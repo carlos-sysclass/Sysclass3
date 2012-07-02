@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Language Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 05 19</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para disponibilizar e editar as traduções do sistema e dos módulos, integrado ao google translate.</description>
+	<className>module_language</className>
+</module>

@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+input.flatButton, button.flatButton{
+	padding:5px 15px 5px 15px;
+	font-weight:bold;
+	background: #e3e3e3;
+	border:1px solid #aaaaaa;
+}

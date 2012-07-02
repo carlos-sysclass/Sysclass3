@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended xLiveChat Module</title>
+	<author>Luiz Henrique P. Ferreira</author>
+	<date>2012 05 30</date>
+	<version>0.1</version>
+	<description>Modulo de atendimento Online</description>
+	<className>module_xlivechat</className>
+</module>

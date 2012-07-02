@@ -1,0 +1,25 @@
+REQS=requirements/project.req requirements/req1.req 
+artifacts/reqsprios.tex: ${REQS}
+	${CALL_RMTOO}
+artifacts/req-graph1.dot: ${REQS}
+	${CALL_RMTOO}
+artifacts/req-graph2.dot: ${REQS}
+	${CALL_RMTOO}
+artifacts/stats_reqs_cnt.csv: ${REQS}
+	${CALL_RMTOO}
+REQS_LATEX2=artifacts/reqtopics.tex
+artifacts/reqtopics.tex: requirements/project.req requirements/req1.req 
+	${CALL_RMTOO}
+TOPIC_ts_common_WhatsAbout_DEPS: topics/WhatsAbout.tic requirements/req1.req
+TOPIC_ts_common_ReqsDocument_DEPS: topics/ReqsDocument.tic requirements/project.req ${TOPIC_ts_common_WhatsAbout_DEPS}
+artifacts/html/ReqsDocument.html: html/header.html html/footer.html ${TOPIC_ts_common_ReqsDocument_DEPS}
+	${CALL_RMTOO}
+artifacts/html/WhatsAbout.html: html/header.html html/footer.html ${TOPIC_ts_common_WhatsAbout_DEPS}
+	${CALL_RMTOO}
+OUTPUT_HTML=artifacts/html/ReqsDocument.html artifacts/html/WhatsAbout.html 
+artifacts/reqs-version.txt: ${REQS}
+	${CALL_RMTOO}
+artifacts/stats_burndown.csv: ${REQS}
+	${CALL_RMTOO}
+artifacts/stats_sprint_burndown.csv: ${REQS}
+	${CALL_RMTOO}

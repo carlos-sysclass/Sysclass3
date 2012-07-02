@@ -1,0 +1,11 @@
+Name: req1
+Type: requirement
+Invented on: 2010-10-09
+Invented by: Andre Kucaniz
+Owner: development
+Description: This \textbf{must} hold the description.
+Rationale: This is a dependent requirement.
+Status: assigned:Andre Kucaniz:2011-05-30
+Priority: development:10
+Effort estimation: 21
+Topic: WhatsAbout

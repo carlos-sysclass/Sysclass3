@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Módulo CEP</title>
+	<author>André Kucaniz</author>
+	<date>2011 04 28</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para fazer fornecedor uma interface de fáil acesso para a pesquisa de CEP.</description>
+	<className>module_cep</className>
+</module>

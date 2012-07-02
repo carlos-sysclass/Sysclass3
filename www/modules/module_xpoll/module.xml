@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Poll Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 09 26</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para disponibilizar as pesquisas realizadas no forum na página inicial do curso.</description>
+	<className>module_xpoll</className>
+</module>

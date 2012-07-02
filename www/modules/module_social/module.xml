@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>redes Sociais</title>
+	<author>Andre Kucaniz</author>
+	<date>2011 03 09</date>
+	<version>0.1</version>
+	<description>This module is used to connect SysClass with Social Networks</description>
+	<className>module_social</className>
+</module>

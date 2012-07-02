@@ -1,0 +1,97 @@
+/*--------------------------------
+         Login Box
+--------------------------------*/
+
+#login_box{
+	background-color: #f3f3f3;
+	z-index:10;
+	display: block;
+	margin:10% auto 100px;
+	border:3px solid #cccccc;
+	position:relative;
+	border-radius:5px;
+} 
+
+#login_box label.fields{
+	position: relative;
+	display:block;
+	margin: 20px 30px 10px;	
+}
+
+#login_box label.fields strong{
+	display:block;
+	width:85px;
+	float:left;
+	
+	color: #333333;
+    font-size: 1.1em;
+    font-weight: normal;
+    line-height: 10px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+	
+
+#login_box label.fields input.indent{
+	width:185px;
+	height:22px;
+	padding:0 5px;
+	line-height:22px;
+    text-shadow: 0 1px 0 #FFFFFF;}
+
+#login_box .button_container {
+	margin: 20px 30px 30px;
+	display:block;
+    clear: both;
+	text-align: center;
+}
+
+	
+#login_box button {
+	/*
+	margin: 20px 30px 30px;
+	display:block;
+    clear: both;
+    */
+}
+
+#login_box #bar{
+	
+	background-color:#4c5766;
+	border-left:none;
+	border-right:none;
+	border-bottom: 1px solid #59676B !important;
+	height: 12px;
+	font-size: 12px;
+	color:white;
+	padding:10px 0;
+	vertical-align: middle;
+    width: 100%;
+    text-align: center;
+	border-radius:0 0 2px 2px;
+	
+}
+
+#login_box #bar a{ margin-left: 5%; margin-right: 5%; color:#ccc; white-space: nowrap; width: 40%}
+#login_box #bar a:hover{ color:#fff;}
+
+#login_box a#login_logo{
+	background: transparent url("../images/adminica_logo_black-trans.png") 0 -15px no-repeat;
+	position:absolute;
+	bottom:-72px;
+	right:24px;
+	height:67px;
+	width:253px;
+}
+
+#login_box a#login_logo span{ visibility:hidden;}
+
+a.logo, #login_box a#login_logo{
+	background: transparent url("../../images/logo.png") no-repeat;
+    margin-left: 43px;
+    margin-top: 18px;
+}
+	
+#login_box a#login_logo{
+	background-position: 0 -15px;
+}
+.grid_8 { width:283px; }

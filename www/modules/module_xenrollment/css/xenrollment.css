@@ -1,0 +1,139 @@
+@CHARSET "UTF-8";
+
+.annotation {
+	font-size:90%;
+	font-style: italic;
+}
+
+.xenrollment-register-checklist li span {
+    position: relative;
+    top: -5px;
+}
+.xenrollment-register-checklist li span.check-item-pendente {
+	font-weight: bold;
+}
+
+.xenrollment-register-checklist li span.check-item-ok {
+	color: #2A8F23;
+}
+
+.xenrollment-register-checklist-status {
+	float : right;
+	text-align: right;
+}
+
+.xenrollment-course-select-list li {
+	padding: 1em 10px !important;
+	cursor: pointer;
+}
+
+.xenrollment-course-select-list li:hover {
+	background: #efefef;
+}
+
+.xenrollment-course-select-list li .course-name {
+ 	width: 50%; 
+ 	display: inline-block; 
+ 	white-space: nowrap;
+}
+
+.xenrollment-course-select-list li .course-price {
+	float: right;
+	font-weight: bold;
+}
+
+.xenrollment-course-select-list li .course-modality {
+	width: 95%;
+	display: block;
+}
+.xenrollment-course-select-list li .course-modality label {
+	display: inline !important;
+	font-weight: normal !important;
+}
+
+.xenrollment-classe-select-list li {
+	padding: 1em 10px !important;
+	cursor: pointer;
+}
+
+.xenrollment-classe-select-list li:hover {
+	background: #efefef;
+}
+
+.xenrollment-classe-select-list li .classe-name {
+ 	width: 50%; 
+ 	display: inline-block; 
+ 	white-space: nowrap;
+}
+
+.xenrollment-course-select-list li .course-modality {
+	width: 95%;
+	display: block;
+}
+.xenrollment-course-select-list li .course-modality label {
+	display: inline !important;
+	font-weight: normal !important;
+}
+
+
+
+
+
+.xdocuments_course_list_item {
+	display : none;
+}
+.xdocuments_list {
+	margin: 20px 0 10px;
+	list-style-type: none;
+}
+
+.xenrollment_course_list_item {
+	cursor: s-resize;
+}
+.xenrollment_course_list_item:hover {
+	background: #eeeeee;
+}
+
+.xdocuments_name {
+	width: 40%; 
+	display: inline-block;
+	margin-left: 5px;
+}
+.xdocuments_required {
+	width: 20%; 
+	display: inline-block;
+	font-weight: bold;
+	text-align: center;
+}
+.xdocuments_status {
+	width: 20%; 
+	display: inline-block;
+	text-align: center;
+}
+.xdocuments_operations {
+	width: 10%; 
+	display: inline-block;
+	text-align: center;
+	
+}
+
+.xdocuments_list li.pendente .xdocuments_status {
+	color: #BF2A23;
+}
+.xdocuments_list li.entregue .xdocuments_status {
+	color: #2A8F23;
+}
+
+.no-color-link {
+	color: #19398F !important;
+}
+
+.user-in-this-course {
+	color: #2A238F !important;
+}
+.in-catalog {
+	color: #2A8F23 !important;	
+}
+.out-catalog {
+	color: #BF2A23 !important;
+}

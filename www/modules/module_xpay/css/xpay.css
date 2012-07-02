@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+.form-field .xpay_methods {
+    margin: 0;
+    vertical-align: super;
+}
+
+.invoice-summary span, .invoice-summary td {
+	text-align : center;	
+}
+.invoice-summary span {
+	display: block;
+}
+.invoice-summary-item {
+	display: block;
+	margin-bottom: 10px;
+}
+.invoice-summary-sign {
+	font-size: 150%;
+	font-weight: bold;
+	padding: 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+table.style1 .xpay-paid {
+	color: #009900;
+}
+table.style1 .xpay-paid td {
+	color: #009900;
+}
+
+.applied_rules {
+	background: #fff;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+}
+.applied_rules li {
+	white-space:nowrap;
+	border: 1px solid #999;
+}
+.applied_rules li .rule_description {
+	padding: 4px 5px 0;
+	font-style: italic;
+}
+
+.applied_rules li .rule_value {
+	padding: 0 5px 4px;
+	font-weight: bold;
+}
+

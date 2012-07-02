@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Projects Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 08 11</date>
+	<version>0.1</version>
+	<description>Este módulo faz o gerenciamento de projetos, artigos, trabalhos, por disciplina ou interdisciplinares</description>
+	<className>module_xprojects</className>
+</module>

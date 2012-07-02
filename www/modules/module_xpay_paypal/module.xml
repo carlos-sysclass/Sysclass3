@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Módulo de integração com web-services Paypal</title>
+	<author>André Kucaniz</author>
+	<date>2012 01 21</date>
+	<version>0.1</version>
+	<description>Submódulo de integração com o Paypal</description>
+	<className>module_xpay_paypal</className>
+</module>

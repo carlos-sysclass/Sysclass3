@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Digest Module</title>
+	<author>Luiz Henrique P. Ferreira</author>
+	<date>2012 05 17</date>
+	<version>0.1</version>
+	<description>Envio de email com as atualizações do Sysclass</description>
+	<className>module_xdigest</className>
+</module>

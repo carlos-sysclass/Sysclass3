@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Módulo Subscribe</title>
+	<author>André Kucaniz</author>
+	<date>2011 04 20</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para agregar todas as notificações do sistema, e servir como interface para o sistema de notificações.</description>
+	<className>module_subscribe</className>
+</module>

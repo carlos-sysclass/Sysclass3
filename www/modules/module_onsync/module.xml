@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>OnSync Conferences</title>
+	<author>André Kucaniz</author>
+	<date>2011 02 09</date>
+	<version>0,1</version>
+	<description>This module is used to connect SysClass with OnSync for lesson conferencing according to the OnSync API</description>
+	<className>module_onsync</className>
+</module>

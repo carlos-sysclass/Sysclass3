@@ -1,0 +1,112 @@
+@CHARSET "UTF-8";
+
+#_XCOURSE_CLASS_CALENDAR_LIST {
+	list-style: none;
+	float: left;
+	max-width: 800px;
+}
+#_XCOURSE_CLASS_CALENDAR_LIST li {
+	float: left;
+	padding: 0;
+}
+
+#_XCOURSE_LOADING_OUTER {
+	width: 100%;
+	text-align: center;
+	display: none;
+	margin: 10px 0;
+}
+#_XCOURSE_LOADING {
+   	padding: 5px;
+	background: #ffffff;
+	border: 1px solid #000;
+	display: inline-block;
+}
+#_XCOURSE_LOADING div {
+	background: url("/themes/sysclass/images/icons/small/others/loader.gif") no-repeat scroll left center transparent;
+	padding: 8px 8px 8px 30px;
+}
+
+#_XCOURSE_LESSONS_SORTABLE_LIST {
+	list-style: none;
+	float: left;
+}
+#_XCOURSE_LESSONS_SORTABLE_LIST li {
+	/* float: left; */
+}
+
+.box .block input.datepicker-in-table {
+	margin: 5px auto;
+}
+
+.xcourse-calendar-checklist li img.checklist-image {
+    position: relative;
+    top: 8px;
+}
+.xcourse-calendar-checklist li span {
+    position: relative;
+}
+.xcourse-calendar-checklist li span.check-item-pendente {
+	font-weight: bold;
+}
+
+.xcourse-calendar-checklist li span.check-item-ok {
+	color: #2A8F23;
+}
+
+.xcourse-calendar-checklist li.step-not-found {
+	color: #C73A3A;
+
+}
+
+.xcourse-calendar-checklist-status {
+	float : right;
+	text-align: right;
+}
+.xcourse-lessons-calendar-details {
+	display: none;
+}
+.xcourse-lessons-calendar-details td:first-child {
+	border-right: 1px solid #000;
+	
+}
+
+.xcourse-feature-list {
+	list-style: none;
+	margin-top: 15px;
+}
+
+.xcourse-feature-list li {
+	cursor: pointer;
+}
+.xcourse-feature-list li a {
+    padding: 5px 10px;
+    display: block;
+}
+.xcourse-feature-list li a:hover {
+    
+}
+
+
+
+/* BLOCKS */
+#xcourse-activity-list {
+	list-style: none;
+}
+#xcourse-activity-list > li {
+	width: 100%;	
+}
+.xcourse-lesson-activity-list {
+	list-style: none;
+}
+.xcourse-lesson-activity-list > li {
+	width: 100%;	
+}
+#xcourse-academic-calendar {
+	list-style: none;
+}
+#xcourse-academic-calendar> li {
+	width: 100%;	
+}
+
+

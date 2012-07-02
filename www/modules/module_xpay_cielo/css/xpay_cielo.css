@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+#xpay-cielo-modal {
+	background: #fff;
+}
+#xpay-cielo-modal .ui-dialog-content {
+	padding: 0;
+}
+.form-field .qtde_parcelas {
+    margin: 0;
+    vertical-align: sub;
+}

@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+.quick_mails-open_contact_block img, .quick_mails-open_feedback_block img {
+	margin-left: 9px;
+    margin-top: 10px;
+}

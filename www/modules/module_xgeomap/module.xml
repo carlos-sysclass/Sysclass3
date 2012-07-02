@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Geo and Map Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 08 15</date>
+	<version>0.1</version>
+	<description>Este módulo fornece funções de Geoprocessamento, Maps, etc.. Integrado ao Google Maps</description>
+	<className>module_xgeomap</className>
+</module>

@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.form-container {
+	
+	
+	
+}
+/* Element container */
+.form-container div {
+	text-align: left;
+}
+.form-container div > label {
+	display: block;
+}
+.form-container div > span, .form-container div > input, .form-container div > select {
+	display: block;
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Enrollment Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 07 13</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para gerenciar as matrículas, desde o cadastro dos alunos nos cursos, re-matrícula, documentos (súb-modulos), e cancelamentos.</description>
+	<className>module_xenrollment</className>
+</module>

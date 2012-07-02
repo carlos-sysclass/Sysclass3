@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+#_PAGAMENTO_BOLETO_FILE_HEADER {
+	margin-top: 15px;
+}
+#_PAGAMENTO_BOLETO_FILE_HEADER, #_PAGAMENTO_BOLETO_FILE_FOOTER {
+	padding-top: 0;
+	padding-bottom: 12px; 
+}

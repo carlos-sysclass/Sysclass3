@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+.ui-datepicker-trigger {
+	margin: 0 5px;
+	position: relative;
+    top: 4px;
+}
+.hasDatepicker {
+	display: inline !important;
+}
+
+._XUSER_responsibleWindow {
+	/*
+	position: absolute;
+	z-index: 100;
+	right: 0;
+	top: 0;
+	border: 1px solid #4C5766;
+	
+	background-color: transparent;
+	background-image: -moz-linear-gradient(center top , #eeeeee 0%, #ffffff 99%);
+	*/
+    /* background-image: -moz-linear-gradient(center top , #1C5EA0 0%, #064792 99%); */
+	/* background-image: -moz-linear-gradient(center top , #4C5766 0%, #313841 99%); */
+}
+.xuser-ativo {
+	color: #008000 !important;
+}
+.xuser-inativo {
+	color: red !important;
+}

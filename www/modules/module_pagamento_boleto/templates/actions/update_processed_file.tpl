@@ -1,0 +1,1 @@
+{include file="$T_PAGAMENTO_BOLETO_BASEDIR/templates/includes/pagamento_boleto.file_processed_status.tpl"}

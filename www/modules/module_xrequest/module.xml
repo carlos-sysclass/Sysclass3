@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Request Module</title>
+	<author>Luiz Henrique P. Ferreira</author>
+	<date>2012 05 17</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para gerenciar as solicitações dos alunos</description>
+	<className>module_xrequest</className>
+</module>

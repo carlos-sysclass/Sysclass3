@@ -1,0 +1,175 @@
+@CHARSET "UTF-8";
+
+#breadcrumb .username, #breadcrumb .filename {
+	color: #d5d5e5;
+}
+
+.block label {
+    clear: both;
+    color: #333333;
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.block input.small, .block textarea.small, .block select.small {
+	width:20%;
+}
+.block input.medium, .block textarea.medium, .block select.medium {
+	width:35%;
+}
+.block input.large, .block textarea.large, .block select.large {
+    width: 70%;
+}
+.block input.full, .block textarea.full, .block select.full {
+    width: 95%;
+}
+.block input {
+    -moz-border-radius-bottomleft: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-topright: 2px;
+    background-color: #E7EDEF;
+    border-bottom-color: #B5B8BB;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color-ltr-source: physical;
+    border-left-color-rtl-source: physical;
+    border-left-color-value: #B5B8BB;
+    border-left-style-ltr-source: physical;
+    border-left-style-rtl-source: physical;
+    border-left-style-value: solid;
+    border-left-width-ltr-source: physical;
+    border-left-width-rtl-source: physical;
+    border-left-width-value: 1px;
+    border-right-color-ltr-source: physical;
+    border-right-color-rtl-source: physical;
+    border-right-color-value: #B5B8BB;
+    border-right-style-ltr-source: physical;
+    border-right-style-rtl-source: physical;
+    border-right-style-value: solid;
+    border-right-width-ltr-source: physical;
+    border-right-width-rtl-source: physical;
+    border-right-width-value: 1px;
+    border-top-color: #B5B8BB;
+    border-top-style: solid;
+    border-top-width: 1px;
+    display: block;
+    height: 1.8em;
+    margin-bottom: 15px;
+    text-indent: 5px;
+}
+.block input.flatButton {
+	height: auto;
+}
+
+.block .uploader {
+	width: 308px; 
+}
+.block .uploader .filename {
+	width: 200px;
+}
+.block .checker, .block .uploader {
+    margin-bottom: 15px;
+}
+
+input, textarea {
+    -x-system-font: none;
+    font-family: 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;
+    font-size: 12px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+.block-links {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.block-links div {
+	
+}
+
+
+.block-links div a{
+	min-height: 55px;
+	padding-top: 6px;
+	padding-bottom: 5px;
+	text-align: center;
+	border: 1px solid #eee;
+	border-radius: 6px;
+}
+.block-links div a:hover {
+	border: 1px solid #eee;
+	-moz-box-shadow: 1px 2px 2px #cccccc, 1px 2px 2px #cccccc;
+}
+
+.block-links div a img {
+}
+
+.dataTables_outerprocessing {
+	margin-right: 1%;
+    margin-top: 1%;
+    position: absolute;
+    right: 0;
+    top: -50px;
+    z-index: 1003;
+    /* border: 1px solid #333333; */
+    padding-left: 4px;
+}
+.dataTables_outerprocessing .dataTables_processing {
+    background-color: #FFFFFF;
+    background: url("/themes/sysclass/images/icons/small/others/loader.gif") no-repeat scroll left center transparent; 
+    color: #444444;
+    height: 16px;
+    padding: 8px 8px 8px 24px;
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    z-index: 1003;
+    text-shadow: none;
+}
+
+.box .no_padding_color .dataTables_wrapper .ui-corner-tl {
+	background-color: #1C5EA0; /* old browsers */
+	background: -moz-linear-gradient(top, #1C5EA0 0%, #064792 99%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1C5EA0), color-stop(99%,#064792)); /* webkit */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1C5EA0', endColorstr='#064792',GradientType=0 ); /* ie */
+	border:1px solid #064792;
+	zoom:1;
+}
+
+.box .no_padding_color .dataTables_wrapper .ui-widget-header {
+	color: #FFFFFF;
+	text-shadow: 0 1px 0 #000000;
+}
+
+.datatable_filter label, .datatable_filter select, .inline {
+	margin: 5px !important;
+	display: inline !important;
+}
+
+.margin-spacing {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.block-links div {
+	margin-top: 3px;
+	margin-bottom: 7px;
+}
+
+.grid-input {
+    display: inline !important;
+    height: 1.8em !important;
+    margin-bottom: 0 !important;
+}
+
+
+.ui-slider-indicator {
+	text-align: center;
+	font-weight: bold;
+}
+

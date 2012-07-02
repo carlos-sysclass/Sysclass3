@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>IES Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 05 20</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para gerenciar a lista de instituições de ensino e polos do sistema.</description>
+	<className>module_ies</className>
+</module>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Polos </title>
+	<author>André Kucaniz</author>
+	<date>2011 04 18</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para disponibilizar os dados de polos.</description>
+	<className>module_polos</className>
+</module>

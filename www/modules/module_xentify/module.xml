@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Entify Module</title>
+	<author>André Kucaniz</author>
+	<date>2012 04 10</date>
+	<version>0.1</version>
+	<description></description>
+	<className>module_xentify</className>
+</module>

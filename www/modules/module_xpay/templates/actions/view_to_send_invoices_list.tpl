@@ -1,0 +1,85 @@
+{capture name="t_xpay_view_send_list"}
+	{include file="$T_XPAY_BASEDIR/templates/includes/options.links.tpl"}
+	
+	<table id="xpay-view-to-send-invoices-list-table" class="style1">
+		<thead>
+			<tr>
+				<th style="text-align: center;">Vencimento</th>
+				<th style="text-align: center;">Parcela</th>
+				<th style="text-align: center;">Usuário</th>
+				<th style="text-align: center;">Curso</th>
+				<th style="text-align: center;">Valor</th>
+				<th style="text-align: center;">Acréscimos (+) / Descontos (-)</th>
+				<th style="text-align: center;">Pago</th>
+				<th style="text-align: center;">Saldo Devedor</th>
+				<th style="text-align: center;">{$smarty.const.__OPTIONS}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach item="invoice" from=$T_XPAY_LIST}
+				<tr class="{if $invoice.locked}locked{/if}">
+					<td align="center">#filter:date-{$invoice.data_vencimento}#</td>
+					<td align="center">{$invoice.invoice_index}/{$invoice.invoice_count}</td>
+					<td align="center">
+						<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&xuser_id={$invoice.user_id}&xcourse_id={$invoice.course_id}">
+							{$invoice.username}
+						</a>
+					</td>
+					<td align="center">{$invoice.course}</td>
+					
+				 	<!-- <td align="center">{$invoice.invoice_id}</td>  -->
+				 	<td align="center">#filter:currency:{$invoice.valor}#</td>
+				 	<td align="center">#filter:currency:{$invoice.total_reajuste}#</td>
+				 	<td align="center">#filter:currency:{$invoice.paid}#</td>
+				 	<td align="center">#filter:currency:{$invoice.valor+$invoice.total_reajuste-$invoice.paid}#</td>
+				 	<td align="center">
+				 		<div>
+				 		{if $invoice.full_price > $invoice.paid}
+				 			{if $invoice.sending}
+					 			<input type="checkbox" name="invoices_to_send" value="{$invoice.negociation_id}:{$invoice.invoice_index}" onclick="xPayUpdateSentInvoiceStatus({$invoice.negociation_id}, {$invoice.invoice_index}, this);" checked="checked" />
+					 		{elseif $invoice.sent_count > 0}
+								<a class="form-icon" href="javascript: xPayMailInvoicesAdviseAction('{$invoice.negociation_id}', '{$invoice.invoice_index}');" title="Reenviar E-mail!"><img src="images/others/transparent.gif" class="sprite16 sprite16-mail" border="0"></a>
+					 		{else}
+					 			<input type="checkbox" name="invoices_to_send" value="{$invoice.negociation_id}:{$invoice.invoice_index}" onclick="xPayUpdateSentInvoiceStatus({$invoice.negociation_id}, {$invoice.invoice_index}, this);" />
+					 		{/if}
+				 			<!-- 
+							<a class="form-icon" href="{$T_XPAY_BASEURL}&action=print_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}" onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_PRINT_INVOICE}', 3);" target = "POPUP_FRAME">
+								<img src="images/others/transparent.gif" class="sprite16 sprite16-printer">
+							</a>
+							 -->
+						{/if}
+						</div>
+				 	</td>
+				</tr>
+			{*foreachelse*}
+			<!-- 
+				<tr>
+				 	<td colspan="7" align="center">{$smarty.const.__XPAY_NO_INVOICES_FOUND}</td>
+				</tr>
+			-->
+			{/foreach}
+		</tbody>
+		<!-- 
+		{if $T_XPAY_STATEMENT.invoices|@count > 0}
+			<tfoot>
+				<tr>
+					<th>&nbsp;</th>
+					<th style="text-align: center;">{$T_XPAY_STATEMENT_TOTALS.invoices_count}</th>
+					<th style="text-align: center;">&nbsp;</th>
+					<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.valor}#</th>
+					<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.total_reajuste}#</th>
+					<th style="text-align: center;" class="xpay-paid">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.paid}#</th>
+					<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.valor+$T_XPAY_STATEMENT_TOTALS.total_reajuste-$T_XPAY_STATEMENT_TOTALS.paid}#</th>
+					<th style="text-align: center;">&nbsp;</th>
+				</tr>
+			</tfoot>
+		{/if}
+		 -->
+	</table>
+{/capture}
+
+{eF_template_printBlock
+	title      = $smarty.const.__XPAY_VIEW_TO_SEND_INVOICES_LIST
+	options    = $T_VIEW_TO_SEND_INVOICES_LIST_OPTIONS
+	data       = $smarty.capture.t_xpay_view_send_list
+}

@@ -1,0 +1,2635 @@
+<?php
+require_once (dirname(__FILE__) . '/module_xpay_submodule.interface.php');
+
+class module_xpay extends MagesterExtendedModule {
+	
+	const INVOICE_ID_TEMPLATE_SEM_DV	= "%04d%02d%01d";
+	const _XPAY_AUTOPAY		= 2;
+	
+	private $rules = null;
+	private $rulesTags = null;
+	
+//	const NOSSO_NUMERO_TEMPLATE		= "%04d%02d%01d%01d";
+	
+	protected static $subModules = null;
+	
+	public function getName() {
+		return "XPAY";
+	}
+	
+	public function getPermittedRoles() {
+		return array("administrator", "student");
+	}
+	
+	public function getTitle($action) {
+		switch($action) {
+			case "view_to_send_invoices_list" : {
+				return __XPAY_VIEW_TO_SEND_INVOICES_LIST;
+			}
+			case "view_to_send_invoices_list" : {
+				return __XPAY_VIEW_TO_SEND_INVOICES_LIST;
+			}
+			case "do_payment" : {
+				return __XPAY_DO_PAYMENT;
+			}
+			case "view_user_statement" : {
+				return __XPAY_USER_STATEMENT;
+			}
+			case "view_user_course_statement" : {
+				return __XPAY_USER_COURSE_STATEMENT;
+			}
+			case "simulate_due_balance_negociation" : {
+				return __XPAY_USER_COURSE_STATEMENT;
+			}
+			case "print_invoice" : {
+				return __XPAY_SHOW_PAYMENTS_SUMMARY;
+			}
+			case "" :						
+			case $this->getDefaultAction() : {
+				return __XPAY_MODULE_NAME;
+			}
+			default : {
+				return parent::getTitle($action);
+			}
+			
+		}
+	}
+	public function getUrl($action) {
+		switch($action) {
+			case "do_payment" :
+			case "view_user_statement" :
+			case "view_user_course_statement" : {
+				foreach($_GET as $index => $get) {
+					if (!in_array($index, array("ctg", "op", "action"))) {
+						$params[] = $index . "=" .  $get;
+					}
+				}
+				return $this->moduleBaseUrl . "&action=" . $action . "&" . implode("&", $params);
+			}
+			case "" : {
+				return $this->moduleBaseUrl;
+			}
+			default : {
+				return parent::getUrl($action);
+			}
+		}
+	}
+	public function getDefaultAction() {
+		if ($this->getCurrentUser()->getType() == 'student') {
+			return "view_user_statement";
+		} else {
+			return "show_payments_summary";
+		}
+		
+		
+	}
+	
+	public function loadConfig() {
+		$config = array(
+			'widgets'	=> array(
+				'last_payments' => array(
+					'payment_count'	=> 10
+				)
+			)
+		);
+		return $config;
+	}
+	/* ACTIONS FUNCTIONS */
+	/* DEFAULT ACTION */
+	public function showPaymentsSummaryAction() {
+		$smarty = $this->getSmartyVar();
+		// BLOCOS ???
+		// 1. Ultimos pagamentos recebidos [ ok ] 
+		// 2. Ultimos boletos enviados
+		// 3. Montante a Receber
+		// 4. VAlor recebido no último mês
+		
+		// 1. Ultimos pagamentos recebidos
+		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['payment_count']);
+		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
+		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
+		//exit;
+	}
+	public function viewLastPaidInvoicesAction() {
+		$smarty = $this->getSmartyVar();
+		// BLOCOS ???
+		// 1. Ultimos pagamentos recebidos
+		// 2. Ultimos boletos enviados
+		// 3. Montante a Receber
+		// 4. VAlor recebido no último mês
+		
+		// 1. Ultimos pagamentos recebidos
+		$lastPaymentsData = $this->_getLastPaymentsList();
+		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
+		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
+		//exit;
+	}
+	public function migrateToNewModelAction() {
+		/*
+		$this->_migrateOldPaymentToNegociation(
+			742, 23
+		);
+		*/
+		
+		$paymentData = ef_getTableData(
+			"users_to_courses uc 
+			JOIN courses c ON (uc.courses_ID = c.id)
+			JOIN users u ON (uc.users_LOGIN = u.login)",
+			"u.id as user_id, c.id as course_id",
+			"uc.user_type = 'student' AND c.ies_id = 1"
+		);
+		foreach($paymentData as $item) {
+			$this->_migrateOldPaymentToNegociation(
+				$item['user_id'],
+				$item['course_id']
+			);
+		}
+		exit;
+	}
+	private function _migrateOldPaymentToNegociation($user_id, $course_id) {
+		// CHECK FOR USER PAYMENTS ON OLD TABLES
+		list($paymentData) = ef_getTableData(
+				"module_pagamento",
+				"*",
+				sprintf("user_id = %d AND course_id = %d", $user_id, $course_id)
+		);
+		// SE JÁ ESTÁ MIGRADO, ENTÃO VAI EMBORA
+		if ($paymentData['migrated'] == 1) {
+			return false;
+		}
+	
+		$editUser = $this->getEditedUser(true, $user_id);
+		$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index']);
+		// SE JÁ TEM UMA NEGOCIAÇÃO REGISTRADA, ENTÃO VAI EMBORA
+		if (count($userNegociation) > 0) {
+			return false;
+		}
+		if (is_null($paymentData)) {
+			return false;
+		}
+	
+		$negociationData =  array(
+			'timestamp'				=> strtotime($paymentData['data_registro']),
+			'user_id'				=> $user_id,
+			'course_id'				=> $course_id,
+			//'registration_tax'		=> 0, // GET COURSE DEFAULTS
+			//'parcelas'				=> 1, // GET COURSE DEFAULTS
+			'negociation_index'		=> 1,
+			'active'				=> 1,
+			//'vencimento_1_parcela'	=> null,
+			'ref_payment_id'		=> $paymentData['payment_id']
+		);
+	
+		$negociationID = eF_insertTableData("module_xpay_course_negociation", $negociationData);
+	
+		// BUSCAR AS FATURAS E MIGRAR, INCLUINDO PAGAMENTOS (OPSS!!)
+		$paymentFull = $this->getPaymentById($paymentData['payment_id']);
+	
+		$newInvoices = array();
+		$boleto_transactions = $paid_items = $invoices_to_paid = $manual_transactions = array();
+	
+		foreach($paymentFull['invoices'] as $oldInvoiceIndex => $oldInvoice) {
+			$vencimento = date_create_from_format("Y-m-d H:i:s", $oldInvoice['data_vencimento']);
+			
+			if ($oldInvoice['valor'] == 0) {
+				continue;
+			}
+			
+			$newInvoices[$oldInvoiceIndex - 1] = $this->_createInvoice(
+					$negociationID, $oldInvoice['valor'], $vencimento, $oldInvoice['invoice_id'], $oldInvoiceIndex - 1, false
+			);
+			if ($oldInvoiceIndex == 1) {
+				$newInvoices[$oldInvoiceIndex - 1]['full_price'] = $oldInvoice['valor'];
+				$newInvoices[$oldInvoiceIndex - 1]['valor'] = $oldInvoice['valor'];
+			}
+			
+			// DO NOT CALCULATE OLD VALUES
+			// PERSIST INVOICE
+			$insertData = array(
+				'negociation_id'		=> $newInvoices[$oldInvoiceIndex - 1]['negociation_id'],
+				'invoice_index'			=> $newInvoices[$oldInvoiceIndex - 1]['invoice_index'],
+				'description'			=> $newInvoices[$oldInvoiceIndex - 1]['description'],
+				'invoice_id'			=> $newInvoices[$oldInvoiceIndex - 1]['invoice_id'],
+				'invoice_sha_access'	=> $newInvoices[$oldInvoiceIndex - 1]['invoice_sha_access'],
+				'valor'					=> $oldInvoice['valor'],
+				'data_registro'			=> $newInvoices[$oldInvoiceIndex - 1]['data_registro'],
+				'data_vencimento'		=> $newInvoices[$oldInvoiceIndex - 1]['data_vencimento'],
+				'locked'				=> $oldInvoice['bloqueio']
+			);
+			eF_insertTableData("module_xpay_invoices", $insertData);
+			
+			if ($oldInvoice['pago'] == 1 || $oldInvoice['pago'] == 2) {
+				$doManual = false;
+				if ($oldInvoice['pago'] == 2) {
+					// BUSCA O RETORNO DO DB
+					list($transactionData) = ef_getTableData(
+							"module_pagamento_boleto_invoices_return",
+							"*",
+							sprintf("payment_id = %d AND parcela_index = %d", $paymentData['payment_id'], $oldInvoiceIndex)
+					);
+					if (is_null($transactionData)) {
+						// DO MANUAL
+						$doManual = true;
+					} else {
+						// Boleto pago e baixado automaticamente (boleto Itaú)
+						$boleto_transactions[] = $item = array(
+								'instance_id' 			=> 'itau_extensao',
+								'data_registro' 		=> $transactionData['data_registro'],
+								'nosso_numero' 			=> $transactionData['nosso_numero'],
+								'data_pagamento' 		=> $transactionData['data_pagamento'],
+								'ocorrencia_id' 		=> $transactionData['ocorrencia_id'],
+								'liquidacao_id' 		=> $transactionData['liquidacao_id'],
+								'valor_titulo' 			=> $transactionData['valor_titulo'],
+								'valor_abatimento' 		=> $transactionData['valor_abatimento'],
+								'valor_desconto' 		=> $transactionData['valor_desconto'],
+								'valor_juros_multa' 	=> $transactionData['valor_juros_multa'],
+								'valor_outros_creditos'	=> $transactionData['valor_outros_creditos'],
+								'valor_total'			=> $transactionData['valor_total'],
+								'tag' 					=> $transactionData['tag'],
+								'filename' 				=> $transactionData['filename'],
+						);
+						$transactionID = ef_insertTableData(
+								"module_xpay_boleto_transactions",
+								$item
+						);
+						$start_timestamp = strtotime($transactionData['data_pagamento']);
+					}
+				}
+			
+				if ($oldInvoice['pago'] == 1 || $doManual) {
+					// Boleto pago e baixado automaticamente (boleto Itaú)
+					$manual_transactions[] = $item = array(
+						'instance_id' 			=> '',
+						'data_registro' 		=> $oldInvoice['data_vencimento'],
+						'description'			=> "",
+						'filename'				=> null
+					);
+					$transactionID = ef_insertTableData(
+						"module_xpay_manual_transactions",
+						$item
+					);
+						
+					$start_timestamp = strtotime($oldInvoice['data_vencimento']);
+				}
+				
+	
+				$paid_items[] = $item = array(
+					'transaction_id'	=> $transactionID,
+					'method_id' 		=> ($oldInvoice['pago'] == 1 || $doManual) ? 'manual' : 'boleto',
+					'paid' 				=> $oldInvoice['valor'],
+					'start_timestamp' 	=> $start_timestamp
+				);
+	
+				$paidID = ef_insertTableData(
+						"module_xpay_paid_items",
+						$item
+				);
+	
+				$invoices_to_paid[] = $item = array(
+					'negociation_id'	=> $negociationID,
+					'invoice_index'		=> $oldInvoiceIndex - 1,
+					'paid_id'			=> $paidID
+				);
+	
+				ef_insertTableData(
+					"module_xpay_invoices_to_paid",
+					$item
+				);
+			}
+		}
+/*		
+		
+		eF_deleteTableData("module_xpay_course_negociation", "id = $negociationID");
+		eF_deleteTableData("module_xpay_invoices", "negociation_id = $negociationID");
+		eF_deleteTableData("module_xpay_boleto_transactions");
+		eF_deleteTableData("module_xpay_paid_items");
+		eF_deleteTableData("module_xpay_invoices_to_paid");
+		*/
+		return true;
+	}
+	public function migrateDiscountToNewModelAction() {
+		// CHECK FOR USER WHICH HAVE MORE THAN 5 PERCENT
+		$paymentData = ef_getTableData(
+				"users_to_courses uc
+				JOIN courses c ON (uc.courses_ID = c.id)
+				JOIN users u ON (uc.users_LOGIN = u.login)
+				JOIN module_pagamento p ON (u.id = p.user_id AND c.id = p.course_id)",
+				"u.id as user_id, c.id as course_id, p.*",
+				"uc.user_type = 'student' AND c.ies_id = 1 AND p.desconto <> 5 AND p.desconto <> 0 AND u.id NOT IN (SELECT rule_xentify_id FROM module_xpay_price_rules)"
+		);
+		foreach($paymentData as $item) {
+			$ruleID = eF_insertTableData(
+				"module_xpay_price_rules",
+				array(
+					"description"			=> sprintf('Desconto de %d%% para pagamento pontual', $item['desconto']),
+					"rule_xentify_scope_id"	=> 7, 
+					"rule_xentify_id"			=> $item['user_id'],
+					"entify_id"				=> 1, 
+					"entify_absolute_id"	=> 1, 
+					"type_id"				=> -1, 
+					"percentual"			=> 1, 
+					"valor"					=> $item['desconto'] / 100, 
+					"base_price_applied"	=> 1, 
+					"applied_on"			=> 'once', 
+					"order"					=> 1, 
+					"active"				=> 1,
+				)
+			);
+			eF_insertTableData(
+				"module_xuser_user_tags",
+				array(
+					'user_id'	=> $item['user_id'],
+					'tag'		=> 'is_custom'
+				)
+			);
+			eF_insertTableData(
+				"module_xpay_price_rules_tags",
+				array(
+					'rule_id'	=> $ruleID,
+					'tag'		=> 'is_not_overdue'
+				)
+			);
+			eF_insertTableData(
+				"module_xpay_price_rules_tags",
+				array(
+					'rule_id'	=> $ruleID,
+					'tag'		=> 'is_not_full_paid'
+				)
+			);			
+			
+		}
+		exit;
+	} 
+	public function viewUserStatementAction() {
+		$smarty = $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$_GET['xuser_id'] = null;
+			$this->getEditedUser(true, $this->getCurrentUser()->user['id']);
+			$smarty -> assign("T_XPAY_IS_ADMIN", false);
+		}
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+		}
+		// GET ALL DEBITS
+		$userDebits = $this->_getUserCoursesPayStatus();
+		if (count($userDebits) == 1) {
+			$userDebit = reset($userDebits);
+			$_GET['xcourse_id'] = $userDebit['course_id'];
+			$this->setCurrentAction("view_user_course_statement", true);
+		} else {
+		
+			$usersTotals= array(
+				'base_price'	=> 0,
+				'paid'			=> 0,
+				'balance'		=> 0
+			);
+			
+			foreach($userDebits as $statement) {
+				$usersTotals['base_price'] 	+= intval($statement['base_price']);
+				$usersTotals['paid']	+= intval($statement['paid']);
+			}
+			$usersTotals['balance'] = intval($usersTotals['base_price'])-intval($usersTotals['paid']);
+	
+			$smarty -> assign("T_XPAY_STATEMENT", $userDebits);
+			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $usersTotals);
+		}
+	}
+	public function viewUserCourseStatementAction() {
+		$smarty = $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$_GET['xuser_id'] = null;
+			$this->getEditedUser(true, $this->getCurrentUser()->user['id']);
+			
+			$smarty -> assign("T_XPAY_IS_ADMIN", false);
+		}
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+		}
+		
+		if (!($editUser = $this->getEditedUser())) {
+			return false;
+		}
+		if (!($editCourse = $this->getEditedCourse())) {
+			return false;
+		}
+		
+		//	ONLY ies_id =1 COURSES
+		if ($editCourse->course['ies_id'] == 1) {
+			$negociation_index = $_GET['negociation_index'];
+		
+			$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
+			
+			foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
+				$applied_rules = array();
+				if ($invoice['total_reajuste'] <> 0) {
+					foreach($invoice['workflow'] as $workflow) {
+						if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
+							foreach($invoice['rules'] as $rule) {
+								if ($rule['id'] == $workflow['rule_id']) {
+									$currentRule = $rule;
+									break;
+								}
+							}
+							$applied_rules[$workflow['rule_id']] = array(
+								'description'		=> $currentRule['description'],
+								'input'				=> $workflow['input'],
+								'diff'				=> $workflow['diff'],
+								'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
+								'count'				=> 0
+								
+							);
+						}
+						$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
+						$applied_rules[$workflow['rule_id']]['count']++;
+					}
+				}
+				$userNegociation['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+				/*
+				["applied_rules"]=>
+				array(2) {
+					[2]=>
+					array(5) {
+						["description"]=>
+						string(22) "Multa de 2% por atraso"
+						["input"]=>
+						float(287.778)
+						["diff"]=>
+						float(5.75556)
+						["count"]=>
+						int(1)
+						["output"]=>
+						float(293.53356)
+					}
+					[3]=>
+					array(5) {
+						["description"]=>
+						string(21) "Juros de 0.33% ao Dia"
+						["input"]=>
+						float(293.53356)
+						["diff"]=>
+						float(0.9496674)
+						["count"]=>
+						int(131)
+						["output"]=>
+						float(417.9399894)
+					}
+				}
+				*/
+			}
+/*
+			echo '<pre>';
+			var_dump($userNegociation['invoices'][3]);
+			echo '</pre>';
+//			exit;
+*/
+			/*
+			if ($this->getCurrentUser()->getType() == 'student') {
+				// @tmp Check if student is on send list
+				list($countItem) = eF_countTableData(
+					"module_xpay_to_send_list_item",
+					"*",
+					sprintf("negociation_id = %d", $userNegociation['id'])
+				);
+				
+				if ($countItem['count'] == 0) {
+					eF_redirect(sprintf("student.php?message=%s&message_type=%s", __XPAY_UNKNOW_ERROR, "failure"));
+					return false;
+				}
+			}
+			*/
+	
+			if (count($userNegociation) == 0) {
+				// CHECK IF COURSE HAS A DEFAULT STATEMENT
+				
+				// CHECK IF HAS A PAYMENT REGISTERED ON OLD module
+				if (!$this->_migrateOldPaymentToNegociation($editUser->user['id'], $editCourse->course['id'])) {
+					$negociationData = $this->_createUserDefaultStatement();
+				}
+				$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index']);
+			} elseif (count($userNegociation['invoices']) == 0) {
+				//$this->_createUserDefaultInvoices($negociationData['id']);
+					
+				//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
+			}
+
+			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
+			
+			$negociationTotals = array(
+					'invoices_count'	=> count($userNegociation['invoices']),
+					'valor'				=> 0,
+					'paid'				=> 0,
+					'balance'			=> 0
+			);
+	
+			foreach($userNegociation['invoices'] as $invoice) {
+				$negociationTotals['valor']	+= $invoice['valor'];
+				$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
+				$negociationTotals['paid']	+= $invoice['paid'];
+			}
+			$negociationTotals['balance'] = intval($negociationTotals['valor'])-intval($negociationTotals['paid']);
+		
+			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
+			
+			return true;
+		} else {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+	}
+	public function simulateDueBalanceNegociationAction() {
+		$smarty = $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+		}
+		
+		if (!($editUser = $this->getEditedUser())) {
+			return false;
+		}
+		if (!($editCourse = $this->getEditedCourse())) {
+			return false;
+		}
+		
+		$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id']);
+		
+		if (count($userNegociation) == 0) {
+			// CHECK IF COURSE HAS A DEFAULT STATEMENT
+			$userNegociation = $this->_createUserDefaultStatement(true);
+			$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index']);
+		}
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOs
+		$form = new HTML_QuickForm2("xpay_invoice_params_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+		
+		$form -> addStatic('saldo_total', array(), array('label'	=> __XPAY_BALANCE));
+		$form -> addText('taxa_matricula', array('class' => 'small', 'alt' => 'decimal'), array('label'	=> __XPAY_REGISTRATION_TAX));
+		//$form -> addStatic('saldo_restante', array("id" => 'dd'), array('label'	=> __XPAY_SUBTOTAL));
+		
+		
+		$form -> addText('total_parcelas', array('class' => 'small', 'alt' => 'integer'), array('label'	=> __XPAY_PARCELAS_COUNT));
+		$form -> addText('vencimento_1_parcela', array('class' => 'small', 'alt' => 'date'), array('label'	=> __XPAY_VENCIMENTO_1_PARCELA));
+		//
+		$form -> addSubmit('submit_invoice_params', null, array('label'	=> __XPAY_SUBMIT));
+		
+		if ($form -> isSubmitted() && $form -> validate()) {
+			// INSERE VALORES E REDIRECIONA PARA
+			$fields = $values = $form->getValue();
+			
+			$fields['taxa_matricula'] 		= str_replace(",", ".", str_replace(".", "", $fields['taxa_matricula']));
+			$fields['vencimento_1_parcela'] = date_create_from_format("d/m/Y H:i:s", $fields['vencimento_1_parcela'] . "  00:00:00");
+			//s$fields['vencimento_1_parcela'] ? $fields['vencimento_1_parcela'] = $fields['vencimento_1_parcela']->format('Y-m-d') : null;
+
+			$negociationParams = array(
+				'full_price'			=> $userNegociation['full_price'],
+				'paid'					=> $userNegociation['paid'],
+				//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
+				'taxa_matricula'		=> $fields['taxa_matricula'],
+				'total_parcelas'		=> $fields['total_parcelas'],
+				'vencimento_1_parcela'	=> $fields['vencimento_1_parcela']
+			);
+			
+			// CRIAR SIMULAÇÃO DE PARCELAMENTO
+			$currentBalance = $negociationParams['full_price'];
+			$invoices = array();
+			$invoice_index = 1;
+			$default_vencimento = 5;
+			
+			$fakeNegociationID = $userNegociation['id'];
+
+			// 1. CREATE INVOICE FOR ALREADY "paid" VALUES, AND LOCK
+			if ($negociationParams['paid'] > 0) {
+				
+				$paidInvoice = $this->_createInvoice(
+					$fakeNegociationID, $negociationParams['paid'], $default_vencimento, null, -1, false
+				);
+				$paidInvoice['locked'] 		= 1;
+				$paidInvoice['description'] = __XPAY_PAID_INVOICE_DESCRIPTION;
+				$paidInvoice['paid']		= $negociationParams['paid'];
+				
+				$invoices[] = $paidInvoice;
+				
+				// 2. REMOVE PAID VALUE FROM FULL PRICE
+				$currentBalance -= $negociationParams['paid'];
+			}
+			$currentVencimento = $fields['vencimento_1_parcela'];
+			$today = new DateTime("today");
+			if ($fields['vencimento_1_parcela'] && intval($currentVencimento->diff($today, false)->format("%r%d")) <= 0) {
+				$monthInterval = new DateInterval('P1M');
+
+				// 3. CREATE INVOICE FOR "taxa_matricula"
+				if ($negociationParams['taxa_matricula'] > 0) {
+					$registrantInvoice = $this->_createInvoice(
+						$fakeNegociationID, $negociationParams['taxa_matricula'], $currentVencimento, null, 0, false
+					);
+					
+					$registrantInvoice['description'] = __XPAY_REGISTRANT_INVOICE;
+					$invoices[] = $registrantInvoice;
+					
+					// 4. REMOVE "taxa_matricula" FROM FULL PRICE
+					$currentBalance -= $negociationParams['taxa_matricula'];
+					
+					$currentVencimento->add($monthInterval);
+					
+				}
+				// 5. DIVIDE BALANCE BY "total_parcelas"
+				$valorParcela = xfloor($currentBalance / $negociationParams['total_parcelas'], 2);
+				
+				// 6. APPEND THE INVOICES VALUES 
+				$invoicesValues = array();
+				for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
+					$invoicesValues[$i] = $valorParcela;
+				}
+				
+				// 7. CALCULATE THE REST
+				$restBalance = round($currentBalance - ($valorParcela * $negociationParams['total_parcelas']), 2);
+				
+				// 8. APPEND THE REST, BY 0.01 STEP ON INVOICES
+				for($i = $negociationParams['total_parcelas']; $i >= 1; $i--) {
+					if ($restBalance > 0) {
+						$invoicesValues[$i]	+= 0.01;
+						$restBalance 		-= 0.01;
+					} else {
+						break;
+					}
+				}
+				
+				// 9. CREATE INVOICES  
+				
+				for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
+					$parcelationInvoice = $this->_createInvoice(
+						$fakeNegociationID, $invoicesValues[$i], $currentVencimento, null, $invoice_index++, false
+					);
+					
+					$parcelationInvoice['description'] = sprintf(__XPAY_NUMBERED_INVOICE, $i);
+					$invoices[] = $parcelationInvoice;
+					
+					$currentVencimento->add($monthInterval);
+				}
+				
+				$suggestedInvoices = array();
+				
+				foreach($invoices as $invoiceitem) {
+					$suggestedInvoices[] = $this->_calculateInvoiceDetails($invoiceitem);
+				}
+				
+				///$userNegociation['sugested_invoices'] = $suggestedInvoices;
+				$userNegociation['sugested_invoices'] = $suggestedInvoices;
+				
+				$negociationTotals = array(
+					'invoices_count'	=> count($userNegociation['invoices']),
+					'valor'				=> 0,
+					'total_reajuste'	=> 0,
+					'paid'				=> 0
+				);
+				
+				foreach($userNegociation['sugested_invoices'] as $invoice) {
+					$negociationTotals['valor']				+= $invoice['valor'];
+					$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
+					$negociationTotals['paid']				+= $invoice['paid'];
+				}
+				$negociationTotals['balance'] = intval($negociationTotals['valor'])+intval($negociationTotals['total_reajuste'])-intval($negociationTotals['paid']);
+				
+				$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
+				
+				$smarty -> assign("T_XPAY_NEGOCIATION_IS_SUGESTED", true);
+				
+				// SAVE ON SESSION SERIALIZED NEGOCIATION BY HASH
+				$negociationHash = $this->createToken(10);
+				$this->setCache($negociationHash, json_encode($userNegociation));
+				$smarty -> assign("T_XPAY_NEGOCIATION_HASH", $negociationHash);
+				$this->addModuleData("negociation_hash", $negociationHash);
+				
+				$values['saldo_total'] = $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']);
+				
+			} else {
+				$this->setMessageVar(__XPAY_PAYMENT_DAY_MUST_BE_GREATER_THAN_TODAY, "failure");
+			}
+		} else {
+			$values = array(
+				'saldo_total'		=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				//'saldo_restante'	=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				'total_parcelas'	=> 10
+			);
+		}
+		$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
+		
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_XPAY_INVOICE_PARAMS_FORM', $renderer -> toArray());
+		return true;
+	}
+	public function saveSimulatedNegociationAction() {
+		$smarty = $this->getSmartyVar();
+		
+		$hashNegociation = $_POST['negociation_hash'];
+		var_dump($hashNegociation);
+		$jsonNegociation = $this->getCache($hashNegociation);
+		var_dump($jsonNegociation);
+		$userNegociation = json_decode($jsonNegociation, true, 50);
+		var_dump($userNegociation);
+		exit;
+		
+		// SAVE WHERE? PERSIST OR NOT PERSIST??
+	}
+	public function doPaymentAction() {
+		$smarty = $this->getSmartyVar();
+		$currentUser = $this->getCurrentUser();
+		// GET PAYMENT ID, AND INVOICE ID
+		/*
+		 * Montar um formulário para selecionar o pagamento e parcela 
+		 * Caso somente um registro de pagamento, pré-selecionar
+		 * Caso o regime de pagamento não permita realizar pagamentos de parcelas fora de ordem, pré selecionar 
+		 */
+		$negociationID = $_GET['negociation_id'];
+		$invoice_index = $_GET['invoice_index'];
+		
+		$xUserModule = $this->loadModule("xuser");
+		
+		$exUserType = $xUserModule->getExtendedTypeID($currentUser);
+		
+		if ($exUserType == 'student') {
+			// CHECK IF NEGOCIATION ID IS FROM USER
+			$negocData = $this->_getNegociationByContraints(array(
+				'negociation_id'	=> $negociationID,
+				'login'				=> $this->getCurrentUser()->user['login']	
+			));
+		} elseif (
+			$exUserType == 'administrator' || 
+			$exUserType == 'financier'
+		) {
+			$negociationID = $_GET['negociation_id'];
+			$invoice_index = $_GET['invoice_index'];
+			
+			$negocData = $this->_getNegociationById($negociationID);
+		} else {
+			$this->setMessageVar(__XPAY_NO_ACCESS, "failure");
+			$selectedIndex = null;
+			return;
+		}
+		
+		if (count($negocData) == 0) {
+			$this->setMessageVar(__XPAY_NONEGOCIATION_FOUND, "failure");
+			$selectedIndex = null;
+			return;
+		}
+		$negocTotals = array(
+			'valor'				=> 0,
+			'total_reajuste'	=> 0,
+			'paid'				=> 0
+		);
+		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+			if ($invoice['full_price'] <= $invoice['paid']) {
+				//					unset($negocData['invoices'][$invoiceIndex]);
+				//					continue;
+			}
+			$negocTotals['valor']			+= $invoice['valor'];
+			$negocTotals['total_reajuste']	+= $invoice['total_reajuste'];
+			$negocTotals['paid']			+= $invoice['paid'];
+		}
+		
+		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
+		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negocTotals);
+		
+		// GET SUB MODULES FUNCTIONS
+		$currentOptions = $this->getSubmodules();
+			
+		$selectedIndexes = array();
+		if (count($currentOptions) > 1) {
+			// MAKE FORM AND USE IT TO SELECT INDEX
+			$selectedIndexes = array_keys($currentOptions);
+		} elseif (count($currentOptions) == 1) {
+			// ONLY ONE OPTION, SELECT AUTOMAGICALY
+			$selectedIndexes[] = key($currentOptions);
+		} else {
+			$this->setMessageVar(__XPAY_NOPAYMENT_TYPES_DEFINED, "warning");
+				
+			$selectedIndex = null;
+			return;
+		}
+		
+		$paymentMethods = array();
+			
+		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
+		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		
+		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+			if ($invoice['full_price'] <= $invoice['paid']) {
+				unset($negocData['invoices'][$invoiceIndex]);
+				continue;
+			}
+			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
+		}
+
+		$form->setDefaults(array(
+			'invoice_indexes'	=> $invoice_index
+		));
+			
+		foreach($selectedIndexes as $selectedKey => $selectedIndex) {
+			$selectedPaymentMethod = $currentOptions[$selectedIndex];
+			
+			if (!$selectedPaymentMethod->paymentCanBeDone($payment_id, $invoice_id)) {
+				unset($selectedIndexes[$selectedKey]);
+		
+				//	$this->setMessageVar(__XPAY_NOPAYMENT_CANT_BE_DONE, "warning");
+				//	return;
+				continue;
+			}
+				
+			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
+			
+			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
+				if ($item['active'] === FALSE) {
+					continue;
+				}
+				$img = sprintf(
+					'<img src="%simages/%s.png" />',
+					$paymentMethods[strtolower($selectedIndex)]['baselink'],
+					empty($item['image_name']) ? $key : $item['image_name']
+				);
+					
+				$form -> addElement('radio', 'pay_methods', $item['name'], $img, strtolower($selectedIndex) . ":" . $key, 'class="xpay_methods"');
+			}
+		}
+		$smarty -> assign("T_XPAY_METHODS", $paymentMethods);
+		if (
+			($form -> isSubmitted() && $form -> validate()) ||
+			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
+		) {
+			$values = $form->exportValues();
+				
+			if ($form -> isSubmitted() && $form -> validate()) {
+				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
+		
+				$_SESSION['pay_method']			= $pay_method;
+				$_SESSION['pay_method_option']	= $pay_method_option;
+				
+				$invoice_index = $values['invoice_indexes'];
+				$form->setDefaults($form->exportValues());
+			} else {
+				/*
+				list($pay_method, $pay_method_option) = array(
+					$_SESSION['pay_method'],
+					$_SESSION['pay_method_option']
+				);
+					
+				$form->setDefaults(array(
+					'pay_methods'	=>  $pay_method . ":" . $pay_method_option
+				));
+				*/
+			}
+			
+			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
+				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
+
+				$selectedPaymentMethod->initPaymentProccess(
+					$negociationID, $invoice_index,
+					array(
+						'option' => $pay_method_option
+					)
+				);
+				
+				
+				
+			} else {
+				unset($_SESSION['pay_method']);
+				unset($_SESSION['pay_method_option']);
+			}
+		}
+		
+		$form -> addRule('pay_methods', _THEFIELD.' "'.__XPAY_PAYMENT_METHOD.'" '._ISMANDATORY, 'required', null, 'client');
+		$form -> addElement('submit', 'xpay_submit', __XPAY_NEXT, 'class = ""');
+			
+		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
+		$form -> accept($renderer);
+		$smarty -> assign('T_XPAY_METHOD_FORM', $renderer -> toArray());
+		
+		//$render = $renderer -> toArray();
+		return true;
+	}
+	public function viewToSendInvoicesListAction() {
+		$smarty = $this->getSmartyVar();
+		$tables = array(
+			"module_xpay_invoices inv",
+			"JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)",
+			"LEFT OUTER JOIN module_xpay_invoices_to_paid inv2paid ON (
+				inv.negociation_id = inv2paid.negociation_id AND
+				inv.invoice_index = inv2paid.invoice_index
+			)",
+			"LEFT OUTER JOIN module_xpay_paid_items pd ON (
+				inv2paid.paid_id = pd.id
+			)",
+			"JOIN users u ON (neg.user_id = u.id)",
+			"JOIN courses c ON (neg.course_id = c.id)",
+			sprintf("LEFT OUTER JOIN module_xpay_to_send_list 2send ON (
+				2send.user_id = %s
+			)", $this->getCUrrentUser()->user['id']),
+			"LEFT OUTER JOIN module_xpay_to_send_list_item 2send_item ON (
+				2send_item.send_id = 2send.id AND 
+				inv.negociation_id = 2send_item.negociation_id AND
+				inv.invoice_index = 2send_item.invoice_index
+			)",
+			"LEFT OUTER JOIN module_xpay_sent_invoices_log sent_log ON (
+				inv.negociation_id = sent_log.negociation_id AND
+				inv.invoice_index = sent_log.invoice_index
+			)"
+				
+			//"JOIN module_pagamento_invoices_status stat ON (inv.status_id = stat.id)",
+			//"LEFT OUTER JOIN module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id AND pag2ies.ies_id = c.ies_id)",
+			//"LEFT OUTER JOIN module_ies ies ON (pag2ies.ies_id = ies.id)"
+		);
+		$fields = array(
+			"neg.user_id",
+			"inv.negociation_id",
+			"neg.course_id",
+			"inv.invoice_index",
+			"inv.invoice_id",
+			"inv.invoice_sha_access",
+			"inv.valor",
+			"inv.data_registro",
+			"inv.data_vencimento",
+			"COUNT(pd.id) as trans_count", 
+			"IFNULL(SUM(pd.paid), 0) as paid",
+			"MIN(pd.start_timestamp) as start_min",
+			"MAX(pd.start_timestamp) as start_max",
+			"u.name",
+			"u.surname",
+			"u.login",
+			"(SELECT COUNT(invoice_index) FROM module_xpay_invoices WHERE negociation_id = neg.id) as invoice_count",
+			"count(2send_item.invoice_index) as sending",
+			"count(sent_log.id) as sent_count",
+			"c.name as course"
+		);
+		
+		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
+		$today = new DateTime("today");
+		$a15DaysInterval = new DateInterval("P15D");
+		
+		$iesIds = $this->getCurrentUserIesIDs();
+		
+		$iesIds[] = 0;
+		//$where[] = "inv.status_id NOT IN (3,4,5)";
+		//$where[] = "inv.pago = 0";
+		$where[] = "inv.locked = 0";
+		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
+		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a15DaysInterval)->format("Y-m-d"));
+		$where[] = "u.active = 1";
+		
+		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
+		
+		$order = array(
+			"inv.data_vencimento ASC"
+		);
+
+		$group = array(
+			"inv.negociation_id",
+			"inv.invoice_index"
+		);
+		
+		// MAKE FILTERS
+		/*
+		echo prepareGetTableData(
+				implode(" ", $tables),
+				implode(", ", $fields),
+				implode(" AND ", $where),
+				implode(", ", $order),
+				implode(", ", $group)
+		);
+		*/
+		$toSendList = eF_getTableData(
+				implode(" ", $tables),
+				implode(", ", $fields),
+				implode(" AND ", $where),
+				implode(", ", $order),
+				implode(", ", $group)
+		);
+		
+		$invoicesList = array();
+		
+		foreach ($toSendList as $invoice) {
+			$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+			if ($invoice['paid'] >= $invoice['full_price']) {
+				continue;
+			}
+			$invoice['username'] = formatLogin(null, $invoice);
+			$invoicesList[] = $invoice;
+		}
+		$smarty->assign("T_XPAY_LIST", $invoicesList);
+        
+        $smarty->assign("T_VIEW_TO_SEND_INVOICES_LIST_OPTIONS", array(
+            array(
+                'href'          => "javascript: xPayMailAllInvoicesAdviseAction();",
+                'image'         => "16x16/mail.gif"
+            )
+        ));
+        
+	}
+	public function mailInvoicesAdviseAction() {
+		$smarty = $this->getSmartyVar();
+		
+		$sendAll = null;
+		!empty($_POST['negociation_id']) ? $negociation_id = $_POST['negociation_id'] : null;
+		!empty($_POST['invoice_index']) ? $invoice_index = $_POST['invoice_index'] : null;
+		$_GET['send_all'] == "true" || $_POST['send_all'] == "true" ? $sendAll = true : null;
+		
+		$status = array();
+		
+		if ($sendAll === TRUE) {
+			$sendList = $this->_getSendInvoicesList(678);
+			
+			foreach($sendList as $sendItem) {
+				$status[] = $this->_sendInvoiceAdvise($sendItem['negociation_id'], $sendItem['invoice_index'], $sendItem['send_id']);
+			}
+			
+		} else {
+			$status[] = $this->_sendInvoiceAdvise($negociation_id, $invoice_index);
+		}
+		
+		if ($_GET['output'] == 'json') {
+			$message		= "Mensagem Enviada com sucesso";
+			$message_type 	= "success";
+			
+			echo json_encode(array(
+				'message'		=> $message,
+				'message_type'	=> $message_type,
+				'sent'			=> $status
+			));
+			exit;
+		} else {
+			$smarty -> assign("T_XPAY_SENT_STATUS", $status);
+		}
+		
+		
+		
+	}
+	public function updateSendInvoiceStatusAction() {
+		$active	= $_POST['active'] == 'true' ? 1 : 0;
+		
+		$data = array(
+			'negociation_id'	=> $_POST['negociation_id'],
+			'invoice_index'		=> $_POST['invoice_index']
+		);
+
+		// GET LAST SEND_ID, OR CREATE IF NULL
+		$sendIDData = eF_getTableData(
+			"module_xpay_to_send_list",
+			"id",
+			sprintf("user_id = %d", $this->getCurrentUser()->user['id']),
+			"id DESC"
+		);
+				
+		if (count($sendIDData) > 0) {
+			$data['send_id'] = $sendIDData[0]['id'];
+		} else {
+			$data['send_id'] = eF_insertTableData("module_xpay_to_send_list", array('data_envio' => date('Y-m-d', time() + (60*60*24*5)  )));
+		}
+		
+		
+		$result = eF_countTableData(
+			"module_xpay_to_send_list_item",
+			"negociation_id, invoice_index",
+			sprintf(
+				"send_id = %d AND negociation_id = %d AND invoice_index =%d",
+				$data['send_id'], $data['negociation_id'], $data['invoice_index']
+			)
+		);
+		
+		if ($result[0]['count'] == 0) {
+			if ($active == 1) {
+				eF_insertTableData("module_xpay_to_send_list_item", $data);
+
+				$result = array(
+						'message'		=> 'Fatura incluída com sucesso',
+						'message_type'	=> 'success'
+				);
+			} else {
+				eF_deleteTableData("module_xpay_to_send_list_item", sprintf(
+					"send_id = %d AND negociation_id = %d AND invoice_index =%d",
+					$data['send_id'], $data['negociation_id'], $data['invoice_index']
+				));
+
+				$result = array(
+					'message'		=> 'Fatura excluída com sucesso',
+					'message_type'	=> 'success'
+				);
+			}
+		}
+		echo json_encode($result);
+		exit;
+	}
+	
+	/* EVENTS HANDLERS */
+	/* MODULE EVENTS RECEIVERS */
+	public function onPaymentReceivedEvent($context, $data) {
+		//$data['payment_id'], $data['parcela_index']
+		
+		if (eF_checkParameter($data['payment_id'], 'id')) {
+			$dataReturn = eF_updateTableData(
+				"module_pagamento_invoices", 
+				array(
+					"pago" 		=> self::_XPAY_AUTOPAY,
+					"bloqueio" 	=> 1,
+					"status_id"	=> 3
+				),
+				sprintf("payment_id = %d AND parcela_index = %d", $data['payment_id'], $data['parcela_index'])
+			);
+		
+		
+			// GET EDITED USER
+			$paymentData = $this->getPaymentById($data['payment_id']);
+			if (!eF_checkParameter($data['user_id'], 'id')) {
+				$data['user_id'] = $paymentData['user_id'];
+			}
+			if (!eF_checkParameter($data['enrollment_id'], 'id')) {
+				$data['enrollment_id'] = $paymentData['enrollment_id'];
+			}
+		}
+		
+		// GET ENROLL ID
+				
+		// CHECK ENROLL BY USER AND COURSE_ID
+		/*
+		$user = $this->getEditedUser();
+		$courses = $user->getUserCourses(array('condition' => 'c.price > 0 AND c.active = 1'));
+			
+		$xenrollmentModule = $this->loadModule('xenrollment');
+
+		foreach($courses as $course) {
+			if ( ($enrollmentData = $xenrollmentModule->getEnrollmentByUserAndCourseID($user->user['id'], $course->course['id']) ) !== FALSE) {
+				break;
+			}
+		}
+		*/
+		if ($data['parcela_index'] == 1) {
+			// MATRICULA PAGA, CRIAR OUTRAS PARCELAS
+			//$this->registerMonthlyInvoicesAction(null, $data);
+			
+			
+			// MIGRATE FROM module_pagamento TO HERE
+			
+		}
+		
+		// ALTERAR STATUS DA MATRICULA
+		$xenrollmentModule = $this->loadModule("xenrollment");
+		$xenrollmentModule->onPaymentReceivedEvent($context, $data);
+			/*
+			// ALTERAR TIPO DO ALUNO
+			$xuserModule = $this->loadModule("xuser");
+			$xuserModule->onPaymentReceivedEvent($context, $data);
+			*/
+			
+		// CREATE ALL OTHER INVOICES, IF parcela_index = 1
+
+			
+		
+		/*
+		if ($data['parcela_index'] == 1) {
+			// UPDATE ENROLLMENT, SET AS PAID
+			
+		*/
+			
+		/*	
+		} else {
+			// JUST SEND E-MAIL TO fin@americas
+		}
+		*/				
+//					if ($registerReturned['updated'] && $registerReturned['tag'] == 1) {
+						
+												
+					
+	}	
+	
+	/* NEW DATA MODEL FUNCTIONS */
+	private function _createUserDefaultStatement($persist = true) {
+		// GET ALL DEBITS
+		// GET ALL PAYMENTS
+		// GET IES, COURSE, CLASS, ETC... RULES.
+		if (!($editUser = $this->getEditedUser())) {
+			return false;
+		}
+		if (!($editCourse = $this->getEditedCourse())) {
+			return false;
+		}
+		//$negociation_index = $_GET['negociation_index'];
+	
+	
+	
+		if (!empty($_GET['negociation_index'])) {
+			$hasNegociation = ef_countTableData(
+					"module_xpay_course_negociation",
+					"negociation_index",
+					sprintf("user_id = %d AND course_id = %d AND negociation_index = %d",
+							$editUser->user['id'],
+							$editCourse->course['id'],
+							$_GET['negociation_index']
+					)
+			);
+				
+			if ($hasNegociation[0]['count'] == 0) {
+				$negociation_index = $_GET['negociation_index'];
+			}
+		}
+	
+		if (!isset($negociation_index)) {
+			$negociationIndexNew = ef_getTableData(
+					"module_xpay_course_negociation",
+					"IFNULL(MAX(negociation_index) + 1, 1) as new_index",
+					sprintf("user_id = %d AND course_id = %d",
+							$editUser->user['id'],
+							$editCourse->course['id']
+					)
+			);
+				
+			$negociation_index = $negociationIndexNew[0]['new_index'];
+		}
+	
+		$negociationData =  array(
+			'timestamp'				=> time(),
+			'user_id'				=> $editUser->user['id'],
+			'course_id'				=> $editCourse->course['id'],
+			'registration_tax'		=> 0,
+			'parcelas'				=> 1, // GET COURSE DEFAULTS
+			'negociation_index'		=> $negociation_index,
+			'active'				=> 1, 	
+			'vencimento_1_parcela'	=> null
+		);
+	
+		if ($persist) {	
+			$negociationID = ef_insertTableData(
+					"module_xpay_course_negociation",
+					$negociationData
+			);
+		}
+		return $negociationData;
+	}
+	private function _createUserDefaultInvoices($negociationID) {
+		$negociationData = $this->_getNegociationById($negociationID);
+		
+		if (count($negociationData) == 0) {
+			return false;
+		}
+		if (count($negociationData['invoices']) > 0) {
+			return false;
+		}
+
+		if ($negociationData['base_price'] <= 0) {
+			return false;
+		}
+		
+		// CREATE DEFAULT INVOICES BY INDIVIDUAL, GROUP, CLASS, COURSE, POLO, IES, ETC..
+		// ... OR BY SCOPE, BASED ON SCOPE PRECEDENCE
+		// IF CANNOT FOUND DEFAULT INVOICES, CREATE A ONE BIG INVOICE
+		
+		$this->_createInvoice(
+			$negociationData['id'],
+			$negociationData['full_price'],
+			date_create_from_format("d/m/Y", "20/04/2012")
+		);
+
+		/*
+		 CREATE TABLE IF NOT EXISTS `module_xpay_invoices` (
+		 		`negociation_id` mediumint(8) NOT NULL,
+		 		`invoice_index` mediumint(8) NOT NULL,
+		 		`invoice_id` text NULL,
+		 		`invoice_sha_access` text,
+		 		`valor` smallint(4) NOT NULL,
+		 		`data_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		 		`data_vencimento` timestamp NULL DEFAULT NULL,
+		 		PRIMARY KEY (`negociation_id`, `invoice_index`),
+		 		FULLTEXT KEY `invoice_id` (`invoice_id`)
+		 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		*/
+	}
+	private function _createInvoice($negociationID, $basePrice, $vencimento = 5, $invoice_id = null, $invoice_index = -1, $persist = true, $negociationUser = false) {
+		if (!is_numeric($negociationID)) {
+
+		}
+		if ($basePrice <= 0) {
+			return false;
+		}
+		if (!$negociationUser) {
+			$negociationUser = $this->getEditedUser();
+		}
+
+		$invoice = array();
+		
+		list(
+			$invoice['full_price'],
+			$invoice['acrescimo'],
+			$invoice['desconto'],
+			$invoice['rules'],
+			$invoice['workflow']
+		) = array_values($this->_applyFullPriceCalculations(
+			$negociationUser,
+			$basePrice,
+			array(
+				'ies_id' 	=> 0,
+				'polo_id' 	=> 0,
+				'course_id' => 0,
+				'class_id' 	=> 0,
+				'group_id' 	=> 0,
+				'user_id' 	=> 0
+			)
+		));
+		
+		$insertData['negociation_id'] 		= $negociationID;
+		$insertData['invoice_index']		= $invoice_index;
+		$insertData['description']			= '';
+		$insertData['invoice_id']			= $invoice_id;
+		$insertData['invoice_sha_access']	= '';
+		$insertData['valor']				= $basePrice;
+		$insertData['data_registro']		= date("Y-m-d H:i:s");
+		$insertData['data_vencimento']		= null;
+		$insertData['locked']				= 0;
+
+		if (!is_numeric($invoice_index) || $invoice_index == -1) {
+			// CREATE A NEW INVOICE ID
+			$insertData['invoice_index'] = $this->_countTotalInvoices($negociationID);
+		}
+		if (empty($invoice_id)) {
+			// CREATE A NEW INVOICE ID
+			$insertData['invoice_id'] = $this->_createInvoiceID($negociationID, $insertData['invoice_index']);
+		}
+		if (is_null($vencimento)) {
+			$vencimento = 5;
+		}
+		if (is_numeric($vencimento)) {
+			// CREATE A VENCIMENTO WITH now() + "$vencimento" days
+			$time = mktime(0, 0, 0, date('m'), date('d') + $vencimento, date("Y"));
+			$insertData['data_vencimento'] = date("Y-m-d", $time); 
+		} elseif (is_object($vencimento)) {
+			$insertData['data_vencimento'] = $vencimento->format("Y-m-d");
+		}
+		if ($persist) {
+			eF_insertTableData("module_xpay_invoices", $insertData);
+		}
+		
+		// CALC FIELDS
+		$invoice['trans_count']	= 0;
+		$invoice['paid']			= 0;
+		$invoice['start_min']	= time();
+		$invoice['start_max']	= time();
+		
+		$fullInvoice = array_merge($insertData, $invoice);
+
+		return $fullInvoice;
+	}
+	private function _countTotalInvoices($negociationID) {
+		list($lastInvoice) = eF_getTableData(
+			"module_xpay_invoices",
+			"MAX(invoice_index) as last_invoice",
+			sprintf("negociation_id = %d", $negociationID)
+		);
+		if (is_null($lastInvoice['last_invoice']) || $lastInvoice['last_invoice'] < 0) {
+			return 1;
+		}
+		$lastInvoice['last_invoice']++;
+		
+		return $lastInvoice['last_invoice'];
+	}
+	private function initRuleSystem() {
+		if (is_null($this->rules)) {
+			$allRules = eF_getTableData(
+				"module_xpay_price_rules",
+				"*",
+				"",
+				"entify_id ASC"
+			);
+			$this->rules = $allRules;
+		}
+		if (is_null($this->rulesTags)) {
+			$allRulesTags = eF_getTableData(
+					"module_xpay_price_rules_tags",
+					"*"
+			);
+			$tagRules = array();
+			foreach($allRulesTags as $tag) {
+				if (!is_array($tagRules[$tag['rule_id']])) {
+					$tagRules[$tag['rule_id']] = array();
+				}
+				$tagRules[$tag['rule_id']][] = $tag['tag'];
+			}
+			
+			
+			$this->rulesTags = $tagRules;
+		}
+		return true;
+	}
+	private function _isRuleAndTagsMatching($ruleID, $sentTags) {
+		if (is_array($this->rulesTags[$ruleID])) {
+			foreach($this->rulesTags[$ruleID] as $tag) {
+				if (!is_array($sentTags)) {
+					return false;
+				}
+				if (!in_array($tag, $sentTags)) {
+					return false;
+				}
+			}
+		}
+		return true;
+		/*
+		foreach($sentTags as $tag) {
+			if (!in_array($tag, $this->rulesTags[$ruleID])) {
+				return false;
+			}
+		}
+		return true;
+		*/
+	}
+	private function _applyFullPriceCalculations($userToCalculate, $basePrice, array $contraints = null, array $sentTags = null) {
+		$this->initRuleSystem();
+		
+		$allRules = $this->rules;
+
+		$xentifyModule = $this->loadModule("xentify");
+		
+		$xUserModule = $this->loadModule("xuser");
+		
+		if (is_null($sentTags)) {
+			$sentTags = array();
+		}
+		$userTags = $xUserModule->getUserTags($userToCalculate);
+		
+		$sentTags = array_merge($userTags, $sentTags);
+		
+		// REMOVE ALL OUT-SCOPE
+		
+		$lastWorkflow = $this->_createEmptyWorkflow($basePrice);
+		
+		$totalAcrescimo = 0;
+		$totalDesconto 	= 0;
+		
+		foreach($allRules as $rule_index => $rule) {
+			if (!$xentifyModule->isUserInScope($userToCalculate, $rule['rule_xentify_scope_id'], $rule['rule_xentify_id'])) {
+				unset($allRules[$rule_index]);
+				continue;
+			}
+			// CHECK CONDITION (IF ANY)
+			if ($this->_isRuleAndTagsMatching($rule['id'], $sentTags)) {
+				if ($rule['applied_on'] == 'once') {
+					$workflows[] = $lastWorkflow = $this->_applyWorkflowRule($rule, $lastWorkflow);
+					
+					if ($lastWorkflow['diff'] > 0) {
+						$totalAcrescimo	+= $lastWorkflow['diff'];
+					} else {
+						$totalDesconto	+= ($lastWorkflow['diff']) * -1;
+					}
+				} elseif ($rule['applied_on'] == 'per_day') {
+					$middleWorkflow = $lastWorkflow;
+					$middleWorkflows = array();
+					for($i = 1; $i <= $contraints['apply_days']; $i++) {
+						$middleWorkflows[] = $middleWorkflow = $this->_applyWorkflowRule($rule, $middleWorkflow);
+						
+						if ($middleWorkflow['diff'] > 0) {
+							$totalAcrescimo	+= $middleWorkflow['diff'];
+						} else {
+							$totalDesconto	+= ($middleWorkflow['diff']) * -1;
+						}
+						// AGGREGATE REPEAT WORKFLOWS IN ONE FLUX
+						$workflows[] =$lastWorkflow = $middleWorkflow;
+					}
+				} else {
+					continue;
+				}
+			}
+		}
+		return array(
+			'full_price'	=> $lastWorkflow['output'],
+			'acrescimo'		=> $totalAcrescimo,
+			'desconto'		=> $totalDesconto, 
+			'rules'			=> $allRules,
+			'workflow'		=> $workflows
+		);
+	}
+	private function _createEmptyWorkflow($baseValue) {
+		return array(
+				'input'			=> 0,
+				'output'		=> $baseValue,
+				'base_value'	=> $baseValue
+		);
+	}
+	private function _applyWorkflowRule($rule, $lastWorkflow) {
+		// MUST RETURN A STRUCT
+		$workflow = array(
+			'rule_id'		=> $rule['id'],
+			'input'			=> $lastWorkflow['output'],
+			'output'		=> 0,
+			'base_value'	=> $lastWorkflow['base_value'],
+			'diff'			=> 0
+		);
+		
+		// INIT CALC
+		if ($rule['base_price_applied'] == 1) {
+			$base_calc = $workflow['base_value'];
+		} else {
+			$base_calc = $workflow['input'];
+		}
+		
+		if ($rule['percentual'] == 1) {
+			$ruleValue = ($base_calc * $rule['valor']) * ($rule['type_id'] > 0 ? 1 : -1);
+		} else {
+			$ruleValue = ($rule['valor']) * ($rule['type_id'] > 0 ? 1 : -1);
+		}
+		$workflow['diff']	=	$ruleValue;
+		$workflow['output'] = $workflow['input'] + $workflow['diff'];
+		
+		return $workflow;
+	}
+	/* GETTERS */
+	private function _getLastPaymentsList($constraints, $limit = null) {
+		//$limit = null MEANS "NO LIMIT"
+		/** @todo Implement $constraints rules!! */
+		
+		
+		$lastPaymentsList = eF_getTableData(
+			"module_xpay_zzz_paid_items",
+			"user_id, course_id, paid_id, name, surname, invoice_index, method_id, total_parcelas, data_pagamento, valor",
+			"",
+			"data_pagamento DESC",
+			"",
+			$limit
+		);
+		return $lastPaymentsList;
+	}
+	private function _getUserCoursesPayStatus($login = null, $course_id = null) {
+		if (!is_null($login)) {
+			$editedUser = $this->getEditedUser(true, $login);
+		} else {
+			$editedUser = $this->getEditedUser();
+		}
+	
+		$userDebitsData = ef_getTableData(
+				"users_to_courses uc
+				LEFT JOIN courses c ON (uc.courses_ID = c.id)
+				LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
+					uc.courses_ID = cp.course_id AND
+					uc.modality_id = cp.modality_id AND (
+						( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
+						( uc.from_timestamp > cp.from_timestamp AND cp.to_timestamp = -1) OR
+						( uc.from_timestamp < cp.to_timestamp AND cp.from_timestamp = -1)
+					)
+				) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)",
+				
+				sprintf(
+						'%1$d as user_id, c.id as course_id, c.name as course, uc.from_timestamp as matricula,
+						IFNULL(cp.price, c.price) as base_price,
+						0 as paid,
+						(SELECT MAX(negociation_index) FROM module_xpay_course_negociation WHERE user_id = %1$d AND course_id = uc.courses_ID) as negociation_index,
+						cm.name as modality',
+						$editedUser->user['id']
+				),
+				sprintf("users_LOGIN = '%s'", $editedUser->user['login'])
+		);
+		$userDebits = array();
+	
+		foreach($userDebitsData as $statement) {
+			$statement['balance'] = intval($statement['base_price'])-intval($statement['paid']);
+				
+			$userDebits[$statement['course_id']] = $statement;
+		}
+	
+		if (!is_null($course_id)) {
+			return $userDebits[$course_id];
+		}
+	
+		return $userDebits;
+	}
+	public function _getNegociationPayerByNegociationID($negociationID) {
+		// CHECK IF IS A SINGLE OR MULTIPLE PAYER NEGOCIATION
+		if (eF_checkParameter($negociationID, 'id')) {
+			$sendToData = eF_getTableData(
+				"module_xpay_course_negociation", 
+				"user_id, send_to, ref_payment_id",
+				"id = " . $negociationID
+			);
+			
+			if (count($sendToData) == 0) {
+				return false;
+			}
+			
+		
+			$sendTo = $sendToData[0]['send_to'];
+			$studentID = $sendToData[0]['user_id'];
+			$xUserModule = $this->loadModule("xuser");
+			if (is_null($sendTo)) {
+				$oldSendTo = eF_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['ref_payment_id']);
+				
+				if (count($oldSendTo) == 0) {
+					return false;
+				}
+				$sendTo = $oldSendTo[0]['send_to']; 
+			}
+
+			return $xUserModule->getUserDetails($studentID, $sendTo);
+		}
+	}
+	public function _getNegociationById($negociationID) {
+		return $this->_getNegociationByContraints(array(
+			'negociation_id'	=> $negociationID
+		));
+	}
+	private function _getNegociationByUserCourses($login = null, $course_id = null, $negociation_index = null) {
+		return $this->_getNegociationByContraints(array(
+			'login'				=> $login,
+			'course_id'			=> $course_id,
+			'negociation_index'	=> $negociation_index	
+		));
+	}
+	public function _getNegociationByContraints(array $contraints = null) {
+		$where = $order = array();
+		
+		if (!is_null($contraints['negociation_id'])) {
+			$where[] = sprintf("neg.id = %d", $contraints['negociation_id']);
+		}
+		
+		if (!is_null($contraints['login']) || !is_null($contraints['user_id'])) {
+			$userID = is_null($contraints['login']) ? $contraints['user_id'] : $contraints['login'];
+			$editedUser = $this->getEditedUser(true, $userID);
+			$where[] = sprintf("neg.user_id = %d", $editedUser->user['id']);
+		} else {
+			$editedUser = $this->getEditedUser();
+		}
+	
+		if (!is_null($contraints['course_id'])) {
+			$editedCourse = $this->getEditedCourse(true, $contraints['course_id']);
+			$where[] = sprintf("neg.course_id = %d", $editedCourse->course['id']);
+		}
+	
+		if (empty($contraints['negociation_index'])) {
+			// IF NO NEGOCIATION_INDEX DEFINED, THEN RETURN THE LAST ACTIVE ONE.
+			$where[] = "neg.active = 1";
+		} else {
+			$where[] = sprintf("negociation_index = %d", $contraints['negociation_index']);
+		}
+		/*
+		echo prepareGetTableData(
+			"module_xpay_course_negociation neg
+			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
+			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
+			LEFT JOIN users u ON (neg.user_id = u.id)
+			LEFT JOIN users_to_courses uc ON (neg.course_id = uc.courses_ID AND u.login = uc.users_LOGIN)
+			LEFT JOIN courses c ON (uc.courses_ID = c.id)
+			LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
+				uc.courses_ID = cp.course_id AND
+				uc.modality_id = cp.modality_id AND (
+					( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
+					( uc.from_timestamp > cp.from_timestamp AND cp.to_timestamp = -1) OR
+					( uc.from_timestamp < cp.to_timestamp AND cp.from_timestamp = -1)
+				)
+			) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)
+			",
+			//"neg.id, neg.user_id, neg.course_id, neg.negociation_index",
+			'neg.id, u.id as user_id, c.id as course_id, u.name, u.surname, u.login, c.name as course, uc.from_timestamp as matricula,
+			IFNULL(cp.price, c.price) as base_price,
+			IFNULL(SUM(pd.paid), 0) as paid,
+			neg.negociation_index,
+			cm.name as modality',
+			implode(" AND ", $where),
+			"negociation_index DESC",
+			"neg.id, u.id, c.id"
+		);
+		*/
+		$negociationData = ef_getTableData(
+			"module_xpay_course_negociation neg
+			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
+			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
+			LEFT JOIN users u ON (neg.user_id = u.id)
+			LEFT JOIN users_to_courses uc ON (neg.course_id = uc.courses_ID AND u.login = uc.users_LOGIN)
+			LEFT JOIN courses c ON (uc.courses_ID = c.id)
+			LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
+				uc.courses_ID = cp.course_id AND
+				uc.modality_id = cp.modality_id AND (
+					( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
+					( uc.from_timestamp > cp.from_timestamp AND cp.to_timestamp = -1) OR
+					( uc.from_timestamp < cp.to_timestamp AND cp.from_timestamp = -1)
+				)
+			) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)
+			",
+			//"neg.id, neg.user_id, neg.course_id, neg.negociation_index",
+			'neg.id, u.id as user_id, c.id as course_id, u.name, u.surname, u.login, c.name as course, uc.from_timestamp as matricula,
+			IFNULL(cp.price, c.price) as base_price,
+			IFNULL(SUM(pd.paid), 0) as paid,
+			neg.negociation_index,
+			cm.name as modality',
+			implode(" AND ", $where),
+			"negociation_index DESC",
+			"neg.id, u.id, c.id"
+		);
+	
+		if (count($negociationData) > 0) {
+			$negociationData = reset($negociationData);
+			// GET ALL NEGOCIATION INVOICES
+			$negociationData['username'] = formatLogin(null, $negociationData);
+			
+			$userNegociation = $this->getEditedUser(null, $negociationData['user_id']);
+			
+			$negociationData['acrescimo']		= 0;
+			$negociationData['desconto']		= 0;
+			$negociationData['invoices']		= $this->_getNegociationInvoices($negociationData['id']);
+				
+			if (count($negociationData['invoices']) == 0) {
+				// APLLY RULES ON ALL
+				/*
+				list(
+						$negociationData['full_price'],
+						$negociationData['acrescimo'],
+						$negociationData['desconto'],
+						$rules,
+						$workflow
+				) = array_values($this->_applyFullPriceCalculations(
+						$userNegociation,
+						$negociationData['base_price'],
+						array(
+						),
+						array('is_not_overdue', 'is_not_full_paid')
+				));
+				*/
+				$negociationData['full_price']	+= $negociationData['base_price'];
+			} else {
+				$negociationData['full_price']	= 0;
+				$negociationData['paid'] 		= 0;
+				
+				foreach($negociationData['invoices'] as $invoice) {
+					$negociationData['full_price']	+= $invoice['full_price'];
+					$negociationData['acrescimo']	+= $invoice['acrescimo'];
+					$negociationData['desconto']	+= $invoice['desconto'];
+					$negociationData['paid'] 		+= $invoice['paid'];
+				}
+			}
+			
+			return $negociationData;
+		} else {
+			return array();
+		}
+	}
+	private function _getNegociationInvoices($nego_id) {
+		$negoInvoices = eF_getTableData(
+			"module_xpay_invoices inv
+			LEFT JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
+			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2paid ON (
+				inv.negociation_id = inv2paid.negociation_id AND
+				inv.invoice_index = inv2paid.invoice_index
+			) LEFT OUTER JOIN module_xpay_paid_items pd ON (
+				inv2paid.paid_id = pd.id
+			)",
+			"neg.user_id, inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
+			inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count,
+			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
+			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
+			sprintf("inv.negociation_id = %d", $nego_id),
+			"data_registro ASC",
+			"inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
+			inv.valor, inv.data_registro, inv.data_vencimento"
+		);
+		
+		// CALCULATE INVOICE DETAILS
+		
+		foreach($negoInvoices as &$invoice) {
+			$negociationUser = $this->getEditedUser(false, $invoice['user_id']);
+			$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+		}
+
+		return $negoInvoices;
+	}
+	public function _getNegociationInvoiceByIndex($nego_id, $invoice_index) {
+		$negoInvoices = eF_getTableData(
+			"module_xpay_invoices inv
+			LEFT JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
+			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2paid ON (
+				inv.negociation_id = inv2paid.negociation_id AND
+				inv.invoice_index = inv2paid.invoice_index
+			) LEFT OUTER JOIN module_xpay_paid_items pd ON (
+				inv2paid.paid_id = pd.id
+			)",
+			"neg.user_id, inv.negociation_id, neg.course_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
+			inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count, 
+			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
+			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
+			sprintf("inv.negociation_id = %d AND inv.invoice_index = %d", $nego_id, $invoice_index),
+			"data_registro ASC",
+			"inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
+			inv.valor, inv.data_registro, inv.data_vencimento"
+		);
+		if (count($negoInvoices) > 0) {
+			// CALCULATE INVOICE DETAILS
+			foreach($negoInvoices as &$invoice) {
+				$negociationUser = $this->getEditedUser(false, $invoice['user_id']);
+				$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+			}
+		}
+
+		return reset($negoInvoices);
+	}
+	public function _getSendInvoicesList($user_id = null) {
+		if (is_null($user_id)) {
+			$user_id = $this->getCurrentUser()->user['id'];
+		}
+		
+		return eF_getTableData(
+			"module_xpay_to_send_list_item send_item
+			LEFT JOIN module_xpay_to_send_list send ON (send_item.send_id = send.id)",
+			"send_item.send_id, send_item.negociation_id, send_item.invoice_index",
+			sprintf("send.user_id = %d", $user_id)
+		);
+	}
+	private function _calculateInvoiceDetails($invoice, $negociationUser) {
+//		$invoice['dias_vencidos'] 	= 0;
+//		$invoice['total_multa'] 	= 0;
+//		$invoice['juros_dia'] 		= 0;
+//		$invoice['total_acrescimo'] = $invoice['total_multa'] + ($invoice['juros_dia'] * $invoice['dias_vencidos']);
+//		$invoice['total_desconto']	= 0;
+		//$invoice['total_reajuste']	= 0;
+		
+		$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
+		if (!$currentVencimento)
+			$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+		
+		if ($currentVencimento) {
+			$today = new DateTime("today");
+			$apply_days = intval($currentVencimento->diff($today, true)->days);
+		}
+		
+		// FIRST GET TOTAL ALREADY PAID
+		$baseValue = $invoice['valor'] - $invoice['paid'];
+		
+		list(
+			$invoice['full_price'],
+			$invoice['acrescimo'],
+			$invoice['desconto'],
+			$invoice['rules'],
+			$invoice['workflow']
+		) = array_values($this->_applyFullPriceCalculations(
+			$negociationUser,
+			$baseValue,
+			array(
+				'apply_days'	=> $apply_days
+			),
+			$this->_getInvoiceTags($invoice)
+		));
+		$invoice['full_price'] += $invoice['paid'];
+		
+		$invoice['total_reajuste']	= $invoice['acrescimo'] - $invoice['desconto'];
+/*		
+	
+		if ($baseValue > 0) {
+			// CALCULATE INVOICE DETAILS BASED ON PAYMENT METHOD RULES
+			$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
+			if (!$currentVencimento) {
+				$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+			}
+			
+			$today = new DateTime("today");
+			
+			if ($currentVencimento && $currentVencimento->diff($today, false)->format("%r%d") > 0 ) {
+				//APLICAR MULTA E JUROS, AND GET DATA FROM 
+				$percentualMultaAoMes = 0.02;
+				$percentualJurosAoDia = 0.0033;
+		
+				$invoice['dias_vencidos'] = floor((time() - strtotime($invoice['data_vencimento'])) / 60 / 60 / 24);
+		
+				$invoice['total_multa'] = intval($baseValue) * $percentualMultaAoMes;
+				$invoice['juros_dia'] = intval($baseValue) * $percentualJurosAoDia;
+				
+				$invoice['juros_dia'] = 0;
+		
+				$invoice['total_acrescimo'] = $invoice['total_multa'] +
+				($invoice['juros_dia'] * $invoice['dias_vencidos']);
+			} else {
+				// MATRICULA OU NÃO-VENCIDA
+			}
+			$invoice['total_reajuste'] = $invoice['total_acrescimo'] - $invoice['total_desconto'];
+		}
+		*/
+		
+		return $invoice;
+	}
+	private function _getInvoiceTags($invoice) {
+		// disponible tags: is_overdue, is_full_paid, is_registration_tax
+		/** @todo montar um jeito mais estruturado para buscar paa "taggear" as faturas */
+		/** @todo Buscar as tags disponiveis do banco */
+		/** @todo Criar callbacks para checar as tags */
+		$tagList = array(
+			'is_overdue',
+			'is_not_overdue',
+			'is_full_paid',
+			'is_not_full_paid',
+			'is_registration_tax',
+			'is_not_registration_tax',
+			'is_custom',
+			'is_not_custom'
+		);
+		$tags = array();
+		
+		//$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
+		$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
+		if (!$currentVencimento)
+			//$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+			$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+		
+	
+		if ($currentVencimento) {
+			// cheching if a weekend
+			$weekday = intval($currentVencimento->format("N"));
+			
+
+			
+			//1 (for Monday) through 7 (for Sunday)
+			$OneDayInterval = new DateInterval("P1D");
+			if ($weekday == 6) {
+				//$currentVencimento->add($OneDayInterval)->add($OneDayInterval);
+			} elseif ($weekday == 7) {
+				//$currentVencimento->add($OneDayInterval);
+			}
+			
+			$today = new DateTime("today");
+			if ((intval($currentVencimento->diff($today, false)->format("%r%d")) > 0)) {
+				$tags[] = 'is_overdue'; 
+			} else {
+				$tags[] = 'is_not_overdue';
+			}
+		}
+		if ((intval($invoice['paid']) >= intval($invoice['valor']))) {
+			$tags[] = 'is_full_paid';
+		} else {
+			$tags[] = 'is_not_full_paid';
+		}
+		
+		if (intval($invoice['invoice_index']) == 0) {
+			$tags[] = 'is_registration_tax';
+		} else {
+			$tags[] = 'is_not_registration_tax';
+		}
+		return $tags;
+	}
+	private function _createInvoiceID($negociation_id, $parcela_index) {
+		$i = 0;
+		do {
+			$invoice_id_sem_DV = sprintf(self::INVOICE_ID_TEMPLATE_SEM_DV, "8", substr($negociation_id, 0, 4), substr($parcela_index, 0, 2));
+			$invoice_id = $invoice_id_sem_DV . $this->_module10($invoice_id_sem_DV);
+	
+			// CHECK IF EXISTS, IF TRUE, GENERATE AGAIN
+			$existsCount = eF_countTableData(
+					// table
+					"module_xpay_invoices",
+					// fields
+					"invoice_id",
+					// where clause
+					"invoice_id = '" . $invoice_id . "'"
+			);
+			$totalcount = $existsCount[0]['count'];
+			$i++;
+		} while( $totalcount > 0 );
+		return $invoice_id;
+	}
+	
+	/* UTILITY FUNCTIONS */
+	private function _sendInvoiceAdvise($negociation_id, $invoice_index, $send_id = null) {
+		if (is_null($negociation_id)) {
+			return false;
+		}
+		if (is_null($invoice_index)) {
+			return false;
+		}
+		/** @todo Get Temnplate from another datasource */
+		$bodyTemplate =
+			'<div>
+			<div>
+			<p class="MsoNormal">Caro(a) <b><span style="color: rgb(31, 73, 125);">{$USERNAME}</span></b></p>
+			</div>
+			<br />
+			<div>
+			<p class="MsoNormal"><span style="font-size: 11pt; color: rgb(31, 73, 125);">Segue o boleto referente à {$MONTH}. Clique no link abaixo para acessar o boleto.</span></p>
+			</div>
+			<br />
+			<div>
+			<p class="MsoNormal">
+			<b><span style="font-size: 11pt; color: rgb(31, 73, 125);"><a href="{$ACCESS_LINK}">{$ACCESS_LINK}</a></span></b>
+			</p>
+			</div>
+			<div>
+			<p class="MsoNormal"><span style="color: rgb(31, 73, 125);">Para
+			esclarecimentos de dúvidas sobre os pagamentos entre em contato com nosso departamento
+			financeiro pelo e-mail <a target="_blank"
+			href="mailto:fin@americas.com.br">fin@americas.com.br</a>.</span></p>
+			</div>
+				
+			<br />
+			<div>
+			<p class="MsoNormal"><span style="font-size: 10pt;">Atenciosamente,</span></p>
+			</div>
+			<div>
+			<p class="MsoNormal"><span style="font-size: 10pt; color: rgb(31, 73, 125);"><br>Grupo Américas<br></span>
+			<u>
+			<span style="font-size: 10pt; color: blue;">
+			<a target="_blank" href="http://www.americas.com.br/">www.americas.com.br</a><br>
+			</span>
+			</u>
+			<span style="font-size: 10pt; color: rgb(31, 73, 125);">Rua Cel. Dulcídio • 517 • Lj. 79<br>
+			Batel • Curitiba • PR<br>
+			80420-170 • Brasil<br>
+			Fone (55-41) 3016-1212&nbsp;</span></p>
+			</div>
+			</div>';
+		
+		$invoiceData = $this->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
+		$invoiceUser = $this->getEditedUser(true, $invoiceData['user_id']);
+		
+		if (!$invoiceUser) {
+			return false;
+		}
+		
+		$s_data_vencimento = $invoiceData['data_vencimento'];
+		
+		if (!empty($s_data_vencimento)) {
+			$mes_boleto = intval(date('m', strtotime($s_data_vencimento)));
+		} else {
+			$mes_boleto = intval(date('m'));
+		}
+
+		$a_meses = array(
+				1  => 'Janeiro',
+				2  => 'Fevereiro',
+				3  => 'março',
+				4  => 'Abril',
+				5  => 'Maio',
+				6  => 'Junho',
+				7  => 'Julho',
+				8  => 'Agosto',
+				9  => 'Setembro',
+				10 => 'outubro',
+				11 => 'Novembro',
+				12 => 'Dezembro'
+		);
+			
+		$search = array(
+				'{$USERNAME}',
+				'{$MONTH}',
+				'{$ACCESS_LINK}'
+		);
+		$repl = array(
+				$invoiceUser->user['name'] . ' ' . $invoiceUser->user['surname'],
+				$a_meses[$mes_boleto],
+				 sprintf("%sstudent.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", G_SERVERNAME, $negociation_id, $invoice_index)
+		);
+		 
+		$body = str_replace($search, $repl, $bodyTemplate);
+		
+		$my_email = "fin@americas.com.br";
+		$user_mail = $invoiceUser->user['email'];
+		//$user_mail = "fin@americas.com.br";
+		 
+		$subject = 'Boleto ULT';
+
+		$header = array (
+			'From'                   	=> $GLOBALS['configuration']['smtp_user'],
+			'Reply-To'				 	=> $my_email,
+			'To'                        => $user_mail,
+			'Subject'                   => $subject,
+			'Content-type'             	=> 'text/html;charset="UTF-8"',                       // if content-type is text/html, the message cannot be received by mail clients for Registration content
+			'Content-Transfer-Encoding' => '7bit'
+		);
+
+		$smtp = Mail::factory('smtp', array(
+				'auth'      => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+				'host'      => $GLOBALS['configuration']['smtp_host'],
+				'password'  => 'pl!kua?#!*]]i$ooe1',
+				'port'      => $GLOBALS['configuration']['smtp_port'],
+				'username'  => "financeiro@magester.net",
+				'timeout'   => $GLOBALS['configuration']['smtp_timeout'])
+		);
+		
+		//$smtp->debug = true;
+		
+		$status = $smtp -> send($user_mail, $header, $body);
+        $status = $smtp -> send("fin@americas.com.br", $header, $body);
+
+		if ($status && !is_null($send_id)) {
+			eF_deleteTableData(
+					"module_xpay_to_send_list_item",
+					sprintf("send_id = %s AND negociation_id = %s AND invoice_index = %s", $send_id, $negociation_id, $invoice_index)
+			);
+		}
+		
+		// ok, delete from queue, log entry
+		
+		$sentLOG = array(			
+			'user_id' 			=> $invoiceData['user_id'],
+			'negociation_id'	=> $negociation_id,
+			'invoice_index'		=> $invoice_index,
+			'email'				=> $user_mail,
+			'sent'				=> $status ? 1 : 0
+		);
+		
+		eF_insertTableData("module_xpay_sent_invoices_log", $sentLOG);
+		
+		return $sentLOG;
+	}
+	public function _asCurrency($rawValue) {
+		global $CURRENCYSYMBOLS;
+		$decimal_sep	= isset($GLOBALS['configuration']["decimal_point"]) ? $GLOBALS['configuration']["decimal_point"] : '.';
+		$thousando_sep 	= isset($GLOBALS['configuration']["thousands_sep"]) ? $GLOBALS['configuration']["thousands_sep"] : '';
+		
+		$currencySymbol = $CURRENCYSYMBOLS[$GLOBALS['configuration']["currency"]];
+		
+		return $currencySymbol . " " . number_format($rawValue, 2, $decimal_sep, $thousando_sep);
+	}
+	public function _module10($num) {
+		$numtotal10 = 0;
+		$fator = 2;
+	
+		// Separacao dos numeros
+		for ($i = strlen($num); $i > 0; $i--) {
+			// pega cada numero isoladamente
+			$numeros[$i] = substr($num,$i-1,1);
+			// Efetua multiplicacao do numero pelo (falor 10)
+			// 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Itaú
+			$temp = $numeros[$i] * $fator;
+			$temp0=0;
+			foreach (preg_split('//',$temp,-1,PREG_SPLIT_NO_EMPTY) as $k=>$v){
+				$temp0+=$v;
+			}
+			$parcial10[$i] = $temp0; //$numeros[$i] * $fator;
+			// monta sequencia para soma dos digitos no (modulo 10)
+			$numtotal10 += $parcial10[$i];
+			if ($fator == 2) {
+				$fator = 1;
+			} else {
+				$fator = 2; // intercala fator de multiplicacao (modulo 10)
+			}
+		}
+	
+		// várias linhas removidas, vide função original
+		// Calculo do modulo 10
+		$resto = $numtotal10 % 10;
+		$digito = 10 - $resto;
+		if ($resto == 0) {
+			$digito = 0;
+		}
+	
+		return $digito;
+	}
+	
+	
+	/* INVESTIGATE FUNCTIONS */
+	private function _getUserDebtDays($user = null) {
+		// RETURN A ARRAY OF timestamp DEBTS, ONE PER INVOICE
+		if (is_array($user)) {
+			$user_id = $user['id'];
+		} elseif (is_object($user)) {
+			$user_id = $user->user['id'];
+		} elseif (is_null($user)) {
+			$user = $this->getCurrentUser();
+			$user_id = $user->user['id'];
+		} else {
+			return false;
+		}
+		$debtTimes = ef_getTableData(
+			"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation nego ON (inv.negociation_id = nego.id)",
+			"negociation_id, invoice_id, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(inv.data_vencimento) as debt_time",
+			sprintf("nego.user_id = %d", $user_id)
+		);
+		
+		return $debtTimes;
+	}
+	public function isUserInDebt($user = null) {
+		$debtTimes = $this->_getUserDebtDays($user);
+		
+		$inDebt = false;
+		foreach($debtTimes as $debt) {
+			// IF debt_time FIELD IS POSITIVE, THEN IS DEBT
+			if ($debt['debt_time'] > 0) {
+				$inDebt = true;
+				break;
+			}
+		}
+		return $inDebt;
+	}
+	
+	/* MODEL FUNCTIONS */
+	public function getSubmodules() {
+		if (is_null(self::$subModules)) {
+			self::$subModules = array(); 
+		
+			$modules = ef_loadAllModules(true);
+		
+			foreach($modules as $module) {
+				if ($module instanceof IxPaySubmodule) {
+					self::$subModules[strtoupper($module->getName())] = $module->setParent($this);
+				}
+			}
+		}
+		return self::$subModules;
+	}
+	public function getPaymentById($payment_id) {
+	
+		if (eF_checkParameter($payment_id, 'id')) {
+			// RETURS ONE REGISTER PER INVOICE.....
+			$paymentResult = eF_getTableData("
+				`module_pagamento` pag, 
+				`module_pagamento_types` pag_typ,
+				/* `module_pagamento_types_details` pag_typ_det, */
+				`module_pagamento_invoices` inv, 
+				`module_pagamento_invoices_status` inv_stat, 
+				`users`
+				LEFT OUTER JOIN `module_xuser` user_det ON (users.id = user_det.id)", 
+				"pag.payment_id, pag.enrollment_id, pag.user_id, pag.course_id, pag.vencimento, pag.data_inicio, pag.desconto, pag.parcelas, pag.payment_type_id, pag.payment_type_index_name, pag.data_registro, pag.send_to, " .
+				"pag_typ.title as payment_type, /* pag_typ_det.name as payment_type_name, */ pag_typ.comments as payment_type_description, " .
+				"users.login, users.name, users.surname, users.email, user_det.cpf, user_det.rg, user_det.endereco, user_det.numero, user_det.complemento, user_det.cidade, user_det.uf, user_det.cep, user_det.not_18, " . 
+				'inv.payment_type_id as inv_payment_type_id, inv.parcela_index, inv.invoice_id, inv.data_registro as invoice_data_registro, inv.data_vencimento, inv.valor, inv.valor_desconto, inv.status_id, inv.pago as inv_pago , inv.bloqueio as inv_bloqueio, inv_stat.descricao as status, inv.tag as invoice_tag',
+				sprintf(
+					"pag.payment_id = %d 
+					AND pag.payment_type_id = pag_typ.payment_type_id
+					/*
+					AND pag.payment_type_id = pag_typ_det.payment_type_id
+					AND pag.payment_type_index_name = pag_typ_det.index_name
+					*/
+					AND pag.user_id = users.id
+					AND pag.payment_id = inv.payment_id
+					AND inv.status_id = inv_stat.id", 
+				$payment_id),
+				"inv.payment_id, inv.parcela_index"
+			);
+			if (count($paymentResult) > 0) {
+				/*
+				$paymentData = array(
+					'payment_id'				=> $paymentResult[0]['payment_id'],
+					'user_id'					=> $paymentResult[0]['user_id'],
+					'enrollment_id'				=> $paymentResult[0]['enrollment_id'],
+					'data_inicio'				=> $paymentResult[0]['data_inicio'],
+					'vencimento'				=> $paymentResult[0]['vencimento'],
+					'desconto'					=> $paymentResult[0]['desconto'],
+					'payment_type_id'			=> $paymentResult[0]['payment_type_id'],
+					'payment_type'				=> $paymentResult[0]['payment_type'],
+					'payment_type_index_name'	=> $paymentResult[0]['payment_type_index_name'],
+					'payment_type_name'			=> $paymentResult[0]['payment_type_name'],
+					'payment_type_description'	=> $paymentResult[0]['payment_type_description'],
+					'data_registro'				=> $paymentResult[0]['data_registro'],
+				
+					'usuario'			=> array(
+						'id'			=>  $paymentResult[0]['user_id'],
+						'login' 		=>  $paymentResult[0]['login'],
+						'name' 			=>  $paymentResult[0]['name'],
+						'surname' 		=>  $paymentResult[0]['surname'],
+						'email'			=>  $paymentResult[0]['email'],
+						'endereco' 		=>  $paymentResult[0]['endereco'],
+						'numero' 		=>  $paymentResult[0]['numero'],
+						'complemento'	=>  $paymentResult[0]['complemento'],
+						'cidade' 		=>  $paymentResult[0]['cidade'],
+						'uf' 			=>  $paymentResult[0]['uf'],
+						'cep'			=>  $paymentResult[0]['cep']
+					),
+					'invoices'			=> array(),
+					//'current_invoice'	=> null,
+					'next_invoice'		=> 1
+				);
+				*/
+				$paymentData = array(
+					'payment_id'				=> $paymentResult[0]['payment_id'],
+					'user_id'					=> $paymentResult[0]['user_id'],
+					'course_id'					=> $paymentResult[0]['course_id'],
+					'enrollment_id'				=> $paymentResult[0]['enrollment_id'],
+					'data_inicio'				=> $paymentResult[0]['data_inicio'],
+					'vencimento'				=> $paymentResult[0]['vencimento'],
+					'desconto'					=> $paymentResult[0]['desconto'],
+					'parcelas'					=> $paymentResult[0]['parcelas'],
+					'payment_type_id'			=> $paymentResult[0]['payment_type_id'],
+					'payment_type'				=> $paymentResult[0]['payment_type'],
+					'payment_type_index_name'	=> $paymentResult[0]['payment_type_index_name'],
+					'payment_type_name'			=> $paymentResult[0]['payment_type_name'],
+					'payment_type_description'	=> $paymentResult[0]['payment_type_description'],
+					'data_registro'				=> $paymentResult[0]['data_registro'],
+					'send_to'					=> $paymentResult[0]['send_to'],
+					'invoices'			=> array(),
+					//'current_invoice'	=> null,
+					'next_invoice'		=> 1
+				);
+				
+				$paymentData['usuario']	= array(
+					'has_minor'		=> 	$paymentResult[0]['not_18'] == 1,
+					'id'			=>  $paymentResult[0]['user_id'],
+					'login' 		=>  $paymentResult[0]['login'],
+					'name' 			=>  $paymentResult[0]['name'],
+					'surname' 		=>  $paymentResult[0]['surname'],
+					'email' 		=>  $paymentResult[0]['email'],
+					'endereco' 		=>  $paymentResult[0]['endereco'],
+					'numero' 		=>  $paymentResult[0]['numero'],
+					'complemento'	=>  $paymentResult[0]['complemento'],
+					'cidade' 		=>  $paymentResult[0]['cidade'],
+					'uf' 			=>  $paymentResult[0]['uf'],
+					'cep'			=>  $paymentResult[0]['cep'],
+					'cpf'			=>  $paymentResult[0]['cpf'],
+					'rg'			=>  $paymentResult[0]['rg']
+				);
+				
+				if ($paymentData['send_to'] == 'parent' && $paymentResult[0]['not_18'] == 1) {
+					// BUSCAR RESPONSÁVEL
+					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='parent' AND id = ".  $paymentResult[0]['user_id']);
+					$paymentData['cliente']	= $responsibleData[0];
+					/*
+					$paymentData['minor']					= $paymentData['usuario'];
+					$paymentData['cliente']['has_minor']	= true;
+					
+					$paymentData['cliente']['surname']		= $responsibleData[0]['surname'];
+					$paymentData['cliente']['email'] 		= $responsibleData[0]['email'];
+					*/
+				} elseif ($paymentData['send_to'] == 'financial') {
+					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='financial' AND id = ".  $paymentResult[0]['user_id']);
+					$paymentData['cliente']	= $responsibleData[0];
+				} else{
+					$paymentData['cliente']	= $paymentData['usuario'];
+				}
+				
+				if ($paymentResult[0]['not_18'] == 1) {
+					
+				}
+				$isNextInvoice = false;
+				foreach($paymentResult as $details) {
+					
+					$paymentData['invoices'][$details['parcela_index']] = array(
+						'payment_id'		=> $details['payment_id'],
+						'invoice_id'		=> $details['invoice_id'],
+						'payment_type_id'	=> $details['inv_payment_type_id'],
+						'parcela_index'		=> $details['parcela_index'],			
+						'data_registro'		=> $details['invoice_data_registro'],
+						'data_vencimento' 	=> $details['data_vencimento'],
+						'valor'				=> $details['valor'],
+						'valor_desconto' 	=> $details['valor_desconto'],
+						'status_id'			=> $details['status_id'],
+						'status'			=> $details['status'],
+						'pago'				=> $details['inv_pago'],
+						'bloqueio'			=> $details['inv_bloqueio'],
+						'tag'				=> json_decode($details['invoice_tag'], true)
+					);
+					/*
+					if ($isNextInvoice) {
+						// IF CURRENT IS 1, IS BECAUSE THE FISRT PAYMENT IS NOT PAID, SO IS THE NEXT TOO.
+						if ($paymentData['current_invoice'] != 1) {
+							$paymentData['next_invoice'] = $details['parcela_index'];
+						}
+						$isNextInvoice = false;
+					}
+					if ($details['status_id'] == 2) {
+						$paymentData['current_invoice'] = $details['parcela_index'];
+						$isNextInvoice = true;
+					}
+					*/
+				}
+				// ARRAY BASE => 1
+				for($i = count($paymentData['invoices']); $i > 1; $i--) {
+					if (
+						in_array($paymentData['invoices'][$i]['status_id'], array(1)) &&
+						$paymentData['invoices'][$i]['bloqueio'] == 0 &&
+						$paymentData['invoices'][$i]['pago'] == 0
+					) {
+						$paymentData['next_invoice'] = $i;
+					}
+				} 
+				// INJECT DATA IN TOKENS IN "payment_type_description"
+				$paymentData['payment_type_description_tpl'] = $paymentData['payment_type_description'];
+				$paymentData['payment_type_description'] = $this->substituteStringTokens($paymentData['payment_type_description'], $paymentData);
+				
+				return $paymentData;
+			} 
+		}
+		// RETURN FALSE IF RECORD NOT EXISTS
+		return false;
+	}
+	private function substituteStringTokens($descriptionString, $paymentData) {
+		$sear = array(
+			"[_PAGAMENTO_MATRICULA]", 
+			"[_PAGAMENTO_PARCELAS]",
+			"[_PAGAMENTO_MENSALIDADE]",
+			"[_PAGAMENTO_VENCIMENTO]",
+			"[_PAGAMENTO_DESCONTO]"
+		);
+		$repl = array(
+			'R$ '. number_format($paymentData['invoices'][1]['valor'], 2, ',', '.'), 
+			sprintf("%02d", $paymentData['parcelas']),
+			'R$ '. number_format(floatval($paymentData['invoices'][$paymentData['next_invoice']]['valor']), 2, ',', '.'), 
+			sprintf("%02d", $paymentData['vencimento']),
+			sprintf("%0.2f%%", $paymentData['desconto'])
+		);
+		
+		return str_replace($sear, $repl, $descriptionString);
+	}
+	public function getPayments($filter = null) {
+		$fields = array(
+				"DISTINCT pag.payment_id",
+				"pag.user_id",
+				"pag.data_registro",
+				"pag.send_to",
+				"pag.course_id",
+				"users.login",
+				"users.name",
+				"users.surname",
+				"(SELECT SUM(inv.valor)
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id
+		) as total_valor",
+				"(SELECT SUM(inv.valor)
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id AND inv.status_id = 3
+		) as total_pago",
+				"(SELECT parcela_index
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id AND inv.bloqueio = 0 AND inv.pago = 0
+				ORDER BY inv.parcela_index LIMIT 1
+				) as next_invoice",
+				/*
+				"(SELECT data_vencimento
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id AND inv.status_id = 2
+				ORDER BY inv.parcela_index LIMIT 1
+		) as proximo_vencimento",
+				
+				"(SELECT COUNT(inv.parcela_index)
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id
+		) as total_parcelas",
+				
+				"(SELECT COUNT(inv.parcela_index)
+				FROM `module_pagamento_invoices` inv
+				WHERE pag.payment_id = inv.payment_id AND inv.pago > 0
+		) as total_parcelas_pagas"
+			*/
+		);
+		/*
+		 prepareGetTableData(
+		 		"`module_pagamento` pag, `users`",
+		 		implode(', ', $fields),
+		 		sprintf("pag.user_id = users.id", $payment_id) . (!is_null($filter) ? ' AND ' . $filter : "")
+		 );
+		*/
+	
+		$paymentDbResult = eF_getTableData(
+				"`module_pagamento` pag, `users`",
+				implode(', ', $fields),
+				sprintf("pag.user_id = users.id", $payment_id) . (!is_null($filter) ? ' AND ' . $filter : "")
+		);
+		$paymentResult = array();
+		foreach($paymentDbResult as $item) {
+			$item['total_pago'] = is_null($item['total_pago']) ? 0 : $item['total_pago'];
+			//$item['total_parcelas_pagas'] = is_null($item['total_parcelas_pagas']) ? 0 : $item['total_parcelas_pagas'];
+	
+			$item['total_saldo']	= $item['total_valor']	- $item['total_pago'];
+	
+			$paymentResult[] = $item;
+		}
+		return $paymentResult;
+	}
+	public function getPaymentsByUserId($userID, $completeData = true) {
+		if (eF_checkParameter($userID, 'id')) {
+			$result = array();
+	
+			if (!$completeData) {
+				return $this->getPayments('user_id = ' . $userID);
+			}
+	
+			$paymentIDs = eF_getTableData("module_pagamento", 'payment_id', 'user_id = ' . $userID);
+	
+			foreach($paymentIDs as $payment) {
+	
+				$result[] = $this->getPaymentById($payment['payment_id']);
+			}
+			return $result;
+		}
+		return false;
+	}
+	public function getInvoiceById($payment_id, $invoice_id) {
+		if (
+			eF_checkParameter($payment_id, 'id') &&
+			eF_checkParameter($invoice_id, 'id')
+		) {
+			$result = eF_getTableData(
+				"module_pagamento_invoices inv 
+				LEFT JOIN module_pagamento pag ON (inv.payment_id = pag.payment_id)
+				LEFT JOIN courses c ON (pag.course_id = c.id)
+				", 
+				"inv.*, c.name as course",
+				sprintf("
+					inv.payment_id = %d AND inv.parcela_index = %d", 
+					$payment_id, 
+					$invoice_id
+				)
+			);
+			
+			if (count($result) > 0) {
+				$invoice = $result[0];
+				
+				return $this->calculateInvoiceDetails($invoice);
+			}
+		}
+		return false;
+	}
+	public function createInvoiceID($payment_id, $parcela_id) {
+		$i = 0;
+		do {
+			$nosso_numero_sem_DV = sprintf(self::INVOICE_ID_TEMPLATE_SEM_DV, substr($payment_id, 0, 4), substr($parcela_id, 0, 2), $i);
+			$nosso_numero = $nosso_numero_sem_DV . $this->generateModule10($nosso_numero_sem_DV);
+	
+			// CHECK IF EXISTS, IF TRUE, GENERATE AGAIN
+			$existsCount = eF_countTableData(
+					// table
+					"module_pagamento_invoices",
+					// fields
+					"invoice_id",
+					// where clause
+					"invoice_id = '" . $nosso_numero . "'"
+			);
+			$totalcount = $existsCount[0]['count'];
+			$i++;
+		} while( $totalcount > 0 );
+		return $nosso_numero;
+	}
+	private function generateModule10($num) {
+		$numtotal10 = 0;
+		$fator = 2;
+	
+		// Separacao dos numeros
+		for ($i = strlen($num); $i > 0; $i--) {
+			// pega cada numero isoladamente
+			$numeros[$i] = substr($num,$i-1,1);
+			// Efetua multiplicacao do numero pelo (falor 10)
+			// 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Itaú
+			$temp = $numeros[$i] * $fator;
+			$temp0=0;
+			foreach (preg_split('//',$temp,-1,PREG_SPLIT_NO_EMPTY) as $k=>$v){
+				$temp0+=$v;
+			}
+			$parcial10[$i] = $temp0; //$numeros[$i] * $fator;
+			// monta sequencia para soma dos digitos no (modulo 10)
+			$numtotal10 += $parcial10[$i];
+			if ($fator == 2) {
+				$fator = 1;
+			} else {
+				$fator = 2; // intercala fator de multiplicacao (modulo 10)
+			}
+		}
+	
+		// várias linhas removidas, vide função original
+		// Calculo do modulo 10
+		$resto = $numtotal10 % 10;
+		$digito = 10 - $resto;
+		if ($resto == 0) {
+			$digito = 0;
+		}
+	
+		return $digito;
+	}
+
+
+	/* OLD-STYLE FUNCTIONS */
+	public function getCenterLinkInfo() {
+		$currentUser = $this -> getCurrentUser();
+	
+		$xuserModule = $this->loadModule("xuser");
+		if (
+				$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+				$xuserModule->getExtendedTypeID($currentUser) == "financier"
+		) {
+			return array(
+				'title' => __XPAY_CONTROL_PANEL_TITLE,
+				'image' => $this -> moduleBaseDir . 'images/pagamento.png',
+				'link'  => $this -> moduleBaseUrl,
+				'class' => 'cash'
+			);
+		}
+	}
+	public function getSidebarLinkInfo() {
+		$currentUser = $this -> getCurrentUser();
+	
+		$xuserModule = $this->loadModule("xuser");
+		if (
+				$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+				$xuserModule->getExtendedTypeID($currentUser) == "financier"
+		) {
+	
+			$link_of_menu_system = array (array ('id' => 'module_xpay_link_id1',
+					'title' => __XPAY_MENU_TITLE,
+//					'image' => $this -> moduleBaseDir.'images/pagamento',
+//					'_magesterExtensions' => '1',
+					'link'  => $this -> moduleBaseUrl));
+			return array ( "system" => $link_of_menu_system);
+		}
+	}
+}
+?>

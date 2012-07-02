@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>eXtended Course Module</title>
+	<author>André Kucaniz</author>
+	<date>2011 06 13</date>
+	<version>0.1</version>
+	<description>Este módulo é usado para gerenciar os cursos, de forma extendida ao módulo geral de cursos/lições do SysClass.</description>
+	<className>module_xcourse</className>
+</module>

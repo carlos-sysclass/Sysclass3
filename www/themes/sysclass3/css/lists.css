@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+ul.default-list li {
+    float: left;
+    margin: 2px 0;
+    width: 100%;
+}
+
+ul.default-list li a.list-item {
+    background: -moz-linear-gradient(center top , #F9F9F9 0%, #E9E9E9 100%) repeat scroll 0 0 transparent;
+    border: 1px solid #C7C7C7;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 1px 2px #CCCCCC;
+    float: right;
+    margin-left: 5px;
+    min-width: 95px;
+    width: 100%;
+    height: 34px;
+}
+
+ul.default-list li a.list-item img {
+    float: left;
+    margin: 3px 4px 0;
+}

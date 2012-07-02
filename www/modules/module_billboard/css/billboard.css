@@ -1,0 +1,7 @@
+/* BLOCKS */
+#billboard-main-list {
+	list-style: none;
+}
+#billboard-main-list > li {
+	width: 100%;	
+}
