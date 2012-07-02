@@ -246,29 +246,30 @@ class module_xcontent extends MagesterExtendedModule {
     	
     	$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
     	
-    	$result = eF_getTableData(
-	    	"module_xcontent_schedule sch 
-	    	LEFT JOIN module_xentify_scopes scop ON sch.xentify_scope_id = scop.id
-    			/*
-	    	LEFT JOIN content cont ON schedl.content_id = cont.id
-	    	LEFT JOIN lessons ON cont.lessons_ID = lessons.id
-    			*/
-	    	LEFT OUTER JOIN module_xcontent_schedule_users user_schedl ON (sch.id = user_schedl.schedule_id)
-	    	", 
-	    	"sch.id, sch.xentify_scope_id, sch.xentify_id, user_schedl.index as selected_option, sch.block_html, sch.active",
-	    	sprintf(
-	    		"CURRENT_TIMESTAMP < sch.end 
-	    		AND sch.active = 1
-    			AND sch.id IN (
-	    			SELECT schedule_id FROM module_xcontent_schedule_contents sch_ct
-	    			WHERE sch_ct.course_id IN (%s)
-	    		)", implode(",", $userCoursesID['course_id'])
-	    	)
-	    );
-    	
+    	if (count($userCoursesID) == 0) {
+    		$result = array();
+    	} else {
+	    	$result = eF_getTableData(
+		    	"module_xcontent_schedule sch 
+		    	LEFT JOIN module_xentify_scopes scop ON sch.xentify_scope_id = scop.id
+	    			/*
+		    	LEFT JOIN content cont ON schedl.content_id = cont.id
+		    	LEFT JOIN lessons ON cont.lessons_ID = lessons.id
+	    			*/
+		    	LEFT OUTER JOIN module_xcontent_schedule_users user_schedl ON (sch.id = user_schedl.schedule_id)
+		    	", 
+		    	"sch.id, sch.xentify_scope_id, sch.xentify_id, user_schedl.index as selected_option, sch.block_html, sch.active",
+		    	sprintf(
+		    		"CURRENT_TIMESTAMP < sch.end 
+		    		AND sch.active = 1
+	    			AND sch.id IN (
+		    			SELECT schedule_id FROM module_xcontent_schedule_contents sch_ct
+		    			WHERE sch_ct.course_id IN (%s)
+		    		)", implode(",", $userCoursesID['course_id'])
+		    	)
+		    );
+    	}
     	//$userCourses = $currentUser->getUserCourses(array('return_objects' => false));
-    	
-    	//var_dump($userCourses
     	
 	    $content_schedule_link = $this->moduleBaseUrl;
     	

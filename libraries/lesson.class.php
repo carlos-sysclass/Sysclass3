@@ -1612,8 +1612,9 @@ class MagesterLesson
 	}
 	private function filterOutArchivedUsers($users) {
 		$archivedUsers = eF_getTableDataFlat("users", "login", "archive != 0");
+
 		foreach ($users as $key => $value) {
-			if (in_array($value, $archivedUsers['login'])) {
+			if (is_array($archivedUsers['login']) && in_array($value, $archivedUsers['login'])) {
 				unset($users[$key]);
 			}
 		}
