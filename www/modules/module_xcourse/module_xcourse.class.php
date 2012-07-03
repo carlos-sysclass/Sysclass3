@@ -168,17 +168,38 @@ class module_xcourse extends MagesterExtendedModule {
 		$constraints 	= 	array (
 								'archive'	=> false, 
 								'active' 	=> true, 
-								'condition' => "uc.user_type = 'student'", 
+								'condition' => "(uc.user_type = 'student' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'student'))", 
 								'sort' 		=> 'name'
 							);
 		$userCourses 	= 	$currentUser -> getUserCourses($constraints);
+		
+
 		if ( count( $userCourses ) == 0 ) {
 			return false;
+		}
+
+
+		if (!array_key_exists('s_courses_ID', $_SESSION) || !is_numeric($_SESSION['s_courses_ID']) || !array_key_exists($_SESSION['s_courses_ID'], $userCourses)) {
+			$firstCourse = reset($userCourses);
+			$_SESSION['s_courses_ID'] = $firstCourse->course['id']; 
+		}
+		
+		// 
+		$found = false;
+		foreach($userCourses as $course) {
+			if ($_SESSION['s_courses_ID'] == $course->course['id']) {
+				$found = true;
+			}
+		}
+		if (!$found) {
+			$firstCourse = reset($userCourses);
+			$_SESSION['s_courses_ID'] = $firstCourse->course['id'];
 		}
 		
 		$userCourse[$_SESSION['s_courses_ID']] = $userCourses[$_SESSION['s_courses_ID']];
 		
 		foreach ( $userCourse as $key => $course ) {
+			
 			# this must be here (before $userCourses assignment) in order to revoke a certificate if it is expired and/or re-assign a course to a student if needed
 			if ( $course -> course['start_date'] && $course -> course['start_date'] > time() ) {
 				$value['remaining'] = null;
@@ -205,6 +226,7 @@ class module_xcourse extends MagesterExtendedModule {
 			# Get current class for course. Load current lesson for course.
 			$hasCalendar 							= null;
 			$courseAcademicCalendar 				= $this->getAcademicCalendar($course -> course['id'], $course -> course['classe_id'], $hasCalendar);
+			
 			$course -> course['academic_calendar']	= $courseAcademicCalendar;
 			$lessonIndex 							= 1;
 			$first_activity_item 					= reset($courseAcademicCalendar);
@@ -217,10 +239,25 @@ class module_xcourse extends MagesterExtendedModule {
 				}
 			}
 			# s_lessons_ID
+			$userLessons = $currentUser -> getUserLessons();
+			
+			$userLessonsKeys = array_keys($userLessons);
+
+			foreach($courseAcademicCalendar as $academicKey => $academicItem) {
+				if (!in_array($academicKey, $userLessonsKeys)) {
+					unset($courseAcademicCalendar[$academicKey]);
+				}
+			}
+			
+			if (!array_key_exists('s_lessons_ID', $_SESSION) || !is_numeric($_SESSION['s_lessons_ID'])) {
+				reset($courseAcademicCalendar);
+				$_SESSION['s_lessons_ID'] = key($courseAcademicCalendar);
+			}
 			
 			#print_r($courseAcademicCalendar);exit;
 			$courseAcademicCalendar2[$_SESSION['s_lessons_ID']] = $courseAcademicCalendar[$_SESSION['s_lessons_ID']];
 			#print_r($courseAcademicCalendar2);exit;
+			
 			# Attach lesson data to course
 			foreach ( $courseAcademicCalendar2 as $index => $academicItem ) {
 				if ( $showOnlyFirst && $hasCalendar ) {
@@ -230,6 +267,7 @@ class module_xcourse extends MagesterExtendedModule {
 				} else {
 					continue;
 				}
+				
 				try {
 					$currentLessonObject			= new MagesterLesson($current_activity_ID);
 					$currentLesson 					= $currentLessonObject -> lesson;
@@ -544,6 +582,8 @@ class module_xcourse extends MagesterExtendedModule {
 		$dados 			= 	$this->loadCourseUserActivity();
 		$currentUser	= 	$this->getCurrentUser();
 		$smarty 		= 	$this->getSmartyVar();
+		
+		
 		$smarty -> assign( 'T_USER_COURSE_PROGRESS',	$dados['T_USER_COURSE_PROGRESS'] );
 		$smarty -> assign( 'T_LESSON_COMPLETED', 		$dados['T_LESSON_COMPLETED'] );
 		$smarty -> assign( 'T_CURRENT_UNITS', 			$dados['T_CURRENT_UNITS'] );
@@ -2438,6 +2478,7 @@ class module_xcourse extends MagesterExtendedModule {
 	/* Data Model Functions */
 	public function getAcademicCalendar($course_id, $class_id, &$has_calendar = null) {
 		$editCourse = $this->getEditedCourse(null, $course_id);
+	
 		 
 		$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
 		$xcourseLessons = $editCourse -> getCourseLessons($constraints);
@@ -2448,40 +2489,40 @@ class module_xcourse extends MagesterExtendedModule {
 			"cal.classe_id", 
 			"cal.start_date", 
 			"cal.end_date"
-			);
+		);
 
-			$tables = "module_xcourse_lesson_class_calendar cal";
+		$tables = "module_xcourse_lesson_class_calendar cal";
 
-			$orders = array(
+		$orders = array(
 			"start_date ASC", 
 			"end_date ASC"
-			);
+		);
 
-			$calendar = array();
-			$has_calendar = false;
+		$calendar = array();
+		$has_calendar = false;
 
-			foreach($xcourseLessons as $lesson) {
-				$wheres = array();
-				$wheres[] = "cal.course_id = " . $course_id;
-				$wheres[] = "cal.lesson_id = " . $lesson['id'];
-				$wheres[] = "cal.classe_id = " . $class_id;
+		foreach($xcourseLessons as $lesson) {
+			$wheres = array();
+			$wheres[] = "cal.course_id = " . $course_id;
+			$wheres[] = "cal.lesson_id = " . $lesson['id'];
+			$wheres[] = "cal.classe_id = " . $class_id;
 					
-				$calendarDB = eF_getTableData(
+			$calendarDB = eF_getTableData(
 				$tables,
 				implode(",", $fields),
 				implode(" AND ", $wheres),
 				implode(",", $orders)
-				);
+			);
 
 				$calendarItem = array(
-	 			"name"			=> $lesson['name'],
-	 			"course_id"		=> $course_id, 
-				"lesson_id"		=> $lesson['id'],  
-				"classe_id"		=> $class_id,  
-				"start_date"	=> null,
-				"end_date"		=> null,
-				"completed"		=> false,
-				"in_progress"	=> false
+		 			"name"			=> $lesson['name'],
+		 			"course_id"		=> $course_id, 
+					"lesson_id"		=> $lesson['id'],  
+					"classe_id"		=> $class_id,  
+					"start_date"	=> null,
+					"end_date"		=> null,
+					"completed"		=> false,
+					"in_progress"	=> false
 				);
 					
 				if (count($calendarDB) > 0) {

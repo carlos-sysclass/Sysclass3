@@ -129,6 +129,10 @@ function MergeContentTrees(sourceID, mergeID) {
 	jQuery.Topic('xcourse_course_lesson_change').subscribe(function(course_id, lesson_id) {
 		var class_name = '.course_lesson_' + course_id + '_' + lesson_id;
 		jQuery('#xcourse-activity-list > li').hide();
+		
+		alert(jQuery('#xcourse-activity-list > li' + class_name).size());
+		
+		
 		if ( jQuery('#xcourse-activity-list > li' + class_name).size() ==  0  ) {
 			var url = window.location.protocol + '//' + window.location.hostname 
 					+ window.location.pathname + '?ctg=module&op=module_xcourse'
@@ -149,7 +153,6 @@ function MergeContentTrees(sourceID, mergeID) {
 		} else {
 			jQuery('#xcourse-activity-list > li' + class_name).show();
 		}
-		
 	});
 
 	jQuery.Topic("xcourse_course_lesson_change").subscribe(function(course_id, lesson_id) {
@@ -1085,10 +1088,12 @@ function xcourse_lessonsAddRemove(course_id, lesson_id) {
 function switchCourseLesson(course_id, lesson_id) {
 	// var url = window.location.pathname + "?student.php?lessons_ID=" +
 	// lesson_id + "&from=" + course_id
+
 	xCourseAPI.setCurrentUserLesson(null, {
 		course_id : course_id,
 		lesson_id : lesson_id
 	}, function(data, status) {
 		jQuery.Topic("xcourse_course_lesson_change").publish(course_id,	lesson_id);
 	});
+
 }
