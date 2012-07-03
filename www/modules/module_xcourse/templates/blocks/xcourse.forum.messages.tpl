@@ -6,4 +6,4 @@
 			</div>
 		</li>
 	{/foreach}
-</ul>
+</ul> 
