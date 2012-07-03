@@ -380,7 +380,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		// (RE)CREATE ALL USER INVOICES HERE
 		foreach($userDebits as $userDebit) {
-			$this->checkAndCreateInvoices($userDebit);
+			//$this->checkAndCreateInvoices($userDebit);
 		}
 		
 
