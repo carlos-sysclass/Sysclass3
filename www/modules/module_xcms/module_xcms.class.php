@@ -121,33 +121,37 @@ class module_xcms extends MagesterExtendedModule {
 	public function loadCalendarBlock($blockIndex = null) {
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
-		 
-		if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] != 'hidden') {
-			$today = getdate(time()); //Get current time in an array
-			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); //Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
-			isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
-				
+		if ( !isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] != 'hidden' ) {
+			# Get current time in an array
+			$today = getdate(time()); 
+			# Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
+			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); 
+			# If a specific calendar date is not defined in the GET, set as the current day to be today
+			isset( $_GET['view_calendar'] ) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
 			$calendarOptions = array();
-			if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] == 'change') {
-				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "eF_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
+			if ( !isset( $currentUser->coreAccess['calendar'] ) || $currentUser -> coreAccess['calendar'] == 'change' ) {
+				$calendarOptions[] = array(
+					'text' 		=> _ADDCALENDAR, 
+					'image' 	=> '16x16/add.png', 
+					'href' 		=> basename($_SERVER['PHP_SELF']).'?ctg=calendar&add=1&view_calendar='.$view_calendar.'&popup=1', 
+					'onClick' 	=> "eF_js_showDivPopup('"._ADDCALENDAR."', 2)",
+					'target' 	=> 'POPUP_FRAME'
+				);
 			}
 			$calendarOptions[] = array('text' => _GOTOCALENDAR, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar");
-				
-			$smarty -> assign("T_CALENDAR_OPTIONS", $calendarOptions);
-			$smarty -> assign("T_CALENDAR_LINK", basename($_SERVER['PHP_SELF'])."?ctg=calendar");
+			$smarty -> assign('T_CALENDAR_OPTIONS', $calendarOptions);
+			$smarty -> assign('T_CALENDAR_LINK', basename($_SERVER['PHP_SELF'])."?ctg=calendar");
 			isset($_GET['add_another']) ? $smarty -> assign('T_ADD_ANOTHER', "1") : null;
-				
 			$events = calendar :: getCalendarEventsForUser($currentUser);
 			$events = calendar :: sortCalendarEventsByTimestamp($events);
-				
-			$smarty -> assign("T_CALENDAR_EVENTS", $events); //Assign events and specific day timestamp to smarty, to be used from calendar
-			$smarty -> assign("T_VIEW_CALENDAR", $view_calendar);
-
+			# Assign events and specific day timestamp to smarty, to be used from calendar
+			$smarty -> assign('T_CALENDAR_EVENTS', $events); 
+			$smarty -> assign('T_VIEW_CALENDAR', $view_calendar);
 			$this->getParent()->appendTemplate(array(
-		   		'title'			=> _CALENDAR,
-		   		'template'		=> $this->moduleBaseDir . 'templates/blocks/xcms.calendar.tpl',
+		   		'title'			=> ' ',
+		   		'template'		=> $this->moduleBaseDir.'templates/blocks/xcms.calendar.tpl',
 		   		'contentclass'	=> 'blockContents blockCalendar'
-		   		), $blockIndex);
+		   	), $blockIndex);
 		} else {
 			return false;
 		}
@@ -159,6 +163,7 @@ class module_xcms extends MagesterExtendedModule {
 		 */
 		return true;
 	}
+
 	public function loadNewsletterBlock($blockIndex = null) {
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
@@ -202,15 +207,15 @@ class module_xcms extends MagesterExtendedModule {
 	}
 
 	public function loadAdsBlock($blockIndex = null) {
+		/*
 		$this->getParent()->appendTemplate(array(
 	   		'title'			=> " ",
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/xcms.ads.tpl',
 	   		'contentclass'	=> 'blockContents'
-	   		), $blockIndex);
-	   		 
-	   		$this->injectJS("jquery/jquery.cycle.all");
-	   		 
-	   		return true;
+	   	), $blockIndex);
+	   	$this->injectJS("jquery/jquery.cycle.all");	 
+	   	return true;
+	   	*/
 	}
 
 	/* ACTIONS FUNCTIONS */
@@ -345,6 +350,7 @@ class module_xcms extends MagesterExtendedModule {
 					$sections[] = array(
 					'class'	=> "grid_7"
 					);
+					
 					break;
     			}
     			case 'threecolumn-33-34-33' : {
