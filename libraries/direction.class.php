@@ -680,7 +680,7 @@ class MagesterDirectionsTree extends MagesterTree
   list($display, $display_lessons, $imageString, $classString) = $this -> getTreeDisplaySettings($options);
   $lessonsString = $coursesString = '';
   while ($iterator -> valid()) {
-   $lessonsString = $this -> printCategoryLessons($iterator, $display_lessons, $options, $lessons);
+   //$lessonsString = $this -> printCategoryLessons($iterator, $display_lessons, $options, $lessons);
    $coursesString = $this -> printCategoryCourses($iterator, $display, $userInfo, $options, $courses, $lessons);
 //			if ($lessonsString || $coursesString) {
     $treeString .= $this -> printCategoryTitle($iterator, $display, $imageString, $classString);

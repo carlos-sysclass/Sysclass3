@@ -14,7 +14,6 @@
 					<div class="col2-3">
 						{assign var="course_id" value="`$course->course.id`"}
 						{assign var="lesson_id" value="`$current_activity.id`"}
-						
 						{if $T_CURRENT_UNITS[$course_id][$lesson_id] > 0}
                         	<a href="{$smarty.session.s_type}.php?ctg=content&view_unit={$T_CURRENT_UNITS[$course_id][$lesson_id]}" title="{$smarty.const._STARTLESSON}" id="videoClassStudent">
 			                    <button class="xcourse-open-lesson">
