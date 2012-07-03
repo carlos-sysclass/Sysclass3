@@ -32,14 +32,14 @@ $min_errorLogger = false;
  * In 'debug' mode, Minify combines files with no minification and adds comments
  * to indicate line #s of the original files.
  */
-$min_allowDebugFlag = false;
+$min_allowDebugFlag = true;
 
 
 /**
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = false;
+$min_enableBuilder = true;
 
 
 /**
