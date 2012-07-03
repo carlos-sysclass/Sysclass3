@@ -19,7 +19,6 @@
  */
 $min_errorLogger = false;
 
-
 /**
  * To allow debugging, you must set this option to true.
  *
