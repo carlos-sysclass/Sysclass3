@@ -2265,6 +2265,7 @@ class MagesterCourse
     		$roleBasicType = null;
     	}
     	$courseLessons = $this -> getCourseLessons();
+    	
     	if ($lessons) {
     		foreach ($courseLessons as $key => $value) {
     			//pr($lessons[$key]);
@@ -2329,6 +2330,7 @@ class MagesterCourse
     			}
     		}
     	}
+    	
     	if ($roleBasicType == 'professor') {
     		if (!isset($GLOBALS['currentUser'] -> coreAccess['course_settings']) || $GLOBALS['currentUser'] -> coreAccess['course_settings'] != 'hidden') {
     			$autocompleteImage = '16x16/certificate.png';
