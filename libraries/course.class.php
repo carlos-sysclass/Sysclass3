@@ -267,7 +267,7 @@ class MagesterCourse
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
 
     	$from = "lessons_to_courses lc, lessons l";
-    	$where[] = "l.archive = 0 and l.course_only=1 and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
+    	$where[] = "l.archive = 0 /* and l.course_only=1 */ and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
     	$result = eF_getTableData($from, "lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
     	implode(" and ", $where), $orderby, false, $limit);
 
@@ -2265,6 +2265,7 @@ class MagesterCourse
     		$roleBasicType = null;
     	}
     	$courseLessons = $this -> getCourseLessons();
+    	
     	if ($lessons) {
     		foreach ($courseLessons as $key => $value) {
     			//pr($lessons[$key]);
@@ -2329,6 +2330,7 @@ class MagesterCourse
     			}
     		}
     	}
+    	
     	if ($roleBasicType == 'professor') {
     		if (!isset($GLOBALS['currentUser'] -> coreAccess['course_settings']) || $GLOBALS['currentUser'] -> coreAccess['course_settings'] != 'hidden') {
     			$autocompleteImage = '16x16/certificate.png';

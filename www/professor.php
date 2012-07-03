@@ -272,6 +272,7 @@ $smarty -> assign("_admin_", $_admin_);
 
 $loadStylesheets = array();
 
+
 try {
 	if ($ctg == 'control_panel') {
 		/***/
