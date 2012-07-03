@@ -1,5 +1,4 @@
 <?php
-
 class module_xenrollment extends MagesterExtendedModule {
 	
 
