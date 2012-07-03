@@ -26,9 +26,9 @@
 {*/foreach*}
 
 {if isset($T_MODULE_JS_STRING)}
-	<script type = "text/javascript" src="/min/f={$T_MODULE_JS_STRING},themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script.js,js/script_jquery.js"></script> {*///MODULES LINK JAVASCRIPT CODE*}
+	<script type = "text/javascript" src="/min/f={$T_MODULE_JS_STRING},themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script_jquery.js"></script> {*///MODULES LINK JAVASCRIPT CODE*}
 {else}
-	<script type = "text/javascript" src="/min/f=themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script.js,js/script_jquery.js"></script> {*///MODULES LINK JAVASCRIPT CODE*}	
+	<script type = "text/javascript" src="/min/f=themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script_jquery.js"></script> {*///MODULES LINK JAVASCRIPT CODE*}	
 {/if}
 
 {*if $T_HEADER_INJECT_SCRIPTS!@count > 0*}
@@ -78,8 +78,6 @@ $$('div.block').ancestors().each(function (s) {
 <div id = "defaultExceptionHandlerDiv" style = "color:#ffffff;display:none"></div>
 
 <script>
-
-
 {if $T_ADD_ANOTHER}
  document.getElementById('add_new_event_link').onclick();
  document.getElementById('popup_frame').src ="{$smarty.session.s_type}.php?ctg=calendar&view_calendar={$T_VIEW_CALENDAR}{if $smarty.get.show_interval}&show_interval={$smarty.get.show_interval}{/if}&add_calendar=1{$T_CALENDAR_TYPE_LINK}&message={$smarty.get.pmessage}&message_type={$smarty.get.pmessage_type}";
