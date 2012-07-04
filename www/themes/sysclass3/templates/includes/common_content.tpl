@@ -213,6 +213,7 @@
         {/if}
        </td></tr>
       <tr><td>
+
        <table class = "navigationTable">
         <tr>
          <td class = "previousUnitHandleIcon">
@@ -232,6 +233,8 @@
           </a>
      {/if}
     {/if}
+    
+
          </td>
          <td class = "completeUnitHandle">
      {if !$T_UNIT.options.hide_complete_unit && $T_UNIT.ctg_type != 'tests' && $T_UNIT.ctg_type != 'feedback'}{assign var = "hideStyle" value = ''}{else}{assign var = "hideStyle" value = 'style = "visibility:hidden"'}{/if}

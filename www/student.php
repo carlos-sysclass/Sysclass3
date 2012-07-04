@@ -193,6 +193,48 @@ try {
 		$currentUnit = $currentContent -> seekNode($_GET['view_unit']); //Initialize current unit
 		//The content tree does not hold data, so assign this unit its data
 		$unitData = new MagesterUnit($_GET['view_unit']);
+		
+	    //Verifica Regra do Curso.
+				$licaoAnterior = $currentLesson->lesson['id'] - 1 ;
+				$currentCourse = new MagesterCourse($_SESSION['s_courses_ID']);
+				$courseId = $currentCourse->course['id'];	
+				
+				$rulesCourse = eF_getTableData("courses", "rules", "id = $courseId");
+				
+				$user_login = $currentUser->user['login'];
+				
+				$takeLesson = eF_getTableData("users_to_lessons", "completed", "lessons_ID = $licaoAnterior AND users_LOGIN = '$user_login' ");
+				
+				foreach ($takeLesson as $completedLesson ){
+					$completed = $completedLesson['completed'];
+				}
+				
+				foreach ( $rulesCourse as $viewrules ) {
+					$rulesCourseCurrent = unserialize($viewrules['rules']);
+						foreach ($rulesCourseCurrent as $rules_Current ) {
+							$lessonIDRules = array("id" => $rules_Current['lesson']); 
+		
+							
+							if(in_array($licaoAnterior, $lessonIDRules['id'])){
+								if ($completed == 0 ) {
+								$preLesson = new MagesterLesson($licaoAnterior); //Initialize lesson
+								//var_dump($preLesson);
+								//exit;
+								$message = _MUSTFIRSTREADLESSON.' <a href = "avascript:void(0)">'.$preLesson->lesson['name'].'</a><br/>';
+								$smarty -> assign("T_CHECKRULES_COURSES", $message );
+								$message_type = 'failure';
+								break;
+								}
+							}	
+						}
+				}
+		
+		
+		
+		
+		
+		
+		
 		$currentUnit['data'] = $unitData['data'];
 		if (!$_GET['ctg']) {
 			$_GET['ctg'] = 'content';
