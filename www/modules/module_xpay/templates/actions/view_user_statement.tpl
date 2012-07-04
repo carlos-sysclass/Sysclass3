@@ -13,14 +13,14 @@
 		<tbody>
 			{foreach item="statement" from=$T_XPAY_STATEMENT}
 				<tr class="{if $invoice.full_price <= $invoice.paid}xpay-paid{/if}{if $invoice.locked}locked{/if}">
-				 	<td>{$statement.course}</td>
+				 	<td>{$statement.module}</td>
 				 	<td>{$statement.modality}</td>
 				 	<td align="center">#filter:currency-{$statement.base_price}#</td>
 				 	<td align="center">#filter:currency:{$statement.paid}#</td>
 				 	<td align="center">#filter:currency-{$statement.balance}#</td>
 				 	<td align="center">
 				 		<div>
-					 		<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&xuser_id={$statement.user_id}&xcourse_id={$statement.course_id}&negociation_index={$statement.negociation_index}" class="form-icon">
+					 		<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&xuser_id={$statement.user_id}&x{$statement.type}_id={$statement.module_id}&negociation_index={$statement.negociation_index}" class="form-icon">
 								<img src="images/others/transparent.gif" class="sprite16 sprite16-unit">
 							</a>
 							<!-- 
