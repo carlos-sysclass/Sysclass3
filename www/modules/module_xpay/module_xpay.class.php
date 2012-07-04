@@ -19,7 +19,7 @@ class module_xpay extends MagesterExtendedModule {
 	
 	public function getPermittedRoles() {
 		return array("administrator", "student");
-	}
+	} 
 	
 	public function getTitle($action) {
 		switch($action) {
