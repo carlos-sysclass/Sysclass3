@@ -1,4 +1,4 @@
-<p style="margin-bottom: 0in;">Caro ###users_name###,</p>
+<p style="margin-bottom: 0in;">Caro ###users_name###,</p>  
 <p style="margin-bottom: 0in;">Bem vindo à ULT - Universidade Livre de Tecnologia!</p>
 <p style="margin-bottom: 0in;">
 Você está recebendo o login e senha para acesso ao sistema SysClass.
