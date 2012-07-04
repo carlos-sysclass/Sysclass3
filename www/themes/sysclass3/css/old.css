@@ -1192,6 +1192,7 @@ div#module_xcourse_content_list_tree_frontend_student ul {
 	border: 1px solid #3a3a3a;
 	border-radius: 2px 2px 2px 2px;
 	float: left;
+	margin-top:-2px;
 }
 
 div#module_xcourse_content_list_tree_frontend_student ul li {
