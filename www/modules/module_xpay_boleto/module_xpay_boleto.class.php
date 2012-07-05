@@ -1670,8 +1670,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					continue;
 				}
 				if (!file_exists($fullfilepath)) {
-					var_dump($fullfilepath);
-					echo '<br />';
+//					var_dump($fullfilepath);
+//					echo '<br />';
 						
 					mkdir($fullfilepath, 0777, true);
 				}
