@@ -204,7 +204,9 @@
          {include file = "includes/tests/show_unsolved_test.tpl"}
         {else}
          {if $T_UNIT.data}
-          {$T_UNIT.data}
+         	{if $T_CHECKRULES_VALUE != 1}
+          		{$T_UNIT.data}
+         	{/if}
          {elseif $T_NO_START}
           {$smarty.const._CHOOSEUNIT}: {$T_SUBTREE}
          {else}
@@ -213,25 +215,32 @@
         {/if}
        </td></tr>
       <tr><td>
+
        <table class = "navigationTable">
         <tr>
          <td class = "previousUnitHandleIcon">
     {if ($T_UNIT.data || $T_UNIT.ctg_type == 'tests' || $T_UNIT.ctg_type == 'feedback') && !$T_TEST_UNDERGOING && $T_UNIT.options.hide_navigation != 1 && $T_UNIT.options.hide_navigation != 3}
      {if $T_PREVIOUS_UNIT}
+        {if $T_CHECKRULES_VALUE != 1 || !$_student_}  
           <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_PREVIOUS_UNIT.id}" title = "{$T_PREVIOUS_UNIT.name}">
            <img class = "handle" src = "images/32x32/navigate_left.png" title = "{$T_PREVIOUS_UNIT.name}" alt = "{$T_PREVIOUS_UNIT.name}" />
           </a>
+        {/if}
      {/if}
     {/if}
          </td>
          <td class = "previousUnitHandle">
     {if ($T_UNIT.data || $T_UNIT.ctg_type == 'tests' || $T_UNIT.ctg_type == 'feedback') && !$T_TEST_UNDERGOING && $T_UNIT.options.hide_navigation != 1 && $T_UNIT.options.hide_navigation != 3}
      {if $T_PREVIOUS_UNIT}
+     	{if $T_CHECKRULES_VALUE != 1 || !$_student_}
           <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_PREVIOUS_UNIT.id}" title = "{$T_PREVIOUS_UNIT.name}">
            {$T_PREVIOUS_UNIT.name|eF_truncate:30}
           </a>
+        {/if}
      {/if}
     {/if}
+    
+
          </td>
          <td class = "completeUnitHandle">
      {if !$T_UNIT.options.hide_complete_unit && $T_UNIT.ctg_type != 'tests' && $T_UNIT.ctg_type != 'feedback'}{assign var = "hideStyle" value = ''}{else}{assign var = "hideStyle" value = 'style = "visibility:hidden"'}{/if}
@@ -245,32 +254,40 @@
            </span>
           </div>
      {elseif $_change_ && $_student_}
-          <a {if !$hideStyle}id = "seenLink"{/if} href = "javascript:void(0)" onclick = "setSeenUnit();" {$hideStyle}>
-            {if $T_SEEN_UNIT}
-             <img class = "handle" src = "images/32x32/unit_completed.png" title = "{$smarty.const._NOTSAWUNIT}" alt = "{$smarty.const._NOTSAWUNIT}" />
-             <div>{$smarty.const._NOTSAWUNIT}</div>
-            {else}
-             <img class = "handle" src = "images/32x32/unit.png" title = "{$smarty.const._SAWUNIT}" alt = "{$smarty.const._SAWUNIT}" />
-             <div>{$smarty.const._SAWUNIT}</div>
-            {/if}
-          </a>
+    
+	       {if $T_CHECKRULES_VALUE != 1 || !$_student_}  
+	          <a {if !$hideStyle}id = "seenLink"{/if} href = "javascript:void(0)" onclick = "setSeenUnit();" {$hideStyle}>
+	            {if $T_SEEN_UNIT}
+	             <img class = "handle" src = "images/32x32/unit_completed.png" title = "{$smarty.const._NOTSAWUNIT}" alt = "{$smarty.const._NOTSAWUNIT}" />
+	             <div>{$smarty.const._NOTSAWUNIT}</div>
+	            {else}
+	             <img class = "handle" src = "images/32x32/unit.png" title = "{$smarty.const._SAWUNIT}" alt = "{$smarty.const._SAWUNIT}" />
+	             <div>{$smarty.const._SAWUNIT}</div>
+	            {/if}
+	          </a>
+	       {/if}
+	       
      {/if}
          </td>
          <td class = "nextUnitHandle">
     {if ($T_UNIT.data || $T_UNIT.ctg_type == 'tests' || $T_UNIT.ctg_type == 'feedback') && !$T_TEST_UNDERGOING && $T_UNIT.options.hide_navigation != 1 && $T_UNIT.options.hide_navigation != 3}
      {if $T_NEXT_UNIT}
-          <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_NEXT_UNIT.id}" title = "{$T_NEXT_UNIT.name}">
-           {$T_NEXT_UNIT.name|eF_truncate:30}
-          </a>
+     	   {if $T_CHECKRULES_VALUE != 1 || !$_student_}
+	          <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_NEXT_UNIT.id}" title = "{$T_NEXT_UNIT.name}">
+	           {$T_NEXT_UNIT.name|eF_truncate:30}
+	          </a>
+	       {/if}   
      {/if}
     {/if}
          </td>
          <td class = "nextUnitHandleIcon">
     {if ($T_UNIT.data || $T_UNIT.ctg_type == 'tests' || $T_UNIT.ctg_type == 'feedback') && !$T_TEST_UNDERGOING && $T_UNIT.options.hide_navigation != 1 && $T_UNIT.options.hide_navigation != 3}
      {if $T_NEXT_UNIT}
+     	{if $T_CHECKRULES_VALUE != 1 || !$_student_}
           <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_NEXT_UNIT.id}" title = "{$T_NEXT_UNIT.name}">
            <img class = "handle" src = "images/32x32/navigate_right.png" title = "{$T_NEXT_UNIT.name}" alt = "{$T_NEXT_UNIT.name}" />
           </a>
+        {/if}
      {/if}
     {/if}
          </td>
