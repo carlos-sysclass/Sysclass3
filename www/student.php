@@ -223,6 +223,7 @@ try {
 								$message = _MUSTFIRSTREADLESSON.' <a href = "avascript:void(0)">'.$preLesson->lesson['name'].'</a><br/>';
 								$smarty -> assign("T_CHECKRULES_COURSES", $message );
 								$smarty -> assign("T_CHECKRULES_VALUE", 1 );
+								$smarty -> assign("T_CHECKRULES_STUDENT", 1 );
 								$message_type = 'failure';
 								break;
 								}
