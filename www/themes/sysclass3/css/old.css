@@ -1210,7 +1210,7 @@ div#module_xcourse_content_list_tree_frontend_student ul li a {
 	position: relative;
 	line-height: 26px;
 	font-size: 12px;
-	text-transform: uppercase;
+/*	text-transform: uppercase; */
 }
 
 div#module_xcourse_content_list_tree_frontend_student ul li img {

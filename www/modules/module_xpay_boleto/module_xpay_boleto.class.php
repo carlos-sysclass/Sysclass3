@@ -1595,6 +1595,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					$count++;
 				} while(file_exists($fullProcPath . $retFileName));
 	
+				var_dump($fullProcPath, $retFileName);
 				
 				if ($file->moveUploadedFile($fullProcPath, $retFileName)) {
 					$fullFilePath = $fullProcPath . $retFileName;
