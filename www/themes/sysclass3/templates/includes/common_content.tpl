@@ -204,7 +204,9 @@
          {include file = "includes/tests/show_unsolved_test.tpl"}
         {else}
          {if $T_UNIT.data}
-          {$T_UNIT.data}
+         	
+          		{$T_UNIT.data}
+         	
          {elseif $T_NO_START}
           {$smarty.const._CHOOSEUNIT}: {$T_SUBTREE}
          {else}
@@ -248,15 +250,19 @@
            </span>
           </div>
      {elseif $_change_ && $_student_}
-          <a {if !$hideStyle}id = "seenLink"{/if} href = "javascript:void(0)" onclick = "setSeenUnit();" {$hideStyle}>
-            {if $T_SEEN_UNIT}
-             <img class = "handle" src = "images/32x32/unit_completed.png" title = "{$smarty.const._NOTSAWUNIT}" alt = "{$smarty.const._NOTSAWUNIT}" />
-             <div>{$smarty.const._NOTSAWUNIT}</div>
-            {else}
-             <img class = "handle" src = "images/32x32/unit.png" title = "{$smarty.const._SAWUNIT}" alt = "{$smarty.const._SAWUNIT}" />
-             <div>{$smarty.const._SAWUNIT}</div>
-            {/if}
-          </a>
+    
+	       {if $T_CHECKRULES_VALUE !== 1 }   
+	          <a {if !$hideStyle}id = "seenLink"{/if} href = "javascript:void(0)" onclick = "setSeenUnit();" {$hideStyle}>
+	            {if $T_SEEN_UNIT}
+	             <img class = "handle" src = "images/32x32/unit_completed.png" title = "{$smarty.const._NOTSAWUNIT}" alt = "{$smarty.const._NOTSAWUNIT}" />
+	             <div>{$smarty.const._NOTSAWUNIT}</div>
+	            {else}
+	             <img class = "handle" src = "images/32x32/unit.png" title = "{$smarty.const._SAWUNIT}" alt = "{$smarty.const._SAWUNIT}" />
+	             <div>{$smarty.const._SAWUNIT}</div>
+	            {/if}
+	          </a>
+	       {/if}
+	       
      {/if}
          </td>
          <td class = "nextUnitHandle">
