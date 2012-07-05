@@ -519,7 +519,7 @@ div.colorinp-top {
 	float: right;
 	height: 28px;
 	margin-top: 18px;
-	width: 165px;
+	width: 184px;
 }
 
 div.colorinp-top input {
@@ -1281,7 +1281,8 @@ div#module_xcourse_content_list_tree_frontend_student ul span.emptyCategory
 }
 
 #layout_margin_top_rigth_index_student .grid_7  .block .title {
-	margin: 0 0 15px 0;
+	margin: 12px 0 0 0;
+	
 }
 
 /* final margin_top_rogth_index_student*/ /*Inicio Seu Polo */

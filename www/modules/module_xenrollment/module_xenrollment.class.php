@@ -139,7 +139,7 @@ class module_xenrollment extends MagesterExtendedModule {
             return array(
 				'title' 	=> $this->getTitle(self::SHOW_CONTROL_PANEL),
                 'image' 	=> 'images/others/transparent.gif',
-                'link'  	=> $this -> moduleBaseUrl,
+                'link'  	=> $this -> moduleBaseUrl.'&action=report_enrollment',
             	'image_class'	=> 'sprite32 sprite32-graduation',
 				'class' => 'archive'
             );
@@ -165,6 +165,10 @@ class module_xenrollment extends MagesterExtendedModule {
     
     
     /* ACTION HANDLERS */
+    public function reportEnrollmentAction(){
+    	print 'mexer aqui';
+    }
+    
     public function openXenrollmentAction() {
     	$token = $this->createToken(30);
 
