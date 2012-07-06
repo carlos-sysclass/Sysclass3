@@ -410,7 +410,7 @@ class module_xpay extends MagesterExtendedModule {
 	public function viewUserCourseStatementAction() {
 		$smarty = $this->getSmartyVar();
 		
-		var_dump($this->getCurrentUser()->getType());
+		//var_dump($this->getCurrentUser()->getType());
 		
 		if ($this->getCurrentUser()->getType() == 'professor') {
 			$this->setMessageVar("Acesso Não Autorizado", "failure");
@@ -438,10 +438,12 @@ class module_xpay extends MagesterExtendedModule {
 			$negociation_index = $_GET['negociation_index'];
 		
 			$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
+/*			
 			echo '<pre>';
 			var_dump($userNegociation);
+			var_dump(date("d/m/Y H:i:s", $userNegociation['matricula']));
 			echo '</pre>';
-			
+*/			
 			foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
 				$applied_rules = array();
 				if ($invoice['total_reajuste'] <> 0) {
@@ -1698,6 +1700,7 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		*/
 		if ($contraints['group_by'] == 'lesson') {
+			/*
 			$negociationData = ef_getTableData(
 				"module_xpay_course_negociation neg
 				LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
@@ -1708,7 +1711,7 @@ class module_xpay extends MagesterExtendedModule {
 				LEFT JOIN lessons_to_courses lc ON (lc.courses_ID = c.id)	
 				LEFT JOIN users_to_lessons ul ON (ul.lessons_ID = lc.lessons_ID AND ul.users_LOGIN = u.login)
 				LEFT JOIN lessons l ON (ul.lessons_ID = l.id)	
-				LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
+				LEFT OUTER JOIN module_xpay_lesson_modality_prices cp ON (
 					uc.courses_ID = cp.course_id AND
 					uc.modality_id = cp.modality_id AND (
 						( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
@@ -1729,6 +1732,7 @@ class module_xpay extends MagesterExtendedModule {
 				"negociation_index DESC",
 				"neg.id, u.id, c.id"
 			);
+			*/
 		} else {
 			$negociationData = ef_getTableData(
 				"module_xpay_course_negociation neg
@@ -1748,7 +1752,9 @@ class module_xpay extends MagesterExtendedModule {
 				",
 				//"neg.id, neg.user_id, neg.course_id, neg.negociation_index",
 				'neg.id, u.id as user_id, c.id as course_id, u.name, u.surname, u.login, c.name as course, uc.from_timestamp as matricula,
+					
 				IFNULL(cp.price, c.price) as base_price,
+					
 				IFNULL(SUM(pd.paid), 0) as paid, uc.modality_id,
 				neg.negociation_index,
 				cm.name as modality',
