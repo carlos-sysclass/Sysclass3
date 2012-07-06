@@ -600,9 +600,6 @@ class module_xpay extends MagesterExtendedModule {
 		} else {
 
 		}
-		
-		
-		
 	
 		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
 		$form = new HTML_QuickForm2("xpay_invoice_params_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
@@ -621,8 +618,6 @@ class module_xpay extends MagesterExtendedModule {
 		if ($form -> isSubmitted() && $form -> validate()) {
 			// INSERE VALORES E REDIRECIONA PARA
 			$fields = $values = $form->getValue();
-			
-
 			
 			$fields['taxa_matricula'] 		= str_replace(",", ".", str_replace(".", "", $fields['taxa_matricula']));
 			$fields['vencimento_1_parcela'] = date_create_from_format("d/m/Y H:i:s", $fields['vencimento_1_parcela'] . "  00:00:00");
@@ -663,7 +658,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$currentVencimento = $fields['vencimento_1_parcela'];
 			$today = new DateTime("today");
-			if ($fields['vencimento_1_parcela'] && intval($currentVencimento->diff($today, false)->format("%r%d")) <= 0) {
+			if ($fields['vencimento_1_parcela'] /* && intval($currentVencimento->diff($today, false)->format("%r%d")) <= 0 */ ) {
 				$monthInterval = new DateInterval('P1M');
 				
 				// 3. CREATE INVOICE FOR "taxa_matricula"
