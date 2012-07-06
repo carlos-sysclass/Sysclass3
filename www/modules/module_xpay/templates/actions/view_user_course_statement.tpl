@@ -68,6 +68,14 @@
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>
 							 -->
+								<a 
+									class="form-icon" 
+									href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+									onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 2)" 
+									target = "POPUP_FRAME"
+								>
+									<img src="images/others/transparent.gif" class="sprite16 sprite16-create_payment">
+								</a>
 								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>

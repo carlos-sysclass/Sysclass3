@@ -806,6 +806,9 @@ class module_xpay extends MagesterExtendedModule {
 		
 		exit;
 	}
+	public function createPaymentAction() {
+		
+	}
 	public function doPaymentAction() {
 		$smarty = $this->getSmartyVar();
 		$currentUser = $this->getCurrentUser();
@@ -838,7 +841,6 @@ class module_xpay extends MagesterExtendedModule {
 			$negocData = $this->_getNegociationById($negociationID);
 			
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
-			
 		} else {
 			$this->setMessageVar(__XPAY_NO_ACCESS, "failure");
 			$selectedIndex = null;

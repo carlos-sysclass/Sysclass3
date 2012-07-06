@@ -65,6 +65,7 @@ html.popup {
 
 .popup body {
 	width: auto;
+	min-width: 100px;
 	padding: 0px;
 	margin: 0px;
 	height: 100%;
