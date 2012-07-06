@@ -1422,9 +1422,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 
 		
 		$invoicePayer = $this->getParent()->_getNegociationPayerByNegociationID($negociation_id);
-		
-		//var_dump($invoicePayer);
-		
+
 		// DADOS DO SEU CLIENTE
 		$invoiceOptions["sacado"] 		= $invoicePayer['name'] . " " . $invoicePayer['surname'];
 		$invoiceOptions["endereco1"] 	= sprintf("%s , %s %s / %s", $invoicePayer['endereco'], $invoicePayer['numero'], $invoicePayer['complemento'], $invoicePayer['bairro']); ;
