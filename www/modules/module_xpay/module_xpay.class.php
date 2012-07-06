@@ -6,6 +6,9 @@ class module_xpay extends MagesterExtendedModule {
 	const INVOICE_ID_TEMPLATE_SEM_DV	= "%04d%02d%01d";
 	const _XPAY_AUTOPAY		= 2;
 	
+	const __NUCLEO_ULT		= 13;
+	const __NUCLEO_POS		= 16;
+	
 	private $rules = null;
 	private $rulesTags = null;
 	
@@ -19,7 +22,7 @@ class module_xpay extends MagesterExtendedModule {
 	
 	public function getPermittedRoles() {
 		return array("administrator", "student");
-	}
+	} 
 	
 	public function getTitle($action) {
 		switch($action) {
@@ -382,12 +385,10 @@ class module_xpay extends MagesterExtendedModule {
 		foreach($userDebits as $userDebit) {
 			//$this->checkAndCreateInvoices($userDebit);
 		}
-		
 
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
-			
-			$_GET['xcourse_id'] = $userDebit['course_id'];
+			$_GET['x' . $userDebit['type'] . '_id'] = $userDebit['module_id'];
 			$this->setCurrentAction("view_user_course_statement", true);
 		} else {
 			$usersTotals= array(
@@ -408,6 +409,8 @@ class module_xpay extends MagesterExtendedModule {
 	}
 	public function viewUserCourseStatementAction() {
 		$smarty = $this->getSmartyVar();
+		
+		var_dump($this->getCurrentUser()->getType());
 		
 		if ($this->getCurrentUser()->getType() == 'professor') {
 			$this->setMessageVar("Acesso Não Autorizado", "failure");
@@ -430,8 +433,8 @@ class module_xpay extends MagesterExtendedModule {
 			return false;
 		}
 		
-		//	ONLY ies_id =1 COURSES
-		if ($editCourse->course['ies_id'] == 1) {
+		//	ONLY directions_ID = 13 COURSES
+		if ($editCourse->course['directions_ID'] == self::__NUCLEO_ULT) {
 			$negociation_index = $_GET['negociation_index'];
 		
 			$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
@@ -1507,7 +1510,7 @@ class module_xpay extends MagesterExtendedModule {
 			$editedUser = $this->getEditedUser();
 		}
 		
-		$courseSQL = prepareGetTableData(
+		$courseItens = eF_getTableData(
 			"users_to_courses uc
 			LEFT JOIN courses c ON (uc.courses_ID = c.id)
 			LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
@@ -1529,8 +1532,13 @@ class module_xpay extends MagesterExtendedModule {
 			),
 			sprintf("users_LOGIN = '%s'  AND uc.modality_id != 3", $editedUser->user['login'])
 		);
-		 
-		$lessonSQL = prepareGetTableData(
+		$courses_ID = array(0);
+		foreach($courseItens as $courseData) {
+			// GET COURSE LESSONS, AND EXCLUDE THEN
+			$courses_ID[] = $courseData['module_id'];
+		}
+		
+		$lessonItens = eF_getTableData(
 			"users_to_lessons ul
 			LEFT join lessons l ON (ul.lessons_ID = l.id)
 			LEFT OUTER join module_xpay_lesson_modality_prices lp ON ( 
@@ -1550,22 +1558,31 @@ class module_xpay extends MagesterExtendedModule {
 				lm.name as modality',
 				$editedUser->user['id']
 			),
-			sprintf("users_LOGIN = '%s' AND l.course_only = 0", $editedUser->user['login'])
+			sprintf("
+				users_LOGIN = '%s' 
+				AND l.course_only = 0 
+				AND l.id NOT IN (SELECT lessons_ID FROM lessons_to_courses WHERE courses_ID IN (%s))", 
+				$editedUser->user['login'],
+				implode(",", $courses_ID)
+			)
 		);
-
-		$userDebitsData = $GLOBALS['db'] -> GetAll($courseSQL . " UNION ALL " . $lessonSQL);
-
+		
+		//var_dump($courseItens);
+		
+		$userDebitsData = $courseItens + $lessonItens;
+		
 		$userDebits = array();
 		// CHECK FOR COURSE_ONLY SELECTED LESSONS
 		foreach($userDebitsData as $statement) {
 			$statement['balance'] = intval($statement['base_price'])-intval($statement['paid']);
-			$userDebits[$statement['module_id']] = $statement;
+			$userDebits[] = $statement;
 		}
-	
+		/*
 		if (!is_null($module_id)) {
 			return $userDebits[$module_id];
 		}
-	
+		*/
+		
 		return $userDebits;
 	}
 	public function _getNegociationPayerByNegociationID($negociationID) {
