@@ -1,4 +1,6 @@
 {capture name="t_xpay_simulate_statement"}
+	{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+	
 	{include
 		file="`$T_XPAY_BASEDIR`templates/includes/print.negociation.summary.tpl"
 		T_XPAY_STATEMENT=$T_XPAY_STATEMENT

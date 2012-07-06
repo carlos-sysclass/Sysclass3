@@ -587,14 +587,11 @@ class module_xpay extends MagesterExtendedModule {
 
 		// CHECK IF COURSE HAS A DEFAULT STATEMENT		
 		if (count($userNegociation) == 0 && count($simulatedNegociation) == 0) {
-			var_dump(1);
 			$userNegociation = $simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$userNegociation = $simulatedNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index'], 1);
 		} elseif (count($userNegociation) == 0) {
-			var_dump(2);
 			$userNegociation = $simulatedNegociation;
 		} elseif (count($simulatedNegociation) == 0) {
-			var_dump(3);
 			$simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$simulatedNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index'], 1);
 		} else {
@@ -624,7 +621,7 @@ class module_xpay extends MagesterExtendedModule {
 			//s$fields['vencimento_1_parcela'] ? $fields['vencimento_1_parcela'] = $fields['vencimento_1_parcela']->format('Y-m-d') : null;
 
 			$negociationParams = array(
-				'full_price'			=> $userNegociation['full_price'],
+				'full_price'			=> $simulatedNegociation['full_price'],
 				'paid'					=> $userNegociation['paid'],
 				//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
 				'taxa_matricula'		=> $fields['taxa_matricula'],
@@ -674,12 +671,10 @@ class module_xpay extends MagesterExtendedModule {
 					$currentBalance -= $negociationParams['taxa_matricula'];
 					
 					$currentVencimento->add($monthInterval);
-					
 				}
 				
 				// 5. DIVIDE BALANCE BY "total_parcelas"
 				$valorParcela = xfloor($currentBalance / $negociationParams['total_parcelas'], 2);
-
 				
 				// 6. APPEND THE INVOICES VALUES 
 				$invoicesValues = array();
@@ -743,13 +738,13 @@ class module_xpay extends MagesterExtendedModule {
 				$this->setCache($negociationHash, json_encode($simulatedNegociation));
 				$smarty -> assign("T_XPAY_NEGOCIATION_HASH", $negociationHash);
 				$this->addModuleData("negociation_hash", $negociationHash);
-				$values['saldo_total'] = $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']);
+				$values['saldo_total'] = $this->_asCurrency($simulatedNegociation['full_price'] - $userNegociation['paid']);
 			} else {
 				$this->setMessageVar(__XPAY_PAYMENT_DAY_MUST_BE_GREATER_THAN_TODAY, "failure");
 			}
 		} else {
 			$values = array(
-				'saldo_total'		=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				'saldo_total'		=> $this->_asCurrency($simulatedNegociation['full_price'] - $userNegociation['paid']),
 				//'saldo_restante'	=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
 				'total_parcelas'	=> 10
 			);
@@ -841,6 +836,9 @@ class module_xpay extends MagesterExtendedModule {
 			$invoice_index = $_GET['invoice_index'];
 			
 			$negocData = $this->_getNegociationById($negociationID);
+			
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+			
 		} else {
 			$this->setMessageVar(__XPAY_NO_ACCESS, "failure");
 			$selectedIndex = null;
@@ -1654,9 +1652,11 @@ class module_xpay extends MagesterExtendedModule {
 				$oldSendTo = eF_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['ref_payment_id']);
 				
 				if (count($oldSendTo) == 0) {
-					return false;
-				}
-				$sendTo = $oldSendTo[0]['send_to']; 
+					// DEFAULT TYPE
+					$sendTo = 'student';
+				} else {
+					$sendTo = $oldSendTo[0]['send_to'];
+				} 
 			}
 
 			return $xUserModule->getUserDetails($studentID, $sendTo);
