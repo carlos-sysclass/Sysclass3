@@ -2460,7 +2460,11 @@ DROP PROCEDURE teste;
 /* 2012-06-29 */
 ALTER TABLE `users_to_lessons` ADD `modality_id` MEDIUMINT( 8 ) NOT NULL AFTER `user_type`;
 
-/* 2012-07-03 */
+/* 2012-07-06 */
+
+
+
+ALTER TABLE `module_xpay_course_negociation` CHANGE `is_simulation` `is_simulation` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '1 = For imcomplete simulation (can be used again), 2=> for closed simulation (disonible for use)'
 
 
 
