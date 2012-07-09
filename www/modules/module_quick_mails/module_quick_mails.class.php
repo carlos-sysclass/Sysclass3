@@ -47,6 +47,27 @@ class module_quick_mails extends MagesterExtendedModule {
 				);
 			}
 		} else {
+			
+			
+		$contactList = eF_getTableData(
+				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
+				"qm.*, COUNT(qml.user_id)", 
+				sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
+				"",
+				"qm.id HAVING COUNT(qml.user_id) > 0"
+			);
+
+			foreach($contactList as &$item) {
+				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
+				
+				$image = explode("/", $item['image']);
+				
+				$item['image'] = array(
+					'size'	=> reset(explode("x", $image[0])),
+					'name'	=> $image[1]
+				);
+			}
+			
 		}
 
 		$smarty -> assign("T_QUICK_MAILS_CONTACT_LIST", $contactList);
@@ -98,6 +119,27 @@ class module_quick_mails extends MagesterExtendedModule {
 	    		);
 	    	}
     	} else {
+    		
+    		
+    		$feedbackList = eF_getTableData(
+	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
+	    			"qm.*, COUNT(qml.user_id)",
+	    			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'feedback'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
+	    			"",
+	    			"qm.id HAVING COUNT(qml.user_id) > 0"
+	    	);
+	    	
+	    	foreach($feedbackList as &$item) {
+	    		$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
+	    	
+	    		$image = explode("/", $item['image']);
+	    	
+	    		$item['image'] = array(
+	    				'size'	=> reset(explode("x", $image[0])),
+	    				'name'	=> $image[1]
+	    		);
+	    	}
+    	
     	}
     	
     	$smarty -> assign("T_QUICK_MAILS_FEEDBACK_LIST", $feedbackList);
