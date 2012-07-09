@@ -15,7 +15,7 @@ class module_xenrollment extends MagesterExtendedModule {
 	protected $editedUser 			= null;
 	protected $editedCourse 		= null;
 
-	/* AÇÕES DISPONIBILIZADAS *
+	/* AÇÕES DISPONIBILIZADAS */
 	 const SHOW_LAST_XENROLLMENTS		= 'show_last_xenrollments';
 	 const REGISTER_XENROLLMENT			= 'register_xenrollment';
 	 const EDIT_XENROLLMENT				= 'edit_xenrollment';
@@ -24,7 +24,6 @@ class module_xenrollment extends MagesterExtendedModule {
 	 const SHOW_CONTROL_PANEL			= 'show_control_panel';
 	 const CHECK_USERS_XENROLLMENT		= 'check_users_xenrollment';
 	 const ADD_XDOCUMENT_TO_COURSE		= 'add_xdocument_to_course';
-	*/
 
 	 /* ENROLLMENT STATUSES */
 	const COMMIT_STATE			= 2;
@@ -66,9 +65,9 @@ class module_xenrollment extends MagesterExtendedModule {
 				$xuserModule = $this->loadModule('xuser');
 				$userObj = $xuserModule->getUserById($enroll['users_id']);
 				return sprintf(
-				__XENROLLMENT_UNREGISTER_TITLE_,
+					__XENROLLMENT_UNREGISTER_TITLE_,
 					'<span class="username">' . formatLogin(null, $userObj->user) . '</span>'
-					);
+				);
 			}
 			case self::OPEN_DOCUMENTS_LIST : {
 				return __XENROLLMENT_SHOW_DOCUMENTS_LIST;
@@ -77,7 +76,6 @@ class module_xenrollment extends MagesterExtendedModule {
 			default : {
 				return __XENROLLMENT_NAME;
 			}
-				
 		}
 		return parent::getTitle($action);
 	}
@@ -95,53 +93,44 @@ class module_xenrollment extends MagesterExtendedModule {
 	}
 
 	public function getSidebarLinkInfo() {
-		 
 		$xuserModule = $this->loadModule("xuser");
 		$currentUser = $this -> getCurrentUser();
-		 
 		if (
-		$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
-		$xuserModule->getExtendedTypeID($currentUser) == "secretary" ||
-		$xuserModule->getExtendedTypeID($currentUser) == "secretary"
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+			$xuserModule->getExtendedTypeID($currentUser) == "secretary" ||
+			$xuserModule->getExtendedTypeID($currentUser) == "secretary"
 		) {
 			$link_of_menu = array (
-			array (
-	        		'id' => $this->index_name . '_menu_link',
-	            	'title' => $this->getTitle(),
-			//              'image' => $this -> moduleBaseDir . 'images/ies16.png',
-	                '_magesterExtensions' => '1',
-	                'link'  => $this -> moduleBaseUrl,
-					'class' => 'archive'
-					)
-					);
-
-					return array ( "user" => $link_of_menu);
+								array (
+	        						'id' 	=> $this->index_name . '_menu_link',
+	            					'title' => $this->getTitle(),
+									//'image' => $this -> moduleBaseDir . 'images/ies16.png',
+	                				'_magesterExtensions' => '1',
+	                				'link'  => $this -> moduleBaseUrl,
+									'class' => 'archive'
+								)
+							);
+			return array ( "user" => $link_of_menu);
 		}
 	}
 
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser();
-
 		$xuserModule = $this->loadModule("xuser");
-
 		if (
-		$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
-		$xuserModule->getExtendedTypeID($currentUser) == "coordenator" ||
-		$xuserModule->getExtendedTypeID($currentUser) == "secretary"
-		) {
-			 
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+			$xuserModule->getExtendedTypeID($currentUser) == "coordenator" ||
+			$xuserModule->getExtendedTypeID($currentUser) == "secretary"
+		) {		 
 			return array(
 				'title' 	=> $this->getTitle(self::SHOW_CONTROL_PANEL),
                 'image' 	=> 'images/others/transparent.gif',
                 'link'  	=> $this -> moduleBaseUrl.'&action=report_enrollment',
             	'image_class'	=> 'sprite32 sprite32-graduation',
 				'class' => 'archive'
-				);
+			);
 		}
-
 	}
-
-
 
 	public function getDefaultAction() {
 		return self::SHOW_LAST_XENROLLMENTS;
@@ -149,16 +138,15 @@ class module_xenrollment extends MagesterExtendedModule {
 
 	protected function getModuleData() {
 		$parentData = parent::getModuleData();
-
 		$selfData = array(
-		$this->index_name . ".show_last_limit"	=> 10
+			$this->index_name . ".show_last_limit"	=> 10
 		);
-
 		return array_merge_recursive($parentData, $selfData);
 	}
 
-
 	/* ACTION HANDLERS */
+	
+	# relatorio de matriculas
 	public function reportEnrollmentAction(){
 		print 'mexer aqui';
 	}
