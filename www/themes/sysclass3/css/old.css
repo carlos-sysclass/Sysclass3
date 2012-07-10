@@ -1269,6 +1269,7 @@ div#module_xcourse_content_list_tree_frontend_student ul span.emptyCategory
 	width: 275px;
 	float: right;
 	margin-top: -154px;
+	z-index: 999;
 }
 
 #layout_margin_top_rigth_index_student .grid_7  .rule2 {
