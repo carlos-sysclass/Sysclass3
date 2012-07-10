@@ -752,6 +752,7 @@ label.error        		{ color: #FF0000; }
 	bottom: 0;
 	left: 0;
 	text-align: center;
+	z-index:1000;
 }
 
 
