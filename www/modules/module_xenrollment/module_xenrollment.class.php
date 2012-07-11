@@ -143,14 +143,138 @@ class module_xenrollment extends MagesterExtendedModule {
 		);
 		return array_merge_recursive($parentData, $selfData);
 	}
+	
+	protected function reportEnrollment($where=null) {
+		/*
+		if ( !empty( $where ) ) {
+			return prepareGetTableData("		users usr
+										LEFT JOIN users_to_lessons utl 	ON utl.users_LOGIN 	= usr.login
+										LEFT JOIN lessons les 			ON les.id 			= utl.lessons_ID
+										LEFT JOIN users_to_courses utc 	ON utc.users_LOGIN 	= usr.login
+										LEFT JOIN courses cou 			ON cou.id 			= utc.courses_ID
+										LEFT JOIN classes cla 			ON cla.id 			= utc.classe_id
+										LEFT JOIN user_types uty 		ON uty.id 			= user_types_ID
+										LEFT JOIN module_xuser mxu 		ON mxu.id 			= usr.id",
+				    				"	usr.name,
+				    					usr.surname,
+				    					uty.name 			user_type,
+				    					utl.users_LOGIN		login,
+				    					les.name			lesson,
+				    					cou.name			course,
+				    					cla.name			class,
+				    					mxu.endereco		address,
+				    					mxu.bairro			neighborhood,
+				    					mxu.cidade			city,
+				    					mxu.uf				state", 
+									"	usr.user_type 		= 'student'
+										AND usr.active 		= 1" . $where,
+				    				"	usr.id DESC
+				    				limit 200");
+			
+		}
+		*/
+		return eF_getTableData("		users usr
+										LEFT JOIN users_to_lessons utl 	ON utl.users_LOGIN 	= usr.login
+										LEFT JOIN lessons les 			ON les.id 			= utl.lessons_ID
+										LEFT JOIN users_to_courses utc 	ON utc.users_LOGIN 	= usr.login
+										LEFT JOIN courses cou 			ON cou.id 			= utc.courses_ID
+										LEFT JOIN classes cla 			ON cla.id 			= utc.classe_id
+										LEFT JOIN user_types uty 		ON uty.id 			= user_types_ID
+										LEFT JOIN module_xuser mxu 		ON mxu.id 			= usr.id",
+				    				"	usr.name,
+				    					usr.surname,
+				    					uty.name 			user_type,
+				    					utl.users_LOGIN		login,
+				    					les.name			lesson,
+				    					cou.name			course,
+				    					cla.name			class,
+				    					mxu.endereco		address,
+				    					mxu.bairro			neighborhood,
+				    					mxu.cidade			city,
+				    					mxu.uf				state", 
+									"	usr.user_type 		= 'student'
+										AND usr.active 		= 1" . $where,
+				    				"	usr.name, usr.surname
+				    				limit 200");
+	}
 
 	/* ACTION HANDLERS */
 	
 	# relatorio de matriculas
-	public function reportEnrollmentAction(){
-		print 'mexer aqui';
+	public function reportEnrollmentAction() {
+		$smarty 	= $this->getSmartyVar();
+		# users info
+		$usersInfo 	= $this->reportEnrollment();
+		$smarty->assign('T_XENROLLMENT_USERSINFO', $usersInfo);
+		unset($usersInfo);
+		# user types for filter
+		$db_userTypes = eF_getTableData(	"	user_types",
+				    						"	name", 
+											"	basic_user_type = 'student'",
+				    						"	name");
+		$userTypes = array();
+		foreach ( $db_userTypes as $key => $userType ) {
+			if ( !empty( $userType['name'] ) ) {
+				$userTypes[] = $userType['name'];
+			}
+		}
+		$smarty->assign('T_XENROLLMENT_USERTYPES', $userTypes);
+		unset($db_userTypes, $userTypes);
+		# cities for filter
+		$db_cities = eF_getTableData(	"	module_xuser mxu",
+				    					"	DISTINCT( mxu.cidade ) name", 
+										"	1 = 1",
+				    					"	mxu.cidade");
+		$cities = array();
+		foreach ( $db_cities as $key => $city ) {
+			if ( !empty( $city['name'] ) ) {
+				$cities[] = $city['name'];
+			}
+		}
+		$smarty->assign('T_XENROLLMENT_CITIES', $cities);
+		unset($db_cities, $cities);
+		# states for filter
+		$db_states = eF_getTableData(	"	module_xuser mxu",
+				    					"	DISTINCT( mxu.uf ) name", 
+										"	1 = 1",
+				   						"	mxu.uf");
+		$states = array();
+		foreach ( $db_states as $key => $state ) {
+			if ( !empty( $state['name'] ) ) {
+				$states[] = $state['name'];
+			}
+		}
+		$smarty->assign('T_XENROLLMENT_STATES', $states);
+		unset($db_states, $states);
+
+		$template = array(
+			'title'			=> $this->getTitle($this->getCurrentAction()),
+	        'template'		=> $this->moduleBaseDir.'templates/actions/xenrollment.report_enrollment.tpl',
+    		'class'			=> '',
+    		'contentclass'	=> ''
+    	);
+    	$this->appendTemplate($template);
 	}
 
+	
+	# ajax relatorio de matriculas com filtros
+	public function getReportEnrollmentAction() {
+		$smarty = $this->getSmartyVar();
+		# filtros da busca
+		$filter  = null;
+		$filter .= !empty($_POST['name'])		?" AND ( CONCAT(usr.name,' ',usr.surname) LIKE '".$_POST['name']."%' OR usr.surname LIKE '%".$_POST['name']."%' )":null;
+		$filter .= !empty($_POST['userType'])	?" AND uty.name = '".$_POST['userType']."'":null;
+		$filter .= !empty($_POST['state'])		?" AND mxu.uf = '".$_POST['state']."'":null;
+		$filter .= !empty($_POST['city'])		?" AND mxu.cidade = '".$_POST['city']."'":null;
+		# users info
+		$usersInfo 	= $this->reportEnrollment($filter);
+		//print $usersInfo;exit;
+		$smarty->assign('T_XENROLLMENT_USERSINFO', $usersInfo);
+		# chamada da template
+	  	echo $smarty -> fetch($this->moduleBaseDir . 'templates/actions/xenrollment.get_report_enrollment.tpl');
+		exit;
+	}
+	
 	public function openXenrollmentAction() {
 		$token = $this->createToken(30);
 
