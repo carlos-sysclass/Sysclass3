@@ -200,6 +200,9 @@ if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
     		setcookie('c_request', $user -> user['user_type'].'.php', time() + 300);
     	}
     //}
+    
+    	
+    	
     LoginRedirect($user -> user['user_type']);
     
     exit;

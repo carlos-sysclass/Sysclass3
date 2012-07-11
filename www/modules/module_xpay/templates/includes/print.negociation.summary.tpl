@@ -1,7 +1,7 @@
 <table class="style1 invoice-summary">
 	<thead>
 		<tr>
-			<th colspan="11">{$T_XPAY_STATEMENT.username} &raquo; {$T_XPAY_STATEMENT.course}</th>
+			<th colspan="11">{$T_XPAY_STATEMENT.username} &raquo; {$T_XPAY_STATEMENT.module}</th>
 		</tr>
 	</thead>
 	<tbody>
