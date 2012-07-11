@@ -4,10 +4,9 @@ session_cache_limiter('none');
 session_start();
 //print_r($_SESSION);
 $path = "../libraries/";
-
+//exit;
 /** The configuration file.*/
 require_once $path."configuration.php";
-
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
@@ -23,9 +22,9 @@ try {
  exit;
 }
 
-
 if ($GLOBALS['currentTheme'] -> options['sidebar_interface']) {
     header("Location: ".$_SESSION['s_type'].".php".($_SERVER['QUERY_STRING'] ? "?".$_SERVER['QUERY_STRING'] : ''));
+	exit;
     //$smarty -> assign("T_SIDEBAR_URL", "");		// set an empty source for horizontal sidebars
     //$smarty -> assign("T_SIDEFRAME_WIDTH", 0);
 }

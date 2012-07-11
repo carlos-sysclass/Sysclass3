@@ -827,12 +827,6 @@ if (G_DEBUG) {
  echo $output;
 }
 function LoginRedirect($user_type) {
-	/*
-	var_dump($user_type);
-	var_dump($redirectPage == "user_dashboard" && $user_type != "administrator");
-	var_dump(strpos($redirectPage, "module") !== false);
-	exit;
-	*/
 	
 	$redirectPage = $GLOBALS['configuration']['login_redirect_page'];
 

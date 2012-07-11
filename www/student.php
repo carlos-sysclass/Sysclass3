@@ -2,7 +2,6 @@
 
 session_cache_limiter('none'); //Initialize session
 session_start();
-
 $path = "../libraries/"; //Define default path
 
 require_once $path."configuration.php";
@@ -49,24 +48,21 @@ if ( !isset($_GET['ajax']) && !isset($_GET['postAjaxRequest']) && !isset($popup)
 	$_SESSION['previousMainUrl'] = $_SERVER['REQUEST_URI'];
 }
 
-if ( isset($_COOKIE['c_request'] ) ) {
+if ( isset($_COOKIE['c_request'] ) && $_COOKIE['c_request'] != 'student.php') {
+
 	setcookie('c_request', '', time() - 86400);
 	if ( mb_strpos($_COOKIE['c_request'], '.php') !== false ) {
 		if ( mb_strpos($_COOKIE['c_request'], 'index.php') !== false ) {
 			echo "<script>top.location='".$_COOKIE['c_request']."';</script>";
 		} else {
-			var_dump("".$_COOKIE['c_request']);
 			eF_redirect("".$_COOKIE['c_request']);
 		}
 	} else {
-		//eF_redirect("".$_COOKIE['c_request']);
-		var_dump("".$_COOKIE['c_request']);
-		
 		eF_redirect("".$_SESSION['s_type'].'.php?'.$_COOKIE['c_request']);
 	}
 	exit;
-	
 }
+
 
 $roles = MagesterLessonUser :: getLessonsRoles();
 $userLessons = $currentUser -> getLessons();
@@ -147,20 +143,20 @@ if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') 
 		$smarty -> assign("T_SHOW_LOADED_LESSON_OPTIONS", 1);
 	}
 }
-
-
-if ($_SESSION['s_lessons_ID'] && $roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php' != basename($_SERVER['PHP_SELF']) ) {
-	if ($_GET['ctg'] != 'lessons') {
-		eF_redirect(''.$roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php');
-		exit;
+if (array_key_exists($_SESSION['s_lessons_ID'], $userLessons) && array_key_exists($userLessons[$_SESSION['s_lessons_ID']], $roles)) {
+	if ($_SESSION['s_lessons_ID'] && $roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php' != basename($_SERVER['PHP_SELF']) ) {
+		if ($_GET['ctg'] != 'lessons') {
+			eF_redirect(''.$roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php');
+			exit;
+		}
 	}
 }
 
 if (isset($_SESSION['s_lessons_ID']) && $_SESSION['s_lessons_ID'] && $_GET['ctg'] != 'lessons') { //Check validity of current lesson
 	$userLessons = $currentUser -> getLessons();
 	if (!isset($userLessons[$_SESSION['s_lessons_ID']]) || $roles[$userLessons[$_SESSION['s_lessons_ID']]] != 'student') {
-		eF_redirect("student.php?ctg=lessons"); //redirect to student's lessons page
-		exit;
+//		eF_redirect("student.php?ctg=lessons"); //redirect to student's lessons page
+//		exit;
 	}
 	try {
 		$currentUser -> applyRoleOptions($userLessons[$_SESSION['s_lessons_ID']]); //Initialize user's role options for this lesson
