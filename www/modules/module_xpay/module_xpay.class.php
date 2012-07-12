@@ -155,16 +155,24 @@ class module_xpay extends MagesterExtendedModule {
 				sprintf("user_id = %d AND course_id = %d", $user_id, $course_id)
 		);
 		// SE JÁ ESTÁ MIGRADO, ENTÃO VAI EMBORA
+		
+		var_dump($paymentData);
+		
 		if ($paymentData['migrated'] == 1) {
 			return false;
 		}
 		
-		var_dump($course_id);
-		exit;
+		// var_dump($course_id);
+		// exit;
 	
 		$editUser = $this->getEditedUser(true, $user_id);
-		$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociationData['negociation_index']);
+		$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $course_id, 'course');
 		// SE JÁ TEM UMA NEGOCIAÇÃO REGISTRADA, ENTÃO VAI EMBORA
+		
+		
+		var_dump($userNegociation);
+		exit;
+		
 		if (count($userNegociation) > 0) {
 			return false;
 		}
@@ -1014,6 +1022,42 @@ class module_xpay extends MagesterExtendedModule {
 		//$render = $renderer -> toArray();
 		return true;
 	}
+	public function createPaymentAction() {
+		$smarty = $this->getSmartyVar();
+		/// GET =
+		/*
+		 * negociation_id	228
+		 * invoice_index	3 
+		*/
+		$values = array(
+			'negociation_id' 	=> 228,
+			'invoice_index[]'	=> !is_array($_GET['invoice_index']) ? array($_GET['invoice_index']) : $_GET['invoice_index'], 	// CAN BE A ARRAY
+			'method'			=> 'manual', 	// CAN BE A ARRAY
+		);
+		
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
+		$form = new HTML_QuickForm2("xpay_create_payment_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+		$form -> addStatic('negociation_id', array(), array('label'	=> __XPAY_BALANCE))->setValue($values['negociation_id']);
+		
+		foreach ($values['invoice_index[]'] as $indexes) {
+			$form -> addHidden('invoice_index[]')->setValue($indexes);
+		}
+		$form -> addHidden('method')->setValue($values['method']);
+		
+		$form -> addText('paid', array('class' => 'small', 'alt' => 'decimal'), array('label'	=> __XPAY_PAID_VALUE));
+		$form -> addTextarea('description', array('class' => 'large'), array('label'	=> __XPAY_JUSTIFICATION));
+		$form -> addSubmit('_create_payment', null, array('label'	=> __XPAY_SUBMIT));
+		if ($form -> isSubmitted() && $form -> validate()) {
+			
+		}
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_XPAY_CREATE_PAYMENT_FORM', $renderer -> toArray());
+	}
+	
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(
@@ -1308,9 +1352,10 @@ class module_xpay extends MagesterExtendedModule {
 	
 	/* NEW DATA MODEL FUNCTIONS */
 	private function checkAndCreateInvoices($userDebit) {
-		
+		/*
 		var_dump($userDebit);
 		exit;
+		*/
 		/*	
 		array(11) {
 			["user_id"]=> string(4) "2330"
@@ -1728,11 +1773,12 @@ class module_xpay extends MagesterExtendedModule {
 			'negociation_index'	=> $negociation_index,
 			'simulation_status'	=> $simulation_status
 		);
-		if ($module_type['lesson']) {
+		if ($module_type == 'lesson') {
 			$constraints['lesson_id']	= $module_id;
 		} else {
 			$constraints['course_id']	= $module_id;
 		}
+		var_dump($constraints);
 		return $this->_getNegociationByContraints($constraints);
 	}	
 	
