@@ -2472,12 +2472,14 @@ function eF_printMessage($str, $print = true, $message_type = '')
 
 */
 function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $onlyText = false, $bcc = false) {
+	
     if ($bcc) {
         $toField = 'Bcc';
     } else {
         $toField = 'To';
     }
-    $hdrs = array('From' => $sender,
+
+    $hdrs = array('From' => is_null($sender) ? $GLOBALS['configuration']['smtp_user'] : $sender,
                   'Subject' => $subject,
                   $toField => $recipient,
                   'Date' => date("r"));
@@ -2506,13 +2508,10 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
                                          'port' => $GLOBALS['configuration']['smtp_port'],
                                          'username' => $GLOBALS['configuration']['smtp_user'],
                                          'timeout' => $GLOBALS['configuration']['smtp_timeout']));
-    
-    $smtp->debug= true;
+   //$smtp->debug= true;
 //	var_dump(get_class($smtp));
-var_dump($recipient, $hdrs, $body);
 
     $result = $smtp -> send($recipient, $hdrs, $body);
-    exit;
     return $result;
 }
 /*
