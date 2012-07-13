@@ -1,6 +1,6 @@
 /*html			{ background: #333333; } */
 body			{ min-width: 1000px; text-align: center; margin: 0px; font-family:arial, heveltica, sans-serif; font-size: 12px; 
-			  background: url('../images/bg.jpg') #FFFFFF;}
+			  background: url('../images/fundo_sysclass.jpg') #FFFFFF;}
 body.login		{ background: none; padding-top: 100px; background: url('../images/header.png') top left repeat-x; }
 
 button{ cursor:pointer;}
@@ -116,7 +116,7 @@ del		{ color: #FF001C; text-decoration:line-through; }
 .main-wrap		{ width: 100%; }
 .page			{ padding-bottom: 50px; }
 
-.logo			{ padding-top: 20px; }
+.logo			{ padding: 15px 0 15px 0; }
 .logo a			{ text-decoration: none; }
 .logo .picture		{ float: left; margin-right: 10px; margin-top: -13px; }
 .logo .textlogo		{ float: left;}
@@ -746,7 +746,7 @@ label.error        		{ color: #FF0000; }
 	width: 100%; 
 	font-size: 12px; 
 	padding: 30px 0px 30px 0px; 
-	background: #333333; 
+	background: #2C2C2C; 
 	border-top: 4px solid #ffffff;
 	position: fixed; 
 	bottom: 0;
