@@ -1240,8 +1240,10 @@ div#module_xcourse_content_list_tree_frontend_student ul li ul li {
 
 div#module_xcourse_content_list_tree_frontend_student ul li ul li a {
 	color: #727272;
-	float: none;
-	margin-left: 5px;
+	display:block;
+	height:29px;
+	margin-top: -23px;
+	padding: 0 10px 0 30px;
 }
 
 div#module_xcourse_content_list_tree_frontend_student ul li:hover ul {
