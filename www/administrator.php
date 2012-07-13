@@ -1,8 +1,6 @@
 <?php
-
 /**
  * Administrator main page
- *
  * This page performs all administrative functions.
  * @package SysClass
  * @version 3.6.0

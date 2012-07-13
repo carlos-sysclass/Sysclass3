@@ -2460,9 +2460,13 @@ DROP PROCEDURE teste;
 /* 2012-06-29 */
 ALTER TABLE `users_to_lessons` ADD `modality_id` MEDIUMINT( 8 ) NOT NULL AFTER `user_type`;
 
-/* 2012-07-03 */
+/* 2012-07-06 */
+ALTER TABLE `module_xpay_course_negociation` CHANGE `is_simulation` `is_simulation` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '1 = For imcomplete simulation (can be used again), 2=> for closed simulation (disonible for use)'
 
+/* 2012-07-11 */
+ALTER TABLE `module_xpay_course_negociation` ADD `lesson_id` INT NOT NULL DEFAULT '0' AFTER `course_id`;
+ALTER TABLE `module_xpay_course_modality_prices` ADD `lesson_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `course_id`;
 
-
-
-
+INSERT INTO `module_xpay_course_modality` (`id`, `name`) VALUES ('0', 'Indefinido');
+ALTER TABLE `module_xpay_course_modality_prices` DROP PRIMARY KEY;
+ALTER TABLE `module_xpay_course_modality_prices` ADD PRIMARY KEY ( `modality_id` , `course_id` , `lesson_id` , `from_timestamp` ) ;

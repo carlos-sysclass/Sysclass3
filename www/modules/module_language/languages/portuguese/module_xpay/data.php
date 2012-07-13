@@ -4,9 +4,7 @@ define("__XPAY_MENU_TITLE", "Financeiro");
 define("__XPAY_CONTROL_PANEL_TITLE", "Financeiro");
 
 /* TITULOS */
-
 define("__XPAY_SUMMARY_LIST", "Pagamentos");
-
 define("__XPAY_VIEW_USER_STATEMENT", "Extrato do Aluno");
 define("__XPAY_VIEW_MY_STATEMENT", "Meu extrato");
 define("__XPAY_VIEW_USER_COURSE_STATEMENT", "Extrato do Curso");
@@ -15,6 +13,7 @@ define("__XPAY_VIEW_MY_COURSE_STATEMENT", "Meu extrato do Curso");
 define("__XPAY_VIEW_TO_SEND_INVOICES_LIST", "Lista de pagamentos a receber");
 define("__XPAY_SIMULATE_NEGOCIATION", "Simular negociação");
 define("__XPAY_LAST_PAYMENTS", "Pagamentos realizados");
+define("__XPAY_CREATE_PAYMENT", "Registrar Pagamento Manual");
 
 define("__XPAY_TITLE", "Pagamentos");
 define("__XPAY_PRINT_INVOICE", "Imprimir Fatura");
@@ -40,11 +39,17 @@ define("__XPAY_INSTANCE_TYPE", "Método de Pagamento");
 define("__XPAY_CREATE_NEW_NEGOCIATION", "Criar nova Negociação");
 define("__XPAY_SAVE_NEGOCIATION", "Salvar Negociação");
 define("__XPAY_ALL_LAST_PAYMENTS", "Ver lista completa");
+define("__XPAY_SUBMIT", "Salvar");
 
 
 /* FRASES */
 define("__XPAY_UNKNOW_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
 define("__XPAY_NO_INVOICES_FOUND", "Nenhuma fatura encontrada");
+define("__XPAY_PAYMENT_SUCCESSFULLY_CREATED", "Pagamento registrado com sucesso.");
 
 define("__XPAY_DAYS", "d");
+
+define("__XPAY_REAL_PAID_VALUE", "Valor Pago");
+define("__XPAY_TO_SUBTRACT_VALUE", "Considerado");
+define("__XPAY_JUSTIFICATION", "Justificativa"); 
 ?>

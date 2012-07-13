@@ -22,7 +22,7 @@ $configurationDefaults = array(
 		'version'	=> '3.0.0',
 		'https'		=> 'optional',
 	),
-	
+
 	'local.magester.net'		=> array(
 		'dbname'	=> 'maguser_root' ,
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass')
@@ -38,11 +38,11 @@ $configurationDefaults = array(
 	),
 	'ult.magester.net'	=> array(
 		'dbname'	=> 'maguser_ult',
-		'overrideTheme'	=> 'magester-default'
+		'overrideTheme'	=> 'sysclass3'
 	),	
 	'www.ult.magester.net'	=> array(
 		'dbname'	=> 'maguser_ult',
-		'overrideTheme'	=> 'magester-default'
+		'overrideTheme'	=> 'sysclass3'
 	),
 	'new.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
@@ -54,11 +54,11 @@ $configurationDefaults = array(
 	),
 	'posult.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new')
+		'overrideTheme'	=> 'sysclass3'
 	),
 	'www.posult.magester.net'	=> array(
 		'dbname'	=> 'maguser_ult',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new')
+		'overrideTheme'	=> 'sysclass3'
 	),
 	'dev.magester.net'	=> array(
 		'dbname'	=> 'maguser_dev',

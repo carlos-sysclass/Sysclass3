@@ -47,6 +47,27 @@ class module_quick_mails extends MagesterExtendedModule {
 				);
 			}
 		} else {
+			
+			
+		$contactList = eF_getTableData(
+				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
+				"qm.*, COUNT(qml.user_id)", 
+				sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
+				"",
+				"qm.id HAVING COUNT(qml.user_id) > 0"
+			);
+
+			foreach($contactList as &$item) {
+				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
+				
+				$image = explode("/", $item['image']);
+				
+				$item['image'] = array(
+					'size'	=> reset(explode("x", $image[0])),
+					'name'	=> $image[1]
+				);
+			}
+			
 		}
 
 		$smarty -> assign("T_QUICK_MAILS_CONTACT_LIST", $contactList);
@@ -98,6 +119,27 @@ class module_quick_mails extends MagesterExtendedModule {
 	    		);
 	    	}
     	} else {
+    		
+    		
+    		$feedbackList = eF_getTableData(
+	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
+	    			"qm.*, COUNT(qml.user_id)",
+	    			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'feedback'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
+	    			"",
+	    			"qm.id HAVING COUNT(qml.user_id) > 0"
+	    	);
+	    	
+	    	foreach($feedbackList as &$item) {
+	    		$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
+	    	
+	    		$image = explode("/", $item['image']);
+	    	
+	    		$item['image'] = array(
+	    				'size'	=> reset(explode("x", $image[0])),
+	    				'name'	=> $image[1]
+	    		);
+	    	}
+    	
     	}
     	
     	$smarty -> assign("T_QUICK_MAILS_FEEDBACK_LIST", $feedbackList);
@@ -191,6 +233,7 @@ class module_quick_mails extends MagesterExtendedModule {
 				
 				if (count($recipients) > 0) {
 				
+	
 					foreach($recipients as $recipient) {
 						$user_recipients[] = $recipient['login'];
 						$mail_recipients[] = array(
@@ -200,7 +243,6 @@ class module_quick_mails extends MagesterExtendedModule {
 						);
 							
 					}
-				
 					switch ($recipients[0]['qm_group']) {
 						case "lesson_students":
 							$lesson = new MagesterLesson($_SESSION['s_lessons_ID']);
@@ -226,7 +268,7 @@ class module_quick_mails extends MagesterExtendedModule {
     		}
 			
 			// ALWAYS SEND A E-MAIL
-			$values['email'] = 1;
+			$values['send_email'] = 1;
 			
 			
 			//$list = implode(",",$mail_recipients);
@@ -261,22 +303,30 @@ class module_quick_mails extends MagesterExtendedModule {
 	        	
 	        	$result = true;
 	        	
-				if ($values['email']) {
+				if ($values['send_email']) {
 					set_time_limit(0);
 					foreach($mail_recipients as $key => $mail) {
+						// PREPEND USER NAME MESSAGE
+						$email_body =
+							sprintf("Mensagem de: %s (%s) <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
+							"\n<br />" .
+							$values['body'];
+							
 						$result = $result && eF_mail(
 							// CHECK IF IS NECESSARY TO CHANGE DE SENDER E-MAIL 
-							sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
-							sprintf("%s <%s>", $mail['fullname'], $mail['email']), // EMAIL TO => COMMA SEP LIST
+							//sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
+							null,
+							//sprintf("%s <%s>", $mail['fullname'], $mail['email']), // EMAIL TO => COMMA SEP LIST
+							sprintf("%s", $mail['email']), // EMAIL TO => COMMA SEP LIST
 							$values['subject'], // EMAIL SUBJECT
-							$values['body'],	// EMAIL BODY 
+							$email_body,	// EMAIL BODY 
 							$attachFile, 		// ATTACHMENTS
 							false, 				// ONLY TEXT ?
 							false				// SEND AS BCC ?
 						);
 					}
 				}
-	
+
 	        	if ($result && $pm -> send($values['email'])) { // DO NOT SEND EMAIL
 	            	$message      = _MESSAGEWASSENT;
 	            	$message_type = 'success';
@@ -321,8 +371,6 @@ class module_quick_mails extends MagesterExtendedModule {
     	$currentUser	= $this->getCurrentUser();
 		$this->loadModule('xuser');
 		
-//		var_dump($this->modules['xuser']->getExtendedTypeID($currentUser));
-
 		if (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_student', 'student', 'professor'))) {
 			$contactList = eF_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 

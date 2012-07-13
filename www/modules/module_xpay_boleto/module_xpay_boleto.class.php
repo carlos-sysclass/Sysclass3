@@ -1422,9 +1422,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 
 		
 		$invoicePayer = $this->getParent()->_getNegociationPayerByNegociationID($negociation_id);
-		
-		//var_dump($invoicePayer);
-		
+
 		// DADOS DO SEU CLIENTE
 		$invoiceOptions["sacado"] 		= $invoicePayer['name'] . " " . $invoicePayer['surname'];
 		$invoiceOptions["endereco1"] 	= sprintf("%s , %s %s / %s", $invoicePayer['endereco'], $invoicePayer['numero'], $invoicePayer['complemento'], $invoicePayer['bairro']); ;
@@ -1595,6 +1593,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					$count++;
 				} while(file_exists($fullProcPath . $retFileName));
 	
+				var_dump($fullProcPath, $retFileName);
 				
 				if ($file->moveUploadedFile($fullProcPath, $retFileName)) {
 					$fullFilePath = $fullProcPath . $retFileName;
@@ -1669,8 +1668,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					continue;
 				}
 				if (!file_exists($fullfilepath)) {
-					var_dump($fullfilepath);
-					echo '<br />';
+//					var_dump($fullfilepath);
+//					echo '<br />';
 						
 					mkdir($fullfilepath, 0777, true);
 				}

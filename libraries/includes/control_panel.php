@@ -605,6 +605,7 @@ try {
             6 => $controlPanelGroups[6],
             7 => $controlPanelGroups[7]
         );
+        
         $smarty->assign("T_CONTROL_PANEL_GROUPS_ORDER", $controlPanelGroupsOrder);
         
         $smarty->assign("T_CONTROL_PANEL_GROUPS", $controlPanelGroups);

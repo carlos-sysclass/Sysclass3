@@ -1,26 +1,7 @@
 {if isset($T_XPAY_STATEMENT)}
 	{capture name="t_xpay_view_statement"}
-		<div class="headerTools">
-			{if $T_XPAY_IS_ADMIN}	
-			<span>
-				<img 
-					src = "images/others/transparent.png"
-					class="imgs_cont sprite16 sprite16-go_into"
-					border = "0"
-				/>				
-				<a href="{$T_XPAY_BASEURL}&action=simulate_due_balance_negociation&xuser_id={$T_XPAY_STATEMENT.user_id}&xcourse_id={$T_XPAY_STATEMENT.course_id}">Simular (re)negociação</a>
-			</span>
-			{/if}
-			<span>
-				<img 
-					src = "images/others/transparent.png"
-					class="imgs_cont sprite16 sprite16-arrow_right"
-					border = "0"
-				/>				
-				<a href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$T_XPAY_STATEMENT.id}">Realizar Pagamento</a>
-			</span>
-		</div>
-		<div class="clear"></div>
+		{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+		
 		
 		{foreach item="invoice" key="invoice_index" from=$T_XPAY_STATEMENT.invoices}
 
@@ -82,15 +63,17 @@
 					 	<td align="center">
 					 		<div>
 					 		{if $invoice.full_price > $invoice.paid}
-					 		<!-- 
-								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_PRINT_INVOICE}', 2);" target = "POPUP_FRAME">
-									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
-								</a>
-							 -->
+							 	{if $T_XPAY_IS_ADMIN}
+									<a 
+										class="form-icon" 
+										href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+										onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
+										target = "POPUP_FRAME"
+									><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
+								{/if}
 								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>
-								
 							{/if}
 							</div>
 					 	
