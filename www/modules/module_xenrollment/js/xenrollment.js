@@ -95,23 +95,24 @@ xDocumentsAPI = {
 };
 	
 jQuery(function($) {
-	
+
+
+
 	jQuery(".xenrollment_course_list_item").click(function() {
 		if (jQuery(this).next().is(".xdocuments_course_list_item")) {
 			jQuery(".xdocuments_course_list_item").not(jQuery(this).next()).hide();
 			jQuery(this).next().toggle();
 		}
 	});
+
 	jQuery(".xenrollment_course_list_item").next(".xdocuments_course_list_item:first").show();
 	
 	jQuery(".xdocument-add-to-course").click(function() {
 		jQuery("#_XDOCUMENTS_ADD_XDOCUMENT_TO_COURSE").dialog('open');
-		
 		return false;
 	}); 
 	
 	if (typeof($languageJS) != 'undefined') {
-	
 		jQuery("#_XDOCUMENTS_ADD_XDOCUMENT_TO_COURSE").dialog({
 			autoOpen: false, 
 			modal: true,
@@ -251,8 +252,7 @@ jQuery(function($) {
 			}
 		);			
 	});
-	
-	
+
 	if (typeof($_xenrollment_mod_data) != 'undefined') {
 		
 		defaults = {
@@ -600,11 +600,29 @@ jQuery(function($) {
 		*/
 	}
 
-	
-	
-	
-	
-	
+	// Atualiza relatorio de matriculas
+	jQuery('#report_enrollment_search_submit').click(function() {
+		var url = window.location.protocol + "//" + window.location.hostname
+				+ window.location.pathname + "?ctg=module&op=module_xenrollment"
+				+ "&action=get_report_enrollment";
+		var sendData = jQuery('#form_enrollment_search').serialize();
+		jQuery('#list_report_enrollment').html('aguarde...');
+		jQuery.post(url, sendData, function(data) {
+			jQuery('#list_report_enrollment').html(data);
+		});
+		return false;
+	});
+
+	// Relatorio das matriculas para excel ( filtros em sessao )
+	jQuery('#report_enrollment_excel').click(function() {
+		var url = window.location.protocol + "//" + window.location.hostname
+		+ window.location.pathname + "?ctg=module&op=module_xenrollment"
+		+ "&action=report_enrollment_excel";
+		var sendData = jQuery('#form_enrollment_search').serialize();
+		jQuery.post(url, sendData,function(){});
+		//return false;
+	});
+
 });
 
 
