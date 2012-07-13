@@ -5,7 +5,7 @@ jQueryUI
 	border: 1px solid #111111;
 	position: absolute;
 	top: 0px;
-	z-index: 200;
+	z-index: 1001;
 	background-color: #FAFAFA;
 	/*change this to match inner block or backgroundcolor*/
 }
