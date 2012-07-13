@@ -1,5 +1,7 @@
 {if $T_XPAY_STATEMENT}
 	{capture name="t_xpay_do_payment"}
+		{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+		
 		{$T_XPAY_METHOD_FORM.javascript}
 		<form {$T_XPAY_METHOD_FORM.attributes}>
 			{$T_XPAY_METHOD_FORM.hidden}

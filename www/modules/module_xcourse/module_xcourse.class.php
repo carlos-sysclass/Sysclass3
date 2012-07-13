@@ -291,7 +291,7 @@ class module_xcourse extends MagesterExtendedModule {
 					}
 					$course -> course['activities'][$currentLesson['id']] = $currentLesson;
 				} catch(Exception $e) {
-					var_dump($e);
+			//		var_dump($e);
 				}
 				if ($showOnlyFirst && $hasCalendar) {
 					break;

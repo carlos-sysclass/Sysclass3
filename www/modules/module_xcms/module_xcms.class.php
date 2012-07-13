@@ -148,7 +148,7 @@ class module_xcms extends MagesterExtendedModule {
 			$smarty -> assign('T_CALENDAR_EVENTS', $events); 
 			$smarty -> assign('T_VIEW_CALENDAR', $view_calendar);
 			$this->getParent()->appendTemplate(array(
-		   		'title'			=> ' ',
+		   		'title'			=> _CALENDAR,
 		   		'template'		=> $this->moduleBaseDir.'templates/blocks/xcms.calendar.tpl',
 		   		'contentclass'	=> 'blockContents blockCalendar'
 		   	), $blockIndex);
@@ -207,7 +207,6 @@ class module_xcms extends MagesterExtendedModule {
 	}
 
 	public function loadAdsBlock($blockIndex = null) {
-		/*
 		$this->getParent()->appendTemplate(array(
 	   		'title'			=> " ",
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/xcms.ads.tpl',
@@ -215,7 +214,6 @@ class module_xcms extends MagesterExtendedModule {
 	   	), $blockIndex);
 	   	$this->injectJS("jquery/jquery.cycle.all");	 
 	   	return true;
-	   	*/
 	}
 
 	/* ACTIONS FUNCTIONS */
@@ -476,6 +474,7 @@ class module_xcms extends MagesterExtendedModule {
 			$editedpage = $this->getEditedPage();
 			$page_id = $editedpage['id'];
 		}
+
 		$pageBlocks = eF_getTableData(
     		"module_xcms_pages_to_blocks pg2block 
     		LEFT JOIN module_xcms_blocks block ON (pg2block.block_id = block.id)",

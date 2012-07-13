@@ -1,4 +1,6 @@
 {capture name="t_xpay_simulate_statement"}
+	{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+	
 	{include
 		file="`$T_XPAY_BASEDIR`templates/includes/print.negociation.summary.tpl"
 		T_XPAY_STATEMENT=$T_XPAY_STATEMENT
@@ -34,21 +36,6 @@
 			</div>
 			 -->
 		 </form>
-	</div>
-	
-	<div class="clear"></div>
-	<div class="grid_24" style="margin-bottom: 20px;" align="right">
-		<button class="form-button icon-add openInvoiceNegociationDialog" type="button">
-			<img width="29" height="29" src="images/transp.png">
-			<span>{$smarty.const.__XPAY_CREATE_NEW_NEGOCIATION}</span>
-		</button>
-		{if $T_XPAY_NEGOCIATION_IS_SUGESTED}
-		<button class="form-button icon-save saveNegociation" type="button">
-			<img width="29" height="29" src="images/transp.png">
-			<span>{$smarty.const.__XPAY_SAVE_NEGOCIATION}</span>
-		</button>
-		{/if}
-		
 	</div>
 	{if $T_XPAY_NEGOCIATION_IS_SUGESTED}
 	<table class="style1">
@@ -107,6 +94,21 @@
 		{/if}
 	</table>
 	{/if}
+	
+	<div class="clear"></div>
+	<div class="grid_24" style="margin: 20px 0;" align="right">
+		<button class="form-button icon-add openInvoiceNegociationDialog" type="button">
+			<img width="29" height="29" src="images/transp.png">
+			<span>{$smarty.const.__XPAY_CREATE_NEW_NEGOCIATION}</span>
+		</button>
+		{if $T_XPAY_NEGOCIATION_IS_SUGESTED}
+		<button class="form-button icon-save saveNegociation" type="button">
+			<img width="29" height="29" src="images/transp.png">
+			<span>{$smarty.const.__XPAY_SAVE_NEGOCIATION}</span>
+		</button>
+		{/if}
+	</div>	
+	
 {/capture}
 {eF_template_printBlock
 	title 			= $smarty.const.__XPAY_SIMULATE_NEGOCIATION

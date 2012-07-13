@@ -1,4 +1,5 @@
 <?php
+
 $user_domains = array(
 	'ultbr'		=> 'ult.com.br',
 	'SysClass'	=> 'SysClass.com',

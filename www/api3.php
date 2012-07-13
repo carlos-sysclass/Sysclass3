@@ -1185,7 +1185,7 @@ if ($api == 1) {
 				break;
 			}
 			*/
-			
+			/*	
 			case 'lesson_to_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {

@@ -77,16 +77,8 @@ div.infoEntry span:first-child{font-weight:bold;}
 }
 
 
-
-/*
 .block-title {
-	padding: 10px 2px 2px;
-}
-*/
-.block-title {
-	padding-bottom:4px;
-	padding-right:2px;
-	padding-top:10px;
+	padding: 0 0 2px 2px;
 }
 /*
 .blockContents {

@@ -137,3 +137,28 @@
 .out-catalog {
 	color: #BF2A23 !important;
 }
+
+/* CSS DA BUSCA EM LISTA MATRICULAS */
+#report_enrollment_search {
+	margin-top:10px;
+}
+
+#report_enrollment_search div {
+	float: left;
+    width: 49%;
+    margin-bottom:5px;
+}
+
+#report_enrollment_search div span {
+	display: block;
+    float: left;
+    width: 13%;
+}
+
+#report_enrollment_search div input, #report_enrollment_search div select {
+	width:79%;
+}
+
+#report_enrollment_search_submit {
+	width:100px !important;
+}

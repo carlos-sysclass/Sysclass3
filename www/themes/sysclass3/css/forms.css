@@ -12,6 +12,15 @@
 .form-container div > label {
 	display: block;
 }
-.form-container div > span, .form-container div > input, .form-container div > select {
+.form-container div > span, .form-container div > input, .form-container div > select, .form-container div > textarea {
 	display: block;
+}
+
+.form-container div.buttons {
+	text-align: center;
+}
+
+/* elements sizes */
+.form-container div > textarea.large {
+	width: 95%;
 }
