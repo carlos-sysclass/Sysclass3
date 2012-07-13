@@ -437,6 +437,7 @@ td.formRequired {
 	/*change this to match inner block or backgroundcolor*/
 	top: 0;
 }
+layout_margin_top_rigth_index_student
 
 .divPopup div.blockContents,.popup div.block,.popup div.blockContents {
 	margin: 0px 10px;
@@ -1270,7 +1271,7 @@ div#module_xcourse_content_list_tree_frontend_student ul span.emptyCategory
 	width: 275px;
 	float: right;
 	margin-top: -154px;
-	z-index: 999;
+	z-index: 99;
 }
 
 #layout_margin_top_rigth_index_student .grid_7  .rule2 {
