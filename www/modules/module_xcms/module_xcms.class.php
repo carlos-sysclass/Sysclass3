@@ -148,7 +148,7 @@ class module_xcms extends MagesterExtendedModule {
 			$smarty -> assign('T_CALENDAR_EVENTS', $events); 
 			$smarty -> assign('T_VIEW_CALENDAR', $view_calendar);
 			$this->getParent()->appendTemplate(array(
-		   		'title'			=> ' ',
+		   		'title'			=> _CALENDAR,
 		   		'template'		=> $this->moduleBaseDir.'templates/blocks/xcms.calendar.tpl',
 		   		'contentclass'	=> 'blockContents blockCalendar'
 		   	), $blockIndex);

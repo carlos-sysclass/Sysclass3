@@ -42,7 +42,7 @@ div.menu-dropdown-subitem {
                         -->
                         <a href = "{if $smarty.session.s_login}{$smarty.server.PHP_SELF}{else}index.php{/if}">
                             <img 
-                                src="themes/sysclass3/images/login_logo.png" 
+                                src="themes/sysclass3/images/logo_ult.png" 
                                 class="picture" 
                                 title="{$T_CONFIGURATION.site_name}" 
                                 alt="{$T_CONFIGURATION.site_name}" 

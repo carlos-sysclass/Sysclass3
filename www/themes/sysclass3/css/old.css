@@ -496,7 +496,7 @@ div.menutop-over span.user-detail {
 
 div.menutop-over span.text,div.menutop-over span.name {
 	color: #FFF;
-	line-height: 7px;
+	line-height: 10px;
 }
 
 div.menutop-over a {
@@ -1272,8 +1272,8 @@ div#module_xcourse_content_list_tree_frontend_student ul span.emptyCategory
 #layout_margin_top_rigth_index_student > .grid_7 {
 	width: 275px;
 	float: right;
-	margin-top: -154px;
 	z-index: 99;
+	margin-top: -173px;
 }
 
 #layout_margin_top_rigth_index_student .grid_7  .rule2 {
