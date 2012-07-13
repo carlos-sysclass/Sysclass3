@@ -2508,7 +2508,9 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
                                          'timeout' => $GLOBALS['configuration']['smtp_timeout']));
     
     $smtp->debug= true;
-	//var_dump(get_class($smtp));
+//	var_dump(get_class($smtp));
+var_dump($recipient, $hdrs, $body);
+
     $result = $smtp -> send($recipient, $hdrs, $body);
     exit;
     return $result;
