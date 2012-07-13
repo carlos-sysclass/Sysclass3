@@ -147,8 +147,11 @@
 
 
 /** @todo Adicionar na tripa imagens para estas classes */
-.sprite16-do_pay { background-position: 0 -799px; width: 18px; height: 16px; } 
-
+.sprite16-do_pay {
+	background-position: 0 -2483px;
+    height: 16px;
+    width: 19px;
+}
 
 .sprite32-add { background-position: 0 0; width: 32px; height: 32px; } 
 .sprite32-addons { background-position: 0 -33px; width: 32px; height: 32px; } 
