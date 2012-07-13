@@ -1,4 +1,7 @@
 <?php
+
+require_once(G_ROOTPATH.'libraries/PHPExcel.php');
+
 class module_xenrollment extends MagesterExtendedModule {
 	/*
 	 const GET_XUSERS				= 'get_xusers';
@@ -145,34 +148,7 @@ class module_xenrollment extends MagesterExtendedModule {
 	}
 	
 	protected function reportEnrollment($where=null) {
-		/*
-		if ( !empty( $where ) ) {
-			return prepareGetTableData("		users usr
-										LEFT JOIN users_to_lessons utl 	ON utl.users_LOGIN 	= usr.login
-										LEFT JOIN lessons les 			ON les.id 			= utl.lessons_ID
-										LEFT JOIN users_to_courses utc 	ON utc.users_LOGIN 	= usr.login
-										LEFT JOIN courses cou 			ON cou.id 			= utc.courses_ID
-										LEFT JOIN classes cla 			ON cla.id 			= utc.classe_id
-										LEFT JOIN user_types uty 		ON uty.id 			= user_types_ID
-										LEFT JOIN module_xuser mxu 		ON mxu.id 			= usr.id",
-				    				"	usr.name,
-				    					usr.surname,
-				    					uty.name 			user_type,
-				    					utl.users_LOGIN		login,
-				    					les.name			lesson,
-				    					cou.name			course,
-				    					cla.name			class,
-				    					mxu.endereco		address,
-				    					mxu.bairro			neighborhood,
-				    					mxu.cidade			city,
-				    					mxu.uf				state", 
-									"	usr.user_type 		= 'student'
-										AND usr.active 		= 1" . $where,
-				    				"	usr.id DESC
-				    				limit 200");
-			
-		}
-		*/
+
 		return eF_getTableData("		users usr
 										LEFT JOIN users_to_lessons utl 	ON utl.users_LOGIN 	= usr.login
 										LEFT JOIN lessons les 			ON les.id 			= utl.lessons_ID
@@ -194,8 +170,9 @@ class module_xenrollment extends MagesterExtendedModule {
 				    					mxu.uf				state", 
 									"	usr.user_type 		= 'student'
 										AND usr.active 		= 1" . $where,
-				    				"	usr.name, usr.surname
-				    				limit 200");
+				    				"	usr.name, usr.surname",
+									"	usr.name ",
+									200);
 	}
 
 	/* ACTION HANDLERS */
@@ -246,14 +223,6 @@ class module_xenrollment extends MagesterExtendedModule {
 		}
 		$smarty->assign('T_XENROLLMENT_STATES', $states);
 		unset($db_states, $states);
-
-		$template = array(
-			'title'			=> $this->getTitle($this->getCurrentAction()),
-	        'template'		=> $this->moduleBaseDir.'templates/actions/xenrollment.report_enrollment.tpl',
-    		'class'			=> '',
-    		'contentclass'	=> ''
-    	);
-    	$this->appendTemplate($template);
 	}
 
 	
@@ -262,19 +231,48 @@ class module_xenrollment extends MagesterExtendedModule {
 		$smarty = $this->getSmartyVar();
 		# filtros da busca
 		$filter  = null;
-		$filter .= !empty($_POST['name'])		?" AND ( CONCAT(usr.name,' ',usr.surname) LIKE '".$_POST['name']."%' OR usr.surname LIKE '%".$_POST['name']."%' )":null;
-		$filter .= !empty($_POST['userType'])	?" AND uty.name = '".$_POST['userType']."'":null;
-		$filter .= !empty($_POST['state'])		?" AND mxu.uf = '".$_POST['state']."'":null;
-		$filter .= !empty($_POST['city'])		?" AND mxu.cidade = '".$_POST['city']."'":null;
+		$filter .= !empty($_POST['name'])		?" AND ( CONCAT(usr.name,' ',usr.surname) LIKE '".addslashes($_POST['name'])."%' OR usr.surname LIKE '%".addslashes($_POST['name'])."%' )":null;
+		$filter .= !empty($_POST['userType'])	?" AND uty.name = '".addslashes($_POST['userType'])."'":null;
+		$filter .= !empty($_POST['state'])		?" AND mxu.uf = '".addslashes($_POST['state'])."'":null;
+		$filter .= !empty($_POST['city'])		?" AND mxu.cidade = '".addslashes($_POST['city'])."'":null;
 		# users info
 		$usersInfo 	= $this->reportEnrollment($filter);
-		//print $usersInfo;exit;
 		$smarty->assign('T_XENROLLMENT_USERSINFO', $usersInfo);
 		# chamada da template
 	  	echo $smarty -> fetch($this->moduleBaseDir . 'templates/actions/xenrollment.get_report_enrollment.tpl');
 		exit;
 	}
-	
+
+	# relatorio de matriculas exportar para excel
+	public function reportEnrollmentExcelAction() {
+		if ( !empty( $_POST ) ) {
+			# guarda filtros na sessao
+			$_SESSION['filters']['name'] 	= addslashes($_POST['name']);
+			$_SESSION['filters']['userType']= addslashes($_POST['userType']);
+			$_SESSION['filters']['state'] 	= addslashes($_POST['state']);
+			$_SESSION['filters']['city'] 	= addslashes($_POST['city']);
+		} else {
+			# Aguarda execução do ajax
+			while( empty( $_SESSION['filters'] ) ) {}
+			# filtros da busca
+			$filter  = null;
+			$filter .= !empty($_SESSION['filters']['name'])		?" AND ( CONCAT(usr.name,' ',usr.surname) LIKE '".$_SESSION['filters']['name']."%' OR usr.surname LIKE '%".addslashes($_SESSION['filters']['name'])."%' )":null;
+			$filter .= !empty($_SESSION['filters']['userType'])	?" AND uty.name = '".$_SESSION['filters']['userType']."'":null;
+			$filter .= !empty($_SESSION['filters']['state'])	?" AND mxu.uf = '".$_SESSION['filters']['state']."'":null;
+			$filter .= !empty($_SESSION['filters']['city'])		?" AND mxu.cidade = '".$_SESSION['filters']['city']."'":null;
+			# users info
+			$usersInfo 	= $this->reportEnrollment($filter);
+			# titulo
+			$title 		= array();
+			$title[] 	= array('Nome','Sobrenome','Tipo','Login','Classe','Curso','Lição','Endereço','Bairro','Cidade','Estado');
+			# gerar excel
+			$objPHPExcel = new PHPExcel();
+			$objPHPExcel->array2ExcelSimple( $usersInfo, $title );
+			unset($_SESSION['filters']);
+		}
+		exit;
+	}
+
 	public function openXenrollmentAction() {
 		$token = $this->createToken(30);
 

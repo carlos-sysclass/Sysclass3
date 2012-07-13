@@ -34,9 +34,13 @@
 					{/foreach}
 				</select>
 			</div>
-
 			<div>
 				<input name="Buscar" value="Buscar" type="submit" id="report_enrollment_search_submit" />
+			</div>
+			<div>
+				<a href="http://local.sysclass.com/administrator.php?ctg=module&op=module_xenrollment&action=report_enrollment_excel" id="report_enrollment_excel">
+					<img alt="Formato Excel" title="Formato Excel" src="themes/default/images/file_types/xls.png" />Exportar para Excel
+				</a>
 			</div>
 		</div>
 	</form>

@@ -612,10 +612,17 @@ jQuery(function($) {
 		});
 		return false;
 	});
-	
-	
-	
-	
+
+	// Relatorio das matriculas para excel ( filtros em sessao )
+	jQuery('#report_enrollment_excel').click(function() {
+		var url = window.location.protocol + "//" + window.location.hostname
+		+ window.location.pathname + "?ctg=module&op=module_xenrollment"
+		+ "&action=report_enrollment_excel";
+		var sendData = jQuery('#form_enrollment_search').serialize();
+		jQuery.post(url, sendData,function(){});
+		//return false;
+	});
+
 });
 
 
