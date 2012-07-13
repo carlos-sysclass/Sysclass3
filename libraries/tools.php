@@ -2509,8 +2509,8 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
     
     $smtp->debug= true;
 	//var_dump(get_class($smtp));
-	
     $result = $smtp -> send($recipient, $hdrs, $body);
+    exit;
     return $result;
 }
 /*
