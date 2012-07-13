@@ -306,12 +306,20 @@ class module_quick_mails extends MagesterExtendedModule {
 				if ($values['email']) {
 					set_time_limit(0);
 					foreach($mail_recipients as $key => $mail) {
+						// PREPEND USER NAME MESSAGE
+						$email_body =
+							sprintf("Mensagem de: %s (%s) <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
+							"\n" .
+							$values['body'];
+							
+						
 						$result = $result && eF_mail(
 							// CHECK IF IS NECESSARY TO CHANGE DE SENDER E-MAIL 
-							sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
+							//sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
+							null,
 							sprintf("%s <%s>", $mail['fullname'], $mail['email']), // EMAIL TO => COMMA SEP LIST
 							$values['subject'], // EMAIL SUBJECT
-							$values['body'],	// EMAIL BODY 
+							$email_body,	// EMAIL BODY 
 							$attachFile, 		// ATTACHMENTS
 							false, 				// ONLY TEXT ?
 							false				// SEND AS BCC ?
