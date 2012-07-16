@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
-body {margin:0; font:12px Verdana,Arial}
+body {margin:0; font:12px Arial, Helvetica}
 #input {border:none; margin:0; border:0}
 .te {border:1px solid #bbb; padding:0 1px 1px; font:12px 'Helvetica Neue',Arial; margin:25px}
 .te iframe {border:none; width:100% !important;}

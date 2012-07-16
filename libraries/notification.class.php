@@ -285,10 +285,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica, geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica, geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 
@@ -314,10 +314,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 		
@@ -342,10 +342,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
@@ -370,10 +370,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
@@ -398,12 +398,12 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="font-family:verdana,geneva,arial,sans-serif; font-size: 12px;">Fone (55-41) 3016-1212 </p>
+			<p style="font-family:Arial, Helvetica,geneva; font-size: 12px;">Fone (55-41) 3016-1212 </p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
