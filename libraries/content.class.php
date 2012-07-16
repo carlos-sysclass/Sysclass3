@@ -1530,8 +1530,6 @@ class MagesterContentTree extends MagesterTree
                         try {
                             $ruleUnit = $this -> seekNode($rule['rule_content_ID']);
                             $scorm2004 = in_array($current['scorm_version'], MagesterContentTree::$scorm2004Versions);
-                            
-                                                     
                             if ($ruleUnit['active'] && ($ruleUnit['data'] || $ruleUnit['ctg_type'] == 'tests' || $scorm2004 )) {
                                 return _MUSTFIRSTREADUNIT.' <a href = "student.php?ctg=content&view_unit='.$ruleUnit['id'].'">'.$ruleUnit['name'].'</a><br/>';
                             }
