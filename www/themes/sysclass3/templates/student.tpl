@@ -518,11 +518,17 @@ function changeItemColor(item, color) {
 </script>
 {/literal}
 {capture name = "center_code"}
- {if $smarty.get.message}{eF_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
- {if $T_MESSAGE}{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE class="full"}{/if}
+ {if $smarty.get.message}
+ 	{eF_template_printMessageBlock content=$smarty.get.message type=$smarty.get.message_type class="homeStudentMessage"}
+ {/if}
+ {if $T_MESSAGE}
+ 	{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE class="full"}
+ {/if}
  {if $T_SEARCH_MESSAGE || $smarty.get.search_message}
-     {if $smarty.get.search_message}{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}{/if}
-  {eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
+     {if $smarty.get.search_message}
+     	{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}
+     {/if}
+  	{eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
  {/if}
  <div>
   {$smarty.capture.moduleControlPanel}
