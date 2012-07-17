@@ -522,13 +522,13 @@ function changeItemColor(item, color) {
  	{eF_template_printMessageBlock content=$smarty.get.message type=$smarty.get.message_type class="homeStudentMessage"}
  {/if}
  {if $T_MESSAGE}
- 	{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE class="full"}
+ 	{eF_template_printMessageBlock content=$T_MESSAGE type=$T_MESSAGE_TYPE class="full homeStudentMessage"}
  {/if}
  {if $T_SEARCH_MESSAGE || $smarty.get.search_message}
      {if $smarty.get.search_message}
      	{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}
      {/if}
-  	{eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
+  	{eF_template_printMessageBlock content=$T_SEARCH_MESSAGE type=$T_MESSAGE_TYPE class="homeStudentMessage"}
  {/if}
  <div>
   {$smarty.capture.moduleControlPanel}
