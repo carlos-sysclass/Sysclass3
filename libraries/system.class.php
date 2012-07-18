@@ -806,7 +806,7 @@ class MagesterSystem
  public static function printErrorMessage($message) {
      $str = '
      <style>
-     .singleMessage{width:100%;font-family:verdana,geneva,arial,sans-serif;font-size:14px;border:1px solid red;background-color:#ffcccc;margin-top:10px}
+     .singleMessage{width:100%;font-family:Arial, Helvetica,geneva;font-size:14px;border:1px solid red;background-color:#ffcccc;margin-top:10px}
      .singleMessage td{padding:10px;}
      .singleMessage td:first-child{width:1%}
      </style>
