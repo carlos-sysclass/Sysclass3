@@ -915,7 +915,7 @@ class module_xcourse extends MagesterExtendedModule {
 				),
 				array(
 				'title'		=> 'Manual do Aluno',
-				'link'		=> 'public_data/pos/engenharia/manual_do_aluno.pdf',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 				'target'	=> '_blank'
 				),
 				array(
@@ -929,7 +929,7 @@ class module_xcourse extends MagesterExtendedModule {
 					
 				array(
 				'title'		=> 'Manual do Aluno',
-				'link'		=> 'public_data/pos/ead/manual_do_aluno.pdf',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 				'target'	=> '_blank'
 				)
 				);
@@ -942,7 +942,7 @@ class module_xcourse extends MagesterExtendedModule {
 				),
 				array(
 				'title'		=> 'Manual do Aluno',
-				'link'		=> 'public_data/pos/erp/manual_do_aluno.pdf',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 				'target'	=> '_blank'
 				),
 				array(
@@ -960,7 +960,7 @@ class module_xcourse extends MagesterExtendedModule {
 			),
 			array(
 			'title'		=> 'Manual do Aluno',
-			'link'		=> 'public_data/pos/posmainframe/manual_do_aluno.pdf',
+			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 			'target'	=> '_blank'
 			),
 			array(
@@ -978,7 +978,7 @@ class module_xcourse extends MagesterExtendedModule {
 			),
 			array(
 			'title'		=> 'Manual do Aluno',
-			'link'		=> 'public_data/pos/posmainframe/manual_do_aluno.pdf',
+			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 			'target'	=> '_blank'
 			),
 			array(
