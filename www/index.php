@@ -8,9 +8,6 @@
  * @package SysClass
  * @version 3.6.0
  */
-
-$smarty -> assign("T_TESTE", 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-
 session_cache_limiter('nocache');
 session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 
