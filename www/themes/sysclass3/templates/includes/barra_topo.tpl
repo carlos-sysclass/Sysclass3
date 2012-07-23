@@ -2,7 +2,6 @@
 {else}
 	<!-- Barra Topo Black -->
 	<div class="barra-topo">
-		{$T_TESTE}
 		<div class="menutop container_24">
 			<div class="menutop-over" id="menutop-over" >
                 <img src="view_file.php?file={$T_CURRENT_USER_AVATAR.avatar}" 
@@ -121,12 +120,13 @@
 				{/if}
 				
 				<!-- Botão chat ( inicio ) -->
-				
+				{if $T_CHECK_XCHAT == 1}
 				<a onclick="javascript:chatWith('suporteult')"href="javascript: void(0);" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
 					<button class="xlivechat_button" type="button">
 						<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
 					</button>
 				</a>
+				{/if}
 				<!-- Botão chat ( fim ) -->
 
 				<div class="separador" style="display: none;" id="separador-icon-top-menu"></div>

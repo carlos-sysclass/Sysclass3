@@ -15,7 +15,7 @@ if (!$horizontal_inframe_version) {
 
 $path = "../libraries/";
 
-/** Configuration file.*/
+# Configuration file.
 require_once $path."configuration.php";
 //$benchmark = new MagesterBenchmark($debug_TimeStart);
 //$benchmark -> set('init');
@@ -25,27 +25,35 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 require_once $path."menu.class.php";
 
 
-/*Check the user type. If the user is not valid, he cannot access this page, so exit*/
+# Check module xchat is active
+$checkXchat = 	eF_getTableData(
+					"modules",
+					"active",
+					"name = 'module_chat'"
+				);
+$smarty->assign("T_CHECK_XCHAT", $checkXchat[0]['active']);
+
+#Check the user type. If the user is not valid, he cannot access this page, so exit
 try {
 	if (!isset($currentUser)) {
 		$currentUser = MagesterUser :: checkUserAccess();
 	}
 	$smarty -> assign("T_CURRENT_USER", $currentUser);
-
-	$entity = getUserTimeTarget($_SERVER['REQUEST_URI']);
-	$lastTime = getUserLastTimeInTarget($entity);
+	$entity 	= getUserTimeTarget($_SERVER['REQUEST_URI']);
+	$lastTime 	= getUserLastTimeInTarget($entity);
 	if ($lastTime === false) {
 		$fields = array(
-  		"session_timestamp" => time(),
-      "session_id" => session_id(),
-      "session_expired" => 0,
-      "users_LOGIN" => $_SESSION['s_login'],
-      "timestamp_now" => time(),
-      "time" => 0,
-      "lessons_ID" => $_SESSION['s_lessons_ID'] ? $_SESSION['s_lessons_ID'] : null,
-      "courses_ID" => $_SESSION['s_courses_ID'] ? $_SESSION['s_courses_ID'] : null,
-      "entity" => current($entity),
-      "entity_id" => key($entity));
+  			"session_timestamp" => time(),
+      		"session_id" 		=> session_id(),
+      		"session_expired" 	=> 0,
+      		"users_LOGIN" 		=> $_SESSION['s_login'],
+      		"timestamp_now" 	=> time(),
+      		"time" 				=> 0,
+      		"lessons_ID" 		=> $_SESSION['s_lessons_ID'] ? $_SESSION['s_lessons_ID'] : null,
+      		"courses_ID" 		=> $_SESSION['s_courses_ID'] ? $_SESSION['s_courses_ID'] : null,
+      		"entity" 			=> current($entity),
+      		"entity_id" 		=> key($entity)
+		);
 		eF_insertTableData("user_times", $fields);
 		$_SESSION['time'] = 0;
 	} else {
@@ -53,12 +61,12 @@ try {
 	}
 	$_SESSION['timestamp'] = time();
 	//pr('last time:'.$_SESSION['time']);
-
 	//	$_SESSION['time'] = time();
 	if ($_SESSION['s_lessons_ID'] && ($currentUser instanceof MagesterLessonUser)) {
-		$userLessons = $currentUser -> getLessons();
-		$currentUser -> applyRoleOptions($userLessons[$_SESSION['s_lessons_ID']]); //Initialize user's role options for this lesson
-		$currentLesson = new MagesterLesson($_SESSION['s_lessons_ID']);
+		$userLessons 	= $currentUser -> getLessons();
+		# Initialize user's role options for this lesson
+		$currentUser -> applyRoleOptions($userLessons[$_SESSION['s_lessons_ID']]);
+		$currentLesson 	= new MagesterLesson($_SESSION['s_lessons_ID']);
 	} else {
 		$currentUser -> applyRoleOptions(); //Initialize user's role options for this lesson
 	}
@@ -76,36 +84,34 @@ if (strlen($configuration['css']) > 0 && is_file(G_CUSTOMCSSPATH.$configuration[
 }
 //---------------------------------------------End of Initialization-------------------------------------------------
 
-
-
-///MODULE1
+# MODULE 1
 $modules = $currentUser -> getModules();
-// Include module languages
+# Include module languages
 foreach ($modules as $module) {
-	// The $setLanguage variable is defined in globals.php
-	$mod_lang_file = $module -> getLanguageFile($setLanguage);
-	if (is_file ($mod_lang_file)) {
+	# The $setLanguage variable is defined in globals.php
+	$mod_lang_file = $module->getLanguageFile($setLanguage);
+	if ( is_file ( $mod_lang_file ) ) {
 		require_once $mod_lang_file;
 	}
 }
-/***Check if the chat configuration exists - if not create it***/
-if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
-	/***** TOP MENU WITH AVATAR AND NAME *****/
+# Check if the chat configuration exists - if not create it
+if ( !isset($horizontal_inframe_version) || !$horizontal_inframe_version ) {
+	# TOP MENU WITH AVATAR AND NAME
 	try {
-		if (isset($_SESSION['facebook_details']['pic'])) {
+		if ( isset( $_SESSION['facebook_details']['pic'] ) ) {
 			$avatar['path'] = $_SESSION['facebook_details']['pic'];
-			$smarty -> assign("T_ABSOLUTE_AVATAR_PATH", 1);
-			$smarty -> assign ("T_AVATAR", $_SESSION['facebook_details']['pic']);
+			$smarty->assign("T_ABSOLUTE_AVATAR_PATH", 1);
+			$smarty->assign("T_AVATAR", $_SESSION['facebook_details']['pic']);
 		} else {
 			$avatar = new MagesterFile($currentUser -> user['avatar']);
 			$smarty -> assign ("T_AVATAR", $currentUser -> user['avatar']);
 		}
-		// Get current dimensions
+		# Get current dimensions
 		list($width, $height) = getimagesize($avatar['path']);
 		if ($width > 200 || $height > 100) {
-			// Get normalized dimensions
+			# Get normalized dimensions
 			list($newwidth, $newheight) = eF_getNormalizedDims($avatar['path'], 200, 100);
-			// The template will check if they are defined and normalize the picture only if needed
+			# The template will check if they are defined and normalize the picture only if needed
 			$width = $newwidth;
 			$height = $newheight;
 		}
@@ -116,12 +122,11 @@ if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
 	$smarty -> assign("T_NEWWIDTH", $width);
 	$smarty -> assign("T_NEWHEIGHT", $height);
 }
-//pr($_SESSION);
+
 if (isset($_SESSION['facebook_user'])) {
-	//pr($_SESSION);
 	//$facebook = new MagesterFacebook();
 	//$fb_details = $facebook->api_client->fql_query("SELECT first_name, last_name, pic FROM user WHERE uid = " . $_SESSION['facebook_user']);
-	//	//unset($_SESSION['facebook_details']);
+	//unset($_SESSION['facebook_details']);
 	//$realname = substr($_SESSION['facebook_details']['first_name'],0,1).".&nbsp;" . $_SESSION['facebook_details']['last_name']. "<br>"; //get the initial letter
 	$smarty -> assign("T_FB_STATUS", $_SESSION['facebook_details']['status']['message']);
 } else {
@@ -148,15 +153,12 @@ $magester_type .= "<br>";
 /***** FOR SEARCHING *****/
 /**Search module is used to display the search field and perform the searches*/
 include "module_search.php";
-
-
 /***** MENU - only for interfaces 0:vertical and 1: horizontal *****/
-
 if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS['currentTheme'] -> options['sidebar_interface'] < 2) {
-
 	$newMenu = new MagesterMenu();
-	$active_menu = 1; // initialized here, might change later
-	// SYSTEM MENU - ADMINISTRATOR ONLY
+	# initialized here, might change later
+	$active_menu = 1;
+	# SYSTEM MENU - ADMINISTRATOR ONLY
 	if ($_SESSION['s_type'] == 'administrator') {
 		$systemMenu = array();
 		$systemMenu[0] = array("id" => "control_panel_a", "image" => "home", "link" => "administrator.php?ctg=control_panel", "title" => _CONTROLCENTER);
@@ -164,12 +166,10 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			// $systemMenu[1] = array("id" => "forum_a", "image" => "message", "link" => "administrator.php?ctg=forum", "title" => _FORUM);
 		}
 		/*
-		 if (!isset($GLOBALS['currentUser'] -> coreAccess['configuration']) || $GLOBALS['currentUser'] -> coreAccess['configuration'] != 'hidden') {
-
-		 $systemMenu[2] = array("id" => "cms_a", "image" => "unit", "link" => "administrator.php?ctg=themes&tab=external", "title" => _CMS);
-
-		 }
-		 */
+		if (!isset($GLOBALS['currentUser'] -> coreAccess['configuration']) || $GLOBALS['currentUser'] -> coreAccess['configuration'] != 'hidden') {
+		$systemMenu[2] = array("id" => "cms_a", "image" => "unit", "link" => "administrator.php?ctg=themes&tab=external", "title" => _CMS);
+		}
+		*/
 		if ($GLOBALS['configuration']['chat_enabled']) {
 			if (!isset($GLOBALS['currentUser'] -> coreAccess['chat']) || $GLOBALS['currentUser'] -> coreAccess['chat'] != 'hidden') {
 				// $systemMenu[3] = array("id" => "chat_a", "image" => "chat", "link" => $_SESSION['s_type'].".php?ctg=chat", "title" => _CHAT);
@@ -178,17 +178,15 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
 			//   $systemMenu[4] = array("id" => "statistics_system_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=system", "title" => _SYSTEMSTATISTICS);
 		}
-
-		//adicionando itens do menu, conforme painel de controle
-			
+		# adicionando itens do menu, conforme painel de controle
 		if (!isset($currentUser -> coreAccess['configuration']) || $currentUser -> coreAccess['configuration'] != 'hidden') {
 			$systemMenu[] = array('id' => 'configuration_a', 'title' => _CONFIGURATIONVARIABLES, 'link' => "administrator.php?ctg=system_config");
 		}
 		/*
-		 if (!isset($currentUser -> coreAccess['logout_user']) || $currentUser -> coreAccess['logout_user'] == 'view') {
+		if (!isset($currentUser -> coreAccess['logout_user']) || $currentUser -> coreAccess['logout_user'] == 'view') {
 			$systemMenu[] = array('id' => 'logout_user_a', 'title' => _LOGOUTUSER, 'link' => "administrator.php?ctg=logout_user&popup=1", 'target' => 'POPUP_FRAME');
-			}
-			*/
+		}
+		*/
 		if (!isset($currentUser -> coreAccess['users']) || $currentUser -> coreAccess['users'] != 'hidden') {
 			$systemMenu[] = array('id' => 'users_a', 'title' => _EXPORTIMPORTDATA, 'link' => "administrator.php?ctg=import_export");
 		}
@@ -206,41 +204,34 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		}
 		if (!isset($currentUser -> coreAccess['modules']) || $currentUser -> coreAccess['modules'] != 'hidden') {
 			$systemMenu[] = array('id' => 'modules_a', 'title' => _MODULES, 'link' => "administrator.php?ctg=modules");
-		}
-			
+		}	
 		//var_dump($systemMenu);
 		//adicionando itens do menu, conforme painel de controle
-
-		// Get system menu modules
+		# Get system menu modules
 		$moduleMenus = eF_getModuleMenu($modules, "system");
 		foreach ($moduleMenus as $moduleMenu) {
 			$systemMenu[] = $moduleMenu;
 		}
-			
 		$newMenu -> insertMenuOption($systemMenu, false, _CONFIGURATION);
-			
-			
-		// ADICIONA OUTROS ITENS DO MENU
-
+	
+		# ADICIONA OUTROS ITENS DO MENU
 		$contentMenu = array();
 		if (!isset($currentUser -> coreAccess['lessons']) || $currentUser -> coreAccess['lessons'] != 'hidden') {
 			$contentMenu[] = array('id' => 'directions_a', 'title' => _DIRECTIONS, 'link' => "administrator.php?ctg=directions");
 			$contentMenu[] = array('id' => 'courses_a', 'title' => _COURSES, 'link' => "administrator.php?ctg=courses");
 			$contentMenu[] = array('id' => 'lessons_a', 'title' => _LESSONS, 'link' => "administrator.php?ctg=lessons");
 		}
-
 		$moduleMenus = eF_getModuleMenu($modules, "content");
 		foreach ($moduleMenus as $moduleMenu) {
 			$contentMenu[] = $moduleMenu;
 		}
 		/*
-		 if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
+		if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
 			$contentMenu[] = array("id" => "statistics_course_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=course", "title" => _COURSESTATISTICS);
 			$contentMenu[] = array("id" => "statistics_lesson_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=lesson", "title" => _LESSONSTATISTICS);
-			}
-			*/
+		}
+		*/
 		$newMenu -> insertMenuOption($contentMenu, false, _CONTENT);
-
 		$userMenu = array();
 		if ($GLOBALS['configuration']['disable_dashboard'] != 1 && (!isset($currentUser -> coreAccess['dashboard']) || $currentUser -> coreAccess['dashboard'] != 'hidden')) {
 			$userMenu[] = array("id" => "personal_a", "image" => "user", "link" => "administrator.php?ctg=users&edit_user=".$_SESSION['s_login'], "title" => _PERSONALDATA);
@@ -255,19 +246,16 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			$userMenu[] = array('id' => 'user_groups_a', 'title' => _GROUPS, 'link' => "administrator.php?ctg=user_groups");
 		}
 		/*
-		 if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
-		 $userMenu[] = array("id" => "statistics_user_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=user", "title" => _USERSTATISTICS);
-		 }
-		 */
+		if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
+			$userMenu[] = array("id" => "statistics_user_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=user", "title" => _USERSTATISTICS);
+		}
+		*/
 		$moduleMenus = eF_getModuleMenu($modules, "user");
 		foreach ($moduleMenus as $moduleMenu) {
 			$userMenu[] = $moduleMenu;
 		}
-
 		$newMenu -> insertMenuOption($userMenu, false, _USER);
-
 		$communicationMenu = array();
-
 		if (!isset($currentUser -> coreAccess['notifications']) || $currentUser -> coreAccess['notifications'] != 'hidden') {
 			$communicationMenu[] = array('id' => 'digests_a', 'title' => _EMAILDIGESTS, 'link' => "administrator.php?ctg=digests");
 		}
@@ -286,46 +274,39 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		foreach ($moduleMenus as $moduleMenu) {
 			$communicationMenu[] = $moduleMenu;
 		}
-
 		$newMenu -> insertMenuOption($communicationMenu, false, _COMMUNICATION);
 		/*
-		 if (!$GLOBALS['configuration']['disable_messages']) {
+		if (!$GLOBALS['configuration']['disable_messages']) {
 			$messagesMenu = array();
-				
 			$roles = MagesterUser :: getRoles(true);
-				
 			foreach($roles as $roleID => $roleName) {
-			$messagesMenu[] = array('id' => 'sendmessage' . $roleID . '_a', 'title' => $roleName, 'link' => "administrator.php?ctg=messages&add=1&specific_type=" . $roleID);
+				$messagesMenu[] = array('id' => 'sendmessage' . $roleID . '_a', 'title' => $roleName, 'link' => "administrator.php?ctg=messages&add=1&specific_type=" . $roleID);
 			}
-				
 			$newMenu -> insertMenuOption($messagesMenu, false, _SENDMESSAGESTO);
-			}
-			*/
+		}
+		*/
 	}
-
 	// ----------------------------------------------------------------------------------------------------
 
-	//pr($_GET);
-	// LESSON MENU
+	# LESSON MENU
 	if (isset($_GET['new_lesson_id']) && $_GET['new_lesson_id']) {
-		// This is a lesson specific menu
+		# This is a lesson specific menu
 		$_SESSION['s_lessons_ID'] = $_GET['new_lesson_id'];
 		if (!isset($currentLesson)) {
 			$currentLesson = new MagesterLesson($_GET['new_lesson_id']);
 		}
-
-		$lessonMenu = eF_getMenu();
-		 
-		if (
-		$_SESSION['s_type'] == 'professor' ||
-		$_SESSION['s_type'] == 'student'
-		) {
-			$lessons = eF_getTableData("users_to_lessons ul, lessons l", "l.name","ul.archive =0 and ul.users_LOGIN='".$_SESSION['s_login']."' AND ul.active=1 AND l.id=ul.lessons_ID AND l.active=1 AND l.id = '".$_GET['new_lesson_id']."'");
-			$lessonMenuId = $newMenu -> createMenu( array("title" => $lessons[0][name], "image" => "go_back.png", "link" => "javascript: void(0);")); //onclick="top.mainframe.location='{$smarty.session.s_type}.php?ctg=lessons';"
+		$lessonMenu = eF_getMenu();	
+		if ( $_SESSION['s_type'] == 'professor' || $_SESSION['s_type'] == 'student' ) {
+			$lessons = 	eF_getTableData(
+							"users_to_lessons ul, lessons l", 
+							"l.name",
+							"ul.archive =0 and ul.users_LOGIN='".$_SESSION['s_login']."' AND ul.active=1 AND l.id=ul.lessons_ID AND l.active=1 AND l.id = '".$_GET['new_lesson_id']."'"
+						);
+			$lessonMenuId = $newMenu -> createMenu( array("title" => $lessons[0][name], "image" => "go_back.png", "link" => "javascript: void(0);")); 
+			//onclick="top.mainframe.location='{$smarty.session.s_type}.php?ctg=lessons';"
 			$newMenu -> insertMenuOption(
-			array("id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId
+				array(	"id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId
 			);
-
 			// Get current lesson menu modules
 			$moduleMenus = eF_getModuleMenu($modules, "current_lesson");
 			foreach ($moduleMenus as $moduleMenu) {
@@ -336,7 +317,6 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 
 		// Insert blank option
 		//$newMenu -> insertMenuOptionAsRawHtml("<table height='8px'></table>", $lessonMenuId);
-		 
 		$userType = eF_getTableData("users", "user_type", "login='".$_SESSION['s_login']."'");
 		if (!isset($_SESSION['s_type'])) {
 			$_SESSION['s_type'] = $userType[0]['user_type'];
@@ -356,35 +336,23 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		// For the second hidden div
 		// Remove users from previous lesson chat rooms - Any other previous lesson cleanup actions can take place here
 		/*
-
 		if ($GLOBALS['configuration']['chat_enabled'] && $currentUser -> coreAccess['chat'] != 'hidden') {
-
 		if (isset($_GET['last_lessons_id']) && $_GET['last_lessons_id'] > 0) {
-
 		$previousLesson = new MagesterLesson($_GET['last_lessons_id']);
-
 		$previousLesson -> removeChatroomUser($currentUser -> user ['login']);
-
 		}
-
-		}
-		 
-
+		}	
 		*/
 		// baltas: why was this commented out? is needed to be hidden behind lesson specific options so that change lesson does not trigger sidebar reloading
-		 
 		//$newMenu -> insertMenuOption(array("id" => "lessons_a", "image" => "lessons", "link" => $_SESSION['s_type'].".php?ctg=lessons", "title" => _MYCOURSES), $lessonMenuId);
-		// Get lessons menu modules
-		 
+		// Get lessons menu modules			
 		$moduleMenus = eF_getModuleMenu($modules, "lessons");
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $lessonMenuId);
 		}
-		 
 		//pr($newMenu);
 	} else {
-		$_SESSION['s_lessons_ID'] = "";
-		 
+		$_SESSION['s_lessons_ID'] = "";	
 		if ($_SESSION['s_type'] == "administrator") {
 			//if (!isset($GLOBALS['currentUser'] -> coreAccess['lessons']) || $GLOBALS['currentUser'] -> coreAccess['lessons'] != 'hidden') {
 			// $newMenu -> insertMenuOption(array("id" => "lessons_a", "image" => "lessons", "link" => "administrator.php?ctg=lessons", "title" => _LESSONS), $lessonMenuId);
@@ -414,19 +382,13 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			 $previousLesson -> removeChatroomUser($currentUser -> user ['login']);
 			 }
 			 }
-			 //$newMenu -> insertMenuOption(array("id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId);
-			  
+			 //$newMenu -> insertMenuOption(array("id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId);	
 			 //$newMenu -> insertMenuOption(array("id" => "lessons_a", "image" => "lessons", "link" => $_SESSION['s_type'].".php?ctg=lessons", "title" => _MYCOURSES), $lessonMenuId);
 			 // Get lessons menu modules
 			 $moduleMenus = eF_getModuleMenu($modules, "lessons");
 			 foreach ($moduleMenus as $moduleMenu) {
 			 $newMenu -> insertMenuOption($moduleMenu, $lessonMenuId);
 			 }
-			  
-			  
-			  
-			  
-			  
 			 $userLessons = $currentUser -> getLessons();
 			 if (empty($userLessons)) {
 			 $active_menu = 1;
@@ -476,9 +438,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		 }
 		 */
 	} elseif ($_SESSION['s_type'] == 'professor') {
-
 		$toolsMenuId = $newMenu -> createMenu( array("title" => _PERSONALOPTIONS));
-
 		if ($GLOBALS['configuration']['disable_dashboard'] != 1 && (!isset($currentUser -> coreAccess['dashboard']) || $currentUser -> coreAccess['dashboard'] != 'hidden')) {
 			$newMenu -> insertMenuOption(array("id" => "personal_a", "image" => "user", "link" => $_SESSION['s_type'].".php?ctg=personal", "title" => _PERSONALDATA), $toolsMenuId);
 		}
@@ -499,16 +459,12 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $toolsMenuId);
 		}
-
 		if (!$GLOBALS['configuration']['disable_messages']) {
-
 			$messagesMenu = array();
-				
 			$roles = MagesterUser :: getRoles(true);
 			$permittedRoles = array(
-			"student", "professor", 2, 3, 4, 5 
+				"student", "professor", 2, 3, 4, 5 
 			);
-				
 			foreach($roles as $roleID => $roleName) {
 				if (in_array($roleID, $permittedRoles)) {
 					$messagesMenu[] = array('id' => 'sendmessage' . $roleID . '_a', 'title' => $roleName, 'link' => $_SESSION['s_type'] . ".php?ctg=messages&add=1&specific_type=" . $roleID);
@@ -517,15 +473,12 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			$newMenu -> insertMenuOption($messagesMenu, false, _SENDMESSAGESTO);
 		}
 	} else {
-
 		// CREATE MENU OF COURSE OPTIONS
 		$constraints = array('archive' => false, 'active' => true, 'condition' => "uc.user_type = 'student'", 'sort' => 'name');
 		$userCourses = $currentUser -> getUserCourses($constraints);
 		$courseLessonsMenu = array();
-
 		$modules = eF_loadAllModules(true);
 		$xcourseModule = $modules['module_xcourse'];
-
 		foreach($userCourses as $courseID => $course) {
 			$courseMenu = array(
 				'id' 		=> 'course_' . $courseID . '_a',
@@ -535,18 +488,12 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 				'class'		=> 'menu-dropdown-subtitle',
 				'subitens'	=> array()
 			);
-
-
 			$hasCalendar = null;
-
 			$courseAcademicCalendar = $xcourseModule->getAcademicCalendar($course -> course['id'], $course -> course['classe_id'], $hasCalendar);
-
 			//		$course -> course['academic_calendar'] = $courseAcademicCalendar;
 			$lessonIndex = 1;
-				
 			$first_activity_item = reset($courseAcademicCalendar);
 			$first_activity_ID = $first_activity_item['lesson_id'];
-				
 			$showOnlyFirst = true;
 			foreach($courseAcademicCalendar as $academicItem) {
 				if ($hasCalendar && ($academicItem['in_progress'] || $academicItem['completed'])) {
@@ -554,7 +501,6 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 					break;
 				}
 			}
-
 			// ATTACH LESSON DATA TO COURSE
 			foreach($courseAcademicCalendar as $index => $academicItem) {
 				if ($showOnlyFirst && $hasCalendar) {
@@ -573,7 +519,6 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 						'title' 	=> $currLesson['name'],
 						'link'		=> sprintf("javascript: switchCourseLesson(%d, %d)", $courseID,  $currLesson['id'])
 					);
-
 					$courseMenu['subitens'][] = $lessonMenu;
 				} catch(Exception $e) {
 				}
@@ -585,14 +530,11 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 				$courseLessonsMenu[] = $courseMenu;
 			}
 		}
-
 		if (count($courseLessonsMenu) == 1) {
 			$newMenu -> insertMenuOption($courseLessonsMenu[0]['subitens'], false, __XCOURSE_MODULES);
 		} else {
 			$newMenu -> insertMenuOption($courseLessonsMenu, false, __XCOURSE_MODULES);
 		}
-
-
 		if (!isset($currentUser -> coreAccess['statistics']) || $currentUser -> coreAccess['statistics'] != 'hidden') {
 			//$newMenu -> insertMenuOption(array("id" => "statistics_a", "image" => "reports", "link" => $_SESSION['s_type'].".php?ctg=statistics", "title" => _STATISTICS), $toolsMenuId);
 			$newMenu -> createMenu(
@@ -613,7 +555,6 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
         		"title" => _FORUMS
 			), false);
 		}
-
 		$toolsMenuId = $newMenu -> createMenu( array("title" => _PERSONALOPTIONS));
 		/*
 		 if ($GLOBALS['configuration']['disable_dashboard'] != 1 && (!isset($currentUser -> coreAccess['dashboard']) || $currentUser -> coreAccess['dashboard'] != 'hidden')) {
@@ -630,8 +571,6 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
         		"title" => _CALENDAR
 			), false);
 		}
-
-
 		if (!$GLOBALS['configuration']['disable_messages'] && (!isset($currentUser -> coreAccess['personal_messages']) || $currentUser -> coreAccess['personal_messages'] != 'hidden')) {
 			//$newMenu -> insertMenuOption(array("id" => "messages_a", "image" => "mail", "link" => $_SESSION['s_type'].".php?ctg=messages", "title" => _MESSAGES), $toolsMenuId);
 		}
@@ -640,16 +579,12 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $toolsMenuId);
 		}
-
 		if (!$GLOBALS['configuration']['disable_messages']) {
-
 			$messagesMenu = array();
-				
 			$roles = MagesterUser :: getRoles(true);
 			$permittedRoles = array(
 			"student", "professor", 2, 3, 4, 5 
 			);
-				
 			foreach($roles as $roleID => $roleName) {
 				if (in_array($roleID, $permittedRoles)) {
 					$messagesMenu[] = array('id' => 'sendmessage' . $roleID . '_a', 'title' => $roleName, 'link' => $_SESSION['s_type'] . ".php?ctg=messages&add=1&specific_type=" . $roleID);
@@ -657,177 +592,155 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			}
 			$newMenu -> insertMenuOption($messagesMenu, false, _SENDMESSAGESTO);
 		}
-
 		if (count($newMenu->getMenuOptions($toolsMenuId)) == 0) {
 			$newMenu->removeMenu($toolsMenuId);
 		}
-
-
 	}
 	// Insert raw html for messages handling
 	//if (!isset($currentUser -> coreAccess['personal_messages']) || $currentUser -> coreAccess['personal_messages'] != 'hidden') {
 	//   $newMenu -> insertMenuOptionAsRawHtml("<table width = '100%'><tr><td align = 'center' id = 'new_chat_message'></td></tr></table><table width = '100%'><tr><td align = 'center' id = 'new_private_message'></td></tr></table>", $toolsMenuId);
-		//}
-		// MODULES MENU
-		$other_menus = array();
-		/*
-		 foreach ($modules as $key => $module) {
-		 $sidebarLinks = $module -> getSidebarLinkInfo();
-		 isset($sidebarLinks["other"]) ? $sidebarLinks = $sidebarLinks["other"] : $sidebarLinks = array();
-		 isset($sidebarLinks["menuTitle"]) ? $menuTitle = $sidebarLinks["menuTitle"] : $menuTitle = '';
-		 // Get the title set for this other menu
-		 // If this menu does not exist create it
-		 if ($menuTitle && !isset($other_menus["'".$menuTitle."'"])) {
-		 $other_menus["'".$menuTitle."'"] = array();
-		 }
-		 if (isset($sidebarLinks["links"])) {
-		 foreach ($sidebarLinks["links"] as $mod_link) {
-		 $other_menus["'".$menuTitle."'"][] = array("id" => $module -> className . (($mod_link['id'])? "_".$mod_link['id']:""),
-		 "image" => eF_getRelativeModuleImagePath($mod_link['image']),
-		 "link" => $mod_link['link'],
-		 "title" => $mod_link['title'],
-		 "moduleLink" => "1",
-		 "_magesterExtensions" => $mod_link['_magesterExtensions'],
-		 "target" => isset($mod_link['target'])?$mod_link['target']:"mainframe");
-		 }
-		 }
-		 }
-		 */
-		// If more than 8 new menus exist, then all will be put under the same menu called MODULES
-		if (sizeof($other_menus) > 8) {
-			$massModulesMenuId = $newMenu -> createMenu( array("title" => _MODULES));
-			foreach ($other_menus as $other_module_menu) {
-				$newMenu -> insertMenuOption($other_module_menu, $massModulesMenu);
-			}
-		} else {
-			// Otherwise a new menu will be put for each of them
-			foreach ($other_menus as $title => $other_module_menu) {
-				$newMenu -> insertMenuOption($other_module_menu, false, substr($title,1,strlen($title)-2));
-			}
+	//}
+	// MODULES MENU
+	$other_menus = array();
+	/*
+	 foreach ($modules as $key => $module) {
+	 $sidebarLinks = $module -> getSidebarLinkInfo();
+	 isset($sidebarLinks["other"]) ? $sidebarLinks = $sidebarLinks["other"] : $sidebarLinks = array();
+	 isset($sidebarLinks["menuTitle"]) ? $menuTitle = $sidebarLinks["menuTitle"] : $menuTitle = '';
+	 // Get the title set for this other menu
+	 // If this menu does not exist create it
+	 if ($menuTitle && !isset($other_menus["'".$menuTitle."'"])) {
+	 $other_menus["'".$menuTitle."'"] = array();
+	 }
+	 if (isset($sidebarLinks["links"])) {
+	 foreach ($sidebarLinks["links"] as $mod_link) {
+	 $other_menus["'".$menuTitle."'"][] = array("id" => $module -> className . (($mod_link['id'])? "_".$mod_link['id']:""),
+	 "image" => eF_getRelativeModuleImagePath($mod_link['image']),
+	 "link" => $mod_link['link'],
+	 "title" => $mod_link['title'],
+	 "moduleLink" => "1",
+	 "_magesterExtensions" => $mod_link['_magesterExtensions'],
+	 "target" => isset($mod_link['target'])?$mod_link['target']:"mainframe");
+	 }
+	 }
+	 }
+	 */
+	// If more than 8 new menus exist, then all will be put under the same menu called MODULES
+	if (sizeof($other_menus) > 8) {
+		$massModulesMenuId = $newMenu -> createMenu( array("title" => _MODULES));
+		foreach ($other_menus as $other_module_menu) {
+			$newMenu -> insertMenuOption($other_module_menu, $massModulesMenu);
 		}
-		// ONLINE USERS MENU
-		if (isset($_SESSION['s_lessons_ID']) && isset($currentLesson)) {
-			try{
-				$lesson_name = $currentLesson -> lesson['name'];
-			} catch (Exception $e){
-				$lesson_name = "";
-			}
-		} else {
+	} else {
+		// Otherwise a new menu will be put for each of them
+		foreach ($other_menus as $title => $other_module_menu) {
+			$newMenu -> insertMenuOption($other_module_menu, false, substr($title,1,strlen($title)-2));
+		}
+	}
+	// ONLINE USERS MENU
+	if (isset($_SESSION['s_lessons_ID']) && isset($currentLesson)) {
+		try{
+			$lesson_name = $currentLesson -> lesson['name'];
+		} catch (Exception $e){
 			$lesson_name = "";
 		}
+	} else {
+		$lesson_name = "";
+	}
+	/*
+	 $modules = eF_loadAllModules(true);
+	 if (array_key_exists("module_bbb", array_keys($modules))) {
+
+	 $edScreenMenuId = $newMenu -> createMenu( array("title" => __EDSCREEN_MENU));
+	 if ($_SESSION['s_type'] == 'administrator') {
+	 $newMenu -> insertMenuOption(
+	 array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
+	 $edScreenMenuId
+	 );
+	 } elseif ($_SESSION['s_type'] == 'professor') {
+	 $newMenu -> insertMenuOption(
+	 array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
+	 $edScreenMenuId
+	 );
+	 } else {
+	 $newMenu -> insertMenuOption(
+	 array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
+	 $edScreenMenuId
+	 );
+	 }
+	 }
+	 */
+
+	// In case of reload, select the correct menu
+	if (isset($_GET['sbctg'])) {
+		$smarty -> assign("T_ACTIVE_ID",$_GET['sbctg']);
 		/*
-		 $modules = eF_loadAllModules(true);
-		 if (array_key_exists("module_bbb", array_keys($modules))) {
-
-		 $edScreenMenuId = $newMenu -> createMenu( array("title" => __EDSCREEN_MENU));
-		 if ($_SESSION['s_type'] == 'administrator') {
-			$newMenu -> insertMenuOption(
-			array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
-			$edScreenMenuId
-			);
-			} elseif ($_SESSION['s_type'] == 'professor') {
-			$newMenu -> insertMenuOption(
-			array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
-			$edScreenMenuId
-			);
-			} else {
-			$newMenu -> insertMenuOption(
-			array("id" => "edscreen_a", "image" => "edscreen", "link" => $_SESSION['s_type'].".php?ctg=module&op=module_bbb", "title" => __EDSCREEN_MENU_TEXT),
-			$edScreenMenuId
-			);
-			}
-			}
-			*/
-
-		// In case of reload, select the correct menu
-		if (isset($_GET['sbctg'])) {
-			$smarty -> assign("T_ACTIVE_ID",$_GET['sbctg']);
-			/*
-
-			if ($_GET['sbctg'] == "personal") {
-
-			#ifdef ENTERPRISE
-
-			if ($_SESSION['s_type'] == "administrator") {
-
-			$active_menu = 5;
-
-			} else if ($employee -> isSupervisor()) {
-
-			$active_menu = 3;
-
-			} else {
-
-			$active_menu = 2;
-
-			}
-
-			#else
-
-			($_SESSION['s_type'] == "administrator") ? $active_menu = 4: $active_menu = 2;
-
-			#endif
-
-			} else {
-
-
-
-
-
-			}
-
-			*/
-			$active_menu = $newMenu -> getCategoryMenu($_GET['sbctg']);
-			//    echo $active_menu;
-		}
-		$smarty -> assign ("T_ACTIVE_MENU", $active_menu);
-		// CHAT MENU
-
-		$_SESSION['last_id'] = 0; // Each time the sidebar reloads you need to get the five last minuites
-		/*
-		if ($GLOBALS['configuration']['chat_enabled'] && (!isset($currentUser -> coreAccess['chat']) || $currentUser -> coreAccess['chat'] != 'hidden')) {
-		$rooms = eF_getTableData("chatrooms c LEFT OUTER JOIN users_to_chatrooms uc ON uc.chatrooms_ID = c.id", "c.id, c.name, count(uc.users_LOGIN) as users", "c.active=1 group by id");
-		 
-		$smarty -> assign("T_CHATROOMS", $rooms);
-		// Set here the default chat - general if no lesson is selected, or the lesson's chat room instead
-		if (isset($_GET['new_lesson_id']) && $_GET['new_lesson_id']) {
-		$smarty -> assign("T_CHATROOMS_ID", $currentLesson -> getChatroom());
+		if ($_GET['sbctg'] == "personal") {
+		#ifdef ENTERPRISE
+		if ($_SESSION['s_type'] == "administrator") {
+		$active_menu = 5;
+		} else if ($employee -> isSupervisor()) {
+		$active_menu = 3;
 		} else {
-		$current_room = eF_getTableData("users_to_chatrooms uc JOIN chatrooms c ON chatrooms_ID = id", "chatrooms_ID, c.users_LOGIN", "uc.users_LOGIN = '".$currentUser -> user['login']."'");
-		 
-		if (empty($current_room)) {
-		$smarty -> assign("T_CHATROOMS_ID",0);
+		$active_menu = 2;
+		}
+		#else
+		($_SESSION['s_type'] == "administrator") ? $active_menu = 4: $active_menu = 2;
+		#endif
 		} else {
-		$smarty -> assign("T_CHATROOMS_ID",$current_room[0]['chatrooms_ID']);
-		if ($current_room[0]['users_LOGIN'] == $currentUser -> user['login']) {
-		$smarty -> assign("T_CHATROOM_OWNED",1);
-		}
-		}
-		}
-		$smarty -> assign("T_CHATENABLED", 1);
-		if (isset($currentUser -> coreAccess['chat']) && $currentUser -> coreAccess['chat'] == 'view') {
-		$smarty -> assign("T_ONLY_VIEW_CHAT", 1);
-		}
-		if ($GLOBALS['configuration']['disable_messages'] == 1) {
-		$smarty -> assign ("T_INVITE_DISABLED", 1);
-		}
-		} else {
-		$smarty -> assign("T_CHATENABLED", 0);
 		}
 		*/
-		$smarty -> assign("T_MENU",$newMenu -> menu);
-		// HACK to include the chat box... @todo: bring it here
-		/*
-		if ($GLOBALS['configuration']['chat_enabled'] && (!isset($currentUser -> coreAccess['chat']) || $currentUser -> coreAccess['chat'] != 'hidden')) {
+		$active_menu = $newMenu -> getCategoryMenu($_GET['sbctg']);
+		//    echo $active_menu;
+	}
+	$smarty -> assign ("T_ACTIVE_MENU", $active_menu);
+	// CHAT MENU
+
+	$_SESSION['last_id'] = 0; // Each time the sidebar reloads you need to get the five last minuites
+	/*
+	if ($GLOBALS['configuration']['chat_enabled'] && (!isset($currentUser -> coreAccess['chat']) || $currentUser -> coreAccess['chat'] != 'hidden')) {
+	$rooms = eF_getTableData("chatrooms c LEFT OUTER JOIN users_to_chatrooms uc ON uc.chatrooms_ID = c.id", "c.id, c.name, count(uc.users_LOGIN) as users", "c.active=1 group by id");
+		
+	$smarty -> assign("T_CHATROOMS", $rooms);
+	// Set here the default chat - general if no lesson is selected, or the lesson's chat room instead
+	if (isset($_GET['new_lesson_id']) && $_GET['new_lesson_id']) {
+	$smarty -> assign("T_CHATROOMS_ID", $currentLesson -> getChatroom());
+	} else {
+	$current_room = eF_getTableData("users_to_chatrooms uc JOIN chatrooms c ON chatrooms_ID = id", "chatrooms_ID, c.users_LOGIN", "uc.users_LOGIN = '".$currentUser -> user['login']."'");
+		
+	if (empty($current_room)) {
+	$smarty -> assign("T_CHATROOMS_ID",0);
+	} else {
+	$smarty -> assign("T_CHATROOMS_ID",$current_room[0]['chatrooms_ID']);
+	if ($current_room[0]['users_LOGIN'] == $currentUser -> user['login']) {
+	$smarty -> assign("T_CHATROOM_OWNED",1);
+	}
+	}
+	}
+	$smarty -> assign("T_CHATENABLED", 1);
+	if (isset($currentUser -> coreAccess['chat']) && $currentUser -> coreAccess['chat'] == 'view') {
+	$smarty -> assign("T_ONLY_VIEW_CHAT", 1);
+	}
+	if ($GLOBALS['configuration']['disable_messages'] == 1) {
+	$smarty -> assign ("T_INVITE_DISABLED", 1);
+	}
+	} else {
+	$smarty -> assign("T_CHATENABLED", 0);
+	}
+	*/
+	$smarty -> assign("T_MENU",$newMenu -> menu);
+	// HACK to include the chat box... @todo: bring it here
+	/*
+	if ($GLOBALS['configuration']['chat_enabled'] && (!isset($currentUser -> coreAccess['chat']) || $currentUser -> coreAccess['chat'] != 'hidden')) {
+	$smarty -> assign("T_MENUCOUNT", $newMenu -> menuCount);
+	} else {
+	*/
+	if ($currentUser -> getType() != "administrator" && !isset($currentLesson)) {
+		$smarty -> assign("T_MENUCOUNT", $newMenu -> menuCount-1);
+	} else {
 		$smarty -> assign("T_MENUCOUNT", $newMenu -> menuCount);
-		} else {
-		*/
-		if ($currentUser -> getType() != "administrator" && !isset($currentLesson)) {
-			$smarty -> assign("T_MENUCOUNT", $newMenu -> menuCount-1);
-		} else {
-			$smarty -> assign("T_MENUCOUNT", $newMenu -> menuCount);
-		}
-		//}
+	}
+	//}
 }
 if ((isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS['currentTheme'] -> options['sidebar_interface'] < 2) ||
 ($GLOBALS['currentTheme'] -> options['sidebar_interface'] == 2 && $GLOBALS['currentTheme'] -> options['show_header'] == 2)) {
@@ -844,13 +757,11 @@ if ((isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS
 		$smarty -> assign("T_ONLINE_USERS_LIST", $onlineUsers);
 	}
 }
+
 if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
 	if (!$GLOBALS['configuration']['disable_messages']) {
 		if (($currentUser -> coreAccess['personal_messages']) || $currentUser -> coreAccess['personal_messages'] != 'hidden') {
 			$unreadMessages = $messages = eF_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
-
-
-
 			$smarty -> assign("T_UNREAD_MESSAGES", $messages[0]['count(*)']);
 			if ($messages[0]['count(*)'] == 1) {
 				$smarty -> assign("T_UNREAD_MESSAGES_TEXT", _YOUHAVE_ONE_UNREADMESSAGE);
