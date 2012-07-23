@@ -841,7 +841,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$exUserType = $xUserModule->getExtendedTypeID($currentUser);
 		
-		if ($exUserType == 'student') {
+		if ($exUserType == 'student' || $exUserType == 'pre_student') {
 			// CHECK IF NEGOCIATION ID IS FROM USER
 			$negocData = $this->_getNegociationByContraints(array(
 				'negociation_id'	=> $negociationID,

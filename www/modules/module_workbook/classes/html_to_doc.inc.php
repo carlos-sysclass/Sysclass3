@@ -94,7 +94,7 @@
    <!--
     /* Font Definitions */
    @font-face
-    {font-family:Verdana;
+    {font-family:Arial, Helvetica;
     panose-1:2 11 6 4 3 5 4 4 2 4;
     mso-font-charset:0;
     mso-generic-font-family:swiss;
@@ -108,8 +108,8 @@
     mso-pagination:widow-orphan;
     font-size:7.5pt;
            mso-bidi-font-size:8.0pt;
-    font-family:"Verdana";
-    mso-fareast-font-family:"Verdana";}
+    font-family:"Arial";
+    mso-fareast-font-family:"Arial";}
    p.small
     {mso-style-parent:"";
     margin:0in;
@@ -117,8 +117,8 @@
     mso-pagination:widow-orphan;
     font-size:1.0pt;
            mso-bidi-font-size:1.0pt;
-    font-family:"Verdana";
-    mso-fareast-font-family:"Verdana";}
+    font-family:"Arial";
+    mso-fareast-font-family:"Arial";}
    @page Section1
     {size:8.5in 11.0in;
     margin:1.0in 1.25in 1.0in 1.25in;

@@ -21,7 +21,7 @@
 			success : function(text) {
 				
 				messageHtml = 
-					'<div id="messageBlock" class="grid_24 message messageSuccess messageBlock">' + 
+					'<div id="messageBlock" class="grid_299 message messageSuccess messageBlock">' + 
 		        	'	<span class="messageInner">' +
 		        	'		<img class="sprite32 sprite32-success" src="themes/default/images/others/transparent.gif"> <strong>sucesso</strong>' +
 		        	'	</span> ' +
