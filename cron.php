@@ -1,7 +1,7 @@
 <?php
 $user_domains = array(
 	'ultbr'		=> 'ult.com.br',
-	'SysClass'	=> 'SysClass.com',
+	'sysclass'	=> 'sysclass.com',
 	'maguser'	=> 'magester.net',
 );
 $username = null;

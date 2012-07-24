@@ -15,7 +15,7 @@ $configurationDefaults = array(
 		'dbtype'	=> 'mysql',
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'maguser',
-		'dbpass'	=> '159753@#$',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
@@ -78,7 +78,7 @@ $configurationDefaults = array(
 	),
 	'local.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'fep7_58A#',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
@@ -88,7 +88,7 @@ $configurationDefaults = array(
 	),
 	'192.168.5.175'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'fep7_58A#',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
@@ -110,7 +110,7 @@ $configurationDefaults = array(
 	*/
 	'sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
@@ -120,7 +120,7 @@ $configurationDefaults = array(
 	),
 	'www.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
@@ -130,7 +130,7 @@ $configurationDefaults = array(
 	),
 	'dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_dev',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
 		'dbprefix'	=> '',
@@ -139,7 +139,7 @@ $configurationDefaults = array(
 	),
 	'www.dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_dev',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
 		'dbprefix'	=> '',
@@ -148,7 +148,7 @@ $configurationDefaults = array(
 	),
 	'pelissari.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_pelissari',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> 'sysclass3',
@@ -158,7 +158,7 @@ $configurationDefaults = array(
 	),
 	'www.pelissari.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_pelissari',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> 'sysclass-new',
@@ -168,7 +168,7 @@ $configurationDefaults = array(
 	),
 	'fajar.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fajar',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -178,7 +178,7 @@ $configurationDefaults = array(
 	),
 	'www.fajar.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fajar',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -188,7 +188,7 @@ $configurationDefaults = array(
 	),	
 	'fati.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fati',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -198,7 +198,7 @@ $configurationDefaults = array(
 	),
 	'www.fati.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fati',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
