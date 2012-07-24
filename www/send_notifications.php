@@ -88,7 +88,8 @@ if (isset($_GET['notification_id'])) {
  }
 } else {
 // debug();
- $sent_messages = MagesterNotification::sendNextNotifications($GLOBALS['configuration']['notifications_messages_per_time']);
+	$sent_messages = MagesterNotification::sendNextNotifications($GLOBALS['configuration']['notifications_messages_per_time']);
+	
 }
 //pr($sent_messages);
 //debug(false);

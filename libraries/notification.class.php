@@ -1069,7 +1069,7 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
      * @return: true if the email was successfully sent
 
      */
-    public function sendTo($recipient) {
+    public function sendTo($recipient, $smtp = null) {
      if (is_array($recipient)) {
       if (isset($recipient['login'])) {
        if (!(isset($recipient['email']) && isset($recipient['name']) && isset($recipient['surname']) && isset($recipient['user_type']) )) {
@@ -1135,12 +1135,17 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
      } else {
       $header['Content-type'] = 'text/plain;charset="UTF-8"';
      }
-        $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
-                                             'host' => $GLOBALS['configuration']['smtp_host'],
-                                             'password' => $GLOBALS['configuration']['smtp_pass'],
-                                             'port' => $GLOBALS['configuration']['smtp_port'],
-                                             'username' => $GLOBALS['configuration']['smtp_user'],
-                                             'timeout' => $GLOBALS['configuration']['smtp_timeout']));
+     	if (!is_object($smtp)) {
+	        $smtp = Mail::factory('smtp', array(
+	        	'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+                'host' => $GLOBALS['configuration']['smtp_host'],
+                'password' => $GLOBALS['configuration']['smtp_pass'],
+                'port' => $GLOBALS['configuration']['smtp_port'],
+                'username' => $GLOBALS['configuration']['smtp_user'],
+                'timeout' => $GLOBALS['configuration']['smtp_timeout'])
+			);
+     	}
+
         // force url change for html messages
         $message = eF_getCorrectLanguageMessage($this -> notification['message'], $recipient['languages_NAME']);
         // Local paths names should become urls
@@ -1212,10 +1217,23 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
 
      */
     public static function sendNextNotifications($limit = false) {
+    	// CONECTAR SOMENTE UMA VEZ AO SMTP
+
+    	 $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+    	 		'host' => $GLOBALS['configuration']['smtp_host'],
+    	 		'password' => $GLOBALS['configuration']['smtp_pass'],
+    	 		'port' => $GLOBALS['configuration']['smtp_port'],
+    	 		'username' => $GLOBALS['configuration']['smtp_user'],
+    	 		'timeout' => $GLOBALS['configuration']['smtp_timeout']));
+    	   
      if (!$limit) {
       $limit = 5;
      }
      $init_limit = $limit;
+     
+     
+     
+     
      $result = eF_getTableData("notifications", "*", "active = 1 AND timestamp <" . time(), "timestamp ASC LIMIT $limit");
      $notifications_to_send = array();
      foreach ($result as $next_notification) {
@@ -1226,7 +1244,7 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
       try {
        foreach ($recipients as $login => $recipient) {
         // Send message
-        if ($notification -> sendTo($recipient)) {
+        if ($notification -> sendTo($recipient, $smtp)) {
          $limit--;
         }
         unset($recipients[$login]);
