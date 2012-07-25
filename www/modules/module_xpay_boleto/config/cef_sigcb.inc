@@ -1,5 +1,4 @@
 <?php
-	
 function digitoVerificador_nossonumero($numero) {
 	$resto2 = modulo_11($numero, 9, 1);
 	$digito = 11 - $resto2;
@@ -10,7 +9,6 @@ function digitoVerificador_nossonumero($numero) {
 	}
 	return $dv;
 }
-
 
 function digitoVerificador_cedente($numero) {
 	$resto2 = modulo_11($numero, 9, 1);
