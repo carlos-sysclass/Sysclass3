@@ -248,12 +248,12 @@ define('G_DBNAME', $configuration['dbname']);
 define('G_DBPREFIX', $configuration['dbprefix']);
 
 /* Access Protocol (http | https) */
-if ($configuration['https'] == 'required' && $protocol != 'https') {
+if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
 	//eF_redirect($url)
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
-} elseif ($configuration['https'] == 'none' && $protocol != 'http') {
+} elseif ($configuration['https'] == 'none' && $protocol != 'http' && $DO_NOT_REDIRECT !== true) {
 	$url = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
