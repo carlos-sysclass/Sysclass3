@@ -1224,8 +1224,10 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
     	 		'password' => $GLOBALS['configuration']['smtp_pass'],
     	 		'port' => $GLOBALS['configuration']['smtp_port'],
     	 		'username' => $GLOBALS['configuration']['smtp_user'],
-    	 		'timeout' => $GLOBALS['configuration']['smtp_timeout']));
-    	 
+	 		'timeout' => $GLOBALS['configuration']['smtp_timeout'],
+			'persist' => true)
+	);
+
      if (!$limit) {
       $limit = 5;
      }
