@@ -22,7 +22,7 @@ $configurationDefaults = array(
 		'version'	=> '3.0.0',
 		'https'		=> 'optional',
 	),
-
+/*
 	'local.magester.net'		=> array(
 		'dbname'	=> 'maguser_root' ,
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass')
@@ -44,6 +44,7 @@ $configurationDefaults = array(
 		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass3'
 	),
+	*/
 	'new.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass'
@@ -52,12 +53,9 @@ $configurationDefaults = array(
 		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass'
 	),
+		/*
 	'posult.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
-		'overrideTheme'	=> 'sysclass3'
-	),
-	'www.posult.magester.net'	=> array(
-		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass3'
 	),
 	'dev.magester.net'	=> array(
@@ -65,49 +63,17 @@ $configurationDefaults = array(
 		'https'		=> 'optional', // 'none', 'optional', 'required'
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new')
 	),
-	'localhost'	=> array(
-		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/sysclass/www/',
-		'dbuser'	=> 'root',
-		'dbpass'	=> 'root',
-		'dbname'	=> 'sysclass',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	'local.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	'192.168.5.175'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	/*
-	'local.sysclass.com'	=> array(
-		'dbuser'	=> 'root',
-		'dbpass'	=> '5564',
-		'dbname'	=> 'sysclass',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
 	*/
+	'local.sysclass.com'	=> array(
+		'dbuser'	=> 'sysclass',
+		'dbpass'	=> 'WXubN7Ih',
+		'dbname'	=> 'sysclass_root',
+		'dbprefix'	=> '',
+		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
+		'version'	=> '3.0.0',
+		'https'		=> 'none', // 'none', 'optional', 'required'
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+	),
 	'sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
@@ -116,7 +82,7 @@ $configurationDefaults = array(
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'required', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
+		'overrideTheme' => 'sysclass3'
 	),
 	'www.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
@@ -126,8 +92,9 @@ $configurationDefaults = array(
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'required', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
+		'overrideTheme' => 'sysclass3'
 	),
+	/*
 	'dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
@@ -254,6 +221,7 @@ $configurationDefaults = array(
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0'
 	),
+	*/
 );
 
 
