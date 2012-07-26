@@ -120,7 +120,8 @@
 				{/if}
 				
 				<!-- Botão chat ( inicio ) -->
-				{if $T_CHECK_XCHAT == 1}
+							
+				{if $T_CHECK_VIEW_LINK_CHAT == 1 }
 				<a onclick="javascript:chatWith('suporteult')"href="javascript: void(0);" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
 					<button class="xlivechat_button" type="button">
 						<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">

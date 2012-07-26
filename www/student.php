@@ -627,6 +627,30 @@ $userRoles = MagesterUser :: GetRoles(true);
 $smarty->assign("T_ROLES_ARRAY", $userRoles);
 $smarty->assign("T_CURRENT_USER_TYPE", $userRoles[$currentUser->user['user_types_ID'] != 0 ? $currentUser->user['user_types_ID'] : $currentUser->getType()]);
 
+
+
+// Verifica se modulo chat esta ativo
+$modulesUserOn = $currentUser->getModules();
+$listModules = array_keys($modulesUserOn);
+
+if( in_array("module_xlivechat", $listModules)) {
+ 	
+	$userOnline = MagesterUser::getUsersOnline();
+	
+	foreach ($userOnline as $_useron ) {
+			if ($_useron['login'] == "suporteult"){
+	 		$viewLink = 1;
+	 	} else {
+	 		$viewLink = null;
+	 	}
+	}
+}
+
+$smarty->assign("T_CHECK_VIEW_LINK_CHAT", $viewLink);
+
+
+
+
 // ASSIGN USER AVATAR
 $user_avatar = array();
 try {
@@ -644,6 +668,8 @@ $smarty->assign("T_CURRENT_USER_AVATAR", $user_avatar);
 
 include '../libraries/includes/avatar.php';
 
+
+
 $benchmark -> set('script');
 $smarty -> display('student.tpl');
 $benchmark -> set('smarty');
@@ -653,5 +679,6 @@ $output = $benchmark -> display();
 if (G_DEBUG) {
 	echo $output;
 }
+
 
 ?>
