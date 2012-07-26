@@ -1502,7 +1502,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$smarty = $this->getSmartyVar();
 
 		// MAKE UPLOAD FORM
-		//error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+		error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 		$form = $this->getUploadInvoicesForm();
 		
 		if ($this->processUploadInvoicesForm()) {
@@ -1602,8 +1602,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					$count++;
 				} while(file_exists($fullProcPath . $retFileName));
 	
-				var_dump($fullProcPath, $retFileName);
-				
 				if ($file->moveUploadedFile($fullProcPath, $retFileName)) {
 					$fullFilePath = $fullProcPath . $retFileName;
 					
