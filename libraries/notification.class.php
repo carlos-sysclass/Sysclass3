@@ -285,10 +285,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica, geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica, geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 
@@ -314,10 +314,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 		
@@ -342,10 +342,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
@@ -370,10 +370,10 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
@@ -398,12 +398,12 @@ class MagesterNotification
 			<p> </p>
 			<p>Equipe ULT</p>
 			<p> </p>
-			<p style="font-family:verdana,geneva,arial,sans-serif; font-size: 12px;">Fone (55-41) 3016-1212 </p>
+			<p style="font-family:Arial, Helvetica,geneva; font-size: 12px;">Fone (55-41) 3016-1212 </p>
 			<p> </p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			Esse  email, incluindo seus anexos, contém informações destinadas a quem foi  endereçado. Caso não seja essa pessoa, apagar esse email  imediatamente. É proibida a utilização, acesso, cópia ou divulgação não  autorizada do conteúdo desse email. As informações contidas nesse email e  em seus anexos são de responsabilidade de seu autor e podem não  representar o posicionamento da ult
 			</p>
-			<p style="color: #4c4c4c; font-size: xx-small; font-family:verdana,geneva,arial,sans-serif; font-weight: normal;">
+			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
 				
@@ -1069,7 +1069,7 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
      * @return: true if the email was successfully sent
 
      */
-    public function sendTo($recipient) {
+    public function sendTo($recipient, $smtp = null) {
      if (is_array($recipient)) {
       if (isset($recipient['login'])) {
        if (!(isset($recipient['email']) && isset($recipient['name']) && isset($recipient['surname']) && isset($recipient['user_type']) )) {
@@ -1135,12 +1135,17 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
      } else {
       $header['Content-type'] = 'text/plain;charset="UTF-8"';
      }
-        $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
-                                             'host' => $GLOBALS['configuration']['smtp_host'],
-                                             'password' => $GLOBALS['configuration']['smtp_pass'],
-                                             'port' => $GLOBALS['configuration']['smtp_port'],
-                                             'username' => $GLOBALS['configuration']['smtp_user'],
-                                             'timeout' => $GLOBALS['configuration']['smtp_timeout']));
+     	if (!is_object($smtp)) {
+	        $smtp = Mail::factory('smtp', array(
+	        	'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+                'host' => $GLOBALS['configuration']['smtp_host'],
+                'password' => $GLOBALS['configuration']['smtp_pass'],
+                'port' => $GLOBALS['configuration']['smtp_port'],
+                'username' => $GLOBALS['configuration']['smtp_user'],
+                'timeout' => $GLOBALS['configuration']['smtp_timeout'])
+			);
+     	}
+
         // force url change for html messages
         $message = eF_getCorrectLanguageMessage($this -> notification['message'], $recipient['languages_NAME']);
         // Local paths names should become urls
@@ -1212,10 +1217,25 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
 
      */
     public static function sendNextNotifications($limit = false) {
+    	// CONECTAR SOMENTE UMA VEZ AO SMTP
+
+    	 $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+    	 		'host' => $GLOBALS['configuration']['smtp_host'],
+    	 		'password' => $GLOBALS['configuration']['smtp_pass'],
+    	 		'port' => $GLOBALS['configuration']['smtp_port'],
+    	 		'username' => $GLOBALS['configuration']['smtp_user'],
+	 		'timeout' => $GLOBALS['configuration']['smtp_timeout'],
+			'persist' => true)
+	);
+
      if (!$limit) {
       $limit = 5;
      }
      $init_limit = $limit;
+     
+     
+     
+     
      $result = eF_getTableData("notifications", "*", "active = 1 AND timestamp <" . time(), "timestamp ASC LIMIT $limit");
      $notifications_to_send = array();
      foreach ($result as $next_notification) {
@@ -1226,7 +1246,7 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
       try {
        foreach ($recipients as $login => $recipient) {
         // Send message
-        if ($notification -> sendTo($recipient)) {
+        if ($notification -> sendTo($recipient, $smtp)) {
          $limit--;
         }
         unset($recipients[$login]);

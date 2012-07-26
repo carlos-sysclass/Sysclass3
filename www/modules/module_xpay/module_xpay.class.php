@@ -841,7 +841,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$exUserType = $xUserModule->getExtendedTypeID($currentUser);
 		
-		if ($exUserType == 'student') {
+		if ($exUserType == 'student' || $exUserType == 'pre_student') {
 			// CHECK IF NEGOCIATION ID IS FROM USER
 			$negocData = $this->_getNegociationByContraints(array(
 				'negociation_id'	=> $negociationID,
@@ -1168,7 +1168,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
 		$today = new DateTime("today");
-		$a15DaysInterval = new DateInterval("P15D");
+		$a15DaysInterval = new DateInterval("P25D");
 		
 		$iesIds = $this->getCurrentUserIesIDs();
 		

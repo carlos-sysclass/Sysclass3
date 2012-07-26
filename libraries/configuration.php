@@ -15,12 +15,18 @@ $configurationDefaults = array(
 		'dbtype'	=> 'mysql',
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'maguser',
-		'dbpass'	=> '159753@#$',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'optional',
+	),
+/*
+	'local.magester.net'		=> array(
+		'dbname'	=> 'maguser_root' ,
+		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass')
+		'overrideTheme'	=> 'sysclass3'
 	),
 	'magester.net'      => array(
     	'dbname'        => 'maguser_ult',
@@ -38,6 +44,7 @@ $configurationDefaults = array(
 		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass3'
 	),
+	*/
 	'new.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass'
@@ -46,12 +53,9 @@ $configurationDefaults = array(
 		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass'
 	),
+		/*
 	'posult.magester.net'	=> array(
 		'dbname'		=> 'maguser_ult',
-		'overrideTheme'	=> 'sysclass3'
-	),
-	'www.posult.magester.net'	=> array(
-		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass3'
 	),
 	'dev.magester.net'	=> array(
@@ -59,72 +63,41 @@ $configurationDefaults = array(
 		'https'		=> 'optional', // 'none', 'optional', 'required'
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new')
 	),
-	'localhost'	=> array(
-		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/sysclass/www/',
-		'dbuser'	=> 'root',
-		'dbpass'	=> 'root',
-		'dbname'	=> 'sysclass',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	'local.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'fep7_58A#',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	'192.168.5.175'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'fep7_58A#',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
-	/*
-	'local.sysclass.com'	=> array(
-		'dbuser'	=> 'root',
-		'dbpass'	=> '5564',
-		'dbname'	=> 'sysclass',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
-	),
 	*/
+	'local.sysclass.com'	=> array(
+		'dbuser'	=> 'sysclass',
+		'dbpass'	=> 'WXubN7Ih',
+		'dbname'	=> 'sysclass_root',
+		'dbprefix'	=> '',
+		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
+		'version'	=> '3.0.0',
+		'https'		=> 'none', // 'none', 'optional', 'required'
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+	),
 	'sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'required', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
+		'overrideTheme' => 'sysclass3'
 	),
 	'www.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'required', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
+		'overrideTheme' => 'sysclass3'
 	),
+	/*
 	'dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_dev',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
 		'dbprefix'	=> '',
@@ -133,7 +106,7 @@ $configurationDefaults = array(
 	),
 	'www.dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_dev',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
 		'dbprefix'	=> '',
@@ -142,7 +115,7 @@ $configurationDefaults = array(
 	),
 	'pelissari.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_pelissari',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> 'sysclass3',
@@ -152,7 +125,7 @@ $configurationDefaults = array(
 	),
 	'www.pelissari.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_pelissari',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> 'sysclass-new',
@@ -162,7 +135,7 @@ $configurationDefaults = array(
 	),
 	'fajar.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fajar',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -172,7 +145,7 @@ $configurationDefaults = array(
 	),
 	'www.fajar.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fajar',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -182,7 +155,7 @@ $configurationDefaults = array(
 	),	
 	'fati.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fati',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -192,7 +165,7 @@ $configurationDefaults = array(
 	),
 	'www.fati.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'ft5dzy6ak1907',
+		'dbpass'	=> 'WXubN7Ih',
 		'dbname'		=> 'sysclass_fati',
 		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
@@ -248,6 +221,7 @@ $configurationDefaults = array(
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0'
 	),
+	*/
 );
 
 
@@ -274,12 +248,12 @@ define('G_DBNAME', $configuration['dbname']);
 define('G_DBPREFIX', $configuration['dbprefix']);
 
 /* Access Protocol (http | https) */
-if ($configuration['https'] == 'required' && $protocol != 'https') {
+if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
 	//eF_redirect($url)
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
-} elseif ($configuration['https'] == 'none' && $protocol != 'http') {
+} elseif ($configuration['https'] == 'none' && $protocol != 'http' && $DO_NOT_REDIRECT !== true) {
 	$url = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;

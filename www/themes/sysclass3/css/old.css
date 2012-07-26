@@ -5,7 +5,7 @@ jQueryUI
 	border: 1px solid #111111;
 	position: absolute;
 	top: 0px;
-	z-index: 200;
+	z-index: 1001;
 	background-color: #FAFAFA;
 	/*change this to match inner block or backgroundcolor*/
 }
@@ -109,7 +109,7 @@ div.block table.iconTable td.group {
 
 ul.tabbernav {
 	border-bottom: 1px solid #C2C2C2;
-	font: normal 12px Trebuchet MS, verdana, sans-serif;
+	font: normal 12px Arial, Helvetica;
 	margin: 0;
 	padding: 9px 0;
 }
@@ -432,11 +432,12 @@ td.formRequired {
 	border: 1px solid #111111;
 	position: absolute;
 	margin-top: 0px;
-	z-index: 200;
+	z-index: 1001;
 	background-color: #FAFAFA;
 	/*change this to match inner block or backgroundcolor*/
 	top: 0;
 }
+layout_margin_top_rigth_index_student
 
 .divPopup div.blockContents,.popup div.block,.popup div.blockContents {
 	margin: 0px 10px;
@@ -495,7 +496,7 @@ div.menutop-over span.user-detail {
 
 div.menutop-over span.text,div.menutop-over span.name {
 	color: #FFF;
-	line-height: 7px;
+	line-height: 10px;
 }
 
 div.menutop-over a {
@@ -1239,8 +1240,10 @@ div#module_xcourse_content_list_tree_frontend_student ul li ul li {
 
 div#module_xcourse_content_list_tree_frontend_student ul li ul li a {
 	color: #727272;
-	float: none;
-	margin-left: 5px;
+	display:block;
+	height:29px;
+	margin-top: -23px;
+	padding: 0 10px 0 30px;
 }
 
 div#module_xcourse_content_list_tree_frontend_student ul li:hover ul {
@@ -1269,8 +1272,8 @@ div#module_xcourse_content_list_tree_frontend_student ul span.emptyCategory
 #layout_margin_top_rigth_index_student > .grid_7 {
 	width: 275px;
 	float: right;
-	margin-top: -154px;
-	z-index: 999;
+	z-index: 99;
+	margin-top: -173px;
 }
 
 #layout_margin_top_rigth_index_student .grid_7  .rule2 {

@@ -136,23 +136,19 @@ abstract class MagesterExtendedModule extends MagesterModule {
 	
 	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
 		parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
-		
-		$this->preActions		= array();
-		$this->postActions		= array();
-		$this->preActionResult	= array();
-		$this->postActionResult	= array();
-		
+		$this->preActions			= array();
+		$this->postActions			= array();
+		$this->preActionResult		= array();
+		$this->postActionResult		= array();
 		$this->eventsActionResult	= array();
 		$this->hooksActionResult	= array();
-		
-		$this->index_name		= str_replace("module_", "", get_class($this));
-		
-		$this->modules = array();
-		
-		if (empty($this->moduleBaseUrl)) {
-			$this->moduleBaseUrl = G_SERVERNAME . str_replace("/", "", $_SERVER['SCRIPT_NAME']) . "?ctg=module&op=module_" . $this->index_name; 
+		$this->index_name			= str_replace("module_", "", get_class($this));
+		$this->modules 				= array();
+		if ( empty( $this->moduleBaseUrl ) ) {
+			$this->moduleBaseUrl = G_SERVERNAME . str_replace('/', '', $_SERVER['SCRIPT_NAME']).'?ctg=module&op=module_'.$this->index_name;
 		}
 	}
+
 	public function getDefaultAction() {
 		return 'default';
 	}

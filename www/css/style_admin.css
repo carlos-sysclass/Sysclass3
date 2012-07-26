@@ -5,10 +5,10 @@
 /* Body */
 /*-----------------------------------------*/
 body {
-	font-family: Helvetica, Arial, Verdana, sans-serif;
+	font-family: Arial, Helvetica;
 	font-size: 16px;
 	color: #000;
-	background: url('../images/bg.jpg') 0 0;
+	background: url('../images/fundo_sysclass.jpg') 0 0;
 	height: 100%;
 }
 .admin_page { text-align: left !important; }

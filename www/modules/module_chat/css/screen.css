@@ -67,7 +67,7 @@ a{
 #content{
 	padding-bottom:1px;
 	outline: none;
-	font-family: Trebuchet MS,verdana,geneva,arial,helvetica,sans-serif;
+	font-family: Arial, Helvetica;
 }
 
 #content p{
@@ -76,18 +76,18 @@ a{
 	padding-bottom:1px;
 	margin:0;
 	text-align:left;
-	font-family: Trebuchet MS,verdana,geneva,arial,helvetica,sans-serif;
+	font-family: Arial, Helvetica;
 }
 
 #content p a{
 	color:#000000;
-	font-family: Trebuchet MS,verdana,geneva,arial,helvetica,sans-serif;
+	font-family: Arial, Helvetica;
 }
 
 #status{
 	margin-right:80px;
 	vertical-align:text-top;
-	font-family: Trebuchet MS,verdana,geneva,arial,helvetica,sans-serif;
+	font-family: Arial, Helvetica;
 }
 #statusText{
 	vertical-align:top;

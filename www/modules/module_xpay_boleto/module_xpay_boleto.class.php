@@ -1368,6 +1368,11 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$indexOpt = $data['option'];
 		}
 		
+		if (is_null($this->getParent())) {
+			$xpayModule = $this->loadModule("xpay");
+			$this->setParent($xpayModule);
+		}
+		
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
 
 		$payInstance = $payInstances['options'][$indexOpt];
@@ -1445,7 +1450,11 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		exit;
 		*/
 		// INJECT USER DATA, INVOICE DATA, ETC...
-		echo $boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
+		$boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
+		if ($data['return_string'] == true) {
+			return $boletoHTML;
+		}	
+		echo $boletoHTML;
 		exit;
 	}
 	

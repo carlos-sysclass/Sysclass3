@@ -474,6 +474,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
             $smarty -> assign("T_SEEN_UNIT", in_array($currentUnit['id'], array_keys($seenContent))); //Notify smarty whether the student has seen the current unit
             if ($currentLesson -> options['rules']) {
                 $ruleCheck = $currentContent -> checkRules($currentUnit['id'], $seenContent);
+              
             }
             if ($ruleCheck !== true) {
                 $message = $ruleCheck;
