@@ -2470,3 +2470,31 @@ ALTER TABLE `module_xpay_course_modality_prices` ADD `lesson_id` MEDIUMINT( 8 ) 
 INSERT INTO `module_xpay_course_modality` (`id`, `name`) VALUES ('0', 'Indefinido');
 ALTER TABLE `module_xpay_course_modality_prices` DROP PRIMARY KEY;
 ALTER TABLE `module_xpay_course_modality_prices` ADD PRIMARY KEY ( `modality_id` , `course_id` , `lesson_id` , `from_timestamp` ) ;
+
+/* 2012-07-25 */
+-- phpMyAdmin SQL Dump
+-- version 3.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jul 25, 2012 at 05:28 PM
+-- Server version: 5.1.63-0ubuntu0.10.04.1
+-- PHP Version: 5.3.2-1ubuntu4.17
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `sysclass_root`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `module_xpay_zzz_paid_items`
+--
+
+DROP VIEW module_xpay_zzz_paid_items;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
+
