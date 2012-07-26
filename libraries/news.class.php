@@ -128,12 +128,12 @@ class news extends MagesterEntity
 				//Get every lesson's name
 				$lessons = array_combine($lessons['id'], $lessons['name']);
 			}
-			/*
+			
 			$courseID = eF_getTableDataFlat("users_to_courses", "courses_id", "active=1 and archive = 0  and users_LOGIN LIKE '".$_SESSION['s_login']."'");
 			foreach ( $courseID as $_courseID ){
 				$courseID = $_courseID;
 			}
-			*/
+			
 			$allClass = eF_getTableDataFlat("classes", "id, name", "active=1 and courses_id = ".$_SESSION['s_courses_ID']);
 			if (sizeof($allClass) > 0) {
 				//Get every lesson's name
@@ -155,7 +155,8 @@ class news extends MagesterEntity
 		$sidenote = '<a href = "javascript:void(0)" onclick = "Element.extend(this).up().select(\'select\').each(function (s) {s.options.selectedIndex=0;})">'._CLEAR.'</a>';
 		$form -> addElement('text', 'title', _ANNOUNCEMENTTITLE, 'class = "inputText"');
 		if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "administrator" ) {
-			//  $form -> addElement('select', 'status', _LESSON, $lessons);
+			//$form -> addElement('select', 'courses', _LESSON, $courseID);
+			$form -> addElement('select', 'lessons', _LESSON, $lessons);
 			$form -> addElement('select', 'classes', _COURSECLASS,array(0 => _COURSEALLCLASS ) + $allClass);
 		}
 		$form -> addRule('title', _THEFIELD.' "'._ANNOUNCEMENTTITLE.'" '._ISMANDATORY, 'required', null, 'client');
@@ -195,7 +196,8 @@ class news extends MagesterEntity
                             "timestamp" => $timestamp,
 					        "classe_id" => $values['classes'],
 					        "expire" => $expire,
-					        "lessons_ID" => $lesson_ID,
+					        //"lessons_ID" => $lesson_ID,
+					        "lessons_ID" => $values['lessons'],
 					        "users_LOGIN" => $_SESSION['s_login']);
 			$news = self :: create($fields, isset($_POST['email']));
 			$this -> news = $news;
