@@ -2242,12 +2242,16 @@ cl.created, cl.max_users";
 	!empty($constraints) OR $constraints = array('active' => true);
 	
 	$polo = eF_getTableData(
-		"module_xuser user LEFT JOIN module_polos polo ON (user.polo_id = polo.id)",
+		"module_xuser user JOIN module_polos polo ON (user.polo_id = polo.id)",
 		"polo.*", 
 		"user.id = " . $this->user['id']
 	);
 	
-	return $polo[0];
+	if (count($polo) > 0) {
+		return $polo[0];
+	} else {
+		return false;
+	}
  }
  
  

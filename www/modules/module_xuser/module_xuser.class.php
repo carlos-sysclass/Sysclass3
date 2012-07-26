@@ -1601,6 +1601,21 @@ class module_xuser extends MagesterExtendedModule {
     		return array();
     	}
     	
+    	$userLogin = eF_getTableData("users", "login", "id = $userID");
+    	
+    	$login = $userLogin[0]['login'];
+    	
+    	$user = MagesterUserFactory::factory($login);
+    	
+    	$this->loadModule("xentify")->getScopesForUser($user);
+    	
+    	var_dump(array_keys($user->getGroups()));
+    	exit;
+    	
+    	
+    	
+    	
+    	
     	$userTags = eF_getTableDataFlat(
     		"module_xuser_user_tags",
     		"tag",

@@ -104,6 +104,51 @@ class module_xentify extends MagesterExtendedModule {
 		
 		return $scopeDBData;
 	}
+    public function getScopesForUser($user = null) {
+    	if (is_null($user)) {
+    		$user = $this->getCurrentUser();
+    	}
+    	$currentScopes = $this->getScopes();
+
+    	$userScopeData = array();
+    	
+    	foreach($currentScopes as $scope) {
+    		var_dump($this->getUserScopeRelevantData($user, $scope['id']));
+    		$userScopeData = array_merge($userScopeData, $this->getUserScopeRelevantData($user, $scope['id']));
+    		
+    	}
+    	var_dump($userScopeData);
+    	exit;
+    }
+    private function getUserScopeRelevantData($user, $scope_type) {
+    	if (is_null($user)) {
+	    	$user = $this->getCurrentUser();
+    	}
+    	$data = array();
+    	
+    	switch($scope_type) {
+    		case 2 : { // SAME POLO AND SAME CLASS
+    			list($data['polo_id']) = $this->getUserScopePoloIndex($user);
+    			break;
+    		}
+    		case 7 : { // SAME POLO AND SAME CLASS
+    			//list($data['user_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    		case 10 : { // SAME POLO AND SAME CLASS
+    			//list($data['polo_id'], $data['classe_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    		case 13 : { // SAME GROUPS
+    			//list($data['group_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    	}
+    	return $data;
+    }
+    
+    
+    
     public function isUserInScope($user = null, $scope_type, $scope_id) {
     	$status = $this->getUserScopeStatus($user, $scope_type, $scope_id);
     	
@@ -172,13 +217,16 @@ class module_xentify extends MagesterExtendedModule {
     	return $status;
     }
     public function getUserScopeData($scope_type, $scope_id) {
+    	/*
     	if (is_null($user)) {
     		$user = $this->getCurrentUser();
     	}
+    	*/
     	$data = array(
     		'user_id'			=> null,
 			'polo_id'			=> null,
-   			'classe_id'			=> null
+   			'classe_id'			=> null,
+    		'group_id'			=> null
 		);
     	
     	switch($scope_type) {
@@ -194,6 +242,10 @@ class module_xentify extends MagesterExtendedModule {
     			list($data['polo_id'], $data['classe_id']) = explode(';', $scope_id);
     			break;
     		}
+    		case 13 : { // SAME GROUPS
+    			list($data['group_id']) = explode(';', $scope_id);
+    			break;
+    		}  		
     	}
     	return $data;
     }
@@ -301,11 +353,20 @@ class module_xentify extends MagesterExtendedModule {
   		}
 	}
     
-    private function checkUserScopeSamePolo($user, $polo_id) {
+	private function getUserScopePoloIndex($user) {
 		$userPolo = $user->getUserPolo(array('return_objects'	=> false));
+		if ($userPolo) { 
+			return $userPolo['id'];
+		} else {
+			return false;
+		}
 		
-		return ($userPolo['id'] == $polo_id);
+	}
+    private function checkUserScopeSamePolo($user, $polo_id) {
+		return ($this->getUserScopePoloIndex($user) == $polo_id);
     }
+    
+    
     private function checkUserScopeSameUser($user, $user_id) {
     	return ($user->user['id'] == $user_id);
     }
