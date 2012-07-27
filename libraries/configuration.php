@@ -94,6 +94,16 @@ $configurationDefaults = array(
 		'https'		=> 'required', // 'none', 'optional', 'required'
 		'overrideTheme' => 'sysclass3'
 	),
+	'fati.sysclass.com'	=> array(
+		'dbuser'	=> 'sysclass',
+		'dbpass'	=> 'WXubN7Ih',
+		'dbname'		=> 'sysclass_fati',
+		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
+		'dbprefix'	=> '',
+		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
+		'version'	=> '3.0.0'
+	),
 	/*
 	'dev.sysclass.com'	=> array(
 		'dbuser'	=> 'sysclass',
