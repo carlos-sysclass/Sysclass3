@@ -147,7 +147,7 @@ class module_xentify extends MagesterExtendedModule {
    					sprintf("xentify_scope_id = %d AND xentify_id IN (%s)", $scope['id'], $value)
     			);    				
     			
-    			if (is_array($scopeTagsDB['tag'])) {
+    			if (!is_null($scopeTagsDB['tag'])) {
     				$scopeTags += $scopeTagsDB['tag'];
     			}
     		}

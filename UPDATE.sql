@@ -2505,8 +2505,19 @@ INSERT INTO `sysclass_root`.`module_xentify_scopes` (`id`,`name`,`description`,`
 	NULL , 'Agrupado por grupo de usuários', '%s será compartilhado entre todos os alunos de um determinado grupo', NULL , '1'
 );
 
-/* @TODO: CADASTRAR GRUPO DE 10% DE DESCONTO, COM ID 1, OU MUDAR NESTE INSERT */
-INSERT INTO `sysclass_root`.`module_xpay_price_rules` (`id`, `description`, `rule_xentify_scope_id`, `rule_xentify_id`, `entify_id`, `entify_absolute_id`, `type_id`, `percentual`, `valor`, `base_price_applied`, `applied_on`, `order`, `active`) VALUES (NULL, 'Desconto de 10% para pagamento pontual ', '13', '1', '1', '1', '-1', '1', '0.1', '1', 'once', '1', '1');
+/* @TODO: CADASTRAR GRUPO DE 10% DE DESCONTO, COM ID 4, OU MUDAR NESTE INSERT */
+INSERT INTO `sysclass_root`.`module_xpay_price_rules` (`id`, `description`, `rule_xentify_scope_id`, `rule_xentify_id`, `entify_id`, `entify_absolute_id`, `type_id`, `percentual`, `valor`, `base_price_applied`, `applied_on`, `order`, `active`) VALUES (NULL, 'Desconto de 10% para pagamento pontual ', '13', '4', '1', '1', '-1', '1', '0.1', '1', 'once', '1', '1');
+
+INSERT INTO `sysclass_root`.`module_xpay_price_rules_tags` (`rule_id`, `tag`) VALUES ('26', 'is_not_full_paid');
+INSERT INTO `sysclass_root`.`module_xpay_price_rules_tags` (`rule_id`, `tag`) VALUES ('26', 'is_not_overdue');
+
+
+INSERT INTO `sysclass_root`.`module_xpay_price_rules` (`id`, `description`, `rule_xentify_scope_id`, `rule_xentify_id`, `entify_id`, `entify_absolute_id`, `type_id`, `percentual`, `valor`, `base_price_applied`, `applied_on`, `order`, `active`) VALUES (NULL, 'Desconto de 30% para pagamento pontual ', '13', '5', '1', '1', '-1', '1', '0.3', '1', 'once', '1', '1');
+
+INSERT INTO `sysclass_root`.`module_xpay_price_rules_tags` (`rule_id`, `tag`) VALUES ('27', 'is_not_full_paid');
+INSERT INTO `sysclass_root`.`module_xpay_price_rules_tags` (`rule_id`, `tag`) VALUES ('27', 'is_not_overdue');
+
+
 
 CREATE TABLE IF NOT EXISTS `module_xentify_scope_tags` (
 	`xentify_scope_id` mediumint(8) UNSIGNED ,
@@ -2515,20 +2526,49 @@ CREATE TABLE IF NOT EXISTS `module_xentify_scope_tags` (
   PRIMARY KEY (`xentify_scope_id`,`xentify_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
-
-
-INSERT INTO `sysclass_root`.`users_to_groups` (
-`groups_ID` ,
-`users_LOGIN`
-)
-VALUES (
-'3', 'carlos.duenhas2'
-);
-
 /* 2012-07-30 */
 ALTER TABLE `module_xentify_scope_tags` DROP PRIMARY KEY;
 ALTER TABLE `module_xentify_scope_tags` ADD PRIMARY KEY ( `xentify_scope_id` , `xentify_id` , `tag` ) ;
+
+INSERT INTO `sysclass_root`.`module_xentify_scope_tags` (
+`xentify_scope_id` ,
+`xentify_id` ,
+`tag`
+)
+VALUES (
+'13', '4', 'is_custom'
+);
+
+INSERT INTO `sysclass_root`.`module_xentify_scope_tags` (
+`xentify_scope_id` ,
+`xentify_id` ,
+`tag`
+)
+VALUES (
+'13', '5', 'is_custom'
+);
+
+INSERT INTO `sysclass_root`.`module_xentify_scope_tags` (
+`xentify_scope_id` ,
+`xentify_id` ,
+`tag`
+)
+VALUES (
+'13', '6', 'is_custom'
+);
+
+
+
+
+
+
+
+
+
+
+
+
+/* CADASTRAR REGRAS PARA 10% desconto, 30% desconto, 0% desconto */
 
 
 
