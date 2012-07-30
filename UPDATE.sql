@@ -2526,6 +2526,10 @@ VALUES (
 '3', 'carlos.duenhas2'
 );
 
+/* 2012-07-30 */
+ALTER TABLE `module_xentify_scope_tags` DROP PRIMARY KEY;
+ALTER TABLE `module_xentify_scope_tags` ADD PRIMARY KEY ( `xentify_scope_id` , `xentify_id` , `tag` ) ;
+
 
 
 

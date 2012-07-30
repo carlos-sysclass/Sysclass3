@@ -1607,31 +1607,15 @@ class module_xuser extends MagesterExtendedModule {
     	
     	$user = MagesterUserFactory::factory($login);
     	
-    	$this->loadModule("xentify")->getScopesForUser($user);
+    	$scopes = $this->loadModule("xentify")->getScopesForUser($user);
+    	$tags = $this->loadModule("xentify")->getTagsForScopes($scopes);
     	
-    	var_dump(array_keys($user->getGroups()));
-    	exit;
-    	
-    	
-    	
-    	
-    	
-    	$userTags = eF_getTableDataFlat(
-    		"module_xuser_user_tags",
-    		"tag",
-    		sprintf("user_id = %d", $userID)
-		);
-    	
-    	if (count($userTags['tag']) == 0) {
+    	if (count($tags) == 0) {
     		// RETURN DEFAULT TAGS
-    		$userTags = eF_getTableDataFlat(
-   				"module_xuser_user_tags",
-   				"tag",
-  				"user_id = 0"
-    		);
+    		$tags = array("is_user_default", "is_not_custom");
     	}
-    		
-    	return $userTags['tag'];
+    	
+    	return $tags;
 	}
 
 	public function getUserDetails($userID, $user_details_type = 'self') {

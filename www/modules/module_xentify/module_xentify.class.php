@@ -113,13 +113,49 @@ class module_xentify extends MagesterExtendedModule {
     	$userScopeData = array();
     	
     	foreach($currentScopes as $scope) {
-    		var_dump($this->getUserScopeRelevantData($user, $scope['id']));
-    		$userScopeData = array_merge($userScopeData, $this->getUserScopeRelevantData($user, $scope['id']));
-    		
+    		//var_dump($this->getUserScopeRelevantData($user, $scope['id']));
+    		//$scopeData = $this->getUserScopeRelevantData($user, $scope['id']);
+    		$scopeData = $this->getUserScopeRelevantData($user, $scope['id']);
+    		if ($scopeData) {
+    			$userScopeData[$scope['id']] = $scopeData;
+    		}
     	}
-    	var_dump($userScopeData);
-    	exit;
+    	return $userScopeData;
     }
+    public function getTagsForScopes($scopeValues) {
+    	$stringIndexesMapper = array(
+    		2 => 'polo_id',
+    		13 => 'group_ids'
+    	);
+    	
+    	$currentScopes = $this->getScopes();
+    	
+    	$scopeTags = array();
+    	foreach($currentScopes as $scope) {
+    		// xentify_scope_id 	xentify_id 	tag
+    		
+    		if (array_key_exists($scope['id'], $stringIndexesMapper) && array_key_exists($scope['id'], $scopeValues)) {
+    			//DB VALUE IS xentify_id = $scopes[$scopeIndex]
+    			if (is_array($scopeValues[$scope['id']])) {
+    				$value = implode(", ", $scopeValues[$scope['id']]);
+    			} else {
+					$value = "'" . $scopeValues[$scope['id']] . "'";
+    			}
+    			$scopeTagsDB = ef_getTableDataFlat(
+    				"module_xentify_scope_tags",
+    				"tag",
+   					sprintf("xentify_scope_id = %d AND xentify_id IN (%s)", $scope['id'], $value)
+    			);    				
+    			
+    			if (is_array($scopeTagsDB['tag'])) {
+    				$scopeTags += $scopeTagsDB['tag'];
+    			}
+    		}
+    	}
+   	
+    	return $scopeTags;
+    }
+    
     private function getUserScopeRelevantData($user, $scope_type) {
     	if (is_null($user)) {
 	    	$user = $this->getCurrentUser();
@@ -128,8 +164,7 @@ class module_xentify extends MagesterExtendedModule {
     	
     	switch($scope_type) {
     		case 2 : { // SAME POLO AND SAME CLASS
-    			list($data['polo_id']) = $this->getUserScopePoloIndex($user);
-    			break;
+    			return $this->getUserScopePoloIndex($user);
     		}
     		case 7 : { // SAME POLO AND SAME CLASS
     			//list($data['user_id']) = explode(';', $scope_id);
@@ -141,7 +176,7 @@ class module_xentify extends MagesterExtendedModule {
     		}
     		case 13 : { // SAME GROUPS
     			//list($data['group_id']) = explode(';', $scope_id);
-    			break;
+    			return $this->getUserGroupsIndex($user);
     		}
     	}
     	return $data;
@@ -355,6 +390,7 @@ class module_xentify extends MagesterExtendedModule {
     
 	private function getUserScopePoloIndex($user) {
 		$userPolo = $user->getUserPolo(array('return_objects'	=> false));
+		
 		if ($userPolo) { 
 			return $userPolo['id'];
 		} else {
@@ -380,6 +416,16 @@ class module_xentify extends MagesterExtendedModule {
     	
     	return in_array($classe_id, $classesID);
     }
+    
+    private function getUserGroupsIndex($user) {
+    	$ids = array();
+    	foreach($user->getGroups() as $group) {
+    		$ids[] = $group['id'];
+    	}
+    	return $ids;
+    }
+    
+    
 	private function checkUserInDebt($user) {
 		return $this->loadModule("xpay")->isUserInDebt($user);
 	}
