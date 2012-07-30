@@ -2556,20 +2556,3 @@ INSERT INTO `sysclass_root`.`module_xentify_scope_tags` (
 VALUES (
 '13', '6', 'is_custom'
 );
-
-
-
-
-
-
-
-
-
-
-
-
-/* CADASTRAR REGRAS PARA 10% desconto, 30% desconto, 0% desconto */
-
-
-
-
