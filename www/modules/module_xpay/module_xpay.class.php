@@ -612,9 +612,6 @@ class module_xpay extends MagesterExtendedModule {
 
 		}
 		
-//		var_dump($userNegociation);
-//		exit;
-		
 	
 		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
 		$form = new HTML_QuickForm2("xpay_invoice_params_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
@@ -1575,8 +1572,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$sentTags = array_merge($userTags, $sentTags);
 		
-		
-		
 		// REMOVE ALL OUT-SCOPE
 		$lastWorkflow = $this->_createEmptyWorkflow($basePrice);
 		
@@ -1589,6 +1584,7 @@ class module_xpay extends MagesterExtendedModule {
 				continue;
 			}
 			// CHECK CONDITION (IF ANY)
+			
 			if ($this->_isRuleAndTagsMatching($rule['id'], $sentTags)) {
 				if ($rule['applied_on'] == 'once') {
 					$workflows[] = $lastWorkflow = $this->_applyWorkflowRule($rule, $lastWorkflow);

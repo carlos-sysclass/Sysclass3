@@ -113,7 +113,6 @@ class module_xentify extends MagesterExtendedModule {
     	$userScopeData = array();
     	
     	foreach($currentScopes as $scope) {
-    		//var_dump($this->getUserScopeRelevantData($user, $scope['id']));
     		//$scopeData = $this->getUserScopeRelevantData($user, $scope['id']);
     		$scopeData = $this->getUserScopeRelevantData($user, $scope['id']);
     		if ($scopeData) {
@@ -208,6 +207,10 @@ class module_xentify extends MagesterExtendedModule {
     			/** @todo Implementar checagem de inadimplência */
     			return $status['overdue'];
     		}
+    		case 13 : { // OVERDUE INVOICES USER
+    			/** @todo Implementar checagem de inadimplência */
+    			return $status['same_group'];
+    		}
     		default : {
     			return false;
     		}
@@ -221,11 +224,13 @@ class module_xentify extends MagesterExtendedModule {
     		'same_polo'		=> false,
     		'same_classe'	=> false,
     		'same_user'		=> false,
+    		'same_group'	=> false,    			
     		'no_overdue'	=> false,
     		'overdue'		=> false
 	   	);
 	   	$data = $this->getUserScopeData($scope_type, $scope_id);
-	   	
+
+
     	switch($scope_type) {
     		case 2 : { // SAME POLO
     			$status['same_polo'] = $this->checkUserScopeSamePolo($user, $data['polo_id']);
@@ -245,6 +250,11 @@ class module_xentify extends MagesterExtendedModule {
     			$status['no_overdue'] = !($status['overdue'] = $this->checkUserInDebt($user));
     			break;
     		}
+    		case 13 : {
+    			$status['same_group']	= $this->checkUserScopeSameGroup($user, $data['group_id']); 
+    			break;
+    		}
+    		
     		default : {
     			return false;
     		}
@@ -257,6 +267,7 @@ class module_xentify extends MagesterExtendedModule {
     		$user = $this->getCurrentUser();
     	}
     	*/
+    	
     	$data = array(
     		'user_id'			=> null,
 			'polo_id'			=> null,
@@ -423,6 +434,9 @@ class module_xentify extends MagesterExtendedModule {
     		$ids[] = $group['id'];
     	}
     	return $ids;
+    }
+    private function checkUserScopeSameGroup($user, $group_id) {
+    	return in_array($group_id, $this->getUserGroupsIndex($user));
     }
     
     
