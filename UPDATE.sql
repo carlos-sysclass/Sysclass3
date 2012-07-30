@@ -2498,3 +2498,38 @@ DROP VIEW module_xpay_zzz_paid_items;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
 
+
+
+/* 2012-07-26 */
+INSERT INTO `sysclass_root`.`module_xentify_scopes` (`id`,`name`,`description`,`rules`,`active`) VALUES (
+	NULL , 'Agrupado por grupo de usuários', '%s será compartilhado entre todos os alunos de um determinado grupo', NULL , '1'
+);
+
+/* @TODO: CADASTRAR GRUPO DE 10% DE DESCONTO, COM ID 1, OU MUDAR NESTE INSERT */
+INSERT INTO `sysclass_root`.`module_xpay_price_rules` (`id`, `description`, `rule_xentify_scope_id`, `rule_xentify_id`, `entify_id`, `entify_absolute_id`, `type_id`, `percentual`, `valor`, `base_price_applied`, `applied_on`, `order`, `active`) VALUES (NULL, 'Desconto de 10% para pagamento pontual ', '13', '1', '1', '1', '-1', '1', '0.1', '1', 'once', '1', '1');
+
+CREATE TABLE IF NOT EXISTS `module_xentify_scope_tags` (
+	`xentify_scope_id` mediumint(8) UNSIGNED ,
+	`xentify_id` varchar (100), 
+	`tag` enum('is_full_paid','is_not_full_paid','is_overdue','is_not_overdue','is_registration_tax','is_not_registration_tax','is_custom','is_not_custom') NOT NULL,
+  PRIMARY KEY (`xentify_scope_id`,`xentify_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+
+INSERT INTO `sysclass_root`.`users_to_groups` (
+`groups_ID` ,
+`users_LOGIN`
+)
+VALUES (
+'3', 'carlos.duenhas2'
+);
+
+/* 2012-07-30 */
+ALTER TABLE `module_xentify_scope_tags` DROP PRIMARY KEY;
+ALTER TABLE `module_xentify_scope_tags` ADD PRIMARY KEY ( `xentify_scope_id` , `xentify_id` , `tag` ) ;
+
+
+
+

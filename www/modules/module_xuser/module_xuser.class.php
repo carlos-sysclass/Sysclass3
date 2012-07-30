@@ -1601,22 +1601,21 @@ class module_xuser extends MagesterExtendedModule {
     		return array();
     	}
     	
-    	$userTags = eF_getTableDataFlat(
-    		"module_xuser_user_tags",
-    		"tag",
-    		sprintf("user_id = %d", $userID)
-		);
+    	$userLogin = eF_getTableData("users", "login", "id = $userID");
     	
-    	if (count($userTags['tag']) == 0) {
+    	$login = $userLogin[0]['login'];
+    	
+    	$user = MagesterUserFactory::factory($login);
+    	
+    	$scopes = $this->loadModule("xentify")->getScopesForUser($user);
+    	$tags = $this->loadModule("xentify")->getTagsForScopes($scopes);
+    	
+    	if (count($tags) == 0) {
     		// RETURN DEFAULT TAGS
-    		$userTags = eF_getTableDataFlat(
-   				"module_xuser_user_tags",
-   				"tag",
-  				"user_id = 0"
-    		);
+    		$tags = array("is_user_default", "is_not_custom");
     	}
-    		
-    	return $userTags['tag'];
+    	
+    	return $tags;
 	}
 
 	public function getUserDetails($userID, $user_details_type = 'self') {

@@ -1575,8 +1575,9 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$sentTags = array_merge($userTags, $sentTags);
 		
-		// REMOVE ALL OUT-SCOPE
 		
+		
+		// REMOVE ALL OUT-SCOPE
 		$lastWorkflow = $this->_createEmptyWorkflow($basePrice);
 		
 		$totalAcrescimo = 0;
