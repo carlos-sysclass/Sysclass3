@@ -1118,6 +1118,91 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_CREATE_PAYMENT_FORM', $renderer -> toArray());
 	}
 	
+	public function editInvoiceAction() {
+		$smarty = $this->getSmartyVar();
+		/// GET =
+		/*
+		 * negociation_id	228
+		* invoice_index	3
+		*/
+	
+		$getValues = array(
+			'negociation_id'	=> $_GET['negociation_id'],
+			'invoice_index'		=> $_GET['invoice_index']
+		);
+	
+		$invoice = $this->_getNegociationInvoiceByIndex($getValues['negociation_id'], $getValues['invoice_index']);
+
+		//exit;
+	
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
+		$form = new HTML_QuickForm2("xpay_edit_invoice_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+		$form -> addHidden('negociation_id')->setValue($getValues['negociation_id']);
+		$form -> addHidden('invoice_index')->setValue($getValues['invoice_index']);
+	
+		$form
+			-> addText('valor', array('class' => 'small', 'alt' => 'decimal'), array('label'	=> __XPAY_VALUE));
+			//->setValue(number_format($invoice['valor'], 2, ",", ""));
+		
+		$form
+			-> addText('data_vencimento', array('class' => 'small no-button' , 'alt' => 'date'), array('label'	=> __XPAY_DUE_DATE));
+			//->setValue(date("d/m/Y", strtotime($invoice['data_vencimento'])));
+	
+		//$form -> addTextarea('description', array('class' => 'large'), array('label'	=> __XPAY_JUSTIFICATION));
+		$form -> addSubmit('_edit_invoice', null, array('label'	=> __XPAY_SUBMIT));
+		
+		if ($form -> isSubmitted() && $form -> validate()) {
+			// VALIDATE
+			$values = $form->getValue();
+			
+			$values['valor'] = (float)str_replace(",", ".", $values['valor']);
+			$data_vencimento = date_create_from_format("d/m/Y", $values['data_vencimento']);
+			
+			if ($data_vencimento) {
+				$values['data_vencimento'] = $data_vencimento->format("Y-m-d");
+			}
+			if (
+				$getValues['negociation_id'] == $values['negociation_id'] &&
+				$getValues['invoice_index'] == $values['invoice_index']
+			) {
+				ef_updateTableData(
+					"module_xpay_invoices",
+					array(
+						'valor'				=> $values['valor'],
+						'data_vencimento'	=> $values['data_vencimento']
+					),
+					sprintf("negociation_id = %d AND invoice_index = %d", $values['negociation_id'], $values['invoice_index'])
+				);
+				
+				$message = __XPAY_INVOICE_SUCCESSFULLY_SAVED;
+				$message_type = "success";
+			} else {
+				$message = __XPAY_INVOICE_SAVE_ERROR;
+				$message_type = "failure";
+			}
+			
+			// with is pop-up, close and send message to parent. if not, then show message.
+			$this->setMessageVar($message, $message_type);
+			if ($_GET['popup'] == 1) {
+				$smarty->assign("T_XPAY_MESSAGE", json_encode(array(
+					'message'		=> $message,
+					'message_type'	=> $message_type
+				)));
+				$smarty -> assign("T_XPAY_IS_DONE", true);
+			}
+		} else {
+			$values['valor']			= number_format($invoice['valor'], 2, ",", "");
+			$values['data_vencimento']	= date("d/m/Y", strtotime($invoice['data_vencimento']));
+		}
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_XPAY_EDIT_INVOICE_FORM', $renderer -> toArray());
+	}
+	
+	
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(

@@ -232,6 +232,12 @@ function getJqueryPeriodicData() {
 				buttonImageOnly: true
 			};
 			
+			/*
+			jQuery( ":input[alt='date']" ).each(function() {
+				alert(jQuery(this).val());
+			});
+			*/
+			
 			if (status == 'success') {
 				datepickerData = jQuery.extend(true, defaultDatepicker, data);
 				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(datepickerData);
@@ -251,6 +257,11 @@ function getJqueryPeriodicData() {
 				
 				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(defaultDatepicker);
 			}
+			/*
+			jQuery( ":input[alt='date']" ).each(function() {
+				alert(jQuery(this).val());
+			});
+			*/
 		}
 	);
 })(jQuery);

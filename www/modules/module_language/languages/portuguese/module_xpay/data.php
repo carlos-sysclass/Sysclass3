@@ -14,6 +14,8 @@ define("__XPAY_VIEW_TO_SEND_INVOICES_LIST", "Lista de pagamentos a receber");
 define("__XPAY_SIMULATE_NEGOCIATION", "Simular negociação");
 define("__XPAY_LAST_PAYMENTS", "Pagamentos realizados");
 define("__XPAY_CREATE_PAYMENT", "Registrar Pagamento Manual");
+define("__XPAY_EDIT_INVOICE", "Alterar Fatura");
+
 
 define("__XPAY_TITLE", "Pagamentos");
 define("__XPAY_PRINT_INVOICE", "Imprimir Fatura");
@@ -46,11 +48,16 @@ define("__XPAY_SUBMIT", "Salvar");
 define("__XPAY_UNKNOW_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
 define("__XPAY_NO_INVOICES_FOUND", "Nenhuma fatura encontrada");
 define("__XPAY_PAYMENT_SUCCESSFULLY_CREATED", "Pagamento registrado com sucesso.");
+define("__XPAY_INVOICE_SUCCESSFULLY_SAVED", "Fatura salva com sucesso.");
+define("__XPAY_INVOICE_SAVE_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
 define("__XPAY_SIMULATE_NEGOCIATION_SAVED", "Negociação salva com sucesso.");
+
 
 define("__XPAY_DAYS", "d");
 
 define("__XPAY_REAL_PAID_VALUE", "Valor Pago");
 define("__XPAY_TO_SUBTRACT_VALUE", "Considerado");
-define("__XPAY_JUSTIFICATION", "Justificativa"); 
+define("__XPAY_JUSTIFICATION", "Justificativa");
+define("__XPAY_DUE_DATE", "Data de Vencimento"); 
+define("__XPAY_VALUE", "Valor");
 ?>
