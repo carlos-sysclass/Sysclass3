@@ -596,22 +596,28 @@ class module_xpay extends MagesterExtendedModule {
 		// GET ONLY SIMULATED NEGOCIATIONS
 		$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 0);
 		$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 1);
-		
-		
+		/*
+		echo '<pre>';
+		var_dump($userNegociation);
+		echo '<pre>';
+		exit;
+		*/
 
 		// CHECK IF COURSE HAS A DEFAULT STATEMENT		
 		if (count($userNegociation) == 0 && count($simulatedNegociation) == 0) {
+			echo 1;
 			$userNegociation = $simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$userNegociation = $simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
 		} elseif (count($userNegociation) == 0) {
+			echo 2;
 			$userNegociation = $simulatedNegociation;
 		} elseif (count($simulatedNegociation) == 0) {
+			echo 3;
 			$simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
 		} else {
 
 		}
-		
 	
 		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
 		$form = new HTML_QuickForm2("xpay_invoice_params_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
@@ -1450,6 +1456,7 @@ class module_xpay extends MagesterExtendedModule {
 				'group_id' 	=> 0,
 				'user_id' 	=> 0
 			)
+			
 		));
 		
 		$insertData['negociation_id'] 		= $negociationID;
@@ -1584,7 +1591,6 @@ class module_xpay extends MagesterExtendedModule {
 				continue;
 			}
 			// CHECK CONDITION (IF ANY)
-			
 			if ($this->_isRuleAndTagsMatching($rule['id'], $sentTags)) {
 				if ($rule['applied_on'] == 'once') {
 					$workflows[] = $lastWorkflow = $this->_applyWorkflowRule($rule, $lastWorkflow);
@@ -1947,14 +1953,70 @@ class module_xpay extends MagesterExtendedModule {
 				*/
 				$negociationData['full_price']	+= $negociationData['base_price'];
 			} else {
+				/*
+				list(
+						$invoice['full_price'],
+						$invoice['acrescimo'],
+						$invoice['desconto'],
+						$invoice['rules'],
+						$invoice['workflow']
+				) = array_values($this->_applyFullPriceCalculations(
+						$negociationUser,
+						$basePrice,
+						array(
+								'ies_id' 	=> 0,
+								'polo_id' 	=> 0,
+								'course_id' => 0,
+								'class_id' 	=> 0,
+								'group_id' 	=> 0,
+								'user_id' 	=> 0
+						)
+				));
+				*/
+				
 				$negociationData['full_price']	= 0;
 				$negociationData['paid'] 		= 0;
 				
 				foreach($negociationData['invoices'] as $invoice) {
+					$total_basePrice 				+= $invoice['valor'];
 					$negociationData['full_price']	+= $invoice['full_price'];
 					$negociationData['acrescimo']	+= $invoice['acrescimo'];
 					$negociationData['desconto']	+= $invoice['desconto'];
 					$negociationData['paid'] 		+= $invoice['paid'];
+				}
+				
+				if ($total_basePrice <> $negociationData['base_price']) {
+					// INVOICE BASE PRICE SUM IS DIFERENT FROM NEGOCIATION BASE PRICE TOTAL, MUST CALCULATE THE DIFF
+					$totalUncovered = $negociationData['base_price'] - $total_basePrice;
+// 					var_dump($totalUncovered);
+					// APPLY A FULL PRICE CALCULATION ON $totalUncovered
+					$negociationCalc = array();
+					list(
+						$negociationCalc['full_price'],
+						$negociationCalc['acrescimo'],
+						$negociationCalc['desconto'],
+						$negociationCalc['rules'],
+						$negociationCalc['workflow']
+					) = array_values($this->_applyFullPriceCalculations(
+						$userNegociation,
+						$totalUncovered,
+						array(
+							'ies_id' 	=> 0,
+							'polo_id' 	=> 0,
+							'course_id' => 0,
+							'class_id' 	=> 0,
+							'group_id' 	=> 0,
+							'user_id' 	=> 0
+						),
+						/** @todo check how to get these "tags" */ 
+						array('is_not_registration_tax', 'is_not_overdue', 'is_not_full_paid', 'is_a_negociation')
+					));
+					
+					$negociationData['full_price'] 	+= $negociationCalc['full_price'];
+					$negociationData['acrescimo']	+= $negociationCalc['acrescimo'];
+					$negociationData['desconto'] 	+= $negociationCalc['desconto'];
+					$negociationData['rules']		=  $negociationCalc['rules'];
+					$negociationData['workflow']	=  $negociationCalc['workflow'];
 				}
 			}
 			
@@ -2123,7 +2185,7 @@ class module_xpay extends MagesterExtendedModule {
 			'is_not_custom'
 		);
 		$tags = array();
-		
+
 		//$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 		$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 		if (!$currentVencimento)
@@ -2134,8 +2196,6 @@ class module_xpay extends MagesterExtendedModule {
 		if ($currentVencimento) {
 			// cheching if a weekend
 			$weekday = intval($currentVencimento->format("N"));
-			
-
 			
 			//1 (for Monday) through 7 (for Sunday)
 			$OneDayInterval = new DateInterval("P1D");
