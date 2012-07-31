@@ -605,14 +605,11 @@ class module_xpay extends MagesterExtendedModule {
 
 		// CHECK IF COURSE HAS A DEFAULT STATEMENT		
 		if (count($userNegociation) == 0 && count($simulatedNegociation) == 0) {
-			echo 1;
 			$userNegociation = $simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$userNegociation = $simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
 		} elseif (count($userNegociation) == 0) {
-			echo 2;
 			$userNegociation = $simulatedNegociation;
 		} elseif (count($simulatedNegociation) == 0) {
-			echo 3;
 			$simulatedNegociation = $this->_createUserDefaultStatement(true, true);
 			$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
 		} else {
@@ -662,7 +659,7 @@ class module_xpay extends MagesterExtendedModule {
 			if ($negociationParams['paid'] > 0) {
 				
 				$paidInvoice = $this->_createInvoice(
-					$fakeNegociationID, $negociationParams['paid'], $default_vencimento, null, -1, false
+					$fakeNegociationID, $negociationParams['paid'], $default_vencimento, null, 0, false
 				);
 				$paidInvoice['locked'] 		= 1;
 				$paidInvoice['description'] = __XPAY_PAID_INVOICE_DESCRIPTION;
@@ -790,6 +787,7 @@ class module_xpay extends MagesterExtendedModule {
 		$hashNegociation = $_POST['negociation_hash'];
 		$jsonNegociation = $this->getCache($hashNegociation);
 		$userNegociation = json_decode($jsonNegociation, true, 50);
+		
 		// SAVE WHERE? PERSIST OR NOT PERSIST??
 		// THE "course_negociation rec" IS ALREADY BEEN SAVED. SAVE ONLY INVOICES 
 		
@@ -824,9 +822,14 @@ class module_xpay extends MagesterExtendedModule {
 			);
 		}
 		// APPLY DISCOUNT RULES
-		
-		
-		exit;
+		if ($_GET['output'] == 'json') {
+			$response = array(
+				"message"		=> __XPAY_SIMULATE_NEGOCIATION_SAVED,
+				"message_type"	=> "success"		
+			);
+			echo json_encode($response);
+			exit;
+		}
 	}
 	public function doPaymentAction() {
 		$smarty = $this->getSmartyVar();
@@ -1872,7 +1875,46 @@ class module_xpay extends MagesterExtendedModule {
 			$simulation_status = $contraints['simulation_status'];
 		}
 		$where[] = sprintf("neg.is_simulation IN (%s)", implode(",", $simulation_status));
+		/*
+		echo prepareGetTableData(
+				"module_xpay_course_negociation neg
+				LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
+				LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
+				LEFT JOIN users u ON (neg.user_id = u.id)
 		
+				LEFT OUTER JOIN users_to_courses uc ON (neg.course_id = uc.courses_ID AND u.login = uc.users_LOGIN AND uc.modality_id <> 3)
+				LEFT JOIN courses c ON (uc.courses_ID = c.id)
+				LEFT OUTER JOIN users_to_lessons ul ON (neg.lesson_id = ul.lessons_ID AND u.login = ul.users_LOGIN)
+				LEFT JOIN lessons l ON (ul.lessons_ID = l.id)
+				LEFT OUTER JOIN module_xpay_course_modality_prices clp ON (
+				(uc.courses_ID = clp.course_id OR ul.lessons_ID = clp.course_id ) AND
+				(uc.modality_id = clp.modality_id OR ul.modality_id = clp.modality_id ) AND (
+				(
+				( uc.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
+				( uc.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
+				( uc.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
+		) OR (
+				( ul.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
+				( ul.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
+				( ul.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
+		)
+		)
+		) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id OR ul.modality_id = cm.id)
+				",
+				//"neg.id, neg.user_id, neg.course_id, neg.negociation_index",
+				'neg.id, u.id as user_id, IFNULL(c.id, l.id) as module_id,
+				neg.course_id, neg.lesson_id,
+				u.name, u.surname, u.login,
+				IFNULL(c.name, l.name) as module, IFNULL(uc.from_timestamp, ul.from_timestamp) as matricula,
+				neg.is_simulation, IFNULL(IFNULL(clp.price, c.price), l.price) as base_price,
+				IFNULL(SUM(pd.paid), 0) as paid, IFNULL(uc.modality_id, ul.modality_id) as modality_id,
+				neg.negociation_index,
+				cm.name as modality',
+				implode(" AND ", $where),
+				"negociation_index DESC",
+				"neg.id, u.id, c.id"
+		);
+		*/
 		$negociationData = ef_getTableData(
 			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
@@ -1898,7 +1940,6 @@ class module_xpay extends MagesterExtendedModule {
 				)
 			) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id OR ul.modality_id = cm.id)
 			",
-			//"neg.id, neg.user_id, neg.course_id, neg.negociation_index",
 			'neg.id, u.id as user_id, IFNULL(c.id, l.id) as module_id, 
 			neg.course_id, neg.lesson_id, 
 			u.name, u.surname, u.login, 
@@ -1988,6 +2029,7 @@ class module_xpay extends MagesterExtendedModule {
 				if ($total_basePrice <> $negociationData['base_price']) {
 					// INVOICE BASE PRICE SUM IS DIFERENT FROM NEGOCIATION BASE PRICE TOTAL, MUST CALCULATE THE DIFF
 					$totalUncovered = $negociationData['base_price'] - $total_basePrice;
+					
 // 					var_dump($totalUncovered);
 					// APPLY A FULL PRICE CALCULATION ON $totalUncovered
 					$negociationCalc = array();
@@ -2012,9 +2054,22 @@ class module_xpay extends MagesterExtendedModule {
 						array('is_not_registration_tax', 'is_not_overdue', 'is_not_full_paid', 'is_a_negociation')
 					));
 					
+					
 					$negociationData['full_price'] 	+= $negociationCalc['full_price'];
-					$negociationData['acrescimo']	+= $negociationCalc['acrescimo'];
-					$negociationData['desconto'] 	+= $negociationCalc['desconto'];
+					
+					if ($totalUncovered < 0 && $negociationCalc['acrescimo'] == 0) { // A SOMA DAS FATURAS É MAIOR QUE O TOTAL DO CURSO. ADICIONAR COMO ACRESCIMO.
+						$negociationData['acrescimo'] 	+= abs($totalUncovered);
+						$negociationData['full_price']	+= $negociationData['acrescimo'];
+					} else {
+						$negociationData['acrescimo'] 	+= $negociationCalc['acrescimo'];
+					}		
+					if ($totalUncovered > 0 && $negociationCalc['desconto'] == 0) { // A SOMA DAS FATURAS É MENOR QUE O TOTAL DO CURSO. ADICIONAR COMO DESCONTO.
+						$negociationData['desconto'] 	+= $totalUncovered;
+						$negociationData['full_price']	-= $negociationData['desconto'];
+					} else {
+						$negociationData['desconto'] 	+= $negociationCalc['desconto'];
+					}
+					
 					$negociationData['rules']		=  $negociationCalc['rules'];
 					$negociationData['workflow']	=  $negociationCalc['workflow'];
 				}

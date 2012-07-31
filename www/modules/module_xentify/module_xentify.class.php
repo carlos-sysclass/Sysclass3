@@ -430,8 +430,10 @@ class module_xentify extends MagesterExtendedModule {
     
     private function getUserGroupsIndex($user) {
     	$ids = array();
-    	foreach($user->getGroups() as $group) {
-    		$ids[] = $group['id'];
+    	if ($user instanceof MagesterUser) {
+    		foreach($user->getGroups() as $group) {
+    			$ids[] = $group['id'];
+    		}
     	}
     	return $ids;
     }

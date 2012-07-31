@@ -46,6 +46,7 @@ define("__XPAY_SUBMIT", "Salvar");
 define("__XPAY_UNKNOW_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
 define("__XPAY_NO_INVOICES_FOUND", "Nenhuma fatura encontrada");
 define("__XPAY_PAYMENT_SUCCESSFULLY_CREATED", "Pagamento registrado com sucesso.");
+define("__XPAY_SIMULATE_NEGOCIATION_SAVED", "Negociação salva com sucesso.");
 
 define("__XPAY_DAYS", "d");
 
