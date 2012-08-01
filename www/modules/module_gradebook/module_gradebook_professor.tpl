@@ -65,10 +65,15 @@
 		<td>
 			&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/arrow_right.png'}" alt="{$smarty.const._GRADEBOOK_SWITCH_TO}" title="{$smarty.const._GRADEBOOK_SWITCH_TO}" style="vertical-align:middle">
 			<a href="javascript:void(0)" onclick="location=('{$T_GRADEBOOK_BASEURL}&switch_lesson='+Element.extend(this).next().options[this.next().options.selectedIndex].value)">{$smarty.const._GRADEBOOK_SWITCH_TO}</a>
-			<select id="switch_lesson" name="switch_lesson">
-{foreach name = 'lessons_loop' key = "id" item = "lesson" from = $T_GRADEBOOK_GRADEBOOK_LESSONS}
-				<option value="{$lesson.id}">{$lesson.name}</option>
-{/foreach}
+		<select id="switch_lesson" name="switch_lesson">
+		{foreach name = 'lessons_loop' key = "course_id" item = "course" from = $T_GRADEBOOK_GRADEBOOK_LESSONS}
+			<optgroup label="{$course.name}">
+			{foreach name = 'lessons_loop' key = "lesson_id" item = "lesson" from = $course.lessons}
+					<option value="{$lesson.id}">{$lesson.name}</option>
+			{/foreach}
+			</optgroup>
+		{/foreach}
+					
 			</select>
 		</td>
 {/if}

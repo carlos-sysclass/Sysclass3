@@ -62,21 +62,25 @@ class module_xlivechat extends MagesterExtendedModule {
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser(); 
         $xuserModule = $this->loadModule("xuser");
-              
+
+        
 		if ($xuserModule->getExtendedTypeID($currentUser) == "administrator") {
 			return array('title' => _MODULE_XLIVECHAT_NAME,
                          'image' => $this -> moduleBaseDir . 'images/xrequest.png',
                          'link'  => $this -> moduleBaseUrl,
 						 'class' => 'xlivechat'
             );
-        }	
+        }
+		   
+        
 	}
    	
 	
 	
 	public function getDefaultAction() {
 	    	$smarty = $this->getSmartyVar();
-	       	   	
+
+	    	
 	       	if ($this->getCurrentUser()->getType() == 'student') {
 				$smarty -> assign("T_TYPE_USER", "student");	
 				return self::GET_LIST_CHAT;
@@ -93,7 +97,10 @@ class module_xlivechat extends MagesterExtendedModule {
 	 	$smarty = $this -> getSmartyVar();
 	 	$listUser = eF_getTableData("module_xlivechat_messagechat", "*", "1","", "`from`");
 		$smarty -> assign("T_LIST_USER", $listUser );
-	
+		
+		
+	     
+		
 	 	return;
 	}
 	
@@ -107,7 +114,8 @@ class module_xlivechat extends MagesterExtendedModule {
 		echo $smarty->fetch($this->moduleBaseDir . "templates/includes/xlivechat_messagens.tpl");
 		exit;
 	}
-	
+
+
    public function getSmartyTpl() {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_XLIVECHAT_BASEDIR" , $this -> moduleBaseDir);

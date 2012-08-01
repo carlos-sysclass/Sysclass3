@@ -457,7 +457,10 @@ public function getName(){
     $lessonColumns = $this->getLessonColumns($currentLessonID);
     $allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
     $gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
-
+   /* 
+    var_dump($gradeBookLessons);
+    exit;
+*/
     $smarty->assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
     $smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
     $smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
@@ -746,7 +749,7 @@ public function getName(){
   $result = eF_getTableData("module_gradebook_objects", "count(id) as total_columns", "lessons_ID=".$lessonID);
   return $result[0]['total_columns'];
  }
-
+/*
  private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
 
   $lessons = array();
@@ -764,7 +767,50 @@ public function getName(){
 
   return $lessons;
  }
+*/
+ 
+ private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
 
+
+ 	
+  $lessons = array();
+  unset($professorLessons[$currentLessonID]); // do not use current lesson
+  
+  $lessons_ID = array_keys($professorLessons);
+  
+  $courses = MagesterCourse::getCourses(false);
+  
+   $result = eF_getTableData("module_gradebook_users a JOIN lessons l ON (a.lessons_ID = l.id)",
+   							 "DISTINCT a.lessons_ID as id, l.name, count(a.uid) as total_users,
+   							 ( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = a.lessons_ID ) as course_ID
+   							 ", 
+   							 "a.lessons_ID IN (".implode(",", $lessons_ID).")",
+   "",
+  							"a.lessons_ID HAVING count(a.uid) > 0"
+   							) ; 
+   							
+  $courselessons = array();
+   foreach($result as $lesson) {
+     		
+   		 if (!is_array($courselessons[$lesson['course_ID']])) {
+   			$courselessons[$lesson['course_ID']] = array(
+   				'id' 	=> $lesson['course_ID'],
+   				'name'	=> $courses[$lesson['course_ID']]['name'],
+   				'lessons' => array()
+   			);
+   		}
+   		$courselessons[$lesson['course_ID']]['lessons'][$lesson['id']] = $lesson;
+   		
+   }
+ 
+   
+     return $courselessons;
+   
+ }
+ 
+ 
+ 
+ 
  private function getStudentGrades($currentUser, $currentLessonID, $lessonColumns){
 
   $grades = array();
