@@ -634,7 +634,11 @@ $modulesUserOn = $currentUser->getModules();
 $listModules = array_keys($modulesUserOn);
 
 if( in_array("module_xlivechat", $listModules)) {
+	
+	
+	$listModules['module_xlivechat']->getSupportUsers();
  	
+	/*
 	$userOnline = MagesterUser::getUsersOnline();
 	
 	foreach ($userOnline as $_useron ) {
@@ -644,6 +648,7 @@ if( in_array("module_xlivechat", $listModules)) {
 	 		$viewLink = null;
 	 	}
 	}
+	*/
 }
 
 $smarty->assign("T_CHECK_VIEW_LINK_CHAT", $viewLink);

@@ -234,8 +234,7 @@ $configurationDefaults = array(
 	*/
 );
 
-
-$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["HTTP_HOST"]]);
+$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
 
 if (array_key_exists('overrideTheme', $configuration)) {
 	$overrideTheme = $configuration['overrideTheme'];
