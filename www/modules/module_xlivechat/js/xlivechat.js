@@ -3,7 +3,7 @@ var username;
 var chatHeartbeatCount = 0;
 var minChatHeartbeat = 1000;
 var maxChatHeartbeat = 33000;
-var chatHeartbeatTime = 1000;
+var chatHeartbeatTime = 5000;
 var originalTitle;
 var blinkOrder = 0;
 
@@ -15,6 +15,10 @@ var chatIsStarted = false;
 
 jQuery(document).ready(function(){
 	originalTitle = document.title;
+	if (typeof(startChatSystem) == 'boolean' && startChatSystem) {
+		startChatSession();
+		chatIsStarted = true;
+	}
 	
 
 	jQuery([window, document]).blur(function(){
@@ -23,8 +27,6 @@ jQuery(document).ready(function(){
 		windowFocus = true;
 		document.title = originalTitle;
 	});
-	
-
 	
 });
 
@@ -394,7 +396,7 @@ function startChatSession(){
 			setTimeout('jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").scrollTop(jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").first().scrollHeight);', 100); // yet another strange ie bug
 		}
 	
-	setTimeout('chatHeartbeat();',chatHeartbeatTime);
+		setTimeout('chatHeartbeat();',chatHeartbeatTime);
 		
 	}});
 }

@@ -374,7 +374,7 @@ body {
 .admin_page .ui-widget-content { border: 0 !important; }
 
 
-.showAccounts { 
+.topMenuItensContainer { 
 	position: absolute;
 	background: #FFF;
 	padding: 10px;
@@ -383,10 +383,10 @@ body {
 	top: 55px;
 	border: 1px solid #CCC;
 	width: 205px;
-	display: none;
+	display: none; 
 	text-align: left;
 }
-.showAccounts > .setaShowAccounts {
+.topMenuItensContainer > .setaShowAccounts {
 	left: 85%;
 	border-style: dashed dashed solid;
 	border-color: transparent;
@@ -414,3 +414,9 @@ body {
 	margin: 0 0 7px 0;
 }
 #showAccountsContainer .dropdown li:last-child { margin: 0; }
+
+#showChatUsersContainer .dropdown { display: block; }
+#showChatUsersContainer .dropdown li {
+	margin: 0 0 7px 0;
+}
+#showChatUsersContainer .dropdown li:last-child { margin: 0; }

@@ -630,30 +630,10 @@ $smarty->assign("T_CURRENT_USER_TYPE", $userRoles[$currentUser->user['user_types
 
 
 // Verifica se modulo chat esta ativo
-$modulesUserOn = $currentUser->getModules();
-$listModules = array_keys($modulesUserOn);
-
-if( in_array("module_xlivechat", $listModules)) {
-	
-	
-	$listModules['module_xlivechat']->getSupportUsers();
- 	
-	/*
-	$userOnline = MagesterUser::getUsersOnline();
-	
-	foreach ($userOnline as $_useron ) {
-			if ($_useron['login'] == "suporteult"){
-	 		$viewLink = 1;
-	 	} else {
-	 		$viewLink = null;
-	 	}
-	}
-	*/
+$userModules = $currentUser->getModules();
+if( array_key_exists("module_xlivechat", $userModules)) {
+	$userModules['module_xlivechat']->includeChatPrerequisites(true);
 }
-
-$smarty->assign("T_CHECK_VIEW_LINK_CHAT", $viewLink);
-
-
 
 
 // ASSIGN USER AVATAR

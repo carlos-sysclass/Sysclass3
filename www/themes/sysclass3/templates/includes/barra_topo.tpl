@@ -62,7 +62,7 @@
 							<img  src="images/others/transparent.png" alt="Acessar como" title="Acesso como" />
 						</button>
 					</a>
-					<div class="showAccounts" id="showAccountsContainer">
+					<div class="topMenuItensContainer" id="showAccountsContainer">
 						<span class="setaShowAccounts"></span>
 						<p class="altAcessoTitle">Alterar acesso</p>
 						<ul class="dropdown">
@@ -121,12 +121,32 @@
 				
 				<!-- Botão chat ( inicio ) -->
 							
-				{if $T_CHECK_VIEW_LINK_CHAT == 1 }
-				<a onclick="javascript:chatWith('suporteult')"href="javascript: void(0);" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
-					<button class="xlivechat_button" type="button">
-						<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
-					</button>
-				</a>
+				{if $T_XLIVECHAT_IS_ONLINE == 1}
+					<!-- 
+					<a onclick="javascript:chatWith('suporteult')"href="javascript: void(0);" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
+						<button class="xlivechat_button" type="button">
+							<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}">
+						</button>
+					</a>
+				 	-->
+				
+					<a href="#" title="{$smarty.const._MODULE_XLIVECHAT_NAME}" id="openChatList">
+						<button class="xlivechat_button" type="button" id="openChatListBtn">
+							<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}" />
+						</button>
+					</a>
+					
+					<div class="topMenuItensContainer" id="showChatUsersContainer">
+						<span class="setaShowAccounts"></span>
+						<p class="altAcessoTitle">Chat</p>
+						<ul class="dropdown">
+							{foreach name = 'additional_accounts' item = "item" key = "login" from = $T_XCHAT_SUPPORT_LIST}
+								{if $item.online} 
+									<li><a href="javascript: chatWith('{$login}');">#filter:login-{$login}#</a></li>
+								{/if}
+							{/foreach}
+						</ul>
+					</div>				
 				{/if}
 				<!-- Botão chat ( fim ) -->
 

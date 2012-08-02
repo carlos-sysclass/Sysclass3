@@ -7,6 +7,11 @@
 </script>
 <script>var BOOKMARKTRANSLATION = '{$smarty.const._BOOKMARKS}';var NODATAFOUND = '{$smarty.const._NODATAFOUND}';</script>
 
+
+{if $T_XLIVECHAT_STARTCHAT}
+	<script>var startChatSystem = true;</script>
+{/if}
+
 <script type = "text/javascript" src = "js/scripts.php?build={$smarty.const.G_BUILD}&load={$T_HEADER_MAIN_SCRIPTS}"> </script> {*Main scripts, such as prototype*}
 
 {if $T_HEADER_EDITOR}

@@ -62,14 +62,13 @@
 	color:green;
     
 }
-
 .xlivechat_agua_atendimento {
 	color:red;
 }
 #module_xlivechat_container {
 	position: fixed;
 	right: 0;
-	bottom: 0;
+	bottom: 71px;
 	z-index: 99;
 }
 

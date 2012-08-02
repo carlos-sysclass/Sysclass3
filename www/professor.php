@@ -273,6 +273,13 @@ $smarty -> assign("_admin_", $_admin_);
 $loadStylesheets = array();
 
 
+
+// Verifica se modulo chat esta ativo
+$userModules = $currentUser->getModules();
+if( array_key_exists("module_xlivechat", $userModules)) {
+	$userModules['module_xlivechat']->includeChatPrerequisites(true);
+}
+
 try {
 	if ($ctg == 'control_panel') {
 		/***/

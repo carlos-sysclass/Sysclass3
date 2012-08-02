@@ -747,7 +747,6 @@ label.error        		{ color: #FF0000; }
 	font-size: 12px; 
 	padding: 30px 0px 30px 0px; 
 	background: #2C2C2C; 
-	border-top: 4px solid #ffffff;
 	position: fixed; 
 	bottom: 0;
 	left: 0;

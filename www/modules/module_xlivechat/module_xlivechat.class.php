@@ -3,6 +3,13 @@ class module_xlivechat extends MagesterExtendedModule {
 	
 	const GET_LIST_CHAT				= 'list_chat_suporte';
 	
+	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
+		parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
+		
+		$this->SUPPORT_USER_TYPE_ID = 26;
+		
+	}
+	
     public function getName() {
         return "XLIVECHAT";
     }
@@ -63,7 +70,10 @@ class module_xlivechat extends MagesterExtendedModule {
 		$currentUser = $this -> getCurrentUser(); 
         $xuserModule = $this->loadModule("xuser");
               
-		if ($xuserModule->getExtendedTypeID($currentUser) == "administrator") {
+		if (
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+			$xuserModule->getExtendedTypeID($currentUser) == "support"
+		) {
 			return array('title' => _MODULE_XLIVECHAT_NAME,
                          'image' => $this -> moduleBaseDir . 'images/xrequest.png',
                          'link'  => $this -> moduleBaseUrl,
@@ -75,26 +85,19 @@ class module_xlivechat extends MagesterExtendedModule {
 	
 	
 	public function getDefaultAction() {
-	    	$smarty = $this->getSmartyVar();
-	       	   	
-	       	if ($this->getCurrentUser()->getType() == 'student') {
-				$smarty -> assign("T_TYPE_USER", "student");	
-				return self::GET_LIST_CHAT;
-				
-			} 
-			if ($this->getCurrentUser()->getType() == 'administrator') {
-				$smarty -> assign("T_TYPE_USER", "administrator");	
-				return self::GET_LIST_CHAT;
-				
-			}
+    	$smarty = $this->getSmartyVar();
+		$smarty -> assign("T_TYPE_USER", $this->getCurrentUser()->getType());
+
+		return self::GET_LIST_CHAT;
 	}
 
 	public function listChatSuporteAction() {
 	 	$smarty = $this -> getSmartyVar();
 	 	$listUser = eF_getTableData("module_xlivechat_messagechat", "*", "1","", "`from`");
+	 	
 		$smarty -> assign("T_LIST_USER", $listUser );
-	
-	 	return;
+		
+	 	return true;
 	}
 	
 	public function xlivechatMessagensAction($userqueue) {
@@ -117,5 +120,44 @@ class module_xlivechat extends MagesterExtendedModule {
   		//exit;
        return $this -> moduleBaseDir . "templates/default.tpl";
     }
+    
+    public function getSupportUsers($onlyOnline) {
+    	$userChatList = ef_getTableDataFlat("users", "login", "user_type = 'professor' AND user_types_ID = " . $this->SUPPORT_USER_TYPE_ID);
+    	
+    	$usersLogins = array_keys(MagesterUser::getUsersOnline());
+    	
+    	$currentUserLogin = $this->getCurrentUser()->user['login'];
+    	foreach($userChatList['login'] as $supportLogin ) {
+    		if ($currentUserLogin != $supportLogin) {
+	   			$suportUsers[$supportLogin] = array(
+	   				'user'		=> MagesterUserFactory::factory($supportLogin),
+	   				'online'	=> in_array($supportLogin, $usersLogins)
+	   			);
+    		}
+   		}
+   		return $suportUsers;
+   	//	$suportUsers
+    }
+    
+    public function includeChatPrerequisites() {
+    	$smarty = $this->getSmartyVar();
+    	// Verifica se modulo chat esta ativo
+    	$modulesUserOn = $this->getCurrentUser()->getModules();
+    	
+    	if( array_key_exists("module_xlivechat", $modulesUserOn)) {
+    		$userChatList = $modulesUserOn['module_xlivechat']->getSupportUsers(true);
+    	
+    		foreach($userChatList as $userChat) {
+    			if ($userChat['online']) {
+    				$smarty -> assign("T_XLIVECHAT_IS_ONLINE", true);
+    				$smarty -> assign("T_XLIVECHAT_STARTCHAT", true);
+    				break;
+    			}
+    		}
+    	}
+    	$smarty -> assign("T_XCHAT_SUPPORT_LIST", $userChatList);
+    }
+    
+    
 }
 ?>

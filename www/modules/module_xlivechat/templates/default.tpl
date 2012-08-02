@@ -1,11 +1,11 @@
-{if $T_XDIGEST_MAIN_TEMPLATE}
-	{include file="$T_XDIGEST_BASEDIR/templates/$T_XDIGEST_MAIN_TEMPLATE"}
+{if $T_XLIVECHAT_MAIN_TEMPLATE}
+	{include file="$T_XLIVECHAT_BASEDIR/templates/$T_XLIVECHAT_MAIN_TEMPLATE"}
 {else}
-	{include file="$T_XDIGEST_BASEDIR/templates/actions/$T_XDIGEST_ACTION.tpl"}
+	{include file="$T_XLIVECHAT_BASEDIR/templates/actions/$T_XLIVECHAT_ACTION.tpl"}
 {/if}
 
-{if $T_XDIGEST_TEMPLATES && $T_XDIGEST_TEMPLATES|@count == 1}
-	{assign var="item" value=$T_XDIGEST_TEMPLATES|@reset}
+{if $T_XLIVECHAT_TEMPLATES && $T_XLIVECHAT_TEMPLATES|@count == 1}
+	{assign var="item" value=$T_XLIVECHAT_TEMPLATES|@reset}
 		
 	{capture name=$index}
 		{include file=$item.template}
@@ -18,9 +18,9 @@
 		class			= $item.class
 		options			= $item.options
 	}
-{elseif $T_XDIGEST_TEMPLATES && $T_XDIGEST_TEMPLATES|@count > 1}
+{elseif $T_XLIVECHAT_TEMPLATES && $T_XLIVECHAT_TEMPLATES|@count > 1}
 	{capture name="t_enrollment_tabbers"}
-		{foreach name="edit_user_iteration" key="index" item="item" from=$T_XDIGEST_TEMPLATES}
+		{foreach name="edit_user_iteration" key="index" item="item" from=$T_XLIVECHAT_TEMPLATES}
 			{capture name=$index}
 				{include file=$item.template}
 			{/capture}
@@ -36,10 +36,10 @@
 	{/capture}
 	
 	{eF_template_printBlock 
-		title="_XDIGEST_TABS"
+		title="_XLIVECHAT_TABS"
 		data=$smarty.capture.t_enrollment_tabbers
-		tabs = $T_XDIGEST_TEMPLATES
+		tabs = $T_XLIVECHAT_TEMPLATES
 	}
 {/if}
 
-{include file="$T_XDIGEST_BASEDIR/templates/includes/javascript.tpl"}
+{include file="$T_XLIVECHAT_BASEDIR/templates/includes/javascript.tpl"}

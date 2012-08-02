@@ -991,7 +991,7 @@ abstract class MagesterUser
     //print("\ntime difference for user: ".$value['users_LOGIN'].' and interval '.$interval.' and time()='.time().' - '.$value['timestamp_now'].': '.(time() - $value['timestamp_now'])."\n");
     if (time() - $value['timestamp_now'] < $interval || !$interval) {
     	$value['login'] = $value['users_LOGIN'];
-     $usersOnline[] = array('login' => $value['users_LOGIN'],
+     $usersOnline[$value['users_LOGIN']] = array('login' => $value['users_LOGIN'],
              'name'		   	=> $value['name'],
              'surname'	   	=> $value['surname'],
              'formattedLogin'=> formatLogin(false, $value),

@@ -2,10 +2,13 @@
 <br />
 <div class="list_user_chat">
 {foreach item = "range" from = $T_LIST_USER}
-<a onclick="javascript:chatWithRetorn('{$range.from}')" href="javascript: void(0);" 
-title="{$smarty.const._MODULE_XLIVECHAT_NAME}" id="queue_{$range.from}" class="xlivechat_agua_atendimento">
-<span>{$range.from}</span><span>({$range.queue})</span><br />
-</a>
+	<a 
+		onclick="javascript:chatWithRetorn('{$range.from}')" href="javascript:void(0);" 
+		title="{$smarty.const._MODULE_XLIVECHAT_NAME}" 
+		id="queue_{$range.from}" 
+		class="xlivechat_agua_atendimento">
+			<span>{$range.from}</span><span>({$range.queue})</span><br />
+	</a>
 {/foreach}
 </div>
 
