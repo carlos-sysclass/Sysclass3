@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
 		return false;
 	});
 	
-	/*
+	
 	if (jQuery('#changeAccountBtn').size() > 0) {
 		
 		jQuery('#showAccountsContainer').css({
@@ -26,5 +26,5 @@ jQuery(document).ready(function() {
 			'left': (jQuery('#openChatListBtn').offset().left - 303 ) + 'px'
 		});
 	}
-	*/
+	
 });

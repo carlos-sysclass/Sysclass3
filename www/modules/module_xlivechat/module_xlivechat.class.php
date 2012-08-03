@@ -116,14 +116,12 @@ class module_xlivechat extends MagesterExtendedModule {
         $smarty -> assign("T_XLIVECHAT_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_XLIVECHAT_BASEURL" , $this -> moduleBaseUrl);
         $smarty -> assign("T_XLIVECHAT_BASELINK" , $this -> moduleBaseLink);
-  		//var_dump($this -> moduleBaseLink);
-  		//exit;
        return $this -> moduleBaseDir . "templates/default.tpl";
     }
     
     public function getSupportUsers($onlyOnline) {
     	$userChatList = ef_getTableDataFlat("users", "login", "user_type = 'professor' AND user_types_ID = " . $this->SUPPORT_USER_TYPE_ID);
-    	
+
     	$usersLogins = array_keys(MagesterUser::getUsersOnline());
     	
     	$currentUserLogin = $this->getCurrentUser()->user['login'];
