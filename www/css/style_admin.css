@@ -409,11 +409,18 @@ body {
 	color: #0e0e0e;
 
 }
+#showAccountsContainer {
+	left: 110px;
+}
 #showAccountsContainer .dropdown { display: block; }
 #showAccountsContainer .dropdown li {
 	margin: 0 0 7px 0;
 }
 #showAccountsContainer .dropdown li:last-child { margin: 0; }
+
+#showChatUsersContainer {
+	left: 200px;
+}
 
 #showChatUsersContainer .dropdown { display: block; }
 #showChatUsersContainer .dropdown li {
