@@ -72,7 +72,7 @@ function chatWithRetorn(chatuser) {
 }
 
 function substitutePeriodForUndelineOrUnderscore(value) {
-	return new String(value).replace(/\./, "_");
+	return new String(value).replace(/\./g, "_");
 }
 
 function createChatBox(chatboxtitle,minimizeChatBox) {
@@ -361,9 +361,9 @@ function checkChatBoxInputKey(event,chatboxtextarea,chatboxtitle) {
 				jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+username+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+message+'</span></div>');
 				jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").scrollTop(jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").last().scrollHeight);
 				
-				if (is_bottom) {
+				//if (is_bottom) {
 					scrollContentBoxToBottom(sanitizeChatboxtitle);
-				}
+				//}
 			});
 		}
 		chatHeartbeatTime = minChatHeartbeat;
