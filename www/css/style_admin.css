@@ -383,7 +383,8 @@ body {
 	top: 55px;
 	border: 1px solid #CCC;
 	width: 205px;
-	display: none; 
+	/* display: none; */
+	visibility: hidden;
 	text-align: left;
 }
 .topMenuItensContainer > .setaShowAccounts {

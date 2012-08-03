@@ -12,18 +12,19 @@ jQuery(document).ready(function() {
 		jQuery('#showChatUsersContainer').filter(':not(:animated)').fadeToggle();
 		return false;
 	});
-	/*
-	if (jQuery('#changeAccountBtn').size() > 0) {
-		
-		jQuery('#showAccountsContainer').css({
-			'left': (jQuery('#changeAccountBtn').offset().left - 303 ) + 'px'
-		});
-	}
 	
-	if (jQuery('#openChatListBtn').size() > 0) {
-		jQuery('#showChatUsersContainer').css({
-			'left': (jQuery('#openChatListBtn').offset().left - 303 ) + 'px'
-		});
-	}
-	*/
+
+	jQuery("#showAccountsContainer").position({
+		of: jQuery( "#changeAccountBtn" ),
+		my: "right top",
+		at: "right bottom",
+		offset: "8 8"
+	}).hide().css("visibility", "visible");
+	
+	jQuery("#showChatUsersContainer").show().position({
+		of: jQuery( "#openChatListBtn" ),
+		my: "right top",
+		at: "right bottom",
+		offset: "8 8"
+	}).hide().css("visibility", "visible");
 });
