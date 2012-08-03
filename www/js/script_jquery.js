@@ -13,16 +13,18 @@ jQuery(document).ready(function() {
 		return false;
 	});
 	
-	
+	/*
 	if (jQuery('#changeAccountBtn').size() > 0) {
+		
 		jQuery('#showAccountsContainer').css({
 			'left': (jQuery('#changeAccountBtn').offset().left - 303 ) + 'px'
-		})
+		});
 	}
 	
 	if (jQuery('#openChatListBtn').size() > 0) {
 		jQuery('#showChatUsersContainer').css({
 			'left': (jQuery('#openChatListBtn').offset().left - 303 ) + 'px'
-		})
+		});
 	}
+	*/
 });
