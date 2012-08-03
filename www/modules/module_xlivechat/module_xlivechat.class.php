@@ -127,8 +127,9 @@ class module_xlivechat extends MagesterExtendedModule {
     	$currentUserLogin = $this->getCurrentUser()->user['login'];
     	foreach($userChatList['login'] as $supportLogin ) {
     		if ($currentUserLogin != $supportLogin || $this->getCurrentUser()->user['users_types_ID']) {
+    			$user = MagesterUserFactory::factory($supportLogin);
 	   			$suportUsers[$supportLogin] = array(
-	   				'user'		=> MagesterUserFactory::factory($supportLogin),
+	   				'user'		=> $user->user,
 	   				'online'	=> in_array($supportLogin, $usersLogins)
 	   			);
     		}
