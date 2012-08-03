@@ -77,7 +77,7 @@ function substitutePeriodForUndelineOrUnderscore(value) {
 
 function createChatBox(chatboxtitle,minimizeChatBox) {
 	
-	sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+	var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
 	
 	if (jQuery("#chatbox_"+sanitizeChatboxtitle).length > 0) {
 		if (jQuery("#chatbox_"+chatboxtitle).css('display') == 'none') {
@@ -209,7 +209,7 @@ function chatHeartbeat(){
 
 				chatboxtitle = item.f;
 				
-				sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+				var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
 
 				if (jQuery("#chatbox_"+sanitizeChatboxtitle).length <= 0) {
 					createChatBox(chatboxtitle);
@@ -218,6 +218,10 @@ function chatHeartbeat(){
 					jQuery("#chatbox_"+sanitizeChatboxtitle).css('display','block');
 					restructureChatBoxes();
 				}
+				
+				/// CHECK IF CHATCONTENT IS ON BOTTOM
+				
+				var is_bottom = checkForContentBoxAtBottom(sanitizeChatboxtitle);
 				
 				if (item.s == 1) {
 					item.f = username;
@@ -232,6 +236,9 @@ function chatHeartbeat(){
 					newMessagesWin[sanitizeChatboxtitle] = true;
 					jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
 					jQuery("#xlivechatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
+				}
+				if (is_bottom) {
+					scrollContentBoxToBottom(sanitizeChatboxtitle);
 				}
 
 				jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").scrollTop(jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").first().scrollHeight);
@@ -259,9 +266,29 @@ function chatHeartbeat(){
 	
 }
 
+function checkForContentBoxAtBottom(chatboxtitle) {
+	var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+	
+	var contentBox = jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent");
+	if (contentBox[0].scrollHeight - contentBox.scrollTop() <= contentBox.outerHeight()) {
+		is_bottom = true;
+	} else {
+		is_bottom = false;
+	}
+	
+	return is_bottom;
+}
+
+function scrollContentBoxToBottom(chatboxtitle) {
+	var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+	var contentBox = jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent");
+	contentBox.animate({scrollTop: contentBox[0].scrollHeight});
+}
+
+
 function closeChatBox(chatboxtitle) {
 	
-	sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+	var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
 	
 	jQuery('#chatbox_'+sanitizeChatboxtitle).css('display','none');
 	
@@ -318,7 +345,7 @@ function toggleChatBoxGrowth(chatboxtitle) {
 
 function checkChatBoxInputKey(event,chatboxtextarea,chatboxtitle) {
 	
-	sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
+	var sanitizeChatboxtitle = substitutePeriodForUndelineOrUnderscore(chatboxtitle);
 	 
 	if(event.keyCode == 13 && event.shiftKey == 0)  {
 		message = jQuery(chatboxtextarea).val();
@@ -328,10 +355,15 @@ function checkChatBoxInputKey(event,chatboxtextarea,chatboxtitle) {
 		jQuery(chatboxtextarea).css('height','44px');
 		if (message != '') {
 			jQuery.post("/modules/module_xlivechat/chat.php?action=sendchat", {to: chatboxtitle, message: message} , function(data){
-			//jQuery.post("?ctg=module&op=module_xlivechat&action=sendchat", {to: chatboxtitle, message: message} , function(data){
+				var is_bottom = checkForContentBoxAtBottom(sanitizeChatboxtitle);
+				
 				message = message.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
 				jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+username+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+message+'</span></div>');
 				jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").scrollTop(jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").last().scrollHeight);
+				
+				if (is_bottom) {
+					scrollContentBoxToBottom(sanitizeChatboxtitle);
+				}
 			});
 		}
 		chatHeartbeatTime = minChatHeartbeat;
