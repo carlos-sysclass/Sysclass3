@@ -90,7 +90,7 @@ function createChatBox(chatboxtitle,minimizeChatBox) {
 	
 	jQuery(" <div />" ).attr("id","chatbox_"+sanitizeChatboxtitle)
 	.addClass("chatbox")
-	.html('<div class="chatboxhead" onclick="javascript:toggleChatBoxGrowth(\''+chatboxtitle+'\')" ><div class="chatboxtitle">'+chatboxtitle+'</div><div class="chatboxoptions"><a href="javascript:void(0)" onclick="javascript:toggleChatBoxGrowth(\''+chatboxtitle+'\')">-</a> <a href="javascript:void(0)" onclick="javascript:closeChatBox(\''+chatboxtitle+'\')">X</a></div><br clear="all"/></div><div class="chatboxcontent"></div><div class="chatboxinput"><textarea class="chatboxtextarea" onkeydown="javascript:return checkChatBoxInputKey(event,this,\''+chatboxtitle+'\');"></textarea></div>')
+	.html('<div class="chatboxhead" onclick="javascript:toggleChatBoxGrowth(\''+chatboxtitle+'\')" ><div class="chatboxtitle">'+chatboxtitle+'</div><div class="chatboxoptions"><a href="javascript:void(0)" onclick="javascript:closeChatBox(\''+chatboxtitle+'\')">X</a></div><br clear="all"/></div><div class="chatboxcontent"></div><div class="chatboxinput"><textarea class="chatboxtextarea" onkeydown="javascript:return checkChatBoxInputKey(event,this,\''+chatboxtitle+'\');"></textarea></div>')
 	.appendTo(jQuery("#module_xlivechat_container"));
 			   
 	jQuery("#chatbox_"+sanitizeChatboxtitle).css('bottom', '0px');
@@ -237,6 +237,9 @@ function chatHeartbeat(){
 					jQuery("#chatbox_"+sanitizeChatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
 					jQuery("#xlivechatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
 				}
+				
+				jQuery.playSound('/modules/module_xlivechat/audio/msg.wav');
+				
 				if (is_bottom) {
 					scrollContentBoxToBottom(sanitizeChatboxtitle);
 				}
@@ -484,3 +487,14 @@ jQuery.cookie = function(name, value, options) {
         return cookieValue;
     }
 };
+
+(function(jQuery){
+	jQuery('body').append('<span id="play-sound-wrapper"></span>');
+
+	jQuery.extend({
+		playSound: function(){
+			jQuery('#play-sound-wrapper').html("<embed src='"+arguments[0]+"' hidden='true' autostart='true' loop='false'>");
+	    }
+	});
+	
+})(jQuery);

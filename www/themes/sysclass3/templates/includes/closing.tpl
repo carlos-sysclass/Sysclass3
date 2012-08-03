@@ -187,4 +187,5 @@ if (!usingHorizontalInterface) {
 
 </script>
 
-<div id="module_xlivechat_container"></div>
+<div id="module_xlivechat_container">
+</div>

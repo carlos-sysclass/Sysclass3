@@ -142,7 +142,7 @@
 						<ul class="dropdown">
 							{foreach name = 'additional_accounts' item = "item" key = "login" from = $T_XCHAT_SUPPORT_LIST}
 								{if $item.online} 
-									<li><a href="javascript: chatWith('{$login}');">#filter:login-{$login}#</a></li>
+									<li><a href="javascript: chatWith('{$login}');">{$item.user.name} {$item.user.surname}</a></li>
 								{/if}
 							{/foreach}
 						</ul>
