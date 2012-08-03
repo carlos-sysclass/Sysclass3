@@ -542,7 +542,8 @@ try {
 							case "module_onsync" :
 							case "module_blogs" :
 							case "module_translate" :
-							case "module_rss" : 
+							case "module_rss" :
+							case "module_xlivechat" :
 							case "module_xrequest" : {
 								$controlPanelOption['group'] = 5;
 								break;
