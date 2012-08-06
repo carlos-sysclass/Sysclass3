@@ -264,4 +264,16 @@ function getJqueryPeriodicData() {
 			*/
 		}
 	);
+	
+	// Requires jQuery!
+	// Requires jQuery!
+	$.ajax({
+	    url: "https://jira.wiseflex.com/s/en_USag3i3o/772/4/1.1.1/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?collectorId=927d80a0",
+	    type: "get",
+	    cache: true,
+	    dataType: "script"
+	});
+
+
+	
 })(jQuery);
