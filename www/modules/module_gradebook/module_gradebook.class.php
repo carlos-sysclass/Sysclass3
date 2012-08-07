@@ -52,10 +52,10 @@ public function getName(){
 
    $object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['import_grades']);
 
-   if($object[0]['creator'] != $_SESSION['s_login']){
-    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
-    exit;
-   }
+//   if($object[0]['creator'] != $_SESSION['s_login']){
+//    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+//    exit;
+//   }
 
    $result = eF_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$_GET['import_grades']);
    $type = $result[0]['refers_to_type'];
@@ -70,10 +70,10 @@ public function getName(){
 
    $object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['delete_column']);
 
-   if($object[0]['creator'] != $_SESSION['s_login']){
-    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
-    exit;
-   }
+//   if($object[0]['creator'] != $_SESSION['s_login']){
+//    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+//    exit;
+//   }
 
    eF_deleteTableData("module_gradebook_objects", "id=".$_GET['delete_column']);
    eF_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
