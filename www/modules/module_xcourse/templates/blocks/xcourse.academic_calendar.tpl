@@ -1,5 +1,5 @@
 {foreach key="course_id" item="course_academic" from=$T_XCOURSE_ACADEMIC_CALENDAR}
-	{assign var="course_calendar_capture" value="course_calendar_`$course_id`"} 
+	{assign var="course_calendar_capture" value="course_calendar_`$course_id`"}
 	
 	{if $course_academic.lessons}
 		{capture name="calendar_table_header"}
@@ -14,13 +14,15 @@
 				{if !is_null($lessons_times.start_date) || !is_null($lessons_times.end_date)}
 					<tr>
 						<td>
+
 							<a href="{$T_XCOURSE_BASEURL}student.php?ctg=module&op=module_xcourse&action=load_academic_calendar_lesson&course_id={$course_id}&lesson_id={$lesson_id}&popup=1" 
 							   target="POPUP_FRAME"
-							   onclick="eF_js_showDivPopup('{$lessons_times.name}', 1)"
-							   >
+							   onclick="eF_js_showDivPopup('{$lessons_times.name}', 2)"
+							>
 								{$lessons_times.name|eF_truncate:70}
 							</a>
-				
+
+							
 						</td>
 						<td align="center">{if $lessons_times.start_date}#filter:date-{$lessons_times.start_date}#{else}N/A{/if}</td>
 						<td align="center">{if $lessons_times.end_date}#filter:date-{$lessons_times.end_date}#{else}N/A{/if}</td>
@@ -89,3 +91,5 @@
 		{/if}
 	{/foreach}
 </ul>
+
+

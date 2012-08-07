@@ -233,6 +233,9 @@ $MODULE_HCD_EVENTS['SEMINAR'] = 6;
 $MODULE_HCD_EVENTS['FIRED'] = 7;
 $MODULE_HCD_EVENTS['LEFT'] = 8;
 $loadScripts = array();
+
+
+
 /**
  * Setup version
  *

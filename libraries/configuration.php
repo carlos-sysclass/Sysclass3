@@ -81,7 +81,7 @@ $configurationDefaults = array(
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
-		'https'		=> 'required', // 'none', 'optional', 'required'
+		'https'		=> 'optional', // 'none', 'optional', 'required'
 		'overrideTheme' => 'sysclass3'
 	),
 	'www.sysclass.com'	=> array(
