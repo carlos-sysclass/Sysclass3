@@ -129,7 +129,7 @@ jQuery(function($) {
 		jQuery(this).next(".applied_rules").show();
 	},function() {
 		jQuery(this).next(".applied_rules").hide();
-	})
+	});
 
 
 	//jQuery(".__XPAY_INVOICE_LIST").dataTable( opt );

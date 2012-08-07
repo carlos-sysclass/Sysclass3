@@ -1292,11 +1292,13 @@ abstract class MagesterUser
     } else {
     	//var_dump(is_dir(G_MODULESPATH.$folder));
     	//var_dump(is_file(G_MODULESPATH.$folder."/".$className.".class.php"));
+    	/*
     	var_dump('DELETE ' . $className);
     	exit;
      eF_deleteTableData("modules","className = '".$className."'");
      $message = _ERRORLOADINGMODULE . " " . $className . " " . _MODULEDELETED;
      $message_type = "failure";
+     */
     }
    }
   }

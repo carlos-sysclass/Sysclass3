@@ -160,7 +160,7 @@ function MergeContentTrees(sourceID, mergeID) {
 		jQuery("#xcourse-academic-calendar > li" + class_course_name).show();
 		jQuery("#xcourse-academic-calendar > li" + class_lesson_name).show();
 	});
-
+	
 	// carrega mensagens do forum do ultimo curso selecionado pelo aluno
 	jQuery.Topic('xcourse_course_lesson_change').subscribe(function(course_id, lesson_id) {
 		jQuery('.xcontent_forum_lessons_list li').hide();

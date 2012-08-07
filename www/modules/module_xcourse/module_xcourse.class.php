@@ -638,7 +638,9 @@ class module_xcourse extends MagesterExtendedModule {
 			return false;
 		}
 		$userCourses = $currentUser -> getUserCourses($constraints);
-		if ($currentLesson = $this->getCurrentLesson()) {
+		
+		//if ($currentLesson = $this->getCurrentLesson()) {
+			/*
 			// GET CURRENT COURSE
 			if ($this->getCurrentCourse()) {
 				$lessonAcademicCalendar = array();
@@ -658,17 +660,29 @@ class module_xcourse extends MagesterExtendedModule {
 				}
 			}
 			$smarty -> assign("T_XCOURSE_ACADEMIC_CALENDAR", $lessonAcademicCalendar);
-		} else {
+			*/
+		//} else {
 			$courseAcademicCalendar = array();
 			foreach ($userCourses as $key => $course) {
 				$courseAcademicCalendar[$course -> course['id']] = array(
 					'course'	=> $course->course,
 					'lessons' 	=> $this->getAcademicCalendar($course -> course['id'], $course -> course['classe_id']) 
 				);
-			}
 				
+				foreach($courseAcademicCalendar[$course -> course['id']]['lessons'] as $key => $lesson) {
+					$academicCalendar = $this->getAcademicCalendarSeries($course -> course['id'], $course -> course['classe_id'], $lesson['lesson_id'], $hasCalendar);
+					$courseAcademicCalendar[$course -> course['id']]['lessons'][$key]['series'] = $academicCalendar[$lesson['lesson_id']]['series'];
+						
+				}
+			}
+			/*
+			echo "<pre>";
+			var_dump($courseAcademicCalendar);
+			echo "</pre>";
+			exit;
+				*/
 			$smarty -> assign("T_XCOURSE_ACADEMIC_CALENDAR", $courseAcademicCalendar);
-		}
+		//}
 		$continue = false;
 
 		if (isset($courseAcademicCalendar)) {
