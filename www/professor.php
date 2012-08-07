@@ -270,6 +270,22 @@ $smarty -> assign("_student_", $_student_);
 $smarty -> assign("_professor_", $_professor_);
 $smarty -> assign("_admin_", $_admin_);
 
+if (!$GLOBALS['configuration']['disable_messages']) {
+	if (($currentUser -> coreAccess['personal_messages']) || $currentUser -> coreAccess['personal_messages'] != 'hidden') {
+		$unreadMessages = $messages = eF_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
+		$smarty -> assign("T_UNREAD_MESSAGES", $messages[0]['count(*)']);
+		if ($messages[0]['count(*)'] == 1) {
+			$smarty -> assign("T_UNREAD_MESSAGES_TEXT", _YOUHAVE_ONE_UNREADMESSAGE);
+		} else {
+			$smarty -> assign("T_UNREAD_MESSAGES_TEXT", sprintf(_YOUHAVE_X_UNREADMESSAGES, $messages[0]['count(*)']));
+		}
+	} else {
+		$smarty -> assign("T_NO_MESSAGES", true);
+	}
+} else {
+	$smarty -> assign("T_NO_PERSONAL_MESSAGES", true);
+}
+
 $loadStylesheets = array();
 
 
