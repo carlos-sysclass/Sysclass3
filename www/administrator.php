@@ -93,6 +93,7 @@ foreach ($loadedModules as $module) {
 	$module->onNewPageLoad();
 }
 
+
 /* Added Session variable for search results */
 $_SESSION['referer'] = $_SERVER['REQUEST_URI'];
 
