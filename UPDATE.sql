@@ -2556,3 +2556,12 @@ INSERT INTO `sysclass_root`.`module_xentify_scope_tags` (
 VALUES (
 '13', '6', 'is_custom'
 );
+
+
+/* 2012-08-08 */
+ALTER TABLE `news` ADD `xscope_id` SMALLINT( 4 ) NOT NULL DEFAULT '0' AFTER `id` ;
+ALTER TABLE `news` ADD `xentify_id` TEXT NULL AFTER `xscope_id`;
+UPDATE `sysclass_root`.`module_xentify_scopes` SET `active` = '1' WHERE `module_xentify_scopes`.`id` =1;
+ALTER TABLE `lessons` ADD `ies_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `id`;
+
+

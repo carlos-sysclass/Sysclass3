@@ -76,10 +76,19 @@ class module_xcms extends MagesterExtendedModule {
 			"classe_id",
 			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
 		);
+
+		$xentifyModule = $this->loadModule("xentify");
+		$user = $this->getCurrentUser();
+		
 		foreach( $news as $key => $noticia) {
+			
 			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
 				unset($news[$key]);
 			} elseif ( $ajax && $noticia['classe_id']==0 ) { 
+				unset($news[$key]);
+			}
+			
+			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
 				unset($news[$key]);
 			}
 		}

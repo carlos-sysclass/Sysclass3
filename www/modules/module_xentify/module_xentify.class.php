@@ -184,11 +184,18 @@ class module_xentify extends MagesterExtendedModule {
     
     
     public function isUserInScope($user = null, $scope_type, $scope_id) {
+    	if ($scope_type == 0 || is_null($scope_type)) {
+    		return true;
+    	}
+    	
     	$status = $this->getUserScopeStatus($user, $scope_type, $scope_id);
     	
     	switch($scope_type) {
     		case 0 : { // SAME POLO AND SAME CLASS
     			return true;
+    		}
+    		case 1 : { // SAME POLO AND SAME CLASS
+    			return $status['same_ies'];
     		}
     		case 2 : { // SAME POLO AND SAME CLASS
     			return $status['same_polo'];
@@ -221,6 +228,7 @@ class module_xentify extends MagesterExtendedModule {
     		$user = $this->getCurrentUser();
     	}
     	$status = array(
+    		'same_ies'		=> false,
     		'same_polo'		=> false,
     		'same_classe'	=> false,
     		'same_user'		=> false,
@@ -230,8 +238,11 @@ class module_xentify extends MagesterExtendedModule {
 	   	);
 	   	$data = $this->getUserScopeData($scope_type, $scope_id);
 
-
     	switch($scope_type) {
+    		case 1 : { // SAME POLO
+    			$status['same_ies'] = $this->checkUserScopeSameIes($user, $data['ies_id']);
+    			break;
+    		}
     		case 2 : { // SAME POLO
     			$status['same_polo'] = $this->checkUserScopeSamePolo($user, $data['polo_id']);
     			break;
@@ -270,12 +281,17 @@ class module_xentify extends MagesterExtendedModule {
     	
     	$data = array(
     		'user_id'			=> null,
+    		'ies_id'			=> null,
 			'polo_id'			=> null,
    			'classe_id'			=> null,
     		'group_id'			=> null
 		);
     	
     	switch($scope_type) {
+    		case 1 : { // SAME POLO AND SAME CLASS
+    			list($data['ies_id']) = explode(';', $scope_id);
+    			break;
+    		}
     		case 2 : { // SAME POLO AND SAME CLASS
     			list($data['polo_id']) = explode(';', $scope_id);
     			break;
@@ -397,6 +413,15 @@ class module_xentify extends MagesterExtendedModule {
   		} else {
    			return MagesterUser :: convertDatabaseResultToUserObjects($result);
   		}
+	}
+	
+	private function getUserScopeIesIndex($user) {
+		$userIes = $user->getUserIes();
+		
+		return $userIes;
+	}
+	private function checkUserScopeSameIes($user, $ies_id) {
+		return in_array($ies_id, $this->getUserScopeIesIndex($user));
 	}
     
 	private function getUserScopePoloIndex($user) {
