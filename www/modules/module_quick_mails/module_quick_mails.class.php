@@ -26,6 +26,7 @@ class module_quick_mails extends MagesterExtendedModule {
 		}
 		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
 		} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
+			$user = $this->getCurrentUser();
 			$contactList = eF_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
 				"qm.*, COUNT(qml.user_id)", 
@@ -34,6 +35,9 @@ class module_quick_mails extends MagesterExtendedModule {
 				"qm.id HAVING COUNT(qml.user_id) > 0"
 			);
 			foreach($contactList as &$item) {
+				
+				
+				
 				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
 				$image = explode("/", $item['image']);
 				$item['image'] = array(
