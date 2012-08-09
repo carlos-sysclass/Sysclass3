@@ -218,6 +218,11 @@ class module_xentify extends MagesterExtendedModule {
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'];
     		}
+    		case 14 : { // OVERDUE INVOICES USER
+    			/** @todo Implementar checagem de inadimplência */
+    			return $status['same_group'] && $status['same_course'];
+    		}
+    		
     		default : {
     			return false;
     		}
@@ -232,7 +237,8 @@ class module_xentify extends MagesterExtendedModule {
     		'same_polo'		=> false,
     		'same_classe'	=> false,
     		'same_user'		=> false,
-    		'same_group'	=> false,    			
+    		'same_group'	=> false,
+   			'same_course'	=> false,
     		'no_overdue'	=> false,
     		'overdue'		=> false
 	   	);
@@ -265,6 +271,11 @@ class module_xentify extends MagesterExtendedModule {
     			$status['same_group']	= $this->checkUserScopeSameGroup($user, $data['group_id']); 
     			break;
     		}
+    		case 14 : {
+    			$status['same_group']	= $this->checkUserScopeSameGroup($user, $data['group_id']);
+    			$status['same_course']	= $this->checkUserScopeSameCourse($user, $data['group_id']);
+    			break;
+    		}
     		
     		default : {
     			return false;
@@ -284,7 +295,8 @@ class module_xentify extends MagesterExtendedModule {
     		'ies_id'			=> null,
 			'polo_id'			=> null,
    			'classe_id'			=> null,
-    		'group_id'			=> null
+    		'group_id'			=> null,
+   			'course_id'			=> null
 		);
     	
     	switch($scope_type) {
@@ -307,7 +319,11 @@ class module_xentify extends MagesterExtendedModule {
     		case 13 : { // SAME GROUPS
     			list($data['group_id']) = explode(';', $scope_id);
     			break;
-    		}  		
+    		}
+    		case 14 : { // SAME GROUPS
+    			list($data['group_id'], $data['course_id']) = explode(';', $scope_id);
+    			break;
+    		}
     	}
     	return $data;
     }
@@ -465,7 +481,22 @@ class module_xentify extends MagesterExtendedModule {
     private function checkUserScopeSameGroup($user, $group_id) {
     	return in_array($group_id, $this->getUserGroupsIndex($user));
     }
-    
+    private function getUserCoursesIndex($user) {
+    	$ids = array();
+    	
+    	if ($user instanceof MagesterUser) {
+    		$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
+    		$userCourses = $this -> getUserCourses($constraints);
+    		
+    		foreach($userCourses as $course) {
+    			$ids[] = $course['id'];
+    		}
+    	}
+    	return $ids;
+    }
+    private function checkUserScopeSameCourse($user, $course_id) {
+    	return in_array($course_id, $this->getUserCoursesIndex($user));
+    }
     
 	private function checkUserInDebt($user) {
 		return $this->loadModule("xpay")->isUserInDebt($user);
