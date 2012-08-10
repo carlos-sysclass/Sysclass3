@@ -7,12 +7,16 @@ jQuery(document).ready(function() {
 		jQuery('#showAccountsContainer').filter(':not(:animated)').fadeToggle();
 		return false;
 	});
-	
-	jQuery('#openChatList').click(function(){
-		jQuery('#showChatUsersContainer').filter(':not(:animated)').fadeToggle();
-		return false;
-	});
-	
+/*	
+#	jQuery('#openChatList').click(function(){
+#		jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
+#		return false;
+#	});
+*/
+	jQuery('#openChatListBtn').click(function(){
+                jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
+                return false;
+        });
 
 	jQuery("#showAccountsContainer").position({
 		of: jQuery( "#changeAccountBtn" ),
@@ -26,5 +30,6 @@ jQuery(document).ready(function() {
 		my: "right top",
 		at: "right bottom",
 		offset: "8 8"
-	}).hide().css("visibility", "visible");
+	}).hide();
+	jQuery("#showChatUsersContainer").css("visibility", "visible");
 });

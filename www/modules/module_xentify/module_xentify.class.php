@@ -273,7 +273,7 @@ class module_xentify extends MagesterExtendedModule {
     		}
     		case 14 : {
     			$status['same_group']	= $this->checkUserScopeSameGroup($user, $data['group_id']);
-    			$status['same_course']	= $this->checkUserScopeSameCourse($user, $data['group_id']);
+    			$status['same_course']	= $this->checkUserScopeSameCourse($user, $data['course_id']);
     			break;
     		}
     		
@@ -486,7 +486,7 @@ class module_xentify extends MagesterExtendedModule {
     	
     	if ($user instanceof MagesterUser) {
     		$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
-    		$userCourses = $this -> getUserCourses($constraints);
+    		$userCourses = $user-> getUserCourses($constraints);
     		
     		foreach($userCourses as $course) {
     			$ids[] = $course['id'];

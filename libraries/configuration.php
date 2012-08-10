@@ -20,7 +20,7 @@ $configurationDefaults = array(
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
-		'https'		=> 'optional',
+		'https'		=> 'none',
 	),
 /*
 	'local.magester.net'		=> array(
@@ -46,7 +46,7 @@ $configurationDefaults = array(
 	),
 	*/
 	'new.magester.net'	=> array(
-		'dbname'		=> 'maguser_ult',
+		'dbname'	=> 'maguser_ult',
 		'overrideTheme'	=> 'sysclass'
 	),
 	'www.new.magester.net'	=> array(
@@ -81,7 +81,7 @@ $configurationDefaults = array(
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
-		'https'		=> 'optional', // 'none', 'optional', 'required'
+		'https'		=> 'none', // 'none', 'optional', 'required'
 		'overrideTheme' => 'sysclass3'
 	),
 	'www.sysclass.com'	=> array(
@@ -91,7 +91,7 @@ $configurationDefaults = array(
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
-		'https'		=> 'required', // 'none', 'optional', 'required'
+		'https'		=> 'none', // 'none', 'optional', 'required'
 		'overrideTheme' => 'sysclass3'
 	),
 	'fati.sysclass.com'	=> array(
