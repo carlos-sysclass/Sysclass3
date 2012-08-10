@@ -27,6 +27,24 @@ class module_quick_mails extends MagesterExtendedModule {
 		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
 		} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
 			$user = $this->getCurrentUser();
+			
+			$xentifyModule = $this->loadModule("xentify");
+			
+			$scopedMailRecipients = ef_getTableData(
+				"module_quick_mails_scope scope LEFT JOIN module_quick_mails_recipients lst ON (scope.recipient_id = lst.id)",
+				"recipient_id, xscope_id, xentify_id, title, image"
+			);
+			
+			foreach($scopedMailRecipients as $key => $recp) {
+				if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
+					unset($scopedMailRecipients[$key]);
+				} else {
+				}
+			}
+			
+			var_dump($scopedMailRecipients);
+			exit;
+			
 			$contactList = eF_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
 				"qm.*, COUNT(qml.user_id)", 

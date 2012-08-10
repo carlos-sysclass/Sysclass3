@@ -194,14 +194,17 @@ class module_xentify extends MagesterExtendedModule {
     		case 0 : { // SAME POLO AND SAME CLASS
     			return true;
     		}
-    		case 1 : { // SAME POLO AND SAME CLASS
+    		case 1 : { // SAME IES
     			return $status['same_ies'];
     		}
-    		case 2 : { // SAME POLO AND SAME CLASS
+    		case 2 : { // SAME POLO
     			return $status['same_polo'];
     		}
-    		case 7 : { // SAME POLO AND SAME CLASS
+    		case 7 : { // SAME USER
     			return $status['same_user'];
+    		}
+    		case 9 : { // SAME USER TYPE
+    			return $status['same_user_type'];
     		}
     		case 10 : { // SAME POLO AND SAME CLASS
     			return $status['same_polo'] && $status['same_classe'];
@@ -214,11 +217,11 @@ class module_xentify extends MagesterExtendedModule {
     			/** @todo Implementar checagem de inadimplência */
     			return $status['overdue'];
     		}
-    		case 13 : { // OVERDUE INVOICES USER
+    		case 13 : { // SAME USER GROUP
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'];
     		}
-    		case 14 : { // OVERDUE INVOICES USER
+    		case 14 : { // SAME USER GROUP AND COURSE
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'] && $status['same_course'];
     		}
@@ -233,17 +236,18 @@ class module_xentify extends MagesterExtendedModule {
     		$user = $this->getCurrentUser();
     	}
     	$status = array(
-    		'same_ies'		=> false,
-    		'same_polo'		=> false,
-    		'same_classe'	=> false,
-    		'same_user'		=> false,
-    		'same_group'	=> false,
-   			'same_course'	=> false,
-    		'no_overdue'	=> false,
-    		'overdue'		=> false
+    		'same_ies'			=> false,
+    		'same_polo'			=> false,
+    		'same_classe'		=> false,
+    		'same_user'			=> false,
+    		'same_user_type'	=> false,
+    		'same_group'		=> false,
+   			'same_course'		=> false,
+    		'no_overdue'		=> false,
+    		'overdue'			=> false
 	   	);
 	   	$data = $this->getUserScopeData($scope_type, $scope_id);
-
+	   	
     	switch($scope_type) {
     		case 1 : { // SAME POLO
     			$status['same_ies'] = $this->checkUserScopeSameIes($user, $data['ies_id']);
@@ -255,6 +259,10 @@ class module_xentify extends MagesterExtendedModule {
     		}
     		case 7 : { // SAME USER (INDIVIDUAL)
     			$status['same_user'] = $this->checkUserScopeSameUser($user, $data['user_id']);
+    			break;
+    		}
+    		case 9 : { // SAME USER (INDIVIDUAL)
+    			$status['same_user_type'] = $this->checkUserScopeSameUserType($user, $data['user_type']);
     			break;
     		}
     		case 10 : { // SAME POLO AND SAME CLASS
@@ -292,9 +300,10 @@ class module_xentify extends MagesterExtendedModule {
     	
     	$data = array(
     		'user_id'			=> null,
-    		'ies_id'			=> null,
+	   		'ies_id'			=> null,
 			'polo_id'			=> null,
    			'classe_id'			=> null,
+    		'user_type'			=> null,
     		'group_id'			=> null,
    			'course_id'			=> null
 		);
@@ -310,6 +319,10 @@ class module_xentify extends MagesterExtendedModule {
     		}
     		case 7 : { // SAME POLO AND SAME CLASS
     			list($data['user_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    		case 9 : { // SAME POLO AND SAME CLASS
+    			list($data['user_type']) = explode(';', $scope_id);
     			break;
     		}
     		case 10 : { // SAME POLO AND SAME CLASS
@@ -468,6 +481,19 @@ class module_xentify extends MagesterExtendedModule {
     	
     	return in_array($classe_id, $classesID);
     }
+    
+    
+    
+    private function getUserTypeIndex($user) {
+	   	if ($user instanceof MagesterUser) {
+    		return $user->user['user_types_ID'] == "0" ? $user->getType() :  $user->user['user_types_ID'];
+    	}
+    	return false;
+    }
+    private function checkUserScopeSameUserType($user, $user_type) {
+    	return $user_type == $this->getUserTypeIndex($user);
+    }
+    
     
     private function getUserGroupsIndex($user) {
     	$ids = array();
