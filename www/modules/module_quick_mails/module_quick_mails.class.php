@@ -14,6 +14,44 @@ class module_quick_mails extends MagesterExtendedModule {
 	public function getPermittedRoles() {
 		return array("professor", "student");
 	}
+	
+	public function getUserContactList($user = null) {
+		if (!($user instanceof MagesterUser)) {
+			$user = $this->getCurrentUser();
+		}
+			
+		$xentifyModule = $this->loadModule("xentify");
+		$contactListData = ef_getTableData(
+				"module_quick_mails_scope scope
+				LEFT JOIN module_quick_mails_recipients qmr ON (scope.recipient_id = qmr.id)
+				LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qmr.id = qml.recipient_id)",
+				"scope.recipient_id, scope.xscope_id, scope.xentify_id, qmr.title, qmr.image, COUNT(qml.user_id) as total_users",
+				"",
+				"",
+				"scope.recipient_id, scope.xscope_id, scope.xentify_id HAVING COUNT(qml.user_id) > 0"
+		);
+			
+			
+		$contactList = array();
+			
+		foreach($contactListData as $key => $recp) {
+			if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
+				unset($contactListData[$key]);
+			} else {
+				$recp['href']	= $this->moduleBaseUrl . "&rec=" . $recp['recipient_id'] . "&popup=1";
+				$image = explode("/", $recp['image']);
+				$recp['image'] = array(
+						'size'	=> reset(explode("x", $image[0])),
+						'name'	=> $image[1]
+				);
+					
+				$contactList[$recp['recipient_id']] = $recp;
+			}
+		}
+		
+		
+		return $contactList;
+	}
 
 	/* BLOCK FUNCTIONS */
 	public function loadQuickContactListBlock($blockIndex = null) {
@@ -24,45 +62,10 @@ class module_quick_mails extends MagesterExtendedModule {
 		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'polo') {
 			return false;
 		}
-		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
-		} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
-			$user = $this->getCurrentUser();
-			
-			$xentifyModule = $this->loadModule("xentify");
-			
-			$scopedMailRecipients = ef_getTableData(
-				"module_quick_mails_scope scope LEFT JOIN module_quick_mails_recipients lst ON (scope.recipient_id = lst.id)",
-				"recipient_id, xscope_id, xentify_id, title, image"
-			);
-			
-			foreach($scopedMailRecipients as $key => $recp) {
-				if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
-					unset($scopedMailRecipients[$key]);
-				} else {
-				}
-			}
-			
-			var_dump($scopedMailRecipients);
-			exit;
-			
-			$contactList = eF_getTableData(
-				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
-				"qm.*, COUNT(qml.user_id)", 
-				sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
-				"",
-				"qm.id HAVING COUNT(qml.user_id) > 0"
-			);
-			foreach($contactList as &$item) {
-				
-				
-				
-				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
-				$image = explode("/", $item['image']);
-				$item['image'] = array(
-					'size'	=> reset(explode("x", $image[0])),
-					'name'	=> $image[1]
-				);
-			}
+		//if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
+		//} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
+			$contactList = $this->getUserContactList();
+		/*
 		} else {
 			$contactList = eF_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
@@ -80,6 +83,7 @@ class module_quick_mails extends MagesterExtendedModule {
 				);
 			}		
 		}
+		*/
 
 		$smarty -> assign("T_QUICK_MAILS_CONTACT_LIST", $contactList);
 
@@ -210,21 +214,7 @@ class module_quick_mails extends MagesterExtendedModule {
 		$form -> addElement('submit', 'submit_mail',    _SEND,    'class = "flatButton"');
 
 
-		$contactList = eF_getTableData(
-			"module_quick_mails_recipients, module_quick_mails_recipients_list qml", 
-			"*", 
-		sprintf("xuser_type = '%s'", $this->modules['xuser']->getExtendedTypeID($currentUser))
-		);
-		foreach($contactList as &$item) {
-			$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
-				
-			$image = explode("/", $item['image']);
-				
-			$item['image'] = array(
-				'size'	=> reset(explode("x", $image[0])),
-				'name'	=> $image[1]
-			);
-		}
+		$contactList = $this->getUserContactList();
 
 		if ($form -> isSubmitted() && $form -> validate()) {
 			$values = $form -> exportValues();
@@ -236,10 +226,11 @@ class module_quick_mails extends MagesterExtendedModule {
 				);
 				*/
 			if (is_numeric($values['recipients'])) {
+				
 				$recipients = eF_getTableData(
 					"module_quick_mails_recipients qm, module_quick_mails_recipients_list qml, users u",
 					"u.name, u.surname, u.login, u.email, qm.qm_group",
-				sprintf("qm.id = qml.recipient_id AND qml.recipient_id = %d AND qml.user_id = u.id", $values['recipients'])
+					sprintf("qm.id = qml.recipient_id AND qml.recipient_id = %d AND qml.user_id = u.id", $values['recipients'])
 				);
 
 				if (count($recipients) > 0) {
@@ -252,8 +243,9 @@ class module_quick_mails extends MagesterExtendedModule {
 								'email'	=> $recipient['email'],
 								'fullname'	=> $recipient['name'] . ' ' . $recipient['surname']
 						);
-							
 					}
+				
+/*
 					switch ($recipients[0]['qm_group']) {
 						case "lesson_students":
 							$lesson = new MagesterLesson($_SESSION['s_lessons_ID']);
@@ -268,6 +260,7 @@ class module_quick_mails extends MagesterExtendedModule {
 							}
 							break;
 					}
+*/
 				}
 			} else {
 				$user_recipients[] = $values['email'];
@@ -288,7 +281,8 @@ class module_quick_mails extends MagesterExtendedModule {
 				$message      = __NO_RECIPIENTS_DEFINED;
 				$message_type = 'failure';
 			} else {
-				$pm = new eF_PersonalMessage($_SESSION['s_login'], $user_recipients, $values['subject'], $values['body'], true);
+				
+				$pm = new eF_PersonalMessage($this->getCurrentUser()->user['login'], $user_recipients, $values['subject'], $values['body'], true);
 
 				$attachFile = array();
 
