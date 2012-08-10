@@ -140,22 +140,16 @@ class module_xlivechat extends MagesterExtendedModule {
     public function includeChatPrerequisites() {
     	$smarty = $this->getSmartyVar();
     	// Verifica se modulo chat esta ativo
-    	$modulesUserOn = $this->getCurrentUser()->getModules();
-
 	if ($this->getCurrentUser()->user['user_types_ID'] == $this->SUPPORT_USER_TYPE_ID) {
 		$smarty -> assign("T_XLIVECHAT_STARTCHAT", true);
 	}
 
     	
-    	if( array_key_exists("module_xlivechat", $modulesUserOn)) {
-    		$userChatList = $modulesUserOn['module_xlivechat']->getSupportUsers(true);
-    	
-    		foreach($userChatList as $userChat) {
-    			if ($userChat['online']) {
-    				$smarty -> assign("T_XLIVECHAT_IS_ONLINE", true);
-    				$smarty -> assign("T_XLIVECHAT_STARTCHAT", true);
-    				break;
-    			}
+    	$userChatList = $this->getSupportUsers(true);
+    	foreach($userChatList as $userChat) {
+    		if ($userChat['online']) {
+    			$smarty -> assign("T_XLIVECHAT_IS_ONLINE", true);
+    			$smarty -> assign("T_XLIVECHAT_STARTCHAT", true);
     		}
     	}
     	$smarty -> assign("T_XCHAT_SUPPORT_LIST", $userChatList);
