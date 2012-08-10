@@ -225,6 +225,10 @@ class module_xentify extends MagesterExtendedModule {
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'] && $status['same_course'];
     		}
+    		case 15 : { // SAME IES AND USER TYPE
+    			/** @todo Implementar checagem de inadimplência */
+    			return $status['same_ies'] && $status['same_user_type'];
+    		}
     		
     		default : {
     			return false;
@@ -284,6 +288,11 @@ class module_xentify extends MagesterExtendedModule {
     			$status['same_course']	= $this->checkUserScopeSameCourse($user, $data['course_id']);
     			break;
     		}
+    		case 15 : {
+    			$status['same_ies'] 		= $this->checkUserScopeSameIes($user, $data['ies_id']);
+    			$status['same_user_type'] 	= $this->checkUserScopeSameUserType($user, $data['user_type']);
+    			break;
+    		}
     		
     		default : {
     			return false;
@@ -335,6 +344,10 @@ class module_xentify extends MagesterExtendedModule {
     		}
     		case 14 : { // SAME GROUPS
     			list($data['group_id'], $data['course_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    		case 15 : { // SAME GROUPS
+    			list($data['ies_id'], $data['user_type']) = explode(';', $scope_id);
     			break;
     		}
     	}

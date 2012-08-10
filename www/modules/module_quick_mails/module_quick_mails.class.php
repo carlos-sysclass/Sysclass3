@@ -35,6 +35,7 @@ class module_quick_mails extends MagesterExtendedModule {
 		$contactList = array();
 			
 		foreach($contactListData as $key => $recp) {
+			
 			if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
 				unset($contactListData[$key]);
 			} else {
@@ -48,7 +49,6 @@ class module_quick_mails extends MagesterExtendedModule {
 				$contactList[$recp['recipient_id']] = $recp;
 			}
 		}
-		
 		
 		return $contactList;
 	}
