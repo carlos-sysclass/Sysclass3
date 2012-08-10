@@ -130,7 +130,7 @@
 					</a>
 				 	-->
 				
-					<a href="#" title="{$smarty.const._MODULE_XLIVECHAT_NAME}" id="openChatList">
+					<a href="javascript: void(0);" title="{$smarty.const._MODULE_XLIVECHAT_NAME}" id="openChatList">
 						<button class="xlivechat_button" type="button" id="openChatListBtn">
 							<img class="xlivechat-icon" src="images/others/transparent.png" alt="{$smarty.const._MODULE_XLIVECHAT_NAME}" title="{$smarty.const._MODULE_XLIVECHAT_NAME}" />
 						</button>
