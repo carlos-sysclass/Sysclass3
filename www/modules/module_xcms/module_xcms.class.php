@@ -69,7 +69,8 @@ class module_xcms extends MagesterExtendedModule {
 
 		# Carrega noticias da ultima licao selecionada
 		$news = news :: getNews(0, true) + news :: getNews($_SESSION['s_lessons_ID'], false);
-
+		
+		
 		# Filtra comunicado pela classe do aluno
 		$userClasses = ef_getTableDataFlat(
 			"users_to_courses",
