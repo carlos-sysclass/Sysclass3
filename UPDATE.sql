@@ -2564,4 +2564,121 @@ ALTER TABLE `news` ADD `xentify_id` TEXT NULL AFTER `xscope_id`;
 UPDATE `sysclass_root`.`module_xentify_scopes` SET `active` = '1' WHERE `module_xentify_scopes`.`id` =1;
 ALTER TABLE `lessons` ADD `ies_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `id`;
 
+/* 2012-08-10 */
+// ESCOPO POR TIPO DE USUÁRIO
+UPDATE `sysclass_root`.`module_xentify_scopes` SET `active` = '1' WHERE `module_xentify_scopes`.`id` =9;
 
+INSERT INTO `module_xentify_scopes` (`id`, `name`, `description`, `rules`, `active`) VALUES
+(NULL, 'Agrupado por IES/tipo de usuário', '%s poderá ser compartilhado entre usuários de mesmo tipo e mesma IES', '{}', 1);
+
+
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Coordenador', '28x28/coordenador', '', '', NULL
+);
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Financeiro', '28x28/financeiro', '', '', NULL
+);
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Suporte Técnico', '28x28/suporte', '', '', NULL
+);
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Direção', '28x28/presidente', '', '', NULL
+);
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Secretaria', '28x28/secretaria', '', '', NULL
+);
+/*
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients` (`id` ,`title` ,`image` ,`xuser_type` ,`qm_type` ,`qm_group`) VALUES (
+	NULL , 'Seu Polo', '28x28/house', '', '', NULL
+);
+*/
+
+CREATE TABLE IF NOT EXISTS `module_quick_mails_scope` (
+  `recipient_id` mediumint(8) NOT NULL,
+  xscope_id mediumint(8) NOT NULL,
+  xentify_id mediumint(8) NOT NULL,
+  PRIMARY KEY (`recipient_id`, xscope_id, xentify_id)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `module_quick_mails_scope` CHANGE `xentify_id` `xentify_id` VARCHAR( 100 ) NOT NULL;
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(1, 15, '1;12'),
+(1, 15, '1;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(2, 15, '1;12'),
+(2, 15, '1;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(3, 15, '1;12'),
+(3, 15, '1;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(4, 15, '1;12'),
+(4, 15, '1;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(5, 15, '1;12'),
+(5, 15, '1;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(11, 15, '2;16'),
+(11, 15, '2;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(12, 15, '2;16'),
+(12, 15, '2;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(13, 15, '2;16'),
+(13, 15, '2;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(14, 15, '2;16'),
+(14, 15, '2;student');
+
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(15, 15, '2;16'),
+(15, 15, '2;student');
+/*
+INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
+(16, 15, '2;16'),
+(16, 15, '2;student');
+
+
+
+*/
+CREATE TABLE IF NOT EXISTS `module_quick_mails_groups` (
+  `id` mediumint(8) NOT NULL,
+  name varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+DELETE FROM `sysclass_root`.`module_quick_mails_recipients_list`;
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('1', '43');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('2', '678');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('3', '334');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('4', '49');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('5', '43');
+
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('11', '1339');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('12', '1501');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('14', '1599');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('15', '899');
+
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('1', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('2', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('3', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('4', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('5', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('6', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('7', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('8', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('9', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('10', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('11', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('12', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('13', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('14', '1');
+INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('15', '1');
