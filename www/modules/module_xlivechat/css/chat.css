@@ -68,9 +68,14 @@
 #module_xlivechat_container {
 	position: fixed;
 	right: 0;
+<<<<<<< HEAD
 	bottom: 71px;
 	z-index: 99;
 	margin-right: 10px;
+=======
+	bottom: 0;
+	z-index: 999999;
+>>>>>>> refs/remotes/origin/fix-issue-93
 }
 
 .chatbox {
