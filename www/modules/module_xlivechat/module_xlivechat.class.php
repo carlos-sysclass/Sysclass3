@@ -69,7 +69,6 @@ class module_xlivechat extends MagesterExtendedModule {
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser(); 
         $xuserModule = $this->loadModule("xuser");
-              
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
 			$xuserModule->getExtendedTypeID($currentUser) == "support"
@@ -79,7 +78,9 @@ class module_xlivechat extends MagesterExtendedModule {
                          'link'  => $this -> moduleBaseUrl,
 						 'class' => 'xlivechat'
             );
-        }	
+        }
+		   
+        
 	}
    	
 	
@@ -110,7 +111,8 @@ class module_xlivechat extends MagesterExtendedModule {
 		echo $smarty->fetch($this->moduleBaseDir . "templates/includes/xlivechat_messagens.tpl");
 		exit;
 	}
-	
+
+
    public function getSmartyTpl() {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_XLIVECHAT_BASEDIR" , $this -> moduleBaseDir);

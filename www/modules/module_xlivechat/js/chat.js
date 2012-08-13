@@ -275,8 +275,7 @@ function checkChatBoxInputKey(event,chatboxtextarea,chatboxtitle) {
 	 
 	if(event.keyCode == 13 && event.shiftKey == 0)  {
 		message = jQuery(chatboxtextarea).val();
-		message = message.replace(/^\s+|\s+$/g,"");
-		alert('asdasdasd');
+		message = message.replace(/^\s+|\s+$/g,"");		
 		jQuery(chatboxtextarea).val('');
 		jQuery(chatboxtextarea).focus();
 		jQuery(chatboxtextarea).css('height','44px');
