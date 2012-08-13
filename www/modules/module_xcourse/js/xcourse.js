@@ -1097,6 +1097,15 @@ function switchCourseLesson(course_id, lesson_id) {
 			jQuery.Topic("xcourse_course_lesson_change").publish(course_id,	lesson_id);
 		});
 	} else {
-		window.location.reload(true);
+		var searchString = String(window.location.search);
+		
+		if (
+			searchString.search(/view_unit=\d/g) == -1 &&
+			searchString.search(/forum=\d/g) == -1
+		) {
+			window.location.reload(true);
+		} else {
+			window.location.href = window.location.pathname;
+		}
 	}
 }

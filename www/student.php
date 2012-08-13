@@ -23,8 +23,6 @@ if ($_GET['no_header'] == 1) {
 	$smarty -> assign("T_NO_HEADER_MODE", 1);
 }
 
-
-
 //Initialize messages, because if register_globals is turned on, some messages will be displayed twice
 $search_message = $message = $message_type = '';
 $load_editor 		= false;
