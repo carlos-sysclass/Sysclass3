@@ -69,17 +69,10 @@ class module_xlivechat extends MagesterExtendedModule {
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser(); 
         $xuserModule = $this->loadModule("xuser");
-<<<<<<< HEAD
-              
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
 			$xuserModule->getExtendedTypeID($currentUser) == "support"
 		) {
-=======
-
-        
-		if ($xuserModule->getExtendedTypeID($currentUser) == "administrator") {
->>>>>>> refs/remotes/origin/fix-issue-93
 			return array('title' => _MODULE_XLIVECHAT_NAME,
                          'image' => $this -> moduleBaseDir . 'images/xrequest.png',
                          'link'  => $this -> moduleBaseUrl,
@@ -93,26 +86,10 @@ class module_xlivechat extends MagesterExtendedModule {
 	
 	
 	public function getDefaultAction() {
-<<<<<<< HEAD
     	$smarty = $this->getSmartyVar();
 		$smarty -> assign("T_TYPE_USER", $this->getCurrentUser()->getType());
 
 		return self::GET_LIST_CHAT;
-=======
-	    	$smarty = $this->getSmartyVar();
-
-	    	
-	       	if ($this->getCurrentUser()->getType() == 'student') {
-				$smarty -> assign("T_TYPE_USER", "student");	
-				return self::GET_LIST_CHAT;
-				
-			} 
-			if ($this->getCurrentUser()->getType() == 'administrator') {
-				$smarty -> assign("T_TYPE_USER", "administrator");	
-				return self::GET_LIST_CHAT;
-				
-			}
->>>>>>> refs/remotes/origin/fix-issue-93
 	}
 
 	public function listChatSuporteAction() {
@@ -121,14 +98,7 @@ class module_xlivechat extends MagesterExtendedModule {
 	 	
 		$smarty -> assign("T_LIST_USER", $listUser );
 		
-<<<<<<< HEAD
 	 	return true;
-=======
-		
-	     
-		
-	 	return;
->>>>>>> refs/remotes/origin/fix-issue-93
 	}
 	
 	public function xlivechatMessagensAction($userqueue) {
