@@ -523,7 +523,7 @@ class module_xentify extends MagesterExtendedModule {
     private function getUserCoursesIndex($user) {
     	$ids = array();
     	
-    	if ($user instanceof MagesterUser) {
+    	if ($user instanceof MagesterLessonUser) {
     		$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
     		$userCourses = $user-> getUserCourses($constraints);
     		
