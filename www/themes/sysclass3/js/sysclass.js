@@ -2,10 +2,9 @@
 	
 	
 	// SEARCH WIDGET
-	//jQuery("#index_page :input[name='login']")
 	jQuery("#index_page :input[name='login']").val($languageJS['__USER_TEXT']);
 	jQuery("#index_page :input[name='password']").hide().val($languageJS['__PASS_TEXT']);
-	jQuery("#index_page :input[name='_password']").val($languageJS['__PASS_TEXT']);
+	jQuery("#index_page :input[name='_password']").val($languageJS['__PASS_TEXT']).show();
 	jQuery("#index_page :input[name='login_or_pwd']").val($languageJS['__RESET_TEXT']);
 	
 	jQuery("#index_page :input[name='login']").focus(function() {

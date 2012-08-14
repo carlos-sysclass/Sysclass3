@@ -7,9 +7,9 @@
 		{$T_LOGIN_FORM.javascript}
 		<form {$T_LOGIN_FORM.attributes}>
 			{$T_LOGIN_FORM.hidden}
-    		<input type="{$T_LOGIN_FORM.login.type}" class="{$T_LOGIN_FORM.login.class}" name="{$T_LOGIN_FORM.login.name}" id="{$T_LOGIN_FORM.login.name}" value="{$smarty.const.__USER_TEXT}" />
-    		<input type="{$T_LOGIN_FORM.password.type}" class="{$T_LOGIN_FORM.password.class}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" value="{$smarty.const.__PASS_TEXT}" />
-    		<input type="text" class="{$T_LOGIN_FORM.password.class}" name="_{$T_LOGIN_FORM.password.name}" id="_{$T_LOGIN_FORM.password.name}" value="{$smarty.const.__PASS_TEXT}" />
+    		<input type="{$T_LOGIN_FORM.login.type}" class="{$T_LOGIN_FORM.login.class}" name="{$T_LOGIN_FORM.login.name}" id="{$T_LOGIN_FORM.login.name}" value="" />
+    		<input type="{$T_LOGIN_FORM.password.type}" class="{$T_LOGIN_FORM.password.class}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" value="{$smarty.const.__PASS_TEXT}" style="display: inline" />
+    		<input type="text" class="{$T_LOGIN_FORM.password.class}" name="_{$T_LOGIN_FORM.password.name}" id="_{$T_LOGIN_FORM.password.name}" value="" style="display: none" />
 
             <button name="{$T_LOGIN_FORM.submit_login.name}" type="submit" class="event-conf" value="{$T_LOGIN_FORM.submit_login.value}" >
                 <img src="images/transp.png"  class="imgs_cont" width="29" height="29" />
