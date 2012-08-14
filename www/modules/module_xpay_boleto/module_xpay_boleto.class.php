@@ -1380,8 +1380,10 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		/** @todo IMPLEMENT THIS THROUGH RULES */
 		//	IF invoice_index = 0 AND data_vencimento IS NULL THEN
 		//		data_vencimento = today + 5 days
-		//	IF invoice_index = 0 AND data_vencimento > today THEN
+		//	IF invoice_index = 0 AND data_vencimento > today AND data_vencimento < today + 5 days THEN
 		//		data_vencimento = today + 5 days
+		//	IF invoice_index = 0 AND data_vencimento > today + 5 days THEN
+		//              DO NOT CHANGE!!!
 		//	IF invoice_index = 0 AND data_vencimento < today THEN
 		//		DO NOT CHANGE!!!
 		//	IF invoice_index > 0 AND data_vencimento > today THEN
@@ -1396,7 +1398,10 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		if ($invoice_index == 0) {
 			if ($datavencimento === FALSE || $datavencimento > $today) {
 				$tmp = new DateTime("today");
-				$datavencimento = $tmp->add(new DateInterval("P5D"));
+				$tmp->add(new DateInterval("P5D"));
+				if ($datavencimento < $tmp) {
+					$datavencimento = $tmp;	
+				}
 			}
 		}
 		
@@ -1421,6 +1426,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			$invoiceOptions["data_vencimento"] = $datavencimento->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
 		}
+
 //		$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
 //		$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
 		$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'] - $invoiceData['paid'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
