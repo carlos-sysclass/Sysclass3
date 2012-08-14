@@ -1,5 +1,5 @@
 function saveTree(el) {
- parameters = {node_orders:treeObj.getNodeOrders(), transfered: TransferedNodes, method: 'get'};
+ parameters = {node_orders:treeObj.getNodeOrders(), transfered: TransferedNodes, method: 'post'};
  var url = window.location.toString();
  ajaxRequest(el, url, parameters, onSaveTree);
  ajaxRequest(el, url, parameters, function(el, result) {

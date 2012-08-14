@@ -2,7 +2,7 @@
 /**
 
  * This page is for copying content and other entities between lessons
-
+saveTree
  * 
 
  */
@@ -96,14 +96,22 @@ try {
             }
 
             try {
-                if (isset($_GET['node_orders'])) { //Save new order through AJAX call
-                    $nodeOrders = explode(",", $_GET['node_orders']);
+                if (isset($_GET['node_orders']) || isset($_POST['node_orders'])) { //Save new order through AJAX call
+                	if (isset($_POST['node_orders'])) {
+                		$nodeOrders = explode(",", $_POST['node_orders']);
+                	} else {
+                		$nodeOrders = explode(",", $_GET['node_orders']);
+                	}
+                	
+                    //$nodeOrders = explode(",", $_GET['node_orders']);
                     $nodeOrders = array_unique($nodeOrders);
                     $previousContentId = 0;
                     $transferedNodes = array();
                     $transferedNodesCheck = array();
                     if ($_GET['transfered']) {
                         $transferedNodesCheck = unserialize($_GET['transfered']);
+                    } elseif ($_POST['transfered']) {
+                    	$transferedNodesCheck = unserialize($_POST['transfered']);
                     }
 
                     $copiedTests = array();
