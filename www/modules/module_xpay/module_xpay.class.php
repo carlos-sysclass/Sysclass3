@@ -1792,7 +1792,7 @@ class module_xpay extends MagesterExtendedModule {
 				cm.name as modality',
 				$editedUser->user['id']
 			),
-			sprintf("users_LOGIN = '%s'  AND uc.modality_id != 3", $editedUser->user['login'])
+			sprintf("users_LOGIN = '%s' AND uc.modality_id != 3 AND uc.archive = 0 AND uc.active = 1", $editedUser->user['login'])
 		);
 		$courses_ID = array(0);
 		foreach($courseItens as $courseData) {
@@ -1823,7 +1823,10 @@ class module_xpay extends MagesterExtendedModule {
 			sprintf("
 				users_LOGIN = '%s' 
 				AND l.course_only = 0 
-				AND l.id NOT IN (SELECT lessons_ID FROM lessons_to_courses WHERE courses_ID IN (%s))", 
+				AND l.id NOT IN (SELECT lessons_ID FROM lessons_to_courses WHERE courses_ID IN (%s))
+				AND ul.archive = 0 
+				AND ul.active = 1	
+				", 
 				$editedUser->user['login'],
 				implode(",", $courses_ID)
 			)
