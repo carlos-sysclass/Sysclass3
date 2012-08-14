@@ -1099,7 +1099,7 @@ class MagesterLesson
 			$this -> users = array();
 			$result = eF_getTableData("users u, users_to_lessons ul",
    	"u.*, ul.user_type as role, ul.from_timestamp, ul.completed, ul.to_timestamp as timestamp_completed", 
-   	"u.user_type != 'administrator' and ul.archive = 0 and u.archive = 0 and ul.users_LOGIN = login and lessons_ID=".$this -> lesson['id'] . (($onlyActive) ? ' and u.active = 1' : '')
+   	"u.user_type != 'administrator' and ul.archive = 0 and u.archive = 0 and ul.users_LOGIN = login and lessons_ID=".$this -> lesson['id'] . (($onlyActive) ? ' and u.active = 1 AND ul.active = 1 AND ul.archive = 0' : '')
 			);
 			foreach ($result as $value) {
 				$this -> users[$value['login']] = array('login' => $value['login'],

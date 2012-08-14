@@ -438,17 +438,6 @@ class MagesterNotification
 		eF_insertTableData("event_notifications", $default_notification);
 	}
 */	
-	
-	
-	
-  
-  
-  
-/*
-
-h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to syzhthsoume)
-
-*/
  }
     /**
 
@@ -961,7 +950,7 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
      if (isset($this -> notification['send_conditions'])) {
     //echo $this -> notification['send_conditions'];
       if ($this -> notification['send_conditions'] == "N;") {
-    $recipients = eF_getTableData("users", "*", "");
+    $recipients = eF_getTableData("users", "*", "active = 1");
     //sending_queue_msgs[$key]['recipients'] = _ALLUSERS;
        foreach ($recipients as $recipient) {
         $recipients_list[$recipient['login']] = $recipient;
@@ -984,7 +973,8 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
           $recipients = $lesson -> getUsersCompleted($this -> recipients["completed"]);
          } else {
           // return all users
-          $recipients = $lesson -> getUsers();
+          // ONLY ACTIVE USERS!!
+          $recipients = $lesson -> getUsers(false, true, true);
          }
         } else if (isset($this -> recipients["courses_ID"])) {
          if ($this -> recipients['user_type'] == "professor") {
@@ -995,8 +985,8 @@ h) Enhmerwsh ana X meres gia shmantika gegonota sto SysClass (auto prepei na to 
           $completed_condition = "";
          }
          $recipients = eF_getTableData("users_to_courses uc, users u", "u.login, u.name, u.surname, u.email, u.user_type as basic_user_type, u.active, u.user_types_ID, uc.user_type as role", "u.archive=0 and uc.archive=0 and uc.users_LOGIN = u.login and uc.courses_ID=". $this -> recipients["courses_ID"] . $completed_condition);
-        } else if (isset($this -> recipients['user_type'])) {
-         $recipients = eF_getTableData("users", "*", "user_type = '". $this -> recipients['user_type']."'");
+//        } else if (isset($this -> recipients['user_type'])) {
+//         $recipients = eF_getTableData("users", "*", "user_type = '". $this -> recipients['user_type']."'");
         } else if (isset($this -> recipients['entity_ID']) && isset($this -> recipients['entity_category'])) {
          if ($this -> recipients['entity_category'] == "survey") {
           $recipients = eF_getTableData("users_to_surveys JOIN users ON users_LOGIN = users.login", "users.*", "surveys_ID = '".$this -> recipients["entity_ID"]."'");
