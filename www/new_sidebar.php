@@ -479,6 +479,9 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		$courseLessonsMenu = array();
 		$modules = eF_loadAllModules(true);
 		$xcourseModule = $modules['module_xcourse'];
+		
+		$userActiveLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID", sprintf("active = 1 AND archive = 0 AND users_LOGIN = '%s", $currentUser->user['login']));
+		
 		foreach($userCourses as $courseID => $course) {
 			$courseMenu = array(
 				'id' 		=> 'course_' . $courseID . '_a',
@@ -511,6 +514,11 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 				} else {
 					continue;
 				}
+				
+				if (!in_array($current_activity_ID, $userActiveLessons['lessons_ID'])) {
+					continue;
+				}
+				
 				try {
 					$currentLessonObject = new MagesterLesson($current_activity_ID);
 					$currLesson = $currentLessonObject -> lesson;

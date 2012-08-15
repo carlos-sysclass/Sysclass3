@@ -1716,10 +1716,10 @@ class module_xcourse extends MagesterExtendedModule {
 				);
 					
 				$result = eF_getTableData(
-				$tables,
-				implode(",", $fields),
-				implode(" AND ", $wheres),
-				implode(",", $orders)
+					$tables,
+					implode(",", $fields),
+					implode(" AND ", $wheres),
+					implode(",", $orders)
 				);
 				/*
 				 $resultSeries = array();
@@ -2520,7 +2520,7 @@ class module_xcourse extends MagesterExtendedModule {
 			$wheres[] = "cal.course_id = " . $course_id;
 			$wheres[] = "cal.lesson_id = " . $lesson['id'];
 			$wheres[] = "cal.classe_id = " . $class_id;
-					
+
 			$calendarDB = eF_getTableData(
 				$tables,
 				implode(",", $fields),
