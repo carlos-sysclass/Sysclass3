@@ -480,7 +480,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		$modules = eF_loadAllModules(true);
 		$xcourseModule = $modules['module_xcourse'];
 		
-		$userActiveLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID", sprintf("active = 1 AND archive = 0 AND users_LOGIN = '%s", $currentUser->user['login']));
+		$userActiveLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID", sprintf("active = 1 AND archive = 0 AND users_LOGIN = '%s'", $currentUser->user['login']));
 		
 		foreach($userCourses as $courseID => $course) {
 			$courseMenu = array(
