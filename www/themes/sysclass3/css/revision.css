@@ -78,7 +78,11 @@ div.infoEntry span:first-child{font-weight:bold;}
 
 
 .block-title {
-	padding: 0 0 2px 2px;
+	float: left;
+	padding: 0;
+	float: left;
+	width: 100%;
+	margin: 0 0 5px 0;
 }
 /*
 .blockContents {
@@ -133,7 +137,7 @@ div.block .title, div.block .title a {
 	font-size: 25px;
 	float: left;
 }
-div.block .title { float: none !important; }
+div.block .title { float: left; }
 div.grid_17 div.block .title, div.grid_17 div.block .title a {
     color: #333333;
     font-size: 20px;
@@ -300,7 +304,7 @@ table.horizontalBlock .rightOption{
 	display: block; 
 	color: #333333; 
 	text-decoration: none;
-	padding: 8px 4px;
+	padding: 8px 6px;
 }
 /*
 .block-title .handles li img {

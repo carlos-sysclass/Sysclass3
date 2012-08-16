@@ -103,179 +103,42 @@ class module_xpay extends MagesterExtendedModule {
 		* Caso somente um registro de pagamento, pré-selecionar
 		* Caso o regime de pagamento não permita realizar pagamentos de parcelas fora de ordem, pré selecionar
 		*/
-		$negociationID = $_GET['negociation_id'];
-		$invoice_index = $_GET['invoice_index'];
-	
 		$xUserModule = $this->loadModule("xuser");
-	
 		$exUserType = $xUserModule->getExtendedTypeID($currentUser);
-	
 		if ($exUserType == 'student' || $exUserType == 'pre_student') {
 			// CHECK IF NEGOCIATION ID IS FROM USER
 			$negocData = $this->_getNegociationByContraints(array(
-					'negociation_id'	=> $negociationID,
-					'login'				=> $this->getCurrentUser()->user['login']
+				'login'				=> $this->getCurrentUser()->user['login']
 			));
-		} elseif (
-				$exUserType == 'administrator' ||
-				$exUserType == 'financier'
-		) {
-			$negociationID = $_GET['negociation_id'];
-			$invoice_index = $_GET['invoice_index'];
-				
-			$negocData = $this->_getNegociationById($negociationID);
-				
-			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		} else {
-			$this->setMessageVar(__XPAY_NO_ACCESS, "failure");
-			$selectedIndex = null;
-			return;
+			return false;
 		}
 	
 		if (count($negocData) == 0) {
-			$this->setMessageVar(__XPAY_NONEGOCIATION_FOUND, "failure");
-			$selectedIndex = null;
-			return;
+			return false;
 		}
-		$negocTotals = array(
-				'valor'				=> 0,
-				'total_reajuste'	=> 0,
-				'paid'				=> 0
-		);
 		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
-			if ($invoice['full_price'] <= $invoice['paid']) {
-				//					unset($negocData['invoices'][$invoiceIndex]);
-				//					continue;
-			}
-			$negocTotals['valor']			+= $invoice['valor'];
-			$negocTotals['total_reajuste']	+= $invoice['total_reajuste'];
-			$negocTotals['paid']			+= $invoice['paid'];
-		}
-	
-		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
-		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negocTotals);
-	
-		// GET SUB MODULES FUNCTIONS
-		$currentOptions = $this->getSubmodules();
-			
-		$selectedIndexes = array();
-		if (count($currentOptions) > 1) {
-			// MAKE FORM AND USE IT TO SELECT INDEX
-			$selectedIndexes = array_keys($currentOptions);
-		} elseif (count($currentOptions) == 1) {
-			// ONLY ONE OPTION, SELECT AUTOMAGICALY
-			$selectedIndexes[] = key($currentOptions);
-		} else {
-			$this->setMessageVar(__XPAY_NOPAYMENT_TYPES_DEFINED, "warning");
-	
-			$selectedIndex = null;
-			return;
-		}
-	
-		$paymentMethods = array();
-			
-		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
-	
-		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
-			if ($invoice['full_price'] <= $invoice['paid']) {
+			if ($invoice['valor']+$invoice['total_reajuste'] <= $invoice['paid']) {
 				unset($negocData['invoices'][$invoiceIndex]);
-				continue;
 			}
-			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
-	
-		$form->setDefaults(array(
-				'invoice_indexes'	=> $invoice_index
-		));
+		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
 			
-		foreach($selectedIndexes as $selectedKey => $selectedIndex) {
-			$selectedPaymentMethod = $currentOptions[$selectedIndex];
-				
-			if (!$selectedPaymentMethod->paymentCanBeDone($payment_id, $invoice_id)) {
-				unset($selectedIndexes[$selectedKey]);
-	
-				//	$this->setMessageVar(__XPAY_NOPAYMENT_CANT_BE_DONE, "warning");
-				//	return;
-				continue;
-			}
-	
-			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
-				
-			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
-				if ($item['active'] === FALSE) {
-					continue;
-				}
-				$img = sprintf(
-						'<img src="%simages/%s.png" />',
-						$paymentMethods[strtolower($selectedIndex)]['baselink'],
-						empty($item['image_name']) ? $key : $item['image_name']
-				);
-					
-				$form -> addElement('radio', 'pay_methods', $item['name'], $img, strtolower($selectedIndex) . ":" . $key, 'class="xpay_methods"');
-			}
-		}
-		$smarty -> assign("T_XPAY_METHODS", $paymentMethods);
-		if (
-				($form -> isSubmitted() && $form -> validate()) ||
-				(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
-		) {
-			$values = $form->exportValues();
-	
-			if ($form -> isSubmitted() && $form -> validate()) {
-				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
-	
-				$_SESSION['pay_method']			= $pay_method;
-				$_SESSION['pay_method_option']	= $pay_method_option;
-	
-				$invoice_index = $values['invoice_indexes'];
-				$form->setDefaults($form->exportValues());
-			} else {
-				/*
-					list($pay_method, $pay_method_option) = array(
-							$_SESSION['pay_method'],
-							$_SESSION['pay_method_option']
-					);
-					
-				$form->setDefaults(array(
-						'pay_methods'	=>  $pay_method . ":" . $pay_method_option
-				));
-				*/
-			}
-				
-			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
-				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
-	
-				$selectedPaymentMethod->initPaymentProccess(
-						$negociationID, $invoice_index,
-						array(
-								'option' => $pay_method_option
-						)
-				);
-	
-	
-	
-			} else {
-				unset($_SESSION['pay_method']);
-				unset($_SESSION['pay_method_option']);
-			}
-		}
-	
-		$form -> addRule('pay_methods', _THEFIELD.' "'.__XPAY_PAYMENT_METHOD.'" '._ISMANDATORY, 'required', null, 'client');
-		$form -> addElement('submit', 'xpay_submit', __XPAY_NEXT, 'class = ""');
-			
-		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		$form -> accept($renderer);
-		$smarty -> assign('T_XPAY_METHOD_FORM', $renderer -> toArray());
-		
-		$smarty = $this -> getSmartyVar();
-		$smarty -> assign ("T_PAYMENT", $payments[0]);
-				
 		$this->getParent()->appendTemplate(array(
-			'title'			=> __XPAY_MY_INVOICES_LIST,
+			'title'			=> __XPAY_VIEW_MY_STATEMENT,
 			'template'		=> $this->moduleBaseDir . 'templates/blocks/invoices.list.tpl',
-			'contentclass'	=> 'blockContents'
+			'contentclass'	=> 'blockContents',
+			'options'		=> array(
+				array(
+					'href'			=> $this->moduleBaseUrl . "&action=view_user_statement",
+					'image'			=> 'others/transparent.png',
+					'text'			=> __XPAY_VIEW_MY_STATEMENT,
+					'image-class'	=> 'sprite16 sprite16-do_pay'
+						
+				)		
+			)
 		), $blockIndex);
+		
 		$this->assignSmartyModuleVariables();
 		
 		return true;
