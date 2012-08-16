@@ -153,6 +153,10 @@
     width: 19px;
 }
 
+.sprite16-first { background-position: 0 -1173px; width: 16px; height: 16px; }
+.sprite16-second  {background-position: 0 -1192px; width: 16px; height: 16px; }
+
+
 .sprite32-add { background-position: 0 0; width: 32px; height: 32px; } 
 .sprite32-addons { background-position: 0 -33px; width: 32px; height: 32px; } 
 .sprite32-announcements { background-position: 0 -66px; width: 32px; height: 32px; } 

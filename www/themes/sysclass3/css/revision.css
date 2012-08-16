@@ -256,7 +256,7 @@ table.horizontalBlock .rightOption{
     box-shadow: 0 1px 2px #CCCCCC;
     cursor: move;
     display: block;
-    float: right;
+    float: left;
     height: 33px;
     padding: 0;
     /*text-indent: -10000px;*/

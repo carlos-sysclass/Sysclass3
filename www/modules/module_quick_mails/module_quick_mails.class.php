@@ -92,7 +92,23 @@ class module_quick_mails extends MagesterExtendedModule {
     		'sub_title'		=> __QUICK_MAILS_CONTACT_US,
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/quick_mails.contacts.tpl',
 	   		'contentclass'	=> 'blockContents',
-    		'absoluteImagePath'	=> true
+    		//'absoluteImagePath'	=> true,
+			'options'		=> array(
+				array(
+					'href'			=> "javascript: _sysclass('quick_mails').toggleContactListBlock(1);",
+					'image'			=> 'others/transparent.png',
+					'text'			=> "E",
+					'class'			=> 'qm_view_second_list',
+					'image-class'	=> 'sprite16 sprite16-first'
+				),
+				array(
+					'href'			=> "javascript: _sysclass('quick_mails').toggleContactListBlock(2);",
+					'image'			=> 'others/transparent.png',
+					'text'			=> "P",
+					'class'			=> 'qm_view_second_list',
+					'image-class'	=> 'sprite16 sprite16-second'
+				)
+			)
 		), $blockIndex);
 
 		$smarty -> assign("T_CURRENT_USER", $currentUser);

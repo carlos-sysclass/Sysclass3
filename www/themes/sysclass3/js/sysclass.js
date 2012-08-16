@@ -1,6 +1,4 @@
 (function($){
-	
-	
 	// SEARCH WIDGET
 	jQuery("#index_page :input[name='login']").val($languageJS['__USER_TEXT']);
 	jQuery("#index_page :input[name='password']").hide().val($languageJS['__PASS_TEXT']);
@@ -128,5 +126,4 @@
 		jQuery(this).parent().parent().children(mostrar).show(3000);
 		return false;
 	});
-
 })(jQuery); // plugin code ends
