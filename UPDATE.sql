@@ -2682,3 +2682,17 @@ INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`
 INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('13', '1');
 INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('14', '1');
 INSERT INTO `sysclass_root`.`module_quick_mails_recipients_list` (`recipient_id`, `user_id`) VALUES ('15', '1');
+
+
+/* 2012-08-16 */
+ALTER TABLE `module_xcms_pages_to_blocks` ADD `xscope_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `block_id`;
+ALTER TABLE `module_xcms_pages_to_blocks` ADD `xentify_id` TEXT NULL DEFAULT NULL AFTER `xscope_id`;
+
+/* module_pagamento is ONLY FOR POS */
+UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` 
+SET `xscope_id` = '1', `xentify_id` = '2' 
+WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_blocks`.`block_id` =15;
+
+INSERT INTO `sysclass_root`.`module_xcms_blocks` (`id`, `name`, `module`, `action`, `tag`) VALUES (NULL, 'SysclassXpayInvoices', 'xpay', 'load_invoices', NULL);
+
+

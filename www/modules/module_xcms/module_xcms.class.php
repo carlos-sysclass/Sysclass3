@@ -450,6 +450,7 @@ class module_xcms extends MagesterExtendedModule {
 	    			array(
 	    			'sysclassAds',
 	    			'magesterPaymentDueInvoicesBlock',
+	    			'SysclassXpayInvoices',
 	    			'magesterCalendar',
 	    			'magesterContentScheduleList',
 	    			'magesterQuickContactList',
@@ -488,21 +489,25 @@ class module_xcms extends MagesterExtendedModule {
 		$pageBlocks = eF_getTableData(
     		"module_xcms_pages_to_blocks pg2block 
     		LEFT JOIN module_xcms_blocks block ON (pg2block.block_id = block.id)",
-    		"pg2block.page_id, block.name, block.module, block.action, block.tag as block_tag, pg2block.tag as custom_tag",
+    		"pg2block.page_id, block.name, block.module, block.action, pg2block.xscope_id, pg2block.xentify_id, block.tag as block_tag, pg2block.tag as custom_tag",
     		"pg2block.page_id = " . $page_id
 		);
+		$user = $this->getCurrentUser();
+		$xentifyModule = $this->loadModule("xentify");
 		 
-		foreach($pageBlocks as &$block) {
-			$block['block_tag'] = json_decode($block['block_tag'], true);
-			$block['custom_tag'] = json_decode($block['custom_tag'], true);
-			$block['tag'] = array_merge (
-			is_array($block['block_tag']) ? $block['block_tag'] : array(),
-			is_array($block['custom_tag']) ? $block['custom_tag'] : array()
-			);
+		foreach($pageBlocks as $key => &$block) {
+			if ($xentifyModule->isUserInScope($user, $block['xscope_id'], $block['xentify_id'])) {
+				$block['block_tag'] = json_decode($block['block_tag'], true);
+				$block['custom_tag'] = json_decode($block['custom_tag'], true);
+				$block['tag'] = array_merge (
+					is_array($block['block_tag']) ? $block['block_tag'] : array(),
+					is_array($block['custom_tag']) ? $block['custom_tag'] : array()
+				);
+			} else {
+				unset($pageBlocks[$key]);
+			}
 		}
-		 
 		return $pageBlocks;
-		 
 	}
 	protected function preFilterPageFields($editedpage) {
 		$editedpage['positions'] = json_encode($editedpage['positions']);
