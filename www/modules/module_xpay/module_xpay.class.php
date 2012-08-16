@@ -122,6 +122,11 @@ class module_xpay extends MagesterExtendedModule {
 				unset($negocData['invoices'][$invoiceIndex]);
 			}
 		}
+		if (count($negocData['invoices']) == 0) {
+			return false;
+		}
+			
+		
 		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
 			
 		$this->getParent()->appendTemplate(array(
