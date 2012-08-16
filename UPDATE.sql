@@ -2696,3 +2696,16 @@ WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_block
 INSERT INTO `sysclass_root`.`module_xcms_blocks` (`id`, `name`, `module`, `action`, `tag`) VALUES (NULL, 'SysclassXpayInvoices', 'xpay', 'load_invoices', NULL);
 
 
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '1' WHERE `module_quick_mails_recipients`.`id` =1;
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '1' WHERE `module_quick_mails_recipients`.`id` =2;
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '1' WHERE `module_quick_mails_recipients`.`id` =3;
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '1' WHERE `module_quick_mails_recipients`.`id` =4;
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '1' WHERE `module_quick_mails_recipients`.`id` =5;
+
+UPDATE `sysclass_root`.`module_quick_mails_recipients` SET `group_id` = '2' WHERE `module_quick_mails_recipients`.`id` IN (11,12,13,14,15);
+
+ALTER TABLE `module_quick_mails_groups` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT;
+INSERT INTO `sysclass_root`.`module_quick_mails_groups` (`id`, `name`) VALUES (NULL , 'Extensão');
+INSERT INTO `sysclass_root`.`module_quick_mails_groups` (`id`, `name`) VALUES (NULL , 'Pós-Graduação');
+
+

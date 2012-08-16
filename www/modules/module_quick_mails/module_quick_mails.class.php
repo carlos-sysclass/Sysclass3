@@ -24,8 +24,9 @@ class module_quick_mails extends MagesterExtendedModule {
 		$contactListData = ef_getTableData(
 				"module_quick_mails_scope scope
 				LEFT JOIN module_quick_mails_recipients qmr ON (scope.recipient_id = qmr.id)
-				LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qmr.id = qml.recipient_id)",
-				"scope.recipient_id, scope.xscope_id, scope.xentify_id, qmr.title, qmr.image, COUNT(qml.user_id) as total_users",
+				LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qmr.id = qml.recipient_id)
+				LEFT OUTER JOIN module_quick_mails_groups qmg ON (qmr.group_id = qmg.id)",
+				"scope.recipient_id, scope.xscope_id, scope.xentify_id, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name, COUNT(qml.user_id) as total_users",
 				"",
 				"",
 				"scope.recipient_id, scope.xscope_id, scope.xentify_id HAVING COUNT(qml.user_id) > 0"
@@ -45,11 +46,12 @@ class module_quick_mails extends MagesterExtendedModule {
 						'size'	=> reset(explode("x", $image[0])),
 						'name'	=> $image[1]
 				);
-					
-				$contactList[$recp['recipient_id']] = $recp;
+				if (!is_array($contactList[$recp['group_id']])) {
+					$contactList[$recp['group_id']] = array(); 
+				}
+				$contactList[$recp['group_id']][$recp['recipient_id']] = $recp;
 			}
 		}
-		
 		return $contactList;
 	}
 
@@ -97,14 +99,14 @@ class module_quick_mails extends MagesterExtendedModule {
 				array(
 					'href'			=> "javascript: _sysclass('quick_mails').toggleContactListBlock(1);",
 					'image'			=> 'others/transparent.png',
-					'text'			=> "E",
-					'class'			=> 'qm_view_second_list',
+					'text'			=> "Extensão",
+					'class'			=> 'qm_view_first_list',
 					'image-class'	=> 'sprite16 sprite16-first'
 				),
 				array(
 					'href'			=> "javascript: _sysclass('quick_mails').toggleContactListBlock(2);",
 					'image'			=> 'others/transparent.png',
-					'text'			=> "P",
+					'text'			=> "Pós-graduação",
 					'class'			=> 'qm_view_second_list',
 					'image-class'	=> 'sprite16 sprite16-second'
 				)
@@ -112,7 +114,6 @@ class module_quick_mails extends MagesterExtendedModule {
 		), $blockIndex);
 
 		$smarty -> assign("T_CURRENT_USER", $currentUser);
-
 		$this->assignSmartyModuleVariables();
 		 
 		return true;

@@ -1,8 +1,9 @@
 (function( $ ){
 	  var methods = {
 	     toggleContactListBlock : function(index) {
-	    	 alert(index);
+	    	 jQuery(".quick_mails-contact-list").hide();
+	    	 jQuery(".quick_mails-contact-list-" + index).show();
 	     }
 	  };
-	  _sysclass("register", "quick_mails", methods);
+	  _sysclass("register", "quick_mails", methods).toggleContactListBlock(1);
 })( jQuery );
