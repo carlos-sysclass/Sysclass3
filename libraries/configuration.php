@@ -30,6 +30,7 @@ $configurationDefaults = array(
 		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> 'sysclass'
 	),
+
 	'local.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
@@ -50,6 +51,22 @@ $configurationDefaults = array(
 		'dbname'        => 'sysclass_fati',
                 'overrideTheme' => 'sysclass3'
 	),
+	'demo.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_demo',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.demo.sysclass.com'     => array(
+		'dbname'        => 'sysclass_demo',
+		'overrideTheme' => 'sysclass3'
+	),
+	'spbc.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_spbc',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.spbc.sysclass.com'     => array(
+		'dbname'        => 'sysclass_spbc',
+		'overrideTheme' => 'sysclass3'
+	),		
 	'idiompro.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_idiompro',
 		'overrideTheme' => 'sysclass3'
@@ -57,15 +74,7 @@ $configurationDefaults = array(
 	'www.idiompro.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_idiompro',
 		'overrideTheme' => 'sysclass3'
-	),
-	'demo.sysclass.com'	=> array(
-		'dbname'	=> 'sysclass_demo',
-		'overrideTheme' => 'sysclass3'
-	),
-        'demo.sysclass.com'     => array(
-                'dbname'        => 'sysclass_demo',
-		'overrideTheme' => 'sysclass3'
-        )
+	)
 );
 
 $configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
