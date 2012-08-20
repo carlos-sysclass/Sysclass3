@@ -75,7 +75,7 @@
  
     <target name="documentation" depends="prepare">
         <exec dir="${basedir}" executable="docblox" failonerror="false">
-            <arg line="run -d ${basedir} -t ${basedir}/build/docblox -i ${basedir}/build/,${basedir}/tests/" />
+            <arg line="run -d ${basedir} -t ${basedir}/build/docblox -i ${basedir}/build/,${basedir}/tests/,${basedir}/PEAR/,${basedir}/Zend/,${basedir}/upload/" />
         </exec>
     </target>
  
