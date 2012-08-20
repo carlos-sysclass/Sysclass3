@@ -523,3 +523,38 @@ html {
 
 
 .inactiveImage, .inactiveImage img{opacity:0.2;filter:alpha(opacity=20);}
+
+/*autocomplete div*/
+div.autocomplete {
+	background: white;
+	border: 1px solid #888;
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+	z-index: 3;
+	white-space: normal;
+	overflow: auto;
+	max-height: 400px;
+}
+
+div.autocomplete ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.autocomplete ul li.selected {
+	background: #ffffbb;
+}
+
+div.autocomplete ul li {
+	cursor: pointer;
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
+}
+
+input.autoCompleteTextBox {
+	width: 50%;
+}
