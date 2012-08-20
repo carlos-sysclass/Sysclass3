@@ -14,224 +14,67 @@ $configurationDefaults = array(
 		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/',
 		'dbtype'	=> 'mysql',
 		'dbhost'	=> 'localhost',
-		'dbuser'	=> 'maguser',
+		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
-		'https'		=> 'optional',
+		'https'		=> 'none',
 	),
-/*
-	'local.magester.net'		=> array(
-		'dbname'	=> 'maguser_root' ,
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass')
-		'overrideTheme'	=> 'sysclass3'
-	),
-	'magester.net'      => array(
-    	'dbname'        => 'maguser_ult',
-        'overrideTheme' => 'sysclass3'
-	),
-    'www.magester.net'      => array(
-    	'dbname'        => 'maguser_ult',
-        'overrideTheme' => 'sysclass3'
-	),
-	'ult.magester.net'	=> array(
-		'dbname'	=> 'maguser_ult',
-		'overrideTheme'	=> 'sysclass3'
-	),	
-	'www.ult.magester.net'	=> array(
-		'dbname'	=> 'maguser_ult',
-		'overrideTheme'	=> 'sysclass3'
-	),
-	*/
 	'new.magester.net'	=> array(
-		'dbname'		=> 'maguser_ult',
+		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> 'sysclass'
 	),
 	'www.new.magester.net'	=> array(
-		'dbname'	=> 'maguser_ult',
+		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> 'sysclass'
 	),
-		/*
-	'posult.magester.net'	=> array(
-		'dbname'		=> 'maguser_ult',
-		'overrideTheme'	=> 'sysclass3'
-	),
-	'dev.magester.net'	=> array(
-		'dbname'	=> 'maguser_dev',
-		'https'		=> 'optional', // 'none', 'optional', 'required'
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new')
-	),
-	*/
+
 	'local.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
 		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'none', // 'none', 'optional', 'required'
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
 	),
 	'sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'optional', // 'none', 'optional', 'required'
+		'dbname'        => 'sysclass_root',
 		'overrideTheme' => 'sysclass3'
 	),
 	'www.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_root',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0',
-		'https'		=> 'required', // 'none', 'optional', 'required'
-		'overrideTheme' => 'sysclass3'
+                'dbname'        => 'sysclass_root',
+                'overrideTheme' => 'sysclass3'
 	),
 	'fati.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_fati',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	/*
-	'dev.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_dev',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'www.dev.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_dev',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'pelissari.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_pelissari',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> 'sysclass3',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'www.pelissari.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_pelissari',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> 'sysclass-new',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'fajar.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_fajar',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'www.fajar.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_fajar',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),	
-	'fati.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_fati',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
+		'dbname'        => 'sysclass_fati',
+                'overrideTheme' => 'sysclass3'
 	),
 	'www.fati.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass',
-		'dbpass'	=> 'WXubN7Ih',
-		'dbname'		=> 'sysclass_fati',
-		//'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass-new'),
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3'),
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
+		'dbname'        => 'sysclass_fati',
+                'overrideTheme' => 'sysclass3'
+	),
+	'demo.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_demo',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.demo.sysclass.com'     => array(
+		'dbname'        => 'sysclass_demo',
+		'overrideTheme' => 'sysclass3'
+	),
+	'spbc.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_spbc',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.spbc.sysclass.com'     => array(
+		'dbname'        => 'sysclass_spbc',
+		'overrideTheme' => 'sysclass3'
 	),		
 	'idiompro.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass_idpro',
-		'dbpass'	=> '159487@@',
-		'dbname'		=> 'sysclass_idiompro',
-		'overrideTheme'	=> 'sysclass-new',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
+		'dbname'	=> 'sysclass_idiompro',
+		'overrideTheme' => 'sysclass3'
 	),
 	'www.idiompro.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass_idpro',
-		'dbpass'	=> '159487@@',
-		'dbname'		=> 'sysclass_idiompro',
-		'overrideTheme'	=> 'sysclass-new',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	
-	
-	
-	'sandbox.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass_sandbox',
-		'dbpass'	=> 'aq1sw2de3@@',
-		'dbname'		=> 'sysclass_sandbox',
-		'overrideTheme'	=> 'sysclass-new',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'www.sandbox.sysclass.com'	=> array(
-		'dbuser'	=> 'sysclass_sandbox',
-		'dbpass'	=> 'aq1sw2de3@@',
-		'dbname'		=> 'sysclass_sandbox',
-		'overrideTheme'	=> 'sysclass-new',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	'demo.ult.com.br'	=> array(
-		'dbuser'	=> 'ultbr_sysclass',
-		'dbpass'	=> 'fep7_58A#@',
-		'dbname'		=> 'ultbr_sysclass',
-		'overrideTheme'	=> 'sysclass3',
-		'dbprefix'	=> '',
-		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
-		'version'	=> '3.0.0'
-	),
-	*/
+		'dbname'	=> 'sysclass_idiompro',
+		'overrideTheme' => 'sysclass3'
+	)
 );
 
 $configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);

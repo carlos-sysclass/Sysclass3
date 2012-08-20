@@ -2506,7 +2506,7 @@ define("_LESSONSORDER","Ordem das aulas");
 define("_LESSONSPROGRESS","Progresso de aulas");
 define("_LESSONSREGISTRATION","Cadastrar aula");
 define("_LESSONSREGISTRATIONS","Cadastros");
-define("_LESSONSTATISTICS","Relatório das aula");
+define("_LESSONSTATISTICS","Relatório de aulas");
 define("_LESSONSTATS_GOTOLESSONSTATSPAGE","Ir para a página de estatísticas da aula");
 define("_LESSONSTATS_LASTLOGINS","Logins da última aula");
 define("_LESSONSTATS_LESSONLINK","Estatísticas");

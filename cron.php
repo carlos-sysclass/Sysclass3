@@ -19,7 +19,7 @@ if ($start !== FALSE) {
 	$start += strlen("subdomains/");
 
 	$sub = substr(dirname(__FILE__), $start);
-	$_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
+	$_SERVER['SERVER_NAME'] =  $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;
 }
@@ -29,12 +29,14 @@ if ($start !== FALSE) {
 	$start += strlen("sub-domains/");
 
 	$sub = substr(dirname(__FILE__), $start);
-	$_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
+	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
+	
+
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;
 }
 if (isset($domain_name)) {
-	$_SERVER['HTTP_HOST'] = $domain_name;
+	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $domain_name;
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;
 }

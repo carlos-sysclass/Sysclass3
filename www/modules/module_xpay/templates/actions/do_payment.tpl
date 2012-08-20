@@ -18,9 +18,11 @@
 					</tr>
 				</thead>
 				<tbody>
+					<!--
 					<tr>
-						<th colspan="6">Curso: <strong>{$T_XPAY_STATEMENT.course}</strong></th>
+						<th colspan="7">Curso: <strong>{$T_XPAY_STATEMENT.course}</strong></th>
 					</tr>
+					--->
 					{foreach item="invoice" from=$T_XPAY_STATEMENT.invoices}
 					<tr class="{if ($invoice.valor+$invoice.total_reajuste) <= $invoice.paid}xpay-paid{/if}{if $invoice.locked}locked{/if}">
 						<td align="center">

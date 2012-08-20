@@ -12,16 +12,5 @@
 		</li>
 	{/foreach}
 </ul>
-<!-- 
-<div class="blockFooter" align="right">
-		<img 
-			src = "images/others/transparent.gif"
-			class="sprite16 sprite16-conversation"
-			border = "0"/>
-		<a title="{$smarty.const.__QUICK_MAILS_ANOTHER_CONTACTS}" href = "{$T_QUICK_MAILS_BASEURL}">
-			<span>{$smarty.const.__QUICK_MAILS_ANOTHER_CONTACTS}</span>
-		</a>
-</div>
- -->
 {/capture}
 {$smarty.capture.t_inner_table_mail_code}

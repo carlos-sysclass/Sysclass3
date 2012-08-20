@@ -2240,6 +2240,38 @@ cl.created, cl.max_users";
    return MagesterCourse :: convertDatabaseResultToClassesArray($result);
   }
  }
+ 
+ public function getUserIes($constraints = array()) {
+ 	!empty($constraints) OR $constraints = array('active' => true);
+ 
+ 	$courseSQL = prepareGetTableData(
+ 		"courses",
+ 		"ies_id",
+ 		sprintf(
+ 			"id IN (
+ 				SELECT courses_ID FROM users_to_courses WHERE active = 1 AND archive = 0 AND users_login = '%s'
+ 			) AND courses.active = 1 AND courses.archive = 0"
+			, $this->user['login']
+ 		)
+ 	);
+ 	
+ 	$lessonSQL = prepareGetTableData(
+		"lessons",
+		"ies_id",
+		sprintf(
+			"id IN (
+				SELECT lessons_ID FROM users_to_lessons WHERE active = 1 AND archive = 0 AND users_login = '%s'
+			) AND lessons.active = 1 AND lessons.archive = 0"
+			, $this->user['login']
+		)
+ 	);
+ 	
+ 	$sql = $courseSQL . " UNION " . $lessonSQL;
+ 	
+ 	$flatIes = $GLOBALS['db'] -> GetCol($sql);
+ 	
+ 	return $flatIes;
+ }
  public function getUserPolo($constraints = array()) {
 	!empty($constraints) OR $constraints = array('active' => true);
 	

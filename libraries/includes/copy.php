@@ -2,7 +2,7 @@
 /**
 
  * This page is for copying content and other entities between lessons
-
+saveTree
  * 
 
  */
@@ -18,15 +18,41 @@ if (!$_change_) {
 $loadScripts[] = 'includes/copy';
 try {
     //Get the user's lessons list, so that he can pick a lesson to copy from
+    $lessonToCoursesDB = ef_getTableData("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "lessons_ID, courses_ID, c.name as course_name");
+    
+    $lessonToCourses = array();
+    
+	foreach($lessonToCoursesDB as $lessonRel) {
+		$lessonToCourses[$lessonRel['lessons_ID']] = array(
+			'course_id' => $lessonRel['courses_ID'],
+			'name'		=> $lessonRel['course_name']
+		);
+	}
+    
+	
     $lessons = $currentUser -> getLessons(true);
 
     unset($lessons[$currentLesson -> lesson['id']]);
-    $direction_lessons = array();
+    $direction_lessons = $course_lessons = array();
     foreach ($lessons as $lesson){
         $direction = $lesson -> getDirection();
         $direction_lessons[$direction['name']][] = array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
+        
+        $lesson_course_id = $lessonToCourses[$lesson -> lesson['id']]['course_id'];
+        
+        if (!is_array($course_lessons[$lesson_course_id])) {
+        	$course_lessons[$lesson_course_id] = array(
+       			'name'	=> $lessonToCourses[$lesson -> lesson['id']]['name'],
+       			'lessons'	=> array()
+        	);
+        }
+        
+        $course_lessons[$lesson_course_id]['lessons'][] = 
+        	array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
     }
-    $smarty -> assign("T_USER_LESSONS", $direction_lessons);
+    
+    $smarty -> assign("T_USER_LESSONS", $course_lessons);
+    //$smarty -> assign("T_USER_LESSONS", $direction_lessons);
 
     if (isset($_GET['from']) && in_array($_GET['from'], array_keys($userLessons))) {
         //We asked to copy the glossary
@@ -96,14 +122,22 @@ try {
             }
 
             try {
-                if (isset($_GET['node_orders'])) { //Save new order through AJAX call
-                    $nodeOrders = explode(",", $_GET['node_orders']);
+                if (isset($_GET['node_orders']) || isset($_POST['node_orders'])) { //Save new order through AJAX call
+                	if (isset($_POST['node_orders'])) {
+                		$nodeOrders = explode(",", $_POST['node_orders']);
+                	} else {
+                		$nodeOrders = explode(",", $_GET['node_orders']);
+                	}
+                	
+                    //$nodeOrders = explode(",", $_GET['node_orders']);
                     $nodeOrders = array_unique($nodeOrders);
                     $previousContentId = 0;
                     $transferedNodes = array();
                     $transferedNodesCheck = array();
                     if ($_GET['transfered']) {
                         $transferedNodesCheck = unserialize($_GET['transfered']);
+                    } elseif ($_POST['transfered']) {
+                    	$transferedNodesCheck = unserialize($_POST['transfered']);
                     }
 
                     $copiedTests = array();

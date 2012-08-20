@@ -40,6 +40,8 @@ header("Content-type: text/javascript; charset: UTF-8");
 ob_start ("ob_gzhandler");
 
 foreach (explode(",", $_GET['load']) as $value) {
+	
+	
     lastModificationTime(filemtime("$value.js"));
 	echo file_get_contents($value . ".js");
     echo "\n";

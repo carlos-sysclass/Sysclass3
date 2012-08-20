@@ -60,7 +60,7 @@ ul li ul.dropdown li {
 	position: absolute;
 	top: 38px;
 	min-width: 100px;
-	z-index: 501;
+	z-index: 99;
 	left:-9999px;
 	zoom:1;
 }

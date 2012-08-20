@@ -78,7 +78,11 @@ div.infoEntry span:first-child{font-weight:bold;}
 
 
 .block-title {
-	padding: 0 0 2px 2px;
+	float: left;
+	padding: 0;
+	float: left;
+	width: 100%;
+	margin: 0 0 5px 0;
 }
 /*
 .blockContents {
@@ -133,7 +137,7 @@ div.block .title, div.block .title a {
 	font-size: 25px;
 	float: left;
 }
-div.block .title { float: none !important; }
+div.block .title { float: left; }
 div.grid_17 div.block .title, div.grid_17 div.block .title a {
     color: #333333;
     font-size: 20px;
@@ -252,7 +256,7 @@ table.horizontalBlock .rightOption{
     box-shadow: 0 1px 2px #CCCCCC;
     cursor: move;
     display: block;
-    float: right;
+    float: left;
     height: 33px;
     padding: 0;
     /*text-indent: -10000px;*/
@@ -300,7 +304,7 @@ table.horizontalBlock .rightOption{
 	display: block; 
 	color: #333333; 
 	text-decoration: none;
-	padding: 8px 4px;
+	padding: 8px 6px;
 }
 /*
 .block-title .handles li img {
@@ -519,3 +523,38 @@ html {
 
 
 .inactiveImage, .inactiveImage img{opacity:0.2;filter:alpha(opacity=20);}
+
+/*autocomplete div*/
+div.autocomplete {
+	background: white;
+	border: 1px solid #888;
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+	z-index: 3;
+	white-space: normal;
+	overflow: auto;
+	max-height: 400px;
+}
+
+div.autocomplete ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.autocomplete ul li.selected {
+	background: #ffffbb;
+}
+
+div.autocomplete ul li {
+	cursor: pointer;
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
+}
+
+input.autoCompleteTextBox {
+	width: 50%;
+}

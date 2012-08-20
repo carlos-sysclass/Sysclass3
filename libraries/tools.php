@@ -2735,6 +2735,7 @@ function getMainScripts() {
 	$mainScripts[]	= 'jquery/jquery.dataTables';
 	$mainScripts[]	= 'widget/messaging';
 	$mainScripts[]	= 'themeScripts';
+	$mainScripts[]	= 'sysclass.module.loader';
 	
 	return $mainScripts;
 }
