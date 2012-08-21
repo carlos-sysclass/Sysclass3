@@ -75,18 +75,18 @@
  
     <target name="documentation" depends="prepare">
         <exec dir="${basedir}" executable="docblox" failonerror="false">
-            <arg line="run -d ${basedir} -t ${basedir}/build/docblox -i ${basedir}/build/,${basedir}/tests/,${basedir}/PEAR/,${basedir}/Zend/,${basedir}/upload/" />
+            <arg line="run -d ${basedir} -t ${basedir}/build/docblox -i ${basedir}/build/,${basedir}/tests/,${basedir}/PEAR/,${basedir}/Zend/,${basedir}/upload/,${basedir}/libraries/PHPExcel,${basedir}/libraries/adodb" />
         </exec>
     </target>
- 
+<!-- 
     <target name="parallel">
         <parallel>
             <antcall target="phpcs" />
             <antcall target="phpmd" />
             <antcall target="phpcpd" />
-   <antcall target="pdepend" />
-        	</parallel>
+   			<antcall target="pdepend" />
+		</parallel>
 	</target>
-
-	<target name="build" depends="clean,prepare,parallel,phpunit,phpcb,documentation" /> 
+-->	
+	<target name="build" depends="clean,prepare,phpcs,phpmd,phpcpd,pdepend,phpunit,phpcb,documentation" /> 
 </project>
