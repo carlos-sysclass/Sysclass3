@@ -1386,7 +1386,7 @@ class module_xpay extends MagesterExtendedModule {
 		$status = array();
 		
 		if ($sendAll === TRUE) {
-			$sendList = $this->_getSendInvoicesList(678);
+			$sendList = $this->_getSendInvoicesList();
 			
 			foreach($sendList as $sendItem) {
 				$status[] = $this->_sendInvoiceAdvise($sendItem['negociation_id'], $sendItem['invoice_index'], $sendItem['send_id']);
@@ -1432,7 +1432,7 @@ class module_xpay extends MagesterExtendedModule {
 		if (count($sendIDData) > 0) {
 			$data['send_id'] = $sendIDData[0]['id'];
 		} else {
-			$data['send_id'] = eF_insertTableData("module_xpay_to_send_list", array('data_envio' => date('Y-m-d', time() + (60*60*24*5)  )));
+			$data['send_id'] = eF_insertTableData("module_xpay_to_send_list", array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*5)  )));
 		}
 		
 		
@@ -2452,7 +2452,7 @@ class module_xpay extends MagesterExtendedModule {
 		if (is_null($invoice_index)) {
 			return false;
 		}
-		/** @todo Get Temnplate from another datasource */
+		/** @todo Get Template from another datasource */
 		$bodyTemplate =
 			'<div>
 			<div>
@@ -2528,18 +2528,37 @@ class module_xpay extends MagesterExtendedModule {
 				'{$MONTH}',
 				'{$ACCESS_LINK}'
 		);
+		
+		/*
 		$repl = array(
 				$invoiceUser->user['name'] . ' ' . $invoiceUser->user['surname'],
 				$a_meses[$mes_boleto],
-				 sprintf("%sstudent.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", G_SERVERNAME, $negociation_id, $invoice_index)
+				sprintf("%sstudent.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", G_SERVERNAME, $negociation_id, $invoice_index)
 		);
+		*/
+		$repl = array(
+				$invoiceUser->user['name'] . ' ' . $invoiceUser->user['surname'],
+				$a_meses[$mes_boleto],
+				""
+		);
+		/** @todo This function MUST BE moved to your own module. */
+		//var_dump($invoiceData);
+		$link = sprintf("ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", $negociation_id, $invoice_index);
+		
+		$oneWeek = new DateInterval("P1W");
+		
+		$today = new DateTime("today");
+		
+		var_dump($this->createDirectAccessLink("student", $link, $today->add($oneWeek)));
+		
+		//$this->createPaymentDirectLink($negociation_id, $invoice_index);
 		 
 		$body = str_replace($search, $repl, $bodyTemplate);
 		
 		$my_email = "fin@americas.com.br";
 		$user_mail = $invoiceUser->user['email'];
 		//$user_mail = "fin@americas.com.br";
-		 
+		 exit;
 		$subject = 'Boleto ULT';
 
 		$header = array (
@@ -2556,15 +2575,15 @@ class module_xpay extends MagesterExtendedModule {
 				'host'      => $GLOBALS['configuration']['smtp_host'],
 				'password'  => 'pl!kua?#!*]]i$ooe1',
 				'port'      => $GLOBALS['configuration']['smtp_port'],
-				'username'  => "financeiro@magester.net",
+				'username'  => "financeiro@sysclass.com",
 				'timeout'   => $GLOBALS['configuration']['smtp_timeout'])
 		);
 		
 		//$smtp->debug = true;
-		
+		/*
 		$status = $smtp -> send($user_mail, $header, $body);
         $status = $smtp -> send("fin@americas.com.br", $header, $body);
-
+		
 		if ($status && !is_null($send_id)) {
 			eF_deleteTableData(
 					"module_xpay_to_send_list_item",
@@ -2573,7 +2592,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		// ok, delete from queue, log entry
-		
 		$sentLOG = array(			
 			'user_id' 			=> $invoiceData['user_id'],
 			'negociation_id'	=> $negociation_id,
@@ -2583,9 +2601,40 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		
 		eF_insertTableData("module_xpay_sent_invoices_log", $sentLOG);
-		
+		*/
 		return $sentLOG;
 	}
+	
+	public function createDirectAccessLink($userType, $query, $expires = false) {
+		$hash = $this->createDirectAccessHash($userType, $query, $expires);
+		
+		return $url = sprintf(
+			"%sservices/dl/?%s&_chk=%s", G_SERVERNAME, $query, $hash
+		);
+	}
+	
+	private function createDirectAccessHash($userType, $query, $expires = false) {
+		$fields = array();
+		
+		$fields['user_type'] = $userType;
+		$fields['query'] = $query;
+		
+		if (is_object($expires)) {
+			$fields['expires'] = $expires->format("Y-m-d");
+		}
+		if (function_exists("sha1")) {
+			$fields['hash'] = sha1(mt_rand() . implode(":", $fields));
+		} else {
+			$fields['hash'] = md5(mt_rand() . implode(":", $fields));
+		}
+		
+		eF_insertTableData(
+			"service_direct_link_hash",
+			$fields
+		);
+		return $fields['hash'];
+	}
+	
 	public function _asCurrency($rawValue) {
 		global $CURRENCYSYMBOLS;
 		$decimal_sep	= isset($GLOBALS['configuration']["decimal_point"]) ? $GLOBALS['configuration']["decimal_point"] : '.';
