@@ -2574,7 +2574,7 @@ class module_xpay extends MagesterExtendedModule {
 
 		$header = array (
 			'From'                   	=> $my_email,
-			'Reply-To'				 	=> $my_email,
+			'Reply-To'			=> "fin@americas.com.br",
 			'To'                        => $user_mail,
 			'Subject'                   => $subject,
 			'Content-type'             	=> 'text/html;charset="UTF-8"',                       // if content-type is text/html, the message cannot be received by mail clients for Registration content
