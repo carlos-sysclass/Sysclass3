@@ -2485,6 +2485,7 @@ class module_xpay extends MagesterExtendedModule {
 			<b><span style="font-size: 11pt; color: rgb(31, 73, 125);"><a href="{$ACCESS_LINK}">{$ACCESS_LINK}</a></span></b>
 			</p>
 			</div>
+			<br />
 			<div>
 			<p class="MsoNormal"><span style="color: rgb(31, 73, 125);">Para
 			esclarecimentos de dúvidas sobre os pagamentos entre em contato com nosso departamento
@@ -2594,8 +2595,8 @@ class module_xpay extends MagesterExtendedModule {
 		//$smtp->debug = true;
 		
 		$status = $smtp -> send($user_mail, $header, $body);
-        $status = $smtp -> send("fin@americas.com.br", $header, $body);
-        //$status = $smtp -> send("andre@ult.com.br", $header, $body);
+	        $status = $smtp -> send("fin@americas.com.br", $header, $body);
+        	//$status = $smtp -> send("andre@ult.com.br", $header, $body);
         
 		if ($status && !is_null($send_id)) {
 			eF_deleteTableData(
