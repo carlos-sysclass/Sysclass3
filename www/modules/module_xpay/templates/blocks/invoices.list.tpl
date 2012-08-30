@@ -12,17 +12,23 @@
 				<tr class="{if $invoice.locked}locked{/if}">
 					<td align="center">
 						<a href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
-							{$invoice.invoice_id}
+						{$invoice.invoice_id}
 						</a>
 					</td>
 				 	<td align="center">
 					 	{if $invoice.data_vencimento}
-				 			#filter:date-{$invoice.data_vencimento}#
+							<a href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
+				 				#filter:date-{$invoice.data_vencimento}#
+							</a>
 				 		{else}
 				 			n/a
 				 		{/if}
 				 	</td>
-				 	<td align="center">#filter:currency-{$invoice.valor+$invoice.total_reajuste}#</td>
+				 	<td align="center">
+						<a href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
+							#filter:currency-{$invoice.valor+$invoice.total_reajuste}#
+						</a>
+					</td>
 				</tr>
 			{/if}
 		{/foreach}
