@@ -2719,5 +2719,7 @@ CREATE TABLE IF NOT EXISTS `service_direct_link_hash` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ALTER TABLE `service_direct_link_hash` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `service_direct_link_hash` ADD `user_login` VARCHAR( 100 ) NOT NULL AFTER `id`;
+
 
 

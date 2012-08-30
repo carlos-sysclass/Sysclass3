@@ -994,10 +994,17 @@ class module_xpay extends MagesterExtendedModule {
 				
 			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
 			
+			$pay_method_active_options = array();
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
 					continue;
 				}
+				
+				$pay_method_active_options[] = array(
+					'pay_method' 		=> strtolower($selectedIndex),  	
+					'pay_method_option'	=> $key
+				);
+				
 				$img = sprintf(
 					'<img src="%simages/%s.png" />',
 					$paymentMethods[strtolower($selectedIndex)]['baselink'],
@@ -1008,6 +1015,16 @@ class module_xpay extends MagesterExtendedModule {
 			}
 		}
 		$smarty -> assign("T_XPAY_METHODS", $paymentMethods);
+				
+		if (count($pay_method_active_options) == 1 && $_GET['do_direct'] == 1) {
+			$pay_method_active_opt = reset($pay_method_active_options);
+			$_SESSION['pay_method'] 		= $pay_method_active_opt['pay_method'];
+			$_SESSION['pay_method_option']	= $pay_method_active_opt['pay_method_option'];
+			
+			
+			
+		}
+		
 		if (
 			($form -> isSubmitted() && $form -> validate()) ||
 			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
@@ -1023,12 +1040,12 @@ class module_xpay extends MagesterExtendedModule {
 				$invoice_index = $values['invoice_indexes'];
 				$form->setDefaults($form->exportValues());
 			} else {
-				/*
+				
 				list($pay_method, $pay_method_option) = array(
 					$_SESSION['pay_method'],
 					$_SESSION['pay_method_option']
 				);
-					
+				/*	
 				$form->setDefaults(array(
 					'pay_methods'	=>  $pay_method . ":" . $pay_method_option
 				));
@@ -2536,33 +2553,26 @@ class module_xpay extends MagesterExtendedModule {
 				sprintf("%sstudent.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", G_SERVERNAME, $negociation_id, $invoice_index)
 		);
 		*/
+		$link = sprintf("ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s&do_direct=1", $negociation_id, $invoice_index);
+		$oneWeek = new DateInterval("P1W");
+		$today = new DateTime("today");
+		
 		$repl = array(
 				$invoiceUser->user['name'] . ' ' . $invoiceUser->user['surname'],
 				$a_meses[$mes_boleto],
-				""
+				$this->createDirectAccessLink($invoiceUser->user['login'], "student", $link, $today->add($oneWeek))
 		);
-		/** @todo This function MUST BE moved to your own module. */
-		//var_dump($invoiceData);
-		$link = sprintf("ctg=module&op=module_xpay&action=do_payment&negociation_id=%s&invoice_index=%s", $negociation_id, $invoice_index);
-		
-		$oneWeek = new DateInterval("P1W");
-		
-		$today = new DateTime("today");
-		
-		var_dump($this->createDirectAccessLink("student", $link, $today->add($oneWeek)));
-		
-		//$this->createPaymentDirectLink($negociation_id, $invoice_index);
-		 
 		$body = str_replace($search, $repl, $bodyTemplate);
 		
-		$my_email = "fin@americas.com.br";
+		$my_email 	= "financeiro@sysclass.com";
+		$my_pass	= 'pl!kua?#!*]]i$ooe1';
 		$user_mail = $invoiceUser->user['email'];
 		//$user_mail = "fin@americas.com.br";
-		 exit;
+
 		$subject = 'Boleto ULT';
 
 		$header = array (
-			'From'                   	=> $GLOBALS['configuration']['smtp_user'],
+			'From'                   	=> $my_email,
 			'Reply-To'				 	=> $my_email,
 			'To'                        => $user_mail,
 			'Subject'                   => $subject,
@@ -2571,19 +2581,22 @@ class module_xpay extends MagesterExtendedModule {
 		);
 
 		$smtp = Mail::factory('smtp', array(
-				'auth'      => $GLOBALS['configuration']['smtp_auth'] ? true : false,
-				'host'      => $GLOBALS['configuration']['smtp_host'],
-				'password'  => 'pl!kua?#!*]]i$ooe1',
-				'port'      => $GLOBALS['configuration']['smtp_port'],
-				'username'  => "financeiro@sysclass.com",
-				'timeout'   => $GLOBALS['configuration']['smtp_timeout'])
+				'auth'      => true,
+				'host'      => "localhost",
+				'password'  => $my_pass,
+				'port'      => 25,
+				'username'  => $my_email,
+				'timeout'   => $GLOBALS['configuration']['smtp_timeout'],
+				'persist' => true
+			)
 		);
 		
 		//$smtp->debug = true;
-		/*
+		
 		$status = $smtp -> send($user_mail, $header, $body);
         $status = $smtp -> send("fin@americas.com.br", $header, $body);
-		
+        //$status = $smtp -> send("andre@ult.com.br", $header, $body);
+        
 		if ($status && !is_null($send_id)) {
 			eF_deleteTableData(
 					"module_xpay_to_send_list_item",
@@ -2601,21 +2614,22 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		
 		eF_insertTableData("module_xpay_sent_invoices_log", $sentLOG);
-		*/
+
 		return $sentLOG;
 	}
 	
-	public function createDirectAccessLink($userType, $query, $expires = false) {
-		$hash = $this->createDirectAccessHash($userType, $query, $expires);
+	public function createDirectAccessLink($userLogin, $userType, $query, $expires = false) {
+		$hash = $this->createDirectAccessHash($userLogin, $userType, $query, $expires);
 		
 		return $url = sprintf(
 			"%sservices/dl/?%s&_chk=%s", G_SERVERNAME, $query, $hash
 		);
 	}
 	
-	private function createDirectAccessHash($userType, $query, $expires = false) {
+	private function createDirectAccessHash($userLogin, $userType, $query, $expires = false) {
 		$fields = array();
-		
+
+		$fields['user_login'] = $userLogin;
 		$fields['user_type'] = $userType;
 		$fields['query'] = $query;
 		

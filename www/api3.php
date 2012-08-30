@@ -153,8 +153,7 @@ if ($api == 1) {
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Unable to update log</message>";
