@@ -324,7 +324,9 @@ $dadosboleto = array_merge(
 	$__METHOD_SUPER_OPTIONS
 );
 
-//var_dump($__METHOD_SUPER_OPTIONS);
+// DO VALIDATION
+$dadosboleto["nosso_numero"] = substr($dadosboleto["nosso_numero"], -8);
+$dadosboleto["numero_documento"] = substr($dadosboleto["numero_documento"], -8);
 
 $codigobanco = "341";
 $codigo_banco_com_dv = geraCodigoBanco($codigobanco);

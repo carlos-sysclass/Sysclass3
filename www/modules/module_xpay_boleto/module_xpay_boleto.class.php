@@ -1441,7 +1441,11 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			$invoiceOptions["data_vencimento"] = $datavencimento->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
 		}
-
+		
+		
+		
+		
+		
 //		$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
 //		$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
 		$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'] - $invoiceData['paid'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
@@ -1458,28 +1462,25 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 //		$dadosboleto["instrucoes2"] = "";
 //		$dadosboleto["instrucoes3"] = "";
 //		$dadosboleto["instrucoes4"] = "";
-		
-		//var_dump($invoiceOptions);
-		
+
 		if (is_callable($payInstance['config'])) {
 			$methodConfig = call_user_func($payInstance['config'], $indexOpt, $invoiceOptions);
 		} else {
 			$methodConfig = $payInstance['config'];
 		}
-		
-		// INJECT USER DATA, INVOICE DATA, ETC...
 		$boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
 		
 		if ($data['return_string'] == true) {
 			return $boletoHTML;
 		}	
 		echo $boletoHTML;
+		exit;
 	}
 	
 	private function loadPaymentInvoiceFromTpl($paymentIndex, $paymentConfig) {
 		$smarty = $this->getSmartyVar();
 		
-		echo $invoiceFile = sprintf(
+		$invoiceFile = sprintf(
 			"%stemplates/layouts/%s.tpl", 
 			$this->moduleBaseDir,
 			$paymentIndex 
@@ -1492,23 +1493,21 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		);
 		
 		require($smartyFunctionsFile);
-		var_dump(0);
+
 		$smarty->register_function(
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex),
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex)
 		);
-var_dump(1);
+
 		$this->assignSmartyModuleVariables();
-		var_dump(2);		
+		
 		/* CUSTOM FIELDS */
 		$index = "03";
 		//$paymentConfig["numero_documento"] = "0000000" . $index;
 		//$paymentConfig["valor_boleto"] = "1," . $index;
 		$smarty->assign("T_" . strtoupper($this->getName()) . "_CFG", $paymentConfig);
-		var_dump(4);
-		echo $boletoHTML = $smarty -> fetch($invoiceFile);
-		var_dump(5);
-		exit;
+		
+		$boletoHTML = $smarty -> fetch($invoiceFile);
 		return $boletoHTML;
 	}
 	public function paymentCanBeDone($payment_id, $invoice_id) {

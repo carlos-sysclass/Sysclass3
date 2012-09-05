@@ -78,7 +78,7 @@
 		<tbody>
 			<tr>
 				<td class=ct width=666><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/6.png" width=665
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/6.png" width=665
 					border=0 alt=""></td>
 			</tr>
 			<tr>
@@ -98,7 +98,7 @@
 	<table width=666 cellspacing=5 cellpadding=0 border=0 align=Default>
 		<tr>
 			<td width="113"><img
-				SRC="{$T_XPAY_BOLETO_BASELINK}images/logo_empresa.png""
+				SRC="{$T_XPAY_BOLETO_BASELINK}images/layouts/logo_empresa.png"
 				alt=""></td>
 			<td class=ti width=455>{$T_XPAY_BOLETO_CFG.identificacao}
 				{if isset($T_XPAY_BOLETO_CFG.cpf_cnpj)}
@@ -106,8 +106,8 @@
 				{else}
 				{/if}
 				<br>
-				{$T_XPAY_BOLETO_CFG.logradouro"], {$T_XPAY_BOLETO_CFG.numero} {$T_XPAY_BOLETO_CFG.complemento} - {$T_XPAY_BOLETO_CFG.bairro}<br />
-				{$T_XPAY_BOLETO_CFG.cidade} / {$T_XPAY_BOLETO_CFG.uf}<br />
+				{$T_XPAY_BOLETO_CFG.endereco}<br />
+				{$T_XPAY_BOLETO_CFG.cidade_uf}<br />
 			</td>
 			<td align=RIGHT width=150 class=ti>&nbsp;</td>
 		</tr>
@@ -119,13 +119,13 @@
 				style="margin-left: 15px;"> <font class="bc">Banco
 						Itaú</font> <!-- 
  <IMG
-      src="{$T_XPAY_BOLETO_BASELINK}images/logoitau.jpg"" width="150" height="40"
+      src="{$T_XPAY_BOLETO_BASELINK}images/layouts/logoitau.jpg" width="150" height="40"
       border=0></span>
  -->
 
 			</span></td>
 			<td width=3 valign=bottom><img height=22
-				src="{$T_XPAY_BOLETO_BASELINK}images/3.png" width=2
+				src="{$T_XPAY_BOLETO_BASELINK}images/layouts/3.png" width=2
 				border=0 alt=""></td>
 			<td class=cpt width=58 valign=bottom>
 				<div align=center>
@@ -134,7 +134,7 @@
 				</div>
 			</td>
 			<td width=3 valign=bottom><img height=22
-				src="{$T_XPAY_BOLETO_BASELINK}images/3.png" width=2
+				src="{$T_XPAY_BOLETO_BASELINK}images/layouts/3.png" width=2
 				border=0 alt=""></td>
 			<td class=ld align=right width=453 valign=bottom><span class=ld>
 					<span class="campotitulo"> {$T_XPAY_BOLETO_CFG.linha_digitavel}
@@ -144,7 +144,7 @@
 		<tbody>
 			<tr>
 				<td colspan=5><img height=2
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=666
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=666
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -153,52 +153,52 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=268 height=13>Cedente</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=156 height=13>Agência/Código do
 					Cedente</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=34 height=13>Espécie</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=53 height=13>Quantidade</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=120 height=13>Nosso número</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=268 height=12><span class="campo">{$T_XPAY_BOLETO_CFG.cedente}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=156 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.agencia_codigo}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=34 height=12><span class="campo">{$T_XPAY_BOLETO_CFG.especie}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=53 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.quantidade}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=120 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.nosso_numero}
@@ -206,34 +206,34 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=268 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=268
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=268
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=156 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=156
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=156
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=34 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=34
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=34
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=53 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=53
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=53
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=120 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=120
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=120
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -242,43 +242,43 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top colspan=3 height=13>Número do documento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=132 height=13>CPF/CNPJ</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=134 height=13>Vencimento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>Valor documento</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top colspan=3 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.numero_documento}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=132 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.cpf_cnpj}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=134 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.data_vencimento}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.valor_boleto}
@@ -286,34 +286,34 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=113 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=113
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=113
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=72 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=72
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=72
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=132 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=132
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=132
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=134 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=134
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=134
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -322,80 +322,80 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=1 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=119 height=13
 					style="white-space: nowrap;">(-) Desconto/Abatimentos</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=112 height=13>(-) Outras deduções</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=113 height=13>(+) Mora / Multa</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=113 height=13>(+) Outros
 					acréscimos</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>(=) Valor cobrado</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=1 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=119 height=12></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=112 height=12></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=113 height=12></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=113 height=12></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12></td>
 			</tr>
 			<tr>
 				<td valign=top width=1 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=1
 					border=0 alt=""></td>
 				<td valign=top width=119 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=119
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=119
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=112 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=112
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=112
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=113 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=113
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=113
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=113 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=113
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=113
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -404,13 +404,13 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=659 height=13>Sacado</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=659 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.sacado}
@@ -418,10 +418,10 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=659 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=659
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=659
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -465,7 +465,7 @@
 			</tr>
 			<tr>
 				<td class=ct width=666><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/6.png" width=665
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/6.png" width=665
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -477,13 +477,13 @@
 				style="margin-left: 15px;"> <font class="bc">Banco
 						Itaú</font> <!-- 
   <IMG
-      src="{$T_XPAY_BOLETO_BASELINK}images/logoitau.jpg"" width="150" height="40"
+      src="{$T_XPAY_BOLETO_BASELINK}images/layouts/logoitau.jpg"" width="150" height="40"
       border=0></span>
  -->
 
 			</span></td>
 			<td width=3 valign=bottom><img height=22
-				src="{$T_XPAY_BOLETO_BASELINK}images/3.png" width=2
+				src="{$T_XPAY_BOLETO_BASELINK}images/layouts/3.png" width=2
 				border=0 alt=""></td>
 			<td class=cpt width=58 valign=bottom>
 				<div align=center>
@@ -492,7 +492,7 @@
 				</div>
 			</td>
 			<td width=3 valign=bottom><img height=22
-				src="{$T_XPAY_BOLETO_BASELINK}images/3.png" width=2
+				src="{$T_XPAY_BOLETO_BASELINK}images/layouts/3.png" width=2
 				border=0 alt=""></td>
 			<td class=ld align=right width=453 valign=bottom><span class=ld>
 					<span class="campotitulo"> {$T_XPAY_BOLETO_CFG.linha_digitavel}
@@ -502,7 +502,7 @@
 		<tbody>
 			<tr>
 				<td colspan=5><img height=2
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=666
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=666
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -511,22 +511,22 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=472 height=13>Local de pagamento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>Vencimento</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=472 height=12>Até o vencimento,
 					preferencialmente no Itaú. Após o vencimento, somente no Itaú.</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.data_vencimento}
@@ -534,16 +534,16 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=472 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=472
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=472
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -552,24 +552,24 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=472 height=13>Cedente</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>Agência/Código
 					cedente</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=472 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.cedente}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.agencia_codigo}
@@ -577,16 +577,16 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=472 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=472
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=472
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -595,34 +595,34 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=113 height=13>Data do documento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=133 height=13>N<u>o</u> documento
 				</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=62 height=13>Espécie doc.</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=34 height=13>Aceite</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=102 height=13>Data processamento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>Nosso número</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=113 height=12>
 					<div align=left>
@@ -631,13 +631,13 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=133 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.numero_documento}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=62 height=12>
 					<div align=left>
@@ -646,7 +646,7 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=34 height=12>
 					<div align=left>
@@ -655,7 +655,7 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=102 height=12>
 					<div align=left>
@@ -664,7 +664,7 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.nosso_numero}
@@ -672,40 +672,40 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=113 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=113
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=113
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=133 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=133
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=133
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=62 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=62
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=62
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=34 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=34
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=34
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=102 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=102
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=102
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -714,39 +714,39 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top COLSPAN="3" height=13>Uso do banco</td>
 				<td class=ct valign=top height=13 width=7><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=83 height=13>Carteira</td>
 				<td class=ct valign=top height=13 width=7><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=53 height=13>Espécie</td>
 				<td class=ct valign=top height=13 width=7><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=103 height=13>Quantidade</td>
 				<td class=ct valign=top height=13 width=7><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=92 height=13>Valor Documento</td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>(=) Valor documento</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td valign=top class=cp height=12 COLSPAN="3">
 					<div align=left></div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=83>
 					<div align=left>
@@ -755,7 +755,7 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=53>
 					<div align=left>
@@ -764,17 +764,17 @@
 					</div>
 				</td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=103><span class="campo"> {$T_XPAY_BOLETO_CFG.quantidade}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=92><span class="campo"> {$T_XPAY_BOLETO_CFG.valor_unitario}
 				</span></td>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top align=right width=180 height=12><span
 					class="campo"> {$T_XPAY_BOLETO_CFG.valor_boleto}
@@ -782,46 +782,46 @@
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=75
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=75
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=31 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=31
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=31
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=83 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=83
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=83
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=53 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=53
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=53
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=103 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=103
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=103
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=92 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=92
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=92
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -834,17 +834,17 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -852,7 +852,7 @@
 				</td>
 				<td valign=top width=468 rowspan=5><font class=ct>Instruções
 						(Texto de responsabilidade do cedente)</font><br> <br> <span
-					class=cp> <font class=campo><?php //echo $dadosboleto["instrucoes}
+					class=cp> <font class=campo>
 							{$T_XPAY_BOLETO_CFG.instrucoes1}<br />
 							{$T_XPAY_BOLETO_CFG.instrucoes2}<br />
 							{$T_XPAY_BOLETO_CFG.instrucoes3}<br />
@@ -864,23 +864,23 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=ct valign=top width=180 height=13>(-) Desconto /
 									Abatimentos</td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=cp valign=top align=right width=180 height=12></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=7 border=0 alt=""></td>
 								<td valign=top width=180 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=180 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -893,17 +893,17 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -914,23 +914,23 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=ct valign=top width=180 height=13>(-) Outras
 									deduções</td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=cp valign=top align=right width=180 height=12></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=7 border=0 alt=""></td>
 								<td valign=top width=180 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=180 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -943,17 +943,17 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -964,23 +964,23 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=ct valign=top width=180 height=13>(+) Mora /
 									Multa</td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=cp valign=top align=right width=180 height=12></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=7 border=0 alt=""></td>
 								<td valign=top width=180 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=180 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -993,17 +993,17 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -1014,23 +1014,23 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=ct valign=top width=180 height=13>(+) Outros
 									acréscimos</td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=cp valign=top align=right width=180 height=12></td>
 							</tr>
 							<tr>
 								<td valign=top width=7 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=7 border=0 alt=""></td>
 								<td valign=top width=180 height=1><img height=1
-									src="{$T_XPAY_BOLETO_BASELINK}images/2.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png"
 									width=180 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -1043,12 +1043,12 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 							</tr>
 						</tbody>
@@ -1059,14 +1059,14 @@
 						<tbody>
 							<tr>
 								<td class=ct valign=top width=7 height=13><img height=13
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=ct valign=top width=180 height=13>(=) Valor
 									cobrado</td>
 							</tr>
 							<tr>
 								<td class=cp valign=top width=7 height=12><img height=12
-									src="{$T_XPAY_BOLETO_BASELINK}images/1.png"
+									src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png"
 									width=1 border=0 alt=""></td>
 								<td class=cp valign=top align=right width=180 height=12></td>
 							</tr>
@@ -1080,7 +1080,7 @@
 		<tbody>
 			<tr>
 				<td valign=top width=666 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=666
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=666
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -1089,13 +1089,13 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=659 height=13>Sacado</td>
 			</tr>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=659 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.sacado}
@@ -1107,7 +1107,7 @@
 		<tbody>
 			<tr>
 				<td class=cp valign=top width=7 height=12><img height=12
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=659 height=12><span class="campo">
 						{$T_XPAY_BOLETO_CFG.endereco1}
@@ -1119,28 +1119,28 @@
 		<tbody>
 			<tr>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=cp valign=top width=472 height=13><span class="campo">
 						{$T_XPAY_BOLETO_CFG.endereco2}
 				</span></td>
 				<td class=ct valign=top width=7 height=13><img height=13
-					src="{$T_XPAY_BOLETO_BASELINK}images/1.png" width=1
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/1.png" width=1
 					border=0 alt=""></td>
 				<td class=ct valign=top width=180 height=13>Cód. baixa</td>
 			</tr>
 			<tr>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=472 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=472
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=472
 					border=0 alt=""></td>
 				<td valign=top width=7 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=7
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=7
 					border=0 alt=""></td>
 				<td valign=top width=180 height=1><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/2.png" width=180
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/2.png" width=180
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
@@ -1185,7 +1185,7 @@
 			</tr>
 			<tr>
 				<td class=ct width=666><img height=1
-					src="{$T_XPAY_BOLETO_BASELINK}images/6.png" width=665
+					src="{$T_XPAY_BOLETO_BASELINK}images/layouts/6.png" width=665
 					border=0 alt=""></td>
 			</tr>
 		</tbody>
