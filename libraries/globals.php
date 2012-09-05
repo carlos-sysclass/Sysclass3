@@ -33,7 +33,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 error_reporting( E_ERROR );
 if ($_GET['debug'] == 10) {
-	error_reporting( E_ALL & ~E_NOTICE);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+	error_reporting( E_ALL & E_NOTICE);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 }
 
 //Prepend the include path with magester folders

@@ -1331,14 +1331,26 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					"name" 			=> "Boleto Bancário",
 					"fullname" 		=> "Boleto Caixa Extensão",
 					"image_name"	=> "boleto",
+					"xscope_id"		=> 1,
+					"xentify_id"	=> 2,
 					"config"		=> array($this, "getPaymentInstanceConfig") // CAN BE A CALLBACK 
 				),
-				"itau_pos"	=> array(
+				"itau_fati"	=> array(
 					"name" 			=> "Boleto Bancário",
-					"fullname" 		=> "Boleto Itaú Pós Graduação",
+					"fullname" 		=> "Boleto Itaú FATI",
 					"image_name"	=> "boleto",
-					"active"		=> false,
+					"xscope_id"		=> 1, 
+					"xentify_id"	=> 2,
 					"config"		=> array($this, "getPaymentInstanceConfig") // CAN BE A CALLBACK 
+				),
+				"itau_fajar"	=> array(
+					"name" 			=> "Boleto Bancário",
+					"fullname" 		=> "Boleto Itaú FAJAR",
+					"image_name"	=> "boleto",
+					"xscope_id"		=> 1,
+					"xentify_id"	=> 3,
+					"active"		=> true,
+					"config"		=> array($this, "getPaymentInstanceConfig") // CAN BE A CALLBACK
 				),
 			)
 		);
@@ -1368,6 +1380,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$indexOpt = $data['option'];
 		}
 		
+		
 		if (is_null($this->getParent())) {
 			$xpayModule = $this->loadModule("xpay");
 			$this->setParent($xpayModule);
@@ -1376,6 +1389,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
 
 		$payInstance = $payInstances['options'][$indexOpt];
+		
+		//var_dump($payInstance);exit;
 		
 		/** @todo IMPLEMENT THIS THROUGH RULES */
 		//	IF invoice_index = 0 AND data_vencimento IS NULL THEN
@@ -1416,7 +1431,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		// user_id (5) + negociation_id(4)
 		$invoiceOptions["nosso_numero3"] 	= sprintf("%05d%04d", substr($invoiceData['user_id'], 0, 5), substr($invoiceData['negociation_id'], 0, 4));
 		
-		$invoiceOptions["numero_documento"] = $invoiceData['invoice_id'];	// Num do pedido ou do documento
+		$invoiceOptions["nosso_numero"] = $invoiceOptions["numero_documento"] = $invoiceData['invoice_id'];	// Num do pedido ou do documento
 		
 		
 		if ($datavencimento < $today && $this->getConfig()->on_overdue == 'refresh') {
@@ -1451,49 +1466,49 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			$methodConfig = $payInstance['config'];
 		}
-		/*
-		var_dump($methodConfig);
-		exit;
-		*/
+		
 		// INJECT USER DATA, INVOICE DATA, ETC...
 		$boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
+		
 		if ($data['return_string'] == true) {
 			return $boletoHTML;
 		}	
 		echo $boletoHTML;
-		exit;
 	}
 	
 	private function loadPaymentInvoiceFromTpl($paymentIndex, $paymentConfig) {
 		$smarty = $this->getSmartyVar();
 		
-		$invoiceFile = sprintf(
+		echo $invoiceFile = sprintf(
 			"%stemplates/layouts/%s.tpl", 
 			$this->moduleBaseDir,
 			$paymentIndex 
 		);
 
 		$smartyFunctionsFile = sprintf(
-				"%sfunctions/smarty/%s.xpay_boleto_FBarCode.php",
-				$this->moduleBaseDir,
-				$paymentIndex
+			"%sfunctions/smarty/%s.xpay_boleto_FBarCode.php",
+			$this->moduleBaseDir,
+			$paymentIndex
 		);
-		require($smartyFunctionsFile);
 		
+		require($smartyFunctionsFile);
+		var_dump(0);
 		$smarty->register_function(
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex),
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex)
 		);
-
+var_dump(1);
 		$this->assignSmartyModuleVariables();
-		
+		var_dump(2);		
 		/* CUSTOM FIELDS */
 		$index = "03";
 		//$paymentConfig["numero_documento"] = "0000000" . $index;
 		//$paymentConfig["valor_boleto"] = "1," . $index;
 		$smarty->assign("T_" . strtoupper($this->getName()) . "_CFG", $paymentConfig);
-		
-		$boletoHTML = $smarty -> fetch($invoiceFile);
+		var_dump(4);
+		echo $boletoHTML = $smarty -> fetch($invoiceFile);
+		var_dump(5);
+		exit;
 		return $boletoHTML;
 	}
 	public function paymentCanBeDone($payment_id, $invoice_id) {

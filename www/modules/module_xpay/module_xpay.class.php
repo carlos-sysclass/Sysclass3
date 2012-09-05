@@ -208,7 +208,6 @@ class module_xpay extends MagesterExtendedModule {
 				sprintf("user_id = %d AND course_id = %d", $user_id, $course_id)
 		);
 		// SE JÁ ESTÁ MIGRADO, ENTÃO VAI EMBORA
-				
 		if ($paymentData['migrated'] == 1) {
 			return false;
 		}
@@ -223,7 +222,7 @@ class module_xpay extends MagesterExtendedModule {
 		if (is_null($paymentData)) {
 			return false;
 		}
-	
+		
 		$negociationData =  array(
 			'timestamp'				=> strtotime($paymentData['data_registro']),
 			'user_id'				=> $user_id,
@@ -353,13 +352,25 @@ class module_xpay extends MagesterExtendedModule {
 				);
 			}
 		}
-/*		
 		
+		// CHECK USER'S DISCOUNTS, AND PUT HIM IN YOUR RESPECTIVE GROUP. 
+		$currentDiscount = floatval($paymentData['desconto']);
+		$discountsToGroups = array(
+			10	=> 4,
+			30	=> 5,
+			0	=> 6
+		);
+		
+		if (is_numeric($discountsToGroups[$currentDiscount])) {
+			$editUser->addGroups($discountsToGroups[$currentDiscount]);
+		}
+		/*
 		eF_deleteTableData("module_xpay_course_negociation", "id = $negociationID");
 		eF_deleteTableData("module_xpay_invoices", "negociation_id = $negociationID");
 		eF_deleteTableData("module_xpay_boleto_transactions");
 		eF_deleteTableData("module_xpay_paid_items");
 		eF_deleteTableData("module_xpay_invoices_to_paid");
+		exit;
 		*/
 		return true;
 	}
@@ -495,7 +506,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		//	ONLY directions_ID = 13 COURSES
-		if ($entify['directions_ID'] == self::__NUCLEO_ULT) {
+		//if ($entify['directions_ID'] == self::__NUCLEO_ULT) {
 			$negociation_index = $_GET['negociation_index'];
 		
 			//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
@@ -573,6 +584,7 @@ class module_xpay extends MagesterExtendedModule {
 			}
 			*/
 	
+
 			if (count($userNegociation) == 0) {
 				// CHECK IF COURSE HAS A DEFAULT STATEMENT
 				
@@ -581,6 +593,10 @@ class module_xpay extends MagesterExtendedModule {
 					if (!$this->_migrateOldPaymentToNegociation($editUser->user['id'], $entify['id'])) {
 						$negociationData = $this->_createUserDefaultStatement();
 					}
+					
+
+					
+					
 				} else {
 					$negociationData = $this->_createUserDefaultStatement();
 				}
@@ -591,6 +607,9 @@ class module_xpay extends MagesterExtendedModule {
 					
 				//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
 			}
+			//var_dump($userNegociation);
+			//exit;
+			
 			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
 			
 			$negociationTotals = array(
@@ -610,10 +629,10 @@ class module_xpay extends MagesterExtendedModule {
 			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
 			
 			return true;
-		} else {
-			$this->setMessageVar("Acesso Não Autorizado", "failure");
-			return false;
-		}
+		//} else {
+			//$this->setMessageVar("Acesso Não Autorizado", "failure");
+			//return false;
+		//}
 	}
 	public function simulateDueBalanceNegociationAction() {
 		$smarty = $this->getSmartyVar();
@@ -949,6 +968,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		// GET SUB MODULES FUNCTIONS
 		$currentOptions = $this->getSubmodules();
+		
 			
 		$selectedIndexes = array();
 		if (count($currentOptions) > 1) {
@@ -1020,14 +1040,12 @@ class module_xpay extends MagesterExtendedModule {
 			$pay_method_active_opt = reset($pay_method_active_options);
 			$_SESSION['pay_method'] 		= $pay_method_active_opt['pay_method'];
 			$_SESSION['pay_method_option']	= $pay_method_active_opt['pay_method_option'];
-			
-			
-			
 		}
 		
 		if (
-			($form -> isSubmitted() && $form -> validate()) ||
+			($form -> isSubmitted() && $form -> validate()) /*||
 			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
+			*/
 		) {
 			$values = $form->exportValues();
 				
@@ -1825,7 +1843,6 @@ class module_xpay extends MagesterExtendedModule {
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
 		/** @todo Implement $constraints rules!! */
-		
 		
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
