@@ -1332,7 +1332,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 					"fullname" 		=> "Boleto Caixa Extensão",
 					"image_name"	=> "boleto",
 					"xscope_id"		=> 1,
-					"xentify_id"	=> 2,
+					"xentify_id"	=> 1,
 					"config"		=> array($this, "getPaymentInstanceConfig") // CAN BE A CALLBACK 
 				),
 				"itau_fati"	=> array(

@@ -1014,12 +1014,34 @@ class module_xpay extends MagesterExtendedModule {
 				
 			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
 			
+			$xentifyModule = $this->loadModule("xentify");
+			
+			$negociationUser = MagesterUserFactory::factory($negocData['login']);
+			
 			$pay_method_active_options = array();
+			
+			$scopeCourse = $xentifyModule->create("course", $negocData['course_id']);
+			$scopeUser = $xentifyModule->create("user", $negocData['login']);
+			
+			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
 					continue;
 				}
+				/*if (!$xentifyModule->isUserInScope($negociationUser, $item['xscope_id'], $item['xentify_id'])) {
+					continue;
+				}
+				*/
 				
+				//var_dump($negocData['course_id']);
+				if (
+					$scopeCourse->inScope($item['xscope_id'], $item['xentify_id']) ||
+					$scopeUser->inScope($item['xscope_id'], $item['xentify_id'])
+				) {
+					continue;
+				}
+				
+				// CHECAR SE O PAGAMENTO OU CURSO DO PAGAMENTO ESTÁ NO ESCOPO
 				$pay_method_active_options[] = array(
 					'pay_method' 		=> strtolower($selectedIndex),  	
 					'pay_method_option'	=> $key
