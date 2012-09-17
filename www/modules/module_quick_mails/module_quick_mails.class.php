@@ -356,11 +356,10 @@ class module_quick_mails extends MagesterExtendedModule {
 						}
 					}
 					
-					
 					foreach($mail_recipients as $key => $mail) {
 						// PREPEND USER NAME MESSAGE
 						$email_body =
-						sprintf("Mensagem de: %s <strong>(%s)</strong> <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
+						sprintf("Mensagem de: %s <strong>(%s)</strong> &lt;%s&gt;", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
 							"\n<br />" .
 							"Matriculado nos seguintes cursos/disciplinas:\n<br />" .
 							sprintf("<ul>%s</ul>", implode("", $courseArray)) . 
