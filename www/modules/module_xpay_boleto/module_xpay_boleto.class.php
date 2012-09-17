@@ -7,18 +7,7 @@ class module_xpay_boletoException extends Exception
 }
 
 class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodule, ICronable {
-	
-	//protected static $subModules = null;
-	
-/*	
-	protected $conf = array(
-		// Opção => Autorizar transação autenticada e não-autenticada
-		'authorization'					=> 2,	
-		'auto_capture'					=> "false",
-		// [A - Débito, 1- Crédito, 2 - loja, 3 - Administradora]
-		'payment_subdivision_method'	=> 3
-	);
-*/ 
+
 	public function loadConfig() {
 		$return_root = $this->moduleBaseDir . "retorno/";
 		self::$_CONFIG = array(
