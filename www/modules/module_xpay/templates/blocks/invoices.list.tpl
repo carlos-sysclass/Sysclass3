@@ -9,7 +9,7 @@
 	<tbody>
 		{foreach item="invoice" from=$T_XPAY_STATEMENT.invoices}
 			{if ($invoice.valor+$invoice.total_reajuste) > $invoice.paid}
-				<tr class="{if $invoice.locked}locked{/if}">
+				<tr class="{if $invoice.locked}locked{/if}{if $invoice.overdue}overdue{/if}">
 					<td align="center">
 						<a href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
 						{$invoice.invoice_id}

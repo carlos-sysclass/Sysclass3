@@ -117,11 +117,28 @@ class module_xpay extends MagesterExtendedModule {
 		if (count($negocData) == 0) {
 			return false;
 		}
+		
+		$today = new DateTime("today");
+		
 		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+			$negocData['invoices'][$invoiceIndex]['overdue'] = false;
 			if ($invoice['valor']+$invoice['total_reajuste'] <= $invoice['paid']) {
 				unset($negocData['invoices'][$invoiceIndex]);
 			}
+			$date = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+			//var_dump($invoice['data_vencimento']);
+
+			if (is_object($date)) {
+				$diff = $date->diff($today);
+				
+				if ($diff->invert == 1 && $diff->days > 20) {
+					unset($negocData['invoices'][$invoiceIndex]);
+				} elseif ($diff->invert == 0 && $diff->days > 0) { // IT'S OVERDUE
+					$negocData['invoices'][$invoiceIndex]['overdue'] = true;
+				}
+			}
 		}
+
 		if (count($negocData['invoices']) == 0) {
 			return false;
 		}
@@ -3251,7 +3268,6 @@ class module_xpay extends MagesterExtendedModule {
 	
 		return $digito;
 	}
-
 
 	/* OLD-STYLE FUNCTIONS */
 	public function getCenterLinkInfo() {
