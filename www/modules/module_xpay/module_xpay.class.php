@@ -443,32 +443,95 @@ class module_xpay extends MagesterExtendedModule {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		}
 		// GET ALL DEBITS
-		$userDebits = $this->_getUserCoursesPayStatus();
+		$userDebits = $this->_getUserModulePayStatus();
 		
-		
-		// (RE)CREATE ALL USER INVOICES HERE
-		foreach($userDebits as $userDebit) {
-			//$this->checkAndCreateInvoices($userDebit);
-		}
 
-		if (count($userDebits) == 1) {
-			$userDebit = reset($userDebits);
+		
+		if (count($userDebits['invoices']) == 1 && count($userDebits['grouped'] == 0)) {
+			$userDebit = reset($userDebits['invoices']);
 			$_GET['x' . $userDebit['type'] . '_id'] = $userDebit['module_id'];
 			$this->setCurrentAction("view_user_course_statement", true);
+		//} elseif (count($userDebits['grouped']) == 1 && count($userDebits['invoices'] == 0)) {
+//			echo "hdjka";
+//			exit;
 		} else {
+			// PROCESS INVOICES...
 			$usersTotals= array(
 				'base_price'	=> 0,
 				'paid'			=> 0,
 				'balance'		=> 0
 			);
 			
-			foreach($userDebits as $statement) {
+			foreach($userDebits['invoices'] as $statement) {
 				$usersTotals['base_price'] 	+= intval($statement['base_price']);
 				$usersTotals['paid']	+= intval($statement['paid']);
 			}
-			$usersTotals['balance'] = intval($usersTotals['base_price'])-intval($usersTotals['paid']);
 			
-			$smarty -> assign("T_XPAY_STATEMENT", $userDebits);
+			// .. AND GROUPS
+			foreach($userDebits['grouped'] as $group_id => $group) {
+				foreach($group as $statement) {
+
+					$usersTotals['base_price'] 	+= intval($statement['base_price']);
+					$usersTotals['paid']	+= intval($statement['paid']);
+					
+					if (!is_array($groupedStatement[$group_id])) {
+						$groupedStatement[$group_id] = array(
+							"user_id"			=> $statement['user_id'], 
+							"type" 				=> "group",
+							"group_id" 			=> $group_id,
+							"module"			=> "",
+							"matricula" 		=> MAX_VALUE,
+							"base_price"		=> 0,
+							"paid"				=> 0,
+							"modality_id"		=> array(),	
+							"negociation_index"	=> 0,
+							"modality"			=> array(),	
+							"balance"			=> 0,
+							"course_count"		=> 0,
+							"lesson_count"		=> 0
+						);
+					}
+					
+					if ($statement['type'] == 'course') {
+						$groupedStatement[$group_id]["course_count"]++;
+					} elseif ($statement['type'] == 'lesson') {
+						$groupedStatement[$group_id]["lesson_count"]++;
+					}
+					
+					$groupedStatement[$group_id]["matricula"]	= min(array($groupedStatement[$group_id]['matricula'], $statement['matricula']));
+					$groupedStatement[$group_id]["base_price"]	= $groupedStatement[$group_id]['base_price'] + $statement['base_price'];
+					$groupedStatement[$group_id]["paid"]		= $groupedStatement[$group_id]['paid'] + $statement['paid'];
+					$groupedStatement[$group_id]["balance"]		= $groupedStatement[$group_id]['balance'] + $statement['balance'];
+					array_push($groupedStatement[$group_id]["modality_id"], $statement['modality_id']);
+					array_push($groupedStatement[$group_id]["modality"], $statement['modality']);
+					
+					$groupedStatement[$group_id]["modality_id"] = array_unique($groupedStatement[$group_id]["modality_id"]);
+					$groupedStatement[$group_id]["modality"] = array_unique($groupedStatement[$group_id]["modality"]);
+				}
+				
+				if ($groupedStatement[$group_id]["course_count"] == 0 && $groupedStatement[$group_id]["lesson_count"] > 0) {
+					$groupedStatement[$group_id]['module'] = sprintf(
+						"%d Disciplinas Agrupadas",
+						$groupedStatement[$group_id]["lesson_count"]
+					);
+				} elseif ($groupedStatement[$group_id]["course_count"] > 0 && $groupedStatement[$group_id]["lesson_count"] == 0) {
+					$groupedStatement[$group_id]['module'] = sprintf(
+							"%d Cursos Agrupadas",
+							$groupedStatement[$group_id]["course_count"]
+					);
+				} else {
+					$groupedStatement[$group_id]['module'] = sprintf(
+						"%d Cursos e %d Lições Agrupados", 
+						$groupedStatement[$group_id]["course_count"],
+						$groupedStatement[$group_id]["lesson_count"]
+					);
+				}
+				
+			}
+			
+			$usersTotals['balance'] = intval($usersTotals['base_price'])-intval($usersTotals['paid']);		
+
+			$smarty -> assign("T_XPAY_STATEMENT", $userDebits['invoices'] + $groupedStatement);
 			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $usersTotals);
 		}
 	}
@@ -1875,6 +1938,114 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		return $lastPaymentsList;
 	}
+	
+	private function _getUserModulePayStatus($login = null, $module_id = null) {
+		if (!is_null($login)) {
+			$editedUser = $this->getEditedUser(true, $login);
+		} else {
+			$editedUser = $this->getEditedUser();
+		}
+		
+		$courseItens = eF_getTableData(
+				sprintf('users_to_courses uc
+				LEFT JOIN module_xpay_course_negociation neg ON (uc.courses_ID = neg.course_id AND neg.user_id = %1$d AND neg.lesson_id <> 0)
+				LEFT OUTER JOIN module_xpay_negociation_to_group neg_grp ON (neg.id = neg_grp.negociation_id)  
+				LEFT JOIN courses c ON (uc.courses_ID = c.id)
+				LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
+				uc.courses_ID = cp.course_id AND
+				uc.modality_id = cp.modality_id AND (
+				( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
+				( uc.from_timestamp > cp.from_timestamp AND cp.to_timestamp = -1) OR
+				( uc.from_timestamp < cp.to_timestamp AND cp.from_timestamp = -1)
+		)
+		) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)', $editedUser->user['id']),
+				sprintf(
+						'%1$d as user_id, neg_grp.negociation_group_id, \'course\' as type, c.id as module_id, c.name as module, uc.from_timestamp as matricula,
+						IFNULL(cp.price, c.price) as base_price,
+						0 as paid,
+						uc.modality_id,
+						(SELECT MAX(negociation_index) FROM module_xpay_course_negociation WHERE user_id = %1$d AND course_id = uc.courses_ID) as negociation_index,
+						cm.name as modality',
+						$editedUser->user['id']
+				),
+				sprintf("users_LOGIN = '%s' AND uc.modality_id != 3 AND uc.archive = 0 AND uc.active = 1", $editedUser->user['login'])
+		);
+		
+		
+		$courses_ID = array(0);
+		foreach($courseItens as $courseData) {
+			// GET COURSE LESSONS, AND EXCLUDE THEN
+			$courses_ID[] = $courseData['module_id'];
+		}
+	
+		$lessonItens = eF_getTableData(
+				sprintf('users_to_lessons ul
+				LEFT JOIN module_xpay_course_negociation neg ON (ul.lessons_ID = neg.lesson_id AND neg.user_id = %1$d AND neg.lesson_id <> 0)
+				LEFT OUTER JOIN module_xpay_negociation_to_group neg_grp ON (neg.id = neg_grp.negociation_id) 
+				LEFT JOIN lessons l ON (ul.lessons_ID = l.id)
+				LEFT OUTER join module_xpay_lesson_modality_prices lp ON (
+					ul.lessons_ID = lp.lesson_id
+					AND ul.modality_id = lp.modality_id AND (
+						( ul.from_timestamp BETWEEN lp.from_timestamp AND lp.to_timestamp ) OR
+						( ul.from_timestamp > lp.from_timestamp AND lp.to_timestamp = -1) OR
+						( ul.from_timestamp < lp.to_timestamp AND lp.from_timestamp = -1)
+					)
+				)
+				LEFT OUTER join module_xpay_lesson_modality lm ON (ul.modality_id = lm.id)', $editedUser->user['id']),
+				sprintf(
+		 			'%1$d as user_id, neg_grp.negociation_group_id, \'lesson\' as type, l.id as module_id, l.name as module,
+						ul.from_timestamp as matricula, IFNULL(lp.price, l.price) as base_price,
+						0 as paid, ul.modality_id,
+						(SELECT MAX(negociation_index) FROM module_xpay_lesson_negociation WHERE user_id = %1$d AND lesson_id = ul.lessons_ID) as negociation_index,
+						lm.name as modality',
+						$editedUser->user['id']
+				),
+				sprintf("
+						users_LOGIN = '%s'
+						AND l.course_only = 0
+						AND l.id NOT IN (SELECT lessons_ID FROM lessons_to_courses WHERE courses_ID IN (%s))
+						AND ul.archive = 0
+						AND ul.active = 1
+						",
+						$editedUser->user['login'],
+						implode(",", $courses_ID)
+				)
+		);
+		
+		
+		$userDebitsData = $courseItens + $lessonItens;
+		
+		$userDebits = array();
+		// CHECK FOR COURSE_ONLY SELECTED LESSONS
+		foreach($userDebitsData as $statement) {
+			$statement['balance'] = intval($statement['base_price'])-intval($statement['paid']);
+			$userDebits[] = $statement;
+		}
+		
+		
+		// GROUP WHEN NECESSARY
+		$userDebitsGroup = array();
+		
+		foreach($userDebits as $index => $statement) {
+			if (!is_null($statement['negociation_group_id'])) {
+				$group_id = $statement['negociation_group_id'];
+				if (!is_array($userDebitsGroup[$group_id])) {
+					$userDebitsGroup[$group_id] = array();
+				}
+				$userDebitsGroup[$group_id][] = $statement;
+				unset($userDebits[$index]);
+			}
+		}
+		
+		/*
+			if (!is_null($module_id)) {
+		return $userDebits[$module_id];
+		}
+		*/
+	
+		return array('invoices' => $userDebits, 'grouped' => $userDebitsGroup);
+	}
+	
 	private function _getUserCoursesPayStatus($login = null, $module_id = null) {
 		if (!is_null($login)) {
 			$editedUser = $this->getEditedUser(true, $login);

@@ -2721,5 +2721,28 @@ ALTER TABLE `service_direct_link_hash` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL 
 
 ALTER TABLE `service_direct_link_hash` ADD `user_login` VARCHAR( 100 ) NOT NULL AFTER `id`;
 
+/* 2012-09-18 */
+CREATE TABLE IF NOT EXISTS `module_xpay_negociation_group` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `description` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `module_xpay_negociation_to_group` (
+  `negociation_id` mediumint(8) NOT NULL,
+  `negociation_group_id` mediumint(8) NOT NULL,
+  PRIMARY KEY (`negociation_id`, `invoice_index`, `invoice_group_id`)
+) ENGINE=MyISAM;
+
+INSERT INTO module_xpay_negociation_group (id, description) VALUES (NULL, "Pagamento agrupado por lição");
+
+INSERT INTO module_xpay_invoices_to_invoices_group VALUES
+(863, 1, 1),
+(864, 1, 1),
+(865, 1, 1),
+(866, 1, 1),
+(867, 1, 1),
+(868, 1, 1),
+(869, 1, 1);
 
 
