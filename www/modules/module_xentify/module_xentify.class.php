@@ -215,6 +215,7 @@ abstract class scope {
 		return false;
 	}
 }
+
 class scopedCourse extends scope implements IScopedEntify {
 	public function __construct($course_id) {
 		$this->entify_id = $course_id;

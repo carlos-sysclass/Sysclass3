@@ -1028,10 +1028,11 @@ class module_xpay extends MagesterExtendedModule {
 				if ($item['active'] === FALSE) {
 					continue;
 				}
+				/*
 				if (!$xentifyModule->isUserInScope($negociationUser, $item['xscope_id'], $item['xentify_id'])) {
 					continue;
 				}
-				
+				*/
 				if (
 					!$scopeCourse->inScope($item['xscope_id'], $item['xentify_id']) ||
 					!$scopeUser->inScope($item['xscope_id'], $item['xentify_id'])
