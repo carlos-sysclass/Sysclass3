@@ -190,7 +190,7 @@ class module_xpay extends MagesterExtendedModule {
 			JOIN courses c ON (uc.courses_ID = c.id)
 			JOIN users u ON (uc.users_LOGIN = u.login)",
 			"u.id as user_id, c.id as course_id",
-			"uc.user_type = 'student' AND c.ies_id = 1"
+			"uc.user_type = 'student' AND c.ies_id = 2"
 		);
 		foreach($paymentData as $item) {
 			$this->_migrateOldPaymentToNegociation(
