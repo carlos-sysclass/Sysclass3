@@ -942,7 +942,8 @@ class module_xpay extends MagesterExtendedModule {
 			));
 		} elseif (
 			$exUserType == 'administrator' || 
-			$exUserType == 'financier'
+			$exUserType == 'financier' ||
+			$exUserType == 'coordenator'
 		) {
 			$negociationID = $_GET['negociation_id'];
 			$invoice_index = $_GET['invoice_index'];
