@@ -195,19 +195,14 @@ class module_xpay extends MagesterExtendedModule {
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
 	}
+	/*
 	public function migrateToNewModelAction() {
-		/*
-		$this->_migrateOldPaymentToNegociation(
-			742, 23
-		);
-		*/
-		
 		$paymentData = ef_getTableData(
 			"users_to_courses uc 
 			JOIN courses c ON (uc.courses_ID = c.id)
 			JOIN users u ON (uc.users_LOGIN = u.login)",
 			"u.id as user_id, c.id as course_id",
-			"uc.user_type = 'student' AND c.ies_id = 2"
+			"uc.user_type = 'student' AND c.ies_id = 3"
 		);
 		foreach($paymentData as $item) {
 			$this->_migrateOldPaymentToNegociation(
@@ -217,6 +212,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		exit;
 	}
+	*/
 	private function _migrateOldPaymentToNegociation($user_id, $course_id) {
 		// CHECK FOR USER PAYMENTS ON OLD TABLES
 		list($paymentData) = ef_getTableData(
