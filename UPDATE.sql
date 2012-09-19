@@ -2721,5 +2721,9 @@ ALTER TABLE `service_direct_link_hash` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL 
 
 ALTER TABLE `service_direct_link_hash` ADD `user_login` VARCHAR( 100 ) NOT NULL AFTER `id`;
 
+/* 2012-09-18 */
+UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` SET `xentify_id` = NULL 
+WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_blocks`.`block_id` =22;
 
+/* 2012-09-18 */
 

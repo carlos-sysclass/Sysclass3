@@ -1426,3 +1426,7 @@ ul.module_polo_info_user img.sprite16-send-email {
 #change_users_form table tr td{
 	padding: 5px;
 }
+
+.style1 tr.overdue td a {
+	color: #aa0000;
+}
