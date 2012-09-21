@@ -2061,11 +2061,11 @@ class module_xpay extends MagesterExtendedModule {
 			$editedUser = $this->getEditedUser();
 		}
 	
-		if (!is_null($contraints['course_id'])) {
+		if (!is_null($contraints['course_id']) && $contraints['course_id'] != 0) {
 			$editedCourse = $this->getEditedCourse(true, $contraints['course_id']);
 			$where[] = sprintf("neg.course_id = %d", $editedCourse->course['id']);
 		}
-		if (!is_null($contraints['lesson_id'])) {
+		if (!is_null($contraints['lesson_id']) && $contraints['lesson_id'] != 0) {
 			$editedLesson = $this->getEditedLesson(true, $contraints['lesson_id']);
 			$where[] = sprintf("neg.lesson_id = %d", $editedLesson->lesson['id']);
 		}
