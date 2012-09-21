@@ -1,10 +1,33 @@
 {if $T_XPAY_STATEMENT}
 	{capture name="t_xpay_do_payment"}
-		{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
-		
 		{$T_XPAY_METHOD_FORM.javascript}
 		<form {$T_XPAY_METHOD_FORM.attributes}>
 			{$T_XPAY_METHOD_FORM.hidden}
+			
+			<div style="float: right;">
+				{foreach key="pay_module_key" item="pay_module" from=$T_XPAY_METHODS}
+					<div class="form-field clear" style="float: left; margin-top:3px;" >
+						{if $pay_module.title}
+							<label class="clear" for="textfield">{$pay_module.title}</label>
+						{/if}
+						{foreach key="pay_index" item="pay_method" from=$pay_module.options}
+							{assign var = "input_name"  value = $pay_module_key:$pay_index }
+							{$T_XPAY_METHOD_FORM.pay_methods[$input_name].html}
+						{/foreach}
+					</div>
+				{/foreach}
+				
+				<div style="float: left;">
+					<button class="form-button icon-save openInvoiceDialog" type="submit">
+						<img width="29" height="29" src="images/transp.png">
+						<span>{$smarty.const.__XPAY_DO_PAY}</span>
+					</button>
+				</div>					
+				
+			</div>
+			
+			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+			
 			<table class="style1">
 				<thead>
 					<tr>
@@ -72,23 +95,6 @@
 					</tr>
 				</tfoot>
 			</table>
-			
-			<div class="form-field clear">
-				<label class="clear" for="textfield">{$smarty.const.__XPAY_PAYMENT_METHOD}<span class="required">*</span></label>
-			</div>
-			
-			{foreach key="pay_module_key" item="pay_module" from=$T_XPAY_METHODS}
-				<div class="form-field clear">
-					{if $pay_module.title}
-						<label class="clear" for="textfield">{$pay_module.title}</label>
-					{/if}
-					{foreach key="pay_index" item="pay_method" from=$pay_module.options}
-						<!--  <input type="radio" value="" name="xpay_methods" class="xpay_methods"> -->
-						{assign var = "input_name"  value = $pay_module_key:$pay_index }
-						{$T_XPAY_METHOD_FORM.pay_methods[$input_name].html}
-					{/foreach}
-				</div>
-			{/foreach}
 	<!-- 
 			<div class="form-field clear buttons">
 				<button class="" type="submit" name="{$T_XPAY_METHOD_FORM.xpay_submit.name}" value="{$T_XPAY_METHOD_FORM.xpay_submit.value}">
@@ -106,6 +112,7 @@
 	
 	{eF_template_printBlock
 		title 			= $smarty.const.__XPAY_DO_PAYMENT
+		sub_title		= $smarty.const.__XPAY_DO_PAYMENT_INSTRUCTIONS
 		data			= $smarty.capture.t_xpay_do_payment
 	}
 {/if}

@@ -71,12 +71,6 @@ jQuery(function($) {
 	});
 
 	if (typeof($_xpay_mod_data) != 'undefined') {
-		if ($_xpay_mod_data["xpay.action"] == "do_payment") {
-			jQuery(":input[name='pay_methods']").click(function() {
-				jQuery(this).parents("form").submit();
-			});
-		}
-	
 		if ($_xpay_mod_data["xpay.action"] == "simulate_due_balance_negociation") {
 			// BUTTON ACTIONS
 			jQuery(".saveNegociation").click(function() {
