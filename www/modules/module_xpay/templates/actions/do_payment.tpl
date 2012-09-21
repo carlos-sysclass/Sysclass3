@@ -37,7 +37,25 @@
 					 		{/if}
 					 	</td>
 					 	<td align="center">#filter:currency-{$invoice.valor}#</td>
-					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#</td>
+					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
+						 	{if $invoice.applied_rules|@count > 0}
+						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
+					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+								 	<ul>
+									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
+									 		<li>
+									 			<div class="rule_description">{$applied_rule.description}</div>
+									 			<div class="rule_value">
+									 			{if $applied_rule.count > 1}{$applied_rule.count}{$applied_rule.repeat_acronym} x {/if}
+									 				#filter:currency:{$applied_rule.diff}#
+									 			{if $applied_rule.count > 1} = #filter:currency:{$applied_rule.output-$applied_rule.input}#{/if}
+									 			</div>
+									 		</li>
+									 	{/foreach}
+								 	</ul>
+							 	</div>
+						 	{/if}
+					 	</td>
 					 	<td align="center">#filter:currency:{$invoice.paid}#</td>
 					 	<td align="center">#filter:currency-{$invoice.valor+$invoice.total_reajuste}#</td>
 					</tr>

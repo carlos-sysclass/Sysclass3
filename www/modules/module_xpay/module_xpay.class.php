@@ -977,6 +977,33 @@ class module_xpay extends MagesterExtendedModule {
 			$negocTotals['paid']			+= $invoice['paid'];
 		}
 		
+		foreach($negocData['invoices'] as $invoice_index => $invoice) {
+			$applied_rules = array();
+			if ($invoice['total_reajuste'] <> 0) {
+				foreach($invoice['workflow'] as $workflow) {
+					if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
+						foreach($invoice['rules'] as $rule) {
+							if ($rule['id'] == $workflow['rule_id']) {
+								$currentRule = $rule;
+								break;
+							}
+						}
+						$applied_rules[$workflow['rule_id']] = array(
+								'description'		=> $currentRule['description'],
+								'input'				=> $workflow['input'],
+								'diff'				=> $workflow['diff'],
+								'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
+								'count'				=> 0
+						);
+					}
+					$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
+					$applied_rules[$workflow['rule_id']]['count']++;
+				}
+			}
+			$negocData['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+		}
+		
+		
 		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
 		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negocTotals);
 		
@@ -1874,6 +1901,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $workflow;
 	}
+	
+	
 	/* GETTERS */
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
