@@ -1920,11 +1920,15 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
-			"user_id, course_id, paid_id, name, surname, invoice_index, method_id, total_parcelas, data_pagamento, valor",
+			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
+				
 			implode(" AND ", $where),
 			"data_pagamento DESC",
 			"",
 			$limit
+				
+				
+			/* Instituição / Polo, */
 		);
 		return $lastPaymentsList;
 	}
