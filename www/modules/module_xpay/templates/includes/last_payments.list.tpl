@@ -23,36 +23,9 @@
 				<td align="center">#filter:currency:{$invoice.valor}#</td>
 			 	<td align="center">
 			 		<div>
-			 			<!--
-						<a class="form-icon" href="{$T_XPAY_BASEURL}&action=view_paid_item&paid_id={$invoice.paid_id}">
-							<img src="images/others/transparent.gif" class="sprite16 sprite16-view">
-						</a>
-						-->
 					</div>
 			 	</td>
 			</tr>
-		{*foreachelse*}
-		<!-- 
-			<tr>
-			 	<td colspan="7" align="center">{$smarty.const.__XPAY_NO_INVOICES_FOUND}</td>
-			</tr>
-		-->
 		{/foreach}
 	</tbody>
-	<!-- 
-	{if $T_XPAY_STATEMENT.invoices|@count > 0}
-		<tfoot>
-			<tr>
-				<th>&nbsp;</th>
-				<th style="text-align: center;">{$T_XPAY_STATEMENT_TOTALS.invoices_count}</th>
-				<th style="text-align: center;">&nbsp;</th>
-				<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.valor}#</th>
-				<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.total_reajuste}#</th>
-				<th style="text-align: center;" class="xpay-paid">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.paid}#</th>
-				<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.valor+$T_XPAY_STATEMENT_TOTALS.total_reajuste-$T_XPAY_STATEMENT_TOTALS.paid}#</th>
-				<th style="text-align: center;">&nbsp;</th>
-			</tr>
-		</tfoot>
-	{/if}
-	 -->
 </table>

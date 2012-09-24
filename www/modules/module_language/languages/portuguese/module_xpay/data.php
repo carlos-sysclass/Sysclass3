@@ -16,15 +16,17 @@ define("__XPAY_LAST_PAYMENTS", "Pagamentos realizados");
 define("__XPAY_CREATE_PAYMENT", "Registrar Pagamento Manual");
 define("__XPAY_EDIT_INVOICE", "Alterar Fatura");
 
-
 define("__XPAY_TITLE", "Pagamentos");
 define("__XPAY_PRINT_INVOICE", "Imprimir Fatura");
 /* BREADCRUMBS */
 define("__XPAY_MODULE_NAME", "Pagamentos");
 define("__XPAY_USER_STATEMENT", "Extrato do Aluno");
+define("__XPAY_DO_PAY", "Pagar");
 define("__XPAY_DO_PAYMENT", "Efetuar Pagamento");
+define("__XPAY_DO_PAYMENT_INSTRUCTIONS", "Selecione a mensalidade que deseja efetuar o pagamento, selecione o método de pagamento e clique sobre pagar para iniciar o pagamento.");
 
-define("__XPAY_PAYMENT_METHOD", "Forma de Pagamento");
+
+define("__XPAY_PAYMENT_METHOD", "Pagamento");
 define("__XPAY_NOPAYMENT_INVOICE_SELECTED", "Nenhuma fatura selecionada");
 
 define("__XPAY_REGISTRANT_INVOICE", "Entrada");
