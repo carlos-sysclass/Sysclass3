@@ -1907,11 +1907,21 @@ class module_xpay extends MagesterExtendedModule {
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
 		/** @todo Implement $constraints rules!! */
-		
+		$where = array();
+		if (is_null($constraints)) {
+			$constraints = array();
+		}
+		if (!array_key_exists("ies_id", $constraints)) {
+			$constraints['ies_id'] = array_merge(array(0), $this->getCurrentUserIesIDs());
+		}
+
+		if (is_array($constraints["ies_id"]) && count($constraints["ies_id"]) > 0) {
+			$where[] = sprintf("ies_id IN (%s)", implode(", ", $constraints["ies_id"]));
+		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
 			"user_id, course_id, paid_id, name, surname, invoice_index, method_id, total_parcelas, data_pagamento, valor",
-			"",
+			implode(" AND ", $where),
 			"data_pagamento DESC",
 			"",
 			$limit
