@@ -1422,6 +1422,7 @@ class module_xpay extends MagesterExtendedModule {
 		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
 		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a15DaysInterval)->format("Y-m-d"));
 		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
 		
 		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
 		
