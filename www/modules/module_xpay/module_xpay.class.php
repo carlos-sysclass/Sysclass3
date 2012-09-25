@@ -1436,7 +1436,7 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		
 		// MAKE FILTERS
-		
+		/*
 		echo prepareGetTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),
@@ -1444,7 +1444,7 @@ class module_xpay extends MagesterExtendedModule {
 				implode(", ", $order),
 				implode(", ", $group)
 		);
-		
+		*/
 		$toSendList = eF_getTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),
