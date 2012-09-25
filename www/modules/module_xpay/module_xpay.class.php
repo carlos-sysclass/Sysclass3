@@ -1411,7 +1411,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
 		$today = new DateTime("today");
-		$a15DaysInterval = new DateInterval("P25D");
+		$a15DaysInterval = new DateInterval("P15D");
+		$a25DaysInterval = new DateInterval("P25D");
 		
 		$iesIds = $this->getCurrentUserIesIDs();
 		
@@ -1420,7 +1421,7 @@ class module_xpay extends MagesterExtendedModule {
 		//$where[] = "inv.pago = 0";
 		$where[] = "inv.locked = 0";
 		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
-		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a15DaysInterval)->format("Y-m-d"));
+		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a25DaysInterval)->format("Y-m-d"));
 		$where[] = "u.active = 1";
 		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
 		
