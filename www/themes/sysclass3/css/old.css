@@ -1430,3 +1430,12 @@ ul.module_polo_info_user img.sprite16-send-email {
 .style1 tr.overdue td a {
 	color: #aa0000;
 }
+
+.indexer-numbered {
+	color: #999999;
+	font-weight: bold;
+}
+
+.headerTools span a.indexer-numbered {
+	padding: 0 0 0 10px;
+}
