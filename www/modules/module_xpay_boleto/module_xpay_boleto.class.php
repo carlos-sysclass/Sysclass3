@@ -1260,7 +1260,6 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 	}
 	
 	public function import($fileStatus, $xpayModule) {
-		echo "<pre>";
 		foreach($fileStatus['registros'] as $registro) {
 			$boletoTransaction = array(
 				'instance_id' 			=> $this->instance_id,
@@ -1281,7 +1280,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 			);
 			
 			// STEP 1 - CHECK IF IS ALREADY IMPORTED
-			list($countReturn) = ef_countTableData(
+			$countReturn = ef_getTableData(
 				"module_xpay_boleto_transactions",
 				"id",
 				sprintf("nosso_numero = '%s'", $registro['nosso_numero']['parseddata'])
@@ -1294,20 +1293,20 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 				sprintf("invoice_id = '%s'", $registro['nosso_numero']['parseddata'])
 			);
 			
-			if (intval($countReturn['count']) == 0 && count($invoiceData) > 0) {
-
+			if (count($countReturn) == 0 && count($invoiceData) > 0) {
 				$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
+			
 
 				$paid_items = array(
 					'transaction_id'	=> $boletoTransID,
 					'method_id' 		=> 'boleto',
-					'paid' 				=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata'],
+					'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata'],
 					'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
 				);
 
 				$paidID = ef_insertTableData(
-						"module_xpay_paid_items",
-						$paid_items
+					"module_xpay_paid_items",
+					$paid_items
 				);
 
 				$negociation_id = $invoiceData[0]['negociation_id'];
@@ -1350,7 +1349,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	
@@ -2143,17 +2142,21 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				//$status = $this->analyzeReturnFile($file['method_index'], $fileProcPath);
 
 				// WITH RESULT, REFRESH PAID ITENS
-				if ($this->importFileStatusToSystem($file['method_index'], $fileProcPath)) {
+				if (($importStatus = $this->importFileStatusToSystem($file['method_index'], $fileProcPath)) === TRUE) {
 
 					// MOVE FILE TO YOUR OWN PATH
 					$finalPath = sprintf($this->getConfig()->paths['return_instance'], $file['method_index']);
 					rename($fileProcPath, $finalPath . $file['name']);
+				} elseif ($importStatus === FALSE) { // FALSE IS A IMPORT ERROR, MUST TRY AGAIN
+				} else { // ANYTHING ELSE IS A FATAL ERROR
+					rename($fileProcPath, $this->getConfig()->paths['return_error'] . $file['name']);
 				}
 				
 				$count++;
 				if (is_numeric($maxFiles) && $maxFiles > 0 && $count >= $maxFiles) {
 					break;
 				}
+		
 			}
 		}
 		return $count; 
@@ -2180,8 +2183,9 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$processor = new $proc_class_name($fullFileName);
 			
 			return $processor->import($fileStatus, $xpayModule);
+		} else { // MOVE FILE TO ERROR PATH
+			return -1; // INVALID ANALYZE
 		}
-		return false;
 	}
 	
 
