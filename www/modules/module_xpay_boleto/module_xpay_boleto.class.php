@@ -2146,8 +2146,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				if ($this->importFileStatusToSystem($file['method_index'], $fileProcPath)) {
 
 					// MOVE FILE TO YOUR OWN PATH
-					//$finalPath = sprintf($this->getConfig()->paths['return_instance'], $file['method_index']);
-					//rename($fileProcPath, $finalPath . $file['name']);
+					$finalPath = sprintf($this->getConfig()->paths['return_instance'], $file['method_index']);
+					rename($fileProcPath, $finalPath . $file['name']);
 				}
 				
 				$count++;
