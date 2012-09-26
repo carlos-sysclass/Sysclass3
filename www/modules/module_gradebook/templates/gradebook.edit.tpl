@@ -80,24 +80,8 @@
 
 <div class="clear" style="margin-top: 10px;" ></div>
 
-<div class="headerTools">
-	<span class="selected">
-<!--     	<img alt="Regras para Cálculo" title="Regras para Cálculo" class="sprite16 sprite16-skills" src="images/others/transparent.gif">  -->
-        <a href="javascript: void(0);">Regras para Cálculo</a>
-	</span>
-	<!--
-	<span>
-     	<img alt="Totais" title="Totais" class="sprite16 sprite16-rules" src="images/others/transparent.gif">  
-        <a href="javascript: void(0);">Totais</a>
-	</span>
-	-->
-	<!-- 
-	<span>
-    	<img alt="Totais" title="Totais" class="sprite16 sprite16-add" src="images/others/transparent.gif">
-        <a href="javascript: void(0);">Ntas</a>
-	</span>
-	 -->
-</div>
+{include file="$T_GRADEBOOK_BASEDIR/templates/includes/action.switch.navbar.tpl"}
+
 
 <div class="clear"></div>
 

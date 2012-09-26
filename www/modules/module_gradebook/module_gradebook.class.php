@@ -3,7 +3,7 @@
 class module_gradebook extends MagesterExtendedModule {
 	
 	public static $newActions = array(
-		"add_group", "delete_group", "load_group_rules", "switch_lesson"
+		"add_group", "delete_group", "load_group_rules", "switch_lesson", "edit_rule_calculation", "edit_total_calculation"
 	);
 
 	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
@@ -23,6 +23,16 @@ class module_gradebook extends MagesterExtendedModule {
 		return array("student", "professor", "administrator");
 	}
 	/* ACTION FUNCTIONS */
+	public function editRuleCalculationAction() {
+		/** 
+		 * @todo Implementar this function. Is the default action
+		 */ 
+	}
+	public function editTotalCalculationAction() {
+		/**
+		 * @todo Implementar this function, based on gradebook.total.window glyffy diag.
+		 */
+	}
 	public function addGroupAction() {
 		if (
 			is_numeric($_SESSION["grade_lessons_ID"]) &&
@@ -119,7 +129,6 @@ class module_gradebook extends MagesterExtendedModule {
 		echo $smarty->fetch($template);
 		exit;
 	}	
-
 	public function switchLessonAction() {
 		$currentUser = $this->getCurrentUser();
 		
@@ -163,6 +172,7 @@ class module_gradebook extends MagesterExtendedModule {
 	}
 	
 	
+	
 	public function getModule(){
 		if (isset($_GET['action'])) {
 			if (in_array($_GET['action'], self::$newActions)) {
@@ -181,10 +191,13 @@ class module_gradebook extends MagesterExtendedModule {
 
 		$currentUser = $this->getCurrentUser();
 		$smarty = $this->getSmartyVar();
+		
 		$ranges = $this->getRanges();
 
 		$smarty->assign("T_GRADEBOOK_BASEURL", $this->moduleBaseUrl);
+		$smarty->assign("T_GRADEBOOK_BASEDIR", $this->moduleBaseDir);
 		$smarty->assign("T_GRADEBOOK_BASELINK", $this->moduleBaseLink);
+		$smarty->assign("T_GRADEBOOK_ACTION", $_GET['action']);
 
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor' || $currentUser->getType() == 'administrator'){
 			$currentLesson = $this->getCurrentLesson();
