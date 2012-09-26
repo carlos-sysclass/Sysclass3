@@ -206,7 +206,7 @@ div.block .toolbar img {
 
 div.block .headerTools {
 	border: solid 1px #C2C2C2;
-	padding: 10px;
+	padding: 10px 0;
 	white-space: nowrap;
 	clear: both;
 	display: inline-block;
@@ -217,7 +217,7 @@ div.block .headerTools {
 
 div.block .headerTools span {
 	border-right: 1px solid #C2C2C2;
-	padding: 0 5px;
+	padding: 10px 5px;
 }
 
 div.block .headerTools span:last-child {
@@ -1431,9 +1431,10 @@ ul.module_polo_info_user img.sprite16-send-email {
 	color: #aa0000;
 }
 
-.indexer-numbered {
+.indexer-numbered, .indexer-numbered:hover {
 	color: #999999;
 	font-weight: bold;
+	text-decoration: none;
 }
 
 .headerTools span a.indexer-numbered {

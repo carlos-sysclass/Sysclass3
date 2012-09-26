@@ -1,6 +1,10 @@
 <?php
 
-class module_gradebook extends MagesterExtendedModule{
+class module_gradebook extends MagesterExtendedModule {
+	
+	public static $newActions = array(
+		"add_group", "delete_group", "load_group_rules"
+	);
 
 	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
 		//var_dump($defined_moduleBaseUrl, $defined_moduleFolder);
@@ -18,12 +22,119 @@ class module_gradebook extends MagesterExtendedModule{
 	public function getPermittedRoles(){
 		return array("student", "professor", "administrator");
 	}
+	/* ACTION FUNCTIONS */
+	public function addGroupAction() {
+		if (
+			is_numeric($_SESSION["grade_lessons_ID"]) &&
+			isset($_POST['name']) &&
+			strlen($_POST['name']) >= 3
+		) {
+			$group_name = $_POST['name'];
+			$fields = array(
+				"lesson_id"	=> $_SESSION["grade_lessons_ID"],
+				"classe_id"	=> is_numeric($_SESSION["grade_classe_ID"]) ? $_SESSION["grade_classe_ID"] : 0,
+				"name"		=> $group_name 
+			);
+			
+			$fields['id'] = eF_insertTableData("module_gradebook_groups", $fields);
+			
+			$return = array(
+				"message" 		=> "Registrado com sucesso",
+				"message_type" 	=> "success",
+				"status"		=> "ok",
+				"data" => $fields
+			);
+		} else {
+			$return = array(
+				"message" 		=> "Occoreu um erro ao tentar registrar a regra",
+				"message_type" 	=> "error"
+			);
+		}
+		echo json_encode($return);
+		exit;
+	}
+	public function deleteGroupAction() {
+		if (
+			is_numeric($_SESSION["grade_lessons_ID"]) &&
+			isset($_POST['group_id'])
+		) {
+			$group_id = $_POST['group_id'];
+			
+			$groupData = eF_getTableData(
+				"module_gradebook_groups", 
+				"*",
+				sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id) 
+			);
+			
+			if (count($groupData) == 0) {
+				$return = array(
+					"message" 		=> "Não é possível excluir grupos compartilhados entre disciplinas",
+					"message_type" 	=> "failure"
+				);
+			} else {
+				$updateStatus = eF_updateTableData(
+					"module_gradebook_objects",
+					array("group_id" => 1),
+					sprintf("lessons_ID = %d AND group_id = %d", $_SESSION["grade_lessons_ID"], $group_id)
+				);
+				$deleteStatus = eF_deleteTableData(
+						"module_gradebook_groups",
+						sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id)
+				);
+					
+				$return = array(
+					"message" 		=> "Grupo excluído com sucesso",
+					"message_type" 	=> "success",
+					"status"		=> "ok",
+					"data"			=> $groupData[0]
+				);
+			}
+		} else {
+			$return = array(
+				"message" 		=> "Occoreu um erro ao tentar excluir o grupo solicitado",
+				"message_type" 	=> "error"
+			);
+		}
+		echo json_encode($return);
+		exit;
+	}
+	public function loadGroupRulesAction() {
+		$smarty = $this->getSmartyVar();
+		
+		is_numeric($_POST['group_id']) ? $currentGroupID = $_POST['group_id'] : (
+			is_numeric($_SESSION['gradebook_group_id']) ? $currentGroupID = $_SESSION['gradebook_group_id'] : $currentGroupID = 1
+		);
+		
+		
+		if ( is_numeric($_SESSION["grade_lessons_ID"]) ) {
+			$currentLessonID = $_SESSION["grade_lessons_ID"];
+			$_SESSION['gradebook_group_id'] = $currentGroupID;
+			$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
+			$smarty -> assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
+		}
+		
+		$this->assignSmartyModuleVariables();
+		
+		$template = $this->moduleBaseDir . 'templates/actions/' . $_GET['action'] . '.tpl';
+		echo $smarty->fetch($template);
+		exit;
+	}	
 
 	public function getModule(){
+		if (isset($_GET['action'])) {
+			if (in_array($_GET['action'], self::$newActions)) {
+				return parent::getModule();
+			}
+		}
 		return true;
 	}
 
 	public function getSmartyTpl(){
+		if (isset($_GET['action'])) {
+			if (in_array($_GET['action'], self::$newActions)) {
+				return parent::getSmartyTpl();
+			}
+		}
 
 		$currentUser = $this->getCurrentUser();
 		$smarty = $this->getSmartyVar();
@@ -64,6 +175,7 @@ class module_gradebook extends MagesterExtendedModule{
 				$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 			}
 			
+			$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		}
 		else if($currentUser->getRole($this->getCurrentLesson()) == 'student'){
 
@@ -97,8 +209,7 @@ class module_gradebook extends MagesterExtendedModule{
 			var_dump($type, $id, $oid);
 			exit;
 			*/
-		}
-		else if(
+		} elseif (
 				isset($_GET['delete_column']) && 
 				eF_checkParameter($_GET['delete_column'], 'id') 
 				&& in_array($_GET['delete_column'], array_keys($lessonColumns))
@@ -321,6 +432,13 @@ class module_gradebook extends MagesterExtendedModule{
 			$tests = $currentLesson->getTests(true, true);
 			$scormTests = $currentLesson->getScormTests();
 			$projects = $currentLesson->getProjects(false);
+			
+			$groupsFull = $this->getGradebookGroups($currentLesson->lesson['id']);
+			$groups = array();
+			foreach($groupsFull as $group) {
+				$groups[$group['id']] = $group['name'];
+			}
+			
 			$weights = array();
 			$refersTo = array("real_world" => _GRADEBOOK_REAL_WORLD_OBJECT, "progress" => _LESSONPROGRESS);
 
@@ -350,6 +468,7 @@ class module_gradebook extends MagesterExtendedModule{
 
 			$form = new HTML_QuickForm("add_column_form", "post", $this->moduleBaseUrl."&add_column=1", "", null, true);
 			$form->addElement('text', 'column_name', _GRADEBOOK_COLUMN_NAME, 'class = "inputText"');
+			$form->addElement('select', 'column_group_id', _GRADEBOOK_COLUMN_GROUP, $groups);
 			$form->addElement('select', 'column_weight', _GRADEBOOK_COLUMN_WEIGHT, $weights);
 			$form->addElement('select', 'column_refers_to', _GRADEBOOK_COLUMN_REFERS_TO, $refersTo);
 			$form->addRule('column_name', _THEFIELD.' "'._GRADEBOOK_COLUMN_NAME.'" '._ISMANDATORY, 'required', null, 'client');
@@ -360,6 +479,7 @@ class module_gradebook extends MagesterExtendedModule{
 				$values = $form->exportValues();
 				$fields = array(
 						"name" => $values['column_name'],
+						"group_id" => $values['column_group_id'],
 						"weight" => $values['column_weight'],
 						"lessons_ID" => $currentLessonID,
 						"creator" => $_SESSION['s_login']
@@ -522,6 +642,10 @@ class module_gradebook extends MagesterExtendedModule{
 				$smarty->assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
 				$smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
 				$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
+				
+				$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
+				
+				
 			} else if($currentUser->getRole($this->getCurrentLesson()) == 'student'){
 
 				$lessonColumns = $this->getLessonColumns($currentLessonID);
@@ -756,9 +880,13 @@ class module_gradebook extends MagesterExtendedModule{
 		return $ranges;
 	}
 
-	private function getLessonColumns($lessonID){
-
-		$result = eF_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID, "id");
+	private function getLessonColumns($lessonID, $groupID = null){
+		
+		if (is_null($groupID)) { 
+			$result = eF_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID, "id");
+		} else {
+			$result = eF_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID." AND group_id = ".$groupID, "id");
+		}
 		$columns = array();
 
 		foreach($result as $value) {
@@ -774,8 +902,15 @@ class module_gradebook extends MagesterExtendedModule{
 				$test = new MagesterTest($grade_object['refers_to_id']);
 				return $test->test['name'];
 			}
+			case 'real_world' : {
+				return "&mdash;&mdash;";
+			}
+			case 'progress' : {
+				return "Progresso Atual";
+			}
+			
 		}
-		var_dump($gradebook_object);
+		var_dump($grade_object);
 		exit;
 	}
 
@@ -838,6 +973,22 @@ class module_gradebook extends MagesterExtendedModule{
 	return $lessons;
 	}
 	*/
+	
+	
+	private function getGradebookGroups($currentLessonID, $currentClasseID = null){ // lessons where GradeBook is installed
+
+		is_null($currentClasseID) ? $currentClasseID = 0 : null; 
+		
+		$result = eF_getTableData(
+			"module_gradebook_groups grp",
+			"id, lesson_id, classe_id, name",
+			"grp.lesson_id IN (0, " . $currentLessonID . ") AND 
+			grp.classe_id IN (0, " . $currentClasseID . ")",
+			"id"
+		);
+	
+		return $result;
+	}
 
 	private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
 

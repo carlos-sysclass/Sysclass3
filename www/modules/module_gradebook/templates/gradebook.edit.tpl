@@ -1,3 +1,13 @@
+<div id="add-group-rule-dialog" class="form-container" title="Nova regra">
+	<form>
+		<div>
+			<label for="name">Name</label>
+			<input type="text" name="name" id="name" />
+		</div>
+	</form>
+</div>
+
+
 {if $T_GRADEBOOK_MESSAGE}
 	<script>
 		re = /\?/;
@@ -14,6 +24,10 @@
 		<tr>
 			<td class="labelCell">{$T_GRADEBOOK_ADD_COLUMN_FORM.column_name.label}:&nbsp;</td>
 			<td class="elementCell">{$T_GRADEBOOK_ADD_COLUMN_FORM.column_name.html}</td>
+		</tr>
+		<tr>
+			<td class="labelCell">{$T_GRADEBOOK_ADD_COLUMN_FORM.column_group_id.label}:&nbsp;</td>
+			<td class="elementCell">{$T_GRADEBOOK_ADD_COLUMN_FORM.column_group_id.html}</td>
 		</tr>
 		<tr>
 			<td class="labelCell">{$T_GRADEBOOK_ADD_COLUMN_FORM.column_weight.label}:&nbsp;</td>
@@ -67,12 +81,12 @@
 <div class="clear" style="margin-top: 10px;" ></div>
 
 <div class="headerTools">
-	<span>
-    	<img alt="Regras para Cálculo" title="Regras para Cálculo" class="sprite16 sprite16-skills" src="images/others/transparent.gif">
+	<span class="selected">
+<!--     	<img alt="Regras para Cálculo" title="Regras para Cálculo" class="sprite16 sprite16-skills" src="images/others/transparent.gif">  -->
         <a href="javascript: void(0);">Regras para Cálculo</a>
 	</span>
 	<span>
-    	<img alt="Totais" title="Totais" class="sprite16 sprite16-rules" src="images/others/transparent.gif">
+<!--     	<img alt="Totais" title="Totais" class="sprite16 sprite16-rules" src="images/others/transparent.gif">  -->
         <a href="javascript: void(0);">Totais</a>
 	</span>
 	<!-- 
@@ -87,79 +101,57 @@
 
 <div class="headerTools">
 	<span>
-    	<a href="javascript: void(0);" class="indexer-numbered">1</a>
-        <a href="javascript: void(0);">Normal</a>
+		Regras Atuais:
 	</span>
-	<span>
-    	<a href="javascript: void(0);" class="indexer-numbered">2</a>
-        <a href="javascript: void(0);">Substitutiva</a>
+	{foreach name="group_loop" item = "group" from = $T_GRADEBOOK_GROUPS}
+	<span class="gradebook-group-header" id="gradebook-group-header-{$group.id}">
+    	<a href="javascript: void(0);" class="indexer-numbered">{$smarty.foreach.group_loop.iteration}</a>
+        <a href="javascript: _sysclass('load', 'gradebook').loadGroupRules({$group.id});">{$group.name}</a>
 	</span>
+	{/foreach}
 	<span>
     	<a href="javascript: void(0);" class="indexer-numbered">+</a>
-        <a href="javascript: void(0);">Adicionar</a>
+        <a href="javascript: _sysclass('load', 'gradebook').addGroup();">Adicionar</a>
 	</span>
-	
+	<!-- 
+	<span>
+    	<a href="javascript: void(0);" class="indexer-numbered">#</a>
+        <a href="javascript: _sysclass('load', 'gradebook').addGroup();">Editar</a>
+	</span>
+	 -->
+	<span>
+    	<a href="javascript: void(0);" class="indexer-numbered">-</a>
+        <a href="javascript: _sysclass('load', 'gradebook').deleteGroup();">Excluir</a>
+	</span>
 </div>
 
-<table class="style1">
-	<thead>
-		<tr>
-			<th></th>
-			<th>Tipo</th>
-			<th>Peso</th>
-			<th>Conteúdo</th>
-			<th>Opções</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_LESSON_COLUMNS}
-			<tr>
-				<th>{$column.name}</th>
-				<th>{$column.refers_to_type}</th>
-				<th>{$column.weight}</th>
-				<th>{$column.content_name}</th>
-				<th>
-					{if $column.refers_to_type != 'real_world'}
-						<a href="{$T_GRADEBOOK_BASEURL}&import_grades={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/import.png" alt="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" title="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" border="0"></a>
-					{/if}
-					<a href="{$T_GRADEBOOK_BASEURL}&delete_column={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0"></a>
-				</th>
-			</tr>
-		{/foreach}
-	</tbody>
-</table>
+<div class="clear"></div>
 
+<div class="headerTools">
+	<span>
+		<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
+		<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
+	</span>
+	<span>
+		&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/compute_score.png'}" alt="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" title="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" style="vertical-align:middle">
+		<a href="{$T_GRADEBOOK_BASEURL}&compute_score_grade=1">{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}</a>&nbsp;
+	</span>
+	<span>
+		&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/xls.png'}" alt="{$smarty.const._GRADEBOOK_EXPORT_EXCEL}" title="{$smarty.const._GRADEBOOK_EXPORT_EXCEL}" style="vertical-align:middle">
+		<a href="javascript:void(0)" onclick="location=('{$T_GRADEBOOK_BASEURL}&export_excel='+Element.extend(this).next().options[this.next().options.selectedIndex].value)">{$smarty.const._GRADEBOOK_EXPORT_EXCEL}</a>
+		<select id="excel" name="excel">
+			<option value="one">{$smarty.const._GRADEBOOK_EXPORT_EXCEL_ONE}</option>
+			<option value="all">{$smarty.const._GRADEBOOK_ALL_LESSONS}</option>
+		</select>&nbsp;
+	</span>
+</div>
 
-<table>
-	<tr>
-		<td>
-			<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
-			<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
-		</td>
-		<td style="border-right: 1px solid #333333;"></td>
-		<td>
-			&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/compute_score.png'}" alt="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" title="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" style="vertical-align:middle">
-			<a href="{$T_GRADEBOOK_BASEURL}&compute_score_grade=1">{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}</a>&nbsp;
-		</td>
-		<td style="border-right: 1px solid #333333;"></td>
-		<td>
-			&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/xls.png'}" alt="{$smarty.const._GRADEBOOK_EXPORT_EXCEL}" title="{$smarty.const._GRADEBOOK_EXPORT_EXCEL}" style="vertical-align:middle">
-			<a href="javascript:void(0)" onclick="location=('{$T_GRADEBOOK_BASEURL}&export_excel='+Element.extend(this).next().options[this.next().options.selectedIndex].value)">{$smarty.const._GRADEBOOK_EXPORT_EXCEL}</a>
-			<select id="excel" name="excel">
-				<option value="one">{$smarty.const._GRADEBOOK_EXPORT_EXCEL_ONE}</option>
-				<option value="all">{$smarty.const._GRADEBOOK_ALL_LESSONS}</option>
-			</select>&nbsp;
-		</td>
-{if sizeof($T_GRADEBOOK_GRADEBOOK_LESSONS) != 0}
-		<td style="border-right: 1px solid #333333;"></td>
-		<td>
-		</td>
-{/if}
-	</tr>
-</table>
+<div id="gradebook-group-rules-container">
+</div>
+
 
 <div style="clear: both; height: 5px;"></div>
-
+<!-- 
 <table class="sortedTable" style="width:100%">
 {foreach name = 'users_loop' key = "id" item = "user" from = $T_GRADEBOOK_LESSON_USERS}
 	<tr id="row_{$user.uid}" class="{cycle values = "oddRowColor, evenRowColor"} {if !$user.active}deactivatedTableElement{/if}">
@@ -184,6 +176,7 @@
 	</tr>
 {/foreach}
 </table>
+ -->
 {/capture}
 
 {eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_professor_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
