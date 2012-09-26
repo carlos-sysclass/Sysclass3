@@ -314,7 +314,7 @@ $dadosboleto["identificacao"] = "União Latino-Americana de Tecnologia SS Ltda";
 $dadosboleto["cpf_cnpj"] = "04.156.193\/0001-25";
 $dadosboleto["endereco"] = "Rua Santa Catarina, 04 Lj. 79 - Jd. N.S. de Fátima";
 $dadosboleto["cidade_uf"] = "Jaguariaíva / Paraná";
-$dadosboleto["cedente"] = "Braswell do Brasil";
+$dadosboleto["cedente"] = "União Latino-Americana de Tecnologia SS Ltda";
 /*
 "instrucoes_matricula":"N\u00c3O RECEBER AP\u00d3S O VENCIMENTO",
 "instrucoes":"MULTA DE R$  ##multa.total## AP\u00d3S : ##vencimento##\r\nJUROS DE R$ ##juros.dia.total## AO DIA\r\n\r\nN\u00c3O RECEBER AP\u00d3S 30 DIAS DE ATRASO\r\nPROTEST\u00c1VEL 30 DIAS AP\u00d3S O VENCIMENTO\r\nSR. CAIXA ##desconto.percentual## DE DESC. AT\u00c9 O VENCIMENTO\r\n",
