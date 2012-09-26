@@ -240,8 +240,6 @@ class module_xcontent extends MagesterExtendedModule {
     		return false;
     	}
     	
-    	
-    	
     	$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
     	
     	$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
