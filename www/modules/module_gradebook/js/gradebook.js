@@ -91,9 +91,18 @@
 				{"group_id" : group_id},
 				"#gradebook-group-rules-container"
 			);
+		},
+		switchToLessonClasse : function(lesson_id, classe_id) {
+			
+			classe_id == null ? classe_id = 0 : null;
+			
+			_sysclass("load", "gradebook")._redirectAction(
+				"switch_lesson",
+				{'lesson_id' : lesson_id, 'classe_id' : classe_id}
+			);
 		}
 	};
-	
+
 	_sysclass("register", "gradebook", methods);
 })( jQuery );
 

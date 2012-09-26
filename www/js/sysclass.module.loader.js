@@ -63,6 +63,19 @@
 				url,
 				sendData
 			);
+		},
+		_redirectAction : function(actionName, sendData) {
+			var url = 
+				window.location.protocol + "//" +
+				window.location.hostname +
+				window.location.pathname + 
+				"?ctg=module&op=module_" + this.name +
+				"&action=" + actionName + 
+				"&" + jQuery.param(sendData);
+			
+			alert(url);
+			window.location.href = url;
+			return;
 		}
 	};
 	/* MAIN LOLADER CLASS */

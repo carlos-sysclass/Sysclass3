@@ -3,7 +3,7 @@
 class module_gradebook extends MagesterExtendedModule {
 	
 	public static $newActions = array(
-		"add_group", "delete_group", "load_group_rules"
+		"add_group", "delete_group", "load_group_rules", "switch_lesson"
 	);
 
 	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
@@ -120,6 +120,49 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}	
 
+	public function switchLessonAction() {
+		$currentUser = $this->getCurrentUser();
+		
+		$currentLessonID = $_SESSION["grade_lessons_ID"];
+		
+		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
+			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
+		} elseif($currentUser->getType() == 'administrator') {
+			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
+		} else {
+			$gradeBookLessons = array();
+		}
+		
+		if(
+			isset($_GET['lesson_id']) &&
+			eF_checkParameter($_GET['lesson_id'], 'id') &&
+			in_array($_GET['lesson_id'], array_keys($gradeBookLessons))
+		) {
+			$_SESSION["grade_lessons_ID"] = $_GET['lesson_id'];
+		} else {
+			
+		}
+		
+		$gradeBookClasses = array();
+		
+		if(
+				isset($_GET['classe_id']) &&
+				eF_checkParameter($_GET['classe_id'], 'id') &&
+				in_array($_GET['lesson_id'], array_keys($gradeBookClasses))
+		) {
+			
+			
+		}
+		
+		
+		
+		
+		
+		eF_redirect("location:".$this->moduleBaseUrl);
+		exit;
+	}
+	
+	
 	public function getModule(){
 		if (isset($_GET['action'])) {
 			if (in_array($_GET['action'], self::$newActions)) {
@@ -300,15 +343,6 @@ class module_gradebook extends MagesterExtendedModule {
 			$workBook->close();
 			exit;
 		}
-		elseif(
-			isset($_GET['switch_lesson']) && 
-			eF_checkParameter($_GET['switch_lesson'], 'id') &&
-			in_array($_GET['switch_lesson'], array_keys($gradeBookLessons))
-		) {
-
-			$lessonID = $_GET['switch_lesson'];
-			eF_redirect("location:".$this->moduleBaseUrl."&lessons_ID=".$lessonID);
-		}
 
 		if(
 			isset($_GET['delete_range']) && 
@@ -468,7 +502,7 @@ class module_gradebook extends MagesterExtendedModule {
 
 			$form = new HTML_QuickForm("add_column_form", "post", $this->moduleBaseUrl."&add_column=1", "", null, true);
 			$form->addElement('text', 'column_name', _GRADEBOOK_COLUMN_NAME, 'class = "inputText"');
-			$form->addElement('select', 'column_group_id', _GRADEBOOK_COLUMN_GROUP, $groups);
+			$form->addElement('select', 'column_group_id', __GRADEBOOK_COLUMN_GROUP, $groups);
 			$form->addElement('select', 'column_weight', _GRADEBOOK_COLUMN_WEIGHT, $weights);
 			$form->addElement('select', 'column_refers_to', _GRADEBOOK_COLUMN_REFERS_TO, $refersTo);
 			$form->addRule('column_name', _THEFIELD.' "'._GRADEBOOK_COLUMN_NAME.'" '._ISMANDATORY, 'required', null, 'client');
@@ -639,6 +673,8 @@ class module_gradebook extends MagesterExtendedModule {
 				echo '</pre>';
 				exit;
 				*/
+				$smarty->assign("T_GRADEBOOK_LESSON_ID", $currentLessonID);
+				
 				$smarty->assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
 				$smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
 				$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
@@ -995,7 +1031,7 @@ class module_gradebook extends MagesterExtendedModule {
 
 
 		$lessons = array();
-		unset($professorLessons[$currentLessonID]); // do not use current lesson
+		//unset($professorLessons[$currentLessonID]); // do not use current lesson
 
 		$lessons_ID = array_keys($professorLessons);
 
