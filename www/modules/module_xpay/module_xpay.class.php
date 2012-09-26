@@ -1112,6 +1112,8 @@ class module_xpay extends MagesterExtendedModule {
 			$values = $form->exportValues();
 				
 			if ($form -> isSubmitted() && $form -> validate()) {
+
+
 				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
 		
 				$_SESSION['pay_method']			= $pay_method;
@@ -1134,7 +1136,6 @@ class module_xpay extends MagesterExtendedModule {
 			
 			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
 				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
-
 				$selectedPaymentMethod->initPaymentProccess(
 					$negociationID, $invoice_index,
 					array(

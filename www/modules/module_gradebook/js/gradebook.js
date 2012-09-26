@@ -52,9 +52,13 @@
 	var methods = {
 		getSelectedGroup : function() {
 			selectedID = jQuery(".gradebook-group-header").filter(".selected").attr("id");
-			groupID = selectedID.replace(/\D/g, "");
+			if (typeof(selectedID) != 'undefined') {
+				groupID = selectedID.replace(/\D/g, "");
 			
-			return groupID;
+				return groupID;
+			} else {
+				return 1;
+			}
 		},
 		addGroup : function() {
 			jQuery("#add-group-rule-dialog").dialog('open');
@@ -99,7 +103,6 @@
 		var url = window.location.pathname + "?ctg=module&op=module_gradebook&lessons_ID=" + lesson_id;
 		jQuery("#modules_gradebook_change_lesson_id").attr("href", url);
 	});
-	
 	
 	jQuery(".gradebook-group-header").live("click", function() {
 		jQuery(".gradebook-group-header").removeClass("selected");
