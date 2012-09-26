@@ -1639,6 +1639,8 @@ class module_xuser extends MagesterExtendedModule {
 			return reset($respData);
 		}
 		return false;
+	}
+	public function getUserIes() {
 		
 	}
 }

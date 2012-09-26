@@ -100,8 +100,8 @@
 			<td width=41><IMG
 				SRC="{$T_XPAY_BOLETO_BASELINK}images/layouts/boleto_cef_sigcb.logo.png">
 			</td>
-			<td class=ti width=455>{$T_XPAY_BOLETO_CFG.identificacao} {if
-				isset($T_XPAY_BOLETO_CFG.cpf_cnpj)}<br>{$T_XPAY_BOLETO_CFG.cpf_cnpj}{/if}<br>
+			<td class=ti width=455>{$T_XPAY_BOLETO_CFG.identificacao} 
+			{if 	isset($T_XPAY_BOLETO_CFG.cpf_cnpj)}<br>{$T_XPAY_BOLETO_CFG.cpf_cnpj}{/if}<br>
 				{$T_XPAY_BOLETO_CFG.endereco}<br> {$T_XPAY_BOLETO_CFG.cidade_uf}<br>
 			</td>
 			<td align=RIGHT width=150 class=ti>&nbsp;</td>

@@ -782,7 +782,7 @@ public function getName(){
   
    $result = eF_getTableData("module_gradebook_users a JOIN lessons l ON (a.lessons_ID = l.id)",
    							 "DISTINCT a.lessons_ID as id, l.name, count(a.uid) as total_users,
-   							 ( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = a.lessons_ID ) as course_ID
+   							 ( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = a.lessons_ID LIMIT 1) as course_ID
    							 ", 
    							 "a.lessons_ID IN (".implode(",", $lessons_ID).")",
    "",

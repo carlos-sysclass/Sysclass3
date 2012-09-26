@@ -117,11 +117,28 @@ class module_xpay extends MagesterExtendedModule {
 		if (count($negocData) == 0) {
 			return false;
 		}
+		
+		$today = new DateTime("today");
+		
 		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+			$negocData['invoices'][$invoiceIndex]['overdue'] = false;
 			if ($invoice['valor']+$invoice['total_reajuste'] <= $invoice['paid']) {
 				unset($negocData['invoices'][$invoiceIndex]);
 			}
+			$date = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+			//var_dump($invoice['data_vencimento']);
+
+			if (is_object($date)) {
+				$diff = $date->diff($today);
+				
+				if ($diff->invert == 1 && $diff->days > 20) {
+					unset($negocData['invoices'][$invoiceIndex]);
+				} elseif ($diff->invert == 0 && $diff->days > 0) { // IT'S OVERDUE
+					$negocData['invoices'][$invoiceIndex]['overdue'] = true;
+				}
+			}
 		}
+
 		if (count($negocData['invoices']) == 0) {
 			return false;
 		}
@@ -178,19 +195,14 @@ class module_xpay extends MagesterExtendedModule {
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
 	}
+	/*
 	public function migrateToNewModelAction() {
-		/*
-		$this->_migrateOldPaymentToNegociation(
-			742, 23
-		);
-		*/
-		
 		$paymentData = ef_getTableData(
 			"users_to_courses uc 
 			JOIN courses c ON (uc.courses_ID = c.id)
 			JOIN users u ON (uc.users_LOGIN = u.login)",
 			"u.id as user_id, c.id as course_id",
-			"uc.user_type = 'student' AND c.ies_id = 1"
+			"uc.user_type = 'student' AND c.ies_id = 3"
 		);
 		foreach($paymentData as $item) {
 			$this->_migrateOldPaymentToNegociation(
@@ -200,6 +212,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		exit;
 	}
+	*/
 	private function _migrateOldPaymentToNegociation($user_id, $course_id) {
 		// CHECK FOR USER PAYMENTS ON OLD TABLES
 		list($paymentData) = ef_getTableData(
@@ -208,7 +221,6 @@ class module_xpay extends MagesterExtendedModule {
 				sprintf("user_id = %d AND course_id = %d", $user_id, $course_id)
 		);
 		// SE JÁ ESTÁ MIGRADO, ENTÃO VAI EMBORA
-				
 		if ($paymentData['migrated'] == 1) {
 			return false;
 		}
@@ -223,7 +235,7 @@ class module_xpay extends MagesterExtendedModule {
 		if (is_null($paymentData)) {
 			return false;
 		}
-	
+		
 		$negociationData =  array(
 			'timestamp'				=> strtotime($paymentData['data_registro']),
 			'user_id'				=> $user_id,
@@ -353,13 +365,25 @@ class module_xpay extends MagesterExtendedModule {
 				);
 			}
 		}
-/*		
 		
+		// CHECK USER'S DISCOUNTS, AND PUT HIM IN YOUR RESPECTIVE GROUP. 
+		$currentDiscount = floatval($paymentData['desconto']);
+		$discountsToGroups = array(
+			10	=> 4,
+			30	=> 5,
+			0	=> 6
+		);
+		
+		if (is_numeric($discountsToGroups[$currentDiscount])) {
+			$editUser->addGroups($discountsToGroups[$currentDiscount]);
+		}
+		/*
 		eF_deleteTableData("module_xpay_course_negociation", "id = $negociationID");
 		eF_deleteTableData("module_xpay_invoices", "negociation_id = $negociationID");
 		eF_deleteTableData("module_xpay_boleto_transactions");
 		eF_deleteTableData("module_xpay_paid_items");
 		eF_deleteTableData("module_xpay_invoices_to_paid");
+		exit;
 		*/
 		return true;
 	}
@@ -495,7 +519,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		//	ONLY directions_ID = 13 COURSES
-		if ($entify['directions_ID'] == self::__NUCLEO_ULT) {
+		//if ($entify['directions_ID'] == self::__NUCLEO_ULT) {
 			$negociation_index = $_GET['negociation_index'];
 		
 			//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
@@ -573,6 +597,7 @@ class module_xpay extends MagesterExtendedModule {
 			}
 			*/
 	
+
 			if (count($userNegociation) == 0) {
 				// CHECK IF COURSE HAS A DEFAULT STATEMENT
 				
@@ -581,6 +606,10 @@ class module_xpay extends MagesterExtendedModule {
 					if (!$this->_migrateOldPaymentToNegociation($editUser->user['id'], $entify['id'])) {
 						$negociationData = $this->_createUserDefaultStatement();
 					}
+					
+
+					
+					
 				} else {
 					$negociationData = $this->_createUserDefaultStatement();
 				}
@@ -591,6 +620,9 @@ class module_xpay extends MagesterExtendedModule {
 					
 				//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
 			}
+			//var_dump($userNegociation);
+			//exit;
+			
 			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
 			
 			$negociationTotals = array(
@@ -610,10 +642,10 @@ class module_xpay extends MagesterExtendedModule {
 			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
 			
 			return true;
-		} else {
-			$this->setMessageVar("Acesso Não Autorizado", "failure");
-			return false;
-		}
+		//} else {
+			//$this->setMessageVar("Acesso Não Autorizado", "failure");
+			//return false;
+		//}
 	}
 	public function simulateDueBalanceNegociationAction() {
 		$smarty = $this->getSmartyVar();
@@ -910,7 +942,8 @@ class module_xpay extends MagesterExtendedModule {
 			));
 		} elseif (
 			$exUserType == 'administrator' || 
-			$exUserType == 'financier'
+			$exUserType == 'financier' ||
+			$exUserType == 'coordenator'
 		) {
 			$negociationID = $_GET['negociation_id'];
 			$invoice_index = $_GET['invoice_index'];
@@ -944,11 +977,39 @@ class module_xpay extends MagesterExtendedModule {
 			$negocTotals['paid']			+= $invoice['paid'];
 		}
 		
+		foreach($negocData['invoices'] as $invoice_index => $invoice) {
+			$applied_rules = array();
+			if ($invoice['total_reajuste'] <> 0) {
+				foreach($invoice['workflow'] as $workflow) {
+					if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
+						foreach($invoice['rules'] as $rule) {
+							if ($rule['id'] == $workflow['rule_id']) {
+								$currentRule = $rule;
+								break;
+							}
+						}
+						$applied_rules[$workflow['rule_id']] = array(
+								'description'		=> $currentRule['description'],
+								'input'				=> $workflow['input'],
+								'diff'				=> $workflow['diff'],
+								'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
+								'count'				=> 0
+						);
+					}
+					$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
+					$applied_rules[$workflow['rule_id']]['count']++;
+				}
+			}
+			$negocData['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+		}
+		
+		
 		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
 		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negocTotals);
 		
 		// GET SUB MODULES FUNCTIONS
 		$currentOptions = $this->getSubmodules();
+		
 			
 		$selectedIndexes = array();
 		if (count($currentOptions) > 1) {
@@ -994,12 +1055,33 @@ class module_xpay extends MagesterExtendedModule {
 				
 			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
 			
+			$xentifyModule = $this->loadModule("xentify");
+			
+			$negociationUser = MagesterUserFactory::factory($negocData['login']);
+			
 			$pay_method_active_options = array();
+			
+			$scopeCourse = $xentifyModule->create("course", $negocData['course_id']);
+			$scopeUser = $xentifyModule->create("user", $negocData['login']);
+			
+			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
 					continue;
 				}
+				/*
+				if (!$xentifyModule->isUserInScope($negociationUser, $item['xscope_id'], $item['xentify_id'])) {
+					continue;
+				}
+				*/
+				if (
+					!$scopeCourse->inScope($item['xscope_id'], $item['xentify_id']) ||
+					!$scopeUser->inScope($item['xscope_id'], $item['xentify_id'])
+				) {
+					continue;
+				}
 				
+				// CHECAR SE O PAGAMENTO OU CURSO DO PAGAMENTO ESTÁ NO ESCOPO
 				$pay_method_active_options[] = array(
 					'pay_method' 		=> strtolower($selectedIndex),  	
 					'pay_method_option'	=> $key
@@ -1020,14 +1102,12 @@ class module_xpay extends MagesterExtendedModule {
 			$pay_method_active_opt = reset($pay_method_active_options);
 			$_SESSION['pay_method'] 		= $pay_method_active_opt['pay_method'];
 			$_SESSION['pay_method_option']	= $pay_method_active_opt['pay_method_option'];
-			
-			
-			
 		}
 		
 		if (
-			($form -> isSubmitted() && $form -> validate()) ||
+			($form -> isSubmitted() && $form -> validate()) /*||
 			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
+			*/
 		) {
 			$values = $form->exportValues();
 				
@@ -1331,7 +1411,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
 		$today = new DateTime("today");
-		$a15DaysInterval = new DateInterval("P25D");
+		$a15DaysInterval = new DateInterval("P15D");
+		$a25DaysInterval = new DateInterval("P25D");
 		
 		$iesIds = $this->getCurrentUserIesIDs();
 		
@@ -1340,8 +1421,9 @@ class module_xpay extends MagesterExtendedModule {
 		//$where[] = "inv.pago = 0";
 		$where[] = "inv.locked = 0";
 		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
-		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a15DaysInterval)->format("Y-m-d"));
+		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a25DaysInterval)->format("Y-m-d"));
 		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
 		
 		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
 		
@@ -1821,19 +1903,34 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $workflow;
 	}
+	
+	
 	/* GETTERS */
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
 		/** @todo Implement $constraints rules!! */
-		
-		
+		$where = array();
+		if (is_null($constraints)) {
+			$constraints = array();
+		}
+		if (!array_key_exists("ies_id", $constraints)) {
+			$constraints['ies_id'] = array_merge(array(0), $this->getCurrentUserIesIDs());
+		}
+
+		if (is_array($constraints["ies_id"]) && count($constraints["ies_id"]) > 0) {
+			$where[] = sprintf("ies_id IN (%s)", implode(", ", $constraints["ies_id"]));
+		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
-			"user_id, course_id, paid_id, name, surname, invoice_index, method_id, total_parcelas, data_pagamento, valor",
-			"",
+			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
+				
+			implode(" AND ", $where),
 			"data_pagamento DESC",
 			"",
 			$limit
+				
+				
+			/* Instituição / Polo, */
 		);
 		return $lastPaymentsList;
 	}
@@ -2009,11 +2106,11 @@ class module_xpay extends MagesterExtendedModule {
 			$editedUser = $this->getEditedUser();
 		}
 	
-		if (!is_null($contraints['course_id'])) {
+		if (!is_null($contraints['course_id']) && $contraints['course_id'] != 0) {
 			$editedCourse = $this->getEditedCourse(true, $contraints['course_id']);
 			$where[] = sprintf("neg.course_id = %d", $editedCourse->course['id']);
 		}
-		if (!is_null($contraints['lesson_id'])) {
+		if (!is_null($contraints['lesson_id']) && $contraints['lesson_id'] != 0) {
 			$editedLesson = $this->getEditedLesson(true, $contraints['lesson_id']);
 			$where[] = sprintf("neg.lesson_id = %d", $editedLesson->lesson['id']);
 		}
@@ -2574,7 +2671,7 @@ class module_xpay extends MagesterExtendedModule {
 
 		$header = array (
 			'From'                   	=> $my_email,
-			'Reply-To'				 	=> $my_email,
+			'Reply-To'			=> "fin@americas.com.br",
 			'To'                        => $user_mail,
 			'Subject'                   => $subject,
 			'Content-type'             	=> 'text/html;charset="UTF-8"',                       // if content-type is text/html, the message cannot be received by mail clients for Registration content
@@ -3214,7 +3311,6 @@ class module_xpay extends MagesterExtendedModule {
 	
 		return $digito;
 	}
-
 
 	/* OLD-STYLE FUNCTIONS */
 	public function getCenterLinkInfo() {

@@ -29,7 +29,7 @@ function digitoVerificador_barra($numero) {
 }
 
 
-// FUN��ES
+// FUNÇÕES
 // Algumas foram retiradas do Projeto PhpBoleto e modificadas para atender as particularidades de cada banco
 
 function formata_numero($numero,$loop,$insert,$tipo = "geral") {
@@ -318,7 +318,7 @@ $conta_cedente = formata_numero($dadosboleto["conta_cedente"],6,0);
 //dv da conta cedente
 $conta_cedente_dv = digitoVerificador_cedente($conta_cedente);
 
-//campo livre (sem dv) � 24 digitos
+//campo livre (sem dv) 24 digitos
 $campo_livre = $conta_cedente . $conta_cedente_dv . formata_numero($dadosboleto["nosso_numero1"],3,0) . formata_numero($dadosboleto["nosso_numero_const1"],1,0) . formata_numero($dadosboleto["nosso_numero2"],3,0) . formata_numero($dadosboleto["nosso_numero_const2"],1,0) . formata_numero($dadosboleto["nosso_numero3"],9,0);
 //dv do campo livre
 $dv_campo_livre = digitoVerificador_nossonumero($campo_livre);
@@ -341,8 +341,6 @@ $dadosboleto["linha_digitavel"] = monta_linha_digitavel($linha);
 $dadosboleto["agencia_codigo"] = $agencia_codigo;
 $dadosboleto["nosso_numero"] = $nossonumero;
 $dadosboleto["codigo_banco_com_dv"] = $codigo_banco_com_dv;
-
-
 
 return $dadosboleto;
 ?>

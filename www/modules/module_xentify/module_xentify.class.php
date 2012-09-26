@@ -1,6 +1,270 @@
 <?php
+interface IScopedEntify {
+	public function inScope($scope_type, $scope_id);
+	public function getCurrentEntify();
+	/* COMPARISON FUNCTIONS */
+	public function checkIfSameIes($ies_id);
+	public function checkIfSamePolo($polo_id);
+	public function checkIfSameUser($user_id);
+	public function checkIfSameUserType($user_type);
+	public function checkIfSameClasse($classe_id);
+	public function checkIfSameGroup($group_id);
+	public function checkIfSameCourse($course_id);
+}
+
+abstract class scope {
+	protected $entify_id = null;
+	protected $entify = null;
+	
+	/* RETURN CURRENT ENTIFY CLASS "FROM libraries"*/
+	public function getCurrentEntify() {
+		return $this->entify;
+	}
+	public function getScopeData($scope_type, $scope_id) {
+		$data = array(
+			'user_id'			=> null,
+			'ies_id'			=> null,
+			'polo_id'			=> null,
+			'classe_id'			=> null,
+			'user_type'			=> null,
+			'group_id'			=> null,
+			'course_id'			=> null
+		);
+		
+		switch($scope_type) {
+			case 1 : { // SAME POLO AND SAME CLASS
+				list($data['ies_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 2 : { // SAME POLO AND SAME CLASS
+				list($data['polo_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 7 : { // SAME POLO AND SAME CLASS
+				list($data['user_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 9 : { // SAME POLO AND SAME CLASS
+				list($data['user_type']) = explode(';', $scope_id);
+				break;
+			}
+			case 10 : { // SAME POLO AND SAME CLASS
+				list($data['polo_id'], $data['classe_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 13 : { // SAME GROUPS
+				list($data['group_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 14 : { // SAME GROUPS
+				list($data['group_id'], $data['course_id']) = explode(';', $scope_id);
+				break;
+			}
+			case 15 : { // SAME GROUPS
+				list($data['ies_id'], $data['user_type']) = explode(';', $scope_id);
+				break;
+			}
+		}
+		return $data;
+	}
+	
+	public function getEntifyScopeStatus($entify = null, $scope_type, $scope_id) {
+		if (is_null($entify)) {
+			$entify = $this->getCurrentEntify();
+		}
+		$status = array(
+			'same_ies'			=> false,
+			'same_polo'			=> false,
+			'same_classe'		=> false,
+			'same_user'			=> false,
+			'same_user_type'	=> false,
+			'same_group'		=> false,
+			'same_course'		=> false,
+			'no_overdue'		=> false,
+			'overdue'			=> false
+		);
+		
+		$data = $this->getScopeData($scope_type, $scope_id);
+
+		switch($scope_type) {
+			case 1 : { // SAME POLO
+				$status['same_ies'] = $this->checkIfSameIes($data['ies_id']);
+				break;
+			}
+			case 2 : { // SAME POLO
+				$status['same_polo'] = $this->checkIfSamePolo($data['polo_id']);
+				break;
+			}
+			case 7 : { // SAME USER (INDIVIDUAL)
+				$status['same_user'] = $this->checkIfSameUser($data['user_id']);
+				break;
+			}
+			case 9 : { // SAME USER (INDIVIDUAL)
+				$status['same_user_type'] = $this->checkIfSameUserType($data['user_type']);
+				break;
+			}
+			case 10 : { // SAME POLO AND SAME CLASS
+				$status['same_polo'] = $this->checkIfSamePolo($data['polo_id']);
+				$status['same_classe'] = $this->checkIfSameClasse($data['classe_id']);
+				break;
+			}
+			/*
+			case 11 :
+			case 12 : { // OVERDUE INVOICES USER
+				$status['no_overdue'] = !($status['overdue'] = $this->checkUserInDebt($user));
+				break;
+			}
+			*/
+			case 13 : {
+				$status['same_group']	= $this->checkIfSameGroup($data['group_id']);
+				break;
+			}
+			case 14 : {
+				$status['same_group']	= $this->checkIfSameGroup($data['group_id']);
+				$status['same_course']	= $this->checkIfSameCourse($data['course_id']);
+				break;
+			}
+			case 15 : {
+				$status['same_ies'] 		= $this->checkIfSameIes($user, $data['ies_id']);
+				$status['same_user_type'] 	= $this->checkIfSameUserType($user, $data['user_type']);
+				break;
+			}
+	
+			default : {
+				return false;
+			}
+		}
+		
+		return $status;
+	}
+
+	public function inScope($scope_type, $scope_id) {
+		if ($scope_type == 0 || is_null($scope_type)) {
+			return true;
+		}
+	
+		$status = $this->getEntifyScopeStatus(null, $scope_type, $scope_id);
+
+		switch($scope_type) {
+			case 0 : {
+				return true;
+			}
+			case 1 : { // SAME IES
+				return $status['same_ies'];
+			}
+			case 2 : { // SAME POLO
+				return $status['same_polo'];
+			}
+			case 7 : { // SAME USER
+				return $status['same_user'];
+			}
+			case 9 : { // SAME USER TYPE
+				return $status['same_user_type'];
+			}
+			case 10 : { // SAME POLO AND SAME CLASS
+				return $status['same_polo'] && $status['same_classe'];
+			}
+			case 11 : { // NO OVERDUE INVOICES USER
+				/** @todo Implementar checagem de adimplência */
+				return $status['no_overdue'];
+			}
+			case 12 : { // OVERDUE INVOICES USER
+				/** @todo Implementar checagem de inadimplência */
+				return $status['overdue'];
+			}
+			case 13 : { // SAME USER GROUP
+				/** @todo Implementar checagem de inadimplência */
+				return $status['same_group'];
+			}
+			case 14 : { // SAME USER GROUP AND COURSE
+				/** @todo Implementar checagem de inadimplência */
+				return $status['same_group'] && $status['same_course'];
+			}
+			case 15 : { // SAME IES AND USER TYPE
+				/** @todo Implementar checagem de inadimplência */
+				return $status['same_ies'] && $status['same_user_type'];
+			}
+	
+			default : {
+				return false;
+			}
+		}
+	}
+
+	
+	/* COMPARISON FUNCTIONS... RETURN FALSE ON PARENT */
+	public function checkIfSameIes($ies_id) {
+		return false;
+	}
+	public function checkIfSamePolo($polo_id) {
+		return false;
+	}
+	public function checkIfSameUser($user_id) {
+		return false;
+	}
+	public function checkIfSameUserType($user_type) {
+		return false;
+	}
+	public function checkIfSameClasse($classe_id) {
+		return false;
+	}
+	public function checkIfSameGroup($group_id) {
+		return false;
+	}
+	public function checkIfSameCourse($course_id) {
+		return false;
+	}
+}
+
+class scopedCourse extends scope implements IScopedEntify {
+	public function __construct($course_id) {
+		$this->entify_id = $course_id;
+		$this->entify = new MagesterCourse($course_id);
+	}
+	/* checkForSameIes */
+	public function checkIfSameIes($ies_id) {
+		if (!is_array($ies_id)) {
+			$ies_id = array($ies_id);
+		}
+		return in_array($this->entify->course['ies_id'], $ies_id);
+	}
+}
+
+class scopedUser extends scope implements IScopedEntify {
+	public function __construct($login) {
+		$this->entify_id = $login;
+		$this->entify = MagesterUserFactory::factory($login);
+	}
+	/* checkForSameIes */
+	public function checkIfSameIes($ies_id) {
+		if (!is_array($ies_id)) {
+			$ies_id = array($ies_id);
+		}
+		$userIes = $this->entify->getUserIes();
+		
+		foreach($ies_id as $id) {
+			if (in_array($id, $userIes)) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
 class module_xentify extends MagesterExtendedModule {
 	const XENTIFY_SEP = ';';
+	
+	public function create($type, $entify_id) {
+		
+		$className = "scoped" . ucfirst($type);
+		
+		if (class_exists($className)) {
+			return new $className($entify_id);
+		} else {
+			throw new xentifyException(__XENTIFY_THIS_SCOPE_ISNT_INSTALLED);
+		}
+	}
+	
 		
     // CORE MODULE FUNCTIONS
     public function getName() {
@@ -353,6 +617,7 @@ class module_xentify extends MagesterExtendedModule {
     	}
     	return $data;
     }
+    
     public function getScopeFields($scopeID = null) {
     /**
      * @todo BUscar nomes dos campos de escopo do banco de dados 
@@ -374,7 +639,6 @@ class module_xentify extends MagesterExtendedModule {
 					'label'	=> __XCONTENT_CLASSE
 				)
 			),
-			
 	   	);
 	   	
 	   	if (array_key_exists($scopeID, $allData)) {

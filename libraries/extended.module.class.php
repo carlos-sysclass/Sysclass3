@@ -591,10 +591,14 @@ abstract class MagesterExtendedModule extends MagesterModule {
 				$userObject->getType() != "administrator" && 
 				in_array($userObject->getType(), array_keys($userObject->getStudentRoles()))
 			) { 
+	   			$userIES = eF_getTableDataFlat("courses c LEFT JOIN users_to_courses uc ON (c.id = uc.courses_ID)", "ies_id", "uc.users_LOGIN = '" . $userObject->user['login'] . "'");
+	   			$currentUserIESIds = $userIES['ies_id'];
+/*	   			
 				$xEnrollmentModule = $this->loadModule("xenrollment");
 			
 		   		$userIES = $xEnrollmentModule->getEnrollmentFieldByUserId($userObject->user['id'], "ies_id");
 		   		$currentUserIESIds = $userIES;
+*/
 			} else {
 				$userIES = eF_getTableDataFlat("module_xies_to_users", "ies_id", "user_id = " . $userObject->user['id']);
 				$currentUserIESIds = $userIES['ies_id'];

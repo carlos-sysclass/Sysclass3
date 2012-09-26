@@ -327,11 +327,43 @@ class module_quick_mails extends MagesterExtendedModule {
 
 				if ($values['send_email']) {
 					set_time_limit(0);
+					
+					$courses = $current_user->getUserCourses();
+					
+					if (count($courses) > 2) {
+						$lessonHide = true;
+					} else {
+						$userLessons = $current_user->getLessons();
+					}
+
+					
+					$courseArray = array();
+					foreach($courses as $course) {
+						if (!$lessonHide) {
+							$lessons = $course->getCourseLessons();
+							$lessonArray = array();
+							foreach($lessons as $lesson) {
+								if (in_array($lesson->lesson['id'], array_keys($userLessons))) {
+									$lessonArray[] = "<li>" . $lesson->lesson['name'] . "</li>";
+								}
+								
+								//$lessons = $course->getLessons()
+							}
+							
+							$courseArray[] = "<li>" . "<strong>" . $course->course['name'] . "</strong><ul>" . implode(",", $lessonArray) . "</ul></li>";
+						} else {
+							$courseArray[] = "<li>" . $course->course['name'] . "</li>";
+						}
+					}
+					
 					foreach($mail_recipients as $key => $mail) {
 						// PREPEND USER NAME MESSAGE
 						$email_body =
-						sprintf("Mensagem de: %s (%s) <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
+						sprintf("Mensagem de: %s <strong>(%s)</strong> &lt;%s&gt;", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
 							"\n<br />" .
+							"Matriculado nos seguintes cursos/disciplinas:\n<br />" .
+							sprintf("<ul>%s</ul>", implode("", $courseArray)) . 
+							"Corpo da Mensagem:\n<br /><br />" .
 						$values['body'];
 							
 						$result = $result && eF_mail(

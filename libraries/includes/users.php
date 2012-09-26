@@ -99,7 +99,28 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             }
             $languages = MagesterSystem :: getLanguages(true);
             $smarty -> assign("T_LANGUAGES", $languages);
-            $users = eF_getTableData("users", "*", "archive = 0");
+            
+            $modules = eF_loadAllModules(true);
+            
+           	$ies_filter = $modules['module_xuser']->getCurrentUserIesIDs();
+           	$ies_filter[] = 0;
+
+            $where = array();
+            $where[] = "u.archive = 0";
+           	$where[] = sprintf("(u.user_type = 'administrator' OR c.ies_id IN (%s))", implode(", ", $ies_filter));
+           	
+			$users = eF_getTableData(
+				"users u
+            	LEFT JOIN users_to_courses uc ON (u.login = uc.users_LOGIN)
+            	LEFT JOIN courses c ON (uc.courses_ID = c.id)",
+            	"u.*",
+            	implode(" AND ", $where),
+            	"",
+            	"u.login"
+            );
+            
+            
+            
             $user_lessons = eF_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND ul.archive=0 AND l.archive=0", "", "ul.users_LOGIN");
             $user_courses = eF_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND uc.archive=0 AND c.archive=0", "", "uc.users_LOGIN");
             $user_groups = eF_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
@@ -121,6 +142,8 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             }
 
             $users = eF_multiSort($users, $sort, $order);
+            
+            
             if (isset($_GET['filter'])) {
                 $users = eF_filterData($users, $_GET['filter']);
             }
