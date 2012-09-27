@@ -1,13 +1,3 @@
-<div id="add-group-rule-dialog" class="form-container" title="Novo Grupo">
-	<form>
-		<div>
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" />
-		</div>
-	</form>
-</div>
-
-
 {if $T_GRADEBOOK_MESSAGE}
 	<script>
 		re = /\?/;

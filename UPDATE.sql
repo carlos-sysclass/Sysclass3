@@ -2758,6 +2758,19 @@ CREATE TABLE IF NOT EXISTS `module_gradebook_groups` (
 
 INSERT INTO `sysclass_root`.`module_gradebook_groups` (`id`, `lesson_id`, `classe_id`, `name`) VALUES (NULL, '0', '0', 'Nota Geral');
 
+/* 2012-09-27 */
+ALTER TABLE `module_gradebook_groups` 
+ADD `require_status` 
+SMALLINT( 4 ) NOT NULL 
+DEFAULT '1' 
+COMMENT '1 = obrigatório, 2 = obrigatorio se falhar no anterior, 3 = opcional';
+
+ALTER TABLE `module_gradebook_groups` ADD `min_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70';
+
+
+
+
+
 
 
 

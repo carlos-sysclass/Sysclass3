@@ -19,7 +19,11 @@
 					// PUT ON
 					_sysclass("load", "gradebook")._postAction(
 						"add_group",
-						{'name' : jQuery("#name").val()},
+						{
+							'name' : jQuery("#name").val(),
+							'require_status' : jQuery("#require_status").val(),
+							'min_value' : jQuery("#min_value").val()
+						},
 						function(response, status) {
 							if (response.status == 'ok') {
 								headerItem = 
