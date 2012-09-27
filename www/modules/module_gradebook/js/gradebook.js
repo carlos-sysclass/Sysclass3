@@ -58,7 +58,7 @@
 			selectedID = jQuery(".gradebook-group-header").filter(".selected").attr("id");
 			if (typeof(selectedID) != 'undefined') {
 				groupID = selectedID.replace(/\D/g, "");
-			
+
 				return groupID;
 			} else {
 				return 1;
@@ -68,18 +68,18 @@
 			jQuery("#add-group-rule-dialog").dialog('open');
 		},
 		editGroup : function() {
-			//jQuery("#add-group-rule-dialog").dialog('open');
 		},
-		deleteGroup : function() {
-			//jQuery("#add-group-rule-dialog").dialog('open');
-			$groupID = this.getSelectedGroup();
-			
+		deleteGroup : function($groupID) {
+			if (typeof($groupID) == 'undefined') {
+				$groupID = this.getSelectedGroup();
+			}
 			_sysclass("load", "gradebook")._postAction(
 				"delete_group",
 				{'group_id' : $groupID},
 				function(response, status) {
 					if (response.status == 'ok') {
 						jQuery("#gradebook-group-header-" + $groupID).remove();
+						jQuery("#gradebook-group-row-" + $groupID).remove();
 					}
 				},
 				'json'

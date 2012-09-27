@@ -15,6 +15,7 @@
 {include file="$T_GRADEBOOK_BASEDIR/templates/includes/action.switch.navbar.tpl"}
 <div class="clear"></div>
 
+<!-- 
 <form method="post" action="#">
 	<fieldset>
 		<div>
@@ -27,7 +28,7 @@
 		</div>
 	</fieldset>
 </form>
-
+ -->
 <table class="style1" style="margin-top: 10px;">
 	<thead>
 		<tr>
@@ -39,16 +40,19 @@
 		</tr>
 	</thead>
 	<tbody>
-		{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_GROUPS}
-			<tr>
-				<th>{$column.name}</th>
-				<td>{$column.require_descr}</td>
-				<td>{$column.min_value}</td>
-				<td>{$column.range}</td>
+		{foreach name = 'columns_loop' key = "id" item = "group" from = $T_GRADEBOOK_GROUPS}
+			<tr id="gradebook-group-row-{$group.id}">
+				<th>{$group.name}</th>
+				<td>{$group.require_descr}</td>
+				<td>{$group.min_value}</td>
+				<td>{$group.range}</td>
 				<td>
 					<!-- 
 					<a href="{$T_GRADEBOOK_BASEURL}&delete_column={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0"></a>
 					 -->
+					 <a href="javascript: _sysclass('load', 'gradebook').deleteGroup({$group.id});">
+					 	<img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0">
+					 </a>
 				</td>
 			</tr>
 		{foreachelse}
