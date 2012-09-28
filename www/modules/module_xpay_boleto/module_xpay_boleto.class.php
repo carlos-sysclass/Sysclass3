@@ -2348,7 +2348,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 	}
 	
 	private function loadPaymentInvoiceFromTpl($paymentIndex, $paymentConfig) {
-		ini_set("display_errors", true);
+//		ini_set("display_errors", true);
 		$smarty = $this->getSmartyVar();
 		$invoiceFile = sprintf(
 			"%stemplates/layouts/%s.tpl", 

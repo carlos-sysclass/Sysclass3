@@ -977,7 +977,7 @@ class module_xpay extends MagesterExtendedModule {
 			$negocTotals['paid']			+= $invoice['paid'];
 		}
 		
-		foreach($negocData['invoices'] as $invoice_index => $invoice) {
+		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			$applied_rules = array();
 			if ($invoice['total_reajuste'] <> 0) {
 				foreach($invoice['workflow'] as $workflow) {
@@ -1000,7 +1000,7 @@ class module_xpay extends MagesterExtendedModule {
 					$applied_rules[$workflow['rule_id']]['count']++;
 				}
 			}
-			$negocData['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+			$negocData['invoices'][$inv_index]['applied_rules'] = $applied_rules;
 		}
 		
 		
@@ -1030,14 +1030,14 @@ class module_xpay extends MagesterExtendedModule {
 		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
 		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
 		
-		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			if ($invoice['full_price'] <= $invoice['paid']) {
-				unset($negocData['invoices'][$invoiceIndex]);
+				unset($negocData['invoices'][$inv_index]);
 				continue;
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
-
+//		var_dump($invoice_index);
 		$form->setDefaults(array(
 			'invoice_indexes'	=> $invoice_index
 		));
@@ -1063,7 +1063,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$scopeCourse = $xentifyModule->create("course", $negocData['course_id']);
 			$scopeUser = $xentifyModule->create("user", $negocData['login']);
-			
+			$firstPayMethodOption = null;
 			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
@@ -1092,9 +1092,16 @@ class module_xpay extends MagesterExtendedModule {
 					$paymentMethods[strtolower($selectedIndex)]['baselink'],
 					empty($item['image_name']) ? $key : $item['image_name']
 				);
+				if (is_null($firstPayMethodOption)) {
+					$firstPayMethodOption = strtolower($selectedIndex) . ":" . $key;
+				}
 					
 				$form -> addElement('radio', 'pay_methods', $item['name'], $img, strtolower($selectedIndex) . ":" . $key, 'class="xpay_methods"');
 			}
+                        $form->setDefaults(array(
+				'pay_methods'       => $firstPayMethodOption
+                        ));
+
 		}
 		$smarty -> assign("T_XPAY_METHODS", $paymentMethods);
 				
