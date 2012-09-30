@@ -23,6 +23,46 @@
 		},
 		isFake : function() {
 			return this.fake;
+		},
+		_postAction : function(actionName, sendData, callback, output) {
+			if (typeof(output) === "undefined" || output === null || output === "") {
+				output = "json";
+			}
+			
+			var url = 
+				window.location.protocol + "//" +
+				window.location.hostname +
+				window.location.pathname + 
+				"?ctg=module&op=module_" + this.name +
+				"&action=" + actionName + "&output=" + output;
+
+			jQuery.post(
+				url,
+				sendData,
+				function(data, status) {
+					if (output == "json") { 
+						jQuery.messaging.show(data);
+					}
+						
+					if (typeof(callback) == 'function') {
+						callback(data, status);
+					}
+				},
+				output
+			);
+		},
+		_loadAction : function(actionName, sendData, selector) {
+			var url = 
+				window.location.protocol + "//" +
+				window.location.hostname +
+				window.location.pathname + 
+				"?ctg=module&op=module_" + this.name +
+				"&action=" + actionName;
+			
+			jQuery(selector).load(
+				url,
+				sendData
+			);
 		}
 	};
 	/* MAIN LOLADER CLASS */

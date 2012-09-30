@@ -148,7 +148,6 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 			} elseif ($line{7} === "9") {
 				$result['footer'] = $this->processReturnFileFooter($line);
 			} else {
-				//var_dump($line{7});
 			}
 		}
 		foreach($result['batch'] as $lote_index => $lote) {
@@ -184,7 +183,6 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 					'tag'					=> json_encode($status),
 					'filename'				=> $fileFullPath
 				);
-				//var_dump($boletoTransaction);
 		
 				// STEP 1 - CHECK IF IS ALREADY IMPORTED
 				list($countReturn) = ef_countTableData(
@@ -211,7 +209,6 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 					// GRAB NEGOCIATION ID, INVOICE_INDEX FORM "nosso_numero"
 					$values = sscanf($boletoTransaction['nosso_numero'], "%03d%03d%05d%04d", $course_id, $invoice_index, $user_id, $negociation_id);
 					//					list($course_id, $invoice_index, $user_id, $negociation_id) = $values;
-					//					var_dump($boletoTransaction['nosso_numero']);
 					//					var_dump($values);
 					//					var_dump($course_id, $invoice_index, $user_id, $negociation_id);
 						
@@ -2264,7 +2261,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$xpayModule = $this->loadModule("xpay");
 			$this->setParent($xpayModule);
 		}
-		
+	
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
 
 		$payInstance = $payInstances['options'][$indexOpt];
@@ -2298,7 +2295,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				}
 			}
 		}
-		
+
 		if (!$datavencimento) {
 			return false;
 		}
@@ -2321,10 +2318,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$invoiceOptions["data_vencimento"] = $datavencimento->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
 		}
 		
-		
-		
-		
-		
 //		$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
 //		$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
 		$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'] - $invoiceData['paid'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
@@ -2341,14 +2334,12 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 //		$dadosboleto["instrucoes2"] = "";
 //		$dadosboleto["instrucoes3"] = "";
 //		$dadosboleto["instrucoes4"] = "";
-
 		if (is_callable($payInstance['config'])) {
 			$methodConfig = call_user_func($payInstance['config'], $indexOpt, $invoiceOptions);
 		} else {
 			$methodConfig = $payInstance['config'];
 		}
 		$boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
-		
 		if ($data['return_string'] == true) {
 			return $boletoHTML;
 		}	
@@ -2357,8 +2348,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 	}
 	
 	private function loadPaymentInvoiceFromTpl($paymentIndex, $paymentConfig) {
+//		ini_set("display_errors", true);
 		$smarty = $this->getSmartyVar();
-		
 		$invoiceFile = sprintf(
 			"%stemplates/layouts/%s.tpl", 
 			$this->moduleBaseDir,
@@ -2370,22 +2361,18 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$this->moduleBaseDir,
 			$paymentIndex
 		);
-		
 		require($smartyFunctionsFile);
-
 		$smarty->register_function(
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex),
 			sprintf('xpay_boleto_%s_FBarCode', $paymentIndex)
 		);
-
-		$this->assignSmartyModuleVariables();
 		
+		$this->assignSmartyModuleVariables();
 		/* CUSTOM FIELDS */
 		$index = "03";
 		//$paymentConfig["numero_documento"] = "0000000" . $index;
 		//$paymentConfig["valor_boleto"] = "1," . $index;
 		$smarty->assign("T_" . strtoupper($this->getName()) . "_CFG", $paymentConfig);
-		
 		$boletoHTML = $smarty -> fetch($invoiceFile);
 		return $boletoHTML;
 	}
