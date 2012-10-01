@@ -90,7 +90,6 @@
 				"&action=" + actionName + 
 				"&" + jQuery.param(sendData);
 			
-			alert(url);
 			window.location.href = url;
 			return;
 		}
