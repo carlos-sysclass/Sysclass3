@@ -1,14 +1,21 @@
 <?php
 
 class module_gradebook extends MagesterExtendedModule {
+	public static $state = "experimental";
+	/* USE THIS OBJECT TO MANAGE ACL, */
+	/* CAN BE ROLE-BASED AND/OR TYPE-BASED */
+	/* EX:  
+	public static $ACL = array(
+		'method_name' => array(
+			'role'	=> 'financier',
+			'type'	=> 'administrator'
+		)
+	);
+	*/
 	
 	public static $newActions = array(
-		"edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "load_group_rules", "load_group_grades", "switch_lesson", "edit_rule_calculation"
+		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "load_group_rules", "load_group_grades", "switch_lesson" 
 	);
-
-	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
-		parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
-	}
 
 	public function getName(){
 		return "GRADEBOOK";
@@ -22,6 +29,9 @@ class module_gradebook extends MagesterExtendedModule {
 		/** 
 		 * @todo Implementar this function. Is the default action
 		 */ 
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
 		$currentUser = $this->getCurrentUser();
 		$smarty = $this->getSmartyVar();
 		
@@ -118,11 +128,12 @@ class module_gradebook extends MagesterExtendedModule {
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 	
 		$this->setMessageVar($message, $message_type);
-		
-		
-
 	}
 	public function editTotalCalculationAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
+		
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		
@@ -144,6 +155,11 @@ class module_gradebook extends MagesterExtendedModule {
 		//$smarty->assign("T_GRADEBOOK_GROUPS_REQUIRE_STATUSES", );
 	}
 	public function studentsGradesAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
+			return false;
+		}
+
+		
 		/**
 		 * @todo Implementar this function, based on gradebook.total.window glyffy diag.
 		 */
@@ -165,6 +181,10 @@ class module_gradebook extends MagesterExtendedModule {
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 	}
 	public function addGroupAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
+		
 		if (is_numeric($_SESSION["grade_lessons_ID"])) {
 			
 		
@@ -201,6 +221,9 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}
 	public function moveGroupAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
 		if (
 			in_array($_POST['to'], array('up', 'down')) &&
 			eF_checkParameter($_POST['group_id'], "id")
@@ -275,6 +298,9 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}
 	public function deleteGroupAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
 		if (
 			is_numeric($_SESSION["grade_lessons_ID"]) &&
 			isset($_POST['group_id'])
@@ -320,6 +346,10 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}
 	public function loadGroupRulesAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
+		
 		$smarty = $this->getSmartyVar();
 		
 		is_numeric($_POST['group_id']) ? $currentGroupID = $_POST['group_id'] : (
@@ -341,6 +371,9 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}	
 	public function loadGroupGradesAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
+			return false;
+		}
 		
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
@@ -497,21 +530,32 @@ class module_gradebook extends MagesterExtendedModule {
 		eF_redirect("location:".$this->moduleBaseUrl);
 		exit;
 	}
-	
-	
-	
-	public function getModule(){
-		if (isset($_GET['action'])) {
-			if (in_array($_GET['action'], self::$newActions)) {
-				return parent::getModule();
-			}
+	public function getDefaultAction() {
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			return "students_grades";
+		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
+			return "edit_rule_calculation";
 		}
-		return true;
 	}
 
+	public function getModule(){
+//		if (isset($_GET['action'])) {
+//			if (in_array($_GET['action'], self::$newActions)) {
+		$result = parent::getModule();
+		if (self::$state == 'experimental') { 
+			$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
+		}
+		return $result;
+//			}
+//		}
+		
+//		return parent::getModule();
+	}
 	public function getSmartyTpl(){
-		if (isset($_GET['action'])) {
-			if (in_array($_GET['action'], self::$newActions)) {
+		$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
+		
+		if ($this->getCurrentAction()) {
+			if (in_array($this->getCurrentAction(), self::$newActions)) {
 				return parent::getSmartyTpl();
 			}
 		}
@@ -1062,17 +1106,16 @@ class module_gradebook extends MagesterExtendedModule {
 
 		$this->setMessageVar($message, $message_type);
 
-		if($currentUser->getType() == 'administrator')
+		if($currentUser->getType() == 'administrator') {
 			//return $this->moduleBaseDir."module_gradebook_professor.tpl";
-			return $this->moduleBaseDir."templates/gradebook.edit.tpl";
+			//return $this->moduleBaseDir."templates/gradebook.edit.tpl";
 
-		else if($currentUser->getRole($this->getCurrentLesson()) == 'professor')
+		} else if($currentUser->getRole($this->getCurrentLesson()) == 'professor')
 			return $this->moduleBaseDir."module_gradebook_professor.tpl";
 
 		else if($currentUser->getRole($this->getCurrentLesson()) == 'student')
 			return $this->moduleBaseDir."module_gradebook_student.tpl";
 	}
-
 	public function getCenterLinkInfo() {
 
 		$currentUser = $this -> getCurrentUser();
@@ -1091,7 +1134,6 @@ class module_gradebook extends MagesterExtendedModule {
 			);
 		}
 	}
-
 	public function getLessonTopLinkInfo($lesson_id, $course_id) {
 		$currentUser = $this -> getCurrentUser();
 		 
@@ -1116,7 +1158,6 @@ class module_gradebook extends MagesterExtendedModule {
 			);
 		}
 	}
-
 	public function getLessonCenterLinkInfo(){
 
 		return array(
@@ -1125,7 +1166,6 @@ class module_gradebook extends MagesterExtendedModule {
 				'link' => $this->moduleBaseUrl
 		);
 	}
-
 	public function getNavigationLinks(){
 
 		$currentUser = $this->getCurrentUser();
@@ -1149,7 +1189,6 @@ class module_gradebook extends MagesterExtendedModule {
 			);
 		}
 	}
-
 	public function getSidebarLinkInfo(){
 		$currentUser = $this -> getCurrentUser();
 		 
@@ -1172,21 +1211,17 @@ class module_gradebook extends MagesterExtendedModule {
 				
 		}
 	}
-
 	public function getLinkToHighlight(){
 		return 'gradebook_link_1';
 	}
-
 	public function isLessonModule(){
 		return true;
 	}
-
 	public function onDeleteUser($login){
 
 		eF_deleteTableData("module_gradebook_users", "users_LOGIN='".$login."'");
 		eF_deleteTableData("module_gradebook_grades", "users_LOGIN='".$login."'");
 	}
-
 	public function onInstall(){
 
 		eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
@@ -1232,7 +1267,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		return($t1 && $t2 && $t3 && $t4);
 	}
-
 	public function onUninstall(){
 
 		$t1 = eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
@@ -1270,7 +1304,6 @@ class module_gradebook extends MagesterExtendedModule {
 		}
 		return $currentLesson;
 	}
-
 	private function getRanges(){
 
 		$result = eF_getTableData("module_gradebook_ranges", "*", "", "range_from");
@@ -1281,7 +1314,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		return $ranges;
 	}
-
 	private function getLessonColumns($lessonID, $groupID = null){
 		
 		if (is_null($groupID)) { 
@@ -1315,7 +1347,6 @@ class module_gradebook extends MagesterExtendedModule {
 		var_dump($grade_object);
 		exit;
 	}
-
 	private function getLessonUsers($lessonID, $objects){
 
 		$result = eF_getTableData("module_gradebook_users", "*", "lessons_ID=".$lessonID, "uid");
@@ -1350,7 +1381,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		return $users;
 	}
-
 	private function getNumberOfColumns($lessonID){
 
 		$result = eF_getTableData("module_gradebook_objects", "count(id) as total_columns", "lessons_ID=".$lessonID);
@@ -1375,8 +1405,6 @@ class module_gradebook extends MagesterExtendedModule {
 	return $lessons;
 	}
 	*/
-	
-	
 	private function getGradebookGroups($currentLessonID, $currentClasseID = null){ // lessons where GradeBook is installed
 
 		is_null($currentClasseID) ? $currentClasseID = 0 : null; 
@@ -1426,7 +1454,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		return $gradebook;
 	}
-
 	private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
 
 
@@ -1465,10 +1492,6 @@ class module_gradebook extends MagesterExtendedModule {
 		return $courselessons;
 		 
 	}
-
-
-
-
 	private function getStudentGrades($currentUser, $currentLessonID, $lessonColumns){
 
 		$grades = array();
@@ -1500,7 +1523,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		return $grades;
 	}
-
 	private function professorLessonToExcel($lessonID, $lessonName, $workBook, $workSheet){
 
 		$headerFormat = &$workBook->addFormat(array(
@@ -1557,7 +1579,6 @@ class module_gradebook extends MagesterExtendedModule {
 			$row++;
 		}
 	}
-
 	private function studentLessonToExcel($lessonID, $lessonName, $currentUser, $workBook, $workSheet){
 
 		$headerFormat = &$workBook->addFormat(array(
@@ -1607,7 +1628,6 @@ class module_gradebook extends MagesterExtendedModule {
 			$workSheet->mergeCells(4, 0, 4, 2 + $columnsNr - 1);
 		}
 	}
-
 	private function importGrades($type, $id, $oid, $userLogin){
 
 		if($type == 'test'){
@@ -1661,7 +1681,6 @@ class module_gradebook extends MagesterExtendedModule {
 
 		eF_updateTableData("module_gradebook_grades", array("grade" => $grade), "oid=".$oid." and users_LOGIN='".$userLogin."'");
 	}
-
 	private function computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid) {
 
 		$divisionBy = 0;
@@ -1702,5 +1721,4 @@ class module_gradebook extends MagesterExtendedModule {
 		eF_updateTableData("module_gradebook_users", array("score" => $overallScore, "grade" => $overallGrade), "uid=".$uid);
 	}
 }
-
 ?>

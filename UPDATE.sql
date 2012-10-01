@@ -2775,9 +2775,8 @@ CREATE TABLE IF NOT EXISTS `module_gradebook_groups_order` (
   `lesson_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL DEFAULT 0,
   `order_index` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`group_id`, `lesson_id`, `classe_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
 
 
 
