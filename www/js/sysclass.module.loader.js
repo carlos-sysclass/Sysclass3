@@ -68,7 +68,7 @@
 				output
 			);
 		},
-		_loadAction : function(actionName, sendData, selector) {
+		_loadAction : function(actionName, sendData, selector, callback) {
 			var url = 
 				window.location.protocol + "//" +
 				window.location.hostname +
@@ -78,7 +78,12 @@
 			
 			jQuery(selector).load(
 				url,
-				sendData
+				sendData,
+				function(data, status) {
+					if (typeof(callback) == 'function') {
+						callback(data, status);
+					}
+				}
 			);
 		},
 		_redirectAction : function(actionName, sendData) {

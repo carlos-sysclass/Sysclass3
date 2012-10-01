@@ -16,6 +16,9 @@ define("__XPAY_LAST_PAYMENTS", "Pagamentos realizados");
 define("__XPAY_CREATE_PAYMENT", "Registrar Pagamento Manual");
 define("__XPAY_EDIT_INVOICE", "Alterar Fatura");
 
+
+define("__XPAY_LAST_FILES", "Últimos arquivos enviados");
+
 define("__XPAY_TITLE", "Pagamentos");
 define("__XPAY_PRINT_INVOICE", "Imprimir Fatura");
 /* BREADCRUMBS */
@@ -42,7 +45,7 @@ define("__XPAY_INSTANCE_TYPE", "Método de Pagamento");
 /* BOTÕES */
 define("__XPAY_CREATE_NEW_NEGOCIATION", "Criar nova Negociação");
 define("__XPAY_SAVE_NEGOCIATION", "Salvar Negociação");
-define("__XPAY_ALL_LAST_PAYMENTS", "Ver lista completa");
+define("__XPAY_VIEW_ALL_LIST", "Ver lista completa");
 define("__XPAY_SUBMIT", "Salvar");
 
 
@@ -54,6 +57,7 @@ define("__XPAY_INVOICE_SUCCESSFULLY_SAVED", "Fatura salva com sucesso.");
 define("__XPAY_INVOICE_SAVE_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
 define("__XPAY_SIMULATE_NEGOCIATION_SAVED", "Negociação salva com sucesso.");
 
+define("__XPAY_FILE_NAME", "Nome do Arquivo");
 
 define("__XPAY_DAYS", "d");
 
