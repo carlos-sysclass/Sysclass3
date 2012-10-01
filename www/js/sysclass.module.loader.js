@@ -1,11 +1,28 @@
 (function( $ ){
 	var __modules = {};
+	if (typeof(window['_mod_data_']) == 'undefined') {
+		window['_mod_data_'] = {};
+	}
+	
 	var methods = {
 		modules : function() {
 			return __modules;
 		},
 		register : function(name, methods) {
-			__modules[name] = jQuery.extend(true, {fake : false}, methods, parentWrapper, {"name" : name});
+			
+			mod_config = {};
+			//window["$_" + name + "_mod_data"]
+			if (typeof(window['_mod_data_']['_' + name + '_']) != 'undefined') {
+				
+				for(idx in window['_mod_data_']['_' + name + '_']) {
+					newIndex = idx.replace(/[a-z0-9]+\./gi, "");
+					mod_config[newIndex] = window['_mod_data_']['_' + name + '_'][idx]; 
+				}
+//				mod_config = window['_mod_data_']['_' + name + '_'];
+			}
+			
+			
+			__modules[name] = jQuery.extend(true, {fake : false}, mod_config, methods, parentWrapper, {"name" : name});
 			return __modules[name];
 		},
 		load : function( name ) {

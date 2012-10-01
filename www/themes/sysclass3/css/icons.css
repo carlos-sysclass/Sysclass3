@@ -269,7 +269,8 @@
 
 
 /* NEW ICONS */
-.sprite16-arrow_down { background-position: -2px -1155px; width: 16px; height: 16px;}
+.sprite16-arrow_down { background-position: 0px -1155px; width: 16px; height: 16px;}
+.sprite16-arrow_up { background-position: 0px -1207px; width: 16px; height: 16px;}
 .sprite16-money { background-position: 0 -2483px; width: 18px; height: 16px; margin-right:6px; }
 .sprite16-admin { background-position: 0 -2465px; width: 16px; height: 18px; margin-right:6px; }
 .sprite16-inbox { background-position: 0 -2448px; width: 18px; height: 18px; margin-right:6px; }

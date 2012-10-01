@@ -41,18 +41,14 @@
 	</thead>
 	<tbody>
 		{foreach name = 'columns_loop' key = "id" item = "group" from = $T_GRADEBOOK_GROUPS}
-			<tr id="gradebook-group-row-{$group.id}">
-				<th>{$group.name}</th>
+			<tr class="gradebook-group-row" id="gradebook-group-row-{$group.id}">
+				<td>{$group.name}</td>
 				<td>{$group.require_descr}</td>
 				<td>{$group.min_value}</td>
 				<td>{$group.range}</td>
 				<td>
-					<!-- 
-					<a href="{$T_GRADEBOOK_BASEURL}&delete_column={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0"></a>
-					 -->
-					 <a href="javascript: _sysclass('load', 'gradebook').deleteGroup({$group.id});">
-					 	<img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0">
-					 </a>
+					 <a class="gradebook-group-mode-down" href="javascript: _sysclass('load', 'gradebook').moveGroupDown({$group.id});"><img class="sprite16 sprite16-arrow_down" src="images/others/transparent.png" border="0"></a>
+					 <a class="gradebook-group-mode-up" href="javascript: _sysclass('load', 'gradebook').moveGroupUp({$group.id});"><img class="sprite16 sprite16-arrow_up" src="images/others/transparent.png" border="0"></a>
 				</td>
 			</tr>
 		{foreachelse}
@@ -66,3 +62,4 @@
 {/capture}
 
 {eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
+{include file="$T_GRADEBOOK_BASEDIR/templates/includes/javascript.tpl"}
