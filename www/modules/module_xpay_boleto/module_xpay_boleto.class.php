@@ -2704,14 +2704,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				{
 					return 0;
 				}
-				return $file_1 < $file_2 ? -1 : 1;
+				return $file_1 < $file_2 ? 1 : -1;
 			});
-			
-			foreach($files as $file) {
-				var_dump($file);
-				var_dump(filemtime($procPath . $file));
-				echo "<br />";
-			}
 			
 			$counter = 0;
 			foreach($files as $file) {
