@@ -513,21 +513,18 @@ class module_gradebook extends MagesterExtendedModule {
 		}
 		
 		$gradeBookClasses = array();
-		
 		if(
 				isset($_GET['classe_id']) &&
 				eF_checkParameter($_GET['classe_id'], 'id') &&
 				in_array($_GET['lesson_id'], array_keys($gradeBookClasses))
 		) {
-			
-			
 		}
 		
-		
-		
-		
-		
-		eF_redirect("location:".$this->moduleBaseUrl);
+		if (!empty($_GET['from'])) {
+			eF_redirect("location:".$this->moduleBaseUrl . "&action=" . $_GET['from']);
+		} else {
+			eF_redirect("location:".$this->moduleBaseUrl);
+		}
 		exit;
 	}
 	public function getDefaultAction() {
