@@ -1119,7 +1119,7 @@ class module_gradebook extends MagesterExtendedModule {
 
 		$xuserModule = $this->loadModule("xuser");
 		if (
-				$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+				$currentUser->getType() == "administrator" ||
 				$xuserModule->getExtendedTypeID($currentUser) == "professor" ||
 				$xuserModule->getExtendedTypeID($currentUser) == "student"
 		) {
