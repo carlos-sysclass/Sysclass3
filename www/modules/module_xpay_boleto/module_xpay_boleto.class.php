@@ -99,6 +99,7 @@ abstract class module_xpay_boleto_default_return_processor {
 	
 	abstract public function analyze();
 	abstract public function import($fileStatus, $xpayModule);
+	abstract public function toHTML($tplFile);
 }
 
 class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_default_return_processor {
@@ -160,7 +161,6 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 		
 		return $result;
 	}
-
 	public function import($fileStatus, $xpayModule) {
 		
 		//$registro $fileStatus['batch'][0]['registros']
@@ -246,6 +246,11 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 			}
 		}
 		return true;
+	}
+	public function toHTML($tplFile) {
+		$analyzeStatus = $this->analyze();
+		echo "NOT IMPLEMENTED YET";
+		exit;
 	}
 	
 	private function processReturnFileHeader($fileLine) {
@@ -1348,7 +1353,11 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 		}
 		return true;
 	}
-	
+	public function toHTML($tplFile) {
+		$analyzeStatus = $this->analyze();
+		// analize and fetch a smarty template, with this status struct
+		exit;
+	}	
 	
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{0} != 0) {
@@ -2073,9 +2082,12 @@ class module_xpay_boleto_itau_fajar_return_processor extends module_xpay_boleto_
 
 
 class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodule, ICronable {
+	protected static $_CONFIG = null;
+	
 	public function loadConfig() {
 		$return_root = $this->moduleBaseDir . "retorno/";
-		self::$_CONFIG = array(
+		
+		$this->_CONFIG = array(
 			'on_overdue'		=> 'refresh', // CAN BE 'refresh, block or none'
 			'partial_payment'	=> false, // CAN BE 'refresh, block or none'
 			'paths'			=> array(
@@ -2086,7 +2098,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			),
 			'cron_file_limit'	=> 5
 		);
-		return self::$_CONFIG;
+		return $this->_CONFIG;
 	}
 	
 	public function getName() {
@@ -2159,6 +2171,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return $count; 
 	}
 	
+	
 	private function analyzeReturnFile($instance_id, $fullFileName) {
 		$proc_class_name = sprintf("module_xpay_boleto_%s_return_processor", $instance_id);
 	
@@ -2168,6 +2181,40 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$processor = new $proc_class_name($fullFileName);
 	
 		return $processor->analyze();
+	}
+	public function returnedFile2Html($instance_id, $fileName) {
+		$smarty = $this->getSmartyVar();
+		$proc_class_name = sprintf("module_xpay_boleto_%s_return_processor", $instance_id);
+
+		if (!class_exists($proc_class_name)) {
+			return false;
+		}
+	
+		$fullFileName = sprintf($this->getConfig()->paths['return_instance'] . $fileName, $instance_id);
+		$processor = new $proc_class_name($fullFileName);
+		$fileStatus = $processor->analyze();
+		
+		// GET INSTANCE ANALYZE TEMPLATE
+		$tplFile = sprintf($this->moduleBaseDir . "templates/includes/%s.file_analyze.tpl", $instance_id);
+		$smarty -> assign("T_PROCESS_FILE_STATUS", $fileStatus);
+		
+		$ocorrencias = eF_getTableData("module_xpay_boleto_ocorrencias", "id, description");
+		
+		foreach($ocorrencias as $ocorrencia) {
+			$base_ocorrencias[$ocorrencia['id']] = $ocorrencia['description'];
+		}
+		$smarty -> assign("T_BASE_OCORRENCIAS", $base_ocorrencias);
+		
+		$liquidacoes = eF_getTableData("module_xpay_boleto_liquidacao", "id, description");
+				
+		foreach($liquidacoes as $liquidacao) {
+			$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
+		}
+		$smarty -> assign("T_BASE_LIQUIDACAO", $base_liquidacao);
+
+		$result = $smarty -> fetch($tplFile);
+		
+		return $result;
 	}
 	
 	private function importFileStatusToSystem($instance_id, $fullFileName) {
@@ -2569,7 +2616,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			}
 		}
 	}
-	private function getOnQueueFilesList() {
+	public function getOnQueueFilesList() {
 		$paymentTypes = $this->getPaymentInstances();
 		$paymentIndexes = $this->getPaymentInstancesIndexes();
 		
@@ -2583,7 +2630,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				'size'	=> 0
 			);
 		}
-
 		$fullProcPaths = array_unique($fullProcPaths);
 
 		foreach($fullProcPaths as $procPath) {
@@ -2625,6 +2671,70 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			}
 		}
 		
+		foreach($queueList as $index => $value) {
+			$queueList[$index]['size'] = sprintf("%.2fKb", ($value['size'] / 1024));
+		}
+		
+		return $queueList;
+	}
+	public function getProcessedFilesList($max_count) {
+		$paymentTypes = $this->getPaymentInstances();
+		$paymentIndexes = $this->getPaymentInstancesIndexes();
+	
+		$queueList = array();
+	
+		foreach($paymentIndexes as $instance_type) {
+			$fullProcPaths[$instance_type] = sprintf($this->getConfig()->paths['return_instance'], $instance_type);
+			$queueList[$instance_type] = array(
+					'name'	=> $paymentTypes['options'][$instance_type]['fullname'],
+					'files'	=> array(),
+					'size'	=> 0
+			);
+		}
+		$fullProcPaths = array_unique($fullProcPaths);
+	
+		foreach($fullProcPaths as $method => $procPath) {
+			$files = scandir($procPath, 1);
+			$counter = 0;
+			foreach($files as $file) {
+				if ($file == "." || $file == "..") {
+					continue;
+				}
+				$counter++;
+				if ($max_count > 0 && $counter > $max_count) {
+					break;
+				}
+				$fileTmp = reset(explode(".", $file));
+				
+				list($name, $count) = explode("-", $fileTmp);
+
+				$file_stat = stat($procPath . $file);
+	
+				$fileStruct = array(
+					'fullpath'	=> $procPath . $file,
+					'name'		=> $name . "-" . $count . ".ret",
+					'method_index'	=> $method,
+					'method_name'	=> $paymentTypes['options'][$method]['fullname'],
+					'timestamp' => $file_stat['mtime'],
+					'size'		=> sprintf("%.2fKb", ($file_stat['size'] / 1024))
+				);
+				$queueList[$method]['files'][] = $fileStruct;
+				$queueList[$method]['size'] += $file_stat['size'];
+	
+				/*
+					echo
+				"<li class=\"file ext_$ext\">
+				<a href=\"#\" rel=\"" . htmlentities($absCurrentDir . $file) . "\">" .
+				"<div class=\"filepart fileprefix\">" . $mapFolderNames[$middleFolder] . "</div>" .
+				"<div class=\"filepart filename\">" . htmlentities($file) . "</div>" .
+				"<div class=\"filepart filetime\">" .  . "</div>" .
+				"<div class=\"filepart filesize\">" .  . "</div>" .
+				"</a>
+				</li>";
+				*/
+			}
+		}
+	
 		foreach($queueList as $index => $value) {
 			$queueList[$index]['size'] = sprintf("%.2fKb", ($value['size'] / 1024));
 		}

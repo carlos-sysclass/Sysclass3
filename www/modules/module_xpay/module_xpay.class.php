@@ -87,7 +87,11 @@ class module_xpay extends MagesterExtendedModule {
 		$config = array(
 			'widgets'	=> array(
 				'last_payments' => array(
-					'payment_count'	=> 10
+					'count'	=> 10
+				),
+				'last_files' => array(
+					'submodule_index'	=> 'XPAY_BOLETO',
+					'count'				=> 10
 				)
 			)
 		);
@@ -170,16 +174,35 @@ class module_xpay extends MagesterExtendedModule {
 	public function showPaymentsSummaryAction() {
 		$smarty = $this->getSmartyVar();
 		// BLOCOS ???
-		// 1. Ultimos pagamentos recebidos [ ok ] 
-		// 2. Ultimos boletos enviados
-		// 3. Montante a Receber
-		// 4. VAlor recebido no último mês
+		// 1. Ultimos pagamentos recebidos [ ok ]
+		// 2. Últimos arquivos enviados [ ok ]
+		// 3. Ultimos boletos enviados
+		// 4. Montante a Receber
+		// 5. Valor recebido no último mês
 		
-		// 1. Ultimos pagamentos recebidos
-		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['payment_count']);
+		// - Últimos pagamentos recebidos
+		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['count']);
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
+
+		// - Últimos arquivos enviados
+		$currentOptions = $this->getSubmodules();
+		
+		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList($this->getConfig()->widgets['last_files']['count']);
+		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
+		
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
+	}
+	public function viewLastSendedFilesAction() {
+		$smarty = $this->getSmartyVar();
+		
+		// - Últimos arquivos enviados
+		$currentOptions = $this->getSubmodules();
+		
+		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList();
+		//var_dump($lastProcessedFilesData);
+		//exit;
+		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
 	}
 	public function viewLastPaidInvoicesAction() {
 		$smarty = $this->getSmartyVar();
@@ -194,6 +217,17 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
+	}
+	public function viewFileDetailsAction() {
+		$instance_id 	= $_POST['method_index'];
+		$fileName		= $_POST['name'];
+		
+		$currentOptions = $this->getSubmodules();
+		
+		$currentSubModule = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']];
+		
+		echo $currentSubModule->returnedFile2Html($instance_id, $fileName);
+		exit;
 	}
 	/*
 	public function migrateToNewModelAction() {

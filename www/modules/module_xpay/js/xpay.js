@@ -155,3 +155,64 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 		//console.log(data);
 	});
 }
+
+
+/* MODULE CREATING */
+(function( $ ) {
+	var methods = {
+		viewFileDetails : function(method_index, name) {
+			this._loadAction(
+				"view_file_details",
+				{"method_index" : method_index, "name" : name},
+				"#xpay-file-details-container",
+				function() {
+					jQuery("#xpay-file-details-container").dialog('open');		
+				}
+			);
+		},
+		startUI : function() {
+			jQuery("#xpay-file-details-container").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				buttons		: {
+					"Fechar" : function() {
+						jQuery( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+				}
+			});
+		}
+	};
+
+	_sysclass("register", "xpay", methods);
+})( jQuery );
+
+
+/* MODULE FLOW-LOGIC */
+
+(function( $ ){
+	_sysclass('load', 'xpay').startUI();
+})( jQuery );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
