@@ -91,7 +91,7 @@ class module_xpay extends MagesterExtendedModule {
 				),
 				'last_files' => array(
 					'submodule_index'	=> 'XPAY_BOLETO',
-					'count'				=> 10
+					'count'				=> 5
 				)
 			)
 		);
