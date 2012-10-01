@@ -1,6 +1,5 @@
 	{capture name="preview_header"}
 		{assign var=t_status value=$T_PROCESS_FILE_STATUS.header}
-			<h2>{$smarty.const.__PAGAMENTO_BOLETO_FILE_HEADER}</h2>
 			<div class="grid_12">
 				<label><strong>Retorno:</strong></label>
 				<span>{$t_status.cod_retorno.formatteddata} - {$t_status.retorno.formatteddata}</span>
@@ -37,7 +36,6 @@
 				<label><strong>N&ordm; Seq. do Arquivo:</strong></label>
 				<span>{$t_status.nro_seq_arquivo_retorno.formatteddata}</span>
 			</div>
-
 	{/capture}
 	
 	{capture name="preview_registers"}
@@ -122,7 +120,6 @@
 	
 	{capture name="preview_footer"}
 		{assign var=t_status value=$T_PROCESS_FILE_STATUS.footer}
-			<h2>{$smarty.const.__PAGAMENTO_BOLETO_FILE_FOOTER}</h2>
 			<!-- 
 			<h4>Cobrança Simples</h4>
 			<div class="grid_5">
@@ -187,11 +184,13 @@
 			{$smarty.capture.preview_header}
 		</div>
 		<div class="clear"></div>
+		<hr />
 		
 		<div id="_PAGAMENTO_BOLETO_FILE_REGISTERS">
 			{$smarty.capture.preview_registers}
 		</div>
 		<div class="clear"></div>
+		<hr />
 			
 		<div id="_PAGAMENTO_BOLETO_FILE_FOOTER">
 			{$smarty.capture.preview_footer}
