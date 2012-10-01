@@ -176,6 +176,19 @@
 				"#gradebook-group-grades-container"
 			);
 		},
+		deleteColumn : function($columnID) {
+			_sysclass("load", "gradebook")._postAction(
+				"delete_column",
+				{'column_id' : $columnID},
+				function(response, status) {
+					if (response.status == 'ok') {
+						jQuery("#gradebook-column-row-" + $columnID).remove();
+					}
+				},
+				'json'
+			);
+		},
+
 		switchToLessonClasse : function(lesson_id, classe_id) {
 			
 			classe_id == null ? classe_id = 0 : null;

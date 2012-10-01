@@ -82,6 +82,10 @@
 			);
 		},
 		_redirectAction : function(actionName, sendData) {
+			if (actionName == null) {
+				actionName = this.action;
+			}
+			
 			var url = 
 				window.location.protocol + "//" +
 				window.location.hostname +

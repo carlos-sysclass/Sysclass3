@@ -14,7 +14,7 @@ class module_gradebook extends MagesterExtendedModule {
 	*/
 	
 	public static $newActions = array(
-		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column", "load_group_rules", "load_group_grades", "switch_lesson" 
+		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column",  "delete_column", "load_group_rules", "load_group_grades", "switch_lesson" 
 	);
 
 	public function getName(){
@@ -398,7 +398,7 @@ class module_gradebook extends MagesterExtendedModule {
 				$refersTo['project_'.$key] = _PROJECT.': '.$project['title'];
 		}
 	
-		$form = new HTML_QuickForm("add_column_form", "post", $this->moduleBaseUrl."&add_column=1", "", null, true);
+		$form = new HTML_QuickForm("add_column_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
 		$form->addElement('text', 'column_name', _GRADEBOOK_COLUMN_NAME, 'class = "inputText"');
 		$form->addElement('select', 'column_group_id', __GRADEBOOK_COLUMN_GROUP, $groups);
 		$form->addElement('select', 'column_weight', _GRADEBOOK_COLUMN_WEIGHT, $weights);
@@ -463,6 +463,52 @@ class module_gradebook extends MagesterExtendedModule {
 			unset($GLOBALS['message_type']);
 		}
 		
+	}
+	public function deleteColumnAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
+		
+		$smarty 		= $this->getSmartyVar();
+		$currentUser	= $this->getCurrentUser();
+		
+		$currentLesson = $this->getSelectedLesson();
+		$currentLessonID = $currentLesson->lesson['id'];
+		
+		$lessonColumns = $this->getLessonColumns($currentLessonID);
+		
+		if (
+				isset($_POST['column_id']) &&
+				eF_checkParameter($_POST['column_id'], 'id') && 
+				in_array($_POST['column_id'], array_keys($lessonColumns))
+		) {
+			$column_id = $_POST['column_id'];
+			$object = eF_getTableData("module_gradebook_objects", "creator", "id=".$column_id);
+		
+			//   if($object[0]['creator'] != $_SESSION['s_login']){
+			//    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+			//    exit;
+			//   }
+		
+			eF_deleteTableData("module_gradebook_objects", "id=".$column_id);
+			eF_deleteTableData("module_gradebook_grades", "oid=".$column_id);
+			
+			$return = array(
+					"message" 		=> "Coluna Excluída com sucesso",
+					"message_type" 	=> "success",
+					"status"		=> "ok",
+					"data" => $fields
+			);
+			echo json_encode($return);
+			exit;
+		} else {
+			$return = array(
+					"message" 		=> "Occoreu um erro ao tentar excluir esta coluna",
+					"message_type" 	=> "error"
+			);
+			echo json_encode($return);
+			exit;
+		}
 	}
 	public function loadGroupRulesAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator') {
@@ -756,16 +802,11 @@ class module_gradebook extends MagesterExtendedModule {
 				
 				$this->importGrades($type, $id, $oid, $userLogin);
 			}
-			/*
-			var_dump($type, $id, $oid);
-			exit;
-			*/
 		} elseif (
 				isset($_GET['delete_column']) && 
 				eF_checkParameter($_GET['delete_column'], 'id') 
 				&& in_array($_GET['delete_column'], array_keys($lessonColumns))
 		) {
-
 			$object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['delete_column']);
 
 			//   if($object[0]['creator'] != $_SESSION['s_login']){
