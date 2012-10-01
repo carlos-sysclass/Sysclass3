@@ -2190,7 +2190,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
 			JOIN users u ON (neg.user_id = u.id)",
 			"inv.negociation_id, u.name, u.surname",
-			sprintf("inv.invoice_id = '%s'", $nosso_numero)
+			sprintf("inv.invoice_id LIKE '%%%s'", $nosso_numero)
 		);
 		if (count($invoiceResult) == 0) {
 			return false;
