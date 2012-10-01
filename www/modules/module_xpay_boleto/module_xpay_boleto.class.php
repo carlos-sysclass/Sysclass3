@@ -2182,6 +2182,43 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 	
 		return $processor->analyze();
 	}
+	
+	
+	private function getClienteFromNossoNumero($nosso_numero) {
+		$invoiceResult = eF_getTableData(
+			"`module_xpay_invoices` inv 
+			JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
+			JOIN users u ON (neg.user_id = u.id)",
+			"inv.negociation_id, u.name, u.surname",
+			sprintf("inv.invoice_id = '%s'", $nosso_numero)
+		);
+		if (count($invoiceResult) == 0) {
+			return false;
+		} 
+		$clienteData = reset($invoiceResult);
+
+		if ($clienteData === FALSE || count($clienteData) == 0) {
+			return false;
+			/*
+			// TENTAR BUSCAR O PAGAMENTO PARCELA, PELA INVOICE
+			$paymentID = $paymentInfo[self::PAYMENT_ID_INDEX];
+			$parcelaIndex = $paymentInfo[self::PAYMENT_PARCELA_INDEX];
+				
+			$paymentDbInfo = $this->parent->getPaymentById($paymentID);
+	
+			if ($paymentDbInfo === FALSE || count($paymentDbInfo) == 0) {
+				return __PAGAMENTO_BOLETO_SACADO_NAO_ENCONTRADO;
+			}
+			// CHECK IF INVOICE INDEX EXISTS
+			if (!array_key_exists($parcelaIndex, $paymentDbInfo['invoices'])) {
+				return __PAGAMENTO_BOLETO_NAO_EXISTE;
+			}
+			*/
+		} else {
+			var_dump($clienteData['name'] . " " . $clienteData['surname']);
+			return $clienteData['name'] . " " . $clienteData['surname'];
+		}
+	}	
 	public function returnedFile2Html($instance_id, $fileName) {
 		$smarty = $this->getSmartyVar();
 		$proc_class_name = sprintf("module_xpay_boleto_%s_return_processor", $instance_id);
@@ -2193,6 +2230,14 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$fullFileName = sprintf($this->getConfig()->paths['return_instance'] . $fileName, $instance_id);
 		$processor = new $proc_class_name($fullFileName);
 		$fileStatus = $processor->analyze();
+		
+		foreach($fileStatus['registros'] as &$register) {
+			if (trim($register['nome_sacado']["originaldata"]) == "") {
+				$register['nome_sacado']["formatteddata"] =
+				$register['nome_sacado']["parseddata"] =
+				$this->getClienteFromNossoNumero($register['nosso_numero']['originaldata']);
+			}
+		}
 		
 		// GET INSTANCE ANALYZE TEMPLATE
 		$tplFile = sprintf($this->moduleBaseDir . "templates/includes/%s.file_analyze.tpl", $instance_id);
