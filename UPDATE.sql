@@ -2778,10 +2778,21 @@ CREATE TABLE IF NOT EXISTS `module_gradebook_groups_order` (
   PRIMARY KEY (`group_id`, `lesson_id`, `classe_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+/* 2012-10-01 */
 
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_liquidacao` (  
+	`id` varchar( 3  )  NOT  NULL ,
+	`description` varchar( 100  )  NOT  NULL ,
+	`disponivel` tinyint( 4  ) DEFAULT  '1',
+	PRIMARY  KEY (  `id`  )  
+) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
+INSERT INTO `sysclass_root`.`module_xpay_boleto_liquidacao` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_liquidacao`;
+DROP TABLE `sysclass_root`.`module_pagamento_boleto_liquidacao`;
 
-
-
-
-
-
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_ocorrencias` (  
+	`id` varchar( 3  )  NOT  NULL ,
+	`description` varchar( 100  )  NOT  NULL ,
+	PRIMARY  KEY (  `id`  )  
+) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
+INSERT INTO `sysclass_root`.`module_xpay_boleto_ocorrencias` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_ocorrencias`;
+DROP TABLE `sysclass_root`.`module_pagamento_boleto_ocorrencias`;
