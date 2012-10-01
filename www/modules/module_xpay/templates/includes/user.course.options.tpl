@@ -1,4 +1,22 @@
 <div class="headerTools">
+	{if $T_XPAY_IS_ADMIN}
+	<span>
+		<img 
+			src = "images/others/transparent.png"
+			class="imgs_cont sprite16 sprite16-generic"
+			border = "0"
+		/>				
+		<a href="{$smarty.const.G_SERVERNAME}?ctg=users&edit_user={$T_XPAY_STATEMENT.login}&op=account">{$smarty.const._EDITUSER}</a>
+	</span>
+	<span>
+		<img 
+			src = "images/others/transparent.png"
+			class="imgs_cont sprite16 sprite16-user_timeline"
+			border = "0"
+		/>				
+		<a href="{$smarty.server.PHP_SELF}?ctg=users&edit_user={$T_XPAY_STATEMENT.login}&op=status">{$smarty.const._LEARNINGSTATUS}</a>
+	</span>
+	{/if}
 	{if $T_XPAY_ACTION != "view_user_course_statement"}
 		<span>
 			<img 
@@ -30,4 +48,4 @@
 	</span>
 	{/if}
 </div>
-<div class="clear"></div>
+<div class="clear"></div>  
