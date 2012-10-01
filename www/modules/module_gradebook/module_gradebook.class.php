@@ -14,7 +14,7 @@ class module_gradebook extends MagesterExtendedModule {
 	*/
 	
 	public static $newActions = array(
-		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "load_group_rules", "load_group_grades", "switch_lesson" 
+		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column", "load_group_rules", "load_group_grades", "switch_lesson" 
 	);
 
 	public function getName(){
@@ -26,101 +26,101 @@ class module_gradebook extends MagesterExtendedModule {
 	}
 	/* ACTION FUNCTIONS */
 	public function editRuleCalculationAction() {
-		/** 
+		/**
 		 * @todo Implementar this function. Is the default action
-		 */ 
+		 */
 		if ($this->getCurrentUser()->getType() != 'administrator') {
 			return false;
 		}
 		$currentUser = $this->getCurrentUser();
 		$smarty = $this->getSmartyVar();
-		
+
 		$ranges = $this->getRanges();
-		
+
 		$smarty->assign("T_GRADEBOOK_BASEURL", $this->moduleBaseUrl);
 		$smarty->assign("T_GRADEBOOK_BASEDIR", $this->moduleBaseDir);
 		$smarty->assign("T_GRADEBOOK_BASELINK", $this->moduleBaseLink);
 		$smarty->assign("T_GRADEBOOK_ACTION", $_GET['action']);
-		
-		
-		
+
+
+
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor' || $currentUser->getType() == 'administrator') {
 			$currentLesson = $this->getSelectedLesson();
 			$currentLessonID = $currentLesson->lesson['id'];
 			$lessonUsers = $currentLesson->getUsers('student'); // get all students that have this lesson
 			$lessonColumns = $this->getLessonColumns($currentLessonID);
 			$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
-				
+
 			if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 				$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
 			} else {
 				$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 			}
-				
+
 			$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		} else {
 			echo 1;
 			return false;
 		}
-		
+
 
 		$smarty->assign("T_GRADEBOOK_RANGES", $ranges);
-		
+
 		/* Add new students to GradeBook related tables */
 		$result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
 		$allLogins = array();
-		
+
 		foreach($result as $user) {
 			array_push($allLogins, $user['users_LOGIN']);
 		}
-		
+
 		if(sizeof($result) != sizeof($lessonUsers)){ // FIXME
 			$lessonColumns = $this->getLessonColumns($currentLessonID);
 			foreach($lessonUsers as $userLogin => $value) {
 				if(!in_array($userLogin, $allLogins)) {
-	
+
 					$userFields = array(
-						"users_LOGIN" => $userLogin,
-						"lessons_ID" => $currentLessonID,
-						"score" => -1,
-						"grade" => '-1'
+							"users_LOGIN" => $userLogin,
+							"lessons_ID" => $currentLessonID,
+							"score" => -1,
+							"grade" => '-1'
 					);
-	
-			 		$uid = eF_insertTableData("module_gradebook_users", $userFields);
-	
+
+					$uid = eF_insertTableData("module_gradebook_users", $userFields);
+
 					foreach($lessonColumns as $key => $column) {
-	
+
 						$fieldsGrades = array(
 					 		"oid" => $key,
 					 		"grade" => -1,
 					 		"users_LOGIN" => $userLogin
 						);
-			
-					 	$type = $column['refers_to_type'];
-					 	$id = $column['refers_to_id'];
-			
-					 	eF_insertTableData("module_gradebook_grades", $fieldsGrades);
-			
-					 	if($type != 'real_world') {
-					 		$this->importGrades($type, $id, $key, $userLogin);
-					 	}
-			 		}
+							
+						$type = $column['refers_to_type'];
+						$id = $column['refers_to_id'];
+							
+						eF_insertTableData("module_gradebook_grades", $fieldsGrades);
+							
+						if($type != 'real_world') {
+							$this->importGrades($type, $id, $key, $userLogin);
+						}
+					}
 					$this->computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid);
 				}
-			 }
+			}
 		}
 		/* End */
 
 		$lessonColumns = $this->getLessonColumns($currentLessonID);
 		$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
-	
+
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
 		} else {
 			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 		}
 		$smarty->assign("T_GRADEBOOK_LESSON_ID", $currentLessonID);
-	
+
 		$smarty->assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
 		$smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
 		$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
@@ -345,6 +345,125 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($return);
 		exit;
 	}
+	
+	public function addColumnAction() {
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			return false;
+		}
+		
+		$smarty 		= $this->getSmartyVar();
+		$currentUser	= $this->getCurrentUser();
+		
+		$currentLesson = $this->getSelectedLesson();
+		$currentLessonID = $currentLesson->lesson['id'];
+/*		
+		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
+			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
+		} else {
+			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
+		}
+*/		
+		$tests = $currentLesson->getTests(true, true);
+		$scormTests = $currentLesson->getScormTests();
+		$projects = $currentLesson->getProjects(false);
+			
+		$groupsFull = $this->getGradebookGroups($currentLesson->lesson['id']);
+		$groups = array();
+		foreach($groupsFull as $group) {
+			$groups[$group['id']] = $group['name'];
+		}
+			
+		$weights = array();
+		$refersTo = array("real_world" => _GRADEBOOK_REAL_WORLD_OBJECT, "progress" => _LESSONPROGRESS);
+		
+		for($i = 1; $i <= 10; $i++)
+			$weights[$i] = $i;
+		
+		if($currentLesson->options['tests'] == 1) {
+			foreach($tests as $key => $test)
+				$refersTo['test_'.$key] = _TEST.': '.$test->test['name'];
+		}
+		
+		if($currentLesson->options['scorm'] == 1) {
+		
+			foreach($scormTests as $key => $scormTest) {
+			
+				$scorm = eF_getTableData("content", "name", "id=".$scormTest);
+				$refersTo['scormtest_'.$scormTest] = _SCORM.' '._TEST.': '.$scorm[0]['name'];
+			}
+		}
+		
+		if($currentLesson->options['projects'] == 1) {
+			foreach($projects as $key => $project)
+				$refersTo['project_'.$key] = _PROJECT.': '.$project['title'];
+		}
+	
+		$form = new HTML_QuickForm("add_column_form", "post", $this->moduleBaseUrl."&add_column=1", "", null, true);
+		$form->addElement('text', 'column_name', _GRADEBOOK_COLUMN_NAME, 'class = "inputText"');
+		$form->addElement('select', 'column_group_id', __GRADEBOOK_COLUMN_GROUP, $groups);
+		$form->addElement('select', 'column_weight', _GRADEBOOK_COLUMN_WEIGHT, $weights);
+		$form->addElement('select', 'column_refers_to', _GRADEBOOK_COLUMN_REFERS_TO, $refersTo);
+		$form->addRule('column_name', _THEFIELD.' "'._GRADEBOOK_COLUMN_NAME.'" '._ISMANDATORY, 'required', null, 'client');
+		$form->addElement('submit', 'submit', _SUBMIT, 'class = "flatButton"');
+	
+		if($form->isSubmitted() && $form->validate()){
+		
+			$values = $form->exportValues();
+			$fields = array(
+				"name" => $values['column_name'],
+				"group_id" => $values['column_group_id'],
+				"weight" => $values['column_weight'],
+				"lessons_ID" => $currentLessonID,
+				"creator" => $_SESSION['s_login']
+			);
+		
+			if($values['column_refers_to'] == "real_world"){
+				$fields['refers_to_type'] = 'real_world';
+				$fields['refers_to_id'] = -1;
+			} elseif($values['column_refers_to'] == "progress") {
+				$fields['refers_to_type'] = 'progress';
+				$fields['refers_to_id'] = $currentLessonID;
+			} else {
+				$type = explode('_', $values['column_refers_to']);
+				$fields['refers_to_type'] = $type[0];
+				$fields['refers_to_id'] = $type[1];
+			}
+		
+			if(($objectID = eF_insertTableData("module_gradebook_objects", $fields))) {
+		
+				$smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
+		
+				foreach($lessonUsers as $userLogin => $value){
+		
+					$fieldsGrades = array(
+						"oid" => $objectID,
+						"grade" => -1,
+						"users_LOGIN" => $userLogin
+					);
+		
+					if(eF_insertTableData("module_gradebook_grades", $fieldsGrades)) {
+						$smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
+					} else {
+						$message = _GRADEBOOK_COLUMN_ADD_PROBLEM;
+						$message_type = 'failure';
+					}
+				}
+			} else {
+				$message = _GRADEBOOK_COLUMN_ADD_PROBLEM;
+				$message_type = 'failure';
+			}
+		}
+		
+		$renderer = prepareFormRenderer($form);
+		$form->accept($renderer);
+		$smarty->assign('T_GRADEBOOK_ADD_COLUMN_FORM', $renderer->toArray());
+		
+		if ($_GET['popup'] == 1) {
+			unset($GLOBALS['message']);
+			unset($GLOBALS['message_type']);
+		}
+		
+	}
 	public function loadGroupRulesAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator') {
 			return false;
@@ -536,21 +655,29 @@ class module_gradebook extends MagesterExtendedModule {
 	}
 
 	public function getModule(){
-//		if (isset($_GET['action'])) {
-//			if (in_array($_GET['action'], self::$newActions)) {
 		$result = parent::getModule();
-		if (self::$state == 'experimental') { 
-			$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
+		if (self::$state == 'experimental') {
+			if ($_GET['popup'] == 1) {
+				unset($GLOBALS['message']);
+				unset($GLOBALS['message_type']);
+			} else {
+				$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
+			}
 		}
 		return $result;
-//			}
-//		}
-		
-//		return parent::getModule();
 	}
 	public function getSmartyTpl(){
-		$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
 		
+		
+		if (self::$state == 'experimental') {
+			if ($_GET['popup'] == 1) {
+				unset($GLOBALS['message']);
+				unset($GLOBALS['message_type']);
+			} else {
+				$this->setMessageVar("Este módulo é experimental. Por favor informar quaisquer erros encontrados.", "warning");
+			}
+		}
+				
 		if ($this->getCurrentAction()) {
 			if (in_array($this->getCurrentAction(), self::$newActions)) {
 				return parent::getSmartyTpl();
@@ -843,107 +970,6 @@ class module_gradebook extends MagesterExtendedModule {
 			$form->accept($renderer);
 			$smarty->assign('T_GRADEBOOK_ADD_EDIT_RANGE_FORM', $renderer->toArray());
 		} else if(isset($_GET['add_column'])){
-
-			$tests = $currentLesson->getTests(true, true);
-			$scormTests = $currentLesson->getScormTests();
-			$projects = $currentLesson->getProjects(false);
-			
-			$groupsFull = $this->getGradebookGroups($currentLesson->lesson['id']);
-			$groups = array();
-			foreach($groupsFull as $group) {
-				$groups[$group['id']] = $group['name'];
-			}
-			
-			$weights = array();
-			$refersTo = array("real_world" => _GRADEBOOK_REAL_WORLD_OBJECT, "progress" => _LESSONPROGRESS);
-
-			for($i = 1; $i <= 10; $i++)
-				$weights[$i] = $i;
-
-			if($currentLesson->options['tests'] == 1){
-
-				foreach($tests as $key => $test)
-					$refersTo['test_'.$key] = _TEST.': '.$test->test['name'];
-			}
-
-			if($currentLesson->options['scorm'] == 1){
-
-				foreach($scormTests as $key => $scormTest){
-
-					$scorm = eF_getTableData("content", "name", "id=".$scormTest);
-					$refersTo['scormtest_'.$scormTest] = _SCORM.' '._TEST.': '.$scorm[0]['name'];
-				}
-			}
-
-			if($currentLesson->options['projects'] == 1){
-
-				foreach($projects as $key => $project)
-					$refersTo['project_'.$key] = _PROJECT.': '.$project['title'];
-			}
-
-			$form = new HTML_QuickForm("add_column_form", "post", $this->moduleBaseUrl."&add_column=1", "", null, true);
-			$form->addElement('text', 'column_name', _GRADEBOOK_COLUMN_NAME, 'class = "inputText"');
-			$form->addElement('select', 'column_group_id', __GRADEBOOK_COLUMN_GROUP, $groups);
-			$form->addElement('select', 'column_weight', _GRADEBOOK_COLUMN_WEIGHT, $weights);
-			$form->addElement('select', 'column_refers_to', _GRADEBOOK_COLUMN_REFERS_TO, $refersTo);
-			$form->addRule('column_name', _THEFIELD.' "'._GRADEBOOK_COLUMN_NAME.'" '._ISMANDATORY, 'required', null, 'client');
-			$form->addElement('submit', 'submit', _SUBMIT, 'class = "flatButton"');
-
-			if($form->isSubmitted() && $form->validate()){
-
-				$values = $form->exportValues();
-				$fields = array(
-						"name" => $values['column_name'],
-						"group_id" => $values['column_group_id'],
-						"weight" => $values['column_weight'],
-						"lessons_ID" => $currentLessonID,
-						"creator" => $_SESSION['s_login']
-				);
-
-				if($values['column_refers_to'] == "real_world"){
-					$fields['refers_to_type'] = 'real_world';
-					$fields['refers_to_id'] = -1;
-				}
-				else if($values['column_refers_to'] == "progress"){
-					$fields['refers_to_type'] = 'progress';
-					$fields['refers_to_id'] = $currentLessonID;
-				}
-				else{
-					$type = explode('_', $values['column_refers_to']);
-					$fields['refers_to_type'] = $type[0];
-					$fields['refers_to_id'] = $type[1];
-				}
-
-				if(($objectID = eF_insertTableData("module_gradebook_objects", $fields))){
-
-					$smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
-
-					foreach($lessonUsers as $userLogin => $value){
-
-						$fieldsGrades = array(
-								"oid" => $objectID,
-								"grade" => -1,
-								"users_LOGIN" => $userLogin
-						);
-
-						if(eF_insertTableData("module_gradebook_grades", $fieldsGrades)){
-							$smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
-						}
-						else{
-							$message = _GRADEBOOK_COLUMN_ADD_PROBLEM;
-							$message_type = 'failure';
-						}
-					}
-				}
-				else{
-					$message = _GRADEBOOK_COLUMN_ADD_PROBLEM;
-					$message_type = 'failure';
-				}
-			}
-
-			$renderer = prepareFormRenderer($form);
-			$form->accept($renderer);
-			$smarty->assign('T_GRADEBOOK_ADD_COLUMN_FORM', $renderer->toArray());
 		} elseif(
 				isset($_GET['edit_publish']) && 
 				isset($_GET['uid']) && 
