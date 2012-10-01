@@ -68,7 +68,7 @@
 			jQuery("#add-group-rule-dialog").dialog('open');
 		},
 		editGroup : function() {
-			alert(this.getSelectedGroup());
+			//alert(this.getSelectedGroup());
 		},
 		deleteGroup : function($groupID) {
 			if (typeof($groupID) == 'undefined') {
@@ -182,7 +182,7 @@
 			
 			_sysclass("load", "gradebook")._redirectAction(
 				"switch_lesson",
-				{'lesson_id' : lesson_id, 'classe_id' : classe_id}
+				{'lesson_id' : lesson_id, 'classe_id' : classe_id, "from" : this.action}
 			);
 		},
 		refreshGroupUI : function() {
