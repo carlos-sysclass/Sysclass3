@@ -2073,9 +2073,12 @@ class module_xpay_boleto_itau_fajar_return_processor extends module_xpay_boleto_
 
 
 class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodule, ICronable {
+	protected static $_CONFIG = null;
+	
 	public function loadConfig() {
 		$return_root = $this->moduleBaseDir . "retorno/";
-		self::$_CONFIG = array(
+		
+		$this->_CONFIG = array(
 			'on_overdue'		=> 'refresh', // CAN BE 'refresh, block or none'
 			'partial_payment'	=> false, // CAN BE 'refresh, block or none'
 			'paths'			=> array(
@@ -2086,7 +2089,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			),
 			'cron_file_limit'	=> 5
 		);
-		return self::$_CONFIG;
+		return $this->_CONFIG;
 	}
 	
 	public function getName() {
@@ -2569,7 +2572,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			}
 		}
 	}
-	private function getOnQueueFilesList() {
+	public function getOnQueueFilesList() {
 		$paymentTypes = $this->getPaymentInstances();
 		$paymentIndexes = $this->getPaymentInstancesIndexes();
 		
@@ -2583,7 +2586,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				'size'	=> 0
 			);
 		}
-
 		$fullProcPaths = array_unique($fullProcPaths);
 
 		foreach($fullProcPaths as $procPath) {
@@ -2629,6 +2631,80 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$queueList[$index]['size'] = sprintf("%.2fKb", ($value['size'] / 1024));
 		}
 		
+		return $queueList;
+	}
+	public function getProcessedFilesList() {
+		$paymentTypes = $this->getPaymentInstances();
+		$paymentIndexes = $this->getPaymentInstancesIndexes();
+	
+		$queueList = array();
+	
+		foreach($paymentIndexes as $instance_type) {
+			$fullProcPaths[] = sprintf($this->getConfig()->paths['return_instance'], $instance_type);
+			$queueList[$instance_type] = array(
+					'name'	=> $paymentTypes['options'][$instance_type]['fullname'],
+					'files'	=> array(),
+					'size'	=> 0
+			);
+		}
+		$fullProcPaths = array_unique($fullProcPaths);
+		var_dump($fullProcPaths);
+		exit;
+	
+		foreach($fullProcPaths as $procPath) {
+			$files = scandir($procPath, 1);
+				
+			foreach($files as $file) {
+				//var_dump($file);
+				//$fileStruct = sscanf($file, "%s_%s_%s-%s-%s-%s-%s.ret", $date, $method, $name, $count, $module10);
+				if ($file == "." || $file == "..") {
+					continue;
+				}
+				$fileTmp = reset(explode(".", $file));
+				var_dump($file);
+				var_dump($fileTmp);
+				exit;
+				/*
+				$module10
+				$date, 
+				$method,
+				
+				list($name, $count, ) = explode("-", $fileTmp);
+	*/
+				$file_stat = stat($procPath . $file);
+	
+				$fileStruct = array(
+						'fullpath'	=> $procPath . $file,
+						'name'		=> $name . "-" . $count . ".ret",
+						'method_index'	=> $method,
+						'method_name'	=> $paymentTypes['options'][$method]['fullname'],
+						'timestamp' => $file_stat['mtime'],
+						'size'		=> sprintf("%.2fKb", ($file_stat['size'] / 1024))
+				);
+				$queueList[$method]['files'][] = $fileStruct;
+				$queueList[$method]['size'] += $file_stat['size'];
+	
+				/*
+					echo
+				"<li class=\"file ext_$ext\">
+				<a href=\"#\" rel=\"" . htmlentities($absCurrentDir . $file) . "\">" .
+				"<div class=\"filepart fileprefix\">" . $mapFolderNames[$middleFolder] . "</div>" .
+				"<div class=\"filepart filename\">" . htmlentities($file) . "</div>" .
+				"<div class=\"filepart filetime\">" .  . "</div>" .
+				"<div class=\"filepart filesize\">" .  . "</div>" .
+				"</a>
+				</li>";
+				*/
+			}
+		}
+	
+		foreach($queueList as $index => $value) {
+			$queueList[$index]['size'] = sprintf("%.2fKb", ($value['size'] / 1024));
+		}
+		
+		var_dump($queueList);
+		exit;
+	
 		return $queueList;
 	}
 }

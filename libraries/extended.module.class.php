@@ -245,10 +245,10 @@ abstract class MagesterExtendedModule extends MagesterModule {
 	}
 	
 	public function getConfig() {
-		if (!is_array(self::$_CONFIG)) {
-			self::$_CONFIG = $this->loadConfig();
+		if (!is_array($this->_CONFIG)) {
+			$this->_CONFIG = $this->loadConfig();
 		}
-		return new ArrayObject(self::$_CONFIG, ArrayObject::ARRAY_AS_PROPS);
+		return new ArrayObject($this->_CONFIG, ArrayObject::ARRAY_AS_PROPS);
 	}
     
     public function getModuleJS() {
