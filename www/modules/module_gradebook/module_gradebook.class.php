@@ -1452,23 +1452,20 @@ class module_gradebook extends MagesterExtendedModule {
 		return $gradebook;
 	}
 	private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
-
-
-
 		$lessons = array();
 		//unset($professorLessons[$currentLessonID]); // do not use current lesson
 
 		$lessons_ID = array_keys($professorLessons);
 
 		$courses = MagesterCourse::getCourses(false);
-
-		$result = eF_getTableData("module_gradebook_users a JOIN lessons l ON (a.lessons_ID = l.id)",
-				"DISTINCT a.lessons_ID as id, l.name, count(a.uid) as total_users,
-				( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = a.lessons_ID LIMIT 1) as course_ID
+		
+		$result = eF_getTableData("lessons l LEFT OUTER JOIN module_gradebook_users a ON (a.lessons_ID = l.id)",
+				"DISTINCT l.id as id, l.name, count(a.uid) as total_users,
+				( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = l.id LIMIT 1) as course_ID
 				",
-				"a.lessons_ID IN (".implode(",", $lessons_ID).")",
+				"l.id IN (".implode(",", $lessons_ID).")",
 				"",
-				"a.lessons_ID HAVING count(a.uid) > 0"
+				"l.id /* HAVING count(a.uid) > 0 */"
 		) ;
 
 		$courselessons = array();

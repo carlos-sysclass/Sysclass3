@@ -170,14 +170,24 @@ class module_xpay extends MagesterExtendedModule {
 	public function showPaymentsSummaryAction() {
 		$smarty = $this->getSmartyVar();
 		// BLOCOS ???
-		// 1. Ultimos pagamentos recebidos [ ok ] 
-		// 2. Ultimos boletos enviados
-		// 3. Montante a Receber
-		// 4. VAlor recebido no último mês
+		// 1. Ultimos pagamentos recebidos [ ok ]
+		// 2. Últimos arquivos enviados 
+		// 3. Ultimos boletos enviados
+		// 4. Montante a Receber
+		// 5. Valor recebido no último mês
 		
-		// 1. Ultimos pagamentos recebidos
+		// - Últimos pagamentos recebidos
 		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['payment_count']);
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
+
+		// - Últimos arquivos enviados
+		$currentOptions = $this->getSubmodules();
+		
+		echo "<pre>";
+		$currentOptions['XPAY_BOLETO']->getProcessedFilesList();
+		echo "</pre>";
+		exit;
+		
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
 	}
