@@ -2060,7 +2060,7 @@ define("_GOTOMYPROFILE","Ir para o meu perfil");
 define("_GOTOPEOPLELIST","Ir para a lista das pessoas");
 define("_GOTOPROJECTS","Ir para projetos");
 define("_GRADE","Nota");
-define("_GRADEBOOK_ADD_COLUMN","Adcionar coluna");
+define("_GRADEBOOK_ADD_COLUMN","Adicionar coluna");
 define("_GRADEBOOK_ADD_RANGE","Adcionar parâmetros");
 define("_GRADEBOOK_ALL_LESSONS","Todas as aulas");
 define("_GRADEBOOK_ALREADY_EXISTS","já existe");

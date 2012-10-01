@@ -43,8 +43,8 @@
 <table>
 	<tr>
 		<td>
-			<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
-			<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
+			<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const.__GRADEBOOK_ADD_COLUMN}" title="{$smarty.const.__GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
+			<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const.__GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const.__GRADEBOOK_ADD_COLUMN}</a>&nbsp;
 		</td>
 		<td style="border-right: 1px solid #333333;"></td>
 		<td>

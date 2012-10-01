@@ -1,13 +1,3 @@
-<div id="add-group-rule-dialog" class="form-container" title="Nova regra">
-	<form>
-		<div>
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" />
-		</div>
-	</form>
-</div>
-
-
 {if $T_GRADEBOOK_MESSAGE}
 	<script>
 		re = /\?/;
@@ -58,7 +48,7 @@
 		{foreach name = 'lessons_loop' key = "course_id" item = "course" from = $T_GRADEBOOK_GRADEBOOK_LESSONS}
 			<optgroup label="{$course.name}">
 			{foreach name = 'lessons_loop' key = "lesson_id" item = "lesson" from = $course.lessons}
-					<option value="{$lesson.id}">{$lesson.name}</option>
+					<option value="{$lesson.id}" {if $lesson.id == $T_GRADEBOOK_LESSON_ID}selected="selected"{/if}>{$lesson.name}</option>
 			{/foreach}
 			</optgroup>
 		{/foreach}
@@ -72,7 +62,7 @@
 	
 	&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/arrow_right.png'}" alt="{$smarty.const._GRADEBOOK_SWITCH_TO}" title="{$smarty.const._GRADEBOOK_SWITCH_TO}" style="vertical-align:middle">
  
-	<a href="javascript:void(0)" onclick="location=('{$T_GRADEBOOK_BASEURL}&switch_lesson='+ jQuery('#switch_lesson').val())">{$smarty.const._GRADEBOOK_SWITCH_TO}</a>
+	<a href="javascript: _sysclass('load', 'gradebook').switchToLessonClasse(jQuery('#switch_lesson').val(), jQuery('#switch_classe').val());">{$smarty.const._GRADEBOOK_SWITCH_TO}</a>
 
 	
 	
@@ -80,28 +70,14 @@
 
 <div class="clear" style="margin-top: 10px;" ></div>
 
-<div class="headerTools">
-	<span class="selected">
-<!--     	<img alt="Regras para Cálculo" title="Regras para Cálculo" class="sprite16 sprite16-skills" src="images/others/transparent.gif">  -->
-        <a href="javascript: void(0);">Regras para Cálculo</a>
-	</span>
-	<span>
-<!--     	<img alt="Totais" title="Totais" class="sprite16 sprite16-rules" src="images/others/transparent.gif">  -->
-        <a href="javascript: void(0);">Totais</a>
-	</span>
-	<!-- 
-	<span>
-    	<img alt="Totais" title="Totais" class="sprite16 sprite16-add" src="images/others/transparent.gif">
-        <a href="javascript: void(0);">Ntas</a>
-	</span>
-	 -->
-</div>
+{include file="$T_GRADEBOOK_BASEDIR/templates/includes/action.switch.navbar.tpl"}
+
 
 <div class="clear"></div>
 
 <div class="headerTools">
 	<span>
-		Regras Atuais:
+		Grupos Atuais:
 	</span>
 	{foreach name="group_loop" item = "group" from = $T_GRADEBOOK_GROUPS}
 	<span class="gradebook-group-header" id="gradebook-group-header-{$group.id}">
@@ -132,6 +108,7 @@
 		<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
 		<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
 	</span>
+	<!-- 
 	<span>
 		&nbsp;<img src="{$T_GRADEBOOK_BASELINK|cat:'images/compute_score.png'}" alt="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" title="{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}" style="vertical-align:middle">
 		<a href="{$T_GRADEBOOK_BASEURL}&compute_score_grade=1">{$smarty.const._GRADEBOOK_COMPUTE_SCORE_GRADE}</a>&nbsp;
@@ -144,6 +121,7 @@
 			<option value="all">{$smarty.const._GRADEBOOK_ALL_LESSONS}</option>
 		</select>&nbsp;
 	</span>
+	 -->
 </div>
 
 <div id="gradebook-group-rules-container">
