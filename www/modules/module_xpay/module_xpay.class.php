@@ -200,6 +200,7 @@ class module_xpay extends MagesterExtendedModule {
 		$currentOptions = $this->getSubmodules();
 		
 		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList();
+		
 		//var_dump($lastProcessedFilesData);
 		//exit;
 		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
