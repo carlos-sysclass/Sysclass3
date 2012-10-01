@@ -2215,7 +2215,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			}
 			*/
 		} else {
-			var_dump($clienteData['name'] . " " . $clienteData['surname']);
 			return $clienteData['name'] . " " . $clienteData['surname'];
 		}
 	}	
