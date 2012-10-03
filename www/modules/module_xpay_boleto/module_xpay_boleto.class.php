@@ -98,7 +98,6 @@ abstract class module_xpay_boleto_default_return_processor {
 	
 	abstract public function analyze();
 	abstract public function import($fileStatus, $xpayModule);
-	abstract public function toHTML($tplFile);
 }
 
 class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_default_return_processor {
@@ -182,35 +181,68 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 					'tag'					=> json_encode($status),
 					'filename'				=> $fileFullPath
 				);
+				
+				// GRAB NEGOCIATION ID, INVOICE_INDEX FORM "nosso_numero"
+				$values = sscanf($boletoTransaction['nosso_numero'], "%03d%03d%05d%04d", $course_id, $invoice_index, $user_id, $negociation_id);
+				//					list($course_id, $invoice_index, $user_id, $negociation_id) = $values;
+				//					var_dump($values);
+				//					var_dump($course_id, $invoice_index, $user_id, $negociation_id);
 		
 				// STEP 1 - CHECK IF IS ALREADY IMPORTED
-				list($countReturn) = ef_countTableData(
+				$countReturn = ef_getTableData(
 					"module_xpay_boleto_transactions",
 					"id",
 					sprintf("nosso_numero = '%s'", $registro['nosso_numero']['parseddata'])
 				);
-				if (intval($countReturn['count']) == 0) {
-						
-					$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
-						
-					$paid_items = array(
-						'transaction_id'	=> $boletoTransID,
-						'method_id' 		=> 'boleto',
-						'paid' 				=> $registro['valor_pago']['parseddata'],
-						'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
-					);
-						
-					$paidID = ef_insertTableData(
+				
+				// STEP 2 - CHECK IF INVOICE EXISTS, AND INVESTIGATE INVOICE VALUES.
+				$invoiceData = eF_getTableData(
+					"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
+					"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
+					sprintf("neg.id = %d AND neg.course_id = %d AND neg.user_id = %d AND inv.invoice_index = %d", 
+						$negociation_id, $course_id, $user_id, $invoice_index
+					)
+				);
+
+				if (count($invoiceData) > 0) {
+					if (count($countReturn) == 0) {
+						$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
+					} else {
+						$boletoTransID = $countReturn[0]['id'];
+					}
+					
+					$countPaid = ef_getTableData(
 						"module_xpay_paid_items",
-						$paid_items
+						"id",
+						sprintf("transaction_id = '%s' AND method_id = 'boleto'", $boletoTransID)
 					);
 						
-					// GRAB NEGOCIATION ID, INVOICE_INDEX FORM "nosso_numero"
-					$values = sscanf($boletoTransaction['nosso_numero'], "%03d%03d%05d%04d", $course_id, $invoice_index, $user_id, $negociation_id);
-					//					list($course_id, $invoice_index, $user_id, $negociation_id) = $values;
-					//					var_dump($values);
-					//					var_dump($course_id, $invoice_index, $user_id, $negociation_id);
+					if (count($countPaid) == 0) {
 						
+						$paid_items = array(
+								'transaction_id'	=> $boletoTransID,
+								'method_id' 		=> 'boleto',
+								'paid' 				=> $registro['valor_pago']['parseddata'],
+								'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
+						);
+						
+						$paidID = ef_insertTableData(
+								"module_xpay_paid_items",
+								$paid_items
+						);
+					} else { // JUST UPDATE VALUE
+						$paidID = $countPaid[0]['id'];
+							
+						$paid_items = array(
+							'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata']
+						);
+						ef_updateTableData(
+							"module_xpay_paid_items",
+							$paid_items,
+							sprintf("id = %d", $paidID)
+						);
+							
+					}
 					$negociation = $xpayModule->_getNegociationByContraints(array(
 							'negociation_id'	=> $negociation_id,
 							'user_id'			=> $user_id,
@@ -233,23 +265,35 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 							if ($registro['valor_pago']['parseddata'] < $paidInvoice['valor'] && !$config['partial_payment']) {
 								$item['full_value']	= $paidInvoice['valor'];
 							}
-		
-							ef_insertTableData(
-									"module_xpay_invoices_to_paid",
-									$item
+							
+							$countInv2Paid = ef_getTableData(
+								"module_xpay_invoices_to_paid",
+								"negociation_id",
+								sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
+										$negociation['id'], $invoice_index, $paidID)
 							);
+							
+							if (count($countInv2Paid) == 0) {
+								ef_insertTableData(
+								"module_xpay_invoices_to_paid",
+								$item
+								);
+							} else {
+								/*
+								 ef_updateTableData(
+								 		"module_xpay_invoices_to_paid",
+								 		array(),
+								 		sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
+								 				$negociation['id'], $invoice_index, $paidID)
+								 );
+								*/
+							}
 						}
-						// BUSCAR A FATURA AGORA
 					}
 				}
 			}
 		}
 		return true;
-	}
-	public function toHTML($tplFile) {
-		$analyzeStatus = $this->analyze();
-		echo "NOT IMPLEMENTED YET";
-		exit;
 	}
 	
 	private function processReturnFileHeader($fileLine) {
@@ -1403,11 +1447,6 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 		}
 		return true;
 	}
-	public function toHTML($tplFile) {
-		$analyzeStatus = $this->analyze();
-		// analize and fetch a smarty template, with this status struct
-		exit;
-	}	
 	
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{0} != 0) {

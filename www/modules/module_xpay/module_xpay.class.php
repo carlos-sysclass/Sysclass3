@@ -233,18 +233,15 @@ class module_xpay extends MagesterExtendedModule {
 	public function importFileToSystemAction() {
 		$method_index 	= $_POST['method_index'];
 		$fileName		= $_POST['name'];
-		
-		
 	
 		$currentOptions = $this->getSubmodules();
 	
 		$currentSubModule = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']];
 	
-		// TRY TO RE-IMPORT FILE
-		
-		
 		$fullFileName = $currentSubModule->getFullPathByMethodIndex($method_index, $fileName);
 		$status = $currentSubModule->importFileStatusToSystem($method_index, $fullFileName);
+		
+		// TRY TO RE-IMPORT FILE
 		
 		if ($status) {
 			$return = array(
