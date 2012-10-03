@@ -170,6 +170,14 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				}
 			);
 		},
+		importFileToSystem : function(method_index, name) {
+			this._postAction(
+				"import_file_to_system",
+				{"method_index" : method_index, "name" : name},
+				function() {},
+				'json'
+			);
+		},
 		startUI : function() {
 			jQuery("#xpay-file-details-container").dialog({
 				autoOpen	: false,

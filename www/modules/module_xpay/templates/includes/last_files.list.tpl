@@ -20,8 +20,11 @@
 						<td align="center">#filter:timestamp_time-{$file.timestamp}#</td>
 						<td align="center">{$file.size}</td>
 						<td align="center">
-							<a href="javascript: _sysclass('load', 'xpay').viewFileDetails('{$file.method_index}', '{$file.name}');"><img class="sprite16 sprite16-analysis" src="images/others/transparent.png" border="0"></a>
+							<a href="javascript: _sysclass('load', 'xpay').viewFileDetails('{$file.method_index}', '{$file.name}');" title="Visualizar detalhes do arquivo"><img class="sprite16 sprite16-analysis" src="images/others/transparent.png" border="0"></a>
+							<a href="javascript: _sysclass('load', 'xpay').importFileToSystem('{$file.method_index}', '{$file.name}');" title="Importar arquivo novamente"><img class="sprite16 sprite16-import" src="images/others/transparent.png" border="0"></a>
 						</td>
+						
+						
 					</tr>
 				{/foreach}
 			{/if}

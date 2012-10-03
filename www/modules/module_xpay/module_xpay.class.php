@@ -230,6 +230,38 @@ class module_xpay extends MagesterExtendedModule {
 		echo $currentSubModule->returnedFile2Html($instance_id, $fileName);
 		exit;
 	}
+	public function importFileToSystemAction() {
+		$method_index 	= $_POST['method_index'];
+		$fileName		= $_POST['name'];
+		
+		
+	
+		$currentOptions = $this->getSubmodules();
+	
+		$currentSubModule = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']];
+	
+		// TRY TO RE-IMPORT FILE
+		
+		
+		$fullFileName = $currentSubModule->getFullPathByMethodIndex($method_index, $fileName);
+		$status = $currentSubModule->importFileStatusToSystem($method_index, $fullFileName);
+		
+		if ($status) {
+			$return = array(
+					"message" 		=> "Arquivo importado com sucesso. Caso os problemas persistam, entre em contato com suporte.",
+					"message_type" 	=> "success",
+					"status"		=> "ok",
+					"data" => $fields
+			);
+		} else {
+			$return = array(
+				"message" 		=> "Occoreu um erro ao tentar importar este arquivo",
+				"message_type" 	=> "error"
+			);
+		}
+		echo json_encode($return);
+		exit;
+	}
 	/*
 	public function migrateToNewModelAction() {
 		$paymentData = ef_getTableData(

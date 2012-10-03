@@ -1289,28 +1289,61 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 			);
 			
 			// STEP 2 - CHECK IF INVOICE EXISTS, AND INVESTIGATE INVOICE VALUES.
+			/*
+			echo prepareGetTableData(
+				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
+				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
+				sprintf("invoice_id LIKE '%%%s'", $registro['nosso_numero']['parseddata'])
+			);
+			*/
 			$invoiceData = eF_getTableData(
 				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
 				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
-				sprintf("invoice_id = '%s'", $registro['nosso_numero']['parseddata'])
+				sprintf("invoice_id LIKE '%%%s'", $registro['nosso_numero']['parseddata'])
 			);
-			
-			if (count($countReturn) == 0 && count($invoiceData) > 0) {
-				$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
-			
+			/*
+			var_dump($registro['nosso_numero']['parseddata'], $countReturn[0]['id'], count($invoiceData));
+			echo "<br />";
+			*/
+			if (count($invoiceData) > 0) {
+				if (count($countReturn) == 0) {
+					$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
+				} else {
+					$boletoTransID = $countReturn[0]['id'];
+				}
 
-				$paid_items = array(
-					'transaction_id'	=> $boletoTransID,
-					'method_id' 		=> 'boleto',
-					'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata'],
-					'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
-				);
-
-				$paidID = ef_insertTableData(
+				$countPaid = ef_getTableData(
 					"module_xpay_paid_items",
-					$paid_items
+					"id",
+					sprintf("transaction_id = '%s' AND method_id = 'boleto'", $boletoTransID)
 				);
-
+					
+				if (count($countPaid) == 0) {
+					$paid_items = array(
+						'transaction_id'	=> $boletoTransID,
+						'method_id' 		=> 'boleto',
+						'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata'],
+						'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
+					);
+					
+					$paidID = ef_insertTableData(
+						"module_xpay_paid_items",
+						$paid_items
+					);
+				} else { // JUST UPDATE VALUE
+					$paidID = $countPaid[0]['id'];
+					
+					$paid_items = array(
+						'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata']
+					);
+					ef_updateTableData(
+						"module_xpay_paid_items",
+						$paid_items,
+						sprintf("id = %d", $paidID)
+					);
+					
+				}
+				
 				$negociation_id = $invoiceData[0]['negociation_id'];
 				$invoice_index	= $invoiceData[0]['invoice_index'];
 				$course_id		= $invoiceData[0]['course_id'];
@@ -1340,12 +1373,30 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 						if ($registro['valor_pago']['parseddata'] < $paidInvoice['valor'] && !$config['partial_payment']) {
 							$item['full_value']	= $paidInvoice['valor'];
 						}
-
-						ef_insertTableData(
+						
+						
+						$countInv2Paid = ef_getTableData(
 							"module_xpay_invoices_to_paid",
-							$item
+							"negociation_id",
+							sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d", 
+									 $negociation['id'], $invoice_index, $paidID)
 						);
-						return true;
+						
+						if (count($countInv2Paid) == 0) {
+							ef_insertTableData(
+								"module_xpay_invoices_to_paid",
+								$item
+							);
+						} else {
+							/*
+							ef_updateTableData(
+								"module_xpay_invoices_to_paid",
+								array(),
+								sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
+									$negociation['id'], $invoice_index, $paidID)
+							);
+							*/
+						}
 					}
 					// BUSCAR A FATURA AGORA
 				}
@@ -2261,7 +2312,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return $result;
 	}
 	
-	private function importFileStatusToSystem($instance_id, $fullFileName) {
+	public function importFileStatusToSystem($instance_id, $fullFileName) {
 		$fileStatus = $this->analyzeReturnFile($instance_id, $fullFileName);
 		
 		if ($fileStatus) {
@@ -2500,6 +2551,9 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return true;
 	}
 	
+	public function getFullPathByMethodIndex($method_index, $fileName) {
+		return sprintf($this->getConfig()->paths['return_instance'] . $fileName, $method_index);
+	}
 	/** FORMULÁRIOS DE UPLOAD */
 	private function getUploadInvoicesForm() {
 		//error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
