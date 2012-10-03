@@ -87,7 +87,7 @@ abstract class module_xpay_boleto_default_return_processor {
 				$result['formatteddata'] = str_replace(".", ",", sprintf($fieldFormat, $result['parseddata']));
 				break;
 			}
-	
+	 d
 			default : {
 				$result['parseddata'] = $result['formatteddata'] = $fieldData;
 				break;
