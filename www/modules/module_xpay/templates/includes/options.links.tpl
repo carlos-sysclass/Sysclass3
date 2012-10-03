@@ -16,6 +16,16 @@
 		/>				
 		<a href="{$T_XPAY_BASEURL}&action=view_to_send_invoices_list">{$smarty.const.__XPAY_VIEW_TO_SEND_INVOICES_LIST}</a>
 	</span>
+	
+	<span>
+		<img 
+			src = "images/others/transparent.png"
+			class="imgs_cont sprite16 sprite16-go_into"
+			border = "0"
+		/>				
+		<a href="{$T_XPAY_BASEURL}&action=view_last_sended_files">Histórico de Arquivos Enviados</a>
+	</span>
+	
 	<span>
 		<img 
 			src = "images/others/transparent.png"
