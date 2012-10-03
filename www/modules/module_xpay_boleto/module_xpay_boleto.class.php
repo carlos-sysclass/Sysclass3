@@ -234,7 +234,7 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 						$paidID = $countPaid[0]['id'];
 							
 						$paid_items = array(
-							'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata']
+							'paid' 			=> $registro['valor_pago']['parseddata'],
 						);
 						ef_updateTableData(
 							"module_xpay_paid_items",
