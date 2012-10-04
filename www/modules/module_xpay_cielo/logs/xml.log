@@ -4492,3 +4492,40 @@ RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
 </transacao>
 
 
+***********************************************
+2012-10-04 16:41:02:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=620&invoice_index=5
+OPERAÃ‡ÃƒO: Transacao
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-transacao id="040f60b1921bab5d55e9378c5ed83746" versao="1.2.0">
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+   <dados-pedido>
+      <numero>06200505</numero>
+      <valor>100</valor>
+      <moeda>986</moeda>
+      <data-hora>2012-10-04T16:41:02</data-hora>
+      <descricao>Anselmo  Pfeifer. (anselmo.pfeifer) - Mensalidade -1 </descricao>
+      <idioma>PT</idioma>
+   </dados-pedido>
+   <forma-pagamento>
+      <bandeira>visa</bandeira>
+      <produto>1</produto>
+      <parcelas>1</parcelas>
+   </forma-pagamento>
+   <url-retorno>http://local.sysclass.com/administrator.php?route=module/module_xpay_cielo/return_payment</url-retorno>
+   <autorizar>4</autorizar>
+   <capturar>false</capturar>
+ <campo-livre> - Mensalidade -1</campo-livre>
+</requisicao-transacao>
+
+***********************************************
+2012-10-04 16:41:04:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay&action=do_payment&negociation_id=620&invoice_index=5
+OPERAÃ‡ÃƒO: Transacao
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<erro xmlns="http://ecommerce.cbmp.com.br"><codigo>051</codigo><mensagem>Obrigatório envio do Token ou do Cartão para Transação Recorrente.</mensagem></erro>
+
+

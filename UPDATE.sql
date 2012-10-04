@@ -2050,9 +2050,9 @@ PRIMARY KEY (`id`),
 -- 2012-01-24
 DROP TABLE IF EXISTS `module_xpay_cielo_transactions`;
 CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-`payment_id` mediumint(8) NOT NULL,
-  `tid` varchar(100) NOT NULL,
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`payment_id` mediumint(8) NOT NULL,
+	`tid` varchar(100) NOT NULL,
 	pedido_id varchar(255) NOT NULL,
 	valor decimal(15,4) NOT NULL DEFAULT '0.0000',
 	data timestamp NULL DEFAULT NULL,
@@ -2060,8 +2060,8 @@ CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions` (
 	bandeira varchar(30) NOT NULL,
 	produto varchar(20) NOT NULL,
 	parcelas varchar(30) NOT NULL,
-PRIMARY KEY (`id`),
-  FULLTEXT KEY `tid_key` (`tid`)
+	PRIMARY KEY (`id`),
+	FULLTEXT KEY `tid_key` (`tid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- 2012-01-24
@@ -2926,3 +2926,31 @@ INSERT INTO module_xpay_boleto_bancos VALUES ('488', 'JPMorgan Chase Bank');
 INSERT INTO module_xpay_boleto_bancos VALUES ('409', 'UNIBANCO - União de Bancos Brasileiros S.A.');
 INSERT INTO module_xpay_boleto_bancos VALUES ('230', 'Unicard Banco Múltiplo S.A.');
 
+
+
+DROP TABLE IF EXISTS `module_xpay_cielo_transactions`;
+CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`negociation_id` mediumint(8) NOT NULL,
+	`tid` varchar(100) NOT NULL,
+	pedido_id varchar(255) NOT NULL,
+	valor decimal(15,4) NOT NULL DEFAULT '0.0000',
+	data timestamp NULL DEFAULT NULL,
+	descricao varchar(255) NOT NULL,
+	bandeira varchar(30) NOT NULL,
+	produto varchar(20) NOT NULL,
+	parcelas varchar(30) NOT NULL,
+	PRIMARY KEY (`id`),
+	FULLTEXT KEY `tid_key` (`tid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `module_xpay_cielo_transactions_to_invoices`;
+CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions_to_invoices` (
+	`transaction_id` int(11) NOT NULL AUTO_INCREMENT,
+	`negociation_id` mediumint(8) NOT NULL,
+	`parcela_index` mediumint(8) NOT NULL,
+PRIMARY KEY (`transaction_id`, `negociation_id`, `parcela_index`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+ALTER TABLE `module_xpay_cielo_transactions` ADD `status` SMALLINT( 4 ) NOT NULL AFTER `parcelas`; 
+ALTER TABLE `module_xpay_cielo_transactions_to_invoices` CHANGE `parcela_index` `invoice_index` MEDIUMINT( 8 ) NOT NULL;
