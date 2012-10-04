@@ -78,7 +78,11 @@
 							<td align="center">{$item.motivo_ocorrencia.formatteddata} - {$T_BASE_OCORRENCIAS[$item.cod_ocorrencia.originaldata]}</td>
 							 -->
 							<td align="center">{$item.data_ocorrencia.formatteddata}</td>
-							<td align="center">{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]|eF_truncate:35}</td>
+							<td align="center">
+								{if ($item.banco_receptor.parseddata)}
+									{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]|eF_truncate:35}
+								{/if}
+							</td>
 							<td align="center">{$item.valor_titulo.formatteddata}</td>
 							<td align="center">{$item.valor_desconto.formatteddata}</td>
 							<td align="center">{$item.valor_total.formatteddata}</td>
