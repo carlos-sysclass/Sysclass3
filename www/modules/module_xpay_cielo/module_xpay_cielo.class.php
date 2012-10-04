@@ -100,26 +100,36 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		
 		
 		$allParcelas = array (
+				/*
 			'*'	=> array(
 				"1"	=> "Crédito À Vista",
-				"2"	=> "2x s/ juros", 
-				"3"	=> "3x s/ juros",
-				"4"	=> "4x s/ juros",
-				"5"	=> "5x s/ juros",
-				"6"	=> "6x s/ juros"
+				//"2"	=> "2x s/ juros", 
+				//"3"	=> "3x s/ juros",
+				//"4"	=> "4x s/ juros",
+				//"5"	=> "5x s/ juros",
+				//"6"	=> "6x s/ juros"
 			),
+			*/
 			'visa'	=> array(
+				"1"	=> "Crédito À Vista",
 				"A"	=> "Débito"
 			),
-			'mastercard'	=> array(),
-			'elo'			=> array(),
-			'diners'		=> array()
+			'mastercard'	=> array(
+				"1"	=> "Crédito À Vista"
+			),
+			'elo'			=> array(
+				"1"	=> "Crédito À Vista"
+			),
+			'diners'		=> array(
+				"1"	=> "Crédito À Vista"
+			),
 		);
 		
 		
-		$parcelas = array_merge_recursive_keys($allParcelas['*'], $allParcelas[$data['option']]);
-		
+		$parcelas = $allParcelas[$data['option']];
+		var_dump($parcelas);
 		foreach($parcelas as $key => $item) {
+			
 			$form -> addElement('radio', 'qtde_parcelas', $item, $item, $key, 'class="qtde_parcelas"');
 		}
 		
@@ -128,6 +138,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$form -> addElement('submit', 'xpay_cielo_submit', __XPAY_CIELO_MAKE, 'class = "button_colour round_all"');
 		
 		if ($form -> isSubmitted() && $form -> validate()) {
+			
 			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $form->exportValues());
 			
 			//$this->injectJS("jquery/jquery.fancybox");
@@ -200,7 +211,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		
 		//header("Content-type: text/plain");
 		
-		$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
+		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
 		
 		$Pedido = new Pedido_Model();
 		
@@ -221,6 +232,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$Pedido->autorizar = $this->conf['authorization'];
 		/// CHECAR COMO INCLUIR O VALOR
 		
+		//var_dump($values);
+		//var_dump($invoiceData);
 
 		// SAME NUMBER AS BOLETO "nosso número"
 		$Pedido->dadosPedidoNumero = $this->getParent()->createInvoiceID($payment_id, $invoice_id);
@@ -255,6 +268,9 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		
 		// ENVIA REQUISIÇÃO SITE CIELO
 		$objResposta = $Pedido->RequisicaoTransacao(false);
+		
+		var_dump($objResposta);
+		exit;
 		
 		$Pedido->tid = (string)$objResposta->tid;
 		$Pedido->pan = (string)$objResposta->pan;

@@ -1175,9 +1175,8 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		if (
-			($form -> isSubmitted() && $form -> validate()) /*||
+			($form -> isSubmitted() && $form -> validate()) ||
 			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
-			*/
 		) {
 			$values = $form->exportValues();
 				
@@ -1193,6 +1192,7 @@ class module_xpay extends MagesterExtendedModule {
 				$form->setDefaults($form->exportValues());
 			} else {
 				
+				
 				list($pay_method, $pay_method_option) = array(
 					$_SESSION['pay_method'],
 					$_SESSION['pay_method_option']
@@ -1203,7 +1203,7 @@ class module_xpay extends MagesterExtendedModule {
 				));
 				*/
 			}
-			
+
 			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
 				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
 				$selectedPaymentMethod->initPaymentProccess(
