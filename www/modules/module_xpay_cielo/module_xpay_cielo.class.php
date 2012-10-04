@@ -85,6 +85,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$form = new HTML_QuickForm("xpay_cielo_init_payment", "post", $_SERVER['REQUEST_URI'], "", null, true);
 		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
 		
+		$form -> addElement("hidden", "invoice_index", $invoice_id);
 		/*
 		$bandeiras = $this->getPaymentInstances();
 		
@@ -125,9 +126,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			),
 		);
 		
-		
 		$parcelas = $allParcelas[$data['option']];
-		var_dump($parcelas);
 		foreach($parcelas as $key => $item) {
 			
 			$form -> addElement('radio', 'qtde_parcelas', $item, $item, $key, 'class="qtde_parcelas"');
@@ -138,38 +137,46 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$form -> addElement('submit', 'xpay_cielo_submit', __XPAY_CIELO_MAKE, 'class = "button_colour round_all"');
 		
 		if ($form -> isSubmitted() && $form -> validate()) {
+			$values = $form->exportValues();
+			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $values);
 			
-			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $form->exportValues());
+			if (is_null($invoice_id)) {
+				$invoice_id = $values['invoice_index'];
+			}
 			
 			//$this->injectJS("jquery/jquery.fancybox");
 			
 			$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
 			
-			$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
+			//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
 			
 			// SAVE TRANSACTION DETAILS HERE
 			$fields = array(
-				"payment_id"	=> $invoiceData['payment_id'],
-				"tid"			=> $Pedido->tid,
-				"pedido_id"		=> $Pedido->dadosPedidoNumero,
-				"valor"			=> floatval($Pedido->dadosPedidoValor) / 100,
-				"data"			=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
-				"descricao"		=> $Pedido->dadosPedidoDescricao,
-				"bandeira"		=> $Pedido->formaPagamentoBandeira,
-				"produto"		=> $Pedido->formaPagamentoProduto,
-				"parcelas"		=> $Pedido->formaPagamentoParcelas,
-				"status"		=> $Pedido->status,
+				"negociation_id"	=> $payment_id,
+				"tid"				=> $Pedido->tid,
+				"pedido_id"			=> $Pedido->dadosPedidoNumero,
+				"valor"				=> floatval($Pedido->dadosPedidoValor) / 100,
+				"data"				=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
+				"descricao"			=> $Pedido->dadosPedidoDescricao,
+				"bandeira"			=> $Pedido->formaPagamentoBandeira,
+				"produto"			=> $Pedido->formaPagamentoProduto,
+				"parcelas"			=> $Pedido->formaPagamentoParcelas,
+				"status"			=> $Pedido->status,
 			);
 			$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
 			
-			
 			$fieldsLink = array(
-				"payment_id"		=> $invoiceData['payment_id'],
-				"parcela_index"		=> $invoiceData['parcela_index'],
+				"negociation_id"	=> $payment_id,
+				"invoice_index"		=> $invoice_id,
 				"transaction_id"	=> $transactionID
 			);
 			
 			eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
+			
+			//echo $Pedido->urlAutenticacao;
+			eF_redirect($Pedido->urlAutenticacao, false, false, true);
+			exit;
+			
 		}
 		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
 		$form -> accept($renderer);
@@ -241,9 +248,14 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$Pedido->dadosPedidoValor = $values["produto"];
 		$Pedido->dadosPedidoValor = floor((floatval($invoiceData['valor']) + floatval($invoiceData['total_reajuste'])) * 100);
 		
+		$Pedido->dadosPedidoValor = 100;
+		
 		//$ies = reset($this->getCurrentUserIes());
 		
-		$currentUser = $this->getCurrentUser()->user;
+		$currentUser = $this->getEditedUser(true, $invoiceData['user_id']);
+		if ($currentUser) {
+			$currentUser = $currentUser->user;
+		}
 		
 		$Pedido->campoLivre =
 			sprintf("%s - %s", $invoiceData['course'], $invoiceData['parcela_index'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['parcela_index'] - 1));
@@ -269,9 +281,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		// ENVIA REQUISIÇÃO SITE CIELO
 		$objResposta = $Pedido->RequisicaoTransacao(false);
 		
-		var_dump($objResposta);
-		exit;
-		
 		$Pedido->tid = (string)$objResposta->tid;
 		$Pedido->pan = (string)$objResposta->pan;
 		$Pedido->status = (string)$objResposta->status;
@@ -282,6 +291,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$currentUser = $this->getCurrentUser();
 		
 		$this->setCache(md5($currentUser->user['login'] . date("Ymd")), $Pedido->tid);
+		
 		
 		return $Pedido;
 		/*
@@ -314,7 +324,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$objResposta = $Pedido->RequisicaoConsulta();
 			$consultaArray = $this->cieloReturnToArray($objResposta);
 		
-		
 			// DEPENDENDO DO VALOR DO STATUS, REALIZAR A CAPTURA
 			if ($consultaArray['status'] == 4) {
 				//var_dump($consultaArray['autorizacao']['valor']);
@@ -335,20 +344,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 			list($transaction) = eF_getTableData(
 				"module_xpay_cielo_transactions trn
-				LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.payment_id = trn2inv.payment_id)
-				LEFT JOIN module_pagamento_invoices inv ON (trn2inv.payment_id = inv.payment_id AND trn2inv.parcela_index = inv.parcela_index)", 
-				"trn.id, trn.tid, trn.payment_id, trn2inv.parcela_index, trn.data, trn.descricao, trn.bandeira, trn.status, trn.pedido_id, trn.valor as valor_total, 
+				LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
+				LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)", 
+				"trn.id, trn.tid, trn.negociation_id, trn2inv.invoice_index, trn.data, trn.descricao, trn.bandeira, trn.status, trn.pedido_id, trn.valor as valor_total, 
 				inv.valor, inv.data_vencimento", 
 				sprintf("tid = '%s'", $Pedido -> tid));
 			
 			
 			$xpayModule = $this->loadModule("xpay");
 			
-			$transaction = $xpayModule->calculateInvoiceDetails($transaction);
-			/*
-			var_dump($transaction);
-			exit;
-			*/
+			
+			$invoiceData = $xpayModule->_getNegociationInvoiceByIndex($transaction['negociation_id'], $transaction['invoice_index']);
+			
+			$transactionAndInvoice = array_merge($invoiceData, $transaction);
+			
 			switch($consultaArray['status'])
 			{
 				case "0": { 
@@ -390,11 +399,22 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					$message 		= "Pagamento Autorizado";
 					$message_type	= "success";
 					
+					$xpayModule->insertInvoicePayment(
+						$invoiceData['negociation_id'], 
+						$invoiceData['invoice_index'], 
+						floatval($transaction['valor_total']),
+						'cielo',
+						$transaction['id'],
+						$transaction['data']
+					);
+					
 					// CALL EVENTS
+					/*
 					$xpayModule->onPaymentReceivedEvent($this, array(
 						'payment_id'	=> $transaction['payment_id'],
 						'parcela_index'	=> $transaction['parcela_index']
 					));
+					*/
 					
 					break;
 				}
@@ -426,22 +446,27 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			}		
 			$smarty -> assign("T_XPAY_CIELO_CONSULTA", $consultaArray);
 			
-			$transaction = $xpayModule->calculateInvoiceDetails($transaction);
+			//$transaction = $xpayModule->calculateInvoiceDetails($transaction);
 			
-			$smarty -> assign("T_XPAY_CIELO_TRANS", $transaction);
+			$smarty -> assign("T_XPAY_CIELO_TRANS", $transactionAndInvoice);
 		} else {
 			$message 		= "Pagamento não efetuado";
 			$message_type	= "failure";
 		}
 		$smarty -> assign("T_XPAY_CIELO_STATUS", $status);
+		/*
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE_TYPE", $message_type);
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE", $message);
+		*/
 		
+		$this->setMessageVar($message, $message_type);
 		
 		//echo $this->moduleBaseDir . "templates/actions/return_payment.tpl";
-		$this->assignSmartyModuleVariables();
-		echo $smarty -> fetch($this->moduleBaseDir . "templates/actions/return_payment.tpl");
-		exit;
+		//$this->assignSmartyModuleVariables();
+		
+		return true;
+		//echo $smarty -> fetch($this->moduleBaseDir . "templates/actions/return_payment.tpl");
+		//exit;
 	}
 	
 	private function cieloReturnToArray($xmlObject) {

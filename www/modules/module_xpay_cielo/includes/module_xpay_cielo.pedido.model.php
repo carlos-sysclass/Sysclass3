@@ -3,7 +3,7 @@
 //require_once 'pedido.php';
 //require_once 'logger.php';
 
-define('VERSAO', "1.1.0");
+define('VERSAO', "1.2.0");
 
 //session_start();
 /*
@@ -118,6 +118,7 @@ function ReturnURL()
 
 	//$ReturnURL = str_replace($file, "retorno.php", $pageURL);
 	$ReturnURL = str_replace($_SERVER['QUERY_STRING'], "module/module_xpay_cielo/return_payment", $pageURL);
+	
 	$ReturnURL = str_replace("?", "?route=" , $ReturnURL);
 
 	return $ReturnURL;

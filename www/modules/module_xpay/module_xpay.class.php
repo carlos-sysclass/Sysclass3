@@ -1181,8 +1181,6 @@ class module_xpay extends MagesterExtendedModule {
 			$values = $form->exportValues();
 				
 			if ($form -> isSubmitted() && $form -> validate()) {
-
-
 				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
 		
 				$_SESSION['pay_method']			= $pay_method;
@@ -1190,6 +1188,10 @@ class module_xpay extends MagesterExtendedModule {
 				
 				$invoice_index = $values['invoice_indexes'];
 				$form->setDefaults($form->exportValues());
+				
+				if (is_numeric($values['invoice_indexes'])) {
+					$invoice_index = $values['invoice_indexes']; 
+				}
 			} else {
 				
 				
@@ -1203,7 +1205,7 @@ class module_xpay extends MagesterExtendedModule {
 				));
 				*/
 			}
-
+			
 			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
 				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
 				$selectedPaymentMethod->initPaymentProccess(
@@ -3383,6 +3385,87 @@ class module_xpay extends MagesterExtendedModule {
 		return $digito;
 	}
 
+	
+	
+	public function insertInvoicePayment($negociation_id, $invoice_index, $paid, $method, $transactionID, $data) {
+		$countPaid = ef_getTableData(
+			"module_xpay_paid_items",
+			"id",
+			sprintf("transaction_id = '%s' AND method_id = '%s'", $transactionID, $method)
+		);
+		
+		if (count($countPaid) == 0) {
+	
+			$paid_items = array(
+				'transaction_id'	=> $transactionID,
+				'method_id' 		=> $method,
+				'paid' 				=> $paid,
+				'start_timestamp' 	=> strtotime($data)
+			);
+	
+			$paidID = ef_insertTableData(
+				"module_xpay_paid_items",
+				$paid_items
+			);
+		} else { // JUST UPDATE VALUE
+			$paidID = $countPaid[0]['id'];
+					
+			$paid_items = array(
+				'paid' 			=> $paid,
+			);
+			ef_updateTableData(
+				"module_xpay_paid_items",
+				$paid_items,
+				sprintf("id = %d", $paidID)
+			);
+					
+		}
+
+		$negociation = $this->_getNegociationByContraints(array(
+			'negociation_id'	=> $negociation_id
+		));
+
+		if (count($negociation) > 0) {
+			// ENCONTROU A NEGOCIAÇÃO
+			//var_dump($negociation);
+			$paidInvoice = $this->_getNegociationInvoiceByIndex($negociation['id'], $invoice_index);
+	
+			if (count($paidInvoice) > 0) {
+				// ENCONTROU A FATURA
+				$item = array(
+					'negociation_id'	=> $negociation['id'],
+					'invoice_index'		=> $invoice_index,
+					'paid_id'			=> $paidID
+				);
+	
+				if ($paid < $paidInvoice['valor'] && !$config['partial_payment']) {
+					$item['full_value']	= $paidInvoice['valor'];
+				}
+						
+				$countInv2Paid = ef_getTableData(
+					"module_xpay_invoices_to_paid",
+					"negociation_id",
+					sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
+							$negociation['id'], $invoice_index, $paidID)
+				);
+						
+				if (count($countInv2Paid) == 0) {
+					ef_insertTableData(
+					"module_xpay_invoices_to_paid",
+					$item
+				);
+				} else {
+				}
+			}
+		} else {
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	
 	/* OLD-STYLE FUNCTIONS */
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser();
