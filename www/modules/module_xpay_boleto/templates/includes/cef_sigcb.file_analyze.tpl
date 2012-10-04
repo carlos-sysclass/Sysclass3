@@ -1,20 +1,27 @@
 	{capture name="preview_header"}
-		{assign var=t_status value=$T_PROCESS_FILE_STATUS.header}
+		{assign var=t_header value=$T_PROCESS_FILE_STATUS.header}
+		
+		
+		
+		{foreach item="t_batch" from=$T_PROCESS_FILE_STATUS.batch}
+			{assign var=t_status value=$T_PROCESS_FILE_STATUS.batch[0].header}
+	
+			{*assign var=t_status value=$T_PROCESS_FILE_STATUS.header*}
 			<div class="grid_12">
 				<label><strong>Retorno:</strong></label>
-				<span>{$t_status.cod_retorno.formatteddata} - {$t_status.retorno.formatteddata}</span>
+				<span>{$t_header.cod_retorno.formatteddata} - {$T_XPAY_BOLETO_CEF_SIGCB_RETORNO[$t_header.cod_retorno.parseddata]}</span>
 			</div>
 			<div class="grid_12">
 				<label><strong>Serviço:</strong></label>
-				<span>{$t_status.cod_servico.formatteddata} - {$t_status.servico.formatteddata}</span>
+				<span>{$t_status.cod_servico.formatteddata} - {$T_XPAY_BOLETO_CEF_SIGCB_SERVICOS[$t_status.cod_servico.parseddata]}</span>
 			</div>
 			<div class="grid_12">
 				<label><strong>Nome do Banco:</strong></label>
-				<span>{$t_status.cod_banco.formatteddata} - {$t_status.nome_banco.formatteddata}</span>
+				<span>{$t_header.cod_banco.formatteddata} - {$t_header.nome_banco.formatteddata}</span>
 			</div>
 			<div class="grid_12">
-				<label><strong>Agência / Conta - DV:</strong></label>
-				<span>{$t_status.agencia.formatteddata} / {$t_status.conta.formatteddata}-{$t_status.dac.formatteddata}</span>
+				<label><strong>Agência - DV / Código Cedente:</strong></label>
+				<span>{$t_status.agencia.formatteddata}-{$t_status.dac.formatteddata} / {$t_status.codigo_cedente.formatteddata}</span>
 			</div>
 			<div class="grid_24">
 				<label><strong>Empresa Cedente:</strong></label>
@@ -22,12 +29,13 @@
 			</div>
 			<div class="grid_12">
 				<label><strong>Data de geração:</strong></label>
-				<span>{$t_status.data_geracao.formatteddata}</span>
+				<span>{$t_header.data_geracao.formatteddata}</span>
 			</div>
 			<div class="grid_12">
 				<label><strong>N&ordm; Seq. do Arquivo:</strong></label>
-				<span>{$t_status.nro_seq_arquivo_retorno.formatteddata}</span>
+				<span>{$t_header.nro_seq_arquivo_retorno.formatteddata}</span>
 			</div>
+		{/foreach}
 	{/capture}
 	
 	{capture name="preview_registers"}
@@ -65,12 +73,12 @@
 							<td align="center">
 								{$item.nosso_numero.formatteddata}
 							</td>
-							<td align="center">{$item.nome_sacado.formatteddata}</td>
+							<td>{$item.nome_sacado.formatteddata}</td>
 							<!-- 
 							<td align="center">{$item.motivo_ocorrencia.formatteddata} - {$T_BASE_OCORRENCIAS[$item.cod_ocorrencia.originaldata]}</td>
 							 -->
 							<td align="center">{$item.data_ocorrencia.formatteddata}</td>
-							<td align="center">{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]}</td>
+							<td align="center">{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]|eF_truncate:35}</td>
 							<td align="center">{$item.valor_titulo.formatteddata}</td>
 							<td align="center">{$item.valor_desconto.formatteddata}</td>
 							<td align="center">{$item.valor_total.formatteddata}</td>

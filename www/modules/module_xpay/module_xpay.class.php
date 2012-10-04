@@ -82,7 +82,6 @@ class module_xpay extends MagesterExtendedModule {
 			return "show_payments_summary";
 		}
 	}
-	
 	public function loadConfig() {
 		$config = array(
 			'widgets'	=> array(

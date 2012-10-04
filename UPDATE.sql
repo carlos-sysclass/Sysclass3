@@ -2924,3 +2924,13 @@ INSERT INTO bancos VALUES ('79', 'JBS Banco S.A.');
 INSERT INTO bancos VALUES ('488', 'JPMorgan Chase Bank');
 INSERT INTO bancos VALUES ('409', 'UNIBANCO - União de Bancos Brasileiros S.A.');
 INSERT INTO bancos VALUES ('230', 'Unicard Banco Múltiplo S.A.');
+
+CREATE TABLE `module_xpay_boleto_bancos` (
+`id` varchar( 10 ) NOT NULL ,
+`description` varchar( 150 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+INSERT INTO `module_xpay_boleto_bancos`
+SELECT *
+FROM `sysclass_root`.`bancos` ;

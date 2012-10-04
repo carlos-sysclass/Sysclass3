@@ -297,22 +297,10 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 	}
 	
 	public function getPaymentVars($nosso_numero) {
-		$invoiceData = eF_getTableData(
-				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
-				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
-				sprintf("invoice_id LIKE '%%%s'", $nosso_numero)
-		);
-		if (count($invoiceData) > 0) {
-			$negociation_id = $invoiceData[0]['negociation_id'];
-			$invoice_index	= $invoiceData[0]['invoice_index'];
-			$course_id		= $invoiceData[0]['course_id'];
-			$lesson_id		= $invoiceData[0]['lesson_id'];
-			$user_id		= $invoiceData[0]['user_id'];
-
-			$values = compact("course_id", "lesson_id", "invoice_index", "user_id", "negociation_id");
-			return $values;
-		}
-		return false;
+		
+		$values = sscanf($nosso_numero, "%03d%03d%05d%04d", $course_id, $invoice_index, $user_id, $negociation_id);
+		$fields = compact("course_id", "invoice_index", "user_id", "negociation_id");
+		return $fields;
 	}
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{7} != 0) {
@@ -1468,15 +1456,22 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 	
 	public function getPaymentVars($nosso_numero) {
 		
-
-		// GRAB NEGOCIATION ID, INVOICE_INDEX FORM "nosso_numero"
-		$values = sscanf($nosso_numero, "%04d%02d%01d", $ref_payment_id, $invoice_index, $user_id, $negociation_id);
-		//					list($course_id, $invoice_index, $user_id, $negociation_id) = $values;
-		//					var_dump($values);
-		//					var_dump($course_id, $invoice_index, $user_id, $negociation_id);
-		$values = compact("course_id", "invoice_index", "user_id", "negociation_id");
+		$invoiceData = eF_getTableData(
+				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
+				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
+				sprintf("invoice_id LIKE '%%%s'", $nosso_numero)
+		);
+		if (count($invoiceData) > 0) {
+			$negociation_id = $invoiceData[0]['negociation_id'];
+			$invoice_index	= $invoiceData[0]['invoice_index'];
+			$course_id		= $invoiceData[0]['course_id'];
+			$lesson_id		= $invoiceData[0]['lesson_id'];
+			$user_id		= $invoiceData[0]['user_id'];
 		
-		return $values;
+			$values = compact("course_id", "lesson_id", "invoice_index", "user_id", "negociation_id");
+			return $values;
+		}
+		return false;
 	}
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{0} != 0) {
@@ -2380,6 +2375,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		if (array_key_exists("batch", $fileStatus)) {
 			foreach($fileStatus['batch'] as &$lote)
 				foreach($lote['registros'] as &$register) {
+					
 					if (trim($register['nome_sacado']["originaldata"]) == "") {
 						$register['nome_sacado']["formatteddata"] =
 						$register['nome_sacado']["parseddata"] =
@@ -2413,16 +2409,38 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
 		}
 		$smarty -> assign("T_BASE_LIQUIDACAO", $base_liquidacao);
-		/*
+		
 		$bancos = eF_getTableData("module_xpay_boleto_bancos", "id, description");
 		
 		foreach($bancos as $banco) {
 			$base_bancos[$banco['id']] = $banco['description'];
 		}
 		$smarty -> assign("T_BASE_BANCOS", $base_bancos);
-*/
-		$result = $smarty -> fetch($tplFile);
 		
+		/** @todo MAKE THIS CALL SUB-METHOD AWARE */
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_SERVICOS", array(
+			1 => "Cobrança",
+			2 => "Cobrança Sem Registro / Serviços",
+			3 => "Desconto de Títulos",
+			4 => "Caução de Títulos"
+		));
+		
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_RETORNO", array(
+			1 => "Remessa (Cliente &raquo; Banco)",
+			2 => "Retorno (Banco &raquo; Cliente)",
+			3 => "Remessa Processada (Banco &raquo; Cliente - Pré-crítica)",
+			4 => "Remessa Processada Parcial (Banco &raquo; Cliente - Pré-crítica)",
+			5 => "Remessa Rejeitada (Banco &raquo; Cliente - Pré-crítica)"
+		));
+		
+		;
+
+		$result = $smarty -> fetch($tplFile);
+		/*
+		echo "<pre>";
+		var_dump($fileStatus);
+		echo "</pre>";
+		*/
 		return $result;
 	}
 	
