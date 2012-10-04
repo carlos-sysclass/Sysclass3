@@ -243,7 +243,7 @@ $dadosboleto["conta"] = "1200"; 	// Num da conta, sem digito
 $dadosboleto["conta_dv"] = "4"; 	// Digito do Num da conta
 
 // DADOS PERSONALIZADOS - CEF
-$dadosboleto["conta_cedente"] = "318992"; // Código Cedente do Cliente, com 6 digitos (Somente N�meros)
+$dadosboleto["conta_cedente"] = "318992"; // Código Cedente do Cliente, com 6 digitos (Somente Números)
 $dadosboleto["carteira"] = "SR";  // Código da Carteira: pode ser SR (Sem Registro) ou CR (Com Registro) - (Confirmar com gerente qual usar)
 
 // SEUS DADOS
@@ -287,9 +287,9 @@ $dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do 
 $dadosboleto["valor_boleto"] = $valor_boleto; 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
 
 // DADOS DO SEU CLIENTE
-$dadosboleto["sacado"] 		= "Andre Kucaniz";
-$dadosboleto["endereco1"] 	= "Av Presidente Getúlio Vargas, 4547 Ap 90 / Água Verde";
-$dadosboleto["endereco2"] 	= "Curitiba / Paraná";
+$dadosboleto["sacado"] 		= "";
+$dadosboleto["endereco1"] 	= "";
+$dadosboleto["endereco2"] 	= "";
 
 
 $dadosboleto = array_merge(

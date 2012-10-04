@@ -296,6 +296,12 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 		return true;
 	}
 	
+	public function getPaymentVars($nosso_numero) {
+		
+		$values = sscanf($nosso_numero, "%03d%03d%05d%04d", $course_id, $invoice_index, $user_id, $negociation_id);
+		$fields = compact("course_id", "invoice_index", "user_id", "negociation_id");
+		return $fields;
+	}
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{7} != 0) {
 			throw new module_xpay_boletoException(_XPAY_BOLETO_REGISTERTYPEISDIFERENT, module_xpay_boletoException::DIFERENT_REGISTERTYPE);
@@ -1448,6 +1454,25 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 		return true;
 	}
 	
+	public function getPaymentVars($nosso_numero) {
+		
+		$invoiceData = eF_getTableData(
+				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
+				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
+				sprintf("invoice_id LIKE '%%%s'", $nosso_numero)
+		);
+		if (count($invoiceData) > 0) {
+			$negociation_id = $invoiceData[0]['negociation_id'];
+			$invoice_index	= $invoiceData[0]['invoice_index'];
+			$course_id		= $invoiceData[0]['course_id'];
+			$lesson_id		= $invoiceData[0]['lesson_id'];
+			$user_id		= $invoiceData[0]['user_id'];
+		
+			$values = compact("course_id", "lesson_id", "invoice_index", "user_id", "negociation_id");
+			return $values;
+		}
+		return false;
+	}
 	private function processReturnFileHeader($fileLine) {
 		if ($fileLine{0} != 0) {
 			throw new module_xpay_boletoException(_PAGAMENTO_REGISTERTYPEISDIFERENT, module_xpay_boletoException::DIFERENT_REGISTERTYPE);
@@ -2273,7 +2298,30 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 	}
 	
 	
-	private function getClienteFromNossoNumero($nosso_numero) {
+	private function getClienteFromNossoNumero($nosso_numero, $method_index = null) {
+		if (!is_null($method_index)) {
+			$proc_class_name = sprintf("module_xpay_boleto_%s_return_processor", $method_index);
+			
+			if (class_exists($proc_class_name)) {
+				$processor = new $proc_class_name();
+				
+				$identifiers = $processor->getPaymentVars($nosso_numero);
+				
+				$invoiceResult = eF_getTableData(
+						"`module_xpay_invoices` inv
+						JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
+						JOIN users u ON (neg.user_id = u.id)",
+						"inv.negociation_id, u.name, u.surname",
+						sprintf("neg.id = %d AND u.id = %d", $identifiers['negociation_id'], $identifiers['user_id'])
+				);
+				if (count($invoiceResult) > 0) {
+					$clienteData = reset($invoiceResult);
+					
+					return $clienteData['name'] . " " . $clienteData['surname'];
+				}
+			}
+			
+		}
 		$invoiceResult = eF_getTableData(
 			"`module_xpay_invoices` inv 
 			JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
@@ -2306,6 +2354,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			return $clienteData['name'] . " " . $clienteData['surname'];
 		}
+		
 	}	
 	public function returnedFile2Html($instance_id, $fileName) {
 		$smarty = $this->getSmartyVar();
@@ -2319,11 +2368,27 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$processor = new $proc_class_name($fullFileName);
 		$fileStatus = $processor->analyze();
 		
-		foreach($fileStatus['registros'] as &$register) {
-			if (trim($register['nome_sacado']["originaldata"]) == "") {
-				$register['nome_sacado']["formatteddata"] =
-				$register['nome_sacado']["parseddata"] =
-				$this->getClienteFromNossoNumero($register['nosso_numero']['originaldata']);
+/*		echo "<pre>";
+		var_dump($fileStatus);
+		echo "</pre>";
+*/		
+		if (array_key_exists("batch", $fileStatus)) {
+			foreach($fileStatus['batch'] as &$lote)
+				foreach($lote['registros'] as &$register) {
+					
+					if (trim($register['nome_sacado']["originaldata"]) == "") {
+						$register['nome_sacado']["formatteddata"] =
+						$register['nome_sacado']["parseddata"] =
+						$this->getClienteFromNossoNumero($register['nosso_numero']['originaldata'], $instance_id);
+					}
+				}
+		} else {
+			foreach($fileStatus['registros'] as &$register) {
+				if (trim($register['nome_sacado']["originaldata"]) == "") {
+					$register['nome_sacado']["formatteddata"] =
+					$register['nome_sacado']["parseddata"] =
+					$this->getClienteFromNossoNumero($register['nosso_numero']['originaldata'], $instance_id);
+				}
 			}
 		}
 		
@@ -2344,9 +2409,38 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
 		}
 		$smarty -> assign("T_BASE_LIQUIDACAO", $base_liquidacao);
+		
+		$bancos = eF_getTableData("module_xpay_boleto_bancos", "id, description");
+		
+		foreach($bancos as $banco) {
+			$base_bancos[$banco['id']] = $banco['description'];
+		}
+		$smarty -> assign("T_BASE_BANCOS", $base_bancos);
+		
+		/** @todo MAKE THIS CALL SUB-METHOD AWARE */
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_SERVICOS", array(
+			1 => "Cobrança",
+			2 => "Cobrança Sem Registro / Serviços",
+			3 => "Desconto de Títulos",
+			4 => "Caução de Títulos"
+		));
+		
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_RETORNO", array(
+			1 => "Remessa (Cliente &raquo; Banco)",
+			2 => "Retorno (Banco &raquo; Cliente)",
+			3 => "Remessa Processada (Banco &raquo; Cliente - Pré-crítica)",
+			4 => "Remessa Processada Parcial (Banco &raquo; Cliente - Pré-crítica)",
+			5 => "Remessa Rejeitada (Banco &raquo; Cliente - Pré-crítica)"
+		));
+		
+		;
 
 		$result = $smarty -> fetch($tplFile);
-		
+		/*
+		echo "<pre>";
+		var_dump($fileStatus);
+		echo "</pre>";
+		*/
 		return $result;
 	}
 	
