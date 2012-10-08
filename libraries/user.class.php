@@ -1090,8 +1090,7 @@ abstract class MagesterUser
   eF_deleteTableData("users_to_groups", "users_LOGIN='".$this -> user['login']."'");
   
   MagesterUserDetails::deleteDetails($this -> user['id']);
-  eF_deleteTableData("c_users_link", "parent_id ='".$this -> user['id']."' OR child_id = '" . $this -> user['id'] . "'");
-  
+ 
   eF_deleteTableData("users", "login='".$this -> user['login']."'");
   eF_deleteTableData("notifications", "recipient='".$this -> user['login']."'");
   MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_REMOVAL, "users_LOGIN" => $this -> user['login'], "users_name" => $this -> user['name'], "users_surname" => $this -> user['surname']));
@@ -3399,6 +3398,7 @@ class MagesterVisitant extends MagesterStudent {
 
 class MagesterResponsible extends MagesterStudent {
 	
+	/*
 	public function linkWithStudent($studentLogin) {
 		// LINK WITH USER
 
@@ -3419,6 +3419,7 @@ class MagesterResponsible extends MagesterStudent {
 
 		return eF_insertTableData("c_users_link", $linkInsert);
 	}
+	*/
 }
 
 class MagesterPreStudent extends MagesterStudent {
