@@ -4,28 +4,6 @@
 		<form {$T_XPAY_METHOD_FORM.attributes}>
 			{$T_XPAY_METHOD_FORM.hidden}
 			
-			<div style="float: right;">
-				{foreach key="pay_module_key" item="pay_module" from=$T_XPAY_METHODS}
-					<div class="form-field clear" style="float: left; margin-top:3px;" >
-						{if $pay_module.title}
-							<label class="clear" for="textfield">{$pay_module.title}</label>
-						{/if}
-						{foreach key="pay_index" item="pay_method" from=$pay_module.options}
-							{assign var = "input_name"  value = $pay_module_key:$pay_index }
-							{$T_XPAY_METHOD_FORM.pay_methods[$input_name].html}
-						{/foreach}
-					</div>
-				{/foreach}
-				
-				<div style="float: left;">
-					<button class="form-button icon-save openInvoiceDialog" type="submit">
-						<img width="29" height="29" src="images/transp.png">
-						<span>{$smarty.const.__XPAY_DO_PAY}</span>
-					</button>
-				</div>					
-				
-			</div>
-			
 			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
 			
 			<table class="style1">
@@ -95,6 +73,33 @@
 					</tr>
 				</tfoot>
 			</table>
+			{capture name="t_xpay_methods"}
+			<div>
+				{foreach key="pay_module_key" item="pay_module" from=$T_XPAY_METHODS}
+					<div class="form-field clear" style="float: left; margin-top:3px;" >
+						{if $pay_module.title}
+							<label class="clear" for="textfield">{$pay_module.title}</label>
+						{/if}
+						{foreach key="pay_index" item="pay_method" from=$pay_module.options}
+							{assign var = "input_name"  value = $pay_module_key:$pay_index }
+							{$T_XPAY_METHOD_FORM.pay_methods[$input_name].html}
+						{/foreach}
+					</div>
+				{/foreach}
+				
+				<div style="float: left;">
+					<button class="form-button icon-save" type="submit">
+						<img width="29" height="29" src="images/transp.png">
+						<span>{$smarty.const.__XPAY_SELECT}</span>
+					</button>
+				</div>					
+			</div>
+			{/capture}
+						
+			{eF_template_printBlock
+				title 			= $smarty.const.__XPAY_PAYMENT_METHOD
+				data			= $smarty.capture.t_xpay_methods
+			}
 	<!-- 
 			<div class="form-field clear buttons">
 				<button class="" type="submit" name="{$T_XPAY_METHOD_FORM.xpay_submit.name}" value="{$T_XPAY_METHOD_FORM.xpay_submit.value}">

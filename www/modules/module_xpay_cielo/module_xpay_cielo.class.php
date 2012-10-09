@@ -399,7 +399,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				case "6": {
 					$status = "Capturada";
 					
-					$message 		= "Pagamento Autorizado";
+					$message 		= "Pagamento Autorizado com sucesso";
 					$message_type	= "success";
 					
 					$xpayModule->insertInvoicePayment(
@@ -410,7 +410,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						$transaction['id'],
 						$transaction['data']
 					);
-					
+
 					// CALL EVENTS
 					/*
 					$xpayModule->onPaymentReceivedEvent($this, array(
@@ -440,7 +440,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					break;
 				}
 				case "10": {
-					$status 		= "Em autenticação";
+					$status	= "Em autenticação";
 					break;
 				}
 				default : {
@@ -457,19 +457,24 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$message_type	= "failure";
 		}
 		$smarty -> assign("T_XPAY_CIELO_STATUS", $status);
-		/*
+/*		
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE_TYPE", $message_type);
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE", $message);
-		*/
-		
+*/		
 		$this->setMessageVar($message, $message_type);
 		
-		//echo $this->moduleBaseDir . "templates/actions/return_payment.tpl";
-		//$this->assignSmartyModuleVariables();
+		$return_link = sprintf(str_replace("_cielo", "", $this->moduleBaseUrl) . "&action=do_payment&negociation_id=%s&invoice_index=%s&message=%s&message_type=%s",
+			$transaction['negociation_id'], 
+			$transaction['invoice_index'],
+			$message,
+			$message_type
+		);
 		
+		$smarty -> assign("T_XPAY_CIELO_RETURN_LINK", $return_link);
+		
+		$this->assignSmartyModuleVariables();
+
 		return true;
-		//echo $smarty -> fetch($this->moduleBaseDir . "templates/actions/return_payment.tpl");
-		//exit;
 	}
 	
 	private function cieloReturnToArray($xmlObject) {

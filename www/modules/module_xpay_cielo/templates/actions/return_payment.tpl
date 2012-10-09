@@ -17,7 +17,6 @@
 	    <div class="radius">
 	    	<span class="spanleft">Data / Hora:</span>
 	        <span class="spanright">#filter:date-{$T_XPAY_CIELO_TRANS.data}# / #filter:time-{$T_XPAY_CIELO_TRANS.data}#</span>
-	
 	    </div>
 	    <div class="radius">
 	    	<span class="spanleft">Bandeira:</span>
@@ -31,11 +30,19 @@
 	    	<span class="spanleft">Total:</span>
 	        <span class="spanright">#filter:currency-{$T_XPAY_CIELO_TRANS.valor_total}#</span>
 	    </div>
+	    {if $T_XPAY_CIELO_RETURN_LINK}
+		    <button name="configurar" type="button" class="event-confnormal" value="configurar" style="float:right; margin: 5px;" onclick="window.location.href = '{$T_XPAY_CIELO_RETURN_LINK}';">
+		    	<img src="images/transp.png" class="imgs_impress" width="29" height="29" />
+		    	<span>Retornar</span>
+		    </button>
+		    &nbsp;&nbsp;&nbsp;
+	    {/if}
+	    
 	    {if $T_XPAY_CIELO_TRANS.status == 6}
-	    <button name="configurar" type="button" class="event-confnormal" value="configurar" style="float:right;" onclick="window.print();">
-	    	<img src="images/transp.png" class="imgs_impress" width="29" height="29" />
-	    	<span>imprimir</span>
-	    </button>
+		    <button name="configurar" type="button" class="event-confnormal" value="configurar" style="float:right; margin: 5px;" onclick="window.print();">
+		    	<img src="images/transp.png" class="imgs_impress" width="29" height="29" />
+		    	<span>imprimir</span>
+		    </button>
 	    {/if}
 	</div>
 {/capture}
