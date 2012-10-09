@@ -56,13 +56,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						
 				"mastercard"	=> array(
 					'name'	=> "Mastercard"
-				),
+				)/*,
 				"elo"			=> array(
 					'name'	=> "Elo"
 				),
 				"diners"		=> array(
 					'name'	=> "Diners"
-				)/*,
+				)*//*,
 				"discover"		=> array(
 					'name'	=> "Discover"
 				)*/
@@ -118,13 +118,15 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			),
 			'mastercard'	=> array(
 				"1"	=> "Crédito À Vista"
-			),
+			)
+				/*
 			'elo'			=> array(
 				"1"	=> "Crédito À Vista"
 			),
 			'diners'		=> array(
 				"1"	=> "Crédito À Vista"
 			),
+			*/
 		);
 		
 		$parcelas = $allParcelas[$data['option']];
