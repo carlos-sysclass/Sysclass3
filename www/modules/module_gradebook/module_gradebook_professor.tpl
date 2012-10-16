@@ -209,30 +209,6 @@
 		});
 	}
 
-	function changeGrade(gid, el){
-
-		Element.extend(el);
-		var grade = $('grade_'+gid).value;
-		var url = '{/literal}{$T_GRADEBOOK_BASEURL}{literal}&change_grade='+gid+'&grade='+grade;
-
-		var img = new Element('img', {id:'img_'+gid, src:'{/literal}{$T_GRADEBOOK_BASELINK}{literal}images/progress1.gif'}).setStyle({position:'absolute'});
-		img_id = img.identify();
-		el.up().insert(img);
-
-		new Ajax.Request(url, {
-			method: 'get',
-			asynchronous: true,
-			onFailure: function(transport){
-				img.hide();
-				alert(decodeURIComponent(transport.responseText));
-			},
-			onSuccess: function(transport){
-				img.hide();
-				new Effect.Appear(el.up(), {queue:'end'});
-			}
-		});
-	}
-
 	/*function exportExcel(el){
 
 		element = document.getElementById(el);

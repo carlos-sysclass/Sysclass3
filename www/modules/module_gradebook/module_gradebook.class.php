@@ -125,7 +125,15 @@ class module_gradebook extends MagesterExtendedModule {
 		$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
 	
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
-	
+		
+		$currentCourse = $this->getSelectedCourse();
+		$currentCourseID = $currentCourse->course['id'];
+		$currentClasse = $this->getSelectedClasse();
+		$currentClasseID = $currentClasse->classe['id'];
+		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
+		$gradeBookClasses = $this->getGradebookClasses($currentCourseID);
+		$smarty->assign("T_GRADEBOOK_CLASSES", $gradeBookClasses);
+
 		$this->setMessageVar($message, $message_type);
 	}
 	public function editTotalCalculationAction() {
@@ -152,6 +160,14 @@ class module_gradebook extends MagesterExtendedModule {
 //		exit;
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 		//$smarty->assign("T_GRADEBOOK_GROUPS_REQUIRE_STATUSES", );
+		
+		$currentCourse = $this->getSelectedCourse();
+		$currentCourseID = $currentCourse->course['id'];
+		$currentClasse = $this->getSelectedClasse();
+		$currentClasseID = $currentClasse->classe['id'];
+		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
+		$gradeBookClasses = $this->getGradebookClasses($currentCourseID);
+		$smarty->assign("T_GRADEBOOK_CLASSES", $gradeBookClasses);
 	}
 	public function studentsGradesAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
@@ -159,9 +175,6 @@ class module_gradebook extends MagesterExtendedModule {
 		}
 
 		
-		/**
-		 * @todo Implementar this function, based on gradebook.total.window glyffy diag.
-		 */
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		
@@ -175,9 +188,18 @@ class module_gradebook extends MagesterExtendedModule {
 		}
 		$smarty->assign("T_GRADEBOOK_LESSON_ID", $currentLessonID);
 		$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
-		
 		$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
+		
+		$currentCourse = $this->getSelectedCourse();
+		$currentCourseID = $currentCourse->course['id'];
+		
+		$currentClasse = $this->getSelectedClasse();
+		$currentClasseID = $currentClasse->classe['id'];
+		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
+		$gradeBookClasses = $this->getGradebookClasses($currentCourseID);
+		$smarty->assign("T_GRADEBOOK_CLASSES", $gradeBookClasses);
+		
 	}
 	public function addGroupAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator') {
@@ -344,7 +366,6 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($return);
 		exit;
 	}
-	
 	public function addColumnAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator') {
 			return false;
@@ -545,6 +566,9 @@ class module_gradebook extends MagesterExtendedModule {
 		$currentLesson = $this->getSelectedLesson();
 		$currentLessonID = $currentLesson->lesson['id'];
 		
+		$currentCourse = $this->getSelectedCourse();
+		$currentClasse = $this->getSelectedClasse();
+		
 		is_numeric($_POST['group_id']) ? $currentGroupID = $_POST['group_id'] : (
 		is_numeric($_SESSION['gradebook_group_id']) ? $currentGroupID = $_SESSION['gradebook_group_id'] : $currentGroupID = 1
 		);
@@ -561,7 +585,7 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		foreach($result as $user)
 			array_push($allLogins, $user['users_LOGIN']);
-		
+		/*
 		if(sizeof($result) != sizeof($lessonUsers)){ // FIXME
 		
 			$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
@@ -600,13 +624,11 @@ class module_gradebook extends MagesterExtendedModule {
 				}
 			}
 		}
+		*/
 		/* End */
 		
 		$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 		$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
-		
-		
-		
 		
 		
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
@@ -615,6 +637,7 @@ class module_gradebook extends MagesterExtendedModule {
 			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 		}
 		
+		$smarty->assign("T_GRADEBOOK_GROUP_ID", $currentGroupID);
 		
  		$smarty->assign("T_GRADEBOOK_LESSON_ID", $currentLessonID);
 		
@@ -653,6 +676,85 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		
 	}
+	public function importStudentsGradesAction() {
+		$currentLesson = $this->getSelectedLesson();
+		$currentLessonID = $currentLesson->lesson['id'];
+		
+		is_numeric($_POST['group_id']) ? $currentGroupID = $_POST['group_id'] : (
+			is_numeric($_SESSION['gradebook_group_id']) ? $currentGroupID = $_SESSION['gradebook_group_id'] : $currentGroupID = 1
+		);
+		$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
+		
+	
+
+		if(
+			isset($_POST['column_id']) &&
+			eF_checkParameter($_POST['column_id'], 'id')
+			&& in_array($_POST['column_id'], array_keys($lessonColumns))
+		) {
+			$column_ID = $_POST['column_id'];
+		
+			$result = eF_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$column_ID);
+			$type = $result[0]['refers_to_type'];
+			$id = $result[0]['refers_to_id'];
+			$oid = $_GET['import_grades'];
+		
+			foreach($lessonUsers as $userLogin => $value) {
+				$this->importGrades($type, $id, $oid, $userLogin);
+			}
+			$return = array(
+				"message" 		=> "Notas importadas com sucesso!",
+				"message_type" 	=> "success",
+				"status"		=> "ok"
+			);
+		} else {
+			$return = array(
+				"message" 		=> "Occoreu um erro ao tentar calcular esta coluna. Caso os problemas persistam, consulte o administrador do sistema.",
+				"message_type" 	=> "error"
+			);
+		}
+		echo json_encode($return);
+		exit;
+	}
+	public function changeGradeAction() {
+		$newGrade = $_GET['grade'];
+		
+		$currentUser = $this->getCurrentUser();
+		
+		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
+
+			try{
+				if($newGrade != ''){
+			
+					if(eF_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
+						throw new MagesterContentException(_GRADEBOOK_INVALID_GRADE.': "'.$newGrade.'". '._GRADEBOOK_VALID_GRADE_SPECS,
+								MagesterContentException :: INVALID_SCORE);
+				}
+				else
+					$newGrade = -1;
+			
+				eF_updateTableData("module_gradebook_grades", array("grade" => $newGrade), "gid=".$_GET['gid']);
+				
+				
+				$response = array(
+					"message" 		=> "Nota alterada com sucesso",
+					"message_type"	=> "success"
+				);
+			} catch(Exception $e) {
+				$response = array(
+					"message" 		=> $e->getMessage(),
+					"message_type"	=> "failure"
+				);
+			}
+		} else {
+			$response = array(
+				"message" 		=> "Acesso não autorizado",
+				"message_type"	=> "error"
+			);
+		}
+		echo json_encode($response);
+		exit;
+	}
 	public function switchLessonAction() {
 		$currentUser = $this->getCurrentUser();
 		
@@ -676,12 +778,21 @@ class module_gradebook extends MagesterExtendedModule {
 			
 		}
 		
-		$gradeBookClasses = array();
+		//$gradeBookClasses = array();
 		if(
-				isset($_GET['classe_id']) &&
-				eF_checkParameter($_GET['classe_id'], 'id') &&
-				in_array($_GET['lesson_id'], array_keys($gradeBookClasses))
+			isset($_GET['classe_id']) &&
+			eF_checkParameter($_GET['classe_id'], 'id')/* &&
+			in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */
 		) {
+			$_SESSION["grade_classes_ID"] = $_GET['classe_id'];
+		}
+		
+		if(
+			isset($_GET['course_id']) &&
+			eF_checkParameter($_GET['course_id'], 'id')/* &&
+			in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */
+		) {
+			$_SESSION["grade_courses_ID"] = $_GET['course_id'];
 		}
 		
 		if (!empty($_GET['from'])) {
@@ -698,6 +809,25 @@ class module_gradebook extends MagesterExtendedModule {
 			return "edit_rule_calculation";
 		}
 	}
+	
+	/**
+	 * @todo TRANSFER THIS FUNCTION TO YOUR OWN MODULE 
+	 */
+	public function loadClassesAction() {
+		if (is_numeric($_POST['course_id'])) {
+			$courseClasses = $this->getGradebookClasses($_POST['course_id']);
+			
+			$classeAssoc = array();
+			foreach($courseClasses as $classe) {
+				$classeAssoc[$classe['id']] = $classe['name'];
+			}
+
+			echo json_encode($classeAssoc);
+			exit;
+		}
+		return false;
+	}
+	
 
 	public function getModule(){
 		$result = parent::getModule();
@@ -784,7 +914,7 @@ class module_gradebook extends MagesterExtendedModule {
 				eF_checkParameter($_GET['import_grades'], 'id')
 				&& in_array($_GET['import_grades'], array_keys($lessonColumns))
 		) {
-
+			/*
 			$object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['import_grades']);
 
 			//   if($object[0]['creator'] != $_SESSION['s_login']){
@@ -801,6 +931,7 @@ class module_gradebook extends MagesterExtendedModule {
 				
 				$this->importGrades($type, $id, $oid, $userLogin);
 			}
+			*/
 		} elseif (
 				isset($_GET['delete_column']) && 
 				eF_checkParameter($_GET['delete_column'], 'id') 
@@ -813,8 +944,8 @@ class module_gradebook extends MagesterExtendedModule {
 			//    exit;
 			//   }
 
-			eF_deleteTableData("module_gradebook_objects", "id=".$_GET['delete_column']);
-			eF_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
+			//eF_deleteTableData("module_gradebook_objects", "id=".$_GET['delete_column']);
+			//eF_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
 		} elseif(isset($_GET['compute_score_grade']) && $_GET['compute_score_grade'] == '1') {
 
 			foreach($allUsers as $uid => $student)
@@ -1031,8 +1162,8 @@ class module_gradebook extends MagesterExtendedModule {
 			isset($_GET['grade']) && 
 			eF_checkParameter($_GET['change_grade'], 'id')
 		) {
+			/*
 			$newGrade = $_GET['grade'];
-
 			try{
 				if($newGrade != ''){
 
@@ -1048,8 +1179,9 @@ class module_gradebook extends MagesterExtendedModule {
 				header("HTTP/1.0 500");
 				echo rawurlencode($e->getMessage());
 			}
-
+			
 			exit;
+			*/
 		} else {
 			$smarty->assign("T_GRADEBOOK_RANGES", $ranges);
 
@@ -1367,6 +1499,44 @@ class module_gradebook extends MagesterExtendedModule {
 		}
 		return $currentLesson;
 	}
+	private function getSelectedCourse($currentUser = null) {
+		if (is_null($currentUser)) {
+			$currentUser = $this->getCurrentUser();
+		}
+		if (isset($_SESSION["grade_courses_ID"]) && is_numeric($_SESSION["grade_courses_ID"]) && $currentUser->getType() == 'administrator') {
+			$currentCourse = new MagesterCourse($_SESSION["grade_courses_ID"]);
+		}
+	
+		if (is_null($currentCourse)) {
+			$currentLesson = $this->getSelectedLesson($currentUser);
+			
+			$allCourses = $currentLesson->getCourses(true);
+			$currentCourse = reset($allCourses);
+			
+			$_SESSION["grade_courses_ID"] = $currentCourse->course['id'];
+		}
+		return $currentCourse;
+	}
+	private function getSelectedClasse($currentUser = null) {
+		if (is_null($currentUser)) {
+			$currentUser = $this->getCurrentUser();
+		}
+		if (isset($_SESSION["grade_classes_ID"]) && is_numeric($_SESSION["grade_classes_ID"]) && $currentUser->getType() == 'administrator') {
+			$currentClasse = new MagesterCourseClass($_SESSION["grade_classes_ID"]);
+		}
+	
+		if (is_null($currentClasse)) {
+			/*
+			$currentCourse = $this->getSelectedCourse($currentUser);
+				
+			$allCourses = $currentLesson->getCourses(true);
+			$currentCourse = reset($allCourses);
+				
+			$_SESSION["grade_classes_ID"] = $currentCourse->course['id'];
+			*/
+		}
+		return $currentClasse;
+	}
 	private function getRanges(){
 
 		$result = eF_getTableData("module_gradebook_ranges", "*", "", "range_from");
@@ -1410,9 +1580,14 @@ class module_gradebook extends MagesterExtendedModule {
 		var_dump($grade_object);
 		exit;
 	}
-	private function getLessonUsers($lessonID, $objects){
+	private function getLessonUsers($lessonID, $objects, $classe_id = null){
 
-		$result = eF_getTableData("module_gradebook_users", "*", "lessons_ID=".$lessonID, "uid");
+		$result = eF_getTableData(
+			"module_gradebook_users", 
+			"*", 
+			"lessons_ID=".$lessonID, 
+			"uid"
+		);
 		$users = array();
 
 		foreach($result as $value){
@@ -1468,6 +1643,11 @@ class module_gradebook extends MagesterExtendedModule {
 	return $lessons;
 	}
 	*/
+	private function getGradebookClasses($currentCourseID) {
+		$courseClasses = MagesterCourseClass::getAllClasses(array('course_id' => $currentCourseID, 'return_objects' => false));
+
+		return $courseClasses;
+	}
 	private function getGradebookGroups($currentLessonID, $currentClasseID = null){ // lessons where GradeBook is installed
 
 		is_null($currentClasseID) ? $currentClasseID = 0 : null; 
@@ -1476,11 +1656,11 @@ class module_gradebook extends MagesterExtendedModule {
 			"module_gradebook_groups grp 
 			LEFT OUTER JOIN module_gradebook_groups_order ord ON (
 				grp.id = ord.group_id AND 
-				grp.lesson_id = ord.lesson_id AND
-				grp.classe_id = ord.classe_id
+				(grp.lesson_id = ord.lesson_id OR grp.lesson_id = 0) AND 
+				(grp.classe_id = ord.classe_id OR grp.classe_id = 0)
 			)",
 			//"id, lesson_id, classe_id, name",
-			"*",
+			"grp.*, ord.*",
 			"grp.lesson_id IN (0, " . $currentLessonID . ") AND 
 			grp.classe_id IN (0, " . $currentClasseID . ")",
 			"ord.order_index, grp.id"
@@ -1494,10 +1674,11 @@ class module_gradebook extends MagesterExtendedModule {
 				(grp.classe_id = ord.classe_id OR grp.classe_id = 0)
 			)",
 			//"id, lesson_id, classe_id, name",
-			"*",
+			"grp.id, grp.lesson_id, grp.classe_id, grp.name, grp.require_status, grp.min_value, ord.order_index",
 			"grp.lesson_id IN (0, " . $currentLessonID . ") AND 
 			grp.classe_id IN (0, " . $currentClasseID . ")",
-			"ord.order_index, grp.id"
+			"ord.order_index, grp.id",
+			"grp.id"
 		);
 		$gradebook = array();
 		$require_statuses = array(

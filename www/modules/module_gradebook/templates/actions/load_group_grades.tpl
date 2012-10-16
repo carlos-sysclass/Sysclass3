@@ -4,21 +4,17 @@
 		<tr>
 			<th class="topTitle">{$smarty.const._GRADEBOOK_STUDENT_NAME}</th>
 			{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_LESSON_COLUMNS}
-			<th class="topTitle rightAlign">{$column.name} ({$smarty.const._GRADEBOOK_COLUMN_WEIGHT_DISPLAY}: {$column.weight})</th>
-			<!-- 
-			<td class="topTitle leftAlign noSort" style="width:16px;">
-				<a href="{$T_GRADEBOOK_BASEURL}&delete_column={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0"></a>
-			</td>
-			 -->
-			<!-- 
-	{if $column.refers_to_type != 'real_world'}
-			<td class="topTitle leftAlign noSort" style="width:16px;">
-				<a href="{$T_GRADEBOOK_BASEURL}&import_grades={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/import.png" alt="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" title="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" border="0"></a>
-			</td>
-	{else}
-			<td class="topTitle leftAlign noSort">&nbsp;</td>
-	{/if}
-	 		-->
+			<th class="topTitle rightAlign">{$column.name} ({$smarty.const._GRADEBOOK_COLUMN_WEIGHT_DISPLAY}: {$column.weight})
+				{if $column.refers_to_type != 'real_world'}
+				<!-- <a href="{$T_GRADEBOOK_BASEURL}&import_grades={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/import.png" alt="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" title="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" border="0"></a>  -->
+				<a href="javascript: _sysclass('load', 'gradebook').importStudentsGrades({$T_GRADEBOOK_GROUP_ID}, {$column.id})" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/import.png" alt="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" title="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" border="0"></a>
+				{/if}
+				<!-- 
+				<td class="topTitle leftAlign noSort" style="width:16px;">
+					<a href="{$T_GRADEBOOK_BASEURL}&delete_column={$column.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/delete.png" alt="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" title="{$smarty.const._GRADEBOOK_DELETE_COLUMN}" border="0"></a>
+				</td>
+				 -->
+			</th>
 			{/foreach}
 			<th class="topTitle centerAlign">{$smarty.const._GRADEBOOK_SCORE}</th>
 			<!-- <th class="topTitle centerAlign noSort">{$smarty.const._GRADEBOOK_GRADE}</th>  -->
