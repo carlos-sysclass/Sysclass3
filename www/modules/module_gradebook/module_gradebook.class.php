@@ -1237,20 +1237,16 @@ class module_gradebook extends MagesterExtendedModule {
 				$lessonColumns = $this->getLessonColumns($currentLessonID);
 				$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
 				
-				
-				
-				
-				
 				if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 					$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
 				} else {
 					$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 				}
 				/*
-				echo '<pre>';
-				var_dump($lessonColumns);
-				echo '</pre>';
-				exit;
+					echo '<pre>';
+					var_dump($lessonColumns);
+					echo '</pre>';
+					exit;
 				*/
 				$smarty->assign("T_GRADEBOOK_LESSON_ID", $currentLessonID);
 				
