@@ -176,6 +176,14 @@
 				"#gradebook-group-grades-container"
 			);
 		},
+		loadClassesByCourse : function($courseID, $lessonID, callback) {
+			this._postAction(
+				"load_classes",
+				{"course_id" : $courseID, "lesson_id" : $lessonID},
+				callback,
+				'json'
+			);
+		},
 		deleteColumn : function($columnID) {
 			_sysclass("load", "gradebook")._postAction(
 				"delete_column",
@@ -188,14 +196,26 @@
 				'json'
 			);
 		},
-
-		switchToLessonClasse : function(lesson_id, classe_id) {
+		importStudentsGrades : function($groupID, $columnID) {
+			var self = this;
+			this._postAction(
+				"import_students_grades",
+				{'group_id' : $groupID, 'column_id' : $columnID, "from" : this.action},
+				function(response, status) {
+					if (response.status == 'ok') {
+						self.loadGroupGrades($groupID);
+					}
+				},
+				'json'
+			);
+		},
+		switchToLessonClasse : function(lesson_id, classe_id, course_id) {
 			
 			classe_id == null ? classe_id = 0 : null;
 			
 			_sysclass("load", "gradebook")._redirectAction(
 				"switch_lesson",
-				{'lesson_id' : lesson_id, 'classe_id' : classe_id, "from" : this.action}
+				{'lesson_id' : lesson_id, 'classe_id' : classe_id, 'course_id' : course_id, "from" : this.action}
 			);
 		},
 		refreshGroupUI : function() {
@@ -205,6 +225,8 @@
 		},
 		startUI : function() {
 			this.refreshGroupUI();
+			
+			//jQuery("#switch_lesson").change();
 		}
 	};
 
@@ -213,6 +235,10 @@
 
 /* MODULE FLOW-LOGIC */
 (function( $ ){
+	
+	
+	var courseClasses = [];
+	
 	jQuery.Topic( "xcourse_course_lesson_change" ).subscribe( function(course_id, lesson_id) {
 		var url = window.location.pathname + "?ctg=module&op=module_gradebook&lessons_ID=" + lesson_id;
 		jQuery("#modules_gradebook_change_lesson_id").attr("href", url);
@@ -241,6 +267,49 @@
 		}
 	}
 	
+	
+	jQuery("#switch_lesson").change( function() {
+		jQuery("#switch_classe option:not(:first)").remove();
+		
+		CourseAndLesson = jQuery(this).val().split("_");
+		if (typeof(courseClasses[CourseAndLesson[0]]) == 'object') {
+			injectClasseIntoCombo(courseClasses[CourseAndLesson[0]]);
+		} else {
+			_sysclass('load', 'gradebook').loadClassesByCourse(
+				CourseAndLesson[0], CourseAndLesson[1],
+				function(classes) {
+					courseClasses[CourseAndLesson[0]] = classes;
+					injectClasseIntoCombo(courseClasses[CourseAndLesson[0]]);
+				}
+				
+			);
+		}
+	});
+	
+	var injectClasseIntoCombo = function(classes) {
+		jQuery("#switch_classe option:not(:first)").remove();
+		for(index in classes) {
+			jQuery("#switch_classe").append(
+				'<option value="' + index + '">' + classes[index] + '</option>'
+			);
+		}
+	}
+	
+	jQuery("#switch_to_link").click( function() {
+		var courseAndLesson = jQuery("#switch_lesson").val().split("_");
+		var courseID = courseAndLesson[0];
+		var lessonID = courseAndLesson[1];
+		var classeID = jQuery('#switch_classe').val();
+		_sysclass('load', 'gradebook').switchToLessonClasse(lessonID, classeID, courseID);
+		
+		return false;
+	});
+
+	
 	_sysclass('load', 'gradebook').startUI();
 	
 })( jQuery );
+
+
+
+
