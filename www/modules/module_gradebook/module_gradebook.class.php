@@ -679,6 +679,11 @@ class module_gradebook extends MagesterExtendedModule {
 		
 	}
 	public function importStudentsGradesAction() {
+		/*
+		$_POST['column_id']	= 194;
+		$_POST['from']		= 'students_grades';
+		$_POST['group_id']	= 7;
+		*/
 		$currentLesson = $this->getSelectedLesson();
 		$currentLessonID = $currentLesson->lesson['id'];
 		
@@ -686,23 +691,24 @@ class module_gradebook extends MagesterExtendedModule {
 			is_numeric($_SESSION['gradebook_group_id']) ? $currentGroupID = $_SESSION['gradebook_group_id'] : $currentGroupID = 1
 		);
 		$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
-		
-	
 
 		if(
 			isset($_POST['column_id']) &&
 			eF_checkParameter($_POST['column_id'], 'id')
 			&& in_array($_POST['column_id'], array_keys($lessonColumns))
 		) {
+			$lessonUsers = $currentLesson->getUsers('student');
 			$column_ID = $_POST['column_id'];
 		
 			$result = eF_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$column_ID);
+
 			$type = $result[0]['refers_to_type'];
 			$id = $result[0]['refers_to_id'];
-			$oid = $_GET['import_grades'];
+			$oid = $column_ID;
 		
 			foreach($lessonUsers as $userLogin => $value) {
 				$this->importGrades($type, $id, $oid, $userLogin);
+
 			}
 			$return = array(
 				"message" 		=> "Notas importadas com sucesso!",
@@ -1883,6 +1889,7 @@ var_dump(
 				$grade = round($result[0]['score']);
 			else
 				$grade = -1;
+
 		}
 		else if($type == 'scormtest'){
 
@@ -1921,7 +1928,11 @@ var_dump(
 			$grade = round($progress[$id]->lesson['overall_progress']['percentage']); // actually it's not grade but progress ...
 		}
 
-		eF_updateTableData("module_gradebook_grades", array("grade" => $grade), "oid=".$oid." and users_LOGIN='".$userLogin."'");
+		eF_insertOrupdateTableData("module_gradebook_grades", array(
+			"oid" => $oid, 
+			"users_LOGIN" => $userLogin, 
+			"grade" => $grade
+		), "oid=".$oid." and users_LOGIN='".$userLogin."'");
 	}
 	private function computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid) {
 
