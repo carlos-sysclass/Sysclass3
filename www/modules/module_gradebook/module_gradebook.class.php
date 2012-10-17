@@ -165,6 +165,7 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		$currentCourse = $this->getSelectedCourse();
 		$currentCourseID = $currentCourse->course['id'];
+		$smarty->assign("T_GRADEBOOK_COURSE_ID", $currentCourseID);
 		$currentClasse = $this->getSelectedClasse();
 		$currentClasseID = $currentClasse->classe['id'];
 		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
@@ -195,7 +196,7 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		$currentCourse = $this->getSelectedCourse();
 		$currentCourseID = $currentCourse->course['id'];
-		
+		$smarty->assign("T_GRADEBOOK_COURSE_ID", $currentCourseID);
 		$currentClasse = $this->getSelectedClasse();
 		$currentClasseID = $currentClasse->classe['id'];
 		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
