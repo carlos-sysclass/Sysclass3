@@ -2269,6 +2269,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 
 					// MOVE FILE TO YOUR OWN PATH
 					$finalPath = sprintf($this->getConfig()->paths['return_instance'], $file['method_index']);
+					
 					rename($fileProcPath, $finalPath . $file['name']);
 				} elseif ($importStatus === FALSE) { // FALSE IS A IMPORT ERROR, MUST TRY AGAIN
 				} else { // ANYTHING ELSE IS A FATAL ERROR
@@ -2279,7 +2280,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				if (is_numeric($maxFiles) && $maxFiles > 0 && $count >= $maxFiles) {
 					break;
 				}
-		
+				
 			}
 		}
 		return $count; 
@@ -2365,6 +2366,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		}
 	
 		$fullFileName = sprintf($this->getConfig()->paths['return_instance'] . $fileName, $instance_id);
+
 		$processor = new $proc_class_name($fullFileName);
 		$fileStatus = $processor->analyze();
 		
@@ -2916,9 +2918,9 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		foreach($paymentIndexes as $instance_type) {
 			$fullProcPaths[$instance_type] = sprintf($this->getConfig()->paths['return_instance'], $instance_type);
 			$queueList[$instance_type] = array(
-					'name'	=> $paymentTypes['options'][$instance_type]['fullname'],
-					'files'	=> array(),
-					'size'	=> 0
+				'name'	=> $paymentTypes['options'][$instance_type]['fullname'],
+				'files'	=> array(),
+				'size'	=> 0
 			);
 		}
 		$fullProcPaths = array_unique($fullProcPaths);
@@ -2946,18 +2948,18 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 				if ($max_count > 0 && $counter > $max_count) {
 					break;
 				}
-				$fileTmp = reset(explode(".", $file));
+//				$fileTmp = reset(explode(".", $file));
 				
-				list($name, $count) = explode("-", $fileTmp);
+//				list($name, $count) = explode("-", $fileTmp);
 
 				$file_stat = stat($procPath . $file);
 	
 				$fileStruct = array(
 					'fullpath'	=> $procPath . $file,
-					'name'		=> $name . "-" . $count . ".ret",
+					'name'		=> $file,
 					'method_index'	=> $method,
 					'method_name'	=> $paymentTypes['options'][$method]['fullname'],
-					'timestamp' => $file_stat['mtime'],
+					'timestamp' 	=> $file_stat['mtime'],
 					'size'		=> sprintf("%.2fKb", ($file_stat['size'] / 1024))
 				);
 				$queueList[$method]['files'][] = $fileStruct;
