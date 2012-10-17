@@ -128,6 +128,8 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		$currentCourse = $this->getSelectedCourse();
 		$currentCourseID = $currentCourse->course['id'];
+		$smarty->assign("T_GRADEBOOK_COURSE_ID", $currentCourseID);
+
 		$currentClasse = $this->getSelectedClasse();
 		$currentClasseID = $currentClasse->classe['id'];
 		$smarty->assign("T_GRADEBOOK_CLASSE_ID", $currentClasseID);
@@ -757,8 +759,10 @@ class module_gradebook extends MagesterExtendedModule {
 	}
 	public function switchLessonAction() {
 		$currentUser = $this->getCurrentUser();
-		
+/*		
 		$currentLessonID = $_SESSION["grade_lessons_ID"];
+
+		var_dump($currentLessonID);
 		
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
@@ -767,19 +771,20 @@ class module_gradebook extends MagesterExtendedModule {
 		} else {
 			$gradeBookLessons = array();
 		}
-		
+var_dump(array_keys($gradeBookLessons));
+var_dump(
+                        in_array($_GET['lesson_id'], array_keys($gradeBookLessons)));
+
+*/		
 		if(
 			isset($_GET['lesson_id']) &&
-			eF_checkParameter($_GET['lesson_id'], 'id') &&
-			in_array($_GET['lesson_id'], array_keys($gradeBookLessons))
+			eF_checkParameter($_GET['lesson_id'], 'id')
 		) {
 			$_SESSION["grade_lessons_ID"] = $_GET['lesson_id'];
-		} else {
-			
 		}
 		
-		//$gradeBookClasses = array();
 		if(
+
 			isset($_GET['classe_id']) &&
 			eF_checkParameter($_GET['classe_id'], 'id')/* &&
 			in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */

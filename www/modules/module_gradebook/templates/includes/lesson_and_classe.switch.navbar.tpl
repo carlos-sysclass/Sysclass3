@@ -3,7 +3,7 @@
 		{foreach name = 'lessons_loop' key = "course_id" item = "course" from = $T_GRADEBOOK_GRADEBOOK_LESSONS}
 			<optgroup label="{$course.name}">
 			{foreach name = 'lessons_loop' key = "lesson_id" item = "lesson" from = $course.lessons}
-					<option value="{$course.id}_{$lesson.id}" {if $lesson.id == $T_GRADEBOOK_LESSON_ID}selected="selected"{/if}>{$lesson.name}</option>
+					<option value="{$course.id}_{$lesson.id}" {if $course.id == $T_GRADEBOOK_COURSE_ID && $lesson.id == $T_GRADEBOOK_LESSON_ID}selected="selected"{/if}>{$lesson.name}</option>
 			{/foreach}
 			</optgroup>
 		{/foreach}
