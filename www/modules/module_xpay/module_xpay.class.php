@@ -518,19 +518,30 @@ class module_xpay extends MagesterExtendedModule {
 		if ($this->getCurrentUser()->getType() == 'administrator') {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		}
+		// GET ALL USER GROUPED NEGOCIATIONS
+		
+		
 		// GET ALL DEBITS
-		$userDebits = $this->_getUserModulePayStatus();
+		$userDebits = $this->_getUserModuleNegociations();
+		
 		
 
 		
-		if (count($userDebits['invoices']) == 1 && count($userDebits['grouped'] == 0)) {
-			$userDebit = reset($userDebits['invoices']);
-			$_GET['x' . $userDebit['type'] . '_id'] = $userDebit['module_id'];
+/*
+		echo "<pre>";
+		var_dump($userDebits);
+		echo "</pre>";
+		exit;
+	*/	
+		if (count($userDebits) == 1) {
+			$userDebit = reset($userDebits);
+			var_dump($_GET['negociation_id'] = $userDebit['id']);
 			$this->setCurrentAction("view_user_course_statement", true);
 		//} elseif (count($userDebits['grouped']) == 1 && count($userDebits['invoices'] == 0)) {
 //			echo "hdjka";
 //			exit;
 		} else {
+			/*
 			// PROCESS INVOICES...
 			$usersTotals= array(
 				'base_price'	=> 0,
@@ -602,13 +613,20 @@ class module_xpay extends MagesterExtendedModule {
 						$groupedStatement[$group_id]["lesson_count"]
 					);
 				}
-				
 			}
+			
+			//var_dump($groupedStatement);
+			
 			
 			$usersTotals['balance'] = intval($usersTotals['base_price'])-intval($usersTotals['paid']);		
 
-			$smarty -> assign("T_XPAY_STATEMENT", $userDebits['invoices'] + $groupedStatement);
+			if (is_array($groupedStatement)) {
+				$smarty -> assign("T_XPAY_STATEMENT", $userDebits['invoices'] + $groupedStatement);
+			} else {
+				$smarty -> assign("T_XPAY_STATEMENT", $userDebits['invoices']);
+			}
 			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $usersTotals);
+			*/
 		}
 	}
 	public function viewUserCourseStatementAction() {
@@ -631,147 +649,95 @@ class module_xpay extends MagesterExtendedModule {
 		if (!($editUser = $this->getEditedUser())) {
 			return false;
 		}
-		if (!($editCourse = $this->getEditedCourse()) && !($editLesson = $this->getEditedLesson())) {
+		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id")) {
+			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
+		} else {
+		}
+		if (!$userNegociation && !($editCourse = $this->getEditedCourse()) && !($editLesson = $this->getEditedLesson())) {
 			return false;
 		}
 		
-		if ($editLesson) {
+		if (!$userNegociation && $editLesson) {
 			$entify = $editLesson->lesson;
 			$entify['type']	= 'lesson';
 		}
-		if ($editCourse) {
+		if (!$userNegociation && $editCourse) {
 			$entify = $editCourse->course;
 			$entify['type']	= 'course';
 		}
 		
 		//	ONLY directions_ID = 13 COURSES
 		//if ($entify['directions_ID'] == self::__NUCLEO_ULT) {
-			$negociation_index = $_GET['negociation_index'];
+		$negociation_index = $_GET['negociation_index'];
 		
-			//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $negociation_index);
+		if (!$userNegociation) {
 			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociation_index);
+		}
 			
-			foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
-				$applied_rules = array();
-				if ($invoice['total_reajuste'] <> 0) {
-					foreach($invoice['workflow'] as $workflow) {
-						if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
-							foreach($invoice['rules'] as $rule) {
-								if ($rule['id'] == $workflow['rule_id']) {
-									$currentRule = $rule;
-									break;
-								}
+		foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
+			$applied_rules = array();
+			if ($invoice['total_reajuste'] <> 0) {
+				foreach($invoice['workflow'] as $workflow) {
+					if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
+						foreach($invoice['rules'] as $rule) {
+							if ($rule['id'] == $workflow['rule_id']) {
+								$currentRule = $rule;
+								break;
 							}
-							$applied_rules[$workflow['rule_id']] = array(
-								'description'		=> $currentRule['description'],
-								'input'				=> $workflow['input'],
-								'diff'				=> $workflow['diff'],
-								'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
-								'count'				=> 0
-							);
 						}
-						$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
-						$applied_rules[$workflow['rule_id']]['count']++;
+						$applied_rules[$workflow['rule_id']] = array(
+							'description'		=> $currentRule['description'],
+							'input'				=> $workflow['input'],
+							'diff'				=> $workflow['diff'],
+							'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
+							'count'				=> 0
+						);
 					}
-				}
-				$userNegociation['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
-				/*
-				["applied_rules"]=>
-				array(2) {
-					[2]=>
-					array(5) {
-						["description"]=>
-						string(22) "Multa de 2% por atraso"
-						["input"]=>
-						float(287.778)
-						["diff"]=>
-						float(5.75556)
-						["count"]=>
-						int(1)
-						["output"]=>
-						float(293.53356)
-					}
-					[3]=>
-					array(5) {
-						["description"]=>
-						string(21) "Juros de 0.33% ao Dia"
-						["input"]=>
-						float(293.53356)
-						["diff"]=>
-						float(0.9496674)
-						["count"]=>
-						int(131)
-						["output"]=>
-						float(417.9399894)
-					}
-				}
-				*/
-			}
-			/*
-			if ($this->getCurrentUser()->getType() == 'student') {
-				// @tmp Check if student is on send list
-				list($countItem) = eF_countTableData(
-					"module_xpay_to_send_list_item",
-					"*",
-					sprintf("negociation_id = %d", $userNegociation['id'])
-				);
-				
-				if ($countItem['count'] == 0) {
-					eF_redirect(sprintf("student.php?message=%s&message_type=%s", __XPAY_UNKNOW_ERROR, "failure"));
-					return false;
+					$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
+					$applied_rules[$workflow['rule_id']]['count']++;
 				}
 			}
-			*/
-	
+			$userNegociation['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+		}
 
-			if (count($userNegociation) == 0) {
-				// CHECK IF COURSE HAS A DEFAULT STATEMENT
+		if (count($userNegociation) == 0) {
+			// CHECK IF COURSE HAS A DEFAULT STATEMENT
 				
-				// CHECK IF HAS A PAYMENT REGISTERED ON OLD module
-				if ($entify['type'] == 'course') {
-					if (!$this->_migrateOldPaymentToNegociation($editUser->user['id'], $entify['id'])) {
-						$negociationData = $this->_createUserDefaultStatement();
-					}
-					
-
-					
-					
-				} else {
+			// CHECK IF HAS A PAYMENT REGISTERED ON OLD module
+			if ($entify['type'] == 'course') {
+				if (!$this->_migrateOldPaymentToNegociation($editUser->user['id'], $entify['id'])) {
 					$negociationData = $this->_createUserDefaultStatement();
 				}
+			} else {
+				$negociationData = $this->_createUserDefaultStatement();
+			}
 				
-				$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index']);
-			} elseif (count($userNegociation['invoices']) == 0) {
-				//$this->_createUserDefaultInvoices($negociationData['id']);
-					
-				//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
-			}
-			//var_dump($userNegociation);
-			//exit;
-			
-			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
-			
-			$negociationTotals = array(
-					'invoices_count'	=> count($userNegociation['invoices']),
-					'valor'				=> 0,
-					'paid'				=> 0,
-					'balance'			=> 0
-			);
-	
-			foreach($userNegociation['invoices'] as $invoice) {
-				$negociationTotals['valor']	+= $invoice['valor'];
-				$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
-				$negociationTotals['paid']	+= $invoice['paid'];
-			}
-			$negociationTotals['balance'] = intval($negociationTotals['valor'])-intval($negociationTotals['paid']);
+			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index']);
+		} elseif (count($userNegociation['invoices']) == 0) {
+			//$this->_createUserDefaultInvoices($negociationData['id']);
+				
+			//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
+		}
 		
-			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
+		$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
 			
-			return true;
-		//} else {
-			//$this->setMessageVar("Acesso Não Autorizado", "failure");
-			//return false;
-		//}
+		$negociationTotals = array(
+			'invoices_count'	=> count($userNegociation['invoices']),
+			'valor'				=> 0,
+			'paid'				=> 0,
+			'balance'			=> 0
+		);
+	
+		foreach($userNegociation['invoices'] as $invoice) {
+			$negociationTotals['valor']	+= $invoice['valor'];
+			$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
+			$negociationTotals['paid']	+= $invoice['paid'];
+		}
+		$negociationTotals['balance'] = intval($negociationTotals['valor'])-intval($negociationTotals['paid']);
+	
+		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
+		
+		return true;
 	}
 	public function simulateDueBalanceNegociationAction() {
 		$smarty = $this->getSmartyVar();
@@ -2131,8 +2097,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $workflow;
 	}
-	
-	
+
 	/* GETTERS */
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
@@ -2162,7 +2127,7 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		return $lastPaymentsList;
 	}
-	
+	/*
 	private function _getUserModulePayStatus($login = null, $module_id = null) {
 		if (!is_null($login)) {
 			$editedUser = $this->getEditedUser(true, $login);
@@ -2260,15 +2225,10 @@ class module_xpay extends MagesterExtendedModule {
 				unset($userDebits[$index]);
 			}
 		}
-		
-		/*
-			if (!is_null($module_id)) {
-		return $userDebits[$module_id];
-		}
-		*/
 	
 		return array('invoices' => $userDebits, 'grouped' => $userDebitsGroup);
 	}
+	
 	
 	private function _getUserCoursesPayStatus($login = null, $module_id = null) {
 		if (!is_null($login)) {
@@ -2344,14 +2304,38 @@ class module_xpay extends MagesterExtendedModule {
 			$statement['balance'] = intval($statement['base_price'])-intval($statement['paid']);
 			$userDebits[] = $statement;
 		}
-		/*
-		if (!is_null($module_id)) {
-			return $userDebits[$module_id];
-		}
-		*/
 		
 		return $userDebits;
 	}
+	*/
+	
+	private function _getUserModuleNegociations($login = null, $module_id = null, $module_type = null) {
+		if (!is_null($login)) {
+			$editedUser = $this->getEditedUser(true, $login);
+		} else {
+			$editedUser = $this->getEditedUser();
+		}
+	
+		/* FUNCTION WALKTHROUGH */
+		/* STEP 1. GET ALL USER NO-SIMULATED NEGOCIATIONS */
+		$userNegociations = eF_getTableDataFlat(
+			'module_xpay_course_negociation neg',
+			'neg.id',
+			sprintf('neg.user_id = %1$d AND neg.is_simulation = 0', $editedUser->user['id'])
+		);
+
+		if (count($userNegociations['id'])) {
+			foreach($userNegociations['id'] as $negocID) {
+				/* STEP 2. (**MOVE TO INNER FUNCTIONS**) CHECK IF THESE NEGOCIATION ARE GROUPED OR NOT */
+				$negociations[] = $this->_getNegociationById($negocID);
+			}
+		}
+
+		/** @todo STEP 3. GRAB ALL USER COURSES AND LESSONS WHO DOESNT HAVE NEGOCIATION, AND APPEND */
+		
+		return $negociations;
+	}
+	
 	public function _getNegociationPayerByNegociationID($negociationID) {
 		// CHECK IF IS A SINGLE OR MULTIPLE PAYER NEGOCIATION
 		if (eF_checkParameter($negociationID, 'id')) {
