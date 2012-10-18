@@ -2729,12 +2729,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_negociation_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
-CREATE TABLE IF NOT EXISTS `module_xpay_negociation_modules` (
-  `negociation_id` mediumint(8) NOT NULL,
-  `invoice_index` mediumint(8) NOT NULL, 
-  `group_id` mediumint(8) NOT NULL,
-  PRIMARY KEY (`negociation_id`, `invoice_index`, `group_id`)
-) ENGINE=MyISAM;
+
 
 INSERT INTO module_xpay_negociation_group (id, description) VALUES (NULL, "Pagamento agrupado por lição");
 
@@ -2951,15 +2946,73 @@ INSERT INTO module_xpay_boleto_bancos VALUES ('488', 'JPMorgan Chase Bank');
 INSERT INTO module_xpay_boleto_bancos VALUES ('409', 'UNIBANCO - União de Bancos Brasileiros S.A.');
 INSERT INTO module_xpay_boleto_bancos VALUES ('230', 'Unicard Banco Múltiplo S.A.');
 
--- UPDATE ALL INVOICE ON NEGOCIATION_ID IN (864, 865, 866, 867, 868, 869) TO 863, AND INCREMENT INVOICE_INDEX
 
 
-ALTER TABLE `module_xpay_negociation_modules` CHANGE `module_id` `lesson_id` MEDIUMINT( 8 ) NOT NULL;
-ALTER TABLE `module_xpay_negociation_modules` ADD `course_id` MEDIUMINT( 8 ) NOT NULL AFTER `lesson_id`;
+CREATE TABLE IF NOT EXISTS `module_xpay_negociation_modules` (
+  `negociation_id` mediumint(8) NOT NULL,
+  `lesson_id` mediumint(8) NOT NULL,
+  `course_id` mediumint(8) NOT NULL,
+  `module_type` enum('lesson','course') NOT NULL DEFAULT 'lesson',
+  PRIMARY KEY (`negociation_id`,`lesson_id`,`course_id`,`module_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '181','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '182','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '183','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '184','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '210','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '211','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '212','lesson');
 
 
-ALTER TABLE module_xpay_negociation_modules DROP PRIMARY KEY;
-ALTER TABLE `module_xpay_negociation_modules` ADD PRIMARY KEY ( `negociation_id` , `lesson_id` , `course_id` , `module_type` ) ;
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '1',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2012-11-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =864 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '2',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2012-12-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =865 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '3',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-01-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =866 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '4',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-02-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =867 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '5',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-03-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =868 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '6',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-04-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =869 AND `module_xpay_invoices`.`invoice_index` =0;
+
 
 
 
