@@ -1,7 +1,7 @@
 {capture name="t_xpay_view_users_in_debt"}
 	{include file="$T_XPAY_BASEDIR/templates/includes/options.links.tpl"}
 	
-	<table id="xpay-view-to-send-invoices-list-table" class="style1">
+	<table id="xpay-view_users-in-debts-table" class="style1 xpayDataTable">
 		<thead>
 			<tr>
 				<th style="text-align: center;">Débito desde</th>
