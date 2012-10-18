@@ -1341,6 +1341,8 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_CREATE_PAYMENT_FORM', $renderer -> toArray());
 	}
 	
+
+	
 	public function editInvoiceAction() {
 		$smarty = $this->getSmartyVar();
 		/// GET =
@@ -1425,7 +1427,99 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_EDIT_INVOICE_FORM', $renderer -> toArray());
 	}
 	
-	
+	public function viewUsersInDebtsAction() {
+		$smarty = $this->getSmartyVar();
+		$tables = array(
+				"module_xpay_invoices inv",
+				"join module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)",
+				"LEFT OUTER join module_xpay_invoices_to_paid inv2paid ON ( inv.negociation_id = inv2paid.negociation_id AND inv.invoice_index = inv2paid.invoice_index )",
+				"LEFT OUTER join module_xpay_paid_items pd ON ( inv2paid.paid_id = pd.id )",
+				"join users u ON (neg.user_id = u.id)",
+				"join courses c ON (neg.course_id = c.id)"
+		);
+		
+		$fields = array(
+			"neg.user_id", 
+			"inv.negociation_id", 
+			"neg.course_id", 
+			"u.name", 
+			"u.surname", 
+			"u.login", 
+			"c.name as course",
+			//"COUNT(inv.invoice_index) as total_parcelas",
+			"SUM(inv.valor) as valor_total",
+			"IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as considered_paid",
+			"IFNULL(SUM(pd.paid), 0) as real_paid",
+			"SUM(inv.valor) - IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as total_debito",
+			"MIN(inv.data_vencimento) as data_debito_inicial"
+		);
+		
+		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
+		$today = new DateTime("today");
+		$a15DaysInterval = new DateInterval("P15D");
+		$a25DaysInterval = new DateInterval("P25D");
+		
+		$iesIds = $this->getCurrentUserIesIDs();
+		
+		$iesIds[] = 0;
+		//$where[] = "inv.status_id NOT IN (3,4,5)";
+		//$where[] = "inv.pago = 0";
+		//$where[] = "inv.locked = 0";
+		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
+		$where[] = "inv.data_vencimento < NOW()";
+		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
+		
+		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
+		
+		$order = array(
+			"inv.data_vencimento ASC"
+		);
+		
+		$group = array(
+			"neg.user_id",
+			"inv.negociation_id",
+			"neg.course_id",
+			"u.name",
+			"u.surname",
+			"u.login",
+			"c.name HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)"
+		);
+		
+		// MAKE FILTERS
+		/*
+		 echo prepareGetTableData(
+		 		implode(" ", $tables),
+		 		implode(", ", $fields),
+		 		implode(" AND ", $where),
+		 		implode(", ", $order),
+		 		implode(", ", $group)
+		 );
+		*/
+		$debtsLists = eF_getTableData(
+				implode(" ", $tables),
+				implode(", ", $fields),
+				implode(" AND ", $where),
+				implode(", ", $order),
+				implode(", ", $group)
+		);
+		
+		foreach($debtsLists as &$debt) {
+			$debt['username'] = formatLogin(null, $debt);
+		}
+		
+		$smarty->assign("T_XPAY_LIST", $debtsLists);
+		
+		/*
+		$smarty->assign("T_VIEW_TO_SEND_INVOICES_LIST_OPTIONS", array(
+			array(
+					'href'          => "javascript: xPayMailAllInvoicesAdviseAction();",
+					'image'         => "16x16/mail.gif"
+			)
+		));
+		*/
+			
+	}
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(
