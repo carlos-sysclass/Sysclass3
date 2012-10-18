@@ -1,4 +1,5 @@
 /upload
+/upload.*
 /boletos
 /cache
 .settings/*

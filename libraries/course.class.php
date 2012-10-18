@@ -3832,6 +3832,9 @@ class MagesterCourse
     	if (isset($constraints['active'])) {
     		$constraints['active'] ? $where[] = 'c.active=1' : $where[] = 'c.active=0';
     	}
+    	if (isset($constraints['course_id'])) {
+    		$constraints['course_id'] ? $where[] = 'c.courses_ID = ' . $constraints['course_id'] : null;
+    	}
 
     	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
     		$result = eF_describeTable("classes");
