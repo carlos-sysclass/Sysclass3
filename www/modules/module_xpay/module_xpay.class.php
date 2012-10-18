@@ -82,12 +82,15 @@ class module_xpay extends MagesterExtendedModule {
 			return "show_payments_summary";
 		}
 	}
-	
 	public function loadConfig() {
 		$config = array(
 			'widgets'	=> array(
 				'last_payments' => array(
-					'payment_count'	=> 10
+					'count'	=> 10
+				),
+				'last_files' => array(
+					'submodule_index'	=> 'XPAY_BOLETO',
+					'count'				=> 5
 				)
 			)
 		);
@@ -170,16 +173,36 @@ class module_xpay extends MagesterExtendedModule {
 	public function showPaymentsSummaryAction() {
 		$smarty = $this->getSmartyVar();
 		// BLOCOS ???
-		// 1. Ultimos pagamentos recebidos [ ok ] 
-		// 2. Ultimos boletos enviados
-		// 3. Montante a Receber
-		// 4. VAlor recebido no último mês
+		// 1. Ultimos pagamentos recebidos [ ok ]
+		// 2. Últimos arquivos enviados [ ok ]
+		// 3. Ultimos boletos enviados
+		// 4. Montante a Receber
+		// 5. Valor recebido no último mês
 		
-		// 1. Ultimos pagamentos recebidos
-		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['payment_count']);
+		// - Últimos pagamentos recebidos
+		$lastPaymentsData = $this->_getLastPaymentsList(null, $this->getConfig()->widgets['last_payments']['count']);
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
+
+		// - Últimos arquivos enviados
+		$currentOptions = $this->getSubmodules();
+		
+		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList($this->getConfig()->widgets['last_files']['count']);
+		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
+		
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
+	}
+	public function viewLastSendedFilesAction() {
+		$smarty = $this->getSmartyVar();
+		
+		// - Últimos arquivos enviados
+		$currentOptions = $this->getSubmodules();
+		
+		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList();
+		
+		//var_dump($lastProcessedFilesData);
+		//exit;
+		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
 	}
 	public function viewLastPaidInvoicesAction() {
 		$smarty = $this->getSmartyVar();
@@ -194,6 +217,46 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
 		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
+	}
+	public function viewFileDetailsAction() {
+		$instance_id 	= $_POST['method_index'];
+		$fileName		= $_POST['name'];
+		
+		$currentOptions = $this->getSubmodules();
+		
+		$currentSubModule = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']];
+		
+		echo $currentSubModule->returnedFile2Html($instance_id, $fileName);
+		exit;
+	}
+	public function importFileToSystemAction() {
+		$method_index 	= $_POST['method_index'];
+		$fileName		= $_POST['name'];
+	
+		$currentOptions = $this->getSubmodules();
+	
+		$currentSubModule = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']];
+	
+		$fullFileName = $currentSubModule->getFullPathByMethodIndex($method_index, $fileName);
+		$status = $currentSubModule->importFileStatusToSystem($method_index, $fullFileName);
+		
+		// TRY TO RE-IMPORT FILE
+		
+		if ($status) {
+			$return = array(
+					"message" 		=> "Arquivo importado com sucesso. Caso os problemas persistam, entre em contato com suporte.",
+					"message_type" 	=> "success",
+					"status"		=> "ok",
+					"data" => $fields
+			);
+		} else {
+			$return = array(
+				"message" 		=> "Occoreu um erro ao tentar importar este arquivo",
+				"message_type" 	=> "error"
+			);
+		}
+		echo json_encode($return);
+		exit;
 	}
 	/*
 	public function migrateToNewModelAction() {
@@ -1040,7 +1103,7 @@ class module_xpay extends MagesterExtendedModule {
 			$negocTotals['paid']			+= $invoice['paid'];
 		}
 		
-		foreach($negocData['invoices'] as $invoice_index => $invoice) {
+		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			$applied_rules = array();
 			if ($invoice['total_reajuste'] <> 0) {
 				foreach($invoice['workflow'] as $workflow) {
@@ -1063,7 +1126,7 @@ class module_xpay extends MagesterExtendedModule {
 					$applied_rules[$workflow['rule_id']]['count']++;
 				}
 			}
-			$negocData['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+			$negocData['invoices'][$inv_index]['applied_rules'] = $applied_rules;
 		}
 		
 		
@@ -1093,14 +1156,14 @@ class module_xpay extends MagesterExtendedModule {
 		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
 		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
 		
-		foreach($negocData['invoices'] as $invoiceIndex => $invoice) {
+		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			if ($invoice['full_price'] <= $invoice['paid']) {
-				unset($negocData['invoices'][$invoiceIndex]);
+				unset($negocData['invoices'][$inv_index]);
 				continue;
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
-
+//		var_dump($invoice_index);
 		$form->setDefaults(array(
 			'invoice_indexes'	=> $invoice_index
 		));
@@ -1126,7 +1189,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$scopeCourse = $xentifyModule->create("course", $negocData['course_id']);
 			$scopeUser = $xentifyModule->create("user", $negocData['login']);
-			
+			$firstPayMethodOption = null;
 			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
@@ -1155,9 +1218,16 @@ class module_xpay extends MagesterExtendedModule {
 					$paymentMethods[strtolower($selectedIndex)]['baselink'],
 					empty($item['image_name']) ? $key : $item['image_name']
 				);
+				if (is_null($firstPayMethodOption)) {
+					$firstPayMethodOption = strtolower($selectedIndex) . ":" . $key;
+				}
 					
 				$form -> addElement('radio', 'pay_methods', $item['name'], $img, strtolower($selectedIndex) . ":" . $key, 'class="xpay_methods"');
 			}
+                        $form->setDefaults(array(
+				'pay_methods'       => $firstPayMethodOption
+                        ));
+
 		}
 		$smarty -> assign("T_XPAY_METHODS", $paymentMethods);
 				
@@ -1175,6 +1245,8 @@ class module_xpay extends MagesterExtendedModule {
 			$values = $form->exportValues();
 				
 			if ($form -> isSubmitted() && $form -> validate()) {
+
+
 				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
 		
 				$_SESSION['pay_method']			= $pay_method;
@@ -1197,7 +1269,6 @@ class module_xpay extends MagesterExtendedModule {
 			
 			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
 				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
-
 				$selectedPaymentMethod->initPaymentProccess(
 					$negociationID, $invoice_index,
 					array(
@@ -1333,6 +1404,8 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_CREATE_PAYMENT_FORM', $renderer -> toArray());
 	}
 	
+
+	
 	public function editInvoiceAction() {
 		$smarty = $this->getSmartyVar();
 		/// GET =
@@ -1417,7 +1490,99 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_EDIT_INVOICE_FORM', $renderer -> toArray());
 	}
 	
-	
+	public function viewUsersInDebtsAction() {
+		$smarty = $this->getSmartyVar();
+		$tables = array(
+				"module_xpay_invoices inv",
+				"join module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)",
+				"LEFT OUTER join module_xpay_invoices_to_paid inv2paid ON ( inv.negociation_id = inv2paid.negociation_id AND inv.invoice_index = inv2paid.invoice_index )",
+				"LEFT OUTER join module_xpay_paid_items pd ON ( inv2paid.paid_id = pd.id )",
+				"join users u ON (neg.user_id = u.id)",
+				"join courses c ON (neg.course_id = c.id)"
+		);
+		
+		$fields = array(
+			"neg.user_id", 
+			"inv.negociation_id", 
+			"neg.course_id", 
+			"u.name", 
+			"u.surname", 
+			"u.login", 
+			"c.name as course",
+			//"COUNT(inv.invoice_index) as total_parcelas",
+			"SUM(inv.valor) as valor_total",
+			"IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as considered_paid",
+			"IFNULL(SUM(pd.paid), 0) as real_paid",
+			"SUM(inv.valor) - IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as total_debito",
+			"MIN(inv.data_vencimento) as data_debito_inicial"
+		);
+		
+		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
+		$today = new DateTime("today");
+		$a15DaysInterval = new DateInterval("P15D");
+		$a25DaysInterval = new DateInterval("P25D");
+		
+		$iesIds = $this->getCurrentUserIesIDs();
+		
+		$iesIds[] = 0;
+		//$where[] = "inv.status_id NOT IN (3,4,5)";
+		//$where[] = "inv.pago = 0";
+		//$where[] = "inv.locked = 0";
+		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
+		$where[] = "inv.data_vencimento < NOW()";
+		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
+		
+		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
+		
+		$order = array(
+			"inv.data_vencimento ASC"
+		);
+		
+		$group = array(
+			"neg.user_id",
+			"inv.negociation_id",
+			"neg.course_id",
+			"u.name",
+			"u.surname",
+			"u.login",
+			"c.name HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)"
+		);
+		
+		// MAKE FILTERS
+		/*
+		 echo prepareGetTableData(
+		 		implode(" ", $tables),
+		 		implode(", ", $fields),
+		 		implode(" AND ", $where),
+		 		implode(", ", $order),
+		 		implode(", ", $group)
+		 );
+		*/
+		$debtsLists = eF_getTableData(
+				implode(" ", $tables),
+				implode(", ", $fields),
+				implode(" AND ", $where),
+				implode(", ", $order),
+				implode(", ", $group)
+		);
+		
+		foreach($debtsLists as &$debt) {
+			$debt['username'] = formatLogin(null, $debt);
+		}
+		
+		$smarty->assign("T_XPAY_LIST", $debtsLists);
+		
+		/*
+		$smarty->assign("T_VIEW_TO_SEND_INVOICES_LIST_OPTIONS", array(
+			array(
+					'href'          => "javascript: xPayMailAllInvoicesAdviseAction();",
+					'image'         => "16x16/mail.gif"
+			)
+		));
+		*/
+			
+	}
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(
@@ -1474,7 +1639,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
 		$today = new DateTime("today");
-		$a15DaysInterval = new DateInterval("P25D");
+		$a15DaysInterval = new DateInterval("P15D");
+		$a25DaysInterval = new DateInterval("P25D");
 		
 		$iesIds = $this->getCurrentUserIesIDs();
 		
@@ -1483,8 +1649,9 @@ class module_xpay extends MagesterExtendedModule {
 		//$where[] = "inv.pago = 0";
 		$where[] = "inv.locked = 0";
 		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
-		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a15DaysInterval)->format("Y-m-d"));
+		$where[] = sprintf("inv.data_vencimento BETWEEN '%s' AND '%s'", $today->sub($a15DaysInterval)->format("Y-m-d"), $today->add($a15DaysInterval)->add($a25DaysInterval)->format("Y-m-d"));
 		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
 		
 		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
 		
@@ -1498,7 +1665,7 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		
 		// MAKE FILTERS
-		/*
+	/*	
 		echo prepareGetTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),
@@ -1506,7 +1673,7 @@ class module_xpay extends MagesterExtendedModule {
 				implode(", ", $order),
 				implode(", ", $group)
 		);
-		*/
+	*/	
 		$toSendList = eF_getTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),

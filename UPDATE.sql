@@ -2768,5 +2768,185 @@ left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_I
 DROP VIEW `module_xpay_zzz_paid_items`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id`,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_id` AS `invoice_id`, `inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
 
+/* 2012-09-26 */
+ALTER TABLE `module_gradebook_objects` ADD `group_id` SMALLINT( 4 ) NOT NULL DEFAULT '1' AFTER `id`;
+UPDATE `module_gradebook_objects` SET group_id = 1;
 
+CREATE TABLE IF NOT EXISTS `module_gradebook_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) NOT NULL,
+  `classe_id` mediumint(8) NOT NULL DEFAULT 0,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+INSERT INTO `sysclass_root`.`module_gradebook_groups` (`id`, `lesson_id`, `classe_id`, `name`) VALUES (NULL, '0', '0', 'Nota Geral');
+
+/* 2012-09-27 */
+ALTER TABLE `module_gradebook_groups` 
+ADD `require_status` 
+SMALLINT( 4 ) NOT NULL 
+DEFAULT '1' 
+COMMENT '1 = obrigatório, 2 = obrigatorio se falhar no anterior, 3 = opcional';
+
+ALTER TABLE `module_gradebook_groups` ADD `min_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70';
+
+/* 2012-09-30 */
+ALTER TABLE `module_gradebook_groups` ADD `order_index` SMALLINT( 4 ) NOT NULL DEFAULT '0';
+
+CREATE TABLE IF NOT EXISTS `module_gradebook_groups_order` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) NOT NULL,
+  `classe_id` mediumint(8) NOT NULL DEFAULT 0,
+  `order_index` varchar(100) NOT NULL,
+  PRIMARY KEY (`group_id`, `lesson_id`, `classe_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+/* 2012-10-01 */
+
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_liquidacao` (  
+	`id` varchar( 3  )  NOT  NULL ,
+	`description` varchar( 100  )  NOT  NULL ,
+	`disponivel` tinyint( 4  ) DEFAULT  '1',
+	PRIMARY  KEY (  `id`  )  
+) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
+INSERT INTO `sysclass_root`.`module_xpay_boleto_liquidacao` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_liquidacao`;
+DROP TABLE `sysclass_root`.`module_pagamento_boleto_liquidacao`;
+
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_ocorrencias` (  
+	`id` varchar( 3  )  NOT  NULL ,
+	`description` varchar( 100  )  NOT  NULL ,
+	PRIMARY  KEY (  `id`  )  
+) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
+INSERT INTO `sysclass_root`.`module_xpay_boleto_ocorrencias` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_ocorrencias`;
+DROP TABLE `sysclass_root`.`module_pagamento_boleto_correncias`;-
+
+/* 2012-10-03 */
+DROP TABLE IF EXISTS `module_xpay_boleto_bancos`;
+CREATE TABLE `module_xpay_boleto_bancos` (
+`id` varchar( 10 ) NOT NULL ,
+`description` varchar( 150 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) DEFAULT CHARSET = utf8;
+
+
+INSERT INTO module_xpay_boleto_bancos VALUES ('246', 'Banco ABC Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('25', 'Banco Alfa S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('641', 'Banco Alvorada S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('29', 'Banco Banerj S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('0', 'Banco Bankpar S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('740', 'Banco Barclays S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('107', 'Banco BBM S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('31', 'Banco Beg S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('739', 'Banco BGN S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('96', 'Banco BM&F de Serviços de Liquidação e Custódia S.A');
+INSERT INTO module_xpay_boleto_bancos VALUES ('318', 'Banco BMG S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('752', 'Banco BNP Paribas Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('248', 'Banco Boavista Interatlântico S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('218', 'Banco Bonsucesso S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('65', 'Banco Bracce S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('36', 'Banco Bradesco BBI S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('204', 'Banco Bradesco Cartões S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('394', 'Banco Bradesco Financiamentos S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('237', 'Banco Bradesco S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('225', 'Banco Brascan S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('208', 'Banco BTG Pactual S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('44', 'Banco BVA S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('263', 'Banco Cacique S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('473', 'Banco Caixa Geral - Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('40', 'Banco Cargill S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('745', 'Banco Citibank S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M08', 'Banco Citicard S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M19', 'Banco CNH Capital S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('215', 'Banco Comercial e de Investimento Sudameris S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('756', 'Banco Cooperativo do Brasil S.A. - BANCOOB');
+INSERT INTO module_xpay_boleto_bancos VALUES ('748', 'Banco Cooperativo Sicredi S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('222', 'Banco Credit Agricole Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('505', 'Banco Credit Suisse (Brasil) S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('229', 'Banco Cruzeiro do Sul S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('3', 'Banco da Amazônia S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('083-3', 'Banco da China Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('707', 'Banco Daycoval S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M06', 'Banco de Lage Landen Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('24', 'Banco de Pernambuco S.A. - BANDEPE');
+INSERT INTO module_xpay_boleto_bancos VALUES ('456', 'Banco de Tokyo-Mitsubishi UFJ Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('214', 'Banco Dibens S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('1', 'Banco do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('47', 'Banco do Estado de Sergipe S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('37', 'Banco do Estado do Pará S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('41', 'Banco do Estado do Rio Grande do Sul S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('4', 'Banco do Nordeste do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('265', 'Banco Fator S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M03', 'Banco Fiat S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('224', 'Banco Fibra S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('626', 'Banco Ficsa S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M18', 'Banco Ford S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('233', 'Banco GE Capital S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M07', 'Banco GMAC S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('612', 'Banco Guanabara S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M22', 'Banco Honda S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('63', 'Banco Ibi S.A. Banco Múltiplo');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M11', 'Banco IBM S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('604', 'Banco Industrial do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('320', 'Banco Industrial e Comercial S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('653', 'Banco Indusval S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('249', 'Banco Investcred Unibanco S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('184', 'Banco Itaú BBA S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('479', 'Banco ItaúBank S.A');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M09', 'Banco Itaucred Financiamentos S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('376', 'Banco J. P. Morgan S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('74', 'Banco J. Safra S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('217', 'Banco John Deere S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('600', 'Banco Luso Brasileiro S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('389', 'Banco Mercantil do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('746', 'Banco Modal S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('45', 'Banco Opportunity S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('623', 'Banco Panamericano S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('611', 'Banco Paulista S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('643', 'Banco Pine S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('638', 'Banco Prosper S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('747', 'Banco Rabobank International Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('356', 'Banco Real S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('633', 'Banco Rendimento S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M16', 'Banco Rodobens S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('72', 'Banco Rural Mais S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('453', 'Banco Rural S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('422', 'Banco Safra S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('33', 'Banco Santander (Brasil) S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('250', 'Banco Schahin S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('749', 'Banco Simples S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('366', 'Banco Société Générale Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('637', 'Banco Sofisa S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('12', 'Banco Standard de Investimentos S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('464', 'Banco Sumitomo Mitsui Brasileiro S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('082-5', 'Banco Topázio S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M20', 'Banco Toyota do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('634', 'Banco Triângulo S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M14', 'Banco Volkswagen S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('M23', 'Banco Volvo (Brasil) S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('655', 'Banco Votorantim S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('610', 'Banco VR S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('370', 'Banco WestLB do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('21', 'BANESTES S.A. Banco do Estado do Espírito Santo');
+INSERT INTO module_xpay_boleto_bancos VALUES ('719', 'Banif-Banco Internacional do Funchal (Brasil)S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('755', 'Bank of America Merrill Lynch Banco Múltiplo S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('73', 'BB Banco Popular do Brasil S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('78', 'BES Investimento do Brasil S.A.-Banco de Investimento');
+INSERT INTO module_xpay_boleto_bancos VALUES ('69', 'BPN Brasil Banco Múltiplo S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('70', 'BRB - Banco de Brasília S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('104', 'Caixa Econômica Federal');
+INSERT INTO module_xpay_boleto_bancos VALUES ('477', 'Citibank N.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('081-7', 'Concórdia Banco S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('487', 'Deutsche Bank S.A. - Banco Alemão');
+INSERT INTO module_xpay_boleto_bancos VALUES ('751', 'Dresdner Bank Brasil S.A. - Banco Múltiplo');
+INSERT INTO module_xpay_boleto_bancos VALUES ('64', 'Goldman Sachs do Brasil Banco Múltiplo S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('62', 'Hipercard Banco Múltiplo S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('399', 'HSBC Bank Brasil S.A. - Banco Múltiplo');
+INSERT INTO module_xpay_boleto_bancos VALUES ('492', 'ING Bank N.V.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('652', 'Itaú Unibanco Holding S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('341', 'Itaú Unibanco S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('79', 'JBS Banco S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('488', 'JPMorgan Chase Bank');
+INSERT INTO module_xpay_boleto_bancos VALUES ('409', 'UNIBANCO - União de Bancos Brasileiros S.A.');
+INSERT INTO module_xpay_boleto_bancos VALUES ('230', 'Unicard Banco Múltiplo S.A.');
 

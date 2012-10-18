@@ -26,7 +26,6 @@
 						</a>
 					</td>
 					<td align="center">{$invoice.course}</td>
-					
 				 	<!-- <td align="center">{$invoice.invoice_id}</td>  -->
 				 	<td align="center">#filter:currency:{$invoice.valor}#</td>
 				 	<td align="center">#filter:currency:{$invoice.total_reajuste}#</td>
