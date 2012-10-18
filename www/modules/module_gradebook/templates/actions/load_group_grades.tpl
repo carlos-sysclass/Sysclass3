@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			<th class="topTitle">{$smarty.const._GRADEBOOK_STUDENT_NAME}</th>
+			<th class="topTitle">{$smarty.const._USERTYPE}</th>
 			{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_LESSON_COLUMNS}
 			<th class="topTitle rightAlign">{$column.name} ({$smarty.const._GRADEBOOK_COLUMN_WEIGHT_DISPLAY}: {$column.weight})
 				{if $column.refers_to_type != 'real_world'}
@@ -22,8 +23,9 @@
 		</tr>
 	</thead>
 {foreach name = 'users_loop' key = "id" item = "user" from = $T_GRADEBOOK_LESSON_USERS}
-	<tr id="row_{$user.uid}" class="{cycle values = "oddRowColor, evenRowColor"} {if !$user.active}deactivatedTableElement{/if}">
+	<tr id="row_{$user.uid}" class="{cycle values = "oddRowColor, evenRowColor"} {if !$user.active}ui-state-disabled{/if}">
 		<td>#filter:login-{$user.users_LOGIN}#</td>
+		<td class="centerAlign">{$user.userrole}</td>
 {foreach name = 'grades_loop' key = "id_" item = "grade" from = $user.grades}
 		<td class="rightAlign">
 			<input type="text" id="grade_{$grade.gid}" value="{$grade.grade}" size="5" maxlength="5" />
@@ -33,6 +35,8 @@
 {/foreach}
 		<td class="centerAlign">{$user.score}</td>
 <!-- 		<td class="centerAlign">{$user.grade}</td>  -->
+		
+		
 		<td class="centerAlign">
 			<input class="inputCheckbox" type="checkbox" name="checked_{$user.uid}" id="checked_{$user.uid}" onclick="publishGradebook('{$user.uid}', this);" {if ($user.publish == 1)} checked="checked"{/if} />
 		</td>
