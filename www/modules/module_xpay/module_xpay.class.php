@@ -2338,7 +2338,6 @@ class module_xpay extends MagesterExtendedModule {
 			'neg.id',
 			sprintf('neg.user_id = %1$d AND neg.is_simulation = 0', $editedUser->user['id'])
 		);
-
 		if (count($userNegociations['id'])) {
 			foreach($userNegociations['id'] as $negocID) {
 				/* STEP 2. (**MOVE TO INNER FUNCTIONS**) CHECK IF THESE NEGOCIATION ARE GROUPED OR NOT */
