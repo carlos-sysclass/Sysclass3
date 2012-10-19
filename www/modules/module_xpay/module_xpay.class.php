@@ -505,7 +505,7 @@ class module_xpay extends MagesterExtendedModule {
 	} 
 	public function viewUserStatementAction() {
 		$smarty = $this->getSmartyVar();
-		
+
 		if ($this->getCurrentUser()->getType() == 'professor') {
 			$this->setMessageVar("Acesso Não Autorizado", "failure");
 			return false;
@@ -518,6 +518,10 @@ class module_xpay extends MagesterExtendedModule {
 		if ($this->getCurrentUser()->getType() == 'administrator') {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		}
+		
+		
+		
+		
 		// GET ALL DEBITS
 		$userDebits = $this->_getUserModuleNegociations();
 /*
@@ -525,7 +529,7 @@ class module_xpay extends MagesterExtendedModule {
 		var_dump($userDebits);
 		echo "</pre>";
 		exit;
-	*/	
+*/	
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
 			
@@ -533,17 +537,12 @@ class module_xpay extends MagesterExtendedModule {
 
 			$this->setCurrentAction("view_user_course_statement", true);
 			
-			
-			
 		//} elseif (count($userDebits['grouped']) == 1 && count($userDebits['invoices'] == 0)) {
 //			echo "hdjka";
 //			exit;
 		} else {
 			// SIMPLY SHOW TWO OR MORE NEGOCIATIONS TO THE USER CHOICES.
 			$smarty -> assign("T_XPAY_NEGOCIATIONS", $userDebits);
-			
-			var_dump($userDebits);
-			
 			/*
 			// PROCESS INVOICES...
 			$usersTotals= array(
@@ -635,6 +634,10 @@ class module_xpay extends MagesterExtendedModule {
 	public function viewUserCourseStatementAction() {
 		$smarty = $this->getSmartyVar();
 		
+
+
+
+		
 		if ($this->getCurrentUser()->getType() == 'professor') {
 			$this->setMessageVar("Acesso Não Autorizado", "failure");
 			return false;
@@ -649,13 +652,18 @@ class module_xpay extends MagesterExtendedModule {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		}
 		
-		if (!($editUser = $this->getEditedUser())) {
-			return false;
-		}
 		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id")) {
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
-		} else {
+			
+			if ($this->getCurrentUser()->getType() == 'administrator') {
+				$editUser = $this->getEditedUser(true, $userNegociation['user_id']);
+			} elseif ($this->getCurrentUser()->getType() == 'student') {
+				if ($this->getCurrentUser()->getType() == 'administrator') {
+					$editUser = $this->getCurrentUser();
+				}
+			}
 		}
+
 		if (!$userNegociation && !($editCourse = $this->getEditedCourse()) && !($editLesson = $this->getEditedLesson())) {
 			return false;
 		}
@@ -676,6 +684,8 @@ class module_xpay extends MagesterExtendedModule {
 		if (!$userNegociation) {
 			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociation_index);
 		}
+
+		
 			
 		foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
 			$applied_rules = array();
@@ -2333,6 +2343,7 @@ class module_xpay extends MagesterExtendedModule {
 			foreach($userNegociations['id'] as $negocID) {
 				/* STEP 2. (**MOVE TO INNER FUNCTIONS**) CHECK IF THESE NEGOCIATION ARE GROUPED OR NOT */
 				$negociation = $this->_getNegociationById($negocID);
+				
 				if (count($negociation['modules']) > 0) {
 					$negociations[] = $negociation;
 				}
@@ -2611,6 +2622,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			if (count($coursePriceID) > 0) {
 				$coursePriceWhere = array_merge($priceWhere, array(sprintf('c.id IN (%s)', implode(", ", $coursePriceID))));
+
 				
 				$coursePriceInfo = ef_getTableData(
 					"users u
