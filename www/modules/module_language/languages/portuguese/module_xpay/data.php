@@ -29,7 +29,7 @@ define("__XPAY_USER_STATEMENT", "Extrato do Aluno");
 define("__XPAY_DO_PAY", "Pagar");
 define("__XPAY_DO_PAYMENT", "Efetuar Pagamento");
 define("__XPAY_DO_PAYMENT_INSTRUCTIONS", "Selecione a mensalidade que deseja efetuar o pagamento, selecione o método de pagamento e clique sobre pagar para iniciar o pagamento.");
-
+define("__XPAY_MODULE_PRINTNAME_COUNT", "%d Módulos");
 
 define("__XPAY_PAYMENT_METHOD", "Pagamento");
 define("__XPAY_NOPAYMENT_INVOICE_SELECTED", "Nenhuma fatura selecionada");

@@ -36,7 +36,7 @@
 					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
 						 	{if $invoice.applied_rules|@count > 0}
 						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
-					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+					 			<div class="hover_tooltip applied_rules" id="applied_rule_{$invoice_index}"> 
 								 	<ul>
 									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
 									 		<li>

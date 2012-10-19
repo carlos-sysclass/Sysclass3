@@ -124,6 +124,20 @@ jQuery(function($) {
 	},function() {
 		jQuery(this).next(".applied_rules").hide();
 	});
+	
+	jQuery(".base_price_details").hide();
+	
+	// JQuery Tooltip
+	jQuery(".base_price_details_link").hover(function() {
+		jQuery(".base_price_details").show().position({
+			"my": "left top",
+			"at": "right top",
+			"of": jQuery(this)
+		});
+	},function() {
+		jQuery(".base_price_details").hide();
+	});
+
 
 
 	//jQuery(".__XPAY_INVOICE_LIST").dataTable( opt );
@@ -180,6 +194,21 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 		},
 		startUI : function() {
 			jQuery("#xpay-file-details-container").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				buttons		: {
+					"Fechar" : function() {
+						jQuery( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+				}
+			});
+			
+			jQuery("#xpay-negociation-base-price-details").dialog({
 				autoOpen	: false,
 				height		: "auto",
 				width		: "auto",
