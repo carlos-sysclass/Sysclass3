@@ -1159,7 +1159,7 @@ class module_xpay extends MagesterExtendedModule {
 				//	return;
 				continue;
 			}
-				
+			
 			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
 			
 			$xentifyModule = $this->loadModule("xentify");
@@ -1167,8 +1167,9 @@ class module_xpay extends MagesterExtendedModule {
 			$negociationUser = MagesterUserFactory::factory($negocData['login']);
 			
 			$pay_method_active_options = array();
+
 			
-			$scopeCourse = $xentifyModule->create("course", $negocData['course_id']);
+			
 			$scopeUser = $xentifyModule->create("user", $negocData['login']);
 			$firstPayMethodOption = null;
 			
@@ -1182,9 +1183,20 @@ class module_xpay extends MagesterExtendedModule {
 				}
 				*/
 				if (
-					!$scopeCourse->inScope($item['xscope_id'], $item['xentify_id']) ||
 					!$scopeUser->inScope($item['xscope_id'], $item['xentify_id'])
 				) {
+					continue;
+				}
+				$breakOuterLoop = false;
+				foreach($negocData['modules'] as $module) {
+					$scopeModule = $xentifyModule->create($module['module_type'], $module['module_id']);
+					
+					if (!$scopeModule->inScope($item['xscope_id'], $item['xentify_id'])) {
+						$breakOuterLoop = true;
+						break;
+					}
+				}
+				if ($breakOuterLoop) {
 					continue;
 				}
 				

@@ -244,9 +244,8 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 							
 					}
 					$negociation = $xpayModule->_getNegociationByContraints(array(
-							'negociation_id'	=> $negociation_id,
-							'user_id'			=> $user_id,
-							'course_id'			=> $course_id
+						'negociation_id'	=> $negociation_id,
+						'user_id'			=> $user_id
 					));
 						
 					if (count($negociation) > 0) {
@@ -2575,6 +2574,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		if (!$datavencimento) {
 			return false;
 		}
+
 		// Composição Nosso Numero - CEF SIGCB
 		// course_id (3)
 		$invoiceOptions["nosso_numero1"]	= sprintf("%03d", substr($invoiceData['course_id'], 0, 3));
@@ -2585,7 +2585,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		
 		$invoiceOptions["nosso_numero"] = $invoiceOptions["numero_documento"] = $invoiceData['invoice_id'];	// Num do pedido ou do documento
 		
-		
+
 		if ($datavencimento < $today && $this->getConfig()->on_overdue == 'refresh') {
 			$invoiceOptions["data_vencimento"] = $today->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
 		} elseif ($datavencimento < $today && $this->getConfig()->on_overdue == 'block') {
@@ -2615,6 +2615,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			$methodConfig = $payInstance['config'];
 		}
+		
 		$boletoHTML = $this->loadPaymentInvoiceFromTpl($indexOpt, $methodConfig);
 		if ($data['return_string'] == true) {
 			return $boletoHTML;
