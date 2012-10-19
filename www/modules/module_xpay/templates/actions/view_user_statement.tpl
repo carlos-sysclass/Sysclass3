@@ -3,7 +3,6 @@
 		<thead>
 			<tr>
 				<th style="text-align: left;">Curso</th>
-				<th style="text-align: center;">Modalidade</th>
 				<th style="text-align: center;">Preço Base</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo</th>
@@ -11,13 +10,17 @@
 			</tr>
 		</thead>
 		<tbody>
+			{assign var="total_base_price" value="0"}
+			{assign var="total_paid" value="0"}
+
 			{foreach item="statement" from=$T_XPAY_NEGOCIATIONS}
+				{math equation="total + current" total=$total_base_price current="`$statement.base_price`" assign="total_base_price"}
+				{math equation="total + current" total=$total_paid current="`$statement.paid`" assign="total_paid"}
 				<tr>
 				 	<td>{$statement.module_printname}</td>
-				 	<td>{$statement.modality}</td> 
 				 	<td align="center">#filter:currency-{$statement.base_price}#</td>
 				 	<td align="center">#filter:currency:{$statement.paid}#</td>
-				 	<td align="center">#filter:currency-{$statement.balance}# asd</td>
+				 	<td align="center">#filter:currency-{$statement.base_price-$statement.paid}#</td>
 				 	<td align="center">
 				 		<div>
 					 		<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&negociation_id={$statement.id}" class="form-icon">
@@ -35,10 +38,10 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="2">Total:</th>
-				<th style="text-align: center;">#filter:currency-{$T_XPAY_STATEMENT_TOTALS.base_price}#</th>
-				<th style="text-align: center;" class="xpay-paid">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.paid}#</th>
-				<th style="text-align: center;">#filter:currency-{$T_XPAY_STATEMENT_TOTALS.balance}#</th>
+				<th>Total:</th>
+				<th style="text-align: center;">#filter:currency-{$total_base_price}#</th>
+				<th style="text-align: center;" class="xpay-paid">#filter:currency:{$total_paid}#</th>
+				<th style="text-align: center;">#filter:currency-{$total_base_price-$total_paid}#</th>
 				<th>&nbsp;</th>
 			</tr>
 		</tfoot>
