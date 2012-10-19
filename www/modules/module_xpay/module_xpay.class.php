@@ -528,12 +528,22 @@ class module_xpay extends MagesterExtendedModule {
 	*/	
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
+			
 			$_GET['negociation_id'] = $userDebit['id'];
+
 			$this->setCurrentAction("view_user_course_statement", true);
+			
+			
+			
 		//} elseif (count($userDebits['grouped']) == 1 && count($userDebits['invoices'] == 0)) {
 //			echo "hdjka";
 //			exit;
 		} else {
+			// SIMPLY SHOW TWO OR MORE NEGOCIATIONS TO THE USER CHOICES.
+			$smarty -> assign("T_XPAY_NEGOCIATIONS", $userDebits);
+			
+			var_dump($userDebits);
+			
 			/*
 			// PROCESS INVOICES...
 			$usersTotals= array(
@@ -733,6 +743,8 @@ class module_xpay extends MagesterExtendedModule {
 		return true;
 	}
 	public function simulateDueBalanceNegociationAction() {
+		$this->setMessageVar("Acesso temporariamente indisponível. Para mais informações, consulte o suporte.", "failure");
+		return false;
 		$smarty = $this->getSmartyVar();
 		
 		if ($this->getCurrentUser()->getType() == 'professor') {
@@ -2320,7 +2332,10 @@ class module_xpay extends MagesterExtendedModule {
 		if (count($userNegociations['id'])) {
 			foreach($userNegociations['id'] as $negocID) {
 				/* STEP 2. (**MOVE TO INNER FUNCTIONS**) CHECK IF THESE NEGOCIATION ARE GROUPED OR NOT */
-				$negociations[] = $this->_getNegociationById($negocID);
+				$negociation = $this->_getNegociationById($negocID);
+				if (count($negociation['modules']) > 0) {
+					$negociations[] = $negociation;
+				}
 			}
 		}
 
@@ -2579,7 +2594,7 @@ class module_xpay extends MagesterExtendedModule {
 			foreach($negociationData['modules'] as $module) {
 				switch($module['module_type']) {
 					case 'course' : {
-						$coursePriceID[] = $module['course'];
+						$coursePriceID[] = $module['course_id'];
 						break;
 					}
 					case 'lesson' : {
@@ -2645,6 +2660,11 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$negociationData['modules'] = $coursePriceInfo + $lessonPriceInfo;
 			
+			/*
+			if (count($negociationData['modules']) == 0) {
+				return false;
+			}
+			*/
 
 			
 			foreach($negociationData['modules'] as $module) {

@@ -3,13 +3,16 @@
 		<tr>
 			<th colspan="11">{$T_XPAY_STATEMENT.username} &raquo; 
 				{$T_XPAY_STATEMENT.module_printname}
-				<a class="base_price_details_link" href="javascript: void(0);">?</a>
+				{if $T_XPAY_STATEMENT.modules|@count > 1}
+					<a class="base_price_details_link" href="javascript: void(0);">?</a>
+				{/if}
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>Preço Base
+				{if $T_XPAY_STATEMENT.modules|@count > 1}
 				<a class="base_price_details_link" href="javascript: void(0);">?</a>
 				<div class="hover_tooltip base_price_details"> 
 				 	<ul>
@@ -26,6 +29,7 @@
 							</li>
 				 	</ul>
 				</div>
+				{/if}
 			</td>
 			<td rowspan="2" class="invoice-summary-sign">+</td>
 			<td>Acréscimos</td>
