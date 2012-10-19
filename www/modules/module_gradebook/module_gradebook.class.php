@@ -1584,8 +1584,12 @@ var_dump(
 		$columns = array();
 
 		foreach($result as $value) {
-			$value['content_name']  = $this->getColumnContent($value);
-			$columns[$value['id']] = $value;
+			if (($value['content_name']  = $this->getColumnContent($value)) == FALSE) {
+				// REMOVE COLUMN
+				ef_deleteTableData("module_gradebook_objects", "id = " . $value['id']);
+			} else {
+				$columns[$value['id']] = $value;
+			}
 		}
 
 		return $columns;
@@ -1593,8 +1597,15 @@ var_dump(
 	private function getColumnContent($grade_object) {
 		switch($grade_object['refers_to_type']) {
 			case 'test' : {
-				$test = new MagesterTest($grade_object['refers_to_id']);
-				return $test->test['name'];
+				try {
+					$test = new MagesterTest($grade_object['refers_to_id']);
+					return $test->test['name'];
+				} catch (MagesterTestException $e) {
+					if ($e->getCode() == MagesterTestException::TEST_NOT_EXISTS) {
+						// REMOVE COLUMN
+						return false;
+					}
+				}
 			}
 			case 'real_world' : {
 				return "&mdash;&mdash;";
