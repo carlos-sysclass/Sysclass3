@@ -2733,6 +2733,7 @@ function getMainScripts() {
 	//$mainScripts[]	= 'jquery/supersubs';
 	// $mainScripts[]	= 'jquery/jquery.tipsy';
 	$mainScripts[]	= 'jquery/jquery.dataTables';
+	$mainScripts[]	= 'jquery/jquery.dataTables.columnFilter';
 	$mainScripts[]	= 'widget/messaging';
 	$mainScripts[]	= 'themeScripts';
 	$mainScripts[]	= 'sysclass.module.loader';

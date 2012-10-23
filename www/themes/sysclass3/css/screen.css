@@ -767,15 +767,15 @@ label.error        		{ color: #FF0000; }
 
 .dataTables_wrapper 						{ }
 .dataTables_wrapper table					{ width: 100% !important; margin: 0px 0px 20px 0px; float: left; }
-.dataTables_wrapper .dataTables_length 				{ float: left; margin: 0px 0px 15px 0px; }
+.dataTables_wrapper .dataTables_length 				{ float: left; margin: 0 0 0 10px; }
 .dataTables_wrapper .dataTables_filter 				{ float: right; margin: 0px 0px 15px 0px; }
 .dataTables_wrapper .dataTables_filter input			{ display: inline; border: 1px solid #B8B8B8; font-size: 12px; color: #333333; height: 16px; padding: 2px 4px 2px 4px; }
 .datatable 							{ clear: both; }
 .datatable thead th.sorting					{ cursor: pointer; padding-right: 25px; }
 .datatable thead th.sorting_desc				{ cursor: pointer; padding-right: 25px; background: url('../images/arrow_sm_black_top.gif') center right no-repeat #eeeeee;}
 .datatable thead th.sorting_asc					{ cursor: pointer; padding-right: 25px; background: url('../images/arrow_sm_black_down.gif') center right no-repeat #eeeeee;}
-.dataTables_wrapper .dataTables_paginate 			{ float: right;  font-size: 11px; line-height: 20px; margin-top: -10px; padding-bottom: 10px; }
-.dataTables_wrapper .dataTables_paginate span			{ display: block; float: left; }
+.dataTables_wrapper .dataTables_paginate 			{float: right;  font-size: 11px; line-height: 20px; margin: 0 10px 0 0; }
+.dataTables_wrapper .dataTables_paginate span, .dataTables_wrapper .dataTables_paginate a			{ display: block; float: left; }
 .dataTables_wrapper .dataTables_paginate .nav a			{ width: 22px; height: 22px; }
 .dataTables_wrapper .dataTables_paginate .paginate_button,
 .dataTables_wrapper .dataTables_paginate .paginate_active	{ cursor: pointer; width: 20px; background: url('../images/button_glas2.png') center center repeat-x #eeeeee; text-align: center; color: #333333; font-weight: bold; text-decoration: none; margin: 0px 1px 0px 1px; border: 1px solid #dddddd; border-bottom: 1px solid #cccccc; -moz-border-radius: 3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px; border-radius: 3px 3px 3px 3px; }
@@ -790,6 +790,18 @@ label.error        		{ color: #FF0000; }
 .dataTables_wrapper .dataTables_paginate .last:hover		{ background: url('../images/arrow_rightend_ovr.png') center center no-repeat !important; text-indent: -9999px; }
 .dataTables_wrapper .dataTables_paginate .next			{ background: url('../images/arrow_right_off.png') center center no-repeat !important; margin: 0px 0px 0px 4px; text-indent: -9999px; border-right-width: 0px; -moz-border-radius: 3px 0px 0px 3px; -webkit-border-radius: 3px 0px 0px 3px; border-radius: 3px 0px 0px 3px;}
 .dataTables_wrapper .dataTables_paginate .next:hover		{ background: url('../images/arrow_right_ovr.png') center center no-repeat!important ; text-indent: -9999px; }
+
+.datatables-header-controls {
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    float: left;
+    margin: 10px 0;
+    padding: 10px 0;
+    width: 100%;
+}
+
+
+
 
 /* *********************************************************************
  * Modal window

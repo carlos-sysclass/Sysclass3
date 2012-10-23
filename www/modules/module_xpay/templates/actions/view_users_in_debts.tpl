@@ -1,7 +1,7 @@
 {capture name="t_xpay_view_users_in_debt"}
 	{include file="$T_XPAY_BASEDIR/templates/includes/options.links.tpl"}
 	
-	<table id="xpay-view_users-in-debts-table" class="style1 xpayDataTable">
+	<table id="xpay-view_users-in-debts-table" class="style1">
 		<thead>
 			<tr>
 				<th style="text-align: center;">Débito desde</th>
@@ -10,9 +10,6 @@
 				<th style="text-align: center;">Valor</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>
-				<!-- 
-				<th style="text-align: center;">{$smarty.const.__OPTIONS}</th>
-				 -->
 			</tr>
 		</thead>
 		<tbody>
@@ -33,6 +30,16 @@
 				</tr>
 			{/foreach}
 		</tbody>
+		<tfoot>
+			<tr>
+				<th style="text-align: center;">Débito desde</th>
+				<th style="text-align: center;">Usuário</th>
+				<th style="text-align: center;">Curso</th>
+				<th style="text-align: center;">Valor</th>
+				<th style="text-align: center;">Pago</th>
+				<th style="text-align: center;">Saldo Devedor</th>
+			</tr>
+		</tfoot>
 	</table>
 {/capture}
 
