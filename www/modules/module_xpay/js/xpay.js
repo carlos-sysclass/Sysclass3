@@ -51,30 +51,6 @@ jQuery(function($) {
 		"bSort": true,
 		"bInfo": false,
 		"bAutoWidth": true,
-		"iDisplayLength"	: 25,
-		"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "Tudo"]],
-		"bDeferRender" : true,
-		"sPaginationType": "full_numbers",
-		//"bScrollCollapse": true,
-		//"sDom" : 't',
-		"oLanguage": {
-			"sUrl": window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datatable&output=json"
-		}
-	};
-	
-	/// CREATE DEFAULT DATATABLES
-    jQuery.datepicker.regional[""].dateFormat = 'dd/mm/yy';
-    jQuery.datepicker.setDefaults($.datepicker.regional['']);
-	jQuery(".xpayDataTable").dataTable( dataTableDefaults );
-
-	debtsTableDefaults = {
-		"bJQueryUI": false,
-		"bPaginate": true,
-		"bLengthChange": true,
-		"bFilter": true,
-		"bSort": false,
-		"bInfo": false,
-		"bAutoWidth": true,
 		"iDisplayLength"	: 10,
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "Tudo"]],
 		"bDeferRender" : true,
@@ -86,51 +62,58 @@ jQuery(function($) {
 		}
 	};
 	
-	jQuery("#xpay-view_users-in-debts-table").dataTable(debtsTableDefaults).columnFilter({ 
-		//sPlaceHolder: "head:after",
-		aoColumns: [ 
-			{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
-			{ type: "text" },
-			{ type: "text" },
-			null,
-			null,
-			null
-		]
-	});
+	/// CREATE DEFAULT DATATABLES
+    jQuery.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+    jQuery.datepicker.setDefaults($.datepicker.regional['']);
+	jQuery(".xpayDataTable").dataTable( dataTableDefaults );
 	
-	//var oTable = jQuery("#xpay-view_users-in-debts-table").dataTable( dataTableDefaults );
-/*	 
-    jQuery("#xpay-view_users-in-debts-table thead input").keyup( function () {
-    	jQuery("#xpay-view_users-in-debts-table").dataTable().fnFilter( this.value, jQuery("#xpay-view_users-in-debts-table thead input").index(this) );
-    });
-*/    
-//    var asInitVals = new Array();
-	     
-    /*
-     * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
-     * the footer
-     */
-    /*
-    jQuery("#xpay-view_users-in-debts-table tfoot input").each( function (i) {
-        asInitVals[i] = this.value;
-    } );
-	     
-    jQuery("#xpay-view_users-in-debts-table tfoot input").focus( function () {
-        if ( this.className == "search_init" ) {
-	        this.className = "";
-	        this.value = "";
-        }
-    } );
-	     
-    jQuery("#xpay-view_users-in-debts-table tfoot input").blur( function (i) {
-        if ( this.value == "" ) {
-            this.className = "search_init";
-            this.value = asInitVals[$("tfoot input").index(this)];
-        }
-    } );
-	*/
+	
+	
+	
+	if (jQuery("#xpay-last-paid-invoices-table").size() > 0) {
+		jQuery("#xpay-last-paid-invoices-table").dataTable(dataTableDefaults).columnFilter({ 
+			aoColumns: [
+				{ type: "text" },
+				{ type: "text" },
+				null,
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "select", values: ["manual", "boleto"] },
+				null,
+				null,
+				null
+			]
+		});
+	}
 
-
+	if (jQuery("#xpay-view-to-send-invoices-list-table").size() > 0) {
+		jQuery("#xpay-view-to-send-invoices-list-table").dataTable(dataTableDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				null,
+				{ type: "text" },
+				{ type: "text" },
+				null,
+				null,
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "text" },
+				{ type: "text" },
+				null,
+				null,
+				null
+			]
+		});
+	}
 	
 	// GLOBAL HANDLERS 
 	jQuery(":input[name='pagamentos']").click(function() {
@@ -172,10 +155,6 @@ jQuery(function($) {
 				jQuery("#xpay-invoice-params-selection").dialog('open');
 			});
 			
-		}
-		
-		if ($_xpay_mod_data["xpay.action"] == "view_to_send_invoices_list") {
-			var xpayViewToSendInvoicesListTable = jQuery("#xpay-view-to-send-invoices-list-table").dataTable( dataTableDefaults );
 		}
 	}
 	

@@ -800,6 +800,17 @@ label.error        		{ color: #FF0000; }
     width: 100%;
 }
 
+/* *********************************************************************
+ * DataTables ColumnFilter Styles
+ * *********************************************************************/
+.filter_date_range {
+	text-align: right;
+	display: block;
+}
+.filter_date_range input.date_range_filter {
+	width: 80px;
+}
+
 
 
 
