@@ -644,23 +644,20 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		if ($this->getCurrentUser()->getType() == 'student') {
 			$_GET['xuser_id'] = null;
-			$this->getEditedUser(true, $this->getCurrentUser()->user['id']);
+			$editUser = $this->getEditedUser(true, $this->getCurrentUser()->user['id']);
 			
 			$smarty -> assign("T_XPAY_IS_ADMIN", false);
 		}
 		if ($this->getCurrentUser()->getType() == 'administrator') {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+			$editUser = $this->getEditedUser(true);
 		}
 		
-		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id")) {
+		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id") && $this->getCurrentUser()->getType() == 'administrator') {
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
 			
 			if ($this->getCurrentUser()->getType() == 'administrator') {
 				$editUser = $this->getEditedUser(true, $userNegociation['user_id']);
-			} elseif ($this->getCurrentUser()->getType() == 'student') {
-				if ($this->getCurrentUser()->getType() == 'administrator') {
-					$editUser = $this->getCurrentUser();
-				}
 			}
 		}
 
@@ -685,8 +682,6 @@ class module_xpay extends MagesterExtendedModule {
 			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociation_index);
 		}
 
-		
-			
 		foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
 			$applied_rules = array();
 			if ($invoice['total_reajuste'] <> 0) {
