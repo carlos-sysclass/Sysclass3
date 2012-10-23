@@ -17,7 +17,7 @@
 				<tr class="{if $invoice.locked}locked{/if}">
 					<td align="center">#filter:date-{$debt.data_debito_inicial}#</td>
 					<td>
-						<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&xuser_id={$debt.user_id}&xcourse_id={$debt.course_id}">
+						<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&negociation_id={$debt.negociation_id}">
 							{$debt.username}
 						</a>
 					</td>
