@@ -110,6 +110,7 @@
 	{if $T_XPAY_IS_ADMIN}
 		{eF_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_USER_COURSE_STATEMENT
+			options			= $T_XPAY_BLOCK_OPTIONS
 			data			= $smarty.capture.t_xpay_view_statement
 		}
 	{else}

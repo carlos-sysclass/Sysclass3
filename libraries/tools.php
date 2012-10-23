@@ -2734,6 +2734,29 @@ function getMainScripts() {
 	// $mainScripts[]	= 'jquery/jquery.tipsy';
 	$mainScripts[]	= 'jquery/jquery.dataTables';
 	$mainScripts[]	= 'jquery/jquery.dataTables.columnFilter';
+	// jQuery Noty
+	$mainScripts[]	= 'jquery/noty/jquery.noty';
+	$mainScripts[]	= 'jquery/noty/layouts/topCenter';
+	$mainScripts[]	= 'jquery/noty/layouts/topRight';
+	$mainScripts[]	= 'jquery/noty/layouts/centerRight';
+	$mainScripts[]	= 'jquery/noty/themes/default';
+	/*
+	<!-- layouts -->
+	<script type="text/javascript" src="../js/noty/layouts/bottom.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/bottomCenter.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/bottomLeft.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/bottomRight.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/center.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/centerLeft.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/centerRight.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/inline.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/top.js"></script>
+	<script type="text/javascript" src="../js/noty/"></script>
+	<script type="text/javascript" src="../js/noty/layouts/topLeft.js"></script>
+	<script type="text/javascript" src="../js/noty/layouts/topRight.js"></script>
+	*/
+	
+	
 	$mainScripts[]	= 'widget/messaging';
 	$mainScripts[]	= 'themeScripts';
 	$mainScripts[]	= 'sysclass.module.loader';
