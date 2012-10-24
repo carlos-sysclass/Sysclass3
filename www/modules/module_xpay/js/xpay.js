@@ -103,31 +103,64 @@ jQuery(function($) {
 	}
 	
 	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
-		
-		/*
-		dataTableDefaults = jQuery.extend(dataTableDefaults, {
+		dataTableDebtsDefaults = jQuery.extend(true, dataTableDefaults, {
 			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
-				var iTotalMarket = 0;
+				var iTotalValor = 0;
+				var iTotalPago = 0;
+				var iTotalSaldo = 0;
+
 				for ( var i=0 ; i<aaData.length ; i++ )
 				{
-					iTotalMarket += aaData[i][4]*1;
+					iTotalValor += parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago += parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo += parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 				
 				// Calculate the market share for browsers on this page
-				var iPageMarket = 0;
-				for ( var i=iStart ; i<iEnd ; i++ )
+				var iFilterValor = 0;
+				var iFilterPago = 0;
+				var iFilterSaldo = 0;
+				for ( var i=0 ; i<aiDisplay.length ; i++ )
 				{
-					iPageMarket += aaData[ aiDisplay[i] ][4]*1;
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
 				}
-				// Modify the footer row to match what we want
-				var nCells = nRow.getElementsByTagName('th');
-				nCells[1].innerHTML = parseInt(iPageMarket * 100)/100 +
-					'% ('+ parseInt(iTotalMarket * 100)/100 +'% total)';
+
+				
+				// Calculate the market share for browsers on this page
+				var iPageValor = 0;
+				var iPagePago = 0;
+				var iPageSaldo = 0;
+				for ( var i=iStart ; i<iEnd ; i++ ) {
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+				jQuery(nRow).next().children().eq(1).html(
+					Globalize.format( iPageValor, "c" )
+				);
+				jQuery(nRow).next().children().eq(2).html(
+					Globalize.format( iPagePago, "c" )
+				);
+				jQuery(nRow).next().children().eq(3).html(
+					Globalize.format( iPageSaldo, "c" )
+				);
+				
+				jQuery(nRow).next().next().children().eq(1).html(
+					Globalize.format( iFilterValor, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(2).html(
+					Globalize.format( iFilterPago, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(3).html(
+					Globalize.format( iFilterSaldo, "c" )
+				);
 			}
 		});
-		*/
 		
-		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDefaults).columnFilter({ 
+		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDebtsDefaults).columnFilter({ 
 			aoColumns: [ 
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
 				{ type: "text" },

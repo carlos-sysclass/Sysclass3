@@ -268,6 +268,7 @@ function getJqueryPeriodicData() {
 		}
 	);
 	
+	Globalize.culture( "pt-BR" ); /** @todo SET THIS TO  GET CURRENT CULTURE */
 	// Requires jQuery!
 	// Requires jQuery!
 	/*

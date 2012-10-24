@@ -39,6 +39,18 @@
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>
 			</tr>
+			<tr>
+				<th colspan="3" style="text-align: right;">Total da Página</th>
+				<th style="text-align: center;">Valor</th>
+				<th style="text-align: center;">Pago</th>
+				<th style="text-align: center;">Saldo Devedor</th>
+			</tr>
+			<tr>
+				<th colspan="3" style="text-align: right;">Grande Total</th>
+				<th style="text-align: center;">Valor</th>
+				<th style="text-align: center;">Pago</th>
+				<th style="text-align: center;">Saldo Devedor</th>
+			</tr>
 		</tfoot>
 	</table>
 {/capture}

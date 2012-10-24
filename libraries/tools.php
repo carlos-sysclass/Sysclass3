@@ -2734,12 +2734,16 @@ function getMainScripts() {
 	// $mainScripts[]	= 'jquery/jquery.tipsy';
 	$mainScripts[]	= 'jquery/jquery.dataTables';
 	$mainScripts[]	= 'jquery/jquery.dataTables.columnFilter';
+	// jQuery Globalize
+	$mainScripts[]	= 'jquery/globalize';
+	$mainScripts[]	= 'jquery/globalize/culture.pt-BR'; /* @todo Substitute this by current culture */
+	
 	// jQuery Noty
-	$mainScripts[]	= 'jquery/noty/jquery.noty';
-	$mainScripts[]	= 'jquery/noty/layouts/topCenter';
-	$mainScripts[]	= 'jquery/noty/layouts/topRight';
-	$mainScripts[]	= 'jquery/noty/layouts/centerRight';
-	$mainScripts[]	= 'jquery/noty/themes/default';
+	//$mainScripts[]	= 'jquery/noty/jquery.noty';
+	//$mainScripts[]	= 'jquery/noty/layouts/topCenter';
+	//$mainScripts[]	= 'jquery/noty/layouts/topRight';
+	//$mainScripts[]	= 'jquery/noty/layouts/centerRight';
+	//$mainScripts[]	= 'jquery/noty/themes/default';
 	/*
 	<!-- layouts -->
 	<script type="text/javascript" src="../js/noty/layouts/bottom.js"></script>
