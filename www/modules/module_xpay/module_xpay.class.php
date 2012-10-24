@@ -541,17 +541,24 @@ class module_xpay extends MagesterExtendedModule {
 */	
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
-			
 			$_GET['negociation_id'] = $userDebit['id'];
-
 			$this->setCurrentAction("view_user_course_statement", true);
-			
-		//} elseif (count($userDebits['grouped']) == 1 && count($userDebits['invoices'] == 0)) {
-//			echo "hdjka";
-//			exit;
-		} else {
+
+		} elseif (count($userDebits) > 1) {
 			// SIMPLY SHOW TWO OR MORE NEGOCIATIONS TO THE USER CHOICES.
 			$smarty -> assign("T_XPAY_NEGOCIATIONS", $userDebits);
+		} else {
+			// USER HAS NO NEGOCIATIONS 
+			if ($this->getCurrentUser()->getType() == 'student') {
+				$this->setMessageVar("Ocorreu um erro ao tentar recuperar as informações de seu extrato. Por favor entre em contato com o suporte.", "warning");
+				return false;
+			} else {
+				// LOAD ALL USER'S COURSES AND LESSONS   
+				$this->setCurrentAction("create_negociation", true);
+			}
+			// 
+			
+			
 			/*
 			// PROCESS INVOICES...
 			$usersTotals= array(
@@ -765,7 +772,80 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return true;
 	}
-	
+	public function createNegociationAction() {
+		$smarty = $this->getSmartyVar();
+		
+		$userDebits = $this->_getUserModuleStatus();
+		
+		
+		
+		// STEPS
+			// 1. MODULE SELECTION (REQUIRED ONLY IF USER HAS 2 OR MORE MODULES)
+			// 2.
+		if (count($userDebits) == 0) { 
+			
+		} elseif (count($userDebits) > 1) {
+			// CREATE FORM AND SELECT CURRENT
+			$this->setMessageVar("Ainda não implementado. REF: XPAY-0001", "warning");
+			return false;
+			
+			$smarty->assign("T_XPAY_USER_MODULES", $userDebits);
+			
+		} elseif (count($userDebits) == 1) {
+			//$smarty->assign("T_XPAY_USER_MODULES", $userDebits);
+			
+			$negociationModules = array(
+				array(
+					'negociation_id'	=> null, 	
+					'lesson_id'			=> $userDebits[0]['type'] == 'lesson' ? $userDebits[0]['module_id'] : 0,
+					'course_id'			=> $userDebits[0]['type'] == 'course' ? $userDebits[0]['module_id'] : 0,
+					'module_type'		=> $userDebits[0]['type']
+				)
+			);
+			
+			$editedUser = $this->getEditedUser(true, $userDebits[0]['user_id']);
+			
+			// CHECK IF THIS USER_NEGOCIATION EXISTS
+			$userNegociations = $this->_getNegociationByContraints(array(
+				'user_id'	=> $userDebits[0]['user_id']
+			));
+			
+			if (count($userNegociations) == 0) {
+				$this->setMessageVar("Ainda não implementado. REF: XPAY-0002", "warning");
+				return false;
+			}
+		}
+		
+		/*
+		module_xpay_negociation_modules
+		*/
+		
+		$negociation = array(
+			'timestamp'				=> time(),
+			'user_id'				=> $editedUser->user['id'],
+			'course_id'				=> 0,
+			'lesson_id'				=> 0,
+			'registration_tax'		=> 0,
+			'parcelas'				=> 0,
+			'negociation_index'		=> 1,
+			'active'				=> 1
+		);
+		
+		$negociationID = ef_insertTableData(
+			"module_xpay_course_negociation",
+			$negociation
+		);
+		
+		
+		
+		
+		
+		echo "<pre>";
+		var_dump($userDebits);
+		echo "</pre>";
+		//exit;
+		
+	}
 	public function editNegociationAction() {
 		/*
 		$this->setMessageVar("Acesso temporariamente indisponível. Para mais informações, consulte o suporte.", "failure");
@@ -1009,8 +1089,6 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign('T_XPAY_INVOICE_PARAMS_FORM', $renderer -> toArray());
 		return true;
 	}
-	
-	
 	public function simulateDueBalanceNegociationAction() {
 		$this->setMessageVar("Acesso temporariamente indisponível. Para mais informações, consulte o suporte.", "failure");
 		return false;
@@ -1654,9 +1732,6 @@ class module_xpay extends MagesterExtendedModule {
 		$form -> render($renderer);
 		$smarty -> assign('T_XPAY_CREATE_PAYMENT_FORM', $renderer -> toArray());
 	}
-	
-
-	
 	public function editInvoiceAction() {
 		$smarty = $this->getSmartyVar();
 		/// GET =
@@ -1740,7 +1815,6 @@ class module_xpay extends MagesterExtendedModule {
 		$form -> render($renderer);
 		$smarty -> assign('T_XPAY_EDIT_INVOICE_FORM', $renderer -> toArray());
 	}
-	
 	public function viewUsersInDebtsAction() {
 		$smarty = $this->getSmartyVar();
 		
@@ -1963,7 +2037,6 @@ class module_xpay extends MagesterExtendedModule {
 		echo json_encode($result);
 		exit;
 	}
-	
 	/* EVENTS HANDLERS */
 	/* MODULE EVENTS RECEIVERS */
 	public function onPaymentReceivedEvent($context, $data) {
@@ -2044,7 +2117,6 @@ class module_xpay extends MagesterExtendedModule {
 												
 					
 	}	
-	
 	/* NEW DATA MODEL FUNCTIONS */
 	private function checkAndCreateInvoices($userDebit) {
 		/*	
@@ -2063,7 +2135,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		*/
 	}
-	
 	private function _createInvoice($negociationID, $basePrice, $vencimento = 5, $invoice_id = null, $invoice_index = -1, $persist = true, $negociationUser = false) {
 		if (!is_numeric($negociationID)) {
 
@@ -2299,7 +2370,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $workflow;
 	}
-
 	/* GETTERS */
 	private function _getLastPaymentsList($constraints, $limit = null) {
 		//$limit = null MEANS "NO LIMIT"
@@ -2323,116 +2393,11 @@ class module_xpay extends MagesterExtendedModule {
 			"data_pagamento DESC",
 			"",
 			$limit
-				
-				
-			/* Instituição / Polo, */
+
 		);
 		return $lastPaymentsList;
 	}
-	/*
-	private function _getUserModulePayStatus($login = null, $module_id = null) {
-		if (!is_null($login)) {
-			$editedUser = $this->getEditedUser(true, $login);
-		} else {
-			$editedUser = $this->getEditedUser();
-		}
-		
-		$courseItens = eF_getTableData(
-				sprintf('users_to_courses uc
-				LEFT JOIN module_xpay_course_negociation neg ON (uc.courses_ID = neg.course_id AND neg.user_id = %1$d AND neg.lesson_id <> 0)
-				LEFT OUTER JOIN module_xpay_negociation_to_group neg_grp ON (neg.id = neg_grp.negociation_id)  
-				LEFT JOIN courses c ON (uc.courses_ID = c.id)
-				LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
-				uc.courses_ID = cp.course_id AND
-				uc.modality_id = cp.modality_id AND (
-				( uc.from_timestamp BETWEEN cp.from_timestamp AND cp.to_timestamp ) OR
-				( uc.from_timestamp > cp.from_timestamp AND cp.to_timestamp = -1) OR
-				( uc.from_timestamp < cp.to_timestamp AND cp.from_timestamp = -1)
-		)
-		) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)', $editedUser->user['id']),
-				sprintf(
-						'%1$d as user_id, neg_grp.negociation_group_id, \'course\' as type, c.id as module_id, c.name as module, uc.from_timestamp as matricula,
-						IFNULL(cp.price, c.price) as base_price,
-						0 as paid,
-						uc.modality_id,
-						(SELECT MAX(negociation_index) FROM module_xpay_course_negociation WHERE user_id = %1$d AND course_id = uc.courses_ID) as negociation_index,
-						cm.name as modality',
-						$editedUser->user['id']
-				),
-				sprintf("users_LOGIN = '%s' AND uc.modality_id != 3 AND uc.archive = 0 AND uc.active = 1", $editedUser->user['login'])
-		);
-		
-		
-		$courses_ID = array(0);
-		foreach($courseItens as $courseData) {
-			// GET COURSE LESSONS, AND EXCLUDE THEN
-			$courses_ID[] = $courseData['module_id'];
-		}
-	
-		$lessonItens = eF_getTableData(
-				sprintf('users_to_lessons ul
-				LEFT JOIN module_xpay_course_negociation neg ON (ul.lessons_ID = neg.lesson_id AND neg.user_id = %1$d AND neg.lesson_id <> 0)
-				LEFT OUTER JOIN module_xpay_negociation_to_group neg_grp ON (neg.id = neg_grp.negociation_id) 
-				LEFT JOIN lessons l ON (ul.lessons_ID = l.id)
-				LEFT OUTER join module_xpay_lesson_modality_prices lp ON (
-					ul.lessons_ID = lp.lesson_id
-					AND ul.modality_id = lp.modality_id AND (
-						( ul.from_timestamp BETWEEN lp.from_timestamp AND lp.to_timestamp ) OR
-						( ul.from_timestamp > lp.from_timestamp AND lp.to_timestamp = -1) OR
-						( ul.from_timestamp < lp.to_timestamp AND lp.from_timestamp = -1)
-					)
-				)
-				LEFT OUTER join module_xpay_lesson_modality lm ON (ul.modality_id = lm.id)', $editedUser->user['id']),
-				sprintf(
-		 			'%1$d as user_id, neg_grp.negociation_group_id, \'lesson\' as type, l.id as module_id, l.name as module,
-						ul.from_timestamp as matricula, IFNULL(lp.price, l.price) as base_price,
-						0 as paid, ul.modality_id,
-						(SELECT MAX(negociation_index) FROM module_xpay_lesson_negociation WHERE user_id = %1$d AND lesson_id = ul.lessons_ID) as negociation_index,
-						lm.name as modality',
-						$editedUser->user['id']
-				),
-				sprintf("
-						users_LOGIN = '%s'
-						AND l.course_only = 0
-						AND l.id NOT IN (SELECT lessons_ID FROM lessons_to_courses WHERE courses_ID IN (%s))
-						AND ul.archive = 0
-						AND ul.active = 1
-						",
-						$editedUser->user['login'],
-						implode(",", $courses_ID)
-				)
-		);
-		
-		
-		$userDebitsData = $courseItens + $lessonItens;
-		
-		$userDebits = array();
-		// CHECK FOR COURSE_ONLY SELECTED LESSONS
-		foreach($userDebitsData as $statement) {
-			$statement['balance'] = intval($statement['base_price'])-intval($statement['paid']);
-			$userDebits[] = $statement;
-		}
-		
-		
-		// GROUP WHEN NECESSARY
-		$userDebitsGroup = array();
-		
-		foreach($userDebits as $index => $statement) {
-			if (!is_null($statement['negociation_group_id'])) {
-				$group_id = $statement['negociation_group_id'];
-				if (!is_array($userDebitsGroup[$group_id])) {
-					$userDebitsGroup[$group_id] = array();
-				}
-				$userDebitsGroup[$group_id][] = $statement;
-				unset($userDebits[$index]);
-			}
-		}
-	
-		return array('invoices' => $userDebits, 'grouped' => $userDebitsGroup);
-	}
-	
-	
-	private function _getUserCoursesPayStatus($login = null, $module_id = null) {
+	private function _getUserModuleStatus($login = null, $module_id = null) {
 		if (!is_null($login)) {
 			$editedUser = $this->getEditedUser(true, $login);
 		} else {
@@ -2509,8 +2474,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $userDebits;
 	}
-	*/
-	
 	private function _getUserModuleNegociations($login = null, $module_id = null, $module_type = null) {
 		if (!is_null($login)) {
 			$editedUser = $this->getEditedUser(true, $login);
@@ -2540,7 +2503,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $negociations;
 	}
-	
 	public function _getNegociationPayerByNegociationID($negociationID) {
 		// CHECK IF IS A SINGLE OR MULTIPLE PAYER NEGOCIATION
 		if (eF_checkParameter($negociationID, 'id')) {
@@ -2577,28 +2539,6 @@ class module_xpay extends MagesterExtendedModule {
 			'negociation_id'	=> $negociationID
 		));
 	}
-	/*
-	private function _getNegociationByUserCourses($login = null, $course_id = null, $negociation_index = null, $simulation_status = 0) {
-		if (!is_array($simulation_status)) {
-			$simulation_status = array($simulation_status);
-		}
-		return $this->_getNegociationByContraints(array(
-			'login'				=> $login,
-			'course_id'			=> $course_id,
-			'negociation_index'	=> $negociation_index,
-			'simulation_status'	=> $simulation_status
-		));
-	}
-	
-	private function _getNegociationByUserLessons($login = null, $lesson_id = null, $negociation_index = null) {
-		return $this->_getNegociationByContraints(array(
-				'login'				=> $login,
-				'lesson_id'			=> $lesson_id,
-				'negociation_index'	=> $negociation_index,
-				'group_by'			=> 'lesson'
-		));
-	}
-	*/
 	private function _getNegociationByUserEntify($login = null, $module_id = null, $module_type = 'course', $negociation_index = null, $simulation_status = 0) {
 		if (!is_array($simulation_status)) {
 			$simulation_status = array($simulation_status);
@@ -2615,7 +2555,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		return $this->_getNegociationByContraints($constraints);
 	}	
-	
 	public function _getNegociationByContraints(array $contraints = null) {
 		$where = $order = array();
 		
@@ -3440,7 +3379,6 @@ class module_xpay extends MagesterExtendedModule {
 
 		return $sentLOG;
 	}
-	
 	public function createDirectAccessLink($userLogin, $userType, $query, $expires = false) {
 		$hash = $this->createDirectAccessHash($userLogin, $userType, $query, $expires);
 		
@@ -3448,7 +3386,6 @@ class module_xpay extends MagesterExtendedModule {
 			"%sservices/dl/?%s&_chk=%s", G_SERVERNAME, $query, $hash
 		);
 	}
-	
 	private function createDirectAccessHash($userLogin, $userType, $query, $expires = false) {
 		$fields = array();
 
@@ -3471,7 +3408,6 @@ class module_xpay extends MagesterExtendedModule {
 		);
 		return $fields['hash'];
 	}
-	
 	public function _asCurrency($rawValue) {
 		global $CURRENCYSYMBOLS;
 		$decimal_sep	= isset($GLOBALS['configuration']["decimal_point"]) ? $GLOBALS['configuration']["decimal_point"] : '.';
@@ -3516,7 +3452,6 @@ class module_xpay extends MagesterExtendedModule {
 	
 		return $digito;
 	}
-	
 	/* INVESTIGATE FUNCTIONS */
 	private function _getUserDebtDays($user = null) {
 		// RETURN A ARRAY OF timestamp DEBTS, ONE PER INVOICE
@@ -3551,7 +3486,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		return $inDebt;
 	}
-
 	/* TO_REVISE FUNCTIONS */
 	private function _createUserDefaultStatement($persist = true, $is_simulation = false) {
 		// GET ALL DEBITS
@@ -3664,7 +3598,6 @@ class module_xpay extends MagesterExtendedModule {
 		 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		*/
 	}
-	
 	/* MODEL FUNCTIONS */
 	public function getSubmodules() {
 		if (is_null(self::$subModules)) {
@@ -4036,7 +3969,6 @@ class module_xpay extends MagesterExtendedModule {
 	
 		return $digito;
 	}
-
 	/* OLD-STYLE FUNCTIONS */
 	public function getCenterLinkInfo() {
 		$currentUser = $this -> getCurrentUser();
