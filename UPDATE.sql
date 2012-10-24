@@ -3014,5 +3014,5 @@ SET `negociation_id` = '863',
 WHERE `module_xpay_invoices`.`negociation_id` =869 AND `module_xpay_invoices`.`invoice_index` =0;
 
 
-
-
+/* 2012-10-24 */
+ALTER TABLE `module_xpay_course_negociation` CHANGE `course_id` `course_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0';
