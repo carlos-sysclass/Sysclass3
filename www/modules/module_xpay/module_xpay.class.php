@@ -1490,9 +1490,8 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		if (
-			($form -> isSubmitted() && $form -> validate()) /*||
-			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION))
-			*/
+			($form -> isSubmitted() && $form -> validate()) ||
+			(array_key_exists('pay_method', $_SESSION) && array_key_exists('pay_method_option', $_SESSION) && $_GET['do_direct'] == 1)
 		) {
 			$values = $form->exportValues();
 				
@@ -3391,7 +3390,7 @@ class module_xpay extends MagesterExtendedModule {
 		$my_email 	= "financeiro@sysclass.com";
 		$my_pass	= 'pl!kua?#!*]]i$ooe1';
 		$user_mail = $invoiceUser->user['email'];
-		//$user_mail = "fin@americas.com.br";
+//		$user_mail = "andre@kucaniz.com";
 
 		$subject = 'Boleto ULT';
 
