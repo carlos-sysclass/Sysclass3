@@ -103,6 +103,30 @@ jQuery(function($) {
 	}
 	
 	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		
+		/*
+		dataTableDefaults = jQuery.extend(dataTableDefaults, {
+			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				var iTotalMarket = 0;
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalMarket += aaData[i][4]*1;
+				}
+				
+				// Calculate the market share for browsers on this page
+				var iPageMarket = 0;
+				for ( var i=iStart ; i<iEnd ; i++ )
+				{
+					iPageMarket += aaData[ aiDisplay[i] ][4]*1;
+				}
+				// Modify the footer row to match what we want
+				var nCells = nRow.getElementsByTagName('th');
+				nCells[1].innerHTML = parseInt(iPageMarket * 100)/100 +
+					'% ('+ parseInt(iTotalMarket * 100)/100 +'% total)';
+			}
+		});
+		*/
+		
 		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDefaults).columnFilter({ 
 			aoColumns: [ 
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
