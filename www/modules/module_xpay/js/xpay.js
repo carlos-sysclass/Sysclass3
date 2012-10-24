@@ -105,6 +105,7 @@ jQuery(function($) {
 	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
 		dataTableDebtsDefaults = jQuery.extend(true, dataTableDefaults, {
 			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				/*
 				var iTotalValor = 0;
 				var iTotalPago = 0;
 				var iTotalSaldo = 0;
@@ -115,7 +116,7 @@ jQuery(function($) {
 					iTotalPago += parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
 					iTotalSaldo += parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
 				}
-				
+				*/
 				// Calculate the market share for browsers on this page
 				var iFilterValor = 0;
 				var iFilterPago = 0;
@@ -123,7 +124,7 @@ jQuery(function($) {
 				for ( var i=0 ; i<aiDisplay.length ; i++ )
 				{
 					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
-					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
 					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 
@@ -134,7 +135,7 @@ jQuery(function($) {
 				var iPageSaldo = 0;
 				for ( var i=iStart ; i<iEnd ; i++ ) {
 					iPageValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
-					iPagePago += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
 					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 
