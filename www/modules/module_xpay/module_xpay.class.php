@@ -3190,7 +3190,7 @@ class module_xpay extends MagesterExtendedModule {
 			"IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as considered_paid",
 			"IFNULL(SUM(pd.paid), 0) as real_paid",
 			"SUM(inv.valor) - IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as total_debito",
-			"MIN(inv.data_vencimento) as data_debito_inicial"
+			"inv.data_vencimento as data_debito_inicial"
 		);
 		
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");

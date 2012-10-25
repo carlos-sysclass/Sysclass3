@@ -44,7 +44,7 @@
 				<th style="text-align: center;">
 					<select name="filter_column_4" class="select_filter">
 						<option value="">Parcelas</option>
-						<option value="1+/">Somente Matrículas</option>
+						<option value="^(1)/">Somente Matrículas</option>
 						<option value="([2-9]|1+[0-9]+)/">Somente Parcelas</option>
 					</select>
 				</th>
