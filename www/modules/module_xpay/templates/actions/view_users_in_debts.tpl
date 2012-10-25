@@ -8,7 +8,7 @@
 				<th style="text-align: center;">Usuário</th>
 				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
-				<th style="text-align: center;">Parcelas</th>
+				<th style="text-align: center;"><!-- Parcelas  --></th>
 				<th style="text-align: center;">Valor Vencido</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Vencido</th>
@@ -26,7 +26,7 @@
 					<td>{$debt.ies}</td>
 					<td>{$debt.course}</td>
 					<td align="center">
-						{$debt.invoice_index}/{$debt.total_parcelas}
+						<!-- {$debt.total_parcelas}  -->
 					</td>
 				 	<!-- <td align="center">{$invoice.invoice_id}</td>  -->
 				 	<td align="center">#filter:currency:{$debt.valor_total}#</td>
@@ -41,7 +41,7 @@
 				<th style="text-align: center;">Usuário</th>
 				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
-				<th style="text-align: center;">Parcelas</th>
+				<th style="text-align: center;"><!-- Parcelas --></th>
 				<th style="text-align: center;">Valor</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>
