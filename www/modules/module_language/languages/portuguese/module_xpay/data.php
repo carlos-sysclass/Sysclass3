@@ -44,7 +44,10 @@ define("__XPAY_BALANCE", "Saldo Devedor");
 define("__XPAY_REGISTRATION_TAX", "Entrada");
 define("__XPAY_PARCELAS_COUNT", "Total de Parcelas");
 define("__XPAY_VENCIMENTO_1_PARCELA", "Vencimento da 1&ordf; Parcela");
+define("__XPAY_DUE_DAY", "Dia de vencimento");
+
 define("__XPAY_INSTANCE_TYPE", "Método de Pagamento");
+
 
 /* BOTÕES */
 define("__XPAY_CREATE_NEW_NEGOCIATION", "Criar nova Negociação");

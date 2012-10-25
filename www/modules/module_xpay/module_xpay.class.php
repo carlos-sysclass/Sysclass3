@@ -650,10 +650,6 @@ class module_xpay extends MagesterExtendedModule {
 	public function viewUserCourseStatementAction() {
 		$smarty = $this->getSmartyVar();
 		
-
-
-
-		
 		if ($this->getCurrentUser()->getType() == 'professor') {
 			$this->setMessageVar("Acesso Não Autorizado", "failure");
 			return false;
@@ -697,31 +693,10 @@ class module_xpay extends MagesterExtendedModule {
 		if (!$userNegociation) {
 			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociation_index);
 		}
-
+		
 		foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
-			$applied_rules = array();
-			if ($invoice['total_reajuste'] <> 0) {
-				foreach($invoice['workflow'] as $workflow) {
-					if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
-						foreach($invoice['rules'] as $rule) {
-							if ($rule['id'] == $workflow['rule_id']) {
-								$currentRule = $rule;
-								break;
-							}
-						}
-						$applied_rules[$workflow['rule_id']] = array(
-							'description'		=> $currentRule['description'],
-							'input'				=> $workflow['input'],
-							'diff'				=> $workflow['diff'],
-							'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
-							'count'				=> 0
-						);
-					}
-					$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
-					$applied_rules[$workflow['rule_id']]['count']++;
-				}
-			}
-			$userNegociation['invoices'][$invoice_index]['applied_rules'] = $applied_rules;
+			
+			$userNegociation['invoices'][$invoice_index]['applied_rules'] = $this->_getAppliedRules($invoice);
 		}
 
 		if (count($userNegociation) == 0) {
@@ -762,12 +737,14 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
 		
 		if ($this->getCurrentUser()->getType() == 'administrator') {
+			/*
 			$smarty->assign("T_XPAY_BLOCK_OPTIONS", array(
 				array(
 					'href'          => "javascript: _sysclass('load', 'xpay').;",
 					'image'         => "16x16/fds.gif"
 				)
 			));
+			*/
 		}
 		
 		return true;
@@ -776,14 +753,13 @@ class module_xpay extends MagesterExtendedModule {
 		$smarty = $this->getSmartyVar();
 		
 		$userDebits = $this->_getUserModuleStatus();
-		
-		
-		
 		// STEPS
 			// 1. MODULE SELECTION (REQUIRED ONLY IF USER HAS 2 OR MORE MODULES)
 			// 2.
 		if (count($userDebits) == 0) { 
 			
+			var_dump($userDebits);
+			exit;
 		} elseif (count($userDebits) > 1) {
 			// CREATE FORM AND SELECT CURRENT
 			$this->setMessageVar("Ainda não implementado. REF: XPAY-0001", "warning");
@@ -810,16 +786,12 @@ class module_xpay extends MagesterExtendedModule {
 				'user_id'	=> $userDebits[0]['user_id']
 			));
 			
-			if (count($userNegociations) == 0) {
+			if (count($userNegociations) > 0) {
 				$this->setMessageVar("Ainda não implementado. REF: XPAY-0002", "warning");
 				return false;
 			}
 		}
-		
-		/*
-		module_xpay_negociation_modules
-		*/
-		
+	
 		$negociation = array(
 			'timestamp'				=> time(),
 			'user_id'				=> $editedUser->user['id'],
@@ -835,16 +807,22 @@ class module_xpay extends MagesterExtendedModule {
 			"module_xpay_course_negociation",
 			$negociation
 		);
+	
+		foreach($negociationModules as &$module) {
+			$module['negociation_id'] = $negociationID;
+		}
+		eF_insertTableDataMultiple("module_xpay_negociation_modules", $negociationModules);
 		
-		
-		
-		
-		
+		$_GET['negociation_id'] = $negociationID;
+		$this->setCurrentAction("edit_negociation", true);
+/*		
 		echo "<pre>";
-		var_dump($userDebits);
-		echo "</pre>";
-		//exit;
+		var_dump($negociation);
+		var_dump($negociationModules);
 		
+		echo "</pre>";
+		exit;
+*/
 	}
 	public function editNegociationAction() {
 		/*
@@ -871,59 +849,18 @@ class module_xpay extends MagesterExtendedModule {
 		) {
 			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
+			
+			$negociationUser = $this->getEditedUser(true, $userNegociation['user_id']);
 		} else {
 			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. POr favor entre em contato com o suporte", "failure");
 			return false;
 		}
-		
-		
-		
-		/*
-		if (!($editUser = $this->getEditedUser())) {
+		if (count($userNegociation['invoices']) > 0) {
+			// SE JÁ TIVER FATURAS PAGAS, 
+			$this->setMessageVar("Ainda não implementado. REF: XPAY-0003", "warning");
 			return false;
 		}
-		if (
-				!($editCourse = $this->getEditedCourse()) &&
-				!($editLesson = $this->getEditedLesson())
-		) {
-			return false;
-		}
-	
-		if ($editLesson) {
-			$entify = $editLesson->lesson;
-			$entify['type'] = 'lesson';
-		} else {
-			$entify = $editCourse->course;
-			$entify['type'] = 'course';
-		}
-		*/
 		
-	
-		// GET ONLY SIMULATED NEGOCIATIONS
-		//$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 0);
-		//$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 1);
-		/*
-			echo '<pre>';
-		var_dump($userNegociation);
-		echo '<pre>';
-		exit;
-		*/
-	
-		// CHECK IF COURSE HAS A DEFAULT STATEMENT
-		/*
-		if (count($userNegociation) == 0 && count($simulatedNegociation) == 0) {
-			$userNegociation = $simulatedNegociation = $this->_createUserDefaultStatement(true, true);
-			$userNegociation = $simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
-		} elseif (count($userNegociation) == 0) {
-			$userNegociation = $simulatedNegociation;
-		} elseif (count($simulatedNegociation) == 0) {
-			$simulatedNegociation = $this->_createUserDefaultStatement(true, true);
-			$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index'], 1);
-		} else {
-	
-		}
-		*/
-	
 		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
 		$form = new HTML_QuickForm2("xpay_invoice_params_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
 	
@@ -934,143 +871,176 @@ class module_xpay extends MagesterExtendedModule {
 	
 		$form -> addText('total_parcelas', array('class' => 'small', 'alt' => 'integer'), array('label'	=> __XPAY_PARCELAS_COUNT));
 		$form -> addText('vencimento_1_parcela', array('class' => 'small', 'alt' => 'date'), array('label'	=> __XPAY_VENCIMENTO_1_PARCELA));
+		
+		$due_days = array();
+		for($i = 1; $i <= 31; $i++) {
+			$due_days[$i] = $i;
+		}
+		
+		$form -> addSelect('dia_vencimento', array('class' => 'medium'), array('label'	=> __XPAY_DUE_DAY, 'options' => $due_days));
 		//
+		
 		$form -> addSubmit('submit_invoice_params', null, array('label'	=> __XPAY_SUBMIT));
-	
 	
 		if ($form -> isSubmitted() && $form -> validate()) {
 		// INSERE VALORES E REDIRECIONA PARA
 			$fields = $values = $form->getValue();
-				
+
 			$fields['taxa_matricula'] 		= str_replace(",", ".", str_replace(".", "", $fields['taxa_matricula']));
 			$fields['vencimento_1_parcela'] = date_create_from_format("d/m/Y H:i:s", $fields['vencimento_1_parcela'] . "  00:00:00");
-			//s$fields['vencimento_1_parcela'] ? $fields['vencimento_1_parcela'] = $fields['vencimento_1_parcela']->format('Y-m-d') : null;
-	
+			
 			$negociationParams = array(
-			'full_price'			=> $simulatedNegociation['full_price'],
+				'full_price'			=> $userNegociation['full_price'],
 				'paid'					=> $userNegociation['paid'],
-					//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
-					'taxa_matricula'		=> $fields['taxa_matricula'],
+				//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
+				'taxa_matricula'		=> $fields['taxa_matricula'],
 				'total_parcelas'		=> $fields['total_parcelas'],
-				'vencimento_1_parcela'	=> $fields['vencimento_1_parcela']
+				'vencimento_1_parcela'	=> $fields['vencimento_1_parcela'],
+				'dia_vencimento'		=> $fields['dia_vencimento']
 			);
 
 			// CRIAR SIMULAÇÃO DE PARCELAMENTO
 			$currentBalance = $negociationParams['full_price'];
 			$invoices = array();
-				$invoice_index = 1;
-				$default_vencimento = 5;
+			$invoice_index = 1;
+			$default_vencimento = 5;
 					
-				$fakeNegociationID = $simulatedNegociation['id'];
+			$fakeNegociationID = $userNegociation['id'];
 	
-						// 1. CREATE INVOICE FOR ALREADY "paid" VALUES, AND LOCK
-						if ($negociationParams['paid'] > 0) {
+			// 1. CREATE INVOICE FOR ALREADY "paid" VALUES, AND LOCK
+			if ($negociationParams['paid'] > 0) {
+				$paidInvoice = $this->_createInvoice(
+						$fakeNegociationID, $negociationParams['paid'], $default_vencimento, null, 0, false, $negociationUser
+				);
+				$paidInvoice['locked'] 		= 1;
+				$paidInvoice['description'] = __XPAY_PAID_INVOICE_DESCRIPTION;
+				$paidInvoice['paid']		= $negociationParams['paid'];
+		
+				$invoices[] = $paidInvoice;
+		
+				// 2. REMOVE PAID VALUE FROM FULL PRICE
+				$currentBalance -= $negociationParams['paid'];
+			}
+			
+			$today = new DateTime("today");
+			$monthInterval = new DateInterval('P1M');
+
+			// 3. CREATE INVOICE FOR "taxa_matricula"
+			if ($negociationParams['taxa_matricula'] > 0) {
+				
+				if (!$fields['vencimento_1_parcela']) {
+					$fields['vencimento_1_parcela'] = new DateTime('today');
+					$fields['vencimento_1_parcela']->add(new DateInterval('P10D'));
+				}
+				$firstDueDate = $fields['vencimento_1_parcela'];
+				
+				$registrantInvoice = $this->_createInvoice(
+					$fakeNegociationID, $negociationParams['taxa_matricula'], $firstDueDate, null, 0, false, $negociationUser
+				);
+				$registrantInvoice['description'] = __XPAY_REGISTRANT_INVOICE;
+				$invoices[] = $registrantInvoice;
+								
+				// 4. REMOVE "taxa_matricula" FROM FULL PRICE
+				$currentBalance -= $negociationParams['taxa_matricula'];
+			} else {
+				if (!$fields['vencimento_1_parcela']) {
+					$firstDueDate = $fields['vencimento_1_parcela'] = new DateTime('today');
+				}
+			}
+			
+			$nextDueDate  = new DateTime();
+			$nextDueDate->setDate(
+				$firstDueDate->format('Y'), 
+				$firstDueDate->format('m'),
+				$negociationParams['dia_vencimento']
+			);
+			
+			$firstNextDiff = $firstDueDate->diff($nextDueDate, false)->format("%r%d");
+
+			if (($negociationParams['taxa_matricula'] > 0 && $firstNextDiff < 15) || $firstNextDiff < 0) {
+				$nextDueDate->add($monthInterval);
+			}
+			
+			// 5. DIVIDE BALANCE BY "total_parcelas"
+			$valorParcela = xfloor($currentBalance / $negociationParams['total_parcelas'], 2);
 	
-						$paidInvoice = $this->_createInvoice(
-								$fakeNegociationID, $negociationParams['paid'], $default_vencimento, null, 0, false
-						);
-						$paidInvoice['locked'] 		= 1;
-						$paidInvoice['description'] = __XPAY_PAID_INVOICE_DESCRIPTION;
-						$paidInvoice['paid']		= $negociationParams['paid'];
+			// 6. APPEND THE INVOICES VALUES
+			$invoicesValues = array();
+			for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
+				$invoicesValues[$i] = $valorParcela;
+			}
+
+			// 7. CALCULATE THE REST
+			$restBalance = round($currentBalance - ($valorParcela * $negociationParams['total_parcelas']), 2);
 	
-						$invoices[] = $paidInvoice;
+			// 8. APPEND THE REST, BY 0.01 STEP ON INVOICES
+			for($i = $negociationParams['total_parcelas']; $i >= 1; $i--) {
+				if ($restBalance > 0) {
+					$invoicesValues[$i]	+= 0.01;
+					$restBalance 		-= 0.01;
+				} else {
+					break;
+				}
+			}
+
+
+			// 9. CREATE INVOICES
+			for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
+				$parcelationInvoice = $this->_createInvoice(
+					$fakeNegociationID, $invoicesValues[$i], $nextDueDate, null, $invoice_index++, false, $negociationUser
+				);
+				
+								
+				$parcelationInvoice['description'] = sprintf(__XPAY_NUMBERED_INVOICE, $i);
+				$invoices[] = $parcelationInvoice;
+								
+				$nextDueDate->add($monthInterval);
+			}
 	
-						// 2. REMOVE PAID VALUE FROM FULL PRICE
-						$currentBalance -= $negociationParams['paid'];
-						}
+			$suggestedInvoices = array();
+
+			foreach($invoices as $invoice_index => $invoice) {
+				$invoice['applied_rules'] = $this->_getAppliedRules($invoice);
+				$suggestedInvoices[] = $invoice;
+			}
+			///$userNegociation['sugested_invoices'] = $suggestedInvoices;
+			$userNegociation['invoices'] = $suggestedInvoices;
+
+			/*
+			$negociationTotals = array(
+				'invoices_count'	=> count($userNegociation['invoices']),
+				'valor'				=> 0,
+				'total_reajuste'	=> 0,
+				'paid'				=> 0
+			);
+	
+			foreach($userNegociation['sugested_invoices'] as $invoice) {
+				$negociationTotals['valor']				+= $invoice['valor'];
+				$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
+				$negociationTotals['paid']				+= $invoice['paid'];
+			}
+			$negociationTotals['balance'] = intval($negociationTotals['valor'])+intval($negociationTotals['total_reajuste'])-intval($negociationTotals['paid']);
+					
+			$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
+			*/
+			//$smarty -> assign("T_XPAY_NEGOCIATION_IS_SUGESTED", true);
+	
+			// SAVE ON SESSION SERIALIZED NEGOCIATION BY HASH
+			//$negociationHash = $this->createToken(10);
+			//$this->setCache($negociationHash, json_encode($userNegociation));
+			//$smarty -> assign("T_XPAY_NEGOCIATION_HASH", $negociationHash);
+			//$this->addModuleData("negociation_hash", $negociationHash);
+			//$values['saldo_total'] = $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']);
 							
-						$currentVencimento = $fields['vencimento_1_parcela'];
-						$today = new DateTime("today");
-						if ($fields['vencimento_1_parcela'] /* && intval($currentVencimento->diff($today, false)->format("%r%d")) <= 0 */ ) {
-							$monthInterval = new DateInterval('P1M');
-	
-							// 3. CREATE INVOICE FOR "taxa_matricula"
-							if ($negociationParams['taxa_matricula'] > 0) {
-								$registrantInvoice = $this->_createInvoice(
-										$fakeNegociationID, $negociationParams['taxa_matricula'], $currentVencimento, null, 0, false
-								);
-									
-								$registrantInvoice['description'] = __XPAY_REGISTRANT_INVOICE;
-								$invoices[] = $registrantInvoice;
-									
-								// 4. REMOVE "taxa_matricula" FROM FULL PRICE
-								$currentBalance -= $negociationParams['taxa_matricula'];
-									
-								$currentVencimento->add($monthInterval);
-							}
-	
-							// 5. DIVIDE BALANCE BY "total_parcelas"
-							$valorParcela = xfloor($currentBalance / $negociationParams['total_parcelas'], 2);
-	
-							// 6. APPEND THE INVOICES VALUES
-							$invoicesValues = array();
-							for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
-								$invoicesValues[$i] = $valorParcela;
-							}
-	
-							// 7. CALCULATE THE REST
-							$restBalance = round($currentBalance - ($valorParcela * $negociationParams['total_parcelas']), 2);
-	
-							// 8. APPEND THE REST, BY 0.01 STEP ON INVOICES
-							for($i = $negociationParams['total_parcelas']; $i >= 1; $i--) {
-								if ($restBalance > 0) {
-									$invoicesValues[$i]	+= 0.01;
-									$restBalance 		-= 0.01;
-								} else {
-									break;
-								}
-							}
-							// 9. CREATE INVOICES
-							for($i = 1; $i <= $negociationParams['total_parcelas']; $i++) {
-								$parcelationInvoice = $this->_createInvoice(
-										$fakeNegociationID, $invoicesValues[$i], $currentVencimento, null, $invoice_index++, false
-								);
-									
-								$parcelationInvoice['description'] = sprintf(__XPAY_NUMBERED_INVOICE, $i);
-								$invoices[] = $parcelationInvoice;
-									
-								$currentVencimento->add($monthInterval);
-							}
-	
-							$suggestedInvoices = array();
-	
-							foreach($invoices as $invoiceitem) {
-								$suggestedInvoices[] = $this->_calculateInvoiceDetails($invoiceitem);
-							}
-	
-							///$userNegociation['sugested_invoices'] = $suggestedInvoices;
-							$simulatedNegociation['sugested_invoices'] = $suggestedInvoices;
-	
-							$negociationTotals = array(
-									'invoices_count'	=> count($simulatedNegociation['invoices']),
-									'valor'				=> 0,
-									'total_reajuste'	=> 0,
-									'paid'				=> 0
-							);
-	
-							foreach($simulatedNegociation['sugested_invoices'] as $invoice) {
-								$negociationTotals['valor']				+= $invoice['valor'];
-								$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
-								$negociationTotals['paid']				+= $invoice['paid'];
-							}
-							$negociationTotals['balance'] = intval($negociationTotals['valor'])+intval($negociationTotals['total_reajuste'])-intval($negociationTotals['paid']);
-	
-							$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
-	
-							$smarty -> assign("T_XPAY_NEGOCIATION_IS_SUGESTED", true);
-	
-							// SAVE ON SESSION SERIALIZED NEGOCIATION BY HASH
-							$negociationHash = $this->createToken(10);
-							$this->setCache($negociationHash, json_encode($simulatedNegociation));
-							$smarty -> assign("T_XPAY_NEGOCIATION_HASH", $negociationHash);
-							$this->addModuleData("negociation_hash", $negociationHash);
-							$values['saldo_total'] = $this->_asCurrency($simulatedNegociation['full_price'] - $userNegociation['paid']);
-						} else {
-							$this->setMessageVar(__XPAY_PAYMENT_DAY_MUST_BE_GREATER_THAN_TODAY, "failure");
-						}
-							
-						$smarty -> assign("T_XPAY_STATEMENT", $simulatedNegociation);
-							
+			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
+			
+			$values = array(
+				'saldo_total'			=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				'total_parcelas'		=> $fields['total_parcelas'],
+				'dia_vencimento'		=> $fields['dia_vencimento'],
+				'vencimento_1_parcela'	=> $firstDueDate->format("d/m/Y"),
+				'taxa_matricula'		=> $fields['taxa_matricula']
+			);
 		} else {
 			$values = array(
 					'saldo_total'		=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
@@ -1079,7 +1049,6 @@ class module_xpay extends MagesterExtendedModule {
 			);
 			$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
 		}
-	
 	
 		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
 		// Set defaults for the form elements
@@ -1825,7 +1794,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$smarty->assign("T_XPAY_LIST", $debtsLists);
 	}
-	
 	public function viewUnpaidInvoicesAction() {
 		
 		$smarty = $this->getSmartyVar();
@@ -1837,7 +1805,6 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$smarty->assign("T_XPAY_LIST", $debtsLists);
 	}
-	
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(
@@ -2158,70 +2125,58 @@ class module_xpay extends MagesterExtendedModule {
 		if (!$negociationUser) {
 			$negociationUser = $this->getEditedUser();
 		}
-
-		$invoice = array();
 		
-		list(
-			$invoice['full_price'],
-			$invoice['acrescimo'],
-			$invoice['desconto'],
-			$invoice['rules'],
-			$invoice['workflow']
-		) = array_values($this->_applyFullPriceCalculations(
-			$negociationUser,
-			$basePrice,
-			array(
-				'ies_id' 	=> 0,
-				'polo_id' 	=> 0,
-				'course_id' => 0,
-				'class_id' 	=> 0,
-				'group_id' 	=> 0,
-				'user_id' 	=> 0
-			)
-			
-		));
-		
-		$insertData['negociation_id'] 		= $negociationID;
-		$insertData['invoice_index']		= $invoice_index;
-		$insertData['description']			= '';
-		$insertData['invoice_id']			= $invoice_id;
-		$insertData['invoice_sha_access']	= '';
-		$insertData['valor']				= $basePrice;
-		$insertData['data_registro']		= date("Y-m-d H:i:s");
-		$insertData['data_vencimento']		= null;
-		$insertData['locked']				= 0;
-
-		if (!is_numeric($invoice_index) || $invoice_index == -1) {
-			// CREATE A NEW INVOICE ID
-			$insertData['invoice_index'] = $this->_countTotalInvoices($negociationID);
-		}
-		if (empty($invoice_id)) {
-			// CREATE A NEW INVOICE ID
-			$insertData['invoice_id'] = $this->_createInvoiceID($negociationID, $insertData['invoice_index']);
-		}
 		if (is_null($vencimento)) {
 			$vencimento = 5;
 		}
+		
 		if (is_numeric($vencimento)) {
 			// CREATE A VENCIMENTO WITH now() + "$vencimento" days
 			$time = mktime(0, 0, 0, date('m'), date('d') + $vencimento, date("Y"));
-			$insertData['data_vencimento'] = date("Y-m-d", $time); 
+			$invoice['data_vencimento'] = date("Y-m-d", $time);
+			$vencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 		} elseif (is_object($vencimento)) {
-			$insertData['data_vencimento'] = $vencimento->format("Y-m-d");
+			$invoice['data_vencimento'] = $vencimento->format("Y-m-d");
 		}
+		
+		if ($vencimento) {
+			$today = new DateTime("today");
+			$apply_days = intval($vencimento->diff($today, true)->days);
+		}
+
+		if (!is_numeric($invoice_index) || $invoice_index == -1) {
+			// CREATE A NEW INVOICE ID
+			$invoice['invoice_index'] = $insertData['invoice_index'] = $this->_countTotalInvoices($negociationID);
+		}
+		if (empty($invoice_id)) {
+			// CREATE A NEW INVOICE ID
+			$invoice['invoice_id'] = $insertData['invoice_id'] = $this->_createInvoiceID($negociationID, $insertData['invoice_index']);
+		}
+		
+		$invoice['invoice_index']		= $insertData['negociation_id'] 	= $negociationID;
+		$invoice['invoice_index'] 		= $insertData['invoice_index']		= $invoice_index;
+		$invoice['description'] 		= $insertData['description']		= '';
+		$invoice['invoice_id'] 			= $insertData['invoice_id']			= $invoice_id;
+		$invoice['invoice_sha_access'] 	= $insertData['invoice_sha_access']	= '';
+		$invoice['valor'] 				= $insertData['valor']				= $basePrice;
+		$invoice['data_registro'] 		= $insertData['data_registro']		= date("Y-m-d H:i:s");
+		//$invoice['data_vencimento'] 	= $insertData['data_vencimento']	= null;
+		$invoice['locked'] 				= $insertData['locked']				= 0;
+		
 		if ($persist) {
+			//sub-group invoice_info
 			eF_insertTableData("module_xpay_invoices", $insertData);
 		}
 		
 		// CALC FIELDS
+		$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+		
 		$invoice['trans_count']	= 0;
 		$invoice['paid']			= 0;
 		$invoice['start_min']	= time();
 		$invoice['start_max']	= time();
-		
-		$fullInvoice = array_merge($insertData, $invoice);
 
-		return $fullInvoice;
+		return $invoice;
 	}
 	private function _countTotalInvoices($negociationID) {
 		list($lastInvoice) = eF_getTableData(
@@ -2285,13 +2240,35 @@ class module_xpay extends MagesterExtendedModule {
 		return true;
 		*/
 	}
+	private function _getAppliedRules($invoice) {
+		$applied_rules = array();
+		if ($invoice['total_reajuste'] <> 0) {
+			foreach($invoice['workflow'] as $workflow) {
+				if (!array_key_exists($workflow['rule_id'], $applied_rules)) {
+					foreach($invoice['rules'] as $rule) {
+						if ($rule['id'] == $workflow['rule_id']) {
+							$currentRule = $rule;
+							break;
+						}
+					}
+					$applied_rules[$workflow['rule_id']] = array(
+							'description'		=> $currentRule['description'],
+							'input'				=> $workflow['input'],
+							'diff'				=> $workflow['diff'],
+							'repeat_acronym'	=> $currentRule['applied_on'] == 'per_day' ? __XPAY_DAYS : '',
+							'count'				=> 0
+					);
+				}
+				$applied_rules[$workflow['rule_id']]['output'] =  $workflow['output'];
+				$applied_rules[$workflow['rule_id']]['count']++;
+			}
+		}
+		return $applied_rules;
+	}	
 	private function _applyFullPriceCalculations($userToCalculate, $basePrice, array $contraints = null, array $sentTags = null) {
 		$this->initRuleSystem();
-		
 		$allRules = $this->rules;
-
 		$xentifyModule = $this->loadModule("xentify");
-		
 		$xUserModule = $this->loadModule("xuser");
 		
 		if (is_null($sentTags)) {
@@ -2313,6 +2290,7 @@ class module_xpay extends MagesterExtendedModule {
 				continue;
 			}
 			// CHECK CONDITION (IF ANY)
+			
 			if ($this->_isRuleAndTagsMatching($rule['id'], $sentTags)) {
 				if ($rule['applied_on'] == 'once') {
 					$workflows[] = $lastWorkflow = $this->_applyWorkflowRule($rule, $lastWorkflow);
@@ -2610,70 +2588,26 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$where[] = sprintf("neg.is_simulation IN (%s)", implode(",", $simulation_status));
 /*
-		$negociationData = ef_getTableData(
-				"module_xpay_course_negociation neg
+		echo  prepareGetTableData(
+			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
 			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
 			LEFT JOIN users u ON (neg.user_id = u.id)
-		
-			LEFT OUTER JOIN users_to_courses uc ON (neg.course_id = uc.courses_ID AND u.login = uc.users_LOGIN AND uc.modality_id <> 3)
-			LEFT OUTER JOIN courses c ON (uc.courses_ID = c.id)
-			LEFT OUTER JOIN users_to_lessons ul ON (neg.lesson_id = ul.lessons_ID AND u.login = ul.users_LOGIN)
-			LEFT OUTER JOIN lessons l ON (ul.lessons_ID = l.id)
-			LEFT OUTER JOIN module_xpay_course_modality_prices clp ON (
-				(uc.courses_ID = clp.course_id OR ul.lessons_ID = clp.course_id ) AND
-				(uc.modality_id = clp.modality_id OR ul.modality_id = clp.modality_id ) AND (
-					(
-						( uc.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
-						( uc.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
-						( uc.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
-					) OR (
-						( ul.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
-						( ul.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
-						( ul.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
-					)
-				)
-			) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id OR ul.modality_id = cm.id)
-		
 			",
-				'neg.id, u.id as user_id, IFNULL(c.id, l.id) as module_id,
-			neg.course_id, neg.lesson_id,
-			u.name, u.surname, u.login,
-			IFNULL(c.name, l.name) as module, IFNULL(uc.from_timestamp, ul.from_timestamp) as matricula,
-			neg.is_simulation, IFNULL(IFNULL(clp.price, c.price), l.price) as base_price,
-			IFNULL(SUM(pd.paid), 0) as paid, IFNULL(uc.modality_id, ul.modality_id) as modality_id,
-			neg.negociation_index,
-			cm.name as modality',
-				implode(" AND ", $where),
-				"negociation_index DESC",
-				"neg.id, u.id, c.id"
+			'neg.id, u.id as user_id, u.name, u.surname, u.login, 
+			neg.is_simulation, neg.course_id, neg.lesson_id, 
+			IFNULL(SUM(pd.paid), 0) as paid,
+			neg.negociation_index',
+			implode(" AND ", $where),
+			"negociation_index DESC",
+			"neg.id, u.id"
 		);
-*/		
+*/
 		$negociationData = ef_getTableData(
 			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
 			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
 			LEFT JOIN users u ON (neg.user_id = u.id)
-			/*
-			LEFT OUTER JOIN users_to_courses uc ON (neg.course_id = uc.courses_ID AND u.login = uc.users_LOGIN AND uc.modality_id <> 3)
-			LEFT OUTER JOIN courses c ON (uc.courses_ID = c.id)
-			LEFT OUTER JOIN users_to_lessons ul ON (neg.lesson_id = ul.lessons_ID AND u.login = ul.users_LOGIN)
-			LEFT OUTER JOIN lessons l ON (ul.lessons_ID = l.id)
-			LEFT OUTER JOIN module_xpay_course_modality_prices clp ON (
-				(uc.courses_ID = clp.course_id OR ul.lessons_ID = clp.course_id ) AND
-				(uc.modality_id = clp.modality_id OR ul.modality_id = clp.modality_id ) AND (
-					(
-						( uc.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
-						( uc.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
-						( uc.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
-					) OR (
-						( ul.from_timestamp BETWEEN clp.from_timestamp AND clp.to_timestamp ) OR
-						( ul.from_timestamp > clp.from_timestamp AND clp.to_timestamp = -1) OR
-						( ul.from_timestamp < clp.to_timestamp AND clp.from_timestamp = -1)
-					) 
-				)
-			) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id OR ul.modality_id = cm.id)
-			*/
 			",
 			'neg.id, u.id as user_id, u.name, u.surname, u.login, 
 			neg.is_simulation, neg.course_id, neg.lesson_id, 
@@ -3016,13 +2950,6 @@ class module_xpay extends MagesterExtendedModule {
 		);
 	}
 	private function _calculateInvoiceDetails($invoice, $negociationUser) {
-//		$invoice['dias_vencidos'] 	= 0;
-//		$invoice['total_multa'] 	= 0;
-//		$invoice['juros_dia'] 		= 0;
-//		$invoice['total_acrescimo'] = $invoice['total_multa'] + ($invoice['juros_dia'] * $invoice['dias_vencidos']);
-//		$invoice['total_desconto']	= 0;
-		//$invoice['total_reajuste']	= 0;
-		
 		$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 		if (!$currentVencimento)
 			$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
@@ -3105,9 +3032,10 @@ class module_xpay extends MagesterExtendedModule {
 
 		//$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 		$currentVencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
-		if (!$currentVencimento)
+		if (!$currentVencimento) {
 			//$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
 			$currentVencimento = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
+		}
 		
 	
 		if ($currentVencimento) {

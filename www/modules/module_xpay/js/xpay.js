@@ -207,6 +207,28 @@ jQuery(function($) {
 		});
 	}
 	
+	jQuery("#xpay-invoice-params-selection").dialog({
+		autoOpen: false, 
+		show: "fade",
+		hide: "fade",
+		modal: true,
+		width: 'auto',
+		resizable: false,
+		buttons : {
+			'Salvar'	: function() {
+				jQuery(this).find("form").submit();
+			},
+			'Cancelar' 	: function() {
+				jQuery(this).dialog('close');
+			}
+		}
+	});
+	
+	jQuery(".openInvoiceNegociationDialog").click(function() {
+		jQuery("#xpay-invoice-params-selection").dialog('open');
+	});
+	
+	
 	// GLOBAL HANDLERS 
 	jQuery(":input[name='pagamentos']").click(function() {
 		window.location.href = "student.php?ctg=module&op=module_xpay&action=do_payment";
@@ -225,28 +247,6 @@ jQuery(function($) {
 					alert(response);
 				});
 			});
-			
-			jQuery("#xpay-invoice-params-selection").dialog({
-				autoOpen: false, 
-				show: "fade",
-				hide: "fade",
-				modal: true,
-				width: 'auto',
-				resizable: false,
-				buttons : {
-					'Salvar'	: function() {
-						jQuery(this).find("form").submit();
-					},
-					'Cancelar' 	: function() {
-						jQuery(this).dialog('close');
-					}
-				}
-			});
-			
-			jQuery(".openInvoiceNegociationDialog").click(function() {
-				jQuery("#xpay-invoice-params-selection").dialog('open');
-			});
-			
 		}
 	}
 	
