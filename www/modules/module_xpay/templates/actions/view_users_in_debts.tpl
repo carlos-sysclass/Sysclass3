@@ -8,10 +8,7 @@
 				<th style="text-align: center;">Usuário</th>
 				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
-				<th style="text-align: center;">
-				
-				
-				</th>
+				<th style="text-align: center;">Parcelas</th>
 				<th style="text-align: center;">Valor Vencido</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Vencido</th>
