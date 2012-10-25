@@ -3218,8 +3218,7 @@ class module_xpay extends MagesterExtendedModule {
 			"u.name",
 			"u.surname",
 			"u.login",
-			"c.name HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)"
-
+			"c.name /* HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)*/"
 		);
 		
 		// MAKE FILTERS
