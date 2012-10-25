@@ -123,9 +123,9 @@ jQuery(function($) {
 				var iFilterSaldo = 0;
 				for ( var i=0 ; i<aiDisplay.length ; i++ )
 				{
-					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
-					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
-					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 
 				
@@ -134,9 +134,9 @@ jQuery(function($) {
 				var iPagePago = 0;
 				var iPageSaldo = 0;
 				for ( var i=iStart ; i<iEnd ; i++ ) {
-					iPageValor += parseFloat(aaData[ aiDisplay[i] ][3].replace('R$', '').replace('.', '').replace(',','.'));
-					iPagePago += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
-					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 
 				jQuery(nRow).next().children().eq(1).html(
@@ -165,6 +165,7 @@ jQuery(function($) {
 			aoColumns: [ 
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
 				{ type: "text" },
+				{ type: "select", values: ["ULT", "FAJAR", "FATI"] }, // GET THOSE VALUES FROM JSON
 				{ type: "text" },
 				null,
 				null,

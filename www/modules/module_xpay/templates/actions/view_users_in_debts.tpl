@@ -6,10 +6,11 @@
 			<tr>
 				<th style="text-align: center;">Débito desde</th>
 				<th style="text-align: center;">Usuário</th>
+				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
-				<th style="text-align: center;">Valor</th>
+				<th style="text-align: center;">Valor Vencido</th>
 				<th style="text-align: center;">Pago</th>
-				<th style="text-align: center;">Saldo Devedor</th>
+				<th style="text-align: center;">Saldo Vencido</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,8 +22,8 @@
 							{$debt.username}
 						</a>
 					</td>
+					<td>{$debt.ies}</td>
 					<td>{$debt.course}</td>
-					
 				 	<!-- <td align="center">{$invoice.invoice_id}</td>  -->
 				 	<td align="center">#filter:currency:{$debt.valor_total}#</td>
 				 	<td align="center">#filter:currency:{$debt.considered_paid}#</td>
@@ -34,19 +35,20 @@
 			<tr>
 				<th style="text-align: center;">Débito desde</th>
 				<th style="text-align: center;">Usuário</th>
+				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
 				<th style="text-align: center;">Valor</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>
 			</tr>
 			<tr>
-				<th colspan="3" style="text-align: right;">Total da Página</th>
+				<th colspan="4" style="text-align: right;">Total da Página</th>
 				<th style="text-align: center;">Valor</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>
 			</tr>
 			<tr>
-				<th colspan="3" style="text-align: right;">Grande Total</th>
+				<th colspan="4" style="text-align: right;">Grande Total</th>
 				<th style="text-align: center;">Valor</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Devedor</th>

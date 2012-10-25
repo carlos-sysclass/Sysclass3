@@ -3156,7 +3156,8 @@ class module_xpay extends MagesterExtendedModule {
 			"LEFT OUTER join module_xpay_invoices_to_paid inv2paid ON ( inv.negociation_id = inv2paid.negociation_id AND inv.invoice_index = inv2paid.invoice_index )",
 			"LEFT OUTER join module_xpay_paid_items pd ON ( inv2paid.paid_id = pd.id )",
 			"join users u ON (neg.user_id = u.id)",
-			"join courses c ON (neg.course_id = c.id)"
+			"join courses c ON (neg.course_id = c.id)",
+			"LEFT OUTER join module_ies ies ON (c.ies_id = ies.id)"
 		);
 		
 		$fields = array(
@@ -3166,6 +3167,8 @@ class module_xpay extends MagesterExtendedModule {
 			"u.name",
 			"u.surname",
 			"u.login",
+			"c.ies_id",
+			"ies.nome as ies",
 			"c.name as course",
 			//"COUNT(inv.invoice_index) as total_parcelas",
 			"SUM(inv.valor) as valor_total",
