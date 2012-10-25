@@ -85,7 +85,7 @@ jQuery(function($) {
 			]
 		});
 	}
-
+	
 	if (jQuery("#xpay-view-to-send-invoices-list-table").size() > 0) {
 		jQuery("#xpay-view-to-send-invoices-list-table").dataTable(dataTableDefaults).columnFilter({ 
 			aoColumns: [ 
@@ -102,9 +102,21 @@ jQuery(function($) {
 		});
 	}
 	
-	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
-		dataTableDebtsDefaults = jQuery.extend(true, dataTableDefaults, {
+	
+	if (jQuery("#xpay-view-unpaid-invoices-table").size() > 0 || jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		dataTableDebtsAndUnpaidDefaults = jQuery.extend(true, dataTableDefaults, {
+			fnInitComplete : function(oSettings, json) {
+				jQuery(":input[name='filter_column_4']").change(function() {
+					jQuery(oSettings.nTable).dataTable().fnFilter( 
+		    			jQuery(this).val(),
+		    			4, 	
+		    			true
+			    	);
+				});
+			},
 			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				
+				
 				/*
 				var iTotalValor = 0;
 				var iTotalPago = 0;
@@ -123,20 +135,19 @@ jQuery(function($) {
 				var iFilterSaldo = 0;
 				for ( var i=0 ; i<aiDisplay.length ; i++ )
 				{
-					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
-					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
-					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
 				}
-
 				
 				// Calculate the market share for browsers on this page
 				var iPageValor = 0;
 				var iPagePago = 0;
 				var iPageSaldo = 0;
 				for ( var i=iStart ; i<iEnd ; i++ ) {
-					iPageValor += parseFloat(aaData[ aiDisplay[i] ][4].replace('R$', '').replace('.', '').replace(',','.'));
-					iPagePago += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
-					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
 				}
 
 				jQuery(nRow).next().children().eq(1).html(
@@ -160,13 +171,35 @@ jQuery(function($) {
 				);
 			}
 		});
-		
-		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDebtsDefaults).columnFilter({ 
+	}
+	
+
+	if (jQuery("#xpay-view-unpaid-invoices-table").size() > 0) {
+		jQuery("#xpay-view-unpaid-invoices-table").dataTable(dataTableDebtsAndUnpaidDefaults).columnFilter({ 
 			aoColumns: [ 
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
 				{ type: "text" },
-				{ type: "select", values: ["ULT", "FAJAR", "FATI"] }, // GET THOSE VALUES FROM JSON
+				{ type: "select", values: ["ULT", "FATI"] }, // GET THOSE VALUES FROM JSON
 				{ type: "text" },
+				null,
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	
+
+
+	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDebtsAndUnpaidDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "text" },
+				{ type: "select", values: ["ULT", "FATI"] }, // GET THOSE VALUES FROM JSON
+				{ type: "text" },
+				null,
 				null,
 				null,
 				null

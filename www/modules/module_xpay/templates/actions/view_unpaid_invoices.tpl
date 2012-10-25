@@ -1,17 +1,14 @@
 {capture name="t_xpay_view_users_in_debt"}
 	{include file="$T_XPAY_BASEDIR/templates/includes/options.links.tpl"}
 
-	<table id="xpay-view_users-in-debts-table" class="style1">
+	<table id="xpay-view-unpaid-invoices-table" class="style1">
 		<thead>
 			<tr>
 					<th style="text-align: center;">Débito desde</th>
 				<th style="text-align: center;">Usuário</th>
 				<th style="text-align: center;">IES</th>
 				<th style="text-align: center;">Curso</th>
-				<th style="text-align: center;">
-				
-				
-				</th>
+				<th style="text-align: center;">Parcelas</th>
 				<th style="text-align: center;">Valor Vencido</th>
 				<th style="text-align: center;">Pago</th>
 				<th style="text-align: center;">Saldo Vencido</th>
@@ -72,6 +69,6 @@
 {/capture}
 
 {eF_template_printBlock
-	title      = $smarty.const.__XPAY_VIEW_USERS_IN_DEBTS
+	title      = $smarty.const.__XPAY_VIEW_INVOICES_IN_DEBTS
 	data       = $smarty.capture.t_xpay_view_users_in_debt
 }

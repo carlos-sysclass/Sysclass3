@@ -11,6 +11,8 @@ define("__XPAY_VIEW_USER_COURSE_STATEMENT", "Extrato do Curso");
 define("__XPAY_USER_COURSE_STATEMENT", "Extrato do Aluno/Curso");
 define("__XPAY_VIEW_MY_COURSE_STATEMENT", "Meu extrato do Curso");
 define("__XPAY_VIEW_TO_SEND_INVOICES_LIST", "Lista de pagamentos a receber");
+define("__XPAY_VIEW_INVOICES_IN_DEBTS", "Faturas em Débito");
+
 define("__XPAY_VIEW_USERS_IN_DEBTS", "Usuários em Débito");
 
 define("__XPAY_SIMULATE_NEGOCIATION", "Simular negociação");

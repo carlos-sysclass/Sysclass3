@@ -1825,6 +1825,19 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$smarty->assign("T_XPAY_LIST", $debtsLists);
 	}
+	
+	public function viewUnpaidInvoicesAction() {
+		
+		$smarty = $this->getSmartyVar();
+		
+		$debtsLists = $this->_getInvoicesInDebts();
+		
+		foreach($debtsLists as &$debt) {
+			$debt['username'] = formatLogin(null, $debt);
+		}
+		$smarty->assign("T_XPAY_LIST", $debtsLists);
+	}
+	
 	public function viewToSendInvoicesListAction() {
 		$smarty = $this->getSmartyVar();
 		$tables = array(
@@ -3149,7 +3162,7 @@ class module_xpay extends MagesterExtendedModule {
 		} while( $totalcount > 0 );
 		return $invoice_id;
 	}
-	private function _getUserInDebts($limit = null) {
+	private function _getInvoicesInDebts($limit = null) {
 		$tables = array(
 			"module_xpay_invoices inv",
 			"join module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)",
@@ -3163,6 +3176,8 @@ class module_xpay extends MagesterExtendedModule {
 		$fields = array(
 			"neg.user_id",
 			"inv.negociation_id",
+			"inv.invoice_index",
+			"(SELECT COUNT(invoice_index) FROM module_xpay_invoices WHERE negociation_id = neg.id) as total_parcelas",
 			"neg.course_id",
 			"u.name",
 			"u.surname",
@@ -3187,6 +3202,7 @@ class module_xpay extends MagesterExtendedModule {
 		$where[] = "inv.data_vencimento < NOW()";
 		$where[] = "u.active = 1";
 		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
+		//$where[] = "inv.invoice_index > 0"; /// ONLY MENSALIDADES
 		
 		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
 		
@@ -3197,11 +3213,13 @@ class module_xpay extends MagesterExtendedModule {
 		$group = array(
 			"neg.user_id",
 			"inv.negociation_id",
+			"inv.invoice_index",
 			"neg.course_id",
 			"u.name",
 			"u.surname",
 			"u.login",
 			"c.name HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)"
+
 		);
 		
 		// MAKE FILTERS
@@ -3225,6 +3243,86 @@ class module_xpay extends MagesterExtendedModule {
 		
 		return $debtsLists;
 	}
+	private function _getUserInDebts($limit = null) {
+		$tables = array(
+				"module_xpay_invoices inv",
+				"join module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)",
+				"LEFT OUTER join module_xpay_invoices_to_paid inv2paid ON ( inv.negociation_id = inv2paid.negociation_id AND inv.invoice_index = inv2paid.invoice_index )",
+				"LEFT OUTER join module_xpay_paid_items pd ON ( inv2paid.paid_id = pd.id )",
+				"join users u ON (neg.user_id = u.id)",
+				"join courses c ON (neg.course_id = c.id)",
+				"LEFT OUTER join module_ies ies ON (c.ies_id = ies.id)"
+		);
+	
+		$fields = array(
+				"neg.user_id",
+				"inv.negociation_id",
+				"inv.invoice_index",
+				"(SELECT COUNT(invoice_index) FROM module_xpay_invoices WHERE negociation_id = neg.id) as total_parcelas",
+				"neg.course_id",
+				"u.name",
+				"u.surname",
+				"u.login",
+				"c.ies_id",
+				"ies.nome as ies",
+				"c.name as course",
+				//"COUNT(inv.invoice_index) as total_parcelas",
+				"SUM(inv.valor) as valor_total",
+				"IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as considered_paid",
+				"IFNULL(SUM(pd.paid), 0) as real_paid",
+				"SUM(inv.valor) - IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0) as total_debito",
+				"MIN(inv.data_vencimento) as data_debito_inicial"
+		);
+	
+		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
+		$today = new DateTime("today");
+		$iesIds = $this->getCurrentUserIesIDs();
+	
+		$iesIds[] = 0;
+		$where[] = sprintf("c.ies_id IN (%s)", implode(',', $iesIds));
+		$where[] = "inv.data_vencimento < NOW()";
+		$where[] = "u.active = 1";
+		$where[] = "neg.is_simulation = 0"; /// ONLY CURRENT-ACTIVE NEGOCIATIONS
+		//$where[] = "inv.invoice_index > 0"; /// ONLY MENSALIDADES
+	
+		//$where[] = sprintf("inv.payment_type_id IN (SELECT payment_type_id FROM module_xpayment_types_to_xies WHERE ies_id IN (%s))", implode(',', $iesIds));
+	
+		$order = array(
+				"inv.data_vencimento ASC"
+		);
+	
+				$group = array(
+						"neg.user_id",
+						"inv.negociation_id",
+						"neg.course_id",
+						"u.name",
+						"u.surname",
+						"u.login",
+			"c.name HAVING SUM(inv.valor) > IFNULL(SUM(IFNULL(inv2paid.full_value, pd.paid)), 0)"
+	
+				);
+	
+				// MAKE FILTERS
+				/*
+			 echo prepareGetTableData(
+			 		implode(" ", $tables),
+			 		implode(", ", $fields),
+			 		implode(" AND ", $where),
+			 		implode(", ", $order),
+			 		implode(", ", $group)
+			 );
+				*/
+				$debtsLists = eF_getTableData(
+						implode(" ", $tables),
+						implode(", ", $fields),
+			implode(" AND ", $where),
+						implode(", ", $order),
+								implode(", ", $group),
+				$limit
+				);
+	
+			return $debtsLists;
+		}
 	/* UTILITY FUNCTIONS */
 	private function _sendInvoiceAdvise($negociation_id, $invoice_index, $send_id = null) {
 		if (is_null($negociation_id)) {
