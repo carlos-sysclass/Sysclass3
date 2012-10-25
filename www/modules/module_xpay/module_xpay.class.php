@@ -3256,7 +3256,7 @@ class module_xpay extends MagesterExtendedModule {
 		$fields = array(
 				"neg.user_id",
 				"inv.negociation_id",
-				"inv.invoice_index",
+				"COUNT(inv.invoice_index) as invoice_index",
 				"(SELECT COUNT(invoice_index) FROM module_xpay_invoices WHERE negociation_id = neg.id) as total_parcelas",
 				"neg.course_id",
 				"u.name",
