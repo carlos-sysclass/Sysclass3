@@ -26,7 +26,7 @@
 					<td>{$debt.ies}</td>
 					<td>{$debt.course}</td>
 					<td align="center">
-						{$debt.invoice_index+1}/{$debt.total_parcelas}
+						{$debt.invoice_index}/{$debt.total_parcelas}
 					</td>
 				 	<!-- <td align="center">{$invoice.invoice_id}</td>  -->
 				 	<td align="center">#filter:currency:{$debt.valor_total}#</td>
