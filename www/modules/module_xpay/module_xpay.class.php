@@ -664,7 +664,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id") && $this->getCurrentUser()->getType() == 'administrator') {
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
-			
 			if ($this->getCurrentUser()->getType() == 'administrator') {
 				$editUser = $this->getEditedUser(true, $userNegociation['user_id']);
 			}
