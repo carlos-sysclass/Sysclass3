@@ -659,6 +659,7 @@ class module_xpay extends MagesterExtendedModule {
 		if (!$userNegociation && !($editCourse = $this->getEditedCourse()) && !($editLesson = $this->getEditedLesson())) {
 			return false;
 		}
+		
 		if (!$userNegociation && $editLesson) {
 			$entify = $editLesson->lesson;
 			$entify['type']	= 'lesson';
@@ -677,6 +678,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		
 		foreach($userNegociation['invoices'] as $invoice_index => $invoice) {
+			
 			$userNegociation['invoices'][$invoice_index]['applied_rules'] = $this->_getAppliedRules($invoice);
 		}
 
@@ -2441,7 +2443,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
-			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
+			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
 				
 			implode(" AND ", $where),
 			"data_pagamento DESC",
