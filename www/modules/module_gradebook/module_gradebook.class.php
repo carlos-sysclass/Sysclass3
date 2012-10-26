@@ -840,7 +840,6 @@ var_dump(
 			return "edit_rule_calculation";
 		}
 	}
-	
 	/**
 	 * @todo TRANSFER THIS FUNCTION TO YOUR OWN MODULE 
 	 */
