@@ -800,6 +800,9 @@ label.error        		{ color: #FF0000; }
     width: 100%;
 }
 
+
+
+
 /* *********************************************************************
  * DataTables ColumnFilter Styles
  * *********************************************************************/
@@ -810,6 +813,17 @@ label.error        		{ color: #FF0000; }
 .filter_date_range input.date_range_filter {
 	width: 80px;
 }
+
+.filter_text {
+	text-align: left;
+	display: block;
+}
+
+.filter_text .text_filter {
+	width: 120px;
+}
+
+
 
 
 

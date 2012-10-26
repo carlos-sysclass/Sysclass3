@@ -67,18 +67,84 @@ jQuery(function($) {
     jQuery.datepicker.setDefaults($.datepicker.regional['']);
 	jQuery(".xpayDataTable").dataTable( dataTableDefaults );
 	
-	
-	
-	
 	if (jQuery("#xpay-last-paid-invoices-table").size() > 0) {
-		jQuery("#xpay-last-paid-invoices-table").dataTable(dataTableDefaults).columnFilter({ 
+		
+		dataTablePaidDefaults = jQuery.extend(true, dataTableDefaults, {
+			fnInitComplete : function(oSettings, json) {
+				jQuery(":input[name='filter_column_3']").change(function() {
+					jQuery(oSettings.nTable).dataTable().fnFilter( 
+		    			jQuery(this).val(),
+		    			4, 	
+		    			true
+			    	);
+				});
+			},
+			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				/*
+				var iTotalValor = 0;
+				var iTotalPago = 0;
+				var iTotalSaldo = 0;
+
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalValor += parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago += parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo += parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				*/
+				// Calculate the market share for browsers on this page
+				var iFilterValor = 0;
+				var iFilterPago = 0;
+				var iFilterSaldo = 0;
+				for ( var i=0 ; i<aiDisplay.length ; i++ )
+				{
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				
+				// Calculate the market share for browsers on this page
+				var iPageValor = 0;
+				var iPagePago = 0;
+				var iPageSaldo = 0;
+				for ( var i=iStart ; i<iEnd ; i++ ) {
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+				jQuery(nRow).next().children().eq(1).html(
+					Globalize.format( iPageValor, "c" )
+				);
+				jQuery(nRow).next().children().eq(2).html(
+					Globalize.format( iPagePago, "c" )
+				);
+				jQuery(nRow).next().children().eq(3).html(
+					Globalize.format( iPageSaldo, "c" )
+				);
+				
+				jQuery(nRow).next().next().children().eq(1).html(
+					Globalize.format( iFilterValor, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(2).html(
+					Globalize.format( iFilterPago, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(3).html(
+					Globalize.format( iFilterSaldo, "c" )
+				);
+			}
+		});		
+		
+		
+		jQuery("#xpay-last-paid-invoices-table").dataTable(dataTablePaidDefaults).columnFilter({ 
 			aoColumns: [
+			    { type: "text" },
 				{ type: "text" },
 				{ type: "text" },
 				null,
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
 				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
-				{ type: "select", values: ["manual", "boleto"] },
+				/* { type: "select", values: ["manual", "boleto"] }, */
 				null,
 				null,
 				null
