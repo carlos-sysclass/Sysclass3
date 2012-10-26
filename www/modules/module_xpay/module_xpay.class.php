@@ -528,9 +528,6 @@ class module_xpay extends MagesterExtendedModule {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 		}
 		
-		
-		
-		
 		// GET ALL DEBITS
 		$userDebits = $this->_getUserModuleNegociations();
 /*
