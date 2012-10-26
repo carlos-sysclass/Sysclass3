@@ -39,7 +39,7 @@
 			 </form>
 		</div>
 		
-		<table class="style1">
+		<table id="xpay-edit-negociation-table" class="style1">
 			<thead>
 				<tr>
 					<th style="text-align: center;">Descrição</th>
@@ -110,20 +110,17 @@
 					</tr>
 				{/foreach}
 			</tbody>
-			
-			{if $T_XPAY_STATEMENT.sugested_invoices|@count > 0}
-				<tfoot>
-					<tr>
-						<th>&nbsp;</th>
-						<th style="text-align: center;">&nbsp;</th>
-						<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.valor}#</th>
-						<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.total_reajuste}#</th>
-						<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.paid}#</th>
-						<th style="text-align: center;">#filter:currency:{$T_XPAY_STATEMENT_TOTALS.balance}#</th>
-						<th style="text-align: center;">&nbsp;</th>
-					</tr>
-				</tfoot>
-			{/if}
+			<tfoot>
+				<tr>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th style="text-align: center;">&nbsp;</th>
+					<th style="text-align: center;">&nbsp;</th>
+					<th style="text-align: center;">&nbsp;</th>
+					<th style="text-align: center;">&nbsp;</th>
+					<th>&nbsp;</th>
+				</tr>
+			</tfoot>
 		</table>
 	
 		

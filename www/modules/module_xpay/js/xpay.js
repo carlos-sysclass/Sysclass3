@@ -273,6 +273,54 @@ jQuery(function($) {
 		});
 	}
 	
+	if (jQuery("#xpay-edit-negociation-table").size() > 0) {
+		
+		// DATATABLES WRAPPER
+		EditNegociationDataTableDefaults = {
+			"bJQueryUI": false,
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bFilter": false,
+			"bSort": true,
+			"bInfo": false,
+			"bAutoWidth": true,
+			"bDeferRender" : true,
+			"bScrollCollapse": true,
+			"sDom": 't',
+			"fnFooterCallback" : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				
+				var iTotalValor = 0, iTotalReajuste = 0, iTotalPago = 0, iTotalSaldo = 0;
+
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalValor 	+= parseFloat(aaData[i][2].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalReajuste	+= parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago 		+= parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo 	+= parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+
+				jQuery(nRow).children().eq(2).html(
+					Globalize.format( iTotalValor, "c" )
+				);
+				jQuery(nRow).children().eq(3).html(
+					Globalize.format( iTotalReajuste, "c" )
+				);
+				jQuery(nRow).children().eq(4).html(
+					Globalize.format( iTotalPago, "c" )
+				);
+				jQuery(nRow).children().eq(5).html(
+					Globalize.format( iTotalSaldo, "c" )
+				);
+			}
+		};
+		jQuery("#xpay-edit-negociation-table").dataTable(EditNegociationDataTableDefaults);
+	}	
+	
+	
+	
+	
+	
 	jQuery("#xpay-invoice-params-selection").dialog({
 		autoOpen: false, 
 		show: "fade",
