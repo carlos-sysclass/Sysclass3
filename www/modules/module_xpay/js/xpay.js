@@ -330,6 +330,21 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				'json'
 			);
 		},
+		saveInvoices : function() {
+			/*
+			if (negociationType != "id" || negociationType != "hash") {
+				negociationType == 'hash';
+			}
+			*/
+			this._postAction(
+				"save_invoices",
+				{"negociation_id" : this.negociation_hash},
+				function(data, status) {
+					
+				},
+				'json'
+			);
+		},
 		startUI : function() {
 			jQuery("#xpay-file-details-container").dialog({
 				autoOpen	: false,

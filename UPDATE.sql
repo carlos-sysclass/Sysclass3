@@ -3016,3 +3016,10 @@ WHERE `module_xpay_invoices`.`negociation_id` =869 AND `module_xpay_invoices`.`i
 
 /* 2012-10-24 */
 ALTER TABLE `module_xpay_course_negociation` CHANGE `course_id` `course_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0';
+
+/* 2012-10-26 */
+ALTER TABLE `module_xpay_invoices` ADD `is_registration_tax` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `invoice_index`;
+
+UPDATE `module_xpay_invoices` SET `is_registration_tax` = 1 WHERE invoice_index = 0;
+
+
