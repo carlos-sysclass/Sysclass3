@@ -31,12 +31,12 @@
 				</div>
 				{/if}
 			</td>
-			<td rowspan="2" class="invoice-summary-sign">+</td>
-			<td>Acréscimos</td>
-			<td rowspan="2" class="invoice-summary-sign">-</td>
-			<td>Descontos</td>
+<!-- 			<td rowspan="2" class="invoice-summary-sign">+</td> -->
+<!-- 			<td>Acréscimos</td> -->
+<!-- 			<td rowspan="2" class="invoice-summary-sign">-</td> -->
+<!-- 			<td>Descontos</td>
 			<td rowspan="2" class="invoice-summary-sign">=</td>
-			<td>Valor Final</td>
+<!-- 			<td>Valor Final</td> -->
 			<td rowspan="2" class="invoice-summary-sign">-</td>
 			<td>Valor Pago</td>
 			<td rowspan="2" class="invoice-summary-sign">=</td>
@@ -44,11 +44,11 @@
 		</tr>
 		<tr>
 			<td>#filter:currency:{$T_XPAY_STATEMENT.base_price}#</td>
-			<td>#filter:currency:{$T_XPAY_STATEMENT.acrescimo}#</td>
-			<td>#filter:currency:{$T_XPAY_STATEMENT.desconto}#</td>
-			<td>#filter:currency:{$T_XPAY_STATEMENT.full_price}#</td>
+			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.acrescimo}#</td>  -->
+			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.desconto}#</td> -->
+			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.full_price}#</td>  -->
 			<td>#filter:currency:{$T_XPAY_STATEMENT.paid}#</td>
-			<td>#filter:currency:{$T_XPAY_STATEMENT.full_price-$T_XPAY_STATEMENT.paid}#</td>
+			<td>#filter:currency:{$T_XPAY_STATEMENT.base_price-$T_XPAY_STATEMENT.paid}#</td>
 		</tr>
 	</tbody>
 </table>	

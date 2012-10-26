@@ -885,7 +885,7 @@ class module_xpay extends MagesterExtendedModule {
 			$fields['vencimento_1_parcela'] = date_create_from_format("d/m/Y H:i:s", $fields['vencimento_1_parcela'] . "  00:00:00");
 			
 			$negociationParams = array(
-				'full_price'			=> $userNegociation['full_price'],
+				'full_price'			=> $userNegociation['base_price'],
 				'paid'					=> $userNegociation['paid'],
 				//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
 				'taxa_matricula'		=> $fields['taxa_matricula'],
@@ -929,8 +929,6 @@ class module_xpay extends MagesterExtendedModule {
 				*/
 				// 2. REMOVE PAID VALUE FROM FULL PRICE
 				$currentBalance -= $negociationParams['paid'];
-				
-				var_dump($currentBalance);
 			}
 			
 			$today = new DateTime("today");
@@ -1060,7 +1058,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			//$values['saldo_total'] = $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']);
 			$values = array(
-				'saldo_total'			=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				'saldo_total'			=> $this->_asCurrency($userNegociation['base_price'] - $userNegociation['paid']),
 				'total_parcelas'		=> $fields['total_parcelas'],
 				'dia_vencimento'		=> $fields['dia_vencimento'],
 				'vencimento_1_parcela'	=> $firstDueDate->format("d/m/Y"),
@@ -1068,7 +1066,7 @@ class module_xpay extends MagesterExtendedModule {
 			);
 		} else {
 			$values = array(
-					'saldo_total'		=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+					'saldo_total'		=> $this->_asCurrency($userNegociation['base_price'] - $userNegociation['paid']),
 					//'saldo_restante'	=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
 					'total_parcelas'	=> 9
 			);

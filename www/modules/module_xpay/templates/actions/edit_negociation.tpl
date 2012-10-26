@@ -82,24 +82,25 @@
 					 	<td align="center">
 					 		<div>
 				 				{if $invoice.sugested == 0}
-									<a 
-										class="form-icon" 
-										href="{$T_XPAY_BASEURL}&action=edit_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-										onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
-										target = "POPUP_FRAME"
-									><img src="images/others/transparent.gif" class="sprite16 sprite16-edit"></a>
-									{if $invoice.full_price > $invoice.paid}
-									<a 
-										class="form-icon" 
-										href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-										onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
-										target = "POPUP_FRAME"
-									><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
+				 					{if $invoice.full_price > $invoice.paid}
+										<a 
+											class="form-icon" 
+											href="{$T_XPAY_BASEURL}&action=edit_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+											onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
+											target = "POPUP_FRAME"
+										><img src="images/others/transparent.gif" class="sprite16 sprite16-edit"></a>
+										<a 
+											class="form-icon" 
+											href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+											onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
+											target = "POPUP_FRAME"
+										><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
 									{/if}
+									<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
+										<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
+									</a>
+									
 								{/if}
-								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
-									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
-								</a>
 							</div>
 					 	</td>
 					</tr>
