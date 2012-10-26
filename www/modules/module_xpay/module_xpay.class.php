@@ -129,7 +129,6 @@ class module_xpay extends MagesterExtendedModule {
 				unset($negocData['invoices'][$invoiceIndex]);
 			}
 			$date = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
-			//var_dump($invoice['data_vencimento']);
 
 			if (is_object($date)) {
 				$diff = $date->diff($today);
@@ -209,8 +208,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$lastProcessedFilesData = $currentOptions[$this->getConfig()->widgets['last_files']['submodule_index']]->getProcessedFilesList();
 		
-		//var_dump($lastProcessedFilesData);
-		//exit;
 		$smarty -> assign("T_XPAY_LAST_FILES", $lastProcessedFilesData);
 	}
 	public function viewLastPaidInvoicesAction() {
@@ -530,12 +527,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		// GET ALL DEBITS
 		$userDebits = $this->_getUserModuleNegociations();
-/*
-		echo "<pre>";
-		var_dump($userDebits);
-		echo "</pre>";
-		exit;
-*/	
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
 			$_GET['negociation_id'] = $userDebit['id'];
@@ -629,8 +620,6 @@ class module_xpay extends MagesterExtendedModule {
 					);
 				}
 			}
-			
-			//var_dump($groupedStatement);
 			
 			
 			$usersTotals['balance'] = intval($usersTotals['base_price'])-intval($usersTotals['paid']);		
@@ -753,8 +742,6 @@ class module_xpay extends MagesterExtendedModule {
 			// 1. MODULE SELECTION (REQUIRED ONLY IF USER HAS 2 OR MORE MODULES)
 			// 2.
 		if (count($userDebits) == 0) { 
-			
-			var_dump($userDebits);
 			exit;
 		} elseif (count($userDebits) > 1) {
 			// CREATE FORM AND SELECT CURRENT
@@ -811,14 +798,6 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$_GET['negociation_id'] = $negociationID;
 		$this->setCurrentAction("edit_negociation", true);
-/*		
-		echo "<pre>";
-		var_dump($negociation);
-		var_dump($negociationModules);
-		
-		echo "</pre>";
-		exit;
-*/
 	}
 	public function editNegociationAction() {
 		$smarty = $this->getSmartyVar();
@@ -1189,12 +1168,6 @@ class module_xpay extends MagesterExtendedModule {
 		// GET ONLY SIMULATED NEGOCIATIONS
 		$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 0);
 		$simulatedNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], null, 1);
-		/*
-		echo '<pre>';
-		var_dump($userNegociation);
-		echo '<pre>';
-		exit;
-		*/
 
 		// CHECK IF COURSE HAS A DEFAULT STATEMENT		
 		if (count($userNegociation) == 0 && count($simulatedNegociation) == 0) {
@@ -1544,7 +1517,6 @@ class module_xpay extends MagesterExtendedModule {
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
-//		var_dump($invoice_index);
 		$form->setDefaults(array(
 			'invoice_indexes'	=> $invoice_index
 		));
@@ -2858,12 +2830,6 @@ class module_xpay extends MagesterExtendedModule {
 				$negociationData['module_printname'] = sprintf(__XPAY_MODULE_PRINTNAME_COUNT, count($negociationData['modules']));  
 			}
 			
-/*
-			echo "<pre>";
-			var_dump($negociationData);
-			echo "</pre>";
-			exit;
-*/				
 			
 				
 			if (count($negociationData['invoices']) == 0) {
@@ -2921,7 +2887,6 @@ class module_xpay extends MagesterExtendedModule {
 					// INVOICE BASE PRICE SUM IS DIFERENT FROM NEGOCIATION BASE PRICE TOTAL, MUST CALCULATE THE DIFF
 					$totalUncovered = $negociationData['base_price'] - $total_basePrice;
 					
-// 					var_dump($totalUncovered);
 					// APPLY A FULL PRICE CALCULATION ON $totalUncovered
 					$negociationCalc = array();
 					list(
@@ -2981,7 +2946,7 @@ class module_xpay extends MagesterExtendedModule {
 			) LEFT OUTER JOIN module_xpay_paid_items pd ON (
 				inv2paid.paid_id = pd.id
 			)",
-			"neg.user_id, inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
+			"neg.user_id, inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access, inv.is_registration_tax, 
 			inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count,
 			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
 			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
@@ -3157,7 +3122,6 @@ class module_xpay extends MagesterExtendedModule {
 		} else {
 			$tags[] = 'is_not_full_paid';
 		}
-		
 		if (intval($invoice['is_registration_tax']) == 1) {
 			$tags[] = 'is_registration_tax';
 		} else {
