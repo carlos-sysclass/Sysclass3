@@ -2538,7 +2538,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		}
 	
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
-
 		$payInstance = $payInstances['options'][$indexOpt];
 		
 		//var_dump($payInstance);exit;
