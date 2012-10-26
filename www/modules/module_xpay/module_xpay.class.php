@@ -527,6 +527,7 @@ class module_xpay extends MagesterExtendedModule {
 		
 		// GET ALL DEBITS
 		$userDebits = $this->_getUserModuleNegociations();
+
 		if (count($userDebits) == 1) {
 			$userDebit = reset($userDebits);
 			$_GET['negociation_id'] = $userDebit['id'];
@@ -645,15 +646,19 @@ class module_xpay extends MagesterExtendedModule {
 			$editUser = $this->getEditedUser(true, $this->getCurrentUser()->user['id']);
 			
 			$smarty -> assign("T_XPAY_IS_ADMIN", false);
-		}
-		if ($this->getCurrentUser()->getType() == 'administrator') {
+		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 			$editUser = $this->getEditedUser(true);
 		}
-		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id") && $this->getCurrentUser()->getType() == 'administrator') {
+		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id")) {
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
 			if ($this->getCurrentUser()->getType() == 'administrator') {
 				$editUser = $this->getEditedUser(true, $userNegociation['user_id']);
+			} else {
+				if ($editUser->user['id'] != $userNegociation['user_id']) {
+		                        $this->setMessageVar("Acesso não autorizado. REF: XPAY-0004", "failure");
+		                        return false;
+				}
 			}
 		}
 		if (!$userNegociation && !($editCourse = $this->getEditedCourse()) && !($editLesson = $this->getEditedLesson())) {
@@ -1478,7 +1483,7 @@ class module_xpay extends MagesterExtendedModule {
 					$applied_rules[$workflow['rule_id']]['count']++;
 				}
 			}
-			$negocData['invoices'][$inv_index]['applied_rules'] = $applied_rules;
+			$negocData['invoices'][$inv_index]['applied_rules'] = $this->_getAppliedRules($invoice);
 		}
 		
 		
@@ -2977,7 +2982,7 @@ class module_xpay extends MagesterExtendedModule {
 				inv2paid.paid_id = pd.id
 			)",
 			"neg.user_id, inv.negociation_id, neg.course_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,  
-			inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count, 
+			inv.is_registration_tax, inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count, 
 			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
 			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
 			sprintf("inv.negociation_id = %d AND inv.invoice_index = %d", $nego_id, $invoice_index),
