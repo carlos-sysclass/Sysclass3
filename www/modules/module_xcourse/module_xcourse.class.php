@@ -879,7 +879,24 @@ class module_xcourse extends MagesterExtendedModule {
 		$currentContent -> markSeenNodes($currentUser);
 		//Content tree block
 		if ($GLOBALS['configuration']['disable_tests'] != 1) {
+/*
 			$iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
+*/
+
+
+
+$iterator = new MagesterContentCourseClassFilterIterator(
+	new MagesterVisitableAndEmptyFilterIterator(
+		new MagesterNodeFilterIterator(
+			new RecursiveIteratorIterator(
+				new RecursiveArrayIterator($currentContent -> tree)
+				, RecursiveIteratorIterator :: SELF_FIRST
+			)
+			, array('active' => 1)
+		)
+	)
+	, $courseClass);
+;
 			$firstNodeIterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
 		} else {
 			$iterator = new MagesterContentCourseClassFilterIterator(

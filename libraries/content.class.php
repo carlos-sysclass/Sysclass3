@@ -2950,8 +2950,8 @@ class MagesterContentCourseClassFilterIterator extends FilterIterator {
     }
     
     function accept() {
-    	//var_dump($this -> courseClass);
-    	//var_dump($this -> current() -> offsetGet('classes'));
+	//    var_dump($this -> courseClass);
+	//    var_dump($this -> current() -> offsetGet('classes'));
     	$content_classes = $this -> current() -> offsetGet('classes');
     	return 
     		count($content_classes) == 0 ||
