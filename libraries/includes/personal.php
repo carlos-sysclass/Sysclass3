@@ -293,6 +293,11 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   	array('image' => '16x16/generic.png', 'title' => _EDITUSER, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=account', 'selected' => isset($_GET['op']) && $_GET['op'] == 'account' ? true : false),
   	array('image' => '16x16/user_timeline.png', 'title' => _LEARNINGSTATUS, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=status' , 'selected' => isset($_GET['op']) && $_GET['op'] == 'status' ? true : false)
   );
+  
+  if ($_GET['edit_user'] && $editedUser->getType() == 'student') {
+  	$options[] = array('image' => '16x16/do_pay.png', 'title' => __XPAY_VIEW_USER_STATEMENT, 'link' => basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_xpay&action=view_user_statement&xuser_login=' . $editedUser->user['login'], 'selected' => false);
+  }
+  
   $titles = array ( "account" => array("edituser" => _EDITUSER,
             "profile" => _USERPROFILE,
             "mapped" => _ADDITIONALACCOUNTS,

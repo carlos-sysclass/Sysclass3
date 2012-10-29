@@ -36,7 +36,7 @@
 					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
 						 	{if $invoice.applied_rules|@count > 0}
 						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
-					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+					 			<div class="hover_tooltip applied_rules" id="applied_rule_{$invoice_index}"> 
 								 	<ul>
 									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
 									 		<li>
@@ -110,6 +110,7 @@
 	{if $T_XPAY_IS_ADMIN}
 		{eF_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_USER_COURSE_STATEMENT
+			options			= $T_XPAY_BLOCK_OPTIONS
 			data			= $smarty.capture.t_xpay_view_statement
 		}
 	{else}

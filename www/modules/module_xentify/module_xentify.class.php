@@ -230,6 +230,32 @@ class scopedCourse extends scope implements IScopedEntify {
 	}
 }
 
+class scopedLesson extends scope implements IScopedEntify {
+	public function __construct($lesson_id) {
+		$this->entify_id = $lesson_id;
+		$this->entify = new MagesterLesson($lesson_id);
+	}
+	/* checkForSameIes */
+	public function checkIfSameIes($ies_id) {
+		if (!is_array($ies_id)) {
+			$ies_id = array($ies_id);
+		}
+		
+		if ($this->entify->lesson['ies_id'] == 0) { // TRY TO CHECK BY COURSE
+			$result = eF_getTableDataFlat("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "c.ies_id", "lc.lessons_ID = " . $this->entify->lesson['id']);
+			if (count($result) == 1) {
+				$lessonIesId = reset($result['ies_id']);
+			} else {
+				return false;
+			}
+		} else {
+			$lessonIesId = $this->entify->lesson['ies_id'];
+		}
+
+		return in_array($lessonIesId, $ies_id);
+	}
+}
+
 class scopedUser extends scope implements IScopedEntify {
 	public function __construct($login) {
 		$this->entify_id = $login;

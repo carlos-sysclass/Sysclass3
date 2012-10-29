@@ -43,8 +43,8 @@
 <table>
 	<tr>
 		<td>
-			<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
-			<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
+			<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const.__GRADEBOOK_ADD_COLUMN}" title="{$smarty.const.__GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
+			<a href="{$T_GRADEBOOK_BASEURL}&add_column=1&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const.__GRADEBOOK_ADD_COLUMN}', 0)">{$smarty.const.__GRADEBOOK_ADD_COLUMN}</a>&nbsp;
 		</td>
 		<td style="border-right: 1px solid #333333;"></td>
 		<td>
@@ -205,30 +205,6 @@
 				img.setAttribute('src', '{/literal}{$T_GRADEBOOK_BASELINK}{literal}images/success.png');
 				new Effect.Appear(img_id);
 				window.setTimeout('Effect.Fade("'+img_id+'")', 1500);
-			}
-		});
-	}
-
-	function changeGrade(gid, el){
-
-		Element.extend(el);
-		var grade = $('grade_'+gid).value;
-		var url = '{/literal}{$T_GRADEBOOK_BASEURL}{literal}&change_grade='+gid+'&grade='+grade;
-
-		var img = new Element('img', {id:'img_'+gid, src:'{/literal}{$T_GRADEBOOK_BASELINK}{literal}images/progress1.gif'}).setStyle({position:'absolute'});
-		img_id = img.identify();
-		el.up().insert(img);
-
-		new Ajax.Request(url, {
-			method: 'get',
-			asynchronous: true,
-			onFailure: function(transport){
-				img.hide();
-				alert(decodeURIComponent(transport.responseText));
-			},
-			onSuccess: function(transport){
-				img.hide();
-				new Effect.Appear(el.up(), {queue:'end'});
 			}
 		});
 	}

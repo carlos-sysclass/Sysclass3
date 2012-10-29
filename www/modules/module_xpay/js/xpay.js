@@ -51,19 +51,297 @@ jQuery(function($) {
 		"bSort": true,
 		"bInfo": false,
 		"bAutoWidth": true,
-		"iDisplayLength"	: 25,
-		"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "Tudo"]],
+		"iDisplayLength"	: 10,
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "Tudo"]],
 		"bDeferRender" : true,
 		"sPaginationType": "full_numbers",
-		//"bScrollCollapse": true,
-		//"sDom" : 't',
+		"bScrollCollapse": true,
+		"sDom": 't<"datatables-header-controls"ilrp>',
 		"oLanguage": {
 			"sUrl": window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datatable&output=json"
 		}
 	};
 	
 	/// CREATE DEFAULT DATATABLES
+    jQuery.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+    jQuery.datepicker.setDefaults($.datepicker.regional['']);
 	jQuery(".xpayDataTable").dataTable( dataTableDefaults );
+	
+	if (jQuery("#xpay-last-paid-invoices-table").size() > 0) {
+		
+		dataTablePaidDefaults = jQuery.extend(true, dataTableDefaults, {
+			fnInitComplete : function(oSettings, json) {
+				jQuery(":input[name='filter_column_3']").change(function() {
+					jQuery(oSettings.nTable).dataTable().fnFilter( 
+		    			jQuery(this).val(),
+		    			4, 	
+		    			true
+			    	);
+				});
+			},
+			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				/*
+				var iTotalValor = 0;
+				var iTotalPago = 0;
+				var iTotalSaldo = 0;
+
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalValor += parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago += parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo += parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				*/
+				// Calculate the market share for browsers on this page
+				var iFilterValor = 0;
+				var iFilterPago = 0;
+				var iFilterSaldo = 0;
+				for ( var i=0 ; i<aiDisplay.length ; i++ )
+				{
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				
+				// Calculate the market share for browsers on this page
+				var iPageValor = 0;
+				var iPagePago = 0;
+				var iPageSaldo = 0;
+				for ( var i=iStart ; i<iEnd ; i++ ) {
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+				jQuery(nRow).next().children().eq(1).html(
+					Globalize.format( iPageValor, "c" )
+				);
+				jQuery(nRow).next().children().eq(2).html(
+					Globalize.format( iPagePago, "c" )
+				);
+				jQuery(nRow).next().children().eq(3).html(
+					Globalize.format( iPageSaldo, "c" )
+				);
+				
+				jQuery(nRow).next().next().children().eq(1).html(
+					Globalize.format( iFilterValor, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(2).html(
+					Globalize.format( iFilterPago, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(3).html(
+					Globalize.format( iFilterSaldo, "c" )
+				);
+			}
+		});		
+		
+		
+		jQuery("#xpay-last-paid-invoices-table").dataTable(dataTablePaidDefaults).columnFilter({ 
+			aoColumns: [
+			    { type: "text" },
+				{ type: "text" },
+				{ type: "text" },
+				null,
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				/* { type: "select", values: ["manual", "boleto"] }, */
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	if (jQuery("#xpay-view-to-send-invoices-list-table").size() > 0) {
+		jQuery("#xpay-view-to-send-invoices-list-table").dataTable(dataTableDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				null,
+				{ type: "text" },
+				{ type: "text" },
+				null,
+				null,
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	
+	if (jQuery("#xpay-view-unpaid-invoices-table").size() > 0 || jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		dataTableDebtsAndUnpaidDefaults = jQuery.extend(true, dataTableDefaults, {
+			fnInitComplete : function(oSettings, json) {
+				jQuery(":input[name='filter_column_4']").change(function() {
+					jQuery(oSettings.nTable).dataTable().fnFilter( 
+		    			jQuery(this).val(),
+		    			4, 	
+		    			true
+			    	);
+				});
+			},
+			fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				
+				
+				/*
+				var iTotalValor = 0;
+				var iTotalPago = 0;
+				var iTotalSaldo = 0;
+
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalValor += parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago += parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo += parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				*/
+				// Calculate the market share for browsers on this page
+				var iFilterValor = 0;
+				var iFilterPago = 0;
+				var iFilterSaldo = 0;
+				for ( var i=0 ; i<aiDisplay.length ; i++ )
+				{
+					iFilterValor += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterPago += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+				
+				// Calculate the market share for browsers on this page
+				var iPageValor = 0;
+				var iPagePago = 0;
+				var iPageSaldo = 0;
+				for ( var i=iStart ; i<iEnd ; i++ ) {
+					iPageValor += parseFloat(aaData[ aiDisplay[i] ][5].replace('R$', '').replace('.', '').replace(',','.'));
+					iPagePago += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
+					iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+				jQuery(nRow).next().children().eq(1).html(
+					Globalize.format( iPageValor, "c" )
+				);
+				jQuery(nRow).next().children().eq(2).html(
+					Globalize.format( iPagePago, "c" )
+				);
+				jQuery(nRow).next().children().eq(3).html(
+					Globalize.format( iPageSaldo, "c" )
+				);
+				
+				jQuery(nRow).next().next().children().eq(1).html(
+					Globalize.format( iFilterValor, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(2).html(
+					Globalize.format( iFilterPago, "c" )
+				);
+				jQuery(nRow).next().next().children().eq(3).html(
+					Globalize.format( iFilterSaldo, "c" )
+				);
+			}
+		});
+	}
+	
+
+	if (jQuery("#xpay-view-unpaid-invoices-table").size() > 0) {
+		jQuery("#xpay-view-unpaid-invoices-table").dataTable(dataTableDebtsAndUnpaidDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "text" },
+				{ type: "select", values: ["ULT", "FATI"] }, // GET THOSE VALUES FROM JSON
+				{ type: "text" },
+				null,
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	
+
+
+	if (jQuery("#xpay-view_users-in-debts-table").size() > 0) {
+		jQuery("#xpay-view_users-in-debts-table").dataTable(dataTableDebtsAndUnpaidDefaults).columnFilter({ 
+			aoColumns: [ 
+				{ type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				{ type: "text" },
+				{ type: "select", values: ["ULT", "FATI"] }, // GET THOSE VALUES FROM JSON
+				{ type: "text" },
+				null,
+				null,
+				null,
+				null
+			]
+		});
+	}
+	
+	if (jQuery("#xpay-edit-negociation-table").size() > 0) {
+		
+		// DATATABLES WRAPPER
+		EditNegociationDataTableDefaults = {
+			"bJQueryUI": false,
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bFilter": false,
+			"bSort": true,
+			"bInfo": false,
+			"bAutoWidth": true,
+			"bDeferRender" : true,
+			"bScrollCollapse": true,
+			"sDom": 't',
+			"fnFooterCallback" : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+				
+				var iTotalValor = 0, iTotalReajuste = 0, iTotalPago = 0, iTotalSaldo = 0;
+
+				for ( var i=0 ; i<aaData.length ; i++ )
+				{
+					iTotalValor 	+= parseFloat(aaData[i][2].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalReajuste	+= parseFloat(aaData[i][3].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalPago 		+= parseFloat(aaData[i][4].replace('R$', '').replace('.', '').replace(',','.'));
+					iTotalSaldo 	+= parseFloat(aaData[i][5].replace('R$', '').replace('.', '').replace(',','.'));
+				}
+
+
+				jQuery(nRow).children().eq(2).html(
+					Globalize.format( iTotalValor, "c" )
+				);
+				jQuery(nRow).children().eq(3).html(
+					Globalize.format( iTotalReajuste, "c" )
+				);
+				jQuery(nRow).children().eq(4).html(
+					Globalize.format( iTotalPago, "c" )
+				);
+				jQuery(nRow).children().eq(5).html(
+					Globalize.format( iTotalSaldo, "c" )
+				);
+			}
+		};
+		jQuery("#xpay-edit-negociation-table").dataTable(EditNegociationDataTableDefaults);
+	}	
+	
+	
+	
+	
+	
+	jQuery("#xpay-invoice-params-selection").dialog({
+		autoOpen: false, 
+		show: "fade",
+		hide: "fade",
+		modal: true,
+		width: 'auto',
+		resizable: false,
+		buttons : {
+			'Salvar'	: function() {
+				jQuery(this).find("form").submit();
+			},
+			'Cancelar' 	: function() {
+				jQuery(this).dialog('close');
+			}
+		}
+	});
+	
+	jQuery(".openInvoiceNegociationDialog").click(function() {
+		jQuery("#xpay-invoice-params-selection").dialog('open');
+	});
+	
 	
 	// GLOBAL HANDLERS 
 	jQuery(":input[name='pagamentos']").click(function() {
@@ -83,32 +361,6 @@ jQuery(function($) {
 					alert(response);
 				});
 			});
-			
-			jQuery("#xpay-invoice-params-selection").dialog({
-				autoOpen: false, 
-				show: "fade",
-				hide: "fade",
-				modal: true,
-				width: 'auto',
-				resizable: false,
-				buttons : {
-					'Salvar'	: function() {
-						jQuery(this).find("form").submit();
-					},
-					'Cancelar' 	: function() {
-						jQuery(this).dialog('close');
-					}
-				}
-			});
-			
-			jQuery(".openInvoiceNegociationDialog").click(function() {
-				jQuery("#xpay-invoice-params-selection").dialog('open');
-			});
-			
-		}
-		
-		if ($_xpay_mod_data["xpay.action"] == "view_to_send_invoices_list") {
-			var xpayViewToSendInvoicesListTable = jQuery("#xpay-view-to-send-invoices-list-table").dataTable( dataTableDefaults );
 		}
 	}
 	
@@ -124,6 +376,20 @@ jQuery(function($) {
 	},function() {
 		jQuery(this).next(".applied_rules").hide();
 	});
+	
+	jQuery(".base_price_details").hide();
+	
+	// JQuery Tooltip
+	jQuery(".base_price_details_link").hover(function() {
+		jQuery(".base_price_details").show().position({
+			"my": "left top",
+			"at": "right top",
+			"of": jQuery(this)
+		});
+	},function() {
+		jQuery(".base_price_details").hide();
+	});
+
 
 
 	//jQuery(".__XPAY_INVOICE_LIST").dataTable( opt );
@@ -155,3 +421,102 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 		//console.log(data);
 	});
 }
+
+
+/* MODULE CREATING */
+(function( $ ) {
+	var methods = {
+		viewFileDetails : function(method_index, name) {
+			this._loadAction(
+				"view_file_details",
+				{"method_index" : method_index, "name" : name},
+				"#xpay-file-details-container",
+				function() {
+					jQuery("#xpay-file-details-container").dialog('open');		
+				}
+			);
+		},
+		importFileToSystem : function(method_index, name) {
+			this._postAction(
+				"import_file_to_system",
+				{"method_index" : method_index, "name" : name},
+				function() {},
+				'json'
+			);
+		},
+		saveInvoices : function() {
+			/*
+			if (negociationType != "id" || negociationType != "hash") {
+				negociationType == 'hash';
+			}
+			*/
+			this._postAction(
+				"save_invoices",
+				{"negociation_id" : this.negociation_hash},
+				function(data, status) {
+					
+				},
+				'json'
+			);
+		},
+		startUI : function() {
+			jQuery("#xpay-file-details-container").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				buttons		: {
+					"Fechar" : function() {
+						jQuery( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+				}
+			});
+			
+			jQuery("#xpay-negociation-base-price-details").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				buttons		: {
+					"Fechar" : function() {
+						jQuery( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+				}
+			});
+		}
+	};
+
+	_sysclass("register", "xpay", methods);
+})( jQuery );
+
+
+/* MODULE FLOW-LOGIC */
+
+(function( $ ){
+	_sysclass('load', 'xpay').startUI();
+})( jQuery );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

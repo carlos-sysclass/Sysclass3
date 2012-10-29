@@ -1,7 +1,7 @@
 <?php
 require_once (dirname(__FILE__) . '/../module_xpay/module_xpay_submodule.interface.php');
 
-//define("XPAY_CIELO_DEV", true);
+define("XPAY_CIELO_DEV", true);
 
 if (defined("XPAY_CIELO_DEV")) {
 	/* DEV KEYS */

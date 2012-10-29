@@ -190,7 +190,7 @@ abstract class MagesterExtendedModule extends MagesterModule {
 		
 		$modules = eF_loadAllModules(true);
 		
-		$selectedAction = $this->getCurrentAction(); 
+		$selectedAction = $this->getCurrentAction();
 		$selectedActionFunction = $this->camelCasefying($selectedAction . "_action");
 		
 		// CHECK FOR HOOK Functions
@@ -224,7 +224,20 @@ abstract class MagesterExtendedModule extends MagesterModule {
 		return true;
 	}
     public function getSmartyTpl() {
-		return $this -> moduleBaseDir . "templates/default.tpl";
+    	if (file_exists($this -> moduleBaseDir . "templates/default.tpl")) {
+    		return $this -> moduleBaseDir . "templates/default.tpl";
+    	} elseif (file_exists($this -> moduleBaseDir . "templates/actions/" . $this->getCurrentAction() . ".tpl")) {
+    		return $this -> moduleBaseDir . "templates/actions/" . $this->getCurrentAction() . ".tpl";
+    	//} elseif (file_exists(G_CURRENTTHEMEPATH . "templates/module/default.tpl")) {
+    	//	return G_CURRENTTHEMEPATH . "templates/module/default.tpl";
+    	//} elseif (file_exists(G_DEFAULTTHEMEPATH . "templates/module/default.tpl")) {
+    	//	return G_DEFAULTTHEMEPATH . "templates/module/default.tpl";
+    	} else {
+//    		throw new Exception("Não foi possível encontrar nenhum template para a ação solicitada");
+//    		exit;
+    	}
+    	return '';
+		
     }
 	
 	public function loadConfig() {
@@ -232,10 +245,10 @@ abstract class MagesterExtendedModule extends MagesterModule {
 	}
 	
 	public function getConfig() {
-		if (!is_array(self::$_CONFIG)) {
-			self::$_CONFIG = $this->loadConfig();
+		if (!is_array($this->_CONFIG)) {
+			$this->_CONFIG = $this->loadConfig();
 		}
-		return new ArrayObject(self::$_CONFIG, ArrayObject::ARRAY_AS_PROPS);
+		return new ArrayObject($this->_CONFIG, ArrayObject::ARRAY_AS_PROPS);
 	}
     
     public function getModuleJS() {

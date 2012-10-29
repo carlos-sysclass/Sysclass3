@@ -1238,7 +1238,7 @@ class MagesterCourse
     	if (empty($users)) {
     		return false;
     	}
-    	$result = eF_getTableData("users_to_courses uc, users u", "uc.users_LOGIN, uc.archive, uc.user_type, uc.to_timestamp, u.archive as user_archive", "u.login=uc.users_LOGIN and uc.courses_ID=".$this->course['id']);
+    	$result = eF_getTableData("users_to_courses uc, users u", "uc.users_LOGIN, uc.archive, uc.user_type, uc.to_timestamp, u.archive as user_archive, uc.modality_id", "u.login=uc.users_LOGIN and uc.courses_ID=".$this->course['id']);
     	$courseUsers = array();
     	$courseRoles = $this -> getPossibleCourseRoles();
     	$courseStudents = 0;
@@ -1300,6 +1300,10 @@ class MagesterCourse
 			'to_timestamp' => 0);
 
     		} elseif ($roleInCourse != $courseUsers[$user]['user_type'] || $courseUsers[$user]['archive']) {
+    			if ($courseUsers[$user]['modality_id'] == 3) {
+    				$ignoreNewLessons = true;
+    			}
+    			
     			$fields = array('archive' => 0,
         	'user_type' => $roleInCourse,
         	'from_timestamp' => $confirmed ? time() : 0);
@@ -1309,6 +1313,10 @@ class MagesterCourse
     			$existingUsers[] = $courseUsers[$user];
 
     		} elseif ($course_type != $courseUsers[$user]['course_type']) {
+    			if ($courseUsers[$user]['modality_id'] == 3) {
+    				$ignoreNewLessons = true;
+    			}
+    			 
     			$fields = array('course_type' => $course_type);
     			$where = "users_LOGIN='".$user."' and courses_ID=".$this -> course['id'];
     			self::persistCourseUsers($fields, $where, $this -> course['id'], $user);
@@ -1345,7 +1353,7 @@ class MagesterCourse
     	if (!empty($newUsers)) {
     		eF_insertTableDataMultiple("users_to_courses", $newUsers);
     	}
-    	if (!empty($newLessonUsers)) {
+    	if (!empty($newLessonUsers) && !$ignoreNewLessons) {
     		eF_insertTableDataMultiple("users_to_lessons", $newLessonUsers);
     	}
     	!isset($newUsers) ? $newUsers = array() : null;
@@ -3823,6 +3831,9 @@ class MagesterCourse
     	}
     	if (isset($constraints['active'])) {
     		$constraints['active'] ? $where[] = 'c.active=1' : $where[] = 'c.active=0';
+    	}
+    	if (isset($constraints['course_id'])) {
+    		$constraints['course_id'] ? $where[] = 'c.courses_ID = ' . $constraints['course_id'] : null;
     	}
 
     	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
