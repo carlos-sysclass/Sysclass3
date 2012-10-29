@@ -937,6 +937,8 @@ class module_xpay extends MagesterExtendedModule {
 			} else {
 				if (!$fields['vencimento_1_parcela']) {
 					$firstDueDate = $fields['vencimento_1_parcela'] = new DateTime('today');
+				} else {
+					$firstDueDate = $fields['vencimento_1_parcela'];
 				}
 			}
 
