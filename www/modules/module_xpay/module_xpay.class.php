@@ -2177,8 +2177,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
-			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
-				
+			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
 			implode(" AND ", $where),
 			"data_pagamento DESC",
 			"",
