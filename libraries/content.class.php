@@ -1744,7 +1744,9 @@ class MagesterContentTree extends MagesterTree
         
         $seenNodes = array_keys($seenContent[$this -> lessonId][$login]);
         $resultScorm = eF_getTabledataFlat("scorm_data", "content_ID, lesson_status", "users_LOGIN='$login'");
-        $resultScorm = array_combine($resultScorm['content_ID'], $resultScorm['lesson_status']);
+        if (is_array($resultScorm['content_ID'])) {
+        	$resultScorm = array_combine($resultScorm['content_ID'], $resultScorm['lesson_status']);
+        }
         $result = eF_getTableData("content c, completed_tests ct, tests t", "t.content_ID, ct.status, ct.timestamp", "ct.status != 'deleted' and ct.archive = 0 and c.id = t.content_ID and c.lessons_ID = ".$this -> lessonId." and ct.tests_ID = t.id and ct.users_LOGIN='$login'");
         foreach ($result as $value) {
             $resultTests[$value['content_ID']] = $value['status'];
