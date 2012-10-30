@@ -1623,7 +1623,8 @@ var_dump(
 		// 
 		$where = array();
 		
-		$where[] = "lessons_ID = " . $lessonID;
+//		$where[] = "lessons_ID = " . $lessonID;
+		$where[] = sprintf("u.login IN (SELECT users_LOGIN FROM users_to_lessons WHERE lessons_ID = %d)", $lessonID);
 		
 		if (!is_null($classe_id)) {
 			$where[] = sprintf("u.login IN (SELECT users_LOGIN FROM users_to_courses WHERE classe_id = %d)", $classe_id); 
