@@ -1629,18 +1629,18 @@ var_dump(
 		if (!is_null($classe_id)) {
 			$where[] = sprintf("u.login IN (SELECT users_LOGIN FROM users_to_courses WHERE classe_id = %d)", $classe_id); 
 		}
-		$where[] = "user_types_ID = 0";
+		$where[] = "(user_types_ID = 0 OR user_types_ID IS NULL)";
 		$where[] = "u.user_type = 'student'";
 		/*
 		echo prepareGetTableData(
-			"users u LEFT JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login)", 
+			sprintf("users u OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
 			"gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
 			implode(" AND ", $where),
 			"uid"
 		);
 		*/
 		$result = eF_getTableData(
-			"users u LEFT JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login)", 
+			sprintf("users u OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
 			"gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
 			implode(" AND ", $where),
 			"uid"
