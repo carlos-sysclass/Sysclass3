@@ -1630,17 +1630,18 @@ var_dump(
 			$where[] = sprintf("u.login IN (SELECT users_LOGIN FROM users_to_courses WHERE classe_id = %d)", $classe_id); 
 		}
 		$where[] = "user_types_ID = 0";
+		$where[] = "u.user_type = 'student'";
 		/*
 		echo prepareGetTableData(
 			"users u LEFT JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login)", 
-			"gbu.uid, gbu.users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish", 
+			"gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
 			implode(" AND ", $where),
 			"uid"
 		);
 		*/
 		$result = eF_getTableData(
 			"users u LEFT JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login)", 
-			"gbu.uid, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
+			"gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
 			implode(" AND ", $where),
 			"uid"
 		);
@@ -1682,7 +1683,7 @@ var_dump(
 			}
 
 			$value['grades'] = $grades;
-			$users[$value['uid']] = $value;
+			$users[$value['id']] = $value;
 		}
 
 		return $users;
