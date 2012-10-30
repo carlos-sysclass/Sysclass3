@@ -826,7 +826,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$negociationUser = $this->getEditedUser(true, $userNegociation['user_id']);
 		} else {
-			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. POr favor entre em contato com o suporte", "failure");
+			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. Por favor entre em contato com o suporte", "failure");
 			return false;
 		}
 		if (count($userNegociation['invoices']) > 0) {

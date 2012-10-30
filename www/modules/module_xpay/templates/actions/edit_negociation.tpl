@@ -106,7 +106,7 @@
 					</tr>
 				{foreachelse}
 					<tr>
-					 	<td colspan="7" align="center">{$smarty.const.__XPAY_NO_INVOICES_FOUND}</td>
+					 	<td colspan="7" class="datatable-not-found" align="center">{$smarty.const.__XPAY_NO_INVOICES_FOUND}</td>
 					</tr>
 				{/foreach}
 			</tbody>
