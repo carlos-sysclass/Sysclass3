@@ -879,7 +879,207 @@ class module_xcourse extends MagesterExtendedModule {
 		$currentContent -> markSeenNodes($currentUser);
 		//Content tree block
 		if ($GLOBALS['configuration']['disable_tests'] != 1) {
+/*
 			$iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
+*/
+
+
+
+$iterator = new MagesterContentCourseClassFilterIterator(
+	new MagesterVisitableAndEmptyFilterIterator(
+		new MagesterNodeFilterIterator(
+			new RecursiveIteratorIterator(
+				new RecursiveArrayIterator($currentContent -> tree)
+				, RecursiveIteratorIterator :: SELF_FIRST
+			)
+			, array('active' => 1)
+		)
+	)
+	, $courseClass);
+;
+			$firstNodeIterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
+		} else {
+			$iterator = new MagesterContentCourseClassFilterIterator(
+							new MagesterTheoryFilterIterator(
+								new MagesterVisitableAndEmptyFilterIterator(
+									new MagesterNodeFilterIterator(
+										new RecursiveIteratorIterator(
+											new RecursiveArrayIterator($currentContent -> tree),RecursiveIteratorIterator :: SELF_FIRST
+										), array('active' => 1)
+									)
+								)
+							), $courseClass
+						);
+			$firstNodeIterator = new MagesterContentCourseClassFilterIterator(new MagesterTheoryFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1)))), $courseClass);
+		}
+		$html_tree = $currentContent -> toHTML($iterator, "xcourse_content_tree", array(
+				'truncateNames' => 60, 
+				'hideFeedback' => true, 
+				'show_hide'	=> false, 
+				'include_root_table' => false
+		)
+		);
+		echo $html_tree;
+		$raw_guidance = array();
+		$raw_guidance[20] = array(
+		array(
+				'title'		=> 'Aula Magna',
+				'link'		=> 'public_data/pos/bioenergia/aula_magna.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Manual do Aluno',
+				'link'		=> 'public_data/pos/bioenergia/manual_do_aluno.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Hábitos de estudos',
+				'link'		=> 'public_data/pos/habitos_de_estudo.xlsx',
+				'target'	=> '_blank'
+				)
+				);
+				$raw_guidance[21] = array(
+				array(
+				'title'		=> 'Aula Magna',
+				'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Manual do Aluno',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Hábitos de estudos',
+				'link'		=> 'public_data/pos/habitos_de_estudo.xlsx',
+				'target'	=> '_blank'
+				)
+				);
+
+				$raw_guidance[28] = array(
+					
+				array(
+				'title'		=> 'Manual do Aluno',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
+				'target'	=> '_blank'
+				)
+				);
+
+				$raw_guidance[31] = array(
+				array(
+				'title'		=> 'Aula Magna',
+				'link'		=> 'public_data/pos/erp/aula_magna.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Manual do Aluno',
+				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
+				'target'	=> '_blank'
+				),
+				array(
+				'title'		=> 'Hábitos de estudos',
+				'link'		=> 'public_data/pos/habitos_de_estudo.xlsx',
+				'target'	=> '_blank'
+				)
+				);
+
+				$raw_guidance[39] = array(
+				array(
+			'title'		=> 'Aula Magna',
+			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
+			'target'	=> '_blank'
+			),
+			array(
+			'title'		=> 'Manual do Aluno',
+			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
+			'target'	=> '_blank'
+			),
+			array(
+			'title'		=> 'Hábitos de estudos',
+			'link'		=> 'public_data/pos/habitos_de_estudo.xlsx',
+			'target'	=> '_blank'
+			)
+			);
+
+			$raw_guidance[40] = array(
+			array(
+			'title'		=> 'Aula Magna',
+			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
+			'target'	=> '_blank'
+			),
+			array(
+			'title'		=> 'Manual do Aluno',
+			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
+			'target'	=> '_blank'
+			),
+			array(
+			'title'		=> 'Hábitos de estudos',
+			'link'		=> 'public_data/pos/habitos_de_estudo.xlsx',
+			'target'	=> '_blank'
+			)
+			);
+			if (array_key_exists($courseID, $raw_guidance)) {
+				// GET CURRENT COURSE
+				$guidance	= $raw_guidance[$courseID];
+					
+				$treeInfoGuidance .= "<ul id=\"xcourse_info_tree\" class=\"infoguidance\">";
+				$treeInfoGuidance .= "	<li style=\"white-space:nowrap;\"><a>Infos</a>";
+				$treeInfoGuidance .= "		<ul>";
+					
+				foreach ( $guidance as $item ) {
+					$treeInfoGuidance .= sprintf("		<li class=\"paperclip\" style=\"white-space:nowrap;\"><a href=\"%s\">%s</a></li>", $item['link'], $item['title']);
+				}
+				$treeInfoGuidance .= "		</ul>";
+				$treeInfoGuidance .= "	</li>";
+				$treeInfoGuidance .= "</ul>";
+				echo $treeInfoGuidance;
+			}
+			exit;
+	}
+
+function loadContentTreeXcourseFront2Action() {
+		$smarty = $this->getSmartyVar();
+		$currentUser = $this->getCurrentUser();
+		$constraints = array('archive' => false, 'active' => true, 'condition' => "uc.user_type = 'student'", 'sort' => 'name');
+		$userCourses = $currentUser -> getUserCourses($constraints);
+		$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
+		// GET USER CLASS
+		$courseClass = $classeData[0]['classe_id'];
+		$lessonID = $_POST["lesson_id"];
+		$lessonID = 205;
+		$courseID = $_POST['course_id'];
+		$courseID = 50;
+		$currentContent = new MagesterContentTree($lessonID);
+		$currentContent -> markSeenNodes($currentUser);
+
+		//Content tree block
+		if ($GLOBALS['configuration']['disable_tests'] != 1) {
+/*
+			$iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
+*/
+
+
+//var_dump(new RecursiveArrayIterator($currentContent -> tree));
+
+
+
+$iterator = 
+//new MagesterContentCourseClassFilterIterator(
+//	new MagesterVisitableAndEmptyFilterIterator(
+//		new MagesterNodeFilterIterator(
+			new RecursiveIteratorIterator(
+				new RecursiveArrayIterator( $currentContent -> tree )
+				, RecursiveIteratorIterator :: SELF_FIRST
+			)
+//			, array('active' => 1)
+//		)
+//	)
+//	, $courseClass
+//);
+;
+var_dump($iterator);
+
+exit;
 			$firstNodeIterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
 		} else {
 			$iterator = new MagesterContentCourseClassFilterIterator(

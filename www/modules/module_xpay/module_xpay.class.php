@@ -826,7 +826,7 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$negociationUser = $this->getEditedUser(true, $userNegociation['user_id']);
 		} else {
-			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. POr favor entre em contato com o suporte", "failure");
+			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. Por favor entre em contato com o suporte", "failure");
 			return false;
 		}
 		if (count($userNegociation['invoices']) > 0) {
@@ -937,6 +937,8 @@ class module_xpay extends MagesterExtendedModule {
 			} else {
 				if (!$fields['vencimento_1_parcela']) {
 					$firstDueDate = $fields['vencimento_1_parcela'] = new DateTime('today');
+				} else {
+					$firstDueDate = $fields['vencimento_1_parcela'];
 				}
 			}
 
@@ -2175,8 +2177,7 @@ class module_xpay extends MagesterExtendedModule {
 		}
 		$lastPaymentsList = eF_getTableData(
 			"module_xpay_zzz_paid_items",
-			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto, paid",
-				
+			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto + tarifa as desconto, IFNULL(total, paid) as paid",
 			implode(" AND ", $where),
 			"data_pagamento DESC",
 			"",
