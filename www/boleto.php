@@ -8,6 +8,36 @@
  * @version 3.0.0
  */
 
+ini_set("display_errors", true);
+header("Content-type: text/plain");
+
+// FOR FIXED FERIADOS
+$givenYear = is_null($givenYear) ? intval(date("Y")) : $givenYear;
+
+
+$fixedHolidays = array (
+	"01/01" => "Ano Novo",
+	"21/04" => "Tiradentes",
+	"01/05" => "Dia do trabalho",
+	"07/09" => "Proclamação da Independência",
+	"12/10" => "Nossa Senhora Aparecida",
+	"02/11" => "Finados",
+	"15/11" => "Proclamação da República",
+	"25/12" => "Natal"
+);
+
+$holidays = array();
+
+foreach($fixedHolidays as $day => $descricao) {
+	$holidays[] = date_create_from_format("d/m/Y", $day . "/" . $givenYear);
+}
+
+
+
+print_r($holidays);
+exit;
+
+
 session_cache_limiter('nocache');
 session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 
