@@ -1640,7 +1640,7 @@ var_dump(
 		);
 		*/
 		$result = eF_getTableData(
-			sprintf("users u OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
+			sprintf("users u LEFT OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
 			"gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active", 
 			implode(" AND ", $where),
 			"uid"
