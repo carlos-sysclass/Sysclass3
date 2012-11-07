@@ -3030,4 +3030,12 @@ LEFT join `module_polos` `pl` on (`xu`.`polo_id` = `pl`.`id`)
 left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
 
 
+/* 2012-11-07 */
+ALTER TABLE `module_gradebook_users` ADD UNIQUE (
+	`users_LOGIN`,
+	`lessons_ID`
+);
+ALTER TABLE `module_gradebook_groups` ADD `pass_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70' AFTER `min_value`;
+
+UPDATE `module_gradebook_groups` SET pass_value = 70, min_value = 20
 

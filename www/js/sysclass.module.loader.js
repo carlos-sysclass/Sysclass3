@@ -9,7 +9,6 @@
 			return __modules;
 		},
 		register : function(name, methods) {
-			
 			mod_config = {};
 			//window["$_" + name + "_mod_data"]
 			if (typeof(window['_mod_data_']['_' + name + '_']) != 'undefined') {
@@ -20,8 +19,7 @@
 				}
 //				mod_config = window['_mod_data_']['_' + name + '_'];
 			}
-			
-			
+
 			__modules[name] = jQuery.extend(true, {fake : false}, mod_config, methods, parentWrapper, {"name" : name});
 			return __modules[name];
 		},
@@ -40,33 +38,6 @@
 		},
 		isFake : function() {
 			return this.fake;
-		},
-		_postAction : function(actionName, sendData, callback, output) {
-			if (typeof(output) === "undefined" || output === null || output === "") {
-				output = "json";
-			}
-			
-			var url = 
-				window.location.protocol + "//" +
-				window.location.hostname +
-				window.location.pathname + 
-				"?ctg=module&op=module_" + this.name +
-				"&action=" + actionName + "&output=" + output;
-
-			jQuery.post(
-				url,
-				sendData,
-				function(data, status) {
-					if (output == "json") { 
-						jQuery.messaging.show(data);
-					}
-						
-					if (typeof(callback) == 'function') {
-						callback(data, status);
-					}
-				},
-				output
-			);
 		},
 		_loadAction : function(actionName, sendData, selector, callback) {
 			var url = 
@@ -101,7 +72,51 @@
 			
 			window.location.href = url;
 			return;
-		}
+		},
+		_getAction : function(actionName, sendData, callback, output) {
+			this.__requestAjax(actionName, sendData, callback, output, "get");
+		},
+		_postAction : function(actionName, sendData, callback, output) {
+			this.__requestAjax(actionName, sendData, callback, output, "post");
+		},
+		__requestAjax : function(actionName, sendData, callback, output, method) {
+			if (typeof(output) === "undefined" || output === null || output === "") {
+				output = "json";
+			}
+			
+			var url = 
+				window.location.protocol + "//" +
+				window.location.hostname +
+				window.location.pathname + 
+				"?ctg=module&op=module_" + this.name +
+				"&action=" + actionName + "&output=" + output;
+			
+			var callback = function(data, status) {
+				if (output == "json") { 
+					jQuery.messaging.show(data);
+				}
+					
+				if (typeof(callback) == 'function') {
+					callback(data, status);
+				}
+			};
+			
+			if (method == 'post') {
+				jQuery.post(
+					url,
+					sendData,
+					callback,
+					output
+				);				
+			} else {
+				jQuery.get(
+					url,
+					sendData,
+					callback,
+					output
+				);				
+			}
+		},
 	};
 	/* MAIN LOLADER CLASS */
 	_sysclass = function( method ) {

@@ -220,15 +220,28 @@
 		setGrade : function(oid, login, el) {
 			var grade = jQuery(el).prev().val();
 			
+			var self = this;
+			
 			this._postAction(
 				"set_grade",
 				{
 					"oid"	: oid,
 					"login"	: login,
 					"grade" : grade
+				}/*,
+				function(data, response) {
+					self.getStudentScores(login);
 				},
-				null,
 				'json'
+				*/
+			);
+		},
+		getStudentScores : function(login) {
+			this._postAction(
+				"get_student_scores", 
+				{
+					"login" : login
+				}
 			);
 		},
 		refreshGroupUI : function() {

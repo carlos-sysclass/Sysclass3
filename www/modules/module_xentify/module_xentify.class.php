@@ -748,7 +748,6 @@ class module_xentify extends MagesterExtendedModule {
 	}
 	
 	private function getUserScopeIesIndex($user) {
-		debug_print_backtrace();
 		$userIes = $user->getUserIes();
 		
 		return $userIes;

@@ -16,7 +16,8 @@
 				 -->
 			</th>
 			{/foreach}
-			<th class="topTitle centerAlign">{$smarty.const._GRADEBOOK_SCORE}</th>
+			<th class="topTitle centerAlign">{$smarty.const._GRADEBOOK_GROUP_SCORE}</th>
+			<th class="topTitle centerAlign">{$smarty.const._GRADEBOOK_FINAL_SCORE}</th>
 			<!-- <th class="topTitle centerAlign noSort">{$smarty.const._GRADEBOOK_GRADE}</th>  -->
 			<th class="topTitle centerAlign noSort">{$smarty.const._GRADEBOOK_PUBLISH}</th>
 		</tr>
@@ -47,9 +48,10 @@
 		</td>
 {/foreach}
  -->
-		<td class="centerAlign">{$user.score}</td>
+		<td align="center">{$user.score}</td>
+		<td align="center">{$user.final_score}</td>
 <!-- 		<td class="centerAlign">{$user.grade}</td>  -->
-		<td class="centerAlign">
+		<td align="center">
 			<input class="inputCheckbox" type="checkbox" name="checked_{$user.uid}" id="checked_{$user.uid}" onclick="publishGradebook('{$user.uid}', this);" {if ($user.publish == 1)} checked="checked"{/if} />
 		</td>
 	</tr>
