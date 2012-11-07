@@ -10,7 +10,6 @@
 		resizable: false,
 		buttons: {
 			"Criar": function() {
-								
 				jQuery("#name").removeClass( "ui-state-error" );
 
 				if (jQuery("#name").val().length >= 3) {
@@ -218,6 +217,20 @@
 				{'lesson_id' : lesson_id, 'classe_id' : classe_id, 'course_id' : course_id, "from" : this.action}
 			);
 		},
+		setGrade : function(oid, login, el) {
+			var grade = jQuery(el).prev().val();
+			
+			this._postAction(
+				"set_grade",
+				{
+					"oid"	: oid,
+					"login"	: login,
+					"grade" : grade
+				},
+				null,
+				'json'
+			);
+		},
 		refreshGroupUI : function() {
 			jQuery(".gradebook-group-row a").show();
 			jQuery(".gradebook-group-row:first a.gradebook-group-mode-up").hide();
@@ -311,5 +324,5 @@
 })( jQuery );
 
 
-
+changeGrade
 
