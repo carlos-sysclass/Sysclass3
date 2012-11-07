@@ -824,12 +824,14 @@ class module_gradebook extends MagesterExtendedModule {
 		exit;
 	}	
 	public function getStudentScoresAction() {
-		$selectedLesson = $this->getSelectedLesson();
-		$lessonID = $selectedLesson->lesson['id'];
-		  
 		$login = $_POST['login'];
 		$login = 'aluno';
 		
+		$currentUser = MagesterUserFactory::factory($login);
+		
+		$selectedLesson = $this->getSelectedLesson($currentUser);
+		$lessonID = $selectedLesson->lesson['id'];
+		  
 		// STEP-BY-STEP:
 		// 1. GET LESSON GROUPS
 		
