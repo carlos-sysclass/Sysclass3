@@ -1707,8 +1707,15 @@ class module_xpay extends MagesterExtendedModule {
 		
 		$invoicesList = array();
 		
+		$negociationUsers = array();
+		
 		foreach ($toSendList as $invoice) {
-			$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+			
+			if (!array_key_exists($invoice['login'], $negociationUsers)) {
+				$negociationUsers[$invoice['login']] = MagesterUserFactory::factory($invoice['login']);
+			}
+			
+			$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUsers[$invoice['login']]);
 			if ($invoice['paid'] >= $invoice['full_price']) {
 				continue;
 			}
