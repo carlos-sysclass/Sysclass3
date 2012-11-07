@@ -7,7 +7,6 @@
  * @package SysClass
  * @version 3.0.0
  */
-
 session_cache_limiter('nocache');
 session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 

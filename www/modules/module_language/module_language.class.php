@@ -96,6 +96,37 @@ class module_language extends MagesterModule {
         return false;
     }
     
+    public function getCurrentHolidays($year = null, $asObjects = true) {
+    	$year = is_null($year) ? intval(date("Y")) : $year;
+    	
+    	/** @todo Get these values from database */
+    	$fixedHolidays = array (
+    		"01/01" => "Ano Novo",
+    		"21/04" => "Tiradentes",
+    		"01/05" => "Dia do trabalho",
+    		"07/09" => "Proclamação da Independência",
+    		"12/10" => "Nossa Senhora Aparecida",
+    		"02/11" => "Finados",
+    		"15/11" => "Proclamação da República",
+    		"25/12" => "Natal"
+    	);
+    	
+    	$holidays = array();
+    	
+    	foreach($fixedHolidays as $day => $descricao) {
+    		$holiday = date_create_from_format("d/m/Y", $day . "/" . $year);
+    		if (!$asObjects) {
+    			$holidays[] = $holiday->format("y-m-d");
+    		} else {
+    			$holidays[] = $holiday;
+    		}
+    	}
+    	 
+    	return $holidays;
+    	
+    	
+    	
+    }
 
     /* MAIN-INDEPENDENT MODULE PAGES */
     public function getModule() {

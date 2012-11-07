@@ -1072,6 +1072,9 @@ class module_xpay extends MagesterExtendedModule {
 		$hashNegociation = $_POST['negociation_id'];
 		$jsonNegociation = $this->getCache($hashNegociation);
 		$userNegociation = json_decode($jsonNegociation, true, 50);
+
+		$xuserModule = $this->loadModule("xuser");
+		$negUser = $xuserModule->getUserById($userNegociation['user_id']);
 		
 		// SAVE WHERE? PERSIST OR NOT PERSIST??
 		// THE "course_negociation rec" IS ALREADY BEEN SAVED. SAVE ONLY INVOICES
@@ -1106,7 +1109,7 @@ class module_xpay extends MagesterExtendedModule {
 					null,
 					$invoice['invoice_index'],
 					true,
-					null,
+					$negUser,
 					$invoice['is_registration_tax']
 				);
 			}
