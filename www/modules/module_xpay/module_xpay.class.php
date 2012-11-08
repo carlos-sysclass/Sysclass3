@@ -1086,11 +1086,12 @@ class module_xpay extends MagesterExtendedModule {
 		eF_updateTableData("module_xpay_course_negociation", array("is_simulation" => 0), sprintf("id = %d", $userNegociation['id']));
 		*/
 		// SAVE INVOICES
+		$newInvoicesIndexes = array();
 		foreach($userNegociation['invoices'] as $invoice) {
 			$vencimento = date_create_from_format("Y-m-d", $invoice['data_vencimento']);
 
 			if ($invoice['locked'] == 1 || $invoice['paid'] > 0) {
-				
+				$newInvoicesIndexes[] = $invoice['invoice_index'];
 			} elseif ($invoice['sugested'] == 1) {
 				// DELETE OLD ONE
 				eF_deleteTableData(
@@ -1101,6 +1102,8 @@ class module_xpay extends MagesterExtendedModule {
 						$invoice['invoice_index']
 					)
 				);
+				
+				$newInvoicesIndexes[] = $invoice['invoice_index'];
 				
 				$this->_createInvoice(
 					$userNegociation['id'],
@@ -1125,8 +1128,17 @@ class module_xpay extends MagesterExtendedModule {
 					$invoice['invoice_index']
 				)
 			);
-			
 		}
+		eF_deleteTableData(
+			"module_xpay_invoices",
+			sprintf(
+				"negociation_id = %d AND invoice_index NOT IN (%s)",
+				$userNegociation['id'],
+				implode(",", $newInvoicesIndexes)
+			)
+		);
+		
+		
 		if ($_GET['output'] == 'json') {
 			$response = array(
 					"message"		=> __XPAY_SIMULATE_NEGOCIATION_SAVED,
