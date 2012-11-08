@@ -197,6 +197,9 @@ if (isset($smarty)) {
     $smarty -> load_filter('output', 'eF_template_formatScore');
     //Selectively include some javascripts based on whether they are actually needed
     $smarty -> load_filter('output', 'eF_template_includeScripts');
+    
+    $smarty -> load_filter('output', 'eF_template_sanitizeDOMString');
+    
     $browser = detectBrowser();
     if ($browser == 'ie6') {
         define("MSIE_BROWSER", 1);

@@ -664,6 +664,14 @@ class module_gradebook extends MagesterExtendedModule {
 		$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 		
+		$gradebookScores = $this->computeFinalScore($currentLessonID);
+		/*
+		echo "<pre>";
+		var_dump($gradebookScores);
+		echo "</pre>";
+		*/
+		$smarty->assign("T_GRADEBOOK_SCORES", $gradebookScores);
+		
 		/*
 		$smarty = $this->getSmartyVar();
 		
@@ -735,6 +743,7 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($return);
 		exit;
 	}
+	/*
 	public function changeGradeAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
 			return false;
@@ -777,14 +786,12 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($response);
 		exit;
 	}
+	*/
 	public function setGradeAction() {
-		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
-			return false;
-		}
-		$newGrade = $_POST['grade'];
-	
 		$currentUser = $this->getCurrentUser();
-	
+
+		$newGrade = $_POST['grade'];
+		
 		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
 			try{
 				if($newGrade != '') {
@@ -803,21 +810,25 @@ class module_gradebook extends MagesterExtendedModule {
 					"oid"			=> $oid,
 					"users_LOGIN"	=> $login
 				), sprintf("oid = %d AND users_LOGIN = '%s'", $oid, $login));
-	
+				
+				// GET LESSONID BY OID
+				$lessonID = reset(eF_getTableData("module_gradebook_objects", "lessons_ID", sprintf("id = %d", $oid)));
+				
 				$response = array(
-						"message" 		=> "Nota alterada com sucesso",
-						"message_type"	=> "success"
+					"message" 		=> "Nota alterada com sucesso",
+					"message_type"	=> "success",
+					"scores"		=> $this->computeFinalScore($lessonID['lessons_ID'], $login)
 				);
 			} catch(Exception $e) {
 				$response = array(
-						"message" 		=> $e->getMessage(),
-						"message_type"	=> "failure"
+					"message" 		=> $e->getMessage(),
+					"message_type"	=> "failure"
 				);
 			}
 		} else {
 			$response = array(
-					"message" 		=> "Acesso não autorizado",
-					"message_type"	=> "error"
+				"message" 		=> "Acesso não autorizado",
+				"message_type"	=> "error"
 			);
 		}
 		echo json_encode($response);
@@ -827,86 +838,20 @@ class module_gradebook extends MagesterExtendedModule {
 		$login = $_POST['login'];
 		$login = 'aluno';
 		
-		$currentUser = MagesterUserFactory::factory($login);
-		
 		$selectedLesson = $this->getSelectedLesson($currentUser);
 		$lessonID = $selectedLesson->lesson['id'];
-		  
-		// STEP-BY-STEP:
-		// 1. GET LESSON GROUPS
-		
-		$lessonGroups = $this->getGradebookGroups($lessonID);
-		
-		// 2. FOR EACH GROUPS SCORES
-		foreach($lessonGroups as $group) {
-			$lessonColumns = $this->getLessonColumns($lessonID, $group['id']);
-
-			$score = $this->computeScoreGrade($lessonColumns, $login);
-			$scores[] = array(
-				'group' 			=> $group['id'], 
-//				'require_status'	=> $group['require_status'],
-				'min_value'			=> $group['min_value'],
-				'pass_value'		=> $group['pass_value'],
-				'score' 			=> $score,
-				'to_next'			=> $score >= $group['min_value'],
-				'pass' 				=> $score >= $group['pass_value']
+				
+		try {
+			$response = $this->computeFinalScore($login, $lessonID);
+		} catch (Exception $e) {
+			$response = array (
+				'message' 		=> $e->getMessage(),
+				'message_type'	=> 'failure'
 			);
 		}
 		
-		$counter = 0;
-		$finalScore = 0;
-		
-		$alreadyPassed = false;
-		/*
-		echo "<pre>";
-		var_dump($scores);
-		echo "</pre>";
-		*/
-		foreach($scores as $score) {
-			$counter++;
-			if ($score['score'] > $finalScore) {
-				$finalScore = $score['score'];
-			}
-			
-			if (!$score['to_next'] && !$alreadyPassed) {
-				$finalStatus = self::__GRADEBBOK_DISAPPROVED;
-				// REPROVADO. NÃO ATINGIU VALOR MÍNIMO
-				break;
-			}
-
-			
-			if ($score['pass'] && !$alreadyPassed) {
-				$finalStatus = "Aprovado";
-				$finalStatus = self::__GRADEBBOK_APPROVED;
-				$alreadyPass = true;
-			}
-			if (!$score['pass'] && !$alreadyPassed) {
-				$finalStatus = self::__GRADEBOOK_WAITING;
-				
-			}
-		}
-		if ($finalStatus == self::__GRADEBOOK_WAITING) {
-			$finalStatus = self::__GRADEBBOK_DISAPPROVED;
-		}
-		
-		$response = array('groups' => array());
-		
-		foreach($scores as $score) {
-			$response['groups'][$score['group']] = $score['score'];
-		}
-		$response['final_score'] = $finalScore;
-		$response['final_status'] = $finalStatus;
-		
-		
-		
-		// 3. GET THE LAST OR THE GREATEST SCORE E SET THEN FINAL.
-		
 		echo json_encode($response);
 		exit;
-		
-		
-		
-		
 	}
 	
 	public function switchLessonAction() {
@@ -2240,6 +2185,100 @@ var_dump(
 		
 		return $overallScore;
 		
+	}
+	private function computeFinalScore($lessonID, $login = null) {
+		
+		$selectedLesson = new MagesterLesson($lessonID);
+		
+		if (is_null($login)) {
+			// GET ALL USERS RESULTS
+			$allLessonUsers = $this->getLessonUsers($lessonID, $this->getLessonColumns($lessonID));
+			$allLessonLogins = array();
+			foreach($allLessonUsers as $user) {
+				$allLessonLogins[] = $user['users_LOGIN'];
+			}
+		} else {
+			$allLessonLogins = array($login);
+		}
+		
+		// STEP-BY-STEP:
+		// 1. GET LESSON GROUPS
+		$lessonGroups = $this->getGradebookGroups($lessonID);
+		
+		$lessonColumns = array();
+		
+		foreach($allLessonLogins as $login) {
+			$response = $scores = array();
+			$score = 0;
+			$currentUser = MagesterUserFactory::factory($login);
+
+			// 2. FOR EACH GROUPS SCORES
+			foreach($lessonGroups as $group) {
+				if (!array_key_exists($group['id'], $lessonColumns)) {
+					$lessonColumns[$group['id']] = $this->getLessonColumns($lessonID, $group['id']);
+				}
+	
+				$score = $this->computeScoreGrade($lessonColumns[$group['id']], $login);
+				$scores[] = array(
+					'group' 			=> $group['id'],
+					//				'require_status'	=> $group['require_status'],
+					'min_value'			=> $group['min_value'],
+					'pass_value'		=> $group['pass_value'],
+					'score' 			=> $score,
+					'to_next'			=> $score >= $group['min_value'],
+					'pass' 				=> $score >= $group['pass_value']
+				);
+			}
+			
+			$counter = 0;
+			$finalScore = 0;
+				
+			$alreadyPassed = false;
+	
+			foreach($scores as $score) {
+				$counter++;
+				if ($score['score'] > $finalScore) {
+					$finalScore = $score['score'];
+				}
+		
+				if (!$score['to_next'] && !$alreadyPassed) {
+					$finalStatus = self::__GRADEBBOK_DISAPPROVED;
+					// REPROVADO. NÃO ATINGIU VALOR MÍNIMO
+					break;
+				}
+		
+		
+				if ($score['pass'] && !$alreadyPassed) {
+					$finalStatus = "Aprovado";
+					$finalStatus = self::__GRADEBBOK_APPROVED;
+					$alreadyPassed = true;
+				}
+				if (!$score['pass'] && !$alreadyPassed) {
+					$finalStatus = self::__GRADEBOOK_WAITING;
+						
+				}
+			}
+			if ($finalStatus == self::__GRADEBOOK_WAITING) {
+				$finalStatus = self::__GRADEBBOK_DISAPPROVED;
+			}
+			
+			$response = array('groups' => array());
+				
+			foreach($scores as $score) {
+				$response['groups'][$score['group']] = $score['score'];
+			}
+			// 3. GET THE LAST OR THE GREATEST SCORE E SET THEN FINAL.
+			$response['final_score'] = $finalScore;
+			$response['final_status'] = $finalStatus;
+			
+			$result[$login] = $response;
+
+			
+		}
+		if (count($result) == 1) {
+			return $result[$login];
+		}
+		return $result;
 	}
 }
 ?>
