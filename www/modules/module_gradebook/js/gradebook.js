@@ -52,6 +52,26 @@
 		}
 	});
 	
+	
+	var dataTableDefaults = {
+		"bJQueryUI": false,
+		"bPaginate": true,
+		"bLengthChange": true,
+		"bFilter": true,
+		"bSort": true,
+		"bInfo": false,
+		"bAutoWidth": true,
+		"iDisplayLength"	: 10,
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "Tudo"]],
+		"bDeferRender" : true,
+		"sPaginationType": "full_numbers",
+		"bScrollCollapse": true,
+		"sDom": 't<"datatables-header-controls"ilrp>',
+		"oLanguage": {
+			"sUrl": window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datatable&output=json"
+		}
+	};
+	
 	var methods = {
 		getSelectedGroup : function() {
 			selectedID = jQuery(".gradebook-group-header").filter(".selected").attr("id");
@@ -169,12 +189,14 @@
 				group_id = this.getSelectedGroup();
 			}
 			
+			jQuery("#gradebook-group-grades-container").empty();
+			
 			_sysclass("load", "gradebook")._loadAction(
 				"load_group_grades",
 				{"group_id" : group_id},
 				"#gradebook-group-grades-container",
 				function() {
-					jQuery("#gradebook-group-grades-container table").dataTable();
+					jQuery("#gradebook-group-grades-container table").dataTable(dataTableDefaults);
 				}
 			);
 			
@@ -349,7 +371,7 @@
 	jQuery(".gradebook-grade-input").live('blur', function() {
 		var self = this;
 		
-		jQuery(this).next("img").show();
+		jQuery(self).next("img").css("visibility", "visible");
 		
 		var oid = jQuery(this).data('oid');
 		var login = jQuery(this).data('login');
@@ -372,7 +394,7 @@
 					);
 				}
 				
-				jQuery(self).next("img").hide();
+				jQuery(self).next("img").css("visibility", "hidden");
 			}
 		);	
 	})

@@ -38,7 +38,7 @@
 							src="{$T_GRADEBOOK_BASELINK|cat:'images/progress1.gif'}" 
 							title="{$smarty.const._SAVE}" 
 							alt="{$smarty.const._SAVE}"
-							style="display: none;" />
+							style="visibility: hidden;" />
 					</td>
 				{/foreach}
 		
