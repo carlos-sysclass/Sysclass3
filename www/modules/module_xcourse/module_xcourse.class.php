@@ -873,13 +873,13 @@ class module_xcourse extends MagesterExtendedModule {
 		$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
 		// GET USER CLASS
 		$courseClass = $classeData[0]['classe_id'];
-		if ($_GET['debug'] == 10)  {
-	                $lessonID = 205;
-        	        $courseID = 50;
-		} else {
+//		if ($_GET['debug'] == 10)  {
+//	                $lessonID = 205;
+//        	        $courseID = 50;
+//		} else {
                 	$lessonID = $_POST["lesson_id"];
 	                $courseID = $_POST['course_id'];
-		}
+//		}
 		$currentContent = new MagesterContentTree($lessonID);
 		$currentContent -> markSeenNodes($currentUser);
 		//Content tree block
@@ -887,7 +887,36 @@ class module_xcourse extends MagesterExtendedModule {
 /*
 			$iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
 */
+/*
+if ($_GET['debug'] == 10) {
 
+unset($currentContent -> tree['4212']);
+
+var_dump($currentContent -> tree);
+//exit;
+        $data =
+
+ new MagesterVisitableAndEmptyFilterIterator(
+                new MagesterNodeFilterIterator(
+                        new RecursiveIteratorIterator(
+                                new RecursiveArrayIterator($currentContent -> tree)
+                                , RecursiveIteratorIterator :: SELF_FIRST
+                        )
+                        , array('active' => 1)
+                )
+        );
+
+
+echo "<pre>";
+        var_dump(
+                                $data->getArrayCopy()
+
+);
+echo "</pre>";
+        exit;
+
+}
+*/
 
 
 $iterator = new MagesterContentCourseClassFilterIterator(
@@ -902,19 +931,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 	)
 	, $courseClass);
 ;
-
-if ($_GET['debug'] == 10) {
-	$data = new RecursiveArrayIterator($currentContent -> tree);
-
-
-echo "<pre>";
-	var_dump(
-                                $data->getArrayCopy()
-
-);
-echo "</pre>";
-	exit;
-}
 
 
 
