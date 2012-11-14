@@ -403,7 +403,3 @@
 	_sysclass('load', 'gradebook').startUI();
 	
 })( jQuery );
-
-
-changeGrade
-
