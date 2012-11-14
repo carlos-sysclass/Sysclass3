@@ -1,6 +1,5 @@
 <?php
-header("Location: index.php");
-exit;
+
 session_cache_limiter('nocache');
 session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 
@@ -11,8 +10,56 @@ require_once $path."configuration.php";
 
 header("content-type: text/plain");
 
-/* BUSCAR TESTS BY UNIT */
-/* COMO RECALCULAR */
+
+$TestID		= 192;
+//$QuestionID = 1533;
+
+$test = new MagesterTest($TestID);
+$testQuestions = $test->getQuestions();
+
+$completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
+
+foreach($completedTests as $testData) {
+	$showTest = unserialize($testData['test']);
+
+	$logData = array(
+			'ID_TESTE' => $testData['tests_ID'],
+			'NOME'		=> "Segurança da Informação - Gestão de Segurança - Prova on line",
+			'ID' => $testData['id'],
+			'LOGIN' => $testData['users_LOGIN'],
+			'OLD_SCORE' => $showTest -> completedTest['score'],
+	);
+
+	$showTest -> completedTest['score'] = 0;
+
+	foreach($showTest->questions as $QuestionID => $question) {
+		if ($QuestionID == 2326) {
+			$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
+		}
+
+		$results = $showTest->questions[$QuestionID]->correct();
+		$showTest->questions[$QuestionID] -> score = round($results['score'] * 100, 2);
+
+		$showTest->questions[$QuestionID] -> results = $results['correct'];
+		$showTest -> completedTest['score'] += $showTest->questions[$QuestionID] -> score * $showTest -> getQuestionWeight($QuestionID); //the total test score
+		$showTest->questions[$QuestionID] -> scoreInTest = round($showTest->questions[$QuestionID] -> score * $showTest -> getQuestionWeight($QuestionID), 3); //Score in test is the question score, weighted with the question's weight in the test
+
+	}
+
+	if ($showTest -> completedTest['score'] != $logData['OLD_SCORE']) {
+		$showTest->save();
+
+		$logData['NEW_SCORE'] = $showTest -> completedTest['score'];
+		$diff[] = $logData;
+	}
+
+	//echo "\n\n";
+}
+
+
+
+
+/*
 $TestID		= 436;
 //$QuestionID = 1533;
 
@@ -36,7 +83,7 @@ foreach($completedTests as $testData) {
 
 	foreach($showTest->questions as $QuestionID => $question) {
 		//$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
-		/*
+
 		if (!array_key_exists($QuestionID, $testQuestions)) {
 		    // QUESTION REMOVED FROM TEST
 		    unset($showTest->questions[$QuestionID]);
@@ -49,7 +96,7 @@ foreach($completedTests as $testData) {
 				$showTest->questions[$QuestionID]->options = unserialize($testQuestions[$QuestionID]['options']);
 			}
 		}
-		*/
+
 		if ($QuestionID == 7830) {
 			if ($showTest->questions[$QuestionID]->userAnswer == 4) {
 				$showTest->questions[$QuestionID]->userAnswer = 2;
@@ -74,11 +121,12 @@ foreach($completedTests as $testData) {
 	}
 	echo "\n\n";
 }
-
+*/
 
 
 /* BUSCAR TESTS BY UNIT */
 /* COMO RECALCULAR */
+/*
 $TestID		= 208;
 
 $test = new MagesterTest($TestID);
@@ -132,9 +180,10 @@ foreach($completedTests as $testData) {
 }
 
 
-
+*/
 /* BUSCAR TESTS BY UNIT */
 /* COMO RECALCULAR */
+/*
 $TestID		= 207;
 //$QuestionID = 1533;
 
@@ -182,6 +231,7 @@ foreach($completedTests as $testData) {
 	}
 	echo "\n\n";
 }
+*/
 
 echo implode(";", array_keys($diff[0]));
 echo "\n";
