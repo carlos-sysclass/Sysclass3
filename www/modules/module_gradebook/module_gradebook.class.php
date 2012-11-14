@@ -2147,19 +2147,24 @@ var_dump(
 	private function computeScoreGrade($lessonColumns, $userLogin) {
 		$divisionBy = 0;
 		$sum = 0;
+		
+		///var_dump($lessonColumns);
+		
 
 		foreach($lessonColumns as $key => $object){
 			
 			$result = eF_getTableData("module_gradebook_grades", "grade",
 					"oid=".$object['id']." and users_LOGIN='".$userLogin."'");
 			$grade = $result[0]['grade'];
-
-			if($grade != -1){
+			
+			$grade = min( max($grade, 0) , 100);
+			
+			//if($grade != -1){
 
 				$weight = $object['weight'];
 				$sum += $grade * $weight;
 				$divisionBy += $weight;
-			}
+			//}
 		}
 
 		if($divisionBy != 0){

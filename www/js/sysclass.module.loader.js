@@ -113,7 +113,7 @@
 				window.location.hostname +
 				window.location.pathname + 
 				"?ctg=module&op=module_" + this.name +
-				"&action=" + actionName + "&debug=10&output=" + output;
+				"&action=" + actionName + "&output=" + output;
 			
 			if (this.opt.noMessages) {
 				var callbackWrapper = callback;

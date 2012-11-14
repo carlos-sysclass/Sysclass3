@@ -264,6 +264,7 @@
 			);
 			this.opt.noMessages = false;
 		},
+		/*
 		getStudentScores : function(login) {
 			var scores = null;
 			
@@ -281,6 +282,7 @@
 			
 			return scores;
 		},
+		*/
 		refreshGroupUI : function() {
 			jQuery(".gradebook-group-row a").show();
 			jQuery(".gradebook-group-row:first a.gradebook-group-mode-up").hide();
