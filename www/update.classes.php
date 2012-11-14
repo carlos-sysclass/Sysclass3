@@ -17,6 +17,15 @@ $path = "../libraries/";
 require_once $path."configuration.php";
 
 
+
+
+
+
+
+
+
+/*
+
 //- ARRUMAR CLASSES
 //	- COLOCAR TUDO NA TABELA USER_TO_COURSES E EXCLUIR TABELA USER_TO_CLASSES
 	$userToClasses = eF_getTableData("users_to_classes uc 
@@ -79,7 +88,7 @@ require_once $path."configuration.php";
 	echo implode("\n", $alreadySetUsers);
 	echo "\nUSUÀRIOS NF:\n";
 	echo implode("\n", $notFoundUsers);
-	
+*/
 /*
 - ARRUMAR MATRICULAS
 	- REGISTRAR MATRICULA DE ALUNOS ANTIGOS
