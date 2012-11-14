@@ -33,32 +33,4 @@
 {/capture}
 
 {eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
-
-<script>
-{literal}
-	function changeGrade(gid, el){
-
-		Element.extend(el);
-		var grade = $('grade_'+gid).value;
-		var url = '{/literal}{$T_GRADEBOOK_BASEURL}{literal}&action=change_grade&gid='+gid+'&grade='+grade;
-
-		var img = new Element('img', {id:'img_'+gid, src:'{/literal}{$T_GRADEBOOK_BASELINK}{literal}images/progress1.gif'}).setStyle({position:'absolute'});
-		img_id = img.identify();
-		el.up().insert(img);
-
-		new Ajax.Request(url, {
-			method: 'get',
-			asynchronous: true,
-			onFailure: function(transport){
-				img.hide();
-				alert(decodeURIComponent(transport.responseText));
-			},
-			onSuccess: function(transport){
-				img.hide();
-				new Effect.Appear(el.up(), {queue:'end'});
-			}
-		});
-	}
-{/literal}
-</script>
 {include file="$T_GRADEBOOK_BASEDIR/templates/includes/javascript.tpl"}

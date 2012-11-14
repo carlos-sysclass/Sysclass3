@@ -12,6 +12,10 @@ class module_gradebook extends MagesterExtendedModule {
 		)
 	);
 	*/
+
+	const __GRADEBBOK_DISAPPROVED = "Reprovado";
+	const __GRADEBBOK_APPROVED = "Aprovado";
+	const __GRADEBOOK_WAITING = "Aguardando";
 	
 	public static $newActions = array(
 		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column",  "delete_column", "load_group_rules", "load_group_grades", "switch_lesson" 
@@ -72,7 +76,7 @@ class module_gradebook extends MagesterExtendedModule {
 		foreach($result as $user) {
 			array_push($allLogins, $user['users_LOGIN']);
 		}
-
+/*
 		if(sizeof($result) != sizeof($lessonUsers)){ // FIXME
 			$lessonColumns = $this->getLessonColumns($currentLessonID);
 			foreach($lessonUsers as $userLogin => $value) {
@@ -108,6 +112,7 @@ class module_gradebook extends MagesterExtendedModule {
 				}
 			}
 		}
+		*/
 		/* End */
 
 		$lessonColumns = $this->getLessonColumns($currentLessonID);
@@ -216,14 +221,17 @@ class module_gradebook extends MagesterExtendedModule {
 			if (
 				isset($_POST['name']) && strlen($_POST['name']) >= 3 &&
 				isset($_POST['require_status']) && is_numeric($_POST['require_status']) &&
-				isset($_POST['min_value']) && is_numeric($_POST['min_value'])
+				isset($_POST['min_value']) && is_numeric($_POST['min_value']) && 
+				isset($_POST['pass_value']) && is_numeric($_POST['pass_value']) &&
+				$_POST['pass_value'] >= $_POST['min_value'] 
 			) {
 				$fields = array(
 					"lesson_id"			=> $_SESSION["grade_lessons_ID"],
 					"classe_id"			=> is_numeric($_SESSION["grade_classe_ID"]) ? $_SESSION["grade_classe_ID"] : 0,
 					"name"				=> $_POST['name'],
 					"require_status"	=> $_POST['require_status'],
-					"min_value"			=> $_POST['min_value']
+					"min_value"			=> $_POST['min_value'],
+					"pass_value"		=> $_POST['pass_value']
 				);
 				
 				$fields['id'] = eF_insertTableData("module_gradebook_groups", $fields);
@@ -563,13 +571,12 @@ class module_gradebook extends MagesterExtendedModule {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
 			return false;
 		}
-		
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		
 		$currentLesson = $this->getSelectedLesson();
 		$currentLessonID = $currentLesson->lesson['id'];
-		
+
 		$currentCourse = $this->getSelectedCourse();
 		$currentClasse = $this->getSelectedClasse();
 		
@@ -607,7 +614,7 @@ class module_gradebook extends MagesterExtendedModule {
 		
 					$uid = eF_insertTableData("module_gradebook_users", $userFields);
 		
-					foreach($lessonColumns as $key => $column){
+					foreach($lessonColumns as $key => $column) {
 		
 						$fieldsGrades = array(
 							"oid" => $key,
@@ -633,12 +640,12 @@ class module_gradebook extends MagesterExtendedModule {
 		$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 		
 		if (is_null($currentClasse)) {
+			$this->checkLessonUsers($currentLessonID, $lessonColumns);
 			$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
 		} else {
+			$this->checkLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
 			$allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
 		}
-		
-		
 		
 		if($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
@@ -657,6 +664,14 @@ class module_gradebook extends MagesterExtendedModule {
 		$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 		
+		$gradebookScores = $this->computeFinalScore($currentLessonID);
+		/*
+		echo "<pre>";
+		var_dump($gradebookScores);
+		echo "</pre>";
+		*/
+		$smarty->assign("T_GRADEBOOK_SCORES", $gradebookScores);
+		
 		/*
 		$smarty = $this->getSmartyVar();
 		
@@ -664,18 +679,12 @@ class module_gradebook extends MagesterExtendedModule {
 		is_numeric($_SESSION['gradebook_group_id']) ? $currentGroupID = $_SESSION['gradebook_group_id'] : $currentGroupID = 1
 		);
 		
-		
 		if ( is_numeric($_SESSION["grade_lessons_ID"]) ) {
 			$currentLessonID = $_SESSION["grade_lessons_ID"];
 			$_SESSION['gradebook_group_id'] = $currentGroupID;
 			$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 			$smarty -> assign("T_GRADEBOOK_LESSON_COLUMNS", $lessonColumns);
 		}
-		
-		
-		
-		
-		
 		*/
 		$this->assignSmartyModuleVariables();
 		$template = $this->moduleBaseDir . 'templates/actions/' . $this->getCurrentAction() . '.tpl';
@@ -734,6 +743,7 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($return);
 		exit;
 	}
+	/*
 	public function changeGradeAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
 			return false;
@@ -776,6 +786,74 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($response);
 		exit;
 	}
+	*/
+	public function setGradeAction() {
+		$currentUser = $this->getCurrentUser();
+
+		$newGrade = $_POST['grade'];
+		
+		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
+			try{
+				if($newGrade != '') {
+					if(eF_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
+						throw new MagesterContentException(_GRADEBOOK_INVALID_GRADE.': "'.$newGrade.'". '._GRADEBOOK_VALID_GRADE_SPECS,
+								MagesterContentException :: INVALID_SCORE);
+				} else {
+					$newGrade = -1;
+				}
+				
+				$login 	= $_POST['login'];
+				$oid	= $_POST['oid'];
+
+				eF_insertOrupdateTableData("module_gradebook_grades", array(
+					"grade" 		=> $newGrade,
+					"oid"			=> $oid,
+					"users_LOGIN"	=> $login
+				), sprintf("oid = %d AND users_LOGIN = '%s'", $oid, $login));
+				
+				// GET LESSONID BY OID
+				$lessonID = reset(eF_getTableData("module_gradebook_objects", "lessons_ID", sprintf("id = %d", $oid)));
+				
+				$response = array(
+					"message" 		=> "Nota alterada com sucesso",
+					"message_type"	=> "success",
+					"scores"		=> $this->computeFinalScore($lessonID['lessons_ID'], $login)
+				);
+			} catch(Exception $e) {
+				$response = array(
+					"message" 		=> $e->getMessage(),
+					"message_type"	=> "failure"
+				);
+			}
+		} else {
+			$response = array(
+				"message" 		=> "Acesso não autorizado",
+				"message_type"	=> "error"
+			);
+		}
+		echo json_encode($response);
+		exit;
+	}	
+	public function getStudentScoresAction() {
+		$login = $_POST['login'];
+		$login = 'aluno';
+		
+		$selectedLesson = $this->getSelectedLesson($currentUser);
+		$lessonID = $selectedLesson->lesson['id'];
+				
+		try {
+			$response = $this->computeFinalScore($login, $lessonID);
+		} catch (Exception $e) {
+			$response = array (
+				'message' 		=> $e->getMessage(),
+				'message_type'	=> 'failure'
+			);
+		}
+		
+		echo json_encode($response);
+		exit;
+	}
+	
 	public function switchLessonAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
 			return false;
@@ -840,7 +918,6 @@ var_dump(
 			return "edit_rule_calculation";
 		}
 	}
-	
 	/**
 	 * @todo TRANSFER THIS FUNCTION TO YOUR OWN MODULE 
 	 */
@@ -1619,8 +1696,6 @@ var_dump(
 		exit;
 	}
 	private function getLessonUsers($lessonID, $objects, $classe_id = null){
-
-		// 
 		$where = array();
 		
 //		$where[] = "lessons_ID = " . $lessonID;
@@ -1631,6 +1706,7 @@ var_dump(
 		}
 		$where[] = "(user_types_ID = 0 OR user_types_ID IS NULL)";
 		$where[] = "u.user_type = 'student'";
+		
 		/*
 		echo prepareGetTableData(
 			sprintf("users u OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
@@ -1650,7 +1726,22 @@ var_dump(
 		
 		$users = array();
 
-		foreach($result as $value){
+		foreach($result as $value) {
+			/*
+			if (is_null($value['uid'])) {
+				// INSERT INTO GRADEBOOK DATA
+				
+				$userFields = array(
+					"users_LOGIN" 	=> $value['users_LOGIN'],
+					"lessons_ID"	=> $lessonID,
+					"score" 		=> -1,
+					"grade" 		=> '-1',
+					'publish'		=> 0
+				);
+				
+				$uid = eF_insertTableData("module_gradebook_users", $userFields);
+			}
+			*/
 
 			$grades = array();
 /*
@@ -1671,15 +1762,21 @@ var_dump(
 			}
 			
 
-			foreach($objects as $key => $object){
+			foreach($objects as $key => $object) {
+				
+				
 
-				$result_ = eF_getTableData("module_gradebook_grades", "gid, grade",
+				$result_ = eF_getTableData(
+						"module_gradebook_grades", "gid, grade",
 						"oid = ".$object['id']." and users_LOGIN='".$value['users_LOGIN']."'");
 
 				if($result_[0]['grade'] == -1)
 					$result_[0]['grade'] = '';
+				
+				
+				$grades[$object['id']] = $result_[0];
 
-				array_push($grades, $result_[0]);
+				//array_push($grades, $result_[0]);
 			}
 
 			$value['grades'] = $grades;
@@ -1688,6 +1785,57 @@ var_dump(
 
 		return $users;
 	}
+	private function checkLessonUsers($lessonID, $objects, $classe_id = null) {
+		$updated = false;
+		$gradebookUsers = $this->getLessonUsers($lessonID, $objects, $classe_id);
+		
+		$currentLesson = new MagesterLesson($lessonID);
+		$lessonUsers = $currentLesson->getUsers('student');
+		
+		$allLogins = array();
+		foreach($gradebookUsers as $gradeUser) {
+			$allGradeLogins[] = $gradeUser['users_LOGIN'];
+		}
+		
+		
+		foreach($lessonUsers as $lessonUser) {
+			if (!in_array($lessonUser['login'], $allGradeLogins)) {
+				// INSERT INTO GRADEBOOK DATA
+				$userFields = array(
+						"users_LOGIN" 	=> $lessonUser['login'],
+						"lessons_ID"	=> $lessonID,
+						"score" 		=> -1,
+						"grade" 		=> '-1',
+						'publish'		=> 0
+				);
+		
+				//$uid = eF_insertTableData("module_gradebook_users", $userFields);
+				
+				foreach($objects as $key => $column) {
+					$fieldsGrades = array(
+						"oid" => $key,
+						"grade" => -1,
+						"users_LOGIN" => $lessonUser['login']
+					);
+				
+					// $type = $column['refers_to_type'];
+					// $id = $column['refers_to_id'];
+				
+					eF_insertTableData("module_gradebook_grades", $fieldsGrades);
+				
+//					if($type != 'real_world')
+//						$this->importGrades($type, $id, $key, $userLogin);
+				}
+				$updated = true;
+				
+				//$this->computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid);				
+				
+			}
+		}
+		return $updated;
+	}
+	
+	
 	private function getNumberOfColumns($lessonID){
 
 		$result = eF_getTableData("module_gradebook_objects", "count(id) as total_columns", "lessons_ID=".$lessonID);
@@ -1743,7 +1891,7 @@ var_dump(
 				(grp.classe_id = ord.classe_id OR grp.classe_id = 0)
 			)",
 			//"id, lesson_id, classe_id, name",
-			"grp.id, grp.lesson_id, grp.classe_id, grp.name, grp.require_status, grp.min_value, ord.order_index",
+			"grp.id, grp.lesson_id, grp.classe_id, grp.name, grp.require_status, grp.min_value, grp.pass_value, ord.order_index",
 			"grp.lesson_id IN (0, " . $currentLessonID . ") AND 
 			grp.classe_id IN (0, " . $currentClasseID . ")",
 			"ord.order_index, grp.id",
@@ -1996,13 +2144,12 @@ var_dump(
 			"grade" => $grade
 		), "oid=".$oid." and users_LOGIN='".$userLogin."'");
 	}
-	private function computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid) {
-
+	private function computeScoreGrade($lessonColumns, $userLogin) {
 		$divisionBy = 0;
 		$sum = 0;
 
 		foreach($lessonColumns as $key => $object){
-
+			
 			$result = eF_getTableData("module_gradebook_grades", "grade",
 					"oid=".$object['id']." and users_LOGIN='".$userLogin."'");
 			$grade = $result[0]['grade'];
@@ -2019,7 +2166,7 @@ var_dump(
 
 			$overallScore = round((float)($sum/$divisionBy));
 			$overallGrade = '-1'; // if no range found
-
+		/*
 			foreach($ranges as $range){
 
 				if($overallScore >= $range['range_from'] && $overallScore <= $range['range_to']){
@@ -2027,13 +2174,111 @@ var_dump(
 					break;
 				}
 			}
+		*/			
 		}
 		else{
 			$overallScore = -1;
 			$overallGrade = '-1';
 		}
 
-		eF_updateTableData("module_gradebook_users", array("score" => $overallScore, "grade" => $overallGrade), "uid=".$uid);
+		//eF_updateTableData("module_gradebook_users", array("score" => $overallScore, "grade" => $overallGrade), sprintf("users_LOGIN = '%s' AND lessons_ID = %d", $userLogin, $lessonID));
+		
+		return $overallScore;
+		
+	}
+	private function computeFinalScore($lessonID, $login = null) {
+		
+		$selectedLesson = new MagesterLesson($lessonID);
+		
+		if (is_null($login)) {
+			// GET ALL USERS RESULTS
+			$allLessonUsers = $this->getLessonUsers($lessonID, $this->getLessonColumns($lessonID));
+			$allLessonLogins = array();
+			foreach($allLessonUsers as $user) {
+				$allLessonLogins[] = $user['users_LOGIN'];
+			}
+		} else {
+			$allLessonLogins = array($login);
+		}
+		
+		// STEP-BY-STEP:
+		// 1. GET LESSON GROUPS
+		$lessonGroups = $this->getGradebookGroups($lessonID);
+		
+		$lessonColumns = array();
+		
+		foreach($allLessonLogins as $login) {
+			$response = $scores = array();
+			$score = 0;
+			$currentUser = MagesterUserFactory::factory($login);
+
+			// 2. FOR EACH GROUPS SCORES
+			foreach($lessonGroups as $group) {
+				if (!array_key_exists($group['id'], $lessonColumns)) {
+					$lessonColumns[$group['id']] = $this->getLessonColumns($lessonID, $group['id']);
+				}
+	
+				$score = $this->computeScoreGrade($lessonColumns[$group['id']], $login);
+				$scores[] = array(
+					'group' 			=> $group['id'],
+					//				'require_status'	=> $group['require_status'],
+					'min_value'			=> $group['min_value'],
+					'pass_value'		=> $group['pass_value'],
+					'score' 			=> $score,
+					'to_next'			=> $score >= $group['min_value'],
+					'pass' 				=> $score >= $group['pass_value']
+				);
+			}
+			
+			$counter = 0;
+			$finalScore = 0;
+				
+			$alreadyPassed = false;
+	
+			foreach($scores as $score) {
+				$counter++;
+				if ($score['score'] > $finalScore) {
+					$finalScore = $score['score'];
+				}
+		
+				if (!$score['to_next'] && !$alreadyPassed) {
+					$finalStatus = self::__GRADEBBOK_DISAPPROVED;
+					// REPROVADO. NÃO ATINGIU VALOR MÍNIMO
+					break;
+				}
+		
+		
+				if ($score['pass'] && !$alreadyPassed) {
+					$finalStatus = "Aprovado";
+					$finalStatus = self::__GRADEBBOK_APPROVED;
+					$alreadyPassed = true;
+				}
+				if (!$score['pass'] && !$alreadyPassed) {
+					$finalStatus = self::__GRADEBOOK_WAITING;
+						
+				}
+			}
+			if ($finalStatus == self::__GRADEBOOK_WAITING) {
+				$finalStatus = self::__GRADEBBOK_DISAPPROVED;
+			}
+			
+			$response = array('groups' => array());
+				
+			foreach($scores as $score) {
+				$response['groups'][$score['group']] = $score['score'];
+			}
+			// 3. GET THE LAST OR THE GREATEST SCORE E SET THEN FINAL.
+			$response['final_score'] = $finalScore;
+			$response['final_status'] = $finalStatus;
+			
+			$result[$login] = $response;
+
+			
+		}
+		if (count($result) == 1) {
+			return $result[$login];
+		}
+		return $result;
 	}
 }
 ?>

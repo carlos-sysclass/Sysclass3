@@ -9,9 +9,8 @@
 			return __modules;
 		},
 		register : function(name, methods) {
-			
 			mod_config = {};
-			//window["$_" + name + "_mod_data"]
+			
 			if (typeof(window['_mod_data_']['_' + name + '_']) != 'undefined') {
 				
 				for(idx in window['_mod_data_']['_' + name + '_']) {
@@ -21,8 +20,18 @@
 //				mod_config = window['_mod_data_']['_' + name + '_'];
 			}
 			
-			
-			__modules[name] = jQuery.extend(true, {fake : false}, mod_config, methods, parentWrapper, {"name" : name});
+			opt_config = jQuery.extend(
+				{
+					"ajax" : {
+						"async" : true
+					},
+					"noMessages"	: false
+				},
+				mod_config
+			);
+
+
+			__modules[name] = jQuery.extend(true, {fake : false}, {"opt" : opt_config}, methods, parentWrapper, {"name" : name});
 			return __modules[name];
 		},
 		load : function( name ) {
@@ -41,32 +50,16 @@
 		isFake : function() {
 			return this.fake;
 		},
-		_postAction : function(actionName, sendData, callback, output) {
-			if (typeof(output) === "undefined" || output === null || output === "") {
+		config : function(name) {
+			return this.opt;
+		},
+		sync: function(bSwitch) {
+			if (typeof(bSwitch) != "boolean") {
 				output = "json";
 			}
+			this.opt.ajax.async = !bSwitch;
 			
-			var url = 
-				window.location.protocol + "//" +
-				window.location.hostname +
-				window.location.pathname + 
-				"?ctg=module&op=module_" + this.name +
-				"&action=" + actionName + "&output=" + output;
-
-			jQuery.post(
-				url,
-				sendData,
-				function(data, status) {
-					if (output == "json") { 
-						jQuery.messaging.show(data);
-					}
-						
-					if (typeof(callback) == 'function') {
-						callback(data, status);
-					}
-				},
-				output
-			);
+			return this;
 		},
 		_loadAction : function(actionName, sendData, selector, callback) {
 			var url = 
@@ -101,9 +94,54 @@
 			
 			window.location.href = url;
 			return;
-		}
+		},
+		_getAction : function(actionName, sendData, callback, output) {
+			this.__requestAjax(actionName, sendData, callback, output, "get");
+		},
+		_postAction : function(actionName, sendData, callback, output) {
+			this.__requestAjax(actionName, sendData, callback, output, "post");
+		},
+		__requestAjax : function(actionName, sendData, callback, output, method) {
+			if (typeof(output) === "undefined" || output === null || output === "") {
+				output = "json";
+			}
+			
+			var self = this;
+			
+			var url = 
+				window.location.protocol + "//" +
+				window.location.hostname +
+				window.location.pathname + 
+				"?ctg=module&op=module_" + this.name +
+				"&action=" + actionName + "&debug=10&output=" + output;
+			
+			if (this.opt.noMessages) {
+				var callbackWrapper = callback;
+			} else {
+				var callbackWrapper = function(data, status) {
+					if (output == "json") { 
+						jQuery.messaging.show(data);
+					}
+					if (typeof(callback) == 'function') {
+						callback(data, status);
+					}
+				};
+			}
+			
+			var options = jQuery.extend(this.opt.ajax, {
+				"type" 		: method,
+				"data"		: sendData,
+				"dataType"	: output,
+				"success"	: callbackWrapper
+			});
+
+			jQuery.ajax(
+				url,
+				options
+			);
+		},
 	};
-	/* MAIN LOLADER CLASS */
+	/* MAIN LOADER CLASS */
 	_sysclass = function( method ) {
 		/* CLASS CONSTRUCTOR */
 		var self = _sysclass;
@@ -114,4 +152,18 @@
 			return methods.load.apply( self, arguments );
 		}    
 	};
+	
+	
+	
+	// REGISTER UTILS CLASSES
+	var utilsMethods = {
+			sanitizeDOMString : function (value) {
+				return new String(value).replace(/\./g, "_");
+			}
+	};
+	
+	_sysclass("register", "utils", utilsMethods);
+	
+	
+	
 })( jQuery );

@@ -10,7 +10,6 @@
 		resizable: false,
 		buttons: {
 			"Criar": function() {
-								
 				jQuery("#name").removeClass( "ui-state-error" );
 
 				if (jQuery("#name").val().length >= 3) {
@@ -52,6 +51,26 @@
 		close: function() {
 		}
 	});
+	
+	
+	var dataTableDefaults = {
+		"bJQueryUI": false,
+		"bPaginate": true,
+		"bLengthChange": true,
+		"bFilter": true,
+		"bSort": true,
+		"bInfo": false,
+		"bAutoWidth": true,
+		"iDisplayLength"	: 10,
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "Tudo"]],
+		"bDeferRender" : true,
+		"sPaginationType": "full_numbers",
+		"bScrollCollapse": true,
+		"sDom": 't<"datatables-header-controls"ilrp>',
+		"oLanguage": {
+			"sUrl": window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datatable&output=json"
+		}
+	};
 	
 	var methods = {
 		getSelectedGroup : function() {
@@ -170,11 +189,20 @@
 				group_id = this.getSelectedGroup();
 			}
 			
+			jQuery("#gradebook-group-grades-container").empty();
+			
 			_sysclass("load", "gradebook")._loadAction(
 				"load_group_grades",
 				{"group_id" : group_id},
-				"#gradebook-group-grades-container"
+				"#gradebook-group-grades-container",
+				function() {
+					jQuery("#gradebook-group-grades-container table").dataTable(dataTableDefaults);
+				}
 			);
+			
+			
+			
+			
 		},
 		loadClassesByCourse : function($courseID, $lessonID, callback) {
 			this._postAction(
@@ -200,7 +228,7 @@
 			var self = this;
 			this._postAction(
 				"import_students_grades",
-				{'group_id' : $groupID, 'column_id' : $columnID, "from" : this.action},
+				{'group_id' : $groupID, 'column_id' : $columnID, "from" : this.opt.action},
 				function(response, status) {
 					if (response.status == 'ok') {
 						self.loadGroupGrades($groupID);
@@ -215,8 +243,43 @@
 			
 			_sysclass("load", "gradebook")._redirectAction(
 				"switch_lesson",
-				{'lesson_id' : lesson_id, 'classe_id' : classe_id, 'course_id' : course_id, "from" : this.action}
+				{'lesson_id' : lesson_id, 'classe_id' : classe_id, 'course_id' : course_id, "from" : this.opt.action}
 			);
+		},
+		setGrade : function(oid, login, grade, callback) {
+			//var grade = jQuery(el).prev().val();
+			
+			var self = this;
+			
+			this.opt.noMessages = true;
+			this._postAction(
+				"set_grade",
+				{
+					"oid"	: oid,
+					"login"	: login,
+					"grade" : grade
+				},
+				callback,
+				'json'
+			);
+			this.opt.noMessages = false;
+		},
+		getStudentScores : function(login) {
+			var scores = null;
+			
+			this.sync(true)._postAction(
+				"get_student_scores", 
+				{
+					"login" : login
+				},
+				function (data, status) {
+					scores = data;
+				}
+			);
+			
+			this.sync(false);
+			
+			return scores;
 		},
 		refreshGroupUI : function() {
 			jQuery(".gradebook-group-row a").show();
@@ -254,13 +317,13 @@
 		//jQuery(this).addClass("selected");
 		_sysclass('load', 'gradebook').editGroup();
 	});
-	if (_sysclass('load', 'gradebook').action == 'edit_rule_calculation') {
+	if (_sysclass('load', 'gradebook').config().action == 'edit_rule_calculation') {
 		if (jQuery(".gradebook-group-header").filter(".selected").size() == 0) {
 			jQuery(".gradebook-group-header").first().click();
 			_sysclass('load', 'gradebook').loadGroupRules();
 		}
 	}
-	if (_sysclass('load', 'gradebook').action == 'students_grades') {
+	if (_sysclass('load', 'gradebook').config().action == 'students_grades') {
 		if (jQuery(".gradebook-group-header").filter(".selected").size() == 0) {
 			jQuery(".gradebook-group-header").first().click();
 			_sysclass('load', 'gradebook').loadGroupGrades();
@@ -304,6 +367,37 @@
 		
 		return false;
 	});
+	
+	jQuery(".gradebook-grade-input").live('blur', function() {
+		var self = this;
+		
+		jQuery(self).next("img").css("visibility", "visible");
+		
+		var oid = jQuery(this).data('oid');
+		var login = jQuery(this).data('login');
+		
+		_sysclass('load', 'gradebook').setGrade(
+			oid, login, jQuery(this).val(),
+			function(data, response) {
+				if (typeof(data.scores != undefined)) {
+					var $scores = data.scores;
+					var cleanedlogin = _sysclass("load", "utils").sanitizeDOMString(login);
+					
+					for (groupID in $scores.groups) {
+						groupDOMID =  "gradebook-group-score-" + groupID + "-" + oid + "-" + cleanedlogin;
+						jQuery("#" + groupDOMID).html($scores.groups[groupID]);
+					}
+					finalDOMID =  "gradebook-final-score-" + oid + "-" + cleanedlogin;
+					jQuery("#" + finalDOMID).html(
+						$scores.final_score + " - " +
+						$scores.final_status
+					);
+				}
+				
+				jQuery(self).next("img").css("visibility", "hidden");
+			}
+		);	
+	})
 
 	
 	_sysclass('load', 'gradebook').startUI();
@@ -311,5 +405,5 @@
 })( jQuery );
 
 
-
+changeGrade
 
