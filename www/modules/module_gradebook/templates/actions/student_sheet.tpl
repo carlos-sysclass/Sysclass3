@@ -1,0 +1,82 @@
+
+
+
+
+{capture name = 't_gradebook_professor_code'}
+
+
+
+<div class="headerTools">
+	{foreach item = "lesson" from = $T_GRADEBOOK_USER_LESSONS}
+		<span> 
+	        <a href="javascript: void(0);">{$lesson.name}</a>
+		</span>
+	{/foreach}
+</div>
+
+
+
+<!--
+<table class="style1">
+	<thead>
+		<tr>
+			<th>{$smarty.const._GRADEBOOK_LESSON_NAME}</th>
+			{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_LESSON_COLUMNS}
+			<th>{$column.name} ({$smarty.const._GRADEBOOK_COLUMN_WEIGHT_DISPLAY}: {$column.weight})
+				{if $column.refers_to_type != 'real_world'}
+				<a href="javascript: _sysclass('load', 'gradebook').importStudentsGrades({$T_GRADEBOOK_GROUP_ID}, {$column.id})" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')"><img src="{$T_GRADEBOOK_BASELINK}images/import.png" alt="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" title="{$smarty.const._GRADEBOOK_IMPORT_GRADES}" border="0"></a>
+				{/if}
+			</th>
+			{/foreach}
+			<th>{$smarty.const.__GRADEBOOK_GROUP_SCORE}</th>
+			<th>{$smarty.const.__GRADEBOOK_FINAL_SCORE}</th>
+			<th>{$smarty.const._GRADEBOOK_PUBLISH}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach name = 'users_loop' key = "id" item = "user" from = $T_GRADEBOOK_LESSON_USERS}
+			{assign var="login" value=$user.users_LOGIN}
+			<tr id="row_{$user.uid}" class="{cycle values = "oddRowColor, evenRowColor"} {if !$user.active}ui-state-disabled{/if}">
+				<td>#filter:login-{$user.users_LOGIN}#</td>
+				{foreach name = 'columns_loop' key = "id" item = "column" from = $T_GRADEBOOK_LESSON_COLUMNS}
+					{assign var="oid" value=$column.id}
+					<td align="center">
+						<input type="text" value="{$user.grades[$oid].grade}" size="5" maxlength="5" class="gradebook-grade-input" 
+							data-oid="{$column.id}"
+							data-login="{$user.users_LOGIN}"
+						 />
+						<img 
+							src="{$T_GRADEBOOK_BASELINK|cat:'images/progress1.gif'}" 
+							title="{$smarty.const._SAVE}" 
+							alt="{$smarty.const._SAVE}"
+							style="visibility: hidden;" />
+					</td>
+				{/foreach}
+		
+				<td align="center"><span id="gradebook-group-score-{$T_GRADEBOOK_GROUP_ID}-{$oid}-#filter:sanitizeDOMString-{$user.users_LOGIN}#">
+					{if $T_GRADEBOOK_SCORES[$login].groups[$T_GRADEBOOK_GROUP_ID] == -1}
+						N/A
+					{else}
+						{$T_GRADEBOOK_SCORES[$login].groups[$T_GRADEBOOK_GROUP_ID]}
+					{/if}
+					
+				</span></td>
+				<td align="center"><span id="gradebook-final-score-{$oid}-#filter:sanitizeDOMString-{$user.users_LOGIN}#">
+					{$T_GRADEBOOK_SCORES[$login].final_score} - {$T_GRADEBOOK_SCORES[$login].final_status}
+				</span></td>
+				<td align="center">
+					<input class="inputCheckbox" type="checkbox" name="checked_{$user.uid}" id="checked_{$user.uid}" onclick="publishGradebook('{$user.uid}', this);" {if ($user.publish == 1)} checked="checked"{/if} />
+				</td>
+			</tr>
+		{foreachelse}
+		
+			<tr class="defaultRowHeight oddRowColor">
+				<td class="emptyCategory" colspan="100%">{$smarty.const._NODATAFOUND}</td>
+			</tr>
+		{/foreach}
+	</tbody>
+</table>
+-->
+{/capture}
+
+{eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_professor_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}	

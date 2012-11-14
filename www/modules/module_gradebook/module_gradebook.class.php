@@ -18,7 +18,8 @@ class module_gradebook extends MagesterExtendedModule {
 	const __GRADEBOOK_WAITING = "Aguardando";
 	
 	public static $newActions = array(
-		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column",  "delete_column", "load_group_rules", "load_group_grades", "switch_lesson" 
+		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column",  
+		"delete_column", "load_group_rules", "load_group_grades", "switch_lesson", "student_sheet" 
 	);
 
 	public function getName(){
@@ -853,6 +854,34 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($response);
 		exit;
 	}
+	public function studentSheetAction() {
+		// SHOW THE USER "BOLETIM"
+		$smarty	= $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$sheetUser = $this->getCurrentUser();
+		} else {
+			$login = "aluno";
+			$sheetUser = MagesterUserFactory::factory($login);
+		}
+		
+		$userLessons = $sheetUser->getLessons(false, 'student');
+		
+		
+		/* 
+		 * USAR UM AUTO-COMPLETE PARA SELECIONAR O CURSO E A TURMA
+		 */
+		
+		var_dump($lessons);
+		
+		
+		
+		
+		$smarty-> assign("T_GRADEBOOK_USER_LESSONS", $userLessons);
+		
+	}
+	
+	
 	
 	public function switchLessonAction() {
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
