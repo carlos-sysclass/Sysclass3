@@ -3115,9 +3115,9 @@ class MagesterLesson
 		$contentTree = new MagesterContentTree($this->lesson['id']);
 		$contentTree -> fromXMLNode($xml->lessonId[0]);
 		$fields = array();
-		$fields['name'] = (string)$xml->lesson->name;
-		$fields['info'] = (string)$xml->lesson->info;
-		$fields['options'] = (string)$xml->lesson->options;
+		$fields['name']        = (string)$xml->lesson->name;
+		$fields['info']        = (string)$xml->lesson->info;
+		$fields['options']     = (string)$xml->lesson->options;
 		$fields['course_only'] = (string)$xml->lesson->course_only;
 		//$fields['auto_certificate'] = (string)$xml->lesson->auto_certificate;
 		//$fields['auto_complete'] = (string)$xml->lesson->auto_complete;
@@ -3139,7 +3139,7 @@ class MagesterLesson
 			$rid = ef_insertTableData("rules", $rule);
 		}
 	}
-	public function toIMS($path){
+	public function toIMS($path) {
 		$lesson_entries = eF_getTableData("content", "id, name, data", "lessons_ID=" . $this->lesson['id'] . " and ctg_type = 'theory' and active=1");
 		$cur_dir = getcwd();
 		chdir(G_LESSONSPATH.$this->lesson['id'].'/');
@@ -3443,10 +3443,10 @@ class MagesterLesson
 			}
 			for ($i = 0; $i < sizeof($xml->glossary->word); $i++){
 				$glossary = array();
-				$glossary['name'] = (string)$xml->glossary->word[$i]->name;
-				$glossary['type'] = (string)$xml->glossary->word[$i]->type;
-				$glossary['info'] = (string)$xml->glossary->word[$i]->info;
-				$glossary['active'] = (string)$xml->glossary->word[$i]->active;
+				$glossary['name'] = (string) $xml->glossary->word[$i]->name;
+				$glossary['type'] = (string) $xml->glossary->word[$i]->type;
+				$glossary['info'] = (string) $xml->glossary->word[$i]->info;
+				$glossary['active'] = (string) $xml->glossary->word[$i]->active;
 				$glossary['lessons_ID'] = $this->lesson['id'];
 				$cid = ef_insertTableData("glossary", $glossary);
 			}

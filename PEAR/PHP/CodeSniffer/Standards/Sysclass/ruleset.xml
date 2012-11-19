@@ -23,9 +23,10 @@
  <exclude-pattern>*/www/public_data/*</exclude-pattern>
  <exclude-pattern>*/Zend/*</exclude-pattern>
  
- <rule ref="PSR2" />
- <rule ref="Generic">
+ <rule ref="PSR2">
 	<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+	<exclude name="Generic.Formatting.SpaceAfterCast"/>
+	<exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
  </rule>
 
 

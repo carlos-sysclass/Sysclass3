@@ -404,29 +404,30 @@ abstract class MagesterUser
    return false;
   }
  }
- public static function checkUserAccess($type = false, $forceType = false) {
-  if ($GLOBALS['configuration']['webserver_auth']) {
-   $user = MagesterUser :: checkWebserverAuthentication();
-  } else if (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
-   $user = MagesterUserFactory :: factory($_SESSION['s_login'], false, $forceType);
-  } else {
-   throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
-  }
-  if (!$user -> isLoggedIn()) {
-   throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
-  }
-  if ($user -> user['timezone']) {
-   date_default_timezone_set($user -> user['timezone']);
-  }
-  $user -> applyRoleOptions($user -> user['user_types_ID']); //Initialize user's role options for this lesson
-  if ($type && $user -> user['user_type'] != $type) {
-   throw new Exception(_YOUCANNOTACCESSTHISPAGE, MagesterUserException::INVALID_TYPE);
-  }
-  if (!$user -> isLoggedIn()) {
-   throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
-  }
-  return $user;
- }
+	public static function checkUserAccess ($type = false, $forceType = false)
+	{
+		if ($GLOBALS['configuration']['webserver_auth']) {
+			$user = MagesterUser :: checkWebserverAuthentication();
+		} elseif (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
+			$user = MagesterUserFactory :: factory($_SESSION['s_login'], false, $forceType);
+		} else {
+			throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
+		}
+		if (!$user -> isLoggedIn()) {
+			throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
+		}
+		if ($user -> user['timezone']) {
+			date_default_timezone_set($user -> user['timezone']);
+		}
+		$user -> applyRoleOptions($user -> user['user_types_ID']); //Initialize user's role options for this lesson
+		if ($type && $user -> user['user_type'] != $type) {
+			throw new Exception(_YOUCANNOTACCESSTHISPAGE, MagesterUserException::INVALID_TYPE);
+		}
+		if (!$user -> isLoggedIn()) {
+			throw new MagesterUserException(_RESOURCEREQUESTEDREQUIRESLOGIN, MagesterUserException::USER_NOT_LOGGED_IN);
+		}
+		return $user;
+	}
  public static function checkWebserverAuthentication() {
   try {
    eval('$usernameVar='.$GLOBALS['configuration']['username_variable'].';');
@@ -2051,20 +2052,21 @@ abstract class MagesterLessonUser extends MagesterUser
   return $userLessons;
  }
  //@TODO: REPLACE getLessons
- public function getUserLessons($constraints = array()) {
-  //if ($this -> lessons === false) {			//COMMENT-IN WHEN IT REPLACES getLessons()
-  $this -> initializeLessons();
-  //}
-  $lessons = array();
-  foreach ($this -> lessons as $key => $lesson) {
-   if (!isset($constraints['return_objects']) || $constraints['return_objects']) {
-    $lessons[$key] = new MagesterLesson($lesson);
-   } else {
-    $lessons[$key] = $lesson;
-   }
-  }
-  return $lessons;
- }
+	public function getUserLessons($constraints = array())
+	{
+		//if ($this -> lessons === false) {			//COMMENT-IN WHEN IT REPLACES getLessons()
+			$this -> initializeLessons();
+		//}
+		$lessons = array();
+		foreach ($this -> lessons as $key => $lesson) {
+			if (!isset($constraints['return_objects']) || $constraints['return_objects']) {
+				$lessons[$key] = new MagesterLesson($lesson);
+			} else {
+				$lessons[$key] = $lesson;
+			}
+		}
+		return $lessons;
+	}
  /**
 	 * Initialize user lessons
 	 *
@@ -2185,25 +2187,26 @@ abstract class MagesterLessonUser extends MagesterUser
   }
   return $lessons;
  }
- public function getUserCourses($constraints = array()) {
-  !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
-  $select['main'] = 'c.id, uc.users_LOGIN,uc.courses_ID,uc.classe_id,uc.completed,uc.score,uc.user_type,uc.course_type,uc.issued_certificate,uc.from_timestamp as active_in_course, uc.to_timestamp, 1 as has_course';
-  $select['has_instances'] = "(select count( * ) from courses c1, users_to_courses uc1 where c1.instance_source=c.id and uc1.courses_ID=c1.id and uc.users_LOGIN='".$this -> user['login']."') as has_instances";
-  $select['num_lessons'] = "(select count( * ) from lessons_to_courses cl, lessons l where cl.courses_ID=c.id and l.archive=0 and l.id=cl.lessons_ID) as num_lessons";
-  $select['num_students'] = "(select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.login=uc.users_LOGIN and u.user_type='student') as num_students";
-  $select = MagesterCourse :: convertCourseConstraintsToRequiredFields($constraints, $select);
+	public function getUserCourses($constraints = array())
+	{
+		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
+		$select['main'] = 'c.id, uc.users_LOGIN,uc.courses_ID,uc.classe_id,uc.completed,uc.score,uc.user_type,uc.course_type,uc.issued_certificate,uc.from_timestamp as active_in_course, uc.to_timestamp, 1 as has_course';
+		$select['has_instances'] = "(select count( * ) from courses c1, users_to_courses uc1 where c1.instance_source=c.id and uc1.courses_ID=c1.id and uc.users_LOGIN='".$this -> user['login']."') as has_instances";
+		$select['num_lessons'] = "(select count( * ) from lessons_to_courses cl, lessons l where cl.courses_ID=c.id and l.archive=0 and l.id=cl.lessons_ID) as num_lessons";
+		$select['num_students'] = "(select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.login=uc.users_LOGIN and u.user_type='student') as num_students";
+		$select = MagesterCourse :: convertCourseConstraintsToRequiredFields($constraints, $select);
   
-  list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
-  $where[] = "c.id=uc.courses_ID and uc.users_LOGIN='".$this -> user['login']."' and uc.archive=0";
-  //$result  = eF_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
-  $sql = prepareGetTableData("courses c, users_to_courses uc", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-  $result = eF_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
-  if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
-   return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
-  } else {
-   return MagesterCourse :: convertDatabaseResultToCourseArray($result);
-  }
- }
+		list ($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
+		$where[] = "c.id=uc.courses_ID and uc.users_LOGIN='".$this -> user['login']."' and uc.archive=0";
+		//$result  = eF_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
+		$sql = prepareGetTableData("courses c, users_to_courses uc", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
+		$result = eF_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
+		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
+			return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
+		} else {
+			return MagesterCourse :: convertDatabaseResultToCourseArray($result);
+		}
+	}
  public function countUserCourses($constraints = array()) {
   !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
   list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);

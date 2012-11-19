@@ -33,7 +33,7 @@ define("__NEWS", "Comunicados");
 define("_MODULE_IES", "Instituições de Ensino");
 define("_STATE", "Estado");
 define("_PHONE", "Telefone");
-define("_MODULE_XUSERS_MANAGEMENT","Gerenciamento de Usuários");
+define("_MODULE_XUSERS_MANAGEMENT", "Gerenciamento de Usuários");
 
 define("__YOUR_LEVEL_IS", "Seu nível é");
 
@@ -49,4 +49,3 @@ define("__RESET_TEXT", "Usuário ou E-mail");
 define("__CHANGEAVATAR", "Trocar Avata");
 
 define("__OPTIONS", "Opções");
-?>

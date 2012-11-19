@@ -10,4 +10,3 @@ define("__QUICK_MAILS_YOUR_POLO", "Seu Polo");
 define("__QUICK_MAILS_ANOTHER_CONTACTS", "Outros Contatos");
 define("__QUICK_MAILS_CONTACT_US", "Entre em contato conosco");
 define("__QUICK_MAILS_FEEDBACK_US", "Faça sugestões sobre o uso do sistema");
-?>

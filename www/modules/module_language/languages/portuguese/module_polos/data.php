@@ -35,4 +35,3 @@ define("_MODULE_SEUPOLO","Seu Polo");
 define("_MODULE_POLOS_ENDERECO_BLOCK","Endereço");
 define("_MODULE_POLOS_EMAIL","Email");
 define("_MODULE_POLOS_ENTRE_CONTATO","Entre em contato com seu polo");
-?>

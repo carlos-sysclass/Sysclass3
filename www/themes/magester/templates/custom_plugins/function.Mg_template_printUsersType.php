@@ -16,5 +16,3 @@ function smarty_function_Mg_template_printUsersType($params, &$smarty) {
 			return '';
  	}
 }
-
-?>
