@@ -10,6 +10,7 @@
 * @version 1.0
 
 */
+
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
@@ -97,6 +98,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 */
 
 abstract class MagesterExtendedModule extends MagesterModule {
+	
+	protected static $firephp = null;
 	
 	protected $preActions;	
 	protected $postActions;
@@ -741,4 +744,25 @@ abstract class MagesterExtendedModule extends MagesterModule {
     	return array();
     }
  
+    /**
+     * DEBUGGING
+     */
+	public function _log($variable) {
+		$this->_log_FirePHP($variable, FirePHP::LOG);
+    }
+	public function _info($variable) {
+		$this->_log_FirePHP($variable, FirePHP::INFO);
+	}    
+	public function _warn($variable) {
+		$this->_log_FirePHP($variable, FirePHP::WARN);
+	}     
+	public function _error($variable) {
+		$this->_log_FirePHP($variable, FirePHP::ERROR);
+	}
+	private function _log_FirePHP($variable, $type) {
+		if (is_null(self::$firephp)) {
+			self::$firephp = FirePHP::getInstance(true);
+		}
+		self::$firephp->fb($variable, $type);     // or FB::
+	}
 }

@@ -100,7 +100,7 @@ $str .= '
     $day = '';
    }
 
-   $day_timestamp = mktime(0, 0, 0, (int)$timestamp_info['mon'], (int)$day, (int)$timestamp_info['year']);
+   $day_timestamp = mktime(0, 0, 0, (int) $timestamp_info['mon'], (int) $day, (int) $timestamp_info['year']);
    $count++;
 
    if (!empty($events_per_day[$day_timestamp])) {

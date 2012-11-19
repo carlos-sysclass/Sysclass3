@@ -1,33 +1,20 @@
 <?php
-
-
 /**
-
  * File for content classes
-
  *
-
  * @package SysClass
-
 */
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
-    exit;
+	exit;
 }
 /**
-
  * Magester content exceptions
-
  *
-
  * This class extends Exception to provide the exceptions related to content
-
  * @package SysClass
-
  *
-
  * @since 3.5.0
-
  */
 class MagesterContentException extends Exception
 {
@@ -562,20 +549,20 @@ class MagesterUnit extends ArrayObject
             return false;
         }
     }
-    public function toXML(){
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' ."\n";
-        $xml .= "\t" . '<unit>';
-        $xml .= "\t\t<name>".parent::offsetGet('name')."</name>\n";
-        $xml .= "\t\t<ctg_type>".parent::offsetGet('ctg_type')."</ctg_type>\n";
-        $xml .= "\t</unit>";
+	public function toXML() {
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>' ."\n";
+		$xml .= "\t" . '<unit>';
+		$xml .= "\t\t<name>".parent::offsetGet('name')."</name>\n";
+		$xml .= "\t\t<ctg_type>".parent::offsetGet('ctg_type')."</ctg_type>\n";
+		$xml .= "\t</unit>";
         return $xml;
-    }
-    public function fromXML($xmlstr){
-        $xml = new SimpleXMLElement($xmlstr);
-        parent::offsetSet('name', (string)$xml->unit->name);
-        parent::offsetSet('ctg_type', (string)$xml->unit->ctg_type);
-    }
-    /**
+	}
+	public function fromXML($xmlstr) {
+		$xml = new SimpleXMLElement($xmlstr);
+		parent::offsetSet('name', (string) $xml->unit->name);
+		parent::offsetSet('ctg_type', (string) $xml->unit->ctg_type);
+	}
+	/**
 
      * Get the id of prerequisite unit for this unit
 

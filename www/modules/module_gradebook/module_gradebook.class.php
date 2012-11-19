@@ -864,21 +864,16 @@ class module_gradebook extends MagesterExtendedModule {
 			$login = "aluno";
 			$sheetUser = MagesterUserFactory::factory($login);
 		}
-		
+
 		$userLessons = $sheetUser->getLessons(false, 'student');
 		
 		
 		/* 
 		 * USAR UM AUTO-COMPLETE PARA SELECIONAR O CURSO E A TURMA
 		 */
-		
-		var_dump($lessons);
-		
-		
-		
+		$this->_log($userLessons);
 		
 		$smarty-> assign("T_GRADEBOOK_USER_LESSONS", $userLessons);
-		
 	}
 	
 	

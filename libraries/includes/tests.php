@@ -155,7 +155,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                         unset($lessons[$key]);
                     }
                 }
-module_chat_users
 
                 $roles = MagesterLessonUser :: getLessonsRoles(true);
                 $smarty -> assign("T_ROLES_ARRAY", $roles);
