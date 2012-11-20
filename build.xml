@@ -4,20 +4,32 @@
     </target>
  
     <target name="prepare">
-        <mkdir dir="${basedir}/build/logs" />
+        <mkdir dir="${basedir}/build/reports" />
+    	<!--
         <mkdir dir="${basedir}/build/codebrowser" />
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/cpd" />
         <mkdir dir="${basedir}/build/dependencies" />
-	<mkdir dir="${basedir}/tests" />
+		<mkdir dir="${basedir}/tests" />
+		-->
     </target>
 
  
     <target name="phpcs">
         <exec dir="${basedir}" executable="phpcs" failonerror="false" output="/dev/null">
-            <arg line="--extensions=php --standard=${basedir}/phpcs.ruleset.xml --report=checkstyle --report-file=${basedir}/build/logs/checkstyle.xml ." />
+            <arg line="--extensions=php --standard=${basedir}/phpcs.ruleset.xml --report=checkstyle --report-file=${basedir}/build/reports/checkstyle.xml ." />
         </exec>
     </target>
+    <target name="checkstyle2html">
+       	<xslt in="${basedir}/build/reports/checkstyle.xml"
+      		  style="${basedir}/checkstyle.xsl"
+      		  out="${basedir}/build/reports/checkstyle-report.html"/>
+
+    </target>
+
+	
+	
+
 <!-- 
     <target name="phpmd">
         <exec dir="${basedir}" executable="phpmd" failonerror="false">
@@ -61,7 +73,7 @@
         </exec>
     </target>
 --> 
-    <target name="phpunit">
+<!--    <target name="phpunit"> -->
         <!-- @todo: CREATE phpunit tests for each class -->
         <!--
         <exec dir="${basedir}/tests" executable="phpunit" failonerror="true">
@@ -71,7 +83,7 @@
                         ${basedir}" />
         </exec>
         -->
-    </target>
+<!--    </target> -->
 
 
 <!-- 
@@ -92,5 +104,5 @@
 	</target>
 -->	
 <!--	<target name="build" depends="clean,prepare,phpcs,phpmd,phpcpd,pdepend,phpunit,phpcb,documentation" /> --> 
-	<target name="build" depends="clean,prepare,phpcs" />
+	<target name="build" depends="clean,prepare,phpcs,checkstyle2html" />
 </project>
