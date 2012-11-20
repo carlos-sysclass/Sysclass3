@@ -2522,7 +2522,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		}
 		return false;
 	}
-	public function initPaymentProccess($negociation_id, $invoice_index, array $data) {
+	public function initPaymentProccess($negociation_id, $invoice_index, array $data)
+	{
 		$payInstances = $this->getPaymentInstances();
 		
 		if (!array_key_exists('option', $data) || !in_array($data['option'], array_keys($payInstances['options']))) {
@@ -2530,7 +2531,6 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		} else {
 			$indexOpt = $data['option'];
 		}
-		
 		
 		if (is_null($this->getParent())) {
 			$xpayModule = $this->loadModule("xpay");
@@ -2585,18 +2585,27 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$invoiceOptions["nosso_numero"] = $invoiceOptions["numero_documento"] = $invoiceData['invoice_id'];	// Num do pedido ou do documento
 		
 
-		if ($datavencimento < $today && $this->getConfig()->on_overdue == 'refresh') {
-			$invoiceOptions["data_vencimento"] = $today->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
-		} elseif ($datavencimento < $today && $this->getConfig()->on_overdue == 'block') {
-			return false;
-		} else {
+		if ($invoiceData['full_price'] <= $invoiceData['paid']) {
+			// BOLETO JÁ PAGO, REEMISSÃO
+			// MANTÉM DATA DE VENCIMENTO ORIGINAL, VALOR ORIGINAL
 			$invoiceOptions["data_vencimento"] = $datavencimento->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
+			
+			$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
+		} else {
+			if ($datavencimento < $today && $this->getConfig()->on_overdue == 'refresh') {
+				$invoiceOptions["data_vencimento"] = $today->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
+			} elseif ($datavencimento < $today && $this->getConfig()->on_overdue == 'block') {
+				return false;
+			} else {
+				$invoiceOptions["data_vencimento"] = $datavencimento->format("d/m/Y"); // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
+			}
+			
+			$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'] - $invoiceData['paid'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
 		}
+		
 		
 //		$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emissão do Boleto
 //		$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
-		$invoiceOptions["valor_boleto"] = number_format($invoiceData['full_price'] - $invoiceData['paid'], 2, ",", ""); 	// Valor do Boleto - REGRA: Com vírgula e sempre com duas casas depois da virgula
-
 		
 		$invoicePayer = $this->getParent()->_getNegociationPayerByNegociationID($negociation_id);
 
@@ -2609,6 +2618,8 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 //		$dadosboleto["instrucoes2"] = "";
 //		$dadosboleto["instrucoes3"] = "";
 //		$dadosboleto["instrucoes4"] = "";
+
+		
 		if (is_callable($payInstance['config'])) {
 			$methodConfig = call_user_func($payInstance['config'], $indexOpt, $invoiceOptions);
 		} else {

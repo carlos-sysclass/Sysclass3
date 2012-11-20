@@ -1264,8 +1264,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			if ($invoice['full_price'] <= $invoice['paid']) {
-				unset($negocData['invoices'][$inv_index]);
-				continue;
+				//unset($negocData['invoices'][$inv_index]);
+				//continue;
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
@@ -1296,6 +1296,8 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$scopeUser = $xentifyModule->create("user", $negocData['login']);
 			$firstPayMethodOption = null;
+			
+			//$this->_log($paymentMethods['xpay_boleto']['options']);
 			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
@@ -1361,13 +1363,11 @@ class module_xpay extends MagesterExtendedModule {
 			$values = $form->exportValues();
 				
 			if ($form -> isSubmitted() && $form -> validate()) {
-
-
 				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
 		
 				$_SESSION['pay_method']			= $pay_method;
 				$_SESSION['pay_method_option']	= $pay_method_option;
-				
+
 				$invoice_index = $values['invoice_indexes'];
 				$form->setDefaults($form->exportValues());
 			} else {
@@ -1391,9 +1391,6 @@ class module_xpay extends MagesterExtendedModule {
 						'option' => $pay_method_option
 					)
 				);
-				
-				
-				
 			} else {
 				unset($_SESSION['pay_method']);
 				unset($_SESSION['pay_method_option']);
