@@ -1,5 +1,5 @@
 <?php
-require_once (dirname(__FILE__) . '/module_xpay_submodule.interface.php');
+require_once dirname(__FILE__) . '/module_xpay_submodule.interface.php';
 
 class module_xpay extends MagesterExtendedModule {
 	
@@ -12,7 +12,7 @@ class module_xpay extends MagesterExtendedModule {
 	private $rules = null;
 	private $rulesTags = null;
 	
-//	const NOSSO_NUMERO_TEMPLATE		= "%04d%02d%01d%01d";
+	//	const NOSSO_NUMERO_TEMPLATE		= "%04d%02d%01d%01d";
 	
 	protected static $subModules = null;
 	
