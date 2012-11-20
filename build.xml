@@ -23,7 +23,7 @@
     <target name="checkstyle2html">
        	<xslt in="${basedir}/build/reports/checkstyle.xml"
       		  style="${basedir}/checkstyle.xsl"
-      		  out="${basedir}/build/reports/checkstyle-report.html"/>
+      		  out="${basedir}/build/reports/checkstyle.html"/>
 
     </target>
 
