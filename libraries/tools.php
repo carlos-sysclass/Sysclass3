@@ -2724,7 +2724,7 @@ function getMainScripts() {
 	);
 
 	$mainScripts[]	= 'jquery/jquery-1.7.1.min';
-	$mainScripts[]	= 'jquery/jquery-ui.min';
+	$mainScripts[]	= 'jquery/jquery-ui-1.9.1';
 	$mainScripts[]	= 'jquery/jquery.metadata';
 //	$mainScripts[]	= 'jquery/jquery.uniform.min';
 	$mainScripts[]	= 'jquery/jquery.meio.mask';

@@ -1,5 +1,5 @@
 <?php
-require_once (dirname(__FILE__) . '/module_xpay_submodule.interface.php');
+require_once dirname(__FILE__) . '/module_xpay_submodule.interface.php';
 
 class module_xpay extends MagesterExtendedModule {
 	
@@ -12,7 +12,7 @@ class module_xpay extends MagesterExtendedModule {
 	private $rules = null;
 	private $rulesTags = null;
 	
-//	const NOSSO_NUMERO_TEMPLATE		= "%04d%02d%01d%01d";
+	//	const NOSSO_NUMERO_TEMPLATE		= "%04d%02d%01d%01d";
 	
 	protected static $subModules = null;
 	
@@ -1264,8 +1264,8 @@ class module_xpay extends MagesterExtendedModule {
 		
 		foreach($negocData['invoices'] as $inv_index => $invoice) {
 			if ($invoice['full_price'] <= $invoice['paid']) {
-				unset($negocData['invoices'][$inv_index]);
-				continue;
+				//unset($negocData['invoices'][$inv_index]);
+				//continue;
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
@@ -1296,6 +1296,8 @@ class module_xpay extends MagesterExtendedModule {
 			
 			$scopeUser = $xentifyModule->create("user", $negocData['login']);
 			$firstPayMethodOption = null;
+			
+			//$this->_log($paymentMethods['xpay_boleto']['options']);
 			
 			foreach($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
 				if ($item['active'] === FALSE) {
@@ -1361,13 +1363,11 @@ class module_xpay extends MagesterExtendedModule {
 			$values = $form->exportValues();
 				
 			if ($form -> isSubmitted() && $form -> validate()) {
-
-
 				list($pay_method, $pay_method_option) = explode(":", $values['pay_methods']);
 		
 				$_SESSION['pay_method']			= $pay_method;
 				$_SESSION['pay_method_option']	= $pay_method_option;
-				
+
 				$invoice_index = $values['invoice_indexes'];
 				$form->setDefaults($form->exportValues());
 			} else {
@@ -1391,13 +1391,16 @@ class module_xpay extends MagesterExtendedModule {
 						'option' => $pay_method_option
 					)
 				);
-				
-				
-				
 			} else {
 				unset($_SESSION['pay_method']);
 				unset($_SESSION['pay_method_option']);
 			}
+		}
+		
+		if ($negocData['invoices'][$invoice_index]['full_price'] <= $negocData['invoices'][$invoice_index]['paid']) {
+			$smarty->assign("T_XPAY_INVOICE_IS_PAID", true);
+		} else {
+			$smarty->assign("T_XPAY_INVOICE_IS_PAID", false);
 		}
 		
 		$form -> addRule('pay_methods', _THEFIELD.' "'.__XPAY_PAYMENT_METHOD.'" '._ISMANDATORY, 'required', null, 'client');

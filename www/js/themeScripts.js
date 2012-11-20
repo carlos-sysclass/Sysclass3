@@ -279,6 +279,27 @@ function getJqueryPeriodicData() {
 	    dataType: "script"
 	});
 	*/
-
 	
+    $.widget( "custom.catcomplete", $.ui.autocomplete, {
+        _renderMenu: function( ul, items ) {
+            var that = this;
+            currentCourse = "";
+            $.each( items, function( index, item ) {
+                if ( item.course_id != currentCourse ) {
+                    ul.append( "<li class='ui-autocomplete-category'>" + item.course_name + "</li>" );
+                    currentCourse = item.course_id;
+                }
+                that._renderItemData( ul, item );
+            });
+        }
+    });
+	
+    jQuery( ".course-lesson-autocomplete" ).catcomplete({
+        delay: 0,
+        source: "course-lesson-autocomplete.php",
+        minLength: 0,
+        select: function( event, ui ) {
+        	_sysclass("publish", "course-lesson-change", ui.item.course_id, ui.item.lesson_id);
+        }
+    });
 })(jQuery);

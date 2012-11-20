@@ -17,4 +17,3 @@ function smarty_function_eF_template_decode_ip($params, &$smarty)
     return $dotquad_ip;
 
 }
-?>

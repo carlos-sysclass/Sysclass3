@@ -264,6 +264,22 @@
 			);
 			this.opt.noMessages = false;
 		},
+		loadStudentLessonSheet : function(courseID, lessonID) {
+			var scores = null;
+			
+			this._loadAction(
+				"load_student_lesson_sheet", 
+				{
+					"course_id" : courseID, 
+					"lesson_id"	: lessonID
+				},
+				"#gradebook-student-lesson-sheet",
+				function (data, status) {
+					
+				}
+			);
+		},
+		
 		/*
 		getStudentScores : function(login) {
 			var scores = null;
@@ -290,8 +306,6 @@
 		},
 		startUI : function() {
 			this.refreshGroupUI();
-			
-			//jQuery("#switch_lesson").change();
 		}
 	};
 
@@ -399,7 +413,15 @@
 				jQuery(self).next("img").css("visibility", "hidden");
 			}
 		);	
-	})
+	});
+	
+	_sysclass("subscribe", "course-lesson-change", function(course_id, lesson_id ) {
+		// SET CURRENT COURSE, AND LESSON
+		alert(course_id);
+		
+		// LOAD
+		_sysclass('load', 'gradebook').loadStudentLessonSheet(course_id, lesson_id);
+	});
 
 	
 	_sysclass('load', 'gradebook').startUI();

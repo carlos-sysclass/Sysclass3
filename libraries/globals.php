@@ -660,5 +660,8 @@ function __autoload($className) {
     } else if (strpos($className, "magesterfacebook") !== false) {
     }
     else if (strpos($className, "xmlexport") !== false) {
-    }
+    	
+    } else if (strpos($className, "firephp") !== false) {
+    	require_once "FirePHPCore/FirePHP.class.php";
+	}
 }

@@ -360,7 +360,3 @@ function smarty_function_eF_template_html_select_date($params, &$smarty)
 
     return $html_result;
 }
-
-/* vim: set expandtab: */
-
-?>

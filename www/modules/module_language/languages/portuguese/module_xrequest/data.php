@@ -52,4 +52,3 @@ define("__XREQUEST_VALOR_TYPE", "Preço");
 define("__XREQUEST_EMAIL", "Email");
 define("__XREQUEST_EDIT_DELET", "Editar/Excluir");
 define("_XREQUEST_EDIT_RANGE", "Editar");
-?>

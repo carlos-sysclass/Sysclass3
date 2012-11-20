@@ -309,12 +309,12 @@ $agencia = formata_numero($dadosboleto["agencia"],4,0);
 //conta : 5 digitos
 $conta = formata_numero($dadosboleto["conta"],5,0);
 //dv da conta
-$conta_dv = formata_numero($dadosboleto["conta_dv"],1,0);
+$conta_dv = formata_numero($dadosboleto["conta_dv"], 1, 0);
 //carteira : 2 caracteres
 $carteira = $dadosboleto["carteira"];
 
 //conta cedente (sem dv) com 6 digitos
-$conta_cedente = formata_numero($dadosboleto["conta_cedente"],6,0);
+$conta_cedente = formata_numero($dadosboleto["conta_cedente"], 6, 0);
 //dv da conta cedente
 $conta_cedente_dv = digitoVerificador_cedente($conta_cedente);
 

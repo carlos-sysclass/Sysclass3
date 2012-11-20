@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="Sysclass">
+ <description>The Sysclass coding standard builds on the Squiz coding standard. Currently used for Sysclass development.</description>
+ <exclude-pattern>*/backups/*</exclude-pattern>
+ <exclude-pattern>*/diagramas/*</exclude-pattern>
+ <exclude-pattern>*/libraries/adodb/*</exclude-pattern>
+ <exclude-pattern>*/libraries/external/*</exclude-pattern>
+ <exclude-pattern>*/libraries/language/*</exclude-pattern>
+ <exclude-pattern>*/libraries/PHPExcel/*</exclude-pattern>
+ <exclude-pattern>*/libraries/smarty/*</exclude-pattern>
+ <exclude-pattern>*/PEAR/*</exclude-pattern>
+ <exclude-pattern>*/ssl/*</exclude-pattern>
+ <exclude-pattern>*/upload/*</exclude-pattern>
+ <exclude-pattern>*/www/certificate_templates/*</exclude-pattern>
+ <exclude-pattern>*/www/charts/*</exclude-pattern>
+ <exclude-pattern>*/www/charts_library/*</exclude-pattern>
+ <exclude-pattern>*/www/content/*</exclude-pattern>
+ <exclude-pattern>*/www/editor/*</exclude-pattern>
+ <exclude-pattern>*/www/facebook/*</exclude-pattern>
+ <exclude-pattern>*/www/jwplayer/*</exclude-pattern>
+ <exclude-pattern>*/www/min/*</exclude-pattern>
+ <exclude-pattern>*/www/phplivedocx/*</exclude-pattern>
+ <exclude-pattern>*/www/public_data/*</exclude-pattern>
+ <exclude-pattern>*/Zend/*</exclude-pattern>
+ 
+ <rule ref="PSR2">
+	<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+	<exclude name="Generic.Formatting.SpaceAfterCast"/>
+	<exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
+ </rule>
+
+
+</ruleset>

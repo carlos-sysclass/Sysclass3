@@ -46,4 +46,3 @@ define("__XENROLLMENT_PAYMENT_NOT_SELECTED_YET", "Forma de pagamento ainda não 
 define("__XENROLLMENT_CHECK_ENROLLMENTS", "Verificar Registro de matrículas"); 
 
 define("__XENROLLMENT_UNREGISTER_HISTORY", "Por favor informe o motivo do cancelamento");
-?>

@@ -252,7 +252,6 @@ class MagesterCourse
     	}
 
     }
-
     /**
      * Return an array of MagesterLesson objects that belong to this course, based
      * on the specified constraints
@@ -262,14 +261,21 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function getCourseLessons($constraints = array()) {
+    public function getCourseLessons($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
-    	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
+    	list ($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
 
     	$from = "lessons_to_courses lc, lessons l";
-    	$where[] = "l.archive = 0 /* and l.course_only=1 */ and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
-    	$result = eF_getTableData($from, "lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
-    	implode(" and ", $where), $orderby, false, $limit);
+    	$where[] = "l.archive = 0 and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
+    	$result = eF_getTableData(
+    		$from,
+    		"lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
+    		implode(" and ", $where),
+    		$orderby,
+   			false,
+   			$limit
+    	);
 
     	$result = $this -> sortLessons($result);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
@@ -277,7 +283,6 @@ class MagesterCourse
     	} else {
     		return MagesterCourse :: convertDatabaseResultToLessonArray($result);
     	}
-
     }
 
     /**

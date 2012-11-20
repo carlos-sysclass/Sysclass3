@@ -40,6 +40,12 @@
 				return __modules[name];	
 			}
 			return methods.register.apply( this, [name, {fake : true}] );
+		},
+		publish : function(eventName) {
+			jQuery.Topic(eventName).publish.apply(jQuery.Topic(eventName), Array.prototype.slice.call( arguments, 1 ));
+		},
+		subscribe : function(eventName, callback) {
+			jQuery.Topic(eventName).subscribe(callback);
 		}
 	};
 	/* ANCESTOR MODULE CLASS */
@@ -139,7 +145,7 @@
 				url,
 				options
 			);
-		},
+		}
 	};
 	/* MAIN LOADER CLASS */
 	_sysclass = function( method ) {
@@ -163,7 +169,17 @@
 	};
 	
 	_sysclass("register", "utils", utilsMethods);
+
+	// REGISTER UTILS CLASSES
+	var i18nMethods = {
+		text : function (token) {
+			if (typeof($languageJS[token]) == 'undefined') {
+				return token;
+			}
+			return $languageJS[token];
+		}
+	};
 	
-	
+	_sysclass("register", "i18n", i18nMethods);
 	
 })( jQuery );

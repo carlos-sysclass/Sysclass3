@@ -30,4 +30,3 @@ function smarty_function_eF_assign_optionsGroups($params, &$smarty) {
 	}
 	$smarty->assign($params['var'], $result);
 }
-?>

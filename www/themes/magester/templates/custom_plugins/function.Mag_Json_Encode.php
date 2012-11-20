@@ -13,4 +13,3 @@ function smarty_function_Mag_Json_Encode($params, &$smarty) {
 	}
 	return json_encode(array());
 }
-?>
