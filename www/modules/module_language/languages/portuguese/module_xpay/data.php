@@ -28,6 +28,7 @@ define("__XPAY_PRINT_INVOICE", "Imprimir Fatura");
 /* BREADCRUMBS */
 define("__XPAY_MODULE_NAME", "Pagamentos");
 define("__XPAY_USER_STATEMENT", "Extrato do Aluno");
+define("__XPAY_VIEW_COPY", "2&ordf; Via");
 define("__XPAY_DO_PAY", "Pagar");
 define("__XPAY_DO_PAYMENT", "Efetuar Pagamento");
 define("__XPAY_DO_PAYMENT_INSTRUCTIONS", "Selecione a mensalidade que deseja efetuar o pagamento, selecione o método de pagamento e clique sobre pagar para iniciar o pagamento.");

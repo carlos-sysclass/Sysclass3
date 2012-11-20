@@ -18,9 +18,13 @@
 				{/foreach}
 				
 				<div style="float: left;">
-					<button class="form-button icon-save openInvoiceDialog" type="submit">
+					<button class="form-button icon-save" id ="xpay-do-payment-button" type="submit">
 						<img width="29" height="29" src="images/transp.png">
-						<span>{$smarty.const.__XPAY_DO_PAY}</span>
+						{if $T_XPAY_INVOICE_IS_PAID}
+							<span>{$smarty.const.__XPAY_VIEW_COPY}</span>
+						{else}
+							<span>{$smarty.const.__XPAY_DO_PAY}</span>
+						{/if}
 					</button>
 				</div>					
 				

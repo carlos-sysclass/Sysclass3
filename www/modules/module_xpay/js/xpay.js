@@ -490,6 +490,19 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				close: function() {
 				}
 			});
+			
+			jQuery(":input[name='invoice_indexes']").click(function() {
+				if (jQuery(this).parents("tr").hasClass("xpay-paid")) {
+					jQuery("#xpay-do-payment-button span").html(
+						_sysclass("load", "i18n").text("__XPAY_VIEW_COPY")	
+					);
+				} else {
+					jQuery("#xpay-do-payment-button span").html(
+						_sysclass("load", "i18n").text("__XPAY_DO_PAY")
+					);
+				}
+				
+			});
 		}
 	};
 
@@ -500,6 +513,9 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 /* MODULE FLOW-LOGIC */
 
 (function( $ ){
+	
+	
+	
 	_sysclass('load', 'xpay').startUI();
 })( jQuery );
 

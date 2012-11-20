@@ -1397,6 +1397,12 @@ class module_xpay extends MagesterExtendedModule {
 			}
 		}
 		
+		if ($negocData['invoices'][$invoice_index]['full_price'] <= $negocData['invoices'][$invoice_index]['paid']) {
+			$smarty->assign("T_XPAY_INVOICE_IS_PAID", true);
+		} else {
+			$smarty->assign("T_XPAY_INVOICE_IS_PAID", false);
+		}
+		
 		$form -> addRule('pay_methods', _THEFIELD.' "'.__XPAY_PAYMENT_METHOD.'" '._ISMANDATORY, 'required', null, 'client');
 		$form -> addElement('submit', 'xpay_submit', __XPAY_NEXT, 'class = ""');
 			

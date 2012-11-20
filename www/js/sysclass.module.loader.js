@@ -169,7 +169,17 @@
 	};
 	
 	_sysclass("register", "utils", utilsMethods);
+
+	// REGISTER UTILS CLASSES
+	var i18nMethods = {
+		text : function (token) {
+			if (typeof($languageJS[token]) == 'undefined') {
+				return token;
+			}
+			return $languageJS[token];
+		}
+	};
 	
-	
+	_sysclass("register", "i18n", i18nMethods);
 	
 })( jQuery );

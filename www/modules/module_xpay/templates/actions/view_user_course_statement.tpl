@@ -73,7 +73,7 @@
 										><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
 									{/if}
 								{/if}
-								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&force={if $invoice.full_price > $invoice.paid}0{else}1{/if}">
+								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>
 							{/if}
