@@ -208,9 +208,9 @@ class MagesterScorm
                     $rollup_considerations[$item_key][$key]['required_for_incomplete'] = $value['attributes']['REQUIREDFORINCOMPLETE'];
                     $rollup_considerations[$item_key][$key]['measure_satisfaction_if_active'] = $value['attributes']['MEASURESATISFACTIONIFACTIVE'];
                     break;
-    case 'IMSSS:PRECONDITIONRULE':
+    			case 'IMSSS:PRECONDITIONRULE':
                     $cond_key = $key;
-     $rule_conditions[$item_key][$cond_key]['rule_type'] = 0;
+     				$rule_conditions[$item_key][$cond_key]['rule_type'] = 0;
                     break;
                 case 'IMSSS:POSTCONDITIONRULE':
                     $cond_key = $key;

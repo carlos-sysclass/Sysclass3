@@ -217,19 +217,17 @@ class XMLExport{
   $p->Cell(0, 13, $txt, 0, 0, $align);
  }
 
- private function showLabel($p, $txt, $font, $font_weight, $font_size, $color, $x, $y){
-
+private function showLabel($p, $txt, $font, $font_weight, $font_size, $color, $x, $y)
+{
   $fw = '';
 
-  if($font_weight != ''){
-
-   switch($font_weight){
-
-    case($font_weight == 'Bold' || $font_weight == 'bold' || $font_weight == 'BOLD'): $fw = 'B'; break;
-    case($font_weight == 'Italic' || $font_weight == 'italic' || $font_weight == 'ITALIC'): $fw = 'I'; break;
-    case($font_weight == 'Bold|Italic' || $font_weight == 'bold|italic' || $font_weight == 'BOLD|ITALIC'): $fw = 'BI'; break;
-   }
-  }
+	if ($font_weight != '') {
+		switch($font_weight) {
+	    	case($font_weight == 'Bold' || $font_weight == 'bold' || $font_weight == 'BOLD'): $fw = 'B'; break;
+    		case($font_weight == 'Italic' || $font_weight == 'italic' || $font_weight == 'ITALIC'): $fw = 'I'; break;
+    		case($font_weight == 'Bold|Italic' || $font_weight == 'bold|italic' || $font_weight == 'BOLD|ITALIC'): $fw = 'BI'; break;
+		}
+	}
 
   $rgb = $this->setColor($color);
   $p->SetTextColor($rgb['r'], $rgb['g'], $rgb['b']);

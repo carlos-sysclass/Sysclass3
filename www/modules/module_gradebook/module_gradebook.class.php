@@ -844,6 +844,55 @@ class module_gradebook extends MagesterExtendedModule {
 	}
 	public function studentSheetAction()
 	{
+		// GENERATE BOLETIM
+		$smarty = $this->getSmartyVar();
+		
+		$currentUser = $this->getCurrentUser();
+		
+		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
+			if (isset($_GET['login'])) {
+				$selectedUser = MagesterUserFactory::factory($_GET['login']);
+			} else {
+				// PLEASE SELECT A USER TO SHOW HIS SHEET
+				$selectedUser = MagesterUserFactory::factory('frederico.lima');
+			}
+		} else {
+			$selectedUser = $currentUser;
+		}
+		
+		$userLessons = $selectedUser->getUserLessons(array('return_objects' => false));
+		
+		$userLogin = $selectedUser->user['login'];
+		foreach ($userLessons as &$lesson) {
+			$lesson['scores'] = $this->computeFinalScore($lesson['id'], $userLogin);
+			$lesson['columns'] = $this->getLessonColumns($lesson['id']);
+			$lesson['groups'] = $this->getGradebookGroups($lesson['id']);
+			
+			foreach ($lesson['columns'] as $key => $object) {
+				$result = eF_getTableData(
+					"module_gradebook_grades",
+					"grade",
+					"oid=".$object['id']." and users_LOGIN='".$userLogin."'"
+				);
+				$grade = $result[0]['grade'];
+					
+				$grade = min(max($grade, 0), 100);
+				
+				$lesson['scores']['columns'][$object['id']] = $grade;
+			}
+				
+			//$score = $this->computeScoreGrade($lessonColumns[$group['id']], $login);
+			
+			//$grades = $this->getStudentGrades($selectedUser, $lesson['id'], $lesson['columns']);
+			
+			if (count($lesson['scores']['groups']) > 1) {
+				$this->_info($lesson['scores']);
+			}
+		}
+		
+		
+		$smarty->assign("T_GRADEBOOK_LESSONS_SCORES", $userLessons);
+		
 		/*
 		- para cada lição do usuário atual (selecionado pelo admin ou o usuário logado)
 			- chamar $this->computeFinalScore($lessonID, $login);
@@ -887,23 +936,10 @@ class module_gradebook extends MagesterExtendedModule {
 		 */
 		
 	}
+	/*
 	public function loadStudentLessonSheetAction()
 	{
-		// GENERATE BOLETIM
-		$smarty = $this->getSmartyVar();
-		
-		$currentUser = $this->getCurrentUser();
-		
-		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
-			if (isset($_GET['login'])) {
-				$selectedUser = MagesterUserFactory::factory($_GET['login']);
-			} else {
-				// PLEASE SELECT A USER TO SHOW HIS SHEET
-				$selectedUser = MagesterUserFactory::factory('aluno');
-			}
-		} else {
-			$selectedUser = $currentUser;
-		}
+
 		
 		$_POST['course_id'] = 13;
 		$_POST['lesson_id'] = 24;
@@ -913,8 +949,6 @@ class module_gradebook extends MagesterExtendedModule {
 		
 		$selectedLesson = $this->getSelectedLesson($currentUser);
 		$lessonID = $selectedLesson->lesson['id'];
-		
-		var_dump($login, $lessonID);
 		
 		try {
 			$response = $this->computeFinalScore($lessonID, $login);
@@ -930,7 +964,7 @@ class module_gradebook extends MagesterExtendedModule {
 		echo json_encode($response);
 		exit;
 	}
-	
+	*/
 	public function switchLessonAction()
 	{
 		$currentUser = $this->getCurrentUser();
@@ -2263,7 +2297,7 @@ var_dump(
 					break;
 				}
 			}
-		*/			
+		*/
 		}
 		else{
 			$overallScore = -1;
@@ -2356,6 +2390,8 @@ var_dump(
 				
 			foreach ($scores as $score) {
 				$response['groups'][$score['group']] = $score['score'];
+				
+				
 			}
 			// 3. GET THE LAST OR THE GREATEST SCORE E SET THEN FINAL.
 			$response['final_score'] = $finalScore;

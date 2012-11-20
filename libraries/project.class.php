@@ -467,7 +467,8 @@ class MagesterProject {
              try {
                  $file = new MagesterFile($value['filename']);
                  $file -> delete();
-             } catch (Exception $e) {/*bypass non-existing files*/}
+             } catch (Exception $e) {/*bypass non-existing files*/
+             }
             }
         }
         eF_deleteTableData("users_to_projects", "projects_ID=".$this -> project['id']);

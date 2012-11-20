@@ -1,10 +1,11 @@
 <project name="Sysclass" default="build">
     <target name="clean">
-        <delete dir="${basedir}/build" />
+<!--        <delete dir="${basedir}/build/" /> -->
     </target>
  
     <target name="prepare">
         <mkdir dir="${basedir}/build/reports" />
+    	<mkdir dir="${basedir}/build/temp" />
     	<!--
         <mkdir dir="${basedir}/build/codebrowser" />
         <mkdir dir="${basedir}/build/coverage" />
@@ -17,17 +18,14 @@
  
     <target name="phpcs">
         <exec dir="${basedir}" executable="phpcs" failonerror="false" output="/dev/null">
-            <arg line="--extensions=php --standard=${basedir}/phpcs.ruleset.xml --report=checkstyle --report-file=${basedir}/build/reports/checkstyle.xml ." />
+            <arg line="--extensions=php --standard=${basedir}/build/lib/phpcs/ruleset.xml --report=checkstyle --report-file=${basedir}/build/temp/checkstyle.xml ." />
         </exec>
     </target>
     <target name="checkstyle2html">
-       	<xslt in="${basedir}/build/reports/checkstyle.xml"
-      		  style="${basedir}/checkstyle.xsl"
+       	<xslt in="${basedir}/build/temp/checkstyle.xml"
+      		  style="${basedir}/build/lib/phpcs/checkstyle.xsl"
       		  out="${basedir}/build/reports/checkstyle.html"/>
-
     </target>
-
-	
 	
 
 <!-- 

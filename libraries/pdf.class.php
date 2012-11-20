@@ -217,7 +217,8 @@ class MagesterPdf
      $this->pdf->Image($imageFile['path'], '', '', 0, 0, '', '', 'T');
     }
    }
-  } catch (Exception $e) {/*do nothing if the image could not be embedded*/}
+  } catch (Exception $e) {/*do nothing if the image could not be embedded*/
+  }
  }
 
  public function printSectionTitle($title) {
