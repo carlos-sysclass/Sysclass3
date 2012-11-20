@@ -451,9 +451,10 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				negociationType == 'hash';
 			}
 			*/
+
 			this._postAction(
 				"save_invoices",
-				{"negociation_id" : this.negociation_hash},
+				{"negociation_id" : this.opt.negociation_hash},
 				function(data, status) {
 					
 				},
