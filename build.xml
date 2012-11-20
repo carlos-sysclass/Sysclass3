@@ -34,9 +34,9 @@
     <target name="phpmd">
         <exec dir="${basedir}" executable="phpmd" failonerror="false">
             <arg line=". xml codesize - -reportfile ${basedir}/build/logs/pmd.xml" />
-        </exec>
-    </target>
- -->
+		</exec>
+	</target>
+-->
 <!--
     <target name="phpcpd">
         <exec dir="${basedir}" executable="phpcpd" failonerror="false">
