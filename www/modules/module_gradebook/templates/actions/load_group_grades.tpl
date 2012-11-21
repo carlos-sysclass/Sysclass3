@@ -19,7 +19,7 @@
 			<th>{$smarty.const.__GRADEBOOK_GROUP_SCORE}</th>
 			<th>{$smarty.const.__GRADEBOOK_FINAL_SCORE}</th>
 			<!-- <th class="topTitle centerAlign noSort">{$smarty.const._GRADEBOOK_GRADE}</th>  -->
-			<th>{$smarty.const._GRADEBOOK_PUBLISH}</th>
+			<th>{$smarty.const._OPTIONS}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -55,7 +55,9 @@
 				</span></td>
 		<!-- 		<td class="centerAlign">{$user.grade}</td>  -->
 				<td align="center">
+					<!--
 					<input class="inputCheckbox" type="checkbox" name="checked_{$user.uid}" id="checked_{$user.uid}" onclick="publishGradebook('{$user.uid}', this);" {if ($user.publish == 1)} checked="checked"{/if} />
+					-->
 					<a href = "{$T_GRADEBOOK_BASEURL}&action=student_sheet&xuser_login={$login}">
 						<img border = "0" src = "images/16x16/certificate.png" title = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" alt = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" />
 					</a>&nbsp;<br />

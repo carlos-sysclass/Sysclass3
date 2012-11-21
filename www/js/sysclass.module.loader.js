@@ -208,6 +208,7 @@
     			delay: 0,
     			minLength: 0,
     			select: function( event, ui ) {
+    				jQuery(this).blur();
     	        	_sysclass("publish", "autocategorycomplete-select", this, ui.item);
     	        }
     		};
