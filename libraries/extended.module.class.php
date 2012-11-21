@@ -216,34 +216,26 @@ abstract class MagesterExtendedModule extends MagesterModule {
 			exit;
 		}
 		// CHECK FOR TEMPLATING
-		$smarty = $this -> getSmartyVar();
-		if (count($this->templates) > 0) {
-			$smarty -> assign ("T_" . $this->getName() . "_TEMPLATES", $this->templates);
-		}
-		$smarty -> assign ("T_" . $this->getName() . "_MOD_DATA", $this->getModuleData());
 		
 		$this->assignSmartyModuleVariables();
 		
 		return true;
 	}
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
     	if (file_exists($this -> moduleBaseDir . "templates/default.tpl")) {
     		return $this -> moduleBaseDir . "templates/default.tpl";
-    	} elseif (file_exists($this -> moduleBaseDir . "templates/actions/" . $this->getCurrentAction() . ".tpl")) {
-    		return $this -> moduleBaseDir . "templates/actions/" . $this->getCurrentAction() . ".tpl";
-    	//} elseif (file_exists(G_CURRENTTHEMEPATH . "templates/module/default.tpl")) {
-    	//	return G_CURRENTTHEMEPATH . "templates/module/default.tpl";
-    	//} elseif (file_exists(G_DEFAULTTHEMEPATH . "templates/module/default.tpl")) {
-    	//	return G_DEFAULTTHEMEPATH . "templates/module/default.tpl";
+    	} elseif (file_exists(G_CURRENTTHEMEPATH . "templates/module/action.wrapper.tpl")) {
+    		return G_CURRENTTHEMEPATH . "templates/module/action.wrapper.tpl";
+    	} elseif (file_exists(G_DEFAULTTHEMEPATH . "templates/module/action.wrapper.tpl")) {
+    		return G_DEFAULTTHEMEPATH . "templates/module/action.wrapper.tpl";
     	} else {
-//    		throw new Exception("Não foi possível encontrar nenhum template para a ação solicitada");
-//    		exit;
+    		throw new Exception("Não foi possível encontrar nenhum template para a ação solicitada");
+    		exit;
     	}
-    	return '';
-		
     }
-	
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		return array();
 	}
 	
@@ -355,25 +347,45 @@ abstract class MagesterExtendedModule extends MagesterModule {
     	}
     	$this->_moduleData[strtolower($this->getName()) . "." . $hashID] = $hashValue;
     }
-	protected function getModuleData() {
-		return array_merge_recursive( 
+	protected function getModuleData()
+	{
+		return array_merge_recursive(
 			array(
 				$this->index_name . ".baseDir" 	=> $this->moduleBaseDir,
 				$this->index_name . ".baseUrl" 	=> $this->moduleBaseUrl,
 				$this->index_name . ".baseLink" => $this->moduleBaseLink,
 				$this->index_name . ".action" 	=> $this->getCurrentAction()
-			), $this->_moduleData
+			),
+			$this->_moduleData,
+			array('blocks' => $this->view()->getBlocks())
 		);
     }
     
-    protected function assignSmartyModuleVariables() {
+    protected function assignSmartyModuleVariables()
+    {
+    	$smarty = $this -> getSmartyVar();
+    	if (count($this->templates) > 0) {
+    		$smarty->assign("T_" . $this->getName() . "_TEMPLATES", $this->templates);
+    	}
+    	$smarty->assign("T_" . $this->getName() . "_MOD_DATA", $this->getModuleData());
+    	$smarty->assign("_T_MODULE_MOD_DATA", $this->getModuleData());
+    	
 		$selectedAction = $this->getCurrentAction();
 		$smarty = $this -> getSmartyVar();
+		
+		$smarty -> assign("T_MODULE_NAME", $this->getName());
 		
         $smarty -> assign("T_" . $this->getName() . "_BASEDIR", $this -> moduleBaseDir);
         $smarty -> assign("T_" . $this->getName() . "_BASEURL", $this -> moduleBaseUrl);
         $smarty -> assign("T_" . $this->getName() . "_BASELINK", $this -> moduleBaseLink);
 		$smarty -> assign("T_" . $this->getName() . "_ACTION", $selectedAction);
+		
+		$smarty -> assign("_T_MODULE_BASEDIR", $this -> moduleBaseDir);
+		$smarty -> assign("_T_MODULE_BASEURL", $this -> moduleBaseUrl);
+		$smarty -> assign("_T_MODULE_BASELINK", $this -> moduleBaseLink);
+		$smarty -> assign("_T_MODULE_ACTION", $selectedAction);
+		
+		
     }
 	
 	/* UTILITY FUNCTION */
@@ -385,7 +397,8 @@ abstract class MagesterExtendedModule extends MagesterModule {
     	
     	return $this;
     }
-    private function _call($type = 'action', $selectedAction = null, $context = null, $index = null, $info = null) {
+    private function _call($type = 'action', $selectedAction = null, $context = null, $index = null, $info = null)
+    {
     	if (is_null($selectedAction)) {
     		$selectedAction = $this->getCurrentAction();
     	}
@@ -395,7 +408,7 @@ abstract class MagesterExtendedModule extends MagesterModule {
 		$selectedActionFunction = $this->camelCasefying($selectedAction . "_" . $type);
 		if (is_callable(array($this, $selectedActionFunction))) {
 			if ($type == 'block') {
-				return $actionResult = $this->$selectedActionFunction($index, $info);	
+				return $actionResult = $this->$selectedActionFunction($index, $info);
 			} else {
 				return $actionResult = $this->$selectedActionFunction($info);
 			}
@@ -406,7 +419,8 @@ abstract class MagesterExtendedModule extends MagesterModule {
     public function callAction($selectedAction = null, $context = null) {
     	return $this->_call("action", $selectedAction, $context);
     }
-    public function callBlock($selectedAction = null, $blockIndex = null, $context = null, $info) {
+    public function callBlock($selectedAction = null, $blockIndex = null, $context = null, $info)
+    {
     	return $this->_call("block", $selectedAction, $context, $blockIndex, $info);
     }
     public function appendTemplate($templateData, $index = null) {
@@ -764,5 +778,32 @@ abstract class MagesterExtendedModule extends MagesterModule {
 			self::$firephp = FirePHP::getInstance(true);
 		}
 		self::$firephp->fb($variable, $type);     // or FB::
+	}
+	/* CODE BELOW IS "IN TEST" MOVE TO PARENT WHEN IT IS TESTED */
+	protected static $viewObject = null;
+	protected function view($forceNew = false)
+	{
+		if (is_null(self::$viewObject) || $forceNew) {
+			self::$viewObject = new ViewObject();
+		}
+		return self::$viewObject;
+	}
+}
+
+class ViewObject
+{
+	protected $blocks = array();
+
+	public function createBlock($type, $id, $data)
+	{
+		$this->blocks[] = array(
+			'type' 		=> $type,
+			'selector'	=> $id,
+			'data'		=> $data
+		);
+	}
+	public function getBlocks()
+	{
+		return $this->blocks;
 	}
 }

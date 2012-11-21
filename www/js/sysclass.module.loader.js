@@ -32,6 +32,9 @@
 
 
 			__modules[name] = jQuery.extend(true, {fake : false}, {"opt" : opt_config}, methods, parentWrapper, {"name" : name});
+			
+			__modules[name].init();
+			
 			return __modules[name];
 		},
 		load : function( name ) {
@@ -66,6 +69,16 @@
 			this.opt.ajax.async = !bSwitch;
 			
 			return this;
+		},
+		init: function() {
+			/* EXPERIMENTAL CODE- -- MODVE TO PARENT WHEN APLICABLE */
+			for (var i in this.opt.blocks) {
+				_sysclass("load", "block").inject(
+					this.opt.blocks[i].type,
+					this.opt.blocks[i].selector,
+					this.opt.blocks[i].data
+				);
+			}
 		},
 		_loadAction : function(actionName, sendData, selector, callback) {
 			var url = 
@@ -156,7 +169,7 @@
 		//} else if ( typeof method === 'object' || ! method ) {
 		} else {
 			return methods.load.apply( self, arguments );
-		}    
+		}
 	};
 	
 	
@@ -181,5 +194,35 @@
 	};
 	
 	_sysclass("register", "i18n", i18nMethods);
+	
+	// REGISTER UTILS CLASSES
+	var blockMethods = {
+		inject : function (type, selector, data) {
+			if (type == "autocategorycomplete") {
+				return this._create_autocategorycomplete(selector, data);
+			}
+			return false;
+		},
+		_create_autocategorycomplete : function(selector, data) {
+    		var defaults = {
+    			delay: 0,
+    			minLength: 0,
+    			select: function( event, ui ) {
+    	        	_sysclass("publish", "autocategorycomplete-select", this, ui.item);
+    	        }
+    		};
+			data = jQuery.extend(true, defaults, data);
+			
+		    jQuery(selector).autocategorycomplete(data).focus(function() {
+		    	jQuery(this).val("");
+		    	jQuery(this).autocategorycomplete( "search", "" );
+		    });
+		}
+	};
+	
+	_sysclass("register", "block", blockMethods);
+	
+	
+	
 	
 })( jQuery );

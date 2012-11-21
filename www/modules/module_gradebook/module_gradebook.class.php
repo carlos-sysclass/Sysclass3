@@ -1,5 +1,6 @@
 <?php
-class module_gradebook extends MagesterExtendedModule {
+class module_gradebook extends MagesterExtendedModule
+{
 	public static $state = "experimental";
 	/* USE THIS OBJECT TO MANAGE ACL, */
 	/* CAN BE ROLE-BASED AND/OR TYPE-BASED */
@@ -40,12 +41,13 @@ class module_gradebook extends MagesterExtendedModule {
 		$smarty = $this->getSmartyVar();
 
 		$ranges = $this->getRanges();
-
+		
+		/*
 		$smarty->assign("T_GRADEBOOK_BASEURL", $this->moduleBaseUrl);
 		$smarty->assign("T_GRADEBOOK_BASEDIR", $this->moduleBaseDir);
 		$smarty->assign("T_GRADEBOOK_BASELINK", $this->moduleBaseLink);
 		$smarty->assign("T_GRADEBOOK_ACTION", $_GET['action']);
-
+		*/
 
 
 		if ($currentUser->getRole($this->getCurrentLesson()) == 'professor' || $currentUser->getType() == 'administrator') {
@@ -850,91 +852,65 @@ class module_gradebook extends MagesterExtendedModule {
 		$currentUser = $this->getCurrentUser();
 		
 		if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
-			if (isset($_GET['login'])) {
-				$selectedUser = MagesterUserFactory::factory($_GET['login']);
+			if (isset($_GET['xuser_login'])) {
+				$selectedUser = MagesterUserFactory::factory($_GET['xuser_login']);
 			} else {
 				// PLEASE SELECT A USER TO SHOW HIS SHEET
-				$selectedUser = MagesterUserFactory::factory('frederico.lima');
+				//$selectedUser = MagesterUserFactory::factory('frederico.lima');
+				return false;
 			}
 		} else {
 			$selectedUser = $currentUser;
 		}
-		
+	
+		$userCourses = $selectedUser->getUserCourses(array('return_objects' => true));
 		$userLessons = $selectedUser->getUserLessons(array('return_objects' => false));
-		
-		$userLogin = $selectedUser->user['login'];
-		foreach ($userLessons as &$lesson) {
-			$lesson['scores'] = $this->computeFinalScore($lesson['id'], $userLogin);
-			$lesson['columns'] = $this->getLessonColumns($lesson['id']);
-			$lesson['groups'] = $this->getGradebookGroups($lesson['id']);
-			
-			foreach ($lesson['columns'] as $key => $object) {
-				$result = eF_getTableData(
-					"module_gradebook_grades",
-					"grade",
-					"oid=".$object['id']." and users_LOGIN='".$userLogin."'"
-				);
-				$grade = $result[0]['grade'];
-					
-				$grade = min(max($grade, 0), 100);
-				
-				$lesson['scores']['columns'][$object['id']] = $grade;
-			}
-				
-			//$score = $this->computeScoreGrade($lessonColumns[$group['id']], $login);
-			
-			//$grades = $this->getStudentGrades($selectedUser, $lesson['id'], $lesson['columns']);
-			
-			if (count($lesson['scores']['groups']) > 1) {
-				$this->_info($lesson['scores']);
-			}
-		}
-		
-		
-		$smarty->assign("T_GRADEBOOK_LESSONS_SCORES", $userLessons);
-		
-		/*
-		- para cada lição do usuário atual (selecionado pelo admin ou o usuário logado)
-			- chamar $this->computeFinalScore($lessonID, $login);
-			- buscar os grupos e colunas
-		
-		Mostrar tudo numa página só, nesta ação (ignorar ação "loadStudentLessonSheetAction")
-		*/
-		
-		/*
-		// SHOW THE USER "BOLETIM"
-		$smarty	= $this->getSmartyVar();
-		
-		if ($this->getCurrentUser()->getType() == 'student') {
-			$sheetUser = $this->getCurrentUser();
-		} else {
-			$login = "aluno";
-			$sheetUser = MagesterUserFactory::factory($login);
-		}
-		
-		$userCourses = $sheetUser->getUserCourses(array('return_objects' => true));
-		$userLessons = $sheetUser->getUserLessons(array('return_objects' => false));
 		$userLessonsIndexes = array_keys($userLessons);
 		
+		$userLogin = $selectedUser->user['login'];
+		$userLessons = array();
 		foreach ($userCourses as $course) {
-			
-			$coursesTree[$course->course['id']] = $course->course;
-
+		
 			$courseLessons = $course->getCourseLessons(array('return_objects' => false));
-			
+		
 			foreach ($courseLessons as $courseLesson) {
 				if (in_array($courseLesson['id'], $userLessonsIndexes)) {
-					$coursesTree[$course->course['id']]['lessons'][$courseLesson['id']] = $courseLesson;
+					$coursesData[] = array(
+						'course_id'		=> $course->course['id'],
+						'course_name'	=> $course->course['name'],
+						'lesson_id'		=> $courseLesson['id'],
+						'lesson_name'	=> $courseLesson['name'],
+						'id'			=> $course->course['id'] . "_" . $courseLesson['id'],
+						'value'			=> $courseLesson['name'],
+						'label'			=> $courseLesson['name']
+					);
+					
+					$courseLesson['course_id'] = $course->course['id'];
+					$courseLesson['scores'] = $this->computeFinalScore($courseLesson['id'], $userLogin);
+					$courseLesson['columns'] = $this->getLessonColumns($courseLesson['id']);
+					$courseLesson['groups'] = $this->getGradebookGroups($courseLesson['id']);
+					
+					foreach ($courseLesson['columns'] as $key => $object) {
+						$result = eF_getTableData(
+							"module_gradebook_grades",
+							"grade",
+							"oid=".$object['id']." and users_LOGIN='".$userLogin."'"
+						);
+						$grade = $result[0]['grade'];
+							
+						$grade = min(max($grade, 0), 100);
+						
+						$courseLesson['scores']['columns'][$object['id']] = $grade;
+					}
+					
+					$userLessons[$courseLesson['id']] = $courseLesson;
 				}
 			}
 		}
-
-		$userLessons = $sheetUser->getUserLessons(array('return_objects' => false));
-		*/
-		/*
-		 * USAR UM AUTO-COMPLETE PARA SELECIONAR O CURSO E A TURMA
-		 */
+		$smarty->assign("T_GRADEBOOK_LESSONS_SCORES", $userLessons);
 		
+		// TO USE ON AUTOCOMPLETE
+		$this->view()->createBlock("autocategorycomplete", ".course-lesson-autocomplete", array("source" => $coursesData));
 	}
 	/*
 	public function loadStudentLessonSheetAction()
@@ -2405,5 +2381,15 @@ var_dump(
 			return $result[$login];
 		}
 		return $result;
+	}
+	/* CODE BELOW IS "IN TEST" MOVE TO PARENT WHEN IT IS TESTED */
+	
+	protected static $viewObject = null;
+	public function view($forceNew = false)
+	{
+		if (is_null(self::$viewObject) || $forceNew) {
+			self::$viewObject = new ViewObject();
+		}
+		return self::$viewObject;
 	}
 }

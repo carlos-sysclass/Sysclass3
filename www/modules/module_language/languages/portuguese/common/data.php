@@ -49,3 +49,5 @@ define("__RESET_TEXT", "Usuário ou E-mail");
 define("__CHANGEAVATAR", "Trocar Avata");
 
 define("__OPTIONS", "Opções");
+
+define("__NO_DATA_FOUND", "Nenhuma informação encontrada");

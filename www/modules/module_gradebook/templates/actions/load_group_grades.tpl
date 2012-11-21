@@ -56,6 +56,11 @@
 		<!-- 		<td class="centerAlign">{$user.grade}</td>  -->
 				<td align="center">
 					<input class="inputCheckbox" type="checkbox" name="checked_{$user.uid}" id="checked_{$user.uid}" onclick="publishGradebook('{$user.uid}', this);" {if ($user.publish == 1)} checked="checked"{/if} />
+					<a href = "{$T_GRADEBOOK_BASEURL}&action=student_sheet&xuser_login={$login}">
+						<img border = "0" src = "images/16x16/certificate.png" title = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" alt = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" />
+					</a>&nbsp;<br />
+					
+					
 				</td>
 			</tr>
 		{foreachelse}

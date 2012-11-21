@@ -280,7 +280,7 @@ function getJqueryPeriodicData() {
 	});
 	*/
 	
-    $.widget( "custom.catcomplete", $.ui.autocomplete, {
+    $.widget( "custom.autocategorycomplete", $.ui.autocomplete, {
         _renderMenu: function( ul, items ) {
             var that = this;
             currentCourse = "";
@@ -294,12 +294,5 @@ function getJqueryPeriodicData() {
         }
     });
 	
-    jQuery( ".course-lesson-autocomplete" ).catcomplete({
-        delay: 0,
-        source: "course-lesson-autocomplete.php",
-        minLength: 0,
-        select: function( event, ui ) {
-        	_sysclass("publish", "course-lesson-change", ui.item.course_id, ui.item.lesson_id);
-        }
-    });
+
 })(jQuery);

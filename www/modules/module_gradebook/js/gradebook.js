@@ -306,7 +306,8 @@
 		},
 		startUI : function() {
 			this.refreshGroupUI();
-		}
+		},
+		
 	};
 
 	_sysclass("register", "gradebook", methods);
@@ -412,17 +413,21 @@
 				
 				jQuery(self).next("img").css("visibility", "hidden");
 			}
-		);	
+		);
 	});
-	
+	_sysclass("subscribe", "autocategorycomplete-select", function(that, data) {
+		jQuery(".gradebook-course-lesson").hide();
+		jQuery("#gradebook-course-lesson-" + data.id).show();
+		
+	});
+	/*
 	_sysclass("subscribe", "course-lesson-change", function(course_id, lesson_id ) {
 		// SET CURRENT COURSE, AND LESSON
-		alert(course_id);
 		
 		// LOAD
 		_sysclass('load', 'gradebook').loadStudentLessonSheet(course_id, lesson_id);
 	});
-
+	*/
 	
 	_sysclass('load', 'gradebook').startUI();
 	

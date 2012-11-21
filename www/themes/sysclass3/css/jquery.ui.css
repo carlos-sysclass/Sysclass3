@@ -408,6 +408,7 @@
 	position: absolute;
 	top: 0; /* #8656 */
 	cursor: default;
+	font-size: 0.9em;
 }
 
 /* workarounds */
