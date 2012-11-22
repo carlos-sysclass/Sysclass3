@@ -406,4 +406,3 @@ $output = $benchmark->display();
 if (G_DEBUG) {
 	echo $output;
 }
-?>

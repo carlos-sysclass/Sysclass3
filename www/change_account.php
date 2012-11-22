@@ -37,5 +37,3 @@ try {
 } catch (Exception $e) {
  handleAjaxExceptions($e);
 }
-
-?>

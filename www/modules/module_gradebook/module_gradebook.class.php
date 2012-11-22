@@ -4,8 +4,8 @@ class module_gradebook extends MagesterExtendedModule
 	public static $state = "experimental";
 	/* USE THIS OBJECT TO MANAGE ACL, */
 	/* CAN BE ROLE-BASED AND/OR TYPE-BASED */
-	/* EX:  
-	public static $ACL = array(
+	/* EX:
+	 * public static $ACL = array(
 		'method_name' => array(
 			'role'	=> 'financier',
 			'type'	=> 'administrator'
@@ -18,19 +18,23 @@ class module_gradebook extends MagesterExtendedModule
 	const __GRADEBOOK_WAITING = "Aguardando";
 	
 	public static $newActions = array(
-		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group", "delete_group", "add_column",  
-		"delete_column", "load_group_rules", "load_group_grades", "switch_lesson", "student_sheet" 
+		"edit_rule_calculation", "edit_total_calculation", "students_grades", "add_group", "move_group",
+		"delete_group", "add_column", "delete_column", "load_group_rules", "load_group_grades",
+		"switch_lesson", "student_sheet"
 	);
 
-	public function getName(){
+	public function getName()
+	{
 		return "GRADEBOOK";
 	}
 
-	public function getPermittedRoles(){
+	public function getPermittedRoles()
+	{
 		return array("student", "professor", "administrator");
 	}
 	/* ACTION FUNCTIONS */
-	public function editRuleCalculationAction() {
+	public function editRuleCalculationAction()
+	{
 		/**
 		 * @todo Implementar this function. Is the default action
 		 */
@@ -39,42 +43,38 @@ class module_gradebook extends MagesterExtendedModule
 		}
 		$currentUser = $this->getCurrentUser();
 		$smarty = $this->getSmartyVar();
-
 		$ranges = $this->getRanges();
 		
-		/*
-		$smarty->assign("T_GRADEBOOK_BASEURL", $this->moduleBaseUrl);
-		$smarty->assign("T_GRADEBOOK_BASEDIR", $this->moduleBaseDir);
-		$smarty->assign("T_GRADEBOOK_BASELINK", $this->moduleBaseLink);
-		$smarty->assign("T_GRADEBOOK_ACTION", $_GET['action']);
-		*/
-
-
-		if ($currentUser->getRole($this->getCurrentLesson()) == 'professor' || $currentUser->getType() == 'administrator') {
+		if (
+			$currentUser->getRole($this->getCurrentLesson()) == 'professor' ||
+			$currentUser->getType() == 'administrator'
+		) {
 			$currentLesson		= $this->getSelectedLesson();
 			$currentLessonID	= $currentLesson->lesson['id'];
-			$lessonUsers		= $currentLesson->getUsers('student'); // get all students that have this lesson
+			// get all students that have this lesson
+			$lessonUsers		= $currentLesson->getUsers('student');
 			$lessonColumns		= $this->getLessonColumns($currentLessonID);
 			$allUsers			= $this->getLessonUsers($currentLessonID, $lessonColumns);
 
 			if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
-				$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
+				$gradeBookLessons = $this->getGradebookLessons(
+					$currentUser->getLessons(false, 'professor'),
+					$currentLessonID
+				);
 			} else {
 				$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 			}
-
+			
 			$gradebookGroups = $this->getGradebookGroups($currentLessonID);
 		} else {
 			return false;
 		}
-
-
 		$smarty->assign("T_GRADEBOOK_RANGES", $ranges);
-
+		
 		/* Add new students to GradeBook related tables */
 		$result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
 		$allLogins = array();
-
+		
 		foreach ($result as $user) {
 			array_push($allLogins, $user['users_LOGIN']);
 		}
@@ -869,12 +869,29 @@ class module_gradebook extends MagesterExtendedModule
 		
 		$userLogin = $selectedUser->user['login'];
 		$userLessons = array();
+		
+		if ($currentLesson = $this->getSelectedLesson()) {
+			$this->addModuleData("lesson_id", $currentLesson->lesson['id']);
+			$currentLessonID = $currentLesson->lesson['id'];
+		}
+		if ($currentCourse = $this->getSelectedCourse()) {
+			$this->addModuleData("course_id", $currentCourse->course['id']);
+		}
+		
 		foreach ($userCourses as $course) {
 		
 			$courseLessons = $course->getCourseLessons(array('return_objects' => false));
+			
+			
 		
 			foreach ($courseLessons as $courseLesson) {
 				if (in_array($courseLesson['id'], $userLessonsIndexes)) {
+					
+					if (isset($currentLessonID) && $currentLessonID == $courseLesson['id']) {
+						$autocompletevalue = $courseLesson['name'];
+					}
+					
+					
 					$coursesData[] = array(
 						'course_id'		=> $course->course['id'],
 						'course_name'	=> $course->course['name'],
@@ -910,7 +927,8 @@ class module_gradebook extends MagesterExtendedModule
 		$smarty->assign("T_GRADEBOOK_LESSONS_SCORES", $userLessons);
 		
 		// TO USE ON AUTOCOMPLETE
-		$this->view()->createBlock("autocategorycomplete", ".course-lesson-autocomplete", array("source" => $coursesData));
+		$this->view()->createBlock("autocategorycomplete", ".course-lesson-autocomplete", array("source" => $coursesData, "value" => $autocompletevalue));
+		
 	}
 	/*
 	public function loadStudentLessonSheetAction()
@@ -1005,6 +1023,8 @@ var_dump(
 			return "students_grades";
 		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
 			return "edit_rule_calculation";
+		} elseif ($this->getCurrentUser()->getType() == 'student') {
+			return "student_sheet";
 		}
 	}
 	/**
@@ -2381,15 +2401,5 @@ var_dump(
 			return $result[$login];
 		}
 		return $result;
-	}
-	/* CODE BELOW IS "IN TEST" MOVE TO PARENT WHEN IT IS TESTED */
-	
-	protected static $viewObject = null;
-	public function view($forceNew = false)
-	{
-		if (is_null(self::$viewObject) || $forceNew) {
-			self::$viewObject = new ViewObject();
-		}
-		return self::$viewObject;
 	}
 }

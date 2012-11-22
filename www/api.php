@@ -1184,4 +1184,3 @@ In case of error it returns also a message entity with description of the error 
         else
         return false;
     }
-?>

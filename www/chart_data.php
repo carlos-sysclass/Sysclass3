@@ -414,7 +414,3 @@ function createMostActiveUsersChart($logins, $seconds) {
     
     echo $chart -> toPrettyString();
 }
-
-
-
-?>

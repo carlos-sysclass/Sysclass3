@@ -860,4 +860,3 @@ function askInformation() {
   handleAjaxExceptions($e);
  }
 }
-?>

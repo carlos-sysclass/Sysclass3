@@ -178,4 +178,3 @@ try {
 } catch (Exception $e) {
  echo ($e -> getMessage().' ('.$e -> getCode().')'); //No ajax error handling here, since we want the info to appear in the popup
 }
-?>

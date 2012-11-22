@@ -41,4 +41,3 @@ if ($totalcount > 0  && file_exists($filename)) {
 	eF_redirect("index.php?message=Não existe o boleto específicado&message_type=failure");
 }
 exit;
-?>

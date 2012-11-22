@@ -306,6 +306,17 @@
 		},
 		startUI : function() {
 			this.refreshGroupUI();
+			
+			if (
+				typeof(this.opt.lesson_id) != 'undefined' &&
+				typeof(this.opt.course_id) != 'undefined'
+			) {
+				var indice = "#gradebook-course-lesson-" + this.opt.course_id + "_" + this.opt.lesson_id;
+				//this.opt.lesson_id
+				//this.opt.course_id
+				jQuery(indice).show();
+			}
+			
 		},
 		
 	};
@@ -415,10 +426,19 @@
 			}
 		);
 	});
+	_sysclass("subscribe", "autocategorycomplete-start", function(that) {
+		
+		console.log(that);
+		// CAN BE USED TO AUTO-SELECT AN OPTION
+		/*
+		jQuery(".gradebook-course-lesson").hide();
+		jQuery("#gradebook-course-lesson-" + data.id).show();
+		*/
+	});
+
 	_sysclass("subscribe", "autocategorycomplete-select", function(that, data) {
 		jQuery(".gradebook-course-lesson").hide();
 		jQuery("#gradebook-course-lesson-" + data.id).show();
-		
 	});
 	/*
 	_sysclass("subscribe", "course-lesson-change", function(course_id, lesson_id ) {

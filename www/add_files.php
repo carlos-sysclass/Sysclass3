@@ -175,4 +175,3 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
 }
 
 $smarty -> display("add_files.tpl");
-?>

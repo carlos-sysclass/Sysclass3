@@ -554,4 +554,3 @@
     $form -> accept($renderer);
     $smarty -> assign('T_ACTION_FORM', $renderer -> toArray());
     $smarty -> display('apidemo.tpl');
-?>

@@ -214,10 +214,14 @@
     		};
 			data = jQuery.extend(true, defaults, data);
 			
-		    jQuery(selector).autocategorycomplete(data).focus(function() {
+		    jQuery(selector).val(data.value).autocategorycomplete(data).focus(function() {
 		    	jQuery(this).val("");
 		    	jQuery(this).autocategorycomplete( "search", "" );
 		    });
+		    
+		    _sysclass("publish", "autocategorycomplete-start", jQuery(selector).get(0));
+		    
+		    
 		}
 	};
 	

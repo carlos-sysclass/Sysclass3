@@ -89,4 +89,3 @@ function xpay_boleto_cef_sigcb_FBarCode($params, &$smarty) {
 	);
 	return $html;
 } //Fim da função
-?>

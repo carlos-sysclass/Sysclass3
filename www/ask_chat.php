@@ -249,5 +249,3 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 //$data = iconv("UTF-8",_CHARSET,$data);
 //echo $data.$special_splitter."new_limit: ".$new_limit."<br>all messages: ".$all_messages."<br>sent: ".$sent."<br>new_limit_flag: ".$new_limit_flag."-|*special_splitter*|-".$rooms_str."-|*special_splitter*|-".$new_limit."-|*special_splitter*|-".$sent;
 echo $data;
-
-?>

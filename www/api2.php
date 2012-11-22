@@ -2016,4 +2016,3 @@ function checkToken($token) {
 		return false;
 	}
 }
-?>
