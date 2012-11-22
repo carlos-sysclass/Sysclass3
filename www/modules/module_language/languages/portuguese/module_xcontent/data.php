@@ -51,6 +51,8 @@ define("__XCONTENT_ERROR_SCHEDULE_NOT_FOUND", "Horário não encontrado");
 define("__XCONTENT_SUCCESS_SCHEDULE_SAVED", "Horário salvo com sucesso");
 define("__XCONTENT_SUCCESS_SCHEDULE_DELETED", "Horário excluído com sucesso");
 
+define("__XCONTENT_SCHEDULE_COPIED_SUCESSFULLY", "Conteúdos copiados com sucesso");
+
 define("__XCONTENT_ERROR_INVALID_START_TIME", "Horário de Início Inválido");
 define("__XCONTENT_ERROR_INVALID_END_TIME", "Horário de Término Inválido");
 define("__XCONTENT_SUCCESS_SCHEDULE_REGISTERED", "Agendamento realizado com sucesso");
