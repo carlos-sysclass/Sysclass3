@@ -300,3 +300,84 @@ function doAjaxDeleteScheduleContent(schedule_id, course_id, content_id, caller)
 		}, 'json'
 	);
 }
+
+
+/* MODULE CREATING */
+(function( $ ) {
+	var methods = {
+		scheduleOrig : null,
+		scheduleDest : null,
+		selectScheduleCopyDestiny : function(scheduleTo) {
+			// OPEN A CURSOR TO SELECT ON THE TABLE
+			this.scheduleDest = scheduleTo;
+			//jQuery("table._XCONTENT_SCHEDULE_LIST a.scheduleCopyAnchor").show();
+			
+			jQuery("table._XCONTENT_SCHEDULE_LIST tbody tr").addClass("waiting-selection");
+			jQuery("body").css("cursor", "copy");
+			
+			return false;
+			
+		},
+		selectScheduleCopyOrigin : function(scheduleFrom) {
+			// OPEN A CURSOR TO SELECT ON THE TABLE
+			this.scheduleOrig = scheduleFrom;
+			
+			jQuery("table._XCONTENT_SCHEDULE_LIST tbody tr").removeClass("waiting-selection");
+			jQuery("table._XCONTENT_SCHEDULE_LIST a.scheduleCopyAnchor").hide();
+			
+			if (this.scheduleOrig == this.scheduleDest) {
+				alert("não é possível copiar o conteudo do mesmo agendamento");
+			} else {
+				if (confirm("Esta operação é irreversível. Tem certeza que deseja continuar?")) {
+					this._postAction(
+						"copy_scheduled_contents", {
+							orig : this.scheduleOrig,
+							dest : this.scheduleDest
+						}, function (data, status) {
+							window.location.reload(true);
+						},
+						'json'
+					);
+				}
+			}
+			
+			jQuery("body").css("cursor", "default");
+		},
+		startUI : function() {
+		}
+	};
+
+	_sysclass("register", "xcontent", methods);
+})( jQuery );
+
+
+/* MODULE FLOW-LOGIC */
+
+(function( $ ) {
+	
+	jQuery("table._XCONTENT_SCHEDULE_LIST tbody tr .contentScheduleCopy").click(function(event) {
+		if (!jQuery(this).parents("tr").hasClass("waiting-selection")) {
+			// GET SCHEDULE ID
+			selectedID = jQuery(this).parents("tr").attr("id");
+			scheduleID = selectedID.replace(/\D/g, "");
+
+			_sysclass("load", "xcontent").selectScheduleCopyDestiny(scheduleID);
+		}
+		return false;
+	});
+	
+	jQuery("table._XCONTENT_SCHEDULE_LIST tbody tr").click(function(event) {
+		if (jQuery(this).hasClass("waiting-selection")) {
+			// GET SCHEDULE ID
+			selectedID = jQuery(this).attr("id");
+			scheduleID = selectedID.replace(/\D/g, "");
+			
+			_sysclass("load", "xcontent").selectScheduleCopyOrigin(scheduleID);
+		}
+		return false;
+	});
+	
+	
+	
+	_sysclass('load', 'xcontent').startUI();
+})( jQuery );

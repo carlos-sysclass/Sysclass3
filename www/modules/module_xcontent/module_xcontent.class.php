@@ -1738,9 +1738,52 @@ class module_xcontent extends MagesterExtendedModule {
 		}
 		return array();
 	}    
+
+	public function copyScheduledContentsAction()
+	{
+		$smarty = $this -> getSmartyVar();
+		$currentUser = $this->getCurrentUser();
+		$xuserModule = $this->loadModule("xuser");
+		
+		if (
+				$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
+				$currentUser->moduleAccess['xcontent'] != 'view' &&
+				$currentUser->moduleAccess['xcontent'] != 'change'
+		) {
+			header("Location: " . $this->moduleBaseUrl);
+			exit;
+		}
+		
+		$fromID = $_POST['orig'];
+		$toID = $_POST['dest'];
+		
+		$contentToInsert = eF_getTableData(
+			"module_xcontent_schedule_contents",
+			sprintf("%d as schedule_id, course_id, content_id, required", $toID),
+			sprintf("schedule_id = %d", $fromID)
+		);
+		
+		try {
+			eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d", $toID));
+			eF_insertTableDataMultiple("module_xcontent_schedule_contents", $contentToInsert);
+			
+			$response = array(
+				'message' => __XCONTENT_SCHEDULE_COPIED_SUCESSFULLY,
+				'message_type' => 'success'
+			);
+		} catch (Exception $e) {
+			$response = array(
+				'message' => $e->getMessage(),
+				'message_type' => 'failure'
+			);
+		}
+		echo json_encode($response);
+		exit;
+	}
 	
 	/* DATA MODEL FUNCTIONS */
-    public function getContentsByScheduleId($scheduleID, $filter = array()) {
+    public function getContentsByScheduleId($scheduleID, $filter = array())
+    {
     	$userID = $this->getCurrentUser()->user['id'];
     	
     	$where = array(sprintf("sch.id = '%s'", $scheduleID));

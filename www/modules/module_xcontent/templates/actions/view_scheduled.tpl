@@ -12,7 +12,7 @@
 		<div class="clear"></div>
 		<h3>{$smarty.const.__XCONTENT_SCOPE}: {$scope.name}</h3>
 	
-		<table class="_XCONTENT_SCHEDULE_LIST static">
+		<table class="_XCONTENT_SCHEDULE_LIST style1">
 			<thead>
 				<tr class="topTitle">
 					<th style="text-align: center;">{$smarty.const.__XCONTENT_COURSE_OR_COURSES}</th>
@@ -26,10 +26,9 @@
 			</thead>
 			<tbody>
 				{foreach item="schedule" from=$T_XCONTENT_SCHEDULES[$scope.id]}
-				<tr>
+				<tr class="" id="schedule-{$schedule.id}">
 					<td>{$schedule.total_courses} {$smarty.const.__XCONTENT_COURSE_OR_COURSES}</td>
-					<td>{$schedule.total_contents} {$smarty.const.__XCONTENT_CONTENT_OR_CONTENTS}</td>
-					
+					<td>{$schedule.total_contents} {$smarty.const.__XCONTENT_CONTENT_OR_CONTENTS} <a onclick="_sysclass('load', 'xcontent').selectScheduleCopyOrigin({$schedule.id});" href="javascript: void(0)" class="scheduleCopyAnchor" style="display: none;">Selecionar</a></td>
 					<td align="center">
 						{if $schedule.start}
 							#filter:date-{$schedule.start}#
@@ -59,9 +58,13 @@
 							<button class="form-icon contentScheduleEdit" onclick="window.location.href = '{$T_XCONTENT_BASEURL}&action=view_scheduled_users&xschedule_id={$schedule.id}'; return false;">
 								<img class="sprite16 sprite16-calendar" src="images/others/transparent.gif" />
 							</button>
+							<button class="form-icon contentScheduleCopy" onclick="return false;" title="Copiar conteúdo de outro Agendamento">
+								<img class="sprite16 sprite16-copy" src="images/others/transparent.gif" />
+							</button>
 							<button class="form-icon contentScheduleDelete" onclick="deleteSchedule({$schedule.id}); return false;">
 								<img class="sprite16 sprite16-close" src="images/others/transparent.gif" />
 							</button>
+
 						</div>
 					
 					</td>
