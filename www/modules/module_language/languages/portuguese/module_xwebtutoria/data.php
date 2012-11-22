@@ -14,4 +14,3 @@ define("__XWEBTUTORIA_SAVE", "Salvar");
 
 // MENSAGENS
 define("__XWEBTUTORIA_NO_ITENS_FOUND", "Nenhuma conversa encontrada"); 
-?>

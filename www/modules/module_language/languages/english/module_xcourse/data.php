@@ -89,4 +89,3 @@ define("__XCOURSE_STUDENT_GUIDANCE", "Course Information");
 
 /* A ACERTAR */
 define("_MODULE_XCOURSES_SAVE", "Salvar");
-?>

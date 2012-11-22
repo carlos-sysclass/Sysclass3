@@ -58,6 +58,3 @@ define("__XCONTENT_ERROR_INVALID_END_TIME", "Horário de Término Inválido");
 define("__XCONTENT_SUCCESS_SCHEDULE_REGISTERED", "Agendamento realizado com sucesso");
 define("__XCONTENT_ERROR_SCHEDULE_REGISTERED", "Ocorreu um erro ao tentar registrado o seu agendamento. Por favor tente novamente.");
 define("__XCONTENT_SUCCESS_SCHEDULE_CONTENT_DELETED", "O Conteúdo foi excluído com sucesso");
-
-
-?>

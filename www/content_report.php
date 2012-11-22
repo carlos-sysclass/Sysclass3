@@ -103,6 +103,3 @@ $smarty -> assign("T_HEADER_MAIN_SCRIPTS", implode(",", $mainScripts));
 
 $_GET['popup'] = 1; //In order to display correctly in horizontal themes
 $smarty -> display("content_report.tpl");
-
-
-?>

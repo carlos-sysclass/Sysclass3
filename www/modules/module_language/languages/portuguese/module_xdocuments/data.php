@@ -21,4 +21,3 @@ define("__XDOCUMENTS_UPDATE_COURSE_DOCUMENT_SUCCESS", "Documento atualizado no c
 define("__XDOCUMENTS_DELETE_COURSE_DOCUMENT_SUCCESS", "Documento excluído do curso com sucesso");
 
 define("__XDOCUMENTS_INSERT_COURSE_DOCUMENT_FAIL", "Ocorreu um erro ao tentar registrar o documento no curso.");
-?>

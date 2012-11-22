@@ -26,7 +26,7 @@ $config = array(
 	'showfiles'		=> true,
 );
 
-if( file_exists($root . $_POST['dir']) ) {
+if (file_exists($root . $_POST['dir'])) {
 	$files = scandir($root . $_POST['dir']);
 
 	natcasesort($files);
@@ -71,8 +71,6 @@ if( file_exists($root . $_POST['dir']) ) {
 				}
 			}
 		}
-		echo "</ul>";	
+		echo "</ul>";
 	}
 }
-
-?>

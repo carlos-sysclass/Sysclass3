@@ -19,4 +19,3 @@ define("__XPAY_BOLETO_RETURN_FILE", "Arquivo de Retorno");
 define("__XPAY_BOLETO_FILE_NAME", "Nome do Arquivo");
 define("__XPAY_BOLETO_FILE_TIME", "Data, Hora");
 define("__XPAY_BOLETO_FILE_SIZE", "Tamanho");
-?>

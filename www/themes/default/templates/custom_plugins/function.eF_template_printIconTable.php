@@ -5,10 +5,11 @@
 * $params is an array with fields: title, columns, links, image
 * $params['links'] is an array with fields: text, image
 */
-function smarty_function_eF_template_printIconTable($params, &$smarty) {
+function smarty_function_eF_template_printIconTable($params, &$smarty)
+{
 
 	return smarty_function_eF_template_printBlock($params, $smarty);
-/*	
+	/*
     $innerTableIdentifier = $GLOBALS['innerTableIdentifier'];
     $cookieString = md5($_SESSION['s_login'].$_SESSION['s_lessons_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
     $cookieValue  = $_COOKIE['innerTables'][$cookieString];
@@ -102,7 +103,5 @@ function smarty_function_eF_template_printIconTable($params, &$smarty) {
      $str .= '</script>';
         
     return $str; 
-*/    
+	*/
 }
-
-?>

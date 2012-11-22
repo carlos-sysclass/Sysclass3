@@ -100,9 +100,9 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
         $maxlen = 16;
         $maxlen_title = 14;
 
-        $i_length = mb_substr_count($title,"i") + mb_substr_count($title,"é") + mb_substr_count($title,"ß");
+        $i_length = mb_substr_count($title,"i") + mb_substr_count($title,"ï¿½") + mb_substr_count($title,"ï¿½");
 
-        if (mb_strlen($title) - $i_length > $maxlen_title) {   // manos lines. Afairoume ta i,é,ß
+        if (mb_strlen($title) - $i_length > $maxlen_title) {   // manos lines. Afairoume ta i,ï¿½,ï¿½
             $str .= "<span class = 'title' title = '".$title."'><b>";
             $str .= "<img align = 'left' src = 'images/others/blank.gif' class='minus arrow' title='".$title."' alt='".$title."'/>";
             $str .= mb_substr($title, 0, $maxlen_title - 3 - mb_strlen($title) + $i_length)."...</b></span>";
@@ -136,12 +136,12 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
                     <tr height = "20">
                         <td id = "'.$key.'" class = "menuTableInactive" >
                             <a id = "'.$key.'_a" href = "'.$menu['link'].'" class = "menuLinkInactive" target = "mainframe"';
-                    $i_length = mb_substr_count($menu['title'],"i") + mb_substr_count($menu['title'],"é") + mb_substr_count($menu['title'],"ß");
+                    $i_length = mb_substr_count($menu['title'],"i") + mb_substr_count($menu['title'],"ï¿½") + mb_substr_count($menu['title'],"ï¿½");
                     if (mb_strlen($menu['title']) + (isset($menu['num'])? 2+mb_strlen($menu['num']) : 0 ) - $i_length> $maxlen) {
                         $str .= 'title = "'.$menu['title'].$str_num.'">'.mb_substr($menu['title'], 0, $maxlen - 3 - mb_strlen($menu['title']) + $i_length).'...';
-                        } else {
+					} else {
                               $str .= ' title="'.$str_num.'">'.$menu['title'];
-                        }
+                    }
                     $str .= '</a>';
                         //<!--<td width = "8" nowrap bgcolor = "'.$_SESSION['COLOR'][$key].'">&nbsp;</td></tr>-->
 
@@ -159,5 +159,3 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
 
     return $str;
 }
-
-?>

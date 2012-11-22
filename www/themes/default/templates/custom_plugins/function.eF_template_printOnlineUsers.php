@@ -3,7 +3,8 @@
 * Smarty plugin: smarty_function_eF_template_printOnlineUsers function. Prints inner table
 *
 */
-function smarty_function_eF_template_printOnlineUsers($params, &$smarty) {
+function smarty_function_eF_template_printOnlineUsers($params, &$smarty)
+{
 
     isset($params['align']) ? $align = $params['align'] : $align = 'left';
 
@@ -27,5 +28,3 @@ function smarty_function_eF_template_printOnlineUsers($params, &$smarty) {
 
     return $str;
 }
-
-?>

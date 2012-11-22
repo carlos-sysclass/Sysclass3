@@ -107,4 +107,3 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
     }
     return $str;
 }
-?>

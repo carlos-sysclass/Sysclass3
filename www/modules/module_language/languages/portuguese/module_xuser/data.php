@@ -37,7 +37,3 @@ define("_MODULE_XUSERS_CELULAR", "Celular");
 define("_MODULE_XUSERS_SAVE", "Salvar");
 
 define("__XUSER_RESPONSIBLE_TYPE", "Tipo do Responsável");
-
-
-
-?>

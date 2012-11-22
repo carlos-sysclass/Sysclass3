@@ -142,14 +142,12 @@ function smarty_function_eF_template_printPNG($params, &$smarty) {
         $x=str_replace($original,$new_tag,$x);
     }
     
-    if($inScript){
+    if ($inScript){
         // before the return, put the script tags back in. (I was having problems when there was
         // javascript that had image tags for PNGs in it when using this function...
-        $x=str_replace($placeholders,$saved_scripts,$x);
+        $x = str_replace($placeholders,$saved_scripts,$x);
     }
     
     return $x;
 
 }
-
-?>

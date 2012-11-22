@@ -36,4 +36,3 @@ define("__PAGAMENTO_BOLETO_SACADO_NAO_ENCONTRADO", "Não encontrado");
 define("__PAGAMENTO_BOLETO_NAO_EXISTE", "Não existente");
 
 define("__XPAYMENT_BOLETO_INSTRUCOES_MATRICULA_LABEL", "Intruções para Matrícula");
-?>

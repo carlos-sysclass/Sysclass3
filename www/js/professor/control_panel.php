@@ -10,4 +10,3 @@
     header($ExpStr);
 
     include ("control_panel.js");
-?>

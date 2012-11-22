@@ -710,4 +710,3 @@ public function addUser($user, $roles = 'student', $confirmed = true) {
 		
 	}
 }
-?>

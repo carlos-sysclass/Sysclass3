@@ -74,4 +74,3 @@ define("__XPAY_TO_SUBTRACT_VALUE", "Considerado");
 define("__XPAY_JUSTIFICATION", "Justificativa");
 define("__XPAY_DUE_DATE", "Data de Vencimento"); 
 define("__XPAY_VALUE", "Valor");
-?>

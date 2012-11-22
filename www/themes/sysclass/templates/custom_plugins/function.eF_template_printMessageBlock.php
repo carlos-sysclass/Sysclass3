@@ -3,7 +3,8 @@
 * prints a block
 *
 */
-function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
+function smarty_function_eF_template_printMessageBlock($params, &$smarty)
+{
     !isset($params['type']) || !$params['type'] ? $params['type'] = 'failure' : null;
     if ($params['type'] == 'success') {
         $messageImage = '<img width="24" height="24" src = "/themes/sysclass/images/icons/small/white/alert_2.png" alt = "'._SUCCESS.'" title = "'._SUCCESS.'">';
@@ -44,4 +45,3 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
     
     return $str;
 }
-?>

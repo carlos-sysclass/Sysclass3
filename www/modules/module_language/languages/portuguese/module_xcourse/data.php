@@ -90,5 +90,3 @@ define("__XCOURSE_MODULE", "Módulo");
 /* A ACERTAR */
 define("_MODULE_XCOURSES_SAVE", "Salvar");
 define("_XCOURSE_OPENLESSONS", "Iniciar aula");
-
-?>

@@ -40,4 +40,3 @@ define("__NEWMESSAGE", "new message");
 define("__NEWMESSAGES", "new messages.");
 
 define("__CHANGEAVATAR", "change avatar");
-?>

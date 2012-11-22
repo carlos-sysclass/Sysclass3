@@ -3,7 +3,8 @@
 * Smarty plugin: smarty_function_eF_template_printNavigation function. 
 *
 */
-function smarty_function_eF_template_printNavigation($params, &$smarty) {
+function smarty_function_eF_template_printNavigation($params, &$smarty)
+{
     $previous = $params['previous'];
     $next     = $params['next'];
 
@@ -31,5 +32,3 @@ function smarty_function_eF_template_printNavigation($params, &$smarty) {
     return $str;
 
 }
-
-?>

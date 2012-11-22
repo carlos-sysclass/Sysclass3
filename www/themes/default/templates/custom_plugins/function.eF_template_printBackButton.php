@@ -17,5 +17,3 @@ function smarty_function_eF_template_printBackButton($params, &$smarty) {
     
     return $code;
 }
-
-?>

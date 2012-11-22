@@ -3,12 +3,13 @@
 * prints a block
 *
 */
-function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
+function smarty_function_eF_template_printMessageBlock($params, &$smarty)
+{
     !isset($params['type']) || !$params['type'] ? $params['type'] = 'failure' : null;
     if ($params['type'] == 'success') {
         $messageImage = '<img src = "images/32x32/success.png" alt = "'._SUCCESS.'" title = "'._SUCCESS.'">';
     } else {
-        $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';        
+        $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
     }
 
 	if (mb_strlen($params['content']) > 1000) {
@@ -31,4 +32,3 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
     
     return $str;
 }
-?>

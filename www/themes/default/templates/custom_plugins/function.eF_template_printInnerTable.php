@@ -175,4 +175,3 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
     
     return $str;
 }
-?>

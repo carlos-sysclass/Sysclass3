@@ -838,4 +838,3 @@ function LoginRedirect($user_type) {
 		eF_redirect("userpage.php");
 	}
 }
-?>

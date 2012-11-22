@@ -3,20 +3,21 @@
 * prints a block
 *
 */
-function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
+function smarty_function_eF_template_printMessageBlock($params, &$smarty)
+{
     !isset($params['type']) || !$params['type'] ? $params['type'] = 'failure' : null;
     if ($params['type'] == 'success') {
         $messageImage 	= '<img src = "images/32x32/success.png" alt = "'._SUCCESS.'" title = "'._SUCCESS.'">';
         $stringType		= 'sucesso';
     } elseif ($params['type'] == 'warning') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Atenção';        
+        $stringType		= 'Atenção';
     } elseif ($params['type'] == 'information') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Informação';        
+        $stringType		= 'Informação';
 	} elseif ($params['type'] == 'failure') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Erro';        
+        $stringType		= 'Erro';
     } else {
     	$params['type'] = "Other";
     	
@@ -49,4 +50,3 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty) {
     
     return $str;
 }
-?>

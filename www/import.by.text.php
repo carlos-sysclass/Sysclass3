@@ -8,7 +8,7 @@
  * @version 3.0.0
  */
 
-set_time_limit ( 300 );
+set_time_limit(300);
  
 session_cache_limiter('nocache');
 session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
@@ -29,15 +29,15 @@ $courses = array(8,8);
 $classes = array(1,2);
 
 
-foreach($filenames as $index => $filename) {
+foreach ($filenames as $index => $filename) {
 	$handle =  fopen($filename, 'r');
 	$students 	= array();
 	//$keys		= array('nome', 'email', 'telefone', 'instituicao_formacao', '_data_nascimento', 'localidade', 'empregabilidade', 'escolaridade');
 	$keys		= array('registro', 'nome', 'email', 'telefone', 'endereco', 'bairro', 'cidade');
 	
-	while($student_raw = fgets($handle)) {
+	while ($student_raw = fgets($handle)) {
 		
-		$student_raw = str_replace("\n", "", $student_raw);	
+		$student_raw = str_replace("\n", "", $student_raw);
 		$student_array = explode("\t", $student_raw);
 		
 		$students[] = array_combine($keys, $student_array);
@@ -47,7 +47,7 @@ foreach($filenames as $index => $filename) {
 	
 	$array_states = localization::getStateList();
 	
-	foreach($students as &$student) {
+	foreach ($students as &$student) {
 		// CLEAN, MERGE, PROCESS STUDENT DATA
 		
 		//1. break name
@@ -80,11 +80,11 @@ foreach($filenames as $index => $filename) {
 	$classeID	= $classes[$index];
 	$course = new MagesterCourse($courseID);
 	
-	foreach($students as &$student) {
+	foreach ($students as &$student) {
 		$insert['name'] = $_GET['name'];
 		$insert['surname'] = $_GET['surname'];
 	
-		// GENERATE LOGIN AND PASSWORD BASED ON NAME AND SURNAME 
+		// GENERATE LOGIN AND PASSWORD BASED ON NAME AND SURNAME
 		$student['login']		= MagesterUser::generateNewLogin($student['name'], $student['surname']);
 		$student['password']	= MagesterUser::generateMD5Password();
 		$student['languages_NAME'] = 'portuguese';
@@ -147,4 +147,3 @@ foreach($filenames as $index => $filename) {
 
 var_dump($inserted);
 exit;
-?>

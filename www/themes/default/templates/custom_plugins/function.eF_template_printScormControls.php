@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printSide function
 */
-function smarty_function_eF_template_printScormControls($params, &$smarty) {
+function smarty_function_eF_template_printScormControls($params, &$smarty)
+{
 
 	$params['exit'] ? $exitStr = '[<a href = "" ">exit</a>]' : $exitStr = '';
 	$params['exitAll'] ? $exitAllStr = '[<a href = "" ">exitAll</a>]' : $exitAllStr = '';
@@ -12,5 +13,3 @@ function smarty_function_eF_template_printScormControls($params, &$smarty) {
 	
     return $exitStr.'&nbsp;'.$exitAllStr.'&nbsp;'.$abandonStr.'&nbsp;'.$abandonAllStr.'&nbsp;'.$suspendAllStr;
 }
-
-?>

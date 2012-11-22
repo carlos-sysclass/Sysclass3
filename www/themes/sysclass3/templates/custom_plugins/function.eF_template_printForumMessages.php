@@ -7,7 +7,8 @@
 * a list of forum messages.
 * 
 */
-function smarty_function_eF_template_printForumMessages($params, &$smarty) {
+function smarty_function_eF_template_printForumMessages($params, &$smarty)
+{
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...
     
@@ -22,16 +23,18 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty) {
     for ($i = 0; $i < $limit; $i++) {
         $params['data'][$i]['title'] ? $title_message = $params['data'][$i]['title'] : $title_message = '<span class = "emptyCategory">'._NOTITLE.'</span>';
         if (mb_strlen($params['data'][$i]['title']) > $max_title_size) {
-            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';                                 //If the message title is large, cut it and append ... 
+            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';
+            //If the message title is large, cut it and append ...
         }
         $str .= '
             <tr><td>
-                    <span class = "counter">'.($i + 1).'.</span> 
-                    <a title="'.$params['data'][$i]['title'].'" href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>'; 
+			<span class = "counter">'.($i + 1).'.</span> 
+            <a title="'.$params['data'][$i]['title'].'"
+				href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>';
 
-        if (isset($params['data'][$i]['show_lessons_name'])) {	
+        if (isset($params['data'][$i]['show_lessons_name'])) {
         	$str .= "<b>".$params['data'][$i]['show_lessons_name'] . "</b>: ";
-        } 
+        }
         $str .= $title_message. '</a>
                 </td><td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';
         $title2 = '#filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
@@ -39,7 +42,7 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty) {
         $str .= '<span title = "'.$title2.'">'.eF_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
         $str .= '
                 </td></tr>';
-    } 
+    }
 
     if ($i == 0) {
         $str .= '
@@ -48,7 +51,5 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty) {
     
     $str .= '</table>';
     
-    return $str; 
+    return $str;
 }
-
-?>

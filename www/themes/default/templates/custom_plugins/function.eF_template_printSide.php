@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printSide function
 */
-function smarty_function_eF_template_printSide($params, &$smarty) {
+function smarty_function_eF_template_printSide($params, &$smarty)
+{
     $str = '
                         <table class = "sideTable">
                             <tr><td>
@@ -34,5 +35,3 @@ function smarty_function_eF_template_printSide($params, &$smarty) {
     
     return $str;
 }
-
-?>

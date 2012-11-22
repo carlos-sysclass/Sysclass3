@@ -129,4 +129,3 @@ define("__XPAYMENT_VIEW_TO_SEND_LIST" , "Montar lista de envio");
 define("_MODULE_PAGAMENTO_UPDATE_INVOICES_STATUS", "Atualizar Status de Pagamentos");
 define("_PAGAMENTO_SELECT_VENCIMENTO", "Novo vencimento");
 define("_PAGAMENTO_EDITINVOICESDIALOG", "Edição de Boleto");
-?>

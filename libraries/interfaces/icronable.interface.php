@@ -1,6 +1,6 @@
 <?php
 /** @todo CREATE FUNCTIONS TO REGISTER CRON EVENTS */
-interface ICronable {
+interface ICronable
+{
 	public function onCronEvent(array $contraints);
 }
-?>

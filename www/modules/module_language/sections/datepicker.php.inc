@@ -147,4 +147,3 @@ $result = array(
 );
 
 return $result;
-?>

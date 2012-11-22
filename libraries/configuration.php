@@ -126,4 +126,3 @@ if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_RED
 	/**Include function files*/
 	require_once('globals.php');
 }
-?>

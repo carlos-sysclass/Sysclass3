@@ -4,7 +4,8 @@
 *
 */
 
-function smarty_function_eF_template_printSurveysList($params ,  &$smarty){
+function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
+{
     
     $str = '';
     
@@ -96,7 +97,7 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty){
                                 continue;
                             }
                         }
-                        if( strcmp($params['user_type'],"professor") == 0 ){
+                        if (strcmp($params['user_type'],"professor") == 0) {
                             $str .='<td align="center"><a href="professor.php?ctg=survey&action=view_users&surveys_ID='.$params['data'][$i]['id'].'">'.$users['done_users'][0]['count(*)'].'/'.$users['total_users'][0]['count(*)'].'</a></td>
                                 <td align="center">
                                     <a href="professor.php?ctg=survey&action=create_survey&survey_action=update&surveys_ID='.$params['data'][$i]['id'].'&screen=1"><img src="images/16x16/edit.png" border="0px" title="'._EDITSURVEY.'"/></a>
@@ -106,13 +107,13 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty){
                                     <a href="professor.php?ctg=survey&action=delete&surveys_ID='.$params['data'][$i]['id'].'" onclick="return confirm(\''._IRREVERSIBLEACTIONAREYOUSURE.'\');"><img src="images/16x16/error_delete.png" border="0px" title="'._DELETE.'"/></a>
                                 </td>';
                         }
-                        if( strcmp($params['user_type'] , "professor") == 0){
-                            if(time() > $params['data'][$i]['end_date']){
+                        if (strcmp($params['user_type'] , "professor") == 0) {
+                            if (time() > $params['data'][$i]['end_date']) {
                                 $str .='
                                     <td><input class="flatButton" type="button" value="'._PUBLISH.'" disabled></td>
                                     </tr>
                                     ';
-                            }else{
+                            } else {
                                 $str .='
                                     <td><input class="flatButton" type="button" value="'._PUBLISH.'" onclick="Javascript:self.location=\'professor.php?ctg=survey&action=publish&lessons_ID='.$params['lessons_ID'].'&surveys_ID='.$params['data'][$i]['id'].'\'" ></td>
                                     </tr>
@@ -125,6 +126,4 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty){
             </form></td></tr></table>
             ';
     return $str;
-} 
-
-?>
+}

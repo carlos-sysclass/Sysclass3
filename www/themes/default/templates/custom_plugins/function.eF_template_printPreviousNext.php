@@ -46,4 +46,3 @@ function smarty_function_eF_template_printPreviousNext($params, &$smarty) {
 */
     return $previousStr.'&nbsp;'.$nextStr;
 }
-?>

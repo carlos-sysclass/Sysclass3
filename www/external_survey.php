@@ -62,5 +62,3 @@ if(!isset($_GET['username']) || !isset($_GET['coupon']) || !isset($_GET['surveys
 }
 
 $smarty -> display('external_survey.tpl');
-
-?>

@@ -420,5 +420,3 @@ $dadosboleto['instrucoes1'] = '';
 $dadosboleto['instrucoes2'] = '';
 $dadosboleto['instrucoes3'] = '';
 $dadosboleto['instrucoes4'] = '';
-
-?>

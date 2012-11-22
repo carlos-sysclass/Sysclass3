@@ -6,7 +6,8 @@
 * Its name should be the same as the one provided in the module.xml file
 
 */
-class module_pagamento extends MagesterExtendedModule {
+class module_pagamento extends MagesterExtendedModule
+{
 	
 	/** @todo: pensar em criar uma classe-pai para todos os sub-modulos... colocando as funções obrigatórias nela (abstratas) */
 	const CREATE_PAYMENT_TYPE		= 'create_payment_type';

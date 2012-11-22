@@ -256,4 +256,3 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 	</div>
 
  */
-?>

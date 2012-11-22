@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printMessage function
 */
-function smarty_function_eF_template_printMessageSurvey($params, &$smarty) {
+function smarty_function_eF_template_printMessageSurvey($params, &$smarty)
+{
 
     if (isset($params['message'])) {
         if (mb_strlen($params['message']) > 1000) {
@@ -14,7 +15,7 @@ function smarty_function_eF_template_printMessageSurvey($params, &$smarty) {
         if (isset($params['type']) && $params['type'] == 'success') {
             $image = '<img src = "images/32x32/success.png" title = "'._SUCCESS.'" alt = "'._SUCCESS.'"/>';
             $class = "message_success";
-        } else if (isset($params['type']) && $params['type'] == 'system_announcement'){
+        } elseif (isset($params['type']) && $params['type'] == 'system_announcement'){
             $image = '<img src = "images/32x32/tools.png"  title = "'._SYSTEM.'" alt = "'._SYSTEM.'" />';
             $class = "message_announcement";
         } else {
@@ -31,13 +32,11 @@ function smarty_function_eF_template_printMessageSurvey($params, &$smarty) {
                     	</td><td class = "'.$class.'">
                     		<img src = "images/16x16/close.png" alt = "'._CLOSE.'" title = "'._CLOSE.'" onclick = "document.getElementById(\'messageTable\').style.display=\'none\';">
                     	</td></tr>
-                </table>';            
+                </table>';
         
-    } else {
+	} else {
         $str = '';
-     }
+	}
     
     return $str;
 }
-
-?>

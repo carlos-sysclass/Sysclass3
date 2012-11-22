@@ -1,8 +1,8 @@
 <?php
-define("_BANNERS_BANNERS","Ad Banners");
+define("_BANNERS_BANNERS", "Ad Banners");
 define("_BANNERS_MODULE", "Ad Banners Module");
 define("_BANNERS_MAIN", "Main page");
-define("_BANNERS_MANAGEMENT","Manage banners");
+define("_BANNERS_MANAGEMENT", "Manage banners");
 define("_BANNERS_ADDBANNER", "Add Banner");
 define("_BANNERS_IMAGE", "Image");
 define("_BANNERS_LINK", "Link");
@@ -19,4 +19,3 @@ define("_BANNERS_DELETEBANNER", "Delete banner");
 define("_BANNERS_EDITBANNER", "Edit banner");
 define("_BANNERS_GOTOBANNERSPAGE", "Go to Ad Banners page");
 define("_BANNERS_ORSELECTONEFROMLIST", "Or select one from list");
-?>

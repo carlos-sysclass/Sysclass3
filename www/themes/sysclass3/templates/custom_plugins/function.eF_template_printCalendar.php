@@ -306,4 +306,3 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
  -->
 <?php 
 }
-?>

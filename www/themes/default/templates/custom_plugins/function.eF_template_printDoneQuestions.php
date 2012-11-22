@@ -67,5 +67,3 @@ function smarty_function_eF_template_printDoneQuestions($params, &$smarty) {
     }        
     return $str; 
 }
-
-?>

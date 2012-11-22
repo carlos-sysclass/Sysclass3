@@ -6,7 +6,8 @@
 *
 
 */
-function smarty_function_eF_template_printOptions($params, &$smarty) {
+function smarty_function_eF_template_printOptions($params, &$smarty)
+{
 	
 	//var_dump($params);
 	
@@ -19,7 +20,7 @@ function smarty_function_eF_template_printOptions($params, &$smarty) {
 		);
 		foreach ($params['links'] as $linkId => $linkData) {
 			if ($linkData['group'] == $groupId) {
-				$groupedParams["links"][] = array(				
+				$groupedParams["links"][] = array(
 					"text"	=> $linkData["text"],
 					"image"	=> $linkData["image"],
 					"href"	=> $linkData["href"]
@@ -36,4 +37,3 @@ function smarty_function_eF_template_printOptions($params, &$smarty) {
 	//exit;
 	return $result;
 }
-?>

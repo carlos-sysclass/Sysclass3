@@ -46,4 +46,3 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
  }
  $smarty -> assign("T_CUSTOMIZATION_DISABLE_FORM", $customizationDisableForm -> toArray());
 }
-?>
