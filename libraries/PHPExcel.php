@@ -214,7 +214,7 @@ class PHPExcel
      */
     public function addSheet(PHPExcel_Worksheet $pSheet = null, $iSheetIndex = null)
     {
-        if ($iSheetIndex === NULL) {
+        if ($iSheetIndex === null) {
             $this->_workSheetCollection[] = $pSheet;
         } else {
             // Insert the sheet at the requested index
@@ -223,7 +223,7 @@ class PHPExcel
                 $iSheetIndex,
                 0,
                 array($pSheet)
-                );
+			);
 
 			// Adjust active sheet index if necessary
 			if ($this->_activeSheetIndex >= $iSheetIndex) {
@@ -421,7 +421,7 @@ class PHPExcel
 	 */
 	public function addExternalSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null)
 	{
-		if ($this->getSheetByName($pSheet->getTitle()) !== NULL) {
+		if ($this->getSheetByName($pSheet->getTitle()) !== null) {
 			throw new Exception("Workbook already contains a worksheet named '{$pSheet->getTitle()}'. Rename the external sheet first.");
 		}
 

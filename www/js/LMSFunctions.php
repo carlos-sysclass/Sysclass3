@@ -790,7 +790,10 @@ function myCmi()
         var student_id = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('403'); }
-            var value = "<?php $student_id=$_SESSION['s_login']; echo $student_id; ?>";
+            var value = "<?php 
+            	$student_id=$_SESSION['s_login']; 
+            	echo $student_id; 
+            ?>";
         }
         /**
 
@@ -892,12 +895,13 @@ function myCmi()
             }
             this.set = function(param) { throw new myError('403'); }
             var value = '';
-            <?php //If the content is beeing reviewed by the professor, we are in no-credit mode
-                if ($_SESSION['s_type'] == 'professor' || (isset($_SESSION['nocredit']) && $_SESSION['nocredit'])) {
-                    echo "value = 'no-credit';";
-                } else {
-                    echo "value = 'credit';";
-                }
+            <?php 
+//If the content is beeing reviewed by the professor, we are in no-credit mode
+if ($_SESSION['s_type'] == 'professor' || (isset($_SESSION['nocredit']) && $_SESSION['nocredit'])) {
+	echo "value = 'no-credit';";
+} else {
+	echo "value = 'credit';";
+}
             ?>
         }
         /**
