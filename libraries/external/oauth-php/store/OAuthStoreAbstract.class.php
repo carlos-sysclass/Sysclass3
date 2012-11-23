@@ -2,24 +2,24 @@
 
 /**
  * Abstract base class for OAuthStore implementations
- * 
+ *
  * @version $Id$
  * @author Marc Worrell <marcw@pobox.com>
- * 
+ *
  * The MIT License
- * 
+ *
  * Copyright (c) 2007-2008 Mediamatic Lab
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -60,39 +60,37 @@ abstract class OAuthStoreAbstract
 	abstract public function getConsumerAccessToken ( $token, $user_id );
 	abstract public function deleteConsumerAccessToken ( $token, $user_id, $user_is_admin = false );
 	abstract public function setConsumerAccessTokenTtl ( $token, $ttl );
-	
+
 	abstract public function listConsumers ( $user_id );
-	abstract public function listConsumerApplications( $begin = 0, $total = 25 ); 
+	abstract public function listConsumerApplications( $begin = 0, $total = 25 );
 	abstract public function listConsumerTokens ( $user_id );
 
 	abstract public function checkServerNonce ( $consumer_key, $token, $timestamp, $nonce );
-	
+
 	abstract public function addLog ( $keys, $received, $sent, $base_string, $notes, $user_id = null );
 	abstract public function listLog ( $options, $user_id );
-	
-	abstract public function install ();	
-	
+
+	abstract public function install ();
+
 	/**
 	 * Fetch the current static consumer key for this site, create it when it was not found.
 	 * The consumer secret for the consumer key is always empty.
-	 * 
-	 * @return string	consumer key 
+	 *
+	 * @return string	consumer key
 	 */
-	
-	
+
 	/* ** Some handy utility functions ** */
-	
+
 	/**
 	 * Generate a unique key
-	 * 
+	 *
 	 * @param boolean unique	force the key to be unique
 	 * @return string
 	 */
 	public function generateKey ( $unique = false )
 	{
 		$key = md5(uniqid(rand(), true));
-		if ($unique)
-		{
+		if ($unique) {
 			list($usec,$sec) = explode(' ',microtime());
 			$key .= dechex($usec).dechex($sec);
 		}
@@ -101,7 +99,7 @@ abstract class OAuthStoreAbstract
 
 	/**
 	 * Check to see if a string is valid utf8
-	 * 
+	 *
 	 * @param string $s
 	 * @return boolean
 	 */
@@ -117,34 +115,27 @@ abstract class OAuthStoreAbstract
 	       |\xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
 	       )+%xs', $s);
 	}
-	
-	
+
 	/**
 	 * Make a string utf8, replacing all non-utf8 chars with a '.'
-	 * 
+	 *
 	 * @param string
 	 * @return string
 	 */
 	protected function makeUTF8 ( $s )
 	{
-		if (function_exists('iconv'))
-		{
-			do
-			{
+		if (function_exists('iconv')) {
+			do {
 				$ok   = true;
 				$text = @iconv('UTF-8', 'UTF-8//TRANSLIT', $s);
-				if (strlen($text) != strlen($s))
-				{
+				if (strlen($text) != strlen($s)) {
 					// Remove the offending character...
 					$s  = $text . '.' . substr($s, strlen($text) + 1);
 					$ok = false;
 				}
-			}
-			while (!$ok);
+			} while (!$ok);
 		}
 		return $s;
 	}
-	
-}
 
-?>
+}

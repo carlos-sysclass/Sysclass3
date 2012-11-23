@@ -37,7 +37,6 @@ class MagesterPdf
          'content_font_size' => 6,
          'default_font' => 'dejavusans');
 
-
  /**
 	 * Create a PDF instance, using the designated title
 	 *
@@ -45,7 +44,8 @@ class MagesterPdf
 	 * @since 3.6.7
 	 * @access public
 	 */
- public function __construct($title = 'PDF Report') {
+ public function __construct($title = 'PDF Report')
+ {
   $this->initializePdf();
   $this->printPdfHeader($title);
  }
@@ -65,7 +65,8 @@ class MagesterPdf
 	 * @since 3.6.7
 	 * @access public
 	 */
- public function printInformationSection($title, $info, $imageFile = false) {
+ public function printInformationSection($title, $info, $imageFile = false)
+ {
   if (sizeof($info) > 0) {
    $this->printSectionTitle($title);
    $this->printSectionImage($imageFile);
@@ -93,7 +94,8 @@ class MagesterPdf
 	 * @since 3.6.7
 	 * @access public
 	 */
- public function printDataSection($title, $data, $formatting, $subSections = array()) {
+ public function printDataSection($title, $data, $formatting, $subSections = array())
+ {
   if (sizeof($data) > 0) {
    if ($title) {
     $this->printSectionTitle($title);
@@ -134,25 +136,26 @@ class MagesterPdf
 	 * @since 3.6.7
 	 * @access public
 	 */
- public function outputPdf($name = 'report.pdf') {
+ public function outputPdf($name = 'report.pdf')
+ {
   header("Content-type: application/pdf");
   header("Content-disposition: attachment; filename=".$name);
   echo $this->pdf->Output('', 'S');
   //$this->pdf->Output($name, 'D');
  }
 
-
- private function calculateRowHeight($row, $formatting) {
+ private function calculateRowHeight($row, $formatting)
+ {
   $height = 0;
   foreach ($row as $columnTitle => $column) {
    $height = max($height, $this->pdf->getStringHeight($formatting[$columnTitle]['width'], $column));
   }
+
   return $height;
  }
 
-
-
- private function setDataSectionRowColor(& $row, & $count) {
+ private function setDataSectionRowColor(& $row, & $count)
+ {
   if (!isset($row['active']) || $row['active']) {
    ($count++%2) ? $this->pdf->setTextColor(18,52,86) : $this->pdf->setTextColor(101,67,33);
   } else {
@@ -161,8 +164,8 @@ class MagesterPdf
   unset($row['active']);
  }
 
-
- private function getFormatting($columnFormatting, $row) {
+ private function getFormatting($columnFormatting, $row)
+ {
   $pageWidth = $this->pdf->GetPageWidth();
   $columnWidth = ($pageWidth/sizeof($row)) - 10;
 
@@ -173,7 +176,7 @@ class MagesterPdf
   foreach ($row as $title => $foo) {
    if (isset($columnFormatting[$title]['width'])) {
     if (strpos($columnFormatting[$title]['width'], '%') !== false) {
-     $width = (($pageWidth - 20)*((int)$columnFormatting[$title]['width'])/100);
+     $width = (($pageWidth - 20)*((int) $columnFormatting[$title]['width'])/100);
     } else {
      $width = $columnFormatting[$title]['width'];
     }
@@ -188,11 +191,11 @@ class MagesterPdf
           'fill' => $columnFormatting[$title]['fill'] ? true : false);
   }
 
-
   return $formatting;
  }
 
- private function printColumnTitles($titleRow, $formatting) {
+ private function printColumnTitles($titleRow, $formatting)
+ {
   $this->pdf->setTextColor(0,0,0);
   $idx = 1;
   unset($titleRow['active']);
@@ -206,8 +209,8 @@ class MagesterPdf
   }
  }
 
-
- private function printSectionImage($imageFile){
+ private function printSectionImage($imageFile)
+ {
   try {
    if ($imageFile) {
     if (!($imageFile instanceOf MagesterFile)) {
@@ -217,21 +220,25 @@ class MagesterPdf
      $this->pdf->Image($imageFile['path'], '', '', 0, 0, '', '', 'T');
     }
    }
-  } catch (Exception $e) {/*do nothing if the image could not be embedded*/}
+  } catch (Exception $e) {/*do nothing if the image could not be embedded*/
+  }
  }
 
- public function printSectionTitle($title) {
+ public function printSectionTitle($title)
+ {
   $this->pdf->setTextColor(0,0,0);
   $this->pdf->Ln(12);
   $this->printMediumTitle($title);
   $this->pdf->Ln(2);
  }
 
- private function initializePdf() {
+ private function initializePdf()
+ {
   $this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
  }
 
- private function printPdfHeader($title) {
+ private function printPdfHeader($title)
+ {
   $this->pdf->SetCreator(formatLogin($_SESSION['s_login']));
   $this->pdf->SetAuthor(formatLogin($_SESSION['s_login']));
   $this->pdf->SetTitle($title);
@@ -259,23 +266,27 @@ class MagesterPdf
 
  }
 
- private function printLargeTitle($text) {
+ private function printLargeTitle($text)
+ {
   $this->pdf->SetFont('', 'B', $this->defaultSettings['large_header_font_size']);
   $this->pdf->Cell(0, 0, $text, 0, 2);
  }
 
- private function printMediumTitle($text) {
+ private function printMediumTitle($text)
+ {
   $this->pdf->SetFont('', 'B', $this->defaultSettings['medium_header_font_size']);
   $this->pdf->Cell(0, 0, $text, 0, 2);
   $this->pdf->SetFont('', 'B', $this->defaultSettings['content_font_size']);
  }
 
- private function printSmallTitle($text) {
+ private function printSmallTitle($text)
+ {
   $this->pdf->SetFont('', 'B', $this->defaultSettings['small_header_font_size']);
   $this->pdf->Cell(0, 0, $text, 0, 2);
  }
 
- private function printSeparatorHeader($text) {
+ private function printSeparatorHeader($text)
+ {
   $this->pdf->Ln(12);
   $this->pdf->SetFont($defaultFont, 'B', $this->defaultSettings['medium_header_font_size']);
   $this->pdf->SetFillColor(220, 220, 220);
@@ -283,7 +294,8 @@ class MagesterPdf
   $this->pdf->SetFillColor(240, 240, 240);
  }
 
- private function printSimpleContent($text, $multi = true) {
+ private function printSimpleContent($text, $multi = true)
+ {
   $this->pdf->SetFont('', '', $this->defaultSettings['content_font_size']);
   if ($multi) {
    $this->pdf->MultiCell(0, 0, $text, 0, 'L', 0, 1);
@@ -292,7 +304,8 @@ class MagesterPdf
   }
  }
 
- private function printMultiContent($text, $formatting, $newLine = 0) {
+ private function printMultiContent($text, $formatting, $newLine = 0)
+ {
   $this->pdf->SetFont('', $formatting['bold'], $this->defaultSettings['content_font_size']);
   $this->pdf->MultiCell($formatting['width'],
          $formatting['height'],
@@ -302,9 +315,5 @@ class MagesterPdf
          $formatting['fill'],
          $newLine);
  }
-
-
-
-
 
 }

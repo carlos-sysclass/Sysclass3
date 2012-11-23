@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Imap.php 12519 2008-11-10 18:41:24Z alexander $
  */
-
 
 /**
  * @see Zend_Mail_Storage_Abstract
@@ -123,9 +122,9 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         if ($flags === null) {
             return count($this->_protocol->search(array('ALL')));
         }
-    
+
         $params = array();
-        foreach ((array)$flags as $flag) {
+        foreach ((array) $flags as $flag) {
             if (isset(self::$_searchFlags[$flag])) {
                 $params[] = self::$_searchFlags[$flag];
             } else {
@@ -133,6 +132,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
                 $params[] = $this->_protocol->escapeString($flag);
             }
         }
+
         return count($this->_protocol->search($params));
     }
 
@@ -148,6 +148,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         if ($id) {
             return $this->_protocol->fetch('RFC822.SIZE', $id);
         }
+
         return $this->_protocol->fetch('RFC822.SIZE', 1, INF);
     }
 
@@ -237,7 +238,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         $this->_has['flags'] = true;
@@ -246,13 +247,14 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
             $this->_protocol = $params;
             try {
                 $this->selectFolder('INBOX');
-            } catch(Zend_Mail_Storage_Exception $e) {
+            } catch (Zend_Mail_Storage_Exception $e) {
                 /**
                  * @see Zend_Mail_Storage_Exception
                  */
                 require_once 'Zend/Mail/Storage/Exception.php';
                 throw new Zend_Mail_Storage_Exception('cannot select INBOX, is this a valid transport?');
             }
+
             return;
         }
 
@@ -383,7 +385,6 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         throw new Zend_Mail_Storage_Exception('unique id not found');
     }
 
-
     /**
      * get root folder or given folder
      *
@@ -394,7 +395,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      */
     public function getFolders($rootFolder = null)
     {
-        $folders = $this->_protocol->listMailbox((string)$rootFolder);
+        $folders = $this->_protocol->listMailbox((string) $rootFolder);
         if (!$folders) {
             /**
              * @see Zend_Mail_Storage_Exception
@@ -428,7 +429,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
                     array_push($folderStack, $parentFolder);
                     $parentFolder = $folder;
                     break;
-                } else if ($stack) {
+                } elseif ($stack) {
                     $parent = array_pop($stack);
                     $parentFolder = array_pop($folderStack);
                 }
@@ -468,7 +469,6 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         }
     }
 
-
     /**
      * get Zend_Mail_Storage_Folder instance for current folder
      *
@@ -496,7 +496,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         // TODO: we assume / as the hierarchy delim - need to get that from the folder class!
         if ($parentFolder instanceof Zend_Mail_Storage_Folder) {
             $folder = $parentFolder->getGlobalName() . '/' . $name;
-        } else if ($parentFolder != null) {
+        } elseif ($parentFolder != null) {
             $folder = $parentFolder . '/' . $name;
         } else {
             $folder = $name;
@@ -616,7 +616,8 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      * @return null
      * @throws Zend_Mail_Storage_Exception
      */
-    public function moveMessage($id, $folder) {
+    public function moveMessage($id, $folder)
+    {
         $this->copyMessage($id, $folder);
         $this->removeMessage($id);
     }
@@ -641,4 +642,3 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
         }
     }
 }
-

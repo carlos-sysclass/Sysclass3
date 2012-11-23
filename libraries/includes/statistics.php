@@ -25,7 +25,7 @@ if ($currentUser -> user['user_type'] != 'administrator') {
         if ($lessonRoles[$type] == 'professor') {
             $isProfessor = 1;
             $professorLessons[] = $key;
-        } else if ($type == 'student') {
+        } elseif ($type == 'student') {
             $isStudent = 1;
             $studentLessons[] = $key;
         }
@@ -38,7 +38,7 @@ if ($currentUser -> user['user_type'] != 'administrator' && !$isSupervisor) {
     if ($isProfessor) {
         if (isset($currentLesson) && !in_array($currentLesson -> lesson['id'], $professorLessons)) {
             $_GET['option'] = 'user';
-        } else if (!isset($currentLesson) && $currentUser -> user['user_type'] != 'professor') {
+        } elseif (!isset($currentLesson) && $currentUser -> user['user_type'] != 'professor') {
             $_GET['option'] = 'user';
         }
     } else {
@@ -60,7 +60,7 @@ try {
 			$options[] = array('text' => _COURSESTATISTICS, 'image' => "32x32/relatorios-courses.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=course");
 			$options[] = array('text' => _SYSTEMSTATISTICS, 'image' => "32x32/relatorios-reports.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=system");
 			$smarty -> assign("T_STATISTICS_OPTIONS", $options);
-		} else if ($isProfessor) {
+		} elseif ($isProfessor) {
 			$options[] = array('text' => _USERSTATISTICS, 'image' => "32x32/relatorios-user.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=user");
 			$options[] = array('text' => _LESSONSTATISTICS, 'image' => "32x32/relatorios-lessons.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=lesson");
 			$options[] = array('text' => _COURSESTATISTICS, 'image' => "32x32/relatorios-courses.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=course");
@@ -69,39 +69,39 @@ try {
 			$options[] = array('text' => _BRANCHSTATISTICS, 'image' => "32x32/branch.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=branches");
 			}
 			$smarty -> assign("T_STATISTICS_OPTIONS", $options);
-		} else if ($isSupervisor) {
+		} elseif ($isSupervisor) {
 			$options[] = array('text' => _USERSTATISTICS, 'image' => "32x32/relatorios-user.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=user");
 			$options[] = array('text' => _COURSESTATISTICS, 'image' => "32x32/relatorios-courses.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=course");
 			$options[] = array('text' => _BRANCHSTATISTICS, 'image' => "32x32/relatorios-branch.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=branches");
 			$options[] = array('group' => 1, 'text' => _ADVANCEDUSERREPORTS, 'image' => "32x32/users.png", 'href' => $_SERVER['PHP_SELF']."?ctg=statistics&option=advanced_user_reports");
 			$smarty -> assign("T_STATISTICS_OPTIONS", $options);
 		}
-	} else if ($_GET['option'] == 'user') {
-		require_once("statistics/users_stats.php");
-	} else if ($_GET['option'] == 'lesson') {
-		require_once("statistics/lessons_stats.php");
-	} else if ($_GET['option'] == 'course') {
-		require_once("statistics/courses_stats.php");
-	} else if ($_GET['option'] == 'test') {
-		require_once("statistics/tests_stats.php");
-	} else if ($_GET['option'] == 'feedback') {
-		require_once("statistics/feedback_stats.php");
-	} else if ($_GET['option'] == 'system') {
-		require_once("statistics/system_stats.php");
+	} elseif ($_GET['option'] == 'user') {
+		require_once 'statistics/users_stats.php';
+	} elseif ($_GET['option'] == 'lesson') {
+		require_once 'statistics/lessons_stats.php';
+	} elseif ($_GET['option'] == 'course') {
+		require_once 'statistics/courses_stats.php';
+	} elseif ($_GET['option'] == 'test') {
+		require_once 'statistics/tests_stats.php';
+	} elseif ($_GET['option'] == 'feedback') {
+		require_once 'statistics/feedback_stats.php';
+	} elseif ($_GET['option'] == 'system') {
+		require_once 'statistics/system_stats.php';
 	} elseif ($_GET['option'] == 'custom') {
-		require_once("statistics/custom_stats.php");
+		require_once 'statistics/custom_stats.php';
 	} elseif ($_GET['option'] == 'certificate') {
-		require_once("statistics/certificates_stats.php");
+		require_once 'statistics/certificates_stats.php';
 	} elseif ($_GET['option'] == 'events') {
-		require_once("statistics/events_stats.php");
-	} else if ($_GET['option'] == "groups") {
-		require_once("statistics/groups_stats.php");
-	} else if ($_GET['option'] == "branches") {
-		require_once("statistics/branches_stats.php");
-	} else if ($_GET['option'] == "participation") {
-		require_once("statistics/participation_stats.php");
-	} else if ($_GET['option'] == "advanced_user_reports") {
-		require_once("statistics/advanced_user_reports.php");
+		require_once 'statistics/events_stats.php';
+	} elseif ($_GET['option'] == "groups") {
+		require_once 'statistics/groups_stats.php';
+	} elseif ($_GET['option'] == "branches") {
+		require_once 'statistics/branches_stats.php';
+	} elseif ($_GET['option'] == "participation") {
+		require_once 'statistics/participation_stats.php';
+	} elseif ($_GET['option'] == "advanced_user_reports") {
+		require_once 'statistics/advanced_user_reports.php';
 	}
 } catch (Exception $e) {
 handleNormalFlowExceptions($e);

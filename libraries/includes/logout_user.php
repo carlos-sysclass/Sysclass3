@@ -3,7 +3,7 @@
 
 * Logs out a user.
 
-* 
+*
 
 * This page provides a list of logged in users, where the administrator may pick one to log out.
 
@@ -20,9 +20,9 @@ $onlineUsers = MagesterUser :: getUsersOnline($GLOBALS['configuration']['autolog
 foreach ($onlineUsers as $value) {
     if ($value['user_type'] == 'administrator' && $value['login'] != $currentUser -> user['login']) {
         array_push($admins, $value['login']);
-    } else if ($value['user_type'] == 'professor') {
+    } elseif ($value['user_type'] == 'professor') {
         array_push($professors, $value['login']);
-    } else if ($value['user_type'] == 'student') {
+    } elseif ($value['user_type'] == 'student') {
         array_push($students, $value['login']);
     }
 }

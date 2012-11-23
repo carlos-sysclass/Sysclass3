@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -20,12 +20,10 @@
  * @version    $Id: Crammd5.php 8064 2008-02-16 10:58:39Z thomas $
  */
 
-
 /**
  * @see Zend_Mail_Protocol_Smtp
  */
 require_once 'Zend/Mail/Protocol/Smtp.php';
-
 
 /**
  * Performs CRAM-MD5 authentication
@@ -60,7 +58,6 @@ class Zend_Mail_Protocol_Smtp_Auth_Crammd5 extends Zend_Mail_Protocol_Smtp
         parent::__construct($host, $port, $config);
     }
 
-
     /**
      * @todo Perform CRAM-MD5 authentication with supplied credentials
      *
@@ -79,7 +76,6 @@ class Zend_Mail_Protocol_Smtp_Auth_Crammd5 extends Zend_Mail_Protocol_Smtp
         $this->_expect(235);
         $this->_auth = true;
     }
-
 
     /**
      * Prepare CRAM-MD5 response to server's ticket

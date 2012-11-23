@@ -95,13 +95,13 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
     $testNames = array_combine($testNames['id'], $testNames['name']);
 
 
-    foreach($doneTests[$_GET['edit_user']] as $key => $value) {
+    foreach ($doneTests[$_GET['edit_user']] as $key => $value) {
         if (in_array($key, array_keys($testNames))) {
             $lastTest = unserialize($doneTests[$_GET['edit_user']][$value['last_test_id']]);
             $userStats['done_tests'][$key] = array('name' => $testNames[$key], 'score' => $value['average_score'], 'last_test_id' => $value['last_test_id'], 'last_score' => $value['scores'][$value['last_test_id']], 'times_done' => $value['times_done'], 'content_ID' => $value[$value['last_test_id']]['content_ID']);
         }
     }
-    foreach($scormDoneTests as $key => $value) {
+    foreach ($scormDoneTests as $key => $value) {
         $userStats['scorm_done_tests'][$key] = array('name' => $value['name'], 'score' => $value['score'], 'content_ID' => $key);
     }
 
@@ -145,7 +145,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
   }
   $tableName = $_GET['ajax'];
   $alreadySorted = true;
-  include("sorted_table.php");
+  include 'sorted_table.php';
  } catch (Exception $e) {
   handleAjaxExceptions($e);
  }
@@ -173,7 +173,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
 
 		foreach ($users as $key => $user) {
 
-			if (is_array($studentTypes) && array_search($user['user_type'], $studentTypes) === false){  //keep only students and sub-students
+			if (is_array($studentTypes) && array_search($user['user_type'], $studentTypes) === false) {  //keep only students and sub-students
 
 				unset($users[$key]);
 

@@ -296,15 +296,13 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $this->_diag_color     = 0x40;
 
         // Set properties passed to Spreadsheet_Excel_Writer_Workbook::addFormat()
-        foreach ($properties as $property => $value)
-        {
+        foreach ($properties as $property => $value) {
             if (method_exists($this, 'set'.ucwords($property))) {
                 $method_name = 'set'.ucwords($property);
                 $this->$method_name($value);
             }
         }
     }
-
 
     /**
     * Generate an Excel BIFF XF record (style or cell).
@@ -487,6 +485,7 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
                                            $sss, $uls, $bFamily,
                                            $bCharSet, $reserved, $cch, $encoding);
         }
+
         return($header . $data . $this->_font_name);
     }
 
@@ -508,6 +507,7 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $key .= "$this->_font_family$this->_font_charset";
         $key .= "$this->_font_shadow$this->_color$this->_italic";
         $key  = str_replace(' ', '_', $key);
+
         return ($key);
     }
 
@@ -651,9 +651,9 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         if (preg_match("/\d/",$location)) {
             return;                      // Ignore numbers
         }
-    
+
         $location = strtolower($location);
-    
+
         if ($location == 'left') {
             $this->_text_h_align = 1;
         }
@@ -691,9 +691,9 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         if (preg_match("/\d/",$location)) {
             return;                      // Ignore numbers
         }
-    
+
         $location = strtolower($location);
- 
+
         if ($location == 'top') {
             $this->_text_v_align = 0;
         }
@@ -883,7 +883,6 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $this->_right_color = $value;
     }
 
-
     /**
     * Sets the cell's foreground color
     *
@@ -990,8 +989,7 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
     */
     function setTextRotation($angle)
     {
-        switch ($angle)
-        {
+        switch ($angle) {
             case 0:
                 $this->_rotation = 0;
                 break;
@@ -1099,4 +1097,3 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $this->_font_name = $font_family;
     }
 }
-?>

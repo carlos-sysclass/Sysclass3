@@ -6,7 +6,8 @@
 *
 
 */
-function smarty_function_eF_template_printBlock($params, &$smarty) {
+function smarty_function_eF_template_printBlock($params, &$smarty)
+{
  if ($params['title'] == "") {return '';}
     $params['link'] ? $params['title'] = '<a href = "'.$params['link'].'">'.$params['title'].'</a>' : null;
  	$params['data'] ? $params['content'] = $params['data'] : null; //'data' is used in printInnertable, and we put this here for compatibility
@@ -66,7 +67,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
      * - id: The id of the <a> tag
 
      */
-    
+
 	if (isset($params['options'])) {
 		$optionsString = '';
 		foreach ($params['options'] as $key => $value) {
@@ -114,7 +115,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 
      */
 	//if (isset($params['links']) && !isset($params['content'])) {
-	
+
     $handleString = '';
     if ($params['help'] && $GLOBALS['configuration']['disable_help'] == 0) {
         $handleString .= '<a href = "javascript:void(0);"><img src = "images/16x16/help.png"  title = "'.$GLOBALS['configuration']['help_url'].'/'.$params['help'].'" onclick = "PopupCenter(\''.$GLOBALS['configuration']['help_url'].'?title='.$params['help'].'&useskin=cologneblue&printable=yes\', \'helpwindow\', \'800\', \'500\')"></a>';
@@ -130,10 +131,10 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
     }
     //This is hidden (css) unless it's inside a sortable ul
  	$handleString .= '<img class = "blockMoveHandle" src = "images/16x16/attachment.png" alt = "'._MOVEBLOCK.'" title = "'._MOVEBLOCK.'" onmousedown = "createSortable(\'firstlist\');createSortable(\'secondlist\');if (window.showBorders) showBorders(event)" onmouseup = "if (window.showBorders) hideBorders(event)">';
- 
-		
+
+
 	if (isset($params['headerlinks'])) {
-		
+
 		!isset($params['columns']) || !$params['columns'] ? $params['columns'] = 4 : null;
 		$width = round(100 / $params['columns']); //Divide available width so that it can be equally assigned to table cells
 		//Use a default group, if none is specified. This way the algorithm for displaying groups is greatly simplified
@@ -157,35 +158,34 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 					isset($value['onclick'])&& $value['onclick'] ? $onclick = 'onclick = "'.$value['onclick'].'"' : $onclick = '';
 					isset($value['title']) && $value['title'] ? $title = 'title = "'.$value['title'].'" alt = "'.$value['title'].'"' : $title = 'title = "'.$value['text'].'" alt = "'.$value['text'].'"';
 					isset($value['selected'])&& $value['selected'] ? $liClass = 'class="current"' : $liClass = '';
-					
+
 					/*
 					return '
-					
-						
+
 					<div class="box grid_16">
-					
+
 </div>';
-					
+
 					*/
-					
+
 					if ($counter++ % $params['columns'] == 0) {
 						$linksString[$groupId] .= '<div class="toggle_container wizard"><div class="wizard_steps"><ul class="clearfix">';
 					}
 					$value['image'] && strpos($value['image'], "modules/") === false ? $value['image'] = 'images/'.$value['image'] : null; //Make sure that modules images are taken using absolute paths
-					
+
 					$linksString[$groupId] .= "
 						<li $liClass>
 							<a $id $href $onclick $target class=\"clearfix\">
 								<img $classstr src = '".$value['image']."' $title />
 								<span>" . $value['text'] . "</span>
-								
+
 							</a>
-						</li>					
+						</li>
 					";
 					/*
 						<td style = 'width:$width%;' class = 'iconData'>
 							<a $id $href $onclick $target>
-								
+
 								".."
 							</a>
 						</td>";
@@ -211,7 +211,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 		}
 		$params['headerlinks'] = /*$params['content'] = */ implode("", $linksString);
 	}
-	
+
 	if (isset($params['links'])) {
 		!isset($params['columns']) || !$params['columns'] ? $params['columns'] = 4 : null;
 		$width = round(100 / $params['columns']); //Divide available width so that it can be equally assigned to table cells
@@ -219,7 +219,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 		if (!isset($params['groups']) || sizeof($params['groups']) == 0) {
 			$params['groups'] = array(0 => 0);
 		}
-		
+
 		foreach ($params['groups'] as $groupId => $name) {
 			$counter = 0; //$counter is used to count how many icons are put in each group, so that the <tr>s are put in correct place, and empty <td>s are appended where needed
 			foreach (array_values($params['links']) as $key => $value) { //array_values makes sure that entries are displayed correctly, even if keys are not sequential
@@ -233,25 +233,25 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 					isset($value['onclick'])&& $value['onclick'] ? $onclick = 'onclick = "'.$value['onclick'].'"' : $onclick = '';
 					isset($value['title']) && $value['title'] ? $title = 'title = "'.$value['title'].'" alt = "'.$value['title'].'"' : $title = 'title = "'.$value['text'].'" alt = "'.$value['text'].'"';
 					isset($value['image_class']) && $value['image_class'] ? $value['image_class'] : '';
-					
-					$gridClass = "grid_" . floor(16 / $params['columns']); 
+
+					$gridClass = "grid_" . floor(16 / $params['columns']);
 					isset($value['selected'])&& $value['selected'] ? $liClass = 'class="' . $gridClass . ' current"' : $liClass = 'class="' . $gridClass . '"';
-					
+
 					if ($counter++ % $params['columns'] == 0) {
 						$linksString[$groupId] .= '<div class="block-links grid_16">';
 					}
 					$value['image'] && strpos($value['image'], "modules/") === false ? $value['image'] = 'images/'.$value['image'] : null; //Make sure that modules images are taken using absolute paths
-					
+
 					$linksString[$groupId] .= "
 						<div $liClass>
 							<a $id $href $onclick $target class=\"clearfix\" $title>
 								<img align=\"middle\" $classstr src = '".$value['image']."' class='" . $value['image_class'] . "'  /><br />"
-								
-								 . $value['text'] . 
+
+								 . $value['text'] .
 							"</a>
-						</div>					
+						</div>
 					";
-					
+
 					if ($counter % $params['columns'] == 0 || $counter >= count($params['links'])) {
 						$linksString[$groupId] .= '</div>';
 					}
@@ -277,13 +277,10 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 			$showContent,
 			$params['links']
 		);
-		
+
 		return $str;
 	}
-	
-	
-	
-	
+
     /**
 
      * The "main_options" parameter is used to display an options menu (much like "tabs") on the top of the block
@@ -316,13 +313,13 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
     if ($GLOBALS['currentTheme'] -> options['images_displaying'] == 2 || ($GLOBALS['currentTheme'] -> options['images_displaying'] == 1 && basename($_SERVER['PHP_SELF']) == 'index.php')) {
      $image = '';
     }
-    
 
- 
- 
+
+
+
 	if ($params['tabs']) {
 		$tabbedHeader .= '<ul class="tab_header grad_colour clearfix">';
-		foreach($params['tabs'] as $tab) {
+		foreach ($params['tabs'] as $tab) {
 			$tabbedHeader .= sprintf(
 				'<li><a href="#%1$s">%2$s</a></li>',
 				urlencode(clearStringSymbols($tab['title'])),
@@ -332,10 +329,10 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 
 		$tabbedHeader .= '</ul>';
 	}
- 
- 
+
+
 	if ($params['tabber']) {
-		if($_GET['tab'] == $params['tabber']) {
+		if ($_GET['tab'] == $params['tabber']) {
 			$tabberdefault = "tabbertabdefault";
 		}
  		$str = sprintf(
@@ -379,8 +376,8 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 			$params['links'],
 			(isset($params['contentclass']) ? $params['contentclass'] : 'block')
 		);
-		
-	} else { 
+
+	} else {
  		$str = sprintf(
 			'<div class="box grid_16 round_all %4$s" style="%5$s" id="%1$s">
 				%2$s
@@ -409,11 +406,10 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 		);
 
 	}
- 
+
 	if (!$params['content'] && !$params['options'] && !$params['headerlinks'] && !$params['links']) {
 		return '';
 	} else {
         return $str;
  	}
 }
-?>

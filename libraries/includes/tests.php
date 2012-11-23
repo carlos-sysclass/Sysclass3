@@ -69,7 +69,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                 exit;
             }
 
-
             // PROPOSED COURSES
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'proposedCoursesTable') {
                 isset($_GET['limit']) ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
@@ -146,16 +145,15 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                         $lessons[$key]['user_type'] = $userLessons[$key] -> userStatus['user_type'];
                         $lessons[$key]['completed'] = $userLessons[$key] -> userStatus['completed'];
                         $lessons[$key]['score'] = $userLessons[$key] -> userStatus['score'];
-                    } else if ($currentUser -> user['user_type'] != 'administrator' || !$lesson['active']) {
+                    } elseif ($currentUser -> user['user_type'] != 'administrator' || !$lesson['active']) {
                         unset($lessons[$key]);
-                    } else if ($lesson['languages_NAME'] != $editedUser -> user['languages_NAME']) {
+                    } elseif ($lesson['languages_NAME'] != $editedUser -> user['languages_NAME']) {
                         unset($lessons[$key]);
                     }
                     if ($lesson['course_only']) {
                         unset($lessons[$key]);
                     }
                 }
-module_chat_users
 
                 $roles = MagesterLessonUser :: getLessonsRoles(true);
                 $smarty -> assign("T_ROLES_ARRAY", $roles);
@@ -209,9 +207,9 @@ module_chat_users
                         $courses[$key]['user_type'] = $userCourses[$key] -> course['user_type'];
                         $courses[$key]['completed'] = $userCourses[$key] -> course['completed'];
                         $courses[$key]['score'] = $userCourses[$key] -> course['score'];
-                    } else if ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
+                    } elseif ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
                         unset($courses[$key]);
-                    } else if ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
+                    } elseif ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
                         unset($courses[$key]);
                     }
                     if ($course['course_only']) {
@@ -251,7 +249,6 @@ module_chat_users
                 exit;
             }
 
-
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'coursesTable') {
                 $directionsTree = new MagesterDirectionsTree();
                 $directionPaths = $directionsTree -> toPathString();
@@ -269,9 +266,9 @@ module_chat_users
                         $courses[$key]['user_type'] = $userCourses[$key] -> course['user_type'];
                         $courses[$key]['completed'] = $userCourses[$key] -> course['completed'];
                         $courses[$key]['score'] = $userCourses[$key] -> course['score'];
-                    } else if ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
+                    } elseif ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
                         unset($courses[$key]);
-                    } else if ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
+                    } elseif ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
                         unset($courses[$key]);
                     }
                 }
@@ -279,7 +276,6 @@ module_chat_users
 
                 $roles = MagesterLessonUser :: getLessonsRoles(true);
                 $smarty -> assign("T_ROLES_ARRAY", $roles);
-
 
                 isset($_GET['limit']) ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
@@ -312,7 +308,6 @@ module_chat_users
             $myarray[2] = array('id'=>3, 'skill'=>'Knowledge of Psychology', 'score'=>75);
             $myarray[3] = array('id'=>4, 'skill'=>'Knowledge of Advanced Nanorobotics', 'score'=>25);
 
-
             //eF_getTableData("
             $smarty -> assign("T_SKILLSGAP",$myarray);
 
@@ -341,13 +336,10 @@ module_chat_users
             $courses_attending = implode("','", array_keys($user -> getUserCourses()));
             $courses_proposed = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID","module_hcd_course_offers_skill.course_ID, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.course_ID NOT IN ('".$courses_attending."')","","module_hcd_course_offers_skill.course_ID ORDER BY skills_offered DESC");
 
-
         } else {
             // SHOW USERS LIST
 
         }
-
-
 
     } else {
 

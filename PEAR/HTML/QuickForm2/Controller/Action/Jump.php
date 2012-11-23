@@ -140,6 +140,7 @@ class HTML_QuickForm2_Controller_Action_Jump
 
             } elseif ('/' == $url[0]) {
                 list($actPath, $actQuery) = self::splitUri($url);
+
                 return $host . self::normalizePath($actPath) . $actQuery;
 
             } else {
@@ -149,6 +150,7 @@ class HTML_QuickForm2_Controller_Action_Jump
                     return $host . $basePath . $actQuery;
                 } else {
                     $path = substr($basePath, 0, strrpos($basePath, '/') + 1) . $actPath;
+
                     return $host . self::normalizePath($path) . $actQuery;
                 }
             }
@@ -206,4 +208,3 @@ class HTML_QuickForm2_Controller_Action_Jump
         exit;
     }
 }
-?>

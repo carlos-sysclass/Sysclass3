@@ -167,6 +167,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     function setContent($content)
     {
         $this->data['content'] = $content;
+
         return $this;
     }
 
@@ -189,6 +190,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
     public function setValue($value)
     {
         $this->setContent($value);
+
         return $this;
     }
 
@@ -243,6 +245,7 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
                 null !== ($value = $ds->getValue($this->getName())))
             {
                 $this->setContent($value);
+
                 return;
             }
         }
@@ -267,10 +270,9 @@ class HTML_QuickForm2_Element_Static extends HTML_QuickForm2_Element
                 "Do not use tag name '{$name}' with Static element, use proper element class"
             );
         }
-        $this->tagName         = (string)$name;
-        $this->forceClosingTag = (bool)$forceClosing;
+        $this->tagName         = (string) $name;
+        $this->forceClosingTag = (bool) $forceClosing;
 
         return $this;
     }
 }
-?>

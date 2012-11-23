@@ -154,7 +154,7 @@ Initialize a Channel from its server and creates the local channel.xml.
     // }}}
 
     // {{{ doList()
-    
+
     function _sortChannels($a, $b)
     {
         return strnatcasecmp($a->getName(), $b->getName());
@@ -179,9 +179,10 @@ Initialize a Channel from its server and creates the local channel.xml.
             $data = '(no registered channels)';
         }
         $this->ui->outputData($data, $command);
+
         return true;
     }
-    
+
     function doUpdateAll($command, $options, $params)
     {
         $reg = &$this->config->getRegistry();
@@ -202,9 +203,10 @@ Initialize a Channel from its server and creates the local channel.xml.
                 }
             }
         }
+
         return $success;
     }
-    
+
     function doInfo($command, $options, $params)
     {
         if (sizeof($params) != 1) {
@@ -257,6 +259,7 @@ Initialize a Channel from its server and creates the local channel.xml.
                 foreach ($errs as $err) {
                     $this->ui->outputData($err['level'] . ': ' . $err['message']);
                 }
+
                 return $this->raiseError('Channel file "' . $params[0] . '" is not valid');
             }
         }
@@ -309,7 +312,7 @@ Initialize a Channel from its server and creates the local channel.xml.
                     }
                     foreach ($funcs as $protocol) {
                         $data['data'][] = array('rest', $protocol['attribs']['type'],
-                            $protocol['_content']); 
+                            $protocol['_content']);
                     }
                 }
             } else {
@@ -357,7 +360,7 @@ Initialize a Channel from its server and creates the local channel.xml.
                             }
                             foreach ($funcs as $protocol) {
                                 $data['data'][] = array('rest', $protocol['attribs']['type'],
-                                    $protocol['_content']); 
+                                    $protocol['_content']);
                             }
                         }
                     } else {
@@ -374,7 +377,7 @@ Initialize a Channel from its server and creates the local channel.xml.
     }
 
     // }}}
-    
+
     function doDelete($command, $options, $params)
     {
         if (sizeof($params) != 1) {
@@ -514,6 +517,7 @@ Initialize a Channel from its server and creates the local channel.xml.
             list($contents, $lastmodified) = $contents;
             if (!$contents) {
                 $this->ui->outputData("Channel \"$params[0]\" is up to date");
+
                 return;
             }
             $contents = implode('', file($contents));
@@ -604,6 +608,7 @@ Initialize a Channel from its server and creates the local channel.xml.
             require_once 'PEAR/Downloader.php';
         }
         $a = new PEAR_Downloader($this->ui, array(), $this->config);
+
         return $a;
     }
 
@@ -624,6 +629,7 @@ Initialize a Channel from its server and creates the local channel.xml.
             } else {
                 $extra = '';
             }
+
             return $this->raiseError('"' . $params[0] . '" is not a valid channel' . $extra);
         }
         if ($reg->isAlias($params[1])) {
@@ -670,4 +676,3 @@ Initialize a Channel from its server and creates the local channel.xml.
         $this->ui->outputData("Discovery of channel \"$params[0]\" succeeded", $command);
     }
 }
-?>

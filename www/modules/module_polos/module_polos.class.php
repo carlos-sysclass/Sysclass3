@@ -1,28 +1,32 @@
 <?php
 
-class module_polos extends MagesterExtendedModule {
-	
+class module_polos extends MagesterExtendedModule
+{
 	const GET_POLOS					= 'get_polos';
 	const ADD_POLO					= 'add_polo';
 	const EDIT_POLO					= 'edit_polo';
 	const DELETE_POLO				= 'delete_polo';
-	
+
     // Mandatory functions required for module function
-    public function getName() {
+    public function getName()
+    {
         return "POLOS";
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator" /*,"professor" *//*,"student"*/);
     }
 
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
         return false;
     }
 
     // Optional functions
     // What should happen on installing the module
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_polos");
         $a = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_polos` (
 			`id` 			mediumint(8) 	NOT NULL,
@@ -46,15 +50,17 @@ class module_polos extends MagesterExtendedModule {
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         $a = eF_executeNew("drop table module_polos;");
 
         return $a;
     }
 
-    public function getCenterLinkInfo() {
+    public function getCenterLinkInfo()
+    {
 		$currentUser = $this -> getCurrentUser();
-        
+
         $xuserModule = $this->loadModule("xuser");
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
@@ -68,25 +74,28 @@ class module_polos extends MagesterExtendedModule {
         }
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
     	$selectedAction = isset($_GET['action']) ? $_GET['action'] : self::GET_POLOS;
 
         $basicNavArray = array (
 			array ('title' => _HOME, 'link' => "administrator.php?ctg=control_panel"),
     		array ('title' => _MODULE_POLOS_MANAGEMENT, 'link'  => $this -> moduleBaseUrl)
 		);
-        
+
 		if ($selectedAction == self::EDIT_POLO) {
             $basicNavArray[] = array ('title' => _MODULE_POLOS_EDITPOLO, 'link'  => $this -> moduleBaseUrl . "&action=" . self::EDIT_POLO . "&polo_id=". $_GET['polo_id']);
-		} else if ($selectedAction == self::ADD_POLO) {
+		} elseif ($selectedAction == self::ADD_POLO) {
             $basicNavArray[] = array ('title' => _MODULE_POLOS_ADDPOLO, 'link'  => $this -> moduleBaseUrl . "&action=" . self::ADD_POLO);
 		}
+
         return $basicNavArray;
     }
 
-    public function getSidebarLinkInfo() {
+    public function getSidebarLinkInfo()
+    {
 		$currentUser = $this -> getCurrentUser();
-        
+
 		$xuserModule = $this->loadModule("xuser");
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
@@ -97,33 +106,34 @@ class module_polos extends MagesterExtendedModule {
 	                                              'image' => $this -> moduleBaseDir . 'images/polos16.png',
 	                                              '_magesterExtensions' => '1',
 	                                              'link'  => $this -> moduleBaseUrl));
-	
+
 	        return array ( "content" => $link_of_menu_clesson);
 		}
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return 'polos_link_id1';
     }
 
-
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
+    public function getModule()
+    {
 		$selectedAction = isset($_GET['action']) ? $_GET['action'] : self::GET_POLOS;
-		
+
 		$smarty = $this -> getSmartyVar();
-		
-		$smarty -> assign("T_MODULE_POLOS_ACTION", $selectedAction);    	
-    	
+
+		$smarty -> assign("T_MODULE_POLOS_ACTION", $selectedAction);
+
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
 
         if ($selectedAction == self::DELETE_POLO && eF_checkParameter($_GET['polo_id'], 'id')) {
             eF_deleteTableData("module_polos", "id=".$_GET['polo_id']);
-            
+
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_MODULE_POLOS_SUCCESFULLYDELETEDPOLOENTRY)."&message_type=success");
-        } else if (
-        	$selectedAction == self::ADD_POLO || 
+        } elseif (
+        	$selectedAction == self::ADD_POLO ||
         	($selectedAction == self::EDIT_POLO && eF_checkParameter($_GET['polo_id'], 'id'))
         ) {
 
@@ -138,7 +148,7 @@ class module_polos extends MagesterExtendedModule {
                     } else {
                         $sort = 'login';
                     }
-			
+
                     $polos = eF_getTableData("module_polos", "*" );
 
                     $users = eF_multiSort($users, $_GET['sort'], $order);
@@ -164,24 +174,24 @@ class module_polos extends MagesterExtendedModule {
 
             $form = new HTML_QuickForm("polo_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
 			$form -> addElement('hidden', 'polo_ID');
-			
+
             $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
             /*
             $accounts = array();
-            
-            foreach($this->accounts as $key => $item) {
+
+            foreach ($this->accounts as $key => $item) {
             	$accounts[$key]	= $item['name'];
             }
             */
-            
+
             $stateList = localization::getStateList();
-            
+
    			$schools = eF_getTableDataFlat("module_ies", "id, nome", "active = 1" );
    			$schools = array_merge(
    				array(-1 => __SELECT_ONE_OPTION),
    				array_combine($schools['id'], $schools['nome'])
    			);
-   			
+
             $form -> addElement('select', 'ies_id', __IES_FORM_NAME, $schools, 'class = "large"');
             $form -> addElement('text', 'nome', _MODULE_POLOS_NOME, 'class = "large"');
             $form -> addRule('nome', _MODULE_POLOS_THEFIELDNAMEISMANDATORY, 'required', null, 'client');
@@ -199,12 +209,12 @@ class module_polos extends MagesterExtendedModule {
 			$form -> addElement('text', 'celular', _MODULE_POLOS_CELULAR, 'class = "medium"');
 			$form -> addElement('textarea', 'observacoes', _MODULE_POLOS_OBSERVACOES, 'class = "large"');
 			$form -> addElement('advcheckbox', 'active', _MODULE_POLOS_ACTIVE, null, '', array(0, 1));
-			
+
             $form -> addElement('submit', 'submit_polo', _MODULE_POLOS_SAVE, 'class = "button_colour round_all"');
-            
+
             if ($selectedAction == self::EDIT_POLO) {
                 $polo_entry = eF_getTableData("module_polos", "*", "id=".$_GET['polo_id']);
-                
+
 				$defaults = array(
 					'polo_ID'		=> $polo_entry[0]['id'],
 					'ies_id'		=> $polo_entry[0]['ies_id'],
@@ -221,15 +231,15 @@ class module_polos extends MagesterExtendedModule {
 					'uf'			=> $polo_entry[0]['uf'],
 					'telefone'		=> $polo_entry[0]['telefone'],
 					'celular'		=> $polo_entry[0]['celular'],
-					'active'		=> (bool)($polo_entry[0]['active'] == '1')				
+					'active'		=> (bool) ($polo_entry[0]['active'] == '1')
 				);
             } else {
                 $defaults = array(
 					'polo_ID'		=> -1,
-                	'active'		=> 1           
+                	'active'		=> 1
 				);
             }
-            $form -> setDefaults( $defaults );            
+            $form -> setDefaults( $defaults );
 
             if ($form -> isSubmitted() && $form -> validate()) {
             	$fields = array(
@@ -250,12 +260,12 @@ class module_polos extends MagesterExtendedModule {
             		'geo_search'	=> null,
 					'telefone'		=> $form -> exportValue('telefone'),
 					'celular'		=> $form -> exportValue('celular'),
-					'active'		=> $form -> exportValue('active')	
+					'active'		=> $form -> exportValue('active')
             	);
-            	
+
             	// (RE)CALCULATE POLO COORDINATES
             	$xgeoMapModule = $this->loadModule("xgeomap");
-            	
+
             	$addressData = $xgeoMapModule->createAddress(
             		$fields['endereco'],
 					$fields['numero'],
@@ -263,18 +273,18 @@ class module_polos extends MagesterExtendedModule {
 					$fields['cidade'],
 					$fields['uf']
 				);
-				
+
 	           	$poloLatLngData = $xgeoMapModule->calculateLatLngByAddress($addressData);
-	           	
+
 	           	if (count($poloLatLngData['results']) == 1) {
 	           		$fields['geo_search'] = json_encode($poloLatLngData['results'][0]);
 	           		$fields['geo_lat']	= $poloLatLngData['results'][0]['geometry']['location']['lat'];
 		           	$fields['geo_lng']	= $poloLatLngData['results'][0]['geometry']['location']['lng'];
 	           	}
-            	
+
              	if ($selectedAction == self::EDIT_POLO) {
              		$fields['id']	= $form -> exportValue('polo_ID');
-             		
+
 					if (eF_updateTableData("module_polos", $fields, "id=".$_GET['polo_id'])) {
 						header("location:".$this -> moduleBaseUrl."&message=".urlencode(_MODULE_POLOS_SUCCESFULLYUPDATEDPOLOENTRY)."&message_type=success");
 					} else {
@@ -288,7 +298,7 @@ class module_polos extends MagesterExtendedModule {
 					}
 				}
             }
-            
+
             $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
             $form -> accept($renderer);
 
@@ -297,50 +307,51 @@ class module_polos extends MagesterExtendedModule {
 			$polos = eF_getTableData("module_polos polo LEFT OUTER JOIN module_ies ies ON (polo.ies_id = ies.id)", "polo.*, ies.nome as ies" );
             $smarty -> assign("T_POLOS", $polos);
         }
+
         return true;
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_MODULE_POLOS_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_MODULE_POLOS_BASEURL" , $this -> moduleBaseUrl);
         $smarty -> assign("T_MODULE_POLOS_BASELINK" , $this -> moduleBaseLink);
-        
+
         $selectedAction = isset($_GET['action']) ? $_GET['action'] : self::GET_POLOS;
-        
+
         //$smarty -> assign("T_MODULE_POLOS_ACTION", $selectedAction);
-        
         return $this -> moduleBaseDir . "templates/default.tpl";
     }
-    
-    public function getPolos() {
+
+    public function getPolos()
+    {
     	$polos_entry = eF_getTableData("module_polos", "*", "active=1");
     	return $polos_entry;
     }
-    
-    public function loadDataPoloBlock($blockIndex = null) {
-    	 
+
+    public function loadDataPoloBlock($blockIndex = null)
+    {
     	$smarty = $this -> getSmartyVar();
     	$currentUser = $this -> getCurrentUser();
     	$userPolo = $currentUser->getUserPolo($currentUser);
-    	
-    	if ( $userPolo['id'] == null ) {
+
+    	if ($userPolo['id'] == null) {
     		return false;
     	} else {
-		 	
+
     	$baseLink = "http://".$_SERVER['HTTP_HOST']."/student.php?ctg=module&op=module_quick_mails&popup=1";
 		$smarty -> assign("T_MODULE_POLOS_INFO_USER_LINK", $baseLink);
     	$smarty -> assign("T_MODULE_POLOS_INFO_USER", $userPolo);
-    	 	 
+
 		$this->getParent()->appendTemplate(array(
 	   		'title'			=> _MODULE_SEUPOLO,
 		    'sub_title'		=> _MODULE_POLOS_ENTRE_CONTATO,
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/polo.data.tpl',
 	   		'contentclass'	=> 'blockContents'
     	), $blockIndex);
-   		
+
     	return true ;
     	}
     }
 }
-?>

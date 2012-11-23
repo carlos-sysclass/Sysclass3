@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../../Converter.php';
 
 define('PATH_BASE', dirname(__FILE__) );
 
-if (isset($_GET['filename'])){
+if (isset($_GET['filename'])) {
 	$fileName = $_GET['filename'];
 }
 $inputFilename = PATH_BASE . DIRECTORY_SEPARATOR . $fileName.'.rtf';  // convert this file

@@ -4,7 +4,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
-
 /**
 
  * @todo for pending:
@@ -220,7 +219,7 @@ try {
              handleAjaxExceptions($e);
             }
             exit;
-        } else if (isset($_GET['ajax']) && $_GET['reset_all_for_all'] == 1) {
+        } elseif (isset($_GET['ajax']) && $_GET['reset_all_for_all'] == 1) {
             try {
           foreach ($doneTests[$currentTest -> test['id']] as $user => $done_test) {
            $currentTest -> undo($user);
@@ -233,21 +232,19 @@ try {
         }
     } elseif (isset($_GET['show_solved_test']) && in_array($_GET['show_solved_test'], $legalSolvedValues)) {
      /***/
-        require_once("tests/show_solved_test.php");
+        require_once 'tests/show_solved_test.php';
     } elseif ((isset($_GET['add_test']) && !isset($_GET['create_quick_test'])) || (isset($_GET['edit_test']) && in_array($_GET['edit_test'], $legalValues))) {
         /***/
-        require_once("tests/add_test.php");
+        require_once 'tests/add_test.php';
     } elseif (isset($_GET['add_question']) || (isset($_GET['edit_question']) && in_array($_GET['edit_question'], $legalQuestions))) {
         /***/
-        require_once("tests/add_question.php");
+        require_once 'tests/add_question.php';
     } elseif (isset($_GET['solved_tests'])) {
 /*
 
         // Get skillgap test related information
 
         $tests     = eF_getTableData("tests", "*", "lessons_ID=0");
-
-
 
         // Get all recently completed skill gap tests
 
@@ -263,8 +260,6 @@ try {
 
             $recentTests = eF_getTableData("completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login JOIN users_to_skillgap_tests ON completed_tests.users_LOGIN = users_to_skillgap_tests.users_LOGIN AND users_to_skillgap_tests.tests_ID = tests.id AND users_to_skillgap_tests.solved = 1", "completed_tests.id, completed_tests.test, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", "completed_tests.tests_id IN ('". implode("','", $test_ids) ."')", "timestamp DESC");
 
-
-
             foreach ($recentTests as $rtid => $rtest) {
 
                 $completedRecentTest = unserialize($rtest['test']);
@@ -274,8 +269,6 @@ try {
             }
 
         }
-
-
 
         $smarty -> assign("T_RECENT_TESTS" , $recentTests);
 
@@ -396,7 +389,7 @@ try {
         //remove inactive and archived lessons
         $result = eF_getTableDataFlat("lessons","id","active=0 OR archive!=''");
         if (!empty($result['id'])) {
-         foreach($questions as $key => $value) {
+         foreach ($questions as $key => $value) {
           if (in_array($value['lessons_ID'],$result['id']) === false) {
            $questionsTemp[] = $questions[$key];
           }
@@ -455,11 +448,7 @@ try {
     $message_type = 'failure';
 }
 
-
-
-
 if (true) {
-
 
 try {
     if ($_student_) {
@@ -586,7 +575,7 @@ try {
 
                     $submitValues = $form -> getSubmitValues();
 
-                    foreach($testInstance -> questions as $id => $question) {
+                    foreach ($testInstance -> questions as $id => $question) {
                         $submitValues['question_time'][$id] || $submitValues['question_time'][$id] === 0 ? $question -> time = $submitValues['question_time'][$id] : null;
                     }
 
@@ -654,7 +643,7 @@ try {
         }
 
         // Optionally ajaxed request - if not ajaxed then it should show the tests list
-        if( isset($_GET['delete_solved_test']) && eF_checkParameter($_GET['delete_solved_test'], 'id')) {
+        if ( isset($_GET['delete_solved_test']) && eF_checkParameter($_GET['delete_solved_test'], 'id')) {
             if (isset($currentUser -> coreAccess['skillgaptests']) && $currentUser -> coreAccess['skillgaptests'] != 'change') {
                 eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                 exit;
@@ -754,7 +743,7 @@ try {
             $ignore_first_par = substr($selectArray,$end+1);
             $start = strpos($ignore_first_par, "(") + 1;
             $end = strpos($ignore_first_par, ")");
-            $init_lesson_questions_max = (integer)substr($ignore_first_par, $start, $end) ;
+            $init_lesson_questions_max = (integer) substr($ignore_first_par, $start, $end) ;
             $lesson_questions = array();
             for ($i =1 ; $i <= $init_lesson_questions_max; $i++) {
                 $lesson_questions[$i] = $i;
@@ -778,12 +767,12 @@ try {
                             // array in the form $lesson[62] = array(id=>62, questions (asked for) =>5, total_questions (for this lesson)=>20);
                             $lessons_to_cover[$key] = array("id" => $key, "questions_asked" => $_POST['educational_questions_count_' . $row], "total_questions" => 0, "questions" => array());
                             // the total_questions and questions fields of the array will be completed correctly in step 2
-                        } else if (strpos($postValue, "course") === 0) {
+                        } elseif (strpos($postValue, "course") === 0) {
                             $courses_to_cover[$key] = array("id" => $key, "questions_asked" => $_POST['educational_questions_count_' . $row]);
                         } else {
                             $directions_to_cover[$key] = array("id" => $key, "questions_asked" => $_POST['educational_questions_count_' . $row]);
                         }
-                    } else if (strpos($postKey, "skills_criteria") === 0) {
+                    } elseif (strpos($postKey, "skills_criteria") === 0) {
                         $row = substr(strrchr($postKey,"_"),1); // the id is educational_criteria_row (row = 1...N)
                         $key = substr(strrchr($postValue, "_"), 1) ; // we do not want the "_" itself
                         if (strpos($postValue, "category") === 0) {
@@ -855,7 +844,7 @@ try {
 
                  foreach ($lessons_to_cover as $lesson) {
 
-                 if ($lesson['total_questions']>0){
+                 if ($lesson['total_questions']>0) {
 
                  echo $lesson['id']."<BR>";
 
@@ -864,7 +853,8 @@ try {
                  }
 
                  */
-                function getRandomLessonQuestion($lessonId) {
+                function getRandomLessonQuestion($lessonId)
+                {
                     global $lessons_to_cover;
                     global $questions_to_assign;
                     $selected_question = rand() % $lessons_to_cover[$lessonId]['total_questions'];
@@ -882,7 +872,7 @@ try {
                 foreach ($lessons_to_cover as $lessonId => $lesson) {
                     // If more questions asked than existing, get all of them
                     if ($lessons_to_cover[$lessonId]['questions_asked'] >= $lessons_to_cover[$lessonId]['total_questions']) {
-                        foreach($lessons_to_cover[$lessonId]['questions'] as $question) {
+                        foreach ($lessons_to_cover[$lessonId]['questions'] as $question) {
                             $questions_to_assign[$question] = $question;
                         }
                         $lessons_to_cover[$lessonId]['total_questions'] = 0; // let the top levels know that no questions are left for this lesson
@@ -904,7 +894,7 @@ try {
                     // If more asked than the available get them all and finish
                     if ($course['questions_asked'] > $total_remaining) {
                         foreach ($course['lessons'] as $lesson) {
-                            foreach($lessons_to_cover[$lesson]['questions'] as $question) {
+                            foreach ($lessons_to_cover[$lesson]['questions'] as $question) {
                                 $questions_to_assign[$question] = $question;
                             }
                             $lessons_to_cover[$lesson]['total_questions'] = 0; // let the other levels know that no questions are left for this lesson
@@ -936,7 +926,7 @@ try {
                     // If more asked than the available get them all and finish
                     if ($direction['questions_asked'] > $total_remaining) {
                         foreach ($direction['lessons'] as $lesson) {
-                            foreach($lessons_to_cover[$lesson]['questions'] as $question) {
+                            foreach ($lessons_to_cover[$lesson]['questions'] as $question) {
                                 $questions_to_assign[$question] = $question;
                             }
                         }
@@ -982,7 +972,7 @@ try {
                 try {
                     $newTest = MagesterTest :: createTest(false, $testFields);
                     //                        pr($questions_to_assign);
-                    foreach($questions_to_assign as $id => $quest) {
+                    foreach ($questions_to_assign as $id => $quest) {
                         $questions_to_assign[$id] = 1;
                     }
                     $newTest ->addQuestions($questions_to_assign);

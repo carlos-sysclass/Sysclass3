@@ -25,28 +25,28 @@
  * @package MIME_Type
  * @author Ian Eure <ieure@php.net>
  */
-class MIME_Type_Parameter {
+class MIME_Type_Parameter
+{
     /**
      * Parameter name
      *
      * @var string
      */
     var $name;
-    
+
     /**
      * Parameter value
      *
      * @var string
      */
     var $value;
-    
+
     /**
      * Parameter comment
      *
      * @var string
      */
     var $comment;
-
 
     /**
      * Constructor.
@@ -61,7 +61,6 @@ class MIME_Type_Parameter {
         }
     }
 
-    
     /**
      * Parse a MIME type parameter and set object fields
      *
@@ -77,7 +76,6 @@ class MIME_Type_Parameter {
         }
     }
 
-
     /**
      * Get a parameter attribute (e.g. name)
      *
@@ -88,9 +86,9 @@ class MIME_Type_Parameter {
     function getAttribute($param)
     {
         $tmp = explode('=', $param);
+
         return trim($tmp[0]);
     }
-
 
     /**
      * Get a parameter value
@@ -107,9 +105,9 @@ class MIME_Type_Parameter {
             $cs = strpos($value, '(');
             $value = substr($value, 0, $cs);
         }
+
         return trim($value, '" ');
     }
-
 
     /**
      * Get a parameter comment
@@ -123,9 +121,9 @@ class MIME_Type_Parameter {
     {
         $cs = strpos($param, '(');
         $comment = substr($param, $cs);
+
         return trim($comment, '() ');
     }
-
 
     /**
      * Does this parameter have a comment?
@@ -139,9 +137,9 @@ class MIME_Type_Parameter {
         if (strstr($param, '(')) {
             return true;
         }
+
         return false;
     }
-
 
     /**
      * Get a string representation of this parameter
@@ -156,7 +154,7 @@ class MIME_Type_Parameter {
         if ($this->comment) {
             $val .= ' ('.$this->comment.')';
         }
+
         return $val;
     }
 }
-?>

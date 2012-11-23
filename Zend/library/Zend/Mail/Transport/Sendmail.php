@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Transport
@@ -20,12 +20,10 @@
  * @version    $Id: Sendmail.php 8064 2008-02-16 10:58:39Z thomas $
  */
 
-
 /**
  * @see Zend_Mail_Transport_Abstract
  */
 require_once 'Zend/Mail/Transport/Abstract.php';
-
 
 /**
  * Class for sending eMails via the PHP internal mail() function
@@ -45,7 +43,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
      */
     public $subject = null;
 
-
     /**
      * Config options for sendmail parameters
      *
@@ -53,14 +50,12 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
      */
     public $parameters;
 
-
     /**
      * EOL character string
      * @var string
      * @access public
      */
     public $EOL = PHP_EOL;
-
 
     /**
      * Constructor.
@@ -72,7 +67,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
     {
         $this->parameters = $parameters;
     }
-
 
     /**
      * Send mail using PHP native mail()
@@ -105,7 +99,6 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
             throw new Zend_Mail_Transport_Exception('Unable to send mail');
         }
     }
-
 
     /**
      * Format and fix headers
@@ -167,4 +160,3 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
     }
 
 }
-

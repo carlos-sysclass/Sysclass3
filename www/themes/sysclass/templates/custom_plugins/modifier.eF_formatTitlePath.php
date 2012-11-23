@@ -5,7 +5,6 @@
  * @subpackage plugins
  */
 
-
 /**
  * Smarty truncate modifier plugin
  *
@@ -20,17 +19,18 @@
  * @param string
  * @return string
  */
-function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...') {
+function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...')
+{
 	$piecesStart = explode("&raquo;&nbsp;", $string); // with tags
 	$stripped = strip_tags($string); //remove tags to count characters
 	$piecesStripped = explode("&raquo;&nbsp;", $stripped);
-	 
+
 	array_walk($piecesStripped, create_function('&$v, $k', '$v = str_replace("&nbsp;", "", $v);'));
-	
+
 	//if (mb_strlen($stripped) <= $length) {
 		$finalString = '';
-		foreach($piecesStart as $item) {
-	 		$finalString .= sprintf('<li>%s</li>', $item);		
+		foreach ($piecesStart as $item) {
+	 		$finalString .= sprintf('<li>%s</li>', $item);
 		}
 		return $finalString;
 	 //}
@@ -47,7 +47,7 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
   for ($k = 1; $k < $piecesNum; $k++) {
    if ($piecesLength[$k] > $pathLimit) {
     $piecesLength[$k] = $piecesLength[$k] - round($piecesLength[$k]*($piecesNum -$k)/10);
-    if(array_sum($piecesLength) <= $length) {
+    if (array_sum($piecesLength) <= $length) {
      break;
     }
    }
@@ -74,11 +74,11 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
  }
 
  $finalString = implode("&raquo;&nbsp;", $piecesFinal); // with tags
- 
+
  var_dump($piecesFinal);
- 
+
  $finalString = str_replace(" </a>", "</a>", $finalString);
+
  return $finalString;
  */
 }
-?>

@@ -113,7 +113,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="align">{#media_dlg.align}</label></td>
 							<td>
 								<select id="align" name="align" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="top">{#media_dlg.align_top}</option>
 									<option value="right">{#media_dlg.align_right}</option>
 									<option value="bottom">{#media_dlg.align_bottom}</option>
@@ -149,7 +149,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="flash_quality">{#media_dlg.quality}</label></td>
 							<td>
 								<select id="flash_quality" name="flash_quality" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="high">high</option>
 									<option value="low">low</option>
 									<option value="autolow">autolow</option>
@@ -161,7 +161,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="flash_scale">{#media_dlg.scale}</label></td>
 							<td>
 								<select id="flash_scale" name="flash_scale" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="showall">showall</option>
 									<option value="noborder">noborder</option>
 									<option value="exactfit">exactfit</option>
@@ -174,7 +174,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="flash_wmode">{#media_dlg.wmode}</label></td>
 							<td>
 								<select id="flash_wmode" name="flash_wmode" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="window">window</option>
 									<option value="opaque">opaque</option>
 									<option value="transparent">transparent</option>
@@ -184,7 +184,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="flash_salign">{#media_dlg.salign}</label></td>
 							<td>
 								<select id="flash_salign" name="flash_salign" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="l">{#media_dlg.align_left}</option>
 									<option value="t">{#media_dlg.align_top}</option>
 									<option value="r">{#media_dlg.align_right}</option>
@@ -259,7 +259,7 @@ if ($_SESSION['s_lessons_ID']) {
 							<td><label for="flv_scalemode">{#media_dlg.flv_scalemode}</label></td>
 							<td>
 								<select id="flv_scalemode" name="flv_scalemode" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="none">none</option>
 									<option value="double">double</option>
 									<option value="full">full</option>
@@ -455,7 +455,7 @@ if ($_SESSION['s_lessons_ID']) {
 						<tr>
 							<td><label for="qt_scale">{#media_dlg.scale}</label></td>
 							<td><select id="qt_scale" name="qt_scale" class="mceEditableSelect" onchange="generatePreview();">
-									<option value="">{#not_set}</option> 
+									<option value="">{#not_set}</option>
 									<option value="tofit">tofit</option>
 									<option value="aspect">aspect</option>
 								</select>
@@ -806,7 +806,6 @@ if ($_SESSION['s_lessons_ID']) {
 								</table>
 							</td>
 						</tr>
-
 
 						<tr>
 							<td colspan="2">

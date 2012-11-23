@@ -80,7 +80,7 @@ class Zend_Log
      */
     public function __destruct()
     {
-        foreach($this->_writers as $writer) {
+        foreach ($this->_writers as $writer) {
             $writer->shutdown();
         }
     }
@@ -187,7 +187,7 @@ class Zend_Log
         	/** @see Zend_Log_Filter_Priority */
             require_once 'Zend/Log/Filter/Priority.php';
             $filter = new Zend_Log_Filter_Priority($filter);
-        } elseif(!is_object($filter) || ! $filter instanceof Zend_Log_Filter_Interface) {
+        } elseif (!is_object($filter) || ! $filter instanceof Zend_Log_Filter_Interface) {
             /** @see Zend_Log_Exception */
             require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Invalid filter provided');
@@ -215,7 +215,8 @@ class Zend_Log
      * @param  $value   Value of the field
      * @return void
      */
-    public function setEventItem($name, $value) {
+    public function setEventItem($name, $value)
+    {
         $this->_extras = array_merge($this->_extras, array($name => $value));
     }
 

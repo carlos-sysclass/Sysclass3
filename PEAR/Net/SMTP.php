@@ -233,6 +233,7 @@ class Net_SMTP
             /* If we receive an empty line, the connection has been closed. */
             if (empty($line)) {
                 $this->disconnect();
+
                 return PEAR::raiseError('Connection was unexpectedly closed');
             }
 
@@ -242,7 +243,7 @@ class Net_SMTP
 
             /* Check the syntax of the response code. */
             if (is_numeric($code)) {
-                $this->_code = (int)$code;
+                $this->_code = (int) $code;
             } else {
                 $this->_code = -1;
                 break;
@@ -457,6 +458,7 @@ class Net_SMTP
         if (empty($method)) {
             if (PEAR::isError($method = $this->_getBestAuthMethod())) {
                 /* Return the PEAR_Error object from _getBestAuthMethod(). */
+
                 return $method;
             }
         } else {
@@ -518,6 +520,7 @@ class Net_SMTP
             if ($this->_code === 503) {
                 return true;
             }
+
             return $error;
         }
 
@@ -568,6 +571,7 @@ class Net_SMTP
             if ($this->_code === 503) {
                 return true;
             }
+
             return $error;
         }
 
@@ -607,6 +611,7 @@ class Net_SMTP
             if ($this->_code === 503) {
                 return true;
             }
+
             return $error;
         }
 
@@ -652,6 +657,7 @@ class Net_SMTP
             if ($this->_code === 503) {
                 return true;
             }
+
             return $error;
         }
 
@@ -813,6 +819,7 @@ class Net_SMTP
         if (isset($this->_esmtp['SIZE']) && ($this->_esmtp['SIZE'] > 0)) {
             if (strlen($data) >= $this->_esmtp['SIZE']) {
                 $this->disconnect();
+
                 return PEAR::raiseError('Message size excedes the server limit');
             }
         }

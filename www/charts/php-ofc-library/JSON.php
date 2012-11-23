@@ -149,13 +149,13 @@ class Services_JSON
     function utf162utf8($utf16)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf16, 'UTF-8', 'UTF-16');
         }
 
         $bytes = (ord($utf16{0}) << 8) | ord($utf16{1});
 
-        switch(true) {
+        switch (true) {
             case ((0x7F & $bytes) == $bytes):
                 // this case should never be reached, because we are in ASCII range
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
@@ -193,11 +193,11 @@ class Services_JSON
     function utf82utf16($utf8)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf8, 'UTF-16', 'UTF-8');
         }
 
-        switch(strlen($utf8)) {
+        switch (strlen($utf8)) {
             case 1:
                 // this case should never be reached, because we are in ASCII range
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
@@ -380,8 +380,8 @@ class Services_JSON
                                             array_keys($var),
                                             array_values($var));
 
-                    foreach($properties as $property) {
-                        if(Services_JSON::isError($property)) {
+                    foreach ($properties as $property) {
+                        if (Services_JSON::isError($property)) {
                             return $property;
                         }
                     }
@@ -392,8 +392,8 @@ class Services_JSON
                 // treat it like a regular array
                 $elements = array_map(array($this, 'encode'), $var);
 
-                foreach($elements as $element) {
-                    if(Services_JSON::isError($element)) {
+                foreach ($elements as $element) {
+                    if (Services_JSON::isError($element)) {
                         return $element;
                     }
                 }
@@ -407,8 +407,8 @@ class Services_JSON
                                         array_keys($vars),
                                         array_values($vars));
 
-                foreach($properties as $property) {
-                    if(Services_JSON::isError($property)) {
+                foreach ($properties as $property) {
+                    if (Services_JSON::isError($property)) {
                         return $property;
                     }
                 }
@@ -435,7 +435,7 @@ class Services_JSON
     {
         $encoded_value = $this->encode($value);
 
-        if(Services_JSON::isError($encoded_value)) {
+        if (Services_JSON::isError($encoded_value)) {
             return $encoded_value;
         }
 
@@ -503,12 +503,12 @@ class Services_JSON
 
                     // This would work on its own, but I'm trying to be
                     // good about returning integers where appropriate:
-                    // return (float)$str;
+                    // return (float) $str;
 
                     // Return float or int, as appropriate
-                    return ((float)$str == (integer)$str)
-                        ? (integer)$str
-                        : (float)$str;
+                    return ((float) $str == (integer) $str)
+                        ? (integer) $str
+                        : (float) $str;
 
                 } elseif (preg_match('/^("|\').*(\1)$/s', $str, $m) && $m[1] == $m[2]) {
                     // STRINGS RETURNED IN UTF-8 FORMAT
@@ -666,7 +666,7 @@ class Services_JSON
                                 // element in an associative array,
                                 // for now
                                 $parts = array();
-                                
+
                                 if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
                                     // "name":value pair
                                     $key = $this->decode($parts[1]);
@@ -802,5 +802,3 @@ if (class_exists('PEAR_Error')) {
     }
 
 }
-    
-?>

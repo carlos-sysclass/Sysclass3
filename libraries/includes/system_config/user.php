@@ -9,10 +9,6 @@ $userMainForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter')
 $userMainForm -> addElement("advcheckbox", "signup", _EXTERNALLYSIGNUP, null, 'class = "inputCheckBox"', array(0, 1));
 $userMainForm -> addElement('select', 'default_type', _DEFAULTUSERTYPE, MagesterUser :: getRoles(true), 'class = "inputCheckBox"');
 
-
-
-
-
  $userMainForm -> addElement("advcheckbox", "activation", _AUTOMATICUSERACTIVATION, null, 'id = "activation" onclick = "if (this.checked) {$(\'mail_activation\').checked=false}" class = "inputCheckBox"', array(0, 1));
  $userMainForm -> addElement("advcheckbox", "mail_activation", _MAILUSERACTIVATION, null, 'id = "mail_activation" onclick = "if (this.checked) {$(\'activation\').checked=false}" class = "inputCheckBox"', array(0, 1));
 

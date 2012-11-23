@@ -76,7 +76,8 @@ class MagesterMenu
     public $menu = array();
      /* The array mapping categories to menus*/
     private $ctg_to_menu = array();
-    function __construct() {
+    function __construct()
+    {
         $this -> menuCount = 1;
     }
     /**
@@ -104,12 +105,14 @@ class MagesterMenu
      * @access public
 
      */
-    public function createMenu($menuAttributes) {
+    public function createMenu($menuAttributes)
+    {
         // The menu id may be one of the attributes
         isset($menuAttributes['id']) ? $id = $menuAttributes['id']: $id = $this -> menuCount++;
         foreach ($menuAttributes as $key => $value) {
             $this -> menu[$id][$key] = $value;
         }
+
         return $id;
     }
     /**
@@ -153,7 +156,8 @@ class MagesterMenu
      * @access public
 
      */
-    public function insertMenuOption($menuOptions, $specific_menuID = false, $menuTitle = false, $menuImg = false) {
+    public function insertMenuOption($menuOptions, $specific_menuID = false, $menuTitle = false, $menuImg = false)
+    {
         if (isset($menuOptions['id'])) {
             (!$specific_menuID)? $menuId = $this -> menuCount++ : $menuId = $specific_menuID;
             if (!isset($menuOptions['target'])) {
@@ -165,7 +169,7 @@ class MagesterMenu
             $optionId = $menuOptions['id'];
             $this -> menu[$menuId]['options'][$optionId] = $menuOptions;
             $this -> ctg_to_menu[substr($optionId, 0, strlen($optionId)-2)] = $menuId;
-        } else if (is_array(end($menuOptions))) {
+        } elseif (is_array(end($menuOptions))) {
             (!$specific_menuID)? $menuId = $this -> menuCount++ : $menuId = $specific_menuID;
             foreach ($menuOptions as $menuOption) {
                 if (!isset($menuOption['target'])) {
@@ -187,6 +191,7 @@ class MagesterMenu
         if ($menuImg) {
             $this -> menu[$menuId]["image"] = $menuImg;
         }
+
         return $menuId -1 ;
     }
     /**
@@ -214,23 +219,27 @@ class MagesterMenu
      * @access public
 
      */
-     public function insertMenuOptionAsRawHtml($htmlCode, $menuId) {
+     public function insertMenuOptionAsRawHtml($htmlCode, $menuId)
+     {
         if ($menuId) {
             $this -> menu[$menuId]['options'][]['html'] = $htmlCode;
+
             return true;
         } else {
             return false;
         }
      }
-     
-     public function getMenuOptions($menuId) {
+
+     public function getMenuOptions($menuId)
+     {
 		return $this -> menu[$menuId]['options'];
      }
-     
-     public function removeMenu($menuId) {
+
+     public function removeMenu($menuId)
+     {
      	unset($this -> menu[$menuId]);
-     } 
-     
+     }
+
     /**
 
      * Function which adds an image to the header of a menu
@@ -262,15 +271,13 @@ class MagesterMenu
      */
 /*
 
-     public function addMenuImage($menuId, $img) {
-
+     public function addMenuImage($menuId, $img)
+     {
         if ($this -> menu[$menuId]) {
 
             $this -> menu[$menuId]["image"] = $img;
 
         }
-
-
 
     }
 
@@ -281,17 +288,15 @@ class MagesterMenu
 
      * Only administrators may have system menus
 
-     * 
+     *
 
      * @access public
 
      */
-/*    
+/*
 
-    public function addSystemMenu() {
-
-
-
+    public function addSystemMenu()
+    {
         $systemMenu = array();
 
         $systemMenu[0] = array("id" => "control_panel_a", "image" => "home", "link" => "administrator.php?ctg=control_panel", "title" => _CONTROLCENTER);
@@ -301,8 +306,6 @@ class MagesterMenu
         $systemMenu[2] = array("id" => "cms_a", "image" => "document_text", "link" => "administrator.php?ctg=cms", "title" => _CMS);
 
         $systemMenu[3] = array("id" => "chat_a", "image" => "user1_message", "link" => $_SESSION['s_type'].".php?ctg=chat", "title" => _CHAT);
-
-
 
         if (!$GLOBALS['currentUser'] -> coreAccess['statistics'] || $GLOBALS['currentUser'] -> coreAccess['statistics'] != 'hidden') {
 
@@ -321,17 +324,15 @@ class MagesterMenu
 
      * Only administrators may have users menus
 
-     * 
+     *
 
      * @access public
 
      */
-/*    
+/*
 
-    public function addUsersMenu() {
-
-
-
+    public function addUsersMenu()
+    {
         $usersMenu = array();
 
         $usersMenu[0] = array("id" => "users_a", "image" => "user1", "link" => "administrator.php?ctg=users", "title" => _USERS);
@@ -341,8 +342,6 @@ class MagesterMenu
         $usersMenu[2] = array("id" => "user_groups_a", "image" => "users3", "link" => "administrator.php?ctg=user_groups", "title" => _GROUPS);
 
         $usersMenu[3] = array("id" => "statistics_user_a", "image" => "chart", "link" => "administrator.php?ctg=statistics&option=user", "title" => _USERSTATISTICS);
-
-
 
 #ifdef ENTERPRISE
 
@@ -360,12 +359,13 @@ class MagesterMenu
      * Function returning the menu id of the category described by the argument string
 
      */
-    public function getCategoryMenu($category) {
+    public function getCategoryMenu($category)
+    {
         //pr($this->ctg_to_menu);
         if (isset($this -> ctg_to_menu[$category])) {
             return $this -> ctg_to_menu[$category];
         } else {
-            return 1; // default value    
+            return 1; // default value
         }
     }
 }

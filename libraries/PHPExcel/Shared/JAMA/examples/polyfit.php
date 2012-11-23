@@ -1,5 +1,5 @@
 <?php
-require_once "../Matrix.php";
+require_once '../Matrix.php';
 /*
 * @package JAMA
 * @author Michael Bommarito
@@ -15,7 +15,8 @@ require_once "../Matrix.php";
 * @returns array $coeffs of polynomial coefficients
 * Pre-Conditions: the system is not underdetermined: sizeof($X) > $n+1
 */
-function polyfit($X, $Y, $n) {
+function polyfit($X, $Y, $n)
+{
 	for ($i = 0; $i < sizeof($X); ++$i)
 		for ($j = 0; $j <= $n; ++$j)
 			$A[$i][$j] = pow($X[$i], $j);
@@ -27,8 +28,9 @@ function polyfit($X, $Y, $n) {
 	return $C->getMatrix(0, $n, 0, 1);
 }
 
-function printpoly( $C = null ) {
-	for($i = $C->m - 1; $i >= 0; --$i) {
+function printpoly( $C = null )
+{
+	for ($i = $C->m - 1; $i >= 0; --$i) {
 		$r = $C->get($i, 0);
 		if ( abs($r) <= pow(10, -9) )
 			$r = 0;
@@ -70,4 +72,3 @@ $Y = array(mt_rand(0, 10), mt_rand(40, 80), mt_rand(240, 400), mt_rand(1800, 221
 $points = new Matrix(array($X, $Y));
 $points->toHTML();
 printpoly(polyfit($X, $Y, 3));
-?>

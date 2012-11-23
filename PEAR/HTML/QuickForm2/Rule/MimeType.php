@@ -79,6 +79,7 @@ class HTML_QuickForm2_Rule_MimeType extends HTML_QuickForm2_Rule
             return true;
         }
         $mime = $this->getConfig();
+
         return is_array($mime)? in_array($value['type'], $mime):
                                 $value['type'] == $mime;
     }
@@ -98,6 +99,7 @@ class HTML_QuickForm2_Rule_MimeType extends HTML_QuickForm2_Rule
                 preg_replace('/\s+/', ' ', var_export($config, true)) . ' given'
             );
         }
+
         return parent::setConfig($config);
     }
 
@@ -119,4 +121,3 @@ class HTML_QuickForm2_Rule_MimeType extends HTML_QuickForm2_Rule
         parent::setOwner($owner);
     }
 }
-?>

@@ -114,6 +114,7 @@ class PEAR_Command_Common extends PEAR
         foreach (array_keys($this->commands) as $command) {
             $ret[$command] = $this->commands[$command]['summary'];
         }
+
         return $ret;
     }
 
@@ -133,6 +134,7 @@ class PEAR_Command_Common extends PEAR
                 $ret[$this->commands[$command]['shortcut']] = $command;
             }
         }
+
         return $ret;
     }
 
@@ -212,10 +214,11 @@ class PEAR_Command_Common extends PEAR
             $help = $this->commands[$command]['summary'];
         }
         if (preg_match_all('/{config\s+([^\}]+)}/e', $help, $matches)) {
-            foreach($matches[0] as $k => $v) {
+            foreach ($matches[0] as $k => $v) {
                 $help = preg_replace("/$v/", $config->get($matches[1][$k]), $help);
             }
         }
+
         return array($help, $this->getHelpArgs($command));
     }
 
@@ -256,8 +259,10 @@ class PEAR_Command_Common extends PEAR
                 $doc = rtrim(str_replace("\n", "\n$p", $v['doc']));
                 $help .= "        $doc\n";
             }
+
             return $help;
         }
+
         return null;
     }
 
@@ -282,10 +287,9 @@ class PEAR_Command_Common extends PEAR
         } else {
             $func = $this->commands[$command]['function'];
         }
+
         return $this->$func($command, $options, $params);
     }
 
     // }}}
 }
-
-?>

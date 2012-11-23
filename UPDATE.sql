@@ -2722,6 +2722,25 @@ ALTER TABLE `service_direct_link_hash` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL 
 ALTER TABLE `service_direct_link_hash` ADD `user_login` VARCHAR( 100 ) NOT NULL AFTER `id`;
 
 /* 2012-09-18 */
+CREATE TABLE IF NOT EXISTS `module_xpay_negociation_group` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `description` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+
+
+INSERT INTO module_xpay_negociation_group (id, description) VALUES (NULL, "Pagamento agrupado por lição");
+
+INSERT INTO module_xpay_invoices_to_invoices_group VALUES
+(863, 1, 1),
+(864, 1, 1),
+(865, 1, 1),
+(866, 1, 1),
+(867, 1, 1),
+(868, 1, 1),
+(869, 1, 1);
+
 UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` SET `xentify_id` = NULL 
 WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_blocks`.`block_id` =22;
 
@@ -2927,7 +2946,6 @@ INSERT INTO module_xpay_boleto_bancos VALUES ('409', 'UNIBANCO - União de Banco
 INSERT INTO module_xpay_boleto_bancos VALUES ('230', 'Unicard Banco Múltiplo S.A.');
 
 
-
 DROP TABLE IF EXISTS `module_xpay_cielo_transactions`;
 CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2954,3 +2972,95 @@ PRIMARY KEY (`transaction_id`, `negociation_id`, `parcela_index`)
 
 ALTER TABLE `module_xpay_cielo_transactions` ADD `status` SMALLINT( 4 ) NOT NULL AFTER `parcelas`; 
 ALTER TABLE `module_xpay_cielo_transactions_to_invoices` CHANGE `parcela_index` `invoice_index` MEDIUMINT( 8 ) NOT NULL;
+
+CREATE TABLE IF NOT EXISTS `module_xpay_negociation_modules` (
+  `negociation_id` mediumint(8) NOT NULL,
+  `lesson_id` mediumint(8) NOT NULL,
+  `course_id` mediumint(8) NOT NULL,
+  `module_type` enum('lesson','course') NOT NULL DEFAULT 'lesson',
+  PRIMARY KEY (`negociation_id`,`lesson_id`,`course_id`,`module_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '181','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '182','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '183','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '184','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '210','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '211','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '212','lesson');
+
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '1',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2012-11-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =864 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '2',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2012-12-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =865 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '3',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-01-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =866 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '4',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-02-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =867 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '5',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-03-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =868 AND `module_xpay_invoices`.`invoice_index` =0;
+
+UPDATE `sysclass_root`.`module_xpay_invoices` 
+SET `negociation_id` = '863',
+	`invoice_index` = '6',
+	`description` = '',
+	`valor` = '174.30',
+	`data_vencimento` = '2013-04-15 00:00:00' 
+WHERE `module_xpay_invoices`.`negociation_id` =869 AND `module_xpay_invoices`.`invoice_index` =0;
+
+
+/* 2012-10-24 */
+ALTER TABLE `module_xpay_course_negociation` CHANGE `course_id` `course_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0';
+
+/* 2012-10-26 */
+ALTER TABLE `module_xpay_invoices` ADD `is_registration_tax` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `invoice_index`;
+
+UPDATE `module_xpay_invoices` SET `is_registration_tax` = 1 WHERE invoice_index = 0;
+
+DROP VIEW module_xpay_zzz_paid_items;
+CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id` AS `ies_id`,pl.id as polo_id, pl.nome as polo,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_id` AS `invoice_id`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) 
+join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) 
+LEFT join `module_xuser` `xu` on (`u`.`id` = `xu`.`id`) 
+LEFT join `module_polos` `pl` on (`xu`.`polo_id` = `pl`.`id`)
+left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
+
+
+/* 2012-11-07 */
+ALTER TABLE `module_gradebook_users` ADD UNIQUE (
+	`users_LOGIN`,
+	`lessons_ID`
+);
+ALTER TABLE `module_gradebook_groups` ADD `pass_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70' AFTER `min_value`;
+
+UPDATE `module_gradebook_groups` SET pass_value = 70, min_value = 20
+

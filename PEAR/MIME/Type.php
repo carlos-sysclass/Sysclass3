@@ -30,28 +30,29 @@ $_fileCmd = 'file';
  * @package MIME_Type
  * @author Ian Eure <ieure@php.net>
  */
-class MIME_Type {
+class MIME_Type
+{
     /**
      * The MIME media type
      *
      * @var string
      */
     var $media = '';
-    
+
     /**
      * The MIME media sub-type
      *
      * @var string
      */
     var $subType = '';
-    
+
     /**
      * Optional MIME parameters
      *
      * @var array
      */
     var $parameters = array();
-    
+
     /**
      * List of valid media types
      *
@@ -66,7 +67,6 @@ class MIME_Type {
         'multipart',
         'message'
     );
-
 
     /**
      * Constructor.
@@ -84,7 +84,6 @@ class MIME_Type {
             $this->parse($type);
         }
     }
-
 
     /**
      * Parse a mime-type
@@ -105,7 +104,6 @@ class MIME_Type {
         }
     }
 
-
     /**
      * Does this type have any parameters?
      *
@@ -118,9 +116,9 @@ class MIME_Type {
         if (strstr($type, ';')) {
             return true;
         }
+
         return false;
     }
-
 
     /**
      * Get a MIME type's parameters
@@ -136,9 +134,9 @@ class MIME_Type {
         for ($i = 1; $i < count($tmp); $i++) {
             $params[] = trim($tmp[$i]);
         }
+
         return $params;
     }
-    
 
     /**
      * Strip paramaters from a MIME type string
@@ -152,9 +150,9 @@ class MIME_Type {
         if (strstr($type, ';')) {
             return substr($type, 0, strpos($type, ';'));
         }
+
         return $type;
     }
-
 
     /**
      * Get a MIME type's media
@@ -167,9 +165,9 @@ class MIME_Type {
     function getMedia($type)
     {
         $tmp = explode('/', $type);
+
         return strtolower($tmp[0]);
     }
-
 
     /**
      * Get a MIME type's subtype
@@ -182,9 +180,9 @@ class MIME_Type {
     {
         $tmp = explode('/', $type);
         $tmp = explode(';', $tmp[1]);
+
         return strtolower(trim($tmp[0]));
     }
-
 
     /**
      * Create a textual MIME type from object values
@@ -201,9 +199,9 @@ class MIME_Type {
                 $type .= '; '.$this->parameters[$key]->get();
             }
         }
+
         return $type;
     }
-
 
     /**
      * Is this type experimental?
@@ -220,9 +218,9 @@ class MIME_Type {
             substr(MIME_Type::getSubType($type), 0, 2) == 'x-') {
             return true;
         }
+
         return false;
     }
-
 
     /**
      * Is this a vendor MIME type?
@@ -237,6 +235,7 @@ class MIME_Type {
         if (substr(MIME_Type::getSubType($type), 0, 4) == 'vnd.') {
             return true;
         }
+
         return false;
     }
 
@@ -253,6 +252,7 @@ class MIME_Type {
         if ($type == '*/*' || MIME_Type::getSubtype($type) == '*') {
             return true;
         }
+
         return false;
     }
 
@@ -272,15 +272,16 @@ class MIME_Type {
         if (!MIME_Type::isWildcard($card)) {
             return false;
         }
-        
+
         if ($card == '*/*') {
             return true;
         }
-        
+
         if (MIME_Type::getMedia($card) ==
             MIME_Type::getMedia($type)) {
             return true;
         }
+
         return false;
     }
 
@@ -331,7 +332,7 @@ class MIME_Type {
         @include_once 'System/Command.php';
         if (function_exists('mime_content_type')) {
             $type = mime_content_type($file);
-        } else if (class_exists('System_Command')) {
+        } elseif (class_exists('System_Command')) {
             $type = MIME_Type::_fileAutoDetect($file);
         } else {
             return PEAR::raiseError("Sorry, can't autodetect; you need the mime_magic extension or System_Command and 'file' installed to use this function.");
@@ -371,18 +372,18 @@ class MIME_Type {
         if (!file_exists($file)) {
             return PEAR::raiseError("File \"$file\" doesn't exist");
         }
-        
+
         if (!is_readable($file)) {
             return PEAR::raiseError("File \"$file\" is not readable");
         }
-        
-        $cmd = new System_Command;
 
+        $cmd = new System_Command;
 
         // Make sure we have the 'file' command.
         $fileCmd = PEAR::getStaticProperty('MIME_Type', 'fileCmd');
         if (!$cmd->which($fileCmd)) {
             unset($cmd);
+
             return PEAR::raiseError("Can't find file command \"{$fileCmd}\"");
         }
 

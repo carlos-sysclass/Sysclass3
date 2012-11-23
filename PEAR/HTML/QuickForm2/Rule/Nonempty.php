@@ -84,6 +84,7 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
                     $nonempty++;
                 }
             }
+
             return $nonempty >= $this->getConfig();
         }
 
@@ -93,7 +94,7 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
         } elseif (is_array($value)) {
             return count(array_filter($value, 'strlen')) >= $this->getConfig();
         } else {
-            return (bool)strlen($value);
+            return (bool) strlen($value);
         }
     }
 
@@ -119,6 +120,7 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
                 preg_replace('/\s+/', ' ', var_export($config, true)) . ' given'
             );
         }
+
         return parent::setConfig(intval($config));
     }
 
@@ -128,4 +130,3 @@ class HTML_QuickForm2_Rule_Nonempty extends HTML_QuickForm2_Rule
                . ", " . $this->getConfig() . "); }";
     }
 }
-?>

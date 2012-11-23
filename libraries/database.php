@@ -24,8 +24,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 /** Maximum query size is 500K. Lower it in case of query problems (like 'server has gone away' in large inserts)*/
 define("G_MAXIMUMQUERYSIZE", 500000);
 /**ADODB database abstraction class*/
-require_once('adodb/adodb.inc.php');
-require_once('adodb/adodb-exceptions.inc.php');
+require_once 'adodb/adodb.inc.php';
+require_once 'adodb/adodb-exceptions.inc.php';
 //require_once('adodb/adodb-memcache.lib.inc.php');
 $ADODB_CACHE_DIR = $path."adodb/cache";
 $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -227,8 +227,6 @@ function eF_insertTableData($table, $fields)
 
 *            'session_ip' => '7f000001');
 
-
-
 * eF_insertTableDataMultiple('logs', $data);
 
 * </code>
@@ -246,7 +244,8 @@ function eF_insertTableData($table, $fields)
 * @since 3.5.0
 
 */
-function eF_insertTableDataMultiple($table, $fields, $checkGpc = true) {
+function eF_insertTableDataMultiple($table, $fields, $checkGpc = true)
+{
 	$thisQuery = microtime(true);
 	//Prepend prefix to the table
 	$table = G_DBPREFIX.$table;
@@ -307,7 +306,8 @@ function eF_insertTableDataMultiple($table, $fields, $checkGpc = true) {
 * @since 3.5
 
 */
-function eF_NullifyRecursive(&$v, $k) {
+function eF_NullifyRecursive(&$v, $k)
+{
 	if (is_string($v)) $v = "'".$v."'"; else if (is_null($v)) $v = "null";else if ($v === false) $v = 0; else if ($v === true) $v = 1;
 }
 /**
@@ -341,7 +341,8 @@ function eF_NullifyRecursive(&$v, $k) {
 * @version 1.0
 
 */
-function eF_updateTableData($table, $fields, $where) {
+function eF_updateTableData($table, $fields, $where)
+{
 	$thisQuery = microtime(true);
 	//Prepend prefix to the table
 	$table = G_DBPREFIX.$table;
@@ -477,7 +478,8 @@ function eF_countTableData($table, $fields = "*", $where = "", $order = "", $gro
 		return $result;
 	}
 }
-function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "") {
+function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
+{
 	$tables = explode(",", $table);
 	foreach ($tables as $key => $value) {
 		//Prepend prefix to the table
@@ -679,7 +681,8 @@ function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="
 * @version 1.0
 
 */
-function eF_describeTable($table, $fields = false) {
+function eF_describeTable($table, $fields = false)
+{
 	//Prepend prefix to the table
 	$table = G_DBPREFIX.$table;
 	if (!$fields) {
@@ -710,7 +713,8 @@ function eF_describeTable($table, $fields = false) {
 * @version 1.0
 
 */
-function eF_getTableFields($table) {
+function eF_getTableFields($table)
+{
 	//Prepend prefix to the table
 	$table = G_DBPREFIX.$table;
 	$result = $GLOBALS['db'] -> GetCol("describe $table");
@@ -727,7 +731,8 @@ function eF_getTableFields($table) {
 * @since 3.6.0
 
 */
-function eF_showTables() {
+function eF_showTables()
+{
 	$tables = array();
 	//Get the database tables
 	$result = $GLOBALS['db'] -> Execute("show table status");
@@ -802,7 +807,8 @@ function eF_insertOrupdateTableData($table, $fields, $where)
 * @since 3.5.1
 
 */
-function eF_addSlashes($param, $checkGpc = true) {
+function eF_addSlashes($param, $checkGpc = true)
+{
 	if (get_magic_quotes_gpc() && $checkGpc) {
 		return $param;
 	} else {
@@ -828,10 +834,12 @@ function eF_addSlashes($param, $checkGpc = true) {
 * @return unknown_type
 
 */
-function eF_addSlashesAux(&$v, $k) {
+function eF_addSlashesAux(&$v, $k)
+{
 	is_string($v) ? $v = addslashes($v) : null;
 }
-function logProcess($thisQuery, $sql) {
+function logProcess($thisQuery, $sql)
+{
 	if ($GLOBALS['db'] -> debug == true) {
 		echo '<span style = "color:red">Time spent on this query: '.(microtime(true) - $thisQuery).'</span>';
 	}
@@ -851,10 +859,12 @@ class MagesterDB
 	public $databaseTime = 0;
 	public $databaseQueries = 0;
 	public $queries = array();
-	public function __construct($db) {
+	public function __construct($db)
+	{
 		$this -> db = $db;
 	}
-	public function cacheGetTableData($table, $fields = "*", $where = "", $order = "", $group = "") {
+	public function cacheGetTableData($table, $fields = "*", $where = "", $order = "", $group = "")
+	{
 		$this -> initializeStats();
 		$sql = $this -> createSQL($table, $fields = "*", $where = "", $order = "", $group = "");
 		$result = $this -> db -> GetAll($sql);
@@ -862,17 +872,20 @@ class MagesterDB
 		$this -> calculateStats();
 		return $result;
 	}
-	private function createSQL($table, $fields = "*", $where = "", $order = "", $group = "") {
+	private function createSQL($table, $fields = "*", $where = "", $order = "", $group = "")
+	{
 		$sql = "SELECT ".$fields." FROM ".$table;
 		!$where OR $sql .= " WHERE ".$where;
 		!$order OR $sql .= " ORDER BY ".$order;
 		!$group OR $sql .= " GROUP BY ".$group;
 		return $sql;
 	}
-	private function initializeStats() {
+	private function initializeStats()
+	{
 		$this -> queryTime = microtime(true);
 	}
-	private function calculateStats() {
+	private function calculateStats()
+	{
 		$this -> db -> databaseTime = $this -> db -> databaseTime + microtime(true) - $this -> queryTime;
 		$this -> db -> databaseQueries++;
 		$this -> db -> queries[$sql][] = microtime(true) - $this -> queryTime;

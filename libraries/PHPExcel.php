@@ -25,13 +25,11 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	define('PHPEXCEL_ROOT', dirname(__FILE__) . '/');
 	require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
-
 
 /**
  * PHPExcel
@@ -126,14 +124,14 @@ class PHPExcel
 		$this->addCellStyleXf(new PHPExcel_Style);
 	}
 
-
 	/**
 	 * Disconnect all worksheets from this PHPExcel workbook object,
 	 *    typically so that the PHPExcel object can be unset
 	 *
 	 */
-	public function disconnectWorksheets() {
-		foreach($this->_workSheetCollection as $k => &$worksheet) {
+	public function disconnectWorksheets()
+	{
+		foreach ($this->_workSheetCollection as $k => &$worksheet) {
 			$worksheet->disconnectCells();
 			$this->_workSheetCollection[$k] = null;
 		}
@@ -202,6 +200,7 @@ class PHPExcel
     {
         $newSheet = new PHPExcel_Worksheet($this);
         $this->addSheet($newSheet, $iSheetIndex);
+
         return $newSheet;
     }
 
@@ -215,7 +214,7 @@ class PHPExcel
      */
     public function addSheet(PHPExcel_Worksheet $pSheet = null, $iSheetIndex = null)
     {
-        if($iSheetIndex === NULL) {
+        if ($iSheetIndex === null) {
             $this->_workSheetCollection[] = $pSheet;
         } else {
             // Insert the sheet at the requested index
@@ -224,7 +223,7 @@ class PHPExcel
                 $iSheetIndex,
                 0,
                 array($pSheet)
-                );
+			);
 
 			// Adjust active sheet index if necessary
 			if ($this->_activeSheetIndex >= $iSheetIndex) {
@@ -338,6 +337,7 @@ class PHPExcel
             0,
             $pSheet
             );
+
         return $newIndex;
     }
 
@@ -419,8 +419,9 @@ class PHPExcel
 	 * @throws Exception
 	 * @return PHPExcel_Worksheet
 	 */
-	public function addExternalSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null) {
-		if ($this->getSheetByName($pSheet->getTitle()) !== NULL) {
+	public function addExternalSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null)
+	{
+		if ($this->getSheetByName($pSheet->getTitle()) !== null) {
 			throw new Exception("Workbook already contains a worksheet named '{$pSheet->getTitle()}'. Rename the external sheet first.");
 		}
 
@@ -449,7 +450,8 @@ class PHPExcel
 	 *
 	 * @return PHPExcel_NamedRange[]
 	 */
-	public function getNamedRanges() {
+	public function getNamedRanges()
+	{
 		return $this->_namedRanges;
 	}
 
@@ -459,7 +461,8 @@ class PHPExcel
 	 * @param PHPExcel_NamedRange $namedRange
 	 * @return PHPExcel
 	 */
-	public function addNamedRange(PHPExcel_NamedRange $namedRange) {
+	public function addNamedRange(PHPExcel_NamedRange $namedRange)
+	{
 		if ($namedRange->getScope() == null) {
 			// global scope
 			$this->_namedRanges[$namedRange->getName()] = $namedRange;
@@ -477,7 +480,8 @@ class PHPExcel
 	 * @param PHPExcel_Worksheet|null $pSheet Scope. Use null for global scope
 	 * @return PHPExcel_NamedRange|null
 	 */
-	public function getNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null) {
+	public function getNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null)
+	{
 		$returnValue = null;
 
 		if ($namedRange != '' && ($namedRange !== NULL)) {
@@ -502,7 +506,8 @@ class PHPExcel
 	 * @param  PHPExcel_Worksheet|null  $pSheet  Scope: use null for global scope.
 	 * @return PHPExcel
 	 */
-	public function removeNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null) {
+	public function removeNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null)
+	{
 		if ($pSheet === NULL) {
 			if (isset($this->_namedRanges[$namedRange])) {
 				unset($this->_namedRanges[$namedRange]);
@@ -520,7 +525,8 @@ class PHPExcel
 	 *
 	 * @return PHPExcel_WorksheetIterator
 	 */
-	public function getWorksheetIterator() {
+	public function getWorksheetIterator()
+	{
 		return new PHPExcel_WorksheetIterator($this);
 	}
 
@@ -529,7 +535,8 @@ class PHPExcel
 	 *
 	 * @return PHPExcel
 	 */
-	public function copy() {
+	public function copy()
+	{
 		$copied = clone $this;
 
 		$worksheetCount = count($this->_workSheetCollection);
@@ -544,8 +551,9 @@ class PHPExcel
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
-	public function __clone() {
-		foreach($this as $key => $val) {
+	public function __clone()
+	{
+		foreach ($this as $key => $val) {
 			if (is_object($val) || (is_array($val))) {
 				$this->{$key} = unserialize(serialize($val));
 			}
@@ -633,10 +641,10 @@ class PHPExcel
 				foreach ($worksheet->getCellCollection(false) as $cellID) {
 					$cell = $worksheet->getCell($cellID);
 					$xfIndex = $cell->getXfIndex();
-					if ($xfIndex > $pIndex ) {
+					if ($xfIndex > $pIndex) {
 						// decrease xf index by 1
 						$cell->setXfIndex($xfIndex - 1);
-					} else if ($xfIndex == $pIndex) {
+					} elseif ($xfIndex == $pIndex) {
 						// set to default xf index 0
 						$cell->setXfIndex(0);
 					}
@@ -801,9 +809,10 @@ class PHPExcel
 			$sheet->garbageCollect();
 		}
 	}
-	
+
 	// data array to excel
-	function array2ExcelSimple( $data, $title ) {
+	function array2ExcelSimple( $data, $title )
+	{
 		// Add some properties
 		$this->getProperties()->setCreator("Sysclass")
 							 ->setLastModifiedBy("Sysclass")
@@ -816,24 +825,24 @@ class PHPExcel
 		// Add some data
 		$columns = array('A' , 'B' , 'C' , 'D' , 'E' , 'F' , 'G' , 'H' , 'I' , 'J' , 'K' , 'L' , 'M' , 'N' , 'O' , 'P' , 'Q' , 'R' , 'S' , 'T' , 'U' , 'V' , 'W' , 'X' , 'Y' , 'Z',
 						 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ' );
-		foreach ( $title as $key1 => $data2 ) {
+		foreach ($title as $key1 => $data2) {
 			$line 	= $key1 + 1;
 			$column	= 0;
-			foreach ( $data2 as $key2 => $value ) {
+			foreach ($data2 as $key2 => $value) {
 				$this->setActiveSheetIndex(0)->setCellValue($columns[$column].$line, $value);
 				$column++;
 			}
-		}		
-		foreach ( $data as $key1 => $data2 ) {
+		}
+		foreach ($data as $key1 => $data2) {
 			$line 	= empty($title)?$key1+1:$key1+2;
 			$column	= 0;
-			foreach ( $data2 as $key2 => $value ) {
+			foreach ($data2 as $key2 => $value) {
 				$this->setActiveSheetIndex(0)->setCellValue($columns[$column].$line, $value);
 				$column++;
 			}
 		}
 		#$this->setActiveSheetIndex(0)->setCellValue('A1', 'Hello');
-		
+
 		// Rename worksheet
 		$this->getActiveSheet()->setTitle('Simple');
 

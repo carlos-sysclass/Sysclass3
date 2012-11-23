@@ -13,15 +13,11 @@ if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['us
 
 }
 
-
-
 !isset($currentUser -> coreAccess['users']) || $currentUser -> coreAccess['users'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 
 $smarty -> assign("_change_", $_change_);
 
-
-
- */ 
+ */
 if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] == 'hidden') {
     eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
@@ -81,14 +77,14 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
 } elseif (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $login = eF_checkParameter($_GET['edit_user'], 'login'))) { //The administrator asked to add a new user or to edit a user
     $smarty -> assign("T_PERSONAL", true);
     /**Include the personal settings file*/
-    include "includes/personal.php"; //User addition and manipulation is done through personal.
+    include 'includes/personal.php'; //User addition and manipulation is done through personal.
 } else { //The admin just asked to view the users
 
 	if ($currentUser -> getType() == "administrator") {
 		//eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=module&op=module_xuser");
 		//exit;
 	}
-	
+
         if (isset($_GET['ajax'])) {
             isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
             if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
@@ -99,16 +95,16 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             }
             $languages = MagesterSystem :: getLanguages(true);
             $smarty -> assign("T_LANGUAGES", $languages);
-            
+
             $modules = eF_loadAllModules(true);
-            
+
            	$ies_filter = $modules['module_xuser']->getCurrentUserIesIDs();
            	$ies_filter[] = 0;
 
             $where = array();
             $where[] = "u.archive = 0";
            	$where[] = sprintf("(u.user_type = 'administrator' OR c.ies_id IN (%s))", implode(", ", $ies_filter));
-           	
+
 			$users = eF_getTableData(
 				"users u
             	LEFT JOIN users_to_courses uc ON (u.login = uc.users_LOGIN)
@@ -118,9 +114,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             	"",
             	"u.login"
             );
-            
-            
-            
+
             $user_lessons = eF_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND ul.archive=0 AND l.archive=0", "", "ul.users_LOGIN");
             $user_courses = eF_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND uc.archive=0 AND c.archive=0", "", "uc.users_LOGIN");
             $user_groups = eF_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
@@ -142,8 +136,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             }
 
             $users = eF_multiSort($users, $sort, $order);
-            
-            
+
             if (isset($_GET['filter'])) {
                 $users = eF_filterData($users, $_GET['filter']);
             }
@@ -159,8 +152,5 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
             $smarty -> display('administrator.tpl');
             exit;
         }
-
-
-
 
 }

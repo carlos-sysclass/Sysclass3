@@ -90,6 +90,7 @@ class HTML_QuickForm2_DataSource_Array implements HTML_QuickForm2_DataSource
                 }
                 $value = $value[$token];
             } while (!empty($tokens));
+
             return $value;
         } elseif (isset($this->values[$name])) {
             return $this->values[$name];
@@ -98,4 +99,3 @@ class HTML_QuickForm2_DataSource_Array implements HTML_QuickForm2_DataSource
         }
     }
 }
-?>

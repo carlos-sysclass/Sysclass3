@@ -20,7 +20,6 @@
  * @version    $Id: Interface.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Auth

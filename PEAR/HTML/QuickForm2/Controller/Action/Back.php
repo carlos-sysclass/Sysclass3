@@ -71,4 +71,3 @@ class HTML_QuickForm2_Controller_Action_Back
         }
     }
 }
-?>

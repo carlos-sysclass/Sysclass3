@@ -118,6 +118,7 @@ installed package.'
     {
         $apackage = isset($a['package']) ? $a['package'] : $a['name'];
         $bpackage = isset($b['package']) ? $b['package'] : $b['name'];
+
         return strcmp($apackage, $bpackage);
     }
 
@@ -158,9 +159,10 @@ installed package.'
             $data = '(no packages installed from channel ' . $channel . ')';
         }
         $this->ui->outputData($data, $command);
+
         return true;
     }
-    
+
     function doListAll($command, $options, $params)
     {
         $reg = &$this->config->getRegistry();
@@ -188,9 +190,10 @@ installed package.'
             }
             $this->ui->outputData($data, $command);
         }
+
         return true;
     }
-    
+
     function doFileList($command, $options, $params)
     {
         if (count($params) != 1) {
@@ -304,6 +307,7 @@ installed package.'
             }
         }
         $this->ui->outputData($data, $command);
+
         return true;
     }
 
@@ -385,6 +389,7 @@ installed package.'
                         $this->ui->outputData($message);
                     }
                 }
+
                 return $this->raiseError($obj);
             }
             if ($obj->getPackagexmlVersion() == '1.0') {
@@ -402,6 +407,7 @@ installed package.'
             $info = $reg->packageInfo($package, null, $channel);
             if (isset($info['old'])) {
                 $obj = $reg->getPackage($package, $channel);
+
                 return $this->_doInfo2($command, $options, $params, $obj, true);
             }
         }
@@ -410,6 +416,7 @@ installed package.'
         }
         if (empty($info)) {
             $this->raiseError("No information found for `$params[0]'");
+
             return;
         }
         unset($info['filelist']);
@@ -578,10 +585,10 @@ installed package.'
                 $release = 'PECL-style Zend extension (source code)';
             break;
             case 'extbin' :
-                $release = 'PECL-style PHP extension (binary)';
+                $release = 'PECL-style PHP extension (binary) ';
             break;
             case 'zendextbin' :
-                $release = 'PECL-style Zend extension (binary)';
+                $release = 'PECL-style Zend extension (binary) ';
             break;
             case 'bundle' :
                 $release = 'Package bundle (collection of packages)';
@@ -1010,5 +1017,3 @@ installed package.'
         $this->ui->outputData($data, 'package-info');
     }
 }
-
-?>

@@ -91,6 +91,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
             return array(PEAR_TASK_ERROR_WRONG_ATTRIB_VALUE, 'type', $xml['attribs']['type'],
                 array('pear-config', 'package-info', 'php-const'));
         }
+
         return true;
     }
 
@@ -130,6 +131,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                         $to = $chan->getServer();
                     } else {
                         $this->logger->log(0, "$dest: invalid pear-config replacement: $a[to]");
+
                         return false;
                     }
                 } else {
@@ -146,6 +148,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                 }
                 if (is_null($to)) {
                     $this->logger->log(0, "$dest: invalid pear-config replacement: $a[to]");
+
                     return false;
                 }
             } elseif ($a['type'] == 'php-const') {
@@ -156,6 +159,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                     $to = constant($a['to']);
                 } else {
                     $this->logger->log(0, "$dest: invalid php-const replacement: $a[to]");
+
                     return false;
                 }
             } else {
@@ -163,6 +167,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                     $to = $t;
                 } else {
                     $this->logger->log(0, "$dest: invalid package-info replacement: $a[to]");
+
                     return false;
                 }
             }
@@ -176,7 +181,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
         if (sizeof($subst_from)) {
             $contents = str_replace($subst_from, $subst_to, $contents);
         }
+
         return $contents;
     }
 }
-?>

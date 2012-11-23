@@ -70,6 +70,7 @@ class Zend_Validate implements Zend_Validate_Interface
             'instance' => $validator,
             'breakChainOnFailure' => (boolean) $breakChainOnFailure
             );
+
         return $this;
     }
 
@@ -99,6 +100,7 @@ class Zend_Validate implements Zend_Validate_Interface
                 break;
             }
         }
+
         return $result;
     }
 
@@ -152,6 +154,7 @@ class Zend_Validate implements Zend_Validate_Interface
                     } else {
                         $object = $class->newInstance();
                     }
+
                     return $object->isValid($value);
                 }
             } catch (Zend_Validate_Exception $ze) {

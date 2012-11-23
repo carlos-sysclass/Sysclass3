@@ -3,8 +3,8 @@
 * Smarty plugin: smarty_function_eF_template_printUsersList function.
 *
 */
-function smarty_function_Mg_template_printUsersType($params, &$smarty) {
-
+function smarty_function_Mg_template_printUsersType($params, &$smarty)
+{
 	switch ($params['user_type']) {
 		case 'administrator':
 			return _ADMINISTRATOR;
@@ -16,5 +16,3 @@ function smarty_function_Mg_template_printUsersType($params, &$smarty) {
 			return '';
  	}
 }
-
-?>

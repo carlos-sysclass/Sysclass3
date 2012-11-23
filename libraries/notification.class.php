@@ -124,7 +124,8 @@ class MagesterNotification
      * @access public
 
      */
-    function __construct($notification) {
+    function __construct($notification)
+    {
         if (is_array($notification)) {
             $this -> notification = $notification;
         } else {
@@ -165,7 +166,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function getNotificationTypes($get_module_notifications = false) {
+    public static function getNotificationTypes($get_module_notifications = false)
+    {
      $system_notifications = array(
      MagesterNotification::SYSTEM_JOIN => array("text" => _SYSTEMJOIN, "category" => "system"),
              MagesterNotification::SYSTEM_REMOVAL => array("text" => _SYSTEM_REMOVAL, "category" => "system"),
@@ -196,9 +198,11 @@ class MagesterNotification
              MagesterNotification::NEW_PROFILE_COMMENT_FOR_OTHER => array("text" => _NEW_PROFILE_COMMENT_FOR_OTHER, "category" => "personal"),
              MagesterNotification::NEW_PROFILE_COMMENT_FOR_SELF => array("text" => _NEW_PROFILE_COMMENT_FOR_SELF, "category" => "personal"),
              MagesterNotification::DELETE_PROFILE_COMMENT_FOR_SELF => array("text" => _DELETE_PROFILE_COMMENT_FOR_SELF, "category" => "personal"));
+
      return $system_notifications;
     }
- public static function addDefaultNotifications() {
+ public static function addDefaultNotifications()
+ {
      // Since 3.6.0 - Add predefined events - maybe set isDefault as metadata
      $predefined_events = array(MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD,
               MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST,
@@ -302,10 +306,10 @@ class MagesterNotification
 			"message" => $message
 		);
 		eF_insertTableData("event_notifications", $default_notification);
-		
+
 	}
  	if (!in_array(MagesterEvent::NEW_TOPIC, $registered_events)) {
-		$message = 
+		$message =
 			'<p>Prezado ###users_name### ###users_surname###,</p>
 			<p> </p>
 			<p>Um novo tópico foi publicado no Fórum da disciplina <strong>###lessons_name###</strong>. Acesse o sistema com seu login e  senha e verifique os comentários postados.</p>
@@ -320,7 +324,7 @@ class MagesterNotification
 			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
-		
+
 		$default_notification = array(
 			"event_type" => MagesterEvent::NEW_TOPIC,
 			"send_conditions" => serialize(array()),
@@ -333,7 +337,7 @@ class MagesterNotification
 		eF_insertTableData("event_notifications", $default_notification);
 	}
  	if (!in_array(MagesterEvent::NEW_FORUM, $registered_events)) {
-		$message = 	
+		$message =
 			'<p>Prezado ###users_name### ###users_surname###,</p>
 			<p> </p>
 			<p>Seja bem-vindo(a) ao Fórum da disciplina <strong>###lessons_name###</strong>. Essa ferramenta permite que você interaja com os professores e demais alunos do seu curso. Ao utilizá-la corretamente você terá acesso a um conteúdo rico e produtivo que o auxiliará no andamento do seu curso.</p>
@@ -348,7 +352,7 @@ class MagesterNotification
 			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
-				
+
 		$default_notification = array(
 			"event_type" => MagesterEvent::NEW_FORUM,
 			"send_conditions" => serialize(array()),
@@ -361,7 +365,7 @@ class MagesterNotification
 		eF_insertTableData("event_notifications", $default_notification);
 	}
  	if (!in_array(MagesterEvent::NEW_SYSTEM_ANNOUNCEMENT, $registered_events)) {
-		$message = 	
+		$message =
 			'<p>Prezado ###users_name### ###users_surname###,</p>
 			<p> </p>
 			<p>Um novo comunicado foi publicado no sistema de apoio ao aluno ULT. Acesse o sistema com seu login e senha e verifique as informações postadas.</p>
@@ -376,7 +380,7 @@ class MagesterNotification
 			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
-				
+
 		$default_notification = array(
 			"event_type" => MagesterEvent::NEW_SYSTEM_ANNOUNCEMENT,
 			"send_conditions" => serialize(array()),
@@ -389,7 +393,7 @@ class MagesterNotification
 		eF_insertTableData("event_notifications", $default_notification);
 	}
  	if (!in_array(MagesterEvent::NEW_LESSON_ANNOUNCEMENT, $registered_events)) {
-		$message = 	
+		$message =
 			'<p>Prezado ###users_name### ###users_surname###,</p>
 			<p> </p>
 			<p>Um novo comunicado foi publicado no sistema de apoio ao aluno ULT. Acesse o sistema com seu login e senha e verifique as informações postadas.</p>
@@ -406,7 +410,7 @@ class MagesterNotification
 			<p style="color: #4c4c4c; font-size: xx-small; font-family:Arial, Helvetica,geneva; font-weight: normal;">
 			This  e-mail, and its attachments, is confidential and it is meant to be  accessed only by its recipient. If you have received this communication  in error, please delete it immediately. It`s forbidden the unauthorized  use, access, copy or discloser of the information contained in this  message. The content of this e-mail is under sole responsibility of its  author. It may not represent the official position of ULT.
 			</p>';
-				
+
 		$default_notification = array(
 			"event_type" => MagesterEvent::NEW_LESSON_ANNOUNCEMENT,
 			"send_conditions" => serialize(array()),
@@ -425,7 +429,7 @@ class MagesterNotification
   	if (!in_array(MagesterEvent::NEW_POLL, $registered_events)) {
 		$message = "NOVA PESQUISA NO FORUM";
 		$message .= '<br>'._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>";
-		
+
 		$default_notification = array(
 			"event_type" => MagesterEvent::NEW_POLL,
 			"send_conditions" => serialize(array()),
@@ -437,7 +441,7 @@ class MagesterNotification
 		);
 		eF_insertTableData("event_notifications", $default_notification);
 	}
-*/	
+*/
  }
     /**
 
@@ -468,7 +472,8 @@ class MagesterNotification
      * @access public
 
      */
-    public function getLessons($returnObjects = false) {
+    public function getLessons($returnObjects = false)
+    {
         if ($this -> lessons == false) {
             $result = eF_getTableData("lessons_to_notifications lc, lessons l", "lc.previous_lessons_ID, l.*", "l.id=lc.lessons_ID and notifications_ID=".$this -> notification['id']);
             if (sizeof($result) > 0) {
@@ -501,6 +506,7 @@ class MagesterNotification
             foreach ($this -> lessons as $key => $lesson) {
                 $lessons[$key] = new MagesterLesson($lesson['id']);
             }
+
             return $lessons;
         } else {
             return $this -> lessons;
@@ -541,7 +547,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function addNotification($timestamp, $subject, $message, $condition, $html_message, $send_interval = false) {
+    public static function addNotification($timestamp, $subject, $message, $condition, $html_message, $send_interval = false)
+    {
      $notification = array ("timestamp" => $timestamp,
              "send_conditions" => serialize($condition),
              "message" => $message,
@@ -550,6 +557,7 @@ class MagesterNotification
   if ($send_interval) {
       $notification['send_interval'] = $send_interval;
      }
+
      return eF_insertTableData("notifications", $notification);
     }
     /**
@@ -587,7 +595,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function editNotification($id, $timestamp, $subject, $message, $condition, $html_message, $send_interval = false) {
+    public static function editNotification($id, $timestamp, $subject, $message, $condition, $html_message, $send_interval = false)
+    {
      $notification = array ("timestamp" => $timestamp,
              "send_conditions" => serialize($condition),
              "message" => $message,
@@ -596,6 +605,7 @@ class MagesterNotification
   if ($send_interval) {
       $notification['send_interval'] = $send_interval;
      }
+
      return eF_updateTableData("notifications", $notification, "id = " . $id);
     }
     /**
@@ -645,7 +655,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function initializeEventNotification($event_notification) {
+    public static function initializeEventNotification($event_notification)
+    {
         $event_types = MagesterEvent::getEventTypes();
         // The same regardless whether $event_notification['after_time'] is positive (After Event)
         // or negative (Before Event): we will compare timestamps with past or future timestamps
@@ -653,7 +664,7 @@ class MagesterNotification
         $timediff = time() - $event_notification['after_time'];
         if (MagesterEvent::SYSTEM_JOIN == $event_notification['event_type']) {
             $users_to_notify = eF_getTableData("users", "login as users_LOGIN, name as users_name, surname as users_surname, timestamp", "timestamp > " . $timediff);
-        } else if (MagesterEvent::SYSTEM_VISITED == abs($event_notification['event_type'])) {
+        } elseif (MagesterEvent::SYSTEM_VISITED == abs($event_notification['event_type'])) {
             $users_result = eF_getTableData("logs JOIN users ON logs.users_LOGIN = users.login", "distinct users.login as users_LOGIN, users.name as users_name, users.surname as users_surname, logs.timestamp", "action = 'login' AND logs.timestamp > " . $timediff, "users.login ASC, logs.timestamp DESC");
             // Removing duplicates to keep only last record of each user - since the list is sorted this will work
             $previous_user = "";
@@ -670,7 +681,7 @@ class MagesterNotification
             foreach ($users_never_entered as $key => $user) {
                 $users_to_notify[] = $user;
             }
-        } else if (MagesterEvent::LESSON_ACQUISITION_AS_STUDENT == $event_notification['event_type'] ||
+        } elseif (MagesterEvent::LESSON_ACQUISITION_AS_STUDENT == $event_notification['event_type'] ||
                    MagesterEvent::LESSON_ACQUISITION_AS_PROFESSOR == $event_notification['event_type'] ||
                    MagesterEvent::LESSON_COMPLETION == abs($event_notification['event_type']) || // for the corresponding AFTER NOT event
                    MagesterEvent::LESSON_PROGRAMMED_START == abs($event_notification['event_type']) || // for the corresponding BEFORE event
@@ -680,18 +691,18 @@ class MagesterNotification
             if (MagesterEvent::LESSON_ACQUISITION_AS_STUDENT == $event_notification['event_type']) {
                 $extra_condition = "users_to_lessons.user_type = 'student' AND ";
     $timestamp_column = "users_to_lessons.from_timestamp";
-            } else if (MagesterEvent::LESSON_ACQUISITION_AS_PROFESSOR == $event_notification['event_type']) {
+            } elseif (MagesterEvent::LESSON_ACQUISITION_AS_PROFESSOR == $event_notification['event_type']) {
                 $extra_condition = "users_to_lessons.user_type = 'professor' AND ";
                 $timestamp_column = "users_to_lessons.from_timestamp";
-            } else if (MagesterEvent::LESSON_COMPLETION == $event_notification['event_type']) {
+            } elseif (MagesterEvent::LESSON_COMPLETION == $event_notification['event_type']) {
                 $extra_condition = "users_to_lessons.completed = '1' AND ";
                 $timestamp_column = "users_to_lessons.to_timestamp";
-            } else if (MagesterEvent::LESSON_COMPLETION == (-1) * $event_notification['event_type']) {
+            } elseif (MagesterEvent::LESSON_COMPLETION == (-1) * $event_notification['event_type']) {
                 $extra_condition = "users_to_lessons.completed = '0' AND ";
                 $timestamp_column = "users_to_lessons.to_timestamp";
-            } else if (MagesterEvent::LESSON_PROGRAMMED_START == abs($event_notification['event_type'])) {
+            } elseif (MagesterEvent::LESSON_PROGRAMMED_START == abs($event_notification['event_type'])) {
                 $timestamp_column = "lessons.from_timestamp";
-            } else if (MagesterEvent::LESSON_PROGRAMMED_EXPIRY == abs($event_notification['event_type'])) {
+            } elseif (MagesterEvent::LESSON_PROGRAMMED_EXPIRY == abs($event_notification['event_type'])) {
                 $timestamp_column = "lessons.to_timestamp";
             }
             if ($conditions['lessons_ID'] != 0) {
@@ -702,7 +713,7 @@ class MagesterNotification
             } else {
                 $users_to_notify = eF_getTableData("lessons", "lessons.id as lessons_ID, lessons.name as lessons_name, " . $timestamp_column . " as timestamp", $extra_condition . $timestamp_column . "> " . $timediff);
             }
-        } else if (MagesterEvent::LESSON_VISITED == abs($event_notification['event_type'])) {
+        } elseif (MagesterEvent::LESSON_VISITED == abs($event_notification['event_type'])) {
             $conditions = unserialize($event_notification['send_conditions']);
             if ($conditions['lessons_ID'] != 0) {
                 $extra_condition .= " logs.lessons_ID = " . $conditions['lessons_ID'] . " AND ";
@@ -717,20 +728,20 @@ class MagesterNotification
                     $previous_user = $user['users_LOGIN'];
                 }
             }
-        } else if (MagesterEvent::PROJECT_SUBMISSION == $event_notification['event_type']) {
+        } elseif (MagesterEvent::PROJECT_SUBMISSION == $event_notification['event_type']) {
             $conditions = unserialize($event_notification['send_conditions']);
             if ($conditions['lessons_ID'] != 0) {
                 $extra_condition .= " projects.lessons_ID = " . $conditions['lessons_ID'] . " AND ";
             }
             $timestamp_column = "users_to_projects.upload_timestamp";
             $users_to_notify = eF_getTableData("users_to_projects JOIN users ON users_to_projects.users_LOGIN = users.login JOIN projects ON users_to_projects.projects_ID = projects.id JOIN lessons ON lessons.id = projects.lessons_ID", "users.login as users_LOGIN, users.name as users_name, users.surname as users_surname, projects.lessons_ID, lessons.name as lessons_name, ". $timestamp_column ." as timestamp, projects.id as entity_ID, projects.title as entity_name", $extra_condition . $timestamp_column . "> " . $timediff);
-        } else if (MagesterEvent::PROJECT_EXPIRY == abs($event_notification['event_type'])) {
+        } elseif (MagesterEvent::PROJECT_EXPIRY == abs($event_notification['event_type'])) {
             $timestamp_column = "projects.deadline";
             if ($conditions['lessons_ID'] != 0) {
                 $extra_condition .= " projects.lessons_ID = " . $conditions['lessons_ID'] . " AND ";
             }
             $users_to_notify = eF_getTableData("projects JOIN lessons ON lessons.id = projects.lessons_ID", "projects.lessons_ID, lessons.name as lessons_name, ". $timestamp_column ." as timestamp, projects.id as entity_ID, projects.title as entity_name", $extra_condition . $timestamp_column . "> " . $timediff);
-        } else if (MagesterEvent::COURSE_ACQUISITION_AS_STUDENT == $event_notification['event_type'] ||
+        } elseif (MagesterEvent::COURSE_ACQUISITION_AS_STUDENT == $event_notification['event_type'] ||
                    MagesterEvent::COURSE_ACQUISITION_AS_PROFESSOR == $event_notification['event_type'] ||
                    MagesterEvent::COURSE_COMPLETION == abs($event_notification['event_type']) ||
                    MagesterEvent::COURSE_PROGRAMMED_START == abs($event_notification['event_type']) || // for the corresponding BEFORE event
@@ -740,18 +751,18 @@ class MagesterNotification
             if (MagesterEvent::COURSE_ACQUISITION_AS_STUDENT == $event_notification['event_type']) {
                 $extra_condition = "users_to_courses.user_type = 'student' AND ";
     $timestamp_column = "users_to_courses.from_timestamp";
-            } else if (MagesterEvent::COURSE_ACQUISITION_AS_PROFESSOR == $event_notification['event_type']) {
+            } elseif (MagesterEvent::COURSE_ACQUISITION_AS_PROFESSOR == $event_notification['event_type']) {
                 $extra_condition = "users_to_courses.user_type = 'professor' AND ";
                 $timestamp_column = "users_to_courses.from_timestamp";
-            } else if (MagesterEvent::COURSE_COMPLETION == $event_notification['event_type'] || MagesterEvent::COURSE_CERTIFICATE_ISSUE == $event_notification['event_type']) {
+            } elseif (MagesterEvent::COURSE_COMPLETION == $event_notification['event_type'] || MagesterEvent::COURSE_CERTIFICATE_ISSUE == $event_notification['event_type']) {
                 $extra_condition = "users_to_courses.completed = '1' AND ";
                 $timestamp_column = "users_to_courses.to_timestamp";
-            } else if (MagesterEvent::COURSE_COMPLETION == (-1) * $event_notification['event_type']) {
+            } elseif (MagesterEvent::COURSE_COMPLETION == (-1) * $event_notification['event_type']) {
                 $extra_condition = "users_to_courses.completed = '0' AND ";
                 $timestamp_column = "users_to_courses.to_timestamp";
-            } else if (MagesterEvent::COURSE_PROGRAMMED_START == abs($event_notification['event_type'])) {
+            } elseif (MagesterEvent::COURSE_PROGRAMMED_START == abs($event_notification['event_type'])) {
                 $timestamp_column = "courses.start_date";
-            } else if (MagesterEvent::COURSE_PROGRAMMED_EXPIRY == abs($event_notification['event_type'])) {
+            } elseif (MagesterEvent::COURSE_PROGRAMMED_EXPIRY == abs($event_notification['event_type'])) {
                 $timestamp_column = "courses.end_date";
             }
             if ($conditions['courses_ID'] != 0) {
@@ -762,7 +773,7 @@ class MagesterNotification
             } else {
                 $users_to_notify = eF_getTableData("courses", "courses.id as lessons_ID, courses.name as lessons_name, " . $timestamp_column . " as timestamp", $extra_condition . $timestamp_column . "> " . $timediff);
             }
-  } else if (MagesterEvent::COURSE_CERTIFICATE_ISSUE == $event_notification['event_type']) {
+  } elseif (MagesterEvent::COURSE_CERTIFICATE_ISSUE == $event_notification['event_type']) {
    $users_result = eF_getTableData("users_to_courses JOIN users ON users_to_courses.users_LOGIN = users.login JOIN courses ON users_to_courses.courses_ID = courses.id", "users.login as users_LOGIN, users.name as users_name, users.surname as users_surname, users_to_courses.courses_ID, courses.name as courses_name, users_to_courses.issued_certificate", "users_to_courses.completed = '1' AND users_to_courses.issued_certificate <> '' and users.archive=0 and users_to_courses.archive=0");
       $users_to_notify = array();
             foreach ($users_result as $key => $user) {
@@ -772,7 +783,7 @@ class MagesterNotification
               $users_to_notify[] = $user;
              }
             }
-        } else if (MagesterEvent::COURSE_VISITED == abs($event_notification['event_type'])) {
+        } elseif (MagesterEvent::COURSE_VISITED == abs($event_notification['event_type'])) {
             $conditions = unserialize($event_notification['send_conditions']);
             if ($conditions['courses_ID'] != 0) {
                 $extra_condition .= " logs.courses_ID = " . $conditions['courses_ID'] . " AND ";
@@ -787,7 +798,7 @@ class MagesterNotification
                     $previous_user = $user['users_LOGIN'];
                 }
             }
-        } else if (MagesterEvent::NEW_SURVEY == $event_notification['event_type']) {
+        } elseif (MagesterEvent::NEW_SURVEY == $event_notification['event_type']) {
             $conditions = unserialize($event_notification['send_conditions']);
             if ($conditions['lessons_ID'] != 0) {
                 $extra_condition .= " projects.lessons_ID = " . $conditions['lessons_ID'] . " AND ";
@@ -849,7 +860,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function addEventNotification($events_type, $subject, $message, $condition, $recipients_category, $html_message, $after_time = false, $send_immediately = false) {
+    public static function addEventNotification($events_type, $subject, $message, $condition, $recipients_category, $html_message, $after_time = false, $send_immediately = false)
+    {
     }
     /**
 
@@ -888,7 +900,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function editEventNotification($event_id, $event_type, $subject, $message, $condition, $recipients_category, $html_message, $after_time = false, $send_immediately = false) {
+    public static function editEventNotification($event_id, $event_type, $subject, $message, $condition, $recipients_category, $html_message, $after_time = false, $send_immediately = false)
+    {
       $notification = array ("message" => $message,
               "subject" => $subject,
               "html_message" => ($html_message) ? 1: 0);
@@ -911,7 +924,8 @@ class MagesterNotification
      * @since: 3.6.0
 
      */
-    public static function getRecentlySent($limit = false) {
+    public static function getRecentlySent($limit = false)
+    {
      if ($limit) {
       return eF_getTableData("sent_notifications", "*" , "1=1 limit $limit", "timestamp DESC");
      } else {
@@ -945,7 +959,8 @@ class MagesterNotification
      * @returns array of SysClass logins, names, surnames, emails, user_types regarding the notification's recipients
 
      */
-    public function getRecipients() {
+    public function getRecipients()
+    {
      $recipients_list = array();
      if (isset($this -> notification['send_conditions'])) {
     //echo $this -> notification['send_conditions'];
@@ -968,7 +983,7 @@ class MagesterNotification
          if (isset($this -> recipients["user_type"])) {
           // return lesson users of specific type
           $recipients = $lesson -> getUsers($this -> recipients["user_type"], false, true);
-         } else if (isset($this -> recipients["completed"])) {
+         } elseif (isset($this -> recipients["completed"])) {
              // return lesson students according to whether they have completed the lesson or not
           $recipients = $lesson -> getUsersCompleted($this -> recipients["completed"]);
          } else {
@@ -976,36 +991,36 @@ class MagesterNotification
           // ONLY ACTIVE USERS!!
           $recipients = $lesson -> getUsers(false, true, true);
          }
-        } else if (isset($this -> recipients["courses_ID"])) {
+        } elseif (isset($this -> recipients["courses_ID"])) {
          if ($this -> recipients['user_type'] == "professor") {
        $completed_condition = " AND uc.user_type = 'professor'";
-         } else if ($this -> recipients['completed'] == "1") {
+         } elseif ($this -> recipients['completed'] == "1") {
           $completed_condition = " AND completed = '1'";
          } else {
           $completed_condition = "";
          }
          $recipients = eF_getTableData("users_to_courses uc, users u", "u.login, u.name, u.surname, u.email, u.user_type as basic_user_type, u.active, u.user_types_ID, uc.user_type as role", "u.archive=0 and uc.archive=0 and uc.users_LOGIN = u.login and uc.courses_ID=". $this -> recipients["courses_ID"] . $completed_condition);
-//        } else if (isset($this -> recipients['user_type'])) {
+//        } elseif (isset($this -> recipients['user_type'])) {
 //         $recipients = eF_getTableData("users", "*", "user_type = '". $this -> recipients['user_type']."'");
-        } else if (isset($this -> recipients['entity_ID']) && isset($this -> recipients['entity_category'])) {
+        } elseif (isset($this -> recipients['entity_ID']) && isset($this -> recipients['entity_category'])) {
          if ($this -> recipients['entity_category'] == "survey") {
           $recipients = eF_getTableData("users_to_surveys JOIN users ON users_LOGIN = users.login", "users.*", "surveys_ID = '".$this -> recipients["entity_ID"]."'");
        $resDone = eF_getTableDataFlat("users_to_done_surveys", "users_LOGIN", "surveys_ID=".$this -> recipients["entity_ID"]);
           $usersToSent = array();
-          if (!empty($resDone['users_LOGIN'])){
+          if (!empty($resDone['users_LOGIN'])) {
         foreach ($recipients as $key => $value) {
-         if (!in_array($value['login'], $resDone['users_LOGIN'])){
+         if (!in_array($value['login'], $resDone['users_LOGIN'])) {
           $usersToSent[] = $value;
          }
         }
         $recipients = $usersToSent;
           }
-         } else if ($this -> recipients['entity_category'] == "projects") {
+         } elseif ($this -> recipients['entity_category'] == "projects") {
        $recipients = eF_getTableData("users_to_projects JOIN users ON users_LOGIN = users.login", "users.*", "projects_ID = '".$this -> recipients["entity_ID"]."'");
          }
-        } else if (isset($this -> recipients["groups_ID"])) {
+        } elseif (isset($this -> recipients["groups_ID"])) {
          $recipients = eF_getTableData("users_to_groups JOIN users ON users_login = users.login", "users.*", "groups_ID = '".$this -> recipients["groups_ID"]."'");
-        } else if (isset($this -> recipients['users_login'])) {
+        } elseif (isset($this -> recipients['users_login'])) {
           $recipients = $this -> recipients['users_login'];
         }
         foreach ($recipients as $recipient) {
@@ -1028,6 +1043,7 @@ class MagesterNotification
        }
       }
     }
+
      return $recipients_list;
     }
     /*
@@ -1059,7 +1075,8 @@ class MagesterNotification
      * @return: true if the email was successfully sent
 
      */
-    public function sendTo($recipient, $smtp = null) {
+    public function sendTo($recipient, $smtp = null)
+    {
      if (is_array($recipient)) {
       if (isset($recipient['login'])) {
        if (!(isset($recipient['email']) && isset($recipient['name']) && isset($recipient['surname']) && isset($recipient['user_type']) )) {
@@ -1088,12 +1105,12 @@ class MagesterNotification
      if (!empty($language)) {
          $language = $language[0]['translation'];
      }
-	 
+
 	 	$currentUser = MagesterUserFactory :: factory($recipient['login']);
 		$modules = $currentUser->getModules();
 		$enrollResult = ef_getTableData("module_xenrollment", "id", sprintf("users_id = %d", $currentUser->user['id'], "id DESC"));
 		//$invoiceLink = $modules['module_pagamento']->generateInvoiceLinkAction($enrollResult[0]['id']);
-		
+
         $template_formulations = array(
         	"users_name" => $recipient['name'],
                   "users_surname" => $recipient['surname'],
@@ -1112,10 +1129,7 @@ class MagesterNotification
 				  "course_terms_link"					=> "http://ult.com.br/wp-content/themes/ult/magester/entify.getter.php?type=courses&subtype=terms&ID=" . $SelectedCourseId
 				   */
 		);
-			  
-			  
-			  
-			  
+
      $header = array ('From' => $GLOBALS['configuration']['system_email'],
                          'To' => $recipient['email'],
                          'Subject' => eF_formulateTemplateMessage($this -> notification['subject'], $template_formulations),
@@ -1164,6 +1178,7 @@ class MagesterNotification
                      "recipient" => $recipient['email'] . " (" .$recipient['name'] . " " . $recipient['surname'] . ")",
                      "subject" => $header['Subject'],
                      "body" => $message));
+
          return true;
      } else {
          return false;
@@ -1176,7 +1191,8 @@ class MagesterNotification
 	 * or deletes the notification for "before" event types
 
 	 */
-    public function scheduleNext() {
+    public function scheduleNext()
+    {
      if ($this -> notification['send_interval'] > 0) {
       eF_updateTableData("notifications", array("timestamp" => $this -> notification['timestamp'] + $this -> notification['send_interval']), "id = '". $this -> notification['id']. "'");
      } else {
@@ -1206,7 +1222,8 @@ class MagesterNotification
      * @param: $limit the maximum number of emails to be sent
 
      */
-    public static function sendNextNotifications($limit = false) {
+    public static function sendNextNotifications($limit = false)
+    {
     	// CONECTAR SOMENTE UMA VEZ AO SMTP
 
     	 $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
@@ -1222,10 +1239,10 @@ class MagesterNotification
       $limit = 5;
      }
      $init_limit = $limit;
-     
-     
-     
-     
+
+
+
+
      $result = eF_getTableData("notifications", "*", "active = 1 AND timestamp <" . time(), "timestamp ASC LIMIT $limit");
      $notifications_to_send = array();
      foreach ($result as $next_notification) {
@@ -1270,9 +1287,11 @@ class MagesterNotification
          eF_execute("INSERT INTO notifications (timestamp, recipient, message, subject, id_type_entity) VALUES ('". implode("'),('", $notifications_to_send) . "')");
         }
        }
+
        return $init_limit; // all messages have been sent
       }
      }
+
      return $init_limit - $limit;
     }
     /*
@@ -1296,7 +1315,8 @@ class MagesterNotification
      * @return: the number of messages deleted
 
      */
-    public static function clearSentMessages() {
+    public static function clearSentMessages()
+    {
   $all_stored_sent = MagesterNotification::getRecentlySent();
   $total_num = sizeof($all_stored_sent);
   if ($total_num > $GLOBALS['configuration']['notifications_max_sent_messages']) {
@@ -1316,12 +1336,14 @@ class MagesterNotification
      * Activate - deactivation functions
 
      */
-    public static function activateEventNotification($event_notification_id) {
+    public static function activateEventNotification($event_notification_id)
+    {
      eF_updateTableData("event_notifications", array("active" => 1), "id = '" . $event_notification_id. "'");
      $event_notification = eF_getTableData("event_notifications", "*", "id = " . $event_notification_id);
      MagesterNotification::initializeEventNotification($event_notification[0]);
     }
-    public static function deactivateEventNotification($event_notification_id) {
+    public static function deactivateEventNotification($event_notification_id)
+    {
   eF_updateTableData("event_notifications", array("active" => 0), "id = '" . $event_notification_id. "'");
   // disable unsent event notifications currently in the queue
   ///eF_updateTableData("notifications", array("active" => 0), "id_type_entity LIKE '" . $event_notification_id. "_%' ");
@@ -1330,18 +1352,22 @@ class MagesterNotification
 //		$event_notification = eF_getTableData("event_notifications", "*", "id = " . $event_notification_id);
 //		MagesterNotification::initializeEventNotification($event_notification[0]);
     }
-    public static function deleteEventNotification($event_notification_id) {
+    public static function deleteEventNotification($event_notification_id)
+    {
      eF_deleteTableData("event_notifications", "id = '" . $event_notification_id. "'");
      // delete unsent event notifications currently in the queue
      eF_deleteTableData("notifications", "id_type_entity LIKE '" . $event_notification_id. "_%' ");
     }
-    public function activate() {
+    public function activate()
+    {
   return eF_updateTableData("notifications", array("active" => 1), "id = '" . $this -> notification['id'] . "'");
     }
-    public function deactivate() {
+    public function deactivate()
+    {
   return eF_updateTableData("notifications", array("active" => 0), "id = '" . $this -> notification['id'] . "'");
     }
-    public function delete() {
+    public function delete()
+    {
      return eF_deleteTableData("notifications", "id = '" . $this -> notification['id'] . "'");
     }
     /**
@@ -1367,7 +1393,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function getAllNotifications() {
+    public static function getAllNotifications()
+    {
      $allNotifications = eF_getTableData("notifications", "*" , "id_type_entity IS NULL");
      $event_notifications = eF_getTableData("event_notifications", "*" , "", "active desc");
      $event_types = MagesterEvent::getEventTypes();
@@ -1384,29 +1411,30 @@ class MagesterNotification
       }
          if ($notification['send_recipients'] == MagesterNotification::TRIGGERINGUSER) {
        $event_notification_recipients = _USERTRIGGERINGTHEEVENT;
-      } else if ($notification['send_recipients'] == MagesterNotification::ALLSYSTEMUSERS) {
+      } elseif ($notification['send_recipients'] == MagesterNotification::ALLSYSTEMUSERS) {
        $event_notification_recipients = _ALLSYSTEMUSERS;
-      } else if ($notification['send_recipients'] == MagesterNotification::SYSTEMADMINISTRATOR) {
+      } elseif ($notification['send_recipients'] == MagesterNotification::SYSTEMADMINISTRATOR) {
        $event_notification_recipients = _SYSTEMADMINISTRATOR;
-      } else if ($notification['send_recipients'] == MagesterNotification::ALLLESSONUSERS) {
+      } elseif ($notification['send_recipients'] == MagesterNotification::ALLLESSONUSERS) {
     $event_notification_recipients = _ALLLESSONUSERS;
-   } else if ($notification['send_recipients'] == MagesterNotification::EXPLICITLYSEL) {
+   } elseif ($notification['send_recipients'] == MagesterNotification::EXPLICITLYSEL) {
     $event_notification_recipients = _EXPLICITLYSELECTED;
-   } else if ($notification['send_recipients'] == MagesterNotification::LESSONPROFESSORS) {
+   } elseif ($notification['send_recipients'] == MagesterNotification::LESSONPROFESSORS) {
     $event_notification_recipients = _LESSONPROFESSORS;
-   } else if ($notification['send_recipients'] == MagesterNotification::LESSONUSERSNOTCOMPLETED) {
+   } elseif ($notification['send_recipients'] == MagesterNotification::LESSONUSERSNOTCOMPLETED) {
        $event_notification_recipients = _LESSONUSERSNOTCOMPLETED;
-   } else if ($notification['send_recipients'] == MagesterNotification::COURSEPROFESSORS) {
+   } elseif ($notification['send_recipients'] == MagesterNotification::COURSEPROFESSORS) {
     $event_notification_recipients = _COURSEPROFESSORS;
-      } else if ($notification['send_recipients'] == MagesterNotification::ALLCOURSEUSERS) {
+      } elseif ($notification['send_recipients'] == MagesterNotification::ALLCOURSEUSERS) {
     $event_notification_recipients = _ALLCOURSEUSERS;
-   } else if ($notification['send_recipients'] == MagesterNotification::USERSUPERVISORS) {
+   } elseif ($notification['send_recipients'] == MagesterNotification::USERSUPERVISORS) {
     $event_notification_recipients = _USERSUPERVISORS;
       } else {
     $event_notification_recipients = "";
       }
       $allNotifications[] = array("id" => $notification['id'], "active" => $notification['active'], "event_notification_recipients" => $event_notification_recipients, "event_type"=> $notification['event_type'], "event" => $event_types_text, "send_interval" => $notification['after_time'], "send_conditions" => $notification['send_conditions'], "subject" => $notification['subject']);
      }
+
   return $allNotifications;
     }
    /**
@@ -1444,7 +1472,8 @@ class MagesterNotification
      * @access public
 
      */
-    public function createMessage($modulesArray = false) {
+    public function createMessage($modulesArray = false)
+    {
      if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_EVENTS == 0) {
       return array();
      }
@@ -1459,7 +1488,7 @@ class MagesterNotification
        foreach ($this -> notification as $field => $value) {
         $data[$field] = $value;
        }
-          $this -> notification['message'] = $modulesArray[$className] -> getNotificationMessage((integer)$this -> notification['type'] - MagesterNotification::MODULE_BASE_TYPE_CODE, $data);
+          $this -> notification['message'] = $modulesArray[$className] -> getNotificationMessage((integer) $this -> notification['type'] - MagesterNotification::MODULE_BASE_TYPE_CODE, $data);
       }
          if (! $this -> notification['message']) {
           $this -> notification['message'] = _UNREGISTEREDEVENT. " " . _FORTHEMODULE . " '" .$className. "'";
@@ -1468,33 +1497,33 @@ class MagesterNotification
          $this -> notification['message'] = _NAMEARTICLE . " <b><a  href = \"".$currentUser -> getType().".php?ctg=social&op=show_profile&user=".$this->notification['users_LOGIN']. "&popup=1\" onclick = \"eF_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ". $this -> notification['users_name']. " " . $this -> notification['users_surname']. "</a></b> ";
          if ($this -> notification['type'] == MagesterNotification::LESSON_ACQUISITION_AS_STUDENT) {
              $this -> notification['message'] .= _WASASSIGNEDTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::LESSON_ACQUISITION_AS_PROFESSOR) {
+         } elseif ($this -> notification['type'] == MagesterNotification::LESSON_ACQUISITION_AS_PROFESSOR) {
              $this -> notification['message'] .= _WILLBETEACHINGLESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::LESSON_COMPLETION) {
+         } elseif ($this -> notification['type'] == MagesterNotification::LESSON_COMPLETION) {
              $this -> notification['message'] .= _HASCOMPLETEDLESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::LESSON_REMOVAL) {
+         } elseif ($this -> notification['type'] == MagesterNotification::LESSON_REMOVAL) {
              $this -> notification['message'] .= _NOLONGERATTENDSLESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_COMMENT_WRITING) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_COMMENT_WRITING) {
              $this -> notification['message'] .= _WROTEACOMMENTFORUNIT . " <b>" . $this -> notification['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::TEST_COMPLETION) {
+         } elseif ($this -> notification['type'] == MagesterNotification::TEST_COMPLETION) {
              $this -> notification['message'] .= _COMPLETEDTEST . " <b>" . $this -> notification['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::TEST_CREATION) {
+         } elseif ($this -> notification['type'] == MagesterNotification::TEST_CREATION) {
              $this -> notification['message'] .= _CREATEDTHETEST . " <b>" . $this -> notification['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_FORUM) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_FORUM) {
              $this -> notification['message'] .= _CREATEDTHENEWFORUM . " <b>" . $this -> notification['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_TOPIC) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_TOPIC) {
              $this -> notification['message'] .= _CREATEDTHENEWTOPIC . " <b>" . $this -> notification['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_POLL) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_POLL) {
              $this -> notification['message'] .= _CREATEDTHENEWPOLL . " <b>" . $this -> notification['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_FORUM_MESSAGE_POST) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_FORUM_MESSAGE_POST) {
              $this -> notification['message'] .= _POSTEDTHENEWMESSAGE . " <b>" . $this -> notification['entity_name'] ."</b> " . _INTHEFORUMOFTHELESSON . " <b>" . $this -> notification['lessons_name'] ."</b>";
-         } else if ($this -> notification['type'] == MagesterNotification::STATUS_CHANGE) {
+         } elseif ($this -> notification['type'] == MagesterNotification::STATUS_CHANGE) {
              $this -> notification['message'] .= _CHANGEDHISHERPROFILE;
-         } else if ($this -> notification['type'] == MagesterNotification::AVATAR_CHANGE) {
+         } elseif ($this -> notification['type'] == MagesterNotification::AVATAR_CHANGE) {
              $this -> notification['message'] .= _CHANGEDHISHERAVATARPICTURE;
-         } else if ($this -> notification['type'] == MagesterNotification::PROFILE_CHANGE) {
+         } elseif ($this -> notification['type'] == MagesterNotification::PROFILE_CHANGE) {
              $this -> notification['message'] .= _CHANGEDHISHERPROFILE;
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_PROFILE_COMMENT_FOR_OTHER) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_PROFILE_COMMENT_FOR_OTHER) {
              $this -> notification['message'] .= _COMMENTEDONTHEPROFILEOF;
              // Here check whether this is your own profile or not
              if ($this -> notification['entity_ID'] != $currentUser -> user['login']) {
@@ -1502,24 +1531,25 @@ class MagesterNotification
              } else {
               $this -> notification['message'] .= " <b>". $this->notification['entity_name'] . "</b>";
              }
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_PROFILE_COMMENT_FOR_SELF) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_PROFILE_COMMENT_FOR_SELF) {
           $this -> notification['message'] .= _COMMENTEDONHISHEROWNPROFILE;
-         } else if ($this -> notification['type'] == MagesterNotification::DELETE_PROFILE_COMMENT_FOR_SELF) {
+         } elseif ($this -> notification['type'] == MagesterNotification::DELETE_PROFILE_COMMENT_FOR_SELF) {
           $this -> notification['message'] .= _DELETEDACOMMENTFROMHISHEROWNPROFILE;
-         } else if ($this -> notification['type'] == MagesterNotification::NEW_POST_FOR_LESSON_TIMELINE_TOPIC) {
+         } elseif ($this -> notification['type'] == MagesterNotification::NEW_POST_FOR_LESSON_TIMELINE_TOPIC) {
           $topic_post = unserialize($this -> notification['entity_name']);
           $this -> notification['message'] .= _POSTEDFORLESSONTOPIC . " <b>" . $topic_post['topic_title'] . "</b> " . _THEPOST . ": " . $topic_post['data'];
           if ($this -> notification['users_LOGIN'] == $GLOBALS['currentUser'] -> user['login']) {
            $this -> notification['editlink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this -> notification['lessons_ID'] . "&post_topic=" . $this -> notification['entity_ID'] . "&action=change&popup=1&id=" . $topic_post['post_id'] ."' onclick = 'eF_js_showDivPopup(\""._EDITMESSAGEFORLESSONTIMELINETOPIC. "\", 1)'  target = 'POPUP_FRAME'><img src='images/16x16/edit.png' border='0' alt = '"._EDITMESSAGEFORLESSONTIMELINETOPIC."' title='"._EDITMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
            $this -> notification['deletelink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this -> notification['lessons_ID'] . "&post_topic=" . $this -> notification['entity_ID'] . "&action=delete&id=" . $topic_post['post_id']."'><img src='images/16x16/error_delete.png' border='0' alt = '"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' title='"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
           }
-         } else if ($this -> notification['type'] == MagesterNotification::DELETE_POST_FROM_LESSON_TIMELINE) {
+         } elseif ($this -> notification['type'] == MagesterNotification::DELETE_POST_FROM_LESSON_TIMELINE) {
           $this -> notification['message'] .= _DELETEDAPOSTFORLESSONTOPIC . " " . $this -> notification['entity_name'];
          } else {
              $this -> notification['message'] = _UNREGISTEREDEVENT;
          }
      }
         $this -> notification['time'] = eF_convertIntervalToTime(time() - $this->notification['timestamp'], true). ' '._AGO;
+
         return $this -> notification['message'];
     }
    /**
@@ -1561,7 +1591,8 @@ class MagesterNotification
      * @access public
 
      */
-    public static function shouldSendNextNotifications() {
+    public static function shouldSendNextNotifications()
+    {
         if ($GLOBALS['configuration']['notifications_use_cron'] == 1) {
             return false;
         }
@@ -1579,6 +1610,7 @@ class MagesterNotification
                 echo $GLOBALS['configuration']['notifications_last_send_timestamp'] . "  " . (60 *$GLOBALS['configuration']['notifications_maximum_inter_time']) . " " . time() ." <BR>";
 
                 */
+
                 return true;
         }
     }

@@ -118,7 +118,7 @@ password from your user configuration.',
             $username = isset($_ENV['USER']) ? $_ENV['USER'] : null;
         }
         $this->ui->outputData("Logging in to $server.", $command);
-        
+
         list($username, $password) = $this->ui->userDialog(
             $command,
             array('Username', 'Password'),
@@ -127,7 +127,7 @@ password from your user configuration.',
             );
         $username = trim($username);
         $password = trim($password);
-        
+
         $this->config->set('username', $username);
         $this->config->set('password', $password);
 
@@ -144,6 +144,7 @@ password from your user configuration.',
         } else {
             return $this->raiseError("Login failed!");
         }
+
         return true;
     }
 
@@ -177,10 +178,9 @@ password from your user configuration.',
         $this->config->remove('username');
         $this->config->remove('password');
         $this->config->store();
+
         return true;
     }
 
     // }}}
 }
-
-?>

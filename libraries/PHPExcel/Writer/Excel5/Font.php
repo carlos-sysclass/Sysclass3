@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel5_Font
  *
@@ -83,7 +82,7 @@ class PHPExcel_Writer_Excel5_Font
 		$icv = $this->_colorIndex; // Index to color palette
 		if ($this->_font->getSuperScript()) {
 			$sss = 1;
-		} else if ($this->_font->getSubScript()) {
+		} elseif ($this->_font->getSubScript()) {
 			$sss = 2;
 		} else {
 			$sss = 0;
@@ -132,7 +131,8 @@ class PHPExcel_Writer_Excel5_Font
 	 * @param boolean $bold
 	 * @return int
 	 */
-	private static function _mapBold($bold) {
+	private static function _mapBold($bold)
+	{
 		if ($bold) {
 			return 0x2BC;	//	700 = Bold font weight
 		}
@@ -156,7 +156,8 @@ class PHPExcel_Writer_Excel5_Font
 	 * @param string
 	 * @return int
 	 */
-	private static function _mapUnderline($underline) {
+	private static function _mapUnderline($underline)
+	{
 		if (isset(self::$_mapUnderline[$underline]))
 			return self::$_mapUnderline[$underline];
 		return 0x00;

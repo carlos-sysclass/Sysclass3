@@ -60,7 +60,6 @@
 // *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // */
 
-
 /**
  * PHPExcel_Writer_Excel5_Worksheet
  *
@@ -426,8 +425,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					// FONT Index
 					if ($element instanceof PHPExcel_RichText_Run) {
 						$str_fontidx = $this->_fntHashIndex[$element->getFont()->getHashCode()];
-					}
-					else {
+					} else {
 						$str_fontidx = 0;
 					}
 					$arrcRun[] = array('strlen' => $str_pos, 'fontidx' => $str_fontidx);
@@ -489,7 +487,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				// internal to current workbook
 				$url = str_replace('sheet://', 'internal:', $url);
 
-			} else if ( preg_match('/^(http:|https:|ftp:|mailto:)/', $url) ) {
+			} elseif ( preg_match('/^(http:|https:|ftp:|mailto:)/', $url) ) {
 				// URL
 				// $url = $url;
 
@@ -646,7 +644,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * @param mixed   $xfIndex The XF format index for the cell
 	 * @param array $arrcRun Index to Font record and characters beginning
 	 */
-	private function _writeRichTextString($row, $col, $str, $xfIndex, $arrcRun){
+	private function _writeRichTextString($row, $col, $str, $xfIndex, $arrcRun)
+	{
 		$record	= 0x00FD;				   // Record identifier
 		$length	= 0x000A;				   // Bytes to follow
 
@@ -838,7 +837,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 			// we use best effort to determine data type
 			if (is_bool($calculatedValue)) {
 				// Boolean value
-				$num = pack('CCCvCv', 0x01, 0x00, (int)$calculatedValue, 0x00, 0x00, 0xFFFF);
+				$num = pack('CCCvCv', 0x01, 0x00, (int) $calculatedValue, 0x00, 0x00, 0xFFFF);
 			} elseif (is_int($calculatedValue) || is_float($calculatedValue)) {
 				// Numeric value
 				$num = pack('d', $calculatedValue);
@@ -1190,7 +1189,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 		$grbit	   = 0x0000;			   // Option flags
 		$ixfe		= $xfIndex;
 
-		if ( $height < 0 ){
+		if ($height < 0) {
 			$height = null;
 		}
 
@@ -1256,7 +1255,6 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 		$grbit		  = 0x00B6;	 // Option flags
 		$rwTop		  = 0x0000;	 // Top row visible in window
 		$colLeft		= 0x0000;	 // Leftmost column visible in window
-
 
 		// The options flags that comprise $grbit
 		$fDspFmla	   = 0;					 // 0 - bit
@@ -2524,12 +2522,13 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * @param resource $image The image to process
 	 * @return array Array with data and properties of the bitmap
 	 */
-	function _processBitmapGd($image) {
+	function _processBitmapGd($image)
+	{
 		$width = imagesx($image);
 		$height = imagesy($image);
 
 		$data = pack("Vvvvv", 0x000c, $width, $height, 0x01, 0x18);
-		for ($j=$height; $j--; ) {
+		for ($j=$height; $j--;) {
 			for ($i=0; $i < $width; ++$i) {
 				$color = imagecolorsforindex($image, imagecolorat($image, $i, $j));
 				foreach (array("red", "green", "blue") as $key) {
@@ -2851,7 +2850,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					$formula1 = $this->_parser->toReversePolish();
 					$sz1 = strlen($formula1);
 
-				} catch(Exception $e) {
+				} catch (Exception $e) {
 					$sz1 = 0;
 					$formula1 = '';
 				}
@@ -2868,7 +2867,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					$formula2 = $this->_parser->toReversePolish();
 					$sz2 = strlen($formula2);
 
-				} catch(Exception $e) {
+				} catch (Exception $e) {
 					$sz2 = 0;
 					$formula2 = '';
 				}
@@ -2893,7 +2892,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * @param string $errorCode
 	 * @return int
 	 */
-	private static function _mapErrorCode($errorCode) {
+	private static function _mapErrorCode($errorCode)
+	{
 		switch ($errorCode) {
 			case '#NULL!':	return 0x00;
 			case '#DIV/0!':	return 0x07;

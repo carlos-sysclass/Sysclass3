@@ -19,7 +19,6 @@
  * @version    $Id: Result.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Auth
@@ -95,7 +94,7 @@ class Zend_Auth_Result
 
         if ($code < self::FAILURE_UNCATEGORIZED) {
             $code = self::FAILURE;
-        } elseif ($code > self::SUCCESS ) {
+        } elseif ($code > self::SUCCESS) {
             $code = 1;
         }
 

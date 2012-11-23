@@ -48,7 +48,8 @@ class news extends MagesterEntity
 	* @access public
 	* @static
 	*/
-	public static function create($fields = array(), $sendEmail = false) {
+	public static function create($fields = array(), $sendEmail = false)
+	{
 		error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 		$fields = array('title' 		=> $fields['title'],
                         'data' 			=> $fields['data'],
@@ -84,7 +85,8 @@ class news extends MagesterEntity
 	* @since 3.6.0
 	* @access public
 	*/
-	public function persist() {
+	public function persist()
+	{
 		parent :: persist();
 		MagesterSearch :: removeText('news', $this -> news['id'], 'data');
 		MagesterSearch :: insertText($this -> news['data'], $this -> news['id'], "news", "data");
@@ -107,7 +109,8 @@ class news extends MagesterEntity
 	* @since 3.6.0
 	* @access public
 	*/
-	public function delete() {
+	public function delete()
+	{
 		parent :: delete();
 		MagesterSearch :: removeText('news', $this -> news['id'], 'title');
 		MagesterSearch :: removeText('news', $this -> news['id'], 'data');
@@ -117,10 +120,11 @@ class news extends MagesterEntity
 	* (non-PHPdoc)
 	* @see libraries/MagesterEntity#getForm($form)
 	*/
-	public function getForm($form) {
+	public function getForm($form)
+	{
 		if ($_SESSION['s_type'] == "professor") {
 			$lessonsID = eF_getTableDataFlat("users_to_lessons", "lessons_id", "active=1 and archive = 0 and users_LOGIN LIKE '".$_SESSION['s_login']."'");
-			foreach ( $lessonsID as $_lessonID ) {
+			foreach ($lessonsID as $_lessonID) {
 				$lessonsID = $_lessonID;
 			}
 			$lessons = eF_getTableDataFlat("lessons", "id, name", "active=1 and id in (".implode(",", $lessonsID).")");
@@ -128,12 +132,12 @@ class news extends MagesterEntity
 				//Get every lesson's name
 				$lessons = array_combine($lessons['id'], $lessons['name']);
 			}
-			
+
 			$courseID = eF_getTableDataFlat("users_to_courses", "courses_id", "active=1 and archive = 0  and users_LOGIN LIKE '".$_SESSION['s_login']."'");
-			foreach ( $courseID as $_courseID ){
+			foreach ($courseID as $_courseID) {
 				$courseID = $_courseID;
 			}
-			
+
 			$allClass = eF_getTableDataFlat("classes", "id, name", "active=1 and courses_id = ".$_SESSION['s_courses_ID']);
 			if (sizeof($allClass) > 0) {
 				//Get every lesson's name
@@ -154,7 +158,7 @@ class news extends MagesterEntity
 		}
 		$sidenote = '<a href = "javascript:void(0)" onclick = "Element.extend(this).up().select(\'select\').each(function (s) {s.options.selectedIndex=0;})">'._CLEAR.'</a>';
 		$form -> addElement('text', 'title', _ANNOUNCEMENTTITLE, 'class = "inputText"');
-		if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "administrator" ) {
+		if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "administrator") {
 			//$form -> addElement('select', 'courses', _LESSON, $courseID);
 			$form -> addElement('select', 'lessons', _LESSON, $lessons);
 			$form -> addElement('select', 'classes', _COURSECLASS,array(0 => _COURSEALLCLASS ) + $allClass);
@@ -179,7 +183,8 @@ class news extends MagesterEntity
 	* (non-PHPdoc)
 	* @see libraries/MagesterEntity#handleForm($form)
 	*/
-	public function handleForm($form) {
+	public function handleForm($form)
+	{
 		$values = $form -> exportValues();
 		$timestamp = mktime($values['timestamp']['H'], $values['timestamp']['i'], 0, $values['timestamp']['M'], $values['timestamp']['d'], $values['timestamp']['Y']);
 		$expire = mktime($values['expire']['H'], $values['expire']['i'], 0, $values['expire']['M'], $values['expire']['d'], $values['expire']['Y']);
@@ -251,7 +256,8 @@ class news extends MagesterEntity
 	* @static
 	* @access public
 	*/
-	public static function getNews($lessonId, $checkExpire = false) {
+	public static function getNews($lessonId, $checkExpire = false)
+	{
 		if ($checkExpire) {
 			$expireString = " and (n.expire=0 OR n.expire >=".time().") AND n.timestamp<=".time();
 			//$expireString = " AND n.timestamp<=".time();   // check why it was here hot talking into account expire. makriria 15/3/2010

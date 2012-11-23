@@ -18,12 +18,11 @@ if (!$_student_) {
     $test = new MagesterTest($currentUnit['id'], true);
     $status = $test -> getStatus($currentUser, $_GET['show_solved_test']);
     $form = new HTML_QuickForm("test_form", "post", basename($_SERVER['PHP_SELF']).'?view_unit='.$_GET['view_unit'], "", 'onsubmit = "$(\'submit_test\').disabled=true;"', true);
-    
 
  switch ($status['status']) {
         case 'incomplete':
         	//error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
-        	
+
             if (!$testInstance = unserialize($status['completedTest']['test'])) {
                 throw new MagesterTestException(_TESTCORRUPTEDASKRESETEXECUTION, MagesterTestException::CORRUPTED_TEST);
             }
@@ -58,23 +57,23 @@ if (!$_student_) {
             $smarty -> assign("T_TEST_UNDERGOING", true);
             //$testUndergoing = true;
             //pr($remainingTime);
-            
+
             break;
         case 'completed':case 'passed':case 'failed':case 'pending':
 /*
         	/** @todo RETIRAR O "IF" E MONTAR ESQUEMA PARA BUSCAR A PÁGINA DE RESULTADO, BASEADO NO unit_id, E CASO EXISTA, DIRECIONAR PARA A PÁGINA CORRENTE */
         	if ($currentUnit['id'] == 2) {
 				//eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=module&op=module_xcms&action=load_xpage&xpage_id=4");
-        		
+
         		// PASS USER AUTO-LOGIN
 //        		header("Location: http://idiompro.com/ingles-online/nivel?hash=" . $currentUser->user['autologin']);
         		header("Location: http://idiompro.com/ingles-online/wp-content/themes/breath/SysClass/nivelamento.score.send.php?hash=" . $currentUser->user['autologin']);
-        		
+
         		//echo "http://idiompro.com/nivel?hash=" . $currentUser->user['autologin'];
         		//eF_redirect("http://idiompro.com/nivel?hash=" . $currentUser->user['autologin']);
         		//exit; //<-- This exit is necessary here, otherwise test might be counted twice
         	}
-        	
+
             if (!$testInstance = unserialize($status['completedTest']['test'])) {
                 throw new MagesterTestException(_TESTCORRUPTEDASKRESETEXECUTION, MagesterTestException::CORRUPTED_TEST);
             }
@@ -121,10 +120,10 @@ if (!$_student_) {
                  //Assigning the 'user_configurable' value to the 'random_pool' option gives us a test instance with the appropriate number of questions
                  if (is_numeric($_GET['user_configurable']) && $_GET['user_configurable'] <= $questionsNumber && $_GET['user_configurable'] > 0) {
                         $test -> options['random_pool'] = $_GET['user_configurable'];
-                 } else if (!isset($_GET['user_configurable']) || !$_GET['user_configurable']) {
+                 } elseif (!isset($_GET['user_configurable']) || !$_GET['user_configurable']) {
                      eF_redirect(basename($_SERVER['PHP_SELF'])."?view_unit=".$_GET['view_unit'].'&message='.urlencode(_MUSTSPECIFYQUESTIONNUMBER));
                      exit;
-                 } else if ($_GET['user_configurable'] > $questionsNumber || $_GET['user_configurable'] <= 0) {
+                 } elseif ($_GET['user_configurable'] > $questionsNumber || $_GET['user_configurable'] <= 0) {
                      eF_redirect(basename($_SERVER['PHP_SELF'])."?view_unit=".$_GET['view_unit'].'&message='.urlencode(_MUSTSPECIFYVALUEFROM.' 1 '._TO.' '.$questionsNumber));
                      exit;
                  } else {
@@ -177,7 +176,7 @@ if (!$_student_) {
 
             $submitValues = $form -> getSubmitValues();
 
-            foreach($testInstance -> questions as $id => $question) {
+            foreach ($testInstance -> questions as $id => $question) {
                 $submitValues['question_time'][$id] || $submitValues['question_time'][$id] === 0 ? $question -> time = $submitValues['question_time'][$id] : null;
             }
 

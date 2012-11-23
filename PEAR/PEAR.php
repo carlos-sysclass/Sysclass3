@@ -206,7 +206,8 @@ class PEAR
      * @access public
      * @return void
      */
-    function _PEAR() {
+    function _PEAR()
+    {
         if ($this->_debug) {
             printf("PEAR destructor called, class=%s\n", strtolower(get_class($this)));
         }
@@ -236,6 +237,7 @@ class PEAR
         if (!array_key_exists($var, $properties[$class])) {
             $properties[$class][$var] = null;
         }
+
         return $properties[$class][$var];
     }
 
@@ -287,6 +289,7 @@ class PEAR
                 return $data->getCode() == $code;
             }
         }
+
         return false;
     }
 
@@ -394,6 +397,7 @@ class PEAR
         } else {
             array_push($this->_expected_errors, array($code));
         }
+
         return sizeof($this->_expected_errors);
     }
 
@@ -437,6 +441,7 @@ class PEAR
                 unset($this->_expected_errors[$key]);
             }
         }
+
         return $deleted;
     }
 
@@ -460,13 +465,14 @@ class PEAR
             // $error_code is a non-empty array here;
             // we walk through it trying to unset all
             // values
-            foreach($error_code as $key => $error) {
+            foreach ($error_code as $key => $error) {
                 if ($this->_checkDelExpect($error)) {
                     $deleted =  true;
                 } else {
                     $deleted = false;
                 }
             }
+
             return $deleted ? true : PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
         } elseif (!empty($error_code)) {
             // $error_code comes alone, trying to unset it
@@ -568,6 +574,7 @@ class PEAR
         if (intval(PHP_VERSION) < 5) {
             // little non-eval hack to fix bug #12147
             include 'PEAR/FixPHP5PEARWarnings.php';
+
             return $a;
         }
         if ($skipmsg) {
@@ -575,6 +582,7 @@ class PEAR
         } else {
             $a = new $ec($message, $code, $mode, $options, $userinfo);
         }
+
         return $a;
     }
 
@@ -594,9 +602,11 @@ class PEAR
     {
         if (isset($this) && is_a($this, 'PEAR')) {
             $a = &$this->raiseError($message, $code, null, null, $userinfo);
+
             return $a;
         } else {
             $a = &PEAR::raiseError($message, $code, null, null, $userinfo);
+
             return $a;
         }
     }
@@ -634,6 +644,7 @@ class PEAR
                 break;
         }
         $stack[] = array($mode, $options);
+
         return true;
     }
 
@@ -670,6 +681,7 @@ class PEAR
                 trigger_error("invalid error mode", E_USER_WARNING);
                 break;
         }
+
         return true;
     }
 
@@ -705,6 +717,7 @@ class PEAR
             PEAR::setErrorHandling($mode, $options);
         }
         $stack[] = array($mode, $options);
+
         return true;
     }
 
@@ -729,6 +742,7 @@ class PEAR
         } else {
             PEAR::setErrorHandling($mode, $options);
         }
+
         return true;
     }
 
@@ -760,8 +774,10 @@ class PEAR
             } else {
                 $suffix = '.so';
             }
+
             return @dl('php_'.$ext.$suffix) || @dl($ext.$suffix);
         }
+
         return true;
     }
 
@@ -927,7 +943,8 @@ class PEAR_Error
      * @return int error mode
      * @access public
      */
-    function getMode() {
+    function getMode()
+    {
         return $this->mode;
     }
 
@@ -940,7 +957,8 @@ class PEAR_Error
      * @return mixed callback function or object/method array
      * @access public
      */
-    function getCallback() {
+    function getCallback()
+    {
         return $this->callback;
     }
 
@@ -1035,6 +1053,7 @@ class PEAR_Error
         if ($frame === null) {
             return $this->backtrace;
         }
+
         return $this->backtrace[$frame];
     }
 
@@ -1065,7 +1084,8 @@ class PEAR_Error
      * @return string a string with an object summary
      * @access public
      */
-    function toString() {
+    function toString()
+    {
         $modes = array();
         $levels = array(E_USER_NOTICE  => 'notice',
                         E_USER_WARNING => 'warning',
@@ -1079,6 +1099,7 @@ class PEAR_Error
             } else {
                 $callback = $this->callback;
             }
+
             return sprintf('[%s: message="%s" code=%d mode=callback '.
                            'callback=%s prefix="%s" info="%s"]',
                            strtolower(get_class($this)), $this->message, $this->code,
@@ -1097,6 +1118,7 @@ class PEAR_Error
         if ($this->mode & PEAR_ERROR_RETURN) {
             $modes[] = 'return';
         }
+
         return sprintf('[%s: message="%s" code=%d mode=%s level=%s '.
                        'prefix="%s" info="%s"]',
                        strtolower(get_class($this)), $this->message, $this->code,
@@ -1115,4 +1137,3 @@ class PEAR_Error
  * c-basic-offset: 4
  * End:
  */
-?>

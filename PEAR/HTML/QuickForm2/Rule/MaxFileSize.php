@@ -82,6 +82,7 @@ class HTML_QuickForm2_Rule_MaxFileSize extends HTML_QuickForm2_Rule
         if (!isset($value['error']) || UPLOAD_ERR_NO_FILE == $value['error']) {
             return true;
         }
+
         return ($this->getConfig() >= @filesize($value['tmp_name']));
     }
 
@@ -100,6 +101,7 @@ class HTML_QuickForm2_Rule_MaxFileSize extends HTML_QuickForm2_Rule
                 preg_replace('/\s+/', ' ', var_export($config, true)) . ' given'
             );
         }
+
         return parent::setConfig($config);
     }
 
@@ -121,4 +123,3 @@ class HTML_QuickForm2_Rule_MaxFileSize extends HTML_QuickForm2_Rule
         parent::setOwner($owner);
     }
 }
-?>

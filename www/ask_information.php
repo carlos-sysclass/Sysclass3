@@ -16,7 +16,6 @@ try {
   $lesson = new MagesterLesson($_GET['lessons_ID']);
   $lessonInformation = $lesson -> getInformation();
 
-
   //$lessonInformation['language'] = $languages[$lesson -> lesson['languages_NAME']];
   if ($lessonInformation['professors']) {
    foreach ($lessonInformation['professors'] as $value) {
@@ -80,7 +79,6 @@ try {
   }
  }
 
-
  if (isset($_GET['courses_ID']) && eF_checkParameter($_GET['courses_ID'], 'id')) {
   $course = new MagesterCourse($_GET['courses_ID']);
   $courseInformation = $course -> getInformation();
@@ -143,29 +141,29 @@ try {
    echo _NODATAFOUND;
   }
  }
- 
-	// FOR MODULES 
+
+	// FOR MODULES
 	if ($_GET['module'] == 'module_pagamento' && isset($_GET['hash_id'])) {
 
 		$currentUser = MagesterUserFactory::factory('admin');
 		$module = eF_loadAllModules(true);
-		
+
 		if ($boletoData = $module['module_pagamento']->getBoletoParcelaDetails($_GET['hash_id'])) {
 			$tooltipInfo[] = '<div class = "infoEntry"><span>Forma de Pagamento</span><span>: ' . $boletoData['payment_type_name'] . '</span></div>';
-			
+
 			$payment_id = $boletoData['payment_id'];
-			
+
 			$coursesData = $module['module_pagamento']->getCoursesByPaymentId($payment_id);
-			
+
 			if (count($coursesData) > 0) {
 				$tooltipInfo[] = '<div class = "infoEntry"><span>Cursos Selecionados</span></div>';
 				$i = 1;
-				foreach($coursesData as $course) {
+				foreach ($coursesData as $course) {
 					$tooltipInfo[] = '<div class = "infoEntry" style="padding-left: 10px"><span>' . $i . '&ordm;Curso</span><span>: ' . $course->course['name'] . '</span></div>';
 					$i++;
 				}
 			}
-			
+
 			$string = implode("", $tooltipInfo);
 			echo $string;
 		} else {
@@ -173,9 +171,7 @@ try {
 		}
 		exit;
 	}
- 
- 
+
 } catch (Exception $e) {
  echo ($e -> getMessage().' ('.$e -> getCode().')'); //No ajax error handling here, since we want the info to appear in the popup
 }
-?>

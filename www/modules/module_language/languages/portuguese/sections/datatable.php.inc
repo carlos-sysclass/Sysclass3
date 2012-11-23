@@ -12,4 +12,3 @@ define("__DATATABLES_oPaginate_sFirst", "Primeiro");
 define("__DATATABLES_oPaginate_sPrevious", "Anterior");
 define("__DATATABLES_oPaginate_sNext", "Próximo");
 define("__DATATABLES_oPaginate_sLast", "Último");
-?>

@@ -73,4 +73,3 @@ class Zend_Pdf_Color_GrayScale extends Zend_Pdf_Color
         return $this->_grayLevel->toString() . ($stroking? " G\n" : " g\n");
     }
 }
-

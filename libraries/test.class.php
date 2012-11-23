@@ -180,7 +180,8 @@ class MagesterTest
      * @access public
 
      */
-    function __construct($test, $isContentId = false) {
+    function __construct($test, $isContentId = false)
+    {
         if (is_array($test)) {
             $this -> test = $test;
         } elseif (!eF_checkParameter($test, 'id')) {
@@ -235,13 +236,15 @@ class MagesterTest
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         eF_deleteTableData("tests_to_questions", "tests_ID=".$this -> test['id']);
         eF_deleteTableData("done_tests", "tests_ID=".$this -> test['id']);
         eF_deleteTableData("completed_tests", "tests_ID=".$this -> test['id']);
         eF_deleteTableData("content", "id=".$this -> test['content_ID']);
         eF_deleteTableData("tests", "id=".$this -> test['id']);
         Cache::resetCache('test:'.$this -> test['id']);
+
         return true;
     }
     /**
@@ -267,7 +270,8 @@ class MagesterTest
      * </code>
 
      */
-    public function activate() {
+    public function activate()
+    {
         $this -> test['active'] = 1;
         $this -> persist();
         $unit = new MagesterUnit($this -> test['content_ID']);
@@ -299,7 +303,8 @@ class MagesterTest
      * </code>
 
      */
-    public function deactivate() {
+    public function deactivate()
+    {
         $this -> test['active'] = 0;
         $this -> persist();
         $unit = new MagesterUnit($this -> test['content_ID']);
@@ -337,7 +342,8 @@ class MagesterTest
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         $fields = array('active' => $this -> test['active'],
                         'content_ID' => $this -> test['content_ID'],
                         'options' => serialize($this -> options),
@@ -347,6 +353,7 @@ class MagesterTest
                         'lessons_ID' => $this -> test['lessons_ID'],
                         'publish' => $this -> test['publish']);
         Cache::resetCache('test:'.$this -> test['id']);
+
         return eF_updateTableData("tests", $fields, "id=".$this -> test['id']) && eF_updateTableData("content", array("publish" => $this -> test['publish']), "id=".$this -> test['content_ID']);
     }
     /**
@@ -380,7 +387,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getQuestions($returnObjects = false) {
+    public function getQuestions($returnObjects = false)
+    {
         if ($this -> questions === false) {
          //Get content unit names, to be assigned to questions for easy access
             $contentNames = eF_getTableDataFlat("content", "id, name", "lessons_ID=".$this -> test['lessons_ID']);
@@ -472,7 +480,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getNonQuestions($returnObjects = false) {
+    public function getNonQuestions($returnObjects = false)
+    {
         $lesson = $this -> getLesson();
         $testQuestions = $this -> getQuestions();
         //Get content unit names, to be assigned to questions for easy access
@@ -499,6 +508,7 @@ class MagesterTest
          $value['content_name'] = $contentNames[$value['content_ID']]; //This is needed here in order for filtering to work properly: the Question object has to have the content name inside it
    $returnObjects ? $nonQuestions[$value['id']] = QuestionFactory :: factory($value) : $nonQuestions[$value['id']] = $value;
         }
+
         return $nonQuestions;
     }
     /**
@@ -534,7 +544,8 @@ class MagesterTest
      * @access public
 
      */
-    public function addQuestions($questions) {
+    public function addQuestions($questions)
+    {
         Cache::resetCache('test:'.$this -> test['id']);
         $testQuestions = $this -> getQuestions();
         $nonTestQuestions = $this -> getNonQuestions();
@@ -559,6 +570,7 @@ class MagesterTest
         }
         //In order to refresh questions
         $this -> questions = false;
+
         return $this -> getQuestions();
     }
     /**
@@ -596,11 +608,13 @@ class MagesterTest
      * @access public
 
      */
-    public function removeQuestions($questionIds = false) {
+    public function removeQuestions($questionIds = false)
+    {
      Cache::resetCache('test:'.$this -> test['id']);
         if ($questionIds === false) {
             eF_deleteTableData("tests_to_questions", "tests_ID = ".$this -> test['id']);
             $this -> questions = false; //Reset questions information
+
             return array();
         } else {
             $testQuestions = $this -> getQuestions();
@@ -612,6 +626,7 @@ class MagesterTest
                 }
             }
             $this -> questions = false; //Reset questions information
+
             return $this -> getQuestions(); //Return new questions list
         }
     }
@@ -636,10 +651,12 @@ class MagesterTest
      * @access public
 
      */
-    public function getUnit() {
+    public function getUnit()
+    {
         if ($this -> unit === false && $this -> test['lessons_ID']) {
             $this -> unit = new MagesterUnit($this -> test['content_ID']);
         }
+
         return $this -> unit;
     }
     /**
@@ -673,7 +690,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getLesson($returnObjects = false) {
+    public function getLesson($returnObjects = false)
+    {
 /*
 
         $result = eF_getTableData("lessons, content", "lessons.id, lessons.name", "lessons.id=content.lessons_ID and content.id=".$this -> test['content_ID']);
@@ -704,6 +722,7 @@ class MagesterTest
      } else {
          $lesson = array(); // used to denote skill gap tests
      }
+
         return $lesson;
     }
     /**
@@ -745,10 +764,11 @@ class MagesterTest
      * @static
 
      */
-    public static function createTest($content, $test) {
+    public static function createTest($content, $test)
+    {
         if ($content === false) {
             $test['content_ID'] = 0;
-        } elseif (! ($content instanceof MagesterUnit)){
+        } elseif (! ($content instanceof MagesterUnit)) {
             $unit = MagesterUnit :: createUnit($content);
             $test['content_ID'] = $unit['id'];
    $test['lessons_ID'] = $unit['lessons_ID'];
@@ -765,6 +785,7 @@ class MagesterTest
           // Special treatment for skillgap tests
     MagesterEvent::triggerEvent(array("type" => MagesterEvent::TEST_CREATION, "users_LOGIN" => $GLOBALS['currentUser'] -> user['login'], "lessons_ID" => 0, "lessons_name" => _SKILLGAPTESTS));
          }
+
             return new MagesterTest($newId);
         } else {
             return false;
@@ -806,7 +827,8 @@ class MagesterTest
 
      */
     private static $auto_assigned = false;
-    public static function getAutoAssignedTests() {
+    public static function getAutoAssignedTests()
+    {
         // Skillgap tests have lessons_ID equal to zero by default
         if (!$auto_assigned) {
          $all_skillgaps = eF_getTableData("tests", "id, options", "lessons_ID = 0");
@@ -818,6 +840,7 @@ class MagesterTest
              }
          }
         }
+
         return $auto_assigned;
     }
     /**
@@ -899,7 +922,8 @@ class MagesterTest
      * @access public
 
      */
-    public function randomize($parameters, $reqs = false) {
+    public function randomize($parameters, $reqs = false)
+    {
   //Get all questions and assign them to an array where keys are their ids. At the same time,
   //calculate the time estimates sum for questions, which will be used in normalization.
      $result = eF_getTableData("questions", "*", "lessons_ID=".$this -> test['lessons_ID']);
@@ -923,9 +947,9 @@ class MagesterTest
       //account when calculating distance. If neither parameter is specified, make a completely random test
       if ((!isset($multitude) || !$multitude) && (!isset($duration) || !$duration)) {
        $point = array(0, 0); //Neither duration nor multitude specified, so this is a completely random test
-      } else if (!isset($multitude) || !$multitude) {
+      } elseif (!isset($multitude) || !$multitude) {
        $point = array(0, array_sum($subsets[$i])/$sum); //Multitude is not specified, only duration, so we minimize the distance to the preferred duration, no matter how many questions there will be
-      } else if (!isset($duration) || !$duration) {
+      } elseif (!isset($duration) || !$duration) {
        $point = array(sizeof($subsets[$i])/$size, 0); //This time duration is not specified, only multitude, so we minimize the distance to the preferred multitude, no matter how long will the test take
       } else {
        $point = array(sizeof($subsets[$i])/$size, array_sum($subsets[$i])/$sum); //Both multitude and duration are specified, so we minimize the distance with this pair (multitude,distance)
@@ -944,6 +968,7 @@ class MagesterTest
   foreach ($selected as $value => $v) {
    $selectedQuestions[$value] = $questions[$value];
   }
+
      return $selectedQuestions;
     }
     /**
@@ -966,13 +991,13 @@ class MagesterTest
 
      * The result holds the following information:
 
-     * - multitude (integer)<br>
+     * - multitude (integer) <br>
 
      * - duration (integer, seconds)<br>
 
-     * - difficulties (array)<br>
+     * - difficulties (array) <br>
 
-     * - types(array)<br>
+     * - types(array) <br>
 
      * - percentage(array) <br>
 
@@ -985,7 +1010,8 @@ class MagesterTest
      * @access public
 
      */
-    public function questionsInfo($questions = false) {
+    public function questionsInfo($questions = false)
+    {
      if (!$questions) {
       $questions = $this -> getQuestions();
      }
@@ -1006,6 +1032,7 @@ class MagesterTest
      foreach ($stats['percentage'] as $key => $value) {
       $stats['percentage'][$key] = round($value, 2);
      }
+
      return $stats;
     }
  /**
@@ -1035,7 +1062,8 @@ class MagesterTest
      * @access protected
 
      */
-    protected static function getSubset($questions, $parameters, $reqs = false) {
+    protected static function getSubset($questions, $parameters, $reqs = false)
+    {
      $questions = self::ashuffle($questions);
      $times = array();
      //If there aren't any parameters, just return a random array
@@ -1049,7 +1077,7 @@ class MagesterTest
       foreach ($subset as $key => $value) {
        $times[$key] = $value -> question['estimate'];
       }
-     } else if (isset($reqs['difficulty'])) {
+     } elseif (isset($reqs['difficulty'])) {
    $units = array_keys($reqs['difficulty']);
    $selected = $any = array();
       foreach ($questions as $key => $question) {
@@ -1059,7 +1087,7 @@ class MagesterTest
      if ($reqs['difficulty'][$unit][$difficulty] > 0) {
       $selected[] = $key;
       $reqs['difficulty'][$unit][$difficulty]--;
-     } else if ($reqs['difficulty'][$unit][$difficulty] === 'any') {
+     } elseif ($reqs['difficulty'][$unit][$difficulty] === 'any') {
       $any[] = $key;
      }
     }
@@ -1069,7 +1097,7 @@ class MagesterTest
       foreach ($selected as $value) {
        $times[$value] = $questions[$value] -> question['estimate'];
       }
-     } else if (isset($reqs['type'])) {
+     } elseif (isset($reqs['type'])) {
    $units = array_keys($reqs['type']);
    $selected = $any = array();
    foreach ($questions as $key => $question) {
@@ -1079,7 +1107,7 @@ class MagesterTest
      if ($reqs['type'][$unit][$type] > 0) {
       $selected[] = $key;
       $reqs['type'][$unit][$type]--;
-     } else if ($reqs['type'][$unit][$type] === 'any') {
+     } elseif ($reqs['type'][$unit][$type] === 'any') {
       $any[] = $key;
      }
     }
@@ -1089,7 +1117,7 @@ class MagesterTest
       foreach ($selected as $value) {
        $times[$value] = $questions[$value] -> question['estimate'];
       }
-     } else if (isset($reqs['percentage'])) {
+     } elseif (isset($reqs['percentage'])) {
    $units = array_keys($reqs['percentage']);
    //Get a random-size slice of the questions
    $questions = array_slice($questions, 0, rand(1, sizeof($questions)), true);
@@ -1113,6 +1141,7 @@ class MagesterTest
        $times[$value] = $questions[$value] -> question['estimate'];
       }
      }
+
      return $times;
     }
     /**
@@ -1144,7 +1173,8 @@ class MagesterTest
      * @access protected
 
      */
-    protected static function ashuffle($array) {
+    protected static function ashuffle($array)
+    {
      $randomizer = range(0, sizeof($array) - 1, 1);
      shuffle($randomizer);
      $keys = array_keys($array);
@@ -1152,6 +1182,7 @@ class MagesterTest
      foreach ($randomizer as $r) {
        $shuffled[$keys[$r]] = $values[$r];
      }
+
      return $shuffled;
     }
     /**
@@ -1187,7 +1218,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getQuestionWeight($questionId) {
+    public function getQuestionWeight($questionId)
+    {
        $testQuestions = $this -> getQuestions();
        if (!in_array($questionId, array_keys($testQuestions))) {
            throw new MagesterTestException(_INVALIDID.': '.$questionId, MagesterTestException :: INVALID_ID);
@@ -1196,6 +1228,7 @@ class MagesterTest
            $weights[$id] = $question['weight'];
        }
        $questionWeight = $weights[$questionId] / array_sum($weights);
+
        return $questionWeight;
     }
     /**
@@ -1227,7 +1260,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getAbsoluteQuestionWeight($questionId) {
+    public function getAbsoluteQuestionWeight($questionId)
+    {
        $testQuestions = $this -> getQuestions();
        if (!in_array($questionId, array_keys($testQuestions))) {
            throw new MagesterTestException(_INVALIDID.': '.$questionId, MagesterTestException :: INVALID_ID);
@@ -1236,6 +1270,7 @@ class MagesterTest
            $weights[$id] = $question['weight'];
        }
        $questionWeight = $weights[$questionId];
+
        return $questionWeight;
     }
     /**
@@ -1273,7 +1308,8 @@ class MagesterTest
      * @deprecated
 
      */
-    public function setDone($user) {
+    public function setDone($user)
+    {
         if ($user instanceof MagesterUser) {
             $login = $user -> user['login'];
         } elseif (!eF_checkParameter($user, 'login')) {
@@ -1302,6 +1338,7 @@ class MagesterTest
                 throw new MagesterTestException(_USERHASNOTDONETEST.': '.$login, MagesterTestException :: NOT_DONE_TEST);
             }
         }
+
         return $this -> doneInfo;
     }
     /**
@@ -1331,7 +1368,8 @@ class MagesterTest
      * @access public
 
      */
-    public function redo($user) {
+    public function redo($user)
+    {
         if ($user instanceof MagesterUser) {
             $login = $user -> user['login'];
         } elseif (eF_checkParameter($user, 'login')) {
@@ -1359,7 +1397,8 @@ class MagesterTest
    eF_updateTableData("completed_tests", array("archive" => 1), "tests_ID=".($this -> test['id'])." and users_LOGIN='".$login."'");
   }
     }
- public function redoOnlyWrong($user) {
+ public function redoOnlyWrong($user)
+ {
         if ($user instanceof MagesterUser) {
             $login = $user -> user['login'];
         } elseif (eF_checkParameter($user, 'login')) {
@@ -1414,7 +1453,8 @@ class MagesterTest
      * @access public
 
      */
-    public function undo($user, $instance = false) {
+    public function undo($user, $instance = false)
+    {
         if ($user instanceof MagesterUser) {
             $login = $user -> user['login'];
         } elseif (eF_checkParameter($user, 'login')) {
@@ -1502,7 +1542,8 @@ class MagesterTest
      * @access protected
 
      */
-    protected function orderQuestions($order = false) {
+    protected function orderQuestions($order = false)
+    {
         if (!$order) {
             $order = array_keys($this -> questions);
             shuffle($order);
@@ -1515,6 +1556,7 @@ class MagesterTest
         }
         $this -> questions = $temp;
         $this -> questionsOrder = array_keys($this -> questions);
+
         return $this -> questionsOrder;
     }
     /**
@@ -1550,7 +1592,8 @@ class MagesterTest
      * @access public
 
      */
-    public function start($login) {
+    public function start($login)
+    {
         $completedTest = new MagesterCompletedTest($this, $login);
         $completedTest -> time['start'] = time(); //The time that this test has started
         $completedTest -> time['resume'] = time(); //Initialize time that this test has 'resumed'
@@ -1611,6 +1654,7 @@ class MagesterTest
                 "lessons_name" => $lesson_name,
                 "entity_ID" => $this -> test['id'],
                 "entity_name" => $this -> test['name']));
+
         return $completedTest;
     }
     /**
@@ -1668,7 +1712,8 @@ class MagesterTest
      * @access public
 
      */
-    public function getStatus($user, $id = false, $onlySolved = false) {
+    public function getStatus($user, $id = false, $onlySolved = false)
+    {
         if ($user instanceof MagesterUser) {
             $login = $user -> user['login'];
         } elseif (!eF_checkParameter($user, 'login')) {
@@ -1717,6 +1762,7 @@ class MagesterTest
                         'testIds' => $testIds,
                         'timestamps' => $timestamps,
       'correctPrevious' => $correctPrevious);
+
         return $status;
     }
     /**
@@ -1764,7 +1810,8 @@ class MagesterTest
      * @access public
 
      */
-    public function toHTMLQuickForm(& $form = false, $questionId = false, $done = false, $editHandles = false, $nocache = false, $isFeedback = false) {
+    public function toHTMLQuickForm(& $form = false, $questionId = false, $done = false, $editHandles = false, $nocache = false, $isFeedback = false)
+    {
      $storeCache = false;
      if (!$questionId && !$done && !$this -> options['random_pool'] && !$this -> options['shuffle_questions'] && !$this -> options['shuffle_answers'] && !$nocache) {
       if ($testString = Cache::getCache('test:'.$this -> test['id'])) {
@@ -1785,7 +1832,7 @@ class MagesterTest
   $recentlyCompleted = unserialize($resultCompleted[0]['test']);
   if ($recentlyCompleted -> redoOnlyWrong == true && !$done) {
    foreach ($recentlyCompleted -> questions as $key => $value) {
-    if($value -> score != 100) {
+    if ($value -> score != 100) {
      $value -> userAnswer = false;
      $allTestQuestionsFilter[$key] = $value;
     }
@@ -1843,7 +1890,7 @@ class MagesterTest
                     <table width = "100%">
                         <tr><td class = "questionWeight" style = "vertical-align:middle;">
         <span style = "float:right">'.$timeSpentString.'</span>';
-   if(!$isFeedback) {
+   if (!$isFeedback) {
     $testString .= '<img src = "images/32x32/'.($done ? $image : 'unit.png').'" style = "vertical-align:middle" alt = "'.($done ? $alt : _QUESTION).'" title = "'.($done ? $title : _QUESTION).'"/>&nbsp;';
             }
    $testString .= '<span style = "vertical-align:middle;font-weight:bold">'._QUESTION.'&nbsp;'. ($count++).'</span>
@@ -1961,6 +2008,7 @@ class MagesterTest
         if ($storeCache) {
          Cache::setCache('test:'.$this -> test['id'], $testString);
         }
+
         return $testString;
     }
     /**
@@ -2000,7 +2048,8 @@ class MagesterTest
      * @access public
 
      */
-    public function toHTML($testString, $remainingTime = false, $freeze = false) {
+    public function toHTML($testString, $remainingTime = false, $freeze = false)
+    {
      $str = '<script>
                     var questionHours = new Array();
                     var questionMinutes = new Array();
@@ -2059,7 +2108,8 @@ class MagesterTest
                 </table>
                 <script language = "JavaScript" type = "text/javascript">
                 var timeup = "'._YOURTIMEISUP.'!";var remainingtime = "'._REMAININGQUESTIONTIME.'";
-                function initTimer() {
+                function initTimer()
+                {
                     hours = "'.$remainingTime['hours'].'";
                     minutes = "'.$remainingTime['minutes'].'";
                     seconds = "'.$remainingTime['seconds'].'";
@@ -2085,6 +2135,7 @@ class MagesterTest
                 <table class = "formElements" style = "width:100%">
                     <tr><td colspan = "2">'.$testString.'</td></tr>
                 </table>';
+
         return $str;
     }
 }
@@ -2166,7 +2217,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function __construct(MagesterTest $sourceTest, $login) {
+    public function __construct(MagesterTest $sourceTest, $login)
+    {
         $this -> test = $sourceTest -> test;
         $this -> options = $sourceTest -> options;
         $this -> completedTest['login'] = $login;
@@ -2206,7 +2258,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function getDirectory() {
+    public function getDirectory()
+    {
         $testDirectory = G_UPLOADPATH.$this -> completedTest['login'].'/tests/';
         if (!is_dir($testDirectory) && !mkdir($testDirectory, 0755)) {
             throw new MagesterTestException(_COULDNOTCREATETESTSDIRECTORY.': '.$testDirectory, MagesterTestException :: ERROR_CREATING_DIRECTORY);
@@ -2217,6 +2270,7 @@ class MagesterCompletedTest extends MagesterTest
             throw new MagesterTestException(_COULDNOTCREATETESTSDIRECTORY.': '.$uploadDirectory, MagesterTestException :: ERROR_CREATING_DIRECTORY);
         }
         $uploadDirectory = new MagesterDirectory($uploadDirectory);
+
         return $uploadDirectory;
     }
     /**
@@ -2250,7 +2304,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function pause($userAnswers, $currentQuestion = false) {
+    public function pause($userAnswers, $currentQuestion = false)
+    {
         foreach ($userAnswers as $id => $answer) {
             $this -> questions[$id] -> userAnswer = $answer;
         }
@@ -2266,7 +2321,7 @@ class MagesterCompletedTest extends MagesterTest
         }
         $this -> save();
     }
-    
+
     /**
 
      * Save the test State
@@ -2298,7 +2353,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function tempStore($userAnswers, $currentQuestion = false) {
+    public function tempStore($userAnswers, $currentQuestion = false)
+    {
         foreach ($userAnswers as $id => $answer) {
             $this -> questions[$id] -> userAnswer = $answer;
         }
@@ -2309,17 +2365,17 @@ class MagesterCompletedTest extends MagesterTest
         }
         $this -> time['spent'] = $this -> time['spent'] + time() - $this -> time['resume']; //Add the time passed since the last pause to the total test time
         //$this -> time['pause'] = time(); //Set the resume time to nows
-        
+
         if ($currentQuestion) {
             $this -> currentQuestion = $currentQuestion;
         }
         $this -> save();
     }
-    
-    
 
-    
-    
+
+
+
+
     /**
 
      * Complete test
@@ -2353,7 +2409,8 @@ class MagesterCompletedTest extends MagesterTest
      * @todo check if folder exists, handle uploaded files
 
      */
-    public function complete($userAnswers) {
+    public function complete($userAnswers)
+    {
 		$resultCompleted = eF_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this -> test['id'], "timestamp desc");
 		$recentlyCompleted = unserialize($resultCompleted[0]['test']);
 		//Assign user answers to each question object, as a member
@@ -2362,7 +2419,7 @@ class MagesterCompletedTest extends MagesterTest
 		}
 		if ($recentlyCompleted -> redoOnlyWrong == 1) {
 			foreach ($recentlyCompleted -> questions as $key => $value) {
-				if($value -> score == 100) {
+				if ($value -> score == 100) {
 					$this -> questions[$key] = $value;
 				}
 			}
@@ -2391,7 +2448,7 @@ class MagesterCompletedTest extends MagesterTest
         //Set the test status
         if ($this -> test['mastery_score'] && $this -> completedTest['score'] >= $this -> test['mastery_score']) {
             $this -> completedTest['status'] = 'passed';
-        } else if ($this -> test['mastery_score'] && $this -> completedTest['score'] < $this -> test['mastery_score']) {
+        } elseif ($this -> test['mastery_score'] && $this -> completedTest['score'] < $this -> test['mastery_score']) {
             $this -> completedTest['status'] = 'failed';
         } else {
             $this -> completedTest['status'] = 'completed';
@@ -2444,12 +2501,12 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function save() {
+    public function save()
+    {
     	$thisSerialized = serialize($this);
-    	
+
         if ($this -> completedTest['id']) {
 
-        	
             $fields = array('test' => $thisSerialized,
                             'status' => $this -> completedTest['status'],
                             'timestamp' => time(),
@@ -2469,8 +2526,7 @@ class MagesterCompletedTest extends MagesterTest
                 'time_spent' => $this -> time['spent'] ? $this -> time['spent'] : null,
                 'pending' => $this -> completedTest['pending'] ? $this -> completedTest['pending'] : 0,
              'score' => $this -> completedTest['score'] ? $this -> completedTest['score'] : null);
-         
-         
+
          $id = eF_insertTableData("completed_tests", $fields);
          $this -> completedTest['id'] = $id;
          $this -> save();
@@ -2510,7 +2566,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function getPotentialScore() {
+    public function getPotentialScore()
+    {
         foreach ($this -> questions as $id => $question) {
             if ($question -> pending) {
                 $potentialScores[$id] = $this -> getQuestionWeight($id);
@@ -2524,6 +2581,7 @@ class MagesterCompletedTest extends MagesterTest
         if ($potentialTestScore > 100) {
          $potentialTestScore = 100;
         }
+
         return $potentialTestScore;
     }
     /**
@@ -2569,9 +2627,8 @@ class MagesterCompletedTest extends MagesterTest
      * @see MagesterTest :: toHTMLQuickForm()
 
      */
-    public function toHTMLSolved($testString, $editHandles = false, $isFeedback = false) {
-    	
-    	
+    public function toHTMLSolved($testString, $editHandles = false, $isFeedback = false)
+    {
 //      if (!$url) {
             $url = htmlspecialchars_decode(basename($_SERVER['PHP_SELF']).'?'.http_build_query($_GET));//$_SERVER['QUERY_STRING'];
 //      }
@@ -2720,7 +2777,7 @@ class MagesterCompletedTest extends MagesterTest
 		4	=> 'Intermediário II',
 		5	=> 'Avançado'
    );
-   
+
    $levelsColors = array(
    		1	=> 'red',
 		2	=> 'black',
@@ -2728,7 +2785,7 @@ class MagesterCompletedTest extends MagesterTest
 		4	=> 'black',
 		5	=> 'green'
    );
-   
+
 	if ($potentialScore <= 40) {
    		$level = 1;
 	} elseif ($potentialScore > 40 && $potentialScore <= 55) {
@@ -2740,7 +2797,7 @@ class MagesterCompletedTest extends MagesterTest
 	} else {
 		$level = 5;
 	}
-	
+
     $str .= '
        <tr><td>
 		<span style = "vertical-align:middle">'.__YOUR_LEVEL_IS.':&nbsp;</span>
@@ -2775,7 +2832,8 @@ class MagesterCompletedTest extends MagesterTest
             <tr><td>'. $testString .'</td></tr>
         </table>
         <script>
-            function redoTest(el) {
+            function redoTest(el)
+            {
                 Element.extend(el);
                 url = "'.preg_replace("/&show_solved_test=\d+/", "", $url).'&ajax=1&redo_test='.$status['lastTest'].'";
                 if ($("redo_progress_img")) {
@@ -2799,7 +2857,8 @@ class MagesterCompletedTest extends MagesterTest
                     }
                 });
             }
-   function redoWrongTest(el) {
+   function redoWrongTest(el)
+   {
                 Element.extend(el);
                 url = "'.preg_replace("/&show_solved_test=\d+/", "", $url).'&ajax=1&redo_wrong_test='.$status['lastTest'].'";
                 if ($("redo_progress_img")) {
@@ -2827,7 +2886,8 @@ class MagesterCompletedTest extends MagesterTest
         if ($editHandles) {
             $str .= '
         <script>
-            function deleteDoneTest(el, all) {
+            function deleteDoneTest(el, all)
+            {
                 Element.extend(el);
                 if (all) {
                     url = "'.$url.'&ajax=1&delete_done_test='.$this -> completedTest['id'].'&all=1";
@@ -2856,7 +2916,8 @@ class MagesterCompletedTest extends MagesterTest
                     }
                 });
             }
-            function editScore(el) {
+            function editScore(el)
+            {
                 Element.extend(el);
                 url = "'.$url.'&ajax=1&test_score=" + $("edit_test_score").value;
                 if ($("progress_img")) {
@@ -2880,11 +2941,11 @@ class MagesterCompletedTest extends MagesterTest
                              $("statusMessage").update("'._PASSED.'").className = "success";
                              setImageSrc($("statusImage"), 32, "success");
                              //$("statusImage").src = "images/32x32/success.png";
-                        } else if (transport.responseText == "failed") {
+                        } elseif (transport.responseText == "failed") {
                             $("statusMessage").update("'._FAILED.'").className = "failure";
                             //$("statusImage").src = "images/32x32/close.png";
                             setImageSrc($("statusImage"), 32, "close");
-                        } else if (transport.responseText == "pending") {
+                        } elseif (transport.responseText == "pending") {
                             $("statusMessage").update("'._OUTCOMEPENDING.'").className = "pending";
                             //$("statusImage").src = "images/32x32/exclamation.png";
                             setImageSrc($("statusImage"), 32, "exclamation");
@@ -2893,7 +2954,8 @@ class MagesterCompletedTest extends MagesterTest
                     }
                 });
             }
-            function editFeedback(el) {
+            function editFeedback(el)
+            {
                 Element.extend(el);
                 url = "'.$url.'&ajax=1&test_feedback=" + $("edit_test_feedback").value;
                 if ($("progress_img")) {
@@ -2919,7 +2981,8 @@ class MagesterCompletedTest extends MagesterTest
                     }
                 });
             }
-            function editQuestionScore(el, id) {
+            function editQuestionScore(el, id)
+            {
                 Element.extend(el);
                 url = "'.$url.'&ajax=1&question=" + id + "&question_score=" + $("edit_question_" + id + "_score").value;
                 if ($("progress_img_"+id)) {
@@ -2947,7 +3010,7 @@ class MagesterCompletedTest extends MagesterTest
                         if (transport.responseText.evalJSON().status == "passed") {
                              $("statusMessage").update("'._PASSED.'").className = "success";
                              $("statusImage").src = "images/32x32/success.png";
-                        } else if (transport.responseText.evalJSON().status == "failed") {
+                        } elseif (transport.responseText.evalJSON().status == "failed") {
                             $("statusMessage").update("'._FAILED.'").className = "failure";
                             $("statusImage").src = "images/32x32/close.png";
                         }
@@ -2955,7 +3018,8 @@ class MagesterCompletedTest extends MagesterTest
                     }
                 });
             }
-            function editQuestionFeedback(el, id) {
+            function editQuestionFeedback(el, id)
+            {
                 Element.extend(el);
                 url = "'.$url.'&ajax=1&question=" + id + "&question_feedback=" + $("edit_question_"+id+"_feedback").value;
                 if ($("progress_img_"+id)) {
@@ -2983,6 +3047,7 @@ class MagesterCompletedTest extends MagesterTest
             }
         </script>';
         }
+
         return $str;
     }
     /**
@@ -3024,7 +3089,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function handleAjaxActions() {
+    public function handleAjaxActions()
+    {
      try {
       if (isset($_GET['test_score'])) {
        if (is_numeric($_GET['test_score']) && $_GET['test_score'] <= 100 && $_GET['test_score'] >= 0) {
@@ -3037,7 +3103,7 @@ class MagesterCompletedTest extends MagesterTest
         }
         if ($this -> test['mastery_score'] && $this -> test['mastery_score'] > $this -> completedTest['score']) {
          $this -> completedTest['status'] = 'failed';
-        } else if ($this -> test['mastery_score'] && $this -> test['mastery_score'] <= $this -> completedTest['score']) {
+        } elseif ($this -> test['mastery_score'] && $this -> test['mastery_score'] <= $this -> completedTest['score']) {
          $this -> completedTest['status'] = 'passed';
         }
         $this -> completedTest['pending'] = 0;
@@ -3047,22 +3113,22 @@ class MagesterCompletedTest extends MagesterTest
         throw new MagesterTestException(_INVALIDSCORE.': '.$_GET['test_score'], MagesterTestException :: INVALID_SCORE);
        }
        exit;
-      } else if (isset($_GET['test_feedback'])) {
+      } elseif (isset($_GET['test_feedback'])) {
 		$utf8Transliterate = $this -> completedTest['feedback'] = SC_Utf8Transliterate($_GET['test_feedback']);
 		$this -> save();
 		echo $utf8Transliterate;
 		exit;
-      } else if (isset($_GET['redo_test']) && eF_checkParameter($_GET['redo_test'], 'id')) {
+      } elseif (isset($_GET['redo_test']) && eF_checkParameter($_GET['redo_test'], 'id')) {
        $result = eF_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_test']);
        $test = new MagesterTest($result[0]['tests_ID']);
        $test -> redo($result[0]['users_LOGIN']);
        exit;
-      } else if (isset($_GET['redo_wrong_test']) && eF_checkParameter($_GET['redo_wrong_test'], 'id')) {
+      } elseif (isset($_GET['redo_wrong_test']) && eF_checkParameter($_GET['redo_wrong_test'], 'id')) {
        $result = eF_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_wrong_test']);
        $test = new MagesterTest($result[0]['tests_ID']);
        $test -> redoOnlyWrong($result[0]['users_LOGIN']);
        exit;
-      } else if (isset($_GET['delete_done_test'])) {
+      } elseif (isset($_GET['delete_done_test'])) {
        if (isset($_GET['all'])) {
         $this -> undo($this -> completedTest['login']);
         //eF_deleteTableData("completed_tests", "users_LOGIN='".$this -> completedTest['login']."' and tests_ID=".$this -> completedTest['testsId']);
@@ -3071,7 +3137,7 @@ class MagesterCompletedTest extends MagesterTest
         //eF_deleteTableData("completed_tests", "id=".$this -> completedTest['id']);
        }
        exit;
-      } else if (isset($_GET['question_score'])) {
+      } elseif (isset($_GET['question_score'])) {
        if (in_array($_GET['question'], array_keys($this -> questions))) {
         if (is_numeric($_GET['question_score']) && $_GET['question_score'] <= 100 && $_GET['question_score'] >= 0) {
          $this -> questions[$_GET['question']] -> score = $_GET['question_score'];
@@ -3089,7 +3155,7 @@ class MagesterCompletedTest extends MagesterTest
            $this -> completedTest['status'] = 'failed';
            $testUser -> setSeenUnit($this -> test['content_ID'], $this -> test['lessons_ID'], 0);
           }
-         } else if ($this -> test['mastery_score'] && $this -> test['mastery_score'] <= $this -> completedTest['score']) {
+         } elseif ($this -> test['mastery_score'] && $this -> test['mastery_score'] <= $this -> completedTest['score']) {
           $this -> completedTest['status'] = 'passed';
           $testUser -> setSeenUnit($this -> test['content_ID'], $this -> test['lessons_ID'], 1);
          }
@@ -3108,11 +3174,11 @@ class MagesterCompletedTest extends MagesterTest
         throw new MagesterTestException(_INVALIDID.': '.$_GET['question'], MagesterTestException :: QUESTION_NOT_EXISTS);
        }
        exit;
-      } else if (isset($_POST['question_answers'])) {
+      } elseif (isset($_POST['question_answers'])) {
       	if (is_array($_POST['question']) && count($_POST['question']) > 0) {
       		$userAnswers = $_POST['question'];
-      		
-      		foreach($userAnswers as $questionID =>  $answer) {
+
+      		foreach ($userAnswers as $questionID =>  $answer) {
 				if (in_array($questionID, array_keys($this -> questions))) {
 					$this -> questions[$questionID] -> userAnswer = $answer;
 				}
@@ -3121,7 +3187,7 @@ class MagesterCompletedTest extends MagesterTest
       	}
    		echo json_encode($this -> completedTest);
 		exit;
-      } else if (isset($_GET['question_feedback'])) {
+      } elseif (isset($_GET['question_feedback'])) {
        if (in_array($_GET['question'], array_keys($this -> questions))) {
 	       	$utf8Transliterate = $this -> questions[$_GET['question']] -> feedback = SC_Utf8Transliterate($_GET['question_feedback']);
 			$this -> save();
@@ -3131,7 +3197,7 @@ class MagesterCompletedTest extends MagesterTest
         throw new MagesterTestException(_INVALIDID.': '.$_GET['question'], MagesterTestException :: QUESTION_NOT_EXISTS);
        }
        exit;
-      } else if (isset($_GET['delete_file'])) {
+      } elseif (isset($_GET['delete_file'])) {
        $file = new MagesterFile($_GET['delete_file']);
        $testDirectory = $this -> getDirectory();
        if (strpos($file['path'], $testDirectory['path']) !== false) {
@@ -3176,7 +3242,8 @@ class MagesterCompletedTest extends MagesterTest
 	 * @access public
 
 	 */
-    public function analyseTest() {
+    public function analyseTest()
+    {
         $parentScores = array();
         foreach ($this -> questions as $question) {
             $questionIds[$question -> question['content_ID']]['score'] += $question -> score;
@@ -3236,6 +3303,7 @@ class MagesterCompletedTest extends MagesterTest
         $options['noclick'] = true;
         //$options['tree_root'] = array('name' => _BACKTOTOP, 'class' => 'examples', 'onclick' => "$('analysis_frame').src = $('analysis_frame').src.replace(/selected_unit=(\d*)/, 'selected_unit='+Element.extend(this).up().id.replace(/node/, ''));");
         $options['onclick'] = "re = new RegExp(this.up().id.replace(/node/, ''), 'g');if(treeObj.getNodeOrders().match(re).length > 1) $('analysis_frame').src = $('analysis_frame').src.replace(/selected_unit=(\d*)/, 'selected_unit='+Element.extend(this).up().id.replace(/node/, ''));";
+
         return array($parentScores, $content -> toHTML($iterator, false, $options));
     }
     /**
@@ -3279,7 +3347,8 @@ class MagesterCompletedTest extends MagesterTest
      * @see calculateChart
 
      */
-    public function displayChart($url) {
+    public function displayChart($url)
+    {
         $str = '
                 <html>
                 <head>
@@ -3292,6 +3361,7 @@ class MagesterCompletedTest extends MagesterTest
                  <!--<a style = "display:block" href = "javascript:void(0)" onclick = "location = location.toString().replace(/selected_unit=(\d*)/, \'\')">'._RESETGRAPH.'</a>-->
                 </body>
                 </html>';
+
         return $str;
     }
     /**
@@ -3339,7 +3409,8 @@ class MagesterCompletedTest extends MagesterTest
      * @see analyseTest
 
      */
-    public function calculateChart($parentScores) {
+    public function calculateChart($parentScores)
+    {
         $scores = array();
         $names = array();
         $names[] = null;
@@ -3365,7 +3436,7 @@ class MagesterCompletedTest extends MagesterTest
         $line_1 -> set_colour( '#DFC329' );
         $line_1 -> set_key(_SCOREINEACHUNIT, 12);
         $line_2 = new line();
-        $line_2 -> set_values(array_fill(0, sizeof($scores), (double)$this -> completedTest['score']));
+        $line_2 -> set_values(array_fill(0, sizeof($scores), (double) $this -> completedTest['score']));
         $line_2 -> set_colour( '#6363AC' );
         $line_2 -> set_key(_SCOREINTEST, 12);
         if (isset($_GET['selected_unit']) && $_GET['selected_unit']) {
@@ -3427,7 +3498,8 @@ class MagesterCompletedTest extends MagesterTest
      * @access public
 
      */
-    public function analyseSkillGapTest() {
+    public function analyseSkillGapTest()
+    {
         // SUB-COMPONENT 1: Creation of the skill-gap matrix
         $questionsAnswered = array();
         foreach ($this -> questions as $qid => $question) {
@@ -3478,6 +3550,7 @@ class MagesterCompletedTest extends MagesterTest
         $analysisResults['lessons'] = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID","module_hcd_lesson_offers_skill.lesson_ID, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$lessons_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
         $courses_attending = implode("','", array_keys($user -> getUserCourses()));
         $analysisResults['courses'] = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID","module_hcd_course_offers_skill.courses_ID, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$courses_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
+
         return $analysisResults;
     }
 }
@@ -3523,7 +3596,8 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         for ($k = 0; $k < sizeof($this -> options); $k++) {
             $index = $this -> order[$k]; //$index is used to reorder question options, in case it was shuffled
             $form -> addElement("radio", "question[".$this -> question['id']."]", $this -> options[$index], htmlspecialchars($this -> options[$index]), $index, "class = inputRadio"); //Add a radio for each option
@@ -3574,7 +3648,8 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -3606,7 +3681,7 @@ class MultipleOneQuestion extends Question implements iQuestion
         $questionString .= '
             </td></tr>
                     </table>';
-                    
+
         return $questionString;
     }
     /**
@@ -3644,7 +3719,8 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $form -> setDefaults(array("question[".$this -> question['id']."]" => null));
         $form -> freeze(); //Freeze the form elements
@@ -3686,6 +3762,7 @@ class MultipleOneQuestion extends Question implements iQuestion
                                 '.$innerQuestionString.'
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
     /**
@@ -3729,7 +3806,8 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         if ($showGivenAnswers && $this -> userAnswer !== false) { //If the user's given answers should be shown, assign them as defaults in the form
@@ -3766,6 +3844,7 @@ class MultipleOneQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -3797,10 +3876,12 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         $shuffleOrder = range(0, sizeof($this -> options) - 1);
         shuffle($shuffleOrder);
         $this -> order = $shuffleOrder;
+
         return $shuffleOrder;
     }
     /**
@@ -3836,8 +3917,10 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         is_numeric($this -> answer[0]) && is_numeric($this -> userAnswer) && $this -> answer[0] == $this -> userAnswer ? $results = array('correct' => true, 'score' => 1) : $results = array('correct' => false, 'score' => 0);//We put the is_numeric() here, because the results might be strings or ints, which should be equal, or false or '', which are always wrong
+
         return $results;
     }
     /**
@@ -3875,7 +3958,8 @@ class MultipleOneQuestion extends Question implements iQuestion
      * @deprecated
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         $order != false ? $this -> order = $order : null;
@@ -3923,7 +4007,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         for ($k = 0; $k < sizeof($this -> options); $k++) {
             $index = $this -> order[$k]; //$index is used to reorder question options, in case it was shuffled
             //$elements[]   = $form -> createElement("advcheckbox", "question[".$this -> question['id']."][".$index."]", $this -> options[$index], $this -> options[$index], 'class = "inputCheckbox"', array(0, 1));
@@ -3974,7 +4059,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -4006,6 +4092,7 @@ class MultipleManyQuestion extends Question implements iQuestion
         $questionString .= '
             </td></tr>
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4049,7 +4136,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) {
@@ -4089,6 +4177,7 @@ class MultipleManyQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4120,10 +4209,12 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         $shuffleOrder = range(0, sizeof($this -> options) - 1);
         shuffle($shuffleOrder);
         $this -> order = $shuffleOrder;
+
         return $shuffleOrder;
     }
     /**
@@ -4159,7 +4250,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         $nc = 0; $nf = 0;
         for ($i = 0; $i < sizeof($this -> userAnswer); $i++) {
             $results['correct'][$i] = true; //Use this variable in order for the template to know how to color the answers (green/red)
@@ -4183,6 +4275,7 @@ class MultipleManyQuestion extends Question implements iQuestion
   } else {
    $nc == 0 ? $results['score'] = 0 : $results['score'] = 1;
   }
+
         return $results;
     }
     /**
@@ -4218,7 +4311,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         $order != false ? $this -> order = $order : null;
@@ -4258,7 +4352,8 @@ class MultipleManyQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) {
@@ -4319,6 +4414,7 @@ class MultipleManyQuestion extends Question implements iQuestion
                                 '.$innerQuestionString.'
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
 }
@@ -4364,7 +4460,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         //$elements[] = $form -> createElement("radio", "question[".$this -> question['id']."]", _FALSE, _FALSE, 0, "class = inputRadio");
         //$elements[] = $form -> createElement("radio", "question[".$this -> question['id']."]", _TRUE, _TRUE, 1, "class = inputRadio");
         $form -> addElement("radio", "question[".$this -> question['id']."]", _FALSE, _FALSE, 0, "class = inputRadio");
@@ -4413,7 +4510,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -4443,6 +4541,7 @@ class TrueFalseQuestion extends Question implements iQuestion
                                 '.$formArray['question'][$this -> question['id']][1]['html'].'
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4480,7 +4579,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $form -> setDefaults(array("question[".$this -> question['id']."]" => null));
         $form -> freeze(); //Freeze the form elements
@@ -4508,6 +4608,7 @@ class TrueFalseQuestion extends Question implements iQuestion
                                 '.$innerQuestionString.'
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4551,7 +4652,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         $results['correct'] ? $class = 'correctAnswer' : $class = 'wrongAnswer';
@@ -4589,6 +4691,7 @@ class TrueFalseQuestion extends Question implements iQuestion
                             '.$innerQuestionString.'</td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4606,7 +4709,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         return true;
     }
     /**
@@ -4642,8 +4746,10 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         is_numeric($this -> answer) && is_numeric($this -> userAnswer) && $this -> answer == $this -> userAnswer ? $results = array('correct' => true, 'score' => 1) : $results = array('correct' => false, 'score' => 0);//We put the is_numeric() here, because the results might be strings or ints, which should be equal, or false or '', which are always wrong
+
         return $results;
     }
     /**
@@ -4679,7 +4785,8 @@ class TrueFalseQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         //$order !== false ? $this -> order = $order : null;
@@ -4727,7 +4834,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         $inputLabels = explode('###', $this -> question['text']);
         $questionText = '';
         for ($k = 0; $k < sizeof($this -> answer); $k++) {
@@ -4779,7 +4887,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -4809,6 +4918,7 @@ class EmptySpacesQuestion extends Question implements iQuestion
         $questionString .= $value['label'][$key + 1].'
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
    /**
@@ -4846,7 +4956,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $inputLabels = explode('###', $this -> question['text']);
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
@@ -4879,6 +4990,7 @@ class EmptySpacesQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] && $explanation ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4924,7 +5036,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true, $explanation = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true, $explanation = true)
+    {
         $inputLabels = explode('###', $this -> question['text']);
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
@@ -4968,6 +5081,7 @@ class EmptySpacesQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] && $explanation ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -4985,7 +5099,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         return true;
     }
     /**
@@ -5021,7 +5136,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         $results['score'] = 0;
         $factor = 1 / sizeof($this -> userAnswer); //If the question has 4 options, then the factor is 1/4.
         for ($i = 0; $i < sizeof($this -> userAnswer); $i++) {
@@ -5036,6 +5152,7 @@ class EmptySpacesQuestion extends Question implements iQuestion
             }
             //$this -> answer[$i] = implode(" "._OR." ", $this -> answer[$i]);
         }
+
         return $results;
     }
     /**
@@ -5071,7 +5188,8 @@ class EmptySpacesQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         //$order !== false ? $this -> order = $order : null;
@@ -5119,7 +5237,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         $options = $this -> options;
         array_walk($options, 'htmlspecialchars');
         for ($k = 0; $k < sizeof($this -> options); $k++) {
@@ -5177,7 +5296,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -5209,6 +5329,7 @@ class MatchQuestion extends Question implements iQuestion
         $questionString .= '
                             </td></tr>
                     </table>';
+
         return $questionString;
     }
  /**
@@ -5246,7 +5367,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) { //Display properly each option. The group can't be used, since we will display each option differently, depending on whether it is correct or not
@@ -5277,6 +5399,7 @@ class MatchQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -5320,7 +5443,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) { //Display properly each option. The group can't be used, since we will display each option differently, depending on whether it is correct or not
@@ -5363,6 +5487,7 @@ class MatchQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -5394,10 +5519,12 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         $shuffleOrder = range(0, sizeof($this -> options) - 1);
         shuffle($shuffleOrder);
         $this -> order = $shuffleOrder;
+
         return $shuffleOrder;
     }
     /**
@@ -5435,7 +5562,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         $results['score'] = 0;
         $factor = 1 / sizeof($this -> userAnswer); //If the question has 4 options, then the factor is 1/4.
         $answerKeys = array_keys($this -> answer);
@@ -5447,6 +5575,7 @@ class MatchQuestion extends Question implements iQuestion
                 $results['correct'][$i] = false;
             }
         }
+
         return $results;
     }
     /**
@@ -5482,7 +5611,8 @@ class MatchQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         $order != false ? $this -> order = $order : null;
@@ -5530,7 +5660,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         $elements[] = $form -> createElement("textarea", "question[".$this -> question['id']."]", null, 'class = "simpleEditor" style = "width:100%;height:100px;"');
         $elements[] = $form -> createElement("file", "file_".$this -> question['id'].'[0]', null, 'class = "inputText" id = "file_'.$this -> question['id'].'[0]" style = "display:none"');
         if ($this -> userAnswer !== false) {
@@ -5577,7 +5708,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -5600,12 +5732,14 @@ class RawTextQuestion extends Question implements iQuestion
                             </td></tr>
                     </table>
                     <script>
-                        function addAnotherFile(el) {
+                        function addAnotherFile(el)
+                        {
                             Element.extend(el);
                             el.up().select("input").each(function (s) {matches = s.name.match(/file_'.$this -> question['id'].'\[(\d*)\]/); next = parseInt(matches[1]) + 1});
                             el.previous().insert(new Element("div").insert(new Element("input", {type: "file", name: "file_'.$this -> question['id'].'["+next+"]"})));
                         }
-                        function deleteFile(el, id) {
+                        function deleteFile(el, id)
+                        {
                             Element.extend(el);
                             url = location+"&ajax=1&delete_file="+id;
                             el.down().src = "images/others/progress1.gif";
@@ -5626,6 +5760,7 @@ class RawTextQuestion extends Question implements iQuestion
                             });
                         }
                     </script>';
+
         return $questionString;
     }
  /**
@@ -5663,7 +5798,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $filesString = '';
         foreach ($this -> files as $file) {
@@ -5688,6 +5824,7 @@ class RawTextQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -5731,7 +5868,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $filesString = '';
         foreach ($this -> files as $file) {
@@ -5760,6 +5898,7 @@ class RawTextQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -5777,7 +5916,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         return true;
     }
     /**
@@ -5813,12 +5953,14 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
         if ($this -> score) {
             $results = array('correct' => '', 'score' => round($this -> score /100,2));
         } else {
             $results = array('correct' => '', 'score' => 0);
         }
+
         return $results;
     }
     /**
@@ -5854,7 +5996,8 @@ class RawTextQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         //$order !== false ? $this -> order = $order : null;
@@ -5864,8 +6007,8 @@ class DragDropQuestion extends Question implements iQuestion
 {
 /*
 
-	public function __construct($question) {
-
+	public function __construct($question)
+	{
 		parent :: __construct($question);
 
 		shuffle($this -> order);
@@ -5902,7 +6045,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLQuickForm(&$form) {
+    public function toHTMLQuickForm(&$form)
+    {
         //$random = range(0, sizeof($this -> answer) - 1);                                                   //$random is a temporary array used only for creating a random ordering
   //shuffle($random);
         $options = $this -> options;
@@ -5960,7 +6104,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTML(&$form) {
+    public function toHTML(&$form)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
         $form -> accept($renderer); //Render the form
@@ -6002,6 +6147,7 @@ class DragDropQuestion extends Question implements iQuestion
             <tr><td colspan = '3' style = 'height:25px'></td></tr>";
         }
         $questionString .= '</table>';
+
         return $questionString;
     }
  /**
@@ -6039,7 +6185,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false) {
+    public function preview(&$form, $questionStats = false, $hideAnswerStatus = false)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) { //Display properly each option. The group can't be used, since we will display each option differently, depending on whether it is correct or not
@@ -6071,6 +6218,7 @@ class DragDropQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -6114,7 +6262,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true) {
+    public function toHTMLSolved(&$form, $showCorrectAnswers = true, $showGivenAnswers = true)
+    {
         $this -> toHTMLQuickForm($form); //Assign proper elements to the form
         $results = $this -> correct(); //Correct question
         for ($k = 0; $k < sizeof($this -> options); $k++) { //Display properly each option. The group can't be used, since we will display each option differently, depending on whether it is correct or not
@@ -6157,6 +6306,7 @@ class DragDropQuestion extends Question implements iQuestion
                             </td></tr>
                         '.($this -> question['explanation'] ? '<tr><td class = "questionExplanation">'._EXPLANATION.': '.$this -> question['explanation'].'</td></tr>' : '').'
                     </table>';
+
         return $questionString;
     }
     /**
@@ -6188,10 +6338,12 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         $shuffleOrder = range(0, sizeof($this -> options) - 1);
         shuffle($shuffleOrder);
         $this -> order = $shuffleOrder;
+
         return $shuffleOrder;
     }
     /**
@@ -6229,7 +6381,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function correct() {
+    public function correct()
+    {
      $results['score'] = 0;
         $factor = 1 / sizeof($this -> userAnswer); //If the question has 4 options, then the factor is 1/4.
         $answerKeys = $this -> answer;
@@ -6241,6 +6394,7 @@ class DragDropQuestion extends Question implements iQuestion
                 $results['correct'][$i] = false;
             }
         }
+
         return $results;
     }
     /**
@@ -6276,7 +6430,8 @@ class DragDropQuestion extends Question implements iQuestion
      * @access public
 
      */
-    public function setDone($userAnswer, $score = false, $order = false) {
+    public function setDone($userAnswer, $score = false, $order = false)
+    {
         $this -> userAnswer = $userAnswer;
         $score !== false ? $this -> score = $score : null;
         $order != false ? $this -> order = $order : null;
@@ -6548,7 +6703,8 @@ abstract class Question
      * @access public
 
      */
-    function __construct($question) {
+    function __construct($question)
+    {
         if (is_array($question)) {
             $this -> question = $question;
         } elseif (!eF_checkParameter($question, 'id')) {
@@ -6602,11 +6758,13 @@ abstract class Question
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         eF_deleteTableData("questions", "id=".$this -> question['id']);
         eF_deleteTableData("done_questions", "id=".$this -> question['id']);
         eF_deleteTableData("tests_to_questions", "questions_ID=".$this -> question['id']);
         eF_deleteTableData("questions_to_skills", "questions_ID=".$this -> question['id']);
+
         return true;
     }
     /**
@@ -6636,7 +6794,8 @@ abstract class Question
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         $fields = array("text" => $this -> question['text'],
                         "type" => $this -> question['type'],
                         "content_ID" => $this -> question['content_ID'],
@@ -6652,6 +6811,7 @@ abstract class Question
          Cache::resetCache('test:'.$id);
         }
         $result = eF_updateTableData("questions", $fields, "id=".$this -> question['id']);
+
         return $result;
     }
     /**
@@ -6681,12 +6841,14 @@ abstract class Question
      * @access public
 
      */
-    public function getTests() {
+    public function getTests()
+    {
         $result = eF_getTableData("tests_to_questions tq, tests t", "t.*", "t.id=tq.tests_ID and tq.questions_ID=".$this -> question['id']);
         $tests = array();
         foreach ($result as $value) {
             $tests[$value['id']] = $value;
         }
+
         return $tests;
     }
     /**
@@ -6724,7 +6886,8 @@ abstract class Question
      * @access public
 
      */
-    public function handleQuestionFiles($uploadDirectory) {
+    public function handleQuestionFiles($uploadDirectory)
+    {
         $uploadedFiles = array();
         if (!($uploadDirectory instanceof MagesterDirectory) && !is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0755)) {
             throw new MagesterTestException(_COULDNOTCREATETESTSDIRECTORY.': '.$uploadDirectory, MagesterTestException :: ERROR_CREATING_DIRECTORY);
@@ -6765,7 +6928,8 @@ abstract class Question
      * @access public
 
      */
-    public function getCounter() {
+    public function getCounter()
+    {
      if ($this -> question['estimate']) {
       $timeInterval = $this -> question['estimate_interval'];
       $duration = $this -> question['estimate'];
@@ -6783,6 +6947,7 @@ abstract class Question
                     questionSec['.$this -> question['id'].'] = new String(3);
                     //eF_js_printQuestionTimer('.$this -> question['id'].');
     </script>';
+
       return $counterStr;
      } else {
       return false;
@@ -6819,10 +6984,12 @@ abstract class Question
      * @static
 
      */
-    public static function createQuestion($question) {
+    public static function createQuestion($question)
+    {
         !isset($question['difficulty']) ? $question['difficulty'] = 'medium' : null;
         if ($newId = eF_insertTableData("questions", $question)) {
    MagesterSearch :: insertText($question['text'], $newId, "questions", "title");
+
          return QuestionFactory :: factory($newId);
         } else {
             return false;
@@ -6857,7 +7024,8 @@ abstract class Question
      * @since 3.5.4
 
      */
-    public static function clearDuplicates($lesson) {
+    public static function clearDuplicates($lesson)
+    {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson -> lesson['id'];
      } elseif (eF_checkParameter($lesson, 'id')) {
@@ -6933,7 +7101,8 @@ class QuestionFactory
      * @static
 
      */
-    public static function factory($question) {
+    public static function factory($question)
+    {
         if (!is_array($question)) {
             if (eF_checkParameter($question, 'id')) {
                 $result = eF_getTableData("questions", "*", "id='".$question."'");
@@ -6955,6 +7124,7 @@ class QuestionFactory
             case 'drag_drop' : $factory = new DragDropQuestion($question); break;
             default: throw new MagesterTestException(_INVALIDQUESTIONTYPE.': "'.$question['type'].'"', MagesterTestException :: INVALID_TYPE); break;
         }
+
         return $factory;
     }
 }
@@ -6996,7 +7166,8 @@ class analyseTestFilterIterator extends FilterIterator
      * @access public
 
      */
-    function __construct($it, $parentScores) {
+    function __construct($it, $parentScores)
+    {
         parent :: __construct($it);
         $this -> parentScores = $parentScores;
         $this -> count = 0;
@@ -7020,7 +7191,8 @@ class analyseTestFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if (in_array($this -> current() -> offsetGet('id'), $this -> parentScores)) {
             return true;
         }

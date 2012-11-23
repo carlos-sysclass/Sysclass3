@@ -123,7 +123,6 @@ class HTML_QuickForm2_Factory
         'notregex'      => array('HTML_QuickForm2_Rule_NotRegex', null)
     );
 
-
    /**
     * Registers a new element type
     *
@@ -136,7 +135,6 @@ class HTML_QuickForm2_Factory
         self::$elementTypes[strtolower($type)] = array($className, $includeFile);
     }
 
-
    /**
     * Checks whether an element type is known to factory
     *
@@ -147,7 +145,6 @@ class HTML_QuickForm2_Factory
     {
         return isset(self::$elementTypes[strtolower($type)]);
     }
-
 
    /**
     * Creates a new element object of the given type
@@ -170,6 +167,7 @@ class HTML_QuickForm2_Factory
         }
         list($className, $includeFile) = self::$elementTypes[$type];
         HTML_QuickForm2_Loader::loadClass($className, $includeFile);
+
         return new $className($name, $attributes, $data);
     }
 
@@ -226,7 +224,7 @@ class HTML_QuickForm2_Factory
             $config = call_user_func(array($className, 'mergeConfig'), $config,
                                      self::$registeredRules[$type][2]);
         }
+
         return new $className($owner, $message, $config);
     }
 }
-?>

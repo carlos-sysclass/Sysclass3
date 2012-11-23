@@ -97,6 +97,7 @@ class HTML_QuickForm2_Controller_Action_Display
         if ($validate) {
             $page->getForm()->validate();
         }
+
         return $this->renderForm($page->getForm());
     }
 
@@ -114,4 +115,3 @@ class HTML_QuickForm2_Controller_Action_Display
         echo $form;
     }
 }
-?>

@@ -85,6 +85,12 @@
             {if !($user.user_type == 'administrator')}
                 <a href = "{$smarty.server.PHP_SELF}?ctg=module&op=module_xpay&action=view_user_statement&xuser_login={$user.login}" class = "editLink"><img border = "0" src = "images/16x16/do_pay.png" title = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" alt = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" /></a>&nbsp;<br />
             {/if}
+            
+            {if ($user.user_type == 'student')}
+                <a href = "{$smarty.server.PHP_SELF}?ctg=module&op=module_gradebook&action=student_sheet&xuser_login={$user.login}" class = "editLink"><img border = "0" src = "images/16x16/certificate.png" title = "{$smarty.const.__GRADEBOOK_VIEW_SHEET}" alt = "{$smarty.const.__GRADEBOOK_VIEW_SHEET}" /></a>&nbsp;<br />
+            {/if}
+            
+            
             {if !($user.user_type == 'administrator' && $user.user_types_ID == 0 && $T_CURRENT_USER->user.user_type == 'administrator' && $T_CURRENT_USER->user.user_types_ID != 0)}
              {if $smarty.session.s_login != $user.login}
                <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSUREYOUWANTTODELETEUSER}')) deleteUser(this, '{$user.login}')"/>

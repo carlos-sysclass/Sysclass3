@@ -46,6 +46,7 @@ class Zend_Debug
         if (self::$_sapi === null) {
             self::$_sapi = PHP_SAPI;
         }
+
         return self::$_sapi;
     }
 
@@ -88,7 +89,7 @@ class Zend_Debug
                     . PHP_EOL . $output
                     . PHP_EOL;
         } else {
-            if(!extension_loaded('xdebug')) {
+            if (!extension_loaded('xdebug')) {
                 $output = htmlspecialchars($output, ENT_QUOTES);
             }
 
@@ -101,6 +102,7 @@ class Zend_Debug
         if ($echo) {
             echo($output);
         }
+
         return $output;
     }
 

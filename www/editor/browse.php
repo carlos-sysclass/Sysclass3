@@ -1,7 +1,7 @@
 <?php
 /**
 
-* This file is used to display a small files list, and is used 
+* This file is used to display a small files list, and is used
 
 * inside the "insert image" operation of the editor
 
@@ -26,14 +26,13 @@ if (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
     exit;
 }
 
-
 try {
-    //There are 2 legal modes: 'lessons' and 'external'. In the first case, we read the legitimate directory from the session. In the second case, we take it from global constant    
+    //There are 2 legal modes: 'lessons' and 'external'. In the first case, we read the legitimate directory from the session. In the second case, we take it from global constant
     if ($_GET['mode'] == 'lesson') {
         $currentLesson = new MagesterLesson($_SESSION['s_lessons_ID']);
         $rootDir = new MagesterDirectory($currentLesson -> getDirectory());
         $filesBaseUrl = $currentLesson -> getDirectoryUrl();
-        
+
         //var_dump($filesBaseUrl);
 
     } elseif ($_GET['mode'] == 'external') {
@@ -60,7 +59,7 @@ try {
     }
 
     $offset = str_replace($rootDir['path'], '', $directory['path'].'/');
- //$t_offset = rtrim($filesBaseUrl.$offset, '/').'/';  //possibly the problem with doulbe slash will be fixed by removing / from the above line, but in order to be sure .... 
+ //$t_offset = rtrim($filesBaseUrl.$offset, '/').'/';  //possibly the problem with doulbe slash will be fixed by removing / from the above line, but in order to be sure ....
     $t_offset = str_replace('//','/', $filesBaseUrl.$offset.'/');
     $t_offset = str_replace('//','/', $t_offset);
  $smarty -> assign("T_OFFSET", $t_offset);
@@ -95,4 +94,3 @@ try {
 $smarty -> assign("T_MESSAGE", $message);
 $smarty -> assign("T_MESSAGE_TYPE", $message_type);
 $smarty -> display("browse.tpl");
-?>

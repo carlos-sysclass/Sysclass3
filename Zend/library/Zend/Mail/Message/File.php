@@ -19,7 +19,6 @@
  * @version    $Id: Message.php 8064 2008-02-16 10:58:39Z thomas $
  */
 
-
 /**
  * Zend_Mail_Part
  */
@@ -59,7 +58,7 @@ class Zend_Mail_Message_File extends Zend_Mail_Part_File implements Zend_Mail_Me
             // set key and value to the same value for easy lookup
             $this->_flags = array_combine($params['flags'], $params['flags']);
         }
-        
+
         parent::__construct($params);
     }
 

@@ -197,11 +197,12 @@ class Base {/*{{{*/
         if ($opt == STATS_DATA_SIMPLE) {
             $this->_dataOption = $opt;
             $this->_data = array_values($arr);
-        } else if ($opt == STATS_DATA_CUMMULATIVE) {
+        } elseif ($opt == STATS_DATA_CUMMULATIVE) {
             $this->_dataOption = $opt;
             $this->_data = $arr;
             $this->_dataExpanded = array();
         }
+
         return $this->_validate();
     }/*}}}*/
 
@@ -238,6 +239,7 @@ class Base {/*{{{*/
             || $nullOption == STATS_IGNORE_NULL
             || $nullOption == STATS_USE_NULL_AS_ZERO) {
             $this->_nullOption = $nullOption;
+
             return true;
         } else {
             return PEAR::raiseError('invalid null handling option expecting: '.
@@ -280,6 +282,7 @@ class Base {/*{{{*/
                 $arr[] = $newval;
             }
         }
+
         return $this->setData($arr, $this->_dataOption);
     }/*}}}*/
 
@@ -309,6 +312,7 @@ class Base {/*{{{*/
                 $arr[] = $newval;
             }
         }
+
         return $this->setData($arr, $this->_dataOption);
     }/*}}}*/
 
@@ -347,6 +351,7 @@ class Base {/*{{{*/
      * @see calcFull()
      */
     function calcBasic($returnErrorObject=true) {/*{{{*/
+
             return array (
                 'min' => $this->__format($this->min(), $returnErrorObject),
                 'max' => $this->__format($this->max(), $returnErrorObject),
@@ -371,6 +376,7 @@ class Base {/*{{{*/
      * @see calcBasic()
      */
     function calcFull($returnErrorObject=true) {/*{{{*/
+
             return array (
                 'min' => $this->__format($this->min(), $returnErrorObject),
                 'max' => $this->__format($this->max(), $returnErrorObject),
@@ -436,6 +442,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['min'] = $min;
         }
+
         return $this->_calculatedValues['min'];
     }/*}}}*/
 
@@ -460,6 +467,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['max'] = $max;
         }
+
         return $this->_calculatedValues['max'];
     }/*}}}*/
 
@@ -482,6 +490,7 @@ class Base {/*{{{*/
                 $this->_calculatedValues['sum'] = $sum;
             }
         }
+
         return $this->_calculatedValues['sum'];
     }/*}}}*/
 
@@ -504,6 +513,7 @@ class Base {/*{{{*/
                 $this->_calculatedValues['sum2'] = $sum2;
             }
         }
+
         return $this->_calculatedValues['sum2'];
     }/*}}}*/
 
@@ -524,14 +534,15 @@ class Base {/*{{{*/
         }
         $sumN = 0;
         if ($this->_dataOption == STATS_DATA_CUMMULATIVE) {
-            foreach($this->_data as $val=>$freq) {
-                $sumN += $freq * pow((double)$val, (double)$n);
+            foreach ($this->_data as $val=>$freq) {
+                $sumN += $freq * pow((double) $val, (double) $n);
             }
         } else {
-            foreach($this->_data as $val) {
-                $sumN += pow((double)$val, (double)$n);
+            foreach ($this->_data as $val) {
+                $sumN += pow((double) $val, (double) $n);
             }
         }
+
         return $sumN;
     }/*}}}*/
 
@@ -552,6 +563,7 @@ class Base {/*{{{*/
                 $this->_calculatedValues['product'] = $product;
             }
         }
+
         return $this->_calculatedValues['product'];
     }/*}}}*/
 
@@ -570,20 +582,21 @@ class Base {/*{{{*/
         }
         $prodN = 1.0;
         if ($this->_dataOption == STATS_DATA_CUMMULATIVE) {
-            foreach($this->_data as $val=>$freq) {
+            foreach ($this->_data as $val=>$freq) {
                 if ($val == 0) {
                     return 0.0;
                 }
-                $prodN *= $freq * pow((double)$val, (double)$n);
+                $prodN *= $freq * pow((double) $val, (double) $n);
             }
         } else {
-            foreach($this->_data as $val) {
+            foreach ($this->_data as $val) {
                 if ($val == 0) {
                     return 0.0;
                 }
-                $prodN *= pow((double)$val, (double)$n);
+                $prodN *= pow((double) $val, (double) $n);
             }
         }
+
         return $prodN;
 
     }/*}}}*/
@@ -608,6 +621,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['count'] = $count;
         }
+
         return $this->_calculatedValues['count'];
     }/*}}}*/
 
@@ -633,6 +647,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['mean'] = $sum / $count;
         }
+
         return $this->_calculatedValues['mean'];
     }/*}}}*/
 
@@ -654,6 +669,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['range'] = $max - $min;
         }
+
         return $this->_calculatedValues['range'];
 
     }/*}}}*/
@@ -676,6 +692,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['variance'] = $variance;
         }
+
         return $this->_calculatedValues['variance'];
     }/*}}}*/
 
@@ -696,6 +713,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['stDev'] = sqrt($variance);
         }
+
         return $this->_calculatedValues['stDev'];
     }/*}}}*/
 
@@ -713,6 +731,7 @@ class Base {/*{{{*/
      * @see variance()
      */
     function varianceWithMean($mean) {/*{{{*/
+
         return $this->__calcVariance($mean);
     }/*}}}*/
 
@@ -733,6 +752,7 @@ class Base {/*{{{*/
         if (PEAR::isError($varianceWM)) {
             return $varianceWM;
         }
+
         return sqrt($varianceWM);
     }/*}}}*/
 
@@ -755,6 +775,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['absDev'] = $absDev;
         }
+
         return $this->_calculatedValues['absDev'];
     }/*}}}*/
 
@@ -771,6 +792,7 @@ class Base {/*{{{*/
      * @see absDev()
      */
     function absDevWithMean($mean) {/*{{{*/
+
         return $this->__calcAbsoluteDeviation($mean);
     }/*}}}*/
 
@@ -808,6 +830,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['skewness'] = ($sumdiff3 / ($count * pow($stDev, 3)));
         }
+
         return $this->_calculatedValues['skewness'];
     }/*}}}*/
 
@@ -845,6 +868,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['kurtosis'] = ($sumdiff4 / ($count * pow($stDev, 4))) - 3;
         }
+
         return $this->_calculatedValues['kurtosis'];
     }/*}}}*/
 
@@ -883,6 +907,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['median'] = $median;
         }
+
         return $this->_calculatedValues['median'];
     }/*}}}*/
 
@@ -923,6 +948,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['mode'] = $mode;
         }
+
         return $this->_calculatedValues['mode'];
     }/*}}}*/
 
@@ -949,6 +975,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['midrange'] = (($max + $min) / 2);
         }
+
         return $this->_calculatedValues['midrange'];
     }/*}}}*/
 
@@ -980,6 +1007,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['geometricMean'] = pow($prod , 1 / $count);
         }
+
         return $this->_calculatedValues['geometricMean'];
     }/*}}}*/
 
@@ -1003,7 +1031,7 @@ class Base {/*{{{*/
             }
             $invsum = 0.0;
             if ($this->_dataOption == STATS_DATA_CUMMULATIVE) {
-                foreach($this->_data as $val=>$freq) {
+                foreach ($this->_data as $val=>$freq) {
                     if ($val == 0) {
                         return PEAR::raiseError('cannot calculate a '.
                                 'harmonic mean with data values of zero.');
@@ -1011,7 +1039,7 @@ class Base {/*{{{*/
                     $invsum += $freq / $val;
                 }
             } else {
-                foreach($this->_data as $val) {
+                foreach ($this->_data as $val) {
                     if ($val == 0) {
                         return PEAR::raiseError('cannot calculate a '.
                                 'harmonic mean with data values of zero.');
@@ -1021,6 +1049,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['harmonicMean'] = $count / $invsum;
         }
+
         return $this->_calculatedValues['harmonicMean'];
     }/*}}}*/
 
@@ -1057,6 +1086,7 @@ class Base {/*{{{*/
         if (PEAR::isError($sum)) {
             return $sum;
         }
+
         return ($sum / $count);
     }/*}}}*/
 
@@ -1090,9 +1120,9 @@ class Base {/*{{{*/
         if (PEAR::isError($sum)) {
             return $sum;
         }
+
         return ($sum / $count);
     }/*}}}*/
-
 
     /**
      * Calculates the coefficient of variation of a data set.
@@ -1123,6 +1153,7 @@ class Base {/*{{{*/
 
             $this->_calculatedValues['coeffOfVariation'] = $stDev / $mean;
         }
+
         return $this->_calculatedValues['coeffOfVariation'];
     }/*}}}*/
 
@@ -1155,6 +1186,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['stdErrorOfMean'] = $stDev / sqrt($count);
         }
+
         return $this->_calculatedValues['stdErrorOfMean'];
     }/*}}}*/
 
@@ -1184,6 +1216,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['frequency'] = $freq;
         }
+
         return $this->_calculatedValues['frequency'];
     }/*}}}*/
 
@@ -1216,6 +1249,7 @@ class Base {/*{{{*/
                                         '75' => $q3
                                         );
         }
+
         return $this->_calculatedValues['quartiles'];
     }/*}}}*/
 
@@ -1254,6 +1288,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['interquartileMean'] = $sum / $n;
         }
+
         return $this->_calculatedValues['interquartileMean'];
     }/*}}}*/
 
@@ -1280,6 +1315,7 @@ class Base {/*{{{*/
             $q1 = $quart['25'];
             $this->_calculatedValues['interquartileRange'] = $q3 - $q1;
         }
+
         return $this->_calculatedValues['interquartileRange'];
     }/*}}}*/
 
@@ -1303,6 +1339,7 @@ class Base {/*{{{*/
             }
             $this->_calculatedValues['quartileDeviation'] = $iqr / 2;
         }
+
         return $this->_calculatedValues['quartileDeviation'];
     }/*}}}*/
 
@@ -1330,6 +1367,7 @@ class Base {/*{{{*/
             $s = $q3 + $q1;
             $this->_calculatedValues['quartileVariationCoefficient'] = 100 * $d / $s;
         }
+
         return $this->_calculatedValues['quartileVariationCoefficient'];
     }/*}}}*/
 
@@ -1359,6 +1397,7 @@ class Base {/*{{{*/
             $s = $q3 - $q1;
             $this->_calculatedValues['quartileSkewnessCoefficient'] = $d / $s;
         }
+
         return $this->_calculatedValues['quartileSkewnessCoefficient'];
     }/*}}}*/
 
@@ -1406,6 +1445,7 @@ class Base {/*{{{*/
         } else {
             $left = floor($obsidx - 1);
             $right = ceil($obsidx - 1);
+
             return ($data[$left] + $data[$right]) / 2;
         }
     }/*}}}*/
@@ -1438,12 +1478,13 @@ class Base {/*{{{*/
         $sdiff = 0;
         if ($this->_dataOption == STATS_DATA_CUMMULATIVE) {
             foreach ($this->_data as $val=>$freq) {
-                $sdiff += $freq * pow((double)($val - $mean), (double)$power);
+                $sdiff += $freq * pow((double) ($val - $mean), (double) $power);
             }
         } else {
             foreach ($this->_data as $val)
-                $sdiff += pow((double)($val - $mean), (double)$power);
+                $sdiff += pow((double) ($val - $mean), (double) $power);
         }
+
         return $sdiff;
     }/*}}}*/
 
@@ -1472,6 +1513,7 @@ class Base {/*{{{*/
         if ($count == 1) {
             return PEAR::raiseError('cannot calculate variance of a singe data point');
         }
+
         return  ($sumdiff2 / ($count - 1));
     }/*}}}*/
 
@@ -1497,6 +1539,7 @@ class Base {/*{{{*/
         if (PEAR::isError($sumabsdev)) {
             return $sumabsdev;
         }
+
         return $sumabsdev / $count;
     }/*}}}*/
 
@@ -1527,6 +1570,7 @@ class Base {/*{{{*/
                 $sdev += abs($val - $mean);
             }
         }
+
         return $sdev;
     }/*}}}*/
 
@@ -1594,6 +1638,7 @@ class Base {/*{{{*/
         } else {
             sort($this->_data);
         }
+
         return true;
     }/*}}}*/
 
@@ -1601,5 +1646,3 @@ class Base {/*{{{*/
 
 // vim: ts=4:sw=4:et:
 // vim6: fdl=1: fdm=marker:
-
-?>

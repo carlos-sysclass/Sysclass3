@@ -12,29 +12,31 @@ class MagesterBenchmark
 
 	public $defaultValues = array('start', 'init', 'script', 'smarty', 'end');
 
-	public function __construct($time = false) {
+	public function __construct($time = false)
+	{
 		if (!$time) {
 			$time = microtime(true);
 		}
 		$this -> times = array('start' => $time);
 	}
 
-	public function set($label, $time = false) {
+	public function set($label, $time = false)
+	{
 		if (!$time) {
 			$time = microtime(true);
 		}
 		$this -> times[$label] = $time;
 	}
 
-	public function stop() {
+	public function stop()
+	{
 		$this -> times['end'] = microtime(true);
 		$this -> dbtimes = array('time' => $GLOBALS['db'] -> databaseTime,
          'queries' => $GLOBALS['db'] -> databaseQueries);
 	}
 
-	public function display() {
-
-
+	public function display()
+	{
 		$GLOBALS['db'] -> queries = eF_multisort($GLOBALS['db'] -> queries, 'times', 'asc');
 		foreach ($GLOBALS['db'] -> queries as $value) {
 			if ($value['times'] > 0.05) {

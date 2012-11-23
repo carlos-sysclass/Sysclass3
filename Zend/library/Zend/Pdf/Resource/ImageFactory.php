@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf */
 require_once 'Zend/Pdf.php';
-
 
 /**
  * Zend_Pdf_ImageFactory
@@ -34,8 +32,9 @@ require_once 'Zend/Pdf.php';
  */
 class Zend_Pdf_Resource_ImageFactory
 {
-    public static function factory($filename) {
-        if(!is_file($filename)) {
+    public static function factory($filename)
+    {
+        if (!is_file($filename)) {
             throw new Zend_Pdf_Exception("Cannot create image resource. File not found.");
         }
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -65,4 +64,3 @@ class Zend_Pdf_Resource_ImageFactory
         }
     }
 }
-

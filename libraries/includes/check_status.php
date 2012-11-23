@@ -64,12 +64,6 @@ foreach ($mandatory as $key => $value) {
 }
 $smarty -> assign("T_MANDATORY", $mandatory);
 
-
-
-
-
-
-
 $optional['gd'] = array('enabled' => in_array('gd', $extensions),
                           'name' => 'GD Libraries functions',
                           'help' => 'GD Libraries extension is needed for advanced image manipulation');
@@ -87,7 +81,6 @@ foreach ($optional as $key => $value) {
 $smarty -> assign("T_OPTIONAL", $optional);
 
 $ini_settings = ini_get_all();
-
 
 ///var_dump($ini_settings);
 
@@ -229,7 +222,7 @@ $smarty -> assign("T_PEAR", $pear);
 $languages = array("english","arabic","bulgarian","chinese_traditional","chinese_simplified","croatian","czech","danish","dutch","finnish","french","german","greek","hindi","italian","japanese","norwegian","polish","portuguese","romanian","russian","spanish","swedish",
        "albanian","catalan","brazilian","filipino","galician","georgian","hebrew","hungarian","indonesian","latvian","lithuanian","persian","serbian","slovak","slovenian","thai","turkish","vietnamese");
 sort($languages);
-foreach ($languages as $value){
+foreach ($languages as $value) {
  if ($value == "chinese_traditional" || $value == "chinese_simplified") {
   $languagesArray[$value] = "chinese";
  } elseif ($value == "brazilian") {
@@ -279,8 +272,8 @@ if ($php_version[0] <= 4) { //PHP 4 will not run
     $install = false;
 }
 
-
-function local_checkThemesWritable() {
+function local_checkThemesWritable()
+{
     $writable = true;
     if (class_exists('FileSystemTree')) {
      $fs = new FileSystemTree(G_ROOTPATH."www/themes/", true);
@@ -290,10 +283,12 @@ function local_checkThemesWritable() {
          }
      }
     }
+
     return $writable;
 }
 
-function local_checkWritableRecursive($path) {
+function local_checkWritableRecursive($path)
+{
     $writable = true;
     if (!is_writable($path)) {
         $writable = false;
@@ -307,5 +302,6 @@ function local_checkWritableRecursive($path) {
          $fs -> iterator -> next();
      }
     }
+
     return $writable;
 }

@@ -12,10 +12,10 @@
 	 */
  class HTML_TO_DOC
  {
-  var $docFile="";
-  var $title="";
-  var $htmlHead="";
-  var $htmlBody="";
+  public $docFile="";
+  public $title="";
+  public $htmlHead="";
+  public $htmlBody="";
   /**
 
 		 * Constructor
@@ -37,7 +37,7 @@
 
 		 *
 
-		 * @param String $docfile 
+		 * @param String $docfile
 
 		 */
   function setDocFileName($docfile)
@@ -45,6 +45,7 @@
    $this->docFile=$docfile;
    if(!preg_match("/\.doc$/i",$this->docFile))
     $this->docFile.=".doc";
+
    return;
   }
   function setTitle($title)
@@ -140,6 +141,7 @@
    </head>
    <body>
 EOH;
+
   return $return;
   }
   /**
@@ -167,7 +169,7 @@ EOH;
 
 		 * @param Boolean $download :: Wheather to download the file or save the file
 
-		 * @return boolean 
+		 * @return boolean
 
 		 */
   function createDocFromURL($url,$file,$download=false)
@@ -175,6 +177,7 @@ EOH;
    if(!preg_match("/^http:/",$url))
     $url="http://".$url;
    $html=@file_get_contents($url);
+
    return $this->createDoc($html,$file,$download);
   }
   /**
@@ -189,7 +192,7 @@ EOH;
 
 		 * @param Boolean $download :: Wheather to download the file or save the file
 
-		 * @return boolean 
+		 * @return boolean
 
 		 */
   function createDoc($html,$file,$download=false)
@@ -201,17 +204,15 @@ EOH;
    $doc=$this->getHeader();
    $doc.=$this->htmlBody;
    $doc.=$this->getFotter();
-   if($download)
-   {
+   if ($download) {
     @header("Cache-Control: ");// leave blank to avoid IE errors
     @header("Pragma: ");// leave blank to avoid IE errors
     @header("Content-type: application/octet-stream");
     @header("Content-Disposition: attachment; filename=\"$this->docFile\"");
     echo $doc;
+
     return true;
-   }
-   else
-   {
+   } else {
     return $this->write_file($this->docFile,$doc);
    }
   }
@@ -242,6 +243,7 @@ EOH;
    $html=preg_replace("/<\/?body((.|\n)*?)>/ims","",$html);
    $this->htmlHead=$head;
    $this->htmlBody=$html;
+
    return;
   }
   /**
@@ -265,10 +267,11 @@ EOH;
   {
    $fp=@fopen($file,$mode);
    if(!is_resource($fp))
+
     return false;
    fwrite($fp,$content);
    fclose($fp);
+
    return true;
   }
  }
-?>

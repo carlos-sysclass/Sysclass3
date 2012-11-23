@@ -311,6 +311,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
         for ($i = $start, $options = array(); $start > $end? $i >= $end: $i <= $end; $i += $step) {
             $options[$i] = sprintf('%02d', $i);
         }
+
         return $options;
     }
 
@@ -326,9 +327,9 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
             return $str;
         }
         $trimmed = ltrim($str, '0');
+
         return strlen($trimmed)? $trimmed: '0';
     }
-
 
    /**
     * Tries to convert the given value to a usable date before setting the
@@ -345,7 +346,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
                 $value = strtotime($value);
             }
             // might be a unix epoch, then we fill all possible values
-            $arr = explode('-', date('w-j-n-Y-g-G-i-s-a-A-W', (int)$value));
+            $arr = explode('-', date('w-j-n-Y-g-G-i-s-a-A-W', (int) $value));
             $value = array(
                 'D' => $arr[0],
                 'l' => $arr[0],
@@ -367,6 +368,7 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
         } else {
             $value = array_map(array($this, 'trimLeadingZeros'), $value);
         }
+
         return parent::setValue($value);
     }
 
@@ -382,10 +384,10 @@ class HTML_QuickForm2_Element_Date extends HTML_QuickForm2_Container_Group
         foreach ($this->getDataSources() as $ds) {
             if (null !== ($value = $ds->getValue($name))) {
                 $this->setValue($value);
+
                 return;
             }
         }
         parent::updateValue();
     }
 }
-?>

@@ -10,8 +10,6 @@ $smarty -> assign("_change_", $_change_);
 $loadScripts[] = 'includes/content';
 $loadScripts[] = 'includes/comments';
 
-
-
 if (!isset($currentContent)) {
     if (!$currentLesson) {
         if ($_GET['view_unit']) {
@@ -31,7 +29,7 @@ if (!isset($currentContent)) {
 
 //Legal values are the array of entities that the current user may actually edit or change.
 $classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
-        	
+
 // GET USER CLASS
 $courseClass = $classeData[0]['classe_id'];
 
@@ -52,14 +50,14 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 
      //This page has a file manager, so bring it on with the correct options
      $basedir = $currentLesson -> getDirectory();
-     
+
      /*
      var_dump($basedir);
      var_dump(rtrim(G_ROOTPATH, "/"));
      var_dump(is_dir($basedir));
      var_dump(strpos($basedir, rtrim(G_ROOTPATH, "/")));
      */
-     
+
      //Default options for the file manager
         if (!isset($currentUser -> coreAccess['files']) || $currentUser -> coreAccess['files'] == 'change') {
             $options = array('lessons_ID' => $currentLesson -> lesson['id'], 'metadata' => 0);
@@ -87,7 +85,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 
         //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
         /**The file manager*/
-     include "file_manager.php";
+     include 'file_manager.php';
 
      //This page also needs an editor and ASCIIMathML
   $load_editor = true;
@@ -255,7 +253,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
                              'ctg_type' => $values['ctg_type'],
                              'active' => 1,
                              'options' => $options);
-             
+
              $currentUnit = $currentContent -> insertNode($fields);
          }
 
@@ -290,21 +288,21 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
      $message_type = 'failure';
  }
 
-} else if (!$currentUnit && $_student_ && !isset($_GET['package_ID'])) {
-	
+} elseif (!$currentUnit && $_student_ && !isset($_GET['package_ID'])) {
+
     $basicIterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST));
-    
+
    	$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
-        	
+
    	// GET USER CLASS
-   	$courseClass = $classeData[0]['classe_id'];    
-    
+   	$courseClass = $classeData[0]['classe_id'];
+
     if (isset($_GET['type']) && $_GET['type'] == 'tests') {
         //if ($GLOBALS['configuration']['disable_tests'] == 1) {exit;}
         $iterator = new MagesterContentCourseClassFilterIterator(new MagesterTestsFilterIterator(new MagesterVisitableFilterIterator($basicIterator)), $courseClass);
-    } else if (isset($_GET['type']) && $_GET['type'] == 'theory') {
+    } elseif (isset($_GET['type']) && $_GET['type'] == 'theory') {
         $iterator = new MagesterContentCourseClassFilterIterator(new MagesterTheoryFilterIterator(new MagesterVisitableFilterIterator($basicIterator)), $courseClass);
-    } else if (isset($_GET['type']) && $_GET['type'] == 'examples') {
+    } elseif (isset($_GET['type']) && $_GET['type'] == 'examples') {
         $iterator = new MagesterContentCourseClassFilterIterator(new MagesterExampleFilterIterator(new MagesterVisitableFilterIterator($basicIterator)), $courseClass);
     } else {
         $iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator($basicIterator), $courseClass);
@@ -322,43 +320,41 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
     $smarty -> assign("T_THEORY_TREE", $currentContent -> toHTML($iterator, 'dhtmlContentTree'));
 } else {
 	if (!is_null($currentUnit) && $_student_) {
-		
+
 		$modules = eF_loadAllModules(true);
-		
+
 		$xUserModule = $modules['module_xuser'];
 		// CHECK FOR USER-TYPE LIBERATION
 		if (is_numeric($_SESSION['s_courses_ID'])) {
 			$currentCourse = new MagesterCourse($_SESSION['s_courses_ID']);
 			$userCourseExType = $xUserModule->getExtendedTypeIDInCourse($currentUser, $currentCourse);
-			
+
 			//var_dump($currentUser);
-			
+
 			if ($userCourseExType == 'student') {
 				$userExType = $xUserModule->getExtendedTypeID($currentUser);
 			} else {
 				$userExType = $userCourseExType;
 			}
-			
+
 		}
-		
+
 		if (!is_null($userExType) && $userExType != 'student' && $userExType != 'nivelation') {
-			
+
 			$url = sprintf("student.php?message=%s&message_type=failure",
 				urlencode("Você ainda não está autorizado a visualizar este conteúdo.")
 			);
 			eF_redirect($url);
 			exit;
 		}
-			
 
 /*		$url = sprintf($xContentModule->moduleBaseUrl . "&action=%s&message_type=%s&message=%s",
 				"waiting_xcontent_schedule_liberation",
 				"failure",
 				urlencode("Você ainda não está autorizado a visualizar essa prova, favor entrar em contato com o responsável do seu Polo.")
 		);
-*/		
-		
-		
+*/
+
 			// CHECK FOR SCHEDULED CONTENT
 			$total_scheduled = eF_getTableData(
 				"module_xcontent_schedule schl
@@ -374,10 +370,10 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 				sprintf("schl.content_id = %d AND schl2u.user_id = %d", $currentUnit->offsetGet('id'), $currentUser->user['id'])
 			);
 			*/
-			
+
 			$xContentModule = $modules['module_xcontent'];
 
-			foreach($total_scheduled as $key => $contentToSchedule) {
+			foreach ($total_scheduled as $key => $contentToSchedule) {
 				// CHECK IF IS THE SAME scope
 				if (!$xContentModule->isUserInScope($currentUser, $contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id'])) {
 					unset($total_scheduled[$key]);
@@ -385,24 +381,24 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 				} else {
 					//var_dump($key);
 				}
-				
+
 				if (strtotime($contentToSchedule['end']) < time()) {
 					unset($total_scheduled[$key]);
 					continue;
 				}
-				
+
 			}
 
 			if (count($total_scheduled) == 0) {
 			} else {
 				$contentToSchedule = reset($total_scheduled);
-				
+
 				$userSchedule = eF_getTableData(
 					"module_xcontent_schedule_users schl2u",
 					"schl2u.schedule_id, schl2u.user_id, schl2u.`index`, schl2u.liberation, schl2u.content_id",
 					sprintf("schl2u.schedule_id = %d AND schl2u.content_id = %d AND schl2u.user_id = %d", $contentToSchedule['id'], $contentToSchedule['content_id'], $currentUser->user['id'])
 				);
-				
+
 				if (count($userSchedule) == 0) {
 					$url = sprintf($xContentModule->moduleBaseUrl . "&action=%s&message_type=%s&message=%s",
 						"register_xcontent_schedule",
@@ -420,7 +416,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 					exit;
 				} else {
 					// USUÁRIO JÁ AGENDOU... CHECAR SE ESTÀ LIBERADO.
-					
+
 					if ($userSchedule[0]['liberation'] == 1) {
 						// DO TEST
 					} else {
@@ -429,15 +425,15 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 							"failure",
 							urlencode("Você ainda não está autorizado a visualizar essa prova, favor entrar em contato com o responsável do seu Polo.")
 						);
-						
+
 						eF_redirect($url);
 						exit;
 					}
 				}
 			}
 			//exit;
-		$contentClasses = eF_getTableDataFlat("classes_to_content", "classe_id", sprintf("content_id = %d", $currentUnit->offsetGet('id')));	
-	
+		$contentClasses = eF_getTableDataFlat("classes_to_content", "classe_id", sprintf("content_id = %d", $currentUnit->offsetGet('id')));
+
 		if ($contentClasses) {
 			if (
 				count($contentClasses['classe_id']) == 0 ||
@@ -450,14 +446,14 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 			}
 	    }
 	}
-	
+
     try {
     	if ($configuration['math_content'] && $configuration['math_images']) {
 			$loadScripts[] = 'ASCIIMath2Tex';
 		} elseif ($configuration['math_content']) {
 			$loadScripts[] = 'ASCIIMathML';
 		}
-    	
+
   		$log_comments = $currentUnit['id']; //in order to store unit into logs
         //This is the basic content iterator, including even inactive, unpublished or empty units
         $visitableIterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST));
@@ -474,7 +470,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
             $smarty -> assign("T_SEEN_UNIT", in_array($currentUnit['id'], array_keys($seenContent))); //Notify smarty whether the student has seen the current unit
             if ($currentLesson -> options['rules']) {
                 $ruleCheck = $currentContent -> checkRules($currentUnit['id'], $seenContent);
-              
+
             }
             if ($ruleCheck !== true) {
                 $message = $ruleCheck;
@@ -507,7 +503,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
             //This is an iterator with only valid units, and is used for students to navigate back and forth
             $visitableIterator = new MagesterVisitableFilterIterator($visitableIterator);
         } else {
-   if ($_change_){
+   if ($_change_) {
     $treeOptions['edit'] = 1;
    }
             $smarty -> assign("T_CONTENT_TREE", $currentContent -> toHTML($visitableIterator, 'dhtmlContentTree', $treeOptions, $scormState));
@@ -531,10 +527,10 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
             if ($currentUnit['ctg_type'] == 'tests' || $currentUnit['ctg_type'] == 'feedback') {
                 $loadScripts[] = 'scriptaculous/dragdrop';
                 $loadScripts[] = 'includes/tests';
-                
-                include("tests/show_unsolved_test.php");
+
+                include 'tests/show_unsolved_test.php';
             }
-            
+
    if (isset($_GET['print'])) {
     $currentUnit['data'] = preg_replace("#<script.*?>.*?</script>#", "", $currentUnit['data']);
     $currentUnit['data'] = strip_tags($currentUnit['data'],'<img><applet><iframe><div><br><p><ul><li>');
@@ -562,7 +558,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
                     $comments[$value['id']] = $value;
                 }
             }
-   foreach($comments as $key => $value) {
+   foreach ($comments as $key => $value) {
        //$user = MagesterUserFactory :: factory($value['users_LOGIN']);
        //$comments[$key]['avatar'] = $user -> getAvatar();
    }

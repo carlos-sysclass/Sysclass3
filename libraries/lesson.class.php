@@ -199,7 +199,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	function __construct($lesson) {
+	function __construct($lesson)
+	{
 		$this -> initializeDataFromSource($lesson);
 		$this -> initializeDirectory();
 		$this -> initializeOptions();
@@ -222,7 +223,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function initializeDataFromSource($lesson) {
+	private function initializeDataFromSource($lesson)
+	{
 		if (is_array($lesson)) {
 			$this -> lesson = $lesson;
 		} elseif (!$this -> validateId($lesson)) {
@@ -250,7 +252,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function initializeDirectory() {
+	private function initializeDirectory()
+	{
 		if ($this -> lesson['instance_source'] && isset($this -> lesson['share_folder']) && $this -> lesson['share_folder'] != $this -> lesson['instance_source']) {
 			$this -> lesson['share_folder'] = $this -> lesson['instance_source'];
 			//$this -> persist(); We don't use persist() because the object is not fully constructed yet and it will ruin it
@@ -276,7 +279,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function initializeOptions() {
+	private function initializeOptions()
+	{
 		$this -> validateSerializedArray($this -> lesson['options']) OR $this -> lesson['options'] = $this -> sanitizeSerialized($this -> lesson['options']);
 		$options = unserialize($this -> lesson['options']);
 		$newOptions = array_diff_key($this -> options, $options); //$newOptions are lesson options that were added to the SysClass Lesson object AFTER the lesson options serialization took place
@@ -297,7 +301,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function buildPriceString() {
+	private function buildPriceString()
+	{
 		if ($this -> validateFloat($this -> lesson['price'])) { //Create the string representing the lesson price
 			$this -> options['recurring'] ? $recurring = array($this -> options['recurring'], $this -> options['recurring_duration']) : $recurring = false;
 			$this -> lesson['price_string'] = formatPrice($this -> lesson['price'], $recurring);
@@ -305,7 +310,8 @@ class MagesterLesson
 			$this -> lesson['price_string'] = formatPrice(0);
 		}
 	}
-	private static function validateAndSanitizeLessonFields($lessonFields) {
+	private static function validateAndSanitizeLessonFields($lessonFields)
+	{
 		$lessonFields = self :: setDefaultLessonValues($lessonFields);
 		$fields = array('name' => self :: validateAndSanitize($lessonFields['name'], 'name'),
                         'active' => self :: validateAndSanitize($lessonFields['active'], 'boolean'),
@@ -332,7 +338,8 @@ class MagesterLesson
       'originating_course' => self :: validateAndSanitize($lessonFields['originating_course'], 'courses_foreign_key'));
 		return $fields;
 	}
-	private static function setDefaultLessonValues($lessonFields) {
+	private static function setDefaultLessonValues($lessonFields)
+	{
 		$defaultValues = array('name' => '',
                             'active' => 1,
                 'archive' => 0,
@@ -393,7 +400,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public static function validateAndSanitize($field, $type) {
+	public static function validateAndSanitize($field, $type)
+	{
 		try {
 			self :: validate($field, $type);
 		} catch (MagesterLessonException $e) {
@@ -438,7 +446,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public static function validate($field, $type) {
+	public static function validate($field, $type)
+	{
 		$validParameter = true;
 		switch ($type) {
 			case 'id': self :: validateId($field) OR $validParameter = false; break;
@@ -460,63 +469,78 @@ class MagesterLesson
 			throw new MagesterLessonException(_INVALIDPARAMETER.' ('.$type.'): "'.$field.'"', MagesterLessonException::INVALID_PARAMETER);
 		}
 	}
-	private static function validateId($field) {
+	private static function validateId($field)
+	{
 		!eF_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateName($field) {
+	private static function validateName($field)
+	{
 		mb_strlen($field) > self::MAX_NAME_LENGTH ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateText($field) {
+	private static function validateText($field)
+	{
 		return true;
 	}
-	private static function validateBoolean($field) {
+	private static function validateBoolean($field)
+	{
 		$field !== true && $field !== false ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateTimestamp($field) {
+	private static function validateTimestamp($field)
+	{
 		!eF_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateSerialized($field) {
+	private static function validateSerialized($field)
+	{
 		unserialize($field) === false && $field !== serialize(false) ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateSerializedArray($field) {
+	private static function validateSerializedArray($field)
+	{
 		$unserialized = unserialize($field);
 		$unserialized === false || !is_array($unserialized) ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateNull($field) {
+	private static function validateNull($field)
+	{
 		!is_null($field) ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateFloat($field) {
+	private static function validateFloat($field)
+	{
 		!is_numeric($field) ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateInteger($field) {
+	private static function validateInteger($field)
+	{
 		!is_numeric($field) ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateDirectionsForeignKey($field) {
+	private static function validateDirectionsForeignKey($field)
+	{
 		!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateLessonsForeignKey($field) {
+	private static function validateLessonsForeignKey($field)
+	{
 		!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateCoursesForeignKey($field) {
+	private static function validateCoursesForeignKey($field)
+	{
 		!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateLanguagesForeignKey($field) {
+	private static function validateLanguagesForeignKey($field)
+	{
 		!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
-	private static function validateUsersForeignKey($field) {
+	private static function validateUsersForeignKey($field)
+	{
 		!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
 		return $returnValue;
 	}
@@ -553,48 +577,73 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function sanitize($field, $type) {
+	public function sanitize($field, $type)
+	{
 		switch ($type) {
-			case 'name': $field = self :: sanitizeName($field); break;
-			case 'boolean': $field = self :: sanitizeBoolean($field); break;
-			case 'boolean_or_timestamp': $field = self :: sanitizeBoolean($field); break;
-			case 'timestamp': $field = self :: sanitizeTimestamp($field); break;
-			case 'serialized': $field = self :: sanitizeSerialized($field); break;
-			case 'float': $field = self :: sanitizeFloat($field); break;
+			case 'name':
+				$field = self :: sanitizeName($field);
+				break;
+			case 'boolean':
+				$field = self :: sanitizeBoolean($field);
+				break;
+			case 'boolean_or_timestamp':
+				$field = self :: sanitizeBoolean($field);
+				break;
+			case 'timestamp':
+				$field = self :: sanitizeTimestamp($field);
+				break;
+			case 'serialized':
+				$field = self :: sanitizeSerialized($field);
+				break;
+			case 'float':
+				$field = self :: sanitizeFloat($field);
+				break;
 			case 'integer':
-			case 'id': $field = self :: sanitizeInteger($field); break;
+			case 'id':
+				$field = self :: sanitizeInteger($field);
+				break;
 			case 'directions_foreign_key':
 			case 'languages_foreign_key':
-			case 'lessons_foreign_key': $field = self :: sanitizeForeignKey($field); break;
-			case 'text': default: break;
+			case 'lessons_foreign_key':
+				$field = self :: sanitizeForeignKey($field);
+				break;
+			case 'text':
+				default: break;
 		}
 		return $field;
 	}
-	private static function sanitizeTimestamp($field) {
+	private static function sanitizeTimestamp($field)
+	{
 		$field = time();
 		return $field;
 	}
-	private static function sanitizeName($field) {
+	private static function sanitizeName($field)
+	{
 		$field = mb_substr($field, 0, self::MAX_NAME_LENGTH);
 		return $field;
 	}
-	private static function sanitizeBoolean($field) {
+	private static function sanitizeBoolean($field)
+	{
 		$field = ($field != 0);
 		return $field;
 	}
-	private static function sanitizeSerialized($field) {
+	private static function sanitizeSerialized($field)
+	{
 		$field = serialize(array());
 		return $field;
 	}
-	private static function sanitizeFloat($field) {
-		$field = (float)$field;
+	private static function sanitizeFloat($field)
+	{
+		$field = (float) $field;
 		return $field;
 	}
-	private static function sanitizeInteger($field) {
-		$field = (int)$field;
+	private static function sanitizeInteger($field)
+	{
+		$field = (int) $field;
 		return $field;
 	}
-	private static function sanitizeForeignKey($field) {
+	private static function sanitizeForeignKey($field)
+	{
 		$field = 0;
 		return $field;
 	}
@@ -657,7 +706,8 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function createLesson($fields) {
+	public static function createLesson($fields)
+	{
 		is_dir(G_LESSONSPATH) OR mkdir(G_LESSONSPATH, 0755);
 		$fields['metadata'] = self::createLessonMetadata($fields);
 		$fields['directions_ID'] = self::computeNewLessonDirectionsId($fields);
@@ -688,7 +738,8 @@ class MagesterLesson
 	* @access private
 
 	*/
-	private static function createLessonMetadata($fields) {
+	private static function createLessonMetadata($fields)
+	{
 		$languages = MagesterSystem :: getLanguages(true);
 		$lessonMetadata = array('title' => $fields['name'],
                                 'creator' => isset($GLOBALS['currentUser']) ? formatLogin($GLOBALS['currentUser'] -> user['login']) : '',
@@ -700,7 +751,8 @@ class MagesterLesson
 		$metadata = serialize($lessonMetadata);
 		return $metadata;
 	}
-	private static function computeNewLessonId() {
+	private static function computeNewLessonId()
+	{
 		$fileSystemTree = new FileSystemTree(G_LESSONSPATH, true);
 		foreach ($fileSystemTree -> tree as $key => $value) {
 			if (preg_match("/\d+/", basename($key))) {
@@ -711,14 +763,16 @@ class MagesterLesson
 		$firstFreeSlot = (max($result[0]['max_id'], max($directories))) + 1;
 		return $firstFreeSlot;
 	}
-	private static function computeNewLessonDirectionsId($fields) {
+	private static function computeNewLessonDirectionsId($fields)
+	{
 		if (!isset($fields['directions_ID'])) {
 			$directions = eF_getTableData("directions", "id");
 			sizeof($directions) > 0 ? $fields['directions_ID'] = $directions[0]['id'] : $fields['directions_ID'] = 1;
 		}
 		return $fields['directions_ID'];
 	}
-	private static function createLessonForum($lesson) {
+	private static function createLessonForum($lesson)
+	{
 		if ($lesson -> lesson['originating_course']) {
 			$originatingCourse = new MagesterCourse($lesson -> lesson['originating_course']);
 			$titleString = $originatingCourse -> course['name'].'&nbsp;&raquo;&nbsp;'.$lesson -> lesson['name'];
@@ -734,7 +788,8 @@ class MagesterLesson
 		$forumId = eF_insertTableData("f_forums", $forumFields);
 		MagesterSearch :: insertText($lesson -> lesson['name'], $forumId, "f_forums", "title");
 	}
-	private static function createLessonChat($lesson) {
+	private static function createLessonChat($lesson)
+	{
 		if ($lesson -> lesson['originating_course']) {
 			$originatingCourse = new MagesterCourse($lesson -> lesson['originating_course']);
 			$titleString = $originatingCourse -> course['name'].'&nbsp;&raquo;&nbsp;'.$lesson -> lesson['name'];
@@ -749,9 +804,11 @@ class MagesterLesson
                             'active' => 1);
 		eF_insertTableData("chatrooms", $chatFields);
 	}
-	private static function addNewLessonSkills($lesson) {
+	private static function addNewLessonSkills($lesson)
+	{
 	}
-	private static function notifyModuleListenersForLessonCreation($lesson) {
+	private static function notifyModuleListenersForLessonCreation($lesson)
+	{
 		// Get all modules (NOT only the ones that have to do with the user type)
 		$modules = eF_loadAllModules();
 		// Trigger all necessary events. If the function has not been re-defined in the derived module class, nothing will happen
@@ -786,7 +843,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function archive() {
+	public function archive()
+	{
 		$this -> lesson['archive'] = time();
 		$this -> lesson['active'] = 0;
 		$this -> persist();
@@ -818,7 +876,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function unarchive() {
+	public function unarchive()
+	{
 		$this -> lesson['archive'] = 0;
 		$this -> lesson['active'] = 1;
 		//Check whether the original category exists
@@ -873,7 +932,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function delete($removeFromCourse = true) {
+	public function delete($removeFromCourse = true)
+	{
 		$this -> initialize('all');
 		if ($removeFromCourse) {
 			$this -> removeLessonFromCourses();
@@ -888,23 +948,27 @@ class MagesterLesson
 		eF_deleteTableData("lessons", "id=".$this -> lesson['id']);
 		MagesterSearch :: removeText('lessons', $this -> lesson['id'], '');
 	}
-	private function removeLessonSkills() {
+	private function removeLessonSkills()
+	{
 	}
-	private function removeLessonFromCourses() {
+	private function removeLessonFromCourses()
+	{
 		foreach ($this -> getCourses(true) as $course) {
 			$course -> removeLessons($this);
 		}
 	}
-	private function removeLessonForums() {
+	private function removeLessonForums()
+	{
 		$lessonsForums = eF_getTableData("f_forums", "*", "lessons_ID=".$this -> lesson['id']);
-		foreach($lessonsForums as $value) {
+		foreach ($lessonsForums as $value) {
 			$forum = new f_forums($value);
 			$forum -> delete();
 		}
 	}
-	private function removeLessonChat() {
+	private function removeLessonChat()
+	{
 		$lessonChatrooms = eF_getTableData("chatrooms", "id", "lessons_ID=".$this -> lesson['id']); //Get the lesson chat room
-		foreach($lessonChatrooms as $value) {
+		foreach ($lessonChatrooms as $value) {
 			eF_deleteTableData("chatmessages", "chatrooms_ID=".$value['id']);
 			eF_deleteTableData("chatrooms", "id=".$value['id']);
 		}
@@ -934,7 +998,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getDirection(){
+	public function getDirection()
+	{
 		$result = eF_getTableData("directions", "id, name", "id=".$this -> lesson['directions_ID']);
 		return array($result[0]['id'] => $result[0]['name']);
 	}
@@ -963,7 +1028,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function activate() {
+	public function activate()
+	{
 		$this -> lesson['active'] = 1;
 		$this -> persist();
 		return true;
@@ -993,7 +1059,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function deactivate() {
+	public function deactivate()
+	{
 		$this -> lesson['active'] = 0;
 		$this -> persist();
 		return true;
@@ -1029,7 +1096,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getDirectory($returnObject = false) {
+	public function getDirectory($returnObject = false)
+	{
 		if ($returnObject) {
 			return new MagesterDirectory($this -> directory);
 		} else {
@@ -1055,7 +1123,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getDirectoryUrl() {
+	public function getDirectoryUrl()
+	{
 		$url = G_RELATIVELESSONSLINK.str_replace(G_LESSONSPATH, '', $this -> getDirectory());
 		return $url;
 	}
@@ -1094,11 +1163,12 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getUsers($basicType = false, $refresh = false, $onlyActive = false) {
+	public function getUsers($basicType = false, $refresh = false, $onlyActive = false)
+	{
 		if ($this -> users === false || $refresh) { //Make a database query only if the variable is not initialized, or it is explicitly asked
 			$this -> users = array();
 			$result = eF_getTableData("users u, users_to_lessons ul",
-   	"u.*, ul.user_type as role, ul.from_timestamp, ul.completed, ul.to_timestamp as timestamp_completed", 
+   	"u.*, ul.user_type as role, ul.from_timestamp, ul.completed, ul.to_timestamp as timestamp_completed",
    	"u.user_type != 'administrator' and ul.archive = 0 and u.archive = 0 and ul.users_LOGIN = login and lessons_ID=".$this -> lesson['id'] . (($onlyActive) ? ' and u.active = 1 AND ul.active = 1 AND ul.archive = 0' : '')
 			);
 			foreach ($result as $value) {
@@ -1136,7 +1206,8 @@ class MagesterLesson
 	* Append the tables that are used from the statistics filters to the FROM table list
 
 	*/
-	public static function appendTableFiltersUserConstraints($from, $constraints) {
+	public static function appendTableFiltersUserConstraints($from, $constraints)
+	{
 		if (isset($constraints['table_filters'])) {
 			foreach ($constraints['table_filters'] as $constraint) {
 				if (isset($constraint['table']) && isset($constraint['joinField'])) {
@@ -1161,7 +1232,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getLessonUsers($constraints = array()) {
+	public function getLessonUsers($constraints = array())
+	{
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 		list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
 		$select = "u.*, ul.lessons_ID,ul.completed,ul.score,ul.user_type as role,ul.from_timestamp as active_in_lesson, ul.to_timestamp as timestamp_completed, ul.comments, ul.done_content, 1 as has_lesson";
@@ -1187,7 +1259,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function countLessonUsers($constraints = array()) {
+	public function countLessonUsers($constraints = array())
+	{
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 		list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
 		$where[] = "u.login=ul.users_LOGIN and ul.lessons_ID='".$this -> lesson['id']."' and ul.archive=0";
@@ -1212,7 +1285,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getLessonUsersIncludingUnassigned($constraints = array()) {
+	public function getLessonUsersIncludingUnassigned($constraints = array())
+	{
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 		list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
 		$where[] = "user_type != 'administrator'";
@@ -1239,7 +1313,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function countLessonUsersIncludingUnassigned($constraints = array()) {
+	public function countLessonUsersIncludingUnassigned($constraints = array())
+	{
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 		list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
 		$where[] = "user_type != 'administrator'";
@@ -1249,7 +1324,8 @@ class MagesterLesson
 		return $result[0]['count'];
 	}
 	//TO REPLACE getUsers
-	public function getLessonUsersOld($returnObjects = false) {
+	public function getLessonUsersOld($returnObjects = false)
+	{
 		if (sizeof($this -> users) == 0) {
 			$this -> initializeUsers();
 		}
@@ -1262,7 +1338,8 @@ class MagesterLesson
 			return $this -> users;
 		}
 	}
-	private function initializeUsers() {
+	private function initializeUsers()
+	{
 		$this -> lesson['total_students'] = $this -> lesson['total_professors'] = 0;
 		$roles = MagesterLessonUser :: getLessonsRoles();
 		$result = eF_getTableData("users_to_lessons ul, users u", "u.*, u.user_type as basic_user_type, ul.user_type as role, ul.from_timestamp as active_in_lesson, ul.score, ul.completed", "u.archive = 0 and ul.archive = 0 and ul.users_LOGIN = u.login and ul.lessons_ID=".$this -> lesson['id']);
@@ -1275,7 +1352,8 @@ class MagesterLesson
 			}
 		}
 	}
-	public function getStudentUsers($returnObjects = false) {
+	public function getStudentUsers($returnObjects = false)
+	{
 		$lessonUsers = $this -> getLessonUsersOld($returnObjects);
 		foreach ($lessonUsers as $key => $value) {
 			if ($value instanceOf MagesterUser) {
@@ -1287,7 +1365,8 @@ class MagesterLesson
 		}
 		return $lessonUsers;
 	}
-	public function getLessonNonUsers($returnObjects = false) {
+	public function getLessonNonUsers($returnObjects = false)
+	{
 		$subquery = "select u.*, u.user_type as basic_user_type,ul.lessons_ID as has_lesson from users u left outer join users_to_lessons ul on (ul.users_login=u.login and lessons_id=".$this -> lesson['id']." and ul.archive != 0) where u.archive = 0 and u.active=1 and u.user_type != 'administrator'";
 		$result = eF_getTableData("($subquery) s", "s.*, s.has_lesson is null");
 		$users = array();
@@ -1312,7 +1391,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	public function isStudentInLesson($user) {
+	public function isStudentInLesson($user)
+	{
 		if ($user instanceOf MagesterUser) {
 			$user = $user -> user['login'];
 		}
@@ -1339,7 +1419,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function isProfessorInLesson($user) {
+	public function isProfessorInLesson($user)
+	{
 		if ($user instanceOf MagesterUser) {
 			$user = $user -> user['login'];
 		}
@@ -1366,7 +1447,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function getPossibleLessonRoles() {
+	private function getPossibleLessonRoles()
+	{
 		if (!isset($this -> roles) || !$this -> roles) {
 			$this -> roles = MagesterLessonUser :: getLessonsRoles();
 		}
@@ -1409,7 +1491,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getUsersCompleted($completed) {
+	public function getUsersCompleted($completed)
+	{
 		foreach ($this -> getUsers() as $key => $user) {
 			if (($completed && !$user['completed']) || (!$completed && $user['completed'])) {
 				unset($users[$key]);
@@ -1452,7 +1535,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getNonUsers($type = false) {
+	public function getNonUsers($type = false)
+	{
 		foreach ($this -> getUsers() as $key => $value) {
 			$lessonUsers[$value['login']] = $value;
 		}
@@ -1505,7 +1589,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getCourses($returnObjects = false) {
+	public function getCourses($returnObjects = false)
+	{
 		$result = eF_getTableData("courses JOIN lessons_to_courses ON courses.id = courses_ID", "courses.*", "courses.archive=0 and lessons_ID = ".$this -> lesson['id']);
 		$courses = array();
 		foreach ($result as $value) {
@@ -1532,7 +1617,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function verifyLessonsList($lessonsList) {
+	public function verifyLessonsList($lessonsList)
+	{
 		is_array($lessonsList) OR $lessonsList = array($lessonsList);
 		$newLessonsList = array();
 		foreach ($lessonsList as $lesson) {
@@ -1580,7 +1666,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function addUsers($users, $roles = 'student', $confirmed = true, $modality_id = 0) {
+	public function addUsers($users, $roles = 'student', $confirmed = true, $modality_id = 0)
+	{
 		$users = MagesterUser::verifyUsersList($users);
 		$users = $this -> filterOutArchivedUsers($users);
 		$roles = MagesterUser::verifyRolesList($roles, sizeof($users));
@@ -1595,8 +1682,8 @@ class MagesterLesson
 				}
 				if (!in_array($user, $lessonUsers)) { //added this to avoid adding existing user when admin changes his role
 					$usersToAddToLesson[] = array(
-						'login' => $user, 
-						'role' => $roleInLesson, 
+						'login' => $user,
+						'role' => $roleInLesson,
 						'confirmed' => $confirmed,
 						'modality_id' => is_numeric($modality_id) ? $modality_id : 0
 					);
@@ -1610,7 +1697,8 @@ class MagesterLesson
 		$this -> users = false; //Reset users cache
 		//return $this -> getUsers();
 	}
-	private function filterOutArchivedUsers($users) {
+	private function filterOutArchivedUsers($users)
+	{
 		$archivedUsers = eF_getTableDataFlat("users", "login", "archive != 0");
 
 		foreach ($users as $key => $value) {
@@ -1620,13 +1708,15 @@ class MagesterLesson
 		}
 		return $users;
 	}
-	public static function convertLessonObjectsToArrays($lessonObjects) {
+	public static function convertLessonObjectsToArrays($lessonObjects)
+	{
 		foreach ($lessonObjects as $key => $value) {
 			$lessonObjects[$key] = $value -> lesson;
 		}
 		return $lessonObjects;
 	}
-	private function getArchivedUsers() {
+	private function getArchivedUsers()
+	{
 		$result = eF_getTableDataFlat("users_to_lessons", "users_LOGIN", "archive!=0 and lessons_ID=".$this->lesson['id']);
 		if (empty($result)) {
 			return array();
@@ -1649,7 +1739,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function addUsersToLesson($usersData) {
+	private function addUsersToLesson($usersData)
+	{
 		$autoAssignedProjects = $this -> getAutoAssignProjects();
 		$archivedLessonUsers = $this -> getArchivedUsers();
 		$newUsers = array();
@@ -1711,7 +1802,8 @@ class MagesterLesson
 	* @access protected
 
 	*/
-	private function setUserRolesInLesson($usersData) {
+	private function setUserRolesInLesson($usersData)
+	{
 		$lessonUsers = $this -> getUsers();
 		foreach ($usersData as $value) {
 			if ($lessonUsers[$value['login']]['role'] != $value['role']) {
@@ -1724,7 +1816,8 @@ class MagesterLesson
 			//Cache::resetCache($cacheKey);
 		}
 	}
-	private function getAutoAssignProjects() {
+	private function getAutoAssignProjects()
+	{
 		$autoAssignProjects = array();
 		foreach ($this -> getProjects() as $id => $project) {
 			if ($project['auto_assign']) {
@@ -1764,7 +1857,8 @@ class MagesterLesson
 	* @todo remove him from projects list
 
 	*/
-	public function removeUsers($users) {
+	public function removeUsers($users)
+	{
 		$users = MagesterUser::verifyUsersList($users);
 		$this -> deleteUserTests($users);
 		$this -> sendNotificationsRemoveLessonUsers($users);
@@ -1776,7 +1870,8 @@ class MagesterLesson
 		$this -> users = false; //Reset users cache
 		return $this -> getUsers();
 	}
-	private function deleteUserTests($users) {
+	private function deleteUserTests($users)
+	{
 		$lessonTests = $this -> getTests(false);
 		foreach ($users as $user) {
 			if (sizeof($lessonTests) > 0) {
@@ -1784,7 +1879,8 @@ class MagesterLesson
 			}
 		}
 	}
-	private function sendNotificationsRemoveLessonUsers($users) {
+	private function sendNotificationsRemoveLessonUsers($users)
+	{
 		foreach ($users as $user) {
 			MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_REMOVAL,
            "users_LOGIN" => $user,
@@ -1821,7 +1917,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function archiveLessonUsers($users) {
+	public function archiveLessonUsers($users)
+	{
 		$users = MagesterUser::verifyUsersList($users);
 		$this -> sendNotificationsRemoveLessonUsers($users);
 		foreach ($users as $user) {
@@ -1832,7 +1929,8 @@ class MagesterLesson
 		$this -> users = false; //Reset users cache
 		return $this -> getUsers();
 	}
-	public static function countLessonsOccurencesInCoursesForAllUsers() {
+	public static function countLessonsOccurencesInCoursesForAllUsers()
+	{
 		$result = eF_getTableData("lessons_to_courses", "lessons_ID, courses_ID");
 		foreach ($result as $value) {
 			$lessonsCourses[$value['lessons_ID']][] = $value['courses_ID'];
@@ -1850,7 +1948,8 @@ class MagesterLesson
 		}
 		return $userLessonCourses;
 	}
-	public static function countLessonsOccurencesInCoursesForUser($user) {
+	public static function countLessonsOccurencesInCoursesForUser($user)
+	{
 		if ($user instanceOf MagesterUser) {
 			$user = $user -> user['login'];
 		}
@@ -1900,22 +1999,25 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function confirm($login) {
+	public function confirm($login)
+	{
 		$login = $this -> convertArgumentToUserLogin($login);
 		eF_updateTableData("users_to_lessons", array("from_timestamp" => time()), "users_LOGIN='".$login."' and lessons_ID=".$this -> lesson['id']." and from_timestamp=0");
 		$cacheKey = "user_lesson_status:lesson:".$this -> lesson['id']."user:".$login;
 		Cache::resetCache($cacheKey);
 	}
-	public function unConfirm($login) {
+	public function unConfirm($login)
+	{
 		$login = $this -> convertArgumentToUserLogin($login);
 		eF_updateTableData("users_to_lessons", array("from_timestamp" => 0), "users_LOGIN='".$login."' and lessons_ID=".$this -> lesson['id']);
 		$cacheKey = "user_lesson_status:lesson:".$this -> lesson['id']."user:".$login;
 		Cache::resetCache($cacheKey);
 	}
-	private function convertArgumentToUserLogin($login) {
+	private function convertArgumentToUserLogin($login)
+	{
 		if ($login instanceof MagesterLessonUser) {
 			$login = $login -> user['login'];
-		} else if (!eF_checkParameter($login, 'login')) {
+		} elseif (!eF_checkParameter($login, 'login')) {
 			throw new MagesterUserException(_INVALIDLOGIN, MagesterUserException::INVALID_LOGIN);
 		}
 		return $login;
@@ -1953,7 +2055,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function setRoles($users, $roles) {
+	public function setRoles($users, $roles)
+	{
 		$users = MagesterUser::verifyUsersList($users);
 		$roles = MagesterUser::verifyRolesList($roles, sizeof($users));
 		foreach ($users as $key => $value) {
@@ -1989,7 +2092,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getRole($login) {
+	public function getRole($login)
+	{
 		$lessonUsers = $this -> getUsers();
 		if (in_array($login, array_keys($lessonUsers))) {
 			return $lessonUsers[$login]['role'];
@@ -2026,17 +2130,18 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getTests($returnObjects = false, $onlyActive = false) {
+	public function getTests($returnObjects = false, $onlyActive = false)
+	{
 		$tests = array();
 		if (!$onlyActive) {
 			$test_data = eF_getTableData("tests t, content c", "t.*", "t.lessons_ID = ".$this -> lesson['id']." and t.content_id = c.id and c.ctg_type='tests' and c.lessons_ID=".$this -> lesson['id']);
 		} else {
 			$test_data = eF_getTableData("tests t, content c", "t.*", "t.active = 1 and c.active = 1 and t.lessons_ID = ".$this -> lesson['id']." and t.content_id = c.id and c.ctg_type='tests' and c.lessons_ID=".$this -> lesson['id']);
 		}
-		foreach ($test_data as $t){
-			if (!$returnObjects){
+		foreach ($test_data as $t) {
+			if (!$returnObjects) {
 				$tests[] = $t['id'];
-			} else{
+			} else {
 				$test = new MagesterTest($t['id']);
 				$tests[$t['id']] = $test;
 			}
@@ -2072,10 +2177,11 @@ class MagesterLesson
 	* @static
 
 	*/
-	public function getScormTests() {
+	public function getScormTests()
+	{
 		$tests = array();
 		$scorm_data = eF_getTableData("content", "id", "lessons_ID=".$this -> lesson['id']." and ctg_type='scorm_test'");
-		foreach ($scorm_data as $data){
+		foreach ($scorm_data as $data) {
 			$tests[] = $data['id'];
 		}
 		return $tests;
@@ -2111,7 +2217,8 @@ class MagesterLesson
 	* @static
 
 	*/
-	public function getQuestions($returnObjects = false){
+	public function getQuestions($returnObjects = false)
+	{
 		$questions = array();
 		$result = eF_getTableData("questions", "*", "lessons_ID=".$this -> lesson['id']);
 		if (sizeof($result) > 0) {
@@ -2121,7 +2228,8 @@ class MagesterLesson
 		}
 		return $questions;
 	}
-	public function getLessonStatusForUsers($constraints = array(), $onlyContent = false) {
+	public function getLessonStatusForUsers($constraints = array(), $onlyContent = false)
+	{
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 		$constraints['return_objects'] = false;
 		$lessonUsers = $this -> getLessonUsers($constraints);
@@ -2144,7 +2252,8 @@ class MagesterLesson
 		}
 		return $lessonUsers;
 	}
-	public function getLessonTimesForUsers() {
+	public function getLessonTimesForUsers()
+	{
 		$usersTimes = array();
 		$timesReport = new MagesterTimes();
 		$result = $timesReport -> getLessonSessionTimesForUsers($this -> lesson['id']);
@@ -2153,7 +2262,8 @@ class MagesterLesson
 		}
 		return $usersTimes;
 	}
-	private function getLessonOverallProgressForUser($user, $totalUnits) {
+	private function getLessonOverallProgressForUser($user, $totalUnits)
+	{
 		$completedUnits = 0;
 		if ($doneContent = unserialize($user['done_content'])) {
 			$completedUnits = sizeof($doneContent);
@@ -2169,7 +2279,8 @@ class MagesterLesson
        'percentage' => 0);
 		}
 	}
-	private function getLessonTestsStatusForUser($user) {
+	private function getLessonTestsStatusForUser($user)
+	{
 		$completedTests = $meanTestScore = 0;
 		$tests = $this -> getTests(true, true);
 		$totalTests = sizeof($tests);
@@ -2197,7 +2308,8 @@ class MagesterLesson
 			return array();
 		}
 	}
-	private function getLessonScormTestsStatusForUser($user) {
+	private function getLessonScormTestsStatusForUser($user)
+	{
 		$usersDoneScormTests = eF_getTableData("scorm_data sd left outer join content c on c.id=sd.content_ID",
               "c.id, c.ctg_type, sd.masteryscore, sd.lesson_status, sd.score, sd.minscore, sd.maxscore",
               "c.ctg_type = 'scorm_test' and (sd.users_LOGIN = '".$user['login']."' or sd.users_LOGIN is null) and c.lessons_ID = ".$this -> lesson['id']);
@@ -2212,7 +2324,8 @@ class MagesterLesson
 		}
 		return $tests;
 	}
-	private function getLessonProjectsStatusForUser($user) {
+	private function getLessonProjectsStatusForUser($user)
+	{
 		$completedProjects = $meanProjectScore = 0;
 		$projects = $this -> getProjects(true, $user['login']);
 		$totalProjects = sizeof($projects);
@@ -2276,14 +2389,24 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getInformation($user = false, $information = false) {
+	public function getInformation($user = false, $information = false)
+	{
 		$lessonContent = new MagesterContentTree($this -> lesson['id'], array('id', 'previous_content_ID', 'parent_content_ID', 'active', 'publish', 'ctg_type'));
 		foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($lessonContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1, 'publish' => 1)) as $key => $value) {
-			switch($value['ctg_type']) {
-				case 'tests': case 'scorm_test': $testIds[$key] = $key; break;
-				case 'theory': case 'scorm': $theoryIds[$key] = $key; break;
-				case 'examples': $exampleIds[$key] = $key; break;
-				default: break;
+			switch ($value['ctg_type']) {
+				case 'tests':
+				case 'scorm_test':
+					$testIds[$key] = $key;
+					break;
+				case 'theory':
+				case 'scorm':
+					$theoryIds[$key] = $key;
+					break;
+				case 'examples':
+					$exampleIds[$key] = $key;
+					break;
+				default:
+					break;
 			}
 		}
 		/*
@@ -2410,7 +2533,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getStatisticInformation($user = false) {
+	public function getStatisticInformation($user = false)
+	{
 		$lessonContent = new MagesterContentTree($this -> lesson['id']);
 		$testIds = array();
 		foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($lessonContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1, 'publish' => 1, 'ctg_type' => 'tests')) as $key => $value) {
@@ -2471,7 +2595,7 @@ class MagesterLesson
 				$storedInfo = unserialize($this -> lesson['info']);
 				unset($storedInfo['professors']); //Due to an old bug, serialized information may contain professors as well. So, we must remove them
 				$info = array_merge($info, $storedInfo);
-			} else if (is_array($this -> lesson['info'])) {
+			} elseif (is_array($this -> lesson['info'])) {
 				$info = array_merge($info, $this -> lesson['info']);
 			}
 		}
@@ -2516,7 +2640,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function setInformation($info = false) {
+	public function setInformation($info = false)
+	{
 		if ($info) {
 			$info = serialize($info);
 			$this -> lesson['info'] = $info;
@@ -2556,7 +2681,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getUnits() {
+	public function getUnits()
+	{
 		$contentTree = new MagesterContentTree($this->lesson['id']);
 		foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($contentTree -> tree), RecursiveIteratorIterator :: SELF_FIRST)) as $key => $value) {
 			$units[$key] = $key;
@@ -2606,7 +2732,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function initialize($deleteEntities) {
+	public function initialize($deleteEntities)
+	{
 		$possibleEntities = array('content',
                                   'tests',
                                   'questions',
@@ -2909,7 +3036,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getChatroom() {
+	public function getChatroom()
+	{
 		if (!isset($this -> chatroom['id'])) {
 			$chatroom_info = eF_getTableData("chatrooms", "id", "lessons_ID = '".$this -> lesson['id']."'");
 			$this -> chatroom = array();
@@ -2922,7 +3050,8 @@ class MagesterLesson
 	* Disable chatroom
 
 	*/
-	public function disableChatroom() {
+	public function disableChatroom()
+	{
 		eF_updateTableData("chatrooms", array("active" => 0), "lessons_ID = '".$this -> lesson['id']."'");
 		eF_deleteTableData("users_to_chatrooms", "chatrooms_ID = " . $this->getChatroom());
 		$this -> setOptions(array("chat" => 0));
@@ -2932,7 +3061,8 @@ class MagesterLesson
 	* Enable chatroom
 
 	*/
-	public function enableChatroom() {
+	public function enableChatroom()
+	{
 		eF_updateTableData("chatrooms", array("active" => 1), "lessons_ID = '".$this -> lesson['id']."'");
 		$this -> setOptions(array("chat" => 1));
 	}
@@ -2969,7 +3099,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getChatroomUsers() {
+	public function getChatroomUsers()
+	{
 		$result = eF_getTableData("users_to_chatrooms", "*", "chatrooms_ID = '".$this-> getChatroom()."'");
 		$this -> chatroom['users'] = array();
 		foreach ($result as $user) {
@@ -3010,7 +3141,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function addChatroomUser($user) {
+	public function addChatroomUser($user)
+	{
 		eF_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$user -> user['login']."'");
 		$userRecord = array("users_LOGIN" => $user -> user['login'],
                             "chatrooms_ID" => $this -> getChatroom(),
@@ -3051,13 +3183,15 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function removeChatroomUser($login) {
+	public function removeChatroomUser($login)
+	{
 		return eF_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$login."' AND chatrooms_ID = '".$this->getChatroom()."'");
 	}
-	public function toXML($flgContent){
+	public function toXML($flgContent)
+	{
 		$str = "";
 		//write out general lesson information
-		foreach ($lesson as $key => $value){
+		foreach ($lesson as $key => $value) {
 			$str .= "<$key>$value<$key>";
 		}
 		//write out the content tree
@@ -3065,9 +3199,9 @@ class MagesterLesson
 		$str .= $contentTree->toXML(false);
 		//write out the glossary
 		$glossary = ef_getTableData("glossary","*","lessons_ID=".$this->lessonId);
-		if (sizeof($glossary) > 0){
+		if (sizeof($glossary) > 0) {
 			$str .= '<glossary>';
-			for ($i = 0; $i < sizeof($glossary); $i++){
+			for ($i = 0; $i < sizeof($glossary); $i++) {
 				$str .= '<word>';
 				$str .= '<name>'.$glossary[$i]['name'].'</name>';
 				$str .= '<info>'.$glossary[$i]['info'].'</info>';
@@ -3079,9 +3213,9 @@ class MagesterLesson
 		}
 		//write out the lesson conditions
 		$conditions = ef_getTableData("lesson_conditions", "*", "lessons_ID=".$this->lessonId);
-		if (sizeof($conditions) > 0){
+		if (sizeof($conditions) > 0) {
 			$str .= '<conditions>';
-			for ($i = 0; $i < sizeof($conditions); $i++){
+			for ($i = 0; $i < sizeof($conditions); $i++) {
 				$str .= '<condition>';
 				$str .= '<type>'.$conditions[$i]['type'].'</type>';
 				$str .= '<options>'.$conditions[$i]['options'].'</options>';
@@ -3092,9 +3226,9 @@ class MagesterLesson
 		}
 		//write out the rules
 		$rules = ef_getTableData("rules r, content c", "r.*", "c.id = r.content_ID and c.lessons_ID=".$this->lessonId);
-		if (sizeof($rules) > 0){
+		if (sizeof($rules) > 0) {
 			$str .= '<rules>';
-			for ($i = 0; $i < sizeof($rules); $i++){
+			for ($i = 0; $i < sizeof($rules); $i++) {
 				$str .= "<rule>";
 				$str .= "<content_id>".$rules[$i]['content_ID']."</content_id>";
 				$str .= "<rule_content_id>".$rules[$i]['rule_content_ID']."</rule_content_id>";
@@ -3104,33 +3238,34 @@ class MagesterLesson
 			}
 			$str .= '</rules>';
 		}
-		if ($flgContent){
+		if ($flgContent) {
 			//to do export the content as well
 		}
 		$xmlstr .= '<?xml version="1.0" encoding="UTF-8"?><lesson>'.$str.'</lesson>';
 		return $xmlstr;
 	}
-	public function fromXML($xmlfile){
+	public function fromXML($xmlfile)
+	{
 		$xml = simplexml_load_file($xmlfile);
 		$contentTree = new MagesterContentTree($this->lesson['id']);
 		$contentTree -> fromXMLNode($xml->lessonId[0]);
 		$fields = array();
-		$fields['name'] = (string)$xml->lesson->name;
-		$fields['info'] = (string)$xml->lesson->info;
-		$fields['options'] = (string)$xml->lesson->options;
-		$fields['course_only'] = (string)$xml->lesson->course_only;
-		//$fields['auto_certificate'] = (string)$xml->lesson->auto_certificate;
-		//$fields['auto_complete'] = (string)$xml->lesson->auto_complete;
-		//$fields['publish'] = (string)$xml->lesson->publish;
+		$fields['name']        = (string) $xml->lesson->name;
+		$fields['info']        = (string) $xml->lesson->info;
+		$fields['options']     = (string) $xml->lesson->options;
+		$fields['course_only'] = (string) $xml->lesson->course_only;
+		//$fields['auto_certificate'] = (string) $xml->lesson->auto_certificate;
+		//$fields['auto_complete'] = (string) $xml->lesson->auto_complete;
+		//$fields['publish'] = (string) $xml->lesson->publish;
 		$lid = ef_inserTableData("lessons", $fields);
-		for ($i = 0; $i < sizeof($xml->lesson->conditions->condition); $i++){
+		for ($i = 0; $i < sizeof($xml->lesson->conditions->condition); $i++) {
 			$condition = array();
 			$condition['type'] = $xml->lessonId->conditions->condition[$i]->type;
 			$condition['options'] = $xml->lessonId->conditions->condition[$i]->options;
 			$condition['relation'] = $xml->lessonId->conditions->condition[$i]->relation;
 			$cid = ef_insertTableData("lesson_conditions", $condition);
 		}
-		for ($i = 0; $i < sizeof($xml->lesson->rules->rule); $i++){
+		for ($i = 0; $i < sizeof($xml->lesson->rules->rule); $i++) {
 			$rule = array();
 			$rule['content_id'] = $xml->lessonId->rules->rule[$i]->content_id;
 			$rule['rule_content_id'] = $xml->lessonId->rules->rule[$i]->rule_content_id;
@@ -3139,7 +3274,8 @@ class MagesterLesson
 			$rid = ef_insertTableData("rules", $rule);
 		}
 	}
-	public function toIMS($path){
+	public function toIMS($path)
+	{
 		$lesson_entries = eF_getTableData("content", "id, name, data", "lessons_ID=" . $this->lesson['id'] . " and ctg_type = 'theory' and active=1");
 		$cur_dir = getcwd();
 		chdir(G_LESSONSPATH.$this->lesson['id'].'/');
@@ -3150,9 +3286,9 @@ class MagesterLesson
 		$str = '<?xml version="1.0" encoding="UTF-8"?><magesterlesson>';
 		//write out the glossary
 		$glossary = ef_getTableData("glossary","*","lessons_ID=".$this->lesson['id']);
-		if (sizeof($glossary) > 0){
+		if (sizeof($glossary) > 0) {
 			$str .= '<glossary>';
-			for ($i = 0; $i < sizeof($glossary); $i++){
+			for ($i = 0; $i < sizeof($glossary); $i++) {
 				$str .= '<word>';
 				$str .= '<name>'.$glossary[$i]['name'].'</name>';
 				$str .= '<info>'.$glossary[$i]['info'].'</info>';
@@ -3164,9 +3300,9 @@ class MagesterLesson
 		}
 		//write out the lesson conditions
 		$conditions = ef_getTableData("lesson_conditions", "*", "lessons_ID=".$this->lesson['id']);
-		if (sizeof($conditions) > 0){
+		if (sizeof($conditions) > 0) {
 			$str .= '<conditions>';
-			for ($i = 0; $i < sizeof($conditions); $i++){
+			for ($i = 0; $i < sizeof($conditions); $i++) {
 				$str .= '<condition>';
 				$str .= '<type>'.$conditions[$i]['type'].'</type>';
 				$str .= '<options>'.$conditions[$i]['options'].'</options>';
@@ -3177,9 +3313,9 @@ class MagesterLesson
 		}
 		//write out the rules
 		$rules = ef_getTableData("rules r, content c", "r.*", "c.id = r.content_ID and c.lessons_ID=".$this->lesson['id']);
-		if (sizeof($rules) > 0){
+		if (sizeof($rules) > 0) {
 			$str .= '<rules>';
-			for ($i = 0; $i < sizeof($rules); $i++){
+			for ($i = 0; $i < sizeof($rules); $i++) {
 				$str .= "<rule>";
 				$str .= "<content_id>".$rules[$i]['content_ID']."</content_id>";
 				$str .= "<rule_content_id>".$rules[$i]['rule_content_ID']."</rule_content_id>";
@@ -3191,9 +3327,9 @@ class MagesterLesson
 		}
 		//write out the questions
 		$questions = ef_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=".$this->lesson['id']."");
-		if (sizeof($questions) > 0){
+		if (sizeof($questions) > 0) {
 			$str .= "<questions>";
-			for ($i = 0; $i < sizeof($questions); $i++){
+			for ($i = 0; $i < sizeof($questions); $i++) {
 				$str .= "<question>";
 				$str .= "<refid>q".$questions[$i]['id']."</refid>";
 				$str .= "<type>".$questions[$i]['type']."</type>";
@@ -3207,9 +3343,9 @@ class MagesterLesson
 		}
 		//write out the tests
 		$tests = ef_getTableData("tests t, content c", "t.*", "t.content_id = c.id and c.lessons_id=".$this->lesson['id']."");
-		if (sizeof($tests) > 0){
+		if (sizeof($tests) > 0) {
 			$str .= "<tests>";
-			for ($i = 0; $i < sizeof($tests); $i++){
+			for ($i = 0; $i < sizeof($tests); $i++) {
 				$str .= "<test>";
 				$str .= "<refid>t".$tests[$i]['id']."</refid>";
 				$str .= "<duration>".$tests[$i]['duration']."</duration>";
@@ -3221,7 +3357,7 @@ class MagesterLesson
 				$str .= "<given_answers>".$tests[$i]['given_answers']."</given_answers>";
 				$questions = ef_getTableData("tests_to_questions","*","tests_ID = ".$tests[$i]['id']);
 				$str .= "<questions>";
-				for ($j = 0; $j < sizeof($questions); $j++){
+				for ($j = 0; $j < sizeof($questions); $j++) {
 					$str .= "<question>";
 					$str .= "<refid>q".$questions[$j]['questions_ID']."</refid>";
 					$str .= "<weight>".$questions[$j]['weight']."</weight>";
@@ -3242,7 +3378,7 @@ class MagesterLesson
 		$d = dir(".");
 		$entries = array();
 		while (false !== ($entry = $d->read())) {
-			if ($entry != "." & $entry != ".."){
+			if ($entry != "." & $entry != "..") {
 				array_push($entries, $entry);
 			}
 		}
@@ -3252,7 +3388,8 @@ class MagesterLesson
 		chdir($cur_dir);
 		deldir($path."/lesson". $this->lesson['id']);
 	}
-	public function fromIMS($ims_file, $deleteEntities = false){
+	public function fromIMS($ims_file, $deleteEntities = false)
+	{
 		if ($deleteEntities) {
 			$this -> initialize($deleteEntities); //Initialize the lesson aspects that the user specified
 		}
@@ -3271,22 +3408,21 @@ class MagesterLesson
 		$references = array();
 		$questionsKeys = array();
 		$testsKeys = array();
-		foreach($tagArray as $key => $value) {
+		foreach ($tagArray as $key => $value) {
 			$fields = array();
 			switch ($value['tag']) {
 				case 'TITLE':
 					$cur = $value['parent_index'];
-					if ($inContent){
+					if ($inContent) {
 						$content[$cur]['name'] = $value['value'];
 					}
-					if ($inTest){
+					if ($inTest) {
 						$tests[$cur]['name'] = $value['value'];
 					}
 					break;
 				case 'ITEM':
 					$cur = $key;
-					if ($value['attributes']['TYPE'] != 'question' && $value['attributes']['TYPE'] != 'test')
-					{
+					if ($value['attributes']['TYPE'] != 'question' && $value['attributes']['TYPE'] != 'test') {
 						$inContent = true;
 						$inTest = false;
 						$inQuestion = false;
@@ -3295,18 +3431,14 @@ class MagesterLesson
 						$content[$key]['ctg_type'] = 'theory';
 						$content[$key]['active'] = 1;
 						$references[$key] = $value['attributes']['IDENTIFIERREF'];
-					}
-					else if ($value['attributes']['TYPE'] == 'test')
-					{
+					} elseif ($value['attributes']['TYPE'] == 'test') {
 						$inTest = true;
 						$inContent = false;
 						$inQuestion = false;
 						$tests[$key]['active'] = '1';
 						$testsKeys[$value['attributes']['IDENTIFIERREF']] = $key;
 						$references[$key] = $value['attributes']['IDENTIFIERREF'];
-					}
-					else if ($value['attributes']['TYPE'] == 'question')
-					{
+					} elseif ($value['attributes']['TYPE'] == 'question') {
 						$inQuestion = true;
 						$inContent = false;
 						$inTest = false;
@@ -3348,7 +3480,7 @@ class MagesterLesson
 				$data = file_get_contents(G_LESSONSPATH.$this->lesson['id']."/IMS_".$timestamp."/".$tagArray[$ref]['attributes']['HREF']);
 				$primitive_hrefs[$ref] = $tagArray[$ref]['attributes']['HREF'];
 				$path_part[$ref] = dirname($primitive_hrefs[$ref]);
-				foreach($tagArray[$ref]['children'] as $value2) {
+				foreach ($tagArray[$ref]['children'] as $value2) {
 					if ($tagArray[$value2]['tag'] == 'DEPENDENCY') {
 						$idx = array_search($tagArray[$value2]['attributes']['IDENTIFIERREF'], $resources);
 						foreach ($tagArray[$idx]['children'] as $value3) {
@@ -3358,39 +3490,37 @@ class MagesterLesson
 						}
 					}
 				}
-				if ($content[$key]['active'] == 1){
+				if ($content[$key]['active'] == 1) {
 					$i1 = stripos($data, "<body");
 					$i2 = stripos($data, ">", $i1);
 					$i3 = strripos($data, "<script");
 					$data = substr($data, $i2 + 1, $i3 - $i2 - 1);
 					$content[$key]['data'] = $data;
-				}
-				else if ($tests[$key]){
+				} elseif ($tests[$key]) {
 					$data = $data;
 					$tests[$key]['description'] = $data;
-				}
-				else if ($questions[$key]){
+				} elseif ($questions[$key]) {
 					$data = $data;
 					$questions[$key]['text'] = $data;
 				}
 			}
 		}
 		$inStart = true;
-		foreach ($content as $key => $value){
+		foreach ($content as $key => $value) {
 			$cid = ef_insertTableData("content", $value);
 			/* TODO INDEX */
-			if ($inStart){
+			if ($inStart) {
 				$inStart = false;
-				foreach ($questions as $keyq => $valueq){
+				foreach ($questions as $keyq => $valueq) {
 					$questions[$keyq]['content_ID'] = $cid;
 				}
 			}
 		}
-		foreach ($questions as $key => $value){
+		foreach ($questions as $key => $value) {
 			$qid = ef_insertTableData("questions", $value);
 			$questions[$key]['id'] = $qid;
 		}
-		foreach ($tests as $key => $value){
+		foreach ($tests as $key => $value) {
 			$test_content['lessons_ID'] = $this->lesson['id'];
 			$test_content['timestamp'] = time();
 			$test_content['ctg_type'] = 'tests';
@@ -3433,64 +3563,63 @@ class MagesterLesson
 			//read the special MagesterLesson.xml
 			$xmlfile = G_LESSONSPATH.$this->lesson['id']."/IMS_".$timestamp."/MagesterLesson.xml";
 			$xml = simplexml_load_file($xmlfile);
-			for ($i = 0; $i < sizeof($xml->conditions->condition); $i++){
+			for ($i = 0; $i < sizeof($xml->conditions->condition); $i++) {
 				$condition = array();
-				$condition['type'] = (string)$xml->conditions->condition[$i]->type;
-				$condition['options'] = (string)$xml->conditions->condition[$i]->options;
-				$condition['relation'] = (string)$xml->conditions->condition[$i]->relation;
+				$condition['type'] = (string) $xml->conditions->condition[$i]->type;
+				$condition['options'] = (string) $xml->conditions->condition[$i]->options;
+				$condition['relation'] = (string) $xml->conditions->condition[$i]->relation;
 				$condition['lessons_ID'] = $this->lesson['id'];
 				$cid = ef_insertTableData("lesson_conditions", $condition);
 			}
-			for ($i = 0; $i < sizeof($xml->glossary->word); $i++){
+			for ($i = 0; $i < sizeof($xml->glossary->word); $i++) {
 				$glossary = array();
-				$glossary['name'] = (string)$xml->glossary->word[$i]->name;
-				$glossary['type'] = (string)$xml->glossary->word[$i]->type;
-				$glossary['info'] = (string)$xml->glossary->word[$i]->info;
-				$glossary['active'] = (string)$xml->glossary->word[$i]->active;
+				$glossary['name'] = (string) $xml->glossary->word[$i]->name;
+				$glossary['type'] = (string) $xml->glossary->word[$i]->type;
+				$glossary['info'] = (string) $xml->glossary->word[$i]->info;
+				$glossary['active'] = (string) $xml->glossary->word[$i]->active;
 				$glossary['lessons_ID'] = $this->lesson['id'];
 				$cid = ef_insertTableData("glossary", $glossary);
 			}
-			for ($i = 0; $i < sizeof($xml->questions->question); $i++){
+			for ($i = 0; $i < sizeof($xml->questions->question); $i++) {
 				$update = array();
-				$refid = (string)$xml->questions->question[$i]->refid;
+				$refid = (string) $xml->questions->question[$i]->refid;
 				$qk = $questionsKeys[$refid];
 				$qid = $questions[$qk]['id'];
-				$update['type'] = (string)$xml->questions->question[$i]->type;
-				$update['difficulty'] = (string)$xml->questions->question[$i]->difficulty;
-				$update['options'] = (string)$xml->questions->question[$i]->options;
-				$update['answer'] = (string)$xml->questions->question[$i]->answer;
-				$update['explanation'] = (string)$xml->questions->question[$i]->explanation;
+				$update['type'] = (string) $xml->questions->question[$i]->type;
+				$update['difficulty'] = (string) $xml->questions->question[$i]->difficulty;
+				$update['options'] = (string) $xml->questions->question[$i]->options;
+				$update['answer'] = (string) $xml->questions->question[$i]->answer;
+				$update['explanation'] = (string) $xml->questions->question[$i]->explanation;
 				ef_updateTableData("questions", $update, "id = $qid");
 			}
-			for ($i = 0; $i < sizeof($xml->tests->test); $i++){
+			for ($i = 0; $i < sizeof($xml->tests->test); $i++) {
 				$update = array();
-				$refid = (string)$xml->tests->test[$i]->refid;
+				$refid = (string) $xml->tests->test[$i]->refid;
 				$tk = $testsKeys[$refid];
 				$tid = $tests[$tk]['id'];
-				$update['duration'] = (string)$xml->tests->test[$i]->duration;
-				$update['redoable'] = (string)$xml->tests->test[$i]->redoable;
-				$update['onebyone'] = (string)$xml->tests->test[$i]->onebyone;
-				$update['answers'] = (string)$xml->tests->test[$i]->answers;
-				$update['shuffle_questions'] = (string)$xml->tests->test[$i]->shuffle_questions;
-				$update['shuffle_answers'] = (string)$xml->tests->test[$i]->shuffle_answers;
-				$update['given_answers'] = (string)$xml->tests->test[$i]->given_answers;
+				$update['duration'] = (string) $xml->tests->test[$i]->duration;
+				$update['redoable'] = (string) $xml->tests->test[$i]->redoable;
+				$update['onebyone'] = (string) $xml->tests->test[$i]->onebyone;
+				$update['answers'] = (string) $xml->tests->test[$i]->answers;
+				$update['shuffle_questions'] = (string) $xml->tests->test[$i]->shuffle_questions;
+				$update['shuffle_answers'] = (string) $xml->tests->test[$i]->shuffle_answers;
+				$update['given_answers'] = (string) $xml->tests->test[$i]->given_answers;
 				ef_updateTableData("tests", $update, "id=".$tid);
-				for ($j = 0; $j < sizeof($xml->tests->test[$i]->questions->question); $j++){
+				for ($j = 0; $j < sizeof($xml->tests->test[$i]->questions->question); $j++) {
 					$testQuestions = array();
-					$refid = (string)$xml->tests->test[$i]->questions->question[$j]->refid;
+					$refid = (string) $xml->tests->test[$i]->questions->question[$j]->refid;
 					$qk = $questionsKeys[$refid];
 					$qid = $questions[$qk]['id'];
-					$previd = (string)$xml->tests->test[$i]->questions->question[$j]->previous;
-					if ($previd != "q0"){
+					$previd = (string) $xml->tests->test[$i]->questions->question[$j]->previous;
+					if ($previd != "q0") {
 						$pk = $questionsKeys[$previd];
 						$pid = $questions[$pk]['id'];
-					}
-					else
+					} else
 					$pid = 0;
 					$testQuestions['tests_ID'] = $tid;
 					$testQuestions['questions_ID'] = $qid;
 					$testQuestions['previous_question_ID'] = $pid;
-					$testQuestions['weight'] = (string)$xml->tests->test[$i]->questions->question[$j]->weight;
+					$testQuestions['weight'] = (string) $xml->tests->test[$i]->questions->question[$j]->weight;
 					ef_insertTableData("tests_to_questions", $testQuestions);
 				}
 			}
@@ -3546,7 +3675,8 @@ class MagesterLesson
 	* @see MagesterLesson :: initialize()
 
 	*/
-	public function import($file, $deleteEntities = false, $lessonProperties = false, $keepName = false) {
+	public function import($file, $deleteEntities = false, $lessonProperties = false, $keepName = false)
+	{
 		if ($deleteEntities) {
 			$this -> initialize($deleteEntities); //Initialize the lesson aspects that the user specified
 		}
@@ -3629,8 +3759,6 @@ class MagesterLesson
 			/*if ($table == "glossary_words") {
 
 			$table = "glossary";
-
-
 
 			} */ // moved 20 lines above
 			if ($table == "lessons") { //from v3 lessons parameters also imported
@@ -3719,14 +3847,13 @@ class MagesterLesson
 								} elseif ($key == "lessons_ID") {
 									$value = $this -> lesson['id'];
 								} elseif ($table == "lesson_conditions" AND $key == "options") {
-									if (mb_strpos($data['lesson_conditions'][$i]['type'], "specific") === false){
-									}else{
+									if (mb_strpos($data['lesson_conditions'][$i]['type'], "specific") === false) {
+									} else {
 										$options = unserialize($data['lesson_conditions'][$i]['options']);
 										$options[0] = $map['content'][$options[0]];
 										$value = serialize($options);
 									}
-								}
-								elseif ($table != "content" AND mb_substr($key, -3) == "_ID") {
+								} elseif ($table != "content" AND mb_substr($key, -3) == "_ID") {
 									$from_table = mb_substr($key, 0, -3);
 									if (isset($map[$from_table][$value])) {
 										$value = $map[$from_table][$value];
@@ -3766,14 +3893,14 @@ class MagesterLesson
 		}
 		if ($data['content']) {
 			$map['content'] = array_reverse($map['content'], true);
-			foreach($map['content'] as $old_id => $new_id) {
+			foreach ($map['content'] as $old_id => $new_id) {
 				eF_updateTableData("content", array('parent_content_ID' => $new_id), "parent_content_ID=$old_id AND lessons_ID=".$this -> lesson['id']);
 				eF_updateTableData("content", array('previous_content_ID' => $new_id), "previous_content_ID=$old_id AND lessons_ID=".$this -> lesson['id']);
 				//eF_updateTableData("questions", array('content_ID' => $new_id), "content_ID=$old_id");
 			}
 		}
 		if ($data['rules']) {
-			foreach($map['content'] as $old_id => $new_id) {
+			foreach ($map['content'] as $old_id => $new_id) {
 				eF_updateTableData("rules", array('rule_content_ID' => $new_id), "rule_content_ID=$old_id");
 			}
 		}
@@ -3784,7 +3911,7 @@ class MagesterLesson
 			eF_updateTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFLESSON . " ". $this -> lesson['name'] , "categories_ID" => -1), "skill_ID = ". $lessonSkillId['skill_ID']);
 		}
 		if ($data['questions']) {
-			foreach($map['questions'] as $old_id => $new_id) {
+			foreach ($map['questions'] as $old_id => $new_id) {
 				eF_updateTableData("tests_to_questions", array('previous_question_ID' => $new_id), "previous_question_ID=$old_id and tests_ID in (select id from tests where lessons_ID=".$this -> lesson['id'].")");
 				// Update all questions of not course_only lessons to offer the lessons skill
 				if ($lessonSkillId) {
@@ -3813,7 +3940,7 @@ class MagesterLesson
 		if ($content_new_IDs_list) {
 			$content_data = eF_getTableData("content", "data,id", "id IN ($content_new_IDs_list) AND lessons_ID=".$this -> lesson['id']." AND data like '%##MAGESTERINNERLINK##%'");
 		}
-		for($i =0; $i < sizeof($content_data); $i++) {
+		for ($i =0; $i < sizeof($content_data); $i++) {
 			preg_match_all("/##MAGESTERINNERLINK##.php\?ctg=content&amp;view_unit=(\d+)/", $content_data[$i]['data'], $regs);
 			foreach ($regs[1] as $value) {
 				$replaced = str_replace("##MAGESTERINNERLINK##.php?ctg=content&amp;view_unit=".$value,"##MAGESTERINNERLINK##.php?ctg=content&amp;view_unit=".$map["content"][$value], $content_data[$i]['data']);
@@ -3918,7 +4045,8 @@ class MagesterLesson
 	* @access private
 
 	*/
-	private function eF_import_getLastChild($tree, $idx) {
+	private function eF_import_getLastChild($tree, $idx)
+	{
 		$original_tree = $tree;
 		$count = 0;
 		$children[$idx] = $tree[$idx]['id'];
@@ -3962,8 +4090,7 @@ class MagesterLesson
 	private function eF_import_getTreeFirstChild($tree)
 	{
 		$count = 0;
-		while ($tree[$count]['parent_content_ID'] != 0 || $tree[$count]['previous_content_ID'] != 0)
-		{
+		while ($tree[$count]['parent_content_ID'] != 0 || $tree[$count]['previous_content_ID'] != 0) {
 			$count++;
 		}
 		$first_node = $count;
@@ -4012,7 +4139,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function export($exportEntities, $rename = true, $exportFiles = true) {
+	public function export($exportEntities, $rename = true, $exportFiles = true)
+	{
 		if (!$exportEntities) {
 			$exportEntities = array('export_surveys' => 1, 'export_announcements' => 1, 'export_glossary' => 1,
                                     'export_calendar' => 1, 'export_comments' => 1, 'export_rules' => 1);
@@ -4141,7 +4269,8 @@ class MagesterLesson
 		unlink($this -> directory.'/'."data.dat"); //Delete database dump file
 		return $file;
 	}
-	public function export2() {
+	public function export2()
+	{
 		try {
 			$dom = new DomDocument();
 			$id = $dom -> createAttribute('id');//
@@ -4217,10 +4346,11 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function getLessons($returnObjects = false, $instances = false) {
+	public static function getLessons($returnObjects = false, $instances = false)
+	{
 		$result = eF_getTableData("lessons l, directions d", "l.*, d.name as direction_name", "l.directions_ID=d.id and l.archive=0".(!$instances ? " and l.instance_source=0" : null), "l.name");
 		foreach ($result as $value) {
-			if ($returnObjects){
+			if ($returnObjects) {
 				$lessons[$value['id']] = new MagesterLesson($value);
 			} else {
 				$value['info'] = unserialize($value['info']);
@@ -4260,7 +4390,8 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function getStandAloneLessons($returnObjects = false) {
+	public static function getStandAloneLessons($returnObjects = false)
+	{
 		$result = eF_getTableData("lessons l, directions d", "l.*, d.name as direction_name", "l.directions_ID=d.id AND l.course_only=0");
 		foreach ($result as $value) {
 			$value['info'] = unserialize($value['info']);
@@ -4303,7 +4434,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getOptions($options) {
+	public function getOptions($options)
+	{
 		if ($options && !is_array($options)) {
 			$options = array($options);
 		}
@@ -4348,7 +4480,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function setOptions($options) {
+	public function setOptions($options)
+	{
 		foreach ($options as $key => $value) {
 			if (isset($this -> options[$key])) {
 				$this -> options[$key] = $value;
@@ -4386,7 +4519,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function persist() {
+	public function persist()
+	{
 		$fields = array('name' => $this -> lesson['name'],
                         'directions_ID' => $this -> lesson['directions_ID'],
                         'info' => $this -> lesson['info'],
@@ -4444,7 +4578,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getConditions($conditions = false) {
+	public function getConditions($conditions = false)
+	{
 		if ($this -> conditions === false) {
 			if (!$conditions) {
 				$conditions = eF_getTableData("lesson_conditions", "*", "lessons_ID=".$this -> lesson['id']);
@@ -4486,7 +4621,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function deleteConditions($conditions) {
+	public function deleteConditions($conditions)
+	{
 		if ($this -> conditions === false) { //Initialize conditions, if you haven't done so
 			$this -> getConditions();
 		}
@@ -4536,7 +4672,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getProjects($returnObjects = false, $login = false, $nonExpired = false) {
+	public function getProjects($returnObjects = false, $login = false, $nonExpired = false)
+	{
 		if ($login instanceof MagesterUser) {
 			$login = $login -> user['login'];
 		}
@@ -4582,7 +4719,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function toHTMLTooltipLink($link, $lessonInformation = false) {
+	public function toHTMLTooltipLink($link, $lessonInformation = false)
+	{
 		if ($GLOBALS['configuration']['disable_tooltip'] != 1) {
 			if (!$lessonInformation) {
 				$lessonInformation = $this -> getInformation();
@@ -4662,7 +4800,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getSkills($only_own = false) {
+	public function getSkills($only_own = false)
+	{
 		if (!isset($this -> skills) || !$this -> skills) {
 			$this -> skills = false; //Initialize skills to something
 			$skills = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON (module_hcd_lesson_offers_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_lesson_offers_skill.lesson_ID='".$this -> lesson['id']."')", "description,specification, module_hcd_skills.skill_ID,lesson_ID,categories_ID","");
@@ -4702,7 +4841,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getBranches($only_own = false) {
+	public function getBranches($only_own = false)
+	{
 		if (!isset($this -> branches) || !$this -> branches) {
 			$this -> branches = false; //Initialize branches to something
 			$branches = eF_getTableData("module_hcd_branch LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID LEFT OUTER JOIN module_hcd_lesson_to_branch ON (module_hcd_lesson_to_branch.branches_ID = module_hcd_branch.branch_ID AND module_hcd_lesson_to_branch.lessons_ID='".$this -> lesson['id']."')", "module_hcd_branch.*, module_hcd_branch.branch_ID as branches_ID, module_hcd_lesson_to_branch.lessons_ID, branch1.name as father","");
@@ -4742,7 +4882,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function insertLessonSkill() {
+	public function insertLessonSkill()
+	{
 		// If insertion of a self-contained lesson add the corresponding skill
 		// Insert the corresponding lesson skill to the skill and lesson_offers_skill tables
 		$lessonSkillId = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFLESSON . " ". $this -> lesson['name'], "categories_ID" => -1));
@@ -4766,7 +4907,8 @@ class MagesterLesson
 	* Function to remove all course inherited skills by all courses where this lesson belongs
 
 	*/
-	public function removeCoursesInheritedSkills() {
+	public function removeCoursesInheritedSkills()
+	{
 		$courses = $this -> getCourses(true);
 		foreach ($courses as $course) {
 			$courseSkill = $course -> getCourseSkill();
@@ -4800,7 +4942,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function deleteLessonSkill() {
+	public function deleteLessonSkill()
+	{
 		// Delete the corresponding lesson skill to the skill and lesson_offers_skill tables
 		$lesson_skill = eF_getTableData("module_hcd_skills JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID","*", "lesson_ID = ". $this -> lesson['id'] . " AND module_hcd_skills.categories_ID = -1");
 		eF_deleteTableData("module_hcd_skills", "skill_ID = ". $lesson_skill[0]['skill_ID']);
@@ -4832,7 +4975,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getLessonSkill() {
+	public function getLessonSkill()
+	{
 		return false;
 	}
 	/**
@@ -4866,7 +5010,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function assignSkill($skill_ID, $specification) {
+	public function assignSkill($skill_ID, $specification)
+	{
 		$this -> getSkills();
 		// Check if the skill is not assigned as offered by this lesson
 		if ($this -> skills[$skill_ID]['lesson_ID'] == "") {
@@ -4916,7 +5061,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function removeSkill($skill_ID) {
+	public function removeSkill($skill_ID)
+	{
 		$this -> getSkills();
 		// Check if the skill is not assigned as offered by this lesson
 		if ($this -> skills[$skill_ID]['lesson_ID'] == $this -> lesson['id']) {
@@ -4960,7 +5106,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function assignBranch($branch_ID) {
+	public function assignBranch($branch_ID)
+	{
 		$this -> getBranches();
 		// Check if the branch is not assigned as offered by this lesson
 		if ($this -> branches[$branch_ID]['lessons_ID'] == "") {
@@ -5004,7 +5151,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function removeBranch($branch_ID) {
+	public function removeBranch($branch_ID)
+	{
 		$this -> getBranches();
 		// Check if the branch is not assigned as offered by this lesson
 		if ($this -> branches[$branch_ID]['lessons_ID'] == $this -> lesson['id']) {
@@ -5053,7 +5201,8 @@ class MagesterLesson
 	* @access public
 
 	*/
-	public function getEvents($topic_ID = false, $returnObjects = false, $avatarSize, $limit = false) {
+	public function getEvents($topic_ID = false, $returnObjects = false, $avatarSize, $limit = false)
+	{
 		if (!($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_LESSON_TIMELINES)) {
 			return array();
 		}
@@ -5079,7 +5228,7 @@ class MagesterLesson
 			$prev_event = false;
 			$count = 0;
 			$filtered_related_events = array();
-			foreach($related_events as $key => $event) {
+			foreach ($related_events as $key => $event) {
 				$user = $users[$event['users_LOGIN']];
 				// Logical combination of events
 				if ($prev_event) {
@@ -5143,7 +5292,8 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function createInstance($instanceSource, $originateCourse) {
+	public static function createInstance($instanceSource, $originateCourse)
+	{
 		if (!($instanceSource instanceof MagesterLesson)) {
 			$instanceSource = new MagesterLesson($instanceSource);
 		}
@@ -5184,10 +5334,11 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function convertArgumentToLessonId($lesson) {
+	public static function convertArgumentToLessonId($lesson)
+	{
 		if ($lesson instanceOf MagesterLesson) {
 			$lesson = $lesson -> lesson['id'];
-		} else if (!eF_checkParameter($lesson, 'id')) {
+		} elseif (!eF_checkParameter($lesson, 'id')) {
 			throw new MagesterLessonException(_INVALIDID, MagesterLessonException :: INVALID_ID);
 		}
 		return $lesson;
@@ -5209,7 +5360,8 @@ class MagesterLesson
 	* @static
 
 	*/
-	public static function convertArgumentToLessonObject($lesson) {
+	public static function convertArgumentToLessonObject($lesson)
+	{
 		if (!($lesson instanceOf MagesterLesson)) {
 			$lesson = new MagesterLesson($lesson);
 		}

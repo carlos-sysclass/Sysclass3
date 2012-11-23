@@ -72,6 +72,7 @@ class PEAR_Installer_Role
         }
         if (!in_array($role, PEAR_Installer_Role::getValidRoles($pkg->getPackageType()))) {
             $a = false;
+
             return $a;
         }
         $a = 'PEAR_Installer_Role_' . ucfirst($role);
@@ -79,6 +80,7 @@ class PEAR_Installer_Role
             require_once str_replace('_', '/', $a) . '.php';
         }
         $b = new $a($config);
+
         return $b;
     }
 
@@ -109,6 +111,7 @@ class PEAR_Installer_Role
                 $ret[$release][] = strtolower(str_replace('PEAR_Installer_Role_', '', $role));
             }
         }
+
         return $ret[$release];
     }
 
@@ -139,6 +142,7 @@ class PEAR_Installer_Role
                 }
             }
         }
+
         return $ret;
     }
 
@@ -169,6 +173,7 @@ class PEAR_Installer_Role
                 }
             }
         }
+
         return $ret;
     }
 
@@ -196,6 +201,7 @@ class PEAR_Installer_Role
                 }
             }
         }
+
         return $ret;
     }
 
@@ -226,7 +232,7 @@ class PEAR_Installer_Role
             return PEAR::raiseError("registerRoles: opendir($dir) failed");
         }
         while ($entry = readdir($dp)) {
-            if ($entry{0} == '.' || substr($entry, -4) != '.xml') {
+            if ($entry {0} == '.' || substr($entry, -4) != '.xml') {
                 continue;
             }
             $class = "PEAR_Installer_Role_".substr($entry, 0, -4);
@@ -247,7 +253,7 @@ class PEAR_Installer_Role
         PEAR_Installer_Role::getInstallableRoles(true);
         PEAR_Installer_Role::getPhpRoles(true);
         PEAR_Installer_Role::getValidRoles('****', true);
+
         return true;
     }
 }
-?>

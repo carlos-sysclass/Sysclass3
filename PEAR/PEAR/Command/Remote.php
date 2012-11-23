@@ -191,7 +191,7 @@ parameter.
         if (PEAR::isError($parsed)) {
             return $this->raiseError('Invalid package name "' . $package . '"');
         }
-        
+
         $channel = $parsed['channel'];
         $this->config->set('default_channel', $channel);
         $chan = $reg->getChannel($channel);
@@ -208,6 +208,7 @@ parameter.
         }
         if (PEAR::isError($info)) {
             $this->config->set('default_channel', $savechannel);
+
             return $this->raiseError($info);
         }
         if (!isset($info['name'])) {
@@ -269,6 +270,7 @@ parameter.
         }
         if (PEAR::isError($available)) {
             $this->config->set('default_channel', $savechannel);
+
             return $this->raiseError($available);
         }
         $i = $j = 0;
@@ -287,6 +289,7 @@ parameter.
         }
         $this->ui->outputData($data, $command);
         $this->config->set('default_channel', $savechannel);
+
         return true;
     }
 
@@ -333,6 +336,7 @@ parameter.
         }
         if (PEAR::isError($available)) {
             $this->config->set('default_channel', $savechannel);
+
             return $this->raiseError('The package list could not be fetched from the remote server. Please try again. (Debug info: "' . $available->getMessage() . '")');
         }
         $data = array(
@@ -351,8 +355,7 @@ parameter.
             if (isset($params[$name])) {
                 $desc .= "\n\n".$info['description'];
             }
-            if (isset($options['mode']))
-            {
+            if (isset($options['mode'])) {
                 if ($options['mode'] == 'installed' && !isset($installed['version'])) {
                     continue;
                 }
@@ -385,6 +388,7 @@ parameter.
         if (isset($options['mode']) && in_array($options['mode'], array('notinstalled', 'upgrades'))) {
             $this->config->set('default_channel', $savechannel);
             $this->ui->outputData($data, $command);
+
             return true;
         }
         foreach ($local_pkgs as $name) {
@@ -400,6 +404,7 @@ parameter.
 
         $this->config->set('default_channel', $savechannel);
         $this->ui->outputData($data, $command);
+
         return true;
     }
 
@@ -437,11 +442,12 @@ parameter.
             $available = $rest->listAll($base, false, false, $package, $summary);
         } else {
             $r = &$this->config->getRemote();
-            $available = $r->call('package.search', $package, $summary, true, 
+            $available = $r->call('package.search', $package, $summary, true,
                 $this->config->get('preferred_state') == 'stable', true);
         }
         if (PEAR::isError($available)) {
             $this->config->set('default_channel', $savechannel);
+
             return $this->raiseError($available);
         }
         if (!$available) {
@@ -477,6 +483,7 @@ parameter.
         }
         $this->ui->outputData($data, $command);
         $this->config->set('default_channel', $channel);
+
         return true;
     }
 
@@ -487,6 +494,7 @@ parameter.
             require_once 'PEAR/Downloader.php';
         }
         $a = &new PEAR_Downloader($this->ui, $options, $this->config);
+
         return $a;
     }
     // {{{ doDownload()
@@ -515,12 +523,14 @@ parameter.
             foreach ($errors as $error) {
                 $this->ui->outputData($error);
             }
+
             return $this->raiseError("$command failed");
         }
         $downloaded = $downloader->getDownloadedPackages();
         foreach ($downloaded as $pkg) {
             $this->ui->outputData("File $pkg[file] downloaded", $command);
         }
+
         return true;
     }
 
@@ -590,6 +600,7 @@ parameter.
             $caption .= ':';
             if (PEAR::isError($latest)) {
                 $this->config->set('default_channel', $savechannel);
+
                 return $latest;
             }
             $data = array(
@@ -597,7 +608,7 @@ parameter.
                 'border' => 1,
                 'headline' => array('Channel', 'Package', 'Local', 'Remote', 'Size'),
                 );
-            foreach ((array)$latest as $pkg => $info) {
+            foreach ((array) $latest as $pkg => $info) {
                 $package = strtolower($pkg);
                 if (!isset($inst[$package])) {
                     // skip packages we don't have installed
@@ -628,6 +639,7 @@ parameter.
             }
         }
         $this->config->set('default_channel', $savechannel);
+
         return true;
     }
 
@@ -674,10 +686,9 @@ parameter.
             $output .= "$num cache entries cleared\n";
         }
         $this->ui->outputData(rtrim($output), $command);
+
         return $num;
     }
 
     // }}}
 }
-
-?>

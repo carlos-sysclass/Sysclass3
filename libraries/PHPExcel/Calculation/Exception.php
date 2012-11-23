@@ -25,7 +25,6 @@
  * @version	1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Calculation_Exception
  *
@@ -33,7 +32,8 @@
  * @package    PHPExcel_Calculation
  * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Calculation_Exception extends Exception {
+class PHPExcel_Calculation_Exception extends Exception
+{
 	/**
 	 * Error handler callback
 	 *
@@ -43,7 +43,8 @@ class PHPExcel_Calculation_Exception extends Exception {
 	 * @param mixed $line
 	 * @param mixed $context
 	 */
-	public static function errorHandlerCallback($code, $string, $file, $line, $context) {
+	public static function errorHandlerCallback($code, $string, $file, $line, $context)
+	{
 		$e = new self($string, $code);
 		$e->line = $line;
 		$e->file = $file;

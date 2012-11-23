@@ -75,6 +75,7 @@ class HTML_QuickForm2_Element_Textarea extends HTML_QuickForm2_Element
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -104,7 +105,7 @@ class HTML_QuickForm2_Element_Textarea extends HTML_QuickForm2_Element
         } else {
             $html = nl2br($value) . self::getOption('linbebreak');
         }
+
         return $html . $this->getPersistentContent();
     }
 }
-?>

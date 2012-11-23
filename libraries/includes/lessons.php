@@ -5,7 +5,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-
 $loadScripts[] = 'includes/lessons';
 
 if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
@@ -100,10 +99,6 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
 
   $lesson -> lesson['course_only'] = 1;
 
-
-
-
-
   $lesson -> persist();
   echo "1";
  } catch (Exception $e) {
@@ -125,7 +120,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
  $form -> addElement('text', 'name', _LESSONNAME, 'class = "inputText"'); //The lesson name, it is required and of type 'text'
  $form -> addRule('name', _THEFIELD.' "'._LESSONNAME.'" '._ISMANDATORY, 'required', null, 'client');
  $form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'noscript');
- if ($GLOBALS['configuration']['onelanguage'] != true){
+ if ($GLOBALS['configuration']['onelanguage'] != true) {
   $form -> addElement('select', 'languages_NAME', _LANGUAGE, MagesterSystem :: getLanguages(true, true)); //Add a language select box to the form
  }
 
@@ -378,14 +373,14 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
              if (in_array($_GET['login'], array_keys($lessonUsers))) {
               $userType != $lessonUsers[$_GET['login']]['role'] ? $editLesson -> setRoles($_GET['login'], $userType) : $editLesson -> archiveLessonUsers($_GET['login']);
              }
-            } else if (isset($_GET['addAll'])) {
+            } elseif (isset($_GET['addAll'])) {
              $userTypes = array();
              isset($_GET['filter']) ? $nonLessonUsers = eF_filterData($nonLessonUsers, $_GET['filter']) : null;
              foreach ($nonLessonUsers as $user) {
               $user['user_types_ID'] ? $userTypes[] = $user['user_types_ID'] : $userTypes[] = $user['basic_user_type'];
              }
              $editLesson -> addUsers(array_keys($nonLessonUsers), $userTypes);
-            } else if (isset($_GET['removeAll'])) {
+            } elseif (isset($_GET['removeAll'])) {
              isset($_GET['filter']) ? $lessonUsers = eF_filterData($lessonUsers, $_GET['filter']) : null;
              $editLesson -> archiveLessonUsers(array_keys($lessonUsers));
             }
@@ -396,17 +391,17 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
            handleAjaxExceptions($e);
           }
          }
-} else if (isset($_GET['lesson_info']) && eF_checkParameter($_GET['lesson_info'], 'id')) {
+} elseif (isset($_GET['lesson_info']) && eF_checkParameter($_GET['lesson_info'], 'id')) {
  /***/
- require_once("lesson_information.php");
-} else if (isset($_GET['lesson_settings']) && eF_checkParameter($_GET['lesson_settings'], 'id')) {
+ require_once 'lesson_information.php';
+} elseif (isset($_GET['lesson_settings']) && eF_checkParameter($_GET['lesson_settings'], 'id')) {
  $currentLesson = new MagesterLesson($_GET['lesson_settings']);
  $smarty -> assign("T_CURRENT_LESSON", $currentLesson);
  $loadScripts[] = 'scriptaculous/scriptaculous';
  //$loadScripts[] = 'scriptaculous/effects';
  $baseUrl = 'ctg=lessons&lesson_settings='.$currentLesson -> lesson['id'];
  $smarty -> assign("T_BASE_URL", $baseUrl);
- require_once "lesson_settings.php";
+ require_once 'lesson_settings.php';
 } else { //The default action is to just print a list with the lessons defined in the system
  //    $filesystem = new FileSystemTree(G_LESSONSPATH, true);
  $form = new HTML_QuickForm("import_lesson_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=lessons", "", null, true); //Build the form
@@ -479,7 +474,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
 
 	         $dataSource = $lessons;
 
-	         include "sorted_table.php";
+	         include 'sorted_table.php';
 
 	         */
          if (isset($_GET['ajax']) && $_GET['ajax'] == 'lessonsTable') {

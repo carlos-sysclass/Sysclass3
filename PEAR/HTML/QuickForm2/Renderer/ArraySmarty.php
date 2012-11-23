@@ -57,12 +57,12 @@ require_once 'HTML/QuickForm2/Renderer/Array.php';
  * The form array structure is the following:
  * <pre>
  * array(
- *   'id'               => form's "id" attribute (string),
- *   'frozen'           => whether the form is frozen (bool),
- *   'attributes'       => attributes for &lt;form&gt; tag (string),
+ *   'id'               => form's "id" attribute (string) ,
+ *   'frozen'           => whether the form is frozen (bool) ,
+ *   'attributes'       => attributes for &lt;form&gt; tag (string) ,
  *   // if form contains required elements:
- *   'required_note'    => note about the required elements (string),
- *   'requirednote'      => note about the required elements (string),
+ *   'required_note'    => note about the required elements (string) ,
+ *   'requirednote'      => note about the required elements (string) ,
  *                           NB: no '_' in the middle
  *                           In old_compat this is a span style="font-size:80%;"
  *                           with the '*' also color:#ff0000;
@@ -94,24 +94,24 @@ require_once 'HTML/QuickForm2/Renderer/Array.php';
  *
  * <pre>
  * array(
- *   'id'        => element id (string),
- *   'name'      => element name (string),
- *   'type'      => type of the element (string),
- *   'frozen'    => whether element is frozen (bool),
+ *   'id'        => element id (string) ,
+ *   'name'      => element name (string) ,
+ *   'type'      => type of the element (string) ,
+ *   'frozen'    => whether element is frozen (bool) ,
  *   // if element has a label:
  *   'label'     => 'label for the element',
  *   // note that if 'static_labels' option is true and element's label is an
  *   // array then there will be several 'label_*' keys corresponding to
  *   // labels' array keys
- *   'required'  => whether element is required (bool),
+ *   'required'  => whether element is required (bool) ,
  *   // if a validation error is present, otherwise this is not set
- *   'error'     => error associated with the element (string),
+ *   'error'     => error associated with the element (string) ,
  *   // if some style was associated with an element:
  *   'style'     => 'some information about element style (e.g. for Smarty)',
  *
  *   // if element is not a Container
  *   'value'     => element value (mixed),
- *   'html'      => HTML for the element (string),
+ *   'html'      => HTML for the element (string) ,
  *
  *   'attribs'          => attributes as an array, this includes what is passed to addElement()
  *   // if element is a Container
@@ -128,7 +128,7 @@ require_once 'HTML/QuickForm2/Renderer/Array.php';
  *     ...
  *     element_N
  *   )
- *   'set_value'  => the 'value' from the attributes array (string). Types radio & checkbox only.
+ *   'set_value'  => the 'value' from the attributes array (string) . Types radio & checkbox only.
  *
  * If the type is 'radio' an element (type = 'radio') is created for each choice that the user has,
  * keyed by the 'id' value. An 'element' will be created having an array elements keyed by
@@ -199,11 +199,11 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
 
         // User specified a key for the renderer array ?
         $data = $element->getData();
-        if(isset($data['SmartyKey'])) {
+        if (isset($data['SmartyKey'])) {
             $ary['SmartyKey'] = $key_val = $data['SmartyKey'];
         }
 
-        if($key_val == '') {
+        if ($key_val == '') {
             $key_val = $ary['id'];
         }
 
@@ -241,9 +241,9 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
         $ary['attribs'] = $element->getAttributes(false);
 
         // Radio buttons record the attribute value
-        if($element->getType() == 'radio' || $element->getType() == 'checkbox') {
+        if ($element->getType() == 'radio' || $element->getType() == 'checkbox') {
             $attribs = $element->getAttributes(false);
-            if(isset($attribs['value'])) {   // Perhaps throw error if not set
+            if (isset($attribs['value'])) {   // Perhaps throw error if not set
                 $ary['set_value'] = $attribs['value'];
             }
         }
@@ -260,7 +260,7 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
      */
     public function startForm(HTML_QuickForm2_Node $form)
     {
-        if($this->options['old_compat']) {
+        if ($this->options['old_compat']) {
             $this->options['group_hiddens'] = true;
         }
 
@@ -271,7 +271,7 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
      * Called at end
      *
      * @param HTML_QuickForm2_Node $form
-     * 
+     *
      * @return void
      */
     public function finishForm(HTML_QuickForm2_Node $form)
@@ -281,7 +281,7 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
         if ($this->hasRequired) {
 
             // Create element 'requirednote' - note no '_'
-            if($this->options['old_compat']) {
+            if ($this->options['old_compat']) {
                 // Old QuickForm had the requirednote styled & a different name:
                 $this->array['requirednote'] = preg_replace('|<em>([^<]+)</em>(.*)|',
                     '<span style="font-size:80%; color:#ff0000;">$1</span><span style="font-size:80%;">$2</span>',
@@ -292,12 +292,12 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
         }
 
         // Create top level elements keyed by form field 'name' or 'id'
-        if(isset($this->array['elements']['0'])) {
+        if (isset($this->array['elements']['0'])) {
             $this->linkToLevelAbove($this->array, $this->array['elements']);
         }
 
         // For compat: it is expected that 'hidden' is a string, not an array:
-        if($this->options['old_compat'] && isset($this->array['hidden']) && is_array($this->array['hidden'])) {
+        if ($this->options['old_compat'] && isset($this->array['hidden']) && is_array($this->array['hidden'])) {
             $this->array['hidden'] = join(' ', $this->array['hidden']);
         }
     }
@@ -318,36 +318,36 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
     {
         $key = $this->options['key_id'] ? 'id' : 'name';
 
-        foreach($elements as &$elem) {
+        foreach ($elements as &$elem) {
             $top_key = $elem[$key];
 
             // If in a group, convert something like inGrp[F4grp][F4_1] to F4_1
             // Don't do if key_id as the value is a straight id.
-            if( !$this->options['key_id'] && $inGroup && $top_key != '') {
-                if(!(preg_match("/\[?([\w_]*)\]?$/i", $top_key, $match))) {
+            if (!$this->options['key_id'] && $inGroup && $top_key != '') {
+                if (!(preg_match("/\[?([\w_]*)\]?$/i", $top_key, $match))) {
                     throw new HTML_QuickForm2_InvalidArgumentException(
                         "linkToLevelAbove can't obtain the name from '$top_key'");
                 }
                 // Allow group with empty field names - makes an array:
-                if($match[1] != '') {   // Don't change for something like field[]
+                if ($match[1] != '') {   // Don't change for something like field[]
                     $top_key = $match[1];
                 }
             }
 
             // Override key for renderer array ?
-            if(isset($elem['SmartyKey'])) {
+            if (isset($elem['SmartyKey'])) {
                 $top_key = $elem['SmartyKey'];
             }
 
             // Radio buttons: several elements with the same name, make an array
-            if(isset($elem['type']) && $elem['type'] == 'radio') {
-                if( ! isset($top[$top_key])) {
+            if (isset($elem['type']) && $elem['type'] == 'radio') {
+                if ( ! isset($top[$top_key])) {
                     $top[$top_key] = array('id' => $top_key, 'type' => 'radio', 'elements' => array());
                 }
                 $top[$top_key][$elem['id']] = &$elem;
 
                 // So that it can be easily found put into 'elements' keyed by the value that it would have:
-                if(isset($elem['set_value'])) {
+                if (isset($elem['set_value'])) {
                     $top[$top_key]['elements'][$elem['set_value']] = &$elem;
                 }
 
@@ -357,29 +357,29 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
                 $name = $fn[1];
                 $index = $fn[2];
 
-                if( ! isset($top[$name])) {
+                if ( ! isset($top[$name])) {
                     $top[$name] = array('id' => $name, 'type' => 'checkbox', 'elements' => array());
                 }
                 $top[$name][$elem['id']] = &$elem;
 
                 // So that it can be easily found put into 'elements' keyed by the value that it would have:
-                if(isset($elem['set_value'])) {
+                if (isset($elem['set_value'])) {
                     $top[$name]['elements'][$index] = &$elem;
                 }
 
             } else {   // Normal field, just link into the level above.
-                if( ! isset($top[$top_key])) {
+                if ( ! isset($top[$top_key])) {
                     $top[$top_key] = &$elem;    // Link into the level above
                 }
             }
 
             // If we have a group link its fields up to this level:
-            if(isset($elem['elements']['0'])) {
+            if (isset($elem['elements']['0'])) {
                 $this->linkToLevelAbove($elem, $elem['elements'], true);
             }
 
             // Link errors to the top level:
-            if(isset($elem['error']) && isset($this->array[$elem['error']])) {
+            if (isset($elem['error']) && isset($this->array[$elem['error']])) {
                 $this->array['errors'][$top_key] = $this->array[$elem['error']];
             }
         }
@@ -387,4 +387,3 @@ class HTML_QuickForm2_Renderer_ArraySmarty extends HTML_QuickForm2_Renderer_Arra
 
     /**#@-*/
 }
-?>

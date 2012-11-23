@@ -23,12 +23,11 @@ $load_editor = true;
      $lessonId = $currentLesson -> lesson['id'];
  }
 
-
  if ($_admin_) {
      $news = news :: getNews(0);
- } else if ($_professor_) {
+ } elseif ($_professor_) {
      $news = news :: getNews(0, true) + news :: getNews($lessonId, false);
- } else if ($_student_) {
+ } elseif ($_student_) {
      $news = news :: getNews(0, true) + news :: getNews($lessonId, true);
  }
  $smarty -> assign("T_NEWS", $news);
@@ -54,5 +53,5 @@ $load_editor = true;
    $smarty -> assign("T_TO_TIMESTAMP", time() + 3600*24*30);
   }
 
-     include("entity.php");
+     include 'entity.php';
  }

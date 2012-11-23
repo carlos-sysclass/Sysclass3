@@ -12,7 +12,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == $tableName) {
  if (!empty($dataSource)) {
   $smarty -> assign("T_DATA_SOURCE", $dataSource);
  }
- 
+
  $smarty -> assign("T_SORTED_TABLE", $tableName);
  if ($benchmark) {
   $benchmark -> set('script');
@@ -26,6 +26,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == $tableName) {
    echo $output;
   }
  }
- 
+
  exit;
 }

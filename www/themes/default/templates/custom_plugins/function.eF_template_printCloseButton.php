@@ -2,8 +2,9 @@
 /**
 * Smarty plugin: eF_template_printCloseButton function
 */
-function smarty_function_eF_template_printCloseButton($params, &$smarty) {
-    if (!isset($params['reload']) || !$params['reload']) {        
+function smarty_function_eF_template_printCloseButton($params, &$smarty)
+{
+    if (!isset($params['reload']) || !$params['reload']) {
         $onclick_str = 'javascript:window.close()';
     } else {
         if (isset($params['page']) && $params['page']) {
@@ -12,11 +13,9 @@ function smarty_function_eF_template_printCloseButton($params, &$smarty) {
             $onclick_str = 'javascript:self.opener.location.reload(); window.close()';
         }
     }
-    
+
     $str = '
             <input class = "flatButton" type = "button" onClick = "'.$onclick_str.'" value = "'._CLOSEWINDOW.'" />';
-    
+
     return $str;
 }
-
-?>

@@ -220,6 +220,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
     function close()
     {
         if ($this->_fileclosed) { // Prevent close() from being called twice.
+
             return true;
         }
         $res = $this->_storeWorkbook();
@@ -227,6 +228,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
             return $this->raiseError($res->getMessage());
         }
         $this->_fileclosed = 1;
+
         return true;
     }
 
@@ -323,8 +325,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         }
 
         // Check that sheetname is <= 31 chars (Excel limit before BIFF8).
-        if ($this->_BIFF_version != 0x0600)
-        {
+        if ($this->_BIFF_version != 0x0600) {
             if (strlen($name) > 31) {
                 return $this->raiseError("Sheetname $name must be <= 31 chars");
             }
@@ -348,6 +349,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $this->_worksheets[$index] = &$worksheet;    // Store ref for iterator
         $this->_sheetnames[$index] = $name;          // Store EXTERNSHEET names
         $this->_parser->setExtSheet($name, $index);  // Register worksheet name with parser
+
         return $worksheet;
     }
 
@@ -364,6 +366,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $format = new Spreadsheet_Excel_Writer_Format($this->_BIFF_version, $this->_xf_index, $properties);
         $this->_xf_index += 1;
         $this->_formats[] = &$format;
+
         return $format;
     }
 
@@ -378,6 +381,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         include_once 'Spreadsheet/Excel/Writer/Validator.php';
         /* FIXME: check for successful inclusion*/
         $valid = new Spreadsheet_Excel_Writer_Validator($this->_parser);
+
         return $valid;
     }
 
@@ -416,6 +420,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
 
         // Set the RGB value
         $this->_palette[$index] = array($red, $green, $blue, 0);
+
         return($index + 8);
     }
 
@@ -556,6 +561,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         if ($this->isError($res)) {
             return $this->raiseError($res->getMessage());
         }
+
         return true;
     }
 
@@ -570,8 +576,10 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
     {
         if (is_dir($dir)) {
             $this->_tmp_dir = $dir;
+
             return true;
         }
+
         return false;
     }
 
@@ -609,6 +617,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         if ($this->isError($res)) {
             return $this->raiseError("OLE Error: ".$res->getMessage());
         }
+
         return true;
     }
 
@@ -665,7 +674,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         // Note: Fonts are 0-indexed. According to the SDK there is no index 4,
         // so the following fonts are 0, 1, 2, 3, 5
         //
-        for ($i = 1; $i <= 5; $i++){
+        for ($i = 1; $i <= 5; $i++) {
             $this->_append($font);
         }
 
@@ -726,7 +735,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
             if (isset($hash_num_formats[$num_format])) {
                 // FORMAT has already been used
                 $this->_formats[$i]->_num_format = $hash_num_formats[$num_format];
-            } else{
+            } else {
                 // Add a new FORMAT
                 $hash_num_formats[$num_format]  = $index;
                 $this->_formats[$i]->_num_format = $index;
@@ -868,9 +877,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         }
     }
 
-
-
-
     /******************************************************************************
     *
     * BIFF RECORDS
@@ -1009,7 +1015,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $this->_append($header . $data);
     }
 
-
     /**
     * Writes Excel FORMAT record for non "built-in" numerical formats.
     *
@@ -1056,7 +1061,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $this->_append($header . $data);
     }
 
-
     /**
     * Write BIFF record EXTERNCOUNT to indicate the number of external sheet
     * references in the workbook.
@@ -1080,7 +1084,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $this->_append($header . $data);
     }
 
-
     /**
     * Writes the Excel BIFF EXTERNSHEET record. These references are used by
     * formulas. NAME record is required to define the print area and the repeat
@@ -1103,7 +1106,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $data        = pack("CC", $cch, $rgch);
         $this->_append($header . $data . $sheetname);
     }
-
 
     /**
     * Store the NAME record in the short format that is used for storing the print
@@ -1167,7 +1169,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $data              .= pack("C", $colmax);
         $this->_append($header . $data);
     }
-
 
     /**
     * Store the NAME record in the long format that is used for storing the repeat
@@ -1477,15 +1478,10 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
             $length = 8;
         }
 
-
-
         // Write the SST block header information
         $header      = pack("vv", $record, $length);
         $data        = pack("VV", $this->_str_total, $this->_str_unique);
         $this->_append($header . $data);
-
-
-
 
         /* TODO: not good for performance */
         foreach (array_keys($this->_str_table) as $string) {
@@ -1499,7 +1495,6 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
             // written out in a single SST or CONTINUE block.
             //
             $block_length += $string_length;
-
 
             // We can write the string if it doesn't cross a CONTINUE boundary
             if ($block_length < $continue_limit) {
@@ -1599,4 +1594,3 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         }
     }
 }
-?>

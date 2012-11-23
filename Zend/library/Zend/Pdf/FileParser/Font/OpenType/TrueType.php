@@ -21,7 +21,6 @@
 /** Zend_Pdf_FileParser_Font_OpenType */
 require_once 'Zend/Pdf/FileParser/Font/OpenType.php';
 
-
 /**
  * Parses an OpenType font file containing TrueType outlines.
  *
@@ -33,7 +32,6 @@ require_once 'Zend/Pdf/FileParser/Font/OpenType.php';
 class Zend_Pdf_FileParser_Font_OpenType_TrueType extends Zend_Pdf_FileParser_Font_OpenType
 {
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 

@@ -59,7 +59,6 @@
 // *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // */
 
-
 /**
  * PHPExcel_Writer_Excel5_BIFFwriter
  *
@@ -118,7 +117,7 @@ class PHPExcel_Writer_Excel5_BIFFwriter
 			$number  = pack("C8", 0x8D, 0x97, 0x6E, 0x12, 0x83, 0xC0, 0xF3, 0x3F);
 			if ($number == $teststr) {
 				$byte_order = 0;    // Little Endian
-			} elseif ($number == strrev($teststr)){
+			} elseif ($number == strrev($teststr)) {
 				$byte_order = 1;    // Big Endian
 			} else {
 				// Give up. I'll fix this in a later version.

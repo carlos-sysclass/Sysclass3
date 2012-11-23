@@ -110,7 +110,8 @@ class MagesterDirection extends ArrayObject
 	 * @access public
 
 	 */
- function __construct($direction) {
+ function __construct($direction)
+ {
   if (!is_array($direction)) {
    if (!eF_checkParameter($direction, 'id')) {
     throw new MagesterLessonException(_INVALIDID.': '.$direction, MagesterDirectionException :: INVALID_ID);
@@ -152,7 +153,8 @@ class MagesterDirection extends ArrayObject
 	 * @access public
 
 	 */
- function persist() {
+ function persist()
+ {
   foreach (new MagesterAttributesOnlyFilterIterator($this -> getIterator()) as $key => $value) {
    $fields[$key] = $value;
   }
@@ -183,7 +185,8 @@ class MagesterDirection extends ArrayObject
 	 * @access public
 
 	 */
- function delete() {
+ function delete()
+ {
   foreach (new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this)), 'id') as $key => $value) {
    eF_deleteTableData("directions", "id=".$value); //Delete Units from database
    eF_updateTableData("lessons", array("directions_ID" => 0), "directions_ID=".$value);
@@ -221,7 +224,8 @@ class MagesterDirection extends ArrayObject
 	 * @access public
 
 	 */
- function getLessons($returnObjects = false, $subDirections = false) {
+ function getLessons($returnObjects = false, $subDirections = false)
+ {
   if (!$subDirections) {
    $result = eF_getTableData("lessons", "id, name", "instance_source = 0 and archive = 0 && directions_ID=".$this['id']);
   } else {
@@ -236,6 +240,7 @@ class MagesterDirection extends ArrayObject
   foreach ($result as $value) {
    $returnObjects ? $lessons[$value['id']] = new MagesterLesson($value['id']) : $lessons[$value['id']] = $value['name'];
   }
+
   return $lessons;
  }
  /**
@@ -269,7 +274,8 @@ class MagesterDirection extends ArrayObject
 	 * @access public
 
 	 */
- function getCourses($returnObjects = false, $subDirections = false) {
+ function getCourses($returnObjects = false, $subDirections = false)
+ {
   if (!$subDirections) {
    $result = eF_getTableData("courses", "id, name", "archive = 0 && instance_source = 0 && directions_ID=".$this['id']);
   } else {
@@ -284,6 +290,7 @@ class MagesterDirection extends ArrayObject
   foreach ($result as $value) {
    $returnObjects ? $courses[$value['id']] = new MagesterCourse($value['id']) : $courses[$value['id']] = $value['name'];
   }
+
   return $courses;
  }
  /**
@@ -317,11 +324,13 @@ class MagesterDirection extends ArrayObject
 	 * @static
 
 	 */
- public static function createDirection($fields = array()) {
+ public static function createDirection($fields = array())
+ {
   !isset($fields['name']) ? $fields['name'] = 'Default direction' : null;
   $newId = eF_insertTableData("directions", $fields);
   $result = eF_getTableData("directions", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
   $direction = new MagesterDirection($result[0]);
+
   return $direction;
  }
  /**
@@ -365,10 +374,12 @@ class MagesterDirection extends ArrayObject
 	 * @static
 
 	 */
- public static function deleteDirection($category) {
+ public static function deleteDirection($category)
+ {
   if (!($category instanceof MagesterDirection)) {
    $category = new MagesterDirection($category);
   }
+
   return $category -> delete();
  }
 }
@@ -406,7 +417,8 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- function __construct() {
+ function __construct()
+ {
   $this -> reset();
  }
  /**
@@ -434,10 +446,12 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- public function reset() {
+ public function reset()
+ {
   $directions = eF_getTableData("directions", "*", "", "name");
   if (sizeof($directions) == 0) {
    $this -> tree = new RecursiveArrayIterator(array());
+
    return;
   }
   foreach ($directions as $node) { //Assign previous direction ids as keys to the previousNodes array, which will be used for sorting afterwards
@@ -492,7 +506,8 @@ class MagesterDirectionsTree extends MagesterTree
 	 *
 
 	 */
- public function reset2() {
+ public function reset2()
+ {
   $directions = eF_getTableData("directions", "*", "", "name");
   $result = eF_getTableData("lessons", "*");
   $lessons = array();
@@ -506,6 +521,7 @@ class MagesterDirectionsTree extends MagesterTree
   }
   if (sizeof($directions) == 0) {
    $this -> tree = new RecursiveArrayIterator(array());
+
    return;
   }
   foreach ($directions as $node) { //Assign previous direction ids as keys to the previousNodes array, which will be used for sorting afterwards
@@ -602,14 +618,16 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- public function getLessonsList($lessons = array()) {
+ public function getLessonsList($lessons = array())
+ {
   $lessonsList = array();
   $iterator = $this -> initializeIterator(false, $lessons, $courses);
   foreach ($iterator as $key => $value) {
-   foreach($value -> offsetGet('lessons') as $id) {
+   foreach ($value -> offsetGet('lessons') as $id) {
     $lessonsList[] = $id;
    }
   }
+
   return $lessonsList;
  }
  /**
@@ -665,7 +683,8 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- public function toHTML($iterator = false, $lessons = false, $courses = false, $userInfo = array(), $options = array()) {
+ public function toHTML($iterator = false, $lessons = false, $courses = false, $userInfo = array(), $options = array())
+ {
   $options = $this -> parseTreeOptions($options);
   $parsedLessons = $this -> parseTreeLessons($lessons);
   $parsedCourses = $this -> parseTreeCourses($courses);
@@ -692,9 +711,11 @@ class MagesterDirectionsTree extends MagesterTree
   if ($options['tree_tools']) {
    $treeString = $this -> printTreeTools($options).$treeString; //This is put at the end, so that $this -> hasLessonsAsStudent is populated
   }
+
   return $treeString;
  }
- private function parseTreeOptions($options) {
+ private function parseTreeOptions($options)
+ {
   //!isset($options['show_cart'])   ? $options['show_cart']   = false : null;
   //!isset($options['information']) ? $options['information'] = false : null;
   !isset($options['lessons_link']) ? $options['lessons_link'] = false : null;
@@ -705,9 +726,11 @@ class MagesterDirectionsTree extends MagesterTree
   !isset($options['tree_tools']) ? $options['tree_tools'] = true : null;
   !isset($options['url']) ? $options['url'] = $_SERVER['REQUEST_URI'] : null; //Pay attention since REQUEST_URI is empty if accessing index.php with the url http://localhost/
   !isset($options['course_lessons']) ? $options['course_lessons'] = true : null;
+
   return $options;
  }
- private function parseTreeLessons($lessons) {
+ private function parseTreeLessons($lessons)
+ {
   if ($lessons === false) { //If a lessons list is not specified, get all active lessons
    $result = eF_getTableData("lessons", "*", "archive = 0 && active=1", "name"); //Get all lessons at once, thus avoiding looping queries
    foreach ($result as $value) {
@@ -736,9 +759,11 @@ class MagesterDirectionsTree extends MagesterTree
    $temp[$key] = $lessons[$key];
   }
   $lessons = $temp;
+
   return $lessons;
  }
- private function parseTreeCourses($courses) {
+ private function parseTreeCourses($courses)
+ {
   if ($courses === false) { //If a courses list is not specified, get all active courses
    $result = eF_getTableData("courses", "*", "archive = 0 && active=1", "name"); //Get all courses at once, thus avoiding looping queries
    foreach ($result as $value) {
@@ -760,18 +785,22 @@ class MagesterDirectionsTree extends MagesterTree
     unset($courses[$key]);
    }
   }
+
   return $courses;
  }
- private function initializeIterator($iterator, $lessons, $courses, $options) {
+ private function initializeIterator($iterator, $lessons, $courses, $options)
+ {
   if (!$iterator) {
    $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST));
   }
   $iterator = $this -> filterOutEmptyCategories($iterator, $lessons, $courses, $options);
   $iterator = new MagesterNodeFilterIterator($iterator, array('hasNodes' => true)); //Filter in only tree nodes that have the 'hasNodes' attribute
   $iterator -> rewind();
+
   return $iterator;
  }
- private function filterOutEmptyCategories($iterator, $lessons, $courses, $options) {
+ private function filterOutEmptyCategories($iterator, $lessons, $courses, $options)
+ {
   $directionsLessons = array();
   foreach ($lessons as $id => $lesson) {
    if ($options['catalog'] && !$lesson -> lesson['show_catalog']) { //Remove inactive lessons
@@ -807,9 +836,11 @@ class MagesterDirectionsTree extends MagesterTree
     }
    }
   }
+
   return $iterator;
  }
- private function printTreeTools($options) {
+ private function printTreeTools($options)
+ {
   if (!isset($_COOKIE['display_all_courses'])) {
    setcookie('display_all_courses', 1);
   }
@@ -833,9 +864,11 @@ class MagesterDirectionsTree extends MagesterTree
      </select>
     </div>';
   }
+
   return $treeString;
  }
- private function printProgressBar($treeLesson, $roleBasicType) {
+ private function printProgressBar($treeLesson, $roleBasicType)
+ {
   $treeString = '';
   if ($roleBasicType == 'student' && $treeLesson -> lesson['completed']) { //Show the "completed" mark
    $treeLesson -> lesson['completed'] ? $icon = 'success' : $icon = 'semi_success';
@@ -864,9 +897,11 @@ class MagesterDirectionsTree extends MagesterTree
   if ($roleBasicType == 'student') {
    $this -> hasLessonsAsStudent = true;
   }
+
   return $treeString;
  }
- private function printLessonBuyLink($treeLesson, $options) {
+ private function printLessonBuyLink($treeLesson, $options)
+ {
   $treeString = '';
   if (isset($options['buy_link']) && $options['buy_link'] && (!isset($treeLesson -> lesson['has_lesson']) || !$treeLesson -> lesson['has_lesson']) && (!isset($treeLesson -> lesson['reached_max_users']) || !$treeLesson -> lesson['reached_max_users']) && (!isset($_SESSION['s_type']) || $_SESSION['s_type'] != 'administrator')) {
    $action = 'addToCart(this, '.$treeLesson -> lesson['id'].', \'lesson\');';
@@ -882,27 +917,35 @@ class MagesterDirectionsTree extends MagesterTree
      '.$image.'
     </span>';
   }
+
   return $treeString;
  }
- private function showLessonPrice($lesson) {
+ private function showLessonPrice($lesson)
+ {
   if ($lesson -> lesson['price']) {
    $lesson -> lesson['price'] ? $priceString = formatPrice($lesson -> lesson['price'], array($lesson -> options['recurring'], $lesson -> options['recurring_duration']), true) : $priceString = false;
+
    return $priceString;
   } else {
    $priceString = _FREELESSON;
+
    return $priceString;
   }
  }
- private function showCoursePrice($course) {
+ private function showCoursePrice($course)
+ {
   if ($course -> course['price']) {
    $course -> course['price'] ? $priceString = formatPrice($course -> course['price'], array($course -> options['recurring'], $course -> options['recurring_duration']), true) : $priceString = false;
+
    return $priceString;
   } else {
    $priceString = _FREECOURSE;
+
    return $priceString;
   }
  }
- private function printCourseLinks($treeCourse, $options, $roleBasicType) {
+ private function printCourseLinks($treeCourse, $options, $roleBasicType)
+ {
   $treeString = '';
   $courseLink = $options['courses_link'];
   $href = str_replace("#user_type#", $roleBasicType, $courseLink).$treeCourse -> shouldDisplayInCatalog();
@@ -948,9 +991,11 @@ class MagesterDirectionsTree extends MagesterTree
    $treeString .= '<a href = "javascript:void(0)" class = "'.$hasInstancesClass.' inactiveLink" title = "'._CONFIRMATIONPEDINGFROMADMIN.'">'.$treeCourse -> course['name'].'</a>';
   }
   $treeString .= $instanceString;
+
   return $treeString;
  }
- private function printLessonLink($treeLesson, $options, $roleBasicType) {
+ private function printLessonLink($treeLesson, $options, $roleBasicType)
+ {
   $treeString = '';
   if (!$roleBasicType || $treeLesson -> lesson['active_in_lesson']) { //active_in_lesson (equals from_timestamp in users_to_lessons) in user status means that the user's status in the lesson is not 'pending'
    $classNames = array();
@@ -967,9 +1012,11 @@ class MagesterDirectionsTree extends MagesterTree
   } else {
    $treeString .= '<a href = "javascript:void(0)" class = "inactiveLink" title = "'._CONFIRMATIONPEDINGFROMADMIN.'">'.$treeLesson -> lesson['name'].'</a>';
   }
+
   return $treeString;
  }
- private function printCategoryTitle($iterator, $display, $imageString, $classString) {
+ private function printCategoryTitle($iterator, $display, $imageString, $classString)
+ {
   $treeString = '';
   $current = $iterator -> current();
   $children = array(); //The $children array is used so that when collapsing a direction, all its children disappear as well
@@ -993,9 +1040,11 @@ class MagesterDirectionsTree extends MagesterTree
        </td>
        <td class = "listTitle"><span class = "listName">'.$current['name'].'</span></td>
       </tr>';
+
   return $treeString;
  }
- private function getTreeDisplaySettings($options) {
+ private function getTreeDisplaySettings($options)
+ {
   if (isset($options['collapse']) && $options['collapse'] == 2) {
    $display = '';
    $display_lessons = 'style = "display:none"';
@@ -1012,14 +1061,16 @@ class MagesterDirectionsTree extends MagesterTree
    $imageString = 'up';
    $classString = ' class = "visible" ';
   }
+
   return array($display, $display_lessons, $imageString, $classString);
  }
- private function printCategoryLessons($iterator, $display_lessons, $options, $lessons) {
+ private function printCategoryLessons($iterator, $display_lessons, $options, $lessons)
+ {
   $roles = MagesterLessonUser :: getLessonsRoles();
   $roleNames = MagesterLessonUser :: getLessonsRoles(true);
   $treeString = $lessonsString = '';
   $current = $iterator -> current();
-  
+
   if (is_array($current -> offsetGet('lessons'))) {
 	  foreach ($current -> offsetGet('lessons') as $lessonId) {
 	   $treeLesson = $lessons[$lessonId];
@@ -1062,9 +1113,11 @@ class MagesterDirectionsTree extends MagesterTree
         </table>
         </td></tr>';
   }
+
   return $treeString;
  }
- private function printCategoryCourses($iterator, $display, $userInfo, $options, $courses, $lessons) {
+ private function printCategoryCourses($iterator, $display, $userInfo, $options, $courses, $lessons)
+ {
   $roles = MagesterLessonUser :: getLessonsRoles();
   $roleNames = MagesterLessonUser :: getLessonsRoles(true);
   $treeString = '';
@@ -1109,6 +1162,7 @@ class MagesterDirectionsTree extends MagesterTree
        </tr>';
    }
   }
+
   return $treeString;
  }
  /* Return an array to be inputed as the contents of a select item or
@@ -1182,7 +1236,8 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- public function toSelect($returnClassedHTML = false, $includeSkillGaps = false, $showQuestions = false, $iterator = false, $lessons = false, $courses = false) {
+ public function toSelect($returnClassedHTML = false, $includeSkillGaps = false, $showQuestions = false, $iterator = false, $lessons = false, $courses = false)
+ {
   if (!$iterator) {
    $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST));
   }
@@ -1318,7 +1373,7 @@ class MagesterDirectionsTree extends MagesterTree
      }
     }
    }
-   foreach($treeArray as $key => $value) {
+   foreach ($treeArray as $key => $value) {
     $extras = " ";
     $htmlString .= '<option';
     if (strpos($key, "direction_") === 0) {
@@ -1333,7 +1388,7 @@ class MagesterDirectionsTree extends MagesterTree
        $extras = ' (0)';
       }
      }
-    } else if (strpos($key, "course_") === 0) {
+    } elseif (strpos($key, "course_") === 0) {
      $course_ID = strrchr($key,"_");
      $htmlString .= ' value = "course'. $course_ID . '" style="background-color:green; color:white"';
      $course_ID = substr($course_ID,1);
@@ -1364,6 +1419,7 @@ class MagesterDirectionsTree extends MagesterTree
    // If no lessons or anything is found, then an empty select or array should be returned
    return $htmlString;
   }
+
   return $treeArray;
  }
  /**
@@ -1395,7 +1451,8 @@ class MagesterDirectionsTree extends MagesterTree
 	 * @access public
 
 	 */
- public function toPathString($includeLeaf = true, $onlyActive = false) {
+ public function toPathString($includeLeaf = true, $onlyActive = false)
+ {
   if ($onlyActive) {
    $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1));
   } else {
@@ -1411,6 +1468,7 @@ class MagesterDirectionsTree extends MagesterTree
    }
    $parentsString[$id] = implode('&nbsp;&rarr;&nbsp;', array_reverse($values));
   }
+
   return $parentsString;
  }
 }

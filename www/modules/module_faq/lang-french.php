@@ -8,7 +8,6 @@ define("_FAQ_MODULE","Module FAQ");//FAQ Module
 define("_FAQ_MAIN","Page principale");//Main page
 define("_FAQ_MANAGEMENT","Gérer les FAQ");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY","FAQ a été mis à jour");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY","FAQ n&#39;a pas pu être mis à jour");//FAQ could not be updated
 define("_FAQ_INSERTFAQ","Insérer entrée de la FAQ");//Insert FAQ entry
@@ -27,4 +26,3 @@ define("_FAQ_CHANGEFAQORDER","FAQ pour le changement");//Change FAQ order
 define("_FAQ_SUCCESFULLYDELETEDFAQENTRY","Supprimé avec succès entrée de la FAQ");//Succesfully deleted FAQ entry
 define("_FAQ_SUCCESFULLYUPDATEDFAQENTRY","Mis à jour la FAQ");//Succesfully updated FAQ entry
 define("_FAQ_PROBLEMUPDATINGFAQENTRY","La FAQ ne peut pas être mis à jour");//The FAQ could not be updated
-?>

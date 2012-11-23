@@ -1,25 +1,29 @@
 <?php
 
-class module_faq extends MagesterModule {
-
-
+class module_faq extends MagesterModule
+{
     // Mandatory functions required for module function
-    public function getName() {
+    public function getName()
+    {
         return _FAQ;
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("professor","student");
     }
 
-	public function isLessonModule() {
+	public function isLessonModule()
+	{
 		return true;
 	}
 
     // Optional functions
     // What should happen on installing the module
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_faq");
+
         return eF_executeNew("CREATE TABLE module_faq (
                           id int(11) NOT NULL auto_increment,
                           lessons_ID int(11) not null,
@@ -31,23 +35,28 @@ class module_faq extends MagesterModule {
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         return eF_executeNew("DROP TABLE module_faq;");
     }
 
     // On deleting a lesson
-    public function onDeleteLesson($lessonId) {
+    public function onDeleteLesson($lessonId)
+    {
         return eF_deleteTableData("module_faq", "lessons_ID=".$lessonId);
     }
 
     // On exporting a lesson
-    public function onExportLesson($lessonId) {
+    public function onExportLesson($lessonId)
+    {
         $data = eF_getTableData("module_faq", "*","lessons_ID=".$lessonId);
+
         return $data;
     }
 
     // On importing a lesson
-    public function onImportLesson($lessonId, $data) {
+    public function onImportLesson($lessonId, $data)
+    {
 //pr($data);
         foreach ($data as $record) {
             unset($record['id']);
@@ -55,10 +64,12 @@ class module_faq extends MagesterModule {
 //            pr($record);
             eF_insertTableData("module_faq",$record);
         }
+
         return true;
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
             return array('title' => 'FAQ',
@@ -67,8 +78,8 @@ class module_faq extends MagesterModule {
         }
     }
 
-
-    public function getSidebarLinkInfo() {
+    public function getSidebarLinkInfo()
+    {
         $link_of_menu_clesson = array (array ('id' => 'other_link_id1',
                                               'title' => _FAQ_LESSONLINK,
                                               'image' => $this -> moduleBaseLink.'images/unknown16',
@@ -78,28 +89,31 @@ class module_faq extends MagesterModule {
         return array ( "current_lesson" => $link_of_menu_clesson);
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
 		$currentLesson = $this -> getCurrentLesson();
+
         return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 						array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getRole($this -> getCurrentLesson()) . ".php?ctg=control_panel"),
                       array ('title' => _FAQ, 'link'  => $this -> moduleBaseUrl));
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return 'other_link_id1';
     }
 
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
-
+    public function getModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
 
         if (isset($_GET['delete_faq']) && eF_checkParameter($_GET['delete_faq'], 'id')) {
             eF_deleteTableData("module_faq", "id=".$_GET['delete_faq']);
             eF_redirect("". $this -> moduleBaseUrl ."&message=".urlencode(_FAQ_SUCCESFULLYDELETEDFAQENTRY)."&message_type=success");
-        } else if (isset($_GET['add_faq']) || (isset($_GET['edit_faq']) && eF_checkParameter($_GET['edit_faq'], 'id'))) {
+        } elseif (isset($_GET['add_faq']) || (isset($_GET['edit_faq']) && eF_checkParameter($_GET['edit_faq'], 'id'))) {
 
             $load_editor = true; //TODO
 
@@ -107,17 +121,16 @@ class module_faq extends MagesterModule {
             $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
             $form -> addElement('textarea', 'question', null, 'class = "simpleEditor" style = "width:100%;height:5em;"');
             $form -> addElement('textarea', 'answer', null, 'class = "simpleEditor" style = "width:100%;height:25em;"');
-			
+
             $currentLesson = $this -> getCurrentLesson();
 			$units = eF_getTableDataFlat("content", "id, name", "lessons_ID = " . $currentLesson -> lesson['id']);
-			
+
 			//$units['id'] = array_merge(array("0"), $units['id']);
 			//$units['name'] = array_merge(array(_FAQ_GENERAL_LESSON), $units['name']);
-			
+
 			sizeof($units) > 0 ? $units = array(0 => _FAQ_GENERAL_LESSON) + array_combine($units['id'], $units['name']) : $units = array("0" => _FAQ_GENERAL_LESSON);
 			$form -> addElement('select', 'related_content',    _CONTENT, $units, 'class = "inputSelectLong"');
-	            
-            
+
             $form -> addElement('submit', 'submit_faq', _SUBMIT, 'class = "flatButton"');
 
             if (isset($_GET['edit_faq'])) {
@@ -129,7 +142,7 @@ class module_faq extends MagesterModule {
 
             if ($form -> isSubmitted() && $form -> validate()) {
                 $fields = array('lessons_ID' => $_SESSION['s_lessons_ID'],
-                				'unit_ID' 	 => $form ->exportValue('related_content'), 
+                				'unit_ID' 	 => $form ->exportValue('related_content'),
                                 'question'   => $form -> exportValue('question'),
                                 'answer'     => $form -> exportValue('answer'));
                 if (isset($_GET['edit_faq'])) {
@@ -165,16 +178,19 @@ class module_faq extends MagesterModule {
 
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_FAQ_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_FAQ_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		 $smarty -> assign("T_FAQ_MODULE_BASELINK" , $this -> moduleBaseLink);
+
         return $this -> moduleBaseDir . "module.tpl";
     }
 
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
@@ -187,16 +203,19 @@ class module_faq extends MagesterModule {
         return true;
     }
 
-    public function getControlPanelSmartyTpl() {
+    public function getControlPanelSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_FAQ_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_FAQ_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		$smarty -> assign("T_FAQ_MODULE_BASELINK" , $this -> moduleBaseLink);
+
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
 
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getControlPanelModule() {
+    public function getControlPanelModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
@@ -210,21 +229,24 @@ class module_faq extends MagesterModule {
 
     }
 
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_FAQ_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_FAQ_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		$smarty -> assign("T_FAQ_MODULE_BASELINK" , $this -> moduleBaseLink);
+
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
-    
+
     /***** Lesson content module pages *******/
-    public function getContentSideInfo() {
+    public function getContentSideInfo()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
 		$currentUnit = $this -> getCurrentUnit();
-    
+
         $faq = eF_getTableData("module_faq", "*", "unit_ID = " . $currentUnit['id']);
         $inner_table_options = array(array('text' => _FAQ_GOTOFAQPAGE,   'image' => $this -> moduleBaseLink."images/redo.png", 'href' => $this -> moduleBaseUrl));
         $smarty -> assign("T_FAQ_INNERTABLE_OPTIONS", $inner_table_options);
@@ -233,14 +255,15 @@ class module_faq extends MagesterModule {
         return true;
     }
 
-    public function getContentSmartyTpl() {
+    public function getContentSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_FAQ_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_FAQ_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		$smarty -> assign("T_FAQ_MODULE_BASELINK" , $this -> moduleBaseLink);
 		$smarty -> assign("T_FAQ_IN_UNIT_CONTENT", true);
+
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
-    }    
-    
+    }
+
 }
-?>

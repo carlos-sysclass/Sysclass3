@@ -14,11 +14,11 @@ $facebook->require_frame();
 $user = $facebook->require_login();
 
 if (isset($_POST['to'])) {
-  $prints_id = (int)$_POST['to'];
+  $prints_id = (int) $_POST['to'];
   $prints = do_step($user, $prints_id);
 } else {
   if (isset($_GET['to'])) {
-    $prints_id = (int)$_GET['to'];
+    $prints_id = (int) $_GET['to'];
   } else {
     $prints_id = $user;
   }

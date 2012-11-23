@@ -18,7 +18,6 @@ if ($GLOBALS['configuration']['disable_calendar'] == 1 || (isset($currentUser ->
  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
-
 $loadScripts[] = 'scriptaculous/controls';
 $loadScripts[] = 'includes/calendar';
 
@@ -42,28 +41,28 @@ if (isset($_GET['ajax'])) {
   if ($_GET['ajax'] == "calendarTable") {
    $dataSource = calendar :: filterCalendarEvents($events, $showInterval, $viewCalendar);
    $tableName = $_GET['ajax'];
-   include("sorted_table.php");
+   include 'sorted_table.php';
    exit;
-  } else if ($_GET['set_default_course']) {
+  } elseif ($_GET['set_default_course']) {
    if ($_SESSION['s_courses_ID']) {
     $course = new MagesterCourse($_SESSION['s_courses_ID']);
     echo json_encode(array('status' => true, 'foreign_ID' => $course -> course['id'], 'name' => $course -> course['name']));
    }
    exit;
-  } else if ($_GET['set_default_lesson']) {
+  } elseif ($_GET['set_default_lesson']) {
    if ($_SESSION['s_lessons_ID']) {
     $lesson = new MagesterLesson($_SESSION['s_lessons_ID']);
     echo json_encode(array('status' => true, 'foreign_ID' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']));
    }
    exit;
-  } else if ($_GET['set_default_group']) {
+  } elseif ($_GET['set_default_group']) {
    $groups = $currentUser -> getGroups();
    if (sizeof($groups) > 0) {
     $group = new MagesterGroup(current($groups));
     echo json_encode(array('status' => true, 'foreign_ID' => $group -> group['id'], 'name' => $group -> group['name']));
    }
    exit;
-  } else if ($_GET['set_default_branch']) {
+  } elseif ($_GET['set_default_branch']) {
    if (sizeof($branches = explode(",", $_SESSION['supervises_branches'])) > 0) {
     $branch = new MagesterBranch($branches[0]);
     echo json_encode(array('status' => true, 'foreign_ID' => $branch -> branch['branch_ID'], 'name' => $branch -> branch['name']));
@@ -75,7 +74,6 @@ if (isset($_GET['ajax'])) {
  }
 }
 
-
 $entityName = 'calendar';
 if ($currentUser -> user['user_type'] == 'administrator') { //admins can edit all events
  $legalValues = array_keys($events);
@@ -83,11 +81,10 @@ if ($currentUser -> user['user_type'] == 'administrator') { //admins can edit al
  $legalValues = array_keys(calendar :: getUserCalendarEvents($currentUser));
 }
 
-include("entity.php");
+include 'entity.php';
 
 $events = calendar :: sortCalendarEventsByTimestamp($events);
 $smarty -> assign("T_SORTED_CALENDAR_EVENTS", $events);
-
 
 $smarty -> assign("T_VIEW_CALENDAR", $viewCalendar);
 

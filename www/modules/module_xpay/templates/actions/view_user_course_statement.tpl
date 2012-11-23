@@ -36,7 +36,7 @@
 					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
 						 	{if $invoice.applied_rules|@count > 0}
 						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
-					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+					 			<div class="hover_tooltip applied_rules" id="applied_rule_{$invoice_index}"> 
 								 	<ul>
 									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
 									 		<li>
@@ -56,31 +56,28 @@
 					 	<td align="center">#filter:currency:{$invoice.valor+$invoice.total_reajuste-$invoice.paid}#</td>
 					 	<td align="center">
 					 		<div>
-					 		{if $invoice.full_price > $invoice.paid || $invoice.full_price == 0}
-							 	{if $T_XPAY_IS_ADMIN}
-									<a 
-										class="form-icon" 
-										href="{$T_XPAY_BASEURL}&action=edit_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-										onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
-										target = "POPUP_FRAME"
-									><img src="images/others/transparent.gif" class="sprite16 sprite16-edit"></a>
-									{if $invoice.full_price > $invoice.paid}
-									<a 
-										class="form-icon" 
-										href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-										onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
-										target = "POPUP_FRAME"
-									><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
+						 		{if $T_XPAY_IS_ADMIN}
+							 		{if $invoice.full_price > $invoice.paid || $invoice.full_price == 0}
+										<a 
+											class="form-icon" 
+											href="{$T_XPAY_BASEURL}&action=edit_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+											onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
+											target = "POPUP_FRAME"
+										><img src="images/others/transparent.gif" class="sprite16 sprite16-edit"></a>
+										{if $invoice.full_price > $invoice.paid}
+											<a 
+												class="form-icon" 
+												href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
+												onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
+												target = "POPUP_FRAME"
+											><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
+										{/if}
 									{/if}
 								{/if}
 								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>
-							{/if}
 							</div>
-					 	
-					 	
-
 					 	</td>
 					 	
 					</tr>
@@ -110,6 +107,7 @@
 	{if $T_XPAY_IS_ADMIN}
 		{eF_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_USER_COURSE_STATEMENT
+			options			= $T_XPAY_BLOCK_OPTIONS
 			data			= $smarty.capture.t_xpay_view_statement
 		}
 	{else}

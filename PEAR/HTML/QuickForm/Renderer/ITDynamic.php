@@ -3,7 +3,7 @@
 
 /**
  * A concrete renderer for HTML_QuickForm, using Integrated Templates.
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -28,15 +28,15 @@ require_once 'HTML/QuickForm/Renderer.php';
 
 /**
  * A concrete renderer for HTML_QuickForm, using Integrated Templates.
- * 
- * This is a "dynamic" renderer, which means that concrete form look 
- * is defined at runtime. This also means that you can define 
+ *
+ * This is a "dynamic" renderer, which means that concrete form look
+ * is defined at runtime. This also means that you can define
  * <b>one</b> template file for <b>all</b> your forms. That template
- * should contain a block for every element 'look' appearing in your 
+ * should contain a block for every element 'look' appearing in your
  * forms and also some special blocks (consult the examples). If a
  * special block is not set for an element, the renderer falls back to
  * a default one.
- * 
+ *
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Alexey Borzov <avb@php.net>
@@ -79,7 +79,7 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
     var $_groupElementIdx = 0;
 
    /**
-    * Blocks to use for different elements  
+    * Blocks to use for different elements
     * @var array
     */
     var $_elementBlocks = array();
@@ -90,7 +90,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
     */
     var $_headerBlock = null;
    /**#@-*/
-
 
    /**
     * Constructor
@@ -103,7 +102,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl = $tpl;
         $this->_tpl->setCurrentBlock('qf_main_loop');
     }
-
 
     function finishForm(&$form)
     {
@@ -123,7 +121,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         // assign javascript validation rules
         $this->_tpl->setVariable('qf_javascript', $form->getValidationScript());
     }
-      
 
     function renderHeader(&$header)
     {
@@ -136,7 +133,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->parse('qf_main_loop');
     }
 
-
     function renderElement(&$element, $required, $error)
     {
         $blockName = $this->_matchBlock($element);
@@ -146,12 +142,12 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
                 if (is_array($this->_groupSeparator)) {
                     $this->_tpl->setVariable('qf_separator', $this->_groupSeparator[($this->_groupElementIdx - 1) % count($this->_groupSeparator)]);
                 } else {
-                    $this->_tpl->setVariable('qf_separator', (string)$this->_groupSeparator);
+                    $this->_tpl->setVariable('qf_separator', (string) $this->_groupSeparator);
                 }
             }
             $this->_groupElementIdx++;
 
-        } elseif(!empty($error)) {
+        } elseif (!empty($error)) {
             // show the error message or keep it for later use
             if ($this->_tpl->blockExists($blockName . '_error')) {
                 $this->_tpl->setVariable('qf_error', $error);
@@ -180,7 +176,7 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         }
         // render extra labels, if any
         if (is_array($labels)) {
-            foreach($labels as $key => $label) {
+            foreach ($labels as $key => $label) {
                 $key = is_int($key)? $key + 2: $key;
                 if ($this->_tpl->blockExists($blockName . '_label_' . $key)) {
                     $this->_tpl->setVariable('qf_label_' . $key, $label);
@@ -190,14 +186,12 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->parse($blockName);
         $this->_tpl->parseCurrentBlock();
     }
-   
 
     function renderHidden(&$element)
     {
         $this->_tpl->setVariable('qf_hidden', $element->toHtml());
         $this->_tpl->parse('qf_hidden_loop');
     }
-
 
     function startGroup(&$group, $required, $error)
     {
@@ -223,7 +217,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->setVariable('qf_group_label', $group->getLabel());
     }
 
-
     function finishGroup(&$group)
     {
         $this->_tpl->parse($this->_matchBlock($group));
@@ -231,14 +224,13 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_tpl->parseCurrentBlock();
     }
 
-
    /**
     * Returns the name of a block to use for element rendering
-    * 
+    *
     * If a name was not explicitly set via setElementBlock(), it tries
     * the names '{prefix}_{element type}' and '{prefix}_{element}', where
     * prefix is either 'qf' or the name of the current group's block
-    * 
+    *
     * @param HTML_QuickForm_element     form element being rendered
     * @access private
     * @return string    block name
@@ -269,7 +261,7 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
 
    /**
     * Sets the block to use for element rendering
-    * 
+    *
     * @param mixed      element name or array ('element name' => 'block name')
     * @param string     block name if $elementName is not an array
     * @access public
@@ -284,7 +276,6 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         }
     }
 
-
    /**
     * Sets the name of a block to use for header rendering
     *
@@ -297,4 +288,3 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         $this->_headerBlock = $blockName;
     }
 }
-?>

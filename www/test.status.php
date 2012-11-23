@@ -28,17 +28,17 @@ unset($doneTests[$currentTest -> test['id']]['average_score']);
 
 $currentDoneTests = $doneTests[$currentTest -> test['id']];
 
-foreach($currentDoneTests as $username => $testStatus) {
+foreach ($currentDoneTests as $username => $testStatus) {
 	$_USERNAME = $username;
-	
-	foreach($testStatus as $testStatusId => $testStatusData) {
+
+	foreach ($testStatus as $testStatusId => $testStatusData) {
 		if (is_numeric($testStatusId)) {
 			$_COMPLETE_TEST_ID = $testStatusId;
 
 			//$completetest60 = new EfrontCompletedTest($currentTest, $_USERNAME);
 			$currentStatus  = $currentTest -> getStatus($_USERNAME, $_COMPLETE_TEST_ID, true);
 			$efrontTest = unserialize($currentStatus['completedTest']['test']);
-			
+
 			if (!$efrontTest) {
 				echo sprintf(
 					"ERRO: unserialize error => USUÁRIO: %s => COMPLETE_TEST_ID: %s <br />",
@@ -53,28 +53,27 @@ foreach($currentDoneTests as $username => $testStatus) {
 				);
 				continue;
 			}
-			
+
 			unset($efrontTest->questions[1038]);
-			
+
 			$score_total = 0;
-			foreach($efrontTest->questions as $id => $question) {
+			foreach ($efrontTest->questions as $id => $question) {
 				$results = $question -> correct();
 		//		echo $id. ' => ' . $results['score'] . ' => ' . $efrontTest -> getQuestionWeight($id) . '<br/>';
 				$score_total += $results['score'] * $efrontTest -> getQuestionWeight($id);
-				 
+
 				$question->score = round($results['score'] * 100, 2);
 			}
 			$score_total > 1 ? $efrontTest -> completedTest['score'] = 100 : $efrontTest -> completedTest['score'] = round($score_total * 100, 2); //Due to roundings, overall score may go slightly above 100. so, truncate it to 100
-			
+
 			$efrontTest->save();
-			
+
 			echo sprintf(
 				"STATUS: TESTE CORRIGIDO! => USUÁRIO: %s => COMPLETE_TEST_ID: %s <br />",
 				$_USERNAME, $_COMPLETE_TEST_ID
 			);
-		}	
+		}
 	}
-	
+
 }
 exit;
-?>

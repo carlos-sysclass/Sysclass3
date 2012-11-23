@@ -9,7 +9,6 @@ define("_REQUEST_ADD_TYPE", "Adicionar tipo de requisição");
 define("_REQUEST_NEW_PROTOCOL", "Solicitar nova requisição");
 define("_REQUEST_LIST_PROTOCOL", "Lista de Protocolos");
 
-
 /*Formulario*/
 define("_MODULE_XREQUEST_NAME", "Requisições");
 define("__XREQUEST_NAME", "Requisições");
@@ -33,7 +32,6 @@ define("__XREQUEST_TYPES_PROTOCOL", "Tipos de Requisições");
 define("__XREQUEST_NEW_STATUS", "Novo tipo de status para as requisições");
 define("__XREQUEST_PROTOCOL", "Requisição");
 
-
 define("__XREQUEST_OPENPROTOCOL", "Requisição aberta com sucesso");
 define("__XREQUEST_ADDNEWREQUEST", "Novo tipo de requisição adicionado");
 define("__XREQUEST_ERROPROTOCOL", "Erro ao abrir Protocolo");
@@ -52,4 +50,3 @@ define("__XREQUEST_VALOR_TYPE", "Preço");
 define("__XREQUEST_EMAIL", "Email");
 define("__XREQUEST_EDIT_DELET", "Editar/Excluir");
 define("_XREQUEST_EDIT_RANGE", "Editar");
-?>

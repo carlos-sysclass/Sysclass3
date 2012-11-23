@@ -4,6 +4,32 @@
 		<form {$T_XPAY_METHOD_FORM.attributes}>
 			{$T_XPAY_METHOD_FORM.hidden}
 			
+			<div style="float: right;">
+				{foreach key="pay_module_key" item="pay_module" from=$T_XPAY_METHODS}
+					<div class="form-field clear" style="float: left; margin-top:3px;" >
+						{if $pay_module.title}
+							<label class="clear" for="textfield">{$pay_module.title}</label>
+						{/if}
+						{foreach key="pay_index" item="pay_method" from=$pay_module.options}
+							{assign var = "input_name"  value = $pay_module_key:$pay_index }
+							{$T_XPAY_METHOD_FORM.pay_methods[$input_name].html}
+						{/foreach}
+					</div>
+				{/foreach}
+				
+				<div style="float: left;">
+					<button class="form-button icon-save" id ="xpay-do-payment-button" type="submit">
+						<img width="29" height="29" src="images/transp.png">
+						{if $T_XPAY_INVOICE_IS_PAID}
+							<span>{$smarty.const.__XPAY_VIEW_COPY}</span>
+						{else}
+							<span>{$smarty.const.__XPAY_DO_PAY}</span>
+						{/if}
+					</button>
+				</div>					
+				
+			</div>
+			
 			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
 			
 			<table class="style1">
@@ -41,7 +67,7 @@
 					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
 						 	{if $invoice.applied_rules|@count > 0}
 						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
-					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+					 			<div class="hover_tooltip applied_rules" id="applied_rule_{$invoice_index}"> 
 								 	<ul>
 									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
 									 		<li>

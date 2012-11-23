@@ -166,8 +166,10 @@ class PEAR_Registry extends PEAR
                     }
                 }
             }
+
             return false;
         }
+
         return is_writeable($this->install_dir);
     }
 
@@ -372,6 +374,7 @@ class PEAR_Registry extends PEAR
         } else {
             $this->_initializeDepDB();
         }
+
         return true;
     }
 
@@ -394,6 +397,7 @@ class PEAR_Registry extends PEAR
             if (!file_exists($this->channelsdir . $ds . 'pear.php.net.reg')) {
                 $this->_initializeChannelDirs();
             }
+
             return $this->_assertStateDir($channel);
         }
         $channelDir = $this->_channelDirectoryName($channel);
@@ -414,6 +418,7 @@ class PEAR_Registry extends PEAR
             return $this->raiseError("could not create directory '" . $channelDir .
                 "', already exists and is not a directory");
         }
+
         return true;
     }
 
@@ -441,7 +446,7 @@ class PEAR_Registry extends PEAR
         } elseif (!is_dir($this->channelsdir)) {
             return $this->raiseError("could not create directory '{$this->channelsdir}" .
                 "', it already exists and is not a directory");
-            
+
         }
         if (!file_exists($this->channelsdir . DIRECTORY_SEPARATOR . '.alias')) {
             if (!$this->hasWriteAccess()) {
@@ -454,8 +459,9 @@ class PEAR_Registry extends PEAR
         } elseif (!is_dir($this->channelsdir . DIRECTORY_SEPARATOR . '.alias')) {
             return $this->raiseError("could not create directory '{$this->channelsdir}" .
                 "/.alias', it already exists and is not a directory");
-            
+
         }
+
         return true;
     }
 
@@ -478,6 +484,7 @@ class PEAR_Registry extends PEAR
             return $this->_channelDirectoryName($channel) . DIRECTORY_SEPARATOR .
                 strtolower($package) . '.reg';
         }
+
         return $this->statedir . DIRECTORY_SEPARATOR . strtolower($package) . '.reg';
     }
 
@@ -496,6 +503,7 @@ class PEAR_Registry extends PEAR
                 $channel = implode('', file($this->_getChannelAliasFileName($channel)));
             }
         }
+
         return $this->channelsdir . DIRECTORY_SEPARATOR . str_replace('/', '_',
             strtolower($channel)) . '.reg';
     }
@@ -531,6 +539,7 @@ class PEAR_Registry extends PEAR
             if ($channel == '__uri') {
                 return '__uri';
             }
+
             return false;
         }
         $channel = strtolower($channel);
@@ -540,7 +549,7 @@ class PEAR_Registry extends PEAR
         } else {
             return $channel;
         }
-    }    
+    }
     // }}}
     // {{{ _getChannelFromAlias()
 
@@ -556,14 +565,16 @@ class PEAR_Registry extends PEAR
             if ($channel == 'pecl.php.net') {
                 return 'pecl';
             }
+
             return false;
         }
         $channel = $this->_getChannel($channel);
         if (PEAR::isError($channel)) {
             return $channel;
         }
+
         return $channel->getAlias();
-    }    
+    }
     // }}}
     // {{{ _channelDirectoryName()
 
@@ -586,6 +597,7 @@ class PEAR_Registry extends PEAR
             if (!$ch) {
                 $ch = $channel;
             }
+
             return $this->statedir . DIRECTORY_SEPARATOR . strtolower('.channel.' .
                 str_replace('/', '_', $ch));
         }
@@ -610,6 +622,7 @@ class PEAR_Registry extends PEAR
         if (!$fp) {
             return null;
         }
+
         return $fp;
     }
 
@@ -640,6 +653,7 @@ class PEAR_Registry extends PEAR
         if (!$fp) {
             return null;
         }
+
         return $fp;
     }
 
@@ -718,6 +732,7 @@ class PEAR_Registry extends PEAR
         $this->filemap_cache = $files;
         fwrite($fp, serialize($files));
         fclose($fp);
+
         return true;
     }
 
@@ -745,6 +760,7 @@ class PEAR_Registry extends PEAR
             return $this->raiseError('PEAR_Registry: invalid filemap data', PEAR_REGISTRY_ERROR_FORMAT, null, null, $data);
         }
         $this->filemap_cache = $tmp;
+
         return true;
     }
 
@@ -794,17 +810,19 @@ class PEAR_Registry extends PEAR
                 return $this->raiseError("could not create lock file" .
                                          (isset($php_errormsg) ? ": " . $php_errormsg : ""));
             }
-            if (!(int)flock($this->lock_fp, $mode)) {
+            if (!(int) flock($this->lock_fp, $mode)) {
                 switch ($mode) {
                     case LOCK_SH: $str = 'shared';    break;
                     case LOCK_EX: $str = 'exclusive'; break;
                     case LOCK_UN: $str = 'unlock';    break;
                     default:      $str = 'unknown';   break;
                 }
+
                 return $this->raiseError("could not acquire $str lock ($this->lockfile)",
                                          PEAR_REGISTRY_ERROR_LOCK);
             }
         }
+
         return true;
     }
 
@@ -818,6 +836,7 @@ class PEAR_Registry extends PEAR
             fclose($this->lock_fp);
         }
         $this->lock_fp = null;
+
         return $ret;
     }
 
@@ -847,6 +866,7 @@ class PEAR_Registry extends PEAR
         if (!$a && $channel == 'pecl.php.net') {
             return true;
         }
+
         return $a;
     }
 
@@ -923,6 +943,7 @@ class PEAR_Registry extends PEAR
         }
         fwrite($fp, serialize($info));
         fclose($fp);
+
         return true;
     }
 
@@ -982,6 +1003,7 @@ class PEAR_Registry extends PEAR
         if (file_exists($file)) {
             $ret = @unlink($file);
         }
+
         return $ret;
     }
 
@@ -1022,12 +1044,14 @@ class PEAR_Registry extends PEAR
                         $ret[$channel][] = $this->_packageInfo($package, null, $channel);
                     }
                 }
+
                 return $ret;
             }
             $ps = $this->_listPackages($channel);
             if (!count($ps)) {
                 return array();
             }
+
             return array_map(array(&$this, '_packageInfo'),
                              $ps, array_fill(0, count($ps), null),
                              array_fill(0, count($ps), $channel));
@@ -1053,6 +1077,7 @@ class PEAR_Registry extends PEAR
         if (isset($data[$key])) {
             return $data[$key];
         }
+
         return null;
     }
 
@@ -1080,6 +1105,7 @@ class PEAR_Registry extends PEAR
         $data = file_get_contents($this->_channelFileName($channel));
         set_magic_quotes_runtime($rt);
         $data = unserialize($data);
+
         return $data;
     }
 
@@ -1113,6 +1139,7 @@ class PEAR_Registry extends PEAR
         if (!in_array('__uri', $channellist)) {
             $channellist[] = '__uri';
         }
+
         return $channellist;
     }
 
@@ -1139,6 +1166,7 @@ class PEAR_Registry extends PEAR
             $pkglist[] = substr($ent, 0, -4);
         }
         closedir($dp);
+
         return $pkglist;
     }
 
@@ -1163,17 +1191,19 @@ class PEAR_Registry extends PEAR
             $pkglist[] = substr($ent, 0, -4);
         }
         closedir($dp);
+
         return $pkglist;
     }
 
     // }}}
-    
+
     function _listAllPackages()
     {
         $ret = array();
         foreach ($this->_listChannels() as $channel) {
             $ret[$channel] = $this->_listPackages($channel);
         }
+
         return $ret;
     }
 
@@ -1199,6 +1229,7 @@ class PEAR_Registry extends PEAR
         if (isset($info['filelist'])) {
             $this->_rebuildFileMap();
         }
+
         return true;
     }
 
@@ -1218,6 +1249,7 @@ class PEAR_Registry extends PEAR
                     }
                 }
             }
+
             return false;
         }
         $channel = $info->getChannel();
@@ -1241,6 +1273,7 @@ class PEAR_Registry extends PEAR
         fwrite($fp, serialize($info));
         $this->_closePackageFile($fp);
         $this->_rebuildFileMap();
+
         return true;
     }
 
@@ -1275,6 +1308,7 @@ class PEAR_Registry extends PEAR
         if (isset($newinfo['filelist'])) {
             $this->_rebuildFileMap();
         }
+
         return true;
     }
 
@@ -1298,6 +1332,7 @@ class PEAR_Registry extends PEAR
         fwrite($fp, serialize($info));
         $this->_closePackageFile($fp);
         $this->_rebuildFileMap();
+
         return true;
     }
 
@@ -1323,6 +1358,7 @@ class PEAR_Registry extends PEAR
         }
         $pkg = &new PEAR_PackageFile($this->_config);
         $pf = &$pkg->fromArray($info);
+
         return $pf;
     }
 
@@ -1352,6 +1388,7 @@ class PEAR_Registry extends PEAR
                 $message = $err['message'] . "\n";
             }
             $ch = PEAR::raiseError($message);
+
             return $ch;
         }
         if ($this->_getChannelFromAlias($channel) == 'pear.php.net') {
@@ -1366,6 +1403,7 @@ class PEAR_Registry extends PEAR
             $pear_channel->setDefaultPEARProtocols();
             $pear_channel->setBaseURL('REST1.0', 'http://pear.php.net/rest/');
             $pear_channel->setBaseURL('REST1.1', 'http://pear.php.net/rest/');
+
             return $pear_channel;
         }
         if ($this->_getChannelFromAlias($channel) == 'pecl.php.net') {
@@ -1381,6 +1419,7 @@ class PEAR_Registry extends PEAR
             $pear_channel->setBaseURL('REST1.0', 'http://pecl.php.net/rest/');
             $pear_channel->setBaseURL('REST1.1', 'http://pecl.php.net/rest/');
             $pear_channel->setValidationPackage('PEAR_Validator_PECL', '1.0');
+
             return $pear_channel;
         }
         if ($this->_getChannelFromAlias($channel) == '__uri') {
@@ -1392,8 +1431,10 @@ class PEAR_Registry extends PEAR
             $private->setName('__uri');
             $private->addFunction('xmlrpc', '1.0', '****');
             $private->setSummary('Pseudo-channel for static packages');
+
             return $private;
         }
+
         return $ch;
     }
 
@@ -1411,6 +1452,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_packageExists($package, $channel);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1430,6 +1472,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_channelExists($channel, $noaliases);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1449,6 +1492,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_isChannelAlias($alias);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1468,6 +1512,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_packageInfo($package, $key, $channel);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1490,6 +1535,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_channelInfo($channel, $noaliases);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1505,6 +1551,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_getChannelFromAlias($channel);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1518,6 +1565,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_getAlias($channel);
         $this->_unlock();
+
         return $ret;
     }
     // {{{ listPackages()
@@ -1529,6 +1577,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_listPackages($channel);
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1542,6 +1591,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_listAllPackages();
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1555,6 +1605,7 @@ class PEAR_Registry extends PEAR
         }
         $ret = $this->_listChannels();
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1588,6 +1639,7 @@ class PEAR_Registry extends PEAR
             $this->_dependencyDB->uninstallPackage($pf);
             $this->_dependencyDB->installPackage($pf);
         }
+
         return $ret;
     }
 
@@ -1608,6 +1660,7 @@ class PEAR_Registry extends PEAR
             $this->_dependencyDB->uninstallPackage($info);
             $this->_dependencyDB->installPackage($info);
         }
+
         return $ret;
     }
 
@@ -1623,6 +1676,7 @@ class PEAR_Registry extends PEAR
         if ($channel->getName() == '__uri') {
             return false;
         }
+
         return $this->addChannel($channel, $lastmodified, true);
     }
 
@@ -1644,6 +1698,7 @@ class PEAR_Registry extends PEAR
         if ($ret && is_a($this->_config, 'PEAR_Config')) {
             $this->_config->setChannels($this->listChannels());
         }
+
         return $ret;
     }
 
@@ -1671,6 +1726,7 @@ class PEAR_Registry extends PEAR
         if (!$update && $ret && is_a($this->_config, 'PEAR_Config')) {
             $this->_config->setChannels($this->listChannels());
         }
+
         return $ret;
     }
 
@@ -1692,6 +1748,7 @@ class PEAR_Registry extends PEAR
         $this->_unlock();
         $p = array('channel' => $channel, 'package' => $package);
         $this->_dependencyDB->uninstallPackage($p);
+
         return $ret;
     }
 
@@ -1718,6 +1775,7 @@ class PEAR_Registry extends PEAR
             $this->_dependencyDB->uninstallPackage($pf);
             $this->_dependencyDB->installPackage($pf);
         }
+
         return $ret;
     }
 
@@ -1741,6 +1799,7 @@ class PEAR_Registry extends PEAR
             $this->_dependencyDB->uninstallPackage($info);
             $this->_dependencyDB->installPackage($info);
         }
+
         return $ret;
     }
 
@@ -1761,6 +1820,7 @@ class PEAR_Registry extends PEAR
             return PEAR::raiseError('Unknown channel: ' . $channel);
         }
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1778,6 +1838,7 @@ class PEAR_Registry extends PEAR
         }
         $pf = &$this->_getPackage($package, $channel);
         $this->_unlock();
+
         return $pf;
     }
 
@@ -1823,6 +1884,7 @@ class PEAR_Registry extends PEAR
         if (!count($ret)) {
             return false;
         }
+
         return $ret;
     }
 
@@ -1838,6 +1900,7 @@ class PEAR_Registry extends PEAR
             return $chan;
         }
         $val = $chan->getValidationObject();
+
         return $val;
     }
     // }}}
@@ -1860,6 +1923,7 @@ class PEAR_Registry extends PEAR
             $ret[] = $e;
         }
         $this->_unlock();
+
         return $ret;
     }
 
@@ -1914,6 +1978,7 @@ class PEAR_Registry extends PEAR
                     return $pkgs[$name];
                 }
             }
+
             return array_filter($pkgs, $notempty);
         }
         if (empty($this->filemap_cache)) {
@@ -1933,6 +1998,7 @@ class PEAR_Registry extends PEAR
             if ($api >= '1.1' && $this->filemap_cache[$attrs['role']][$path] == $package) {
                 return false;
             }
+
             return $this->filemap_cache[$attrs['role']][$path];
         }
         $l = strlen($this->install_dir);
@@ -1943,8 +2009,10 @@ class PEAR_Registry extends PEAR
             if ($api >= '1.1' && $this->filemap_cache[$attrs['role']][$path] == $package) {
                 return false;
             }
+
             return $this->filemap_cache[$attrs['role']][$path];
         }
+
         return false;
     }
 
@@ -1972,7 +2040,6 @@ class PEAR_Registry extends PEAR
         return '1.1';
     }
     // }}}
-
 
     /**
      * Parse a package name, or validate a parsed package name array
@@ -2012,7 +2079,7 @@ class PEAR_Registry extends PEAR
                 if ($components['scheme'] == 'http') {
                     // uri package
                     $param = array('uri' => $param, 'channel' => '__uri');
-                } elseif($components['scheme'] != 'channel') {
+                } elseif ($components['scheme'] != 'channel') {
                     return PEAR::raiseError('parsePackageName(): only channel:// uris may ' .
                         'be downloaded, not "' . $param . '"', 'invalid', null, null, $param);
                 }
@@ -2149,9 +2216,10 @@ class PEAR_Registry extends PEAR
                     return PEAR::raiseError('parsePackageName(): "' . $param['version'] .
                         '" is neither a valid version nor a valid state in "' .
                         $saveparam . '"', 'version/state', null, null, $param);
-                }                    
+                }
             }
         }
+
         return $param;
     }
 
@@ -2207,8 +2275,7 @@ class PEAR_Registry extends PEAR
         if (isset($parsed['group'])) {
             $ret .= '#' . $parsed['group'];
         }
+
         return $ret;
     }
 }
-
-?>

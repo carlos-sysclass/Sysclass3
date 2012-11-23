@@ -12,7 +12,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -21,24 +21,21 @@
  * @version    $Id: Abstract.php 12395 2008-11-07 23:58:38Z nico $
  */
 
-
 /**
  * @see Zend_Validate
  */
 require_once 'Zend/Validate.php';
-
 
 /**
  * @see Zend_Validate_Hostname
  */
 require_once 'Zend/Validate/Hostname.php';
 
-
 /**
  * Zend_Mail_Protocol_Abstract
  *
  * Provides low-level methods for concrete adapters to communicate with a remote mail server and track requests and responses.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -54,12 +51,10 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     const EOL = "\r\n";
 
-
     /**
      * Default timeout in seconds for initiating session
      */
     const TIMEOUT_CONNECTION = 30;
-
 
     /**
      * Hostname or IP address of remote server
@@ -67,13 +62,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_host;
 
-
     /**
      * Port number of connection
      * @var integer
      */
     protected $_port;
-
 
     /**
      * Instance of Zend_Validate to check hostnames
@@ -81,13 +74,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_validHost;
 
-
     /**
      * Socket connection resource
      * @var resource
      */
     protected $_socket;
-
 
     /**
      * Last request sent to server
@@ -95,13 +86,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_request;
 
-
     /**
      * Array of server responses to last request
      * @var array
      */
     protected $_response;
-
 
     /**
      * String template for parsing server responses using sscanf (default: 3 digit code and response string)
@@ -109,13 +98,11 @@ abstract class Zend_Mail_Protocol_Abstract
      */
     protected $_template = '%d%s';
 
-
     /**
      * Log of mail requests and server responses for a session
      * @var string
      */
     private $_log;
-
 
     /**
      * Constructor.
@@ -142,7 +129,6 @@ abstract class Zend_Mail_Protocol_Abstract
         $this->_port = $port;
     }
 
-
     /**
      * Class destructor to cleanup open resources
      *
@@ -153,14 +139,12 @@ abstract class Zend_Mail_Protocol_Abstract
         $this->_disconnect();
     }
 
-
     /**
      * Create a connection to the remote host
      *
      * Concrete adapters for this class will implement their own unique connect scripts, using the _connect() method to create the socket resource.
      */
     abstract public function connect();
-
 
     /**
      * Retrieve the last client request
@@ -172,7 +156,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $this->_request;
     }
 
-
     /**
      * Retrieve the last server response
      *
@@ -182,7 +165,6 @@ abstract class Zend_Mail_Protocol_Abstract
     {
         return $this->_response;
     }
-
 
     /**
      * Retrieve the transaction log
@@ -194,7 +176,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $this->_log;
     }
 
-
     /**
      * Reset the transaction log
      *
@@ -204,7 +185,6 @@ abstract class Zend_Mail_Protocol_Abstract
     {
         $this->_log = '';
     }
-
 
     /**
      * Connect to the server using the supplied transport and target
@@ -245,7 +225,6 @@ abstract class Zend_Mail_Protocol_Abstract
         return $result;
     }
 
-
     /**
      * Disconnect from remote host and free resource
      *
@@ -257,7 +236,6 @@ abstract class Zend_Mail_Protocol_Abstract
             fclose($this->_socket);
         }
     }
-
 
     /**
      * Send the given request followed by a LINEEND to the server.
@@ -293,7 +271,6 @@ abstract class Zend_Mail_Protocol_Abstract
 
         return $result;
     }
-
 
     /**
      * Get a line from the stream.
@@ -344,7 +321,6 @@ abstract class Zend_Mail_Protocol_Abstract
 
         return $reponse;
     }
-
 
     /**
      * Parse server response for successful codes

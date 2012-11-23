@@ -49,7 +49,6 @@
 // *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // */
 
-
 /**
  * PHPExcel_Writer_Excel5_Parser
  *
@@ -553,8 +552,7 @@ class PHPExcel_Writer_Excel5_Parser
 		    return $this->_convertError($token);
 
 		// commented so argument number can be processed correctly. See toReversePolish().
-		/*elseif (preg_match("/[A-Z0-9\xc0-\xdc\.]+/",$token))
-		{
+		/*elseif (preg_match("/[A-Z0-9\xc0-\xdc\.]+/",$token)) {
 			return($this->_convertFunction($token,$this->_func_args));
 		}*/
 
@@ -1091,7 +1089,7 @@ class PHPExcel_Writer_Excel5_Parser
 	 */
 	function _match($token)
 	{
-		switch($token) {
+		switch ($token) {
 			case "+":
 			case "-":
 			case "*":
@@ -1171,23 +1169,20 @@ class PHPExcel_Writer_Excel5_Parser
 					return $token;
 				}
 				// If it's a string (of maximum 255 characters)
-				elseif (preg_match("/\"([^\"]|\"\"){0,255}\"/",$token) and $this->_lookahead != '"' and (substr_count($token, '"')%2 == 0))
-				{
+				elseif (preg_match("/\"([^\"]|\"\"){0,255}\"/",$token) and $this->_lookahead != '"' and (substr_count($token, '"')%2 == 0)) {
 					return $token;
 				}
 			    // If it's an error code
-			    elseif (preg_match("/^#[A-Z0\/]{3,5}[!?]{1}$/", $token) or $token == '#N/A')
-			    {
+			    elseif (preg_match("/^#[A-Z0\/]{3,5}[!?]{1}$/", $token) or $token == '#N/A') {
 			        return $token;
 			    }
 				// if it's a function call
-				elseif (preg_match("/^[A-Z0-9\xc0-\xdc\.]+$/i",$token) and ($this->_lookahead == "("))
-				{
+				elseif (preg_match("/^[A-Z0-9\xc0-\xdc\.]+$/i",$token) and ($this->_lookahead == "(")) {
 					return $token;
 				}
 				//	It's an argument of some description (e.g. a named range),
 				//		precise nature yet to be determined
-				elseif(substr($token,-1) == ')') {
+				elseif (substr($token,-1) == ')') {
 					return $token;
 				}
 				return '';
@@ -1275,7 +1270,7 @@ class PHPExcel_Writer_Excel5_Parser
 			$this->_advance();
 			return $result;
         // If it's an error code
-        } elseif (preg_match("/^#[A-Z0\/]{3,5}[!?]{1}$/", $this->_current_token) or $this->_current_token == '#N/A'){
+        } elseif (preg_match("/^#[A-Z0\/]{3,5}[!?]{1}$/", $this->_current_token) or $this->_current_token == '#N/A') {
 		    $result = $this->_createTree($this->_current_token, 'ptgErr', '');
 		    $this->_advance();
 		    return $result;
@@ -1379,22 +1374,19 @@ class PHPExcel_Writer_Excel5_Parser
 			return $result;
 		}
 		// if it's a reference
-		if (preg_match('/^\$?[A-Ia-i]?[A-Za-z]\$?[0-9]+$/',$this->_current_token))
-		{
+		if (preg_match('/^\$?[A-Ia-i]?[A-Za-z]\$?[0-9]+$/',$this->_current_token)) {
 			$result = $this->_createTree($this->_current_token, '', '');
 			$this->_advance();
 			return $result;
 		}
 		// If it's an external reference (Sheet1!A1 or Sheet1:Sheet2!A1 or Sheet1!$A$1 or Sheet1:Sheet2!$A$1)
-		elseif (preg_match("/^" . self::REGEX_SHEET_TITLE_UNQUOTED . "(\:" . self::REGEX_SHEET_TITLE_UNQUOTED . ")?\!\\$?[A-Ia-i]?[A-Za-z]\\$?[0-9]+$/u",$this->_current_token))
-		{
+		elseif (preg_match("/^" . self::REGEX_SHEET_TITLE_UNQUOTED . "(\:" . self::REGEX_SHEET_TITLE_UNQUOTED . ")?\!\\$?[A-Ia-i]?[A-Za-z]\\$?[0-9]+$/u",$this->_current_token)) {
 			$result = $this->_createTree($this->_current_token, '', '');
 			$this->_advance();
 			return $result;
 		}
 		// If it's an external reference ('Sheet1'!A1 or 'Sheet1:Sheet2'!A1 or 'Sheet1'!$A$1 or 'Sheet1:Sheet2'!$A$1)
-		elseif (preg_match("/^'" . self::REGEX_SHEET_TITLE_QUOTED . "(\:" . self::REGEX_SHEET_TITLE_QUOTED . ")?'\!\\$?[A-Ia-i]?[A-Za-z]\\$?[0-9]+$/u",$this->_current_token))
-		{
+		elseif (preg_match("/^'" . self::REGEX_SHEET_TITLE_QUOTED . "(\:" . self::REGEX_SHEET_TITLE_QUOTED . ")?'\!\\$?[A-Ia-i]?[A-Za-z]\\$?[0-9]+$/u",$this->_current_token)) {
 			$result = $this->_createTree($this->_current_token, '', '');
 			$this->_advance();
 			return $result;
@@ -1409,8 +1401,7 @@ class PHPExcel_Writer_Excel5_Parser
 			return $result;
 		}
 		// If it's an external range (Sheet1!A1:B2 or Sheet1:Sheet2!A1:B2 or Sheet1!$A$1:$B$2 or Sheet1:Sheet2!$A$1:$B$2)
-		elseif (preg_match("/^" . self::REGEX_SHEET_TITLE_UNQUOTED . "(\:" . self::REGEX_SHEET_TITLE_UNQUOTED . ")?\!\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+:\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+$/u",$this->_current_token))
-		{
+		elseif (preg_match("/^" . self::REGEX_SHEET_TITLE_UNQUOTED . "(\:" . self::REGEX_SHEET_TITLE_UNQUOTED . ")?\!\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+:\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+$/u",$this->_current_token)) {
 			// must be an error?
 			//$result = $this->_current_token;
 			$result = $this->_createTree($this->_current_token, '', '');
@@ -1418,8 +1409,7 @@ class PHPExcel_Writer_Excel5_Parser
 			return $result;
 		}
 		// If it's an external range ('Sheet1'!A1:B2 or 'Sheet1'!A1:B2 or 'Sheet1'!$A$1:$B$2 or 'Sheet1'!$A$1:$B$2)
-		elseif (preg_match("/^'" . self::REGEX_SHEET_TITLE_QUOTED . "(\:" . self::REGEX_SHEET_TITLE_QUOTED . ")?'\!\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+:\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+$/u",$this->_current_token))
-		{
+		elseif (preg_match("/^'" . self::REGEX_SHEET_TITLE_QUOTED . "(\:" . self::REGEX_SHEET_TITLE_QUOTED . ")?'\!\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+:\\$?([A-Ia-i]?[A-Za-z])?\\$?[0-9]+$/u",$this->_current_token)) {
 			// must be an error?
 			//$result = $this->_current_token;
 			$result = $this->_createTree($this->_current_token, '', '');
@@ -1427,9 +1417,8 @@ class PHPExcel_Writer_Excel5_Parser
 			return $result;
 		}
 		// If it's a number or a percent
-		elseif (is_numeric($this->_current_token))
-		{
-		    if($this->_lookahead == '%'){
+		elseif (is_numeric($this->_current_token)) {
+		    if ($this->_lookahead == '%') {
 		        $result = $this->_createTree('ptgPercent', $this->_current_token, '');
 		    } else {
 		        $result = $this->_createTree($this->_current_token, '', '');
@@ -1438,8 +1427,7 @@ class PHPExcel_Writer_Excel5_Parser
 		    return $result;
 		}
 		// if it's a function call
-		elseif (preg_match("/^[A-Z0-9\xc0-\xdc\.]+$/i",$this->_current_token))
-		{
+		elseif (preg_match("/^[A-Z0-9\xc0-\xdc\.]+$/i",$this->_current_token)) {
 			$result = $this->_func();
 			return $result;
 		}

@@ -55,7 +55,6 @@ require_once 'PEAR/Config.php';
 require_once 'PEAR/Command.php';
 require_once 'Console/Getopt.php';
 
-
 PEAR_Command::setFrontendType('CLI');
 $all_commands = PEAR_Command::getCommands();
 
@@ -376,6 +375,7 @@ function cmdHelp($command)
         foreach ($sc as $s => $c) {
             $ret .= sprintf("     %-8s %s\n", $s, $c);
         }
+
         return $ret;
 
     } elseif ($command == "version") {
@@ -394,12 +394,14 @@ function cmdHelp($command)
             return "$progname $command [options] $help[0]\n$help[1]";
         }
     }
+
     return "Command '$command' is not valid, try '$progname help'";
 }
 
 // }}}
 
-function error_handler($errno, $errmsg, $file, $line, $vars) {
+function error_handler($errno, $errmsg, $file, $line, $vars)
+{
     if ((defined('E_STRICT') && $errno & E_STRICT) || (defined('E_DEPRECATED') &&
           $errno & E_DEPRECATED) || !error_reporting()) {
         if (defined('E_STRICT') && $errno & E_STRICT) {
@@ -433,9 +435,9 @@ function error_handler($errno, $errmsg, $file, $line, $vars) {
         $file = basename($file);
     }
     print "\n$prefix: $errmsg in $file on line $line\n";
+
     return false;
 }
-
 
 /*
  * Local variables:
@@ -446,5 +448,3 @@ function error_handler($errno, $errmsg, $file, $line, $vars) {
  * End:
  */
 // vim600:syn=php
-
-?>

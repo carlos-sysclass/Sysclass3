@@ -133,7 +133,7 @@ class MagesterEvent
 	const NEW_POST_FOR_LESSON_TIMELINE_TOPIC = 34; // users_LOGIN, lessons_ID, lessons_name, entity_ID (=topics_ID), entity_name (=array("id" => post id, "data" => post text)
     const DELETE_POST_FROM_LESSON_TIMELINE = 35; // users_LOGIN, lessons_ID, lessons_name, entity_ID (=topics_ID), entity_name (=topic_title)
 	const NEW_FORUM_MESSAGE_POST = 38; // users_LOGIN, lessons_ID, lessons_name, entity_ID (=forum_ID), entity_name (=forum name)
-  
+
     // Personal information codes: [150-174]
     const STATUS_CHANGE = 150; // users_LOGIN, entity_name (=new status)
     const AVATAR_CHANGE = 151; // users_LOGIN, entity_id (=new img file id)
@@ -213,7 +213,8 @@ class MagesterEvent
      * @access public
 
      */
-    function __construct($event) {
+    function __construct($event)
+    {
         if (is_array($event)) {
             $this -> event = $event;
         } else {
@@ -255,7 +256,8 @@ class MagesterEvent
 
      */
     private static $system_events = false;
-    public static function getEventTypes($get_module_events = false) {
+    public static function getEventTypes($get_module_events = false)
+    {
      if (!isset($system_events) || !$system_events) {
       $system_events = array(MagesterEvent::SYSTEM_JOIN => array("text" => _SYSTEMJOIN, "category" => "system", "priority" => 1, "afterEvent" => 1),
              MagesterEvent::SYSTEM_REMOVAL => array("text" => _SYSTEM_REMOVAL, "category" => "system"),
@@ -315,6 +317,7 @@ class MagesterEvent
           );
 //2222222222222222222222222
      }
+
      return $system_events;
     }
     /**
@@ -346,7 +349,8 @@ class MagesterEvent
      * @access public
 
      */
-    public function getLessons($returnObjects = false) {
+    public function getLessons($returnObjects = false)
+    {
         if ($this -> lessons == false) {
             $result = eF_getTableData("lessons_to_events lc, lessons l", "lc.previous_lessons_ID, l.*", "l.id=lc.lessons_ID and events_ID=".$this -> event['id']);
             if (sizeof($result) > 0) {
@@ -379,6 +383,7 @@ class MagesterEvent
             foreach ($this -> lessons as $key => $lesson) {
                 $lessons[$key] = new MagesterLesson($lesson['id']);
             }
+
             return $lessons;
         } else {
             return $this -> lessons;
@@ -421,7 +426,8 @@ class MagesterEvent
      * @access public
 
      */
-    public static function getEvents($login, $returnObjects = false, $max = false) {
+    public static function getEvents($login, $returnObjects = false, $max = false)
+    {
      if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_EVENTS == 0) {
       return array();
      }
@@ -439,6 +445,7 @@ class MagesterEvent
             foreach ($events as $event) {
                 $eventObjects[] = new MagesterEvent($event);
             }
+
             return $eventObjects;
         } else {
             return $events;
@@ -469,7 +476,8 @@ class MagesterEvent
      * @static
 
      */
-    public static function getEventsForAllUsers($returnObjects = false, $max = false) {
+    public static function getEventsForAllUsers($returnObjects = false, $max = false)
+    {
      if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_EVENTS == 0) {
       return array();
      }
@@ -484,6 +492,7 @@ class MagesterEvent
             foreach ($events as $event) {
                 $eventObjects[] = new MagesterEvent($event);
             }
+
             return $eventObjects;
         } else {
             return $events;
@@ -522,7 +531,8 @@ class MagesterEvent
      * @access public
 
      */
- public static function getForumEvents($login, $returnObjects = false, $max = false) {
+ public static function getForumEvents($login, $returnObjects = false, $max = false)
+ {
      if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_EVENTS == 0) {
       return array();
      }
@@ -541,6 +551,7 @@ class MagesterEvent
             foreach ($events as $event) {
                 $eventObjects[] = new MagesterEvent($event);
             }
+
             return $eventObjects;
         } else {
             return $events;
@@ -581,7 +592,8 @@ class MagesterEvent
      * @access public
 
      */
-    public static function triggerEvent($fields, $send_notification = true) {
+    public static function triggerEvent($fields, $send_notification = true)
+    {
   // Check and create all necessary fields
         if (!isset($fields['type'])) {
             throw new MagesterEventException(_NOEVENTCODEDEFINED, MagesterEventException::NOEVENTCODE_DEFINED);
@@ -678,14 +690,15 @@ class MagesterEvent
      // By default all notifications will be sent
      if ($send_notification) {
       $event = new MagesterEvent($fields); // this should create an event instance for our class
-      
+
       $event -> appendNewNotification($event_types); // append this notification to the email queue
      }
     }
-    
-    
+
+
     // Substitute templates in message body/subject of emails
-    private function createSubstitutionsArray($event_types, $send_recipients) {
+    private function createSubstitutionsArray($event_types, $send_recipients)
+    {
      if ($this -> event['timestamp'] != "") {
          $timestamp = $this -> event['timestamp'];
      } else {
@@ -723,7 +736,7 @@ class MagesterEvent
       // the $this -> event['lessons_name'] might refer to courses or lessons according to the category
       if ($type['category'] == "courses") {
        $subst_array['courses_name'] = $this -> event['lessons_name'];
-      } else if ($type['category'] == 'payments') {
+      } elseif ($type['category'] == 'payments') {
        $subst_array['lessons_name'] = $this -> event['lessons_name'];
       } else {
        if ($this -> event['lessons_ID'] == 0) {
@@ -775,6 +788,7 @@ class MagesterEvent
      } else {
       throw new MagesterEventException(_EVENTDOESNOTEXIST, MagesterEventException :: EVENT_NOT_EXISTS);
      }
+
      return $subst_array;
     }
     /*
@@ -794,7 +808,8 @@ class MagesterEvent
      * 					when an event VISITED is used (*** and vice versa ***)
 
      */
-    public function appendNewNotification($event_types, $replace_notification = false, $create_negative = true) {
+    public function appendNewNotification($event_types, $replace_notification = false, $create_negative = true)
+    {
      if ($create_negative) {
          // Get all (positive and negative) notifications stored for this event (more than one are possible for each event)
          $event_notifications = eF_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this -> event['type'] ."' OR event_type = '".(-1) * $this -> event['type'] ."')");
@@ -802,7 +817,7 @@ class MagesterEvent
          // Get all notifications stored for exactly this event (only positive or negative though more than one are possible for each event)
         $event_notifications = eF_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this -> event['type'] ."')");
      }
-     
+
   if (sizeof($event_notifications)) {
    // Form each one and append it to the notifications queue
       $notifications_to_send = array();
@@ -825,7 +840,7 @@ class MagesterEvent
         // Set type - entity field: denoting the type of the event ."_". the ID of the involved entity (lesson, test, forum etc)
 		if ($this -> event['entity_ID']) {
          $event_notification['id_type_entity'] = $event_notification['id'] . "_" . $event_notification['event_type'] . "_" . $this -> event['entity_ID'];
-        } else if ($this -> event['lessons_ID']) {
+        } elseif ($this -> event['lessons_ID']) {
          $event_notification['id_type_entity'] = $event_notification['id'] . "_" . $event_notification['event_type'] . "_" . $this -> event['lessons_ID'];
         } else {
          $event_notification['id_type_entity'] = $event_notification['id'] . "_" . $event_notification['event_type'] . "_";
@@ -840,31 +855,31 @@ class MagesterEvent
         if ($event_notification['send_recipients'] == MagesterNotification::TRIGGERINGUSER) {
          $event_notification['send_conditions'] = "";
          $event_notification['recipient'] = $this -> event['users_LOGIN'];
-        } else if ($event_notification['send_recipients'] == MagesterNotification::ALLSYSTEMUSERS) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::ALLSYSTEMUSERS) {
          $event_notification['send_conditions'] = "N;";
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::SYSTEMADMINISTRATOR) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::SYSTEMADMINISTRATOR) {
          $event_notification['send_conditions'] = serialize(array("user_type" => "administrator"));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::ALLLESSONUSERS) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::ALLLESSONUSERS) {
          $event_notification['send_conditions'] = serialize(array("lessons_ID" => $this -> event['lessons_ID']));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::LESSONPROFESSORS) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::LESSONPROFESSORS) {
          $event_notification['send_conditions'] = serialize(array("lessons_ID" => $this -> event['lessons_ID'],
                         "user_type" => "professor"));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::COURSEPROFESSORS) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::COURSEPROFESSORS) {
          $event_notification['send_conditions'] = serialize(array("courses_ID" => $this -> event['lessons_ID'],
                         "user_type" => "professor"));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::ALLCOURSEUSERS) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::ALLCOURSEUSERS) {
          $event_notification['send_conditions'] = serialize(array("courses_ID" => $this -> event['lessons_ID']));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::LESSONUSERSNOTCOMPLETED) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::LESSONUSERSNOTCOMPLETED) {
          $event_notification['send_conditions'] = serialize(array("lessons_ID" => $this -> event['lessons_ID'],
                         "completed" => "0"));
          $event_notification['recipient'] = "";
-        } else if ($event_notification['send_recipients'] == MagesterNotification::EXPLICITLYSEL) {
+        } elseif ($event_notification['send_recipients'] == MagesterNotification::EXPLICITLYSEL) {
          if (isset($this -> event['explicitly_selected'])) {
           // General case - set field "explicitly_selected" in the triggerEvent fields
           if (!is_array($this -> event['explicitly_selected'])) {
@@ -896,8 +911,7 @@ class MagesterEvent
         // Format the message on the first layer: replacing event specific information now
         // Note: Recipient's specific information will be first replaced in layer 2 (before sending)
         $template_formulations = $this -> createSubstitutionsArray($event_types, $event_notification['send_recipients']);
-        
-        
+
         $subject = eF_formulateTemplateMessage($event_notification['subject'], $template_formulations);
         $message = eF_formulateTemplateMessage($event_notification['message'], $template_formulations);
         $html_message = $event_notification['html_message'];
@@ -920,11 +934,10 @@ class MagesterEvent
         //$notifications_to_send[] = $timestamp. "','". $event_notification['id_type_entity'] ."','" .$event_notification['after_time']. "', '" .$event_notification['send_conditions']."','". $event_notification['recipient']. "', '".$subject. "', '".$message. "', '".$html_message;
        }
       }
-      
+
       if (sizeof($notifications_to_send)) {
        //eF_execute("INSERT INTO notifications (timestamp, id_type_entity, send_interval, send_conditions, recipient, subject, message, html_message) VALUES ('". implode("'),('", $notifications_to_send) . "')");
-       
-      	
+
        eF_insertTableDataMultiple("notifications", $notifications_to_send);
       }
      }
@@ -958,7 +971,8 @@ class MagesterEvent
      * @access public
 
      */
-    public static function logEvent($fields) {
+    public static function logEvent($fields)
+    {
      if ($fields['type'] == MagesterEvent::PROJECT_EXPIRY) {
       eF_deleteTableData("events", "lessons_ID = ". $fields['lessons_ID'] . " AND type = ".MagesterEvent::PROJECT_EXPIRY . " AND entity_ID = " . $fields['entity_ID']);
      }
@@ -988,12 +1002,14 @@ class MagesterEvent
           $fields['lessons_name'] = $lesson['name'];
           $result = $result & eF_insertTableData("events", $fields);
             }
+
             return $result;
         } else {
             // Else just a single event
          //!isset($fields['lessons_ID'])     ? $fields['lessons_ID']      = $GLOBALS['currentLesson'] -> lesson['id'] : null;
          //!isset($fields['lessons_name'])   ? $fields['lessons_name']    = $GLOBALS['currentLesson'] -> lesson['name'] : null;
          unset($fields['explicitly_selected']);
+
          return eF_insertTableData("events", $fields);
         }
         //MagesterSearch :: insertText($fields['name'], $newId, "events", "title");
@@ -1046,7 +1062,8 @@ class MagesterEvent
      * @access public
 
      */
-    public function createMessage($modulesArray = false) {
+    public function createMessage($modulesArray = false)
+    {
      if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_EVENTS == 0) {
       return array();
      }
@@ -1062,7 +1079,7 @@ class MagesterEvent
        foreach ($this -> event as $field => $value) {
         $data[$field] = $value;
        }
-          $this -> event['message'] = $modulesArray[$className] -> getEventMessage((integer)$this -> event['type'] - MagesterEvent::MODULE_BASE_TYPE_CODE, $data);
+          $this -> event['message'] = $modulesArray[$className] -> getEventMessage((integer) $this -> event['type'] - MagesterEvent::MODULE_BASE_TYPE_CODE, $data);
       }
          if (! $this -> event['message']) {
           $this -> event['message'] = _UNREGISTEREDEVENT. " " . _FORTHEMODULE . " '" .$className. "'";
@@ -1070,95 +1087,95 @@ class MagesterEvent
      } else {
       // Basic system event codes
       // All excluded events are not of the form: The user did sth. For example: Project X expired
-      if ($this -> event['type'] != MagesterEvent::PROJECT_EXPIRY && $this -> event['type'] != MagesterEvent::LESSON_PROGRAMMED_EXPIRY && $this -> event['type'] != MagesterEvent::LESSON_PROGRAMMED_START ) {
+      if ($this -> event['type'] != MagesterEvent::PROJECT_EXPIRY && $this -> event['type'] != MagesterEvent::LESSON_PROGRAMMED_EXPIRY && $this -> event['type'] != MagesterEvent::LESSON_PROGRAMMED_START) {
           //changed to $_SESSION['s_type'] to work for different roles between lessons
           formatLogin($this -> event['users_LOGIN']) ? $formattedLogin = formatLogin($this -> event['users_LOGIN']) : $formattedLogin = $this->event['users_name'].' '.$this->event['users_surname'].' ('.$this->event['users_LOGIN'].')';
        $this -> event['message'] = _NAMEARTICLE . " <b><a  href = \"".$_SESSION['s_type'].".php?ctg=social&op=show_profile&user=".$this->event['users_LOGIN']. "&popup=1\" onclick = \"eF_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ".$formattedLogin."</a></b> ";
       }
          if ($this -> event['type'] == MagesterEvent::SYSTEM_JOIN) {
           $this -> event['message'] .= _HASJOINEDTHESYSTEM;
-         } else if ($this -> event['type'] == MagesterEvent::SYSTEM_VISITED) {
+         } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_VISITED) {
           $this -> event['message'] .= _VISITEDTHESYSTEM;
-         } else if ($this -> event['type'] == MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD) {
+         } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD) {
              $this -> event['message'] .= _HASFORGOTTENHISPASSWORD;
-   } else if ($this -> event['type'] == MagesterEvent::SYSTEM_REMOVAL) {
+   } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_REMOVAL) {
     $this -> event['message'] .= _HASBEENREMOVEDFROMTHESYSTEM;
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_ACQUISITION_AS_STUDENT) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_ACQUISITION_AS_STUDENT) {
              $this -> event['message'] .= _WASASSIGNEDTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_ACQUISITION_AS_PROFESSOR) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_ACQUISITION_AS_PROFESSOR) {
              $this -> event['message'] .= _WILLBETEACHINGLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_VISITED) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_VISITED) {
              $this -> event['message'] .= _VISITEDLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_REMOVAL) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_REMOVAL) {
              $this -> event['message'] .= _NOLONGERATTENDSLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_COMPLETION) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_COMPLETION) {
              $this -> event['message'] .= _HASCOMPLETEDLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::PROJECT_SUBMISSION) {
+         } elseif ($this -> event['type'] == MagesterEvent::PROJECT_SUBMISSION) {
              $this -> event['message'] .= _SUBMITTEDPROJECT . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::PROJECT_CREATION) {
+         } elseif ($this -> event['type'] == MagesterEvent::PROJECT_CREATION) {
              $this -> event['message'] .= _HASCREATEDPROJECT . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_PROGRAMMED_START) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_PROGRAMMED_START) {
              $this -> event['message'] .= _SCHEDULEDSTARTOFLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::LESSON_PROGRAMMED_EXPIRY) {
+         } elseif ($this -> event['type'] == MagesterEvent::LESSON_PROGRAMMED_EXPIRY) {
              $this -> event['message'] .= _SCHEDULEDEXPIRYOFLESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::PROJECT_EXPIRY) {
+         } elseif ($this -> event['type'] == MagesterEvent::PROJECT_EXPIRY) {
              $this -> event['message'] .= _THEPROJECT . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b> " . _HASEXPIRED;
-         } else if ($this -> event['type'] == MagesterEvent::NEW_LESSON_ANNOUNCEMENT) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_LESSON_ANNOUNCEMENT) {
              $this -> event['message'] .= _HASPUBLISHEDTHEANNOUNCEMENT. " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b> ";
-         } else if ($this -> event['type'] == MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST) {
+         } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST) {
     $this -> event['message'] .= _HASASKEDFORANEWPASSWORD;
-         } else if ($this -> event['type'] == MagesterEvent::SYSTEM_REGISTER) {
+         } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_REGISTER) {
     $this -> event['message'] .= _WASREGISTEREDINTOTHESYSTEM;
-   } else if ($this -> event['type'] == MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION) {
+   } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION) {
     $this -> event['message'] .= _ACTIVATEDHISACCOUNTWITHEACTIVATIONMAIL;
-   } else if ($this -> event['type'] == MagesterEvent::SYSTEM_USER_DEACTIVATE) {
+   } elseif ($this -> event['type'] == MagesterEvent::SYSTEM_USER_DEACTIVATE) {
     $this -> event['message'] .= _WASDEACTIVATEDFROMTHESYSTEM;
          // For courses we have lessons_name -> courses_name
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_ACQUISITION_AS_STUDENT) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_ACQUISITION_AS_STUDENT) {
              $this -> event['message'] .= _WASASSIGNEDTHECOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_ACQUISITION_AS_PROFESSOR) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_ACQUISITION_AS_PROFESSOR) {
              $this -> event['message'] .= _WILLBETEACHINGCOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_COMPLETION) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_COMPLETION) {
              $this -> event['message'] .= _HASCOMPLETEDCOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_REMOVAL) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_REMOVAL) {
              $this -> event['message'] .= _NOLONGERATTENDSCOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_PROGRAMMED_START) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_PROGRAMMED_START) {
              $this -> event['message'] .= _SCHEDULEDSTARTOFCOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_PROGRAMMED_EXPIRY) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_PROGRAMMED_EXPIRY) {
              $this -> event['message'] .= _SCHEDULEDEXPIRYOFCOURSE . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::TEST_CREATION) {
+         } elseif ($this -> event['type'] == MagesterEvent::TEST_CREATION) {
           $this -> event['message'] .= _CREATEDTHETEST . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::CONTENT_MODIFICATION) {
+         } elseif ($this -> event['type'] == MagesterEvent::CONTENT_MODIFICATION) {
              $this -> event['message'] .= _HASMODIFIEDUNIT . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::CONTENT_CREATION) {
+         } elseif ($this -> event['type'] == MagesterEvent::CONTENT_CREATION) {
              $this -> event['message'] .= _HASCREATEDUNIT . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-            } else if ($this -> event['type'] == MagesterEvent::CONTENT_COMPLETION) {
+            } elseif ($this -> event['type'] == MagesterEvent::CONTENT_COMPLETION) {
              $this -> event['message'] .= _HASCOMPLETEDUNIT . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_SYSTEM_ANNOUNCEMENT) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_SYSTEM_ANNOUNCEMENT) {
           $this -> event['message'] .= _HASPUBLISHEDTHEANNOUNCEMENT. " <b>" . $this -> event['entity_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_SURVEY) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_SURVEY) {
              $this -> event['message'] .= _HASPUBLISHEDSURVEY . " <b>" . str_replace("</p>", "", str_replace("<p>", "", $this -> event['entity_name'])) ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_COMMENT_WRITING) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_COMMENT_WRITING) {
              $this -> event['message'] .= _WROTEACOMMENTFORUNIT . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::TEST_START) {
+         } elseif ($this -> event['type'] == MagesterEvent::TEST_START) {
              $this -> event['message'] .= _STARTEDTEST . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::TEST_COMPLETION) {
+         } elseif ($this -> event['type'] == MagesterEvent::TEST_COMPLETION) {
              $this -> event['message'] .= _COMPLETEDTEST . " <b>" . $this -> event['entity_name'] ."</b> " . _OFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_FORUM) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_FORUM) {
              $this -> event['message'] .= _CREATEDTHENEWFORUM . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_TOPIC) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_TOPIC) {
              $this -> event['message'] .= _CREATEDTHENEWTOPIC . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_POLL) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_POLL) {
              $this -> event['message'] .= _CREATEDTHENEWPOLL . " <b>" . $this -> event['entity_name'] ."</b> " . _FORTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
              $this -> event['message'] .= _POSTEDTHENEWMESSAGE . " <b>" . $this -> event['entity_name'] ."</b> " . _INTHEFORUMOFTHELESSON . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::STATUS_CHANGE) {
+         } elseif ($this -> event['type'] == MagesterEvent::STATUS_CHANGE) {
              $this -> event['message'] .= _CHANGEDHISHERPROFILE;
-         } else if ($this -> event['type'] == MagesterEvent::AVATAR_CHANGE) {
+         } elseif ($this -> event['type'] == MagesterEvent::AVATAR_CHANGE) {
              $this -> event['message'] .= _CHANGEDHISHERAVATARPICTURE;
-         } else if ($this -> event['type'] == MagesterEvent::PROFILE_CHANGE) {
+         } elseif ($this -> event['type'] == MagesterEvent::PROFILE_CHANGE) {
              $this -> event['message'] .= _CHANGEDHISHERPROFILE;
-         } else if ($this -> event['type'] == MagesterEvent::NEW_PROFILE_COMMENT_FOR_OTHER) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_PROFILE_COMMENT_FOR_OTHER) {
              $this -> event['message'] .= _COMMENTEDONTHEPROFILEOF;
              // Here check whether this is your own profile or not
              if ($this -> event['entity_ID'] != $currentUser -> user['login']) {
@@ -1166,60 +1183,61 @@ class MagesterEvent
              } else {
               $this -> event['message'] .= " <b>". $this->event['entity_name'] . "</b>";
              }
-         } else if ($this -> event['type'] == MagesterEvent::NEW_PROFILE_COMMENT_FOR_SELF) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_PROFILE_COMMENT_FOR_SELF) {
           $this -> event['message'] .= _COMMENTEDONHISHEROWNPROFILE;
-         } else if ($this -> event['type'] == MagesterEvent::DELETE_PROFILE_COMMENT_FOR_SELF) {
+         } elseif ($this -> event['type'] == MagesterEvent::DELETE_PROFILE_COMMENT_FOR_SELF) {
           $this -> event['message'] .= _DELETEDACOMMENTFROMHISHEROWNPROFILE;
-         } else if ($this -> event['type'] == MagesterEvent::NEW_POST_FOR_LESSON_TIMELINE_TOPIC) {
+         } elseif ($this -> event['type'] == MagesterEvent::NEW_POST_FOR_LESSON_TIMELINE_TOPIC) {
           $topic_post = unserialize($this -> event['entity_name']);
           $this -> event['message'] .= _POSTEDFORLESSONTOPIC . " <b>" . $topic_post['topic_title'] . "</b> " . _THEPOST . ": " . $topic_post['data'];
           if ($this -> event['users_LOGIN'] == $GLOBALS['currentUser'] -> user['login']) {
            $this -> event['editlink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this -> event['lessons_ID'] . "&post_topic=" . $this -> event['entity_ID'] . "&action=change&popup=1&id=" . $topic_post['post_id'] ."' onclick = 'eF_js_showDivPopup(\""._EDITMESSAGEFORLESSONTIMELINETOPIC. "\", 1)'  target = 'POPUP_FRAME'><img src='images/16x16/edit.png' border='0' alt = '"._EDITMESSAGEFORLESSONTIMELINETOPIC."' title='"._EDITMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
            $this -> event['deletelink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this -> event['lessons_ID'] . "&post_topic=" . $this -> event['entity_ID'] . "&action=delete&id=" . $topic_post['post_id']."'><img src='images/16x16/error_delete.png' border='0' alt = '"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' title='"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
           }
-         } else if ($this -> event['type'] == MagesterEvent::DELETE_POST_FROM_LESSON_TIMELINE) {
+         } elseif ($this -> event['type'] == MagesterEvent::DELETE_POST_FROM_LESSON_TIMELINE) {
           $this -> event['message'] .= _DELETEDAPOSTFORLESSONTOPIC . " " . $this -> event['entity_name'];
-         } else if ($this -> event['type'] == MagesterEvent::HCD_NEW_BRANCH) {
+         } elseif ($this -> event['type'] == MagesterEvent::HCD_NEW_BRANCH) {
           $this -> event['message'] .= _CREATEDTHEBRANCH . " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::HCD_REMOVE_BRANCH) {
+         } elseif ($this -> event['type'] == MagesterEvent::HCD_REMOVE_BRANCH) {
           $this -> event['message'] .= _DELETEDTHEBRANCH. " <b>" . $this -> event['lessons_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::HCD_NEW_JOB_ASSIGNMENT) {
+         } elseif ($this -> event['type'] == MagesterEvent::HCD_NEW_JOB_ASSIGNMENT) {
     $this -> event['message'] .= _WASASSIGNEDTHEJOB . " <b>" . $this -> event['entity_name'] ."</b>" . _ATBRANCH . " <b>" . $this -> event['lessons_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_REMOVE_JOB_ASSIGNMENT) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_REMOVE_JOB_ASSIGNMENT) {
     $this -> event['message'] .= _WASREMOVEDFROMJOB . " <b>" . $this -> event['entity_name'] ."</b>" . _ATBRANCH . " <b>" . $this -> event['lessons_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_FIRED) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_FIRED) {
     $this -> event['message'] .= _WASFIRED;
-   } else if ($this -> event['type'] == MagesterEvent::NEW_ASSIGNMENT_TO_GROUP) {
+   } elseif ($this -> event['type'] == MagesterEvent::NEW_ASSIGNMENT_TO_GROUP) {
     $this -> event['message'] .= _WASASSIGNEDTOGROUP . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::REMOVAL_FROM_GROUP) {
+   } elseif ($this -> event['type'] == MagesterEvent::REMOVAL_FROM_GROUP) {
     $this -> event['message'] .= _WASREMOVEDFROMGROUP . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::NEW_PAYPAL_PAYMENT) {
+   } elseif ($this -> event['type'] == MagesterEvent::NEW_PAYPAL_PAYMENT) {
        $this -> event['message'] .= _PAYEDWITHPAYPAL . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::NEW_BALANCE_PAYMENT) {
+   } elseif ($this -> event['type'] == MagesterEvent::NEW_BALANCE_PAYMENT) {
                 $this -> event['message'] .= _PAYEDWITHBALANCE . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::COUPON_USAGE) {
+   } elseif ($this -> event['type'] == MagesterEvent::COUPON_USAGE) {
        $this -> event['message'] .= _USEDCOUPON . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_NEW_SKILL) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_NEW_SKILL) {
     $this -> event['message'] .= _WASASSIGNEDSKILL . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_REMOVE_SKILL) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_REMOVE_SKILL) {
     $this -> event['message'] .= _DOESNOTHAVEANYMORESKILL . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_SKILL_EDIT) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_SKILL_EDIT) {
     $this -> event['message'] .= _HADHISSKILLEDITEDTO . " <b>" . $this -> event['entity_name'] ."</b>";
-   } else if ($this -> event['type'] == MagesterEvent::HCD_HIRED) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_HIRED) {
     $this -> event['message'] .= _WASHIRED;
-   } else if ($this -> event['type'] == MagesterEvent::HCD_LEFT) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_LEFT) {
     $this -> event['message'] .= _HASLEFTHECOMPANY;
-   } else if ($this -> event['type'] == MagesterEvent::HCD_WAGE_CHANGE) {
+   } elseif ($this -> event['type'] == MagesterEvent::HCD_WAGE_CHANGE) {
     $this -> event['message'] .= _HASHADHISWAGECHANGETO ." <b>" . $this -> event['entity_name'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_CERTIFICATE_ISSUE) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_CERTIFICATE_ISSUE) {
              $this -> event['message'] .= _HASCERTIFICATED . " <b>" . $this -> event['lessons_name'] ."</b> " . _WITHGRADE ." <b>". $this -> event['entity_name'] ."</b> ". _WITHKEY . " <b> ". $this -> event['entity_ID'] ."</b>";
-         } else if ($this -> event['type'] == MagesterEvent::COURSE_CERTIFICATE_REVOKE) {
+         } elseif ($this -> event['type'] == MagesterEvent::COURSE_CERTIFICATE_REVOKE) {
              $this -> event['message'] .= _HASLOSTCERTIFICATE . " <b>" . $this -> event['lessons_name'] ."</b>";
          } else {
            return false;
          }
      }
         $this -> event['time'] = eF_convertIntervalToTime(time() - $this->event['timestamp'], true). ' '._AGO;
+
         return $this -> event['message'];
     }
 }

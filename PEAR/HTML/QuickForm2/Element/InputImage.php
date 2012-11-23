@@ -124,6 +124,7 @@ class HTML_QuickForm2_Element_InputImage extends HTML_QuickForm2_Element_Input
             $this->attributes['name'] .= '[]';
             $html = parent::__toString();
             $this->attributes['name']  = substr($this->attributes['name'], 0, -2);
+
             return $html;
         }
     }
@@ -140,6 +141,7 @@ class HTML_QuickForm2_Element_InputImage extends HTML_QuickForm2_Element_Input
                         'x' => $value,
                         'y' => $ds->getValue($name . '_y')
                     );
+
                     return;
 
                 } elseif (false !== strpos($name, '[')) {
@@ -151,6 +153,7 @@ class HTML_QuickForm2_Element_InputImage extends HTML_QuickForm2_Element_Input
                             'x' => $value[0],
                             'y' => $value[1]
                         );
+
                         return;
                     }
                 }
@@ -159,4 +162,3 @@ class HTML_QuickForm2_Element_InputImage extends HTML_QuickForm2_Element_Input
         $this->coordinates = null;
     }
 }
-?>

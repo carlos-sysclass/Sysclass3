@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_DocProps
  *
@@ -229,8 +228,7 @@ class PHPExcel_Writer_Excel2007_DocProps extends PHPExcel_Writer_Excel2007_Write
 			$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/officeDocument/2006/custom-properties');
 			$objWriter->writeAttribute('xmlns:vt', 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes');
 
-
-			foreach($customPropertyList as $key => $customProperty) {
+			foreach ($customPropertyList as $key => $customProperty) {
 				$propertyValue = $pPHPExcel->getProperties()->getCustomPropertyValue($customProperty);
 				$propertyType = $pPHPExcel->getProperties()->getCustomPropertyType($customProperty);
 
@@ -239,7 +237,7 @@ class PHPExcel_Writer_Excel2007_DocProps extends PHPExcel_Writer_Excel2007_Write
 					$objWriter->writeAttribute('pid', 		$key+2);
 					$objWriter->writeAttribute('name', 		$customProperty);
 
-					switch($propertyType) {
+					switch ($propertyType) {
 						case 'i' :
 							$objWriter->writeElement('vt:i4', 		$propertyValue);
 							break;
@@ -261,7 +259,6 @@ class PHPExcel_Writer_Excel2007_DocProps extends PHPExcel_Writer_Excel2007_Write
 
 				$objWriter->endElement();
 			}
-
 
 		$objWriter->endElement();
 

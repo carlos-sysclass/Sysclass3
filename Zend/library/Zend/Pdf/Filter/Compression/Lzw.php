@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Filter_Compression */
 require_once 'Zend/Pdf/Filter/Compression.php';
-
 
 /**
  * LZW stream filter
@@ -46,12 +44,12 @@ class Zend_Pdf_Filter_Compression_Lzw extends Zend_Pdf_Filter_Compression
             if ($earlyChange != 0  &&  $earlyChange != 1) {
                 throw new Zend_Pdf_Exception('Invalid value of \'EarlyChange\' decode param - ' . $earlyChange . '.' );
             }
+
             return $earlyChange;
         } else {
             return 1;
         }
     }
-
 
     /**
      * Encode data

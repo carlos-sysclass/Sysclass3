@@ -3,7 +3,7 @@
 
  * This page is for copying content and other entities between lessons
 saveTree
- * 
+ *
 
  */
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
@@ -19,38 +19,38 @@ $loadScripts[] = 'includes/copy';
 try {
     //Get the user's lessons list, so that he can pick a lesson to copy from
     $lessonToCoursesDB = ef_getTableData("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "lessons_ID, courses_ID, c.name as course_name");
-    
+
     $lessonToCourses = array();
-    
-	foreach($lessonToCoursesDB as $lessonRel) {
+
+	foreach ($lessonToCoursesDB as $lessonRel) {
 		$lessonToCourses[$lessonRel['lessons_ID']] = array(
 			'course_id' => $lessonRel['courses_ID'],
 			'name'		=> $lessonRel['course_name']
 		);
 	}
-    
-	
+
+
     $lessons = $currentUser -> getLessons(true);
 
     unset($lessons[$currentLesson -> lesson['id']]);
     $direction_lessons = $course_lessons = array();
-    foreach ($lessons as $lesson){
+    foreach ($lessons as $lesson) {
         $direction = $lesson -> getDirection();
         $direction_lessons[$direction['name']][] = array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
-        
+
         $lesson_course_id = $lessonToCourses[$lesson -> lesson['id']]['course_id'];
-        
+
         if (!is_array($course_lessons[$lesson_course_id])) {
         	$course_lessons[$lesson_course_id] = array(
        			'name'	=> $lessonToCourses[$lesson -> lesson['id']]['name'],
        			'lessons'	=> array()
         	);
         }
-        
-        $course_lessons[$lesson_course_id]['lessons'][] = 
+
+        $course_lessons[$lesson_course_id]['lessons'][] =
         	array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
     }
-    
+
     $smarty -> assign("T_USER_LESSONS", $course_lessons);
     //$smarty -> assign("T_USER_LESSONS", $direction_lessons);
 
@@ -70,7 +70,7 @@ try {
             }
             exit;
         //We asked to copy the questions
-        } else if (isset($_GET['entity']) && $_GET['entity'] == 'questions') {
+        } elseif (isset($_GET['entity']) && $_GET['entity'] == 'questions') {
             try {
              $result = eF_getTableData("questions", "*", "lessons_ID = ".$_GET['from']);
              foreach ($result as $key => $value) {
@@ -87,7 +87,7 @@ try {
             }
             exit;
         //We asked to copy the surveys
-        } else if (isset($_GET['entity']) && $_GET['entity'] == 'surveys') {
+        } elseif (isset($_GET['entity']) && $_GET['entity'] == 'surveys') {
             try {
              $result = eF_getTableData("surveys", "*", "lessons_ID = ".$_GET['from']);
              foreach ($result as $key => $value) {
@@ -128,7 +128,7 @@ try {
                 	} else {
                 		$nodeOrders = explode(",", $_GET['node_orders']);
                 	}
-                	
+
                     //$nodeOrders = explode(",", $_GET['node_orders']);
                     $nodeOrders = array_unique($nodeOrders);
                     $previousContentId = 0;

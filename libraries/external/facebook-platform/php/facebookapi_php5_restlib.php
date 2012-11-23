@@ -34,7 +34,8 @@
 
 include_once 'jsonwrapper/jsonwrapper.php';
 
-class FacebookRestClient {
+class FacebookRestClient
+{
   public $secret;
   public $session_key;
   public $api_key;
@@ -67,7 +68,8 @@ class FacebookRestClient {
    *                            directly accessing the $session_key member
    *                            variable.
    */
-  public function __construct($api_key, $secret, $session_key=null) {
+  public function __construct($api_key, $secret, $session_key=null)
+  {
     $this->secret       = $secret;
     $this->session_key  = $session_key;
     $this->api_key      = $api_key;
@@ -82,21 +84,24 @@ class FacebookRestClient {
       ?>
 <script type="text/javascript">
 var types = ['params', 'xml', 'php', 'sxml'];
-function getStyle(elem, style) {
+function getStyle(elem, style)
+{
   if (elem.getStyle) {
     return elem.getStyle(style);
   } else {
     return elem.style[style];
   }
 }
-function setStyle(elem, style, value) {
+function setStyle(elem, style, value)
+{
   if (elem.setStyle) {
     elem.setStyle(style, value);
   } else {
     elem.style[style] = value;
   }
 }
-function toggleDisplay(id, type) {
+function toggleDisplay(id, type)
+{
   for (var i = 0; i < types.length; i++) {
     var t = types[i];
     var pre = document.getElementById(t + id);
@@ -108,6 +113,7 @@ function toggleDisplay(id, type) {
       }
     }
   }
+
   return false;
 }
 </script>
@@ -123,7 +129,8 @@ function toggleDisplay(id, type) {
    *
    * @param $uid int the user id
    */
-  public function set_user($uid) {
+  public function set_user($uid)
+  {
     $this->user = $uid;
   }
 
@@ -134,14 +141,16 @@ function toggleDisplay(id, type) {
    *
    * @param $use_curl_if_available bool whether or not to use cURL if available
    */
-  public function set_use_curl_if_available($use_curl_if_available) {
+  public function set_use_curl_if_available($use_curl_if_available)
+  {
     $this->use_curl_if_available = $use_curl_if_available;
   }
 
   /**
    * Start a batch operation.
    */
-  public function begin_batch() {
+  public function begin_batch()
+  {
     if ($this->pending_batch()) {
       $code = FacebookAPIErrorCodes::API_EC_BATCH_ALREADY_STARTED;
       $description = FacebookAPIErrorCodes::$api_error_descriptions[$code];
@@ -155,7 +164,8 @@ function toggleDisplay(id, type) {
   /*
    * End current batch operation
    */
-  public function end_batch() {
+  public function end_batch()
+  {
     if (!$this->pending_batch()) {
       $code = FacebookAPIErrorCodes::API_EC_BATCH_NOT_STARTED;
       $description = FacebookAPIErrorCodes::$api_error_descriptions[$code];
@@ -171,11 +181,13 @@ function toggleDisplay(id, type) {
   /**
    * are we currently queueing up calls for a batch?
    */
-  public function pending_batch() {
+  public function pending_batch()
+  {
     return $this->pending_batch;
   }
 
-  private function execute_server_side_batch() {
+  private function execute_server_side_batch()
+  {
     $item_count = count($this->batch_queue);
     $method_feed = array();
     foreach ($this->batch_queue as $batch_item) {
@@ -199,7 +211,6 @@ function toggleDisplay(id, type) {
 
     $result = $this->convert_xml_to_result($xml, 'batch.run', $params);
 
-
     if (is_array($result) && isset($result['error_code'])) {
       throw new FacebookRestClientException($result['error_msg'],
                                             $result['error_code']);
@@ -221,14 +232,15 @@ function toggleDisplay(id, type) {
     }
   }
 
-  public function begin_permissions_mode($permissions_apikey) {
+  public function begin_permissions_mode($permissions_apikey)
+  {
     $this->call_as_apikey = $permissions_apikey;
   }
 
-  public function end_permissions_mode() {
+  public function end_permissions_mode()
+  {
     $this->call_as_apikey = '';
   }
-
 
   /*
    * If a page is loaded via HTTPS, then all images and static
@@ -237,7 +249,8 @@ function toggleDisplay(id, type) {
    * url, then call set_use_ssl_resources to retrieve the correct
    * urls.
    */
-  public function set_use_ssl_resources($is_ssl = true) {
+  public function set_use_ssl_resources($is_ssl = true)
+  {
     $this->use_ssl_resources = $is_ssl;
   }
 
@@ -269,7 +282,8 @@ function toggleDisplay(id, type) {
    *
    * @return string  An authentication token.
    */
-  public function auth_createToken() {
+  public function auth_createToken()
+  {
     return $this->call_method('facebook.auth.createToken');
   }
 
@@ -284,7 +298,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  An assoc array containing session_key, uid
    */
-  public function auth_getSession($auth_token, $generate_session_secret=false) {
+  public function auth_getSession($auth_token, $generate_session_secret=false)
+  {
     if (!$this->pending_batch()) {
       $result = $this->call_method('facebook.auth.getSession',
           array('auth_token' => $auth_token,
@@ -295,6 +310,7 @@ function toggleDisplay(id, type) {
       // desktop apps have a special secret
       $this->secret = $result['secret'];
     }
+
       return $result;
     }
   }
@@ -308,7 +324,8 @@ function toggleDisplay(id, type) {
    * @error API_EC_PARAM_SESSION_KEY
    *        API_EC_PARAM_UNKNOWN
    */
-  public function auth_promoteSession() {
+  public function auth_promoteSession()
+  {
       return $this->call_method('facebook.auth.promoteSession');
   }
 
@@ -319,7 +336,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true if session expiration was successful, false otherwise
    */
-  public function auth_expireSession() {
+  public function auth_expireSession()
+  {
       return $this->call_method('facebook.auth.expireSession');
   }
 
@@ -331,7 +349,8 @@ function toggleDisplay(id, type) {
    *  @param  string  $perm  The permission to revoke
    *  @param  int     $uid   The user for whom to revoke the permission.
    */
-  public function auth_revokeExtendedPermission($perm, $uid=null) {
+  public function auth_revokeExtendedPermission($perm, $uid=null)
+  {
     return $this->call_method('facebook.auth.revokeExtendedPermission',
         array('perm' => $perm, 'uid' => $uid));
   }
@@ -348,7 +367,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true if revocation succeeds, false otherwise
    */
-  public function auth_revokeAuthorization($uid=null) {
+  public function auth_revokeAuthorization($uid=null)
+  {
       return $this->call_method('facebook.auth.revokeAuthorization',
           array('uid' => $uid));
   }
@@ -360,7 +380,8 @@ function toggleDisplay(id, type) {
    * @param  string  API key of an app
    * @return string  The public key for the app.
    */
-  public function auth_getAppPublicKey($target_app_key) {
+  public function auth_getAppPublicKey($target_app_key)
+  {
     return $this->call_method('facebook.auth.getAppPublicKey',
           array('target_app_key' => $target_app_key));
   }
@@ -372,7 +393,8 @@ function toggleDisplay(id, type) {
    *
    * @return signed public session data structure.
    */
-  public function auth_getSignedPublicSessionData() {
+  public function auth_getSignedPublicSessionData()
+  {
     return $this->call_method('facebook.auth.getSignedPublicSessionData',
                               array());
   }
@@ -382,7 +404,8 @@ function toggleDisplay(id, type) {
    * This number is determined based on the accounts registered through
    * connect.registerUsers() (see below).
    */
-  public function connect_getUnconnectedFriendsCount() {
+  public function connect_getUnconnectedFriendsCount()
+  {
     return $this->call_method('facebook.connect.getUnconnectedFriendsCount',
         array());
   }
@@ -414,7 +437,8 @@ function toggleDisplay(id, type) {
   * @return array  The list of email hashes for the successfully registered
   *                accounts.
   */
-  public function connect_registerUsers($accounts) {
+  public function connect_registerUsers($accounts)
+  {
     return $this->call_method('facebook.connect.registerUsers',
         array('accounts' => $accounts));
   }
@@ -428,7 +452,8 @@ function toggleDisplay(id, type) {
   * @return array  The list of email hashes which have been successfully
   *                unregistered.
   */
-  public function connect_unregisterUsers($email_hashes) {
+  public function connect_unregisterUsers($email_hashes)
+  {
     return $this->call_method('facebook.connect.unregisterUsers',
         array('email_hashes' => $email_hashes));
   }
@@ -619,6 +644,7 @@ function toggleDisplay(id, type) {
    */
   public function &fbml_registerCustomTags($tags) {
     $tags = json_encode($tags);
+
     return $this->call_method('facebook.fbml.registerCustomTags',
                               array('tags' => $tags));
   }
@@ -640,7 +666,6 @@ function toggleDisplay(id, type) {
                               array('app_id' => $app_id));
   }
 
-
   /**
    * Delete custom tags the application has registered. If
    * $tag_names is null, all the application's custom tags will be
@@ -657,8 +682,6 @@ function toggleDisplay(id, type) {
     return $this->call_method('facebook.fbml.deleteCustomTags',
                               array('tag_names' => json_encode($tag_names)));
   }
-
-
 
   /**
    * This method is deprecated for calls made on behalf of users. This method
@@ -822,7 +845,6 @@ function toggleDisplay(id, type) {
               'user_message' => $user_message));
   }
 
-
   /**
    * Publish a post to the user's stream.
    *
@@ -837,7 +859,6 @@ function toggleDisplay(id, type) {
   public function stream_publish(
     $message, $attachment = null, $action_links = null, $target_id = null,
     $uid = null) {
-
     return $this->call_method(
       'facebook.stream.publish',
       array('message' => $message,
@@ -855,7 +876,8 @@ function toggleDisplay(id, type) {
    * @param $uid      the actor (defaults to session user)
    * @return bool
    */
-  public function stream_remove($post_id, $uid = null) {
+  public function stream_remove($post_id, $uid = null)
+  {
     return $this->call_method(
       'facebook.stream.remove',
       array('post_id' => $post_id,
@@ -870,7 +892,8 @@ function toggleDisplay(id, type) {
    * @param $uid      the actor (defaults to session user)
    * @return string the id of the created comment
    */
-  public function stream_addComment($post_id, $comment, $uid = null) {
+  public function stream_addComment($post_id, $comment, $uid = null)
+  {
     return $this->call_method(
       'facebook.stream.addComment',
       array('post_id' => $post_id,
@@ -886,7 +909,8 @@ function toggleDisplay(id, type) {
    * @param $uid      the actor (defaults to session user)
    * @return bool
    */
-  public function stream_removeComment($comment_id, $uid = null) {
+  public function stream_removeComment($comment_id, $uid = null)
+  {
     return $this->call_method(
       'facebook.stream.removeComment',
       array('comment_id' => $comment_id,
@@ -900,7 +924,8 @@ function toggleDisplay(id, type) {
    * @param $uid      the actor (defaults to session user)
    * @return bool
    */
-  public function stream_addLike($post_id, $uid = null) {
+  public function stream_addLike($post_id, $uid = null)
+  {
     return $this->call_method(
       'facebook.stream.addLike',
       array('post_id' => $post_id,
@@ -914,7 +939,8 @@ function toggleDisplay(id, type) {
    * @param $uid      the actor (defaults to session user)
    * @return bool
    */
-  public function stream_removeLike($post_id, $uid = null) {
+  public function stream_removeLike($post_id, $uid = null)
+  {
     return $this->call_method(
       'facebook.stream.removeLike',
       array('post_id' => $post_id,
@@ -990,6 +1016,7 @@ function toggleDisplay(id, type) {
     if ($flid) {
       $params['flid'] = $flid;
     }
+
     return $this->call_method('facebook.friends.get', $params);
 
   }
@@ -1052,7 +1079,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  Cookies!  Nom nom nom nom nom.
    */
-  public function data_getCookies($uid, $name) {
+  public function data_getCookies($uid, $name)
+  {
     return $this->call_method('facebook.data.getCookies',
         array('uid' => $uid,
               'name' => $name));
@@ -1069,7 +1097,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true on success
    */
-  public function data_setCookie($uid, $name, $value, $expires, $path) {
+  public function data_setCookie($uid, $name, $value, $expires, $path)
+  {
     return $this->call_method('facebook.data.setCookie',
         array('uid' => $uid,
               'name' => $name,
@@ -1123,7 +1152,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  API methods/namespaces which are allowed access
    */
-  public function permissions_checkGrantedApiAccess($permissions_apikey) {
+  public function permissions_checkGrantedApiAccess($permissions_apikey)
+  {
     return $this->call_method('facebook.permissions.checkGrantedApiAccess',
         array('permissions_apikey' => $permissions_apikey));
   }
@@ -1135,7 +1165,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  API methods/namespaces which are allowed access
    */
-  public function permissions_checkAvailableApiAccess($permissions_apikey) {
+  public function permissions_checkAvailableApiAccess($permissions_apikey)
+  {
     return $this->call_method('facebook.permissions.checkAvailableApiAccess',
         array('permissions_apikey' => $permissions_apikey));
   }
@@ -1150,7 +1181,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  API methods/namespaces which are allowed access
    */
-  public function permissions_grantApiAccess($permissions_apikey, $method_arr) {
+  public function permissions_grantApiAccess($permissions_apikey, $method_arr)
+  {
     return $this->call_method('facebook.permissions.grantApiAccess',
         array('permissions_apikey' => $permissions_apikey,
               'method_arr' => $method_arr));
@@ -1163,7 +1195,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true on success
    */
-  public function permissions_revokeApiAccess($permissions_apikey) {
+  public function permissions_revokeApiAccess($permissions_apikey)
+  {
     return $this->call_method('facebook.permissions.revokeApiAccess',
         array('permissions_apikey' => $permissions_apikey));
   }
@@ -1178,12 +1211,14 @@ function toggleDisplay(id, type) {
    * @param  properties  a map from property names to  values
    * @return             true on success
    */
-  public function payments_setProperties($properties) {
+  public function payments_setProperties($properties)
+  {
     return $this->call_method ('facebook.payments.setProperties',
         array('properties' => json_encode($properties)));
   }
 
-  public function payments_getOrderDetails($order_id) {
+  public function payments_getOrderDetails($order_id)
+  {
     return json_decode($this->call_method(
         'facebook.payments.getOrderDetails',
         array('order_id' => $order_id)), true);
@@ -1521,7 +1556,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  An array of user objects
    */
-  public function photos_upload($file, $aid=null, $caption=null, $uid=null) {
+  public function photos_upload($file, $aid=null, $caption=null, $uid=null)
+  {
     return $this->call_upload_method('facebook.photos.upload',
                                      array('aid' => $aid,
                                            'caption' => $caption,
@@ -1539,7 +1575,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  An array with the video's ID, title, description, and a link to view it on Facebook.
    */
-  public function video_upload($file, $title=null, $description=null) {
+  public function video_upload($file, $title=null, $description=null)
+  {
     return $this->call_upload_method('facebook.video.upload',
                                      array('title' => $title,
                                            'description' => $description),
@@ -1665,6 +1702,7 @@ function toggleDisplay(id, type) {
       'clear' => $clear,
       'status_includes_verb' => $status_includes_verb,
     );
+
     return $this->call_method('facebook.users.setStatus', $args);
   }
 
@@ -1678,6 +1716,7 @@ function toggleDisplay(id, type) {
    */
   public function &comments_get($xid) {
     $args = array('xid' => $xid);
+
     return $this->call_method('facebook.comments.get', $args);
   }
 
@@ -1722,6 +1761,7 @@ function toggleDisplay(id, type) {
     $args = array(
       'xid'        => $xid,
       'comment_id' => $comment_id);
+
     return $this->call_method('facebook.comments.remove', $args);
   }
 
@@ -1761,6 +1801,7 @@ function toggleDisplay(id, type) {
       'end_time'   => $end_time,
       'limit'      => $limit,
       'filter_key' => $filter_key);
+
     return $this->call_method('facebook.stream.get', $args);
   }
 
@@ -1776,6 +1817,7 @@ function toggleDisplay(id, type) {
    */
   public function &stream_getFilters($uid = null) {
     $args = array('uid' => $uid);
+
     return $this->call_method('facebook.stream.getFilters', $args);
   }
 
@@ -1790,6 +1832,7 @@ function toggleDisplay(id, type) {
    */
   public function &stream_getComments($post_id) {
     $args = array('post_id' => $post_id);
+
     return $this->call_method('facebook.stream.getComments', $args);
   }
 
@@ -1901,7 +1944,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true on success
    */
-  public function profile_setInfoOptions($field, $options) {
+  public function profile_setInfoOptions($field, $options)
+  {
     return $this->call_method('facebook.profile.setInfoOptions',
         array('field'   => $field,
               'options' => json_encode($options)));
@@ -1912,7 +1956,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  A list of category names
    */
-  function marketplace_getCategories() {
+  function marketplace_getCategories()
+  {
     return $this->call_method('facebook.marketplace.getCategories',
         array());
   }
@@ -1924,7 +1969,8 @@ function toggleDisplay(id, type) {
    *
    * @return array A list of subcategory names
    */
-  function marketplace_getSubCategories($category) {
+  function marketplace_getSubCategories($category)
+  {
     return $this->call_method('facebook.marketplace.getSubCategories',
         array('category' => $category));
   }
@@ -1937,7 +1983,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  The data for matched listings
    */
-  function marketplace_getListings($listing_ids, $uids) {
+  function marketplace_getListings($listing_ids, $uids)
+  {
     return $this->call_method('facebook.marketplace.getListings',
         array('listing_ids' => $listing_ids, 'uids' => $uids));
   }
@@ -1952,7 +1999,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  The data for matched listings
    */
-  function marketplace_search($category, $subcategory, $query) {
+  function marketplace_search($category, $subcategory, $query)
+  {
     return $this->call_method('facebook.marketplace.search',
         array('category' => $category,
               'subcategory' => $subcategory,
@@ -2815,7 +2863,8 @@ function toggleDisplay(id, type) {
    *
    * @return array  A map from property name to value
    */
-  public function admin_getAppProperties($properties) {
+  public function admin_getAppProperties($properties)
+  {
     return json_decode(
         $this->call_method('facebook.admin.getAppProperties',
             array('properties' => json_encode($properties))), true);
@@ -2828,7 +2877,8 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true on success
    */
-  public function admin_setAppProperties($properties) {
+  public function admin_setAppProperties($properties)
+  {
     return $this->call_method('facebook.admin.setAppProperties',
        array('properties' => json_encode($properties)));
   }
@@ -2882,11 +2932,13 @@ function toggleDisplay(id, type) {
    *
    * @return bool  true on success
    */
-  public function admin_setRestrictionInfo($restriction_info = null) {
+  public function admin_setRestrictionInfo($restriction_info = null)
+  {
     $restriction_str = null;
     if (!empty($restriction_info)) {
       $restriction_str = json_encode($restriction_info);
     }
+
     return $this->call_method('admin.setRestrictionInfo',
         array('restriction_str' => $restriction_str));
   }
@@ -2901,12 +2953,12 @@ function toggleDisplay(id, type) {
    *
    * @return array  The age restriction settings for this application.
    */
-  public function admin_getRestrictionInfo() {
+  public function admin_getRestrictionInfo()
+  {
     return json_decode(
         $this->call_method('admin.getRestrictionInfo'),
         true);
   }
-
 
   /**
    * Bans a list of users from the app. Banned users can't
@@ -2915,7 +2967,8 @@ function toggleDisplay(id, type) {
    * @param array $uids an array of user ids
    * @return bool true on success
    */
-  public function admin_banUsers($uids) {
+  public function admin_banUsers($uids)
+  {
     return $this->call_method(
       'admin.banUsers', array('uids' => json_encode($uids)));
   }
@@ -2927,7 +2980,8 @@ function toggleDisplay(id, type) {
    * @param array $uids an array of user ids
    * @return bool true on success
    */
-  public function admin_unbanUsers($uids) {
+  public function admin_unbanUsers($uids)
+  {
     return $this->call_method(
       'admin.unbanUsers', array('uids' => json_encode($uids)));
   }
@@ -2942,7 +2996,8 @@ function toggleDisplay(id, type) {
    * @return bool true on success
    */
 
-  public function admin_getBannedUsers($uids = null) {
+  public function admin_getBannedUsers($uids = null)
+  {
     return $this->call_method(
       'admin.getBannedUsers',
       array('uids' => $uids ? json_encode($uids) : null));
@@ -2968,8 +3023,7 @@ function toggleDisplay(id, type) {
       $data = $this->post_request($method, $params);
       if (empty($params['format']) || strtolower($params['format']) != 'json') {
         $result = $this->convert_xml_to_result($data, $method, $params);
-      }
-      else {
+      } else {
         $result = json_decode($data, true);
       }
 
@@ -2977,8 +3031,7 @@ function toggleDisplay(id, type) {
         throw new FacebookRestClientException($result['error_msg'],
                                               $result['error_code']);
       }
-    }
-    else {
+    } else {
       $result = null;
       $batch_item = array('m' => $method, 'p' => $params, 'r' => & $result);
       $this->batch_queue[] = $batch_item;
@@ -2996,7 +3049,8 @@ function toggleDisplay(id, type) {
    *
    * @return array A dictionary representing the response.
    */
-  public function call_upload_method($method, $params, $file, $server_addr = null) {
+  public function call_upload_method($method, $params, $file, $server_addr = null)
+  {
     if (!$this->pending_batch()) {
       if (!file_exists($file)) {
         $code =
@@ -3012,8 +3066,7 @@ function toggleDisplay(id, type) {
         throw new FacebookRestClientException($result['error_msg'],
                                               $result['error_code']);
       }
-    }
-    else {
+    } else {
       $code =
         FacebookAPIErrorCodes::API_EC_BATCH_METHOD_NOT_ALLOWED_IN_BATCH_MODE;
       $description = FacebookAPIErrorCodes::$api_error_descriptions[$code];
@@ -3023,7 +3076,8 @@ function toggleDisplay(id, type) {
     return $result;
   }
 
-  protected function convert_xml_to_result($xml, $method, $params) {
+  protected function convert_xml_to_result($xml, $method, $params)
+  {
     $sxml = simplexml_load_string($xml);
     $result = self::convert_simplexml_to_array($sxml);
 
@@ -3042,19 +3096,23 @@ function toggleDisplay(id, type) {
       print '<pre id="sxml'.$this->cur_id.'" style="display: none; overflow: auto;">'.print_r($sxml, true).'</pre>';
       print '</div>';
     }
+
     return $result;
   }
 
-  private function finalize_params($method, $params) {
+  private function finalize_params($method, $params)
+  {
     list($get, $post) = $this->add_standard_params($method, $params);
     // we need to do this before signing the params
     $this->convert_array_values_to_json($post);
     $post['sig'] = Facebook::generate_sig(array_merge($get, $post),
                                           $this->secret);
+
     return array($get, $post);
   }
 
-  private function convert_array_values_to_json(&$params) {
+  private function convert_array_values_to_json(&$params)
+  {
     foreach ($params as $key => &$val) {
       if (is_array($val)) {
         $val = json_encode($val);
@@ -3066,7 +3124,8 @@ function toggleDisplay(id, type) {
    * Add the generally required params to our request.
    * Params method, api_key, and v should be sent over as get.
    */
-  private function add_standard_params($method, $params) {
+  private function add_standard_params($method, $params)
+  {
     $post = $params;
     $get = array();
     if ($this->call_as_apikey) {
@@ -3090,19 +3149,22 @@ function toggleDisplay(id, type) {
         $this->use_ssl_resources) {
       $post['return_ssl_resources'] = true;
     }
+
     return array($get, $post);
   }
 
-  private function create_url_string($params) {
+  private function create_url_string($params)
+  {
     $post_params = array();
     foreach ($params as $key => &$val) {
       $post_params[] = $key.'='.urlencode($val);
     }
+
     return implode('&', $post_params);
   }
 
-  private function run_multipart_http_transaction($method, $params, $file, $server_addr) {
-
+  private function run_multipart_http_transaction($method, $params, $file, $server_addr)
+  {
     // the format of this message is specified in RFC1867/RFC1341.
     // we add twenty pseudo-random digits to the end of the boundary string.
     $boundary = '--------------------------FbMuLtIpArT' .
@@ -3129,10 +3191,12 @@ function toggleDisplay(id, type) {
     $content_lines[] = $close_delimiter;
     $content_lines[] = '';
     $content = implode("\r\n", $content_lines);
+
     return $this->run_http_post_transaction($content_type, $content, $server_addr);
   }
 
-  public function post_request($method, $params) {
+  public function post_request($method, $params)
+  {
     list($get, $post) = $this->finalize_params($method, $params);
     $post_string = $this->create_url_string($post);
     $get_string = $this->create_url_string($get);
@@ -3155,10 +3219,12 @@ function toggleDisplay(id, type) {
                                                  $content,
                                                  $url_with_get);
     }
+
     return $result;
   }
 
-  private function post_upload_request($method, $params, $file, $server_addr = null) {
+  private function post_upload_request($method, $params, $file, $server_addr = null)
+  {
     $server_addr = $server_addr ? $server_addr : $this->server_addr;
     list($get, $post) = $this->finalize_params($method, $params);
     $get_string = $this->create_url_string($get);
@@ -3181,11 +3247,12 @@ function toggleDisplay(id, type) {
       $result = $this->run_multipart_http_transaction($method, $post,
                                                       $file, $url_with_get);
     }
+
     return $result;
   }
 
-  private function run_http_post_transaction($content_type, $content, $server_addr) {
-
+  private function run_http_post_transaction($content_type, $content, $server_addr)
+  {
     $user_agent = 'Facebook API PHP5 Client 1.1 (non-curl) ' . phpversion();
     $content_length = strlen($content);
     $context =
@@ -3205,10 +3272,12 @@ function toggleDisplay(id, type) {
       }
       fclose($sock);
     }
+
     return $result;
   }
 
-  public static function convert_simplexml_to_array($sxml) {
+  public static function convert_simplexml_to_array($sxml)
+  {
     $arr = array();
     if ($sxml) {
       foreach ($sxml as $k => $v) {
@@ -3222,17 +3291,18 @@ function toggleDisplay(id, type) {
     if (sizeof($arr) > 0) {
       return $arr;
     } else {
-      return (string)$sxml;
+      return (string) $sxml;
     }
   }
 
-  private function get_uid($uid) {
+  private function get_uid($uid)
+  {
     return $uid ? $uid : $this->user;
   }
 }
 
-
-class FacebookRestClientException extends Exception {
+class FacebookRestClientException extends Exception
+{
 }
 
 // Supporting methods and values------
@@ -3241,8 +3311,8 @@ class FacebookRestClientException extends Exception {
  * Error codes and descriptions for the Facebook API.
  */
 
-class FacebookAPIErrorCodes {
-
+class FacebookAPIErrorCodes
+{
   const API_EC_SUCCESS = 0;
 
   /*
@@ -3362,7 +3432,6 @@ class FacebookAPIErrorCodes {
   const API_EC_SESSION_REQUIRED = 453;
   const API_EC_SESSION_REQUIRED_FOR_SECRET = 454;
   const API_EC_SESSION_CANNOT_USE_SESSION_SECRET = 455;
-
 
   /**
    * FQL ERRORS

@@ -19,4 +19,3 @@ define("_BANNERS_DELETEBANNER","删除旗帜");//Delete banner
 define("_BANNERS_EDITBANNER","编辑旗帜");//Edit banner
 define("_BANNERS_GOTOBANNERPAGE","转到广告横幅页");//Go to Ad Banners page
 define("_BANNERS_ORSELECTONEFROMLIST","或选择其中一个，从名单");//Or select one from list
-?>

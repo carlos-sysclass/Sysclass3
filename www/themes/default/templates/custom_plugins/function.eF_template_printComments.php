@@ -6,7 +6,8 @@
 *
 
 */
-function smarty_function_eF_template_printComments($params, &$smarty) {
+function smarty_function_eF_template_printComments($params, &$smarty)
+{
     $max_title_size = 50; //The maximum length of the title, after which it is cropped with ...
     $list_fold_size = 3; //The folding occurs in this number of lines
     if (isset($params['limit'])) {
@@ -18,7 +19,7 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
         <table border = "0" width = "100%">';
     for ($i = 0; $i < $list_fold_size && $i < $limit; $i++) {
         if (mb_strlen($params['data'][$i]['content_name']) > $max_title_size) {
-            $params['data'][$i]['content_name'] = mb_substr($params['data'][$i]['content_name'], 0, $max_title_size).'...'; //If the message title is large, cut it and append ...            
+            $params['data'][$i]['content_name'] = mb_substr($params['data'][$i]['content_name'], 0, $max_title_size).'...'; //If the message title is large, cut it and append ...
         }
         $title2 = '#filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
 
@@ -67,7 +68,7 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
 
         </table>
 
-    
+
 
             <table border = "0" width = "100%" id = "recent_comments" style = "display:none">';
 
@@ -75,7 +76,7 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
 
             if (mb_strlen($params['data'][$i]['content_name']) > $max_title_size) {
 
-                $params['data'][$i]['content_name'] = mb_substr($params['data'][$i]['content_name'], 0, $max_title_size).'...';                                 //If the message title is large, cut it and append ...            
+                $params['data'][$i]['content_name'] = mb_substr($params['data'][$i]['content_name'], 0, $max_title_size).'...';                                 //If the message title is large, cut it and append ...
 
             }
 
@@ -95,7 +96,7 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
 
                     </td></tr>';
 
-        } 
+        }
 
         $str .= '
 
@@ -105,6 +106,6 @@ function smarty_function_eF_template_printComments($params, &$smarty) {
         $str .= '
             </table>';
     }
+
     return $str;
 }
-?>

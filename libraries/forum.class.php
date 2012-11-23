@@ -1,7 +1,7 @@
 <?php
 /**
 
- * 
+ *
 
  * @author user
 
@@ -17,7 +17,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 /**
 
- * 
+ *
 
  * @author user
 
@@ -28,7 +28,7 @@ class f_forums extends MagesterEntity
 {
     /**
 
-     * 
+     *
 
      * @var unknown_type
 
@@ -36,12 +36,13 @@ class f_forums extends MagesterEntity
     public $tree;
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         //$this -> entity = 'f_forums';
         parent :: __construct($param);
     }
@@ -52,7 +53,8 @@ class f_forums extends MagesterEntity
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
         $forumTree = self :: getForumTree();
         $children = $forumTree[$this -> {$this -> entity}['id']]; //Get all the forum's direct siblings
         for ($i = 0; isset($children[$i]); $i++) { //Find all the forum siblings' siblings
@@ -78,14 +80,15 @@ class f_forums extends MagesterEntity
     }
     /**
 
-     * 
+     *
 
      * @param $forums
 
      * @return unknown_type
 
      */
-    public static function getForumTree($forums = false) {
+    public static function getForumTree($forums = false)
+    {
         if ($forums === false) {
             $forums = f_forums :: getAll("f_forums");
         }
@@ -101,6 +104,7 @@ class f_forums extends MagesterEntity
             $forums[$node['id']] = $node; //Copy node to forums, which will be used later as forums source
             unset($tempForums[$key]); //We visited the node, so delete it from the (array) graph
         }
+
         return $forumTree;
     }
     /**
@@ -110,7 +114,8 @@ class f_forums extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
         $form -> addElement('text', 'title', _TITLE, 'class = "inputText"');
         $form -> addRule('title', _THEFIELD.' "'._TITLE.'" '._ISMANDATORY, 'required', null, 'client');
         $form -> addElement('select', 'status', _STATUS, array(1 => _PUBLIC, 2 => _LOCKED, 3 => _INVISIBLE));
@@ -120,6 +125,7 @@ class f_forums extends MagesterEntity
                                    'lessons_ID' => $this -> {$this -> entity}['lessons_ID'],
                  'status' => $this -> {$this -> entity}['status'],
                  'comments' => $this -> {$this -> entity}['comments']));
+
         return $form;
     }
     /**
@@ -129,7 +135,8 @@ class f_forums extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         $values = $form -> exportValues();
         $fields = array("title" => $values['title'],
                         "lessons_ID" => isset($values['lessons_ID']) ? $values['lessons_ID'] : $defaultLesson,
@@ -152,7 +159,8 @@ class f_forums extends MagesterEntity
      * @see libraries/MagesterEntity#persist()
 
      */
-    public function persist() {
+    public function persist()
+    {
         parent :: persist();
         //Propagate the forum status to all of its subforums and topics
         $result = eF_getTableData("f_forums", "*", "id=".$this -> {$this -> entity}['id']);
@@ -179,14 +187,15 @@ class f_forums extends MagesterEntity
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $new_id = eF_insertTableData("f_forums", $fields);
         MagesterSearch :: insertText($fields['title'], $new_id, "f_forums", "title");
         if (mb_strlen($fields['comments']) > 3) {
@@ -207,7 +216,7 @@ class f_forums extends MagesterEntity
     }
     /**
 
-     * 
+     *
 
      * @param $tree
 
@@ -224,7 +233,8 @@ class f_forums extends MagesterEntity
      * @return unknown_type
 
      */
-    public static function calculateForumStats($tree, $node, $topics, $polls, $messages, $last_post) {
+    public static function calculateForumStats($tree, $node, $topics, $polls, $messages, $last_post)
+    {
         $total = array();
         $total['topics'] += $topics[$node];
         $total['polls'] += $polls[$node];
@@ -244,12 +254,13 @@ class f_forums extends MagesterEntity
                 $last_post[$id] > $total['last_post'] ? $total['last_post'] = $last_post[$id] : '';
             }
         }
+
         return $total;
     }
 }
 /**
 
- * 
+ *
 
  * @author user
 
@@ -260,12 +271,13 @@ class f_topics extends MagesterEntity
 {
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         $this -> entity = 'f_topics';
         parent :: __construct($param);
     }
@@ -276,7 +288,8 @@ class f_topics extends MagesterEntity
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
         $fmid = eF_getTableDataFlat("f_messages", "id", "f_topics_ID=".$this -> {$this -> entity}['id']);
         eF_deleteTableData("f_messages", "f_topics_ID=".$this -> {$this -> entity}['id']);
         parent :: delete();
@@ -290,7 +303,8 @@ class f_topics extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'title', _TITLE, 'class = "inputText"');
      $form -> addRule('title', _THEFIELD.' "'._TITLE.'" '._ISMANDATORY, 'required', null, 'client');
      $form -> addElement('select', 'status', _STATUS, array(1 => _PUBLIC, 2 => _LOCKED, 3 => _INVISIBLE));
@@ -298,6 +312,7 @@ class f_topics extends MagesterEntity
      $form -> addElement('submit', 'submit_add_topic', _SUBMIT, 'class = "flatButton"');
         $form -> setDefaults(array('title' => $this -> {$this -> entity}['title'],
                                    'status' => $this -> {$this -> entity}['status']));
+
         return $form;
     }
     /**
@@ -307,7 +322,8 @@ class f_topics extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         $values = $form -> exportValues();
         if (isset($_GET['edit'])) {
          $fields = array("title" => $values['title'],
@@ -325,21 +341,23 @@ class f_topics extends MagesterEntity
             self :: create($fields);
         }
     }
-    public function persist() {
+    public function persist()
+    {
         parent :: persist();
         MagesterSearch :: removeText('f_topics', $this -> {$this -> entity}['id'], '');
         MagesterSearch :: insertText($fields['title'], $this -> {$this -> entity}['id'], "f_topics", "title");
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         //The message field is only used for creating the topic's initial message
         $message = $fields['message'];
         unset($fields['message']);
@@ -369,15 +387,17 @@ class f_topics extends MagesterEntity
 			);
     }
 }
-class f_messages extends MagesterEntity {
+class f_messages extends MagesterEntity
+{
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         $this -> entity = 'f_messages';
         parent :: __construct($param);
     }
@@ -388,7 +408,8 @@ class f_messages extends MagesterEntity {
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
         parent :: delete();
         MagesterSearch :: removeText('f_messages', $this -> {$this -> entity}['id'], '');
     }
@@ -399,7 +420,8 @@ class f_messages extends MagesterEntity {
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'title', _TITLE, 'class = "inputText"');
      $form -> addElement('textarea', 'body', _BODY, 'id = "editor_message_data" class = "inputTextarea simpleEditor"');
      $form -> addElement('hidden', 'replyto', null);
@@ -413,6 +435,7 @@ class f_messages extends MagesterEntity {
      }
      $form -> setDefaults(array('title' => $this -> {$this -> entity}['title'],
                                    'body' => $this -> {$this -> entity}['body']));
+
         return $form;
     }
     /**
@@ -422,7 +445,8 @@ class f_messages extends MagesterEntity {
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         $values = $form -> exportValues();
         if (isset($_GET['edit'])) {
          $fields = array("title" => $values['title'],
@@ -446,7 +470,8 @@ class f_messages extends MagesterEntity {
      * @see libraries/MagesterEntity#persist()
 
      */
-    public function persist() {
+    public function persist()
+    {
         parent :: persist();
         MagesterSearch :: removeText('f_messages', $this -> {$this -> entity}['id'], '');
         MagesterSearch :: insertText($fields['title'], $this -> {$this -> entity}['id'], "f_messages", "title");
@@ -456,14 +481,15 @@ class f_messages extends MagesterEntity {
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $new_id = eF_insertTableData("f_messages", $fields);
         MagesterSearch :: insertText($fields['title'], $new_id, "f_messages", "title");
         if (mb_strlen($fields['body']) > 3) {
@@ -479,15 +505,17 @@ class f_messages extends MagesterEntity {
                    "entity_name" => $fields['title']));
     }
 }
-class f_poll extends MagesterEntity {
+class f_poll extends MagesterEntity
+{
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         $this -> entity = 'f_poll';
         parent :: __construct($param);
     }
@@ -498,7 +526,8 @@ class f_poll extends MagesterEntity {
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
        $result = eF_getTableData("f_poll", "users_LOGIN", "id=".$this -> {$this -> entity}['id']); //Get poll information, to make sure that the user has the priviledge to delete it
        eF_deleteTableData("f_users_to_polls", "f_poll_ID=".$this -> {$this -> entity}['id']);
        parent :: delete();
@@ -511,7 +540,8 @@ class f_poll extends MagesterEntity {
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'poll_subject', _SUBJECT, 'class = "inputText"');
      $form -> addRule('poll_subject', _THEFIELD.' "'._TITLE.'" '._ISMANDATORY, 'required', null, 'client');
      $form -> addElement('textarea', 'poll_text', _QUESTIONTEXT, 'class = "inputTextarea simpleEditor"');
@@ -539,6 +569,7 @@ class f_poll extends MagesterEntity {
             }
             $form -> setDefaults(array('options['.$key.']' => htmlspecialchars_decode($value, ENT_QUOTES)));
         }
+
         return $form;
     }
     /**
@@ -548,7 +579,8 @@ class f_poll extends MagesterEntity {
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         $values = $form -> getSubmitValues();
         foreach ($values['options'] as $key => $value) {
             $values['options'][$key] = htmlspecialchars($value, ENT_QUOTES,'UTF-8');
@@ -559,7 +591,7 @@ class f_poll extends MagesterEntity {
         $end = mktime(0, 0, 0, $form_values['to']['m'], $form_values['to']['d'], $form_values['to']['Y']);
         if ($start > $end) {
             throw new Exception(_ENDDATEMUSTBEBEFORESTARTDATE);
-        } else if ($form -> validate()) {
+        } elseif ($form -> validate()) {
             $fields = array('options' => $options,
                             'title' => $form_values['poll_subject'],
                             'question' => $form_values['poll_text'],
@@ -583,21 +615,23 @@ class f_poll extends MagesterEntity {
      * @see libraries/MagesterEntity#persist()
 
      */
-    public function persist() {
+    public function persist()
+    {
         parent :: persist();
         MagesterSearch :: removeText('f_poll', $this -> {$this -> entity}['id'], 'title');
         MagesterSearch :: insertText($fields['title'], $this -> {$this -> entity}['id'], "f_poll", "title");
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $new_id = eF_insertTableData("f_poll", $fields);
         MagesterSearch :: insertText($fields['title'], $new_id, "f_poll", "title");
         if (mb_strlen($fields['question']) > 3) {

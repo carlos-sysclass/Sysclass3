@@ -162,24 +162,25 @@ tinymceConfigs["digestEditor"]
 );
 
 var tinyMCEmode = true;
-function toggleEditor(id, editor_selector) {
+function toggleEditor(id, editor_selector)
+{
  if (!tinyMCE.get(id)) {
   tinyMCE.settings = tinymceConfigs[editor_selector];
   tinyMCE.execCommand(\'mceAddControl\', false, id);
   tinyMCEmode = true;
- }
- else {
+ } else {
   tinyMCE.execCommand(\'mceRemoveControl\', false, id);
   tinyMCEmode = false;
  }
 }
-function digestHandleEvent(e) {
+function digestHandleEvent(e)
+{
        if (e.type == \'click\') {
            myActiveElement="";
        }
+
        return true;
 }
 
 ';
 print $str;
-?>

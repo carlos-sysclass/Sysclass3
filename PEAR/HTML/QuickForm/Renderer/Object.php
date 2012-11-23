@@ -3,7 +3,7 @@
 
 /**
  * A concrete renderer for HTML_QuickForm, makes an object from form contents
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -73,7 +73,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
     var $_elementType = 'QuickFormElement';
 
     /**
-    * Additional style information for different elements  
+    * Additional style information for different elements
     * @var array $_elementStyles
     */
     var $_elementStyles = array();
@@ -85,14 +85,13 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
     var $_collectHidden = false;
    /**#@-*/
 
-
     /**
      * Constructor
      *
      * @param bool    true: collect all hidden elements
      * @access public
      */
-    function HTML_QuickForm_Renderer_Object($collecthidden = false) 
+    function HTML_QuickForm_Renderer_Object($collecthidden = false)
     {
         $this->HTML_QuickForm_Renderer();
         $this->_collectHidden = $collecthidden;
@@ -103,7 +102,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
      * Return the rendered Object
      * @access public
      */
-    function toObject() 
+    function toObject()
     {
         return $this->_obj;
     }
@@ -118,7 +117,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_elementType = $type;
     }
 
-    function startForm(&$form) 
+    function startForm(&$form)
     {
         $this->_obj->frozen = $form->isFrozen();
         $this->_obj->javascript = $form->getValidationScript();
@@ -126,7 +125,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_obj->requirednote = $form->getRequiredNote();
         $this->_obj->errors = new StdClass;
 
-        if($this->_collectHidden) {
+        if ($this->_collectHidden) {
             $this->_obj->hidden = '';
         }
         $this->_elementIdx = 1;
@@ -134,7 +133,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_sectionCount = 0;
     } // end func startForm
 
-    function renderHeader(&$header) 
+    function renderHeader(&$header)
     {
         $hobj = new StdClass;
         $hobj->header = $header->toHtml();
@@ -142,10 +141,10 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_currentSection = $this->_sectionCount++;
     }
 
-    function renderElement(&$element, $required, $error) 
+    function renderElement(&$element, $required, $error)
     {
         $elObj = $this->_elementToObject($element, $required, $error);
-        if(!empty($error)) {
+        if (!empty($error)) {
             $name = $elObj->name;
             $this->_obj->errors->$name = $error;
         }
@@ -154,23 +153,23 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
     function renderHidden(&$element)
     {
-        if($this->_collectHidden) {
+        if ($this->_collectHidden) {
             $this->_obj->hidden .= $element->toHtml() . "\n";
         } else {
             $this->renderElement($element, false, null);
         }
     } //end func renderHidden
 
-    function startGroup(&$group, $required, $error) 
+    function startGroup(&$group, $required, $error)
     {
         $this->_currentGroup = $this->_elementToObject($group, $required, $error);
-        if(!empty($error)) {
+        if (!empty($error)) {
             $name = $this->_currentGroup->name;
             $this->_obj->errors->$name = $error;
         }
     } // end func startGroup
 
-    function finishGroup(&$group) 
+    function finishGroup(&$group)
     {
         $this->_storeObject($this->_currentGroup);
         $this->_currentGroup = null;
@@ -185,9 +184,9 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
      * @param error string    Error associated with the element
      * @return object
      */
-    function _elementToObject(&$element, $required, $error) 
+    function _elementToObject(&$element, $required, $error)
     {
-        if($this->_elementType) {
+        if ($this->_elementType) {
             $ret = new $this->_elementType;
         }
         $ret->name = $element->getName();
@@ -207,30 +206,31 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $ret->required = $required;
         $ret->error = $error;
 
-        if(isset($this->_elementStyles[$ret->name])) {
+        if (isset($this->_elementStyles[$ret->name])) {
             $ret->style = $this->_elementStyles[$ret->name];
             $ret->styleTemplate = "styles/". $ret->style .".html";
         }
-        if($ret->type == 'group') {
+        if ($ret->type == 'group') {
             $ret->separator = $element->_separator;
             $ret->elements = array();
         } else {
             $ret->html = $element->toHtml();
         }
+
         return $ret;
     }
 
-    /** 
+    /**
      * Stores an object representation of an element in the form array
      *
      * @access private
      * @param QuickformElement     Object representation of an element
      * @return void
      */
-    function _storeObject($elObj) 
+    function _storeObject($elObj)
     {
         $name = $elObj->name;
-        if(is_object($this->_currentGroup) && $elObj->type != 'group') {
+        if (is_object($this->_currentGroup) && $elObj->type != 'group') {
             $this->_currentGroup->elements[] = $elObj;
         } elseif (isset($this->_currentSection)) {
             $this->_obj->sections[$this->_currentSection]->elements[] = $elObj;
@@ -241,7 +241,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
     function setElementStyle($elementName, $styleName = null)
     {
-        if(is_array($elementName)) {
+        if (is_array($elementName)) {
             $this->_elementStyles = array_merge($this->_elementStyles, $elementName);
         } else {
             $this->_elementStyles[$elementName] = $styleName;
@@ -250,13 +250,11 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
 } // end class HTML_QuickForm_Renderer_Object
 
-
-
 /**
  * Convenience class for the form object passed to outputObject()
- * 
+ *
  * Eg.
- * <pre>  
+ * <pre>
  * {form.outputJavaScript():h}
  * {form.outputHeader():h}
  *   <table>
@@ -266,7 +264,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
  *   </table>
  * </form>
  * </pre>
- * 
+ *
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Ron McClain <ron@humaniq.com>
@@ -306,7 +304,7 @@ class QuickformForm
     var $hidden;
 
    /**
-    * Set if there were validation errors.  
+    * Set if there were validation errors.
     * StdClass object with element names for keys and their
     * error messages as values
     * @var object $errors
@@ -315,7 +313,7 @@ class QuickformForm
 
    /**
     * Array of QuickformElementObject elements.  If there are headers in the form
-    * this will be empty and the elements will be in the 
+    * this will be empty and the elements will be in the
     * separate sections
     * @var array $elements
     */
@@ -329,7 +327,7 @@ class QuickformForm
 
    /**
     * Output &lt;form&gt; header
-    * {form.outputHeader():h} 
+    * {form.outputHeader():h}
     * @return string    &lt;form attributes&gt;
     */
     function outputHeader()
@@ -348,11 +346,10 @@ class QuickformForm
     }
 } // end class QuickformForm
 
-
 /**
  * Convenience class describing a form element.
  *
- * The properties defined here will be available from 
+ * The properties defined here will be available from
  * your flexy templates by referencing
  * {form.zip.label:h}, {form.zip.html:h}, etc.
  *
@@ -445,7 +442,6 @@ class QuickformElement
         return ($this->type == "submit" || $this->type == "reset");
     }
 
-
    /**
     * XXX: why does it use Flexy when all other stuff here does not depend on it?
     */
@@ -455,7 +451,7 @@ class QuickformElement
         HTML_Template_Flexy::staticQuickTemplate('styles/' . $this->style . '.html', $this);
         $ret = ob_get_contents();
         ob_end_clean();
+
         return $ret;
     }
 } // end class QuickformElement
-?>

@@ -3,7 +3,7 @@
 class y_axis extends y_axis_base
 {
 	function y_axis(){}
-	
+
 	//
 	// y axis right does NOT control
 	// grid colour, the left axis does
@@ -13,5 +13,5 @@ class y_axis extends y_axis_base
 		$tmp = 'grid-colour';
 		$this->$tmp = $colour;
 	}
-	
+
 }

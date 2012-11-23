@@ -1,6 +1,6 @@
 <?php
-include_once "includes/header.php";
-include_once "includes/navbar.php";
+include_once 'includes/header.php';
+include_once 'includes/navbar.php';
 ?>
 <p>
 Source Listing:
@@ -18,13 +18,13 @@ Source Listing:
   ?>
 </ul>
 <?php
-if( isset($_REQUEST['view']) ) {
+if ( isset($_REQUEST['view']) ) {
 	$hash = $_REQUEST['view'];
 	$n = array_search($hash, array_map(sha1, $files));
 	$fileName = $files[$n];
   ?>
-  <hr />  
-	Viewing: <?php echo $fileName;?>	
+  <hr />
+	Viewing: <?php echo $fileName;?>
 	<hr />
 	<?php
 	highlight_file($fileName);
@@ -32,6 +32,4 @@ if( isset($_REQUEST['view']) ) {
 	<hr />
 <?php
 }
-include_once "includes/footer.php";	
-?>
-
+include_once 'includes/footer.php';

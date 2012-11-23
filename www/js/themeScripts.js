@@ -239,7 +239,7 @@ function getJqueryPeriodicData() {
 			*/
 			
 			if (status == 'success') {
-				datepickerData = jQuery.extend(true, defaultDatepicker, data);
+				datepickerData = jQuery.extend(true, jQuery.datepicker.regional[""], defaultDatepicker, data);
 				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(datepickerData);
 				
 				datepickerData.showButtonPanel 	= false;
@@ -248,15 +248,18 @@ function getJqueryPeriodicData() {
 				
 				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(datepickerData);
 			} else {
-				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(defaultDatepicker);
+				datepickerData = jQuery.extend(true, jQuery.datepicker.regional[""], defaultDatepicker);
+				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(datepickerData);
 				
 				defaultDatepicker.showButtonPanel 	= false;
 				defaultDatepicker.buttonImageOnly 	= false;
 				defaultDatepicker.showOn			= "focus";
 
 				
-				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(defaultDatepicker);
+				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(datepickerData);
 			}
+			jQuery.datepicker.setDefaults(datepickerData);
+			jQuery.datepicker.regional[""] = datepickerData;
 			/*
 			jQuery( ":input[alt='date']" ).each(function() {
 				alert(jQuery(this).val());
@@ -265,6 +268,7 @@ function getJqueryPeriodicData() {
 		}
 	);
 	
+	Globalize.culture( "pt-BR" ); /** @todo SET THIS TO  GET CURRENT CULTURE */
 	// Requires jQuery!
 	// Requires jQuery!
 	/*
@@ -275,6 +279,20 @@ function getJqueryPeriodicData() {
 	    dataType: "script"
 	});
 	*/
-
 	
+    $.widget( "custom.autocategorycomplete", $.ui.autocomplete, {
+        _renderMenu: function( ul, items ) {
+            var that = this;
+            currentCourse = "";
+            $.each( items, function( index, item ) {
+                if ( item.course_id != currentCourse ) {
+                    ul.append( "<li class='ui-autocomplete-category'>" + item.course_name + "</li>" );
+                    currentCourse = item.course_id;
+                }
+                that._renderItemData( ul, item );
+            });
+        }
+    });
+	
+
 })(jQuery);

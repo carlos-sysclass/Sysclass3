@@ -25,7 +25,6 @@
  * @version	1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel5
  *
@@ -110,7 +109,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 *
 	 * @param	PHPExcel	$phpExcel	PHPExcel object
 	 */
-	public function __construct(PHPExcel $phpExcel) {
+	public function __construct(PHPExcel $phpExcel)
+	{
 		$this->_phpExcel	= $phpExcel;
 
 		$this->_parser		= new PHPExcel_Writer_Excel5_Parser();
@@ -122,8 +122,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 * @param	string		$pFilename
 	 * @throws	Exception
 	 */
-	public function save($pFilename = null) {
-
+	public function save($pFilename = null)
+	{
 		// garbage collect
 		$this->_phpExcel->garbageCollect();
 
@@ -205,14 +205,14 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 
 		$this->_documentSummaryInformation = $this->_writeDocumentSummaryInformation();
 		// initialize OLE Document Summary Information
-		if(isset($this->_documentSummaryInformation) && !empty($this->_documentSummaryInformation)){
+		if (isset($this->_documentSummaryInformation) && !empty($this->_documentSummaryInformation)) {
 			$OLE_DocumentSummaryInformation = new PHPExcel_Shared_OLE_PPS_File(PHPExcel_Shared_OLE::Asc2Ucs(chr(5) . 'DocumentSummaryInformation'));
 			$OLE_DocumentSummaryInformation->append($this->_documentSummaryInformation);
 		}
 
 		$this->_summaryInformation = $this->_writeSummaryInformation();
 		// initialize OLE Summary Information
-		if(isset($this->_summaryInformation) && !empty($this->_summaryInformation)){
+		if (isset($this->_summaryInformation) && !empty($this->_summaryInformation)) {
 		  $OLE_SummaryInformation = new PHPExcel_Shared_OLE_PPS_File(PHPExcel_Shared_OLE::Asc2Ucs(chr(5) . 'SummaryInformation'));
 		  $OLE_SummaryInformation->append($this->_summaryInformation);
 		}
@@ -220,11 +220,11 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		// define OLE Parts
 		$arrRootData = array($OLE);
 		// initialize OLE Properties file
-		if(isset($OLE_SummaryInformation)){
+		if (isset($OLE_SummaryInformation)) {
 			$arrRootData[] = $OLE_SummaryInformation;
 		}
 		// initialize OLE Extended Properties file
-		if(isset($OLE_DocumentSummaryInformation)){
+		if (isset($OLE_DocumentSummaryInformation)) {
 			$arrRootData[] = $OLE_DocumentSummaryInformation;
 		}
 
@@ -244,7 +244,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 * @throws	Exception	Exception when directory does not exist
 	 * @return PHPExcel_Writer_Excel5
 	 */
-	public function setTempDir($pValue = '') {
+	public function setTempDir($pValue = '')
+	{
 		return $this;
 	}
 
@@ -253,7 +254,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 *
 	 * @return boolean
 	 */
-	public function getPreCalculateFormulas() {
+	public function getPreCalculateFormulas()
+	{
 		return $this->_preCalculateFormulas;
 	}
 
@@ -262,7 +264,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 *
 	 * @param boolean $pValue	Pre-Calculate Formulas?
 	 */
-	public function setPreCalculateFormulas($pValue = true) {
+	public function setPreCalculateFormulas($pValue = true)
+	{
 		$this->_preCalculateFormulas = $pValue;
 	}
 
@@ -479,7 +482,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 
 					$bstoreContainer->addBSE($BSE);
 
-				} else if ($drawing instanceof PHPExcel_Worksheet_MemoryDrawing) {
+				} elseif ($drawing instanceof PHPExcel_Worksheet_MemoryDrawing) {
 
 					switch ($drawing->getRenderingFunction()) {
 
@@ -522,8 +525,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 * Build the OLE Part for DocumentSummary Information
 	 * @return string
 	 */
-	private function _writeDocumentSummaryInformation(){
-
+	private function _writeDocumentSummaryInformation()
+	{
 		// offset: 0; size: 2; must be 0xFE 0xFF (UTF-16 LE byte order mark)
 		$data = pack('v', 0xFFFE);
 		// offset: 2; size: 2;
@@ -556,7 +559,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		$dataSection_NumProps++;
 
 		// GKPIDDSI_CATEGORY : Category
-		if($this->_phpExcel->getProperties()->getCategory()){
+		if ($this->_phpExcel->getProperties()->getCategory()) {
 			$dataProp = $this->_phpExcel->getProperties()->getCategory();
 			$dataProp = 'Test result file';
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x02),
@@ -653,7 +656,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		//		4 	Property count
 		//		8 * $dataSection_NumProps (8 =  ID (4) + OffSet(4))
 		$dataSection_Content_Offset = 8 + $dataSection_NumProps * 8;
-		foreach ($dataSection as $dataProp){
+		foreach ($dataSection as $dataProp) {
 			// Summary
 			$dataSection_Summary .= pack($dataProp['summary']['pack'], $dataProp['summary']['data']);
 			// Offset
@@ -661,25 +664,22 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			// DataType
 			$dataSection_Content .= pack($dataProp['type']['pack'], $dataProp['type']['data']);
 			// Data
-			if($dataProp['type']['data'] == 0x02){ // 2 byte signed integer
+			if ($dataProp['type']['data'] == 0x02) { // 2 byte signed integer
 				$dataSection_Content .= pack('V', $dataProp['data']['data']);
 
 				$dataSection_Content_Offset += 4 + 4;
-			}
-			elseif($dataProp['type']['data'] == 0x03){ // 4 byte signed integer
+			} elseif ($dataProp['type']['data'] == 0x03) { // 4 byte signed integer
 				$dataSection_Content .= pack('V', $dataProp['data']['data']);
 
 				$dataSection_Content_Offset += 4 + 4;
-			}
-			elseif($dataProp['type']['data'] == 0x0B){ // Boolean
-				if($dataProp['data']['data'] == false){
+			} elseif ($dataProp['type']['data'] == 0x0B) { // Boolean
+				if ($dataProp['data']['data'] == false) {
 					$dataSection_Content .= pack('V', 0x0000);
 				} else {
 					$dataSection_Content .= pack('V', 0x0001);
 				}
 				$dataSection_Content_Offset += 4 + 4;
-			}
-			elseif($dataProp['type']['data'] == 0x1E){ // null-terminated string prepended by dword string length
+			} elseif ($dataProp['type']['data'] == 0x1E) { // null-terminated string prepended by dword string length
 				// Null-terminated string
 				$dataProp['data']['data'] .= chr(0);
 				$dataProp['data']['length'] += 1;
@@ -691,13 +691,11 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 				$dataSection_Content .= $dataProp['data']['data'];
 
 				$dataSection_Content_Offset += 4 + 4 + strlen($dataProp['data']['data']);
-			}
-			elseif($dataProp['type']['data'] == 0x40){ // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
+			} elseif ($dataProp['type']['data'] == 0x40) { // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
 				$dataSection_Content .= $dataProp['data']['data'];
 
 				$dataSection_Content_Offset += 4 + 8;
-			}
-			else {
+			} else {
 				// Data Type Not Used at the moment
 				$dataSection_Content .= $dataProp['data']['data'];
 
@@ -724,7 +722,8 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 * Build the OLE Part for Summary Information
 	 * @return string
 	 */
-	private function _writeSummaryInformation(){
+	private function _writeSummaryInformation()
+	{
 		// offset: 0; size: 2; must be 0xFE 0xFF (UTF-16 LE byte order mark)
 		$data = pack('v', 0xFFFE);
 		// offset: 2; size: 2;
@@ -757,7 +756,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		$dataSection_NumProps++;
 
 		//	Title
-		if($this->_phpExcel->getProperties()->getTitle()){
+		if ($this->_phpExcel->getProperties()->getTitle()) {
 			$dataProp = $this->_phpExcel->getProperties()->getTitle();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x02),
 								   'offset' => array('pack' => 'V'),
@@ -766,7 +765,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Subject
-		if($this->_phpExcel->getProperties()->getSubject()){
+		if ($this->_phpExcel->getProperties()->getSubject()) {
 			$dataProp = $this->_phpExcel->getProperties()->getSubject();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x03),
 								   'offset' => array('pack' => 'V'),
@@ -775,7 +774,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Author (Creator)
-		if($this->_phpExcel->getProperties()->getCreator()){
+		if ($this->_phpExcel->getProperties()->getCreator()) {
 			$dataProp = $this->_phpExcel->getProperties()->getCreator();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x04),
 								   'offset' => array('pack' => 'V'),
@@ -784,7 +783,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Keywords
-		if($this->_phpExcel->getProperties()->getKeywords()){
+		if ($this->_phpExcel->getProperties()->getKeywords()) {
 			$dataProp = $this->_phpExcel->getProperties()->getKeywords();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x05),
 								   'offset' => array('pack' => 'V'),
@@ -793,7 +792,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Comments (Description)
-		if($this->_phpExcel->getProperties()->getDescription()){
+		if ($this->_phpExcel->getProperties()->getDescription()) {
 			$dataProp = $this->_phpExcel->getProperties()->getDescription();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x06),
 								   'offset' => array('pack' => 'V'),
@@ -802,7 +801,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Last Saved By (LastModifiedBy)
-		if($this->_phpExcel->getProperties()->getLastModifiedBy()){
+		if ($this->_phpExcel->getProperties()->getLastModifiedBy()) {
 			$dataProp = $this->_phpExcel->getProperties()->getLastModifiedBy();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x08),
 								   'offset' => array('pack' => 'V'),
@@ -811,7 +810,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Created Date/Time
-		if($this->_phpExcel->getProperties()->getCreated()){
+		if ($this->_phpExcel->getProperties()->getCreated()) {
 			$dataProp = $this->_phpExcel->getProperties()->getCreated();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x0C),
 								   'offset' => array('pack' => 'V'),
@@ -820,7 +819,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			$dataSection_NumProps++;
 		}
 		//	Modified Date/Time
-		if($this->_phpExcel->getProperties()->getModified()){
+		if ($this->_phpExcel->getProperties()->getModified()) {
 			$dataProp = $this->_phpExcel->getProperties()->getModified();
 			$dataSection[] = array('summary'=> array('pack' => 'V', 'data' => 0x0D),
 								   'offset' => array('pack' => 'V'),
@@ -840,7 +839,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		//		4 	Property count
 		//		8 * $dataSection_NumProps (8 =  ID (4) + OffSet(4))
 		$dataSection_Content_Offset = 8 + $dataSection_NumProps * 8;
-		foreach ($dataSection as $dataProp){
+		foreach ($dataSection as $dataProp) {
 			// Summary
 			$dataSection_Summary .= pack($dataProp['summary']['pack'], $dataProp['summary']['data']);
 			// Offset
@@ -848,17 +847,15 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 			// DataType
 			$dataSection_Content .= pack($dataProp['type']['pack'], $dataProp['type']['data']);
 			// Data
-			if($dataProp['type']['data'] == 0x02){ // 2 byte signed integer
+			if ($dataProp['type']['data'] == 0x02) { // 2 byte signed integer
 				$dataSection_Content .= pack('V', $dataProp['data']['data']);
 
 				$dataSection_Content_Offset += 4 + 4;
-			}
-			elseif($dataProp['type']['data'] == 0x03){ // 4 byte signed integer
+			} elseif ($dataProp['type']['data'] == 0x03) { // 4 byte signed integer
 				$dataSection_Content .= pack('V', $dataProp['data']['data']);
 
 				$dataSection_Content_Offset += 4 + 4;
-			}
-			elseif($dataProp['type']['data'] == 0x1E){ // null-terminated string prepended by dword string length
+			} elseif ($dataProp['type']['data'] == 0x1E) { // null-terminated string prepended by dword string length
 				// Null-terminated string
 				$dataProp['data']['data'] .= chr(0);
 				$dataProp['data']['length'] += 1;
@@ -870,13 +867,11 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 				$dataSection_Content .= $dataProp['data']['data'];
 
 				$dataSection_Content_Offset += 4 + 4 + strlen($dataProp['data']['data']);
-			}
-			elseif($dataProp['type']['data'] == 0x40){ // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
+			} elseif ($dataProp['type']['data'] == 0x40) { // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
 				$dataSection_Content .= $dataProp['data']['data'];
 
 				$dataSection_Content_Offset += 4 + 8;
-			}
-			else {
+			} else {
 				// Data Type Not Used at the moment
 			}
 		}

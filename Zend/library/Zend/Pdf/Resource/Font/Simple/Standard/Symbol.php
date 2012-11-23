@@ -21,7 +21,6 @@
 /** Zend_Pdf_Resource_Font_Simple_Standard */
 require_once 'Zend/Pdf/Resource/Font/Simple/Standard.php';
 
-
 /**
  * Implementation for the standard PDF font Symbol.
  *
@@ -43,7 +42,6 @@ require_once 'Zend/Pdf/Resource/Font/Simple/Standard.php';
 class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Font_Simple_Standard
 {
   /**** Instance Variables ****/
-
 
     /**
      * Array for conversion from local encoding to special font encoding.
@@ -171,10 +169,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
             0xfc => "\xf8\xfc",   0xfd => "\xf8\xfd",   0xfe => "\xf8\xfe",
         );
 
-
-
   /**** Public Interface ****/
-
 
   /* Object Lifecycle */
 
@@ -184,7 +179,6 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
     public function __construct()
     {
         parent::__construct();
-
 
         /* Object properties */
 
@@ -343,7 +337,6 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
         $this->_cmap = Zend_Pdf_Cmap::cmapWithTypeData(
           Zend_Pdf_Cmap::TYPE_BYTE_ENCODING_STATIC, $cmapData);
 
-
         /* Resource dictionary */
 
         /* The resource dictionary for the standard fonts is sparse because PDF
@@ -396,6 +389,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
                  */
             }
         }
+
         return $encodedString;
     }
 
@@ -425,6 +419,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
         if ($charEncoding != 'UTF-16BE') {
             $decodedString = iconv('UTF-16BE', $charEncoding, $decodedString);
         }
+
         return $decodedString;
     }
 
@@ -453,6 +448,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_Symbol extends Zend_Pdf_Resource_Fo
         if ($charEncoding != 'ISO-8859-1') {
             $string = iconv($charEncoding, 'ISO-8859-1', $string);
         }
+
         return $this->decodeString($string, 'UTF-16BE');
     }
 

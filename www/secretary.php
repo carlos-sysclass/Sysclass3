@@ -71,7 +71,7 @@ foreach ($loadedModules as $module) {
     }
 
     // Get module css
-    if($mod_css_file = $module -> getModuleCSS()) {
+    if ($mod_css_file = $module -> getModuleCSS()) {
         if (is_file ($mod_css_file)) {
 
             // Get the relative path
@@ -83,7 +83,7 @@ foreach ($loadedModules as $module) {
     }
 
     // Get module js
-    if($mod_js_file = $module -> getModuleJS()) {
+    if ($mod_js_file = $module -> getModuleJS()) {
         if (is_file($mod_js_file)) {
             // Get the relative path
             if ($position = strpos($mod_js_file, "modules")) {
@@ -96,7 +96,7 @@ foreach ($loadedModules as $module) {
 
     // Run onNewPageLoad code of the module (if such is defined)
     $module -> onNewPageLoad();
-    
+
 }
 
 /*Added Session variable for search results*/
@@ -106,12 +106,12 @@ $_SESSION['referer'] = $_SERVER['REQUEST_URI'];
 if ($GLOBALS['currentTheme'] -> options['sidebar_interface'] == 1 || $GLOBALS['currentTheme'] -> options['sidebar_interface'] == 2) {
  // Used inside new_sidebar_frame to opt out code
  $horizontal_inframe_version = true;
- include "new_sidebar.php";
+ include 'new_sidebar.php';
 }
 
 //include "new_sidebar.php";
 
-//var_dump($GLOBALS['currentTheme'] -> options['sidebar_interface']); 
+//var_dump($GLOBALS['currentTheme'] -> options['sidebar_interface']);
 
 
 
@@ -124,7 +124,7 @@ $smarty -> assign("T_OP", isset($_GET['op']) ? $_GET['op'] : false);
 $_student_ = $_professor_ = $_admin_ = 0;
 if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'student') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'student')) {
     $_student_ = 1;
-} else if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
+} elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
     $_professor_ = 1;
 } else {
     $_admin_ = 1;
@@ -136,97 +136,74 @@ $smarty -> assign("_admin_", $_admin_);
 try {
  if ($ctg == 'control_panel') {
      /***/
-     require_once ("control_panel.php");
- }
- elseif ($ctg == 'landing_page') {
+     require_once 'control_panel.php';
+ } elseif ($ctg == 'landing_page') {
      /***/
-     require_once ("landing_page.php");
- }
- elseif ($ctg == 'social') {
+     require_once 'landing_page.php';
+ } elseif ($ctg == 'social') {
      /***/
-     require_once ("social.php");
- }
- elseif ($ctg == 'languages') {
+     require_once 'social.php';
+ } elseif ($ctg == 'languages') {
      /***/
-     require_once ("languages.php");
- }
- elseif ($ctg == 'forum') {
+     require_once 'languages.php';
+ } elseif ($ctg == 'forum') {
      /***/
-     require_once("includes/forum.php");
- }
- elseif ($ctg == 'messages') {
+     require_once 'includes/forum.php';
+ } elseif ($ctg == 'messages') {
      /***/
-     require_once("includes/messages.php");
- }
- elseif ($ctg == 'chat') {
+     require_once 'includes/messages.php';
+ } elseif ($ctg == 'chat') {
      /***/
-     require_once("includes/chat.php");
- }
- elseif ($ctg == 'backup') {
+     require_once 'includes/chat.php';
+ } elseif ($ctg == 'backup') {
      /***/
-     require_once ("backup.php");
- }
- elseif ($ctg == 'news') {
+     require_once 'backup.php';
+ } elseif ($ctg == 'news') {
      /***/
-     require_once ("news.php");
- }
- elseif ($ctg == 'user_profile') {
+     require_once 'news.php';
+ } elseif ($ctg == 'user_profile') {
      /***/
-     require_once ("user_profile.php");
- }
- elseif ($ctg == 'import_export') {
+     require_once 'user_profile.php';
+ } elseif ($ctg == 'import_export') {
      /***/
-     require_once ("import_export.php");
- }
- elseif ($ctg == 'system_config') {
+     require_once 'import_export.php';
+ } elseif ($ctg == 'system_config') {
      /***/
-  require_once ("includes/system_config.php");
- }
- elseif ($ctg == 'personal') {
+  require_once 'includes/system_config.php';
+ } elseif ($ctg == 'personal') {
      /**This part is used to display the user's personal information*/
-     include "includes/personal.php";
- }
- elseif ($ctg == 'maintenance') {
+     include 'includes/personal.php';
+ } elseif ($ctg == 'maintenance') {
      /***/
-     require_once ("maintenance.php");
- }
- elseif ($ctg == 'versionkey') {
+     require_once 'maintenance.php';
+ } elseif ($ctg == 'versionkey') {
      /***/
-     require_once ("versionkey.php");
- }
- elseif ($ctg == 'curriculums') {
+     require_once 'versionkey.php';
+ } elseif ($ctg == 'curriculums') {
      /***/
-     require_once ("curriculums.php");
- }
- elseif ($ctg == 'payments') {
+     require_once 'curriculums.php';
+ } elseif ($ctg == 'payments') {
      /***/
-     require_once ("payments.php");
- }
- elseif ($ctg == 'modules') {
+     require_once 'payments.php';
+ } elseif ($ctg == 'modules') {
      /***/
-     require_once ("includes/modules.php");
- }
- elseif ($ctg == 'users') {
+     require_once 'includes/modules.php';
+ } elseif ($ctg == 'users') {
      /***/
-     require_once ("users.php");
- }
- elseif ($ctg == 'lessons') {
+     require_once 'users.php';
+ } elseif ($ctg == 'lessons') {
      /***/
-     require_once ("lessons.php");
- }
- elseif ($ctg == 'directions') {
+     require_once 'lessons.php';
+ } elseif ($ctg == 'directions') {
      /***/
-     require_once "categories.php";
- }
- elseif ($ctg == 'archive') {
+     require_once 'categories.php';
+ } elseif ($ctg == 'archive') {
      /***/
-     require_once "archive.php";
- }
- elseif ($ctg == 'courses') {
+     require_once 'archive.php';
+ } elseif ($ctg == 'courses') {
      /***/
-     require_once "courses.php";
- }
- elseif ($ctg == "file_manager") {
+     require_once 'courses.php';
+ } elseif ($ctg == "file_manager") {
      //This page has a file manager, so bring it on with the correct options
      $basedir = $currentUser -> getDirectory();
      //Default options for the file manager
@@ -237,9 +214,8 @@ try {
         $url = basename($_SERVER['PHP_SELF']).'?ctg=file_manager';
         $extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
 
-        include "file_manager.php";
- }
- elseif ($ctg == 'logout_user') {
+        include 'file_manager.php';
+ } elseif ($ctg == 'logout_user') {
 
   // Done here to include administrator.php access control
   if ($_GET['ajax'] == "ajax" && eF_checkParameter($_GET['user'], "login")) {
@@ -250,64 +226,50 @@ try {
 
      /***/
      require_once 'logout_user.php';
- }
- elseif ($ctg == 'user_types') {
+ } elseif ($ctg == 'user_types') {
      /***/
      require_once 'user_types.php';
- }
- elseif ($ctg == 'user_groups') {
+ } elseif ($ctg == 'user_groups') {
      /***/
      require_once 'includes/groups.php';
- }
- elseif ($ctg == 'calendar') {
+ } elseif ($ctg == 'calendar') {
      if ($currentUser -> coreAccess['calendar'] != 'hidden' && $GLOBALS['configuration']['disable_calendar'] != 1) {
       /***/
-         require_once "calendar.php";
+         require_once 'calendar.php';
      } else {
          eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
      }
- }
- elseif ($ctg == 'search_courses') {
+ } elseif ($ctg == 'search_courses') {
   /**Search courses is used to find the course users that fulfill an arbitrary number of criteria */
-     require_once "search_courses.php";
- }
- elseif ($ctg == 'search_users') {
+     require_once 'search_courses.php';
+ } elseif ($ctg == 'search_users') {
 
-
-
- }
- elseif ($ctg == 'digests') {
+ } elseif ($ctg == 'digests') {
      /** Email digests feature */
-     require_once "digests.php";
- }
- elseif ($ctg == 'statistics') {
+     require_once 'digests.php';
+ } elseif ($ctg == 'statistics') {
      if (isset($currentUser -> coreAccess['statistics']) && $currentUser -> coreAccess['statistics'] == 'hidden') {
          eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
      }
      /** Statistics is the page that calculates and displays the system statistics.*/
-     require_once "statistics.php";
- }
- elseif ($ctg == 'module_hcd') {
+     require_once 'statistics.php';
+ } elseif ($ctg == 'module_hcd') {
      /***/
-     require_once "module_hcd.php";
- }
- elseif ($ctg == 'themes') {
+     require_once 'module_hcd.php';
+ } elseif ($ctg == 'themes') {
      /***/
-     require_once "themes.php";
- }
- else if ($ctg == 'tests') {
+     require_once 'themes.php';
+ } elseif ($ctg == 'tests') {
      /***/
-     require_once "module_tests.php";
+     require_once 'module_tests.php';
      /**Ranking tests */
-     require_once "tests.php";
- }
- else if ($ctg == 'facebook') {
+     require_once 'tests.php';
+ } elseif ($ctg == 'facebook') {
      /***/
-     require_once "module_facebook.php";
- }
- elseif ($ctg == 'module') {
+     require_once 'module_facebook.php';
+ } elseif ($ctg == 'module') {
      /***/
-     require_once "module.php";
+     require_once 'module.php';
  }
 
 /*
@@ -382,11 +344,10 @@ foreach ($loadedModules as $module) {
     // Get append finish loading blocks
     $result = $module -> onPageFinishLoadingSmartyTpl();
     if ($result !== FALSE) {
-    	$module_append_templates[] = $result; 
+    	$module_append_templates[] = $result;
     }
 }
 $smarty -> assign("T_TO_APPEND_TEMPLATES", $module_append_templates);
-
 
 $benchmark -> set('script');
 $smarty -> display('administrator.tpl');
@@ -396,6 +357,3 @@ $output = $benchmark -> display();
 if (G_DEBUG) {
  echo $output;
 }
-
-
-?>

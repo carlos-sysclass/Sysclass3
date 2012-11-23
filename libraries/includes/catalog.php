@@ -43,7 +43,7 @@ if (isset($_GET['fct'])) {
         } elseif ($_GET['type'] == 'credit' && isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
             $cart['credit'] += $_GET['id'];
         }
-    } else if ($_GET['fct'] == 'removeFromCart' && in_array($_GET['type'], $legalBuyTypes)) {
+    } elseif ($_GET['fct'] == 'removeFromCart' && in_array($_GET['type'], $legalBuyTypes)) {
         if ($_GET['type'] == 'lesson' && isset($_GET['id']) && in_array($_GET['id'], $legalLessonValues)) {
             unset($cart['lesson'][$_GET['id']]);
         } elseif ($_GET['type'] == 'course' && isset($_GET['id']) && in_array($_GET['id'], $legalCourseValues)) {
@@ -51,7 +51,7 @@ if (isset($_GET['fct'])) {
         } elseif ($_GET['type'] == 'credit') {
             unset($cart['credit']);
         }
-    } else if ($_GET['fct'] == 'removeAllFromCart') {
+    } elseif ($_GET['fct'] == 'removeAllFromCart') {
         unset($cart);
     }
 
@@ -66,7 +66,7 @@ if (isset($_GET['fct'])) {
     $smarty -> display("includes/blocks/cart.tpl");
     //It's always an ajax function
     exit;
-} else if (isset($_GET['return_paypal'])) {
+} elseif (isset($_GET['return_paypal'])) {
     if (isset($_GET['cart_entry']) && isset($_GET['product_type'])) {
 
     } else {
@@ -75,7 +75,7 @@ if (isset($_GET['fct'])) {
      eF_redirect(G_SERVERNAME.'studentpage.php?message='.urlencode(_TRANSACTIONCOMPLETELESSONSWILLBEASSIGNED).'&message_type=success');
     }
 
-} else if (isset($_GET['checkout'])) {
+} elseif (isset($_GET['checkout'])) {
     $currentUser = MagesterUserFactory::factory($_SESSION['s_login']);
     if ($currentUser -> user['user_type'] != 'administrator') {
      $lessons = $currentUser -> getEligibleNonLessons();
@@ -153,7 +153,7 @@ if (isset($_GET['fct'])) {
      //Remove the lesson from the cart if it's not eligible
      if (!$value['show_catalog'] || !$value['active'] || !$value['publish'] || $value['course_only']) {
       //Do nothing, simpy bypassing lesson
-     } else if (!$value['price']) {
+     } elseif (!$value['price']) {
       $freeLessons[] = $key;
      } else {
       $nonFreeLessons[] = $key;
@@ -164,7 +164,7 @@ if (isset($_GET['fct'])) {
      //Remove the course from the cart if it's not eligible
      if ((!$value['show_catalog'] && $course -> course['instance_source']) || !$value['active'] || !$value['publish']) {
       //Do nothing, simpy bypassing course
-     } else if (!$value['price']) {
+     } elseif (!$value['price']) {
       $freeCourses[] = $key;
      } else {
       $nonFreeCourses[] = $key;

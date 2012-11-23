@@ -17,13 +17,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Trailer */
 require_once 'Zend/Pdf/Trailer.php';
 
 /** Zend_Pdf_Element_Reference_Context */
 require_once 'Zend/Pdf/Element/Reference/Context.php';
-
 
 /**
  * PDF file trailer.
@@ -48,7 +46,6 @@ class Zend_Pdf_Trailer_Keeper extends Zend_Pdf_Trailer
      * @var Zend_Pdf_Trailer
      */
     private $_prev;
-
 
     /**
      * Object constructor
@@ -136,6 +133,7 @@ class Zend_Pdf_Trailer_Keeper extends Zend_Pdf_Trailer
                  * We have not found reference to the header of free object list,
                  * thus we treat it as there are no free objects.
                  */
+
                 return 0;
             }
 

@@ -3,7 +3,7 @@
 
 /**
  * HTML class for a wysiwyg type field
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -24,12 +24,12 @@
 
 /**
  * Base class for form elements
- */ 
+ */
 require_once 'HTML/QuickForm/textarea.php';
 
 /**
  * HTML class for a wysiwyg type field
- * 
+ *
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Adam Daniel <adaniel1@eesus.jnj.com>
@@ -51,10 +51,10 @@ class HTML_QuickForm_wysiwyg extends HTML_QuickForm_textarea
 
     // }}}
     // {{{ constructor
-        
+
     /**
      * Class constructor
-     * 
+     *
      * @param     string    Input field name attribute
      * @param     mixed     Label(s) for a field
      * @param     mixed     Either a typical HTML attribute string or an associative array
@@ -69,16 +69,7 @@ class HTML_QuickForm_wysiwyg extends HTML_QuickForm_textarea
         $this->_type = 'wysiwyg';
         $this->updateAttributes(array('alt'=> 'wysiwyg'));
     } //end constructor
-    
+
     // }}}
 
-
-
-
-
-
-
-
-
 } //end class HTML_QuickForm_wysiwyg
-?>

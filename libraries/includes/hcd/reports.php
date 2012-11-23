@@ -25,7 +25,7 @@ if ($_GET['ajax'] == 'coursesTable' || $_GET['ajax'] == 'instancesTable') {
   $smarty -> assign("T_TABLE_SIZE", $totalEntries);
   $tableName = $_GET['ajax'];
   $alreadySorted = 1;
-  include("sorted_table.php");
+  include 'sorted_table.php';
  } catch (Exception $e) {
   handleAjaxExceptions($e);
  }
@@ -138,8 +138,8 @@ if (isset($_GET['search'])) {
   $dataSource = $employees;
   $tableName = $_GET['ajax'];
   /**Handle sorted table's sorting and filtering*/
-  include("sorted_table.php");
- } else if (isset($_GET['stats']) && $_GET['stats'] == 1) {
+  include 'sorted_table.php';
+ } elseif (isset($_GET['stats']) && $_GET['stats'] == 1) {
   $user_logins = $recipients_array;
   $lessonNames = eF_getTableDataFlat("lessons", "id, name");
   $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
@@ -153,7 +153,7 @@ if (isset($_GET['search'])) {
    $value['lessons_ID'] ? $result[$key]['lesson_name'] = $lessonNames[$value['lessons_ID']] : null;
    if ($value['action'] == 'content') {
     $result[$key]['content_name'] = $contentNames[$value['comments']];
-   } else if ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
+   } elseif ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
     $result[$key]['content_name'] = $testNames[$value['comments']];
    }
   }
@@ -198,14 +198,14 @@ if (isset($_GET['search'])) {
                                'lastmove' => _NAVIGATEDSYSTEM);
   $smarty -> assign("T_ACTIONS", $actions);
   $smarty -> display($_SESSION['s_type'].'.tpl');
- } else if (isset($_GET['add_to_existing_group'])) {
+ } elseif (isset($_GET['add_to_existing_group'])) {
   try {
    $group = new MagesterGroup($_GET['add_to_existing_group']);
    $group -> addUsers($recipients_array);
   } catch (Exception $e) {
    echo $e->getMessage();
   }
- } else if(isset($_GET['add_to_new_group'])) {
+ } elseif (isset($_GET['add_to_new_group'])) {
   try {
    $group = MagesterGroup::create(array("name" => $_GET['add_to_new_group']));
    $group -> addUsers($recipients_array);
@@ -213,7 +213,7 @@ if (isset($_GET['search'])) {
   } catch (Exception $e) {
    echo $e->getMessage();
   }
- } else if(isset($_GET['add_course'])) {
+ } elseif (isset($_GET['add_course'])) {
   try {
    $course = new MagesterCourse($_GET['add_course']);
    $course -> addUsers($recipients_array);
@@ -272,7 +272,7 @@ $form -> addElement('select', 'user_type', _USERTYPE, $roles_array, 'id="user_ty
 
 
 
- for ($k = 0; $k < sizeof($roles['user_type']); $k++){
+ for ($k = 0; $k < sizeof($roles['user_type']); $k++) {
 
  $roles_array[$roles['user_type'][$k]] = $roles['user_type'][$k];
 

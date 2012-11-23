@@ -41,5 +41,3 @@ require_once 'pearcmd.php';
  * End:
  */
 // vim600:syn=php
-
-?>

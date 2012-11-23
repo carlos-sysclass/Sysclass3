@@ -10,7 +10,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 	exit;
 }
 
-
 /**
  * Course exceptions
  *
@@ -121,7 +120,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    function __construct($source) {
+    function __construct($source)
+    {
     	$this -> initializeDataFromSource($source);
     	$this -> initializeRules();
     	$this -> initializeOptions();
@@ -137,7 +137,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function initializeDataFromSource($source) {
+    private function initializeDataFromSource($source)
+    {
     	if (is_array($source)) {
     		$this -> course = $source;
     	} elseif (!$this -> validateId($source)) {
@@ -163,7 +164,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access private
      */
-    private function setCategoryId() {
+    private function setCategoryId()
+    {
     	if ($this -> course['instance_source']) {
     		$parentCourse = new MagesterCourse($this -> course['instance_source']);
     		if ($parentCourse -> course['directions_ID']) {
@@ -185,7 +187,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function initializeRules() {
+    private function initializeRules()
+    {
     	$this -> validateSerializedArray($this -> course['rules']) OR $this -> course['rules'] = $this -> sanitizeSerialized($this -> course['rules']);
     	$this -> rules = unserialize($this -> course['rules']);
     }
@@ -196,7 +199,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function initializeOptions() {
+    private function initializeOptions()
+    {
     	$this -> validateSerializedArray($this -> course['options']) OR $this -> course['options'] = $this -> sanitizeSerialized($this -> course['options']);
     	$options = unserialize($this -> course['options']);
     	$newOptions = array_diff_key($this -> options, $options); //$newOptions are course options that were added to the MagesterCourse object AFTER the lesson options serialization took place
@@ -211,7 +215,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function buildPriceString() {
+    private function buildPriceString()
+    {
     	if ($this -> validateFloat($this -> course['price'])) { //Create the string representing the course price
     		$this -> options['recurring'] ? $recurring = array($this -> options['recurring'], $this -> options['recurring_duration']) : $recurring = false;
     		$this -> course['price_string'] = formatPrice($this -> course['price'], $recurring);
@@ -235,7 +240,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function shouldDisplayInCatalog() {
+    public function shouldDisplayInCatalog()
+    {
     	if ($this -> course['show_catalog']) {
     		return $this -> course['id'];
     	} else {
@@ -252,7 +258,6 @@ class MagesterCourse
     	}
 
     }
-
     /**
      * Return an array of MagesterLesson objects that belong to this course, based
      * on the specified constraints
@@ -262,14 +267,21 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function getCourseLessons($constraints = array()) {
+    public function getCourseLessons($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
-    	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
+    	list ($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
 
     	$from = "lessons_to_courses lc, lessons l";
-    	$where[] = "l.archive = 0 /* and l.course_only=1 */ and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
-    	$result = eF_getTableData($from, "lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
-    	implode(" and ", $where), $orderby, false, $limit);
+    	$where[] = "l.archive = 0 and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
+    	$result = eF_getTableData(
+    		$from,
+    		"lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
+    		implode(" and ", $where),
+    		$orderby,
+   			false,
+   			$limit
+    	);
 
     	$result = $this -> sortLessons($result);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
@@ -277,7 +289,6 @@ class MagesterCourse
     	} else {
     		return MagesterCourse :: convertDatabaseResultToLessonArray($result);
     	}
-
     }
 
     /**
@@ -288,7 +299,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function countCourseLessons($constraints = array()) {
+    public function countCourseLessons($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
@@ -303,7 +315,8 @@ class MagesterCourse
     /**
      * Experimental addition based on sorted table
      */
-    public function addCourseLessons($constraints = array()) {
+    public function addCourseLessons($constraints = array())
+    {
     	$lessons = $this -> getCourseLessonsIncludingUnassigned($constraints);
     	$this -> addLessons($lessons);
     }
@@ -311,7 +324,8 @@ class MagesterCourse
     /**
      * Experimental removal based on sorted table
      */
-    public function removeCourseLessons($constraints = array()) {
+    public function removeCourseLessons($constraints = array())
+    {
     	$lessons = $this -> getCourseLessons($constraints);
     	$this -> removeLessons($lessons);
     }
@@ -325,7 +339,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function getCourseLessonsIncludingUnassigned($constraints = array()) {
+    public function getCourseLessonsIncludingUnassigned($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
 
@@ -350,7 +365,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function countCourseLessonsIncludingUnassigned($constraints = array()) {
+    public function countCourseLessonsIncludingUnassigned($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
 
@@ -362,7 +378,6 @@ class MagesterCourse
     	return $result[0]['count'];
     }
 
-
     /**
      * Get the schedule for this lesson, in this course
      *
@@ -371,7 +386,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function getLessonScheduleInCourse($lesson) {
+    public function getLessonScheduleInCourse($lesson)
+    {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
 
     	$result = eF_getTableData("lessons_to_courses", "start_date, end_date", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson -> lesson['id']);
@@ -387,7 +403,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function setLessonScheduleInCourse($lesson, $fromTimestamp, $toTimestamp) {
+    public function setLessonScheduleInCourse($lesson, $fromTimestamp, $toTimestamp)
+    {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
 
     	$fields = array("start_date" => $fromTimestamp, "end_date" => $toTimestamp);
@@ -402,7 +419,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function unsetLessonScheduleInCourse($lesson) {
+    public function unsetLessonScheduleInCourse($lesson)
+    {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
 
     	$fields = array("start_date" => null, "end_date" => null);
@@ -418,7 +436,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function sortLessons($result) {
+    private function sortLessons($result)
+    {
     	$previous = 0; //Previous is only used when no previous_lessons_ID is set
     	$courseLessons = $previousValues = array();
     	foreach ($result as $value) {
@@ -466,8 +485,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function addLessons($lessons) {
-
+    public function addLessons($lessons)
+    {
     	$lessonObjects = $this -> verifyLessonsList($lessons);
     	$lastLessonId = $this -> getCourseLastLesson();
     	$courseUsers = $this -> getUsers();
@@ -506,8 +525,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function removeLessons($lessons) {
-
+    public function removeLessons($lessons)
+    {
     	$lessonObjects = $this -> verifyLessonsList($lessons);
     	$previousLessons = $this -> getPreviousLessonsInCourse();
     	$lessonsToCourses = $this -> countLessonsOccurencesInCourses();
@@ -542,7 +561,8 @@ class MagesterCourse
      * @access private
      * @todo: Simplify course rules implementation
      */
-    private function removeLessonFromCourseRules($lesson) {
+    private function removeLessonFromCourseRules($lesson)
+    {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
 
     	unset($this -> rules[$lesson]); //Unset rules that have this lesson as source
@@ -587,7 +607,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function getPreviousLessonsInCourse() {
+    private function getPreviousLessonsInCourse()
+    {
     	$courseLessons = $this -> getCourseLessons();
     	foreach ($courseLessons as $id => $lesson) {
     		$previousLessons[$id] = $lesson->lesson['previous_lessons_ID'];
@@ -602,7 +623,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function countLessonsOccurencesInCourses() {
+    private function countLessonsOccurencesInCourses()
+    {
     	$result = eF_getTableDataFlat("lessons_to_courses lc", "lc.lessons_ID, count(lc.lessons_ID)", "", "", "lc.lessons_ID");
     	$lessonsToCourses = array_combine($result['lessons_ID'], $result['count(lc.lessons_ID)']);
     	return $lessonsToCourses;
@@ -617,7 +639,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function getCourseLastLesson() {
+    private function getCourseLastLesson()
+    {
     	$lastLesson = end($this -> getCourseLessons());
     	if ($lastLesson) {
     		$lastLessonId = $lastLesson->lesson['id'];
@@ -637,7 +660,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function verifyLessonsList($lessonsList) {
+    private function verifyLessonsList($lessonsList)
+    {
     	is_array($lessonsList) OR $lessonsList = array($lessonsList);
 
     	$newLessonsList = array();
@@ -659,7 +683,8 @@ class MagesterCourse
      * @access public
      * @static
      */
-    public static function verifyCoursesList($coursesList) {
+    public static function verifyCoursesList($coursesList)
+    {
     	is_array($coursesList) OR $coursesList = array($coursesList);
 
     	$newCoursesList = array();
@@ -677,7 +702,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function addCourseUsersToLesson($lesson, $usersToAdd = false, $confirmed = true) {
+    private function addCourseUsersToLesson($lesson, $usersToAdd = false, $confirmed = true)
+    {
     	if (!$usersToAdd) {
     		$usersToAdd = $this -> getUsers();
     	}
@@ -706,7 +732,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function insertCourseSkill() {
+    public function insertCourseSkill()
+    {
     	// If insertion of a self-contained course add the corresponding skill
     	// Insert the corresponding course skill to the skill and course_offers_skill tables
     	$courseSkillId = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " ". $this -> course['name'], "categories_ID" => -1));
@@ -721,7 +748,6 @@ class MagesterCourse
     			$insert_string .= "('".$question['id']."','".$courseSkillId."',2)";
     		}
     	}
-
 
     	if ($insert_string != "") {
     		eF_executeNew("INSERT INTO questions_to_skills VALUES " . $insert_string);
@@ -742,7 +768,8 @@ class MagesterCourse
      * @since 3.5.2
      * @access public
      */
-    public function getCourseSkill() {
+    public function getCourseSkill()
+    {
     	return false;
     }
     /**
@@ -752,7 +779,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function addLessonQuestionsToCourseSkill($lesson) {
+    private function addLessonQuestionsToCourseSkill($lesson)
+    {
     	$lessonQuestions = eF_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
     	$courseSkill = $this -> getCourseSkill();
     	// Get course specific skill
@@ -770,7 +798,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function removeLessonQuestionsFromCourseSkill($lesson) {
+    private function removeLessonQuestionsFromCourseSkill($lesson)
+    {
     	$lessonQuestions = eF_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
     	$courseSkill = $this -> getCourseSkill();
     	if (!empty($lessonQuestions['id'])) {
@@ -793,7 +822,8 @@ class MagesterCourse
      * @access public
      * @todo: Replace with getCourseUsersXXX()
      */
-    public function getUsers($returnObjects = false, $constraints = array()) {
+    public function getUsers($returnObjects = false, $constraints = array())
+    {
     	if ($this -> users === false) {
     		$this -> initializeUsers($constraints);
     	}
@@ -820,7 +850,8 @@ class MagesterCourse
      * @access public
      * @todo: Replace with getCourseUsersXXX()
      */
-    public function getStudentUsers($returnObjects = false, $constraints = array()) {
+    public function getStudentUsers($returnObjects = false, $constraints = array())
+    {
     	$courseUsers = $this -> getUsers($returnObjects, $constraints) OR $courseUsers = array();
     	foreach ($courseUsers as $key => $value) {
     		if ($value instanceOf MagesterUser) {
@@ -843,7 +874,8 @@ class MagesterCourse
      * @access public
      * @todo: Replace with getCourseUsersXXX()
      */
-    public function getProfessorUsers($returnObjects = false, $constraints = array()) {
+    public function getProfessorUsers($returnObjects = false, $constraints = array())
+    {
     	$courseUsers = $this -> getUsers($returnObjects, $constraints) OR $courseUsers = array();
     	foreach ($courseUsers as $key => $value) {
     		if ($value instanceOf MagesterUser) {
@@ -864,7 +896,8 @@ class MagesterCourse
      * @access public
      * @todo: Replace with getCourseUsersXXX()
      */
-    public function isStudentInCourse($user) {
+    public function isStudentInCourse($user)
+    {
     	if ($user instanceOf MagesterUser) {
     		$user = $user -> user['login'];
     	}
@@ -885,7 +918,8 @@ class MagesterCourse
      * @access public
      * @todo Implement using getCourseUsersXXX()
      */
-    public function isProfessorInCourse($user) {
+    public function isProfessorInCourse($user)
+    {
     	if ($user instanceOf MagesterUser) {
     		$user = $user -> user['login'];
     	}
@@ -905,7 +939,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function getCourseUsersAggregatingResults($constraints = array()) {
+    public function getCourseUsersAggregatingResults($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$from = "(users u, (select uc.user_type as role,uc.score,uc.completed,uc.users_LOGIN,uc.to_timestamp, uc.from_timestamp as active_in_course, uc.from_timestamp as enrolled_on from courses c left outer join users_to_courses uc on uc.courses_ID=c.id where (c.id=".$this -> course['id']." or c.instance_source=".$this -> course['id'].") and uc.archive=0) r)";
@@ -935,7 +970,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function countCourseUsersAggregatingResults($constraints = array()) {
+    public function countCourseUsersAggregatingResults($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$from = "(users u, (select uc.score,uc.completed,uc.users_LOGIN,uc.to_timestamp, uc.from_timestamp as active_in_course from courses c left outer join users_to_courses uc on uc.courses_ID=c.id where (c.id=".$this -> course['id']." or c.instance_source=".$this -> course['id'].") and uc.archive=0) r)";
@@ -954,7 +990,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function getCourseUsers($constraints = array()) {
+    public function getCourseUsers($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$select = "u.*, uc.courses_ID,uc.completed,uc.score,uc.user_type as role,uc.from_timestamp as active_in_course, uc.to_timestamp, uc.comments, uc.issued_certificate, 1 as has_course";
@@ -974,7 +1011,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function countCourseUsers($constraints = array()) {
+    public function countCourseUsers($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	//$select  = "u.*, uc.courses_ID,uc.completed,uc.score,uc.user_type,uc.from_timestamp as active_in_course, 1 as has_course";
@@ -991,7 +1029,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function getCourseUsersIncludingUnassigned($constraints = array()) {
+    public function getCourseUsersIncludingUnassigned($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$where[] = "user_type != 'administrator'";
@@ -1016,7 +1055,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function countCourseUsersIncludingUnassigned($constraints = array()) {
+    public function countCourseUsersIncludingUnassigned($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$where[] = "user_type != 'administrator'";
@@ -1034,7 +1074,8 @@ class MagesterCourse
      * @since 3.6.2
      * @access public
      */
-    public function getCourseUsersAggregatingResultsIncludingUnassigned($constraints = array()) {
+    public function getCourseUsersAggregatingResultsIncludingUnassigned($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$from = "users u left outer join
@@ -1057,13 +1098,15 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function getPossibleCourseRoles() {
+    private function getPossibleCourseRoles()
+    {
     	if (!isset($this -> roles) || !$this -> roles) {
     		$this -> roles = MagesterLessonUser :: getLessonsRoles();
     	}
     	return $this -> roles;
     }
-    public static function convertCourseUserConstraintsToSqlParameters($constraints) {
+    public static function convertCourseUserConstraintsToSqlParameters($constraints)
+    {
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
     	$where = MagesterUser::addWhereConditionToUserConstraints($constraints);
     	$limit = self::addLimitConditionToConstraints($constraints);
@@ -1077,7 +1120,8 @@ class MagesterCourse
      * @access private
      * @todo remove when not needed
      */
-    private function initializeUsers($constraints = array()) {
+    private function initializeUsers($constraints = array())
+    {
     	$this -> course['total_students'] = $this -> course['total_professors'] = 0;
     	$roles = MagesterLessonUser :: getLessonsRoles();
     	!empty($constraints) OR $constraints = array('archive' => false);
@@ -1112,7 +1156,8 @@ class MagesterCourse
      * @access public
      * @todo deprecated
      */
-    public function getNonUsers($returnObjects = false) {
+    public function getNonUsers($returnObjects = false)
+    {
     	$subquery = "select u.*, u.user_type as basic_user_type,uc.courses_ID as has_course from users u left outer join users_to_courses uc on (uc.users_login=u.login and courses_id=".$this -> course['id']." and uc.archive != 0) where u.archive = 0 and u.active=1 and u.user_type != 'administrator'";
     	$result = eF_getTableData("($subquery) s", "s.*, s.has_course is null");
     	$users = array();
@@ -1130,7 +1175,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function addUsersToCourse($usersData, $archivedCourseUsers = false) {
+    private function addUsersToCourse($usersData, $archivedCourseUsers = false)
+    {
     	if (!$archivedCourseUsers) {
     		$archivedCourseUsers = $this -> getArchivedUsers();
     	}
@@ -1175,7 +1221,8 @@ class MagesterCourse
     	}
     	$this -> users = false;
     }
-    private function getArchivedUsers() {
+    private function getArchivedUsers()
+    {
     	$result = eF_getTableDataFlat("users_to_courses", "users_LOGIN", "archive!=0 and courses_ID=".$this->course['id']);
     	if (empty($result)) {
     		return array();
@@ -1191,7 +1238,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function setUserRolesInCourse($usersData) {
+    private function setUserRolesInCourse($usersData)
+    {
     	$courseUsers = $this -> getUsers();
     	foreach ($usersData as $value) {
     		if ($courseUsers[$value['login']]['role'] != $value['role']) {
@@ -1223,7 +1271,8 @@ class MagesterCourse
      * @access public
      * @todo deprecated
      */
-    public function addUsers($users, $userRoles = 'student', $confirmed = true, $course_type = 'Presencial') {
+    public function addUsers($users, $userRoles = 'student', $confirmed = true, $course_type = 'Presencial')
+    {
     	if ($this -> course['supervisor_LOGIN']) {
     		$confirmed = false;
     	}
@@ -1283,7 +1332,7 @@ class MagesterCourse
     		if ($this -> course['max_users'] && $isStudentRoleInCourse && $this -> course['max_users'] <= $courseStudents++) {
     			throw new MagesterCourseException(_MAXIMUMUSERSREACHEDFORCOURSE, MagesterCourseException :: MAX_USERS_LIMIT);
     		}
-    		 
+
     		if (!isset($courseUsers[$user])) {
     			$newUsers[] = array('users_LOGIN' => $user,
 			'courses_ID' => $this -> course['id'],
@@ -1303,7 +1352,7 @@ class MagesterCourse
     			if ($courseUsers[$user]['modality_id'] == 3) {
     				$ignoreNewLessons = true;
     			}
-    			
+
     			$fields = array('archive' => 0,
         	'user_type' => $roleInCourse,
         	'from_timestamp' => $confirmed ? time() : 0);
@@ -1316,7 +1365,7 @@ class MagesterCourse
     			if ($courseUsers[$user]['modality_id'] == 3) {
     				$ignoreNewLessons = true;
     			}
-    			 
+
     			$fields = array('course_type' => $course_type);
     			$where = "users_LOGIN='".$user."' and courses_ID=".$this -> course['id'];
     			self::persistCourseUsers($fields, $where, $this -> course['id'], $user);
@@ -1324,7 +1373,6 @@ class MagesterCourse
 
     		}
 
-    		 
     		foreach ($courseLessons as $id) {
     			if (!isset($courseLessonsToUsers[$id][$user])) {
     				$usersToAddToCourseLesson[$id][$user] = array('login' => $user, 'role' => $roleInCourse, 'confirmed' => $confirmed);
@@ -1394,7 +1442,8 @@ class MagesterCourse
      * @access public
      * @todo rename to removeUsersFromCourse
      */
-    public function removeUsers($users) {
+    public function removeUsers($users)
+    {
     	$users = MagesterUser::verifyUsersList($users);
     	$this -> removeUsersFromCourseLessons($users);
     	$this -> sendNotificationsRemoveCourseUsers($users);
@@ -1413,7 +1462,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access private
      */
-    private function removeUsersFromCourseLessons($users) {
+    private function removeUsersFromCourseLessons($users)
+    {
     	if (sizeof($users) == 1) {
     		$key = key($users);
     		$lessonsToCourses = MagesterLesson::countLessonsOccurencesInCoursesForUser($users[$key]);
@@ -1431,7 +1481,6 @@ class MagesterCourse
     	}
     }
 
-
     /**
      * Put user in a course class
      *
@@ -1446,18 +1495,18 @@ class MagesterCourse
      * @since 3.9.0
      * @access public
      */
-    public function putUserInClass($user_login, $classe_id) {
+    public function putUserInClass($user_login, $classe_id)
+    {
     	if ($this->isStudentInCourse($user_login) || $this -> isProfessorInCourse($user_login)) {
     		$result = eF_updateTableData(
-				"users_to_courses", 
+				"users_to_courses",
     		array('classe_id' => $classe_id),
     		sprintf("users_LOGIN = '%s' AND courses_ID = %d", $user_login, $this->course['id'])
     		);
-    		return (bool)$result;
+    		return (bool) $result;
     	}
     	return false;
     }
-
 
     /**
      * Archive user in course
@@ -1474,7 +1523,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function archiveCourseUsers($users) {
+    public function archiveCourseUsers($users)
+    {
     	$users = MagesterUser::verifyUsersList($users);
     	$this -> archiveUsersInCourseLessons($users);
     	$this -> sendNotificationsRemoveCourseUsers($users);
@@ -1493,7 +1543,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access private
      */
-    private function archiveUsersInCourseLessons($users) {
+    private function archiveUsersInCourseLessons($users)
+    {
     	if (sizeof($users) == 1) {
     		$key = key($users);
     		$lessonsToCourses = MagesterLesson::countLessonsOccurencesInCoursesForUser($users[$key]);
@@ -1517,7 +1568,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access private
      */
-    private function sendNotificationsRemoveCourseUsers($users) {
+    private function sendNotificationsRemoveCourseUsers($users)
+    {
     	foreach ($users as $user) {
     		MagesterEvent::triggerEvent(array("type" => MagesterEvent::COURSE_REMOVAL,
            "users_LOGIN" => $user,
@@ -1540,7 +1592,8 @@ class MagesterCourse
      * @since 3.5.2
      * @access public
      */
-    public function confirm($login) {
+    public function confirm($login)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	foreach ($this -> getCourseLessons() as $lesson) {
     		$lesson -> confirm($login);
@@ -1561,7 +1614,8 @@ class MagesterCourse
      * @since 3.6.0
      * @access public
      */
-    public function unConfirm($login) {
+    public function unConfirm($login)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	foreach ($this -> getCourseLessons() as $lesson) {
     		$lesson -> unConfirm($login);
@@ -1577,10 +1631,11 @@ class MagesterCourse
      * @return int The group's id
      * @since 3.6.3
      */
-    private static function convertArgumentToGroupId($group) {
+    private static function convertArgumentToGroupId($group)
+    {
     	if ($group instanceof MagesterGroup) {
     		$group = $group -> group['id'];
-    	} else if (!eF_checkParameter($group, 'id')) {
+    	} elseif (!eF_checkParameter($group, 'id')) {
     		throw new MagesterGroupException(_INVALIDID, MagesterGroupException::INVALID_ID);
     	}
     	return $group;
@@ -1601,7 +1656,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function setRoles($users, $roles) {
+    public function setRoles($users, $roles)
+    {
     	$users = MagesterUser::verifyUsersList($users);
     	$roles = MagesterUser::verifyRolesList($roles, sizeof($users));
     	$courseLessons = $this -> getCourseLessons();
@@ -1627,7 +1683,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function persist() {
+    public function persist()
+    {
     	$this -> rules ? $this -> course['rules'] = serialize($this -> rules) : $this -> course['rules'] = null;
     	$this -> options ? $this -> course['options'] = serialize($this -> options) : $this -> course['options'] = null;
     	$this -> course['price'] = str_replace(array($GLOBALS['configuration']['decimal_point'], $GLOBALS['configuration']['thousands_sep']), array('.', ''), $this -> course['price']); //This way, you handle the case where the price is in the form 1,000.00
@@ -1646,7 +1703,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access private
      */
-    private static function validateAndSanitizeCourseFields($courseFields) {
+    private static function validateAndSanitizeCourseFields($courseFields)
+    {
     	$courseFields = self :: setDefaultCourseValues($courseFields);
     	$fields = array(
 			'name' => self :: validateAndSanitize($courseFields['name'], 'name'),
@@ -1676,14 +1734,15 @@ class MagesterCourse
 			'instance_source' => self :: validateAndSanitize($courseFields['instance_source'], 'courses_foreign_key')
     	);
     	return $fields;
-    		
+
     }
     /**
      * Set default values for course fields
      * @param array $courseFields The current course fields
      * @return array The course fields, with default values where missing
      */
-    private static function setDefaultCourseValues($courseFields) {
+    private static function setDefaultCourseValues($courseFields)
+    {
     	$defaultValues = array('name' => '',
                             'active' => 1,
                 'archive' => 0,
@@ -1725,7 +1784,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public static function validateAndSanitize($field, $type) {
+    public static function validateAndSanitize($field, $type)
+    {
     	try {
     		self :: validate($field, $type);
     	} catch (MagesterCourseException $e) {
@@ -1754,7 +1814,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public static function validate($field, $type) {
+    public static function validate($field, $type)
+    {
     	$validParameter = true;
     	switch ($type) {
     		case 'id': self :: validateId($field) OR $validParameter = false; break;
@@ -1777,63 +1838,78 @@ class MagesterCourse
     		throw new MagesterCourseException(_INVALIDPARAMETER.' ('.$type.'): "'.$field.'"', MagesterCourseException::INVALID_PARAMETER);
     	}
     }
-    private static function validateId($field) {
+    private static function validateId($field)
+    {
     	!eF_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateName($field) {
+    private static function validateName($field)
+    {
     	mb_strlen($field) > self::MAX_NAME_LENGTH ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateText($field) {
+    private static function validateText($field)
+    {
     	return true;
     }
-    private static function validateBoolean($field) {
+    private static function validateBoolean($field)
+    {
     	$field !== false && $field !== true ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateTimestamp($field) {
+    private static function validateTimestamp($field)
+    {
     	!eF_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateSerialized($field) {
+    private static function validateSerialized($field)
+    {
     	unserialize($field) === false && $field !== serialize(false) ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateSerializedArray($field) {
+    private static function validateSerializedArray($field)
+    {
     	$unserialized = unserialize($field);
     	$unserialized === false || !is_array($unserialized) ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateNull($field) {
+    private static function validateNull($field)
+    {
     	!is_null($field) ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateFloat($field) {
+    private static function validateFloat($field)
+    {
     	!is_numeric($field) ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateInteger($field) {
+    private static function validateInteger($field)
+    {
     	!is_numeric($field) ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateDirectionsForeignKey($field) {
+    private static function validateDirectionsForeignKey($field)
+    {
     	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateCoursesForeignKey($field) {
+    private static function validateCoursesForeignKey($field)
+    {
     	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateLessonsForeignKey($field) {
+    private static function validateLessonsForeignKey($field)
+    {
     	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateLanguagesForeignKey($field) {
+    private static function validateLanguagesForeignKey($field)
+    {
     	!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
-    private static function validateUsersForeignKey($field) {
+    private static function validateUsersForeignKey($field)
+    {
     	!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
@@ -1854,48 +1930,74 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public static function sanitize($field, $type) {
+    public static function sanitize($field, $type)
+    {
     	switch ($type) {
-    		case 'name': $field = self :: sanitizeName($field); break;
-    		case 'boolean': $field = self :: sanitizeBoolean($field); break;
-    		case 'boolean_or_timestamp': $field = self :: sanitizeBoolean($field); break;
-    		case 'timestamp': $field = self :: sanitizeTimestamp($field); break;
-    		case 'serialized': $field = self :: sanitizeSerialized($field); break;
-    		case 'float': $field = self :: sanitizeFloat($field); break;
+    		case 'name':
+    			$field = self :: sanitizeName($field);
+    			break;
+    		case 'boolean':
+    			$field = self :: sanitizeBoolean($field);
+    			break;
+    		case 'boolean_or_timestamp':
+    			$field = self :: sanitizeBoolean($field);
+    			break;
+    		case 'timestamp':
+    			$field = self :: sanitizeTimestamp($field);
+    			break;
+    		case 'serialized':
+    			$field = self :: sanitizeSerialized($field);
+    			break;
+    		case 'float':
+    			$field = self :: sanitizeFloat($field);
+    			break;
     		case 'integer':
-    		case 'id': $field = self :: sanitizeInteger($field); break;
+    		case 'id':
+    			$field = self :: sanitizeInteger($field);
+    			break;
     		case 'directions_foreign_key':
     		case 'languages_foreign_key':
-    		case 'courses_foreign_key': $field = self :: sanitizeForeignKey($field); break;
-    		case 'text': default: break;
+    		case 'courses_foreign_key':
+    			$field = self :: sanitizeForeignKey($field);
+    			break;
+    		case 'text':
+    		default:
+				break;
     	}
     	return $field;
     }
-    private static function sanitizeTimestamp($field) {
+    private static function sanitizeTimestamp($field)
+    {
     	$field = is_numeric($field) && ($field != 0);
     	return $field;
     }
-    private static function sanitizeName($field) {
+    private static function sanitizeName($field)
+    {
     	$field = mb_substr($field, 0, self::MAX_NAME_LENGTH);
     	return $field;
     }
-    private static function sanitizeBoolean($field) {
+    private static function sanitizeBoolean($field)
+    {
     	$field = ($field != 0);
     	return $field;
     }
-    private static function sanitizeSerialized($field) {
+    private static function sanitizeSerialized($field)
+    {
     	$field = serialize(array());
     	return $field;
     }
-    private static function sanitizeFloat($field) {
-    	$field = (float)$field;
+    private static function sanitizeFloat($field)
+    {
+    	$field = (float) $field;
     	return $field;
     }
-    private static function sanitizeInteger($field) {
-    	$field = (int)$field;
+    private static function sanitizeInteger($field)
+    {
+    	$field = (int) $field;
     	return $field;
     }
-    private static function sanitizeForeignKey($field) {
+    private static function sanitizeForeignKey($field)
+    {
     	$field = 0;
     	return $field;
     }
@@ -1913,7 +2015,8 @@ class MagesterCourse
      * @since 3.6.0
      * @access public
      */
-    public function archive() {
+    public function archive()
+    {
     	$this -> course['archive'] = time();
     	$this -> course['active'] = 0;
     	foreach ($this -> getInstances(array('archive' => false)) as $value) {
@@ -1930,7 +2033,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function archiveUniqueLessons() {
+    private function archiveUniqueLessons()
+    {
     	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
@@ -1951,7 +2055,8 @@ class MagesterCourse
      * @since 3.6.0
      * @access public
      */
-    public function unarchive() {
+    public function unarchive()
+    {
     	$this -> course['archive'] = 0;
     	$this -> course['active'] = 1;
     	//Check whether the original category exists
@@ -1972,7 +2077,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function unarchiveUniqueLessons() {
+    private function unarchiveUniqueLessons()
+    {
     	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
@@ -1994,7 +2100,8 @@ class MagesterCourse
      * @access public
      * @todo remove from other courses succession
      */
-    public function delete() {
+    public function delete()
+    {
     	$this -> removeLessons(array_keys($this -> getCourseLessons()));
     	$courseUsers = eF_getTableDataFlat("users_to_courses", "users_LOGIN", "courses_ID=".$this -> course['id']);
     	$this -> removeUsers($courseUsers["users_LOGIN"]);
@@ -2011,7 +2118,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function deleteCourseInstances() {
+    private function deleteCourseInstances()
+    {
     	$result = eF_getTableData("courses", "*", "instance_source=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterCourse($value);
@@ -2024,7 +2132,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function deleteUniqueLessons() {
+    private function deleteUniqueLessons()
+    {
     	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
@@ -2037,7 +2146,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    public function removeCourseSkills() {
+    public function removeCourseSkills()
+    {
     }
     /**
      * Create course instance
@@ -2054,7 +2164,8 @@ class MagesterCourse
      * @access public
      * @static
      */
-    public static function createInstance($instanceSource) {
+    public static function createInstance($instanceSource)
+    {
     	if (!($instanceSource instanceof MagesterCourse)) {
     		$instanceSource = new MagesterCourse($instanceSource);
     	}
@@ -2065,7 +2176,8 @@ class MagesterCourse
     	$instance = new MagesterCourse($instance -> course['id']); //refresh instance object
     	return $instance;
     }
-    private static function createDbEntryForInstance($instanceSource) {
+    private static function createDbEntryForInstance($instanceSource)
+    {
     	$currentSourceInstances = sizeof($instanceSource -> getInstances());
     	$result = eF_getTableData("courses", "*", "id=".$instanceSource -> course['id']); //Get all the fields of the course directly from the database
     	unset($result[0]['id']);
@@ -2078,7 +2190,8 @@ class MagesterCourse
     	$instance -> persist();
     	return $instance;
     }
-    private static function assignSourceLessonsToInstance($instanceSource, $instance) {
+    private static function assignSourceLessonsToInstance($instanceSource, $instance)
+    {
     	$result = eF_getTableDataFlat("lessons_to_courses lc, lessons l", "l.id, l.instance_source", "l.id=lc.lessons_ID and lc.courses_ID=".$instanceSource -> course['id']);
     	$instanceSourceLessonsThatAreUnique = array_combine($result['id'], $result['instance_source']);
     	$instanceSourceLessons = $instanceSource -> getCourseLessons();
@@ -2094,13 +2207,15 @@ class MagesterCourse
     	}
     	$instance -> addLessons($newLessons);
     }
-    private static function assignSourceSkillsToInstance($instanceSource, $instance) {
+    private static function assignSourceSkillsToInstance($instanceSource, $instance)
+    {
     	$courseSkills = $instanceSource -> getSkills(true);
     	foreach ($courseSkills as $key => $skill) {
     		$instance -> assignSkill($skill['skill_ID'], $skill['specification']);
     	}
     }
-    private static function assignSourceBranchToInstance($instanceSource, $instance) {
+    private static function assignSourceBranchToInstance($instanceSource, $instance)
+    {
     }
     /**
      * Revoke sertificate
@@ -2117,7 +2232,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function revokeCertificate($login) {
+    public function revokeCertificate($login)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	$fields = array("issued_certificate" => "");
     	$where = "users_LOGIN='$login' and courses_ID=".$this -> course['id'];
@@ -2144,7 +2260,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function issueCertificate($login, $certificate) {
+    public function issueCertificate($login, $certificate)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	$fields = array("issued_certificate" => $certificate);
     	$where = "users_LOGIN='$login' and courses_ID=".$this -> course['id'];
@@ -2173,7 +2290,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function prepareCertificate($login) {
+    public function prepareCertificate($login)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	$courseUser = MagesterUserFactory :: factory($login);
     	$userStats = MagesterStats :: getUsersCourseStatus($this, $login);
@@ -2201,7 +2319,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function getCertificate() {
+    public function getCertificate()
+    {
     	if (!$this -> options['certificate'] && is_file(G_CURRENTTHEMEPATH."templates/certificate-".$this -> course['languages_NAME'].".tpl")) {
     		$certificate = file_get_contents(G_CURRENTTHEMEPATH."templates/certificate-".$this -> course['languages_NAME'].".tpl");
     	} elseif ($this -> options['certificate']) {
@@ -2226,7 +2345,8 @@ class MagesterCourse
      * @access public
      * @todo check parameter
      */
-    public function setCertificate($certificate) {
+    public function setCertificate($certificate)
+    {
     	$this -> options['certificate'] = $certificate;
     	$this -> persist();
     }
@@ -2247,7 +2367,8 @@ class MagesterCourse
      * @access public
      * @todo convert to smarty template
      */
-    public function toHTML($lessons = false, $options = array()) {
+    public function toHTML($lessons = false, $options = array())
+    {
     	!isset($options['courses_link']) ? $options['courses_link'] = false : null;
     	!isset($options['lessons_link']) ? $options['lessons_link'] = false : null;
     	if (isset($options['collapse']) && $options['collapse'] == 2) {
@@ -2273,7 +2394,7 @@ class MagesterCourse
     		$roleBasicType = null;
     	}
     	$courseLessons = $this -> getCourseLessons();
-    	
+
     	if ($lessons) {
     		foreach ($courseLessons as $key => $value) {
     			//pr($lessons[$key]);
@@ -2327,8 +2448,7 @@ class MagesterCourse
     				$eligible[$lessonId] -> eligible = false;
     			}
     		}
-    	}
-    	elseif (!is_null($this -> course['remaining']) && $roleBasicType == 'student') {
+    	} elseif (!is_null($this -> course['remaining']) && $roleBasicType == 'student') {
     		if ($this -> course['remaining'] > 0) {
     			$courseString .= '<span style = "vertical-align:middle">&nbsp;('.eF_convertIntervalToTime($this -> course['remaining'], true).' '.mb_strtolower(_REMAINING).')</span>';
     		} else {
@@ -2338,7 +2458,7 @@ class MagesterCourse
     			}
     		}
     	}
-    	
+
     	if ($roleBasicType == 'professor') {
     		if (!isset($GLOBALS['currentUser'] -> coreAccess['course_settings']) || $GLOBALS['currentUser'] -> coreAccess['course_settings'] != 'hidden') {
     			$autocompleteImage = '16x16/certificate.png';
@@ -2394,7 +2514,7 @@ class MagesterCourse
     			$courseString .= '<tr class = "directionEntry">';
     			if (isset($lesson -> lesson['active_in_lesson']) && !$lesson -> lesson['active_in_lesson']) {
     				$courseString .= '<td style = "padding-bottom:2px"></td><td><a href = "javascript:void(0)" class = "inactiveLink" title = "'._CONFIRMATIONPEDINGFROMADMIN.'">'.$lesson -> lesson['name'].'</a></td>';
-    			} else if (!$lesson -> eligible) {
+    			} elseif (!$lesson -> eligible) {
     				if ($lesson -> lesson['completed']) {
     					$courseString .= '
        <td class = "lessonProgress">
@@ -2493,7 +2613,8 @@ class MagesterCourse
      * @access public
      * @todo refactor
      */
-    public function getBranches($only_own = false) {
+    public function getBranches($only_own = false)
+    {
     	if (!isset($this -> branches) || !$this -> branches) {
     		$this -> branches = false; //Initialize branches to something
     		$branches = eF_getTableData("module_hcd_branch LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID LEFT OUTER JOIN module_hcd_course_to_branch ON (module_hcd_course_to_branch.branches_ID = module_hcd_branch.branch_ID AND module_hcd_course_to_branch.courses_ID='".$this -> course['id']."')", "module_hcd_branch.*, module_hcd_branch.branch_ID as branches_ID, module_hcd_course_to_branch.courses_ID, branch1.name as father","");
@@ -2533,7 +2654,8 @@ class MagesterCourse
      * @access public
      * @todo refactor
      */
-    public function toSelect() {
+    public function toSelect()
+    {
     	$courseLessons = MagesterCourse::convertLessonObjectsToArrays($this->getCourseLessons());
     	$eligible = $courseLessons;
     	foreach ($courseLessons as $lessonId => $value) {
@@ -2570,7 +2692,8 @@ class MagesterCourse
      * @access public
      * @todo refactor
      */
-    public function getInformation() {
+    public function getInformation()
+    {
     	$information = array();
     	if ($this -> course['info']) {
     		$order = array("general_description", "objectives", "assessment", "lesson_topics", "resources", "other_info", "learning_method"); // for displaying fiels sorted
@@ -2614,14 +2737,16 @@ class MagesterCourse
      * @since 3.5.2
      * @access public
      */
-    public function export() {
+    public function export()
+    {
     	$courseTempDir = $this -> createCourseTempDirectory();
     	$this -> exportCourseLessons($courseTempDir);
     	$this -> exportDatabaseData($courseTempDir);
     	$file = $this -> createCourseExportFile($courseTempDir);
     	return $file;
     }
-    private function createCourseTempDirectory() {
+    private function createCourseTempDirectory()
+    {
     	$userTempDir = $this -> createUserTempDirectory();
     	$courseTempDir = $userTempDir['path'].'/course_export_'.$this -> course['id']; //The compressed file will be moved to the user's temp directory
     	if (is_dir($courseTempDir)) { //If the user's temp directory does not exist, create it
@@ -2631,7 +2756,8 @@ class MagesterCourse
     	$courseTempDir = MagesterDirectory :: createDirectory($courseTempDir, false);
     	return $courseTempDir;
     }
-    private function createUserTempDirectory() {
+    private function createUserTempDirectory()
+    {
     	$userTempDir = $GLOBALS['currentUser'] -> user['directory'].'/temp';
     	if (!is_dir($userTempDir)) { //If the user's temp directory does not exist, create it
     		$userTempDir = MagesterDirectory :: createDirectory($userTempDir, false);
@@ -2640,14 +2766,16 @@ class MagesterCourse
     	}
     	return $userTempDir;
     }
-    private function exportCourseLessons($courseTempDir) {
+    private function exportCourseLessons($courseTempDir)
+    {
     	$courseLessons = $this -> getCourseLessons();
     	foreach ($courseLessons as $id => $lesson) {
     		$exportedFile = $lesson -> export('all', false);
     		$exportedFile -> copy($courseTempDir['path']);
     	}
     }
-    private function exportDatabaseData($courseTempDir) {
+    private function exportDatabaseData($courseTempDir)
+    {
     	$data = array();
     	$data['courses'] = eF_getTableData("courses", "*", "id=".$this -> course['id']);
     	unset($data['courses'][0]['instance_source']);
@@ -2656,7 +2784,8 @@ class MagesterCourse
     	}
     	file_put_contents($courseTempDir['path'].'/data.dat', serialize($data));
     }
-    private function createCourseExportFile($courseTempDir) {
+    private function createCourseExportFile($courseTempDir)
+    {
     	$userTempDir = new MagesterDirectory($GLOBALS['currentUser'] -> user['directory'].'/temp');
     	$file = $courseTempDir -> compress($this -> course['id'].'_exported.zip', false); //Compress the lesson files
     	$newList = FileSystemTree :: importFiles($file['path']); //Import the file to the database, so we can download it
@@ -2691,7 +2820,8 @@ class MagesterCourse
      * @since 3.5.2
      * @access public
      */
-    public function import($courseFile, $removeLessons = true, $courseProperties = false) {
+    public function import($courseFile, $removeLessons = true, $courseProperties = false)
+    {
     	$data = $this -> getCourseDataFromExportedFile($courseFile);
     	if ($courseProperties) {
     		$this -> mergeCourseProperties($data);
@@ -2714,7 +2844,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function getCourseDataFromExportedFile($file) {
+    private function getCourseDataFromExportedFile($file)
+    {
     	$fileList = $file -> uncompress();
     	$fileList = array_unique(array_reverse($fileList, true));
     	$dataFile = new MagesterFile($file['directory'].'/data.dat');
@@ -2732,7 +2863,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function mergeCourseProperties($data) {
+    private function mergeCourseProperties($data)
+    {
     	unset($data['courses'][0]['directions_ID']);
     	unset($data['courses'][0]['created']);
     	$this -> course = array_merge($this -> course, $data['courses'][0]);
@@ -2748,7 +2880,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function importLessonsToCourse($data, $courseFile) {
+    private function importLessonsToCourse($data, $courseFile)
+    {
     	$data['lessons_to_courses'] = $this -> setCorrectLessonOrder($data['lessons_to_courses']);
     	foreach ($data['lessons_to_courses'] as $value) {
     		$lesson = MagesterLesson :: createLesson(array('name' => 'imported_lesson', //This is changed right below, during import
@@ -2761,7 +2894,8 @@ class MagesterCourse
     		$this -> replaceLessonInCourseRules($value['lessons_ID'], $lesson);
     	}
     }
-    private function setCorrectLessonOrder($lessonsToCourses) {
+    private function setCorrectLessonOrder($lessonsToCourses)
+    {
     	foreach ($lessonsToCourses as $value) {
     		$lessons[$value['lessons_ID']] = $value;
     		$previous[$value['lessons_ID']] = $value['previous_lessons_ID'];
@@ -2795,7 +2929,8 @@ class MagesterCourse
      * @access public
      * @todo refactor
      */
-    public function toHTMLTooltipLink($link, $courseInformation = false) {
+    public function toHTMLTooltipLink($link, $courseInformation = false)
+    {
     	if ($GLOBALS['configuration']['disable_tooltip'] != 1) {
     		if (!$courseInformation) {
     			$courseInformation = $this -> getInformation();
@@ -2860,15 +2995,10 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public static function createCourse($fields) {
-
+    public static function createCourse($fields)
+    {
     	$fields['metadata'] = self::createCourseMetadata($fields);
     	$fields = self::validateAndSanitizeCourseFields($fields);
-
-
-
-
-
 
     	$newId = eF_insertTableData("courses", $fields);
     	// Insert the corresponding lesson skill to the skill and lesson_offers_skill tables. Automatic skill generation only for the educational version
@@ -2884,7 +3014,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private static function createCourseMetadata($fields) {
+    private static function createCourseMetadata($fields)
+    {
     	$languages = MagesterSystem :: getLanguages(true);
     	$courseMetadata = array('title' => $fields['name'],
                                 'creator' => formatLogin($GLOBALS['currentUser'] -> user['login']),
@@ -2921,7 +3052,8 @@ class MagesterCourse
      * @static
      * @todo remove - deprecated
      */
-    public static function deleteCourse($course) {
+    public static function deleteCourse($course)
+    {
     	if (!($course instanceof MagesterCourse)) {
     		$course = new MagesterCourse($course);
     	}
@@ -2944,7 +3076,8 @@ class MagesterCourse
      * @static
      * @todo deprecated
      */
-    public static function getCourses($returnObjects = false) {
+    public static function getCourses($returnObjects = false)
+    {
     	//$result = eF_getTableData("courses c, directions d", "c.*, d.name as direction_name, (select count( * ) from courses l where instance_source=c.id) as has_instances", "c.directions_ID=d.id and archive=0 and instance_source=0");
     	$result = eF_getTableData("courses c", "c.*, (select count( * ) from courses l where instance_source=c.id) as has_instances", "archive=0 and instance_source=0");
     	foreach ($result as $value) {
@@ -2952,14 +3085,16 @@ class MagesterCourse
     	}
     	return $courses;
     }
-    public static function getCoursesWithPendingUsers($constraints = array()) {
+    public static function getCoursesWithPendingUsers($constraints = array())
+    {
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$where[] = "uc.courses_ID=c.id and uc.from_timestamp=0";
     	$where[] = "uc.users_LOGIN=u.login and u.archive=0";
     	$result = eF_getTableData("users u, courses c, users_to_courses uc", "c.*, uc.users_LOGIN", implode(" and ", $where), $orderby, $groupby, $limit);
     	return $result;
     }
-    public static function getCoursesWithPendingUsersForSupervisor($constraints = array(), $supervisor) {
+    public static function getCoursesWithPendingUsersForSupervisor($constraints = array(), $supervisor)
+    {
     	$supervisor = MagesterUser::convertArgumentToUserLogin($supervisor);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$where[] = "uc.courses_ID=c.id and uc.from_timestamp=0";
@@ -2971,21 +3106,24 @@ class MagesterCourse
     /**
      * @todo: Return num_lessons
      */
-    public static function getCoursesWithSpecificUserParticipation($constraints = array(), $login) {
+    public static function getCoursesWithSpecificUserParticipation($constraints = array(), $login)
+    {
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$innerQuery = "select courses_ID,completed,score,user_type,from_timestamp as active_in_course from users_to_courses where archive=0 and users_login='".$login."'";
     	$result = eF_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
     	return self :: convertDatabaseResultToCourseObjects($result);
     }
-    public static function getCoursesWithSpecificGroupParticipation($constraints = array(), $group) {
+    public static function getCoursesWithSpecificGroupParticipation($constraints = array(), $group)
+    {
     	$group = self :: convertArgumentToGroupId($group);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$innerQuery = "select courses_ID,user_type from courses_to_groups where groups_ID='".$group."'";
     	$result = eF_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
     	return self :: convertDatabaseResultToCourseObjects($result);
     }
-    private static function setCourseUserSelection(&$constraints = array()) {
+    private static function setCourseUserSelection(&$constraints = array())
+    {
     	//"(select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.active=1 and uc.archive=0 and u.login=uc.users_LOGIN and u.user_type='student') as num_students";
     	if (empty($constraints['table_filters'])) {
     		return "(select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.active=1 and uc.archive=0 and u.login=uc.users_LOGIN and u.user_type='student') as num_students";
@@ -3001,7 +3139,8 @@ class MagesterCourse
     		return "(select count(*) FROM " . $from . " WHERE " . implode(" AND ", $where) . ") as num_students";
     	}
     }
-    public static function getAllCourses($constraints = array()) {
+    public static function getAllCourses($constraints = array())
+    {
     	$select['main'] = 'c.id';
     	$select['has_instances'] = ""; //Must be here, even if empty
     	$select['num_lessons'] = "(select count( * ) from lessons_to_courses cl, lessons l where cl.courses_ID=c.id and l.archive=0 and l.id=cl.lessons_ID) as num_lessons";
@@ -3016,7 +3155,7 @@ class MagesterCourse
     		$from[] = "(select count(id) from courses c1 where c1.instance_source=courses.id ) as has_instances";
     	}
     	$sql = prepareGetTableData("courses c", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-    	
+
     	$result = eF_getTableData("courses, ($sql) t", implode(",", $from), "courses.id=t.id");
 
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
@@ -3025,41 +3164,47 @@ class MagesterCourse
     		return MagesterCourse :: convertDatabaseResultToCourseArray($result);
     	}
     }
-    public static function countAllCourses($constraints = array()) {
+    public static function countAllCourses($constraints = array())
+    {
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	//$where[] = "d.id=c.directions_ID";
     	$result = eF_countTableData("courses c", "c.id", implode(" and ", $where));
     	return $result[0]['count'];
     }
-    public static function convertDatabaseResultToLessonObjects($result) {
+    public static function convertDatabaseResultToLessonObjects($result)
+    {
     	$lessonObjects = array();
     	foreach ($result as $value) {
     		$lessonObjects[$value['id']] = new MagesterLesson($value);
     	}
     	return $lessonObjects;
     }
-    public static function convertDatabaseResultToLessonArray($result) {
+    public static function convertDatabaseResultToLessonArray($result)
+    {
     	$lessonArray = array();
     	foreach ($result as $value) {
     		$lessonArray[$value['id']] = $value;
     	}
     	return $lessonArray;
     }
-    public static function convertDatabaseResultToCourseObjects($result) {
+    public static function convertDatabaseResultToCourseObjects($result)
+    {
     	$courseObjects = array();
     	foreach ($result as $value) {
     		$courseObjects[$value['id']] = new MagesterCourse($value);
     	}
     	return $courseObjects;
     }
-    public static function convertDatabaseResultToCourseArray($result) {
+    public static function convertDatabaseResultToCourseArray($result)
+    {
     	$courseArray = array();
     	foreach ($result as $value) {
     		$courseArray[$value['id']] = $value;
     	}
     	return $courseArray;
     }
-    public static function convertLessonObjectsToArrays($lessonObjects) {
+    public static function convertLessonObjectsToArrays($lessonObjects)
+    {
     	foreach ($lessonObjects as $key => $value) {
     		if ($value instanceOf MagesterLesson) {
     			$lessonObjects[$key] = $value -> lesson;
@@ -3067,7 +3212,8 @@ class MagesterCourse
     	}
     	return $lessonObjects;
     }
-    public static function convertCourseObjectsToArrays($courseObjects) {
+    public static function convertCourseObjectsToArrays($courseObjects)
+    {
     	foreach ($courseObjects as $key => $value) {
     		if ($value instanceOf MagesterCourse) {
     			$courseObjects[$key] = $value -> course;
@@ -3075,7 +3221,8 @@ class MagesterCourse
     	}
     	return $courseObjects;
     }
-    public static function convertUserObjectsToArrays($userObjects) {
+    public static function convertUserObjectsToArrays($userObjects)
+    {
     	foreach ($userObjects as $key => $value) {
     		if ($value instanceOf MagesterUser) {
     			$userObjects[$key] = $value -> user;
@@ -3083,13 +3230,15 @@ class MagesterCourse
     	}
     	return $userObjects;
     }
-    public static function convertLessonConstraintsToSqlParameters($constraints) {
+    public static function convertLessonConstraintsToSqlParameters($constraints)
+    {
     	$where = self::addWhereConditionToLessonConstraints($constraints);
     	$limit = self::addLimitConditionToConstraints($constraints);
     	$order = self::addSortOrderConditionToConstraints($constraints);
     	return array($where, $limit, $order);
     }
-    private static function addWhereConditionToLessonConstraints($constraints) {
+    private static function addWhereConditionToLessonConstraints($constraints)
+    {
     	if (isset($constraints['archive'])) {
     		$constraints['archive'] ? $where[] = 'l.archive!=0' : $where[] = 'l.archive=0';
     	}
@@ -3112,7 +3261,8 @@ class MagesterCourse
     /*
      * Append the tables that are used from the statistics filters to the FROM table list
      */
-    public static function appendTableFiltersUserConstraints($from, $constraints) {
+    public static function appendTableFiltersUserConstraints($from, $constraints)
+    {
     	if (isset($constraints['table_filters'])) {
     		foreach ($constraints['table_filters'] as $constraint) {
     			if (isset($constraint['table']) && isset($constraint['joinField'])) {
@@ -3122,7 +3272,8 @@ class MagesterCourse
     	}
     	return $from;
     }
-    public function convertCourseConstraintsToRequiredFields($constraints, $select) {
+    public function convertCourseConstraintsToRequiredFields($constraints, $select)
+    {
     	foreach ($select as $key => $value) {
     		if ((!isset($constraints['required_fields']) || !in_array($key, $constraints['required_fields'])) && $key != 'main') {
     			unset($select[$key]);
@@ -3130,13 +3281,15 @@ class MagesterCourse
     	}
     	return $select;
     }
-    public static function convertCourseConstraintsToSqlParameters($constraints) {
+    public static function convertCourseConstraintsToSqlParameters($constraints)
+    {
     	$where = self::addWhereConditionToCourseConstraints($constraints);
     	$limit = self::addLimitConditionToConstraints($constraints);
     	$order = self::addSortOrderConditionToConstraints($constraints);
     	return array($where, $limit, $order);
     }
-    private static function addWhereConditionToCourseConstraints($constraints) {
+    private static function addWhereConditionToCourseConstraints($constraints)
+    {
     	$where = array();
     	if (isset($constraints['archive'])) {
     		$constraints['archive'] ? $where[] = 'c.archive!=0' : $where[] = 'c.archive=0';
@@ -3152,9 +3305,9 @@ class MagesterCourse
     	if (isset($constraints['instance'])) {
     		if ($constraints['instance'] === true) {
     			$where[] = 'c.instance_source!=0';
-    		} else if ($constraints['instance'] == false) {
+    		} elseif ($constraints['instance'] == false) {
     			$where[] = 'c.instance_source=0';
-    		} else if (eF_checkParameter($constraints['instance'], 'id')) {
+    		} elseif (eF_checkParameter($constraints['instance'], 'id')) {
     			$where[] = '(c.instance_source='.$constraints['instance'].' or c.id='.$constraints['instance'].')';
     		}
     	}
@@ -3177,7 +3330,8 @@ class MagesterCourse
     	}
     	return $where;
     }
-    private static function addSortOrderConditionToConstraints($constraints) {
+    private static function addSortOrderConditionToConstraints($constraints)
+    {
     	$order = '';
     	if (isset($constraints['sort']) && eF_checkParameter($constraints['sort'], 'alnum_with_spaces')) {
     		$order = $constraints['sort'];
@@ -3187,7 +3341,8 @@ class MagesterCourse
     	}
     	return $order;
     }
-    private static function addLimitConditionToConstraints($constraints) {
+    private static function addLimitConditionToConstraints($constraints)
+    {
     	$limit = '';
     	if (isset($constraints['limit']) && eF_checkParameter($constraints['limit'], 'int') && $constraints['limit'] > 0) {
     		$limit = $constraints['limit'];
@@ -3210,7 +3365,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function getSkills($only_own = false) {
+    public function getSkills($only_own = false)
+    {
     	if (!isset($this -> skills) || !$this -> skills) {
     		$this -> skills = false; //Initialize skills to something
     		$skills = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_skill_categories ON module_hcd_skill_categories.id = module_hcd_skills.categories_ID LEFT OUTER JOIN module_hcd_course_offers_skill ON (module_hcd_course_offers_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_course_offers_skill.courses_ID='".$this -> course['id']."')", "module_hcd_skills.description,specification, module_hcd_skills.skill_ID,courses_ID, categories_ID, module_hcd_skill_categories.description as category","");
@@ -3241,7 +3397,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function assignSkill($skill_ID, $specification) {
+    public function assignSkill($skill_ID, $specification)
+    {
     	$this -> getSkills();
     	// Check if the skill is not assigned as offered by this course
     	if ($this -> skills[$skill_ID]['courses_ID'] == "") {
@@ -3270,7 +3427,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function removeSkill($skill_ID) {
+    public function removeSkill($skill_ID)
+    {
     	$this -> getSkills();
     	// Check if the skill is not assigned as offered by this course
     	if ($this -> skills[$skill_ID]['courses_ID'] == $this -> course['id']) {
@@ -3296,7 +3454,8 @@ class MagesterCourse
      * @since 3.6.0
      * @access public
      */
-    public function assignBranch($branch_ID) {
+    public function assignBranch($branch_ID)
+    {
     	$this -> getBranches();
     	// Check if the branch is not assigned as offered by this course
     	if ($this -> branches[$branch_ID]['courses_ID'] == "") {
@@ -3323,7 +3482,8 @@ class MagesterCourse
      * @since 3.6.0
      * @access public
      */
-    public function removeBranch($branch_ID) {
+    public function removeBranch($branch_ID)
+    {
     	$this -> getBranches();
     	// Check if the branch is not assigned as offered by this course
     	if ($this -> branches[$branch_ID]['courses_ID'] == $this -> course['id']) {
@@ -3347,7 +3507,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public function getInstances($constraints = array()) {
+    public function getInstances($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false);
     	$constraints['instance'] = $this -> course['id'];
     	$constraints['required_fields'] = array('num_students', 'num_lessons', 'num_skills', 'location');
@@ -3382,7 +3543,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public function countCourseInstances($constraints = array()) {
+    public function countCourseInstances($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	$constraints['instance'] = $this -> course['id'];
     	//$constraints['required_fields'] = array('num_students', 'num_lessons', 'num_skills', 'location');
@@ -3410,11 +3572,12 @@ class MagesterCourse
      * @since 3.6.1
      * @access public
      */
-    public function setLessonMode($lesson, $mode) {
+    public function setLessonMode($lesson, $mode)
+    {
     	($lesson instanceof MagesterLesson) OR $lesson = new MagesterLesson($lesson);
     	if ($mode == 'unique') {
     		$this -> setUniqueLessonMode($lesson);
-    	} else if ($mode == 'shared') {
+    	} elseif ($mode == 'shared') {
     		$this -> setSharedLessonMode($lesson);
     	}
     }
@@ -3425,7 +3588,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function setUniqueLessonMode($lesson) {
+    private function setUniqueLessonMode($lesson)
+    {
     	$courseUsers = $this -> countCourseUsers(array('archive' => false));
     	if ($courseUsers['count'] > 0) {
     		throw new Exception(_YOUCANNOTCHANGEMODECOURSENOTEMPTY, MagesterCourseException::COURSE_NOT_EMPTY);
@@ -3451,7 +3615,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function setSharedLessonMode($lesson) {
+    private function setSharedLessonMode($lesson)
+    {
     	$courseUsers = $this -> countCourseUsers(array('archive' => false));
     	if ($courseUsers['count'] > 0) {
     		throw new Exception(_YOUCANNOTCHANGEMODECOURSENOTEMPTY, MagesterCourseException::COURSE_NOT_EMPTY);
@@ -3470,7 +3635,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function replaceLessonInCourseRules($oldLesson, $newLesson) {
+    private function replaceLessonInCourseRules($oldLesson, $newLesson)
+    {
     	$oldLesson = MagesterLesson::convertArgumentToLessonId($oldLesson);
     	$newLesson = MagesterLesson::convertArgumentToLessonId($newLesson);
     	foreach ($this -> rules as $id => $rule) {
@@ -3496,7 +3662,8 @@ class MagesterCourse
      * @since 3.6.1
      * @access private
      */
-    private function replaceLessonInCourseOrder($oldLesson, $newLesson) {
+    private function replaceLessonInCourseOrder($oldLesson, $newLesson)
+    {
     	$oldLesson = MagesterLesson::convertArgumentToLessonId($oldLesson);
     	$newLesson = MagesterLesson::convertArgumentToLessonId($newLesson);
     	$previousLessons = $this -> getPreviousLessonsInCourse();
@@ -3518,10 +3685,11 @@ class MagesterCourse
      * @access public
      * @static
      */
-    public static function convertArgumentToCourseId($course) {
+    public static function convertArgumentToCourseId($course)
+    {
     	if ($course instanceOf MagesterCourse) {
     		$course = $course -> course['id'];
-    	} else if (!eF_checkParameter($course, 'id')) {
+    	} elseif (!eF_checkParameter($course, 'id')) {
     		throw new MagesterCourseException(_INVALIDID, MagesterCourseException :: INVALID_ID);
     	}
     	return $course;
@@ -3549,7 +3717,8 @@ class MagesterCourse
      * @since 3.5.0
      * @access public
      */
-    public function checkRules($user, $courseLessons = false) {
+    public function checkRules($user, $courseLessons = false)
+    {
     	$user = MagesterUser::convertArgumentToUserLogin($user);
     	$roles = MagesterLessonUser :: getLessonsRoles();
     	if ($courseLessons == false) {
@@ -3596,7 +3765,8 @@ class MagesterCourse
      * @since 3.6.3
      * @access public
      */
-    public function isCourseLesson($lesson) {
+    public function isCourseLesson($lesson)
+    {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
     	$result = eF_getTableData("lessons_to_courses", "*", "lessons_ID=".$lesson -> lesson['id']." and courses_ID=".$this -> course['id']);
     	return !empty($result);
@@ -3611,7 +3781,8 @@ class MagesterCourse
      * @access public
      * @static
      */
-    public static function persistCourseUsers($fields, $where, $courseId, $userLogin) {
+    public static function persistCourseUsers($fields, $where, $courseId, $userLogin)
+    {
     	eF_updateTableData("users_to_courses", $fields, $where);
     	//$cacheKey = "user_course_status:course:".$courseId."user:".$userLogin;
     	//Cache::resetCache($cacheKey);
@@ -3626,13 +3797,15 @@ class MagesterCourse
      * @access public
      * @static
      */
-    public static function persistCourseLessons($fields, $where) {
+    public static function persistCourseLessons($fields, $where)
+    {
     	eF_updateTableData("lessons_to_courses", $fields, $where);
     }
-    public function handlePostAjaxRequestionForLessons() {
+    public function handlePostAjaxRequestionForLessons()
+    {
     	if (isset($_GET['id']) && eF_checkParameter($_GET['id'], 'id')) {
     		!$this -> isCourseLesson($_GET['id']) ? $this -> addLessons($_GET['id']) : $this -> removeLessons($_GET['id']) ;
-    	} else if (isset($_GET['addAll'])) {
+    	} elseif (isset($_GET['addAll'])) {
     		$constraints = createConstraintsFromSortedTable() + array('archive' => false, 'active' => true);
     		unset($constraints['limit']);//This way, we preserve filter, but the operation still applies to all entries
     		$this -> addCourseLessons($constraints);
@@ -3646,7 +3819,7 @@ class MagesterCourse
     		 isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
     		 $this -> addLessons(array_diff(array_keys($lessons), array_keys($courseLessons)));
     		 */
-    	} else if (isset($_GET['removeAll'])) {
+    	} elseif (isset($_GET['removeAll'])) {
     		//$constraints = createConstraintsFromSortedTable() + array('archive' => false, 'active' => true);
     		//$this -> removeCourseLessons($constraints);
     		$courseLessons = $this -> getCourseLessons();
@@ -3656,12 +3829,13 @@ class MagesterCourse
     	$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
     	echo json_encode(array('lessons' => array_keys($this -> getCourseLessons($constraints))));
     }
-    public function handlePostAjaxRequestForSkills() {
+    public function handlePostAjaxRequestForSkills()
+    {
     	if ($_GET['insert'] == "true") {
     		$this -> assignSkill($_GET['add_skill'], $_GET['specification']);
-    	} else if ($_GET['insert'] == "false") {
+    	} elseif ($_GET['insert'] == "false") {
     		$this -> removeSkill($_GET['add_skill']);
-    	} else if (isset($_GET['addAll'])) {
+    	} elseif (isset($_GET['addAll'])) {
     		$skills = $this -> getSkills();
     		isset($_GET['filter']) ? $skills = eF_filterData($skills, $_GET['filter']) : null;
     		foreach ($skills as $skill) {
@@ -3669,7 +3843,7 @@ class MagesterCourse
     				$this -> assignSkill($skill['skill_ID'], "");
     			}
     		}
-    	} else if (isset($_GET['removeAll'])) {
+    	} elseif (isset($_GET['removeAll'])) {
     		$skills = $this -> getSkills();
     		isset($_GET['filter']) ? $skills = eF_filterData($skills, $_GET['filter']) : null;
     		foreach ($skills as $skill) {
@@ -3679,27 +3853,30 @@ class MagesterCourse
     		}
     	}
     }
-    public function handlePostAjaxRequestForUsers() {
+    public function handlePostAjaxRequestForUsers()
+    {
     	if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
     		$this -> handlePostAjaxRequestForSingleUser();
-    	} else if (isset($_GET['addAll'])) {
+    	} elseif (isset($_GET['addAll'])) {
     		$this -> handlePostAjaxRequestForUsersAddAll();
-    	} else if (isset($_GET['removeAll'])) {
+    	} elseif (isset($_GET['removeAll'])) {
     		$this -> handlePostAjaxRequestForUsersRemoveAll();
     	}
     }
 
-    public function handlePostAjaxRequestForUsersClasses() {
+    public function handlePostAjaxRequestForUsersClasses()
+    {
     	if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
     		$this -> handlePostAjaxRequestForSingleUserClasses();
-    	} else if (isset($_GET['addAll'])) {
+    	} elseif (isset($_GET['addAll'])) {
     		//$this -> handlePostAjaxRequestForUsersAddAll();
-    	} else if (isset($_GET['removeAll'])) {
+    	} elseif (isset($_GET['removeAll'])) {
     		//$this -> handlePostAjaxRequestForUsersRemoveAll();
     	}
     }
 
-    private function handlePostAjaxRequestForSingleUserClasses() {
+    private function handlePostAjaxRequestForSingleUserClasses()
+    {
     	isset($_GET['user_type']) && in_array($_GET['user_type'], array_keys(MagesterLessonUser :: getLessonsRoles())) ? $userType = $_GET['user_type'] : $userType = 'student';
     	$user = MagesterUserFactory :: factory($_GET['login']);
     	$courseclass = new MagesterCourseClass($_GET['courseclass']);
@@ -3711,18 +3888,18 @@ class MagesterCourse
     	}
     }
 
-
-    private function handlePostAjaxRequestForSingleUser() {
+    private function handlePostAjaxRequestForSingleUser()
+    {
     	isset($_GET['user_type']) && in_array($_GET['user_type'], array_keys(MagesterLessonUser :: getLessonsRoles())) ? $userType = $_GET['user_type'] : $userType = 'student';
-    	 
+
     	$classes = $this->getCourseClasses(array("active" => 1, "return_objects" => false));
     	$classesID = array();
-    	foreach($classes as $classe) {
+    	foreach ($classes as $classe) {
     		$classesID[] = $classe['id'];
     	}
 
     	$userInCourse = $_GET['user_in_course'];
-    	 
+
     	isset($_GET['class_id']) && in_array($_GET['class_id'], $classesID) ? $class_id = $_GET['class_id'] : $class_id = 0;
 
     	isset($_GET['set_class_id']) && in_array($_GET['set_class_id'], $classesID) ? $set_class_id = $_GET['set_class_id'] : $set_class_id = null;
@@ -3732,7 +3909,7 @@ class MagesterCourse
     	if (is_numeric($set_class_id)) {
     		$this->putUserInClass($user->user['login'], $set_class_id);
     	} else {
-    			
+
     		if (!$user -> hasCourse($this) || $user -> getUserTypeInCourse($this) != $userType) {
     			$this -> addUsers($user, $userType);
     		} else {
@@ -3741,7 +3918,8 @@ class MagesterCourse
     		$this->putUserInClass($user->user['login'], $class_id);
     	}
     }
-    private function handlePostAjaxRequestForUsersAddAll() {
+    private function handlePostAjaxRequestForUsersAddAll()
+    {
     	$constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null');
     	$users = $this -> getCourseUsersIncludingUnassigned($constraints);
     	$users = MagesterUser :: convertUserObjectsToArrays($users);
@@ -3759,7 +3937,8 @@ class MagesterCourse
     		throw new MagesterCourseException(str_replace("%x", self::MAX_MASS_OPERATION_SIZE, _ONLYXCANBEAPPLIEDATATIME), MagesterCourseException :: PARTIAL_IMPORT);
     	}
     }
-    private function handlePostAjaxRequestForUsersRemoveAll() {
+    private function handlePostAjaxRequestForUsersRemoveAll()
+    {
     	$constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is not null');
     	$users = $this -> getCourseUsersIncludingUnassigned($constraints);
     	$users = MagesterUser :: convertUserObjectsToArrays($users);
@@ -3767,8 +3946,8 @@ class MagesterCourse
     	$this -> archiveCourseUsers(array_keys($users));
     }
 
-    public function getCourseClasses($constraints = array()) {
-
+    public function getCourseClasses($constraints = array())
+    {
     	$fields = array(
 			"c.*",
 			"c.courses_ID IS NOT NULL as has_course",
@@ -3777,7 +3956,7 @@ class MagesterCourse
 
 			if ($constraints['users_ID']) {
 				$userLogin = eF_getTableData("users", "login", "id = " . $constraints['users_ID']);
-					
+
 				$fields[] = sprintf(
 				"(SELECT COUNT(uc.users_ID) FROM users_to_courses uc WHERE uc.classe_id = c.id AND uc.users_LOGIN = '%s' AND uc.active = 1 AND uc.archive = 0) as user_has_class",
 				$userLogin[0]['login']
@@ -3785,7 +3964,6 @@ class MagesterCourse
 			} else {
 				$fields[] = "0 AS user_has_class";
 			}
-
 
 			!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 			list($where, $limit, $orderby) = MagesterCourse :: convertClassesConstraintsToSqlParameters($constraints);
@@ -3802,7 +3980,8 @@ class MagesterCourse
 			}
     }
 
-    public function countCourseClasses($constraints = array()) {
+    public function countCourseClasses($constraints = array())
+    {
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterCourse :: convertClassesConstraintsToSqlParameters($constraints);
 
@@ -3814,23 +3993,29 @@ class MagesterCourse
     	return $result[0]['count'];
     }
 
-    public function setUserCourseClass($login, $course_id, $classe_id) {
+    public function setUserCourseClass($login, $course_id, $classe_id)
+    {
     	ef_updateTableData("users_to_courses", array("classe_id" => $classe_id), sprintf("users_LOGIN = '%s' AND courses_ID = %d", $login, $course_id));
     }
 
-    public static function convertClassesConstraintsToSqlParameters($constraints) {
+    public static function convertClassesConstraintsToSqlParameters($constraints)
+    {
     	$where = self::addWhereConditionToClassesConstraints($constraints);
     	$limit = self::addLimitConditionToConstraints($constraints);
     	$order = self::addSortOrderConditionToConstraints($constraints);
     	return array($where, $limit, $order);
     }
 
-    private static function addWhereConditionToClassesConstraints($constraints) {
+    private static function addWhereConditionToClassesConstraints($constraints)
+    {
     	if (isset($constraints['archive'])) {
     		$constraints['archive'] ? $where[] = 'c.archive!=0' : $where[] = 'c.archive=0';
     	}
     	if (isset($constraints['active'])) {
     		$constraints['active'] ? $where[] = 'c.active=1' : $where[] = 'c.active=0';
+    	}
+    	if (isset($constraints['course_id'])) {
+    		$constraints['course_id'] ? $where[] = 'c.courses_ID = ' . $constraints['course_id'] : null;
     	}
 
     	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
@@ -3847,14 +4032,16 @@ class MagesterCourse
     	return $where;
     }
 
-    public static function convertDatabaseResultToClassesObjects($result) {
+    public static function convertDatabaseResultToClassesObjects($result)
+    {
     	$classesObjects = array();
     	foreach ($result as $value) {
     		$classesObjects[$value['id']] = new MagesterCourseClass($value);
     	}
     	return $classesObjects;
     }
-    public static function convertDatabaseResultToClassesArray($result) {
+    public static function convertDatabaseResultToClassesArray($result)
+    {
     	$classesArray = array();
     	foreach ($result as $value) {
     		$classesArray[$value['id']] = $value;
@@ -3862,8 +4049,8 @@ class MagesterCourse
     	return $classesArray;
     }
 
-
-    public static function getModalidades() {
+    public static function getModalidades()
+    {
     	return array(
 		'presencial'	=> array(
 			'groupLabel'	=> 'Presencial',

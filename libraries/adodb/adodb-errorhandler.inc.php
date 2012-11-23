@@ -11,9 +11,8 @@
  *
 */
 
-
 // added Claudio Bustos  clbustos#entelchile.net
-if (!defined('ADODB_ERROR_HANDLER_TYPE')) define('ADODB_ERROR_HANDLER_TYPE',E_USER_ERROR); 
+if (!defined('ADODB_ERROR_HANDLER_TYPE')) define('ADODB_ERROR_HANDLER_TYPE',E_USER_ERROR);
 
 if (!defined('ADODB_ERROR_HANDLER')) define('ADODB_ERROR_HANDLER','ADODB_Error_Handler');
 
@@ -31,7 +30,7 @@ if (!defined('ADODB_ERROR_HANDLER')) define('ADODB_ERROR_HANDLER','ADODB_Error_H
 function ADODB_Error_Handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection)
 {
 	if (error_reporting() == 0) return; // obey @ protocol
-	switch($fn) {
+	switch ($fn) {
 	case 'EXECUTE':
 		$sql = $p1;
 		$inputparams = $p2;
@@ -72,8 +71,6 @@ function ADODB_Error_Handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnec
 			error_log("($t) $s", ADODB_ERROR_LOG_TYPE);
 	}
 
-
 	//print "<p>$s</p>";
-	trigger_error($s,ADODB_ERROR_HANDLER_TYPE); 
+	trigger_error($s,ADODB_ERROR_HANDLER_TYPE);
 }
-?>

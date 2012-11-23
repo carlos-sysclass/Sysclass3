@@ -60,7 +60,6 @@
 // *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // */
 
-
 /**
  * PHPExcel_Writer_Excel5_Workbook
  *
@@ -189,7 +188,6 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 */
 	private $_escher;
 
-
 	/**
 	 * Class constructor
 	 *
@@ -303,7 +301,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	public function _addFont(PHPExcel_Style_Font $font)
 	{
 		$fontHashCode = $font->getHashCode();
-		if(isset($this->_addedFonts[$fontHashCode])){
+		if (isset($this->_addedFonts[$fontHashCode])) {
 			$fontIndex = $this->_addedFonts[$fontHashCode];
 		} else {
 			$countFonts = count($this->_fontWriters);
@@ -323,7 +321,8 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * @param string $rgb E.g. 'FF00AA'
 	 * @return int Color index
 	 */
-	private function _addColor($rgb) {
+	private function _addColor($rgb)
+	{
 		if (!isset($this->_colors[$rgb])) {
 			if (count($this->_colors) < 57) {
 				// then we add a custom color altering the palette
@@ -610,7 +609,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					);
 
 			// (exclusive) either repeatColumns or repeatRows
-			} else if ($sheetSetup->isColumnsToRepeatAtLeftSet() || $sheetSetup->isRowsToRepeatAtTopSet()) {
+			} elseif ($sheetSetup->isColumnsToRepeatAtLeftSet() || $sheetSetup->isRowsToRepeatAtTopSet()) {
 
 				// Columns to repeat
 				if ($sheetSetup->isColumnsToRepeatAtLeftSet()) {
@@ -687,7 +686,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					}
 					$chunk .= $this->writeData($this->_writeDefinedNameBiff8($namedRange->getName(), $formulaData, $scope, false));
 
-				} catch(Exception $e) {
+				} catch (Exception $e) {
 					// do nothing
 				}
 			}
@@ -719,7 +718,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x07), $formulaData, $i + 1, true));
 
 			// (exclusive) either repeatColumns or repeatRows
-			} else if ($sheetSetup->isColumnsToRepeatAtLeftSet() || $sheetSetup->isRowsToRepeatAtTopSet()) {
+			} elseif ($sheetSetup->isColumnsToRepeatAtLeftSet() || $sheetSetup->isRowsToRepeatAtTopSet()) {
 
 				// Columns to repeat
 				if ($sheetSetup->isColumnsToRepeatAtLeftSet()) {
@@ -959,7 +958,6 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 
 		$numberFormatString = PHPExcel_Shared_String::UTF8toBIFF8UnicodeLong($format);
 		$length    = 2 + strlen($numberFormatString);      // Number of bytes to follow
-
 
 		$header    = pack("vv", $record, $length);
 		$data      = pack("v", $ifmt) .  $numberFormatString;

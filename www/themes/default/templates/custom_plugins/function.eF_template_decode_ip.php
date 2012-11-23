@@ -1,6 +1,6 @@
 <?php
 /*
-{eF_template_decode_ip ip='3e674945'}	
+{eF_template_decode_ip ip='3e674945'}
 */
 function smarty_function_eF_template_decode_ip($params, &$smarty)
 {
@@ -17,4 +17,3 @@ function smarty_function_eF_template_decode_ip($params, &$smarty)
     return $dotquad_ip;
 
 }
-?>

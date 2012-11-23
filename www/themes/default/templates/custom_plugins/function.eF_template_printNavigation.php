@@ -1,9 +1,10 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printNavigation function. 
+* Smarty plugin: smarty_function_eF_template_printNavigation function.
 *
 */
-function smarty_function_eF_template_printNavigation($params, &$smarty) {
+function smarty_function_eF_template_printNavigation($params, &$smarty)
+{
     $previous = $params['previous'];
     $next     = $params['next'];
 
@@ -17,7 +18,7 @@ function smarty_function_eF_template_printNavigation($params, &$smarty) {
                     <img border = "0" src = "images/32x32/navigate_left.png" title = "'.$previous['name'].'" alt = "'.$previous['name'].'" /></a>&nbsp</b>';
         $connector = "<img src = \"images/others/spacer.gif\" />";
     }
-    
+
     if ($next AND $next['id'] != 0) {
         //($next['ctg_type'] == 'tests') ? $link = basename($_SERVER['PHP_SELF']).'?ctg=tests&show_test_content_ID='.$next['id'] : $link = basename($_SERVER['PHP_SELF']).'?ctg=content&view_unit='.$next['id'];
         ($next['ctg_type'] == 'tests') ? $link = basename($_SERVER['PHP_SELF']).'?ctg=tests&view_unit='.$next['id'] : $link = basename($_SERVER['PHP_SELF']).'?ctg=content&view_unit='.$next['id'];
@@ -26,10 +27,8 @@ function smarty_function_eF_template_printNavigation($params, &$smarty) {
                 <b>
                 <a href="'.$link.'" title="'.$next['name'].'">
                     <img border = "0" src = "images/32x32/navigate_right.png" title = "'.$next['name'].'" alt = "'.$next['name'].'" /></a>&nbsp;</b>';
-    } 
-    
+    }
+
     return $str;
 
 }
-
-?>

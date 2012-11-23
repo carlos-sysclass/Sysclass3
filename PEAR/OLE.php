@@ -19,7 +19,6 @@
 //
 // $Id: OLE.php,v 1.7 2003/08/21 15:15:40 xnoguer Exp $
 
-
 /**
 * Constants for OLE package
 */
@@ -30,7 +29,7 @@ define('OLE_DATA_SIZE_SMALL', 0x1000);
 define('OLE_LONG_INT_SIZE',        4);
 define('OLE_PPS_SIZE',          0x80);
 
-require_once('PEAR.php');
+require_once 'PEAR.php';
 require_once 'OLE/PPS.php';
 
 /**
@@ -117,6 +116,7 @@ class OLE extends PEAR
         if (PEAR::isError($ret)) {
             return $ret;
         }
+
         return true;
     }
 
@@ -143,12 +143,11 @@ class OLE extends PEAR
     function _readPpsWks($pps_wk_start, $big_block_size)
     {
         $pointer = ($pps_wk_start + 1) * $big_block_size;
-        while (1)
-        {
+        while (1) {
             fseek($this->_file_handle, $pointer);
             $pps_wk = fread($this->_file_handle, OLE_PPS_SIZE);
             if (strlen($pps_wk) != OLE_PPS_SIZE) {
-                break; // Excel likes to add a trailing byte sometimes 
+                break; // Excel likes to add a trailing byte sometimes
                 //return $this->raiseError("PPS at $pointer seems too short: ".strlen($pps_wk));
             }
             $name_length = unpack("c", substr($pps_wk, 64, 2)); // FIXME (2 bytes??)
@@ -185,7 +184,7 @@ class OLE extends PEAR
             $pointer += OLE_PPS_SIZE;
         }
     }
- 
+
     /**
     * It checks whether the PPS tree is complete (all PPS's read)
     * starting with the given PPS (not necessarily root)
@@ -199,23 +198,22 @@ class OLE extends PEAR
         if ($this->_list[$index]->NextPps != -1) {
             if (!isset($this->_list[$this->_list[$index]->NextPps])) {
                 return false;
-            }
-            else {
+            } else {
                 return $this->_ppsTreeComplete($this->_list[$index]->NextPps);
             }
         }
         if ($this->_list[$index]->DirPps != -1) {
             if (!isset($this->_list[$this->_list[$index]->DirPps])) {
                 return false;
-            }
-            else {
+            } else {
                 return $this->_ppsTreeComplete($this->_list[$index]->DirPps);
             }
         }
+
         return true;
     }
 
-    /** 
+    /**
     * Checks whether a PPS is a File PPS or not.
     * If there is no PPS for the index given, it will return false.
     *
@@ -228,10 +226,11 @@ class OLE extends PEAR
         if (isset($this->_list[$index])) {
             return ($this->_list[$index]->Type == OLE_PPS_TYPE_FILE);
         }
+
         return false;
     }
 
-    /** 
+    /**
     * Checks whether a PPS is a Root PPS or not.
     * If there is no PPS for the index given, it will return false.
     *
@@ -244,10 +243,11 @@ class OLE extends PEAR
         if (isset($this->_list[$index])) {
             return ($this->_list[$index]->Type == OLE_PPS_TYPE_ROOT);
         }
+
         return false;
     }
 
-    /** 
+    /**
     * Gives the total number of PPS's found in the OLE container.
     *
     * @access public
@@ -277,9 +277,10 @@ class OLE extends PEAR
         }
         // Beware!!! _data member is actually a position
         fseek($this->_file_handle, $this->_list[$index]->_data + $position);
+
         return fread($this->_file_handle, $length);
     }
-    
+
     /**
     * Gets the data length from a PPS
     * If there is no PPS for the index given, it will return 0.
@@ -293,6 +294,7 @@ class OLE extends PEAR
         if (isset($this->_list[$index])) {
             return $this->_list[$index]->Size;
         }
+
         return 0;
     }
 
@@ -310,6 +312,7 @@ class OLE extends PEAR
         for ($i = 0; $i < strlen($ascii); $i++) {
             $rawname .= $ascii{$i}."\x00";
         }
+
         return $rawname;
     }
 
@@ -319,7 +322,7 @@ class OLE extends PEAR
     *
     * @access public
     * @static
-    * @param integer $date A timestamp 
+    * @param integer $date A timestamp
     * @return string The string for the OLE container
     */
     function LocalDate2OLE($date = null)
@@ -346,18 +349,17 @@ class OLE extends PEAR
         // Make HEX string
         $res = '';
 
-        for ($i=0; $i<4; $i++)
-        {
+        for ($i=0; $i<4; $i++) {
             $hex = $low_part % 0x100;
             $res .= pack('c', $hex);
             $low_part /= 0x100;
         }
-        for ($i=0; $i<4; $i++)
-        {
+        for ($i=0; $i<4; $i++) {
             $hex = $high_part % 0x100;
             $res .= pack('c', $hex);
             $high_part /= 0x100;
         }
+
         return $res;
     }
 
@@ -378,8 +380,7 @@ class OLE extends PEAR
         // factor used for separating numbers into 4 bytes parts
         $factor = pow(2,32);
         $high_part = 0;
-        for ($i=0; $i<4; $i++)
-        {
+        for ($i=0; $i<4; $i++) {
             $al = unpack('C', $string{(7 - $i)});
             $high_part += $al[''];
             if ($i < 3) {
@@ -387,8 +388,7 @@ class OLE extends PEAR
             }
         }
         $low_part = 0;
-        for ($i=4; $i<8; $i++)
-        {
+        for ($i=4; $i<8; $i++) {
             $al = unpack('C', $string{(7 - $i)});
             $low_part += $al[''];
             if ($i < 7) {
@@ -398,13 +398,13 @@ class OLE extends PEAR
         $big_date = ($high_part*$factor) + $low_part;
         // translate to seconds
         $big_date /= 10000000;
-        
+
         // days from 1-1-1601 until the beggining of UNIX era
         $days = 134774;
-        
+
         // translate to seconds from beggining of UNIX era
         $big_date -= $days*24*3600;
+
         return floor($big_date);
     }
 }
-?>

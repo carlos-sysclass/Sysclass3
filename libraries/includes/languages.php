@@ -130,7 +130,7 @@ if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAcces
     $dataSource = $languages;
     $tableName = 'languagesTable';
     /**Handle sorted table's sorting and filtering*/
-    include("sorted_table.php");
+    include 'sorted_table.php';
 
 }
 

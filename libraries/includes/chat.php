@@ -42,7 +42,7 @@ if (isset($_GET['chat_room_options'])) {
         $options_str = '';
         $chatrooms = eF_getTableData("chatrooms", "name, id", "type = 'private' AND users_LOGIN = '".$_SESSION['s_login']."'"); //Get only private rooms that belong to this user
 
-        if ($_SESSION['s_type'] == "administrator"){
+        if ($_SESSION['s_type'] == "administrator") {
             $chatrooms = array_merge(eF_getTableData("chatrooms", "id, name, active", "type = 'public'"), $chatrooms);
             $chatrooms = array_merge(array(array("name" => _MAGESTERMAIN, "id" => 0 , "active" =>1)), $chatrooms);
             $smarty -> assign("T_CHATROOMS", $chatrooms);
@@ -163,7 +163,6 @@ if (isset($_GET['chat_room_options'])) {
 
 } else {
 
-
     $user_type = eF_getUserBasicType($_SESSION['s_login']);
     $smarty ->assign("T_USER",$user_type);
     if (isset($_GET['delete']) && eF_checkParameter($_GET['id'], 'id')) { //Delete the room
@@ -210,7 +209,6 @@ if (isset($_GET['chat_room_options'])) {
     }
 
     $ctg = "chat";
-
 
     if (isset($_GET['logout'])) {
         if (isset($_GET['chatrooms_ID']) && eF_checkParameter($_GET['chatrooms_ID'], 'id')) {
@@ -299,7 +297,7 @@ if (isset($_GET['chat_room_options'])) {
                                'chatrooms_ID' => $chatrooms_ID,
                                'users_USER_TYPE' => $_SESSION['s_type'],
                                'timestamp' => time());
-        if(count($user_already_online)==0) {
+        if (count($user_already_online)==0) {
             eF_insertTableData("users_to_chatrooms", $fields_insert); //Insert new user to database
         }
         if (isset($_GET['msg_id_from']) && eF_checkParameter($_GET['msg_id_from'], 'id') && isset($_GET['msg_id_to']) && eF_checkParameter($_GET['msg_id_to'], 'id') && isset($_GET['from_user']) && eF_checkParameter($_GET['from_user'], 'login')) { //We have just accepted an invitation for a one-to-one conversation. Update messages to display the acceptance and reload chat page.
@@ -410,11 +408,12 @@ if (isset($_GET['chat_room_options'])) {
  * date: 21/2/07 ---> public rooms take care of users_to_lessons (except for admin)...makriria
 
  */
-function eF_local_roomInfo($room_type) {
+function eF_local_roomInfo($room_type)
+{
     if ($room_type == 'public') {
-        if ($_SESSION['s_type'] == "administrator"){
+        if ($_SESSION['s_type'] == "administrator") {
             $rooms_array = eF_getTableData("chatrooms", "id, name, create_timestamp, users_LOGIN, active, lessons_ID", "");
-        }else {
+        } else {
             $rooms_array = eF_getTableData("chatrooms,users_to_lessons as ul", "distinct id, name, create_timestamp, chatrooms.users_LOGIN, chatrooms.active", "ul.archive=0 and type = 'public' AND (chatrooms.lessons_ID=ul.lessons_ID OR chatrooms.lessons_ID IS NULL) AND ul.users_LOGIN='".$_SESSION['s_login']."'");
         }
     } elseif ($room_type == 'private') {
@@ -426,7 +425,7 @@ function eF_local_roomInfo($room_type) {
     //remove inactive and archived lessons
     $result = eF_getTableDataFlat("lessons","id","active=0 OR archive!=''");
     if (!empty($result['id'])) {
-     foreach($rooms_array as $key => $value) {
+     foreach ($rooms_array as $key => $value) {
       if (in_array($value['lessons_ID'],$result['id']) === false) {
        $roomsTemp[] = $rooms_array[$key];
       }
@@ -441,5 +440,6 @@ function eF_local_roomInfo($room_type) {
         $num_of_users_in_room = eF_getTableData("users_to_chatrooms", "count(*)", "chatrooms_ID=".$rooms_array[$i]['id']);
         $num_of_users_in_room[0]['count(*)'] > 0 ? $rooms_array[$i]['num_of_users_in_room'] = $num_of_users_in_room[0]['count(*)'] : $rooms_array[$i]['num_of_users_in_room'] = 0;
     }
+
     return $rooms_array;
 }

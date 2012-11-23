@@ -72,6 +72,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
         $file = $pkg->getFileContents($fileXml['name']);
         if (PEAR::isError($file)) {
             PEAR::popErrorHandling();
+
             return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                 $fileXml['name'] . '" is not valid: ' .
                 $file->getMessage());
@@ -86,11 +87,13 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                 foreach ($pkg->getValidationWarnings() as $warn) {
                     $warnings .= $warn['message'] . "\n";
                 }
+
                 return array(PEAR_TASK_ERROR_INVALID, 'Analysis of post-install script "' .
                     $fileXml['name'] . '" failed: ' . $warnings);
             }
             if (count($analysis['declared_classes']) != 1) {
                 PEAR::popErrorHandling();
+
                 return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                     $fileXml['name'] . '" must declare exactly 1 class');
             }
@@ -98,6 +101,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
             if ($class != str_replace(array('/', '.php'), array('_', ''),
                   $fileXml['name']) . '_postinstall') {
                 PEAR::popErrorHandling();
+
                 return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                     $fileXml['name'] . '" class "' . $class . '" must be named "' .
                     str_replace(array('/', '.php'), array('_', ''),
@@ -105,6 +109,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
             }
             if (!isset($analysis['declared_methods'][$class])) {
                 PEAR::popErrorHandling();
+
                 return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                     $fileXml['name'] . '" must declare methods init() and run()');
             }
@@ -116,6 +121,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
             }
             if (count($methods)) {
                 PEAR::popErrorHandling();
+
                 return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                     $fileXml['name'] . '" must declare methods init() and run()');
             }
@@ -151,7 +157,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                         return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                             $fileXml['name'] . '" ' . $tasksNamespace .
                             'paramgroup> id "' . $param[$tasksNamespace . 'id'] .
-                            '" must have a ' . $tasksNamespace . 
+                            '" must have a ' . $tasksNamespace .
                             'conditiontype> tag containing either "=", ' .
                             '"!=", or "preg_match"');
                     }
@@ -225,6 +231,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                 }
             }
         }
+
         return true;
     }
 
@@ -270,6 +277,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                 }
                 $newparams[str_replace($this->_pkg->getTasksNs() . ':', '', $i)] = $param;
             }
+
             return $newparams;
         }
     }
@@ -311,6 +319,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                 '->init()" failed');
         }
         $this->_contents = $contents;
+
         return true;
     }
 
@@ -326,4 +335,3 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
     {
     }
 }
-?>

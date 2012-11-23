@@ -169,8 +169,8 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
             );
         }
         $this->id        = $id;
-        $this->wizard    = (bool)$wizard;
-        $this->propagate = (bool)$propagateId;
+        $this->wizard    = (bool) $wizard;
+        $this->propagate = (bool) $propagateId;
     }
 
    /**
@@ -213,6 +213,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
         if (empty($this->sessionContainer)) {
             $this->sessionContainer = new HTML_QuickForm2_Controller_SessionContainer($this);
         }
+
         return $this->sessionContainer;
     }
 
@@ -250,6 +251,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
             reset($this->pages);
             $this->actionName = array(key($this->pages), 'display');
         }
+
         return $this->actionName;
     }
 
@@ -264,6 +266,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
     public function run()
     {
         list($page, $action) = $this->getActionName();
+
         return $this->pages[$page]->handle($action);
     }
 
@@ -358,6 +361,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
             }
             $previous = $page;
         }
+
         return null;
     }
 
@@ -376,6 +380,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
             }
             $previous = $page;
         }
+
         return null;
     }
 
@@ -410,9 +415,11 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
                         continue;
                     }
                 }
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -428,6 +435,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
                 return $page;
             }
         }
+
         return null;
     }
 
@@ -468,6 +476,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
                 }
             }
         }
+
         return $values;
     }
 
@@ -490,6 +499,7 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
                 $a[$k] = self::arrayMerge(isset($a[$k])? $a[$k]: array(), $v);
             }
         }
+
         return $a;
     }
 
@@ -503,4 +513,3 @@ class HTML_QuickForm2_Controller implements IteratorAggregate
         return new ArrayIterator($this->pages);
     }
 }
-?>

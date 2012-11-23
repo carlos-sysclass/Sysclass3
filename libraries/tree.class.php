@@ -79,11 +79,13 @@ abstract class MagesterTree
      * @access public
 
      */
-	public function getFirstNode($iterator = false) {
+	public function getFirstNode($iterator = false)
+	{
        if (!$iterator) {
            $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create a new iterator, so that the internal iterator pointer is not reset
        }
        $iterator -> rewind(); //Initialize iterator
+
        return $iterator -> current();
     }
     /**
@@ -117,11 +119,13 @@ abstract class MagesterTree
      * @access public
 
      */
-	public function getLastNode($iterator = false) {
+	public function getLastNode($iterator = false)
+	{
        if (!$iterator) {
            $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST));
        }
        foreach ($iterator as $lastNode); //We create new iterators (in order to leave unchanged the internal tree pointer) and advance them to the end of the tree
+
        return $lastNode;
     }
     /**
@@ -159,7 +163,8 @@ abstract class MagesterTree
      * @access public
 
      */
-    public function getNextNode($queryNode, $iterator = false) {
+    public function getNextNode($queryNode, $iterator = false)
+    {
         $queryNode instanceof ArrayObject ? $nodeId = $queryNode['id'] : $nodeId = $queryNode;
         if (!$iterator) {
             $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
@@ -178,6 +183,7 @@ abstract class MagesterTree
             if (!$queryNode) {
                 $this -> currentNodeId = $nextNode['id']; //If a $queryNode was not specified, we must advance the internal pointer, so assign the current node pointer to the next node
             }
+
             return $nextNode;
         } else {
             return false;
@@ -222,7 +228,8 @@ abstract class MagesterTree
      * @access public
 
      */
-    public function getPreviousNode($queryNode, $iterator = false) {
+    public function getPreviousNode($queryNode, $iterator = false)
+    {
         $queryNode instanceof ArrayObject ? $nodeId = $queryNode['id'] : $nodeId = $queryNode;
         if (!$iterator) {
             $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
@@ -234,6 +241,7 @@ abstract class MagesterTree
         }
         if ($iterator -> valid()) { //If we found the designated node, $previousNode now holds the previous node
             if (!isset($previousNode)) { //The designated node was apparently the first one, so return false
+
                 return false;
             } else {
              if (!$queryNode) {
@@ -277,7 +285,8 @@ abstract class MagesterTree
      * @access public
 
      */
-    public function seekNode($queryNode) {
+    public function seekNode($queryNode)
+    {
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $queryNode) { //Advance iterator until we reach the designated node
@@ -324,7 +333,8 @@ abstract class MagesterTree
      * @see RecursiveArrayIterator :: getChildren()
 
      */
-    public function getNodeChildren($node) {
+    public function getNodeChildren($node)
+    {
         $node instanceof ArrayObject ? $nodeId = $node['id'] : $nodeId = $node;
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
@@ -332,6 +342,7 @@ abstract class MagesterTree
             $iterator -> next();
         }
         if ($iterator -> valid()) { //If we found the designated node
+
             return $iterator -> getChildren();
         } else {
             throw new MagesterTreeException(_NODEDOESNOTEXIST.': '.$nodeId, MagesterTreeException :: NODE_NOT_EXISTS);
@@ -358,7 +369,8 @@ abstract class MagesterTree
      * @return array An array of array obhects, ancestors of the
 
      */
-    public function getNodeAncestors($node) {
+    public function getNodeAncestors($node)
+    {
         $node instanceof ArrayObject ? $nodeId = $node['id'] : $nodeId = $node;
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator($this -> tree, RecursiveIteratorIterator :: SELF_FIRST)); //Get an iterator for the current tree. This iterator returns only whole node arrays and not node members separately (such as id, timestamp etc)
         $iterator -> rewind(); //Initialize iterator
@@ -373,6 +385,7 @@ abstract class MagesterTree
   } else {
       $parents = array();
   }
+
   return $parents;
     }
     /**
@@ -394,10 +407,12 @@ abstract class MagesterTree
      * @access protected
 
      */
-    protected function filterOutChildren($branch) {
+    protected function filterOutChildren($branch)
+    {
         foreach (new removeNumericIndicesFilterIterator(new RecursiveArrayIterator($branch)) as $key => $value) { //Keep only associative array keys and drop numerical, which hold the children
             $node[$key] = $value;
         }
+
         return $node;
     }
     /**
@@ -431,11 +446,13 @@ abstract class MagesterTree
      * @access public
 
      */
-    public function getFlatTree() {
+    public function getFlatTree()
+    {
        $flatTree = array();
        foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)) as $key => $value) { //We create new iterators (in order to leave unchanged the internal tree pointer) and advance them to the end of the tree
            $flatTree[] = $this -> filterOutChildren($value);
        }
+
        return $flatTree;
  }
  /**
@@ -447,7 +464,8 @@ abstract class MagesterTree
 	 * @return unknown_type
 
 	 */
- public function isLeaf($node) {
+ public function isLeaf($node)
+ {
      $node instanceof ArrayObject ? $nodeId = $node['id'] : $nodeId = $node;
      $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
      $iterator -> rewind();
@@ -459,20 +477,20 @@ abstract class MagesterTree
          $iterator = new MagesterNodeFilterIterator(new IteratorIterator(new ArrayIterator($iterator -> current())));
          $iterator -> rewind(); //Initialize iterator
          if ($iterator -> valid()) { //Advance iterator until we reach the designated node
+
              return false;
          }
+
          return true;
      } else {
          throw new MagesterTreeException(_NODEDOESNOTEXIST.': '.$node['id'], MagesterTreeException :: NODE_NOT_EXISTS);
      }
  }
- public function isRoot($iterator = false, $node) {
-  if($node['parent_content_ID'] == '0')
-  {
+ public function isRoot($iterator = false, $node)
+ {
+  if ($node['parent_content_ID'] == '0') {
    return true;
-  }
-  else
-  {
+  } else {
    return false;
   }
        if (!$iterator) {
@@ -481,12 +499,12 @@ abstract class MagesterTree
        $iterator -> rewind(); //Initialize iterator
   if ($iterator -> current() -> offsetGet('id') == $node->offsetGet('id')) {
    return true;
-  }
-    else {
+  } else {
    return false;
     }
   }
- public function getLastChild($queryNode) {
+ public function getLastChild($queryNode)
+ {
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $queryNode['id']) { //Advance iterator until we reach the designated node
@@ -499,9 +517,11 @@ abstract class MagesterTree
              $currentNode = $iterator -> current();
     $iterator -> next();
    }
+
    return $currentNode;
  }
-  public function isLastChild($queryNode) {
+  public function isLastChild($queryNode)
+  {
      $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $queryNode['parent_content_ID']) { //Advance iterator until we reach the designated node
@@ -516,16 +536,14 @@ abstract class MagesterTree
     $iterator -> next();
    }
   //	echo $queryNode['content_ID']." == ". $currentNode['content_ID'];
-   if($queryNode['content_ID'] == $currentNode['content_ID'] )
-   {
+   if ($queryNode['content_ID'] == $currentNode['content_ID']) {
   //		echo "TRUE";
     return true;
-   }
-   else
-   {
+   } else {
   //		echo "FALSE";
     return false;
    }
+
    return $currentNode;
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
@@ -539,19 +557,17 @@ abstract class MagesterTree
     $iterator -> next();
    }
    $iterator->next();
-   if($iterator->valid())
-   {
+   if ($iterator->valid()) {
     return false;
-   }
-   else
-   {
+   } else {
     return true;
    }
         } else {
             throw new MagesterTreeException(_NODEDOESNOTEXIST.': '.$queryNode['id'], MagesterTreeException :: NODE_NOT_EXISTS);
         }
  }
-  public function getNextSiblingNode($queryNode) {
+  public function getNextSiblingNode($queryNode)
+  {
    $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $queryNode['parent_content_ID']) { //Advance iterator until we reach the designated node
@@ -564,19 +580,17 @@ abstract class MagesterTree
     $iterator -> next();
    }
    $iterator->next();
-   if ($iterator -> valid())
-   {
+   if ($iterator -> valid()) {
     return $iterator -> current();
-   }
-   else
-   {
+   } else {
     throw new MagesterTreeException(_NODEDOESNOTEXIST.': '.$queryNode['id'], MagesterTreeException :: NODE_NOT_EXISTS);
    }
         } else {
             throw new MagesterTreeException(_NODEDOESNOTEXIST.': '.$queryNode['id'], MagesterTreeException :: NODE_NOT_EXISTS);
         }
    }
-  public function getPreviousSiblingNode($queryNode) {
+  public function getPreviousSiblingNode($queryNode)
+  {
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $queryNode['parent_content_ID']) { //Advance iterator until we reach the designated node
@@ -589,9 +603,9 @@ abstract class MagesterTree
     $previousNode = $iterator -> current();
     $iterator -> next();
    }
-   if ($iterator -> valid())
-   {
+   if ($iterator -> valid()) {
     if (!isset($previousNode)) { //The designated node was apparently the first one, so return false
+
      return false;
      } else {
              if (!$queryNode) {
@@ -676,7 +690,8 @@ class MagesterAttributesOnlyFilterIterator extends FilterIterator
      * @return boolean
 
      */
-    function accept() {
+    function accept()
+    {
         return !is_numeric($this -> key()) && !is_array($this -> current());
     }
 }
@@ -691,7 +706,8 @@ class removeNumericIndicesFilterIterator extends FilterIterator
      * @return boolean
 
      */
-    function accept() {
+    function accept()
+    {
         return !is_numeric($this -> key());
     }
 }
@@ -729,7 +745,8 @@ class MagesterAttributeFilterIterator extends FilterIterator
      * @param unknown_type $mode
 
      */
-    function __construct($it, $mode = false) {
+    function __construct($it, $mode = false)
+    {
         parent::__construct($it);
         is_array($mode) ? $this -> mode = $mode : $this -> mode = array($mode);
     }
@@ -742,7 +759,8 @@ class MagesterAttributeFilterIterator extends FilterIterator
      * @return unknown
 
      */
-    function accept() {
+    function accept()
+    {
         return in_array($this -> key(), $this -> mode);
     }
 }
@@ -764,12 +782,14 @@ class MagesterNodeFilterIterator extends FilterIterator
      * $evaluate sets if the mode will be evaluated to true or false
 
      */
-    function __construct($it, $mode = false, $evaluate = true) {
+    function __construct($it, $mode = false, $evaluate = true)
+    {
      parent::__construct($it);
      $this -> mode = $mode;
         $this -> evaluate = $evaluate;
     }
-    function accept() {
+    function accept()
+    {
      if ($this -> mode) {
             $accepted = true;
             $current = $this -> current();
@@ -778,6 +798,7 @@ class MagesterNodeFilterIterator extends FilterIterator
                     $this -> evaluate ? $accepted = false : $accepted = true;
                 }
             }
+
             return $this -> current() instanceof ArrayObject & $accepted;
         } else {
             return $this -> current() instanceof ArrayObject;

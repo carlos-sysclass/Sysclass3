@@ -276,8 +276,10 @@ used for automated conversion or learning the format.
                                        sizeof($err), sizeof($warn));
         if ($strict && sizeof($err) > 0) {
             $this->output .= "Fix these errors and try again.";
+
             return false;
         }
+
         return true;
     }
 
@@ -288,6 +290,7 @@ used for automated conversion or learning the format.
             require_once 'PEAR/Packager.php';
         }
         $a = &new PEAR_Packager;
+
         return $a;
     }
 
@@ -303,6 +306,7 @@ used for automated conversion or learning the format.
         $common = new PEAR_Common;
         $common->ui = $this->ui;
         $a->setLogger($common);
+
         return $a;
     }
     // {{{ doPackage()
@@ -330,6 +334,7 @@ used for automated conversion or learning the format.
         if ($this->output) {
             $this->ui->outputData($this->output, $command);
         }
+
         return true;
     }
 
@@ -382,6 +387,7 @@ used for automated conversion or learning the format.
         }
         $this->_displayValidationResults($err, $warn);
         $this->ui->outputData($this->output, $command);
+
         return true;
     }
 
@@ -394,6 +400,7 @@ used for automated conversion or learning the format.
         $_cmd = $command;
         if (sizeof($params) < 1) {
             $help = $this->getHelp($command);
+
             return $this->raiseError("$command: missing parameter: $help[0]");
         }
         $obj = &$this->getPackageFile($this->config, $this->_debug);
@@ -413,6 +420,7 @@ used for automated conversion or learning the format.
         }
         if (!$this->_displayValidationResults($err, $warn, true)) {
             $this->ui->outputData($this->output, $command);
+
             return $this->raiseError('CVS tag failed');
         }
         $version = $info->getVersion();
@@ -454,6 +462,7 @@ used for automated conversion or learning the format.
             pclose($fp);
         }
         $this->ui->outputData($this->output, $_cmd);
+
         return true;
     }
 
@@ -465,6 +474,7 @@ used for automated conversion or learning the format.
         $this->output = '';
         if (sizeof($params) < 1) {
             $help = $this->getHelp($command);
+
             return $this->raiseError("$command: missing parameter: $help[0]");
         }
         $obj = &$this->getPackageFile($this->config, $this->_debug);
@@ -484,6 +494,7 @@ used for automated conversion or learning the format.
         }
         if (!$this->_displayValidationResults($err, $warn, true)) {
             $this->ui->outputData($this->output, $command);
+
             return $this->raiseError('CVS diff failed');
         }
         $info1 = $info->getFilelist();
@@ -535,6 +546,7 @@ used for automated conversion or learning the format.
             pclose($fp);
         }
         $this->ui->outputData($this->output, $command);
+
         return true;
     }
 
@@ -663,6 +675,7 @@ used for automated conversion or learning the format.
             }
 
             $this->ui->outputData($data, $command);
+
             return true;
         }
 
@@ -719,6 +732,7 @@ used for automated conversion or learning the format.
             return $this->raiseError("gpg sign failed");
         }
         $tar->addModify("$tmpdir/package.sig", '', $tmpdir);
+
         return true;
     }
 
@@ -733,9 +747,10 @@ used for automated conversion or learning the format.
             require_once 'PEAR/Installer.php';
         }
         $a = &new PEAR_Installer($ui);
+
         return $a;
     }
-    
+
     /**
      * For unit testing purposes
      */
@@ -747,12 +762,13 @@ used for automated conversion or learning the format.
                 include_once 'PEAR/Command/Packaging.php';
             }
         }
-        
+
         if (class_exists('PEAR_Command_Packaging')) {
             $a = &new PEAR_Command_Packaging($ui, $config);
         } else {
             $a = null;
         }
+
         return $a;
     }
 
@@ -769,12 +785,14 @@ used for automated conversion or learning the format.
         if ($packaging_cmd !== null) {
             $this->ui->outputData('PEAR_Command_Packaging is installed; using '.
                 'newer "make-rpm-spec" command instead');
+
             return $packaging_cmd->run('make-rpm-spec', $options, $params);
         } else {
             $this->ui->outputData('WARNING: "pear makerpm" is no longer available; an '.
               'improved version is available via "pear make-rpm-spec", which '.
               'is available by installing PEAR_Command_Packaging');
         }
+
         return true;
     }
 
@@ -790,6 +808,7 @@ used for automated conversion or learning the format.
         if (!PEAR::isError($pf)) {
             if (is_a($pf, 'PEAR_PackageFile_v2')) {
                 $this->ui->outputData($packagexml . ' is already a package.xml version 2.0');
+
                 return true;
             }
             $gen = &$pf->getDefaultGenerator();
@@ -808,9 +827,11 @@ used for automated conversion or learning the format.
                     }
                 }
                 $this->ui->outputData($saved->getMessage());
+
                 return true;
             }
             $this->ui->outputData('Wrote new version 2.0 package.xml to "' . $saved . '"');
+
             return true;
         } else {
             if (is_array($pf->getUserInfo())) {
@@ -818,11 +839,10 @@ used for automated conversion or learning the format.
                     $this->ui->outputData($warning['message']);
                 }
             }
+
             return $this->raiseError($pf);
         }
     }
 
     // }}}
 }
-
-?>

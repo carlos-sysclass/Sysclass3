@@ -67,10 +67,10 @@ $GLOBALS['_PEAR_Command_objects'] = array();
  *   params:
  *
  *    (string) command name
- *    (array)  assoc array with options, freely defined by each
+ *    (array) assoc array with options, freely defined by each
  *             command, for example:
  *             array('force' => true)
- *    (array)  list of the other parameters
+ *    (array) list of the other parameters
  *
  *   The run() function returns a PEAR_CommandResponse object.  Use
  *   these methods to get information:
@@ -129,6 +129,7 @@ class PEAR_Command
         }
         if (!isset($GLOBALS['_PEAR_Command_commandlist'][$command])) {
             $a = PEAR::raiseError("unknown command `$command'");
+
             return $a;
         }
         $class = $GLOBALS['_PEAR_Command_commandlist'][$command];
@@ -137,10 +138,12 @@ class PEAR_Command
         }
         if (!class_exists($class)) {
             $a = PEAR::raiseError("unknown command `$command'");
+
             return $a;
         }
         $ui = PEAR_Command::getFrontendObject();
         $obj = &new $class($ui, $config);
+
         return $obj;
     }
 
@@ -158,6 +161,7 @@ class PEAR_Command
         $ui = PEAR_Command::getFrontendObject();
         $config = &PEAR_Config::singleton();
         $obj = &new $class($ui, $config);
+
         return $obj;
     }
 
@@ -173,6 +177,7 @@ class PEAR_Command
     function &getFrontendObject()
     {
         $a = &PEAR_Frontend::singleton();
+
         return $a;
     }
 
@@ -190,6 +195,7 @@ class PEAR_Command
     function &setFrontendClass($uiclass)
     {
         $a = &PEAR_Frontend::setFrontendClass($uiclass);
+
         return $a;
     }
 
@@ -207,6 +213,7 @@ class PEAR_Command
     function setFrontendType($uitype)
     {
         $uiclass = 'PEAR_Frontend_' . $uitype;
+
         return PEAR_Command::setFrontendClass($uiclass);
     }
 
@@ -248,7 +255,7 @@ class PEAR_Command
             $GLOBALS['_PEAR_Command_commandlist'] = array();
         }
         while ($entry = readdir($dp)) {
-            if ($entry{0} == '.' || substr($entry, -4) != '.xml') {
+            if ($entry {0} == '.' || substr($entry, -4) != '.xml') {
                 continue;
             }
             $class = "PEAR_Command_".substr($entry, 0, -4);
@@ -294,6 +301,7 @@ class PEAR_Command
         ksort($GLOBALS['_PEAR_Command_shortcuts']);
         ksort($GLOBALS['_PEAR_Command_commandlist']);
         @closedir($dp);
+
         return true;
     }
 
@@ -314,6 +322,7 @@ class PEAR_Command
         if (empty($GLOBALS['_PEAR_Command_commandlist'])) {
             PEAR_Command::registerCommands();
         }
+
         return $GLOBALS['_PEAR_Command_commandlist'];
     }
 
@@ -333,6 +342,7 @@ class PEAR_Command
         if (empty($GLOBALS['_PEAR_Command_shortcuts'])) {
             PEAR_Command::registerCommands();
         }
+
         return $GLOBALS['_PEAR_Command_shortcuts'];
     }
 
@@ -363,6 +373,7 @@ class PEAR_Command
             return null;
         }
         $obj = &PEAR_Command::getObject($command);
+
         return $obj->getGetoptArgs($command, $short_args, $long_args);
     }
 
@@ -384,6 +395,7 @@ class PEAR_Command
         if (!isset($GLOBALS['_PEAR_Command_commanddesc'][$command])) {
             return null;
         }
+
         return $GLOBALS['_PEAR_Command_commanddesc'][$command];
     }
 
@@ -406,11 +418,11 @@ class PEAR_Command
         }
         if (isset($cmds[$command])) {
             $obj = &PEAR_Command::getObject($command);
+
             return $obj->getHelp($command);
         }
+
         return false;
     }
     // }}}
 }
-
-?>

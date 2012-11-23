@@ -63,4 +63,3 @@ interface HTML_QuickForm2_MessageProvider
     */
     public function get(array $messageId, $langId = null);
 }
-?>

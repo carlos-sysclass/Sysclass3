@@ -14,13 +14,12 @@ try {
  /* Check permissions: only admins and supervisors can see branches - the supervisors only their own */
  if (isset($_GET['delete_branch'])) {
   $currentBranch = new MagesterBranch($_GET['delete_branch']);
- } else if (isset($_GET['edit_branch'])) {
+ } elseif (isset($_GET['edit_branch'])) {
   $currentBranch = new MagesterBranch($_GET['edit_branch']);
  }
 } catch (Exception $e) {
  handleAjaxExceptions($e);
 }
-
 
 /*****************************************************
 
@@ -34,7 +33,7 @@ if (isset($_GET['postAjaxRequest'])) {
    echo $val."<option>".$element."<option>";
   }
   exit;
- } else if (isset($_GET['getSupervisorsSelect'])) {
+ } elseif (isset($_GET['getSupervisorsSelect'])) {
   $ar = $currentBranch -> createSupervisorsSelect();
   foreach ($ar as $val=>$element) {
    echo $val."<option>".$element."<option>";
@@ -50,7 +49,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
  } catch (MagesterBranchException $e) {
   handleAjaxExceptions($e);
  }
-} else if (isset($_GET['add_branch']) || isset($_GET['edit_branch'])) {
+} elseif (isset($_GET['add_branch']) || isset($_GET['edit_branch'])) {
  if ($_GET['ajax']) {
    // First job is to assign the jobs Assign jobs
    if (isset($_GET['postAjaxRequest'])) {
@@ -58,9 +57,9 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      /* Find all employees having this skill */
      if ($_GET['insert'] == "true") {
       echo $currentBranch -> assignLesson($_GET['add_lesson']);
-     } else if ($_GET['insert'] == "false") {
+     } elseif ($_GET['insert'] == "false") {
       echo $currentBranch -> removeLesson($_GET['add_lesson']);
-     } else if (isset($_GET['addAll'])) {
+     } elseif (isset($_GET['addAll'])) {
       $lessons = $currentBranch -> getAllLessons();
       isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
       foreach ($lessons as $lesson) {
@@ -69,7 +68,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
        }
       }
       echo "-1";
-     } else if (isset($_GET['removeAll'])) {
+     } elseif (isset($_GET['removeAll'])) {
       $lessons = $currentBranch -> getAllLessons();
       isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
       foreach ($lessons as $lesson) {
@@ -81,18 +80,18 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      }
      exit;
 
-    } else if (isset($_GET['add_course'])) {
+    } elseif (isset($_GET['add_course'])) {
      /* Find all employees having this skill */
      if ($_GET['insert'] == "true") {
       echo $currentBranch -> addCoursesToBranch($_GET['add_course']);
-     } else if ($_GET['insert'] == "false") {echo "A";debug();
+     } elseif ($_GET['insert'] == "false") {echo "A";debug();
       echo $currentBranch -> removeCoursesFromBranch($_GET['add_course']);
-     } else if (isset($_GET['addAll'])) {
+     } elseif (isset($_GET['addAll'])) {
       $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null') + createConstraintsFromSortedTable();
       $courses = $currentBranch -> getBranchCoursesIncludingUnassigned($constraints);
       isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
       $currentBranch -> addCoursesToBranch($courses);
-     } else if (isset($_GET['removeAll'])) {
+     } elseif (isset($_GET['removeAll'])) {
       $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
       $courses = $currentBranch -> getBranchCoursesIncludingUnassigned($constraints);
 
@@ -101,7 +100,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      }
      exit;
 
-    } else if (isset($_GET['propagate'])) {
+    } elseif (isset($_GET['propagate'])) {
      $subBranches = $currentBranch -> getAllSubbranches(true);
      foreach ($subBranches as $branch) {
       if ($_GET['selected']) {
@@ -135,14 +134,14 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
        exit;
       }
       exit;
-     } else if ($_GET['insert'] == "false") {
+     } elseif ($_GET['insert'] == "false") {
 
       $editedUser = MagesterUserFactory :: factory($_GET['add_employee']);
       $editedEmployee = $editedUser -> aspects['hcd'];
       $old_job_description_ID = eF_getJobDescriptionId($_GET['add_job'], $_GET['edit_branch']);
       $editedEmployee = $editedEmployee -> removeJob ($old_job_description_ID);
       exit;
-     } else if (isset($_GET['addAll'] )) {
+     } elseif (isset($_GET['addAll'] )) {
 
       $employees = $currentBranch -> getEmployeesWithJobs();
       // Filter all employee according to the filter
@@ -160,7 +159,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
        }
       }
       exit;
-     } else if (isset($_GET['removeAll'] )) {
+     } elseif (isset($_GET['removeAll'] )) {
       $employees = $currentBranch -> getEmployeesWithJobs();
       isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
 
@@ -206,7 +205,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      $alreadySorted = 1;
      $smarty -> assign("T_TABLE_SIZE", $totalEntries);
 
-     include("sorted_table.php");
+     include 'sorted_table.php';
     } catch (Exception $e) {
      handleAjaxExceptions($e);
     }
@@ -270,7 +269,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
 
           $dataSource = $employees;
     $tableName = $_GET['ajax'];
-    include("sorted_table.php");
+    include 'sorted_table.php';
    }
    // Create ajax enabled table for employees
    if (isset($_GET['ajax']) && $_GET['ajax'] == 'branchJobsTable') {
@@ -288,7 +287,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     foreach ($employees as $key => $value) {
      if (!$value['active']) {
       unset($employees[$key]);
-     } else if (!$GLOBALS['configuration']['show_unassigned_users_to_supervisors'] && !$value['job_description_ID']) {
+     } elseif (!$GLOBALS['configuration']['show_unassigned_users_to_supervisors'] && !$value['job_description_ID']) {
       unset($employees[$key]);
      }
     }
@@ -362,7 +361,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     }
     $dataSource = $branches;
     $tableName = $_GET['ajax'];
-    include("sorted_table.php");
+    include 'sorted_table.php';
    }
 
    $smarty -> assign("T_JOB_DESCRIPTIONS", $currentBranch -> getJobDescriptions(true));
@@ -465,7 +464,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
   }
   $dataSource = $branches;
   $tableName = $_GET['ajax'];
-  include("sorted_table.php");
+  include 'sorted_table.php';
  }
 
 }

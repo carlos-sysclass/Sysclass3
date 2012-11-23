@@ -7,14 +7,14 @@ require_once dirname(__FILE__) . '/../../Converter.php';
 
 define('PATH_BASE', dirname(__FILE__) );
 
-//if (isset($_GET['fileName'])){
+//if (isset($_GET['fileName'])) {
 	//$fileName = $_GET['fileName'];
 //}
 //$inputFilename = PATH_BASE . DIRECTORY_SEPARATOR . $fileName.'.rtf';  // convert this file
 //$outputFormat  = 'pdf';                                             // into this format
 
 $inputFilename = PATH_BASE . DIRECTORY_SEPARATOR . $fileName.'.rtf';  // convert this file
-$outputFormat  = 'pdf';   
+$outputFormat  = 'pdf';
 
 // -----------------------------------------------------------------------------
 

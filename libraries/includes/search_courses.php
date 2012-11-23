@@ -44,7 +44,7 @@ if (isset($_GET['ajax'])) {
             $crit_broken = explode("_",$criterium);
             $id = $crit_broken[1];
             // If the condition == 3 then the user must not have this course assigned
-            if ($_GET['condition_'.$id] == '3' ) {
+            if ($_GET['condition_'.$id] == '3') {
                 if ($search_string != "") {
                     $search_string .= " AND ";
                 }
@@ -65,7 +65,7 @@ if (isset($_GET['ajax'])) {
                         if ($_GET['from_date_cond_'.$id] == "2") {
                             $search_string .= " AND users_to_courses".$id.".from_timestamp >= " . $from_timestamp . " AND users_to_courses".$id.".from_timestamp < " . ($from_timestamp + 86400); //"
                         // Until the defined starting date
-                        } else if ($_GET['from_date_cond_'.$id] == "3") {
+                        } elseif ($_GET['from_date_cond_'.$id] == "3") {
                             $search_string .= " AND users_to_courses".$id.".from_timestamp <= " . $from_timestamp . " ";
                         // From the defined starting date
                         } else {
@@ -79,14 +79,14 @@ if (isset($_GET['ajax'])) {
                         if ($_GET['to_date_cond_'.$id] == "2") {
                             $search_string .= " AND users_to_courses".$id.".to_timestamp >= " . $to_timestamp . " AND users_to_courses".$id.".to_timestamp < " . ($to_timestamp + 86400);
                         // Until the defined starting date
-                        } else if ($_GET['to_date_cond_'.$id] == "1") {
+                        } elseif ($_GET['to_date_cond_'.$id] == "1") {
                             $search_string .= " AND users_to_courses".$id.".to_timestamp >= " . $to_timestamp . " ";
                         // to the defined starting date
                         } else {
                             $search_string .= " AND users_to_courses".$id.".to_timestamp <= " . $to_timestamp . " ";
                         }
                     }
-                } else if ( $_GET['condition_'.$id] == '2' ) {
+                } elseif ($_GET['condition_'.$id] == '2') {
                     $search_string .= " AND users_to_courses".$id.".completed = '0' ";
                     if (isset($_GET['from_date_day_'.$id]) && $_GET['from_date_day_'.$id] != '0' && $_GET['from_date_day_'.$id] != '') {
                         $from_timestamp = mktime(0, 0, 0, $_GET['from_date_month_'.$id], $_GET['from_date_day_'.$id], $_GET['from_date_year_'.$id]);
@@ -94,7 +94,7 @@ if (isset($_GET['ajax'])) {
                         if ($_GET['from_date_cond_'.$id] == "2") {
                             $search_string .= " AND users_to_courses".$id.".from_timestamp >= " . $from_timestamp . " AND users_to_courses".$id.".from_timestamp < " . ($from_timestamp + 86400);
                         // Until the defined starting date
-                        } else if ($_GET['from_date_cond_'.$id] == "3") {
+                        } elseif ($_GET['from_date_cond_'.$id] == "3") {
                             $search_string .= " AND users_to_courses".$id.".from_timestamp <= " . $from_timestamp . " ";
                         // From the defined starting date
                         } else {
@@ -246,7 +246,6 @@ if ($currentUser -> getType() == "administrator") {
 
   $options = array(array('image' => '16x16/scorm.png', 'title' => _SEARCHFORUSER, 'link' => $_SESSION['s_type'].'.php?ctg=search_users' , 'selected' => false),
        array('image' => '16x16/glossary.png', 'title' => _SEARCHCOURSEUSERS, 'link' => 'administrator.php?ctg=search_courses', 'selected' => true));
-
 
  $smarty -> assign("T_TABLE_OPTIONS", $options);
 }

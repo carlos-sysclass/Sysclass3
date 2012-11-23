@@ -25,7 +25,7 @@ if (isset($_GET['branch_filter']) && $_GET['branch_filter'] != 0) {
   $branches = array($_GET['branch_filter']);
   $branchesTree = new MagesterBranchesTree();
   $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($branchesTree -> getNodeChildren($_GET['branch_filter'])), RecursiveIteratorIterator :: SELF_FIRST));
-  foreach($iterator as $key => $value) {
+  foreach ($iterator as $key => $value) {
    $branches[] = $key;
   }
 

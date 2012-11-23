@@ -42,7 +42,7 @@ if ($_SESSION['s_type'] == "administrator") {
       "reports system" => G_SERVERNAME."administrator.php?ctg=statistics&option=system",
       "system reports" => G_SERVERNAME."administrator.php?ctg=statistics&option=system"
       );
-} else if ($_SESSION['s_type'] == "professor") {
+} elseif ($_SESSION['s_type'] == "professor") {
  $command_array = array("edit unit" => G_SERVERNAME."professor.php?ctg=content&edit_unit=",
       "edit project" => G_SERVERNAME."professor.php?ctg=projects&edit_project=",
       "score project" => G_SERVERNAME."professor.php?ctg=projects&project_results=",
@@ -92,7 +92,6 @@ if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "student") {
 }
 $command_array["send message"]= G_SERVERNAME.basename($_SERVER['PHP_SELF'])."?ctg=messages";
 
-
 $command_array_values = array_values($command_array);
 $command_array_keys = array_keys($command_array);
 
@@ -107,109 +106,108 @@ if (isset($_POST['search_text']) && mb_strlen(trim($_POST['search_text'])) <= 3)
         }
 }
 
-
 if (isset($_POST['search_text'])) {
  $right_key = '';
  $query_array[0] = $_POST['search_text']; // check if each command is contained in search text
- foreach (array_keys($command_array) as $key => $command){
+ foreach (array_keys($command_array) as $key => $command) {
 
   $index = strpos($_POST['search_text'], $command);
   //pr($index);
-  if($index !== false){
+  if ($index !== false) {
    $right_key = $key;
    //pr($right_key);
   }
  }
  //echo $right_key;
- if(isset($right_key)){
+ if (isset($right_key)) {
  //pr($query_array[0]);pr($command_array_keys[$right_key]);return;
-  if (strcmp($query_array[0], $command_array_keys[$right_key]) == 0){
+  if (strcmp($query_array[0], $command_array_keys[$right_key]) == 0) {
    eF_redirect("".$command_array_values[$right_key]);return;
-  }else{
+  } else {
 
    $argument = mb_substr($query_array[0], -(mb_strlen($query_array[0])- mb_strlen($command_array_keys[$right_key]))+1);
    $opcode = $command_array_keys[$right_key];
 
-   if(strpos($opcode,"lesson")!== false){
+   if (strpos($opcode,"lesson")!== false) {
     $result_command = eF_getTableData("lessons","id,name","name like'%".$argument."%'");
-    if(sizeof($result_command) == 1){
+    if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
      //pr($result_command);pr($command_array_values[$right_key]);return;
     }
-   }elseif(strpos($opcode,"user")!== false){
+   } elseif (strpos($opcode,"user")!== false) {
     $result_command = eF_getTableData("users","login","login like'%".$argument."%'");
-    if(sizeof($result_command) == 1){
+    if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['login']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "login");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "login");
     }
-   }elseif(strpos($opcode,"category")!== false){
+   } elseif (strpos($opcode,"category")!== false) {
     $result_command = eF_getTableData("directions","id,name","name like'%".$argument."%'");
-     if(sizeof($result_command) == 1){
+     if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
     }
-   }elseif(strpos($opcode,"course")!== false){
+   } elseif (strpos($opcode,"course")!== false) {
     $result_command = eF_getTableData("courses","id,name","name like'%".$argument."%'");
-    if(sizeof($result_command) == 1){
+    if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
     }
-   }elseif(strpos($opcode,"test")!== false){
+   } elseif (strpos($opcode,"test")!== false) {
     $result_command = eF_getTableData("tests,content","tests.id,content.name,content.lessons_ID","tests.content_ID=content.id and content.name like'%".$argument."%'");
-     if(sizeof($result_command) == 1){
+     if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
-     }else if(sizeof($result_command) > 1){
+     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
-   }elseif(strpos($opcode,"unit")!== false){
+   } elseif (strpos($opcode,"unit")!== false) {
     $result_command = eF_getTableData("content","id,name,lessons_ID","ctg_type!='tests' and name like'%".$argument."%'");
-    if(sizeof($result_command) == 1){
+    if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
-   }elseif(strpos($opcode,"project")!== false){
+   } elseif (strpos($opcode,"project")!== false) {
     $result_command = eF_getTableData("projects","id,title,lessons_ID","title like'%".$argument."%'");
     //pr($result_command);
-    if(sizeof($result_command) == 1){
+    if (sizeof($result_command) == 1) {
      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "title");
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
-   }elseif(strpos($opcode,"question")!== false){
+   } elseif (strpos($opcode,"question")!== false) {
     $result_command = eF_getTableData("questions","id,text,type,lessons_ID","text like'%".$argument."%'");
-     if(sizeof($result_command) == 1){
+     if (sizeof($result_command) == 1) {
       eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&question_type=".$result[0]['type']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
-    }else if(sizeof($result_command) > 1){
+    } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
      $smarty -> assign("T_SEARCH_COMMAND_KEY1", "id");
@@ -251,7 +249,7 @@ if (isset($_POST['search_text'])) {
     if ($currentUser instanceOf MagesterLessonUser) {
         $smarty -> assign("T_CURRENT_USER", $currentUser);
         $userLessons = $currentUser -> getLessons(true);
-        foreach ($userLessons as $key => $value){
+        foreach ($userLessons as $key => $value) {
             if (!$value -> lesson['active']) {
                 unset($userLessons[$key]);
             } else {
@@ -310,7 +308,7 @@ if (isset($_POST['search_text'])) {
    } elseif ($results[$i]['table_name'] == "questions") {
     $res1 = eF_getTableData("questions", "id,text as name, type, lessons_ID", "id=".$results[$i]['foreign_ID']);
     $type_str = _QUESTIONS;
-   } elseif($results[$i]['table_name'] == "glossary") {
+   } elseif ($results[$i]['table_name'] == "glossary") {
     $res1 = eF_getTableData("glossary", "id,name, info, lessons_ID", "id=".$results[$i]['foreign_ID']);
     $type_str = _GLOSSARY;
    }
@@ -328,7 +326,7 @@ if (isset($_POST['search_text'])) {
                                                           'score' => $results[$i]['score'] * 100,
                                                           'name' => $res1[0]['name']);
                     } elseif ($results[$i]['table_name'] != 'f_messages' && $results[$i]['table_name'] != 'f_topics' && $results[$i]['table_name'] != 'f_forums') {
-                        if($results[$i]['table_name'] == "lessons"){
+                        if ($results[$i]['table_name'] == "lessons") {
                             $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
                                 $tmp_data = array('id' => $res1[0]['id'],
                                                                'name' => MagesterSearch :: highlightText($res1[0]['name'],$cr, 'resultsTitleBold'),
@@ -347,7 +345,7 @@ if (isset($_POST['search_text'])) {
                                     $search_results_current_lesson[$res1[0]['lessons_ID']][] = $tmp_data;
                                     $current_lesson_name = $lesson[0]['name'];
                                 }
-                        } else if ($results[$i]['table_name'] == "glossary") {
+                        } elseif ($results[$i]['table_name'] == "glossary") {
                             $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
        $stripedContent = MagesterSearch :: resultsTextLimit(preg_replace("#<script.*?>.*?</script>#", "", $res1[0]['info']), $cr, 'resultsText');
        if (strcmp($stripedContent, "...") == 0) {
@@ -404,7 +402,7 @@ if (isset($_POST['search_text'])) {
                                     $search_results_current_lesson[$res1[0]['lessons_ID']][] = $tmp_data;
                                     $current_lesson_name = $lesson[0]['name'];
                                 }
-                        } else if ($results[$i]['table_name'] == "questions" && $_SESSION['s_type'] == 'professor') {
+                        } elseif ($results[$i]['table_name'] == "questions" && $_SESSION['s_type'] == 'professor') {
                             $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
        $stripedContent = MagesterSearch :: resultsTextLimit(preg_replace("#<script.*?>.*?</script>#", "", $res1[0]['name']), $cr, 'resultsText');
        if (strcmp($stripedContent, "...") == 0) {

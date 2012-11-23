@@ -9,5 +9,4 @@
     time() + $offset) . " GMT";
     header($ExpStr);
 
-    include ("control_panel.js");
-?>
+    include 'control_panel.js';

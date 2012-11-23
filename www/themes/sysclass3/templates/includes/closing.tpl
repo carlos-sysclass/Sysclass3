@@ -31,9 +31,9 @@
 {*/foreach*}
 
 {if isset($T_MODULE_JS_STRING)}
-	<script type = "text/javascript" src="/min/f={$T_MODULE_JS_STRING}"></script> {*///MODULES LINK JAVASCRIPT CODE*}
+	<script type = "text/javascript" src="/min/f={$T_MODULE_JS_STRING}&debug"></script> {*///MODULES LINK JAVASCRIPT CODE*}
 {/if}
-<script type = "text/javascript" src="/min/f=themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script_jquery.js"></script> {*///MODULES LINK JAVASCRIPT CODE*}
+<script type = "text/javascript" src="/min/f=themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script_jquery.js&debug"></script> {*///MODULES LINK JAVASCRIPT CODE*}
 
 {*if $T_HEADER_INJECT_SCRIPTS!@count > 0*}
 	{foreach item="script" from=$T_HEADER_INJECT_SCRIPTS}

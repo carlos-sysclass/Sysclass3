@@ -4,10 +4,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-
 $loadScripts[] = 'js/jquery';
 //$loadScripts[] = 'includes/personal';
-
 
  /****************************************************************************************************************************************************/
  /************************************************* ADD USER OR EDIT USER ****************************************************************************/
@@ -17,7 +15,7 @@ $loadScripts[] = 'js/jquery';
  if (!isset($_GET['edit_user'])) {
   $_GET['edit_user'] = $currentUser -> login;
   $editedUser = $currentUser;
- } 
+ }
  $smarty -> assign("T_LOGIN", $_GET['edit_user']);
  $smarty -> assign("T_EDITEDUSER", $editedUser);
  //Set the avatar
@@ -45,11 +43,8 @@ $loadScripts[] = 'js/jquery';
    $personal_profile_form = 1;
    $systemAvatars = array_merge(array("" => ""), $systemAvatars);
   }
- } else { 
- 	
- 	
- 	
- 	
+ } else {
+
  	//The user is being edited by the admin
   $form = new HTML_QuickForm("set_avatar_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=users&edit_user=".$editedUser -> user['login'], "", null, true);
   if ($GLOBALS['configuration']['social_modules_activated'] > 0) {
@@ -64,7 +59,7 @@ $loadScripts[] = 'js/jquery';
  $form -> addElement('advcheckbox', 'delete_avatar', _DELETECURRENTAVATAR, null, 'class = "inputCheckbox"', array(0, 1));
 
  $form -> addElement('select', 'system_avatar' , _ORSELECTONEFROMLIST, $systemAvatars, "id = 'select_avatar'");
- 
+
  $form -> setMaxFileSize(FileSystemTree :: getUploadMaxSize() * 1024); //getUploadMaxSize returns size in KB
  // Distinguishing between personal and other user administrator
 
@@ -72,7 +67,7 @@ $loadScripts[] = 'js/jquery';
   if (!isset($_GET['op'])) {
    $_GET['op'] = 'account';
   }
-  $options = array( 
+  $options = array(
 //  	array('image' => '16x16/home.png', 'title' => _DASHBOARD, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=dashboard', 'selected' => isset($_GET['op']) && $_GET['op'] == 'dashboard' ? true : false),
   	array('image' => '16x16/generic.png', 'title' => _MYACCOUNT, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=account', 'selected' => isset($_GET['op']) && $_GET['op'] == 'account' ? true : false)
 );
@@ -177,7 +172,7 @@ $loadScripts[] = 'js/jquery';
       $needed_reload = 1;
       $message = _SUCCESFULLYSETAVATAR; // in case we have simultaneous changes in profile and avatar this value will be overwritten
      }
-     
+
      $editedUser -> persist();
      $message_type = 'success';
     }
@@ -190,11 +185,10 @@ $loadScripts[] = 'js/jquery';
     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
    }
   }
-  
+
  }
- 
+
  $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
  $form -> accept($renderer);
  $smarty -> assign('T_AVATAR_FORM', $renderer -> toArray());
  //End of set the avatar
-

@@ -3,7 +3,7 @@
 
 * Add files
 
-* 
+*
 
 * This file presents the page used to insert and handle files and folders
 
@@ -59,7 +59,7 @@ if (isset($_GET['filename']) && !eF_checkParameter($_GET['filename'], 'directory
 
 if (!isset($_GET['dir']) && $_SESSION['s_type'] == "professor") {
     $dir = $_SESSION['s_lessons_ID']."/";
-}elseif(!isset($_GET['dir']) && $_SESSION['s_type'] == "administrator"){
+} elseif (!isset($_GET['dir']) && $_SESSION['s_type'] == "administrator") {
     $dir = '/';
 } else {
     $dir = urldecode($_GET['dir']);
@@ -71,7 +71,6 @@ if (!isset($_GET['dir']) && $_SESSION['s_type'] == "professor") {
         exit;
     }
 }
-
 
 if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
     if (unlink(G_LESSONSPATH.$_GET['filename'])) {
@@ -103,7 +102,7 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
             eF_printMessage(_YOUCANNOTCREATETHISFOLDER);
 
             $alert_message = _TRIEDTOCREATEFOLDER.': '.$dir_to_create;
-            //eF_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4); 
+            //eF_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4);
 
             exit;
         }
@@ -142,13 +141,12 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
             eF_printMessage(_INVALIDNAME);
             exit;
         }
-        if ($_SESSION['s_type'] == "professor"){
+        if ($_SESSION['s_type'] == "professor") {
             $target_dir = G_LESSONSPATH.$_POST['to_dir'];
-        }elseif ($_SESSION['s_type'] == "administrator"){
+        } elseif ($_SESSION['s_type'] == "administrator") {
             $target_dir = G_ADMINPATH.$_POST['to_dir'];
         }
         list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads('fileupload', $target_dir);
-
 
         $smarty -> assign("T_UPLOAD_MESSAGES", $upload_messages);
         $smarty -> assign("T_UPLOAD_MESSAGES_TYPE", $upload_messages_type);
@@ -175,4 +173,3 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
 }
 
 $smarty -> display("add_files.tpl");
-?>

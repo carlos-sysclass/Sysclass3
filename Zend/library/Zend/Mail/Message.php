@@ -19,7 +19,6 @@
  * @version    $Id: Message.php 9099 2008-03-30 19:35:47Z thomas $
  */
 
-
 /**
  * Zend_Mail_Part
  */

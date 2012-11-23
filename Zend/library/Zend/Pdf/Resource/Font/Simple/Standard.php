@@ -21,7 +21,6 @@
 /** Zend_Pdf_Resource_Font_Simple */
 require_once 'Zend/Pdf/Resource/Font/Simple.php';
 
-
 /**
  * Abstract class definition for the standard 14 Type 1 PDF fonts.
  *

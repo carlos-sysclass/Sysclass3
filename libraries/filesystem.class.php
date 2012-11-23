@@ -298,7 +298,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    function __construct($file) {
+    function __construct($file)
+    {
         if (is_array($file)) { //Instantiate object based on the given array
             $file['path'] = MagesterDirectory :: normalize($file['path']);
             if (strpos($file['path'], G_ROOTPATH) === false) {
@@ -329,7 +330,7 @@ class MagesterFile extends ArrayObject
                 if (is_file($file) && strpos($file, G_ROOTPATH) !== false) { //Create object without database information
                     $fileArray = array('id' => -1, //Set 'id' to -1, meaning this file has not a database representation
                                        'path' => $file);
-                } else if (strpos($file, G_ROOTPATH) === false) {
+                } elseif (strpos($file, G_ROOTPATH) === false) {
                     throw new MagesterFileException(_ILLEGALPATH.': '.$file, MagesterFileException :: ILLEGAL_PATH);
                 } else {
                     throw new MagesterFileException(_FILEDOESNOTEXIST.': '.$file, MagesterFileException :: FILE_NOT_EXIST);
@@ -390,7 +391,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         if (is_file($this['path']) && !unlink($this['path'])) { //If the file exists but could not be deleted, throw an exception. This way, even files that their equivalent physical file does not exist, may be deleted.
             throw new MagesterFileException(_CANNOTDELETEFILE, MagesterFileException :: GENERAL_ERROR);
         }
@@ -398,6 +400,7 @@ class MagesterFile extends ArrayObject
              eF_deleteTableData("files", "path = '".str_replace(G_ROOTPATH, '', eF_addSlashes($this['path']))."' or id=".$this['id']); //Delete database representation of the file
             MagesterSearch :: removeText('files', $this['id'], 'data');
         }
+
         return true;
     }
     /**
@@ -445,7 +448,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function copy($destinationPath, $overwrite = true) {
+    public function copy($destinationPath, $overwrite = true)
+    {
         $destinationPath = MagesterDirectory :: normalize($destinationPath);
         $parentDirectory = new MagesterDirectory(dirname($destinationPath)); //This way we check integrity of destination
         if (is_dir($destinationPath)) { //If $destinationPath is a directory, it means that the target file name was not specified, so append the current
@@ -472,6 +476,7 @@ class MagesterFile extends ArrayObject
                 }
             }
             $file = new MagesterFile($destinationPath);
+
             return $file;
         } else {
             //eF_deleteTableData("files", "id=$fileid");                                                //If copy failed, delete empty table entry
@@ -513,7 +518,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function rename($destinationPath, $overwrite = false) {
+    public function rename($destinationPath, $overwrite = false)
+    {
         $destinationPath = MagesterDirectory :: normalize($destinationPath);
         $parentDirectory = new MagesterDirectory(dirname($destinationPath)); //This way we check integrity of destination
         FileSystemTree::checkFile($destinationPath);
@@ -564,7 +570,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         $fields = array('path' => str_replace(G_ROOTPATH, '', $this['path']),
                         'description' => $this['description'],
                         'groups_ID' => $this['groups_ID'],
@@ -577,6 +584,7 @@ class MagesterFile extends ArrayObject
         foreach ($fileMetadataArray as $key => $value) {
             MagesterSearch :: insertText($value, $this['id'], "files", "data");
         }
+
         return $ok;
     }
     /**
@@ -612,7 +620,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function refresh() {
+    public function refresh()
+    {
         if ($this['id'] != -1) {
             $result = eF_getTableData("files", "*", "id=".$this['id']);
             $this['path'] = G_ROOTPATH.$result[0]['path'];
@@ -651,7 +660,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
 	 */
-    public function compress($zipName = false, $decode = false) {
+    public function compress($zipName = false, $decode = false)
+    {
      if (!$zipName) {
             $zipName = $this['path'].'.zip';
         } else {
@@ -669,6 +679,7 @@ class MagesterFile extends ArrayObject
             if ($code != 0) {
                 throw new MagesterFileException(_COMMANDFAILEDWITHOUTPUT.': '.$response.". "._PERHAPSDONTSUPPORTZIP, MagesterFileException :: ERROR_ZIP_PROCESSING);
             }
+
             return new MagesterFile($zipName);
         } else {
             $zip = new ZipArchive;
@@ -679,6 +690,7 @@ class MagesterFile extends ArrayObject
                  $zip -> addFile($this['path'], $this['name']);
                 }
                 $zip -> close();
+
                 return new MagesterFile($zipName);
             } else {
                 throw new MagesterFileException(_CANNOTOPENCOMPRESSEDFILE.': '.$this['path'], MagesterFileException :: ERROR_OPEN_ZIP);
@@ -718,7 +730,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function uncompress($addDB = true) {
+    public function uncompress($addDB = true)
+    {
         if ($this['extension'] == 'zip') {
             if ($GLOBALS['configuration']['zip_method'] == 'system') {
                 if ($GLOBALS['configuration']['file_black_list']) {
@@ -751,6 +764,7 @@ class MagesterFile extends ArrayObject
                     }
                     if ($this['id'] != -1 && $addDB) {
                         $importedFiles = FileSystemTree :: importFiles($zipFiles, $options);
+
                         return $importedFiles;
                     } else {
                         return $zipFiles;
@@ -790,7 +804,8 @@ class MagesterFile extends ArrayObject
      * @since 3.6.0
 
      */
-    public function listContents() {
+    public function listContents()
+    {
         if ($this['extension'] == 'zip') {
             $zipFiles = array();
             if ($GLOBALS['configuration']['zip_method'] == 'system') {
@@ -804,6 +819,7 @@ class MagesterFile extends ArrayObject
                     $zipFiles[] = trim($value);
                 }
                 unlink($tempfile);
+
                 return $zipFiles;
             } else {
                 $zip = new ZipArchive;
@@ -811,6 +827,7 @@ class MagesterFile extends ArrayObject
                     for ($i = 0; $i < $zip -> numFiles; $i++) {
                         $zipFiles[] = $zip -> getNameIndex($i);
                     }
+
                     return $zipFiles;
                 } else {
                     throw new MagesterFileException(_CANNOTOPENCOMPRESSEDFILE.': '.$this['path'], MagesterFileException :: ERROR_OPEN_ZIP);
@@ -847,12 +864,14 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function getTypeImage() {
+    public function getTypeImage()
+    {
         if (is_file(G_DEFAULTIMAGESPATH.'file_types/'.$this['extension'].'.png') || is_file(G_IMAGESPATH.'file_types/'.$this['extension'].'.png')) {
             $image = 'images/file_types/'.$this['extension'].'.png';
         } else {
             $image = 'images/file_types/unknown.png';
         }
+
         return $image;
     }
     /**
@@ -886,7 +905,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function share($lessonId = false) {
+    public function share($lessonId = false)
+    {
         if (!$lessonId) {
             $lessonId = $_SESSION['s_lessons_ID'];
         }
@@ -933,7 +953,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function unshare() {
+    public function unshare()
+    {
         $this['shared'] = 0;
         $this -> persist();
     }
@@ -970,7 +991,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function toHTMLTooltipLink($link, $preview = true, $tableId = 'filesTable') {
+    public function toHTMLTooltipLink($link, $preview = true, $tableId = 'filesTable')
+    {
         $classes[] = 'info'; //This array holds the link css classes
         if (!$link) {
             $link = 'javascript:void(0)';
@@ -993,6 +1015,7 @@ class MagesterFile extends ArrayObject
             }
         }
         $tooltipString .= '</span></a>';
+
         return $tooltipString;
     }
     /**
@@ -1060,7 +1083,8 @@ class MagesterFile extends ArrayObject
      * @static
 
      */
-    public static function encode($name) {
+    public static function encode($name)
+    {
         $newName = $name;
         if ($GLOBALS['configuration']['file_encoding']) {
             if (in_array($GLOBALS['configuration']['file_encoding'], mb_list_encodings())) {
@@ -1069,6 +1093,7 @@ class MagesterFile extends ArrayObject
                 $newName = mb_convert_encoding($name, "UTF7-IMAP", "UTF-8");
             }
         }
+
         return $newName;
     }
     /**
@@ -1104,7 +1129,8 @@ class MagesterFile extends ArrayObject
      * @see MagesterFile :: encode()
 
      */
-    public static function decode($name) {
+    public static function decode($name)
+    {
         $newName = $name;
         if ($GLOBALS['configuration']['file_encoding']) {
             if (in_array($GLOBALS['configuration']['file_encoding'], mb_list_encodings())) {
@@ -1113,6 +1139,7 @@ class MagesterFile extends ArrayObject
                 $newName = mb_convert_encoding($name, "UTF-8", "UTF7-IMAP");
             }
         }
+
         return $newName;
     }
     /**
@@ -1130,7 +1157,8 @@ class MagesterFile extends ArrayObject
      * @access public
 
      */
-    public function sendFile($attachment = false) {
+    public function sendFile($attachment = false)
+    {
      if ($attachment) {
       $this['name'] = urlencode(str_replace(" ", "_", $this['name']));
    header("Content-Description: File Transfer");
@@ -1207,7 +1235,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    function __construct($directory) {
+    function __construct($directory)
+    {
         $directory = MagesterDirectory :: normalize($directory);
         /*
         if (strpos($directory, '/ult/') !== false) {
@@ -1216,7 +1245,7 @@ class MagesterDirectory extends ArrayObject
         */
         //var_dump($directory, is_dir($directory), rtrim(G_ROOTPATH, "/"), strpos($directory, rtrim(G_ROOTPATH, "/")));
         if (is_dir($directory) && strpos($directory, rtrim(G_ROOTPATH, "/")) !== false) { //Create object without database information
-        	
+
             $directoryArray = array('path' => $directory,
                                     'name' => MagesterFile :: decode(basename($directory)),
                                     'directory' => dirname($directory),
@@ -1227,14 +1256,14 @@ class MagesterDirectory extends ArrayObject
                 $pathParts[$key] = urlencode($value);
             }
             $directoryArray['url_path'] = implode("/", $pathParts);
-        } else if (strpos($directory, rtrim(G_ROOTPATH, "/")) === false) {
+        } elseif (strpos($directory, rtrim(G_ROOTPATH, "/")) === false) {
             throw new MagesterFileException(_ILLEGALPATH.': '.$directory, MagesterFileException :: ILLEGAL_PATH);
         } else {
             throw new MagesterFileException(_DIRECTORYDOESNOTEXIST.': '.$directory, MagesterFileException :: DIRECTORY_NOT_EXIST);
         }
         parent :: __construct($directoryArray); //Create an ArrayObject from the given array
     }
-    
+
     /**
 
      * Normalize path
@@ -1268,7 +1297,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public static function normalize($path) {
+    public static function normalize($path)
+    {
         //$realPath = realpath($path);
         if ($realPath && file_exists($realPath)) {
             if (DIRECTORY_SEPARATOR == "\\") {
@@ -1309,7 +1339,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         $it = new MagesterREFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this['path']), RecursiveIteratorIterator :: SELF_FIRST), array('/.svn/'), false);
         $files = array();
         $result = eF_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, '', $this['path'])."%'");
@@ -1372,7 +1403,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public function copy($destinationPath, $overwrite = false) {
+    public function copy($destinationPath, $overwrite = false)
+    {
         $destinationPath = MagesterDirectory :: normalize($destinationPath);
         $parentDirectory = new MagesterDirectory(dirname($destinationPath)); //This way we check integrity of destination
         if (!is_dir($destinationPath)) {
@@ -1397,6 +1429,7 @@ class MagesterDirectory extends ArrayObject
             }
         }
         $newDirectory = new MagesterDirectory($destinationPath);
+
         return $newDirectory;
     }
     /**
@@ -1434,7 +1467,8 @@ class MagesterDirectory extends ArrayObject
      * @see copy()
 
      */
-    public function rename($destinationPath, $overwrite = false) {
+    public function rename($destinationPath, $overwrite = false)
+    {
         $destinationPath = MagesterDirectory :: normalize($destinationPath);
         $parentDirectory = new MagesterDirectory(dirname($destinationPath)); //This way we check integrity of destination
         if (!is_dir($destinationPath)) {
@@ -1506,7 +1540,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public function compress($zipName = false, $includeSelf = true, $decode = false) {
+    public function compress($zipName = false, $includeSelf = true, $decode = false)
+    {
         if (!$zipName) {
             $zipName = $this['path'].'.zip';
         } else {
@@ -1524,6 +1559,7 @@ class MagesterDirectory extends ArrayObject
             if ($code != 0) {
                 throw new MagesterFileException(_COMMANDFAILEDWITHOUTPUT.': '.$response.". "._PERHAPSDONTSUPPORTZIP, MagesterFileException :: ERROR_ZIP_PROCESSING);
             }
+
             return new MagesterFile($zipName);
         } else {
             $zip = new ZipArchive;
@@ -1552,6 +1588,7 @@ class MagesterDirectory extends ArrayObject
                     }
                 }
                 $zip -> close();
+
                 return new MagesterFile($zipName);
             } else {
                 throw new MagesterFileException(_CANNOTOPENCOMPRESSEDFILE.': '.$this['path'], MagesterFileException :: ERROR_OPEN_ZIP);
@@ -1589,7 +1626,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public static function createDirectory($fullPath) {
+    public static function createDirectory($fullPath)
+    {
         $fullPath = MagesterFile :: encode(MagesterDirectory :: normalize($fullPath));
         $parentDirectory = new MagesterDirectory(dirname($fullPath));
         if (is_dir($fullPath)) {
@@ -1597,6 +1635,7 @@ class MagesterDirectory extends ArrayObject
         }
         if (mkdir($fullPath, 0755)) {
             $newDirectory = new MagesterDirectory($fullPath);
+
             return $newDirectory;
         } else {
             throw new Exception(_COULDNOTCREATEDIRECTORY.': '.$fullPath, MagesterFileException :: CANNOT_CREATE_DIR);
@@ -1629,8 +1668,10 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public function getTypeImage() {
+    public function getTypeImage()
+    {
         $image = 'images/file_types/folder.png';
+
         return $image;
     }
     /**
@@ -1662,7 +1703,8 @@ class MagesterDirectory extends ArrayObject
      * @access public
 
      */
-    public function toHTMLTooltipLink($link) {
+    public function toHTMLTooltipLink($link)
+    {
         $classes[] = 'info'; //This array holds the link css classes
         if (!$link) {
             $link = 'javascript:void(0)';
@@ -1683,6 +1725,7 @@ class MagesterDirectory extends ArrayObject
             }
         }
         $tooltipString .= '</span></a>';
+
         return $tooltipString;
     }
 }
@@ -1742,7 +1785,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    function __construct($dir = G_ROOTPATH, $shallow = false) {
+    function __construct($dir = G_ROOTPATH, $shallow = false)
+    {
         //pr($dir);echo "1";
         if (!($dir instanceof MagesterDirectory)) {
             $dir = new MagesterDirectory($dir);
@@ -1785,7 +1829,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function insertNode($node, $parentNode = false, $previousNode = false) {
+    public function insertNode($node, $parentNode = false, $previousNode = false)
+    {
         return false;
     }
     /**
@@ -1809,7 +1854,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function removeNode($node) {
+    public function removeNode($node)
+    {
         return false;
     }
     /**
@@ -1841,7 +1887,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function reset() {
+    public function reset()
+    {
         //Get all files that are within the designated directory
         if ($this -> shallow) {
          $result = eF_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%' and path not like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%/%'"); //not files inside subfolders
@@ -1958,7 +2005,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function getUploadForm(& $form) {
+    public function getUploadForm(& $form)
+    {
         $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
         $form -> addElement('file', 'file_upload[0]', null, 'class = "inputText"');
         $form -> addElement('file', 'file_upload[1]', null, 'class = "inputText"');
@@ -2009,6 +2057,7 @@ class FileSystemTree extends MagesterTree
               </table>
               </form>
               <img src = "images/others/progress_big.gif" id = "uploading_image" title = "'._UPLOADING.'" alt = "'._UPLOADING.'" style = "display:none;margin-left:auto;margin-right:auto;margin-top:30px;vertical-align:middle;"/>';
+
         return $formString;
     }
     /**
@@ -2048,7 +2097,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function handleUploadForm(& $form) {
+    public function handleUploadForm(& $form)
+    {
         if ($form -> exportValue('upload_current_directory')) {
             $curDir = MagesterDirectory :: normalize($form -> exportValue('upload_current_directory'));
         } else {
@@ -2063,17 +2113,18 @@ class FileSystemTree extends MagesterTree
             $this -> reset();
         }
         $urlUpload = $form -> exportValue('url_upload');
-        if ($urlUpload != "" ) {
+        if ($urlUpload != "") {
             $this -> checkFile($urlUpload);
             $urlArray = explode("/", $urlUpload);
             $urlFile = urldecode($urlArray[sizeof($urlArray) - 1]);
             //copy() does not like names with spaces, so we split the $urlUpload to dirname() and basename() and we urlencode() the latter
             if (!copy(dirname($urlUpload).'/'.rawurlencode(basename($urlUpload)), $curDir."/".$urlFile)) {
                 throw new Exception(_PROBLEMUPLOADINGFILE);
-            }else{
+            } else {
                 $uploadedFile = new MagesterFile($curDir."/".$urlFile);
             }
         }
+
         return $uploadedFile;
     }
     /**
@@ -2097,7 +2148,8 @@ class FileSystemTree extends MagesterTree
      * @access protected
 
      */
-    protected function getCreateDirectoryForm(& $form) {
+    protected function getCreateDirectoryForm(& $form)
+    {
         $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
         $form -> addElement('text', 'create_directory', null, 'class = "inputText"');
         $form -> addElement('hidden', 'current_directory', null, 'id = "current_directory" class = "inputText"');
@@ -2118,6 +2170,7 @@ class FileSystemTree extends MagesterTree
                 </td></tr>
               </table>
               </form>';
+
         return $formString;
     }
     /**
@@ -2157,7 +2210,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    protected function handleCreateDirectoryForm(& $form) {
+    protected function handleCreateDirectoryForm(& $form)
+    {
         $newDir = basename(MagesterDirectory :: normalize($form -> exportValue('create_directory')));
         if ($form -> exportValue('current_directory')) {
             $curDir = MagesterDirectory :: normalize($form -> exportValue('current_directory'));
@@ -2168,6 +2222,7 @@ class FileSystemTree extends MagesterTree
             $createdDirectory = MagesterDirectory :: createDirectory($curDir.'/'.$newDir);
             $this -> reset();
         }
+
         return $createdDirectory;
     }
     /**
@@ -2193,8 +2248,8 @@ class FileSystemTree extends MagesterTree
      */
     /*
 
-     protected function getCopyForm(& $form) {
-
+     protected function getCopyForm(& $form)
+     {
      $form -> addElement('hidden', 'copy_files', null, 'class = "inputText" id = "copy_files"');
 
      $form -> addElement('hidden', 'copy_current_directory', null, 'id = "copy_current_directory" class = "inputText"');
@@ -2205,15 +2260,11 @@ class FileSystemTree extends MagesterTree
 
      $form -> addElement('submit', 'submit_copy_file', _EXECUTE, 'class = "flatButton" onclick = "getSelected();"');
 
-
-
      $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
 
      $form -> accept($renderer);
 
      $formArray = $renderer -> toArray();
-
-
 
      $formString = '
 
@@ -2248,8 +2299,6 @@ class FileSystemTree extends MagesterTree
      </table>
 
      </form>';
-
-
 
      return $formString;
 
@@ -2295,8 +2344,8 @@ class FileSystemTree extends MagesterTree
      */
     /*
 
-     protected function handleCopyForm(& $form) {
-
+     protected function handleCopyForm(& $form)
+     {
      $destinationDirectory = MagesterDirectory :: normalize($form -> exportValue('destination'));
 
      if ($form -> exportValue('copy_current_directory')) {
@@ -2435,7 +2484,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function toHTML($url, $currentDirectory = '', $ajaxOptions = array(), $options, $extraFileTools = array(), $extraDirectoryTools = array(), $extraHeaderOptions = array(), $defaultIterator = false, $show_tooltip = true, $extraColumns = array()) {
+    public function toHTML($url, $currentDirectory = '', $ajaxOptions = array(), $options, $extraFileTools = array(), $extraDirectoryTools = array(), $extraHeaderOptions = array(), $defaultIterator = false, $show_tooltip = true, $extraColumns = array())
+    {
         //Set default options
         !isset($options['show_type']) ? $options['show_type'] = true : null;
         !isset($options['show_date']) ? $options['show_date'] = true : null;
@@ -2473,24 +2523,20 @@ class FileSystemTree extends MagesterTree
             //Get its parent directory
             $parentDir = new MagesterDirectory($currentDir['directory']);
             //Build a new (shallow) file system tree on the current directory
-            
-            
-            
+
             $innerFileSystem = new FileSystemTree($currentDir, false);
             //Assign each node as a child to the currentDir, thus creating a new tree with currentDir as parent
             foreach ($innerFileSystem -> tree as $key => $value) {
                 $currentDir[$key] = $value;
             }
-            
-            
-            
+
             //$currentDir = $this -> seekNode($currentDirectory);
             //$parentDir  = new MagesterDirectory($currentDir['directory']);
         } else {
             $currentDirectory = $this -> dir['path'];
             $currentDir = $this -> tree;
         }
-        
+
         try {
             $uploadForm = new HTML_QuickForm("upload_file_form_$tableId", "post", $url, "", "target = 'POPUP_FRAME'", true);
             $uploadFormString = $this -> getUploadForm($uploadForm);
@@ -2510,8 +2556,6 @@ class FileSystemTree extends MagesterTree
 
              $copyForm       = new HTML_QuickForm("copy_file_form", "post", $url, "", "", true);
 
-
-
              foreach ($iterator = new MagesterDirectoryOnlyFilterIterator(new MagesterNodeFilterIterator($currentDir)) as $key => $value) {
 
              $directories[$key] = str_replace($this -> dir['path'].'/', '', MagesterFile :: decode($value['path']));
@@ -2521,8 +2565,6 @@ class FileSystemTree extends MagesterTree
              $copyForm -> addElement('select', 'destination', null, $directories, 'class = "inputText"');
 
              $copyFormString = $this -> getCopyForm($copyForm);
-
-
 
              if ($copyForm -> isSubmitted() && $copyForm -> validate()) {
 
@@ -2550,14 +2592,14 @@ class FileSystemTree extends MagesterTree
         $fileArrays = array();
         $foldersArray = array();
         $filesArray = array();
-        
+
         if ($options['folders']) {
             $iterator = new MagesterDirectoryOnlyFilterIterator((new ArrayIterator($currentDir))); //Plain ArrayIterator so that it iterates only on the current's folder files
             if ($options['db_files_only']) { //Filter out directories without database representation
                 $iterator = new MagesterDBOnlyFilterIterator($iterator);
             }
             foreach ($iterator as $key => $value) { //We convert iterator to a complete array of files, so we can apply sorting, filtering etc more easily
-                $current = (array)$iterator -> current();
+                $current = (array) $iterator -> current();
                 foreach ($current as $k => $v) { //Remove child elements, such files, directories etc from the array, so we can successfully apply operations on to them, such as filtering
                     if ($v instanceOf ArrayObject) {
                         unset ($current[$k]);
@@ -2566,7 +2608,7 @@ class FileSystemTree extends MagesterTree
                 $current['size'] = 0;
                 $current['extension'] = '';
                 $current['shared'] = 10; //Add these 3 parameters, so that sorting below works correctly (10 means nothing, since a folder cannot be shared, but it is handy for sorting)
-                $foldersArray[] = (array)$current; //Array representation of directory objects, on which we can apply sorting, filtering, etc
+                $foldersArray[] = (array) $current; //Array representation of directory objects, on which we can apply sorting, filtering, etc
            }
            $foldersArray = eF_multiSort($foldersArray, 'name', 'asc');
         }
@@ -2582,17 +2624,17 @@ class FileSystemTree extends MagesterTree
             }
         //}
 
-        
+
         foreach ($iterator as $key => $value) { //We convert iterator to a complete array of files, so we can apply sorting, filtering etc more easily
-            $current = (array)$iterator -> current();
+            $current = (array) $iterator -> current();
             foreach ($current as $k => $v) { //Remove child elements, such files, directories etc from the array, so we can successfully apply operations on to them, such as filtering
                 if ($v instanceOf ArrayObject) {
                     unset ($current[$k]);
                 }
             }
-            $filesArray[] = (array)$current; //Array representation of file objects, on which we can apply sorting, filtering, etc
+            $filesArray[] = (array) $current; //Array representation of file objects, on which we can apply sorting, filtering, etc
         }
-        
+
         $filesArray = eF_multiSort($filesArray, 'name', 'asc');
         $fileArrays = array_merge($foldersArray, $filesArray);
         isset($ajaxOptions['order']) && $ajaxOptions['order'] == 'asc' ? $ajaxOptions['order'] = 'asc' : $ajaxOptions['order'] = 'desc';
@@ -2601,18 +2643,18 @@ class FileSystemTree extends MagesterTree
         !isset($ajaxOptions['offset']) ? $ajaxOptions['offset'] = 0 : null;
         !isset($ajaxOptions['filter']) ? $ajaxOptions['filter'] = '' : null;
         $size = sizeof($fileArrays);
-        
-        
+
+
         if ($size) {
-       	
+
          $fileArrays = eF_multiSort($fileArrays, $ajaxOptions['sort'], $ajaxOptions['order']);
-         
+
          $ajaxOptions['filter'] ? $fileArrays = eF_filterData($fileArrays, $ajaxOptions['filter']) : null;
-         
+
          $fileArrays = array_slice($fileArrays, $ajaxOptions['offset'], $ajaxOptions['limit']);
-         
+
         }
-        
+
         $extraColumnsString = '';
         foreach ($extraColumns as $value) {
    $extraColumnsString = '<td class = "topTitle centerAlign" name = "'.$value.'">'.$value.'</td>';
@@ -2640,7 +2682,7 @@ class FileSystemTree extends MagesterTree
                       <td colspan = "5"></td></tr>';
         }
         $i = 0;
-  if ($_SESSION['supervises_branches'] != "" ) {
+  if ($_SESSION['supervises_branches'] != "") {
    $currentEmployee = MagesterUserFactory :: factory($_SESSION['s_login']);
    $employees = eF_getTableData("users LEFT OUTER JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_LOGIN LEFT OUTER JOIN module_hcd_employee_works_at_branch ON users.login = module_hcd_employee_works_at_branch.users_LOGIN","users.*, count(job_description_ID) as jobs_num"," users.user_type <> 'administrator' AND ((module_hcd_employee_works_at_branch.branch_ID IN (" . $_SESSION['supervises_branches'] ." ) AND module_hcd_employee_works_at_branch.assigned='1') OR EXISTS (SELECT module_hcd_employees.users_login FROM module_hcd_employees LEFT OUTER JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.users_login = module_hcd_employees.users_login WHERE users.login=module_hcd_employees.users_login AND module_hcd_employee_works_at_branch.branch_ID IS NULL)) GROUP BY login", "login");
    $supervisedLogins = array();
@@ -2652,9 +2694,9 @@ class FileSystemTree extends MagesterTree
     }
    }
   }
-  
- 
-  
+
+
+
         foreach ($fileArrays as $key => $value) {
             $toolsString = '';
             $sharedString = '';
@@ -2686,7 +2728,7 @@ class FileSystemTree extends MagesterTree
                 if ($options['delete'] && ($_SESSION['s_type'] == 'administrator' || (($value['users_LOGIN'] == $_SESSION['s_login'] ||in_array($value['users_LOGIN'], $supervisedLogins)) && isset($value['users_LOGIN'])) || ($GLOBALS['configuration']['allow_users_to_delete_supervisor_files'] == 1))) {
                     $toolsString .= '<img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "'._DELETE.'" title = "'._DELETE.'" onclick = "if (confirm(\''._IRREVERSIBLEACTIONAREYOUSURE.'\')) {deleteFile(this, $(\'span_'.urlencode($identifier).'\').innerHTML)}"/></a>&nbsp;';
                 }
-            } else if (is_dir($value['path'])) {
+            } elseif (is_dir($value['path'])) {
                 $identifier = $value['path'];
                 $value = new MagesterDirectory($value['path']);
                 $link = $url.'&view_dir='.urlencode($identifier);
@@ -2833,6 +2875,7 @@ class FileSystemTree extends MagesterTree
 
 
  */
+
         return $str;
     }
     /**
@@ -2866,7 +2909,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public function handleAjaxActions($currentUser) {
+    public function handleAjaxActions($currentUser)
+    {
         if (isset($_GET['delete']) && (eF_checkParameter($_GET['delete'], 'id') || strpos(urldecode($_GET['delete']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['delete']));
@@ -2875,7 +2919,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } else if (isset($_GET['share']) && (eF_checkParameter($_GET['share'], 'id') || strpos(urldecode($_GET['share']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['share']) && (eF_checkParameter($_GET['share'], 'id') || strpos(urldecode($_GET['share']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['share']));
                 $file -> share();
@@ -2883,7 +2927,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } else if (isset($_GET['unshare']) && (eF_checkParameter($_GET['unshare'], 'id') || strpos(urldecode($_GET['unshare']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['unshare']) && (eF_checkParameter($_GET['unshare'], 'id') || strpos(urldecode($_GET['unshare']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['unshare']));
                 $file -> unshare();
@@ -2891,7 +2935,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } else if (isset($_GET['uncompress']) && (eF_checkParameter($_GET['uncompress'], 'id') || strpos(urldecode($_GET['uncompress']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['uncompress']) && (eF_checkParameter($_GET['uncompress'], 'id') || strpos(urldecode($_GET['uncompress']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['uncompress']));
                 $file -> uncompress();
@@ -2988,7 +3032,8 @@ class FileSystemTree extends MagesterTree
      * @static
 
      */
-    public function uploadFile($fieldName, $destinationDirectory = false, $offset = false) {
+    public function uploadFile($fieldName, $destinationDirectory = false, $offset = false)
+    {
         if (!$destinationDirectory) {
             $destinationDirectory = $this -> dir;
         }
@@ -3073,6 +3118,7 @@ class FileSystemTree extends MagesterTree
                         MagesterSearch :: insertText($value, $id, "files", "data");
                     }
                 }
+
                 return new MagesterFile($id);
             }
         }
@@ -3102,7 +3148,8 @@ class FileSystemTree extends MagesterTree
      * @access public
 
      */
-    public static function checkFile($name) {
+    public static function checkFile($name)
+    {
     if ($GLOBALS['configuration']['file_black_list'] != '') {
          $blackList = explode(",", $GLOBALS['configuration']['file_black_list']);
     } else {
@@ -3170,12 +3217,14 @@ class FileSystemTree extends MagesterTree
      * @static
 
      */
-    public static function getUploadMaxSize() {
+    public static function getUploadMaxSize()
+    {
         preg_match('/(\d+)/', ini_get('memory_limit'), $memory_limit);
         preg_match('/(\d+)/', ini_get('upload_max_filesize'), $upload_max_filesize);
         preg_match('/(\d+)/', ini_get('post_max_size'), $post_max_size);
         $memory_limit[1] == 1 ? $memory_limit[1] = $upload_max_filesize[1] : null; //In case memory_limit is set to -1 (no limit), then equalize this variable with the upload_max_filesize
         $max_upload = min($memory_limit[1] * 1024, $upload_max_filesize[1] * 1024, $post_max_size[1] * 1024, $GLOBALS['configuration']['max_file_size']);
+
         return $max_upload;
     }
     /**
@@ -3211,7 +3260,8 @@ class FileSystemTree extends MagesterTree
      * @static
 
      */
-    public static function getFileTypes($type = false) {
+    public static function getFileTypes($type = false)
+    {
         $fileTypes = array();
         foreach (MagesterFile :: $mimeTypes as $key => $filetype) {
             switch ($type) {
@@ -3235,6 +3285,7 @@ class FileSystemTree extends MagesterTree
                     break;
             }
         }
+
         return $fileTypes;
     }
     /**
@@ -3276,7 +3327,8 @@ class FileSystemTree extends MagesterTree
      * @static
 
      */
-    public static function importFiles($list, $options = array()) {
+    public static function importFiles($list, $options = array())
+    {
         if (!is_array($list)) {
             $list = array($list);
         }
@@ -3304,6 +3356,7 @@ class FileSystemTree extends MagesterTree
                 }
             }
         }
+
         return $newList;
     }
 }
@@ -3337,7 +3390,8 @@ class MagesterDirectoryOnlyFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         //return is_dir($this -> key());
         //pr($this -> current());
         return is_dir($this -> key());
@@ -3373,7 +3427,8 @@ class MagesterFileOnlyFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         return is_file($this -> key());
     }
 }
@@ -3407,7 +3462,8 @@ class MagesterDBOnlyFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('id') != -1) {
             return true;
         }
@@ -3471,7 +3527,8 @@ class MagesterREFilterIterator extends FilterIterator
      * @param boolean $mode Whether to include or exclude the filtered files from the data set
 
      */
-    function __construct($it, $re, $mode = true) {
+    function __construct($it, $re, $mode = true)
+    {
         parent :: __construct($it);
         is_array($re) ? $this -> re = $re : $this -> re = array($re);
         $this -> mode = $mode;
@@ -3495,11 +3552,13 @@ class MagesterREFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         $result = array();
         foreach ($this -> re as $regExp) {
             $this -> mode ? $result[] = preg_match($regExp, $this -> key()) : $result[] = !preg_match($regExp, $this -> key());
         }
+
         return array_product($result);
     }
 }
@@ -3561,7 +3620,8 @@ class MagesterFileTypeFilterIterator extends FilterIterator
      * @param boolean $mode Whether to include or exclude the filtered files from the data set
 
      */
-    function __construct($it, $fileTypes, $mode = true) {
+    function __construct($it, $fileTypes, $mode = true)
+    {
         parent :: __construct($it);
         is_array($fileTypes) ? $this -> fileTypes = $fileTypes : $this -> fileTypes = array($fileTypes);
         $this -> mode = $mode;
@@ -3585,13 +3645,15 @@ class MagesterFileTypeFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         $result = array();
         if (in_array(mb_strtolower($this -> current() -> offsetGet('extension')), $this -> fileTypes)) {
             $this -> mode ? $return = true : $return = false;
         } else {
             $this -> mode ? $return = false : $return = true;
         }
+
         return $return;
     }
 }
