@@ -39,7 +39,7 @@ class curriculums extends MagesterEntity
 
      * The curriculums properties
 
-     * 
+     *
 
      * @since 3.6.0
 
@@ -49,19 +49,22 @@ class curriculums extends MagesterEntity
 
      */
     public $curriculums = array();
-    public function addCourses($courses) {
+    public function addCourses($courses)
+    {
      $courses = MagesterCourse :: verifyCoursesList($courses);
      foreach ($courses as $course) {
       eF_insertTableData("curriculums_to_courses", array("curriculums_ID" => $this -> curriculums['id'], "courses_ID" => $course -> course['id']));
      }
     }
-    public function removeCourses($courses) {
+    public function removeCourses($courses)
+    {
      $courses = MagesterCourse :: verifyCoursesList($courses);
      foreach ($courses as $course) {
       eF_deleteTableData("curriculums_to_courses", "curriculums_ID=".$this -> curriculums['id']." and courses_ID=".$course -> course['id']);
      }
     }
-    public function assignToUser($user) {
+    public function assignToUser($user)
+    {
      $courses = $this -> getCurriculumCourses();
      if (!empty($courses)) {
       $user -> addCourses($courses);
@@ -70,7 +73,8 @@ class curriculums extends MagesterEntity
      }
      eF_insertTableData("curriculums_to_users", array("users_LOGIN" => $user -> user['login'], "curriculums_ID" => $this -> curriculums['id']));
     }
-    public function removeFromUser($user) {
+    public function removeFromUser($user)
+    {
      $courses = $this -> getCurriculumCourses();
      if (!empty($courses)) {
       $user -> removeCourses($courses);
@@ -79,37 +83,45 @@ class curriculums extends MagesterEntity
      }
      eF_deleteTableData("curriculums_to_users", "curriculums_ID=".$this -> curriculums['id']);
     }
-    public function assignToGroup($group) {
+    public function assignToGroup($group)
+    {
      $courses = $this -> getCurriculumCourses();
      $group -> addCourses($courses);
     }
-    public function getCurriculumCourses($constraints = array()) {
+    public function getCurriculumCourses($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
   list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
   $select = "c.*, cc.courses_ID, 1 as has_course";
   $where[] = "c.id=cc.courses_ID and cc.curriculums_ID='".$this -> curriculums['id']."'";
      $result = eF_getTableData("courses c, curriculums_to_courses cc", $select,
          implode(" and ", $where), $orderby, $groupby, $limit);
+
   return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
     }
-    public function countCurriculumCourses($constraints = array()) {
+    public function countCurriculumCourses($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
   $where[] = "c.id=cc.courses_ID and cc.curriculums_ID='".$this -> curriculums['id']."'";
      $result = eF_countTableData("courses c, curriculums_to_courses cc", "c.id",
          implode(" and ", $where));
+
   return $result[0]['count'];
     }
-    public function getCurriculumCoursesIncludingUnassigned($constraints = array()) {
+    public function getCurriculumCoursesIncludingUnassigned($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
   list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
   $select = "c.*, r.courses_ID is not null as has_course";
   $result = eF_getTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this -> curriculums['id']."') r on c.id=r.courses_ID ", $select,
          implode(" and ", $where), $orderby, "", $limit);
+
   return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
     }
 
-    public function countCurriculumCoursesIncludingUnassigned($constraints = array()) {
+    public function countCurriculumCoursesIncludingUnassigned($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
      $result = eF_countTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this -> curriculums['id']."') r on c.id=r.courses_ID ", "c.id",
@@ -118,7 +130,8 @@ class curriculums extends MagesterEntity
   return $result[0]['count'];
     }
 
-    public function getCurriculumUsers($constraints = array()) {
+    public function getCurriculumUsers($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
@@ -130,16 +143,19 @@ class curriculums extends MagesterEntity
   return MagesterUser :: convertDatabaseResultToUserObjects($result);
     }
 
-    public function countCurriculumUsers($constraints = array()) {
+    public function countCurriculumUsers($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
   $where[] = "u.login=cu.users_LOGIN and cu.curriculums_ID='".$this -> curriculums['id']."'";
      $result = eF_countTableData("users u, curriculums_to_users cu", "u.login",
          implode(" and ", $where));
+
   return $result[0]['count'];
     }
 
-    public function getCurriculumUsersIncludingUnassigned($constraints = array()) {
+    public function getCurriculumUsersIncludingUnassigned($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
 
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
@@ -151,7 +167,8 @@ class curriculums extends MagesterEntity
   return MagesterUser :: convertDatabaseResultToUserObjects($result);
     }
 
-    public function countCurriculumUsersIncludingUnassigned($constraints = array()) {
+    public function countCurriculumUsersIncludingUnassigned($constraints = array())
+    {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
   $where[] = "u.user_type != 'administrator'";
@@ -165,11 +182,11 @@ class curriculums extends MagesterEntity
 
      * Create a curriculum
 
-     * 
+     *
 
      * This function is used to create a curriculum
 
-     * 
+     *
 
      * @param $fields An array of data
 
@@ -182,13 +199,15 @@ class curriculums extends MagesterEntity
      * @static
 
      */
-    public static function create($fields = array(), $sendEmail = false) {
+    public static function create($fields = array(), $sendEmail = false)
+    {
         $fields = array('name' => $fields['name'],
                         'active' => $fields['active'] ? $fields['active'] : 1,
             'description' => $fields['description']);
         $newId = eF_insertTableData("curriculums", $fields);
         $result = eF_getTableData("curriculums", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $curriculums = new curriculums($result[0]['id']);
+
         return $curriculums;
     }
     /**
@@ -198,7 +217,8 @@ class curriculums extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'name', _NAME, 'class = "inputText"');
      $form -> addElement('textarea', 'description', _DESCRIPTION, 'class = "inputTextArea" style = "width:100%;height:5em');
      $form -> addElement('advcheckbox', 'active', _ACTIVE, null, null, array(0, 1));
@@ -209,6 +229,7 @@ class curriculums extends MagesterEntity
      } else {
       $form -> setDefaults(array('active' => 1));
      }
+
         return $form;
     }
     /**
@@ -218,7 +239,8 @@ class curriculums extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
      $values = $form -> exportValues();
         if (isset($_GET['edit'])) {
             $this -> {$this -> entity}["name"] = $values['name'];

@@ -89,4 +89,3 @@ class HTML_QuickForm2_Container_Fieldset extends HTML_QuickForm2_Container
         throw new HTML_QuickForm2_Exception('Not implemented');
     }
 }
-?>

@@ -19,7 +19,6 @@
  * @version    $Id: Part.php 8064 2008-02-16 10:58:39Z thomas $
  */
 
-
 /**
  * @see Zend_Mime_Decode
  */
@@ -29,7 +28,6 @@ require_once 'Zend/Mime/Decode.php';
  * @see Zend_Mail_Part
  */
 require_once 'Zend/Mail/Part.php';
-
 
 /**
  * @category   Zend
@@ -63,7 +61,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
             require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('no file given in params');
         }
-        
+
         if (!is_resource($params['file'])) {
             $this->_fh = fopen($params['file'], 'r');
         } else {
@@ -86,7 +84,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
         }
 
         Zend_Mime_Decode::splitMessage($header, $this->_headers, $null);
-        
+
         $this->_contentPos[0] = ftell($this->_fh);
         if ($endPos !== null) {
             $this->_contentPos[1] = $endPos;
@@ -97,7 +95,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
         if (!$this->isMultipart()) {
             return;
         }
-        
+
         $boundary = $this->getHeaderField('content-type', 'boundary');
         if (!$boundary) {
             /**
@@ -106,7 +104,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
             require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('no boundary found in content type to split message');
         }
-        
+
         $part = array();
         $pos = $this->_contentPos[0];
         fseek($this->_fh, $pos);
@@ -134,16 +132,15 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
                     $this->_partPos[] = $part;
                 }
                 $part = array($pos);
-            } else if ($line == '--' . $boundary . '--') {
+            } elseif ($line == '--' . $boundary . '--') {
                 $part[1] = $lastPos;
                 $this->_partPos[] = $part;
                 break;
             }
         }
         $this->_countParts = count($this->_partPos);
-        
-    }
 
+    }
 
     /**
      * Body of part
@@ -157,9 +154,10 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
     {
         fseek($this->_fh, $this->_contentPos[0]);
         if ($stream !== null) {
-            return stream_copy_to_stream($this->_fh, $stream, $this->_contentPos[1] - $this->_contentPos[0]);    
+            return stream_copy_to_stream($this->_fh, $stream, $this->_contentPos[1] - $this->_contentPos[0]);
         }
         $length = $this->_contentPos[1] - $this->_contentPos[0];
+
         return $length < 1 ? '' : fread($this->_fh, $length);
     }
 
@@ -170,7 +168,8 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
      *
      * @return int size
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->_contentPos[1] - $this->_contentPos[0];
     }
 
@@ -192,7 +191,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
             throw new Zend_Mail_Exception('part not found');
         }
 
-        return new self(array('file' => $this->_fh, 'startPos' => $this->_partPos[$num][0], 
+        return new self(array('file' => $this->_fh, 'startPos' => $this->_partPos[$num][0],
                               'endPos' => $this->_partPos[$num][1]));
     }
 }

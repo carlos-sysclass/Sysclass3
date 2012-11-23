@@ -3,8 +3,8 @@
  *  This module implements the external entify loader procedure.
  *  Author: Andre Kucaniz
  *  Contact: andre@ult.com.br
- *  SysClass ver: 
- * 
+ *  SysClass ver:
+ *
 */
 $path = "../libraries/";                //Define default path
 
@@ -13,14 +13,14 @@ error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_
 /** The configuration file.*/
 require_once $path."configuration.php";
 if(
-	empty($_GET['type']) || 
+	empty($_GET['type']) ||
 	empty($_GET['ID'])
 ) {
 	exit;
 } else {
 	$type		= $_GET['type'];
 	$ID			= $_GET['ID'];
-	switch($type) {
+	switch ($type) {
 		case "courses" : {
 			if ($_GET['subtype'] == "terms") {
 				$resultData = eF_getTableData("courses","terms","id=".$ID);

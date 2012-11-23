@@ -58,7 +58,6 @@ class Zend_Pdf_Color_Rgb extends Zend_Pdf_Color
      */
     private $_b;
 
-
     /**
      * Object constructor
      *
@@ -98,4 +97,3 @@ class Zend_Pdf_Color_Rgb extends Zend_Pdf_Color
              . $this->_b->toString() .     ($stroking? " RG\n" : " rg\n");
     }
 }
-

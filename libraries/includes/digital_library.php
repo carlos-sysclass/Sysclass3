@@ -1,7 +1,7 @@
 <?php
 /**
 
-* 
+*
 
 * @package SysClass
 
@@ -17,7 +17,7 @@ $loadScripts[] = 'includes/news';
 $_student_ = $_professor_ = $_admin_ = 0;
 if ($_SESSION['s_lesson_user_type'] == 'student') {
     $_student_ = 1;
-} else if ($_SESSION['s_lesson_user_type'] == 'professor') {
+} elseif ($_SESSION['s_lesson_user_type'] == 'professor') {
     $_professor_ = 1;
 } else {
     $_admin_ = 1;
@@ -37,7 +37,7 @@ $basedir = $currentLesson -> getDirectory();
 
 try {
  $result = eF_getTableData("files", "*", "shared=".$currentLesson -> lesson['id']);
- 
+
  foreach ($result as $value) {
   $sharedFiles[G_ROOTPATH.$value['path']] = new MagesterFile($value['id']);
  }
@@ -50,7 +50,7 @@ try {
   $url = basename($_SERVER['PHP_SELF']).'?ctg=digital_library';
   $options = array('share' => false, 'zip' => false, 'folders' => false, 'delete' => false, 'edit' => false, 'create_folder' => false, 'upload' => false);
 
-  include "file_manager.php";
+  include 'file_manager.php';
  }
 } catch (Exception $e) {
  $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());

@@ -5,21 +5,23 @@
 * $params is an array with fields: title, data, image, navigation (optional), is_last (optional), absoluteImagePath(optional)
 * $params['data'] is plain html
 */
-function smarty_function_eF_template_printInnerTable($params, &$smarty) {
+function smarty_function_eF_template_printInnerTable($params, &$smarty)
+{
 	return smarty_function_eF_template_printBlock2($params, $smarty);
 }
-function smarty_function_eF_template_printBlock2($params, &$smarty) {
+function smarty_function_eF_template_printBlock2($params, &$smarty)
+{
     $params['link'] ? $params['title'] 	 = '<a href = "'.$params['link'].'">'.$params['title'].'</a>' : null;
-	$params['data'] ? $params['content'] = $params['data'] 											  : null;		//'data' is used in printInnertable, and we put this here for compatibility 
+	$params['data'] ? $params['content'] = $params['data'] 											  : null;		//'data' is used in printInnertable, and we put this here for compatibility
 
 	/**
 	 * Cookies for remembering the open/close status of blocks, and to display status depending on lesson layout settings if it's the control panel
-	 * @todo: Make it better, to comply with new blocks (this one's copied from old innerTable functions 
+	 * @todo: Make it better, to comply with new blocks (this one's copied from old innerTable functions
 	 */
     $innerTableIdentifier = $GLOBALS['innerTableIdentifier'];
     $cookieString = md5($_SESSION['s_login'].$_SESSION['s_lessons_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
     $cookieValue  = $_COOKIE['innerTables'][$cookieString];
-	
+
     /**
      * $params['options'] is an array with handles that are displayed on the block header,
      * and are encompassing custom functionality. Each handle is an <a> element that contains an <img> element.
@@ -36,13 +38,13 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
     	$optionsString = '';
     	foreach ($params['options'] as $key => $value) {
 			isset($value['onClick']) ? $value['onclick'] = $value['onClick'] : null;		//sometimes onClick is used instead of onclick.
-    		
-			isset($value['class'])  && $value['class']   ? $classstr = 'class = "'.$value['class'].'"' 				: $classstr = '';    		
+
+			isset($value['class'])  && $value['class']   ? $classstr = 'class = "'.$value['class'].'"' 				: $classstr = '';
     		isset($value['target']) && $value['target']  ? $target   = 'target = "'.$value['target'].'"'    		: $target   = '';
     		isset($value['id'])     && $value['id']      ? $id	  	 = 'id = "'.$value['id'].'"'    	   	   		: $id	    = '';
     		isset($value['href'])   && $value['href']    ? $href	 = 'href = "'.$value['href'].'"'    	   		: $href	    = 'href = "javascript:void(0)"';
     		isset($value['onclick'])&& $value['onclick'] ? $onclick	 = 'onclick = "'.$value['onclick'].'"'  		: $onclick  = '';
-    		
+
     		$optionsString .= "<a $id $href $onclick $target><img $class src = 'images/".$value['image']."' title = '".$value['text']."' alt = '".$value['text']."' /></a>";
     	}
     }
@@ -57,7 +59,7 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
      * - text: The text that accompanies the icon (mandatory)
      * - image: The icon src (mandatory)
      * - href: Where the icon's link will point to, defaults to javascript:void(0)
-     * - onclick: An action to perform 
+     * - onclick: An action to perform
      * - title: The alt/title to use for the icon, defaults to the same as 'text' above
      * - group: If icons are separated to groups, which group to put this entry into
      */
@@ -69,19 +71,19 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
     	if (!isset($params['groups']) || sizeof($params['groups']) == 0) {
     		$params['groups'] = array(0 => 0);
     	}
-    	
+
     	$linksString = '
     		<table class = "iconTable">';
     	foreach ($params['groups'] as $groupId => $name) {
-			$counter = 0;		//$counter is used to count how many icons are put in each group, so that the <tr>s are put in correct place, and empty <td>s are appended where needed    	 
-    		
+			$counter = 0;		//$counter is used to count how many icons are put in each group, so that the <tr>s are put in correct place, and empty <td>s are appended where needed
+
 			//Print group separator, only if $groupId > 0. This way, the default group specified above, does not print any group separator
     		$groupId ? $linksString .= '<tr><td class = "group" colspan = "'.$params['columns'].'">'.$name.'</td></tr>' : null;
 
     		foreach (array_values($params['links']) as $key => $value) {						//array_values makes sure that entries are displayed correctly, even if keys are not sequential
     			if ($value['group'] == $groupId) {
     				isset($value['onClick']) ? $value['onclick'] = $value['onClick'] : null;		//sometimes onClick is used instead of onclick.
-    				 
+
     				isset($value['class'])  && $value['class']   ? $classstr = 'class = "'.$value['class'].'"' 				: $classstr = '';
     				isset($value['target']) && $value['target']  ? $target   = 'target = "'.$value['target'].'"'    		: $target   = '';
     				isset($value['id'])     && $value['id']      ? $id	  	 = 'id = "'.$value['id'].'"'    	   	   		: $id	    = '';
@@ -98,11 +100,11 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
                         		<img $class src = 'images/".$value['image']."' $title /><br>
                         		".$value['text']."
                         	</a>
-                        </td>";    				
+                        </td>";
     				if ($counter % $params['columns'] == 0) {
     					$linksString .= '</tr>';
     				}
-    			}    			
+    			}
     		}
     		//If the icons where not a factor of $params[columns'], then there are some gaps left in the table. We must fill these gaps with empty table cells
 	        for ($i = $params['columns']; $i > $counter % $params['columns']; $i--) {
@@ -110,8 +112,8 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
 	        }
     	}
         $linksString .= '</table>';
-        
-        $params['content'] = $linksString;    	
+
+        $params['content'] = $linksString;
     }
 
     /**
@@ -133,14 +135,14 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
     	}
     	$mainOptions = '<div class = "toolbar">'.$mainOptions.'</div>';
     }
-    
-    !isset($params['absoluteImagePath']) && $params['image'] ? $params['image'] = 'images/'.$params['image'] : null;	//if absoluteImagePath is specified, it means that $params['image'] contains an absolute path (or anyway it refers to an image not under www/images/) 
+
+    !isset($params['absoluteImagePath']) && $params['image'] ? $params['image'] = 'images/'.$params['image'] : null;	//if absoluteImagePath is specified, it means that $params['image'] contains an absolute path (or anyway it refers to an image not under www/images/)
     isset($params['image']) && $params['image'] ? $image = '<img src = "'.$params['image'].'" alt = "'.urlencode($params['title']).'" title = "'.urlencode($params['title']).'" />' : $image = '';
-    
+
     if ($GLOBALS['currentTheme'] -> options['images_displaying'] == 2 || ($GLOBALS['currentTheme'] -> options['images_displaying'] == 1 && basename($_SERVER['PHP_SELF']) == 'index.php')) {
     	$image = '';
     }
-    
+
     if ($cookieValue == 'hidden') {
     	$handleString = '<img class = "close" src = "images/16x16/navigate_down.png" onclick = "toggleBlock(this, \''.$cookieString.'\')" id = "'.urlencode($params['title']).'_image">';
     	$showContent  = 'display:none';
@@ -148,7 +150,7 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
     	$handleString = '<img class = "open" src = "images/16x16/navigate_up.png" onclick = "toggleBlock(this, \''.$cookieString.'\')"  id = "'.urlencode($params['title']).'_image">';
     	$showContent  = '';
     }
-    $str = '	
+    $str = '
     <div class = "block" style = "'.$params['style'].';" id = "'.urlencode($params['title']).'" >
         <div class = "blockContents">
         		<span class = "title">'.$image.''.$params['title'].'</span>
@@ -156,14 +158,14 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
         		<span class = "subtitle">'.$params['sub_title'].'</span>
         		'.$mainOptions.'
         		<div class = "content" style = "'.$showContent.'" id = "'.urlencode($params['title']).'_content">'.$params['content'].'</div>
-        		<span style = "display:none">&nbsp;</span>	
+        		<span style = "display:none">&nbsp;</span>
         </div>
     </div>';
 
-	$str .= '	
+	$str .= '
 	<script>
 		$("'.urlencode($params['title']).'").ancestors().each(function (s) {
-			if (s.readAttribute(\'collapsed\')) {				
+			if (s.readAttribute(\'collapsed\')) {
 				$("'.urlencode($params['title']).'_content").hide();
 				$("'.urlencode($params['title']).'_image").removeClassName("open");
 				$("'.urlencode($params['title']).'_image").addClassName("close");
@@ -172,6 +174,5 @@ function smarty_function_eF_template_printBlock2($params, &$smarty) {
 		});
 	</script>';
 
-    
     return $str;
 }

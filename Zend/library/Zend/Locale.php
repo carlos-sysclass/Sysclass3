@@ -237,6 +237,7 @@ class Zend_Locale
                 if (isset($params[0])) {
                     $param = $params[0];
                 }
+
                 return self::getOrder($param);
             }
 
@@ -318,7 +319,7 @@ class Zend_Locale
             if ($language !== 'C') {
                 if (strpos($language, '.') !== false) {
                     $language = substr($language, 0, (strpos($language, '.') - 1));
-                } else if (strpos($language, '@') !== false) {
+                } elseif (strpos($language, '@') !== false) {
                     $language = substr($language, 0, (strpos($language, '@') - 1));
                 }
 
@@ -345,6 +346,7 @@ class Zend_Locale
         }
 
         self::$_environment = $languagearray;
+
         return $languagearray;
     }
 
@@ -406,6 +408,7 @@ class Zend_Locale
         }
 
         self::$_browser = $languages;
+
         return $languages;
     }
 
@@ -445,6 +448,7 @@ class Zend_Locale
     public function getLanguage()
     {
         $locale = explode('_', $this->_locale);
+
         return $locale[0];
     }
 
@@ -738,7 +742,7 @@ class Zend_Locale
             trigger_error('You are running Zend_Locale in compatibility mode... please migrate your scripts', E_USER_NOTICE);
             if (isset(self::$_localeData[$locale]) === true) {
                 return $locale;
-            } else if (!$strict) {
+            } elseif (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return $locale[0];
@@ -747,7 +751,7 @@ class Zend_Locale
         } else {
             if (isset(self::$_localeData[$locale]) === true) {
                 return true;
-            } else if (!$strict) {
+            } elseif (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return true;
@@ -812,6 +816,7 @@ class Zend_Locale
         unset($list['auto']);
         unset($list['browser']);
         unset($list['environment']);
+
         return $list;
     }
 
@@ -848,6 +853,7 @@ class Zend_Locale
     public static function hasCache()
     {
         require_once 'Zend/Locale/Data.php';
+
         return Zend_Locale_Data::hasCache();
     }
 

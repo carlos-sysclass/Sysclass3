@@ -112,6 +112,7 @@ class PEAR_PackageFile_v2_Validator
               version_compare('1.5.2',
                 $test['dependencies']['required']['pearinstaller']['min'], '<')) {
             $this->_pearVersionTooLow($test['dependencies']['required']['pearinstaller']['min']);
+
             return false;
         }
         // ignore post-installation array fields
@@ -179,10 +180,12 @@ class PEAR_PackageFile_v2_Validator
             }
             if (!isset($this->_packageInfo['contents']['dir'])) {
                 $this->_filelistMustContainDir('contents');
+
                 return false;
             }
             if (isset($this->_packageInfo['contents']['file'])) {
                 $this->_filelistCannotContainFile('contents');
+
                 return false;
             }
         }
@@ -239,6 +242,7 @@ class PEAR_PackageFile_v2_Validator
         $list = $this->_packageInfo['contents'];
         if (isset($list['dir']) && is_array($list['dir']) && isset($list['dir'][0])) {
             $this->_multipleToplevelDirNotAllowed();
+
             return $this->_isValid = 0;
         }
         $this->_validateFilelist();
@@ -261,6 +265,7 @@ class PEAR_PackageFile_v2_Validator
                             ),
                         'package "%channel%/%package%" cannot be properly validated without ' .
                         'validation package "%channel%/%name%-%version%"');
+
                     return $this->_isValid = 0;
                 }
                 $validator->setPackageFile($this->_pf);
@@ -295,6 +300,7 @@ class PEAR_PackageFile_v2_Validator
         if ($this->_isValid) {
             return $this->_pf->_isValid = $this->_isValid = $state;
         }
+
         return $this->_pf->_isValid = $this->_isValid = 0;
     }
 
@@ -348,6 +354,7 @@ class PEAR_PackageFile_v2_Validator
                 }
                 if (!$loose) {
                     $this->_invalidTagOrder($unfoundtags, $key, $root);
+
                     return false;
                 }
             } else {
@@ -355,6 +362,7 @@ class PEAR_PackageFile_v2_Validator
                     if (isset($test['multiple']) && $test['multiple'] != '*') {
                         $unfoundtags[] = $test['tag'];
                         $this->_invalidTagOrder($unfoundtags, $key, $root);
+
                         return false;
                     } else {
                         if ($key) {
@@ -365,6 +373,7 @@ class PEAR_PackageFile_v2_Validator
                     }
                     if (!isset($test['multiple'])) {
                         $this->_invalidTagOrder($unfoundtags, $key, $root);
+
                         return false;
                     }
                     continue;
@@ -398,6 +407,7 @@ class PEAR_PackageFile_v2_Validator
                 $this->_invalidTagOrder('*no tags allowed here*', $key, $root);
             }
         }
+
         return $ret;
     }
 
@@ -431,8 +441,10 @@ class PEAR_PackageFile_v2_Validator
                     }
                 }
             }
+
             return $ret;
         }
+
         return true;
     }
 
@@ -444,6 +456,7 @@ class PEAR_PackageFile_v2_Validator
             foreach ($pieces as $piece) {
                 $ret['choices'][] = $this->_processStructure($piece);
             }
+
             return $ret;
         }
         $multi = $key{0};
@@ -457,6 +470,7 @@ class PEAR_PackageFile_v2_Validator
         } else {
             $ret['tag'] = $key;
         }
+
         return $ret;
     }
 
@@ -1058,8 +1072,7 @@ class PEAR_PackageFile_v2_Validator
                 // single file
                 $list['file'] = array($list['file']);
             }
-            foreach ($list['file'] as $i => $file)
-            {
+            foreach ($list['file'] as $i => $file) {
                 if (isset($file['attribs']) && isset($file['attribs']['name']) &&
                       $file['attribs']['name']{0} == '.' &&
                         $file['attribs']['name']{1} == '/') {
@@ -1304,7 +1317,7 @@ class PEAR_PackageFile_v2_Validator
             }
             if (is_array($rel) && array_key_exists('filelist', $rel)) {
                 if ($rel['filelist']) {
-                    
+
                     $this->_validateFilelist($rel['filelist'], true);
                 }
             }
@@ -1712,9 +1725,11 @@ class PEAR_PackageFile_v2_Validator
                         call_user_func_array($log, array(1, $err['message']));
                     }
                 }
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -1725,6 +1740,7 @@ class PEAR_PackageFile_v2_Validator
         }
         if (!isset($this->_pf->_packageFile)) {
             $this->_cannotValidateNoPathSet();
+
             return false;
         }
         $dir_prefix = dirname($this->_pf->_packageFile);
@@ -1734,6 +1750,7 @@ class PEAR_PackageFile_v2_Validator
         $info = $this->_pf->getContents();
         if (!$info || !isset($info['dir']['file'])) {
             $this->_tagCannotBeEmpty('contents><dir');
+
             return false;
         }
         $info = $info['dir']['file'];
@@ -1782,6 +1799,7 @@ class PEAR_PackageFile_v2_Validator
                     'in %file%: %type% "%name%" not prefixed with package name "%package%"');
             }
         }
+
         return $this->_isValid;
     }
 
@@ -1797,6 +1815,7 @@ class PEAR_PackageFile_v2_Validator
         if (!function_exists("token_get_all")) {
             $this->_stack->push(__FUNCTION__, 'error', array('file' => $file),
                 'Parser error: token_get_all() function must exist to analyze source code, PHP may have been compiled with --disable-tokenizer');
+
             return false;
         }
         if (!defined('T_DOC_COMMENT')) {
@@ -1902,6 +1921,7 @@ class PEAR_PackageFile_v2_Validator
                     if (($current_class_level != -1) || ($current_function_level != -1)) {
                         $this->_stack->push(__FUNCTION__, 'error', array('file' => $file),
                         'Parser error: invalid PHP found in file "%file%"');
+
                         return false;
                     }
                 case T_FUNCTION:
@@ -1914,7 +1934,7 @@ class PEAR_PackageFile_v2_Validator
                     if (version_compare(zend_version(), '2.0', '<')) {
                         if (in_array(strtolower($data),
                             array('public', 'private', 'protected', 'abstract',
-                                  'interface', 'implements', 'throw') 
+                                  'interface', 'implements', 'throw')
                                  )) {
                             $this->_stack->push(__FUNCTION__, 'warning', array(
                                 'file' => $file),
@@ -1968,6 +1988,7 @@ class PEAR_PackageFile_v2_Validator
                     if (!($tokens[$i - 1][0] == T_WHITESPACE || $tokens[$i - 1][0] == T_STRING)) {
                         $this->_stack->push(__FUNCTION__, 'warning', array('file' => $file),
                             'Parser error: invalid PHP found in file "%file%"');
+
                         return false;
                     }
                     $class = $tokens[$i - 1][1];
@@ -1977,6 +1998,7 @@ class PEAR_PackageFile_v2_Validator
                     continue 2;
             }
         }
+
         return array(
             "source_file" => $file,
             "declared_classes" => $declared_classes,
@@ -2053,7 +2075,7 @@ class PEAR_PackageFile_v2_Validator
             $providesret[$key] =
                 array('file'=> $file, 'type' => 'function', 'name' => $function);
         }
+
         return $providesret;
     }
 }
-?>

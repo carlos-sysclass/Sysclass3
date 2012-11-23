@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Pop3.php 9099 2008-03-30 19:35:47Z thomas $
  */
-
 
 /**
  * @see Zend_Mail_Storage_Abstract
@@ -36,7 +35,6 @@ require_once 'Zend/Mail/Protocol/Pop3.php';
  */
 require_once 'Zend/Mail/Message.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -52,7 +50,6 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
      */
     protected $_protocol;
 
-
     /**
      * Count messages all messages in current box
      *
@@ -63,7 +60,8 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
     public function countMessages()
     {
         $this->_protocol->status($count, $null);
-        return (int)$count;
+
+        return (int) $count;
     }
 
     /**
@@ -76,6 +74,7 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
     public function getSize($id = 0)
     {
         $id = $id ? $id : null;
+
         return $this->_protocol->getList($id);
     }
 
@@ -142,6 +141,7 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
         $content = $this->_protocol->retrieve($id);
         // TODO: find a way to avoid decoding the headers
         Zend_Mime_Decode::splitMessage($content, $null, $body);
+
         return $body;
     }
 
@@ -161,7 +161,7 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         $this->_has['fetchPart'] = false;
@@ -170,6 +170,7 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
 
         if ($params instanceof Zend_Mail_Protocol_Pop3) {
             $this->_protocol = $params;
+
             return;
         }
 
@@ -244,9 +245,10 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
             }
             $count = $this->countMessages();
             if ($count < 1) {
-                return array(); 
+                return array();
             }
             $range = range(1, $count);
+
             return array_combine($range, $range);
         }
 
@@ -304,11 +306,12 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
                 // need to make a real call, because not all server are honest in their capas
                 try {
                     $this->_protocol->top(1, 0, false);
-                } catch(Zend_Mail_Exception $e) {
+                } catch (Zend_Mail_Exception $e) {
                     // ignoring error
                 }
             }
             $this->_has['top'] = $this->_protocol->hasTop;
+
             return $this->_protocol->hasTop;
         }
 
@@ -316,10 +319,11 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
             $id = null;
             try {
                 $id = $this->_protocol->uniqueid(1);
-            } catch(Zend_Mail_Exception $e) {
+            } catch (Zend_Mail_Exception $e) {
                 // ignoring error
             }
             $this->_has['uniqueid'] = $id ? true : false;
+
             return $this->_has['uniqueid'];
         }
 

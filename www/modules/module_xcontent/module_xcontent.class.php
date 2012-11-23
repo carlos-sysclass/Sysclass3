@@ -1,19 +1,24 @@
 <?php
-class module_xcontent extends MagesterExtendedModule {
+class module_xcontent extends MagesterExtendedModule
+{
 	const XENTIFY_SEP = ';';
-		
+
     // CORE MODULE FUNCTIONS
-    public function getName() {
+    public function getName()
+    {
         return "XCONTENT";
     }
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator", "professor", "student");
     }
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
         return true;
     }
-    public function getTitle($action) {
-    	switch($action) {
+    public function getTitle($action)
+    {
+    	switch ($action) {
     		case "authorize_xcontent_schedule" : {
     			return "Agendamento de Conteúdo";
     		}
@@ -37,8 +42,9 @@ class module_xcontent extends MagesterExtendedModule {
     		}
     	}
     }
-    public function getUrl($action) {
-    	switch($action) {
+    public function getUrl($action)
+    {
+    	switch ($action) {
 			case "edit_schedule_times" :
 			case "view_scheduled_users" : {
 				return $this->moduleBaseUrl . "&action=" . $action . "&xschedule_id=" . $_GET['xschedule_id'];
@@ -48,41 +54,43 @@ class module_xcontent extends MagesterExtendedModule {
     		}
     	}
     }
-    public function getDefaultAction() {
+    public function getDefaultAction()
+    {
     	//return "authorize_xcontent_schedule";
     	return "view_scheduled";
     }
 	/*
-	public function getNavigationLinks() {
+	public function getNavigationLinks()
+	{
 		$this->showModuleBreadcrumbs = false;
-		
+
 		return parent::getNavigationLinks();
 	}
     */
-    
+
     /*
-	public function addStylesheets() {
+	public function addStylesheets()
+	{
 		return array("960gs/fluid/24columns");
 	}
 	*/
     /* BLOCK FUNCTIONS */
-    public function loadContentAnalisysBlock($blockIndex = null, $blockInfo = null) {
+    public function loadContentAnalisysBlock($blockIndex = null, $blockInfo = null)
+    {
     	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
-    	
+
     	// OPEN TEST RESULT
     	$testContentID = $blockInfo['unit_id'];
-    	
+
     	try {
     		$userTest = new MagesterTest($testContentID);
-    		
+
     		$recentUserTests = eF_getTableData(
-    			"completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login", 
-    			"completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", 
+    			"completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login",
+    			"completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN",
     			"completed_tests.status != 'deleted' and completed_tests.users_LOGIN = '" . $this->getCurrentUser()->user['login'] . "' and completed_tests.tests_id = " . $userTest->test['id'], "timestamp DESC");
-    		
-    		
-    		
+
     		if (count($recentUserTests) > 0) {
     			$userScore = is_null($recentUserTests[0]['score']) ? 0 : $recentUserTests[0]['score'];
 
@@ -125,7 +133,7 @@ class module_xcontent extends MagesterExtendedModule {
 								'text'	=> 'Escrever cartas formais e informais, inclusive reclamações, e preparar relatórios um pouco mais complexos e detalhados.'
 							)
 						)
-							
+
 			   		),
 					3	=> array(
 			   			'label'	=> 'Intermediário',
@@ -145,7 +153,7 @@ class module_xcontent extends MagesterExtendedModule {
 								'text'	=> 'Desenvolver relatórios contendo gráficos, pesquisas de mercado, apresentar os pros e contras e fazer comparações de dados.'
 							)
 						)
-							
+
 					),
 					4	=> array(
 			   			'label'	=> 'Intermediário Superior',
@@ -171,7 +179,7 @@ class module_xcontent extends MagesterExtendedModule {
 						'text'	=> 'Expressar- se com clareza e fluência, dominando com segurança uma ampla variedade de linguagem, com elevado grau de exatidão. Lidar com informações complexas com segurança. Demonstrar um amplo repertório de vocabulário, estruturas e expressões coloquiais e idiomáticas. Comandar reuniões, mantendo o controle usando a linguagem específica do assunto com facilidade e fluência. Aproxima-se da competência de quem está falando sua língua-mãe.'
 			   		)
 				);
-				
+
 				//var_dump($recentUserTests[0]);
 
 				if ($userScore <= 40) {
@@ -187,78 +195,75 @@ class module_xcontent extends MagesterExtendedModule {
 				}
     		} else {
     			// Usuário ainda não fez o teste
-    			
+
     		}
-    		
+
     		$smarty -> assign("T_XCONTENT_USERLEVEL", $levels[$level]);
     		$smarty -> assign("T_XCONTENT_USERSCORE", $userScore);
-    		    		
-	    	
+
 	    	$this->getParent()->appendTemplate(array(
 		   		'title'			=> __XCONTENT_LEVEL . ":" . $levels[$level]['label'],
 		   		'template'		=> $this->moduleBaseDir . 'templates/blocks/analisys_range.text.tpl',
 		   		'contentclass'	=> 'blockContents'
 	    	), $blockIndex);
-	    	
-	    	
 
-	    	
 	    	$this->injectJS("jquery/jquery-ui");
-    	
-	    	
-	    	return true;    	
+
+	    	return true;
     	} catch (Exception $e) {
-    		return false;    	
+    		return false;
     	}
     }
-    public function loadContentAnalisysRangeBlock($blockIndex = null, $blockInfo = null) {
+    public function loadContentAnalisysRangeBlock($blockIndex = null, $blockInfo = null)
+    {
     	$this->getParent()->appendTemplate(array(
 	   		'title'			=> __XCONTENT_LEVELS,
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/analisys_range.table.tpl',
 	   		'contentclass'	=> 'blockContents'
     	), $blockIndex);
     }
-    public function loadContentScheduleListBlock($blockIndex = null, $blockInfo = null) {
+    public function loadContentScheduleListBlock($blockIndex = null, $blockInfo = null)
+    {
     	// CHECK context (filter) LINK (polo, user_type, course, etc).
     	// OPEN TEST RESULT
     	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
-    	
+
     	$xuserModule = $this->loadModule("xuser");
 
     	if (is_object($this->getCurrentLesson())) {
     		$currentLessonsID = array( $this->getCurrentLesson()->lesson['id'] );
     	} elseif (is_array($this->getCurrentLesson())) {
-    		$currentLesson = $this->getCurrentLesson();	
+    		$currentLesson = $this->getCurrentLesson();
     		$currentLessonsID = array( $currentLesson['id'] );
     	} else {
     		// GET USER LESSONS
-    		$currentLessonsID = array_keys($currentUser->getLessons(false)); 
+    		$currentLessonsID = array_keys($currentUser->getLessons(false));
     	}
-    	
+
     	if (count($currentLessonsID) == 0) {
     		return false;
     	}
-    	
+
     	$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
-    	
+
     	$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
-    	
+
     	if (count($userCoursesID) == 0) {
     		$result = array();
     	} else {
 	    	$result = eF_getTableData(
-		    	"module_xcontent_schedule sch 
+		    	"module_xcontent_schedule sch
 		    	LEFT JOIN module_xentify_scopes scop ON sch.xentify_scope_id = scop.id
 	    			/*
 		    	LEFT JOIN content cont ON schedl.content_id = cont.id
 		    	LEFT JOIN lessons ON cont.lessons_ID = lessons.id
 	    			*/
 		    	LEFT OUTER JOIN module_xcontent_schedule_users user_schedl ON (sch.id = user_schedl.schedule_id)
-		    	", 
+		    	",
 		    	"sch.id, sch.xentify_scope_id, sch.xentify_id, user_schedl.index as selected_option, sch.block_html, sch.active",
 		    	sprintf(
-		    		"CURRENT_TIMESTAMP < sch.end 
+		    		"CURRENT_TIMESTAMP < sch.end
 		    		AND sch.active = 1
 	    			AND sch.id IN (
 		    			SELECT schedule_id FROM module_xcontent_schedule_contents sch_ct
@@ -268,39 +273,39 @@ class module_xcontent extends MagesterExtendedModule {
 		    );
     	}
     	//$userCourses = $currentUser->getUserCourses(array('return_objects' => false));
-    	
+
 	    $content_schedule_link = $this->moduleBaseUrl;
-    	
+
     	if ($xuserModule->getExtendedTypeID($currentUser) == 'polo') {
 // CHECK CURRENT USER POLO SCHEDULES
-    		
-    		foreach($result as $key => &$contentToSchedule) {
+
+    		foreach ($result as $key => &$contentToSchedule) {
 	    		// CHECK IF IS THE SAME scope
-	    		
+
 	    		if (!$this->isUserInScope($currentUser, $contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id'])) {
 					unset($result[$key]);
 					continue;
 				}
 				$scheduleID = $contentToSchedule['id'];
 	    	}
-	    	
+
 	    	$content_schedule_link = $this->moduleBaseUrl . "&action=view_scheduled_users&xschedule_id=" . $scheduleID;
-	    	
+
 	    	if (count($result) == 0) {
 	    		return false;
 	    	}
-	    	
+
 	    	$this->getParent()->appendTemplate(array(
 	   			'title'			=> __XCONTENT_AUTHORIZE_SCHEDULE,
 	   			'template'		=> $this->moduleBaseDir . 'templates/blocks/content.authorize.list.tpl',
 	   			'contentclass'	=> 'blockContents'
     		), $blockIndex);
-    		
+
     	} elseif ($currentUser->getType() == 'student') {
 //    		var_dump($this->getUserScopeStatus($currentUser, '10', '8;14'));
 
     		//var_dump($result);
-			foreach($result as $key => $contentToSchedule) {
+			foreach ($result as $key => $contentToSchedule) {
 				// CHECK IF IS THE SAME scope
 				if (!$this->isUserInScope($currentUser, $contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id'])) {
 					unset($result[$key]);
@@ -309,70 +314,68 @@ class module_xcontent extends MagesterExtendedModule {
 					//var_dump($key);
 				}
 			}
-			
+
 			$content_schedule_link = $this->moduleBaseUrl . "&action=register_xcontent_schedule";
-			
+
 			if (count($result) == 0) {
 				return false;
 			}
 			// IF HAS ACTIVE CONTENT SCHEDULE
 
-			
 	    	$this->getParent()->appendTemplate(array(
 	   			'title'			=> __XCONTENT_AUTHORIZE_SCHEDULE,
 	   			'template'		=> $this->moduleBaseDir . 'templates/blocks/content.schedule.list.tpl',
 	   			'contentclass'	=> 'blockContents'
     		), $blockIndex);
-	    	
-	    	// IF NOT 
+
+	    	// IF NOT
 //	    	return false;
     	}
     	/*
-    	foreach($result as &$item) {
+    	foreach ($result as &$item) {
     		$item['contents']	= $this->getContentsByScheduleId($item['id']);
     	}
-    	
+
     	var_dump($result);
-    	
-    	
 
 		exit;
 		*/
 		$smarty -> assign("T_XCONTENT_SCHEDULE_LINK", $content_schedule_link);
     	$this->assignSmartyModuleVariables();
-		    /*	
+		    /*
     	$this->getParent()->appendTemplate(array(
 	   		'title'			=> __XCONTENT_SCHEDULE,
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/content.schedule.list.tpl',
 	   		'contentclass'	=> 'blockContents'
     	), $blockIndex);
 */
-    	return true;    	
+    	return true;
     }
-    
+
     /* ACTIONS FUNCTIONS */
-	public function viewScheduledAction() {
+	public function viewScheduledAction()
+	{
     	$smarty = $this->getSmartyVar();
     	$scopos = $this->getScopes();
-    	
+
     	$currentUser = $this->getCurrentUser();
-    	
+
     	// GET ALL SCHEDULE,AND GROUP BY SCOPE
     	$smarty -> assign("T_XCONTENT_SCOPES", $scopos);
-    	
+
     	$xuserModule = $this->loadModule("xuser");
     	$smarty -> assign("T_CURRENT_USER", $currentUser);
-    	
+
     	$smarty -> assign("T_EXTENDED_USERTYPE", $xuserModule->getExtendedTypeID($currentUser));
-    	
+
     	$schedules = array();
-    	foreach($scopos as $escopo) {
+    	foreach ($scopos as $escopo) {
     		$schedules[$escopo['id']] = $this->getSchedules($escopo['id']);
     	}
-    	foreach($schedules as $scope_id => &$scoped_schedule) {
-    		foreach($scoped_schedule as $scoped_index => &$schedule) {
+    	foreach ($schedules as $scope_id => &$scoped_schedule) {
+    		foreach ($scoped_schedule as $scoped_index => &$schedule) {
     			if (
-    					$xuserModule->getExtendedTypeID($currentUser) != "administrator" && 
+    					$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
     					$currentUser->moduleAccess['xcontent'] != 'view' &&
     					$currentUser->moduleAccess['xcontent'] != 'change'
     			) {
@@ -389,93 +392,91 @@ class module_xcontent extends MagesterExtendedModule {
 				}
 				//CURRENT_TIMESTAMP < sch.end
 				$scopeData = $this->getScopeEntifyValues(null, $schedule['xentify_scope_id'], $schedule['xentify_id']);
-				
+
 				//$scopeEntifyKeys = array_keys($scopeData);
 				//$smarty -> assign("T_XCONTENT_SCOPE_FIELDS", $scopeEntifyKeys);
-			
+
 				$schedule = array_merge($schedule, $scopeData);
     		}
     	}
-    	
+
     	//var_dump($currentUser);
-    	
+
     	$smarty -> assign("T_XCONTENT_SCHEDULES", $schedules);
-    	
+
     	return true;
     }
-	public function newScheduleAction() {
+	public function newScheduleAction()
+	{
 	   	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
-    	
+
     	$xuserModule = $this->loadModule("xuser");
-    	
+
     	if (
-			$xuserModule->getExtendedTypeID($currentUser) != "administrator" && 
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
 			$currentUser->moduleAccess['xcontent'] != 'view' &&
 			$currentUser->moduleAccess['xcontent'] != 'change'
    		) {
 			header("Location: " . $this->moduleBaseUrl);
 			exit;
 		}
-    	
+
     	// LOAD DATA FROM xentify Module
     	$scopeData = eF_getTableData("module_xentify_scopes", "id, name, description, rules", "active = 1");
     	$scopeCombo = array(-1	=> __SELECT_ONE_OPTION);
-    	foreach($scopeData as $item) {
-    		$scopeCombo[$item['id']] = $item['name']; 
+    	foreach ($scopeData as $item) {
+    		$scopeCombo[$item['id']] = $item['name'];
     	}
-    	
+
     	//$form = new HTML_QuickForm2("xcontent_new_schedule_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
     	$form = new HTML_QuickForm2("xcontent_new_schedule_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
-    	
+
 		//$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
-		
 
 		$form -> addElement('hidden', 'step_index');
 		$form -> addSelect('scope_id', null, array('label'	=> __XCONTENT_SCOPE, 'options'	=> $scopeCombo));
-		
+
 		$coursesObjects =  MagesterCourse::getAllCourses(array('active' => 1));
 		$lessonCombo = array(-1 => __SELECT_ONE_LESSON);
-		
-		foreach($coursesObjects as $course) {
+
+		foreach ($coursesObjects as $course) {
 			$lessons = $course->getCourseLessons(array('return_objects' => false));
 			if (!is_array($lessonCombo[$course->course['name']]) && count($lessons) > 0) {
 				$lessonCombo[$course->course['name']] = array();
 			}
-			
-			foreach($lessons as $lesson) {
+
+			foreach ($lessons as $lesson) {
 				$lessonCombo[$course->course['name']][$lesson['id']] = $lesson['name'];
 			}
 		}
 		$form -> addSelect('lesson_id', null, array('label'	=> __XCONTENT_LESSON, 'options' => $lessonCombo));
-		
+
 		/** @todo Incluir registro de horários */
 		$form -> addText('start_date', array('alt' => 'date', 'class'	=> 'no-button'), array('label'	=> __XCONTENT_START_DATE));
 		//$form -> addElement('jquerytime', 'start_time', __XCONTENT_START_DATE, 'class = "no-button"');
 		$form -> addText('end_date', array('alt' => 'date', 'class'	=> 'no-button'), array('label'	=> __XCONTENT_END_DATE));
 		//$form -> addElement('jquerytime', 'end_time', __XCONTENT_START_DATE, 'class = "no-button"');
-		
+
 		$form -> addSubmit('submit_schedule', null, array('label'	=> __XCONTENT_SUBMIT));
 
 		$scopeFields = array();
-		
+
 		$values = $form->getValue();
-		
-		
-		
+
 		if (is_numeric($values['scope_id']) && $values['scope_id'] > 0) {
 			// MAKE OPTIONS FOR SELECTED SCOPE
 			$scopeFields = $this->makeScopeFormOptions($values['scope_id'], $form);
 			$values = $form->getValue();
-			
+
 			$smarty -> assign("T_XCONTENT_SCOPE_FIELDS", $scopeFields);
-					
+
 			if ($form -> isSubmitted() && $form -> validate()) {
 				$xentifyValues = array();
-				foreach($scopeFields as $field_name) {
+				foreach ($scopeFields as $field_name) {
 					$xentifyValues[] = $values[$field_name];
 				}
-		
+
 				$start_date = date_create_from_format("d/m/Y", $values['start_date']);
 				$end_date = date_create_from_format("d/m/Y", $values['end_date']);
 
@@ -491,7 +492,7 @@ class module_xcontent extends MagesterExtendedModule {
 				}
 				//var_dump($insertValues);
 				$xScheduleID = eF_insertTableData("module_xcontent_schedule", $insertValues);
-				
+
 				// INSERE VALORES E REDIRECIONA PARA
 				header(sprintf("Location: " . $this->moduleBaseUrl . "&action=edit_schedule_times&xschedule_id=%s", $xScheduleID));
 				exit;
@@ -503,23 +504,21 @@ class module_xcontent extends MagesterExtendedModule {
 				'scope_id'		=> -1
 			);
 		}
-		
 
 		//$form->setDefaults($values);
 		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
 		// Set defaults for the form elements
-		
-		
+
 		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
 
-		
 		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
 		$form -> render($renderer);
 		$smarty -> assign('T_XCONTENT_NEW_SCHEDULE_FORM', $renderer -> toArray());
 
 		return true;
     }
-    public function editScheduleTimesAction() {
+    public function editScheduleTimesAction()
+    {
         $smarty = $this -> getSmartyVar();
         $currentUser = $this->getCurrentUser();
     	$xuserModule = $this->loadModule("xuser");
@@ -528,7 +527,7 @@ class module_xcontent extends MagesterExtendedModule {
     	exit;
 */
 		if (
-			$xuserModule->getExtendedTypeID($currentUser) != "administrator" && 
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
 			$currentUser->moduleAccess['xcontent'] != 'view' &&
 			$currentUser->moduleAccess['xcontent'] != 'change'
    		) {
@@ -539,33 +538,33 @@ class module_xcontent extends MagesterExtendedModule {
         if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
         	header("Location: " . $this->moduleBaseUrl);
 			exit;
-        	
+
         }
         $scheduleID = $_GET['xschedule_id'];
-        
+
         $smarty -> assign("T_XCONTENT_SCHEDULE_ID", $scheduleID);
-/*        
+/*
         list($scheduleData) = eF_getTableData(
-        	"module_xcontent_schedule sch 
+        	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)
         	LEFT JOIN content ct ON (sch.content_id = ct.id)
-        	LEFT JOIN lessons l ON (ct.lessons_ID = l .id)", 
+        	LEFT JOIN lessons l ON (ct.lessons_ID = l .id)",
         	"sch.id, sch.content_id, ct.name as content, l.name as lesson, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
         	sprintf("sch.id = '%s'", $scheduleID)
         );
 */
         list($scheduleData) = eF_getTableData(
-        	"module_xcontent_schedule sch 
+        	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)",
         	"sch.id, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
         	sprintf("sch.id = '%s'", $scheduleID)
         );
-        
+
         $scheduleContents = $scheduleData['contents']	= $this->getContentsByScheduleId($scheduleData['id']);
-        
+
         // GROUP BY COURSE ID, THEN LESSON ID
         $courseGrouped = $lessonForGroup = $scheduleGrouped = array();
-        foreach($scheduleContents as $schedule) {
+        foreach ($scheduleContents as $schedule) {
         	if (!array_key_exists($schedule['course_id'], $scheduleGrouped)) {
         		$scheduleGrouped[$schedule['course_id']] = array();
         		$courseGrouped[$schedule['course_id']] = $schedule['course'];
@@ -585,96 +584,97 @@ class module_xcontent extends MagesterExtendedModule {
 		$scopeData = $this->getScopeEntifyValues(null, $scheduleData['xentify_scope_id'], $scheduleData['xentify_id']);
 		$scopeEntifyKeys = array_keys($scopeData);
 		$smarty -> assign("T_XCONTENT_SCOPE_FIELDS", $scopeEntifyKeys);
-		
+
 		$scheduleData = array_merge($scheduleData, $scopeData);
-		
+
 		$smarty -> assign("T_XCONTENT_SCHEDULE", $scheduleData);
-		
+
 		$scheduleTimesData = eF_getTableData(
 			"module_xcontent_schedule_itens",
 			"schedule_id, `index`, start, end, active",
 			sprintf("schedule_id = %d", $scheduleID),
 			"`index` ASC"
 		);
-		
+
 		$smarty -> assign("T_XCONTENT_SCHEDULE_TIMES", $scheduleTimesData);
 
 		return true;
     }
-    public function appendNewContentToScheduleAction() {
+    public function appendNewContentToScheduleAction()
+    {
     	$smarty = $this->getSmartyVar();
-    	
+
     	// CREATING NEW CONTENT FORM
 		$form = new HTML_QuickForm2("xcontent_new_schedule_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
-		
+
 		$form -> addElement('hidden', 'schedule_id');
 		$form -> addElement('hidden', 'content_id');
-		
+
 		$coursesObjects =  MagesterCourse::getAllCourses(array('active' => 1));
 		$lessonCombo = array(-1 => __SELECT_ONE_LESSON);
-		
-		foreach($coursesObjects as $course) {
+
+		foreach ($coursesObjects as $course) {
 			$lessons = $course->getCourseLessons(array('return_objects' => false));
 			if (!is_array($lessonCombo[$course->course['name']]) && count($lessons) > 0) {
 				$lessonCombo[$course->course['name']] = array();
 			}
-			
-			foreach($lessons as $lesson) {
+
+			foreach ($lessons as $lesson) {
 				$lessonCombo[$course->course['name']][$course->course['id'] . "_" . $lesson['id']] = $lesson['name'];
 			}
 		}
 		$form -> addSelect('lesson_id', null, array('label'	=> __XCONTENT_LESSON, 'options' => $lessonCombo));
-		
+
 		$form -> addSubmit('submit_schedule', null, array('label'	=> __XCONTENT_SUBMIT));
-		
+
 		$form -> addCheckbox('required', null, array('label'	=> __XCONTENT_REQUIRED));
-		
+
 		$values = array(
 			'schedule_id'	=> $_GET['xschedule_id'],
 		);
-		
+
         $form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
 		// Set defaults for the form elements
-		
+
 		if ($form -> isSubmitted() && $form -> validate()) {
 			$values = $form->getValue();
-			
+
 			list($course_id, $lesson_id) = explode("_", $values['lesson_id']);
-			
+
 			is_null($values['required']) ? $values['required'] = 0 : null;
-			
+
 			$insertData = array(
-				'schedule_id'	=> $values['schedule_id'],	
-				'course_id'		=> $course_id, 
+				'schedule_id'	=> $values['schedule_id'],
+				'course_id'		=> $course_id,
 				'content_id' 	=> $values['content_id'],
 				'required'		=> $values['required']
 			);
-			
+
 			ef_insertTableData(
 				"module_xcontent_schedule_contents",
 				$insertData
 			);
-			
+
 			header("Location: " . $this->moduleBaseUrl . "&action=edit_schedule_times&xschedule_id=" . $insertData['schedule_id']);
 			exit;
 		}
-		
-		
+
 		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
 		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
 		$form -> render($renderer);
 		$smarty -> assign('T_XCONTENT_SELECT_FORM', $renderer -> toArray());
-		
+
 		return true;
     }
-    public function fetchContentTreeAction() {
+    public function fetchContentTreeAction()
+    {
     	$lesson_id = $_POST['lesson_id'];
-    	
+
     	$contentTree = new MagesterContentTree($lesson_id);
 		$contentHTML = $contentTree->toHTML(
-			false,						// $iterator = false, 
-			"xcontent_content_tree",	// $treeId = false, 
-			array(						// $options = array(), 
+			false,						// $iterator = false,
+			"xcontent_content_tree",	// $treeId = false,
+			array(						// $options = array(),
 				'hideFeedback'	=> true,
 				'onclick'		=> '',
 				'selectedNode'	=> $currentContentId,
@@ -688,13 +688,14 @@ class module_xcontent extends MagesterExtendedModule {
 			)
 			// $scormState = array()
 		);
-		
+
 		echo $contentHTML;
 		exit;
     }
-    public function saveScheduleTimeAction() {
+    public function saveScheduleTimeAction()
+    {
 		if (eF_checkParameter($_POST['xschedule_id'], 'id')) {
-			
+
 			$schedule_id = $_POST['xschedule_id'];
 			$newData = array(
 				'index'	=> $_POST['index'],
@@ -702,7 +703,7 @@ class module_xcontent extends MagesterExtendedModule {
 				'start'	=> $_POST['start'],
 				'end' 	=> $_POST['end']
 			);
-			
+
 			$date = date_create_from_format("d/m/Y", $newData['date']);
 			if ($date === FALSE) {
 				//return message
@@ -714,7 +715,7 @@ class module_xcontent extends MagesterExtendedModule {
 			}
 			$start = strtotime($date->format("Y-m-d") . " " . $newData['start']);
 			$end = strtotime($date->format("Y-m-d") . " " . $newData['end']);
-			
+
 			if (empty($_POST['start']) || $start === FALSE) {
 				//return message
 				echo json_encode(array(
@@ -731,26 +732,26 @@ class module_xcontent extends MagesterExtendedModule {
 				));
 				exit;
 			}
-			
+
 			if ($start > $end) {
 				//return message
 				echo json_encode(array(
 					'message'		=> __XCONTENT_ERROR_START_TIME_GREATER_THAN_END_TIME,
 					'message_type'	=> 'error'
 				));
-				exit;				
+				exit;
 			}
-			
+
 			if ($newData['index'] < 1) {
 				// INSERT
 				list($indexData) = eF_getTableData("module_xcontent_schedule_itens", "MAX(`index`) + 1 as newIndex", "schedule_id = " . $schedule_id);
-				
+
 				if (is_null($indexData['newIndex'])) {
 					$index = 1;
 				} else {
 					$index = $indexData['newIndex'];
 				}
-				
+
 				$insertData = array(
 					'schedule_id' 	=> $schedule_id,
 					'index'			=> $index, // CALC
@@ -758,12 +759,12 @@ class module_xcontent extends MagesterExtendedModule {
 					'end'	 		=> date("Y-m-d H:i:s", $end),
 					'active'		=> 1
 				);
-				
+
 				eF_insertTableData("module_xcontent_schedule_itens", $insertData);
 			} else {
 				// UPDATE
 				$index = $newData['index'];
-				
+
 				$insertData = array(
 					'schedule_id' 	=> $schedule_id,
 					'index'			=> $index, // CALC
@@ -771,7 +772,7 @@ class module_xcontent extends MagesterExtendedModule {
 					'end'	 		=> date("Y-m-d H:i:s", $end),
 					'active'		=> 1
 				);
-				
+
 				$updateData = array(
 					'start'			=> $insertData['start'], // CALC
 					'end'	 		=> $insertData['end']
@@ -788,7 +789,7 @@ class module_xcontent extends MagesterExtendedModule {
 					)
 				)
 			);
-			
+
 		} else {
 				//return message
 			echo json_encode(array(
@@ -799,16 +800,16 @@ class module_xcontent extends MagesterExtendedModule {
 		}
 		exit;
     }
-    public function deleteScheduleTimeAction() {
+    public function deleteScheduleTimeAction()
+    {
 		if (eF_checkParameter($_POST['xschedule_id'], 'id') && eF_checkParameter($_POST['index'], 'id')) {
-			
+
 			$schedule_id 	= $_POST['xschedule_id'];
 			$index 			= $_POST['index'];
 
 			list($insertData) = eF_getTableData("module_xcontent_schedule_itens", "*", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
-			
-			
-			$insertData['success'] = (bool)eF_deleteTableData("module_xcontent_schedule_itens", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
+
+			$insertData['success'] = (bool) eF_deleteTableData("module_xcontent_schedule_itens", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
 			echo json_encode(
 				array_merge(
 					$insertData,
@@ -828,21 +829,21 @@ class module_xcontent extends MagesterExtendedModule {
 		}
 		exit;
     }
-    public function deleteScheduleContentAction() {
+    public function deleteScheduleContentAction()
+    {
 		if (is_numeric($_POST['schedule_id']) && is_numeric($_POST['course_id']) && is_numeric($_POST['content_id'])) {
-			
+
 			$schedule_id 	= $_POST['schedule_id'];
 			$course_id 		= $_POST['course_id'];
 			$content_id 	= $_POST['content_id'];
-			
+
 			list($insertData) = eF_getTableData(
-				"module_xcontent_schedule_contents", 
-				"*", 
+				"module_xcontent_schedule_contents",
+				"*",
 				sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id)
 			);
-			
-			
-			$insertData['success'] = (bool)eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id));
+
+			$insertData['success'] = (bool) eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id));
 			$insertData['success'] = true;
 			echo json_encode(
 				array_merge(
@@ -863,42 +864,43 @@ class module_xcontent extends MagesterExtendedModule {
 		}
 		exit;
     }
-	public function viewScheduledUsersAction() {
+	public function viewScheduledUsersAction()
+	{
 		$smarty = $this -> getSmartyVar();
 		$currentUser = $this->getCurrentUser();
 		$xuserModule = $this->loadModule("xuser");
-		
+
         // LOAD SCHEDULES FOR CLASS
         if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
         	return false;
         }
         $scheduleID = $_GET['xschedule_id'];
-        
+
         $smarty -> assign("T_XCONTENT_SCHEDULE_ID", $scheduleID);
-/*        
+/*
         list($scheduleData) = eF_getTableData(
-        	"module_xcontent_schedule sch 
+        	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)
         	LEFT JOIN content ct ON (sch.content_id = ct.id)
-        	LEFT JOIN lessons l ON (ct.lessons_ID = l .id)", 
+        	LEFT JOIN lessons l ON (ct.lessons_ID = l .id)",
         	"sch.id, sch.content_id, ct.name as content, l.name as lesson, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
         	sprintf("sch.id = '%s'", $scheduleID)
         );
 */
         list($scheduleData) = eF_getTableData(
-        	"module_xcontent_schedule sch 
+        	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)",
         	"sch.id, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
         	sprintf("sch.id = '%s'", $scheduleID)
         );
-        
+
         $scheduleData['contents']	= $this->getContentsByScheduleId($scheduleData['id']);
-        
+
         if (
         	$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
        		$currentUser->moduleAccess['xcontent'] != 'view' &&
        		$currentUser->moduleAccess['xcontent'] != 'change'
-        ) {        
+        ) {
 			if (!$this->isUserInScope($currentUser, $scheduleData['xentify_scope_id'], $scheduleData['xentify_id'])) {
 				header("Location: " . $this->moduleBaseUrl);
 				exit;
@@ -908,16 +910,16 @@ class module_xcontent extends MagesterExtendedModule {
 		$scopeData = $this->getScopeEntifyValues(null, $scheduleData['xentify_scope_id'], $scheduleData['xentify_id']);
 		$scopeEntifyKeys = array_keys($scopeData);
 		$smarty -> assign("T_XCONTENT_SCOPE_FIELDS", $scopeEntifyKeys);
-		
+
 		$scheduleData = array_merge($scheduleData, $scopeData);
-		
+
 		$smarty -> assign("T_XCONTENT_SCHEDULE", $scheduleData);
-		
+
 		$scheduleTimesUsersData = eF_getTableData(
 			"module_xcontent_schedule_users sch_u
 			LEFT JOIN module_xcontent_schedule_itens it ON (it.schedule_id = sch_u.schedule_id AND it.`index` = sch_u.`index`)
 			LEFT JOIN module_xcontent_schedule_contents sch_c ON (sch_u.schedule_id = sch_c.schedule_id AND sch_u.content_id = sch_c.content_id)
-			LEFT JOIN users u ON (sch_u.user_id = u.id) 
+			LEFT JOIN users u ON (sch_u.user_id = u.id)
 			LEFT JOIN content c ON (sch_u.content_id = c.id)
 			LEFT JOIN courses co ON (sch_c.course_id = co.id)
 			LEFT JOIN lessons l ON (c.lessons_ID = l.id)",
@@ -925,24 +927,24 @@ class module_xcontent extends MagesterExtendedModule {
 			sprintf("sch_u.schedule_id = %d", $scheduleID),
 			"start ASC, course_id ASC, content_id ASC"
 		);
-		
+
 		$coursesID = eF_getTableDataFlat(
-			"module_xcontent_schedule_contents", 
+			"module_xcontent_schedule_contents",
 			"course_id",
 			sprintf("schedule_id = %d", $scheduleID)
 		);
-		
+
 		var_dump();
-		
+
 		// GET ALL USERS ON SCOPE AND EXCLUDE ALL ALREADY SCHEDULED.
 		$scopedUsers = $this->getUsersByScopeId($scheduleData['xentify_scope_id'], $scheduleData['xentify_id']);
-		
+
 		//var_dump($scopedUsers);
 		// INJECT USER IN $scheduleTimesUsersData structure
-		
-		foreach($scopedUsers as $scopedKey => $scopedItem) {
+
+		foreach ($scopedUsers as $scopedKey => $scopedItem) {
 			$found = false;
-			foreach($scheduleTimesUsersData as $scheduleTime) {
+			foreach ($scheduleTimesUsersData as $scheduleTime) {
 				if ($scopedItem['id'] == $scheduleTime['user_id']) {
 					unset($scopedUsers[$scopedKey]);
 					$found = true;
@@ -951,11 +953,11 @@ class module_xcontent extends MagesterExtendedModule {
 			if ($found) {
 				continue;
 			}
-			
+
 			if ($xuserModule->getExtendedTypeID(MagesterUserFactory :: factory($scopedItem['login'])) != 'student') {
 				continue;
 			}
-			
+
 			$userDataTemplate = array(
 				"schedule_id"	=> $scheduleID,
 			    "user_id"		=> $scopedItem['id'],
@@ -967,7 +969,7 @@ class module_xcontent extends MagesterExtendedModule {
 			    "end"			=> null,
 			    "active"		=> 1
 		    );
-		    
+
 		    // FILTER COURSES BY SCHEDULE CONTENT IDs
 			// GET USER COURSE
 			$userCourseClasseData = ef_getTableData(
@@ -975,7 +977,7 @@ class module_xcontent extends MagesterExtendedModule {
 				"c.id as course_id, c.name as course_name, uc.classe_id, cl.name as classe_name",
 				sprintf("uc.users_LOGIN = '%s' AND c.id IN (%s)", $scopedItem['login'], implode(", ", $coursesID['course_id']))
 			);
-		    
+
 		    if (count($userCourseClasseData) == 0) {
 		    	$noScheduledUser = array_merge(
 		    		$userDataTemplate,
@@ -991,7 +993,7 @@ class module_xcontent extends MagesterExtendedModule {
 					)
 				);
 			} else {
-				foreach($userCourseClasseData as $userClasseRel) {
+				foreach ($userCourseClasseData as $userClasseRel) {
 					$noScheduledUser = array_merge(
 			    		$userDataTemplate,
 			    		array(
@@ -1009,44 +1011,44 @@ class module_xcontent extends MagesterExtendedModule {
 				}
 			}
 		}
-		
+
 		// GROUP BY start
-		foreach($scheduleTimesUsersData as $scheduleTime) {
+		foreach ($scheduleTimesUsersData as $scheduleTime) {
 			if (!is_array($scheduleTimesUsers[$scheduleTime['start']])) {
 				$scheduleTimesUsers[$scheduleTime['start']] = array();
 			}
 			$scheduleTimesUsers[$scheduleTime['start']][] = $scheduleTime;
 		}
 		// GROUP BY start
-		foreach($noScheduleTimesUsersData as $scheduleTime) {
+		foreach ($noScheduleTimesUsersData as $scheduleTime) {
 			if (!is_array($noScheduleTimesUsers[$scheduleTime['start']])) {
 				$noScheduleTimesUsers[$scheduleTime['start']] = array();
 			}
 			$noScheduleTimesUsers[$scheduleTime['start']][] = $scheduleTime;
 		}
-		
+
 		$smarty -> assign("T_XCONTENT_SCHEDULE_TIME_USERS", $scheduleTimesUsers);
 		$smarty -> assign("T_XCONTENT_NOSCHEDULE_TIME_USERS", $noScheduleTimesUsers);
-		
+
 		return true;
     }
-    
-    public function registerXcontentScheduleAction() {
+
+    public function registerXcontentScheduleAction()
+    {
     	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
-    	
+
     	$xuserModule = $this->loadModule("xuser");
-    	
-    	
+
     	if ($xuserModule->getExtendedTypeID($currentUser) == 'polo') {
     	} elseif ($currentUser->getType() == 'student') {
-    	
+
     	//if (in_array($currentUser -> user['id'], array(1289, 47, 48))) {
     		 if (array_key_exists('xcontent_schedule_item', $_POST)) {
 	    		$userSchedules = $_POST['xcontent_schedule_item'];
-	    		
+
 	    		$schedulesToInsert = array();
-	    		foreach($userSchedules as $schedule_id => $schedule_index) {
+	    		foreach ($userSchedules as $schedule_id => $schedule_index) {
 	    			$schedulesToInsert[] = array(
 						'schedule_id' 	=> $schedule_id,
 						'user_id'		=> $currentUser->user['id'],
@@ -1055,29 +1057,29 @@ class module_xcontent extends MagesterExtendedModule {
 	    			eF_deleteTableData(
 	    				"module_xcontent_schedule_users",
 	    				sprintf(
-	    					"schedule_id = %d AND user_id = %d", 
-	    					$schedule_id, 
+	    					"schedule_id = %d AND user_id = %d",
+	    					$schedule_id,
 	    					$currentUser->user['id']
 	    				)
 	    			);
 	    			// INSERIR EVENTO NA AGENDA
 	    		}
 	    		eF_insertTableDataMultiple("module_xcontent_schedule_users", $schedulesToInsert);
-	    		
+
 	    		$this->setMessageVar(__XCONTENT_SUCCESS_SCHEDULE_REGISTERED, "success");
 	    	}
-    		
+
     		//$currentUser = $this->getCurrentUser();
-    		
+
     		if ($this->getCurrentLesson()) {
     			$currentLessonsID = array( $this->getCurrentLesson()->lesson['id'] );
     		} else {
     			// GET USER LESSONS
-    			$currentLessonsID = array_keys($currentUser->getLessons(false, 'student')); 
+    			$currentLessonsID = array_keys($currentUser->getLessons(false, 'student'));
     		}
-    		
+
     		$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
-    		
+
     		$result = eF_getTableData(
     				"module_xcontent_schedule sch
     				LEFT JOIN module_xentify_scopes scop ON (sch.xentify_scope_id = scop.id)
@@ -1091,31 +1093,30 @@ class module_xcontent extends MagesterExtendedModule {
     						WHERE sch_ct.course_id IN (%s)
     				)", implode(",", $userCoursesID['course_id'])
     				), "", "sch.id, sch.xentify_scope_id, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active HAVING COUNT(cont_item.index) > 0"
-    		);    		
+    		);
 
     		/*
-    		
+
     		$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
-    		
+
     		$result = eF_getTableData(
-	    		"module_xcontent_schedule schedl 
+	    		"module_xcontent_schedule schedl
 	    		LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
 	    		LEFT JOIN content cont ON schedl.content_id = cont.id
 	    		LEFT JOIN lessons ON cont.lessons_ID = lessons.id
 	    		LEFT OUTER JOIN module_xcontent_schedule_users user_schedl ON (schedl.id = user_schedl.schedule_id)
-	    		", 
-	    		"schedl.id, schedl.content_id, schedl.xentify_scope_id, schedl.xentify_id, user_schedl.index as selected_option, schedl.block_html, cont.name, lessons.name as lesson_name", 
+	    		",
+	    		"schedl.id, schedl.content_id, schedl.xentify_scope_id, schedl.xentify_id, user_schedl.index as selected_option, schedl.block_html, cont.name, lessons.name as lesson_name",
 	    		sprintf(
-	    			"CURRENT_TIMESTAMP BETWEEN schedl.start AND schedl.end 
-	    			AND schedl.active = 1 
+	    			"CURRENT_TIMESTAMP BETWEEN schedl.start AND schedl.end
+	    			AND schedl.active = 1
 	    			AND schedl.content_id IN (%s)", implode(",", $userContentID['id'])
 	    		)
 	    	);
 	    	*/
 
-
     		//var_dump($result);
-	    	foreach($result as $key => &$contentToSchedule) {
+	    	foreach ($result as $key => &$contentToSchedule) {
 	    		// CHECK IF IS THE SAME scope
 	    		if (!$this->isUserInScope($currentUser, $contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id'])) {
 	    			unset($result[$key]);
@@ -1125,27 +1126,27 @@ class module_xcontent extends MagesterExtendedModule {
 	    				unset($result[$key]);
 	    				continue;
 	    			}
-	    			
+
 	    			//var_dump($contentToSchedule);
-	    			
+
 	    			// CHECK IF USER ALREADY SCHEDULED THIS CONTENT
-	    			$contentSchedules = 
+	    			$contentSchedules =
 		    			eF_getTableData(
-		    				"module_xcontent_schedule_itens schedl", 
-		    				"schedl.*, DAYOFWEEK(schedl.start) as week_day", 
+		    				"module_xcontent_schedule_itens schedl",
+		    				"schedl.*, DAYOFWEEK(schedl.start) as week_day",
 		    				sprintf("schedl.schedule_id = %d", $contentToSchedule['id'])
 		    			);
-	    			
+
 	    			$scheduleContents = $contentToSchedule['contents']	= $this->getContentsByScheduleId(
 	    				$contentToSchedule['id'],
     					array('courses_id' => $userCoursesID['course_id'])
 	    			);
-	    			
+
 	    			//var_dump($scheduleContents);
 	    			//exit;
 	    			// GROUP BY COURSE ID, THEN LESSON ID
 	    			$courseGrouped = $lessonForGroup = $scheduleGrouped = array();
-	    			foreach($scheduleContents as $schedule) {
+	    			foreach ($scheduleContents as $schedule) {
 	    				if (!array_key_exists($schedule['course_id'], $scheduleGrouped)) {
 	    					$scheduleGrouped[$schedule['course_id']] = array();
 	    					$courseGrouped[$schedule['course_id']] = $schedule['course'];
@@ -1156,25 +1157,23 @@ class module_xcontent extends MagesterExtendedModule {
 	    				}
 	    				$scheduleGrouped[$schedule['course_id']][$schedule['lesson_id']][] = $schedule;
 	    			}
-	    			
+
 	    			$smarty -> assign("T_XCONTENT_COURSES", $courseGrouped);
 	    			$smarty -> assign("T_XCONTENT_LESSONS", $lessonForGroup);
-	    			
-	    			$contentToSchedule['grouped_content'] = $scheduleGrouped;	    			
-	    			
-	    			
-		    			
+
+	    			$contentToSchedule['grouped_content'] = $scheduleGrouped;
+
 		    		// GROUP BY WEEK DAY
-		    		$schedules = array();  
-		    		foreach($contentSchedules as $scheduleItem) {
+		    		$schedules = array();
+		    		foreach ($contentSchedules as $scheduleItem) {
 		    			if (!is_array($schedules[$scheduleItem['week_day']])) {
 		    				$schedules[$scheduleItem['week_day']] = array();
 		    			}
 		    			$schedules[$scheduleItem['week_day']][] = $scheduleItem;
-		    		} 
-		    		
+		    		}
+
 		    		$contentToSchedule['schedules'] = $schedules;
-		    	
+
 	    		}
 	    	}
 	    	/*
@@ -1183,8 +1182,7 @@ class module_xcontent extends MagesterExtendedModule {
 	    	echo '</pre>';
 	    	exit;
 	    	*/
-	    	
-	    	
+
 	    	// CHECK FOR POSTED VARS
 
 	    	//if (count($result))
@@ -1193,23 +1191,21 @@ class module_xcontent extends MagesterExtendedModule {
 	    		- CHECAR SE EXISTE ALGUM AGENDAMENTO PENDENTE
 	    		- SE SIM, VERIFICAR SE É NO MESMO ( CURSO, DISCIPLINA E TURMA) DO ALUNO
 	    		- SE SIM MOSTRAR AGENDA COM O PERIODO SELECIONADO, COM AS OPÇÕES PARA MARCAR.
-	    		
-	    	MOSTRAR AGENDA BASEADO EM: 
+
+	    	MOSTRAR AGENDA BASEADO EM:
 	    		- Polo do aluno
-	    	*/	
-	    	
-	    	
+	    	*/
+
 	    	$userPolo = $currentUser->getUserPolo(array('return_objects'	=> false));
 
 	    	$smarty -> assign("T_XCONTENT_SCHEDULE_ITEM", __XCONTENT_SCHEDULE_REGISTER);
 	    	$smarty -> assign("T_XCONTENT_SCHEDULE_CONTENTS", $result);
 	    	$smarty -> assign("T_XCONTENT_USERPOLO", $userPolo);
-	    	
-	    	
+
 	    	if (count($result) == 0) {
 	    		return false;
 	    	}
-	    	
+
 	    	$week_days = array(
 	    		1	=> 'Domingo',
 	    		2	=> 'Segunda-feira',
@@ -1221,10 +1217,10 @@ class module_xcontent extends MagesterExtendedModule {
 	    	);
 
 	    	$smarty -> assign("T_XCONTENT_WEEKNAMES", $week_days);
-	    	
+
 	    	//$this->injectJS("jquery/jquery.weekcalendar");
 	    	//$this->injectCSS("jquery/jquery.weekcalendar");
-	    	
+
 	    	return true;
     	//} else {
 //    		return false;
@@ -1233,40 +1229,40 @@ class module_xcontent extends MagesterExtendedModule {
     	}
     	return false;
     }
-    public function selectContentScheduleTimeAction() {
+    public function selectContentScheduleTimeAction()
+    {
     	$smarty = $this->getSmartyVar();
-    	
-    	
+
     	if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
     		header("Location : " . $this->moduleBaseUrl . "&action=register_xcontent_schedule");
     		exit;
     	}
     	$schedule_id = $_GET['xschedule_id'];
-    	
+
     	if (!eF_checkParameter($_GET['xcontent_id'], 'id')) {
     		header("Location : " . $this->moduleBaseUrl . "&action=register_xcontent_schedule");
     		exit;
     	}
     	$content_id	= $_GET['xcontent_id'];
-    	
+
     	if (count($_POST) > 0) {
     		// FORM IS SUBMITTED
     		list($totalData) = eF_countTableData(
-    			"module_xcontent_schedule_users", 
+    			"module_xcontent_schedule_users",
     			"schedule_id as total",
     			sprintf(
     				"schedule_id = %d AND content_id = %d AND user_id = %s",
     				$schedule_id, $content_id, $this->getCurrentUser()->user['id']
     			)
 	   		);
-	   		
+
 	   		if ($totalData['count'] > 0) {
 	   			$updateData = array(
 		    		'`index`'	=> $_POST['xcontent_schedule_item']
-	   			);    		
+	   			);
 	   			$result = eF_updateTableData(
-	   				"module_xcontent_schedule_users", 
-	   				$updateData, 
+	   				"module_xcontent_schedule_users",
+	   				$updateData,
 	   				sprintf(
     					"schedule_id = %d AND content_id = %d AND user_id = %s",
     					$schedule_id, $content_id, $this->getCurrentUser()->user['id']
@@ -1282,7 +1278,7 @@ class module_xcontent extends MagesterExtendedModule {
 	    		);
 	    		$result = eF_insertTableData("module_xcontent_schedule_users", $insertData);
 	   		}
-	   		
+
 	   		if ($result) {
 	   			header("Location: " . $this->moduleBaseUrl . "&action=register_xcontent_schedule" .
 	   				"&message=" . urlencode(__XCONTENT_SUCCESS_SCHEDULE_REGISTERED) .
@@ -1293,28 +1289,27 @@ class module_xcontent extends MagesterExtendedModule {
 	   			$this->setMessageVar(__XCONTENT_ERROR_SCHEDULE_REGISTERED, "failure");
 	   		}
     	}
-    	
+
    		list($selectedOption) = eF_getTableData(
-   			"module_xcontent_schedule_users", 
+   			"module_xcontent_schedule_users",
    			"`index`",
    			sprintf(
    				"schedule_id = %d AND content_id = %d AND user_id = %s",
    				$schedule_id, $content_id, $this->getCurrentUser()->user['id']
   			)
   		);
-    	
+
     	$smarty -> assign("T_XCONTENT_SCHEDULE_ID", $schedule_id);
     	$smarty -> assign("T_XCONTENT_CONTENT_ID", $content_id);
     	$smarty -> assign("T_XCONTENT_SELECTED_OPTION", $selectedOption['index']);
-    	
-    	
+
 		list($contentData) = $this->getContentsByScheduleId(
 			$schedule_id,
 			array('contents_id' => array($content_id))
 		);
-		
+
 		///var_dump($contentData);
-    	
+
     	$smarty -> assign("T_XCONTENT_CONTENT", $contentData);
     	/*
     	$contentToSchedule['contents']	= $this->getContentsByScheduleId(
@@ -1322,24 +1317,23 @@ class module_xcontent extends MagesterExtendedModule {
     		array('courses_id' => $userCoursesID['course_id'])
     	);
     	*/
-    	
-    	$contentSchedules = 
+
+    	$contentSchedules =
     		eF_getTableData(
-    			"module_xcontent_schedule_itens schedl", 
-    			"schedl.*, DAYOFWEEK(schedl.start) as week_day", 
+    			"module_xcontent_schedule_itens schedl",
+    			"schedl.*, DAYOFWEEK(schedl.start) as week_day",
     			sprintf("schedl.schedule_id = %d", $schedule_id)
     		);
-    	
-    		
+
     	// GROUP BY WEEK DAY
-    	$schedules = array();  
-    	foreach($contentSchedules as $scheduleItem) {
+    	$schedules = array();
+    	foreach ($contentSchedules as $scheduleItem) {
     		if (!is_array($schedules[$scheduleItem['week_day']])) {
    				$schedules[$scheduleItem['week_day']] = array();
    			}
    			$schedules[$scheduleItem['week_day']][] = $scheduleItem;
-   		} 
-    	
+   		}
+
    		$smarty -> assign("T_XCONTENT_SCHEDULE", $schedules);
     	$week_days = array(
     		1	=> 'Domingo',
@@ -1353,82 +1347,85 @@ class module_xcontent extends MagesterExtendedModule {
 
     	$smarty -> assign("T_XCONTENT_WEEKNAMES", $week_days);
     }
-    public function waitingXcontentScheduleLiberationAction() {
+    public function waitingXcontentScheduleLiberationAction()
+    {
     	return true;
     }
-    public function userContentScheduledLiberationAction() {
+    public function userContentScheduledLiberationAction()
+    {
     	$fields = $_POST;
-    	
+
     	$userContent = eF_getTableData(
-			"module_xcontent_schedule_users", 
-			"*", 
-			sprintf("schedule_id = %d AND user_id = %d AND content_id = %d", $fields['schedule_id'], $fields['user_id'], $fields['content_id'])
-		);
-    	
-    	if (count($userContent)  == 1) {
-    		eF_updateTableData(
-				"module_xcontent_schedule_users", 
-				array('liberation' => $fields['liberation']), 
-				sprintf("schedule_id = %d AND user_id = %d", $fields['schedule_id'], $fields['user_id'])
-			);
-			
-	    	return array(
-	    		"message"		=> "Usuário liberado com sucesso", 
-	    		"message_type"	=> "success",
-	    		"data"			=> $userContent
-	    	);
-    	}
-    	
-    	return array(
-    		"message"		=> "Ocorreu um erro ao tentar liberar o usuário. Por favor tente novamente.", 
-    		"message_type"	=> "failure",
-    		"data"			=> $userContent
-    	);
-    }
-    public function userContentNotScheduledLiberationAction() {
-    	$fields = $_POST;
-    	
-    	$userContent = eF_getTableData(
-			"module_xcontent_schedule_users", 
+			"module_xcontent_schedule_users",
 			"*",
 			sprintf("schedule_id = %d AND user_id = %d AND content_id = %d", $fields['schedule_id'], $fields['user_id'], $fields['content_id'])
 		);
-    	
+
     	if (count($userContent)  == 1) {
     		eF_updateTableData(
-				"module_xcontent_schedule_users", 
-				array('liberation' => $fields['liberation']), 
+				"module_xcontent_schedule_users",
+				array('liberation' => $fields['liberation']),
 				sprintf("schedule_id = %d AND user_id = %d", $fields['schedule_id'], $fields['user_id'])
 			);
-			
+
 	    	return array(
-	    		"message"		=> "Usuário liberado com sucesso", 
+	    		"message"		=> "Usuário liberado com sucesso",
 	    		"message_type"	=> "success",
 	    		"data"			=> $userContent
 	    	);
     	}
-    	
+
     	return array(
-    		"message"		=> "Ocorreu um erro ao tentar liberar o usuário. Por favor tente novamente.", 
+    		"message"		=> "Ocorreu um erro ao tentar liberar o usuário. Por favor tente novamente.",
     		"message_type"	=> "failure",
     		"data"			=> $userContent
     	);
     }
-    
-    public function authorizeXcontentScheduleAction() {
+    public function userContentNotScheduledLiberationAction()
+    {
+    	$fields = $_POST;
+
+    	$userContent = eF_getTableData(
+			"module_xcontent_schedule_users",
+			"*",
+			sprintf("schedule_id = %d AND user_id = %d AND content_id = %d", $fields['schedule_id'], $fields['user_id'], $fields['content_id'])
+		);
+
+    	if (count($userContent)  == 1) {
+    		eF_updateTableData(
+				"module_xcontent_schedule_users",
+				array('liberation' => $fields['liberation']),
+				sprintf("schedule_id = %d AND user_id = %d", $fields['schedule_id'], $fields['user_id'])
+			);
+
+	    	return array(
+	    		"message"		=> "Usuário liberado com sucesso",
+	    		"message_type"	=> "success",
+	    		"data"			=> $userContent
+	    	);
+    	}
+
+    	return array(
+    		"message"		=> "Ocorreu um erro ao tentar liberar o usuário. Por favor tente novamente.",
+    		"message_type"	=> "failure",
+    		"data"			=> $userContent
+    	);
+    }
+
+    public function authorizeXcontentScheduleAction()
+    {
     	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
-    	
+
     	$xuserModule = $this->loadModule("xuser");
-	
+
     	if (
     		$xuserModule->getExtendedTypeID($currentUser) == 'polo' ||
   			$currentUser->getType() == 'administrator'
     	) {
     		if ($xuserModule->getExtendedTypeID($currentUser) == 'polo') {
     			$userIsAdmin = false;
-    			
-    			
+
 				if ($this->getCurrentLesson()) {
 	    			$currentLessonsID = array( $this->getCurrentLesson()->lesson['id'] );
 	    		} else {
@@ -1443,19 +1440,19 @@ class module_xcontent extends MagesterExtendedModule {
     		$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
     		/*
     		$result = eF_getTableData(
-	    		"module_xcontent_schedule schedl 
+	    		"module_xcontent_schedule schedl
 	    		LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
-	    		", 
-	    		"schedl.id, schedl.xentify_scope_id, schedl.xentify_id, schedl.block_html, ", 
+	    		",
+	    		"schedl.id, schedl.xentify_scope_id, schedl.xentify_id, schedl.block_html, ",
 	    		sprintf(
-	    			"CURRENT_TIMESTAMP BETWEEN schedl.start AND schedl.end 
-	    			AND schedl.active = 1 
+	    			"CURRENT_TIMESTAMP BETWEEN schedl.start AND schedl.end
+	    			AND schedl.active = 1
 	    			AND schedl.content_id IN (%s)", implode(",", $userContentID['id'])
 	    		)
 	    	);
 	    	*/
     		$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
-    		
+
     		$result = eF_getTableData(
     				"module_xcontent_schedule sch
     				LEFT JOIN module_xentify_scopes scop ON (sch.xentify_scope_id = scop.id)
@@ -1469,15 +1466,15 @@ class module_xcontent extends MagesterExtendedModule {
     						WHERE sch_ct.course_id IN (%s)
     					)", implode(",", $userCoursesID['course_id'])
     				)
-    		);    		
-    		
+    		);
+
     		$AllCourses = MagesterCourse::getAllCourses(array('return_objects' => false));
     		$AllLessons = MagesterLesson::getLessons(true);
     		$AllClasses = MagesterCourseClass::getAllClasses(array('return_objects' => false));
     		$AllUsersClassesDB = eF_getTableData("users_to_courses", "users_LOGIN, classe_id", "classe_id <> 0");
 	   		$paidUsers = array();
-    		
-    		foreach($AllUsersClassesDB as $userClass) {
+
+    		foreach ($AllUsersClassesDB as $userClass) {
     			if (array_key_exists($userClass['users_LOGIN'], $AllUsersClasses)) {
     				$AllUsersClasses[$userClass['users_LOGIN']] = array();
     			}
@@ -1486,8 +1483,7 @@ class module_xcontent extends MagesterExtendedModule {
     		$allPolos = array();
     		if (!$userIsAdmin) {
     			$userPolo = $currentUser->getUserPolo(array('return_objects'	=> false));
-    			
-    			
+
     			$allPolos[$userPolo['id']] = $userPolo;
     		} else {
     			$allPolosDB = eF_getTableData(
@@ -1495,55 +1491,52 @@ class module_xcontent extends MagesterExtendedModule {
     					"polo.*",
     					"polo.active = 1"
     			);
-    			
-    			foreach($allPolosDB as $userPolo) {
+
+    			foreach ($allPolosDB as $userPolo) {
     				$allPolos[$userPolo['id']] = $userPolo;
     			}
     		}
-    		foreach($allPolos as $userPolo) {
+    		foreach ($allPolos as $userPolo) {
     			$AllPoloData = array();
-		    	foreach($result as $key => $contentToSchedule) {
+		    	foreach ($result as $key => $contentToSchedule) {
 		    		// CHECK IF IS THE SAME scope
 		    		if (!$userIsAdmin) {
 		    	    	$status = $this->getUserScopeStatus($currentUser, $contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id']);
-	    			
+
 	    				if (!$status['same_polo']) {
 		    				//unset($result[$key]);
 		    				continue;
 	    				}
 		    		}
-		    		
+
 	    			$data = $this->getUserScopeData($contentToSchedule['xentify_scope_id'], $contentToSchedule['xentify_id']);
-	    			
+
 	    			if ($data['polo_id'] != $userPolo['id']) {
 	    				continue;
 	    			}
-	    			
+
 	    			// CHECK IF USER ALREADY SCHEDULED THIS CONTENT
-	    			
+
 	    			$contentClasse = $AllClasses[$data['classe_id']];
 					$contentToSchedule['classe_name'] = $contentClasse['name'];
-					
+
 					$courseID = $contentClasse['courses_ID'];
 	    			$contentCourse = $AllCourses[$courseID];
-	    			
+
 	    			//var_dump($AllCourses[$courseID]);
 	    			$contentToSchedule['course_name'] = $contentCourse['name'];
-	    			
+
 	    			// CARREGAR USUARIOS AGENDADOS FILTER BY POLO.
-	    			
+
 	    			//if (!$userIsAdmin) {
 	    				$lessonsUsers = $AllLessons[$contentToSchedule['lesson_id']]->getLessonUsers(array('return_objects' => false, 'condition' => sprintf("u.id IN (SELECT id FROM module_xuser WHERE polo_id = %s)", $userPolo['id'])));
-	    				
+
 	    				if (!array_key_exists($courseID, $paidUsers)) {
 	    					$paidUserCourse = eF_getTableDataFlat("module_xenrollment enr LEFT JOIN users u ON (enr.users_id = u.id)", "u.login", sprintf("courses_id = %d AND status_id = 4", $courseID));
-	    					
-	    					$paidUsers[$courseID] = $paidUserCourse['login']; 
+
+	    					$paidUsers[$courseID] = $paidUserCourse['login'];
 	    				}
-	    				
-	    				
-	    				
-	    				
+
 	    				$userContentSchedules =	eF_getTableData(
 	    					"module_xcontent_schedule_users sch_u
 	    					LEFT JOIN module_xcontent_schedule_itens sch_item ON (sch_u.schedule_id = sch_item.schedule_id AND sch_u.index = sch_item.index)
@@ -1564,10 +1557,10 @@ class module_xcontent extends MagesterExtendedModule {
 	    				);
 	    			}
 */
-	    			
+
 //		    		var_dump($paidUsers[$courseID]);
-		    		
-		    		foreach($userContentSchedules as &$scheduleItem) {
+
+		    		foreach ($userContentSchedules as &$scheduleItem) {
 		    			if (in_array($scheduleItem['login'], $paidUsers[$courseID])) {
 			    			$scheduleItem['fullname'] = formatLogin(null, $scheduleItem);
 			    			$scheduleItem['scheduled']	= true;
@@ -1579,14 +1572,14 @@ class module_xcontent extends MagesterExtendedModule {
 		    			}
 		    			unset($lessonsUsers[$scheduleItem['login']]);
 		    		}
-		    		foreach($lessonsUsers as $nonScheduledUser) {
+		    		foreach ($lessonsUsers as $nonScheduledUser) {
 		    			//var_dump($contentToSchedule);
 		    			if (in_array($nonScheduledUser['login'], $paidUsers[$courseID])) {
 							if (in_array($contentClasse['id'], $AllUsersClasses[$nonScheduledUser['login']])) {
 								if ($nonScheduledUser['user_type'] != 'student' || $nonScheduledUser['user_types_ID'] == '11') {
 				    				continue;
 				    			}
-				    			
+
 				    			$scheduleToAppend = array(
 				    			    "schedule_id" 	=> $contentToSchedule['id'],
 				    				"user_id"		=> $nonScheduledUser['id'],
@@ -1599,7 +1592,7 @@ class module_xcontent extends MagesterExtendedModule {
 				    				"scheduled"		=> false
 				    			);
 				    			$scheduleToAppend['fullname'] = formatLogin(null, $scheduleToAppend);
-				    			
+
 				    			$userContentSchedules[] = $scheduleToAppend;
 			    			}
 		    			} else {
@@ -1612,27 +1605,25 @@ class module_xcontent extends MagesterExtendedModule {
 		    		$contentToSchedule['users'] = $userContentSchedules;
 		    		$AllPoloData[] = $contentToSchedule;
 		    	}
-		    	$allData[$userPolo['id']] = $AllPoloData; 
+		    	$allData[$userPolo['id']] = $AllPoloData;
 	    	}
-	    	
-	    	
+
 	    	$smarty -> assign("T_XCONTENT_SCHEDULE_ITEM", "Agendamento da Prova Presencial");
 	    	$smarty -> assign("T_XCONTENT_SCHEDULE_CONTENTS", $allData);
 	    	if (!$userIsAdmin) {
 	    		$smarty -> assign("T_XCONTENT_USERPOLO", $userPolo);
-	    		
+
 	    	} else {
 	    		// LOAD POLO LIST
-	    		
+
 	    	}
 	    	$smarty -> assign("T_XCONTENT_POLOS", $allPolos);
 	    	$smarty -> assign("T_XCONTENT_IS_ADMIN", $userIsAdmin);
-	    	
-	    	
+
 	    	if (count($result) == 0) {
 	    		return false;
 	    	}
-	    	
+
 	    	$week_days = array(
 	    		1	=> 'Domingo',
 	    		2	=> 'Segunda-feira',
@@ -1644,7 +1635,7 @@ class module_xcontent extends MagesterExtendedModule {
 	    	);
 
 	    	$smarty -> assign("T_XCONTENT_WEEKNAMES", $week_days);
-	    	
+
 	    	return true;
     	} elseif ($currentUser->getType() == 'student') {
     	} elseif ($currentUser->getType() == 'professor') {
@@ -1652,7 +1643,8 @@ class module_xcontent extends MagesterExtendedModule {
     	return false;
     }
 
-	public function getUserTestScoreAction($token = null, $constraints = null) {
+	public function getUserTestScoreAction($token = null, $constraints = null)
+	{
 		if (isset($constraints['login'])) {
 			$currentUser	= MagesterUserFactory :: factory($constraints['login']);
 		} else {
@@ -1660,18 +1652,18 @@ class module_xcontent extends MagesterExtendedModule {
 		}
 		// OPEN TEST RESULT
 		$testContentID = $constraints['unit_id'];
-		
+
 		try {
 			$userTest = new MagesterTest($testContentID);
-			
+
 			$recentUserTests = eF_getTableData(
 					"completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login",
 					"completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN",
 					"completed_tests.status != 'deleted' and completed_tests.users_LOGIN = '" . $currentUser->user['login'] . "' and completed_tests.tests_id = " . $userTest->test['id'], "timestamp DESC");
-		
+
 			if (count($recentUserTests) > 0) {
 				$userScore = is_null($recentUserTests[0]['score']) ? 0 : $recentUserTests[0]['score'];
-				
+
 				/** @todo Move this code to your own class */
 				/*
 				 Book	%			Nível					skill_id
@@ -1699,10 +1691,10 @@ class module_xcontent extends MagesterExtendedModule {
 				if ($userScore > 55) {
 					$skills[] = 4;
 				}
-				
+
 				$skillToInsert = array();
-				
-				foreach($skills as $skill) {
+
+				foreach ($skills as $skill) {
 					$skillToInsert[] = array(
 						'user_id'	=> $currentUser->user['id'],
 						'skill_id'	=> $skill
@@ -1713,7 +1705,7 @@ class module_xcontent extends MagesterExtendedModule {
 					sprintf("user_id = %d AND skill_id IN (1,2,3,4)", $currentUser->user['id'])
 				);
 				ef_insertTableDataMultiple("module_xskill_users", $skillToInsert);
-				
+
 				// APPEND SKILLS TO USER, BASED ON SCORE
 				if ($userScore <= 40) {
 					$level = 1;
@@ -1725,8 +1717,8 @@ class module_xcontent extends MagesterExtendedModule {
 					$level = 4;
 				} else {
 					$level = 5;
-				}				
-				
+				}
+
 				return array(
 					'score'		=> $userScore,
 					'level'		=> $level,
@@ -1737,14 +1729,14 @@ class module_xcontent extends MagesterExtendedModule {
 			var_dump($e);
 		}
 		return array();
-	}    
+	}
 
 	public function copyScheduledContentsAction()
 	{
 		$smarty = $this -> getSmartyVar();
 		$currentUser = $this->getCurrentUser();
 		$xuserModule = $this->loadModule("xuser");
-		
+
 		if (
 				$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
 				$currentUser->moduleAccess['xcontent'] != 'view' &&
@@ -1753,20 +1745,20 @@ class module_xcontent extends MagesterExtendedModule {
 			header("Location: " . $this->moduleBaseUrl);
 			exit;
 		}
-		
+
 		$fromID = $_POST['orig'];
 		$toID = $_POST['dest'];
-		
+
 		$contentToInsert = eF_getTableData(
 			"module_xcontent_schedule_contents",
 			sprintf("%d as schedule_id, course_id, content_id, required", $toID),
 			sprintf("schedule_id = %d", $fromID)
 		);
-		
+
 		try {
 			eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d", $toID));
 			eF_insertTableDataMultiple("module_xcontent_schedule_contents", $contentToInsert);
-			
+
 			$response = array(
 				'message' => __XCONTENT_SCHEDULE_COPIED_SUCESSFULLY,
 				'message_type' => 'success'
@@ -1780,12 +1772,12 @@ class module_xcontent extends MagesterExtendedModule {
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	/* DATA MODEL FUNCTIONS */
     public function getContentsByScheduleId($scheduleID, $filter = array())
     {
     	$userID = $this->getCurrentUser()->user['id'];
-    	
+
     	$where = array(sprintf("sch.id = '%s'", $scheduleID));
     	if (array_key_exists('course_id', $filter)) {
     		$where[] = 'course_id = ' . $filter['course_id'];
@@ -1796,7 +1788,7 @@ class module_xcontent extends MagesterExtendedModule {
     	if (array_key_exists('contents_id', $filter)) {
     		$where[] = sprintf('sch_c.content_id IN (%s)', implode(",", $filter['contents_id']));
     	}
-   	
+
         $contentData = eF_getTableData(
         	"module_xcontent_schedule sch
         	JOIN module_xcontent_schedule_contents sch_c ON  (sch.id = sch_c.schedule_id)
@@ -1804,41 +1796,43 @@ class module_xcontent extends MagesterExtendedModule {
         	LEFT JOIN lessons l ON (ct.lessons_ID = l.id)
         	LEFT JOIN courses c ON (sch_c.course_id = c.id)
         	LEFT OUTER JOIN module_xcontent_schedule_users sch_u ON (
-        		sch_c.schedule_id = sch_u.schedule_id AND 
-        		sch_u.user_id = " . $userID . " AND 
+        		sch_c.schedule_id = sch_u.schedule_id AND
+        		sch_u.user_id = " . $userID . " AND
         		sch_c.content_id = sch_u.content_id
         	)
 			LEFT OUTER JOIN module_xcontent_schedule_itens sch_i ON (
-        		sch_u.schedule_id = sch_i.schedule_id AND 
+        		sch_u.schedule_id = sch_i.schedule_id AND
         		sch_u.`index` = sch_i.`index`
         	)",
         	"sch.id as schedule_id, sch_c.course_id, c.name as course, ct.lessons_ID as lesson_id, l.name as lesson, sch_c.content_id, ct.name as content, sch_c.required, sch_u.`index` as option_index, sch_i.start as option_start, sch_i.end as option_end",
         	implode(" AND ", $where),
         	"required DESC"
         );
+
         return $contentData;
     }
-	public function getSchedules($scopeID = null, $grouped = false) {
+	public function getSchedules($scopeID = null, $grouped = false)
+	{
 		$where = array(
 			"schedl.active = 1"
 		);
-		
+
 		if (is_numeric($scopeID)) {
 			$scopeID = array($scopeID);
 		}
-		
+
 		if (is_array($scopeID)) {
 			$where[] = sprintf("schedl.xentify_scope_id IN (%s)", implode(", ", $scopeID));
 		}
 /*
     	$scheduleData = eF_getTableData(
-	    	"module_xcontent_schedule schedl 
+	    	"module_xcontent_schedule schedl
 	    	LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
 	    	LEFT JOIN content cont ON schedl.content_id = cont.id
-	    	LEFT JOIN lessons ON cont.lessons_ID = lessons.id", 
-	    	"schedl.id, schedl.content_id, schedl.xentify_scope_id, schedl.xentify_id, 
+	    	LEFT JOIN lessons ON cont.lessons_ID = lessons.id",
+	    	"schedl.id, schedl.content_id, schedl.xentify_scope_id, schedl.xentify_id,
 	    	schedl.start, schedl.block_html, cont.name, lessons.name as lesson_name,
-	    	(SELECT MIN(module_xcontent_schedule_itens.start) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as start, 
+	    	(SELECT MIN(module_xcontent_schedule_itens.start) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as start,
 	    	(SELECT MAX(module_xcontent_schedule_itens.end) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as end",
     		implode(" AND ", $where),
     		"schedl.start DESC"
@@ -1875,10 +1869,10 @@ class module_xcontent extends MagesterExtendedModule {
    			"schedl.start DESC",
    			"schedl.id, schedl.xentify_scope_id, schedl.xentify_id, schedl.start, schedl.block_html"
     	);
-    	
+
 	    $result = array();
 	    if ($grouped) {
-		    foreach($scheduleData as $item) {
+		    foreach ($scheduleData as $item) {
 		    	if (!is_array($result[$item['xentify_scope_id']])) {
 		    		$result[$item['xentify_scope_id']] = array();
 		    	}
@@ -1890,19 +1884,20 @@ class module_xcontent extends MagesterExtendedModule {
 
 	    return $result;
 	}
-	
+
 	/** @todo Move this functions  to your own module "xentify" */
-	private function makeScopeFormOptions($scope_id, &$form) {
+	private function makeScopeFormOptions($scope_id, &$form)
+	{
 		// RETURN FIELD NAMES ??
 		$scopeFields = array();
-		switch($scope_id) {
+		switch ($scope_id) {
 			case 2 : {
 				$scopeFields = array('polo_id');
-				
+
 				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
-				foreach($polosData as $polo) {
-					$poloCombo[$polo['id']] = $polo['nome'];	
+				foreach ($polosData as $polo) {
+					$poloCombo[$polo['id']] = $polo['nome'];
 				}
 				$form
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
@@ -1910,13 +1905,13 @@ class module_xcontent extends MagesterExtendedModule {
 				/*
 				$classeData = eF_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
-					"cl.id, c.name as course_name, cl.name as classe_name", 
+					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
 					"c.name ASC, cl.name ASC, cl.id"
 				);
 				$classeCombo = array(-1 => __SELECT_ONE_OPTION);
-				
-				foreach($classeData as $classe) {
+
+				foreach ($classeData as $classe) {
 					if (!is_array($classeCombo[$classe['course_name']])) {
 						$classeCombo[$classe['course_name']] = array();
 					}
@@ -1927,28 +1922,28 @@ class module_xcontent extends MagesterExtendedModule {
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
 				*/
 				break;
-			} 
+			}
 			case 10 : {
 				$scopeFields = array('polo_id', 'classe_id');
-				
+
 				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
-				foreach($polosData as $polo) {
-					$poloCombo[$polo['id']] = $polo['nome'];	
+				foreach ($polosData as $polo) {
+					$poloCombo[$polo['id']] = $polo['nome'];
 				}
 				$form
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
-				
+
 				$classeData = eF_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
-					"cl.id, c.name as course_name, cl.name as classe_name", 
+					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
 					"c.name ASC, cl.name ASC, cl.id"
 				);
 				$classeCombo = array(-1 => __SELECT_ONE_OPTION);
-				
-				foreach($classeData as $classe) {
+
+				foreach ($classeData as $classe) {
 					if (!is_array($classeCombo[$classe['course_name']])) {
 						$classeCombo[$classe['course_name']] = array();
 					}
@@ -1957,15 +1952,16 @@ class module_xcontent extends MagesterExtendedModule {
 				$form
 					->addSelect('classe_id', null, array('label'	=> __XCONTENT_CLASSE, 'options' => $classeCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
-				
+
 				break;
-			} 
+			}
 		}
 		return $scopeFields;
-	}	
-	
+	}
+
 	/* DATA MODEL FUNCTIONS */
-	public function getScopes($constraints = null) {
+	public function getScopes($constraints = null)
+	{
 		if (is_null($constraints)) {
 			$constraints = array('active' => true);
 		}
@@ -1973,19 +1969,20 @@ class module_xcontent extends MagesterExtendedModule {
 		if (array_key_exists('active', $constraints)) {
 			$where[] = 'active = ' . ($constraints['active'] ? '1' : 0);
 		}
-		
+
 		$scopeDBData = eF_getTableData("module_xentify_scopes", "*", implode(" AND ", $where));
-		
-		foreach($scopeDBData as &$scope) {
+
+		foreach ($scopeDBData as &$scope) {
 			$scope['fields'] = $this->getScopeFields($scope['id']);
 		}
-		
+
 		return $scopeDBData;
 	}
-    public function isUserInScope($user = null, $scope_type, $scope_id) {
+    public function isUserInScope($user = null, $scope_type, $scope_id)
+    {
     	$status = $this->getUserScopeStatus($user, $scope_type, $scope_id);
-    	
-    	switch($scope_type) {
+
+    	switch ($scope_type) {
     		case 0 : { // SAME POLO AND SAME CLASS
     			return true;
     		}
@@ -2008,19 +2005,20 @@ class module_xcontent extends MagesterExtendedModule {
     		}
     	}
     }
-    public function getUserScopeStatus($user = null, $scope_type, $scope_id) {
+    public function getUserScopeStatus($user = null, $scope_type, $scope_id)
+    {
     	if (is_null($user)) {
     		$user = $this->getCurrentUser();
     	}
     	$status = array(
-    		'same_polo'		=> false,	
+    		'same_polo'		=> false,
     		'same_classe'	=> false,
     		'no_overdue'	=> false,
     		'overdue'		=> false
 	   	);
 	   	$data = $this->getUserScopeData($scope_type, $scope_id);
-	   	
-    	switch($scope_type) {
+
+    	switch ($scope_type) {
     		case 2 : { // SAME POLO
     			$status['same_polo'] = $this->checkUserScopeSamePolo($user, $data['polo_id']);
     			break;
@@ -2030,7 +2028,7 @@ class module_xcontent extends MagesterExtendedModule {
     			$status['same_classe'] = $this->checkUserScopeSameClasse($user, $data['classe_id']);
     			break;
     		}
-    		case 11 : 
+    		case 11 :
     		case 12 : { // OVERDUE INVOICES USER
     			$status['no_overdue'] = !($status['overdue'] = $this->checkUserInDebt($user));
     			break;
@@ -2041,7 +2039,8 @@ class module_xcontent extends MagesterExtendedModule {
     	}
     	return $status;
     }
-    public function getUserScopeData($scope_type, $scope_id) {
+    public function getUserScopeData($scope_type, $scope_id)
+    {
     	if (is_null($user)) {
     		$user = $this->getCurrentUser();
     	}
@@ -2049,8 +2048,8 @@ class module_xcontent extends MagesterExtendedModule {
 			'polo_id'			=> null,
    			'classe_id'			=> null
 		);
-    	
-    	switch($scope_type) {
+
+    	switch ($scope_type) {
     		case 2 : { // SAME POLO AND SAME CLASS
     			list($data['polo_id']) = explode(';', $scope_id);
     			break;
@@ -2062,9 +2061,10 @@ class module_xcontent extends MagesterExtendedModule {
     	}
     	return $data;
     }
-    public function getScopeFields($scopeID = null) {
+    public function getScopeFields($scopeID = null)
+    {
     /**
-     * @todo BUscar nomes dos campos de escopo do banco de dados 
+     * @todo BUscar nomes dos campos de escopo do banco de dados
      */
 		$allData  = array(
 			2 => array(
@@ -2077,44 +2077,46 @@ class module_xcontent extends MagesterExtendedModule {
 				array(
 					'name' 	=> 'polo_name',
 					'label'	=> __XCONTENT_POLO
-				), 
+				),
 				array(
 					'name' 	=> 'classe_name',
 					'label'	=> __XCONTENT_CLASSE
 				)
 			),
-			
+
 	   	);
-	   	
+
 	   	if (array_key_exists($scopeID, $allData)) {
 	   		return $allData[$scopeID];
 	   	}
-	   	
+
 	   	$result = array();
-   		foreach($allData as $scope) {
+   		foreach ($allData as $scope) {
    			$result = array_merge_recursive($result, $scope);
    		}
    		return $result;
     }
-    public function getScopeEntifyNames($user = null, $scope_type, $scope_id) {
+    public function getScopeEntifyNames($user = null, $scope_type, $scope_id)
+    {
     	$scopeData = $this->getUserScopeData($scope_type, $scope_id);
-    	
+
     	$data = array();
-    	
+
     	if (eF_checkParameter($scopeData['polo_id'], 'id')) {
     		list($data['polo']) = eF_getTableData("module_polos", "*", 'id = ' . $scopeData['polo_id']);
     	}
     	if (eF_checkParameter($scopeData['classe_id'], 'id')) {
     		list($data['classe']) = eF_getTableData("classes", "*", 'id = ' . $scopeData['classe_id']);
     	}
-    	
+
     	return $data;
     }
-	public function getScopeEntifyValues($user = null, $scope_type, $scope_id) {
+	public function getScopeEntifyValues($user = null, $scope_type, $scope_id)
+	{
     	$scopeData = $this->getScopeEntifyNames(null, $scope_type, $scope_id);
-    	
+
     	$result = array();
-    	
+
     	if (is_array($scopeData['polo'])) {
     		$result['polo_name'] = array(
     			'label'	=> __XCONTENT_POLO,
@@ -2127,82 +2129,88 @@ class module_xcontent extends MagesterExtendedModule {
     			'value'	=> $scopeData['classe']['name']
     		);
     	}
-    	
+
     	return $result;
     }
-	public function getUsersByScopeId($scope_type, $scope_id, $contraints = array()) {
+	public function getUsersByScopeId($scope_type, $scope_id, $contraints = array())
+	{
 		$scope_data = $this->getUserScopeData($scope_type, $scope_id);
-		
+
 		!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
-		
+
     	$allWheres = array(
-			'polo'		=> sprintf("u.id IN (select id FROM module_xuser xu WHERE xu.polo_id = %d)", $scope_data['polo_id'])	
+			'polo'		=> sprintf("u.id IN (select id FROM module_xuser xu WHERE xu.polo_id = %d)", $scope_data['polo_id'])
    			//'classe_id'	=> sprintf("u.id IN (select id FROM module_xuser xu WHERE xu.polo_id = %d)", $scope_data['polo_id'])
 		);
-		
+
 		$scopedWhere = array();
-    	
-    	switch($scope_type) {
+
+    	switch ($scope_type) {
     		case 2 : { // SAME POLO AND SAME CLASS
     			$scopedWhere[] = $allWheres['polo'];
     			break;
     		}
     		default : {
-    			
+
     		}
     	}
   		list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
-  		
+
   		$where = array_merge($where, $scopedWhere);
-  		
+
 		$from = "users u";
   		$select = "u.*";
 		$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, "", $limit);
-		
+
 		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == false) {
    			return MagesterUser :: convertDatabaseResultToUserArray($result);
   		} else {
    			return MagesterUser :: convertDatabaseResultToUserObjects($result);
   		}
 	}
-    
-    private function checkUserScopeSamePolo($user, $polo_id) {
+
+    private function checkUserScopeSamePolo($user, $polo_id)
+    {
 		$userPolo = $user->getUserPolo(array('return_objects'	=> false));
-		
+
 		return ($userPolo['id'] == $polo_id);
     }
-    private function checkUserScopeSameClasse($user, $classe_id) {
+    private function checkUserScopeSameClasse($user, $classe_id)
+    {
         $userClasses = $user->getUserCoursesClasses(array('return_objects'	=> false));
-    			
+
     	$classesID = array();
-    	foreach($userClasses as $classe) {
+    	foreach ($userClasses as $classe) {
     		$classesID[] = $classe['id'];
     	}
-    	
+
     	return in_array($classe_id, $classesID);
     }
 
     /* MAIN-INDEPENDENT MODULE INFO, PAGES, TEMPLATES, ETC... */
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
     	$this->registerXcontentScheduleAction();
-    	
+
     	$this->assignSmartyModuleVariables();
-    	
+
     	return true;
     }
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
     	return $this->moduleBaseDir . "templates/includes/lesson.innertable.tpl";
-    	
+
     }
     /* OLD-STYLE FUNCTIONS */
-    public function getCenterLinkInfo() {
+    public function getCenterLinkInfo()
+    {
     	$currentUser = $this -> getCurrentUser();
-    	
+
     	;
-    
+
     	$xuserModule = $this->loadModule("xuser");
 		if (
-			$xuserModule->getExtendedTypeID($currentUser) == "administrator" || 
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
 			$currentUser->moduleAccess['xcontent'] == 'view' ||
 			$currentUser->moduleAccess['xcontent'] == 'change'
     	) {
@@ -2214,13 +2222,13 @@ class module_xcontent extends MagesterExtendedModule {
     		);
     	}
     }
-    public function getSidebarLinkInfo() {
-    	 
+    public function getSidebarLinkInfo()
+    {
     	$xuserModule = $this->loadModule("xuser");
     	$currentUser = $this -> getCurrentUser();
-    	
+
 		if (
-			$xuserModule->getExtendedTypeID($currentUser) == "administrator" || 
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
 			$currentUser->moduleAccess['xcontent'] == 'view' ||
 			$currentUser->moduleAccess['xcontent'] == 'change'
     	) {
@@ -2233,7 +2241,7 @@ class module_xcontent extends MagesterExtendedModule {
     						'link'  => $this -> moduleBaseUrl
     				)
     		);
-    
+
     		return array ( "content" => $link_of_menu);
     	}
     }

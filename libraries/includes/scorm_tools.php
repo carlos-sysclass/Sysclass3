@@ -19,8 +19,7 @@ function get_APIFunctions()
            var result = doLMSInitialize();
            var status = doLMSGetValue( "cmi.core.lesson_status" );
 
-           if (status == "not attempted")
-           {
+           if (status == "not attempted") {
               // the student is now attempting the lesson
               doLMSSetValue( "cmi.core.lesson_status", "incomplete" );
            }
@@ -37,14 +36,11 @@ function get_APIFunctions()
 
         function computeTime()
         {
-           if ( startDate != 0 )
-           {
+           if (startDate != 0) {
               var currentDate = new Date().getTime();
               var elapsedSeconds = ( (currentDate - startDate) / 1000 );
               var formattedTime = convertTotalSeconds( elapsedSeconds );
-           }
-           else
-           {
+           } else {
               formattedTime = "00:00:00.0";
            }
 
@@ -77,8 +73,7 @@ function get_APIFunctions()
 
            var mode = doLMSGetValue( "cmi.core.lesson_mode" );
 
-           if ( mode != "review" && mode != "browse" )
-           {
+           if (mode != "review" && mode != "browse") {
               doLMSSetValue( "cmi.core.lesson_status", status );
            }
 
@@ -116,8 +111,7 @@ function get_APIFunctions()
         function unloadPage( status )
         {
 
-            if (exitPageStatus != true)
-            {
+            if (exitPageStatus != true) {
                 doQuit( status );
             }
 
@@ -144,20 +138,17 @@ function get_APIFunctions()
            var strSec = new String(sec);
            var strWholeSec = strSec;
            var strFractionSec = "";
-           if (strSec.indexOf(".") != -1)
-           {
+           if (strSec.indexOf(".") != -1) {
               strWholeSec = strSec.substring(0, strSec.indexOf("."));
               strFractionSec = strSec.substring(strSec.indexOf(".")+1, strSec.length);
            }
 
-           if (strWholeSec.length < 2)
-           {
+           if (strWholeSec.length < 2) {
               strWholeSec = "0" + strWholeSec;
            }
            strSec = strWholeSec;
 
-           if (strFractionSec.length)
-           {
+           if (strFractionSec.length) {
               strSec = strSec+ "." + strFractionSec;
            }
 
@@ -209,16 +200,15 @@ function get_APIFunctions()
         function doLMSInitialize()
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSInitialize was not successful.");
+
               return "false";
            }
 
            var result = api.LMSInitialize("");
 
-           if (result.toString() != "true")
-           {
+           if (result.toString() != "true") {
               var err = ErrorHandler();
            }
 
@@ -228,18 +218,15 @@ function get_APIFunctions()
         function doLMSFinish()
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSFinish was not successful.");
+
               return "false";
-           }
-           else
-           {
+           } else {
               // call the LMSFinish function that should be implemented by the API
 
               var result = api.LMSFinish("");
-              if (result.toString() != "true")
-              {
+              if (result.toString() != "true") {
                  var err = ErrorHandler();
               }
 
@@ -251,25 +238,20 @@ function get_APIFunctions()
         function doLMSGetValue(name)
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSGetValue was not successful.");
+
               return "";
-           }
-           else
-           {
+           } else {
               var value = api.LMSGetValue(name);
               var errCode = api.LMSGetLastError().toString();
-              if (errCode != _NoError)
-              {
+              if (errCode != _NoError) {
                  // an error was encountered so display the error description
                  var errDescription = api.LMSGetErrorString(errCode);
                  alert("LMSGetValue("+name+") failed. \n"+ errDescription);
-                 return "";
-              }
-              else
-              {
 
+                 return "";
+              } else {
                  return value.toString();
               }
            }
@@ -278,16 +260,13 @@ function get_APIFunctions()
         function doLMSSetValue(name, value)
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSSetValue was not successful.");
+
               return;
-           }
-           else
-           {
+           } else {
               var result = api.LMSSetValue(name, value);
-              if (result.toString() != "true")
-              {
+              if (result.toString() != "true") {
                  var err = ErrorHandler();
               }
            }
@@ -298,16 +277,13 @@ function get_APIFunctions()
         function doLMSCommit()
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSCommit was not successful.");
+
               return "false";
-           }
-           else
-           {
+           } else {
               var result = api.LMSCommit("");
-              if (result != "true")
-              {
+              if (result != "true") {
                  var err = ErrorHandler();
               }
            }
@@ -318,9 +294,9 @@ function get_APIFunctions()
         function doLMSGetLastError()
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSGetLastError was not successful.");
+
               return _GeneralError;
            }
 
@@ -330,8 +306,7 @@ function get_APIFunctions()
         function doLMSGetErrorString(errorCode)
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSGetErrorString was not successful.");
            }
 
@@ -341,8 +316,7 @@ function get_APIFunctions()
         function doLMSGetDiagnostic(errorCode)
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSGetDiagnostic was not successful.");
            }
 
@@ -353,21 +327,16 @@ function get_APIFunctions()
         {
 
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nLMSIsInitialized() failed.");
+
               return false;
-           }
-           else
-           {
+           } else {
               var value = api.LMSGetValue("cmi.core.student_name");
               var errCode = api.LMSGetLastError().toString();
-              if (errCode == _NotInitialized)
-              {
+              if (errCode == _NotInitialized) {
                  return false;
-              }
-              else
-              {
+              } else {
                  return true;
               }
            }
@@ -376,21 +345,19 @@ function get_APIFunctions()
         function ErrorHandler()
         {
            var api = getAPIHandle();
-           if (api == null)
-           {
+           if (api == null) {
               alert("Unable to locate the LMS API Implementation.\nCannot determine LMS error code.");
+
               return;
            }
 
            // check for errors caused by or from the LMS
            var errCode = api.LMSGetLastError().toString();
-           if (errCode != _NoError)
-           {
+           if (errCode != _NoError) {
               // an error was encountered so display the error description
               var errDescription = api.LMSGetErrorString(errCode);
 
-              if (_Debug == true)
-              {
+              if (_Debug == true) {
                  errDescription += "\n";
                  errDescription += api.LMSGetDiagnostic(null);
                  // by passing null to LMSGetDiagnostic, we get any available diagnostics
@@ -405,8 +372,7 @@ function get_APIFunctions()
 
         function getAPIHandle()
         {
-           if (apiHandle == null)
-           {
+           if (apiHandle == null) {
               apiHandle = getAPI();
            }
 
@@ -416,19 +382,19 @@ function get_APIFunctions()
 
         function findAPI(win)
         {
-           while ((win.API == null) && (win.parent != null) && (win.parent != win))
-           {
+           while ((win.API == null) && (win.parent != null) && (win.parent != win)) {
               findAPITries++;
               // Note: 7 is an arbitrary number, but should be more than sufficient
-              if (findAPITries > 7)
-              {
+              if (findAPITries > 7) {
                  alert("Error finding API -- too deeply nested.");
+
                  return null;
               }
 
               win = win.parent;
 
            }
+
            return win.API;
         }
 
@@ -437,14 +403,13 @@ function get_APIFunctions()
         function getAPI()
         {
            var theAPI = findAPI(window);
-           if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined"))
-           {
+           if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined")) {
               theAPI = findAPI(window.opener);
            }
-           if (theAPI == null)
-           {
+           if (theAPI == null) {
               alert("Unable to find an API adapter");
            }
+
            return theAPI
         }
     ';
@@ -480,11 +445,12 @@ function eF_local_parseManifest($path)
         }
         if ($tagContents[$i]['type'] == 'open') {
             array_push($currentParent, $i);
-        } else if ($tagContents[$i]['type'] == 'close') {
+        } elseif ($tagContents[$i]['type'] == 'close') {
             array_pop($currentParent);
         }
 
     }
+
     return $tagArray;
 }
 
@@ -526,9 +492,9 @@ function eF_local_readDirRecursive($path = '.')
         closedir($handle);
         $count++;
     }
+
     return $path_array;
 }
-
 
 function build_tarfile($lessons_id, $path)
 {
@@ -734,7 +700,6 @@ function get_asset_metadata($el)
     return $metadata;
 }
 
-
 function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
 {
     $GLOBALS['configuration']['G_DELIMITER'] = '/';
@@ -777,7 +742,6 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
             }
         }
 
-
         $content = create_html_files($content);
         if ($fp = fopen($html_dirname . "/" . $lesson_entries[$i]['name'] . ".html", "wb")) {
           fwrite($fp, $content);
@@ -792,7 +756,7 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
     }
 
     $questions = ef_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
-    for ($i = 0; $i < sizeof($questions); $i++){
+    for ($i = 0; $i < sizeof($questions); $i++) {
         $data = $questions[$i]['text'];
         /*Gia ka8e arxeio, an afto fainetai stin erotisi, alla3e to path kai vale to onoma toy sth lista tou periexomenou*/
         foreach ($filelist as $value) {
@@ -813,7 +777,7 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
 
     //create the test files
     $tests = ef_getTableData("tests t, content c", "t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
-    for ($i = 0; $i < sizeof($tests); $i++){
+    for ($i = 0; $i < sizeof($tests); $i++) {
         $data = $tests[$i]['description'];
         /*Gia ka8e arxeio, an afto fainetai stin erotisi, alla3e to path kai vale to onoma toy sth lista tou periexomenou*/
         foreach ($filelist as $value) {
@@ -850,7 +814,6 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
         fwrite($fp, $metadata);
         fclose($fp);
     }
-
 
     /*Create manifest*/
     $prerequisites = get_prerequisites();
@@ -891,6 +854,7 @@ function get_prerequisites()
     foreach ($rules as $value) {
         $prerequisites[$value['content_ID']] = $value['rule_content_ID'];
     }
+
     return $prerequisites;
 }
 /**
@@ -902,11 +866,10 @@ function deldir($dir)
 {
     if (isset($dir) & $dir != '' & $dir != G_LESSONSPATH) {
         $current_dir = opendir($dir);
-        while($entryname = readdir($current_dir)) {
-            if(is_dir("$dir/$entryname") and ($entryname != "." and $entryname!="..")) {
+        while ($entryname = readdir($current_dir)) {
+            if (is_dir("$dir/$entryname") and ($entryname != "." and $entryname!="..")) {
                 deldir("${dir}/${entryname}");
-            }
-            elseif($entryname != "." and $entryname!="..") {
+            } elseif ($entryname != "." and $entryname!="..") {
                 unlink("${dir}/${entryname}");
             }
         }
@@ -937,6 +900,7 @@ function build_manifest_metadata($metadata)
                 $adlcp_location
             .'</adlcp:location>
         </metadata>';
+
     return $str;
 }
 
@@ -962,7 +926,7 @@ function build_manifest_resources($lesson_entries, $tests, $questions, $files_di
         $resource_str .= '</resource>';
     }
 
-    for ($i = 0; $i < sizeof($tests); $i++){
+    for ($i = 0; $i < sizeof($tests); $i++) {
         $resource_str .= '<resource identifier="t' . $tests[$i]['id'] . '" type="webcontent" adlcp:scormtype="sco" href="html/test' . $tests[$i]['id'] . '.html">';
         $resource_str .= '<metadata></metadata>';
         $resource_str .= '<file href="html/test' . $tests[$i]['id'] . '.html"/>';
@@ -970,7 +934,7 @@ function build_manifest_resources($lesson_entries, $tests, $questions, $files_di
         $resource_str .= '</resource>';
     }
 
-    for ($i = 0; $i < sizeof($questions); $i++){
+    for ($i = 0; $i < sizeof($questions); $i++) {
         $resource_str .= '<resource identifier="q' . $questions[$i]['id'] . '" type="webcontent" adlcp:scormtype="sco" href="html/question' . $questions[$i]['id'] . '.html">';
         $resource_str .= '<metadata></metadata>';
         $resource_str .= '<file href="html/question' . $questions[$i]['id'] . '.html"/>';
@@ -985,6 +949,7 @@ function build_manifest_resources($lesson_entries, $tests, $questions, $files_di
           </resource>';
 
     $final_str = '<resources>' . $resource_str . $dependency_str . $SPECIAL_str. '</resources>';
+
     return $final_str;
 
 }
@@ -1033,7 +998,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
     //write out the questions
     /*$questions = ef_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
 
-    for ($i = 0; $i < sizeof($questions); $i++){
+    for ($i = 0; $i < sizeof($questions); $i++) {
 
         $final_str .= "<item identifier='question".$questions[$i]['id']."' identifierref='q".$questions[$i]['id']."' type='question'><title>question ".($i+1)."</title></item>";
 
@@ -1041,7 +1006,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
     //write the tests
     /*$tests = ef_getTableData("tests t, content c", "c.name, t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
 
-    for ($i = 0; $i < sizeof($tests); $i++){
+    for ($i = 0; $i < sizeof($tests); $i++) {
 
         $final_str .= "<item identifier='test".$tests[$i]['id']."' identifierref='t".$tests[$i]['id']."' type='test'><title>".$tests[$i]['name']."</title></item>";
 
@@ -1049,7 +1014,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
     //write the projects
     /*$projects = ef_getTableData("projects","*", "lessons_id=$lessons_id");
 
-    for ($i = 0; $i < sizeof($projects); $i++){
+    for ($i = 0; $i < sizeof($projects); $i++) {
 
         $final_str .= "<item identifier='project".$projects[$i]['id']."' identifierref='p".$projects[$i]['id']."' type='project'><title>project ".($i+1)."</title></item>";
 
@@ -1057,6 +1022,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
     $content .= "\t" . '<organizations default="org1">' . "\n";
     $content .= "\t<organization identifier=\"Org\" structure=\"hierarchical\"><title>default</title>" . "\n";
     $content .= $final_str . "\t" . '</organization></organizations>' . "\n";
+
     return $content;
 }
 /**
@@ -1077,6 +1043,7 @@ function build_manifest_main($str)
         ';
     $manifest .= $str;
     $manifest .= '</manifest>';
+
     return $manifest;
 }
 /**
@@ -1092,38 +1059,37 @@ function create_html_files($content)
         var findAPITries = 0;
         function getAPIHandle()
         {
-           if (apiHandle == null)
-           {
+           if (apiHandle == null) {
               apiHandle = getAPI();
            }
+
            return apiHandle;
         }
         function findAPI(win)
         {
-           while ((win.API == null) && (win.parent != null) && (win.parent != win))
-           {
+           while ((win.API == null) && (win.parent != null) && (win.parent != win)) {
               findAPITries++;
               // Note: 7 is an arbitrary number, but should be more than sufficient
-              if (findAPITries > 7)
-              {
+              if (findAPITries > 7) {
                  alert("Error finding API -- too deeply nested.");
+
                  return null;
               }
               win = win.parent;
            }
+
            return win.API;
         }
         function getAPI()
         {
            var theAPI = findAPI(window);
-           if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined"))
-           {
+           if ((theAPI == null) && (window.opener != null) && (typeof(window.opener) != "undefined")) {
               theAPI = findAPI(window.opener);
            }
-           if (theAPI == null)
-           {
+           if (theAPI == null) {
               alert("Unable to find an API adapter");
            }
+
            return theAPI
         }
 

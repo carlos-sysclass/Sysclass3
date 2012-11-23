@@ -92,7 +92,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
   $innertable_modules = array();
   //var_dump(array_keys($loadedModules));
-  
+
   foreach ($loadedModules as $name => $module) {
    unset($InnertableHTML);
      //$centerLinkInfo = $module -> getCenterLinkInfo();
@@ -103,13 +103,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    if ($InnertableHTML) {
     // Get module html - two ways: pure HTML or PHP+smarty
     // If no smarty file is defined then false will be returned
-    
+
     if ($module_smarty_file) {
      // Execute the php code -> The code has already been executed by above (**HERE**)
      // Let smarty know to include the module smarty file
      $innertable_modules[$module->className] = array('smarty_file' => $module_smarty_file);
     } else {
-    	
+
      // Present the pure HTML cod
      $innertable_modules[$module->className] = array('html_code' => $InnertableHTML);
      //var_dump($innertable_modules[$module->className]);

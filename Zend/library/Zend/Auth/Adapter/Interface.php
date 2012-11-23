@@ -20,12 +20,10 @@
  * @version    $Id: Interface.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Result
  */
 require_once 'Zend/Auth/Result.php';
-
 
 /**
  * @category   Zend

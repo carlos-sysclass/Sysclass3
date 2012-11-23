@@ -86,7 +86,6 @@ class Zend_Soap_Server implements Zend_Server_Interface
      */
     protected $_wsdlCache;
 
-
     /**
      * Registered fault exceptions
      * @var array
@@ -183,7 +182,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
      */
     public function setOptions($options)
     {
-        if($options instanceof Zend_Config) {
+        if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
 
@@ -251,11 +250,11 @@ class Zend_Soap_Server implements Zend_Server_Interface
             $options['uri'] = $this->_uri;
         }
 
-        if(null !== $this->_features) {
+        if (null !== $this->_features) {
             $options['features'] = $this->_features;
         }
 
-        if(null !== $this->_wsdlCache) {
+        if (null !== $this->_wsdlCache) {
             $options['cache_wsdl'] = $this->_wsdlCache;
         }
 
@@ -277,6 +276,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         }
 
         $this->_encoding = $encoding;
+
         return $this;
     }
 
@@ -305,6 +305,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         }
 
         $this->_soapVersion = $version;
+
         return $this;
     }
 
@@ -348,6 +349,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     {
         $this->validateUrn($actor);
         $this->_actor = $actor;
+
         return $this;
     }
 
@@ -374,6 +376,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     {
         $this->validateUrn($uri);
         $this->_uri = $uri;
+
         return $this;
     }
 
@@ -414,6 +417,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         }
 
         $this->_classmap = $classmap;
+
         return $this;
     }
 
@@ -436,6 +440,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function setWsdl($wsdl)
     {
         $this->_wsdl = $wsdl;
+
         return $this;
     }
 
@@ -458,12 +463,13 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function setSoapFeatures($feature)
     {
         $this->_features = $feature;
+
         return $this;
     }
 
     /**
      * Return current SOAP Features options
-     * 
+     *
      * @return int
      */
     public function getSoapFeatures()
@@ -480,6 +486,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function setWsdlCache($options)
     {
         $this->_wsdlCache = $options;
+
         return $this;
     }
 
@@ -585,12 +592,12 @@ class Zend_Soap_Server implements Zend_Server_Interface
      */
     public function setObject($object)
     {
-        if(!is_object($object)) {
+        if (!is_object($object)) {
             require_once 'Zend/Soap/Server/Exception.php';
             throw new Zend_Soap_Server_Exception('Invalid object argument ('.gettype($object).')');
         }
 
-        if(isset($this->_object)) {
+        if (isset($this->_object)) {
             require_once 'Zend/Soap/Server/Exception.php';
             throw new Zend_Soap_Server_Exception('An object has already been registered with this soap server instance');
         }
@@ -649,6 +656,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         }
 
         $this->_persistence = $mode;
+
         return $this;
     }
 
@@ -691,12 +699,13 @@ class Zend_Soap_Server implements Zend_Server_Interface
             }
 
             $dom = new DOMDocument();
-            if(strlen($xml) == 0 || !$dom->loadXML($xml)) {
+            if (strlen($xml) == 0 || !$dom->loadXML($xml)) {
                 require_once 'Zend/Soap/Server/Exception.php';
                 throw new Zend_Soap_Server_Exception('Invalid XML');
             }
         }
         $this->_request = $xml;
+
         return $this;
     }
 
@@ -724,6 +733,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function setReturnResponse($flag)
     {
         $this->_returnResponse = ($flag) ? true : false;
+
         return $this;
     }
 
@@ -824,7 +834,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         $soap = $this->_getSoap();
 
         ob_start();
-        if($setRequestException instanceof Exception) {
+        if ($setRequestException instanceof Exception) {
             // Send SOAP fault message if we've catched exception
             $soap->fault("Sender", $setRequestException->getMessage());
         } else {
@@ -843,6 +853,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
 
         if (!$this->_returnResponse) {
             echo $this->_response;
+
             return;
         }
 
@@ -859,6 +870,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         $displayErrorsOriginalState = ini_get('display_errors');
         ini_set('display_errors', false);
         set_error_handler(array($this, 'handlePhpErrors'), E_USER_ERROR);
+
         return $displayErrorsOriginalState;
     }
 
@@ -871,6 +883,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     public function registerFaultException($class)
     {
         $this->_faultExceptions = array_merge($this->_faultExceptions, (array) $class);
+
         return $this;
     }
 
@@ -885,6 +898,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
         if (in_array($class, $this->_faultExceptions, true)) {
             $index = array_search($class, $this->_faultExceptions);
             unset($this->_faultExceptions[$index]);
+
             return true;
         }
 
@@ -926,7 +940,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
             } else {
                 $message = 'Unknown error';
             }
-        } elseif(is_string($fault)) {
+        } elseif (is_string($fault)) {
             $message = $fault;
         } else {
             $message = 'Unknown error';
@@ -936,7 +950,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
             'VersionMismatch', 'MustUnderstand', 'DataEncodingUnknown',
             'Sender', 'Receiver', 'Server'
         );
-        if(!in_array($code, $allowedFaultModes)) {
+        if (!in_array($code, $allowedFaultModes)) {
             $code = "Receiver";
         }
 

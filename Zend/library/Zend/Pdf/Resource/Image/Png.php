@@ -121,11 +121,11 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
          * The following loop processes PNG chunks. 4 Byte Longs are packed first give the chunk length
          * followed by the chunk signature, a four byte code. IDAT and IEND are manditory in any PNG.
          */
-        while(($chunkLengthBytes = fread($imageFile, 4)) !== false) {
+        while (($chunkLengthBytes = fread($imageFile, 4)) !== false) {
             $chunkLengthtmp         = unpack('Ni', $chunkLengthBytes);
             $chunkLength            = $chunkLengthtmp['i'];
             $chunkType                      = fread($imageFile, 4);
-            switch($chunkType) {
+            switch ($chunkType) {
                 case 'IDAT': //Image Data
                     /*
                      * Reads the actual image data from the PNG file. Since we know at this point that the compression
@@ -159,7 +159,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
 
                         case Zend_Pdf_Resource_Image_Png::PNG_CHANNEL_INDEXED:
                             //Find the first transparent color in the index, we will mask that. (This is a bit of a hack. This should be a SMask and mask all entries values).
-                            if(($trnsIdx = strpos($trnsData, chr(0))) !== false) {
+                            if (($trnsIdx = strpos($trnsData, chr(0))) !== false) {
                                 $transparencyData = array(new Zend_Pdf_Element_Numeric($trnsIdx), new Zend_Pdf_Element_Numeric($trnsIdx));
                             }
                             break;
@@ -198,7 +198,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                 break;
 
             case Zend_Pdf_Resource_Image_Png::PNG_CHANNEL_INDEXED:
-                if(empty($paletteData)) {
+                if (empty($paletteData)) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception( "PNG Corruption: No palette data read for indexed type PNG." );
                 }
@@ -216,7 +216,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                  * the other will contain the Gray transparency overlay data. The former will become the object data and the latter
                  * will become the Shadow Mask (SMask).
                  */
-                if($bits > 8) {
+                if ($bits > 8) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception("Alpha PNGs with bit depth > 8 are not yet supported");
                 }
@@ -236,7 +236,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                 $pngDataRawDecoded = $decodingStream->value;
 
                 //Iterate every pixel and copy out gray data and alpha channel (this will be slow)
-                for($pixel = 0, $pixelcount = ($width * $height); $pixel < $pixelcount; $pixel++) {
+                for ($pixel = 0, $pixelcount = ($width * $height); $pixel < $pixelcount; $pixel++) {
                     $imageDataTmp .= $pngDataRawDecoded[($pixel*2)];
                     $smaskData .= $pngDataRawDecoded[($pixel*2)+1];
                 }
@@ -250,7 +250,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                  * the other will contain the Gray transparency overlay data. The former will become the object data and the latter
                  * will become the Shadow Mask (SMask).
                  */
-                if($bits > 8) {
+                if ($bits > 8) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception("Alpha PNGs with bit depth > 8 are not yet supported");
                 }
@@ -270,7 +270,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                 $pngDataRawDecoded = $decodingStream->value;
 
                 //Iterate every pixel and copy out rgb data and alpha channel (this will be slow)
-                for($pixel = 0, $pixelcount = ($width * $height); $pixel < $pixelcount; $pixel++) {
+                for ($pixel = 0, $pixelcount = ($width * $height); $pixel < $pixelcount; $pixel++) {
                     $imageDataTmp .= $pngDataRawDecoded[($pixel*4)+0] . $pngDataRawDecoded[($pixel*4)+1] . $pngDataRawDecoded[($pixel*4)+2];
                     $smaskData .= $pngDataRawDecoded[($pixel*4)+3];
                 }
@@ -284,13 +284,13 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
                 throw new Zend_Pdf_Exception( "PNG Corruption: Invalid color space." );
         }
 
-        if(empty($imageData)) {
+        if (empty($imageData)) {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception( "Corrupt PNG Image. Mandatory IDAT chunk not found." );
         }
 
         $imageDictionary = $this->_resource->dictionary;
-        if(!empty($smaskData)) {
+        if (!empty($smaskData)) {
             /*
              * Includes the Alpha transparency data as a Gray Image, then assigns the image as the Shadow Mask for the main image data.
              */
@@ -313,7 +313,7 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
             $smaskStream->dictionary->Filter       = new Zend_Pdf_Element_Name('FlateDecode');
         }
 
-        if(!empty($transparencyData)) {
+        if (!empty($transparencyData)) {
             //This is experimental and not properly tested.
             $imageDictionary->Mask = new Zend_Pdf_Element_Array($transparencyData);
         }
@@ -343,21 +343,24 @@ class Zend_Pdf_Resource_Image_Png extends Zend_Pdf_Resource_Image
     /**
      * Image width
      */
-    public function getPixelWidth() {
+    public function getPixelWidth()
+    {
     return $this->_width;
     }
 
     /**
      * Image height
      */
-    public function getPixelHeight() {
+    public function getPixelHeight()
+    {
         return $this->_height;
     }
 
     /**
      * Image properties
      */
-    public function getProperties() {
+    public function getProperties()
+    {
         return $this->_imageProperties;
     }
 }

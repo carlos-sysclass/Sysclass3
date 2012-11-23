@@ -67,6 +67,7 @@ class PEAR_Packager extends PEAR_Common
                 }
             }
             $this->log(0, $pf->getMessage());
+
             return $this->raiseError("Cannot package, errors in package file");
         } else {
             foreach ($pf->getValidationWarnings() as $warning) {
@@ -87,6 +88,7 @@ class PEAR_Packager extends PEAR_Common
                     }
                 }
                 $this->log(0, $pf2->getMessage());
+
                 return $this->raiseError("Cannot package, errors in second package file");
             } else {
                 foreach ($pf2->getValidationWarnings() as $warning) {
@@ -116,6 +118,7 @@ class PEAR_Packager extends PEAR_Common
             foreach ($main->getValidationWarnings() as $warning) {
                 $this->log(0, 'Error: ' . $warning['message']);
             }
+
             return $this->raiseError("Cannot package, errors in package");
         } else {
             foreach ($main->getValidationWarnings() as $warning) {
@@ -135,6 +138,7 @@ class PEAR_Packager extends PEAR_Common
                 if ($a) {
                     return $this->raiseError('The two package.xml files are not equivalent!');
                 }
+
                 return $this->raiseError("Cannot package, errors in package");
             } else {
                 foreach ($other->getValidationWarnings() as $warning) {
@@ -148,7 +152,7 @@ class PEAR_Packager extends PEAR_Common
             }
             $dest_package = basename($tgzfile);
             $pkgdir = dirname($pkgfile);
-    
+
             // TAR the Package -------------------------------------------
             $this->log(1, "Package $dest_package done");
             if (file_exists("$pkgdir/CVS/Root")) {
@@ -163,11 +167,12 @@ class PEAR_Packager extends PEAR_Common
             $tgzfile = $gen->toTgz($this, $compress);
             if (PEAR::isError($tgzfile)) {
                 $this->log(0, $tgzfile->getMessage());
+
                 return $this->raiseError("Cannot package, errors in package");
             }
             $dest_package = basename($tgzfile);
             $pkgdir = dirname($pkgfile);
-    
+
             // TAR the Package -------------------------------------------
             $this->log(1, "Package $dest_package done");
             if (file_exists("$pkgdir/CVS/Root")) {
@@ -177,6 +182,7 @@ class PEAR_Packager extends PEAR_Common
                 $this->log(1, "(or set the CVS tag $cvstag by hand)");
             }
         }
+
         return $dest_package;
     }
 
@@ -185,15 +191,15 @@ class PEAR_Packager extends PEAR_Common
 
 // {{{ md5_file() utility function
 if (!function_exists('md5_file')) {
-    function md5_file($file) {
+    function md5_file($file)
+    {
         if (!$fd = @fopen($file, 'r')) {
             return false;
         }
         fclose($fd);
         $md5 = md5(file_get_contents($file));
+
         return $md5;
     }
 }
 // }}}
-
-?>

@@ -5,7 +5,6 @@
  * @subpackage plugins
  */
 
-
 /**
  * Smarty truncate modifier plugin
  *
@@ -20,16 +19,17 @@
  * @param string
  * @return string
  */
-function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...') {
+function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...')
+{
 	$piecesStart = explode("&raquo;&nbsp;", $string); // with tags
 	$stripped = strip_tags($string); //remove tags to count characters
 	$piecesStripped = explode("&raquo;&nbsp;", $stripped);
-	 
+
 	array_walk($piecesStripped, create_function('&$v, $k', '$v = str_replace("&nbsp;", "", $v);'));
-	
+
 	$finalString = array();
-	foreach($piecesStart as $item) {
-		$finalString[] .= sprintf('%s', $item);		
+	foreach ($piecesStart as $item) {
+		$finalString[] .= sprintf('%s', $item);
 	}
 	return implode("&raquo;&nbsp;", $finalString);
 }

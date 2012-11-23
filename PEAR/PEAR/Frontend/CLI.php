@@ -292,10 +292,12 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                     array_unshift($completedPhases, $group['id']);
                     if (!$script->run($answers, $group['id'])) {
                         $script->run($completedPhases, '_undoOnError');
+
                         return;
                     }
                 } else {
                     $script->run($completedPhases, '_undoOnError');
+
                     return;
                 }
             }
@@ -335,6 +337,7 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
             $answers = $this->userDialog('', $prompts, $types, $answers);
             $tried = true;
         } while (is_array($answers) && count(array_filter($answers)) != count($prompts));
+
         return $answers;
     }
     // {{{ userDialog(prompt, [type], [default])
@@ -376,9 +379,9 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                     $result[$key] = trim($line);
                 }
             }
+
             return $result;
-        }
-        while (true) {
+        } while (true) {
             $descLength = max(array_map('strlen', $prompts));
             $descFormat = "%-{$descLength}s";
             $last = count($prompts);
@@ -397,8 +400,8 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
             if ($tmp == 'abort') {
                 return false;
             }
-            if (isset($testprompts[(int)$tmp - 1])) {
-                $var = $testprompts[(int)$tmp - 1];
+            if (isset($testprompts[(int) $tmp - 1])) {
+                $var = $testprompts[(int) $tmp - 1];
                 $desc = $prompts[$var];
                 $current = @$result[$var];
                 print "$desc [$current] : ";
@@ -420,6 +423,7 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
         if (!defined('STDIN')) {
             fclose($fp);
         }
+
         return $result;
     }
 
@@ -448,6 +452,7 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
         if (in_array($default, $positives)) {
             return true;
         }
+
         return false;
     }
 
@@ -664,8 +669,8 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                     $this->_tableRow($data['headline'], array('bold' => true), array(1 => array('wrap' => 55)));
                 }
 
-                foreach($data['data'] as $category) {
-                    foreach($category as $pkg) {
+                foreach ($data['data'] as $category) {
+                    foreach ($category as $pkg) {
                         $this->_tableRow($pkg, null, array(1 => array('wrap' => 55)));
                     }
                 };
@@ -681,8 +686,8 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                     $this->_tableRow($data['headline'], array('bold' => true), array(1 => array('wrap' => 55)));
                 }
 
-                foreach($data['data'] as $category) {
-                    foreach($category as $pkg) {
+                foreach ($data['data'] as $category) {
+                    foreach ($category as $pkg) {
                         unset($pkg[4]);
                         unset($pkg[5]);
                         $this->_tableRow($pkg, null, array(1 => array('wrap' => 55)));
@@ -701,8 +706,8 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                                      array('bold' => true),
                                      $opts);
                 }
-                foreach($data['data'] as $group) {
-                    foreach($group as $value) {
+                foreach ($data['data'] as $group) {
+                    foreach ($group as $value) {
                         if ($value[2] == '') {
                             $value[2] = "<not set>";
                         }
@@ -753,7 +758,7 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
                                          array('bold' => true),
                                          $opts);
                     }
-                    foreach($data['data'] as $row) {
+                    foreach ($data['data'] as $row) {
                         $this->_tableRow($row, null, $opts);
                     }
                     $this->_endTable();
@@ -773,6 +778,7 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
         if ($append_crlf) {
             return $this->_displayLine($text);
         }
+
         return $this->_display($text);
     }
 
@@ -785,10 +791,9 @@ class PEAR_Frontend_CLI extends PEAR_Frontend
         if (empty($this->term['bold'])) {
             return strtoupper($text);
         }
+
         return $this->term['bold'] . $text . $this->term['normal'];
     }
 
     // }}}
 }
-
-?>

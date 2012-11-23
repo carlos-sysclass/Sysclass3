@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Imap.php 12539 2008-11-11 02:47:17Z yoshida@zend.co.jp $
  */
-
 
 /**
  * @category   Zend
@@ -34,7 +33,7 @@ class Zend_Mail_Protocol_Imap
      * Default timeout in seconds for initiating session
      */
     const TIMEOUT_CONNECTION = 30;
-    
+
     /**
      * socket to imap server
      * @var resource|null
@@ -152,6 +151,7 @@ class Zend_Mail_Protocol_Imap
     protected function _assumedNextLine($start)
     {
         $line = $this->_nextLine();
+
         return strpos($line, $start) === 0;
     }
 
@@ -195,8 +195,8 @@ class Zend_Mail_Protocol_Imap
                 "foo" baz {3}<NL>bar ("f\\\"oo" bar)
             would be returned as:
                 array('foo', 'baz', 'bar', array('f\\\"oo', 'bar'));
-                
-            // TODO: add handling of '[' and ']' to parser for easier handling of response text 
+
+            // TODO: add handling of '[' and ']' to parser for easier handling of response text
         */
         //  replace any trailling <NL> including spaces with a single space
         $line = rtrim($line) . ' ';
@@ -317,9 +317,10 @@ class Zend_Mail_Protocol_Imap
         // last line has response code
         if ($tokens[0] == 'OK') {
             return $lines ? $lines : true;
-        } else if ($tokens[0] == 'NO'){
+        } elseif ($tokens[0] == 'NO') {
             return false;
         }
+
         return null;
     }
 
@@ -409,6 +410,7 @@ class Zend_Mail_Protocol_Imap
         foreach (func_get_args() as $string) {
             $result[] = $this->escapeString($string);
         }
+
         return $result;
     }
 
@@ -429,6 +431,7 @@ class Zend_Mail_Protocol_Imap
             }
             $result[] = $this->escapeList($v);
         }
+
         return '(' . implode(' ', $result) . ')';
     }
 
@@ -462,6 +465,7 @@ class Zend_Mail_Protocol_Imap
             fclose($this->_socket);
             $this->_socket = null;
         }
+
         return $result;
     }
 
@@ -484,6 +488,7 @@ class Zend_Mail_Protocol_Imap
         foreach ($response as $line) {
             $capabilities = array_merge($capabilities, $line);
         }
+
         return $capabilities;
     }
 
@@ -514,7 +519,7 @@ class Zend_Mail_Protocol_Imap
                     $result[strtolower($tokens[1])] = $tokens[0];
                     break;
                 case '[UIDVALIDITY':
-                    $result['uidvalidity'] = (int)$tokens[2];
+                    $result['uidvalidity'] = (int) $tokens[2];
                     break;
                 default:
                     // ignore
@@ -524,6 +529,7 @@ class Zend_Mail_Protocol_Imap
         if ($tokens[0] != 'OK') {
             return false;
         }
+
         return $result;
     }
 
@@ -569,15 +575,15 @@ class Zend_Mail_Protocol_Imap
     {
         if (is_array($from)) {
             $set = implode(',', $from);
-        } else if ($to === null) {
-            $set = (int)$from;
-        } else if ($to === INF) {
-            $set = (int)$from . ':*';
+        } elseif ($to === null) {
+            $set = (int) $from;
+        } elseif ($to === INF) {
+            $set = (int) $from . ':*';
         } else {
-            $set = (int)$from . ':' . (int)$to;
+            $set = (int) $from . ':' . (int) $to;
         }
 
-        $items = (array)$items;
+        $items = (array) $items;
         $itemList = $this->escapeList($items);
 
         $this->sendRequest('FETCH', array($set, $itemList), $tag);
@@ -619,6 +625,7 @@ class Zend_Mail_Protocol_Imap
             if ($to === null && !is_array($from) && $tokens[0] == $from) {
                 // we still need to read all lines
                 while (!$this->readLine($tokens, $tag));
+
                 return $data;
             }
             $result[$tokens[0]] = $data;
@@ -686,9 +693,9 @@ class Zend_Mail_Protocol_Imap
         }
 
         $flags = $this->escapeList($flags);
-        $set = (int)$from;
+        $set = (int) $from;
         if ($to != null) {
-            $set .= ':' . ($to == INF ? '*' : (int)$to);
+            $set .= ':' . ($to == INF ? '*' : (int) $to);
         }
 
         $result = $this->requestAndResponse('STORE', array($set, $item, $flags), $silent);
@@ -745,9 +752,9 @@ class Zend_Mail_Protocol_Imap
      */
     public function copy($folder, $from, $to = null)
     {
-        $set = (int)$from;
+        $set = (int) $from;
         if ($to != null) {
-            $set .= ':' . ($to == INF ? '*' : (int)$to);
+            $set .= ':' . ($to == INF ? '*' : (int) $to);
         }
 
         return $this->requestAndResponse('COPY', array($set, $this->escapeString($folder)), true);
@@ -824,13 +831,15 @@ class Zend_Mail_Protocol_Imap
         if (!$response) {
             return $response;
         }
-        
+
         foreach ($response as $ids) {
             if ($ids[0] == 'SEARCH') {
                 array_shift($ids);
+
                 return $ids;
             }
         }
+
         return array();
     }
 

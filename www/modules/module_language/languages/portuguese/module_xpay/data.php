@@ -20,7 +20,6 @@ define("__XPAY_LAST_PAYMENTS", "Pagamentos realizados");
 define("__XPAY_CREATE_PAYMENT", "Registrar Pagamento Manual");
 define("__XPAY_EDIT_INVOICE", "Alterar Fatura");
 
-
 define("__XPAY_LAST_FILES", "Últimos arquivos enviados");
 
 define("__XPAY_TITLE", "Pagamentos");
@@ -49,13 +48,11 @@ define("__XPAY_DUE_DAY", "Dia de vencimento");
 
 define("__XPAY_INSTANCE_TYPE", "Método de Pagamento");
 
-
 /* BOTÕES */
 define("__XPAY_CREATE_NEW_NEGOCIATION", "Criar nova Negociação");
 define("__XPAY_SAVE_NEGOCIATION", "Salvar Negociação");
 define("__XPAY_VIEW_ALL_LIST", "Ver lista completa");
 define("__XPAY_SUBMIT", "Salvar");
-
 
 /* FRASES */
 define("__XPAY_UNKNOW_ERROR", "Ocorreu um erro desconhecido. Caso o problema persista, favor entrar em contato");
@@ -72,5 +69,5 @@ define("__XPAY_DAYS", "d");
 define("__XPAY_REAL_PAID_VALUE", "Valor Pago");
 define("__XPAY_TO_SUBTRACT_VALUE", "Considerado");
 define("__XPAY_JUSTIFICATION", "Justificativa");
-define("__XPAY_DUE_DATE", "Data de Vencimento"); 
+define("__XPAY_DUE_DATE", "Data de Vencimento");
 define("__XPAY_VALUE", "Valor");

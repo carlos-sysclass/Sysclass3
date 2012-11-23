@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "Modulul FAQ");//FAQ Module
 define("_FAQ_MAIN", "Pagina principală");//Main page
 define("_FAQ_MANAGEMENT", "Admin Intrebari frecvente");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "Intrebari frecvente a fost actualizat cu succes");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Intrebari frecvente nu a putut fi actualizat");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Inserare intrare FAQ");//Insert FAQ entry

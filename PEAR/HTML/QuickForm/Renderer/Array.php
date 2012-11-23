@@ -3,7 +3,7 @@
 
 /**
  * A concrete renderer for HTML_QuickForm, makes an array of form contents
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -275,7 +275,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         // render label(s)
         $labels = $element->getLabel();
         if (is_array($labels) && $this->_staticLabels) {
-            foreach($labels as $key => $label) {
+            foreach ($labels as $key => $label) {
                 $key = is_int($key)? $key + 1: $key;
                 if (1 === $key) {
                     $ret['label'] = $label;
@@ -297,6 +297,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         } else {
             $ret['html']      = $element->toHtml();
         }
+
         return $ret;
     }
 
@@ -338,4 +339,3 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         }
     }
 }
-?>

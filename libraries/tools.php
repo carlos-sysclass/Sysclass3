@@ -8,7 +8,8 @@
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
-function formatStaticText($value) {
+function formatStaticText($value)
+{
      $toggleEditorCode = '
   <div>
             <img onclick = "toggleEditor(\'data\',\'simpleEditor\');" class = "handle" src = "images/16x16/order.png" title = "'._TOGGLEHTMLEDITORMODE.'" alt = "'._TOGGLEHTMLEDITORMODE.'" />&nbsp;
@@ -23,7 +24,8 @@ function formatStaticText($value) {
      return $value['label'];
 }
 
-function filterSortPage($dataSource) {
+function filterSortPage($dataSource)
+{
  isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
  if (isset($_GET['sort']) && $_GET['sort'] && eF_checkParameter($_GET['sort'], 'text')) {
@@ -48,7 +50,8 @@ function filterSortPage($dataSource) {
  return array($tableSize, $dataSource);
 }
 
-function prepareFormRenderer($form) {
+function prepareFormRenderer($form)
+{
  $form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
  $form -> setRequiredNote(_REQUIREDNOTE);
 
@@ -69,7 +72,8 @@ function prepareFormRenderer($form) {
     return $renderer;
 }
 
-function createConstraintsFromSortedTable() {
+function createConstraintsFromSortedTable()
+{
  $constraints = array();
 
  isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $constraints['offset'] = $_GET['offset'] : null;
@@ -87,14 +91,15 @@ function createConstraintsFromSortedTable() {
 
  if (isset($_COOKIE['toggle_active']) && $_COOKIE['toggle_active'] == 1) {
   $constraints['active'] = 1;
- } else if (isset($_COOKIE['toggle_active']) && $_COOKIE['toggle_active'] == -1) {
+ } elseif (isset($_COOKIE['toggle_active']) && $_COOKIE['toggle_active'] == -1) {
   $constraints['active'] = 0;
  }
 
  return $constraints;
 }
 
-function handleAjaxExceptions($e) {
+function handleAjaxExceptions($e)
+{
  header("HTTP/1.0 500");
  $message = str_replace("<br>", ",", $e -> getMessage());
  if ($e -> getCode()) {
@@ -104,7 +109,8 @@ function handleAjaxExceptions($e) {
  exit;
 }
 
-function handleNormalFlowExceptions($e) {
+function handleNormalFlowExceptions($e)
+{
  $GLOBALS['smarty'] -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
  $GLOBALS['message'] = $e -> getMessage();
  if ($e -> getCode()) {
@@ -120,11 +126,13 @@ function handleNormalFlowExceptions($e) {
  */
 if (!function_exists('json_decode')) {
     require_once 'external/facebook-platform/php/jsonwrapper/JSON/JSON.php';
-    function json_decode($arg) {
+    function json_decode($arg)
+    {
         global $services_json;
         if (!isset($services_json)) {
             $services_json = new Services_JSON();
         }
+
         return $services_json->decode($arg);
     }
 }
@@ -143,10 +151,12 @@ if (!function_exists('json_decode')) {
  * @param: template_substituions: the array in the form array("fieldA" => "valueA",...) to substitute ###fieldA### with valueA
 
  */
-function eF_formulateTemplateMessage($message, $template_substitutions) {
+function eF_formulateTemplateMessage($message, $template_substitutions)
+{
     foreach ($template_substitutions as $field => $value) {
         $message = str_replace("###" . $field . "###", $value, $message);
     }
+
     return $message;
 }
 /**
@@ -162,7 +172,8 @@ function eF_formulateTemplateMessage($message, $template_substitutions) {
  * @return unknown
 
  */
-function profile($start = true, &$path) {
+function profile($start = true, &$path)
+{
     $outputDirectory = 'www/profiles';
     if (!is_dir(G_ROOTPATH.$outputDirectory)) {
         mkdir(G_ROOTPATH.$outputDirectory, 0755);
@@ -173,6 +184,7 @@ function profile($start = true, &$path) {
         }
     } else {
         $str = '<a href = "pprofp.php?data_file='.basename($path).'&opt=u">'.basename($path).'</a>';
+
         return $str;
     }
 }
@@ -203,7 +215,8 @@ function profile($start = true, &$path) {
  * @since 3.5.0
 
  */
-function debug($mode = true, $level = E_ALL) {
+function debug($mode = true, $level = E_ALL)
+{
     ini_set("display_errors", true);
     if ($mode) {
   echo "Starting debug output";
@@ -238,7 +251,7 @@ function eF_truncatePath($string, $length = 40, $pathLimit = 6, $etc = '...', $d
   for ($k = 1; $k < $piecesNum; $k++) {
    if ($piecesLength[$k] > $pathLimit) {
     $piecesLength[$k] = $piecesLength[$k] - round($piecesLength[$k]*($piecesNum -$k)/10);
-    if(array_sum($piecesLength) <= $length) {
+    if (array_sum($piecesLength) <= $length) {
      break;
     }
    }
@@ -260,6 +273,7 @@ function eF_truncatePath($string, $length = 40, $pathLimit = 6, $etc = '...', $d
  }
  $piecesFinal[] = $lastElement;
  $finalString = implode($delimiter, $piecesFinal); // with tags
+
  return $finalString;
 }
 /**
@@ -295,7 +309,8 @@ function eF_truncatePath($string, $length = 40, $pathLimit = 6, $etc = '...', $d
  * @since 3.6.0
 
  */
-function formatLogin($login, $fields = array(), $duplicate = true) {
+function formatLogin($login, $fields = array(), $duplicate = true)
+{
     //The function is usually called by a filter, which passes a preg matches array, where index 1 holds the login
     !is_array($login) OR $login = $login[1];
  $roles = MagesterUser :: getRoles(true);
@@ -303,6 +318,7 @@ function formatLogin($login, $fields = array(), $duplicate = true) {
     if (!empty($fields)) {
         $replacements = array($fields['surname'], $fields['name'], $fields['login'], mb_substr($fields['name'], 0, 1), $roles[$fields['user_type']]);
         $format = str_replace($tags, $replacements, $GLOBALS['configuration']['username_format']);
+
         return $format;
     } else {
      if (!isset($GLOBALS['_usernames'])) {
@@ -322,6 +338,7 @@ function formatLogin($login, $fields = array(), $duplicate = true) {
     }
    }
      }
+
      return $GLOBALS['_usernames'][$login];
     }
 }
@@ -352,8 +369,10 @@ function formatLogin($login, $fields = array(), $duplicate = true) {
  * @access public
 
  */
-function formatScore($score) {
+function formatScore($score)
+{
     $scoreString = number_format($score, 2, $GLOBALS['configuration']['decimal_point'], '');
+
     return $scoreString;
 }
 /**
@@ -387,7 +406,8 @@ function formatScore($score) {
  * @since 3.6.0
 
  */
-function formatPrice($price, $recurring = false, $showDiscount = false) {
+function formatPrice($price, $recurring = false, $showDiscount = false)
+{
     $recurringOptions = array('D' => _DAYSCONDITIONAL,
             'W' => _WEEKSCONDITIONAL,
             'M' => _MONTHSCONDITIONAL,
@@ -412,6 +432,7 @@ function formatPrice($price, $recurring = false, $showDiscount = false) {
         $price = '<span class = "normalPrice">'.$price.' </span>';
     }
     $price = $price.$recurringString;
+
     return $price;
 }
 /**
@@ -449,22 +470,38 @@ function formatPrice($price, $recurring = false, $showDiscount = false) {
  * @return string The date in human-readable format
 
  */
-function formatTimestamp($timestamp, $mode = false) {
+function formatTimestamp($timestamp, $mode = false)
+{
     if (!$timestamp) {
         return '';
     }
     switch ($GLOBALS['configuration']['date_format']) {
-        case "YYYY/MM/DD": $format = '%Y %b %d'; break;
-        case "MM/DD/YYYY": $format = '%b %d %Y'; break;
-        case "DD/MM/YYYY": default: $format = '%d %b %Y'; break;
+        case "YYYY/MM/DD":
+        	$format = '%Y %b %d';
+        	break;
+        case "MM/DD/YYYY":
+        	$format = '%b %d %Y';
+        	break;
+        case "DD/MM/YYYY":
+		default:
+        	$format = '%d %b %Y';
+        	break;
     }
     switch ($mode) {
-        case 'time': $format .= ', %H:%M:%S'; break;
-        case 'time_nosec': $format .= ', %H:%M'; break;
-        case 'time_only_nosec': $format = '%H:%M'; break;
-        default: break;
+        case 'time':
+        	$format .= ', %H:%M:%S';
+        	break;
+        case 'time_nosec':
+        	$format .= ', %H:%M';
+        	break;
+        case 'time_only_nosec':
+        	$format = '%H:%M';
+        	break;
+        default:
+        	break;
     }
     $dateString = iconv(_CHARSET, 'UTF-8', strftime($format, $timestamp));
+
     return $dateString;
 }
 /**
@@ -490,12 +527,20 @@ function formatTimestamp($timestamp, $mode = false) {
  * @return string The date format based on system settings
 
  */
-function getDateFormat() {
+function getDateFormat()
+{
     switch ($GLOBALS['configuration']['date_format']) {
-        case "YYYY/MM/DD": $format = 'YMd'; break;
-        case "MM/DD/YYYY": $format = 'MdY'; break;
-        case "DD/MM/YYYY": default: $format = 'dMY'; break;
+        case "YYYY/MM/DD":
+        	$format = 'YMd';
+        	break;
+        case "MM/DD/YYYY":
+        	$format = 'MdY';
+        	break;
+        case "DD/MM/YYYY":
+        	default: $format = 'dMY';
+        	break;
     }
+
     return $format;
 }
 /**
@@ -527,13 +572,15 @@ function getDateFormat() {
  * @return string The date in human-readable format
 
  */
-function formatHTMLTableToText($table) {
+function formatHTMLTableToText($table)
+{
  $result = str_replace("<tr>", "<tr>\n", $table);
  $result = str_replace("<br>", "\n", $result);
  $result = str_replace("<td>", "<td>\t", $result);
  $result = str_replace("&nbsp;", " ", $result);
  $result = str_replace("&rarr;", "-->", $result);
  $result = strip_tags($result);
+
  return $result;
 }
 /**
@@ -541,7 +588,8 @@ function formatHTMLTableToText($table) {
 * Sort multi-dimensional arrays
 
 */
-function eF_multiSort($array, $sort_by, $sort_order = 'asc') {
+function eF_multiSort($array, $sort_by, $sort_order = 'asc')
+{
     if (!in_array($sort_by, array_keys(current($array)))) {
         return $array;
     }
@@ -561,9 +609,11 @@ function eF_multiSort($array, $sort_by, $sort_order = 'asc') {
         //$temp[] = $array[$key];          //Use this in order to have keys reindexed
         $temp[$key] = $array[$key]; //Use this in order to have keys preserved
     }
+
     return $temp;
 }
-function setWritePermissions($dir) {
+function setWritePermissions($dir)
+{
  $failedDirectories = $failedFiles = array();
  $d = new RecursiveDirectoryIterator($dir);
  if (!chmod($dir, 0755)) {
@@ -574,15 +624,17 @@ function setWritePermissions($dir) {
    if (!chmod($path -> getPathName(), 0755)) {
     $failedDirectories[] = $path -> getPathName();
    }
-  } else if ($path -> isFile()) {
+  } elseif ($path -> isFile()) {
    if (!chmod($path -> getPathName(), 0644)) {
     $failedFiles[] = $path -> getPathName();
    }
   }
  }
+
  return array($failedDirectories, $failedFiles);
 }
-function setReadPermissions($dir) {
+function setReadPermissions($dir)
+{
  $failedDirectories = $failedFiles = array();
  $d = new RecursiveDirectoryIterator($dir);
  if (!chmod($dir, 0555)) {
@@ -593,15 +645,17 @@ function setReadPermissions($dir) {
    if (!chmod($path -> getPathName(), 0555)) {
     $failedDirectories[] = $path -> getPathName();
    }
-  } else if ($path -> isFile()) {
+  } elseif ($path -> isFile()) {
    if (!chmod($path -> getPathName(), 0444)) {
     $failedFiles[] = $path -> getPathName();
    }
   }
  }
+
  return array($failedDirectories, $failedFiles);
 }
-function checkPermissions($dir) {
+function checkPermissions($dir)
+{
  $failedDirectories = $failedFiles = array();
  $magesterDirectories = array("www", "libraries", "Zend", "PEAR", "backups", "upload");
  $d = new RecursiveDirectoryIterator($dir);
@@ -617,9 +671,10 @@ function checkPermissions($dir) {
    }
   }
  }
- if (!is_writable(G_ROOTPATH)){
+ if (!is_writable(G_ROOTPATH)) {
   $failedDirectories[] = G_ROOTPATH;
  }
+
  return array($failedDirectories, $failedFiles);
 }
 /**
@@ -647,8 +702,10 @@ function checkPermissions($dir) {
 * @version 1.0
 
 */
-function eF_encodeIP($dotquad_ip) {
+function eF_encodeIP($dotquad_ip)
+{
     $ip_sep = explode('.', $dotquad_ip);
+
     return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
 }
 /**
@@ -678,7 +735,8 @@ function eF_encodeIP($dotquad_ip) {
 * @version 1.0
 
 */
-function eF_decodeIP($hex_ip) {
+function eF_decodeIP($hex_ip)
+{
     if (!$hex_ip) {
         return '';
     }
@@ -686,6 +744,7 @@ function eF_decodeIP($hex_ip) {
                   hexdec(mb_substr($hex_ip,2,2)).'.'.
                   hexdec(mb_substr($hex_ip,4,2)).'.'.
                   hexdec(mb_substr($hex_ip,6,2));
+
     return $dotquad_ip;
 }
 /**
@@ -715,7 +774,7 @@ function eF_checkIP()
      $client_ip_parts = explode('.', $client_ip);
         $allowed_ips = explode(",", preg_replace("/\s+/", "", $allowedIPs)); //explode ips into an array, after stripping off any whitespace
         $ok1 = false;
-        foreach($allowed_ips as $ip) {
+        foreach ($allowed_ips as $ip) {
             $ip_parts = explode('.', $ip);
             $count = 0;
             $temp = true;
@@ -735,12 +794,12 @@ function eF_checkIP()
         $client_ip_parts = explode('.', $client_ip);
         $allowed_ips = explode(",", preg_replace("/\s+/", "", $disAllowedIPs)); //explode ips into an array, after stripping off any whitespace
         $ok2 = false;
-        foreach($allowed_ips as $ip) {
+        foreach ($allowed_ips as $ip) {
             $ip_parts = explode('.', $ip);
             $count = 0;
             $temp = true;
             while ($temp && $count < 4) {
-                if ($client_ip_parts[$count] != $ip_parts[$count] && $ip_parts[$count] != '*' ) {
+                if ($client_ip_parts[$count] != $ip_parts[$count] && $ip_parts[$count] != '*') {
                     $temp = false;
                 }
                 $count++;
@@ -748,6 +807,7 @@ function eF_checkIP()
             $ok2 = $ok2 | $temp;
         }
     }
+
     return $ok1 & !$ok2; //For the user to be able to login, he must either be in the first group or the second group
 }
 /**
@@ -769,7 +829,8 @@ function eF_checkIP()
 * @version 0.8
 
 */
-function eF_convertTextToSmilies($str) {
+function eF_convertTextToSmilies($str)
+{
     $img_str = ' <image src = "'.G_CURRENTTHEMEURL.'images/smilies/icon_';
     $text_array = array(':)', ':-)',
                            ':(', ':-(',
@@ -847,6 +908,7 @@ function eF_checkUserLdap($login, $password)
     if (!$b) {
         return 0; //login / password values don't match
     }
+
     return true;
 }
 /**
@@ -876,6 +938,7 @@ function eF_getLdapValues($filter, $attributes)
     $ds = eF_ldapConnect();
     $sr = ldap_search($ds, $basedn, $filter, $attributes);
     $result = ldap_get_entries($ds, $sr);
+
     return $result;
 }
 /**
@@ -893,7 +956,8 @@ function eF_getLdapValues($filter, $attributes)
 * @version 1.0
 
 */
-function eF_ldapConnect() {
+function eF_ldapConnect()
+{
     $server = eF_getTableData("configuration", "value", "name='ldap_server'");
     $port = eF_getTableData("configuration", "value", "name='ldap_port'");
     $binddn = eF_getTableData("configuration", "value", "name='ldap_binddn'");
@@ -904,6 +968,7 @@ function eF_ldapConnect() {
     ldap_set_option($ds, LDAP_OPT_TIMELIMIT, 10);
     ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
     $b = ldap_bind($ds, $GLOBALS['configuration']['ldap_binddn'], $GLOBALS['configuration']['ldap_password']);
+
     return $ds;
 }
 /**
@@ -1016,28 +1081,33 @@ function eF_checkParameter($parameter, $type, $correct = false)
         case 'uint':
         case 'id':
             if (!preg_match("/^[0-9]{1,100}$/", $parameter)) { //Caution: If 0 is met, then it will return 0 and not false! so, it must checked against false to make sure
+
                 return false;
             }
             break;
         case 'login':
             //if (!preg_match("/^[^0-9]_*\w+(\w*[._@-]*\w*)*$/", $parameter)) {              //This means: begins with 0 or more '_', never a number, followed by at least 1 word character, followed by any combination of .,_,-,@ and word characters.
             if (!preg_match("/^_*\w+(\w*[._@-]*\w*)*$/", $parameter) || mb_strlen($parameter) > 100) { //This means: begins with 0 or more '_',                 followed by at least 1 word character, followed by any combination of .,_,-,@ and word characters.
+
                 return false;
             }
             break;
         case 'email':
             if (!preg_match("/^([a-zA-Z0-9_\.\-'])+\@(([a-zA-Z0-9_\-])+\.)+([a-zA-Z0-9]{2,4})+$/", $parameter)) { //This means: begins with 0 or more '_' or '-', followed by at least 1 word character, followed by any combination of '_', '-', '.' and word characters, then '@', then the same as before, then the '.' and then 1 ore more characters.
+
                 return false;
             }
             break;
         case 'filename':
         case 'file':
             if (preg_match("/^.*((\.\.)|(\/)|(\\\)).*$/", $parameter)) { //File name must not contain .. or slashes of any kind
+
                 return false;
             }
             break;
         case 'directory':
             if (preg_match("/^.*((\.\.)|(\\\)).*$/", $parameter)) { //Directory is the same as filename, except that it may contain forward slashes
+
                 return false;
             }
             break;
@@ -1063,6 +1133,7 @@ function eF_checkParameter($parameter, $type, $correct = false)
         break;
         case 'ldap_attribute':
             if (!preg_match("/^[A-Za-z0-9:;\-_]{1,100}$/", $parameter)) { //An ldap attribute may be of the form: cn:lang-el;
+
                 return false;
             }
         break;
@@ -1094,10 +1165,13 @@ function eF_checkParameter($parameter, $type, $correct = false)
        default:
             break;
     }
+
     return $parameter;
 }
-function strip_script_tags($str) {
+function strip_script_tags($str)
+{
     $str = preg_replace("/<script>(.*)<\/script>/i", "$1", $str);
+
     return $str;
 }
 /**
@@ -1176,7 +1250,7 @@ function strip_script_tags($str) {
 function eF_getMenu()
 {
     $menu = array();
-    switch($_SESSION['s_type']) {
+    switch ($_SESSION['s_type']) {
         case 'administrator':
             $menu['general']['control_panel'] = array('title' => _CONTROLCENTER, 'link' => 'administrator.php?ctg=control_panel', 'image' => 'home');
             $menu['general']['users'] = array('title' => _USERS, 'link' => 'administrator.php?ctg=users', 'image' => 'users');
@@ -1337,6 +1411,7 @@ function eF_getMenu()
             $menu['general']['logout'] = array('title' => _LOGOUT, 'link' => '/index.php?logout=true', 'image' => 'logout', 'target' => "mainframe");
         break;
     }
+
     return $menu;
 }
 /**
@@ -1391,6 +1466,7 @@ function eF_convertIntervalToTime($interval, $ago = false)
             if (round($hours / 24) == 1 && $hours % 24 >= 1) {
                 $str.= ' '.($hours % 24).' '.mb_strtolower($hours == 1 ? _HOUR : _HOURS);
             }
+
             return $str;
         } elseif ($hours > 0) {
             return $hours.' '.mb_strtolower($hours == 1 ? _HOUR : _HOURS);
@@ -1403,59 +1479,65 @@ function eF_convertIntervalToTime($interval, $ago = false)
         return array('hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds);
     }
 }
-function eF_getSurveyInfo($lesson_id){
+function eF_getSurveyInfo($lesson_id)
+{
     $survey_about = eF_getTableData("surveys","id,survey_code,survey_name,start_date,end_date,status","lessons_ID=".$lesson_id);
     $survey_questions = array();
     for($i = 0 ; $i < sizeof($survey_about) ; $i ++)
         $survey_questions[$i] = eF_getTableData("questions_to_surveys","count(*)","surveys_ID=".$survey_about[$i]['id']);
     $data = array('survey_info' => $survey_about,
                   'survey_questions' => $survey_questions);
+
     return $data;
 }
-function eF_getSurveyQuestions($survey_id){
+function eF_getSurveyQuestions($survey_id)
+{
     $data = eF_getTableData("questions_to_surveys","id,surveys_ID,father_ID,type,question,answers,created,info","surveys_ID=".$survey_id,"father_ID ASC");
     if(sizeof($data) == 0)
+
         return 0;
     else
     return $data;
 }
-function eF_getSurveyStatistics($survey_id){
+function eF_getSurveyStatistics($survey_id)
+{
     $survey_questions = eF_getTableData("questions_to_surveys","type,question,answers","surveys_ID=".$survey_id,"father_ID ASC");
     $done_users = eF_getTableData("users_to_done_surveys","users_LOGIN","surveys_ID=".$survey_id);
     $votes = array();
-    for($i = 0 ; $i < sizeof($done_users) ; $i +=1){
+    for ($i = 0 ; $i < sizeof($done_users) ; $i +=1) {
         $user = '"'.$done_users[$i]['users_LOGIN'].'"';
         $user_answers = eF_getTableData("survey_questions_done sqd ,questions_to_surveys qts","sqd.user_answers,qts.type","sqd.question_ID = qts.id AND sqd.surveys_ID=".$survey_id." AND qts.surveys_ID=".$survey_id." AND qts.surveys_ID=sqd.surveys_ID AND sqd.users_LOGIN=".$user,"qts.father_ID ASC");
         $vote = array();
-        for($j = 0 ; $j < sizeof($survey_questions) ; $j+=1){
-            if($user_answers[$j]['type'] == 'multiple_many'){
+        for ($j = 0 ; $j < sizeof($survey_questions) ; $j+=1) {
+            if ($user_answers[$j]['type'] == 'multiple_many') {
                 $choices = unserialize($survey_questions[$j]['answers']);
                 $type = array_keys($choices);
                 $keys = array_keys($choices[$type[0]]);
                 $needles = unserialize($user_answers[$j]['user_answers']);
-                for($k = 0 ; $k < sizeof($choices[$type[0]]) ; $k +=1){
+                for ($k = 0 ; $k < sizeof($choices[$type[0]]) ; $k +=1) {
                     $place = array_search($needles[$k],$choices[$type[0]]);
-                    if((string)$place != ''){
+                    if ((string) $place != '') {
                         $vote[$j][$keys[$k]] =$place;
-                    }else{
+                    } else {
                         $vote[$j][$keys[$k]] == -1;
                     }
                 }
-            }else{
-                if($user_answers[$j]['type'] != 'development'){
+            } else {
+                if ($user_answers[$j]['type'] != 'development') {
                     $choices = unserialize($survey_questions[$j]['answers']);
                     $needle = unserialize($user_answers[$j]['user_answers']);
                     $type = array_keys($choices);
                     $keys = array_keys($choices[$type[0]]);
                     $place = array_search($needle,$choices[$type[0]]);
                     $vote[$j]=$place;
-                }else{
+                } else {
                     $vote[$j] =1;
                 }
             }
         }
         $votes[$i] = $vote;
     }
+
     return array('questions' => $survey_questions , 'votes' => $votes);
 }
 /**
@@ -1489,7 +1571,8 @@ function eF_getSurveyStatistics($survey_id){
 * @version 1.0
 
 */
-function eF_checkNotExist($needle, $type) {
+function eF_checkNotExist($needle, $type)
+{
     switch ($type) {
         case 'login':
             $result = eF_getTableData("users", "login", "login='$needle' and archive=0");
@@ -1514,14 +1597,17 @@ function eF_checkNotExist($needle, $type) {
     }
 }
 if (!function_exists("pr")) {
-	function pr($ar) {
+	function pr($ar)
+	{
 	    echo "<pre>";print_r($ar);echo "</pre>";
 	}
 }
-function pre($ar) {
+function pre($ar)
+{
     echo "<pre>";print_r($ar);echo "</pre>";exit;
 }
-function vd($ar) {
+function vd($ar)
+{
     echo "<pre>";var_dump($ar);echo "</pre>";
 }
 /**
@@ -1549,7 +1635,8 @@ function vd($ar) {
 * @version 1.0
 
 */
-function eF_filterData($data, $filter) {
+function eF_filterData($data, $filter)
+{
  $filter = trim(mb_strtolower($filter), '||');
  if ($filter) {
      foreach ($data as $key => $value) {
@@ -1559,6 +1646,7 @@ function eF_filterData($data, $filter) {
          }
      }
  }
+
     return $data;
 }
 /**
@@ -1580,13 +1668,15 @@ function eF_filterData($data, $filter) {
 *
 
 **/
-function eF_getRelativeModuleImagePath($imageFile) {
+function eF_getRelativeModuleImagePath($imageFile)
+{
     // If an image inside hte
     if ($position = strpos($imageFile, "modules")) {
         $image_path = G_SERVERNAME.substr($imageFile, $position);
     } else {
         $image_path = "../".$imageFile;
     }
+
     return $image_path;
 }
 /**
@@ -1618,11 +1708,12 @@ function eF_getRelativeModuleImagePath($imageFile) {
 *
 
 **/
-function eF_getModuleMenu($modules, $menu_category) {
+function eF_getModuleMenu($modules, $menu_category)
+{
     $links = array();
     foreach ($modules as $module) {
         if ($menu_category != "current_lesson" || ($menu_category == "current_lesson" && $GLOBALS['currentLesson'] -> options[$module -> className])) {
-				
+
             $sidebarLinks = $module -> getSidebarLinkInfo($benchmark);
             isset($sidebarLinks[$menu_category]) ? $sidebarLinks = $sidebarLinks[$menu_category] : $sidebarLinks = array();
             foreach ($sidebarLinks as $mod_link) {
@@ -1637,6 +1728,7 @@ function eF_getModuleMenu($modules, $menu_category) {
             }
         }
     }
+
     return $links;
 }
 /**
@@ -1650,7 +1742,8 @@ function eF_getModuleMenu($modules, $menu_category) {
 * Used for checking for events to be executed
 
 */
-function eF_loadAllModules($onlyActive = false) {
+function eF_loadAllModules($onlyActive = false)
+{
     if ($onlyActive) {
      $modulesDB = eF_getTableData("modules","*","active=1");
     } else {
@@ -1665,7 +1758,7 @@ function eF_loadAllModules($onlyActive = false) {
       $className = $module['className'];
       // If a module is to be updated then its class should not be loaded now
       if (!($currentUser -> getType() == "administrator" && $_GET['ctg'] == "control_panel" && $_GET['op'] == "modules" && $_GET['upgrade'] == $className)) {
-       if(is_file(G_MODULESPATH.$folder."/".$className.".class.php")) {
+       if (is_file(G_MODULESPATH.$folder."/".$className.".class.php")) {
         require_once G_MODULESPATH.$folder."/".$className.".class.php";
         if (class_exists($className)) {
          $modules[$className] = new $className("", $folder);
@@ -1680,6 +1773,7 @@ function eF_loadAllModules($onlyActive = false) {
       }
      }
     }
+
     return $modules;
 }
 /**
@@ -1688,7 +1782,8 @@ function eF_loadAllModules($onlyActive = false) {
 
  */
 if (!function_exists('memory_get_peak_usage')) {
- function memory_get_peak_usage() {
+ function memory_get_peak_usage()
+ {
   return memory_get_usage();
  }
 }
@@ -1697,51 +1792,46 @@ if (!function_exists('memory_get_peak_usage')) {
  * Supplementary json_encode in case php version is < 5.2 (taken from http://gr.php.net/json_encode)
 
  */
-if (!function_exists('json_encode'))
-{
+if (!function_exists('json_encode')) {
     function json_encode($a=false)
     {
         if (is_null($a)) return 'null';
         if ($a === false) return 'false';
         if ($a === true) return 'true';
-        if (is_scalar($a))
-        {
-            if (is_float($a))
-            {
+        if (is_scalar($a)) {
+            if (is_float($a)) {
                 // Always use "." for floats.
                 return floatval(str_replace(",", ".", strval($a)));
             }
-            if (is_string($a))
-            {
+            if (is_string($a)) {
                 static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
+
                 return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
-            }
-            else
+            } else
+
             return $a;
         }
         $isList = true;
-        for ($i = 0, reset($a); $i < count($a); $i++, next($a))
-        {
-            if (key($a) !== $i)
-            {
+        for ($i = 0, reset($a); $i < count($a); $i++, next($a)) {
+            if (key($a) !== $i) {
                 $isList = false;
                 break;
             }
         }
         $result = array();
-        if ($isList)
-        {
+        if ($isList) {
             foreach ($a as $v) $result[] = json_encode($v);
+
             return '[' . join(',', $result) . ']';
-        }
-        else
-        {
+        } else {
             foreach ($a as $k => $v) $result[] = json_encode($k).':'.json_encode($v);
+
             return '{' . join(',', $result) . '}';
         }
     }
 }
-function printInPdfRows($str, $pdf, $row_chars = false) {
+function printInPdfRows($str, $pdf, $row_chars = false)
+{
     // Set the characters per pdf row
     if ($row_chars) {
         $max_chars_per_line = $row_chars;
@@ -1762,18 +1852,20 @@ function printInPdfRows($str, $pdf, $row_chars = false) {
                 $str_len -= ($len+1);
             }
             $pdf->Cell(170, 5, $row, 0, 1, L, 0);
-        } while($str_len > 0);
+        } while ($str_len > 0);
     } else {
         $pdf->Cell(170, 5, $str, 0, 1, L, 0);
     }
+
     return true;
 }
 // Normalize picture to $maxNewWidth x $maxNewHeightof dimensions
-function eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight) {
+function eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight)
+{
     list($width, $height) = getimagesize($filename);
     $newwidth = $width;
     $newheight = $height;
-    while($newwidth > $maxNewWidth || $newheight > $maxNewHeight) {
+    while ($newwidth > $maxNewWidth || $newheight > $maxNewHeight) {
         if ($newwidth > $maxNewWidth) {
             $newheight = ceil($maxNewWidth * $newheight/$newwidth);
             $newwidth = $maxNewWidth;
@@ -1783,12 +1875,14 @@ function eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight) {
             $newheight = $maxNewHeight;
         }
     }
+
     return array($newwidth, $newheight);
 }
 // Normalize picture of type $extension (png, gif, jpg or jpeg) with $filename
 // to dimensions to $maxNewWidth x DimY or DimX x $maxNewHeight
 // and overwriting existing picture with the normalized one
-function eF_normalizeImage($filename, $extension, $maxNewWidth, $maxNewHeight) {
+function eF_normalizeImage($filename, $extension, $maxNewWidth, $maxNewHeight)
+{
     if (!extension_loaded('gd') && !extension_loaded('gd2')) {
         return false;
     }
@@ -1796,10 +1890,12 @@ function eF_normalizeImage($filename, $extension, $maxNewWidth, $maxNewHeight) {
     list($width, $height) = getimagesize($filename);
     // Get normalized dimensions
     list($newwidth, $newheight) = eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight);
+
     return eF_createImage($filename, $extension, $width, $height, $newwidth, $newheight);
 }
 // Recreate an image (width x height) with new dimensions (newwidth x newheight)
-function eF_createImage($filename, $extension, $width, $height, $newwidth, $newheight) {
+function eF_createImage($filename, $extension, $width, $height, $newwidth, $newheight)
+{
     if (!extension_loaded('gd') && !extension_loaded('gd2')) {
         return false;
     }
@@ -1808,7 +1904,7 @@ function eF_createImage($filename, $extension, $width, $height, $newwidth, $newh
         $source =imagecreatefrompng($filename);
         imagealphablending($thumb, false);
         imagesavealpha($thumb, true);
-    } else if ($extension == "gif") {
+    } elseif ($extension == "gif") {
         $source =imagecreatefromgif($filename);
         imagecolortransparent($thumb, imagecolorallocate($thumb, 0, 0, 0));
         imagealphablending($thumb, true);
@@ -1819,7 +1915,7 @@ function eF_createImage($filename, $extension, $width, $height, $newwidth, $newh
     imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
     if ($extension == "png") {
         return imagepng($thumb, $filename, 0, PNG_ALL_FILTERS);
-    } else if ($extension == "gif") {
+    } elseif ($extension == "gif") {
         return imagegif($thumb, $filename, 500);
     } else {
         return imagejpeg($thumb, $filename,100);
@@ -1842,7 +1938,7 @@ function utf8ToUnicode(&$str)
   $mBytes = 1; // cached expected number of octets in the current sequence
   $out = array();
   $len = strlen($str);
-  for($i = 0; $i < $len; $i++) {
+  for ($i = 0; $i < $len; $i++) {
     $in = ord($str{$i});
     if (0 == $mState) {
       // When mState is zero we expect either a US-ASCII character or a
@@ -1851,25 +1947,25 @@ function utf8ToUnicode(&$str)
         // US-ASCII, pass straight through.
         $out[] = $in;
         $mBytes = 1;
-      } else if (0xC0 == (0xE0 & ($in))) {
+      } elseif (0xC0 == (0xE0 & ($in))) {
         // First octet of 2 octet sequence
         $mUcs4 = ($in);
         $mUcs4 = ($mUcs4 & 0x1F) << 6;
         $mState = 1;
         $mBytes = 2;
-      } else if (0xE0 == (0xF0 & ($in))) {
+      } elseif (0xE0 == (0xF0 & ($in))) {
         // First octet of 3 octet sequence
         $mUcs4 = ($in);
         $mUcs4 = ($mUcs4 & 0x0F) << 12;
         $mState = 2;
         $mBytes = 3;
-      } else if (0xF0 == (0xF8 & ($in))) {
+      } elseif (0xF0 == (0xF8 & ($in))) {
         // First octet of 4 octet sequence
         $mUcs4 = ($in);
         $mUcs4 = ($mUcs4 & 0x07) << 18;
         $mState = 3;
         $mBytes = 4;
-      } else if (0xF8 == (0xFC & ($in))) {
+      } elseif (0xF8 == (0xFC & ($in))) {
         /* First octet of 5 octet sequence.
 
          *
@@ -1889,7 +1985,7 @@ function utf8ToUnicode(&$str)
         $mUcs4 = ($mUcs4 & 0x03) << 24;
         $mState = 4;
         $mBytes = 5;
-      } else if (0xFC == (0xFE & ($in))) {
+      } elseif (0xFC == (0xFE & ($in))) {
         // First octet of 6 octet sequence, see comments for 5 octet sequence.
         $mUcs4 = ($in);
         $mUcs4 = ($mUcs4 & 1) << 30;
@@ -1901,6 +1997,7 @@ function utf8ToUnicode(&$str)
          * octet of a multi-octet sequence.
 
          */
+
         return false;
       }
     } else {
@@ -1950,15 +2047,17 @@ function utf8ToUnicode(&$str)
          * Incomplete multi-octet sequence.
 
          */
+
         return false;
       }
     }
   }
   $outstr = "";
-  for ($i = 0; $i < sizeof($out); $i++){
+  for ($i = 0; $i < sizeof($out); $i++) {
     $outstr.= "\u".$out[$i];
     $outstr.= "\u".$out[$i];
   }
+
   return $outstr;
 }
 /**
@@ -2016,9 +2115,11 @@ function eF_dateFormat($returnSpaces = true, $format = false)
                 break;
             }
     }
+
     return $output;
 }
-function eF_assignSupervisorMissingSubBranchesRecursive() {
+function eF_assignSupervisorMissingSubBranchesRecursive()
+{
  $count = 0;
  $fixed = true;
  while ($fixed && $count++ < 10) {
@@ -2027,7 +2128,8 @@ function eF_assignSupervisorMissingSubBranchesRecursive() {
  }
  //exit;
 }
-function eF_assignSupervisorMissingSubBranches() {
+function eF_assignSupervisorMissingSubBranches()
+{
 //pr($_SESSION['supervises_branches']);
  $currentUser = $GLOBALS['currentUser'];
  $supervisor_at_branches = eF_getRights();
@@ -2047,6 +2149,7 @@ function eF_assignSupervisorMissingSubBranches() {
    $fixed = true;
   }
  }
+
  return $fixed;
 }
 /**
@@ -2056,7 +2159,8 @@ function eF_assignSupervisorMissingSubBranches() {
  * for the educational version, if they do not already exist
 
  */
-function eF_insertAutoLessonCourseSkills() {
+function eF_insertAutoLessonCourseSkills()
+{
                   // Skillgap tests related code
                     // Two conditions must be fulfilled - for educational version:
                     // - every lesson offers a lesson specific skill [I](Knowledge of lesson: xxx) (and every course the same [II])
@@ -2064,7 +2168,7 @@ function eF_insertAutoLessonCourseSkills() {
                     // [I] Check and addition of all existing lesson related skills
                     $lessons = eF_getTableData("lessons","*","");
                     $lesson_skills = eF_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_lesson_offers_skill", "*", "categories_ID = -1");
-                    foreach($lessons as $lesson) {
+                    foreach ($lessons as $lesson) {
                         // If the lesson is not provided only through a course - where the course skill applies
                         if ($lesson['course_only'] == 0) {
                             // If the lesson's skill is not currently logged to the table of lesson-skills
@@ -2084,7 +2188,7 @@ function eF_insertAutoLessonCourseSkills() {
                     // [II] Check and addition of all existing course related skills
                     $courses = eF_getTableData("courses","*","");
                     $course_skills = eF_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_course_offers_skill", "*", "categories_ID = -1");
-                    foreach($courses as $course) {
+                    foreach ($courses as $course) {
                         // If the course is not provided only through a course - where the course skill applies
                         if ($course['course_only'] == 0) {
                             // If the course's skill is not currently logged to the table of course-skills
@@ -2137,7 +2241,8 @@ function eF_insertAutoLessonCourseSkills() {
  * Function that checks that the value for an _magester social module is valid
 
  */
-function eF_checkSocialModuleExistance($value) {
+function eF_checkSocialModuleExistance($value)
+{
     // Value zero is used to denote all social modules
     if ($value == 0) {
         return true;
@@ -2147,6 +2252,7 @@ function eF_checkSocialModuleExistance($value) {
     if ($l >= 0 && $l < SOCIAL_MODULES_ALL && ($l - intval($l) == 0)) {
         return true;
     }
+
     return false;
 }
 /*
@@ -2154,7 +2260,8 @@ function eF_checkSocialModuleExistance($value) {
  * Returning an array with the world's timezones
 
  */
-function eF_getTimezones() {
+function eF_getTimezones()
+{
   $timezones = array();
   $timezones['Pacific/Kwajalein'] = "(GMT -12:00) Eniwetok, Kwajalein";
         $timezones['Pacific/Samoa'] = "(GMT -11:00) Midway Is, Samoa";
@@ -2228,6 +2335,7 @@ function eF_getTimezones() {
         $timezones['Pacific/Fiji'] = "(GMT +12:00) Fiji, Kamchatka, Marshall Is";
         $timezones['Pacific/Auckland'] = "(GMT +12:00) Auckland, Wellington";
         $timezones['Pacific/Tongatapu'] = "(GMT +13:00) Nuku'alofa";
+
         return $timezones;
 }
 /**
@@ -2241,7 +2349,8 @@ function eF_getTimezones() {
  * @return string The client's browser
 
  */
-function detectBrowser() {
+function detectBrowser()
+{
     $mobileAgents = array('iphone', 'ipod', 'blackberry', 'htc', 'palm', 'windows ce', 'opera mini', 'android', 'midp', 'symbian');
     $agent = $_SERVER['HTTP_USER_AGENT'];
     switch (true) {
@@ -2253,6 +2362,7 @@ function detectBrowser() {
         case stripos($agent, 'safari') !== false: $browser = 'safari'; break;
         default: $browser = 'ie'; break;
     }
+
     return $browser;
 }
 /**
@@ -2282,7 +2392,8 @@ function detectBrowser() {
  * @since 3.6.0
 
  */
-function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
+function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false)
+{
  if (!$retainUrl) {
      $parts = parse_url($url);
      if (isset($parts['query']) && $parts['query']) {
@@ -2317,7 +2428,8 @@ function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
  * @since 3.6.0
 
  */
-function encryptString($string, $method = 'base64') {
+function encryptString($string, $method = 'base64')
+{
  $hashResidue = strrchr($string, '#');
  $string = str_replace($hashResidue, '', $string);
     switch ($method) {
@@ -2326,6 +2438,7 @@ function encryptString($string, $method = 'base64') {
         default : $encodedString = $string;break;
     }
     $encodedString .= $hashResidue;
+
     return $encodedString;
 }
 /**
@@ -2345,7 +2458,8 @@ function encryptString($string, $method = 'base64') {
  * @since 3.6.0
 
  */
-function decryptString($string, $method = 'base64') {
+function decryptString($string, $method = 'base64')
+{
  $hashResidue = strrchr($string, '#');
  $string = str_replace($hashResidue, '', $string);
  switch ($method) {
@@ -2354,6 +2468,7 @@ function decryptString($string, $method = 'base64') {
         default : $decodedString = $string;break;
     }
     $decodedString .= $hashResidue;
+
     return $decodedString;
 }
 /**
@@ -2371,7 +2486,8 @@ function decryptString($string, $method = 'base64') {
  * @since 3.6.3
 
  */
-function decryptUrl($url, $method = 'base64') {
+function decryptUrl($url, $method = 'base64')
+{
  $parts = parse_url($url);
  parse_str($parts['query'], $query);
  $urlString = array(decryptString($query['cru']));
@@ -2380,6 +2496,7 @@ function decryptUrl($url, $method = 'base64') {
   $urlString[] = "$key=$value";
  }
  $urlString = $parts['path'].'?'.implode('&', $urlString);
+
  return $urlString;
 }
 /**
@@ -2471,8 +2588,8 @@ function eF_printMessage($str, $print = true, $message_type = '')
 * - Fixed return results
 
 */
-function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $onlyText = false, $bcc = false) {
-	
+function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $onlyText = false, $bcc = false)
+{
     if ($bcc) {
         $toField = 'Bcc';
     } else {
@@ -2501,7 +2618,7 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
     }
     $body = $mime -> get($params);
     $hdrs = $mime -> headers($hdrs);
-    
+
     $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
                                          'host' => $GLOBALS['configuration']['smtp_host'],
                                          'password' => $GLOBALS['configuration']['smtp_pass'],
@@ -2512,6 +2629,7 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
 //	var_dump(get_class($smtp));
 
     $result = $smtp -> send($recipient, $hdrs, $body);
+
     return $result;
 }
 /*
@@ -2523,7 +2641,8 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
  * Otherwise the default language is returned
 
  */
-function eF_getCorrectLanguageMessage($message, $language) {
+function eF_getCorrectLanguageMessage($message, $language)
+{
     $language_tag = "<------------------------".$language."------------------------>";
     $pos = strpos($message, $language_tag);
     if ($pos) {
@@ -2554,7 +2673,8 @@ function eF_getCorrectLanguageMessage($message, $language) {
  * and replace the inner bracket text with its md5 equivalent
 
  */
-function eF_replaceMD5($message) {
+function eF_replaceMD5($message)
+{
     $pos = strpos($message, "###md5(");
     //echo "*****".$pos."****<BR>";
     if ($pos) {
@@ -2566,6 +2686,7 @@ function eF_replaceMD5($message) {
             $message = substr($message, 0, $pos) . md5(substr($message, $pos+7, $pos2).G_MD5KEY) . eF_replaceMD5(substr($message, $pos+7+$pos2+4));
         }
     }
+
     return $message;
 }
 /**
@@ -2591,40 +2712,45 @@ function eF_replaceMD5($message) {
 * @deprecated
 
 */
-function eF_getUserBasicType($login = false, $lessons_ID = false){
-    if($login == false){
+function eF_getUserBasicType($login = false, $lessons_ID = false)
+{
+    if ($login == false) {
         $login = $_SESSION['s_login'];
     }
-    if($lessons_ID == false){
+    if ($lessons_ID == false) {
         if (isset($_SESSION['s_lessons_ID']))
             $lessons_ID = $_SESSION['s_lessons_ID'];
     }
     $user = MagesterUserFactory :: factory($login);
-    try{
+    try {
         $lesson = new MagesterLesson($lessons_ID);
         $role = $user -> getRole($lesson -> lesson['id']);
-    }
-    catch (Exception $e){
+    } catch (Exception $e) {
         $role = $user -> user['user_type'];
     }
-    if ($role != "student" && $role != "professor" && $role != "administrator" ){
+    if ($role != "student" && $role != "professor" && $role != "administrator") {
         $res2 = eF_getTableData("user_types","basic_user_type","user_type='".$role."'");
         $user_type = $res2[0]['basic_user_type'];
-    }else{
+    } else {
         $user_type = $role;
     }
+
     return $user_type;
 }
-function convertTimeToSeconds($time) {
+function convertTimeToSeconds($time)
+{
  $time_parts = explode(":", $time);
  $seconds = round($time_parts[2] + $time_parts[1]*60 + $time_parts[0]*60*60);
+
  return $seconds;
 }
-function convertSecondsToTime($time) {
+function convertSecondsToTime($time)
+{
  $newTime = array();
  $newTime['hours'] = floor($time / 3600);
  $newTime['minutes'] = floor(($time % 3600) / 60);
  $newTime['seconds'] = floor(($time % 3600) % 60);
+
  return ($newTime);
 }
 /**
@@ -2646,7 +2772,8 @@ function convertSecondsToTime($time) {
 * @version 1.0
 
 */
-function addTime(&$a, $b) {
+function addTime(&$a, $b)
+{
  $time1 = 3600 * $a['hours'] + 60 * $a['minutes'] + $a['seconds'];
  $time2 = 3600 * $b['hours'] + 60 * $b['minutes'] + $b['seconds'];
  $time1 += $time2;
@@ -2685,7 +2812,8 @@ function addTime(&$a, $b) {
 
 	*/
 }
-function getUserTimeTarget($url) {
+function getUserTimeTarget($url)
+{
  $urlParts = parse_url($url);
  $queryParts = explode('&', $urlParts['query']);
  if (isset($_SESSION['s_lessons_ID']) && $_SESSION['s_lessons_ID']) {
@@ -2693,16 +2821,18 @@ function getUserTimeTarget($url) {
  } else {
   $entity = array(0 => 'system');
  }
- foreach($queryParts as $part) {
+ foreach ($queryParts as $part) {
   $result = explode("=", $part);
   switch ($result[0]) {
    case 'view_unit': $entity = array($result[1] => 'unit'); break;
    default: break;
   }
  }
+
  return $entity;
 }
-function getUserLastTimeInTarget($entity) {
+function getUserLastTimeInTarget($entity)
+{
  $result = eF_getTableData("user_times", "time", "session_id = '".session_id()."' and users_LOGIN='".$_SESSION['s_login']."' and entity='".current($entity)."' and entity_id='".key($entity)."'");
  if (sizeof($result) > 0) {
   return $result[0]['time'];
@@ -2711,7 +2841,8 @@ function getUserLastTimeInTarget($entity) {
  }
 }
 
-function getMainScripts() {
+function getMainScripts()
+{
 	$mainScripts = array(
 		'MagesterScripts',
 		'scriptaculous/prototype',
@@ -2737,7 +2868,7 @@ function getMainScripts() {
 	// jQuery Globalize
 	$mainScripts[]	= 'jquery/globalize';
 	$mainScripts[]	= 'jquery/globalize/culture.pt-BR'; /* @todo Substitute this by current culture */
-	
+
 	// jQuery Noty
 	//$mainScripts[]	= 'jquery/noty/jquery.noty';
 	//$mainScripts[]	= 'jquery/noty/layouts/topCenter';
@@ -2759,12 +2890,12 @@ function getMainScripts() {
 	<script type="text/javascript" src="../js/noty/layouts/topLeft.js"></script>
 	<script type="text/javascript" src="../js/noty/layouts/topRight.js"></script>
 	*/
-	
-	
+
+
 	$mainScripts[]	= 'widget/messaging';
 	$mainScripts[]	= 'themeScripts';
 	$mainScripts[]	= 'sysclass.module.loader';
-	
+
 	return $mainScripts;
 }
 /**
@@ -2776,7 +2907,8 @@ function getMainScripts() {
 * @version 1.0
 
 */
-function clearTemplatesCache() {
+function clearTemplatesCache()
+{
  try {
   $cacheTree = new FileSystemTree(G_THEMECACHE, true);
   foreach (new MagesterDirectoryOnlyFilterIterator($cacheTree -> tree) as $value) {
@@ -2788,11 +2920,13 @@ class AjaxResultObject
 {
  public $message = '';
  public $response = false;
- public function __construct($response, $message) {
+ public function __construct($response, $message)
+ {
   $this -> response = $response;
   $this -> message = $message;
  }
- public function display($return = false) {
+ public function display($return = false)
+ {
   $output = json_encode(array('response' => $this -> response, 'message' => $this -> message));
   if ($return) {
    return $output;
@@ -2802,7 +2936,8 @@ class AjaxResultObject
  }
 }
 
-function clearStringSymbols($subject) {
+function clearStringSymbols($subject)
+{
 		$search = array(
 			'à','á','â','ã','ä','å',
 			'ç',
@@ -2838,9 +2973,10 @@ function clearStringSymbols($subject) {
 			"_"
 		);
 		return str_replace($search, $replace, $subject);
-	} 
-	
-	function SC_Utf8Transliterate($str) {
+	}
+
+	function SC_Utf8Transliterate($str)
+	{
 		$encoding = mb_detect_encoding($str, "UTF-8,ISO-8859-1,WINDOWS-1252");
 		if ($encoding != 'UTF-8') {
 			return iconv($encoding, 'UTF-8//TRANSLIT', $str);
@@ -2848,17 +2984,18 @@ function clearStringSymbols($subject) {
 			return $str;
 		}
 	}
-	
+
 // ROUND VALUES WITH DECIMAL PRECISION
-function xfloor($number, $precision, $separator = ".") {
+function xfloor($number, $precision, $separator = ".")
+{
 	$numberpart=explode($separator,$number);
 	$numberpart[1]=substr_replace($numberpart[1],$separator,$precision,0);
-	if($numberpart[0]>=0) {
+	if ($numberpart[0]>=0) {
 		$numberpart[1]=floor($numberpart[1]);
 	} else {
 		$numberpart[1]=ceil($numberpart[1]);
 	}
-	
+
 	$ceil_number= array($numberpart[0],$numberpart[1]);
 	return floatval(implode($separator,$ceil_number));
 }

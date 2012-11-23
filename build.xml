@@ -2,7 +2,7 @@
     <target name="clean">
 <!--        <delete dir="${basedir}/build/" /> -->
     </target>
- 
+
     <target name="prepare">
         <mkdir dir="${basedir}/build/reports" />
     	<mkdir dir="${basedir}/build/temp" />
@@ -15,7 +15,7 @@
 		-->
     </target>
 
- 
+
     <target name="phpcs">
         <exec dir="${basedir}" executable="phpcs" failonerror="false" output="/dev/null">
             <arg line="--extensions=php --standard=${basedir}/build/lib/phpcs/ruleset.xml --report=checkstyle --report-file=${basedir}/build/temp/checkstyle.xml ." />
@@ -26,9 +26,9 @@
       		  style="${basedir}/build/lib/phpcs/checkstyle.xsl"
       		  out="${basedir}/build/reports/checkstyle.html"/>
     </target>
-	
 
-<!-- 
+
+<!--
     <target name="phpmd">
         <exec dir="${basedir}" executable="phpmd" failonerror="false">
             <arg line=". xml codesize - -reportfile ${basedir}/build/logs/pmd.xml" />
@@ -70,7 +70,7 @@
             <arg line="- -log ${basedir}/build/logs - -source ${basedir} - -output ${basedir}/build/codebrowser" />
         </exec>
     </target>
---> 
+-->
 <!--    <target name="phpunit"> -->
         <!-- @todo: CREATE phpunit tests for each class -->
         <!--
@@ -84,14 +84,14 @@
 <!--    </target> -->
 
 
-<!-- 
+<!--
     <target name="documentation" depends="prepare">
         <exec dir="${basedir}" executable="docblox" failonerror="false">
             <arg line="run -d ${basedir} -t ${basedir}/build/docblox -i ${basedir}/build/,${basedir}/tests/,${basedir}/PEAR/,${basedir}/Zend/,${basedir}/upload/,${basedir}/libraries/PHPExcel,${basedir}/libraries/adodb" />
         </exec>
     </target>
 -->
-<!-- 
+<!--
     <target name="parallel">
         <parallel>
             <antcall target="phpcs" />
@@ -100,7 +100,7 @@
    			<antcall target="pdepend" />
 		</parallel>
 	</target>
--->	
-<!--	<target name="build" depends="clean,prepare,phpcs,phpmd,phpcpd,pdepend,phpunit,phpcb,documentation" /> --> 
+-->
+<!--	<target name="build" depends="clean,prepare,phpcs,phpmd,phpcpd,pdepend,phpunit,phpcb,documentation" /> -->
 	<target name="build" depends="clean,prepare,phpcs,checkstyle2html" />
 </project>

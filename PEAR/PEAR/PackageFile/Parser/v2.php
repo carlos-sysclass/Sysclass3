@@ -72,6 +72,7 @@ class PEAR_PackageFile_Parser_v2 extends PEAR_XMLParser
                 $data .= substr($line, $indent_len) . "\n";
             }
         }
+
         return $data;
     }
 
@@ -86,6 +87,7 @@ class PEAR_PackageFile_Parser_v2 extends PEAR_XMLParser
         if ($element == 'notes') {
             return trim($this->_unIndent($data));
         }
+
         return trim($data);
     }
 
@@ -109,7 +111,7 @@ class PEAR_PackageFile_Parser_v2 extends PEAR_XMLParser
         }
         $ret->fromArray($this->_unserializedData);
         $ret->setPackagefile($file, $archive);
+
         return $ret;
     }
 }
-?>

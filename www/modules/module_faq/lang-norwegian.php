@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "FAQ Modul");//FAQ Module
 define("_FAQ_MAIN", "Hovedside");//Main page
 define("_FAQ_MANAGEMENT", "Behandle FAQs");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "FAQ ble oppdatert");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "FAQ kunne ikke oppdateres");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Sett FAQ oppføring");//Insert FAQ entry

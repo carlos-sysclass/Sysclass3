@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element_Object */
 require_once 'Zend/Pdf/Element/Object.php';
 
@@ -29,7 +28,6 @@ require_once 'Zend/Pdf/Element/Name.php';
 
 /** Zend_Pdf_Resource */
 require_once 'Zend/Pdf/Resource.php';
-
 
 /**
  * Image abstraction.
@@ -75,4 +73,3 @@ abstract class Zend_Pdf_Resource_Image extends Zend_Pdf_Resource
      */
     abstract public function getProperties();
 }
-

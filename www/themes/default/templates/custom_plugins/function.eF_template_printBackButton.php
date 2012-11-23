@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printBackButton function
 */
-function smarty_function_eF_template_printBackButton($params, &$smarty) {
+function smarty_function_eF_template_printBackButton($params, &$smarty)
+{
     switch ($params['type']) {
         case 'link':
             $code = '
@@ -13,7 +14,7 @@ function smarty_function_eF_template_printBackButton($params, &$smarty) {
             $code = '
                 <input class = "flatButton" type = "button" value = "'._BACK.'" onclick = "history.back()" />';
             break;
-    }        
-    
+    }
+
     return $code;
 }

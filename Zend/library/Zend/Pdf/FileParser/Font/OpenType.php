@@ -24,7 +24,6 @@ require_once 'Zend/Pdf/FileParser/Font.php';
 /** Zend_Pdf_Cmap */
 require_once 'Zend/Pdf/Cmap.php';
 
-
 /**
  * Abstract base class for OpenType font file parsers.
  *
@@ -54,7 +53,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
 {
   /**** Instance Variables ****/
 
-
     /**
      * Stores the scaler type (font type) for the font file. See
      * {@link _readScalerType()}.
@@ -68,10 +66,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
      */
     protected $_tableDirectory = array();
 
-
-
   /**** Public Interface ****/
-
 
   /* Semi-Concrete Class Implementation */
 
@@ -206,7 +201,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
             $this->_tableDirectory[$tableName]['length'] = $tableLength;
         }
     }
-
 
     /**
      * Parses the OpenType head (Font Header) table.
@@ -362,7 +356,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
         $this->names = $fontNames;
     }
 
-
     /**
      * Parses the OpenType post (PostScript Information) table.
      *
@@ -475,7 +468,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
         // Skip other maxp table entries (if presented with table version 1.0)...
     }
 
-
     /**
      * Parses the OpenType OS/2 (OS/2 and Windows Metrics) table.
      *
@@ -516,6 +508,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
                 $this->vendorID = '';
                 $this->xHeight = 0;
                 $this->capitalHeight = 0;
+
                 return;
             } else {
                 /* Something else went wrong. Throw this exception higher up the chain.
@@ -575,7 +568,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
              * outlines from fonts yet, so this means no embed.
              */
             $this->isEmbeddable = false;
-        } else if ($this->isBitSet(1, $embeddingFlags)) {
+        } elseif ($this->isBitSet(1, $embeddingFlags)) {
             /* Restricted license embedding. We currently don't have any way to
              * enforce this, so interpret this as no embed. This may be revised
              * in the future...
@@ -710,7 +703,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
          *   haven't been supplied here instead of storing zero.
          */
     }
-
 
     /**
      * Parses the OpenType hmtx (Horizontal Metrics) table.
@@ -969,6 +961,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
                 throw new Zend_Pdf_Exception('Not an OpenType font file',
                                              Zend_Pdf_Exception::WRONG_FONT_TYPE);
         }
+
         return $this->_scalerType;
     }
 
@@ -1007,6 +1000,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
                                          Zend_Pdf_Exception::DONT_UNDERSTAND_TABLE_VERSION);
         }
         $this->_debugLog('Version %.2f table', $tableVersion);
+
         return $tableVersion;
     }
 
@@ -1064,7 +1058,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
                     return null;
             }
 
-        } else if ($platformID == 1) {    // Macintosh encoding.
+        } elseif ($platformID == 1) {    // Macintosh encoding.
             switch ($languageID) {
                 case 0:
                     return 'en';
@@ -1102,6 +1096,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
             }
 
         } else {    // Unknown encoding.
+
             return null;
         }
     }

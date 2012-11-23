@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element_Dictionary */
 require_once 'Zend/Pdf/Element/Dictionary.php';
-
 
 /**
  * PDF file trailer
@@ -53,7 +51,6 @@ abstract class Zend_Pdf_Trailer
             throw new Zend_Pdf_Exception("Unknown trailer dictionary key: '$key'.");
         }
     }
-
 
     /**
      * Object constructor
@@ -101,7 +98,6 @@ abstract class Zend_Pdf_Trailer
     {
         return "trailer\n" . $this->_dict->toString() . "\n";
     }
-
 
     /**
      * Get length of source PDF

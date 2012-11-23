@@ -281,7 +281,6 @@ if ($_SESSION['s_lessons_ID']) {
        <td><label for="flv_defaultvolume">{#media_dlg.flv_defaultvolume}</label></td>
        <td><input type="text" id="flv_defaultvolume" name="flv_defaultvolume" onchange="generatePreview();" /></td>
 
-
       </tr>
 
       <tr>
@@ -804,7 +803,6 @@ if ($_SESSION['s_lessons_ID']) {
         </table>
        </td>
       </tr>
-
 
       <tr>
        <td colspan="2">

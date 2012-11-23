@@ -38,7 +38,7 @@ try {
             echo $_GET['value'];
             exit;
         }
-    } else if (isset($_GET['insert_editor_file'])) {
+    } elseif (isset($_GET['insert_editor_file'])) {
         //Input a file that was picked by clicking on the "insert to editor" arrow, in the file manager
         try {
             $file_id = urldecode($_GET['file_id']);
@@ -152,9 +152,9 @@ try {
 
           $ajaxOptions = array('sort' => $sort, 'order' => $order, 'limit' => $limit, 'offset' => $offset, 'filter' => $filter);
           //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
-          
+
           $filesystemCode = $filesystem -> toHTML($url, $other, $ajaxOptions, $options, $extraFileTools, array(), $extraHeaderOptions, $filesystemIterator, false, $extraColumns);
-          
+
           $smarty -> assign("T_DISPLAYCODE", $filesystemCode);
           $smarty -> display('display_code.tpl');
           exit;

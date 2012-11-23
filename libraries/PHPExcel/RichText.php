@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_RichText
  *
@@ -132,7 +131,8 @@ class PHPExcel_RichText implements PHPExcel_IComparable
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
     	return $this->getPlainText();
     }
 
@@ -168,7 +168,8 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 	 *
 	 * @return string	Hash code
 	 */
-	public function getHashCode() {
+	public function getHashCode()
+	{
 		$hashElements = '';
 		foreach ($this->_richTextElements as $element) {
 			$hashElements .= $element->getHashCode();
@@ -183,7 +184,8 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
-	public function __clone() {
+	public function __clone()
+	{
 		$vars = get_object_vars($this);
 		foreach ($vars as $key => $value) {
 			if (is_object($value)) {

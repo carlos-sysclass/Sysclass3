@@ -96,6 +96,7 @@ class PEAR_PackageFile_Parser_v1
             $code = xml_get_error_code($xp);
             $line = xml_get_current_line_number($xp);
             xml_parser_free($xp);
+
             return PEAR::raiseError(sprintf("XML error: %s at line %d",
                            $str = xml_error_string($code), $line), 2);
         }
@@ -109,6 +110,7 @@ class PEAR_PackageFile_Parser_v1
         }
         $pf->setPackagefile($file, $archive);
         $pf->fromArray($this->_packageInfo);
+
         return $pf;
     }
     // {{{ _unIndent()
@@ -134,6 +136,7 @@ class PEAR_PackageFile_Parser_v1
                 $data .= substr($line, $indent_len) . "\n";
             }
         }
+
         return $data;
     }
 
@@ -458,4 +461,3 @@ class PEAR_PackageFile_Parser_v1
 
     // }}}
 }
-?>

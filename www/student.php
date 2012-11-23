@@ -30,7 +30,7 @@ $loadScripts 		= array();
 $loadStylesheets 	= array();
 try {
 	$currentUser 	= MagesterUser :: checkUserAccess(false, 'student');
-	if ( $currentUser -> user['user_type'] == 'administrator' ) {
+	if ($currentUser -> user['user_type'] == 'administrator') {
 		throw new Exception(_ADMINISTRATORCANNOTACCESSLESSONPAGE, MagesterUserException :: RESTRICTED_USER_TYPE);
 	}
 	$smarty -> assign("T_CURRENT_USER", $currentUser);
@@ -74,7 +74,7 @@ if ( count( $_GET ) == 0 ) {
 	$_SESSION["s_courses_ID"] = $lastLessonViewed[0]['course_ID'];
 }
 
-if ( $_SESSION['s_lessons_ID'] ) {
+if ($_SESSION['s_lessons_ID']) {
 	try {
 		$currentLesson = new MagesterLesson($_SESSION['s_lessons_ID']); //Initialize lesson
 	} catch (Exception $e) {
@@ -85,13 +85,13 @@ if ( $_SESSION['s_lessons_ID'] ) {
 
 #This is used to allow users to enter directly internal lesson specific pages from external pages
 if ( isset( $_GET['new_lessons_ID'] ) && eF_checkParameter( $_GET['new_lessons_ID'], 'id' ) ) {
-	if ( $_GET['new_lessons_ID'] != $_SESSION['s_lessons_ID'] ) {
+	if ($_GET['new_lessons_ID'] != $_SESSION['s_lessons_ID']) {
 		$_SESSION['s_lessons_ID'] = $_GET['new_lessons_ID'];
 		if ( isset($_GET['sbctg'] ) ) {
 			$smarty -> assign( "T_SPECIFIC_LESSON_CTG", $_GET['sbctg'] );
 		}
 		$smarty -> assign("T_REFRESH_SIDE","true");
-	} else if ($_GET['new_lessons_ID'] == $_SESSION['s_lessons_ID']) {
+	} elseif ($_GET['new_lessons_ID'] == $_SESSION['s_lessons_ID']) {
 		$smarty -> assign("T_SHOW_LOADED_LESSON_OPTIONS", 1);
 	}
 }
@@ -108,7 +108,7 @@ if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') 
 			}
 			$eligibility = $course -> checkRules($_SESSION['s_login']);
 
-			if ($eligibility[$_GET['lessons_ID']] == 0){
+			if ($eligibility[$_GET['lessons_ID']] == 0) {
 				unset($_GET['lessons_ID']);
 				$message = _YOUCANNOTACCESSTHISLESSONBECAUSEOFCOURSERULES;
 				eF_redirect("student.php?ctg=lessons&message=".urlencode($message)."&message_type=failure");
@@ -137,7 +137,7 @@ if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') 
 			$ctg = 'personal';
 
 		}
-	} else if ($_GET['lessons_ID'] == $_SESSION['s_lessons_ID']) {
+	} elseif ($_GET['lessons_ID'] == $_SESSION['s_lessons_ID']) {
 		$smarty -> assign("T_SHOW_LOADED_LESSON_OPTIONS", 1);
 	}
 }
@@ -187,30 +187,30 @@ try {
 		$currentUnit = $currentContent -> seekNode($_GET['view_unit']); //Initialize current unit
 		//The content tree does not hold data, so assign this unit its data
 		$unitData = new MagesterUnit($_GET['view_unit']);
-		
+
 	    //Verifica Regra do Curso.
 				$licaoAnterior = $currentLesson->lesson['id'] - 1 ;
 				$currentCourse = new MagesterCourse($_SESSION['s_courses_ID']);
-				$courseId = $currentCourse->course['id'];	
-				
+				$courseId = $currentCourse->course['id'];
+
 				$rulesCourse = eF_getTableData("courses", "rules", "id = $courseId");
-				
+
 				$user_login = $currentUser->user['login'];
-				
+
 				$takeLesson = eF_getTableData("users_to_lessons", "completed", "lessons_ID = $licaoAnterior AND users_LOGIN = '$user_login' ");
-				
-				foreach ($takeLesson as $completedLesson ){
+
+				foreach ($takeLesson as $completedLesson) {
 					$completed = $completedLesson['completed'];
 				}
-				
-				foreach ( $rulesCourse as $viewrules ) {
+
+				foreach ($rulesCourse as $viewrules) {
 					$rulesCourseCurrent = unserialize($viewrules['rules']);
-						foreach ($rulesCourseCurrent as $rules_Current ) {
-							$lessonIDRules = array("id" => $rules_Current['lesson']); 
-		
-							
-							if(in_array($licaoAnterior, $lessonIDRules['id'])){
-								if ($completed == 0 ) {
+						foreach ($rulesCourseCurrent as $rules_Current) {
+							$lessonIDRules = array("id" => $rules_Current['lesson']);
+
+
+							if (in_array($licaoAnterior, $lessonIDRules['id'])) {
+								if ($completed == 0) {
 								$preLesson = new MagesterLesson($licaoAnterior); //Initialize lesson
 								//var_dump($preLesson);
 								//exit;
@@ -221,16 +221,16 @@ try {
 								$message_type = 'failure';
 								break;
 								}
-							}	
+							}
 						}
 				}
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		$currentUnit['data'] = $unitData['data'];
 		if (!$_GET['ctg']) {
 			$_GET['ctg'] = 'content';
@@ -257,7 +257,7 @@ foreach ($loadedModules as $module) {
 		require_once $mod_lang_file;
 	}
 	// Get module css
-	if($mod_css_file = $module -> getModuleCSS()) {
+	if ($mod_css_file = $module -> getModuleCSS()) {
 		if (is_file ($mod_css_file)) {
 			// Get the relative path
 			if ($position = strpos($mod_css_file, "modules")) {
@@ -267,7 +267,7 @@ foreach ($loadedModules as $module) {
 		}
 	}
 	// Get module js
-	if($mod_js_file = $module -> getModuleJS()) {
+	if ($mod_js_file = $module -> getModuleJS()) {
 		if (is_file($mod_js_file)) {
 			// Get the relative path
 			if ($position = strpos($mod_js_file, "modules")) {
@@ -330,10 +330,10 @@ if ((!isset($_GET['ajax']) && !isset($_GET['postAjaxRequest'])) && ($GLOBALS['cu
 	$horizontal_inframe_version = true;
 	if ($_GET['ctg'] == "lessons" && $_GET['op'] != 'search') {
 		$_SESSION['s_lessons_ID'] = "";
-	} else if ($_SESSION['s_lessons_ID']) {
+	} elseif ($_SESSION['s_lessons_ID']) {
 		$_GET['new_lesson_id'] = $_SESSION['s_lessons_ID'];
 	}
-	include "new_sidebar.php";
+	include 'new_sidebar.php';
 } else {
 	$smarty -> assign("T_NO_HORIZONTAL_MENU", 1);
 }
@@ -372,7 +372,7 @@ $smarty -> assign("T_FCT", isset($_GET['fct']) ? $_GET['fct'] : false);
 $_student_ = $_professor_ = $_admin_ = 0;
 if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'student') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'student')) {
 	$_student_ = 1;
-} else if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
+} elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
 	$_professor_ = 1;
 } else {
 	$_admin_ = 1;
@@ -409,58 +409,58 @@ if (!$GLOBALS['configuration']['disable_messages']) {
 
 try {
 	if ($ctg == 'control_panel') {
-		require_once("control_panel.php");
+		require_once 'control_panel.php';
 	} elseif ($ctg == 'landing_page') {
-		require_once ("landing_page.php");
+		require_once 'landing_page.php';
 	} elseif ($ctg == 'news') {
-		require_once ("news.php");
+		require_once 'news.php';
 	} elseif ($ctg == 'progress') {
-		require_once("progress.php");
+		require_once 'progress.php';
 	} elseif ($ctg == 'comments') {
-		require_once ("comments.php");
+		require_once 'comments.php';
 	} elseif ($ctg== 'lesson_information') {
-		require_once("lesson_information.php");
+		require_once 'lesson_information.php';
 	} elseif ($ctg== 'digital_library' && $currentLesson -> options['digital_library']) {
-		require_once("digital_library.php");
+		require_once 'digital_library.php';
 	} elseif ($ctg == 'projects') {
-		require_once("projects.php");
+		require_once 'projects.php';
 	} elseif ($ctg == 'content') {
 		if (isset($_GET['commit_lms'])) {
-			require_once("lms_commit.php");
+			require_once 'lms_commit.php';
 			exit;
 		} else {
-			require_once("common_content.php");
+			require_once 'common_content.php';
 		}
 	} elseif ($ctg == 'tests') {
-		require_once("module_tests.php");
+		require_once 'module_tests.php';
 	} elseif ($ctg == 'feedback') {
-		require_once("module_tests.php");
+		require_once 'module_tests.php';
 	} elseif ($ctg == 'lessons') {
-		require_once("includes/lessons_list.php");
+		require_once 'includes/lessons_list.php';
 	} elseif ($ctg == 'forum') {
-		require_once("includes/forum.php");
+		require_once 'includes/forum.php';
 	} elseif ($ctg == 'messages') {
-		require_once("includes/messages.php");
+		require_once 'includes/messages.php';
 	} elseif ($ctg == 'module') {
-		require_once("module.php");
+		require_once 'module.php';
 	} elseif ($ctg == "social") {
-		require_once("social.php");
-	} else if ($ctg == 'facebook') {
-		require_once "module_facebook.php";
+		require_once 'social.php';
+	} elseif ($ctg == 'facebook') {
+		require_once 'module_facebook.php';
 	} elseif ($ctg == 'calendar') {
 		if ($currentUser -> coreAccess['calendar'] != 'hidden' && $GLOBALS['configuration']['disable_calendar'] != 1) {
-			require_once "calendar.php";
+			require_once 'calendar.php';
 		} else {
 			eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		}
 	} elseif ($ctg == 'glossary') {
-		require_once("glossary.php");
+		require_once 'glossary.php';
 	} elseif ($ctg == 'survey') {
 		if ($currentUser -> coreAccess['surveys'] == 'hidden' || $GLOBALS['configuration']['disable_surveys'] == 1) {
 			eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		}
 		$load_editor=true;
-		include_once "module_surveys.php";
+		include_once 'module_surveys.php';
 	} elseif ($ctg == 'statistics') {
 		if (isset($_GET['show_solved_test']) && eF_checkParameter($_GET['show_solved_test'], 'id') && isset($_GET['lesson']) && eF_checkParameter($_GET['lesson'], 'id')) {
 			try {
@@ -494,7 +494,7 @@ try {
 		} else {
 			/**The statistics funtions*/
 			if ($currentUser -> coreAccess['statistics'] != 'hidden') {
-				require_once "statistics.php";
+				require_once 'statistics.php';
 			} else {
 				eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 			}
@@ -502,12 +502,12 @@ try {
 	} elseif ($ctg == 'personal') {
 		$login = $_SESSION['s_login'];
 		/**This part is used to display the user's personal information*/
-		include "includes/personal.php";
+		include 'includes/personal.php';
 		$log_comments = 1; //The $log_comments variable is used at the log entry.
 	} elseif ($ctg == 'dashboard') {
 		$login = $_SESSION['s_login'];
 		/**This part is used to display the user's personal information*/
-		include "includes/dashboard.php";
+		include 'includes/dashboard.php';
 		$log_comments = 1; //The $log_comments variable is used at the log entry.
 	} elseif (sizeof($modules) > 0 && in_array($ctg, array_keys($module_ctgs))) {
 		/* At this point, we apply module functionality */

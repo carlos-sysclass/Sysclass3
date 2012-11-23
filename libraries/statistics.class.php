@@ -148,17 +148,18 @@ class MagesterStats
      * @static
 
      */
-    public static function getStudentsSeenContent($lessons = false, $users = false, $options = array()) {
+    public static function getStudentsSeenContent($lessons = false, $users = false, $options = array())
+    {
         if ($lessons == false) {
             $lessons = eF_getTableDataFlat("lessons", "id");
             $lessons = $lessons['id'];
-        } else if (!is_array($lessons)) {
+        } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
         }
         foreach ($lessons as $key => $lesson) {
             if ($lesson instanceof MagesterLesson) {
                 $lessons[$key] = $lesson -> lesson['id'];
-            } else if (!eF_checkParameter($lesson, 'id')) {
+            } elseif (!eF_checkParameter($lesson, 'id')) {
                 throw new MagesterLessonException(_INVALIDID, MagesterLessonException :: INVALID_ID);
             } else {
                 $lessons[$key] = $lesson;
@@ -173,7 +174,7 @@ class MagesterStats
         foreach ($users as $key => $user) {
             if ($user instanceof MagesterUser) {
                 $users[$key] = $user -> user['login'];
-            } else if (!eF_checkParameter($user, 'login')) {
+            } elseif (!eF_checkParameter($user, 'login')) {
                 throw new MagesterLessonException(_INVALIDLOGIN, MagesterUserException :: INVALID_LOGIN);
             } else {
                 $users[$key] = $user;
@@ -255,6 +256,7 @@ class MagesterStats
                 unset($usersDoneContent[$lessonId]);
             }
         }
+
         return $usersDoneContent;
     }
     /**
@@ -386,7 +388,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getStudentsDoneTests($lessons = false, $users = false) {
+    public static function getStudentsDoneTests($lessons = false, $users = false)
+    {
         if (!$users) {
             $users = eF_getTableDataFlat("users", "login");
             $users = $users['login'];
@@ -463,6 +466,7 @@ class MagesterStats
                 $doneTests[$doneScormTest['users_LOGIN']][$doneScormTest['content_ID']] = $doneScormTest;
             }
         }
+
         return $doneTests;
     }
  /**
@@ -538,7 +542,8 @@ class MagesterStats
 	 * @static
 
 	 */
- public static function getDoneTestsPerUser($users = false, $test = false, $lesson = false) {
+ public static function getDoneTestsPerUser($users = false, $test = false, $lesson = false)
+ {
      if ($users !== false) {
          if (is_array($users)) {
              foreach ($users as $key => $user) {
@@ -549,9 +554,9 @@ class MagesterStats
              if (sizeof($users) == 0) {
                  throw new MagesterUserException(_INVALIDLOGIN.': '.implode(",", $users), MagesterUserException :: INVALID_LOGIN);
              }
-         } else if ($users instanceof MagesterUser) {
+         } elseif ($users instanceof MagesterUser) {
              $users = array($users -> user['login']);
-         } else if (!eF_checkParameter($users, 'login')) {
+         } elseif (!eF_checkParameter($users, 'login')) {
              throw new MagesterUserException(_INVALIDLOGIN.': '.$users, MagesterUserException :: INVALID_LOGIN);
          } else {
           $users = array($users);
@@ -561,7 +566,7 @@ class MagesterStats
      if ($test !== false) {
          if ($test instanceof MagesterTest) {
              $test = $test -> test['id'];
-         } else if (!eF_checkParameter($test, 'id')) {
+         } elseif (!eF_checkParameter($test, 'id')) {
              throw new MagesterTestException(_INVALIDID.': '.$test, MagesterTestException :: INVALID_ID);
          }
      }
@@ -571,9 +576,9 @@ class MagesterStats
      }
      if ($user && $test) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
-     } else if ($user) {
+     } elseif ($user) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.users_LOGIN in ('$user') $sql");
-     } else if ($test) {
+     } elseif ($test) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test $sql");
      } else {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id $sql");
@@ -594,7 +599,7 @@ class MagesterStats
                     $doneTest['test'] = serialize($doneTest['test']);
                     $testResults[$user][$testId][$doneTestId] = $doneTest;
                 }
-                if (!isset($testResults[$user][$testId]['last_test_id'])){
+                if (!isset($testResults[$user][$testId]['last_test_id'])) {
                     end($testResults[$user][$testId]['scores']);
                     $testResults[$user][$testId]['last_test_id'] = key($testResults[$user][$testId]['scores']);
                 }
@@ -606,6 +611,7 @@ class MagesterStats
             }
             $testResults[$user]['average_score'] = round(array_sum($averageScores) / sizeof($averageScores), 2);
         }
+
      return $testResults;
  }
  /**
@@ -681,7 +687,8 @@ class MagesterStats
 	 * @static
 
 	 */
- public static function getDoneTestsPerTest($users = false, $test = false, $from = false, $to = false, $lesson = false) {
+ public static function getDoneTestsPerTest($users = false, $test = false, $from = false, $to = false, $lesson = false)
+ {
   if ($from !== false && $to !== false) {
    $timeString = " and ct.timestamp between $from and $to ";
   }
@@ -695,9 +702,9 @@ class MagesterStats
              if (sizeof($users) == 0) {
                  throw new MagesterUserException(_INVALIDLOGIN.': '.implode(",", $users), MagesterUserException :: INVALID_LOGIN);
              }
-         } else if ($users instanceof MagesterUser) {
+         } elseif ($users instanceof MagesterUser) {
              $users = array($users -> user['login']);
-         } else if (!eF_checkParameter($users, 'login')) {
+         } elseif (!eF_checkParameter($users, 'login')) {
              throw new MagesterUserException(_INVALIDLOGIN.': '.$users, MagesterUserException :: INVALID_LOGIN);
          }
          $user = implode("','", $users);
@@ -705,7 +712,7 @@ class MagesterStats
      if ($test !== false) {
          if ($test instanceof MagesterTest) {
              $test = $test -> test['id'];
-         } else if (!eF_checkParameter($test, 'id')) {
+         } elseif (!eF_checkParameter($test, 'id')) {
              throw new MagesterTestException(_INVALIDID.': '.$test, MagesterTestException :: INVALID_ID);
          }
      }
@@ -714,10 +721,10 @@ class MagesterStats
      }
      if ($user && $test) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
-     } else if ($user) {
+     } elseif ($user) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
          //$result = eF_getTableData("completed_tests ct, tests t", "ct.users_LOGIN, ct.status, ct.timestamp, ct.archive, ct.time_start, ct.time_end, ct.time_spent, ct.score, ct.pending", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
-     } else if ($test) {
+     } elseif ($test) {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test $sql");
      } else {
          $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." $sql");
@@ -738,7 +745,7 @@ class MagesterStats
                     $doneTest['test'] = serialize($doneTest['test']);
                     $testResults[$testId][$user][$doneTestId] = $doneTest;
                 }
-                if (!isset($testResults[$testId][$user]['last_test_id'])){
+                if (!isset($testResults[$testId][$user]['last_test_id'])) {
                     end($testResults[$testId][$user]['scores']);
                     $testResults[$testId][$user]['last_test_id'] = key($testResults[$testId][$user]['scores']);
                 }
@@ -750,6 +757,7 @@ class MagesterStats
             }
             $testResults[$testId]['average_score'] = round(array_sum($averageScores) / sizeof($averageScores), 2);
         }
+
      return $testResults;
  }
     /**
@@ -825,7 +833,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getUsersTimeAll($fromTimestamp = false, $toTimestamp = false, $lessons = false, $users = false) {
+    public static function getUsersTimeAll($fromTimestamp = false, $toTimestamp = false, $lessons = false, $users = false)
+    {
      //pr($users);exit;
         !$fromTimestamp ? $fromTimestamp = mktime(0, 0, 0, 1, 1, 2000) : null;
         !$toTimestamp ? $toTimestamp = time() : null;
@@ -867,7 +876,7 @@ class MagesterStats
                          } else {
                              $lessonStart = $value['timestamp'];
                          }
-                     } else if ($value['lessons_ID'] == $lessonId) {
+                     } elseif ($value['lessons_ID'] == $lessonId) {
                          $inLesson = 1;
                          $lessonStart = $value['timestamp'];
                      }
@@ -887,6 +896,7 @@ class MagesterStats
              isset($accessResults[$lessonId][$login]) ? $userTimes[$lessonId][$login]['accesses'] = $accessResults[$lessonId][$login] : $userTimes[$lessonId][$login]['accesses'] = 0;
          }
         }
+
         return $userTimes;
     }
     /**
@@ -956,14 +966,15 @@ class MagesterStats
      * @static
 
      */
-    public static function getUsersTime($lesson, $users = false, $fromTimestamp = false, $toTimestamp = false) {
+    public static function getUsersTime($lesson, $users = false, $fromTimestamp = false, $toTimestamp = false)
+    {
         if (!($lesson instanceof MagesterLesson)) {
             $lesson = new MagesterLesson($lesson);
         }
         $lessonId = $lesson -> lesson['id'];
         if (!$users) {
             $users = array_keys($lesson -> getUsers());
-        } else if (!is_array($users)) {
+        } elseif (!is_array($users)) {
             $users = array($users);
         }
         !$fromTimestamp ? $fromTimestamp = mktime(0, 0, 0, 1, 1, 1970) : null;
@@ -998,7 +1009,7 @@ class MagesterStats
                         } else {
                             $lessonStart = $value['timestamp'];
                         }
-                    } else if ($value['lessons_ID'] == $lessonId) {
+                    } elseif ($value['lessons_ID'] == $lessonId) {
                         $inLesson = 1;
                         $lessonStart = $value['timestamp'];
                     }
@@ -1017,6 +1028,7 @@ class MagesterStats
             $userTimes[$login] = $totalTime;
             isset($accessResults[$login]) ? $userTimes[$login]['accesses'] = $accessResults[$login] : $userTimes[$login]['accesses'] = 0;
         }
+
         return $userTimes;
     }
     /**
@@ -1058,7 +1070,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getStudentsAssignedProjects($lessons = false, $users = false) {
+    public static function getStudentsAssignedProjects($lessons = false, $users = false)
+    {
         if (!$users) {
             $users = eF_getTableDataFlat("users", "login");
             $users = $users['login'];
@@ -1088,9 +1101,11 @@ class MagesterStats
                 $asignedProjects[$login][$project['projects_ID']] = $project;
             }
         }
+
         return $asignedProjects;
     }
-    public static function getUsersForumPosts($lessonId, $users = false) {
+    public static function getUsersForumPosts($lessonId, $users = false)
+    {
         //pr($lessonId);
   $total_posts = array();
         $result = eF_getTableData("f_messages fm, f_topics ft, f_forums ff", "fm.users_LOGIN as login, count(*) as cnt", "fm.f_topics_ID = ft.id and ft.f_forums_ID = ff.id and ff.lessons_ID = ".$lessonId. " group by fm.users_LOGIN");
@@ -1103,9 +1118,11 @@ class MagesterStats
                 $total_posts[$login] = 0;
             }
         }
+
         return $total_posts;
     }
-    public static function getUsersComments($lessonId, $users = false) {
+    public static function getUsersComments($lessonId, $users = false)
+    {
         $total_comments = array();
         $result = eF_getTableData("comments cm, content c", "cm.users_LOGIN as login, count(*) as cnt", "cm.content_id = c.id and c.lessons_ID = ".$lessonId. " group by cm.users_LOGIN");
         foreach ($result as $data) {
@@ -1116,6 +1133,7 @@ class MagesterStats
                 $total_comments[$login] = 0;
             }
         }
+
         return $total_comments;
     }
     /**
@@ -1161,10 +1179,11 @@ class MagesterStats
      * @access public
 
      */
-    public static function getUsersLessonStatus($lessons = false, $users = false, $options = array()) {
+    public static function getUsersLessonStatus($lessons = false, $users = false, $options = array())
+    {
         if ($lessons === false) {
             $lessons = eF_getTableData("lessons", "*");
-        } else if (!is_array($lessons)) {
+        } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
         }
         if ($users != false) {
@@ -1183,6 +1202,7 @@ class MagesterStats
              $lessonStatus[$lessonId][$user] = self :: getUserLessonStatus($lesson, $user, $options);
             }
         }
+
         return $lessonStatus;
     }
     /**
@@ -1228,7 +1248,8 @@ class MagesterStats
      * @access public
 
      */
-    public static function getUsersLessonStatusAll($lessons = false, $users = false, $options = array()) {
+    public static function getUsersLessonStatusAll($lessons = false, $users = false, $options = array())
+    {
 /*
 
         $studentLessons = array();
@@ -1278,7 +1299,7 @@ class MagesterStats
         $usersDoneTests = $temp;
         if ($lessons === false) {
             $lessons = eF_getTableData("lessons", "*");
-        } else if (!is_array($lessons)) {
+        } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
         }
         foreach ($lessons as $key => $lesson) {
@@ -1341,7 +1362,7 @@ class MagesterStats
                 $visitableTestIds = array();
                 $testIds = array();
                 foreach ($iterator = new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($lessonContent -> tree), RecursiveIteratorIterator :: SELF_FIRST))) as $key => $value) {
-                    switch($value -> offsetGet('ctg_type')) {
+                    switch ($value -> offsetGet('ctg_type')) {
                      case 'theory':
                      case 'scorm':
                       $visitableContentIds[$key] = $key; //Get the not-test unit ids for this content
@@ -1497,6 +1518,7 @@ class MagesterStats
                 }
             }
         }
+
         return $lessonStatus;
     }
     /**
@@ -1540,14 +1562,15 @@ class MagesterStats
      * @access public
 
      */
-    public static function getUsersCourseStatusAll($courses = false, $users = false, $options = array()) {
+    public static function getUsersCourseStatusAll($courses = false, $users = false, $options = array())
+    {
         $roles = MagesterLessonUser :: getLessonsRoles();
         foreach ($roles as $key => $value) {
          $value == 'student' ? $studentLessonRoles[] = $key : null;
         }
         if ($courses === false) {
             $courses = eF_getTableData("courses", "*");
-        } else if (!is_array($courses)) {
+        } elseif (!is_array($courses)) {
             $courses = array($courses);
         }
         $coursesLessons = array();
@@ -1594,7 +1617,7 @@ class MagesterStats
                  $value['remaining'] = null;
                 } elseif ($course -> course['end_date'] && $course -> course['end_date'] < time()) {
                  $value['remaining'] = 0;
-                } else if ($course -> options['duration'] && $value['from_timestamp']) {
+                } elseif ($course -> options['duration'] && $value['from_timestamp']) {
                  if ($value['from_timestamp'] < $course -> course['start_date']) {
                   $value['from_timestamp'] = $course -> course['start_date'];
                  }
@@ -1662,6 +1685,7 @@ class MagesterStats
                 }
             }
         }
+
         return $courseStatus;
     }
     /**
@@ -1705,10 +1729,11 @@ class MagesterStats
      * @access public
 
      */
-    public static function getUsersCourseStatus($courses = false, $users = false, $options = array()) {
+    public static function getUsersCourseStatus($courses = false, $users = false, $options = array())
+    {
         if ($courses === false) {
             $courses = eF_getTableData("courses", "*");
-        } else if (!is_array($courses)) {
+        } elseif (!is_array($courses)) {
             $courses = array($courses);
         }
         $coursesLessons = array();
@@ -1731,19 +1756,20 @@ class MagesterStats
                 $courseStatus[$course -> course['id']][$user] = self :: getUserCourseStatus($course, $user, $options);
             }
         }
+
         return $courseStatus;
     }
-    public function getUserCourseStatus($course, $user, $options) {
+    public function getUserCourseStatus($course, $user, $options)
+    {
         $cacheKey = 'user_course_status:';
         $course instanceOf MagesterCourse ? $cacheKey .= 'course:'.$course -> course['id'] : $cacheKey .= 'course:'.$course;
         $user instanceOf MagesterUser ? $cacheKey .= 'user:'.$user -> user['login'] : $cacheKey .= 'user:'.$user;
 /*
 
         if ($status = Cache::getCache($cacheKey)) {
-
             return unserialize($status);
 
-        } else  {
+        } else {
 
             $storeCache = true;
 
@@ -1825,9 +1851,11 @@ class MagesterStats
         if ($storeCache) {
          //Cache::setCache($cacheKey, serialize($courseStatus));
         }
+
         return $courseStatus;
     }
-    public function getUserLessonStatus($lesson, $user, $options) {
+    public function getUserLessonStatus($lesson, $user, $options)
+    {
 /*
 
     	$cacheKey = 'user_lesson_status:';
@@ -1837,10 +1865,9 @@ class MagesterStats
         $user   instanceOf MagesterUser   ? $cacheKey .= 'user:'.$user -> user['login']    : $cacheKey .= 'user:'.$user;
 
         if ($status = Cache::getCache($cacheKey)) {
-
             return unserialize($status);
 
-        } else  {
+        } else {
 
             $storeCache = true;
 
@@ -1914,7 +1941,7 @@ class MagesterStats
                 $visitableTestIds = array();
                 $testIds = array();
                 foreach ($iterator = new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($lessonContent -> tree), RecursiveIteratorIterator :: SELF_FIRST))) as $key => $value) {
-                    switch($value -> offsetGet('ctg_type')) {
+                    switch ($value -> offsetGet('ctg_type')) {
                      case 'theory':
                      case 'scorm':
                       $visitableContentIds[$key] = $key; //Get the not-test unit ids for this content
@@ -2015,6 +2042,7 @@ class MagesterStats
         }
 
 */
+
         return $lessonStatus;
     }
     /**
@@ -2058,7 +2086,8 @@ class MagesterStats
      * @static
 
      */
-    public static function checkConditions($seenUnits, $conditions, $visitableContentIds, $visitableTestIds) {
+    public static function checkConditions($seenUnits, $conditions, $visitableContentIds, $visitableTestIds)
+    {
         !$seenUnits ? $seenUnits = array() : null;
         $notSeenUnits = array_diff_key($visitableContentIds, $seenUnits); //The units that the user has yet to see
         $conditionsMet = array();
@@ -2106,6 +2135,7 @@ class MagesterStats
         } else {
             $passed = 0;
         }
+
         return array($conditionsMet, $passed);
     }
     /**
@@ -2135,7 +2165,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getUserCommunicationInfo($user) {
+    public static function getUserCommunicationInfo($user)
+    {
         if (! ($user instanceof MagesterUser)) {
             $user = MagesterUserFactory :: factory($user);
         }
@@ -2186,6 +2217,7 @@ class MagesterStats
          }
         }
         $info['comments'] = $comments;
+
         return $info;
     }
     /**
@@ -2215,7 +2247,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getUserUsageInfo($user) {
+    public static function getUserUsageInfo($user)
+    {
         if (! ($user instanceof MagesterUser)) {
             $user = MagesterUserFactory :: factory($user);
         }
@@ -2266,6 +2299,7 @@ class MagesterStats
         $info['mean_duration'] = $mean_duration;
         $info['month_mean_duration'] = $month_mean_duration;
         $info['week_mean_duration'] = $week_mean_duration;
+
         return $info;
     }
     /**
@@ -2301,7 +2335,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getTestInfo($tests = false, $categories = false, $show_all = false, $lesson = false) {
+    public static function getTestInfo($tests = false, $categories = false, $show_all = false, $lesson = false)
+    {
         if ($tests == false) {
             $tests = eF_getTableDataFlat("tests, content", "tests.id", "tests.content_ID=content.id and content.ctg_type = 'tests' and tests.lessons_ID != 0"); //This way we get tests that have a corresponding unit
             $tests = $tests['id'];
@@ -2409,6 +2444,7 @@ class MagesterStats
             }
             $testsInfo[$id] = $testInfo;
         }
+
         return $testsInfo;
     }
     /**
@@ -2440,12 +2476,13 @@ class MagesterStats
      * @static
 
      */
-    public static function getScormTestInfo($tests = false, $categories = false, $show_all = false) {
+    public static function getScormTestInfo($tests = false, $categories = false, $show_all = false)
+    {
         $tests_info = array();
         if ($tests === false) {
             $tests = eF_getTableDataFlat("content","id", "ctg_type='scorm_test'");
    $tests = $tests['id'];
-        } else if (!is_array($tests)) {
+        } elseif (!is_array($tests)) {
             $tests = array($tests);
         }
         $lessonNames = eF_getTableDataFlat("lessons", "id,name");
@@ -2519,6 +2556,7 @@ class MagesterStats
             }
             $tests_info[$id] = $testInfo;
         }
+
         return $tests_info;
     }
     /**
@@ -2550,7 +2588,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getQuestionInfo($questions = false, $lesson = false) {
+    public static function getQuestionInfo($questions = false, $lesson = false)
+    {
         $questions_info = array();
         if ($questions == false) {
             $questions = eF_getTableData("questions", "id");
@@ -2591,6 +2630,7 @@ class MagesterStats
         foreach ($questions as $id) {
             $questions_info[$id]['done']['avg_score'] = $questions_info[$id]['done']['avg_score'] / $questions_info[$id]['done']['times_done'];
         }
+
         return $questions_info;
     }
     /**
@@ -2622,7 +2662,8 @@ class MagesterStats
      * @static
 
      */
-    public static function getProjectInfo($projects = false) {
+    public static function getProjectInfo($projects = false)
+    {
         $projects_info = array();
         if ($projects == false) {
             $projects = eF_getTableData("projects","id");
@@ -2650,6 +2691,7 @@ class MagesterStats
             }
             $projects_info[$project_id] = $project_info;
         }
+
         return $projects_info;
     }
     /**
@@ -2815,7 +2857,8 @@ class MagesterStats
      * @access public
 
      */
-    public static function doneTestInfo($testInfo) {
+    public static function doneTestInfo($testInfo)
+    {
         if (is_array($testInfo)) {
             $doneTests = $testInfo;
         } elseif (eF_checkParameter($testInfo, 'id')) {
@@ -2853,6 +2896,7 @@ class MagesterStats
         $stats['meanScore'] = round($stats['meanScore'] / $stats['timesDone'], 2); //This is the mean score of all test executions
         $stats['meanMeanScore'] = round($stats['meanMeanScore'] / sizeof($testUsers), 2); //This is the mean score of mean scores
         $stats['lastTimesMeanScore'] = round($stats['lastTimesMeanScore'] / sizeof($testUsers), 2); //This is the mean score of the last execution of each test
+
         return array('users' => $testUsers, 'stats' => $stats);
     }
  /**
@@ -2968,7 +3012,8 @@ class MagesterStats
 	 * @access public
 
 	 */
- public static function getQuestionsUnitStatistics($questions) {
+ public static function getQuestionsUnitStatistics($questions)
+ {
      $questionsStats = array();
      $unitStats = array();
      foreach ($questions as $id => $question) {
@@ -2997,6 +3042,7 @@ class MagesterStats
      foreach ($unitsData as $contentId => $data) {
          $unitsData[$contentId]['meanScore'] = round(array_sum($data['scores']) / sizeof($data['scores']), 2);
      }
+
      return array('questionStats' => $questionsStats, 'unitStats' => $unitsData);
  }
  /**
@@ -3146,7 +3192,8 @@ class MagesterStats
 	 * @access public
 
 	 */
- public static function getQuestionsStatistics($test = false) {
+ public static function getQuestionsStatistics($test = false)
+ {
      if (!$test) {
          $result = eF_getTableData("completed_tests", "*", "status != 'deleted'");
      } else {
@@ -3284,7 +3331,8 @@ class MagesterStats
 	 * @version 1.0 27/10/2005
 
 	 */
- public static function getUserTimes($login, $interval = false) {
+ public static function getUserTimes($login, $interval = false)
+ {
      $times = array('duration' => array(), 'time' => array(), 'session_ip' => array());
      if (isset($interval['from']) && eF_checkParameter($interval['from'], 'timestamp') && isset($interval['to']) && eF_checkParameter($interval['to'], 'timestamp')) {
          $result = eF_getTableDataFlat("logs", "timestamp, action, session_ip", "timestamp > ".$interval['from']." and timestamp < ".$interval['to']." and users_LOGIN='".$login."' and (action='login' or action = 'logout')", "timestamp");
@@ -3300,7 +3348,7 @@ class MagesterStats
                      $end_action = $result['timestamp'][$count];
                      $count++;
                  }
-                 if ($end_action - $result['timestamp'][$i] <= 3600){ //only take into account intervals less than one hour
+                 if ($end_action - $result['timestamp'][$i] <= 3600) { //only take into account intervals less than one hour
                      $times['duration'][] = $end_action - $result['timestamp'][$i];
                      $times['time'][] = $result['timestamp'][$i];
                      $times['session_ip'][] = eF_decodeIP($result['session_ip'][$i]);
@@ -3308,6 +3356,7 @@ class MagesterStats
              }
          }
      }
+
      return $times;
  }
  /**
@@ -3373,7 +3422,8 @@ class MagesterStats
 	 * @version 1.0 10/12/2009
 
 	 */
- public static function getParticipationStatistics($users, $from, $to) {
+ public static function getParticipationStatistics($users, $from, $to)
+ {
   $logins = array_keys($users);
   $eventTypes = array(27,38,30,31,75,77,100,101,103);
   $logins_string = "'".implode("','", $logins)."'";
@@ -3383,14 +3433,17 @@ class MagesterStats
   foreach ($result as $key => $value) {
    $participation[$value['users_LOGIN']][$value['lessons_ID']][$value['type']] = $value;
   }
+
      return $participation;
  }
- public static function saveAdvancedUserReports($report) {
+ public static function saveAdvancedUserReports($report)
+ {
   $report['rules']['conditions'] = array_values($report['rules']['conditions']); //reindex array
   $report['rules']['columns'] = array_values($report['rules']['columns']); //reindex array
   eF_updateTableData("advanced_user_reports", array('rules' => serialize($report['rules'])), "id=".$report['id']);
  }
- public static function getQuestionResponseDetails($testStats) {
+ public static function getQuestionResponseDetails($testStats)
+ {
   $userQuestions = array();
   foreach ($testStats as $value) {
    foreach ($value as $user => $testAttempts) {
@@ -3424,6 +3477,7 @@ class MagesterStats
     }
    }
   }
+
   return $userQuestions;
  }
 }

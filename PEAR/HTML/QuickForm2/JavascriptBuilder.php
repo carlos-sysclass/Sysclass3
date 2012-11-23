@@ -180,6 +180,7 @@ class HTML_QuickForm2_JavascriptBuilder
             $ret = "<script type=\"text/javascript\">\n//<![CDATA[\n"
                    . $ret  . "\n//]]>\n</script>";
         }
+
         return $ret;
     }
 
@@ -248,9 +249,9 @@ class HTML_QuickForm2_JavascriptBuilder
             $js = "<script type=\"text/javascript\">\n//<![CDATA[\n"
                   . $js . "\n//]]>\n</script>";
         }
+
         return $js;
     }
-
 
    /**
     * Encodes a value for use as Javascript literal
@@ -289,6 +290,7 @@ class HTML_QuickForm2_JavascriptBuilder
                     array_keys($value), array_values($value)
                 )) . '}';
             }
+
             return '[' . implode(',', array_map(
                 array('HTML_QuickForm2_JavascriptBuilder', 'encode'),
                 $value
@@ -296,6 +298,7 @@ class HTML_QuickForm2_JavascriptBuilder
 
         } elseif (is_object($value)) {
             $vars = get_object_vars($value);
+
             return '{' . implode(',', array_map(
                 array('HTML_QuickForm2_JavascriptBuilder', 'encodeNameValue'),
                 array_keys($vars), array_values($vars)
@@ -308,7 +311,6 @@ class HTML_QuickForm2_JavascriptBuilder
         }
     }
 
-
    /**
     * Callback for array_map used to generate name-value pairs
     *
@@ -318,7 +320,6 @@ class HTML_QuickForm2_JavascriptBuilder
     */
     protected static function encodeNameValue($name, $value)
     {
-        return self::encode((string)$name) . ':' . self::encode($value);
+        return self::encode((string) $name) . ':' . self::encode($value);
     }
 }
-?>

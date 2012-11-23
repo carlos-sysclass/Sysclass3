@@ -73,4 +73,3 @@ interface HTML_QuickForm2_DataSource_Submit extends HTML_QuickForm2_DataSource
     */
     public function getUpload($name);
 }
-?>

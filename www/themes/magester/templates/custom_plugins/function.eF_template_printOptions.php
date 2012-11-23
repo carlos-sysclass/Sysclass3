@@ -8,9 +8,9 @@
 */
 function smarty_function_eF_template_printOptions($params, &$smarty)
 {
-	
+
 	//var_dump($params);
-	
+
 	foreach ($params['groups'] as $groupId => $groupName) {
 		$groupedParams = array(
 			"title" => $groupName,

@@ -10,7 +10,6 @@ require_once $path."configuration.php";
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-
 try {
  $currentUser = MagesterUser :: checkUserAccess();
  $smarty -> assign("T_CURRENT_USER", $currentUser);
@@ -59,7 +58,7 @@ if (isset($_SESSION['s_type'])) {
 	} else {
 		$displaypage = $_SESSION['s_type'];
 	}
-	
+
 	$smarty -> display($displaypage."page.tpl");
 } else {
 	eF_redirect("index.php");

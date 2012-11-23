@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "FAQ Modul");//FAQ Module
 define("_FAQ_MAIN", "Glavna stranica");//Main page
 define("_FAQ_MANAGEMENT", "Upravljanje Pitanja i odgovori");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "FAQ uspješno je ažuriran");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Često postavljana pitanja nisu mogli biti promijenjeni");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Umetni FAQ unos");//Insert FAQ entry

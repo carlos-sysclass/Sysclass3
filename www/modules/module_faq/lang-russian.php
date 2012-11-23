@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "Модуль FAQ");//FAQ Module
 define("_FAQ_MAIN", "Главная страница");//Main page
 define("_FAQ_MANAGEMENT", "Управление Часто задаваемые вопросы");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "Вопрос был успешно обновлен");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Часто задаваемые вопросы не могут быть обновлены");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Вставьте въездом FAQ");//Insert FAQ entry

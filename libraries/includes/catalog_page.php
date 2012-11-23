@@ -10,7 +10,7 @@ $loadScripts[] = 'includes/catalog';
 //The courses catalog
 if (isset($_GET['ajax']) && $_GET['ajax'] == 'cart') {
  try {
-  include "catalog.php";
+  include 'catalog.php';
  } catch (Exception $e) {
   header("HTTP/1.0 500 ");
   echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
@@ -18,7 +18,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'cart') {
  exit;
 }
 /**Handles cart and catalog*/
-include "catalog.php";
+include 'catalog.php';
 
 if (!isset($_GET['checkout'])) {
  //Get available languages
@@ -55,7 +55,7 @@ if (!isset($_GET['checkout'])) {
     $smarty -> assign("T_HAS_COURSE", in_array($course -> course['id'], array_keys($userCourses)));
    }
   }
- } else if ($_GET['info_course']) {
+ } elseif ($_GET['info_course']) {
   $course = new MagesterCourse($_GET['info_course']);
   $course -> course['num_students'] = sizeof($course -> getStudentUsers());
   $course -> course['seats_remaining'] = $course -> course['max_users'] - $course -> course['num_students'];
@@ -64,12 +64,6 @@ if (!isset($_GET['checkout'])) {
   if ((isset($_SESSION['s_type']) && $_SESSION['s_type'] == 'administrator') || in_array($_SESSION['s_login'], array_keys($course -> getUsers()))) {
    $smarty -> assign("T_HAS_COURSE", true);
   }
-
-
-
-
-
-
 
   $lessons = $course -> getCourseLessons();
   foreach ($lessons as $key => $lesson) {
@@ -122,7 +116,7 @@ if (!isset($_GET['checkout'])) {
          'collapse' => $GLOBALS['configuration']['collapse_catalog'],
          'buy_link' => true,
                   'course_lessons' => false);
- include("directions_tree.php");
+ include 'directions_tree.php';
 
  $smarty -> assign("T_CART", cart :: prepareCart());
 }

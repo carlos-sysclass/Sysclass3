@@ -104,7 +104,7 @@
 		<span class="ld2"> &nbsp;&nbsp;&nbsp;&nbsp;Linha Digitável: &nbsp;<?php echo $dadosboleto["linha_digitavel"]?><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Valor: &nbsp;&nbsp;R$ <?php echo $dadosboleto["valor_boleto"]?><br>
 		</span>
-		
+
 		</DIV>
 		</td>
 	</tr>
@@ -144,7 +144,7 @@
 <table cellspacing=0 cellpadding=0 width=666 border=0>
 	<tr>
 		<td class=cp width=150><span class="campo" style="margin-left: 15px;">
-		<font class="bc">Banco Itaú</font> <!-- 
+		<font class="bc">Banco Itaú</font> <!--
  <IMG
       src="<?php echo $this->moduleBaseLink . "images/logoitau.jpg"; ?>" width="150" height="40"
       border=0></span>
@@ -485,7 +485,7 @@
 <table cellspacing=0 cellpadding=0 width=666 border=0>
 	<tr>
 		<td class=cp width=150><span class="campo" style="margin-left: 15px;">
-		<font class="bc">Banco Itaú</font> <!-- 
+		<font class="bc">Banco Itaú</font> <!--
   <IMG
       src="<?php echo $this->moduleBaseLink . "images/logoitau.jpg"; ?>" width="150" height="40"
       border=0></span>
@@ -836,7 +836,7 @@
 			<td valign=top width=468 rowspan=5><font class=ct>Instruções (Texto
 			de responsabilidade do cedente)</font><br>
 			<br>
-			<span class=cp> 
+			<span class=cp>
 				<FONT class=campo><?php //echo $dadosboleto["instrucoes"]; ?><?php echo (nl2br($dadosboleto["instrucoes"])); ?></FONT>
 			<br>
 			<br>

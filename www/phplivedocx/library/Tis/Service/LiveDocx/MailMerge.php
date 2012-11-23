@@ -6,7 +6,6 @@ require_once 'Tis/Service/LiveDocx.php';
 /** Zend_Pdf **/
 require_once 'Zend/Pdf.php';
 
-
 /**
  * phpLiveDocx - LiveDocx.MailMerge
  *

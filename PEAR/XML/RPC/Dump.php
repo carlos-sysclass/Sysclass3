@@ -78,6 +78,7 @@ class XML_RPC_Dump
             } else {
                 $strType = gettype($value);
             }
+
             return $this->getIndent($nLevel) . 'NOT A XML_RPC_Value: '
                    . $strType . "\r\n";
         }
@@ -117,6 +118,7 @@ class XML_RPC_Dump
         } else {
             $strClass = '';
         }
+
         return $this->getIndent($nLevel) . gettype($value) . $strClass
                . ' ' . $value . "\r\n";
     }
@@ -137,6 +139,7 @@ class XML_RPC_Dump
             $strOutput .= $this->getIndent($nLevel + 1) . $key . "\r\n";
             $strOutput .= $this->generateDump($keyval, $nLevel + 2);
         }
+
         return $strOutput;
     }
 
@@ -152,11 +155,12 @@ class XML_RPC_Dump
     {
         $nSize     = $value->arraysize();
         $strOutput = $this->getIndent($nLevel) . 'array' . "\r\n";
-        for($nA = 0; $nA < $nSize; $nA++) {
+        for ($nA = 0; $nA < $nSize; $nA++) {
             $strOutput .= $this->getIndent($nLevel + 1) . $nA . "\r\n";
             $strOutput .= $this->generateDump($value->arraymem($nA),
                                               $nLevel + 2);
         }
+
         return $strOutput;
     }
 
@@ -172,6 +176,7 @@ class XML_RPC_Dump
         if (!isset($this->arIndent[$nLevel])) {
             $this->arIndent[$nLevel] = str_repeat($this->strBaseIndent, $nLevel);
         }
+
         return $this->arIndent[$nLevel];
     }
 }
@@ -183,5 +188,3 @@ class XML_RPC_Dump
  * c-hanging-comment-ender-p: nil
  * End:
  */
-
-?>

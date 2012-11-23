@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -34,7 +33,6 @@ if (!defined('PHPEXCEL_ROOT')) {
 	define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
 	require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
-
 
 /**
  * PHPExcel_Cell_AdvancedValueBinder
@@ -68,7 +66,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 			if ($value == PHPExcel_Calculation::getTRUE()) {
 				$cell->setValueExplicit( True, PHPExcel_Cell_DataType::TYPE_BOOL);
 				return true;
-			} elseif($value == PHPExcel_Calculation::getFALSE()) {
+			} elseif ($value == PHPExcel_Calculation::getFALSE()) {
 				$cell->setValueExplicit( False, PHPExcel_Cell_DataType::TYPE_BOOL);
 				return true;
 			}
@@ -82,7 +80,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 			// Check for percentage
 			if (preg_match('/^\-?[0-9]*\.?[0-9]*\s?\%$/', $value)) {
 				// Convert value to number
-				$cell->setValueExplicit( (float)str_replace('%', '', $value) / 100, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+				$cell->setValueExplicit( (float) str_replace('%', '', $value) / 100, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 				// Set style
 				$cell->getParent()->getStyle( $cell->getCoordinate() )->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE );
 				return true;

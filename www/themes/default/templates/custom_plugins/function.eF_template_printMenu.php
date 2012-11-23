@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printMenu function
 */
-function smarty_function_eF_template_printMenu($params, &$smarty) {
+function smarty_function_eF_template_printMenu($params, &$smarty)
+{
     //if (mb_strlen($params['lesson_name']) > 23) {
     //    $params['lesson_name'] = mb_substr($params['lesson_name'], 0, 20).'...';
     //}
@@ -21,60 +22,50 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
     //      $str .= "var active_id = 'control'";
     $str .= "var active_id = 'something improbable';";
     $str .= '
-        function changeTDcolor(id) {
+        function changeTDcolor(id)
+        {
         alert(\'asdf\');
             var body_tag = document.getElementsByTagName(\'body\');                 //The body tag controls the current ctg colors. i.e. body_lessons sets the color to ctg="lessons" colors
             body_tag[0].id = "body_"+id;
             alert(active_id + " "+ id);
-                if(active_id != id)
-                {
-                        if(document.getElementById(active_id))
-                        {
+                if (active_id != id) {
+                        if (document.getElementById(active_id)) {
                                 document.getElementById(active_id).className = "menuTableInactive";
                         }
 
-                        if(document.getElementById(active_id+"_a"))
-                        {
+                        if (document.getElementById(active_id+"_a")) {
                                 document.getElementById(active_id+"_a").className = "menuLinkInactive";
                         }
                         active_id = id;
 
                         if(document.getElementById(id))
                                 document.getElementById(id).className = "topTitle rightAlign";
-                        if(document.getElementById(id+"_a"))
-                        {
+                        if (document.getElementById(id+"_a")) {
                                 document.getElementById(active_id+"_a").className = "menuLinkActive";
                         }
 
                 }
         }
 
-      function changeColorOnRefresh() {
+      function changeColorOnRefresh()
+      {
         ';
-        if($params['user_type']=='student')
-        {
+        if ($params['user_type']=='student') {
               $str .= "var temp_id = 'control_panel';
                 ";
-        }
-        else if($params['user_type']=='professor')
-        {
+        } elseif ($params['user_type']=='professor') {
               $str .= "var temp_id = 'control_panel';
                 ";
-        }
-        else
-        {
+        } else {
               $str .= "var temp_id = 'control';
                 ";
         }
 
-        if($params['ctg']=='lessons')
-        {
+        if ($params['ctg']=='lessons') {
             $str .= '
                 changeTDcolor(temp_id);
                 ';
-        }
-        else
-        {
+        } else {
             $str .= '
                 changeTDcolor("'.$params['ctg'].'");
                 ';
@@ -112,7 +103,6 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
                   $str .= $title;
             $str .= "</b></span>";
             }
-
 
         $str .= '</td></tr>
 

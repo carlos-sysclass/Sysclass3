@@ -3,7 +3,6 @@
 
 require_once dirname(__FILE__) . '/../../common.php';
 
-
 $date = new Zend_Date();
 
 $date->setLocale(LOCALE);

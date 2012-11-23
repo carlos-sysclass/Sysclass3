@@ -36,11 +36,11 @@ if ($_SESSION['s_lessons_ID']) {
     <TD style = "vertical-align:top;width:50%">{#advanced_dlg.file}: <span class="help">{#advlink_dlg.selectonewantaslink}.</span><br>
         <iframe name="LNKPICK" src="<?php echo $iframeUrl;?>" style="border: solid black 1px; width: 300px; height:240px; z-index:1"></iframe>
     </TD>
-<?php if ($_SESSION['s_lessons_ID']) {?>    
+<?php if ($_SESSION['s_lessons_ID']) {?>
     <TD style = "vertical-align:top;width:50%">{#advanced_dlg.unit}: <span class="help">{#advlink_dlg.selectonewantaslink}.</span><br>
         <iframe name="LNKPICKCONTENT" src="<?php echo $contentIframeUrl;?>" style="border: solid black 1px; width: 300px; height:240px; z-index:1"></iframe>
     </TD>
-<?php }?>    
+<?php }?>
 </TR>
 </table>
 
@@ -130,7 +130,7 @@ if ($_SESSION['s_lessons_ID']) {
 						<tr>
 							<td nowrap="nowrap" id="labelleft"><label>{#advlink_dlg.popup_position}</label>&nbsp;</td>
 							<td nowrap="nowrap">
-								<input type="text" id="popupleft" name="popupleft" value="" onchange="buildOnClick();" /> /                                
+								<input type="text" id="popupleft" name="popupleft" value="" onchange="buildOnClick();" /> /
 								<input type="text" id="popuptop" name="popuptop" value="" onchange="buildOnClick();" /> (c /c = center)
 							</td>
 						</tr>
@@ -175,8 +175,8 @@ if ($_SESSION['s_lessons_ID']) {
 
 					<table border="0" cellpadding="0" cellspacing="4">
 						<tr>
-							<td class="column1"><label id="idlabel" for="id">{#advlink_dlg.id}</label></td> 
-							<td><input id="id" name="id" type="text" value="" /></td> 
+							<td class="column1"><label id="idlabel" for="id">{#advlink_dlg.id}</label></td>
+							<td><input id="id" name="id" type="text" value="" /></td>
 						</tr>
 
 						<tr>
@@ -195,14 +195,14 @@ if ($_SESSION['s_lessons_ID']) {
 						</tr>
 
 						<tr>
-							<td class="column1"><label id="dirlabel" for="dir">{#advlink_dlg.langdir}</label></td> 
+							<td class="column1"><label id="dirlabel" for="dir">{#advlink_dlg.langdir}</label></td>
 							<td>
-								<select id="dir" name="dir"> 
-										<option value="">{#not_set}</option> 
-										<option value="ltr">{#advlink_dlg.ltr}</option> 
-										<option value="rtl">{#advlink_dlg.rtl}</option> 
+								<select id="dir" name="dir">
+										<option value="">{#not_set}</option>
+										<option value="ltr">{#advlink_dlg.ltr}</option>
+										<option value="rtl">{#advlink_dlg.rtl}</option>
 								</select>
-							</td> 
+							</td>
 						</tr>
 
 						<tr>
@@ -211,10 +211,10 @@ if ($_SESSION['s_lessons_ID']) {
 						</tr>
 
 						<tr>
-							<td class="column1"><label id="langlabel" for="lang">{#advlink_dlg.langcode}</label></td> 
+							<td class="column1"><label id="langlabel" for="lang">{#advlink_dlg.langcode}</label></td>
 							<td>
 								<input id="lang" name="lang" type="text" value="" />
-							</td> 
+							</td>
 						</tr>
 
 						<tr>
@@ -229,50 +229,50 @@ if ($_SESSION['s_lessons_ID']) {
 
 						<tr>
 							<td><label id="rellabel" for="rel">{#advlink_dlg.rel}</label></td>
-							<td><select id="rel" name="rel"> 
-									<option value="">{#not_set}</option> 
-									<option value="lightbox">Lightbox</option> 
-									<option value="alternate">Alternate</option> 
-									<option value="designates">Designates</option> 
-									<option value="stylesheet">Stylesheet</option> 
-									<option value="start">Start</option> 
-									<option value="next">Next</option> 
-									<option value="prev">Prev</option> 
-									<option value="contents">Contents</option> 
-									<option value="index">Index</option> 
-									<option value="glossary">Glossary</option> 
-									<option value="copyright">Copyright</option> 
-									<option value="chapter">Chapter</option> 
-									<option value="subsection">Subsection</option> 
-									<option value="appendix">Appendix</option> 
-									<option value="help">Help</option> 
+							<td><select id="rel" name="rel">
+									<option value="">{#not_set}</option>
+									<option value="lightbox">Lightbox</option>
+									<option value="alternate">Alternate</option>
+									<option value="designates">Designates</option>
+									<option value="stylesheet">Stylesheet</option>
+									<option value="start">Start</option>
+									<option value="next">Next</option>
+									<option value="prev">Prev</option>
+									<option value="contents">Contents</option>
+									<option value="index">Index</option>
+									<option value="glossary">Glossary</option>
+									<option value="copyright">Copyright</option>
+									<option value="chapter">Chapter</option>
+									<option value="subsection">Subsection</option>
+									<option value="appendix">Appendix</option>
+									<option value="help">Help</option>
 									<option value="bookmark">Bookmark</option>
 									<option value="nofollow">No Follow</option>
 									<option value="tag">Tag</option>
-								</select> 
+								</select>
 							</td>
 						</tr>
 
 						<tr>
 							<td><label id="revlabel" for="rev">{#advlink_dlg.rev}</label></td>
-							<td><select id="rev" name="rev"> 
-									<option value="">{#not_set}</option> 
-									<option value="alternate">Alternate</option> 
-									<option value="designates">Designates</option> 
-									<option value="stylesheet">Stylesheet</option> 
-									<option value="start">Start</option> 
-									<option value="next">Next</option> 
-									<option value="prev">Prev</option> 
-									<option value="contents">Contents</option> 
-									<option value="index">Index</option> 
-									<option value="glossary">Glossary</option> 
-									<option value="copyright">Copyright</option> 
-									<option value="chapter">Chapter</option> 
-									<option value="subsection">Subsection</option> 
-									<option value="appendix">Appendix</option> 
-									<option value="help">Help</option> 
-									<option value="bookmark">Bookmark</option> 
-								</select> 
+							<td><select id="rev" name="rev">
+									<option value="">{#not_set}</option>
+									<option value="alternate">Alternate</option>
+									<option value="designates">Designates</option>
+									<option value="stylesheet">Stylesheet</option>
+									<option value="start">Start</option>
+									<option value="next">Next</option>
+									<option value="prev">Prev</option>
+									<option value="contents">Contents</option>
+									<option value="index">Index</option>
+									<option value="glossary">Glossary</option>
+									<option value="copyright">Copyright</option>
+									<option value="chapter">Chapter</option>
+									<option value="subsection">Subsection</option>
+									<option value="appendix">Appendix</option>
+									<option value="help">Help</option>
+									<option value="bookmark">Bookmark</option>
+								</select>
 							</td>
 						</tr>
 
@@ -295,63 +295,63 @@ if ($_SESSION['s_lessons_ID']) {
 
 					<table border="0" cellpadding="0" cellspacing="4">
 						<tr>
-							<td class="column1"><label for="onfocus">onfocus</label></td> 
-							<td><input id="onfocus" name="onfocus" type="text" value="" /></td> 
+							<td class="column1"><label for="onfocus">onfocus</label></td>
+							<td><input id="onfocus" name="onfocus" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onblur">onblur</label></td> 
-							<td><input id="onblur" name="onblur" type="text" value="" /></td> 
+							<td class="column1"><label for="onblur">onblur</label></td>
+							<td><input id="onblur" name="onblur" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onclick">onclick</label></td> 
-							<td><input id="onclick" name="onclick" type="text" value="" /></td> 
+							<td class="column1"><label for="onclick">onclick</label></td>
+							<td><input id="onclick" name="onclick" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="ondblclick">ondblclick</label></td> 
-							<td><input id="ondblclick" name="ondblclick" type="text" value="" /></td> 
+							<td class="column1"><label for="ondblclick">ondblclick</label></td>
+							<td><input id="ondblclick" name="ondblclick" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onmousedown">onmousedown</label></td> 
-							<td><input id="onmousedown" name="onmousedown" type="text" value="" /></td> 
+							<td class="column1"><label for="onmousedown">onmousedown</label></td>
+							<td><input id="onmousedown" name="onmousedown" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onmouseup">onmouseup</label></td> 
-							<td><input id="onmouseup" name="onmouseup" type="text" value="" /></td> 
+							<td class="column1"><label for="onmouseup">onmouseup</label></td>
+							<td><input id="onmouseup" name="onmouseup" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onmouseover">onmouseover</label></td> 
-							<td><input id="onmouseover" name="onmouseover" type="text" value="" /></td> 
+							<td class="column1"><label for="onmouseover">onmouseover</label></td>
+							<td><input id="onmouseover" name="onmouseover" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onmousemove">onmousemove</label></td> 
-							<td><input id="onmousemove" name="onmousemove" type="text" value="" /></td> 
+							<td class="column1"><label for="onmousemove">onmousemove</label></td>
+							<td><input id="onmousemove" name="onmousemove" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onmouseout">onmouseout</label></td> 
-							<td><input id="onmouseout" name="onmouseout" type="text" value="" /></td> 
+							<td class="column1"><label for="onmouseout">onmouseout</label></td>
+							<td><input id="onmouseout" name="onmouseout" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onkeypress">onkeypress</label></td> 
-							<td><input id="onkeypress" name="onkeypress" type="text" value="" /></td> 
+							<td class="column1"><label for="onkeypress">onkeypress</label></td>
+							<td><input id="onkeypress" name="onkeypress" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onkeydown">onkeydown</label></td> 
-							<td><input id="onkeydown" name="onkeydown" type="text" value="" /></td> 
+							<td class="column1"><label for="onkeydown">onkeydown</label></td>
+							<td><input id="onkeydown" name="onkeydown" type="text" value="" /></td>
 						</tr>
 
 						<tr>
-							<td class="column1"><label for="onkeyup">onkeyup</label></td> 
-							<td><input id="onkeyup" name="onkeyup" type="text" value="" /></td> 
+							<td class="column1"><label for="onkeyup">onkeyup</label></td>
+							<td><input id="onkeyup" name="onkeyup" type="text" value="" /></td>
 						</tr>
 					</table>
 				</fieldset>

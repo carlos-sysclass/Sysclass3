@@ -27,7 +27,6 @@
 
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/PCLZip/pclzip.lib.php';
 
-
 /**
  * PHPExcel_Shared_ZipArchive
  *
@@ -42,7 +41,6 @@ class PHPExcel_Shared_ZipArchive
 	const OVERWRITE		= 'OVERWRITE';
 	const CREATE		= 'CREATE';
 
-
 	/**
 	 * Temporary storage directory
 	 *
@@ -56,7 +54,6 @@ class PHPExcel_Shared_ZipArchive
 	 * @var string
 	 */
 	private $_zip;
-
 
     /**
 	 * Open a new zip archive
@@ -73,7 +70,6 @@ class PHPExcel_Shared_ZipArchive
 		return true;
 	}
 
-
     /**
 	 * Close this zip archive
 	 *
@@ -81,7 +77,6 @@ class PHPExcel_Shared_ZipArchive
 	public function close()
 	{
 	}
-
 
     /**
 	 * Add a new file to the zip archive from a string of raw data.

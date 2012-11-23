@@ -19,7 +19,6 @@
  * @version    $Id: Auth.php 11747 2008-10-08 18:33:58Z norm2782 $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Auth
@@ -103,6 +102,7 @@ class Zend_Auth
     public function setStorage(Zend_Auth_Storage_Interface $storage)
     {
         $this->_storage = $storage;
+
         return $this;
     }
 

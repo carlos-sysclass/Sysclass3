@@ -21,11 +21,10 @@ OAuthStore::instance("2Leg", $options );
 // this is the URL of the request
 $url = JIRA_BASE_URL . "/plugins/servlet/oauth/request-token";
 // you can also use POST instead
-$method = "GET"; 
+$method = "GET";
 $params = null;
 
-try
-{
+try {
 	// Obtain a request object for the request we want to make
 	$request = new OAuthRequester($url, $method, $params);
 
@@ -38,13 +37,11 @@ try
 			CURLOPT_SSL_VERIFYPEER	=> true,
 			CURLOPT_SSL_VERIFYHOST	=> 2,
 			CURLOPT_CAINFO			=> dirname(__FILE__) . "/../ssl/jira.wiseflex.com.pem"
-		)		
+		)
 	);
 
 	$response = $result['body'];
 	var_dump($response);
-}
-catch(OAuthException2 $e)
-{
+} catch (OAuthException2 $e) {
 	var_dump($e);
 }

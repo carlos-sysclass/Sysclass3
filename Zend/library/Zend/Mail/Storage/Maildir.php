@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Maildir.php 12519 2008-11-10 18:41:24Z alexander $
  */
-
 
 /**
  * @see Zend_Mail_Storage_Abstract
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Message/File.php';
  * @see Zend_Mail_Storage
  */
 require_once 'Zend/Mail/Storage.php';
-
 
 /**
  * @category   Zend
@@ -71,7 +69,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                                           'R' => Zend_Mail_Storage::FLAG_ANSWERED,
                                           'S' => Zend_Mail_Storage::FLAG_SEEN,
                                           'T' => Zend_Mail_Storage::FLAG_DELETED);
-                                          
+
     // TODO: getFlags($id) for fast access if headers are not needed (i.e. just setting flags)?
 
     /**
@@ -86,16 +84,17 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
             return count($this->_files);
         }
 
-        $count = 0;                
+        $count = 0;
         if (!is_array($flags)) {
             foreach ($this->_files as $file) {
                 if (isset($file['flaglookup'][$flags])) {
                     ++$count;
                 }
             }
+
             return $count;
         }
-        
+
         $flags = array_flip($flags);
            foreach ($this->_files as $file) {
                foreach ($flags as $flag => $v) {
@@ -105,6 +104,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                }
                ++$count;
            }
+
            return $count;
     }
 
@@ -152,6 +152,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     {
         if ($id !== null) {
             $filedata = $this->_getFileData($id);
+
             return isset($filedata['size']) ? $filedata['size'] : filesize($filedata['filename']);
         }
 
@@ -162,8 +163,6 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
 
         return $result;
     }
-
-
 
     /**
      * Fetch a message
@@ -179,7 +178,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
             return new $this->_messageClass(array('file'  => $this->_getFileData($id, 'filename'),
                                                   'flags' => $this->_getFileData($id, 'flags')));
         }
-        
+
         return new $this->_messageClass(array('handler' => $this, 'id' => $id, 'headers' => $this->getRawHeader($id),
                                               'flags'   => $this->_getFileData($id, 'flags')));
     }
@@ -216,6 +215,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         }
 
         fclose($fh);
+
         return $content;
     }
 
@@ -249,6 +249,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
 
         $content = stream_get_contents($fh);
         fclose($fh);
+
         return $content;
     }
 
@@ -263,7 +264,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (!isset($params->dirname) || !is_dir($params->dirname)) {
@@ -301,6 +302,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         if (file_exists($dirname . '/tmp') && !is_dir($dirname . '/tmp')) {
             return false;
         }
+
         return is_dir($dirname . '/cur');
     }
 
@@ -332,7 +334,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         if ($dh) {
             $this->_getMaildirFiles($dh, $dirname . '/new/', array(Zend_Mail_Storage::FLAG_RECENT));
             closedir($dh);
-        } else if (file_exists($dirname . '/new/')) {
+        } elseif (file_exists($dirname . '/new/')) {
             /**
              * @see Zend_Mail_Storage_Exception
              */
@@ -381,7 +383,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
                           'flaglookup' => array_flip($named_flags),
                           'filename'   => $dirname . $entry);
             if ($size !== null) {
-                $data['size'] = (int)$size;
+                $data['size'] = (int) $size;
             }
             $this->_files[] = $data;
         }
@@ -445,6 +447,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
         foreach ($this->_files as $num => $file) {
             $ids[$num + 1] = $file['uniq'];
         }
+
         return $ids;
     }
 

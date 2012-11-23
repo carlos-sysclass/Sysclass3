@@ -6,7 +6,7 @@
 function smarty_function_eF_template_printSurvey($params ,  &$smarty)
 {
     //$returnVal = '';
-   
+
     if (strcmp($params['user_type'], "student") == 0) {
         $header = '<form name="submitSurvey" method="POST" action="student.php?ctg=survey&op=survey_store&screen_survey=3">
             <table width="100%">';
@@ -18,7 +18,7 @@ function smarty_function_eF_template_printSurvey($params ,  &$smarty)
     if (strcmp($params['user_type'], "professor") == 0) {
         $header = '<table width="100%" align="left">';
     }
-    
+
     foreach ($params['data'][0] as $key => $value) {
         if (strcmp($key, "survey_name") == 0 ) {
             $header .= '<tr><td align="left"><b>'.$value.'</b></td>
@@ -109,7 +109,7 @@ function smarty_function_eF_template_printSurvey($params ,  &$smarty)
                             </select>
                         </td>
                     </tr>';
-            
+
             if ($params['action'] == 'survey_preview') {
                 $user_answer = unserialize($params['answers'][$i]['user_answers']);
                 $questions .= '<tr><td class="surveyAnswer">'._STUDENTANSWER.'&nbsp;:&nbsp;'.$user_answer.'</td></tr>';
@@ -167,8 +167,8 @@ function smarty_function_eF_template_printSurvey($params ,  &$smarty)
         $questions .= '<tr><td align="left"><input class="flatButton" type="submit" value="'._SURVEYSUBMIT.'"/></td></tr>
         </table></form>';
     }
-    
+
     $returnVal = '<table style = "width:100%;text-align:left"><tr><td>'.$header.$questions.'</td></tr></table>';
-    
+
     return $returnVal;
 }

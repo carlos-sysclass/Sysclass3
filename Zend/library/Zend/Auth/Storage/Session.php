@@ -20,18 +20,15 @@
  * @version    $Id: Session.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Storage_Interface
  */
 require_once 'Zend/Auth/Storage/Interface.php';
 
-
 /**
  * @see Zend_Session
  */
 require_once 'Zend/Session.php';
-
 
 /**
  * @category   Zend

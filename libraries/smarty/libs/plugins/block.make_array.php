@@ -53,10 +53,10 @@ function smarty_block_make_array($params, $content, &$smarty)
         $src    = str_replace(      ']',             ' ] ',          $src);
         // split on whitespace
         $src    = preg_split (      '/\s+/',          $src);
-       
+
         $msg    = '';
         $stack  = array();
-   
+
         // take each token in turn...
         $level  = 0;
         $items  = 0;
@@ -122,4 +122,3 @@ function smarty_block_make_array($params, $content, &$smarty)
 
     }
 }
-?> 

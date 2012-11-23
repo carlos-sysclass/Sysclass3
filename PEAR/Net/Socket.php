@@ -32,8 +32,8 @@ define('NET_SOCKET_ERROR', 4);
  * @author Stig Bakken <ssb@php.net>
  * @author Chuck Hagenbuch <chuck@horde.org>
  */
-class Net_Socket extends PEAR {
-
+class Net_Socket extends PEAR
+{
     /**
      * Socket file pointer.
      * @var resource $fp
@@ -162,6 +162,7 @@ class Net_Socket extends PEAR {
 
         @fclose($this->fp);
         $this->fp = null;
+
         return true;
     }
 
@@ -194,6 +195,7 @@ class Net_Socket extends PEAR {
 
         $this->blocking = $mode;
         socket_set_blocking($this->fp, $this->blocking);
+
         return true;
     }
 
@@ -233,6 +235,7 @@ class Net_Socket extends PEAR {
         if ($returned == 0) {
             return true;
         }
+
         return $this->raiseError('Cannot set write buffer.');
     }
 
@@ -390,6 +393,7 @@ class Net_Socket extends PEAR {
         }
 
         $buf = @fread($this->fp, 2);
+
         return (ord($buf[0]) + (ord($buf[1]) << 8));
     }
 
@@ -407,6 +411,7 @@ class Net_Socket extends PEAR {
         }
 
         $buf = @fread($this->fp, 4);
+
         return (ord($buf[0]) + (ord($buf[1]) << 8) +
                 (ord($buf[2]) << 16) + (ord($buf[3]) << 24));
     }
@@ -425,9 +430,10 @@ class Net_Socket extends PEAR {
         }
 
         $string = '';
-        while (($char = @fread($this->fp, 1)) != "\x00")  {
+        while (($char = @fread($this->fp, 1)) != "\x00") {
             $string .= $char;
         }
+
         return $string;
     }
 
@@ -445,6 +451,7 @@ class Net_Socket extends PEAR {
         }
 
         $buf = @fread($this->fp, 4);
+
         return sprintf("%s.%s.%s.%s", ord($buf[0]), ord($buf[1]),
                        ord($buf[2]), ord($buf[3]));
     }
@@ -472,6 +479,7 @@ class Net_Socket extends PEAR {
                 return rtrim($line, "\r\n");
             }
         }
+
         return $line;
     }
 
@@ -498,6 +506,7 @@ class Net_Socket extends PEAR {
         while (!feof($this->fp)) {
             $data .= @fread($this->fp, $this->lineLength);
         }
+
         return $data;
     }
 
@@ -545,6 +554,7 @@ class Net_Socket extends PEAR {
         if (count($except)) {
             $result |= NET_SOCKET_ERROR;
         }
+
         return $result;
     }
 
@@ -567,6 +577,7 @@ class Net_Socket extends PEAR {
             if (!is_resource($this->fp)) {
                 return $this->raiseError('not connected');
             }
+
             return @stream_socket_enable_crypto($this->fp, $enabled, $type);
         } else {
             return $this->raiseError('Net_Socket::enableCrypto() requires php version >= 5.1.0');

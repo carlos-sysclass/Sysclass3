@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "常见模块");//FAQ Module
 define("_FAQ_MAIN", "主网页");//Main page
 define("_FAQ_MANAGEMENT", "管理常见问题");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "常见问题已成功更新");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "常见问题无法更新");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "插入FAQ条目");//Insert FAQ entry

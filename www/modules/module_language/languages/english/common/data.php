@@ -9,7 +9,6 @@ define("__START_DATE", "Start Date");
 define("__END_DATE", "End Date");
 
 define("__WELCOME", "Welcome");
- 	 	
 
 define("__LOADING_MESSAGE", "Loading");
 define("__YOUAREIN_", "You are in :");

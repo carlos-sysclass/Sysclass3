@@ -82,8 +82,7 @@ if (isset($_SESSION['s_login']) && ($_SESSION['s_type'] == 'administrator' || $c
 
     }
 
-
-   } else if ($_SESSION['s_type'] == 'administrator') {
+   } elseif ($_SESSION['s_type'] == 'administrator') {
     $employees = eF_getTableData("
     users
     LEFT OUTER JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_LOGIN",
@@ -104,13 +103,12 @@ if (isset($_SESSION['s_login']) && ($_SESSION['s_type'] == 'administrator' || $c
     }
    }
 
-
    $tableName = "usersTable";
    $smarty -> assign("T_ROLES", MagesterUser :: getRoles(true));
 
    $dataSource = $employees;
 
-   include ("sorted_table.php");
+   include 'sorted_table.php';
   }
   exit;
  }

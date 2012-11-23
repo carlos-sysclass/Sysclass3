@@ -74,7 +74,6 @@ require_once 'Zend/Pdf/StringParser.php';
 /** Zend_Pdf_Parser_Stream */
 require_once 'Zend/Pdf/Parser/Stream.php';
 
-
 /**
  * PDF file parser
  *
@@ -97,7 +96,6 @@ class Zend_Pdf_Parser
      * @var Zend_Pdf_Trailer_Keeper
      */
     private $_trailer;
-
 
     /**
      * Get length of source PDF
@@ -144,7 +142,7 @@ class Zend_Pdf_Parser
                 if (!ctype_digit($nextLexeme)) {
                     throw new Zend_Pdf_Exception(sprintf('PDF file syntax error. Offset - 0x%X. Cross-reference table subheader values must contain only digits.', $this->_stringParser->offset-strlen($nextLexeme)));
                 }
-                $objNum = (int)$nextLexeme;
+                $objNum = (int) $nextLexeme;
 
                 $refCount = $this->_stringParser->readLexeme();
                 if (!ctype_digit($refCount)) {
@@ -279,7 +277,7 @@ class Zend_Pdf_Parser
                 for ($count2 = 0; $count2 < $entries; $count2++) {
                     if ($entryField1Size == 0) {
                         $type = 1;
-                    } else if ($entryField1Size == 1) { // Optimyze one-byte field case
+                    } elseif ($entryField1Size == 1) { // Optimyze one-byte field case
                         $type = ord($xrefStreamData[$streamOffset++]);
                     } else {
                         $type = Zend_Pdf_StringParser::parseIntFromStream($xrefStreamData, $streamOffset, $entryField1Size);
@@ -331,10 +329,9 @@ class Zend_Pdf_Parser
             throw new Zend_Pdf_Exception('Cross-reference streams are not supported yet.');
         }
 
-
         $trailerObj = new Zend_Pdf_Trailer_Keeper($trailerDict, $context);
         if ($trailerDict->Prev instanceof Zend_Pdf_Element_Numeric ||
-            $trailerDict->Prev instanceof Zend_Pdf_Element_Reference ) {
+            $trailerDict->Prev instanceof Zend_Pdf_Element_Reference) {
             $trailerObj->setPrev($this->_loadXRefTable($trailerDict->Prev->value));
             $context->getRefTable()->setParent($trailerObj->getPrev()->getRefTable());
         }
@@ -398,7 +395,7 @@ class Zend_Pdf_Parser
             throw new Zend_Pdf_Exception('File is not a PDF.');
         }
 
-        $pdfVersion = (float)substr($pdfVersionComment, 5);
+        $pdfVersion = (float) substr($pdfVersionComment, 5);
         if ($pdfVersion < 0.9 || $pdfVersion >= 1.61) {
             /**
              * @todo
@@ -455,7 +452,6 @@ class Zend_Pdf_Parser
         $this->_trailer = $this->_loadXRefTable($startXref);
         $factory->setObjectCount($this->_trailer->Size->value);
     }
-
 
     /**
      * Object destructor

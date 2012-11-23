@@ -74,6 +74,5 @@ function smarty_function_eF_template_printProjects($params, &$smarty)
             </table>';
     }
 
-
     return $str;
 }

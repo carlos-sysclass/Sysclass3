@@ -28,12 +28,10 @@ foreach ($comments as $value) {
     //}
 }
 
-
-
 //Theses values will be used for the new comment
 $values = array('content_ID' => $currentUnit['id'], 'users_LOGIN' => $currentUser -> user['login']);
 $entityForm = new HTML_QuickForm("create_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=comments&view_unit=".$currentUnit['id'].(isset($_GET['add']) ? '&add=1' : '&edit='.$_GET['edit']), "", null, true);
 
 $entityName = 'comments';
 
-include("entity.php");
+include 'entity.php';

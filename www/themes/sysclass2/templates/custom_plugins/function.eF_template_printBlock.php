@@ -6,7 +6,8 @@
 *
 
 */
-function smarty_function_eF_template_printBlock($params, &$smarty) {
+function smarty_function_eF_template_printBlock($params, &$smarty)
+{
 if (empty($params['id'])) {
 	$params['id'] = $params['title'];
 }
@@ -93,7 +94,6 @@ if ($params['id'] == "") {
      }
     }
 
-    
     //$optionsString .= "<a href = 'http://docs.magester.net' target = '_new'><img src = 'images/16x16/help.png' title = '"._HELP."' alt = '"._HELP."' /></a>";
     //$optionsString .= "<a href = 'javascript:void(0)' onclick = 'eF_js_showDivPopup(\"search\", 0, \"cse\")'><img src = 'images/16x16/help.png' title = '"._HELP."' alt = '"._HELP."' /></a>";
     /**
@@ -228,16 +228,16 @@ if ($params['id'] == "") {
         */
     }
     //This is hidden (css) unless it's inside a sortable ul
-    
+
     $contentclass = array_key_exists('contentclass', $params) ? $params['contentclass'] : 'blockContents';
-    
+
  $handleString .= '<img class = "blockMoveHandle" src = "images/16x16/attachment.png" alt = "'._MOVEBLOCK.'" title = "'._MOVEBLOCK.'" onmousedown = "createSortable(\'firstlist\');createSortable(\'secondlist\');if (window.showBorders) showBorders(event)" onmouseup = "if (window.showBorders) hideBorders(event)">';
     $str = '
    <div class = "block" style = "'.$params['style'].';" id = "'.urlencode($params['title']).'" >
         	<div class="block-title">
           <span class = "handles">'.$optionsString.$handleString.'</span>
           <span class = "title">'. /*$image.*/''.$params['title'].'</span>
-          </div>   
+          </div>
         <div class = " ' . $contentclass . '" >
 
           <span class = "subtitle">'.$params['sub_title'].'</span>
@@ -249,7 +249,7 @@ if ($params['id'] == "") {
         </div>
     </div>';
     if ($params['tabber']) {
-  if($_GET['tab'] == $params['tabber']) {
+  if ($_GET['tab'] == $params['tabber']) {
    $tabberdefault = "tabbertabdefault";
   }
   $str = '<div class = "tabbertab '.$tabberdefault.'"><h3>'.$params['title'].'</h3>'.$str.'</div>';

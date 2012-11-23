@@ -328,6 +328,7 @@ Run post-installation scripts in package <package>, if any exist.
             require_once 'PEAR/Downloader.php';
         }
         $a = &new PEAR_Downloader($ui, $options, $config);
+
         return $a;
     }
 
@@ -340,6 +341,7 @@ Run post-installation scripts in package <package>, if any exist.
             require_once 'PEAR/Installer.php';
         }
         $a = &new PEAR_Installer($ui);
+
         return $a;
     }
 
@@ -393,6 +395,7 @@ Run post-installation scripts in package <package>, if any exist.
             fwrite($fp, $line);
         }
         fclose($fp);
+
         return true;
     }
 
@@ -446,6 +449,7 @@ Run post-installation scripts in package <package>, if any exist.
             fwrite($fp, $line);
         }
         fclose($fp);
+
         return true;
     }
 
@@ -506,6 +510,7 @@ Run post-installation scripts in package <package>, if any exist.
                     }
                 }
             }
+
             return array(
                 'extensions' => $extensions,
                 'zend_extensions' => $zend_extensions,
@@ -536,12 +541,12 @@ Run post-installation scripts in package <package>, if any exist.
             $this->ui->outputData('using package root: ' . $options['packagingroot']);
         }
         $reg = &$this->config->getRegistry();
- 
+
         $abstractpackages = array();
         $otherpackages = array();
         // parse params
         PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
-        foreach($params as $param) {
+        foreach ($params as $param) {
             if (strpos($param, 'http://') === 0) {
                 $otherpackages[] = $param;
                 continue;
@@ -577,13 +582,14 @@ Run post-installation scripts in package <package>, if any exist.
                     }
                 }
             }
-            $abstractpackages = 
+            $abstractpackages =
                 array_map(array($reg, 'parsedPackageNameToString'), $abstractpackages);
         }
 
         $packages = array_merge($abstractpackages, $otherpackages);
         if (!count($packages)) {
             $this->ui->outputData('Nothing to ' . $command);
+
             return true;
         }
 
@@ -614,12 +620,14 @@ Run post-installation scripts in package <package>, if any exist.
                 $data['data'][] = array($reg->parsedPackageNameToString($package->getParsedPackage()));
             }
             $this->ui->outputData($data, 'pretend');
+
             return true;
         }
         $this->installer->setOptions($options);
         $this->installer->sortPackagesForInstall($downloaded);
         if (PEAR::isError($err = $this->installer->setDownloadedPackages($downloaded))) {
             $this->raiseError($err->getMessage());
+
             return true;
         }
         $extrainfo = array();
@@ -785,6 +793,7 @@ Run post-installation scripts in package <package>, if any exist.
                 $this->ui->outputData($info);
             }
         }
+
         return true;
     }
 
@@ -885,6 +894,7 @@ Run post-installation scripts in package <package>, if any exist.
         $err = $this->installer->sortPackagesForUninstall($newparams);
         if (PEAR::isError($err)) {
             $this->ui->outputData($err->getMessage(), $command);
+
             return true;
         }
         $params = $newparams;
@@ -975,9 +985,11 @@ Run post-installation scripts in package <package>, if any exist.
                 if (is_object($pkg)) {
                     $pkg = $reg->parsedPackageNameToString($pkg);
                 }
+
                 return $this->raiseError("uninstall failed: $pkg");
             }
         }
+
         return true;
     }
 
@@ -1056,6 +1068,7 @@ Run post-installation scripts in package <package>, if any exist.
             return $this->raiseError('Could not retrieve package "' . $params[0] . '" from registry');
         }
         $this->ui->outputData('Install scripts complete', $command);
+
         return true;
     }
 
@@ -1071,7 +1084,7 @@ Run post-installation scripts in package <package>, if any exist.
         $latestReleases = array();
 
         $ret = array();
-        foreach($packages as $package) {
+        foreach ($packages as $package) {
             if (isset($package['group'])) {
                 $ret[] = $package;
                 continue;
@@ -1096,7 +1109,7 @@ Run post-installation scripts in package <package>, if any exist.
                 if ($dorest) {
                     $rest = &$this->config->getREST('1.0', array());
                     $installed = array_flip($reg->listPackages($channel));
-                    $latest = $rest->listLatestUpgrades($base, 
+                    $latest = $rest->listLatestUpgrades($base,
                         $this->config->get('preferred_state'), $installed,
                         $channel, $reg);
                 } else {
@@ -1136,4 +1149,3 @@ Run post-installation scripts in package <package>, if any exist.
     }
 
 }
-?>

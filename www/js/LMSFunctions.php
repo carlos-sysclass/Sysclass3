@@ -16,13 +16,11 @@ $result = eF_getTableData("scorm_data", "*", "users_LOGIN is null AND content_ID
 sizeof($result) ? $SCOValues = $result[0] : $SCOValues = array();
 
 $SCOState = 'var SCOState = new Array();';
-foreach ($SCOValues as $key => $value)
-{
+foreach ($SCOValues as $key => $value) {
     $SCOState .= "SCOState['$key'] = '$value';";//echo "alert('LMS User Set: SCOState[$key] = $value');";
 }
 
-foreach ($LMSToSCOValues as $key => $value)
-{
+foreach ($LMSToSCOValues as $key => $value) {
     //Score must be set to zero each time the student visits the SCO; The professor has other ways to see t
     if ($key == 'score') {
         $value = 0;
@@ -88,8 +86,6 @@ function API(){}
 
 ########################## LMS Functions ################################
 
-
-
 These functions implement the SCORM protocol. However, they use corresponding oxiliary
 
 functions to the the real job. They all initially call myInitError(), which
@@ -97,8 +93,6 @@ functions to the the real job. They all initially call myInitError(), which
 sets the LMS error code to 0. This is done because each new call to an LMS
 
 function needs to set a new error code, which remains 0 unless an error occurs.
-
-
 
 #########################################################################
 
@@ -113,7 +107,7 @@ function LMSInitialize(parameter)
     myInitError();
     try {
         return_value = myInitialize(parameter);
-    } catch(e) {
+    } catch (e) {
         myErrorHandler(e);
     } finally {
         if (_DEBUG) alert("Function: LMSInitialize \nArgument: '"+parameter+"' \nReturnes: '"+return_value+"'");
@@ -131,7 +125,7 @@ function LMSFinish(parameter)
     myInitError();
     try {
         return_value = myFinish(parameter);
-    } catch(e) {
+    } catch (e) {
         myErrorHandler(e);
     } finally {
         if (_DEBUG) alert("Function: LMSFinish \nArgument: '"+parameter+"' \nReturnes: '"+return_value+"'");
@@ -217,15 +211,11 @@ function LMSGetDiagnostic(errorNumber)
 
 ########################## my* Function ##############################
 
-
-
 These functions implement the actual functionality of the corresponding LMS
 
 functions. Initially, each function checks the LMS state. Possible states are
 
 "Not started", "Started", "Finished", each with different valid function calls.
-
-
 
 #########################################################################
 
@@ -240,19 +230,16 @@ functions. Initially, each function checks the LMS state. Possible states are
 function myInitialize(parameter)
 {
     return_value = "false";
-    if (parameter != '')
-    {
+    if (parameter != '') {
         throw new myError ('201', 'Non-Empty parameter');
     }
-    if (myCurrentState != -1 & myCurrentState != 1)
-    {
+    if (myCurrentState != -1 & myCurrentState != 1) {
         throw new myError('101', 'LMS not initialized');
-    }
-    else
-    {
+    } else {
         myCurrentState = 0;
         return_value = "true";
     }
+
     return return_value;
 }
 /**
@@ -266,42 +253,30 @@ function myFinish(parameter)
 {
     //alert(myCurrentState);
     return_value = "false";
-    if (parameter != '')
-    {
+    if (parameter != '') {
         throw new myError ('201', 'Non-Empty parameter');
     }
-    if (myCurrentState != 0 && myCurrentState != 1)
-    {
+    if (myCurrentState != 0 && myCurrentState != 1) {
         throw new myError('301', 'LMS not initialized');
-    }
-    else
-    {
+    } else {
         /*1. Set cmi.core.lesson_status*/
-        if (!(SCOState['lesson_status']))
-        {
-            if (SCOState['masteryscore'])
-            {
-                if (cmi.core.score.raw.get() < SCOState['masteryscore'])
-                {
+        if (!(SCOState['lesson_status'])) {
+            if (SCOState['masteryscore']) {
+                if (cmi.core.score.raw.get() < SCOState['masteryscore']) {
                     SCOState['lesson_status'] = 'failed';
                     cmi.core.lesson_status.set('failed');
-                }
-                else
-                {
+                } else {
                     SCOState['lesson_status'] = 'passed';
                     cmi.core.lesson_status.set('passed');
                 }
-            }
-            else
-            {
+            } else {
                 SCOState['lesson_status'] = 'completed';
                 cmi.core.lesson_status.set('completed');
             }
         }
         /*2. Set cmi.core.entry.*/
         var exit = SCOState['scorm_exit'];
-        switch (exit)
-        {
+        switch (exit) {
             case 'time-out':
                 SCOState['entry'] = '';
                 break;
@@ -319,14 +294,14 @@ function myFinish(parameter)
                 break;
         }
         /*3, Set cmi.core.total_time*/
-        if (SCOState['session_time'] && SCOState['session_time'] != '' )
-        {
+        if (SCOState['session_time'] && SCOState['session_time'] != '') {
             SCOState['total_time'] = SCOState['session_time'];
         }
         myCommit('finish');
         myCurrentState = 1;
         return_value = "true";
     }
+
     return return_value;
 }
 /**
@@ -377,13 +352,11 @@ function mySetValues(property, value) //throw new myError(0);
 function myCommit(parameter)
 {
     var return_value = "false";
-    if (parameter != '' && parameter != 'finish') //'finish' parameter indicates that myCommit was called from myFinish, so it may persist total_time as well
-    {
+    if (parameter != '' && parameter != 'finish') { //'finish' parameter indicates that myCommit was called from myFinish, so it may persist total_time as well
         myErrorHandler(new myError('201', 'Non-Empty parameter'));
+
         return return_value;
-    }
-    else
-    {
+    } else {
   if (_DEBUG && document.getElementById('commitFrame')) {
    document.getElementById('commitFrame').style.display = '';
    document.getElementById('commitFrame').style.width = '300px';
@@ -397,8 +370,7 @@ function myCommit(parameter)
             commitArray = SCOState;
             commitParameters = '';
             /*commitArray holds the variables that need to be commited. These become a series of GET parameters, which are communicated to the LMSCommitPage.php page*/
-            for (mykey in commitArray)
-            {
+            for (mykey in commitArray) {
                 if (mykey != 'total_time' || parameter == 'finish') {
                     if (document.getElementById(mykey)) {
                         document.getElementById(mykey).value = commitArray[mykey];
@@ -406,7 +378,7 @@ function myCommit(parameter)
                 }
             }
             <?php
-                if ( $_GET['view_unit'] ) {
+                if ($_GET['view_unit']) {
                     echo "document.getElementById('content_ID').value = ".$_GET['view_unit'].";";
                 }
             ?>
@@ -420,7 +392,8 @@ function myCommit(parameter)
         }
     }
 }
-function handleCommit(transport) {
+function handleCommit(transport)
+{
  if (!(w = findFrame(top, 'mainframe'))) {
   if (window.opener && window.opener.updateProgress) {
    w = window.opener;
@@ -453,8 +426,10 @@ function myGetErrorString(errorNumber)
     errorStrings['404'] = 'Element is write only';
     errorStrings['405'] = 'Incorrect Data Type';
     if (errorNumber == '') { //No arguments were given, so no error is reported (this is basically to comply with the case where the function is called before LMSInitialize())
+
         return '';
-    } else if ((typeof errorStrings[errorNumber]) == 'undefined') { //If the error code is not valid, do nothing really
+    } elseif ((typeof errorStrings[errorNumber]) == 'undefined') { //If the error code is not valid, do nothing really
+
         return errorStrings[0];
     } else {
         return errorStrings[errorNumber];
@@ -484,18 +459,13 @@ function myGetDiagnostic(errorNumber)
     return errorDiagnostic[errorNumber];
 }
 
-
 /*
 
 ######################## Supplementary functions #########################
 
-
-
 These functions implement supplementary operations needed by the LMS. They
 
 are mainly associated to error handling.
-
-
 
 #########################################################################
 
@@ -507,8 +477,7 @@ are mainly associated to error handling.
 */
 function checkState()
 {
-    if (myCurrentState != 0)
-    {
+    if (myCurrentState != 0) {
         throw new myError('301');
     }
 }
@@ -522,49 +491,37 @@ function checkParameter(property)
     /*The code below is used to handle strings of the form "cmi.interactions.1.objectives.0.id" */
     str = property;
     str_split = property.split(".");
-    if (!isNaN(parseInt(str_split[2])))
-    {
+    if (!isNaN(parseInt(str_split[2]))) {
         k = 3; //k is used to discriminate cmi.interactions.1.objectives.0.id from cmi.interactions.1.id
         str = str_split[0]+'.'+str_split[1]+'['+str_split[2]+']';
         /*If the objext is already defined, do not define it again*/
-        if (eval('typeof '+str_split[0]+'.'+str_split[1]) == 'undefined')
-        {
+        if (eval('typeof '+str_split[0]+'.'+str_split[1]) == 'undefined') {
             throw new myError('201');
         }
         _TEMP = str_split[2]; //This is used to signify globally the current index
-        if (!(eval(str)))
-        {
+        if (!(eval(str))) {
             var current_length = eval(str_split[0]+'.'+str_split[1]+'.length'); //Check if the siginified index is sequential (e.g. if the last array index is 3, the designated array index must be at most 4)
-            if (str_split[2] > current_length)
-            {
+            if (str_split[2] > current_length) {
                 throw new myError('201');
-            }
-            else
-            {
+            } else {
                 eval(str+'= new '+str_split[1]+'Object()');
             }
         }
-        if (!isNaN(parseInt(str_split[4])))
-        {
-            if (eval('typeof '+str+'.'+str_split[3]) == 'undefined')
-            {
+        if (!isNaN(parseInt(str_split[4]))) {
+            if (eval('typeof '+str+'.'+str_split[3]) == 'undefined') {
                 throw new myError('201');
             }
             _TEMP2 = str_split[4]; //This is used to signify globally the current index
             var current_length = eval(str+'.'+str_split[3]+'.length'); //Check if the siginified index is sequential (e.g. if the last array index is 3, the designated array index must be at most 4)
             str+='.'+str_split[3]+'['+str_split[4]+']';
-            if (str_split[4] > current_length)
-            {
+            if (str_split[4] > current_length) {
                 throw new myError('201');
-            }
-            else
-            {
+            } else {
                 eval(str+'= new '+str_split[3]+'Object()');
             }
             k = 5;
         }
-        for (var i = k; i < str_split.length; i++)
-        {
+        for (var i = k; i < str_split.length; i++) {
             str += '.'+str_split[i];
         }
         property = str;
@@ -581,12 +538,11 @@ function checkParameter(property)
     }
 
     /*Check if the parameter exists*/
-    if (property == null || eval('typeof '+property) == 'undefined')
-    {
+    if (property == null || eval('typeof '+property) == 'undefined') {
         var last_element = str_split.pop(); //Take the last element in the array
         if (last_element == '_children') {
             throw new myError('202');
-        } else if (last_element == '_count') {
+        } elseif (last_element == '_count') {
             throw new myError('203');
         } else {
             throw new myError('201');
@@ -594,7 +550,6 @@ function checkParameter(property)
     }
 
     //alert("checkParameter returned: "+property);
-
     return property;
 }
 
@@ -672,12 +627,9 @@ function checkDataType(parameter, data_model, type)
 
         case 'CMITime':
             match = (/^(\d\d):(\d\d):(\d\d)(.\d{1,2})?$/i.exec(parameter)); //A point in a 24-hour clock, with an optional 1 or 2 digit decimal part in seconds
-            if (match && match[1] < 24 && match[2] < 60 && match[3] < 60)
-            {
+            if (match && match[1] < 24 && match[2] < 60 && match[3] < 60) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
             break;
@@ -741,19 +693,14 @@ function myError(errorNumber, errorMessage)
 */
 function myErrorHandler(err)
 {
-    if (err instanceof myError)
-    {
+    if (err instanceof myError) {
         myErrorNumber = err.errorNumber;
-        if (err.errorMessage)
-        {
+        if (err.errorMessage) {
             myErrorDiagnostic = err.errorMessage;
-        }
-        else
-        {
+        } else {
             myErrorDiagnostic = myGetDiagnostic(err.errorNumber);
         }
-    }
-    else throw err;
+    } else throw err;
 }
 /**
 
@@ -781,8 +728,6 @@ parameter's value, we will access it at exactly the same way, since all
 
 parameter elements (cmi, core, student_name) are objects.
 
-
-
 #########################################################################
 
 */
@@ -798,8 +743,7 @@ function myCmi()
     * cmi.core is made of objects which all SCOs depend on and all LMSs must implement
 
     */
-    this.core = new function()
-    {
+    this.core = new function() {
         /**
 
         * cmi.core._children is a string that contains all the elements the LMS supports
@@ -819,8 +763,7 @@ function myCmi()
         * Initialization: All LMS children, so that an LMSGetValue call will return a comma separated list
 
         */
-        var _children = function()
-        {
+        var _children = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('402'); }
             var value = 'student_id, student_name, lesson_location, credit, lesson_status, entry, score, total_time, lesson_mode, exit, session_time';
@@ -844,8 +787,7 @@ function myCmi()
         * Initialization: LMS sets it to the user id.
 
         */
-        var student_id = function()
-        {
+        var student_id = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('403'); }
             var value = "<?php $student_id=$_SESSION['s_login']; echo $student_id; ?>";
@@ -869,8 +811,7 @@ function myCmi()
         * Initialization: LMS sets it to the user full name
 
         */
-        var student_name = function()
-        {
+        var student_name = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('403'); }
             <?php
@@ -901,29 +842,24 @@ function myCmi()
         * Initialization: LMS sets it to ''. Using it is SCO responsibility.
 
         */
-        var lesson_location = function()
-        {
-            this.get = function()
-            {
+        var lesson_location = function() {
+            this.get = function() {
                 //<?php /* if ( isset($LMSToSCOValues['lesson_location']) ) echo "value = '".$LMSToSCOValues['lesson_location']."';"; */ ?>
                 //if (SCOState['lesson_location'] && SCOState['lesson_location'] != '' && typeof SCOState['lesson_location'] != 'undefined')
-                if (typeof SCOState['lesson_location'] != 'undefined')
-                {
+                if (typeof SCOState['lesson_location'] != 'undefined') {
                     value = SCOState['lesson_location'];
                 }
+
                 return value;
             }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMIString255', false))
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMIString255', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     //commitArray['lesson_location'] = value;
                     SCOState['lesson_location'] = value;
+
                     return "true";
                 }
             }
@@ -950,10 +886,8 @@ function myCmi()
         * Initialization: LMS responsibility.
 
         */
-        var credit = function()
-        {
-            this.get = function()
-            {
+        var credit = function() {
+            this.get = function() {
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -985,29 +919,24 @@ function myCmi()
         * Initialization: LMS responsibility.
 
         */
-        var lesson_status = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['lesson_status'])
-                {
+        var lesson_status = function() {
+            this.get = function() {
+                if (SCOState['lesson_status']) {
                     value = SCOState['lesson_status'];
                 }
+
                 return value;
             }
-            this.set = function(param)
-            {
+            this.set = function(param) {
                 count = 0;
-                if (!checkDataType(param, 'CMIVocabulary', 'Status') || param == 'not attempted')
-                {
+                if (!checkDataType(param, 'CMIVocabulary', 'Status') || param == 'not attempted') {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     //while (param != legal_values[count] && count++ < legal_values.length );
                     //if (count >= legal_values.length)
                     value = param;
                     SCOState['lesson_status'] = value;
+
                     return "true";
                 }
             }
@@ -1034,22 +963,19 @@ function myCmi()
         * Initialization: LMS responsibility.
 
         */
-        var entry = function()
-        {
-            this.get = function()
-            {
-                if ((typeof SCOState['entry']) != 'undefined') //Since entry may be just '', we need to check if it is defined
-                {
+        var entry = function() {
+            this.get = function() {
+                if ((typeof SCOState['entry']) != 'undefined') { //Since entry may be just '', we need to check if it is defined
                     value = SCOState['entry'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
             var value = 'ab-initio';
         }
         /*User's performance*/
-        var score = function()
-        {
+        var score = function() {
             /**
 
             * cmi.core.score._children is a string that lists all the elements supported by cmi.core.score
@@ -1069,8 +995,7 @@ function myCmi()
             * Initialization: All the score's children, so that an LMSGetValue call returns a comma-separated list
 
             */
-            var _children = function()
-            {
+            var _children = function() {
                 this.get = function() { return value; }
                 this.set = function(param) { throw new myError('402'); }
                 var value = 'raw,min,max';
@@ -1094,19 +1019,15 @@ function myCmi()
             * Initialization: The empty string ''
 
             */
-            var raw = function()
-            {
+            var raw = function() {
                 this.get = function() { return value; }
-                this.set = function(param)
-                {
-                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                    {
+                this.set = function(param) {
+                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                         throw new myError('405');
-                    }
-                    else
-                    {
+                    } else {
                         value = param;
                         SCOState['score'] = value;
+
                         return "true";
                     }
                 }
@@ -1146,19 +1067,15 @@ Uncomment this and comment below to make it non-implemented
             }
 
 */
-            var max = function()
-            {
+            var max = function() {
                 this.get = function() { return value; }
-                this.set = function(param)
-                {
-                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                    {
+                this.set = function(param) {
+                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                         throw new myError('405');
-                    }
-                    else
-                    {
+                    } else {
                         value = param;
                         SCOState['maxscore'] = value;
+
                         return "true";
                     }
                 }
@@ -1198,19 +1115,15 @@ Uncomment this and comment below to make it non-implemented
             }
 
 */
-            var min = function()
-            {
+            var min = function() {
                 this.get = function() { return value; }
-                this.set = function(param)
-                {
-                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                    {
+                this.set = function(param) {
+                    if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                         throw new myError('405');
-                    }
-                    else
-                    {
+                    } else {
                         value = param;
                         SCOState['minscore'] = value;
+
                         return "true";
                     }
                 }
@@ -1240,14 +1153,12 @@ Uncomment this and comment below to make it non-implemented
         * Initialization: To 0000:00:00.00
 
         */
-        var total_time = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['total_time'])
-                {
+        var total_time = function() {
+            this.get = function() {
+                if (SCOState['total_time']) {
                     value = SCOState['total_time'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -1287,14 +1198,12 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var lesson_mode = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['lesson_mode'])
-                {
+        var lesson_mode = function() {
+            this.get = function() {
+                if (SCOState['lesson_mode']) {
                     value = SCOState['lesson_mode'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -1320,20 +1229,16 @@ Uncomment this and comment below to make it non-implemented
         * Initialization: Not needed
 
         */
-        var exit = function()
-        {
+        var exit = function() {
             this.get = function() { throw new myError('404'); }
-            this.set = function(param)
-            {
+            this.set = function(param) {
                 count = 0;
-                if (!checkDataType(param, 'CMIVocabulary', 'Exit'))
-                {
+                if (!checkDataType(param, 'CMIVocabulary', 'Exit')) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     SCOState['scorm_exit'] = value;
+
                     return "true";
                 }
             }
@@ -1360,19 +1265,15 @@ Uncomment this and comment below to make it non-implemented
         * Initialization: To 0000:00:00.00
 
         */
-        var session_time = function()
-        {
+        var session_time = function() {
             this.get = function() { throw new myError('404'); }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMITimespan', false))
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMITimespan', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     SCOState['session_time'] = value;
+
                     return "true";
                 }
             }
@@ -1412,26 +1313,21 @@ Uncomment this and comment below to make it non-implemented
     * Initialization: To ''
 
     */
-    this.suspend_data = new function()
-    {
-        this.get = function()
-        {
-            if (SCOState['suspend_data'])
-            {
+    this.suspend_data = new function() {
+        this.get = function() {
+            if (SCOState['suspend_data']) {
                 value = SCOState['suspend_data'];
             }
+
             return value;
         }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIString4096', false))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIString4096', false)) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
                 SCOState['suspend_data'] = value;
+
                 return "true";
             }
         }
@@ -1458,14 +1354,12 @@ Uncomment this and comment below to make it non-implemented
     * Initialization: To ''
 
     */
-    this.launch_data = new function()
-    {
-        this.get = function()
-        {
-            if (SCOState['datafromlms'])
-            {
+    this.launch_data = new function() {
+        this.get = function() {
+            if (SCOState['datafromlms']) {
                 value = SCOState['datafromlms'];
             }
+
             return value;
         }
         this.set = function(param) { throw new myError('403'); }
@@ -1503,19 +1397,15 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    this.comments = new function()
-    {
+    this.comments = new function() {
         this.get = function() { return value; }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIString4096', false))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIString4096', false)) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value += param;
                 SCOState['comments'] = value;
+
                 return "true";
             }
         }
@@ -1553,14 +1443,12 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    this.comments_from_lms = new function()
-    {
-        this.get = function()
-        {
-            if (SCOState['comments_from_lms'])
-            {
+    this.comments_from_lms = new function() {
+        this.get = function() {
+            if (SCOState['comments_from_lms']) {
                 value = SCOState['comments_from_lms'];
             }
+
             return value;
         }
         this.set = function(param) { throw new myError('403'); }
@@ -1571,8 +1459,7 @@ Uncomment this and comment below to make it non-implemented
     * It may adjust SCO depending on user performance
 
     */
-    this.student_data = new function()
-    {
+    this.student_data = new function() {
         /**
 
         * cmi.student_data._children is a string that contains a list of all the elements supported by cmi.student_data
@@ -1605,8 +1492,7 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var _children = function()
-        {
+        var _children = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('402'); }
             var value = 'mastery_score,max_time_allowed,time_limit_action';
@@ -1643,14 +1529,12 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var mastery_score = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['masteryscore'])
-                {
+        var mastery_score = function() {
+            this.get = function() {
+                if (SCOState['masteryscore']) {
                     value = SCOState['masteryscore'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -1688,14 +1572,12 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var max_time_allowed = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['maxtimeallowed'])
-                {
+        var max_time_allowed = function() {
+            this.get = function() {
+                if (SCOState['maxtimeallowed']) {
                     value = SCOState['maxtimeallowed'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -1733,14 +1615,12 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var time_limit_action = function()
-        {
-            this.get = function()
-            {
-                if (SCOState['timelimitaction'])
-                {
+        var time_limit_action = function() {
+            this.get = function() {
+                if (SCOState['timelimitaction']) {
                     value = SCOState['timelimitaction'];
                 }
+
                 return value;
             }
             this.set = function(param) { throw new myError('403'); }
@@ -1753,8 +1633,7 @@ Uncomment this and comment below to make it non-implemented
         this.time_limit_action = new time_limit_action();
     }
     /*Options that may be needed in SCOs*/
-    this.student_preference = new function()
-    {
+    this.student_preference = new function() {
         /**
 
         * cmi.student_preference._children is a string containing a list of all the elements supported by cmi.student_preference
@@ -1787,8 +1666,7 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var _children = function()
-        {
+        var _children = function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('402'); }
             var value = 'language,speech,audio,speed,text';
@@ -1825,18 +1703,14 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var audio = function()
-        {
+        var audio = function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMISInteger', false) || param < -1 || param > 100)
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMISInteger', false) || param < -1 || param > 100) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
+
                     return "true";
                 }
             }
@@ -1874,18 +1748,14 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var language = function()
-        {
+        var language = function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMIString255', false))
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMIString255', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
+
                     return "true";
                 }
             }
@@ -1923,18 +1793,14 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var speed = function()
-        {
+        var speed = function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMISInteger', false) || param < -100 || param > 100)
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMISInteger', false) || param < -100 || param > 100) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
+
                     return "true";
                 }
             }
@@ -1972,18 +1838,14 @@ Uncomment this and comment below to make it non-implemented
         }
 
 */
-        var text = function()
-        {
+        var text = function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if (!checkDataType(param, 'CMISInteger', false) || (param != "1" && param != "0" && param != "-1"))
-                {
+            this.set = function(param) {
+                if (!checkDataType(param, 'CMISInteger', false) || (param != "1" && param != "0" && param != "-1")) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
+
                     return "true";
                 }
             }
@@ -2033,8 +1895,7 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    objectives._children = new function()
-    {
+    objectives._children = new function() {
         this.get = function() { return value; }
         this.set = function(param) { throw new myError('402'); }
         var value = 'id,score,status';
@@ -2071,8 +1932,7 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    objectives._count = new function()
-    {
+    objectives._count = new function() {
         this.get = function() { return cmi.objectives.length; }
         this.set = function(param) { throw new myError('402'); }
     }
@@ -2116,8 +1976,7 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    interactions._children = new function()
-    {
+    interactions._children = new function() {
         this.get = function() { return value; }
         this.set = function(param) { throw new myError('402'); }
         var value = 'id,objectives,time,type,correct_responses,weighting,student_response,result,latency';
@@ -2154,16 +2013,14 @@ Uncomment this and comment below to make it non-implemented
     }
 
 */
-    interactions._count = new function()
-    {
+    interactions._count = new function() {
         this.get = function() { return cmi.interactions.length; }
         this.set = function(param) { throw new myError('402'); }
     }
     //Assign interactions to cmi object
     this.interactions = interactions;
 } //end of cmi
-objectivesObject = function()
-{
+objectivesObject = function() {
 /*
 
     this.id = new function()
@@ -2177,33 +2034,27 @@ objectivesObject = function()
     }
 
 */
-    this.id = new function()
-    {
-        this.get = function()
-        {
-            if (value === null) //means that is not initialized yet
-            {
+    this.id = new function() {
+        this.get = function() {
+            if (value === null) { //means that is not initialized yet
                 value = ''; //Return empty string and throw error
                 throw new myError('201');
             }
+
             return value;
         }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIIdentifier', false))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIIdentifier', false)) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
         var value = null;
     }
-    this.score = new function()
-    {
+    this.score = new function() {
 /*
 
         this._children = new function()
@@ -2217,8 +2068,7 @@ objectivesObject = function()
         }
 
 */
-        this._children = new function()
-        {
+        this._children = new function() {
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('402'); }
             var value = 'raw,min,max';
@@ -2236,19 +2086,15 @@ objectivesObject = function()
         }
 
 */
-        this.raw = new function()
-        {
+        this.raw = new function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                {
+            this.set = function(param) {
+                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     SCOState['score'] = value;
+
                     return "true";
                 }
             }
@@ -2267,19 +2113,15 @@ objectivesObject = function()
         }
 
 */
-        this.max = new function()
-        {
+        this.max = new function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                {
+            this.set = function(param) {
+                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     SCOState['maxscore'] = value;
+
                     return "true";
                 }
             }
@@ -2298,19 +2140,15 @@ objectivesObject = function()
         }
 
 */
-        this.min = new function()
-        {
+        this.min = new function() {
             this.get = function() { return value; }
-            this.set = function(param)
-            {
-                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false))
-                {
+            this.set = function(param) {
+                if ((!checkDataType(param, 'CMIDecimal', false) || param < 0 || param > 100) && !checkDataType(param, 'CMIBlank', false)) {
                     throw new myError('405');
-                }
-                else
-                {
+                } else {
                     value = param;
                     SCOState['minscore'] = value;
+
                     return "true";
                 }
             }
@@ -2330,27 +2168,22 @@ objectivesObject = function()
     }
 
 */
-    this.status = new function()
-    {
-        this.get = function()
-        {
-            if (SCOState['lesson_status'])
-            {
+    this.status = new function() {
+        this.get = function() {
+            if (SCOState['lesson_status']) {
                 value = SCOState['lesson_status'];
             }
+
             return value;
         }
-        this.set = function(param)
-        {
+        this.set = function(param) {
             count = 0;
-            if (!checkDataType(param, 'CMIVocabulary', 'Status'))
-            {
+            if (!checkDataType(param, 'CMIVocabulary', 'Status')) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
                 SCOState['lesson_status'] = value;
+
                 return "true";
             }
         }
@@ -2358,8 +2191,7 @@ objectivesObject = function()
         var legal_values = new Array('passed', 'completed', 'failed', 'incomplete', 'browsed', 'not attempted');
     }
 }
-interactionsObject = function()
-{
+interactionsObject = function() {
 /*
 
     this.id = new function()
@@ -2373,18 +2205,14 @@ interactionsObject = function()
     }
 
 */
-    this.id = new function()
-    {
+    this.id = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIIdentifier', false))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIIdentifier', false)) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2404,8 +2232,7 @@ interactionsObject = function()
     }
 
 */
-    objectives._count = new function()
-    {
+    objectives._count = new function() {
     //  this.get = function()      { return 1000; }
         this.set = function(param) { throw new myError('402'); }
     }
@@ -2424,18 +2251,14 @@ interactionsObject = function()
     }
 
 */
-    this.time = new function()
-    {
+    this.time = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMITime', false)) //edw 8elei ena RE
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMITime', false)) { //edw 8elei ena RE
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2454,18 +2277,14 @@ interactionsObject = function()
     }
 
 */
-    this.type = new function()
-    {
+    this.type = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIVocabulary', 'Interaction')) //edw 8elei ena RE
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIVocabulary', 'Interaction')) { //edw 8elei ena RE
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2488,8 +2307,7 @@ interactionsObject = function()
     }
 
 */
-    correct_responses._count = new function()
-    {
+    correct_responses._count = new function() {
     //  this.get = function()      { return cmi.objectives.length; }
         this.set = function(param) { throw new myError('402'); }
     }
@@ -2508,18 +2326,14 @@ interactionsObject = function()
     }
 
 */
-    this.weighting = new function()
-    {
+    this.weighting = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIDecimal', false)) //edw 8elei ena RE
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIDecimal', false)) { //edw 8elei ena RE
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2538,18 +2352,14 @@ interactionsObject = function()
     }
 
 */
-    this.student_response = new function()
-    {
+    this.student_response = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIFeedback', cmi.interactions[_TEMP].type.getValue()))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIFeedback', cmi.interactions[_TEMP].type.getValue())) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2568,18 +2378,14 @@ interactionsObject = function()
     }
 
 */
-    this.result = new function()
-    {
+    this.result = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIVocabulary', 'Result')) //edw 8elei ena RE
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIVocabulary', 'Result')) { //edw 8elei ena RE
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
@@ -2598,26 +2404,21 @@ interactionsObject = function()
     }
 
 */
-    this.latency = new function()
-    {
+    this.latency = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMITimespan', false)) //edw 8elei ena RE
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMITimespan', false)) { //edw 8elei ena RE
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }
         var value = '';
     }
 }
-correct_responsesObject = function()
-{
+correct_responsesObject = function() {
 /*
 
     this.pattern = new function()
@@ -2631,18 +2432,14 @@ correct_responsesObject = function()
     }
 
 */
-    this.pattern = new function()
-    {
+    this.pattern = new function() {
         this.get = function() { throw new myError('404'); }
-        this.set = function(param)
-        {
-            if (!checkDataType(param, 'CMIFeedback', cmi.interactions[_TEMP2].type.getValue()))
-            {
+        this.set = function(param) {
+            if (!checkDataType(param, 'CMIFeedback', cmi.interactions[_TEMP2].type.getValue())) {
                 throw new myError('405');
-            }
-            else
-            {
+            } else {
                 value = param;
+
                 return "true";
             }
         }

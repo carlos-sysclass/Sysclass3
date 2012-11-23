@@ -21,7 +21,6 @@
 /** Zend_Pdf_Cmap */
 require_once 'Zend/Pdf/Cmap.php';
 
-
 /**
  * Implements the "segment mapping to delta values" character map (type 4).
  *
@@ -37,7 +36,6 @@ require_once 'Zend/Pdf/Cmap.php';
 class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
 {
   /**** Instance Variables ****/
-
 
     /**
      * The number of segments in the table.
@@ -95,10 +93,7 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
      */
     protected $_glyphIndexArray = array();
 
-
-
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 
@@ -187,6 +182,7 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
             }
 
         }
+
         return $glyphNumbers;
     }
 
@@ -239,6 +235,7 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
                            $subtableIndex - 1);
             $glyphNumber = $this->_glyphIndexArray[$glyphIndex];
         }
+
         return $glyphNumber;
     }
 
@@ -256,16 +253,17 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
                 $characterCodes[] = $code;
             }
         }
+
         return $characterCodes;
     }
 
-    
+
     /**
      * Returns an array containing the glyphs numbers that have entries in this character map.
      * Keys are Unicode character codes (integers)
-     * 
+     *
      * This functionality is partially covered by glyphNumbersForCharacters(getCoveredCharacters())
-     * call, but this method do it in more effective way (prepare complete list instead of searching 
+     * call, but this method do it in more effective way (prepare complete list instead of searching
      * glyph for each character code).
      *
      * @internal
@@ -274,7 +272,7 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
     public function getCoveredCharactersGlyphs()
     {
         $glyphNumbers = array();
-        
+
         for ($segmentNum = 1; $segmentNum <= $this->_segmentCount; $segmentNum++) {
             if ($this->_segmentTableIdRangeOffsets[$segmentNum] == 0) {
                 $delta = $this->_segmentTableIdDeltas[$segmentNum];
@@ -296,7 +294,7 @@ class Zend_Pdf_Cmap_SegmentToDelta extends Zend_Pdf_Cmap
                 }
             }
         }
-        
+
         return $glyphNumbers;
     }
 

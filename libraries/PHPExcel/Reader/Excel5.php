@@ -56,7 +56,6 @@
 //		 NOTE: this patch only works for BIFF8 as BIFF5-7 use a different
 //		 external sheet reference structure
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -157,7 +156,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	const XLS_Type_SHEETLAYOUT			= 0x0862;
 	const XLS_Type_XFEXT				= 0x087d;
 	const XLS_Type_UNKNOWN				= 0xffff;
-
 
 	/**
 	 * Read data only?
@@ -402,14 +400,13 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	 */
 	private $_sharedFormulaParts;
 
-
 	/**
 	 * Create a new PHPExcel_Reader_Excel5 instance
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->_readFilter = new PHPExcel_Reader_DefaultReadFilter();
 	}
-
 
 	/**
 	 * Read data only?
@@ -422,7 +419,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	{
 		return $this->_readDataOnly;
 	}
-
 
 	/**
 	 * Set read data only
@@ -439,7 +435,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $this;
 	}
 
-
 	/**
 	 * Get which sheets to load
 	 *		Returns either an array of worksheet names (the list of worksheets that should be loaded), or a null
@@ -451,7 +446,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	{
 		return $this->_loadSheetsOnly;
 	}
-
 
 	/**
 	 * Set which sheets to load
@@ -469,7 +463,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $this;
 	}
 
-
 	/**
 	 * Set all sheets to load
 	 *		Tells the Reader to load all worksheets from the workbook.
@@ -482,16 +475,15 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $this;
 	}
 
-
 	/**
 	 * Read filter
 	 *
 	 * @return PHPExcel_Reader_IReadFilter
 	 */
-	public function getReadFilter() {
+	public function getReadFilter()
+	{
 		return $this->_readFilter;
 	}
-
 
 	/**
 	 * Set read filter
@@ -499,11 +491,11 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	 * @param PHPExcel_Reader_IReadFilter $pValue
 	 * @return PHPExcel_Reader_Excel5
 	 */
-	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue) {
+	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue)
+	{
 		$this->_readFilter = $pValue;
 		return $this;
 	}
-
 
 	/**
 	 * Can the current PHPExcel_Reader_IReader read the file?
@@ -531,7 +523,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			return false;
 		}
 	}
-
 
 	/**
 	 * Reads names of the worksheets from a file, without parsing the whole file to a PHPExcel object
@@ -580,7 +571,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 		return $worksheetNames;
 	}
-
 
 	/**
 	 * Return worksheet info (Name, Last Column Letter, Last Column Index, Total Rows, Total Columns)
@@ -674,7 +664,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 		return $worksheetInfo;
 	}
-
 
 	/**
 	 * Loads PHPExcel from file
@@ -1054,7 +1043,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			}
 
 			if (!empty($this->_cellNotes)) {
-				foreach($this->_cellNotes as $note => $noteDetails) {
+				foreach ($this->_cellNotes as $note => $noteDetails) {
 //					echo '<b>Cell annotation ',$note,'</b><br />';
 //					var_dump($noteDetails);
 //					echo '<br />';
@@ -1156,7 +1145,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 						$scope = ($definedName['scope'] == 0) ?
 							null : $this->_phpExcel->getSheetByName($this->_sheets[$definedName['scope'] - 1]['name']);
 
-						$this->_phpExcel->addNamedRange( new PHPExcel_NamedRange((string)$definedName['name'], $docSheet, $extractedRange, $localOnly, $scope) );
+						$this->_phpExcel->addNamedRange( new PHPExcel_NamedRange((string) $definedName['name'], $docSheet, $extractedRange, $localOnly, $scope) );
 					}
 				} else {
 					//	Named Value
@@ -1992,9 +1981,9 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 					$rotation = 0;
 					if ($angle <= 90) {
 						$rotation = $angle;
-					} else if ($angle <= 180) {
+					} elseif ($angle <= 180) {
 						$rotation = 90 - $angle;
-					} else if ($angle == 255) {
+					} elseif ($angle == 255) {
 						$rotation = -165;
 					}
 					$objStyle->getAlignment()->setTextRotation($rotation);
@@ -3222,7 +3211,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 		// bit 0, mask 0x01; 1 = sheet is protected
 		$bool = (0x01 & self::_GetInt2d($recordData, 0)) >> 0;
-		$this->_phpSheet->getProtection()->setSheet((bool)$bool);
+		$this->_phpSheet->getProtection()->setSheet((bool) $bool);
 	}
 
 
@@ -3246,7 +3235,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		// bit: 0, mask 0x01; 1 = scenarios are protected
 		$bool = (0x01 & self::_GetInt2d($recordData, 0)) >> 0;
 
-		$this->_phpSheet->getProtection()->setScenarios((bool)$bool);
+		$this->_phpSheet->getProtection()->setScenarios((bool) $bool);
 	}
 
 
@@ -3270,7 +3259,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		// bit: 0, mask 0x01; 1 = objects are protected
 		$bool = (0x01 & self::_GetInt2d($recordData, 0)) >> 0;
 
-		$this->_phpSheet->getProtection()->setObjects((bool)$bool);
+		$this->_phpSheet->getProtection()->setObjects((bool) $bool);
 	}
 
 
@@ -4125,7 +4114,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		$this->_frozen = (bool) ((0x0008 & $options) >> 3);
 
 		// bit: 6; mask: 0x0040; 0 = columns from left to right, 1 = columns from right to left
-		$this->_phpSheet->setRightToLeft((bool)((0x0040 & $options) >> 6));
+		$this->_phpSheet->setRightToLeft((bool) ((0x0040 & $options) >> 6));
 
 		// bit: 10; mask: 0x0400; 0 = sheet not active, 1 = sheet active
 		$isActive = (bool) ((0x0400 & $options) >> 10);
@@ -4347,11 +4336,11 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 			if ($isUNC) {
 				$hyperlinkType = 'UNC';
-			} else if (!$isFileLinkOrUrl) {
+			} elseif (!$isFileLinkOrUrl) {
 				$hyperlinkType = 'workbook';
-			} else if (ord($recordData{$offset}) == 0x03) {
+			} elseif (ord($recordData{$offset}) == 0x03) {
 				$hyperlinkType = 'local';
-			} else if (ord($recordData{$offset}) == 0xE0) {
+			} elseif (ord($recordData{$offset}) == 0xE0) {
 				$hyperlinkType = 'URL';
 			}
 
@@ -4616,9 +4605,9 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 				$objValidation = $this->_phpSheet->getCell($coordinate)->getDataValidation();
 				$objValidation->setType($type);
 				$objValidation->setErrorStyle($errorStyle);
-				$objValidation->setAllowBlank((bool)$allowBlank);
-				$objValidation->setShowInputMessage((bool)$showInputMessage);
-				$objValidation->setShowErrorMessage((bool)$showErrorMessage);
+				$objValidation->setAllowBlank((bool) $allowBlank);
+				$objValidation->setShowInputMessage((bool) $showInputMessage);
+				$objValidation->setShowErrorMessage((bool) $showErrorMessage);
 				$objValidation->setShowDropDown(!$suppressDropDown);
 				$objValidation->setOperator($operator);
 				$objValidation->setErrorTitle($errorTitle);
@@ -4995,8 +4984,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 			$this->_pos += 4 + $length;
 			$nextIdentifier = self::_GetInt2d($this->_data, $this->_pos);
-		}
-		while ($nextIdentifier == self::XLS_Type_CONTINUE);
+		} while ($nextIdentifier == self::XLS_Type_CONTINUE);
 
 		$splicedData = array(
 			'recordData' => $data,
@@ -5381,7 +5369,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			$name = 'tNum';
 			$size = 9;
 			$data = self::_extractNumber(substr($formulaData, 1));
-			$data = str_replace(',', '.', (string)$data); // in case non-English locale
+			$data = str_replace(',', '.', (string) $data); // in case non-English locale
 			break;
 		case 0x20:	//	array constant
 		case 0x40:
@@ -6462,7 +6450,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return '"' . str_replace('"', '""', $value) . '"';
 	}
 
-
 	/**
 	 * Reads first 8 bytes of a string and return IEEE 754 float
 	 *
@@ -6492,7 +6479,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $value;
 	}
 
-
 	private static function _GetIEEE754($rknum)
 	{
 		if (($rknum & 0x02) != 0) {
@@ -6518,7 +6504,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $value;
 	}
 
-
 	/**
 	 * Get UTF-8 string from (compressed or uncompressed) UTF-16 string
 	 *
@@ -6534,7 +6519,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 		return PHPExcel_Shared_String::ConvertEncoding($string, 'UTF-8', 'UTF-16LE');
 	}
-
 
 	/**
 	 * Convert UTF-16 string in compressed notation to uncompressed form. Only used for BIFF8.
@@ -6553,7 +6537,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $uncompressedString;
 	}
 
-
 	/**
 	 * Convert string to UTF-8. Only used for BIFF5.
 	 *
@@ -6564,7 +6547,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	{
 		return PHPExcel_Shared_String::ConvertEncoding($string, 'UTF-8', $this->_codepage);
 	}
-
 
 	/**
 	 * Read 16-bit unsigned integer
@@ -6577,7 +6559,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 	{
 		return ord($data[$pos]) | (ord($data[$pos+1]) << 8);
 	}
-
 
 	/**
 	 * Read 32-bit signed integer
@@ -6600,7 +6581,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		}
 		return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $_ord_24;
 	}
-
 
 	/**
 	 * Read color
@@ -6630,7 +6610,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		return $color;
 	}
 
-
 	/**
 	 * Map border style
 	 * OpenOffice documentation: 2.5.11
@@ -6658,7 +6637,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			default:   return PHPExcel_Style_Border::BORDER_NONE;
 		}
 	}
-
 
 	/**
 	 * Get fill pattern from index
@@ -6693,7 +6671,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		}
 	}
 
-
 	/**
 	 * Map error code, e.g. '#N/A'
 	 *
@@ -6713,7 +6690,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			default: return false;
 		}
 	}
-
 
 	/**
 	 * Map built-in color to RGB value
@@ -6737,7 +6713,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			default:   return array('rgb' => '000000');
 		}
 	}
-
 
 	/**
 	 * Map color array from BIFF5 built-in color index
@@ -6808,7 +6783,6 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		}
 	}
 
-
 	/**
 	 * Map color array from BIFF8 built-in color index
 	 *
@@ -6878,8 +6852,8 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		}
 	}
 
-
-	private function _parseRichText($is = '') {
+	private function _parseRichText($is = '')
+	{
 		$value = new PHPExcel_RichText();
 
 		$value->createText($is);

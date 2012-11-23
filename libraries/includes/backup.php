@@ -42,7 +42,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                       'title' => _BACKUP,
                       'action' => 'eF_js_showDivPopup(\''._BACKUP.'\', 0, \'backup_table\')'));
          /**The file manager*/
-      include "file_manager.php";
+      include 'file_manager.php';
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
             $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';

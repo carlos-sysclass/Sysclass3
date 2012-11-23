@@ -1,4 +1,4 @@
-<?php 
+<?php
 define("__XPROJECTS_NAME", "Projetos");
 define(
 	"__XPROJECTS_YOUR_ACCESS_INFO",

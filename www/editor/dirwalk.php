@@ -3,7 +3,7 @@
 
 * Directory and other function for the editor
 
-* 
+*
 
 * This file is used by the editor, and includes various functions, mostly filesystem-related.
 
@@ -26,10 +26,12 @@ eF_printHeader();
 * Also takes out the leading "/"
 
 */
-function cut_root_folder($sub_folder){
-    if (mb_strlen($sub_folder) > mb_strlen(G_LESSONSPATH)){
+function cut_root_folder($sub_folder)
+{
+    if (mb_strlen($sub_folder) > mb_strlen(G_LESSONSPATH)) {
         $fld = str_replace(G_LESSONSPATH, '', $sub_folder);
         $fld = preg_replace("#^/+#", "", $fld);
+
         return $fld;
     } else {
         return "";
@@ -40,16 +42,20 @@ function cut_root_folder($sub_folder){
  Utility function. print a file's size
 
 */
-function print_filesize($file){
+function print_filesize($file)
+{
     $s = filesize($file);
-    if ($s > 1024){
+    if ($s > 1024) {
         $s = round($s / 1024);
+
         return "$s Kb";
     }
-    if ($s > 1024*1024){
+    if ($s > 1024*1024) {
         $s = round($s / (1024 * 1024));
+
         return "$s Mb";
     }
+
     return "$s b";
 }
 /**
@@ -63,11 +69,12 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
     $dir = preg_replace("#/+#", "/", "$dir");
     $dir = preg_replace("#/$#", "", $dir);
     $dir = stripslashes($dir);
-//echo $dir;   
+//echo $dir;
     if (!($d = dir($dir))) {
         mkdir($dir, 0755);
         if (!($d = dir($dir))) {
             echo "\t "._CANNOTOPENFOLDER." - [$dir]";
+
             return;
         }
     }
@@ -82,7 +89,7 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
     if (is_file(G_LESSONSPATH.$lessons_ID."/data.tgz")) {
         @unlink(G_LESSONSPATH.$lessons_ID."/data.tgz");
     }
-    if($lessons_ID != ""){
+    if ($lessons_ID != "") {
         if (G_LESSONSPATH.$lessons_ID != $dir) { //This means that we are in a different folder (namely a subfolder) than the lesson root folder
             if ($_SESSION['s_type'] != "student") {
 
@@ -98,7 +105,7 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
             }
             echo '<br/><img hspace = "2" src = "icons/open_folder.png" border = "0"><B>/'.mb_substr($dir, mb_strlen(G_LESSONSPATH.$lessons_ID) + 1).'</B>';
         }
-    }else{
+    } else {
         //echo $dir;
         if (G_ADMINPATH != $dir."/") { //This means that we are in a different folder (namely a subfolder) than the admin root folder
 
@@ -121,7 +128,7 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
 
     echo "<hr/>";
     $first_time = true;
-    while ($entry = $d->read()){
+    while ($entry = $d->read()) {
         if (is_file("$dir/$entry")) {
             $ext = pathinfo($entry, PATHINFO_EXTENSION);
             if (!is_file("icons/$ext.png")) {
@@ -138,7 +145,7 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
                     echo "<img hspace = \"2\" src = \"icons/$ext.png\" alt = \"\" border = \"0\">\n";
                 }
                 if ($type == "image") {
- //echo "<br>".$dir."<br>".$entry;                
+ //echo "<br>".$dir."<br>".$entry;
                     print_copy_link_image("$dir/$entry", $entry);
                 } elseif ($type == "files" || $type == 'all_files') {
                     if ($_SESSION['s_type'] == "student") {
@@ -152,11 +159,11 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
                     }
                 } elseif ($type == "flash") {
                     print_copy_link_flash("$dir/$entry", $entry);
-                } elseif($type == "java") {
+                } elseif ($type == "java") {
                     print_copy_link_java("$dir/$entry", $entry);
-                } elseif($type == "videomusic") {
+                } elseif ($type == "videomusic") {
                     print_copy_link_videomusic("$dir/$entry", $entry);
-                }elseif($type == "media") {
+                } elseif ($type == "media") {
                     print_copy_link_videomusic("$dir/$entry", $entry);
                 }
 
@@ -172,14 +179,14 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
             if (sizeof($contents) > 0) {
                 $confirm_msg = _THISFOLDERCONTAINS.' '.sizeof($contents).' '._FILESANDSUBFOLDERS.'! ';
             }
-//echo $dir."<br>".$entry."<br>".$target;   
+//echo $dir."<br>".$entry."<br>".$target;
 //echo $dir."<br>";
-//echo $entry."<br>";   
-//echo $target; 
-            if($lessons_ID != ""){
+//echo $entry."<br>";
+//echo $target;
+            if ($lessons_ID != "") {
 
                 printf("<a href = \"".$parentpage."?lessons_ID=".$lessons_ID."&dir=%s&for_type=".$type."\" ".$target.">", urlencode(str_replace(G_LESSONSPATH, '', $dir)."/".$entry));
-            }elseif($_SESSION['s_type'] == "administrator"){
+            } elseif ($_SESSION['s_type'] == "administrator") {
                 printf("<a href = \"".$parentpage."?dir=%s&for_type=".$type."\" ".$target.">", urlencode(str_replace(G_ADMINPATH, '', $dir."/")."/".$entry));
             }
             printf("<img hspace = \"2\" src = \"icons/close_folder.png\" alt = \""._OPENFOLDER."\" border = \"0\">%s</a>", $entry);
@@ -209,7 +216,7 @@ function main_process($dir, $type, $lessons_ID)
         $valid_file_types_temp = array("jpg", "gif", "png", "bmp");
     } elseif ($type == "files") {
         $valid_file_types_temp = array("zip", "html", "htm", "pdf", "doc", "xls", "ppt", "pps", "txt", "jpg", "gif", "png", "exe", "zip", "m", "mp3", "wav", "ra", "avi", "mov", "mpeg", "mid", "wma", "bmp", "wmv", "mp4");
-        if($_SESSION['s_type'] == "administrator"){
+        if ($_SESSION['s_type'] == "administrator") {
             $valid_file_types_temp[] = "php";
         }
     } elseif ($type == "flash") {
@@ -220,11 +227,11 @@ function main_process($dir, $type, $lessons_ID)
         $valid_file_types_temp = array("mp3", "wav", "ra", "avi", "mov", "mpeg", "mpg", "mid", "wma", "wmv", "mp4");
     } elseif ($type == 'all_files') {
         $valid_file_types_temp = array();
-    } elseif($type == "media"){
+    } elseif ($type == "media") {
          $valid_file_types_temp = array("mp3", "wav", "ra", "avi", "mov", "mpeg", "mpg", "mid", "wma", "swf", "wmv", "avi", "mp4");
     }
     $valid_file_types = $valid_file_types_temp; // prostheto kai tis antistoixes katalikseis me kefalaia. makriria
-    for($i=0; $i<sizeof($valid_file_types_temp); $i++){
+    for ($i=0; $i<sizeof($valid_file_types_temp); $i++) {
         $valid_file_types[] = mb_strtoupper($valid_file_types_temp[$i]);
     }
 //    $dir = preg_replace(G_RELATIVELESSONSLINK, "", $dir);
@@ -240,11 +247,11 @@ function print_copy_link_image($path, $name)
     $width = $imgsize[0];
     $height = $imgsize[1];
     $path = preg_replace("#/+#", "/", $path);
-//echo $path."<hr>";    
+//echo $path."<hr>";
     $path = str_replace(G_LESSONSPATH, "/".G_RELATIVELESSONSLINK, $path);
     $path = str_replace(G_ADMINPATH, "/".G_RELATIVEADMINLINK, $path);
     $path = preg_replace("#/+#", "/", $path);
-//echo $path;    
+//echo $path;
     echo "<a href = \"#\" onClick = \"top.document.getElementById('src').value = '".$path."';\">".$name."</a>";
 }
 
@@ -322,11 +329,11 @@ function print_file_name($path, $name)
 
 *
 
-* This function accepts a directory name and returns an array where the elements are 
+* This function accepts a directory name and returns an array where the elements are
 
-* the full paths to every file in it, recursively. If the second parameter is specified, 
+* the full paths to every file in it, recursively. If the second parameter is specified,
 
-* then only files of the specified type are returned. If no argument is specified, it searches 
+* then only files of the specified type are returned. If no argument is specified, it searches
 
 * the current directory and returns every file in it.
 
@@ -420,6 +427,7 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
             }
         }
     }
+
     return $filelist;
 }
 /**
@@ -436,13 +444,13 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
 
 * $timestamp = time();
 
-* list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads("file_upload", "uploads/", $timestamp."_");  //This will upload all the files specified in the "file_upload" form field, move them to the "uploads" directory and append to their name the current timestamp. 
+* list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads("file_upload", "uploads/", $timestamp."_");  //This will upload all the files specified in the "file_upload" form field, move them to the "uploads" directory and append to their name the current timestamp.
 
-* //$uploaded_messages is an array with the error or succes message corresponding to each of the uploaded files 
+* //$uploaded_messages is an array with the error or succes message corresponding to each of the uploaded files
 
 * //$upload_messages_type is an array holding the correspnding message types
 
-* //$filename is an array holding the uploaded files filenames 
+* //$filename is an array holding the uploaded files filenames
 
 * </code>
 
@@ -465,7 +473,8 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
 * @version 0.9
 
 */
-function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filename = '', $ext=false) {
+function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filename = '', $ext=false)
+{
     $ok = false;
     $upload_messages = array();
     if ($target_dir[mb_strlen($target_dir) - 1] != '/') {
@@ -485,7 +494,7 @@ function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filena
     if (sizeof($disallowed_extensions) == 0 || $disallowed_extensions[0]['value'] == '') {
         unset ($disallowed_extensions);
     }
-    if ($ext == false){
+    if ($ext == false) {
         unset($ext);
     }
     foreach ($_FILES[$field_name]['name'] as $count => $value) {
@@ -525,7 +534,7 @@ function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filena
                 $upload_messages[$count] = _YOUMAYONLYUPLOADFILESWITHEXTENSION.': '.$allowed_extensions[0]['value'].'<br/>';
             } elseif (!eF_checkParameter($file['name'], 'filename')) {
                 $upload_messages[$count] = _INVALIDFILENAME;
-            } else if ( isset($ext) && $path_parts && !in_array($path_parts['extension'], explode(",", preg_replace("/\s+/", "", $ext)))){
+            } elseif ( isset($ext) && $path_parts && !in_array($path_parts['extension'], explode(",", preg_replace("/\s+/", "", $ext)))) {
                 $upload_messages[$count] = _YOUMAYONLYUPLOADFILESWITHEXTENSION.': '.$ext.'<br/>';
             } else {
                 $new_name = explode('.', $path_parts['basename']); //These 3 lines translate greek characters to greeklish characters
@@ -555,4 +564,3 @@ function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filena
         return array($ok, $upload_messages, $upload_messages_type, false);
     }
 }
-?>

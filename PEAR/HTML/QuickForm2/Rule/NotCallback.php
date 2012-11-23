@@ -72,6 +72,7 @@ class HTML_QuickForm2_Rule_NotCallback extends HTML_QuickForm2_Rule_Callback
     {
         $value  = $this->owner->getValue();
         $config = $this->getConfig();
+
         return !call_user_func_array(
             $config['callback'], array_merge(array($value), $config['arguments'])
         );
@@ -86,8 +87,8 @@ class HTML_QuickForm2_Rule_NotCallback extends HTML_QuickForm2_Rule_Callback
         foreach ($config['arguments'] as $arg) {
             $arguments[] = HTML_QuickForm2_JavascriptBuilder::encode($arg);
         }
+
         return "function() { return !" . $this->findJavascriptName() .
                "(" . implode(', ', $arguments) . "); }";
     }
 }
-?>

@@ -9,12 +9,12 @@ class bar_3d_value
 		$this->top = $top;
 //		$this->bottom = $bottom;
 	}
-	
+
 	function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
+
 	function set_tooltip( $tip )
 	{
 		$this->tip = $tip;

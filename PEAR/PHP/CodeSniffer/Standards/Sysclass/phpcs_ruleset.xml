@@ -22,7 +22,7 @@
  <exclude-pattern>*/www/phplivedocx/*</exclude-pattern>
  <exclude-pattern>*/www/public_data/*</exclude-pattern>
  <exclude-pattern>*/Zend/*</exclude-pattern>
- 
+
  <rule ref="PSR2">
 	<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
 	<exclude name="Generic.Formatting.SpaceAfterCast"/>

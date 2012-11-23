@@ -5,7 +5,6 @@
  * @subpackage plugins
  */
 
-
 /**
  * Smarty truncate modifier plugin
  *
@@ -31,6 +30,7 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
  if (mb_strlen($stripped) <= $length) {
   $finalString = implode("<span>&raquo;&nbsp;</span>", $piecesStart); // with tags
   $finalString = str_replace(" </a>", "</a>", $finalString);
+
   return $finalString;
  }
 
@@ -45,7 +45,7 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
   for ($k = 1; $k < $piecesNum; $k++) {
    if ($piecesLength[$k] > $pathLimit) {
     $piecesLength[$k] = $piecesLength[$k] - round($piecesLength[$k]*($piecesNum -$k)/10);
-    if(array_sum($piecesLength) <= $length) {
+    if (array_sum($piecesLength) <= $length) {
      break;
     }
    }
@@ -73,5 +73,6 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
 
  $finalString = implode("&raquo;&nbsp;", $piecesFinal); // with tags
  $finalString = str_replace(" </a>", "</a>", $finalString);
+
  return $finalString;
 }

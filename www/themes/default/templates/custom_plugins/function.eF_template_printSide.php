@@ -32,6 +32,6 @@ function smarty_function_eF_template_printSide($params, &$smarty)
                             </td></tr>
                         </table>
                         <br/>';
-    
+
     return $str;
 }

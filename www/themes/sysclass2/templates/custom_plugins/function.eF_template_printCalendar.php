@@ -6,7 +6,8 @@
  *
 
  */
-function smarty_function_eF_template_printCalendar($params, &$smarty) {
+function smarty_function_eF_template_printCalendar($params, &$smarty)
+{
  $events = $params['events'];
  //isset($params['ctg']) ? $current_ctg = $params['ctg'] : $current_ctg = 'control_panel';             //If a ctg is defined (e.g. ctg=calendar), use this as the links target. Otherwise, use control_panel (default)
  foreach ($events as $key => $event) {
@@ -29,7 +30,7 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
  $firstday = mktime(0, 0, 0, $timestamp_info['mon'] , 1, $timestamp_info['year']);
  $lastday = mktime(0, 0, 0, $timestamp_info['mon'] + 1, 0, $timestamp_info['year']);
  $firstday_info = getdate($firstday);
- 
+
   if ($firstday_info['wday'] == 0) {
 //  $firstday_info['wday'] = 7;
  }
@@ -44,11 +45,6 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
  isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
  isset($_GET['show_interval']) ? $show_interval_link = '&show_interval='.$_GET['show_interval'] : $show_interval_link = '';
 
- 
- 
- 
-
- 
  $str = '
 <div align="center" style="margin: 0 10px 10px;">
 	<div
@@ -68,7 +64,7 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
 				<span class="ui-datepicker-year">' . $timestamp_info['year'] . '</span>
 			</div>
 		</div>
-		
+
 		<table class="ui-datepicker-calendar">
         	<thead>
 				<tr>
@@ -103,15 +99,15 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
 	} else {
 		$day = '&nbsp;';
 	}
-   $day_timestamp = mktime(0, 0, 0, (int)$timestamp_info['mon'], (int)$day, (int)$timestamp_info['year']);
+   $day_timestamp = mktime(0, 0, 0, (int) $timestamp_info['mon'], (int) $day, (int) $timestamp_info['year']);
 	if ($params['other_months']) {
 		$day = date('d', $day_timestamp);
 	}
-   
+
    $count++;
-   
+
 	$linkClassName = '';
-   
+
 	if ($day_timestamp == $today) {
 		$className .= ' ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today';
 		$linkClassName .= ' ui-state-highlight';
@@ -120,11 +116,10 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
 	if ($day_timestamp == $view_calendar) {
     	$className .= ' ui-state-error';
 	}
-   
+
 	if (in_array(date('w', $day_timestamp), array(0,6))) {
 		$className .= ' ui-datepicker-week-end';
-	}   
-   
+	}
 
    if (!empty($events_per_day[$day_timestamp])) {
     $className = 'eventCalendar';
@@ -145,7 +140,7 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
     $day_str = '<a href = "'.basename($_SERVER['PHP_SELF']).'?ctg=calendar&view_calendar='.$day_timestamp.'" class = "info ui-state-default ' . $linkClassName . '  ui-state-active" >
 		<span class = "tooltipSpan">'.$dayEvents.'</span>
 	'.$day.'</a>';
-    
+
 	} else {
 		if ($day != '&nbsp;') {
     		$day_str = '<a href = "'.basename($_SERVER['PHP_SELF']).'?ctg=calendar&view_calendar='.$day_timestamp.'" class="ui-state-default ' . $linkClassName . '">'.$day.'</a>';
@@ -153,9 +148,6 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
    			$day_str = '';
    		}
    }
-
-
-   
 
    $str .= '
                 <td class = "'.$className.'">'./*$day_timestamp .*/ ' ' .$day_str.'</td>';
@@ -173,12 +165,8 @@ function smarty_function_eF_template_printCalendar($params, &$smarty) {
 
  return $str;
 
-
-
-
-
  ?>
- <!-- 
+ <!--
 <div align="center" style="margin: 0 10px 10px;">
 	<div
 		class="ui-datepicker-inline ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"

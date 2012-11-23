@@ -4,8 +4,6 @@ define("__PAGAMENTO_BOLETO_SEND_FILE_SUCCESS", "Arquivo enviado com sucesso! <a 
 
 define("_MODULE_PAGAMENTO_BOLETO_SEND_FILE_ERRO", "Ocorreu um erro ao tentar enviar o seu arquivo. Caso os problemas persistam, entre em contato com o suporte.");
 
-
-
 define("_MODULE_PAGAMENTO_BOLETO_FILE_TITLE", "Título");
 define("_MODULE_PAGAMENTO_BOLETO_RETURN_FILE", "Arquivo de Retorno");
 define("_MODULE_PAGAMENTO_BOLETO_SUBMIT", "Salvar");

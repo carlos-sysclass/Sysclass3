@@ -71,7 +71,7 @@ try {
         case 'lesson':
             if (!($currentUser instanceof MagesterLessonUser)) {
                 throw new Exception(_YOUCANNOTACCESSREQUESTEDRESOURCE);
-            }            
+            }
             $userLessons = $currentUser -> getLessons();
             if (in_array($_GET['id'], array_keys($userLessons))) {
                 $lesson = new MagesterLesson($_GET['id']);

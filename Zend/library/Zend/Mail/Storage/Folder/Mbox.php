@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Mbox.php 9098 2008-03-30 19:29:10Z thomas $
  */
-
 
 /**
  * @see Zend_Mail_Storage_Folder
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Storage/Folder/Interface.php';
  * @see Zend_Mail_Storage_Mbox
  */
 require_once 'Zend/Mail/Storage/Mbox.php';
-
 
 /**
  * @category   Zend
@@ -79,7 +77,7 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (isset($params->filename)) {
@@ -185,6 +183,7 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
             require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("folder $rootFolder not found");
         }
+
         return $currentFolder;
     }
 
@@ -199,14 +198,14 @@ class Zend_Mail_Storage_Folder_Mbox extends Zend_Mail_Storage_Mbox implements Ze
      */
     public function selectFolder($globalName)
     {
-        $this->_currentFolder = (string)$globalName;
+        $this->_currentFolder = (string) $globalName;
 
         // getting folder from folder tree for validation
         $folder = $this->getFolders($this->_currentFolder);
 
         try {
             $this->_openMboxFile($this->_rootdir . $folder->getGlobalName());
-        } catch(Zend_Mail_Storage_Exception $e) {
+        } catch (Zend_Mail_Storage_Exception $e) {
             // check what went wrong
             if (!$folder->isSelectable()) {
                 /**

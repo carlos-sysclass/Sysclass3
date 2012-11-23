@@ -131,6 +131,7 @@ class HTML_QuickForm2_DataSource_SuperGlobal
                           $this->arrayMapRecursive($callback, $v):
                           call_user_func($callback, $v);
         }
+
         return $mapped;
     }
 
@@ -159,12 +160,12 @@ class HTML_QuickForm2_DataSource_SuperGlobal
                     $value[$key] = $value[$key][$token];
                 }
             } while (!empty($tokens));
+
             return $value;
-        } elseif(isset($this->files[$name])) {
+        } elseif (isset($this->files[$name])) {
             return $this->files[$name];
         } else {
             return null;
         }
     }
 }
-?>

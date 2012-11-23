@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_WriterPart
  *
@@ -48,7 +47,8 @@ abstract class PHPExcel_Writer_Excel2007_WriterPart
 	 * @param PHPExcel_Writer_IWriter	$pWriter
 	 * @throws Exception
 	 */
-	public function setParentWriter(PHPExcel_Writer_IWriter $pWriter = null) {
+	public function setParentWriter(PHPExcel_Writer_IWriter $pWriter = null)
+	{
 		$this->_parentWriter = $pWriter;
 	}
 
@@ -58,7 +58,8 @@ abstract class PHPExcel_Writer_Excel2007_WriterPart
 	 * @return PHPExcel_Writer_IWriter
 	 * @throws Exception
 	 */
-	public function getParentWriter() {
+	public function getParentWriter()
+	{
 		if (!is_null($this->_parentWriter)) {
 			return $this->_parentWriter;
 		} else {
@@ -72,7 +73,8 @@ abstract class PHPExcel_Writer_Excel2007_WriterPart
 	 * @param PHPExcel_Writer_IWriter	$pWriter
 	 * @throws Exception
 	 */
-	public function __construct(PHPExcel_Writer_IWriter $pWriter = null) {
+	public function __construct(PHPExcel_Writer_IWriter $pWriter = null)
+	{
 		if (!is_null($pWriter)) {
 			$this->_parentWriter = $pWriter;
 		}

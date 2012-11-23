@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "UKK-moduuli");//FAQ Module
 define("_FAQ_MAIN", "PRH");//Main page
 define("_FAQ_MANAGEMENT", "Hallitse Usein kysytyt kysymykset");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "UKK oli päivittäminen onnistui");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "UKK ei voi päivittää");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Lisää Usein kysytyistä kysymyksistä");//Insert FAQ entry

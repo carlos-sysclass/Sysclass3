@@ -116,7 +116,6 @@ abstract class HTML_QuickForm2_Rule
     */
     protected $chainedRules = array(array());
 
-
    /**
     * Class constructor
     *
@@ -157,6 +156,7 @@ abstract class HTML_QuickForm2_Rule
     public function setConfig($config)
     {
         $this->config = $config;
+
         return $this;
     }
 
@@ -178,7 +178,8 @@ abstract class HTML_QuickForm2_Rule
     */
     public function setMessage($message)
     {
-        $this->message = (string)$message;
+        $this->message = (string) $message;
+
         return $this;
     }
 
@@ -235,6 +236,7 @@ abstract class HTML_QuickForm2_Rule
             );
         }
         $this->chainedRules[count($this->chainedRules) - 1][] = $next;
+
         return $this;
     }
 
@@ -258,6 +260,7 @@ abstract class HTML_QuickForm2_Rule
             );
         }
         $this->chainedRules[] = array($next);
+
         return $this;
     }
 
@@ -285,6 +288,7 @@ abstract class HTML_QuickForm2_Rule
             $localValid = true;
         }
         $globalValid or $this->setOwnerError();
+
         return $globalValid;
     }
 
@@ -352,6 +356,7 @@ abstract class HTML_QuickForm2_Rule
                 }
             }
         }
+
         return array_keys($triggers);
     }
 
@@ -390,7 +395,7 @@ abstract class HTML_QuickForm2_Rule
             }
             $js .= ",\n\t [" . implode(",\n", $chained) . "]";
         }
+
         return $js . ')';
     }
 }
-?>

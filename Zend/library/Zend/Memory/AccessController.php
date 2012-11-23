@@ -48,7 +48,6 @@ class Zend_Memory_AccessController implements Zend_Memory_Container_Interface
      */
     private $_memContainer;
 
-
     /**
      * Object constructor
      *
@@ -66,7 +65,6 @@ class Zend_Memory_AccessController implements Zend_Memory_Container_Interface
     {
         $this->_memContainer->destroy();
     }
-
 
     /**
      * Get string value reference
@@ -98,7 +96,6 @@ class Zend_Memory_AccessController implements Zend_Memory_Container_Interface
     {
         $this->_memContainer->lock();
     }
-
 
     /**
      * Unlock object

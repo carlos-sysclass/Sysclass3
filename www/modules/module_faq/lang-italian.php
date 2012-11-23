@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "FAQ Modulo");//FAQ Module
 define("_FAQ_MAIN", "Pagina principale");//Main page
 define("_FAQ_MANAGEMENT", "Gestisci le domande più frequenti");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "FAQ è stato aggiornato con successo");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "FAQ potrebbe non essere aggiornato");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Inserisci FAQ");//Insert FAQ entry

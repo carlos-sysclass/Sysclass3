@@ -78,6 +78,7 @@ class HTML_QuickForm2_Element_Script extends HTML_QuickForm2_Element_Static
     public function __toString()
     {
         $cr = HTML_Common2::getOption('linebreak');
+
         return "<script type=\"text/javascript\">{$cr}//<![CDATA[{$cr}"
                . $this->data['content'] . "{$cr}//]]>{$cr}</script>";
     }
@@ -94,4 +95,3 @@ class HTML_QuickForm2_Element_Script extends HTML_QuickForm2_Element_Static
         $renderer->renderHidden($this);
     }
 }
-?>

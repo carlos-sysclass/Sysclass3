@@ -100,7 +100,6 @@ class Zend_Server_Reflection
             throw new Zend_Server_Reflection_Exception('Invalid function "' . $function . '" passed to reflectFunction');
         }
 
-
         if ($argv && !is_array($argv)) {
             require_once 'Zend/Server/Reflection/Exception.php';
             throw new Zend_Server_Reflection_Exception('Invalid argv argument passed to reflectClass');

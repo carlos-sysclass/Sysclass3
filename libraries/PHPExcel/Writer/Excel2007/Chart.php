@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_Chart
  *
@@ -86,7 +85,6 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 				$this->_writePlotArea($pChart->getPlotArea(), $pChart->getXAxisLabel(), $pChart->getYAxisLabel(), $objWriter);
 
 				$this->_writeLegend($pChart->getLegend(), $objWriter);
-
 
 				$objWriter->startElement('c:plotVisOnly');
 					$objWriter->writeAttribute('val', 1);
@@ -232,11 +230,11 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 			$chartTypes = self::_getChartType($plotArea);
 			$catIsMultiLevelSeries = $valIsMultiLevelSeries = FALSE;
 			$plotGroupingType = '';
-			foreach($chartTypes as $chartType) {
+			foreach ($chartTypes as $chartType) {
 				$objWriter->startElement('c:'.$chartType);
 
 					$groupCount = $plotArea->getPlotGroupCount();
-					for($i = 0; $i < $groupCount; ++$i) {
+					for ($i = 0; $i < $groupCount; ++$i) {
 						$plotGroup = $plotArea->getPlotGroupByIndex($i);
 						$groupType = $plotGroup->getPlotType();
 						if ($groupType == $chartType) {
@@ -643,7 +641,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 			$chartType = array($plotArea->getPlotGroupByIndex(0)->getPlotType());
 		} else {
 			$chartTypes = array();
-			for($i = 0; $i < $groupCount; ++$i) {
+			for ($i = 0; $i < $groupCount; ++$i) {
 				$chartTypes[] = $plotArea->getPlotGroupByIndex($i)->getPlotType();
 			}
 			$chartType = array_unique($chartTypes);
@@ -709,7 +707,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 			}
 		}
 
-		foreach($plotSeriesOrder as $plotSeriesIdx => $plotSeriesRef) {
+		foreach ($plotSeriesOrder as $plotSeriesIdx => $plotSeriesRef) {
 			$objWriter->startElement('c:ser');
 
 				$objWriter->startElement('c:idx');
@@ -865,7 +863,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 				$objWriter->writeAttribute('val', $plotSeriesLabel->getPointCount() );
 			$objWriter->endElement();
 
-			foreach($plotSeriesLabel->getDataValues() as $plotLabelKey => $plotLabelValue) {
+			foreach ($plotSeriesLabel->getDataValues() as $plotLabelKey => $plotLabelValue) {
 				$objWriter->startElement('c:pt');
 					$objWriter->writeAttribute('idx', $plotLabelKey );
 
@@ -911,7 +909,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 					for ($level = 0; $level < $levelCount; ++$level) {
 						$objWriter->startElement('c:lvl');
 
-						foreach($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
+						foreach ($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
 							if (isset($plotSeriesValue[$level])) {
 								$objWriter->startElement('c:pt');
 									$objWriter->writeAttribute('idx', $plotSeriesKey );
@@ -953,7 +951,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 						$objWriter->writeAttribute('val', $plotSeriesValues->getPointCount() );
 					$objWriter->endElement();
 
-					foreach($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
+					foreach ($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
 						$objWriter->startElement('c:pt');
 							$objWriter->writeAttribute('idx', $plotSeriesKey );
 
@@ -993,7 +991,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
 					$objWriter->writeAttribute('val', $plotSeriesValues->getPointCount() );
 				$objWriter->endElement();
 
-				foreach($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
+				foreach ($plotSeriesValues->getDataValues() as $plotSeriesKey => $plotSeriesValue) {
 					$objWriter->startElement('c:pt');
 						$objWriter->writeAttribute('idx', $plotSeriesKey );
 						$objWriter->startElement('c:v');

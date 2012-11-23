@@ -1,6 +1,6 @@
 <?php
 
-include("../../../libraries/configuration.php");
+include '../../../libraries/configuration.php';
 
 session_start();
 global $dbh;
@@ -11,45 +11,41 @@ if ($_GET['force'] == "clearU2ULogs") { clearU2ULogs(); }
 if ($_GET['force'] == "clearAllLogs") { clearAllLogs(); }
 if ($_GET['force'] == "getLessonFromId") { getLessonFromId(); }
 
-
 /////////////////////////////////////////////////////////////////////////////
-function clearU2ULogs(){
-
+function clearU2ULogs()
+{
 	$sql = "DELETE FROM module_chat WHERE isLesson='0'";
 	$result = mysql_query($sql);
-	
+
 	if (!$result) {
     	die('Error executing Clear Log query: ' . mysql_error());
-	}
-	else{
+	} else {
 		echo ("CHAT HISTORY SUCCESFULLY DELETED");
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////
-function clearAllLogs(){
-
+function clearAllLogs()
+{
 	$sql = "DELETE FROM module_chat WHERE 1";
 	$result = mysql_query($sql);
-	
+
 	if (!$result) {
     	die('Error executing Clear Log query: ' . mysql_error());
-	}
-	else{
+	} else {
 		echo ("CHAT HISTORY SUCCESFULLY DELETED");
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
-function getLessonFromId(){
-
+function getLessonFromId()
+{
 	if (eF_checkParameter($_GET['loglessonid'], 'id')) {
 		$id = $_GET["loglessonid"];
 		$sql = "SELECT name FROM lessons WHERE id='".$id."'";
 		$result = mysql_query($sql);
 	}
-	while ($lesson = mysql_fetch_array($result)){
+	while ($lesson = mysql_fetch_array($result)) {
 		echo $lesson["name"];
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-

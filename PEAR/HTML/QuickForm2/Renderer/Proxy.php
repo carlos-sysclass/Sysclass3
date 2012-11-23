@@ -130,6 +130,7 @@ class HTML_QuickForm2_Renderer_Proxy extends HTML_QuickForm2_Renderer
         if (isset($this->_rendererMethods[$lower])) {
             // support fluent interfaces
             $ret = call_user_func_array(array($this->_renderer, $name), $arguments);
+
             return $ret === $this->_renderer? $this: $ret;
         }
         $this->updatePlugins();
@@ -161,6 +162,7 @@ class HTML_QuickForm2_Renderer_Proxy extends HTML_QuickForm2_Renderer
             $this->updatePlugins();
             $exists = isset($this->_pluginMethods[$lower]);
         }
+
         return $exists;
     }
 
@@ -215,6 +217,7 @@ class HTML_QuickForm2_Renderer_Proxy extends HTML_QuickForm2_Renderer
     public function setOption($nameOrOptions, $value = null)
     {
         $this->_renderer->setOption($nameOrOptions, $value);
+
         return $this;
     }
 
@@ -231,6 +234,7 @@ class HTML_QuickForm2_Renderer_Proxy extends HTML_QuickForm2_Renderer
     public function setJavascriptBuilder(HTML_QuickForm2_JavascriptBuilder $builder = null)
     {
         $this->_renderer->setJavascriptBuilder($builder);
+
         return $this;
     }
 
@@ -284,4 +288,3 @@ class HTML_QuickForm2_Renderer_Proxy extends HTML_QuickForm2_Renderer
                       " could not be converted to string", E_USER_ERROR);
     }
 }
-?>

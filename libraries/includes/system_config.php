@@ -18,13 +18,13 @@ $options[] = array('image' => '16x16/generic.png', 'title' => _CUSTOMIZATION, 'l
 $smarty -> assign("T_TABLE_OPTIONS", $options);
 
 if (!isset($_GET['op']) || $_GET['op'] == 'general') {
- require_once("system_config/general.php");
+ require_once 'system_config/general.php';
 } elseif ($_GET['op'] == 'user') {
- require_once("system_config/user.php");
+ require_once 'system_config/user.php';
 } elseif ($_GET['op'] == 'appearance') {
- require_once("system_config/appearance.php");
+ require_once 'system_config/appearance.php';
 } elseif ($_GET['op'] == 'external') {
- require_once("system_config/external.php");
+ require_once 'system_config/external.php';
 } elseif ($_GET['op'] == 'customization') {
- require_once("system_config/customization.php");
+ require_once 'system_config/customization.php';
 }

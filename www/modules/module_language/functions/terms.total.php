@@ -1,9 +1,9 @@
-<?php 
+<?php
 //error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 //header("Content-type: text/javascript");
 ob_start();
 
-//header("Content-Type: application/javascript"); 
+//header("Content-Type: application/javascript");
 
 // REQUIRE ALL LANGUAGE CONSTANTS
 $path = dirname(__FILE__) . "/../../../../libraries/";
@@ -20,7 +20,7 @@ $modulesDB = eF_getTableData("modules","*","className = 'module_language' AND ac
 foreach ($modulesDB as $module) {
 	$folder = $module['position'];
 	$className = $module['className'];
-	     	
+
 	require_once G_MODULESPATH.$folder."/".$className.".class.php";
 	if (class_exists($className)) {
 		$modulesLanguage = new $className("", $folder);
@@ -35,19 +35,19 @@ if (!$modulesLanguage) {
 $languages = $modulesLanguage->getDisponibleLanguages();
 
 if (isset($_GET['language']) && in_array($_GET['language'], $languages)) {
-	$modulesLanguage->getLanguageFile($_GET['language']);	
+	$modulesLanguage->getLanguageFile($_GET['language']);
 } else {
-	foreach($languages as $language) {
-		$modulesLanguage->getLanguageFile($language);	
+	foreach ($languages as $language) {
+		$modulesLanguage->getLanguageFile($language);
 	}
 }
 //$modulesLanguage->getLanguageFile($language);
-	
+
 $allConstants = get_defined_constants(true);
-	
+
 $userConstants = $allConstants['user'];
 
-foreach($userConstants as $key => $value) {
+foreach ($userConstants as $key => $value) {
 	if (strpos($key, "__") === 0) {
 		$langConstants[$key] = $value;
 	}

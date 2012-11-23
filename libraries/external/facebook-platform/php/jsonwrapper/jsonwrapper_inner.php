@@ -19,5 +19,3 @@ function json_decode($arg)
 	}
 	return $services_json->decode($arg);
 }
-
-?>

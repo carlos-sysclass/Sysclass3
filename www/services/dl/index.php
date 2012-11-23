@@ -1,8 +1,8 @@
 <?php
 /**
-* Direct Link Service Wrapper 
+* Direct Link Service Wrapper
 *
-* Service call wrapper. Will be deprecated once the new model will be implemented. 
+* Service call wrapper. Will be deprecated once the new model will be implemented.
 * @package SysClass
 * @version 0.1
 */
@@ -52,7 +52,7 @@ if (!$found) {
 	$user = MagesterUserFactory :: factory($redirectItem['user_login']);
 	$password = $user -> user['password'];
 	$ok = $user -> login($password, true);
-	
+
 	$redirectURL = G_SERVERNAME . $redirectItem['user_type'] . ".php?" . $redirectItem['query'];
 	header("Location: " . $redirectURL);
 }

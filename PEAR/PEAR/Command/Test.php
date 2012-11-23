@@ -304,5 +304,3 @@ Run regression tests with PHP\'s regression testing script (run-tests.php).',
     }
     // }}}
 }
-
-?>

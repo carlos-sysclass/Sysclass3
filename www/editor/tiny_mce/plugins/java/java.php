@@ -70,7 +70,7 @@ if ($_SESSION['s_lessons_ID']) {
                                     </table>
                                 </td>
                             </tr>
-                            
+
                             <tr>
                                 <td nowrap="nowrap"><label>{#java_dlg.size}</label></td>
                                 <td nowrap="nowrap">

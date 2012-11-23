@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "FAQ Modul");//FAQ Module
 define("_FAQ_MAIN", "Startsida");//Main page
 define("_FAQ_MANAGEMENT", "Hantera Vanliga frågor");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "Vanliga frågor har uppdaterats");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Vanliga frågor kunde inte uppdateras");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Sätt FAQ");//Insert FAQ entry

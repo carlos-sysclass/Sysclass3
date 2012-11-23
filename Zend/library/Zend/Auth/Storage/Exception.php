@@ -20,12 +20,10 @@
  * @version    $Id: Exception.php 9101 2008-03-30 19:54:38Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Exception
  */
 require_once 'Zend/Auth/Exception.php';
-
 
 /**
  * @category   Zend

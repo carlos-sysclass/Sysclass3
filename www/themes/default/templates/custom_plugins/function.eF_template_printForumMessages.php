@@ -5,20 +5,20 @@
 * This function prints a list with forum messages titles and the corresponding list
 * It is used to both student and professor pages, at the front page, and wherever we need
 * a list of forum messages.
-* 
+*
 */
 function smarty_function_eF_template_printForumMessages($params, &$smarty)
 {
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...
-    
+
     if (isset($params['limit'])) {                                  //If limit is specified, then only up to limit messages are displayed
         $limit = min($params['limit'], sizeof($params['data']));
     } else {
         $limit = sizeof($params['data']);
     }
 
-    $str = '        
+    $str = '
         <table border = "0" width = "100%">';
     for ($i = 0; $i < $limit; $i++) {
         $params['data'][$i]['title'] ? $title_message = $params['data'][$i]['title'] : $title_message = '<span class = "emptyCategory">'._NOTITLE.'</span>';
@@ -28,7 +28,7 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty)
         }
         $str .= '
             <tr><td>
-                    <span class = "counter">'.($i + 1).'.</span> 
+                    <span class = "counter">'.($i + 1).'.</span>
                     <a title="'.$params['data'][$i]['title'].'" href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>';
 
         if (isset($params['data'][$i]['show_lessons_name'])) {
@@ -47,8 +47,8 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty)
         $str .= '
             <tr><td class = "emptyCategory">'._NONEWFORUMMESSAGES.'</td></tr>';
     }
-    
+
     $str .= '</table>';
-    
+
     return $str;
 }

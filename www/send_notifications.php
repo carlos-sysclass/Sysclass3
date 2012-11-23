@@ -10,8 +10,6 @@
 
  * from the notifications table.
 
-
-
  * @package SysClass
 
  * @version 3.6.0
@@ -66,7 +64,7 @@ if (isset($_GET['notification_id'])) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
      $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
  }
-} else if (isset($_GET['sent_notification_id'])) {
+} elseif (isset($_GET['sent_notification_id'])) {
  $sent_notification = eF_getTableData("sent_notifications", "*", "id = " . $_GET['sent_notification_id']);
  if (!empty ($sent_notification)) {
   $notification = $sent_notification[0];
@@ -89,7 +87,7 @@ if (isset($_GET['notification_id'])) {
 } else {
 // debug();
 	$sent_messages = MagesterNotification::sendNextNotifications($GLOBALS['configuration']['notifications_messages_per_time']);
-	
+
 }
 //pr($sent_messages);
 //debug(false);
@@ -100,7 +98,6 @@ if ($GLOBALS['configuration']['notifications_maximum_inter_time'] > 0) {
 if ($sent_messages) {
  MagesterNotification::clearSentMessages();
 }
-
 
 if ((!isset($hide_messages) || !$hide_messages) && !isset($_GET['ajax']) && (basename($_SERVER['PHP_SELF']) != 'crontab_notifications.php')) {
  if ($sent_messages) {
@@ -118,7 +115,6 @@ if ((!isset($hide_messages) || !$hide_messages) && !isset($_GET['ajax']) && (bas
  }
  echo $message. "sent";
 }
-
 
 chdir($dir);
 

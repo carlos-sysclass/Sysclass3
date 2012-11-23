@@ -9,36 +9,43 @@
 class module_complete_test extends MagesterModule
 {
 
-	public function getName() {
+	public function getName()
+	{
 		return "Correct test";
 	}
 
-	public function getPermittedRoles() {
+	public function getPermittedRoles()
+	{
 		return array("professor");
 	}
 
-	public function onInstall() {
+	public function onInstall()
+	{
 		return true;
 	}
 
-	public function onUnInstall() {
+	public function onUnInstall()
+	{
 		return true;
 	}
 
-	public function getModule() {
+	public function getModule()
+	{
 		return true;
 	}
 
-	public function isLessonModule() {
+	public function isLessonModule()
+	{
 		return true;
 	}
 
-	public function getLessonSmartyTpl() {
+	public function getLessonSmartyTpl()
+	{
 		return $this -> getControlPanelSmartyTpl();
 	}
 
-	public function getSmartyTpl() {
-
+	public function getSmartyTpl()
+	{
 		$smarty = $this -> getSmartyVar();
 		$smarty -> assign("T_CURRENT_TEST_MODULE_BASEURL", $this -> moduleBaseUrl);
 
@@ -151,7 +158,7 @@ class module_complete_test extends MagesterModule
 
 						$submitValues = $form -> getSubmitValues();
 
-						foreach($testInstance -> questions as $id => $question) {
+						foreach ($testInstance -> questions as $id => $question) {
 							$submitValues['question_time'][$id] || $submitValues['question_time'][$id] === 0 ? $question -> time = $submitValues['question_time'][$id] : null;
 						}
 
@@ -235,7 +242,8 @@ class module_complete_test extends MagesterModule
 
 	}
 
-	public function getCenterLinkInfo() {
+	public function getCenterLinkInfo()
+	{
 		$optionArray = array('title' => _COMPLETE_TEST_CORRECTTEST,
                              'image' => $this -> moduleBaseLink.'images/tests.png',
                              'link'  => $this -> moduleBaseUrl);
@@ -244,15 +252,15 @@ class module_complete_test extends MagesterModule
 		return $centerLinkInfo;
 	}
 
-	public function getLessonCenterLinkInfo() {
-
+	public function getLessonCenterLinkInfo()
+	{
 		if ($_SESSION['s_lesson_user_type'] == 'professor') {
 			return $this -> getCenterLinkInfo();
 		}
 	}
 
-	public function getNavigationLinks() {
-
+	public function getNavigationLinks()
+	{
 		$currentUser = $this -> getCurrentUser();
 		$currentLesson = $this -> getCurrentLesson();
 
@@ -264,7 +272,8 @@ class module_complete_test extends MagesterModule
 
 	}
 
-	private function buildImportCsvForm() {
+	private function buildImportCsvForm()
+	{
 		$currentContent = new MagesterContentTree($this -> getCurrentLesson());
 		$testsIterator = new MagesterTestsFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST))));
 		foreach ($testsIterator as $key => $value) {
@@ -278,7 +287,8 @@ class module_complete_test extends MagesterModule
 		return $form;
 	}
 
-	private function handleImportCsvForm(&$form) {
+	private function handleImportCsvForm(&$form)
+	{
 		$currentUser = $this -> getCurrentUser();
 		$smarty 	 = $this -> getSmartyVar();
 		if ($form -> isSubmitted() && $form -> validate()) {
@@ -304,7 +314,8 @@ class module_complete_test extends MagesterModule
 		return array($selectedTest, $uploadedFile);
 	}
 
-	private function buildCorrelateDataForm($selectedTest, $uploadedFile) {
+	private function buildCorrelateDataForm($selectedTest, $uploadedFile)
+	{
 		if (isset($selectedTest)) {
 			$selectedTestId = $selectedTest -> test['id'];
 		} elseif ($_GET['test_id']) {
@@ -320,7 +331,7 @@ class module_complete_test extends MagesterModule
 		$form -> addElement('hidden', 'score_source_hidden', '', 'id = "score_source_hidden"');
 		if (isset($selectedTest)) {
 			$form -> setDefaults(array('test_id' => $selectedTest -> test['id'], 'uploaded_file' => $uploadedFile['path']));
-			foreach($selectedTest -> getQuestions() as $key => $value) {
+			foreach ($selectedTest -> getQuestions() as $key => $value) {
 				$form -> addElement('hidden', $key.'_answer_source_hidden', '', 'id = "'.$key.'_answer_source_hidden"');
 				$form -> addElement('hidden', $key.'_score_source_hidden', '', 'id = "'.$key.'_score_source_hidden"');
 			}
@@ -330,8 +341,8 @@ class module_complete_test extends MagesterModule
 		return $form;
 	}
 
-	private function handleCorrelateDataForm(&$form) {
-
+	private function handleCorrelateDataForm(&$form)
+	{
 		if ($form  -> isSubmitted() && $form -> validate()) {
 			$currentLesson = $this -> getCurrentLesson();
 			$lessonUsers = $currentLesson -> getUsers('student');
@@ -391,7 +402,7 @@ class module_complete_test extends MagesterModule
 						$completedTest -> time['end']              = $timestamps[$key]+1; //The time that this test ends
 						$completedTest -> time['spent']            = 1; //The time that this test ends
 						$completedTest -> completedTest['status']  = 'passed'; //The time that this test ends
-						$completedTest -> completedTest['score']   = (float)$parsedContents[$key][$scoreColumn];
+						$completedTest -> completedTest['score']   = (float) $parsedContents[$key][$scoreColumn];
 
 						foreach ($completedTest -> getQuestions(true) as $id => $question) {
 							$questionScoreColumn = $formValues[$id.'_score_source_hidden'];
@@ -420,7 +431,8 @@ class module_complete_test extends MagesterModule
 
 	}
 
-	private function translateParsedAnswersToUserAnswers($parsedAnswer, $question) {
+	private function translateParsedAnswersToUserAnswers($parsedAnswer, $question)
+	{
 		$userAnswers  = array_fill(0, sizeof($question -> options), 0);
 		$parsedAnswer = explode("/", $parsedAnswer);
 		foreach ($parsedAnswer as $key => $value) {
@@ -436,11 +448,13 @@ class module_complete_test extends MagesterModule
 		return $userAnswers;
 	}
 
-	private function buildMappingsForm($selectedTest, $uploadedFile) {
+	private function buildMappingsForm($selectedTest, $uploadedFile)
+	{
 		//$dateFormat
 	}
 /*
-	private function importCSVContents($parsedContents) {
+	private function importCSVContents($parsedContents)
+	{
 		$lessonUsers = $currentLesson -> getUsers('student');                    //Get all users that have this lesson
 		foreach ($parsedContents as $value) {
 			$login = '';
@@ -456,7 +470,7 @@ class module_complete_test extends MagesterModule
 
 			if ($userLogin && in_array($userLogin, array_keys($lessonUsers))) {
 				$login = $userLogin;
-			} else if ($userLogin) {
+			} elseif ($userLogin) {
 				$existingUsersButNotInLesson[] = $userLogin;
 			} else {
 				$notFoundUsers[] = $userNameInCSV;
@@ -471,7 +485,8 @@ class module_complete_test extends MagesterModule
 		pr($values);exit;
 	}
 */
-	private function analyzeContentsToFindUserFormat($testUsers, $allUsers) {
+	private function analyzeContentsToFindUserFormat($testUsers, $allUsers)
+	{
 		$allUsers = eF_getTableData("users", "login, name, surname");
 		foreach ($allUsers as $value) {
 			$surnameName[$value['login']] = $value['surname'].', '.$value['name'];
@@ -495,7 +510,7 @@ class module_complete_test extends MagesterModule
 				$userFormat = false;
 			}
 		}
-		foreach($testUsers as $key => $value) {
+		foreach ($testUsers as $key => $value) {
 			$testUsers[$key] = array_search($value, $sourceArray);
 		}
 		return $testUsers;
@@ -503,11 +518,13 @@ class module_complete_test extends MagesterModule
 		//return $userFormat;
 	}
 
-	private function analyzeContentsToFindScoreFormat($testScores) {
+	private function analyzeContentsToFindScoreFormat($testScores)
+	{
 		pr($testScores);
 	}
 
-	private function analyzeContentsToFindDateFormat($testDates) {
+	private function analyzeContentsToFindDateFormat($testDates)
+	{
 		$count = 0;
 		$dateFormat = false;
 		while (!$dateFormat && $testDates[$count]) {
@@ -538,11 +555,11 @@ class module_complete_test extends MagesterModule
 		//return $dateFormat;
 	}
 
-	private function importCsvFile() {
-
+	private function importCsvFile()
+	{
 	}
 
-	private function parseCSVContents() {
-
+	private function parseCSVContents()
+	{
 	}
 }

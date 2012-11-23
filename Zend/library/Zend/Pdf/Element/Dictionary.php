@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
-
 
 /**
  * PDF file 'dictionary' element implementation
@@ -41,7 +39,6 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
      */
     private $_items = array();
 
-
     /**
      * Object constructor
      *
@@ -52,7 +49,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
     {
         if ($val === null) {
             return;
-        } else if (!is_array($val)) {
+        } elseif (!is_array($val)) {
             throw new Zend_Pdf_Exception('Argument must be an array');
         }
 
@@ -66,7 +63,6 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
             $this->_items[$name] = $element;
         }
     }
-
 
     /**
      * Add element to an array
@@ -89,7 +85,6 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
     {
         return array_keys($this->_items);
     }
-
 
     /**
      * Get handler
@@ -130,7 +125,6 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
         return Zend_Pdf_Element::TYPE_DICTIONARY;
     }
 
-
     /**
      * Return object as string
      *
@@ -147,7 +141,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
                 throw new Zend_Pdf_Exception('Wrong data');
             }
 
-            if (strlen($outStr) - $lastNL > 128)  {
+            if (strlen($outStr) - $lastNL > 128) {
                 $outStr .= "\n";
                 $lastNL = strlen($outStr);
             }
@@ -159,7 +153,6 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
 
         return $outStr;
     }
-
 
     /**
      * Convert PDF element to PHP type.

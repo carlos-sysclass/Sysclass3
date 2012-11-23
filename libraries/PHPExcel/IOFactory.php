@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**	PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -85,7 +84,8 @@ class PHPExcel_IOFactory
 	 * @access	public
      * @return	array
      */
-	public static function getSearchLocations() {
+	public static function getSearchLocations()
+	{
 		return self::$_searchLocations;
 	}	//	function getSearchLocations()
 
@@ -97,7 +97,8 @@ class PHPExcel_IOFactory
 	 * @param	array $value
 	 * @throws	Exception
 	 */
-	public static function setSearchLocations($value) {
+	public static function setSearchLocations($value)
+	{
 		if (is_array($value)) {
 			self::$_searchLocations = $value;
 		} else {
@@ -114,7 +115,8 @@ class PHPExcel_IOFactory
 	 * @param	string $location	Example: PHPExcel/Writer/{0}.php
 	 * @param	string $classname 	Example: PHPExcel_Writer_{0}
 	 */
-	public static function addSearchLocation($type = '', $location = '', $classname = '') {
+	public static function addSearchLocation($type = '', $location = '', $classname = '')
+	{
 		self::$_searchLocations[] = array( 'type' => $type, 'path' => $location, 'class' => $classname );
 	}	//	function addSearchLocation()
 
@@ -128,7 +130,8 @@ class PHPExcel_IOFactory
 	 * @return	PHPExcel_Writer_IWriter
 	 * @throws	Exception
 	 */
-	public static function createWriter(PHPExcel $phpExcel, $writerType = '') {
+	public static function createWriter(PHPExcel $phpExcel, $writerType = '')
+	{
 		// Search type
 		$searchType = 'IWriter';
 
@@ -158,7 +161,8 @@ class PHPExcel_IOFactory
 	 * @return	PHPExcel_Reader_IReader
 	 * @throws	Exception
 	 */
-	public static function createReader($readerType = '') {
+	public static function createReader($readerType = '')
+	{
 		// Search type
 		$searchType = 'IReader';
 
@@ -188,7 +192,8 @@ class PHPExcel_IOFactory
 	 * @return	PHPExcel
 	 * @throws	Exception
 	 */
-	public static function load($pFilename) {
+	public static function load($pFilename)
+	{
 		$reader = self::createReaderForFile($pFilename);
 		return $reader->load($pFilename);
 	}	//	function load()
@@ -202,7 +207,8 @@ class PHPExcel_IOFactory
 	 * @return	string
 	 * @throws	Exception
 	 */
-	public static function identify($pFilename) {
+	public static function identify($pFilename)
+	{
 		$reader = self::createReaderForFile($pFilename);
 		$className = get_class($reader);
 		$classType = explode('_',$className);
@@ -219,8 +225,8 @@ class PHPExcel_IOFactory
 	 * @return	PHPExcel_Reader_IReader
 	 * @throws	Exception
 	 */
-	public static function createReaderForFile($pFilename) {
-
+	public static function createReaderForFile($pFilename)
+	{
 		// First, lucky guess by inspecting file extension
 		$pathinfo = pathinfo($pFilename);
 

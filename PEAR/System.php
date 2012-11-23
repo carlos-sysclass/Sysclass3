@@ -60,7 +60,7 @@ $GLOBALS['_System_temp_files'] = array();
 * @version    Release: 1.7.2
 * @link       http://pear.php.net/package/PEAR
 * @since      Class available since Release 0.1
-* @static 
+* @static
 */
 class System
 {
@@ -71,7 +71,7 @@ class System
     * @param    string  $short_options  the allowed option short-tags
     * @param    string  $long_options   the allowed option long-tags
     * @return   array   the given options and there values
-    * @static 
+    * @static
     * @access private
     */
     function _parseArgs($argv, $short_options, $long_options = null)
@@ -79,6 +79,7 @@ class System
         if (!is_array($argv) && $argv !== null) {
             $argv = preg_split('/\s+/', $argv, -1, PREG_SPLIT_NO_EMPTY);
         }
+
         return Console_Getopt::getopt2($argv, $short_options);
     }
 
@@ -88,7 +89,7 @@ class System
     *
     * @param mixed $error a PEAR error or a string with the error message
     * @return bool false
-    * @static 
+    * @static
     * @access private
     */
     function raiseError($error)
@@ -97,6 +98,7 @@ class System
             $error = $error->getMessage();
         }
         trigger_error($error, E_USER_WARNING);
+
         return false;
     }
 
@@ -122,7 +124,7 @@ class System
     * @param    integer $aktinst    starting deep of the lookup
     * @param    bool    $silent     if true, do not emit errors.
     * @return   array   the structure of the dir
-    * @static 
+    * @static
     * @access   private
     */
 
@@ -133,6 +135,7 @@ class System
             if (!$silent) {
                 System::raiseError("Could not open dir $sPath");
             }
+
             return $struct; // XXX could not open error
         }
         $struct['dirs'][] = $sPath = realpath($sPath); // XXX don't add if '.' or '..' ?
@@ -155,6 +158,7 @@ class System
                 }
             }
         }
+
         return $struct;
     }
 
@@ -163,7 +167,7 @@ class System
     *
     * @param    array $files Array listing files and dirs
     * @return   array
-    * @static 
+    * @static
     * @see System::_dirToStruct()
     */
     function _multipleToStruct($files)
@@ -178,6 +182,7 @@ class System
                 $struct['files'][] = $file;
             }
         }
+
         return $struct;
     }
 
@@ -187,7 +192,7 @@ class System
     *
     * @param    string  $args   the arguments for rm
     * @return   mixed   PEAR_Error or true for success
-    * @static 
+    * @static
     * @access   public
     */
     function rm($args)
@@ -222,6 +227,7 @@ class System
                 }
             }
         }
+
         return $ret;
     }
 
@@ -231,7 +237,7 @@ class System
     * The -p option will create parent directories
     * @param    string  $args    the name of the director(y|ies) to create
     * @return   bool    True for success
-    * @static 
+    * @static
     * @access   public
     */
     function mkDir($args)
@@ -276,12 +282,13 @@ class System
                 }
             }
         } else {
-            foreach($opts[1] as $dir) {
+            foreach ($opts[1] as $dir) {
                 if ((@file_exists($dir) || !is_dir($dir)) && !mkdir($dir, $mode)) {
                     $ret = false;
                 }
             }
         }
+
         return $ret;
     }
 
@@ -297,7 +304,7 @@ class System
     *
     * @param    string  $args   the arguments
     * @return   boolean true on success
-    * @static 
+    * @static
     * @access   public
     */
     function &cat($args)
@@ -326,6 +333,7 @@ class System
         if (isset($mode)) {
             if (!$outputfd = fopen($outputfile, $mode)) {
                 $err = System::raiseError("Could not open $outputfile");
+
                 return $err;
             }
             $ret = true;
@@ -347,6 +355,7 @@ class System
         if (is_resource($outputfd)) {
             fclose($outputfd);
         }
+
         return $ret;
     }
 
@@ -371,7 +380,7 @@ class System
     * @param   string  $args  The arguments
     * @return  mixed   the full path of the created (file|dir) or false
     * @see System::tmpdir()
-    * @static 
+    * @static
     * @access  public
     */
     function mktemp($args = null)
@@ -407,6 +416,7 @@ class System
             PEAR::registerShutdownFunc(array('System', '_removeTmpFiles'));
             $first_time = false;
         }
+
         return $tmp;
     }
 
@@ -414,7 +424,7 @@ class System
     * Remove temporary files created my mkTemp. This function is executed
     * at script shutdown time
     *
-    * @static 
+    * @static
     * @access private
     */
     function _removeTmpFiles()
@@ -433,7 +443,7 @@ class System
     * Note: php.ini-recommended removes the "E" from the variables_order setting,
     * making unavaible the $_ENV array, that s why we do tests with _ENV
     *
-    * @static 
+    * @static
     * @return string The temporary directory on the system
     */
     function tmpdir()
@@ -451,11 +461,13 @@ class System
             if ($var = isset($_ENV['windir']) ? $_ENV['windir'] : getenv('windir')) {
                 return $var;
             }
+
             return getenv('SystemRoot') . '\temp';
         }
         if ($var = isset($_ENV['TMPDIR']) ? $_ENV['TMPDIR'] : getenv('TMPDIR')) {
             return $var;
         }
+
         return realpath('/tmp');
     }
 
@@ -466,7 +478,7 @@ class System
     * @param mixed  $fallback Value to return if $program is not found
     *
     * @return mixed A string with the full path or false if not found
-    * @static 
+    * @static
     * @author Stig Bakken <ssb@php.net>
     */
     function which($program, $fallback = false)
@@ -514,6 +526,7 @@ class System
                 }
             }
         }
+
         return $fallback;
     }
 
@@ -538,7 +551,7 @@ class System
     *
     * @param  mixed Either array or string with the command line
     * @return array Array of found files
-    * @static 
+    * @static
     *
     */
     function find($args)
@@ -599,8 +612,10 @@ class System
                     $ret[] = $files[$i];
                 }
             }
+
             return $ret;
         }
+
         return $files;
     }
 }

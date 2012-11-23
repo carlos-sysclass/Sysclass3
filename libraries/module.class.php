@@ -11,9 +11,11 @@
 
 */
 //This file cannot be called directly, only included.
+/*
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
 	exit;
 }
+*/
 /**
 
 * MagesterModuleException class
@@ -181,12 +183,13 @@ class MagesterModuleException extends Exception
 */
 abstract class MagesterModule
 {
-	var $className;
-	var $moduleBaseUrl;
-	var $moduleBaseDir;
-	var $moduleBaseLink;
+	public $className;
+	public $moduleBaseUrl;
+	public $moduleBaseDir;
+	public $moduleBaseLink;
 	// Constructor
-	function __construct($defined_moduleBaseUrl , $defined_moduleFolder ) {
+	function __construct($defined_moduleBaseUrl , $defined_moduleFolder )
+	{
 		// Information set by running environment
 		$this -> className = get_class($this);
 		$this -> moduleBaseDir = G_MODULESPATH. $defined_moduleFolder ."/";
@@ -194,7 +197,8 @@ abstract class MagesterModule
 		$this -> moduleBaseLink = G_SERVERNAME . "modules/". $defined_moduleFolder . "/";
 	}
 	// Function that checks whether the module's defined components are correct
-	function diagnose(&$error) {
+	function diagnose(&$error)
+	{
 		// Check whether the roles defined are acceptable
 		$roles = $this -> getPermittedRoles();
 		foreach ($roles as $role) {
@@ -238,18 +242,20 @@ abstract class MagesterModule
 	// Access control - Mandatory
 	abstract public function getPermittedRoles();
 	// Function denoting whether the module is related to lessons (and hence can be activated-deactivated) or not
-	public function isLessonModule() {
+	public function isLessonModule()
+	{
 		return false;
 	}
 	// Function to include the language file. Can be overriden to include any file
-	public function getLanguageFile($language) {
+	public function getLanguageFile($language)
+	{
 		// TRY TO LOAD FILE FROM module_language
 		/*
 		$modules = eF_loadAllModules(true);
-		 
+
 		var_dump($modules['module_language']);
 		exit;
-		 
+
 		*/
 		if (is_file($this -> moduleBaseDir . "lang-".$language.".php")) {
 			return $this -> moduleBaseDir . "lang-".$language.".php";
@@ -258,11 +264,13 @@ abstract class MagesterModule
 
 	}
 	// Any further actions that need to take place during installation
-	public function onInstall() {
+	public function onInstall()
+	{
 		return true;
 	}
 	// Any further actions that need to take place during uninstalling
-	public function onUninstall() {
+	public function onUninstall()
+	{
 		return true;
 	}
 	// Any further actions that need to take place during module upgrade
@@ -292,12 +300,14 @@ abstract class MagesterModule
 	// existing data are deleted only once they have been successfully copied to the new table
 	// It is noted here that if onUpgrade() is not defined, then the SysClass system will leave
 	// existing module database tables and their data intact.
-	public function onUpgrade() {
+	public function onUpgrade()
+	{
 		return true;
 	}
 	/************ SysClass information provided to the module ************/
 	// Runtime variables
-	public function getCurrentIes() {
+	public function getCurrentIes()
+	{
 		global $currentIES;
 		/**
 		 * @todo change code to get ies_code from enrollment, and can return a array of ID's
@@ -311,23 +321,28 @@ abstract class MagesterModule
 		}
 		return $currentIES;
 	}
-	public function getCurrentUser() {
+	public function getCurrentUser()
+	{
 		global $currentUser;
 		return $currentUser;
 	}
-	public function getCurrentLesson() {
+	public function getCurrentLesson()
+	{
 		global $currentLesson;
 		return $currentLesson;
 	}
-	public function getCurrentUnit() {
+	public function getCurrentUnit()
+	{
 		global $currentUnit;
 		return $currentUnit;
 	}
-	public function getSmartyVar() {
+	public function getSmartyVar()
+	{
 		global $smarty;
 		return $smarty;
 	}
-	public function setMessageVar($message, $message_type) {
+	public function setMessageVar($message, $message_type)
+	{
 		$GLOBALS['message'] = $message;
 		$GLOBALS['message_type'] = $message_type;
 		return true;
@@ -389,10 +404,11 @@ abstract class MagesterModule
 	* @access public
 
 	*/
-	public function addEvent($type, $data) {
+	public function addEvent($type, $data)
+	{
 		$fields = array();
 		// All module related events have the same offset + the particular event's type
-		$fields['type'] = MagesterEvent::MODULE_BASE_TYPE_CODE + (integer)$type;
+		$fields['type'] = MagesterEvent::MODULE_BASE_TYPE_CODE + (integer) $type;
 		// This should not exist normally, just in case
 		unset($data['type']);
 		// The discimination between events from different modules with the same type is made
@@ -401,7 +417,7 @@ abstract class MagesterModule
 		// Mandatory users_LOGIN, users_surname, users_name fields
 		if (isset($data['users_LOGIN'])) {
 			$fields['users_LOGIN'] = $data['users_LOGIN'];
-			if(isset($data['surname']) && isset($data['name'])) {
+			if (isset($data['surname']) && isset($data['name'])) {
 				$fields['users_surname'] = $data['surname'];
 				$fields['users_name'] = $data['name'];
 			} else {
@@ -475,19 +491,22 @@ abstract class MagesterModule
 	* @since 3.6.0
 	* @access public
 	*/
-	public function getEventMessage($type, $data) {
+	public function getEventMessage($type, $data)
+	{
 		return false;
 	}
-	
+
 	// Method used to load current SysClass scripts from the www/js folder as
 	// return array("XX","folderY/ZZ"); will load www/js/XX.js and www/js/folderY/ZZ.js
-	public function addScripts() {
+	public function addScripts()
+	{
 		return array();
 	}
-	
+
 	// Method used to load current SysClass css from the www/css folder as
 	// return array("XX","folderY/ZZ"); will load www/css/XX.css and www/css/folderY/ZZ.css
-	public function addStylesheets() {
+	public function addStylesheets()
+	{
 		return array();
 	}
 
@@ -501,7 +520,8 @@ abstract class MagesterModule
 	* The global smarty variable may also be used here and in conjunction
 	* with the getSmartyTpl() function, use php+smarty to display the page
 	*/
-	public function getModule() {
+	public function getModule()
+	{
 		return false;
 	}
 
@@ -509,11 +529,13 @@ abstract class MagesterModule
 	* This is the function that returns the name of the module smarty template file
 	* for the appearance of the main page of the module (if one such is used)
 	* Example implementation:
-	public function getSmartyTpl() {
+	public function getSmartyTpl()
+	{
 	return $this -> moduleBaseDir . "
 	}
 	*/
-	public function getSmartyTpl() {
+	public function getSmartyTpl()
+	{
 		$smarty = $this -> getSmartyVar();
 		$smarty -> assign("T_MODULE_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_BASELINK" , $this -> moduleBaseLink);
@@ -527,82 +549,97 @@ abstract class MagesterModule
 	* appear as a sub-window on the main lesson page of the current Lesson (for students/professors)
 	* Note: Current lesson information may be retrieved with the getCurrentLesson() function
 	*/
-	public function getLessonModule() {
+	public function getLessonModule()
+	{
 		return false;
 	}
 
-	public function getLessonSmartyTpl() {
+	public function getLessonSmartyTpl()
+	{
 		return false;
 	}
 
 	/***** Lesson content module pages *******/
-	public function getContentSideInfo() {
+	public function getContentSideInfo()
+	{
 		return false;
 	}
 
-	public function getContentSmartyTpl() {
+	public function getContentSmartyTpl()
+	{
 		return false;
 	}
 
 	// Returns the title string to appear on top of the content side - if such is defined
-	public function getContentSideTitle() {
+	public function getContentSideTitle()
+	{
 		return false;
 	}
-	
+
 	/***** Administrator control panel *******/
 	/**
 	* This is the function for the php code of the module page that may
 	* appear as a sub-window on the main administrator control panel page
 	*/
-	public function getControlPanelModule() {
+	public function getControlPanelModule()
+	{
 		return false;
 	}
 
-	public function getControlPanelSmartyTpl() {
+	public function getControlPanelSmartyTpl()
+	{
 		$smarty = $this->getSmartyVar();
 		$smarty -> assign("T_MODULE_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		return false;
 	}
 
-	public function getDashboardModule() {
+	public function getDashboardModule()
+	{
 		return false;
 	}
-	
-	public function getDashboardSmartyTpl() {
+
+	public function getDashboardSmartyTpl()
+	{
 		$smarty = $this->getSmartyVar();
 		$smarty -> assign("T_MODULE_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		return false;
 	}
-	
-	public function getCatalogModule() {
+
+	public function getCatalogModule()
+	{
 		return false;
 	}
-	
-	public function getCatalogSmartyTpl() {
+
+	public function getCatalogSmartyTpl()
+	{
 		$smarty = $this->getSmartyVar();
 		$smarty -> assign("T_MODULE_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		return false;
 	}
-	
-	public function getLandingPageModule() {
+
+	public function getLandingPageModule()
+	{
 		return false;
 	}
-	
-	public function getLandingPageSmartyTpl() {
+
+	public function getLandingPageSmartyTpl()
+	{
 		$smarty = $this->getSmartyVar();
 		$smarty -> assign("T_MODULE_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_BASEURL" , $this -> moduleBaseUrl);
 		return false;
 	}
 	// Get module javascript code
-	public function getModuleJS() {
+	public function getModuleJS()
+	{
 		return false;
 	}
 	// Get module css
-	public function getModuleCSS() {
+	public function getModuleCSS()
+	{
 		return false;
 	}
 	/****
@@ -623,8 +660,8 @@ abstract class MagesterModule
 
 
 
-	public function getNavigationLinks() {
-
+	public function getNavigationLinks()
+	{
 	if (isset($_GET['subpage1'])) {
 
 	return array (array ('title' => "Main Page" , 'link'  => $this -> moduleBaseUrl),
@@ -640,7 +677,8 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function getNavigationLinks() {
+	public function getNavigationLinks()
+	{
 		return false;
 	}
 	/****
@@ -655,8 +693,8 @@ abstract class MagesterModule
 
 
 
-	public function getLinkToHighlight() {
-
+	public function getLinkToHighlight()
+	{
 	if (isset($_GET['management'])) {
 
 	return 'other_link_id1';
@@ -670,7 +708,8 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function getLinkToHighlight() {
+	public function getLinkToHighlight()
+	{
 		return false;
 	}
 	/****
@@ -693,8 +732,8 @@ abstract class MagesterModule
 
 
 
-	public function getCenterLinkInfo() {
-
+	public function getCenterLinkInfo()
+	{
 	return array ('title' => 'My Module',
 
 	'image' => $this -> moduleBaseDir . 'images/my_module.jpg');
@@ -702,7 +741,8 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function getCenterLinkInfo() {
+	public function getCenterLinkInfo()
+	{
 		return false;
 	}
 	/****
@@ -725,8 +765,8 @@ abstract class MagesterModule
 
 
 
-	public function getCenterLinkInfo() {
-
+	public function getCenterLinkInfo()
+	{
 	return array ('title' => 'My Module',
 
 	'image' => $this -> moduleBaseDir . 'images/my_module.jpg');
@@ -734,11 +774,13 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function getLessonCenterLinkInfo() {
+	public function getLessonCenterLinkInfo()
+	{
 		return false;
 	}
 
-	public function getLessonTopLinkInfo($lesson_id, $course_id) {
+	public function getLessonTopLinkInfo($lesson_id, $course_id)
+	{
 		return false;
 	}
 	/****
@@ -777,8 +819,8 @@ abstract class MagesterModule
 
 
 
-	public function getSidebarLinkInfo() {
-
+	public function getSidebarLinkInfo()
+	{
 	$link_of_menu_system = array   (array ('id'    => 'system_link_id',
 
 	'title' => 'My System Related Module Part 1',
@@ -826,36 +868,43 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function getSidebarLinkInfo() {
+	public function getSidebarLinkInfo()
+	{
 		return false;
 	}
 	//the following two can also become a module-aspect in User
 	// Code to execute when a user with login = $login has been registered
-	public function onNewUser($login) {
+	public function onNewUser($login)
+	{
 		return false;
 	}
 	// Code to execute when a user with login = $login is deleted
-	public function onDeleteUser($login) {
+	public function onDeleteUser($login)
+	{
 		return false;
 	}
 	//the following two can also become a module-aspect in Lesson
 	// Code to execute when a lesson with id = $lessonId has been registered
-	public function onNewLesson($lessonId) {
+	public function onNewLesson($lessonId)
+	{
 		return false;
 	}
 
 	// Code to execute when a lesson with id = $lessonId is deleted
-	public function onDeleteLesson($lessonId) {
+	public function onDeleteLesson($lessonId)
+	{
 		return false;
 	}
 
 	//the following two can also become a module-aspect in CourseClass
 	// Code to execute when a course classe with id = $courseclassId has been registered
-	public function onNewCourseClass($courseclassId) {
+	public function onNewCourseClass($courseclassId)
+	{
 		return false;
 	}
 
-	public function onDeleteCourseClass($courseclassId) {
+	public function onDeleteCourseClass($courseclassId)
+	{
 		return false;
 	}
 
@@ -865,8 +914,8 @@ abstract class MagesterModule
 	// that need to be stored into the exported lesson file
 	/*  Example implementation:
 
-	public function onExportLesson($lessonId) {
-
+	public function onExportLesson($lessonId)
+	{
 	$data = eF_getTableData("myModule", "*", "lessons_ID = $lessonId");
 
 	$data['myModuleVersion'] = "3.5beta";
@@ -876,7 +925,8 @@ abstract class MagesterModule
 	}
 
 	*/
-	public function onExportLesson($lessonId) {
+	public function onExportLesson($lessonId)
+	{
 		return false;
 	}
 	// Code to execute when a lesson with id = $lessonId is imported. This
@@ -884,13 +934,11 @@ abstract class MagesterModule
 	// as it was exported by the onExportLesson function.
 	/*  Example implementation (in accordance with the above given export example):
 
-	public function onExportLesson($lessonId, $data) {
-
+	public function onExportLesson($lessonId, $data)
+	{
 	echo "My module's version is " . $data['myModuleVersion'];
 
 	unset($data['myModuleVersion']);
-
-
 
 	foreach ($data as $record) {
 
@@ -902,22 +950,27 @@ abstract class MagesterModule
 
 	}
 	*/
-	public function onImportLesson($lessonId, $data) {
+	public function onImportLesson($lessonId, $data)
+	{
 		return false;
 	}
-	public function onCompleteLesson($lessonId, $login) {
+	public function onCompleteLesson($lessonId, $login)
+	{
 		return false;
 	}
 	// For system events - every time a new page is loaded
-	public function onNewPageLoad() {
+	public function onNewPageLoad()
+	{
 		return false;
 	}
 
-	public function onPageFinishLoadingSmartyTpl() {
+	public function onPageFinishLoadingSmartyTpl()
+	{
 		return false;
 	}
 
-	public function onNewUserOnCourse($login, $courseID) {
+	public function onNewUserOnCourse($login, $courseID)
+	{
 		return false;
 	}
 }

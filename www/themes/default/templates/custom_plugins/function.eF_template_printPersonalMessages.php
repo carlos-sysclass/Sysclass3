@@ -15,12 +15,12 @@ function smarty_function_eF_template_printPersonalMessages($params, &$smarty)
         $limit = sizeof($params['data']);
     }
 
-    $str = '        
+    $str = '
         <table border = "0" width = "100%">';
     for ($i = 0; $i < $list_fold_size && $i < $limit; $i++) {
         $title_message = $params['data'][$i]['title'];
         if (mb_strlen($params['data'][$i]['title']) > $max_title_size) {
-            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';                                 
+            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';
             //If the message title is large, cut it and append ...
         }
 
@@ -33,7 +33,7 @@ function smarty_function_eF_template_printPersonalMessages($params, &$smarty)
         //$str .= '<img src="images/16x16/calendar.png" title="'.$title2.'" alt="'.$title2.'" style = "vertical-align:middle"/>
         $str .= '</td></tr>';
     }
-    
+
     if ($i == 0) {
         $str .= '
             <tr><td class = "emptyCategory">'._NONEWPERSONALMESSAGES.'</td></tr>
@@ -42,6 +42,6 @@ function smarty_function_eF_template_printPersonalMessages($params, &$smarty)
         $str .= '
             </table>';
     }
-    
+
     return $str;
 }

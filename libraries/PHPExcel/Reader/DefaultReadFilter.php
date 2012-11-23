@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -52,7 +51,8 @@ class PHPExcel_Reader_DefaultReadFilter implements PHPExcel_Reader_IReadFilter
 	 * @param	$worksheetName	Optional worksheet name
 	 * @return	boolean
 	 */
-	public function readCell($column, $row, $worksheetName = '') {
+	public function readCell($column, $row, $worksheetName = '')
+	{
 		return true;
 	}
 }

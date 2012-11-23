@@ -24,8 +24,8 @@
  * - Redistributions in binary form must reproduce the above copyright
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
- * - Neither the name of the authors, nor the names of its contributors 
- *   may be used to endorse or promote products derived from this 
+ * - Neither the name of the authors, nor the names of its contributors
+ *   may be used to endorse or promote products derived from this
  *   software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -71,8 +71,8 @@
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/Mail_mime
  */
-class Mail_mimePart {
-
+class Mail_mimePart
+{
    /**
     * The encoding type of this part
     *
@@ -186,28 +186,24 @@ class Mail_mimePart {
             $headers['Content-Type'] = $contentType['type'];
             if (isset($contentType['name'])) {
                 $headers['Content-Type'] .= ';' . MAIL_MIMEPART_CRLF;
-                $headers['Content-Type'] .= $this->_buildHeaderParam('name', $contentType['name'], 
-                                                isset($contentType['charset']) ? $contentType['charset'] : 'US-ASCII', 
+                $headers['Content-Type'] .= $this->_buildHeaderParam('name', $contentType['name'],
+                                                isset($contentType['charset']) ? $contentType['charset'] : 'US-ASCII',
                                                 isset($contentType['language']) ? $contentType['language'] : NULL);
             } elseif (isset($contentType['charset'])) {
                 $headers['Content-Type'] .= "; charset=\"{$contentType['charset']}\"";
             }
         }
 
-
         if (isset($contentDisp['disp'])) {
             $headers['Content-Disposition'] = $contentDisp['disp'];
             if (isset($contentDisp['filename'])) {
                 $headers['Content-Disposition'] .= ';' . MAIL_MIMEPART_CRLF;
-                $headers['Content-Disposition'] .= $this->_buildHeaderParam('filename', $contentDisp['filename'], 
-                                                isset($contentDisp['charset']) ? $contentDisp['charset'] : 'US-ASCII', 
+                $headers['Content-Disposition'] .= $this->_buildHeaderParam('filename', $contentDisp['filename'],
+                                                isset($contentDisp['charset']) ? $contentDisp['charset'] : 'US-ASCII',
                                                 isset($contentDisp['language']) ? $contentDisp['language'] : NULL);
             }
         }
-        
-        
-        
-        
+
         // Default content-type
         if (!isset($headers['Content-Type'])) {
             $headers['Content-Type'] = 'text/plain';
@@ -240,7 +236,7 @@ class Mail_mimePart {
         $encoded = $this->_encoded;
 
         if (count($this->_subparts)) {
-            srand((double)microtime()*1000000);
+            srand((double) microtime()*1000000);
             $boundary = '=_' . md5(rand() . microtime());
             $this->_headers['Content-Type'] .= ';' . MAIL_MIMEPART_CRLF . "\t" . 'boundary="' . $boundary . '"';
 
@@ -254,8 +250,8 @@ class Mail_mimePart {
                 $subparts[] = implode(MAIL_MIMEPART_CRLF, $headers) . MAIL_MIMEPART_CRLF . MAIL_MIMEPART_CRLF . $tmp['body'] . MAIL_MIMEPART_CRLF;
             }
 
-            $encoded['body'] = '--' . $boundary . MAIL_MIMEPART_CRLF . 
-                               rtrim(implode('--' . $boundary . MAIL_MIMEPART_CRLF , $subparts), MAIL_MIMEPART_CRLF) . MAIL_MIMEPART_CRLF . 
+            $encoded['body'] = '--' . $boundary . MAIL_MIMEPART_CRLF .
+                               rtrim(implode('--' . $boundary . MAIL_MIMEPART_CRLF , $subparts), MAIL_MIMEPART_CRLF) . MAIL_MIMEPART_CRLF .
                                '--' . $boundary.'--' . MAIL_MIMEPART_CRLF;
 
         } else {
@@ -286,6 +282,7 @@ class Mail_mimePart {
     function &addSubPart($body, $params)
     {
         $this->_subparts[] = new Mail_mimePart($body, $params);
+
         return $this->_subparts[count($this->_subparts) - 1];
     }
 
@@ -372,6 +369,7 @@ class Mail_mimePart {
             $output .= $newline . $eol;
         }
         $output = substr($output, 0, -1 * strlen($eol)); // Don't want last crlf
+
         return $output;
     }
 
@@ -434,6 +432,7 @@ class Mail_mimePart {
             $headCount++;
         }
         $headers = implode(MAIL_MIMEPART_CRLF, $headers) . ';';
+
         return $headers;
     }
 } // End of class

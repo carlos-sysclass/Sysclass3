@@ -6,11 +6,11 @@
 
 function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
 {
-    
+
     $str = '';
-    
+
     $str .= '<table style = "width:100%;text-align:left">';
-        if( strcmp($params['user_type'],"professor") == 0 ){
+        if ( strcmp($params['user_type'],"professor") == 0 ) {
             $str .='<tr>
                     <td>
                         <table width="100%" border="0px">
@@ -26,9 +26,9 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
         }
         $str .='
             <tr><td colspan="100%" align="left" width="100%">
-            <form name="select0" action="javascript:void(0);" onsubmit="return false"> 
+            <form name="select0" action="javascript:void(0);" onsubmit="return false">
             <table width="100%" align="left" border="0px" class="sortedTable">';
-            
+
             $str .='<tr class="defaultRowHeight">
                 <td class="topTitle" align="left">'._SURVEYCODE.'</td>
                 <td class="topTitle" align="left">'._SURVEYNAME.'</td>
@@ -36,64 +36,63 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
                 <td class="topTitle" align="left">'._SURVEYAVALIABLEFROM.'</td>
                 <td class="topTitle" align="left" colspan="1">'._SURVEYUNTIL.'</td>
                 <td class="topTitle" align="center">'._SURVEYSTATUS.'</td>';
-                if( strcmp($params['user_type'],"professor") == 0 ){
+                if ( strcmp($params['user_type'],"professor") == 0 ) {
                     $str .= '<td class="topTitle" align="center">'._PARTICIPATION.'</td>
                          <td class="topTitle" align="center">'._OPERATIONS.'</td>
                          <td class="topTitle" align="left">'._PUBLISH.'</td>';
                 }
             $str .= '</tr>';
-            for($i = 0 ; $i < sizeof($params['data']) ; $i ++){
-                    if($params['data'] == '0'){
+            for ($i = 0 ; $i < sizeof($params['data']) ; $i ++) {
+                    if ($params['data'] == '0') {
                         $str.='<tr><td class="emptyCategory" colspan="100%">'._NODATAFOUND.'</td></tr>';
                         break;
-                    }else{
-                        if(fmod($i,2)){
+                    } else {
+                        if (fmod($i,2)) {
                             $now = time();
-                            if( $now >= $params['data'][$i]['end_date'] ){
+                            if ($now >= $params['data'][$i]['end_date']) {
                                 $str .= '<tr class="emptyCategory">';
-                            }else{
+                            } else {
                                 $str .= '<tr class="oddRowColor">';
                             }
-                        }else{
+                        } else {
                             $now = time();
-                            if( $now >= $params['data'][$i]['end_date'] ){
+                            if ($now >= $params['data'][$i]['end_date']) {
                                 $str .= '<tr class="emptyCategory">';
-                            }else{
+                            } else {
                                 $str .= '<tr class="evenRowColor">';
-                            } 
+                            }
                         }
                         $users = array('total_users' => eF_getTableData("users_to_surveys","count(*)","surveys_ID=".intVal($params['data'][$i]['id'])),
                                    'done_users' => eF_getTableData("users_to_done_surveys","count(*)"," done=1 AND surveys_ID=".intVal($params['data'][$i]['id'])));
-                        foreach($params['data'][$i] as $key => $value){
-                            if($key == 'survey_code'){
+                        foreach ($params['data'][$i] as $key => $value) {
+                            if ($key == 'survey_code') {
                                 $str .= '<td align="left">'.$value.'</td>';
                             }
-                            if($key == 'survey_name'){
+                            if ($key == 'survey_name') {
                                 $str.='<td align="left"><a href="'.$params['user_type'].'.php?ctg=survey&surveys_ID='.$params['data'][$i]['id'].'&screen_survey=2">'.$value.'</a></span></td><td align="center">'.$params['questions'][$i][0]['count(*)'].'</td>
                                 ';
-                            }else if($key == 'share'){
-                                if($value == 'yes'){ $str .= '<td align="left">'._YES.'</td>'; }
-                                else { $str .= '<td align="left">'._NO.'</td>'; }
-                            }else if($key == 'status'){
+                            } elseif ($key == 'share') {
+                                if ($value == 'yes') { $str .= '<td align="left">'._YES.'</td>'; } else { $str .= '<td align="left">'._NO.'</td>'; }
+                            } elseif ($key == 'status') {
                                 $now = time();
 								if (time() < $params['data'][$i]['end_date']) {
-									if($value == 1){
+									if ($value == 1) {
 										$str .= '<td align="center"><a href="professor.php?ctg=survey&action=change_status&survey_action=deactivate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_green.png" border="0px" title="'._DEACTIVATE.'" /></a></td>';
-									} else{
+									} else {
 										$str .= '<td align="center"><a href="professor.php?ctg=survey&action=change_status&survey_action=activate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_red.png" border="0px" title="'._ACTIVATE.'" /></a></td>';
 									}
 								} else {
-									if($value == 1){
+									if ($value == 1) {
 										$str .= '<td align="center"><a href="javascript:void(0);"><img src="images/16x16/trafficlight_green.png" border="0px" title="'._DEACTIVATE.'" /></a></td>';
-									}else{
+									} else {
 										$str .= '<td align="center"><a href="javascript:void(0);"><img src="images/16x16/trafficlight_red.png" border="0px" title="'._ACTIVATE.'" /></a></td>';
 									}
 								}
-                            }else if($key == 'start_date' || $key == 'end_date'){
+                            } elseif ($key == 'start_date' || $key == 'end_date') {
                                 $str .= '<td align="left">#filter:timestamp-'.$value.'#</td>';
-                            }else if($key != 'id' && $key != 'survey_code' && $key != 'lessons_ID' && $key != 'share' && $key != 'status' && $key != 'end_date' && $key != 'start_date'){
+                            } elseif ($key != 'id' && $key != 'survey_code' && $key != 'lessons_ID' && $key != 'share' && $key != 'status' && $key != 'end_date' && $key != 'start_date') {
                                 $str.='<td align="center">'.$value.'</td>';
-                            }else{
+                            } else {
                                 continue;
                             }
                         }
@@ -125,5 +124,6 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
             $str.='</table>
             </form></td></tr></table>
             ';
+
     return $str;
 }

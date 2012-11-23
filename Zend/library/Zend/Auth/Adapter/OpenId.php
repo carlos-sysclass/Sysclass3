@@ -20,18 +20,15 @@
  * @version    $Id: OpenId.php 12519 2008-11-10 18:41:24Z alexander $
  */
 
-
 /**
  * @see Zend_Auth_Adapter_Interface
  */
 require_once 'Zend/Auth/Adapter/Interface.php';
 
-
 /**
  * @see Zend_OpenId_Consumer
  */
 require_once 'Zend/OpenId/Consumer.php';
-
 
 /**
  * A Zend_Auth Authentication Adapter allowing the use of OpenID protocol as an
@@ -138,6 +135,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setIdentity($id)
     {
         $this->_id = $id;
+
         return $this;
     }
 
@@ -150,6 +148,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setStorage(Zend_OpenId_Consumer_Storage $storage)
     {
         $this->_storage = $storage;
+
         return $this;
     }
 
@@ -162,6 +161,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setReturnTo($returnTo)
     {
         $this->_returnTo = $returnTo;
+
         return $this;
     }
 
@@ -174,6 +174,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setRoot($root)
     {
         $this->_root = $root;
+
         return $this;
     }
 
@@ -186,6 +187,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setExtensions($extensions)
     {
         $this->_extensions = $extensions;
+
         return $this;
     }
 
@@ -198,6 +200,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setResponse($response)
     {
         $this->_response = $response;
+
         return $this;
     }
 
@@ -211,6 +214,7 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
     public function setCheckImmediate($check_immediate)
     {
         $this->_check_immediate = $check_immediate;
+
         return $this;
     }
 
@@ -219,7 +223,8 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
      *
      * @param Zend_Http_Client $client HTTP client object to be used
      */
-    public function setHttpClient($client) {
+    public function setHttpClient($client)
+    {
         $this->_httpClient = $client;
     }
 
@@ -230,7 +235,8 @@ class Zend_Auth_Adapter_OpenId implements Zend_Auth_Adapter_Interface
      * @throws Zend_Auth_Adapter_Exception If answering the authentication query is impossible
      * @return Zend_Auth_Result
      */
-    public function authenticate() {
+    public function authenticate()
+    {
         $id = $this->_id;
         if (!empty($id)) {
             $consumer = new Zend_OpenId_Consumer($this->_storage);

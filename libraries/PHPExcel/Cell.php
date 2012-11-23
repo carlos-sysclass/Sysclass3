@@ -25,7 +25,6 @@
  * @version		1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Cell
  *
@@ -98,25 +97,26 @@ class PHPExcel_Cell
 	 */
 	private $_formulaAttributes;
 
-
 	/**
 	 * Send notification to the cache controller
 	 *
 	 * @return void
 	 **/
-	public function notifyCacheController() {
+	public function notifyCacheController()
+	{
 		$this->_parent->getCellCacheController()->updateCacheData($this);
 		return $this;
 	}
 
-	public function detach() {
+	public function detach()
+	{
 		$this->_parent = null;
 	}
 
-	public function attach($parent) {
+	public function attach($parent)
+	{
 		$this->_parent = $parent;
 	}
-
 
 	/**
 	 * Create a new Cell
@@ -244,15 +244,15 @@ class PHPExcel_Cell
 				break;
 
 			case PHPExcel_Cell_DataType::TYPE_NUMERIC:
-				$this->_value = (float)$pValue;
+				$this->_value = (float) $pValue;
 				break;
 
 			case PHPExcel_Cell_DataType::TYPE_FORMULA:
-				$this->_value = (string)$pValue;
+				$this->_value = (string) $pValue;
 				break;
 
 			case PHPExcel_Cell_DataType::TYPE_BOOL:
-				$this->_value = (bool)$pValue;
+				$this->_value = (bool) $pValue;
 				break;
 
 			case PHPExcel_Cell_DataType::TYPE_ERROR:
@@ -458,7 +458,8 @@ class PHPExcel_Cell
 	 *
 	 * @return PHPExcel_Worksheet
 	 */
-	public function getParent() {
+	public function getParent()
+	{
 		return $this->_parent;
 	}
 
@@ -468,7 +469,8 @@ class PHPExcel_Cell
 	 * @param PHPExcel_Worksheet $parent
 	 * @return PHPExcel_Cell
 	 */
-	public function rebindParent(PHPExcel_Worksheet $parent) {
+	public function rebindParent(PHPExcel_Worksheet $parent)
+	{
 		$this->_parent = $parent;
 
 		return $this->notifyCacheController();
@@ -702,10 +704,10 @@ class PHPExcel_Cell
 			if (!isset($pString{1})) {
 				$_indexCache[$pString] = $_columnLookup[$pString];
 				return $_indexCache[$pString];
-			} elseif(!isset($pString{2})) {
+			} elseif (!isset($pString{2})) {
 				$_indexCache[$pString] = $_columnLookup[$pString{0}] * 26 + $_columnLookup[$pString{1}];
 				return $_indexCache[$pString];
-			} elseif(!isset($pString{3})) {
+			} elseif (!isset($pString{3})) {
 				$_indexCache[$pString] = $_columnLookup[$pString{0}] * 676 + $_columnLookup[$pString{1}] * 26 + $_columnLookup[$pString{2}];
 				return $_indexCache[$pString];
 			}
@@ -748,7 +750,8 @@ class PHPExcel_Cell
 	 * @param	string	$pRange		Range (e.g. A1 or A1:A10 or A1:A10 A100:A1000)
 	 * @return	array	Array containing single cell references
 	 */
-	public static function extractAllCellReferencesInRange($pRange = 'A1') {
+	public static function extractAllCellReferencesInRange($pRange = 'A1')
+	{
 		// Returnvalue
 		$returnValue = array();
 
@@ -763,7 +766,7 @@ class PHPExcel_Cell
 
 			// Range...
 			$ranges = PHPExcel_Cell::splitRange($cellBlock);
-			foreach($ranges as $range) {
+			foreach ($ranges as $range) {
 				// Single cell?
 				if (!isset($range[1])) {
 					$returnValue[] = $range[0];
@@ -821,7 +824,8 @@ class PHPExcel_Cell
 	 *
 	 * @return PHPExcel_Cell_IValueBinder
 	 */
-	public static function getValueBinder() {
+	public static function getValueBinder()
+	{
 		if (self::$_valueBinder === NULL) {
 			self::$_valueBinder = new PHPExcel_Cell_DefaultValueBinder();
 		}
@@ -835,7 +839,8 @@ class PHPExcel_Cell
 	 * @param PHPExcel_Cell_IValueBinder $binder
 	 * @throws Exception
 	 */
-	public static function setValueBinder(PHPExcel_Cell_IValueBinder $binder = null) {
+	public static function setValueBinder(PHPExcel_Cell_IValueBinder $binder = null)
+	{
 		if ($binder === NULL) {
 			throw new Exception("A PHPExcel_Cell_IValueBinder is required for PHPExcel to function correctly.");
 		}
@@ -846,7 +851,8 @@ class PHPExcel_Cell
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
-	public function __clone() {
+	public function __clone()
+	{
 		$vars = get_object_vars($this);
 		foreach ($vars as $key => $value) {
 			if ((is_object($value)) && ($key != '_parent')) {
@@ -880,7 +886,6 @@ class PHPExcel_Cell
 		return $this->notifyCacheController();
 	}
 
-
 	public function setFormulaAttributes($pAttributes)
 	{
 		$this->_formulaAttributes = $pAttributes;
@@ -893,4 +898,3 @@ class PHPExcel_Cell
 	}
 
 }
-

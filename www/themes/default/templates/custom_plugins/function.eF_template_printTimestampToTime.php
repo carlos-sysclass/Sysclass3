@@ -9,7 +9,7 @@ function smarty_function_eF_template_printTimestampToTime($params, &$smarty)
     if (!isset($params['timestamp']) || $params['timestamp'] <= 0) {
         $params['timestamp'] = time();
     }
-    
+
     if (isset($params['onlytime']) && $params['onlytime']) {
         $str = date("H:m:s", $params['timestamp']);
     } else {

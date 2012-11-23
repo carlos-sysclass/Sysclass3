@@ -109,6 +109,7 @@ class PEAR_DependencyDB
                 return $e;
             }
         }
+
         return $GLOBALS['_PEAR_DEPENDENCYDB_INSTANCE']
               [$config->get('php_dir', null, 'pear.php.net')];
     }
@@ -150,8 +151,10 @@ class PEAR_DependencyDB
                     }
                 }
             }
+
             return false;
         }
+
         return is_writeable($this->_depdb);
     }
 
@@ -198,6 +201,7 @@ class PEAR_DependencyDB
         if (isset($data['packages'][$channel][$package])) {
             return $data['packages'][$channel][$package];
         }
+
         return false;
     }
 
@@ -237,6 +241,7 @@ class PEAR_DependencyDB
                 }
             }
         }
+
         return $dependencies;
     }
 
@@ -258,6 +263,7 @@ class PEAR_DependencyDB
         if (isset($data['dependencies'][$channel][$package])) {
             return $data['dependencies'][$channel][$package];
         }
+
         return false;
     }
 
@@ -270,9 +276,10 @@ class PEAR_DependencyDB
     {
         $c = array();
         $this->_getDepDB();
+
         return $this->_dependsOn($parent, $child, $c);
     }
-    
+
     function _dependsOn($parent, $child, &$checked)
     {
         if (is_object($parent)) {
@@ -307,6 +314,7 @@ class PEAR_DependencyDB
                         return true;
                     }
                 }
+
                 return false;
             }
             if (strtolower($info['dep']['channel']) == strtolower($depchannel) &&
@@ -329,6 +337,7 @@ class PEAR_DependencyDB
                 }
             }
         }
+
         return false;
     }
 
@@ -432,6 +441,7 @@ class PEAR_DependencyDB
             return $error;
         }
         $this->_cache = $depdb;
+
         return true;
     }
 
@@ -467,16 +477,18 @@ class PEAR_DependencyDB
                 return PEAR::raiseError("could not create Dependency lock file" .
                                          (isset($php_errormsg) ? ": " . $php_errormsg : ""));
             }
-            if (!(int)flock($this->_lockFp, $mode)) {
+            if (!(int) flock($this->_lockFp, $mode)) {
                 switch ($mode) {
                     case LOCK_SH: $str = 'shared';    break;
                     case LOCK_EX: $str = 'exclusive'; break;
                     case LOCK_UN: $str = 'unlock';    break;
                     default:      $str = 'unknown';   break;
                 }
+
                 return PEAR::raiseError("could not acquire $str lock ($this->_lockfile)");
             }
         }
+
         return true;
     }
 
@@ -492,6 +504,7 @@ class PEAR_DependencyDB
             fclose($this->_lockFp);
         }
         $this->_lockFp = null;
+
         return $ret;
     }
 
@@ -509,6 +522,7 @@ class PEAR_DependencyDB
         }
         if (!$fp = fopen($this->_depdb, 'r')) {
             $err = PEAR::raiseError("Could not open dependencies file `".$this->_depdb."'");
+
             return $err;
         }
         $rt = get_magic_quotes_runtime();
@@ -518,6 +532,7 @@ class PEAR_DependencyDB
         $data = unserialize(file_get_contents($this->_depdb));
         set_magic_quotes_runtime($rt);
         $this->_cache = $data;
+
         return $data;
     }
 
@@ -534,6 +549,7 @@ class PEAR_DependencyDB
         }
         if (!$fp = fopen($this->_depdb, 'wb')) {
             $this->_unlock();
+
             return PEAR::raiseError("Could not open dependencies file `".$this->_depdb."' for writing");
         }
         $rt = get_magic_quotes_runtime();
@@ -543,6 +559,7 @@ class PEAR_DependencyDB
         fclose($fp);
         $this->_unlock();
         $this->_cache = $deps;
+
         return true;
     }
 
@@ -704,4 +721,3 @@ class PEAR_DependencyDB
         }
     }
 }
-?>

@@ -13,9 +13,9 @@ function smarty_function_eF_template_printCloseButton($params, &$smarty)
             $onclick_str = 'javascript:self.opener.location.reload(); window.close()';
         }
     }
-    
+
     $str = '
             <input class = "flatButton" type = "button" onClick = "'.$onclick_str.'" value = "'._CLOSEWINDOW.'" />';
-    
+
     return $str;
 }

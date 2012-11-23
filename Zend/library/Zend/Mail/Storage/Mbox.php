@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Mbox.php 12519 2008-11-10 18:41:24Z alexander $
  */
-
 
 /**
  * @see Zend_Loader
@@ -36,7 +35,6 @@ require_once 'Zend/Mail/Storage/Abstract.php';
  * @see Zend_Mail_Message_File
  */
 require_once 'Zend/Mail/Message/File.php';
-
 
 /**
  * @category   Zend
@@ -88,7 +86,6 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
         return count($this->_positions);
     }
 
-
     /**
      * Get a list of messages with number and size
      *
@@ -99,6 +96,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
     {
         if ($id) {
             $pos = $this->_positions[$id - 1];
+
             return $pos['end'] - $pos['start'];
         }
 
@@ -109,7 +107,6 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
 
         return $result;
     }
-
 
     /**
      * Get positions for mail message or throw exeption if id is invalid
@@ -131,7 +128,6 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
         return $this->_positions[$id - 1];
     }
 
-
     /**
      * Fetch a message
      *
@@ -145,6 +141,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
         if (strtolower($this->_messageClass) == 'zend_mail_message_file' || is_subclass_of($this->_messageClass, 'zend_mail_message_file')) {
             // TODO top/body lines
             $messagePos = $this->_getPos($id);
+
             return new $this->_messageClass(array('file' => $this->_fh, 'startPos' => $messagePos['start'],
                                                   'endPos' => $messagePos['end']));
         }
@@ -208,6 +205,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
             throw new Zend_Mail_Storage_Exception('not implemented');
         }
         $messagePos = $this->_getPos($id);
+
         return stream_get_contents($this->_fh, $messagePos['end'] - $messagePos['separator'], $messagePos['separator']);
     }
 
@@ -222,9 +220,9 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
-    
+
         if (!isset($params->filename) /* || Zend_Loader::isReadable($params['filename']) */) {
             /**
              * @see Zend_Mail_Storage_Exception
@@ -382,10 +380,12 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
         if ($id) {
             // check if id exists
             $this->_getPos($id);
+
             return $id;
         }
 
         $range = range(1, $this->countMessages());
+
         return array_combine($range, $range);
     }
 
@@ -403,6 +403,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
     {
         // check if id exists
         $this->_getPos($id);
+
         return $id;
     }
 

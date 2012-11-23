@@ -13,7 +13,6 @@ $smarty -> assign("T_OPTION", $_GET['option']);
 
 try {
 
-
     if (isset($_GET['from_year'])) { //the admin has chosen a period
         $from = mktime($_GET['from_hour'], $_GET['from_min'], 0, $_GET['from_month'], $_GET['from_day'], $_GET['from_year']);
         $to = mktime($_GET['to_hour'], $_GET['to_min'], 0, $_GET['to_month'], $_GET['to_day'], $_GET['to_year']);
@@ -59,7 +58,7 @@ try {
     $timesReport = new MagesterTimes(array($from, $to));
     $userTimes = $timesReport -> getSystemSessionTimesForUsers();
 
-    foreach($result as $value) {
+    foreach ($result as $value) {
         $users[$value['users_LOGIN']]['name'] = $value['name'];
         $users[$value['users_LOGIN']]['surname'] = $value['surname'];
         $users[$value['users_LOGIN']]['active'] = $value['active'];
@@ -75,7 +74,6 @@ try {
             $lessons[$value['lessons_ID']] = array();
         }
     }
-
 
     $totalUserAccesses = $totalUserTime = 0;
     foreach ($users as $key => $user) {

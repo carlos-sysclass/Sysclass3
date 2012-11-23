@@ -78,6 +78,7 @@ class HTML_QuickForm2_Rule_NotRegex extends HTML_QuickForm2_Rule_Regex
         } elseif (!strlen($value)) {
             return true;
         }
+
         return !preg_match($this->getConfig() . 'D', $value);
     }
 
@@ -103,4 +104,3 @@ class HTML_QuickForm2_Rule_NotRegex extends HTML_QuickForm2_Rule_Regex
                "; return qf.rules.empty(value) || !{$regex}.test(value); }";
     }
 }
-?>

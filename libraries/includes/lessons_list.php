@@ -8,13 +8,13 @@ $loadScripts[] = 'includes/lessons_list';
 $loadScripts[] = 'includes/catalog';
 try {
  if (isset($_GET['op']) && $_GET['op'] == 'tests') {
-  require_once("tests/show_skill_gap_tests.php");
+  require_once 'tests/show_skill_gap_tests.php';
 
  } elseif (isset($_GET['export']) && $_GET['export'] == 'rtf') {
-  require_once("rtf_export.php");
+  require_once 'rtf_export.php';
 
  } elseif (isset($_GET['export']) && $_GET['export'] == 'xml') {
-  require_once("xml_export.php");
+  require_once 'xml_export.php';
 
  } elseif (isset($_GET['course'])) {
   $currentCourse = new MagesterCourse($_GET['course']);
@@ -29,10 +29,10 @@ try {
 
   require_once 'course_settings.php';
  } elseif (isset($_GET['op']) && $_GET['op'] == 'search') {
-  require_once "module_search.php";
+  require_once 'module_search.php';
 
  } elseif (isset($_GET['catalog'])) {
-  require_once "catalog_page.php";
+  require_once 'catalog_page.php';
 
  } else {
 
@@ -52,14 +52,14 @@ try {
 		 */
   $constraints = array('archive' => false, 'active' => true, 'sort' => 'name');
   $userCourses = $currentUser -> getUserCourses($constraints);
-  
+
   foreach ($userCourses as $key => $course) {
    //this must be here (before $userCourses assignment) in order to revoke a certificate if it is expired and/or re-assign a course to a student if needed
    if ($course -> course['start_date'] && $course -> course['start_date'] > time()) {
     $value['remaining'] = null;
    } elseif ($course -> course['end_date'] && $course -> course['end_date'] < time()) {
     $value['remaining'] = 0;
-   } else if ($course -> options['duration'] && $course -> course['active_in_course']) {
+   } elseif ($course -> options['duration'] && $course -> course['active_in_course']) {
     if ($course -> course['active_in_course'] < $course -> course['start_date']) {
      $course -> course['active_in_course'] = $course -> course['start_date'];
     }
@@ -79,7 +79,7 @@ try {
    }
    $userCourses[$key] = $course;
   }
-  
+
   //$userCourses        = $currentUser -> getCourses(true, false, $options);
   //$userCourseProgress = MagesterStats :: getUsersCourseStatus($userCourses, $currentUser -> user['login'], $options);
   //$userCourses        = array_intersect_key($userCourses, $userCourseProgress); //Needed because MagesterStats :: getUsersCourseStatus might remove automatically courses, based on time constraints

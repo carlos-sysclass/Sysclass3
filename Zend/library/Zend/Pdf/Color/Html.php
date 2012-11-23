@@ -59,7 +59,6 @@ class Zend_Pdf_Color_Html extends Zend_Pdf_Color
         $this->_color = self::color($color);
     }
 
-
     /**
      * Instructions, which can be directly inserted into content stream
      * to switch color.
@@ -400,4 +399,3 @@ class Zend_Pdf_Color_Html extends Zend_Pdf_Color
         }
     }
 }
-

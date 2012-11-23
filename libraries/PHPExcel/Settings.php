@@ -34,7 +34,6 @@ if (!defined('PHPEXCEL_ROOT')) {
 	require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
-
 class PHPExcel_Settings
 {
 	/**	constants */
@@ -50,7 +49,6 @@ class PHPExcel_Settings
     const PDF_RENDERER_DOMPDF		= 'dompdf';
     const PDF_RENDERER_MPDF			= 'mpdf';
 
-
 	private static $_chartRenderers = array(
 		self::CHART_RENDERER_JPGRAPH,
 	);
@@ -61,7 +59,6 @@ class PHPExcel_Settings
 		self::PDF_RENDERER_MPDF,
 	);
 
-
 	/**
 	 * Name of the class used for Zip file management
 	 *		e.g.
@@ -70,7 +67,6 @@ class PHPExcel_Settings
 	 * @var string
 	 */
 	private static $_zipClass	= self::ZIPARCHIVE;
-
 
 	/**
 	 * Name of the external Library used for rendering charts
@@ -88,7 +84,6 @@ class PHPExcel_Settings
 	 */
 	private static $_chartRendererPath = NULL;
 
-
 	/**
 	 * Name of the external Library used for rendering PDF files
 	 *		e.g.
@@ -105,7 +100,6 @@ class PHPExcel_Settings
 	 */
 	private static $_pdfRendererPath = NULL;
 
-
 	/**
 	 * Set the Zip handler Class that PHPExcel should use for Zip file management (PCLZip or ZipArchive)
 	 *
@@ -113,7 +107,8 @@ class PHPExcel_Settings
 	 *											e.g. PHPExcel_Settings::PCLZip or PHPExcel_Settings::ZipArchive
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setZipClass($zipClass) {
+	public static function setZipClass($zipClass)
+	{
 		if (($zipClass === self::PCLZIP) ||
 			($zipClass === self::ZIPARCHIVE)) {
 			self::$_zipClass = $zipClass;
@@ -121,7 +116,6 @@ class PHPExcel_Settings
 		}
 		return FALSE;
 	}	//	function setZipClass()
-
 
 	/**
 	 * Return the name of the Zip handler Class that PHPExcel is configured to use (PCLZip or ZipArchive)
@@ -131,30 +125,30 @@ class PHPExcel_Settings
 	 *											for Zip file management
 	 *												e.g. PHPExcel_Settings::PCLZip or PHPExcel_Settings::ZipArchive
 	 */
-	public static function getZipClass() {
+	public static function getZipClass()
+	{
 		return self::$_zipClass;
 	}	//	function getZipClass()
-
 
 	/**
 	 * Return the name of the method that is currently configured for cell cacheing
 	 *
 	 * @return	string				Name of the cacheing method
 	 */
-	public static function getCacheStorageMethod() {
+	public static function getCacheStorageMethod()
+	{
 		return PHPExcel_CachedObjectStorageFactory::$_cacheStorageMethod;
 	}	//	function getCacheStorageMethod()
-
 
 	/**
 	 * Return the name of the class that is currently being used for cell cacheing
 	 *
 	 * @return	string				Name of the class currently being used for cacheing
 	 */
-	public static function getCacheStorageClass() {
+	public static function getCacheStorageClass()
+	{
 		return PHPExcel_CachedObjectStorageFactory::$_cacheStorageClass;
 	}	//	function getCacheStorageClass()
-
 
 	/**
 	 * Set the method that should be used for cell cacheing
@@ -168,17 +162,16 @@ class PHPExcel_Settings
 		return PHPExcel_CachedObjectStorageFactory::initialize($method, $arguments);
 	}	//	function setCacheStorageMethod()
 
-
 	/**
 	 * Set the locale code to use for formula translations and any special formatting
 	 *
 	 * @param	string	$locale		The locale code to use (e.g. "fr" or "pt_br" or "en_uk")
 	 * @return	boolean				Success or failure
 	 */
-	public static function setLocale($locale='en_us') {
+	public static function setLocale($locale='en_us')
+	{
 		return PHPExcel_Calculation::getInstance()->setLocale($locale);
 	}	//	function setLocale()
-
 
 	/**
 	 * Set details of the external library that PHPExcel should use for rendering charts
@@ -188,7 +181,8 @@ class PHPExcel_Settings
 	 * @param	 string	$libraryBaseDir		Directory path to the library's base folder
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setChartRenderer($libraryName, $libraryBaseDir) {
+	public static function setChartRenderer($libraryName, $libraryBaseDir)
+	{
 		if (!self::setChartRendererName($libraryName))
 			return FALSE;
 		return self::setChartRendererPath($libraryBaseDir);
@@ -202,7 +196,8 @@ class PHPExcel_Settings
 	 *											e.g. PHPExcel_Settings::CHART_RENDERER_JPGRAPH
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setChartRendererName($libraryName) {
+	public static function setChartRendererName($libraryName)
+	{
 		if (!in_array($libraryName,self::$_chartRenderers)) {
 			return FALSE;
 		}
@@ -219,12 +214,12 @@ class PHPExcel_Settings
 	 * @param	 string	$libraryBaseDir		Directory path to the library's base folder
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setChartRendererPath($libraryBaseDir) {
+	public static function setChartRendererPath($libraryBaseDir)
+	{
 		self::$_chartRendererPath = $libraryBaseDir;
 
 		return TRUE;
 	}	//	function setChartRendererPath()
-
 
 	/**
 	 * Return the Chart Rendering Library that PHPExcel is currently configured to use (e.g. jpgraph)
@@ -233,10 +228,10 @@ class PHPExcel_Settings
 	 *											currently configured to use
 	 *												e.g. PHPExcel_Settings::CHART_RENDERER_JPGRAPH
 	 */
-	public static function getChartRendererName() {
+	public static function getChartRendererName()
+	{
 		return self::$_chartRendererName;
 	}	//	function getChartRendererName()
-
 
 	/**
 	 * Return the directory path to the Chart Rendering Library that PHPExcel is currently configured to use
@@ -244,10 +239,10 @@ class PHPExcel_Settings
 	 * @return	 string						Directory Path to the Chart Rendering Library that PHPExcel is
 	 *											currently configured to use
 	 */
-	public static function getChartRendererPath() {
+	public static function getChartRendererPath()
+	{
 		return self::$_chartRendererPath;
 	}	//	function getChartRendererPath()
-
 
 	/**
 	 * Set details of the external library that PHPExcel should use for rendering PDF files
@@ -259,7 +254,8 @@ class PHPExcel_Settings
 	 * @param	 string	$libraryBaseDir		Directory path to the library's base folder
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setPdfRenderer($libraryName, $libraryBaseDir) {
+	public static function setPdfRenderer($libraryName, $libraryBaseDir)
+	{
 		if (!self::setPdfRendererName($libraryName))
 			return FALSE;
 		return self::setPdfRendererPath($libraryBaseDir);
@@ -275,7 +271,8 @@ class PHPExcel_Settings
 	 *											  or PHPExcel_Settings::PDF_RENDERER_MPDF
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setPdfRendererName($libraryName) {
+	public static function setPdfRendererName($libraryName)
+	{
 		if (!in_array($libraryName,self::$_pdfRenderers)) {
 			return FALSE;
 		}
@@ -292,12 +289,12 @@ class PHPExcel_Settings
 	 * @param	 string	$libraryBaseDir		Directory path to the library's base folder
 	 * @return	 boolean					Success or failure
 	 */
-	public static function setPdfRendererPath($libraryBaseDir) {
+	public static function setPdfRendererPath($libraryBaseDir)
+	{
 		self::$_pdfRendererPath = $libraryBaseDir;
 
 		return TRUE;
 	}	//	function setPdfRendererPath()
-
 
 	/**
 	 * Return the PDF Rendering Library that PHPExcel is currently configured to use (e.g. dompdf)
@@ -308,10 +305,10 @@ class PHPExcel_Settings
 	 *													 PHPExcel_Settings::PDF_RENDERER_DOMPDF
 	 *												  or PHPExcel_Settings::PDF_RENDERER_MPDF
 	 */
-	public static function getPdfRendererName() {
+	public static function getPdfRendererName()
+	{
 		return self::$_pdfRendererName;
 	}	//	function getPdfRendererName()
-
 
 	/**
 	 * Return the directory path to the PDF Rendering Library that PHPExcel is currently configured to use
@@ -319,7 +316,8 @@ class PHPExcel_Settings
 	 * @return	 string						Directory Path to the PDF Rendering Library that PHPExcel is
 	 *											currently configured to use
 	 */
-	public static function getPdfRendererPath() {
+	public static function getPdfRendererPath()
+	{
 		return self::$_pdfRendererPath;
 	}	//	function getPdfRendererPath()
 

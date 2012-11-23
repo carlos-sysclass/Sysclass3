@@ -28,11 +28,11 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty)
             	<tr><td>'.$messageImage.'</td>
             		<td class = "'.$params['type'].'Block">'.$params['content'].'</td>
             		<td><img src = "images/32x32/close.png" alt = "'._CLOSE.'" title = "'._CLOSE.'" onclick = "window.Effect ? new Effect.Fade($(\'messageBlock\')) : document.getElementById(\'messageBlock\').style.display = \'none\';"></td></tr>
-            </table>	
+            </table>
         </div>
         </div>';
     */
-    
+
     $str = sprintf(
 	    '<div class="messageBlock alert %s">
 			%s
@@ -42,6 +42,6 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty)
 	    $messageImage,
 	    $params['content']
     );
-    
+
     return $str;
 }

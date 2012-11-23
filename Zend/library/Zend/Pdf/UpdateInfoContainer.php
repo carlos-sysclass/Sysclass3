@@ -26,7 +26,6 @@ require_once 'Zend/Pdf/Element/Object.php';
 /** Zend_Memory */
 require_once 'Zend/Memory.php';
 
-
 /**
  * Container which collects updated object info.
  *
@@ -49,7 +48,6 @@ class Zend_Pdf_UpdateInfoContainer
      * @var integer
      */
     private $_genNum;
-
 
     /**
      * Flag, which signals, that object is free
@@ -84,7 +82,6 @@ class Zend_Pdf_UpdateInfoContainer
             }
         }
     }
-
 
     /**
      * Get object number
@@ -134,4 +131,3 @@ class Zend_Pdf_UpdateInfoContainer
         return $this->_dump->getRef();
     }
 }
-

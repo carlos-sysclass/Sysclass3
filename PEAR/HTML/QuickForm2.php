@@ -131,7 +131,6 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
         );
     }
 
-
    /**
     * Adds a new data source to the form
     *
@@ -198,6 +197,7 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
                 return true;
             }
         }
+
         return false;
     }
 
@@ -226,7 +226,7 @@ class HTML_QuickForm2 extends HTML_QuickForm2_Container
         }
         $this->renderClientRules($renderer->getJavascriptBuilder());
         $renderer->finishForm($this);
+
         return $renderer;
     }
 }
-?>

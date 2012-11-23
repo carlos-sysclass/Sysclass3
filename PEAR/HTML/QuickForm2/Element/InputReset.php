@@ -96,4 +96,3 @@ class HTML_QuickForm2_Element_InputReset extends HTML_QuickForm2_Element_Input
         return null;
     }
 }
-?>

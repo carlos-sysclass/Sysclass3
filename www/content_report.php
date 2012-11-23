@@ -26,7 +26,6 @@ try {
 
     $load_editor = true;
 
-
     $form = new HTML_QuickForm("content_report_form", "post", "content_report.php", "", null, true);
 
     $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
@@ -48,17 +47,16 @@ try {
                 $recipients[] = $key;
             }
 
-
-            if (strpos($values['page'], "glossary") !== false){
+            if (strpos($values['page'], "glossary") !== false) {
                 $title = _ERRORREPORTFOR.'&nbsp;'.$lesson -> lesson['name'].'&nbsp;['._GLOSSARY.']';
-            } elseif (strpos($values['page'], "edit_question") !== false){
+            } elseif (strpos($values['page'], "edit_question") !== false) {
                 $title = _ERRORREPORTFOR.'&nbsp;'.$lesson -> lesson['name'].'&nbsp;['._QUESTION.']';
-            } else{
+            } else {
                 $contentId = mb_substr($values['page'],10);
                 preg_match("/.*view_unit=(\d+).*/", $values['page'], $matches);
 
                 $resultType = eF_getTableData("content", "ctg_type", "id=".$matches[1]);
-                if ($resultType[0]['ctg_type'] == "tests"){
+                if ($resultType[0]['ctg_type'] == "tests") {
                     $title = _ERRORREPORTFOR.'&nbsp;'.$lesson -> lesson['name'].'&nbsp;['._TESTS.']';
                 } else {
                     $title = _ERRORREPORTFOR.'&nbsp;'.$lesson -> lesson['name'].'&nbsp;['._CONTENT.']';
@@ -67,7 +65,6 @@ try {
             $patterns = array("/([&|\?])message=[^&]*(&message_type=[^&]*)?(&(.*))*/");
             $replacements = array("\$1\$4");
             $values['page'] = preg_replace($patterns, $replacements, $values['page']);
-
 
             $data = '<a href="professor.php?lessons_ID='.$_SESSION['s_lessons_ID'].'&'.$values['page'].'">'._LINKTOTOPIC.'</a><br><br>'._NOTES.':&nbsp;'.$values['notes'];
 
@@ -90,7 +87,6 @@ try {
     $form -> accept($renderer);
 
     $smarty -> assign('T_REPORTS_FORM', $renderer -> toArray());
-
 
 $smarty -> assign("T_HEADER_LOAD_SCRIPTS", array());
 $smarty -> assign("T_HEADER_EDITOR", $load_editor);

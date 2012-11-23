@@ -254,10 +254,10 @@ if ($_GET['op'] == 'reset_lesson') {
                 if (in_array($_GET['login'], array_keys($lessonUsers))) {
                     $userType != $lessonUsers[$_GET['login']]['role'] ? $currentLesson -> setRoles($_GET['login'], $userType) : $currentLesson -> archiveLessonUsers($_GET['login']);
                 }
-            } else if (isset($_GET['addAll'])) {
+            } elseif (isset($_GET['addAll'])) {
                 isset($_GET['filter']) ? $nonLessonUsers = eF_filterData($nonLessonUsers, $_GET['filter']) : null;
                 $currentLesson -> addUsers(array_keys($nonLessonUsers));
-            } else if (isset($_GET['removeAll'])) {
+            } elseif (isset($_GET['removeAll'])) {
                 isset($_GET['filter']) ? $lessonUsers = eF_filterData($lessonUsers, $_GET['filter']) : null;
                 $currentLesson -> archiveLessonUsers(array_keys($lessonUsers));
             }
@@ -277,7 +277,7 @@ if ($_GET['op'] == 'reset_lesson') {
     $currentUser -> user['user_type'] = 'student';
     $modules = eF_loadAllModules();
 
-    foreach($modules as $key => $module) {
+    foreach ($modules as $key => $module) {
         if (method_exists($module, 'getLessonModule') && $currentLesson -> options[$key]) {
             $lessonModules[$key] = $moduleInfo[$key];
         }
@@ -309,10 +309,6 @@ if ($_GET['op'] == 'reset_lesson') {
         $lessonSettings['tests'] = array('text' => _TESTS, 'image' => "32x32/tests.png", 'onClick' => 'activate(this, \'tests\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['tests']) && $currentLesson -> options['tests'] ? null : 'inactiveImage');
     }
 
-
-
-
-
     if ($GLOBALS['configuration']['disable_feedback'] != 1) {
         $lessonSettings['feedback'] = array('text' => _FEEDBACK, 'image' => "32x32/feedback.png", 'onClick' => 'activate(this, \'feedback\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['feedback']) && $currentLesson -> options['feedback'] ? null : 'inactiveImage');
     }
@@ -333,12 +329,6 @@ if ($_GET['op'] == 'reset_lesson') {
     if ($GLOBALS['configuration']['chat_enabled']) {
         $lessonSettings['chat'] = array('text' => _CHAT, 'image' => "32x32/chat.png", 'onClick' => 'activate(this, \'chat\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['chat']) && $currentLesson -> options['chat'] ? null : 'inactiveImage');
     }
-
-
-
-
-
-
 
     $lessonSettings['scorm'] = array('text' => _SCORM, 'image' => "32x32/scorm.png", 'onClick' => 'activate(this, \'scorm\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['scorm']) && $currentLesson -> options['scorm'] ? null : 'inactiveImage');
 
@@ -373,7 +363,6 @@ if ($_GET['op'] == 'reset_lesson') {
   $lessonSettings['show_horizontal_bar'] = array('text' => _SHOWHORIZONTALBAR, 'image' => "32x32/export.png", 'onClick' => 'activate(this, \'show_horizontal_bar\')', 'title' => _CLICKTOTOGGLE, 'group' => 1, 'class' => !isset($currentLesson -> options['show_horizontal_bar']) || $currentLesson -> options['show_horizontal_bar'] ? null : 'inactiveImage');
  }
     //$lessonSettings['complete_next_lesson']= array('text' => _MOVETONEXTLESSONONCOMPLETE,'image' => "32x32/options.png", 'onClick' => 'activate(this, \'complete_next_lesson\')',      'title' => _CLICKTOTOGGLE, 'group' => 1, 'class' => isset($currentLesson -> options['complete_next_lesson']) && $currentLesson -> options['complete_next_lesson'] ? null : 'inactiveImage');
-
 
     ///MODULES6
     if ($currentUser -> getType() == "administrator") {

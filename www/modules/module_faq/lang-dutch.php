@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "FAQ module");//FAQ Module
 define("_FAQ_MAIN", "Hoofd pagina");//Main page
 define("_FAQ_MANAGEMENT", "Manage FAQs");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "FAQ is bijgewerkt");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Veel gestelde vragen konden niet worden bijgewerkt");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Plaats FAQ entry");//Insert FAQ entry

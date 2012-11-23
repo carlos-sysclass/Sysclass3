@@ -116,7 +116,7 @@ class HTML_QuickForm2_Controller_SessionContainer
     */
     public function storeValidationStatus($pageId, $status)
     {
-        $this->data['valid'][$pageId] = (bool)$status;
+        $this->data['valid'][$pageId] = (bool) $status;
     }
 
    /**

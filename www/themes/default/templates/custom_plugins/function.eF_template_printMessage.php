@@ -22,7 +22,7 @@ function smarty_function_eF_template_printMessage($params, &$smarty)
             $image = '<img src = "images/32x32/warning.png"  title = "'._WARNING.'" alt = "'._WARNING.'" />';
             $class = "message_failure";
         }
-        
+
         $str = '
                 <table class = "messageTable" id = "messageTable">
                     <tr><td class = "'.$class.'">
@@ -33,10 +33,10 @@ function smarty_function_eF_template_printMessage($params, &$smarty)
                     		<img src = "images/16x16/close.png" alt = "'._CLOSE.'" title = "'._CLOSE.'" onclick = "if (window.Effect) new Effect.Fade(Element.extend(this).up().up().up().up().up().up()); else document.getElementById(\'messageTable\').parentNode.parentNode.style.display=\'none\';">
                     	</td></tr>
                 </table>';
-        
+
     } else {
         $str = '';
 	}
-    
+
     return $str;
 }

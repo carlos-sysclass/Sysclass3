@@ -20,7 +20,6 @@
  * @version    $Id: Feed.php 15577 2009-05-14 12:43:34Z matthew $
  */
 
-
 /**
  * Feed utility class
  *
@@ -58,7 +57,6 @@ class Zend_Feed
         'rss'        => 'http://blogs.law.harvard.edu/tech/rss',
     );
 
-
     /**
      * Set the HTTP client instance
      *
@@ -71,7 +69,6 @@ class Zend_Feed
     {
         self::$_httpClient = $httpClient;
     }
-
 
     /**
      * Gets the HTTP client object. If none is set, a new Zend_Http_Client will be used.
@@ -90,7 +87,6 @@ class Zend_Feed
 
         return self::$_httpClient;
     }
-
 
     /**
      * Toggle using POST instead of PUT and DELETE HTTP methods
@@ -139,7 +135,6 @@ class Zend_Feed
             $prefix;
     }
 
-
     /**
      * Add a namespace and prefix to the registered list
      *
@@ -155,7 +150,6 @@ class Zend_Feed
     {
         self::$_namespaces[$prefix] = $namespaceURI;
     }
-
 
     /**
      * Imports a feed located at $uri.
@@ -177,9 +171,9 @@ class Zend_Feed
             throw new Zend_Feed_Exception('Feed failed to load, got response code ' . $response->getStatus());
         }
         $feed = $response->getBody();
+
         return self::importString($feed);
     }
-
 
     /**
      * Imports a feed represented by $string.
@@ -242,7 +236,6 @@ class Zend_Feed
         throw new Zend_Feed_Exception('Invalid or unsupported feed format');
     }
 
-
     /**
      * Imports a feed from a file located at $filename.
      *
@@ -262,9 +255,9 @@ class Zend_Feed
             require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception("File could not be loaded: $php_errormsg");
         }
+
         return self::importString($feed);
     }
-
 
     /**
      * Attempts to find feeds at $uri referenced by <link ... /> tags. Returns an
@@ -382,6 +375,7 @@ class Zend_Feed
          * @see Zend_Feed_Builder
          */
         require_once 'Zend/Feed/Builder.php';
+
         return new $obj(null, null, new Zend_Feed_Builder($data));
     }
 
@@ -399,6 +393,7 @@ class Zend_Feed
             require_once 'Zend/Loader.php';
             Zend_Loader::loadClass($obj);
         }
+
         return new $obj(null, null, $builder);
     }
 }

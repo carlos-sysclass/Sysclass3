@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Folder.php 9099 2008-03-30 19:35:47Z thomas $
  */
-
 
 /**
  * @category   Zend
@@ -78,6 +77,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     public function hasChildren()
     {
         $current = $this->current();
+
         return $current && $current instanceof Zend_Mail_Storage_Folder && !$current->isLeaf();
     }
 
@@ -191,7 +191,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
      */
     public function __toString()
     {
-        return (string)$this->getGlobalName();
+        return (string) $this->getGlobalName();
     }
 
     /**

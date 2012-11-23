@@ -52,8 +52,10 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                     $extension, 'providesextension');
             }
             $this->_packageInfo['providesextension'] = $extension;
+
             return true;
         }
+
         return false;
     }
 
@@ -108,7 +110,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
         $this->_isValid = 0;
         if (!isset($this->_packageInfo['uri'])) {
             // ensure that the uri tag is set up in the right location
-            $this->_packageInfo = $this->_insertBefore($this->_packageInfo, 
+            $this->_packageInfo = $this->_insertBefore($this->_packageInfo,
                 array('extends', 'summary', 'description', 'lead',
                 'developer', 'contributor', 'helper', 'date', 'time', 'version',
                 'stability', 'license', 'notes', 'contents', 'compatible',
@@ -292,6 +294,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                 }
                 if (!count($this->_packageInfo[$role])) {
                     unset($this->_packageInfo[$role]);
+
                     return true;
                 }
                 $this->_packageInfo[$role] =
@@ -299,12 +302,14 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                 if (count($this->_packageInfo[$role]) == 1) {
                     $this->_packageInfo[$role] = $this->_packageInfo[$role][0];
                 }
+
                 return true;
             }
             if (count($this->_packageInfo[$role]) == 1) {
                 $this->_packageInfo[$role] = $this->_packageInfo[$role][0];
             }
         }
+
         return false;
     }
 
@@ -458,7 +463,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                     'bundle', 'changelog'), array(), 'contents');
         }
         if ($this->getPackageType() != 'bundle') {
-            $this->_packageInfo['contents'] = 
+            $this->_packageInfo['contents'] =
                 array('dir' => array('attribs' => array('name' => '/')));
             if ($baseinstall) {
                 $this->_packageInfo['contents']['dir']['attribs']['baseinstalldir'] = $baseinstall;
@@ -542,10 +547,12 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                         $this->_packageInfo['contents']['dir']['file'][$this->_tasksNs .
                             ':' . $task->getName()][] = $task->getXml();
                     }
+
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -631,7 +638,8 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
      * @param string package name or uri
      * @param string channel name if non-uri
      */
-    function addUsesrole($role, $packageOrUri, $channel = false) {
+    function addUsesrole($role, $packageOrUri, $channel = false)
+    {
         $set = array('role' => $role);
         if ($channel) {
             $set['package'] = $packageOrUri;
@@ -663,7 +671,8 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
      * @param string package name or uri
      * @param string channel name if non-uri
      */
-    function addUsestask($task, $packageOrUri, $channel = false) {
+    function addUsestask($task, $packageOrUri, $channel = false)
+    {
         $set = array('task' => $task);
         if ($channel) {
             $set['package'] = $packageOrUri;
@@ -737,6 +746,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                 'required' => array('optional', 'group'),
                 'php' => array('pearinstaller', 'package', 'subpackage', 'extension', 'os', 'arch')
             ));
+
         return true;
     }
 
@@ -899,6 +909,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
         if ($providesextension) {
             $dep['providesextension'] = $providesextension;
         }
+
         return $dep;
     }
 
@@ -927,6 +938,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
         }
         $dep = $this->_constructDep($name, $channel, false, $min, $max, $recommended, $exclude,
             $providesextension, $nodefault);
+
         return $this->_addGroupDependency($type, $dep, $groupname);
     }
 
@@ -949,6 +961,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
         }
         $dep = $this->_constructDep($name, false, $uri, false, false, false, false,
             $providesextension, $nodefault);
+
         return $this->_addGroupDependency($type, $dep, $groupname);
     }
 
@@ -965,6 +978,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
     {
         $this->_isValid = 0;
         $dep = $this->_constructDep($name, false, false, $min, $max, $recommended, $exclude);
+
         return $this->_addGroupDependency('extension', $dep, $groupname);
     }
 
@@ -995,6 +1009,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                             $type => $arr
                         ));
                     $this->_isValid = 0;
+
                     return true;
                 } else {
                     return false;
@@ -1008,9 +1023,11 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                             $type => $arr
                         ));
                         $this->_isValid = 0;
+
                         return true;
                     }
                 }
+
                 return false;
             }
         }
@@ -1241,6 +1258,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
                 array(), $type);
         }
         $this->_packageInfo[$type] = array();
+
         return true;
     }
 
@@ -1255,8 +1273,10 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
             }
             $this->_packageInfo = $this->_mergeTag($this->_packageInfo, array(),
                 array($type => array('changelog')));
+
             return true;
         }
+
         return false;
     }
 
@@ -1271,6 +1291,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
             if ($strict) {
                 if ($p == 'extsrc' || $p == 'zendextsrc') {
                     $a = null;
+
                     return $a;
                 }
             }
@@ -1284,6 +1305,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
             }
         } else {
             $a = null;
+
             return $a;
         }
     }
@@ -1544,7 +1566,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
     function generateChangeLogEntry($notes = false)
     {
         return array(
-            'version' => 
+            'version' =>
                 array(
                     'release' => $this->getVersion('release'),
                     'api' => $this->getVersion('api'),
@@ -1565,6 +1587,7 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
     {
         if (!isset($this->_packageInfo['changelog'])) {
             $this->_packageInfo['changelog']['release'] = $contents;
+
             return;
         }
         if (!isset($this->_packageInfo['changelog']['release'][0])) {
@@ -1574,10 +1597,11 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
             } else {
                 $this->_packageInfo['changelog']['release'] = array(
                     $this->_packageInfo['changelog']['release']);
+
                 return $this->_packageInfo['changelog']['release'][] = $contents;
             }
         }
-        foreach($this->_packageInfo['changelog']['release'] as $index => $changelog) {
+        foreach ($this->_packageInfo['changelog']['release'] as $index => $changelog) {
             if (isset($changelog['version']) &&
                   strnatcasecmp($changelog['version']['release'], $releaseversion) == 0) {
                 $curlog = $index;
@@ -1598,4 +1622,3 @@ class PEAR_PackageFile_v2_rw extends PEAR_PackageFile_v2
         unset($this->_packageInfo['changelog']);
     }
 }
-?>

@@ -11,7 +11,6 @@ require_once $path."configuration.php";
 
 header("content-type: text/plain");
 
-
 $TestID		= 192;
 //$QuestionID = 1533;
 
@@ -20,7 +19,7 @@ $testQuestions = $test->getQuestions();
 
 $completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
-foreach($completedTests as $testData) {
+foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
 
 	$logData = array(
@@ -33,7 +32,7 @@ foreach($completedTests as $testData) {
 
 	$showTest -> completedTest['score'] = 0;
 
-	foreach($showTest->questions as $QuestionID => $question) {
+	foreach ($showTest->questions as $QuestionID => $question) {
 		if ($QuestionID == 2326) {
 			$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
 		}
@@ -69,9 +68,9 @@ $testQuestions = $test->getQuestions();
 
 $completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
-foreach($completedTests as $testData) {
+foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
-	
+
 	$logData = array(
 		'ID_TESTE' => $testData['tests_ID'],
 		'NOME'		=> "Segurança da Informação - Gestão de Segurança - Prova on line",
@@ -82,7 +81,7 @@ foreach($completedTests as $testData) {
 
 	$showTest -> completedTest['score'] = 0;
 
-	foreach($showTest->questions as $QuestionID => $question) {
+	foreach ($showTest->questions as $QuestionID => $question) {
 		//$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
 
 		if (!array_key_exists($QuestionID, $testQuestions)) {
@@ -104,26 +103,25 @@ foreach($completedTests as $testData) {
 				echo "<br />";
 			}
 		}
-		
+
 		$results = $showTest->questions[$QuestionID]->correct();
 		$showTest->questions[$QuestionID] -> score = round($results['score'] * 100, 2);
-		
+
 		$showTest->questions[$QuestionID] -> results = $results['correct'];
 		$showTest -> completedTest['score'] += $showTest->questions[$QuestionID] -> score * $showTest -> getQuestionWeight($QuestionID); //the total test score
 		$showTest->questions[$QuestionID] -> scoreInTest = round($showTest->questions[$QuestionID] -> score * $showTest -> getQuestionWeight($QuestionID), 3); //Score in test is the question score, weighted with the question's weight in the test
-		
+
 	}
 
 	if ($showTest -> completedTest['score'] != $logData['OLD_SCORE']) {
 		$showTest->save();
-		
+
 		$logData['NEW_SCORE'] = $showTest -> completedTest['score'];
 		$diff[] = $logData;
 	}
 	echo "\n\n";
 }
 */
-
 
 /* BUSCAR TESTS BY UNIT */
 /* COMO RECALCULAR */
@@ -135,7 +133,7 @@ $testQuestions = $test->getQuestions();
 
 $completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
-foreach($completedTests as $testData) {
+foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
 
 	$logData = array(
@@ -148,20 +146,20 @@ foreach($completedTests as $testData) {
 
 	$showTest -> completedTest['score'] = 0;
 
-	foreach($showTest->questions as $QuestionID => $question) {
-		
+	foreach ($showTest->questions as $QuestionID => $question) {
+
 		if ($QuestionID == 7869) {
 			$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
 		}
-		
+
 		if ($QuestionID == 7861) {
 			$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
 		}
-		
+
 		if ($QuestionID == 7855) {
 			$showTest->questions[$QuestionID]->answer = unserialize($testQuestions[$QuestionID]['answer']);
 		}
-		
+
 		$results = $showTest->questions[$QuestionID]->correct();
 		$showTest->questions[$QuestionID] -> score = round($results['score'] * 100, 2);
 
@@ -193,7 +191,7 @@ $testQuestions = $test->getQuestions();
 
 $completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
-foreach($completedTests as $testData) {
+foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
 
 	$logData = array(
@@ -206,11 +204,11 @@ foreach($completedTests as $testData) {
 
 	$showTest -> completedTest['score'] = 0;
 
-	foreach($showTest->questions as $QuestionID => $question) {
+	foreach ($showTest->questions as $QuestionID => $question) {
 		if ($QuestionID == 8880) {
 			if ($showTest->questions[$QuestionID]->answer[0] != $showTest->questions[$QuestionID]->userAnswer) {
 				$showTest->questions[$QuestionID]->userAnswer = $showTest->questions[$QuestionID]->answer[0];
-				
+
 			}
 			echo "\n";
 		}
@@ -236,7 +234,7 @@ foreach($completedTests as $testData) {
 
 echo implode(";", array_keys($diff[0]));
 echo "\n";
-foreach($diff as $item) {
+foreach ($diff as $item) {
 	echo implode(";", $item);
 	echo "\n";
 }

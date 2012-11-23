@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "Често задавани въпроси Модул");/
 define("_FAQ_MAIN", "Основна страница");//Main page
 define("_FAQ_MANAGEMENT", "Управление на често задавани въпроси");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "Въпросът бе успешно актуализиран");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Често задавани въпроси не могат да бъдат актуализирани");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Поставете FAQ влизане");//Insert FAQ entry

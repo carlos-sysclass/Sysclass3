@@ -13,7 +13,7 @@ if ($_POST['templateName']) {
 
 	$filename = $dir.'/'.$_POST['templateName'].'.html';
 	$templateContent = $_POST['templateContent'];
-	if(file_exists($filename) === false) {
+	if (file_exists($filename) === false) {
 		$ok = file_put_contents($filename, $templateContent);
 		chmod($filename, 0644);
 		if ($ok !== false) {
@@ -41,11 +41,11 @@ if ($_POST['templateName']) {
 		<tr>
 			<td colspan="2" class="title">{#save_template_dlg.save_template_desc}</td>
 		</tr>
-<? if (isset($message) && $message != "") {?>		
+<? if (isset($message) && $message != "") {?>
 		<tr>
 			<td colspan="2" class="title"><? echo $message; ?></td>
 		</tr>
-<?}?>		
+<?}?>
 		<tr>
 			<td nowrap="nowrap">{#save_template_dlg.save_template_name}:</td>
 			<td><input name="templateName" type="text" class="mceFocus" id="templateName" value="" style="width: 200px" />.html
@@ -66,4 +66,3 @@ if ($_POST['templateName']) {
 </form>
 </body>
 </html>
-

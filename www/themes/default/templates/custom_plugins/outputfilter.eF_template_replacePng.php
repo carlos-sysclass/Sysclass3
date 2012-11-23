@@ -3,8 +3,8 @@
 * Replaces PNGs with equivalent GIFs
 */
 
-function smarty_outputfilter_eF_template_replacePng($compiled, &$smarty) {
-
+function smarty_outputfilter_eF_template_replacePng($compiled, &$smarty)
+{
     preg_match_all("/images(\/.*)?\/((.*)\.png)/U", $compiled, $images);            // /U is necessary here
 
 //    if (!defined(G_CURRENTTHEMEPATH)) {
@@ -18,9 +18,9 @@ function smarty_outputfilter_eF_template_replacePng($compiled, &$smarty) {
                 $patterns[]     = $image;
                 $replacements[] = $new_image;
             }
-        } 
+        }
     }
-    
+
     $new = str_replace($patterns, $replacements, $compiled);
     //$new = preg_replace("/\.png/", ".gif", $compiled);
     return $new;

@@ -7,7 +7,6 @@ define("_ONSYNC_MODULE", "OnSync Conference Module");
 define("_ONSYNC_MAIN", "Main page");
 define("_ONSYNC_MANAGEMENT", "Manage Conferences");
 
-
 define("_ONSYNC_SUCCESFULLYINSERTEDONSYNCENTRY", "Conference was succesfully updated");
 define("_ONSYNC_PROBLEMINSERTINGONSYNCENTRY", "Conference could not be created");
 define("_ONSYNC_INSERTONSYNC", "Insert conference");

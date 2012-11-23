@@ -25,13 +25,11 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/linearBestFitClass.php';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/logarithmicBestFitClass.php';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/exponentialBestFitClass.php';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/powerBestFitClass.php';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/polynomialBestFitClass.php';
-
 
 /**
  * PHPExcel_trendClass
@@ -83,8 +81,8 @@ class trendClass
 	 **/
 	private static $_trendCache = array();
 
-
-	public static function calculate($trendType=self::TREND_BEST_FIT, $yValues, $xValues=array(), $const=True) {
+	public static function calculate($trendType=self::TREND_BEST_FIT, $yValues, $xValues=array(), $const=True)
+	{
 		//	Calculate number of points in each dataset
 		$nY = count($yValues);
 		$nX = count($xValues);
@@ -127,13 +125,13 @@ class trendClass
 			case self::TREND_BEST_FIT_NO_POLY	:
 				//	If the request is to determine the best fit regression, then we test each trend line in turn
 				//	Start by generating an instance of each available trend method
-				foreach(self::$_trendTypes as $trendMethod) {
+				foreach (self::$_trendTypes as $trendMethod) {
 					$className = 'PHPExcel_'.$trendMethod.'BestFit';
 					$bestFit[$trendMethod] = new $className($yValues,$xValues,$const);
 					$bestFitValue[$trendMethod] = $bestFit[$trendMethod]->getGoodnessOfFit();
 				}
 				if ($trendType != self::TREND_BEST_FIT_NO_POLY) {
-					foreach(self::$_trendTypePolyOrders as $trendMethod) {
+					foreach (self::$_trendTypePolyOrders as $trendMethod) {
 						$order = substr($trendMethod,-1);
 						$bestFit[$trendMethod] = new PHPExcel_Polynomial_Best_Fit($order,$yValues,$xValues,$const);
 						if ($bestFit[$trendMethod]->getError()) {

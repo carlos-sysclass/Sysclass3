@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Cell_Hyperlink
  *
@@ -68,7 +67,8 @@ class PHPExcel_Cell_Hyperlink
 	 *
 	 * @return string
 	 */
-	public function getUrl() {
+	public function getUrl()
+	{
 		return $this->_url;
 	}
 
@@ -78,7 +78,8 @@ class PHPExcel_Cell_Hyperlink
 	 * @param	string	$value
 	 * @return PHPExcel_Cell_Hyperlink
 	 */
-	public function setUrl($value = '') {
+	public function setUrl($value = '')
+	{
 		$this->_url = $value;
 		return $this;
 	}
@@ -88,7 +89,8 @@ class PHPExcel_Cell_Hyperlink
 	 *
 	 * @return string
 	 */
-	public function getTooltip() {
+	public function getTooltip()
+	{
 		return $this->_tooltip;
 	}
 
@@ -98,7 +100,8 @@ class PHPExcel_Cell_Hyperlink
 	 * @param	string	$value
 	 * @return PHPExcel_Cell_Hyperlink
 	 */
-	public function setTooltip($value = '') {
+	public function setTooltip($value = '')
+	{
 		$this->_tooltip = $value;
 		return $this;
 	}
@@ -108,7 +111,8 @@ class PHPExcel_Cell_Hyperlink
 	 *
 	 * @return boolean
 	 */
-	public function isInternal() {
+	public function isInternal()
+	{
 		return strpos($this->_url, 'sheet://') !== false;
 	}
 
@@ -117,7 +121,8 @@ class PHPExcel_Cell_Hyperlink
 	 *
 	 * @return string	Hash code
 	 */
-	public function getHashCode() {
+	public function getHashCode()
+	{
     	return md5(
     		  $this->_url
     		. $this->_tooltip

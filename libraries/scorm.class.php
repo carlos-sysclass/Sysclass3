@@ -30,7 +30,8 @@ class MagesterScorm
      * @return unknown_type
 
      */
-    public static function parseManifest($data) {
+    public static function parseManifest($data)
+    {
         //We don't use SimpleXML, due to memory and other issues with this iterator class
         $parser = xml_parser_create();
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
@@ -49,10 +50,11 @@ class MagesterScorm
             }
             if ($tagContents[$i]['type'] == 'open') {
                 array_push($currentParent, $i);
-            } else if ($tagContents[$i]['type'] == 'close') {
+            } elseif ($tagContents[$i]['type'] == 'close') {
                 array_pop($currentParent);
             }
         }
+
         return $tagArray;
     }
     /**
@@ -72,7 +74,8 @@ class MagesterScorm
      * @param $parent The key of the tagArray entry which will be the father of the new node
 
      */
-    private static function copyNodeChildren(&$tagArray, $node, $parent) {
+    private static function copyNodeChildren(&$tagArray, $node, $parent)
+    {
         $newRule = $tagArray[$node];
         $newRule['parent_index'] = $parent;
         $tagArray[] = $newRule;
@@ -95,7 +98,8 @@ class MagesterScorm
      * @return unknown_type
 
      */
-    public static function import($lesson, $manifestFile, $scormFolderName, $parameters) {
+    public static function import($lesson, $manifestFile, $scormFolderName, $parameters)
+    {
         if ($lesson instanceof MagesterLesson) {
             $currentLesson = $lesson;
         } else {
@@ -110,7 +114,7 @@ class MagesterScorm
          * Now parse XML file as usual
 
          */
-        foreach($tagArray as $key => $value) {
+        foreach ($tagArray as $key => $value) {
             $fields = array();
             switch ($value['tag']) {
                 case 'SCHEMAVERSION':
@@ -160,7 +164,7 @@ class MagesterScorm
                     $content_to_organization[$item_key] = $organization;
                     break;
                 case 'RESOURCE':
-                    if($scorm2004) {
+                    if ($scorm2004) {
                         $resources[$key] = MagesterContentTreeSCORM :: form_id($value['attributes']['IDENTIFIER']);
                     } else {
                         $resources[$key] = $value['attributes']['IDENTIFIER'];
@@ -239,7 +243,7 @@ class MagesterScorm
                     $objective[$item_key][$obj_key]['satisfied_by_measure'] = $value['attributes']['SATISFIEDBYMEASURE'];
                     /*
 
-                     if($objective_ID == '') {
+                     if ($objective_ID == '') {
 
                      $objective_ID = 'empty_obj_id';
 
@@ -341,7 +345,7 @@ class MagesterScorm
                     $data = file_get_contents($scormPath."/".$tagArray[$ref]['attributes']['HREF']);
                     $primitive_hrefs[$ref] = $tagArray[$ref]['attributes']['HREF'];
                     $path_part[$ref] = dirname($primitive_hrefs[$ref]);
-                    foreach($tagArray[$ref]['children'] as $value2) {
+                    foreach ($tagArray[$ref]['children'] as $value2) {
                         if ($tagArray[$value2]['tag'] == 'DEPENDENCY') {
                             $idx = array_search($tagArray[$value2]['attributes']['IDENTIFIERREF'], $resources);
                             foreach ($tagArray[$idx]['children'] as $value3) {
@@ -375,7 +379,7 @@ class MagesterScorm
                     $total_fields[$key]['options'] = serialize(array('hide_complete_unit' => 1));
                     $this_id = eF_insertTableData("content", $total_fields[$key]);
                     $tagArray[$key]['this_id'] = $this_id;
-                    foreach($tagArray[$key]['children'] as $key2 => $value2) {
+                    foreach ($tagArray[$key]['children'] as $key2 => $value2) {
                         if (isset($total_fields[$value2])) {
                             $total_fields[$value2]['parent_content_ID'] = $this_id;
                         }
@@ -456,7 +460,8 @@ class MagesterScorm
      * @return unknown_type
 
      */
-    public static function import2($lesson, $manifest) {
+    public static function import2($lesson, $manifest)
+    {
         //@todo: parse $lesson
         //foreach ($namespaces as $prefix => $ns) {
         //$xml->registerXPathNamespace($prefix, $ns);
@@ -492,10 +497,10 @@ class MagesterScorm
          * - xml:base (xs:anyURI, o): provides a relative path offset for the content file(s) contained in the manifest
 
          */
-        $manifest['identifier'] = (string)$xml -> attributes() -> identifier;
-        $manifest['version'] = (string)$xml -> attributes() -> version;
+        $manifest['identifier'] = (string) $xml -> attributes() -> identifier;
+        $manifest['version'] = (string) $xml -> attributes() -> version;
         //@todo: handle 'xml:base'
-        //$manifest['xml:base']	= (string)$xml -> attributes() -> xml:base;
+        //$manifest['xml:base']	= (string) $xml -> attributes() -> xml:base;
         /**
 
          * Metadata: may contain the following elements:
@@ -507,8 +512,8 @@ class MagesterScorm
          * - {metadata} (0/1)
 
          */
-        $metadata['schema'] = (string)$xml -> metadata -> schema;
-        $metadata['schemaversion'] = (string)$xml -> metadata -> schemaversion;
+        $metadata['schema'] = (string) $xml -> metadata -> schema;
+        $metadata['schemaversion'] = (string) $xml -> metadata -> schemaversion;
         //@todo: handle metadata
         /*
 
@@ -521,7 +526,7 @@ class MagesterScorm
          * - default (xs:IDREF, m): The id of the default organization
 
          */
-        $organizations['default'] = (string)$xml -> organizations -> attributes();
+        $organizations['default'] = (string) $xml -> organizations -> attributes();
         //@todo: check that default is actually an existing organization
         /*
 
@@ -546,7 +551,7 @@ class MagesterScorm
          */
         foreach ($xml -> organizations -> organization as $org) {
             $org -> registerXPathNamespace($dfn, $namespaces[""]); // register a prefix for that default namespace:
-            $id = (string)$org -> attributes() -> identifier;
+            $id = (string) $org -> attributes() -> identifier;
             $org -> attributes() -> structure ? $organization[$id]['structure'] = $org -> attributes() -> structure :$organization[$id]['structure'] = 'hierarchical';
             $organization[$id]['title'] = $org -> attributes() -> title;
             //@todo: the importing may be done below existing elements, take this into account when considering $previousContentId (its initial value may not be 0)
@@ -558,7 +563,7 @@ class MagesterScorm
                     'previous_content_ID' => $previousContent['id'],
                     'lessons_ID' => $lesson));
             //Get contents of the organization
-            foreach($org as $key => $value) {
+            foreach ($org as $key => $value) {
                 /*
 
                  * Item: may contain the following elements:
@@ -591,16 +596,16 @@ class MagesterScorm
 
                  */
                 if ($key == 'item') {
-                    $itemId = (string)$value -> attributes() -> identifier;
+                    $itemId = (string) $value -> attributes() -> identifier;
                     //pr($value -> attributes() -> identifier);
                     $item = array('identifier' => $itemId,
-          'identifierref' => (string)$value -> attributes() -> identifierref,
-          'isvisible' => (string)$value -> attributes() -> isvisible,
-          'parameters' => (string)$value -> attributes() -> parameters,
-          'title' => (string)$value -> title,
-             'timeLimitAction' => (string)reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:timeLimitAction")), //reset() returns the first element of an array, handy because xpath() returns array
-          'dataFromLMS' => (string)reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:dataFromLMS")),
-          'completionThreshold' => (string)reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:completionThreshold")));
+          'identifierref' => (string) $value -> attributes() -> identifierref,
+          'isvisible' => (string) $value -> attributes() -> isvisible,
+          'parameters' => (string) $value -> attributes() -> parameters,
+          'title' => (string) $value -> title,
+             'timeLimitAction' => (string) reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:timeLimitAction")), //reset() returns the first element of an array, handy because xpath() returns array
+          'dataFromLMS' => (string) reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:dataFromLMS")),
+          'completionThreshold' => (string) reset($org -> xpath("$dfn:item[@identifier='$itemId']/adlcp:completionThreshold")));
                     //@todo:<imsss:sequencing>, <adlnav:presentation>
                     //@todo: nested items
                     //@todo: metadata
@@ -650,12 +655,12 @@ class MagesterScorm
 
          */
         foreach ($resources -> resource as $key => $value) {
-            $resourceId = (string)$value -> attributes() -> identifier;
+            $resourceId = (string) $value -> attributes() -> identifier;
             $resource = array('identifier' => $resourceId,
-                     'type' => (string)$value -> attributes() -> type,
-         'href' => (string)$value -> attributes() -> href,
-         'base' => (string)$value -> attributes($namespaces['xml']) -> base,
-         'scormType' => (string)$value -> attributes($namespaces['adlcp']) -> scormType);
+                     'type' => (string) $value -> attributes() -> type,
+         'href' => (string) $value -> attributes() -> href,
+         'base' => (string) $value -> attributes($namespaces['xml']) -> base,
+         'scormType' => (string) $value -> attributes($namespaces['adlcp']) -> scormType);
             /**
 
              * File: may contain the following elements:
@@ -667,8 +672,8 @@ class MagesterScorm
              * - href (xs:string, m): identifies the location of the file
 
              */
-            foreach($value -> file as $f) {
-                $file = array('href' => (string)$f -> attributes() -> href);
+            foreach ($value -> file as $f) {
+                $file = array('href' => (string) $f -> attributes() -> href);
             }
             /**
 
@@ -681,8 +686,8 @@ class MagesterScorm
              * - identifierref (xs:string, m): an identifier attribute of a resource
 
              */
-            foreach($value -> dependency as $d) {
-                $dependency = array('identifierref' => (string)$d -> attributes() -> identifierref);
+            foreach ($value -> dependency as $d) {
+                $dependency = array('identifierref' => (string) $d -> attributes() -> identifierref);
             }
         }
         //@todo: sequencingCollection
@@ -694,8 +699,6 @@ class MagesterScorm
 
          foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::SELF_FIRST) as $key => $value) {
 
-
-
          }
 
          */
@@ -705,11 +708,10 @@ class MagesterScorm
 
          //$iterator = simplexml_load_string($data, 'SimpleXMLIterator');
 
-
-
          */
     }
-    public static function createUnitFromItem($item) {
+    public static function createUnitFromItem($item)
+    {
         $fields = array('name' => $item['name'],
                         'data' => '',
                         'parent_content_ID' => '',

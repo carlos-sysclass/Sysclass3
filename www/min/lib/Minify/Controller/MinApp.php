@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Minify_Controller_MinApp  
+ * Class Minify_Controller_MinApp
  * @package Minify
  */
 
@@ -8,20 +8,21 @@ require_once 'Minify/Controller/Base.php';
 
 /**
  * Controller class for requests to /min/index.php
- * 
+ *
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>
  */
-class Minify_Controller_MinApp extends Minify_Controller_Base {
-    
+class Minify_Controller_MinApp extends Minify_Controller_Base
+{
     /**
      * Set up groups of files as sources
-     * 
+     *
      * @param array $options controller and Minify options
      * @return array Minify options
-     * 
+     *
      */
-    public function setupSources($options) {
+    public function setupSources($options)
+    {
         // filter controller options
         $cOptions = array_merge(
             array(
@@ -36,18 +37,20 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
         $sources = array();
         $this->selectionId = '';
         $missingUri = '';
-        
+
         if (isset($_GET['g'])) {
             // add group(s)
             $this->selectionId .= 'g=' . $_GET['g'];
             $keys = explode(',', $_GET['g']);
             if ($keys != array_unique($keys)) {
                 $this->log("Duplicate group key found.");
+
                 return $options;
             }
             foreach (explode(',', $_GET['g']) as $key) {
                 if (! isset($cOptions['groups'][$key])) {
                     $this->log("A group configuration for \"{$key}\" was not found");
+
                     return $options;
                 }
                 $files = $cOptions['groups'][$key];
@@ -55,7 +58,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                 if (is_object($files)) {
                     $files = array($files);
                 } elseif (! is_array($files)) {
-                    $files = (array)$files;
+                    $files = (array) $files;
                 }
                 foreach ($files as $file) {
                     if ($file instanceof Minify_Source) {
@@ -70,6 +73,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                         $sources[] = $this->_getFileSource($file, $cOptions);
                     } else {
                         $this->log("The path \"{$file}\" could not be found (or was not a file)");
+
                         return $options;
                     }
                 }
@@ -78,6 +82,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                         $this->checkType($sources[0]);
                     } catch (Exception $e) {
                         $this->log($e->getMessage());
+
                         return $options;
                     }
                 }
@@ -87,7 +92,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
             // try user files
             // The following restrictions are to limit the URLs that minify will
             // respond to. Ideally there should be only one way to reference a file.
-            if (// verify at least one file, files are single comma separated, 
+            if (// verify at least one file, files are single comma separated,
                 // and are all same extension
                 ! preg_match('/^[^,]+\\.(css|js)(?:,[^,]+\\.\\1)*$/', $_GET['f'], $m)
                 // no "//"
@@ -98,6 +103,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                 || preg_match('/(?:^|[^\\.])\\.\\//', $_GET['f'])
             ) {
                 $this->log("GET param 'f' invalid (see MinApp.php line 63)");
+
                 return $options;
             }
             $ext = ".{$m[1]}";
@@ -105,11 +111,13 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                 $this->checkType($m[1]);
             } catch (Exception $e) {
                 $this->log($e->getMessage());
+
                 return $options;
             }
             $files = explode(',', $_GET['f']);
             if ($files != array_unique($files)) {
                 $this->log("Duplicate files specified");
+
                 return $options;
             }
             if (isset($_GET['b'])) {
@@ -118,16 +126,17 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                     && false === strpos($_GET['b'], '..')
                     && $_GET['b'] !== '.') {
                     // valid base
-                    $base = "/{$_GET['b']}/";       
+                    $base = "/{$_GET['b']}/";
                 } else {
                     $this->log("GET param 'b' invalid (see MinApp.php line 84)");
+
                     return $options;
                 }
             } else {
                 $base = '/';
             }
             $allowDirs = array();
-            foreach ((array)$cOptions['allowDirs'] as $allowDir) {
+            foreach ((array) $cOptions['allowDirs'] as $allowDir) {
                 $allowDirs[] = realpath(str_replace('//', $_SERVER['DOCUMENT_ROOT'] . '/', $allowDir));
             }
             $basenames = array(); // just for cache id
@@ -141,6 +150,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                         continue;
                     } else {
                         $this->log("At least two files missing: '$missingUri', '$uri'");
+
                         return $options;
                     }
                 }
@@ -149,6 +159,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
                     parent::checkAllowDirs($file, $allowDirs, $uri);
                 } catch (Exception $e) {
                     $this->log($e->getMessage());
+
                     return $options;
                 }
                 $sources[] = $this->_getFileSource($file, $cOptions);
@@ -172,6 +183,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
         } else {
             $this->log("No sources to serve");
         }
+
         return $options;
     }
 
@@ -182,6 +194,7 @@ class Minify_Controller_MinApp extends Minify_Controller_Base {
             && preg_match($cOptions['noMinPattern'], basename($file))) {
             $spec['minifier'] = '';
         }
+
         return new Minify_Source($spec);
     }
 

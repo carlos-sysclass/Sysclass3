@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_StringTable
  *
@@ -123,7 +122,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 							}
 							$objWriter->writeRawData($textToWrite);
 							$objWriter->endElement();
-						} else if ($textElement instanceof PHPExcel_RichText) {
+						} elseif ($textElement instanceof PHPExcel_RichText) {
 							$this->writeRichText($objWriter, $textElement);
 						}
 
@@ -182,7 +181,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 							$objWriter->startElement($prefix.'vertAlign');
 							if ($element->getFont()->getSuperScript()) {
 								$objWriter->writeAttribute('val', 'superscript');
-							} else if ($element->getFont()->getSubScript()) {
+							} elseif ($element->getFont()->getSubScript()) {
 								$objWriter->writeAttribute('val', 'subscript');
 							}
 							$objWriter->endElement();
@@ -248,7 +247,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 					$objWriter->writeAttribute('i', ($element->getFont()->getItalic() ? 1 : 0));
 					// Underline
 					$underlineType = $element->getFont()->getUnderline();
-					switch($underlineType) {
+					switch ($underlineType) {
 						case 'single' :
 							$underlineType = 'sng';
 							break;
@@ -270,7 +269,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 //						$objWriter->startElement($prefix.'vertAlign');
 //						if ($element->getFont()->getSuperScript()) {
 //							$objWriter->writeAttribute('val', 'superscript');
-//						} else if ($element->getFont()->getSubScript()) {
+//						} elseif ($element->getFont()->getSubScript()) {
 //							$objWriter->writeAttribute('val', 'subscript');
 //						}
 //						$objWriter->endElement();
@@ -294,7 +293,8 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 	 * @param 	array	$stringTable	Stringtable
 	 * @return 	array
 	 */
-	public function flipStringTable($stringTable = array()) {
+	public function flipStringTable($stringTable = array())
+	{
 		// Return value
 		$returnValue = array();
 
@@ -302,7 +302,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 		foreach ($stringTable as $key => $value) {
 			if (! $value instanceof PHPExcel_RichText) {
 				$returnValue[$value] = $key;
-			} else if ($value instanceof PHPExcel_RichText) {
+			} elseif ($value instanceof PHPExcel_RichText) {
 				$returnValue[$value->getHashCode()] = $key;
 			}
 		}

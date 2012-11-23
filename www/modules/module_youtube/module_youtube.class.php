@@ -1,25 +1,29 @@
 <?php
- 
-class module_youtube extends MagesterModule {
 
-
+class module_youtube extends MagesterModule
+{
     // Mandatory functions required for module function
-    public function getName() {
+    public function getName()
+    {
         return _YOUTUBE;
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("professor","student");
     }
 
- public function isLessonModule() {
+ public function isLessonModule()
+ {
   return true;
  }
 
     // Optional functions
     // What should happen on installing the module
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_youtube");
+
         return eF_executeNew("CREATE TABLE module_youtube (
                           id int(11) NOT NULL auto_increment,
                           lessons_ID int(11) NOT NULL,
@@ -31,12 +35,14 @@ class module_youtube extends MagesterModule {
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         return eF_executeNew("DROP TABLE module_youtube;");
     }
 
     // On exporting a lesson
-    public function onDeleteLesson($lessonId) {
+    public function onDeleteLesson($lessonId)
+    {
         $links_to_del = eF_getTableDataFlat("module_youtube", "id","lessons_ID='".$lessonId."'");
         eF_deleteTableData("module_youtube", "lessons_ID='".$lessonId."'");
 
@@ -44,13 +50,16 @@ class module_youtube extends MagesterModule {
     }
 
     // On exporting a lesson
-    public function onExportLesson($lessonId) {
+    public function onExportLesson($lessonId)
+    {
         $data = eF_getTableData("module_youtube", "*","lessons_ID=".$lessonId);
+
         return $data;
     }
 
     // On importing a lesson
-    public function onImportLesson($lessonId, $data) {
+    public function onImportLesson($lessonId, $data)
+    {
         $changed_ids = array();
 
         foreach ($data as $link_record) {
@@ -63,7 +72,8 @@ class module_youtube extends MagesterModule {
         return true;
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
             return array('title' => _YOUTUBE,
@@ -72,8 +82,8 @@ class module_youtube extends MagesterModule {
         }
     }
 
-
-    public function getCenterLinkInfo() {
+    public function getCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() == "administrator") {
             return array('title' => _YOUTUBE,
@@ -82,8 +92,8 @@ class module_youtube extends MagesterModule {
         }
     }
 
-    public function getNavigationLinks() {
-
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
   $currentLesson = $this -> getCurrentLesson();
         $basicNavArray = array (array ('title' => _MYLESSONS, 'onclick' => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
@@ -91,15 +101,16 @@ class module_youtube extends MagesterModule {
                  array ('title' => _YOUTUBE, 'link' => $this -> moduleBaseUrl));
         if (isset($_GET['edit_youtube'])) {
          $basicNavArray[] = array ('title' => _YOUTUBE_MANAGEMENT, 'link' => $this -> moduleBaseUrl . "&edit_youtube=". $_GET['edit_youtube']);
-        } else if (isset($_GET['add_youtube'])) {
+        } elseif (isset($_GET['add_youtube'])) {
           $basicNavArray[] = array ('title' => _YOUTUBE_MANAGEMENT, 'link' => $this -> moduleBaseUrl . "&add_youtube=1");
         }
+
         return $basicNavArray;
 
     }
 
-    public function getSidebarLinkInfo() {
-
+    public function getSidebarLinkInfo()
+    {
         $link_of_menu_clesson = array (array ('id' => 'youtube_link_id1',
                                               'title' => _YOUTUBE,
                                               'image' => $this -> moduleBaseDir . 'images/youtube16',
@@ -110,12 +121,14 @@ class module_youtube extends MagesterModule {
 
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return 'youtube_link_id1';
     }
 
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
+    public function getModule()
+    {
         $currentUser = $this -> getCurrentUser();
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
@@ -143,7 +156,6 @@ class module_youtube extends MagesterModule {
     $next_tag = $youtube[$idfound + 1]['title'] .": " . $youtube[$idfound + 1]['description'];
    }
 
-
    echo '<table id="youtube_player"><tr><td colspan=\"2\"><object><param name="movie" value="http://www.youtube.com/v/'.$videolink.'"></param>';
    echo '<param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$videolink.'" type="application/x-shockwave-flash" allowfullscreen="true" width="400" height="323"></embed></object></td></tr><tr><td width="50%" align="left">';
    if ($prev) {
@@ -162,8 +174,7 @@ class module_youtube extends MagesterModule {
             eF_deleteTableData("module_youtube", "id=".$_GET['delete_youtube']);
             eF_deleteTableData("module_youtube_users_to_meeting", "meeting_ID=".$_GET['delete_youtube']);
             eF_redirect("". $this -> moduleBaseUrl ."&message=".urlencode(_YOUTUBE_SUCCESFULLYDELETEDYOUTUBEENTRY)."&message_type=success");
-        } else if (isset($_GET['add_youtube']) || (isset($_GET['edit_youtube']) && eF_checkParameter($_GET['edit_youtube'], 'id'))) {
-
+        } elseif (isset($_GET['add_youtube']) || (isset($_GET['edit_youtube']) && eF_checkParameter($_GET['edit_youtube'], 'id'))) {
 
    $form = new HTML_QuickForm("youtube_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
@@ -243,7 +254,8 @@ class module_youtube extends MagesterModule {
 
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_YOUTUBE_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_YOUTUBE_MODULE_BASEURL" , $this -> moduleBaseUrl);
@@ -252,7 +264,8 @@ class module_youtube extends MagesterModule {
         return $this -> moduleBaseDir . "module.tpl";
     }
 /*
-    public function addScripts() {
+    public function addScripts()
+    {
   $currentUser = $this -> getCurrentUser();
   if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
       return array("scriptaculous/prototype", "scriptaculous/effects");
@@ -261,13 +274,14 @@ class module_youtube extends MagesterModule {
         }
     }
 */
- public function getdModuleJS() {
+ public function getdModuleJS()
+ {
   return $this -> moduleBaseDir . "module_youtube.js";
  }
 
-
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
             // Get smarty variable
@@ -283,6 +297,7 @@ class module_youtube extends MagesterModule {
        $smarty -> assign("T_NEXT_TAG", $youtube[1]['title'] .": ".$youtube[1]['description']);
     }
    }
+
             return true;
         } else {
             return false;
@@ -290,7 +305,8 @@ class module_youtube extends MagesterModule {
 
     }
 
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
             $smarty = $this -> getSmartyVar();
@@ -308,9 +324,10 @@ class module_youtube extends MagesterModule {
             return false;
         }
     }
-    
+
 	/*
-    public function getDashboardModule() {
+    public function getDashboardModule()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> user['user_type'] == "student") {
             // Get smarty variable
@@ -318,7 +335,6 @@ class module_youtube extends MagesterModule {
             $currentLesson = $this -> getCurrentLesson();
 
             $youtube = eF_getTableData("module_youtube", "*", 'lessons_ID IS NULL');
-            
 
 	   if (sizeof($youtube) > 0) {
 	    $smarty -> assign("T_VIDEOLINK", $youtube[0]['link']);
@@ -327,6 +343,7 @@ class module_youtube extends MagesterModule {
 	       $smarty -> assign("T_NEXT_TAG", $youtube[1]['title'] .": ".$youtube[1]['description']);
 	    }
 	   }
+
             return true;
         } else {
             return false;
@@ -334,7 +351,8 @@ class module_youtube extends MagesterModule {
 
     }
 
-    public function getDashboardSmartyTpl() {
+    public function getDashboardSmartyTpl()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> user['user_type'] == "student") {
             $smarty = $this -> getSmartyVar();

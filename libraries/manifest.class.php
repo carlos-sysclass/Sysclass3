@@ -157,7 +157,8 @@ class MagesterManifest
      * @access public
 
      */
-    function __construct($lesson_id) {
+    function __construct($lesson_id)
+    {
         if (!eF_checkParameter($lesson_id, 'id')) {
             throw new eF_ManifestException(_INVALIDID, eF_ManifestException :: INVALID_ID);
         }
@@ -170,7 +171,7 @@ class MagesterManifest
             $cunit = $content->getCurrentNode();
             $this->addUnit(new MagesterUnit($cunit[0]));
             $lunits = $content->getNextNodes();
-            for ($i = 0; $i < sizeof($lunits); $i++){
+            for ($i = 0; $i < sizeof($lunits); $i++) {
                 $this->addUnit(new MagesterUnit($lunits[$i]));
             }
         }
@@ -204,7 +205,8 @@ class MagesterManifest
      * @access public
 
      */
-    public function addUnit($unit){
+    public function addUnit($unit)
+    {
         $this->units[$unit->offsetGet('id')] = $unit;
     }
      /**
@@ -236,11 +238,11 @@ class MagesterManifest
      * @access public
 
      */
-    function addQuestion($question){
-        if ($question instanceOf Question){
+    function addQuestion($question)
+    {
+        if ($question instanceOf Question) {
             $this->questions[$question->question['id']] = $question;
-        }
-        else{
+        } else {
             $this->questions[$question] = new QuestionFactory($question);
         }
     }
@@ -273,23 +275,29 @@ class MagesterManifest
      * @access public
 
      */
-    function addTest($test){
+    function addTest($test)
+    {
         $tests[] = $test;
     }
-    function addProject($project_id){
+    function addProject($project_id)
+    {
         $pdata = ef_getTableData("projects", "*", "id=$project_id");
         $this->projects[$project_id] = $pdata[0];
     }
-    function addUnitResource($filename, $uid){
+    function addUnitResource($filename, $uid)
+    {
         $this->unit_resources[$uid][] = $filename;
     }
-    function addQuestionResource($filename, $qid){
+    function addQuestionResource($filename, $qid)
+    {
         $this->question_resources[$qid][] = $filename;
     }
-    function addTestResource($filename, $tid){
+    function addTestResource($filename, $tid)
+    {
         $this->test_resources[$tid][] = $filename;
     }
-    function addProjectResource($filename, $pid){
+    function addProjectResource($filename, $pid)
+    {
         $this->project_resources[$pid][] = $filename;
     }
     /**
@@ -319,7 +327,8 @@ class MagesterManifest
      * @access public
 
      */
-    public function toXML(){
+    public function toXML()
+    {
         $xml = '<?xml version="1.0" encoding="ISO-8859-7"?>' . "\n";
         $xml .= '<manifest identifier="SingleCourseManifest" version="1.1"
                 xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
@@ -331,36 +340,36 @@ class MagesterManifest
         $xml .= "\t" . '<organizations default="org1">' . "\n";
         $xml .= "\t\t<organization identifier=\"Org\" structure=\"hierarchical\"><title>default</title>" . "\n";
         //write the units
-        foreach ($this->units as $id => $unit){
-            if (!$unit->isTest()){
+        foreach ($this->units as $id => $unit) {
+            if (!$unit->isTest()) {
                 $xml .= "\t\t" . '<item identifier="content'.$id.'" identifierref="c'.$id.'">'."\n";
                 $xml .= "\t\t\t<title>".$unit->offsetGet('name')."</title>\n";
                 $preq = $unit->getPrerequisite();
-                if ($preq){
+                if ($preq) {
                     $xml .= "\t\t\t".'<adlcp:prerequisites type="aicc_script">content'.$preq.'</adlcp:prerequisites>'."\n";
                 }
                 $xml .= "\t\t</item>\n";
             }
         }
         //write the questions
-        foreach ($this->questions as $id => $question){
+        foreach ($this->questions as $id => $question) {
             $xml .= "\t\t" . '<item identifier="question'.$id.'" identifierref="q'.$id.'">'."\n";
             $xml .= "\t\t\t<title>question ".$question->question['id']."</title>\n";
         }
         //write the tests
-        foreach ($this->tests as $id => $test){
+        foreach ($this->tests as $id => $test) {
             $xml .= "\t\t" . '<item identifier="test'.$id.'" identifierref="t'.$id.'">'."\n";
             $xml .= "\t\t\t<title>".$test->getUnit()->offsetGet['name']."</title>\n";
         }
         //write the projects
-        foreach ($this->projects as $id => $project){
+        foreach ($this->projects as $id => $project) {
             $xml .= "\t\t" . '<item identifier="project'.$id.'" identifierref="p'.$id.'">'."\n";
             $xml .= "\t\t\t<title>".$project['title']."</title>\n";
         }
         $xml .= "\t\t".'</organization>'."\n\t".'</organizations>' . "\n";
         $xml .= "\t".'<resources>'."\n";
         //write the unit resources
-        foreach ($this->unit_resources as $id => $filename){
+        foreach ($this->unit_resources as $id => $filename) {
             $xml .= "\t\t". '<resource identifier="u'.$id.' type="webcontent" adlcp:scormtype="sco" href="'.$filename.'">'."\n";
             $xml .= "\t\t\t". '<metadata></metadata>' . "\n";
             $xml .= "\t\t\t". '<file href="'.$filename.'"/>' . "\n";
@@ -368,7 +377,7 @@ class MagesterManifest
             $xml .= "\t\t". '</resource>';
         }
         //write the test resources
-        foreach ($this->test_resources as $id => $filename){
+        foreach ($this->test_resources as $id => $filename) {
             $xml .= "\t\t". '<resource identifier="u'.$id.' type="webcontent" adlcp:scormtype="sco" href="'.$filename.'">'."\n";
             $xml .= "\t\t\t". '<metadata></metadata>' . "\n";
             $xml .= "\t\t\t". '<file href="'.$filename.'"/>' . "\n";
@@ -376,7 +385,7 @@ class MagesterManifest
             $xml .= "\t\t". '</resource>';
         }
         //write the questions resources
-        foreach ($this->question_resources as $id => $filename){
+        foreach ($this->question_resources as $id => $filename) {
             $xml .= "\t\t". '<resource identifier="u'.$id.' type="webcontent" adlcp:scormtype="sco" href="'.$filename.'">'."\n";
             $xml .= "\t\t\t". '<metadata></metadata>' . "\n";
             $xml .= "\t\t\t". '<file href="'.$filename.'"/>' . "\n";
@@ -384,7 +393,7 @@ class MagesterManifest
             $xml .= "\t\t". '</resource>';
         }
         //write the projects resources
-        foreach ($this->project_resources as $id => $filename){
+        foreach ($this->project_resources as $id => $filename) {
             $xml .= "\t\t". '<resource identifier="u'.$id.' type="webcontent" adlcp:scormtype="sco" href="'.$filename.'">'."\n";
             $xml .= "\t\t\t". '<metadata></metadata>' . "\n";
             $xml .= "\t\t\t". '<file href="'.$filename.'"/>' . "\n";
@@ -393,6 +402,7 @@ class MagesterManifest
         }
         $xml .= "\t".'</resources>'."\n";
         $xml .= '</manifest>';
+
         return $xml;
     }
 }

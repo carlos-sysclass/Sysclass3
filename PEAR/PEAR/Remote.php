@@ -69,14 +69,13 @@ class PEAR_Remote extends PEAR
 
     // }}}
     // {{{ setRegistry()
-    
+
     function setRegistry(&$reg)
     {
         $this->_registry = &$reg;
     }
     // }}}
     // {{{ getCache()
-
 
     function getCache($args)
     {
@@ -98,6 +97,7 @@ class PEAR_Remote extends PEAR
             'lastChange' => filemtime($filename),
             'content'    => unserialize($content),
             );
+
         return $result;
     }
 
@@ -183,6 +183,7 @@ class PEAR_Remote extends PEAR
             if (!PEAR::isError($result)) {
                 $this->saveCache($_args, $result);
             }
+
             return $result;
         } elseif (!($fp = fopen('XML/RPC.php', 'r', true))) {
             return $this->raiseError("For this remote PEAR operation you need to load the xmlrpc extension or install XML_RPC");
@@ -196,7 +197,7 @@ class PEAR_Remote extends PEAR
         $username = $this->config->get('username');
         $password = $this->config->get('password');
         $eargs = array();
-        foreach($args as $arg) {
+        foreach ($args as $arg) {
             $eargs[] = $this->_encode($arg);
         }
         $f = new XML_RPC_Message($method, $eargs);
@@ -237,11 +238,13 @@ class PEAR_Remote extends PEAR
             if ($e == $GLOBALS['XML_RPC_err']['http_error'] && strstr($r->faultString(), '304 Not Modified') !== false) {
                 return $this->cache['content'];
             }
+
             return $this->raiseError($r->faultString(), $e);
         }
 
         $result = XML_RPC_decode($v);
         $this->saveCache($_args, $result);
+
         return $result;
     }
 
@@ -361,6 +364,7 @@ class PEAR_Remote extends PEAR
             case "200": // OK
                 break;
             case "304": // Not Modified
+
                 return $this->cache['content'];
             case "401": // Unauthorized
                 if ($username && $password) {
@@ -372,7 +376,7 @@ class PEAR_Remote extends PEAR
                 }
             default:
                 return $this->raiseError("PEAR_Remote ($server_host:$server_port) : " .
-                    "unexpected HTTP response", (int)$matches[1], null, null,
+                    "unexpected HTTP response", (int) $matches[1], null, null,
                     "$matches[1] $matches[2]");
         }
         while (trim(fgets($fp, 2048)) != ''); // skip rest of headers
@@ -411,14 +415,17 @@ class PEAR_Remote extends PEAR
             extract($ret[0]);
             $faultString = "XML-RPC Server Fault: " .
                  str_replace("\n", " ", $faultString);
+
             return $this->raiseError($faultString, $faultCode);
         } elseif (is_array($ret) && sizeof($ret) == 2 && !empty($ret['faultString']) &&
               !empty($ret['faultCode'])) {
             extract($ret);
             $faultString = "XML-RPC Server Fault: " .
                  str_replace("\n", " ", $faultString);
+
             return $this->raiseError($faultString, $faultCode);
         }
+
         return $ret;
     }
 
@@ -435,7 +442,7 @@ class PEAR_Remote extends PEAR
         $type = gettype($php_val);
         $xmlrpcval = new XML_RPC_Value;
 
-        switch($type) {
+        switch ($type) {
             case "array":
                 reset($php_val);
                 $firstkey = key($php_val);
@@ -488,11 +495,10 @@ class PEAR_Remote extends PEAR
             default:
                 return null;
         }
+
         return $xmlrpcval;
     }
 
     // }}}
 
 }
-
-?>

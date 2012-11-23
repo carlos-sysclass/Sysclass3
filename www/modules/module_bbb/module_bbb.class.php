@@ -1,20 +1,24 @@
 <?php
 
-class module_BBB extends MagesterModule {
-
-    public function getName() {
+class module_BBB extends MagesterModule
+{
+    public function getName()
+    {
         return _BBB;
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator","professor","student");
     }
 
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
         return true;
     }
 
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists `module_BBB`");
         $a = eF_executeNew("CREATE TABLE `module_BBB` (
                           `id` int(11) NOT NULL auto_increment,
@@ -56,7 +60,8 @@ class module_BBB extends MagesterModule {
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         $a = eF_executeNew("DROP TABLE `module_BBB`;");
         $b = eF_executeNew("DROP TABLE `module_BBB_users_to_meeting`;");
         $c = eF_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_server';");
@@ -67,7 +72,8 @@ class module_BBB extends MagesterModule {
     }
 
     // On exporting a lesson
-    public function onDeleteLesson($lessonId) {
+    public function onDeleteLesson($lessonId)
+    {
         $meetings_to_del = eF_getTableDataFlat("module_BBB", "id","lessons_ID='".$lessonId."'");
         eF_deleteTableData("module_BBB", "lessons_ID='".$lessonId."'");
         $delmeet = implode($meetings_to_del['id'],"','");
@@ -77,15 +83,18 @@ class module_BBB extends MagesterModule {
     }
 
     // On exporting a lesson
-    public function onExportLesson($lessonId) {
+    public function onExportLesson($lessonId)
+    {
         $data = array();
         $data['meetings'] = eF_getTableData("module_BBB", "*","lessons_ID=".$lessonId);
         $data['users_to_meetings'] = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON module_BBB.id = module_BBB_users_to_meeting.meeting_ID", "module_BBB_users_to_meeting.*","lessons_ID=".$lessonId);
+
         return $data;
     }
 
     // On importing a lesson
-    public function onImportLesson($lessonId, $data) {
+    public function onImportLesson($lessonId, $data)
+    {
         $changed_ids = array();
 
         foreach ($data['meetings'] as $meeting_record) {
@@ -108,10 +117,12 @@ class module_BBB extends MagesterModule {
             }
             eF_insertTableData("module_BBB_users_to_meeting",$users_to_meetings_record);
         }
+
         return true;
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
             return array('title' => __EDSCREEN,
@@ -121,8 +132,8 @@ class module_BBB extends MagesterModule {
         }
     }
 
-
-    public function getCenterLinkInfo() {
+    public function getCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() == "administrator") {
             return array('title' => __EDSCREEN,
@@ -132,17 +143,18 @@ class module_BBB extends MagesterModule {
 				);
         }
     }
-    
-    public function getLessonTopLinkInfo($lesson_id, $course_id) {
+
+    public function getLessonTopLinkInfo($lesson_id, $course_id)
+    {
     	$currentUser = $this -> getCurrentUser();
-    	
-    	if (is_null($lesson_id)) { 
+
+    	if (is_null($lesson_id)) {
     		return false;
     	}
-    	if (is_null($course_id)) { 
+    	if (is_null($course_id)) {
     		$course_id = 0;
     	}
-        
+
 		return array(
 			'title' => __EDSCREEN,
 			'image' => $this -> moduleBaseDir . 'images/bbb32.png',
@@ -150,8 +162,8 @@ class module_BBB extends MagesterModule {
 		);
     }
 
-    public function getNavigationLinks() {
-
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole() == "administrator") {
             $basicNavArray = array (array ('title' => _HOME, 'link' => "administrator.php?ctg=control_panel"),
@@ -164,16 +176,17 @@ class module_BBB extends MagesterModule {
                                     array ('title' => __EDSCREEN, 'link'  => $this -> moduleBaseUrl));
 	        if (isset($_GET['edit_BBB'])) {
 	            $basicNavArray[] = array ('title' => __EDSCREEN_MANAGEMENT, 'link'  => $this -> moduleBaseUrl . "&edit_BBB=". $_GET['edit_BBB']);
-	        } else if (isset($_GET['add_BBB'])) {
+	        } elseif (isset($_GET['add_BBB'])) {
 	            $basicNavArray[] = array ('title' =>__EDSCREEN_MANAGEMENT, 'link'  => $this -> moduleBaseUrl . "&add_BBB=1");
 	        }
         }
+
         return $basicNavArray;
 
     }
 
-    public function getSidebarLinkInfo() {
-
+    public function getSidebarLinkInfo()
+    {
         $link_of_menu_clesson = array (array ('id' => 'BBB_link_id1',
                                               'title' => __EDSCREEN,
                                               'image' => $this -> moduleBaseDir . 'images/bbb16',
@@ -184,13 +197,14 @@ class module_BBB extends MagesterModule {
 
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return 'BBB_link_id1';
     }
 
-
     private $BBB_server_host = false;
-    private function getBBBServer() {
+    private function getBBBServer()
+    {
         if (!$this -> BBB_server_host) {
             $BBB_server = eF_getTableData("configuration", "value", "name = 'module_BBB_server'");
             $this -> BBB_server_host = $BBB_server[0]['value'];
@@ -200,7 +214,8 @@ class module_BBB extends MagesterModule {
     }
 
     private $BBB_server_version = false;
-    private function getBBBServerVer() {
+    private function getBBBServerVer()
+    {
         if (!$this -> BBB_server_version) {
             $BBB_server_ver = eF_getTableData("configuration", "value", "name = 'module_BBB_server_version'");
             $this -> BBB_server_version = $BBB_server_ver[0]['value'];
@@ -211,14 +226,15 @@ class module_BBB extends MagesterModule {
 
 	// Function to return the security salt
     private $BBB_security_salt = false;
-    private function getBBBSalt() {
+    private function getBBBSalt()
+    {
         if (!$this -> BBB_security_salt) {
             $BBB_salt = eF_getTableData("configuration", "value", "name = 'module_BBB_salt'");
             $this -> BBB_security_salt = $BBB_salt[0]['value'];
         }
+
          return $this -> BBB_security_salt;
     }
-
 
 	/* This will help us handle the XML response from the BBB server after the 'create' call.
 	 * Shamelessly stolen from the BBB PHP API available in the project's code repository.
@@ -236,8 +252,8 @@ class module_BBB extends MagesterModule {
      * URL according to role of the user, whether the meeting has started or
      * whether that incomprehensible flag by the guy who did dimdim is true or false.
      */
-    private function createBBBUrl($currentUser, $meeting_info, $always_joining = false) {
-
+    private function createBBBUrl($currentUser, $meeting_info, $always_joining = false)
+    {
 		// These are common in all cases
 		$BBB_server				= $this -> getBBBServer();
 		$BBB_server_ver			= $this -> getBBBServerVer();
@@ -250,22 +266,21 @@ class module_BBB extends MagesterModule {
 		}
 
 		//echo "always_joining".$always_joining."meetinginfostatus".$meeting_info['status'];
-		
+
 		$conferenceID			= urlencode(utf8_decode($meeting_info['meetingID']));
 
 		//Here we create the room, and give back the URL to join as admin after that.
 		if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor" && $meeting_info['status'] == 0 && $meeting_info.mayStart) {
 
-			
 			$conferenceNameAndID	= urlencode(utf8_decode($meeting_info['name']));
-			
+
 			$moderatorPassword		= "M97f15B7113G";
 			$attendeePassword		= "Ow2D75JE160B";
-			
+
 			$voiceBridge = 70000 + rand(0, 9999);
-			
+
 			$logoutURL = ($_SERVER['HTTPS'] == 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . "/" . $this->moduleBaseUrl . "&finished_meeting=" . $meeting_info['id'];
-			
+
 			$optionStringArray = array(
 				'meetingID='.$conferenceID,
 				'name='.$conferenceNameAndID,
@@ -279,25 +294,23 @@ class module_BBB extends MagesterModule {
 			);
 			$optionString = implode("&", $optionStringArray);
 
-			if($BBB_server_ver == 1) {
+			if ($BBB_server_ver == 1) {
 				//echo ' String to salt: '.'create'.$optionString.$securitySalt;
 				$saltedHash	= sha1('create'.$optionString.$securitySalt);
-			}
-			else {
+			} else {
 				$saltedHash	= sha1($optionString.$securitySalt);
 			}
 
 			$BBBurl		= $BBB_serverPath.'create?'.$optionString.'&checksum='.$saltedHash;
-			
+
 			//echo $BBBurl;
-			
 
 			//We parsed the creation URL, let's see what the server has to say.
 			//It would be really nice to handle this reply in the future,
 			//but it would require a radical rewrite of the whole smarty connection button thing...
 			//echo 'to create'.$BBBurl;
 			//echo ' create URL: '.$BBBurl;
-			
+
 			$xml = $this -> bbb_wrap_simplexml_load_file($BBBurl);
 
 			// Returning the join URL when all's gone well....
@@ -308,10 +321,9 @@ class module_BBB extends MagesterModule {
 				$voiceBridge = 70000 + rand(0, 9999);
 				$optionString = 'fullName='.$fullName.'&meetingID='.$conferenceID.'&password='.$moderatorPassword.'&voiceBridge='.$voiceBridge.'&welcome='.urlencode(_WELCOMETO.' %%CONFNAME%%');
 
-				if($BBB_server_ver == 1) {
+				if ($BBB_server_ver == 1) {
 					$saltedHash	= sha1('join'.$optionString.$securitySalt);
-				}
-				else {
+				} else {
 					$saltedHash	= sha1($optionString.$securitySalt);
 				}
 
@@ -337,10 +349,9 @@ class module_BBB extends MagesterModule {
 			$voiceBridge = 70000 + rand(0, 9999);
 			$optionString = 'fullName='.$fullName.'&meetingID='.$conferenceID.'&password='.$password.'&voiceBridge='.$voiceBridge.'&welcome='.urlencode(_WELCOMETO.' %%CONFNAME%%');
 
-			if($BBB_server_ver == 1) {
+			if ($BBB_server_ver == 1) {
 				$saltedHash	= sha1('join'.$optionString.$securitySalt);
-			}
-			else {
+			} else {
 				$saltedHash	= sha1($optionString.$securitySalt);
 			}
 
@@ -357,11 +368,12 @@ class module_BBB extends MagesterModule {
 		//echo ' URL is: '.$BBBurl;
 		return $BBBurl;
 	}
-	
-	//http://yourserver.com/bigbluebutton/api/getMeetings?checksum=[checksum] 
+
+	//http://yourserver.com/bigbluebutton/api/getMeetings?checksum=[checksum]
 
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
+    public function getModule()
+    {
         $currentUser = $this -> getCurrentUser();
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
@@ -409,9 +421,9 @@ class module_BBB extends MagesterModule {
             /** Post skill - Ajax skill **/
             if ($_GET['insert'] == "true") {
                 eF_insertTableData("module_BBB_users_to_meeting", array('users_LOGIN' => $_GET['user'], 'meeting_ID' => $_GET['edit_BBB']));
-            } else if ($_GET['insert'] == "false") {
+            } elseif ($_GET['insert'] == "false") {
                 eF_deleteTableData("module_BBB_users_to_meeting", "users_LOGIN = '". $_GET['user'] . "' AND meeting_ID = '".$_GET['edit_BBB']."'");
-            } else if (isset($_GET['addAll'])) {
+            } elseif (isset($_GET['addAll'])) {
                 $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login, users.name, users.surname, meeting_ID","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND (meeting_ID <> '".$_GET['edit_BBB']."' OR meeting_ID IS NULL)");
 
                 $users_attending = eF_getTableDataFlat("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
@@ -425,17 +437,17 @@ class module_BBB extends MagesterModule {
                         $users_attending[] = $user['login'];
                     }
                 }
-            } else if (isset($_GET['removeAll'])) {
+            } elseif (isset($_GET['removeAll'])) {
                 $users_attending = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
                 //$users_attending = $users_attending['login'];
                 isset($_GET['filter']) ? $users_attending = eF_filterData($users_attending, $_GET['filter']) : null;
 
                 $users_to_delete = array();
-                foreach($users_attending as $user) {
+                foreach ($users_attending as $user) {
                     $users_to_delete[] = $user['login'];
                 }
                 eF_deleteTableData("module_BBB_users_to_meeting", "meeting_ID = '".$_GET['edit_BBB']."' AND users_LOGIN IN ('".implode("','", $users_to_delete)."')");
-            } else if (isset($_GET['mail_users']) && $_GET['mail_users'] == 1) {
+            } elseif (isset($_GET['mail_users']) && $_GET['mail_users'] == 1) {
                 $currentLesson = $this ->getCurrentLesson();
                 $meeting_users = eF_getTableData("module_BBB_users_to_meeting JOIN users ON module_BBB_users_to_meeting.users_LOGIN = users.login", "users.login, users.name, users.surname, users.email", "meeting_ID = ".$_GET['edit_BBB'] . " AND users.login <> '". $currentUser -> user['login'] ."'");
 
@@ -446,16 +458,16 @@ class module_BBB extends MagesterModule {
                 $subject = _BBB_MEETING;
                 $count = 0;
                 foreach ($meeting_users as $user) {
-                	
-                	
+
+
 					$userObject = MagesterUserFactory::factory($user['login']);
-                    
-                   
+
+
                     /*
                     $body .= "Segue abaixo o link para acesso, sendo possível acessar esta transmissão através de sua conta\n\n";
 //					$body .= $this -> createOnsyncUrl($userObject, $meeting_info[0], true) . "\n";
 //					var_dump($meeting_info);
-					$body .= sprintf("%s", $this -> createBBBUrl($userObject, $meeting_info[0], true)); 
+					$body .= sprintf("%s", $this -> createBBBUrl($userObject, $meeting_info[0], true));
 
 					$onsyncUrl = $this->accounts[$meeting_info[0]['account_ID']]['link_baseurl'] . $meeting_info[0]['friendly_url'];
 					$body .= $onsyncUrl . "\n\n";
@@ -463,13 +475,13 @@ class module_BBB extends MagesterModule {
                     $body .= "Obrigado,\n";
 					$body .= "Suporte ULT";
 					*/
-					
+
 					$body = "Olá " . $user['name']. ",\n\n";
 					$body .= sprintf("Você foi convidado para participar da transmissão da Aula de %s agendada para o dia de %s\n\n", $currentLesson -> lesson['name'], date("d/m/Y \à\s H:i", $meeting_info[0]['timestamp']));
 					$body .= "Para assistir a sua aula clique no link abaixo, insira seu login e senha, clique em Aulas – Ao Vivo, após clique no ícone Opções.\n\n";
 					$body .= "http://ult.magester.net\n\n";
 					$body .= "Caso encontre alguma dificuldade no acesso, entre em contato com nossa equipe de suporte – suporte@ult.com.br .\n\n";
-					
+
 					$body .= "Obrigado,\n";
 					$body .= "Suporte ULT";
 
@@ -493,7 +505,7 @@ class module_BBB extends MagesterModule {
                     if ($smtp -> send($user_mail, $header, $body)) {
                         $count++;
                     }
-                    
+
                     //var_dump($body);
                 }
                 echo $count;
@@ -548,12 +560,12 @@ class module_BBB extends MagesterModule {
             eF_deleteTableData("module_BBB", "id=".$_GET['delete_BBB']);
             eF_deleteTableData("module_BBB_users_to_meeting", "meeting_ID=".$_GET['delete_BBB']);
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_BBB_SUCCESFULLYDELETEDBBBENTRY)."&message_type=success");
-        } else if ($userRole == "professor" && (isset($_GET['add_BBB']) || (isset($_GET['edit_BBB']) && eF_checkParameter($_GET['edit_BBB'], 'id')))) {
+        } elseif ($userRole == "professor" && (isset($_GET['add_BBB']) || (isset($_GET['edit_BBB']) && eF_checkParameter($_GET['edit_BBB'], 'id')))) {
 
             // Create ajax enabled table for meeting attendants
             if (isset($_GET['edit_BBB'])) {
             	$smarty -> assign("T_ROLES", MagesterUser :: getRoles(true));
-            	
+
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'BBBUsersTable') {
                     isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
@@ -588,11 +600,11 @@ class module_BBB extends MagesterModule {
                     }
 
                     $smarty -> assign("T_USERS", $users);
-            		
-                    $smarty -> display($this -> getSmartyTpl());
-                    
 
-            		
+                    $smarty -> display($this -> getSmartyTpl());
+
+
+
                     exit;
 
                 } else {
@@ -609,9 +621,9 @@ class module_BBB extends MagesterModule {
                                                     "users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND users.login <> '".$currentUser -> user['login'] . "' AND module_BBB.id = '".$_GET['edit_BBB']."' AND users.active = 1 AND users_to_lessons.active = 1");
 
                     $smarty -> assign("T_USERS", $users);
-                    
-                    
-                    
+
+
+
                 }
             }
 
@@ -690,7 +702,7 @@ class module_BBB extends MagesterModule {
                                            'lobby'=> $BBB_entry[0]['lobby'],
                                            'lessons_ID' => $BBB_entry[0]['lessons_ID']));
             } else {
-                $timestamp_info = getdate(time());     
+                $timestamp_info = getdate(time());
                 $timestamp_info['minutes'] = $timestamp_info['minutes'] - ($timestamp_info['minutes'] % 15);
             }
 
@@ -731,9 +743,9 @@ class module_BBB extends MagesterModule {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_BBB_PROBLEMUPDATINGBBBENTRY)."&message_type=failure");
                         }
                     } else {
-                    	
+
                     	// CREATING MeetingID
-                    	
+
                     	$fields['meetingID'] = sha1(
                     		sprintf(
                     			"%04d___%s___%s",
@@ -765,32 +777,32 @@ class module_BBB extends MagesterModule {
 
             if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
                 $BBB = eF_getTableData(
-                	"module_BBB bbb LEFT JOIN lessons l ON (bbb.lessons_ID = l.id)", 
-                	"bbb.*, l.name as lesson_name, l.id as lesson_id", 
+                	"module_BBB bbb LEFT JOIN lessons l ON (bbb.lessons_ID = l.id)",
+                	"bbb.*, l.name as lesson_name, l.id as lesson_id",
                 	"lessons_ID = '".$currentLesson -> lesson['id']."'"
                 );
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "professor");
             } else {
                 //$BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'");
                 $BBB = eF_getTableData(
-                	"module_BBB_users_to_meeting JOIN module_BBB bbb ON id = meeting_ID LEFT JOIN lessons l ON (bbb.lessons_ID = l.id)", 
-                	"bbb.*, module_BBB_users_to_meeting.*, l.name as lesson_name, l.id as lesson_id", 
+                	"module_BBB_users_to_meeting JOIN module_BBB bbb ON id = meeting_ID LEFT JOIN lessons l ON (bbb.lessons_ID = l.id)",
+                	"bbb.*, module_BBB_users_to_meeting.*, l.name as lesson_name, l.id as lesson_id",
                 	"users_LOGIN='".$currentUser -> user['login']."'",
                 	"l.id"
                 );
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "student");
             }
-            
-            
+
+
             $serverMeetings = $this->_remoteCall("getMeetings");
             $esMeetings = array();
-            if (strtoupper((string)$serverMeetings->returncode) == 'SUCCESS') {
-            	foreach($serverMeetings->meetings->meeting as $meet) {
-            		//var_dump((array)$meet);
-            		$meetArray = (array)$meet;
-            		
+            if (strtoupper((string) $serverMeetings->returncode) == 'SUCCESS') {
+            	foreach ($serverMeetings->meetings->meeting as $meet) {
+            		//var_dump((array) $meet);
+            		$meetArray = (array) $meet;
+
             		$esMeetings[$meetArray['meetingID']] = $meetArray;
-            	}	
+            	}
             }
 
             $now = time();
@@ -807,35 +819,37 @@ class module_BBB extends MagesterModule {
 
                 // CHECK IF MEETING IS ON THE SERVER
                 if ($serverMeetings) {
-                	$BBB[$key]['inServer'] = in_array($meeting['meetingID'], array_keys($esMeetings));	
+                	$BBB[$key]['inServer'] = in_array($meeting['meetingID'], array_keys($esMeetings));
                 } else {
                 	// IF NO REMOTE CALL, THEN ALL IS "IN SERVER"
                 	$BBB[$key]['inServer'] = true;
                 }
                 //$serverMeetings
-                
+
             }
 			//pr($BBB);
             $smarty -> assign("T_BBB", $BBB);
             $smarty -> assign("T_USERINFO",$currentUser -> user);
         }
+
         return true;
     }
-    
-	protected function _remoteCall($method = 'getMethods', $parameters = array()) {
+
+	protected function _remoteCall($method = 'getMethods', $parameters = array())
+	{
 		$methods = array(
 			'getMeetings'
 		);
 		if (!in_array($method, $methods)) {
 			return $methods;
 		}
-		
+
 		// SERVER IS UP???
 		// CHECK IF SERVER IS UP
-		
+
 		return false;
-		
-		switch($method) {
+
+		switch ($method) {
 			case "getMeetings" : {
 				$url = ($this->_createRemoteCallUrl($method, $parameters));
 				break;
@@ -844,8 +858,9 @@ class module_BBB extends MagesterModule {
 
 		return $this->_makeRemoteCall($url);
 	}
-	
-	private function _createRemoteCallUrl($method = 'getMethods', $parameters = array()) {
+
+	private function _createRemoteCallUrl($method = 'getMethods', $parameters = array())
+	{
 		// These are common in all cases
 		$BBB_server				= $this -> getBBBServer();
 		$BBB_server_ver			= $this -> getBBBServerVer();
@@ -857,26 +872,27 @@ class module_BBB extends MagesterModule {
 			$BBB_serverPath = $BBB_server."/bigbluebutton/api/";
 		}
 		$optionArray = array();
-		foreach($parameters as $key => $value) {
+		foreach ($parameters as $key => $value) {
 			$optionArray[] = sprintf("%s=%s", $key, $value);
 		}
-		
+
 		$optionString = implode("&", $optionArray);
-		
-		if($BBB_server_ver == 1) {
+
+		if ($BBB_server_ver == 1) {
 			$saltedHash	= sha1($method.$optionString.$securitySalt);
 		} else {
 			$saltedHash	= sha1($optionString.$securitySalt);
 		}
-		
+
 		$optionArray[] = "checksum=".$saltedHash;
-		
+
 		$BBBurl = $BBB_serverPath . $method . "?" . implode("&", $optionArray);
 
 		return $BBBurl;
 	}
-	
-	private function _makeRemoteCall($url) {
+
+	private function _makeRemoteCall($url)
+	{
 		if ($url) {
 			if (extension_loaded('curl')) {
 				$ch = curl_init() or die ( curl_error() );
@@ -887,20 +903,21 @@ class module_BBB extends MagesterModule {
 				curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 				$data = curl_exec( $ch );
 				curl_close( $ch );
-				
-				if($data) {
+
+				if ($data) {
 					return (new SimpleXMLElement($data));
 				} else {
 					return (simplexml_load_file($url));
 				}
 			}
-			
-			return (simplexml_load_file($url));	
+
+			return (simplexml_load_file($url));
 		}
 		return false;
 	}
 
-    public function addScripts() {
+    public function addScripts()
+    {
         if (isset($_GET['edit_BBB'])) {
             return array("scriptaculous/prototype", "scriptaculous/effects");
         } else {
@@ -908,7 +925,8 @@ class module_BBB extends MagesterModule {
         }
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_BBB_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_BBB_MODULE_BASEURL" , $this -> moduleBaseUrl);
@@ -918,7 +936,8 @@ class module_BBB extends MagesterModule {
     }
 
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-	public function getLessonModule() {
+	public function getLessonModule()
+	{
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) != "administrator") {
             // Get smarty variable
@@ -930,7 +949,6 @@ class module_BBB extends MagesterModule {
 
  				$BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago} AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
   				//$BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'  AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
-              
 
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "student");
                 $BBB_server = eF_getTableData("configuration", "value", "name = 'module_BBB_server'");
@@ -943,28 +961,26 @@ class module_BBB extends MagesterModule {
                 	}
                 	// The meeting is planned for some point in the past
                 	if ($meeting['timestamp'] <= time() && $meeting['timestamp'] > $fifteen_minutes_ago) {
-                		$BBB[$key]['time_remaining'] = _BBB_NOW;    		
+                		$BBB[$key]['time_remaining'] = _BBB_NOW;
                 		$BBB[$key]['joiningUrl'] = $this -> createBBBUrl($currentUser, $meeting, true);
 						$smarty -> assign("T_BBB_CREATEMEETINGURL", $BBB[$key]['joiningUrl']);
                 	}
-                	     //pr($meeting); 
+                	     //pr($meeting);
                 }
-            }
-            else {
+            } else {
             	// User's role is that of a professor
-    
+
                 $BBB = eF_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago}", "timestamp DESC");
                 //$BBB = eF_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'", "timestamp DESC");
-                
-                
+
+
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "professor");
                 $now = time();
                 foreach ($BBB as $key => $meeting) {
                 	if ($meeting ['timestamp'] > $now) {
                 		$BBB [$key]['mayStart'] = 0;
                 		$BBB[$key]['time_remaining'] = _BBB_IN . ' ' . eF_convertIntervalToTime($meeting['timestamp'] - time(), true);
-                	}
-                	else {
+                	} else {
                 		$BBB [$key]['mayStart'] = 1;
                 		$BBB[$key]['time_remaining'] = _BBB_NOW;
                 		// always start_meeting = 1 url so that only one professor might start the meeting
@@ -973,24 +989,25 @@ class module_BBB extends MagesterModule {
                 	}
                 }
             }
-            
+
             $smarty -> assign("T_MODULE_BBB_INNERTABLE_OPTIONS", array(array('text' => _BBB_BBBLIST,   'image' => $this -> moduleBaseLink."images/go_into.png", 'href' => $this -> moduleBaseUrl)));
             $smarty -> assign("T_BBB_INNERTABLE", $BBB);
-            
+
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) != "administrator") {
             $smarty = $this -> getSmartyVar();
             $smarty -> assign("T_BBB_MODULE_BASEDIR" , $this -> moduleBaseDir);
             $smarty -> assign("T_BBB_MODULE_BASEURL" , $this -> moduleBaseUrl);
             $smarty -> assign("T_BBB_MODULE_BASELINK" , $this -> moduleBaseLink);
+
             return $this -> moduleBaseDir . "module_InnerTable.tpl";
         } else {
             return false;

@@ -77,8 +77,6 @@ Below are the available action arguments an the corresponding arguments needed (
 
 /api.php?token=<token>&action=logout												logs out from SysClass API
 
-
-
 API returns xml corresponding to the action argument. For actions like magesterlogin, activate_user etc it returns a status entity ("ok" or "error").
 
 In case of error it returns also a message entity with description of the error occured.
@@ -88,13 +86,13 @@ $path = "../libraries/";
 require_once $path."configuration.php";
 $data = eF_getTableData("configuration", "value", "name='api'"); //Read current values
 $api = $data[0]['value'];
-if ($api == 1){
-	if (isset($_GET['action'])){
+if ($api == 1) {
+	if (isset($_GET['action'])) {
 		$action = $_GET['action'];
-		switch($_GET['action']){
+		switch ($_GET['action']) {
 			case 'token':
 				$token = createToken(30);
-				if (strlen($token) == 30){
+				if (strlen($token) == 30) {
 					$insert['token'] = $token;
 					$insert['status'] = "unlogged";
 					$insert['expired'] = 0;
@@ -105,11 +103,11 @@ if ($api == 1){
 					echo "</xml>";
 				}
 				break;
-			case 'magesterlogin' :{
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
+			case 'magesterlogin' :
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$token = $_GET['token'];
 					$creds = eF_getTableData("tokens t, users u", "u.login, u.password, u.user_type", "t.users_LOGIN = u.LOGIN and t.token='$token'");
-					if (sizeof($creds) == 0){
+					if (sizeof($creds) == 0) {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Invalid username</message>";
@@ -132,30 +130,27 @@ if ($api == 1){
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Unable to update log</message>";
 						echo "</xml>";
 					}
 					break;
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
 					echo "</xml>";
 					break;
 				}
-			}
-			case 'magesterlogout': 
+			case 'magesterlogout':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$token = $_GET['token'];
 					if (isset($_GET['login'])) {
 						try {
 							$user = MagesterUserFactory :: factory($_GET['login']);
-							try{
+							try {
 								$user -> logout();
 								echo "<xml>";
 								echo "<status>ok</status>";
@@ -189,26 +184,26 @@ if ($api == 1){
 					echo "</xml>";
 					break;
 				}
-			case 'login': 
-				if (isset($_GET['username']) && isset($_GET['password']) && isset($_GET['token']) ){
+			case 'login':
+				if (isset($_GET['username']) && isset($_GET['password']) && isset($_GET['token']) ) {
 					$user = MagesterUserFactory :: factory($_GET['username']);
 					if ($user -> user['user_type'] == "administrator") {
 						$login = $_GET['username'];
 						$password = MagesterUser::createPassword($_GET['password']);
 						$token = $_GET['token'];
 						$tmp = eF_getTableData("tokens","token","status='unlogged'");
-						if (sizeof($tmp) > 0){
+						if (sizeof($tmp) > 0) {
 							if (eF_checkParameter($login, 'login')) {
 								$tmp = eF_getTableData("users", "password","login='$login'");
 								$pwd = $tmp[0]['password'];
-								if ($pwd == $password){
+								if ($pwd == $password) {
 									$update['status'] = "logged";
 									$update['users_LOGIN'] = $login;
 									eF_updateTableData("tokens",$update,"token='$token'");
 									echo "<xml>";
 									echo "<status>ok</status>";
 									echo "</xml>";
-								} else{
+								} else {
 									echo "<xml>";
 									echo "<status>error</status>";
 									echo "<message>Invalid password</message>";
@@ -220,7 +215,7 @@ if ($api == 1){
 								echo "<message>Invalid username</message>";
 								echo "</xml>";
 							}
-						} else{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid token</message>";
@@ -240,8 +235,8 @@ if ($api == 1){
 				}
 				break;
 			case 'create_lesson':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['name']) && isset($_GET['category']) && isset($_GET['course_only']) && isset($_GET['language'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['name']) && isset($_GET['category']) && isset($_GET['course_only']) && isset($_GET['language'])) {
 						if (!eF_checkParameter($_GET['category'], 'uint')) {
 							echo "<xml>";
 							echo "<status>Invalid category</status>";
@@ -256,29 +251,23 @@ if ($api == 1){
 						if (isset($_GET['price']) && eF_checkParameter($_GET['price'], 'uint')) {
 							$insert['price'] = $_GET['price'];
 						}
-						if (eF_insertTableData("lessons", $insert))
-						{
+						if (eF_insertTableData("lessons", $insert)) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else
-						{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Some problem occured</message>";
 							echo "</xml>";
 						}
-					}
-					else
-					{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -286,37 +275,31 @@ if ($api == 1){
 				}
 				break;
 			case 'create_user':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['password']) && isset($_GET['email']) && isset($_GET['languages']) && isset($_GET['name']) && isset($_GET['surname'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['password']) && isset($_GET['email']) && isset($_GET['languages']) && isset($_GET['name']) && isset($_GET['surname'])) {
 						$insert['login'] = $_GET['login'];
 						$insert['password'] = MagesterUser :: createPassword($_GET['password']);
 						$insert['email'] = $_GET['email'];
 						$insert['languages_NAME'] = $_GET['languages'];
 						$insert['name'] = $_GET['name'];
 						$insert['surname'] = $_GET['surname'];
-						if (eF_insertTableData("users", $insert))
-						{
+						if (eF_insertTableData("users", $insert)) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else
-						{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>User exists</message>";
 							echo "</xml>";
 						}
-					}
-					else
-					{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -451,9 +434,9 @@ if ($api == 1){
 				}
 				break;
 			case 'group_info':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['group'])){
-						try{
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['group'])) {
+						try {
 							$group = eF_getTableData("groups","name, description, languages_NAME,unique_key");
 							echo "<xml>";
 							echo "<general_info>";
@@ -463,22 +446,19 @@ if ($api == 1){
 							echo "<unique_key>".$group[0]['unique_key']."</unique_key>";
 							echo "</general_info>";
 							echo "</xml>";
-						}
-						catch (Exception $e){
+						} catch (Exception $e) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Group doesn't exist</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -486,32 +466,29 @@ if ($api == 1){
 				}
 				break;
 			case 'group_to_user':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['group'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['group'])) {
 						$insert['users_LOGIN'] = $_GET['login'];
 						$insert['groups_ID'] = $_GET['group'];
 						$res = eF_getTableData("users_to_groups", "*", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
-						if (sizeof($res) == 0){
+						if (sizeof($res) == 0) {
 							eF_insertTableData("users_to_groups",$insert);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Assignment already exists</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -519,21 +496,19 @@ if ($api == 1){
 				}
 				break;
 			case 'group_from_user':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['group'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['group'])) {
 						$res = eF_deleteTableData("users_to_groups", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -541,34 +516,31 @@ if ($api == 1){
 				}
 				break;
 			case 'lesson_to_user':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['lesson'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$insert['users_LOGIN'] = $_GET['login'];
 						$insert['lessons_ID'] = $_GET['lesson'];
 						$insert['active'] = '1';
 						$insert['from_timestamp'] = time();
 						$res = eF_getTableData("users_to_lessons", "*", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
-						if (sizeof($res) == 0){
+						if (sizeof($res) == 0) {
 							eF_insertTableData("users_to_lessons",$insert);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Assignment already exists</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -576,31 +548,28 @@ if ($api == 1){
 				}
 				break;
 			case 'deactivate_user_lesson':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['lesson'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$update['from_timestamp'] = 0;
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])){
+						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>User doesn't exist</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -608,31 +577,28 @@ if ($api == 1){
 				}
 				break;
 			case 'activate_user_lesson':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['lesson'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$update['from_timestamp'] = time();
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])){
+						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
-						}
-						else{
+						} else {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>User doesn't exist</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -640,21 +606,19 @@ if ($api == 1){
 				}
 				break;
 			case 'lesson_from_user':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login']) && isset($_GET['lesson'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$res = eF_deleteTableData("users_to_lessons", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -662,23 +626,21 @@ if ($api == 1){
 				}
 				break;
 			case 'user_lessons':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login'])) {
 						$lessons = eF_getTableData("users_to_lessons ul, lessons l", "l.name", "ul.lessons_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
 						echo "<xml>";
-						for ($i=0; $i<sizeof($lessons); $i++){
+						for ($i=0; $i<sizeof($lessons); $i++) {
 							echo "<lesson>".$lessons[$i]['name']."</lesson>";
 						}
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -686,9 +648,9 @@ if ($api == 1){
 				}
 				break;
 			case 'lesson_info':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['lesson'])){
-						try{
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['lesson'])) {
+						try {
 							$lesson = new MagesterLesson($_GET['lesson']);
 							$info = $lesson -> getStatisticInformation();
 							echo "<xml>";
@@ -699,22 +661,19 @@ if ($api == 1){
 							echo "<language>".$info['language']."</language>";
 							echo "</general_info>";
 							echo "</xml>";
-						}
-						catch (Exception $e){
+						} catch (Exception $e) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Lesson doesn't exist</message>";
 							echo "</xml>";
 						}
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -722,23 +681,21 @@ if ($api == 1){
 				}
 				break;
 			case 'user_courses':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
-					if (isset($_GET['login'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
+					if (isset($_GET['login'])) {
 						$courses = eF_getTableData("users_to_courses ul, courses l", "l.name", "ul.courses_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
 						echo "<xml>";
-						for ($i=0; $i<sizeof($courses); $i++){
+						for ($i=0; $i<sizeof($courses); $i++) {
 							echo "<course>".$courses[$i]['name']."</course>";
 						}
 						echo "</xml>";
-					}
-					else{
+					} else {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Incomplete arguments</message>";
 						echo "</xml>";
 					}
-				}
-				else{
+				} else {
 					echo "<xml>";
 					echo "<status>error</status>";
 					echo "<message>Invalid token</message>";
@@ -746,9 +703,9 @@ if ($api == 1){
 				}
 				break;
 			case 'user_info':
-				if (isset($_GET['token']) && checkToken($_GET['token'])){
+				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login'])) {
-						try{
+						try {
 							$user = MagesterUserFactory :: factory($_GET['login']);
 							echo "<xml>";
 							echo "<general_info>";
@@ -757,8 +714,7 @@ if ($api == 1){
 							echo "<user_type>".$user -> user['user_type']."</user_type>";
 							echo "</general_info>";
 							echo "</xml>";
-						}
-						catch (Exception $e){
+						} catch (Exception $e) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>User doesn't exist</message>";
@@ -911,7 +867,7 @@ if ($api == 1){
 
 						echo "\n\t\t";
 
-						for ($i=0; $i < sizeof($lessons);$i++){
+						for ($i=0; $i < sizeof($lessons);$i++) {
 
 						echo "<lesson>";
 
@@ -1105,7 +1061,7 @@ if ($api == 1){
 function createToken($length)
 {
 	$salt = "abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789"; // salt to select chars from
-	srand((double)microtime()*1000000); // start the random generator
+	srand((double) microtime()*1000000); // start the random generator
 	$token=""; // set the inital variable
 	for ($i=0; $i<$length; $i++) {// loop and create password
 		$token = $token . substr($salt, rand() % strlen($salt), 1);

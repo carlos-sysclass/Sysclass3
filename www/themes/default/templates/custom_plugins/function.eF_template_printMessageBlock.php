@@ -18,7 +18,7 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty)
         $infix  = mb_substr($params['content'], 1001, mb_strlen($params['content']) - mb_strlen($prefix) - mb_strlen($suffix));
     	$params['content'] = $prefix.'<a href = "javascript:void(0)" onclick = "this.style.display = \'none\';Element.extend(this).next().show()"><br>[...]<br></a><span style = "display:none">'.$infix.'</span>'.$suffix;
     }
-    
+
     $str .= '
         <div class = "block" id = "messageBlock">
         <div class = "blockContents messageContents">
@@ -26,9 +26,9 @@ function smarty_function_eF_template_printMessageBlock($params, &$smarty)
             	<tr><td>'.$messageImage.'</td>
             		<td class = "'.$params['type'].'Block">'.$params['content'].'</td>
             		<td><img src = "images/32x32/close.png" alt = "'._CLOSE.'" title = "'._CLOSE.'" onclick = "window.Effect ? new Effect.Fade($(\'messageBlock\')) : document.getElementById(\'messageBlock\').style.display = \'none\';"></td></tr>
-            </table>	
+            </table>
         </div>
         </div>';
-    
+
     return $str;
 }

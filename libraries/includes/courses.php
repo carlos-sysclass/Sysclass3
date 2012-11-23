@@ -9,7 +9,7 @@ $loadScripts[] = 'includes/courses';
 
 if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
-} else if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
+} elseif (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
  $_change_ = false;
 } else {
  $_change_ = true;
@@ -76,26 +76,25 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
       $skills = $editCourse -> getSkills();
    $dataSource = $skills;
    $tableName = 'skillsTable';
-   include("sorted_table.php");
-  } else if ($_GET['ajax'] == 'classesTable' || $_GET['ajax'] == 'classesuserTable') {
+   include 'sorted_table.php';
+  } elseif ($_GET['ajax'] == 'classesTable' || $_GET['ajax'] == 'classesuserTable') {
 	$constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
-	
-	
+
 	if (isset($_GET['login'])) {
 		// FILTER SELECTION ONLY BY THIS USER
 		$userFilter = MagesterUserFactory::factory($_GET['login']);
 		$constraints['users_ID'] = $userFilter->user['id'];
 	}
-	
+
 	$classes = $editCourse -> getCourseClasses($constraints);
 	$totalEntries = $editCourse -> countCourseClasses($constraints);
 	$dataSource = MagesterCourseClass :: convertClassesObjectsToArrays($classes);
-	
+
 	$tableName = $_GET['ajax'];
 	$alreadySorted = 1;
 	$smarty -> assign("T_TABLE_SIZE", $totalEntries);
-	include("sorted_table.php");
-  } else if ($_GET['ajax'] == 'lessonsTable') {
+	include 'sorted_table.php';
+  } elseif ($_GET['ajax'] == 'lessonsTable') {
    $courseUsers = $editCourse -> countCourseUsers(array('archive' => false));
    $smarty -> assign("T_COURSE_HAS_USERS", $courseUsers['count']);
 
@@ -126,38 +125,37 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		$tableName = $_GET['ajax'];
 		$alreadySorted = 1;
 		$smarty -> assign("T_TABLE_SIZE", $totalEntries);
-		include("sorted_table.php");
+		include 'sorted_table.php';
 
-	} else if ($_GET['ajax'] == 'usersTable') {
+	} elseif ($_GET['ajax'] == 'usersTable') {
 		$roles = MagesterLessonUser :: getLessonsRoles(true);
 		$smarty -> assign("T_ROLES", $roles);
-		
+
 		$classeAssoc = array();
 		$classeAssoc[0] = "Nenhuma turma selecionada";
-		
+
 		$classeData = ef_getTableData("classes", "id, name", sprintf("active = 1 AND courses_ID = %d", $editCourse->course['id']));
-		foreach($classeData as $item) {
+		foreach ($classeData as $item) {
 			$classeAssoc[$item['id']] = $item['name'];
 		}
-		
+
 		$smarty -> assign("T_CLASSE_NAMES", $classeAssoc);
-		
 
 		$rolesBasic = MagesterLessonUser :: getLessonsRoles();
 		$smarty -> assign("T_BASIC_ROLES_ARRAY", $rolesBasic);
 
 		$constraints = array('archive' => false, 'active' => 1, 'return_objects' => false) + createConstraintsFromSortedTable();
 		$users = $editCourse -> getCourseUsersIncludingUnassigned($constraints);
-		
+
 		var_dump($users);
-		
+
 		$totalEntries = $editCourse -> countCourseUsersIncludingUnassigned($constraints);
 		$dataSource = $users;
 		$tableName = $_GET['ajax'];
 		$alreadySorted = 1;
 		$smarty -> assign("T_TABLE_SIZE", $totalEntries);
-		include("sorted_table.php");
-  } else if ($_GET['ajax'] == 'instancesTable') {
+		include 'sorted_table.php';
+  } elseif ($_GET['ajax'] == 'instancesTable') {
 
    $constraints = array('archive' => false) + createConstraintsFromSortedTable();
       if ($editCourse -> course['instance_source']) {
@@ -174,7 +172,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
    $tableName = $_GET['ajax'];
    $alreadySorted = 1;
    $smarty -> assign("T_TABLE_SIZE", $totalEntries);
-   include("sorted_table.php");
+   include 'sorted_table.php';
   } elseif (isset($_GET['mode'])) {
    $editCourse -> setLessonMode($_GET['lesson'], $_GET['mode']);
   } elseif (isset($_GET['add_instance'])) {
@@ -183,25 +181,25 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
    } else {
     MagesterCourse :: createInstance($editCourse -> course['id']);
    }
-  } else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'lessons') {
+  } elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'lessons') {
       $editCourse -> handlePostAjaxRequestionForLessons();
-  } else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'skills') {
+  } elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'skills') {
             $editCourse -> handlePostAjaxRequestForSkills();
-  } else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'usersclasses') {
+  } elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'usersclasses') {
   		$editCourse -> handlePostAjaxRequestForUsers();
   		$editCourse -> handlePostAjaxRequestForUsersClasses();
 
-  } else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'classes_schedules') {
+  } elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'classes_schedules') {
 
   		if (!isset($_GET['courseclass'])) {
   			throw new Exception(_COURSECLASS_ID_NOT_PASSED);
   		}
   		$editCourseClass = new MagesterCourseClass($_GET['courseclass']);
-		
+
   		$editCourseClass->setSchedule($_POST['schedules']);
   		$editCourseClass->persistSchedule();
-  		
-  } else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'users') {
+
+  } elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'users') {
   		$editCourse -> handlePostAjaxRequestForUsers();
   } elseif ($_GET['ajax'] == 'confirm_user') {
    $editCourse -> confirm($_GET['user']);
@@ -227,8 +225,8 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
   $post_target = 'edit_course='.$_GET['edit_course'];
   $smarty -> assign("T_COURSE_OPTIONS", array(
   		array(
-  			'text' => _COURSESETTINGS, 
-  			'image' => "16x16/generic.png", 
+  			'text' => _COURSESETTINGS,
+  			'image' => "16x16/generic.png",
   			'href' => basename($_SERVER['PHP_SELF'])."?ctg=courses&course=".$_GET['edit_course']."&op=course_info"
   		)
   	)
@@ -259,20 +257,19 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
  $form -> addElement('advcheckbox', 'active', _ACTIVEFEM, null, null, array(0, 1));
  $form -> addElement('advcheckbox', 'show_catalog', _SHOWCOURSEINCATALOG, null, null, array(0, 1));
  $form -> addElement('text', 'price', _PRICE, 'class = "inputText" style = "width:50px"');
- 
+
  /* PRICE BY MODALIDADE */
  $modalidades = MagesterCourse::getModalidades();
- 
- foreach($modalidades as $groupName => $group) {
+
+ foreach ($modalidades as $groupName => $group) {
  	$elems = array();
- 	foreach($group['fields'] as $fieldName => $field) {
+ 	foreach ($group['fields'] as $fieldName => $field) {
  		$elems[] = $form -> addElement($field['type'], $fieldName, $field['label'], $field['attr'], null, $field['options']);
  		$form -> setDefaults(array($fieldName => $field['default']));
  	}
  	//$form->addGroup($elems, $groupName, $group['groupLabel'], ' ');
  }
- 
- 
+
  //$form -> addElement('text', 'course_code', _COURSECODE, 'class = "inputText" style = "width:50px"');
  $form -> addElement('text', 'training_hours', _TRAININGHOURS, 'class = "inputText" style = "width:50px"');
 
@@ -317,16 +314,12 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
        'max_users' => $form -> exportValue('max_users') ? $form -> exportValue('max_users') : null,
        'price' => $form -> exportValue('price'),
        'supervisor_LOGIN' => $values['supervisor_LOGIN'] ? $values['supervisor_LOGIN'] : null);
-   
-   
-   
-   
-	foreach($modalidades as $groupName => $group) {
- 		foreach($group['fields'] as $fieldName => $field) {
+
+	foreach ($modalidades as $groupName => $group) {
+ 		foreach ($group['fields'] as $fieldName => $field) {
  			$fields[$fieldName] = $form -> exportValue($fieldName);
  		}
  	}
- 	
 
    try {
     if (isset($_GET['edit_course'])) {
@@ -341,7 +334,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
      //$redirect = basename($_SERVER['PHP_SELF']).'?ctg=courses&message='.urlencode(_COURSEUPDATED).'&message_type=success';
     } else {
      $editCourse = MagesterCourse :: createCourse($fields);
-     
+
      $message = _SUCCESFULLYCREATEDCOURSE;
      $redirect = basename($_SERVER['PHP_SELF'])."?ctg=courses&edit_course=".$editCourse -> course['id']."&tab=lessons&message=".urlencode(_SUCCESFULLYCREATEDCOURSE)."&message_type=success";
     }
@@ -383,11 +376,10 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
  $renderer = prepareFormRenderer($form);
  $form -> accept($renderer);
  $smarty -> assign('T_COURSE_FORM', $renderer -> toArray());
- 
- 
+
 //The courses advanced settings
 } elseif (isset($_GET['courseclass'])) {
-	
+
 	if (isset($_GET['delete_courseclass']) && eF_checkParameter($_GET['delete_courseclass'], 'id')) {
 		try {
 			if (!$_change_) {
@@ -400,56 +392,53 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		}
 		exit;
 	}
-	
+
 	$course = new Magestercourse($_GET['courseclass']);
-	
+
 	$action_suffix = "add_courseclass=1";
-	
-	
+
 	if (isset($_GET['edit_courseclass'])) {
 		$edit = true;
 		$action_suffix = "edit_courseclass=" . $_GET['edit_courseclass'];
 		$smarty -> assign("T_COURSECLASS_FORM_TITLE", _EDITCOURSECLASS);
-		
+
 		$editCourseClass = new MagesterCourseClass($_GET['edit_courseclass']);
 	} else {
 		$edit = false;
 		$action_suffix = "add_courseclass=1";
 		$smarty -> assign("T_COURSECLASS_FORM_TITLE", _NEWCOURSECLASS);
 	}
-		
+
 	$form = new HTML_QuickForm(
-		"add_courseclass_form", 
-		"post", 
-		basename($_SERVER['PHP_SELF'])."?ctg=courses&courseclass=" . $_GET['courseclass'] . "&" . $action_suffix . "&popup=1", 
+		"add_courseclass_form",
+		"post",
+		basename($_SERVER['PHP_SELF'])."?ctg=courses&courseclass=" . $_GET['courseclass'] . "&" . $action_suffix . "&popup=1",
 		"", null, true
 	);
-	
-	$form -> addElement('hidden', 'courses_ID', $_GET['courseclass']); 
-	
+
+	$form -> addElement('hidden', 'courses_ID', $_GET['courseclass']);
+
 	if ($edit) {
 		$form -> addElement('hidden', 'id', $_GET['edit_courseclass']);
 	}
  	$form -> addElement('text', 'name', _COURSECLASSNAME, 'class = "inputText"');
  	$form -> addRule('name', _THEFIELD.' "'._COURSECLASSNAME.'" '._ISMANDATORY, 'required', null, 'client');
- 	
+
  	$form -> addElement('advcheckbox', 'active', _ACTIVEFEM, null, null, array(0, 1));
  	//$form -> addElement('advcheckbox', 'show_catalog', _SHOWCOURSEINCATALOG, null, null, array(0, 1));
- 	
+
  	$form -> addElement('text', 'max_users', _MAXSTUDENTS, 'style = "display: none;"');
  	$form -> addRule('max_users', _THEFIELD.' "'._MAXSTUDENTS.'" '._ISMANDATORY, 'numeric', null, 'client');
- 	
- 	
+
  	$form -> addElement('date', 'start_date', _STARTDATE);
  	$form -> addElement('date', 'end_date', _ENDDATE);
- 	
+
 	$form -> addElement('submit', 'submit_courseclass', _SUBMIT, 'class = "flatButton"');
- 	
- 	
+
  	if ($form -> isSubmitted() && $form -> validate()) {
  		// FECHA POP-UP
 		$values = $form -> exportValues();
-		
+
 		$fields = array(
 			//'id'
 			'courses_ID'		=> $form -> exportValue('courses_ID'),
@@ -461,7 +450,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 			'duration'			=> 0,
 			'options'			=> '',
 			//'languages_NAME'	=> $GLOBALS['configuration']['onelanguage'] ? $GLOBALS['configuration']['default_language'] : $form -> exportValue('languages_NAME')
-			'languages_NAME'	=> $GLOBALS['configuration']['default_language'], 
+			'languages_NAME'	=> $GLOBALS['configuration']['default_language'],
 			'metadata'			=> null,
 			'share_folder'		=> null,
 			//'created'			=> time(),
@@ -472,7 +461,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		$fields['start_date'] = $values['start_date'] = strtotime(
 			$fields['start_date']['Y'] . '-' . $fields['start_date']['M'] . '-' . $fields['start_date']['d']
 		);
-		
+
 		$fields['end_date'] = $values['end_date'] = strtotime(
 			$fields['end_date']['Y'] . '-' . $fields['end_date']['M'] . '-' . $fields['end_date']['d']
 		);
@@ -480,20 +469,20 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		if ($edit) {
 			// UPDATE CourseClass
 			$editCourseClass->classe = array_merge($editCourseClass->classe, $values);
-			
+
 			$editCourseClass->persist();
 		} else {
 			$editCourseClass = MagesterCourseClass:: createCourseClass($fields);
 		}
 
 		$smarty -> assign("T_REDIRECT_PARENT_TO", basename($_SERVER['PHP_SELF'])."?ctg=courses&edit_course=" . $course->course['id'] );
- 		
+
  	}
  	if ($edit) {
  		$defaults = $editCourseClass->classe;
  	} else {
 	 	$defaults = MagesterCourseClass :: getDefaultCourseClassValues();
-	 	
+
 	 	unset($defaults['courses_ID']);
  	}
  	$form->setDefaults($defaults);
@@ -539,15 +528,15 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
  } catch (MagesterFileException $e) {
      handleNormalFlowExceptions($e);
  }
- 
- 
+
+
  $renderer = prepareFormRenderer($form);
  $form -> accept($renderer); //Assign this form to the renderer, so that corresponding template code is created
  $smarty -> assign('T_IMPORT_COURSE_FORM', $renderer -> toArray()); //Assign the form to the template
  /** Calculate and display course ajax lists*/
- 
+
  $sortedColumns = array('name', 'location', 'num_students', 'num_lessons', 'num_skills', 'start_date', 'end_date', 'price_presencial', 'price_web', 'created', 'active', 'operations');
- 
+
  $smarty -> assign("T_DATASOURCE_SORT_BY", array_search('active', $sortedColumns));
  $smarty -> assign("T_DATASOURCE_SORT_ORDER", 'desc');
  $smarty -> assign("T_DATASOURCE_OPERATIONS", array('statistics', 'settings', 'delete'));
@@ -564,12 +553,12 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
    $courses = MagesterCourse :: getAllCourses($constraints);
    $totalEntries = MagesterCourse :: countAllCourses($constraints);
    $dataSource = MagesterCourse :: convertCourseObjectsToArrays($courses);
-   
- 
+
+
    $smarty -> assign("T_TABLE_SIZE", $totalEntries);
    $tableName = $_GET['ajax'];
    $alreadySorted = 1;
-   include("sorted_table.php");
+   include 'sorted_table.php';
   } catch (Exception $e) {
    handleAjaxExceptions($e);
   }

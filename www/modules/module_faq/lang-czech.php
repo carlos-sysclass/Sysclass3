@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "Modul FAQ");//FAQ Module
 define("_FAQ_MAIN", "Hlavní stránka");//Main page
 define("_FAQ_MANAGEMENT", "Správa FAQs");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "FAQ byl úspěšně aktualizován");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "FAQ nemohla být aktualizována");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "Vložit FAQ vstup");//Insert FAQ entry

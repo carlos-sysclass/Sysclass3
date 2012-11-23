@@ -15,14 +15,14 @@ function smarty_function_eF_template_printMessageSurvey($params, &$smarty)
         if (isset($params['type']) && $params['type'] == 'success') {
             $image = '<img src = "images/32x32/success.png" title = "'._SUCCESS.'" alt = "'._SUCCESS.'"/>';
             $class = "message_success";
-        } elseif (isset($params['type']) && $params['type'] == 'system_announcement'){
+        } elseif (isset($params['type']) && $params['type'] == 'system_announcement') {
             $image = '<img src = "images/32x32/tools.png"  title = "'._SYSTEM.'" alt = "'._SYSTEM.'" />';
             $class = "message_announcement";
         } else {
             $image = '<img src = "images/32x32/warning.png"  title = "'._WARNING.'" alt = "'._WARNING.'" />';
             $class = "message_failure";
         }
-        
+
         $str = '
                 <table class = "messageTable" id = "messageTable">
                     <tr><td class = "'.$class.'">
@@ -33,10 +33,10 @@ function smarty_function_eF_template_printMessageSurvey($params, &$smarty)
                     		<img src = "images/16x16/close.png" alt = "'._CLOSE.'" title = "'._CLOSE.'" onclick = "document.getElementById(\'messageTable\').style.display=\'none\';">
                     	</td></tr>
                 </table>';
-        
+
 	} else {
         $str = '';
 	}
-    
+
     return $str;
 }

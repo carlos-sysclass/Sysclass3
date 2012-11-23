@@ -18,7 +18,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * @category   Zend
  * @package    Zend
@@ -27,4 +26,3 @@
  */
 class Zend_Exception extends Exception
 {}
-

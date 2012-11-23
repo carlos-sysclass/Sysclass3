@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * String value object
  *
@@ -29,7 +28,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @todo       also implement Countable for PHP 5.1 but not yet to stay 5.0 compatible
  */
-class Zend_Memory_Value implements ArrayAccess {
+class Zend_Memory_Value implements ArrayAccess
+{
     /**
      * Value
      *
@@ -62,7 +62,7 @@ class Zend_Memory_Value implements ArrayAccess {
     {
         $this->_container = $container;
 
-        $this->_value = (string)$value;
+        $this->_value = (string) $value;
 
         /**
          * Object is marked as just modified by memory manager
@@ -74,7 +74,6 @@ class Zend_Memory_Value implements ArrayAccess {
          */
         $this->_trace = false;
     }
-
 
     /**
      * ArrayAccess interface method
@@ -133,7 +132,6 @@ class Zend_Memory_Value implements ArrayAccess {
         }
     }
 
-
     /**
      * To string conversion
      *
@@ -143,7 +141,6 @@ class Zend_Memory_Value implements ArrayAccess {
     {
         return $this->_value;
     }
-
 
     /**
      * Get string value reference

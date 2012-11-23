@@ -91,9 +91,9 @@ class HTML_QuickForm2_Element_InputCheckbox extends HTML_QuickForm2_Element_Inpu
                 } else {
                     $this->removeAttribute('checked');
                 }
+
                 return;
             }
         }
     }
 }
-?>

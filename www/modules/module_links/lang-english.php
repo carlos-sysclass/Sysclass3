@@ -22,7 +22,6 @@ define("_LINKS_DELETELINK", "Delete link");
 define("_LINKS_EDITLINK", "Edit link");
 define("_LINKS_GOTOLINKSPAGE", "Go to Links page");
 
-
 define("_LINKS_XFOUNDRESULTS", "Foram encontradas %d links.");
 define("_LINKS_CLICK", "Clique");
 define("_LINKS_HERE", "aqui");

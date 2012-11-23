@@ -19,7 +19,6 @@
 //
 // $Id: OLE.php,v 1.13 2007/03/07 14:38:25 schmidt Exp $
 
-
 /**
 * Array for storing OLE instances that are accessed from
 * OLE_ChainedBlockStream::stream_open().

@@ -6,12 +6,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 session_write_close();
 
-
-
-
-
-
-
 if ($editedUser -> user['user_type'] != 'administrator') {
  $directionsTree = new MagesterDirectionsTree();
  $directionsArray = $directionsTree -> getFlatTree();
@@ -63,7 +57,7 @@ if ($editedUser -> user['user_type'] != 'administrator') {
  $smarty -> assign("T_USER_TESTS", $userDoneTests);
  foreach ($userLessons as $key => $lesson) {
   if ($lesson -> lesson['course_only']) {
-   foreach($courseLessons as $courseId => $foo) {
+   foreach ($courseLessons as $courseId => $foo) {
     if (isset($courseLessons[$courseId][$key])) {
      $courseLessons[$courseId][$key] = $lesson -> lesson;
     } elseif ($foo -> lesson) {
@@ -79,7 +73,6 @@ if ($editedUser -> user['user_type'] != 'administrator') {
   }
  }
 
-
  $smarty -> assign("T_USER_LESSONS", $userLessons);
  $smarty -> assign("T_COURSE_LESSONS", $courseLessons);
 
@@ -93,15 +86,12 @@ if ($editedUser -> user['user_type'] != 'administrator') {
 }
 $smarty -> assign("T_EMPLOYEE_FORM_CAPTION", _USERFORM.": " . formatLogin($editedUser -> user['login']));
 
-
-
-
 if (isset($_GET['pdf']) && $currentUser -> user['login'] != $editedUser -> user['login']) {
 
  $pdf = new MagesterPdf(_EMPLOYEEFORM . ": " . formatLogin($editedUser -> user['login']));
  try {
   $avatarFile = new MagesterFile($infoUser -> user['avatar']);
- } catch(Exception $e) {
+ } catch (Exception $e) {
   $avatarFile = new MagesterFile(G_SYSTEMAVATARSPATH."unknown_small.png");
  }
 
@@ -131,7 +121,6 @@ if (isset($_GET['pdf']) && $currentUser -> user['login'] != $editedUser -> user[
  }
  $pdf -> printInformationSection(_SKILLS, $info);
 
-
  if ($editedUser -> user['user_type'] != 'administrator' && (!empty($userCourses) || !empty($userLessons))) {
   $formatting = array(_NAME => array('width' => '40%', 'fill' => false),
        _CATEGORY => array('width' => '25%','fill' => false),
@@ -148,7 +137,6 @@ if (isset($_GET['pdf']) && $currentUser -> user['login'] != $editedUser -> user[
          _COMPLETED => $value['to_timestamp'] ? formatTimestamp($value['to_timestamp']) : '-',
          _SCORE => formatScore($value['score']).'%',
          'active' => $value['active']);
-
 
    if (isset($courseLessons[$value['id']]) && !empty($courseLessons[$value['id']])) {
     $subsectionFormatting = array(_NAME => array('width' => '78%', 'fill' => true),
@@ -202,7 +190,6 @@ if (isset($_GET['pdf']) && $currentUser -> user['login'] != $editedUser -> user[
 */
   }
   $pdf->printDataSection(_TRAINING.': '._LESSONS, $data, $formatting, $subSections);
-
 
   $info = array(array(_COURSESAVERAGE, $averages['courses'].'%'),
        array(_LESSONSAVERAGE, $averages['lessons'].'%'));

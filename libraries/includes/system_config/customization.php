@@ -13,8 +13,6 @@ $customizationDisableForm -> addElement("advcheckbox", "disable_online_users", _
 $customizationDisableForm -> addElement("advcheckbox", "disable_glossary", _GLOSSARY, null, 'class = "inputCheckBox"', array(0, 1));
 $customizationDisableForm -> addElement("advcheckbox", "disable_calendar", _CALENDAR, null, 'class = "inputCheckBox"', array(0, 1));
 
-
-
 $customizationDisableForm -> addElement("advcheckbox", "disable_news", _ANNOUNCEMENTS, null, 'class = "inputCheckBox"', array(0, 1));
 $customizationDisableForm -> addElement("advcheckbox", "disable_messages", _MESSAGES, null, 'class = "inputCheckBox"', array(0, 1));
 $customizationDisableForm -> addElement("advcheckbox", "disable_forum", _FORUMS, null, 'class = "inputCheckBox"', array(0, 1));

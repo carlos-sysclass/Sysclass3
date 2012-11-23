@@ -53,7 +53,8 @@ class payments extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      //$form -> addElement('select', 'user', _USER, 'class = "inputText"');
      //$form -> addRule('user', _THEFIELD.' "'._USER.'" '._ISMANDATORY, 'required', null, 'client');
      $form -> addElement('text', 'amount', _AMOUNT, 'class = "inputTextScore"');
@@ -70,7 +71,8 @@ class payments extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         formatLogin();
         $flippedLogins = array_flip($GLOBALS['_usernames']);
         $timestamp = mktime($_POST['payment_Hour'], $_POST['payment_Minute'], 0, $_POST['payment_Month'], $_POST['payment_Day'], $_POST['payment_Year']);
@@ -102,7 +104,8 @@ class payments extends MagesterEntity
      * @access public
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
      $fields['lessons'] = array_filter($fields['lessons'], 'is_numeric');
      if (isset($fields['lessons']) && sizeof($fields['lessons']) > 0) {
       $lessonNames = eF_getTableDataFlat("lessons", "name", "id in (".implode(",", $fields['lessons']).")");
@@ -122,7 +125,7 @@ class payments extends MagesterEntity
         if ($fields['method'] == 'paypal') {
             //@todo: get corresponding paypal_data id
    $eventType = MagesterEvent::NEW_PAYPAL_PAYMENT;
-        } else if ($fields['method'] == 'balance') {
+        } elseif ($fields['method'] == 'balance') {
    $eventType = MagesterEvent::NEW_BALANCE_PAYMENT;
         } else {
          $eventType = false;
@@ -144,6 +147,7 @@ class payments extends MagesterEntity
          }
    MagesterEvent::triggerEvent($event);
         }
+
         return $payment;
     }
 }
@@ -165,13 +169,15 @@ class cart
      * @return unknown_type
 
      */
-    public static function retrieveCart() {
+    public static function retrieveCart()
+    {
         if (isset($_COOKIE['cart']) && is_numeric($_COOKIE['cart'])) {
             $result = eF_getTableData("carts", "contents", "id=".$_COOKIE['cart']);
             $cart = unserialize($result[0]['contents']);
         } else {
             $cart = array();
         }
+
         return $cart;
     }
     /**
@@ -183,7 +189,8 @@ class cart
      * @return unknown_type
 
      */
-    public static function prepareCart($cart = false) {
+    public static function prepareCart($cart = false)
+    {
         if (!$cart) {
             $cart = self :: retrieveCart();
         }
@@ -243,6 +250,7 @@ class cart
             $cart['total_price'] = $cartTotal;
             $cart['total_price_string'] = formatPrice($cartTotal, false, false);
         }
+
         return $cart;
     }
     /**
@@ -254,7 +262,8 @@ class cart
      * @return unknown_type
 
      */
-    public static function storeCart($cart = false) {
+    public static function storeCart($cart = false)
+    {
         if (!$cart) {
             setcookie("cart", "", time() - 3600);
         } else {
@@ -275,6 +284,7 @@ class cart
              eF_deleteTableData("carts", "timestamp < ".(time() - 86400));
          }
         }
+
         return $cart;
     }
     /**
@@ -286,7 +296,8 @@ class cart
      * @return unknown_type
 
      */
-    public static function compactCart($cart) {
+    public static function compactCart($cart)
+    {
         unset($cart['total_price_string']);
         unset($cart['total_price']);
         if (empty($cart['lesson'])) {
@@ -300,6 +311,7 @@ class cart
         }
         if (empty($cart)) {
             unset($cart);
+
             return false;
         } else {
             return $cart;
@@ -318,7 +330,8 @@ class cart
      * @return unknown_type
 
      */
-    public static function filterCart($cart, $lessons = array(), $courses = array()) {
+    public static function filterCart($cart, $lessons = array(), $courses = array())
+    {
         if (isset($cart['lesson'])) {
             foreach ($cart['lesson'] as $key => $entry) {
                 if (!in_array($key, array_keys($lessons))) {
@@ -334,6 +347,7 @@ class cart
             }
         }
         $cart = self :: compactCart($cart);
+
         return $cart;
     }
 }

@@ -27,7 +27,8 @@
 
 define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
 
-class PHPExcel_Shared_OLERead {
+class PHPExcel_Shared_OLERead
+{
 	private $data = '';
 
 	// OLE identifier
@@ -59,12 +60,9 @@ class PHPExcel_Shared_OLERead {
 	const START_BLOCK_POS					= 0x74;
 	const SIZE_POS							= 0x78;
 
-
-
 	public $wrkbook						= null;
 	public $summaryInformation			= null;
 	public $documentSummaryInformation	= null;
-
 
 	/**
 	 * Read the file
@@ -75,7 +73,7 @@ class PHPExcel_Shared_OLERead {
 	public function read($sFileName)
 	{
 		// Check if file exists and is readable
-		if(!is_readable($sFileName)) {
+		if (!is_readable($sFileName)) {
 			throw new Exception("Could not open " . $sFileName . " for reading! File does not exist, or it is not readable.");
 		}
 
@@ -225,7 +223,7 @@ class PHPExcel_Shared_OLERead {
 		$block = $bl;
 		$data = '';
 
-		while ($block != -2)  {
+		while ($block != -2) {
 			$pos = ($block + 1) * self::BIG_BLOCK_SIZE;
 			$data .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
 			$block = $this->bigBlockChain[$block];
@@ -236,7 +234,8 @@ class PHPExcel_Shared_OLERead {
 	/**
 	 * Read entries in the directory stream.
 	 */
-	private function _readPropertySets() {
+	private function _readPropertySets()
+	{
 		$offset = 0;
 
 		// loop through entires, each entry is 128 bytes

@@ -24,7 +24,6 @@ require_once 'Zend/Pdf/Resource/Font/Simple.php';
 /** Zend_Pdf_FileParser_Font_OpenType */
 require_once 'Zend/Pdf/FileParser/Font/OpenType.php';
 
-
 /**
  * Parsed and (optionaly) embedded fonts implementation
  *
@@ -46,8 +45,7 @@ abstract class Zend_Pdf_Resource_Font_Simple_Parsed extends Zend_Pdf_Resource_Fo
     public function __construct(Zend_Pdf_FileParser_Font_OpenType $fontParser)
     {
         parent::__construct();
-        
-        
+
         $fontParser->parse();
 
         /* Object properties */
@@ -72,9 +70,7 @@ abstract class Zend_Pdf_Resource_Font_Simple_Parsed extends Zend_Pdf_Resource_Fo
         $this->_glyphWidths       = $fontParser->glyphWidths;
         $this->_missingGlyphWidth = $this->_glyphWidths[0];
 
-
         $this->_cmap = $fontParser->cmap;
-
 
         /* Resource dictionary */
 

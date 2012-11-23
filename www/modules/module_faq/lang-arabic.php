@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "أسئلة وأجوبة الوحدة");//FAQ Module
 define("_FAQ_MAIN", "الصفحة الرئيسية");//Main page
 define("_FAQ_MANAGEMENT", "إدارة أسئلة وأجوبة");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "أسئلة وأجوبة بنجاح تحديث");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "أسئلة وأجوبة لا يمكن تحديث");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "تضاف أسئلة وأجوبة دخول");//Insert FAQ entry

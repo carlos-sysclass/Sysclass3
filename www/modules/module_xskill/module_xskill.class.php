@@ -1,25 +1,30 @@
 <?php
 
-class module_xskill extends MagesterExtendedModule {
+class module_xskill extends MagesterExtendedModule
+{
     // CORE MODULE FUNCTIONS
-    public function getName() {
+    public function getName()
+    {
         return "XSKILL";
     }
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator");
     }
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
         return true;
     }
-    
+
     /* MAIN-INDEPENDENT MODULE INFO, PAGES, TEMPLATES, ETC... */
-    
+
     /* BLOCK FUNCTIONS */
     /* ACTIONS FUNCTIONS */
 
-    /* HOOK ACTIONS FUNCTIONS */  
+    /* HOOK ACTIONS FUNCTIONS */
     /* DATA MODEL FUNCTIONS /*/
-    public function loadCourseSkills($course_id) {
+    public function loadCourseSkills($course_id)
+    {
     	if (eF_checkParameter($course_id, "id")) {
 	    	$course_skills = eF_getTableData(
 	    		"module_xskill_course2skills c2skl LEFT JOIN module_xskill skl ON c2skl.skill_id = skl.id",
@@ -27,10 +32,10 @@ class module_xskill extends MagesterExtendedModule {
 	    		sprintf("c2skl.course_id = %d", $course_id)
 			);
 			$result = array(
-				'require'	=> array(), 
-				'provide'	=> array() 
+				'require'	=> array(),
+				'provide'	=> array()
 			);
-			foreach($course_skills as $skill) {
+			foreach ($course_skills as $skill) {
 				if ($skill['require'] == 1 || $skill['provide'] != 1) {
 					$result['require'][] = $skill;
 				} else {
@@ -40,7 +45,8 @@ class module_xskill extends MagesterExtendedModule {
 			return $result;
 	    }
     }
-    public function loadUserSkills($user_id) {
+    public function loadUserSkills($user_id)
+    {
     	if (eF_checkParameter($user_id, "id")) {
 	    	$users_skills = eF_getTableData(
 	    		"module_xskill_users u2skl LEFT JOIN module_xskill skl ON u2skl.skill_id = skl.id",
@@ -50,5 +56,5 @@ class module_xskill extends MagesterExtendedModule {
 			return $users_skills;
 	    }
     }
-    
+
 }

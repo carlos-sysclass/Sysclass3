@@ -20,8 +20,8 @@
 // THIS FILE IS DEPRECATED IN FAVOR OF DEPENDENCY2.PHP, AND IS NOT USED IN THE INSTALLER
 // $Id: Dependency.php,v 1.42 2006/03/26 23:25:56 cellog Exp $
 
-require_once "PEAR.php";
-require_once "OS/Guess.php";
+require_once 'PEAR.php';
+require_once 'OS/Guess.php';
 
 define('PEAR_DEPENDENCY_MISSING',        -1);
 define('PEAR_DEPENDENCY_CONFLICT',       -2);
@@ -141,17 +141,22 @@ class PEAR_Dependency
                 if (!$this->registry->packageExists($name, $channel)) {
                     if ($opt) {
                         $errmsg = "package `$channel/$name' is recommended to utilize some features.";
+
                         return PEAR_DEPENDENCY_MISSING_OPTIONAL;
                     }
                     $errmsg = "requires package `$channel/$name'";
+
                     return PEAR_DEPENDENCY_MISSING;
                 }
+
                 return false;
             case 'not':
                 if ($this->registry->packageExists($name, $channel)) {
                     $errmsg = "conflicts with package `$channel/$name'";
+
                     return PEAR_DEPENDENCY_CONFLICT;
                 }
+
                 return false;
             case 'lt':
             case 'le':
@@ -170,15 +175,19 @@ class PEAR_Dependency
                         if ($version) {
                             $errmsg .= "  Installed version is $version";
                         }
+
                         return $code;
                     }
                     $errmsg = "requires package `$channel/$name' " .
                         $this->signOperator($relation) . " $req";
+
                     return $code;
                 }
+
                 return false;
         }
         $errmsg = "relation '$relation' with requirement '$req' is not supported (name=$channel/$name)";
+
         return PEAR_DEPENDENCY_BAD_DEPENDENCY;
     }
 
@@ -225,6 +234,7 @@ class PEAR_Dependency
                 }
             }
         }
+
         return ($error) ? true : false;
     }
 
@@ -247,6 +257,7 @@ class PEAR_Dependency
         if ($relation == 'not') {
             if (extension_loaded($name)) {
                 $errmsg = "conflicts with  PHP extension '$name'";
+
                 return PEAR_DEPENDENCY_CONFLICT;
             } else {
                 return false;
@@ -259,9 +270,11 @@ class PEAR_Dependency
             }
             if ($opt) {
                 $errmsg = "'$name' PHP extension is recommended to utilize some features";
+
                 return PEAR_DEPENDENCY_MISSING_OPTIONAL;
             }
             $errmsg = "'$name' PHP extension is not installed";
+
             return PEAR_DEPENDENCY_MISSING;
         }
         if ($relation == 'has') {
@@ -281,9 +294,11 @@ class PEAR_Dependency
             if ($opt) {
                 $errmsg = "'$name' PHP extension version " . $this->signOperator($operator) .
                     " $req is recommended to utilize some features";
+
                 return $code;
             }
         }
+
         return $code;
     }
 
@@ -310,6 +325,7 @@ class PEAR_Dependency
             return false;
         }
         $errmsg = "'$os' operating system not supported";
+
         return PEAR_DEPENDENCY_CONFLICT;
     }
 
@@ -332,6 +348,7 @@ class PEAR_Dependency
         }
         if ($relation == 'not') {
             $errmsg = "Invalid dependency - 'not' is allowed when specifying PHP, you must run PHP in PHP";
+
             return PEAR_DEPENDENCY_BAD_DEPENDENCY;
         }
         if (substr($req, 0, 2) == 'v.') {
@@ -342,8 +359,10 @@ class PEAR_Dependency
         if (!version_compare("$php_ver", "$req", $operator)) {
             $errmsg = "PHP version " . $this->signOperator($operator) .
                 " $req is required";
+
             return PEAR_DEPENDENCY_CONFLICT;
         }
+
         return false;
     }
 
@@ -370,6 +389,7 @@ class PEAR_Dependency
             }
         }
         $errmsg = "'$program' program is not present in the PATH";
+
         return PEAR_DEPENDENCY_MISSING;
     }
 
@@ -398,6 +418,7 @@ class PEAR_Dependency
             return false;
         }
         $errmsg = "'$sapi_backend' SAPI backend not supported";
+
         return PEAR_DEPENDENCY_CONFLICT;
     }
 
@@ -422,8 +443,10 @@ class PEAR_Dependency
         if (!version_compare("$zend_ver", "$req", $operator)) {
             $errmsg = "Zend version " . $this->signOperator($operator) .
                 " $req is required";
+
             return PEAR_DEPENDENCY_CONFLICT;
         }
+
         return false;
     }
 
@@ -441,7 +464,7 @@ class PEAR_Dependency
      */
     function signOperator($operator)
     {
-        switch($operator) {
+        switch ($operator) {
             case 'lt': return '<';
             case 'le': return '<=';
             case 'gt': return '>';
@@ -487,9 +510,9 @@ class PEAR_Dependency
                                PEAR_DEPENDENCY_CONFLICT;
                 break;
         }
+
         return $code;
     }
 
     // }}}
 }
-?>

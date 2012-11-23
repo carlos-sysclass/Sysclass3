@@ -6,9 +6,8 @@ class scatter_value
 	{
 		$this->x = $x;
 		$this->y = $y;
-		
-		if( $dot_size > 0 )
-		{
+
+		if ($dot_size > 0) {
 			$tmp = 'dot-size';
 			$this->$tmp = $dot_size;
 		}
@@ -23,7 +22,7 @@ class scatter
 		$this->set_colour( $colour );
 		$this->set_dot_size( $dot_size );
 	}
-	
+
 	function set_colour( $colour )
 	{
 		$this->colour = $colour;
@@ -34,7 +33,7 @@ class scatter
 		$tmp = 'dot-size';
 		$this->$tmp = $dot_size;
 	}
-	
+
 	function set_values( $values )
 	{
 		$this->values = $values;

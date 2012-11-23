@@ -1,26 +1,27 @@
 <?php
 //include_once ("../PEAR/Spreadsheet/Excel/Writer.php");
 
-class module_chat extends MagesterExtendedModule {
-
-
-	public function getName() {
+class module_chat extends MagesterExtendedModule
+{
+	public function getName()
+	{
 		return "Chat Module";
 	}
 
-	public function getPermittedRoles() {
+	public function getPermittedRoles()
+	{
 	 	return array("administrator", "professor", "student");
 	}
 
-    public function getModuleJS() {
+    public function getModuleJS()
+    {
 		if (strpos(decryptUrl($_SERVER['REQUEST_URI']), $this -> moduleBaseUrl) !== false) {
 			return $this->moduleBaseDir."js/admin.js";
 		}
     }
 
-
-	public function onInstall(){
-
+	public function onInstall()
+	{
 		eF_executeNew("drop table if exists module_chat");
 		$res1 = eF_executeNew("CREATE TABLE module_chat (
 							id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -51,11 +52,11 @@ class module_chat extends MagesterExtendedModule {
 							('1', '2000', '30000')"
 							);
 
-
 		return ($res1 && $res2 && $res3 &&res4);
 	}
 
-	public function onUninstall() {
+	public function onUninstall()
+	{
             $res1 = eF_executeNew("DROP TABLE module_chat;");
 			$res2 = eF_executeNew("DROP TABLE module_chat_users;");
 			$res3 = eF_executeNew("DROP TABLE module_chat_config;");
@@ -63,7 +64,8 @@ class module_chat extends MagesterExtendedModule {
 			return ($res1 && $res2 && $res3);
     }
 
-	public function getCenterLinkInfo() {
+	public function getCenterLinkInfo()
+	{
         $optionArray = array('title' => 'Chatasasas',
                              'image' => $this -> moduleBaseDir.'img/chat.png',
                              'link' => $this -> moduleBaseUrl);
@@ -72,11 +74,13 @@ class module_chat extends MagesterExtendedModule {
         return $centerLinkInfo;
     }
 
-	public function getModule(){
+	public function getModule()
+	{
 		return true;
 	}
 
-	public function getSidebarLinkInfo () {
+	public function getSidebarLinkInfo ()
+	{
 	//echo("holaaaaaaa");
         $currentUser = $this -> getCurrentUser();
     	// professors should see a link in the lessons menu
@@ -94,14 +98,15 @@ class module_chat extends MagesterExtendedModule {
 // and admins should see a link in the users menu and in a newly defined menu
 
 	}
-	
 
 	// Get module css
-    public function getModuleCSS() {
+    public function getModuleCSS()
+    {
         return $this->moduleBaseDir."css/screen.css";
     }
 
-	private function calculateCommonality($user){
+	private function calculateCommonality($user)
+	{
 		$currentUserLessons = array();
 		$commonality = array();
 		$common_lessons = array();
@@ -117,14 +122,14 @@ class module_chat extends MagesterExtendedModule {
 		$result = eF_executeNew ("SELECT login FROM users");
 
 		foreach ($result as $value) {
-			if ($value["login"] != $user){
+			if ($value["login"] != $user) {
 				$all_users[] = ($value["login"]);
 
 				$rate = 0;
 
 				$result2 = eF_executeNew ("SELECT lessons_ID FROM users_to_lessons WHERE archive=0 and users_LOGIN='".$value['login']."'");
 
-				foreach ($result2 as $value2){
+				foreach ($result2 as $value2) {
 					$users_lessons[] = $value2["lessons_ID"];
 				}
 
@@ -140,35 +145,33 @@ class module_chat extends MagesterExtendedModule {
 
 	}
 
-	public function isPopup() {
+	public function isPopup()
+	{
 		/*$pageURL = 'http';
 		if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
 			$pageURL .= "://";
 		if ($_SERVER["SERVER_PORT"] != "80") {
 			$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-		}
-		else {
+		} else {
 			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		}
 		return $pageURL;*/
-		if (isset($_GET['popup'])){
+		if (isset($_GET['popup'])) {
 			if ($_GET['popup']==1)
 				return true;
 		}
 		return false;
 	}
 
-
-	public function addScripts() {
+	public function addScripts()
+	{
 		return array("scriptaculous/effects",
 					 "scriptaculous/controls");
 	}
 
-
-
 	//public function getSmartyTpl() {
-	public function onPageFinishLoadingSmartyTpl() {
-
+	public function onPageFinishLoadingSmartyTpl()
+	{
 		if (!isset($_SESSION['lesson_rooms']))
 			$_SESSION['lesson_rooms'] = array();
 
@@ -179,24 +182,22 @@ class module_chat extends MagesterExtendedModule {
 
 		//$page = $this->isPopup();
 
-		//if ($this->contains($page,"popup=1")){
-		if ($this->isPopup()){
+		//if ($this->contains($page,"popup=1")) {
+		if ($this->isPopup()) {
 			$smarty -> assign("T_CHAT_MODULE_STATUS", "OFF");
-		}
-		else{
+		} else {
 			$smarty -> assign("T_CHAT_MODULE_STATUS", "ON");
 		}
 
-		if (!$_SESSION['chatter']){
+		if (!$_SESSION['chatter']) {
 			$currentUser = $this -> getCurrentUser();
 			$_SESSION['chatter'] = $currentUser -> login;
 			$_SESSION['utype'] = $currentUser -> getType();
 			$this -> calculateCommonality($currentUser -> login);
 			eF_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
-		}
-		else{
+		} else {
 			$currentUser = $this -> getCurrentUser();
-			if ($_SESSION['chatter'] != $currentUser -> login){
+			if ($_SESSION['chatter'] != $currentUser -> login) {
 				$_SESSION['chatter'] = $currentUser -> login;
 				$_SESSION['utype'] = $currentUser -> getType();
 				$this -> calculateCommonality($currentUser -> login);
@@ -210,32 +211,31 @@ class module_chat extends MagesterExtendedModule {
 
 		$onlineUsers = MagesterUser :: getUsersOnline();
 
-
 		$smarty -> assign("T_CHAT_MODULE_ONLINEUSERS", $onlineUsers);
 
 		return $this -> moduleBaseDir . "module_chat.tpl";
 	}
 
-	public function getSmartyTpl() {
-
+	public function getSmartyTpl()
+	{
 		$smarty = $this -> getSmartyVar();
-		
+
 		$smarty->assign('T_CHAT_ERROR_RATE', "");
 		$smarty->assign('T_CHAT_ERROR2_RATE', "");
 
-			if (isset($_POST['rate']) && isset($_POST['rate2'])){
-			
+			if (isset($_POST['rate']) && isset($_POST['rate2'])) {
+
 				$ok = true;
-				if ($_POST['rate'] < 1){
+				if ($_POST['rate'] < 1) {
 					$smarty->assign('T_CHAT_ERROR_RATE', " New Rate must be greater or equal to 1.");
 					$ok = false;
 				}
-				if ($_POST['rate2'] < 1){
+				if ($_POST['rate2'] < 1) {
 					$smarty->assign('T_CHAT_ERROR2_RATE', " New Rate must be greater or equal to 1.");
 					$ok = false;
 				}
-				
-				if ($ok){
+
+				if ($ok) {
 					$this -> setChatHeartbeat($_POST['rate']*1000);
 					$this -> setRefresh_rate($_POST['rate2']*1000);
 				}
@@ -245,32 +245,30 @@ class module_chat extends MagesterExtendedModule {
 			$r2 = $this->getRefresh_rate();
 
 			$smarty->assign('T_CHAT_CURRENT_RATE', $r/1000);
-			
 
 			$form = new HTML_QuickForm("change_chatheartbeat_form", "post", $this->moduleBaseUrl."&setChatHeartBeat=1", "", null, true);
 			$form->addElement('text', 'rate', "rate", 'class="inputText" value="'.($r/1000).'" style="width:100px;"');
 			$form->addRule('rate', _THEFIELD.' "Rate" '._ISMANDATORY, 'required', null, 'client');
 			$form->addRule('rate', "Non numeric Value", 'numeric', null, 'client');
 			$form->addRule('rate', "Rate must be greater than 1", 'callback', create_function('$rate', 'return ($rate >= 1);'));
-			
+
 			$form->addElement('text', 'rate2', "rate2", 'class="inputText" value="'.($r2/1000).'" style="width:100px;"');
 			$form->addRule('rate2', _THEFIELD.' "Rate" '._ISMANDATORY, 'required', null, 'client');
 			$form->addRule('rate2', "Non numeric Value", 'numeric', null, 'client');
-			
+
 			$form->addElement('submit', 'submit1', _SUBMIT, 'class="flatButton"');
-			
-			
+
 			$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
 			$form->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
 			$form->setRequiredNote("mesh");
 			$form->accept($renderer);
 			$smarty->assign('T_CHAT_CHANGE_CHATHEARTBEAT_FORM', $renderer->toArray());
-			
+
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+
 			/*$smarty->assign('T_CHAT_ERROR2_RATE', "");
-			
-			if (isset($_POST['rate2'])){
+
+			if (isset($_POST['rate2'])) {
 				if ($_POST['rate2'] >= 1)
 					$this -> setRefresh_rate($_POST['rate2']*1000);
 				else
@@ -296,7 +294,7 @@ class module_chat extends MagesterExtendedModule {
 			//$lessons = $this -> getLessonsCatalogue();
 			//$smarty->assign('T_CHAT_LESSONS', $lessons);
 			$textfieldcontent = "";
-			if (isset($_POST['lessontitle'])){
+			if (isset($_POST['lessontitle'])) {
 				$textfieldcontent = $_POST['lessontitle'];
 				//$l = strip_tags($_POST['lessontitle']);
 				//$l2 = substr($l, strpos($l, '→')+5);
@@ -304,8 +302,8 @@ class module_chat extends MagesterExtendedModule {
 											$_POST['from']['Y'].'-'.$_POST['from']['M'].'-'.$_POST['from']['d'].' '."00:00:00" ,
 											$_POST['until']['Y'].'-'.$_POST['until']['M'].'-'.$_POST['until']['d'].' '."23:59:59"
 											);
-											
-				$smarty->assign('T_LOG', $log);							
+
+				$smarty->assign('T_LOG', $log);
 				$smarty->assign('T_CHAT_LESSON_TITLE', $l2);
 
 			}
@@ -319,7 +317,7 @@ class module_chat extends MagesterExtendedModule {
 
 			$form->setDefaults(array('until' => array('d' => date('d'), 'M' => date('m'), 'Y' => date('Y')),
 									 'from' => $week_ago
-									 ));			
+									 ));
 
 			$form->addElement('submit', 'submit', "Create Log", 'class="flatButton"');
 			$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -333,39 +331,38 @@ class module_chat extends MagesterExtendedModule {
 		return $this -> moduleBaseDir . "control_panel.tpl";
 	}
 
-
-	public function getNavigationLinks() {
+	public function getNavigationLinks()
+	{
 		$currentUser = $this -> getCurrentUser();
 
         /*if ($currentUser -> getType() == 'administrator') {
-			if (isset($_GET['setChatHeartBeat'])){
+			if (isset($_GET['setChatHeartBeat'])) {
 				return array (array ('title' => _HOME, 'link'  => $currentUser -> getType() . ".php?ctg=control_panel"),
 								array ('title' => "Chat Module", 'link'  => $this -> moduleBaseUrl),
 								array ('title' => "Chat Engine Rate", 'link' => ($this -> moduleBaseUrl)."&setChatHeartBeat=1"));
-			}
-			else if (isset($_GET['setRefresh_rate'])){
+			} elseif (isset($_GET['setRefresh_rate'])) {
 				return array (array ('title' => _HOME, 'link'  => $currentUser -> getType() . ".php?ctg=control_panel"),
 								array ('title' => "Chat Module", 'link'  => $this -> moduleBaseUrl),
 								array ('title' => "User List Refresh Rate", 'link' => ($this -> moduleBaseUrl)."&setRefresh_rate=1"));
-			}
-			else if (isset($_GET['createLog'])){
+			} elseif (isset($_GET['createLog'])) {
 				return array (array ('title' => _HOME, 'link'  => $currentUser -> getType() . ".php?ctg=control_panel"),
 								array ('title' => "Chat Module", 'link'  => $this -> moduleBaseUrl),
 								array ('title' => "Create History Log", 'link' => ($this -> moduleBaseUrl)."&createLog=1"));
-			}
-			else{*/
+			} else {*/
             	return array (array ('title' => _HOME, 'link'  => $currentUser -> getType() . ".php?ctg=control_panel"),
 								array ('title' => "Chat Module", 'link'  => $this -> moduleBaseUrl));
 			//}
         //}
 	}
 
-	public function checkRate($rate){
+	public function checkRate($rate)
+	{
 		if ($rate<1)
 			return false;
 		return true;
 	}
-	private function contains($str, $content){
+	private function contains($str, $content)
+	{
 		$str = strtolower($str);
 		$content = strtolower($content);
 
@@ -375,52 +372,52 @@ class module_chat extends MagesterExtendedModule {
 			return false;
 	}
 
-	private function getChatHeartbeat(){
-
+	private function getChatHeartbeat()
+	{
 		$rate = eF_getTableData("module_chat_config", "chatHeartbeatTime", "1");
-		foreach( $rate as $r ){
+		foreach ($rate as $r) {
 			return $r['chatHeartbeatTime'];
 		}
 
 	}
 
-	private function getRefresh_rate(){
-
+	private function getRefresh_rate()
+	{
 		$rate = eF_getTableData("module_chat_config", "refresh_rate", "1");
-		foreach( $rate as $r ){
+		foreach ($rate as $r) {
 			return $r['refresh_rate'];
 		}
 	}
 
-
-	private function setChatheartBeat($rate){
+	private function setChatheartBeat($rate)
+	{
 		$sql = "update module_chat_config set chatHeartbeatTime = '".$rate."' where 1";
 		$query = mysql_query($sql);
 	}
 
-
-	private function setRefresh_rate($rate){
-
+	private function setRefresh_rate($rate)
+	{
 		$sql = "update module_chat_config set refresh_rate = '".$rate."' where 1";
 		$query = mysql_query($sql);
 	}
 
-	private function getLessonsCatalogue(){
-
+	private function getLessonsCatalogue()
+	{
 		$lsn = eF_getTableData("lessons", "name", "1");
 
 		$lessons = array();
 
-		foreach ($lsn as $lesson){
+		foreach ($lsn as $lesson) {
 			$lessons[] = $lesson['name'];
 		}
 		return $lessons;
 	}
 
-	private function createLessonHistory($lesson, $from, $until){
+	private function createLessonHistory($lesson, $from, $until)
+	{
 		$lesson = str_replace(' ','_',$lesson);
-		
-		//if (time() > strtotime($from)){
+
+		//if (time() > strtotime($from)) {
 		//	$sql = "select * from module_chat where (module_chat.to_user = '".$lesson."') order by id ASC";
 		//}
 		//else{
@@ -431,7 +428,6 @@ class module_chat extends MagesterExtendedModule {
 		/*$data = array();
 		$workbook = new Spreadsheet_Excel_Writer();
 		$workbook->setVersion(8);
-
 
 		$worksheet =& $workbook->addWorksheet($lesson.' ');
 		$worksheet->setInputEncoding('utf-8');
@@ -457,7 +453,6 @@ class module_chat extends MagesterExtendedModule {
 		$format_date = $workbook->addFormat();
 		$format_date->setBorder(1);
 
-
 		$worksheet->write(0, 0, 'FROM USER', $format_title);
 		$worksheet->write(0, 1, 'MESSAGE', $format_title);
 		$worksheet->write(0, 2, 'SENT AT', $format_title);
@@ -470,12 +465,12 @@ class module_chat extends MagesterExtendedModule {
 			/*$worksheet->write($i, 0, $chat["from_user"], $format_user);
 			$worksheet->write($i, 1, $chat["message"], $multipleLineDataFormat);
 			$worksheet->write($i, 2, $chat["sent"], $format_date);*/
-			
+
 			if ($i%2==0)
 				$log .= "<tr class=\"oddRowColor\"><td class=\"sender\">".$chat["from_user"].":</td><td class=\"alignCenter chatmsg\">".$chat["message"]."</td><td class=\"alignLeft date\">".$chat["sent"]."</td></td>";
 			else
 				$log .= "<tr class=\"evenRowColor\"><td class=\"sender\">".$chat["from_user"].":</td><td class=\"alignCenter chatmsg\">".$chat["message"]."</td><td class=\"alignLeft date\">".$chat["sent"]."</td></td>";
-			
+
 			$i++;
 		}
 		$log.= "</table>";
@@ -495,7 +490,8 @@ class module_chat extends MagesterExtendedModule {
     	return date("d-M-Y", $subtract);
 	}
 
-    public function getModuleIcon() {
+    public function getModuleIcon()
+    {
         return $this -> moduleBaseLink.'img/chat.png';
     }
 }

@@ -3,11 +3,12 @@
 * Replaces occurences of the form #filter:user_login-asdfas# with a personal message link
 */
 
-function smarty_outputfilter_eF_template_loginToMessageLink($compiled, &$smarty) {
+function smarty_outputfilter_eF_template_loginToMessageLink($compiled, &$smarty)
+{
 	if (
 		!$GLOBALS['configuration']['disable_messages']
 		&& (
-	    	!$GLOBALS['currentUser'] -> coreAccess['personal_messages'] || 
+	    	!$GLOBALS['currentUser'] -> coreAccess['personal_messages'] ||
 	    	$GLOBALS['currentUser'] -> coreAccess['personal_messages'] != 'hidden'
 		)
 	) {
@@ -21,6 +22,5 @@ function smarty_outputfilter_eF_template_loginToMessageLink($compiled, &$smarty)
     }
 //    $compiled = preg_replace_callback("/#filter:user_login-(.*)#/U", 'formatLogin', $compiled);
 //    $compiled = preg_replace_callback("/#filter:user_loginNoIcon-(.*)#/U", 'formatLogin', $compiled);
-    
     return $compiled;
 }

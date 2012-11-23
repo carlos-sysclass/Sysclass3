@@ -6,7 +6,8 @@
 *
 
 */
-function smarty_function_eF_template_printBlock($params, &$smarty) {
+function smarty_function_eF_template_printBlock($params, &$smarty)
+{
  if ($params['title'] == "") {return '';}
     $params['link'] ? $params['title'] = '<a href = "'.$params['link'].'">'.$params['title'].'</a>' : null;
  $params['data'] ? $params['content'] = $params['data'] : null; //'data' is used in printInnertable, and we put this here for compatibility
@@ -228,7 +229,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
         </div>
     </div>';
     if ($params['tabber']) {
-  if($_GET['tab'] == $params['tabber']) {
+  if ($_GET['tab'] == $params['tabber']) {
    $tabberdefault = "tabbertabdefault";
   }
   $str = '<div class = "tabbertab '.$tabberdefault.'"><h3>'.$params['title'].'</h3>'.$str.'</div>';

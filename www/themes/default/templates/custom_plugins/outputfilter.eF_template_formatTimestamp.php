@@ -4,7 +4,8 @@
 * Replaces occurences of the form #filter:timestamp-1132843907# with the current date
 
 */
-function smarty_outputfilter_eF_template_formatTimestamp($compiled, &$smarty) {
+function smarty_outputfilter_eF_template_formatTimestamp($compiled, &$smarty)
+{
     switch ($GLOBALS['configuration']['date_format']) {
         case "YYYY/MM/DD": $format = '%Y %b %d'; break;
         case "MM/DD/YYYY": $format = '%b %d %Y'; break;
@@ -21,5 +22,6 @@ function smarty_outputfilter_eF_template_formatTimestamp($compiled, &$smarty) {
     $new = preg_replace("/#filter:timestamp_time_nosec-\d?#/e", "", $new);
     $new = preg_replace("/#filter:timestamp_interval-\d?#/e", "", $new);
     $new = preg_replace("/#filter:timestamp_time_only_nosec-\d?#/e", "", $new);
+
     return $new;
 }

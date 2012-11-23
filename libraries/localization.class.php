@@ -18,7 +18,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  */
 class localization
 {
-	public static function getStateList() {
+	public static function getStateList()
+	{
 		return array(
 			"AC"	=> "Acre",
 			"AL"	=> "Alagoas",
@@ -47,11 +48,12 @@ class localization
 			"SC"	=> "Santa Catarina",
 			"SP"	=> "São Paulo",
 			"TO"	=> "Tocantins"
-		);		
+		);
 	}
-	public static function getStateNameById($stateId) {
+	public static function getStateNameById($stateId)
+	{
 		$stateList = self::getStateList();
-		
+
 		if (array_key_exists($stateId, $stateList)) {
 			return $stateList[$stateId];
 		}

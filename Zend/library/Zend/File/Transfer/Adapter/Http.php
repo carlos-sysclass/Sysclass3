@@ -64,6 +64,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     public function setValidators(array $validators, $files = null)
     {
         $this->clearValidators();
+
         return $this->addValidators($validators, $files);
     }
 
@@ -130,6 +131,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
             $validator->setFiles($temp)
                       ->isValid($files, null);
             $this->_messages += $validator->getMessages();
+
             return false;
         }
 
@@ -174,6 +176,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
                     }
 
                     $this->_files[$file]['received'] = false;
+
                     return false;
                 }
 
@@ -189,6 +192,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
             if (!$content['filtered']) {
                 if (!$this->_filter($file)) {
                     $this->_files[$file]['filtered'] = false;
+
                     return false;
                 }
 
@@ -337,7 +341,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
                 if (is_array($call)) {
                     $status = $call + $status;
                 }
-            } else if (self::isUploadProgressAvailable()) {
+            } elseif (self::isUploadProgressAvailable()) {
                 $call = call_user_func(self::$_callbackUploadProgress, $id);
                 if (is_array($call)) {
                     $status = $call + $status;
@@ -353,7 +357,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
             if (!is_array($call)) {
                 $status['done']    = true;
                 $status['message'] = 'Failure while retrieving the upload progress';
-            } else if (!empty($status['cancel_upload'])) {
+            } elseif (!empty($status['cancel_upload'])) {
                 $status['done']    = true;
                 $status['message'] = 'The upload has been canceled';
             } else {

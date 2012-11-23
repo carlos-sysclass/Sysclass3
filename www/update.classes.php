@@ -16,42 +16,34 @@ $path = "../libraries/";
 /** Configuration file */
 require_once $path."configuration.php";
 
-
-
-
-
-
-
-
-
 /*
 
 //- ARRUMAR CLASSES
 //	- COLOCAR TUDO NA TABELA USER_TO_COURSES E EXCLUIR TABELA USER_TO_CLASSES
-	$userToClasses = eF_getTableData("users_to_classes uc 
+	$userToClasses = eF_getTableData("users_to_classes uc
 	LEFT JOIN classes c ON (uc.classes_ID = c.id)
 	LEFT JOIN users u ON (uc.users_ID = u.id)
 	", "*");
-	
+
 	//var_dump($userToClasses);
-	
+
 //	fields: users_ID 	classes_ID 	active 	archive 	user_type
 	//var_dump($userToClasses);
-	foreach($userToClasses as $classeUser) {
-		// 
-		$user2CourseCount = eF_countTableData("users_to_courses", "*", 
-			sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID']) 
+	foreach ($userToClasses as $classeUser) {
+		//
+		$user2CourseCount = eF_countTableData("users_to_courses", "*",
+			sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 		);
 
 		if ($user2CourseCount[0]['count'] == 1) {
-			$user2Course = eF_getTableData("users_to_courses", "*", 
-				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID']) 
+			$user2Course = eF_getTableData("users_to_courses", "*",
+				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 			);
 			if ($user2Course[0]['class_id'] == 0) {
 				// UPDATE
 				eF_updateTableData(
-					"users_to_courses", 
-					array('classe_id' => $classeUser['classes_ID']), 
+					"users_to_courses",
+					array('classe_id' => $classeUser['classes_ID']),
 					sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 				);
 				eF_deleteTableData(
@@ -61,7 +53,7 @@ require_once $path."configuration.php";
 				$settedUsers[] = $classeUser['login'];
 			} elseif ($user2Course[0]['class_id'] != $classeUser['classes_ID']) {
 				// DIFERENTE, COM VALORES DIFERENTES EM CADA UM. VERIFICAR MANUALMENTE QUAL DEVE SER ACERTADO
-					
+
 				$errorSetUsers[] = $classeUser['login'];
 			} elseif ($user2Course[0]['class_id'] == $classeUser['classes_ID']) {
 				// usuário setados
@@ -74,12 +66,11 @@ require_once $path."configuration.php";
 				"users_to_classes",
 			 	sprintf("users_ID = %d AND classes_ID = %d", $classeUser['users_ID'], $classeUser['classes_ID'])
 			);
-		} 
+		}
 	}
 	// CLEARING users_to_courses WITH NO COURSE
-	var_dump(eF_deleteTableData("users_to_courses", "courses_ID NOT IN (SELECT id FROM courses)")); 
+	var_dump(eF_deleteTableData("users_to_courses", "courses_ID NOT IN (SELECT id FROM courses)"));
 
-	
 	echo "\nUSUÀRIOS COM ERRO:\n";
 	echo implode("\n", $settedUsers);
 	echo "\nUSUÀRIOS COM ERRO:\n";
@@ -93,6 +84,6 @@ require_once $path."configuration.php";
 - ARRUMAR MATRICULAS
 	- REGISTRAR MATRICULA DE ALUNOS ANTIGOS
 - ARRUMAR PAGAMENTOS
-	- LIGAR O PAGAMENTO SOMENTE A MATRICULA 
+	- LIGAR O PAGAMENTO SOMENTE A MATRICULA
 	- INCLUIR LISTA DE BOLETOS PARA O ALUNO
 */

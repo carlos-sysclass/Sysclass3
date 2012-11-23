@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_ElementFactory */
 require_once 'Zend/Pdf/ElementFactory.php';
 
@@ -26,7 +25,6 @@ require_once 'Zend/Pdf/Element/Object.php';
 
 /** Zend_Pdf_Element_Dictionary */
 require_once 'Zend/Pdf/Element/Dictionary.php';
-
 
 /**
  * PDF file Resource abstraction
@@ -105,4 +103,3 @@ abstract class Zend_Pdf_Resource
         return $this->_objectFactory;
     }
 }
-

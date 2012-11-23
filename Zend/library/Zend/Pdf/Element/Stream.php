@@ -18,7 +18,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * @see Zend_Pdf
  */
@@ -51,7 +50,6 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
      */
     public $value;
 
-
     /**
      * Object constructor
      *
@@ -62,7 +60,6 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
         $this->value = Zend_Pdf::getMemoryManager()->create($val);
     }
 
-
     /**
      * Return type of the element.
      *
@@ -72,7 +69,6 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
     {
         return Zend_Pdf_Element::TYPE_STREAM;
     }
-
 
     /**
      * Stream length.
@@ -85,7 +81,6 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
         return strlen($this->value->getRef());
     }
 
-
     /**
      * Clear stream
      *
@@ -97,7 +92,6 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
         $this->value->touch();
     }
 
-
     /**
      * Append value to a stream
      *
@@ -106,10 +100,9 @@ class Zend_Pdf_Element_Stream extends Zend_Pdf_Element
     public function append($val)
     {
         $ref = &$this->value->getRef();
-        $ref .= (string)$val;
+        $ref .= (string) $val;
         $this->value->touch();
     }
-
 
     /**
      * Return object as string

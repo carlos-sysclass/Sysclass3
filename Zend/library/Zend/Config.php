@@ -19,7 +19,6 @@
  * @version    $Id: Config.php 14415 2009-03-21 21:56:00Z rob $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Config
@@ -83,7 +82,7 @@ class Zend_Config implements Countable, Iterator
 
     /**
      * Load file error string.
-     * 
+     *
      * Is null if there was no error while file loading
      *
      * @var string
@@ -131,6 +130,7 @@ class Zend_Config implements Countable, Iterator
         if (array_key_exists($name, $this->_data)) {
             $result = $this->_data[$name];
         }
+
         return $result;
     }
 
@@ -169,11 +169,11 @@ class Zend_Config implements Countable, Iterator
             throw new Zend_Config_Exception('Zend_Config is read only');
         }
     }
-    
+
     /**
      * Deep clone of this instance to ensure that nested Zend_Configs
      * are also cloned.
-     * 
+     *
      * @return void
      */
     public function __clone()
@@ -204,6 +204,7 @@ class Zend_Config implements Countable, Iterator
                 $array[$key] = $value;
             }
         }
+
         return $array;
     }
 
@@ -257,6 +258,7 @@ class Zend_Config implements Countable, Iterator
     public function current()
     {
         $this->_skipNextIteration = false;
+
         return current($this->_data);
     }
 
@@ -278,6 +280,7 @@ class Zend_Config implements Countable, Iterator
     {
         if ($this->_skipNextIteration) {
             $this->_skipNextIteration = false;
+
             return;
         }
         next($this->_data);
@@ -312,9 +315,10 @@ class Zend_Config implements Countable, Iterator
      */
     public function getSectionName()
     {
-        if(is_array($this->_loadedSection) && count($this->_loadedSection) == 1) {
+        if (is_array($this->_loadedSection) && count($this->_loadedSection) == 1) {
             $this->_loadedSection = $this->_loadedSection[0];
         }
+
         return $this->_loadedSection;
     }
 
@@ -328,7 +332,6 @@ class Zend_Config implements Countable, Iterator
         return $this->_loadedSection === null;
     }
 
-
     /**
      * Merge another Zend_Config with this one. The items
      * in $merge will override the same named items in
@@ -339,15 +342,15 @@ class Zend_Config implements Countable, Iterator
      */
     public function merge(Zend_Config $merge)
     {
-        foreach($merge as $key => $item) {
-            if(array_key_exists($key, $this->_data)) {
-                if($item instanceof Zend_Config && $this->$key instanceof Zend_Config) {
+        foreach ($merge as $key => $item) {
+            if (array_key_exists($key, $this->_data)) {
+                if ($item instanceof Zend_Config && $this->$key instanceof Zend_Config) {
                     $this->$key = $this->$key->merge(new Zend_Config($item->toArray(), !$this->readOnly()));
                 } else {
                     $this->$key = $item;
                 }
             } else {
-                if($item instanceof Zend_Config) {
+                if ($item instanceof Zend_Config) {
                     $this->$key = new Zend_Config($item->toArray(), !$this->readOnly());
                 } else {
                     $this->$key = $item;
@@ -373,7 +376,7 @@ class Zend_Config implements Countable, Iterator
             }
         }
     }
-    
+
     /**
      * Returns if this Zend_Config object is read only or not.
      *
@@ -383,7 +386,7 @@ class Zend_Config implements Countable, Iterator
     {
         return !$this->_allowModifications;
     }
-    
+
     /**
      * Get the current extends
      *
@@ -393,7 +396,7 @@ class Zend_Config implements Countable, Iterator
     {
         return $this->_extends;
     }
-    
+
     /**
      * Set an extend for Zend_Config_Writer
      *
@@ -405,11 +408,11 @@ class Zend_Config implements Countable, Iterator
     {
         if ($extendedSection === null && isset($this->_extends[$extendingSection])) {
             unset($this->_extends[$extendingSection]);
-        } else if ($extendedSection !== null) {
+        } elseif ($extendedSection !== null) {
             $this->_extends[$extendingSection] = $extendedSection;
         }
     }
-    
+
     /**
      * Throws an exception if $extendingSection may not extend $extendedSection,
      * and tracks the section extension if it is valid.
@@ -444,7 +447,7 @@ class Zend_Config implements Countable, Iterator
      * @param integer $errline
      */
     protected function _loadFileErrorHandler($errno, $errstr, $errfile, $errline)
-    { 
+    {
         if ($this->_loadFileErrorStr === null) {
             $this->_loadFileErrorStr = $errstr;
         } else {

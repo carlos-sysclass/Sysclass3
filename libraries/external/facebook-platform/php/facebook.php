@@ -34,7 +34,8 @@
 include_once 'facebookapi_php5_restlib.php';
 
 define('FACEBOOK_API_VALIDATION_ERROR', 1);
-class Facebook {
+class Facebook
+{
   public $api_client;
   public $api_key;
   public $secret;
@@ -60,7 +61,8 @@ class Facebook {
    *                                 if the user doesn't have one, but
    *                                 there is an auth token present in the url,
    */
-  public function __construct($api_key, $secret, $generate_session_secret=false) {
+  public function __construct($api_key, $secret, $generate_session_secret=false)
+  {
     $this->api_key                 = $api_key;
     $this->secret                  = $secret;
     $this->generate_session_secret = $generate_session_secret;
@@ -72,9 +74,9 @@ class Facebook {
     $defaultUser = null;
     if ($this->user) {
       $defaultUser = $this->user;
-    } else if ($this->profile_user) {
+    } elseif ($this->profile_user) {
       $defaultUser = $this->profile_user;
-    } else if ($this->canvas_user) {
+    } elseif ($this->canvas_user) {
       $defaultUser = $this->canvas_user;
     }
 
@@ -106,7 +108,8 @@ class Facebook {
    *
    * @param bool  resolve_auth_token  convert an auth token into a session
    */
-  public function validate_fb_params($resolve_auth_token=true) {
+  public function validate_fb_params($resolve_auth_token=true)
+  {
     $this->fb_params = $this->get_valid_fb_params($_POST, 48 * 3600, 'fb_sig');
 
     // note that with preload FQL, it's possible to receive POST params in
@@ -130,7 +133,7 @@ class Facebook {
 
       if (isset($this->fb_params['session_key'])) {
         $session_key =  $this->fb_params['session_key'];
-      } else if (isset($this->fb_params['profile_session_key'])) {
+      } elseif (isset($this->fb_params['profile_session_key'])) {
         $session_key =  $this->fb_params['profile_session_key'];
       } else {
         $session_key = null;
@@ -184,12 +187,14 @@ class Facebook {
 
   // Store a temporary session secret for the current session
   // for use with the JS client library
-  public function promote_session() {
+  public function promote_session()
+  {
     try {
       $session_secret = $this->api_client->auth_promoteSession();
       if (!$this->in_fb_canvas()) {
         $this->set_cookies($this->user, $this->api_client->session_key, $this->session_expires, $session_secret);
       }
+
       return $session_secret;
     } catch (FacebookRestClientException $e) {
       // API_EC_PARAM means we don't have a logged in user, otherwise who
@@ -200,7 +205,8 @@ class Facebook {
     }
   }
 
-  public function do_get_session($auth_token) {
+  public function do_get_session($auth_token)
+  {
     try {
       return $this->api_client->auth_getSession($auth_token, $this->generate_session_secret);
     } catch (FacebookRestClientException $e) {
@@ -214,9 +220,11 @@ class Facebook {
 
   // Invalidate the session currently being used, and clear any state associated
   // with it. Note that the user will still remain logged into Facebook.
-  public function expire_session() {
+  public function expire_session()
+  {
     if ($this->api_client->auth_expireSession()) {
       $this->clear_cookie_state();
+
       return true;
     } else {
       return false;
@@ -230,7 +238,8 @@ class Facebook {
    * @param string  $next  URL to redirect to upon logging out
    *
    */
-   public function logout($next) {
+   public function logout($next)
+   {
     $logout_url = $this->get_logout_url($next);
 
     // Clear any stored state
@@ -245,7 +254,8 @@ class Facebook {
    *  client.
    *
    */
-  public function clear_cookie_state() {
+  public function clear_cookie_state()
+  {
     if (!$this->in_fb_canvas() && isset($_COOKIE[$this->api_key . '_user'])) {
        $cookies = array('user', 'session_key', 'expires', 'ss');
        foreach ($cookies as $name) {
@@ -261,10 +271,11 @@ class Facebook {
      $this->api_client->session_key = 0;
   }
 
-  public function redirect($url) {
+  public function redirect($url)
+  {
     if ($this->in_fb_canvas()) {
       echo '<fb:redirect url="' . $url . '"/>';
-    } else if (preg_match('/^https?:\/\/([^\/]*\.)?facebook\.com(:\d+)?/i', $url)) {
+    } elseif (preg_match('/^https?:\/\/([^\/]*\.)?facebook\.com(:\d+)?/i', $url)) {
       // make sure facebook.com url's load in the full frame so that we don't
       // get a frame within a frame.
       echo "<script type=\"text/javascript\">\ntop.location.href = \"$url\";\n</script>";
@@ -274,55 +285,66 @@ class Facebook {
     exit;
   }
 
-  public function in_frame() {
+  public function in_frame()
+  {
     return isset($this->fb_params['in_canvas'])
         || isset($this->fb_params['in_iframe']);
   }
-  public function in_fb_canvas() {
+  public function in_fb_canvas()
+  {
     return isset($this->fb_params['in_canvas']);
   }
 
-  public function get_loggedin_user() {
+  public function get_loggedin_user()
+  {
     return $this->user;
   }
 
-  public function get_canvas_user() {
+  public function get_canvas_user()
+  {
     return $this->canvas_user;
   }
 
-  public function get_profile_user() {
+  public function get_profile_user()
+  {
     return $this->profile_user;
   }
 
-  public static function current_url() {
+  public static function current_url()
+  {
     return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   }
 
   // require_add and require_install have been removed.
   // see http://developer.facebook.com/news.php?blog=1&story=116 for more details
-  public function require_login() {
+  public function require_login()
+  {
     if ($user = $this->get_loggedin_user()) {
       return $user;
     }
     $this->redirect($this->get_login_url(self::current_url(), $this->in_frame()));
   }
 
-  public function require_frame() {
+  public function require_frame()
+  {
     if (!$this->in_frame()) {
       $this->redirect($this->get_login_url(self::current_url(), true));
     }
   }
 
-  public static function get_facebook_url($subdomain='www') {
+  public static function get_facebook_url($subdomain='www')
+  {
     return 'http://' . $subdomain . '.facebook.com';
   }
 
-  public function get_install_url($next=null) {
+  public function get_install_url($next=null)
+  {
     // this was renamed, keeping for compatibility's sake
     return $this->get_add_url($next);
   }
 
-  public function get_add_url($next=null) {
+  public function get_add_url($next=null)
+  {
     $page = self::get_facebook_url().'/add.php';
     $params = array('api_key' => $this->api_key);
 
@@ -333,7 +355,8 @@ class Facebook {
     return $page . '?' . http_build_query($params);
   }
 
-  public function get_login_url($next, $canvas) {
+  public function get_login_url($next, $canvas)
+  {
     $page = self::get_facebook_url().'/login.php';
     $params = array('api_key' => $this->api_key,
                     'v'       => '1.0');
@@ -348,7 +371,8 @@ class Facebook {
     return $page . '?' . http_build_query($params);
   }
 
-  public function get_logout_url($next) {
+  public function get_logout_url($next)
+  {
     $page = self::get_facebook_url().'/logout.php';
     $params = array('app_key'     => $this->api_key,
                     'session_key' => $this->api_client->session_key);
@@ -361,7 +385,8 @@ class Facebook {
     return $page . '?' . http_build_query($params);
   }
 
-  public function set_user($user, $session_key, $expires=null, $session_secret=null) {
+  public function set_user($user, $session_key, $expires=null, $session_secret=null)
+  {
     if (!$this->in_fb_canvas() && (!isset($_COOKIE[$this->api_key . '_user'])
                                    || $_COOKIE[$this->api_key . '_user'] != $user)) {
       $this->set_cookies($user, $session_key, $expires, $session_secret);
@@ -371,7 +396,8 @@ class Facebook {
     $this->session_expires = $expires;
   }
 
-  public function set_cookies($user, $session_key, $expires=null, $session_secret=null) {
+  public function set_cookies($user, $session_key, $expires=null, $session_secret=null)
+  {
     $cookies = array();
     $cookies['user'] = $user;
     $cookies['session_key'] = $session_key;
@@ -383,16 +409,16 @@ class Facebook {
     }
 
     foreach ($cookies as $name => $val) {
-      setcookie($this->api_key . '_' . $name, $val, (int)$expires, '', $this->base_domain);
+      setcookie($this->api_key . '_' . $name, $val, (int) $expires, '', $this->base_domain);
       $_COOKIE[$this->api_key . '_' . $name] = $val;
     }
     $sig = self::generate_sig($cookies, $this->secret);
-    setcookie($this->api_key, $sig, (int)$expires, '', $this->base_domain);
+    setcookie($this->api_key, $sig, (int) $expires, '', $this->base_domain);
     $_COOKIE[$this->api_key] = $sig;
 
     if ($this->base_domain != null) {
       $base_domain_cookie = 'base_domain_' . $this->api_key;
-      setcookie($base_domain_cookie, $this->base_domain, (int)$expires, '', $this->base_domain);
+      setcookie($base_domain_cookie, $this->base_domain, (int) $expires, '', $this->base_domain);
       $_COOKIE[$base_domain_cookie] = $this->base_domain;
     }
   }
@@ -402,7 +428,8 @@ class Facebook {
    * @param     string   $val   Should come directly from $_GET, $_POST, etc.
    * @return    string   val without added slashes
    */
-  public static function no_magic_quotes($val) {
+  public static function no_magic_quotes($val)
+  {
     if (get_magic_quotes_gpc()) {
       return stripslashes($val);
     } else {
@@ -435,7 +462,8 @@ class Facebook {
    *                and also matching the signature associated with them.
    *          OR    an empty array if the params do not validate
    */
-  public function get_valid_fb_params($params, $timeout=null, $namespace='fb_sig') {
+  public function get_valid_fb_params($params, $timeout=null, $namespace='fb_sig')
+  {
     $prefix = $namespace . '_';
     $prefix_len = strlen($prefix);
     $fb_params = array();
@@ -462,6 +490,7 @@ class Facebook {
     if (!$signature || (!$this->verify_signature($fb_params, $signature))) {
       return array();
     }
+
     return $fb_params;
   }
 
@@ -474,7 +503,8 @@ class Facebook {
    *  @return bool True if the user is the one that selected the
    *               reclamation link.
    */
-  public function verify_account_reclamation($user, $hash) {
+  public function verify_account_reclamation($user, $hash)
+  {
     return $hash == md5($user . $this->secret);
   }
 
@@ -486,7 +516,8 @@ class Facebook {
    *                       not including the signature itself
    * @param $expected_sig  the expected result to check against
    */
-  public function verify_signature($fb_params, $expected_sig) {
+  public function verify_signature($fb_params, $expected_sig)
+  {
     return self::generate_sig($fb_params, $this->secret) == $expected_sig;
   }
 
@@ -518,6 +549,7 @@ class Facebook {
     $signature = base64_decode($signed_data['sig']);
     $result = openssl_verify($serialized_data, $signature, $public_key,
                              OPENSSL_ALGO_SHA1);
+
     return $result == 1;
   }
 
@@ -535,7 +567,8 @@ class Facebook {
    *
    * @return a hash to be checked against the signature provided by Facebook
    */
-  public static function generate_sig($params_array, $secret) {
+  public static function generate_sig($params_array, $secret)
+  {
     $str = '';
 
     ksort($params_array);
@@ -549,14 +582,16 @@ class Facebook {
     return md5($str);
   }
 
-  public function encode_validationError($summary, $message) {
+  public function encode_validationError($summary, $message)
+  {
     return json_encode(
                array('errorCode'    => FACEBOOK_API_VALIDATION_ERROR,
                      'errorTitle'   => $summary,
                      'errorMessage' => $message));
   }
 
-  public function encode_multiFeedStory($feed, $next) {
+  public function encode_multiFeedStory($feed, $next)
+  {
     return json_encode(
                array('method'   => 'multiFeedStory',
                      'content'  =>
@@ -564,7 +599,8 @@ class Facebook {
                            'feed' => $feed)));
   }
 
-  public function encode_feedStory($feed, $next) {
+  public function encode_feedStory($feed, $next)
+  {
     return json_encode(
                array('method'   => 'feedStory',
                      'content'  =>
@@ -593,6 +629,4 @@ class Facebook {
                  'image_4_link' => $image_4_link);
   }
 
-
 }
-

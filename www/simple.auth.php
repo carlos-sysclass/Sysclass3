@@ -1,7 +1,6 @@
 <?php
 $path = "../libraries/";
 
-
 $user		= 'akucaniz';
 $pass		= 'z7d#lqed$';
 
@@ -17,7 +16,7 @@ $userPassEncoded = base64_encode($user.":".$pass);
 
 $headers = array(
 	"Authorization: Basic $userPassEncoded",
-	"Content-Type: application/json"		
+	"Content-Type: application/json"
 );
 
 curl_setopt_array($ch, array(

@@ -66,6 +66,7 @@ class PEAR_REST
         if (file_exists($cachefile)) {
             return unserialize(implode('', file($cachefile)));
         }
+
         return $this->retrieveData($url, $accept, $forcestring);
     }
 
@@ -104,6 +105,7 @@ class PEAR_REST
                 // reset the age of the cache if the server says it was unmodified
                 $this->saveCache($url, $ret, null, true, $cacheId);
             }
+
             return $ret;
         }
         if (is_array($file)) {
@@ -117,6 +119,7 @@ class PEAR_REST
         }
         if ($forcestring) {
             $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+
             return $content;
         }
         if (isset($headers['content-type'])) {
@@ -143,6 +146,7 @@ class PEAR_REST
             $content = $parser->getData();
         }
         $this->saveCache($url, $content, $lastmodified, false, $cacheId);
+
         return $content;
     }
 
@@ -162,6 +166,7 @@ class PEAR_REST
         if (time() - $cacheid['age'] < $cachettl) {
             return $this->getCache($url);
         }
+
         return false;
     }
 
@@ -171,6 +176,7 @@ class PEAR_REST
             md5($url) . 'rest.cacheid';
         if (file_exists($cacheidfile)) {
             $ret = unserialize(implode('', file($cacheidfile)));
+
             return $ret;
         } else {
             return false;
@@ -225,6 +231,7 @@ class PEAR_REST
                 'lastChange' => $cacheid['lastChange'],
                 )));
             fclose($fp);
+
             return true;
         } else {
             fwrite($fp, serialize(array(
@@ -238,10 +245,12 @@ class PEAR_REST
             if (file_exists($cacheidfile)) {
                 @unlink($cacheidfile);
             }
+
             return false;
         }
         fwrite($fp, serialize($contents));
         fclose($fp);
+
         return true;
     }
 
@@ -286,7 +295,7 @@ class PEAR_REST
             $path = $info['path'];
         }
         $proxy_host = $proxy_port = $proxy_user = $proxy_pass = '';
-        if ($this->config->get('http_proxy')&& 
+        if ($this->config->get('http_proxy')&&
               $proxy = parse_url($this->config->get('http_proxy'))) {
             $proxy_host = isset($proxy['host']) ? $proxy['host'] : null;
             if (isset($proxy['scheme']) && $proxy['scheme'] == 'https') {
@@ -387,9 +396,10 @@ class PEAR_REST
                     $lastmodified = $headers['last-modified'];
                 }
             }
+
             return array($data, $lastmodified, $headers);
         }
+
         return $data;
     }
 }
-?>

@@ -3,7 +3,7 @@
 
 * Show avatars
 
-* 
+*
 
 * This file is the page which shows the avatars list
 

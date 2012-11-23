@@ -112,6 +112,7 @@ class HTML_QuickForm2_Rule_Length extends HTML_QuickForm2_Rule
             }
             $check = implode(' && ', $checks);
         }
+
         return "function() { var length = " . $this->owner->getJavascriptValue() .
                ".length; return qf.rules.empty(length) || ({$check}); }";
     }
@@ -141,6 +142,7 @@ class HTML_QuickForm2_Rule_Length extends HTML_QuickForm2_Rule
                 $length['max'] = end($config);
             }
         }
+
         return $length;
     }
 
@@ -184,6 +186,7 @@ class HTML_QuickForm2_Rule_Length extends HTML_QuickForm2_Rule
                 );
             }
         }
+
         return $length;
     }
 
@@ -230,7 +233,7 @@ class HTML_QuickForm2_Rule_Length extends HTML_QuickForm2_Rule
                 $config = $config['min'];
             }
         }
+
         return parent::setConfig($config);
     }
 }
-?>

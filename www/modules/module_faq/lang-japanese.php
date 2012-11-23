@@ -8,7 +8,6 @@ define("_FAQ_MODULE", "よくある質問モジュール");//FAQ Module
 define("_FAQ_MAIN", "メインページ");//Main page
 define("_FAQ_MANAGEMENT", "管理よくあるご質問");//Manage FAQs
 
-
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "よくあるご質問は正常に更新されました");//FAQ was succesfully updated
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "よくある質問更新されない可能性がある");//FAQ could not be updated
 define("_FAQ_INSERTFAQ", "FAQエントリを挿入する");//Insert FAQ entry

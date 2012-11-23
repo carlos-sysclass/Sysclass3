@@ -111,10 +111,10 @@ class HTML_QuickForm2_Element_InputSubmit extends HTML_QuickForm2_Element_Input
                 null !== ($value = $ds->getValue($this->getName())))
             {
                 $this->submitValue = $value;
+
                 return;
             }
         }
         $this->submitValue = null;
     }
 }
-?>

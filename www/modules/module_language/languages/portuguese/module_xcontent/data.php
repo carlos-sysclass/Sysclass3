@@ -8,9 +8,6 @@ define("__XCONTENT_WAITING_LIBERATION", "Prova ainda não liberada");
 define("__XCONTENT_VIEW_SCHEDULED_USERS", "Visualizar agendamentos registrados");
 define("__XCONTENT_SCHEDULE_REGISTER", "Seleção de horários");
 
-
-
-
 define("__XCONTENT_VIEW_SCHEDULED", "Agendamento de Conteúdo");
 define("__XCONTENT_NEW_SCHEDULE", "Registrar Agendamento");
 define("__XCONTENT_EDIT_SCHEDULE", "Editar Agendamento");
@@ -22,8 +19,6 @@ define("__XCONTENT_SET_SCHEDULE_TIMES", "Registrar o agendamento");
 define("__XCONTENT_USER_WITH_SCHEDULED_REGISTERED", "Com agendamento registrado");
 define("__XCONTENT_USER_WITH_NO_SCHEDULED_REGISTERED", "Sem agendamento registrado");
 define("__XCONTENT_USER_SCHEDULE_LIBERATION", "Confirmar");
-
-
 
 define("__XCONTENT_USER", "Usuário");
 define("__XCONTENT_COURSE", "Curso");
@@ -42,8 +37,6 @@ define("__XCONTENT_NO_CONTENT_DEFINED", "n/a");
 
 define("__XCONTENT_COURSE_OR_COURSES", "Curso(s)");
 define("__XCONTENT_CONTENT_OR_CONTENTS", "Conteúdo(s)");
-
-
 
 // ERROS
 define("__XCONTENT_ERROR_INVALID_DATE", "Data Inválida");
