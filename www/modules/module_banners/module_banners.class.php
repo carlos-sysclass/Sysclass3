@@ -233,4 +233,3 @@ class module_banners extends MagesterModule {
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
 }
-?>

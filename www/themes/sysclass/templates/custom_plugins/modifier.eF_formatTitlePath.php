@@ -81,4 +81,3 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
  return $finalString;
  */
 }
-?>

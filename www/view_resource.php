@@ -87,5 +87,3 @@ try {
 } catch (Exception $e) {
     eF_redirect("".$currentUser -> user['user_type'].".php?message=".$e -> getMessage());
 }
-
-?>

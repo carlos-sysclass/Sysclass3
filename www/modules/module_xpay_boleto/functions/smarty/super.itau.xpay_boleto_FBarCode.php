@@ -100,4 +100,3 @@ function xpay_boleto_super_itau_FBarCode($params, &$smarty) {
 	return $html;
 
 } //Fim da função
-?>

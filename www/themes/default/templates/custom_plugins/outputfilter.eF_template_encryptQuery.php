@@ -21,4 +21,3 @@ function local_encryptQueryReplace($matches) {
     //pr($matches[1].$matches[2].$matches[3]);
     return $matches[1].$matches[2].$matches[3];
 }
-?>

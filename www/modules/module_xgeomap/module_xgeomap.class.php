@@ -85,4 +85,3 @@ class module_xgeomap extends MagesterExtendedModule {
         return true;
 	}
 }
-?>

@@ -40,7 +40,4 @@ function smarty_modifier_eF_truncate($string, $length = 80, $etc = '...',
         return $string;
     }
 }
-
 /* vim: set expandtab: */
-
-?>

@@ -154,4 +154,3 @@ class module_cep extends MagesterModule {
    		return $this->moduleBaseDir."module_cep.js";
     }
 }
-?>

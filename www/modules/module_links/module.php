@@ -5,5 +5,3 @@ if (is_file("lang-".$_SESSION['s_language'].".php")) {
 } else {
     include "lang-english.php";
 }
-
-?>

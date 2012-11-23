@@ -99,7 +99,7 @@ class MagesterSearch
   $eachword = explode(" ", $querywords);
   $eachword = array_unique($eachword); //Remove duplicate values from search table
   $terms = array();
-  foreach ($eachword AS $key => $value) {
+  foreach ($eachword as $key => $value) {
    $len = mb_strlen($value);
    if ($len > 3 AND $len < 100) { //Only words with length more than 3 and less than 100 characters long.
     $terms[] = $value;

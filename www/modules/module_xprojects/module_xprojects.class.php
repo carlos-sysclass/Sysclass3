@@ -561,4 +561,3 @@ class module_xprojects extends MagesterExtendedModule {
     }
     
 }
-?>

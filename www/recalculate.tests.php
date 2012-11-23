@@ -240,4 +240,3 @@ foreach($diff as $item) {
 	echo implode(";", $item);
 	echo "\n";
 }
-?>

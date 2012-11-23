@@ -46,4 +46,3 @@ foreach (explode(",", $_GET['load']) as $value) {
 	echo file_get_contents($value . ".js");
     echo "\n";
 }
-?>

@@ -52,4 +52,3 @@ class module_xskill extends MagesterExtendedModule {
     }
     
 }
-?>

@@ -1411,4 +1411,3 @@ class module_xenrollment extends MagesterExtendedModule {
 			return $docList;
 		}
 	}
-	?>

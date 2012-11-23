@@ -452,4 +452,3 @@ class module_certificates extends MagesterModule {
         return false;
     }
 }
-?>

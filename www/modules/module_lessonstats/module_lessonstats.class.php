@@ -160,4 +160,3 @@ class module_lessonstats extends MagesterModule {
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
 }
-?>

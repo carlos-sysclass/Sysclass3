@@ -51,4 +51,3 @@ header("Content-Type: application/javascript", true);
 
 echo 'var $languageJS = ' . json_encode($langConstants) . ";";
 exit;
-?>

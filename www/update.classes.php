@@ -96,4 +96,3 @@ require_once $path."configuration.php";
 	- LIGAR O PAGAMENTO SOMENTE A MATRICULA 
 	- INCLUIR LISTA DE BOLETOS PARA O ALUNO
 */
-?>

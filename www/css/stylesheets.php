@@ -42,4 +42,3 @@ foreach (explode(",", $_GET['load']) as $value) {
     
     include("$value.css"); echo "\n";
 }
-?>

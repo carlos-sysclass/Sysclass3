@@ -662,6 +662,5 @@ class module_blogs extends MagesterModule {
 	
 	public function isLessonModule() {
 		return true;
-	}	
+	}
 }
-?>

@@ -96,4 +96,3 @@ class module_lessonsidebar extends MagesterModule {
         return false;
     }
 }
-?>

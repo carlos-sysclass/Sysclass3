@@ -35,5 +35,3 @@ if ($GLOBALS['configuration']['social_modules_activated'] > 0) {
 }
 
 $smarty -> display("show_avatars.tpl")
-
-?>

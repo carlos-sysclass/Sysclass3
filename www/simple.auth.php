@@ -40,4 +40,3 @@ echo "<pre>";
 var_dump($resultData);
 echo "</pre>";
 exit;
-?>

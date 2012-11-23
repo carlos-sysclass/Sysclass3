@@ -476,4 +476,3 @@ class module_xwebtutoria extends MagesterExtendedModule {
 
     
 }
-?>

@@ -27,4 +27,3 @@ define("_FAQ_CHANGEFAQORDER","FAQ pour le changement");//Change FAQ order
 define("_FAQ_SUCCESFULLYDELETEDFAQENTRY","Supprimé avec succès entrée de la FAQ");//Succesfully deleted FAQ entry
 define("_FAQ_SUCCESFULLYUPDATEDFAQENTRY","Mis à jour la FAQ");//Succesfully updated FAQ entry
 define("_FAQ_PROBLEMUPDATINGFAQENTRY","La FAQ ne peut pas être mis à jour");//The FAQ could not be updated
-?>

@@ -360,4 +360,3 @@ class module_language extends MagesterModule {
 		}
 	}
 }
-?>

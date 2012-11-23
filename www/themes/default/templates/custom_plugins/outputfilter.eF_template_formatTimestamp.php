@@ -23,4 +23,3 @@ function smarty_outputfilter_eF_template_formatTimestamp($compiled, &$smarty) {
     $new = preg_replace("/#filter:timestamp_time_only_nosec-\d?#/e", "", $new);
     return $new;
 }
-?>

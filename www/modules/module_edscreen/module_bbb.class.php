@@ -827,4 +827,3 @@ class module_BBB extends MagesterModule {
         }
     }
 }
-?>

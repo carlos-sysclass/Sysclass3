@@ -545,11 +545,4 @@ class module_complete_test extends MagesterModule
 	private function parseCSVContents() {
 
 	}
-
-
-
 }
-
-
-
-?>

@@ -27,4 +27,3 @@ class module_subscribe extends MagesterModule {
     	}
     }
 }
-?>

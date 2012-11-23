@@ -18,5 +18,3 @@ function smarty_outputfilter_eF_template_loginToMessageLink($compiled, &$smarty)
     
     return $compiled;
 }
-
-?>

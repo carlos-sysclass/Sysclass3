@@ -4,7 +4,8 @@
 * Replaces occurences of the form #filter:datetime-1132843907# with the current date
 
 */
-function smarty_outputfilter_eF_template_formatDatetime($compiled, &$smarty) {
+function smarty_outputfilter_eF_template_formatDatetime($compiled, &$smarty)
+{
 	
     switch ($GLOBALS['configuration']['date_format']) {
         case "YYYY/MM/DD": {
@@ -38,4 +39,3 @@ function smarty_outputfilter_eF_template_formatDatetime($compiled, &$smarty) {
     
     return $new;
 }
-?>

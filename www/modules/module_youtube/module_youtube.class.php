@@ -320,13 +320,13 @@ class module_youtube extends MagesterModule {
             $youtube = eF_getTableData("module_youtube", "*", 'lessons_ID IS NULL');
             
 
-   if (sizeof($youtube) > 0) {
-    $smarty -> assign("T_VIDEOLINK", $youtube[0]['link']);
-    if (isset($youtube[1])) {
-       $smarty -> assign("T_NEXT", $youtube[1]['id']);
-       $smarty -> assign("T_NEXT_TAG", $youtube[1]['title'] .": ".$youtube[1]['description']);
-    }
-   }
+	   if (sizeof($youtube) > 0) {
+	    $smarty -> assign("T_VIDEOLINK", $youtube[0]['link']);
+	    if (isset($youtube[1])) {
+	       $smarty -> assign("T_NEXT", $youtube[1]['id']);
+	       $smarty -> assign("T_NEXT_TAG", $youtube[1]['title'] .": ".$youtube[1]['description']);
+	    }
+	   }
             return true;
         } else {
             return false;
@@ -354,4 +354,3 @@ class module_youtube extends MagesterModule {
     }
     */
 }
-?>

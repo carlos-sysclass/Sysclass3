@@ -497,6 +497,5 @@ class module_chat extends MagesterExtendedModule {
 
     public function getModuleIcon() {
         return $this -> moduleBaseLink.'img/chat.png';
-    }    
+    }
 }
-?>

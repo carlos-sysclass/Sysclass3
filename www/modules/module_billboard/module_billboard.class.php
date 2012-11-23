@@ -311,6 +311,4 @@ class module_billboard extends MagesterExtendedModule {
         $smarty -> assign("T_USERLESSONTYPE", $currentUser -> user['user_type']);
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
-
 }
-?>

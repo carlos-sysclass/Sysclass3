@@ -64,4 +64,3 @@ if (isset($_SESSION['s_type'])) {
 } else {
 	eF_redirect("index.php");
 }
-?>

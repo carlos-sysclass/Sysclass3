@@ -503,10 +503,6 @@ class module_quick_mails extends MagesterExtendedModule {
 			exit;
 		}
 	}
-
 	/* HOOK ACTIONS FUNCTIONS */
-	  
 	/* DATA MODEL FUNCTIONS /*/
-
 }
-?>

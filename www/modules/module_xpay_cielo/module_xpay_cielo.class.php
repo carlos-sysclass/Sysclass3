@@ -511,4 +511,3 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	}
 	*/
 }
-?>

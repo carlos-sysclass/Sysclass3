@@ -48,5 +48,3 @@ catch(OAuthException2 $e)
 {
 	var_dump($e);
 }
-
-?>

@@ -236,4 +236,3 @@ class module_links extends MagesterExtendedModule {
        	return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
 }
-?>

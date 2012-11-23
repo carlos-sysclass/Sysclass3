@@ -21,4 +21,3 @@ function smarty_outputfilter_eF_template_formatCurrency($compiled, &$smarty) {
     
     return $new;
 }
-?>

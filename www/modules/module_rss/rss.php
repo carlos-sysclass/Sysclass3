@@ -57,4 +57,3 @@ function lastModificationTime($time=0) {
 }
 
 */
-?>

@@ -840,4 +840,3 @@ if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
 	$smarty -> assign("T_NO_HORIZONTAL_MENU", 1);
 	$smarty -> display('new_sidebar.tpl');
 }
-?>

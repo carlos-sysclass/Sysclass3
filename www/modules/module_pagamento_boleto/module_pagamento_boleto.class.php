@@ -962,4 +962,3 @@ CREATE TABLE IF NOT EXISTS `module_pagamento_boleto_invoices_return`(
 
 
 }
-?>

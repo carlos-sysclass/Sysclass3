@@ -75,4 +75,3 @@ function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 
  $finalString = str_replace(" </a>", "</a>", $finalString);
  return $finalString;
 }
-?>

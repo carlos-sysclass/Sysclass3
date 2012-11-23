@@ -832,4 +832,3 @@ class module_xentify extends MagesterExtendedModule {
 	}
 
 }
-?>

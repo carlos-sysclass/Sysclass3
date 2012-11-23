@@ -41,6 +41,4 @@ class module_xdigest extends MagesterExtendedModule {
   		//exit;
        return $this -> moduleBaseDir . "templates/default.tpl";
     }
-    
 }
-?>

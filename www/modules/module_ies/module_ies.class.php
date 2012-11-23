@@ -286,4 +286,3 @@ class module_ies extends MagesterExtendedModule {
         return true;
     }
 }
-?>

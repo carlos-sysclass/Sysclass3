@@ -176,4 +176,3 @@ class module_xpoll extends MagesterExtendedModule {
     /* HOOK ACTION FUNCTIONS */  
     /* DATA MODEL FUNCTIONS /*/
 }
-?>

@@ -8,4 +8,3 @@ function smarty_outputfilter_eF_template_sanitizeDOMString($compiled, &$smarty) 
     $compiled = preg_replace("/#filter:sanitizeDOMString-(.*)#/e", "str_replace(\".\", \"_\", \"\$1\")", $compiled);
     return $compiled;
 }
-?>

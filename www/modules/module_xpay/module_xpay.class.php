@@ -3835,4 +3835,3 @@ class module_xpay extends MagesterExtendedModule {
 		}
 	}
 }
-?>

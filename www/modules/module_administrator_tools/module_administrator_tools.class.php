@@ -436,4 +436,3 @@ class module_administrator_tools extends MagesterExtendedModule {
         return $this -> moduleBaseDir . "module.tpl";
     }
 }
-?>

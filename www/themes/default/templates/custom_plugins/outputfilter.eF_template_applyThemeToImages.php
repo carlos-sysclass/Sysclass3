@@ -27,4 +27,3 @@ function smarty_outputfilter_eF_template_applyThemeToImages($compiled, &$smarty)
     $new = str_replace($patterns, $replacements, $compiled);
     return $new;
 }
-?>

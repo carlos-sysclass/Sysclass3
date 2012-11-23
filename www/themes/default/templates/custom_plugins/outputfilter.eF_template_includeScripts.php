@@ -37,5 +37,3 @@ function smarty_outputfilter_eF_template_includeScripts($compiled, &$smarty) {
 
     return $compiled;
 }
-
-?>

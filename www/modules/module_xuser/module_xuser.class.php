@@ -944,7 +944,7 @@ class module_xuser extends MagesterExtendedModule {
 						if ($values['group']) {
 							$this->getEditedUser() -> addGroups($values['group']);
 						} else {
-							$groups = eF_getTableDataFlat("groups","id","");
+							$groups = eF_getTableDataFlat("groups", "id", "");
 							$this->getEditedUser() -> removeGroups($groups['id']);
 						}
 				    }
@@ -1644,4 +1644,3 @@ class module_xuser extends MagesterExtendedModule {
 		
 	}
 }
-?>

@@ -105,4 +105,3 @@ class module_translate extends MagesterExtendedModule {
     }
 
 }
-?>

@@ -37,4 +37,3 @@ function smarty_outputfilter_eF_template_formatDatetime($compiled, &$smarty) {
     
     return $new;
 }
-?>

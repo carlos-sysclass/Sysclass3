@@ -81,4 +81,3 @@ function getConnectedUsers(){
 	}
 	return $usersOnline;
 }
-?>

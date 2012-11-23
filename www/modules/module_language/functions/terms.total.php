@@ -62,4 +62,3 @@ echo json_encode(array($_GET['index'] => count($langConstants)));
 
 //echo 'var $languageJS = ' . json_encode($langConstants);
 exit;
-?>

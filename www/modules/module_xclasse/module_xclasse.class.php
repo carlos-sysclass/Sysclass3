@@ -356,10 +356,4 @@ class module_xclasse extends MagesterExtendedModule {
 		
 		return true;
     }
-
-   
-    
-    /* Data Model Functions */
- 
 }
-?>

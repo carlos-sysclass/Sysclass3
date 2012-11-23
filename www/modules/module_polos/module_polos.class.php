@@ -343,4 +343,3 @@ class module_polos extends MagesterExtendedModule {
     	}
     }
 }
-?>

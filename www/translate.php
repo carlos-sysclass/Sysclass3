@@ -286,4 +286,3 @@ foreach($translations as $lang => $transLang) {
 	}
 	fwrite($toFile, "\n?>");
 }
-?>

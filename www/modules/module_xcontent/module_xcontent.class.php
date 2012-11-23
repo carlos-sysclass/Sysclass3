@@ -2237,7 +2237,4 @@ class module_xcontent extends MagesterExtendedModule {
     		return array ( "content" => $link_of_menu);
     	}
     }
-    
-	
 }
-?>

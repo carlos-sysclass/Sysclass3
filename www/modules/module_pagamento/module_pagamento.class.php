@@ -3502,7 +3502,5 @@ AND u.active = 1))");
    		} 
    		return false;
    	}
-   	*/
-   	
+	*/
 }
-?>

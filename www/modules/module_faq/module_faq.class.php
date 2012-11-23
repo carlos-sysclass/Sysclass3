@@ -240,7 +240,6 @@ class module_faq extends MagesterModule {
 		$smarty -> assign("T_FAQ_MODULE_BASELINK" , $this -> moduleBaseLink);
 		$smarty -> assign("T_FAQ_IN_UNIT_CONTENT", true);
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
-    }    
+    }
     
 }
-?>

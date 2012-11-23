@@ -607,7 +607,4 @@ function VerificaErro($vmPost, $vmResposta)
 			
 			return $status;
 		}
-		
 	}
-	
-?>

@@ -646,7 +646,7 @@ $smarty->assign("T_CURRENT_USER_TYPE", $userRoles[$currentUser->user['user_types
 
 // Verifica se modulo chat esta ativo
 $userModules = $currentUser->getModules();
-if( array_key_exists("module_xlivechat", $userModules)) {
+if (array_key_exists("module_xlivechat", $userModules)) {
 	$userModules['module_xlivechat']->includeChatPrerequisites(true);
 }
 
@@ -679,6 +679,3 @@ $output = $benchmark -> display();
 if (G_DEBUG) {
 	echo $output;
 }
-
-
-?>

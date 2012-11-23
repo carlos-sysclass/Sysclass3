@@ -82,4 +82,3 @@ class module_social extends MagesterExtendedModule {
         }
     }
 }
-?>

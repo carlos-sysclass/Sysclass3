@@ -8,5 +8,3 @@ function smarty_outputfilter_eF_template_setInnerLinks($compiled, &$smarty) {
 
     return $new;
 }
-
-?>

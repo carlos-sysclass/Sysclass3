@@ -157,4 +157,3 @@ class module_xlivechat extends MagesterExtendedModule {
     	$smarty -> assign("T_XCHAT_SUPPORT_LIST", $userChatList);
     }
 }
-?>

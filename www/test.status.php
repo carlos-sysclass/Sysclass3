@@ -77,4 +77,3 @@ foreach($currentDoneTests as $username => $testStatus) {
 	
 }
 exit;
-?>

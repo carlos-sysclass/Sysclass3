@@ -601,4 +601,3 @@ class module_xrequest extends MagesterExtendedModule {
 	public function getUserDetails($userID, $user_details_type = 'self') {
 	}
 }
-?>

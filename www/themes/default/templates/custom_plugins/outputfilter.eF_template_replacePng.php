@@ -25,4 +25,3 @@ function smarty_outputfilter_eF_template_replacePng($compiled, &$smarty) {
     //$new = preg_replace("/\.png/", ".gif", $compiled);
     return $new;
 }
-?>

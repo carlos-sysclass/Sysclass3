@@ -2997,4 +2997,3 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return $queueList;
 	}
 }
-?>

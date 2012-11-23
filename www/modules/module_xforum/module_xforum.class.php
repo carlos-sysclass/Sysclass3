@@ -60,8 +60,7 @@ class module_xforum extends MagesterExtendedModule {
 			exit;
         }
     }
-    /* HOOK ACTIONS FUNCTIONS */  
+    /* HOOK ACTIONS FUNCTIONS */
    
     /* DATA MODEL FUNCTIONS /*/
 }
-?>

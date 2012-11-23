@@ -6,4 +6,3 @@ function smarty_outputfilter_gzip2($tpl_source, &$smarty)
     
 	return $tpl_source;
 }
-?>

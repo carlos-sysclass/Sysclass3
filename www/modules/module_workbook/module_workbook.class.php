@@ -1219,5 +1219,3 @@ class module_workbook extends MagesterModule{
   return $answers;
  }
 }
-
-?>

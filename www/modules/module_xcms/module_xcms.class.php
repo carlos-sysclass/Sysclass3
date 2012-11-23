@@ -547,4 +547,3 @@ class module_xcms extends MagesterExtendedModule {
 	 }
 	 */
 }
-?>
