@@ -1189,10 +1189,12 @@ class module_xpay extends MagesterExtendedModule
 
 		if ($exUserType == 'student' || $exUserType == 'pre_student') {
 			// CHECK IF NEGOCIATION ID IS FROM USER
-			$negocData = $this->_getNegociationByContraints(array(
-				'negociation_id'	=> $negociationID,
-				'login'				=> $this->getCurrentUser()->user['login']
-			));
+			$negocData = $this->_getNegociationByContraints(
+				array(
+					'negociation_id'	=> $negociationID,
+					'login'				=> $this->getCurrentUser()->user['login']
+				)
+			);
 		} elseif (
 			$exUserType == 'administrator' ||
 			$exUserType == 'financier' ||
@@ -3504,8 +3506,8 @@ class module_xpay extends MagesterExtendedModule
 	{
 		if (eF_checkParameter($payment_id, 'id')) {
 			// RETURS ONE REGISTER PER INVOICE.....
-			$paymentResult = eF_getTableData("
-				`module_pagamento` pag,
+			$paymentResult = eF_getTableData(
+				"`module_pagamento` pag,
 				`module_pagamento_types` pag_typ,
 				/* `module_pagamento_types_details` pag_typ_det, */
 				`module_pagamento_invoices` inv,
