@@ -1292,9 +1292,9 @@ class module_xpay extends MagesterExtendedModule
 			}
 			$form -> addElement('radio', 'invoice_indexes', $invoice['invoice_index'], $img, $invoice['invoice_index'], 'class="xpay_methods"');
 		}
-		$form->setDefaults(array(
-			'invoice_indexes'	=> $invoice_index
-		));
+		$form->setDefaults(
+			array('invoice_indexes'	=> $invoice_index)
+		);
 
 		foreach ($selectedIndexes as $selectedKey => $selectedIndex) {
 			$selectedPaymentMethod = $currentOptions[$selectedIndex];
@@ -1412,9 +1412,11 @@ class module_xpay extends MagesterExtendedModule
 			if (array_key_exists(strtoupper($pay_method), $currentOptions)) {
 				$selectedPaymentMethod = $currentOptions[strtoupper($pay_method)];
 				$selectedPaymentMethod->initPaymentProccess(
-					$negociationID, $invoice_index,
+					$negociationID,
+					$invoice_index,
 					array(
-						'option' => $pay_method_option
+						'option' 			=> $pay_method_option,
+						"instance_option"	=> $_POST['instance_option']
 					)
 				);
 			} else {
@@ -1438,6 +1440,29 @@ class module_xpay extends MagesterExtendedModule
 
 		//$render = $renderer -> toArray();
 		return true;
+	}
+	public function viewInstanceOptionsAction()
+	{
+		list($module_index, $module_option) = explode(":", $_POST['instance_index']);
+		$this->_log($module_index, $module_option);
+		
+		$module_index = "xpay_cielo";
+		$module_option = "visa";
+		
+		// GET SUB MODULES FUNCTIONS
+		$currentModules = $this->getSubmodules();
+		
+		if (array_key_exists(strtoupper($module_index), $currentModules)) {
+			$subModuleTemplate = $currentModules[strtoupper($module_index)]->fetchPaymentInstanceOptionsTemplate($module_option);
+
+		}
+		if ($subModuleTemplate === false) {
+			exit;
+		}
+		
+		
+		echo $subModuleTemplate;
+		exit;
 	}
 	public function createPaymentAction()
 	{
@@ -3491,12 +3516,24 @@ class module_xpay extends MagesterExtendedModule
 	{
 		if (is_null(self::$subModules)) {
 			self::$subModules = array();
-
-			$modules = ef_loadAllModules(true);
-
-			foreach ($modules as $module) {
-				if ($module instanceof IxPaySubmodule) {
-					self::$subModules[strtoupper($module->getName())] = $module->setParent($this);
+			
+			$modulesDB = eF_getTableData("modules", "*", "active=1");
+			$currentUser = $this->getCurrentUser();
+			
+			// Get all modules enabled
+			foreach ($modulesDB as $module) {
+				$folder = $module['position'];
+				$className = $module['className'];
+				$interfaces = (class_implements($className));
+				
+				if (array_key_exists("IxPaySubmodule", $interfaces)) {
+					if (is_file(G_MODULESPATH . $folder . "/" . $className .  ".class.php")) {
+						require_once G_MODULESPATH . $folder . "/" . $className . ".class.php";
+					}
+					
+					$object = new $className("", $folder);
+					
+					self::$subModules[strtoupper($object->getName())] = $object->setParent($this);
 				}
 			}
 		}

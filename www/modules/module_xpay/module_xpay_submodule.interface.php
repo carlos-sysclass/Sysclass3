@@ -4,6 +4,7 @@ interface IxPaySubmodule
 	public static function getInstance();
 
 	public function getPaymentInstances();
+	public function fetchPaymentInstanceOptionsTemplate($instance_id);
 	public function getPaymentInstanceConfig($instance_id, array $overrideOptions);
 	public function initPaymentProccess($payment_id, $invoice_id, array $data);
 

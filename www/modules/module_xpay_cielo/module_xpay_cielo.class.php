@@ -54,29 +54,117 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			'baselink'	=> $this->moduleBaseLink,
 			'options'	=> array (
 				"visa"			=> array(
-					'name'	=> "Visa"
+					'name'	=> "Visa",
+					"options"	=> array(
+						"1"	=> "À Vista no Cartão de Crédito",
+						"A"	=> "À Vista no Cartão de Débito",
+						"XX"	=> "Pagamento Mensal Automático no Cartão de Crédito"
+					),
+					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 				),
 
 				"mastercard"	=> array(
-					'name'	=> "Mastercard"
-				)/*,
+					"name"	=> "Mastercard",
+					"options"	=> array(
+						"1"	=> "Crédito À Vista",
+						"A"	=> "Débito"
+					),
+					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+				)
+				/*,
 				"elo"			=> array(
 					'name'	=> "Elo"
 				),
 				"diners"		=> array(
 					'name'	=> "Diners"
-				)*//*,
+				),
 				"discover"		=> array(
 					'name'	=> "Discover"
-				)*/
+				)
+				*/
 			)
 		);
 	}
 	public function getPaymentInstanceConfig($instance_id, array $overrideOptions)
 	{
+		var_dump($overrideOptions);
+		exit;
 		return $instance_id;
 	}
-
+	public function getPaymentInstanceOptions($instance_id)
+	{
+		$instances = $this->getPaymentInstances($instance_id);
+		
+		return $instances[$instance_id]['options'];
+	}
+	public function fetchPaymentInstanceOptionsTemplate($instance_id)
+	{
+		$smarty = $this->getSmartyVar();
+		$instances = $this->getPaymentInstances();
+		$options = $instances['options'][$instance_id]['options'];
+		$tpl = $instances['options'][$instance_id]['template'];
+		$smarty -> assign("T_XPAY_CIELO_OPT", $options);
+		return $smarty -> fetch($tpl);
+	}
+	/*
+	private function createPaymentForm($payment_id, $invoice_id, array $data) {
+		$form = new HTML_QuickForm("xpay_cielo_init_payment", "post", $_SERVER['REQUEST_URI'], "", null, true);
+		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		
+		$form -> addElement("hidden", "invoice_index", $invoice_id);
+		$form -> addElement("hidden", "bandeira", $data['option']);
+		$allParcelas = $this->getPaymentInstanceOptions($data['option']);
+		
+		foreach ($parcelas as $key => $item) {
+			$form -> addElement('radio', 'qtde_parcelas', $item, $item, $key, 'class="qtde_parcelas"');
+		}
+		
+		$form -> addRule('qtde_parcelas', _THEFIELD.' "'.__XPAY_QTDE_PARCELAS.'" '._ISMANDATORY, 'required', null, 'client');
+		
+		$form -> addElement('submit', 'xpay_cielo_submit', __XPAY_CIELO_MAKE, 'class = "button_colour round_all"');
+		
+		if ($form -> isSubmitted() && $form -> validate()) {
+			$values = $form->exportValues();
+			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $values);
+				
+			if (is_null($invoice_id)) {
+				$invoice_id = $values['invoice_index'];
+			}
+				
+			//$this->injectJS("jquery/jquery.fancybox");
+		
+			$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
+			//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
+				
+			// SAVE TRANSACTION DETAILS HERE
+			$fields = array(
+					"negociation_id"	=> $payment_id,
+					"tid"				=> $Pedido->tid,
+					"pedido_id"			=> $Pedido->dadosPedidoNumero,
+					"valor"				=> floatval($Pedido->dadosPedidoValor) / 100,
+					"data"				=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
+					"descricao"			=> $Pedido->dadosPedidoDescricao,
+					"bandeira"			=> $Pedido->formaPagamentoBandeira,
+					"produto"			=> $Pedido->formaPagamentoProduto,
+					"parcelas"			=> $Pedido->formaPagamentoParcelas,
+					"status"			=> $Pedido->status,
+			);
+			$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
+		
+			$fieldsLink = array(
+					"negociation_id"	=> $payment_id,
+					"invoice_index"		=> $invoice_id,
+					"transaction_id"	=> $transactionID
+			);
+		
+			eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
+				
+			//echo $Pedido->urlAutenticacao;
+			eF_redirect($Pedido->urlAutenticacao, false, false, true);
+			exit;
+		}
+	}
+	*/
 	public function initPaymentProccess($payment_id, $invoice_id, array $data)
 	{
 		// CREATE FORM
@@ -88,121 +176,38 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$currentContext = $this->getParent();
 		}
 
-		$form = new HTML_QuickForm("xpay_cielo_init_payment", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
 		
-		$form -> addElement("hidden", "invoice_index", $invoice_id);
+		$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $data);
+		
+		$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
+		//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
 		/*
-		$bandeiras = $this->getPaymentInstances();
-
-		//$form -> addElement('select', 'bandeira' , __XPAY_CIELO_BANDEIRA, $bandeiras,'class="inputText" id="fatherBranch"');
-		foreach ($bandeiras as $key => $item) {
-			$form -> addElement('radio', 'bandeira', $item, null, $key, 'class="bandeiras"');
-		}
-		*/
-
-		$form -> addElement("hidden", "bandeira", $data['option']);
-
-		//var_dump($data['option']);
-
-		$allParcelas = array (
-				/*
-			'*'	=> array(
-				"1"	=> "Crédito À Vista",
-				//"2"	=> "2x s/ juros", 
-				//"3"	=> "3x s/ juros",
-				//"4"	=> "4x s/ juros",
-				//"5"	=> "5x s/ juros",
-				//"6"	=> "6x s/ juros"
-			),
-			*/
-			'visa'	=> array(
-				"1"	=> "Crédito À Vista",
-				"A"	=> "Débito"
-			),
-			'mastercard'	=> array(
-				"1"	=> "Crédito À Vista"
-			)
-				/*
-			'elo'			=> array(
-				"1"	=> "Crédito À Vista"
-			),
-			'diners'		=> array(
-				"1"	=> "Crédito À Vista"
-			),
-			*/
+		// SAVE TRANSACTION DETAILS HERE
+		$fields = array(
+			"negociation_id"	=> $payment_id,
+			"tid"				=> $Pedido->tid,
+			"pedido_id"			=> $Pedido->dadosPedidoNumero,
+			"valor"				=> floatval($Pedido->dadosPedidoValor) / 100,
+			"data"				=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
+			"descricao"			=> $Pedido->dadosPedidoDescricao,
+			"bandeira"			=> $Pedido->formaPagamentoBandeira,
+			"produto"			=> $Pedido->formaPagamentoProduto,
+			"parcelas"			=> $Pedido->formaPagamentoParcelas,
+			"status"			=> $Pedido->status,
 		);
-		$parcelas = $allParcelas[$data['option']];
-		foreach($parcelas as $key => $item) {
-			$form -> addElement('radio', 'qtde_parcelas', $item, $item, $key, 'class="qtde_parcelas"');
-		}
-
-		$form -> addRule('qtde_parcelas', _THEFIELD.' "'.__XPAY_QTDE_PARCELAS.'" '._ISMANDATORY, 'required', null, 'client');
-
-		$form -> addElement('submit', 'xpay_cielo_submit', __XPAY_CIELO_MAKE, 'class = "button_colour round_all"');
-
-		if ($form -> isSubmitted() && $form -> validate()) {
-			$values = $form->exportValues();
-			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $values);
-			
-			if (is_null($invoice_id)) {
-				$invoice_id = $values['invoice_index'];
-			}
-			
-			//$this->injectJS("jquery/jquery.fancybox");
-
-			$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
-			//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
-			
-			// SAVE TRANSACTION DETAILS HERE
-			$fields = array(
-				"negociation_id"	=> $payment_id,
-				"tid"				=> $Pedido->tid,
-				"pedido_id"			=> $Pedido->dadosPedidoNumero,
-				"valor"				=> floatval($Pedido->dadosPedidoValor) / 100,
-				"data"				=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
-				"descricao"			=> $Pedido->dadosPedidoDescricao,
-				"bandeira"			=> $Pedido->formaPagamentoBandeira,
-				"produto"			=> $Pedido->formaPagamentoProduto,
-				"parcelas"			=> $Pedido->formaPagamentoParcelas,
-				"status"			=> $Pedido->status,
-			);
-			$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
-
-			$fieldsLink = array(
-				"negociation_id"	=> $payment_id,
-				"invoice_index"		=> $invoice_id,
-				"transaction_id"	=> $transactionID
-			);
-
-			eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
-			
-			//echo $Pedido->urlAutenticacao;
-			eF_redirect($Pedido->urlAutenticacao, false, false, true);
-			exit;
-			
-		}
-		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		$form -> accept($renderer);
-		$smarty -> assign('T_MODULE_XPAY_CIELO_FORM', $renderer -> toArray());
-
-		$currentContext->appendTemplate(array(
-			'title'			=> __XPAY_CIELO_DO_PAYMENT,
-			'template'		=> $this->moduleBaseDir . 'templates/hook/xpay.do_payment.tpl',
-			'contentclass'	=> 'blockContents',
-			'options'		=> array(
-					/*
-				array(
-					"id"			=> "xcourse_lesson_switch",
-					"datasource" 	=> $userCourseSwitch
-				)
-				*/
-			)
-		), $blockIndex);
-
-		$this->assignSmartyModuleVariables();
-
-		return true;
+		$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
+		
+		$fieldsLink = array(
+			"negociation_id"	=> $payment_id,
+			"invoice_index"		=> $invoice_id,
+			"transaction_id"	=> $transactionID
+		);
+		
+		eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
+		*/
+		//echo $Pedido->urlAutenticacao;
+		eF_redirect($Pedido->urlAutenticacao, false, false, true);
+		exit;
 
 		// Colocar o formulaŕio para escolha de bandeira, parcelamento, etc...
 
@@ -220,18 +225,17 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	{
 		require_once (dirname(__FILE__) . '/includes/module_xpay_cielo.pedido.model.php');
 
-		//header("Content-type: text/plain");
-		
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
+		
 		$Pedido = new Pedido_Model();
 
-		$Pedido->formaPagamentoBandeira = $values["bandeira"];
+		$Pedido->formaPagamentoBandeira = $values["option"];
 
-		if ($values["qtde_parcelas"] != "A" && $values["qtde_parcelas"] != "1") {
+		if ($values["instance_option"] != "A" && $values["instance_option"] != "1") {
 			$Pedido->formaPagamentoProduto = $this->conf['payment_subdivision_method'];
-			$Pedido->formaPagamentoParcelas = $values["qtde_parcelas"];
+			$Pedido->formaPagamentoParcelas = $values["instance_option"];
 		} else {
-			$Pedido->formaPagamentoProduto = $values["qtde_parcelas"];
+			$Pedido->formaPagamentoProduto = $values["instance_option"];
 			$Pedido->formaPagamentoParcelas = 1;
 		}
 
@@ -528,31 +532,4 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		return $tidKey = md5($currentUser->user['login'] . date("Ymd"));
 	}
 
-	/* ACTIONS FUNCTIONS */
-	/*
-	public function doPaymentAction()
-	{
-		// GET SUB MODULES FUNCTIONS
-		var_dump($this->getSubmodules());
-
-	}
-	*/
-	/* MODEL FUNCTIONS */
-	/*
-	public function getSubmodules()
-	{
-		if (is_null(self::$subModules)) {
-			self::$subModules = array();
-
-			$modules = ef_loadAllModules(true);
-
-			foreach ($modules as $module) {
-				if ($module instanceof IxPaySubmodule) {
-					self::$subModules[] = $module;
-				}
-			}
-		}
-		return self::$subModules;
-	}
-	*/
 }
