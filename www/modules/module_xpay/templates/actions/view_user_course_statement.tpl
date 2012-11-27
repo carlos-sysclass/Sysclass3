@@ -6,6 +6,16 @@
 			file="`$T_XPAY_BASEDIR`templates/includes/print.negociation.summary.tpl"
 			T_XPAY_STATEMENT=$T_XPAY_STATEMENT
 		}
+		
+		<div id="xpay-do_payment-options-dialog" title="Pagamentos">
+			<div id="xpay-do_payment-options-dialog-loader">
+				<img src="images/progress.gif">
+				{$smarty.const._LOADING}
+			</div>
+			<div id="xpay-do_payment-options-dialog-inner">
+			</div>
+		</div>
+		
 		<table class="style1">
 			<thead>
 				<tr>
@@ -74,7 +84,12 @@
 										{/if}
 									{/if}
 								{/if}
+								<!--
 								<a class="form-icon" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}">
+									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
+								</a>
+								-->
+								<a class="form-icon xpay-do_payment-options-dialog-link" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&output=dialog">
 									<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 								</a>
 							</div>

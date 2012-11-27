@@ -60,6 +60,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						"A"	=> "À Vista no Cartão de Débito",
 						"XX"	=> "Pagamento Mensal Automático no Cartão de Crédito"
 					),
+					"default_option"	=> 1,
 					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 				),
 
@@ -69,6 +70,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						"1"	=> "Crédito À Vista",
 						"A"	=> "Débito"
 					),
+					"default_option"	=> 1,
 					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 				)
 				/*,
@@ -104,6 +106,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$options = $instances['options'][$instance_id]['options'];
 		$tpl = $instances['options'][$instance_id]['template'];
 		$smarty -> assign("T_XPAY_CIELO_OPT", $options);
+		$smarty -> assign("T_XPAY_CIELO_DEFAULT_OPTION", $instances['options'][$instance_id]['default_option']);
 		return $smarty -> fetch($tpl);
 	}
 	/*

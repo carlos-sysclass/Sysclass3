@@ -1438,17 +1438,25 @@ class module_xpay extends MagesterExtendedModule
 		$form -> accept($renderer);
 		$smarty -> assign('T_XPAY_METHOD_FORM', $renderer -> toArray());
 
+		if ($_GET['output'] == 'dialog') {
+			// JUST FETCH THE TEMPLATE AND EXIT;
+			echo $smarty -> fetch($this->moduleBaseDir . "/templates/includes/do_payment.dialog.tpl");
+			exit;
+		}
+		
+		
 		//$render = $renderer -> toArray();
 		return true;
 	}
 	public function viewInstanceOptionsAction()
 	{
 		list($module_index, $module_option) = explode(":", $_POST['instance_index']);
-		$this->_log($module_index, $module_option);
-		
+		$this->_log($module_index);
+		$this->_log($module_option);
+		/*
 		$module_index = "xpay_cielo";
 		$module_option = "visa";
-		
+		*/
 		// GET SUB MODULES FUNCTIONS
 		$currentModules = $this->getSubmodules();
 		

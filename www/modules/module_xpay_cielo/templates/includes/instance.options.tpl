@@ -4,7 +4,7 @@
 			<tr>
 		{/if}
 			<td width="5%">
-				<input type="radio" checked="checked" value="{$key}" name="instance_option" class="xpay-instance-option">
+				<input type="radio" value="{$key}" name="instance_option" class="xpay-instance-option" {if $T_XPAY_CIELO_DEFAULT_OPTION == $key}checked="checked"{/if}>
 			</td>
 			<td>
 				{$item}
@@ -13,4 +13,8 @@
 			</tr>
 		{/if}
 	{/foreach}
+	{if ($T_XPAY_CIELO_OPT|@count % 2 == 1)}
+		<td colspan="2"></td>
+		</tr>
+	{/if}
 </table>
