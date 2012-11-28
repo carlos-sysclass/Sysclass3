@@ -1616,7 +1616,6 @@ var_dump(
 			);
 			return array("current_lesson" => $currentLessonMenu, 'system' => $currentLessonMenu);
 		} else {
-				
 		}
 	}
 	public function getLinkToHighlight(){
