@@ -174,27 +174,10 @@ function getJqueryPeriodicData() {
 		return aData;
 	};
 	
-	/*
-	jQuery.fn.dataTableExt.oSort['m/d/Y-asc']  = function(a,b) {
-		var ukDatea = a.split('/');
-		var ukDateb = b.split('/');
-		
-		var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
-		var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
-		
-		return ((x < y) ? -1 : ((x > y) ?  1 : 0));
-	};
-
-	jQuery.fn.dataTableExt.oSort['m/d/Y-desc'] = function(a,b) {
-		var ukDatea = a.split('/');
-		var ukDateb = b.split('/');
-		
-		var x = (ukDatea[2] + ukDatea[0] + ukDatea[1]) * 1;
-		var y = (ukDateb[2] + ukDateb[0] + ukDateb[1]) * 1;
-		
-		return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
-	};
-	*/
+	jQuery.fn.dataTableExt.ofnSearch['img-src'] = function ( sData ) {
+		return jQuery(sData).attr("src");
+	}
+	
 	jQuery(".ui-progress-bar").each(function() {
 		var currentValue = new Number(jQuery(this).html());
 		

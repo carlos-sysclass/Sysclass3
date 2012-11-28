@@ -3112,22 +3112,5 @@ INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES (
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('5', 'Não autorizada');
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('6', 'Capturada');
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('8', 'Não capturada');
-INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('0', 'Criada');
-INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('0', 'Criada');
-
-break;
-									case "9":
-									$status = __XPAY_CIELO_CANCELLED;
-		
-									$message 		= "Pagamento Cancelado";
-					$message_type	= "warning";
-		
-							// CALL EVENTS
-		
-									break;
-									case "10":
-									$status	= "Em autenticação";
-
-
-
-
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('9', 'Cancelada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('10', 'Em autenticação');

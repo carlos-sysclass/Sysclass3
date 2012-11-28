@@ -10,11 +10,10 @@
 		},
 		register : function(name, methods) {
 			mod_config = {};
-			
 			if (typeof(window['_mod_data_']['_' + name + '_']) != 'undefined') {
 				
 				for(idx in window['_mod_data_']['_' + name + '_']) {
-					newIndex = idx.replace(/[a-z0-9]+\./gi, "");
+					newIndex = idx.replace(/[a-z0-9_]+\./gi, "");
 					mod_config[newIndex] = window['_mod_data_']['_' + name + '_'][idx]; 
 				}
 //				mod_config = window['_mod_data_']['_' + name + '_'];
@@ -29,8 +28,7 @@
 				},
 				mod_config
 			);
-
-
+			
 			__modules[name] = jQuery.extend(true, {fake : false}, {"opt" : opt_config}, methods, parentWrapper, {"name" : name});
 			
 			__modules[name].init();

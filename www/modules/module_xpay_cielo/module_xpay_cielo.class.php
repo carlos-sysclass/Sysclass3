@@ -62,13 +62,28 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			} else { // PARCELAMENTO
 				$trans['forma_pagamento'] = sprintf("Parcelado %dx", $trans['parcelas']);
 			}
-			
 		}
-		
-		$smarty -> assign("T_XPAY_CIELO_TRANSACTIONS", $transactions);
 
-		$statuses = eF_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
-		$smarty -> assign("T_XPAY_CIELO_STATUSES", $statuses);
+		$smarty -> assign("T_XPAY_CIELO_TRANSACTIONS", $transactions);
+		
+		$statusesDB = eF_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
+		$statuses = array();
+		foreach ($statusesDB as $statusDB) {
+			$statuses[] = $statusDB['nome'];
+		}
+		$this->addModuleData("statuses", $statuses);
+		
+		var_dump($formas);
+		foreach ($instances['options'] as $bandeira) {
+			foreach ($bandeira['options'] as $forma) {
+				$formas_pagamento[] = $forma;
+			}
+		}
+		$formas_pagamento = array_unique($formas_pagamento);
+		$this->addModuleData("formas_pagamento", $formas_pagamento);
+		
+		$bandeiras = array_keys($instances['options']);
+		$this->addModuleData("bandeiras", $bandeiras);
 	}
 
 	/* IxPaySubmodule INTERFACE FUNCTIONS */
@@ -586,5 +601,4 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$currentUser = $this->getCurrentUser();
 		return $tidKey = md5($currentUser->user['login'] . date("Ymd"));
 	}
-
 }

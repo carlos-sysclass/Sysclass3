@@ -1395,7 +1395,7 @@ class module_xpay extends MagesterExtendedModule
 				$form->setDefaults($form->exportValues());
 				
 				if (is_numeric($values['invoice_indexes'])) {
-					$invoice_index = $values['invoice_indexes']; 
+					$invoice_index = $values['invoice_indexes'];
 				}
 			} else {
 				list($pay_method, $pay_method_option) = array(
@@ -1526,7 +1526,7 @@ class module_xpay extends MagesterExtendedModule
 
 			$manualTransaction = array(
 				'instance_id' 			=> '',
-//				'data_registro' 		=> $oldInvoice['data_vencimento'],
+				//'data_registro' 		=> $oldInvoice['data_vencimento'],
 				'description'			=> $values['description']
 			);
 			$transactionID = ef_insertTableData(
@@ -1564,10 +1564,15 @@ class module_xpay extends MagesterExtendedModule
 			// with is pop-up, close and send message to parent. if not, then show message.
 			if ($_GET['popup'] == 1) {
 				$this->setMessageVar(__XPAY_PAYMENT_SUCCESSFULLY_CREATED, "success");
-				$smarty->assign("T_XPAY_MESSAGE", json_encode(array(
-					'message'		=> __XPAY_PAYMENT_SUCCESSFULLY_CREATED,
-					'message_type'	=> "success"
-				)));
+				$smarty->assign(
+					"T_XPAY_MESSAGE",
+					json_encode(
+						array(
+							'message'		=> __XPAY_PAYMENT_SUCCESSFULLY_CREATED,
+							'message_type'	=> "success"
+						)
+					)
+				);
 				$smarty -> assign("T_XPAY_IS_DONE", true);
 			} else {
 				$this->setMessageVar(__XPAY_PAYMENT_SUCCESSFULLY_CREATED, "success");
