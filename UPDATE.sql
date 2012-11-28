@@ -3062,5 +3062,72 @@ ALTER TABLE `module_gradebook_users` ADD UNIQUE (
 );
 ALTER TABLE `module_gradebook_groups` ADD `pass_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70' AFTER `min_value`;
 
-UPDATE `module_gradebook_groups` SET pass_value = 70, min_value = 20
+UPDATE `module_gradebook_groups` SET pass_value = 70, min_value = 20;
+
+
+/* 2012-11-27 */
+DROP TABLE IF EXISTS `module_xpay_cielo_transactions_to_invoices`;
+CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions_to_invoices` (
+  	`transaction_id` int(11) NOT NULL AUTO_INCREMENT,
+	`negociation_id` mediumint(8) NOT NULL,
+	`invoice_index` mediumint(8) NOT NULL,
+	PRIMARY KEY (`transaction_id`, `negociation_id`, `invoice_index`)
+) ENGINE=MyISAM;
+
+
+DROP TABLE IF EXISTS `module_xpay_cielo_transactions`;
+CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`negociation_id` mediumint(8) NOT NULL,
+	`tid` varchar(100) NOT NULL,
+	pedido_id varchar(255) NOT NULL,
+	valor decimal(15,4) NOT NULL DEFAULT '0.0000',
+	data timestamp NULL DEFAULT NULL,
+	descricao varchar(255) NOT NULL,
+	bandeira varchar(30) NOT NULL,
+	produto varchar(20) NOT NULL,
+	parcelas varchar(30) NOT NULL,
+	status smallint(4) NOT NULL,
+	PRIMARY KEY (`id`),
+	FULLTEXT KEY `tid_key` (`tid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `module_xpay_invoices` ADD `locked_reason` VARCHAR( 500 ) NULL;
+
+
+
+CREATE TABLE IF NOT EXISTS `module_xpay_cielo_statuses` (
+  `id` smallint(4) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('0', 'Criada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('1', 'Em andamento');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('2', 'Autenticada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('3', 'Não autenticada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('4', 'Autorizada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('5', 'Não autorizada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('6', 'Capturada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('8', 'Não capturada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('0', 'Criada');
+INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('0', 'Criada');
+
+break;
+									case "9":
+									$status = __XPAY_CIELO_CANCELLED;
+		
+									$message 		= "Pagamento Cancelado";
+					$message_type	= "warning";
+		
+							// CALL EVENTS
+		
+									break;
+									case "10":
+									$status	= "Em autenticação";
+
+
+
 

@@ -1,0 +1,6 @@
+@media print
+{
+	.barra-topo, #header, #footer {display: none !important; }
+	#content { padding-top : 0px; }
+	
+}

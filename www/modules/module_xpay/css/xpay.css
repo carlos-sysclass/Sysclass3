@@ -29,6 +29,14 @@ table.style1 .xpay-paid td {
 	color: #009900;
 }
 
+
+table.style1 .xpay-locked {
+	color: #000099;
+}
+table.style1 .xpay-locked td:FIRST-CHILD {
+	color: #000099;
+}
+
 .hover_tooltip {
 	background: #fff;
 	position: absolute;

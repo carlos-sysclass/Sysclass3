@@ -576,22 +576,3 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 (function( $ ){
 	_sysclass('load', 'xpay').startUI();
 })( jQuery );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

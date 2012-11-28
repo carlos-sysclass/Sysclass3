@@ -333,6 +333,9 @@ foreach ($loadedModules as $module) {
 	$loadScripts = array_merge($loadScripts, $module->addScripts());
 	$loadStylesheets = array_merge($loadStylesheets, $module->addStylesheets());
 }
+
+$loadStylesheets = array_merge($loadStylesheets, MagesterExtendedModule::getInjectedCSS());
+
 //Main scripts, such as prototype
 $mainScripts = getMainScripts();
 $smarty->assign("T_HEADER_MAIN_SCRIPTS", implode(",", $mainScripts));

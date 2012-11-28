@@ -1,7 +1,7 @@
 <?php
 require_once (dirname(__FILE__) . '/../module_xpay/module_xpay_submodule.interface.php');
 
-define("XPAY_CIELO_DEV", true);
+define("XPAY_CIELO_DEV", false);
 
 if (defined("XPAY_CIELO_DEV")) {
 	/* DEV KEYS */
@@ -36,6 +36,41 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		return array("administrator", "student");
 	}
 
+	public function listTransactionsAction()
+	{
+		// SHOW A LIST WITH ALL CIELO TRANSACTIONS
+		// THE USER CAN SEARCH, VIEW, CAPTURE AND CANCEL TRANSACTIONS
+		$smarty = $this->getSmartyVar();
+		
+		$transactions = eF_getTableData(
+			"module_xpay_cielo_transactions trans 
+			LEFT JOIN module_xpay_cielo_transactions_statuses stat ON (trans.status = stat.id) 
+			LEFT JOIN module_xpay_cielo_transactions_to_invoices trans2inv ON (trans2inv.transaction_id = trans.id)
+			LEFT JOIN module_xpay_course_negociation neg ON (trans2inv.negociation_id = neg.id)
+			LEFT JOIN users u ON (neg.user_id = u.id)",
+			"trans2inv.negociation_id, trans2inv.invoice_index, u.login, trans2inv.transaction_id, 
+			trans.data, trans.tid, trans.valor, trans.bandeira, trans.produto, trans.parcelas, 
+			trans.status as status_id, stat.nome as status"
+		);
+		
+		$instances = $this->getPaymentInstances();
+		
+				
+		foreach ($transactions as &$trans) {
+			if (array_key_exists($trans['produto'], $instances['options'][$trans['bandeira']]['options'])) {
+				$trans['forma_pagamento'] = $instances['options'][$trans['bandeira']]['options'][$trans['produto']];
+			} else { // PARCELAMENTO
+				$trans['forma_pagamento'] = sprintf("Parcelado %dx", $trans['parcelas']);
+			}
+			
+		}
+		
+		$smarty -> assign("T_XPAY_CIELO_TRANSACTIONS", $transactions);
+
+		$statuses = eF_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
+		$smarty -> assign("T_XPAY_CIELO_STATUSES", $statuses);
+	}
+
 	/* IxPaySubmodule INTERFACE FUNCTIONS */
 	public static function getInstance()
 	{
@@ -56,9 +91,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				"visa"			=> array(
 					'name'	=> "Visa",
 					"options"	=> array(
-						"1"	=> "À Vista no Cartão de Crédito",
-						"A"	=> "À Vista no Cartão de Débito",
-						"XX"	=> "Pagamento Mensal Automático no Cartão de Crédito"
+						"1"	=> "Crédito à Vista",
+						"A"	=> "Débito à Vista"
 					),
 					"default_option"	=> 1,
 					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
@@ -67,8 +101,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				"mastercard"	=> array(
 					"name"	=> "Mastercard",
 					"options"	=> array(
-						"1"	=> "Crédito À Vista",
-						"A"	=> "Débito"
+						"1"	=> "Crédito à Vista",
+						"A"	=> "Débito à Vista"
 					),
 					"default_option"	=> 1,
 					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
@@ -109,70 +143,82 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$smarty -> assign("T_XPAY_CIELO_DEFAULT_OPTION", $instances['options'][$instance_id]['default_option']);
 		return $smarty -> fetch($tpl);
 	}
-	/*
-	private function createPaymentForm($payment_id, $invoice_id, array $data) {
-		$form = new HTML_QuickForm("xpay_cielo_init_payment", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+	public function fetchPaymentReceiptTemplate($negociation_id, $invoice_index)
+	{
+		require_once (dirname(__FILE__) . '/includes/module_xpay_cielo.pedido.model.php');
+		$smarty = $this->getSmartyVar();
 		
-		$form -> addElement("hidden", "invoice_index", $invoice_id);
-		$form -> addElement("hidden", "bandeira", $data['option']);
-		$allParcelas = $this->getPaymentInstanceOptions($data['option']);
+		$transactions = eF_getTableData(
+			"module_xpay_cielo_transactions trn
+			LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
+			LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)",
+			"trn.id, trn.tid, trn.negociation_id, trn2inv.invoice_index, trn.data, trn.descricao, trn.bandeira, trn.status, trn.pedido_id, trn.valor as valor_total,
+			inv.valor, inv.data_vencimento",
+			sprintf("inv.negociation_id = %d AND inv.invoice_index = %d", $negociation_id, $invoice_index)
+		);
 		
-		foreach ($parcelas as $key => $item) {
-			$form -> addElement('radio', 'qtde_parcelas', $item, $item, $key, 'class="qtde_parcelas"');
-		}
+		var_dump($transactions);
+		exit;
 		
-		$form -> addRule('qtde_parcelas', _THEFIELD.' "'.__XPAY_QTDE_PARCELAS.'" '._ISMANDATORY, 'required', null, 'client');
+		$Pedido = new Pedido_Model();
+		$Pedido->dadosEcNumero = CIELO;
+		$Pedido->dadosEcChave = CIELO_CHAVE;
+		$Pedido->tid = $transaction['tid'];
+		$objResposta = $Pedido->RequisicaoConsulta();
+		$consultaArray = $this->cieloReturnToArray($objResposta);
+		// Consulta situação da transação
 		
-		$form -> addElement('submit', 'xpay_cielo_submit', __XPAY_CIELO_MAKE, 'class = "button_colour round_all"');
+		$xpayModule = $this->loadModule("xpay");
+		$invoiceData = $xpayModule->_getNegociationInvoiceByIndex($transaction['negociation_id'], $transaction['invoice_index']);
+		$transactionAndInvoice = array_merge($invoiceData, $transaction);
 		
-		if ($form -> isSubmitted() && $form -> validate()) {
-			$values = $form->exportValues();
-			$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $values);
-				
-			if (is_null($invoice_id)) {
-				$invoice_id = $values['invoice_index'];
-			}
-				
-			//$this->injectJS("jquery/jquery.fancybox");
+		$statuses = array(
+			0 	=> __XPAY_CIELO_CREATED,
+			1	=> "Em andamento",
+			2	=> "Autenticada",
+			3	=> "Não autenticada",
+			4	=> "Autorizada",
+			5	=> "Não autorizada",
+			6	=> "Capturada",
+			8	=> "Não capturada",
+			9	=> __XPAY_CIELO_CANCELLED,
+			10	=> "Em autenticação"
+		);
 		
-			$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
-			//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
-				
-			// SAVE TRANSACTION DETAILS HERE
-			$fields = array(
-					"negociation_id"	=> $payment_id,
-					"tid"				=> $Pedido->tid,
-					"pedido_id"			=> $Pedido->dadosPedidoNumero,
-					"valor"				=> floatval($Pedido->dadosPedidoValor) / 100,
-					"data"				=> date("Y-m-d H:i:s", strtotime($Pedido->dadosPedidoData)),
-					"descricao"			=> $Pedido->dadosPedidoDescricao,
-					"bandeira"			=> $Pedido->formaPagamentoBandeira,
-					"produto"			=> $Pedido->formaPagamentoProduto,
-					"parcelas"			=> $Pedido->formaPagamentoParcelas,
-					"status"			=> $Pedido->status,
-			);
-			$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
+		$status = $statuses[$consultaArray['status']];
 		
-			$fieldsLink = array(
-					"negociation_id"	=> $payment_id,
-					"invoice_index"		=> $invoice_id,
-					"transaction_id"	=> $transactionID
-			);
 		
-			eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
-				
-			//echo $Pedido->urlAutenticacao;
-			eF_redirect($Pedido->urlAutenticacao, false, false, true);
-			exit;
-		}
+		$smarty -> assign("T_XPAY_CIELO_STATUS", $status);
+		$smarty -> assign("T_XPAY_CIELO_CONSULTA", $consultaArray);
+			
+		///$transaction = $xpayModule->_calculateInvoiceDetails($transaction);
+		$smarty -> assign("T_XPAY_CIELO_TRANS", $transactionAndInvoice);
+
+		/*
+		$this->setMessageVar($message, $message_type);
+		
+		$return_link = sprintf(
+			str_replace("_cielo", "", $this->moduleBaseUrl) . "&action=view_user_course_statement&negociation_id=%s&invoice_index=%s&message=%s&message_type=%s",
+			$transaction['negociation_id'],
+			$transaction['invoice_index'],
+			$message,
+			$message_type
+		);
+		
+		$smarty -> assign("T_XPAY_CIELO_RETURN_LINK", $return_link);
+		*/
+		$this->assignSmartyModuleVariables();
+		$this->injectCSS("printer.clean");
+		
+		return $smarty->fetch($this->moduleBaseDir . "templates/includes/payment.receipt.tpl");
 	}
-	*/
+
 	public function initPaymentProccess($payment_id, $invoice_id, array $data)
 	{
 		// CREATE FORM
-		$smarty = $this->getSmartyVar();
-
+		//$smarty = $this->getSmartyVar();
+		echo "<pre>";
+		
 		if (!is_object($this->getParent())) {
 			$currentContext = $this;
 		} else {
@@ -182,9 +228,9 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		
 		$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $data);
 		
-		$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
+		//$smarty -> assign("T_XPAY_CIELO_URL_AUTENTICACAO", $Pedido->urlAutenticacao);
 		//$invoiceData = $this->getParent()->getInvoiceById($payment_id, $invoice_id);
-		/*
+		
 		// SAVE TRANSACTION DETAILS HERE
 		$fields = array(
 			"negociation_id"	=> $payment_id,
@@ -198,6 +244,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			"parcelas"			=> $Pedido->formaPagamentoParcelas,
 			"status"			=> $Pedido->status,
 		);
+	
 		$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
 		
 		$fieldsLink = array(
@@ -207,21 +254,12 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		);
 		
 		eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
-		*/
+		
 		//echo $Pedido->urlAutenticacao;
 		eF_redirect($Pedido->urlAutenticacao, false, false, true);
 		exit;
-
-		// Colocar o formulaŕio para escolha de bandeira, parcelamento, etc...
-
-		// Criar a transação, e direcionar para o link da Cielo.. colocar num iframe, se possível.
-
-		// codigoBandeira = [visa, mastercard, elo] (checar bandeiras disponíveis)
-		// formaPagamento = [1,2,3,4,...] (é o total de parcelas) Até 6 parcelas
-		// tipoParcelamento = [2 - loja, 3 - Administradora] ???? (Checar no américas) Administradora
-		// capturarAutomaticamente = false // Capturar após o retorno
-		// indicadorAutorizacao = 2	// Opção => Autorizar transação autenticada e não-autenticada
-		//
+		
+		exit;
 	}
 
 	private function processPaymentForm($payment_id, $invoice_id, $values)
@@ -264,12 +302,14 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		if ($currentUser) {
 			$currentUser = $currentUser->user;
 		}
-
+		/** @todo Get the user lesson or course */
+		$currentService = "";
+		
 		$Pedido->campoLivre =
-			sprintf("%s - %s", $invoiceData['course'], $invoiceData['parcela_index'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['parcela_index'] - 1));
+			sprintf("%s - %s", $currentService, $invoiceData['is_registration_tax'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['invoice_index']));
 
 		$Pedido->dadosPedidoDescricao =
-			sprintf("%s - %s %s", formatLogin(null, $currentUser), $invoiceData['parcela_index'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['parcela_index'] - 1), $invoiceData['course']);
+			sprintf("%s - %s %s", formatLogin(null, $currentUser), $invoiceData['is_registration_tax'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['invoice_index']), $currentService);
 
 			/*
 			var_dump(mb_detect_encoding($Pedido->dadosPedidoDescricao));
@@ -333,15 +373,21 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$consultaArray = $this->cieloReturnToArray($objResposta);
 
 			// DEPENDENDO DO VALOR DO STATUS, REALIZAR A CAPTURA
+			// A CAPTURA SERÁ FEITA POSTERIORMENTE
+			/*
 			if ($consultaArray['status'] == 4) {
 				//var_dump($consultaArray['autorizacao']['valor']);
 				$objResposta = $Pedido->RequisicaoCaptura();
 				// RECARREGA INFORMAÇÕES, APÓS CAPTURA
 				$consultaArray = $this->cieloReturnToArray($objResposta);
 			}
-
+			*/
 			$message 		= "Pagamento em andamento";
 			$message_type	= "warning";
+			
+			
+			//var_dump($consultaArray);
+			
 
 			// ATUALIZAR STATUS NO BANCO DE DADOS
 			eF_updateTableData(
@@ -353,10 +399,11 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			list($transaction) = eF_getTableData(
 				"module_xpay_cielo_transactions trn
 				LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
-				LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)", 
+				LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)",
 				"trn.id, trn.tid, trn.negociation_id, trn2inv.invoice_index, trn.data, trn.descricao, trn.bandeira, trn.status, trn.pedido_id, trn.valor as valor_total, 
-				inv.valor, inv.data_vencimento", 
-				sprintf("tid = '%s'", $Pedido -> tid));
+				inv.valor, inv.data_vencimento",
+				sprintf("tid = '%s'", $Pedido -> tid)
+			);
 
 			$xpayModule = $this->loadModule("xpay");
 			
@@ -366,48 +413,52 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 			switch($consultaArray['status'])
 			{
-				case "0": { 
+				case "0":
 					$status = __XPAY_CIELO_CREATED;
 					break;
-				}
-				case "1": {
+				case "1":
 					$status = "Em andamento";
 					break;
-				}
-				case "2": {
+				case "2":
 					$status = "Autenticada";
 					break;
-				}
-				case "3": {
+				case "3":
 					$status = "Não autenticada";
 
 					$message 		= "Autenticação não concluída";
 					$message_type	= "failure";
 
 					break;
-				}
-				case "4": {
+				case "4":
 					$status = "Autorizada";
 
+					$message 		= "Pagamento Autorizado";
+					$message_type	= "success";
+					
+					$xpayModule->lockInvoice(
+						$invoiceData['negociation_id'],
+						$invoiceData['invoice_index'],
+						"Aguardando Captura"
+					);
+					// BLOCK THIS INVOICE, UNTIL THIS HAS BEEN CAPTURED
 					break;
-				}
-				case "5": {
+				case "5":
 					$status = "Não autorizada";
 
 					$message 		= "Pagamento não Autorizado";
 					$message_type	= "failure";
 
 					break;
-				}
-				case "6": {
+				case "6":
+					// THE TRANSACTION CAN BE AUTO CAPTURED, BECAUSE DEBIT PAYMENTS
 					$status = "Capturada";
-					
+
 					$message 		= "Pagamento Autorizado com sucesso";
 					$message_type	= "success";
 					
 					$xpayModule->insertInvoicePayment(
-						$invoiceData['negociation_id'], 
-						$invoiceData['invoice_index'], 
+						$invoiceData['negociation_id'],
+						$invoiceData['invoice_index'],
 						floatval($transaction['valor_total']),
 						'cielo',
 						$transaction['id'],
@@ -422,16 +473,14 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					));
 					*/
 					break;
-				}
-				case "8": {
+				case "8":
 					$status = "Não capturada";
 
 					$message 		= "Pagamento não Autorizado";
 					$message_type	= "failure";
 
 					break;
-				}
-				case "9": {
+				case "9":
 					$status = __XPAY_CIELO_CANCELLED;
 
 					$message 		= "Pagamento Cancelado";
@@ -440,14 +489,11 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					// CALL EVENTS
 
 					break;
-				}
-				case "10": {
+				case "10":
 					$status	= "Em autenticação";
 					break;
-				}
-				default : {
+				default:
 					$status = "Transação não encontrada";
-				}
 			}
 			$smarty -> assign("T_XPAY_CIELO_CONSULTA", $consultaArray);
 			
@@ -459,14 +505,15 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$message_type	= "failure";
 		}
 		$smarty -> assign("T_XPAY_CIELO_STATUS", $status);
-/*		
+		/*
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE_TYPE", $message_type);
 		$smarty -> assign("T_XPAY_CIELO_MESSAGE", $message);
-*/		
+		*/
 		$this->setMessageVar($message, $message_type);
 		
-		$return_link = sprintf(str_replace("_cielo", "", $this->moduleBaseUrl) . "&action=do_payment&negociation_id=%s&invoice_index=%s&message=%s&message_type=%s",
-			$transaction['negociation_id'], 
+		$return_link = sprintf(
+			str_replace("_cielo", "", $this->moduleBaseUrl) . "&action=view_user_course_statement&negociation_id=%s&invoice_index=%s&message=%s&message_type=%s",
+			$transaction['negociation_id'],
 			$transaction['invoice_index'],
 			$message,
 			$message_type
@@ -474,6 +521,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		
 		$smarty -> assign("T_XPAY_CIELO_RETURN_LINK", $return_link);
 		$this->assignSmartyModuleVariables();
+		
+		$this->injectCSS("printer.clean");
 
 		return true;
 	}
@@ -522,6 +571,9 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		);
 	}
 
+	
+	
+	
 	public function paymentCanBeDone($payment_id, $invoice_id)
 	{
 		return true;

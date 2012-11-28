@@ -786,9 +786,9 @@ class module_xpay extends MagesterExtendedModule
 			$editedUser = $this->getEditedUser(true, $userDebits[0]['user_id']);
 
 			// CHECK IF THIS USER_NEGOCIATION EXISTS
-			$userNegociations = $this->_getNegociationByContraints(array(
-				'user_id'	=> $userDebits[0]['user_id']
-			));
+			$userNegociations = $this->_getNegociationByContraints(
+				array('user_id'	=> $userDebits[0]['user_id'])
+			);
 
 			if (count($userNegociations) > 0) {
 				$this->setMessageVar("Ainda não implementado. REF: XPAY-0002", "warning");
@@ -1451,8 +1451,6 @@ class module_xpay extends MagesterExtendedModule
 	public function viewInstanceOptionsAction()
 	{
 		list($module_index, $module_option) = explode(":", $_POST['instance_index']);
-		$this->_log($module_index);
-		$this->_log($module_option);
 		/*
 		$module_index = "xpay_cielo";
 		$module_option = "visa";
@@ -1810,6 +1808,62 @@ class module_xpay extends MagesterExtendedModule
         ));
 
 	}
+	public function viewPaymentReceiptAction() {
+		$smarty = $this->getSmartyVar();
+		/*
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		*/
+		$negociation_id = is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id") ? $_GET['negociation_id'] : null;
+		$invoice_index = is_numeric($_GET['invoice_index']) ? $_GET['invoice_index'] : null;
+		
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+		} else {
+			// CHECK IF CURRENT USER IS THE SAME NEGOCIATION USER 
+			//$negioc
+			return false;
+		}
+		if (!is_null($negociation_id) && !is_null($invoice_index)) {
+			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
+			$userInvoice = $this->_getNegociationInvoiceByIndex($negociation_id, $invoice_index);
+		
+
+		} else {
+			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. Por favor entre em contato com o suporte", "failure");
+			return false;
+		}
+		
+		/*
+		fetchPaymentReceiptTemplate
+		
+		
+		list($module_index, $module_option) = explode(":", $_POST['instance_index']);
+
+		// GET SUB MODULES FUNCTIONS
+		
+		*/
+		$currentModules = $this->getSubmodules();
+		
+		$module_index = strtoupper("xpay_" . $userInvoice['method_id']);
+		
+		
+		if (array_key_exists(strtoupper($module_index), $currentModules)) {
+			$subModuleTemplate = $currentModules[strtoupper($module_index)]->fetchPaymentReceiptTemplate($negociation_id, $invoice_index);
+		}
+		if ($subModuleTemplate === false) {
+			exit;
+		}
+		
+		echo $subModuleTemplate;
+		exit;
+	}
 	public function mailInvoicesAdviseAction()
 	{
 		$smarty = $this->getSmartyVar();
@@ -1821,7 +1875,7 @@ class module_xpay extends MagesterExtendedModule
 
 		$status = array();
 
-		if ($sendAll === TRUE) {
+		if ($sendAll === true) {
 			$sendList = $this->_getSendInvoicesList();
 
 			foreach ($sendList as $sendItem) {
@@ -1987,6 +2041,38 @@ class module_xpay extends MagesterExtendedModule
 
 	}
 	/* NEW DATA MODEL FUNCTIONS */
+	public function lockInvoice($negociation_id, $invoice_index, $reason = _XPAY_BLOCK)
+	{
+		if (is_numeric($negociation_id) && is_numeric($invoice_index)) {
+			eF_updateTableData(
+				"module_xpay_invoices",
+				array(
+					'locked' => 1,
+					'locked_reason' => $reason
+				),
+				sprintf("negociation_id = %d AND invoice_index = %d", $negociation_id, $invoice_index)
+			);
+			return true;
+		}
+		return false;
+	}
+	public function unlockInvoice($negociation_id, $invoice_index)
+	{
+		if (is_numeric($negociation_id) && is_numeric($invoice_index)) {
+			eF_updateTableData(
+				"module_xpay_invoices",
+				array(
+					'locked' => 1,
+					'locked_reason' => ""
+				),
+				sprintf("negociation_id = %d AND invoice_index = %d", $negociation_id, $invoice_index)
+			);
+			return true;
+		}
+		return false;
+	}
+	
+	
 	private function checkAndCreateInvoices($userDebit)
 	{
 		/*
@@ -2573,7 +2659,7 @@ class module_xpay extends MagesterExtendedModule
 
 			$negociationData['acrescimo']		= 0;
 			$negociationData['desconto']		= 0;
-			$negociationData['invoices']		= $this->_getNegociationInvoices($negociationData['id']);
+			$negociationData['invoices']		= $this->getNegociationInvoices($negociationData['id']);
 
 			// CALCULATE BASE PRICE, BASED ON MODULES SOMATORY
 			foreach ($negociationData['modules'] as $module) {
@@ -2610,12 +2696,12 @@ class module_xpay extends MagesterExtendedModule
 			 				)
 			 		) LEFT OUTER JOIN module_xpay_course_modality cm ON (uc.modality_id = cm.id)
 			 		",
-						'c.id as module_id, c.name as module, \'course\' as module_type, uc.from_timestamp as matricula,
+					'c.id as module_id, c.name as module, \'course\' as module_type, uc.from_timestamp as matricula,
 			 		IFNULL(clp.price, c.price) as base_price,
 			 		/* IFNULL(SUM(pd.paid), 0) as paid, */ uc.modality_id as modality_id, cm.name as modality',
-						implode(" AND ", $coursePriceWhere),
-						"",
-						"c.id"
+					implode(" AND ", $coursePriceWhere),
+					"",
+					"c.id"
 				);
 			}
 			if (count($lessonPriceID) > 0) {
@@ -2766,7 +2852,7 @@ class module_xpay extends MagesterExtendedModule
 			return array();
 		}
 	}
-	private function _getNegociationInvoices($nego_id)
+	private function getNegociationInvoices($nego_id)
 	{
 		$negoInvoices = eF_getTableData(
 			"module_xpay_invoices inv
@@ -2777,10 +2863,11 @@ class module_xpay extends MagesterExtendedModule
 			) LEFT OUTER JOIN module_xpay_paid_items pd ON (
 				inv2paid.paid_id = pd.id
 			)",
-			"neg.user_id, inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access, inv.is_registration_tax,
-			inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count,
-			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
-			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
+			"neg.user_id, inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access, 
+			inv.is_registration_tax, inv.valor, inv.data_registro, inv.data_vencimento, 
+			COUNT(pd.id) as trans_count, IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid, 
+			pd.method_id, inv.locked, inv.locked_reason, MIN(pd.start_timestamp) as start_min, 
+			MAX(pd.start_timestamp) as start_max",
 			sprintf("inv.negociation_id = %d", $nego_id),
 			"data_registro ASC",
 			"inv.negociation_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,
@@ -2812,7 +2899,7 @@ class module_xpay extends MagesterExtendedModule
 			)",
 			"neg.user_id, inv.negociation_id, neg.course_id, inv.invoice_index, inv.invoice_id, inv.invoice_sha_access,
 			inv.is_registration_tax, inv.valor, inv.data_registro, inv.data_vencimento, COUNT(pd.id) as trans_count,
-			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid,
+			IFNULL(IFNULL(SUM(inv2paid.full_value), SUM(pd.paid)), 0) as paid, pd.method_id,
 			MIN(pd.start_timestamp) as start_min, MAX(pd.start_timestamp) as start_max",
 			sprintf("inv.negociation_id = %d AND inv.invoice_index = %d", $nego_id, $invoice_index),
 			"data_registro ASC",
@@ -4019,8 +4106,8 @@ class module_xpay extends MagesterExtendedModule
 
 			$link_of_menu_system = array (array ('id' => 'module_xpay_link_id1',
 					'title' => __XPAY_MENU_TITLE,
-//					'image' => $this -> moduleBaseDir.'images/pagamento',
-//					'_magesterExtensions' => '1',
+					//'image' => $this -> moduleBaseDir.'images/pagamento',
+					//'_magesterExtensions' => '1',
 					'link'  => $this -> moduleBaseUrl));
 			return array ( "system" => $link_of_menu_system);
 		}
