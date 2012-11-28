@@ -58,7 +58,6 @@ require_once 'HTML/QuickForm2/Element/Select.php';
  */
 require_once 'HTML/QuickForm2/Element/Script.php';
 
-
 /**
  * Hierarchical select element
  *
@@ -287,6 +286,7 @@ class HTML_QuickForm2_Element_Hierselect extends HTML_QuickForm2_Container_Group
         foreach ($this->getDataSources() as $ds) {
             if (null !== ($value = $ds->getValue($name))) {
                 $this->setValue($value);
+
                 return;
             }
         }
@@ -316,6 +316,7 @@ class HTML_QuickForm2_Element_Hierselect extends HTML_QuickForm2_Container_Group
                 $ret[$k] = $this->_prepareOptions($v, $depth - 1);
             }
         }
+
         return $ret;
     }
 
@@ -357,6 +358,7 @@ class HTML_QuickForm2_Element_Hierselect extends HTML_QuickForm2_Container_Group
         foreach ($this as $element) {
             $ids[] = $element->getId();
         }
+
         return 'qf.elements.hierselect.init(' . HTML_QuickForm2_JavascriptBuilder::encode($ids)
                . (empty($this->jsCallback)? '': ", {$this->jsCallback}") . ');';
     }
@@ -366,6 +368,7 @@ class HTML_QuickForm2_Element_Hierselect extends HTML_QuickForm2_Container_Group
         require_once 'HTML/QuickForm2/Renderer.php';
 
         $cr = HTML_Common2::getOption('linebreak');
+
         return $this->render(HTML_QuickForm2_Renderer::factory('default')
                                 ->setTemplateForId($this->getId(), '{content}')
                    )->__toString()
@@ -402,7 +405,7 @@ class HTML_QuickForm2_Element_Hierselect extends HTML_QuickForm2_Container_Group
         parent::render($renderer);
 
         $this->removeChild($script);
+
         return $renderer;
     }
 }
-?>

@@ -48,7 +48,6 @@
  */
 require_once 'HTML/QuickForm2/Element.php';
 
-
 /**
  * Collection of <option>s and <optgroup>s
  *
@@ -86,7 +85,6 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
     */
     protected $possibleValues;
 
-
    /**
     * Class constructor
     *
@@ -113,7 +111,7 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
     public function addOption($text, $value, $attributes = null)
     {
         if (null === $attributes) {
-            $attributes = array('value' => (string)$value);
+            $attributes = array('value' => (string) $value);
         } else {
             $attributes = self::prepareAttributes($attributes);
             if (isset($attributes['selected'])) {
@@ -123,10 +121,10 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
                     $this->values[] = $value;
                 }
             }
-            $attributes['value'] = (string)$value;
+            $attributes['value'] = (string) $value;
         }
         if (!isset($attributes['disabled'])) {
-            $this->possibleValues[(string)$value] = true;
+            $this->possibleValues[(string) $value] = true;
         }
         $this->options[] = array('text' => $text, 'attr' => $attributes);
     }
@@ -146,6 +144,7 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
                             $label, $attributes
                         );
         $this->options[] = $optgroup;
+
         return $optgroup;
     }
 
@@ -179,6 +178,7 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
                 $html .= $option->__toString();
             }
         }
+
         return $html;
     }
 
@@ -216,7 +216,6 @@ class HTML_QuickForm2_Element_Select_OptionContainer extends HTML_Common2
     }
 }
 
-
 /**
  * Class representing an <optgroup> tag
  *
@@ -245,13 +244,14 @@ class HTML_QuickForm2_Element_Select_Optgroup
     {
         parent::__construct($values, $possibleValues);
         $this->setAttributes($attributes);
-        $this->attributes['label'] = (string)$label;
+        $this->attributes['label'] = (string) $label;
     }
 
     public function __toString()
     {
         $indent    = $this->getIndent();
         $linebreak = self::getOption('linebreak');
+
         return $indent . '<optgroup' . $this->getAttributes(true) . '>' .
                $linebreak . parent::__toString() . $indent . '</optgroup>' . $linebreak;
     }
@@ -282,7 +282,6 @@ class HTML_QuickForm2_Element_Select_OptionIterator extends RecursiveArrayIterat
     }
 }
 
-
 /**
  * Class representing a <select> element
  *
@@ -310,7 +309,6 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
     * @var array
     */
     protected $possibleValues = array();
-
 
    /**
     * Object containing options for the <select> element
@@ -366,6 +364,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
                 $this->attributes['name']  = substr($this->attributes['name'], 0, -2);
             }
             $indent = $this->getIndent();
+
             return $indent . '<select' . $attrString . '>' .
                    self::getOption('linebreak') .
                    $this->optionContainer->__toString() .
@@ -401,6 +400,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
                          ) + $idAttr) . ' />';
             }
         }
+
         return $html;
     }
 
@@ -450,6 +450,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
                     $lastValue = $child['attr']['value'];
                 }
             }
+
             return $lastValue;
         }
     }
@@ -461,6 +462,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
         } else {
             $this->values = array($value);
         }
+
         return $this;
     }
 
@@ -500,6 +502,7 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
                                      $this->values, $this->possibleValues
                                  );
         $this->loadOptionsFromArray($this->optionContainer, $options);
+
         return $this;
     }
 
@@ -566,10 +569,10 @@ class HTML_QuickForm2_Element_Select extends HTML_QuickForm2_Element
                     $ds instanceof HTML_QuickForm2_DataSource_Submit)
                 {
                     $this->setValue(null === $value? array(): $value);
+
                     return;
                 }
             }
         }
     }
 }
-?>

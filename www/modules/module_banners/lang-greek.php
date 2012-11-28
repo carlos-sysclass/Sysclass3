@@ -1,8 +1,8 @@
 <?php
-define("_BANNERS_BANNERS","Διαφημίσεις");
+define("_BANNERS_BANNERS", "Διαφημίσεις");
 define("_BANNERS_MODULE", "Άρθρωμα Διαφημίσεις");
-define("_BANNERS_MAIN","Κύρια σελίδα");
-define("_BANNERS_MANAGEMENT","Διαχείριση");
+define("_BANNERS_MAIN", "Κύρια σελίδα");
+define("_BANNERS_MANAGEMENT", "Διαχείριση");
 define("_BANNERS_ADDBANNER", "Προσθήκη Διαφήμισης");
 define("_BANNERS_IMAGE", "Εικόνα");
 define("_BANNERS_LINK", "Σύνδεσμος");
@@ -19,4 +19,3 @@ define("_BANNERS_DELETEBANNER", "Διαγραφή διαφήμισης");
 define("_BANNERS_EDITBANNER", "Ενημέρωση διαφήμισης");
 define("_BANNERS_GOTOBANNERSPAGE", "Μετάβαση στην σελίδα των Διαφημίσεων");
 define("_BANNERS_ORSELECTONEFROMLIST", "Ή επιλέξτε ένα από τη λίστα");
-?>

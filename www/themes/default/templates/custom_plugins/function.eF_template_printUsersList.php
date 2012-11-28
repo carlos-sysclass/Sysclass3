@@ -3,7 +3,8 @@
 * Smarty plugin: smarty_function_eF_template_printUsersList function.
 *
 */
-function smarty_function_eF_template_printUsersList($params, &$smarty) {
+function smarty_function_eF_template_printUsersList($params, &$smarty)
+{
 
     $admin_str     = '<option value = "-1" disabled>---- '._ADMINISTRATORS.' ----</option>';
     $professor_str = '<option value = "-1" disabled>---- '._PROFESSORS.' ----</option>';
@@ -31,5 +32,3 @@ function smarty_function_eF_template_printUsersList($params, &$smarty) {
 
     return $professor_str.$student_str.$admin_str;
 }
-
-?>

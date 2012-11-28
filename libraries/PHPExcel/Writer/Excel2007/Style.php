@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_Style
  *
@@ -299,7 +298,7 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 				$objWriter->startElement('vertAlign');
 				if ($pFont->getSuperScript()) {
 					$objWriter->writeAttribute('val', 'superscript');
-				} else if ($pFont->getSubScript()) {
+				} elseif ($pFont->getSubScript()) {
 					$objWriter->writeAttribute('val', 'subscript');
 				}
 				$objWriter->endElement();
@@ -372,16 +371,16 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		// xf
 		$objWriter->startElement('xf');
 			$objWriter->writeAttribute('xfId', 0);
-			$objWriter->writeAttribute('fontId', 			(int)$this->getParentWriter()->getFontHashTable()->getIndexForHashCode($pStyle->getFont()->getHashCode()));
+			$objWriter->writeAttribute('fontId', 			(int) $this->getParentWriter()->getFontHashTable()->getIndexForHashCode($pStyle->getFont()->getHashCode()));
 
 			if ($pStyle->getNumberFormat()->getBuiltInFormatCode() === false) {
-				$objWriter->writeAttribute('numFmtId', 			(int)($this->getParentWriter()->getNumFmtHashTable()->getIndexForHashCode($pStyle->getNumberFormat()->getHashCode()) + 164)   );
+				$objWriter->writeAttribute('numFmtId', 			(int) ($this->getParentWriter()->getNumFmtHashTable()->getIndexForHashCode($pStyle->getNumberFormat()->getHashCode()) + 164)   );
 			} else {
-				$objWriter->writeAttribute('numFmtId', 			(int)$pStyle->getNumberFormat()->getBuiltInFormatCode());
+				$objWriter->writeAttribute('numFmtId', 			(int) $pStyle->getNumberFormat()->getBuiltInFormatCode());
 			}
 
-			$objWriter->writeAttribute('fillId', 			(int)$this->getParentWriter()->getFillHashTable()->getIndexForHashCode($pStyle->getFill()->getHashCode()));
-			$objWriter->writeAttribute('borderId', 			(int)$this->getParentWriter()->getBordersHashTable()->getIndexForHashCode($pStyle->getBorders()->getHashCode()));
+			$objWriter->writeAttribute('fillId', 			(int) $this->getParentWriter()->getFillHashTable()->getIndexForHashCode($pStyle->getFill()->getHashCode()));
+			$objWriter->writeAttribute('borderId', 			(int) $this->getParentWriter()->getBordersHashTable()->getIndexForHashCode($pStyle->getBorders()->getHashCode()));
 
 			// Apply styles?
 			$objWriter->writeAttribute('applyFont', 		($pPHPExcel->getDefaultStyle()->getFont()->getHashCode() != $pStyle->getFont()->getHashCode()) ? '1' : '0');
@@ -401,7 +400,7 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 				$textRotation = 0;
 				if ($pStyle->getAlignment()->getTextRotation() >= 0) {
 					$textRotation = $pStyle->getAlignment()->getTextRotation();
-				} else if ($pStyle->getAlignment()->getTextRotation() < 0) {
+				} elseif ($pStyle->getAlignment()->getTextRotation() < 0) {
 					$textRotation = 90 - $pStyle->getAlignment()->getTextRotation();
 				}
 
@@ -458,7 +457,7 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 				$textRotation = 0;
 				if ($pStyle->getAlignment()->getTextRotation() >= 0) {
 					$textRotation = $pStyle->getAlignment()->getTextRotation();
-				} else if ($pStyle->getAlignment()->getTextRotation() < 0) {
+				} elseif ($pStyle->getAlignment()->getTextRotation() < 0) {
 					$textRotation = 90 - $pStyle->getAlignment()->getTextRotation();
 				}
 

@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_Rels
  *
@@ -218,7 +217,7 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
 //			$charts = $pWorksheet->getChartCollection();
 //			echo 'Chart Rels: ' , count($charts) , '<br />';
 //			if (count($charts) > 0) {
-//				foreach($charts as $chart) {
+//				foreach ($charts as $chart) {
 //					$this->_writeRelationship(
 //						$objWriter,
 //						++$d,

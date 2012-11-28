@@ -342,7 +342,7 @@ class PEAR_PackageFile_v1
      *
      * - package name
      * - channel name
-     * - dependencies 
+     * - dependencies
      * @var boolean
      * @access private
      */
@@ -399,6 +399,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['_lastversion'])) {
             return $this->_packageInfo['_lastversion'];
         }
+
         return false;
     }
 
@@ -452,6 +453,7 @@ class PEAR_PackageFile_v1
             !isset($this->_packageInfo[$field])) {
             return false;
         }
+
         return $this->_packageInfo[$field];
     }
 
@@ -468,6 +470,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['dirtree']) && count($this->_packageInfo['dirtree'])) {
             return $this->_packageInfo['dirtree'];
         }
+
         return false;
     }
 
@@ -507,6 +510,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['extends'])) {
             return $this->_packageInfo['extends'];
         }
+
         return false;
     }
 
@@ -518,6 +522,7 @@ class PEAR_PackageFile_v1
         if (!$this->validate(PEAR_VALIDATE_NORMAL)) {
             return false;
         }
+
         return $this->getArray();
     }
 
@@ -536,6 +541,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['package'])) {
             return $this->_packageInfo['package'];
         }
+
         return false;
     }
 
@@ -558,6 +564,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['version'])) {
             return $this->_packageInfo['version'];
         }
+
         return false;
     }
 
@@ -577,6 +584,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['maintainers'])) {
             return $this->_packageInfo['maintainers'];
         }
+
         return false;
     }
 
@@ -625,8 +633,10 @@ class PEAR_PackageFile_v1
             unset($this->_packageInfo['maintainers'][$found]);
             $this->_packageInfo['maintainers'] =
                 array_values($this->_packageInfo['maintainers']);
+
             return true;
         }
+
         return false;
     }
 
@@ -635,6 +645,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['release_state'])) {
             return $this->_packageInfo['release_state'];
         }
+
         return false;
     }
 
@@ -654,6 +665,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['release_date'])) {
             return $this->_packageInfo['release_date'];
         }
+
         return false;
     }
 
@@ -668,6 +680,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['release_license'])) {
             return $this->_packageInfo['release_license'];
         }
+
         return false;
     }
 
@@ -682,6 +695,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['summary'])) {
             return $this->_packageInfo['summary'];
         }
+
         return false;
     }
 
@@ -696,6 +710,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['description'])) {
             return $this->_packageInfo['description'];
         }
+
         return false;
     }
 
@@ -710,6 +725,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['release_notes'])) {
             return $this->_packageInfo['release_notes'];
         }
+
         return false;
     }
 
@@ -724,6 +740,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['release_deps'])) {
             return $this->_packageInfo['release_deps'];
         }
+
         return false;
     }
 
@@ -819,6 +836,7 @@ class PEAR_PackageFile_v1
                 return true;
             }
         }
+
         return false;
     }
 
@@ -827,6 +845,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['configure_options'])) {
             return $this->_packageInfo['configure_options'];
         }
+
         return false;
     }
 
@@ -858,6 +877,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['provides'])) {
             return $this->_packageInfo['provides'];
         }
+
         return false;
     }
 
@@ -889,6 +909,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['filelist'])) {
             return $this->_packageInfo['filelist'];
         }
+
         return false;
     }
 
@@ -925,6 +946,7 @@ class PEAR_PackageFile_v1
         if (isset($this->_packageInfo['changelog'])) {
             return $this->_packageInfo['changelog'];
         }
+
         return false;
     }
 
@@ -1210,6 +1232,7 @@ class PEAR_PackageFile_v1
             $chan = $this->_registry->getChannel('pear.php.net');
             if (PEAR::isError($chan)) {
                 $this->_validateError(PEAR_PACKAGEFILE_ERROR_CHANNELVAL, $chan->getMessage());
+
                 return $this->_isValid = 0;
             }
             $validator = $chan->getValidationObject();
@@ -1231,6 +1254,7 @@ class PEAR_PackageFile_v1
         if ($this->_isValid) {
             return $this->_isValid = $state;
         }
+
         return $this->_isValid = 0;
     }
 
@@ -1286,6 +1310,7 @@ class PEAR_PackageFile_v1
                 }
             }
         }
+
         return $this->_isValid;
     }
 
@@ -1300,6 +1325,7 @@ class PEAR_PackageFile_v1
             require_once 'PEAR/PackageFile/Generator/v1.php';
         }
         $a = &new PEAR_PackageFile_Generator_v1($this);
+
         return $a;
     }
 
@@ -1332,6 +1358,7 @@ class PEAR_PackageFile_v1
             if (PEAR::isError($file)) {
                 return PEAR::raiseError("Cannot locate file '$file' in archive");
             }
+
             return $file;
         }
     }
@@ -1448,6 +1475,7 @@ class PEAR_PackageFile_v1
                     if (($current_class_level != -1) || ($current_function_level != -1)) {
                         $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_PHPFILE,
                             array('file' => $file));
+
                         return false;
                     }
                 case T_FUNCTION:
@@ -1460,7 +1488,7 @@ class PEAR_PackageFile_v1
                     if (version_compare(zend_version(), '2.0', '<')) {
                         if (in_array(strtolower($data),
                             array('public', 'private', 'protected', 'abstract',
-                                  'interface', 'implements', 'throw') 
+                                  'interface', 'implements', 'throw')
                                  )) {
                             $this->_validateWarning(PEAR_PACKAGEFILE_ERROR_PHP5,
                                 array($file));
@@ -1512,6 +1540,7 @@ class PEAR_PackageFile_v1
                     if (!($tokens[$i - 1][0] == T_WHITESPACE || $tokens[$i - 1][0] == T_STRING)) {
                         $this->_validateError(PEAR_PACKAGEFILE_ERROR_INVALID_PHPFILE,
                             array('file' => $file));
+
                         return false;
                     }
                     $class = $tokens[$i - 1][1];
@@ -1521,6 +1550,7 @@ class PEAR_PackageFile_v1
                     continue 2;
             }
         }
+
         return array(
             "source_file" => $file,
             "declared_classes" => $declared_classes,
@@ -1600,4 +1630,3 @@ class PEAR_PackageFile_v1
 
     // }}}
 }
-?>

@@ -101,11 +101,11 @@ $_SESSION['referer'] = $_SERVER['REQUEST_URI'];
 if ($GLOBALS['currentTheme']->options['sidebar_interface'] == 1 || $GLOBALS['currentTheme']->options['sidebar_interface'] == 2) {
 	// Used inside new_sidebar_frame to opt out code
 	$horizontal_inframe_version = true;
-	include "new_sidebar.php";
+	include 'new_sidebar.php';
 }
 
 //include "new_sidebar.php";
-//var_dump($GLOBALS['currentTheme'] -> options['sidebar_interface']); 
+//var_dump($GLOBALS['currentTheme'] -> options['sidebar_interface']);
 !isset($_GET['ctg']) ? $ctg = "control_panel" : $ctg = $_GET['ctg'];
 
 $smarty->assign("T_CTG", $ctg); //As soon as we derive the current ctg, assign it to smarty.
@@ -115,7 +115,7 @@ $smarty->assign("T_OP", isset($_GET['op']) ? $_GET['op'] : false);
 $_student_ = $_professor_ = $_admin_ = 0;
 if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'student') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'student')) {
 	$_student_ = 1;
-} else if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
+} elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
 	$_professor_ = 1;
 } else {
 	$_admin_ = 1;
@@ -145,73 +145,73 @@ if (!$GLOBALS['configuration']['disable_messages']) {
 try {
 	if ($ctg == 'control_panel') {
 		/*		 * */
-		require_once ("control_panel.php");
+		require_once 'control_panel.php';
 	} elseif ($ctg == 'landing_page') {
 		/*		 * */
-		require_once ("landing_page.php");
+		require_once 'landing_page.php';
 	} elseif ($ctg == 'social') {
 		/*		 * */
-		require_once ("social.php");
+		require_once 'social.php';
 	} elseif ($ctg == 'languages') {
 		/*		 * */
-		require_once ("languages.php");
+		require_once 'languages.php';
 	} elseif ($ctg == 'forum') {
 		/*		 * */
-		require_once("includes/forum.php");
+		require_once 'includes/forum.php';
 	} elseif ($ctg == 'messages') {
 		/*		 * */
-		require_once("includes/messages.php");
+		require_once 'includes/messages.php';
 	} elseif ($ctg == 'chat') {
 		/*		 * */
-		require_once("includes/chat.php");
+		require_once 'includes/chat.php';
 	} elseif ($ctg == 'backup') {
 		/*		 * */
-		require_once ("backup.php");
+		require_once 'backup.php';
 	} elseif ($ctg == 'news') {
 		/*		 * */
-		require_once ("news.php");
+		require_once 'news.php';
 	} elseif ($ctg == 'user_profile') {
 		/*		 * */
-		require_once ("user_profile.php");
+		require_once 'user_profile.php';
 	} elseif ($ctg == 'import_export') {
 		/*		 * */
-		require_once ("import_export.php");
+		require_once 'import_export.php';
 	} elseif ($ctg == 'system_config') {
 		/*		 * */
-		require_once ("includes/system_config.php");
+		require_once 'includes/system_config.php';
 	} elseif ($ctg == 'personal') {
 		/*		 * This part is used to display the user's personal information */
-		include "includes/personal.php";
+		include 'includes/personal.php';
 	} elseif ($ctg == 'maintenance') {
 		/*		 * */
-		require_once ("maintenance.php");
+		require_once 'maintenance.php';
 	} elseif ($ctg == 'versionkey') {
 		/*		 * */
-		require_once ("versionkey.php");
+		require_once 'versionkey.php';
 	} elseif ($ctg == 'curriculums') {
 		/*		 * */
-		require_once ("curriculums.php");
+		require_once 'curriculums.php';
 	} elseif ($ctg == 'payments') {
 		/*		 * */
-		require_once ("payments.php");
+		require_once 'payments.php';
 	} elseif ($ctg == 'modules') {
 		/*		 * */
-		require_once ("includes/modules.php");
+		require_once 'includes/modules.php';
 	} elseif ($ctg == 'users') {
 		/*		 * */
-		require_once ("users.php");
+		require_once 'users.php';
 	} elseif ($ctg == 'lessons') {
 		/*		 * */
-		require_once ("lessons.php");
+		require_once 'lessons.php';
 	} elseif ($ctg == 'directions') {
 		/*		 * */
-		require_once "categories.php";
+		require_once 'categories.php';
 	} elseif ($ctg == 'archive') {
 		/*		 * */
-		require_once "archive.php";
+		require_once 'archive.php';
 	} elseif ($ctg == 'courses') {
 		/*		 * */
-		require_once "courses.php";
+		require_once 'courses.php';
 	} elseif ($ctg == "file_manager") {
 		//This page has a file manager, so bring it on with the correct options
 		$basedir = $currentUser->getDirectory();
@@ -223,7 +223,7 @@ try {
 		$url = basename($_SERVER['PHP_SELF']) . '?ctg=file_manager';
 		$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
 
-		include "file_manager.php";
+		include 'file_manager.php';
 	} elseif ($ctg == 'logout_user') {
 
 		// Done here to include administrator.php access control
@@ -244,41 +244,41 @@ try {
 	} elseif ($ctg == 'calendar') {
 		if ($currentUser->coreAccess['calendar'] != 'hidden' && $GLOBALS['configuration']['disable_calendar'] != 1) {
 			/*			 * */
-			require_once "calendar.php";
+			require_once 'calendar.php';
 		} else {
 			eF_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
 		}
 	} elseif ($ctg == 'search_courses') {
 		/*		 * Search courses is used to find the course users that fulfill an arbitrary number of criteria */
-		require_once "search_courses.php";
+		require_once 'search_courses.php';
 	} elseif ($ctg == 'search_users') {
-		
+
 	} elseif ($ctg == 'digests') {
 		/** Email digests feature */
-		require_once "digests.php";
+		require_once 'digests.php';
 	} elseif ($ctg == 'statistics') {
 		if (isset($currentUser->coreAccess['statistics']) && $currentUser->coreAccess['statistics'] == 'hidden') {
 			eF_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
 		}
 		/** Statistics is the page that calculates and displays the system statistics. */
-		require_once "statistics.php";
+		require_once 'statistics.php';
 	} elseif ($ctg == 'module_hcd') {
 		/*		 * */
-		require_once "module_hcd.php";
+		require_once 'module_hcd.php';
 	} elseif ($ctg == 'themes') {
 		/*		 * */
-		require_once "themes.php";
-	} else if ($ctg == 'tests') {
+		require_once 'themes.php';
+	} elseif ($ctg == 'tests') {
 		/*		 * */
-		require_once "module_tests.php";
+		require_once 'module_tests.php';
 		/*		 * Ranking tests */
-		require_once "tests.php";
-	} else if ($ctg == 'facebook') {
+		require_once 'tests.php';
+	} elseif ($ctg == 'facebook') {
 		/*		 * */
-		require_once "module_facebook.php";
+		require_once 'module_facebook.php';
 	} elseif ($ctg == 'module') {
 		/*		 * */
-		require_once "module.php";
+		require_once 'module.php';
 	}
 
 	/*
@@ -362,17 +362,16 @@ $userRoles = MagesterUser :: GetRoles(true);
 $smarty->assign("T_ROLES_ARRAY", $userRoles);
 $smarty->assign("T_CURRENT_USER_TYPE", $userRoles[$currentUser->getType()]);
 
-
 // Verifica se modulo chat esta ativo
 $modulesUserOn = $currentUser->getModules();
 $listModules = array_keys($modulesUserOn);
 
-if( in_array("module_xlivechat", $listModules)) {
- 	
+if ( in_array("module_xlivechat", $listModules)) {
+
 	$userOnline = MagesterUser::getUsersOnline();
-	
-	foreach ($userOnline as $_useron ) {
-			if ($_useron['login'] == "suporteult"){
+
+	foreach ($userOnline as $_useron) {
+			if ($_useron['login'] == "suporteult") {
 	 		$viewLink = 1;
 	 	} else {
 	 		$viewLink = null;
@@ -381,7 +380,6 @@ if( in_array("module_xlivechat", $listModules)) {
 }
 
 $smarty->assign("T_CHECK_VIEW_LINK_CHAT", $viewLink);
-
 
 // ASSIGN USER AVATAR
 $user_avatar = array();

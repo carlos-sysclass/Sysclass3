@@ -1,6 +1,6 @@
 <?php
 /**
- * Class with static methods for loading classes and files 
+ * Class with static methods for loading classes and files
  *
  * PHP version 5
  *
@@ -49,7 +49,7 @@
 require_once 'HTML/QuickForm2/Exception.php';
 
 /**
- * Class with static methods for loading classes and files 
+ * Class with static methods for loading classes and files
  *
  * @category   HTML
  * @package    HTML_QuickForm2
@@ -107,8 +107,10 @@ class HTML_QuickForm2_Loader
         $fp = @fopen($fileName, 'r', true);
         if (is_resource($fp)) {
             fclose($fp);
+
             return true;
         }
+
         return false;
     }
 
@@ -131,10 +133,10 @@ class HTML_QuickForm2_Loader
         }
         try {
             @self::loadClass($class);
+
             return true;
         } catch (Exception $e) {
             return false;
         }
     }
 }
-?>

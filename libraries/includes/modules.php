@@ -10,7 +10,6 @@ if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['
     eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
-
 try {
     if (isset($_GET['delete_module']) && eF_checkParameter($_GET['delete_module'], 'filename')) {
         if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
@@ -47,21 +46,21 @@ try {
         eF_deleteTableData("modules", "className='".$className."'");
 
         exit;
-    } elseif(isset($_GET['activate_module']) && eF_checkParameter($_GET['activate_module'], 'filename')) {
+    } elseif (isset($_GET['activate_module']) && eF_checkParameter($_GET['activate_module'], 'filename')) {
         if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
             throw new MagesterSystemException(_UNAUTHORIZEDACCESS, MagesterSystemException::UNAUTHORIZED_ACCESS);
         }
         eF_updateTableData("modules", array("active" => 1), "className = '".$_GET['activate_module']."'");
         echo "1";
         exit;
-    } elseif(isset($_GET['deactivate_module']) && eF_checkParameter($_GET['deactivate_module'], 'filename')) {
+    } elseif (isset($_GET['deactivate_module']) && eF_checkParameter($_GET['deactivate_module'], 'filename')) {
         if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
             throw new MagesterSystemException(_UNAUTHORIZEDACCESS, MagesterSystemException::UNAUTHORIZED_ACCESS);
         }
         eF_updateTableData("modules", array("active" => 0), "className = '".$_GET['deactivate_module']."'");
         echo "0";
         exit;
-    } elseif(isset($_GET['install_module']) && eF_checkParameter($_GET['install_module'], 'filename')) {
+    } elseif (isset($_GET['install_module']) && eF_checkParameter($_GET['install_module'], 'filename')) {
 
     }
 } catch (Exception $e) {
@@ -139,7 +138,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
     $ok = 1;
     //list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads("file_upload", G_MODULESPATH);
 //pr($uploadedFile);exit;
-    if(isset($_GET['upgrade'])) {
+    if (isset($_GET['upgrade'])) {
         $prev_module_version = eF_getTableData("modules", "position", "className = '".$_GET['upgrade']."'");
         $prev_module_folder = $prev_module_version[0]['position'];
         // The name of the temp folder to extract the new version of the module
@@ -164,9 +163,9 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
 
                 $xml = simplexml_load_file(G_MODULESPATH.$module_folder.'/module.xml');
 
-                $className = (string)$xml -> className;
+                $className = (string) $xml -> className;
                 $className = str_replace(" ", "", $className);
-                $database_file = (string)$xml -> database;
+                $database_file = (string) $xml -> database;
                 if (is_file(G_MODULESPATH.$module_folder.'/'.$className. ".class.php")) {
                     $module_exists = 0;
 
@@ -178,7 +177,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                             }
                         }
                     }
-                    
+
                     if ($module_exists == 0) {
                         require_once G_MODULESPATH.$module_folder."/".$className.".class.php";
 
@@ -211,10 +210,10 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                                                              'db_file' => $database_file,
                                                              'name' => $className,
                                                              'active' => 1,
-                                                             'title' => ((string)$xml -> title)?(string)$xml -> title:" ",
-                                                             'author' => (string)$xml -> author,
-                                                             'version' => (string)$xml -> version,
-                                                             'description' => (string)$xml -> description,
+                                                             'title' => ((string) $xml -> title)?(string) $xml -> title:" ",
+                                                             'author' => (string) $xml -> author,
+                                                             'version' => (string) $xml -> version,
+                                                             'description' => (string) $xml -> description,
                                                              'position' => $module_position,
                                                              'permissions' => implode(",", $module -> getPermittedRoles()));
 
@@ -291,7 +290,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
      //$dir -> delete();
                     //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                 }
-            } else if (!is_dir(G_MODULESPATH.$module_folder)) {
+            } elseif (!is_dir(G_MODULESPATH.$module_folder)) {
                 $message = _THISFOLDERDOESNOTEXIT.': '.G_MODULESPATH.$module_folder;
                 $message_type = 'failure';
             } else {

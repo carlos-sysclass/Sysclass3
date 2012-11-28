@@ -89,6 +89,7 @@ class HTML_QuickForm2_Rule_Each extends HTML_QuickForm2_Rule
                 }
             } catch (HTML_QuickForm2_InvalidArgumentException $e) {}
         }
+
         return true;
     }
 
@@ -107,6 +108,7 @@ class HTML_QuickForm2_Rule_Each extends HTML_QuickForm2_Rule
                 $callbacks[] = $rule->getJavascriptCallback();
             } catch (HTML_QuickForm2_InvalidArgumentException $e) {}
         }
+
         return "function () { return qf.rules.each([\n\t\t" . implode(",\n\t\t", $callbacks) . "\n\t]); }";
     }
 
@@ -133,6 +135,7 @@ class HTML_QuickForm2_Rule_Each extends HTML_QuickForm2_Rule
                 'Cannot use "required" Rule as a template'
             );
         }
+
         return parent::setConfig($config);
     }
 
@@ -154,4 +157,3 @@ class HTML_QuickForm2_Rule_Each extends HTML_QuickForm2_Rule
         parent::setOwner($owner);
     }
 }
-?>

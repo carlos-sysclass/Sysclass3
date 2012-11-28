@@ -48,10 +48,7 @@ abstract class Zend_Pdf_FileParser
      */
     const BYTE_ORDER_BIG_ENDIAN    = 1;
 
-
-
   /**** Instance Variables ****/
-
 
     /**
      * Flag indicating that the file has passed a cursory validation check.
@@ -71,10 +68,7 @@ abstract class Zend_Pdf_FileParser
      */
     protected $_dataSource = null;
 
-
-
   /**** Public Interface ****/
-
 
   /* Abstract Methods */
 
@@ -96,7 +90,6 @@ abstract class Zend_Pdf_FileParser
      * @throws Zend_Pdf_Exception
      */
     abstract public function parse();
-
 
   /* Object Lifecycle */
 
@@ -127,7 +120,6 @@ abstract class Zend_Pdf_FileParser
     {
         $this->_dataSource = null;
     }
-
 
   /* Accessors */
 
@@ -161,7 +153,6 @@ abstract class Zend_Pdf_FileParser
         return $this->_dataSource;
     }
 
-
   /* Primitive Methods */
 
     /**
@@ -175,11 +166,13 @@ abstract class Zend_Pdf_FileParser
         $this->_dataSource->moveToOffset($offset);
     }
 
-    public function getOffset() {
+    public function getOffset()
+    {
        return $this->_dataSource->getOffset();
     }
 
-    public function getSize() {
+    public function getSize()
+    {
        return $this->_dataSource->getSize();
     }
 
@@ -255,7 +248,7 @@ abstract class Zend_Pdf_FileParser
                     $number = ($number << 8) | ord($bytes[$i]);
                 }
             }
-        } else if ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
+        } elseif ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
             $number = ord($bytes[$size - 1]);
             if (($number & 0x80) == 0x80) {
                 /* Negative number. See discussion above.
@@ -276,6 +269,7 @@ abstract class Zend_Pdf_FileParser
             throw new Zend_Pdf_Exception("Invalid byte order: $byteOrder",
                                          Zend_Pdf_Exception::INVALID_BYTE_ORDER);
         }
+
         return $number;
     }
 
@@ -314,7 +308,7 @@ abstract class Zend_Pdf_FileParser
             for ($i = 1; $i < $size; $i++) {
                 $number = ($number << 8) | ord($bytes[$i]);
             }
-        } else if ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
+        } elseif ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
             $number = 0;
             for ($i = --$size; $i >= 0; $i--) {
                 $number |= ord($bytes[$i]) << ($i * 8);
@@ -324,6 +318,7 @@ abstract class Zend_Pdf_FileParser
             throw new Zend_Pdf_Exception("Invalid byte order: $byteOrder",
                                          Zend_Pdf_Exception::INVALID_BYTE_ORDER);
         }
+
         return $number;
     }
 
@@ -338,6 +333,7 @@ abstract class Zend_Pdf_FileParser
     {
         $bitMask = 1 << $bit;
         $isSet = (($bitField & $bitMask) == $bitMask);
+
         return $isSet;
     }
 
@@ -368,6 +364,7 @@ abstract class Zend_Pdf_FileParser
                                          Zend_Pdf_Exception::BAD_FIXED_POINT_SIZE);
         }
         $number = $this->readInt(($bitsToRead >> 3), $byteOrder) / (1 << $fractionBits);
+
         return $number;
     }
 
@@ -408,11 +405,13 @@ abstract class Zend_Pdf_FileParser
             if ($characterSet == 'UTF-16BE') {
                 return $bytes;
             }
+
             return iconv('UTF-16BE', $characterSet, $bytes);
-        } else if ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
+        } elseif ($byteOrder == Zend_Pdf_FileParser::BYTE_ORDER_LITTLE_ENDIAN) {
             if ($characterSet == 'UTF-16LE') {
                 return $bytes;
             }
+
             return iconv('UTF-16LE', $characterSet, $bytes);
         } else {
             require_once 'Zend/Pdf/Exception.php';
@@ -446,6 +445,7 @@ abstract class Zend_Pdf_FileParser
         if ($characterSet == 'MacRoman') {
             return $bytes;
         }
+
         return iconv('MacRoman', $characterSet, $bytes);
     }
 
@@ -477,6 +477,7 @@ abstract class Zend_Pdf_FileParser
         if ($characterSet == 'ASCII') {
             return $bytes;
         }
+
         return iconv('ASCII', $characterSet, $bytes);
     }
 

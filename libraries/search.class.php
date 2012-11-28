@@ -88,22 +88,23 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function insertText($text, $foreignID, $tableName, $position) {
+ public static function insertText($text, $foreignID, $tableName, $position)
+ {
      $fields['foreign_ID'] = $foreignID;
   $fields['table_name'] = MagesterSearch :: $tableAssoc[$tableName]; //from 3.6 there is a corespondence between tables and numbers
   ($position == "title") ? $fields['position'] = 0 : $fields['position'] = 1; //from 3.6  1 means 'data' and 0 means 'title'
   //todo : remove also some special chars like [ ] & * etc
-  if($text == "") {return true;}
+  if ($text == "") {return true;}
   $replace = array("(", "{", "}", ")","]", "[","@", "#", "$", "%", "^", "&","*", ".", ",");
   $querywords = mb_strtolower(strip_tags(str_replace("&nbsp;"," ", str_replace($replace, " ", $text))));
   $eachword = explode(" ", $querywords);
   $eachword = array_unique($eachword); //Remove duplicate values from search table
   $terms = array();
-  foreach ($eachword AS $key => $value) {
+  foreach ($eachword as $key => $value) {
    $len = mb_strlen($value);
    if ($len > 3 AND $len < 100) { //Only words with length more than 3 and less than 100 characters long.
     $terms[] = $value;
-   } else{
+   } else {
    }
   }
   //Querying for all values may be very slow; this is why we added this 20 values limit
@@ -132,6 +133,7 @@ class MagesterSearch
           //$res = eF_executeNew("insert into search_keywords (".implode(",", array_keys($fields)).") values ".implode(",",$rows)."");
           eF_insertTableDataMultiple("search_keywords", $allFields);
       }
+
   return true;
  }
  /**
@@ -163,7 +165,8 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function removeText($tableName, $foreignID, $position, $morefIds = false) {
+ public static function removeText($tableName, $foreignID, $position, $morefIds = false)
+ {
   if (strlen($position) > 2) {
    ($position == "title") ? $position_str = "position = 0 and " : $position_str = "position = 1 and ";
   }
@@ -192,13 +195,15 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function searchForOneWord($word, $maxres, $tableName, $position) {
+ public static function searchForOneWord($word, $maxres, $tableName, $position)
+ {
   ($position == "title") ? $position_str = 0 : $position_str = 1;
   $res = eF_getTableDataFlat("search_invertedindex","id","keyword like '%$word%'");
   if (sizeof($res) > 0) {
       $idsList = implode(",", $res['id']);
       $result = eF_getTableDataFlat("search_keywords", "foreign_ID, count(keyword) AS score, table_name, position", "keyword IN ($idsList)".($position ? ' and position='.$position_str : '').($tableName ? ' and table_name='. MagesterSearch :: $tableAssoc[$tableName] : '')."", "", "foreign_ID,table_name limit $maxres");
   }
+
   return $result;
  }
  /**
@@ -236,7 +241,8 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function searchFull ($text, $tableName = false, $position = false, $number = 20) {
+ public static function searchFull ($text, $tableName = false, $position = false, $number = 20)
+ {
   global $debugMessages;
   $debugMessages.="Got into search";
   $eachword = explode(" ", $text);
@@ -250,7 +256,7 @@ class MagesterSearch
    }
   }
   //These lines are used for removing empty subarrays because of words with mb_strlen < 3
-  foreach($results as $key => $value) {
+  foreach ($results as $key => $value) {
    if (!empty($value)) {
      $resultsTemp[] = $results[$key];
      $score_idsTemp[] = $score_ids[$key];
@@ -275,6 +281,7 @@ class MagesterSearch
           'score' => $common_keys[$results[0]['foreign_ID'][$i]] / $max_score);
    }
   }
+
   return $field_data;
  }
  /**
@@ -298,10 +305,11 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function searchUsers ($text) {
+ public static function searchUsers ($text)
+ {
   $split_stemmed = split(" ",$text);
   while (list($key,$val)= each($split_stemmed)) {
-   if($val <> " " && strlen($val) > 2){
+   if ($val <> " " && strlen($val) > 2) {
     $val = strtoupper($val);
     $where .= "(upper(login) LIKE '%$val%' OR upper(email) LIKE '%$val%' OR upper(name) LIKE '%$val%' OR upper(surname) LIKE '%$val%') OR";
    }
@@ -309,6 +317,7 @@ class MagesterSearch
   $where = substr($where,0,(strLen($where)-4)); //this will eat the last OR
   $where .= ") ORDER BY login DESC";
   $result = eF_getTableData("users", "*", $where);
+
   return $result;
  }
  /**
@@ -334,7 +343,8 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function wordLimiter ($str, $n = 100, $startChar = '...',$endChar = '...') {
+ public static function wordLimiter ($str, $n = 100, $startChar = '...',$endChar = '...')
+ {
   if (mb_strlen($str) < $n) {
    return $str;
   }
@@ -346,6 +356,7 @@ class MagesterSearch
   for ($i = 0; $i < $n; $i++) {
    $str .= $words[$i].' ';
   }
+
   return $startChar.trim($str).$endChar;
  }
  /**
@@ -369,7 +380,8 @@ class MagesterSearch
      * @access public
 
 	 */
- public static function highlightText ($searchText, $searchCriteria, $style) {
+ public static function highlightText ($searchText, $searchCriteria, $style)
+ {
   if (!is_array($searchCriteria)) {
    $searchCriteria = trim($searchCriteria);
    $searchCriteria = explode(" ", $searchCriteria); //create an array of keywords if it does not exists
@@ -381,6 +393,7 @@ class MagesterSearch
     }
    }
   }
+
   return $searchText;
  }
     /**
@@ -410,7 +423,8 @@ class MagesterSearch
      * @access public
 
      */
- public static function resultsTextLimit ($data, $searchCriteria, $style, $limitText = "150", $start = "...", $end = "...") {
+ public static function resultsTextLimit ($data, $searchCriteria, $style, $limitText = "150", $start = "...", $end = "...")
+ {
   $data = strip_tags($data);
   $dataLength = mb_strlen($data);
   if (!is_array($searchCriteria)) {
@@ -426,14 +440,15 @@ class MagesterSearch
   $foot = $dataLength;
   $startC = $endC = null;
   if (sizeof($positions) > 0) {
-   if($positions[0] > floor($limitText/2)) {
+   if ($positions[0] > floor($limitText/2)) {
     $head = $positions[0] - floor($limitText/2);
     $startC = $start;
    }
-   if(($positions['0'] + floor($limitText/2)) < $dataLength) {
+   if (($positions['0'] + floor($limitText/2)) < $dataLength) {
     $foot = $positions[0] + floor($limitText/2);
     $endC = $end;
    }
+
    return $startC . MagesterSearch :: highlightText(mb_substr($data, $head, ($foot - $head)), $searchCriteria, $style) . $endC;
   } else {
    return MagesterSearch :: highlightText(mb_substr($data, 0, $limitText), $searchCriteria, $style) . $end;
@@ -454,7 +469,8 @@ class MagesterSearch
      * @access public
 
      */
- public static function reBuiltIndex () {
+ public static function reBuiltIndex ()
+ {
      eF_deleteTableData("search_keywords"); //Delete old search terms
 //		eF_deleteTableData("search");
   $GLOBALS['db'] -> Execute("truncate table search_invertedindex");
@@ -484,7 +500,7 @@ class MagesterSearch
   $forums = eF_getTableData("f_forums", "id, title, comments");
   for ($i = 0; $i < sizeof($forums); $i++) {
    MagesterSearch :: insertText($forums[$i]['title'], $forums[$i]['id'], "f_forums", "title");
-   if(strlen($forums[$i]['comments'])>3){
+   if (strlen($forums[$i]['comments'])>3) {
     MagesterSearch :: insertText(strip_tags($forums[$i]['comments']), $forums[$i]['id'], "f_forums","data");
    }
   }
@@ -492,7 +508,7 @@ class MagesterSearch
   $f_topics = eF_getTableData("f_topics", "id, title, comments");
   for ($i = 0; $i < sizeof($f_topics); $i++) {
    MagesterSearch :: insertText($f_topics[$i]['title'], $f_topics[$i]['id'], "f_topics", "title");
-   if(strlen($f_topics[$i]['comments'])>3){
+   if (strlen($f_topics[$i]['comments'])>3) {
     MagesterSearch :: insertText(strip_tags($f_topics[$i]['comments']), $f_topics[$i]['id'], "f_topics","data");
    }
   }
@@ -500,7 +516,7 @@ class MagesterSearch
   $f_poll = eF_getTableData("f_poll", "id, title, question");
   for ($i = 0; $i < sizeof($f_poll); $i++) {
    MagesterSearch :: insertText($f_poll[$i]['title'], $f_poll[$i]['id'], "f_poll", "title");
-   if(strlen($f_poll[$i]['question'])>3){
+   if (strlen($f_poll[$i]['question'])>3) {
     MagesterSearch :: insertText(strip_tags($f_poll[$i]['question']), $f_poll[$i]['id'], "f_poll","data");
    }
   }

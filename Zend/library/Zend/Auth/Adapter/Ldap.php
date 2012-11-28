@@ -102,6 +102,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
     public function setOptions($options)
     {
         $this->_options = is_array($options) ? $options : array();
+
         return $this;
     }
 
@@ -125,6 +126,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
     public function setUsername($username)
     {
         $this->_username = (string) $username;
+
         return $this;
     }
 
@@ -148,6 +150,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
     public function setPassword($password)
     {
         $this->_password = (string) $password;
+
         return $this;
     }
 
@@ -196,6 +199,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         $name = $options['accountDomainName'];
         if (!$name)
             $name = $options['accountDomainNameShort'];
+
         return $name ? $name : '';
     }
 
@@ -222,6 +226,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
         if (!$username) {
             $code = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
             $messages[0] = 'A username is required';
+
             return new Zend_Auth_Result($code, '', $messages);
         }
         if (!$password) {
@@ -230,6 +235,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
              */
             $code = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $messages[0] = 'A password is required';
+
             return new Zend_Auth_Result($code, '', $messages);
         }
 
@@ -300,11 +306,11 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                      * server options.
                      */
                     continue;
-                } else if ($err == Zend_Ldap_Exception::LDAP_NO_SUCH_OBJECT) {
+                } elseif ($err == Zend_Ldap_Exception::LDAP_NO_SUCH_OBJECT) {
                     $code = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
                     $messages[0] = "Account not found: $username";
                     $failedAuthorities[$dname] = $zle->getMessage();
-                } else if ($err == Zend_Ldap_Exception::LDAP_INVALID_CREDENTIALS) {
+                } elseif ($err == Zend_Ldap_Exception::LDAP_INVALID_CREDENTIALS) {
                     $code = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
                     $messages[0] = 'Invalid credentials';
                     $failedAuthorities[$dname] = $zle->getMessage();
@@ -340,6 +346,7 @@ class Zend_Auth_Adapter_Ldap implements Zend_Auth_Adapter_Interface
                 $str .= ',';
             $str .= $key . '=' . $val;
         }
+
         return $str;
     }
 }

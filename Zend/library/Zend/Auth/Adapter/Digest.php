@@ -20,12 +20,10 @@
  * @version    $Id: Digest.php 9668 2008-06-11 08:15:02Z doctorrock83 $
  */
 
-
 /**
  * @see Zend_Auth_Adapter_Interface
  */
 require_once 'Zend/Auth/Adapter/Interface.php';
-
 
 /**
  * @category   Zend
@@ -103,6 +101,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
     public function setFilename($filename)
     {
         $this->_filename = (string) $filename;
+
         return $this;
     }
 
@@ -125,6 +124,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
     public function setRealm($realm)
     {
         $this->_realm = (string) $realm;
+
         return $this;
     }
 
@@ -147,6 +147,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
     public function setUsername($username)
     {
         $this->_username = (string) $username;
+
         return $this;
     }
 
@@ -169,6 +170,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
     public function setPassword($password)
     {
         $this->_password = (string) $password;
+
         return $this;
     }
 
@@ -219,12 +221,14 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
                     $result['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
                     $result['messages'][] = 'Password incorrect';
                 }
+
                 return new Zend_Auth_Result($result['code'], $result['identity'], $result['messages']);
             }
         }
 
         $result['code'] = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
         $result['messages'][] = "Username '$this->_username' and realm '$this->_realm' combination not found";
+
         return new Zend_Auth_Result($result['code'], $result['identity'], $result['messages']);
     }
 }

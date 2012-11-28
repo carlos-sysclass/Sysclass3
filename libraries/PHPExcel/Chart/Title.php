@@ -25,7 +25,6 @@
  * @version		1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Chart_Title
  *
@@ -64,7 +63,8 @@ class PHPExcel_Chart_Title
 	 *
 	 * @return string
 	 */
-	public function getCaption() {
+	public function getCaption()
+	{
 		return $this->_caption;
 	}
 
@@ -73,7 +73,8 @@ class PHPExcel_Chart_Title
 	 *
 	 * @param string $caption
 	 */
-	public function setCaption($caption = null) {
+	public function setCaption($caption = null)
+	{
 		$this->_caption = $caption;
 	}
 
@@ -82,7 +83,8 @@ class PHPExcel_Chart_Title
 	 *
 	 * @return PHPExcel_Chart_Layout
 	 */
-	public function getLayout() {
+	public function getLayout()
+	{
 		return $this->_layout;
 	}
 

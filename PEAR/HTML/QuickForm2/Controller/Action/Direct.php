@@ -68,4 +68,3 @@ class HTML_QuickForm2_Controller_Action_Direct
         return $page->getController()->getPage($name)->handle('jump');
     }
 }
-?>

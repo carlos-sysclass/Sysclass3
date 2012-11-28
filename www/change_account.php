@@ -26,7 +26,7 @@ try {
    $redirectPage = $GLOBALS['configuration']['login_redirect_page'];
    if ($redirectPage == "user_dashboard" && $newUser -> user['user_type'] != "administrator") {
     echo 'userpage.php?ctg=personal';
-   }elseif (strpos($redirectPage, "module") !== false) {
+   } elseif (strpos($redirectPage, "module") !== false) {
     echo 'userpage.php?ctg=landing_page';
    } else {
     echo 'userpage.php';

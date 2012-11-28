@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Maildir.php 9098 2008-03-30 19:29:10Z thomas $
  */
-
 
 /**
  * @see Zend_Mail_Storage_Folder
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Storage/Folder/Interface.php';
  * @see Zend_Mail_Storage_Maildir
  */
 require_once 'Zend/Mail/Storage/Maildir.php';
-
 
 /**
  * @category   Zend
@@ -83,7 +81,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
     public function __construct($params)
     {
         if (is_array($params)) {
-            $params = (object)$params;
+            $params = (object) $params;
         }
 
         if (!isset($params->dirname) || !is_dir($params->dirname)) {
@@ -162,7 +160,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
                     array_push($folderStack, $parentFolder);
                     $parentFolder = $folder;
                     break;
-                } else if ($stack) {
+                } elseif ($stack) {
                     $parent = array_pop($stack);
                     $parentFolder = array_pop($folderStack);
                 }
@@ -211,6 +209,7 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
             require_once 'Zend/Mail/Storage/Exception.php';
             throw new Zend_Mail_Storage_Exception("folder $rootFolder not found");
         }
+
         return $currentFolder;
     }
 
@@ -225,14 +224,14 @@ class Zend_Mail_Storage_Folder_Maildir extends Zend_Mail_Storage_Maildir impleme
      */
     public function selectFolder($globalName)
     {
-        $this->_currentFolder = (string)$globalName;
+        $this->_currentFolder = (string) $globalName;
 
         // getting folder from folder tree for validation
         $folder = $this->getFolders($this->_currentFolder);
 
         try {
             $this->_openMaildir($this->_rootdir . '.' . $folder->getGlobalName());
-        } catch(Zend_Mail_Storage_Exception $e) {
+        } catch (Zend_Mail_Storage_Exception $e) {
             // check what went wrong
             if (!$folder->isSelectable()) {
                 /**

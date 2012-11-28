@@ -20,7 +20,7 @@ if (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues) && $_chang
 		handleAjaxExceptions($e);
 	}
 	exit;
-} else if (isset($_GET['activate']) && in_array($_GET['activate'], $legalValues) && $_change_) {
+} elseif (isset($_GET['activate']) && in_array($_GET['activate'], $legalValues) && $_change_) {
 	try {
 		$entity = new $entityName($_GET['activate']);
 		$entity -> activate();
@@ -29,7 +29,7 @@ if (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues) && $_chang
 		handleAjaxExceptions($e);
 	}
 	exit;
-} else if (isset($_GET['deactivate']) && in_array($_GET['deactivate'], $legalValues) && $_change_) {
+} elseif (isset($_GET['deactivate']) && in_array($_GET['deactivate'], $legalValues) && $_change_) {
 	try {
 		$entity = new $entityName($_GET['deactivate']);
 		$entity -> deactivate();
@@ -38,7 +38,7 @@ if (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues) && $_chang
 		handleAjaxExceptions($e);
 	}
 	exit;
-} else if ((isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalValues))) && $_change_) {
+} elseif ((isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalValues))) && $_change_) {
 	try {
 		//Create the form, unless it already exists
 		if (!isset($entityForm) || !($entityForm instanceof HTML_QuickForm)) {
@@ -76,13 +76,8 @@ if (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues) && $_chang
 		$renderer = prepareFormRenderer($entityForm);
 		$entityForm -> accept($renderer);
 
-
 		$smarty -> assign('T_ENTITY_FORM', $renderer -> toArray());
 		$smarty -> assign('T_ENTITY_FORM_ARRAY', $entityForm -> toArray());
-		 
-
-
-
 
 	} catch (Exception $e) {
 		handleNormalFlowExceptions($e);

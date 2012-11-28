@@ -121,7 +121,7 @@ class PEAR_PackageFile_v2
      *
      * - package name
      * - channel name
-     * - dependencies 
+     * - dependencies
      * @var boolean
      * @access private
      */
@@ -152,6 +152,7 @@ class PEAR_PackageFile_v2
     function &getPEARDownloader(&$i, $o, &$c)
     {
         $z = &new PEAR_Downloader($i, $o, $c);
+
         return $z;
     }
 
@@ -170,6 +171,7 @@ class PEAR_PackageFile_v2
             require_once 'PEAR/Dependency2.php';
         }
         $z = &new PEAR_Dependency2($c, $o, $p, $s);
+
         return $z;
     }
 
@@ -189,18 +191,21 @@ class PEAR_PackageFile_v2
     {
         if (!OS_WINDOWS) {
             $a = false;
+
             return $a;
         }
         if ($this->getPackageType() == 'extsrc' || $this->getPackageType() == 'zendextsrc') {
             $releasetype = $this->getPackageType() . 'release';
             if (!is_array($installer->getInstallPackages())) {
                 $a = false;
+
                 return $a;
             }
             foreach ($installer->getInstallPackages() as $p) {
                 if ($p->isExtension($this->_packageInfo['providesextension'])) {
                     if ($p->getPackageType() != 'extsrc' && $p->getPackageType() != 'zendextsrc') {
                         $a = false;
+
                         return $a; // the user probably downloaded it separately
                     }
                 }
@@ -246,6 +251,7 @@ class PEAR_PackageFile_v2
                                     array('channel' => $pf->getChannel(),
                                           'package' => $pf->getPackage()), true) . '" successful');
                             $a = array($ret[0], $err);
+
                             return $a;
                         }
                         $installer->log(0, 'Download and install of binary extension "' .
@@ -257,6 +263,7 @@ class PEAR_PackageFile_v2
             }
         }
         $a = false;
+
         return $a;
     }
 
@@ -271,6 +278,7 @@ class PEAR_PackageFile_v2
                 return $this->_packageInfo['providesextension'];
             }
         }
+
         return false;
     }
 
@@ -284,6 +292,7 @@ class PEAR_PackageFile_v2
               array('extsrc', 'extbin', 'zendextsrc', 'zendextbin'))) {
             return $this->_packageInfo['providesextension'] == $extension;
         }
+
         return false;
     }
 
@@ -373,6 +382,7 @@ class PEAR_PackageFile_v2
                 $pass = false;
             }
         }
+
         return $pass;
     }
 
@@ -510,6 +520,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_requestedGroup)) {
             return $this->_requestedGroup;
         }
+
         return false;
     }
 
@@ -532,6 +543,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['_lastversion'])) {
             return $this->_packageInfo['_lastversion'];
         }
+
         return false;
     }
 
@@ -576,6 +588,7 @@ class PEAR_PackageFile_v2
         if (count($ret)) {
             return $ret;
         }
+
         return false;
     }
 
@@ -634,6 +647,7 @@ class PEAR_PackageFile_v2
         if (count($this->_scripts)) {
             return true;
         }
+
         return false;
     }
 
@@ -646,7 +660,6 @@ class PEAR_PackageFile_v2
             }
         }
     }
-
 
     /**
      * Convert a recursive set of <dir> and <file> tags into a single <dir> tag with
@@ -790,7 +803,6 @@ class PEAR_PackageFile_v2
         return $this->_archiveFile;
     }
 
-
     /**
      * Directly set the array that defines this packagefile
      *
@@ -819,6 +831,7 @@ class PEAR_PackageFile_v2
         if (!$this->validate(PEAR_VALIDATE_NORMAL)) {
             return false;
         }
+
         return $this->getArray($forreg);
     }
 
@@ -835,6 +848,7 @@ class PEAR_PackageFile_v2
             $arr['old']['release_deps'] = $this->getDeps();
             $arr['old']['maintainers'] = $this->getMaintainers();
             $arr['xsdversion'] = '2.0';
+
             return $arr;
         } else {
             $info = $this->_packageInfo;
@@ -845,6 +859,7 @@ class PEAR_PackageFile_v2
             if (isset($info['#binarypackage'])) {
                 unset($info['#binarypackage']);
             }
+
             return $info;
         }
     }
@@ -865,14 +880,17 @@ class PEAR_PackageFile_v2
             if (!is_string($arr['old'][$field])) {
                 return null;
             }
+
             return $arr['old'][$field];
         }
         if (isset($arr[$field])) {
             if (!is_string($arr[$field])) {
                 return null;
             }
+
             return $arr[$field];
         }
+
         return null;
     }
 
@@ -886,6 +904,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['name'])) {
             return $this->_packageInfo['name'];
         }
+
         return false;
     }
 
@@ -897,6 +916,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['channel'])) {
             return strtolower($this->_packageInfo['channel']);
         }
+
         return false;
     }
 
@@ -905,6 +925,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['uri'])) {
             return $this->_packageInfo['uri'];
         }
+
         return false;
     }
 
@@ -913,6 +934,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['extends'])) {
             return $this->_packageInfo['extends'];
         }
+
         return false;
     }
 
@@ -921,6 +943,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['summary'])) {
             return $this->_packageInfo['summary'];
         }
+
         return false;
     }
 
@@ -929,6 +952,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['description'])) {
             return $this->_packageInfo['description'];
         }
+
         return false;
     }
 
@@ -945,6 +969,7 @@ class PEAR_PackageFile_v2
                 $ret['contributor'] = $this->_packageInfo['contributor'] :null;
             (isset($this->_packageInfo['helper'])) ?
                 $ret['helper'] = $this->_packageInfo['helper'] :null;
+
             return $ret;
         } else {
             $ret = array();
@@ -993,8 +1018,10 @@ class PEAR_PackageFile_v2
                     $ret[] = $s;
                 }
             }
+
             return $ret;
         }
+
         return false;
     }
 
@@ -1003,6 +1030,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['lead'])) {
             return $this->_packageInfo['lead'];
         }
+
         return false;
     }
 
@@ -1011,6 +1039,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['developer'])) {
             return $this->_packageInfo['developer'];
         }
+
         return false;
     }
 
@@ -1019,6 +1048,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['contributor'])) {
             return $this->_packageInfo['contributor'];
         }
+
         return false;
     }
 
@@ -1027,6 +1057,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['helper'])) {
             return $this->_packageInfo['helper'];
         }
+
         return false;
     }
 
@@ -1065,6 +1096,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['date'])) {
             return $this->_packageInfo['date'];
         }
+
         return false;
     }
 
@@ -1073,6 +1105,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['time'])) {
             return $this->_packageInfo['time'];
         }
+
         return false;
     }
 
@@ -1084,6 +1117,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['version'][$key])) {
             return $this->_packageInfo['version'][$key];
         }
+
         return false;
     }
 
@@ -1092,6 +1126,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['stability'])) {
             return $this->_packageInfo['stability'];
         }
+
         return false;
     }
 
@@ -1100,6 +1135,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['stability'][$key])) {
             return $this->_packageInfo['stability'][$key];
         }
+
         return false;
     }
 
@@ -1115,6 +1151,7 @@ class PEAR_PackageFile_v2
                 return $this->_packageInfo['license'];
             }
         }
+
         return false;
     }
 
@@ -1123,6 +1160,7 @@ class PEAR_PackageFile_v2
         if (!isset($this->_packageInfo['license']) || !is_array($this->_packageInfo['license'])) {
             return false;
         }
+
         return $this->_packageInfo['license']['attribs'];
     }
 
@@ -1131,6 +1169,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['notes'])) {
             return $this->_packageInfo['notes'];
         }
+
         return false;
     }
 
@@ -1143,6 +1182,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['usesrole'])) {
             return $this->_packageInfo['usesrole'];
         }
+
         return false;
     }
 
@@ -1155,6 +1195,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['usestask'])) {
             return $this->_packageInfo['usestask'];
         }
+
         return false;
     }
 
@@ -1182,8 +1223,10 @@ class PEAR_PackageFile_v2
             if (!$preserve) {
                 $this->_packageInfo['filelist'] = $ret;
             }
+
             return $ret;
         }
+
         return false;
     }
 
@@ -1208,8 +1251,10 @@ class PEAR_PackageFile_v2
             for ($i = 0; $i < count($releases['configureoption']); $i++) {
                 $releases['configureoption'][$i] = $releases['configureoption'][$i]['attribs'];
             }
+
             return $releases['configureoption'];
         }
+
         return false;
     }
 
@@ -1243,6 +1288,7 @@ class PEAR_PackageFile_v2
                     if ($forfilecheck) {
                         return $this->getFilelist();
                     }
+
                     return $contents;
                 }
                 $release = array($release);
@@ -1297,12 +1343,14 @@ class PEAR_PackageFile_v2
                         $contents[$file] = $attrs['attribs'];
                     }
                 }
+
                 return $contents;
             }
         } else { // simple release - no installconditions or install-as
             if ($forfilecheck) {
                 return $this->getFilelist();
             }
+
             return $contents;
         }
         // no releases matched
@@ -1329,6 +1377,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['filelist'][$file]['installed_as'])) {
             return $this->_packageInfo['filelist'][$file]['installed_as'];
         }
+
         return false;
     }
 
@@ -1354,6 +1403,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['contents'])) {
             return $this->_packageInfo['contents'];
         }
+
         return false;
     }
 
@@ -1374,6 +1424,7 @@ class PEAR_PackageFile_v2
         if ($index !== false &&
               isset($this->_packageInfo['contents']['dir']['file'][$index]['attribs'])) {
             $this->_packageInfo['contents']['dir']['file'][$index]['attribs'][$attr] = $value;
+
             return true;
         }
         if (!isset($this->_packageInfo['contents']['dir']['file'])) {
@@ -1394,10 +1445,12 @@ class PEAR_PackageFile_v2
                     } else {
                         $this->_packageInfo['contents']['dir']['file']['attribs'][$attr] = $value;
                     }
+
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -1414,6 +1467,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['dirtree']) && count($this->_packageInfo['dirtree'])) {
             return $this->_packageInfo['dirtree'];
         }
+
         return false;
     }
 
@@ -1466,6 +1520,7 @@ class PEAR_PackageFile_v2
         if (version_compare($me, $info['min'], '>=') && version_compare($me, $info['max'], '<=')) {
             return true;
         }
+
         return false;
     }
 
@@ -1477,6 +1532,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['compatible'])) {
             return $this->_packageInfo['compatible'];
         }
+
         return false;
     }
 
@@ -1485,6 +1541,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['dependencies'])) {
             return $this->_packageInfo['dependencies'];
         }
+
         return false;
     }
 
@@ -1544,6 +1601,7 @@ class PEAR_PackageFile_v2
                 }
             }
         }
+
         return false;
     }
 
@@ -1563,7 +1621,7 @@ class PEAR_PackageFile_v2
                         if (strtolower($dep['name']) == strtolower($package) &&
                               $depchannel == $channel) {
                             return true;
-                        }  
+                        }
                     }
                 }
             }
@@ -1581,12 +1639,13 @@ class PEAR_PackageFile_v2
                             if (strtolower($dep['name']) == strtolower($package) &&
                                   $depchannel == $channel) {
                                 return true;
-                            }  
+                            }
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -1610,6 +1669,7 @@ class PEAR_PackageFile_v2
                 return $group;
             }
         }
+
         return false;
     }
 
@@ -1728,6 +1788,7 @@ class PEAR_PackageFile_v2
                 return $ret;
             }
         }
+
         return false;
     }
 
@@ -1754,6 +1815,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['bundle'])) {
             return 'bundle';
         }
+
         return false;
     }
 
@@ -1769,6 +1831,7 @@ class PEAR_PackageFile_v2
         if ($this->getPackageType() && isset($this->_packageInfo[$type])) {
             return $this->_packageInfo[$type];
         }
+
         return false;
     }
 
@@ -1780,6 +1843,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['changelog'])) {
             return $this->_packageInfo['changelog'];
         }
+
         return false;
     }
 
@@ -1796,6 +1860,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['zendextbinrelease'])) {
             return '2.1';
         }
+
         return '2.0';
     }
 
@@ -1809,6 +1874,7 @@ class PEAR_PackageFile_v2
             return array('channel' => $this->_packageInfo['srcchannel'],
                          'package' => $this->_packageInfo['srcpackage']);
         }
+
         return false;
     }
 
@@ -1817,6 +1883,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['bundle'])) {
             return $this->_packageInfo['contents']['bundledpackage'];
         }
+
         return false;
     }
 
@@ -1825,6 +1892,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['_lastmodified'])) {
             return $this->_packageInfo['_lastmodified'];
         }
+
         return false;
     }
 
@@ -1854,6 +1922,7 @@ class PEAR_PackageFile_v2
             if (PEAR::isError($file)) {
                 return PEAR::raiseError("Cannot locate file '$file' in archive");
             }
+
             return $file;
         }
     }
@@ -1875,6 +1944,7 @@ class PEAR_PackageFile_v2
                 $a->$name = $this->$name;
             }
         }
+
         return $a;
     }
 
@@ -1884,6 +1954,7 @@ class PEAR_PackageFile_v2
             require_once 'PEAR/PackageFile/Generator/v2.php';
         }
         $a = &new PEAR_PackageFile_Generator_v2($this);
+
         return $a;
     }
 
@@ -1896,6 +1967,7 @@ class PEAR_PackageFile_v2
             }
             $this->_v2Validator = new PEAR_PackageFile_v2_Validator;
         }
+
         return $this->_v2Validator->analyzeSourceCode($file, $string);
     }
 
@@ -1914,6 +1986,7 @@ class PEAR_PackageFile_v2
         if (isset($this->_packageInfo['xsdversion'])) {
             unset($this->_packageInfo['xsdversion']);
         }
+
         return $this->_v2Validator->validate($this, $state);
     }
 
@@ -1929,6 +2002,7 @@ class PEAR_PackageFile_v2
                 }
             }
         }
+
         return $this->_tasksNs;
     }
 
@@ -1958,6 +2032,7 @@ class PEAR_PackageFile_v2
                 }
             }
         }
+
         return false;
     }
 
@@ -1973,6 +2048,7 @@ class PEAR_PackageFile_v2
         $after = array_slice($array, $offset);
         $before = array_slice($array, 0, $offset);
         $before[$newkey] = $value;
+
         return array_merge($before, $after);
     }
 
@@ -1990,6 +2066,7 @@ class PEAR_PackageFile_v2
             }
         }
         $array[$newkey] = $contents;
+
         return $array;
     }
 
@@ -2017,6 +2094,7 @@ class PEAR_PackageFile_v2
                 }
                 if (count($order) > 1) {
                     $manip[$tag] = $this->_mergeTag($manip[$tag], $contents, array_slice($order, 1));
+
                     return $manip;
                 }
             }
@@ -2033,7 +2111,7 @@ class PEAR_PackageFile_v2
                 $manip[$tag][] = $contents;
             }
         }
+
         return $manip;
     }
 }
-?>

@@ -9,25 +9,25 @@ error_reporting(E_ALL);
 require_once '../Matrix.php';
 require_once 'Stats.php';
 
-
 /**
  * Example of use of Matrix Class, featuring magic squares.
  */
-class Benchmark {
+class Benchmark
+{
 	public $stat;
-
 
 	/**
 	 * Simple function to replicate PHP 5 behaviour
 	 */
-	function microtime_float() {
+	function microtime_float()
+	{
 		list($usec, $sec) = explode(" ", microtime());
 
-		return ((float)$usec + (float)$sec);
+		return ((float) $usec + (float) $sec);
 	}	//	function microtime_float()
 
-
-	function displayStats($times = null) {
+	function displayStats($times = null)
+	{
 		$this->stat->setData($times);
 		$stats = $this->stat->calcFull();
 
@@ -44,8 +44,8 @@ class Benchmark {
 		return $stats;
 	}	//	function displayStats()
 
-
-	function runEig($n = 4, $t = 100) {
+	function runEig($n = 4, $t = 100)
+	{
 		$times = array();
 
 		for ($i = 0; $i < $t; ++$i) {
@@ -59,8 +59,8 @@ class Benchmark {
 		return $times;
 	}	//	function runEig()
 
-
-	function runLU($n = 4, $t = 100) {
+	function runLU($n = 4, $t = 100)
+	{
 		$times = array();
 
 		for ($i = 0; $i < $t; ++$i) {
@@ -74,8 +74,8 @@ class Benchmark {
 		return $times;
 	}	//	function runLU()
 
-
-	function runQR($n = 4, $t = 100) {
+	function runQR($n = 4, $t = 100)
+	{
 		$times = array();
 
 		for ($i = 0; $i < $t; ++$i) {
@@ -89,8 +89,8 @@ class Benchmark {
 		return $times;
 	}	//	function runQR()
 
-
-	function runCholesky($n = 4, $t = 100) {
+	function runCholesky($n = 4, $t = 100)
+	{
 		$times = array();
 
 		for ($i = 0; $i < $t; ++$i) {
@@ -104,8 +104,8 @@ class Benchmark {
 		return $times;
 	}	//	function runCholesky()
 
-
-	function runSVD($n = 4, $t = 100) {
+	function runSVD($n = 4, $t = 100)
+	{
 		$times = array();
 
 		for ($i = 0; $i < $t; ++$i) {
@@ -119,8 +119,8 @@ class Benchmark {
 		return $times;
 	}	//	function runSVD()
 
-
-	function run() {
+	function run()
+	{
 		$n = 8;
 		$t = 16;
 		$sum = 0;
@@ -155,17 +155,16 @@ class Benchmark {
 		return $sum;
 	}	//	function run()
 
-
-	public function __construct() {
+	public function __construct()
+	{
 		$this->stat = new Base();
 	}	//	function Benchmark()
 
 }  // class Benchmark		(end MagicSquareExample)
 
-
 $benchmark = new Benchmark();
 
-switch($_REQUEST['decomposition']) {
+switch ($_REQUEST['decomposition']) {
 	case 'cholesky':
 		$m = array();
 		for ($i = 2; $i <= 8; $i *= 2) {
@@ -176,7 +175,7 @@ switch($_REQUEST['decomposition']) {
 			echo "<br />";
 		}
 		echo '<pre>';
-		foreach($m as $x => $y) {
+		foreach ($m as $x => $y) {
 			echo "$x\t" . 1000*$y . "\n";
 		}
 		echo '</pre>';
@@ -191,7 +190,7 @@ switch($_REQUEST['decomposition']) {
 			echo "<br />";
 		}
 		echo '<pre>';
-		foreach($m as $x => $y) {
+		foreach ($m as $x => $y) {
 			echo "$x\t" . 1000*$y . "\n";
 		}
 		echo '</pre>';
@@ -206,7 +205,7 @@ switch($_REQUEST['decomposition']) {
 			echo "<br />";
 		}
 		echo '<pre>';
-		foreach($m as $x => $y) {
+		foreach ($m as $x => $y) {
 			echo "$x\t" . 1000*$y . "\n";
 		}
 		echo '</pre>';
@@ -221,14 +220,14 @@ switch($_REQUEST['decomposition']) {
 			echo "<br />";
 		}
 		echo '<pre>';
-		foreach($m as $x => $y) {
+		foreach ($m as $x => $y) {
 			echo "$x\t" . 1000*$y . "\n";
 		}
 		echo '</pre>';
 		break;
 	case 'svd':
 		$m = array();
-		for($i = 2; $i <= 8; $i *= 2) {
+		for ($i = 2; $i <= 8; $i *= 2) {
 			$t = 32 / $i;
 			echo "<b>Singular value decomposition: $t random {$i}x{$i} matrices</b><br />";
 			$s = $benchmark->displayStats($benchmark->runSVD($i, $t));
@@ -236,7 +235,7 @@ switch($_REQUEST['decomposition']) {
 			echo "<br />";
 		}
 		echo '<pre>';
-		foreach($m as $x => $y) {
+		foreach ($m as $x => $y) {
 			echo "$x\t" . 1000*$y . "\n";
 		}
 		echo '</pre>';

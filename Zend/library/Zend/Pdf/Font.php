@@ -84,7 +84,6 @@ require_once 'Zend/Pdf/Resource/Font/Simple/Standard/ZapfDingbats.php';
 /** Zend_Pdf_Resource_Font_Extracted */
 require_once 'Zend/Pdf/Resource/Font/Extracted.php';
 
-
 /**
  * Abstract factory class which vends {@link Zend_Pdf_Resource_Font} objects.
  *
@@ -103,7 +102,6 @@ require_once 'Zend/Pdf/Resource/Font/Extracted.php';
 abstract class Zend_Pdf_Font
 {
   /**** Class Constants ****/
-
 
   /* Font Types */
 
@@ -143,7 +141,6 @@ abstract class Zend_Pdf_Font
      * These fonts are used only to construct Type 0 composite fonts and can't be used directly
      */
     const TYPE_CIDFONT_TYPE_2 = 6;
-
 
   /* Names of the Standard 14 PDF Fonts */
 
@@ -246,7 +243,6 @@ abstract class Zend_Pdf_Font
      * Name of the standard PDF font Zapf Dingbats.
      */
     const FONT_ZAPFDINGBATS = 'ZapfDingbats';
-
 
   /* Font Name String Types */
 
@@ -351,7 +347,6 @@ abstract class Zend_Pdf_Font
      */
     const NAME_CID_NAME = 20;
 
-
   /* Font Weights */
 
     /**
@@ -398,7 +393,6 @@ abstract class Zend_Pdf_Font
      * Black (Heavy) font weight.
      */
     const WEIGHT_BLACK = 900;
-
 
   /* Font Widths */
 
@@ -447,7 +441,6 @@ abstract class Zend_Pdf_Font
      */
     const WIDTH_ULTRA_EXPANDED = 9;
 
-
   /* Font Embedding Options */
 
     /**
@@ -471,10 +464,7 @@ abstract class Zend_Pdf_Font
      */
     const EMBED_SUPPRESS_EMBED_EXCEPTION = 0x08;
 
-
-
   /**** Class Variables ****/
-
 
     /**
      * Array whose keys are the unique PostScript names of instantiated fonts.
@@ -490,10 +480,7 @@ abstract class Zend_Pdf_Font
      */
     private static $_fontFilePaths = array();
 
-
-
   /**** Public Interface ****/
-
 
   /* Factory Methods */
 
@@ -608,6 +595,7 @@ abstract class Zend_Pdf_Font
         /* Add this new font to the cache array and return it for use.
          */
         Zend_Pdf_Font::$_fontNames[$name] = $font;
+
         return $font;
     }
 
@@ -693,7 +681,6 @@ abstract class Zend_Pdf_Font
             // others?
         }
 
-
         /* Done with the data source object.
          */
         $dataSource = null;
@@ -706,6 +693,7 @@ abstract class Zend_Pdf_Font
             Zend_Pdf_Font::$_fontNames[$fontName] = $font;
             $filePathKey = md5($filePath);
             Zend_Pdf_Font::$_fontFilePaths[$filePathKey] = $font;
+
             return $font;
 
         } else {
@@ -717,10 +705,7 @@ abstract class Zend_Pdf_Font
 
     }
 
-
-
   /**** Internal Methods ****/
-
 
   /* Font Extraction Methods */
 
@@ -769,6 +754,7 @@ abstract class Zend_Pdf_Font
                     throw $exception;
             }
         }
+
         return $font;
     }
 

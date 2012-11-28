@@ -39,7 +39,6 @@ try {
     next($folders);
     $smarty -> assign("T_SENT_FOLDER", key($folders));//The 'sent' folder is always the 2nd in the list
 
-
     foreach ($folders as $folder) {
         $totalMessages += $folder['messages_num'];
         $totalSize += $folder['filesize'];
@@ -57,37 +56,25 @@ try {
 
 	$res2 = eF_getTableData("f_configuration", "value", "name='quota_kilobytes'");
 
-
-
 	$res1[0]['value'] = ($res1[0]['value'])? $res1[0]['value'] : G_QUOTA_NUM_OF_MESSAGES;
 
 	$res2[0]['value'] = ($res2[0]['value'])? $res2[0]['value'] : G_QUOTA_KB;
-
-
 
 	$smarty -> assign("T_QUOTA_NUM_OF_MESSAGES", $res1[0]['value']);
 
 	$smarty -> assign("T_QUOTA_KILOBYTES", $res2[0]['value']);
 
-
-
 	$total_messages = eF_getTableData("f_personal_messages", "count(*)", "users_LOGIN='".$currentUser -> user['login']."'");
 
 	$total_files    = eF_diveIntoDir(G_UPLOADPATH.$currentUser -> user['login'].'/message_attachments/');
-
-
 
 	$smarty -> assign("T_TOTAL_MESSAGES", $total_messages[0]['count(*)']);
 
 	$smarty -> assign("T_TOTAL_SIZE", ceil($total_files[2] / 1000));
 
-
-
 	$total_messages_percentage = round(100 * $total_messages[0]['count(*)'] / $res1[0]['value'], 2);
 
 	$total_files_percentage    = round(100 * ceil($total_files[2]/1000) / $res2[0]['value'], 2);
-
-
 
 	$smarty -> assign("T_TOTAL_MESSAGES_PERCENTAGE", $total_messages_percentage);
 
@@ -102,7 +89,7 @@ try {
   $legalValues = $legalFolderValues;
      $entityName = 'f_folders';
      //Handle creation, deletion etc uniquely
-  include("entity.php");
+  include 'entity.php';
  } elseif (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues)) {
      try {
          $result = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$_GET['delete']);
@@ -180,10 +167,10 @@ try {
         $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
 
         //$form -> addElement('advcheckbox', 'bcc', _UNDISCLOSEDRECIPIENTS, null, 'class = "inputCheckbox"');
-        
+
         $form -> addElement('hidden', 'bcc', _UNDISCLOSEDRECIPIENTS);
         $form -> setDefaults( array('bcc' => '1') );
-        
+
 		$form -> addElement('radio', 'recipients', null, null, 'only_specific_users', 'onclick = "eF_js_selectRecipients(\'only_specific_users\')" id = "only_specific_users"');
 	    $form -> addElement('radio', 'recipients', null, null, 'active_users', 'onclick = "eF_js_selectRecipients(\'active_users\')" 	     id = "all_active_users"');
 	    $form -> addElement('radio', 'recipients', null, null, 'specific_course', 'onclick = "eF_js_selectRecipients(\'specific_course\')"');
@@ -191,29 +178,29 @@ try {
 	    $form -> addElement('radio', 'recipients', null, null, 'specific_lesson_professor', 'onclick = "eF_js_selectRecipients(\'specific_lesson_professor\')"');
 	    $form -> addElement('radio', 'recipients', null, null, 'specific_type', 'onclick = "eF_js_selectRecipients(\'specific_type\')"');
 	    $form -> addElement('select', 'user_type', null, $roles, 'id = "user_type_recipients" 		 class = "inputSelectLong" disabled = "disabled"');
-	    
+
 	    $form -> addElement('select', 'specific_course', null, $courses, 'id = "course_recipients" 			 class = "inputSelectLong" disabled = "disabled"');
 	    $form -> addElement('select', 'lesson', null, $lessons, 'id = "lesson_recipients" 			 class = "inputSelectLong" disabled = "disabled"');
 	    $form -> addElement('select', 'professor', null, $lessons, 'id = "lesson_professor_recipients" class = "inputSelectLong" disabled = "disabled"');
 	    $form -> addElement('advcheckbox', 'specific_course_completed', _COMPLETED, null, 'class = "inputCheckbox" id="specific_course_completed_check" style="visibility:hidden" checked=""');
-	    
+
 	    $form -> addRule('lesson', _INVALIDFIELDDATA, 'checkParameter', 'id');
-        
+
 		if ($_GET['specific_type'] && in_array($_GET['specific_type'], array_keys($roles))) {
 			$T_DESTINATARYALREADYSELECTED = 'specific_type';
-			
+
            // $form -> addElement('hidden', 'recipients', null, null, 'specific_type', 'onclick = "eF_js_selectRecipients(\'specific_type\')"');
-           // $form -> addElement('hidden', 'user_type', null, $_GET['specific_type'], $_GET['specific_type'], 'id = "user_type_recipients"'); 
-            
+           // $form -> addElement('hidden', 'user_type', null, $_GET['specific_type'], $_GET['specific_type'], 'id = "user_type_recipients"');
+
             $form -> setDefaults(array(
             	'recipients' => 'specific_type',
             	'user_type' => $_GET['specific_type']
             ));
             $smarty -> assign("T_DESTINATARYSELECTION", _ALLOFTHEM . ': <strong>' . $roles[$_GET['specific_type']] . '</strong>');
-            
+
 		} else {
 	        $T_DESTINATARYALREADYSELECTED = null;
-	        
+
 	        $form -> setDefaults(array('recipients' => 'only_specific_users'));
         }
         $smarty -> assign("T_DESTINATARYALREADYSELECTED", $T_DESTINATARYALREADYSELECTED);
@@ -234,7 +221,7 @@ try {
         }
         if ($position2 = strpos($previous_url, "sidebar")) {
 
-        } else if ($position3 = strpos($previous_url, "show_profile")) {
+        } elseif ($position3 = strpos($previous_url, "show_profile")) {
             $form -> setDefaults(array( 'previous_url' => "?new_message.php"));
         } else {
             $form -> setDefaults(array( 'previous_url' => $previous_url));
@@ -318,7 +305,7 @@ try {
     $flippedLogins = array_flip($GLOBALS['_usernames']);
     if ($_admin_) {
      $flippedLogins[_ALLUSERS] = "[*]";
-    } elseif($_professor_){
+    } elseif ($_professor_) {
      $flippedLogins[_MYSTUDENTS] = "[*]";
     }
                 //$values['recipient'] = str_replace(" ", "", $values['recipient']);
@@ -332,11 +319,11 @@ try {
     foreach ($recipientsTemp as $key => $value) {
      $recipients[] = $flippedLogins[$value];
     }
-                if (in_array("[*]", $recipients)){
+                if (in_array("[*]", $recipients)) {
                     if ($_admin_) {
                         $rec_users = eF_getTableDataFlat("users", "login", "active=1"); // entry [*] means message for all system users
                         $recipients = array_merge($recipients, array_values($users));
-                    } elseif($_professor_){
+                    } elseif ($_professor_) {
                         $rec_users = $currentUser -> getProfessorStudents();
                         $recipients = array_merge($recipients, $rec_users);
                     }
@@ -447,7 +434,7 @@ try {
             // Using the array_values function to form 0=>login1,1=>login2... instead of login1=>login1, login2=>login2
             if (isset($recipients) && !empty($result)) {
                 $recipients = array_values(array_merge($recipients, $result));
-            } else if (!empty($result)) {
+            } elseif (!empty($result)) {
                 $recipients = array_values($result);
             }
             // else the $recipients = $recipients
@@ -455,7 +442,7 @@ try {
             if (isset($recipients)) {
                 $pm = new eF_PersonalMessage($currentUser -> user['login'], $recipients, $values['subject'], $values['body'], $values['bcc']);
                 if ($_FILES['attachment']['name'][0] != "") {
-                    if ($_FILES['attachment']['size'][0] == 0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE ) { //If the directory could not be created, display an erro message
+                    if ($_FILES['attachment']['size'][0] == 0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE) { //If the directory could not be created, display an erro message
                         $message = _EACHFILESIZEMUSTBESMALLERTHAN." ".G_MAXFILESIZE." Bytes";
                         $message_type = 'failure';
                     }
@@ -499,8 +486,6 @@ try {
 
             } else {
 
-
-
                 if (strpos($form->exportValue('previous_url'), '?')) {
 
                     eF_redirect(''.$form->exportValue('previous_url'). '&message='.urlencode($message).'&message_type='.$message_type);
@@ -526,7 +511,7 @@ try {
         $form -> setRequiredNote(_REQUIREDNOTE);
         $form -> accept($renderer); //Assign this form to the renderer, so that corresponding template code is created
         $smarty -> assign('T_ADD_MESSAGE_FORM', $renderer -> toArray()); //Assign the form to the template
-    } else if (isset($_GET['view']) && in_array($_GET['view'], $legalValues)) {
+    } elseif (isset($_GET['view']) && in_array($_GET['view'], $legalValues)) {
         $currentMessage = $messages[$_GET['view']];
         //With this iterator, we find the previous and next messages in the same folder
         $it = new ArrayIterator(new ArrayObject($messages));
@@ -605,11 +590,7 @@ try {
 
         }
 
-
-
         isset($_GET['page']) && eF_checkParameter($_GET['page'], 'uint') ? $page = $_GET['page'] : $page = 1;
-
-
 
         $p_messages_per_page = eF_getTableData("f_configuration", "value", "name='personal_messages_per_page'");
 

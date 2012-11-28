@@ -71,7 +71,6 @@ define('XML_RPC_ERROR_INCORRECT_PARAMS', 105);
 define('XML_RPC_ERROR_PROGRAMMING', 106);
 /**#@-*/
 
-
 /**
  * Data types
  * @global string $GLOBALS['XML_RPC_I4']
@@ -126,7 +125,6 @@ $GLOBALS['XML_RPC_Array'] = 'array';
  */
 $GLOBALS['XML_RPC_Struct'] = 'struct';
 
-
 /**
  * Data type meta-types
  * @global array $GLOBALS['XML_RPC_Types']
@@ -142,7 +140,6 @@ $GLOBALS['XML_RPC_Types'] = array(
     $GLOBALS['XML_RPC_Array']    => 2,
     $GLOBALS['XML_RPC_Struct']   => 3,
 );
-
 
 /**
  * Error message numbers
@@ -172,7 +169,6 @@ $GLOBALS['XML_RPC_str'] = array(
     'invalid_request'     => 'Invalid request payload',
 );
 
-
 /**
  * Default XML encoding (ISO-8859-1, UTF-8 or US-ASCII)
  * @global string $GLOBALS['XML_RPC_defencoding']
@@ -191,13 +187,11 @@ $GLOBALS['XML_RPC_erruser'] = 800;
  */
 $GLOBALS['XML_RPC_errxml'] = 100;
 
-
 /**
  * Compose backslashes for escaping regexp
  * @global string $GLOBALS['XML_RPC_backslash']
  */
 $GLOBALS['XML_RPC_backslash'] = chr(92) . chr(92);
-
 
 /**#@+
  * Which functions to use, depending on whether mbstring is enabled or not.
@@ -218,7 +212,6 @@ if (function_exists('mb_ereg')) {
     $GLOBALS['XML_RPC_func_split'] = 'split';
 }
 /**#@-*/
-
 
 /**
  * Should we automatically base64 encode strings that contain characters
@@ -293,6 +286,7 @@ function XML_RPC_se($parser_resource, $name, $attrs)
         if ($name != 'METHODRESPONSE' && $name != 'METHODCALL') {
             $XML_RPC_xh[$parser]['isf'] = 2;
             $XML_RPC_xh[$parser]['isf_reason'] = 'missing top level xmlrpc element';
+
             return;
         }
     } else {
@@ -301,6 +295,7 @@ function XML_RPC_se($parser_resource, $name, $attrs)
             $name = $GLOBALS['XML_RPC_func_ereg_replace']('[^a-zA-Z0-9._-]', '', $name);
             $XML_RPC_xh[$parser]['isf'] = 2;
             $XML_RPC_xh[$parser]['isf_reason'] = "xmlrpc element $name cannot be child of {$XML_RPC_xh[$parser]['stack'][0]}";
+
             return;
         }
     }
@@ -582,8 +577,8 @@ function XML_RPC_cd($parser_resource, $data)
  * @version    Release: 1.5.1
  * @link       http://pear.php.net/package/XML_RPC
  */
-class XML_RPC_Base {
-
+class XML_RPC_Base
+{
     /**
      * PEAR Error handling
      *
@@ -627,8 +622,8 @@ class XML_RPC_Base {
  * @version    Release: 1.5.1
  * @link       http://pear.php.net/package/XML_RPC
  */
-class XML_RPC_Client extends XML_RPC_Base {
-
+class XML_RPC_Client extends XML_RPC_Base
+{
     /**
      * The path and name of the RPC server script you want the request to go to
      * @var string
@@ -728,7 +723,6 @@ class XML_RPC_Client extends XML_RPC_Base {
      * @var string
      */
     var $headers = '';
-
 
     /**
      * Sets the object's properties
@@ -889,9 +883,11 @@ class XML_RPC_Client extends XML_RPC_Base {
             $this->errstr = 'send()\'s $msg parameter must be an'
                           . ' XML_RPC_Message object.';
             $this->raiseError($this->errstr, XML_RPC_ERROR_PROGRAMMING);
+
             return 0;
         }
         $msg->debug = $this->debug;
+
         return $this->sendPayloadHTTP10($msg, $this->server, $this->port,
                                         $timeout, $this->username,
                                         $this->password);
@@ -961,12 +957,14 @@ class XML_RPC_Client extends XML_RPC_Base {
                               . $this->proxy . ':' . $this->proxy_port
                               . ' failed. ' . $this->errstr,
                               XML_RPC_ERROR_CONNECTION_FAILED);
+
             return 0;
         } elseif (!$fp) {
             $this->raiseError('Connection to RPC server '
                               . $server . ':' . $port
                               . ' failed. ' . $this->errstr,
                               XML_RPC_ERROR_CONNECTION_FAILED);
+
             return 0;
         }
 
@@ -994,6 +992,7 @@ class XML_RPC_Client extends XML_RPC_Base {
 
         if (!fputs($fp, $op, strlen($op))) {
             $this->errstr = 'Write error';
+
             return 0;
         }
         $resp = $msg->parseResponseFile($fp);
@@ -1003,10 +1002,12 @@ class XML_RPC_Client extends XML_RPC_Base {
             fclose($fp);
             $this->errstr = 'RPC server did not send response before timeout.';
             $this->raiseError($this->errstr, XML_RPC_ERROR_CONNECTION_FAILED);
+
             return 0;
         }
 
         fclose($fp);
+
         return $resp;
     }
 
@@ -1052,6 +1053,7 @@ class XML_RPC_Client extends XML_RPC_Base {
 
         $this->headers .= "Content-Type: text/xml\r\n";
         $this->headers .= 'Content-Length: ' . strlen($msg->payload);
+
         return true;
     }
 }
@@ -1143,6 +1145,7 @@ class XML_RPC_Response extends XML_RPC_Base
         "</param>\n</params>";
         }
         $rs .= "\n</methodResponse>";
+
         return $rs;
     }
 }
@@ -1252,6 +1255,7 @@ class XML_RPC_Message extends XML_RPC_Base
         if (!$this->send_encoding) {
             $this->send_encoding = $XML_RPC_defencoding;
         }
+
         return '<?xml version="1.0" encoding="' . $this->send_encoding . '"?>'
                . "\n<methodCall>\n";
     }
@@ -1311,6 +1315,7 @@ class XML_RPC_Message extends XML_RPC_Base
         if ($meth != '') {
             $this->methodname = $meth;
         }
+
         return $this->methodname;
     }
 
@@ -1320,6 +1325,7 @@ class XML_RPC_Message extends XML_RPC_Base
     function serialize()
     {
         $this->createPayload();
+
         return $this->payload;
     }
 
@@ -1350,6 +1356,7 @@ class XML_RPC_Message extends XML_RPC_Base
         } else {
             $this->raiseError('The submitted request did not contain this parameter',
                               XML_RPC_ERROR_INCORRECT_PARAMS);
+
             return new XML_RPC_Response(0, $XML_RPC_err['incorrect_params'],
                                         $XML_RPC_str['incorrect_params']);
         }
@@ -1446,6 +1453,7 @@ class XML_RPC_Message extends XML_RPC_Base
         while ($data = @fread($fp, 8192)) {
             $ipd .= $data;
         }
+
         return $this->parseResponse($ipd);
     }
 
@@ -1493,6 +1501,7 @@ class XML_RPC_Message extends XML_RPC_Base
                                           $XML_RPC_str['http_error'] . ' (' .
                                           $errstr . ')');
                 xml_parser_free($parser_resource);
+
                 return $r;
         }
 
@@ -1524,6 +1533,7 @@ class XML_RPC_Message extends XML_RPC_Base
             $r = new XML_RPC_Response(0, $XML_RPC_err['invalid_return'],
                                       $XML_RPC_str['invalid_return']);
             xml_parser_free($parser_resource);
+
             return $r;
         }
 
@@ -1556,6 +1566,7 @@ class XML_RPC_Message extends XML_RPC_Base
             }
         }
         $r->hdrs = split("\r?\n", $XML_RPC_xh[$parser]['ha'][1]);
+
         return $r;
     }
 }
@@ -1610,12 +1621,14 @@ class XML_RPC_Value extends XML_RPC_Base
         if ($this->mytype == 1) {
             $this->raiseError('Scalar can have only one value',
                               XML_RPC_ERROR_INVALID_TYPE);
+
             return 0;
         }
         $typeof = $GLOBALS['XML_RPC_Types'][$type];
         if ($typeof != 1) {
             $this->raiseError("Not a scalar type (${typeof})",
                               XML_RPC_ERROR_INVALID_TYPE);
+
             return 0;
         }
 
@@ -1640,6 +1653,7 @@ class XML_RPC_Value extends XML_RPC_Base
             $this->me[$type] = $val;
             $this->mytype = $typeof;
         }
+
         return 1;
     }
 
@@ -1652,10 +1666,12 @@ class XML_RPC_Value extends XML_RPC_Base
             $this->raiseError(
                     'Already initialized as a [' . $this->kindOf() . ']',
                     XML_RPC_ERROR_ALREADY_INITIALIZED);
+
             return 0;
         }
         $this->mytype = $GLOBALS['XML_RPC_Types']['array'];
         $this->me['array'] = $vals;
+
         return 1;
     }
 
@@ -1668,10 +1684,12 @@ class XML_RPC_Value extends XML_RPC_Base
             $this->raiseError(
                     'Already initialized as a [' . $this->kindOf() . ']',
                     XML_RPC_ERROR_ALREADY_INITIALIZED);
+
             return 0;
         }
         $this->mytype = $GLOBALS['XML_RPC_Types']['struct'];
         $this->me['struct'] = $vals;
+
         return 1;
     }
 
@@ -1759,6 +1777,7 @@ class XML_RPC_Value extends XML_RPC_Base
                 $rs .= "<${typ}>${val}</${typ}>";
             }
         }
+
         return $rs;
     }
 
@@ -1781,6 +1800,7 @@ class XML_RPC_Value extends XML_RPC_Base
         $ar = $o->me;
         reset($ar);
         list($typ, $val) = each($ar);
+
         return '<value>' .  $this->serializedata($typ, $val) .  "</value>\n";
     }
 
@@ -1855,6 +1875,7 @@ class XML_RPC_Value extends XML_RPC_Base
         if (!is_scalar($v)) {
             $v = false;
         }
+
         return $v;
     }
 
@@ -1868,6 +1889,7 @@ class XML_RPC_Value extends XML_RPC_Base
         if ($a == $GLOBALS['XML_RPC_I4']) {
             $a = $GLOBALS['XML_RPC_Int'];
         }
+
         return $a;
     }
 
@@ -1886,6 +1908,7 @@ class XML_RPC_Value extends XML_RPC_Base
     {
         reset($this->me);
         list($a, $b) = each($this->me);
+
         return sizeof($b);
     }
 
@@ -1931,6 +1954,7 @@ function XML_RPC_iso8601_encode($timet, $utc = 0)
             $t = strftime('%Y%m%dT%H:%M:%S', $timet - date('Z'));
         }
     }
+
     return $t;
 }
 
@@ -1957,6 +1981,7 @@ function XML_RPC_iso8601_decode($idate, $utc = 0)
             $t = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
     }
+
     return $t;
 }
 
@@ -1980,6 +2005,7 @@ function XML_RPC_decode($XML_RPC_val)
         for ($i = 0; $i < $size; $i++) {
             $arr[] = XML_RPC_decode($XML_RPC_val->arraymem($i));
         }
+
         return $arr;
 
     } elseif ($kind == 'struct') {
@@ -1988,6 +2014,7 @@ function XML_RPC_decode($XML_RPC_val)
         while (list($key, $value) = $XML_RPC_val->structeach()) {
             $arr[$key] = XML_RPC_decode($value);
         }
+
         return $arr;
     }
 }
@@ -2063,6 +2090,7 @@ function XML_RPC_encode($php_val)
     default:
         $XML_RPC_val = false;
     }
+
     return $XML_RPC_val;
 }
 
@@ -2073,5 +2101,3 @@ function XML_RPC_encode($php_val)
  * c-hanging-comment-ender-p: nil
  * End:
  */
-
-?>

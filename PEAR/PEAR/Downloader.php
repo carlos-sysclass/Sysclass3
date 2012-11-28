@@ -132,7 +132,7 @@ class PEAR_Downloader extends PEAR_Common
      * @access private
      */
     var $_errorStack = array();
-    
+
     /**
      * @var boolean
      * @access private
@@ -224,9 +224,11 @@ class PEAR_Downloader extends PEAR_Common
                 $this->log(1, 'Auto-discovered channel "' . $channel .
                     '", alias "' . $alias . '", adding to registry');
             }
+
             return true;
         }
         unlink($a);
+
         return false;
     }
 
@@ -241,6 +243,7 @@ class PEAR_Downloader extends PEAR_Common
             require_once 'PEAR/Downloader/Package.php';
         }
         $a = &new PEAR_Downloader_Package($t);
+
         return $a;
     }
 
@@ -257,6 +260,7 @@ class PEAR_Downloader extends PEAR_Common
             require_once 'PEAR/Dependency2.php';
         }
         $z = &new PEAR_Dependency2($c, $i, $p, $s);
+
         return $z;
     }
 
@@ -264,6 +268,7 @@ class PEAR_Downloader extends PEAR_Common
     {
         if (!count($params)) {
             $a = array();
+
             return $a;
         }
         if (!isset($this->_registry)) {
@@ -310,6 +315,7 @@ class PEAR_Downloader extends PEAR_Common
                         $curchannel = &$this->_registry->getChannel($params[$i]->getChannel());
                         if (PEAR::isError($curchannel)) {
                             PEAR::staticPopErrorHandling();
+
                             return $this->raiseError($curchannel);
                         }
                         if (PEAR::isError($dir = $this->getDownloadDir())) {
@@ -354,6 +360,7 @@ class PEAR_Downloader extends PEAR_Common
         PEAR_Downloader_Package::removeDuplicates($params);
         if (!count($params)) {
             $a = array();
+
             return $a;
         }
         if (!isset($this->_options['nodeps']) && !isset($this->_options['offline'])) {
@@ -379,14 +386,15 @@ class PEAR_Downloader extends PEAR_Common
         }
         if (!count($params)) {
             $a = array();
+
             return $a;
-        }
-        while (PEAR_Downloader_Package::mergeDependencies($params));
+        } while (PEAR_Downloader_Package::mergeDependencies($params));
         PEAR_Downloader_Package::removeDuplicates($params, true);
         PEAR_Downloader_Package::removeInstalled($params);
         if (!count($params)) {
             $this->pushError('No valid packages found', PEAR_INSTALLER_FAILED);
             $a = array();
+
             return $a;
         }
         PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
@@ -395,6 +403,7 @@ class PEAR_Downloader extends PEAR_Common
         if (!count($params)) {
             $this->pushError('No valid packages found', PEAR_INSTALLER_FAILED);
             $a = array();
+
             return $a;
         }
         $ret = array();
@@ -431,10 +440,12 @@ class PEAR_Downloader extends PEAR_Common
             if (!count($newparams)) {
                 $this->pushError('Download failed', PEAR_INSTALLER_FAILED);
                 $a = array();
+
                 return $a;
             }
         }
         $this->_downloadedPackages = $ret;
+
         return $newparams;
     }
 
@@ -679,6 +690,7 @@ class PEAR_Downloader extends PEAR_Common
                     'a writeable dir');
             }
         }
+
         return $this->_downloadDir = $downloaddir;
     }
 
@@ -727,6 +739,7 @@ class PEAR_Downloader extends PEAR_Common
             require_once 'PEAR/PackageFile.php';
         }
         $a = &new PEAR_PackageFile($c, $d, $t);
+
         return $a;
     }
 
@@ -752,6 +765,7 @@ class PEAR_Downloader extends PEAR_Common
                     }
                 }
                 $this->configSet('default_channel', $curchannel);
+
                 return PEAR::raiseError('Unknown remote channel: ' . $remotechannel);
             } while (false);
         }
@@ -772,6 +786,7 @@ class PEAR_Downloader extends PEAR_Common
             }
             if (PEAR::isError($url)) {
                 $this->configSet('default_channel', $curchannel);
+
                 return $url;
             }
             if ($parr['channel'] != $curchannel) {
@@ -827,6 +842,7 @@ class PEAR_Downloader extends PEAR_Common
                     $url['url'] .= $ext;
                 }
             }
+
             return $url;
         } elseif ($chan->supports('xmlrpc', 'package.getDownloadURL', false, '1.1')) {
             // don't install with the old version information unless we're doing a plain
@@ -860,6 +876,7 @@ class PEAR_Downloader extends PEAR_Common
             PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
             if (PEAR::isError($dir = $this->getDownloadDir())) {
                 PEAR::staticPopErrorHandling();
+
                 return $dir;
             }
             PEAR::staticPopErrorHandling();
@@ -872,6 +889,7 @@ class PEAR_Downloader extends PEAR_Common
             if (!isset($this->_options['soft'])) {
                 $this->log(0, $pinfo->getMessage());
             }
+
             return PEAR::raiseError('Remote package.xml is not valid - this should never happen');
         }
         $url['info'] = &$pinfo;
@@ -885,6 +903,7 @@ class PEAR_Downloader extends PEAR_Common
                 $url['url'] .= $ext;
             }
         }
+
         return $url;
     }
     // }}}
@@ -919,6 +938,7 @@ class PEAR_Downloader extends PEAR_Common
                             break;
                         }
                     }
+
                     return PEAR::raiseError('Unknown remote channel: ' . $remotechannel);
                 } while (false);
             }
@@ -950,8 +970,10 @@ class PEAR_Downloader extends PEAR_Common
                 if (is_object($info)) {
                     $param = $info->getChannel() . '/' . $info->getPackage();
                 }
+
                 return PEAR::raiseError('Package "' . $param . '" is not valid');
             }
+
             return $info;
         } elseif ($chan->supportsREST($this->config->get('preferred_mirror')) &&
               $base = $chan->getBaseURL('REST1.0', $this->config->get('preferred_mirror'))) {
@@ -1001,6 +1023,7 @@ class PEAR_Downloader extends PEAR_Common
                     $url['url'] .= $ext;
                 }
             }
+
             return $url;
         } elseif ($chan->supports('xmlrpc', 'package.getDepDownloadURL', false, '1.1')) {
             if ($version) {
@@ -1031,6 +1054,7 @@ class PEAR_Downloader extends PEAR_Common
             if (!isset($this->_options['soft'])) {
                 $this->log(0, $pinfo->getMessage());
             }
+
             return PEAR::raiseError('Remote package.xml is not valid - this should never happen');
         }
         $url['info'] = &$pinfo;
@@ -1044,6 +1068,7 @@ class PEAR_Downloader extends PEAR_Common
                 $url['url'] .= $ext;
             }
         }
+
         return $url;
     }
     // }}}
@@ -1069,6 +1094,7 @@ class PEAR_Downloader extends PEAR_Common
         if (!extension_loaded("zlib")) {
             $package .= '?uncompress=yes';
         }
+
         return $package;
     }
 
@@ -1086,6 +1112,7 @@ class PEAR_Downloader extends PEAR_Common
         $ret = $this->_downloadedPackages;
         $this->_downloadedPackages = array();
         $this->_toDownload = array();
+
         return $ret;
     }
 
@@ -1112,7 +1139,7 @@ class PEAR_Downloader extends PEAR_Common
                 $bytes += $params;
                 break;
             case 'start':
-                if($params[1] == -1) {
+                if ($params[1] == -1) {
                     $length = "Unknown size";
                 } else {
                     $length = number_format($params[1], 0, '', ',')." bytes";
@@ -1141,6 +1168,7 @@ class PEAR_Downloader extends PEAR_Common
                 $path = $prepend . $path;
             }
         }
+
         return $path;
     }
     // }}}
@@ -1166,6 +1194,7 @@ class PEAR_Downloader extends PEAR_Common
             $msgs[] = $err[0];
         }
         $this->_errorStack = array();
+
         return $msgs;
     }
 
@@ -1176,7 +1205,7 @@ class PEAR_Downloader extends PEAR_Common
      */
     function sortPkgDeps(&$packages, $uninstall = false)
     {
-        $uninstall ? 
+        $uninstall ?
             $this->sortPackagesForUninstall($packages) :
             $this->sortPackagesForInstall($packages);
     }
@@ -1225,8 +1254,7 @@ class PEAR_Downloader extends PEAR_Common
                               'channel' => 'pear.php.net',
                               'package' => strtolower($dep['name']),
                           ));
-                    if (isset($nodes[$dname]))
-                    {
+                    if (isset($nodes[$dname])) {
                         if (!isset($deplinks[$dname])) {
                             $deplinks[$dname] = array();
                         }
@@ -1239,8 +1267,7 @@ class PEAR_Downloader extends PEAR_Common
                               'channel' => 'pecl.php.net',
                               'package' => strtolower($dep['name']),
                           ));
-                    if (isset($nodes[$dname]))
-                    {
+                    if (isset($nodes[$dname])) {
                         if (!isset($deplinks[$dname])) {
                             $deplinks[$dname] = array();
                         }
@@ -1323,6 +1350,7 @@ class PEAR_Downloader extends PEAR_Common
             }
         }
         $packages = $ret;
+
         return;
     }
 
@@ -1358,6 +1386,7 @@ class PEAR_Downloader extends PEAR_Common
         static $visited = array();
         if ($test === null) {
             $visited = array();
+
             return;
         }
         // this happens when a parent has a dep cycle on another dependency
@@ -1379,6 +1408,7 @@ class PEAR_Downloader extends PEAR_Common
                 }
             }
         }
+
         return false;
     }
 
@@ -1402,8 +1432,7 @@ class PEAR_Downloader extends PEAR_Common
                       'channel' => $depchannel,
                       'package' => strtolower($dep['name']),
                   ));
-            if (isset($nodes[$dname]))
-            {
+            if (isset($nodes[$dname])) {
                 if (!isset($deplinks[$dname])) {
                     $deplinks[$dname] = array();
                 }
@@ -1435,6 +1464,7 @@ class PEAR_Downloader extends PEAR_Common
                 }
             }
         }
+
         return false;
     }
 
@@ -1456,6 +1486,7 @@ class PEAR_Downloader extends PEAR_Common
         if ($this->_dependsOn($b, $a)) {
             return -1;
         }
+
         return 0;
     }
 
@@ -1533,7 +1564,7 @@ class PEAR_Downloader extends PEAR_Common
             $config = &PEAR_Config::singleton();
         }
         $proxy_host = $proxy_port = $proxy_user = $proxy_pass = '';
-        if ($config->get('http_proxy') && 
+        if ($config->get('http_proxy') &&
               $proxy = parse_url($config->get('http_proxy'))) {
             $proxy_host = isset($proxy['host']) ? $proxy['host'] : null;
             if (isset($proxy['scheme']) && $proxy['scheme'] == 'https') {
@@ -1561,6 +1592,7 @@ class PEAR_Downloader extends PEAR_Common
                     call_user_func($callback, 'connfailed', array($proxy_host, $proxy_port,
                                                                   $errno, $errstr));
                 }
+
                 return PEAR::raiseError("Connection to `$proxy_host:$proxy_port' failed: $errstr", $errno);
             }
             if ($lastmodified === false || $lastmodified) {
@@ -1578,6 +1610,7 @@ class PEAR_Downloader extends PEAR_Common
                     call_user_func($callback, 'connfailed', array($host, $port,
                                                                   $errno, $errstr));
                 }
+
                 return PEAR::raiseError("Connection to `$host:$port' failed: $errstr", $errno);
             }
             if ($lastmodified === false || $lastmodified) {
@@ -1638,6 +1671,7 @@ class PEAR_Downloader extends PEAR_Common
             if (isset($headers['location'])) {
                 if ($wasredirect < 5) {
                     $redirect = $wasredirect + 1;
+
                     return $this->downloadHttp($headers['location'],
                             $ui, $save_dir, $callback, $lastmodified, $accept);
                 } else {
@@ -1665,6 +1699,7 @@ class PEAR_Downloader extends PEAR_Common
             if ($callback) {
                 call_user_func($callback, 'writefailed', array($dest_file, $php_errormsg));
             }
+
             return PEAR::raiseError("could not open $dest_file for writing");
         }
         if (isset($headers['content-length'])) {
@@ -1675,8 +1710,7 @@ class PEAR_Downloader extends PEAR_Common
         $bytes = 0;
         if ($callback) {
             call_user_func($callback, 'start', array(basename($dest_file), $length));
-        }
-        while ($data = fread($fp, 1024)) {
+        } while ($data = fread($fp, 1024)) {
             $bytes += strlen($data);
             if ($callback) {
                 call_user_func($callback, 'bytesread', $bytes);
@@ -1686,6 +1720,7 @@ class PEAR_Downloader extends PEAR_Common
                 if ($callback) {
                     call_user_func($callback, 'writefailed', array($dest_file, $php_errormsg));
                 }
+
                 return PEAR::raiseError("$dest_file: write failed ($php_errormsg)");
             }
         }
@@ -1705,11 +1740,11 @@ class PEAR_Downloader extends PEAR_Common
                     $lastmodified = $headers['last-modified'];
                 }
             }
+
             return array($dest_file, $lastmodified, $headers);
         }
+
         return $dest_file;
     }
 }
 // }}}
-
-?>

@@ -180,6 +180,7 @@ class Zend_Registry extends ArrayObject
         if (self::$_registry === null) {
             return false;
         }
+
         return self::$_registry->offsetExists($index);
     }
 

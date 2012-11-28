@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Pop3.php 12539 2008-11-11 02:47:17Z yoshida@zend.co.jp $
  */
-
 
 /**
  * @category   Zend
@@ -34,7 +33,7 @@ class Zend_Mail_Protocol_Pop3
      * Default timeout in seconds for initiating session
      */
     const TIMEOUT_CONNECTION = 30;
-    
+
     /**
      * saves if server supports top
      * @var null|bool
@@ -53,7 +52,6 @@ class Zend_Mail_Protocol_Pop3
      */
     protected $_timestamp;
 
-
     /**
      * Public constructor
      *
@@ -69,7 +67,6 @@ class Zend_Mail_Protocol_Pop3
         }
     }
 
-
     /**
      * Public destructor
      */
@@ -77,7 +74,6 @@ class Zend_Mail_Protocol_Pop3
     {
         $this->logout();
     }
-
 
     /**
      * Open connection to POP3 server
@@ -134,7 +130,6 @@ class Zend_Mail_Protocol_Pop3
         return $welcome;
     }
 
-
     /**
      * Send a request
      *
@@ -153,7 +148,6 @@ class Zend_Mail_Protocol_Pop3
             throw new Zend_Mail_Protocol_Exception('send failed - connection closed?');
         }
     }
-
 
     /**
      * read a response
@@ -204,7 +198,6 @@ class Zend_Mail_Protocol_Pop3
         return $message;
     }
 
-
     /**
      * Send request and get resposne
      *
@@ -218,9 +211,9 @@ class Zend_Mail_Protocol_Pop3
     public function request($request, $multiline = false)
     {
         $this->sendRequest($request);
+
         return $this->readResponse($multiline);
     }
-
 
     /**
      * End communication with POP3 server (also closes socket)
@@ -253,6 +246,7 @@ class Zend_Mail_Protocol_Pop3
     public function capa()
     {
         $result = $this->request('CAPA', true);
+
         return explode("\n", $result);
     }
 
@@ -271,6 +265,7 @@ class Zend_Mail_Protocol_Pop3
         if ($tryApop && $this->_timestamp) {
             try {
                 $this->request("APOP $user " . md5($this->_timestamp . $password));
+
                 return;
             } catch (Zend_Mail_Protocol_Exception $e) {
                 // ignore
@@ -313,7 +308,8 @@ class Zend_Mail_Protocol_Pop3
             $result = $this->request("LIST $msgno");
 
             list(, $result) = explode(' ', $result);
-            return (int)$result;
+
+            return (int) $result;
         }
 
         $result = $this->request('LIST', true);
@@ -321,7 +317,7 @@ class Zend_Mail_Protocol_Pop3
         $line = strtok($result, "\n");
         while ($line) {
             list($no, $size) = explode(' ', trim($line));
-            $messages[(int)$no] = (int)$size;
+            $messages[(int) $no] = (int) $size;
             $line = strtok("\n");
         }
 
@@ -342,6 +338,7 @@ class Zend_Mail_Protocol_Pop3
             $result = $this->request("UIDL $msgno");
 
             list(, $result) = explode(' ', $result);
+
             return $result;
         }
 
@@ -354,7 +351,7 @@ class Zend_Mail_Protocol_Pop3
                 continue;
             }
             list($no, $id) = explode(' ', trim($line), 2);
-            $messages[(int)$no] = $id;
+            $messages[(int) $no] = $id;
         }
 
         return $messages;
@@ -390,7 +387,7 @@ class Zend_Mail_Protocol_Pop3
         }
         $this->hasTop = true;
 
-        $lines = (!$lines || $lines < 1) ? 0 : (int)$lines;
+        $lines = (!$lines || $lines < 1) ? 0 : (int) $lines;
 
         try {
             $result = $this->request("TOP $msgno $lines", true);
@@ -406,7 +403,6 @@ class Zend_Mail_Protocol_Pop3
         return $result;
     }
 
-
     /**
      * Make a RETR call for retrieving a full message with headers and body
      *
@@ -420,7 +416,6 @@ class Zend_Mail_Protocol_Pop3
         return $this->retrieve($msgno);
     }
 
-
     /**
      * Make a RETR call for retrieving a full message with headers and body
      *
@@ -431,6 +426,7 @@ class Zend_Mail_Protocol_Pop3
     public function retrieve($msgno)
     {
         $result = $this->request("RETR $msgno", true);
+
         return $result;
     }
 
@@ -445,7 +441,6 @@ class Zend_Mail_Protocol_Pop3
         $this->request('NOOP');
     }
 
-
     /**
      * Make a DELE count to remove a message
      *
@@ -456,7 +451,6 @@ class Zend_Mail_Protocol_Pop3
     {
         $this->request("DELE $msgno");
     }
-
 
     /**
      * Make RSET call, which rollbacks delete requests

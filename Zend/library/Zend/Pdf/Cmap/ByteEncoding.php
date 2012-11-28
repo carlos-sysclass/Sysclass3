@@ -21,7 +21,6 @@
 /** Zend_Pdf_Cmap */
 require_once 'Zend/Pdf/Cmap.php';
 
-
 /**
  * Implements the "byte encoding" character map (type 0).
  *
@@ -41,7 +40,6 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
 {
   /**** Instance Variables ****/
 
-
     /**
      * Glyph index array. Stores the actual glyph numbers. The array keys are
      * the translated Unicode code points.
@@ -49,10 +47,7 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
      */
     protected $_glyphIndexArray = array();
 
-
-
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 
@@ -80,6 +75,7 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
             $glyphNumbers[$key] = $this->_glyphIndexArray[$characterCode];
 
         }
+
         return $glyphNumbers;
     }
 
@@ -100,6 +96,7 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
         if (! isset($this->_glyphIndexArray[$characterCode])) {
             return Zend_Pdf_Cmap::MISSING_CHARACTER_GLYPH;
         }
+
         return $this->_glyphIndexArray[$characterCode];
     }
 
@@ -117,9 +114,9 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
     /**
      * Returns an array containing the glyphs numbers that have entries in this character map.
      * Keys are Unicode character codes (integers)
-     * 
+     *
      * This functionality is partially covered by glyphNumbersForCharacters(getCoveredCharacters())
-     * call, but this method do it in more effective way (prepare complete list instead of searching 
+     * call, but this method do it in more effective way (prepare complete list instead of searching
      * glyph for each character code).
      *
      * @internal
@@ -129,7 +126,6 @@ class Zend_Pdf_Cmap_ByteEncoding extends Zend_Pdf_Cmap
     {
         return $this->_glyphIndexArray;
     }
-
 
   /* Object Lifecycle */
 

@@ -3,7 +3,7 @@
 
 * Show avatars
 
-* 
+*
 
 * This file is the page which shows the avatars list
 
@@ -35,5 +35,3 @@ if ($GLOBALS['configuration']['social_modules_activated'] > 0) {
 }
 
 $smarty -> display("show_avatars.tpl")
-
-?>

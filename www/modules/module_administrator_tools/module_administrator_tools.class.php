@@ -7,7 +7,8 @@
  * Its name should be the same as the one provided in the module.xml file
 
  */
-class module_administrator_tools extends MagesterExtendedModule {
+class module_administrator_tools extends MagesterExtendedModule
+{
  /*
 
      * Mandatory function returning the name of the module
@@ -15,7 +16,8 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return string the name of the module
 
      */
-    public function getName() {
+    public function getName()
+    {
         return _MODULE_ADMINISTRATOR_TOOLS;
     }
     /*
@@ -27,17 +29,20 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return array of SysClass user roles that this module applies for
 
      */
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator");
     }
- public function getModuleJs() {
+ public function getModuleJs()
+ {
   return $this->moduleBaseDir."module_administrator_tools.js";
  }
  /*
-    public function addScripts() {
+    public function addScripts()
+    {
      return array("scriptaculous/effects", "scriptaculous/controls");
     }
-  */  
+  */
     /*
 
      * Function to be executed when the module is installed to an SysClass system
@@ -63,7 +68,8 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return the result (true/false) of any module installation operations
 
      */
-    public function onInstall() {
+    public function onInstall()
+    {
   return true;
     }
     /*
@@ -85,7 +91,8 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return the result (true/false) of any removal operations
 
      */
-    public function onUninstall() {
+    public function onUninstall()
+    {
   //eF_executeNew("DROP TABLE ;");
     }
     /*
@@ -121,14 +128,17 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return array describing the header navigational links for the module pages
 
      */
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
+
         return array (array ('title' => _HOME, 'link' => $currentUser -> getRole() . ".php"),
                       array ('title' => _MODULE_ADMINISTRATOR_TOOLS, 'link' => $this -> moduleBaseUrl));
     }
-    public function getCenterLinkInfo() {
+    public function getCenterLinkInfo()
+    {
     	$currentUser = $this -> getCurrentUser();
-        
+
 		$xuserModule = $this->loadModule("xuser");
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator"
@@ -174,7 +184,8 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return the result of any module operations in boolean form (true/false)
 
      */
-    public function getModule() {
+    public function getModule()
+    {
      try {
    //$GLOBALS['load_editor'] = true;
    $smarty = $this -> getSmartyVar();
@@ -302,7 +313,8 @@ class module_administrator_tools extends MagesterExtendedModule {
      }
      $this -> setMessageVar($message, $message_type);
     }
-    private function toggleSetting($setting, $enable) {
+    private function toggleSetting($setting, $enable)
+    {
      $result = eF_getTableData("lessons", "id, options");
      foreach ($result as $value) {
       $options = unserialize($value['options']);
@@ -317,7 +329,8 @@ class module_administrator_tools extends MagesterExtendedModule {
       }
      }
     }
-    private function getLessonSettings() {
+    private function getLessonSettings()
+    {
      $lessonSettings['theory'] = array('text' => _THEORY, 'image' => "32x32/theory.png", 'onClick' => 'activate(this, \'theory\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => 'inactiveImage');
      $lessonSettings['examples'] = array('text' => _EXAMPLES, 'image' => "32x32/examples.png", 'onClick' => 'activate(this, \'examples\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => 'inactiveImage');
      if ($GLOBALS['configuration']['disable_projects'] != 1) {
@@ -393,6 +406,7 @@ class module_administrator_tools extends MagesterExtendedModule {
      }
      $lessonSettings[$key]['onClick'] = 'activate(this, \''.$key.'\')';
      $lessonSettings[$key]['style'] = 'color:inherit';
+
      return $lessonSettings;
     }
     /*
@@ -428,12 +442,13 @@ class module_administrator_tools extends MagesterExtendedModule {
      * @return false or the string of the filename of the smarty template file for the module main pages
 
      */
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_MODULE_ADMINISTRATOR_TOOLS_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_MODULE_ADMINISTRATOR_TOOLS_BASEURL" , $this -> moduleBaseUrl);
         $smarty -> assign("T_MODULE_ADMINISTRATOR_TOOLS_BASELINK", $this -> moduleBaseLink);
+
         return $this -> moduleBaseDir . "module.tpl";
     }
 }
-?>

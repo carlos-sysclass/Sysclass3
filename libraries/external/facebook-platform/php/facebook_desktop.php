@@ -36,18 +36,21 @@
  *  This class extends and modifies the "Facebook" class to better
  *  suit desktop apps.
  */
-class FacebookDesktop extends Facebook {
+class FacebookDesktop extends Facebook
+{
   // the application secret, which differs from the session secret
   public $app_secret;
   public $verify_sig;
 
-  public function __construct($api_key, $secret) {
+  public function __construct($api_key, $secret)
+  {
     $this->app_secret = $secret;
     $this->verify_sig = false;
     parent::__construct($api_key, $secret);
   }
 
-  public function do_get_session($auth_token) {
+  public function do_get_session($auth_token)
+  {
     $this->api_client->secret = $this->app_secret;
     $this->api_client->session_key = null;
     $session_info = parent::do_get_session($auth_token);
@@ -55,15 +58,18 @@ class FacebookDesktop extends Facebook {
       // store the session secret
       $this->set_session_secret($session_info['secret']);
     }
+
     return $session_info;
   }
 
-  public function set_session_secret($session_secret) {
+  public function set_session_secret($session_secret)
+  {
     $this->secret = $session_secret;
     $this->api_client->secret = $session_secret;
   }
 
-  public function require_login() {
+  public function require_login()
+  {
     if ($this->get_loggedin_user()) {
       try {
         // try a session-based API call to ensure that we have the correct
@@ -92,7 +98,8 @@ class FacebookDesktop extends Facebook {
     $this->redirect($this->get_login_url(self::current_url(), $this->in_fb_canvas()));
   }
 
-  public function verify_signature($fb_params, $expected_sig) {
+  public function verify_signature($fb_params, $expected_sig)
+  {
     // we don't want to verify the signature until we have a valid
     // session secret
     if ($this->verify_sig) {

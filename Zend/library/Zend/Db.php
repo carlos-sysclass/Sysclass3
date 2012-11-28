@@ -20,7 +20,6 @@
  * @version    $Id: Db.php 15577 2009-05-14 12:43:34Z matthew $
  */
 
-
 /**
  * Class for connecting to SQL databases and performing common operations.
  *

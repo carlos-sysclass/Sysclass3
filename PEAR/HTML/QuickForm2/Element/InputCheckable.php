@@ -114,6 +114,7 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
     public function setContent($content)
     {
         $this->data['content'] = $content;
+
         return $this;
     }
 
@@ -130,7 +131,7 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
 
     public function setValue($value)
     {
-        if ((string)$value == $this->getAttribute('value')) {
+        if ((string) $value == $this->getAttribute('value')) {
             return $this->setAttribute('checked');
         } else {
             return $this->removeAttribute('checked');
@@ -157,6 +158,7 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
                          $this->getId(), ENT_QUOTES, self::getOption('charset')
                      ) . '">' . $this->data['content'] . '</label>';
         }
+
         return parent::__toString() . $label;
     }
 
@@ -169,4 +171,3 @@ class HTML_QuickForm2_Element_InputCheckable extends HTML_QuickForm2_Element_Inp
         }
     }
 }
-?>

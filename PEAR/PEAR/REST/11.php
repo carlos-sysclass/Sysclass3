@@ -197,6 +197,7 @@ class PEAR_REST_11
             }
         }
         PEAR::popErrorHandling();
+
         return $ret;
     }
 
@@ -218,7 +219,7 @@ class PEAR_REST_11
         if ($include) {
             $i--;
         }
+
         return array_slice($states, $i + 1);
     }
 }
-?>

@@ -7,9 +7,10 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 class Cache
 {
- public static $cacheTimeout = 604800; //3600*24*7, 1 week	
+ public static $cacheTimeout = 604800; //3600*24*7, 1 week
 
- public static function getCache($parameters) {
+ public static function getCache($parameters)
+ {
   $key = self :: encode($parameters);
 
   $result = eF_getTableData("cache", "value, timestamp, timeout", "cache_key='".$key."'");
@@ -20,7 +21,8 @@ class Cache
   }
  }
 
- public static function setCache($parameters, $data, $timeout = false) {
+ public static function setCache($parameters, $data, $timeout = false)
+ {
   $key = self :: encode($parameters);
   $values = array("cache_key" => $key, "value" => $data, "timestamp" => time());
   if ($timeout && eF_checkParameter($timeout, 'int')) {
@@ -36,15 +38,17 @@ class Cache
   return $result;
  }
 
- public static function resetCache($parameters) {
+ public static function resetCache($parameters)
+ {
   $key = self :: encode($parameters);
 
   eF_deleteTableData("cache", "cache_key='".$key."'");
  }
 
-
- private static function encode($parameters) {
+ private static function encode($parameters)
+ {
   $key = hash('sha256', $parameters);
+
   return $key;
  }
 
@@ -68,7 +72,8 @@ abstract class MagesterCache
 
 class CacheFactory
 {
-    public static function factory() {
+    public static function factory()
+    {
         switch ($GLOBALS['configuration']['cache_method']) {
             case 'apc': $cache = new MagesterCacheAPC(); break;
             case 'memcache': $cache = new MagesterCacheMemcache(); break;
@@ -82,8 +87,8 @@ class MagesterCacheDB extends MagesterCache
 {
     //public $keys = array()
 
-    public function setCache($key, $entity, $timeout) {
-
+    public function setCache($key, $entity, $timeout)
+    {
   $values = array("cache_key" => $key, "value" => serialize($entity), "timestamp" => time());
 
   if ($this -> get($parameters)) {
@@ -96,11 +101,13 @@ class MagesterCacheDB extends MagesterCache
 
     }
 
-    public function deleteCache($key) {
+    public function deleteCache($key)
+    {
         eF_deleteTableData("cache", "cache_key='".$key."'");
     }
 
-    public function getCache($key) {
+    public function getCache($key)
+    {
   $result = eF_getTableData("cache", "value, timestamp", "cache_key='".$key."'");
   if (sizeof($result) > 0 || time() - $result['timestamp'] <= $this -> cacheTimeout) {
    if ($result[0]['value'] !== serialize(false)) {
@@ -112,7 +119,7 @@ class MagesterCacheDB extends MagesterCache
            throw new MagesterCacheException(_CACHEENTRYINVALID, MagesterCacheException::ENTRY_INVALID);
        }
    } else {
-       return false; //This means that the serialized value was "false" 
+       return false; //This means that the serialized value was "false"
    }
   } elseif (time() - $result['timestamp'] <= $this -> cacheTimeout) {
       $this -> delete($key);
@@ -122,7 +129,8 @@ class MagesterCacheDB extends MagesterCache
   }
     }
 
-    public function deleteCacheBasedOnKeyFilter($filter) {
+    public function deleteCacheBasedOnKeyFilter($filter)
+    {
         //eF_deleteTableData("cache")
     }
 }
@@ -132,37 +140,21 @@ class MagesterCacheAPC implements iCache
 
 {
 
-    public function __construct($method) {
-
-        
-
+    public function __construct($method)
+    {
     }
 
-    
-
-    public function setCache($key, $entity, $timeout) {
-
-        
-
+    public function setCache($key, $entity, $timeout)
+    {
     }
 
-    
-
-    public function deleteCache($key) {
-
-        
-
+    public function deleteCache($key)
+    {
     }
 
-    
-
-    public function getCache($key) {
-
-        
-
+    public function getCache($key)
+    {
     }
-
-    
 
 }
 
@@ -170,37 +162,21 @@ class MagesterCacheMemcache implements iCache
 
 {
 
-    public function __construct($method) {
-
-        
-
+    public function __construct($method)
+    {
     }
 
-    
-
-    public function setCache($key, $entity, $timeout) {
-
-        
-
+    public function setCache($key, $entity, $timeout)
+    {
     }
 
-    
-
-    public function deleteCache($key) {
-
-        
-
+    public function deleteCache($key)
+    {
     }
 
-    
-
-    public function getCache($key) {
-
-        
-
+    public function getCache($key)
+    {
     }
-
-    
 
 }
 

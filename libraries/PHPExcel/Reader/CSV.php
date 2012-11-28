@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -92,7 +91,6 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 */
 	private $_contiguous	= false;
 
-
 	/**
 	 * Row counter for loading rows contiguously
 	 *
@@ -109,14 +107,13 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 */
 	private $_readFilter = null;
 
-
 	/**
 	 * Create a new PHPExcel_Reader_CSV
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->_readFilter		= new PHPExcel_Reader_DefaultReadFilter();
 	}	//	function __construct()
-
 
 	/**
 	 * Can the current PHPExcel_Reader_IReader read the file?
@@ -136,17 +133,16 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		return true;
 	}	//	function canRead()
 
-
 	/**
 	 * Read filter
 	 *
 	 * @access	public
 	 * @return PHPExcel_Reader_IReadFilter
 	 */
-	public function getReadFilter() {
+	public function getReadFilter()
+	{
 		return $this->_readFilter;
 	}	//	function getReadFilter()
-
 
 	/**
 	 * Set read filter
@@ -154,11 +150,11 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @access	public
 	 * @param	PHPExcel_Reader_IReadFilter $pValue
 	 */
-	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue) {
+	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue)
+	{
 		$this->_readFilter = $pValue;
 		return $this;
 	}	//	function setReadFilter()
-
 
 	/**
 	 * Set input encoding
@@ -172,7 +168,6 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		return $this;
 	}	//	function setInputEncoding()
 
-
 	/**
 	 * Get input encoding
 	 *
@@ -183,7 +178,6 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	{
 		return $this->_inputEncoding;
 	}	//	function getInputEncoding()
-
 
 	/**
 	 * Return worksheet info (Name, Last Column Letter, Last Column Index, Total Rows, Total Columns)
@@ -255,7 +249,6 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		return $worksheetInfo;
 	}
 
-
 	/**
 	 * Loads PHPExcel from file
 	 *
@@ -272,7 +265,6 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		// Load into this instance
 		return $this->loadIntoExisting($pFilename, $objPHPExcel);
 	}	//	function load()
-
 
 	/**
 	 * Loads PHPExcel from file into PHPExcel instance
@@ -344,7 +336,7 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		// Loop through each line of the file in turn
 		while (($rowData = fgetcsv($fileHandle, 0, $this->_delimiter, $this->_enclosure)) !== FALSE) {
 			$columnLetter = 'A';
-			foreach($rowData as $rowDatum) {
+			foreach ($rowData as $rowDatum) {
 				if ($rowDatum != '' && $this->_readFilter->readCell($columnLetter, $currentRow)) {
 					// Unescape enclosures
 					$rowDatum = str_replace($escapeEnclosures, $this->_enclosure, $rowDatum);
@@ -382,7 +374,8 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @access	public
 	 * @return string
 	 */
-	public function getDelimiter() {
+	public function getDelimiter()
+	{
 		return $this->_delimiter;
 	}	//	function getDelimiter()
 
@@ -394,7 +387,8 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @param	string	$pValue		Delimiter, defaults to ,
 	 * @return	PHPExcel_Reader_CSV
 	 */
-	public function setDelimiter($pValue = ',') {
+	public function setDelimiter($pValue = ',')
+	{
 		$this->_delimiter = $pValue;
 		return $this;
 	}	//	function setDelimiter()
@@ -406,7 +400,8 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @access	public
 	 * @return string
 	 */
-	public function getEnclosure() {
+	public function getEnclosure()
+	{
 		return $this->_enclosure;
 	}	//	function getEnclosure()
 
@@ -418,7 +413,8 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @param	string	$pValue		Enclosure, defaults to "
 	 * @return PHPExcel_Reader_CSV
 	 */
-	public function setEnclosure($pValue = '"') {
+	public function setEnclosure($pValue = '"')
+	{
 		if ($pValue == '') {
 			$pValue = '"';
 		}
@@ -426,17 +422,16 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		return $this;
 	}	//	function setEnclosure()
 
-
 	/**
 	 * Get line ending
 	 *
 	 * @access	public
 	 * @return string
 	 */
-	public function getLineEnding() {
+	public function getLineEnding()
+	{
 		return $this->_lineEnding;
 	}	//	function getLineEnding()
-
 
 	/**
 	 * Set line ending
@@ -445,11 +440,11 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @param	string	$pValue		Line ending, defaults to OS line ending (PHP_EOL)
 	 * @return PHPExcel_Reader_CSV
 	 */
-	public function setLineEnding($pValue = PHP_EOL) {
+	public function setLineEnding($pValue = PHP_EOL)
+	{
 		$this->_lineEnding = $pValue;
 		return $this;
 	}	//	function setLineEnding()
-
 
 	/**
 	 * Get sheet index
@@ -457,10 +452,10 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @access	public
 	 * @return int
 	 */
-	public function getSheetIndex() {
+	public function getSheetIndex()
+	{
 		return $this->_sheetIndex;
 	}	//	function getSheetIndex()
-
 
 	/**
 	 * Set sheet index
@@ -469,11 +464,11 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 * @param	int		$pValue		Sheet index
 	 * @return PHPExcel_Reader_CSV
 	 */
-	public function setSheetIndex($pValue = 0) {
+	public function setSheetIndex($pValue = 0)
+	{
 		$this->_sheetIndex = $pValue;
 		return $this;
 	}	//	function setSheetIndex()
-
 
 	/**
 	 * Set Contiguous
@@ -483,7 +478,7 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 	 */
 	public function setContiguous($contiguous = false)
 	{
-		$this->_contiguous = (bool)$contiguous;
+		$this->_contiguous = (bool) $contiguous;
 		if (!$contiguous) {
 			$this->_contiguousRow	= -1;
 		}
@@ -491,14 +486,14 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		return $this;
 	}	//	function setInputEncoding()
 
-
 	/**
 	 * Get Contiguous
 	 *
 	 * @access	public
 	 * @return boolean
 	 */
-	public function getContiguous() {
+	public function getContiguous()
+	{
 		return $this->_contiguous;
 	}	//	function getSheetIndex()
 

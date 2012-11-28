@@ -21,7 +21,6 @@
 /** Zend_Pdf_Cmap */
 require_once 'Zend/Pdf/Cmap.php';
 
-
 /**
  * Implements the "trimmed table mapping" character map (type 6).
  *
@@ -37,7 +36,6 @@ require_once 'Zend/Pdf/Cmap.php';
 class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
 {
   /**** Instance Variables ****/
-
 
     /**
      * The starting character code covered by this table.
@@ -57,10 +55,7 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
      */
     protected $_glyphIndexArray = array();
 
-
-
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 
@@ -89,6 +84,7 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
             $glyphNumbers[$key] = $this->_glyphIndexArray[$glyphIndex];
 
         }
+
         return $glyphNumbers;
     }
 
@@ -110,6 +106,7 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
             return Zend_Pdf_Cmap::MISSING_CHARACTER_GLYPH;
         }
         $glyphIndex = $characterCode - $this->_startCode;
+
         return $this->_glyphIndexArray[$glyphIndex];
     }
 
@@ -125,16 +122,16 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
         for ($code = $this->_startCode; $code <= $this->_endCode; $code++) {
             $characterCodes[] = $code;
         }
+
         return $characterCodes;
     }
-
 
     /**
      * Returns an array containing the glyphs numbers that have entries in this character map.
      * Keys are Unicode character codes (integers)
-     * 
+     *
      * This functionality is partially covered by glyphNumbersForCharacters(getCoveredCharacters())
-     * call, but this method do it in more effective way (prepare complete list instead of searching 
+     * call, but this method do it in more effective way (prepare complete list instead of searching
      * glyph for each character code).
      *
      * @internal
@@ -149,7 +146,6 @@ class Zend_Pdf_Cmap_TrimmedTable extends Zend_Pdf_Cmap
 
         return $glyphNumbers;
     }
-
 
   /* Object Lifecycle */
 

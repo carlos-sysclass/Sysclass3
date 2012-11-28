@@ -172,6 +172,7 @@ class Zend_Server_Reflection_Class
     {
         if (empty($namespace)) {
             $this->_namespace = '';
+
             return;
         }
 

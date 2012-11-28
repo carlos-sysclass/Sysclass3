@@ -3,23 +3,26 @@
  * @author Andre
  * @copyright 2008
  */
-class module_quick_mails extends MagesterExtendedModule {
-
+class module_quick_mails extends MagesterExtendedModule
+{
 	const GET_COURSE_ROLES_SEND_LIST = 'get_course_roles_send_list';
 
-	public function getName() {
+	public function getName()
+	{
 		return "QUICK_MAILS";
 	}
 
-	public function getPermittedRoles() {
+	public function getPermittedRoles()
+	{
 		return array("professor", "student");
 	}
-	
-	public function getUserContactList($user = null) {
+
+	public function getUserContactList($user = null)
+	{
 		if (!($user instanceof MagesterUser)) {
 			$user = $this->getCurrentUser();
 		}
-			
+
 		$xentifyModule = $this->loadModule("xentify");
 		$contactListData = ef_getTableData(
 				"module_quick_mails_scope scope
@@ -31,12 +34,11 @@ class module_quick_mails extends MagesterExtendedModule {
 				"",
 				"scope.recipient_id, scope.xscope_id, scope.xentify_id HAVING COUNT(qml.user_id) > 0"
 		);
-			
-			
+
 		$contactList = array();
-			
-		foreach($contactListData as $key => $recp) {
-			
+
+		foreach ($contactListData as $key => $recp) {
+
 			if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
 				unset($contactListData[$key]);
 			} else {
@@ -47,7 +49,7 @@ class module_quick_mails extends MagesterExtendedModule {
 						'name'	=> $image[1]
 				);
 				if (!is_array($contactList[$recp['group_id']])) {
-					$contactList[$recp['group_id']] = array(); 
+					$contactList[$recp['group_id']] = array();
 				}
 				$contactList[$recp['group_id']][$recp['recipient_id']] = $recp;
 			}
@@ -56,7 +58,8 @@ class module_quick_mails extends MagesterExtendedModule {
 	}
 
 	/* BLOCK FUNCTIONS */
-	public function loadQuickContactListBlock($blockIndex = null) {
+	public function loadQuickContactListBlock($blockIndex = null)
+	{
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		$this->loadModule('xuser');
@@ -70,20 +73,20 @@ class module_quick_mails extends MagesterExtendedModule {
 		/*
 		} else {
 			$contactList = eF_getTableData(
-				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
-				"qm.*, COUNT(qml.user_id)", 
+				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
+				"qm.*, COUNT(qml.user_id)",
 				sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
 				"",
 				"qm.id HAVING COUNT(qml.user_id) > 0"
 			);
-			foreach($contactList as &$item) {
+			foreach ($contactList as &$item) {
 				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
 				$image = explode("/", $item['image']);
 				$item['image'] = array(
 					'size'	=> reset(explode("x", $image[0])),
 					'name'	=> $image[1]
 				);
-			}		
+			}
 		}
 		*/
 
@@ -115,23 +118,23 @@ class module_quick_mails extends MagesterExtendedModule {
 
 		$smarty -> assign("T_CURRENT_USER", $currentUser);
 		$this->assignSmartyModuleVariables();
-		 
+
 		return true;
 	}
 
-	public function loadQuickFeedbackListBlock($blockIndex = null) {
+	public function loadQuickFeedbackListBlock($blockIndex = null)
+	{
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		$this->loadModule('xuser');
-		 
+
 		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'polo') {
 			return false;
 		}
 		if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
-			 
+
 		} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
-			 
-			 
+
 			$feedbackList = eF_getTableData(
 	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 	    			"qm.*, COUNT(qml.user_id)",
@@ -140,7 +143,7 @@ class module_quick_mails extends MagesterExtendedModule {
 	    			"qm.id HAVING COUNT(qml.user_id) > 0"
 	    			);
 
-	    			foreach($feedbackList as &$item) {
+	    			foreach ($feedbackList as &$item) {
 	    				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
 
 	    				$image = explode("/", $item['image']);
@@ -152,7 +155,6 @@ class module_quick_mails extends MagesterExtendedModule {
 	    			}
 		} else {
 
-
 			$feedbackList = eF_getTableData(
 	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 	    			"qm.*, COUNT(qml.user_id)",
@@ -161,7 +163,7 @@ class module_quick_mails extends MagesterExtendedModule {
 	    			"qm.id HAVING COUNT(qml.user_id) > 0"
 	    			);
 
-	    			foreach($feedbackList as &$item) {
+	    			foreach ($feedbackList as &$item) {
 	    				$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
 
 	    				$image = explode("/", $item['image']);
@@ -171,11 +173,11 @@ class module_quick_mails extends MagesterExtendedModule {
 	    				'name'	=> $image[1]
 	    				);
 	    			}
-	    			 
+
 		}
-		 
+
 		$smarty -> assign("T_QUICK_MAILS_FEEDBACK_LIST", $feedbackList);
-		 
+
 		$this->getParent()->appendTemplate(array(
     			'title'			=> __QUICK_MAILS_FEEDBACK,
     			'sub_title'		=> __QUICK_MAILS_FEEDBACK_US,
@@ -194,15 +196,16 @@ class module_quick_mails extends MagesterExtendedModule {
 		)
 		*/
 		), $blockIndex);
-		 
+
 		$smarty -> assign("T_CURRENT_USER", $currentUser);
-		 
+
 		$this->assignSmartyModuleVariables();
 
 		return true;
 	}
 
-	public function getModule() {
+	public function getModule()
+	{
 		if ($this->getCurrentAction() == self::GET_COURSE_ROLES_SEND_LIST) {
 			return parent::getModule();
 		}
@@ -230,7 +233,6 @@ class module_quick_mails extends MagesterExtendedModule {
 		$form -> addElement('file', 'attachment[0]', _ATTACHMENT, null, 'class = "inputText"');
 		$form -> addElement('submit', 'submit_mail',    _SEND,    'class = "flatButton"');
 
-
 		$contactList = $this->getUserContactList();
 
 		if ($form -> isSubmitted() && $form -> validate()) {
@@ -243,7 +245,7 @@ class module_quick_mails extends MagesterExtendedModule {
 				);
 				*/
 			if (is_numeric($values['recipients'])) {
-				
+
 				$recipients = eF_getTableData(
 					"module_quick_mails_recipients qm, module_quick_mails_recipients_list qml, users u",
 					"u.name, u.surname, u.login, u.email, qm.qm_group",
@@ -252,8 +254,7 @@ class module_quick_mails extends MagesterExtendedModule {
 
 				if (count($recipients) > 0) {
 
-
-					foreach($recipients as $recipient) {
+					foreach ($recipients as $recipient) {
 						$user_recipients[] = $recipient['login'];
 						$mail_recipients[] = array(
 								'login'	=> $recipient['login'],
@@ -261,13 +262,13 @@ class module_quick_mails extends MagesterExtendedModule {
 								'fullname'	=> $recipient['name'] . ' ' . $recipient['surname']
 						);
 					}
-				
+
 /*
 					switch ($recipients[0]['qm_group']) {
 						case "lesson_students":
 							$lesson = new MagesterLesson($_SESSION['s_lessons_ID']);
 							$lessonUsers  = $lesson -> getUsers("student", true, true);
-							foreach ($lessonUsers as $value){
+							foreach ($lessonUsers as $value) {
 								$mail_recipients[] = array(
 										'login'	=> $value['login'],
 										'email'	=> $value['email'],
@@ -287,29 +288,28 @@ class module_quick_mails extends MagesterExtendedModule {
     					'fullname'	=> $values['name']
 				);
 			}
-				
+
 			// ALWAYS SEND A E-MAIL
 			$values['send_email'] = 1;
-				
-				
+
 			//$list = implode(",",$mail_recipients);
 
 			if (count($user_recipients) == 0) {
 				$message      = __NO_RECIPIENTS_DEFINED;
 				$message_type = 'failure';
 			} else {
-				
+
 				$pm = new eF_PersonalMessage($this->getCurrentUser()->user['login'], $user_recipients, $values['subject'], $values['body'], true);
 
 				$attachFile = array();
 
 				if ($_FILES['attachment']['name'][0] != "") {
-					if ($_FILES['attachment']['size'][0] ==0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE ) {                                                           //If the directory could not be created, display an erro message
+					if ($_FILES['attachment']['size'][0] ==0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE) {                                                           //If the directory could not be created, display an erro message
 						$message      = _EACHFILESIZEMUSTBESMALLERTHAN." ".G_MAXFILESIZE." Bytes";
 						$message_type = 'failure';
 					}
 					//Upload user avatar file
-					 
+
 					$pm -> sender_attachment_timestamp = time();
 
 					$user_dir = G_UPLOADPATH.$_SESSION['s_login'].'/message_attachments/Sent/'.$pm -> sender_attachment_timestamp.'/';
@@ -327,45 +327,44 @@ class module_quick_mails extends MagesterExtendedModule {
 
 				if ($values['send_email']) {
 					set_time_limit(0);
-					
+
 					$courses = $current_user->getUserCourses();
-					
+
 					if (count($courses) > 2) {
 						$lessonHide = true;
 					} else {
 						$userLessons = $current_user->getLessons();
 					}
 
-					
 					$courseArray = array();
-					foreach($courses as $course) {
+					foreach ($courses as $course) {
 						if (!$lessonHide) {
 							$lessons = $course->getCourseLessons();
 							$lessonArray = array();
-							foreach($lessons as $lesson) {
+							foreach ($lessons as $lesson) {
 								if (in_array($lesson->lesson['id'], array_keys($userLessons))) {
 									$lessonArray[] = "<li>" . $lesson->lesson['name'] . "</li>";
 								}
-								
+
 								//$lessons = $course->getLessons()
 							}
-							
+
 							$courseArray[] = "<li>" . "<strong>" . $course->course['name'] . "</strong><ul>" . implode(",", $lessonArray) . "</ul></li>";
 						} else {
 							$courseArray[] = "<li>" . $course->course['name'] . "</li>";
 						}
 					}
-					
-					foreach($mail_recipients as $key => $mail) {
+
+					foreach ($mail_recipients as $key => $mail) {
 						// PREPEND USER NAME MESSAGE
 						$email_body =
 						sprintf("Mensagem de: %s <strong>(%s)</strong> &lt;%s&gt;", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
 							"\n<br />" .
 							"Matriculado nos seguintes cursos/disciplinas:\n<br />" .
-							sprintf("<ul>%s</ul>", implode("", $courseArray)) . 
+							sprintf("<ul>%s</ul>", implode("", $courseArray)) .
 							"Corpo da Mensagem:\n<br /><br />" .
 						$values['body'];
-							
+
 						$result = $result && eF_mail(
 						// CHECK IF IS NECESSARY TO CHANGE DE SENDER E-MAIL
 						//sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
@@ -407,7 +406,8 @@ class module_quick_mails extends MagesterExtendedModule {
 		return true;
 	}
 
-	public function getSmartyTpl(){
+	public function getSmartyTpl()
+	{
 		$smarty = $this -> getSmartyVar();
 		$smarty -> assign("T_MODULE_MAIL_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_MAIL_BASEURL" , $this -> moduleBaseUrl);
@@ -415,26 +415,27 @@ class module_quick_mails extends MagesterExtendedModule {
 		return $this -> moduleBaseDir . "module.tpl";
 	}
 
-	public function getLessonModule() {
+	public function getLessonModule()
+	{
 		return true;
 	}
 
-	public function getLessonSmartyTpl() {
-		 
+	public function getLessonSmartyTpl()
+	{
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		$this->loadModule('xuser');
 
 		if (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_student', 'student', 'professor'))) {
 			$contactList = eF_getTableData(
-				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)", 
-				"qm.*, COUNT(qml.user_id)", 
+				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
+				"qm.*, COUNT(qml.user_id)",
 			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
 				"",
-				"qm.id HAVING COUNT(qml.user_id) > 0" 
+				"qm.id HAVING COUNT(qml.user_id) > 0"
 				);
 
-				foreach($contactList as &$item) {
+				foreach ($contactList as &$item) {
 					$item['href']	= $this->moduleBaseUrl . "&rec=" . $item['id'] . "&popup=1";
 
 					$image = explode("/", $item['image']);
@@ -463,25 +464,26 @@ class module_quick_mails extends MagesterExtendedModule {
 
 		 $smarty -> assign("T_CURRENT_USER", $currentUser);
 
-
-		  
 		 return true;
 		 */
-		 
+
 	}
 
-	public function getLessonLinkInfo() {
+	public function getLessonLinkInfo()
+	{
 		return array(
             	'title' => _MAILS_MODULEMAILS,
                          'image' => 'images/32x32/mail.png',
                          'link'  => $this -> moduleBaseUrl);
 
 	}
-	public function isLessonModule(){
+	public function isLessonModule()
+	{
 		return true;
 	}
 
-	public function getCourseDashboardLinkInfo() {
+	public function getCourseDashboardLinkInfo()
+	{
 		return array(
             'title' => _MAILS_MODULEMAILS,
 			'image' => 'images/others/transparent.gif',
@@ -490,9 +492,9 @@ class module_quick_mails extends MagesterExtendedModule {
 		);
 	}
 
-
 	/* ACTIONS FUNCTIONS */
-	public function getCourseRolesSendListAction() {
+	public function getCourseRolesSendListAction()
+	{
 		// GET LAST MESSAGES FROM LESSON
 		$smarty = $this->getSmartyVar();
 
@@ -503,10 +505,6 @@ class module_quick_mails extends MagesterExtendedModule {
 			exit;
 		}
 	}
-
 	/* HOOK ACTIONS FUNCTIONS */
-	  
 	/* DATA MODEL FUNCTIONS /*/
-
 }
-?>

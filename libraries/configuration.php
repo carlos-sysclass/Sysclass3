@@ -66,7 +66,7 @@ $configurationDefaults = array(
 	'www.spbc.sysclass.com'     => array(
 		'dbname'        => 'sysclass_spbc',
 		'overrideTheme' => 'sysclass3'
-	),		
+	),
 	'idiompro.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_idiompro',
 		'overrideTheme' => 'sysclass3'
@@ -84,7 +84,6 @@ if (array_key_exists('overrideTheme', $configuration)) {
 } else {
 	$overrideTheme = null;
 }
-
 
 /** The database Host */
 define('G_DBTYPE', $configuration['dbtype']);
@@ -113,17 +112,15 @@ if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_RED
 	define ("G_PROTOCOL", $protocol);
 	/** The server name*/
 	define('G_SERVERNAME', $configuration['server']);
-	
-	
+
 	//var_dump($configuration);
-	
+
 	/**Software root path*/
 	define("G_ROOTPATH", $configuration['root_path']);
-	
+
 	/**Current version*/
 	define('G_VERSION_NUM', $configuration['version']);
-	
+
 	/**Include function files*/
-	require_once('globals.php');
+	require_once 'globals.php';
 }
-?>

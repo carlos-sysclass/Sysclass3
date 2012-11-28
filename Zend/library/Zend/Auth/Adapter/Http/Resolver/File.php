@@ -20,12 +20,10 @@
  * @version    $Id: File.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Adapter_Http_Resolver_Interface
  */
 require_once 'Zend/Auth/Adapter/Http/Resolver/Interface.php';
-
 
 /**
  * HTTP Authentication File Resolver
@@ -118,7 +116,7 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
              */
             require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
             throw new Zend_Auth_Adapter_Http_Resolver_Exception('Username is required');
-        } else if (!ctype_print($username) || strpos($username, ':') !== false) {
+        } elseif (!ctype_print($username) || strpos($username, ':') !== false) {
             /**
              * @see Zend_Auth_Adapter_Http_Resolver_Exception
              */
@@ -132,7 +130,7 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
              */
             require_once 'Zend/Auth/Adapter/Http/Resolver/Exception.php';
             throw new Zend_Auth_Adapter_Http_Resolver_Exception('Realm is required');
-        } else if (!ctype_print($realm) || strpos($realm, ':') !== false) {
+        } elseif (!ctype_print($realm) || strpos($realm, ':') !== false) {
             /**
              * @see Zend_Auth_Adapter_Http_Resolver_Exception
              */
@@ -157,11 +155,13 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
             if ($line[0] == $username && $line[1] == $realm) {
                 $password = $line[2];
                 fclose($fp);
+
                 return $password;
             }
         }
 
         fclose($fp);
+
         return false;
     }
 }

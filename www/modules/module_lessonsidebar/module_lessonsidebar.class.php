@@ -1,25 +1,31 @@
 <?php
 
-class module_lessonsidebar extends MagesterModule {
-    public function getName() {
+class module_lessonsidebar extends MagesterModule
+{
+    public function getName()
+    {
         return _LESSON_SIDEBAR;
     }
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
      return array("student", "professor");
     }
 
-    public function onInstall() {
+    public function onInstall()
+    {
         return true;
     }
 
-    public function onUninstall() {
+    public function onUninstall()
+    {
         return true;
     }
 
-    public function getSidebarLinkInfo() {
+    public function getSidebarLinkInfo()
+    {
     	/*
         $currentUser = $this -> getCurrentUser();
-      
+
         $userLessons        = $currentUser -> getLessons(true);
         $userLessonProgress = MagesterStats :: getUsersLessonStatus($userLessons, $currentUser -> user['login']);
 
@@ -40,7 +46,7 @@ class module_lessonsidebar extends MagesterModule {
         	$temp[$courseId] = $user[$currentUser -> user['login']];
         }
 		$userInfo['courses'] = $temp;
-                    
+
         $roles     = MagesterLessonUser :: getLessonsRoles();
         $roleNames = MagesterLessonUser :: getLessonsRoles(true);
 		!is_null($benchmark) ? $benchmark->set("sidebar-4") : null;
@@ -52,15 +58,15 @@ class module_lessonsidebar extends MagesterModule {
 	        } else {
 	        	$courseLessons = $course -> getCourseLessons();
 	            $eligible = array_combine(array_keys($courseLessons), array_fill(0, sizeof($courseLessons), 1));    //All lessons set to true
-	        }        	
+	        }
 
 	        foreach ($eligible as $lessonId => $value) {
 	        	$userLessons[$lessonId] -> lesson['eligible'] = $value;
-	        	$userLessons[$lessonId] -> lesson['courseId'] = $course -> course['id'];	        
-	        }           	
-        }    
+	        	$userLessons[$lessonId] -> lesson['courseId'] = $course -> course['id'];
+	        }
+        }
 
-        $mylessons = array();       
+        $mylessons = array();
         foreach ($userLessons as $lesson) {
             if ($lesson -> lesson['id'] != "" && (!isset($lesson -> lesson['eligible']) || (isset($lesson -> lesson['eligible']) && $lesson -> lesson['eligible']))) {
             	if ($lesson -> lesson['courseId']) {
@@ -75,25 +81,28 @@ class module_lessonsidebar extends MagesterModule {
                    'link'  =>  $roles[$lesson -> userStatus['user_type']]. ".php?lessons_ID=". $lesson -> lesson['id'] .$lessonCourseId);
             }
         }
-        
-        $currentLesson = $this -> getCurrentLesson();            
+
+        $currentLesson = $this -> getCurrentLesson();
+
         return array (  "other"  => array('menuTitle' => _MYLESSONSMENU, 'links' => $mylessons));
 		*/
-		
+
 		return false;
 
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         return array ();
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return '';
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         return false;
     }
 }
-?>

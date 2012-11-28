@@ -19,8 +19,8 @@ $sha1_access = $_GET['id'];
 
 // GET IF HASH EXISTS IN TABLE
 $existsCount = eF_countTableData(
-	// table 
-	"module_pagamento_invoices", 	
+	// table
+	"module_pagamento_invoices",
 	// fields
 	"invoices_sha_access",
   	// where clause

@@ -20,12 +20,11 @@
  * @version    $Id$
  */
 
-
 interface Zend_Soap_Wsdl_Strategy_Interface
 {
     /**
      * Method accepts the current WSDL context file.
-     * 
+     *
      * @param <type> $context
      */
     public function setContext(Zend_Soap_Wsdl $context);

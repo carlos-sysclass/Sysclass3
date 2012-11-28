@@ -66,10 +66,10 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
     */
     protected $elements = array();
 
-
     public function setName($name)
     {
-        $this->attributes['name'] = (string)$name;
+        $this->attributes['name'] = (string) $name;
+
         return $this;
     }
 
@@ -80,6 +80,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $child->toggleFrozen($freeze);
             }
         }
+
         return parent::toggleFrozen($freeze);
     }
 
@@ -90,6 +91,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $child->persistentFreeze($persistent);
             }
         }
+
         return parent::persistentFreeze($persistent);
     }
 
@@ -146,6 +148,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 }
             }
         }
+
         return empty($values)? null: $values;
     }
 
@@ -175,6 +178,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
     public function getValue()
     {
         $value = $this->getChildValues(true);
+
         return is_null($value)? null: $this->applyFilters($value);
     }
 
@@ -197,6 +201,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $a[$k] = self::arrayMerge(isset($a[$k])? $a[$k]: array(), $v);
             }
         }
+
         return $a;
     }
 
@@ -227,6 +232,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         }
         $element->setContainer($this);
         $this->elements[] = $element;
+
         return $element;
     }
 
@@ -278,7 +284,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
             );
         }
         $unset = false;
-        foreach ($this as $key => $child){
+        foreach ($this as $key => $child) {
             if ($child === $element) {
                 unset($this->elements[$key]);
                 $element->setContainer(null);
@@ -289,9 +295,9 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         if ($unset) {
             $this->elements = array_values($this->elements);
         }
+
         return $element;
     }
-
 
    /**
     * Returns an element if its id is found
@@ -306,6 +312,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 return $element;
             }
         }
+
         return null;
     }
 
@@ -323,6 +330,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $found[] = $element;
             }
         }
+
         return $found;
     }
 
@@ -348,6 +356,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 }
                 $element->setContainer($this);
                 array_splice($this->elements, $offset, 0, array($element));
+
                 return $element;
             }
             $offset++;
@@ -403,7 +412,6 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         }
     }
 
-
    /**
     * Performs the server-side validation
     *
@@ -418,6 +426,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
             $valid = $child->validate() && $valid;
         }
         $valid = parent::validate() && $valid;
+
         return $valid;
     }
 
@@ -444,6 +453,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $name = isset($a[0]) ? $a[0] : null;
                 $attr = isset($a[1]) ? $a[1] : null;
                 $data = isset($a[2]) ? $a[2] : array();
+
                 return $this->addElement($type, $name, $attr, $data);
             }
         }
@@ -464,6 +474,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
         }
         $this->renderClientRules($renderer->getJavascriptBuilder());
         $renderer->finishContainer($this);
+
         return $renderer;
     }
 
@@ -488,6 +499,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $args[] = $value;
             }
         }
+
         return 'qf.$cv(' . implode(', ', $args) . ')';
     }
 
@@ -499,6 +511,7 @@ abstract class HTML_QuickForm2_Container extends HTML_QuickForm2_Node
                 $triggers[$trigger] = true;
             }
         }
+
         return array_keys($triggers);
     }
 }
@@ -529,5 +542,3 @@ class HTML_QuickForm2_ContainerIterator extends RecursiveArrayIterator implement
         return new HTML_QuickForm2_ContainerIterator($this->current());
     }
 }
-
-?>

@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Cell_IValueBinder
  *

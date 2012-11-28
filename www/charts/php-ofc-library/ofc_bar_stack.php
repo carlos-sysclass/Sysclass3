@@ -9,7 +9,7 @@ class bar_stack extends bar_base
 		$this->type      = "bar_stack";
 		parent::bar_base();
 	}
-	
+
 	function append_stack( $v )
 	{
 		$this->append_value( $v );

@@ -6,7 +6,6 @@ require_once 'Tis/Service/LiveDocx/Exception.php';
 /** Zend_Soap_Client **/
 require_once 'Zend/Soap/Client.php';
 
-
 /**
  * phpLiveDocx
  *
@@ -194,28 +193,6 @@ class Tis_Service_LiveDocx
     // -------------------------------------------------------------------------
 
 } // end of class
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    /**
 //     * Create a new user on LiveDocx service (restricted access)

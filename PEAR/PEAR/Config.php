@@ -254,7 +254,7 @@ class PEAR_Config extends PEAR
         );
 
     var $layers = array();
-    
+
     /**
      * Configuration data, two-dimensional array where the first
      * dimension is the config layer ('user', 'system' and 'default'),
@@ -272,7 +272,7 @@ class PEAR_Config extends PEAR
         'system' => array(),
         'default' => array(),
         );
-    
+
     /**
      * Configuration values that can be set for a channel
      *
@@ -648,6 +648,7 @@ class PEAR_Config extends PEAR
         }
 
         $GLOBALS['_PEAR_Config_instance'] = &$t_conf;
+
         return $GLOBALS['_PEAR_Config_instance'];
     }
 
@@ -665,6 +666,7 @@ class PEAR_Config extends PEAR
         if ($this->isDefinedLayer('user') || $this->isDefinedLayer('system')) {
             return true;
         }
+
         return false;
     }
 
@@ -715,6 +717,7 @@ class PEAR_Config extends PEAR
         } else {
             unset($this->_registry[$layer]);
         }
+
         return true;
     }
 
@@ -741,6 +744,7 @@ class PEAR_Config extends PEAR
                 $e = $this->_ftp->init($path);
                 if (PEAR::isError($e)) {
                     $this->_ftp->popErrorHandling();
+
                     return $e;
                 }
                 $tmp = System::mktemp('-d');
@@ -749,6 +753,7 @@ class PEAR_Config extends PEAR
                     'pear.ini', false, FTP_BINARY);
                 if (PEAR::isError($e)) {
                     $this->_ftp->popErrorHandling();
+
                     return $e;
                 }
                 PEAR_Common::addTempFile($tmp . DIRECTORY_SEPARATOR . 'pear.ini');
@@ -774,6 +779,7 @@ class PEAR_Config extends PEAR
                     $fail = '"' . implode('", "', $fail) . '"';
                     unset($this->files['ftp']);
                     unset($this->configuration['ftp']);
+
                     return PEAR::raiseError('ERROR: Ftp configuration file must set all ' .
                         'directory configuration variables.  These variables were not set: ' .
                         $fail);
@@ -785,11 +791,12 @@ class PEAR_Config extends PEAR
             }
         } while (false); // poor man's catch
         unset($this->files['ftp']);
+
         return PEAR::raiseError('no remote host specified');
     }
 
     // {{{ _setupChannels()
-    
+
     /**
      * Reads the existing configurations and creates the _channels array from it
      */
@@ -873,6 +880,7 @@ class PEAR_Config extends PEAR
         } else {
             unset($this->_registry[$layer]);
         }
+
         return true;
     }
 
@@ -903,6 +911,7 @@ class PEAR_Config extends PEAR
                 unset($arr1[$key]);
             }
         }
+
         return array_merge($ret, $arr1);
     }
 
@@ -928,6 +937,7 @@ class PEAR_Config extends PEAR
                     return $err;
                 }
             }
+
             return true;
         }
         if (empty($this->files[$layer])) {
@@ -953,6 +963,7 @@ class PEAR_Config extends PEAR
         if (!@fwrite($fp, $contents)) {
             return $this->raiseError("PEAR_Config::writeConfigFile: fwrite failed ($php_errormsg)");
         }
+
         return true;
     }
 
@@ -986,7 +997,7 @@ class PEAR_Config extends PEAR
         if (empty($contents)) {
             return $this->raiseError('Configuration file "' . $file . '" is empty');
         }
-        
+
         set_magic_quotes_runtime($rt);
 
         $version = false;
@@ -1011,6 +1022,7 @@ class PEAR_Config extends PEAR
                     $data = array();
                 } else {
                     $err = $this->raiseError("PEAR_Config: bad data in $file");
+
                     return $err;
                 }
             }
@@ -1018,6 +1030,7 @@ class PEAR_Config extends PEAR
                 if (strlen(trim($contents)) > 0) {
                     $error = "PEAR_Config: bad data in $file";
                     $err = $this->raiseError($error);
+
                     return $err;
                 } else {
                     $data = array();
@@ -1026,8 +1039,10 @@ class PEAR_Config extends PEAR
         // add parsing of newer formats here...
         } else {
             $err = $this->raiseError("$file: unknown version `$version'");
-            return $err; 
+
+            return $err;
         }
+
         return $data;
     }
 
@@ -1124,6 +1139,7 @@ class PEAR_Config extends PEAR
             // fix bug #7351: setting custom config variable in a channel fails
             $this->_channelConfigInfo[] = $name;
         }
+
         return true;
     }
 
@@ -1165,6 +1181,7 @@ class PEAR_Config extends PEAR
                 }
             }
         }
+
         return true;
     }
 
@@ -1208,6 +1225,7 @@ class PEAR_Config extends PEAR
                 }
             }
         }
+
         return true;
     }
 
@@ -1241,8 +1259,10 @@ class PEAR_Config extends PEAR
             if ($ret != 'pear.php.net') {
                 $this->_lazyChannelSetup();
             }
+
             return $ret;
         }
+
         return PEAR_CONFIG_DEFAULT_CHANNEL;
     }
 
@@ -1274,7 +1294,7 @@ class PEAR_Config extends PEAR
             $this->_lazyChannelSetup();
         }
         $channel = strtolower($channel);
-        
+
         $test = (in_array($key, $this->_channelConfigInfo)) ?
             $this->_getChannelValue($key, $layer, $channel) :
             null;
@@ -1286,6 +1306,7 @@ class PEAR_Config extends PEAR
                     return $this->_prependPath($test, $this->_installRoot);
                 }
             }
+
             return $test;
         }
         if ($layer === null) {
@@ -1311,6 +1332,7 @@ class PEAR_Config extends PEAR
                             }
                         }
                     }
+
                     return $test;
                 }
             }
@@ -1335,8 +1357,10 @@ class PEAR_Config extends PEAR
                     }
                 }
             }
+
             return $test;
         }
+
         return null;
     }
 
@@ -1380,6 +1404,7 @@ class PEAR_Config extends PEAR
                         return $channel; // mirror does not exist
                     }
                 }
+
                 return $ret;
             }
             if ($channel != $this->getDefaultChannel($layer)) {
@@ -1389,9 +1414,9 @@ class PEAR_Config extends PEAR
                 return $this->getDefaultChannel($layer);
             }
         }
+
         return $ret;
     }
-
 
     // }}}
     // {{{ set(key, value, [layer])
@@ -1444,7 +1469,7 @@ class PEAR_Config extends PEAR
         extract($this->configuration_info[$key]);
         switch ($type) {
             case 'integer':
-                $value = (int)$value;
+                $value = (int) $value;
                 break;
             case 'set': {
                 // If a valid_set is specified, require the value to
@@ -1477,6 +1502,7 @@ class PEAR_Config extends PEAR
         if ($channel != 'pear.php.net') {
             if (in_array($key, $this->_channelConfigInfo)) {
                 $this->configuration[$layer]['__channels'][$channel][$key] = $value;
+
                 return true;
             } else {
                 return false;
@@ -1506,6 +1532,7 @@ class PEAR_Config extends PEAR
                 $this->_registry[$layer]->setConfig($this);
             }
         }
+
         return true;
     }
 
@@ -1533,6 +1560,7 @@ class PEAR_Config extends PEAR
                         $this->_regInitialized[$layer] = false;
                     } else {
                         unset($this->_registry[$layer]);
+
                         return;
                     }
                 }
@@ -1543,7 +1571,7 @@ class PEAR_Config extends PEAR
         }
     }
     // {{{ setChannels()
-    
+
     /**
      * Set the list of channels.
      *
@@ -1577,6 +1605,7 @@ class PEAR_Config extends PEAR
                 }
             }
         }
+
         return true;
     }
 
@@ -1599,6 +1628,7 @@ class PEAR_Config extends PEAR
         if (isset($this->configuration_info[$key])) {
             return $this->configuration_info[$key]['type'];
         }
+
         return false;
     }
 
@@ -1620,6 +1650,7 @@ class PEAR_Config extends PEAR
         if (isset($this->configuration_info[$key])) {
             return $this->configuration_info[$key]['doc'];
         }
+
         return false;
     }
        // }}}
@@ -1640,6 +1671,7 @@ class PEAR_Config extends PEAR
         if (isset($this->configuration_info[$key])) {
             return $this->configuration_info[$key]['prompt'];
         }
+
         return false;
     }
     // }}}
@@ -1660,6 +1692,7 @@ class PEAR_Config extends PEAR
         if (isset($this->configuration_info[$key])) {
             return $this->configuration_info[$key]['group'];
         }
+
         return false;
     }
 
@@ -1680,6 +1713,7 @@ class PEAR_Config extends PEAR
         foreach ($this->configuration_info as $key => $info) {
             $tmp[$info['group']] = 1;
         }
+
         return array_keys($tmp);
     }
 
@@ -1704,6 +1738,7 @@ class PEAR_Config extends PEAR
                 $keys[] = $key;
             }
         }
+
         return $keys;
     }
 
@@ -1733,8 +1768,10 @@ class PEAR_Config extends PEAR
             if (key($valid_set) === 0) {
                 return $valid_set;
             }
+
             return array_keys($valid_set);
         }
+
         return null;
     }
 
@@ -1761,6 +1798,7 @@ class PEAR_Config extends PEAR
             unset($test['__channels']);
             $keys = array_merge($keys, $test);
         }
+
         return array_keys($keys);
     }
 
@@ -1784,13 +1822,16 @@ class PEAR_Config extends PEAR
         if ($channel !== 'pear.php.net') {
             if (isset($this->configuration[$layer]['__channels'][$channel][$key])) {
                 unset($this->configuration[$layer]['__channels'][$channel][$key]);
+
                 return true;
             }
         }
         if (isset($this->configuration[$layer][$key])) {
             unset($this->configuration[$layer][$key]);
+
             return true;
         }
+
         return false;
     }
 
@@ -1812,8 +1853,10 @@ class PEAR_Config extends PEAR
     {
         if (isset($this->configuration[$layer])) {
             $this->configuration[$layer] = array();
+
             return true;
         }
+
         return false;
     }
 
@@ -1850,6 +1893,7 @@ class PEAR_Config extends PEAR
     function toDefault($key)
     {
         trigger_error("PEAR_Config::toDefault() deprecated, use PEAR_Config::remove() instead", E_USER_NOTICE);
+
         return $this->remove($key, 'user');
     }
 
@@ -1878,6 +1922,7 @@ class PEAR_Config extends PEAR
                     if ($returnchannel) {
                         return array('layer' => $layer, 'channel' => $channel);
                     }
+
                     return $layer;
                 }
             }
@@ -1885,9 +1930,11 @@ class PEAR_Config extends PEAR
                 if ($returnchannel) {
                     return array('layer' => $layer, 'channel' => 'pear.php.net');
                 }
+
                 return $layer;
             }
         }
+
         return '';
     }
 
@@ -1908,6 +1955,7 @@ class PEAR_Config extends PEAR
     function isDefaulted($key)
     {
         trigger_error("PEAR_Config::isDefaulted() deprecated, use PEAR_Config::definedBy() instead", E_USER_NOTICE);
+
         return $this->definedBy($key) == 'system';
     }
 
@@ -1930,6 +1978,7 @@ class PEAR_Config extends PEAR
                 return true;
             }
         }
+
         return false;
     }
 
@@ -1962,6 +2011,7 @@ class PEAR_Config extends PEAR
     {
         $cf = $this->configuration;
         unset($cf['default']);
+
         return array_keys($cf);
     }
 
@@ -1991,6 +2041,7 @@ class PEAR_Config extends PEAR
             return $this->_registry['default'];
         } elseif ($use) {
             $a = false;
+
             return $a;
         } else {
             // only go here if null was passed in
@@ -2015,6 +2066,7 @@ class PEAR_Config extends PEAR
         if (is_object($reg)) {
             $this->_registry[$layer]->setConfig($this);
         }
+
         return true;
     }
 
@@ -2029,6 +2081,7 @@ class PEAR_Config extends PEAR
     function &getRemote()
     {
         $remote = &new PEAR_Remote($this);
+
         return $remote;
     }
 
@@ -2039,9 +2092,10 @@ class PEAR_Config extends PEAR
     {
         $version = str_replace('.', '', $version);
         if (!class_exists($class = 'PEAR_REST_' . $version)) {
-            require_once 'PEAR/REST/' . $version . '.php';
+            require_once 'PEAR/REST/'. $version . '.php';
         }
         $remote = &new $class($this, $options);
+
         return $remote;
     }
 
@@ -2056,6 +2110,7 @@ class PEAR_Config extends PEAR
             return $this->_ftp;
         } else {
             $a = false;
+
             return $a;
         }
     }
@@ -2076,6 +2131,7 @@ class PEAR_Config extends PEAR
                 $path = $prepend . $path;
             }
         }
+
         return $path;
     }
     // }}}
@@ -2104,5 +2160,3 @@ class PEAR_Config extends PEAR
         }
     }
 }
-
-?>

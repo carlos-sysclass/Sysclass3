@@ -27,7 +27,6 @@ if ($GLOBALS['configuration']['webserver_auth']) {
 	$currentUser -> login($currentUser -> user['password'], true);
 }
 
-
 //@todo:temporary here, should leave
 $cacheId = null;
 
@@ -65,7 +64,7 @@ if (!$smarty -> is_cached('index.tpl', $cacheId) || !$GLOBALS['configuration']['
 	//ksort($languages);
 	$smarty -> assign("T_LANGUAGES", $languages);
 	$debug_InitTime = microtime(true) - $debug_TimeStart;
-	if ($configuration['cms_page'] != "" && sizeof($_GET) == 0 && file_exists(G_CURRENTTHEMEPATH."external/".$GLOBALS['configuration']['cms_page'].".php")){ //if there is cms page and no get parameter defined
+	if ($configuration['cms_page'] != "" && sizeof($_GET) == 0 && file_exists(G_CURRENTTHEMEPATH."external/".$GLOBALS['configuration']['cms_page'].".php")) { //if there is cms page and no get parameter defined
 		eF_redirect("".G_SERVERNAME.G_CURRENTTHEMEURL."external/".$configuration['cms_page'].".php");
 	}
 	if (isset($_GET['logout']) && !isset($_POST['submit_login'])) { //If user wants to log out
@@ -166,7 +165,7 @@ if (!$smarty -> is_cached('index.tpl', $cacheId) || !$GLOBALS['configuration']['
        'collapse' => $GLOBALS['configuration']['collapse_catalog'],
        'buy_link' => true,
        'course_lessons' => false);
-	include("directions_tree.php");
+	include 'directions_tree.php';
 }
 /* -------------------------------------------------------Login part-------------------------------------------------------------------*/
 if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
@@ -175,7 +174,6 @@ if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
 		$autolinks = $result['autologin'];
 		$key = array_search($_GET['autologin'], $autolinks);
 
-
 		if ($key !== false) {
 			$user = MagesterUserFactory :: factory($result['login'][$key]);
 			$pattern = $user -> user['login']."_".$user -> user['timestamp'];
@@ -183,12 +181,10 @@ if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
 			if (strcmp($pattern, $_GET['autologin']) == 0) {
 				$user -> login($user -> user['password'], true);
 
-
-
 				//if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
 				//check for valid lesson
 				$urlArray = array();
-				foreach($_GET as $key => $item) {
+				foreach ($_GET as $key => $item) {
 					if ($key != 'autologin') {
 						$urlArray[] = $key . '=' . $item;
 					}
@@ -200,8 +196,6 @@ if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
 				}
 				//}
 
-				 
-				 
 				LoginRedirect($user -> user['user_type']);
 
 				exit;
@@ -303,8 +297,7 @@ if ($form -> isSubmitted() && $form -> validate()) {
 		} elseif ($e -> getCode() == MagesterUserException :: USER_INACTIVE) {
 			$message = $e -> getMessage();
 			$message_type = 'failure';
-		}
-		else {
+		} else {
 			$message = _LOGINERRORPLEASEMAKESURECAPSLOCKISOFF;
 			$message_type = 'failure';
 		}
@@ -569,7 +562,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 				MagesterEvent::triggerEvent(array("type" => (-1) * MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user_data['login'], "users_name" => $user_data['name'], "users_surname" => $user_data['surname']));
 				//pr($self_registered_jobs);
 				if ($configuration['activation'] == 0) {
-					if ($configuration['mail_activation'] == 1){
+					if ($configuration['mail_activation'] == 1) {
 						$tmp = eF_getTableData("users","timestamp","login='".$user_data['login']."'");
 						$timestamp = $tmp[0]["timestamp"];
 						MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION, "users_LOGIN" => $tmp[0]['login'], "users_name" => $tmp[0]['name'], "users_surname" => $tmp[0]['surname'], "timestamp" => $timestamp, "entity_name" => $timestamp));
@@ -590,7 +583,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 					}
 					if ($GLOBALS['configuration']['show_license_note'] && $newUser -> user['viewed_license'] == 0) {
 						eF_redirect("index.php?ctg=agreement&message=".urlencode($message)."&message_type=".$message_type);
-					} else if ($_SESSION['login_mode']) {
+					} elseif ($_SESSION['login_mode']) {
 						eF_redirect("index.php?ctg=checkout&checkout=1&message=".urlencode($message)."&message_type=".$message_type);
 					} else {
 						eF_redirect("userpage.php?message=".urlencode($message)."&message_type=".$message_type);
@@ -657,7 +650,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'contact') { //The user asked to disp
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'lesson_info') { //The user asked to display information on a lesson
 	//session_start();			//Isn't needed here if the head session_start() is in place
 	if (!$smarty -> is_cached('index.tpl', $cacheId) || !$GLOBALS['configuration']['smarty_caching']) {
-		include("directions_tree.php");
+		include 'directions_tree.php';
 		try {
 			if (isset($_GET['lessons_ID'])) {
 				if (isset($lessons[$_GET['lessons_ID']]) && ($lessons[$_GET['lessons_ID']] instanceOf MagesterLesson)) {
@@ -687,7 +680,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'lesson_info') { //The user asked to 
 						$smarty -> assign("T_HAS_COURSE", in_array($course -> course['id'], array_keys($userCourses)));
 					}
 				}
-			} else if ($_GET['courses_ID']) {
+			} elseif ($_GET['courses_ID']) {
 				if (isset($courses[$_GET['courses_ID']]) && ($courses[$_GET['courses_ID']] instanceOf MagesterCourse)) {
 					$smarty -> assign("T_HAS_COURSE", $courses[$_GET['courses_ID']] -> course['has_course']);
 				}
@@ -753,7 +746,7 @@ $benchmark -> set('script');
 $loadScripts[] = 'includes/catalog';
 if (isset($_GET['ajax']) && $_GET['ajax'] == 'cart') {
 	try {
-		include "catalog.php";
+		include 'catalog.php';
 	} catch (Exception $e) {
 		header("HTTP/1.0 500 ");
 		echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
@@ -763,7 +756,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'cart') {
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'checkout' && $_GET['checkout'] && $_SESSION['s_login']) {
 	try {
 		/**Handles cart and catalog*/
-		include "catalog.php";
+		include 'catalog.php';
 	} catch (Exception $e) {
 		$smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
 		$message = $e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
@@ -826,8 +819,8 @@ $output = $benchmark -> display();
 if (G_DEBUG) {
 	echo $output;
 }
-function LoginRedirect($user_type) {
-
+function LoginRedirect($user_type)
+{
 	$redirectPage = $GLOBALS['configuration']['login_redirect_page'];
 
 	if ($redirectPage == "user_dashboard" && $user_type != "administrator") {
@@ -838,4 +831,3 @@ function LoginRedirect($user_type) {
 		eF_redirect("userpage.php");
 	}
 }
-?>

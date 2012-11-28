@@ -18,13 +18,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_StringParser */
 require_once 'Zend/Pdf/StringParser.php';
 
 /** Zend_Pdf_Element_Reference_Table */
 require_once 'Zend/Pdf/Element/Reference/Table.php';
-
 
 /**
  * PDF reference object context
@@ -64,7 +62,6 @@ class Zend_Pdf_Element_Reference_Context
         $this->_refTable     = $refTable;
     }
 
-
     /**
      * Context parser
      *
@@ -74,7 +71,6 @@ class Zend_Pdf_Element_Reference_Context
     {
         return $this->_stringParser;
     }
-
 
     /**
      * Context reference table
@@ -86,4 +82,3 @@ class Zend_Pdf_Element_Reference_Context
         return $this->_refTable;
     }
 }
-

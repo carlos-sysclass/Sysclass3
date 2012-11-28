@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * PDF provides a powerfull facilities for specifying the colors of graphics objects.
  * This class encapsulates color behaviour.
@@ -41,4 +40,3 @@ abstract class Zend_Pdf_Color
      */
     abstract public function instructions($stroking);
 }
-

@@ -187,7 +187,7 @@ class Zend_Soap_Client
      */
     public function setOptions($options)
     {
-        if($options instanceof Zend_Config) {
+        if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
 
@@ -626,7 +626,7 @@ class Zend_Soap_Client
      */
     public function setProxyPort($proxyPort)
     {
-        $this->_proxy_port = (int)$proxyPort;
+        $this->_proxy_port = (int) $proxyPort;
 
         $this->_soapClient = null;
 
@@ -781,17 +781,18 @@ class Zend_Soap_Client
      */
     public function setStreamContext($context)
     {
-        if(!is_resource($context) || get_resource_type($context) !== "stream-context") {
+        if (!is_resource($context) || get_resource_type($context) !== "stream-context") {
             /**
              * @see Zend_Soap_Client_Exception
              */
-            require_once "Zend/Soap/Client/Exception.php";
+            require_once 'Zend/Soap/Client/Exception.php';
             throw new Zend_Soap_Client_Exception(
                 "Invalid stream context resource given."
             );
         }
 
         $this->_stream_context = $context;
+
         return $this;
     }
 
@@ -814,6 +815,7 @@ class Zend_Soap_Client
     public function setSoapFeatures($feature)
     {
         $this->_features = $feature;
+
         return $this;
     }
 
@@ -836,6 +838,7 @@ class Zend_Soap_Client
     public function setWsdlCache($options)
     {
         $this->_cache_wsdl = $options;
+
         return $this;
     }
 
@@ -971,7 +974,6 @@ class Zend_Soap_Client
         $this->_soapClient = new Zend_Soap_Client_Common(array($this, '_doRequest'), $wsdl, $options);
     }
 
-
     /**
      * Perform arguments pre-processing
      *
@@ -1067,7 +1069,6 @@ class Zend_Soap_Client
         return $this->_preProcessResult($result);
     }
 
-
     /**
      * Return a list of available functions
      *
@@ -1087,7 +1088,6 @@ class Zend_Soap_Client
 
         return $this->_soapClient->__getFunctions();
     }
-
 
     /**
      * Get used types.

@@ -137,7 +137,7 @@ $generalPHPForm -> addRule('max_execution_time', _INVALIDFIELDDATA, 'checkParame
 $generalPHPForm -> addRule('max_file_size', _INVALIDFIELDDATA, 'checkParameter', 'id');
 $generalPHPForm -> addRule('max_file_size', _INVALIDFIELDDATAFORFIELD.': "'._MAXFILESIZE.'"', 'numeric', null, 'client');
 $generalPHPForm -> setDefaults($GLOBALS['configuration']);
-isset($configuration['memory_limit']) ? $generalPHPForm -> setDefaults(array('memory_limit' => $configuration['memory_limit'])) : $generalPHPForm -> setDefaults(array('memory_limit' => (int)ini_get('memory_limit')));
+isset($configuration['memory_limit']) ? $generalPHPForm -> setDefaults(array('memory_limit' => $configuration['memory_limit'])) : $generalPHPForm -> setDefaults(array('memory_limit' => (int) ini_get('memory_limit')));
 isset($configuration['max_execution_time']) ? $generalPHPForm -> setDefaults(array('max_execution_time' => $configuration['max_execution_time'])) : $generalPHPForm -> setDefaults(array('max_execution_time' => ini_get('max_execution_time')));
 isset($configuration['gz_handler']) ? $generalPHPForm -> setDefaults(array('gz_handler' => $configuration['gz_handler'])) : $generalPHPForm -> setDefaults(array('gz_handler' => ''));
 //		isset($configuration['display_errors'])   ? $generalPHPForm -> setDefaults(array('display_errors'	 => $configuration['display_errors']))	 : $generalPHPForm -> setDefaults(array('display_errors'	 => ini_get('display_errors')));
@@ -161,7 +161,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
    } else {
     if ($key == 'memory_limit' || $key == 'max_execution_time') { //You can't set these values below the php.ini setting
      ini_restore($key);
-     if ((int)ini_get($key) <= $value || $value == -1) {
+     if ((int) ini_get($key) <= $value || $value == -1) {
       MagesterConfiguration :: setValue($key, $value);
      } else {
       $message = _COULDNOTUPDATE." $key "._WITHVALUE." ".$value.": "._VALUEISSMALLERTHATPHPINI;

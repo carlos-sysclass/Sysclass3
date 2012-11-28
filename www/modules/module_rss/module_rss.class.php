@@ -28,15 +28,18 @@ class module_rss extends MagesterExtendedModule
                     //'comments'		 => _COMMENTS
                     );
  public $feedLimit = 10;
-    public function getName() {
+    public function getName()
+    {
         return "RSS";
     }
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("administrator", "professor", "student");
     }
-    
+
     /* BLOCK FUNCTIONS */
-    public function loadMainFeedsListBlock($blockIndex = null) {
+    public function loadMainFeedsListBlock($blockIndex = null)
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_RSS_MODULE_BASEURL", $this -> moduleBaseUrl);
   //pr($this -> moduleBaseLink);
@@ -50,38 +53,39 @@ class module_rss extends MagesterExtendedModule
         }
         $feeds = $this -> getFeeds(true);
 
-
         foreach ($feeds as $key => $feed) {
             if ($feed['lessons_ID'] != -1 && $_SESSION['s_lessons_ID'] && $feed['lessons_ID'] != $_SESSION['s_lessons_ID']) {
                 unset ($feeds[$key]);
             }
-			
+
         }
 
         $smarty -> assign("T_RSS_OPTIONS", $options);
         $smarty -> assign("T_RSS_NUM_FEEDS", sizeof($feeds));
-        
+
         if (sizeof($feeds) > 0) {
 	   		$this->getParent()->appendTemplate(array(
 				'title'			=> __RSS_TITLE,
 				'template'		=> $this->moduleBaseDir . 'templates/blocks/rss.main_feeds_list.tpl',
 				'contentclass'	=> 'blockContents'
 		   	), $blockIndex);
-		   	
+
 		   	$this->assignSmartyModuleVariables();
-		   	
+
 		   	return true;
-        } 
+        }
+
         return false;
 
         return $this -> moduleBaseDir . "module_rss_cpanel.tpl";
     }
-    
-    
- public function getModuleJs() {
+
+ public function getModuleJs()
+ {
   return $this->moduleBaseDir."rss_reader.js";
  }
-    public function onUpgrade() {
+    public function onUpgrade()
+    {
         try {
          eF_executeNew("CREATE TABLE if not exists module_rss_provider(id int(11) not null auto_increment primary key,
                     mode varchar(255),
@@ -92,7 +96,8 @@ class module_rss extends MagesterExtendedModule
         } catch (Exception $e) {}
     }
 
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_rss_feeds");
         eF_executeNew("CREATE TABLE module_rss_feeds(id int(11) not null auto_increment primary key,
                     title varchar(255),
@@ -107,32 +112,39 @@ class module_rss extends MagesterExtendedModule
                     type varchar(255),
                     active int(11) not null default 1,
                     lessons_ID int(11) default 0)");
+
   return true;
     }
 
-    public function onUnInstall() {
+    public function onUnInstall()
+    {
         eF_executeNew("drop table module_rss_feeds");
 
         return true;
     }
 
-    public function getModule() {
+    public function getModule()
+    {
         return true;
     }
 
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
         return true;
     }
-    
- public function isLessonModule() {
+
+ public function isLessonModule()
+ {
   return true;
  }
 
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         return $this -> getControlPanelSmartyTpl();
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_RSS_MODULE_BASEURL", $this -> moduleBaseUrl);
         $smarty -> assign("T_RSS_MODULE_BASELINK", $this -> moduleBaseLink);
@@ -177,7 +189,7 @@ class module_rss extends MagesterExtendedModule
              handleAjaxExceptions($e);
             }
             exit;
-        } else if (isset($_GET['add_feed']) || (isset($_GET['edit_feed']) && eF_checkParameter($_GET['edit_feed'], 'id'))) {
+        } elseif (isset($_GET['add_feed']) || (isset($_GET['edit_feed']) && eF_checkParameter($_GET['edit_feed'], 'id'))) {
          if ($_SESSION['s_lesson_user_type']) {
           $type = $_SESSION['s_lesson_user_type'];
          } else {
@@ -235,7 +247,7 @@ class module_rss extends MagesterExtendedModule
                 }
             }
             $smarty -> assign("T_RSS_ADD_RSS_FORM", $form -> toArray());
-        } else if (isset($_GET['add_feed_provider']) || (isset($_GET['edit_feed_provider']) && eF_checkParameter($_GET['edit_feed_provider'], 'id'))) {
+        } elseif (isset($_GET['add_feed_provider']) || (isset($_GET['edit_feed_provider']) && eF_checkParameter($_GET['edit_feed_provider'], 'id'))) {
          if ($_SESSION['s_lesson_user_type']) {
           $type = $_SESSION['s_lesson_user_type'];
          } else {
@@ -335,7 +347,8 @@ class module_rss extends MagesterExtendedModule
 
     }
 
-    private function getRssFeeds($refresh = false) {
+    private function getRssFeeds($refresh = false)
+    {
      session_write_close();
      $feedTitle = '';
      $feeds = $this -> getFeeds(true);
@@ -379,7 +392,7 @@ class module_rss extends MagesterExtendedModule
 			'		</span>'.
 			'	</div>'.
          	'</li>',
-		 $value['title'], $description, formatTimestamp($value['timestamp']), $value['link'] 
+		 $value['title'], $description, formatTimestamp($value['timestamp']), $value['link']
 		 );
         }
         $rssStrings[] = $str;
@@ -393,10 +406,10 @@ class module_rss extends MagesterExtendedModule
      return $rssString;
     }
 
-    public function getCenterLinkInfo() {
-    	
+    public function getCenterLinkInfo()
+    {
 		$currentUser = $this -> getCurrentUser();
-        
+
 		$xuserModule = $this->loadModule("xuser");
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
@@ -407,19 +420,21 @@ class module_rss extends MagesterExtendedModule
 	                             'image' => $this -> moduleBaseLink.'images/rss32.png',
 	                             'link' => $this -> moduleBaseUrl);
 	        $centerLinkInfo = $optionArray;
-		
+
         	return $centerLinkInfo;
 		}
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() != 'student') {
             return $this -> getCenterLinkInfo();
         }
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
 
         if ($currentUser -> getType() == 'administrator') {
@@ -427,19 +442,21 @@ class module_rss extends MagesterExtendedModule
                           array ('title' => _RSS_RSS, 'link' => $this -> moduleBaseUrl));
         } else {
    $currentLesson = $this -> getCurrentLesson();
+
             return array ( array ('title' => _MYLESSONS, 'onclick' => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
        array ('title' => $currentLesson -> lesson['name'], 'link' => $currentUser -> getType() . ".php?ctg=control_panel"),
        array ('title' => _RSS_RSS, 'link' => $this -> moduleBaseUrl));
         }
     }
 
-    public function getControlPanelModule() {
+    public function getControlPanelModule()
+    {
         return true;
     }
-    public function getSidebarLinkInfo() {
-    	
+    public function getSidebarLinkInfo()
+    {
 		$currentUser = $this -> getCurrentUser();
-        
+
 		$xuserModule = $this->loadModule("xuser");
 
 	    $link_of_menu_system = array (array ('id' => 'rss_link_id1',
@@ -449,7 +466,7 @@ class module_rss extends MagesterExtendedModule
                                               	'link'  => $this -> moduleBaseUrl));
 		if (
 			$xuserModule->getExtendedTypeID($currentUser) == "administrator"
-		) {    	
+		) {
         	return array ( "communication" => $link_of_menu_system);
         } elseif (
 			$xuserModule->getExtendedTypeID($currentUser) == "professor" ||
@@ -458,16 +475,19 @@ class module_rss extends MagesterExtendedModule
 			//return array ( "tools" => $link_of_menu_system);
 		}
     }
-    
-    public function getDashboardModule() {
+
+    public function getDashboardModule()
+    {
 		return true;
     }
 
-    public function getDashboardSmartyTpl() {
+    public function getDashboardSmartyTpl()
+    {
     	return $this -> getControlPanelSmartyTpl();
     }
 
-    public function getControlPanelSmartyTpl() {
+    public function getControlPanelSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_RSS_MODULE_BASEURL", $this -> moduleBaseUrl);
   //pr($this -> moduleBaseLink);
@@ -492,18 +512,18 @@ class module_rss extends MagesterExtendedModule
         return $this -> moduleBaseDir . "module_rss_cpanel.tpl";
     }
 
-
-    public function parseFeed($feed) {
+    public function parseFeed($feed)
+    {
         $xmlString = file_get_contents($feed['url']);
         try {
             $iterator = new SimpleXMLIterator($xmlString);
             foreach (new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator :: SELF_FIRST) as $key => $value) {
                 if ($key == 'item') {
-                    $data = array('title' => (string)$value -> title, 'link' => (string)$value -> link, 'description' => (string)$value -> description);
+                    $data = array('title' => (string) $value -> title, 'link' => (string) $value -> link, 'description' => (string) $value -> description);
                     if ($value -> pubDate) {
-                     $data['timestamp'] = strtotime((string)$value -> pubDate);
-                    } else if ($value -> date) {
-                     $data['timestamp'] = (string)$value -> date;
+                     $data['timestamp'] = strtotime((string) $value -> pubDate);
+                    } elseif ($value -> date) {
+                     $data['timestamp'] = (string) $value -> date;
                     }
                     $rss[] = $data;
                 }
@@ -516,15 +536,14 @@ class module_rss extends MagesterExtendedModule
         return $rss;
     }
 
-    public function getFeeds($onlyActive = false, $lessonId = false) {
+    public function getFeeds($onlyActive = false, $lessonId = false)
+    {
         if ($onlyActive) {
             $result = eF_getTableData("module_rss_feeds", "*", "active=1");
         } else {
             $result = eF_getTableData("module_rss_feeds", "*");
         }
         $feeds = array();
-
-
 
         foreach ($result as $value) {
          if (!$lessonId || ($value['lessons_ID'] == $lessonId) || ($value['lessons_ID'] == 0 && $value['active']) || $value['lessons_ID'] == -1) {
@@ -535,7 +554,8 @@ class module_rss extends MagesterExtendedModule
         return $feeds;
     }
 
-    public function getProvidedFeeds($lessonId = false) {
+    public function getProvidedFeeds($lessonId = false)
+    {
      try {
       $result = eF_getTableData("module_rss_provider", "*");
      } catch (Exception $e) {
@@ -552,18 +572,20 @@ class module_rss extends MagesterExtendedModule
         return $feeds;
     }
 
-    public function createRssFeed($source, $mode, $lesson) {
+    public function createRssFeed($source, $mode, $lesson)
+    {
      $data = $this -> getRssSource($source, $mode, $lesson);
      $rss = $this -> createEnvelop($data);
      $this -> showRss($rss);
     }
 
-    private function getRssSource($source, $mode, $lesson) {
+    private function getRssSource($source, $mode, $lesson)
+    {
      $feeds = $this -> getProvidedFeeds();
      foreach ($feeds as $value) {
       if ($value['active'] && $value['mode'] == 'system') {
        $systemFeeds[$value['type']] = $value;
-      } else if ($value['active'] && $value['mode'] == 'lesson') {
+      } elseif ($value['active'] && $value['mode'] == 'lesson') {
        $lessonFeeds[$value['type']] = $value;
       }
      }
@@ -655,8 +677,6 @@ class module_rss extends MagesterExtendedModule
 
     			$currentUser = $this -> getCurrentUser();
 
-
-
 				$eventObjects = array();
 
     			$result = eF_getTableData("events", "*", "", "timestamp DESC limit 100");
@@ -670,8 +690,6 @@ class module_rss extends MagesterExtendedModule
 					pr($eventObject);
 
 				}
-
-
 
     			break;
 
@@ -710,9 +728,11 @@ class module_rss extends MagesterExtendedModule
       default:
        break;
      }
+
      return $data;
     }
-    private function createEnvelop($data) {
+    private function createEnvelop($data)
+    {
   $xml = '';
   foreach ($data as $value) {
    $xml .= '
@@ -723,9 +743,11 @@ class module_rss extends MagesterExtendedModule
     <date>'.time().'</date>
    </item>';
   }
+
   return $xml;
  }
- private function showRss($rss) {
+ private function showRss($rss)
+ {
   $rss = '<?xml version="1.0" encoding="ISO-8859-1" ?>
 <rss version="2.0">
  <channel>

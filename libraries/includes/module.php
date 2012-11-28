@@ -12,7 +12,7 @@ if (isset($loadedModules[$className])) {
 		foreach ($nav_links as $link) {
 			if (isset($link['onclick'])) {
 				$module_nav_links .= '<a class="titleLink" href ="javascript:void(0)" onclick="'.$link['onclick'].'">'.$link['title'].'</a>';
-			}else {
+			} else {
 				$module_nav_links .= '<a class="titleLink" href ="'.$link['link'].'">'.$link['title'].'</a>';
 			}
 			$count++;

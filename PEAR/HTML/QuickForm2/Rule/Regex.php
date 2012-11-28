@@ -87,6 +87,7 @@ class HTML_QuickForm2_Rule_Regex extends HTML_QuickForm2_Rule
         } elseif (!strlen($value)) {
             return true;
         }
+
         return preg_match($this->getConfig() . 'D', $value);
     }
 
@@ -105,6 +106,7 @@ class HTML_QuickForm2_Rule_Regex extends HTML_QuickForm2_Rule
                 preg_replace('/\s+/', ' ', var_export($config, true)) . ' given'
             );
         }
+
         return parent::setConfig($config);
     }
 
@@ -130,4 +132,3 @@ class HTML_QuickForm2_Rule_Regex extends HTML_QuickForm2_Rule
                "; return qf.rules.empty(value) || {$regex}.test(value); }";
     }
 }
-?>

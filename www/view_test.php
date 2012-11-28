@@ -28,11 +28,11 @@ try {
         $test = new MagesterTest($_GET['test_id']);
         $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
 //        $test -> setDone($_GET['user']);
-    } else if (isset($_GET['content_id'])) {
+    } elseif (isset($_GET['content_id'])) {
         $test = new MagesterTest($_GET['content_id'], true);
         $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
 //        $test -> setDone($_GET['user']);
-    } else if (isset($_GET['done_test_id'])) {
+    } elseif (isset($_GET['done_test_id'])) {
         $result = eF_getTableData("completed_tests", "*", "status != 'deleted' and id=".$_GET['done_test_id']);
         $test = new MagesterTest($result[0]['tests_ID']);
         $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$result[0]['users_LOGIN']."' and tests_ID=".$test -> test['id']);
@@ -51,7 +51,7 @@ try {
 
     if (isset($_GET['show_solved_test']) && in_array($_GET['show_solved_test'], array_keys($doneTests))) {
         $showTest = unserialize($doneTests[$_GET['show_solved_test']]['test']);
-    } else if (isset($_GET['done_test_id']) && in_array($_GET['done_test_id'], array_keys($doneTests))) {
+    } elseif (isset($_GET['done_test_id']) && in_array($_GET['done_test_id'], array_keys($doneTests))) {
         $showTest = unserialize($doneTests[$_GET['done_test_id']]['test']);
     } else {
         $showTest = unserialize($doneTests[key($doneTests)]['test']); //Take the first in the row
@@ -66,11 +66,10 @@ try {
 
         if (!in_array($_SESSION['s_login'], array_keys($lessonUsers))) {
             throw new Exception(_YOUARENOTAUTHORISEDTOSEETHISTEST);
-        } else if ($lessonUsers[$_SESSION['s_login']]['role'] == 'student' && $_SESSION['s_login'] != $showTest -> completedTest['login']) {
+        } elseif ($lessonUsers[$_SESSION['s_login']]['role'] == 'student' && $_SESSION['s_login'] != $showTest -> completedTest['login']) {
             throw new Exception(_YOUARENOTAUTHORISEDTOSEETHISTEST);
         }
     }
-
 
     if ($_SESSION['s_type'] != 'student') {
         $showTest -> options['answers'] = 1;
@@ -121,6 +120,3 @@ $mainScripts = getMainScripts();
 $smarty -> assign("T_HEADER_MAIN_SCRIPTS", implode(",", $mainScripts));
 
 $smarty -> display('view_test.tpl');
-
-
-?>

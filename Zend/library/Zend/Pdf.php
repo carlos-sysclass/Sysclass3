@@ -101,8 +101,6 @@ class Zend_Pdf
      */
     const PDF_HEADER  = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
 
-
-
     /**
      * Pages collection
      *
@@ -187,7 +185,6 @@ class Zend_Pdf
      */
     protected $_parser;
 
-
     /**
      * List of inheritable attributesfor pages tree
      *
@@ -218,7 +215,6 @@ class Zend_Pdf
     {
         self::$_memoryManager = $memoryManager;
     }
-
 
     /**
      * Create new PDF document from a $source string
@@ -407,7 +403,6 @@ class Zend_Pdf
         $this->_loadPages($this->_trailer->Root->Pages);
     }
 
-
     /**
      * Load pages recursively
      *
@@ -428,11 +423,10 @@ class Zend_Pdf
             }
         }
 
-
         foreach ($pages->Kids->items as $child) {
             if ($child->Type->value == 'Pages') {
                 $this->_loadPages($child, $attributes);
-            } else if ($child->Type->value == 'Page') {
+            } elseif ($child->Type->value == 'Page') {
                 foreach (self::$_inheritableAttributes as $property) {
                     if ($child->$property === null && array_key_exists($property, $attributes)) {
                         /**
@@ -467,7 +461,7 @@ class Zend_Pdf
         $pagesContainer->touch();
         $pagesContainer->Kids->items->clear();
 
-        foreach ($this->pages as $page ) {
+        foreach ($this->pages as $page) {
             $page->render($this->_objFactory);
 
             $pageDictionary = $page->getPageDictionary();
@@ -480,7 +474,6 @@ class Zend_Pdf
         $pagesContainer->Count->touch();
         $pagesContainer->Count->value = count($this->pages);
     }
-
 
     /**
      * Create page object, attached to the PDF document.
@@ -553,7 +546,6 @@ class Zend_Pdf
     {
         return $this->_javaScript;
     }
-
 
     /**
      * Return an associative array containing all the named actions in the PDF.
@@ -715,7 +707,7 @@ class Zend_Pdf
                     case 'CreationDate':
                         // break intentionally omitted
                     case 'ModDate':
-                        $docInfo->$key = new Zend_Pdf_Element_String((string)$value);
+                        $docInfo->$key = new Zend_Pdf_Element_String((string) $value);
                         break;
 
                     case 'Title':
@@ -735,7 +727,7 @@ class Zend_Pdf
                                 $value = chr(254) . chr(255) . mb_convert_encoding($value, 'UTF-16', $detected);
                             }
                         }
-                        $docInfo->$key = new Zend_Pdf_Element_String((string)$value);
+                        $docInfo->$key = new Zend_Pdf_Element_String((string) $value);
                         break;
 
                     default:
@@ -867,7 +859,6 @@ class Zend_Pdf
         }
     }
 
-
     /**
      * Set the document-level JavaScript
      *
@@ -877,7 +868,6 @@ class Zend_Pdf
     {
         $this->_javaScript = $javascript;
     }
-
 
     /**
      * Convert date to PDF format (it's close to ASN.1 (Abstract Syntax Notation
@@ -903,6 +893,7 @@ class Zend_Pdf
         } else {
             $date = date('\D\:YmdHisO', $timestamp);
         }
+
         return substr_replace($date, '\'', -2, 0) . '\'';
     }
 

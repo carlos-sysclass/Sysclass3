@@ -26,7 +26,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_CachedObjectStorageFactory
  *
@@ -48,7 +47,6 @@ class PHPExcel_CachedObjectStorageFactory
 	const cache_to_sqlite				= 'SQLite';
 	const cache_to_sqlite3				= 'SQLite3';
 
-
 	/**
 	 * Name of the method used for cell cacheing
 	 *
@@ -62,7 +60,6 @@ class PHPExcel_CachedObjectStorageFactory
 	 * @var string
 	 */
 	private static $_cacheStorageClass = NULL;
-
 
 	/**
 	 * List of all possible cache storage methods
@@ -82,7 +79,6 @@ class PHPExcel_CachedObjectStorageFactory
 		self::cache_to_sqlite,
 		self::cache_to_sqlite3,
 	);
-
 
 	/**
 	 * Default arguments for each cache storage method
@@ -116,14 +112,12 @@ class PHPExcel_CachedObjectStorageFactory
 													),
 	);
 
-
 	/**
 	 * Arguments for the active cache storage method
 	 *
 	 * @var array of mixed array
 	 */
 	private static $_storageMethodParameters = array();
-
 
 	/**
 	 * Return the current cache storage method
@@ -138,7 +132,6 @@ class PHPExcel_CachedObjectStorageFactory
 		return NULL;
 	}	//	function getCacheStorageMethod()
 
-
 	/**
 	 * Return the current cache storage class
 	 *
@@ -152,7 +145,6 @@ class PHPExcel_CachedObjectStorageFactory
 		return NULL;
 	}	//	function getCacheStorageClass()
 
-
 	/**
 	 * Return the list of all possible cache storage methods
 	 *
@@ -163,7 +155,6 @@ class PHPExcel_CachedObjectStorageFactory
 		return self::$_storageMethods;
 	}	//	function getCacheStorageMethods()
 
-
 	/**
 	 * Return the list of all available cache storage methods
 	 *
@@ -172,7 +163,7 @@ class PHPExcel_CachedObjectStorageFactory
 	public static function getCacheStorageMethods()
 	{
 		$activeMethods = array();
-		foreach(self::$_storageMethods as $storageMethod) {
+		foreach (self::$_storageMethods as $storageMethod) {
 			$cacheStorageClass = 'PHPExcel_CachedObjectStorage_' . $storageMethod;
 			if (call_user_func(array($cacheStorageClass, 'cacheMethodIsAvailable'))) {
 				$activeMethods[] = $storageMethod;
@@ -180,7 +171,6 @@ class PHPExcel_CachedObjectStorageFactory
 		}
 		return $activeMethods;
 	}	//	function getCacheStorageMethods()
-
 
 	/**
 	 * Identify the cache storage method to use
@@ -203,7 +193,7 @@ class PHPExcel_CachedObjectStorageFactory
 		}
 
 		self::$_storageMethodParameters[$method] = self::$_storageMethodDefaultParameters[$method];
-		foreach($arguments as $k => $v) {
+		foreach ($arguments as $k => $v) {
 			if (isset(self::$_storageMethodParameters[$method][$k])) {
 				self::$_storageMethodParameters[$method][$k] = $v;
 			}
@@ -215,7 +205,6 @@ class PHPExcel_CachedObjectStorageFactory
 		}
 		return TRUE;
 	}	//	function initialize()
-
 
 	/**
 	 * Initialise the cache storage

@@ -48,7 +48,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
                 $urlUpload = $form -> exportValue('url_upload');
 
                 $imsFiles = array();
-                if ($urlUpload != "" ) {
+                if ($urlUpload != "") {
                     FileSystemTree :: checkFile($urlUpload);
                     $urlArray = explode("/", $urlUpload);
                     $urlFile = urldecode($urlArray[sizeof($urlArray) - 1]);
@@ -109,7 +109,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
         $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
-} else if ($_GET['ims_export']) {
+} elseif ($_GET['ims_export']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
@@ -137,7 +137,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
 
             $lesson_entries = eF_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and active=1");
 
-            require_once("ims_tools.php");
+            require_once 'ims_tools.php';
             create_manifest($lessons_id, $lesson_entries, $filelist, IMS_FOLDER);
 
             $imsDirectory = new MagesterDirectory(IMS_FOLDER ."/lesson". $lessons_id."/");

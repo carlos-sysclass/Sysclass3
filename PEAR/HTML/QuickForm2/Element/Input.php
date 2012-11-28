@@ -83,6 +83,7 @@ class HTML_QuickForm2_Element_Input extends HTML_QuickForm2_Element
     public function setValue($value)
     {
         $this->setAttribute('value', $value);
+
         return $this;
     }
 
@@ -107,8 +108,8 @@ class HTML_QuickForm2_Element_Input extends HTML_QuickForm2_Element
     protected function getFrozenHtml()
     {
         $value = $this->getAttribute('value');
+
         return (('' != $value)? htmlspecialchars($value, ENT_QUOTES, self::getOption('charset')): '&nbsp;') .
                $this->getPersistentContent();
     }
 }
-?>

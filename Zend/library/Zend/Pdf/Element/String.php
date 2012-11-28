@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
-
 
 /**
  * PDF file 'string' element implementation
@@ -47,9 +45,8 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
      */
     public function __construct($val)
     {
-        $this->value   = (string)$val;
+        $this->value   = (string) $val;
     }
-
 
     /**
      * Return type of the element.
@@ -61,7 +58,6 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
         return Zend_Pdf_Element::TYPE_STRING;
     }
 
-
     /**
      * Return object as string
      *
@@ -70,9 +66,8 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
      */
     public function toString($factory = null)
     {
-        return '(' . self::escape((string)$this->value) . ')';
+        return '(' . self::escape((string) $this->value) . ')';
     }
-
 
     /**
      * Escape string according to the PDF rules
@@ -86,7 +81,7 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
         $lastNL = 0;
 
         for ($count = 0; $count < strlen($inStr); $count++) {
-            if (strlen($outStr) - $lastNL > 128)  {
+            if (strlen($outStr) - $lastNL > 128) {
                 $outStr .= "\\\n";
                 $lastNL = strlen($outStr);
             }
@@ -135,7 +130,7 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
 
                 default:
                     // Don't use non-ASCII characters escaping
-                    // if ($nextCode >= 32 && $nextCode <= 126 ) {
+                    // if ($nextCode >= 32 && $nextCode <= 126) {
                     //     // Visible ASCII symbol
                     //     $outStr .= $inStr[$count];
                     // } else {
@@ -150,7 +145,6 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
         return $outStr;
     }
 
-
     /**
      * Unescape string according to the PDF rules
      *
@@ -162,7 +156,7 @@ class Zend_Pdf_Element_String extends Zend_Pdf_Element
         $outStr = '';
 
         for ($count = 0; $count < strlen($inStr); $count++) {
-            if ($inStr[$count] != '\\' || $count == strlen($inStr)-1)  {
+            if ($inStr[$count] != '\\' || $count == strlen($inStr)-1) {
                 $outStr .= $inStr[$count];
             } else { // Escape sequence
                 switch ($inStr{++$count}) {

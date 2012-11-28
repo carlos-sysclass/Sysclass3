@@ -15,7 +15,6 @@ $loadScripts[] = 'scriptaculous/dragdrop';
 $loadScripts[] = 'includes/themes';
 $loadScripts[] = 'includes/entity';
 
-
 $themeSettingsTools = array(array('text' => _APPEARANCE, 'image' => "16x16/layout.png", 'href' => basename($_SERVER['PHP_SELF']).'?ctg=system_config&op=appearance'));
 $smarty -> assign ("T_APPEARANCE_LINK", $themeSettingsTools);
 
@@ -168,12 +167,12 @@ try {
 
                 if (isset($_GET['edit_page'])) {
                     $url = basename($_SERVER['PHP_SELF']).'?ctg=themes&theme='.$currentSetTheme -> {$currentSetTheme -> entity}['id'].'&tab=external&edit_page='.$_GET['edit_page'];
-                }else{
+                } else {
                     $url = basename($_SERVER['PHP_SELF']).'?ctg=themes&theme='.$currentSetTheme -> {$currentSetTheme -> entity}['id'].'&tab=external&add_page=1';
                 }
                 $options = array('share' => false);
 
-                include "file_manager.php";
+                include 'file_manager.php';
             } catch (Exception $e) {
              handleNormalFlowExceptions($e);
             }
@@ -221,7 +220,7 @@ try {
    }
    $extraColumns = array(_INSERT);
             //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
-            include "file_manager.php";
+            include 'file_manager.php';
 
         } catch (Exception $e) {
          handleNormalFlowExceptions($e);
@@ -359,11 +358,11 @@ try {
 
                 echo "set";
                 exit;
-            } else if (isset($_GET['ajax']) && $_GET['ajax'] == 'reset_layout') {
+            } elseif (isset($_GET['ajax']) && $_GET['ajax'] == 'reset_layout') {
                 $layoutTheme -> applySettings('layout');
                 echo "reset";
                 exit;
-            } else if (isset($_GET['delete_block'])) {
+            } elseif (isset($_GET['delete_block'])) {
                 //Remove the block's file
                 if (is_file($file = G_EXTERNALPATH.$customBlocks[$_GET['delete_block']]['name'].'.tpl')) {
                  $file = new MagesterFile($file);
@@ -383,7 +382,7 @@ try {
 
                 $layoutTheme -> persist();
                 exit;
-            } else if (isset($_GET['toggle_block'])) {
+            } elseif (isset($_GET['toggle_block'])) {
                 if (isset($layoutTheme -> layout['positions']['enabled'][$_GET['toggle_block']])) {
                    unset($layoutTheme -> layout['positions']['enabled'][$_GET['toggle_block']]);
                    echo json_encode(array('enabled' => false));
@@ -395,7 +394,7 @@ try {
                 $layoutTheme -> persist();
                 //pr($_GET['toggle_block']);
                 exit;
-            } else if (isset($_GET['export_layout'])) {
+            } elseif (isset($_GET['export_layout'])) {
                 file_put_contents(G_EXTERNALPATH.'layout_settings.php.inc', serialize($layoutTheme -> layout));
 
                 $directory = new MagesterDirectory(G_EXTERNALPATH);
@@ -422,7 +421,7 @@ try {
     $smarty -> assign("T_BROWSERS", themes :: $browsers);
 
     $entityName = 'themes';
-    require("entity.php");
+    require 'entity.php';
 
     if (isset($_GET['set_browser']) && in_array($_GET['set_browser'], $legalValues) && isset($_GET['browser']) && in_array($_GET['browser'], array_keys(themes :: $browsers))) {
         try {

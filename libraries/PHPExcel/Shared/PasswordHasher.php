@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Shared_PasswordHasher
  *
@@ -45,7 +44,8 @@ class PHPExcel_Shared_PasswordHasher
 	 * @param 	string	$pPassword	Password to hash
 	 * @return 	string				Hashed password
 	 */
-	public static function hashPassword($pPassword = '') {
+	public static function hashPassword($pPassword = '')
+	{
         $password = 0x0000;
         $i        = 1;       // char position
 

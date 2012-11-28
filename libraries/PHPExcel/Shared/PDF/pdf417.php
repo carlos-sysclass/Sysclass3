@@ -81,8 +81,6 @@ if (!defined('PDF417DEFS')) {
 	 */
 	define('QUIETV', 2);
 
-
-
 } // end of definitions
 
 // #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
@@ -101,8 +99,8 @@ if (!class_exists('PDF417', false)) {
 	 * @license http://www.gnu.org/copyleft/lesser.html LGPL
 	 * @version 1.0.003
 	 */
-	class PDF417 {
-
+	class PDF417
+	{
 		/**
 		 * @var barcode array to be returned which is readable by TCPDF
 		 * @access protected
@@ -540,7 +538,8 @@ if (!class_exists('PDF417', false)) {
 		 * òparam array $macro information for macro block
 		 * @access public
 		 */
-		public function __construct($code, $ecl=-1, $aspectratio=2, $macro=array()) {
+		public function __construct($code, $ecl=-1, $aspectratio=2, $macro=array())
+		{
 			$barcode_array = array();
 			if ((is_null($code)) OR ($code == '\0') OR ($code == '')) {
 				return false;
@@ -548,7 +547,7 @@ if (!class_exists('PDF417', false)) {
 			// get the input sequence array
 			$sequence = $this->getInputSequences($code);
 			$codewords = array(); // array of code-words
-			foreach($sequence as $seq) {
+			foreach ($sequence as $seq) {
 				$cw = $this->getCompaction($seq[0], $seq[1], true);
 				$codewords = array_merge($codewords, $cw);
 			}
@@ -739,7 +738,8 @@ if (!class_exists('PDF417', false)) {
 		 * @return array barcode array readable by TCPDF;
 		 * @access public
 		 */
-		public function getBarcodeArray() {
+		public function getBarcodeArray()
+		{
 			return $this->barcode_array;
 		}
 
@@ -750,7 +750,8 @@ if (!class_exists('PDF417', false)) {
 		 * @return int error correction level
 		 * @access protected
 		 */
-		protected function getErrorCorrectionLevel($ecl, $numcw) {
+		protected function getErrorCorrectionLevel($ecl, $numcw)
+		{
 			// get maximum correction level
 			$maxecl = 8; // starting error level
 			$maxerrsize = (928 - $numcw); // available codewords for error
@@ -788,7 +789,8 @@ if (!class_exists('PDF417', false)) {
 		 * @return array of error correction codewords
 		 * @access protected
 		 */
-		protected function getErrorCorrection($cw, $ecl) {
+		protected function getErrorCorrection($cw, $ecl)
+		{
 			// get error correction coefficients
 			$ecc = $this->rsfactors[$ecl];
 			// number of error correction factors
@@ -798,7 +800,7 @@ if (!class_exists('PDF417', false)) {
 			// initialize array of error correction codewords
 			$ecw = array_fill(0, $eclsize, 0);
 			// for each data codeword
-			foreach($cw as $k => $d) {
+			foreach ($cw as $k => $d) {
 				$t1 = ($d + $ecw[$eclmaxid]) % 929;
 				for ($j = $eclmaxid; $j > 0; --$j) {
 					$t2 = ($t1 * $ecc[$j]) % 929;
@@ -809,7 +811,7 @@ if (!class_exists('PDF417', false)) {
 				$t3 = 929 - $t2;
 				$ecw[0] = $t3 % 929;
 			}
-			foreach($ecw as $j => $e) {
+			foreach ($ecw as $j => $e) {
 				if ($e != 0) {
 					$ecw[$j] = 929 - $e;
 				}
@@ -824,14 +826,15 @@ if (!class_exists('PDF417', false)) {
 		 * @return bidimensional array containing characters and classification
 		 * @access protected
 		 */
-		protected function getInputSequences($code) {
+		protected function getInputSequences($code)
+		{
 			$sequence_array = array(); // array to be returned
 			$numseq = array();
 			// get numeric sequences
 			preg_match_all('/([0-9]{13,})/', $code, $numseq, PREG_OFFSET_CAPTURE);
 			$numseq[1][] = array('', strlen($code));
 			$offset = 0;
-			foreach($numseq[1] as $seq) {
+			foreach ($numseq[1] as $seq) {
 				$seqlen = strlen($seq[0]);
 				if ($seq[1] > 0) {
 					// extract text sequence before the number sequence
@@ -841,7 +844,7 @@ if (!class_exists('PDF417', false)) {
 					preg_match_all('/([\x09\x0a\x0d\x20-\x7e]{5,})/', $prevseq, $textseq, PREG_OFFSET_CAPTURE);
 					$textseq[1][] = array('', strlen($prevseq));
 					$txtoffset = 0;
-					foreach($textseq[1] as $txtseq) {
+					foreach ($textseq[1] as $txtseq) {
 						$txtseqlen = strlen($txtseq[0]);
 						if ($txtseq[1] > 0) {
 							// extract byte sequence before the text sequence
@@ -881,9 +884,10 @@ if (!class_exists('PDF417', false)) {
 		 * @return array of codewords
 		 * @access protected
 		 */
-		protected function getCompaction($mode, $code, $addmode=true) {
+		protected function getCompaction($mode, $code, $addmode=true)
+		{
 			$cw = array(); // array of codewords to return
-			switch($mode) {
+			switch ($mode) {
 				case 900: { // Text Compaction mode latch
 					$submode = 0; // default Alpha sub-mode
 					$txtarr = array(); // array of characters and sub-mode switching characters

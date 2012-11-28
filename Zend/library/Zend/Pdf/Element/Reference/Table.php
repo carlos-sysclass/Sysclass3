@@ -18,7 +18,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * PDF file reference table
  *
@@ -68,8 +67,6 @@ class Zend_Pdf_Element_Reference_Table
      */
     private $_usedObjects;
 
-
-
     /**
      * Object constructor
      */
@@ -79,7 +76,6 @@ class Zend_Pdf_Element_Reference_Table
         $this->_free   = array();  $this->_generations = array();
         $this->_inuse  = array();  $this->_usedObjects = array();
     }
-
 
     /**
      * Add reference to the reference table
@@ -94,8 +90,8 @@ class Zend_Pdf_Element_Reference_Table
         if (!is_numeric($refElements[0]) || !is_numeric($refElements[1]) || $refElements[2] != 'R') {
             throw new Zend_Pdf_Exception("Incorrect reference: '$ref'");
         }
-        $objNum = (int)$refElements[0];
-        $genNum = (int)$refElements[1];
+        $objNum = (int) $refElements[0];
+        $genNum = (int) $refElements[1];
 
         if ($inuse) {
             $this->_inuse[$ref]          = $offset;
@@ -106,7 +102,6 @@ class Zend_Pdf_Element_Reference_Table
         }
     }
 
-
     /**
      * Set parent reference table
      *
@@ -116,7 +111,6 @@ class Zend_Pdf_Element_Reference_Table
     {
         $this->_parent = $parent;
     }
-
 
     /**
      * Get object offset
@@ -140,7 +134,6 @@ class Zend_Pdf_Element_Reference_Table
 
         return null;
     }
-
 
     /**
      * Get next object from a list of free objects.
@@ -166,7 +159,6 @@ class Zend_Pdf_Element_Reference_Table
         throw new Zend_Pdf_Exception('Object not found.');
     }
 
-
     /**
      * Get next generation number for free object
      *
@@ -190,4 +182,3 @@ class Zend_Pdf_Element_Reference_Table
         throw new Zend_Pdf_Exception('Object not found.');
     }
 }
-

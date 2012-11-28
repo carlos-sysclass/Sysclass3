@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
-
 
 /**
  * PDF file 'boolean' element implementation
@@ -40,7 +38,6 @@ class Zend_Pdf_Element_Boolean extends Zend_Pdf_Element
      */
     public $value;
 
-
     /**
      * Object constructor
      *
@@ -56,7 +53,6 @@ class Zend_Pdf_Element_Boolean extends Zend_Pdf_Element
         $this->value   = $val;
     }
 
-
     /**
      * Return type of the element.
      *
@@ -66,7 +62,6 @@ class Zend_Pdf_Element_Boolean extends Zend_Pdf_Element
     {
         return Zend_Pdf_Element::TYPE_BOOL;
     }
-
 
     /**
      * Return object as string

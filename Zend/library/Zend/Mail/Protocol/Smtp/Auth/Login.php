@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
@@ -20,12 +20,10 @@
  * @version    $Id: Login.php 8064 2008-02-16 10:58:39Z thomas $
  */
 
-
 /**
  * @see Zend_Mail_Protocol_Smtp
  */
 require_once 'Zend/Mail/Protocol/Smtp.php';
-
 
 /**
  * Performs LOGIN authentication
@@ -45,14 +43,12 @@ class Zend_Mail_Protocol_Smtp_Auth_Login extends Zend_Mail_Protocol_Smtp
      */
     protected $_username;
 
-
     /**
      * LOGIN password
      *
      * @var string
      */
     protected $_password;
-
 
     /**
      * Constructor.
@@ -75,7 +71,6 @@ class Zend_Mail_Protocol_Smtp_Auth_Login extends Zend_Mail_Protocol_Smtp
 
         parent::__construct($host, $port, $config);
     }
-
 
     /**
      * Perform LOGIN authentication with supplied credentials

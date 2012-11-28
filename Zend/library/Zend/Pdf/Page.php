@@ -55,7 +55,6 @@ class Zend_Pdf_Page
 {
   /**** Class Constants ****/
 
-
   /* Page Sizes */
 
     /**
@@ -78,7 +77,6 @@ class Zend_Pdf_Page
      */
     const SIZE_LETTER_LANDSCAPE  = '792:612:';
 
-
   /* Shape Drawing */
 
     /**
@@ -96,7 +94,6 @@ class Zend_Pdf_Page
      */
     const SHAPE_DRAW_FILL_AND_STROKE = 2;
 
-
   /* Shape Filling Methods */
 
     /**
@@ -109,15 +106,12 @@ class Zend_Pdf_Page
      */
     const FILL_METHOD_EVEN_ODD        = 1;
 
-
   /* Line Dash Types */
 
     /**
      * Solid line dash.
      */
     const LINE_DASHING_SOLID = 0;
-
-
 
     /**
      * Reference to the object with page dictionary.
@@ -240,7 +234,7 @@ class Zend_Pdf_Page
 
             return;
 
-        } else if ($param1 instanceof Zend_Pdf_Page && $param2 === null && $param3 === null) {
+        } elseif ($param1 instanceof Zend_Pdf_Page && $param2 === null && $param3 === null) {
             // Clone existing page.
             // Let already existing content and resources to be shared between pages
             // We don't give existing content modification functionality, so we don't need "deep copy"
@@ -271,7 +265,7 @@ class Zend_Pdf_Page
             }
 
             return;
-        } else if (is_string($param1) &&
+        } elseif (is_string($param1) &&
                    ($param2 === null || $param2 instanceof Zend_Pdf_ElementFactory_Interface) &&
                    $param3 === null) {
             $this->_objFactory = ($param2 !== null)? $param2 : Zend_Pdf_ElementFactory::createFactory(1);
@@ -296,7 +290,7 @@ class Zend_Pdf_Page
             }
 
             $pageDim = explode(':', $param1);
-            if(count($pageDim) == 3) {
+            if (count($pageDim) == 3) {
                 $pageWidth  = $pageDim[0];
                 $pageHeight = $pageDim[1];
             } else {
@@ -311,7 +305,7 @@ class Zend_Pdf_Page
              * @todo support of pagesize recalculation to "default user space units"
              */
 
-        } else if (is_numeric($param1) && is_numeric($param2) &&
+        } elseif (is_numeric($param1) && is_numeric($param2) &&
                    ($param3 === null || $param3 instanceof Zend_Pdf_ElementFactory_Interface)) {
             $this->_objFactory = ($param3 !== null)? $param3 : Zend_Pdf_ElementFactory::createFactory(1);
             $this->_attached = false;
@@ -335,7 +329,6 @@ class Zend_Pdf_Page
         $this->_pageDictionary->MediaBox->items[] = new Zend_Pdf_Element_Numeric($pageHeight);
         $this->_pageDictionary->Contents     = new Zend_Pdf_Element_Array();
     }
-
 
     /**
      * Clone operator
@@ -934,11 +927,11 @@ class Zend_Pdf_Page
             }
 
             $clipPath    = $xC->toString() . ' ' . $yC->toString() . " m\n";
-            $clipSectors = (int)ceil(($endAngle - $startAngle)/M_PI_4);
+            $clipSectors = (int) ceil(($endAngle - $startAngle)/M_PI_4);
             $clipRadius  = max($x2 - $x1, $y2 - $y1);
 
-            for($count = 0; $count <= $clipSectors; $count++) {
-                $pAngle = $startAngle + ($endAngle - $startAngle)*$count/(float)$clipSectors;
+            for ($count = 0; $count <= $clipSectors; $count++) {
+                $pAngle = $startAngle + ($endAngle - $startAngle)*$count/(float) $clipSectors;
 
                 $pX = new Zend_Pdf_Element_Numeric($x + cos($pAngle)*$clipRadius);
                 $pY = new Zend_Pdf_Element_Numeric($y + sin($pAngle)*$clipRadius);
@@ -1054,6 +1047,7 @@ class Zend_Pdf_Page
     public function drawContentStream($cs, $x1, $y1, $x2, $y2)
     {
         /** @todo implementation */
+
         return $this;
     }
 
@@ -1116,7 +1110,7 @@ class Zend_Pdf_Page
             // drawEllipse($x1, $y1, $x2, $y2);
             $startAngle = null;
             $fillType = Zend_Pdf_Page::SHAPE_DRAW_FILL_AND_STROKE;
-        } else if ($param6 === null) {
+        } elseif ($param6 === null) {
             // drawEllipse($x1, $y1, $x2, $y2, $fillType);
             $startAngle = null;
             $fillType = $param5;
@@ -1161,11 +1155,11 @@ class Zend_Pdf_Page
             }
 
             $clipPath    = $xC->toString() . ' ' . $yC->toString() . " m\n";
-            $clipSectors = (int)ceil(($endAngle - $startAngle)/M_PI_4);
+            $clipSectors = (int) ceil(($endAngle - $startAngle)/M_PI_4);
             $clipRadius  = max($x2 - $x1, $y2 - $y1);
 
-            for($count = 0; $count <= $clipSectors; $count++) {
-                $pAngle = $startAngle + ($endAngle - $startAngle)*$count/(float)$clipSectors;
+            for ($count = 0; $count <= $clipSectors; $count++) {
+                $pAngle = $startAngle + ($endAngle - $startAngle)*$count/(float) $clipSectors;
 
                 $pX = new Zend_Pdf_Element_Numeric($x + cos($pAngle)*$clipRadius);
                 $pY = new Zend_Pdf_Element_Numeric($y + sin($pAngle)*$clipRadius);
@@ -1262,6 +1256,7 @@ class Zend_Pdf_Page
     public function drawLayoutBox($box, $x, $y)
     {
         /** @todo implementation */
+
         return $this;
     }
 
@@ -1454,6 +1449,7 @@ class Zend_Pdf_Page
     public function pathClose()
     {
         /** @todo implementation */
+
         return $this;
     }
 
@@ -1467,6 +1463,7 @@ class Zend_Pdf_Page
     public function pathLine($x, $y)
     {
         /** @todo implementation */
+
         return $this;
     }
 
@@ -1481,6 +1478,7 @@ class Zend_Pdf_Page
     public function pathMove($x, $y)
     {
         /** @todo implementation */
+
         return $this;
     }
 
@@ -1523,7 +1521,6 @@ class Zend_Pdf_Page
 
         $mXObj = new Zend_Pdf_Element_Numeric(-$x);
         $mYObj = new Zend_Pdf_Element_Numeric(-$y);
-
 
         $this->_addProcSet('PDF');
         $this->_contents .= '1 0 0 1 ' . $xObj->toString() . ' ' . $yObj->toString() . " cm\n"
@@ -1597,4 +1594,3 @@ class Zend_Pdf_Page
         return $this;
     }
 }
-

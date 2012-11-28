@@ -22,8 +22,8 @@
  * @package Mail
  * @version $Revision: 1.17 $
  */
-class Mail_sendmail extends Mail {
-
+class Mail_sendmail extends Mail
+{
 	/**
      * The location of the sendmail or sendmail wrapper binary on the
      * filesystem.

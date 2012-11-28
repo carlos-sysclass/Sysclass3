@@ -206,6 +206,7 @@ abstract class HTML_QuickForm2_Controller_Page
                 $it->current()
             );
         }
+
         return $image;
     }
 
@@ -248,11 +249,11 @@ abstract class HTML_QuickForm2_Controller_Page
         $container = $this->getController()->getSessionContainer();
         $id        = $this->form->getId();
 
-        $container->storeValues($id, (array)$this->form->getValue());
+        $container->storeValues($id, (array) $this->form->getValue());
         if ($validate) {
             $container->storeValidationStatus($id, $this->form->validate());
         }
+
         return $container->getValidationStatus($id);
     }
 }
-?>

@@ -57,13 +57,13 @@ require_once 'HTML/QuickForm2/Renderer.php';
  * The form array structure is the following:
  * <pre>
  * array(
- *   'id'               => form's "id" attribute (string),
- *   'frozen'           => whether the form is frozen (bool),
- *   'attributes'       => attributes for &lt;form&gt; tag (string),
+ *   'id'               => form's "id" attribute (string) ,
+ *   'frozen'           => whether the form is frozen (bool) ,
+ *   'attributes'       => attributes for &lt;form&gt; tag (string) ,
  *   // if form contains required elements:
- *   'required_note'    => note about the required elements (string),
+ *   'required_note'    => note about the required elements (string) ,
  *   // if 'group_hiddens' option is true:
- *   'hidden'           => array with html of hidden elements (array),
+ *   'hidden'           => array with html of hidden elements (array) ,
  *   // if form has some javascript for setup or validation:
  *   'javascript'       => form javascript (string)
  *   // if 'group_errors' option is true:
@@ -82,28 +82,28 @@ require_once 'HTML/QuickForm2/Renderer.php';
  * Where element_i is an array of the form
  * <pre>
  * array(
- *   'id'        => element id (string),
- *   'type'      => type of the element (string),
- *   'frozen'    => whether element is frozen (bool),
+ *   'id'        => element id (string) ,
+ *   'type'      => type of the element (string) ,
+ *   'frozen'    => whether element is frozen (bool) ,
  *   // if element has a label:
  *   'label'     => 'label for the element',
  *   // note that if 'static_labels' option is true and element's label is an
  *   // array then there will be several 'label_*' keys corresponding to
  *   // labels' array keys
- *   'required'  => whether element is required (bool),
+ *   'required'  => whether element is required (bool) ,
  *   // if a validation error is present and 'group_errors' option is false:
- *   'error'     => error associated with the element (string),
+ *   'error'     => error associated with the element (string) ,
  *   // if some style was associated with an element:
  *   'style'     => 'some information about element style (e.g. for Smarty)',
  *
  *   // if element is not a Container
  *   'value'     => element value (mixed),
- *   'html'      => HTML for the element (string),
+ *   'html'      => HTML for the element (string) ,
  *
  *   // if element is a Container
  *   'attributes' => container attributes (string)
  *   // only for groups, if separator is set:
- *   'separator'  => separator for group elements (array),
+ *   'separator'  => separator for group elements (array) ,
  *   'elements'   => array(
  *     element_1,
  *     ...
@@ -238,6 +238,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
             $ary['elements']   = array();
             $ary['attributes'] = $element->getAttributes(true);
         }
+
         return $ary;
     }
 
@@ -296,6 +297,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
         } else {
             $this->styles[$idOrStyles] = $style;
         }
+
         return $this;
     }
 
@@ -368,7 +370,7 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
             $ary['separator'] = array();
             for ($i = 0, $count = count($group); $i < $count - 1; $i++) {
                 if (!is_array($separator)) {
-                    $ary['separator'][] = (string)$separator;
+                    $ary['separator'][] = (string) $separator;
                 } else {
                     $ary['separator'][] = $separator[$i % count($separator)];
                 }
@@ -383,4 +385,3 @@ class HTML_QuickForm2_Renderer_Array extends HTML_QuickForm2_Renderer
     }
     /**#@-*/
 }
-?>

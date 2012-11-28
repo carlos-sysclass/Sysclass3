@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Shared_File
  *
@@ -41,7 +40,8 @@ class PHPExcel_Shared_File
 	  * @param 	string	$pFilename	Filename
 	  * @return bool
 	  */
-	public static function file_exists($pFilename) {
+	public static function file_exists($pFilename)
+	{
 		// Sick construction, but it seems that
 		// file_exists returns strange values when
 		// doing the original file_exists on ZIP archives...
@@ -70,7 +70,8 @@ class PHPExcel_Shared_File
 	 * @param string $pFilename
 	 * @return string
 	 */
-	public static function realpath($pFilename) {
+	public static function realpath($pFilename)
+	{
 		// Returnvalue
 		$returnValue = '';
 
@@ -82,7 +83,7 @@ class PHPExcel_Shared_File
 		// Found something?
 		if ($returnValue == '' || ($returnValue === NULL)) {
 			$pathArray = explode('/' , $pFilename);
-			while(in_array('..', $pathArray) && $pathArray[0] != '..') {
+			while (in_array('..', $pathArray) && $pathArray[0] != '..') {
 				for ($i = 0; $i < count($pathArray); ++$i) {
 					if ($pathArray[$i] == '..' && $i > 0) {
 						unset($pathArray[$i]);

@@ -40,7 +40,7 @@ class Zend_Config_Xml extends Zend_Config
      * @var boolean
      */
     protected $_skipExtends = false;
-    
+
     /**
      * Loads the section $section from the config file (or string $xml for
      * access facilitated by nested object properties.
@@ -78,7 +78,7 @@ class Zend_Config_Xml extends Zend_Config
                 $this->_skipExtends = (bool) $options['skipExtends'];
             }
         }
-        
+
         set_error_handler(array($this, '_loadFileErrorHandler')); // Warnings and errors are suppressed
         if (strstr($xml, '<?xml')) {
             $config = simplexml_load_string($xml);
@@ -100,7 +100,7 @@ class Zend_Config_Xml extends Zend_Config
             }
 
             parent::__construct($dataArray, $allowModifications);
-        } else if (is_array($section)) {
+        } elseif (is_array($section)) {
             $dataArray = array();
             foreach ($section as $sectionName) {
                 if (!isset($config->$sectionName)) {
@@ -152,7 +152,7 @@ class Zend_Config_Xml extends Zend_Config
         if (isset($thisSection['extends'])) {
             $extendedSection = (string) $thisSection['extends'];
             $this->_assertValidExtend($section, $extendedSection);
-            
+
             if (!$this->_skipExtends) {
                 $config = $this->_processExtends($element, $extendedSection, $config);
             }
@@ -200,7 +200,7 @@ class Zend_Config_Xml extends Zend_Config
             foreach ($xmlObject->children() as $key => $value) {
                 if (count($value->children()) > 0) {
                     $value = $this->_toArray($value);
-                } else if (count($value->attributes()) > 0) {
+                } elseif (count($value->attributes()) > 0) {
                     $attributes = $value->attributes();
                     if (isset($attributes['value'])) {
                         $value = (string) $attributes['value'];
@@ -221,7 +221,7 @@ class Zend_Config_Xml extends Zend_Config
                     $config[$key] = $value;
                 }
             }
-        } else if (!isset($xmlObject['extends']) && (count($config) === 0)) {
+        } elseif (!isset($xmlObject['extends']) && (count($config) === 0)) {
             // Object has no children nor attributes and doesn't use the extends
             // attribute: it's a string
             $config = (string) $xmlObject;
@@ -245,7 +245,7 @@ class Zend_Config_Xml extends Zend_Config
                 if (isset($firstArray[$key])) {
                     $firstArray[$key] = $this->_arrayMergeRecursive($firstArray[$key], $value);
                 } else {
-                    if($key === 0) {
+                    if ($key === 0) {
                         $firstArray= array(0=>$this->_arrayMergeRecursive($firstArray, $value));
                     } else {
                         $firstArray[$key] = $value;

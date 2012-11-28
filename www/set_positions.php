@@ -88,6 +88,5 @@ try {
 
     }
 } catch (Exception $e) {
- handleAjaxExceptions($e);
+	handleAjaxExceptions($e);
 }
-?>

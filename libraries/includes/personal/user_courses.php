@@ -4,15 +4,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-
 try {
  if (isset($_GET['postAjaxRequest'])) {
   if (isset($_GET['add_lesson'])) {
    if ($_GET['insert'] == "true") {
     $courseUser -> addLessons($_GET['add_lesson'], $_GET['user_type'], 1);
-   } else if ($_GET['insert'] == "false") {
+   } elseif ($_GET['insert'] == "false") {
     $courseUser -> archiveUserLessons($_GET['add_lesson']);
-   } else if (isset($_GET['addAll'])) {
+   } elseif (isset($_GET['addAll'])) {
     $userNonLessons = $courseUser -> getNonLessons(true);
 
     $lessons = array();
@@ -24,7 +23,7 @@ try {
 
     isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
     $courseUser -> addLessons(array_keys($lessons), $courseUser -> user['user_types_ID'] ? $courseUser -> user['user_types_ID'] : $courseUser -> user['user_type'], 1);
-   } else if (isset($_GET['removeAll'])) {
+   } elseif (isset($_GET['removeAll'])) {
     $userLessons = $courseUser -> getLessons(true);
     $lessons = array();
     foreach ($userLessons as $key => $lesson) {
@@ -34,7 +33,7 @@ try {
     }
     isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
     $courseUser -> archiveUserLessons(array_keys($lessons));
-   } else if (isset($_GET['addAllLessonsFromTest'])) {
+   } elseif (isset($_GET['addAllLessonsFromTest'])) {
     // The missing and required skill set is sent over with the ajax request
     $skills_missing = array();
     $all_skills = "";
@@ -62,21 +61,21 @@ try {
     }
    }
    exit;
-  } else if (isset($_GET['add_course'])) {
+  } elseif (isset($_GET['add_course'])) {
    if ($_GET['insert'] == "true") {
     $courseUser -> addCourses($_GET['add_course'], $_GET['user_type'], 1);
-   } else if ($_GET['insert'] == "false") {
+   } elseif ($_GET['insert'] == "false") {
     $courseUser -> archiveUserCourses($_GET['add_course']);
-   } else if (isset($_GET['addAll'])) {
+   } elseif (isset($_GET['addAll'])) {
     $constraints = array('archive' => false, 'active' => true, 'instance' => isset($_GET['instancesTable_source']) && $_GET['instancesTable_source'] ? $_GET['instancesTable_source'] : false) + createConstraintsFromSortedTable();
     $constraints['condition'] = 'r.courses_ID is null or r.archive != 0';
     $userCourses = $courseUser -> getUserCoursesIncludingUnassigned($constraints);
     $courseUser -> addCourses($userCourses, $courseUser -> user['user_type'], 1);
-   } else if (isset($_GET['removeAll'])) {
+   } elseif (isset($_GET['removeAll'])) {
     $constraints = array('archive' => false, 'active' => true, 'instance' => isset($_GET['instancesTable_source']) && $_GET['instancesTable_source'] ? $_GET['instancesTable_source'] : false) + createConstraintsFromSortedTable();
     $userCourses = $courseUser -> getUserCourses($constraints);
     $courseUser -> archiveUserCourses($userCourses);
-   } else if (isset($_GET['addAllCoursesFromTest'])) {
+   } elseif (isset($_GET['addAllCoursesFromTest'])) {
     // The missing and required skill set is sent over with the ajax request
     $skills_missing = array();
     $all_skills = "";
@@ -129,7 +128,7 @@ try {
    foreach ($lessons as $key => $value) {
     if ($value['course_only']) {
      unset($lessons[$key]);
-    } else if (!isset($value['completed'])) { //Populate missing fields in order for sorting to work correctly
+    } elseif (!isset($value['completed'])) { //Populate missing fields in order for sorting to work correctly
      $lessons[$key]['completed'] = '';
      $lessons[$key]['score'] = '';
      $lessons[$key]['active_in_lesson'] = '';
@@ -150,7 +149,6 @@ try {
    $lessons = MagesterLesson :: convertLessonObjectsToArrays($courseLessons);
    $dataSource = $lessons;
   }
-
 
   if ($_GET['ajax'] == 'coursesTable' || $_GET['ajax'] == 'instancesTable') {
    $smarty -> assign("T_DATASOURCE_COLUMNS", array('name', 'location', 'active_in_course', 'user_type', 'num_lessons', 'status', 'completed', 'score', 'has_course'));
@@ -187,7 +185,7 @@ try {
   }
 
   $tableName = $_GET['ajax'];
-  include("sorted_table.php");
+  include 'sorted_table.php';
  }
 
 } catch (Exception $e) {

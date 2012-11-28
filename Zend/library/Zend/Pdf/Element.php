@@ -17,13 +17,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
 
 /** Zend_Pdf_Element_Object */
 require_once 'Zend/Pdf/Element/Object.php';
-
 
 /**
  * PDF file element implementation
@@ -69,7 +67,6 @@ abstract class Zend_Pdf_Element
      */
     abstract public function toString($factory = null);
 
-
     /**
      * Set top level parent indirect object.
      *
@@ -80,7 +77,6 @@ abstract class Zend_Pdf_Element
         $this->_parentObject = &$parent;
     }
 
-
     /**
      * Get top level parent indirect object.
      *
@@ -90,7 +86,6 @@ abstract class Zend_Pdf_Element
     {
         return $this->_parentObject;
     }
-
 
     /**
      * Mark object as modified, to include it into new PDF file segment.
@@ -133,9 +128,9 @@ abstract class Zend_Pdf_Element
     {
         if (is_numeric($input)) {
             return new Zend_Pdf_Element_Numeric($input);
-        } else if (is_bool($input)) {
+        } elseif (is_bool($input)) {
             return new Zend_Pdf_Element_Boolean($input);
-        } else if (is_array($input)) {
+        } elseif (is_array($input)) {
             $pdfElementsArray = array();
             $isDictionary = false;
 
@@ -152,8 +147,7 @@ abstract class Zend_Pdf_Element
                 return new Zend_Pdf_Element_Array($pdfElementsArray);
             }
         } else {
-            return new Zend_Pdf_Element_String((string)$input);
+            return new Zend_Pdf_Element_String((string) $input);
         }
     }
 }
-

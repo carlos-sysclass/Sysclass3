@@ -102,6 +102,7 @@ class HTML_QuickForm2_Element_Button extends HTML_QuickForm2_Element
     function setContent($content)
     {
         $this->data['content'] = $content;
+
         return $this;
     }
 
@@ -152,10 +153,10 @@ class HTML_QuickForm2_Element_Button extends HTML_QuickForm2_Element
                 null !== ($value = $ds->getValue($this->getName())))
             {
                 $this->submitValue = $value;
+
                 return;
             }
         }
         $this->submitValue = null;
     }
 }
-?>

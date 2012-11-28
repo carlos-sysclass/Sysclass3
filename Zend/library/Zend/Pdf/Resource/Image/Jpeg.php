@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Resource_Image */
 require_once 'Zend/Pdf/Resource/Image.php';
 
@@ -26,7 +25,6 @@ require_once 'Zend/Pdf/Element/Numeric.php';
 
 /** Zend_Pdf_Element_Name */
 require_once 'Zend/Pdf/Element/Name.php';
-
 
 /**
  * JPEG image
@@ -56,7 +54,7 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
         }
 
         $gd_options = gd_info();
-        if (!$gd_options['JPG Support'] ) {
+        if (!$gd_options['JPG Support']) {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception('JPG support is not configured properly.');
         }
@@ -91,7 +89,7 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
         $imageDictionary->BitsPerComponent = new Zend_Pdf_Element_Numeric($imageInfo['bits']);
         if ($imageInfo[2] == IMAGETYPE_JPEG) {
             $imageDictionary->Filter       = new Zend_Pdf_Element_Name('DCTDecode');
-        } else if ($imageInfo[2] == IMAGETYPE_JPEG2000){
+        } elseif ($imageInfo[2] == IMAGETYPE_JPEG2000) {
             $imageDictionary->Filter       = new Zend_Pdf_Element_Name('JPXDecode');
         }
 
@@ -119,22 +117,24 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
     /**
      * Image width
      */
-    public function getPixelWidth() {
+    public function getPixelWidth()
+    {
         return $this->_width;
     }
 
     /**
      * Image height
      */
-    public function getPixelHeight() {
+    public function getPixelHeight()
+    {
         return $this->_height;
     }
 
     /**
      * Image properties
      */
-    public function getProperties() {
+    public function getProperties()
+    {
         return $this->_imageProperties;
     }
 }
-

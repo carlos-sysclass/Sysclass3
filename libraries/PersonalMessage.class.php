@@ -184,7 +184,8 @@ class eF_PersonalMessage
     * @access public
 
     */
-    public function __construct($sender, $recipients, $subject = '', $body = '', $bcc = true) {
+    public function __construct($sender, $recipients, $subject = '', $body = '', $bcc = true)
+    {
         $this -> getUsersData(); //Retrive data for the system users, such as messages folders, emails etc
         $this -> getConfiguration();
         if ($this -> checkRecipient($sender)) { //Check if the sender is valid
@@ -202,6 +203,7 @@ class eF_PersonalMessage
             }
             $this -> recipients = $recipients;
         } else { //A single login was given, but it wasn't valid
+
             return false;
         }
         $this -> subject = $subject ? $subject : _NOSUBJECT; //If a subject is not specified, give it _NOSUBJECT subject
@@ -239,9 +241,11 @@ class eF_PersonalMessage
     * @access public
 
     */
-    public function send($email = false) {
+    public function send($email = false)
+    {
         if (sizeof($this -> recipients) == 0) {
             $this -> errorMessage = _INVALIDRECIPIENT;
+
             return false;
         }
         $timestamp = time();
@@ -256,14 +260,14 @@ class eF_PersonalMessage
    }
    $recipientsList = implode(",", $recipientsMail);
    /*
-   $this -> body = 
+   $this -> body =
    	_THISISAPMFROMSITE." <a href=".G_SERVERNAME.">".$GLOBALS['configuration']['site_name']."</a><br />".
-   	
+
    	$this -> body;
    */
    $emailBody = str_replace('##MAGESTERINNERLINK##', 'student' ,$this -> body);
    if (($result = eF_mail($this -> userData[$this -> sender]['email'], $recipientsList, $this -> subject, $emailBody, $this -> attachments, false, $this -> bcc)) !== true) {
-   	
+
 //   				var_dump($this -> userData[$this -> sender]['email'], $recipientsList, $this -> subject, $emailBody, $this -> attachments, false, $this -> bcc);
                    $this -> errorMessage .= _THEMESSAGEWASNOTSENTASEMAIL.'<br/>';
             }
@@ -324,7 +328,8 @@ class eF_PersonalMessage
     *
 
     */
-    public function setAttachment($filename) {
+    public function setAttachment($filename)
+    {
         $this -> attachments[] = $filename;
     }
     /**
@@ -350,8 +355,10 @@ class eF_PersonalMessage
     * @access private
 
     */
-    private function checkRecipient($recipient) {
+    private function checkRecipient($recipient)
+    {
         if (!eF_checkParameter($recipient, 'login')) { //Is it a well-formed login
+
             return false;
         } else {
             if (!in_array($recipient, array_keys($this -> userData))) {
@@ -380,7 +387,8 @@ class eF_PersonalMessage
     * @access private
 
     */
-    private function getUsersData() {
+    private function getUsersData()
+    {
         $result_folders = eF_getTableData("f_folders", "*"); //Get all user message folders
         $result_users = eF_getTableData("users", "login, email, user_type"); //Get all user user information
         $result_messages = eF_getTableDataFlat("f_personal_messages", "users_LOGIN");
@@ -423,7 +431,8 @@ class eF_PersonalMessage
     * @access private
 
     */
-    private function getConfiguration() {
+    private function getConfiguration()
+    {
         $result = eF_getTableDataFlat("f_configuration", "*");
         sizeof($result) > 0 ? $this -> config = array_combine($result['name'], $result['value']) : $this -> config = array();
     }
@@ -450,7 +459,8 @@ class eF_PersonalMessage
     * @access private
 
     */
-    private function checkUserQuota($login, $check_attachment = false) {
+    private function checkUserQuota($login, $check_attachment = false)
+    {
         if ($check_attachment) {
             $total_files = 0;//@todo: was: eF_diveIntoDir(G_UPLOADPATH.$login.'/message_attachments/');
             if ($this -> config['pm_attach_quota'] && $total_files[2] > $this -> config['pm_attach_quota'] * 1024) {
@@ -500,10 +510,11 @@ class eF_PersonalMessage
      * @access public
 
      */
-    public static function getUserFolders($user) {
+    public static function getUserFolders($user)
+    {
         if ($user instanceof MagesterUser) {
             $user = $user -> user['login'];
-        } else if (!eF_checkParameter($user, 'login')) {
+        } elseif (!eF_checkParameter($user, 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.": '".$user."'", MagesterUserException :: INVALID_LOGIN);
         }
      if (!is_dir(G_UPLOADPATH.$user.'/message_attachments/')) { //Check if the messages folder for this user exists on the disk
@@ -523,10 +534,10 @@ class eF_PersonalMessage
          if ($value['name'] == 'Incoming') {
              $value['name'] = _INCOMING;
              $incoming = array($value['id'] => $value);
-         } else if ($value['name'] == 'Sent') {
+         } elseif ($value['name'] == 'Sent') {
              $value['name'] = _SENT;
              $sent = array($value['id'] => $value);
-         } else if ($value['name'] == 'Drafts') {
+         } elseif ($value['name'] == 'Drafts') {
              $value['name'] = _DRAFTS;
              $drafts = array($value['id'] => $value);
          } else {
@@ -545,6 +556,7 @@ class eF_PersonalMessage
    }
    $folders[$key]['filesize'] = round($folders[$key]['filesize']/1024);
      }
+
      return $folders;
     }
  /**
@@ -566,7 +578,8 @@ class eF_PersonalMessage
 	* @deprecated
 
 	*/
- public static function eF_deletePersonalMessage($msg_id) {
+ public static function eF_deletePersonalMessage($msg_id)
+ {
      if (eF_checkParameter($msg_id, 'id')) {
          $res = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$msg_id);
          if ($_SESSION['s_login'] == $res[0]['users_LOGIN'] || $_SESSION['s_type'] == 'administrator') {
@@ -575,13 +588,16 @@ class eF_PersonalMessage
                  $attached_file = new MagesterFile($res[0]['attachments']);
                  $attached_file -> delete();
              }
+
              return true;
          } else {
              $message = 'You cannot delete this message';
+
              return $message;
          }
      } else {
          $message = _INVALIDID;
+
          return $message;
      }
  }
@@ -604,7 +620,8 @@ class f_folders extends MagesterEntity
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
         $folderMessages = eF_getTableData("f_personal_messages", "id", "f_folders_ID=".$this -> {$this -> entity}['id']);
         foreach ($folderMessages as $message) {
             eF_PersonalMessage :: eF_deletePersonalMessage($message['id']);
@@ -620,10 +637,12 @@ class f_folders extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
         $form -> addElement('text', 'name', _FOLDERNAME, 'class = "inputText"');
      $form -> addElement('submit', 'submit', _SUBMIT, 'class = "flatButton"');
      $form -> setDefaults(array('name' => $this -> {$this -> entity}['name']));
+
      return $form;
     }
     /**
@@ -633,7 +652,8 @@ class f_folders extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         $values = $form -> exportValues();
         if (!eF_checkParameter($values['name'], 'filename')) {
             throw new MagesterFileException(_ILLEGALFILENAME.': '.$values['name'], MagesterFileException :: ILLEGAL_FILE_NAME);
@@ -657,7 +677,8 @@ class f_folders extends MagesterEntity
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         !isset($fields['users_LOGIN']) || !eF_checkParameter($fields['users_LOGIN'], 'login') ? $fields['users_LOGIN'] = $_SESSION['s_login'] : null;
         $directory = G_UPLOADPATH.$fields['users_LOGIN'].'/message_attachments/'.$fields['name'];
         if (!mkdir($directory, 0755)) {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 if (phpversion() < 5) {
     exit('Minify requires PHP5 or greater.');
@@ -33,11 +33,11 @@ $setIncludeSuccess = set_include_path(dirname(__FILE__) . '/../lib' . PATH_SEPAR
 // we do it this way because we want the builder to work after the user corrects
 // include_path. (set_include_path returning FALSE is OK).
 try {
-    require_once 'Solar/Dir.php';    
+    require_once 'Solar/Dir.php';
 } catch (Exception $e) {
     if (! $setIncludeSuccess) {
         echo "Minify: set_include_path() failed. You may need to set your include_path "
-            ."outside of PHP code, e.g., in php.ini.";    
+            ."outside of PHP code, e.g., in php.ini.";
     } else {
         echo $e->getMessage();
     }
@@ -98,7 +98,7 @@ b {color:#c00}
 <?php endIf; ?>
 
 <p id=minRewriteFailed class="hide"><strong>Note:</strong> Your webserver does not seem to
- support mod_rewrite (used in /min/.htaccess). Your Minify URIs will contain "?", which 
+ support mod_rewrite (used in /min/.htaccess). Your Minify URIs will contain "?", which
 <a href="http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/"
 >may reduce the benefit of proxy cache servers</a>.</p>
 
@@ -152,9 +152,9 @@ available URIs to add.</p>
 </div>
 
 <h3>Combining CSS files that contain <code>@import</code></h3>
-<p>If your CSS files contain <code>@import</code> declarations, Minify will not 
+<p>If your CSS files contain <code>@import</code> declarations, Minify will not
 remove them. Therefore, you will want to remove those that point to files already
-in your list, and move any others to the top of the first file in your list 
+in your list, and move any others to the top of the first file in your list
 (imports below any styles will be ignored by browsers as invalid).</p>
 <p>If you desire, you can use Minify URIs in imports and they will not be touched
 by Minify. E.g. <code>@import "<span class=minRoot>/min/?</span>g=css2";</code></p>
@@ -193,11 +193,11 @@ $(function () {
     $.get(url, function (ocStatus) {
         $.get(url + '&hello=1', function (ocHello) {
             if (ocHello != 'World!') {
-                msg += 'It appears output is being automatically compressed, interfering ' 
+                msg += 'It appears output is being automatically compressed, interfering '
                      + ' with Minify\'s own compression. ';
                 if (ocStatus == '1')
                     msg += 'The option "zlib.output_compression" is enabled in your PHP configuration. '
-                         + 'Minify set this to "0", but it had no effect. This option must be disabled ' 
+                         + 'Minify set this to "0", but it had no effect. This option must be disabled '
                          + 'in php.ini or .htaccess.';
                 else
                     msg += 'The option "zlib.output_compression" is disabled in your PHP configuration '

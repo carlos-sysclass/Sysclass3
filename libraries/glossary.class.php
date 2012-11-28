@@ -84,7 +84,8 @@ class glossary extends MagesterEntity
      * @static
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $fields = array("name" => $fields['name'],
                         "info" => $fields['info'],
                         "lessons_ID" => $fields['lessons_ID'],
@@ -95,6 +96,7 @@ class glossary extends MagesterEntity
   //pr($glossary);exit;
   MagesterSearch :: insertText($glossary -> glossary['name'], $glossary -> glossary['id'], "glossary", "title");
         MagesterSearch :: insertText($glossary -> glossary['info'], $glossary -> glossary['id'], "glossary", "data");
+
         return $glossary;
     }
  /**
@@ -122,7 +124,8 @@ class glossary extends MagesterEntity
      * @access public
 
      */
- public function delete() {
+ public function delete()
+ {
   parent :: delete();
   MagesterSearch :: removeText('glossary', $this -> glossary['id'], 'title');
      MagesterSearch :: removeText('glossary', $this -> glossary['id'], 'data');
@@ -154,7 +157,8 @@ class glossary extends MagesterEntity
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         parent :: persist();
         MagesterSearch :: removeText('glossary', $this -> glossary['id'], 'data');
         MagesterSearch :: insertText($this -> glossary['info'], $this -> glossary['id'], "glossary", "data");
@@ -168,13 +172,15 @@ class glossary extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'name', _TERM, 'id="termField" class = "inputText"');
      $form -> addRule('name', _THEFIELD.' '._TERM.' '._ISMANDATORY, 'required');
      $form -> addElement('textarea', 'info', _DEFINITION, 'class = "simpleEditor inputTextarea"');
      $form -> addElement('submit', 'submit', _SUBMITTERM, 'class = "flatButton"');
      $form -> addElement('submit', 'submit_term_add_another', _SUBMITANDADDANOTHER, 'class = "flatButton"');
      $form -> setDefaults(array('name' => $this -> glossary['name'], 'info' => $this -> glossary['info']));
+
         return $form;
     }
     /**
@@ -184,7 +190,8 @@ class glossary extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         if (isset($_GET['edit'])) {
             $this -> glossary["name"] = $form -> exportValue('name');
             $this -> glossary["info"] = $form -> exportValue('info');
@@ -218,32 +225,32 @@ class glossary extends MagesterEntity
      * @static
 
      */
-    public static function getGlossaryWords($words) {
+    public static function getGlossaryWords($words)
+    {
         $initials = array();
   $returnValue = preg_match("/^\p{L}.*$/u", 'a');
-        foreach($words as $key => $value) {
+        foreach ($words as $key => $value) {
             $letter = mb_strtoupper(mb_substr($value['name'], 0, 1));
             //echo "LETTER: ".$letter." ASCII: ".ord($letter)."<br/>";
             if (preg_match("/[0-9]/", $letter)) {
                 $initials["0-9"][$letter][] = $words[$key];
-            } else if (!preg_match("/\p{L}/u", $letter) && $returnValue !== false) {
+            } elseif (!preg_match("/\p{L}/u", $letter) && $returnValue !== false) {
                 $initials["Symbols"][$letter][] = $words[$key];
-            } else if (!preg_match("/\w/", $letter) && $returnValue === false) {
+            } elseif (!preg_match("/\w/", $letter) && $returnValue === false) {
                 $initials["Symbols"][$letter][] = $words[$key];
-            }
-   else {
+            } else {
                 $initials[$letter][] = $words[$key];
             }
         }
         $setNum = isset($initials["0-9"]);
         $setSym = isset($initials["Symbols"]);
-        if( $setNum || $setSym) {
+        if ($setNum || $setSym) {
             $tempNum = $initials["0-9"];
             $tempSym = $initials["Symbols"];
             unset($initials["0-9"]);
             unset($initials["Symbols"]);
             ksort($initials);
-            if($setNum) {
+            if ($setNum) {
                 $initials["0-9"] = $tempNum;
             }
             if ($setSym) {
@@ -252,6 +259,7 @@ class glossary extends MagesterEntity
         } else {
             ksort($initials);
         }
+
         return $initials;
     }
     /**
@@ -263,7 +271,8 @@ class glossary extends MagesterEntity
      * @return unknown_type
 
      */
-    public static function applyGlossary($text, $lessonId) {
+    public static function applyGlossary($text, $lessonId)
+    {
         $glossary_words = eF_getTableData("glossary", "name,info", "lessons_ID=".$lessonId); //Get all the glossary words of this lesson
         $searchdata = array();
         $searchdatanext = array();
@@ -285,6 +294,7 @@ class glossary extends MagesterEntity
         $text = self :: highlightWords($text, $searchdata, $replacedata);
         $text = preg_replace("/encode\*\(\)\!768atyj/", "", $text);
         $text = preg_replace($searchdatanext, $replacedata, $text);
+
         return $text;
     }
     /**
@@ -300,7 +310,8 @@ class glossary extends MagesterEntity
      * @return unknown_type
 
      */
-    public static function highlightWords ($text, $searchdata, $replacedata) {
+    public static function highlightWords ($text, $searchdata, $replacedata)
+    {
         $word = $searchdata;
         $textPieces = preg_split("'(<a.*>.*</a>)|(<.+?>)'", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $found = false;
@@ -314,6 +325,7 @@ class glossary extends MagesterEntity
             $newTextPieces[] = $piece;
         }
         $text = implode('', $newTextPieces);
+
         return $text;
     }
     /**
@@ -329,10 +341,11 @@ class glossary extends MagesterEntity
     {
         $matching_text = $matches[2];
         $words = explode(" ", $matching_text);
-        foreach($words as $key => $word) {
+        foreach ($words as $key => $word) {
             $words[$key] = 'encode*()!768atyj'.$word;
         }
         $new_text = implode(' ',$words);
+
         return $matches[1]."<a class = 'info glossary' href = 'javascript:void(0)'>".$new_text."<span class = 'tooltipSpan'>yty656hgh".self::encodeWordsInner($matching_text)."</span></a>".$matches[3];
     }
     /**
@@ -347,10 +360,11 @@ class glossary extends MagesterEntity
     public static function encodeWordsInner($text)
     {
         $words = explode(" ", $text);
-        foreach($words as $key => $word) {
+        foreach ($words as $key => $word) {
             $words[$key] = 'encode*()!768atyj'.$word;
         }
         $new_text = implode(' ',$words);
+
         return $new_text;
     }
     /**
@@ -382,7 +396,8 @@ class glossary extends MagesterEntity
      * @since 3.6.0
 
      */
-    public static function clearDuplicates($lesson) {
+    public static function clearDuplicates($lesson)
+    {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson -> lesson['id'];
      } elseif (eF_checkParameter($lesson, 'id')) {

@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 if (!$currentUser -> coreAccess['forum'] || $currentUser -> coreAccess['forum'] == 'change') {
     $_change_ = 1;
-} 
+}
 
 try {
     if ($GLOBALS['configuration']['disable_forum'] == 1) {
@@ -16,14 +16,14 @@ try {
 
 	$roles = MagesterUser :: getRoles(true);
 	$smarty -> assign("T_USERROLES",$roles);
-	
+
 	// 1. Buscar todos os forums
 	$forums = f_forums :: getAll("f_forums");
 
 	// 2. Buscar os IDS das LIÇÕES e das TURMAS nas quas o usuário está matriculado
 	$userLessons = ef_getTableDataFlat(
-		"users_to_lessons", 
-		"lessons_ID", 
+		"users_to_lessons",
+		"lessons_ID",
 		sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
 	);
 	$userClasses = ef_getTableDataFlat(
@@ -31,8 +31,8 @@ try {
 			"classe_id",
 			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
 	);
-	
-	foreach($forums as $key => $forum) {
+
+	foreach ($forums as $key => $forum) {
 		// 2. Filtrar somente os foruns que estão na mesma LIÇÃO que o aluno
 		if ($forum['lessons_ID'] == 0 || in_array($forum['lessons_ID'], $userLessons['lessons_ID'])) {
 		} else {
@@ -46,35 +46,30 @@ try {
 			continue;
 		}
 	}
-	
-	foreach ($forums  as $forums_lesson_ID ) {
+
+	foreach ($forums  as $forums_lesson_ID) {
 			$forums_f[] = $forums_lesson_ID['id'];
 	}
-	
- 
-	 
-	
 
 	$forums_ID = implode(",", $forums_f);
-	
+
  //$forums = f_forums :: getAll("f_forums");
  //$forums = f_forums :: getAllid("f_forums", "id in (".$forums_ID.")");
  $lessons = MagesterLesson :: getLessons();
- 
 
- if($_admin_){
+ if ($_admin_) {
  	$forums = f_forums :: getAll("f_forums");
  } else {
  	$forums = f_forums :: getAllid("f_forums", "id in (".$forums_ID.")");
  }
-  
+
     if (!$_admin_) {
-    	
+
     	//var_dump($currentUser->user);
         $userLessons = $currentUser -> getEligibleLessons();
-        
+
        // var_dump(array_keys($userLessons));
-        
+
         foreach ($forums as $key => $value) {
             //This takes the forum that belongs to this lesson, as well as general forums
             if ($value['lessons_ID'] && (!in_array($value['lessons_ID'], array_keys($userLessons))) || $lessons[$value['lessons_ID']]['active'] == 0 || $lessons[$value['lessons_ID']]['archive'] == 1) { //if forum of lesson deactivated by professor not display it in list
@@ -89,21 +84,20 @@ try {
         sprintf("user_id = %d", $currentUser->user['id'])
 	);
 	$topic['topic_id'][] = 0;
-    
+
 	if (!$_admin_) {
-    	foreach($forums as $key => $f_forum) {
+    	foreach ($forums as $key => $f_forum) {
     		if (!in_array($f_forum['group_topic_id'] , $topic['topic_id'], $classID['classe_id'])) {
     			unset($forums[$key]);
 	    	}
-    	}    
+    	}
 	}
-	
-	
+
     $legalForumValues = array_keys($forums);
-	
+
     //var_dump($legalForumValues);
 	//exit;
-	  
+
     if (sizeof($legalForumValues) > 0) {
         $legalTopicValues = eF_getTableDataFlat("f_topics", "id", "f_forums_ID in (".implode(",", $legalForumValues).")");
         $legalTopicValues = $legalTopicValues['id'];
@@ -116,8 +110,7 @@ try {
          $legalMessageValues = $legalMessageValues['id'];
         }
     }
-    
-        
+
     $forumTree = f_forums :: getForumTree($forums);
 
     if (isset($_GET['forum']) && !in_array($_GET['forum'], $legalForumValues)) {
@@ -142,7 +135,7 @@ try {
             echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
         }
         exit;
-    } else if ($_GET['type'] == 'topic' && isset($_GET['delete']) && in_array($_GET['delete'], $legalTopicValues)) {
+    } elseif ($_GET['type'] == 'topic' && isset($_GET['delete']) && in_array($_GET['delete'], $legalTopicValues)) {
         try {
             $topic = new f_topics($_GET['delete']);
             $topic -> delete();
@@ -151,7 +144,7 @@ try {
             echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
         }
         exit;
-    } else if ($_GET['type'] == 'poll' && isset($_GET['delete']) && in_array($_GET['delete'], $legalPollValues)) {
+    } elseif ($_GET['type'] == 'poll' && isset($_GET['delete']) && in_array($_GET['delete'], $legalPollValues)) {
         try {
             $poll = new f_poll($_GET['delete']);
             $poll -> delete();
@@ -160,7 +153,7 @@ try {
             echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
         }
         exit;
-    } else if ($_GET['type'] == 'message' && isset($_GET['delete']) && in_array($_GET['delete'], $legalMessageValues)) {
+    } elseif ($_GET['type'] == 'message' && isset($_GET['delete']) && in_array($_GET['delete'], $legalMessageValues)) {
         try {
             $forum = new f_messages($_GET['delete']);
             $forum -> delete();
@@ -169,7 +162,7 @@ try {
             echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
         }
         exit;
-    } else if ($_GET['type'] == 'forum' && (!$_student_ || $forum_config['students_add_forums']) && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalForumValues)))) {
+    } elseif ($_GET['type'] == 'forum' && (!$_student_ || $forum_config['students_add_forums']) && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalForumValues)))) {
   $load_editor = 1;
         if ($_admin_) {
             $lessons = eF_getTableDataFlat("lessons", "id, name", "active=1");
@@ -177,38 +170,37 @@ try {
                 //Get every lesson's name
                 $lessons = array_combine($lessons['id'], $lessons['name']);
             }
-            
+
         	$allClass = eF_getTableDataFlat("classes", "id, name", "active=1");
             if (sizeof($allClass) > 0) {
                 //Get every lesson's name
                 $allClass = array_combine($allClass['id'], $allClass['name']);
             }
-            
+
         } else {
             $lessons = $currentUser -> getLessons(true);
             foreach ($lessons as $key => $value) {
                 //Keep only names
                 $lessons[$key] = $value -> lesson['name'];
             }
-            
+
         $courseID = eF_getTableDataFlat("users_to_courses", "courses_id", "active=1 and archive = 0  and users_LOGIN LIKE '".$_SESSION['s_login']."'");
-    	foreach ( $courseID as $_courseID ){
+    	foreach ($courseID as $_courseID) {
     		 $courseID = $_courseID;
     	}
-    	
-       
+
     	$allClass = eF_getTableDataFlat("classes", "id, name", "active=1 and courses_id in (".implode(",", $courseID).")");
             if (sizeof($allClass) > 0) {
                 //Get every lesson's name
                 $allClass = array_combine($allClass['id'], $allClass['name']);
             }
-        
-        
-        
+
+
+
         }
-        
-        
-        
+
+
+
         //Truncate long lesson names
         array_walk($lessons, create_function('&$v', 'mb_strlen($v) > 50 ? $v = mb_substr($v, 0, 50)."..." : null;'));
         $lessons[0] = _ALLLESSONS;
@@ -225,30 +217,30 @@ try {
 
         $entityName = 'f_forums';
         $legalValues = $legalForumValues;
-        include("entity.php");
-    } else if ($_GET['type'] == 'topic' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalTopicValues)))) {
+        include 'entity.php';
+    } elseif ($_GET['type'] == 'topic' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalTopicValues)))) {
         $load_editor = 1;
         $entityForm = new HTML_QuickForm("topic_add_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=forum".(isset($_GET['edit']) ? '&edit='.$_GET['edit'] : '&add=1')."&type=topic&forum_id=".$_GET['forum_id'], "", null, true); //Build the form
 
         $entityName = 'f_topics';
         $legalValues = $legalTopicValues;
-        include("entity.php");
+        include 'entity.php';
 
-    } else if ($_GET['type'] == 'poll' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalPollValues)))) {
+    } elseif ($_GET['type'] == 'poll' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalPollValues)))) {
         $load_editor = 1;
         $entityForm = new HTML_QuickForm("poll_add_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=forum".(isset($_GET['edit']) ? '&edit='.$_GET['edit'] : '&add=1')."&type=poll&forum_id=".$_GET['forum_id'], "", null, true); //Build the form
 
         $entityName = 'f_poll';
         $legalValues = $legalPollValues;
-        include("entity.php");
-    } else if ($_GET['type'] == 'message' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalMessageValues)))) {
+        include 'entity.php';
+    } elseif ($_GET['type'] == 'message' && (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $legalMessageValues)))) {
         $load_editor = 1;
         $entityForm = new HTML_QuickForm("message_add_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=forum".(isset($_GET['edit']) ? '&edit='.$_GET['edit'] : '&add=1')."&type=message&topic_id=".$_GET['topic_id'], "", null, true); //Build the form
 
         $entityName = 'f_messages';
         $legalValues = $legalMessageValues;
-        include("entity.php");
-    } else if (isset($_GET['config'])) {
+        include 'entity.php';
+    } elseif (isset($_GET['config'])) {
         $form = new HTML_QuickForm("forum_admin_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=forum&config=1", "", null, true); //Build the form
         $form -> addElement('select', 'allow_html', _ALLOWHTMLFPM, array(1 => _YES, 0 => _NO));
         $form -> addElement('select', 'polls', _ACTIVATEPOLLS, array(1 => _YES, 0 => _NO));
@@ -333,9 +325,9 @@ try {
             }
 
             $parent_forum = $topic[0]['f_forums_ID'];
-        } else if (isset($_GET['poll']) && in_array($_GET['poll'], $legalPollValues)) {
+        } elseif (isset($_GET['poll']) && in_array($_GET['poll'], $legalPollValues)) {
             $result = eF_getTableData("f_users_to_polls", "*", "f_poll_ID=".$_GET['poll']." and users_LOGIN='".$_SESSION['s_login']."'");
-			
+
             if (sizeof($result) > 0 || (isset($_GET['action']) && $_GET['action'] == 'view') || ($currentUser -> coreAccess['forum'] && $currentUser -> coreAccess['forum'] != 'change')) {
                 $smarty -> assign("T_ACTION", "view");
             }
@@ -348,11 +340,11 @@ try {
             $poll_data[0]['timestamp_end'] > time() ? $poll_data[0]['isopen'] = true : $poll_data[0]['isopen'] = false;
 
             $votes_distrib = array();
-            for ($i = 0; $i < sizeof($poll_data[0]['options']); $i++){
+            for ($i = 0; $i < sizeof($poll_data[0]['options']); $i++) {
                 $votes_distrib[$i]['vote'] = 0;
             }
 
-            for ($i = 0; $i < sizeof($poll_votes); $i++){
+            for ($i = 0; $i < sizeof($poll_votes); $i++) {
                 $votes_distrib[$poll_votes[$i]['vote']]['vote']++;
 				if (!is_array($votes_distrib[$poll_votes[$i]['vote']]['users'])) {
 					$votes_distrib[$poll_votes[$i]['vote']]['users'] = array();
@@ -360,7 +352,7 @@ try {
 				$votes_distrib[$poll_votes[$i]['vote']]['users'][] = $poll_votes[$i]['users_LOGIN'];
             }
 
-            for ($i = 0; $i < sizeof($votes_distrib); $i++){
+            for ($i = 0; $i < sizeof($votes_distrib); $i++) {
                 $votes_distrib[$i]['perc'] = round($votes_distrib[$i]['vote'] / sizeof($poll_votes), 2);
                 $votes_distrib[$i]['text'] = $poll_data[0]['options'][$i];
                 $votes_distrib[$i]['width'] = $votes_distrib[$i]['perc'] * 200;
@@ -369,7 +361,7 @@ try {
 			$smarty -> assign(
 				"T_CURRENT_POLL_USER_TYPE",
 				$currentUser->user['user_type']
-			);				 
+			);
 
 
 
@@ -390,7 +382,7 @@ try {
                 //debug();
                 $res = eF_getTableData("f_users_to_polls", "*", "f_poll_ID=".$values['options']['vote']." and users_LOGIN='".$currentUser -> user['login']."'");
                 //debug(false);
-                if (sizeof($res) > 0){
+                if (sizeof($res) > 0) {
                     $message = _YOUHAVEALREADYVOTED;
                     $message_type = 'failure';
                 } else {
@@ -399,7 +391,7 @@ try {
                             'vote' => $values['options']['vote'],
                             'timestamp' => time());
 
-                    if (eF_insertTableData("f_users_to_polls", $fields)){
+                    if (eF_insertTableData("f_users_to_polls", $fields)) {
                         $message = _SUCCESFULLYVOTED;
                         $message_type = 'success';
                         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=forum&poll=".$_GET['poll']);
@@ -448,7 +440,7 @@ try {
     //remove inactive and archived lessons
             $result = eF_getTableDataFlat("lessons","id","active=0 OR archive!=''");
       if (!empty($result['id'])) {
-       foreach($forums as $key => $value) {
+       foreach ($forums as $key => $value) {
         if (in_array($value['lessons_ID'],$result['id']) !== false) {
          unset($forums[$key]);
         }

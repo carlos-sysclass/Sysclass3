@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Interface.php 8064 2008-02-16 10:58:39Z thomas $
  */
-
 
 /**
  * @category   Zend
@@ -37,7 +36,6 @@ interface Zend_Mail_Part_Interface extends RecursiveIterator
      * @return bool if part is multipart
      */
     public function isMultipart();
-
 
     /**
      * Body of part
@@ -72,7 +70,6 @@ interface Zend_Mail_Part_Interface extends RecursiveIterator
      */
     public function countParts();
 
-
     /**
      * Get all headers
      *
@@ -95,7 +92,7 @@ interface Zend_Mail_Part_Interface extends RecursiveIterator
      * @throws Zend_Mail_Exception
      */
     public function getHeader($name, $format = null);
-    
+
     /**
      * Get a specific field from a header like content type or all fields as array
      *
@@ -112,7 +109,6 @@ interface Zend_Mail_Part_Interface extends RecursiveIterator
      * @throws Zend_Exception, Zend_Mail_Exception
      */
     public function getHeaderField($name, $wantedPart = 0, $firstName = 0);
-
 
     /**
      * Getter for mail headers - name is matched in lowercase

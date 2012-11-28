@@ -21,8 +21,8 @@
  *	@license PHP v3.0
  *	@version 1.1
  */
-class EigenvalueDecomposition {
-
+class EigenvalueDecomposition
+{
 	/**
 	 *	Row and column dimension (square matrix).
 	 *	@var int
@@ -73,7 +73,8 @@ class EigenvalueDecomposition {
 	 *
 	 *	@access private
 	 */
-	private function tred2 () {
+	private function tred2 ()
+	{
 		//  This is derived from the Algol procedures tred2 by
 		//  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
 		//  Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
@@ -182,7 +183,8 @@ class EigenvalueDecomposition {
 	 *
 	 *	@access private
 	 */
-	private function tql2() {
+	private function tql2()
+	{
 		for ($i = 1; $i < $this->n; ++$i) {
 			$this->e[$i-1] = $this->e[$i];
 		}
@@ -288,7 +290,8 @@ class EigenvalueDecomposition {
 	 *
 	 *	@access private
 	 */
-	private function orthes () {
+	private function orthes ()
+	{
 		$low  = 0;
 		$high = $this->n-1;
 
@@ -364,13 +367,13 @@ class EigenvalueDecomposition {
 		}
 	}
 
-
 	/**
 	 *	Performs complex division.
 	 *
 	 *	@access private
 	 */
-	private function cdiv($xr, $xi, $yr, $yi) {
+	private function cdiv($xr, $xi, $yr, $yi)
+	{
 		if (abs($yr) > abs($yi)) {
 			$r = $yi / $yr;
 			$d = $yr + $r * $yi;
@@ -384,7 +387,6 @@ class EigenvalueDecomposition {
 		}
 	}
 
-
 	/**
 	 *	Nonsymmetric reduction from Hessenberg to real Schur form.
 	 *
@@ -395,7 +397,8 @@ class EigenvalueDecomposition {
 	 *
 	 *	@access private
 	 */
-	private function hqr2 () {
+	private function hqr2 ()
+	{
 		//  Initialize
 		$nn = $this->n;
 		$n  = $nn - 1;
@@ -441,7 +444,7 @@ class EigenvalueDecomposition {
 				--$n;
 				$iter = 0;
 			// Two roots found
-			} else if ($l == $n-1) {
+			} elseif ($l == $n-1) {
 				$w = $this->H[$n][$n-1] * $this->H[$n-1][$n];
 				$p = ($this->H[$n-1][$n-1] - $this->H[$n][$n]) / 2.0;
 				$q = $p * $p + $w;
@@ -684,7 +687,7 @@ class EigenvalueDecomposition {
 					}
 				}
 			// Complex vector
-			} else if ($q < 0) {
+			} elseif ($q < 0) {
 				$l = $n-1;
 				// Last vector component imaginary so matrix is triangular
 				if (abs($this->H[$n][$n-1]) > abs($this->H[$n-1][$n])) {
@@ -771,7 +774,6 @@ class EigenvalueDecomposition {
 		}
 	} // end hqr2
 
-
 	/**
 	 *	Constructor: Check for symmetry, then construct the eigenvalue decomposition
 	 *
@@ -779,7 +781,8 @@ class EigenvalueDecomposition {
 	 *	@param A  Square matrix
 	 *	@return Structure to access D and V.
 	 */
-	public function __construct($Arg) {
+	public function __construct($Arg)
+	{
 		$this->A = $Arg->getArray();
 		$this->n = $Arg->getColumnDimension();
 
@@ -806,17 +809,16 @@ class EigenvalueDecomposition {
 		}
 	}
 
-
 	/**
 	 *	Return the eigenvector matrix
 	 *
 	 *	@access public
 	 *	@return V
 	 */
-	public function getV() {
+	public function getV()
+	{
 		return new Matrix($this->V, $this->n, $this->n);
 	}
-
 
 	/**
 	 *	Return the real parts of the eigenvalues
@@ -824,10 +826,10 @@ class EigenvalueDecomposition {
 	 *	@access public
 	 *	@return real(diag(D))
 	 */
-	public function getRealEigenvalues() {
+	public function getRealEigenvalues()
+	{
 		return $this->d;
 	}
-
 
 	/**
 	 *	Return the imaginary parts of the eigenvalues
@@ -835,10 +837,10 @@ class EigenvalueDecomposition {
 	 *	@access public
 	 *	@return imag(diag(D))
 	 */
-	public function getImagEigenvalues() {
+	public function getImagEigenvalues()
+	{
 		return $this->e;
 	}
-
 
 	/**
 	 *	Return the block diagonal eigenvalue matrix
@@ -846,7 +848,8 @@ class EigenvalueDecomposition {
 	 *	@access public
 	 *	@return D
 	 */
-	public function getD() {
+	public function getD()
+	{
 		for ($i = 0; $i < $this->n; ++$i) {
 			$D[$i] = array_fill(0, $this->n, 0.0);
 			$D[$i][$i] = $this->d[$i];

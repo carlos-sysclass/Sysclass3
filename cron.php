@@ -13,7 +13,6 @@ if (array_key_exists($username, $user_domains)) {
 	exit;
 }
 
-
 $start = strpos(dirname(__FILE__), "subdomains/");
 if ($start !== false) {
 	$start += strlen("subdomains/");
@@ -30,7 +29,6 @@ if ($start !== false) {
 
 	$sub = substr(dirname(__FILE__), $start);
 	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
-	
 
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;

@@ -25,7 +25,6 @@
  * @version	1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Style_NumberFormat
  *
@@ -251,8 +250,7 @@ class PHPExcel_Style_NumberFormat implements PHPExcel_IComparable
 		if ($this->_isSupervisor) {
 			return $this->getSharedComponent()->getFormatCode();
 		}
-		if ($this->_builtInFormatCode !== false)
-		{
+		if ($this->_builtInFormatCode !== false) {
 			return self::builtInFormatCode($this->_builtInFormatCode);
 		}
 		return $this->_formatCode;
@@ -595,7 +593,7 @@ class PHPExcel_Style_NumberFormat implements PHPExcel_IComparable
 			$dateObj = PHPExcel_Shared_Date::ExcelToPHPObject($value);
 			$value = $dateObj->format($format);
 
-		} else if (preg_match('/%$/', $format)) { // % number format
+		} elseif (preg_match('/%$/', $format)) { // % number format
 			if ($format === self::FORMAT_PERCENTAGE) {
 				$value = round( (100 * $value), 0) . '%';
 			} else {
@@ -649,7 +647,7 @@ class PHPExcel_Style_NumberFormat implements PHPExcel_IComparable
 
 				if (preg_match('/#?.*\?\/\?/', $format, $m)) {
 					//echo 'Format mask is fractional '.$format.' <br />';
-					if ($value != (int)$value) {
+					if ($value != (int) $value) {
 						$sign = ($value < 0) ? '-' : '';
 
 						$integerPart = floor(abs($value));

@@ -53,7 +53,6 @@ class Zend_Soap_Client_DotNet extends Zend_Soap_Client
         parent::__construct($wsdl, $options);
     }
 
-
     /**
      * Perform arguments pre-processing
      *

@@ -103,7 +103,7 @@ class HTML_QuickForm2_Rule_Required extends HTML_QuickForm2_Rule_Nonempty
                 '"required" rule cannot have an empty error message'
             );
         }
+
         return parent::setMessage($message);
     }
 }
-?>

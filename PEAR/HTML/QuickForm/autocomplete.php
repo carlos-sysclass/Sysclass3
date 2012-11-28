@@ -3,7 +3,7 @@
 
 /**
  * HTML class for an autocomplete element
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -23,20 +23,20 @@
 
 /**
  * HTML class for a text field
- */ 
+ */
 require_once 'HTML/QuickForm/text.php';
 
 /**
  * HTML class for an autocomplete element
- * 
+ *
  * Creates an HTML input text element that
  * at every keypressed javascript event checks in an array of options
  * if there's a match and autocompletes the text in case of match.
  *
  * For the JavaScript code thanks to Martin Honnen and Nicholas C. Zakas
  * See {@link http://www.faqts.com/knowledge_base/view.phtml/aid/13562} and
- * {@link http://www.sitepoint.com/article/1220} 
- * 
+ * {@link http://www.sitepoint.com/article/1220}
+ *
  * Example:
  * <code>
  * $autocomplete = $form->addElement('autocomplete', 'fruit', 'Favourite fruit:');
@@ -134,11 +134,11 @@ class HTML_QuickForm_autocomplete extends HTML_QuickForm_text
                 $this->_js .= <<<EOS
 
 /* begin javascript for autocomplete */
-function setSelectionRange(input, selectionStart, selectionEnd) {
+function setSelectionRange(input, selectionStart, selectionEnd)
+{
     if (input.setSelectionRange) {
         input.setSelectionRange(selectionStart, selectionEnd);
-    }
-    else if (input.createTextRange) {
+    } elseif (input.createTextRange) {
         var range = input.createTextRange();
         range.collapse(true);
         range.moveEnd("character", selectionEnd);
@@ -148,11 +148,13 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
     input.focus();
 }
 
-function setCaretToPosition(input, position) {
+function setCaretToPosition(input, position)
+{
     setSelectionRange(input, position, position);
 }
 
-function replaceSelection (input, replaceString) {
+function replaceSelection (input, replaceString)
+{
 	var len = replaceString.length;
     if (input.setSelectionRange) {
         var selectionStart = input.selectionStart;
@@ -161,8 +163,7 @@ function replaceSelection (input, replaceString) {
         input.value = input.value.substring(0, selectionStart) + replaceString + input.value.substring(selectionEnd);
 		input.selectionStart  = selectionStart + len;
 		input.selectionEnd  = selectionStart + len;
-    }
-    else if (document.selection) {
+    } elseif (document.selection) {
         var range = document.selection.createRange();
 		var saved_range = range.duplicate();
 
@@ -177,7 +178,8 @@ function replaceSelection (input, replaceString) {
 }
 
 
-function autocompleteMatch (text, values) {
+function autocompleteMatch (text, values)
+{
     for (var i = 0; i < values.length; i++) {
         if (values[i].toUpperCase().indexOf(text.toUpperCase()) == 0) {
             return values[i];
@@ -187,7 +189,8 @@ function autocompleteMatch (text, values) {
     return null;
 }
 
-function autocomplete(textbox, event, values) {
+function autocomplete(textbox, event, values)
+{
     if (textbox.setSelectionRange || textbox.createTextRange) {
         switch (event.keyCode) {
             case 38:    // up arrow
@@ -207,6 +210,7 @@ function autocomplete(textbox, event, values) {
             case 20:    // caps lock
             case 8:     // backspace
             case 46:    // delete
+
                 return true;
                 break;
 
@@ -217,15 +221,15 @@ function autocomplete(textbox, event, values) {
                 replaceSelection(textbox, c);
                 sMatch = autocompleteMatch(textbox.value, values);
                 var len = textbox.value.length;
-				
+
                 if (sMatch != null) {
                     textbox.value = sMatch;
                     setSelectionRange(textbox, len, textbox.value.length);
                 }
+
                 return false;
         }
-    }
-    else {
+    } else {
         return true;
     }
 }
@@ -250,9 +254,9 @@ EOS;
             }
             $js .= "//]]>\n</script>";
         }
+
         return $js . parent::toHtml();
     }// end func toHtml
 
     // }}}
 } // end class HTML_QuickForm_autocomplete
-?>

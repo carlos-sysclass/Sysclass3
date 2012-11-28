@@ -7,7 +7,8 @@
  *
 
  */
-function smarty_function_eF_template_printBlock($params, &$smarty) {
+function smarty_function_eF_template_printBlock($params, &$smarty)
+{
 	if (empty($params['id'])) {
 		$params['id'] = $params['title'];
 	}
@@ -88,7 +89,6 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 
 			if ($datasource != null) {
 				// PUT A COMBO
-
 
 				/*
 
@@ -339,8 +339,8 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
 			'<div class="min-text">' . $params['sub_title'] . '</div>' .
 			'</div>' .
 			'<ul class="clear handles">' . $optionsString . $handleString . '</ul>
-	          
-		</div>   
+
+		</div>
 		<div class="clear"></div>
         <div class = " ' . $contentclass . '" >
           ' . $mainOptions . '
@@ -351,7 +351,7 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
         </div>
 		<div class="columns clear bt-space15"></div>
     </div>
-    
+
     ';
 	if ($params['tabber']) {
 		if ($_GET['tab'] == $params['tabber']) {
@@ -383,4 +383,3 @@ function smarty_function_eF_template_printBlock($params, &$smarty) {
   </div>
 
  */
-?>

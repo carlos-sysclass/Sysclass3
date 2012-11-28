@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Shared_Escher_DggContainer_BstoreContainer
  *
@@ -52,7 +51,6 @@ class PHPExcel_Writer_Excel5_Escher
 	 */
 	private $_spOffsets;
 
-
 	/**
 	 * Constructor
 	 *
@@ -77,7 +75,7 @@ class PHPExcel_Writer_Excel5_Escher
 			if ($dggContainer = $this->_object->getDggContainer()) {
 				$writer = new PHPExcel_Writer_Excel5_Escher($dggContainer);
 				$this->_data = $writer->close();
-			} else if ($dgContainer = $this->_object->getDgContainer()) {
+			} elseif ($dgContainer = $this->_object->getDgContainer()) {
 				$writer = new PHPExcel_Writer_Excel5_Escher($dgContainer);
 				$this->_data = $writer->close();
 				$this->_spOffsets = $writer->getSpOffsets();
@@ -399,7 +397,6 @@ class PHPExcel_Writer_Excel5_Escher
 			$header = pack('vvV', $recVerInstance, $recType, $length);
 
 			$data .= $header . pack('VV', $this->_object->getSpId(), $this->_object->getSpgr() ? 0x0005 : 0x0A00);
-
 
 			// the options
 			if ($this->_object->getOPTCollection()) {

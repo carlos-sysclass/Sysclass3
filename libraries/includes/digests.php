@@ -34,7 +34,7 @@ if (isset($_GET['activate_notification'])) {
   $notification -> activate();
  }
  exit;
-} else if (isset($_GET['deactivate_notification'])) {
+} elseif (isset($_GET['deactivate_notification'])) {
  if (isset($_GET['event']) && $_GET['event']) {
   MagesterNotification::deactivateEventNotification($_GET['deactivate_notification']);
  } else {
@@ -95,7 +95,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
   $form -> addElement('select', 'type' , _SENDNOTIFICATION, array(0 => _ONDATE, 1 => _ONEVENT, 2 => _AFTEREVENT, 3 => _BEFOREEVENT), "id = 'type_when' class = 'inputSelectMed' onChange = 'changeMessageType(this, true)'");
   $form -> addElement('select', 'when' , _FREQUENCY, array(0 => _ONCE, 1 => _PERIODICALLY), "id = 'message_frequency' class = 'inputSelectMed' onChange = 'changeMessageFrequency()'");
 
-
   // Create the event_types selects
   $all_event_types = MagesterEvent::getEventTypes();
 
@@ -141,7 +140,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
   $form -> addElement('select', 'event_types' , _EVENT, $events, "id = 'event_types'  class = 'inputSelectMed'  onChange = 'changeEventCategory(this)'");
   $form -> addElement('select', 'event_types_after' , NULL, $events_after, "id = 'event_types_after'  class = 'inputSelectMed'  onChange = 'changeEventCategory(this)'");
   $form -> addElement('select', 'event_types_before' , NULL, $events_before, "id = 'event_types_before'  class = 'inputSelectMed'  onChange = 'changeEventCategory(this)'");
-
 
   // Create the date select
   $formatDate = eF_dateFormat();
@@ -208,13 +206,13 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
              }
              if ($mode == "test") {
               $basic_templates_array["tests_name"] = _TESTNAME;
-             } else if ($mode == "news") {
+             } elseif ($mode == "news") {
               $basic_templates_array["announcement_title"] = _ANNOUNCEMENTTITLE;
               $basic_templates_array["announcement_body"] = _ANNOUNCEMENTBODY;
-             } else if ($mode == "content") {
+             } elseif ($mode == "content") {
               $basic_templates_array["unit_title"] = _UNITNAME;
               $basic_templates_array["unit_content"] = _UNITCONTENT;
-             } else if ($mode == "survey") {
+             } elseif ($mode == "survey") {
               $basic_templates_array["survey_name"] = _SURVEYNAME;
               $basic_templates_array["survey_id"] = _SURVEYID;
               $basic_templates_array["survey_message"] = _SURVEYMESSAGE;
@@ -285,16 +283,10 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
              */
 
-
-
-
-
-
             $form -> addElement('select', 'available_lessons', _LESSON, $av_lessons, 'id = "available_lessons" class = "inputSelectMed"');
             $form -> addElement('select', 'available_courses', _COURSE, $av_courses, 'id = "available_courses" class = "inputSelectMed"');
             $form -> addElement('select', 'available_tests', _TEST, $tests, 'id = "available_tests" class = "inputSelectMed"');
             //$form -> addElement('select', 'available_content',    _CONTENT, $units,       'id = "available_content" class = "inputSelectMed"');
-
 
             /*
 
@@ -333,15 +325,9 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
             $form -> addElement('select', 'user_type', null, $roles, 'id = "user_type_recipients" class = "inputSelectMed" disabled = "disabled"');
             $form -> addRule('user_type', _INVALIDFIELDDATA, 'checkParameter', 'text');
 
-
             $basic_event_recipients = array(MagesterNotification::TRIGGERINGUSER => _USERTRIGGERINGTHEEVENT,
             MagesterNotification::ALLSYSTEMUSERS => _ALLSYSTEMUSERS,
             MagesterNotification::SYSTEMADMINISTRATOR => _SYSTEMADMINISTRATOR);
-
-
-
-
-
 
             $smarty -> assign("T_BASIC_EVENT_RECIPIENTS" , sizeof($basic_event_recipients));
 
@@ -350,7 +336,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
              if ($mode == "courses") {
               $basic_event_recipients[MagesterNotification::COURSEPROFESSORS] = _COURSEPROFESSORS;
               $basic_event_recipients[MagesterNotification::ALLCOURSEUSERS] = _ALLCOURSEUSERS;
-             } else if ($mode != "system") {
+             } elseif ($mode != "system") {
               if ($mode == "survey" || $mode == "projects" || $mode == "job") {
                $basic_event_recipients[MagesterNotification::EXPLICITLYSEL] = _EXPLICITLYSELECTED;
                $smarty -> assign("T_SHOW_EXPLICITLY_HELP", 1);
@@ -370,7 +356,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
             $form -> addElement('advcheckbox', 'html_message', _SENDMESSAGEASHTML, null, 'id = "html_message_id" ');
             //$form -> addElement('advcheckbox', 'send_bcc', _BCCRECIPIENTS, null);
 
-
             // User groups
             $groups = eF_getTableData("groups", "id, name", "active=1");
             $groups_list = array();
@@ -387,7 +372,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
             $form -> addElement('radio', 'recipients', null, null, 'specific_group', $disable_groups . ' onclick = "eF_js_selectRecipients(\'specific_group\')"');
             $form -> addElement('select', 'group_recipients', null, $groups_list, 'id = "group_recipients" class = "inputSelectMed" disabled = "disabled"');
 
-
             // And categories for HCD
             /*
 
@@ -399,7 +383,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
              $branches_list = array();
 
-             include ("../libraries/module_hcd_tools.php");
+             include '../libraries/module_hcd_tools.php';
 
              $branches_list = eF_createBranchesTreeSelect($branches,1);
 
@@ -410,8 +394,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
              $disable_branches = "disabled=\"disabled\"";
 
              }
-
-
 
              $job_descriptions = eF_getTableData("module_hcd_job_description", "distinct description","");
 
@@ -435,8 +417,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
              }
 
-
-
              $skills = eF_getTableData("module_hcd_skills", "skill_ID, description","");
 
              $skills_list = array();
@@ -459,21 +439,15 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
              }
 
-
-
              $form -> addElement('radio', 'recipients', null, null, 'specific_branch_job_description', $disable_branches . ' onclick = "eF_js_selectRecipients(\'specific_branch_job_description\')"');
 
              $form -> addElement('select', 'branch_recipients', null, $branches_list, 'id = "branch_recipients" class = "inputSelectMed" disabled = "disabled"');
 
              $form -> addElement('advcheckbox', 'include_subbranches', _INCLUDESUBBRANCHES, null, 'class = "inputCheckbox" id="include_subbranches" style="visibility:hidden" checked=""');
 
-
-
              $form -> addElement('radio', 'recipients', null, null, 'specific_job_description', $disable_job_descriptions . ' onclick = "eF_js_selectRecipients(\'specific_job_description\')"');
 
              $form -> addElement('select', 'job_description_recipients',null, $job_description_list, 'id = "job_description_recipients" class = "inputSelectMed" disabled = "disabled"');
-
-
 
              $form -> addElement('radio', 'recipients', null, null, 'specific_skill', $disable_skills . ' onclick = "eF_js_selectRecipients(\'specific_skill\')"');
 
@@ -514,7 +488,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                                                'send_immediately' => $event['send_immediately'],
                                                'event_recipients' => $event['send_recipients'],
                                                'html_message' => $event['html_message']));
-              } else if ($event['after_time'] < 0) {
+              } elseif ($event['after_time'] < 0) {
                $type = "3";
                $form -> setDefaults(array('event_types_before' => $event['event_type'] ."_". $event_category,
                                                'send_interval' => (-1)*$event['after_time'],
@@ -534,13 +508,13 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
               $send_conditions = unserialize($event['send_conditions']);
               if ($event_category == "lessons") {
                $condition = $send_conditions["lessons_ID"];
-              } else if ($event_category == "tests") {
+              } elseif ($event_category == "tests") {
                $condition = $send_conditions["tests_ID"];
-              } else if ($event_category == "content") {
+              } elseif ($event_category == "content") {
                $condition = $send_conditions["unit_ID"];
-              } else if ($event_category == "forum") {
+              } elseif ($event_category == "forum") {
                $condition = $send_conditions["forums_ID"];
-              } else if ($event_category == "courses") {
+              } elseif ($event_category == "courses") {
                $condition = $send_conditions["courses_ID"];
               } else {
                $condition = false;
@@ -572,13 +546,13 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                  $form -> setDefaults(array('lesson' => $condition_category['lessons_ID'],
                                                        'recipients' => 'specific_lesson'));
                 }
-               } else if (isset($condition_category['courses_ID'])) {
+               } elseif (isset($condition_category['courses_ID'])) {
                 $form -> setDefaults(array('specific_course_completed' => $condition_category['completed'],
                                                    'recipients' => 'specific_course'));
-               } else if (isset($condition_category['user_type'])) {
+               } elseif (isset($condition_category['user_type'])) {
                 $form -> setDefaults(array('user_type' => $condition_category['user_type'],
                                                    'recipients' => 'specific_type'));
-               } else if (isset($condition_category['groups_ID'])) {
+               } elseif (isset($condition_category['groups_ID'])) {
                 $form -> setDefaults(array('group_recipients' => $condition_category['groups_ID'],
                                                    'recipients' => 'specific_group'));
                }
@@ -621,17 +595,17 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                // Keep recipients' information
                if ($condition_category == "specific_lesson") {
                 $condition = array("lessons_ID" => $form -> exportValue('lesson'));
-               } else if ($condition_category == "specific_lesson_professor") {
+               } elseif ($condition_category == "specific_lesson_professor") {
                 $condition = array("lessons_ID" => $form -> exportValue('professor'),
                                            "user_type" => "professor");
-               } else if ($condition_category == "specific_course") {
+               } elseif ($condition_category == "specific_course") {
                 $condition = array("courses_ID" => $form -> exportValue('specific_course'));
                 if ($form -> exportValue('specific_course_completed')) {
                  $condition['completed'] = 1;
                 }
-               } else if ($condition_category == "specific_type") {
+               } elseif ($condition_category == "specific_type") {
                 $condition = array("user_type" => $form -> exportValue('user_type'));
-               } else if ($condition_category == "specific_group") {
+               } elseif ($condition_category == "specific_group") {
                 $condition = array("groups_ID" => $form -> exportValue('group_recipients'));
                } else {
                 $condition = NULL;
@@ -647,7 +621,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                  if ($message_frequency == "0") {
                   MagesterNotification::addNotification($timestamp, $subject, $message, $condition, $html_message);
                   // Notification periodically starting from a specific date
-                 } else if ($message_frequency == "1") {
+                 } elseif ($message_frequency == "1") {
                   MagesterNotification::addNotification($timestamp, $subject, $message, $condition, $html_message, $form -> exportValue('send_interval'));
                  }
                  $message = _NOTIFICATIONSETUPSUCCESSFULLY;
@@ -660,7 +634,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                  if ($message_frequency == "0") {
                   MagesterNotification::addNotification($timestamp, $subject, $message, $condition, $html_message);
                   // Notification periodically starting from a specific date
-                 } else if ($message_frequency == "1") {
+                 } elseif ($message_frequency == "1") {
                   MagesterNotification::addNotification($timestamp, $subject, $message, $condition, $html_message, $form -> exportValue('send_interval'));
                  }
                 } else {
@@ -668,7 +642,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                  if ($message_frequency == "0") {
                   MagesterNotification::editNotification($_GET['edit_notification'], $timestamp, $subject, $message, $condition, $html_message);
                   // Notification periodically starting from a specific date
-                 } else if ($message_frequency == "1") {
+                 } elseif ($message_frequency == "1") {
                   MagesterNotification::editNotification($_GET['edit_notification'], $timestamp, $subject, $message, $condition, $html_message, $form -> exportValue('send_interval'));
                  }
                 }
@@ -682,10 +656,10 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                 $event_type = explode("_", $form -> exportValue('event_types'));
                 $send_immediately = $form -> exportValue('send_immediately');
                 $after_time = false;
-               } else if ($notification_type == 2) {
+               } elseif ($notification_type == 2) {
                 $event_type = explode("_", $form -> exportValue('event_types_after'));
                 $after_time = $form -> exportValue('send_interval');
-               } else if ($notification_type == 3) {
+               } elseif ($notification_type == 3) {
                 $event_type = explode("_", $form -> exportValue('event_types_before'));
                 $after_time = (-1) * $form -> exportValue('send_interval');
                }
@@ -696,13 +670,13 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
                if ($event_category == "lessons") {
                 $condition = $form -> exportValue('available_' . $event_category);
                 $condition = array("lessons_ID" => $condition);
-               } else if ($event_category == "courses") {//pr($form -> exportValues());exit;
+               } elseif ($event_category == "courses") {//pr($form -> exportValues());exit;
                 $condition = $form -> exportValue('available_' . $event_category);
                 $condition = array("courses_ID" => $condition);
-               } else if ($event_category == "tests") {
+               } elseif ($event_category == "tests") {
                 $condition = $form -> exportValue('available_' . $event_category);
                 $condition = array("tests_ID" => $condition);
-               } else if ($event_category == "forum" || $event_category == "content") {
+               } elseif ($event_category == "forum" || $event_category == "content") {
                 $condition = array("lessons_ID" => $form -> exportValue('available_lessons'));
                } else {
                 $condition = array();
@@ -776,7 +750,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
     } else {
      $sending_queue_msg['send_conditions'] = unserialize($sending_queue_msg['send_conditions']);
 
-
      if (is_array($sending_queue_msg['send_conditions'])) {
       if (isset($sending_queue_msg['send_conditions']['lessons_ID'])) {
        if ($sending_queue_msg['send_conditions']['lessons_ID'] != 0) {
@@ -790,7 +763,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
        } else {
         $sending_queue_msgs[$key]['recipients'] = _ANYLESSON;
        }
-      } else if (isset($sending_queue_msg['send_conditions']['tests_ID'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['tests_ID'])) {
        if ($sending_queue_msg['send_conditions']['tests_ID'] != 0) {
         $test = new MagesterTest($sending_queue_msg['send_conditions']['tests_ID']);
         $sending_queue_msgs[$key]['recipients'] = _TEST . ": " . $test -> test['name'];
@@ -798,21 +771,20 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
         $sending_queue_msgs[$key]['recipients'] = _ANYTEST;
 
        }
-      } else if (isset($sending_queue_msg['send_conditions']['unit_ID'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['unit_ID'])) {
 
+      } elseif (isset($sending_queue_msg['send_conditions']['forum_ID'])) {
 
-      } else if (isset($sending_queue_msg['send_conditions']['forum_ID'])) {
-
-      } else if (isset($sending_queue_msg['send_conditions']['entity_ID'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['entity_ID'])) {
        $sending_queue_msgs[$key]['recipients'] = _SELECTEDUSERS;
-      } else if (isset($sending_queue_msg['send_conditions']['groups_ID'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['groups_ID'])) {
        if ($sending_queue_msg['send_conditions']['groups_ID'] != 0) {
         $group = new MagesterGroup($sending_queue_msg['send_conditions']['groups_ID']);
         $sending_queue_msgs[$key]['recipients'] = _GROUP . ": " . $group -> group['name'];
        } else {
         $sending_queue_msgs[$key]['recipients'] = _ANYCOURSE;
        }
-      } else if (isset($sending_queue_msg['send_conditions']['courses_ID'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['courses_ID'])) {
        if ($sending_queue_msg['send_conditions']['courses_ID'] != 0) {
         $course = new MagesterCourse($sending_queue_msg['send_conditions']['courses_ID']);
         if (isset($sending_queue_msg['send_conditions']['user_type'])) {
@@ -826,20 +798,20 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
        } else {
         $sending_queue_msgs[$key]['recipients'] = _ANYCOURSE;
        }
-      } else if (isset($sending_queue_msg['send_conditions']['user_type'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['user_type'])) {
        $user_type = $sending_queue_msg['send_conditions']['user_type'];
        if ($user_type == "administrator") {
         $user_type_name = _ADMINISTRATOR;
-       } else if ($user_type == "professor") {
+       } elseif ($user_type == "professor") {
         $user_type_name = _PROFESSOR;
-       } else if ($user_type == "student") {
+       } elseif ($user_type == "student") {
         $user_type_name = _STUDENT;
        } else {
         $user_type = eF_getTableData("user_types", "name", "id = '" . $user_type . "'");
         $user_type_name = $user_type[0]['name'];
        }
        $sending_queue_msgs[$key]['recipients'] = _USERTYPE . ": " . $user_type_name;
-      } else if (isset($sending_queue_msg['send_conditions']['users_login']) && isset($sending_queue_msg['send_conditions']['supervisor'])) {
+      } elseif (isset($sending_queue_msg['send_conditions']['users_login']) && isset($sending_queue_msg['send_conditions']['supervisor'])) {
        $sending_queue_msgs[$key]['recipients'] = _USERSUPERVISORS;
       } else {
        $sending_queue_msgs[$key]['recipients'] = _ALLUSERS;
@@ -881,9 +853,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
   }
 
-
-
-
   $notifications = MagesterNotification::getAllNotifications();
   $events_table = MagesterEvent::getEventTypes(false);
 
@@ -903,7 +872,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
        } else {
         $notifications[$key]['when'] = "<span style='display:none'>$days</span>" . $days . " " . _DAYSAFTEREVENT;
        }
-      } else if ($notification['send_interval'] < 0) {
+      } elseif ($notification['send_interval'] < 0) {
        $days = (-1)*$notification['send_interval'] / 86400;
        if ($days < 1.0) {
         $hours = $days * 24;
@@ -949,7 +918,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
       } else {
        $notifications[$key]['recipients'] = _ANYLESSON;
       }
-     } else if (isset($notification['send_conditions']['tests_ID'])) {
+     } elseif (isset($notification['send_conditions']['tests_ID'])) {
       if ($notification['send_conditions']['tests_ID'] != 0) {
        try {
         $test = new MagesterTest($notification['send_conditions']['tests_ID']);
@@ -963,7 +932,7 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
        $notifications[$key]['recipients'] = _ANYTEST;
 
       }
-     } else if (isset($notification['send_conditions']['unit_ID'])) {
+     } elseif (isset($notification['send_conditions']['unit_ID'])) {
       if ($notification['send_conditions']['tests_ID'] != 0) {
        $test = new MagesterTest($notification['send_conditions']['tests_ID']);
        $notifications[$key]['recipients'] = _TEST . ": " . $test -> test['name'];
@@ -972,16 +941,16 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
       }
 
-     } else if (isset($notification['send_conditions']['forum_ID'])) {
+     } elseif (isset($notification['send_conditions']['forum_ID'])) {
 
-     } else if (isset($notification['send_conditions']['groups_ID'])) {
+     } elseif (isset($notification['send_conditions']['groups_ID'])) {
       if ($notification['send_conditions']['groups_ID'] != 0) {
        $group = new MagesterGroup($notification['send_conditions']['groups_ID']);
        $notifications[$key]['recipients'] = _GROUP . ": " . $group -> group['name'];
       } else {
        $notifications[$key]['recipients'] = _ANYCOURSE;
       }
-     } else if (isset($notification['send_conditions']['courses_ID'])) {
+     } elseif (isset($notification['send_conditions']['courses_ID'])) {
 
       if ($notification['send_conditions']['courses_ID'] != 0) {
        $course = new MagesterCourse($notification['send_conditions']['courses_ID']);
@@ -999,13 +968,13 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
       } else {
        $notifications[$key]['recipients'] = _ANYCOURSE;
       }
-     } else if (isset($notification['send_conditions']['user_type'])) {
+     } elseif (isset($notification['send_conditions']['user_type'])) {
       $user_type = $notification['send_conditions']['user_type'];
       if ($user_type == "administrator") {
        $user_type_name = _ADMINISTRATOR;
-      } else if ($user_type == "professor") {
+      } elseif ($user_type == "professor") {
        $user_type_name = _PROFESSOR;
-      } else if ($user_type == "student") {
+      } elseif ($user_type == "student") {
        $user_type_name = _STUDENT;
       } else {
        $user_type = eF_getTableData("user_types", "name", "id = '" . $user_type . "'");
@@ -1028,7 +997,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
 
    $smarty -> assign("T_NOTIFICATIONS", $notifications);
   }
-
 
   // Notifications configuration form
   $config_form = new HTML_QuickForm("configuration_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=digests&tab=config_tab", "", null, true);
@@ -1090,7 +1058,6 @@ if ($_GET['op'] == "preview" && eF_checkParameter($_GET['sent_id'], 'id') ) {
   $config_form -> accept($renderer); //Assign this form to the renderer, so that corresponding template code is created
 
   $smarty -> assign('T_NOTIFICATION_VARIABLES_FORM', $renderer -> toArray()); //Assign the form to the template
-
 
   // Get recently sent messages - do that after submitting the new global variables
   $smarty -> assign("T_RECENTLY_SENT_NOTIFICATIONS", MagesterNotification::getRecentlySent());

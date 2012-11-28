@@ -132,6 +132,7 @@ class Zend_Gdata extends Zend_Gdata_App
         if ($client != null) {
             $feed->setHttpClient($client);
         }
+
         return $feed;
     }
 
@@ -158,6 +159,7 @@ class Zend_Gdata extends Zend_Gdata_App
                     'You must specify the location as either a string URI ' .
                     'or a child of Zend_Gdata_Query');
         }
+
         return parent::getFeed($uri, $className);
     }
 
@@ -183,6 +185,7 @@ class Zend_Gdata extends Zend_Gdata_App
                     'You must specify the location as either a string URI ' .
                     'or a child of Zend_Gdata_Query');
         }
+
         return parent::getEntry($uri, $className);
     }
 
@@ -215,6 +218,7 @@ class Zend_Gdata extends Zend_Gdata_App
             $body = $filterResult['body'];
             $headers = $filterResult['headers'];
             $contentType = $filterResult['contentType'];
+
             return $this->_httpClient->filterHttpResponse(parent::performHttpRequest($method, $url, $headers, $body, $contentType, $remainingRedirects));
         } else {
             return parent::performHttpRequest($method, $url, $headers, $body, $contentType, $remainingRedirects);

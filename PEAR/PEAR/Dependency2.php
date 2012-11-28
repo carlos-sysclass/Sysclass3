@@ -144,6 +144,7 @@ class PEAR_Dependency2
         if ($extra == ' ()') {
             $extra = '';
         }
+
         return $extra;
     }
 
@@ -256,6 +257,7 @@ class PEAR_Dependency2
                     }
                 }
         }
+
         return true;
     }
 
@@ -294,6 +296,7 @@ class PEAR_Dependency2
                         'not match "' . $dep['pattern'] . '"');
                 }
             }
+
             return true;
         } else {
             if ($not) {
@@ -305,6 +308,7 @@ class PEAR_Dependency2
                         'required "' . $dep['pattern'] . '"');
                 }
             }
+
             return true;
         }
     }
@@ -354,6 +358,7 @@ class PEAR_Dependency2
                             $dep['name'] . '"' . $extra);
                     }
                 }
+
                 return true;
             } else {
                 if (isset($dep['conflicts'])) {
@@ -385,6 +390,7 @@ class PEAR_Dependency2
                     return $this->raiseError('%s requires PHP extension "' . $dep['name'] .
                         '"' . $extra);
                 }
+
                     return $this->warning('warning: %s requires PHP extension "' . $dep['name'] .
                         '"' . $extra);
             }
@@ -464,6 +470,7 @@ class PEAR_Dependency2
                 }
             }
         }
+
         return true;
     }
 
@@ -517,6 +524,7 @@ class PEAR_Dependency2
                 }
             }
         }
+
         return true;
     }
 
@@ -573,6 +581,7 @@ class PEAR_Dependency2
                 }
             }
         }
+
         return true;
     }
 
@@ -696,6 +705,7 @@ class PEAR_Dependency2
                             $extra . $rest);
                     }
                 }
+
                 return true;
             } else {
                 if (isset($dep['conflicts'])) {
@@ -826,7 +836,7 @@ class PEAR_Dependency2
                 if (!isset($this->_options['nodeps']) && !isset($this->_options['force']) &&
                       !isset($this->_options['loose'])) {
                     return $this->raiseError('%s dependency package "' . $depname .
-                        '" ' . $installed . ' version ' . $version . 
+                        '" ' . $installed . ' version ' . $version .
                         ' is not the recommended version ' . $dep['recommended'] .
                         ', but may be compatible, use --force to install');
                 } else {
@@ -836,6 +846,7 @@ class PEAR_Dependency2
                 }
             }
         }
+
         return true;
     }
 
@@ -894,6 +905,7 @@ class PEAR_Dependency2
                         '%s cannot be uninstalled, other installed packages depend on this package');
                 }
             }
+
             return true;
         }
         // first, list the immediate parents of each package to be uninstalled
@@ -1039,6 +1051,7 @@ class PEAR_Dependency2
                 }
             }
         }
+
         return true;
     }
 
@@ -1098,12 +1111,13 @@ class PEAR_Dependency2
             return $this->warning($depname . $extra . ' can be optionally used by installed package' .
                     ' "%s"');
         }
+
         return true;
     }
 
     /**
      * validate a downloaded package against installed packages
-     * 
+     *
      * As of PEAR 1.4.3, this will only validate
      *
      * @param array|PEAR_Downloader_Package|PEAR_PackageFile_v1|PEAR_PackageFile_v2
@@ -1168,6 +1182,7 @@ class PEAR_Dependency2
             return $this->raiseError(
                 '%s cannot be installed, conflicts with installed packages');
         }
+
         return true;
     }
 
@@ -1255,6 +1270,7 @@ class PEAR_Dependency2
                 $newdep['max'] = '6.0.0';
             }
         }
+
         return array($newdep, $type);
     }
 
@@ -1269,7 +1285,7 @@ class PEAR_Dependency2
      */
     function signOperator($operator)
     {
-        switch($operator) {
+        switch ($operator) {
             case 'lt': return '<';
             case 'le': return '<=';
             case 'gt': return '>';
@@ -1286,6 +1302,7 @@ class PEAR_Dependency2
         if (isset($this->_options['ignore-errors'])) {
             return $this->warning($msg);
         }
+
         return PEAR::raiseError(sprintf($msg, $this->_registry->parsedPackageNameToString(
             $this->_currentPackage, true)));
     }
@@ -1296,4 +1313,3 @@ class PEAR_Dependency2
             $this->_currentPackage, true)));
     }
 }
-?>

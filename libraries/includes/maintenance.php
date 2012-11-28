@@ -4,13 +4,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
-
 $loadScripts[] = 'includes/maintenance';
 if (isset($currentUser -> coreAccess['maintenance']) && $currentUser -> coreAccess['maintenance'] == 'hidden') {
     eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 /**Functions to perform status check*/
-require_once "check_status.php";
+require_once 'check_status.php';
 
 //Create and capture phpinfo code
 ob_start();
@@ -265,9 +264,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         try {
             if ($_GET['cache'] == 'templates') {
                 clearTemplatesCache();
-            } else if ($_GET['cache'] == 'tests') {
+            } elseif ($_GET['cache'] == 'tests') {
                 eF_deleteTableData("cache");
-            } else if ($_GET['cache'] == 'query') {
+            } elseif ($_GET['cache'] == 'query') {
              eF_executeNew("reset query cache");
             }
         } catch (Exception $e) {
@@ -354,7 +353,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
             try {
                 if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
      $user = MagesterUserFactory :: factory($_GET['login']);
-     if ($user -> user['autologin'] == "" ) {
+     if ($user -> user['autologin'] == "") {
       $convert = $_GET['login']."_".$usersArray[$_GET['login']]['timestamp'];
       $converted = md5($convert.G_MD5KEY);
       $user -> user['autologin'] = $converted;
@@ -363,7 +362,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
      }
      $user -> persist();
      echo $converted;
-                } else if (isset($_GET['addAll'])) {
+                } elseif (isset($_GET['addAll'])) {
      isset($_GET['filter']) ? $usersArray = eF_filterData($usersArray, $_GET['filter']) : null;
      foreach ($usersArray as $key => $value) {
       if ($value['autologin'] == "") {
@@ -371,7 +370,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
        eF_updateTableData("users", array('autologin' => $autologin), "login='".$key."'");
       }
      }
-                } else if (isset($_GET['removeAll'])) {
+                } elseif (isset($_GET['removeAll'])) {
      if (isset($_GET['filter'])) {
       $usersArray = eF_filterData($usersArray, $_GET['filter']);
       $queryString = "'".implode("','", array_keys($usersArray))."'";

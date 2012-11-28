@@ -42,10 +42,6 @@ $html = $contentTree -> toHTML($visitableIterator, false, array('noclick' => tru
 $mainScripts = getMainScripts();
 $smarty -> assign("T_HEADER_MAIN_SCRIPTS", implode(",", $mainScripts));
 
-
 $smarty -> assign("T_CONTENT_TREE", $html);
 
-
 $smarty -> display("browsecontent.tpl");
-
-?>

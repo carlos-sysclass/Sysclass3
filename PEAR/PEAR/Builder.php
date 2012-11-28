@@ -19,7 +19,7 @@
  * @version    CVS: $Id: Builder.php,v 1.31 2007/01/10 05:32:51 cellog Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
- * 
+ *
  * TODO: log output parameters in PECL command line
  * TODO: msdev path in configuration
  */
@@ -228,6 +228,7 @@ class PEAR_Builder extends PEAR_Common
             }
         }
         closedir($d);
+
         return $ret;
     }
 
@@ -318,7 +319,7 @@ class PEAR_Builder extends PEAR_Common
         // }}} end of interactive part
 
         // FIXME make configurable
-        if(!$user=getenv('USER')){
+        if (!$user=getenv('USER')) {
             $user='defaultuser';
         }
         $build_basedir = "/var/tmp/pear-build-$user";
@@ -356,21 +357,25 @@ class PEAR_Builder extends PEAR_Common
             $err = $this->_runCommand($cmd, $callback);
             if (PEAR::isError($err)) {
                 chdir($old_cwd);
+
                 return $err;
             }
             if (!$err) {
                 chdir($old_cwd);
+
                 return $this->raiseError("`$cmd' failed");
             }
         }
         if (!($dp = opendir("modules"))) {
             chdir($old_cwd);
+
             return $this->raiseError("no `modules' directory found");
         }
         $built_files = array();
         $prefix = exec("php-config --prefix");
         $this->_harvestInstDir($prefix, $inst_dir . DIRECTORY_SEPARATOR . $prefix, $built_files);
         chdir($old_cwd);
+
         return $built_files;
     }
 
@@ -401,7 +406,7 @@ class PEAR_Builder extends PEAR_Common
         $matches = array();
         if (preg_match('/^\s+(\S[^:]+):\s+(\d{8})/', $data, $matches)) {
             $member = preg_replace('/[^a-z]/', '_', strtolower($matches[1]));
-            $apino = (int)$matches[2];
+            $apino = (int) $matches[2];
             if (isset($this->$member)) {
                 $this->$member = $apino;
                 //$msg = sprintf("%-22s : %d", $matches[1], $apino);
@@ -456,6 +461,7 @@ class PEAR_Builder extends PEAR_Common
         } else {
             $exitcode = -1;
         }
+
         return ($exitcode == 0);
     }
 
@@ -468,12 +474,12 @@ class PEAR_Builder extends PEAR_Common
             if ($this->debug >= $level) {
                 call_user_func($this->current_callback, 'output', $msg);
             }
+
             return;
         }
+
         return PEAR_Common::log($level, $msg);
     }
 
     // }}}
 }
-
-?>

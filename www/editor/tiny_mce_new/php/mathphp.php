@@ -4,14 +4,17 @@
 //This code is a php conversion/mod of mathjs from Peter Jipsen's ASCIIsvg.js
 //script, (c) Peter Jipsen.  See /javascript/ASCIIsvg.js
 
-function mathphppre($st) {
+function mathphppre($st)
+{
   if (strpos($st,"^-1") || strpos($st,"^(-1)")) {
 		$st = str_replace(array("sin^-1","cos^-1","tan^-1","sin^(-1)","cos^(-1)","tan^(-1)"),array("asin","acos","atan","asin","acos","atan"),$st);
 		$st = str_replace(array("sinh^-1","cosh^-1","tanh^-1","sinh^(-1)","cosh^(-1)","tanh^(-1)"),array("asinh","acosh","atanh","asinh","acosh","atanh"),$st);
   }
+
   return $st;
 }
-function parenvarifneeded($matches) {
+function parenvarifneeded($matches)
+{
 	  if ($matches[2]=='[') {
 		  return $matches[0];
 	  } else {
@@ -19,7 +22,8 @@ function parenvarifneeded($matches) {
 	  }
   }
 //varlist should be | separated, like "x|y"
-function mathphp($st,$varlist) {
+function mathphp($st,$varlist)
+{
   //translate a math formula to php function notation
   // a^b --> pow(a,b)
   // na --> n*a
@@ -28,20 +32,20 @@ function mathphp($st,$varlist) {
   // sin^-1 --> asin etc.
   //while ^ in string, find term on left and right
   //slice and concat new formula string
-  
+
   //parenthesize variables with number endings, ie $c2^3 => ($c2)^3
   //$st = preg_replace('/(\$[a-zA-Z\d]+)$/',"($1)",$st);
   $st .= ' ';
-  
+
   //$st = preg_replace('/(\$[a-zA-Z\d_]+)([^\[])/',"($1)$2",$st);
   $st = preg_replace_callback('/(\$[a-zA-Z\d_]+)(.)/','parenvarifneeded',$st);
-  
+
   //parenthesizes the function variables
   if ($varlist != null) {
 	  $reg = "/([^a-zA-Z])(" . $varlist . ")([^a-zA-Z])/";
-	  $st= preg_replace($reg,"$1($2)$3",$st);	
+	  $st= preg_replace($reg,"$1($2)$3",$st);
 	  //need second run through to catch x*x
-	  $st= preg_replace($reg,"$1($2)$3",$st);	
+	  $st= preg_replace($reg,"$1($2)$3",$st);
 	  $reg = "/^(" . $varlist . ")([^a-zA-Z])/";
 	  $st= preg_replace($reg,"($1)$2",$st);
 	  $reg = "/([^a-zA-Z])(" . $varlist . ")$/";
@@ -56,14 +60,14 @@ function mathphp($st,$varlist) {
 		$st = str_replace(array("sin^-1","cos^-1","tan^-1","sin^(-1)","cos^(-1)","tan^(-1)"),array("asin","acos","atan","asin","acos","atan"),$st);
 		$st = str_replace(array("sinh^-1","cosh^-1","tanh^-1","sinh^(-1)","cosh^(-1)","tanh^(-1)"),array("asinh","acosh","atanh","asinh","acosh","atanh"),$st);
   }
-  
+
   $st= preg_replace('/^e$/',"(exp(1))",$st);
   $st= preg_replace("/^pi([^a-zA-Z])/","(M_PI)$1",$st);
   $st= preg_replace("/([^a-zA-Z])pi$/","$1(M_PI)",$st);
   $st= preg_replace("/([^a-zA-Z])pi([^a-zA-Z])/","$1(M_PI)$2",$st);
   $st= preg_replace("/^e([^a-zA-Z])/","(exp(1))$1",$st);
   $st= preg_replace('/([^a-zA-Z$])e$/',"$1(exp(1))",$st);
-  
+
   $st= preg_replace('/([^a-zA-Z$])e([^a-zA-Z])/',"$1(exp(1))$2",$st);
   //$st= preg_replace("/([0-9])([\(a-zA-Z])/","$1*$2",$st);
   $st= preg_replace("/([0-9])([\(])/","$1*$2",$st);
@@ -76,12 +80,12 @@ function mathphp($st,$varlist) {
   $st= preg_replace('/([0-9])\*\(exp\(1\)\)([0-9])/',"\\1E\\2",$st);
 
   $st= preg_replace('/([0-9])\*E([\-0-9])/',"\\1E\\2",$st);
-  
+
   $st= preg_replace("/\)([\(0-9a-zA-Z])/",")*$1",$st);
-  
+
   //fix PHP's 1/-2*5 order of ops bug
   $st = preg_replace('/\/(\-[\d\.E]+)(\*|\/)/',"/($1)$2",$st);
- 
+
   while ($i=strpos($st,"^")) {
     //find left argument
     if ($i==0) return "Error: missing argument";
@@ -94,7 +98,7 @@ function mathphp($st,$varlist) {
         $j--;
         while ($j>=0 && ($ch=substr($st,$j,1))>="0" && $ch<="9") $j--;
       }
-    } else if ($ch==")") {// look for matching opening bracket and function name
+    } elseif ($ch==")") {// look for matching opening bracket and function name
       $nested = 1;
       $j--;
       while ($j>=0 && $nested>0) {
@@ -105,11 +109,11 @@ function mathphp($st,$varlist) {
       }
       while ($j>=0 && ($ch=substr($st,$j,1))>="a" && $ch<="z" || $ch>="A" && $ch<="Z")
         $j--;
-    } else if ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
+    } elseif ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
       $j--;
       while ($j>=0 && (($ch=substr($st,$j,1))>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$'))
         $j--;
-    } else { 
+    } else {
       return "Error: incorrect syntax in " .$st." at position ".$j;
     }
     //find right argument
@@ -123,7 +127,7 @@ function mathphp($st,$varlist) {
         $k++;
         while ($k<strlen($st) && ($ch=substr($st,$k,1))>="0" && $ch<="9") $k++;
       }
-    } else if ($ch=="(") {// look for matching closing bracket and function name
+    } elseif ($ch=="(") {// look for matching closing bracket and function name
       $nested = 1;
       $k++;
       while ($k<strlen($st) && $nested>0) {
@@ -132,17 +136,17 @@ function mathphp($st,$varlist) {
         else if ($ch==")") $nested--;
         $k++;
       }
-    } else if ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
+    } elseif ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
       $k++;
       while ($k<strlen($st) && (($ch=substr($st,$k,1))>="a" && $ch<="z" ||
                $ch>="A" && $ch<="Z") || $ch=='$') $k++;
-    } else { 
+    } else {
       return "Error: incorrect syntax in ".$st." at position "+$k;
     }
     $st = substr($st,0,$j+1) . "safepow(" . substr($st,$j+1,($i-$j-1)) . "," . substr($st,$i+1,($k-$i-1)) . ")" . substr($st,$k);
     //$st= st.slice(0,$j+1)+"pow("+st.slice($j+1,i)+","+st.slice(i+1,$k)+")"+ st.slice($k);
   }
-  
+
   while ($i=strpos($st,"!")) {
     //find left argument
     if ($i==0) return "Error: missing argument";
@@ -155,7 +159,7 @@ function mathphp($st,$varlist) {
         $j--;
         while ($j>=0 && ($ch=substr($st,$j,1))>="0" && $ch<="9") $j--;
       }
-    } else if ($ch==")") {// look for matching opening bracket and function name
+    } elseif ($ch==")") {// look for matching opening bracket and function name
       $nested = 1;
       $j--;
       while ($j>=0 && $nested>0) {
@@ -166,11 +170,11 @@ function mathphp($st,$varlist) {
       }
       while ($j>=0 && ($ch=substr($st,$j,1))>="a" && $ch<="z" || $ch>="A" && $ch<="Z")
         $j--;
-    } else if ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
+    } elseif ($ch>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$') {// look for variable
       $j--;
       while ($j>=0 && (($ch=substr($st,$j,1))>="a" && $ch<="z" || $ch>="A" && $ch<="Z" || $ch=='$'))
         $j--;
-    } else { 
+    } else {
       return "Error: incorrect syntax in ".$st." at position "+$j;
     }
     $st= substr($st,0,$j+1)."factorial(".substr($st,$j+1,($i-$j-1)).")".substr($st,$i+1);
@@ -185,8 +189,9 @@ function mathphp($st,$varlist) {
   return $st;
 }
 
-function safepow($base,$power) {
-	if ($base==0) {if($power==0) {return sqrt(-1);} else {return 0;}}
+function safepow($base,$power)
+{
+	if ($base==0) {if ($power==0) {return sqrt(-1);} else {return 0;}}
 	if ($base<0 && floor($power)!=$power) {
 		for ($j=3; $j<50; $j+=2) {
 			if (abs(round($j*$power)-($j*$power))<.000001) {
@@ -210,30 +215,35 @@ function safepow($base,$power) {
 	return $result;
 }
 
-function factorial($x) {
+function factorial($x)
+{
 	for ($i=$x-1;$i>0;$i--) {
-		$x *= $i;	
+		$x *= $i;
 	}
 	return ($x<0?false:($x==0?1:$x));
 }
 //basic trig cofunctions
-function sec($x) {
+function sec($x)
+{
 	return (1/cos($x));
 }
-function csc($x) {
+function csc($x)
+{
 	return (1/sin($x));
 }
-function cot($x) {
+function cot($x)
+{
 	return (1/tan($x));
 }
-function sech($x) {
+function sech($x)
+{
 	return (1/cosh($x));
 }
-function csch($x) {
+function csch($x)
+{
 	return (1/sinh($x));
 }
-function coth($x) {
+function coth($x)
+{
 	return (1/tanh($x));
 }
-
-?>

@@ -42,7 +42,6 @@ if (isset($_GET['csv_sample']) && $_GET['csv_sample']==1 && isset($_GET['sample_
     exit;
 }
 
-
 if ($importForm -> isSubmitted()) {
     try {
         if (!is_dir($currentUser -> user['directory']."/temp")) {
@@ -62,10 +61,6 @@ if ($importForm -> isSubmitted()) {
         if ($importType == "anything") {
          $import_types = $import_export_types;
          unset($import_types['anything']);
-
-
-
-
 
          $log = array("success" => array(), "failure" => array());
          foreach ($import_types as $import_type => $import_name) {
@@ -89,10 +84,7 @@ if ($importForm -> isSubmitted()) {
           }
          }
 
-
          // Variable to remove the header elements from success/failure counting
-
-
 
           $excess_elements = sizeof($import_export_types); // minus the 'anything'
 

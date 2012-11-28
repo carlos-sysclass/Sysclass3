@@ -11,5 +11,3 @@ define("__COURSE", "Curso");
 define("__COURSE_CLASSE", "Turmas");
 define("__COURSE_CREATE_NEW_CLASSE", "Criar Turma");
 define("__USERCLASSE", "Turma");
-
-?>

@@ -19,7 +19,6 @@
  * @version    $Id: Math.php 14041 2009-02-10 21:49:38Z thomas $
  */
 
-
 /**
  * Utility class for proxying math function to bcmath functions, if present,
  * otherwise to PHP builtin math operators, with limited detection of overflow conditions.
@@ -103,10 +102,12 @@ class Zend_Locale_Math
             $roundUp = str_pad('', $length, '0');
             $roundUp[$decPos] = '.';
             $roundUp[$roundPos + $decPos] = '1';
+
             return bcadd($op1, $roundUp, $precision);
         } elseif ($precision >= 0) {
             return substr($op1, 0, $decPos + ($precision ? $precision + 1: 0));
         }
+
         return (string) $op1;
     }
 
@@ -145,6 +146,7 @@ class Zend_Locale_Math
         if (!empty($convert['negative_sign']) and (strpos($value, "-"))) {
             $value = str_replace("-", $convert['negative_sign'], $value);
         }
+
         return $value;
     }
 
@@ -186,6 +188,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcadd($op1, $op2, $scale);
     }
 
@@ -201,6 +204,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcsub($op1, $op2, $scale);
     }
 
@@ -216,6 +220,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcpow($op1, $op2, $scale);
     }
 
@@ -231,6 +236,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcmul($op1, $op2, $scale);
     }
 
@@ -246,6 +252,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bcdiv($op1, $op2, $scale);
     }
 
@@ -259,6 +266,7 @@ class Zend_Locale_Math
     public static function Sqrt($op1, $scale = null)
     {
         $op1 = self::exponent($op1, $scale);
+
         return bcsqrt($op1, $scale);
     }
 
@@ -273,6 +281,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1);
         $op2 = self::exponent($op2);
+
         return bcmod($op1, $op2);
     }
 
@@ -288,6 +297,7 @@ class Zend_Locale_Math
     {
         $op1 = self::exponent($op1, $scale);
         $op2 = self::exponent($op2, $scale);
+
         return bccomp($op1, $op2, $scale);
     }
 }

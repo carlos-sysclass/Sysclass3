@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Filter_Interface */
 require_once 'Zend/Pdf/Filter/Interface.php';
-
 
 /**
  * ASCII85 stream filter

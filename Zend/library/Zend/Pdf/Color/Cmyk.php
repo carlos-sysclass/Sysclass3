@@ -66,7 +66,6 @@ class Zend_Pdf_Color_Cmyk extends Zend_Pdf_Color
      */
     private $_k;
 
-
     /**
      * Object constructor
      *
@@ -111,4 +110,3 @@ class Zend_Pdf_Color_Cmyk extends Zend_Pdf_Color
              . $this->_k->toString() .     ($stroking? " K\n" : " k\n");
     }
 }
-

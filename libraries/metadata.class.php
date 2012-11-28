@@ -20,7 +20,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
  *
 
- * @package SysClass 
+ * @package SysClass
 
  */
 abstract class MagesterInformation
@@ -29,7 +29,7 @@ abstract class MagesterInformation
 
      * Metadata array.
 
-     * 
+     *
 
      * This array holds the actual metadata, while the keys are the Dublin Core atributes.
 
@@ -47,7 +47,7 @@ abstract class MagesterInformation
 
      * Metadata attributes
 
-     * 
+     *
 
      * This array holds the metadata attributes along with their equivalent textual representation
 
@@ -65,7 +65,7 @@ abstract class MagesterInformation
 
      * Instantiate class
 
-     * 
+     *
 
      * This function is used to instantiate the class object. If $metadata is specified
 
@@ -81,7 +81,7 @@ abstract class MagesterInformation
 
      * $metadata = new DublinCoreMetadata($md);			//Instantiate Dublin Core (DC) metadata representation
 
-     * </code> 
+     * </code>
 
      *
 
@@ -92,7 +92,8 @@ abstract class MagesterInformation
      * @access public
 
      */
-    function __construct($metadata = false) {
+    function __construct($metadata = false)
+    {
         if ($metadata) {
             foreach ($this -> metadataAttributes as $attribute => $label) {
                 if (isset($metadata[$attribute]) && $metadata[$attribute]) {
@@ -109,7 +110,7 @@ abstract class MagesterInformation
 
      * This function is used to update the information, based on the $attributes array.
 
-     * This is an array of attribute/value pairs, where attributes are part of the information 
+     * This is an array of attribute/value pairs, where attributes are part of the information
 
      * type (for example Dublin Core attributes).
 
@@ -117,15 +118,15 @@ abstract class MagesterInformation
 
      * <code>
 
-     * $metadata = new DublinCoreMetadata($md);					//Instantiate Dublin Core (DC) metadata representation 
+     * $metadata = new DublinCoreMetadata($md);					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
      * </code>
 
-     *   
+     *
 
      * @param array $attributes The new attribute/value pairs
 
@@ -134,7 +135,8 @@ abstract class MagesterInformation
      * @access public
 
      */
-    public function update($attributes) {
+    public function update($attributes)
+    {
         foreach ($attributes as $node => $value) {
             if (in_array($node, array_keys($this -> metadataAttributes))) {
                 $this -> metadataArray[$node] = $value;
@@ -145,7 +147,7 @@ abstract class MagesterInformation
 
      * Convert information to XML
 
-     * 
+     *
 
      * This function is used to convert the current information (or metadata) attribute/value pairs
 
@@ -157,7 +159,7 @@ abstract class MagesterInformation
 
      * $metadata = new DublinCoreMetadata($md);					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -172,24 +174,26 @@ abstract class MagesterInformation
      * @access public
 
      */
-    public function toXML() {
+    public function toXML()
+    {
         foreach ($this -> metadataArray as $attribute => $value) {
             $dc[] = "<$attribute>$value</$attribute>";
         }
         $xml = '<metadata>'.implode("\n", $dc).'</metadata>';
+
         return $xml;
     }
     /**
 
      * Convert XML to information
 
-     * 
+     *
 
-     * This function is used to convert an XML representation to inner information (or metadata) 
+     * This function is used to convert an XML representation to inner information (or metadata)
 
      * attribute/value pairs
 
-     * 
+     *
 
      * <br/>Example:
 
@@ -197,9 +201,9 @@ abstract class MagesterInformation
 
      * $metadata = new DublinCoreMetadata();					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> fromXML($xml);								//Load metadata XML 
+     * $metadata -> fromXML($xml);								//Load metadata XML
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -214,11 +218,12 @@ abstract class MagesterInformation
      * @access public
 
      */
-    public function fromXML($xml) {
+    public function fromXML($xml)
+    {
         $sxi = new SimpleXMLIterator($xml);
         foreach ($sxi as $node => $value) {
             if (in_array($node, array_keys($this -> metadataAttributes))) {
-                $this -> metadataArray[$node] = (string)$value;
+                $this -> metadataArray[$node] = (string) $value;
             }
         }
     }
@@ -226,7 +231,7 @@ abstract class MagesterInformation
 
      * Create a form for information manipulation
 
-     * 
+     *
 
      * This function sets up required fields for manipulating information
 
@@ -251,7 +256,8 @@ abstract class MagesterInformation
      * @access public
 
      */
-    public function toHTMLQuickForm(& $form) {
+    public function toHTMLQuickForm(& $form)
+    {
         foreach ($this -> metadataAttributes as $attribute => $label) {
             $form -> addElement('textarea', $attribute, $label, 'class = "inputText" style = "display:none;width:80%" id = "'.$attribute.'"');
             $form -> setDefaults(array($attribute => $this -> metadataArray[$attribute]));
@@ -261,7 +267,7 @@ abstract class MagesterInformation
 
      * Print HTML code for information
 
-     * 
+     *
 
      * This function prints HTML code suitable for viewing and editing information.
 
@@ -273,7 +279,7 @@ abstract class MagesterInformation
 
      * $metadata = new DublinCoreMetadata($md);					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> toHTML($form);								//Populate form fields 
+     * $metadata -> toHTML($form);								//Populate form fields
 
      * </code>
 
@@ -283,7 +289,7 @@ abstract class MagesterInformation
 
      * parameter is provided, so that this Javascript code may be optionally excluded. This way,
 
-     * if we want to have many information instances in one page, only the last one should print 
+     * if we want to have many information instances in one page, only the last one should print
 
      * the Javascript code.
 
@@ -295,7 +301,7 @@ abstract class MagesterInformation
 
      * $metadata = new LearningObjectInformation($info);		//Instantiate Learning Object (LO) information representation
 
-     * $metadata -> toHTML($form, false);						//Populate form fields but don't print JS 
+     * $metadata -> toHTML($form, false);						//Populate form fields but don't print JS
 
      * $metadata = new DublinCoreMetadata($md);					//Instantiate Dublin Core (DC) metadata representation
 
@@ -309,7 +315,7 @@ abstract class MagesterInformation
 
      * @param boolean $printJS Whether to print the accompanying Javascript functions
 
-     * @param boolean $showTools Whether to show add/edit/delete handles  
+     * @param boolean $showTools Whether to show add/edit/delete handles
 
      * @return string The HTML code
 
@@ -318,8 +324,9 @@ abstract class MagesterInformation
      * @access public
 
      */
-    public function toHTML(& $form, $printJS = true, $showTools = true) {
-        $this -> toHTMLQuickForm($form); //Assign proper elements to the form 
+    public function toHTML(& $form, $printJS = true, $showTools = true)
+    {
+        $this -> toHTMLQuickForm($form); //Assign proper elements to the form
      $renderer = new HTML_QuickForm_Renderer_ArraySmarty($foo); //Get a smarty renderer, only because it reforms the form in a very convenient way for printing html
      $form -> accept($renderer); //Render the form
      $formArray = $renderer -> toArray(); //Get the rendered form fields
@@ -351,40 +358,44 @@ abstract class MagesterInformation
                   </span>
                   ';
             }
-         $html .= '            				
+         $html .= '
                    <span style = "display:none;">
               <img class = "ajaxHandle" src = "images/16x16/success.png" id = "submit_'.$attribute.'" alt = "'._SAVE.'" title = "'._SAVE.'" onclick = "submitField(this, \''.$attribute.'\');" />
                  <img class = "ajaxHandle" src = "images/16x16/error_delete.png" id = "cancel_'.$attribute.'" alt = "'._CANCEL.'" title = "'._CANCEL.'" onclick = "toggleFields(\''.$attribute.'\')" />
                 </span>
-      </td></tr>';		                                					                                				  
+      </td></tr>';
      }
      $html .= '
                 </table>';
      if ($printJS) {
          $html .= "
     <script>
-             function deleteField(el, key) {
+             function deleteField(el, key)
+             {
               if (confirm('"._IRREVERSIBLEACTIONAREYOUSURE."')) {
                $(key).value = '';
                submitField(el, key, 'delete');
               }
              }
-             function toggleFields(key) {
+             function toggleFields(key)
+             {
               $(key).toggle(); //text area
               $(key).next().toggle(); //span with label
               $(key).next().next().toggle(); //Add/edit and delete tools
               $(key).next().next().next().toggle(); //submit and cancel tools
     }
-    function submitField(el, key, action) {
+    function submitField(el, key, action)
+    {
      //action == 'delete' ? el = $('delete_'+key) : el = $('cancel_'+key);
                     var url = '".$_SERVER['REQUEST_URI']."';
                     parameters = {postAjaxRequest:1, dc:key, value:encodeURIComponent($(key).value), method: 'get'};
                     ajaxRequest(el, url, parameters, onSubmitField);
                 }
-                function onSubmitField(el, response) {
+                function onSubmitField(el, response)
+                {
                  if (el.id.match(/submit_/)) {
                   key = el.id.replace('submit_', '');
-                 } else if (el.id.match(/delete_/)) {
+                 } elseif (el.id.match(/delete_/)) {
                   key = el.id.replace('delete_', '');
                  }
                  if (response == '') {
@@ -400,6 +411,7 @@ abstract class MagesterInformation
        }
              </script>";
      }
+
      return $html;
     }
 }
@@ -409,7 +421,7 @@ abstract class MagesterInformation
 
  *
 
- * @package SysClass 
+ * @package SysClass
 
  */
 class DublinCoreMetadata extends MagesterInformation
@@ -418,9 +430,9 @@ class DublinCoreMetadata extends MagesterInformation
 
      * Dublin Core attributes for XML metadata
 
-     * 
+     *
 
-     * This array holds the Dublin Core attributes as keys and their equivalent textual 
+     * This array holds the Dublin Core attributes as keys and their equivalent textual
 
      * representations as values.
 
@@ -454,7 +466,7 @@ class DublinCoreMetadata extends MagesterInformation
 
      * Instantiate class
 
-     * 
+     *
 
      * This is the class constructor for Dublin Core metadata. If the $metadata array
 
@@ -470,7 +482,7 @@ class DublinCoreMetadata extends MagesterInformation
 
      * </code>
 
-     * 
+     *
 
      * @param array $metadata An optional metadata array
 
@@ -479,7 +491,8 @@ class DublinCoreMetadata extends MagesterInformation
      * @access public
 
      */
-    function __construct($metadata = false) {
+    function __construct($metadata = false)
+    {
         $this -> metadataAttributes = self :: $dublinCoreAttributes;
         parent :: __construct($metadata);
     }
@@ -487,7 +500,7 @@ class DublinCoreMetadata extends MagesterInformation
 
      * Convert information to XML
 
-     * 
+     *
 
      * This function is used to convert the current information (or metadata) attribute/value pairs
 
@@ -499,9 +512,9 @@ class DublinCoreMetadata extends MagesterInformation
 
      * $metadata = new DublinCoreMetadata();					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> fromXML($xml);								//Load metadata XML 
+     * $metadata -> fromXML($xml);								//Load metadata XML
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -518,24 +531,26 @@ class DublinCoreMetadata extends MagesterInformation
      * @access public
 
      */
-    public function toXML($prefix = '') {
+    public function toXML($prefix = '')
+    {
         foreach (self :: $dublinCoreAttributes as $attribute => $value) {
             $dc[] = "<".$prefix.$attribute.">".$this -> metadataArray[$attribute]."</".$prefix.$attribute.">";
         }
         $xml = implode("\n", $dc);
+
         return $xml;
     }
     /**
 
      * Convert XML to information
 
-     * 
+     *
 
-     * This function is used to convert an XML representation to inner information (or metadata) 
+     * This function is used to convert an XML representation to inner information (or metadata)
 
      * attribute/value pairs
 
-     * 
+     *
 
      * <br/>Example:
 
@@ -543,9 +558,9 @@ class DublinCoreMetadata extends MagesterInformation
 
      * $metadata = new DublinCoreMetadata();					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> fromXML($xml);								//Load metadata XML 
+     * $metadata -> fromXML($xml);								//Load metadata XML
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -560,11 +575,12 @@ class DublinCoreMetadata extends MagesterInformation
      * @access public
 
      */
-    public function fromXML($xml) {
+    public function fromXML($xml)
+    {
         $sxi = new SimpleXMLIterator($xml);
         foreach ($sxi as $node => $value) {
             if (in_array($node, array_keys($this -> metadataAttributes))) {
-                $this -> metadataArray[$node] = (string)$value;
+                $this -> metadataArray[$node] = (string) $value;
             }
         }
     }
@@ -575,7 +591,7 @@ class DublinCoreMetadata extends MagesterInformation
 
  *
 
- * @package SysClass 
+ * @package SysClass
 
  */
 class LearningObjectInformation extends MagesterInformation
@@ -584,7 +600,7 @@ class LearningObjectInformation extends MagesterInformation
 
      * Learning object information
 
-     * 
+     *
 
      * This array holds attributes that describe a learning object. Keys are the attributes and values are
 
@@ -596,7 +612,7 @@ class LearningObjectInformation extends MagesterInformation
 
      * @since 3.5.0
 
-     * @access public 
+     * @access public
 
      * @static
 
@@ -612,7 +628,7 @@ class LearningObjectInformation extends MagesterInformation
 
      * Instantiate class
 
-     * 
+     *
 
      * This is the class constructor for Learning Object (LO) information. If the $metadata array
 
@@ -628,7 +644,7 @@ class LearningObjectInformation extends MagesterInformation
 
      * </code>
 
-     * 
+     *
 
      * @param array $metadata An optional metadata/information array
 
@@ -637,7 +653,8 @@ class LearningObjectInformation extends MagesterInformation
      * @access public
 
      */
-    function __construct($metadata) {
+    function __construct($metadata)
+    {
         $this -> metadataAttributes = self :: $learningObjectAttributes;
         parent :: __construct($metadata);
     }
@@ -645,7 +662,7 @@ class LearningObjectInformation extends MagesterInformation
 
      * Convert information to XML
 
-     * 
+     *
 
      * This function is used to convert the current information (or metadata) attribute/value pairs
 
@@ -657,9 +674,9 @@ class LearningObjectInformation extends MagesterInformation
 
      * $metadata = new LearningObjectInformation();				//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> fromXML($xml);								//Load metadata XML 
+     * $metadata -> fromXML($xml);								//Load metadata XML
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -674,24 +691,26 @@ class LearningObjectInformation extends MagesterInformation
      * @access public
 
      */
-    public function toXML() {
+    public function toXML()
+    {
         foreach ($this -> metadataArray as $attribute => $value) {
             $dc[] = "<$attribute>$value</$attribute>";
         }
         $xml = implode("\n", $dc);
+
         return $xml;
     }
  /**
 
      * Convert XML to information
 
-     * 
+     *
 
-     * This function is used to convert an XML representation to inner information (or metadata) 
+     * This function is used to convert an XML representation to inner information (or metadata)
 
      * attribute/value pairs
 
-     * 
+     *
 
      * <br/>Example:
 
@@ -699,9 +718,9 @@ class LearningObjectInformation extends MagesterInformation
 
      * $metadata = new DublinCoreMetadata();					//Instantiate Dublin Core (DC) metadata representation
 
-     * $metadata -> fromXML($xml);								//Load metadata XML 
+     * $metadata -> fromXML($xml);								//Load metadata XML
 
-     * $metadata -> update(array('title' => 'new title'));		//Update a DC field  
+     * $metadata -> update(array('title' => 'new title'));		//Update a DC field
 
      * $xml = $metadata -> toXML();								//Return the XML representation of the changed metadata
 
@@ -716,11 +735,12 @@ class LearningObjectInformation extends MagesterInformation
      * @access public
 
      */
-    public function fromXML($xml) {
+    public function fromXML($xml)
+    {
         $sxi = new SimpleXMLIterator($xml);
         foreach ($sxi as $node => $value) {
             if (in_array($node, array_keys($this -> metadataAttributes))) {
-                $this -> metadataArray[$node] = (string)$value;
+                $this -> metadataArray[$node] = (string) $value;
             }
         }
     }

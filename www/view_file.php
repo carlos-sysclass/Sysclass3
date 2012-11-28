@@ -52,4 +52,3 @@ try {
 } catch (MagesterFileException $e) {
     echo MagesterSystem :: printErrorMessage($e -> getMessage());
 }
-?>

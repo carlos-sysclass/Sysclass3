@@ -113,7 +113,7 @@ class HTML_QuickForm2_MessageProvider_Strftime implements HTML_QuickForm2_Messag
             }
             $message = $message[$key];
         }
+
         return $message;
     }
 }
-?>

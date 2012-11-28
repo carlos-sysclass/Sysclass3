@@ -46,7 +46,6 @@ $form -> addRule('user', _INVALIDFIELDDATA, 'checkParameter', 'login');
 
 $form -> setDefaults(array('recipients' => 'active_users'));
 
-
 // GGET DATA FOR CREATING THE SELECTS
 /**************************************************/
 $form -> addElement('text', 'subject', _SUBJECT, 'class = "emailSubjectText"');

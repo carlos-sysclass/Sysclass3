@@ -19,4 +19,3 @@ define("_BANNERS_DELETEBANNER","Изтрий банер");//Delete banner
 define("_BANNERS_EDITBANNER","Редактиране банер");//Edit banner
 define("_BANNERS_GOTOBANNERPAGE","Отидете на страницата Рекламни Банери");//Go to Ad Banners page
 define("_BANNERS_ORSELECTONEFROMLIST","Или избери от списъка");//Or select one from list
-?>

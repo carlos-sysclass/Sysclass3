@@ -17,7 +17,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /**
  * PHP Array (OO wrapper)
  * Used to be returned by reference by __get() methods
@@ -27,13 +26,13 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @todo       also implement Countable for PHP 5.1 but not yet to stay 5.0 compatible
  */
-class Zend_Pdf_PhpArray implements ArrayAccess, Iterator, Countable {
+class Zend_Pdf_PhpArray implements ArrayAccess, Iterator, Countable
+{
     /**
      * Array element
      * @var mixed
      */
     protected $_items = array();
-
 
     /**
      * Object constructor
@@ -44,54 +43,47 @@ class Zend_Pdf_PhpArray implements ArrayAccess, Iterator, Countable {
     {
         if ($srcArray === null) {
             reset($this->_items);
-        } else if (is_array($srcArray)) {
+        } elseif (is_array($srcArray)) {
             $this->_items = $srcArray;
         } else {
             throw new Exception('Array can be initialized only by other array');
         }
     }
 
-
     public function current()
     {
         return current($this->_items);
     }
-
 
     public function next()
     {
         return next($this->_items);
     }
 
-
     public function key()
     {
         return key($this->_items);
     }
 
-
-    public function valid() {
+    public function valid()
+    {
         return current($this->_items)!==false;
     }
-
 
     public function rewind()
     {
         reset($this->_items);
     }
 
-
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->_items);
     }
 
-
     public function offsetGet($offset)
     {
         return $this->_items[$offset];
     }
-
 
     public function offsetSet($offset, $value)
     {
@@ -102,18 +94,16 @@ class Zend_Pdf_PhpArray implements ArrayAccess, Iterator, Countable {
         }
     }
 
-
     public function offsetUnset($offset)
     {
         unset($this->_items[$offset]);
     }
 
-
     public function clear()
     {
         $this->_items = array();
     }
-    
+
     /**
      * Defined by Countable interface
      *
@@ -123,6 +113,5 @@ class Zend_Pdf_PhpArray implements ArrayAccess, Iterator, Countable {
     {
         return count($this->_items);
     }
-    
-}
 
+}

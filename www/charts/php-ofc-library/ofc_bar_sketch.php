@@ -8,16 +8,15 @@ class bar_sketch extends bar_base
 	{
 		$this->type      = "bar_sketch";
 		parent::bar_base();
-		
+
 		$this->set_colour( $colour );
 		$this->set_outline_colour( $outline_colour );
 		$this->offset = $fun_factor;
 	}
-	
+
 	function set_outline_colour( $outline_colour )
 	{
 		$tmp = 'outline-colour';
-		$this->$tmp = $outline_colour;	
+		$this->$tmp = $outline_colour;
 	}
 }
-

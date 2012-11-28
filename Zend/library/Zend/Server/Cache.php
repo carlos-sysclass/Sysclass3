@@ -78,10 +78,10 @@ class Zend_Server_Cache
     /**
      * Load server definition from a file
      *
-     * Unserializes a stored server definition from $filename. Returns false if 
+     * Unserializes a stored server definition from $filename. Returns false if
      * it fails in any way, true on success.
      *
-     * Useful to prevent needing to build the server definition on each 
+     * Useful to prevent needing to build the server definition on each
      * request. Sample usage:
      *
      * <code>
@@ -115,7 +115,6 @@ class Zend_Server_Cache
             return false;
         }
 
-
         if (false === ($dispatch = @file_get_contents($filename))) {
             return false;
         }
@@ -139,6 +138,7 @@ class Zend_Server_Cache
     {
         if (is_string($filename) && file_exists($filename)) {
             unlink($filename);
+
             return true;
         }
 

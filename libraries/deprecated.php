@@ -36,7 +36,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 *
 
 */
-function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_active = true) {
+function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_active = true)
+{
     if (!$lessons_ID || !eF_checkParameter($lessons_ID, 'id')) {
         $lessons_ID = $_SESSION['s_lessons_ID'];
     }
@@ -63,6 +64,7 @@ function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_acti
     if (sizeof($tree) > 0) {
         $tree = eF_putInCorrectOrder($tree, $only_active); //Reorder the units to match the content series
     }
+
     return $tree;
 }
 
@@ -89,8 +91,9 @@ function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_acti
 * @deprecated
 
 */
-function eF_makeCompatibleTree(&$tree, $nodes, $level = 0) {
-    foreach($nodes as $node) {
+function eF_makeCompatibleTree(&$tree, $nodes, $level = 0)
+{
+    foreach ($nodes as $node) {
         $new_node = array('id' => $node['id'],
                           'name' => $node['name'],
                           'ctg_type' => $node['ctg_type'],
@@ -103,6 +106,7 @@ function eF_makeCompatibleTree(&$tree, $nodes, $level = 0) {
         }
         eF_makeCompatibleTree($tree, $node['children'], $level + 1);
     }
+
     return $tree;
 }
 /**
@@ -134,7 +138,8 @@ function eF_makeCompatibleTree(&$tree, $nodes, $level = 0) {
 * - Added the check if the first unit is active
 
 */
-function eF_putInCorrectOrder($tree, $only_active) {
+function eF_putInCorrectOrder($tree, $only_active)
+{
     $current_unit = $tree[0];
     if ($current_unit['active'] || !$only_active) {
         $correct_tree[0] = $tree[0];
@@ -146,6 +151,7 @@ function eF_putInCorrectOrder($tree, $only_active) {
             $correct_tree[] = $current_unit;
         }
     }
+
     return $correct_tree;
 }
 /**
@@ -184,6 +190,7 @@ function eF_getSeenContent($login, $lessons_ID)
  if ($done_content == false) { // in case $done_content is false from a "b:0;" value in database
   $done_content = array();
  }
+
     return ($done_content + $done_tests);
 }
 /**
@@ -297,8 +304,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     if ($_SESSION['s_type'] == 'student') {
         $seen_content = eF_getSeenContent($_SESSION['s_login'], $lessons_ID);
         //print_r($seen_content);
-        foreach ($tree as $key => $value)
-        {
+        foreach ($tree as $key => $value) {
             if (in_array($value['id'], $seen_content)) {
                 $tree[$key]['seen']='yes';
             }
@@ -355,8 +361,8 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
             //if (!eF_isDoneContent($tree[$i]['id'])) {
             if (!($tree[$i]['isDoneContent'])) {
                 $parent_keep = false;
-                for($k = 0; $k < sizeof($keep) AND !$parent_keep; $k++) {
-                    if($tree[$i]['id'] == $keep[$k]) {
+                for ($k = 0; $k < sizeof($keep) AND !$parent_keep; $k++) {
+                    if ($tree[$i]['id'] == $keep[$k]) {
                         $parent_keep = true;
                         $keep[$counter] = $tree[$i]['parent_id'];
                         $counter++;
@@ -481,7 +487,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
 
                     //do nothing
 
-                } else if (!$parent_keep) {
+                } elseif (!$parent_keep) {
 
                     $tree = array_merge(array_slice($tree, 0, $i), array_slice($tree, $i + 1, sizeof($tree) - 1));
 
@@ -503,8 +509,6 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
 
     }
 
-
-
     $keep = array();
 
 */
@@ -522,7 +526,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
                 }
                 if (!isset($tree[$i]['seen']) && $tree[$i]['ctg_type'] == 'tests') { //This line checks against 'seen' attribute for tests, so that a test is considered 'unseen' not if it hasn't been visited, but if it hasn't been completed
                     //do nothing
-                } else if (!$parent_keep) {
+                } elseif (!$parent_keep) {
                     $tree = array_merge(array_slice($tree, 0, $i), array_slice($tree, $i + 1, sizeof($tree) - 1));
                 } else {
                     $tree[$i]['active'] = false;
@@ -647,6 +651,7 @@ function eF_getParents($content_ID, $tree = null, $tree_indexes = null)
             $now++;
         }
     }
+
     return $parents;
 }
 /**
@@ -693,6 +698,7 @@ function eF_getOffset()
     if (!isset($offset)) {
         $offset = 0;
     }
+
     return $offset;
 }
 /**
@@ -702,7 +708,8 @@ function eF_getOffset()
 * @deprecated
 
 */
-function getLessonContentUnits($lessons_ID = false, $nonempty = false) {
+function getLessonContentUnits($lessons_ID = false, $nonempty = false)
+{
     if (!$lessons_ID) {
         $lessons_ID = $_SESSION['s_lessons_ID'];
     }
@@ -717,6 +724,7 @@ function getLessonContentUnits($lessons_ID = false, $nonempty = false) {
         $units = eF_getTableData("content", "count(*)", "ctg_type != 'tests' and lessons_ID = $lessons_ID and active = 1".$nonempty);
         $tests = eF_getTableData("content", "count(*)", "ctg_type = 'tests' and lessons_ID = $lessons_ID and active = 1");
     }
+
     return array('units' => $units[0]['count(*)'], 'tests' => $tests[0]['count(*)']);
 }
 /**
@@ -762,7 +770,7 @@ function eF_printHeader($editor = false)
     print '<LINK rel="stylesheet" type="text/css" href="slashfiles/menu.css" />
     <LINK rel="stylesheet" type="text/css" href="css/drag-drop-folder-tree.css" />
     <LINK rel="stylesheet" type="text/css" href="css/tabber.css" />';
-    if($editor == true) {
+    if ($editor == true) {
         print '
         <script language="javascript" type="text/javascript" src="editor/tiny_mce/tiny_mce.js"></script>
         <script language="javascript" type="text/javascript">
@@ -836,7 +844,8 @@ function eF_printHeader($editor = false)
         external_image_list_url : "myexternallist.js",
         flash_external_list_url : "example_data/example_flash_list.js"
         });
-    function myCustomFileBrowser(field_name, url, type, win) {
+    function myCustomFileBrowser(field_name, url, type, win)
+    {
         var fileBrowserWindow = new Array();
         fileBrowserWindow["file"] = "editor/popups/insert_image.php" + "?type=" + type + "&lessons_ID='.$_SESSION['s_lessons_ID'].'";
         fileBrowserWindow["title"] = "File Browser";
@@ -941,8 +950,7 @@ print'        </HEAD>
         <script type="text/javascript" src="js/PieNG.js"></script>
         <script type="text/javascript" src="js/tabber.js"></script>
         <script type="text/javascript" LANGUAGE="JavaScript">
-            if(window.location==top.location)
-            {
+            if (window.location==top.location) {
             //if(document.body.style && document.body.style.marginLeft)
                     //  document.body.style.marginLeft = "10px";
             }
@@ -974,13 +982,13 @@ print'        </HEAD>
                     resizeable = 1;
                 }
                 popup = window.open(URL, '', 'toolbar = 0, scrollbars = 1, location = 0, statusbar = 1, menubar = 0, resizable = '+resizeable+', width = '+width+', height = '+height+', left = '+left+', top = '+top);
+
                 return popup;
             }
             //���� �� ������� javascript ������ �� iframe ��� scorm ��� ����� �������, ���� �� ������ ��� ��� ������
             function setCorrectIframeSize()
             {
-                if (frame = window.document.getElementById('scormFrameID'))
-                {
+                if (frame = window.document.getElementById('scormFrameID')) {
                     innerDoc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
                     objToResize = (frame.style) ? frame.style : frame;
                     if (frame.document) {
@@ -1013,7 +1021,8 @@ print'        </HEAD>
 * @return array The tree leaves
 
 */
-function eF_findLeaves(&$units) {
+function eF_findLeaves(&$units)
+{
     for ($i = 0; $i < sizeof($units); $i++) {
         $ok = true;
         for ($j = 0; $j < sizeof($units); $j++) {
@@ -1030,6 +1039,7 @@ function eF_findLeaves(&$units) {
         unset($units[$unset_array[$i]]);
     }
     $units = array_values($units);
+
     return $leaves;
 }
 /**
@@ -1086,13 +1096,10 @@ function eF_deleteFolder($folder)
     }
 }
 
-
-
-
-
 if (!function_exists('date_create_from_format')) {
-	function date_create_from_format($format, $dateString) {
-		switch($format) {
+	function date_create_from_format($format, $dateString)
+	{
+		switch ($format) {
 			case 'd/m/Y' : {
 				list($day, $month, $year) = sscanf($dateString, '%02d/%02d/%04d');
 				if (
@@ -1176,7 +1183,8 @@ if (!function_exists('date_create_from_format')) {
 }
 
 if (!function_exists('array_merge_recursive_keys')) {
-	function array_merge_recursive_keys() {
+	function array_merge_recursive_keys()
+	{
 		$arrays = func_get_args();
 		$base = array_shift($arrays);
 
@@ -1193,4 +1201,3 @@ if (!function_exists('array_merge_recursive_keys')) {
 		return $base;
 	}
 }
-

@@ -4,7 +4,8 @@
 * Smarty plugin: eF_template_printSide function
 
 */
-function smarty_function_eF_template_printPreviousNext($params, &$smarty) {
+function smarty_function_eF_template_printPreviousNext($params, &$smarty)
+{
  mb_strlen($params['previous']['name']) - 3 > MagesterUnit::MAXIMUM_NAME_LENGTH ? $params['previous']['name'] = mb_substr($params['previous']['name'], 0, MagesterUnit::MAXIMUM_NAME_LENGTH).'...' : null;
  mb_strlen($params['next']['name']) - 3 > MagesterUnit::MAXIMUM_NAME_LENGTH ? $params['next']['name'] = mb_substr($params['next']['name'], 0, MagesterUnit::MAXIMUM_NAME_LENGTH).'...' : null;
  $params['previous'] ? $previousStr = '<a href = "'.basename($_SERVER['PHP_SELF']).'?view_unit='.$params['previous']['id'].'" title = "'.$params['previous']['name'].'"><img class = "handle" src = "images/32x32/navigate_left.png"  title = "'.$params['previous']['name'].'" alt = "'.$params['previous']['name'].'" /></a><a href = "'.basename($_SERVER['PHP_SELF']).'?view_unit='.$params['previous']['id'].'" title = "'.$params['previous']['name'].'">'.$params['previous']['name'].'</a>' : $previousStr = '';
@@ -44,6 +45,6 @@ function smarty_function_eF_template_printPreviousNext($params, &$smarty) {
 	}
 
 */
+
     return $previousStr.'&nbsp;'.$nextStr;
 }
-?>

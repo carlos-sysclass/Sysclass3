@@ -10,14 +10,15 @@
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>
  */
-class Minify_HTML_Helper {
+class Minify_HTML_Helper
+{
     public $rewriteWorks = true;
     public $minAppUri = '/min';
     public $groupsConfigFile = '';
 
     /*
      * Get an HTML-escaped Minify URI for a group or set of files
-     * 
+     *
      * @param mixed $keyOrFiles a group key or array of filepaths/URIs
      * @param array $opts options:
      *   'farExpires' : (default true) append a modified timestamp for cache revving
@@ -48,6 +49,7 @@ class Minify_HTML_Helper {
             $h->setGroup($keyOrFiles, $opts['farExpires']);
         }
         $uri = $h->getRawUri($opts['farExpires'], $opts['debug']);
+
         return htmlspecialchars($uri, ENT_QUOTES, $opts['charset']);
     }
 
@@ -71,6 +73,7 @@ class Minify_HTML_Helper {
         } elseif ($farExpires && $this->_lastModified) {
             $path .= "&" . $this->_lastModified;
         }
+
         return $path;
     }
 
@@ -109,11 +112,11 @@ class Minify_HTML_Helper {
             }
         }
     }
-    
+
     public static function getLastModified($sources, $lastModified = 0)
     {
         $max = $lastModified;
-        foreach ((array)$sources as $source) {
+        foreach ((array) $sources as $source) {
             if (is_object($source) && isset($source->lastModified)) {
                 $max = max($max, $source->lastModified);
             } elseif (is_string($source)) {
@@ -125,6 +128,7 @@ class Minify_HTML_Helper {
                 }
             }
         }
+
         return $max;
     }
 
@@ -132,7 +136,6 @@ class Minify_HTML_Helper {
     protected $_filePaths = array();
     protected $_lastModified = null;
 
-    
     /**
      * In a given array of strings, find the character they all have at
      * a particular index
@@ -141,7 +144,8 @@ class Minify_HTML_Helper {
      * @param int $pos index to check
      * @return mixed a common char or '' if any do not match
      */
-    protected static function _getCommonCharAtPos($arr, $pos) {
+    protected static function _getCommonCharAtPos($arr, $pos)
+    {
         $l = count($arr);
         $c = $arr[0][$pos];
         if ($c === '' || $l === 1)
@@ -158,7 +162,8 @@ class Minify_HTML_Helper {
      * @param array $paths root-relative URIs of files
      * @param string $minRoot root-relative URI of the "min" application
      */
-    protected static function _getShortestUri($paths, $minRoot = '/min/') {
+    protected static function _getShortestUri($paths, $minRoot = '/min/')
+    {
         $pos = 0;
         $base = '';
         $c;
@@ -173,7 +178,7 @@ class Minify_HTML_Helper {
         }
         $base = preg_replace('@[^/]+$@', '', $base);
         $uri = $minRoot . 'f=' . implode(',', $paths);
-        
+
         if (substr($base, -1) === '/') {
             // we have a base dir!
             $basedPaths = $paths;
@@ -188,6 +193,7 @@ class Minify_HTML_Helper {
                 ? $uri
                 : $bUri;
         }
+
         return $uri;
     }
 }

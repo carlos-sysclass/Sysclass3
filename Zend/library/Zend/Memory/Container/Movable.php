@@ -33,7 +33,8 @@ require_once 'Zend/Memory/Value.php';
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Memory_Container_Movable extends Zend_Memory_Container {
+class Zend_Memory_Container_Movable extends Zend_Memory_Container
+{
     /**
      * Internal object Id
      *

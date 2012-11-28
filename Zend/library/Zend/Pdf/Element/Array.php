@@ -18,14 +18,11 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
 
 /** Zend_Pdf_PhpArray */
 require_once 'Zend/Pdf/PhpArray.php';
-
-
 
 /**
  * PDF file 'array' element implementation
@@ -47,7 +44,6 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
      */
     private $_items;
 
-
     /**
      * Object constructor
      *
@@ -65,11 +61,10 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
                 }
                 $this->_items[] = $element;
             }
-        } else if ($val !== null){
+        } elseif ($val !== null) {
             throw new Zend_Pdf_Exception('Argument must be an array');
         }
     }
-
 
     /**
      * Provides access to $this->_items
@@ -77,13 +72,13 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
      * @param string $property
      * @return Zend_Pdf_PhpArray
      */
-    public function __get($property) {
+    public function __get($property)
+    {
         if ($property=='items') {
             return $this->_items;
         }
         throw new Exception('Undefined property: Zend_Pdf_Element_Array::$' . $property);
     }
-
 
     /**
      * Provides read-only access to $this->_items;
@@ -91,7 +86,8 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
      * @param unknown_type $offset
      * @param unknown_type $value
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         if ($property=='items') {
             throw new Exception('Array container cannot be overwritten');
         }
@@ -108,7 +104,6 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
         return Zend_Pdf_Element::TYPE_ARRAY;
     }
 
-
     /**
      * Return object as string
      *
@@ -121,7 +116,7 @@ class Zend_Pdf_Element_Array extends Zend_Pdf_Element
         $lastNL = 0;
 
         foreach ($this->_items as $element) {
-            if (strlen($outStr) - $lastNL > 128)  {
+            if (strlen($outStr) - $lastNL > 128) {
                 $outStr .= "\n";
                 $lastNL = strlen($outStr);
             }

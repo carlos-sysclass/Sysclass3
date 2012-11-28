@@ -19,8 +19,7 @@
 //
 // $Id: File.php,v 1.8 2003/12/12 21:10:10 xnoguer Exp $
 
-
-require_once ('OLE/PPS.php');
+require_once 'OLE/PPS.php';
 
 /**
 * Class for creating File PPS's for OLE containers
@@ -48,7 +47,7 @@ class OLE_PPS_File extends OLE_PPS
     {
         $this->_tmp_dir = '';
         $this->OLE_PPS(
-            null, 
+            null,
             $name,
             OLE_PPS_TYPE_FILE,
             null,
@@ -71,8 +70,10 @@ class OLE_PPS_File extends OLE_PPS
     {
         if (is_dir($dir)) {
             $this->_tmp_dir = $dir;
+
             return true;
         }
+
         return false;
     }
 
@@ -94,7 +95,7 @@ class OLE_PPS_File extends OLE_PPS
             fseek($this->_PPS_FILE, 0);
         }
     }
-    
+
     /**
     * Append data to PPS
     *
@@ -105,10 +106,8 @@ class OLE_PPS_File extends OLE_PPS
     {
         if ($this->_PPS_FILE) {
             fwrite($this->_PPS_FILE, $data);
-        }
-        else {
+        } else {
             $this->_data .= $data;
         }
     }
 }
-?>

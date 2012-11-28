@@ -6,7 +6,8 @@
  *
 
  */
-function smarty_function_eF_template_printCalendar($params, &$smarty) {
+function smarty_function_eF_template_printCalendar($params, &$smarty)
+{
  $events = $params['events'];
  //isset($params['ctg']) ? $current_ctg = $params['ctg'] : $current_ctg = 'control_panel';             //If a ctg is defined (e.g. ctg=calendar), use this as the links target. Otherwise, use control_panel (default)
  foreach ($events as $key => $event) {
@@ -152,5 +153,3 @@ $str .= '
 
  return $str;
 }
-
-?>

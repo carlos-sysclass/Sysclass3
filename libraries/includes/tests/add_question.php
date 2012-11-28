@@ -4,7 +4,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
-
 $loadScripts[] = 'includes/questions';
 if (!$_change_) {
     throw new MagesterUserException(_UNAUTHORIZEDACCESS, MagesterUserException::RESTRICTED_USER_TYPE);
@@ -39,7 +38,7 @@ foreach ($filesystemIterator as $key => $value) {
 $extraColumns = array(_INSERT);
 //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
 /**The file manager*/
-include "file_manager.php";
+include 'file_manager.php';
 
 //This page also needs an editor and ASCIIMathML
 $load_editor = true;
@@ -194,7 +193,7 @@ switch ($_GET['question_type']) { //Depending on the question type, the user mig
                 //$qtype_ans = sizeof($values['multiple_many']);
                 //if ($qtype_ans <= 4) {
                 //    $smarty -> assign("T_QUESTION_TYPE_CODE", "K5");
-                //} else if ($qtype_ans >= 5) {
+                //} elseif ($qtype_ans >= 5) {
                 //    $smarty -> assign("T_QUESTION_TYPE_CODE", "K6");
                 //}
 
@@ -476,7 +475,7 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['get_proposed_skills'])) {
         // If the lesson belongs only to courses, get all skills of its courses
         if ($lesson -> lesson['course_only']) {
             $lesson_belonging_courses = $lesson -> getCourses(true);
-            foreach($lesson_belonging_courses as $course) {
+            foreach ($lesson_belonging_courses as $course) {
                 $course_skills = $course ->getSkills(true);
                 foreach ($course_skills as $skillID => $skill) {
                     $skills_to_propose[] = $skillID;
@@ -504,11 +503,11 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['get_proposed_skills'])) {
 if (isset($_GET['postAjaxRequest']) && isset($_GET['skill'])) {
     if ($_GET['insert'] == "true") {
         eF_insertTableData("questions_to_skills", array("skills_ID" => $_GET['skill'], "questions_ID" => $_GET['edit_question'], "relevance" => $_GET['relevance']));
-    } else if ($_GET['insert'] == "update") {
+    } elseif ($_GET['insert'] == "update") {
         eF_updateTableData("questions_to_skills", array("relevance" => $_GET['relevance']), "skills_ID = '". $_GET['skill'] . "' AND questions_ID = '" . $_GET['edit_question'] . "'");
-    } else if ($_GET['insert'] == "false") {
+    } elseif ($_GET['insert'] == "false") {
         eF_deleteTableData("questions_to_skills", "skills_ID = '" . $_GET['skill']. "' AND questions_ID = '" . $_GET['edit_question'] . "'");
-    } else if (isset($_GET['addAll'])) {
+    } elseif (isset($_GET['addAll'])) {
         // Different management if a users' filter is set or not
         if ($_GET['filter']) {
             $existing_question_skills_r = eF_getTableData("questions_to_skills", "*", "questions_ID = '".$_GET['edit_question']."'");
@@ -548,10 +547,10 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['skill'])) {
         if (isset($all_skills_to_add)) {
             eF_execute("INSERT INTO questions_to_skills (questions_id, skills_ID, relevance) VALUES " . $all_skills_to_add);
         }
-    } else if (isset($_GET['removeAll'])) {
+    } elseif (isset($_GET['removeAll'])) {
         if ($_GET['filter']) {
             $all_related_skills = eF_getTableData("questions_to_skills JOIN module_hcd_skills ON skills_ID = skill_ID","skills_ID, description", "questions_ID = '".$_GET['edit_question'] . "'");
-            if(!empty($all_related_skills)) {
+            if (!empty($all_related_skills)) {
                 $all_related_skills = eF_filterData($all_related_skills,$_GET['filter']);
                 $skills_to_remove = array();
                 foreach ($all_related_skills as $skill) {

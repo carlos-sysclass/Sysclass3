@@ -141,14 +141,16 @@
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	function getParam($name, $def = false) {
+	function getParam($name, $def = false)
+	{
 		if (!isset($_GET[$name]))
 			return $def;
 
 		return preg_replace("/[^0-9a-z\-_,]+/i", "", $_GET[$name]); // Remove anything but 0-9,a-z,-_
 	}
 
-	function getFileContents($path) {
+	function getFileContents($path)
+	{
 		$path = realpath($path);
 
 		if (!$path || !@is_file($path))
@@ -170,7 +172,8 @@
 		return $content;
 	}
 
-	function putFileContents($path, $content) {
+	function putFileContents($path, $content)
+	{
 		if (function_exists("file_put_contents"))
 			return @file_put_contents($path, $content);
 
@@ -180,4 +183,3 @@
 			fclose($fp);
 		}
 	}
-?>

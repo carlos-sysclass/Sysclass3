@@ -28,4 +28,3 @@ define("_CHAT_LESSON_TITLE", "Lesson Title");
 define("_CHAT_FROM_DATE", "From Date");
 define("_CHAT_UNTIL_DATE", "To Date");
 define("_CHAT_MODULE_RATES", "Module rates");
-?>

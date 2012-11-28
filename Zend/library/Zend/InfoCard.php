@@ -92,7 +92,6 @@ class Zend_InfoCard
      */
     protected $_adapter;
 
-
     /**
      * InfoCard Constructor
      *
@@ -102,12 +101,12 @@ class Zend_InfoCard
     {
         $this->_keyPairs = array();
 
-        if(!extension_loaded('mcrypt')) {
+        if (!extension_loaded('mcrypt')) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Use of the Zend_InfoCard component requires the mcrypt extension to be enabled in PHP");
         }
 
-        if(!extension_loaded('openssl')) {
+        if (!extension_loaded('openssl')) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Use of the Zend_InfoCard component requires the openssl extension to be enabled in PHP");
         }
@@ -123,6 +122,7 @@ class Zend_InfoCard
     public function setAdapter(Zend_InfoCard_Adapter_Interface $a)
     {
         $this->_adapter = $a;
+
         return $this;
     }
 
@@ -134,7 +134,7 @@ class Zend_InfoCard
      */
     public function getAdapter()
     {
-        if($this->_adapter === null) {
+        if ($this->_adapter === null) {
             require_once 'Zend/InfoCard/Adapter/Default.php';
             $this->setAdapter(new Zend_InfoCard_Adapter_Default());
         }
@@ -161,6 +161,7 @@ class Zend_InfoCard
     public function setPkiCipherObject(Zend_InfoCard_Cipher_Pki_Interface $cipherObj)
     {
         $this->_pkiCipherObj = $cipherObj;
+
         return $this;
     }
 
@@ -183,6 +184,7 @@ class Zend_InfoCard
     public function setSymCipherObject($cipherObj)
     {
         $this->_symCipherObj = $cipherObj;
+
         return $this;
     }
 
@@ -196,12 +198,13 @@ class Zend_InfoCard
     public function removeCertificatePair($key_id)
     {
 
-        if(!key_exists($key_id, $this->_keyPairs)) {
+        if (!key_exists($key_id, $this->_keyPairs)) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Attempted to remove unknown key id: $key_id");
         }
 
         unset($this->_keyPairs[$key_id]);
+
         return $this;
     }
 
@@ -231,19 +234,19 @@ class Zend_InfoCard
 
         $key_id = md5($private_key_file.$public_key_file);
 
-        if(key_exists($key_id, $this->_keyPairs)) {
+        if (key_exists($key_id, $this->_keyPairs)) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Attempted to add previously existing certificate pair: $private_key_file, $public_key_file");
         }
 
-        switch($type) {
+        switch ($type) {
             case Zend_InfoCard_Cipher::ENC_RSA:
             case Zend_InfoCard_Cipher::ENC_RSA_OAEP_MGF1P:
                 $this->_keyPairs[$key_id] = array('private' => $private_key_file,
                                 'public'      => $public_key_file,
                                 'type_uri'    => $type);
 
-                if($password !== null) {
+                if ($password !== null) {
                     $this->_keyPairs[$key_id]['password'] = $password;
                 } else {
                     $this->_keyPairs[$key_id]['password'] = null;
@@ -267,7 +270,7 @@ class Zend_InfoCard
      */
     public function getCertificatePair($key_id)
     {
-        if(key_exists($key_id, $this->_keyPairs)) {
+        if (key_exists($key_id, $this->_keyPairs)) {
             return $this->_keyPairs[$key_id];
         }
 
@@ -293,7 +296,7 @@ class Zend_InfoCard
         unset($temp[0]);
         $certificateData = base64_decode(implode("\n", $temp));
 
-        switch($digestMethod) {
+        switch ($digestMethod) {
             case self::DIGEST_SHA1:
                 $digest_retval = sha1($certificateData, true);
                 break;
@@ -315,11 +318,11 @@ class Zend_InfoCard
     protected function _findCertifiatePairByDigest($digest, $digestMethod = self::DIGEST_SHA1)
     {
 
-        foreach($this->_keyPairs as $key_id => $certificate_data) {
+        foreach ($this->_keyPairs as $key_id => $certificate_data) {
 
             $cert_digest = $this->_getPublicKeyDigest($key_id, $digestMethod);
 
-            if($cert_digest == $digest) {
+            if ($cert_digest == $digest) {
                 return $key_id;
             }
         }
@@ -340,7 +343,7 @@ class Zend_InfoCard
 
         // Determine the Encryption Method used to encrypt the token
 
-        switch($encryptedData->getEncryptionMethod()) {
+        switch ($encryptedData->getEncryptionMethod()) {
             case Zend_InfoCard_Cipher::ENC_AES128CBC:
             case Zend_InfoCard_Cipher::ENC_AES256CBC:
                 break;
@@ -353,15 +356,14 @@ class Zend_InfoCard
 
         $keyinfo = $encryptedData->getKeyInfo();
 
-        if(!($keyinfo instanceof Zend_InfoCard_Xml_KeyInfo_XmlDSig)) {
+        if (!($keyinfo instanceof Zend_InfoCard_Xml_KeyInfo_XmlDSig)) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Expected a XML digital signature KeyInfo, but was not found");
         }
 
-
         $encryptedKey = $keyinfo->getEncryptedKey();
 
-        switch($encryptedKey->getEncryptionMethod()) {
+        switch ($encryptedKey->getEncryptionMethod()) {
             case Zend_InfoCard_Cipher::ENC_RSA:
             case Zend_InfoCard_Cipher::ENC_RSA_OAEP_MGF1P:
                 break;
@@ -374,7 +376,7 @@ class Zend_InfoCard
 
         $key_id = $this->_findCertifiatePairByDigest($securityTokenRef->getKeyReference());
 
-        if(!$key_id) {
+        if (!$key_id) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Unable to find key pair used to encrypt symmetric InfoCard Key");
         }
@@ -383,7 +385,7 @@ class Zend_InfoCard
 
         // Santity Check
 
-        if($certificate_pair['type_uri'] != $encryptedKey->getEncryptionMethod()) {
+        if ($certificate_pair['type_uri'] != $encryptedKey->getEncryptionMethod()) {
             require_once 'Zend/InfoCard/Exception.php';
             throw new Zend_InfoCard_Exception("Certificate Pair which matches digest is not of same algorithm type as document, check addCertificate()");
         }
@@ -432,41 +434,45 @@ class Zend_InfoCard
         require_once 'Zend/InfoCard/Exception.php';
         try {
             $signedAssertionsXml = $this->_extractSignedToken($strXmlToken);
-        } catch(Zend_InfoCard_Exception $e) {
+        } catch (Zend_InfoCard_Exception $e) {
             $retval->setError('Failed to extract assertion document');
             $retval->setCode(Zend_InfoCard_Claims::RESULT_PROCESSING_FAILURE);
+
             return $retval;
         }
 
         try {
             $assertions = Zend_InfoCard_Xml_Assertion::getInstance($signedAssertionsXml);
-        } catch(Zend_InfoCard_Exception $e) {
+        } catch (Zend_InfoCard_Exception $e) {
             $retval->setError('Failure processing assertion document');
             $retval->setCode(Zend_InfoCard_Claims::RESULT_PROCESSING_FAILURE);
+
             return $retval;
         }
 
-        if(!($assertions instanceof Zend_InfoCard_Xml_Assertion_Interface)) {
+        if (!($assertions instanceof Zend_InfoCard_Xml_Assertion_Interface)) {
             throw new Zend_InfoCard_Exception("Invalid Assertion Object returned");
         }
 
-        if(!($reference_id = Zend_InfoCard_Xml_Security::validateXMLSignature($assertions->asXML()))) {
+        if (!($reference_id = Zend_InfoCard_Xml_Security::validateXMLSignature($assertions->asXML()))) {
             $retval->setError("Failure Validating the Signature of the assertion document");
             $retval->setCode(Zend_InfoCard_Claims::RESULT_VALIDATION_FAILURE);
+
             return $retval;
         }
 
         // The reference id should be locally scoped as far as I know
-        if($reference_id[0] == '#') {
+        if ($reference_id[0] == '#') {
             $reference_id = substr($reference_id, 1);
         } else {
             $retval->setError("Reference of document signature does not reference the local document");
             $retval->setCode(Zend_InfoCard_Claims::RESULT_VALIDATION_FAILURE);
+
             return $retval;
         }
 
         // Make sure the signature is in reference to the same document as the assertions
-        if($reference_id != $assertions->getAssertionID()) {
+        if ($reference_id != $assertions->getAssertionID()) {
             $retval->setError("Reference of document signature does not reference the local document");
             $retval->setCode(Zend_InfoCard_Claims::RESULT_VALIDATION_FAILURE);
         }
@@ -474,12 +480,11 @@ class Zend_InfoCard
         // Validate we haven't seen this before and the conditions are acceptable
         $conditions = $this->getAdapter()->retrieveAssertion($assertions->getAssertionURI(), $assertions->getAssertionID());
 
-        if($conditions === false) {
+        if ($conditions === false) {
             $conditions = $assertions->getConditions();
         }
 
-
-        if(is_array($condition_error = $assertions->validateConditions($conditions))) {
+        if (is_array($condition_error = $assertions->validateConditions($conditions))) {
             $retval->setError("Conditions of assertion document are not met: {$condition_error[1]} ({$condition_error[0]})");
             $retval->setCode(Zend_InfoCard_Claims::RESULT_VALIDATION_FAILURE);
         }
@@ -488,7 +493,7 @@ class Zend_InfoCard
 
         $retval->setClaims($attributes);
 
-        if($retval->getCode() == 0) {
+        if ($retval->getCode() == 0) {
             $retval->setCode(Zend_InfoCard_Claims::RESULT_SUCCESS);
         }
 

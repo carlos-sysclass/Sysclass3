@@ -232,7 +232,8 @@ class MagesterConfiguration
     * @static
 
     */
-    public static function getValues() {
+    public static function getValues()
+    {
         $options = eF_getTableDataFlat("configuration", "*");
         sizeof($options) > 0 ? $options = array_combine($options['name'], $options['value']) : $options = array();
         foreach (MagesterConfiguration :: $defaultOptions as $key => $value) {
@@ -241,6 +242,7 @@ class MagesterConfiguration
                 $options[$key] = $value;
             }
         }
+
         return $options;
     }
     /**
@@ -270,7 +272,8 @@ class MagesterConfiguration
     * @static
 
     */
-    public static function getDefaultValues() {
+    public static function getDefaultValues()
+    {
         return MagesterConfiguration :: $defaultOptions;
     }
     /**
@@ -310,7 +313,8 @@ class MagesterConfiguration
     * @static
 
     */
-    public static function setValue($name, $value) {
+    public static function setValue($name, $value)
+    {
         $result = eF_getTableData("configuration", "value", "name = '$name'");
         if (sizeof($result) > 0) {
             $result = eF_updateTableData("configuration", array('value' => $value), "name = '$name'");
@@ -321,6 +325,7 @@ class MagesterConfiguration
         if ($result) {
          $GLOBALS['configuration'][$name] = $value; //Reset existing value
         }
+
         return $result;
     }
 }

@@ -83,4 +83,3 @@ function arrayDecorator($result)
 
     return $ret;
 }
-

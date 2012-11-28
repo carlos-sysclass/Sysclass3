@@ -104,6 +104,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
                 }
                 $valueAry =& $valueAry[$token];
             } while ($tokens);
+
             return $valueAry;
         }
     }
@@ -171,7 +172,6 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
         }
     }
 
-
     public function getName()
     {
         return $this->name;
@@ -184,6 +184,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
         foreach ($this as $child) {
             $this->renameChild($child);
         }
+
         return $this;
     }
 
@@ -215,6 +216,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
             $elname = $this->getName().'['.implode('][', $tokens).']';
         }
         $element->setName($elname);
+
         return $element;
     }
 
@@ -238,6 +240,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
 
         $element->setContainer($this);
         $this->elements[] = $element;
+
         return $element;
     }
 
@@ -257,6 +260,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
                                  '\1', $element->getName());
             $element->setName($name);
         }
+
         return $element;
     }
 
@@ -274,6 +278,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
         if (null === $reference) {
             return $this->appendChild($element);
         }
+
         return parent::insertBefore($this->renameChild($element), $reference);
     }
 
@@ -287,6 +292,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
     public function setSeparator($separator)
     {
         $this->data['separator'] = $separator;
+
         return $this;
     }
 
@@ -314,6 +320,7 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
         }
         $this->renderClientRules($renderer->getJavascriptBuilder());
         $renderer->finishGroup($this);
+
         return $renderer;
     }
 
@@ -327,4 +334,3 @@ class HTML_QuickForm2_Container_Group extends HTML_QuickForm2_Container
                )->__toString();
     }
 }
-?>

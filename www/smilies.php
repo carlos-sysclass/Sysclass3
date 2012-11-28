@@ -10,7 +10,8 @@ require_once($path."configuration.php");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script>
-function putSmiley(str) {
+function putSmiley(str)
+{
     var obj = top.sideframe.document.chat_form.chat_message;
     obj.value = obj.value + str;
     top.mainframe.document.getElementById('popup_close').onclick();

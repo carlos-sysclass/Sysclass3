@@ -18,24 +18,24 @@ require_once $path."configuration.php";
 
 try {
 	$currentUser = MagesterUser :: checkUserAccess();
-	
+
 	if ($currentUser->getType() == 'student') {
 		$sheetUser = $this->getCurrentUser();
 	} else {
 		$login = "aluno";
 		$sheetUser = MagesterUserFactory::factory($login);
 	}
-	
+
 	$searchCondition = sprintf("l.name LIKE '%%%s%%'", $_GET['term']);
-	
+
 	$userCourses = $sheetUser->getUserCourses(array('return_objects' => true));
 	$userLessons = $sheetUser->getUserLessons(array('return_objects' => false));
 	$userLessonsIndexes = array_keys($userLessons);
-	
+
 	foreach ($userCourses as $course) {
 
 		$courseLessons = $course->getCourseLessons(array('return_objects' => false, 'condition' => $searchCondition));
-	
+
 		foreach ($courseLessons as $courseLesson) {
 			if (in_array($courseLesson['id'], $userLessonsIndexes)) {
 				$coursesData[] = array(

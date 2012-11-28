@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -79,14 +78,13 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 	 */
 	private $_readFilter = null;
 
-
 	/**
 	 * Create a new PHPExcel_Reader_SYLK
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->_readFilter 	= new PHPExcel_Reader_DefaultReadFilter();
 	}
-
 
 	/**
 	 * Can the current PHPExcel_Reader_IReader read the file?
@@ -122,27 +120,26 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 		return true;
 	}
 
-
 	/**
 	 * Read filter
 	 *
 	 * @return PHPExcel_Reader_IReadFilter
 	 */
-	public function getReadFilter() {
+	public function getReadFilter()
+	{
 		return $this->_readFilter;
 	}
-
 
 	/**
 	 * Set read filter
 	 *
 	 * @param PHPExcel_Reader_IReadFilter $pValue
 	 */
-	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue) {
+	public function setReadFilter(PHPExcel_Reader_IReadFilter $pValue)
+	{
 		$this->_readFilter = $pValue;
 		return $this;
 	}
-
 
 	/**
 	 * Set input encoding
@@ -155,7 +152,6 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 		return $this;
 	}
 
-
 	/**
 	 * Get input encoding
 	 *
@@ -165,7 +161,6 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 	{
 		return $this->_inputEncoding;
 	}
-
 
 	/**
 	 * Return worksheet info (Name, Last Column Letter, Last Column Index, Total Rows, Total Columns)
@@ -211,8 +206,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 			$dataType = array_shift($rowData);
 			if ($dataType == 'C') {
 				//  Read cell value data
-				foreach($rowData as $rowDatum) {
-					switch($rowDatum{0}) {
+				foreach ($rowData as $rowDatum) {
+					switch ($rowDatum{0}) {
 						case 'C' :
 						case 'X' :
 							$columnIndex = substr($rowDatum,1) - 1;
@@ -238,7 +233,6 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 		return $worksheetInfo;
 	}
 
-
 	/**
 	 * Loads PHPExcel from file
 	 *
@@ -254,7 +248,6 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 		// Load into this instance
 		return $this->loadIntoExisting($pFilename, $objPHPExcel);
 	}
-
 
 	/**
 	 * Loads PHPExcel from file into PHPExcel instance
@@ -304,8 +297,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 			//	Read shared styles
 			if ($dataType == 'P') {
 				$formatArray = array();
-				foreach($rowData as $rowDatum) {
-					switch($rowDatum{0}) {
+				foreach ($rowData as $rowDatum) {
+					switch ($rowDatum{0}) {
 						case 'P' :	$formatArray['numberformat']['code'] = str_replace($fromFormats,$toFormats,substr($rowDatum,1));
 									break;
 						case 'E' :
@@ -338,8 +331,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 			} elseif ($dataType == 'C') {
 				$hasCalculatedValue = false;
 				$cellData = $cellDataFormula = '';
-				foreach($rowData as $rowDatum) {
-					switch($rowDatum{0}) {
+				foreach ($rowData as $rowDatum) {
+					switch ($rowDatum{0}) {
 						case 'C' :
 						case 'X' :	$column = substr($rowDatum,1);
 									break;
@@ -352,7 +345,7 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 									//	Convert R1C1 style references to A1 style references (but only when not quoted)
 									$temp = explode('"',$cellDataFormula);
 									$key = false;
-									foreach($temp as &$value) {
+									foreach ($temp as &$value) {
 										//	Only count/replace in alternate array entries
 										if ($key = !$key) {
 											preg_match_all('/(R(\[?-?\d*\]?))(C(\[?-?\d*\]?))/',$value, $cellReferences,PREG_SET_ORDER+PREG_OFFSET_CAPTURE);
@@ -362,7 +355,7 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 											$cellReferences = array_reverse($cellReferences);
 											//	Loop through each R1C1 style reference in turn, converting it to its A1 style equivalent,
 											//		then modify the formula to use that new reference
-											foreach($cellReferences as $cellReference) {
+											foreach ($cellReferences as $cellReference) {
 												$rowReference = $cellReference[2][0];
 												//	Empty R reference is the current row
 												if ($rowReference == '') $rowReference = $row;
@@ -399,8 +392,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 			} elseif ($dataType == 'F') {
 				$formatStyle = $columnWidth = $styleSettings = '';
 				$styleData = array();
-				foreach($rowData as $rowDatum) {
-					switch($rowDatum{0}) {
+				foreach ($rowData as $rowDatum) {
+					switch ($rowDatum{0}) {
 						case 'C' :
 						case 'X' :	$column = substr($rowDatum,1);
 									break;
@@ -453,8 +446,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 					}
 				}
 			} else {
-				foreach($rowData as $rowDatum) {
-					switch($rowDatum{0}) {
+				foreach ($rowData as $rowDatum) {
+					switch ($rowDatum{0}) {
 						case 'C' :
 						case 'X' :	$column = substr($rowDatum,1);
 									break;
@@ -473,16 +466,15 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 		return $objPHPExcel;
 	}
 
-
 	/**
 	 * Get sheet index
 	 *
 	 * @return int
 	 */
-	public function getSheetIndex() {
+	public function getSheetIndex()
+	{
 		return $this->_sheetIndex;
 	}
-
 
 	/**
 	 * Set sheet index
@@ -490,7 +482,8 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 	 * @param	int		$pValue		Sheet index
 	 * @return PHPExcel_Reader_SYLK
 	 */
-	public function setSheetIndex($pValue = 0) {
+	public function setSheetIndex($pValue = 0)
+	{
 		$this->_sheetIndex = $pValue;
 		return $this;
 	}

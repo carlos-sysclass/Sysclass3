@@ -72,7 +72,7 @@ class HTML_QuickForm2_Controller_Action_Next
             return $next->handle('jump');
 
         // Consider this a 'finish' button, if there is no explicit one
-        } elseif($page->getController()->isWizard()) {
+        } elseif ($page->getController()->isWizard()) {
             if ($page->getController()->isValid()) {
                 return $page->handle('process');
             } else {
@@ -85,4 +85,3 @@ class HTML_QuickForm2_Controller_Action_Next
         }
     }
 }
-?>

@@ -5,35 +5,37 @@
 * This function prints a list with forum messages titles and the corresponding list
 * It is used to both student and professor pages, at the front page, and wherever we need
 * a list of forum messages.
-* 
+*
 */
-function smarty_function_eF_template_printForumMessages($params, &$smarty) {
+function smarty_function_eF_template_printForumMessages($params, &$smarty)
+{
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...
-    
+
     if (isset($params['limit'])) {                                  //If limit is specified, then only up to limit messages are displayed
         $limit = min($params['limit'], sizeof($params['data']));
     } else {
         $limit = sizeof($params['data']);
     }
-	
+
 	//var_dump($params);
 
-    $str = '        
+    $str = '
         <table border = "0" width = "100%">';
     for ($i = 0; $i < $limit; $i++) {
         $params['data'][$i]['title'] ? $title_message = $params['data'][$i]['title'] : $title_message = '<span class = "emptyCategory">'._NOTITLE.'</span>';
         if (mb_strlen($params['data'][$i]['title']) > $max_title_size) {
-            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';                                 //If the message title is large, cut it and append ... 
+            $params['data'][$i]['title'] = mb_substr($params['data'][$i]['title'], 0, $max_title_size).'...';
+            //If the message title is large, cut it and append ...
         }
         $str .= '
             <tr><td>
-                    <span class = "counter">'.($i + 1).'.</span> 
-                    <a title="'.$params['data'][$i]['title'].'" href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>'; 
+                    <span class = "counter">'.($i + 1).'.</span>
+                    <a title="'.$params['data'][$i]['title'].'" href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>';
 
-        if (isset($params['data'][$i]['show_lessons_name'])) {	
+        if (isset($params['data'][$i]['show_lessons_name'])) {
         	$str .= "<b>".$params['data'][$i]['show_lessons_name'] . "</b>: ";
-        } 
+        }
         $str .= $title_message. '</a>
                 </td><td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';
         $title2 = '#filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
@@ -46,14 +48,12 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty) {
         $str .= '
             <tr><td class = "emptyCategory">'._NONEWFORUMMESSAGES.'</td></tr>';
     }
-    
-    $str .= '</table>';
-    
-	if (count($params['data']) > $limit) {
-        $str .= sprintf('<div style="margin-top: 20px;"><a href="%s"><strong>e mais %d mensagens</strong></a></div>', basename($_SERVER['PHP_SELF']) . '?ctg=forum&forum=' . $params['forum_lessons_ID'], count($params['data']) - $limit); 
-	}
-    
-    return $str; 
-}
 
-?>
+    $str .= '</table>';
+
+	if (count($params['data']) > $limit) {
+        $str .= sprintf('<div style="margin-top: 20px;"><a href="%s"><strong>e mais %d mensagens</strong></a></div>', basename($_SERVER['PHP_SELF']) . '?ctg=forum&forum=' . $params['forum_lessons_ID'], count($params['data']) - $limit);
+	}
+
+    return $str;
+}

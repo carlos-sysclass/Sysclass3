@@ -146,6 +146,7 @@ function XML_RPC_Server_listMethods($server, $m)
         $outAr[] = new XML_RPC_Value($key, 'string');
     }
     $v->addArray($outAr);
+
     return new XML_RPC_Response($v);
 }
 
@@ -192,6 +193,7 @@ function XML_RPC_Server_methodSignature($server, $m)
         $r = new XML_RPC_Response(0, $XML_RPC_err['introspect_unknown'],
                                   $XML_RPC_str['introspect_unknown']);
     }
+
     return $r;
 }
 
@@ -226,6 +228,7 @@ function XML_RPC_Server_methodHelp($server, $m)
         $r = new XML_RPC_Response(0, $XML_RPC_err['introspect_unknown'],
                                      $XML_RPC_str['introspect_unknown']);
     }
+
     return $r;
 }
 
@@ -260,7 +263,7 @@ function XML_RPC_Server_debugmsg($m)
  *     ),
  *     1,
  *     0
- * ); 
+ * );
  * </code>
  *
  * @category   Web Services
@@ -434,8 +437,7 @@ class XML_RPC_Server
         $this->server_headers = $GLOBALS['XML_RPC_func_ereg_replace']("[\r\n]+[ \t]+",
                                 ' ', trim($this->server_headers));
         $headers = $GLOBALS['XML_RPC_func_split']("[\r\n]+", $this->server_headers);
-        foreach ($headers as $header)
-        {
+        foreach ($headers as $header) {
             header($header);
         }
 
@@ -488,6 +490,7 @@ class XML_RPC_Server
                               . strlen($this->server_payload) . "\r\n"
                               . 'Content-Type: text/xml;'
                               . ' charset=' . $this->encoding;
+
         return true;
     }
 
@@ -536,6 +539,7 @@ class XML_RPC_Server
             if ($last > 0) {
                 $allowed[$last] = 'or ' . $allowed[$last];
             }
+
             return array(0,
                          'Signature permits ' . implode(', ', $allowed)
                                 . ' parameters but the request had '
@@ -567,8 +571,8 @@ class XML_RPC_Server
         $XML_RPC_xh[$parser]['isf']    = 0;
         $XML_RPC_xh[$parser]['params'] = array();
         $XML_RPC_xh[$parser]['method'] = '';
-        $XML_RPC_xh[$parser]['stack'] = array();	
-        $XML_RPC_xh[$parser]['valuestack'] = array();	
+        $XML_RPC_xh[$parser]['stack'] = array();
+        $XML_RPC_xh[$parser]['valuestack'] = array();
 
         $plist = '';
 
@@ -654,6 +658,7 @@ class XML_RPC_Server
                                           $XML_RPC_str['unknown_method']);
             }
         }
+
         return $r;
     }
 
@@ -681,5 +686,3 @@ class XML_RPC_Server
  * c-hanging-comment-ender-p: nil
  * End:
  */
-
-?>

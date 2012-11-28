@@ -38,7 +38,7 @@ foreach ($filesystemIterator as $key => $value) {
 $extraColumns = array(_INSERT);
 //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
 /**The file manager*/
-include "file_manager.php";
+include 'file_manager.php';
 
 //This page also needs an editor and ASCIIMathML
 $load_editor = true;
@@ -106,7 +106,6 @@ if ($_GET['ctg'] != 'feedback') {
 }
 $form -> addRule('name', _THEFIELD.' "'._NAME.'" '._ISMANDATORY, 'required', null, 'client');
 
-
 if (!$skillgap_tests) {
     $optionsArray = $currentContent -> toHTMLSelectOptions(); //Get the units as an array of formated strings, that can be used to form an HTML select list
     $select_units = & HTML_QuickForm :: createElement('select', 'parent_content', _UNITPARENT, null, 'class = "inputSelect"');
@@ -130,8 +129,8 @@ if (!$skillgap_tests) {
 } else {
 
     $form -> addElement('text', 'general_threshold', null, 'class = "inputText"');
-    $form->registerRule('decimal2digits','regex','/^\d{1,2}(\.\d{1,2})?$/');
-    $form->addRule('general_threshold',_INVALIDFIELDDATAFORFIELD.' "'._GENERALTHRESHOLD.'": '. _NUMBERFROM000TO9999REQUIRED,'decimal2digits');
+    $form->registerRule('decimal2digits', 'regex', '/^\d{1,2}(\.\d{1,2})?$/');
+    $form->addRule('general_threshold', INVALIDFIELDDATAFORFIELD.' "'._GENERALTHRESHOLD.'": '. _NUMBERFROM000TO9999REQUIRED, 'decimal2digits');
     // Set default value and if it is defined it will be overwritten - @hardcoded value 50 - could be set by admin in general
     $form -> setDefaults(array('general_threshold' => "50.00"));
 
@@ -143,7 +142,7 @@ if (!$skillgap_tests) {
 $unitsToQuestionsDifficulties = array();
 foreach ($result as $value) {
     $questions[$value['id']] = $value;
-    if (!isset($unitsToQuestionsDifficulties[$value['content_ID']])){
+    if (!isset($unitsToQuestionsDifficulties[$value['content_ID']])) {
         $unitsToQuestionsDifficulties[$value['content_ID']] = array();
     }
     if (!isset($unitsToQuestionsDifficulties[$value['content_ID']][$value['difficulty']])) {
@@ -173,26 +172,30 @@ $smarty -> assign("T_QUESTION_TYPES_ICONS", Question::$questionTypesIcons);
 
 if (isset($_GET['add_test'])) {
     $form -> addElement('submit', 'submit_test', _SAVETESTANDADDQUESTIONS, 'class = "flatButton"');
-    $form -> setDefaults(array('given_answers' => 1,
-                               'answers' => 1,
-                               'maintain_history' => 5,
-                               'publish' => 1,
-                               'mastery_score' => $_GET['ctg'] != 'feedback' ? 50 : 0,
-                   'redoable' => 1));
+    $form -> setDefaults(
+    	array(
+    		'given_answers' => 1,
+            'answers' => 1,
+            'maintain_history' => 5,
+            'publish' => 1,
+            'mastery_score' => $_GET['ctg'] != 'feedback' ? 50 : 0,
+            'redoable' => 1
+    	)
+    );
     if (isset($_GET['from_unit'])) {
         $form -> setDefaults(array('parent_content' => $_GET['from_unit']));
     }
-} else if (isset($_GET['edit_test'])) {
+} elseif (isset($_GET['edit_test'])) {
 
     if (!$skillgap_tests) {
         $testUnit = new MagesterUnit($currentTest -> test['content_ID']);
     }
- if ($_GET['ctg'] != 'feedback') {
-  $form -> addElement('submit', 'submit_test', _SAVETEST, 'class = "flatButton"');
-  $form -> addElement('submit', 'submit_test_new', _SAVEASNEWTEST, 'class = "flatButton"');
- } else {
-  $form -> addElement('submit', 'submit_test', _SAVE, 'class = "flatButton"');
- }
+	if ($_GET['ctg'] != 'feedback') {
+		$form -> addElement('submit', 'submit_test', _SAVETEST, 'class = "flatButton"');
+		$form -> addElement('submit', 'submit_test_new', _SAVEASNEWTEST, 'class = "flatButton"');
+	} else {
+		$form -> addElement('submit', 'submit_test', _SAVE, 'class = "flatButton"');
+	}
     $form -> freeze('parent_content');
     $form -> setDefaults($currentTest -> options);
     $form -> setDefaults(array('name' => $currentTest -> test['name'],
@@ -336,7 +339,6 @@ $form -> accept($renderer);
 
 $smarty -> assign('T_TEST_FORM', $renderer -> toArray());
 
-
 // Code to find users to who a skillgap tests has been assigned
 if ($skillgap_tests) {
     // AJAX CODE TO RELOAD SKILL-GAP TEST USERS
@@ -372,7 +374,7 @@ if ($skillgap_tests) {
 
         // Find the completed test for each user
         foreach ($testUsers as $uid => $user) {
-            foreach($test_info as $info) {
+            foreach ($test_info as $info) {
                 if ($info['users_LOGIN'] == $user['login']) {
                     $testUsers[$uid]['completed_test_id'] = $info['id'];
                 }
@@ -431,7 +433,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'questionsTable') {
 
     foreach ($questions as $id => $question) {
         $form -> addElement("checkbox", "questions[".$id."]", null, null, 'id = "checked_'.$id.'" onclick = "ajaxPost(\''.$id.'\', this, \'questionsTable\');"');
-        $form -> addElement('select', 'question_weight['.$id.']', null, array_combine(range(1,10), range(1,10)), 'id = "weight_'.$id.'" onchange = "$(\'checked_'.$id.'\').checked=true;ajaxPost(\''.$id.'\', this);"');
+        $form -> addElement('select', 'question_weight['.$id.']', null, array_combine(range(1, 10), range(1, 10)), 'id = "weight_'.$id.'" onchange = "$(\'checked_'.$id.'\').checked=true;ajaxPost(\''.$id.'\', this);"');
     }
 
     $smarty -> assign('T_UNIT_QUESTIONS', $questions);
@@ -448,16 +450,16 @@ if (isset($_GET['postAjaxRequest'])) {
     if (isset($_GET['login'])) {
         if ($_GET['checked'] == "true") {
             eF_insertTableData("users_to_skillgap_tests", array( "users_LOGIN" => $_GET['login'], "tests_ID" => $_GET['edit_test']));
-        } else if ($_GET['checked'] == "false") {
+        } elseif ($_GET['checked'] == "false") {
             eF_deleteTableData("users_to_skillgap_tests", "users_LOGIN = '". $_GET['login'] ."' AND tests_ID = '" .$_GET['edit_test'] . "'");
 
-        } else if (isset($_GET['addAll'])) {
+        } elseif (isset($_GET['addAll'])) {
 
             // Different management if a users' filter is set or not
             if ($_GET['filter']) {
                 $existing_test_users_r = eF_getTableData("users_to_skillgap_tests", "*", "tests_ID = '".$_GET['edit_test']."'");
                 if (!empty($existing_test_users_r)) {
-                    $existing_test_users_r = eF_filterData($existing_test_users_r,$_GET['filter']);
+                    $existing_test_users_r = eF_filterData($existing_test_users_r, $_GET['filter']);
                     $existing_test_users['users_LOGIN'] = array();
                     foreach ($existing_test_users_r as $test_user) {
                         $existing_test_users['users_LOGIN'][] = $test_user['users_LOGIN'];
@@ -466,7 +468,7 @@ if (isset($_GET['postAjaxRequest'])) {
                     $existing_test_users = array();
                 }
                 $all_users_r = eF_getTableData("users", "*", "user_type = 'student'");
-                $all_users_r = eF_filterData($all_users_r,$_GET['filter']);
+                $all_users_r = eF_filterData($all_users_r, $_GET['filter']);
 
                 $all_users['login'] = array();
                 foreach ($all_users_r as $test_user) {
@@ -495,11 +497,11 @@ if (isset($_GET['postAjaxRequest'])) {
             if (isset($all_users_to_add)) {
                 eF_execute("INSERT INTO users_to_skillgap_tests (tests_ID, users_LOGIN, solved) VALUES " . $all_users_to_add);
             }
-        } else if (isset($_GET['removeAll'])) {
+        } elseif (isset($_GET['removeAll'])) {
             // Different management if a users' filter is set or not
             if ($_GET['filter']) {
                 $all_current_users = eF_getTableData("users_to_skillgap_tests JOIN users ON users_LOGIN = login", "login, name, surname", "");
-                isset($_GET['filter']) ? $all_current_users = eF_filterData($all_current_users,$_GET['filter']) : null;
+                isset($_GET['filter']) ? $all_current_users = eF_filterData($all_current_users, $_GET['filter']) : null;
 
                 foreach ($all_current_users as $test_user) {
                     eF_deleteTableData("users_to_skillgap_tests", "tests_ID = '".$_GET['edit_test'] . "' AND users_LOGIN = '". $test_user['login']."' ");
@@ -517,13 +519,13 @@ if (isset($_GET['postAjaxRequest'])) {
                 } else { //The user doesn't have the project, so add him
                     $currentTest -> addQuestions(array($_GET['question'] => $_GET['weight']));
                 }
-            } else if (isset($_GET['addAll'])) {
+            } elseif (isset($_GET['addAll'])) {
 
                 $nonTestQuestions = $currentTest -> getNonQuestions();
 
                 // Do not add development questions to skill gap tests
                 if ($skillgap_tests) {
-                    foreach($nonTestQuestions as $qid => $nonTestQuestion) {
+                    foreach ($nonTestQuestions as $qid => $nonTestQuestion) {
                         if ($nonTestQuestion['type'] == 'raw_text') {
                             unset($nonTestQuestions[$qid]);
                         } else {
@@ -546,9 +548,9 @@ if (isset($_GET['postAjaxRequest'])) {
      }
      $nonTestQuestions = $nonTestQuestionsTemp;
     }
-                isset($_GET['filter']) ? $nonTestQuestions = eF_filterData($nonTestQuestions,$_GET['filter']) : null;
+                isset($_GET['filter']) ? $nonTestQuestions = eF_filterData($nonTestQuestions, $_GET['filter']) : null;
                 $currentTest -> addQuestions(array_combine(array_keys($nonTestQuestions), array_fill(0, sizeof($nonTestQuestions), 1)));
-            } else if (isset($_GET['removeAll'])) {
+            } elseif (isset($_GET['removeAll'])) {
                 $testQuestions = $currentTest -> getQuestions();
 
                 if ($skillgap_tests) {
@@ -563,7 +565,7 @@ if (isset($_GET['postAjaxRequest'])) {
                     }
                 }
 
-                isset($_GET['filter']) ? $testQuestions = eF_filterData($testQuestions,$_GET['filter']) : null;
+                isset($_GET['filter']) ? $testQuestions = eF_filterData($testQuestions, $_GET['filter']) : null;
                 $currentTest -> removeQuestions(array_keys($testQuestions));
             }
 
@@ -609,7 +611,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'randomize') {
             }
             $reqs = array('difficulty' => $_GET['unit_to_difficulty']);
             //Remove units and types that are set to 'Off'
-        } else if (isset($_GET['unit_to_type'])) {
+        } elseif (isset($_GET['unit_to_type'])) {
             foreach ($_GET['unit_to_type'] as $key => $value) {
                 if (!isset($_GET['unit'][$key]) || $_GET['unit'][$key] == 'off') {
                     unset($_GET['unit_to_type'][$key]);
@@ -623,7 +625,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'randomize') {
             }
             $reqs = array('type' => $_GET['unit_to_type']);
             //Adjust percentages so that the total sum is always 100
-        } else if (isset($_GET['unit_to_percentage'])) {
+        } elseif (isset($_GET['unit_to_percentage'])) {
             $sum = 0;
             //If total sum is more than 100, truncate last values so that total remains 100
             foreach ($_GET['unit_to_percentage'] as $key => $value) {

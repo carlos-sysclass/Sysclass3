@@ -100,7 +100,7 @@ class HTML_QuickForm2_Controller_DefaultAction
     public function render(HTML_QuickForm2_Renderer $renderer)
     {
         $renderer->renderHidden($this);
+
         return $renderer;
     }
 }
-?>

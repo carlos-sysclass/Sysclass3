@@ -36,7 +36,7 @@ if (isset($_GET['chatrooms_ID'])) {
     } else {
      $chatrooms_ID = 0;
     }
-} else if (isset($_GET['bring_chatrooms'])){
+} elseif (isset($_GET['bring_chatrooms'])) {
     // The chatrooms are all the ones with more than zero users and the ones you have created
     $rooms = eF_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
 //pr($rooms);
@@ -94,7 +94,7 @@ if (isset($_GET['add_user']) && isset($_GET['add_user_type']) && eF_checkParamet
 }
 
 // Get online users of current room
-if(isset($_GET['get_users'])) {
+if (isset($_GET['get_users'])) {
     // The room users of the SysClass general room are all users-the ones currently logged in to another channel
     $data = "";
 
@@ -136,7 +136,7 @@ if (isset($_POST['submit']) || isset($_POST['chat_message']) ) { //The user post
              echo _CHATROOMDOESNOTEXIST_ERROR . $special_splitter; // notify user that room was deleted
              $_SESSION['last_chat_msg_id'] = 0;
              exit;
-         } else if ($roomExists[0]['active'] == 0) {
+         } elseif ($roomExists[0]['active'] == 0) {
              echo _CHATROOMISNOTENABLED_ERROR . $special_splitter; // notify user that room is not active
              $_SESSION['last_chat_msg_id'] = 0;
              exit;

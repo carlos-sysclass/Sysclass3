@@ -4,7 +4,8 @@
 * Loads specific js based on whether they are used (Loading Order does matter!)
 
 */
-function smarty_outputfilter_eF_template_includeScripts($compiled, &$smarty) {
+function smarty_outputfilter_eF_template_includeScripts($compiled, &$smarty)
+{
     $basicScripts = array();
     if (preg_match('/tabber/', $compiled)) {
         $basicScripts[] = 'tabber';
@@ -37,5 +38,3 @@ function smarty_outputfilter_eF_template_includeScripts($compiled, &$smarty) {
 
     return $compiled;
 }
-
-?>

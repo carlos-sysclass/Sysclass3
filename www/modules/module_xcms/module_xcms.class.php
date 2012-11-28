@@ -1,5 +1,6 @@
 <?php
-class module_xcms extends MagesterExtendedModule {
+class module_xcms extends MagesterExtendedModule
+{
 	const PGTYPE_USER_TYPE	= 1;
 	const PGTYPE_COURSE		= 2;
 	//const PGTYPE_LESSON		= 4;
@@ -15,16 +16,17 @@ class module_xcms extends MagesterExtendedModule {
 		'course'	=> null
 	);
 
-	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder) {
+	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder)
+	{
 		parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
 
 		$this->page_callbacks = array(
-			'user_type'	=> 
+			'user_type'	=>
 		create_function('$context', '
 					$object = $context->getCurrentUser();
 					return isset($object->user["user_type"]) ? $object->user["user_type"] : false;
 				'),
-			'course'	=> 
+			'course'	=>
 		create_function('$context', '
 					$object = $context->getCurrentCourse();
 					return isset($object->course["id"]) ? $object->course["id"] : false;
@@ -32,7 +34,6 @@ class module_xcms extends MagesterExtendedModule {
 		'lesson'	=> self::PGTYPE_LESSON
 		*/
 		);
-
 
 		$this->preActions[] = 'checkUserPermissionAction';
 		//		$this->preActions[] = 'makeEnrollmentOptions';
@@ -42,35 +43,40 @@ class module_xcms extends MagesterExtendedModule {
 	}
 
 	// CORE MODULE FUNCTIONS
-	public function getName() {
+	public function getName()
+	{
 		return "XCMS";
 	}
-	public function getPermittedRoles() {
+	public function getPermittedRoles()
+	{
 		return array("student", "professor");
 	}
-	public function isLessonModule() {
+	public function isLessonModule()
+	{
 		return false;
 	}
 
-	public function getNavigationLinks() {
+	public function getNavigationLinks()
+	{
 		$this->showModuleBreadcrumbs = false;
 		return parent::getNavigationLinks();
 	}
 
 	/* MAIN-INDEPENDENT MODULE INFO, PAGES, TEMPLATES, ETC... */
 	/*
-	 public function addStylesheets() {
+	 public function addStylesheets()
+	 {
 		return array("960gs/fluid/24columns");
 		}
 		*/
-	
-	public function loadNews( $ajax=false ) {
+
+	public function loadNews( $ajax=false )
+	{
 		$currentUser	= $this->getCurrentUser();
 
 		# Carrega noticias da ultima licao selecionada
 		$news = news :: getNews(0, true) + news :: getNews($_SESSION['s_lessons_ID'], false);
-		
-		
+
 		# Filtra comunicado pela classe do aluno
 		$userClasses = ef_getTableDataFlat(
 			"users_to_courses",
@@ -80,15 +86,15 @@ class module_xcms extends MagesterExtendedModule {
 
 		$xentifyModule = $this->loadModule("xentify");
 		$user = $this->getCurrentUser();
-		
-		foreach( $news as $key => $noticia) {
-			
+
+		foreach ($news as $key => $noticia) {
+
 			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
 				unset($news[$key]);
-			} elseif ( $ajax && $noticia['classe_id']==0 ) { 
+			} elseif ($ajax && $noticia['classe_id']==0) {
 				unset($news[$key]);
 			}
-			
+
 			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
 				unset($news[$key]);
 			}
@@ -98,15 +104,16 @@ class module_xcms extends MagesterExtendedModule {
 	}
 
 	/* BLOCK FUNCTIONS */
-	public function loadNewsBlock($blockIndex = null) {
+	public function loadNewsBlock($blockIndex = null)
+	{
 		$smarty = $this->getSmartyVar();
 
 		# carrega comunicados do aluno
 		$news =  $this->loadNews();
-		$announcements_options = 	array( 
+		$announcements_options = 	array(
 										array(
-											'text' 	=> _ANNOUNCEMENTGO, 
-											'image' => "16x16/go_into.png", 
+											'text' 	=> _ANNOUNCEMENTGO,
+											'image' => "16x16/go_into.png",
 											'href' 	=> basename($_SERVER['PHP_SELF'])."?ctg=news&lessons_ID=all"
 										)
 									);
@@ -128,22 +135,23 @@ class module_xcms extends MagesterExtendedModule {
 		return false;
 	}
 
-	public function loadCalendarBlock($blockIndex = null) {
+	public function loadCalendarBlock($blockIndex = null)
+	{
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 		if ( !isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] != 'hidden' ) {
 			# Get current time in an array
-			$today = getdate(time()); 
+			$today = getdate(time());
 			# Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
-			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); 
+			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 			# If a specific calendar date is not defined in the GET, set as the current day to be today
 			isset( $_GET['view_calendar'] ) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
 			$calendarOptions = array();
 			if ( !isset( $currentUser->coreAccess['calendar'] ) || $currentUser -> coreAccess['calendar'] == 'change' ) {
 				$calendarOptions[] = array(
-					'text' 		=> _ADDCALENDAR, 
-					'image' 	=> '16x16/add.png', 
-					'href' 		=> basename($_SERVER['PHP_SELF']).'?ctg=calendar&add=1&view_calendar='.$view_calendar.'&popup=1', 
+					'text' 		=> _ADDCALENDAR,
+					'image' 	=> '16x16/add.png',
+					'href' 		=> basename($_SERVER['PHP_SELF']).'?ctg=calendar&add=1&view_calendar='.$view_calendar.'&popup=1',
 					'onClick' 	=> "eF_js_showDivPopup('"._ADDCALENDAR."', 2)",
 					'target' 	=> 'POPUP_FRAME'
 				);
@@ -155,7 +163,7 @@ class module_xcms extends MagesterExtendedModule {
 			$events = calendar :: getCalendarEventsForUser($currentUser);
 			$events = calendar :: sortCalendarEventsByTimestamp($events);
 			# Assign events and specific day timestamp to smarty, to be used from calendar
-			$smarty -> assign('T_CALENDAR_EVENTS', $events); 
+			$smarty -> assign('T_CALENDAR_EVENTS', $events);
 			$smarty -> assign('T_VIEW_CALENDAR', $view_calendar);
 			$this->getParent()->appendTemplate(array(
 		   		'title'			=> _CALENDAR,
@@ -174,7 +182,8 @@ class module_xcms extends MagesterExtendedModule {
 		return true;
 	}
 
-	public function loadNewsletterBlock($blockIndex = null) {
+	public function loadNewsletterBlock($blockIndex = null)
+	{
 		$smarty 		= $this->getSmartyVar();
 		$currentUser	= $this->getCurrentUser();
 
@@ -182,20 +191,20 @@ class module_xcms extends MagesterExtendedModule {
 			$today = getdate(time()); //Get current time in an array
 			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); //Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
 			isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
-				
+
 			$calendarOptions = array();
 			if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] == 'change') {
 				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "eF_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
 			}
 			$calendarOptions[] = array('text' => _GOTOCALENDAR, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar");
-				
+
 			$smarty -> assign("T_CALENDAR_OPTIONS", $calendarOptions);
 			$smarty -> assign("T_CALENDAR_LINK", basename($_SERVER['PHP_SELF'])."?ctg=calendar");
 			isset($_GET['add_another']) ? $smarty -> assign('T_ADD_ANOTHER', "1") : null;
-				
+
 			$events = calendar :: getCalendarEventsForUser($currentUser);
 			$events = calendar :: sortCalendarEventsByTimestamp($events);
-				
+
 			$smarty -> assign("T_CALENDAR_EVENTS", $events); //Assign events and specific day timestamp to smarty, to be used from calendar
 			$smarty -> assign("T_VIEW_CALENDAR", $view_calendar);
 
@@ -216,26 +225,28 @@ class module_xcms extends MagesterExtendedModule {
 		return true;
 	}
 
-	public function loadAdsBlock($blockIndex = null) {
+	public function loadAdsBlock($blockIndex = null)
+	{
 		$this->getParent()->appendTemplate(array(
 	   		'title'			=> " ",
 	   		'template'		=> $this->moduleBaseDir . 'templates/blocks/xcms.ads.tpl',
 	   		'contentclass'	=> 'blockContents'
 	   	), $blockIndex);
-	   	$this->injectJS("jquery/jquery.cycle.all");	 
+	   	$this->injectJS("jquery/jquery.cycle.all");
 	   	return true;
 	}
 
 	/* ACTIONS FUNCTIONS */
-	public function loadNewsAction(){
+	public function loadNewsAction()
+	{
 		$smarty = $this->getSmartyVar();
 
 		# carrega comunicados do aluno
 		$news =  $this->loadNews(true);
-		$announcements_options = 	array( 
+		$announcements_options = 	array(
 										array(
-											'text' 	=> _ANNOUNCEMENTGO, 
-											'image' => "16x16/go_into.png", 
+											'text' 	=> _ANNOUNCEMENTGO,
+											'image' => "16x16/go_into.png",
 											'href' 	=> basename($_SERVER['PHP_SELF'])."?ctg=news&lessons_ID=all"
 										)
 									);
@@ -248,8 +259,9 @@ class module_xcms extends MagesterExtendedModule {
 			echo $smarty -> fetch($this->moduleBaseDir . 'templates/blocks/xcms.news.tpl');
 		}
 	}
-	
-	public function loadXpageAction() {
+
+	public function loadXpageAction()
+	{
 		$smarty = $this->getSmartyVar();
 		if ( !($editedPage = $this->getEditedPage()) ) {
 			$this->setMessageVar(__XCMS_NOPAGE_FOUND, "failure");
@@ -299,13 +311,12 @@ class module_xcms extends MagesterExtendedModule {
     			'course'	=> 'all'
     			),
     		'deny'	=> 'all',
-    		'order'	=> 'allow, deny'    	
+    		'order'	=> 'allow, deny'
     		);
-    		 
 
     		// DEFINE LAYOUT BLOCK SIZES
     		$sections = array();
-    		switch($editedPage['layout']) {
+    		switch ($editedPage['layout']) {
     			case 'twocolumn-50-50' : {
     				$sections[] = array(
 					'class'	=> "grid_12"
@@ -358,7 +369,7 @@ class module_xcms extends MagesterExtendedModule {
 					$sections[] = array(
 					'class'	=> "grid_7"
 					);
-					
+
 					break;
     			}
     			case 'threecolumn-33-34-33' : {
@@ -388,7 +399,7 @@ class module_xcms extends MagesterExtendedModule {
     		if (!is_null($editedPage['positions']) && is_array($editedPage['positions'])) {
     			// APLLY BLOCK POSITIONS TO SECTIONS
     			$positions = array_values($editedPage['positions']);
-    			foreach($positions as $key => $blocksNames) {
+    			foreach ($positions as $key => $blocksNames) {
     				if (array_key_exists($key, $sections)) {
     					$sections[$key]['blocks'] = $blocksNames;
     				} else {
@@ -400,11 +411,11 @@ class module_xcms extends MagesterExtendedModule {
     		$pageBlocks = $this->loadPageBlocks($editedPage['id']);
     		reset($sections);
 
-    		foreach($pageBlocks as $block) {
+    		foreach ($pageBlocks as $block) {
     			if ($blockModule = $this->loadModule($block['module'])) {
-    				 
+
     				$actionResult = $blockModule->setParent($this)->callBlock($block['action'], $block['name'], null, $block['tag']);
-    				 
+
     				if (!$actionResult) {
     					//	var_dump($block['module'] . '::' . $block['action']);
     					//	var_dump($actionResult);
@@ -421,7 +432,7 @@ class module_xcms extends MagesterExtendedModule {
     				} else {
     					// CHECK FOR BLOCK NAME IN COLUMN INDEX
     					$found = false;
-    					foreach($sections as $key => $column) {
+    					foreach ($sections as $key => $column) {
     						if (in_array($block['name'], $column['blocks'])) {
     							$found = true;
     							break;
@@ -462,7 +473,7 @@ class module_xcms extends MagesterExtendedModule {
     		} else {
     			// UPDATE POSITIONS
     			$editedPage['positions'] = array();
-    			foreach($sections as $key => $value) {
+    			foreach ($sections as $key => $value) {
     				$editedPage['positions'][] = array_values($value['blocks']);
     			}
     		}
@@ -480,22 +491,23 @@ class module_xcms extends MagesterExtendedModule {
 	}}
 	/* HOOK ACTIONS FUNCTIONS */
 	/* DATA MODEL FUNCTIONS /*/
-	protected function loadPageBlocks($page_id = null) {
+	protected function loadPageBlocks($page_id = null)
+	{
 		if (is_null($page_id)) {
 			$editedpage = $this->getEditedPage();
 			$page_id = $editedpage['id'];
 		}
 
 		$pageBlocks = eF_getTableData(
-    		"module_xcms_pages_to_blocks pg2block 
+    		"module_xcms_pages_to_blocks pg2block
     		LEFT JOIN module_xcms_blocks block ON (pg2block.block_id = block.id)",
     		"pg2block.page_id, block.name, block.module, block.action, pg2block.xscope_id, pg2block.xentify_id, block.tag as block_tag, pg2block.tag as custom_tag",
     		"pg2block.page_id = " . $page_id
 		);
 		$user = $this->getCurrentUser();
 		$xentifyModule = $this->loadModule("xentify");
-		 
-		foreach($pageBlocks as $key => &$block) {
+
+		foreach ($pageBlocks as $key => &$block) {
 			if ($xentifyModule->isUserInScope($user, $block['xscope_id'], $block['xentify_id'])) {
 				$block['block_tag'] = json_decode($block['block_tag'], true);
 				$block['custom_tag'] = json_decode($block['custom_tag'], true);
@@ -509,13 +521,15 @@ class module_xcms extends MagesterExtendedModule {
 		}
 		return $pageBlocks;
 	}
-	protected function preFilterPageFields($editedpage) {
+	protected function preFilterPageFields($editedpage)
+	{
 		$editedpage['positions'] = json_encode($editedpage['positions']);
 		$editedpage['rules'] = json_encode($editedpage['rules']);
-		 
+
 		return $editedpage;
 	}
-	public function persistPage($editedpage = null, $page_id = null) {
+	public function persistPage($editedpage = null, $page_id = null)
+	{
 		if (is_null($editedpage)) {
 			$editedpage = $this->getEditedPage();
 		}
@@ -525,10 +539,11 @@ class module_xcms extends MagesterExtendedModule {
 		$pageFields = $this->preFilterPageFields($editedpage);
 		eF_updateTableData("module_xcms_pages", $pageFields, "id = " . $page_id);
 	}
-	public function getPageByPageTypeId($page_bit) {
+	public function getPageByPageTypeId($page_bit)
+	{
 		$pageContraints = array();
-		foreach($this->page_types as $key => $type) {
-			$pageContraints[$key] = (bool)($_GET['xpage_type'] & $type);
+		foreach ($this->page_types as $key => $type) {
+			$pageContraints[$key] = (bool) ($_GET['xpage_type'] & $type);
 		}
 		/*
 		 $pageContraints
@@ -538,13 +553,14 @@ class module_xcms extends MagesterExtendedModule {
 		//var_dump($pageContraints);
 		//exit;
 	}
-	public function createBaseUrlByPageId($page_id, $action = 'load_xpage') {
+	public function createBaseUrlByPageId($page_id, $action = 'load_xpage')
+	{
 		return sprintf($this->moduleBaseUrl . "&action=%s&xpage_id=%s", $action, $page_id);
 	}
 	/*
-	 public function updatePageFieldById($page_id, $fields) {
+	 public function updatePageFieldById($page_id, $fields)
+	 {
 	 eF_updateTableData("module_xcms_pages", $fields, "id = " . $page_id);
 	 }
 	 */
 }
-?>

@@ -141,6 +141,7 @@ abstract class HTML_QuickForm2_Renderer
         list ($className, $includeFile) = self::$_types[$type];
         HTML_QuickForm2_Loader::loadClass($className, $includeFile);
         HTML_QuickForm2_Loader::loadClass('HTML_QuickForm2_Renderer_Proxy');
+
         return new HTML_QuickForm2_Renderer_Proxy(new $className, self::$_pluginClasses[$type]);
     }
 
@@ -225,6 +226,7 @@ abstract class HTML_QuickForm2_Renderer
     {
         try {
             $method = new ReflectionMethod($this, $name);
+
             return $method->isPublic();
         } catch (ReflectionException $e) {
             return false;
@@ -237,13 +239,13 @@ abstract class HTML_QuickForm2_Renderer
     * The following options are available:
     * <ul>
     *   <li>'group_hiddens' - whether to group hidden elements together or
-    *                         render them where they were added (boolean)</li>
+    *                         render them where they were added (boolean) </li>
     *   <li>'group_errors'  - whether to group error messages or render them
-    *                         alongside elements they apply to (boolean)</li>
-    *   <li>'errors_prefix' - leading message for grouped errors (string)</li>
-    *   <li>'errors_suffix' - trailing message for grouped errors (string)</li>
+    *                         alongside elements they apply to (boolean) </li>
+    *   <li>'errors_prefix' - leading message for grouped errors (string) </li>
+    *   <li>'errors_suffix' - trailing message for grouped errors (string) </li>
     *   <li>'required_note' - note displayed if the form contains required
-    *                         elements (string)</li>
+    *                         elements (string) </li>
     * </ul>
     *
     * @param    string|array    option name or array ('option name' => 'option value')
@@ -287,6 +289,7 @@ abstract class HTML_QuickForm2_Renderer
                 "Unknown option '{$name}'"
             );
         }
+
         return $this->options[$name];
     }
 
@@ -301,6 +304,7 @@ abstract class HTML_QuickForm2_Renderer
             HTML_QuickForm2_Loader::loadClass('HTML_QuickForm2_JavascriptBuilder');
             $this->jsBuilder = new HTML_QuickForm2_JavascriptBuilder();
         }
+
         return $this->jsBuilder;
     }
 
@@ -316,6 +320,7 @@ abstract class HTML_QuickForm2_Renderer
     public function setJavascriptBuilder(HTML_QuickForm2_JavascriptBuilder $builder = null)
     {
         $this->jsBuilder = $builder;
+
         return $this;
     }
 
@@ -375,4 +380,3 @@ abstract class HTML_QuickForm2_Renderer
     */
     abstract public function finishGroup(HTML_QuickForm2_Node $group);
 }
-?>

@@ -64,4 +64,3 @@ interface HTML_QuickForm2_DataSource
     */
     public function getValue($name);
 }
-?>

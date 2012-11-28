@@ -77,7 +77,7 @@ class HTML_QuickForm2_Element_InputHidden extends HTML_QuickForm2_Element_Input
     {
         $renderer->renderHidden($this);
         $this->renderClientRules($renderer->getJavascriptBuilder());
+
         return $renderer;
     }
 }
-?>

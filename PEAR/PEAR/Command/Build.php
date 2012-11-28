@@ -86,6 +86,7 @@ Builds one or more extensions contained in a package.'
         if (PEAR::isError($err)) {
             return $err;
         }
+
         return true;
     }
 

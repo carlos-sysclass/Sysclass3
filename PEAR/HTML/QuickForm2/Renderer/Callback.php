@@ -209,6 +209,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
             $html[] = $script;
         }
         $html[] = '</div>';
+
         return implode($break, $html) . $break;
     }
 
@@ -231,6 +232,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         $html[] = $element->__toString();
         $html[] = '</div>';
         $html[] = '</div>';
+
         return implode("", $html);
     }
 
@@ -240,7 +242,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         $html = array();
         if (!empty($renderer->errors)) {
             $html[] = '<div class="errors">';
-            if (($prefix = $renderer->getOption('errors_prefix')) && 
+            if (($prefix = $renderer->getOption('errors_prefix')) &&
                 !empty($prefix)) {
                 $html[] = '<p>' . $prefix . '</p>';
             }
@@ -249,12 +251,13 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
                 $html[] = '<li>' . $error . '</li>';
             }
             $html[] = '</ul>';
-            if (($suffix = $renderer->getOption('errors_suffix')) && 
+            if (($suffix = $renderer->getOption('errors_suffix')) &&
                 !empty($suffix)) {
                 $html[] = '<p>' . $suffix . '</p>';
             }
             $html[] = '</div>';
         }
+
         return implode("", $html);
     }
 
@@ -274,6 +277,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         foreach ($renderer->hidden as $hidden) {
             $html[] = $hidden->__toString();
         }
+
         return '<div style="display: none;">'.implode('', $html).'</div>';
     }
 
@@ -291,6 +295,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         HTML_QuickForm2_Container $container)
     {
         $break  = HTML_Common2::getOption('linebreak');
+
         return implode($break, array_pop($renderer->html));
     }
 
@@ -315,7 +320,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         $separator = $group->getSeparator();
         $elements  = array_pop($renderer->html);
         if (!is_array($separator)) {
-            $content = implode((string)$separator, $elements);
+            $content = implode((string) $separator, $elements);
         } else {
             $content    = '';
             $cSeparator = count($separator);
@@ -327,6 +332,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         $html[] = $content;
         $html[] = '</div>';
         $html[] = '</div>';
+
         return implode($break, $html) . $break;
     }
 
@@ -343,10 +349,11 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         $elements = array_pop($renderer->html);
         $html[] = implode($break, $elements);
         $html[] = '</fieldset>';
+
         return implode($break, $html) . $break;
     }
 
-    public static function _renderLabel(HTML_QuickForm2_Renderer $renderer, 
+    public static function _renderLabel(HTML_QuickForm2_Renderer $renderer,
         HTML_QuickForm2_Node $node)
     {
         $html = array();
@@ -369,6 +376,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
             $html[] = array_shift($label);
             $html[] = '</label>';
         }
+
         return implode('', $html);
     }
 
@@ -506,6 +514,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->labelCallback = $callback;
         }
+
         return $this;
     }
 
@@ -520,6 +529,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->hiddenGroupCallback = $callback;
         }
+
         return $this;
     }
 
@@ -534,6 +544,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->requiredNoteCallback = $callback;
         }
+
         return $this;
     }
 
@@ -553,6 +564,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->callbacksForClass[strtolower($className)] = $callback;
         }
+
         return $this;
     }
 
@@ -572,6 +584,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->callbacksForId[$id] = $callback;
         }
+
         return $this;
     }
 
@@ -588,6 +601,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->errorGroupCallback = $callback;
         }
+
         return $this;
     }
 
@@ -609,6 +623,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->elementCallbacksForGroupClass[strtolower($groupClass)][strtolower($elementClass)] = $callback;
         }
+
         return $this;
     }
 
@@ -630,6 +645,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
         if ($this->_validateCallback($callback)) {
             $this->elementCallbacksForGroupId[$groupId][strtolower($elementClass)] = $callback;
         }
+
         return $this;
     }
 
@@ -715,7 +731,7 @@ class HTML_QuickForm2_Renderer_Callback extends HTML_QuickForm2_Renderer
                 }
             } while ($grClass = strtolower(get_parent_class($grClass)));
         }
+
         return $default;
     }
 }
-?>

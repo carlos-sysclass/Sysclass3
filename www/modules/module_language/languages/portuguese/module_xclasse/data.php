@@ -14,5 +14,3 @@ define("__XCLASSE_ERROR_DELETE_MESSAGE", "Não foi posspível excluir a turma se
 define("__XCLASSE_VIEW_CLASSES", "Turmas");
 define("__XCLASSE_NEWCLASS", "Cadastrar Turma");
 define("__XCLASSE_EDITCLASS", "Editar Turma");
-
-?>

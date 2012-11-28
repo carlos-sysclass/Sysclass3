@@ -21,7 +21,6 @@
 /** Zend_Pdf_FileParserDataSource */
 require_once 'Zend/Pdf/FileParserDataSource.php';
 
-
 /**
  * Concrete subclass of {@link Zend_Pdf_FileParserDataSource} that provides an
  * interface to filesystem objects.
@@ -39,7 +38,6 @@ class Zend_Pdf_FileParserDataSource_File extends Zend_Pdf_FileParserDataSource
 {
   /**** Instance Variables ****/
 
-
     /**
      * Fully-qualified path to the file.
      * @var string
@@ -52,10 +50,7 @@ class Zend_Pdf_FileParserDataSource_File extends Zend_Pdf_FileParserDataSource
      */
     protected $_fileResource = null;
 
-
-
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 
@@ -128,6 +123,7 @@ class Zend_Pdf_FileParserDataSource_File extends Zend_Pdf_FileParserDataSource
                                          Zend_Pdf_Exception::INSUFFICIENT_DATA);
         }
         $this->_offset += $byteCount;
+
         return $bytes;
     }
 
@@ -143,7 +139,6 @@ class Zend_Pdf_FileParserDataSource_File extends Zend_Pdf_FileParserDataSource
         return file_get_contents($this->_filePath);
     }
 
-
   /* Object Magic Methods */
 
     /**
@@ -155,7 +150,6 @@ class Zend_Pdf_FileParserDataSource_File extends Zend_Pdf_FileParserDataSource
     {
         return $this->_filePath;
     }
-
 
   /* Primitive Methods */
 

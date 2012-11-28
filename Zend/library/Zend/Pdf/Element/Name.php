@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
-
 
 /**
  * PDF file 'name' element implementation
@@ -40,7 +38,6 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
      */
     public $value;
 
-
     /**
      * Object constructor
      *
@@ -53,9 +50,8 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
         if (strpos($val,"\x00") !== false) {
             throw new Zend_Pdf_Exception('Null character is not allowed in PDF Names');
         }
-        $this->value   = (string)$val;
+        $this->value   = (string) $val;
     }
-
 
     /**
      * Return type of the element.
@@ -66,7 +62,6 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
     {
         return Zend_Pdf_Element::TYPE_NAME;
     }
-
 
     /**
      * Escape string according to the PDF rules
@@ -109,7 +104,7 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
                     break;
 
                 default:
-                    if ($nextCode >= 33 && $nextCode <= 126 ) {
+                    if ($nextCode >= 33 && $nextCode <= 126) {
                         // Visible ASCII symbol
                         $outStr .= $inStr[$count];
                     } else {
@@ -122,7 +117,6 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
         return $outStr;
     }
 
-
     /**
      * Unescape string according to the PDF rules
      *
@@ -134,7 +128,7 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
         $outStr = '';
 
         for ($count = 0; $count < strlen($inStr); $count++) {
-            if ($inStr[$count] != '#' )  {
+            if ($inStr[$count] != '#') {
                 $outStr .= $inStr[$count];
             } else {
                 // Escape sequence
@@ -142,9 +136,9 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
                 $count +=2;
             }
         }
+
         return $outStr;
     }
-
 
     /**
      * Return object as string
@@ -154,6 +148,6 @@ class Zend_Pdf_Element_Name extends Zend_Pdf_Element
      */
     public function toString($factory = null)
     {
-        return '/' . self::escape((string)$this->value);
+        return '/' . self::escape((string) $this->value);
     }
 }

@@ -257,13 +257,13 @@ class Zend_Paginator implements Countable, IteratorAggregate
         if ($adapter == self::INTERNAL_ADAPTER) {
             if (is_array($data)) {
                 $adapter = 'Array';
-            } else if ($data instanceof Zend_Db_Table_Select) {
+            } elseif ($data instanceof Zend_Db_Table_Select) {
                 $adapter = 'DbTableSelect';
-            } else if ($data instanceof Zend_Db_Select) {
+            } elseif ($data instanceof Zend_Db_Select) {
                 $adapter = 'DbSelect';
-            } else if ($data instanceof Iterator) {
+            } elseif ($data instanceof Iterator) {
                 $adapter = 'Iterator';
-            } else if (is_integer($data)) {
+            } elseif (is_integer($data)) {
                 $adapter = 'Null';
             } else {
                 $type = (is_object($data)) ? get_class($data) : gettype($data);
@@ -413,6 +413,7 @@ class Zend_Paginator implements Countable, IteratorAggregate
     {
         try {
             $return = $this->render();
+
             return $return;
         } catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
@@ -429,7 +430,8 @@ class Zend_Paginator implements Countable, IteratorAggregate
      */
     public function setCacheEnabled($enable)
     {
-        $this->_cacheEnabled = (bool)$enable;
+        $this->_cacheEnabled = (bool) $enable;
+
         return $this;
     }
 
@@ -482,6 +484,7 @@ class Zend_Paginator implements Countable, IteratorAggregate
             $cleanId = $this->_getCacheId($pageNumber);
             self::$_cache->remove($cleanId);
         }
+
         return $this;
     }
 
@@ -806,6 +809,7 @@ class Zend_Paginator implements Countable, IteratorAggregate
                 }
             }
         }
+
         return $data;
     }
 
@@ -942,6 +946,7 @@ class Zend_Paginator implements Countable, IteratorAggregate
         if ($page === null) {
             $page = $this->getCurrentPageNumber();
         }
+
         return self::CACHE_TAG_PREFIX . $page . '_' . spl_object_hash($this);
     }
 

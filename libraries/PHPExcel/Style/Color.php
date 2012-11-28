@@ -25,7 +25,6 @@
  * @version 1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Style_Color
  *
@@ -81,7 +80,6 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 * @var string
 	 */
 	private $_parentPropertyName;
-
 
 	/**
 	 * Create a new PHPExcel_Style_Color
@@ -213,7 +211,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 * @throws	Exception
 	 * @return PHPExcel_Style_Color
 	 */
-	public function applyFromArray($pStyles = null) {
+	public function applyFromArray($pStyles = null)
+	{
 		if (is_array($pStyles)) {
 			if ($this->_isSupervisor) {
 				$this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
@@ -236,7 +235,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *
 	 * @return string
 	 */
-	public function getARGB() {
+	public function getARGB()
+	{
 		if ($this->_isSupervisor) {
 			return $this->getSharedComponent()->getARGB();
 		}
@@ -249,7 +249,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 * @param string $pValue
 	 * @return PHPExcel_Style_Color
 	 */
-	public function setARGB($pValue = PHPExcel_Style_Color::COLOR_BLACK) {
+	public function setARGB($pValue = PHPExcel_Style_Color::COLOR_BLACK)
+	{
 		if ($pValue == '') {
 			$pValue = PHPExcel_Style_Color::COLOR_BLACK;
 		}
@@ -267,7 +268,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *
 	 * @return string
 	 */
-	public function getRGB() {
+	public function getRGB()
+	{
 		if ($this->_isSupervisor) {
 			return $this->getSharedComponent()->getRGB();
 		}
@@ -280,7 +282,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 * @param	string	$pValue	RGB value
 	 * @return PHPExcel_Style_Color
 	 */
-	public function setRGB($pValue = '000000') {
+	public function setRGB($pValue = '000000')
+	{
 		if ($pValue == '') {
 			$pValue = '000000';
 		}
@@ -303,7 +306,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *									decimal value
 	 * @return	string		The extracted colour component
 	 */
-	private static function _getColourComponent($RGB,$offset,$hex=true) {
+	private static function _getColourComponent($RGB,$offset,$hex=true)
+	{
 		$colour = substr($RGB,$offset,2);
 		if (!$hex)
 			$colour = hexdec($colour);
@@ -318,7 +322,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *									decimal value
 	 * @return	string		The red colour component
 	 */
-	public static function getRed($RGB,$hex=true) {
+	public static function getRed($RGB,$hex=true)
+	{
 		if (strlen($RGB) == 8) {
 			return self::_getColourComponent($RGB,2,$hex);
 		} elseif (strlen($RGB) == 6) {
@@ -334,7 +339,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *									decimal value
 	 * @return	string		The green colour component
 	 */
-	public static function getGreen($RGB,$hex=true) {
+	public static function getGreen($RGB,$hex=true)
+	{
 		if (strlen($RGB) == 8) {
 			return self::_getColourComponent($RGB,4,$hex);
 		} elseif (strlen($RGB) == 6) {
@@ -350,7 +356,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *									decimal value
 	 * @return	string		The blue colour component
 	 */
-	public static function getBlue($RGB,$hex=true) {
+	public static function getBlue($RGB,$hex=true)
+	{
 		if (strlen($RGB) == 8) {
 			return self::_getColourComponent($RGB,6,$hex);
 		} elseif (strlen($RGB) == 6) {
@@ -365,7 +372,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 * @param	float		$adjustPercentage	The percentage by which to adjust the colour as a float from -1 to 1
 	 * @return	string		The adjusted colour as an RGB value (e.g. FF00CCCC or CCDDEE
 	 */
-	public static function changeBrightness($hex, $adjustPercentage) {
+	public static function changeBrightness($hex, $adjustPercentage)
+	{
 		$red	= self::getRed($hex,false);
 		$green	= self::getGreen($hex,false);
 		$blue	= self::getBlue($hex,false);
@@ -400,7 +408,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *											should be returned if the indexed colour doesn't exist
 	 * @return	PHPExcel_Style_Color
 	 */
-	public static function indexedColor($pIndex, $background=false) {
+	public static function indexedColor($pIndex, $background=false)
+	{
 		// Clean parameter
 		$pIndex = intval($pIndex);
 
@@ -481,7 +490,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	 *
 	 * @return string	Hash code
 	 */
-	public function getHashCode() {
+	public function getHashCode()
+	{
 		if ($this->_isSupervisor) {
 			return $this->getSharedComponent()->getHashCode();
 		}
@@ -494,7 +504,8 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
-	public function __clone() {
+	public function __clone()
+	{
 		$vars = get_object_vars($this);
 		foreach ($vars as $key => $value) {
 			if ((is_object($value)) && ($key != '_parent')) {

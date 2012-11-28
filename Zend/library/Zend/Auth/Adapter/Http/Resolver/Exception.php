@@ -20,12 +20,10 @@
  * @version    $Id: Exception.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Exception
  */
 require_once 'Zend/Auth/Exception.php';
-
 
 /**
  * HTTP Auth Resolver Exception

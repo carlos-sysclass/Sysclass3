@@ -26,8 +26,8 @@
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Date_DateObject {
-
+abstract class Zend_Date_DateObject
+{
     /**
      * UNIX Timestamp
      */
@@ -81,7 +81,7 @@ abstract class Zend_Date_DateObject {
 
         if (is_numeric($timestamp)) {
             $this->_unixTimestamp = $timestamp;
-        } else if ($timestamp === null) {
+        } elseif ($timestamp === null) {
             $this->_unixTimestamp = time();
         } else {
             require_once 'Zend/Date/Exception.php';
@@ -120,6 +120,7 @@ abstract class Zend_Date_DateObject {
         if ($sync !== null) {
             $this->_syncronised = round($sync);
         }
+
         return (time() + $this->_syncronised);
     }
 
@@ -166,7 +167,7 @@ abstract class Zend_Date_DateObject {
         }
 
         if (isset(self::$_cache)) {
-            $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int)$gmt, '-','_');
+            $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int) $gmt, '-','_');
             if ($result = self::$_cache->load($id)) {
                 return unserialize($result);
             }
@@ -226,8 +227,7 @@ abstract class Zend_Date_DateObject {
             for ($count = 1969; $count >= $year; $count--) {
 
                 $leapyear = self::isYearLeapYear($count);
-                if ($count > $year)
-                {
+                if ($count > $year) {
                     $date += 365;
                     if ($leapyear === true)
                         $date++;
@@ -249,7 +249,7 @@ abstract class Zend_Date_DateObject {
             // gregorian correction for 5.Oct.1582
             if ($date < -12220185600) {
                 $date += 864000;
-            } else if ($date < -12219321600) {
+            } elseif ($date < -12219321600) {
                 $date  = -12219321600;
             }
         }
@@ -277,7 +277,7 @@ abstract class Zend_Date_DateObject {
         // all leapyears can be divided through 400
         if ($year % 400 == 0) {
             return true;
-        } else if (($year > 1582) and ($year % 100 == 0)) {
+        } elseif (($year > 1582) and ($year % 100 == 0)) {
             return false;
         }
 
@@ -303,18 +303,20 @@ abstract class Zend_Date_DateObject {
         if ($timestamp === null) {
             $result = ($gmt) ? @gmdate($format) : @date($format);
             date_default_timezone_set($oldzone);
+
             return $result;
         }
 
         if (abs($timestamp) <= 0x7FFFFFFF) {
             $result = ($gmt) ? @gmdate($format, $timestamp) : @date($format, $timestamp);
             date_default_timezone_set($oldzone);
+
             return $result;
         }
 
         $jump = false;
         if (isset(self::$_cache)) {
-            $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int)$gmt, '-','_');
+            $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int) $gmt, '-','_');
             if ($result2 = self::$_cache->load($idstamp)) {
                 $timestamp = unserialize($result2);
                 $jump = true;
@@ -353,7 +355,7 @@ abstract class Zend_Date_DateObject {
 
         for ($i = 0; $i < $length; $i++) {
 
-            switch($format[$i]) {
+            switch ($format[$i]) {
 
                 // day formats
                 case 'd':  // day of month, 2 digits, with leading zero, 01 - 31
@@ -383,9 +385,9 @@ abstract class Zend_Date_DateObject {
                 case 'S':  // english suffix for day of month, st nd rd th
                     if (($date['mday'] % 10) == 1) {
                         $output .= 'st';
-                    } else if ((($date['mday'] % 10) == 2) and ($date['mday'] != 12)) {
+                    } elseif ((($date['mday'] % 10) == 2) and ($date['mday'] != 12)) {
                         $output .= 'nd';
-                    } else if (($date['mday'] % 10) == 3) {
+                    } elseif (($date['mday'] % 10) == 3) {
                         $output .= 'rd';
                     } else {
                         $output .= 'th';
@@ -668,7 +670,7 @@ abstract class Zend_Date_DateObject {
         }
 
         if (isset(self::$_cache)) {
-            $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int)$fast, '-','_');
+            $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int) $fast, '-','_');
             if ($result = self::$_cache->load($id)) {
                 return unserialize($result);
             }
@@ -688,7 +690,7 @@ abstract class Zend_Date_DateObject {
             $act = 1970;
 
             // iterate through 10 years table, increasing speed
-            foreach(self::$_yearTable as $year => $seconds) {
+            foreach (self::$_yearTable as $year => $seconds) {
                 if ($timestamp >= $seconds) {
                     $i = $act;
                     break;
@@ -856,7 +858,7 @@ abstract class Zend_Date_DateObject {
             $month     = 12;
             $day       = 31;
 
-        } else if (($month == 12) and ((self::dayOfWeek($year + 1, 1, 1) < 5) and
+        } elseif (($month == 12) and ((self::dayOfWeek($year + 1, 1, 1) < 5) and
                    (self::dayOfWeek($year + 1, 1, 1) > 0))) {
             return 1;
         }
@@ -872,13 +874,14 @@ abstract class Zend_Date_DateObject {
      * @param float $a - value to correct
      * @param float $b - maximum range to set
      */
-    private function _range($a, $b) {
+    private function _range($a, $b)
+    {
         while ($a < 0) {
             $a += $b;
-        }
-        while ($a >= $b) {
+        } while ($a >= $b) {
             $a -= $b;
         }
+
         return $a;
     }
 
@@ -897,6 +900,7 @@ abstract class Zend_Date_DateObject {
                 return date_sunset($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
                                    $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
             }
+
             return date_sunrise($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
                                 $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
         }
@@ -935,7 +939,7 @@ abstract class Zend_Date_DateObject {
         // adjust quadrant
         if ($solLongitude > $threeQuarterCircle) {
             $solAscension += $fullCircle;
-        } else if ($solLongitude > $quarterCircle) {
+        } elseif ($solLongitude > $quarterCircle) {
             $solAscension += $halfCircle;
         }
 

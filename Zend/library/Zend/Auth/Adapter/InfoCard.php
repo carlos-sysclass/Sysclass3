@@ -82,6 +82,7 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     public function setAdapter(Zend_InfoCard_Adapter_Interface $a)
     {
         $this->_infoCard->setAdapter($a);
+
         return $this;
     }
 
@@ -114,6 +115,7 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     public function setPKICipherObject(Zend_InfoCard_Cipher_PKI_Interface $cipherObj)
     {
         $this->_infoCard->setPKICipherObject($cipherObj);
+
         return $this;
     }
 
@@ -136,6 +138,7 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     public function setSymCipherObject(Zend_InfoCard_Cipher_Symmetric_Interface $cipherObj)
     {
         $this->_infoCard->setSymCipherObject($cipherObj);
+
         return $this;
     }
 
@@ -149,6 +152,7 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     public function removeCertificatePair($key_id)
     {
         $this->_infoCard->removeCertificatePair($key_id);
+
         return $this;
     }
 
@@ -189,6 +193,7 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     public function setXmlToken($strXmlToken)
     {
         $this->_xmlToken = $strXmlToken;
+
         return $this;
     }
 
@@ -211,15 +216,15 @@ class Zend_Auth_Adapter_InfoCard implements Zend_Auth_Adapter_Interface
     {
         try {
             $claims = $this->_infoCard->process($this->getXmlToken());
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return new Zend_Auth_Result(Zend_Auth_Result::FAILURE , null, array('Exception Thrown',
                                                                                 $e->getMessage(),
                                                                                 $e->getTraceAsString(),
                                                                                 serialize($e)));
         }
 
-        if(!$claims->isValid()) {
-            switch($claims->getCode()) {
+        if (!$claims->isValid()) {
+            switch ($claims->getCode()) {
                 case Zend_infoCard_Claims::RESULT_PROCESSING_FAILURE:
                     return new Zend_Auth_Result(
                         Zend_Auth_Result::FAILURE,

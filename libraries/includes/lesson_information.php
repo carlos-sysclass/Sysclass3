@@ -1,7 +1,7 @@
 <?php
 /**
 
-* 
+*
 
 * @package SysClass
 
@@ -68,8 +68,6 @@ if ($_GET['edit_info'] && $_change_ && !$_student_) {
 
         if ($lessonAvatarForm -> isSubmitted() && $lessonAvatarForm -> validate()) {
 
-
-
         }
 
 */
@@ -123,7 +121,7 @@ if ($_GET['edit_info'] && $_change_ && !$_student_) {
     }
     $lessonInformation = $currentLesson -> getInformation($currentUser -> user['login']);
  foreach ($lesson_info_categories as $key => $value) {
-  if ($lessonInformation[$key] != "" ) {
+  if ($lessonInformation[$key] != "") {
    $lessonInformation[$key] = str_replace ("\n","<br />", $lessonInformation[$key]);
   }
  }

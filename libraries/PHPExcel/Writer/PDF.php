@@ -25,7 +25,6 @@
  * @version		1.7.7, 2012-05-19
  */
 
-
 /** Require FPDF library */
 $k_path_url = dirname(__FILE__) . '/PDF';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/PDF/tcpdf.php';
@@ -37,7 +36,8 @@ require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/PDF/tcpdf.php';
  * @package		PHPExcel_Writer
  * @copyright	Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
+class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter
+{
 	/**
 	 * Temporary storage directory
 	 *
@@ -65,7 +65,6 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 * @var int
 	 */
 	private $_paperSize	= null;
-
 
 	/**
 	 * Paper Sizes xRef List
@@ -147,7 +146,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 *
 	 * @param 	PHPExcel	$phpExcel	PHPExcel object
 	 */
-	public function __construct(PHPExcel $phpExcel) {
+	public function __construct(PHPExcel $phpExcel)
+	{
 		parent::__construct($phpExcel);
 		$this->setUseInlineCss(true);
 		$this->_tempDir = PHPExcel_Shared_File::sys_get_temp_dir();
@@ -162,7 +162,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 *
 	 * @param	string	$fontName
 	 */
-	public function setFont($fontName) {
+	public function setFont($fontName)
+	{
 		$this->_font = $fontName;
 		return $this;
 	}
@@ -172,7 +173,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
      *
      * @return int
      */
-    public function getPaperSize() {
+    public function getPaperSize()
+    {
     	return $this->_paperSize;
     }
 
@@ -182,7 +184,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
      * @param int $pValue
      * @return PHPExcel_Writer_PDF
      */
-    public function setPaperSize($pValue = PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER) {
+    public function setPaperSize($pValue = PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER)
+    {
     	$this->_paperSize = $pValue;
     	return $this;
     }
@@ -192,7 +195,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
      *
      * @return string
      */
-    public function getOrientation() {
+    public function getOrientation()
+    {
     	return $this->_orientation;
     }
 
@@ -202,7 +206,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
      * @param string $pValue
      * @return PHPExcel_Writer_PDF
      */
-    public function setOrientation($pValue = PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT) {
+    public function setOrientation($pValue = PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT)
+    {
     	$this->_orientation = $pValue;
     	return $this;
     }
@@ -213,7 +218,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 * @param 	string 		$pFilename    Filename for the saved file
 	 * @throws 	Exception
 	 */
-	public function save($pFilename = null) {
+	public function save($pFilename = null)
+	{
 		// garbage collect
 		$this->_phpExcel->garbageCollect();
 
@@ -261,11 +267,9 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 			$printPaperSize = $this->_paperSize;
 		}
 
-
 		if (isset(self::$_paperSizes[$printPaperSize])) {
 			$paperSize = self::$_paperSizes[$printPaperSize];
 		}
-
 
 		// Create PDF
 		$pdf = new TCPDF($orientation, 'pt', $paperSize);
@@ -306,7 +310,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 *
 	 * @return string
 	 */
-	public function getTempDir() {
+	public function getTempDir()
+	{
 		return $this->_tempDir;
 	}
 
@@ -317,7 +322,8 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 * @throws 	Exception	Exception when directory does not exist
 	 * @return PHPExcel_Writer_PDF
 	 */
-	public function setTempDir($pValue = '') {
+	public function setTempDir($pValue = '')
+	{
 		if (is_dir($pValue)) {
 			$this->_tempDir = $pValue;
 		} else {

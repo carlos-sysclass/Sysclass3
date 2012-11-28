@@ -12,7 +12,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 /**
- * 
+ *
  * @author user
  *
  */
@@ -20,48 +20,48 @@ class bookmarks extends MagesterEntity
 {
     /**
      * The bookmarks properties
-     * 
+     *
      * @since 3.6.0
      * @var array
      * @access public
      */
     public $bookmarks = array();
-       
+
     /**
      * Create bookmarks
-     * 
+     *
      * This function is used to create bookmarks
      * <br>Example:
      * <code>
-	 * $bookmarks = bookmarks :: create($fields));		//$fields is an array of data for the bookmark 
+	 * $bookmarks = bookmarks :: create($fields));		//$fields is an array of data for the bookmark
      * </code>
-     * 
+     *
      * @param $fields An array of data
      * @return bookmarks The new object
      * @since 3.6.0
      * @access public
      * @static
      */
-    public static function create($fields = array()) {        
-        
+    public static function create($fields = array())
+    {
         $newId    = eF_insertTableData("bookmarks", $fields);
-        $bookmark = new bookmarks($newId);        
+        $bookmark = new bookmarks($newId);
 
-        return $bookmarks;            
+        return $bookmarks;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see libraries/MagesterEntity#getForm($form)
      */
     public function getForm($form) {}
-    
+
     /**
      * (non-PHPdoc)
      * @see libraries/MagesterEntity#handleForm($form)
      */
     public function handleForm($form, $values = false) {}
-    
+
     /**
 	 * Get bookmarks
 	 *
@@ -96,27 +96,27 @@ class bookmarks extends MagesterEntity
 	 * @access public
 	 * @static
      */
-    public static function getBookmarks($user, $lesson) {
+    public static function getBookmarks($user, $lesson)
+    {
         if ($user instanceof MagesterUser) {
             $user = $user -> user['login'];
-        } else if (!eF_checkParameter($user, 'login')) {
+        } elseif (!eF_checkParameter($user, 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.': '.$user['login'], MagesterUserException :: INVALID_LOGIN);
         }
         if ($lesson instanceof MagesterLesson) {
             $lesson = $lesson -> lesson['id'];
-        } else if (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!eF_checkParameter($lesson, 'id')) {
             throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException :: INVALID_ID);
-        }        
-        
+        }
+
         $bookmarks = array();
         $result    = eF_getTableData("bookmarks b, lessons l", "b.*, l.name as lesson_name", "b.lessons_ID=l.id and users_LOGIN='".$user."' and lessons_ID=".$lesson);
         foreach ($result as $value) {
             $bookmarks[$value['id']] = $value;
         }
-        
+
         return $bookmarks;
 
     }
-    
-    
+
 }

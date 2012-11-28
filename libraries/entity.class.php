@@ -61,7 +61,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         if (!$this -> entity) {
             $this -> entity = strtolower(str_replace('Magester', '', get_class($this)));
         }
@@ -89,7 +90,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         eF_deleteTableData($this -> entity, "id=".$this -> {$this -> entity}['id']);
     }
     /**
@@ -119,7 +121,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         eF_updateTableData($this -> entity, $this -> {$this -> entity}, "id=".$this -> {$this -> entity}['id']);
     }
     /**
@@ -133,7 +136,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function activate() {
+    public function activate()
+    {
         $this -> {$this -> entity}['active'] = 1;
         $this -> persist();
     }
@@ -148,7 +152,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function deactivate() {
+    public function deactivate()
+    {
         $this -> {$this -> entity}['active'] = 0;
         $this -> persist();
     }
@@ -163,7 +168,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function archive() {
+    public function archive()
+    {
      if (isset($this -> {$this -> entity}['archive'])) {
       $this -> {$this -> entity}['archive'] = 1;
       $this -> persist();
@@ -184,7 +190,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function export($type) {
+    public function export($type)
+    {
      $result = eF_getTableData($this -> entity, "*");
      switch ($type) {
       case 'csv':
@@ -204,6 +211,7 @@ abstract class MagesterEntity
        }
       break;
      }
+
      return $export;
     }
     /**
@@ -219,7 +227,8 @@ abstract class MagesterEntity
      * @access public
 
      */
-    public function import($type) {
+    public function import($type)
+    {
      switch ($type) {
       case 'csv':
        break;
@@ -230,7 +239,8 @@ abstract class MagesterEntity
        break;
      }
     }
-    public static function createDateElement($form, $elementName, $elementLabel, $options = array()) {
+    public static function createDateElement($form, $elementName, $elementLabel, $options = array())
+    {
      $options = array_merge(array('format' => getDateFormat().' H:i',
              'minYear' => date("Y") - 4,
              'maxYear' => date("Y") + 3), $options);
@@ -243,6 +253,7 @@ abstract class MagesterEntity
       $el -> _locale['en']['weekdays_long'][$i] = iconv(_CHARSET, 'UTF-8', strftime("%A", mktime(0, 0, 0, 1, $i+2, 2000)));
       $el -> _locale['en']['weekdays_short'][$i] = iconv(_CHARSET, 'UTF-8', strftime("%a", mktime(0, 0, 0, 1, $i+2, 2000)));
      }
+
      return $el;
     }
     /**
@@ -262,7 +273,8 @@ abstract class MagesterEntity
      * @static
 
      */
-    public static function getAll($name, $returnObjects = false) {
+    public static function getAll($name, $returnObjects = false)
+    {
        $result = eF_getTableData($name, "*");
        $entity = array();
        foreach ($result as $value) {
@@ -272,10 +284,12 @@ abstract class MagesterEntity
                $entity[$value['id']] = $value;
            }
        }
+
        return $entity;
     }
-    
-    public static function getAllid($name, $where , $returnObjects = false) {
+
+    public static function getAllid($name, $where , $returnObjects = false)
+    {
        $result = eF_getTableData($name, "*", $where);
        $entity = array();
        foreach ($result as $value) {
@@ -285,6 +299,7 @@ abstract class MagesterEntity
                $entity[$value['id']] = $value;
            }
        }
+
        return $entity;
     }
     /**

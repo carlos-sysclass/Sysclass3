@@ -25,5 +25,4 @@ define("_FAQ_SUCCESFULLYDELETEDFAQENTRY", "SSS içeriği basarıyla silindi");
 define("_FAQ_SUCCESFULLYUPDATEDFAQENTRY", "SSS içeriği basarıyla güncellendi");
 define("_FAQ_PROBLEMUPDATINGFAQENTRY", "SSS içeriği güncellenemedi");
 define("_FAQ_GENERAL_LESSON", "Genel olarak ders hakkında");
-define("_FAQ_REGARDING","İlgili başlık");
-?>
+define("_FAQ_REGARDING", "İlgili başlık");

@@ -37,4 +37,3 @@ define("__IES_SUCCESFULLYUPDATEDIESENTRY","Instituição de Ensino atualizada co
 define("__IES_PROBLEMUPDATINGIESENTRY","Ocorreu um problema ao tentar salvar a Instituição de Ensino.");
 define("__IES_SUCCESFULLYINSERTEDIESENTRY","Instituição de Ensino inserida com sucesso");
 define("__IES_PROBLEMINSERTINGIESENTRY","Ocorreu um problema ao tentar salvar a Instituição de Ensino.");
-?>

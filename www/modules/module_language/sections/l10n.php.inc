@@ -25,4 +25,3 @@ $result = array(
 );
 
 return $result;
-?>
