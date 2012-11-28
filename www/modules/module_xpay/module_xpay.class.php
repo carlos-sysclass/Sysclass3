@@ -1613,7 +1613,8 @@ class module_xpay extends MagesterExtendedModule
 			// VALIDATE
 			$values = $form->getValue();
 
-			$values['valor'] = (float) str_replace(",", ".", $values['valor']);
+			
+			$values['valor'] = (float) str_replace(",", ".", str_replace(".", "", $values['valor']));
 			$data_vencimento = date_create_from_format("d/m/Y", $values['data_vencimento']);
 
 			if ($data_vencimento) {
