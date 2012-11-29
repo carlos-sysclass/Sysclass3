@@ -62,7 +62,7 @@
 			class="imgs_cont sprite16 sprite16-go_into"
 			border = "0"
 		/>				
-		<a href="{$T_XPAY_BASEURL}_cielo&action=pending_transactions">Capturar Transações</a>
+		<a href="{$T_XPAY_BASEURL}_cielo&action=list_transactions">Verificar Transações Cartão</a>
 	</span>
 </div>
 <div class="clear"></div>

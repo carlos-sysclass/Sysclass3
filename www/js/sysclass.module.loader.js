@@ -78,6 +78,15 @@
 				);
 			}
 		},
+		_getActionUrl : function(actionName, sendData) {
+			var url = this.opt.baseUrl + "&action=" + actionName;
+			
+			if (typeof(sendData) == 'object') {
+				url = url + "&" + jQuery.param(sendData); 
+			}
+			
+			return url;
+		},
 		_loadAction : function(actionName, sendData, selector, callback) {
 			var url = 
 				window.location.protocol + "//" +

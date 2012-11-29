@@ -4543,3 +4543,402 @@ RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
 </transacao>
 
 
+***********************************************
+2012-11-29 16:36:33:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3B11001&output=dialog
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="63d988d47766629400d2a4dd06f93e7c" versao="1.2.0">
+   <tid>100173489808F3B11001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 16:36:34:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3B11001&output=dialog
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="63d988d47766629400d2a4dd06f93e7c" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F3B11001</tid>
+  <pan>IqVz7P9zaIgTYdU41HaW/OB/d7Idwttqwb2vaTt8MT0=</pan>
+  <dados-pedido>
+    <numero>13720503</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T15:29:50.649-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 5</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>visa</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>6</status>
+  <autenticacao>
+    <codigo>6</codigo>
+    <mensagem>Autenticada com sucesso</mensagem>
+    <data-hora>2012-11-28T15:30:15.163-02:00</data-hora>
+    <valor>100</valor>
+    <eci>5</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>6</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T15:30:15.174-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586673</nsu>
+  </autorizacao>
+  <captura>
+    <codigo>6</codigo>
+    <mensagem>Transacao capturada com sucesso</mensagem>
+    <data-hora>2012-11-29T17:29:55.248-02:00</data-hora>
+    <valor>100</valor>
+  </captura>
+</transacao>
+
+
+***********************************************
+2012-11-29 16:37:48:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3B11001&output=dialog
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="9728ea86774794b788f7e030ce9d1339" versao="1.2.0">
+   <tid>100173489808F3B11001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 16:37:48:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3B11001&output=dialog
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="9728ea86774794b788f7e030ce9d1339" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F3B11001</tid>
+  <pan>IqVz7P9zaIgTYdU41HaW/OB/d7Idwttqwb2vaTt8MT0=</pan>
+  <dados-pedido>
+    <numero>13720503</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T15:29:50.649-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 5</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>visa</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>6</status>
+  <autenticacao>
+    <codigo>6</codigo>
+    <mensagem>Autenticada com sucesso</mensagem>
+    <data-hora>2012-11-28T15:30:15.163-02:00</data-hora>
+    <valor>100</valor>
+    <eci>5</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>6</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T15:30:15.174-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586673</nsu>
+  </autorizacao>
+  <captura>
+    <codigo>6</codigo>
+    <mensagem>Transacao capturada com sucesso</mensagem>
+    <data-hora>2012-11-29T17:29:55.248-02:00</data-hora>
+    <valor>100</valor>
+  </captura>
+</transacao>
+
+
+***********************************************
+2012-11-29 16:38:26:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3801001&output=dialog
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="0c4d8cde4edea63ccb1f29536318c98e" versao="1.2.0">
+   <tid>100173489808F3801001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 16:38:26:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3801001&output=dialog
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="0c4d8cde4edea63ccb1f29536318c98e" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F3801001</tid>
+  <pan>b1SQ6jpKCDt3n9C0dgD/ZkPQ1Bh+7aJESqr/CwP64P0=</pan>
+  <dados-pedido>
+    <numero>13720404</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T14:34:07.471-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 4</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>mastercard</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>4</status>
+  <autenticacao>
+    <codigo>4</codigo>
+    <mensagem>Nao autenticada</mensagem>
+    <data-hora>2012-11-28T14:34:23.812-02:00</data-hora>
+    <valor>100</valor>
+    <eci>1</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>4</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T14:34:23.817-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586624</nsu>
+  </autorizacao>
+</transacao>
+
+
+***********************************************
+2012-11-29 16:38:26:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3801001&output=dialog
+OPERAÇÃO: Captura
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-captura id="0c4d8cde4edea63ccb1f29536318c98e" versao="1.2.0">
+   <tid>100173489808F3801001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+   </requisicao-captura>
+
+***********************************************
+2012-11-29 16:38:26:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&transaction_tid=100173489808F3801001&output=dialog
+OPERAÇÃO: Captura
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="0c4d8cde4edea63ccb1f29536318c98e" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F3801001</tid>
+  <pan>b1SQ6jpKCDt3n9C0dgD/ZkPQ1Bh+7aJESqr/CwP64P0=</pan>
+  <dados-pedido>
+    <numero>13720404</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T14:34:07.471-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 4</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>mastercard</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>6</status>
+  <autenticacao>
+    <codigo>6</codigo>
+    <mensagem>Nao autenticada</mensagem>
+    <data-hora>2012-11-28T14:34:23.812-02:00</data-hora>
+    <valor>100</valor>
+    <eci>1</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>6</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T14:34:23.817-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586624</nsu>
+  </autorizacao>
+  <captura>
+    <codigo>6</codigo>
+    <mensagem>Transacao capturada com sucesso</mensagem>
+    <data-hora>2012-11-29T17:34:20.446-02:00</data-hora>
+    <valor>100</valor>
+  </captura>
+</transacao>
+
+
+***********************************************
+2012-11-29 16:49:57:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="b1f1b3400efde76ad714051b31301bb2" versao="1.2.0">
+   <tid>100173489808F37D1001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 16:49:57:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="b1f1b3400efde76ad714051b31301bb2" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F37D1001</tid>
+  <pan>5UeSVNFr1L76SHYZclDdTlr3Ax2Z84mstUQoXbV9AE0=</pan>
+  <dados-pedido>
+    <numero>13720305</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T14:30:16.058-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 3</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>visa</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>6</status>
+  <autenticacao>
+    <codigo>6</codigo>
+    <mensagem>Transacao sem autenticacao</mensagem>
+    <data-hora>2012-11-28T14:31:16.994-02:00</data-hora>
+    <valor>100</valor>
+    <eci>6</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>6</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T14:31:16.997-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586621</nsu>
+  </autorizacao>
+  <captura>
+    <codigo>6</codigo>
+    <mensagem>Transacao capturada com sucesso</mensagem>
+    <data-hora>2012-11-28T14:31:18.161-02:00</data-hora>
+    <valor>100</valor>
+  </captura>
+</transacao>
+
+
+***********************************************
+2012-11-29 16:50:09:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="73ffbe6212ac2c6fb6a13d5757820f94" versao="1.2.0">
+   <tid>100173489808F11F1001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 16:50:09:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="73ffbe6212ac2c6fb6a13d5757820f94" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F11F1001</tid>
+  <dados-pedido>
+    <numero>13720107</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-27T14:12:49.892-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 1</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>visa</bandeira>
+    <produto>1</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>9</status>
+  <cancelamentos>
+    <cancelamento>
+      <codigo>9</codigo>
+      <mensagem>Cancelamento por timeout do usuario</mensagem>
+      <data-hora>2012-11-27T14:18:46.081-02:00</data-hora>
+      <valor>100</valor>
+    </cancelamento>
+  </cancelamentos>
+</transacao>
+
+
+***********************************************
+2012-11-29 17:05:48:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="7e5641426f9a7daea7cf49df17563b4b" versao="1.2.0">
+   <tid>100173489808F3AEA001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-11-29 17:05:48:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
+<transacao versao="1.2.0" id="7e5641426f9a7daea7cf49df17563b4b" xmlns="http://ecommerce.cbmp.com.br">
+  <tid>100173489808F3AEA001</tid>
+  <pan>IqVz7P9zaIgTYdU41HaW/OB/d7Idwttqwb2vaTt8MT0=</pan>
+  <dados-pedido>
+    <numero>13720404</numero>
+    <valor>100</valor>
+    <moeda>986</moeda>
+    <data-hora>2012-11-28T15:26:03.432-02:00</data-hora>
+    <descricao>Douglas Nascimento de Jesus do Sacramento. (douglas.sacramento) - Mensalidade 4</descricao>
+    <idioma>PT</idioma>
+  </dados-pedido>
+  <forma-pagamento>
+    <bandeira>visa</bandeira>
+    <produto>A</produto>
+    <parcelas>1</parcelas>
+  </forma-pagamento>
+  <status>6</status>
+  <autenticacao>
+    <codigo>6</codigo>
+    <mensagem>Autenticada com sucesso</mensagem>
+    <data-hora>2012-11-28T15:26:38.921-02:00</data-hora>
+    <valor>100</valor>
+    <eci>5</eci>
+  </autenticacao>
+  <autorizacao>
+    <codigo>6</codigo>
+    <mensagem>Transa��o autorizada</mensagem>
+    <data-hora>2012-11-28T15:26:38.938-02:00</data-hora>
+    <valor>100</valor>
+    <lr>00</lr>
+    <arp>123456</arp>
+    <nsu>586670</nsu>
+  </autorizacao>
+  <captura>
+    <codigo>6</codigo>
+    <mensagem>Transacao capturada com sucesso</mensagem>
+    <data-hora>2012-11-28T15:26:38.953-02:00</data-hora>
+    <valor>100</valor>
+  </captura>
+</transacao>
+
+

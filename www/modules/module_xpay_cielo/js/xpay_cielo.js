@@ -24,15 +24,17 @@
 			
 			dataTablePaidDefaults = jQuery.extend(true, dataTableDefaults, {
 				"aoColumns": [
-					null,
-					null,
-					null,
-					{sType : "img-src", sSortDataType : "img-src"},
-					null,
-					null,
-					null
-				]
-				         
+					{"mData": "tid"},
+					{"mData": "data"},
+					{"mData": "login"},
+					{/*sType : "img-src", sSortDataType : "img-src", */"mData": "bandeira"},
+					{"mData": "forma_pagamento"},
+					{"mData": "valor"},
+					{"mData": "status"},
+					{"mData": "options"}
+				],
+		        "bProcessing": true,
+		        "sAjaxSource": this._getActionUrl("load_transactions", {output : 'json'})
 				/*,
 				fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
 					// Calculate the market share for browsers on this page
@@ -80,9 +82,7 @@
 
 			});
 			
-			
-			
-			
+			console.log(dataTablePaidDefaults);
 			
 			jQuery("#xpay-cielo-last-transactions-table").dataTable(dataTablePaidDefaults).columnFilter({ 
 				aoColumns: [
@@ -93,8 +93,27 @@
 					{ type: "select", values: this.opt.formas_pagamento },
 					{ type: "text" },
 					{ type: "select", values: this.opt.statuses },
+					null
 				]
 			});
+			
+			jQuery(".xpay-cielo-do-capture-link").click(function() {
+				
+				
+			})
+			
+		},
+		doCaptureAction : function(transTID) {
+			var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
+			
+			this._postAction(
+				"do_capture",
+				{transaction_tid : transTID},
+				function(data, response) {
+					oTable.fnClearTable();
+				},
+				'json'
+			);
 		}
 	};
 

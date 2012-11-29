@@ -2041,7 +2041,7 @@ class module_xpay extends MagesterExtendedModule
 			// JUST SEND E-MAIL TO fin@americas
 		}
 		*/
-//					if ($registerReturned['updated'] && $registerReturned['tag'] == 1) {
+		// if ($registerReturned['updated'] && $registerReturned['tag'] == 1) {
 
 
 

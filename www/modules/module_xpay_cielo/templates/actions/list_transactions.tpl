@@ -9,6 +9,7 @@
 			<th style="text-align: center;">Forma</th>
 			<th style="text-align: center;">Valor</th>
 			<th style="text-align: center;">Status</th>
+			<th style="text-align: center;">Opções</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,6 +22,16 @@
 				<td align="center">{$trans.forma_pagamento}</td>
 				<td align="center">#filter:currency:{$trans.valor}#</td>
 				<td align="center">{$trans.status_id} - {$trans.status}</td>
+				<td align="center">
+					{if $trans.status_id == 0}
+						{* EXCLUDE OPTION *}
+					{/if}
+					{*if $trans.status_id == 4*}
+						<a class="form-icon xpay-cielo-do-capture-link" onclick="_sysclass('load', 'xpay_cielo').doCaptureAction('{$trans.tid}');" href="javascript: void(0);">
+							<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
+						</a>
+					{*/if*}
+				</td>
 			</tr>
 		{/foreach}
 	</tbody>
@@ -34,6 +45,7 @@
 			<th style="text-align: center;">Forma</th>
 			<th style="text-align: center;">Valor</th>
 			<th style="text-align: center;">Status</th>
+			<th style="text-align: center;">Opções</th>
 		</tr>
 	</tfoot>
 </table>
