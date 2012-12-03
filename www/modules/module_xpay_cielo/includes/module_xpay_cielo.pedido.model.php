@@ -13,7 +13,7 @@ if(!isset($_SESSION["pedidos"]))
 }
 */
 // CONSTANTES
-if (defined("XPAY_CIELO_DEV")) {
+if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	define("ENDERECO_BASE", "https://qasecommerce.cielo.com.br");
 } else {
 	define("ENDERECO_BASE", "https://ecommerce.cbmp.com.br");
@@ -24,7 +24,7 @@ define("ENDERECO", ENDERECO_BASE."/servicos/ecommwsec.do");
 // Envia requisiçãoo
 function httprequest($paEndereco, $paPost){
 
-	//error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+	# error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 	
 	$sessao_curl = curl_init();
 	curl_setopt($sessao_curl, CURLOPT_URL, $paEndereco);
@@ -41,13 +41,10 @@ function httprequest($paEndereco, $paPost){
 	//  CURLOPT_SSL_CAINFO
 	//  informa a localização do certificado para verificação com o peer
 	
-	//echo dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt";
-	//var_dump(file_exists(dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt"));
-	//exit;
-	if (defined("XPAY_CIELO_DEV")) {
+	if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 		curl_setopt($sessao_curl, CURLOPT_CAINFO, dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt");
 	} else {
-		curl_setopt($sessao_curl, CURLOPT_CAINFO, "/home/SysClass/ssl/certs/verisign.crt");
+		curl_setopt($sessao_curl, CURLOPT_CAINFO, dirname(__FILE__) . "/../ssl/verisign.crt");
 	}
 	curl_setopt($sessao_curl, CURLOPT_SSLVERSION, 3);
 
@@ -58,8 +55,8 @@ function httprequest($paEndereco, $paPost){
 	//  CURLOPT_TIMEOUT
 	//  o tempo máximo em segundos de espera para a execução da requisição (curl_exec)
 	curl_setopt($sessao_curl, CURLOPT_TIMEOUT, 400);
-	
-	
+
+
 	
 	//CURLOPT_HTTPHEADER 	An array of HTTP header fields to set, in the format
 	//curl_setopt($sessao_curl, CURLOPT_HTTPHEADER, array('Accept-Charset: ISO-8859-1'));
@@ -74,9 +71,11 @@ function httprequest($paEndereco, $paPost){
 	curl_setopt($sessao_curl, CURLOPT_POST, true);
 	curl_setopt($sessao_curl, CURLOPT_POSTFIELDS, $paPost );
 
+	$fp = fopen(dirname(__FILE__).'/../logs/curlerror.txt', 'w');
+	curl_setopt($sessao_curl, CURLOPT_VERBOSE, 1);
+	curl_setopt($sessao_curl, CURLOPT_STDERR, $fp);
+
 	$resultado = curl_exec($sessao_curl);
-	
-	//var_dump($resultado);
 
 	if ($resultado) {
 		curl_close($sessao_curl);
@@ -424,20 +423,13 @@ function VerificaErro($vmPost, $vmResposta)
 		{
 			$this->logger->logWrite("ENVIO: " . $vmPost, $transacao);
 	
-			//echo ENDERECO;
-			//var_dump($vmPost);
-			///exit;
-			
 			// ENVIA REQUISIÇÃO SITE CIELO
 			$vmResposta = httprequest(ENDERECO, "mensagem=" . $vmPost);
 			
-			///var_dump($vmResposta);
 			$this->logger->logWrite("RESPOSTA: " . $vmResposta, $transacao);
 			
 			$error_status = VerificaErro($vmPost, $vmResposta);
 			
-			var_dump($error_status);
-	
 			return simplexml_load_string($vmResposta);
 		}
 		

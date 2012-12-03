@@ -3,7 +3,7 @@ require_once (dirname(__FILE__) . '/../module_xpay/module_xpay_submodule.interfa
 
 define("XPAY_CIELO_DEV", false);
 
-if (defined("XPAY_CIELO_DEV")) {
+if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	/* DEV KEYS */
 	define("CIELO", "1001734898");
 	define("CIELO_CHAVE", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
