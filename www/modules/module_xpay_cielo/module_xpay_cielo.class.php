@@ -253,6 +253,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
 				'baselink'	=> $this->moduleBaseLink,
 				'options'	=> array (
+					/*
 					"visa"			=> array(
 						'name'	=> "Visa",
 						"options"	=> array(
@@ -272,6 +273,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						"default_option"	=> 1,
 						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 					)
+					*/
 				)
 			);
 		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
@@ -279,7 +281,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
 				'baselink'	=> $this->moduleBaseLink,
 				'options'	=> array (
-					/*
 					"visa"			=> array(
 						'name'	=> "Visa",
 						"options"	=> array(
@@ -289,7 +290,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						"default_option"	=> 1,
 						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 					),
-	
 					"mastercard"	=> array(
 						"name"	=> "Mastercard",
 						"options"	=> array(
@@ -299,7 +299,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						"default_option"	=> 1,
 						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 					)
-					*/
 					/*,
 					"elo"			=> array(
 						'name'	=> "Elo"
