@@ -427,8 +427,6 @@
 		);
 	});
 	_sysclass("subscribe", "autocategorycomplete-start", function(that) {
-		
-		console.log(that);
 		// CAN BE USED TO AUTO-SELECT AN OPTION
 		/*
 		jQuery(".gradebook-course-lesson").hide();

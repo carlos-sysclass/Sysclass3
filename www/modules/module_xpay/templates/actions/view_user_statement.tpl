@@ -19,9 +19,9 @@
 					{math equation="total + current" total=$total_paid current="`$statement.paid`" assign="total_paid"}
 					<tr>
 					 	<td>{$statement.module_printname}</td>
-					 	<td align="center">#filter:currency-{$statement.base_price}#</td>
+					 	<td align="center">#filter:currency:{$statement.base_price}#</td>
 					 	<td align="center">#filter:currency:{$statement.paid}#</td>
-					 	<td align="center">#filter:currency-{$statement.base_price-$statement.paid}#</td>
+					 	<td align="center">#filter:currency:{$statement.base_price-$statement.paid}#</td>
 					 	<td align="center">
 					 		<div>
 						 		<a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&negociation_id={$statement.id}" class="form-icon">
@@ -40,9 +40,9 @@
 			<tfoot>
 				<tr>
 					<th>Total:</th>
-					<th style="text-align: center;">#filter:currency-{$total_base_price}#</th>
+					<th style="text-align: center;">#filter:currency:{$total_base_price}#</th>
 					<th style="text-align: center;" class="xpay-paid">#filter:currency:{$total_paid}#</th>
-					<th style="text-align: center;">#filter:currency-{$total_base_price-$total_paid}#</th>
+					<th style="text-align: center;">#filter:currency:{$total_base_price-$total_paid}#</th>
 					<th>&nbsp;</th>
 				</tr>
 			</tfoot>

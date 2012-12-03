@@ -1605,10 +1605,6 @@ var_dump(
 			);
 			return array("current_lesson" => $currentLessonMenu, 'system' => $currentLessonMenu);
 		} else {
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 		}
 	}
 	public function getLinkToHighlight()
