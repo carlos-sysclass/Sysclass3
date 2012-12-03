@@ -4942,3 +4942,41 @@ RESPOSTA: <?xml version="1.0" encoding="ISO-8859-1"?>
 </transacao>
 
 
+***********************************************
+2012-12-03 13:28:09:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="e8df666ad0966abaf173e9c3fe61e2d9" versao="1.2.0">
+   <tid>9</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-12-03 13:28:21:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+RESPOSTA: The requested URL returned error: 503
+
+***********************************************
+2012-12-03 14:07:19:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+ENVIO: <?xml version="1.0" encoding="UTF-8" ?>
+<requisicao-consulta id="931ff3a6ea41b7d6d452648f47a8f4c5" versao="1.2.0">
+   <tid>100173489808F11F1001</tid>
+   <dados-ec>
+      <numero>1001734898</numero>
+      <chave>e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832</chave>
+   </dados-ec>
+</requisicao-consulta>
+
+***********************************************
+2012-12-03 14:07:31:000000 (ART)
+DO ARQUIVO: /administrator.php?ctg=module&op=module_xpay_cielo&action=do_capture&output=json
+OPERAÇÃO: Consulta
+RESPOSTA: The requested URL returned error: 503
+

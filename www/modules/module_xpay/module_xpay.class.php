@@ -165,7 +165,6 @@ class module_xpay extends MagesterExtendedModule
 					'image'			=> 'others/transparent.png',
 					'text'			=> __XPAY_VIEW_MY_STATEMENT,
 					'image-class'	=> 'sprite16 sprite16-do_pay'
-
 				)
 			)
 		), $blockIndex);

@@ -146,6 +146,7 @@ function VerificaErro($vmPost, $vmResposta)
 		$error_msg = "     Codigo do erro: " . $ex->getCode() . "\n";
 		$error_msg .= "     Mensagem: " . $ex->getMessage() . "\n";
 
+		/*
 		// Gera p�gina HTML
 		echo '<html><head><title>Erro na transação</title></head><body>';
 		echo '<span style="color:red;, font-weight:bold;">Ocorreu um erro em sua transação!</span>' . '<br />';
@@ -157,11 +158,16 @@ function VerificaErro($vmPost, $vmResposta)
 				'window.close();}else{window.location.href=' . "'index.php';" . '}" />';
 		echo '</center></p></body></html>';
 		$error_msg .= "     XML de envio: " . "\n" . $vmPost;
-
+		
+		*/
+		
 		// Dispara o erro
 		trigger_error($error_msg, E_USER_ERROR);
-
-		return true;
+		
+		return array(
+			'message'		=> $ex->getMessage(),
+			'message_type'	=> 'failure'
+		);
 	}
 
 	if($objResposta->getName() == "erro")
@@ -422,40 +428,40 @@ function VerificaErro($vmPost, $vmResposta)
 			//var_dump($vmPost);
 			///exit;
 			
-			// ENVIA REQUISIÇÂO SITE CIELO
+			// ENVIA REQUISIÇÃO SITE CIELO
 			$vmResposta = httprequest(ENDERECO, "mensagem=" . $vmPost);
 			
 			///var_dump($vmResposta);
 			$this->logger->logWrite("RESPOSTA: " . $vmResposta, $transacao);
 			
-			VerificaErro($vmPost, $vmResposta);
+			$error_status = VerificaErro($vmPost, $vmResposta);
+			
+			var_dump($error_status);
 	
 			return simplexml_load_string($vmResposta);
 		}
 		
 		// Requisições
-		public function RequisicaoTransacao($incluirPortador)
+	public function RequisicaoTransacao($incluirPortador)
+	{
+		$msg = $this->XMLHeader() . "\n" . '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n" . $this->XMLDadosEc() . "\n";
+		if($incluirPortador == true)
 		{
-			$msg = $this->XMLHeader() . "\n" .
-				   '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n   "
-				   		. $this->XMLDadosEc() . "\n   ";
-			if($incluirPortador == true)
-			{
 					//$msg .=	$this->XMLDadosPortador() . "\n   ";
-			}
-							
-			$msg .=		  $this->XMLDadosPedido() . "\n   "
-				   		. $this->XMLFormaPagamento() . "\n   "
-				   		. $this->XMLUrlRetorno() . "\n   "
-				   		. $this->XMLAutorizar() . "\n   "
-				   		. $this->XMLCapturar() . "\n " 
-				   		. $this->XMLCampoLivre() . "\n" ;
-			
-			$msg .= '</requisicao-transacao>';
-			
-			$objResposta = $this->Enviar($msg, "Transacao");
-			return $objResposta;
 		}
+							
+		$msg .=		  $this->XMLDadosPedido() . "\n   "
+			   		. $this->XMLFormaPagamento() . "\n   "
+			   		. $this->XMLUrlRetorno() . "\n   "
+			   		. $this->XMLAutorizar() . "\n"
+			   		. $this->XMLCapturar() . "\n " 
+			   		. $this->XMLCampoLivre() . "\n" ;
+			
+		$msg .= '</requisicao-transacao>';
+		
+		$objResposta = $this->Enviar($msg, "Transacao");
+		return $objResposta;
+	}
 		
 		public function RequisicaoTid()
 		{

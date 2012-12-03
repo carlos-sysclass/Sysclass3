@@ -110,17 +110,38 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$instances = $this->getPaymentInstances();
 				
 			foreach ($transactions as &$trans) {
+				
+				$trans["bandeira_image"] = sprintf(
+					"<img src=\"%simages/%s.png\" />",
+					$this->moduleBaseLink,
+					$trans["bandeira"]
+				);
+				
 				if (array_key_exists($trans['produto'], $instances['options'][$trans['bandeira']]['options'])) {
 					$trans['forma_pagamento'] = $instances['options'][$trans['bandeira']]['options'][$trans['produto']];
 				} else { // PARCELAMENTO
 					$trans['forma_pagamento'] = sprintf("Parcelado %dx", $trans['parcelas']);
 				}
-				$trans["options"] = 'opções';
+				$trans["options"] = sprintf(
+					"<a 
+						class=\"form-icon xpay-cielo-do-capture-link\" 
+						onclick=\"_sysclass('load', 'xpay_cielo').doCaptureAction('%d');\" 
+						href=\"javascript: void(0);\"
+					>
+					<img src=\"themes/default/images/others/transparent.gif\" class=\"sprite16 sprite16-arrow_right\">
+					</a>",
+					$trans['id']
+				);
+				
+				$trans["bandeira_image"] = sprintf(
+					"<img src=\"%simages/%s.png\" />",
+					$this->moduleBaseLink,
+					$trans["bandeira"]
+				);
 			}
 	
 			if ($_GET['output'] == 'json') {
-				
-								echo json_encode(array("aaData"	=> $transactions));
+				echo json_encode(array("aaData"	=> $transactions));
 				exit;
 			}
 		}
@@ -227,42 +248,72 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 	public function getPaymentInstances()
 	{
-		return array(
-			//'title'		=> __XPAY_CIELO_DO_PAYMENT,
-			'baselink'	=> $this->moduleBaseLink,
-			'options'	=> array (
-				"visa"			=> array(
-					'name'	=> "Visa",
-					"options"	=> array(
-						"1"	=> "Crédito à Vista",
-						"A"	=> "Débito à Vista"
+		if ($this->getCurrentUser()->getType() == 'student') {
+			return array(
+				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
+				'baselink'	=> $this->moduleBaseLink,
+				'options'	=> array (
+					"visa"			=> array(
+						'name'	=> "Visa",
+						"options"	=> array(
+								"1"	=> "Crédito à Vista",
+								"A"	=> "Débito à Vista"
+						),
+						"default_option"	=> 1,
+						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 					),
-					"default_option"	=> 1,
-					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
-				),
-
-				"mastercard"	=> array(
-					"name"	=> "Mastercard",
-					"options"	=> array(
-						"1"	=> "Crédito à Vista",
-						"A"	=> "Débito à Vista"
+	
+					"mastercard"	=> array(
+						"name"	=> "Mastercard",
+						"options"	=> array(
+								"1"	=> "Crédito à Vista",
+								"A"	=> "Débito à Vista"
+						),
+						"default_option"	=> 1,
+						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+					)
+				)
+			);
+		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
+			return array(
+				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
+				'baselink'	=> $this->moduleBaseLink,
+				'options'	=> array (
+					/*
+					"visa"			=> array(
+						'name'	=> "Visa",
+						"options"	=> array(
+							"1"	=> "Crédito à Vista",
+							"A"	=> "Débito à Vista"
+						),
+						"default_option"	=> 1,
+						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 					),
-					"default_option"	=> 1,
-					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+	
+					"mastercard"	=> array(
+						"name"	=> "Mastercard",
+						"options"	=> array(
+							"1"	=> "Crédito à Vista",
+							"A"	=> "Débito à Vista"
+						),
+						"default_option"	=> 1,
+						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+					)
+					*/
+					/*,
+					"elo"			=> array(
+						'name'	=> "Elo"
+					),
+					"diners"		=> array(
+						'name'	=> "Diners"
+					),
+					"discover"		=> array(
+						'name'	=> "Discover"
+					)
+					*/
 				)
-				/*,
-				"elo"			=> array(
-					'name'	=> "Elo"
-				),
-				"diners"		=> array(
-					'name'	=> "Diners"
-				),
-				"discover"		=> array(
-					'name'	=> "Discover"
-				)
-				*/
-			)
-		);
+			);
+		}
 	}
 	public function getPaymentInstanceConfig($instance_id, array $overrideOptions)
 	{
