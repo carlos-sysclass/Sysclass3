@@ -8,8 +8,8 @@ if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	define("CIELO", "1001734898");
 	define("CIELO_CHAVE", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
 } else {
-	define("CIELO", "1027241163");
-	define("CIELO_CHAVE", "149644d64ba539a638060b0c043361b3c2bafc4df10dc0980c934251c53cc455");
+	define("CIELO", "1037979963");
+	define("CIELO_CHAVE", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
 }
 
 class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
@@ -19,9 +19,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	protected $conf = array(
 		// Opção => Autorizar transação autenticada e não-autenticada
 		'authorization'					=> 2, // AUTORIZAÇÃO E AUTENTICAÇÂO
-		//'authorization'					=> 4, // RECORRENTE
-		'authorization'					=> 2,
-		'auto_capture'					=> "false",
+		//'authorization'					=> 4, // RECORRENTE (SOMENTE COM CAPTURA DO CARTÃO NA LOJA
+		'auto_capture'					=> "true",
 		// [A - Débito, 1- Crédito, 2 - loja, 3 - Administradora]
 		'payment_subdivision_method'	=> 2
 	);
@@ -481,7 +480,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$Pedido->dadosPedidoValor = $values["produto"];
 		$Pedido->dadosPedidoValor = floor((floatval($invoiceData['valor']) + floatval($invoiceData['total_reajuste'])) * 100);
 
-		$Pedido->dadosPedidoValor = 100;
+		$Pedido->dadosPedidoValor = 101;
 		
 		//$ies = reset($this->getCurrentUserIes());
 		
