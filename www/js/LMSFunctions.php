@@ -791,8 +791,8 @@ function myCmi()
             this.get = function() { return value; }
             this.set = function(param) { throw new myError('403'); }
             var value = "<?php 
-            	$student_id=$_SESSION['s_login']; 
-            	echo $student_id; 
+            	$student_id=$_SESSION['s_login'];
+            	echo $student_id;
             ?>";
         }
         /**

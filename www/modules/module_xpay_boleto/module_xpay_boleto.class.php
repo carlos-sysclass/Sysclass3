@@ -2549,6 +2549,13 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		}
 		return false;
 	}
+	public function fetchPaymentInstanceOptionsTemplate($instance_id)
+	{
+		// RETURN FALSE FOR "NO OPTIONS"
+		return false;
+	}
+	
+	
 	public function initPaymentProccess($negociation_id, $invoice_index, array $data)
 	{
 		$payInstances = $this->getPaymentInstances();

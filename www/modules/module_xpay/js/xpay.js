@@ -437,6 +437,17 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				}
 			);
 		},
+		viewInstanceOptions : function(instance_index) {
+			this._loadAction(
+				"view_instance_options",
+				{"instance_index" : instance_index},
+				"#xpay-submodule-options-container",
+				function() {
+					//jQuery("#xpay-file-details-container").dialog('open');		
+				}
+			);
+			
+		},
 		importFileToSystem : function(method_index, name) {
 			this._postAction(
 				"import_file_to_system",
@@ -491,7 +502,7 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				close: function() {
 				}
 			});
-			
+
 			jQuery(":input[name='invoice_indexes']").click(function() {
 				if (jQuery(this).parents("tr").hasClass("xpay-paid")) {
 					jQuery("#xpay-do-payment-button span").html(
@@ -502,8 +513,57 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 						_sysclass("load", "i18n").text("__XPAY_DO_PAY")
 					);
 				}
-				
 			});
+			
+			
+			jQuery(":input[name='pay_methods']").live('click', function() {
+				_sysclass("load", "xpay").viewInstanceOptions(jQuery(this).val());
+				
+				jQuery("#xpay-do-payment-button")
+					.removeAttr("disabled")
+					.removeClass("ui-state-disabled");
+			});
+			
+			// CCREATE DIALOG FORM DO-PAY OPTIONS
+			jQuery("#xpay-do_payment-options-dialog").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				close: function() {
+				}
+			});
+			/// DISABLE PAY BUTTON
+			jQuery("#xpay-do-payment-button")
+				.attr("disabled", "disabled")
+				.addClass("ui-state-disabled");
+			
+			jQuery(".xpay-do_payment-options-dialog-link").click(function() {
+				var url = jQuery(this).attr("href");
+				jQuery("#xpay-do_payment-options-dialog-inner").empty();
+				jQuery("#xpay-do_payment-options-dialog-loader").show();
+				jQuery("#xpay-do_payment-options-dialog").dialog('open');
+				
+				jQuery("#xpay-do_payment-options-dialog-inner").load(url, function() {
+					jQuery("#xpay-do_payment-options-dialog-loader").hide();
+					
+					if (jQuery(":input[name='pay_methods']:checked").size() > 0) {
+						jQuery(":input[name='pay_methods']:checked").click();
+					};
+					
+					
+					jQuery("#xpay-do_payment-options-dialog").dialog("widget").position({
+					   my: "center",
+					   at: "center",
+					   of: window
+					});
+				});
+				
+				
+				return false;
+			});
+
 		}
 	};
 
@@ -514,27 +574,5 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 /* MODULE FLOW-LOGIC */
 
 (function( $ ){
-	
-	
-	
 	_sysclass('load', 'xpay').startUI();
 })( jQuery );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

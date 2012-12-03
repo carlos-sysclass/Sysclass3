@@ -9,6 +9,5 @@
 	
 	{/literal}
 	
-	
 	window._mod_data_._{$T_MODULE_NAME|@strtolower}_ = {Mag_Json_Encode data=$_T_MODULE_MOD_DATA};
 </script>

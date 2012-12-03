@@ -27,10 +27,13 @@
 						{/if}
 					</button>
 				</div>					
-				
 			</div>
 			
 			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+			<div class="clear"></div>
+			
+			<div id="xpay-submodule-options-container">sdfsdf</div>
+			<div class="clear"></div>
 			
 			<table class="style1">
 				<thead>
@@ -99,6 +102,7 @@
 					</tr>
 				</tfoot>
 			</table>
+
 	<!-- 
 			<div class="form-field clear buttons">
 				<button class="" type="submit" name="{$T_XPAY_METHOD_FORM.xpay_submit.name}" value="{$T_XPAY_METHOD_FORM.xpay_submit.value}">

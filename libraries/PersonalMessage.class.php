@@ -578,29 +578,26 @@ class eF_PersonalMessage
 	* @deprecated
 
 	*/
- public static function eF_deletePersonalMessage($msg_id)
- {
-     if (eF_checkParameter($msg_id, 'id')) {
-         $res = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$msg_id);
-         if ($_SESSION['s_login'] == $res[0]['users_LOGIN'] || $_SESSION['s_type'] == 'administrator') {
-             eF_deleteTableData("f_personal_messages", "id=".$msg_id);
-             if ($res[0]['attachments'] != '') {
-                 $attached_file = new MagesterFile($res[0]['attachments']);
-                 $attached_file -> delete();
-             }
-
-             return true;
-         } else {
-             $message = 'You cannot delete this message';
-
-             return $message;
-         }
-     } else {
-         $message = _INVALIDID;
-
-         return $message;
-     }
- }
+	public static function eF_deletePersonalMessage($msg_id)
+	{
+		if (eF_checkParameter($msg_id, 'id')) {
+			$res = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$msg_id);
+			if ($_SESSION['s_login'] == $res[0]['users_LOGIN'] || $_SESSION['s_type'] == 'administrator') {
+				eF_deleteTableData("f_personal_messages", "id=".$msg_id);
+				if ($res[0]['attachments'] != '') {
+					$attached_file = new MagesterFile($res[0]['attachments']);
+                 	$attached_file -> delete();
+             	}
+				return true;
+         	} else {
+            	$message = 'You cannot delete this message';
+				return $message;
+         	}
+		} else {
+        	$message = _INVALIDID;
+			return $message;
+		}
+	}
 }
 /**
 

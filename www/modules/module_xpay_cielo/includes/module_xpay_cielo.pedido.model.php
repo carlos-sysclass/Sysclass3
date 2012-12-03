@@ -3,11 +3,12 @@
 //require_once 'pedido.php';
 //require_once 'logger.php';
 
-define('VERSAO', "1.1.0");
+define('VERSAO', "1.2.0");
 
 //session_start();
 /*
-if (!isset($_SESSION["pedidos"])) {
+if(!isset($_SESSION["pedidos"]))
+{
 	$_SESSION["pedidos"] = new ArrayObject();
 }
 */
@@ -21,10 +22,10 @@ if (defined("XPAY_CIELO_DEV")) {
 define("ENDERECO", ENDERECO_BASE."/servicos/ecommwsec.do");
 
 // Envia requisiçãoo
-function httprequest($paEndereco, $paPost)
-{
-	//error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+function httprequest($paEndereco, $paPost){
 
+	//error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+	
 	$sessao_curl = curl_init();
 	curl_setopt($sessao_curl, CURLOPT_URL, $paEndereco);
 
@@ -39,7 +40,7 @@ function httprequest($paEndereco, $paPost)
 
 	//  CURLOPT_SSL_CAINFO
 	//  informa a localização do certificado para verificação com o peer
-
+	
 	//echo dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt";
 	//var_dump(file_exists(dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt"));
 	//exit;
@@ -57,10 +58,13 @@ function httprequest($paEndereco, $paPost)
 	//  CURLOPT_TIMEOUT
 	//  o tempo máximo em segundos de espera para a execução da requisição (curl_exec)
 	curl_setopt($sessao_curl, CURLOPT_TIMEOUT, 400);
-
+	
+	
+	
 	//CURLOPT_HTTPHEADER 	An array of HTTP header fields to set, in the format
 	//curl_setopt($sessao_curl, CURLOPT_HTTPHEADER, array('Accept-Charset: ISO-8859-1'));
 	//curl_setopt($sessao_curl, CURLOPT_ENCODING, "UTF-8");
+	
 
 	//  CURLOPT_RETURNTRANSFER
 	//  TRUE para curl_exec retornar uma string de resultado em caso de sucesso, ao
@@ -71,7 +75,7 @@ function httprequest($paEndereco, $paPost)
 	curl_setopt($sessao_curl, CURLOPT_POSTFIELDS, $paPost );
 
 	$resultado = curl_exec($sessao_curl);
-
+	
 	//var_dump($resultado);
 
 	if ($resultado) {
@@ -87,23 +91,26 @@ function ReturnURL()
 {
 	$pageURL = 'http';
 
-	if ($_SERVER["SERVER_PORT"] == 443) { // protocolo https
+	if ($_SERVER["SERVER_PORT"] == 443) // protocolo https
+	{
 		$pageURL .= 's';
 	}
 	$pageURL .= "://";
-	if ($_SERVER["SERVER_PORT"] != "80") {
+	if ($_SERVER["SERVER_PORT"] != "80")
+	{
 		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 	} else {
 		$pageURL .= $_SERVER["SERVER_NAME"]. substr($_SERVER["REQUEST_URI"], 0);
 	}
 	// ALTERNATIVA PARA SERVER_NAME -> HOST_HTTP
-
+	
+	
 	$queryString = $_SERVER['QUERY_STRING'];
 	$queryArray = explode("&", $queryString);
 	$queryItens = array();
-	foreach ($queryArray as $item) {
+	foreach($queryArray as $item) {
 		list($queryKey, $queryValue)  = explode("=", $item);
-
+		
 		$queryItens[$queryKey] = $queryValue;
 	}
 
@@ -111,6 +118,7 @@ function ReturnURL()
 
 	//$ReturnURL = str_replace($file, "retorno.php", $pageURL);
 	$ReturnURL = str_replace($_SERVER['QUERY_STRING'], "module/module_xpay_cielo/return_payment", $pageURL);
+	
 	$ReturnURL = str_replace("?", "?route=" , $ReturnURL);
 
 	return $ReturnURL;
@@ -120,19 +128,25 @@ function VerificaErro($vmPost, $vmResposta)
 {
 	$error_msg = null;
 
-	try {
-		if (stripos($vmResposta, "SSL certificate problem") !== false) {
+	try
+	{
+		if(stripos($vmResposta, "SSL certificate problem") !== false)
+		{
 			throw new Exception("CERTIFICADO INVÁLIDO - O certificado da transação não foi aprovado", "099");
 		}
-
+		
 		$objResposta = simplexml_load_string($vmResposta, null, LIBXML_NOERROR);
-		if ($objResposta == null) {
+		if($objResposta == null)
+		{
 			throw new Exception("HTTP READ TIMEOUT - o Limite de Tempo da transação foi estourado", "099");
 		}
-	} catch (Exception $ex) {
+	}
+	catch (Exception $ex)
+	{
 		$error_msg = "     Codigo do erro: " . $ex->getCode() . "\n";
 		$error_msg .= "     Mensagem: " . $ex->getMessage() . "\n";
 
+		/*
 		// Gera p�gina HTML
 		echo '<html><head><title>Erro na transação</title></head><body>';
 		echo '<span style="color:red;, font-weight:bold;">Ocorreu um erro em sua transação!</span>' . '<br />';
@@ -140,18 +154,24 @@ function VerificaErro($vmPost, $vmResposta)
 		echo '' . $error_msg . '<br /><br />';
 		//echo "     XML de envio: " . "<br />" . htmlentities($vmPost);
 		echo '<p><center>';
-		echo '<input type="button" value="Retornar" onclick="javascript:if (window.opener!=null) {window.opener.location.reload();' .
-				'window.close();} else {window.location.href=' . "'index.php';" . '}" />';
+		echo '<input type="button" value="Retornar" onclick="javascript:if(window.opener!=null){window.opener.location.reload();' .
+				'window.close();}else{window.location.href=' . "'index.php';" . '}" />';
 		echo '</center></p></body></html>';
 		$error_msg .= "     XML de envio: " . "\n" . $vmPost;
-
+		
+		*/
+		
 		// Dispara o erro
 		trigger_error($error_msg, E_USER_ERROR);
-
-		return true;
+		
+		return array(
+			'message'		=> $ex->getMessage(),
+			'message_type'	=> 'failure'
+		);
 	}
 
-	if ($objResposta->getName() == "erro") {
+	if($objResposta->getName() == "erro")
+	{
 		$error_msg = "     C�digo do erro: " . $objResposta->codigo . "\n";
 		$error_msg .= "     Mensagem: " . utf8_decode($objResposta->mensagem) . "\n";
 		// Gera p�gina HTML
@@ -161,8 +181,8 @@ function VerificaErro($vmPost, $vmResposta)
 		echo '' . $error_msg . '<br /><br />';
 		//echo "     XML de envio: " . "<br />" . htmlentities($vmPost);
 		echo '<p><center>';
-		echo '<input type="button" value="Retornar" onclick="javascript:if (window.opener!=null) {window.opener.location.reload();' .
-				'window.close();} else {window.location.href=' . "'index.php';" . '}" />';
+		echo '<input type="button" value="Retornar" onclick="javascript:if(window.opener!=null){window.opener.location.reload();' .
+				'window.close();}else{window.location.href=' . "'index.php';" . '}" />';
 		echo '</center></p></body></html>';
 		$error_msg .= "     XML de envio: " . "\n" . $vmPost;
 
@@ -171,106 +191,106 @@ function VerificaErro($vmPost, $vmResposta)
 	}
 }
 
-	class Logger_Model
-	{
+
+
+	class Logger_Model {
 		private $log_file = "/../logs/xml.log";
 		private $fp = null;
-
-		public function __construct()
-		{
+		
+		public function __construct() {
 			$this->log_file = dirname(__FILE__) . "/../logs/xml.log";
 		}
-
+		
 		public function logOpen()
 		{
 			$this->fp = fopen($this->log_file, 'a');
 		}
-
+		 
 		public function logWrite($strMessage, $transacao)
 		{
 			if(!$this->fp)
 				$this->logOpen();
-
+			
 			$path = $_SERVER["REQUEST_URI"];
 			$data = date("Y-m-d H:i:s:u (T)");
-
+			
 			$log = "***********************************************" . "\n";
 			$log .= $data . "\n";
-			$log .= "DO ARQUIVO: " . $path . "\n";
+			$log .= "DO ARQUIVO: " . $path . "\n"; 
 			$log .= "OPERAÇÃO: " . $transacao . "\n";
-			$log .= $strMessage . "\n\n";
+			$log .= $strMessage . "\n\n"; 
 
 			fwrite($this->fp, $log);
 		}
 	}
-
+	
 	class Pedido_Model
 	{
 		private $logger;
-
+				
 		public $dadosEcNumero;
 		public $dadosEcChave;
-
+		
 		public $dadosPortadorNumero;
 		public $dadosPortadorVal;
 		public $dadosPortadorInd;
 		public $dadosPortadorCodSeg;
 		public $dadosPortadorNome;
-
+		
 		public $dadosPedidoNumero;
 		public $dadosPedidoValor;
 		public $dadosPedidoMoeda = "986";
 		public $dadosPedidoData;
 		public $dadosPedidoDescricao;
 		public $dadosPedidoIdioma = "PT";
-
+		
 		public $formaPagamentoBandeira;
 		public $formaPagamentoProduto;
 		public $formaPagamentoParcelas;
-
+		
 		public $urlRetorno;
 		public $autorizar;
 		public $capturar;
-
+		
 		public $campoLivre;
-
+		
 		public $tid;
 		public $status;
 		public $urlAutenticacao;
-
+		
 		//const ENCODING = "ISO-8859-1";
 		const ENCODING = "UTF-8";
-
+		
 		function __construct()
 		{
 			// cria um logger
 			$this->logger = new Logger_Model();
 		}
-
+		
 		// Geradores de XML
 		private function XMLHeader()
 		{
-			return '<?xml version="1.0" encoding="' . self::ENCODING . '" ?>';
+			return '<?xml version="1.0" encoding="' . self::ENCODING . '" ?>'; 
 		}
-
+		
 		private function XMLDadosEc()
 		{
 			$msg = '<dados-ec>' . "\n      " .
 						'<numero>'
-							. $this->dadosEcNumero .
+							. $this->dadosEcNumero . 
 						'</numero>' . "\n      " .
 						'<chave>'
 							. $this->dadosEcChave .
 						'</chave>' . "\n   " .
 					'</dados-ec>';
-
+							
 			return $msg;
 		}
-
+		
 		private function XMLDadosPortador()
 		{
-			$msg = '<dados-portador>' . "\n      " .
-						'<numero>'
+			$msg = '<dados-portador>' . "\n      " . 
+						'<numero>' 
 							. $this->dadosPortadorNumero .
 						'</numero>' . "\n      " .
 						'<validade>'
@@ -282,23 +302,24 @@ function VerificaErro($vmPost, $vmResposta)
 						'<codigo-seguranca>'
 							. $this->dadosPortadorCodSeg .
 						'</codigo-seguranca>' . "\n   ";
-
+			
 			// Verifica se Nome do Portador foi informado
-			if ($this->dadosPortadorNome != null && $this->dadosPortadorNome != "") {
+			if($this->dadosPortadorNome != null && $this->dadosPortadorNome != "")
+			{
 				$msg .= '   <nome-portador>'
 							. $this->dadosPortadorNome .
 						'</nome-portador>' . "\n   " ;
 			}
-
+			
 			$msg .= '</dados-portador>';
-
+			
 			return $msg;
 		}
-
+		
 		private function XMLDadosCartao()
 		{
-			$msg = '<dados-cartao>' . "\n      " .
-						'<numero>'
+			$msg = '<dados-cartao>' . "\n      " . 
+						'<numero>' 
 							. $this->dadosPortadorNumero .
 						'</numero>' . "\n      " .
 						'<validade>'
@@ -311,24 +332,25 @@ function VerificaErro($vmPost, $vmResposta)
 							. $this->dadosPortadorCodSeg .
 						'</codigo-seguranca>' . "\n   ";
 
-			// Verifica se Nome do Portador foi informado
-			if ($this->dadosPortadorNome != null && $this->dadosPortadorNome != "") {
+			// Verifica se Nome do Portador foi informado				
+			if($this->dadosPortadorNome != null && $this->dadosPortadorNome != "")
+			{
 				$msg .= '   <nome-portador>'
 							. $this->dadosPortadorNome .
 						'</nome-portador>' . "\n   " ;
 			}
-
+			
 			$msg .= '</dados-cartao>';
-
+			
 			return $msg;
 		}
-
+		
 		private function XMLDadosPedido()
 		{
 			$this->dadosPedidoData = date("Y-m-d") . "T" . date("H:i:s");
 			$msg = '<dados-pedido>' . "\n      " .
 						'<numero>'
-							. $this->dadosPedidoNumero .
+							. $this->dadosPedidoNumero . 
 						'</numero>' . "\n      " .
 						'<valor>'
 							. $this->dadosPedidoValor .
@@ -339,7 +361,8 @@ function VerificaErro($vmPost, $vmResposta)
 						'<data-hora>'
 							. $this->dadosPedidoData .
 						'</data-hora>' . "\n      ";
-			if ($this->dadosPedidoDescricao != null && $this->dadosPedidoDescricao != "") {
+			if($this->dadosPedidoDescricao != null && $this->dadosPedidoDescricao != "")
+			{
 				$msg .= '<descricao>'
 					. $this->dadosPedidoDescricao .
 					'</descricao>' . "\n      ";
@@ -348,14 +371,14 @@ function VerificaErro($vmPost, $vmResposta)
 						. $this->dadosPedidoIdioma .
 					'</idioma>' . "\n   " .
 					'</dados-pedido>';
-
+							
 			return $msg;
 		}
-
+		
 		private function XMLFormaPagamento()
 		{
 			$msg = '<forma-pagamento>' . "\n      " .
-						'<bandeira>'
+						'<bandeira>' 
 							. $this->formaPagamentoBandeira .
 						'</bandeira>' . "\n      " .
 						'<produto>'
@@ -365,109 +388,109 @@ function VerificaErro($vmPost, $vmResposta)
 							. $this->formaPagamentoParcelas .
 						'</parcelas>' . "\n   " .
 					'</forma-pagamento>';
-
+							
 			return $msg;
 		}
-
+		 
 		private function XMLUrlRetorno()
 		{
 			$msg = '<url-retorno>' . $this->urlRetorno . '</url-retorno>';
-
+			
 			return $msg;
 		}
-
+		
 		private function XMLAutorizar()
 		{
 			$msg = '<autorizar>' . $this->autorizar . '</autorizar>';
-
+			
 			return $msg;
 		}
-
+		
 		private function XMLCapturar()
 		{
 			$msg = '<capturar>' . $this->capturar . '</capturar>';
-
+			
 			return $msg;
 		}
-
-		private function XMLCampoLivre()
-		{
+		
+		private function XMLCampoLivre() {
 			$msg = '<campo-livre>' . $this->campoLivre . '</campo-livre>';
-
+			
 			return $msg;
 		}
-
+		
 		// Envia Requisição
 		public function Enviar($vmPost, $transacao)
 		{
 			$this->logger->logWrite("ENVIO: " . $vmPost, $transacao);
-
+	
 			//echo ENDERECO;
 			//var_dump($vmPost);
 			///exit;
-
-			// ENVIA REQUISIÇÂO SITE CIELO
+			
+			// ENVIA REQUISIÇÃO SITE CIELO
 			$vmResposta = httprequest(ENDERECO, "mensagem=" . $vmPost);
-
+			
 			///var_dump($vmResposta);
 			$this->logger->logWrite("RESPOSTA: " . $vmResposta, $transacao);
-
-			VerificaErro($vmPost, $vmResposta);
-
+			
+			$error_status = VerificaErro($vmPost, $vmResposta);
+			
+			var_dump($error_status);
+	
 			return simplexml_load_string($vmResposta);
 		}
-
+		
 		// Requisições
-		public function RequisicaoTransacao($incluirPortador)
+	public function RequisicaoTransacao($incluirPortador)
+	{
+		$msg = $this->XMLHeader() . "\n" . '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n" . $this->XMLDadosEc() . "\n";
+		if($incluirPortador == true)
 		{
-			$msg = $this->XMLHeader() . "\n" .
-				   '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n   "
-				   		. $this->XMLDadosEc() . "\n   ";
-			if ($incluirPortador == true) {
 					//$msg .=	$this->XMLDadosPortador() . "\n   ";
-			}
-
-			$msg .=		  $this->XMLDadosPedido() . "\n   "
-				   		. $this->XMLFormaPagamento() . "\n   "
-				   		. $this->XMLUrlRetorno() . "\n   "
-				   		. $this->XMLAutorizar() . "\n   "
-				   		. $this->XMLCapturar() . "\n "
-				   		. $this->XMLCampoLivre() . "\n" ;
-
-			$msg .= '</requisicao-transacao>';
-
-			$objResposta = $this->Enviar($msg, "Transacao");
-			return $objResposta;
 		}
-
+							
+		$msg .=		  $this->XMLDadosPedido() . "\n   "
+			   		. $this->XMLFormaPagamento() . "\n   "
+			   		. $this->XMLUrlRetorno() . "\n   "
+			   		. $this->XMLAutorizar() . "\n"
+			   		. $this->XMLCapturar() . "\n " 
+			   		. $this->XMLCampoLivre() . "\n" ;
+			
+		$msg .= '</requisicao-transacao>';
+		
+		$objResposta = $this->Enviar($msg, "Transacao");
+		return $objResposta;
+	}
+		
 		public function RequisicaoTid()
 		{
 			$msg = $this->XMLHeader() . "\n" .
 				   '<requisicao-tid id="' . md5(date("YmdHisu")) . '" versao ="' . VERSAO . '">' . "\n   "
-				        . $this->XMLDadosEc() . "\n   "
+				        . $this->XMLDadosEc() . "\n   " 
 				        . $this->XMLFormaPagamento() . "\n" .
 				   '</requisicao-tid>';
-
+				        
 			$objResposta = $this->Enviar($msg, "Requisicao Tid");
 			return $objResposta;
 		}
-
+		
 		public function RequisicaoAutorizacaoPortador()
 		{
 			$msg = $this->XMLHeader() . "\n" .
 				   '<requisicao-autorizacao-portador id="' . md5(date("YmdHisu")) . '" versao ="' . VERSAO . '">' . "\n"
 				   		. '<tid>' . $this->tid . '</tid>' . "\n   "
-				        . $this->XMLDadosEc() . "\n   "
+				        . $this->XMLDadosEc() . "\n   " 
 				        . $this->XMLDadosCartao() . "\n   "
 				        . $this->XMLDadosPedido() . "\n   "
 				        . $this->XMLFormaPagamento() . "\n   "
 				        . '<capturar-automaticamente>' . $this->capturar . '</capturar-automaticamente>' . "\n" .
 				   '</requisicao-autorizacao-portador>';
-
+			
 			$objResposta = $this->Enviar($msg, "Autorizacao Portador");
 			return $objResposta;
 		}
-
+		
 		public function RequisicaoAutorizacaoTid()
 		{
 			$msg = $this->XMLHeader() . "\n" .
@@ -475,42 +498,43 @@ function VerificaErro($vmPost, $vmResposta)
 				 	. '<tid>' . $this->tid . '</tid>' . "\n  "
 				 	. $this->XMLDadosEc() . "\n" .
 				 '</requisicao-autorizacao-tid>';
-
+				 	
 			$objResposta = $this->Enviar($msg, "Autorizacao Tid");
 			return $objResposta;
 		}
-
+		
 		public function RequisicaoCaptura($PercentualCaptura = null, $anexo = null)
 		{
 			$msg = $this->XMLHeader() . "\n" .
 				    '<requisicao-captura id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n   "
 				   	. '<tid>' . $this->tid . '</tid>' . "\n   "
 				   	. $this->XMLDadosEc() . "\n   ";
-
+			
 			if (!is_null($PercentualCaptura)) {
 				$msg = '<valor>' . $PercentualCaptura . '</valor>' . "\n";
 			}
-			if ($anexo != null && $anexo != "") {
+			if($anexo != null && $anexo != "")
+			{
 				$msg .=	'   <anexo>' . $anexo . '</anexo>' . "\n";
 			}
 			$msg .= '</requisicao-captura>';
-
+			
 			$objResposta = $this->Enviar($msg, "Captura");
 			return $objResposta;
 		}
-
+		
 		public function RequisicaoCancelamento()
 		{
-			$msg = $this->XMLHeader() . "\n" .
+			$msg = $this->XMLHeader() . "\n" . 
 				   '<requisicao-cancelamento id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n   "
 				    . '<tid>' . $this->tid . '</tid>' . "\n   "
 				    . $this->XMLDadosEc() . "\n" .
 				   '</requisicao-cancelamento>';
-
+			
 			$objResposta = $this->Enviar($msg, "Cancelamento");
 			return $objResposta;
 		}
-
+		
 		public function RequisicaoConsulta()
 		{
 			$msg = $this->XMLHeader() . "\n" .
@@ -518,11 +542,12 @@ function VerificaErro($vmPost, $vmResposta)
 				    . '<tid>' . $this->tid . '</tid>' . "\n   "
 				    . $this->XMLDadosEc() . "\n" .
 				   '</requisicao-consulta>';
-
+			
 			$objResposta = $this->Enviar($msg, "Consulta");
 			return $objResposta;
 		}
-
+		
+		
 		// Transforma em string
 		public function ToString()
 		{
@@ -534,19 +559,19 @@ function VerificaErro($vmPost, $vmResposta)
 				   	. $this->XMLDadosPedido()
 				   	. $this->XMLFormaPagamento() .
 				   '</objeto-pedido>';
-
+				   	
 			return $msg;
 		}
-
+		
 		public function FromString($Str)
 		{
 			$DadosEc = "dados-ec";
 			$DadosPedido = "dados-pedido";
 			$DataHora = "data-hora";
 			$FormaPagamento = "forma-pagamento";
-
+			
 			$XML = simplexml_load_string($Str);
-
+			
 			$this->tid = $XML->tid;
 			$this->status = $XML->status;
 			$this->dadosEcChave = $XML->$DadosEc->chave;
@@ -557,11 +582,12 @@ function VerificaErro($vmPost, $vmResposta)
 			$this->formaPagamentoProduto = $XML->$FormaPagamento->produto;
 			$this->formaPagamentoParcelas = $XML->$FormaPagamento->parcelas;
 		}
-
+		
 		// Traduz cógigo do Status
 		public function getStatus()
 		{
-			switch ($this->status) {
+			switch($this->status)
+			{
 				case "0": $status = "Criada";
 						break;
 				case "1": $status = "Em andamento";
@@ -585,7 +611,9 @@ function VerificaErro($vmPost, $vmResposta)
 				default: $status = "n/a";
 						break;
 			}
-
+			
 			return $status;
 		}
+		
 	}
+?>

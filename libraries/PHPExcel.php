@@ -330,13 +330,13 @@ class PHPExcel
             $this->_workSheetCollection,
             $oldIndex,
             1
-            );
+		);
         array_splice(
             $this->_workSheetCollection,
             $newIndex,
             0,
             $pSheet
-            );
+		);
 
         return $newIndex;
     }
@@ -439,7 +439,7 @@ class PHPExcel
 		// update the cellXfs
 		foreach ($pSheet->getCellCollection(false) as $cellID) {
 			$cell = $pSheet->getCell($cellID);
-			$cell->setXfIndex( $cell->getXfIndex() + $countCellXfs );
+			$cell->setXfIndex($cell->getXfIndex() + $countCellXfs);
 		}
 
 		return $this->addSheet($pSheet, $iSheetIndex);
@@ -484,14 +484,14 @@ class PHPExcel
 	{
 		$returnValue = null;
 
-		if ($namedRange != '' && ($namedRange !== NULL)) {
+		if ($namedRange != '' && ($namedRange !== null)) {
 			// first look for global defined name
 			if (isset($this->_namedRanges[$namedRange])) {
 				$returnValue = $this->_namedRanges[$namedRange];
 			}
 
 			// then look for local defined name (has priority over global defined name if both names exist)
-			if (($pSheet !== NULL) && isset($this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange])) {
+			if (($pSheet !== null) && isset($this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange])) {
 				$returnValue = $this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange];
 			}
 		}
@@ -508,7 +508,7 @@ class PHPExcel
 	 */
 	public function removeNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null)
 	{
-		if ($pSheet === NULL) {
+		if ($pSheet === null) {
 			if (isset($this->_namedRanges[$namedRange])) {
 				unset($this->_namedRanges[$namedRange]);
 			}
@@ -788,19 +788,19 @@ class PHPExcel
 			// for all cells
 			foreach ($sheet->getCellCollection(false) as $cellID) {
 				$cell = $sheet->getCell($cellID);
-				$cell->setXfIndex( $map[$cell->getXfIndex()] );
+				$cell->setXfIndex($map[$cell->getXfIndex()]);
 			}
 
 			// for all row dimensions
 			foreach ($sheet->getRowDimensions() as $rowDimension) {
 				if ($rowDimension->getXfIndex() !== null) {
-					$rowDimension->setXfIndex( $map[$rowDimension->getXfIndex()] );
+					$rowDimension->setXfIndex($map[$rowDimension->getXfIndex()]);
 				}
 			}
 
 			// for all column dimensions
 			foreach ($sheet->getColumnDimensions() as $columnDimension) {
-				$columnDimension->setXfIndex( $map[$columnDimension->getXfIndex()] );
+				$columnDimension->setXfIndex($map[$columnDimension->getXfIndex()]);
 			}
 		}
 
@@ -811,7 +811,7 @@ class PHPExcel
 	}
 
 	// data array to excel
-	function array2ExcelSimple( $data, $title )
+	public function array2ExcelSimple($data, $title)
 	{
 		// Add some properties
 		$this->getProperties()->setCreator("Sysclass")

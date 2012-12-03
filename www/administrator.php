@@ -104,6 +104,10 @@ if ($GLOBALS['currentTheme']->options['sidebar_interface'] == 1 || $GLOBALS['cur
 	include 'new_sidebar.php';
 }
 
+if ( !empty( $_GET['route'] ) ) {
+	list($_GET['ctg'], $_GET['op'], $_GET['action'], $_GET['data']) = explode("/", $_GET['route'], 4);
+}
+
 //include "new_sidebar.php";
 //var_dump($GLOBALS['currentTheme'] -> options['sidebar_interface']);
 !isset($_GET['ctg']) ? $ctg = "control_panel" : $ctg = $_GET['ctg'];
@@ -329,6 +333,9 @@ foreach ($loadedModules as $module) {
 	$loadScripts = array_merge($loadScripts, $module->addScripts());
 	$loadStylesheets = array_merge($loadStylesheets, $module->addStylesheets());
 }
+
+$loadStylesheets = array_merge($loadStylesheets, MagesterExtendedModule::getInjectedCSS());
+
 //Main scripts, such as prototype
 $mainScripts = getMainScripts();
 $smarty->assign("T_HEADER_MAIN_SCRIPTS", implode(",", $mainScripts));
