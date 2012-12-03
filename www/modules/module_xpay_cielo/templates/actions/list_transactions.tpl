@@ -26,11 +26,11 @@
 					{if $trans.status_id == 0}
 						{* EXCLUDE OPTION *}
 					{/if}
-					{*if $trans.status_id == 4*}
+					{if $trans.status_id == 4}
 						<a class="form-icon xpay-cielo-do-capture-link" onclick="_sysclass('load', 'xpay_cielo').doCaptureAction('{$trans.tid}');" href="javascript: void(0);">
 							<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 						</a>
-					{*/if*}
+					{/if}
 				</td>
 			</tr>
 		{/foreach}

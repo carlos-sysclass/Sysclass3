@@ -22,11 +22,12 @@ if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 define("ENDERECO", ENDERECO_BASE."/servicos/ecommwsec.do");
 
 // Envia requisiçãoo
-function httprequest($paEndereco, $paPost){
-
-	# error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
-	
+function httprequest($paEndereco, $paPost)
+{
+	# error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);
+	//Uncomment this to get a full list of errors
 	$sessao_curl = curl_init();
+
 	curl_setopt($sessao_curl, CURLOPT_URL, $paEndereco);
 
 	curl_setopt($sessao_curl, CURLOPT_FAILONERROR, true);
@@ -57,11 +58,10 @@ function httprequest($paEndereco, $paPost){
 	curl_setopt($sessao_curl, CURLOPT_TIMEOUT, 400);
 
 
-	
 	//CURLOPT_HTTPHEADER 	An array of HTTP header fields to set, in the format
 	//curl_setopt($sessao_curl, CURLOPT_HTTPHEADER, array('Accept-Charset: ISO-8859-1'));
 	//curl_setopt($sessao_curl, CURLOPT_ENCODING, "UTF-8");
-	
+
 
 	//  CURLOPT_RETURNTRANSFER
 	//  TRUE para curl_exec retornar uma string de resultado em caso de sucesso, ao
