@@ -247,71 +247,41 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 	public function getPaymentInstances()
 	{
-		if ($this->getCurrentUser()->getType() == 'student') {
-			return array(
-				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
-				'baselink'	=> $this->moduleBaseLink,
-				'options'	=> array (
-					/*
-					"visa"			=> array(
-						'name'	=> "Visa",
-						"options"	=> array(
-								"1"	=> "Crédito à Vista",
-								"A"	=> "Débito à Vista"
-						),
-						"default_option"	=> 1,
-						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+		return array(
+			//'title'		=> __XPAY_CIELO_DO_PAYMENT,
+			'baselink'	=> $this->moduleBaseLink,
+			'options'	=> array (
+				"visa"			=> array(
+					'name'	=> "Visa",
+					"options"	=> array(
+						"1"	=> "Crédito à Vista",
+						"A"	=> "Débito à Vista"
 					),
-	
-					"mastercard"	=> array(
-						"name"	=> "Mastercard",
-						"options"	=> array(
-								"1"	=> "Crédito à Vista",
-								"A"	=> "Débito à Vista"
-						),
-						"default_option"	=> 1,
-						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
-					)
-					*/
+					"default_option"	=> 1,
+					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
+				),
+				"mastercard"	=> array(
+					"name"	=> "Mastercard",
+					"options"	=> array(
+						"1"	=> "Crédito à Vista",
+						"A"	=> "Débito à Vista"
+					),
+					"default_option"	=> 1,
+					"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
 				)
-			);
-		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
-			return array(
-				//'title'		=> __XPAY_CIELO_DO_PAYMENT,
-				'baselink'	=> $this->moduleBaseLink,
-				'options'	=> array (
-					"visa"			=> array(
-						'name'	=> "Visa",
-						"options"	=> array(
-							"1"	=> "Crédito à Vista",
-							"A"	=> "Débito à Vista"
-						),
-						"default_option"	=> 1,
-						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
-					),
-					"mastercard"	=> array(
-						"name"	=> "Mastercard",
-						"options"	=> array(
-							"1"	=> "Crédito à Vista",
-							"A"	=> "Débito à Vista"
-						),
-						"default_option"	=> 1,
-						"template"	=> $this->moduleBaseDir . "templates/includes/instance.options.tpl"
-					)
-					/*,
-					"elo"			=> array(
-						'name'	=> "Elo"
-					),
-					"diners"		=> array(
-						'name'	=> "Diners"
-					),
-					"discover"		=> array(
-						'name'	=> "Discover"
-					)
-					*/
+				/*,
+				"elo"			=> array(
+					'name'	=> "Elo"
+				),
+				"diners"		=> array(
+					'name'	=> "Diners"
+				),
+				"discover"		=> array(
+					'name'	=> "Discover"
 				)
-			);
-		}
+				*/
+			)
+		);
 	}
 	public function getPaymentInstanceConfig($instance_id, array $overrideOptions)
 	{
@@ -480,7 +450,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$Pedido->dadosPedidoValor = $values["produto"];
 		$Pedido->dadosPedidoValor = floor((floatval($invoiceData['valor']) + floatval($invoiceData['total_reajuste'])) * 100);
 
-		$Pedido->dadosPedidoValor = 101;
+		//$Pedido->dadosPedidoValor = 101;
 		
 		//$ies = reset($this->getCurrentUserIes());
 		
