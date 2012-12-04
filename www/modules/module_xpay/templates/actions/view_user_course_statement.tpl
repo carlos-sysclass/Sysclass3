@@ -1,11 +1,35 @@
 {if isset($T_XPAY_STATEMENT)}
 	{capture name="t_xpay_view_statement"}
-		{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
-		
+		<div style="float: left;">
+			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+		</div>
+		{if $T_XPAY_IS_ADMIN}
+			<div style="float: right;">
+				<!--
+					<label>Desconto:</label> 
+					<select name="xpay-sendto-option">
+						<option selected="selected">Aluno</option>
+						<option selected="selected">Aluno</option>
+						<option selected="selected">Aluno</option>
+					</select>
+					&nbsp;&nbsp;&nbsp;
+				-->
+				<label>Responsável Financeiro:</label> 
+				<select name="xpay-sendto-option" onchange="_sysclass('load', 'xpay').updateNegociationAction({$T_XPAY_STATEMENT.id}, {literal}{send_to: jQuery(this).val()}{/literal});">
+					<option {if $T_XPAY_STATEMENT.send_to == "student"}selected="selected"{/if} value="student">Aluno</option>
+					<option {if $T_XPAY_STATEMENT.send_to == "parent"}selected="selected"{/if} value="parent">Pais ou Responsáveis</option>
+					<option {if $T_XPAY_STATEMENT.send_to == "financial"}selected="selected"{/if} value="financial">Empresa</option>
+				</select>
+			</div>
+			<div class="clear"></div>
+		{/if}
+			
 		{include
 			file="`$T_XPAY_BASEDIR`templates/includes/print.negociation.summary.tpl"
 			T_XPAY_STATEMENT=$T_XPAY_STATEMENT
 		}
+		
+
 		
 		<div id="xpay-do_payment-options-dialog" title="Pagamentos">
 			<div id="xpay-do_payment-options-dialog-loader">

@@ -723,7 +723,12 @@ class module_xpay extends MagesterExtendedModule
 		}
 
 		$smarty -> assign("T_XPAY_STATEMENT", $userNegociation);
-
+		/*
+		echo "<pre>";
+		var_dump($userNegociation);
+		echo "<pre>";
+		exit;
+		*/
 		$negociationTotals = array(
 			'invoices_count'	=> count($userNegociation['invoices']),
 			'valor'				=> 0,
@@ -750,6 +755,16 @@ class module_xpay extends MagesterExtendedModule
 			));
 			*/
 		}
+		/*
+		$groups = eF_getTableData("groups", "id, name", "active=1");
+		
+		$editUser->getGroups();
+		var_dump($editUser -> groups);
+		
+		$smarty->assign("T_XPAY_DISCOUNT_GROUPS", $groups);
+		$smarty->assign("T_XPAY_USER_GROUP", $groups);
+		*/
+	
 
 		return true;
 	}
@@ -1083,6 +1098,64 @@ class module_xpay extends MagesterExtendedModule
 		$form -> render($renderer);
 		$smarty -> assign('T_XPAY_INVOICE_PARAMS_FORM', $renderer -> toArray());
 		return true;
+	}
+	public function updateNegociationAction()
+	{
+		$smarty = $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() != 'administrator') {
+			$result = array(
+					"message"		=> "Acesso Não Autorizado",
+					"message_type"	=> "failure"
+			);
+			echo json_encode($result);
+			exit;
+		}
+		if (
+				is_numeric($_POST['negociation_id']) &&
+				eF_checkParameter($_POST['negociation_id'], "id")
+		) {
+			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
+			$userNegociation = $this->_getNegociationByID($_POST['negociation_id']);
+		
+			$negociationUser = $this->getEditedUser(true, $userNegociation['user_id']);
+		} else {
+			$result = array(
+				"message"		=> "Ocorreu um erro ao tentar acessar a sua negociação. Por favor entre em contato com o suporte",
+				"message_type"	=> "failure"
+			);
+			echo json_encode($result);
+			exit;
+		}
+		
+		$fields = array(
+			'send_to'
+		);
+		
+		$updateFields = array();
+		
+		foreach ($fields as $field) {
+			if (array_key_exists($field, $_POST) && !empty($_POST[$field])) {
+				$updateFields[$field] = $_POST[$field];
+			}
+		}
+		if (count($updateFields) == 0) {
+			$result = array(
+				"message"		=> "Por favor informe os campos que você deseja atualizar.",
+				"message_type"	=> "warning"
+			);
+			echo json_encode($result);
+			exit;
+		} else {
+			eF_updateTableData("module_xpay_course_negociation", $updateFields, sprintf('id = %d', $userNegociation['id']));
+			
+			$result = array(
+				"message"		=> "Negociação atualizada com sucesso.",
+				"message_type"	=> "success"
+			);
+			echo json_encode($result);
+			exit;
+		}
 	}
 	public function saveInvoicesAction()
 	{
@@ -2605,7 +2678,7 @@ class module_xpay extends MagesterExtendedModule
 			LEFT JOIN users u ON (neg.user_id = u.id)
 			",
 			'neg.id, u.id as user_id, u.name, u.surname, u.login,
-			neg.is_simulation, neg.course_id, neg.lesson_id,
+			neg.is_simulation, neg.course_id, neg.lesson_id, neg.send_to, 
 			IFNULL(SUM(pd.paid), 0) as paid,
 			neg.negociation_index',
 			implode(" AND ", $where),

@@ -402,7 +402,7 @@ function xPayUpdateSentInvoiceStatus(negociation_id, invoice_index, checkBox) {
 		"invoice_index"  : invoice_index,
 		"active"		 : checkBox.checked 
 	}, function(data, response) {
-		console.log(data);
+		//console.log(data);
 	});
 }
 
@@ -472,6 +472,16 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				'json'
 			);
 		},
+		updateNegociationAction : function(negociation_id, data) {
+			var sendData = jQuery.extend(true, {"negociation_id" : negociation_id}, data);
+			this._postAction(
+				"update_negociation",
+				sendData,
+				function(data, status) {
+				},
+				'json'
+			);
+		},
 		startUI : function() {
 			jQuery("#xpay-file-details-container").dialog({
 				autoOpen	: false,
@@ -524,7 +534,7 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 					.removeClass("ui-state-disabled");
 			});
 			
-			// CCREATE DIALOG FORM DO-PAY OPTIONS
+			// CREATE DIALOG FORM DO-PAY OPTIONS
 			jQuery("#xpay-do_payment-options-dialog").dialog({
 				autoOpen	: false,
 				height		: "auto",
@@ -532,6 +542,7 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				modal		: true,
 				resizable	: false,
 				close: function() {
+					
 				}
 			});
 			/// DISABLE PAY BUTTON
@@ -552,7 +563,6 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 						jQuery(":input[name='pay_methods']:checked").click();
 					};
 					
-					
 					jQuery("#xpay-do_payment-options-dialog").dialog("widget").position({
 					   my: "center",
 					   at: "center",
@@ -563,6 +573,15 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				
 				return false;
 			});
+			/*
+			jQuery(":input[name='xpay-sendto-option']").change(function() {
+				alert(jQuery(this).val());
+				
+				
+				this.updateNegociationAction(, {send_to: jQuery(this).val()});
+				
+			})
+			*/;
 
 		}
 	};
