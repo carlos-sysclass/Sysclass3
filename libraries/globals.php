@@ -1,12 +1,4 @@
 <?php
-/**
-$LastChangedRevision: 9001 $
-* File includes and configuration options
-*
-* This file is used to perform configuration and inclusion tasks.
-* @package SysClass
-*/
-
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
@@ -30,10 +22,9 @@ $debugMode = 0;
 header('Content-Type: text/html; charset=utf-8');
 
 error_reporting( E_ERROR );
-//if ($_GET['debug'] == 10) {
+if ($_GET['debug'] == 10) {
 	error_reporting( E_ALL & ~E_NOTICE);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
-//}
-
+}
 //Prepend the include path with magester folders
 set_include_path($path.'../PEAR/'
                 . PATH_SEPARATOR . $path.'includes/'
