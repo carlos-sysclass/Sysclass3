@@ -9,9 +9,6 @@
 					<a class="base_price_details_link" href="javascript: void(0);">?</a>
 				{/if}
 			</th>
-			<th colspan="5">
-			</th>
-			
 		</tr>
 	</thead>
 	<tbody>
