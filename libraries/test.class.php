@@ -2941,11 +2941,11 @@ class MagesterCompletedTest extends MagesterTest
                              $("statusMessage").update("'._PASSED.'").className = "success";
                              setImageSrc($("statusImage"), 32, "success");
                              //$("statusImage").src = "images/32x32/success.png";
-                        } elseif (transport.responseText == "failed") {
+                        } else if (transport.responseText == "failed") {
                             $("statusMessage").update("'._FAILED.'").className = "failure";
                             //$("statusImage").src = "images/32x32/close.png";
                             setImageSrc($("statusImage"), 32, "close");
-                        } elseif (transport.responseText == "pending") {
+                        } else if (transport.responseText == "pending") {
                             $("statusMessage").update("'._OUTCOMEPENDING.'").className = "pending";
                             //$("statusImage").src = "images/32x32/exclamation.png";
                             setImageSrc($("statusImage"), 32, "exclamation");
@@ -3010,7 +3010,7 @@ class MagesterCompletedTest extends MagesterTest
                         if (transport.responseText.evalJSON().status == "passed") {
                              $("statusMessage").update("'._PASSED.'").className = "success";
                              $("statusImage").src = "images/32x32/success.png";
-                        } elseif (transport.responseText.evalJSON().status == "failed") {
+                        } else if (transport.responseText.evalJSON().status == "failed") {
                             $("statusMessage").update("'._FAILED.'").className = "failure";
                             $("statusImage").src = "images/32x32/close.png";
                         }
