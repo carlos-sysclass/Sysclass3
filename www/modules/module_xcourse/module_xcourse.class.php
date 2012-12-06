@@ -458,9 +458,9 @@ class module_xcourse extends MagesterExtendedModule
 		} else {
 			$context = $this;
 		}
-		if ( $xuserModule->getExtendedTypeID( $currentUser ) == 'polo' ) {
-			return false;
-		}
+		//if ( $xuserModule->getExtendedTypeID( $currentUser ) == 'polo' ) {
+		//	return false;
+		//}
 		$userCourse = $currentUser -> getUserCourses($constraints);
 		# LOADING STUDENT GUIDANCE BY COURSE
 		# CARREGANDO ORIENTAÇÃO POR ALUNO DO CURSO
@@ -590,8 +590,11 @@ class module_xcourse extends MagesterExtendedModule
 		$dados 			= 	$this->loadCourseUserActivity();
 		$currentUser	= 	$this->getCurrentUser();
 		$smarty 		= 	$this->getSmartyVar();
-
-
+		/*
+		echo "<pre>";
+		var_dump($dados);
+		echo "</pre>";
+		*/
 		$smarty -> assign( 'T_USER_COURSE_PROGRESS',	$dados['T_USER_COURSE_PROGRESS'] );
 		$smarty -> assign( 'T_LESSON_COMPLETED', 		$dados['T_LESSON_COMPLETED'] );
 		$smarty -> assign( 'T_CURRENT_UNITS', 			$dados['T_CURRENT_UNITS'] );
