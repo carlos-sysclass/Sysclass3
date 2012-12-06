@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+li.gradebook-course-lesson {
+	padding: 10px 0;
+	margin: 5px 0;
+}
+li.gradebook-course-lesson .collapse-title {
+	font-size: 1.1em;
+	margin: 8px 5px 5px;
+	padding: 4px;
+	border-bottom: 1px solid #cccccc;
+}
+
+	
+li.gradebook-course-lesson .collapse-content {
+	display: none;
+	margin: 5px;
+	padding: 4px;
+}
+
