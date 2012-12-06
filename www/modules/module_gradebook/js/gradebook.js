@@ -312,11 +312,15 @@
 				typeof(this.opt.course_id) != 'undefined'
 			) {
 				var indice = "#gradebook-course-lesson-" + this.opt.course_id + "_" + this.opt.lesson_id;
-				//this.opt.lesson_id
 				//this.opt.course_id
+				//this.opt.lesson_id
 				jQuery(indice).show();
 			}
 			
+			jQuery(".gradebook-course-lesson .collapse-title a").click(function() {
+				jQuery(this).parent().next(".collapse-content").toggle();
+
+			});
 		},
 		
 	};
@@ -435,8 +439,8 @@
 	});
 
 	_sysclass("subscribe", "autocategorycomplete-select", function(that, data) {
-		jQuery(".gradebook-course-lesson").hide();
-		jQuery("#gradebook-course-lesson-" + data.id).show();
+		///jQuery(".gradebook-course-lesson").hide();
+		///jQuery("#gradebook-course-lesson-" + data.id).show();
 	});
 	/*
 	_sysclass("subscribe", "course-lesson-change", function(course_id, lesson_id ) {

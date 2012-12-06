@@ -32,6 +32,17 @@ class module_gradebook extends MagesterExtendedModule
 	{
 		return array("student", "professor", "administrator");
 	}
+	public function getDefaultAction()
+	{
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			return "students_grades";
+		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
+			return "edit_rule_calculation";
+		} elseif ($this->getCurrentUser()->getType() == 'student') {
+			return "student_sheet";
+		}
+	}	
+	
 	/* ACTION FUNCTIONS */
 	public function editRuleCalculationAction()
 	{
@@ -927,7 +938,8 @@ class module_gradebook extends MagesterExtendedModule
 		$smarty->assign("T_GRADEBOOK_LESSONS_SCORES", $userLessons);
 
 		// TO USE ON AUTOCOMPLETE
-		$this->view()->createBlock("autocategorycomplete", ".course-lesson-autocomplete", array("source" => $coursesData, "value" => $autocompletevalue));
+		
+		//$this->view()->createBlock("autocategorycomplete", ".course-lesson-autocomplete", array("source" => $coursesData, "value" => $autocompletevalue));
 
 	}
 	/*
@@ -1016,16 +1028,7 @@ var_dump(
 		}
 		exit;
 	}
-	public function getDefaultAction()
-	{
-		if ($this->getCurrentUser()->getType() == 'professor') {
-			return "students_grades";
-		} elseif ($this->getCurrentUser()->getType() == 'administrator') {
-			return "edit_rule_calculation";
-		} elseif ($this->getCurrentUser()->getType() == 'student') {
-			return "student_sheet";
-		}
-	}
+
 	/**
 	 * @todo TRANSFER THIS FUNCTION TO YOUR OWN MODULE
 	 */

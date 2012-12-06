@@ -744,8 +744,8 @@ label.error        		{ color: #FF0000; }
 .footer			{ 
 	color: #BBBBBB; 
 	width: 100%; 
-	font-size: 12px; 
-	padding: 30px 0px 30px 0px; 
+	font-size: 13px; 
+	padding: 20px 0px 20px 0px; 
 	background: #2C2C2C; 
 	position: fixed; 
 	bottom: 0;

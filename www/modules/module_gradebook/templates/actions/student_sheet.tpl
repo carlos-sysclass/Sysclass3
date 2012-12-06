@@ -4,13 +4,16 @@
 	<div class="clear"></div>
 
 	<!-- THIS CODE BELOW MUST BE MOVED TO YOUR OWN SPACE -->
+	<!--
 	<div class="course-lesson-autocomplete-container">
 	    <label>Selecione uma disciplina:</label>
 	    <input class="course-lesson-autocomplete" value="" />
 	</div>
+	-->
 	
-	
+	<ul>
 	{foreach item="lesson" from=$T_GRADEBOOK_LESSONS_SCORES}
+		
 		{capture name="t_gradebook_lesson"}
 			<table class="style1">
 				<thead>
@@ -60,13 +63,14 @@
 			</table>
 		{/capture}
 		
-		<div class="gradebook-course-lesson" id ="gradebook-course-lesson-{$lesson.course_id}_{$lesson.id}" style="display: none;">
-			<br />
-			{eF_template_printBlock title=$lesson.name data=$smarty.capture.t_gradebook_lesson image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
-		</div>
-		
+		<li class="gradebook-course-lesson" id ="gradebook-course-lesson-{$lesson.course_id}_{$lesson.id}">
+			<div class="collapse-title"><a href="javascript: void(0);">{$lesson.name}</a></div>
+			<div class="collapse-content" style="display: none;">{$smarty.capture.t_gradebook_lesson}</div>
+		</li>
 	{/foreach}
+</ul>	
 {/capture}
+
 {eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_sheet_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
 
 	
