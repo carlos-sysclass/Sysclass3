@@ -55,7 +55,7 @@
 			</thead>
 			<tbody>
 				{foreach item="invoice" key="invoice_index" from=$T_XPAY_STATEMENT.invoices}
-					<tr class="{if ($invoice.valor+$invoice.total_reajuste) <= $invoice.paid}xpay-paid{/if}{if $invoice.locked}xpay-locked{/if}">
+					<tr class="{if ($invoice.valor+$invoice.total_reajuste) <= $invoice.paid}xpay-paid{/if} {if $invoice.locked}xpay-locked{/if}">
 					 	<td align="center">{$invoice.invoice_id}</td>
 					 	<td align="center">{$invoice.invoice_index}</td>
 					 	<td align="center">

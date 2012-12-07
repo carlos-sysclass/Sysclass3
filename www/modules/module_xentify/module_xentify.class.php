@@ -92,27 +92,27 @@ abstract class scope
 		$data = $this->getScopeData($scope_type, $scope_id);
 
 		switch ($scope_type) {
-			case 1 : { // SAME POLO
+			case 1:
+				// SAME IES
 				$status['same_ies'] = $this->checkIfSameIes($data['ies_id']);
 				break;
-			}
-			case 2 : { // SAME POLO
+			case 2:
+				// SAME POLO
 				$status['same_polo'] = $this->checkIfSamePolo($data['polo_id']);
 				break;
-			}
-			case 7 : { // SAME USER (INDIVIDUAL)
+			case 7:
+				// SAME USER (INDIVIDUAL)
 				$status['same_user'] = $this->checkIfSameUser($data['user_id']);
 				break;
-			}
-			case 9 : { // SAME USER (INDIVIDUAL)
+			case 9:
+				// SAME USER TYPE (INDIVIDUAL)
 				$status['same_user_type'] = $this->checkIfSameUserType($data['user_type']);
 				break;
-			}
-			case 10 : { // SAME POLO AND SAME CLASS
+			case 10: 
+				// SAME POLO AND SAME CLASS				
 				$status['same_polo'] = $this->checkIfSamePolo($data['polo_id']);
 				$status['same_classe'] = $this->checkIfSameClasse($data['classe_id']);
 				break;
-			}
 			/*
 			case 11 :
 			case 12 : { // OVERDUE INVOICES USER
@@ -120,24 +120,19 @@ abstract class scope
 				break;
 			}
 			*/
-			case 13 : {
+			case 13:
 				$status['same_group']	= $this->checkIfSameGroup($data['group_id']);
 				break;
-			}
-			case 14 : {
+			case 14:
 				$status['same_group']	= $this->checkIfSameGroup($data['group_id']);
 				$status['same_course']	= $this->checkIfSameCourse($data['course_id']);
 				break;
-			}
-			case 15 : {
+			case 15:
 				$status['same_ies'] 		= $this->checkIfSameIes($user, $data['ies_id']);
 				$status['same_user_type'] 	= $this->checkIfSameUserType($user, $data['user_type']);
 				break;
-			}
-
-			default : {
+			default:
 				return false;
-			}
 		}
 
 		return $status;

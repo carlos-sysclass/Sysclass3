@@ -27,56 +27,43 @@ class module_xpay extends MagesterExtendedModule
 	public function getTitle($action)
 	{
 		switch ($action) {
-			case "view_to_send_invoices_list" : {
+			case "view_to_send_invoices_list":
 				return __XPAY_VIEW_TO_SEND_INVOICES_LIST;
-			}
-			case "do_payment" : {
+			case "do_payment":
 				return __XPAY_DO_PAYMENT;
-			}
-			case "view_user_statement" : {
+			case "view_user_statement":
 				return __XPAY_USER_STATEMENT;
-			}
-			case "view_user_course_statement" : {
+			case "view_user_course_statement":
 				return __XPAY_USER_COURSE_STATEMENT;
-			}
-			case "edit_negociation" : {
+			case "edit_negociation":
 				return __XPAY_USER_COURSE_STATEMENT;
-			}
-			case "simulate_due_balance_negociation" : {
+			case "simulate_due_balance_negociation":
 				return __XPAY_USER_COURSE_STATEMENT;
-			}
-			case "print_invoice" : {
+			case "print_invoice":
 				return __XPAY_SHOW_PAYMENTS_SUMMARY;
-			}
-			case "" :
-			case $this->getDefaultAction() : {
+			case "":
+			case $this->getDefaultAction():
 				return __XPAY_MODULE_NAME;
-			}
-			default : {
+			default:
 				return parent::getTitle($action);
-			}
-
 		}
 	}
 	public function getUrl($action)
 	{
 		switch ($action) {
-			case "do_payment" :
-			case "view_user_statement" :
-			case "view_user_course_statement" : {
+			case "do_payment":
+			case "view_user_statement":
+			case "view_user_course_statement":
 				foreach ($_GET as $index => $get) {
 					if (!in_array($index, array("ctg", "op", "action"))) {
 						$params[] = $index . "=" .  $get;
 					}
 				}
 				return $this->moduleBaseUrl . "&action=" . $action . "&" . implode("&", $params);
-			}
-			case "" : {
+			case "":
 				return $this->moduleBaseUrl;
-			}
-			default : {
+			default:
 				return parent::getUrl($action);
-			}
 		}
 	}
 	public function getDefaultAction()
@@ -117,9 +104,9 @@ class module_xpay extends MagesterExtendedModule
 		$exUserType = $xUserModule->getExtendedTypeID($currentUser);
 		if ($exUserType == 'student' || $exUserType == 'pre_student') {
 			// CHECK IF NEGOCIATION ID IS FROM USER
-			$negocData = $this->_getNegociationByContraints(array(
-				'login'				=> $this->getCurrentUser()->user['login']
-			));
+			$negocData = $this->_getNegociationByContraints(
+				array('login'				=> $this->getCurrentUser()->user['login'])
+			);
 		} else {
 			return false;
 		}
@@ -1395,7 +1382,7 @@ class module_xpay extends MagesterExtendedModule
 			//$this->_log($paymentMethods['xpay_boleto']['options']);
 
 			foreach ($paymentMethods[strtolower($selectedIndex)]['options'] as $key => $item) {
-				if ($item['active'] === FALSE) {
+				if ($item['active'] === false) {
 					continue;
 				}
 				/*
@@ -2036,6 +2023,85 @@ class module_xpay extends MagesterExtendedModule
 		}
 		echo json_encode($result);
 		exit;
+	}
+	
+	public function viewAppliedRulesAction()
+	{
+		$smarty = $this->getSmartyVar();
+		
+		if ($this->getCurrentUser()->getType() == 'professor') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'student') {
+			$this->setMessageVar("Acesso Não Autorizado", "failure");
+			return false;
+		}
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+			$smarty -> assign("T_XPAY_IS_ADMIN", true);
+		}
+		
+		if (
+				is_numeric($_GET['negociation_id']) &&
+				eF_checkParameter($_GET['negociation_id'], "id")
+		) {
+			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
+			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
+		
+			$negociationUser = $this->getEditedUser(true, $userNegociation['user_id']);
+		} else {
+			$this->setMessageVar("Ocorreu um erro ao tentar acessar a sua negociação. Por favor entre em contato com o suporte", "failure");
+			return false;
+		}
+		
+		$this->initRuleSystem();
+		$allRules = $this->rules;
+		$xentifyModule = $this->loadModule("xentify");
+		$xUserModule = $this->loadModule("xuser");
+		/*
+		if (is_null($sentTags)) {
+			$sentTags = array();
+		}
+		$userTags = $xUserModule->getUserTags($userToCalculate);
+		
+		$sentTags = array_merge($userTags, $sentTags);
+		
+		// REMOVE ALL OUT-SCOPE
+		$lastWorkflow = $this->_createEmptyWorkflow($basePrice);
+		
+		$totalAcrescimo = 0;
+		$totalDesconto 	= 0;
+		*/
+		
+		$scopeUser = $xentifyModule->create("user", $negociationUser->user['login']);
+		$userRules = array();
+		
+		foreach ($allRules as $rule_index => $rule) {
+			// GETTING RULES BY USER
+			if ($scopeUser->inScope($rule['rule_xentify_scope_id'], $rule['rule_xentify_id'])) {
+				$userRules[$rule_index] = $allRules[$rule_index];
+				$userRules[$rule_index]['tags'] = $this->rulesTags[$rule_index];
+			}
+			// GETTING RULES BY COURSE
+			// GETTING RULES BY LESSON
+			// GETTING RULES BY IES
+			// GETTING RULES BY GROUP
+		}
+		
+		$smarty -> assign("T_XPAY_CURRENT_RULES", $userRules);
+		$smarty -> assign("T_XPAY_TAGS_TRANSLATE", array(
+			"is_not_full_paid"			=> "Não estiver paga",
+			"is_not_overdue"			=> "Em atraso",
+			"is_not_registration_tax"	=> "Não for Matrícula" ,
+			"is_not_custom"				=> false
+		));
+		echo "<pre>";
+		var_dump($userRules);
+		//var_dump($userNegociation);
+		echo "</pre>";
+		//exit;
+		
+		
 	}
 	/* EVENTS HANDLERS */
 	/* MODULE EVENTS RECEIVERS */

@@ -45,7 +45,15 @@
 			<td>Saldo</td>
 		</tr>
 		<tr>
-			<td>#filter:currency:{$T_XPAY_STATEMENT.base_price}#</td>
+			<td>
+				#filter:currency:{$T_XPAY_STATEMENT.base_price}#
+				{if $T_XPAY_IS_ADMIN}
+					<a class="form-icon xpay-append-rule" href="{$T_XPAY_BASEURL}&action=add_discount_rule&negociation_id={$T_XPAY_STATEMENT.id}&output=dialog">
+						<img src="images/16x16/edit.png">
+					</a>
+					
+				{/if}
+			</td>
 			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.acrescimo}#</td>  -->
 			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.desconto}#</td> -->
 			<!-- <td>#filter:currency:{$T_XPAY_STATEMENT.full_price}#</td>  -->

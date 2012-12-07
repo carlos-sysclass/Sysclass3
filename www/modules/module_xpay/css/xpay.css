@@ -29,13 +29,16 @@ table.style1 .xpay-paid td {
 	color: #009900;
 }
 
-
+/*
 table.style1 .xpay-locked {
 	color: #000099;
 }
-table.style1 .xpay-locked td:FIRST-CHILD {
+*/
+/*
+table.style1 .xpay-locked td:LAST-CHILD {
 	color: #000099;
 }
+*/
 
 .hover_tooltip {
 	background: #fff;
@@ -84,4 +87,27 @@ table.style1 .xpay-locked td:FIRST-CHILD {
 }
 .xpay-instance-option {
 	vertical-align: middle;
+}
+
+
+.xpay-rules li {
+	float: left;
+	margin: 0;
+	width: 100%;
+	padding: 7px 10px;
+}
+
+.xpay-rules li .xpay-rule-tags {
+	float: right;
+}
+
+.xpay-rule-discount {
+	padding: 2px;
+	color: #fff;
+	background: #33aa33;
+}
+.xpay-rule-charge {
+	padding: 2px;
+	color: #fff;
+	background: #aa3333;
 }
