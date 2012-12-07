@@ -41,7 +41,7 @@ class module_gradebook extends MagesterExtendedModule
 		} elseif ($this->getCurrentUser()->getType() == 'student') {
 			return "student_sheet";
 		}
-	}	
+	}
 	
 	/* ACTION FUNCTIONS */
 	public function editRuleCalculationAction()
@@ -930,8 +930,16 @@ class module_gradebook extends MagesterExtendedModule
 
 						$courseLesson['scores']['columns'][$object['id']] = $grade;
 					}
+					
+					if (!array_key_exists($course->course['id'], $userLessons)) {
+						$userLessons[$course->course['id']] = array(
+							'id'		=> $course->course['id'],
+							'name'		=> $course->course['name'],
+							'lessons'	=> array()
+						);
+					}
 
-					$userLessons[$courseLesson['id']] = $courseLesson;
+					$userLessons[$course->course['id']]['lessons'][$courseLesson['id']] = $courseLesson;
 				}
 			}
 		}

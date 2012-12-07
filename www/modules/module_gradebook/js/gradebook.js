@@ -307,20 +307,38 @@
 		startUI : function() {
 			this.refreshGroupUI();
 			
+			jQuery(".gradebook-course .collapse-title a, .gradebook-course-lesson .collapse-title a").click(function() {
+				if (jQuery(this).parent().next(".collapse-content").is(":visible")) {
+					jQuery(this).find(".gradebook-tree-indicator").removeClass("sprite16-navigate_down").addClass("sprite16-navigate_right");
+				} else {
+					jQuery(this).find(".gradebook-tree-indicator").removeClass("sprite16-navigate_right").addClass("sprite16-navigate_down");
+				}
+				jQuery(this).parent().next(".collapse-content").toggle();
+			});
+			
 			if (
 				typeof(this.opt.lesson_id) != 'undefined' &&
 				typeof(this.opt.course_id) != 'undefined'
 			) {
-				var indice = "#gradebook-course-lesson-" + this.opt.course_id + "_" + this.opt.lesson_id;
+				var courseIndex = "#gradebook-course-" + this.opt.course_id;
+				var lessonIndex = "#gradebook-course-lesson-" + this.opt.course_id + "_" + this.opt.lesson_id;
 				//this.opt.course_id
 				//this.opt.lesson_id
-				jQuery(indice).show();
+				jQuery(courseIndex +  "> .collapse-title a").click();
+				jQuery(lessonIndex +  "> .collapse-title a").click();
+				
 			}
-			
-			jQuery(".gradebook-course-lesson .collapse-title a").click(function() {
-				jQuery(this).parent().next(".collapse-content").toggle();
 
+			/*
+			jQuery(".gradebook-course-lesson .collapse-title a").click(function() {
+				if (jQuery(this).parent().next(".collapse-content").is(":visible")) {
+					jQuery(this).find(".gradebook-tree-indicator").removeClass("sprite16-navigate_down").addClass("sprite16-navigate_right");
+				} else {
+					jQuery(this).find(".gradebook-tree-indicator").removeClass("sprite16-navigate_right").addClass("sprite16-navigate_down");
+				}
+				jQuery(this).parent().next(".collapse-content").toggle();
 			});
+			*/
 		},
 		
 	};
