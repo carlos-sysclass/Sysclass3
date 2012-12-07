@@ -61,8 +61,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<th>{$smarty.const.__GRADEBOOK_TOTAL}</th>
-								<th style="text-align: center;">{$smarty.const.__GRADEBOOK_WEIGHT}</th>
+								<th colspan="2">{$smarty.const.__GRADEBOOK_TOTAL}</th>
 								<th style="text-align: center;">{$lesson.scores.final_score}</th>
 							</tr>
 						</tfoot>

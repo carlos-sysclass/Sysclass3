@@ -193,6 +193,7 @@ class module_gradebook extends MagesterExtendedModule
 	}
 	public function studentsGradesAction()
 	{
+		
 		if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
 			return false;
 		}
@@ -204,7 +205,11 @@ class module_gradebook extends MagesterExtendedModule
 		$currentLessonID = $currentLesson->lesson['id'];
 
 		if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
+			/// MUST MANTAIN CURRENT COURSE/LESSON
 			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
+			
+			
+			
 		} else {
 			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 		}
@@ -877,7 +882,10 @@ class module_gradebook extends MagesterExtendedModule
 			$selectedUser = $currentUser;
 		}
 
+		// INTERSECT USER COURSES WITH PROF COURSES
 		$userCourses = $selectedUser->getUserCourses(array('return_objects' => true));
+		
+		
 		$userLessons = $selectedUser->getUserLessons(array('return_objects' => false));
 		$userLessonsIndexes = array_keys($userLessons);
 
