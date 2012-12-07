@@ -223,7 +223,7 @@ if (isset($_GET['add_test'])) {
 if ($form -> isSubmitted() && $form -> validate()) {
     $values = $form -> exportValues();
     if ($_GET['ctg'] != 'feedback') {
-  $testOptions = array('duration' => $values['duration'] * 60, //Duration is displayed in minutes, but is stored in seconds
+		$testOptions = array('duration' => $values['duration'] * 60, //Duration is displayed in minutes, but is stored in seconds
                                 'redoable' => $values['redoable'] ? $values['redoable'] : 0,
                                 'onebyone' => $values['onebyone'],
                           'only_forward' => $values['only_forward'],
@@ -241,8 +241,8 @@ if ($form -> isSubmitted() && $form -> validate()) {
                           'general_threshold' => $values['general_threshold'], //skill-gap option
                               'assign_to_new' => $values['assign_to_new'], //skill-gap option
                           'automatic_assignment' => $values['automatic_assignment']); //skill-gap option
- } else {
-  $testOptions = array('duration' => 0, //Duration is displayed in minutes, but is stored in seconds
+	} else {
+		$testOptions = array('duration' => 0, //Duration is displayed in minutes, but is stored in seconds
                                 'redoable' => 1,
                                 'onebyone' => 0,
                           'only_forward' => 0,

@@ -1,58 +1,58 @@
 <?php
-    session_cache_limiter('none'); //Initialize session
-    session_start();
-    $path = "../libraries/";
-    require_once $path."configuration.php";
-    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-    $css = $GLOBALS['configuration']['css'];
-    if (strlen($css) > 0 && is_file(G_CUSTOMCSSPATH.$css)) {
-        $smarty->assign("T_CUSTOM_CSS", $css);
-    }
-    $loadScripts = array_merge($loadScripts, array('scriptaculous/prototype','scriptaculous/scriptaculous','scriptaculous/effects','scriptaculous/controls'));
+session_cache_limiter('none'); //Initialize session
+session_start();
+$path = "../libraries/";
+require_once $path."configuration.php";
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+$css = $GLOBALS['configuration']['css'];
+if (strlen($css) > 0 && is_file(G_CUSTOMCSSPATH.$css)) {
+	$smarty->assign("T_CUSTOM_CSS", $css);
+}
+$loadScripts = array_merge($loadScripts, array('scriptaculous/prototype','scriptaculous/scriptaculous','scriptaculous/effects','scriptaculous/controls'));
 
-    $actions = array();
-    $actions[0] = "token";
-    $actions[1] = "login";
-    $actions[2] = "magesterlogin";
- $actions[3] = "create_lesson";
-    $actions[4] = "create_user";
-    $actions[5] = "user_info";
-    $actions[6] = "user_lessons";
-    $actions[7] = "user_courses";
-    $actions[8] = "update_user";
-    $actions[9] = "activate_user";
-    $actions[10] = "deactivate_user";
-    $actions[11] = "remove_user";
-    $actions[12] = "groups";
-    $actions[13] = "group_info";
-    $actions[14] = "group_to_user";
-    $actions[15] = "group_from_user";
-    $actions[16] = "catalog";
-    $actions[17] = "lessons";
-    $actions[18] = "lesson_info";
-    $actions[19] = "lesson_to_user";
-    $actions[20] = "lesson_from_user";
-    $actions[21] = "courses";
-    $actions[22] = "course_info";
-    $actions[23] = "course_to_user";
-    $actions[24] = "course_from_user";
- $actions[25] = "magesterlogout";
-    $actions[26] = "logout";
+$actions = array();
+$actions[0] = "token";
+$actions[1] = "login";
+$actions[2] = "magesterlogin";
+$actions[3] = "create_lesson";
+$actions[4] = "create_user";
+$actions[5] = "user_info";
+$actions[6] = "user_lessons";
+$actions[7] = "user_courses";
+$actions[8] = "update_user";
+$actions[9] = "activate_user";
+$actions[10] = "deactivate_user";
+$actions[11] = "remove_user";
+$actions[12] = "groups";
+$actions[13] = "group_info";
+$actions[14] = "group_to_user";
+$actions[15] = "group_from_user";
+$actions[16] = "catalog";
+$actions[17] = "lessons";
+$actions[18] = "lesson_info";
+$actions[19] = "lesson_to_user";
+$actions[20] = "lesson_from_user";
+$actions[21] = "courses";
+$actions[22] = "course_info";
+$actions[23] = "course_to_user";
+$actions[24] = "course_from_user";
+$actions[25] = "magesterlogout";
+$actions[26] = "logout";
 
-    $smarty -> assign("T_ACTIONS", $actions);
+$smarty -> assign("T_ACTIONS", $actions);
 
-    if (isset($_GET['action'])) {
-        $action = $actions[$_GET['action']];
-        $action_id = $_GET['action'];
-    } elseif (isset($_POST['action'])) {
-        $action = $actions[$_POST['action']];
-        $action_id = $_POST['action'];
-    } else {
-        $action = "token";
-        $action_id = 0;
-    }
-    $smarty -> assign("T_ACTION", $action);
+if (isset($_GET['action'])) {
+	$action = $actions[$_GET['action']];
+	$action_id = $_GET['action'];
+} elseif (isset($_POST['action'])) {
+	$action = $actions[$_POST['action']];
+	$action_id = $_POST['action'];
+} else {
+	$action = "token";
+	$action_id = 0;
+}
+$smarty -> assign("T_ACTION", $action);
 
     $postTarget = basename($_SERVER['PHP_SELF']);
     $form = new HTML_QuickForm("action_form", "post", $postTarget, "", null, true);
@@ -216,31 +216,28 @@
     $form -> addElement('textarea', 'output', _OUTPUT, 'class = "simpleEditor inputTextarea" style = "disabled:true;width:60%;height:120px"');
     $form -> addElement('submit', 'submit_action', _SUBMIT, 'class = "flatButton"');
 
-    if ($form -> isSubmitted()) {
-        if ($form -> validate()) {
-            $values = $form -> exportValues();
-            switch ($action) {
-                case 'token':{
-                    if ($stream = fopen(G_SERVERNAME.'api.php?action=token', 'r')) {
-                        $output = stream_get_contents($stream);
-                        fclose($stream);
-                    }
-                    break;
-                }
-                case 'login':{
+if ($form -> isSubmitted()) {
+	if ($form -> validate()) {
+        $values = $form -> exportValues();
+		switch ($action) {
+            case 'token':
+				if ($stream = fopen(G_SERVERNAME.'api.php?action=token', 'r')) {
+                	$output = stream_get_contents($stream);
+                    fclose($stream);
+				}
+                break;
+			case 'login':
                     $login = $values['login'];
                     $pwd = $values['password'];
                     $token = $values['token'];
-                    if ($stream = fopen(G_SERVERNAME.'api.php?action=login&username='.$login.
-                     '&password='.$pwd."&token=".$token, 'r')) {
-                        $output = stream_get_contents($stream);
-                        fclose($stream);
-                    }
-                    break;
-                }
-                case 'magesterlogin':{
-                    $token = $values['token'];
-     $login = $values['login'];
+                if ($stream = fopen(G_SERVERNAME.'api.php?action=login&username='.$login.'&password='.$pwd."&token=".$token, 'r')) {
+					$output = stream_get_contents($stream);
+                    fclose($stream);
+				}
+                break;
+			case 'magesterlogin':{
+                $token = $values['token'];
+     			$login = $values['login'];
      /*
 
 					 * WARNING: This will not work as expected: It will simply register the user as being login, without actually logging
@@ -396,7 +393,7 @@
                     }
                     break;
                 }
-                case 'group_from_user':{
+            case 'group_from_user':
                     $login = $values['login'];
                     $group = $values['group'];
                     $token = $values['token'];
@@ -407,8 +404,7 @@
                     }
                     break;
                     break;
-                }
-                case 'lesson_to_user':{
+            case 'lesson_to_user':
                     $login = $values['login'];
                     $lesson = $values['lesson'];
                     $token = $values['token'];
@@ -418,8 +414,7 @@
                         fclose($stream);
                     }
                     break;
-                }
-                case 'lesson_from_user':{
+			case 'lesson_from_user':
                     $login = $values['login'];
                     $lesson = $values['lesson'];
                     $token = $values['token'];
@@ -430,8 +425,7 @@
                     }
                     break;
                     break;
-                }
-                case 'user_lessons':{
+			case 'user_lessons':
                     $login = $values['login'];
                     $token = $values['token'];
                     if ($stream = fopen(G_SERVERNAME.'api.php?action=user_lessons&login='.$login.
@@ -440,8 +434,7 @@
                         fclose($stream);
                     }
                     break;
-                }
-                case 'lesson_info':{
+			case 'lesson_info':
                     $lesson = $values['lesson'];
                     $token = $values['token'];
                     if ($stream = fopen(G_SERVERNAME.'api.php?action=lesson_info&lesson='.$lesson.
@@ -450,11 +443,10 @@
                         fclose($stream);
                     }
                     break;
-                }
-                case 'course_to_user':{
+			case 'course_to_user':
                     $login = $values['login'];
                     $course = $values['course'];
-     $type = $values['type'];
+				$type = $values['type'];
                     $token = $values['token'];
                     if ($stream = fopen(G_SERVERNAME.'api.php?action=course_to_user&login='.$login.
                     '&course='.$course.'&type='.$type.'&token='.$token, 'r')) {
@@ -462,8 +454,7 @@
                         fclose($stream);
                     }
                     break;
-                }
-                case 'course_from_user':{
+                case 'course_from_user':
                     $login = $values['login'];
                     $course = $values['course'];
                     $token = $values['token'];
@@ -474,7 +465,6 @@
                     }
                     break;
                     break;
-                }
                 case 'user_courses':{
                     $login = $values['login'];
                     $token = $values['token'];
@@ -532,23 +522,22 @@
                     break;
                     break;
                 }
-                case 'logout':{
-                    $token = $values['token'];
-                    if ($stream = fopen(G_SERVERNAME.'api.php?action=logout&token='.$token, 'r')) {
-                        $output = stream_get_contents($stream);
-                        fclose($stream);
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    $form -> setDefaults(array('action' => $action_id));
-    $element = & $form->getElement('output');
-    $element -> setValue($output);
-    $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-    $form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
-    $form -> setRequiredNote(_REQUIREDNOTE);
-    $form -> accept($renderer);
-    $smarty -> assign('T_ACTION_FORM', $renderer -> toArray());
-    $smarty -> display('apidemo.tpl');
+			case 'logout':
+            	$token = $values['token'];
+                if ($stream = fopen(G_SERVERNAME.'api.php?action=logout&token='.$token, 'r')) {
+                	$output = stream_get_contents($stream);
+                    fclose($stream);
+				}
+                break;
+		}
+	}
+}
+$form -> setDefaults(array('action' => $action_id));
+$element = & $form->getElement('output');
+$element -> setValue($output);
+$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
+$form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
+$form -> setRequiredNote(_REQUIREDNOTE);
+$form -> accept($renderer);
+$smarty -> assign('T_ACTION_FORM', $renderer -> toArray());
+$smarty -> display('apidemo.tpl');

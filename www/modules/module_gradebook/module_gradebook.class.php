@@ -90,7 +90,7 @@ class module_gradebook extends MagesterExtendedModule
 			array_push($allLogins, $user['users_LOGIN']);
 		}
 		/*
-		 	if (sizeof($result) != sizeof($lessonUsers)) { // FIXME
+		 	if (sizeof($result) != sizeof($lessonUsers)) { 
 			$lessonColumns = $this->getLessonColumns($currentLessonID);
 			foreach ($lessonUsers as $userLogin => $value) {
 				if (!in_array($userLogin, $allLogins)) {
@@ -177,8 +177,8 @@ class module_gradebook extends MagesterExtendedModule
 		$smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
 
 		$gradebookGroups = $this->getGradebookGroups($currentLessonID);
-//		var_dump($gradebookGroups);
-//		exit;
+		//var_dump($gradebookGroups);
+		//exit;
 		$smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 		//$smarty->assign("T_GRADEBOOK_GROUPS_REQUIRE_STATUSES", );
 
@@ -318,8 +318,10 @@ class module_gradebook extends MagesterExtendedModule
 
 			eF_deleteTableData(
 				"module_gradebook_groups_order",
-				sprintf("lesson_id =%d AND classe_id = %d",
-					$currentLessonID, $currentClasseID
+				sprintf(
+					"lesson_id =%d AND classe_id = %d",
+					$currentLessonID,
+					$currentClasseID
 				)
 			);
 			$insertFields = array();
@@ -378,8 +380,8 @@ class module_gradebook extends MagesterExtendedModule
 					sprintf("lessons_ID = %d AND group_id = %d", $_SESSION["grade_lessons_ID"], $group_id)
 				);
 				$deleteStatus = eF_deleteTableData(
-						"module_gradebook_groups",
-						sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id)
+					"module_gradebook_groups",
+					sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id)
 				);
 
 				$return = array(
@@ -409,13 +411,13 @@ class module_gradebook extends MagesterExtendedModule
 
 		$currentLesson = $this->getSelectedLesson();
 		$currentLessonID = $currentLesson->lesson['id'];
-/*
+		/*
 		if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 			$gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
 		} else {
 			$gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
 		}
-*/
+		*/
 		$tests = $currentLesson->getTests(true, true);
 		$scormTests = $currentLesson->getScormTests();
 		$projects = $currentLesson->getProjects(false);
@@ -429,12 +431,14 @@ class module_gradebook extends MagesterExtendedModule
 		$weights = array();
 		$refersTo = array("real_world" => _GRADEBOOK_REAL_WORLD_OBJECT, "progress" => _LESSONPROGRESS);
 
-		for($i = 1; $i <= 10; $i++)
+		for ($i = 1; $i <= 10; $i++) {
 			$weights[$i] = $i;
+		}
 
 		if ($currentLesson->options['tests'] == 1) {
-			foreach($tests as $key => $test)
+			foreach ($tests as $key => $test) {
 				$refersTo['test_'.$key] = _TEST.': '.$test->test['name'];
+			}
 		}
 
 		if ($currentLesson->options['scorm'] == 1) {
@@ -447,8 +451,9 @@ class module_gradebook extends MagesterExtendedModule
 		}
 
 		if ($currentLesson->options['projects'] == 1) {
-			foreach($projects as $key => $project)
+			foreach ($projects as $key => $project) {
 				$refersTo['project_'.$key] = _PROJECT.': '.$project['title'];
+			}
 		}
 
 		$form = new HTML_QuickForm("add_column_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
@@ -617,10 +622,11 @@ class module_gradebook extends MagesterExtendedModule
 		$result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
 		$allLogins = array();
 
-		foreach($result as $user)
+		foreach ($result as $user) {
 			array_push($allLogins, $user['users_LOGIN']);
+		}
 		/*
-		if (sizeof($result) != sizeof($lessonUsers)) { // FIXME
+		if (sizeof($result) != sizeof($lessonUsers)) {
 
 			$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 
@@ -733,7 +739,7 @@ class module_gradebook extends MagesterExtendedModule
 		);
 		$lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 
-		if(
+		if (
 			isset($_POST['column_id']) &&
 			eF_checkParameter($_POST['column_id'], 'id')
 			&& in_array($_POST['column_id'], array_keys($lessonColumns))
@@ -1004,19 +1010,19 @@ class module_gradebook extends MagesterExtendedModule
 		} else {
 			$gradeBookLessons = array();
 		}
-var_dump(array_keys($gradeBookLessons));
-var_dump(
-                        in_array($_GET['lesson_id'], array_keys($gradeBookLessons)));
+		var_dump(array_keys($gradeBookLessons));
+		var_dump(
+        in_array($_GET['lesson_id'], array_keys($gradeBookLessons)));
 
-*/
-		if(
+		*/
+		if (
 			isset($_GET['lesson_id']) &&
 			eF_checkParameter($_GET['lesson_id'], 'id')
 		) {
 			$_SESSION["grade_lessons_ID"] = $_GET['lesson_id'];
 		}
 
-		if(
+		if (
 
 			isset($_GET['classe_id']) &&
 			eF_checkParameter($_GET['classe_id'], 'id')/* &&
@@ -1027,14 +1033,14 @@ var_dump(
 			unset($_SESSION["grade_classes_ID"]);
 		}
 
-		if(
+		if (
 			isset($_GET['course_id']) &&
 			eF_checkParameter($_GET['course_id'], 'id')/* &&
 			in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */
 		) {
 			$_SESSION["grade_courses_ID"] = $_GET['course_id'];
-		//} elseif ($_GET['course_id'] == 0) {
-		//	unset($_SESSION["grade_courses_ID"]);
+			//} elseif ($_GET['course_id'] == 0) {
+			//	unset($_SESSION["grade_courses_ID"]);
 		}
 
 		if (!empty($_GET['from'])) {
@@ -1142,7 +1148,7 @@ var_dump(
 			$currentLessonID = $currentLesson->lesson['id'];
 		}
 
-		if(
+		if (
 				isset($_GET['import_grades']) &&
 				eF_checkParameter($_GET['import_grades'], 'id')
 				&& in_array($_GET['import_grades'], array_keys($lessonColumns))
@@ -1181,8 +1187,9 @@ var_dump(
 			//eF_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
 		} elseif (isset($_GET['compute_score_grade']) && $_GET['compute_score_grade'] == '1') {
 
-			foreach($allUsers as $uid => $student)
+			foreach ($allUsers as $uid => $student) {
 				$this->computeScoreGrade($lessonColumns, $ranges, $student['users_LOGIN'], $uid);
+			}
 		} elseif (isset($_GET['export_excel']) && ($_GET['export_excel'] == 'one' || $_GET['export_excel'] == 'all')) {
 
 			require_once 'Spreadsheet/Excel/Writer.php';
@@ -1216,7 +1223,7 @@ var_dump(
 
 			$workBook->close();
 			exit;
-		} else if(
+		} elseif (
 			isset($_GET['export_student_excel']) &&
 			($_GET['export_student_excel'] == 'current' || $_GET['export_student_excel'] == 'all')
 		) {
@@ -1239,8 +1246,11 @@ var_dump(
 				foreach ($studentLessons as $key => $value) {
 
 					// Is GradeBook installed for this lesson ?
-					$installed = eF_getTableData("module_gradebook_users", "*",
-							"lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'");
+					$installed = eF_getTableData(
+						"module_gradebook_users",
+						"*",
+						"lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'"
+					);
 					if (sizeof($installed) != 0) {
 
 						$subLesson = new MagesterLesson($key);
@@ -1254,7 +1264,7 @@ var_dump(
 			exit;
 		}
 
-		if(
+		if (
 			isset($_GET['delete_range']) &&
 			eF_checkParameter($_GET['delete_range'], 'id') &&
 			in_array($_GET['delete_range'], array_keys($ranges))
@@ -1274,8 +1284,9 @@ var_dump(
 
 			$grades = array();
 
-			for($i = 1; $i <= 100; $i++)
+			for ($i = 1; $i <= 100; $i++) {
 				$grades[$i] = $i;
+			}
 
 			isset($_GET['add_range']) ? $postTarget = "&add_range=1" : $postTarget = "&edit_range=".$_GET['edit_range'];
 
@@ -1303,8 +1314,9 @@ var_dump(
 						"grade" => $values['grade']
 				);
 
-				if(isset($_GET['edit_range'])) // do not check it below ...
+				if (isset($_GET['edit_range'])) {// do not check it below ...
 					unset($ranges[$_GET['edit_range']]);
+				}
 
 				foreach ($ranges as $range) {
 
@@ -1315,18 +1327,25 @@ var_dump(
 						break;
 					}
 
-					if($fields['range_from'] >= $range['range_from'] && $fields['range_to'] <= $range['range_to'])
+					if ($fields['range_from'] >= $range['range_from'] && $fields['range_to'] <= $range['range_to']) {
 						$invalid_range = true;
+					}
+					if (
+						$fields['range_from'] >= $range['range_from'] &&
+						$fields['range_from'] <= $range['range_to'] &&
+						$fields['range_to'] >= $range['range_to']
+					) {
+						$invalid_range = true;
+					}
+						
 
-					if($fields['range_from'] >= $range['range_from'] && $fields['range_from'] <= $range['range_to'] &&
-							$fields['range_to'] >= $range['range_to'])
+					if ($fields['range_to'] >= $range['range_from'] && $fields['range_to'] <= $range['range_to']) {
 						$invalid_range = true;
+					}
 
-					if($fields['range_to'] >= $range['range_from'] && $fields['range_to'] <= $range['range_to'])
+					if ($fields['range_from'] <= $range['range_from'] && $fields['range_to'] >= $range['range_to']) {
 						$invalid_range = true;
-
-					if($fields['range_from'] <= $range['range_from'] && $fields['range_to'] >= $range['range_to'])
-						$invalid_range = true;
+					}
 
 					if ($invalid_range) {
 						$message = _GRADEBOOK_INVALID_RANGE.". "._GRADEBOOK_RANGE;
@@ -1376,8 +1395,7 @@ var_dump(
 				in_array($_GET['uid'], array_keys($allUsers))
 			) {
 			try {
-				eF_updateTableData("module_gradebook_users", array("publish" => $_GET['publish']),
-						"uid=".$_GET['uid']);
+				eF_updateTableData("module_gradebook_users", array("publish" => $_GET['publish']), "uid=".$_GET['uid']);
 			} catch (Exception $e) {
 				handleAjaxExceptions($e);
 			}
@@ -1416,8 +1434,9 @@ var_dump(
 				$result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
 				$allLogins = array();
 
-				foreach($result as $user)
+				foreach ($result as $user) {
 					array_push($allLogins, $user['users_LOGIN']);
+				}
 
 				if (sizeof($result) != sizeof($lessonUsers)) { // FIXME
 
@@ -1449,8 +1468,9 @@ var_dump(
 
 								eF_insertTableData("module_gradebook_grades", $fieldsGrades);
 
-								if($type != 'real_world')
+								if ($type != 'real_world') {
 									$this->importGrades($type, $id, $key, $userLogin);
+								}
 							}
 
 							$this->computeScoreGrade($lessonColumns, $ranges, $userLogin, $uid);
@@ -1499,8 +1519,7 @@ var_dump(
 				foreach ($studentLessons as $key => $value) {
 
 					// Is GradeBook installed for this lesson ?
-					$installed = eF_getTableData("module_gradebook_users", "*",
-							"lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'");
+					$installed = eF_getTableData("module_gradebook_users", "*", "lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'");
 					if (sizeof($installed) != 0) {
 
 						$lesson = new MagesterLesson($key);
@@ -1524,12 +1543,11 @@ var_dump(
 		if ($currentUser->getType() == 'administrator') {
 			//return $this->moduleBaseDir."module_gradebook_professor.tpl";
 			//return $this->moduleBaseDir."templates/gradebook.edit.tpl";
-
-		} else if($currentUser->getRole($this->getCurrentLesson()) == 'professor')
+		} elseif ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 			return $this->moduleBaseDir."module_gradebook_professor.tpl";
-
-		else if($currentUser->getRole($this->getCurrentLesson()) == 'student')
+		} elseif ($currentUser->getRole($this->getCurrentLesson()) == 'student') {
 			return $this->moduleBaseDir."module_gradebook_student.tpl";
+		}
 	}
 	public function getCenterLinkInfo()
 	{
@@ -1641,13 +1659,15 @@ var_dump(
 	}
 	public function onInstall()
 	{
+		/*
 		eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
-		$t1 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_ranges` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`range_from` int(3) NOT NULL,
-				`range_to` int(3) NOT NULL,
-				`grade` varchar(50) NOT NULL,
-				PRIMARY KEY (`id`)
+		$t1 = eF_executeNew(
+			"CREATE TABLE IF NOT EXISTS `module_gradebook_ranges` (
+			`id` int(11) NOT NULL AUTO_INCREMENT,
+			`range_from` int(3) NOT NULL,
+			`range_to` int(3) NOT NULL,
+			`grade` varchar(50) NOT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
 		eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_objects`");
@@ -1683,6 +1703,8 @@ var_dump(
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
 		return($t1 && $t2 && $t3 && $t4);
+		*/
+		return true;
 	}
 	public function onUninstall()
 	{
@@ -1767,8 +1789,9 @@ var_dump(
 		$result = eF_getTableData("module_gradebook_ranges", "*", "", "range_from");
 		$ranges = array();
 
-		foreach($result as $value)
+		foreach ($result as $value) {
 			$ranges[$value['id']] = $value;
+		}
 
 		return $ranges;
 	}
@@ -1782,7 +1805,7 @@ var_dump(
 		$columns = array();
 
 		foreach ($result as $value) {
-			if (($value['content_name']  = $this->getColumnContent($value)) == FALSE) {
+			if (($value['content_name']  = $this->getColumnContent($value)) == false) {
 				// REMOVE COLUMN
 				ef_deleteTableData("module_gradebook_objects", "id = " . $value['id']);
 			} else {
@@ -1795,7 +1818,7 @@ var_dump(
 	private function getColumnContent($grade_object)
 	{
 		switch ($grade_object['refers_to_type']) {
-			case 'test' : {
+			case 'test':
 				try {
 					$test = new MagesterTest($grade_object['refers_to_id']);
 					return $test->test['name'];
@@ -1805,13 +1828,11 @@ var_dump(
 						return false;
 					}
 				}
-			}
-			case 'real_world' : {
+				break;
+			case 'real_world':
 				return "&mdash;&mdash;";
-			}
-			case 'progress' : {
+			case 'progress':
 				return "Progresso Atual";
-			}
 
 		}
 		var_dump($grade_object);
@@ -1821,7 +1842,7 @@ var_dump(
 	{
 		$where = array();
 
-//		$where[] = "lessons_ID = " . $lessonID;
+		//$where[] = "lessons_ID = " . $lessonID;
 		$where[] = sprintf("u.login IN (SELECT users_LOGIN FROM users_to_lessons WHERE lessons_ID = %d)", $lessonID);
 
 		if (!is_null($classe_id)) {
@@ -1867,16 +1888,18 @@ var_dump(
 			*/
 
 			$grades = array();
-/*
+			/*
 			$active = eF_getTableData("users", "active", "login='".$value['users_LOGIN']."'"); // active or not ?
 			$value['active'] = $active[0]['active'];
-*/
+			*/
 
-			if($value['score'] == -1)
+			if ($value['score'] == -1) {
 				$value['score'] = '-';
+			}
 
-			if($value['grade'] == '-1')
+			if ($value['grade'] == '-1') {
 				$value['grade'] = '-';
+			}
 
 			if ($value['user_types_ID'] != 0) {
 				$value['userrole'] = $userRoles[$value['user_types_ID']];
@@ -1887,11 +1910,14 @@ var_dump(
 			foreach ($objects as $key => $object) {
 
 				$result_ = eF_getTableData(
-						"module_gradebook_grades", "gid, grade",
-						"oid = ".$object['id']." and users_LOGIN='".$value['users_LOGIN']."'");
+					"module_gradebook_grades",
+					"gid, grade",
+					"oid = ".$object['id']." and users_LOGIN='".$value['users_LOGIN']."'"
+				);
 
-				if($result_[0]['grade'] == -1)
+				if ($result_[0]['grade'] == -1) {
 					$result_[0]['grade'] = '';
+				}
 
 				$grades[$object['id']] = $result_[0];
 
@@ -1942,8 +1968,8 @@ var_dump(
 
 					eF_insertTableData("module_gradebook_grades", $fieldsGrades);
 
-//					if($type != 'real_world')
-//						$this->importGrades($type, $id, $key, $userLogin);
+					//if($type != 'real_world')
+					//	$this->importGrades($type, $id, $key, $userLogin);
 				}
 				$updated = true;
 
@@ -1984,8 +2010,9 @@ var_dump(
 
 		return $courseClasses;
 	}
-	private function getGradebookGroups($currentLessonID, $currentClasseID = null){ // lessons where GradeBook is installed
-
+	private function getGradebookGroups($currentLessonID, $currentClasseID = null)
+	{
+		// lessons where GradeBook is installed
 		is_null($currentClasseID) ? $currentClasseID = 0 : null;
 		/*
 		echo prepareGetTableData(
@@ -2034,7 +2061,9 @@ var_dump(
 
 		return $gradebook;
 	}
-	private function getGradebookLessons($professorLessons, $currentLessonID){ // lessons where GradeBook is installed
+	private function getGradebookLessons($professorLessons, $currentLessonID)
+	{
+		// lessons where GradeBook is installed
 		$lessons = array();
 		//unset($professorLessons[$currentLessonID]); // do not use current lesson
 
@@ -2042,14 +2071,14 @@ var_dump(
 
 		$courses = MagesterCourse::getCourses(false);
 
-		$result = eF_getTableData("lessons l LEFT OUTER JOIN module_gradebook_users a ON (a.lessons_ID = l.id)",
-				"DISTINCT l.id as id, l.name, count(a.uid) as total_users,
-				( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = l.id LIMIT 1) as course_ID
-				",
-				"l.id IN (".implode(",", $lessons_ID).")",
-				"",
-				"l.id /* HAVING count(a.uid) > 0 */"
-		) ;
+		$result = eF_getTableData(
+			"lessons l LEFT OUTER JOIN module_gradebook_users a ON (a.lessons_ID = l.id)",
+			"DISTINCT l.id as id, l.name, count(a.uid) as total_users,
+			( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = l.id LIMIT 1) as course_ID",
+			"l.id IN (".implode(",", $lessons_ID).")",
+			"",
+			"l.id /* HAVING count(a.uid) > 0 */"
+		);
 
 		$courselessons = array();
 		foreach ($result as $lesson) {
@@ -2078,20 +2107,22 @@ var_dump(
 
 			foreach ($lessonColumns as $key => $column) {
 
-				$grade = eF_getTableData("module_gradebook_grades", "grade",
-						"oid = ".$column['id']." and users_LOGIN='".$currentUser->user['login']."'");
+				$grade = eF_getTableData("module_gradebook_grades", "grade", "oid = ".$column['id']." and users_LOGIN='".$currentUser->user['login']."'");
 
-				if($grade[0]['grade'] == -1)
+				if ($grade[0]['grade'] == -1) {
 					$grade[0]['grade'] = '-';
+				}
 
 				$grades[$i++] = $grade[0]['grade'];
 			}
 
-			if($user[0]['score'] == -1)
+			if ($user[0]['score'] == -1) {
 				$user[0]['score'] = '-';
+			}
 
-			if($user[0]['grade'] == '-1')
+			if ($user[0]['grade'] == '-1') {
 				$user[0]['grade'] = '-';
+			}
 
 			$grades[$i++] = $user[0]['score'];
 			$grades[$i] = $user[0]['grade'];
@@ -2101,22 +2132,31 @@ var_dump(
 	}
 	private function professorLessonToExcel($lessonID, $lessonName, $workBook, $workSheet)
 	{
-		$headerFormat = &$workBook->addFormat(array(
+		$headerFormat = &$workBook->addFormat(
+			array(
 				'border' => 0,
 				'bold' => '1',
 				'size' => '12',
 				'color' => 'black',
 				'fgcolor' => 22,
-				'align' => 'center'));
+				'align' => 'center'
+			)
+		);
 
-		$titleCenterFormat = &$workBook->addFormat(array(
+		$titleCenterFormat = &$workBook->addFormat(
+			array(
 				'HAlign' => 'center',
 				'Size' => 11,
-				'Bold' => 1));
+				'Bold' => 1
+			)
+		);
 
-		$fieldCenterFormat = &$workBook->addFormat(array(
+		$fieldCenterFormat = &$workBook->addFormat(
+			array(
 				'HAlign' => 'center',
-				'Size' => 10));
+				'Size' => 10
+			)
+		);
 
 		$lessonColumns = $this->getLessonColumns($lessonID);
 		$allUsers = $this->getLessonUsers($lessonID, $lessonColumns);
@@ -2131,8 +2171,9 @@ var_dump(
 		$col = 1;
 		$workSheet->write(2, 0, _GRADEBOOK_STUDENT_NAME, $titleCenterFormat);
 
-		foreach($lessonColumns as $key => $value)
+		foreach ($lessonColumns as $key => $value) {
 			$workSheet->write(2, $col++, $value['name'].' ('._GRADEBOOK_COLUMN_WEIGHT_DISPLAY.': '.$value['weight'].')', $titleCenterFormat);
+		}
 
 		$workSheet->write(2, $col++, _GRADEBOOK_SCORE, $titleCenterFormat);
 		$workSheet->write(2, $col++, _GRADEBOOK_GRADE, $titleCenterFormat);
@@ -2145,8 +2186,9 @@ var_dump(
 			$user = MagesterUserFactory::factory($student['users_LOGIN']);
 			$workSheet->write($row, $col++, $user->user['name'].' '.$user->user['surname'].' ('.$user->user['login'].')', $fieldCenterFormat);
 
-			foreach($student['grades'] as $key2 => $grade)
+			foreach ($student['grades'] as $key2 => $grade) {
 				$workSheet->write($row, $col++, $grade['grade'], $fieldCenterFormat);
+			}
 
 			$workSheet->write($row, $col++, $student['score'], $fieldCenterFormat);
 			$workSheet->write($row, $col++, $student['grade'], $fieldCenterFormat);
@@ -2157,22 +2199,31 @@ var_dump(
 	}
 	private function studentLessonToExcel($lessonID, $lessonName, $currentUser, $workBook, $workSheet)
 	{
-		$headerFormat = &$workBook->addFormat(array(
+		$headerFormat = &$workBook->addFormat(
+			array(
 				'border' => 0,
 				'bold' => '1',
 				'size' => '12',
 				'color' => 'black',
 				'fgcolor' => 22,
-				'align' => 'center'));
+				'align' => 'center'
+			)
+		);
 
-		$titleCenterFormat = &$workBook->addFormat(array(
+		$titleCenterFormat = &$workBook->addFormat(
+			array(
 				'HAlign' => 'center',
 				'Size' => 11,
-				'Bold' => 1));
+				'Bold' => 1
+			)
+		);
 
-		$fieldCenterFormat = &$workBook->addFormat(array(
+		$fieldCenterFormat = &$workBook->addFormat(
+			array(
 				'HAlign' => 'center',
-				'Size' => 10));
+				'Size' => 10
+			)
+		);
 
 		$lessonColumns = $this->getLessonColumns($lessonID);
 		$studentGrades = $this->getStudentGrades($currentUser, $lessonID, $lessonColumns);
@@ -2186,8 +2237,9 @@ var_dump(
 
 		$col = 0;
 
-		foreach($lessonColumns as $key => $value)
+		foreach ($lessonColumns as $key => $value) {
 			$workSheet->write(2, $col++, $value['name'].' ('._GRADEBOOK_COLUMN_WEIGHT_DISPLAY.': '.$value['weight'].')', $titleCenterFormat);
+		}
 
 		$workSheet->write(2, $col++, _GRADEBOOK_SCORE, $titleCenterFormat);
 		$workSheet->write(2, $col++, _GRADEBOOK_GRADE, $titleCenterFormat);
@@ -2196,8 +2248,9 @@ var_dump(
 
 		if (sizeof($studentGrades)) {
 
-			for($i = 0; $i < sizeof($studentGrades); $i++)
+			for ($i = 0; $i < sizeof($studentGrades); $i++) {
 				$workSheet->write(3, $col++, $studentGrades[$i], $fieldCenterFormat);
+			}
 		} else {
 			$workSheet->write(4, 0, _GRADEBOOK_NOT_PUBLISHED, $fieldCenterFormat);
 			$workSheet->mergeCells(4, 0, 4, 2 + $columnsNr - 1);
@@ -2212,10 +2265,11 @@ var_dump(
 			$where .= "and archive=0";
 			$result = eF_getTableData("completed_tests", "score", $where);
 
-			if(sizeof($result) != 0)
+			if (sizeof($result) != 0) {
 				$grade = round($result[0]['score']);
-			else
+			} else {
 				$grade = -1;
+			}
 
 		} elseif ($type == 'scormtest') {
 
@@ -2293,7 +2347,7 @@ var_dump(
 
 			$overallScore = round((float) ($sum/$divisionBy));
 			$overallGrade = '-1'; // if no range found
-		/*
+			/*
 			foreach ($ranges as $range) {
 
 				if ($overallScore >= $range['range_from'] && $overallScore <= $range['range_to']) {
@@ -2301,7 +2355,7 @@ var_dump(
 					break;
 				}
 			}
-		*/
+			*/
 		} else {
 			$overallScore = -1;
 			$overallGrade = '-1';
