@@ -71,3 +71,16 @@ define("__XPAY_TO_SUBTRACT_VALUE", "Considerado");
 define("__XPAY_JUSTIFICATION", "Justificativa");
 define("__XPAY_DUE_DATE", "Data de Vencimento");
 define("__XPAY_VALUE", "Valor");
+
+define("__XPAY_DESCRIPTION", "Descrição/Motivo");
+define("__XPAY_TYPE", "Tipo");
+define("__XPAY_VALUE_TYPE", "Forma de Cálculo"); 
+define("__XPAY_PERCENTUAL", "Valor Percentual");
+define("__XPAY_ABS_VALUE", "Valor Total");
+
+define("__XPAY_DISCOUNT", "Desconto");
+define("__XPAY_INCREASE", "Acréscimo");
+
+define("__XPAY_PERCENT_VALUE", "Percentual");
+define("__XPAY_ABSOLUTE_VALUE", "Valor Absoluto");
+

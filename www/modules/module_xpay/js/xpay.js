@@ -573,6 +573,74 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				
 				return false;
 			});
+			
+			// CREATE DIALOG FORM DO-PAY OPTIONS
+			jQuery("#xpay-add_discount_rule-options-dialog").dialog({
+				autoOpen	: false,
+				height		: "auto",
+				width		: "auto",
+				modal		: true,
+				resizable	: false,
+				buttons : {
+					"Salvar" : function() {
+						$postData = jQuery(this).find("form").serialize();
+						
+						var url = jQuery(this).find("form").attr("action");
+						
+						jQuery.post(
+							url,
+							$postData,
+							function(data, status) {
+								console.log(data, status);
+							},
+							'json'
+						);
+						
+						//jQuery(this).dialog("close");
+						//window.location.reload(true);
+						
+					},
+					"Cancelar" : function() {
+						jQuery(this).dialog("close");
+						
+					}
+				},
+				close: function() {
+					
+				}
+			});
+			
+			jQuery(".xpay-add_discount_rule-dialog-link").click(function() {
+				var url = jQuery(this).attr("href");
+				
+				jQuery("#xpay-add_discount_rule-options-dialog-inner").empty();
+				jQuery("#xpay-add_discount_rule-options-dialog-loader").show();
+				jQuery("#xpay-add_discount_rule-options-dialog").dialog('open');
+				
+				jQuery("#xpay-add_discount_rule-options-dialog-inner").load(url, function() {
+					jQuery(this).find('input:text').setMask({autoTab: false});
+					
+					jQuery(this).find(".xpay-show-on-percentual").hide();
+					jQuery(this).find("#xpay-show-on-percentual-" + jQuery(this).find(":input[name='percentual']").val()).show();
+					
+					jQuery(this).find(":input[name='percentual']").change(function() {
+						jQuery(this).parents("form").find(".xpay-show-on-percentual").hide();
+						jQuery(this).parents("form").find("#xpay-show-on-percentual-" + jQuery(this).val()).show();
+						
+					});
+					
+					jQuery("#xpay-add_discount_rule-options-dialog-loader").hide();
+					
+					jQuery("#xpay-add_discount_rule-options-dialog").dialog("widget").position({
+					   my: "center",
+					   at: "center",
+					   of: window
+					});
+				});
+				
+				
+				return false;
+			});
 			/*
 			jQuery(":input[name='xpay-sendto-option']").change(function() {
 				alert(jQuery(this).val());

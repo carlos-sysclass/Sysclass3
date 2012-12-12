@@ -1,5 +1,6 @@
 {if isset($T_XPAY_STATEMENT)}
 	{capture name="t_xpay_view_statement"}
+	
 		<div style="float: left;">
 			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
 		</div>
@@ -23,22 +24,11 @@
 			</div>
 			<div class="clear"></div>
 		{/if}
-			
+
 		{include
 			file="`$T_XPAY_BASEDIR`templates/includes/print.negociation.summary.tpl"
 			T_XPAY_STATEMENT=$T_XPAY_STATEMENT
 		}
-		
-
-		
-		<div id="xpay-do_payment-options-dialog" title="Pagamentos">
-			<div id="xpay-do_payment-options-dialog-loader">
-				<img src="images/progress.gif">
-				{$smarty.const._LOADING}
-			</div>
-			<div id="xpay-do_payment-options-dialog-inner">
-			</div>
-		</div>
 		
 		<table class="style1">
 			<thead>

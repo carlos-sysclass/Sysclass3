@@ -187,7 +187,7 @@ function getJqueryPeriodicData() {
 			value: currentValue.valueOf()
 		});
 	});
-	$.metadata.setType('attr','metadata');
+	jQuery.metadata.setType('attr','metadata');
 	
 	jQuery('input:text').setMask({autoTab: false});
 	

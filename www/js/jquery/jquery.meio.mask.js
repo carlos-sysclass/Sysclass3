@@ -149,7 +149,7 @@
 				'decimal'			: { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '000' },
 				'decimal-us'		: { mask : '99.999,999,999,999', type : 'reverse', defaultValue : '000' },
 				'signed-decimal'	: { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '+000' },
-				'signed-decimal-us' : { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '+000' }
+				'signed-decimal-us' : { mask : '99,999.999.999.999', type : 'reverse', defaultValue : '+000' },
 			},
 			
 			init : function(){

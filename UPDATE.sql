@@ -3114,3 +3114,7 @@ INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES (
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('8', 'Não capturada');
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('9', 'Cancelada');
 INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES ('10', 'Em autenticação');
+
+
+/* 2012-12-12 */
+ALTER TABLE `module_xpay_price_rules` ADD `global_price` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `rule_xentify_id`;

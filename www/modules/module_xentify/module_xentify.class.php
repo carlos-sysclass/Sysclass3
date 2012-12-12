@@ -534,15 +534,15 @@ class module_xentify extends MagesterExtendedModule
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'];
     		}
-    		case 14 : { // SAME USER GROUP AND COURSE
+    		case 14: // SAME USER GROUP AND COURSE
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_group'] && $status['same_course'];
-    		}
-    		case 15 : { // SAME IES AND USER TYPE
+    		case 15: // SAME IES AND USER TYPE
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_ies'] && $status['same_user_type'];
-    		}
-
+    		case 16:// SAME NEGOCIATION
+    			/** @todo Implementar checagem de inadimplência */
+    			return $status['same_negociation_id'];
     		default : {
     			return false;
     		}
@@ -554,15 +554,16 @@ class module_xentify extends MagesterExtendedModule
     		$user = $this->getCurrentUser();
     	}
     	$status = array(
-    		'same_ies'			=> false,
-    		'same_polo'			=> false,
-    		'same_classe'		=> false,
-    		'same_user'			=> false,
-    		'same_user_type'	=> false,
-    		'same_group'		=> false,
-   			'same_course'		=> false,
-    		'no_overdue'		=> false,
-    		'overdue'			=> false
+    		'same_ies'				=> false,
+    		'same_polo'				=> false,
+    		'same_classe'			=> false,
+    		'same_user'				=> false,
+    		'same_user_type'		=> false,
+    		'same_group'			=> false,
+   			'same_course'			=> false,
+    		'same_negociation_id'	=> false,
+    		'no_overdue'			=> false,
+    		'overdue'				=> false
 	   	);
 	   	$data = $this->getUserScopeData($scope_type, $scope_id);
 
@@ -607,10 +608,17 @@ class module_xentify extends MagesterExtendedModule
     			$status['same_user_type'] 	= $this->checkUserScopeSameUserType($user, $data['user_type']);
     			break;
     		}
-
-    		default : {
+    		case 16:
+    			$status['same_negociation_id'] 		= $this->checkUserScopeSameNegociation($user, $data['negociation_id']);
+    			break;
+    		/*
+   			case 17:
+   				$status['same_negociation_id'] 		= $this->checkUserScopeSameNegociation($user, $data['negociation_id']);
+   				$status['same_invoice_index'] 		= $this->checkUserScopeSameInvoice($user, $data['invoice_index']);
+   				break;
+   			*/
+    		default:
     			return false;
-    		}
     	}
     	return $status;
     }
@@ -629,7 +637,9 @@ class module_xentify extends MagesterExtendedModule
    			'classe_id'			=> null,
     		'user_type'			=> null,
     		'group_id'			=> null,
-   			'course_id'			=> null
+   			'course_id'			=> null,
+    		'negociation_id'	=> null,
+    		'invoice_index'		=> null
 		);
 
     	switch ($scope_type) {
@@ -653,18 +663,24 @@ class module_xentify extends MagesterExtendedModule
     			list($data['polo_id'], $data['classe_id']) = explode(';', $scope_id);
     			break;
     		}
-    		case 13 : { // SAME GROUPS
+    		case 13: // SAME GROUPS
     			list($data['group_id']) = explode(';', $scope_id);
     			break;
-    		}
-    		case 14 : { // SAME GROUPS
+    		case 14: // SAME GROUPS
     			list($data['group_id'], $data['course_id']) = explode(';', $scope_id);
     			break;
-    		}
-    		case 15 : { // SAME GROUPS
+    		case 15: // SAME GROUPS
     			list($data['ies_id'], $data['user_type']) = explode(';', $scope_id);
     			break;
-    		}
+    		case 16:  // SAME NEGOCIATION
+    			list($data['negociation_id']) = explode(';', $scope_id);
+    			break;
+    		/*
+   			case 17:  // SAME NEGOCIATION
+   				list($data['negociation_id'], $data['invoice_index']) = explode(';', $scope_id);
+   				break;
+   			/*/
+    				 
     	}
     	return $data;
     }
@@ -863,10 +879,19 @@ class module_xentify extends MagesterExtendedModule
     {
     	return in_array($course_id, $this->getUserCoursesIndex($user));
     }
-
+	
+    private function getUserNegociationsIndex($user)
+    {
+    	$result = eF_getTableDataFlat("module_xpay_course_negociation", "id", sprintf("user_id = %d", $user->user['id']));
+    	return $result['id'];
+    }
+    private function checkUserScopeSameNegociation($user, $negociation_id)
+    {
+    	return in_array($negociation_id, $this->getUserNegociationsIndex($user));
+    }
+    
 	private function checkUserInDebt($user)
 	{
 		return $this->loadModule("xpay")->isUserInDebt($user);
 	}
-
 }

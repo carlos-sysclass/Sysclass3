@@ -142,19 +142,22 @@ class module_xpay extends MagesterExtendedModule
 
 		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
 
-		$this->getParent()->appendTemplate(array(
-			'title'			=> __XPAY_VIEW_MY_STATEMENT,
-			'template'		=> $this->moduleBaseDir . 'templates/blocks/invoices.list.tpl',
-			'contentclass'	=> 'blockContents',
-			'options'		=> array(
-				array(
-					'href'			=> $this->moduleBaseUrl . "&action=view_user_statement",
-					'image'			=> 'others/transparent.png',
-					'text'			=> __XPAY_VIEW_MY_STATEMENT,
-					'image-class'	=> 'sprite16 sprite16-do_pay'
+		$this->getParent()->appendTemplate(
+			array(
+				'title'			=> __XPAY_VIEW_MY_STATEMENT,
+				'template'		=> $this->moduleBaseDir . 'templates/blocks/invoices.list.tpl',
+				'contentclass'	=> 'blockContents',
+				'options'		=> array(
+					array(
+						'href'			=> $this->moduleBaseUrl . "&action=view_user_statement",
+						'image'			=> 'others/transparent.png',
+						'text'			=> __XPAY_VIEW_MY_STATEMENT,
+						'image-class'	=> 'sprite16 sprite16-do_pay'
+					)
 				)
-			)
-		), $blockIndex);
+			),
+			$blockIndex
+		);
 
 		$this->assignSmartyModuleVariables();
 
@@ -705,7 +708,6 @@ class module_xpay extends MagesterExtendedModule
 			$userNegociation = $this->_getNegociationByUserEntify($editUser->user['login'], $entify['id'], $entify['type'], $negociationData['negociation_index']);
 		} elseif (count($userNegociation['invoices']) == 0) {
 			//$this->_createUserDefaultInvoices($negociationData['id']);
-
 			//$userNegociation = $this->_getNegociationByUserCourses($editUser->user['login'], $editCourse->course['id'], $userNegociation['negociation_index']);
 		}
 
@@ -728,6 +730,7 @@ class module_xpay extends MagesterExtendedModule
 			$negociationTotals['total_reajuste']	+= $invoice['total_reajuste'];
 			$negociationTotals['paid']	+= $invoice['paid'];
 		}
+		
 		$negociationTotals['balance'] = intval($negociationTotals['valor'])-intval($negociationTotals['paid']);
 
 		$smarty -> assign("T_XPAY_STATEMENT_TOTALS", $negociationTotals);
@@ -883,7 +886,7 @@ class module_xpay extends MagesterExtendedModule
 			$fields['vencimento_1_parcela'] = date_create_from_format("d/m/Y H:i:s", $fields['vencimento_1_parcela'] . "  00:00:00");
 
 			$negociationParams = array(
-				'full_price'			=> $userNegociation['base_price'],
+				'full_price'			=> $userNegociation['full_price'],
 				'paid'					=> $userNegociation['paid'],
 				//'balance'				=> $userNegociation['full_price'] - $userNegociation['paid'],
 				'taxa_matricula'		=> $fields['taxa_matricula'],
@@ -1066,9 +1069,9 @@ class module_xpay extends MagesterExtendedModule
 			);
 		} else {
 			$values = array(
-					'saldo_total'		=> $this->_asCurrency($userNegociation['base_price'] - $userNegociation['paid']),
-					//'saldo_restante'	=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
-					'total_parcelas'	=> 9
+				'saldo_total'		=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				//'saldo_restante'	=> $this->_asCurrency($userNegociation['full_price'] - $userNegociation['paid']),
+				'total_parcelas'	=> 9
 			);
 		}
 
@@ -1229,6 +1232,147 @@ class module_xpay extends MagesterExtendedModule
 		}
 
 	}
+	public function addDiscountRuleAction()
+	{
+		$smarty = $this->getSmartyVar();
+		/*
+		eF_insertTableData(
+			
+		);
+		*/
+		
+		$insertData = array(
+			'id'					=> null,	// AI
+			'description'			=> "",		// EDITAVEL
+			//'rule_xentify_scope_id'	=> null,
+			//'rule_xentify_id'		=> null,
+			'entify_id'				=> 1,
+			'entify_absolute_id'	=> 1,
+			'global_price'			=> 1,
+			'type_id'				=> -1,		// EDITAVEL
+			'percentual'			=> 1,		// EDITAVEL
+			'valor'					=> 0,		// EDITAVEL
+			'base_price_applied'	=> 1,
+			'applied_on'			=> "once",	// EDITAVEL
+			'order'					=> 1,
+			'active'				=> 1
+		);
+		
+		$getValues = array(
+			'negociation_id'	=> $_GET['negociation_id'],
+			'invoice_index'		=> is_numeric($_GET['invoice_index']) ? $_GET['invoice_index'] : false
+		);
+		
+		if ($getValues['invoice_index'] === false) {
+			$insertData['rule_xentify_scope_id']	= 16;
+			$insertData['rule_xentify_id']	= sprintf("%d", $getValues['negociation_id']);
+			
+			$insertData['global_price']	= 1;
+		} else {
+			$insertData['rule_xentify_scope_id']	= 17;
+			$insertData['rule_xentify_id']	= sprintf("%d;%d", $getValues['negociation_id'], $getValues['invoice_index']);
+			
+			$insertData['global_price']	= 0;
+		}
+		
+		//$invoice = $this->_getNegociationInvoiceByIndex($getValues['negociation_id'], $getValues['invoice_index']);
+		
+		//exit;
+		
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
+		$form = new HTML_QuickForm2("xpay_add_discount_rule", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+		$form -> addHidden('negociation_id')->setValue($getValues['negociation_id']);
+		
+		
+		$form	-> addText('description', array('class' => 'large'), array('label'	=> __XPAY_DESCRIPTION));
+		
+		$rule_types = array(
+			-1	=> __XPAY_DISCOUNT,
+			1	=> __XPAY_INCREASE
+		);
+		$form -> addSelect('type_id', array('class' => 'medium'), array('label'	=> __XPAY_TYPE, 'options' => $rule_types));
+		
+		$rule_value_types = array(
+			1	=> __XPAY_PERCENT_VALUE,
+			0	=> __XPAY_ABSOLUTE_VALUE
+		);
+		$form -> addSelect('percentual', array('class' => 'medium'), array('label'	=> __XPAY_VALUE_TYPE, 'options' => $rule_value_types));
+
+		$form	-> addText('valor_absoluto', array('class' => 'small', 'alt' => 'decimal'), array('label'	=> __XPAY_ABS_VALUE));
+		$form	-> addText('valor_percentual', array('class' => 'small', 'alt' => 'decimal'), array('label'	=> __XPAY_PERCENTUAL));
+		
+		
+		/*
+		$rule_frequency = array(
+			"once"			=> "uma vez",
+			"per_day"		=> "por dia",
+			"per_month"		=> "por mês"
+		);
+		$form -> addSelect('applied_on', array('class' => 'medium'), array('label'	=> __XPAY_FREQUENCY, 'options' => $rule_frequency));
+		*/
+		//$form -> addTextarea('description', array('class' => 'large'), array('label'	=> __XPAY_JUSTIFICATION));
+		//$form -> addSubmit('_add_rule_invoice', null, array('label'	=> __XPAY_SUBMIT));
+		
+		if ($form -> isSubmitted() && $form -> validate()) {
+			// VALIDATE
+			$values = array_merge($insertData, $form->getValue());
+			
+			unset($insertData['id']);
+			
+			$insertData = array(
+				'description'			=> $values['description'],		// EDITAVEL
+				'rule_xentify_scope_id'	=> $values['rule_xentify_scope_id'],
+				'rule_xentify_id'		=> $values['rule_xentify_id'],
+				'entify_id'				=> $values['entify_id'],
+				'entify_absolute_id'	=> $values['entify_absolute_id'],
+				'global_price'			=> $values['global_price'],
+				'type_id'				=> $values['type_id'],		// EDITAVEL
+				'percentual'			=> $values['percentual'],		// EDITAVEL
+				//'valor'					=> 0,		// EDITAVEL
+				'base_price_applied'	=> $values['base_price_applied'],
+				'applied_on'			=> $values['applied_on'],	// EDITAVEL
+				'order'					=> $values['order'],
+				'active'				=> $values['active']
+			);
+			
+			if ($insertData['percentual'] == 1) {
+				$insertData['valor'] = ((float) str_replace(",", ".", str_replace(".", "", $values['valor_percentual']))) / 100;
+			} else {
+				$insertData['valor'] = (float) str_replace(",", ".", str_replace(".", "", $values['valor_absoluto']));
+			}
+			
+			
+			$ruleID = eF_insertTableData("module_xpay_price_rules", $insertData);
+			
+			//eF_insertTableData("module_xpay_price_rules_tags");
+
+			// INJECT USER ON CUSTOM??
+			
+			$result = array(
+				'message' 		=> __XPAY_RULE_SUCCESSFULLY_SAVED,
+				'message_type' 	=> "success"
+			);
+			
+			echo json_encode($result);
+			exit;
+		} else {
+			$values = $insertData;
+		}
+		//var_dump($values);
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_XPAY_ADD_RULE_FORM', $renderer -> toArray());
+		
+		
+		if ($_GET['output'] == 'dialog') {
+			// JUST FETCH THE TEMPLATE AND EXIT;
+			echo $smarty -> fetch($this->moduleBaseDir . "/templates/includes/add_discount_rule.dialog.tpl");
+			exit;
+		}
+	}
 	public function doPaymentAction()
 	{
 		$smarty = $this->getSmartyVar();
@@ -1258,7 +1402,7 @@ class module_xpay extends MagesterExtendedModule
 			$exUserType == 'administrator' ||
 			$exUserType == 'financier' ||
 			$exUserType == 'coordenator'
-) {
+		) {
 			$negociationID = $_GET['negociation_id'];
 			$invoice_index = $_GET['invoice_index'];
 
@@ -1338,7 +1482,6 @@ class module_xpay extends MagesterExtendedModule
 			$selectedIndex = null;
 			return;
 		}
-
 		$paymentMethods = array();
 
 		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
@@ -1988,7 +2131,10 @@ class module_xpay extends MagesterExtendedModule
 		if (count($sendIDData) > 0) {
 			$data['send_id'] = $sendIDData[0]['id'];
 		} else {
-			$data['send_id'] = eF_insertTableData("module_xpay_to_send_list", array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*5)  )));
+			$data['send_id'] = eF_insertTableData(
+				"module_xpay_to_send_list",
+				array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*5)))
+			);
 		}
 
 
@@ -1997,7 +2143,9 @@ class module_xpay extends MagesterExtendedModule
 			"negociation_id, invoice_index",
 			sprintf(
 				"send_id = %d AND negociation_id = %d AND invoice_index =%d",
-				$data['send_id'], $data['negociation_id'], $data['invoice_index']
+				$data['send_id'],
+				$data['negociation_id'],
+				$data['invoice_index']
 			)
 		);
 
@@ -2010,10 +2158,15 @@ class module_xpay extends MagesterExtendedModule
 						'message_type'	=> 'success'
 				);
 			} else {
-				eF_deleteTableData("module_xpay_to_send_list_item", sprintf(
-					"send_id = %d AND negociation_id = %d AND invoice_index =%d",
-					$data['send_id'], $data['negociation_id'], $data['invoice_index']
-				));
+				eF_deleteTableData(
+					"module_xpay_to_send_list_item",
+					sprintf(
+						"send_id = %d AND negociation_id = %d AND invoice_index =%d",
+						$data['send_id'],
+						$data['negociation_id'],
+						$data['invoice_index']
+					)
+				);
 
 				$result = array(
 					'message'		=> 'Fatura excluída com sucesso',
@@ -2024,7 +2177,7 @@ class module_xpay extends MagesterExtendedModule
 		echo json_encode($result);
 		exit;
 	}
-	
+	/*
 	public function viewAppliedRulesAction()
 	{
 		$smarty = $this->getSmartyVar();
@@ -2058,20 +2211,7 @@ class module_xpay extends MagesterExtendedModule
 		$allRules = $this->rules;
 		$xentifyModule = $this->loadModule("xentify");
 		$xUserModule = $this->loadModule("xuser");
-		/*
-		if (is_null($sentTags)) {
-			$sentTags = array();
-		}
-		$userTags = $xUserModule->getUserTags($userToCalculate);
-		
-		$sentTags = array_merge($userTags, $sentTags);
-		
-		// REMOVE ALL OUT-SCOPE
-		$lastWorkflow = $this->_createEmptyWorkflow($basePrice);
-		
-		$totalAcrescimo = 0;
-		$totalDesconto 	= 0;
-		*/
+
 		
 		$scopeUser = $xentifyModule->create("user", $negociationUser->user['login']);
 		$userRules = array();
@@ -2101,8 +2241,8 @@ class module_xpay extends MagesterExtendedModule
 		echo "</pre>";
 		//exit;
 		
-		
 	}
+	*/
 	/* EVENTS HANDLERS */
 	/* MODULE EVENTS RECEIVERS */
 	public function onPaymentReceivedEvent($context, $data)
@@ -2412,7 +2552,15 @@ class module_xpay extends MagesterExtendedModule
 		$totalDesconto 	= 0;
 
 		foreach ($allRules as $rule_index => $rule) {
+			
 			if (!$xentifyModule->isUserInScope($userToCalculate, $rule['rule_xentify_scope_id'], $rule['rule_xentify_id'])) {
+				unset($allRules[$rule_index]);
+				continue;
+			}
+			if (
+				($contraints['global_price'] && $rule['global_price'] == 0) ||
+				($contraints['invoice_price'] && $rule['global_price'] == 1)
+			) {
 				unset($allRules[$rule_index]);
 				continue;
 			}
@@ -2721,7 +2869,7 @@ class module_xpay extends MagesterExtendedModule
 			$simulation_status = $contraints['simulation_status'];
 		}
 		$where[] = sprintf("neg.is_simulation IN (%s)", implode(",", $simulation_status));
-/*
+		/*
 		echo  prepareGetTableData(
 			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
@@ -2736,7 +2884,7 @@ class module_xpay extends MagesterExtendedModule
 			"negociation_index DESC",
 			"neg.id, u.id"
 		);
-*/
+		*/
 		$negociationData = ef_getTableData(
 			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
@@ -2867,9 +3015,9 @@ class module_xpay extends MagesterExtendedModule
 					'l.id as module_id, l.name as module, \'lesson\' as module_type, ul.from_timestamp as matricula,
 			 		IFNULL(clp.price, l.price) as base_price,
 					/* IFNULL(SUM(pd.paid), 0) as paid, */ ul.modality_id as modality_id, cm.name as modality',
-						implode(" AND ", $lessonPriceWhere),
-						"",
-						"l.id"
+					implode(" AND ", $lessonPriceWhere),
+					"",
+					"l.id"
 				);
 			}
 
@@ -2886,6 +3034,21 @@ class module_xpay extends MagesterExtendedModule
 
 				$module_names[] = $module['module'];
 			}
+			
+			// CALCULATE global_price Rules
+			$priceCalculations = $this->_applyFullPriceCalculations(
+				$userNegociation,
+				$negociationData['base_price'],
+				array(
+					'global_price'	=> true
+				),
+				$sentTags
+			);
+			
+			$negociationData['acrescimo']		= $priceCalculations["acrescimo"];
+			$negociationData['desconto']		= $priceCalculations["desconto"];
+			$negociationData['full_price']		= $priceCalculations["full_price"];
+
 
 			if (count($negociationData['modules']) <= 1) {
 				$negociationData['module_printname'] = implode(", ", $module_names);
@@ -2906,11 +3069,12 @@ class module_xpay extends MagesterExtendedModule
 						$userNegociation,
 						$negociationData['base_price'],
 						array(
+							'invoice_price'	=> true
 						),
 						array('is_not_overdue', 'is_not_full_paid')
 				));
 				*/
-				$negociationData['full_price']	+= $negociationData['base_price'];
+				//$negociationData['full_price']	+= $negociationData['base_price'];
 			} else {
 				/*
 				list(
@@ -2928,22 +3092,23 @@ class module_xpay extends MagesterExtendedModule
 								'course_id' => 0,
 								'class_id' 	=> 0,
 								'group_id' 	=> 0,
-								'user_id' 	=> 0
+								'user_id' 	=> 0,
+								'invoice_price'	=> true
 						)
 				));
 				*/
 
-				$negociationData['full_price']	= 0;
+				//$negociationData['full_price']	= 0;
 				$negociationData['paid'] 		= 0;
 
 				foreach ($negociationData['invoices'] as $invoice) {
 					$total_basePrice 				+= $invoice['valor'];
-					$negociationData['full_price']	+= $invoice['full_price'];
-					$negociationData['acrescimo']	+= $invoice['acrescimo'];
-					$negociationData['desconto']	+= $invoice['desconto'];
+					//$negociationData['full_price']	+= $invoice['full_price'];
+					//$negociationData['acrescimo']	+= $invoice['acrescimo'];
+					//$negociationData['desconto']	+= $invoice['desconto'];
 					$negociationData['paid'] 		+= $invoice['paid'];
 				}
-
+				/*
 				if ($total_basePrice <> $negociationData['base_price']) {
 					// INVOICE BASE PRICE SUM IS DIFERENT FROM NEGOCIATION BASE PRICE TOTAL, MUST CALCULATE THE DIFF
 					$totalUncovered = $negociationData['base_price'] - $total_basePrice;
@@ -2956,39 +3121,42 @@ class module_xpay extends MagesterExtendedModule
 						$negociationCalc['desconto'],
 						$negociationCalc['rules'],
 						$negociationCalc['workflow']
-					) = array_values($this->_applyFullPriceCalculations(
-						$userNegociation,
-						$totalUncovered,
-						array(
-							'ies_id' 	=> 0,
-							'polo_id' 	=> 0,
-							'course_id' => 0,
-							'class_id' 	=> 0,
-							'group_id' 	=> 0,
-							'user_id' 	=> 0
-						),
-						/** @todo check how to get these "tags" */
-						array('is_not_registration_tax', 'is_not_overdue', 'is_not_full_paid', 'is_a_negociation')
-					));
+					) = array_values(
+						$this->_applyFullPriceCalculations(
+							$userNegociation,
+							$totalUncovered,
+							array(
+								'ies_id' 	=> 0,
+								'polo_id' 	=> 0,
+								'course_id' => 0,
+								'class_id' 	=> 0,
+								'group_id' 	=> 0,
+								'user_id' 	=> 0,
+								'invoice_price'	=> true
+							),
+							array('is_not_registration_tax', 'is_not_overdue', 'is_not_full_paid', 'is_a_negociation')
+						)
+					);
 
-					$negociationData['full_price'] 	+= $negociationCalc['full_price'];
+					//$negociationData['full_price'] 	+= $negociationCalc['full_price'];
 
 					if ($totalUncovered < 0 && $negociationCalc['acrescimo'] == 0) { // A SOMA DAS FATURAS É MAIOR QUE O TOTAL DO CURSO. ADICIONAR COMO ACRESCIMO.
-						$negociationData['acrescimo'] 	+= abs($totalUncovered);
-						$negociationData['full_price']	+= $negociationData['acrescimo'];
+						//$negociationData['acrescimo'] 	+= abs($totalUncovered);
+						//$negociationData['full_price']	+= $negociationData['acrescimo'];
 					} else {
-						$negociationData['acrescimo'] 	+= $negociationCalc['acrescimo'];
+						//$negociationData['acrescimo'] 	+= $negociationCalc['acrescimo'];
 					}
 					if ($totalUncovered > 0 && $negociationCalc['desconto'] == 0) { // A SOMA DAS FATURAS É MENOR QUE O TOTAL DO CURSO. ADICIONAR COMO DESCONTO.
-						$negociationData['desconto'] 	+= $totalUncovered;
-						$negociationData['full_price']	-= $negociationData['desconto'];
+						//$negociationData['desconto'] 	+= $totalUncovered;
+						//$negociationData['full_price']	-= $negociationData['desconto'];
 					} else {
-						$negociationData['desconto'] 	+= $negociationCalc['desconto'];
+						//$negociationData['desconto'] 	+= $negociationCalc['desconto'];
 					}
 
 					$negociationData['rules']		=  $negociationCalc['rules'];
 					$negociationData['workflow']	=  $negociationCalc['workflow'];
 				}
+				*/
 			}
 
 			return $negociationData;
@@ -3097,7 +3265,8 @@ class module_xpay extends MagesterExtendedModule
 			$negociationUser,
 			$baseValue,
 			array(
-				'apply_days'	=> $apply_days
+				'apply_days'	=> $apply_days,
+				'invoice_price'	=> true
 			),
 			$this->_getInvoiceTags($invoice)
 		));
