@@ -1321,18 +1321,25 @@ class module_xcontent extends MagesterExtendedModule
     	$contentSchedules =
     		eF_getTableData(
     			"module_xcontent_schedule_itens schedl",
-    			"schedl.*, DAYOFWEEK(schedl.start) as week_day",
-    			sprintf("schedl.schedule_id = %d", $schedule_id)
+    			"DATE(start) as data, schedl.*, DAYOFWEEK(schedl.start) as week_day",
+    			sprintf("schedl.schedule_id = %d", $schedule_id),
+			"start ASC"
     		);
 
     	// GROUP BY WEEK DAY
     	$schedules = array();
     	foreach ($contentSchedules as $scheduleItem) {
-    		if (!is_array($schedules[$scheduleItem['week_day']])) {
-   				$schedules[$scheduleItem['week_day']] = array();
-   			}
-   			$schedules[$scheduleItem['week_day']][] = $scheduleItem;
+		if (!is_array($schedules[$scheduleItem['data']])) {
+                        $schedules[$scheduleItem['data']] = array();
+                }   
+    		if (!is_array($schedules[$scheduleItem['data']][$scheduleItem['week_day']])) {
+   			$schedules[$scheduleItem['data']][$scheduleItem['week_day']] = array();
    		}
+		$schedules[$scheduleItem['data']][$scheduleItem['week_day']][] = $scheduleItem;
+	}
+
+///var_dump($schedules);
+
 
    		$smarty -> assign("T_XCONTENT_SCHEDULE", $schedules);
     	$week_days = array(
@@ -1788,6 +1795,27 @@ class module_xcontent extends MagesterExtendedModule
     	if (array_key_exists('contents_id', $filter)) {
     		$where[] = sprintf('sch_c.content_id IN (%s)', implode(",", $filter['contents_id']));
     	}
+/*
+	var_dump(prepareGetTableData(
+                "module_xcontent_schedule sch
+                JOIN module_xcontent_schedule_contents sch_c ON  (sch.id = sch_c.schedule_id)
+                LEFT JOIN content ct ON (sch_c.content_id = ct.id)
+                LEFT JOIN lessons l ON (ct.lessons_ID = l.id)
+                LEFT JOIN courses c ON (sch_c.course_id = c.id)
+                LEFT OUTER JOIN module_xcontent_schedule_users sch_u ON (
+                        sch_c.schedule_id = sch_u.schedule_id AND
+                        sch_u.user_id = " . $userID . " AND
+                        sch_c.content_id = sch_u.content_id
+                )
+                        LEFT OUTER JOIN module_xcontent_schedule_itens sch_i ON (
+                        sch_u.schedule_id = sch_i.schedule_id AND
+                        sch_u.`index` = sch_i.`index`
+                )",
+                "sch.id as schedule_id, sch_c.course_id, c.name as course, ct.lessons_ID as lesson_id, l.name as lesson, sch_c.content_id, ct.name as content, sch_c.required, sch_u.`index` as option_index, sch_i.start as option_start, sch_i.end as option_end",
+                implode(" AND ", $where),
+                "required DESC"
+        ));
+*/
 
         $contentData = eF_getTableData(
         	"module_xcontent_schedule sch
