@@ -1946,7 +1946,8 @@ class module_xpay extends MagesterExtendedModule
 		//$where = $this->makeInvoicesListFilters(null, "inv.parcela_index");
 		$today = new DateTime("today");
 		$a15DaysInterval = new DateInterval("P15D");
-		$a25DaysInterval = new DateInterval("P25D");
+		$a25DaysInterval = new DateInterval("P40D");
+		
 
 		$iesIds = $this->getCurrentUserIesIDs();
 
