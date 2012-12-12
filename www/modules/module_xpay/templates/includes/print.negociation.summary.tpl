@@ -48,8 +48,8 @@
 			<td>
 				#filter:currency:{$T_XPAY_STATEMENT.base_price}#
 				{if $T_XPAY_IS_ADMIN}
-					<a class="form-icon xpay-add_discount_rule-dialog-link" href="{$T_XPAY_BASEURL}&action=add_discount_rule&negociation_id={$T_XPAY_STATEMENT.id}&output=dialog">
-						<img src="images/16x16/edit.png">
+					<a class="form-icon xpay-add_discount_rule-dialog-link" href="{$T_XPAY_BASEURL}&action=add_discount_rule&negociation_id={$T_XPAY_STATEMENT.id}&output=dialog" title="Adicionar nova regra de cálculo">
+						<img src="images/16x16/add.png">
 					</a>
 					
 				{/if}

@@ -591,13 +591,14 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 							url,
 							$postData,
 							function(data, status) {
-								console.log(data, status);
+								
+								var url = window.location.href + "&message=" + data.message + "&message_type=" + data.message_type;
+								window.location.href = url;
 							},
 							'json'
 						);
-						
 						//jQuery(this).dialog("close");
-						//window.location.reload(true);
+						
 						
 					},
 					"Cancelar" : function() {

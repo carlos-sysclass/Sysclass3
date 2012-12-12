@@ -1341,7 +1341,6 @@ class module_xpay extends MagesterExtendedModule
 				$insertData['valor'] = (float) str_replace(",", ".", str_replace(".", "", $values['valor_absoluto']));
 			}
 			
-			
 			$ruleID = eF_insertTableData("module_xpay_price_rules", $insertData);
 			
 			//eF_insertTableData("module_xpay_price_rules_tags");

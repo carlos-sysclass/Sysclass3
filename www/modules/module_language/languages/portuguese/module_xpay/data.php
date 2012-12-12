@@ -83,4 +83,6 @@ define("__XPAY_INCREASE", "Acréscimo");
 
 define("__XPAY_PERCENT_VALUE", "Percentual");
 define("__XPAY_ABSOLUTE_VALUE", "Valor Absoluto");
+define("__XPAY_RULE_SUCCESSFULLY_SAVED", "Regra Salva com sucesso");
+
 
