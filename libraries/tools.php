@@ -119,37 +119,13 @@ function handleNormalFlowExceptions($e)
  $GLOBALS['message_type'] = 'failure';
 }
 
-/**
-
- * If json_decode() does not exist, use external implementation
-
- */
-if (!function_exists('json_decode')) {
-    require_once 'external/facebook-platform/php/jsonwrapper/JSON/JSON.php';
-    function json_decode($arg)
-    {
-        global $services_json;
-        if (!isset($services_json)) {
-            $services_json = new Services_JSON();
-        }
-
-        return $services_json->decode($arg);
-    }
-}
 /*
-
  * Function that transforms a templated message according to the specific
-
  * substitutions provided in the template_substitutions array
-
  *
-
  * All fields to be substituted are denoted within ###...###.
-
  * @param: message the templated message to be formulated
-
  * @param: template_substituions: the array in the form array("fieldA" => "valueA",...) to substitute ###fieldA### with valueA
-
  */
 function eF_formulateTemplateMessage($message, $template_substitutions)
 {

@@ -1,4 +1,4 @@
-sysclass
+SysClass
 ========
 
-Teste de Commmit
+SysClass is an e-learning platform developed by the ULT team.
