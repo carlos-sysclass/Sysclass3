@@ -455,7 +455,7 @@ function defaultExceptionHandler($e)
  *
  * @since 3.6.6
  */
-function shutDownFunction()
+function shutdownFunction()
 {
  if (function_exists('error_get_last')) {
   $error = error_get_last();

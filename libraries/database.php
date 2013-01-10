@@ -361,31 +361,31 @@ function eF_updateTableData($table, $fields, $where)
 }
 /**
 
-* Delete database data
+ * Delete database data
 
-*
+ *
 
-* This function is used to delete the database data specified by the where clause.
+ * This function is used to delete the database data specified by the where clause.
 
-* <br>Example
+ * <br>Example
 
-* <code>
+ * <code>
 
-* $result = eF_deleteTableData('users');                  //Equivalent to truncate table "users".
+ * $result = eF_deleteTableData('users');                  //Equivalent to truncate table "users".
 
-* $result = eF_deleteTableData('users', 'id = 1');        //Delete data from table users, where id = 1.
+ * $result = eF_deleteTableData('users', 'id = 1');        //Delete data from table users, where id = 1.
 
-* </code>
+ * </code>
 
-* @param string $table The table to dekete data from
+ * @param string $table The table to dekete data from
 
-* @param string $where The where clause of the SQL Delete.
+ * @param string $where The where clause of the SQL Delete.
 
-* @return mixed The query result, usually true/false.
+ * @return mixed The query result, usually true/false.
 
-* @version 1.0
+ * @version 1.0
 
-*/
+ */
 function eF_deleteTableData($table, $where="")
 {
 	//Prepend prefix to the table

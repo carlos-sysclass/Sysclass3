@@ -866,8 +866,7 @@ abstract class MagesterUser
    }
   } else { //Authenticate normal user
    if (!$encrypted) {
-    //$password = MagesterUser::createPassword($password);
-	$password = md5($password);
+    $password = MagesterUser::createPassword($password);
    }
    if ($password != $this -> user['password']) {
     throw new MagesterUserException(_INVALIDPASSWORD, MagesterUserException :: INVALID_PASSWORD);

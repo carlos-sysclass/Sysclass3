@@ -2366,46 +2366,32 @@ function detectBrowser()
     return $browser;
 }
 /**
-
  * Redirect to another page
-
  *
-
  * This function implements either server-side (php) or client side (javascript) redirection
-
  * <br/>Example:
-
  * <code>
-
  * </code>
-
  *
-
  * @param string $url The url to redirect to. If 'self' is used, it is equivalent to a reload (only it isn't)
-
  * @param boolean $js Whether to use js-based redirection
-
  * @param string $target which frame to reload (only applicable when $js is true). Can be 'top', 'window' or any frame name
-
  * @param boolean $retainUrl Whether to retain the url as it is
-
  * @since 3.6.0
-
  */
-function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false)
-{
- if (!$retainUrl) {
-     $parts = parse_url($url);
-     if (isset($parts['query']) && $parts['query']) {
-         if ($GLOBALS['configuration']['encrypt_url']) {
-             $parts['query'] = 'cru='.encryptString($parts['query']);
-         }
-         $parts['query'] = '?'.$parts['query'];
-     } else {
-         $parts['query'] = '';
-     }
-     $url = G_SERVERNAME.basename($parts['path']).$parts['query'];
- }
+function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
+    if (!$retainUrl) {
+        $parts = parse_url($url);
+        if (isset($parts['query']) && $parts['query']) {
+            if ($GLOBALS['configuration']['encrypt_url']) {
+                $parts['query'] = 'cru='.encryptString($parts['query']);
+            }
+            $parts['query'] = '?'.$parts['query'];
+        } else {
+            $parts['query'] = '';
+        }
+        $url = G_SERVERNAME.basename($parts['path']).$parts['query'];
+    }
     if ($js) {
         echo "<script language='JavaScript'>$target.location='$url'</script>";
     } else {
