@@ -138,6 +138,5 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
         $smarty->assign("T_ROLES", MagesterUser::getRoles(true));
         $smarty->display('administrator.tpl');
         exit;
-    }
 
 }
