@@ -35,6 +35,10 @@ if ($start !== false) {
 }
 if (isset($domain_name)) {
 	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $domain_name;
+
+	if ($_SERVER['SERVER_NAME'] == 'sysclass.com') {
+		$_SERVER['HTTPS'] = 'on';
+	}
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;
 }
