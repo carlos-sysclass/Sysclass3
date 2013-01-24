@@ -1,12 +1,8 @@
 <?php
 /**
-
  * Respond to ajax query returing a list
-
  *
-
  * @package SysClass
-
  */
 session_cache_limiter('none');
 session_start();

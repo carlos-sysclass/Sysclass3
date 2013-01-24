@@ -1,25 +1,15 @@
 <?php
 /**
-
-* Add files
-
-*
-
-* This file presents the page used to insert and handle files and folders
-
-* @package SysClass
-
-* @version 1.1
-
-* Changes from 1.0 to 1.1 (16/11/2005):
-
-* Changes from 2.5 to 3 (06/07/2007): administrator also upload files in his folder (/content/admin)  makriria
-
-* - Fixed very serious bug, concerning the ability to access files anywhere on the server
-
-* - Fixed minor problems
-
-*/
+ * Add files
+ *
+ * This file presents the page used to insert and handle files and folders
+ * @package SysClass
+ * @version 1.1
+ * Changes from 1.0 to 1.1 (16/11/2005):
+ * Changes from 2.5 to 3 (06/07/2007): administrator also upload files in his folder (/content/admin)  makriria
+ * - Fixed very serious bug, concerning the ability to access files anywhere on the server
+ * - Fixed minor problems
+ */
 //General initializations and parameter
 session_cache_limiter('none');
 session_start();
@@ -30,10 +20,10 @@ include_once $path."configuration.php";
 //print_r($_POST);print_r($_GET);
 eF_printHeader();
 try {
- $currentUser = MagesterUser :: checkUserAccess();
+    $currentUser = MagesterUser :: checkUserAccess();
 } catch (Exception $e) {
- echo "<script>parent.location = 'index.php?message=".urlencode($e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure'</script>"; //This way the frameset will revert back to single frame, and the annoying effect of 2 index.php, one in each frame, will not happen
- exit;
+    echo "<script>parent.location = 'index.php?message=".urlencode($e->getMessage().' ('.$e->getCode().')')."&message_type=failure'</script>"; //This way the frameset will revert back to single frame, and the annoying effect of 2 index.php, one in each frame, will not happen
+    exit;
 }
 if (!isset($_SESSION['s_lessons_ID']) && $_SESSION['s_type'] == "professor") { //Check if a lesson is selected if user is a professor
     eF_printMessage(_LESSONNOTSET);
@@ -74,19 +64,19 @@ if (!isset($_GET['dir']) && $_SESSION['s_type'] == "professor") {
 
 if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
     if (unlink(G_LESSONSPATH.$_GET['filename'])) {
-        $smarty -> assign("T_DELETE_MESSAGE", _SUCCESFULLYDELETEDFILEWINDOWCLOSE5SECONDS);
-        $smarty -> assign("T_DELETE_MESSAGE_TYPE", 'success');
+        $smarty->assign("T_DELETE_MESSAGE", _SUCCESFULLYDELETEDFILEWINDOWCLOSE5SECONDS);
+        $smarty->assign("T_DELETE_MESSAGE_TYPE", 'success');
     } else {
-        $smarty -> assign("T_DELETE_MESSAGE", _THEREWASAPROBLEMDELETETINGFILEWINDOWCLOSE5SECONDS);
-        $smarty -> assign("T_DELETE_MESSAGE_TYPE", 'failure');
+        $smarty->assign("T_DELETE_MESSAGE", _THEREWASAPROBLEMDELETETINGFILEWINDOWCLOSE5SECONDS);
+        $smarty->assign("T_DELETE_MESSAGE_TYPE", 'failure');
     }
 } elseif (isset($_GET['op']) && $_GET['op'] == "deletefolder") {
     if (eF_deleteFolder(G_LESSONSPATH.$_GET['filename'].'/')) {
-        $smarty -> assign("T_DELETEFOLDER_MESSAGE", _SUCCESFULLYDELETEDFOLDERWINDOWCLOSE5SECONDS);
-        $smarty -> assign("T_DELETEFOLDER_MESSAGE_TYPE", 'success');
+        $smarty->assign("T_DELETEFOLDER_MESSAGE", _SUCCESFULLYDELETEDFOLDERWINDOWCLOSE5SECONDS);
+        $smarty->assign("T_DELETEFOLDER_MESSAGE_TYPE", 'success');
     } else {
-        $smarty -> assign("T_DELETEFOLDER_MESSAGE", _NOTSUCCESFULLYDELETEDFOLDERWINDOWCLOSE5SECONDS);
-        $smarty -> assign("T_DELETEFOLDER_MESSAGE_TYPE", 'failure');
+        $smarty->assign("T_DELETEFOLDER_MESSAGE", _NOTSUCCESFULLYDELETEDFOLDERWINDOWCLOSE5SECONDS);
+        $smarty->assign("T_DELETEFOLDER_MESSAGE_TYPE", 'failure');
     }
 } elseif (isset($_GET['op']) && $_GET['op'] == "createfolder") {
     if (isset($_POST['submit'])) {
@@ -108,18 +98,18 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
         }
 
         if (@mkdir(G_LESSONSPATH.$dir_to_create, 0755)) {
-            $smarty -> assign("T_CREATEFOLDER_MESSAGE", _SUCCESFULLYCREATEDFOLDERWINDOWCLOSE5SECONDS);
-            $smarty -> assign("T_CREATEFOLDER_MESSAGE_TYPE", 'success');
+            $smarty->assign("T_CREATEFOLDER_MESSAGE", _SUCCESFULLYCREATEDFOLDERWINDOWCLOSE5SECONDS);
+            $smarty->assign("T_CREATEFOLDER_MESSAGE_TYPE", 'success');
         } else {
-            $smarty -> assign("T_CREATEFOLDER_MESSAGE", _COULDNOTCREATEFOLDERWINDOWCLOSE5SECONDS);
-            $smarty -> assign("T_CREATEFOLDER_MESSAGE_TYPE", 'failure');
+            $smarty->assign("T_CREATEFOLDER_MESSAGE", _COULDNOTCREATEFOLDERWINDOWCLOSE5SECONDS);
+            $smarty->assign("T_CREATEFOLDER_MESSAGE_TYPE", 'failure');
         }
     }
 
-    $smarty -> assign("T_DIRECTORY", $dir);
+    $smarty->assign("T_DIRECTORY", $dir);
 } else {
 
-    if (($GLOBALS['currentLesson'] -> options['digital_library'])) {
+    if (($GLOBALS['currentLesson']->options['digital_library'])) {
         if (!is_dir(G_LESSONSPATH.$_SESSION['s_lessons_ID']."/Digital Library")) {
             @mkdir(G_LESSONSPATH.$_SESSION['s_lessons_ID']."/Digital Library", 0755);
         }
@@ -148,28 +138,28 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
         }
         list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads('fileupload', $target_dir);
 
-        $smarty -> assign("T_UPLOAD_MESSAGES", $upload_messages);
-        $smarty -> assign("T_UPLOAD_MESSAGES_TYPE", $upload_messages_type);
+        $smarty->assign("T_UPLOAD_MESSAGES", $upload_messages);
+        $smarty->assign("T_UPLOAD_MESSAGES_TYPE", $upload_messages_type);
     }
 
-    $smarty -> assign("T_MESSAGE", $message);
-    $smarty -> assign("T_DIRECTORY", $dir);
-    $smarty -> assign("T_FILES", $files);
-    $smarty -> assign("T_LESSONS_ID", $_SESSION['s_lessons_ID']);
+    $smarty->assign("T_MESSAGE", $message);
+    $smarty->assign("T_DIRECTORY", $dir);
+    $smarty->assign("T_FILES", $files);
+    $smarty->assign("T_LESSONS_ID", $_SESSION['s_lessons_ID']);
 
-    $smarty -> assign("T_COPY_STRING", $copy_string);
-    $smarty -> assign("T_SIZE", $size);
+    $smarty->assign("T_COPY_STRING", $copy_string);
+    $smarty->assign("T_SIZE", $size);
 
     if (isset($allowed_extensions)) {
-        $smarty -> assign("T_ALLOWED_EXTENSIONS", $allowed_extensions[0]['value']);
+        $smarty->assign("T_ALLOWED_EXTENSIONS", $allowed_extensions[0]['value']);
     }
     if (isset($disallowed_extensions)) {
-        $smarty -> assign("T_DISALLOWED_EXTENSIONS", $disallowed_extensions[0]['value']);
+        $smarty->assign("T_DISALLOWED_EXTENSIONS", $disallowed_extensions[0]['value']);
     }
 
     if (isset($content_ID) && $content_ID != "") {
-        $smarty -> assign("T_CONTENT_ID", $content_ID);
+        $smarty->assign("T_CONTENT_ID", $content_ID);
     }
 }
 
-$smarty -> display("add_files.tpl");
+$smarty->display("add_files.tpl");

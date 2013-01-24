@@ -35,7 +35,7 @@ if (!isset($_GET['username']) || !isset($_GET['coupon']) || !isset($_GET['survey
        $smarty -> assign("T_SURVEYNAME",$survey_name[0]['survey_name']);
        //$email='"'.$_GET['email'].'"';
        //$user = eF_getTableData("users","login","email=".$email);
-       $user_done_survey = eF_getTableData('users_to_done_surveys','done','surveys_ID='.$surveys_ID.' AND users_LOGIN="'.$_GET['username'].'"');
+       $user_done_survey = eF_getTableData("users_to_done_surveys",'done','surveys_ID='.$surveys_ID.' AND users_LOGIN="'.$_GET['username'].'"');
 
        if ($user_done_survey[0]['done'] == 1  || $survey_data[0]['status'] == 0) {
            $smarty -> assign("T_ACCESS","-1");

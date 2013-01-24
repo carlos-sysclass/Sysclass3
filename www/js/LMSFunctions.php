@@ -819,7 +819,7 @@ function myCmi()
             this.set = function(param) { throw new myError('403'); }
             <?php
                 /*Get the user name from the database*/
-                $result = eF_getTableData('users', 'name, surname', 'login="' .$_SESSION['s_login']. '"');
+                $result = eF_getTableData("users", 'name, surname', 'login="' .$_SESSION['s_login']. '"');
                 $student_name = $result[0]['surname'].' '.$result[0]['name'];
             ?>
             var value = "<?php echo $student_name; ?>";
