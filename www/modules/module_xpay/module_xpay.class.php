@@ -2663,6 +2663,18 @@ class module_xpay extends MagesterExtendedModule
 			$limit
 
 		);
+
+/*
+                echo prepareGetTableData(
+                        "module_xpay_zzz_paid_items",
+                        "negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto + tarifa as desconto, IFNULL(total, paid) as paid",
+                        implode(" AND ", $where),
+                        "data_pagamento DESC",
+                        "",
+                        $limit
+
+                );
+*/
 		return $lastPaymentsList;
 	}
 	private function _getUserModuleStatus($login = null, $module_id = null)

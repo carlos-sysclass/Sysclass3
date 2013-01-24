@@ -8,16 +8,16 @@
 		<meta http-equiv = "Content-Type" content = "text/html; charset = utf-8">
 		<link rel="shortcut icon" href="{if $T_FAVICON}{$T_FAVICON}{else}themes/default/images/favicon.png{/if}">
 		<!-- <link rel = "stylesheet" type = "text/css" href = "{$smarty.const.G_CURRENTTHEMECSS}" /> -->
-		<link type="text/css" rel="stylesheet" href="/min/b=themes/sysclass3/css&f=fixed/24columns.css,reset.css,screen.css,jquery.wysiwyg.css,jquery.ui.css,menu.css,forms.css,old.css,lists.css,revision.css,icons.css" />
+		<link type="text/css" rel="stylesheet" href="/min/?b=themes/sysclass3/css&f=fixed/24columns.css,reset.css,screen.css,jquery.wysiwyg.css,jquery.ui.css,menu.css,forms.css,old.css,lists.css,revision.css,icons.css" />
 		<!-- New Admin -->
 		<!-- IE HTML5 -->
 		<!--[if lt IE 9]>
 			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link type="text/css" rel="stylesheet" href="/min/b=css&f=reset_admin.css,sprite_admin.css,style_admin.css" />
+		<link type="text/css" rel="stylesheet" href="/min/?b=css&f=reset_admin.css,sprite_admin.css,style_admin.css" />
 		<!-- /end new admin -->
 		{if isset($T_MODULE_CSS_STRING)}
-			<link type="text/css" rel="stylesheet" href="/min/f={$T_MODULE_CSS_STRING}" />
+			<link type="text/css" rel="stylesheet" href="/min/?f={$T_MODULE_CSS_STRING}" />
 		{/if}
 		{*foreach name = 'module_css_list' item = item key = key from = $T_MODULE_CSS*}
 <!-- 			<link rel = "stylesheet" type = "text/css" href = "{$item}?build={$smarty.const.G_BUILD}" /> {*///MODULES LINK STYLESHEETS*}  -->

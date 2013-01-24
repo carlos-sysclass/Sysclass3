@@ -41,11 +41,13 @@ $configurationDefaults = array(
 	),
 	'sysclass.com'	=> array(
 		'dbname'        => 'sysclass_root',
-		'overrideTheme' => 'sysclass3'
+		'overrideTheme' => 'sysclass3',
+		'https'         => 'required'
 	),
 	'www.sysclass.com'	=> array(
                 'dbname'        => 'sysclass_root',
-                'overrideTheme' => 'sysclass3'
+                'overrideTheme' => 'sysclass3',
+		'https'         => 'required'
 	),
 	'fati.sysclass.com'	=> array(
 		'dbname'        => 'sysclass_fati',
