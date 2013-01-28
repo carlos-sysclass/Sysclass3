@@ -66,8 +66,7 @@
 							</tr>
 							<tr>
 								<th colspan="2">Situação final</th>
-								<th style="text-align: center;">{if $lesson.scores.final_score >=
-6}Aprovado{else}Reprovado{/if}</th>
+								<th style="text-align: center;">{$lesson.scores.final_status}</th>
 							</tr>
 						</tfoot>
 					</table>
