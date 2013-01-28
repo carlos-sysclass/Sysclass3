@@ -1,16 +1,13 @@
 <?php
 /**
-
- * This page is for copying content and other entities between lessons
-saveTree
+ * This page is for copying content and other entities between lessons saveTree
  *
-
  */
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
-!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess['content'] == 'change' ? $_change_ = 1 : $_change_ = 0;
-$smarty -> assign("_change_", $_change_);
+!isset($currentUser->coreAccess['content']) || $currentUser->coreAccess['content'] == 'change' ? $_change_ = 1 : $_change_ = 0;
+$smarty->assign("_change_", $_change_);
 if (!$_change_) {
     eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     exit;
@@ -22,96 +19,96 @@ try {
 
     $lessonToCourses = array();
 
-	foreach ($lessonToCoursesDB as $lessonRel) {
-		$lessonToCourses[$lessonRel['lessons_ID']] = array(
-			'course_id' => $lessonRel['courses_ID'],
-			'name'		=> $lessonRel['course_name']
-		);
-	}
+    foreach ($lessonToCoursesDB as $lessonRel) {
+        $lessonToCourses[$lessonRel['lessons_ID']] = array(
+            'course_id' => $lessonRel['courses_ID'],
+            'name'		=> $lessonRel['course_name']
+        );
+    }
 
 
-    $lessons = $currentUser -> getLessons(true);
+    $lessons = $currentUser->getLessons(true);
 
-    unset($lessons[$currentLesson -> lesson['id']]);
+    unset($lessons[$currentLesson->lesson['id']]);
     $direction_lessons = $course_lessons = array();
     foreach ($lessons as $lesson) {
-        $direction = $lesson -> getDirection();
-        $direction_lessons[$direction['name']][] = array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
+        $direction = $lesson->getDirection();
+        $direction_lessons[$direction['name']][] = array('id' => $lesson->lesson['id'], 'name' => $lesson->lesson['name']);
 
-        $lesson_course_id = $lessonToCourses[$lesson -> lesson['id']]['course_id'];
+        $lesson_course_id = $lessonToCourses[$lesson->lesson['id']]['course_id'];
 
         if (!is_array($course_lessons[$lesson_course_id])) {
-        	$course_lessons[$lesson_course_id] = array(
-       			'name'	=> $lessonToCourses[$lesson -> lesson['id']]['name'],
-       			'lessons'	=> array()
-        	);
+            $course_lessons[$lesson_course_id] = array(
+                'name'	=> $lessonToCourses[$lesson->lesson['id']]['name'],
+                'lessons'	=> array()
+            );
         }
 
         $course_lessons[$lesson_course_id]['lessons'][] =
-        	array('id' => $lesson -> lesson['id'], 'name' => $lesson -> lesson['name']);
+            array('id' => $lesson->lesson['id'], 'name' => $lesson->lesson['name']);
     }
 
-    $smarty -> assign("T_USER_LESSONS", $course_lessons);
-    //$smarty -> assign("T_USER_LESSONS", $direction_lessons);
+    $smarty->assign("T_USER_LESSONS", $course_lessons);
+    //$smarty->assign("T_USER_LESSONS", $direction_lessons);
 
     if (isset($_GET['from']) && in_array($_GET['from'], array_keys($userLessons))) {
         //We asked to copy the glossary
         if (isset($_GET['entity']) && $_GET['entity'] == 'glossary') {
             try {
-             $result = eF_getTableData("glossary", "name, info, type, active", "lessons_ID = ".$_GET['from']);
-             foreach ($result as $key => $value) {
-                 $result[$key]['lessons_ID'] = $currentLesson -> lesson['id'];
-             }
-             eF_insertTableDataMultiple("glossary", $result);
-             glossary :: clearDuplicates($currentLesson);
+                $result = eF_getTableData("glossary", "name, info, type, active", "lessons_ID = ".$_GET['from']);
+                foreach ($result as $key => $value) {
+                    $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
+                }
+                eF_insertTableDataMultiple("glossary", $result);
+                glossary::clearDuplicates($currentLesson);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
-                echo $e -> getMessage().' ('.$e -> getCode().')';
+                echo $e->getMessage().' ('.$e->getCode().')';
             }
             exit;
-        //We asked to copy the questions
+            //We asked to copy the questions
         } elseif (isset($_GET['entity']) && $_GET['entity'] == 'questions') {
             try {
-             $result = eF_getTableData("questions", "*", "lessons_ID = ".$_GET['from']);
-             foreach ($result as $key => $value) {
-                 $result[$key]['lessons_ID'] = $currentLesson -> lesson['id'];
-                 unset($result[$key]['content_ID']);
-                 unset($result[$key]['id']);
-             }
+                $result = eF_getTableData("questions", "*", "lessons_ID = ".$_GET['from']);
+                foreach ($result as $key => $value) {
+                    $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
+                    unset($result[$key]['content_ID']);
+                    unset($result[$key]['id']);
+                }
 
-             eF_insertTableDataMultiple("questions", $result);
-             glossary :: clearDuplicates($currentLesson);
+                eF_insertTableDataMultiple("questions", $result);
+                glossary::clearDuplicates($currentLesson);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
-                echo $e -> getMessage().' ('.$e -> getCode().')';
+                echo $e->getMessage().' ('.$e->getCode().')';
             }
             exit;
-        //We asked to copy the surveys
+            //We asked to copy the surveys
         } elseif (isset($_GET['entity']) && $_GET['entity'] == 'surveys') {
             try {
-             $result = eF_getTableData("surveys", "*", "lessons_ID = ".$_GET['from']);
-             foreach ($result as $key => $value) {
-                 $result[$key]['lessons_ID'] = $currentLesson -> lesson['id'];
-                 unset($result[$key]['id']);
-             }
-             eF_insertTableDataMultiple("surveys", $result);
+                $result = eF_getTableData("surveys", "*", "lessons_ID = ".$_GET['from']);
+                foreach ($result as $key => $value) {
+                    $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
+                    unset($result[$key]['id']);
+                }
+                eF_insertTableDataMultiple("surveys", $result);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
-                echo $e -> getMessage().' ('.$e -> getCode().')';
+                echo $e->getMessage().' ('.$e->getCode().')';
             }
             exit;
-        //We asked to copy content
+            //We asked to copy content
         } else {
             $currentContent = new MagesterContentTree($currentLesson, true);
-            $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST));
-            if (sizeof($currentContent -> tree) == 0) {
-                $smarty -> assign("T_CONTENT_TREE", $currentContent -> toHTML($iterator, 'dhtmlTargetTree', array('noclick' => true, 'drag' => false, 'tree_root' => true)));
+            $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator::SELF_FIRST));
+            if (sizeof($currentContent->tree) == 0) {
+                $smarty->assign("T_CONTENT_TREE", $currentContent->toHTML($iterator, 'dhtmlTargetTree', array('noclick' => true, 'drag' => false, 'tree_root' => true)));
             } else {
-                $smarty -> assign("T_CONTENT_TREE", $currentContent -> toHTML($iterator, 'dhtmlTargetTree', array('noclick' => true, 'drag' => false, 'expand' => true)));
+                $smarty->assign("T_CONTENT_TREE", $currentContent->toHTML($iterator, 'dhtmlTargetTree', array('noclick' => true, 'drag' => false, 'expand' => true)));
             }
             $sourceContent = new MagesterContentTree($_GET['from'], true);
-            $sourceIterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($sourceContent -> tree), RecursiveIteratorIterator :: SELF_FIRST));
-            $smarty -> assign("T_SOURCE_TREE", $sourceContent -> toHTML($sourceIterator, 'dhtmlSourceTree', array('noclick' => true, 'drag' => true, 'expand' => true)));
+            $sourceIterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($sourceContent->tree), RecursiveIteratorIterator::SELF_FIRST));
+            $smarty->assign("T_SOURCE_TREE", $sourceContent->toHTML($sourceIterator, 'dhtmlSourceTree', array('noclick' => true, 'drag' => true, 'expand' => true)));
 
             $currentIds[] = 0; //0 is a valid parent node
             foreach ($iterator as $key => $value) {
@@ -123,11 +120,11 @@ try {
 
             try {
                 if (isset($_GET['node_orders']) || isset($_POST['node_orders'])) { //Save new order through AJAX call
-                	if (isset($_POST['node_orders'])) {
-                		$nodeOrders = explode(",", $_POST['node_orders']);
-                	} else {
-                		$nodeOrders = explode(",", $_GET['node_orders']);
-                	}
+                    if (isset($_POST['node_orders'])) {
+                        $nodeOrders = explode(",", $_POST['node_orders']);
+                    } else {
+                        $nodeOrders = explode(",", $_GET['node_orders']);
+                    }
 
                     //$nodeOrders = explode(",", $_GET['node_orders']);
                     $nodeOrders = array_unique($nodeOrders);
@@ -137,7 +134,7 @@ try {
                     if ($_GET['transfered']) {
                         $transferedNodesCheck = unserialize($_GET['transfered']);
                     } elseif ($_POST['transfered']) {
-                    	$transferedNodesCheck = unserialize($_POST['transfered']);
+                        $transferedNodesCheck = unserialize($_POST['transfered']);
                     }
 
                     $copiedTests = array();
@@ -148,18 +145,18 @@ try {
                             if (eF_checkParameter($id, 'id') !== false && eF_checkParameter($parentContentId, 'id') !== false && in_array($id, $sourceIds) && in_array($parentContentId, $currentIds)) {
                                 //echo "Copying $id to parent $parentContentId with previous $previousContentId\n";
                                 try {
-                                    $createdUnit = $currentContent -> copyUnit($id, $parentContentId, $previousContentId);
+                                    $createdUnit = $currentContent->copyUnit($id, $parentContentId, $previousContentId);
                                     $transferedNodes[] = intval($id);
                                 } catch (Exception $e) {
-                                    $errorMessages[] = $e -> getMessage().' '.$e -> getCode();
+                                    $errorMessages[] = $e->getMessage().' '.$e->getCode();
                                 }
                             }
                             $previousContentId = $id;
                         }
                     }
 
-                    Question :: clearDuplicates($currentLesson);
-                    glossary :: clearDuplicates($currentLesson);
+                    Question::clearDuplicates($currentLesson);
+                    glossary::clearDuplicates($currentLesson);
 
                     if (isset($errorMessages) && $errorMessages) {
                         header("HTTP/1.0 500 ");
@@ -171,13 +168,13 @@ try {
                 }
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
-                echo $e -> getMessage().' ('.$e -> getCode().')';
+                echo $e->getMessage().' ('.$e->getCode().')';
                 exit;
             }
         }
     }
 } catch (Exception $e) {
-    $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
+    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

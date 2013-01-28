@@ -786,42 +786,42 @@ function showTestQuestion(question_num) {
 }
 
 function checkQuestions() {
- var finished = new Array();
- var count = 0;
- $$('.unsolvedQuestion').each(function (r) {
-  finished[count] = 0;
-     if (r.hasClassName('trueFalseQuestion')) {
-      r.select('input[type=radio]').each(function (s) {s.checked ? finished[count] = 1 : null;});
-     } else if (r.hasClassName('multipleOneQuestion')) {
-      r.select('input[type=radio]').each(function (s) {s.checked ? finished[count] = 1 : null;});
-     } else if (r.hasClassName('multipleManyQuestion')) {
-      r.select('input[type=checkbox]').each(function (s) {s.checked ? finished[count] = 1 : null;});
-     } else if (r.hasClassName('matchQuestion')) {
-      //r.select('select').each(function (s) {s.checked ? finished[count] = 1 : null;});
-      finished[count] = 1;
-     } else if (r.hasClassName('emptySpacesQuestion')) {
-      r.select('input[type=text]').each(function (s) {s.value ? finished[count] = 1 : null;});
-     } else if (r.hasClassName('rawTextQuestion')) {
-      r.select('textarea').each(function (s) {s.value ? finished[count] = 1 : null;});
-     } else if (r.hasClassName('dragDropQuestion')) {
-      r.select('td.dragDropTarget').each(function (s) {s.childElements().length ? finished[count] = 1 : null;});
-     }
-     count++;
- });
+    var finished = new Array();
+    var count = 0;
+    $$('.unsolvedQuestion').each(function (r) {
+        finished[count] = 0;
+        if (r.hasClassName('trueFalseQuestion')) {
+            r.select('input[type=radio]').each(function (s) {s.checked ? finished[count] = 1 : null;});
+        } else if (r.hasClassName('multipleOneQuestion')) {
+            r.select('input[type=radio]').each(function (s) {s.checked ? finished[count] = 1 : null;});
+        } else if (r.hasClassName('multipleManyQuestion')) {
+            r.select('input[type=checkbox]').each(function (s) {s.checked ? finished[count] = 1 : null;});
+        } else if (r.hasClassName('matchQuestion')) {
+            //r.select('select').each(function (s) {s.checked ? finished[count] = 1 : null;});
+            finished[count] = 1;
+        } else if (r.hasClassName('emptySpacesQuestion')) {
+            r.select('input[type=text]').each(function (s) {s.value ? finished[count] = 1 : null;});
+        } else if (r.hasClassName('rawTextQuestion')) {
+            r.select('textarea').each(function (s) {s.value ? finished[count] = 1 : null;});
+        } else if (r.hasClassName('dragDropQuestion')) {
+            r.select('td.dragDropTarget').each(function (s) {s.childElements().length ? finished[count] = 1 : null;});
+        }
+        count++;
+    });
 
- var unfinished = new Array();
- for (var i = 0; i < finished.length; i++) {
-  if (!finished[i]) { unfinished.push(i+1); }
- }
- if (unfinished.length) {
-  if (force_answer_all == 1) {
-   alert (translations['youhavetoanswerallquestions']+': '+unfinished);
-   return false;
-  } else if(force_answer_all == 0) {
-   return confirm(translations['youhavenotcompletedquestions']+': '+unfinished+'. '+translations['areyousureyouwanttosubmittest']);
-  }
+    var unfinished = new Array();
+    for (var i = 0; i < finished.length; i++) {
+        if (!finished[i]) { unfinished.push(i+1); }
+    }
+    if (unfinished.length) {
+        if (force_answer_all == 1) {
+            alert (translations['youhavetoanswerallquestions']+': '+unfinished);
+            return false;
+        } else if(force_answer_all == 0) {
+            return confirm(translations['youhavenotcompletedquestions']+': '+unfinished+'. '+translations['areyousureyouwanttosubmittest']);
+        }
 
- }
+    }
 }
 function handleDrop(s,d, e) {
  s.setStyle({left:'auto', top:'auto'});
