@@ -1,6 +1,5 @@
 <?php
-class module_gradebook extends MagesterExtendedModule
-{
+class module_gradebook extends MagesterExtendedModule {
     public static $state = "experimental";
     /* USE THIS OBJECT TO MANAGE ACL, */
     /* CAN BE ROLE-BASED AND/OR TYPE-BASED */
@@ -32,17 +31,15 @@ class module_gradebook extends MagesterExtendedModule
         "student_sheet"
     );
 
-    public function getName()
-    {
+    public function getName() {
         return "GRADEBOOK";
     }
 
-    public function getPermittedRoles()
-    {
+    public function getPermittedRoles() {
         return array("student", "professor", "administrator");
     }
-    public function getDefaultAction()
-    {
+
+    public function getDefaultAction() {
         if ($this->getCurrentUser()->getType() == 'professor') {
             return "students_grades";
         } elseif ($this->getCurrentUser()->getType() == 'administrator') {
@@ -53,8 +50,7 @@ class module_gradebook extends MagesterExtendedModule
     }
 
     /* ACTION FUNCTIONS */
-    public function editRuleCalculationAction()
-    {
+    public function editRuleCalculationAction() {
         /**
          * @todo Implementar this function. Is the default action
          */
@@ -1093,8 +1089,8 @@ class module_gradebook extends MagesterExtendedModule
         }
         return $result;
     }
-    public function getSmartyTpl()
-    {
+
+    public function getSmartyTpl() {
         if (self::$state == 'experimental') {
             if ($_GET['popup'] == 1) {
                 unset($GLOBALS['message']);
@@ -1104,8 +1100,11 @@ class module_gradebook extends MagesterExtendedModule
             }
         }
 
+        // Verifies if $_GET['action'] is set
         if ($this->getCurrentAction()) {
+            // Verifies if it's in the actions list
             if (in_array($this->getCurrentAction(), self::$newActions)) {
+                // Return the parent (default) path of the Smarty template files
                 return parent::getSmartyTpl();
             }
         }
@@ -2376,8 +2375,8 @@ class module_gradebook extends MagesterExtendedModule
         return $overallScore;
 
     }
-    private function computeFinalScore($lessonID, $login = null)
-    {
+
+    private function computeFinalScore($lessonID, $login = null) {
 
         $selectedLesson = new MagesterLesson($lessonID);
 

@@ -64,10 +64,10 @@
 								<th colspan="2">{$smarty.const.__GRADEBOOK_TOTAL}</th>
 								<th style="text-align: center;">{$lesson.scores.final_score}</th>
 							</tr>
-							<tr>
+							{*<tr>
 								<th colspan="2">Situação final</th>
 								<th style="text-align: center;">{$lesson.scores.final_status}</th>
-							</tr>
+							</tr>*}
 						</tfoot>
 					</table>
 				{/capture}
