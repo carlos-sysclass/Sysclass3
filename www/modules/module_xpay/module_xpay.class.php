@@ -691,6 +691,7 @@ class module_xpay extends MagesterExtendedModule
 		foreach ($userNegociation['invoices'] as $invoice_index => $invoice) {
 
 			$userNegociation['invoices'][$invoice_index]['applied_rules'] = $this->_getAppliedRules($invoice);
+
 		}
 
 		if (count($userNegociation) == 0) {
@@ -2507,6 +2508,7 @@ class module_xpay extends MagesterExtendedModule
 	}
 	private function _getAppliedRules($invoice)
 	{
+//var_dump($invoice);
 		$applied_rules = array();
 		if ($invoice['total_reajuste'] <> 0) {
 			foreach ($invoice['workflow'] as $workflow) {
@@ -3205,7 +3207,12 @@ class module_xpay extends MagesterExtendedModule
 			$invoice['paid'] = round($invoice['paid'], 2);
 
 			$negociationUser = $this->getEditedUser(false, $invoice['user_id']);
+
+//var_dump($negociationUser);
+//var_dump($invoice);
 			$invoice = $this->_calculateInvoiceDetails($invoice, $negociationUser);
+
+
 		}
 
 		return $negoInvoices;
@@ -3263,7 +3270,12 @@ class module_xpay extends MagesterExtendedModule
 			$today = new DateTime("today");
 			$apply_days = intval($currentVencimento->diff($today, true)->days);
 		}
-
+/*
+		if ($invoice['invoice_index'] == 2) {
+			var_dump($currentVencimento);
+			var_dump($apply_days);
+		}
+*/
 		// FIRST GET TOTAL ALREADY PAID
 		$baseValue = $invoice['valor'] - $invoice['paid'];
 
@@ -3284,6 +3296,20 @@ class module_xpay extends MagesterExtendedModule
 		));
 		$invoice['full_price'] += $invoice['paid'];
 
+if ($invoice['invoice_index'] == 2) {
+//var_dump($currentVencimento);
+//var_dump($this->_getInvoiceTags($invoice));
+//var_dump($baseValue);
+/*
+var_dump(
+                        $invoice['full_price'],
+                        $invoice['acrescimo'],
+                        $invoice['desconto'],
+                        $invoice['rules'],
+                        $invoice['workflow']
+);
+*/
+}
 		$invoice['total_reajuste']	= $invoice['acrescimo'] - $invoice['desconto'];
 /*
 
@@ -3357,7 +3383,8 @@ class module_xpay extends MagesterExtendedModule
 			}
 
 			$today = new DateTime("today");
-			if ((intval($currentVencimento->diff($today, false)->format("%r%d")) > 0)) {
+
+			if ((intval($currentVencimento->diff($today, false)->format("%r%a")) > 0)) {
 				$tags[] = 'is_overdue';
 			} else {
 				$tags[] = 'is_not_overdue';
@@ -4362,7 +4389,6 @@ class module_xpay extends MagesterExtendedModule
 
 		if (count($negociation) > 0) {
 			// ENCONTROU A NEGOCIAÇÃO
-			//var_dump($negociation);
 			$paidInvoice = $this->_getNegociationInvoiceByIndex($negociation['id'], $invoice_index);
 	
 			if (count($paidInvoice) > 0) {
