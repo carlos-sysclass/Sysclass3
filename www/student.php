@@ -1,7 +1,8 @@
 <?php
 
 session_cache_limiter('none'); //Initialize session
-session_start();
+$sid = session_id();
+if (empty($sid)) session_start();
 $path = "../libraries/"; //Define default path
 
 require_once $path."configuration.php";

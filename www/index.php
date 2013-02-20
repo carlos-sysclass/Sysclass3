@@ -9,7 +9,8 @@
  * @version 3.6.0
  */
 session_cache_limiter('nocache');
-session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
+$sid = session_id();
+if (empty($sid)) session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 
 $path = "../libraries/";
 //Automatically redirect to installation page if configuration file is missing

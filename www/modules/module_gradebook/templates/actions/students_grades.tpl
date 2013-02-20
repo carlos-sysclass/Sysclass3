@@ -27,6 +27,10 @@
 	{/foreach}
 </div>
 
+<div id="gradebook-loading" style="width: 100%; text-align: center; padding-top: 50px;">
+    <img src="{$T_GRADEBOOK_BASELINK|cat:'images/progress1.gif'}" title="{$smarty.const._SAVE}" alt="{$smarty.const._SAVE}" /> Carregando
+</div>
+
 <div id="gradebook-group-grades-container">
 </div>
 

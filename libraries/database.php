@@ -31,7 +31,7 @@ if (!isset($GLOBALS['db']) || !$GLOBALS['db']) {
     $GLOBALS['db']->memCachePort = 11211; /// this is default memCache port
     $GLOBALS['db']->memCacheCompress = false; /// Use 'true' to store the item compressed (uses zlib)
      */
-    $GLOBALS['db']->Connect(G_DBHOST, G_DBUSER, G_DBPASSWD, G_DBNAME);
+    $GLOBALS['db']->PConnect(G_DBHOST, G_DBUSER, G_DBPASSWD, G_DBNAME);
 }
 //$perf = NewPerfMonitor($GLOBALS['db']);$perf->UI($pollsecs=5);
 if (G_DBTYPE == 'mysql') {
@@ -53,6 +53,7 @@ $GLOBALS['db']->databaseQueries = 0;
  * @version 1.0
  * @deprecated
  */
+
 function eF_executeNew($sql)
 {
     $thisQuery = microtime(true);
@@ -63,6 +64,7 @@ function eF_executeNew($sql)
     logProcess($thisQuery, $sql);
     return $result;
 }
+
 /**
  * Execute code directly -- HIGHLY deprecated!!
  *
@@ -146,6 +148,7 @@ function eF_insertTableData($table, $fields)
         return false;
     }
 }
+
 /**
  * Insert mutiple values
  *
@@ -229,6 +232,7 @@ function eF_NullifyRecursive(&$v, $k)
 {
     if (is_string($v)) $v = "'".$v."'"; else if (is_null($v)) $v = "null";else if ($v === false) $v = 0; else if ($v === true) $v = 1;
 }
+
 /**
  * Update table data
  *
@@ -263,6 +267,7 @@ function eF_updateTableData($table, $fields, $where)
     logProcess($thisQuery, $sql);
     return $result;
 }
+
 /**
  * Delete database data
  *
@@ -290,6 +295,7 @@ function eF_deleteTableData($table, $where="")
     logProcess($thisQuery, $sql);
     return $result;
 }
+
 /**
  * Retrieve database data.
  *
@@ -322,7 +328,22 @@ function eF_getTableData($table, $fields = "*", $where = "", $order = "", $group
 {
     $thisQuery = microtime(true);
     $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
-    $result = $GLOBALS['db']->GetAll($sql);
+    //$result = $GLOBALS['db']->GetAll($sql);
+
+    $result = $GLOBALS['db']->_Execute($sql);
+
+    if ($result) {
+        $tempResult = array();
+
+        while(!$result->EOF) {
+            $tempResult[] = $result->fields;
+            $result->MoveNext();
+        }
+
+        $result = $tempResult;
+    }
+
+
     logProcess($thisQuery, $sql);
     if ($result == false) {
         return array();
@@ -330,6 +351,7 @@ function eF_getTableData($table, $fields = "*", $where = "", $order = "", $group
         return $result;
     }
 }
+
 function eF_countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 {
     $thisQuery = microtime(true);
@@ -342,6 +364,7 @@ function eF_countTableData($table, $fields = "*", $where = "", $order = "", $gro
         return $result;
     }
 }
+
 function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 {
     $tables = explode(",", $table);
@@ -366,6 +389,7 @@ function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $g
     }
     return $sql;
 }
+
 /**
  * Retrieve table contents Flat
  *
@@ -428,6 +452,7 @@ function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="
     logProcess($thisQuery, $sql);
     return $temp;
 }
+
 /**
  * Describes a table field
  *
@@ -483,6 +508,7 @@ function eF_describeTable($table, $fields = false)
     }
     return $desc;
 }
+
 /**
  * Get table fields
  *
@@ -499,6 +525,7 @@ function eF_getTableFields($table)
     $result = $GLOBALS['db']->GetCol("describe $table");
     return $result;
 }
+
 /**
  * Show all tables in the database
  *
@@ -516,6 +543,7 @@ function eF_showTables()
     }
     return $tables;
 }
+
 /**
  * Perform an update or insert, depending on whether the entry
  * actually exists in the database
@@ -537,6 +565,7 @@ function eF_insertOrupdateTableData($table, $fields, $where)
         return eF_insertTableData($table, $fields);
     }
 }
+
 /**
  * Add slashes to parameter
  *
@@ -569,6 +598,7 @@ function eF_addSlashes($param, $checkGpc = true)
         }
     }
 }
+
 /**
  * Auxiliary function used by eF_addSlashes
  *
@@ -595,7 +625,34 @@ function logProcess($thisQuery, $sql)
         }
         $GLOBALS['db']->queries[$GLOBALS['db']->databaseQueries]['trace'] = print_r($backtrace, true);
     }
+    // Comment the next line in a production environment
+    //storeLog($thisQuery, $sql);
+
 }
+
+/**
+ * Stores a query in the database
+ *
+ * @param $tStart
+ * @param $sql
+ *
+ */
+function storeLog($tStart, $sql) {
+    $tEnd = microtime(true);
+    $tTotal = $tEnd - $tStart;
+
+    $trace = "";
+    foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $key => $value) {
+        array_walk($v['args'], function(&$item, $key) {
+            $item = var_export($item, true);
+        });
+        $trace .= '#' . $key . ' ' . $value['file'] . '(' . $value['line'] . '): ' . (isset($value['class']) ? $value['class'] . '->' : '') . $value['function'] . '(' . implode(', ', $value['args']) . ')' . "\n";
+    }
+
+    $startDate = date('Y-m-d H:i:s', $tStart);
+    $GLOBALS['db']->Execute('INSERT INTO queries_logs(executed_at, duration, php_session_id, query, backtrace) VALUES("?", "?", "?", "?", "?")', array($startDate, $tTotal, session_id(), $sql, $trace));
+}
+
 class MagesterDB
 {
     public $databaseTime = 0;
