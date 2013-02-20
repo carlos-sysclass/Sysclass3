@@ -2434,7 +2434,7 @@ class module_gradebook extends MagesterExtendedModule {
                 if (!$score['to_next'] && !$alreadyPassed) {
                     $finalStatus = self::__GRADEBBOK_DISAPPROVED;
                     // REPROVADO. NÃO ATINGIU VALOR MÍNIMO
-                    break;
+                    continue;
                 }
 
 
