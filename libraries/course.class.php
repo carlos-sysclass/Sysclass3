@@ -3059,6 +3059,7 @@ class MagesterCourse
     	}
     	return $course -> delete();
     }
+
     /**
      * Get system courses
      *
@@ -3076,15 +3077,23 @@ class MagesterCourse
      * @static
      * @todo deprecated
      */
-    public static function getCourses($returnObjects = false)
-    {
-    	//$result = eF_getTableData("courses c, directions d", "c.*, d.name as direction_name, (select count( * ) from courses l where instance_source=c.id) as has_instances", "c.directions_ID=d.id and archive=0 and instance_source=0");
-    	$result = eF_getTableData("courses c", "c.*, (select count( * ) from courses l where instance_source=c.id) as has_instances", "archive=0 and instance_source=0");
+    public static function getCourses($returnObjects = false) {
+        //$result = eF_getTableData(
+        //    "courses c, directions d",
+        //    "c.*, d.name as direction_name, (select count( * ) from courses l where instance_source=c.id) as has_instances",
+        //    "c.directions_ID=d.id and archive=0 and instance_source=0"
+        //);
+        $result = eF_getTableData(
+            "courses c",
+            "c.*, (select count( * ) from courses l where instance_source=c.id) as has_instances",
+            "archive=0 and instance_source=0"
+        );
     	foreach ($result as $value) {
-    		$returnObjects ? $courses[$value['id']] = new MagesterCourse($value) : $courses[$value['id']] = $value;
+    		$courses[$value['id']] = $returnObjects ? new MagesterCourse($value) : $value;
     	}
     	return $courses;
     }
+
     public static function getCoursesWithPendingUsers($constraints = array())
     {
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);

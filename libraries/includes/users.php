@@ -102,10 +102,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
                         as courses_num,
                     (SELECT count(ug.groups_ID) FROM users_to_groups as ug
                         WHERE ug.users_LOGIN = u.login)
-                        as groups_num,
-                    (SELECT logs.timestamp FROM logs
-                        WHERE logs.action='login' and logs.users_LOGIN=u.login order by logs.timestamp desc limit 1)
-                        as last_login
+                        as groups_num
                 FROM
                     users u
                 WHERE

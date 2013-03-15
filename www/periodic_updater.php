@@ -9,6 +9,7 @@
 session_cache_limiter('none');
 $sid = session_id();
 if (empty($sid)) session_start();
+
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 $path = "../libraries/";

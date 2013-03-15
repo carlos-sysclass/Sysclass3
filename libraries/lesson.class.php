@@ -4317,38 +4317,30 @@ class MagesterLesson
             pr($e);
         }
     }
+
     /**
-
-    * Get system lessons
-
-    *
-
-    * This function is used used to return a list with all the system
-
-    * lessons.
-
-    * <br/>Example:
-
-    * <code>
-
-    * $lessons = _MagesterLesson :: getLessons();
-
-    * </code>
-
-    *
-
-    * @return array The lessons list
-
-    * @since 3.5.0
-
-    * @access public
-
-    * @static
-
+     * Get system lessons
+     *
+     * This function is used used to return a list with all the system
+     * lessons.
+     * <br/>Example:
+     * <code>
+     * $lessons = _MagesterLesson :: getLessons();
+     * </code>
+     *
+     * @return array The lessons list
+     * @since 3.5.0
+     * @access public
+     * @static
      */
     public static function getLessons($returnObjects = false, $instances = false)
     {
-        $result = eF_getTableData("lessons l, directions d", "l.*, d.name as direction_name", "l.directions_ID=d.id and l.archive=0".(!$instances ? " and l.instance_source=0" : null), "l.name");
+        $result = eF_getTableData(
+            "lessons l, directions d",
+            "l.*, d.name as direction_name",
+            "l.directions_ID=d.id and l.archive=0".(!$instances ? " and l.instance_source=0" : null),
+            "l.name"
+        );
         foreach ($result as $value) {
             if ($returnObjects) {
                 $lessons[$value['id']] = new MagesterLesson($value);
@@ -4359,6 +4351,7 @@ class MagesterLesson
         }
         return $lessons;
     }
+
     /**
 
     * Get system lessons that do not currently belong to a course

@@ -1,55 +1,53 @@
 /* MODULE CREATING */
 (function( $ ) {
-
-
     jQuery("#add-group-rule-dialog").dialog({
         autoOpen: false,
-    height: 300,
-    width: 400,
-    modal: true,
-    resizable: false,
-    buttons: {
-        "Criar": function() {
-            jQuery("#name").removeClass( "ui-state-error" );
+        height: 300,
+        width: 400,
+        modal: true,
+        resizable: false,
+        buttons: {
+            "Criar": function() {
+                jQuery("#name").removeClass( "ui-state-error" );
 
-            if (jQuery("#name").val().length >= 3) {
+                if (jQuery("#name").val().length >= 3) {
+                    jQuery( this ).dialog( "close" );
+
+                    // PUT ON
+                    _sysclass("load", "gradebook")._postAction(
+                        "add_group",
+                        {
+                            'name': jQuery("#name").val(),
+                        'require_status': jQuery("#require_status").val(),
+                        'min_value': jQuery("#min_value").val()
+                        },
+                        function(response, status) {
+                            if (response.status == 'ok') {
+                                headerItem = 
+                        '<span class="gradebook-group-header" id="gradebook-group-header-' + response.data.id + '">' +
+                        '	<a href="javascript: void(0);" class="indexer-numbered">' + (jQuery(".gradebook-group-header").size() + 1) +'</a>' +
+                        '	<a href="javascript: _sysclass(\'load\', \'gradebook\').loadGroupRules(' + response.data.id + ');">' +
+                        response.data.name +
+                        '	</a>' +
+                        '</span>';
+
+                    jQuery(".gradebook-group-header").last().after(headerItem);
+                            }
+                        },
+                        'json'
+                            );
+
+                } else {
+                    alert("O nome deve ter no mínimo 3 caracteres");
+                    jQuery("#name").addClass( "ui-state-error" );
+                }
+            },
+            Cancel: function() {
                 jQuery( this ).dialog( "close" );
-
-                // PUT ON
-                _sysclass("load", "gradebook")._postAction(
-                    "add_group",
-                    {
-                        'name' : jQuery("#name").val(),
-                    'require_status' : jQuery("#require_status").val(),
-                    'min_value' : jQuery("#min_value").val()
-                    },
-                    function(response, status) {
-                        if (response.status == 'ok') {
-                            headerItem = 
-                    '<span class="gradebook-group-header" id="gradebook-group-header-' + response.data.id + '">' +
-                    '	<a href="javascript: void(0);" class="indexer-numbered">' + (jQuery(".gradebook-group-header").size() + 1) +'</a>' +
-                    '	<a href="javascript: _sysclass(\'load\', \'gradebook\').loadGroupRules(' + response.data.id + ');">' +
-                    response.data.name +
-                    '	</a>' +
-                    '</span>';
-
-                jQuery(".gradebook-group-header").last().after(headerItem);
-                        }
-                    },
-                    'json'
-                        );
-
-            } else {
-                alert("O nome deve ter no mínimo 3 caracteres");
-                jQuery("#name").addClass( "ui-state-error" );
             }
         },
-        Cancel: function() {
-            jQuery( this ).dialog( "close" );
+        close: function() {
         }
-    },
-    close: function() {
-    }
     });
 
 
@@ -63,7 +61,7 @@
         "bAutoWidth": true,
         "iDisplayLength"	: 10,
         "aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "Tudo"]],
-        "bDeferRender" : true,
+        "bDeferRender": true,
         "sPaginationType": "full_numbers",
         "bScrollCollapse": true,
         "sDom": 't<"datatables-header-controls"ilrp>',
@@ -73,7 +71,7 @@
     };
 
     var methods = {
-        getSelectedGroup : function() {
+        getSelectedGroup: function() {
             selectedID = jQuery(".gradebook-group-header").filter(".selected").attr("id");
             if (typeof(selectedID) != 'undefined') {
                 groupID = selectedID.replace(/\D/g, "");
@@ -83,19 +81,19 @@
                 return 1;
             }
         },
-        addGroup : function() {
+        addGroup: function() {
             jQuery("#add-group-rule-dialog").dialog('open');
         },
-        editGroup : function() {
+        editGroup: function() {
             //alert(this.getSelectedGroup());
         },
-        deleteGroup : function($groupID) {
+        deleteGroup: function($groupID) {
             if (typeof($groupID) == 'undefined') {
                 $groupID = this.getSelectedGroup();
             }
             _sysclass("load", "gradebook")._postAction(
                     "delete_group",
-                    {'group_id' : $groupID},
+                    {'group_id': $groupID},
                     function(response, status) {
                         if (response.status == 'ok') {
                             jQuery("#gradebook-group-header-" + $groupID).remove();
@@ -105,7 +103,7 @@
                     'json'
                     );
         },
-        moveGroupUp : function(group_id) {
+        moveGroupUp: function(group_id) {
             if (typeof(group_id) == 'undefined') {
                 group_id = this.getSelectedGroup();
             }
@@ -120,8 +118,8 @@
                     self._postAction(
                         "move_group",
                         {
-                            'to' : "up",
-                        'group_id' : group_id,
+                            'to': "up",
+                            'group_id': group_id,
                         },
                         function(response, status) {
                             if (response.status == 'ok') {
@@ -139,7 +137,7 @@
                 return false;
             }
         },
-        moveGroupDown : function(group_id) {
+        moveGroupDown: function(group_id) {
             if (typeof(group_id) == 'undefined') {
                 group_id = this.getSelectedGroup();
             }
@@ -154,8 +152,8 @@
                     self._postAction(
                         "move_group",
                         {
-                            'to' : "down",
-                        'group_id' : group_id,
+                            'to': "down",
+                        'group_id': group_id,
                         },
                         function(response, status) {
                             if (response.status == 'ok') {
@@ -173,18 +171,18 @@
                 return false;
             }
         },
-        loadGroupRules : function(group_id) {
+        loadGroupRules: function(group_id) {
             if (typeof(group_id) == 'undefined') {
                 group_id = this.getSelectedGroup();
             }
 
             _sysclass("load", "gradebook")._loadAction(
                     "load_group_rules",
-                    {"group_id" : group_id},
+                    {"group_id": group_id},
                     "#gradebook-group-rules-container"
                     );
         },
-        loadGroupGrades : function(group_id) {
+        loadGroupGrades: function(group_id) {
             if (typeof(group_id) == 'undefined') {
                 group_id = this.getSelectedGroup();
             }
@@ -193,7 +191,7 @@
 
             _sysclass("load", "gradebook")._loadAction(
                     "load_group_grades",
-                    {"group_id" : group_id},
+                    {"group_id": group_id},
                     "#gradebook-group-grades-container",
                     function() {
                         jQuery("#gradebook-group-grades-container table").dataTable(dataTableDefaults);
@@ -205,18 +203,18 @@
 
 
         },
-        loadClassesByCourse : function($courseID, $lessonID, callback) {
+        loadClassesByCourse: function($courseID, $lessonID, callback) {
             this._postAction(
                     "load_classes",
-                    {"course_id" : $courseID, "lesson_id" : $lessonID},
+                    {"course_id": $courseID, "lesson_id": $lessonID},
                     callback,
                     'json'
                     );
         },
-        deleteColumn : function($columnID) {
+        deleteColumn: function($columnID) {
             _sysclass("load", "gradebook")._postAction(
                     "delete_column",
-                    {'column_id' : $columnID},
+                    {'column_id': $columnID},
                     function(response, status) {
                         if (response.status == 'ok') {
                             jQuery("#gradebook-column-row-" + $columnID).remove();
@@ -225,11 +223,11 @@
                     'json'
                     );
         },
-        importStudentsGrades : function($groupID, $columnID) {
+        importStudentsGrades: function($groupID, $columnID) {
             var self = this;
             this._postAction(
                     "import_students_grades",
-                    {'group_id' : $groupID, 'column_id' : $columnID, "from" : this.opt.action},
+                    {'group_id': $groupID, 'column_id': $columnID, "from": this.opt.action},
                     function(response, status) {
                         if (response.status == 'ok') {
                             self.loadGroupGrades($groupID);
@@ -238,16 +236,16 @@
                     'json'
                     );
         },
-        switchToLessonClasse : function(lesson_id, classe_id, course_id) {
+        switchToLessonClasse: function(lesson_id, classe_id, course_id) {
 
-            classe_id == null ? classe_id = 0 : null;
+            classe_id == null ? classe_id = 0: null;
 
             _sysclass("load", "gradebook")._redirectAction(
                     "switch_lesson",
-                    {'lesson_id' : lesson_id, 'classe_id' : classe_id, 'course_id' : course_id, "from" : this.opt.action}
+                    {'lesson_id': lesson_id, 'classe_id': classe_id, 'course_id': course_id, "from": this.opt.action}
                     );
         },
-        setGrade : function(oid, login, grade, callback) {
+        setGrade: function(oid, login, grade, callback) {
             //var grade = jQuery(el).prev().val();
 
             var self = this;
@@ -258,20 +256,20 @@
                     {
                         "oid"	: oid,
                 "login"	: login,
-                "grade" : grade
+                "grade": grade
                     },
                     callback,
                     'json'
                     );
             this.opt.noMessages = false;
         },
-        loadStudentLessonSheet : function(courseID, lessonID) {
+        loadStudentLessonSheet: function(courseID, lessonID) {
             var scores = null;
 
             this._loadAction(
                     "load_student_lesson_sheet", 
                     {
-                        "course_id" : courseID, 
+                        "course_id": courseID, 
                 "lesson_id"	: lessonID
                     },
                     "#gradebook-student-lesson-sheet",
@@ -282,13 +280,13 @@
         },
 
         /*
-           getStudentScores : function(login) {
+           getStudentScores: function(login) {
            var scores = null;
 
            this.sync(true)._postAction(
            "get_student_scores", 
            {
-           "login" : login
+           "login": login
            },
            function (data, status) {
            scores = data;
@@ -300,12 +298,12 @@
            return scores;
            },
            */
-        refreshGroupUI : function() {
+        refreshGroupUI: function() {
             jQuery(".gradebook-group-row a").show();
             jQuery(".gradebook-group-row:first a.gradebook-group-mode-up").hide();
             jQuery(".gradebook-group-row:last a.gradebook-group-mode-down").hide();
         },
-        startUI : function() {
+        startUI: function() {
             this.refreshGroupUI();
 
             jQuery(".gradebook-course .collapse-title a, .gradebook-course-lesson .collapse-title a").click(function() {
