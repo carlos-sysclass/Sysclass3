@@ -1286,6 +1286,7 @@ abstract class MagesterUser
 
         //var_dump($this->getType());
 
+        $currentLessonRole = $this->getRole($GLOBALS['currentLesson']);
         // Get all modules enabled for this user type
         foreach ($modulesDB as $module) {
             $folder = $module['position'];
@@ -1300,7 +1301,7 @@ abstract class MagesterUser
                         // Got to check if this is a lesson module so as to change the moduleBasePath
                         if ($modules[$className]->isLessonModule() && isset($GLOBALS['currentLesson'])) {
                             $modules[$className]->moduleBaseUrl =
-                                $this->getRole($GLOBALS['currentLesson']) .".php?ctg=module&op=".$className;
+                                $currentLessonRole .".php?ctg=module&op=".$className;
                         }
                         if (!in_array($user_type, $modules[$className]->getPermittedRoles())) {
                             unset($modules[$className]);

@@ -603,6 +603,9 @@ class module_gradebook extends MagesterExtendedModule {
     }
 
     public function loadGroupGradesAction() {
+        $logQueriesNow = true;
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- Inicio do metodo loadGroupGradesAction -----'");
+
         if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
             return false;
         }
@@ -627,25 +630,19 @@ class module_gradebook extends MagesterExtendedModule {
             $gradeBookLessons = $this->getGradebookLessons(MagesterLesson::getLessons(), $currentLessonID);
         }
 
-        /* Add new students to GradeBook related tables */
-        //$result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
-        //$allLogins = array();
-
-        //foreach ($result as $user) {
-        //    $allLogins[] = $user['users_LOGIN'];
-        //}
-        /* some commented code deleted here */
-        /* End */
         $lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 
         if (is_null($currentClasse)) {
+            if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- checkLessonUsers -----'");
             $this->checkLessonUsers($currentLessonID, $lessonColumns);
+            if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getLessonUsers -----'");
             $allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
         } else {
             $this->checkLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
             $allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
         }
 
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getGradebookLessons -----'");
         if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
             $gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
         } else {
@@ -658,17 +655,19 @@ class module_gradebook extends MagesterExtendedModule {
         $smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
         $smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
 
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getGradebookGroups -----'");
         $gradebookGroups = $this->getGradebookGroups($currentLessonID);
         $smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- computeFinalScore -----'");
         $gradebookScores = $this->computeFinalScore($currentLessonID);
-        /* some commented code deleted here */
         $smarty->assign("T_GRADEBOOK_SCORES", $gradebookScores);
 
-        /* some commented code deleted here */
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- assignSmartyModuleVariables -----'");
         $this->assignSmartyModuleVariables();
         $template = $this->moduleBaseDir . 'templates/actions/' . $this->getCurrentAction() . '.tpl';
         echo $smarty->fetch($template);
+        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- Final do metodo loadGroupGradesAction -----'");
         exit;
 
     }
@@ -1831,35 +1830,42 @@ class module_gradebook extends MagesterExtendedModule {
             sprintf("users u LEFT OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
             "gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active",
             implode(" AND ", $where),
-            "uid"
+            "users_LOGIN"
         );
 
         $userRoles = MagesterUser::getRoles(true);
 
+        $userNames = array();
+        foreach($result as $value) {
+            $userNames[] = $value['users_LOGIN'];
+        }
+        $objectIds = array();
+        foreach ($objects as $object) {
+            $objectIds[] = $object['id'];
+        }
+
+        $userNames = "'" . implode("', '", $userNames) . "'";
+        $objectIds = implode(", ", $objectIds);
+
+        $result_ = eF_getTableData(
+            "module_gradebook_grades",
+            "users_LOGIN, oid, gid, grade",
+            "oid IN ($objectIds) and users_LOGIN IN ($userNames)",
+            "users_LOGIN DESC"
+        );
+        /*
+        foreach ($result_ as $key => $value) {
+            echo '---';
+            var_dump($key);
+            var_dump($value);
+        };
+        exit;
+         */
+
         $users = array();
-
         foreach ($result as $value) {
-            /*
-            if (is_null($value['uid'])) {
-                // INSERT INTO GRADEBOOK DATA
-
-                $userFields = array(
-                    "users_LOGIN" 	=> $value['users_LOGIN'],
-                    "lessons_ID"	=> $lessonID,
-                    "score" 		=> -1,
-                    "grade" 		=> '-1',
-                    'publish'		=> 0
-                );
-
-                $uid = eF_insertTableData("module_gradebook_users", $userFields);
-            }
-             */
 
             $grades = array();
-            /*
-            $active = eF_getTableData("users", "active", "login='".$value['users_LOGIN']."'"); // active or not ?
-            $value['active'] = $active[0]['active'];
-             */
 
             if ($value['score'] == -1) {
                 $value['score'] = '-';
@@ -1875,7 +1881,16 @@ class module_gradebook extends MagesterExtendedModule {
                 $value['userrole'] = $userRoles[$value['user_type']];
             }
 
-            foreach ($objects as $key => $object) {
+            while (end($result_)['users_LOGIN'] == $value['users_LOGIN']) {
+                $object = array_pop($result_);
+
+                if ($object['grade'] == -1) {
+                    $object['grade'] = '';
+                }
+                $grades[$object['oid']] = $object;
+            }
+                /*
+            foreach ($objects as $object) {
 
                 $result_ = eF_getTableData(
                     "module_gradebook_grades",
@@ -1891,6 +1906,7 @@ class module_gradebook extends MagesterExtendedModule {
 
                 //array_push($grades, $result_[0]);
             }
+                 */
 
             $value['grades'] = $grades;
             $users[$value['id']] = $value;
@@ -1901,13 +1917,33 @@ class module_gradebook extends MagesterExtendedModule {
 
     private function checkLessonUsers($lessonID, $objects, $classe_id = null) {
         $updated = false;
-        $gradebookUsers = $this->getLessonUsers($lessonID, $objects, $classe_id);
+        //$gradebookUsers = $this->getLessonUsers($lessonID, $objects, $classe_id);
 
+        /* Here we search for all users asigned to this lesson */
         $currentLesson = new MagesterLesson($lessonID);
         $lessonUsers = $currentLesson->getUsers('student');
 
+
+        /* Here we search for all users that already have an object associated with him/her for this lesson */
+        $lessonUsersLogins = array();
+        foreach ($lessonUsers as $lessonUser) {
+            $lessonUsersLogins[] = $lessonUser['login'];
+        }
+        $lessonUsersLogins = "'" . implode("', '", $lessonUsersLogins) . "'";
+
+        $objectIds = array();
+        foreach ($objects as $object) {
+            $objectIds[] = $object['id'];
+        }
+        $objectIds = implode(", ", $objectIds);
+
+        $result_ = eF_getTableData(
+            "module_gradebook_grades",
+            "DISTINCT users_LOGIN, oid, grade",
+            "oid IN ($objectIds) and users_LOGIN IN ($lessonUsersLogins)"
+        );
         $allLogins = array();
-        foreach ($gradebookUsers as $gradeUser) {
+        foreach ($result_ as $gradeUser) {
             $allGradeLogins[] = $gradeUser['users_LOGIN'];
         }
 
