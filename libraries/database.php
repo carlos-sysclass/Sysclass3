@@ -626,7 +626,7 @@ function logProcess($thisQuery, $sql)
         $GLOBALS['db']->queries[$GLOBALS['db']->databaseQueries]['trace'] = print_r($backtrace, true);
     }
     // Comment the next line in a production environment
-    storeLog($thisQuery, $sql);
+    //storeLog($thisQuery, $sql);
 
 }
 

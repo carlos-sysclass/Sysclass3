@@ -603,8 +603,6 @@ class module_gradebook extends MagesterExtendedModule {
     }
 
     public function loadGroupGradesAction() {
-        $logQueriesNow = true;
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- Inicio do metodo loadGroupGradesAction -----'");
 
         if ($this->getCurrentUser()->getType() != 'administrator' && $this->getCurrentUser()->getType() != 'professor') {
             return false;
@@ -633,16 +631,13 @@ class module_gradebook extends MagesterExtendedModule {
         $lessonColumns = $this->getLessonColumns($currentLessonID, $currentGroupID);
 
         if (is_null($currentClasse)) {
-            if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- checkLessonUsers -----'");
             $this->checkLessonUsers($currentLessonID, $lessonColumns);
-            if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getLessonUsers -----'");
             $allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns);
         } else {
             $this->checkLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
             $allUsers = $this->getLessonUsers($currentLessonID, $lessonColumns, $currentClasse->classe['id']);
         }
 
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getGradebookLessons -----'");
         if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
             $gradeBookLessons = $this->getGradebookLessons($currentUser->getLessons(false, 'professor'), $currentLessonID);
         } else {
@@ -655,19 +650,15 @@ class module_gradebook extends MagesterExtendedModule {
         $smarty->assign("T_GRADEBOOK_LESSON_USERS", $allUsers);
         $smarty->assign("T_GRADEBOOK_GRADEBOOK_LESSONS", $gradeBookLessons);
 
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- getGradebookGroups -----'");
         $gradebookGroups = $this->getGradebookGroups($currentLessonID);
         $smarty->assign("T_GRADEBOOK_GROUPS", $gradebookGroups);
 
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- computeFinalScore -----'");
         $gradebookScores = $this->computeFinalScore($currentLessonID);
         $smarty->assign("T_GRADEBOOK_SCORES", $gradebookScores);
 
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- assignSmartyModuleVariables -----'");
         $this->assignSmartyModuleVariables();
         $template = $this->moduleBaseDir . 'templates/actions/' . $this->getCurrentAction() . '.tpl';
         echo $smarty->fetch($template);
-        if ($logQueriesNow) storeLog(microtime(true), "SELECT '----- Final do metodo loadGroupGradesAction -----'");
         exit;
 
     }
