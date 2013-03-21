@@ -1872,13 +1872,18 @@ class module_gradebook extends MagesterExtendedModule {
                 $value['userrole'] = $userRoles[$value['user_type']];
             }
 
-            while (end($result_)['users_LOGIN'] == $value['users_LOGIN']) {
-                $object = array_pop($result_);
+            if (is_array($result_)) {
+                $lastValue = end($result_);
+                while ($lastValue['users_LOGIN'] == $value['users_LOGIN']) {
+                    $object = array_pop($result_);
 
-                if ($object['grade'] == -1) {
-                    $object['grade'] = '';
+                    if ($object['grade'] == -1) {
+                        $object['grade'] = '';
+                    }
+                    $grades[$object['oid']] = $object;
+
+                    $lastValue = end($result_);
                 }
-                $grades[$object['oid']] = $object;
             }
                 /*
             foreach ($objects as $object) {
