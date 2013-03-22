@@ -1837,13 +1837,17 @@ class module_gradebook extends MagesterExtendedModule {
 
         $userNames = "'" . implode("', '", $userNames) . "'";
         $objectIds = implode(", ", $objectIds);
+        if (strlen($objectIds)>0) {
 
-        $result_ = eF_getTableData(
-            "module_gradebook_grades",
-            "users_LOGIN, oid, gid, grade",
-            "oid IN ($objectIds) and users_LOGIN IN ($userNames)",
-            "users_LOGIN DESC"
-        );
+            $result_ = eF_getTableData(
+                "module_gradebook_grades",
+                "users_LOGIN, oid, gid, grade",
+                "oid IN ($objectIds) and users_LOGIN IN ($userNames)",
+                "users_LOGIN DESC"
+            );
+        } else {
+            $result_ = array();
+        }
         /*
         foreach ($result_ as $key => $value) {
             echo '---';
@@ -1933,11 +1937,16 @@ class module_gradebook extends MagesterExtendedModule {
         }
         $objectIds = implode(", ", $objectIds);
 
-        $result_ = eF_getTableData(
-            "module_gradebook_grades",
-            "DISTINCT users_LOGIN, oid, grade",
-            "oid IN ($objectIds) and users_LOGIN IN ($lessonUsersLogins)"
-        );
+        if (strlen($objectIds)>0) {
+            $result_ = eF_getTableData(
+                "module_gradebook_grades",
+                "DISTINCT users_LOGIN, oid, grade",
+                "oid IN ($objectIds) and users_LOGIN IN ($lessonUsersLogins)"
+            );
+        } else {
+            $result_ =array();
+        }
+
         $allLogins = array();
         foreach ($result_ as $gradeUser) {
             $allGradeLogins[] = $gradeUser['users_LOGIN'];
@@ -2368,6 +2377,10 @@ class module_gradebook extends MagesterExtendedModule {
 
     private function computeFinalScore($lessonID, $login = null) {
 
+        $storeQueriesLogs = false;
+        if ($storeQueriesLogs) storeLog(microtime(true), "----- Inicio do metodo computeFinalScore");
+
+
         $selectedLesson = new MagesterLesson($lessonID);
 
         if (is_null($login)) {
@@ -2390,16 +2403,22 @@ class module_gradebook extends MagesterExtendedModule {
         $lessonColumns = array();
 
         foreach ($allLessonLogins as $login) {
+            if ($storeQueriesLogs) storeLog(microtime(true), "----- Outter foreach");
             $response = $scores = array();
             $score = 0;
+
+            if ($storeQueriesLogs) storeLog(microtime(true), "----- 1. MagesterUserFactory");
             $currentUser = MagesterUserFactory::factory($login);
 
             // 2. FOR EACH GROUPS SCORES
             foreach ($lessonGroups as $group) {
+                if ($storeQueriesLogs) storeLog(microtime(true), "----- Inner foreach");
                 if (!array_key_exists($group['id'], $lessonColumns)) {
+                    if ($storeQueriesLogs) storeLog(microtime(true), "----- 2. getLessonColumns");
                     $lessonColumns[$group['id']] = $this->getLessonColumns($lessonID, $group['id']);
                 }
 
+                if ($storeQueriesLogs) storeLog(microtime(true), "----- 3. computeScoreGrade");
                 $score = $this->computeScoreGrade($lessonColumns[$group['id']], $login);
                 $scores[] = array(
                     'group' 			=> $group['id'],
@@ -2461,6 +2480,7 @@ class module_gradebook extends MagesterExtendedModule {
         if (count($result) == 1) {
             return $result[$login];
         }
+        if ($storeQueriesLogs) storeLog(microtime(true), "----- Final do metodo computeFinalScore");
         return $result;
     }
 }
