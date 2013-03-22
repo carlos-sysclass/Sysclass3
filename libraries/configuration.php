@@ -65,6 +65,14 @@ $configurationDefaults = array(
 		'dbname'        => 'sysclass_demo',
 		'overrideTheme' => 'sysclass3'
 	),
+	'fajar.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_fajar',
+		'overrideTheme' => 'sysclass3'
+	),
+	'comptia.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_comptia',
+		'overrideTheme' => 'sysclass3'
+	),
 	'spbc.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_spbc',
 		'overrideTheme' => 'sysclass3'

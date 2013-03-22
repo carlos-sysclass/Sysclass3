@@ -1,4 +1,4 @@
-/admin
-/classes
+/admin/*
+/classes/*
 /editor_templates
-/lessons
+/lessons/*
