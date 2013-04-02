@@ -176,8 +176,6 @@ if ( !empty( $_GET['urlmaker'] ) ) {
 		list($key, $value) = explode(":", $paramGroup);
 		$_GET[$key] = $value;
 	}
-	var_dump($_GET);
-	exit;
 } 
 
 
