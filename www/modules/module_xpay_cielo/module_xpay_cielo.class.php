@@ -385,8 +385,12 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$currentContext = $this;
 		} else {
 			$currentContext = $this->getParent();
-		}
+        }
 
+        if (is_null($this->getParent())) {
+            $xpayModule = $this->loadModule("xpay");
+            $this->setParent($xpayModule);
+        }
 		
 		$Pedido = $this->processPaymentForm($payment_id, $invoice_id, $data);
 		
@@ -416,10 +420,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		);
 		
 		eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
-		
-		//echo $Pedido->urlAutenticacao;
-		eF_redirect($Pedido->urlAutenticacao, false, false, true);
-		exit;
+
+        if (!$data['return_data']) {
+            //echo $Pedido->urlAutenticacao;
+            //  
+    		eF_redirect($Pedido->urlAutenticacao, false, false, true);
+	    	exit;
+        } else {
+            return array(
+                'link'  => $Pedido->urlAutenticacao,
+                'tid'   => $Pedido->tid  
+            );
+//            return $Pedido->urlAutenticacao;
+        }
+
 	}
 
 	private function processPaymentForm($payment_id, $invoice_id, $values)
@@ -428,10 +442,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
 		
-		$Pedido = new Pedido_Model();
+        $Pedido = new Pedido_Model();
 
-		$Pedido->formaPagamentoBandeira = $values["option"];
+        if (empty($values["option"])) {
+            $Pedido->formaPagamentoBandeira = $values["bandeira"];
+        } else {
+            $Pedido->formaPagamentoBandeira = $values["option"];
+        }
 
+        if (empty($values["instance_option"])) {
+            $values["instance_option"] = $values["parcelas"];
+        } else {
+            $values["instance_option"] = $values["instance_option"];
+        }
+        
 		if ($values["instance_option"] != "A" && $values["instance_option"] != "1") {
 			$Pedido->formaPagamentoProduto = $this->conf['payment_subdivision_method'];
 			$Pedido->formaPagamentoParcelas = $values["instance_option"];
@@ -464,10 +488,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		}
 		/** @todo Get the user lesson or course */
 		$currentService = "";
-		
-		$Pedido->campoLivre =
-			sprintf("%s - %s", $currentService, $invoiceData['is_registration_tax'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['invoice_index']));
 
+        if (!empty($values['campo_livre'])) {
+            $Pedido->campoLivre = $values['campo_livre'];
+        } else {
+    		$Pedido->campoLivre =
+	    		sprintf("%s - %s", $currentService, $invoiceData['is_registration_tax'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['invoice_index']));
+        }
 		$Pedido->dadosPedidoDescricao =
 			sprintf("%s - %s %s", formatLogin(null, $currentUser), $invoiceData['is_registration_tax'] == 1 ? "Matricula" : "Mensalidade " . ($invoiceData['invoice_index']), $currentService);
 
@@ -483,8 +510,12 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 		//$Pedido->campoLivre 			= mb_convert_encoding($Pedido->campoLivre, "ISO-8859-1", "UTF-8");
 		//$Pedido->dadosPedidoDescricao 	= mb_convert_encoding($Pedido->dadosPedidoDescricao, "ISO-8859-1", "UTF-8");
-
-		$Pedido->urlRetorno = ReturnURL();
+        //Aceitar Parametros externos aqui...
+        if (!empty($values['return_url'])) {
+            $Pedido->urlRetorno = $values['return_url'];
+        } else {
+    		$Pedido->urlRetorno = ReturnURL();
+        }
 
 		// ENVIA REQUISIÇÃO SITE CIELO
 		$objResposta = $Pedido->RequisicaoTransacao(false);
@@ -521,10 +552,30 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$tidKey = $this->getTidKey();
 
 		if (array_key_exists($tidKey, $_POST)) {
-			$Pedido->tid = $_POST[$tidKey];
-		} else {
+            $Pedido->tid = $_POST[$tidKey];
+        } elseif (array_key_exists($tidKey, $_GET)) {
+            $Pedido->tid = $_GET[$tidKey];
+        } elseif ($this->getCache($tidKey)) {
 			$Pedido->tid = $this->getCache($tidKey);
-		}
+        } else {
+            // CHECAR TID PELO NEGOCIATION_ID, INVOICE_INDEX
+
+            $tidData = eF_getTableData(
+                "module_xpay_cielo_transactions_to_invoices trans2inv LEFT JOIN module_xpay_cielo_transactions trans ON (trans2inv.transaction_id = trans.id)
+                LEFT JOIN module_xpay_course_negociation neg ON (trans2inv.negociation_id = neg.id)
+                ",
+                "tid",
+                sprintf("trans2inv.negociation_id = %d AND invoice_index = %d AND neg.user_id = %d", $_GET['negociation_id'], $_GET['invoice_index'], $this->getCurrentUser()->user['id']),
+                "data DESC LIMIT 1"
+            );
+
+            if (count($tidData) == 0) {
+                $Pedido->tid = null;
+            } else {
+
+                $Pedido->tid = $tidData[0]['tid'];
+            }
+        }
 		$status = -1;
 		// Consulta situação da transação
 
@@ -743,9 +794,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	public function getInvoiceStatusById($payment_id, $invoice_id)
 	{
 	}
-	private function getTidKey()
-	{
-		$currentUser = $this->getCurrentUser();
-		return $tidKey = md5($currentUser->user['login'] . date("Ymd"));
+	private function getTidKey($login)
+    {
+        if (!is_null($login)) {
+        } else {
+            $currentUser = $this->getCurrentUser();
+            $login = $currentUser->user['login'];
+        }
+		return $tidKey = md5($login . date("Ymd"));
 	}
 }
