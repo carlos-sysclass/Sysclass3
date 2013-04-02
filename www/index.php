@@ -176,7 +176,8 @@ if ( !empty( $_GET['urlmaker'] ) ) {
 		list($key, $value) = explode(":", $paramGroup);
 		$_GET[$key] = $value;
 	}
-} 
+	unset($_GET['urlmaker']);
+}
 
 
 /* -------------------------------------------------------Login part-------------------------------------------------------------------*/
