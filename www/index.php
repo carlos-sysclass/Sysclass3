@@ -168,6 +168,19 @@ if (!$smarty->is_cached('index.tpl', $cacheId) || !$GLOBALS['configuration']['sm
         'course_lessons' => false);
     include 'directions_tree.php';
 }
+
+if ( !empty( $_GET['urlmaker'] ) ) {
+	$paramRaw = $_GET['urlmaker'];
+	$paramArray = explode("|", $paramRaw);
+	foreach($paramArray as $paramGroup) {
+		list($key, $value) = explode(":", $paramGroup);
+		$_GET[$key] = $value;
+	}
+	var_dump($_GET);
+	exit;
+}
+
+
 /* -------------------------------------------------------Login part-------------------------------------------------------------------*/
 if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
     try {

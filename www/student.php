@@ -339,6 +339,9 @@ if ((!isset($_GET['ajax']) && !isset($_GET['postAjaxRequest'])) && ($GLOBALS['cu
     $smarty->assign("T_NO_HORIZONTAL_MENU", 1);
 }
 
+//https://sysclass.com/student.php?urlmaker=route:module/module_xpay_cielo/return_payment|autologin:963c2a713fefecf957c2bd965c258db1
+//"https://sysclass.com/student.php?urlmaker=route:module/module_xpay_cielo/return_payment|autologin:%s", $userhash);
+
 if ( !empty( $_GET['route'] ) ) {
     list($_GET['ctg'], $_GET['op'], $_GET['action'], $_GET['data']) = explode("/", $_GET['route'], 4);
 }
