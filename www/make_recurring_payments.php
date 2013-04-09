@@ -16,24 +16,33 @@
 
  */
 //This is needed in order to make cron jobs able to run the file
-$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = "sysclass.com";
+$path = "/home/sysclass/root/libraries/";
+$_SERVER['HTTP_HOST'] = 'sysclass.com';
+$_SERVER['SERVER_NAME'] = 'sysclass.com';
+
+$DO_NOT_REDIRECT = true;
+
+$_GET['debug'] = 10;
+ini_set("display_errors", 1);
+
+require_once $path."configuration.php";
 
 
 $dir = getcwd();
 chdir(dirname(__FILE__));
-$debug_TimeStart = microtime(true); //Debugging timer - initialization
 session_cache_limiter('none'); //Initialize session
 session_start();
-$path = "../libraries/"; //Define default path
-/** The configuration file.*/
-require_once $path."configuration.php";
-$debug_InitTime = microtime(true) - $debug_TimeStart; //Debugging timer - time spent on file inclusion
-$lowest_possible_time = time() - 21600; // last acceptable time - pending 6 hours in the queue to be sent
-
 // GET A LIST OF TODAY'S PAYMENTS
 
+
+
+$paymentMaker = MagesterUserFactory::factory("admin");
+$paymentMaker->login("fep7_58A$");
+global $currentUser;
+$currentUser = $paymentMaker;
 $modules = eF_loadAllModules(true);
 
+//var_dump($modules);
 
 
 // MAKE ONE-BY-ONE
