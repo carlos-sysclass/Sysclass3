@@ -250,6 +250,7 @@ function VerificaErro($vmPost, $vmResposta)
 		public $urlRetorno;
 		public $autorizar;
 		public $capturar;
+		public $gerarToken;
 		
 		public $campoLivre;
 		
@@ -411,7 +412,12 @@ function VerificaErro($vmPost, $vmResposta)
 			
 			return $msg;
 		}
-		
+		private function XMLGerarToken()
+		{
+			$msg = '<gerar-token>' . $this->gerarToken . '</gerar-token>';
+				
+			return $msg;
+		}
 		private function XMLCampoLivre() {
 			$msg = '<campo-livre>' . $this->campoLivre . '</campo-livre>';
 			
@@ -446,7 +452,8 @@ function VerificaErro($vmPost, $vmResposta)
 			   		. $this->XMLFormaPagamento() . "\n   "
 			   		. $this->XMLUrlRetorno() . "\n   "
 			   		. $this->XMLAutorizar() . "\n"
-			   		. $this->XMLCapturar() . "\n " 
+			   		. $this->XMLCapturar() . "\n "
+			   		. $this->XMLGerarToken() . "\n "  
 			   		. $this->XMLCampoLivre() . "\n" ;
 			
 		$msg .= '</requisicao-transacao>';
