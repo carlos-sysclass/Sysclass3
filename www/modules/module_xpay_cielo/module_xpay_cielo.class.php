@@ -19,6 +19,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	protected $conf = array(
 		// Opção => Autorizar transação autenticada e não-autenticada
 		'authorization'					=> 2, // AUTORIZAÇÃO E AUTENTICAÇÂO
+		'recurring_authorization'		=> 3,
 		//'authorization'					=> 4, // RECORRENTE (SOMENTE COM CAPTURA DO CARTÃO NA LOJA
 		'auto_capture'					=> "true",
 		// [A - Débito, 1- Crédito, 2 - loja, 3 - Administradora]
@@ -527,6 +528,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         	if (count($tokenData) > 0) {
         		$Pedido->token = $values['token'];
         		$Pedido->formaPagamentoBandeira = $tokenData["bandeira"];
+        		$Pedido->autorizar = $this->conf['recurring_authorization'];
         		$objResposta = $Pedido->RequisicaoTransacao("token");
         		
         		var_dump($Pedido);
