@@ -458,6 +458,7 @@ function VerificaErro($vmPost, $vmResposta)
 			
 		$msg .= '</requisicao-transacao>';
 		
+		var_dump($msg);
 		$objResposta = $this->Enviar($msg, "Transacao");
 		return $objResposta;
 	}
