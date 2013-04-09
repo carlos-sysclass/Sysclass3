@@ -477,7 +477,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		// SAME NUMBER AS BOLETO "nosso número"
 		$Pedido->dadosPedidoNumero = $this->getParent()->createInvoiceID($payment_id, $invoice_id);
 
-		$Pedido->dadosPedidoValor = $values["produto"];
+		//$Pedido->dadosPedidoValor = $values["produto"];
 		$Pedido->dadosPedidoValor = floor((floatval($invoiceData['valor']) + floatval($invoiceData['total_reajuste'])) * 100);
 
 		//$Pedido->dadosPedidoValor = 101;
@@ -585,6 +585,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$objResposta = $Pedido->RequisicaoConsulta();
 			$consultaArray = $this->cieloReturnToArray($objResposta);
 			
+			var_dump($consultaArray);
 			
 
 			// DEPENDENDO DO VALOR DO STATUS, REALIZAR A CAPTURA
@@ -747,6 +748,10 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$DadosPedido	= "dados-pedido";
 		$DataHora		= "data-hora";
 		$FormaPagamento	= "forma-pagamento";
+		
+		$dadosToken				= "dados-token";
+		$codigoToken			= "codigo-token";
+		$numeroCartaoTruncado 	= "numero-cartao-truncado";
 
 		return array(
 			'dados_pedido' => array(
@@ -782,7 +787,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				"mensagem"	=> (string) $xmlObject->captura->mensagem,
 				"data_hora"	=> date("Y-m-d H:i:s", strtotime((string) $xmlObject->captura->$DataHora)),
 				"valor"		=> floatval((string) $xmlObject->captura->valor) / 100
-			)
+			),
+			"token"	=> array(
+				"token"		=> (string) $xmlObject->token->$dadosToken->$codigoToken,
+				"status"	=> (string) $xmlObject->token->$dadosToken->status,
+				"cartao"	=> (string) $xmlObject->token->$dadosToken->$numeroCartaoTruncado
+					
+			)	
 		);
 	}
 
