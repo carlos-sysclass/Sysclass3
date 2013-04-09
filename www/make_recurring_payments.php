@@ -16,6 +16,9 @@
 
  */
 //This is needed in order to make cron jobs able to run the file
+$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = "sysclass.com";
+
+
 $dir = getcwd();
 chdir(dirname(__FILE__));
 $debug_TimeStart = microtime(true); //Debugging timer - initialization
