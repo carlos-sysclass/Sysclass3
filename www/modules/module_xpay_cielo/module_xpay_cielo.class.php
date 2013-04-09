@@ -519,6 +519,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
     		$Pedido->urlRetorno = ReturnURL();
         }
 
+        $doNormal = false;
         // TRANSACAO NORMAL OU COM TOKEN ??
         if (!empty($values['token'])) {
         	list($tokenData) = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
@@ -528,30 +529,37 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         		$Pedido->formaPagamentoBandeira = $tokenData["bandeira"];
         		$objResposta = $Pedido->RequisicaoTransacao("token");
         		
+        		var_dump($Pedido);
+        		var_dump($objResposta);
         		
+        		exit;
+        	} else {
+        		$doNormal = true;
         	}
 
         	
-        	exit;
+        	
         } else {
-        	// ENVIA REQUISIÇÃO SITE CIELO
-        	$objResposta = $Pedido->RequisicaoTransacao(false);
+        	$doNormal = true;
         } 
-        
-        
 
-		$Pedido->tid = (string) $objResposta->tid;
-		$Pedido->pan = (string) $objResposta->pan;
-		$Pedido->status = (string) $objResposta->status;
-
-		$urlAutenticacao = "url-autenticacao";
-		$Pedido->urlAutenticacao = (string) $objResposta->$urlAutenticacao;
-
-		$currentUser = $this->getCurrentUser();
-
-		$this->setCache(md5($currentUser->user['login'] . date("Ymd")), $Pedido->tid);
-
-		return $Pedido;
+        if ($doNormal) {
+	        // ENVIA REQUISIÇÃO SITE CIELO
+	        $objResposta = $Pedido->RequisicaoTransacao(false);
+	
+			$Pedido->tid = (string) $objResposta->tid;
+			$Pedido->pan = (string) $objResposta->pan;
+			$Pedido->status = (string) $objResposta->status;
+	
+			$urlAutenticacao = "url-autenticacao";
+			$Pedido->urlAutenticacao = (string) $objResposta->$urlAutenticacao;
+	
+			$currentUser = $this->getCurrentUser();
+	
+			$this->setCache(md5($currentUser->user['login'] . date("Ymd")), $Pedido->tid);
+	
+			return $Pedido;
+        }
 		/*
 		// Serializa Pedido e guarda na SESSION
 		$StrPedido = $Pedido->ToString();
