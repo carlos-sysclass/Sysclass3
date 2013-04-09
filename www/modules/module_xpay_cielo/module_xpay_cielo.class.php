@@ -470,7 +470,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$Pedido->capturar = $this->conf['auto_capture'];
 		$Pedido->autorizar = $this->conf['authorization'];
 		
-		$Pedido->gerarToken = $this->conf['gerar_token'];
+		$Pedido->gerarToken = $values['gerar_token'] ? 'true' : 'false';
 		/// CHECAR COMO INCLUIR O VALOR
 
 
