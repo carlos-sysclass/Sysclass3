@@ -521,15 +521,24 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
         // TRANSACAO NORMAL OU COM TOKEN ??
         if (!empty($values['token'])) {
-        	$tokenData = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
-        	var_dump($tokenData);
+        	list($tokenData) = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
+        	
+        	if (count($tokenData) > 0) {
+        		$Pedido->token = $values['token'];
+        		$Pedido->formaPagamentoBandeira = $tokenData["bandeira"];
+        		$objResposta = $Pedido->RequisicaoTransacao("token");
+        		
+        		
+        	}
+
+        	
         	exit;
-        }
+        } else {
+        	// ENVIA REQUISIÇÃO SITE CIELO
+        	$objResposta = $Pedido->RequisicaoTransacao(false);
+        } 
         
         
-        
-		// ENVIA REQUISIÇÃO SITE CIELO
-		$objResposta = $Pedido->RequisicaoTransacao(false);
 
 		$Pedido->tid = (string) $objResposta->tid;
 		$Pedido->pan = (string) $objResposta->pan;
