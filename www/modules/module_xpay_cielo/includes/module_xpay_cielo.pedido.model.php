@@ -453,8 +453,8 @@ function VerificaErro($vmPost, $vmResposta)
 			   		. $this->XMLUrlRetorno() . "\n   "
 			   		. $this->XMLAutorizar() . "\n"
 			   		. $this->XMLCapturar() . "\n "
-			   		. $this->XMLGerarToken() . "\n "  
-			   		. $this->XMLCampoLivre() . "\n" ;
+			   		. $this->XMLCampoLivre() . "\n"
+			   		. $this->XMLGerarToken() . "\n " ;
 			
 		$msg .= '</requisicao-transacao>';
 		
