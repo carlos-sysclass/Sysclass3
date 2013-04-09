@@ -519,6 +519,15 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
     		$Pedido->urlRetorno = ReturnURL();
         }
 
+        // TRANSACAO NORMAL OU COM TOKEN ??
+        if (!empty($values['token'])) {
+        	$tokenData = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
+        	var_dump($tokenData);
+        	exit;
+        }
+        
+        
+        
 		// ENVIA REQUISIÇÃO SITE CIELO
 		$objResposta = $Pedido->RequisicaoTransacao(false);
 
@@ -712,6 +721,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					$invoiceData['user_id'],
 					$consultaArray['token']["token"],
 					$consultaArray['token']["cartao"],
+					$consultaArray['forma_pagamento']["bandeira"],
 					$consultaArray['token']["status"]
 				);
 			}			
@@ -750,7 +760,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		return true;
 	}
 	
-	private function saveTokenForUserCard($user_id, $token, $cartao, $status)
+	private function saveTokenForUserCard($user_id, $token, $cartao, $bandeira, $status)
 	{
 		$tokenID = eF_insertTableData(
 			"module_xpay_cielo_card_tokens", 
@@ -758,6 +768,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				"user_id"	=> $user_id,
 				"token"		=> $token,
 				"cartao"	=> $cartao,
+				"bandeira"	=> $bandeira,
 				"status_id"	=> $status
 			)
 		);

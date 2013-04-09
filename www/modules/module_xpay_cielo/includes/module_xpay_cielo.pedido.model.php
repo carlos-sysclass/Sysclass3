@@ -315,6 +315,16 @@ function VerificaErro($vmPost, $vmResposta)
 			
 			return $msg;
 		}
+		private function XMLDadosToken()
+		{
+			$msg = '<dados-portador>' . "\n      " .
+						'<token>' .
+							$this->token .
+						'</token>' . "\n      " .
+					'</dados-portador>';
+				
+			return $msg;
+		}
 		
 		private function XMLDadosCartao()
 		{
@@ -440,12 +450,14 @@ function VerificaErro($vmPost, $vmResposta)
 		}
 		
 		// Requisições
-	public function RequisicaoTransacao($incluirPortador)
+	public function RequisicaoTransacao($modo = false)
 	{
 		$msg = $this->XMLHeader() . "\n" . '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n" . $this->XMLDadosEc() . "\n";
-		if($incluirPortador == true)
-		{
-					//$msg .=	$this->XMLDadosPortador() . "\n   ";
+		
+		if ($modo == "portador") {
+			$msg .=	$this->XMLDadosPortador() . "\n   ";
+		} elseif ($modo == "token") {
+			$msg .=	$this->XMLDadosToken() . "\n   ";
 		}
 							
 		$msg .=		  $this->XMLDadosPedido() . "\n   "
