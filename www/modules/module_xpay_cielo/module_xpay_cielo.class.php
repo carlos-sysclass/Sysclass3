@@ -523,6 +523,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         if (!empty($values['token'])) {
         	$tokenData = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
         	var_dump($tokenData);
+        	exit;
         }
         
         
