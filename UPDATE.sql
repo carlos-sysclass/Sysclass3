@@ -3129,3 +3129,5 @@ CREATE TABLE `sysclass_root`.`module_xpay_cielo_card_tokens` (
 	`status_id` SMALLINT( 4 ) NOT NULL
 ) ENGINE = MYISAM ;
 
+ALTER TABLE `module_xpay_cielo_card_tokens` ADD `bandeira` VARCHAR( 20 ) NULL DEFAULT '' AFTER `cartao`;
+
