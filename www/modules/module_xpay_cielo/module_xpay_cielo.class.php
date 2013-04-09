@@ -789,7 +789,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				"valor"		=> floatval((string) $xmlObject->captura->valor) / 100
 			),
 			"token"	=> array(
-				"has_token"	=> !empty($xmlObject->token->$dadosToken->$codigoToken)),
+				"has_token"	=> !empty($xmlObject->token->$dadosToken->$codigoToken),
 				"token"		=> (string) $xmlObject->token->$dadosToken->$codigoToken,
 				"status"	=> (string) $xmlObject->token->$dadosToken->status,
 				"cartao"	=> (string) $xmlObject->token->$dadosToken->$numeroCartaoTruncado
