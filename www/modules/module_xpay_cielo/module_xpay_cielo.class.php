@@ -585,9 +585,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$objResposta = $Pedido->RequisicaoConsulta();
 			$consultaArray = $this->cieloReturnToArray($objResposta);
 			
-			var_dump($consultaArray);
-			
-
 			// DEPENDENDO DO VALOR DO STATUS, REALIZAR A CAPTURA
 			// A CAPTURA SERÁ FEITA POSTERIORMENTE
 			/*
@@ -603,8 +600,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 			
 			//var_dump($consultaArray);
-			
-
 			// ATUALIZAR STATUS NO BANCO DE DADOS
 			eF_updateTableData(
 				"module_xpay_cielo_transactions",
@@ -680,7 +675,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						$transaction['id'],
 						$transaction['data']
 					);
-
 					// CALL EVENTS
 					/*
 					$xpayModule->onPaymentReceivedEvent($this, array(
@@ -711,7 +705,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				default:
 					$status = "Transação não encontrada";
 			}
+			
+			if ($consultaArray['token']['has_token']) {
+				// SAVE USER CARD TOKEN
+				$tokenID = $this->saveTokenForUserCard(
+					$invoiceData['user_id'],
+					$consultaArray['token']["token"],
+					$consultaArray['token']["cartao"],
+					$consultaArray['token']["status"]
+				);
+			}			
+			
 			$smarty -> assign("T_XPAY_CIELO_CONSULTA", $consultaArray);
+			
+			
 			
 			//$transaction = $xpayModule->calculateInvoiceDetails($transaction);
 			
@@ -741,6 +748,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$this->injectCSS("printer.clean");
 
 		return true;
+	}
+	
+	private function saveTokenForUserCard($user_id, $token, $cartao, $status)
+	{
+		$tokenID = eF_insertTableData(
+			"module_xpay_cielo_card_tokens", 
+			array(
+				"user_id"	=> $user_id,
+				"token"		=> $token,
+				"cartao"	=> $cartao,
+				"status_id"	=> $status
+			)
+		);
+		return $tokenID;
 	}
 
 	private function cieloReturnToArray($xmlObject)

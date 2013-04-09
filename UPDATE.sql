@@ -3118,3 +3118,14 @@ INSERT INTO `sysclass_root`.`module_xpay_cielo_statuses` (`id`, `nome`) VALUES (
 
 /* 2012-12-12 */
 ALTER TABLE `module_xpay_price_rules` ADD `global_price` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `rule_xentify_id`;
+
+
+/* 2013-04-09 */
+CREATE TABLE `sysclass_root`.`module_xpay_cielo_card_tokens` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	`user_id` MEDIUMINT( 8 ) NOT NULL ,
+	`token` VARCHAR( 100 ) NOT NULL ,
+	`cartao` VARCHAR( 50 ) NOT NULL ,
+	`status_id` SMALLINT( 4 ) NOT NULL
+) ENGINE = MYISAM ;
+
