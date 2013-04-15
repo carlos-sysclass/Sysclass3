@@ -654,7 +654,7 @@ table.style1 thead th		{ padding-top: 2px; }
 table.style1 thead td		{ background: #DDDDDD; border-bottom: 1px solid #FFFFFF; text-align: left; line-height: 22px; padding: 2px 6px 4px 6px; white-space: nowrap; }
 table.style1 tbody th,
 table.style1 tbody .title	{ background: url('../images/bck_black_5.png'); font-weight: bold; white-space: nowrap; color: #666666; }
-table.style1 td			{ background: url('../images/bck_white_75.png'); border-bottom: 1px solid #DDDDDD; line-height: 22px; padding: 4px 6px 4px 6px; }
+table.style1 td			{ vertical-align: top; background: url('../images/bck_white_75.png'); border-bottom: 1px solid #DDDDDD; line-height: 22px; padding: 4px 6px 4px 6px; }
 table.style1 .icon16		{ margin-top: 3px; margin-bottom: 3px; }
 table.style1 td.vcenter		{ vertical-align: middle; }
 table.style1 td p		{ padding-bottom: 3px; padding-top: 3px; }

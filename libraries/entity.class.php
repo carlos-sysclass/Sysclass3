@@ -4,34 +4,37 @@
  * @author SysClass
  *
  */
+
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
+
 /**
  * Entity exceptions
  * @author SysClass
  *
  */
-class MagesterEntityException extends Exception
-{
+class MagesterEntityException extends Exception {
     const INVALID_ID = 2001;
     const ENTITY_NOT_EXIST = 2002;
     const INVALID_PARAMETER = 2003;
 }
+
 /**
  * General Entity Class
  *
  * @author SysClass
  *
  */
-abstract class MagesterEntity
-{
+abstract class MagesterEntity {
+
     /**
      * The entity variable
      * @var string
      */
     public $entity;
+
     /**
      * Instantiate entity
      *
@@ -39,8 +42,7 @@ abstract class MagesterEntity
      * @since 3.6.0
      * @access public
      */
-    public function __construct($param)
-    {
+    public function __construct($param) {
         if (!$this->entity) {
             $this->entity = strtolower(str_replace('Magester', '', get_class($this)));
         }
@@ -57,16 +59,17 @@ abstract class MagesterEntity
             $this->{$this->entity} = $param;
         }
     }
+
     /**
      * Delete entity
      *
      * @since 3.6.0
      * @access public
      */
-    public function delete()
-    {
+    public function delete() {
         eF_deleteTableData($this->entity, "id=".$this->{$this->entity}['id']);
     }
+
     /**
      * Create entity
      *
@@ -76,51 +79,52 @@ abstract class MagesterEntity
      * @static
      */
     public abstract static function create($fields = array());
+
     /**
      * Persist entity
      *
      * @since 3.6.0
      * @access public
      */
-    public function persist()
-    {
+    public function persist() {
         eF_updateTableData($this->entity, $this->{$this->entity}, "id=".$this->{$this->entity}['id']);
     }
+
     /**
      * Activate entity
      *
      * @since 3.6.0
      * @access public
      */
-    public function activate()
-    {
+    public function activate() {
         $this->{$this->entity}['active'] = 1;
         $this->persist();
     }
+
     /**
      * Deactivate entity
      *
      * @since 3.6.0
      * @access public
      */
-    public function deactivate()
-    {
+    public function deactivate() {
         $this->{$this->entity}['active'] = 0;
         $this->persist();
     }
+
     /**
      * Archive entity (if applicable)
      *
      * @since 3.6.0
      * @access public
      */
-    public function archive()
-    {
+    public function archive() {
         if (isset($this->{$this->entity}['archive'])) {
             $this->{$this->entity}['archive'] = 1;
             $this->persist();
         }
     }
+
     /**
      * Export entity
      *
@@ -129,8 +133,7 @@ abstract class MagesterEntity
      * @since 3.6.0
      * @access public
      */
-    public function export($type)
-    {
+    public function export($type) {
         $result = eF_getTableData($this->entity, "*");
         switch ($type) {
         case 'csv':
@@ -153,6 +156,7 @@ abstract class MagesterEntity
 
         return $export;
     }
+
     /**
      * Import entity
      *
@@ -160,8 +164,7 @@ abstract class MagesterEntity
      * @since 3.6.0
      * @access public
      */
-    public function import($type)
-    {
+    public function import($type) {
         switch ($type) {
         case 'csv':
             break;
@@ -172,8 +175,8 @@ abstract class MagesterEntity
             break;
         }
     }
-    public static function createDateElement($form, $elementName, $elementLabel, $options = array())
-    {
+
+    public static function createDateElement($form, $elementName, $elementLabel, $options = array()) {
         $options = array_merge(array('format' => getDateFormat().' H:i',
             'minYear' => date("Y") - 4,
             'maxYear' => date("Y") + 3), $options);
@@ -189,6 +192,7 @@ abstract class MagesterEntity
 
         return $el;
     }
+
     /**
      * Get all entity entries
      *
@@ -198,8 +202,7 @@ abstract class MagesterEntity
      * @access public
      * @static
      */
-    public static function getAll($name, $returnObjects = false)
-    {
+    public static function getAll($name, $returnObjects = false) {
         $result = eF_getTableData($name, "*");
         $entity = array();
         foreach ($result as $value) {
@@ -213,8 +216,7 @@ abstract class MagesterEntity
         return $entity;
     }
 
-    public static function getAllid($name, $where , $returnObjects = false)
-    {
+    public static function getAllid($name, $where , $returnObjects = false) {
         $result = eF_getTableData($name, "*", $where);
         $entity = array();
         foreach ($result as $value) {
@@ -227,6 +229,7 @@ abstract class MagesterEntity
 
         return $entity;
     }
+
     /**
      * Produce the creation form for this entity
      *
@@ -236,6 +239,7 @@ abstract class MagesterEntity
      * @static
      */
     public abstract function getForm($form);
+
     /**
      * Handle the posted form values
      *
@@ -245,4 +249,5 @@ abstract class MagesterEntity
      * @static
      */
     public abstract function handleForm($form);
+    
 }
