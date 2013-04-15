@@ -2402,13 +2402,18 @@ class module_gradebook extends MagesterExtendedModule {
 
         $lessonColumns = array();
 
-        foreach ($allLessonLogins as $login) {
+        $allLessonUsers = eF_getTableData("users", "*", "login IN ('" . implode("', '", $allLessonLogins) . "')");
+
+        foreach ($allLessonUsers as $user) {
+
             if ($storeQueriesLogs) storeLog(microtime(true), "----- Outter foreach");
+
+            $login = $user['login'];
             $response = $scores = array();
             $score = 0;
 
             if ($storeQueriesLogs) storeLog(microtime(true), "----- 1. MagesterUserFactory");
-            $currentUser = MagesterUserFactory::factory($login);
+            $currentUser = MagesterUserFactory::factory($user);
 
             // 2. FOR EACH GROUPS SCORES
             foreach ($lessonGroups as $group) {
