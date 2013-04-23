@@ -105,12 +105,13 @@ del		{ color: #FF001C; text-decoration:line-through; }
 
 .pagesize		{ width: 1000px; margin: 0px auto; text-align: left; }
 .pagetop		{
-	width: 100%;
-	min-width: 1000px;
+	/*width: 100%;*/
+	width: 650px;
+	min-width: 650px;
 	position: relative;
 	z-index: 99;
 }
-.head			{ padding: 0px 0px 0px 0px;}
+.head			{ width:650px; padding: 0px 0px 0px 0px;}
 .head_top		{ position: relative; min-height: 70px; }
 .main			{ }
 .main-wrap		{ width: 100%; }
