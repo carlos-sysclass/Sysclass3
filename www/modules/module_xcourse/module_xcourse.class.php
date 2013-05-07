@@ -468,10 +468,6 @@ class module_xcourse extends MagesterExtendedModule
 		$raw_guidance = array();
 		$raw_guidance[20] =	array (
 								array (
-									'title'		=> 'Aula Magna',
-									'link'		=> 'public_data/pos/bioenergia/aula_magna.pdf',
-									'target'	=> '_blank'
-								), array (
 									'title'		=> 'Manual do Aluno',
 									'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 									'target'	=> '_blank'
@@ -482,11 +478,6 @@ class module_xcourse extends MagesterExtendedModule
 								)
 							);
 		$raw_guidance[21] = array (
-								array(
-									'title'		=> 'Aula Magna',
-									'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
-									'target'	=> '_blank'
-								),
 								array(
 									'title'		=> 'Manual do Aluno',
 									'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -500,11 +491,6 @@ class module_xcourse extends MagesterExtendedModule
 							);
 		$raw_guidance[31] = array(
 								array(
-									'title'		=> 'Aula Magna',
-									'link'		=> 'public_data/pos/erp/aula_magna.pdf',
-									'target'	=> '_blank'
-								),
-								array(
 									'title'		=> 'Manual do Aluno',
 									'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 									'target'	=> '_blank'
@@ -517,11 +503,6 @@ class module_xcourse extends MagesterExtendedModule
 							);
 		$raw_guidance[39] = array(
 								array(
-									'title'		=> 'Aula Magna',
-									'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
-									'target'	=> '_blank'
-								),
-								array(
 									'title'		=> 'Manual do Aluno',
 									'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 									'target'	=> '_blank'
@@ -533,11 +514,6 @@ class module_xcourse extends MagesterExtendedModule
 								)
 							);
 		$raw_guidance[40] = array(
-								array(
-									'title'		=> 'Aula Magna',
-									'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
-									'target'	=> '_blank'
-								),
 								array(
 									'title'		=> 'Manual do Aluno',
 									'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -978,11 +954,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 		echo $html_tree;
 		$raw_guidance = array();
 		$raw_guidance[20] = array(
-		array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/bioenergia/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
 				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/bioenergia/manual_do_aluno.pdf',
@@ -995,11 +966,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 				)
 				);
 				$raw_guidance[21] = array(
-				array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
 				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -1023,11 +989,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 
 				$raw_guidance[31] = array(
 				array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/erp/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
-				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 				'target'	=> '_blank'
@@ -1040,11 +1001,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 				);
 
 				$raw_guidance[39] = array(
-				array(
-			'title'		=> 'Aula Magna',
-			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
-			'target'	=> '_blank'
-			),
 			array(
 			'title'		=> 'Manual do Aluno',
 			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -1058,11 +1014,6 @@ $iterator = new MagesterContentCourseClassFilterIterator(
 			);
 
 			$raw_guidance[40] = array(
-			array(
-			'title'		=> 'Aula Magna',
-			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
-			'target'	=> '_blank'
-			),
 			array(
 			'title'		=> 'Manual do Aluno',
 			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -1162,11 +1113,6 @@ exit;
 		echo $html_tree;
 		$raw_guidance = array();
 		$raw_guidance[20] = array(
-		array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/bioenergia/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
 				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/bioenergia/manual_do_aluno.pdf',
@@ -1179,11 +1125,6 @@ exit;
 				)
 				);
 				$raw_guidance[21] = array(
-				array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/engenharia/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
 				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -1207,11 +1148,6 @@ exit;
 
 				$raw_guidance[31] = array(
 				array(
-				'title'		=> 'Aula Magna',
-				'link'		=> 'public_data/pos/erp/aula_magna.pdf',
-				'target'	=> '_blank'
-				),
-				array(
 				'title'		=> 'Manual do Aluno',
 				'link'		=> 'public_data/pos/manual_do_aluno.pdf',
 				'target'	=> '_blank'
@@ -1224,11 +1160,6 @@ exit;
 				);
 
 				$raw_guidance[39] = array(
-				array(
-			'title'		=> 'Aula Magna',
-			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
-			'target'	=> '_blank'
-			),
 			array(
 			'title'		=> 'Manual do Aluno',
 			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
@@ -1242,11 +1173,6 @@ exit;
 			);
 
 			$raw_guidance[40] = array(
-			array(
-			'title'		=> 'Aula Magna',
-			'link'		=> 'public_data/pos/posmainframe/aula_magna.pdf',
-			'target'	=> '_blank'
-			),
 			array(
 			'title'		=> 'Manual do Aluno',
 			'link'		=> 'public_data/pos/manual_do_aluno.pdf',
