@@ -53,6 +53,7 @@ function initSidebar(s_login) {
         }
     } catch (e) {sidebarExceptionHandler(e, 'initSidebar');}
 }
+
 function toggleSidebar(s_login) {
     try {
         var is_ie;
@@ -99,7 +100,6 @@ function toggleSidebar(s_login) {
                 }
             }
         } else {
-
             createCookie(s_login+'_sidebar','hidden',30);
             top.document.getElementById('framesetId').cols = ""+sidebar_width+", *";
             if (top.sideframe) {
@@ -138,6 +138,7 @@ function toggleSidebar(s_login) {
         sidebarExceptionHandler(e, 'toggleSidebar');
     }
 }
+
 function checkToOpenSidebar(s_login) {
     try {
         var value = readCookie(s_login+'_sidebarMode');
@@ -149,6 +150,7 @@ function checkToOpenSidebar(s_login) {
         sidebarExceptionHandler(e, 'checkToOpenSidebar');
     }
 }
+
 function show_user_box(user_str,user,send_msg,view_page,user_type,user_time, user_stats, user_profile, logout_user) {
     try {
         href_str = '<a href = "'+translations['s_type']+'.php?ctg=messages&add=1&recipient='+user+'&popup=1" onclick = "eF_js_showDivPopup(\'\', \'\', \'user_table\');eF_js_showDivPopup(\'\', 2)" target = "POPUP_FRAME">'+send_msg+"</a>";
@@ -1195,58 +1197,43 @@ function checkIfEnter(event) {
 function setActiveId(ctg, op, tab, type, module_menu, stats_options, user_type) {
     try {
         if (ctg == "personal" && tab == "file_record") {
-
             changeTDcolor('file_manager');
-
         } else if (ctg == "control_panel" && user_type != "administrator") {
-
             changeTDcolor('lesson_main');
-
         } else if (ctg == "content" && type == "theory") {
-
             changeTDcolor('theory');
-
         } else if (ctg == "tests") {
-
             changeTDcolor('tests');
-
         } else if (ctg == "projects") {
-
             changeTDcolor('exercises');
-
         } else if (ctg == "glossary") {
-
             changeTDcolor('glossary');
-
         } else if (ctg == 'content' && op == 'file_manager') {
-
             changeTDcolor('file_manager');
-
         } else if (ctg == 'statistics') {
             changeTDcolor('statistics_' + stats_options);
-            //			} else if (ctg == 'users' && $smarty.session.employee_type == $smarty.const._SUPERVISOR}
-            //			changeTDcolor('employees');
-
-} else if (ctg == "module_hcd") {
-    if (op == "reports") {
-        changeTDcolor('search_employee');
-    } else if (op != "") {
-        changeTDcolor(op);
-    } else {
-        changeTDcolor('hcd_control_panel');
+//		} else if (ctg == 'users' && $smarty.session.employee_type == $smarty.const._SUPERVISOR}
+//  		changeTDcolor('employees');
+        } else if (ctg == "module_hcd") {
+            if (op == "reports") {
+                changeTDcolor('search_employee');
+            } else if (op != "") {
+                changeTDcolor(op);
+            } else {
+                changeTDcolor('hcd_control_panel');
+            }
+        } else if (ctg == 'social') {
+            if (op == 'people') {
+                changeTDcolor('people');
+            }
+        } else if (ctg == 'module') {
+            changeTDcolor(module_menu); //{$T_MODULE_HIGHLIGHT}
+        } else {
+            changeTDcolor(ctg);
+        }
+    } catch (e) {
+        sidebarExceptionHandler(e, 'setActiveId');
     }
-} else if (ctg == 'social') {
-    if (op == 'people') {
-        changeTDcolor('people');
-
-    }
-
-} else if (ctg == 'module') {
-    changeTDcolor(module_menu); //{$T_MODULE_HIGHLIGHT}
-} else {
-    changeTDcolor(ctg);
-}
-} catch (e) {sidebarExceptionHandler(e, 'setActiveId');}
 }
 function setMenuPositions() {
     try {

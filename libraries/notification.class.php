@@ -192,41 +192,42 @@ class MagesterNotification {
                 ._AUTOMATEDEMAILSENTFROM." ###host_name### "._ON." ###date###");
             eF_insertTableData("event_notifications", $default_notification);
         }
-  /*
-  if (!in_array(MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION, $registered_events)) {
-   $default_notification = array("event_type" => MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION,
-               "send_conditions" => serialize(array()),
-               "send_immediately"=> 1,
-            "subject" => _ACCOUNTACTIVATIONMAILSUBJECT,
-            "message" => _DEARUSER." ###users_name###,<br><br>"._WELCOMETOOUR.' '._ELEARNINGPLATFORM.".! <br>"._ACCOUNTACTIVATIONMAILBODY."<br>###host_name###/index.php?account=###users_login###&key=###timestamp###<br><br><br>".
-                           _AUTOMATEDEMAILSENTFROM.' ###host_name### '._ON.' ###date###<br>'.
-                           _FORFURTHERCONTACTADMINAT." ###host_name###/index.php?ctg=contact <br><br>"._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>");
-   eF_insertTableData("event_notifications", $default_notification);
-  }
-   */
-  /*
-  if (!in_array(MagesterEvent::SYSTEM_REGISTER, $registered_events)) {
-      $message = _DEARUSER.' ###users_name###,<br><br>'
-                  ._WELCOMETOOUR.' '._ELEARNINGPLATFORM.". <br>"._ACCOUNTACTIVATEDWITHPERSONALINFORMATION."<br><br>".
-                 _LOGIN .': ###users_login###<br>'.
-                 _FIRSTNAME .': ###users_name###<br>'.
-                 _SURNAME .': ###users_surname###<br>'.
-                 _EMAILADDRESS.': ###users_email###<br>'.
-                 _LANGUAGE.': ###users_language###<br>'.
-                 _COMMENTS.': ###users_comments###<br><br>';
-   // we cannot really check about the other two cases...
-         if ($GLOBALS['configuration']['mail_activation']) {
-             $message .= _YOUMAYLOGINMAILACTIVATION . "<br><br>";
+        /*
+        if (!in_array(MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION, $registered_events)) {
+            $default_notification = array("event_type" => MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION,
+                "send_conditions" => serialize(array()),
+                "send_immediately"=> 1,
+                "subject" => _ACCOUNTACTIVATIONMAILSUBJECT,
+                "message" => _DEARUSER." ###users_name###,<br><br>"._WELCOMETOOUR.' '._ELEARNINGPLATFORM.".! <br>"._ACCOUNTACTIVATIONMAILBODY."<br>###host_name###/index.php?account=###users_login###&key=###timestamp###<br><br><br>".
+                    _AUTOMATEDEMAILSENTFROM.' ###host_name### '._ON.' ###date###<br>'.
+                    _FORFURTHERCONTACTADMINAT." ###host_name###/index.php?ctg=contact <br><br>"._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>"
+            );
+            eF_insertTableData("event_notifications", $default_notification);
+        }*/
+        /*
+        if (!in_array(MagesterEvent::SYSTEM_REGISTER, $registered_events)) {
+            $message = _DEARUSER.' ###users_name###,<br><br>'.
+                _WELCOMETOOUR.' '._ELEARNINGPLATFORM.". <br>"._ACCOUNTACTIVATEDWITHPERSONALINFORMATION."<br><br>".
+                _LOGIN .': ###users_login###<br>'.
+                _FIRSTNAME .': ###users_name###<br>'.
+                _SURNAME .': ###users_surname###<br>'.
+                _EMAILADDRESS.': ###users_email###<br>'.
+                _LANGUAGE.': ###users_language###<br>'.
+                _COMMENTS.': ###users_comments###<br><br>';
+            // we cannot really check about the other two cases...
+            if ($GLOBALS['configuration']['mail_activation']) {
+                $message .= _YOUMAYLOGINMAILACTIVATION . "<br><br>";
             }
             $message .= _FORFURTHERCONTACTADMINAT.' ###host_name###/index.php?ctg=contact <br><br>'._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>";
-   $default_notification = array("event_type" => MagesterEvent::SYSTEM_REGISTER,
-               "send_conditions" => serialize(array()),
-               "send_immediately"=> 1,
-            "subject" => _REGISTRATIONEMAIL,
-            "message" => $message);
-   eF_insertTableData("event_notifications", $default_notification);
-  }
-   */
+            $default_notification = array(
+                "event_type" => MagesterEvent::SYSTEM_REGISTER,
+                "send_conditions" => serialize(array()),
+                "send_immediately"=> 1,
+                "subject" => _REGISTRATIONEMAIL,
+                "message" => $message
+            );
+            eF_insertTableData("event_notifications", $default_notification);
+        }*/
         if (!in_array(MagesterEvent::NEW_FORUM_MESSAGE_POST, $registered_events)) {
             $message =
                 '<p>Prezado ###users_name### ###users_surname###,</p>
@@ -254,7 +255,6 @@ class MagesterNotification {
                 "message" => $message
             );
             eF_insertTableData("event_notifications", $default_notification);
-
         }
         if (!in_array(MagesterEvent::NEW_TOPIC, $registered_events)) {
             $message =
@@ -370,26 +370,22 @@ class MagesterNotification {
             );
             eF_insertTableData("event_notifications", $default_notification);
         }
+        /*
+        if (!in_array(MagesterEvent::NEW_POLL, $registered_events)) {
+            $message = "NOVA PESQUISA NO FORUM";
+            $message .= '<br>'._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>";
 
-
-
-/*
-    if (!in_array(MagesterEvent::NEW_POLL, $registered_events)) {
-        $message = "NOVA PESQUISA NO FORUM";
-        $message .= '<br>'._KINDREGARDSMAGESTER."<br>---<br>"._ADMINISTRATIONGROUP."<br>###site_name###<br>###site_motto###<br>";
-
-        $default_notification = array(
-            "event_type" => MagesterEvent::NEW_POLL,
-            "send_conditions" => serialize(array()),
-            "send_immediately"=> 1,
-            "html_message"	=> 1,
-            "send_recipients"	=> MagesterNotification::EXPLICITLYSEL,
-            "subject" => "Nova Pesquisa",
-            "message" => $message
-        );
-        eF_insertTableData("event_notifications", $default_notification);
-    }
- */
+            $default_notification = array(
+                "event_type" => MagesterEvent::NEW_POLL,
+                "send_conditions" => serialize(array()),
+                "send_immediately"=> 1,
+                "html_message"	=> 1,
+                "send_recipients"	=> MagesterNotification::EXPLICITLYSEL,
+                "subject" => "Nova Pesquisa",
+                "message" => $message
+            );
+            eF_insertTableData("event_notifications", $default_notification);
+        }*/
     }
 
     /**
@@ -1020,7 +1016,8 @@ class MagesterNotification {
     public static function sendNextNotifications($limit = false) {
         // CONECTAR SOMENTE UMA VEZ AO SMTP
 
-        $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
+        $smtp = Mail::factory('smtp', array(
+            'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
             'host' => $GLOBALS['configuration']['smtp_host'],
             'password' => $GLOBALS['configuration']['smtp_pass'],
             'port' => $GLOBALS['configuration']['smtp_port'],
@@ -1334,19 +1331,14 @@ class MagesterNotification {
         if ((isset($_SESSION['send_next_notifications_now']) && $_SESSION['send_next_notifications_now']) ||
             ($GLOBALS['configuration']['notifications_pageloads'] > 0 && rand(1, $GLOBALS['configuration']['notifications_pageloads']) == 1) ||
             (($GLOBALS['configuration']['notifications_maximum_inter_time'] > 0 && $GLOBALS['configuration']['notifications_last_send_timestamp'] > 0) && ($GLOBALS['configuration']['notifications_last_send_timestamp'] + 60 *$GLOBALS['configuration']['notifications_maximum_inter_time'] < time()))) {
-                /*//Debugging
+            /*//Debugging
+            echo "condition 1: ***" . (isset($_SESSION['send_next_notifications_now']) && $_SESSION['send_next_notifications_now']) . "***<BR>";
+            echo "condition 2: ***" . ($GLOBALS['configuration']['notifications_pageloads'] > 0 && rand(1, $GLOBALS['configuration']['notifications_pageloads']) == 1) . "***<BR>";
+            echo "condition 3: ***" . (($GLOBALS['configuration']['notifications_maximum_inter_time'] > 0 && $GLOBALS['configuration']['notifications_last_send_timestamp'] > 0) && ($GLOBALS['configuration']['notifications_last_send_timestamp'] + 60 *$GLOBALS['configuration']['notifications_maximum_inter_time'] < time())) . "***<BR>";
+            echo $GLOBALS['configuration']['notifications_last_send_timestamp'] . "  " . (60 *$GLOBALS['configuration']['notifications_maximum_inter_time']) . " " . time() ." <BR>";
+            */
 
-                echo "condition 1: ***" . (isset($_SESSION['send_next_notifications_now']) && $_SESSION['send_next_notifications_now']) . "***<BR>";
-
-                echo "condition 2: ***" . ($GLOBALS['configuration']['notifications_pageloads'] > 0 && rand(1, $GLOBALS['configuration']['notifications_pageloads']) == 1) . "***<BR>";
-
-                echo "condition 3: ***" . (($GLOBALS['configuration']['notifications_maximum_inter_time'] > 0 && $GLOBALS['configuration']['notifications_last_send_timestamp'] > 0) && ($GLOBALS['configuration']['notifications_last_send_timestamp'] + 60 *$GLOBALS['configuration']['notifications_maximum_inter_time'] < time())) . "***<BR>";
-
-                echo $GLOBALS['configuration']['notifications_last_send_timestamp'] . "  " . (60 *$GLOBALS['configuration']['notifications_maximum_inter_time']) . " " . time() ." <BR>";
-
-*/
-
-return true;
+            return true;
         }
     }
 }

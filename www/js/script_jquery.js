@@ -7,16 +7,18 @@ jQuery(document).ready(function() {
 		jQuery('#showAccountsContainer').filter(':not(:animated)').fadeToggle();
 		return false;
 	});
-/*	
-#	jQuery('#openChatList').click(function(){
-#		jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
-#		return false;
-#	});
-*/
+
+	/*	
+	jQuery('#openChatList').click(function(){
+		jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
+		return false;
+	});
+	*/
+	
 	jQuery('#openChatListBtn').click(function(){
-                jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
-                return false;
-        });
+        jQuery('#showChatUsersContainer').css("visibility", "visible").filter(':not(:animated)').fadeToggle();
+        return false;
+    });
 
 	jQuery("#showAccountsContainer").position({
 		of: jQuery( "#changeAccountBtn" ),

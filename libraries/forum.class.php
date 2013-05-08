@@ -415,13 +415,15 @@ class f_messages extends MagesterEntity {
             MagesterSearch::insertText(strip_tags($fields['body']), $new_id, "f_messages", "data");
         }
         // Timelines add event
-        MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_FORUM_MESSAGE_POST,
+        MagesterEvent::triggerEvent(array(
+            "type" => MagesterEvent::NEW_FORUM_MESSAGE_POST,
             "users_LOGIN" => $_SESSION['s_login'],
             "lessons_ID" => isset($GLOBALS['currentLesson']) ? $GLOBALS['currentLesson']->lesson['id'] : null,
             "lessons_name" => isset($GLOBALS['currentLesson']) ? $GLOBALS['currentLesson']->lesson['name'] : null,
             "entity_ID" => $new_id,
             'explicitly_selected'	=> array('admin', 'carlos.oliveira'),
-            "entity_name" => $fields['title']));
+            "entity_name" => $fields['title'])
+        );
     }
 
 }
