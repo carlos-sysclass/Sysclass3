@@ -2461,7 +2461,7 @@ class module_xpay extends MagesterExtendedModule
 			$allRules = eF_getTableData(
 				"module_xpay_price_rules",
 				"*",
-				"active=0",
+				"active=1",
 				"entify_id ASC"
 			);
 			$this->rules = $allRules;
