@@ -2461,7 +2461,7 @@ class module_xpay extends MagesterExtendedModule
 			$allRules = eF_getTableData(
 				"module_xpay_price_rules",
 				"*",
-				"",
+				"active=0",
 				"entify_id ASC"
 			);
 			$this->rules = $allRules;
@@ -3296,22 +3296,22 @@ class module_xpay extends MagesterExtendedModule
 		));
 		$invoice['full_price'] += $invoice['paid'];
 
-if ($invoice['invoice_index'] == 2) {
-//var_dump($currentVencimento);
-//var_dump($this->_getInvoiceTags($invoice));
-//var_dump($baseValue);
-/*
-var_dump(
-                        $invoice['full_price'],
-                        $invoice['acrescimo'],
-                        $invoice['desconto'],
-                        $invoice['rules'],
-                        $invoice['workflow']
-);
-*/
-}
+		if ($invoice['invoice_index'] == 2) {
+		//var_dump($currentVencimento);
+		//var_dump($this->_getInvoiceTags($invoice));
+		//var_dump($baseValue);
+		/*
+		var_dump(
+		                    $invoice['full_price'],
+		                    $invoice['acrescimo'],
+		                    $invoice['desconto'],
+		                    $invoice['rules'],
+		                    $invoice['workflow']
+		);
+		*/
+		}
 		$invoice['total_reajuste']	= $invoice['acrescimo'] - $invoice['desconto'];
-/*
+		/*
 
 		if ($baseValue > 0) {
 			// CALCULATE INVOICE DETAILS BASED ON PAYMENT METHOD RULES
