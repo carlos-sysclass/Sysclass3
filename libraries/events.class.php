@@ -591,7 +591,9 @@ class MagesterEvent
         }
         if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
             try {
-                $new_forum_message_post = new f_messages($this->event['entity_ID']);
+
+                $new_forum_message_post = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
+                $new_forum_message_post = $new_forum_message_post[0];
                 $subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
                 $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
                 $subst_array['new_forum_message_post_date'] = date("d/m/Y", strtotime($new_forum_message_post['timestamp']));
