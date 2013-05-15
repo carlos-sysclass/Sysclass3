@@ -595,8 +595,8 @@ class MagesterEvent
                 $new_forum_message_post = $this->event['fields'];
                 $subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
                 $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
-                $subst_array['new_forum_message_post_date'] = date("d/m/Y", strtotime($new_forum_message_post['timestamp']));
-                $subst_array['new_forum_message_post_time'] = date("H:i:s", strtotime($new_forum_message_post['timestamp']));
+                $subst_array['new_forum_message_post_date'] = date("d/m/Y", $new_forum_message_post['timestamp']);
+                $subst_array['new_forum_message_post_time'] = date("H:i:s", $new_forum_message_post['timestamp']);
 
                 $subst_array['new_forum_message_post_user_avatar'] = "";
                 $subst_array['new_forum_message_post_link'] = "#";
