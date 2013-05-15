@@ -958,11 +958,13 @@ class MagesterNotification {
         // Local paths names should become urls
         if ($this->notification['html_message'] == 1) {
             $message = str_replace('="content', '="###host_name###/content', $message);
+            /*
             if ($configuration['math_images']) {
                 $message = "<html><body><script type = \"text/javascript\" src = \"###host_name###/js/ASCIIMath2Tex.js\"> </script>".$message."</body></html>";
             } else {
                 $message = "<html><body><script type = \"text/javascript\" src = \"###host_name###/js/ASCIIMathML.js\"> </script>".$message."</body></html>";
             }
+            */
         } else {
             $message = str_replace("<br />", "\r\n", $message);
             $message = str_replace("<br>", "\r\n", $message);

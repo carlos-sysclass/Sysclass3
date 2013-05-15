@@ -320,7 +320,8 @@ class f_topics extends MagesterEntity {
                 "lessons_name" => isset($GLOBALS['currentLesson']) ? $GLOBALS['currentLesson']->lesson['name'] : null,
                 "entity_ID" => $new_id,
                 'explicitly_selected'	=> array('admin', 'carlos.oliveira'),
-                "entity_name" => $fields['title'])
+                "entity_name" => $fields['title']),
+                "message_fields" => $message_fields
             );
     }
 

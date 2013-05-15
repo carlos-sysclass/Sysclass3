@@ -589,6 +589,17 @@ class MagesterEvent
         if ($this->event['type'] == MagesterEvent::SYSTEM_JOIN) {
             $subst_array['new_password'] = $this->event['entity_name'];
         }
+        if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
+            // TODO: Add the substitution strings needed to the new topic event
+            $new_forum_message_post = new f_messages($this->event['entity_ID']);
+            $subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
+            $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
+            $subst_array['new_forum_message_post_date'] = date("d/m/Y", strtotime($new_forum_message_post['timestamp']));
+            $subst_array['new_forum_message_post_time'] = date("H:i:s", strtotime($new_forum_message_post['timestamp']));
+
+            $subst_array['new_forum_message_post_user_avatar'] = "";
+            $subst_array['new_forum_message_post_link'] = "#";
+        }
         if (isset($event_types[abs($this->event['type'])])) {
             $type = $event_types[abs($this->event['type'])];
             //echo $type . "***";
@@ -745,19 +756,13 @@ class MagesterEvent
                             $event_notification['recipient'] = "";
                         }
                     }
-        /*
-
+                    /*
                     // Special treatment due to explicity recipient selection
-
                     if ($this->event['type'] == MagesterEvent::NEW_SURVEY) {
-
                         $event_notification['send_conditions'] = serialize(array("surveys_ID" => $this->event['entity_ID']));
-
                         $event_notification['recipient'] = "";
-
                     }
-
-         */
+                    */
                     //@TODO unite with upper
                     // Format the message on the first layer: replacing event specific information now
                     // Note: Recipient's specific information will be first replaced in layer 2 (before sending)
