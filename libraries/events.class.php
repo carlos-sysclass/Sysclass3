@@ -601,13 +601,13 @@ class MagesterEvent
             //$subst_array['new_forum_message_post_link'] = "#";
 
 
-            $subst_array['new_forum_message_post_message'] = "Corpo da mensagem";
+            $subst_array['new_forum_message_post_body'] = "Corpo da mensagem";
             $subst_array['new_forum_message_post_title'] = "Título da mensagem";
             $subst_array['new_forum_message_post_date'] = "Data";
             $subst_array['new_forum_message_post_time'] = "Hora";
 
             $subst_array['new_forum_message_post_user_avatar'] = "";
-            $subst_array['new_forum_message_post_link'] = "#";
+            $subst_array['new_forum_message_post_link'] = $_SERVER['SERVER_NAME'] . "?ctg=forum&pool=" . $this->event['entity_ID'];
         }
         if (isset($event_types[abs($this->event['type'])])) {
             $type = $event_types[abs($this->event['type'])];
