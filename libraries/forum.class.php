@@ -422,8 +422,7 @@ class f_messages extends MagesterEntity {
             "lessons_name" => isset($GLOBALS['currentLesson']) ? $GLOBALS['currentLesson']->lesson['name'] : null,
             "entity_ID" => $new_id,
             'explicitly_selected'	=> array('admin', 'carlos.oliveira'),
-            "entity_name" => $fields['title'],
-            "fields" => $fields)
+            "entity_name" => $fields['title'])
         );
     }
 
