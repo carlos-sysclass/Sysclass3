@@ -592,11 +592,20 @@ class MagesterEvent
         if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
             try {
                 //$new_forum_message_post = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
-                $new_forum_message_post = $this->event['fields'];
-                $subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
-                $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
-                $subst_array['new_forum_message_post_date'] = date("d/m/Y", $new_forum_message_post['timestamp']);
-                $subst_array['new_forum_message_post_time'] = date("H:i:s", $new_forum_message_post['timestamp']);
+                //$new_forum_message_post = $this->event['fields'];
+                //$subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
+                //$subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
+                //$subst_array['new_forum_message_post_date'] = date("d/m/Y", $new_forum_message_post['timestamp']);
+                //$subst_array['new_forum_message_post_time'] = date("H:i:s", $new_forum_message_post['timestamp']);
+
+                //$subst_array['new_forum_message_post_user_avatar'] = "";
+                //$subst_array['new_forum_message_post_link'] = "#";
+
+
+                $subst_array['new_forum_message_post_message'] = "Corpo da mensagem";
+                $subst_array['new_forum_message_post_title'] = "Título da mensagem";
+                $subst_array['new_forum_message_post_date'] = "Data";
+                $subst_array['new_forum_message_post_time'] = "Hora";
 
                 $subst_array['new_forum_message_post_user_avatar'] = "";
                 $subst_array['new_forum_message_post_link'] = "#";
