@@ -592,22 +592,19 @@ class MagesterEvent
         if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
             $new_forum_message = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
             $new_forum_message = $new_forum_message[0];
-            //$new_forum_message_post = $this->event['fields'];
-            //$subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
-            //$subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
-            //$subst_array['new_forum_message_post_date'] = date("d/m/Y", $new_forum_message_post['timestamp']);
-            //$subst_array['new_forum_message_post_time'] = date("H:i:s", $new_forum_message_post['timestamp']);
 
-            //$subst_array['new_forum_message_post_user_avatar'] = "";
-            //$subst_array['new_forum_message_post_link'] = "#";
-
+            $avatar_ID = $triggeringUser->user['avatar'];
+            if (!is_null($avatar_ID)) {
+                $subst_array['new_forum_message_user_avatar'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/view_file.php?file=" . $avatar_ID;
+            } else {
+                $subst_array['new_forum_message_user_avatar'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/view_file.php?/home/sysclass/root/www/themes/sysclass3/images/avatars/system_avatars/unknown_small.png";
+            }
 
             $subst_array['new_forum_message_body'] = $new_forum_message['body'];
             $subst_array['new_forum_message_title'] = $new_forum_message['title'];
             $subst_array['new_forum_message_date'] = date("d/m/Y", $new_forum_message['timestamp']);
             $subst_array['new_forum_message_time'] = date("H:i:s", $new_forum_message['timestamp']);
 
-            $subst_array['new_forum_message_user_avatar'] = "";
             $subst_array['new_forum_message_link'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/" . $triggeringUser->user['user_type'] . ".php?ctg=forum&topic=" . $new_forum_message['f_topics_ID'];
         }
         if (isset($event_types[abs($this->event['type'])])) {
