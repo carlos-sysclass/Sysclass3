@@ -602,13 +602,13 @@ class MagesterEvent
             //$subst_array['new_forum_message_post_link'] = "#";
 
 
-            $subst_array['new_forum_message_post_body'] = $new_forum_message_post['body'];
-            $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
-            $subst_array['new_forum_message_post_date'] = "Data";
-            $subst_array['new_forum_message_post_time'] = "Hora";
+            $subst_array['new_forum_message_body'] = $new_forum_message_post['body'];
+            $subst_array['new_forum_message_title'] = $new_forum_message_post['title'];
+            $subst_array['new_forum_message_date'] = "Data";
+            $subst_array['new_forum_message_time'] = "Hora";
 
-            $subst_array['new_forum_message_post_user_avatar'] = "";
-            $subst_array['new_forum_message_post_link'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/" . $triggeringUser->user['user_type'] . ".php?ctg=forum&topic=" . $new_forum_message_post['f_topics_ID'];
+            $subst_array['new_forum_message_user_avatar'] = "";
+            $subst_array['new_forum_message_link'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/" . $triggeringUser->user['user_type'] . ".php?ctg=forum&topic=" . $new_forum_message_post['f_topics_ID'];
         }
         if (isset($event_types[abs($this->event['type'])])) {
             $type = $event_types[abs($this->event['type'])];
