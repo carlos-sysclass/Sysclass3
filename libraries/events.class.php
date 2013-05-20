@@ -590,8 +590,8 @@ class MagesterEvent
             $subst_array['new_password'] = $this->event['entity_name'];
         }
         if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
-            $new_forum_message_post = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
-            $new_forum_message_post = $new_forum_message_post[0];
+            $new_forum_message = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
+            $new_forum_message = $new_forum_message[0];
             //$new_forum_message_post = $this->event['fields'];
             //$subst_array['new_forum_message_post_message'] = $new_forum_message_post['body'];
             //$subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
@@ -602,13 +602,13 @@ class MagesterEvent
             //$subst_array['new_forum_message_post_link'] = "#";
 
 
-            $subst_array['new_forum_message_body'] = $new_forum_message_post['body'];
-            $subst_array['new_forum_message_title'] = $new_forum_message_post['title'];
-            $subst_array['new_forum_message_date'] = "Data";
-            $subst_array['new_forum_message_time'] = "Hora";
+            $subst_array['new_forum_message_body'] = $new_forum_message['body'];
+            $subst_array['new_forum_message_title'] = $new_forum_message['title'];
+            $subst_array['new_forum_message_date'] = date("d/m/Y", strtotime($new_forum_message_post['timestamp']));
+            $subst_array['new_forum_message_time'] = date("H:i:s", strtotime($new_forum_message_post['timestamp']));
 
             $subst_array['new_forum_message_user_avatar'] = "";
-            $subst_array['new_forum_message_link'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/" . $triggeringUser->user['user_type'] . ".php?ctg=forum&topic=" . $new_forum_message_post['f_topics_ID'];
+            $subst_array['new_forum_message_link'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/" . $triggeringUser->user['user_type'] . ".php?ctg=forum&topic=" . $new_forum_message['f_topics_ID'];
         }
         if (isset($event_types[abs($this->event['type'])])) {
             $type = $event_types[abs($this->event['type'])];
