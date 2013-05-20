@@ -607,7 +607,7 @@ class MagesterEvent
             $subst_array['new_forum_message_post_time'] = "Hora";
 
             $subst_array['new_forum_message_post_user_avatar'] = "";
-            $subst_array['new_forum_message_post_link'] = $_SERVER['SERVER_NAME'] . "?ctg=forum&pool=" . $this->event['entity_ID'];
+            $subst_array['new_forum_message_post_link'] = $_SERVER['SERVER_NAME'] . $triggeringUser->user['user_type'] . "php?ctg=forum&pool=" . $this->event['entity_ID'];
         }
         if (isset($event_types[abs($this->event['type'])])) {
             $type = $event_types[abs($this->event['type'])];
