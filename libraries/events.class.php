@@ -597,7 +597,7 @@ class MagesterEvent
             if (!is_null($avatar_ID)) {
                 $subst_array['new_forum_message_user_avatar'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/view_file.php?file=" . $avatar_ID;
             } else {
-                $subst_array['new_forum_message_user_avatar'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/view_file.php?/home/sysclass/root/www/themes/sysclass3/images/avatars/system_avatars/unknown_small.png";
+                $subst_array['new_forum_message_user_avatar'] = ($_SERVER['HTTPS'] ? "https://" : "http://") . $_SERVER['SERVER_NAME'] . "/view_file.php?file=/home/sysclass/root/www/themes/sysclass3/images/avatars/system_avatars/unknown_small.png";
             }
 
             $subst_array['new_forum_message_body'] = $new_forum_message['body'];
