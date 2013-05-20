@@ -602,8 +602,8 @@ class MagesterEvent
             //$subst_array['new_forum_message_post_link'] = "#";
 
 
-            $subst_array['new_forum_message_post_body'] = "Corpo da mensagem";
-            $subst_array['new_forum_message_post_title'] = "Título da mensagem";
+            $subst_array['new_forum_message_post_body'] = $new_forum_message_post['body'];
+            $subst_array['new_forum_message_post_title'] = $new_forum_message_post['title'];
             $subst_array['new_forum_message_post_date'] = "Data";
             $subst_array['new_forum_message_post_time'] = "Hora";
 
