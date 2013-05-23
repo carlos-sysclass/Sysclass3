@@ -909,10 +909,10 @@ class MagesterNotification {
             $language = $language[0]['translation'];
         }
 
-        $currentUser = MagesterUserFactory::factory($recipient['login']);
-        $modules = $currentUser->getModules();
-        $enrollResult = ef_getTableData("module_xenrollment", "id", sprintf("users_id = %d", $currentUser->user['id'], "id DESC"));
-        //$invoiceLink = $modules['module_pagamento']->generateInvoiceLinkAction($enrollResult[0]['id']);
+        //$currentUser = MagesterUserFactory::factory($recipient['login']);
+        //$modules = $currentUser->getModules();
+        //$enrollResult = ef_getTableData("module_xenrollment", "id", sprintf("users_id = %d", $currentUser->user['id'], "id DESC"));
+        ////$invoiceLink = $modules['module_pagamento']->generateInvoiceLinkAction($enrollResult[0]['id']);
 
         $template_formulations = array(
             "users_name" => $recipient['name'],
@@ -927,21 +927,18 @@ class MagesterNotification {
             "user_type" => $recipient['user_type'],
             "host_name" => $hostname,
             "site_name" => $GLOBALS['configuration']['site_name'],
-            "site_motto" => $GLOBALS['configuration']['site_motto'],
+            "site_motto" => $GLOBALS['configuration']['site_motto'] /*,
             "payment_registration_boleto_link"	=> $invoiceLink['link'] /*,
             "course_terms_link"					=> "http://ult.com.br/wp-content/themes/ult/magester/entify.getter.php?type=courses&subtype=terms&ID=" . $SelectedCourseId
              */
         );
 
-        $header = array ('From' => $GLOBALS['configuration']['system_email'],
+        $header = array (
+            'From' => $GLOBALS['configuration']['system_email'],
             'To' => $recipient['email'],
             'Subject' => eF_formulateTemplateMessage($this->notification['subject'], $template_formulations),
-            'Content-Transfer-Encoding' => '7bit');
-        if ($this->notification['html_message'] == 1) {
-            $header['Content-type'] = 'text/html;charset="UTF-8"'; // if content-type is text/html, the message cannot be received by mail clients for Registration content
-        } else {
-            $header['Content-type'] = 'text/plain;charset="UTF-8"';
-        }
+            'Content-Transfer-Encoding' => '7bit'
+        );
         if (!is_object($smtp)) {
             $smtp = Mail::factory('smtp', array(
                 'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
@@ -955,8 +952,11 @@ class MagesterNotification {
 
         // force url change for html messages
         $message = eF_getCorrectLanguageMessage($this->notification['message'], $recipient['languages_NAME']);
+
         // Local paths names should become urls
         if ($this->notification['html_message'] == 1) {
+            $header['Content-type'] = 'text/html;charset="UTF-8"'; // if content-type is text/html, the message cannot be received by mail clients for Registration content
+
             $message = str_replace('="content', '="###host_name###/content', $message);
             /*
             if ($configuration['math_images']) {
@@ -966,6 +966,8 @@ class MagesterNotification {
             }
             */
         } else {
+            $header['Content-type'] = 'text/plain;charset="UTF-8"';
+
             $message = str_replace("<br />", "\r\n", $message);
             $message = str_replace("<br>", "\r\n", $message);
             $message = str_replace("<p>", "\r\n", $message);
@@ -979,10 +981,15 @@ class MagesterNotification {
         if ($smtp->send($recipient['email'], $header, $message)) {
             //if (true) {  echo $recipient['email'] . " (" .$recipient['name'] . " " . $recipient['surname'] . ") " . $message ."<BR>";  // for debugging
             // put into sent_notifications table
-            eF_insertTableData("sent_notifications", array("timestamp" => time(),
-                "recipient" => $recipient['email'] . " (" .$recipient['name'] . " " . $recipient['surname'] . ")",
-                "subject" => $header['Subject'],
-                "body" => $message));
+            eF_insertTableData(
+                "sent_notifications",
+                array(
+                    "timestamp" => time(),
+                    "recipient" => $recipient['email'] . " (" .$recipient['name'] . " " . $recipient['surname'] . ")",
+                    "subject" => $header['Subject'],
+                    "body" => $message
+                )
+            );
 
             return true;
         } else {
@@ -1033,11 +1040,7 @@ class MagesterNotification {
         }
         $init_limit = $limit;
 
-
-
-
         $result = eF_getTableData("notifications", "*", "active = 1 AND timestamp <" . time(), "timestamp ASC LIMIT $limit");
-        $notifications_to_send = array();
         foreach ($result as $next_notification) {
             $notification = new MagesterNotification($next_notification);
             // Try to send all messages of this notification
@@ -1045,13 +1048,13 @@ class MagesterNotification {
             $recipients = $notification->getRecipients();
             try {
                 foreach ($recipients as $login => $recipient) {
+                    if (!$limit) {
+                        break;
+                    }
                     // Send message
                     if ($notification->sendTo($recipient, $smtp)) {
                         $limit--;
-                    }
-                    unset($recipients[$login]);
-                    if (!$limit) {
-                        break;
+                        unset($recipients[$login]);
                     }
                 }
             } catch (Exception $e) {
@@ -1059,7 +1062,7 @@ class MagesterNotification {
             }
             // Check if the notification is periodical - if so  arrange (insert) the next notification
             // Note here: generated single recipient notifications should never have a send interval
-            if ($notification->notification['send_interval'] != "") {
+            if ($notification->notification['send_interval'] != "" && $notification->notification['send_interval'] != "0") {
                 $notification->scheduleNext();
             } else {
                 // Pop this notification - delete it
