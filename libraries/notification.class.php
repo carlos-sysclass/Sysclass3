@@ -1062,7 +1062,7 @@ class MagesterNotification {
             }
             // Check if the notification is periodical - if so  arrange (insert) the next notification
             // Note here: generated single recipient notifications should never have a send interval
-            if ($notification->notification['send_interval'] != "" && $notification->notification['send_interval'] != "0") {
+            if ($notification->notification['send_interval'] != "" || $notification->notification['send_interval'] != "0") {
                 $notification->scheduleNext();
             } else {
                 // Pop this notification - delete it
