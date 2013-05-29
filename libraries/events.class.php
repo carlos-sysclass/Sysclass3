@@ -593,12 +593,8 @@ class MagesterEvent
             $new_forum_message = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
             $new_forum_message = $new_forum_message[0];
 
-            $avatar_ID = $triggeringUser->user['avatar'];
-            if (!is_null($avatar_ID)) {
-                $subst_array['new_forum_message_user_avatar'] = "http://" . $_SERVER['SERVER_NAME'] . "/view_file.php?file=" . $avatar_ID;
-            } else {
-                $subst_array['new_forum_message_user_avatar'] = "http://" . $_SERVER['SERVER_NAME'] . "/view_file.php?file=/home/sysclass/root/www/themes/sysclass3/images/avatars/system_avatars/unknown_small.png";
-            }
+            $new_forum_message['body'] = str_replace("[quote]", "<bloquote>", $new_forum_message['body']);
+            $new_forum_message['body'] = str_replace("[/quote]", "</bloquote>", $new_forum_message['body']);
 
             $subst_array['new_forum_message_body'] = $new_forum_message['body'];
             $subst_array['new_forum_message_title'] = $new_forum_message['title'];
