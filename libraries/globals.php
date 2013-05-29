@@ -4,6 +4,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
+spl_autoload_register ("__autoload" );
+
 //Used for debugging purposes only
 $debug_TimeStart = microtime(true);
 
