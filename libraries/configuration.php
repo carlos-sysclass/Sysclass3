@@ -49,6 +49,11 @@ $configurationDefaults = array(
                 'overrideTheme' => 'sysclass3',
 		'https'         => 'required'
 	),
+        '173.193.157.162'      => array(
+                'dbname'        => 'sysclass_root',
+                'overrideTheme' => 'sysclass3',
+                'https'         => 'none'
+        ),
 	'fati.sysclass.com'	=> array(
 		'dbname'        => 'sysclass_fati',
                 'overrideTheme' => 'sysclass3'
