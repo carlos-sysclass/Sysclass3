@@ -316,7 +316,8 @@ if (class_exists("MagesterNotification") && MagesterNotification::shouldSendNext
 $smarty->assign("T_MODULE_CSS", $module_css_array);
 $smarty->assign("T_MODULE_CSS_STRING", implode(",",$module_css_array));
 $smarty->assign("T_MODULE_JS", $module_js_array);
-$smarty->assign("T_MODULE_JS_STRING", implode(",",$module_js_array));
+//$smarty->assign("T_MODULE_JS_STRING", implode(",",$module_js_array));
+$smarty->assign("T_MODULE_JS_ARRAY", $module_js_array);
 foreach ($loadedModules as $module) {
     $loadScripts = array_merge($loadScripts, $module->addScripts());
     $loadStylesheets = array_merge($loadStylesheets, $module->addStylesheets());
