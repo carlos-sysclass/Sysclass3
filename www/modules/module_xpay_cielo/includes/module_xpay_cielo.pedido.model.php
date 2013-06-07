@@ -34,7 +34,7 @@ function httprequest($paEndereco, $paPost)
 
 	//  CURLOPT_SSL_VERIFYPEER
 	//  verifica a validade do certificado
-	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYPEER, true);
+	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYPEER, false);
 	//  CURLOPPT_SSL_VERIFYHOST
 	//  verifica se a identidade do servidor bate com aquela informada no certificado
 	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYHOST, 2);
