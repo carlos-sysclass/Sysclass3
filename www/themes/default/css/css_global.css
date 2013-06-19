@@ -7,7 +7,7 @@ html {
 
 body {
 	font-size: 12px;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	background: #FCFCFC;
 	border-left: 1px solid #E6E6E6;
 	height: 100%;
@@ -527,7 +527,7 @@ input,select,textarea {
 	border: 1px solid #999999;
 	font-size: 12px;
 	font-weight: bold;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .inputText {
@@ -2549,12 +2549,12 @@ div.facebookHeader {
 
 .phpinfodisplay,.phpinfodisplay  td,.phpinfodisplay  th,.phpinfodisplay  h1,.phpinfodisplay  h2
 	{
-	font-family: sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .phpinfodisplay pre {
 	margin: 0px;
-	font-family: monospace;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .phpinfodisplay a:link {
