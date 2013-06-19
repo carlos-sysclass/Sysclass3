@@ -1,5 +1,5 @@
 /*html			{ background: #333333; } */
-body			{ min-width: 1000px; text-align: center; margin: 0px; font-family:arial, heveltica, sans-serif; font-size: 12px; 
+body			{ min-width: 1000px; text-align: center; margin: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; 
 			  background: url('../images/fundo_sysclass.jpg') #FFFFFF;}
 body.login		{ background: none; padding-top: 100px; background: url('../images/header.png') top left repeat-x; }
 
@@ -62,9 +62,9 @@ input.button	{ display: inline-block; line-height: 13px; /* IE8 hack */ line-hei
 
 strong		{ color: #333333; }
 small		{ font-size: 11px; line-height: 14px; display: block; }
-code		{ color: #333333; font-family: "Courier New",Courier,monospace,sans-serif; }
-q		{ background:url("../images/quote.png") no-repeat 7px 8px #FFFFFF; color: #333333; display:block; font-family: "Times New Roman", arial; font-size: 14px; line-height: 18px; font-style: normal; min-height: 42px; padding: 10px 10px 10px 32px; quotes:"" ""; font-style:italic; -moz-border-radius: 3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px; border-radius: 3px 3px 3px 3px;}
-q cite		{ color: #959595; display: block; font-size: 12px; padding-top: 5px; font-family: arial; }
+code		{ color: #333333; font-family: Arial, Helvetica, sans-serif; }
+q		{ background:url("../images/quote.png") no-repeat 7px 8px #FFFFFF; color: #333333; display:block; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 18px; font-style: normal; min-height: 42px; padding: 10px 10px 10px 32px; quotes:"" ""; font-style:italic; -moz-border-radius: 3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px; border-radius: 3px 3px 3px 3px;}
+q cite		{ color: #959595; display: block; font-size: 12px; padding-top: 5px; font-family: Arial, Helvetica, sans-serif; }
 del		{ color: #FF001C; text-decoration:line-through; }
 
 .rule		{ padding-top: 2px; padding-bottom: 20px; background: url('../images/rule.gif') 0px 0px repeat-x; }
@@ -361,7 +361,7 @@ a:hover .thumb		{ border: 1px solid #00A5C4; }
 .size48			{ width: 48px; height: 48px; }
 .size64			{ width: 64px; height: 64px; }
 
-.code			{ background: url('../images/bck_white_90.png'); color: #00A5C4; font-family: "Courier New",Courier,monospace,sans-serif; font-size: 12px; padding: 2px 5px 3px 5px; margin-bottom: 5px; }
+.code			{ background: url('../images/bck_white_90.png'); color: #00A5C4; font-family: Arial, Helvetica, sans-serif; font-size: 12px; padding: 2px 5px 3px 5px; margin-bottom: 5px; }
 .code span		{ color: #ff001c; }
 
 ul.standard		{ list-style-type: square; padding: 10px 0 20px 16px; }
