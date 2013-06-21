@@ -91,9 +91,9 @@
         <td class = "submitCell"><input class = "flatButton" type = "button" value = "submit" onclick = "updateCoupon(this)"></td></tr>
       </table>
       {/capture}
-      {eF_template_printBlock title = $smarty.const._COUPON data = $smarty.capture.t_coupon_form_code image = '32x32/shopping_basket_add.png'}
+      {sC_template_printBlock title = $smarty.const._COUPON data = $smarty.capture.t_coupon_form_code image = '32x32/shopping_basket_add.png'}
       </div>
-      <a id = "enter_coupon_link" href = "javascript:void(0)" onclick = "eF_js_showDivPopup('{$smarty.const._COUPON}', 0, 'coupon_table')">{$smarty.const._CLICKTOENTERDISCOUNTCOUPON}</a>
+      <a id = "enter_coupon_link" href = "javascript:void(0)" onclick = "sC_js_showDivPopup('{$smarty.const._COUPON}', 0, 'coupon_table')">{$smarty.const._CLICKTOENTERDISCOUNTCOUPON}</a>
      {/if}
      </div>
     &nbsp;</div>

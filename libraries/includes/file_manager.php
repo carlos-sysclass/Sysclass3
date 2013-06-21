@@ -6,11 +6,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 $GLOBALS['loadScripts'][] = 'includes/filemanager';
 
 if (isset($currentUser -> coreAccess['files']) && $currentUser -> coreAccess['files'] == 'hidden') {
-    eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 try {
-    if (isset($_GET['display_metadata']) && (eF_checkParameter($_GET['display_metadata'], 'id') || strpos($_GET['display_metadata'], $currentLesson -> getDirectory()) !== false)) {
+    if (isset($_GET['display_metadata']) && (sC_checkParameter($_GET['display_metadata'], 'id') || strpos($_GET['display_metadata'], $currentLesson -> getDirectory()) !== false)) {
         $form = new HTML_QuickForm("empty_form", "post", null, null, null, true);
         $file = new MagesterFile(urldecode($_GET['display_metadata']));
         if ($file['id'] == -1) {
@@ -135,17 +135,17 @@ try {
 
         if (isset($_GET['ajax']) && $_GET['ajax'] == $options['table_id']) {
          try {
-          isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+          isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-          if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+          if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
            $sort = $_GET['sort'];
            isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
           } else {
            $sort = 'login';
           }
 
-          if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-           isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+          if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+           isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
           }
           isset($_GET['filter']) ? $filter = $_GET['filter'] : $filter = false;
           isset($_GET['other']) ? $other = $_GET['other'] : $other = '';

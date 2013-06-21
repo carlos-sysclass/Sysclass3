@@ -11,12 +11,12 @@
                                              {assign var="calendar_ctg" value = "personal"}
                                             {/if}
 
-                                               {eF_template_printCalendar ctg=$calendar_ctg events=$T_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR}
+                                               {sC_template_printCalendar ctg=$calendar_ctg events=$T_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR}
 
                                            {/capture}
                                            {assign var="calendar_title" value = `$smarty.const._CALENDAR`&nbsp;(#filter:timestamp-`$T_VIEW_CALENDAR`#)}
 
-                                          {eF_template_printBlock title=$calendar_title data=$smarty.capture.t_calendar_code image='32x32/calendar.png' options=$T_CALENDAR_OPTIONS link=$T_CALENDAR_LINK}
+                                          {sC_template_printBlock title=$calendar_title data=$smarty.capture.t_calendar_code image='32x32/calendar.png' options=$T_CALENDAR_OPTIONS link=$T_CALENDAR_LINK}
 
                                    </td></tr>
                                 {/capture}
@@ -38,7 +38,7 @@
                                               <table width="100%"><tr><td class="emptyCategory">{$smarty.const._YOUARENOTCONNECTEDTOFACEBOOK} <a href="javascript:void(0);" onclick="FB.Connect.requireSession(function(){literal} { top.location='{/literal}{$smarty.session.s_type}{literal}page.php?fb_authenticated=1'; }{/literal}); return false;">{$smarty.const._HERE}</a></td></tr></table>
                                               {/if}
                                            {/capture}
-                                          {eF_template_printBlock title=$smarty.const._FACEBOOKPROFILE data=$smarty.capture.t_facebook_code image='/32x32/facebook.png' options=$T_FB_OPTIONS}
+                                          {sC_template_printBlock title=$smarty.const._FACEBOOKPROFILE data=$smarty.capture.t_facebook_code image='/32x32/facebook.png' options=$T_FB_OPTIONS}
                                    </td></tr>
                                 {/capture}
                             {/if}
@@ -47,9 +47,9 @@
         {capture name = "moduleForumList"}
                                    <tr><td class = "moduleCell">
                                            {capture name='t_forum_messages_code'}
-                                               {eF_template_printForumMessages data=$T_FORUM_MESSAGES forum_lessons_ID = $T_FORUM_LESSONS_ID limit = 5}
+                                               {sC_template_printForumMessages data=$T_FORUM_MESSAGES forum_lessons_ID = $T_FORUM_LESSONS_ID limit = 5}
                                            {/capture}
-                                           {eF_template_printBlock title=$smarty.const._RECENTMESSAGESATFORUM data=$smarty.capture.t_forum_messages_code image='32x32/forum.png' options=$T_FORUM_OPTIONS link=$T_FORUM_LINK}
+                                           {sC_template_printBlock title=$smarty.const._RECENTMESSAGESATFORUM data=$smarty.capture.t_forum_messages_code image='32x32/forum.png' options=$T_FORUM_OPTIONS link=$T_FORUM_LINK}
                                    </td></tr>
                                 {/capture}
                             {/if}
@@ -57,9 +57,9 @@
         {capture name = "moduleProjectsList"}
                                    <tr><td class = "moduleCell">
                                            {capture name='t_projects_code'}
-                                               {eF_template_printProjects data=$T_ALL_PROJECTS limit=5}
+                                               {sC_template_printProjects data=$T_ALL_PROJECTS limit=5}
                                            {/capture}
-                                           {eF_template_printBlock title=$smarty.const._PROJECTS data=$smarty.capture.t_projects_code image='32x32/projects.png' options=$T_PROJECTS_OPTIONS link=$T_PROJECTS_LINK}
+                                           {sC_template_printBlock title=$smarty.const._PROJECTS data=$smarty.capture.t_projects_code image='32x32/projects.png' options=$T_PROJECTS_OPTIONS link=$T_PROJECTS_LINK}
                                    </td></tr>
                                 {/capture}
                             {/if}
@@ -69,14 +69,14 @@
                                            {capture name='t_news_code'}
                                          <table class = "cpanelTable">
                                          {foreach name = 'news_list' item = "item" key = "key" from = $T_NEWS}
-                                          <tr><td>{$smarty.foreach.news_list.iteration}. <a title = "{$item.title}" href = "{$smarty.server.PHP_SELF}?ctg=news&view={$item.id}&lessons_ID=all&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">{$item.title}</a></td>
+                                          <tr><td>{$smarty.foreach.news_list.iteration}. <a title = "{$item.title}" href = "{$smarty.server.PHP_SELF}?ctg=news&view={$item.id}&lessons_ID=all&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">{$item.title}</a></td>
                                            <td class = "cpanelTime">#filter:user_login-{$item.users_LOGIN}#, <span title = "#filter:timestamp_time-{$item.timestamp}#">{$item.time_since}</span></td></tr>
                                          {foreachelse}
                                           <tr><td class = "emptyCategory">{$smarty.const._NOANNOUNCEMENTSPOSTED}</td></tr>
                                          {/foreach}
                                          </table>
                                            {/capture}
-                                             {eF_template_printBlock title=$smarty.const._ANNOUNCEMENTS data=$smarty.capture.t_news_code image='32x32/announcements.png' array=$T_NEWS options = $T_NEWS_OPTIONS link = $T_NEWS_LINK}
+                                             {sC_template_printBlock title=$smarty.const._ANNOUNCEMENTS data=$smarty.capture.t_news_code image='32x32/announcements.png' array=$T_NEWS options = $T_NEWS_OPTIONS link = $T_NEWS_LINK}
                                    </td></tr>
                                 {/capture}
                             {/if}
@@ -84,9 +84,9 @@
         {capture name = "moduleCommentsList"}
                                    <tr><td class = "moduleCell">
                                            {capture name='t_lesson_comments_code'}
-                                               {eF_template_printComments data = $T_LESSON_COMMENTS}
+                                               {sC_template_printComments data = $T_LESSON_COMMENTS}
                                            {/capture}
-                                             {eF_template_printBlock title=$smarty.const._RECENTCOMMENTS data=$smarty.capture.t_lesson_comments_code image='32x32/note.png'}
+                                             {sC_template_printBlock title=$smarty.const._RECENTCOMMENTS data=$smarty.capture.t_lesson_comments_code image='32x32/note.png'}
                                    </td></tr>
                                 {/capture}
                             {/if}
@@ -102,8 +102,8 @@
                                      <td class = "elementCell">
                                        <img src = "view_file.php?file={$comment.avatar}" title="{$smarty.const._CURRENTAVATAR}" alt="{$smarty.const._CURRENTAVATAR}" width = "{$comment.avatar_width}" height = "{$comment.avatar_height}" style="vertical-align:middle" />
                                      </td>
-                                     <td width="100%" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$comment.authors_LOGIN}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$comment.authors_LOGIN}#</b></a>: {$comment.data|replace:"<p>":""|replace:"</p>":""} <span class="timeago">{$comment.time_ago}</span> </td>
-                                     {*<td>{if $smarty.session.s_login == $comment.authors_LOGIN}<a href = "{$smarty.session.s_type}.php?ctg=social&op=comments&action=change&id={$comment.id}" onclick= "eF_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1);" target = "POPUP_FRAME"><img src="images/16x16/edit.png" title="{$smarty.const._EDIT}" alt="{$smarty.const._EDIT}" border = 0 style="vertical-align:middle" /> </a>{/if}</td>*}
+                                     <td width="100%" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$comment.authors_LOGIN}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$comment.authors_LOGIN}#</b></a>: {$comment.data|replace:"<p>":""|replace:"</p>":""} <span class="timeago">{$comment.time_ago}</span> </td>
+                                     {*<td>{if $smarty.session.s_login == $comment.authors_LOGIN}<a href = "{$smarty.session.s_type}.php?ctg=social&op=comments&action=change&id={$comment.id}" onclick= "sC_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1);" target = "POPUP_FRAME"><img src="images/16x16/edit.png" title="{$smarty.const._EDIT}" alt="{$smarty.const._EDIT}" border = 0 style="vertical-align:middle" /> </a>{/if}</td>*}
                                      <td><a href = "{$smarty.session.s_type}.php?ctg=social&op=comments&action=delete&id={$comment.id}" onclick="return confirm('{$smarty.const._AREYOUSUREYOUWANTTODELETETHISCOMMENT}');"><img src="images/16x16/error_delete.png" title="{$smarty.const._DELETE}" alt="{$smarty.const._DELETE}" border = 0 style="vertical-align:middle" /> </a></td>
                                     </tr>
                                 {foreachelse}
@@ -129,7 +129,7 @@
                                                 <td class = "elementCell">
                                                   <img src = "view_file.php?file={$user.avatar}" title="{$smarty.const._CURRENTAVATAR}" alt="{$smarty.const._CURRENTAVATAR}" width = "{$user.avatar_width}" height = "{$user.avatar_height}" style="vertical-align:middle" />
                                                 </td>
-                                                <td width="100%" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$user.login}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$user.login}#</b></a>{if isset($user.status) && $user.status != ''} {$user.status}{/if}</td>
+                                                <td width="100%" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$user.login}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$user.login}#</b></a>{if isset($user.status) && $user.status != ''} {$user.status}{/if}</td>
                                                 </tr>
                                {foreachelse}
                                 <tr>
@@ -197,7 +197,7 @@
 
                                           {/capture}
                                       {if $T_CONFIGURATION.disable_messages != 1}
-            {eF_template_printBlock title = $smarty.const._RECENTINCOMINGMESSAGES data = $smarty.capture.t_messages image = "32x32/mail.png" options=$T_MY_INCOMING_MESSAGES_OPTIONS}
+            {sC_template_printBlock title = $smarty.const._RECENTINCOMINGMESSAGES data = $smarty.capture.t_messages image = "32x32/mail.png" options=$T_MY_INCOMING_MESSAGES_OPTIONS}
                                          {/if}
            </td></tr>
                                 {/capture}
@@ -359,7 +359,7 @@
                      </table>
        {/if}
     {/capture}
-     {eF_template_printBlock title = $smarty.const._USERPROFILE data = $smarty.capture.t_show_profile_code image = '32x32/profile.png'}
+     {sC_template_printBlock title = $smarty.const._USERPROFILE data = $smarty.capture.t_show_profile_code image = '32x32/profile.png'}
 
     {*************** PROFILE COMMENTS PAGE ********************}
     {elseif $T_OP == "comments"}
@@ -396,7 +396,7 @@
           <script>parent.location = parent.location;</script>
       {/if}
      {/capture}
-     {eF_template_printBlock title = $smarty.const._ADDCOMMENT data = $smarty.capture.t_add_user_comment image = '32x32/billboard.png'}
+     {sC_template_printBlock title = $smarty.const._ADDCOMMENT data = $smarty.capture.t_add_user_comment image = '32x32/billboard.png'}
 
                 {* PEOPLE PAGE *}
     {elseif $T_OP == "people"}
@@ -417,7 +417,7 @@
             <td class = "elementCell">
               <img src = "view_file.php?file={$user.avatar}" title="{$smarty.const._CURRENTAVATAR}" alt="{$smarty.const._CURRENTAVATAR}" width = "{$user.avatar_width}" height = "{$user.avatar_height}" style="vertical-align:middle" />
             </td>
-            <td width="{if $smarty.session.s_type == "administrator"}100%{else}80%{/if}" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$user.login}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$user.login}#</b></a>
+            <td width="{if $smarty.session.s_type == "administrator"}100%{else}80%{/if}" >&nbsp;<a href = "{$smarty.session.s_type}.php?ctg=social&op=show_profile&user={$user.login}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._USERPROFILE}', 1)" target = "POPUP_FRAME"><b>#filter:login-{$user.login}#</b></a>
 
              {if isset($user.status) && $user.status != ''} {$user.status}{/if} {if isset($user.time_ago)} <span class="timeago">{$user.time_ago}</span>{/if}
             </td>
@@ -484,9 +484,9 @@
    -->
     {/capture}
              {if $smarty.session.s_type == "administrator"}
-     {eF_template_printBlock title = $smarty.const._USERSWITHCOMMONLESSONS data = $smarty.capture.t_people image = "32x32/users.png" main_options=$T_TABLE_OPTIONS help = 'Social_extensions'}
+     {sC_template_printBlock title = $smarty.const._USERSWITHCOMMONLESSONS data = $smarty.capture.t_people image = "32x32/users.png" main_options=$T_TABLE_OPTIONS help = 'Social_extensions'}
     {else}
-     {eF_template_printBlock title = $smarty.const._USERSWITHCOMMONLESSONS data = $smarty.capture.t_people image = "32x32/users.png" main_options=$T_TABLE_OPTIONS help = 'Lesson_users'}
+     {sC_template_printBlock title = $smarty.const._USERSWITHCOMMONLESSONS data = $smarty.capture.t_people image = "32x32/users.png" main_options=$T_TABLE_OPTIONS help = 'Lesson_users'}
     {/if}
                 {*************** TIMELINES PAGE ********************}
     {elseif $T_OP == "timeline"}
@@ -495,7 +495,7 @@
      {if isset($smarty.get.lessons_ID)}
 
 
-         {*The eF_template_printBlock for the following capture will be used only
+         {*The sC_template_printBlock for the following capture will be used only
            in the full page mode, namely where all=1 *}
          {capture name = 't_lessons_timeline_code'}
 

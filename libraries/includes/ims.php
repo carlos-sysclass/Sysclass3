@@ -15,7 +15,7 @@ if (!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess[
 $smarty -> assign("T_TABLE_OPTIONS", $options);
  if (!$_GET['ims_export']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
 
     try {
@@ -23,7 +23,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
         $maxUploads = 100;
 
         $form = new HTML_QuickForm("upload_ims_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=ims&ims_import=1', "", null, true);
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
   $form -> addElement('file', 'ims_file[0]', _UPLOADTHEIMSFILEINZIPFORMAT);
   for ($i = 1; $i < $maxUploads; $i++) {
@@ -93,10 +93,10 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
                     $manifestFile = new MagesterFile($imsPath.'imsmanifest.xml');
                     MagesterIMS :: import($currentLesson, $manifestFile, $imsFolderName, array('embed_type' => $values['embed_type'], 'popup_parameters' => $values['popup_parameters']));
                 }
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=ims&message=".urlencode(_SUCCESSFULLYIMPORTEDIMSFILE)."&message_type=success");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=ims&message=".urlencode(_SUCCESSFULLYIMPORTEDIMSFILE)."&message_type=success");
             } catch (Exception $e) {
                 $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = failure;
             }
 
@@ -106,15 +106,15 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
         $smarty -> assign('T_UPLOAD_IMS_FORM', $renderer -> toArray());
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
 } elseif ($_GET['ims_export']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     $form = new HTML_QuickForm("export_ims_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=ims&ims_export=1', "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form -> addElement('submit', 'submit_export_ims', _EXPORT, 'class = "flatButton"');
     if ($form -> isSubmitted() && $form -> validate()) {
         define ('IMS_FOLDER', G_ROOTPATH."www/content/ims_data");
@@ -135,7 +135,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
                 ($value instanceOf MagesterDirectory) ? $filelist[] = preg_replace("#".$currentLesson -> getDirectory()."#", "", $key).'/' : $filelist[] = preg_replace("#".$currentLesson -> getDirectory()."#", "", $key);
             }
 
-            $lesson_entries = eF_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and active=1");
+            $lesson_entries = sC_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and active=1");
 
             require_once 'ims_tools.php';
             create_manifest($lessons_id, $lesson_entries, $filelist, IMS_FOLDER);
@@ -150,7 +150,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
             $smarty -> assign("T_MESSAGE_TYPE", "success");
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = "failure";
         }
     }

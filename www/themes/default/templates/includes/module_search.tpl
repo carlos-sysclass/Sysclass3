@@ -24,7 +24,7 @@
         <div class="searchResults">
         <div class="resultsTitle">
             {if $cresult.table_name == 'news'}
-    <a href = "{$smarty.session.s_type}.php?ctg=news&view={$cresult.id}&popup=1" target = "POPUP_FRAME" onClick = "eF_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">
+    <a href = "{$smarty.session.s_type}.php?ctg=news&view={$cresult.id}&popup=1" target = "POPUP_FRAME" onClick = "sC_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">
                 <img src="images/16x16/announcements.png" border="0" align="top"/>&nbsp;{$cresult.name}
                 </a>
             {elseif $cresult.table_name == 'lessons'}
@@ -63,7 +63,7 @@
             {if $smarty.session.s_type == 'administrator'}
                 <a href="administrator.php?ctg=lessons&amp;edit_lesson={$result.lessons_ID}" class="editLink"><img src="images/16x16/announcements.png" border="0" align="top"/>&nbsp;{$result.name}</a>
             {else}
-                <a href = "{$smarty.session.s_type}.php?ctg=news&view={$result.id}&popup=1" target = "POPUP_FRAME" onClick = "eF_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);"><img src="images/16x16/announcements.png" border="0" align="top"/>&nbsp;{$result.name}</a>
+                <a href = "{$smarty.session.s_type}.php?ctg=news&view={$result.id}&popup=1" target = "POPUP_FRAME" onClick = "sC_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);"><img src="images/16x16/announcements.png" border="0" align="top"/>&nbsp;{$result.name}</a>
    {/if}
             {elseif $result.table_name == 'lessons'}
             {if $smarty.session.s_type == 'administrator'}
@@ -147,14 +147,14 @@
     <br>
     ({$smarty.const._FROM2}
     {if $smarty.session.s_login <> $T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}
-    <a title="{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}&popup=1">{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}</a>
+    <a title="{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}" target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}&popup=1">{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}</a>
     {else}
     {$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].sender}
     {/if}
     |
     {$smarty.const._TO2}
     {if $smarty.session.s_login <> $T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}
-    <a title="{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}&popup=1">{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}</a>
+    <a title="{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}" target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}&popup=1">{$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}</a>
     {else}
     {$T_SEARCH_RESULTS_PERSONAL_MESSAGES[results_list].recipient}
     {/if}
@@ -178,7 +178,7 @@
                 <div class="searchResults">
                 <div class="resultsTitle">
                 <a class="editLink" href="{$smarty.session.s_type}.php?ctg=users&edit_user={$item.login}">#filter:login-{$item.login}#</a>
-                <a title="#filter:login-{$item.login}#" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$item.login}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$item.login}&popup=1"><img border="0" alt="{$smarty.const._SENDPERSONALMESSAGE}" title="{$smarty.const._SENDPERSONALMESSAGE}" src="images/16x16/mail.png"/></a>
+                <a title="#filter:login-{$item.login}#" target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$item.login}', 2)" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$item.login}&popup=1"><img border="0" alt="{$smarty.const._SENDPERSONALMESSAGE}" title="{$smarty.const._SENDPERSONALMESSAGE}" src="images/16x16/mail.png"/></a>
                 <a class="editLink" href="{$smarty.session.s_type}.php?ctg=users&edit_user={$item.login}"><img border="0" alt="{$smarty.const._EDIT}" title="{$smarty.const._EDIT}" src="images/16x16/edit.png"/></a>
                 </div>
                 </div>
@@ -274,45 +274,45 @@
 <div class = "tabber">
     {if sizeof($T_SEARCH_COMMAND) >0}
         <div class = "tabbertab" title = "{$smarty.const._COMMANDS}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSCOMMANDS data=$smarty.capture.t_command_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSCOMMANDS data=$smarty.capture.t_command_search_results_code image='32x32/search.png'}
         </div>
     {/if}
     {if sizeof($T_SEARCH_RESULTS_CURRENT_LESSON) >0 || sizeof($T_SEARCH_RESULTS_LESSONS) >0}
         <div class = "tabbertab" title = "{$smarty.const._LESSONS}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINLESSONS data=$smarty.capture.t_lessons_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINLESSONS data=$smarty.capture.t_lessons_results_code image='32x32/search.png'}
         </div>
     {/if}
     {if sizeof($T_SEARCH_RESULTS_FORUM) >0 }
         <div class = "tabbertab" title = "{$smarty.const._FORUM}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINFORUM data=$smarty.capture.t_forum_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINFORUM data=$smarty.capture.t_forum_search_results_code image='32x32/search.png'}
         </div>
     {/if}
     {if sizeof($T_SEARCH_RESULTS_PERSONAL_MESSAGES) >0 }
         <div class = "tabbertab" title = "{$smarty.const._PERSONALMESSAGES}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINPERSONALMESSAGES data=$smarty.capture.t_personal_messages_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINPERSONALMESSAGES data=$smarty.capture.t_personal_messages_search_results_code image='32x32/search.png'}
         </div>
     {/if}
     {if sizeof($T_SEARCH_RESULTS_COURSES) >0 }
         <div class = "tabbertab" title = "{$smarty.const._COURSES}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINCOURSES data=$smarty.capture.t_courses_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINCOURSES data=$smarty.capture.t_courses_search_results_code image='32x32/search.png'}
         </div>
     {/if}
  {if sizeof($T_SEARCH_RESULTS_FILES) >0 }
         <div class = "tabbertab" title = "{$smarty.const._FILES}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINFILES data=$smarty.capture.t_files_results_code image='32x32/file_explorer.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINFILES data=$smarty.capture.t_files_results_code image='32x32/file_explorer.png'}
         </div>
     {/if}
     {if sizeof($T_SEARCH_RESULTS_USERS) >0 && $smarty.session.s_type == 'administrator'}
         <div class = "tabbertab" title = "{$smarty.const._USERS}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINUSERS data=$smarty.capture.t_users_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINUSERS data=$smarty.capture.t_users_search_results_code image='32x32/search.png'}
         </div>
     {/if}
      {if sizeof($T_SEARCH_RESULTS_GLOSSARY) >0 && $smarty.session.s_type != 'administrator'}
         <div class = "tabbertab" title = "{$smarty.const._GLOSSARY}">
-            {eF_template_printBlock title=$smarty.const._SEARCHRESULTSINGLOSSARY data=$smarty.capture.t_glossary_search_results_code image='32x32/search.png'}
+            {sC_template_printBlock title=$smarty.const._SEARCHRESULTSINGLOSSARY data=$smarty.capture.t_glossary_search_results_code image='32x32/search.png'}
         </div>
     {/if}
 
 </div>
 {/capture}
-{eF_template_printBlock title=$smarty.const._SEARCHRESULTS data=$smarty.capture.t_search_results_code image='32x32/search.png'}
+{sC_template_printBlock title=$smarty.const._SEARCHRESULTS data=$smarty.capture.t_search_results_code image='32x32/search.png'}

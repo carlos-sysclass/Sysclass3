@@ -359,7 +359,7 @@ if (top.sideframe && !usingHorizontalInterface) {
 * This function is used to resize scorm iframe, so that it spans through the entire page
 
 */
-function eF_js_setCorrectIframeSize(setHeight)
+function sC_js_setCorrectIframeSize(setHeight)
 {
  //Event.observe($('scormFrameID').contentWindow, 'beforeunload', function (s) {alert('b');});
     if (frame = window.document.getElementById('scormFrameID')) {
@@ -411,7 +411,7 @@ if (typeof(editPdfContent) != 'undefined' && editPdfContent) {
 }
 
 if (typeof(setIframeSize) != 'undefined' && setIframeSize) {
- eF_js_setCorrectIframeSize();
+ sC_js_setCorrectIframeSize();
 }
 
 if (typeof(matchscreenobjectid) != 'undefined' && matchscreenobjectid) {

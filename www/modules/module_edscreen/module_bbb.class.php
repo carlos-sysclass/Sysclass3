@@ -19,8 +19,8 @@ class module_BBB extends MagesterModule
 
     public function onInstall()
     {
-        eF_executeNew("drop table if exists `module_BBB`");
-        $a = eF_executeNew("CREATE TABLE `module_BBB` (
+        sC_executeNew("drop table if exists `module_BBB`");
+        $a = sC_executeNew("CREATE TABLE `module_BBB` (
                           `id` int(11) NOT NULL auto_increment,
                           `name` varchar(255) NOT NULL,
                           `timestamp` int(11) NOT NULL,
@@ -35,25 +35,25 @@ class module_BBB extends MagesterModule
                           `status` int(1) default 0,
                           PRIMARY KEY  (id)
                         ) DEFAULT CHARSET=utf8;");
-        eF_executeNew("drop table if exists `module_BBB_users_to_meeting` ");
-        $b = eF_executeNew("CREATE TABLE `module_BBB_users_to_meeting` (
+        sC_executeNew("drop table if exists `module_BBB_users_to_meeting` ");
+        $b = sC_executeNew("CREATE TABLE `module_BBB_users_to_meeting` (
                         `users_LOGIN` varchar(255) NOT NULL,
                         `meeting_ID` int(11) NOT NULL,
                         KEY (`users_LOGIN`,`meeting_ID`)
                        ) DEFAULT CHARSET=utf8;");
 
-		ef_deleteTableData("configuration", "name IN ('module_BBB_server', 'module_BBB_salt', 'module_BBB_server_version')");
+		sC_deleteTableData("configuration", "name IN ('module_BBB_server', 'module_BBB_salt', 'module_BBB_server_version')");
 
-        if (!($c = eF_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_server','http://yourserver.com/');"))) {
-            $c = eF_executeNew("UPDATE `configuration` SET value = 'http://yourserver.com/' WHERE name = 'module_BBB_server';");
+        if (!($c = sC_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_server','http://yourserver.com/');"))) {
+            $c = sC_executeNew("UPDATE `configuration` SET value = 'http://yourserver.com/' WHERE name = 'module_BBB_server';");
         }
 
-        if (!($d = eF_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_salt','29ae87201c1d23f7099f3dfb92f63578');"))) {
-            $d = eF_executeNew("UPDATE `configuration` SET value = '29ae87201c1d23f7099f3dfb92f63578' WHERE name = 'module_BBB_salt';");
+        if (!($d = sC_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_salt','29ae87201c1d23f7099f3dfb92f63578');"))) {
+            $d = sC_executeNew("UPDATE `configuration` SET value = '29ae87201c1d23f7099f3dfb92f63578' WHERE name = 'module_BBB_salt';");
         }
 
-        if (!($e = eF_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_server_version', '1');"))) {
-            $e = eF_executeNew("UPDATE `configuration` SET `value` = '1' WHERE `name` = 'module_BBB_server_version';");
+        if (!($e = sC_executeNew("INSERT INTO `configuration` VALUES ('module_BBB_server_version', '1');"))) {
+            $e = sC_executeNew("UPDATE `configuration` SET `value` = '1' WHERE `name` = 'module_BBB_server_version';");
         }
 
         return $a && $b && $c && $d && $e;
@@ -62,11 +62,11 @@ class module_BBB extends MagesterModule
     // And on deleting the module
     public function onUninstall()
     {
-        $a = eF_executeNew("DROP TABLE `module_BBB`;");
-        $b = eF_executeNew("DROP TABLE `module_BBB_users_to_meeting`;");
-        $c = eF_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_server';");
-		$d = eF_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_salt';");
-		$e = eF_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_server_version';");
+        $a = sC_executeNew("DROP TABLE `module_BBB`;");
+        $b = sC_executeNew("DROP TABLE `module_BBB_users_to_meeting`;");
+        $c = sC_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_server';");
+		$d = sC_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_salt';");
+		$e = sC_executeNew("DELETE FROM `configuration` WHERE `name` = 'module_BBB_server_version';");
 
         return $a && $b && $c && $d && $e;
     }
@@ -74,10 +74,10 @@ class module_BBB extends MagesterModule
     // On exporting a lesson
     public function onDeleteLesson($lessonId)
     {
-        $meetings_to_del = eF_getTableDataFlat("module_BBB", "id","lessons_ID='".$lessonId."'");
-        eF_deleteTableData("module_BBB", "lessons_ID='".$lessonId."'");
+        $meetings_to_del = sC_getTableDataFlat("module_BBB", "id","lessons_ID='".$lessonId."'");
+        sC_deleteTableData("module_BBB", "lessons_ID='".$lessonId."'");
         $delmeet = implode($meetings_to_del['id'],"','");
-        eF_deleteTableData("module_BBB_users_to_meeting", "meeting_ID IN ('".$delmeet ."')");
+        sC_deleteTableData("module_BBB_users_to_meeting", "meeting_ID IN ('".$delmeet ."')");
 
         return true;
     }
@@ -86,8 +86,8 @@ class module_BBB extends MagesterModule
     public function onExportLesson($lessonId)
     {
         $data = array();
-        $data['meetings'] = eF_getTableData("module_BBB", "*","lessons_ID=".$lessonId);
-        $data['users_to_meetings'] = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON module_BBB.id = module_BBB_users_to_meeting.meeting_ID", "module_BBB_users_to_meeting.*","lessons_ID=".$lessonId);
+        $data['meetings'] = sC_getTableData("module_BBB", "*","lessons_ID=".$lessonId);
+        $data['users_to_meetings'] = sC_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON module_BBB.id = module_BBB_users_to_meeting.meeting_ID", "module_BBB_users_to_meeting.*","lessons_ID=".$lessonId);
 
         return $data;
     }
@@ -103,7 +103,7 @@ class module_BBB extends MagesterModule
             $old_meeting_id = $meeting_record['id'];
             unset($meeting_record['id']);
             $meeting_record['lessons_ID'] = $lessonId;
-            $new_meeting_id = eF_insertTableData("module_BBB",$meeting_record);
+            $new_meeting_id = sC_insertTableData("module_BBB",$meeting_record);
 
             if ($new_meeting_id != $old_meeting_id) {
                 $changed_ids[$old_meeting_id] = $new_meeting_id;
@@ -115,7 +115,7 @@ class module_BBB extends MagesterModule
             if (isset($changed_ids[$users_to_meetings_record['meeting_ID']])) {
                 $users_to_meetings_record['meeting_ID'] = $changed_ids[$users_to_meetings_record['meeting_ID']];
             }
-            eF_insertTableData("module_BBB_users_to_meeting",$users_to_meetings_record);
+            sC_insertTableData("module_BBB_users_to_meeting",$users_to_meetings_record);
         }
 
         return true;
@@ -189,7 +189,7 @@ class module_BBB extends MagesterModule
     private function getBBBServer()
     {
         if (!$this -> BBB_server_host) {
-            $BBB_server = eF_getTableData("configuration", "value", "name = 'module_BBB_server'");
+            $BBB_server = sC_getTableData("configuration", "value", "name = 'module_BBB_server'");
             $this -> BBB_server_host = $BBB_server[0]['value'];
         }
 
@@ -200,7 +200,7 @@ class module_BBB extends MagesterModule
     private function getBBBServerVer()
     {
         if (!$this -> BBB_server_version) {
-            $BBB_server_ver = eF_getTableData("configuration", "value", "name = 'module_BBB_server_version'");
+            $BBB_server_ver = sC_getTableData("configuration", "value", "name = 'module_BBB_server_version'");
             $this -> BBB_server_version = $BBB_server_ver[0]['value'];
         }
 
@@ -212,7 +212,7 @@ class module_BBB extends MagesterModule
     private function getBBBSalt()
     {
         if (!$this -> BBB_security_salt) {
-            $BBB_salt = eF_getTableData("configuration", "value", "name = 'module_BBB_salt'");
+            $BBB_salt = sC_getTableData("configuration", "value", "name = 'module_BBB_salt'");
             $this -> BBB_security_salt = $BBB_salt[0]['value'];
         }
 
@@ -308,7 +308,7 @@ class module_BBB extends MagesterModule
 
 				$BBBurl = $BBB_serverPath.'join?'.$optionString.'&checksum='.$saltedHash;
 
-				eF_updateTableData("module_BBB", array('status' => '1'), "id=".$meeting_info[id]);
+				sC_updateTableData("module_BBB", array('status' => '1'), "id=".$meeting_info[id]);
 			} else {
 			//...or the professor page if it hasn't.
 				//echo ' xml response '.$xml;
@@ -360,7 +360,7 @@ class module_BBB extends MagesterModule
         if ($currentUser -> getType() == "administrator") {
 
             $form = new HTML_QuickForm("BBB_server_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
             $form -> addElement('text', 'server', null, 'class = "inputText" id="server_input"');
             $form -> addRule('server', _BBBTHEFIELDNAMEISMANDATORY, 'required', null, 'client');
             $form -> addElement('text', 'salt', null, 'class = "inputText" id="salt_input"');
@@ -399,40 +399,40 @@ class module_BBB extends MagesterModule
         if (isset($_GET['postAjaxRequest'])) {
             /** Post skill - Ajax skill **/
             if ($_GET['insert'] == "true") {
-                eF_insertTableData("module_BBB_users_to_meeting", array('users_LOGIN' => $_GET['user'], 'meeting_ID' => $_GET['edit_BBB']));
+                sC_insertTableData("module_BBB_users_to_meeting", array('users_LOGIN' => $_GET['user'], 'meeting_ID' => $_GET['edit_BBB']));
             } elseif ($_GET['insert'] == "false") {
-                eF_deleteTableData("module_BBB_users_to_meeting", "users_LOGIN = '". $_GET['user'] . "' AND meeting_ID = '".$_GET['edit_BBB']."'");
+                sC_deleteTableData("module_BBB_users_to_meeting", "users_LOGIN = '". $_GET['user'] . "' AND meeting_ID = '".$_GET['edit_BBB']."'");
             } elseif (isset($_GET['addAll'])) {
-                $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login, users.name, users.surname, meeting_ID","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND (meeting_ID <> '".$_GET['edit_BBB']."' OR meeting_ID IS NULL)");
+                $users = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login, users.name, users.surname, meeting_ID","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND (meeting_ID <> '".$_GET['edit_BBB']."' OR meeting_ID IS NULL)");
 
-                $users_attending = eF_getTableDataFlat("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
+                $users_attending = sC_getTableDataFlat("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
 
-                isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $users = sC_filterData($users, $_GET['filter']) : null;
                 $users_attending = $users_attending['login'];
 
                 foreach ($users as $user) {
                     if (!in_array($user['login'], $users_attending)) {
-                        eF_insertTableData("module_BBB_users_to_meeting", array('users_LOGIN' => $user['login'], 'meeting_ID' => $_GET['edit_BBB']));
+                        sC_insertTableData("module_BBB_users_to_meeting", array('users_LOGIN' => $user['login'], 'meeting_ID' => $_GET['edit_BBB']));
                         $users_attending[] = $user['login'];
                     }
                 }
             } elseif (isset($_GET['removeAll'])) {
-                $users_attending = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
+                $users_attending = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_BBB_users_to_meeting ON users.login = module_BBB_users_to_meeting.users_LOGIN","users.login","users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_BBB']."'");
                 //$users_attending = $users_attending['login'];
-                isset($_GET['filter']) ? $users_attending = eF_filterData($users_attending, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $users_attending = sC_filterData($users_attending, $_GET['filter']) : null;
 
                 $users_to_delete = array();
                 foreach ($users_attending as $user) {
                     $users_to_delete[] = $user['login'];
                 }
-                eF_deleteTableData("module_BBB_users_to_meeting", "meeting_ID = '".$_GET['edit_BBB']."' AND users_LOGIN IN ('".implode("','", $users_to_delete)."')");
+                sC_deleteTableData("module_BBB_users_to_meeting", "meeting_ID = '".$_GET['edit_BBB']."' AND users_LOGIN IN ('".implode("','", $users_to_delete)."')");
             } elseif (isset($_GET['mail_users']) && $_GET['mail_users'] == 1) {
                 $currentLesson = $this ->getCurrentLesson();
-                $meeting_users = eF_getTableData("module_BBB_users_to_meeting JOIN users ON module_BBB_users_to_meeting.users_LOGIN = users.login", "users.login, users.name, users.surname, users.email", "meeting_ID = ".$_GET['edit_BBB'] . " AND users.login <> '". $currentUser -> user['login'] ."'");
+                $meeting_users = sC_getTableData("module_BBB_users_to_meeting JOIN users ON module_BBB_users_to_meeting.users_LOGIN = users.login", "users.login, users.name, users.surname, users.email", "meeting_ID = ".$_GET['edit_BBB'] . " AND users.login <> '". $currentUser -> user['login'] ."'");
 
-                isset($_GET['filter']) ? $meeting_users  = eF_filterData($meeting_users , $_GET['filter']) : null;
+                isset($_GET['filter']) ? $meeting_users  = sC_filterData($meeting_users , $_GET['filter']) : null;
 
-                $meeting_info = eF_getTableData("module_BBB", "*", "id = ".$_GET['edit_BBB']);
+                $meeting_info = sC_getTableData("module_BBB", "*", "id = ".$_GET['edit_BBB']);
 
                 $subject = _BBB_MEETING;
                 $count = 0;
@@ -487,12 +487,12 @@ class module_BBB extends MagesterModule
 
 
 //pr($_GET);
-        if (isset($_GET['start_meeting']) && eF_checkParameter($_GET['start_meeting'], 'id')) {
+        if (isset($_GET['start_meeting']) && sC_checkParameter($_GET['start_meeting'], 'id')) {
 
             $BBB_server = $this -> getBBBServer();
             if ($BBB_server != "") {
 
-                $BBB = eF_getTableData("module_BBB", "*", "id=".$_GET['start_meeting']);
+                $BBB = sC_getTableData("module_BBB", "*", "id=".$_GET['start_meeting']);
 
                 if ($BBB[0]['status'] != 2) {
 
@@ -500,7 +500,7 @@ class module_BBB extends MagesterModule
 					$smarty -> assign("T_BBB_CREATEMEETINGURL", $BBBurl); // TESTING
 
                     if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor" && $meeting_info['status'] == 0) {
-                        eF_updateTableData("module_BBB", array('status' => '1'), "id=".$_GET['start_meeting']);
+                        sC_updateTableData("module_BBB", array('status' => '1'), "id=".$_GET['start_meeting']);
                     }
 
                     //echo $BBBUrl."<BR>";
@@ -515,9 +515,9 @@ class module_BBB extends MagesterModule
         }
 
 
-        if (isset($_GET['finished_meeting']) && eF_checkParameter($_GET['finished_meeting'], 'id')) {
+        if (isset($_GET['finished_meeting']) && sC_checkParameter($_GET['finished_meeting'], 'id')) {
             if ($userRole == "professor") {
-                eF_updateTableData("module_BBB", array('status' => '2'), "id=".$_GET['finished_meeting']);
+                sC_updateTableData("module_BBB", array('status' => '2'), "id=".$_GET['finished_meeting']);
             }
 
             $currentLesson = $this -> getCurrentLesson();
@@ -526,39 +526,39 @@ class module_BBB extends MagesterModule
             header("location:". $currentUser -> getType() . "page.php");
         }
 
-        if (isset($_GET['delete_BBB']) && eF_checkParameter($_GET['delete_BBB'], 'id') && $userRole == "professor") {
-            eF_deleteTableData("module_BBB", "id=".$_GET['delete_BBB']);
-            eF_deleteTableData("module_BBB_users_to_meeting", "meeting_ID=".$_GET['delete_BBB']);
+        if (isset($_GET['delete_BBB']) && sC_checkParameter($_GET['delete_BBB'], 'id') && $userRole == "professor") {
+            sC_deleteTableData("module_BBB", "id=".$_GET['delete_BBB']);
+            sC_deleteTableData("module_BBB_users_to_meeting", "meeting_ID=".$_GET['delete_BBB']);
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_BBB_SUCCESFULLYDELETEDBBBENTRY)."&message_type=success");
-        } elseif ($userRole == "professor" && (isset($_GET['add_BBB']) || (isset($_GET['edit_BBB']) && eF_checkParameter($_GET['edit_BBB'], 'id')))) {
+        } elseif ($userRole == "professor" && (isset($_GET['add_BBB']) || (isset($_GET['edit_BBB']) && sC_checkParameter($_GET['edit_BBB'], 'id')))) {
 
             // Create ajax enabled table for meeting attendants
             if (isset($_GET['edit_BBB'])) {
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'BBBUsersTable') {
-                    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-                    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                         $sort = $_GET['sort'];
                         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                     } else {
                         $sort = 'login';
                     }
 
-                    $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
+                    $users = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                                                     JOIN module_BBB ON module_BBB.lessons_ID = users_to_lessons.lessons_ID
                                                     LEFT OUTER JOIN module_BBB_users_to_meeting ON module_BBB.id = module_BBB_users_to_meeting.meeting_ID AND users.login = module_BBB_users_to_meeting.users_LOGIN",
                                                     "users.login, users.name, users.surname, users.email, meeting_ID",
                                                     "users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND users.login <> '".$currentUser -> user['login'] . "' AND module_BBB.id = '".$_GET['edit_BBB']."'");
 
-                    $users = eF_multiSort($users, $_GET['sort'], $order);
+                    $users = sC_multiSort($users, $_GET['sort'], $order);
                     if (isset($_GET['filter'])) {
-                        $users = eF_filterData($users , $_GET['filter']);
+                        $users = sC_filterData($users , $_GET['filter']);
                     }
 
                     $smarty -> assign("T_USERS_SIZE", sizeof($users));
 
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $users = array_slice($users, $offset, $limit);
                     }
 
@@ -568,7 +568,7 @@ class module_BBB extends MagesterModule
 
                 } else {
 
-                    $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
+                    $users = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                                                     JOIN module_BBB ON module_BBB.lessons_ID = users_to_lessons.lessons_ID
                                                     LEFT OUTER JOIN module_BBB_users_to_meeting ON module_BBB.id = module_BBB_users_to_meeting.meeting_ID AND users.login = module_BBB_users_to_meeting.users_LOGIN",
                                                     "users.login, users.name, users.surname, meeting_ID",
@@ -580,7 +580,7 @@ class module_BBB extends MagesterModule
             }
 
             $form = new HTML_QuickForm("BBB_entry_form", "post", $_SERVER['REQUEST_URI']. "&tab=users", "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
             $form -> addElement('text', 'name', null, 'class = "inputText"');
             $form -> addRule('name', _BBBTHEFIELDNAMEISMANDATORY, 'required', null, 'client');
 
@@ -632,7 +632,7 @@ class module_BBB extends MagesterModule
 
 
             $currentLesson = $this -> getCurrentLesson();
-            $students = eF_getTableData("users_to_lessons", "count(users_LOGIN) as total_students", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+            $students = sC_getTableData("users_to_lessons", "count(users_LOGIN) as total_students", "lessons_ID = '".$currentLesson -> lesson['id']."'");
 
             $total_students = $students[0]['total_students'];
             $students_count = array();
@@ -645,7 +645,7 @@ class module_BBB extends MagesterModule
 
 
             if (isset($_GET['edit_BBB'])) {
-                $BBB_entry = eF_getTableData("module_BBB", "*", "id=".$_GET['edit_BBB']);
+                $BBB_entry = sC_getTableData("module_BBB", "*", "id=".$_GET['edit_BBB']);
                 $timestamp_info = getdate($BBB_entry[0]['timestamp']);
                 $form -> setDefaults(array('name'       => $BBB_entry[0]['name'],
                                            'presenterAV'=> $BBB_entry[0]['confType'],
@@ -669,7 +669,7 @@ class module_BBB extends MagesterModule
 
             if ($form -> isSubmitted() && $form -> validate()) {
 
-                if (eF_checkParameter($form -> exportValue('name'), 'text')) {
+                if (sC_checkParameter($form -> exportValue('name'), 'text')) {
                     $smarty = $this -> getSmartyVar();
                     $currentLesson = $this -> getCurrentLesson();
 
@@ -687,7 +687,7 @@ class module_BBB extends MagesterModule
 
 
                     if (isset($_GET['edit_BBB'])) {
-                        if (eF_updateTableData("module_BBB", $fields, "id=".$_GET['edit_BBB'])) {
+                        if (sC_updateTableData("module_BBB", $fields, "id=".$_GET['edit_BBB'])) {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_BBB_SUCCESFULLYUPDATEDBBBENTRY)."&message_type=success");
                         } else {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_BBB_PROBLEMUPDATINGBBBENTRY)."&message_type=failure");
@@ -696,7 +696,7 @@ class module_BBB extends MagesterModule
                         // The key will be the current time when the event was set concatenated with the initial timestamp for the meeting
                         // If the latter changes after an event editing the key will not be changed
                         $fields['confKey'] = $currentLesson -> lesson['id'] . time() . $timestamp;
-                        if ($result = eF_insertTableData("module_BBB", $fields)) {
+                        if ($result = sC_insertTableData("module_BBB", $fields)) {
                             header("location:".$this -> moduleBaseUrl."&edit_BBB=".$result."&message=".urlencode(_BBB_SUCCESFULLYINSERTEDBBBENTRY)."&message_type=success&tab=users");
                         } else {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_BBB_PROBLEMINSERTINGBBBENTRY)."&message_type=failure");
@@ -716,10 +716,10 @@ class module_BBB extends MagesterModule
 
 
             if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
-                $BBB = eF_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+                $BBB = sC_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "professor");
             } else {
-                $BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'");
+                $BBB = sC_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'");
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "student");
             }
 
@@ -773,15 +773,15 @@ class module_BBB extends MagesterModule
             if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
             	// User's role is that of a student
 
- 				$BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago} AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
-  				//$BBB = eF_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'  AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
+ 				$BBB = sC_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago} AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
+  				//$BBB = sC_getTableData("module_BBB_users_to_meeting JOIN module_BBB ON id = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'  AND users_LOGIN='".$currentUser -> user['login']."'", "timestamp DESC");
 
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "student");
-                $BBB_server = eF_getTableData("configuration", "value", "name = 'module_BBB_server'");
+                $BBB_server = sC_getTableData("configuration", "value", "name = 'module_BBB_server'");
                 foreach ($BBB as $key => $meeting) {
                 	// The meeting has not started yet and is planned for some point in future
                 	if ($meeting['timestamp'] > time()) {
-                		$BBB[$key]['time_remaining'] = _BBB_IN . ' ' . eF_convertIntervalToTime($meeting['timestamp'] - time(), true);
+                		$BBB[$key]['time_remaining'] = _BBB_IN . ' ' . sC_convertIntervalToTime($meeting['timestamp'] - time(), true);
                 		$BBB[$key]['joiningUrl'] = $this -> createBBBUrl($currentUser, $meeting, true);
 						$smarty -> assign("T_BBB_CREATEMEETINGURL", $BBB[$key]['joiningUrl']);
                 	}
@@ -796,8 +796,8 @@ class module_BBB extends MagesterModule
             } else {
             	// User's role is that of a professor
 
-                $BBB = eF_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago}", "timestamp DESC");
-                //$BBB = eF_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'", "timestamp DESC");
+                $BBB = sC_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND `timestamp` > {$fifteen_minutes_ago}", "timestamp DESC");
+                //$BBB = sC_getTableData("module_BBB", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'", "timestamp DESC");
 
 
                 $smarty -> assign("T_BBB_CURRENTLESSONTYPE", "professor");
@@ -805,7 +805,7 @@ class module_BBB extends MagesterModule
                 foreach ($BBB as $key => $meeting) {
                 	if ($meeting ['timestamp'] > $now) {
                 		$BBB [$key]['mayStart'] = 0;
-                		$BBB[$key]['time_remaining'] = _BBB_IN . ' ' . eF_convertIntervalToTime($meeting['timestamp'] - time(), true);
+                		$BBB[$key]['time_remaining'] = _BBB_IN . ' ' . sC_convertIntervalToTime($meeting['timestamp'] - time(), true);
                 	} else {
                 		$BBB [$key]['mayStart'] = 1;
                 		$BBB[$key]['time_remaining'] = _BBB_NOW;

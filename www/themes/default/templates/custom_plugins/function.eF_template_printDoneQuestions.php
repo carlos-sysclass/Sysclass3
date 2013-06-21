@@ -1,9 +1,9 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printDoneQuestions function. Prints inner table
+* Smarty plugin: smarty_function_sC_template_printDoneQuestions function. Prints inner table
 *
 */
-function smarty_function_eF_template_printDoneQuestions($params, &$smarty)
+function smarty_function_sC_template_printDoneQuestions($params, &$smarty)
 {
     $max_title_size = 25;                                           //The maximum length of the title, after which it is cropped with ...
     $list_fold_size = 20;                                            //The folding occurs in this number of lines

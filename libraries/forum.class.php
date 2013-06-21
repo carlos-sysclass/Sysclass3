@@ -45,22 +45,22 @@ class f_forums extends MagesterEntity {
             $children = array_merge ($children, $forumTree[$children[$i]]);
         }
         $children[] = $this->{$this->entity}['id']; //Append the deleted forum to the childrens list
-        $topics = eF_getTableDataFlat("f_topics", "id", "f_forums_ID in (".implode(",", $children).")"); //Get forums' topics
+        $topics = sC_getTableDataFlat("f_topics", "id", "f_forums_ID in (".implode(",", $children).")"); //Get forums' topics
         if (sizeof($topics) > 0) { //Delete forums' messages and topics
-            $fmid = eF_getTableDataFlat("f_messages", "id", "f_topics_ID in (".implode(",", $topics['id']).")");
+            $fmid = sC_getTableDataFlat("f_messages", "id", "f_topics_ID in (".implode(",", $topics['id']).")");
             if (sizeof($fmid) > 0) {
                 MagesterSearch::removeText('f_messages', implode(",", $fmid['id']), '', true);
             }
-            eF_deleteTableData("f_messages", "f_topics_id in (".implode(",", $topics['id']).")");
-            eF_deleteTableData("f_topics", "id in (".implode(",", $topics['id']).")");
+            sC_deleteTableData("f_messages", "f_topics_id in (".implode(",", $topics['id']).")");
+            sC_deleteTableData("f_topics", "id in (".implode(",", $topics['id']).")");
         }
-        $fpid = eF_getTableDataFlat("f_poll", "id", "f_forums_ID in (".implode(",", $children).")");
+        $fpid = sC_getTableDataFlat("f_poll", "id", "f_forums_ID in (".implode(",", $children).")");
         if (sizeof($fpid) > 0) {
            MagesterSearch::removeText('f_poll', implode(",", $fpid['id']), '', true);
         }
-        eF_deleteTableData("f_poll", "f_forums_ID in (".implode(",", $children).")"); //Delete polls
+        sC_deleteTableData("f_poll", "f_forums_ID in (".implode(",", $children).")"); //Delete polls
         MagesterSearch::removeText('f_forums', implode(",", $children), '', true);
-        eF_deleteTableData("f_forums", "id in (".implode(",", $children).")"); //Finally, delete forums themselves
+        sC_deleteTableData("f_forums", "id in (".implode(",", $children).")"); //Finally, delete forums themselves
     }
 
     /**
@@ -134,22 +134,22 @@ class f_forums extends MagesterEntity {
     public function persist() {
         parent::persist();
         //Propagate the forum status to all of its subforums and topics
-        $result = eF_getTableData("f_forums", "*", "id=".$this->{$this->entity}['id']);
+        $result = sC_getTableData("f_forums", "*", "id=".$this->{$this->entity}['id']);
         $fields = $result[0];
         $childrenTempList = array($result[0]['id']);
         //pr($childrenTempList);
         $childrenList = $childrenTempList;
         while (!empty($childrenTempList)) {
             $list = implode(",", $childrenTempList);
-            $result = eF_getTableDataFlat("f_forums", "id", "parent_id IN ($list)");
+            $result = sC_getTableDataFlat("f_forums", "id", "parent_id IN ($list)");
             $childrenTempList = $result['id'];
             if (!empty($childrenTempList)) {
                 $childrenList = array_merge($childrenList, $childrenTempList);
             }
         }
         $list = implode(",",$childrenList);
-        eF_updateTableData("f_forums", array("status" => $fields['status']), "id IN ($list)");
-        eF_updateTableData("f_topics", array("status" => $fields['status']), "f_forums_ID IN ($list)");
+        sC_updateTableData("f_forums", array("status" => $fields['status']), "id IN ($list)");
+        sC_updateTableData("f_topics", array("status" => $fields['status']), "f_forums_ID IN ($list)");
         MagesterSearch::removeText('f_forums', $this->{$this->entity}['id'], '');
         MagesterSearch::insertText($fields['title'], $this->{$this->entity}['id'], "f_forums", "title");
         if (mb_strlen($fields['comments']) > 3) {
@@ -163,7 +163,7 @@ class f_forums extends MagesterEntity {
      * @return unknown_type
      */
     public static function create($fields = array()) {
-        $new_id = eF_insertTableData("f_forums", $fields);
+        $new_id = sC_insertTableData("f_forums", $fields);
         MagesterSearch::insertText($fields['title'], $new_id, "f_forums", "title");
         if (mb_strlen($fields['comments']) > 3) {
             MagesterSearch::insertText(strip_tags($fields['comments']), $new_id, "f_forums", "data");
@@ -238,8 +238,8 @@ class f_topics extends MagesterEntity {
      * @see libraries/MagesterEntity#delete()
      */
     public function delete() {
-        $fmid = eF_getTableDataFlat("f_messages", "id", "f_topics_ID=".$this->{$this->entity}['id']);
-        eF_deleteTableData("f_messages", "f_topics_ID=".$this->{$this->entity}['id']);
+        $fmid = sC_getTableDataFlat("f_messages", "id", "f_topics_ID=".$this->{$this->entity}['id']);
+        sC_deleteTableData("f_messages", "f_topics_ID=".$this->{$this->entity}['id']);
         parent::delete();
         MagesterSearch::removeText('f_messages', implode(",", $fmid['id']), '', true);
         MagesterSearch::removeText('f_topics', $this->{$this->entity}['id'], '');
@@ -298,14 +298,14 @@ class f_topics extends MagesterEntity {
         //The message field is only used for creating the topic's initial message
         $message = $fields['message'];
         unset($fields['message']);
-        $topic_id = eF_insertTableData("f_topics", $fields);
+        $topic_id = sC_insertTableData("f_topics", $fields);
         $message_fields = array("title" => $fields['title'],
             "body" => $message,
             "f_topics_ID" => $topic_id,
             "users_LOGIN" => $_SESSION['s_login'],
             "timestamp" => time(),
             "replyto" => 0);
-        $new_id = eF_insertTableData("f_messages", $message_fields);
+        $new_id = sC_insertTableData("f_messages", $message_fields);
         MagesterSearch::insertText($message_fields['title'], $new_id, "f_messages", "title");
         MagesterSearch::insertText($fields['title'], $topic_id, "f_topics", "title");
         if (mb_strlen($message_fields['body']) > 3) {
@@ -356,7 +356,7 @@ class f_messages extends MagesterEntity {
         $form->addElement('hidden', 'replyto', null);
         $form->addElement('submit', 'submit_add_message', _SUBMIT, 'class = "flatButton"');
         if (isset($_GET['replyto']) && in_array($_GET['replyto'], $GLOBALS['legalValues'])) {
-            $replyto = eF_getTableData("f_messages", "*", "id=".$_GET['replyto']);
+            $replyto = sC_getTableData("f_messages", "*", "id=".$_GET['replyto']);
             $form->setDefaults(array('title' => 'Re: '.$replyto[0]['title']));
             if (isset($_GET['quote'])) {
                 $form->setDefaults(array('body' => '[quote]'.str_replace(array('<p>', '</p>'), '', $replyto[0]['body']).'[/quote]'));
@@ -409,7 +409,7 @@ class f_messages extends MagesterEntity {
      * @return unknown_type
      */
     public static function create($fields = array()) {
-        $new_id = eF_insertTableData("f_messages", $fields);
+        $new_id = sC_insertTableData("f_messages", $fields);
         MagesterSearch::insertText($fields['title'], $new_id, "f_messages", "title");
         if (mb_strlen($fields['body']) > 3) {
             MagesterSearch::insertText(strip_tags($fields['body']), $new_id, "f_messages", "data");
@@ -444,8 +444,8 @@ class f_poll extends MagesterEntity {
      * @see libraries/MagesterEntity#delete()
      */
     public function delete() {
-        $result = eF_getTableData("f_poll", "users_LOGIN", "id=".$this->{$this->entity}['id']); //Get poll information, to make sure that the user has the priviledge to delete it
-        eF_deleteTableData("f_users_to_polls", "f_poll_ID=".$this->{$this->entity}['id']);
+        $result = sC_getTableData("f_poll", "users_LOGIN", "id=".$this->{$this->entity}['id']); //Get poll information, to make sure that the user has the priviledge to delete it
+        sC_deleteTableData("f_users_to_polls", "f_poll_ID=".$this->{$this->entity}['id']);
         parent::delete();
         MagesterSearch::removeText('f_poll', $this->{$this->entity}['id'], '');
     }
@@ -458,7 +458,7 @@ class f_poll extends MagesterEntity {
         $form->addElement('text', 'poll_subject', _SUBJECT, 'class = "inputText"');
         $form->addRule('poll_subject', _THEFIELD.' "'._TITLE.'" '._ISMANDATORY, 'required', null, 'client');
         $form->addElement('textarea', 'poll_text', _QUESTIONTEXT, 'class = "inputTextarea simpleEditor"');
-        $formatDate = eF_dateFormat();
+        $formatDate = sC_dateFormat();
         $options = array(
             'format' => $formatDate,
             'minYear' => date("Y"),
@@ -535,7 +535,7 @@ class f_poll extends MagesterEntity {
      * @return unknown_type
      */
     public static function create($fields = array()) {
-        $new_id = eF_insertTableData("f_poll", $fields);
+        $new_id = sC_insertTableData("f_poll", $fields);
         MagesterSearch::insertText($fields['title'], $new_id, "f_poll", "title");
         if (mb_strlen($fields['question']) > 3) {
             MagesterSearch::insertText(strip_tags($fields['question']), $new_id, "f_poll","data");

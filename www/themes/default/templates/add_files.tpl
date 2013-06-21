@@ -10,27 +10,27 @@
 {/if}
 
 {if isset($T_MESSAGE)}
-    {eF_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
+    {sC_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
 {/if}
 
 {if isset($T_UPLOAD_MESSAGES)}
     {section name = 'upload_messages_list' loop = $T_UPLOAD_MESSAGES}
-        {eF_template_printMessage message = $T_UPLOAD_MESSAGES[upload_messages_list] type = $T_UPLOAD_MESSAGES_TYPE[upload_messages_list]}
+        {sC_template_printMessage message = $T_UPLOAD_MESSAGES[upload_messages_list] type = $T_UPLOAD_MESSAGES_TYPE[upload_messages_list]}
     {/section}
 {/if}
 
 {if isset($smarty.get.op) && $smarty.get.op == 'delete'}
-    {eF_template_printMessage message = $T_DELETE_MESSAGE type = $T_DELETE_MESSAGE_TYPE}
-    {eF_template_printCloseButton reload = true}
+    {sC_template_printMessage message = $T_DELETE_MESSAGE type = $T_DELETE_MESSAGE_TYPE}
+    {sC_template_printCloseButton reload = true}
     <meta http-equiv = "refresh" content = "5;url=add_files.php?close=true" />
 {elseif isset($smarty.get.op) && $smarty.get.op == 'deletefolder'}
-    {eF_template_printMessage message = $T_DELETEFOLDER_MESSAGE type = $T_DELETEFOLDER_MESSAGE_TYPE}
-    {eF_template_printCloseButton reload = true}
+    {sC_template_printMessage message = $T_DELETEFOLDER_MESSAGE type = $T_DELETEFOLDER_MESSAGE_TYPE}
+    {sC_template_printCloseButton reload = true}
     <meta http-equiv = "refresh" content = "5;url=add_files.php?close=true" />
 {elseif isset($smarty.get.op) && $smarty.get.op == 'createfolder'}
     {if isset($smarty.post.submit)}
-        {eF_template_printMessage message = $T_CREATEFOLDER_MESSAGE type = $T_CREATEFOLDER_MESSAGE_TYPE}
-        {eF_template_printCloseButton reload = true}
+        {sC_template_printMessage message = $T_CREATEFOLDER_MESSAGE type = $T_CREATEFOLDER_MESSAGE_TYPE}
+        {sC_template_printCloseButton reload = true}
         <meta http-equiv = "refresh" content = "5;url=add_files.php?close=true" />        
     {else}
     <form action = "{$smarty.server.PHP_SELF}?op=createfolder" method = "post">

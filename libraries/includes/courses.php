@@ -8,7 +8,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 $loadScripts[] = 'includes/courses';
 
 if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
- eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+ sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 } elseif (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
  $_change_ = false;
 } else {
@@ -16,7 +16,7 @@ if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['
 }
 $smarty -> assign("_change_", $_change_);
 
-if (isset($_GET['delete_course']) && eF_checkParameter($_GET['delete_course'], 'id')) {
+if (isset($_GET['delete_course']) && sC_checkParameter($_GET['delete_course'], 'id')) {
  try {
   if (!$_change_) {
    throw new Exception(_UNAUTHORIZEDACCESS);
@@ -27,7 +27,7 @@ if (isset($_GET['delete_course']) && eF_checkParameter($_GET['delete_course'], '
      handleAjaxExceptions($e);
  }
  exit;
-} elseif (isset($_GET['archive_course']) && eF_checkParameter($_GET['archive_course'], 'login')) { //The administrator asked to delete a course
+} elseif (isset($_GET['archive_course']) && sC_checkParameter($_GET['archive_course'], 'login')) { //The administrator asked to delete a course
  try {
   if (!$_change_) {
    throw new Exception(_UNAUTHORIZEDACCESS);
@@ -38,7 +38,7 @@ if (isset($_GET['delete_course']) && eF_checkParameter($_GET['delete_course'], '
      handleAjaxExceptions($e);
  }
  exit;
-} elseif (isset($_GET['deactivate_course']) && eF_checkParameter($_GET['deactivate_course'], 'id')) {
+} elseif (isset($_GET['deactivate_course']) && sC_checkParameter($_GET['deactivate_course'], 'id')) {
  try {
   if (!$_change_) {
    throw new Exception(_UNAUTHORIZEDACCESS);
@@ -51,7 +51,7 @@ if (isset($_GET['delete_course']) && eF_checkParameter($_GET['delete_course'], '
      handleAjaxExceptions($e);
  }
  exit;
-} elseif (isset($_GET['activate_course']) && eF_checkParameter($_GET['activate_course'], 'id')) {
+} elseif (isset($_GET['activate_course']) && sC_checkParameter($_GET['activate_course'], 'id')) {
  try {
   if (!$_change_) {
    throw new Exception(_UNAUTHORIZEDACCESS);
@@ -134,7 +134,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		$classeAssoc = array();
 		$classeAssoc[0] = "Nenhuma turma selecionada";
 
-		$classeData = ef_getTableData("classes", "id, name", sprintf("active = 1 AND courses_ID = %d", $editCourse->course['id']));
+		$classeData = sC_getTableData("classes", "id, name", sprintf("active = 1 AND courses_ID = %d", $editCourse->course['id']));
 		foreach ($classeData as $item) {
 			$classeAssoc[$item['id']] = $item['name'];
 		}
@@ -216,7 +216,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 
 } elseif (isset($_GET['add_course']) || isset($_GET['edit_course'])) {
  if (!$_change_) {
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=courses&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=courses&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
  }
 
  if (isset($_GET['add_course'])) {
@@ -234,14 +234,14 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
  }
 
  $form = new HTML_QuickForm("add_courses_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=courses&".$post_target, "", null, true);
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
  $form -> addElement('text', 'name', _COURSENAME, 'class = "inputText"');
  $form -> addRule('name', _THEFIELD.' "'._COURSENAME.'" '._ISMANDATORY, 'required', null, 'client');
  //$form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
  try {
   $directionsTree = new MagesterDirectionsTree();
   if (sizeof($directionsTree -> tree) == 0) {
-   eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
+   sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
   }
   $directions = $directionsTree -> toPathString();
  } catch (Exception $e) {
@@ -328,7 +328,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
      }
      $editCourse -> course = array_merge($editCourse -> course, $fields);
      if ($courseSk = $editCourse -> getCourseSkill()) {
-      eF_updateTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " " .$form -> exportValue('name')), "skill_ID = " .$courseSk['skill_ID']) ;
+      sC_updateTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " " .$form -> exportValue('name')), "skill_ID = " .$courseSk['skill_ID']) ;
      }
      $message = _COURSEUPDATED;
      //$redirect = basename($_SERVER['PHP_SELF']).'?ctg=courses&message='.urlencode(_COURSEUPDATED).'&message_type=success';
@@ -355,19 +355,19 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
     //$start_date = mktime(0, 0, 0, $_POST['date_Month'], $_POST['date_Day'], $_POST['date_Year']);
     $editCourse -> persist();
     if (isset($updateCourseInstancesCategory) && $updateCourseInstancesCategory) {
-     eF_updateTableData("courses", array("directions_ID" => $editCourse -> course['directions_ID']), "instance_source=".$editCourse -> course['id']);
+     sC_updateTableData("courses", array("directions_ID" => $editCourse -> course['directions_ID']), "instance_source=".$editCourse -> course['id']);
     }
-    if ($form -> exportValue('branches_ID') && eF_checkParameter($form -> exportValue('branches_ID'), 'id')) {
-     $result = eF_getTableDataFlat("module_hcd_course_to_branch", "branches_ID", "courses_ID=".$editCourse -> course['id']);
+    if ($form -> exportValue('branches_ID') && sC_checkParameter($form -> exportValue('branches_ID'), 'id')) {
+     $result = sC_getTableDataFlat("module_hcd_course_to_branch", "branches_ID", "courses_ID=".$editCourse -> course['id']);
      if (sizeof($result['branches_ID']) == 0) {
-      eF_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID'), "courses_ID" => $editCourse -> course['id']));
+      sC_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID'), "courses_ID" => $editCourse -> course['id']));
      } elseif (sizeof($result) == 1) {
       //Only one branch associated with this course, as a 'location'
-      eF_updateTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID')), "courses_ID=".$editCourse -> course['id']);
+      sC_updateTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID')), "courses_ID=".$editCourse -> course['id']);
      }
     } else {
     }
-    !isset($redirect) OR eF_redirect($redirect);
+    !isset($redirect) OR sC_redirect($redirect);
    } catch (Exception $e) {
        handleNormalFlowExceptions($e);
    }
@@ -380,7 +380,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 //The courses advanced settings
 } elseif (isset($_GET['courseclass'])) {
 
-	if (isset($_GET['delete_courseclass']) && eF_checkParameter($_GET['delete_courseclass'], 'id')) {
+	if (isset($_GET['delete_courseclass']) && sC_checkParameter($_GET['delete_courseclass'], 'id')) {
 		try {
 			if (!$_change_) {
 				throw new Exception(_UNAUTHORIZEDACCESS);
@@ -499,7 +499,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 //The main courses list
 } else {
 //	$moduleURL = G_SERVERNAME . $_SESSION['s_type'] . '.php?ctg=module&op=module_xcourse';
-//	eF_redirect($moduleURL);
+//	sC_redirect($moduleURL);
 //	exit;
 
  //Directly import course
@@ -510,7 +510,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
   if ($form -> isSubmitted() && $form -> validate()) { //If the form is submitted and validated
    $directionsTree = new MagesterDirectionsTree();
    if (sizeof($directionsTree -> tree) == 0) {
-    eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
+    sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
     exit;
    }
    $userTempDir = $GLOBALS['currentUser'] -> user['directory'].'/temp';
@@ -546,7 +546,7 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
    if ($_GET['ajax'] == 'coursesTable') {
     $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => false);
    }
-   if ($_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+   if ($_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
     $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => $_GET['instancesTable_source']);
    }
    $constraints['required_fields'] = array('has_instances', 'location', 'num_students', 'num_lessons', 'num_skills');

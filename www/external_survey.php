@@ -26,16 +26,16 @@ if (!isset($_GET['username']) || !isset($_GET['coupon']) || !isset($_GET['survey
        if ( isset($_GET['screen']) && $_GET['screen'] == '2') {
            $load_editor=true;
        }
-       if (isset($_GET['surveys_ID']) && eF_checkParameter($_GET['surveys_ID'],'id')) {
+       if (isset($_GET['surveys_ID']) && sC_checkParameter($_GET['surveys_ID'],'id')) {
             $surveys_ID = $_GET['surveys_ID'];
        }
-       $survey_data = eF_getTableData("surveys","id,survey_name,survey_info,start_text,end_text,status","id=".$surveys_ID);
-       $survey_questions = eF_getSurveyQuestions($surveys_ID);
-       $survey_name = eF_getTableData("surveys","survey_name","id=".$surveys_ID);
+       $survey_data = sC_getTableData("surveys","id,survey_name,survey_info,start_text,end_text,status","id=".$surveys_ID);
+       $survey_questions = sC_getSurveyQuestions($surveys_ID);
+       $survey_name = sC_getTableData("surveys","survey_name","id=".$surveys_ID);
        $smarty -> assign("T_SURVEYNAME",$survey_name[0]['survey_name']);
        //$email='"'.$_GET['email'].'"';
-       //$user = eF_getTableData("users","login","email=".$email);
-       $user_done_survey = eF_getTableData("users_to_done_surveys",'done','surveys_ID='.$surveys_ID.' AND users_LOGIN="'.$_GET['username'].'"');
+       //$user = sC_getTableData("users","login","email=".$email);
+       $user_done_survey = sC_getTableData("users_to_done_surveys",'done','surveys_ID='.$surveys_ID.' AND users_LOGIN="'.$_GET['username'].'"');
 
        if ($user_done_survey[0]['done'] == 1  || $survey_data[0]['status'] == 0) {
            $smarty -> assign("T_ACCESS","-1");
@@ -45,17 +45,17 @@ if (!isset($_GET['username']) || !isset($_GET['coupon']) || !isset($_GET['survey
            $smarty -> assign("T_SURVEY_STARTTEXT",$survey_data[0]['start_text']);
            $smarty -> assign("T_SURVEY_QUESTIONS",$survey_questions);
            if (isset($_GET['op']) && strcmp($_GET['op'],"survey_store") == 0) {
-               $survey_data = eF_getTableData("surveys","id,end_text","id=".$surveys_ID);
+               $survey_data = sC_getTableData("surveys","id,end_text","id=".$surveys_ID);
                $smarty -> assign("T_SURVEY_INFO",$survey_data);
-               for ($i = 0 ; $i < sizeof(eF_getSurveyQuestions($_POST['surveys_ID'])) ; $i++) {
+               for ($i = 0 ; $i < sizeof(sC_getSurveyQuestions($_POST['surveys_ID'])) ; $i++) {
                    $answers = array('users_LOGIN' => $_GET['username'],
                             'surveys_ID' => $surveys_ID,
                             'question_ID' => $_POST['question_ID'][$i],
                             'user_answers' => serialize($_POST['answer'][$i]),
                             'submited' =>(string) time());
-                   eF_insertTableData("survey_questions_done",$answers);
+                   sC_insertTableData("survey_questions_done",$answers);
                }
-               eF_insertTableData("users_to_done_surveys",array('surveys_ID' => $surveys_ID,'users_LOGIN' => $_GET['username'],'done' => 1));
+               sC_insertTableData("users_to_done_surveys",array('surveys_ID' => $surveys_ID,'users_LOGIN' => $_GET['username'],'done' => 1));
            }
         }
     }

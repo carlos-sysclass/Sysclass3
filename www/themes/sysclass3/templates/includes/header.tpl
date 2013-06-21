@@ -114,7 +114,7 @@
 </head>
 {* Using that to avoid creating a body for the sidebar*}
 {if $smarty.server.PHP_SELF|@basename != 'new_sidebar.php'}
-	<body {if isset($T_CURRENT_CTG)}id = "body_{$T_CURRENT_CTG}"{elseif $smarty.server.PHP_SELF|basename == 'index.php'}id = "index_page"{/if} onkeypress = "if (window.eF_js_keypress) eF_js_keypress(event);" onbeforeunload = "if (window.getPeriodicData) getPeriodicData();" {if $_admin_} class="admin_page"{/if}>
+	<body {if isset($T_CURRENT_CTG)}id = "body_{$T_CURRENT_CTG}"{elseif $smarty.server.PHP_SELF|basename == 'index.php'}id = "index_page"{/if} onkeypress = "if (window.sC_js_keypress) sC_js_keypress(event);" onbeforeunload = "if (window.getPeriodicData) getPeriodicData();" {if $_admin_} class="admin_page"{/if}>
 	{/if}
 	
 	

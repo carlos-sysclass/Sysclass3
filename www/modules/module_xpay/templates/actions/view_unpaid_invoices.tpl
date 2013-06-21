@@ -68,7 +68,7 @@
 	</table>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title      = $smarty.const.__XPAY_VIEW_INVOICES_IN_DEBTS
 	data       = $smarty.capture.t_xpay_view_users_in_debt
 }

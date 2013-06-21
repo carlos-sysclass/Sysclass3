@@ -64,7 +64,7 @@ class module_xpay_paypal extends MagesterExtendedModule implements IxPaySubmodul
 		}
 
 		$form = new HTML_QuickForm("xpay_paypal_init_payment", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
 		/*
 		 $bandeiras = $this->getPaymentInstances();
@@ -117,7 +117,7 @@ class module_xpay_paypal extends MagesterExtendedModule implements IxPaySubmodul
 					"parcelas"		=> $Pedido->formaPagamentoParcelas,
 					"status"		=> $Pedido->status,
 			);
-			$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
+			$transactionID = sC_insertTableData("module_xpay_cielo_transactions", $fields);
 
 			$fieldsLink = array(
 					"payment_id"		=> $invoiceData['payment_id'],
@@ -125,7 +125,7 @@ class module_xpay_paypal extends MagesterExtendedModule implements IxPaySubmodul
 					"transaction_id"	=> $transactionID
 			);
 
-			eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
+			sC_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
 			*/
 		}
 		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -250,13 +250,13 @@ $message 		= "Pagamento em andamento";
 $message_type	= "warning";
 
 // ATUALIZAR STATUS NO BANCO DE DADOS
-eF_updateTableData(
+sC_updateTableData(
 "module_xpay_cielo_transactions",
 array("status" => $consultaArray['status']),
 sprintf("tid = '%s'", $Pedido -> tid)
 );
 
-list($transaction) = eF_getTableData(
+list($transaction) = sC_getTableData(
 "module_xpay_cielo_transactions trn
 LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.payment_id = trn2inv.payment_id)
 LEFT JOIN module_pagamento_invoices inv ON (trn2inv.payment_id = inv.payment_id AND trn2inv.parcela_index = inv.parcela_index)",

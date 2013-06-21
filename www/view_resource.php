@@ -24,12 +24,12 @@ if (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
         $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
     } catch (MagesterException $e) {                                                //The user is not valid
         $message = $e -> getMessage().' ('.$e -> getCode().')';
-        eF_redirect("index.php?message=".urlencode($message)."&message_type=failure");
+        sC_redirect("index.php?message=".urlencode($message)."&message_type=failure");
         exit;
     }
 } else {
     setcookie('c_request', $_SERVER['REQUEST_URI'], time() + 300);
-    eF_redirect("index.php?message=".urlencode(_RESOURCEREQUESTEDREQUIRESLOGIN)."&message_type=failure");
+    sC_redirect("index.php?message=".urlencode(_RESOURCEREQUESTEDREQUIRESLOGIN)."&message_type=failure");
     exit;
 }
 
@@ -60,7 +60,7 @@ try {
             if ($file['shared']) {
                 $userLessons = $currentUser -> getLessons();
                 if (in_array($file['shared'], array_keys($userLessons))) {
-                    eF_redirect("view_file.php?file=".$_GET['id']);
+                    sC_redirect("view_file.php?file=".$_GET['id']);
                 } else {
                     throw new Exception(_CANNOTACCESSRESOURCE);
                 }
@@ -85,5 +85,5 @@ try {
         default: break;
     }
 } catch (Exception $e) {
-    eF_redirect("".$currentUser -> user['user_type'].".php?message=".$e -> getMessage());
+    sC_redirect("".$currentUser -> user['user_type'].".php?message=".$e -> getMessage());
 }

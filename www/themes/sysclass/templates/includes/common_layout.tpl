@@ -12,7 +12,7 @@
 				
 			<!-- BREADCRUMBS -->
 		 	{if !$hide_path}
-		 		<ul class="grad_colour" id="breadcrumb">{$title|eF_formatTitlePath}</ul>
+		 		<ul class="grad_colour" id="breadcrumb">{$title|sC_formatTitlePath}</ul>
 		 	{/if}
 	
 				

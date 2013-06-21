@@ -24,7 +24,7 @@
 {/capture}
 
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__LANGUAGE_LIST_BLOCK_TITLE
 	data			= $smarty.capture.t_get_language_block
 	contentclass	= "no_padding"

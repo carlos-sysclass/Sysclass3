@@ -210,7 +210,7 @@ function createUserLessonLoginAccessChart($from, $to, $login, $lesson_id)
 {
     $traffic = MagesterStats :: getUsersTime($lesson_id, false, $from, $to);
 
-    $result  = eF_getTableData("logs", "id, users_LOGIN, action, timestamp", "timestamp between $from and $to and lessons_id=".$lesson_id." and users_LOGIN = '".$login."' order by timestamp");
+    $result  = sC_getTableData("logs", "id, users_LOGIN, action, timestamp", "timestamp between $from and $to and lessons_id=".$lesson_id." and users_LOGIN = '".$login."' order by timestamp");
     $labels  = array();
     $count   = array();
     //Assign each day of the week an empty slot
@@ -256,7 +256,7 @@ function createUserLessonLoginAccessChart($from, $to, $login, $lesson_id)
 
 function createUserLoginAccessChart($from, $to, $login)
 {
-    $result = eF_getTableData("logs", "id, users_LOGIN, action, timestamp", "timestamp between $from and $to and action = 'login' and users_LOGIN = '".$login."' order by timestamp");
+    $result = sC_getTableData("logs", "id, users_LOGIN, action, timestamp", "timestamp between $from and $to and action = 'login' and users_LOGIN = '".$login."' order by timestamp");
 
     //Assign each day of the week an empty slot
     $labels = array();
@@ -305,7 +305,7 @@ function createUserLoginAccessChart($from, $to, $login)
 
 function createLoginAccessChart($from, $to)
 {
-    $result = eF_getTableData("logs", "*", "timestamp between $from and $to and action = 'login' order by timestamp");
+    $result = sC_getTableData("logs", "*", "timestamp between $from and $to and action = 'login' order by timestamp");
 
     $labels = array();
     $count = array();
@@ -354,7 +354,7 @@ function createLoginAccessChart($from, $to)
 
 function createUserTypeChart()
 {
-    $result    = eF_getTableDataFlat("users", "user_type, count(user_type) as num", "", "", "user_type");
+    $result    = sC_getTableDataFlat("users", "user_type, count(user_type) as num", "", "", "user_type");
     $userTypes = $result['user_type'];
     $count     = $result['num'];
     $title     = new title(_USERTYPES);

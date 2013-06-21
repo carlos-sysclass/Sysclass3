@@ -188,7 +188,7 @@
 	</div>
 </form>
 {/capture}
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCONTENT_EDIT_SCHEDULE
 	data			= $smarty.capture.t_edit_schedule_times
 	contentclass	= "blockContents"

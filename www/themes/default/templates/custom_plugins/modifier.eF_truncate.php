@@ -22,7 +22,7 @@
  * @param boolean
  * @return string
  */
-function smarty_modifier_eF_truncate($string, $length = 80, $etc = '...',
+function smarty_modifier_sC_truncate($string, $length = 80, $etc = '...',
                                   $break_words = false, $middle = false)
 {
     if ($length == 0)

@@ -58,7 +58,7 @@
 	</div>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._MODULE_POLOS_MANAGEMENT
 	data=$smarty.capture.t_polos_table
 	contentclass=""

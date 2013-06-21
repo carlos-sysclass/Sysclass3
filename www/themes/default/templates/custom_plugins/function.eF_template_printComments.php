@@ -1,12 +1,12 @@
 <?php
 /**
 
-* Smarty plugin: smarty_function_eF_template_printComments function. Prints inner table
+* Smarty plugin: smarty_function_sC_template_printComments function. Prints inner table
 
 *
 
 */
-function smarty_function_eF_template_printComments($params, &$smarty)
+function smarty_function_sC_template_printComments($params, &$smarty)
 {
     $max_title_size = 50; //The maximum length of the title, after which it is cropped with ...
     $list_fold_size = 3; //The folding occurs in this number of lines
@@ -48,7 +48,7 @@ function smarty_function_eF_template_printComments($params, &$smarty)
 
   $str .= '<td align = "right">
                     #filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#,
-                    <span title = "'.$title2.'">'.eF_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO.'</span>
+                    <span title = "'.$title2.'">'.sC_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO.'</span>
                 </td></tr>';
     }
 

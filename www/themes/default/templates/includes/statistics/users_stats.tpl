@@ -129,9 +129,9 @@
      </select>
      </td></tr> -->
    <tr><td class = "labelCell">{$smarty.const._FROM}:&nbsp;</td>
-    <td class = "elementCell">{eF_template_html_select_date prefix = "from_" time = $T_FROM_TIMESTAMP start_year = "-2" end_year = "+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
+    <td class = "elementCell">{sC_template_html_select_date prefix = "from_" time = $T_FROM_TIMESTAMP start_year = "-2" end_year = "+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
    <tr><td class = "labelCell">{$smarty.const._TO}:&nbsp;</td>
-    <td class = "elementCell">{eF_template_html_select_date prefix = "to_" time = $T_TO_TIMESTAMP start_year = "-2" end_year = "+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
+    <td class = "elementCell">{sC_template_html_select_date prefix = "to_" time = $T_TO_TIMESTAMP start_year = "-2" end_year = "+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
    <tr><td class = "labelCell">{$smarty.const._ANALYTICLOG}:</td>
     <td class = "elementCell"><input class = "inputCheckbox" type = checkbox id = "showLog" {if (isset($T_USER_LOG))}checked{/if}></td></tr>
    <tr><td class = "labelCell"></td>
@@ -146,7 +146,7 @@
   <table class = "statisticsTools">
    <tr><td id = "right">
      {$smarty.const._ACCESSSTATISTICS}:
-     <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_access');"/>
+     <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_access');"/>
     </td></tr>
   </table>
   <div id = "graph_table" style = "display:none"><div id = "proto_chart" class = "proto_graph"></div></div>
@@ -186,7 +186,7 @@
       {if $lesson.completed}<img src = "images/16x16/success.png" alt = "{$smart.const._YES}" title = "{$smarty.const._COMPLETEDON} #filter:timestamp_time-{$lesson.to_timestamp}#">{else}<img src = "images/16x16/forbidden.png" alt = "{$smarty.const._NO}" title = "{$smarty.const._NO}">{/if}
      </td>
      <td class = "centerAlign">
-      <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_lesson_access', '{$id}');"/>
+      <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_lesson_access', '{$id}');"/>
      </td>
     </tr>
    {foreachelse}
@@ -214,7 +214,7 @@
     <td>{$info.content_name}</td>
     <td>{$T_ACTIONS[$info.action]}</td>
     <td>#filter:timestamp_time-{$info.timestamp}#</td>
-    <td>{$info.session_ip|eF_decodeIp}</td>
+    <td>{$info.session_ip|sC_decodeIp}</td>
    </tr>
    {foreachelse}
    <tr class = "oddRowColor defaultRowHeight"><td colspan = "100%" class = "emptyCategory">{$smarty.const._NODATAFOUND}</td></tr>
@@ -290,12 +290,12 @@
   </table>
   <div class = "tabber">
   {if $T_REPORTS_USER->user.user_type != 'administrator'}
-   {eF_template_printBlock tabber = "courses" title =$smarty.const._COURSES data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
-   {eF_template_printBlock tabber = "lessons" title =$smarty.const._LESSONS data = $smarty.capture.t_lessons_list_code image = '32x32/lessons.png'}
+   {sC_template_printBlock tabber = "courses" title =$smarty.const._COURSES data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
+   {sC_template_printBlock tabber = "lessons" title =$smarty.const._LESSONS data = $smarty.capture.t_lessons_list_code image = '32x32/lessons.png'}
   {/if}
-   {eF_template_printBlock tabber = "moreinfo" title =$smarty.const._MOREINFO data = $smarty.capture.t_moreinfo_code image = '32x32/information.png'}
+   {sC_template_printBlock tabber = "moreinfo" title =$smarty.const._MOREINFO data = $smarty.capture.t_moreinfo_code image = '32x32/information.png'}
   {if $smarty.capture.t_traffic_code}
-   {eF_template_printBlock tabber = "usertraffic" title =$smarty.const._TRAFFIC data = $smarty.capture.t_traffic_code image = '32x32/generic.png'}
+   {sC_template_printBlock tabber = "usertraffic" title =$smarty.const._TRAFFIC data = $smarty.capture.t_traffic_code image = '32x32/generic.png'}
   {/if}
   </div>
  {/if}
@@ -433,11 +433,11 @@
 {/capture}
 
  {if $smarty.get.specific_lesson_info}
-  {eF_template_printBlock title = $smarty.const._DETAILS data = $smarty.capture.t_specific_lesson_info_code image = '32x32/lessons.png' help = 'Reports'}
+  {sC_template_printBlock title = $smarty.const._DETAILS data = $smarty.capture.t_specific_lesson_info_code image = '32x32/lessons.png' help = 'Reports'}
  {elseif $smarty.get.specific_course_info}
-  {eF_template_printBlock title = $smarty.const._DETAILS data = $smarty.capture.t_specific_course_info_code image = '32x32/courses.png' help = 'Reports'}
+  {sC_template_printBlock title = $smarty.const._DETAILS data = $smarty.capture.t_specific_course_info_code image = '32x32/courses.png' help = 'Reports'}
  {elseif $T_REPORTS_USER}
-  {eF_template_printBlock title = "`$smarty.const._REPORTSFORUSER` <span class='innerTableName'>&quot;#filter:login-`$T_REPORTS_USER->user.login`#&quot;</span>" data = $smarty.capture.user_statistics image = '32x32/users.png' help = 'Reports' options=$T_EDIT_USER_LINK}
+  {sC_template_printBlock title = "`$smarty.const._REPORTSFORUSER` <span class='innerTableName'>&quot;#filter:login-`$T_REPORTS_USER->user.login`#&quot;</span>" data = $smarty.capture.user_statistics image = '32x32/users.png' help = 'Reports' options=$T_EDIT_USER_LINK}
  {else}
-  {eF_template_printBlock title = $smarty.const._USERSTATISTICS data = $smarty.capture.user_statistics image = '32x32/users.png' help = 'Reports'}
+  {sC_template_printBlock title = $smarty.const._USERSTATISTICS data = $smarty.capture.user_statistics image = '32x32/users.png' help = 'Reports'}
  {/if}

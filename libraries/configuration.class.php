@@ -204,7 +204,7 @@ class MagesterConfiguration
      * @static
      */
     public static function getValues() {
-        $options = eF_getTableDataFlat("configuration", "*");
+        $options = sC_getTableDataFlat("configuration", "*");
         sizeof($options) > 0 ? $options = array_combine($options['name'], $options['value']) : $options = array();
         foreach (MagesterConfiguration::$defaultOptions as $key => $value) {
             if (!isset($options[$key])) {
@@ -255,11 +255,11 @@ class MagesterConfiguration
      * @static
      */
     public static function setValue($name, $value) {
-        $result = eF_getTableData("configuration", "value", "name = '$name'");
+        $result = sC_getTableData("configuration", "value", "name = '$name'");
         if (sizeof($result) > 0) {
-            $result = eF_updateTableData("configuration", array('value' => $value), "name = '$name'");
+            $result = sC_updateTableData("configuration", array('value' => $value), "name = '$name'");
         } else {
-            $result = eF_insertTableData("configuration", array('name' => $name, 'value' => $value), "name = '$name'");
+            $result = sC_insertTableData("configuration", array('name' => $name, 'value' => $value), "name = '$name'");
         }
         $GLOBALS['configuration'][$name] = $value;
         if ($result) {

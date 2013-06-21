@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 $generalSecurityForm = new HTML_QuickForm("general_security_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=security", "", null, true);
-$generalSecurityForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$generalSecurityForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $generalSecurityForm -> addElement("text", "file_white_list", _ALLOWEDEXTENSIONS, 'class = "inputText"');
 $generalSecurityForm -> addElement("static", "", _COMMASEPARATEDLISTASTERISKEXTENSIONEXAMPLE);
 $generalSecurityForm -> addElement("text", "file_black_list", _DISALLOWEDEXTENSIONS, 'class = "inputText"');
@@ -32,12 +32,12 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach ($values as $key => $value) {
    $result = MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=security&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=security&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_GENERAL_SECURITY_FORM", $generalSecurityForm -> toArray());
 $generalLocaleForm = new HTML_QuickForm("general_locale", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=locale", "", null, true);
-$generalLocaleForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$generalLocaleForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $defaultEncodings = array_combine(mb_list_encodings(), mb_list_encodings());
 $encodings['UTF7-IMAP'] = 'UTF7-IMAP';
 if (in_array(_CHARSET, $defaultEncodings)) {
@@ -49,7 +49,7 @@ $encodings = array_merge($encodings, $defaultEncodings);
 $generalLocaleForm -> addElement("select", "default_language", _DEFAULTLANGUAGE, MagesterSystem :: getLanguages(true, true), 'class = "inputSelect"');
 $generalLocaleForm -> addElement("advcheckbox", "onelanguage", _ONLYONELANGUAGE, null, 'class = "inputCheckBox"', array(0, 1));
 $generalLocaleForm -> addElement("select", "date_format", _DATEFORMAT, array("DD/MM/YYYY" => "DD/MM/YYYY", "MM/DD/YYYY" => "MM/DD/YYYY", "YYYY/MM/DD" => "YYYY/MM/DD"));
-$generalLocaleForm -> addElement("select", "time_zone", _TIMEZONE, eF_getTimezones(), 'class = "inputText" style="width:40em"');
+$generalLocaleForm -> addElement("select", "time_zone", _TIMEZONE, sC_getTimezones(), 'class = "inputText" style="width:40em"');
 $generalLocaleForm -> addElement("select", "currency", _CURRENCY, $CURRENCYNAMES);
 $generalLocaleForm -> addElement("select", "currency_order", _SHOWCURRENCYSYMBOL, array(1 => _BEFOREPRICE, 0 => _AFTERPRICE));
 $generalLocaleForm -> addElement("text", "decimal_point", _DECIMALPOINT, 'class = "inputText" style = "width:50px"');
@@ -66,12 +66,12 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach ($values as $key => $value) {
    $result = MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=locale&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=locale&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_GENERAL_LOCALE_FORM", $generalLocaleForm -> toArray());
 $generalSMTPForm = new HTML_QuickForm("general_smtp", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=smtp", "", null, true);
-$generalSMTPForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$generalSMTPForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $generalSMTPForm -> addElement("text", "system_email", _SYSTEMEMAIL, 'class = "inputText"');
 $generalSMTPForm -> addElement("text", "smtp_host", _SMTPSERVER, 'class = "inputText"');
 $generalSMTPForm -> addElement("static", "", _IFUSESSLTHENPHPOPENSSL);
@@ -97,9 +97,9 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
    foreach ($values as $key => $value) {
     $result = MagesterConfiguration :: setValue($key, $value);
    }
-   eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=smtp&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+   sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=smtp&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
   } else {
-   $user_mail = eF_getTableData("users", "email", "login='".$_SESSION['s_login']."'");
+   $user_mail = sC_getTableData("users", "email", "login='".$_SESSION['s_login']."'");
    $header = array ('From' => $values['system_email'],
          'To' => $user_mail[0]['email'],
          'Subject' => 'Test email',
@@ -124,7 +124,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
 }
 $smarty -> assign("T_GENERAL_SMTP_FORM", $generalSMTPForm -> toArray());
 $generalPHPForm = new Html_QuickForm("general_php_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=php", "", null, true);
-$generalPHPForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$generalPHPForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $generalPHPForm -> addElement("text", "memory_limit", _MEMORYLIMIT, 'class = "inputText" style = "width:60px"');
 $generalPHPForm -> addElement("text", "max_execution_time", _MAXEXECUTIONTIME, 'class = "inputText" style = "width:60px"');
 $generalPHPForm -> addElement("static", "", _LEAVEBLANKTOUSEPHPINI);
@@ -155,7 +155,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
     } elseif ($key == 'max_file_size') {
      MagesterConfiguration :: setValue($key, FileSystemTree :: getUploadMaxSize());
     } else {
-     eF_deleteTableData("configuration", "name = '$key'");
+     sC_deleteTableData("configuration", "name = '$key'");
      unset($configuration[$key]);
     }
    } else {
@@ -171,7 +171,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
     }
    }
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=php&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=general&tab=php&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_GENERAL_PHP_FORM", $generalPHPForm -> toArray());

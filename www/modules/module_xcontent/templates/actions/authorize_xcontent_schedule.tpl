@@ -56,9 +56,9 @@
 						{/if}
 					</td>
 					<td>{$schedule_user.fullname}</td>
-					<td>{$schedule.course_name|eF_truncate:30}</td>
+					<td>{$schedule.course_name|sC_truncate:30}</td>
 					<td>{$schedule.classe_name}</td>
-					<td>{$schedule.lesson_name|eF_truncate:50}</td>
+					<td>{$schedule.lesson_name|sC_truncate:50}</td>
 					{if !$T_XCONTENT_IS_ADMIN}
 						<td align="center">
 							<input name="xcontent_liberado[{$schedule_user.user_id}]" class="xcontent_liberation" type="checkbox" value="{$schedule_user.user_id}"
@@ -84,7 +84,7 @@
 </form>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $T_XCONTENT_SCHEDULE_ITEM
 	data			= $smarty.capture.t_xcontent_schedule
 	contentclass	= "blockContents"

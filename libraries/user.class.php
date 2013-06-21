@@ -157,7 +157,7 @@ abstract class MagesterUser
      * @access public
      */
     function __construct($user, $password = false) {
-        if (!eF_checkParameter($user['login'], 'login')) {
+        if (!sC_checkParameter($user['login'], 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.': '.$user['login'], MagesterUserException::INVALID_LOGIN);
         } elseif ($password !== false && $password != $user['password']) {
             throw new MagesterUserException(_INVALIDPASSWORD.': '.$user, MagesterUserException::INVALID_PASSWORD);
@@ -193,7 +193,7 @@ abstract class MagesterUser
 
         try {
             //Create database representations for personal messages folders (it has nothing to do with filsystem database representation)
-            eF_insertTableDataMultiple("f_folders", array(
+            sC_insertTableDataMultiple("f_folders", array(
                 array('name' => 'Incoming', 'users_LOGIN' => $this->user['login']),
                 array('name' => 'Sent', 'users_LOGIN' => $this->user['login']),
                 array('name' => 'Drafts', 'users_LOGIN' => $this->user['login'])
@@ -247,7 +247,7 @@ abstract class MagesterUser
      */
     public static function createUser($userProperties, $users = array(), $addToDefaultGroup = true) {
         if (empty($users)) {
-            $users = eF_getTableDataFlat("users", "login, active, archive");
+            $users = sC_getTableDataFlat("users", "login, active, archive");
         }
 
         $archived = array_combine($users['login'], $users['archive']);
@@ -261,8 +261,8 @@ abstract class MagesterUser
         $users = array_combine($users['login'], $users['active']);
         $activatedUsers = array_sum($users); //not taking into account deactivated users in license users count
 
-        //$versionDetails = eF_checkVersionKey($GLOBALS['configuration']['version_key']);
-        if (!isset($userProperties['login']) || !eF_checkParameter($userProperties['login'], 'login')) {
+        //$versionDetails = sC_checkVersionKey($GLOBALS['configuration']['version_key']);
+        if (!isset($userProperties['login']) || !sC_checkParameter($userProperties['login'], 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.': '.$userProperties['login'], MagesterUserException::INVALID_LOGIN);
         }
         if (in_array($userProperties['login'], array_keys($archived))) {
@@ -271,7 +271,7 @@ abstract class MagesterUser
         if (in_array($userProperties['login'], array_keys($users)) > 0) {
             throw new MagesterUserException(_USERALREADYEXISTS.': '.$userProperties['login'], MagesterUserException::USER_EXISTS);
         }
-        if ($userProperties['email'] && !eF_checkParameter($userProperties['email'], 'email')) {
+        if ($userProperties['email'] && !sC_checkParameter($userProperties['email'], 'email')) {
             throw new MagesterUserException(_INVALIDEMAIL.': '.$userProperties['email'], MagesterUserException::INVALID_PARAMETER);
         }
         if (!isset($userProperties['name'])) {
@@ -292,12 +292,12 @@ abstract class MagesterUser
         !isset($userProperties['pending']) ? $userProperties['pending'] = 0 : null; // 0 means not pending, 1 means pending
         !isset($userProperties['timestamp']) || $userProperties['timestamp'] == "" ? $userProperties['timestamp'] = time() : null;
         !isset($userProperties['user_types_ID']) ? $userProperties['user_types_ID'] = 0 : null;
-        eF_insertTableData("users", $userProperties);
+        sC_insertTableData("users", $userProperties);
         // Assign to the new user all skillgap tests that should be automatically assigned to every new student
 
         $newUser = MagesterUserFactory::factory($userProperties['login']);
         $newUser->user['password'] = $passwordNonTransformed;
-        global $currentUser; // this is for running eF_loadAllModules ..needs to go somewhere else
+        global $currentUser; // this is for running sC_loadAllModules ..needs to go somewhere else
         if (!$currentUser) {
             $currentUser = $newUser;
         }
@@ -312,7 +312,7 @@ abstract class MagesterUser
         ///MODULES1 - Module user add events
         // Get all modules (NOT only the ones that have to do with the user type)
         if (!$cached_modules) {
-            $cached_modules = eF_loadAllModules();
+            $cached_modules = sC_loadAllModules();
         }
         // Trigger all necessary events. If the function has not been re-defined in the derived module class, nothing will happen
         foreach ($cached_modules as $module) {
@@ -342,7 +342,7 @@ abstract class MagesterUser
                 $users[$key] = $value['login'];
             } elseif (is_array($value) && isset($value['users_LOGIN'])) {
                 $users[$key] = $value['users_LOGIN'];
-            } elseif (!eF_checkParameter($value, 'login')) {
+            } elseif (!sC_checkParameter($value, 'login')) {
                 unset($users[$key]);
             }
         }
@@ -433,7 +433,7 @@ abstract class MagesterUser
         try {
             eval('$usernameVar='.$GLOBALS['configuration']['username_variable'].';');
             if (!$usernameVar) {
-                eF_redirect(G_SERVERNAME.$GLOBALS['configuration']['error_page'], true, 'top', true);
+                sC_redirect(G_SERVERNAME.$GLOBALS['configuration']['error_page'], true, 'top', true);
                 exit;
             } else {
                 try {
@@ -450,17 +450,17 @@ abstract class MagesterUser
                                 $user->login($user->user['password'], true);
                             }
                         } catch (Exception $e) {
-                            eF_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
+                            sC_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
                             exit;
                         }
                     } else {
-                        eF_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
+                        sC_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
                         exit;
                     }
                 }
             }
         } catch (Exception $e) {
-            eF_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
+            sC_redirect(G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page'], true, 'top', true);
             //header("location:".G_SERVERNAME.$GLOBALS['configuration']['unauthorized_page']);
         }
 
@@ -483,7 +483,7 @@ abstract class MagesterUser
      */
     public static function getUsers($returnAdmins = true) {
         $users = array();
-        $result = eF_getTableData("users", "LOGIN, user_type", "archive=0");
+        $result = sC_getTableData("users", "LOGIN, user_type", "archive=0");
         foreach ($result as $value) {
             if ($value['user_type'] == 'administrator') {
                 if ($returnAdmins) {
@@ -540,7 +540,7 @@ abstract class MagesterUser
      */
     public function setPassword($password) {
         $password_encrypted = MagesterUser::createPassword($password);
-        if (eF_updateTableData("users", array("password" => $password_encrypted), "login='".$this->user['login']."'")) {
+        if (sC_updateTableData("users", array("password" => $password_encrypted), "login='".$this->user['login']."'")) {
             $this->user['password'] = $password;
 
             return true;
@@ -590,11 +590,11 @@ abstract class MagesterUser
     public function setLoginType($loginType = 'normal', $password = '') {
         //The user login type is specified by the password. If the password is 'ldap', the the login type is also ldap. There is no chance to mistaken normal users for ldap users, since all normal users have passwords stored in md5 format, which can never be 'ldap' (or anything like it)
         if ($loginType == 'ldap' && $this->user['password'] != 'ldap') {
-            eF_updateTableData("users", array("password" => 'ldap'), "login='".$this->user['login']."'");
+            sC_updateTableData("users", array("password" => 'ldap'), "login='".$this->user['login']."'");
             $this->user['password'] = 'ldap';
         } elseif ($loginType == 'normal' && $this->user['password'] == 'ldap') {
             !$password ? $password = MagesterUser::createPassword($this->user['login']) : null; //If a password is not specified, use the user's login name
-            eF_updateTableData("users", array("password" => $password), "login='".$this->user['login']."'");
+            sC_updateTableData("users", array("password" => $password), "login='".$this->user['login']."'");
             $this->user['password'] = $password;
         }
 
@@ -680,7 +680,7 @@ abstract class MagesterUser
      * @access public
      */
     public function setAvatar($file) {
-        if (eF_updateTableData("users", array("avatar" => $file['id']), "login = '".$this->user['login']."'")) {
+        if (sC_updateTableData("users", array("avatar" => $file['id']), "login = '".$this->user['login']."'")) {
             $this->user['avatar'] = $file['id'];
 
             return true;
@@ -726,7 +726,7 @@ abstract class MagesterUser
      * @access public
      */
     public function setStatus($status) {
-        if (eF_updateTableData("users", array("status" => $status), "login = '".$this->user['login']."'")) {
+        if (sC_updateTableData("users", array("status" => $status), "login = '".$this->user['login']."'")) {
             $this->user['status'] = $status;
             MagesterEvent::triggerEvent(array("type" => MagesterEvent::STATUS_CHANGE, "users_LOGIN" => $this->user['login'], "users_name" => $this->user['name'], "users_surname" => $this->user['surname'], "entity_name" => $status));
             //echo $status;
@@ -793,23 +793,23 @@ abstract class MagesterUser
             }
         } else {
             $session_path = ini_get('session.save_path');
-            $session_name = eF_getTableData("logs", 'comments', 'users_LOGIN="'.$this->user['login'].'" AND action = "login"', 'timestamp desc limit 1');
+            $session_name = sC_getTableData("logs", 'comments', 'users_LOGIN="'.$this->user['login'].'" AND action = "login"', 'timestamp desc limit 1');
             unlink($session_path.'/sess_'.$session_name[0]['comments']);
         }
-        //  eF_deleteTableData("module_chat_users", "username='".$this->user['login']."'"); //Log out user from the chat Module
-        eF_deleteTableData("users_to_chatrooms", "users_LOGIN='".$this->user['login']."'"); //Log out user from the chat
-        eF_deleteTableData("chatrooms", "users_LOGIN='".$this->user['login']."' and type='one_to_one'"); //Delete any one-to-one conversations
-        $result = eF_getTableData("logs", "action", "users_LOGIN = '".$this->user['login']."'", "timestamp desc limit 1"); //?? ??? ????? ???????? ???, ????? ??? logs ??? ????? logout, ???? ?? ????? logout ??? ??? ??? ?? ???????
+        //  sC_deleteTableData("module_chat_users", "username='".$this->user['login']."'"); //Log out user from the chat Module
+        sC_deleteTableData("users_to_chatrooms", "users_LOGIN='".$this->user['login']."'"); //Log out user from the chat
+        sC_deleteTableData("chatrooms", "users_LOGIN='".$this->user['login']."' and type='one_to_one'"); //Delete any one-to-one conversations
+        $result = sC_getTableData("logs", "action", "users_LOGIN = '".$this->user['login']."'", "timestamp desc limit 1"); //?? ??? ????? ???????? ???, ????? ??? logs ??? ????? logout, ???? ?? ????? logout ??? ??? ??? ?? ???????
         if ($result[0]['action'] != 'logout') {
             $fields_insert = array('users_LOGIN' => $this->user['login'],
                 'timestamp' => time(),
                 'action' => 'logout',
                 'comments' => 0,
-                'session_ip' => eF_encodeIP($_SERVER['REMOTE_ADDR']));
-            eF_insertTableData("logs", $fields_insert);
+                'session_ip' => sC_encodeIP($_SERVER['REMOTE_ADDR']));
+            sC_insertTableData("logs", $fields_insert);
         }
-        //eF_deleteTableData('users_online', "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("user_times", array("session_expired" => 1), "users_LOGIN='".$this->user['login']."'");
+        //sC_deleteTableData('users_online', "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("user_times", array("session_expired" => 1), "users_LOGIN='".$this->user['login']."'");
     }
     /**
      * Login user
@@ -840,7 +840,7 @@ abstract class MagesterUser
             throw new MagesterUserException(_USERINACTIVE, MagesterUserException::USER_INACTIVE);
         }
         if ($this->isLdapUser) { //Authenticate LDAP user
-            if (!eF_checkUserLdap($this->user['login'], $password)) {
+            if (!sC_checkUserLdap($this->user['login'], $password)) {
                 throw new MagesterUserException(_INVALIDPASSWORD, MagesterUserException::INVALID_PASSWORD);
             }
         } else { //Authenticate normal user
@@ -863,7 +863,7 @@ abstract class MagesterUser
         }
         $_SESSION['s_lessons_ID'] = ''; //@todo: Here, we should reset all session values, except for cart contents
         //if user language is deactivated or deleted, login user with system default language
-        $result = eF_getTableData("languages", "name", "name='".$this->user['languages_NAME']."' and active=1");
+        $result = sC_getTableData("languages", "name", "name='".$this->user['languages_NAME']."' and active=1");
         if ($result[0]['name'] == $this->user['languages_NAME']) {
             $login_language = $this->user['languages_NAME'];
         } else {
@@ -879,8 +879,8 @@ abstract class MagesterUser
             'timestamp' => time(),
             'action' => 'login',
             'comments' => session_id(),
-            'session_ip' => eF_encodeIP($_SERVER['REMOTE_ADDR']));
-        eF_insertTableData("logs", $fields_insert);
+            'session_ip' => sC_encodeIP($_SERVER['REMOTE_ADDR']));
+        sC_insertTableData("logs", $fields_insert);
 /*
         $fields = array('users_LOGIN'   => $this->user['login'],
                             'timestamp'	 => time(),
@@ -888,11 +888,11 @@ abstract class MagesterUser
                             'session_ip'	=> $_SERVER['REMOTE_ADDR']);
  */
         if ($this->isLoggedIn()) {
-            //eF_updateTableData("user_times", array("session_expired" => 1), "users_LOGIN='".$this->user['login']."'");
+            //sC_updateTableData("user_times", array("session_expired" => 1), "users_LOGIN='".$this->user['login']."'");
         }
-        $result = eF_getTableData("user_times", "id", "session_id = '".session_id()."' and users_LOGIN='".$this->user['login']."'");
+        $result = sC_getTableData("user_times", "id", "session_id = '".session_id()."' and users_LOGIN='".$this->user['login']."'");
         if (sizeof($result) > 0) {
-            eF_updateTableData("user_times", array("session_expired" => 0), "session_id = '".session_id()."' and users_LOGIN='".$this->user['login']."'");
+            sC_updateTableData("user_times", array("session_expired" => 0), "session_id = '".session_id()."' and users_LOGIN='".$this->user['login']."'");
         } else {
             $fields = array("session_timestamp" => time(),
                 "session_id" => session_id(),
@@ -902,7 +902,7 @@ abstract class MagesterUser
                 "time" => 0,
                 "entity" => 'system',
                 "entity_id" => 0);
-            eF_insertTableData("user_times", $fields);
+            sC_insertTableData("user_times", $fields);
         }
 
         return true;
@@ -969,9 +969,9 @@ abstract class MagesterUser
      * @access public
      */
     public function refreshLogin() {
-        $result = eF_getTableData("user_times", 'id', "session_expired=0 and users_LOGIN='".$this->user['login']."'");
+        $result = sC_getTableData("user_times", 'id', "session_expired=0 and users_LOGIN='".$this->user['login']."'");
         if (sizeof($result) > 0) {
-            eF_updateTableData("user_times", array("timestamp_now" => time()), "id='".$result[0]['id']."'");
+            sC_updateTableData("user_times", array("timestamp_now" => time()), "id='".$result[0]['id']."'");
 
             return true;
         } else {
@@ -997,8 +997,8 @@ abstract class MagesterUser
     public static function getUsersOnline($interval = false) {
         $usersOnline = array();
         //A user may have multiple active entries on the user_times table, one for system, one for unit etc. Pick the most recent
-        //  $result = eF_getTableData("user_times", "users_LOGIN, timestamp_now, session_timestamp", "session_expired=0", "timestamp_now desc");
-        $result = eF_getTableData("user_times,users", "users_LOGIN, users.name, users.surname, users.user_type, users.user_type, timestamp_now, session_timestamp", "users.login=user_times.users_LOGIN and session_expired=0", "timestamp_now desc");
+        //  $result = sC_getTableData("user_times", "users_LOGIN, timestamp_now, session_timestamp", "session_expired=0", "timestamp_now desc");
+        $result = sC_getTableData("user_times,users", "users_LOGIN, users.name, users.surname, users.user_type, users.user_type, timestamp_now, session_timestamp", "users.login=user_times.users_LOGIN and session_expired=0", "timestamp_now desc");
 
         foreach ($result as $value) {
             if (!isset($parsedUsers[$value['users_LOGIN']])) {
@@ -1011,7 +1011,7 @@ abstract class MagesterUser
                         'formattedLogin'=> formatLogin(false, $value),
                         'user_type'	 => $value['user_type'],
                         'timestamp_now' => $value['timestamp_now'],
-                        'time' => eF_convertIntervalToTime(time() - $value['session_timestamp']));
+                        'time' => sC_convertIntervalToTime(time() - $value['session_timestamp']));
                 } else {
                     MagesterUserFactory::factory($value['users_LOGIN'])->logout();
                 }
@@ -1036,8 +1036,8 @@ abstract class MagesterUser
      * @access public
      */
     public function isLoggedIn() {
-        //$result = eF_getTableData("users_online", '*', "users_LOGIN='".$this->user['login']."'");
-        $result = eF_getTableData("user_times", 'users_LOGIN', "session_expired=0 and users_LOGIN='".$this->user['login']."'");
+        //$result = sC_getTableData("users_online", '*', "users_LOGIN='".$this->user['login']."'");
+        $result = sC_getTableData("user_times", 'users_LOGIN', "session_expired=0 and users_LOGIN='".$this->user['login']."'");
         if (sizeof($result) > 0) {
             return true;
         } else {
@@ -1063,7 +1063,7 @@ abstract class MagesterUser
         $this->logout();
         ///MODULES2 - Module user delete events - Before anything else
         // Get all modules (NOT only the ones that have to do with the user type)
-        $modules = eF_loadAllModules();
+        $modules = sC_loadAllModules();
         // Trigger all necessary events. If the function has not been re-defined in the derived module class, nothing will happen
         foreach ($modules as $module) {
             $module->onDeleteUser($this->user['login']);
@@ -1078,37 +1078,37 @@ abstract class MagesterUser
             $aspect->delete();
         }
         calendar::deleteUserCalendarEvents($this->user['login']);
-        eF_updateTableData("f_forums", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("f_messages", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("f_topics", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("f_poll", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("chatrooms", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("chatmessages", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("news", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_updateTableData("files", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("f_folders", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("f_personal_messages", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("bookmarks", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("comments", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("f_users_to_polls", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("logs", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("rules", "users_LOGIN='".$this->user['login']."'");
-        //eF_deleteTableData("users_online", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("user_times", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("users_to_surveys", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("users_to_done_surveys", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("survey_questions_done", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("lessons_timeline_topics_data", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("events", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("profile_comments", "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("f_forums", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("f_messages", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("f_topics", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("f_poll", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("chatrooms", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("chatmessages", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("news", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("files", array("users_LOGIN" => ''), "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("f_folders", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("f_personal_messages", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("bookmarks", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("comments", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("f_users_to_polls", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("logs", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("rules", "users_LOGIN='".$this->user['login']."'");
+        //sC_deleteTableData("users_online", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("user_times", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_surveys", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_done_surveys", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("survey_questions_done", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("lessons_timeline_topics_data", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("events", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("profile_comments", "users_LOGIN='".$this->user['login']."'");
         //This line was in MagesterProfessor and MagesterStudent without an obvious reason. Admins may also be members of groups
-        eF_deleteTableData("users_to_groups", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_groups", "users_LOGIN='".$this->user['login']."'");
 
         MagesterUserDetails::deleteDetails($this->user['id']);
-        eF_deleteTableData("c_users_link", "parent_id ='".$this->user['id']."' OR child_id = '" . $this->user['id'] . "'");
+        sC_deleteTableData("c_users_link", "parent_id ='".$this->user['id']."' OR child_id = '" . $this->user['id'] . "'");
 
-        eF_deleteTableData("users", "login='".$this->user['login']."'");
-        eF_deleteTableData("notifications", "recipient='".$this->user['login']."'");
+        sC_deleteTableData("users", "login='".$this->user['login']."'");
+        sC_deleteTableData("notifications", "recipient='".$this->user['login']."'");
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_REMOVAL, "users_LOGIN" => $this->user['login'], "users_name" => $this->user['name'], "users_surname" => $this->user['surname']));
 
         return true;
@@ -1127,13 +1127,13 @@ abstract class MagesterUser
         }
         switch ($userType) {
         case 'student':
-            eF_updateTableData("users", array("user_type" => "student"), "login='".$this->user['login']."'");
+            sC_updateTableData("users", array("user_type" => "student"), "login='".$this->user['login']."'");
             break;
         case 'professor':
-            eF_updateTableData("users", array("user_type" => "professor"), "login='".$this->user['login']."'");
+            sC_updateTableData("users", array("user_type" => "professor"), "login='".$this->user['login']."'");
             break;
         case 'administrator':
-            eF_updateTableData("users", array("user_type" => "administrator"), "login='".$this->user['login']."'");
+            sC_updateTableData("users", array("user_type" => "administrator"), "login='".$this->user['login']."'");
             break;
         default: break;
         }
@@ -1172,7 +1172,7 @@ abstract class MagesterUser
             'additional_accounts' => $this->user['additional_accounts'],
             'short_description' => $this->user['short_description'],
             'autologin' => $this->user['autologin']);
-        eF_updateTableData("users", $fields, "login='".$this->user['login']."'");
+        sC_updateTableData("users", $fields, "login='".$this->user['login']."'");
 
         return true;
     }
@@ -1190,7 +1190,7 @@ abstract class MagesterUser
      */
     public function getGroups() {
         if (! $this->groups) {
-            $result = eF_getTableData("users_to_groups ug, groups g", "g.*", "ug.users_LOGIN = '".$this->login."' and g.id=ug.groups_ID and g.active=1");
+            $result = sC_getTableData("users_to_groups ug, groups g", "g.*", "ug.users_LOGIN = '".$this->login."' and g.id=ug.groups_ID and g.active=1");
             foreach ($result as $group) {
                 $this->groups[$group['id']] = $group;
             }
@@ -1220,7 +1220,7 @@ abstract class MagesterUser
             $groupIds = array($groupIds);
         }
         foreach ($groupIds as $key => $groupId) {
-            if (eF_checkParameter($groupId, 'id') && !isset($this->groups[$groupId])) {
+            if (sC_checkParameter($groupId, 'id') && !isset($this->groups[$groupId])) {
                 $group = new MagesterGroup($groupId);
                 $group->addUsers($this->user['login'], $this->user['user_types_ID'] ? $this->user['user_types_ID'] : $this->user['user_type']);
                 $this->groups[$groupId] = $groupId;
@@ -1252,7 +1252,7 @@ abstract class MagesterUser
             $groupIds = array($groupIds);
         }
         foreach ($groupIds as $key => $groupId) {
-            if (eF_checkParameter($groupId, 'id') && isset($this->groups[$groupId])) {
+            if (sC_checkParameter($groupId, 'id') && isset($this->groups[$groupId])) {
                 $group = new MagesterGroup($groupId);
                 $group->removeUsers($this->user['login']);
                 unset($this->groups[$key]); //Remove groups from cache array."
@@ -1279,7 +1279,7 @@ abstract class MagesterUser
      * @access public
      */
     public function getModules() {
-        $modulesDB = eF_getTableData("modules","*","active = 1");
+        $modulesDB = sC_getTableData("modules","*","active = 1");
 
         $modules = array();
         isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] ? $user_type = $_SESSION['s_lesson_user_type'] : $user_type = $this->getType();
@@ -1316,7 +1316,7 @@ abstract class MagesterUser
         /*
         var_dump('DELETE ' . $className);
         exit;
-     eF_deleteTableData("modules","className = '".$className."'");
+     sC_deleteTableData("modules","className = '".$className."'");
      $message = _ERRORLOADINGMODULE . " " . $className . " " . _MODULEDELETED;
      $message_type = "failure";
          */
@@ -1417,7 +1417,7 @@ abstract class MagesterUser
         }
 
         if ($role) {
-            $result = eF_getTableData("user_types", "*", "id='".$role."'");
+            $result = sC_getTableData("user_types", "*", "id='".$role."'");
             unserialize($result[0]['core_access']) ? $this->coreAccess = unserialize($result[0]['core_access']) : null;
             unserialize($result[0]['modules_access']) ? $this->moduleAccess = unserialize($result[0]['modules_access']) : null;
         }
@@ -1444,7 +1444,7 @@ abstract class MagesterUser
     public static function getRoles($getNames = false) {
         //Cache results in self::$userRoles
         if (is_null(self::$userRoles)) {
-            $roles = eF_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
+            $roles = sC_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
             self::$userRoles = $roles;
         } else {
             $roles = self::$userRoles;
@@ -1471,7 +1471,7 @@ abstract class MagesterUser
      */
     public function getProfileComments() {
         if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_COMMENTS) {
-            $result = eF_getTableData("profile_comments JOIN users ON authors_LOGIN = users.login", "profile_comments.id, profile_comments.timestamp, authors_LOGIN, users.name, users.surname, users.avatar, data", "users_LOGIN = '".$this->user['login']."'", "timestamp DESC");
+            $result = sC_getTableData("profile_comments JOIN users ON authors_LOGIN = users.login", "profile_comments.id, profile_comments.timestamp, authors_LOGIN, users.name, users.surname, users.avatar, data", "users_LOGIN = '".$this->user['login']."'", "timestamp DESC");
             $comments = array();
             foreach ($result as $comment) {
                 $comments[$comment['id']] = $comment;
@@ -1508,7 +1508,7 @@ abstract class MagesterUser
     public static function convertArgumentToUserLogin($login) {
         if ($login instanceof MagesterUser) {
             $login = $login->user['login'];
-        } elseif (!eF_checkParameter($login, 'login')) {
+        } elseif (!sC_checkParameter($login, 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN, MagesterUserException::INVALID_LOGIN);
         }
 
@@ -1539,7 +1539,7 @@ abstract class MagesterUser
             $constraints['active'] ? $where[] = 'u.active=1' : $where[] = 'u.active=0';
         }
         if (isset($constraints['filter']) && $constraints['filter']) {
-            $result = eF_describeTable("users");
+            $result = sC_describeTable("users");
             $tableFields = array();
             foreach ($result as $value) {
                 $tableFields[] = "u.".$value['Field'].' like "%'.$constraints['filter'].'%"';
@@ -1559,10 +1559,10 @@ abstract class MagesterUser
     }
     private static function addLimitConditionToConstraints($constraints) {
         $limit = '';
-        if (isset($constraints['limit']) && eF_checkParameter($constraints['limit'], 'int') && $constraints['limit'] > 0) {
+        if (isset($constraints['limit']) && sC_checkParameter($constraints['limit'], 'int') && $constraints['limit'] > 0) {
             $limit = $constraints['limit'];
         }
-        if ($limit && isset($constraints['offset']) && eF_checkParameter($constraints['offset'], 'int') && $constraints['offset'] >= 0) {
+        if ($limit && isset($constraints['offset']) && sC_checkParameter($constraints['offset'], 'int') && $constraints['offset'] >= 0) {
             $limit = $constraints['offset'].','.$limit;
         }
 
@@ -1570,7 +1570,7 @@ abstract class MagesterUser
     }
     private static function addSortOrderConditionToConstraints($constraints) {
         $order = '';
-        if (isset($constraints['sort']) && eF_checkParameter($constraints['sort'], 'alnum_with_spaces')) {
+        if (isset($constraints['sort']) && sC_checkParameter($constraints['sort'], 'alnum_with_spaces')) {
             $order = $constraints['sort'];
             if (isset($constraints['order']) && in_array($constraints['order'], array('asc', 'desc'))) {
                 $order .= ' '.$constraints['order'];
@@ -1689,7 +1689,7 @@ abstract class MagesterUser
     /*
     public function getUserTags($user) {
         if (is_numeric($user)) {
-            $userDB = eF_getTableData("users", "login", "id = " . $user);
+            $userDB = sC_getTableData("users", "login", "id = " . $user);
             $user = $userDB[0]['login'];
         }
         if (is_string($user)) {
@@ -1858,7 +1858,7 @@ abstract class MagesterLessonUser extends MagesterUser
             $userTypes = array_pad($userTypes, sizeof($lessonIds), $userTypes[0]);
         }
         if (sizeof($lessonIds) > 0) {
-            $lessons = eF_getTableData("lessons", "*", "id in (".implode(",", $lessonIds).")");
+            $lessons = sC_getTableData("lessons", "*", "id in (".implode(",", $lessonIds).")");
             foreach ($lessons as $key => $lesson) {
                 $lesson = new MagesterLesson($lesson);
                 $lesson->addUsers($this->user['login'], $userTypes[$key], $activate);
@@ -1892,7 +1892,7 @@ abstract class MagesterLessonUser extends MagesterUser
         if (!is_array($lessonIds)) {
             $lessonIds = array($lessonIds);
         }
-        $lessons = eF_getTableData("lessons", "*", "id in (".implode(",", $lessonIds).")");
+        $lessons = sC_getTableData("lessons", "*", "id in (".implode(",", $lessonIds).")");
         foreach ($lessons as $key => $lesson) {
             $lesson = new MagesterLesson($lesson);
             $lesson->confirm($this->user['login']);
@@ -1922,18 +1922,18 @@ abstract class MagesterLessonUser extends MagesterUser
             $lessonIds = array($lessonIds);
         }
         foreach ($lessonIds as $key => $lessonID) {
-            if (!eF_checkParameter($lessonID, 'id')) {
+            if (!sC_checkParameter($lessonID, 'id')) {
                 unset($lessonIds[$key]); //Remove illegal vaues from lessons array.
             }
         }
-        eF_deleteTableData("users_to_lessons", "users_LOGIN = '".$this->user['login']."' and lessons_ID in (".implode(",", $lessonIds).")"); //delete lessons from list
+        sC_deleteTableData("users_to_lessons", "users_LOGIN = '".$this->user['login']."' and lessons_ID in (".implode(",", $lessonIds).")"); //delete lessons from list
         foreach ($lessonIds as $lessonId) {
             $cacheKey = "user_lesson_status:lesson:".$lessonId."user:".$this->user['login'];
             Cache::resetCache($cacheKey);
         }
         //Timelines event
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_REMOVAL, "users_LOGIN" => $this->user['login'], "lessons_ID" => $lessonIds));
-        $userLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID, user_type", "users_LOGIN = '".$this->user['login']."'");
+        $userLessons = sC_getTableDataFlat("users_to_lessons", "lessons_ID, user_type", "users_LOGIN = '".$this->user['login']."'");
         $this->lessons = array_combine($userLessons['lessons_ID'], $userLessons['user_type']);
 
         return $this->lessons;
@@ -1957,9 +1957,9 @@ abstract class MagesterLessonUser extends MagesterUser
             "completed" => 0,
             "current_unit" => 0,
             "score" => 0);
-        eF_updateTableData("users_to_lessons", $tracking_info, "users_LOGIN='".$this->user['login']."' and lessons_ID = ".$lesson->lesson['id']);
-        eF_deleteTableData("completed_tests", "users_LOGIN = '".$this->user['login']."' and tests_ID in (select id from tests where lessons_ID='".$lesson->lesson['id']."')");
-        eF_deleteTableData("scorm_data", "users_LOGIN = '".$this->user['login']."' and content_ID in (select id from content where lessons_ID='".$lesson->lesson['id']."')");
+        sC_updateTableData("users_to_lessons", $tracking_info, "users_LOGIN='".$this->user['login']."' and lessons_ID = ".$lesson->lesson['id']);
+        sC_deleteTableData("completed_tests", "users_LOGIN = '".$this->user['login']."' and tests_ID in (select id from tests where lessons_ID='".$lesson->lesson['id']."')");
+        sC_deleteTableData("scorm_data", "users_LOGIN = '".$this->user['login']."' and content_ID in (select id from content where lessons_ID='".$lesson->lesson['id']."')");
     }
     public function resetProgressInAllLessons() {
         $tracking_info = array("done_content" => "",
@@ -1970,9 +1970,9 @@ abstract class MagesterLessonUser extends MagesterUser
             "completed" => 0,
             "current_unit" => 0,
             "score" => 0);
-        eF_updateTableData("users_to_lessons", $tracking_info, "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("completed_tests", "users_LOGIN = '".$this->user['login']."'");
-        eF_deleteTableData("scorm_data", "users_LOGIN = '".$this->user['login']."'");
+        sC_updateTableData("users_to_lessons", $tracking_info, "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("completed_tests", "users_LOGIN = '".$this->user['login']."'");
+        sC_deleteTableData("scorm_data", "users_LOGIN = '".$this->user['login']."'");
     }
     /**
      * Reset the user's progress in the specified course
@@ -1992,7 +1992,7 @@ abstract class MagesterLessonUser extends MagesterUser
             "to_timestamp" => 0,
             "completed" => 0,
             "score" => 0);
-        eF_updateTableData("users_to_courses", $tracking_info, "users_LOGIN='".$this->user['login']."' and courses_ID = ".$course->course['id']);
+        sC_updateTableData("users_to_courses", $tracking_info, "users_LOGIN='".$this->user['login']."' and courses_ID = ".$course->course['id']);
         if ($resetLessons) {
             foreach ($course->getCourseLessons() as $lesson) {
                 $this->resetProgressInLesson($lesson);
@@ -2006,7 +2006,7 @@ abstract class MagesterLessonUser extends MagesterUser
             "to_timestamp" => 0,
             "completed" => 0,
             "score" => 0);
-        eF_updateTableData("users_to_courses", $tracking_info, "users_LOGIN='".$this->user['login']."'");
+        sC_updateTableData("users_to_courses", $tracking_info, "users_LOGIN='".$this->user['login']."'");
     }
     /**
      * Get the users's lessons list
@@ -2035,7 +2035,7 @@ abstract class MagesterLessonUser extends MagesterUser
             if ($returnObjects) {
                 $userLessons = array();
                 //Assign all lessons to an array, this way avoiding looping queries
-                $result = eF_getTableData(
+                $result = sC_getTableData(
                     "lessons l, users_to_lessons ul",
                     "l.*",
                     "l.archive=0 and " .
@@ -2049,7 +2049,7 @@ abstract class MagesterLessonUser extends MagesterUser
                 }
                 $courseLessons = array();
                 $nonCourseLessons = array();
-                $result = eF_getTableData(
+                $result = sC_getTableData(
                     "users u,users_to_lessons ul, lessons l",
                     "ul.*, u.user_type as basic_user_type, u.user_types_ID",
                     "l.archive=0 and " .
@@ -2075,7 +2075,7 @@ abstract class MagesterLessonUser extends MagesterUser
                 }
                 $userLessons = $courseLessons + $nonCourseLessons;
             } else {
-                $result = eF_getTableDataFlat(
+                $result = sC_getTableDataFlat(
                     "users_to_lessons ul, lessons l",
                     "ul.lessons_ID, ul.user_type",
                     "l.archive=0 and " .
@@ -2093,7 +2093,7 @@ abstract class MagesterLessonUser extends MagesterUser
                     if (!$userType) { //For some reason, the user type is not set in the database. so set it now
                         $userType = $this->user['user_type'];
                         $this->lessons[$lessonId] = $userType;
-                        eF_updateTableData(
+                        sC_updateTableData(
                             "users_to_lessons",
                             array("user_type" => $userType),
                             "lessons_ID=$lessonId and users_LOGIN='".$this->user['login']."'"
@@ -2145,7 +2145,7 @@ abstract class MagesterLessonUser extends MagesterUser
      * @access protected
      */
     private function initializeLessons() {
-        $result = eF_getTableData("users_to_lessons ul, lessons l",
+        $result = sC_getTableData("users_to_lessons ul, lessons l",
             "ul.*, ul.to_timestamp as timestamp_completed, ul.from_timestamp as active_in_lesson, l.id, l.name, l.directions_ID, l.course_only, l.instance_source, l.duration,l.options,l.to_timestamp,l.from_timestamp, l.active, 1 as has_lesson",
             "l.archive = 0 and ul.archive = 0 and l.id=ul.lessons_ID and ul.users_LOGIN='".$this->user['login']."'");
         if (empty($result)) {
@@ -2223,21 +2223,21 @@ abstract class MagesterLessonUser extends MagesterUser
      * @access public
      */
     public function getNonLessons($returnObjects = false) {
-        $userLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID", "archive=0 and users_LOGIN = '".$this->user['login']."'");
+        $userLessons = sC_getTableDataFlat("users_to_lessons", "lessons_ID", "archive=0 and users_LOGIN = '".$this->user['login']."'");
         //sizeof($userLessons) > 0 ? $sql = "and id not in (".implode(",", $userLessons['lessons_ID']).")" : $sql = '';
         sizeof($userLessons) > 0 ? $sql = "active = 1 and id not in (".implode(",", $userLessons['lessons_ID']).")" : $sql = 'active = 1';
         if ($returnObjects) {
             $nonUserLessons = array();
-            //$lessons		= eF_getTableData("lessons", "*", "languages_NAME='".$this->user['languages_NAME']."'".$sql);
-            $lessons = eF_getTableData("lessons", "*", $sql);
+            //$lessons		= sC_getTableData("lessons", "*", "languages_NAME='".$this->user['languages_NAME']."'".$sql);
+            $lessons = sC_getTableData("lessons", "*", $sql);
             foreach ($lessons as $value) {
                 $nonUserLessons[$value['id']] = new MagesterLesson($value['id']);
             }
 
             return $nonUserLessons;
         } else {
-            //$lessons = eF_getTableDataFlat("lessons", "*", "languages_NAME='".$this->user['languages_NAME']."'".$sql);
-            $lessons = eF_getTableDataFlat("lessons", "*", $sql);
+            //$lessons = sC_getTableDataFlat("lessons", "*", "languages_NAME='".$this->user['languages_NAME']."'".$sql);
+            $lessons = sC_getTableDataFlat("lessons", "*", $sql);
 
             return $lessons['id'];
         }
@@ -2273,9 +2273,9 @@ abstract class MagesterLessonUser extends MagesterUser
 
         list ($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
         $where[] = "c.id=uc.courses_ID and uc.users_LOGIN='".$this->user['login']."' and uc.archive=0";
-        //$result  = eF_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
+        //$result  = sC_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
         $sql = prepareGetTableData("courses c, users_to_courses uc", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-        $result = eF_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
+        $result = sC_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
         if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
             return MagesterCourse::convertDatabaseResultToCourseObjects($result);
         } else {
@@ -2286,7 +2286,7 @@ abstract class MagesterLessonUser extends MagesterUser
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
         $where[] = "c.id=uc.courses_ID and uc.users_LOGIN='".$this->user['login']."' and uc.archive=0";
-        $result = eF_countTableData("courses c, users_to_courses uc", "c.id", implode(" and ", $where));
+        $result = sC_countTableData("courses c, users_to_courses uc", "c.id", implode(" and ", $where));
 
         return $result[0]['count'];
     }
@@ -2308,9 +2308,9 @@ abstract class MagesterLessonUser extends MagesterUser
         //$select = MagesterCourse::convertCourseConstraintsToRequiredFields($constraints, $select);
         list($where, $limit, $orderby) = MagesterCourse::convertClassesConstraintsToSqlParameters($constraints);
         $where[] = "c.id=cl.courses_ID and uc.classe_id = cl.id AND uc.users_LOGIN='".$this->user['login']."' and uc.archive=0";
-        //$result  = eF_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
+        //$result  = sC_getTableData("courses c, users_to_courses uc", $select, implode(" and ", $where), $orderby, false, $limit);
         $sql = prepareGetTableData("courses c, classes cl, users_to_courses uc", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-        $result = eF_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.courses_ID");
+        $result = sC_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.courses_ID");
 
 
         if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
@@ -2354,7 +2354,7 @@ abstract class MagesterLessonUser extends MagesterUser
     public function getUserPolo($constraints = array()) {
         !empty($constraints) OR $constraints = array('active' => true);
 
-        $polo = eF_getTableData(
+        $polo = sC_getTableData(
             "module_xuser user JOIN module_polos polo ON (user.polo_id = polo.id)",
             "polo.*",
             "user.id = " . $this->user['id']
@@ -2378,9 +2378,9 @@ abstract class MagesterLessonUser extends MagesterUser
         $select['num_students'] = "(select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.login=uc.users_LOGIN and u.user_type='student') as num_students";
         $select = MagesterCourse::convertCourseConstraintsToRequiredFields($constraints, $select);
         list($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
-        //$result  = eF_getTableData("courses c left outer join (select completed,score,courses_ID, from_timestamp,archive from users_to_courses where users_login='".$this->user['login']."' and archive=0) r on c.id=r.courses_ID ", $select, implode(" and ", $where), $orderby, "", $limit);
+        //$result  = sC_getTableData("courses c left outer join (select completed,score,courses_ID, from_timestamp,archive from users_to_courses where users_login='".$this->user['login']."' and archive=0) r on c.id=r.courses_ID ", $select, implode(" and ", $where), $orderby, "", $limit);
         $sql = prepareGetTableData("courses c left outer join (select completed,score,courses_ID, from_timestamp,archive from users_to_courses where users_login='".$this->user['login']."' and archive=0) r on c.id=r.courses_ID ", implode(",", $select), implode(" and ", $where), $orderby, "", $limit);
-        $result = eF_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
+        $result = sC_getTableData("courses, ($sql) t", "courses.*, t.*", "courses.id=t.id");
         if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
             return MagesterCourse::convertDatabaseResultToCourseObjects($result);
         } else {
@@ -2391,7 +2391,7 @@ abstract class MagesterLessonUser extends MagesterUser
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
         //$where[] = "d.id=c.directions_ID";
-        $result = eF_countTableData("courses c left outer join (select completed,score,courses_ID, from_timestamp from users_to_courses where users_login='".$this->user['login']."' and archive=0) r on c.id=r.courses_ID ", "c.id",
+        $result = sC_countTableData("courses c left outer join (select completed,score,courses_ID, from_timestamp from users_to_courses where users_login='".$this->user['login']."' and archive=0) r on c.id=r.courses_ID ", "c.id",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -2426,12 +2426,12 @@ abstract class MagesterLessonUser extends MagesterUser
         list($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
         //WITH THIS NEW QUERY, WE GET THE SLOW 'has_instances' PROPERTY AFTER FILTERING
         $sql = prepareGetTableData("courses c left outer join (select id from courses) r on c.id=r.id", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "courses, ($sql) t",
             "courses.*, (select count(id) from courses c1 where c1.instance_source=courses.id ) as has_instances, t.*",
             "courses.id=t.id");
         //THIS WAS THE OLD QUERY, MUCH SLOWER
-        //$result  = eF_getTableData("courses c left outer join (select id from courses) r on c.id=r.id", $select, implode(" and ", $where), $orderby, false, $limit);
+        //$result  = sC_getTableData("courses c left outer join (select id from courses) r on c.id=r.id", $select, implode(" and ", $where), $orderby, false, $limit);
         if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
             return MagesterCourse::convertDatabaseResultToCourseObjects($result);
         } else {
@@ -2442,7 +2442,7 @@ abstract class MagesterLessonUser extends MagesterUser
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse::convertCourseConstraintsToSqlParameters($constraints);
         //$where[] = "d.id=c.directions_ID";
-        $result = eF_countTableData("courses c left outer join (select id from courses) r on c.id=r.id", "c.id",
+        $result = sC_countTableData("courses c left outer join (select id from courses) r on c.id=r.id", "c.id",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -2476,12 +2476,12 @@ abstract class MagesterLessonUser extends MagesterUser
         $where[] = "(select count(*) > 0 from users_to_courses uc1, courses c1 where uc1.users_login='".$this->user['login']."' and uc1.archive=0 $activeSql and c1.archive = 0 and (c1.instance_source=c.id or c1.id=c.id) and c1.id=uc1.courses_ID)=1";
         //WITH THIS NEW QUERY, WE GET THE SLOW 'has_instances' PROPERTY AFTER FILTERING
         $sql = prepareGetTableData("courses c left outer join (select id from courses) r on c.id=r.id", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "courses, ($sql) t",
             "courses.*, (select count(id) from courses c1 where c1.instance_source=courses.id ) as has_instances, t.*",
             "courses.id=t.id");
         //THIS WAS THE OLD QUERY, MUCH SLOWER
-        //$result  = eF_getTableData("courses c left outer join (select id from courses) r on c.id=r.id", $select, implode(" and ", $where), $orderby, false, $limit);
+        //$result  = sC_getTableData("courses c left outer join (select id from courses) r on c.id=r.id", $select, implode(" and ", $where), $orderby, false, $limit);
         if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
             return MagesterCourse::convertDatabaseResultToCourseObjects($result);
         } else {
@@ -2500,7 +2500,7 @@ abstract class MagesterLessonUser extends MagesterUser
             $activeSql = '';
         }
         $where[] = "(select count(*) > 0 from users_to_courses uc1, courses c1 where uc1.users_login='".$this->user['login']."' and uc1.archive=0 $activeSql and c1.archive = 0 and (c1.instance_source=c.id or c1.id=c.id) and c1.id=uc1.courses_ID)=1";
-        $result = eF_countTableData("directions d,courses c left outer join (select id from courses) r on c.id=r.id", "c.id",
+        $result = sC_countTableData("directions d,courses c left outer join (select id from courses) r on c.id=r.id", "c.id",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -2617,7 +2617,7 @@ abstract class MagesterLessonUser extends MagesterUser
         foreach ($courses as $key => $value) {
             if ($value instanceOf MagesterCourse) {
                 $courses[$key] = $value->course['id'];
-            } elseif (!eF_checkParameter($value, 'id')) {
+            } elseif (!sC_checkParameter($value, 'id')) {
                 unset($courses[$key]);
             }
         }
@@ -2636,7 +2636,7 @@ abstract class MagesterLessonUser extends MagesterUser
         $lessons = $this->verifyLessonsList($lessons);
         $this->sendNotificationsRemoveUserLessons($lessons);
         foreach ($lessons as $lesson) {
-            eF_updateTableData("users_to_lessons", array("archive" => time()), "users_LOGIN='".$this->user['login']."' and lessons_ID=$lesson");
+            sC_updateTableData("users_to_lessons", array("archive" => time()), "users_LOGIN='".$this->user['login']."' and lessons_ID=$lesson");
             $cacheKey = "user_lesson_status:lesson:".$lesson."user:".$this->user['login'];
             Cache::resetCache($cacheKey);
         }
@@ -2651,7 +2651,7 @@ abstract class MagesterLessonUser extends MagesterUser
         foreach ($lessons as $key => $value) {
             if ($value instanceOf MagesterLesson) {
                 $lessons[$key] = $value->lesson['id'];
-            } elseif (!eF_checkParameter($value, 'id')) {
+            } elseif (!sC_checkParameter($value, 'id')) {
                 unset($lessons[$key]);
             }
         }
@@ -2725,7 +2725,7 @@ abstract class MagesterLessonUser extends MagesterUser
         $completedTests = $meanTestScore = 0;
         $tests = $lesson->getTests(true, true);
         $totalTests = sizeof($tests);
-        $result = eF_getTableData("completed_tests ct, tests t", "ct.tests_ID, ct.score", "t.id=ct.tests_ID and ct.users_LOGIN='".$this->user['login']."' and ct.archive=0 and t.lessons_ID=".$lesson->lesson['id']);
+        $result = sC_getTableData("completed_tests ct, tests t", "ct.tests_ID, ct.score", "t.id=ct.tests_ID and ct.users_LOGIN='".$this->user['login']."' and ct.archive=0 and t.lessons_ID=".$lesson->lesson['id']);
         foreach ($result as $value) {
             if (in_array($value['tests_ID'], array_keys($tests))) {
                 $meanTestScore += $value['score'];
@@ -2751,7 +2751,7 @@ abstract class MagesterLessonUser extends MagesterUser
         }
     }
     private function getUserScormTestsStatusInLesson($lesson) {
-        $usersDoneScormTests = eF_getTableData("scorm_data sd left outer join content c on c.id=sd.content_ID",
+        $usersDoneScormTests = sC_getTableData("scorm_data sd left outer join content c on c.id=sd.content_ID",
             "c.id, c.ctg_type, sd.users_LOGIN, sd.masteryscore, sd.lesson_status, sd.score, sd.minscore, sd.maxscore",
             "c.ctg_type = 'scorm_test' and sd.users_LOGIN = '".$this->user['login']."' and c.lessons_ID = ".$lesson->lesson['id']);
         $tests = array();
@@ -2850,7 +2850,7 @@ abstract class MagesterLessonUser extends MagesterUser
         $courses = $this->verifyCoursesList($courses);
         $roles = MagesterUser::verifyRolesList($roles, sizeof($courses));
         if (sizeof($courses) > 0) {
-            $courses = eF_getTableData("courses", "*", "id in (".implode(",", $courses).")");
+            $courses = sC_getTableData("courses", "*", "id in (".implode(",", $courses).")");
             foreach ($courses as $key => $course) {
                 $course = new MagesterCourse($course);
                 $course->addUsers($this->user['login'], $roles[$key], $confirmed);
@@ -2905,16 +2905,16 @@ abstract class MagesterLessonUser extends MagesterUser
      */
     public function removeCourses($courses) {
         $courseIds = $this->verifyCoursesList($courses);
-        $result = eF_getTableData("lessons_to_courses lc, users_to_courses uc", "lc.*", "lc.courses_ID=uc.courses_ID and uc.users_LOGIN = '".$this->user['login']."'");
+        $result = sC_getTableData("lessons_to_courses lc, users_to_courses uc", "lc.*", "lc.courses_ID=uc.courses_ID and uc.users_LOGIN = '".$this->user['login']."'");
         foreach ($result as $value) {
             $lessonsToCourses[$value['lessons_ID']][] = $value['courses_ID'];
             $coursesToLessons[$value['courses_ID']][] = $value['lessons_ID'];
         }
         if (!empty($courseIds)) {
-            $userLessonsThroughCourse = eF_getTableDataFlat("lessons_to_courses lc, users_to_courses uc", "lc.lessons_ID", "lc.courses_ID=uc.courses_ID and uc.courses_ID in (".implode(",", $courseIds).") and uc.users_LOGIN = '".$this->user['login']."'");
+            $userLessonsThroughCourse = sC_getTableDataFlat("lessons_to_courses lc, users_to_courses uc", "lc.lessons_ID", "lc.courses_ID=uc.courses_ID and uc.courses_ID in (".implode(",", $courseIds).") and uc.users_LOGIN = '".$this->user['login']."'");
             $userLessonsThroughCourse = $userLessonsThroughCourse['lessons_ID'];
         }
-        eF_deleteTableData("users_to_courses", "users_LOGIN = '".$this->user['login']."' and courses_ID in (".implode(",", $courseIds).")"); //delete courses from list
+        sC_deleteTableData("users_to_courses", "users_LOGIN = '".$this->user['login']."' and courses_ID in (".implode(",", $courseIds).")"); //delete courses from list
         foreach ($courseIds as $id) {
             $cacheKey = "user_course_status:course:".$id."user:".$this->user['login'];
             Cache::resetCache($cacheKey);
@@ -2954,12 +2954,12 @@ abstract class MagesterLessonUser extends MagesterUser
         } else {
             $fields = array("user_type" => $this->user['user_type']);
         }
-        if ($lessonId && eF_checkParameter($lessonId, 'id')) {
-            eF_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$this->user['login']."' and lessons_ID=$lessonId");
+        if ($lessonId && sC_checkParameter($lessonId, 'id')) {
+            sC_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$this->user['login']."' and lessons_ID=$lessonId");
             $cacheKey = "user_lesson_status:lesson:".$lessonId."user:".$this->user['login'];
             Cache::resetCache($cacheKey);
         } else {
-            eF_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$this->user['login']."'");
+            sC_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$this->user['login']."'");
         }
     }
     /**
@@ -2982,7 +2982,7 @@ abstract class MagesterLessonUser extends MagesterUser
             $lessonId = $lessonId->lesson['id'];
         }
         if (in_array($lessonId, array_keys($this->getLessons()))) {
-            $result = eF_getTableData("users_to_lessons", "user_type", "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lessonId);
+            $result = sC_getTableData("users_to_lessons", "user_type", "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lessonId);
 
             return $roles[$result[0]['user_type']];
         } else {
@@ -3011,7 +3011,7 @@ abstract class MagesterLessonUser extends MagesterUser
     public static function getLessonsRoles($getNames = false) {
         //Cache results in self::$lessonRoles
         if (is_null(self::$lessonRoles)) {
-            $roles = eF_getTableDataFlat("user_types", "*", "active=1 AND basic_user_type!='administrator'"); //Get available roles
+            $roles = sC_getTableDataFlat("user_types", "*", "active=1 AND basic_user_type!='administrator'"); //Get available roles
             self::$lessonRoles = $roles;
         } else {
             $roles = self::$lessonRoles;
@@ -3134,7 +3134,7 @@ abstract class MagesterLessonUser extends MagesterUser
      */
     public function getRelatedUsers() {
         $myLessons = $this ->getLessons();
-        $other_users = eF_getTableDataFlat("users_to_lessons ul, users u", "distinct users_LOGIN" , "u.archive=0 and u.active=1 and ul.users_LOGIN=u.login and ul.archive=0 and lessons_ID IN ('" . implode("','", array_keys($myLessons)) . "') AND users_LOGIN <> '" . $this->user['login'] . "'");
+        $other_users = sC_getTableDataFlat("users_to_lessons ul, users u", "distinct users_LOGIN" , "u.archive=0 and u.active=1 and ul.users_LOGIN=u.login and ul.archive=0 and lessons_ID IN ('" . implode("','", array_keys($myLessons)) . "') AND users_LOGIN <> '" . $this->user['login'] . "'");
         $users = $other_users['users_LOGIN'];
 
         return $users;
@@ -3152,7 +3152,7 @@ abstract class MagesterLessonUser extends MagesterUser
      * @access public
      */
     public function getCommonLessons($login) {
-        $result = eF_getTableData("users_to_lessons as ul1 JOIN users_to_lessons as ul2 ON ul1.lessons_ID = ul2.lessons_ID JOIN lessons ON ul1.lessons_ID = lessons.id", "lessons.id, lessons.name", "ul1.archive=0 and ul2.archive=0 and ul1.users_LOGIN = '".$this->user['login']."' AND ul2.users_LOGIN = '".$login."'");
+        $result = sC_getTableData("users_to_lessons as ul1 JOIN users_to_lessons as ul2 ON ul1.lessons_ID = ul2.lessons_ID JOIN lessons ON ul1.lessons_ID = lessons.id", "lessons.id, lessons.name", "ul1.archive=0 and ul2.archive=0 and ul1.users_LOGIN = '".$this->user['login']."' AND ul2.users_LOGIN = '".$login."'");
         $common_lessons = array();
         foreach ($result as $common_lesson) {
             $common_lessons[$common_lesson['id']] = $common_lesson;
@@ -3184,20 +3184,20 @@ abstract class MagesterLessonUser extends MagesterUser
     public function hasCourse($course) {
         if ($course instanceOf MagesterCourse) {
             $course = $course->course['id'];
-        } elseif (!eF_checkParameter($course, 'id')) {
+        } elseif (!sC_checkParameter($course, 'id')) {
             throw new MagesterCourseException(_INVALIDID.": $course", MagesterCourseException::INVALID_ID);
         }
-        $result = eF_getTableData("users_to_courses", "courses_ID", "courses_ID=$course and users_LOGIN='".$this->user['login']."' and archive=0");
+        $result = sC_getTableData("users_to_courses", "courses_ID", "courses_ID=$course and users_LOGIN='".$this->user['login']."' and archive=0");
 
         return sizeof($result) > 0;
     }
     public function getUserTypeInCourse($course) {
         if ($course instanceOf MagesterCourse) {
             $course = $course->course['id'];
-        } elseif (!eF_checkParameter($course, 'id')) {
+        } elseif (!sC_checkParameter($course, 'id')) {
             throw new MagesterCourseException(_INVALIDID.": $course", MagesterCourseException::INVALID_ID);
         }
-        $result = eF_getTableData("users_to_courses", "user_type", "courses_ID=$course and users_LOGIN='".$this->user['login']."' and archive=0");
+        $result = sC_getTableData("users_to_courses", "user_type", "courses_ID=$course and users_LOGIN='".$this->user['login']."' and archive=0");
         if (!empty($result)) {
             return $result[0]['user_type'];
         } else {
@@ -3229,8 +3229,8 @@ class MagesterProfessor extends MagesterLessonUser
      */
     public function delete() {
         parent::delete();
-        eF_deleteTableData("users_to_lessons", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("users_to_courses", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_lessons", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_courses", "users_LOGIN='".$this->user['login']."'");
 /*
         foreach ($this->getCourses() as $id => $value) {
             $cacheKey = "user_course_status:course:".$id."user:".$this->user['login'];
@@ -3263,22 +3263,22 @@ class MagesterStudent extends MagesterLessonUser
      */
     public function delete() {
         parent::delete();
-        $userDoneTests = eF_getTableData("done_tests", "id", "users_LOGIN='".$this->user['login']."'");
+        $userDoneTests = sC_getTableData("done_tests", "id", "users_LOGIN='".$this->user['login']."'");
         if (sizeof($userDoneTests) > 0) {
-            eF_deleteTableData("done_questions", "done_tests_ID IN (".implode(",", $userDoneTests['id']).")");
-            eF_deleteTableData("done_tests", "users_LOGIN='".$this->user['login']."'");
+            sC_deleteTableData("done_questions", "done_tests_ID IN (".implode(",", $userDoneTests['id']).")");
+            sC_deleteTableData("done_tests", "users_LOGIN='".$this->user['login']."'");
         }
-        eF_deleteTableData("users_to_lessons", "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("users_to_courses", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_lessons", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_courses", "users_LOGIN='".$this->user['login']."'");
 /*
         foreach ($this->getCourses() as $id => $value) {
             $cacheKey = "user_course_status:course:".$id."user:".$this->user['login'];
             Cache::resetCache($cacheKey);
         }
  */
-        eF_deleteTableData("users_to_projects", "users_LOGIN='".$this->user['login']."'");
-        //eF_deleteTableData("users_to_done_tests",   "users_LOGIN='".$this->user['login']."'");
-        eF_deleteTableData("completed_tests", "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("users_to_projects", "users_LOGIN='".$this->user['login']."'");
+        //sC_deleteTableData("users_to_done_tests",   "users_LOGIN='".$this->user['login']."'");
+        sC_deleteTableData("completed_tests", "users_LOGIN='".$this->user['login']."'");
     }
     /**
      * Complete lesson
@@ -3305,20 +3305,20 @@ class MagesterStudent extends MagesterLessonUser
                 'to_timestamp' => time(),
                 'score' => $score,
                 'comments' => $comments);
-            eF_updateTableData("users_to_lessons", $fields, "users_LOGIN = '".$this->user['login']."' and lessons_ID=".$lesson->lesson['id']);
+            sC_updateTableData("users_to_lessons", $fields, "users_LOGIN = '".$this->user['login']."' and lessons_ID=".$lesson->lesson['id']);
             //$cacheKey = "user_lesson_status:lesson:".$lesson->lesson['id']."user:".$this->user['login'];
             //Cache::resetCache($cacheKey);
             // Timelines event
             MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_COMPLETION, "users_LOGIN" => $this->user['login'], "lessons_ID" => $lesson->lesson['id'], "lessons_name" => $lesson->lesson['name']));
             //Get results in lessons
             $userLessons = array();
-            $result = eF_getTableData("users_to_lessons", "lessons_ID,completed,score", "users_LOGIN='".$this->user['login']."'");
+            $result = sC_getTableData("users_to_lessons", "lessons_ID,completed,score", "users_LOGIN='".$this->user['login']."'");
             foreach ($result as $value) {
                 if ($userLessons[$value['lessons_ID']] = $value);
             }
             $lessonCourses = $lesson->getCourses(true); //Get the courses that this lesson is part of. This way, we can auto complete a course, if it should be auto completed
             //Filter out courses that the student doesn't have
-            $result = eF_getTableDataFlat("users_to_courses", "courses_ID", "users_LOGIN='".$this->user['login']."'");
+            $result = sC_getTableDataFlat("users_to_courses", "courses_ID", "users_LOGIN='".$this->user['login']."'");
             $userCourses = $result['courses_ID'];
             foreach ($lessonCourses as $id => $course) {
                 if (!in_array($id, $userCourses)) {
@@ -3340,7 +3340,7 @@ class MagesterStudent extends MagesterLessonUser
                     }
                 }
             }
-            $modules = eF_loadAllModules();
+            $modules = sC_loadAllModules();
             foreach ($modules as $module) {
                 $module->onCompleteLesson($lesson->lesson['id'],$this->user['login']);
             }
@@ -3421,19 +3421,19 @@ class MagesterStudent extends MagesterLessonUser
         }
         if ($unit instanceof MagesterUnit) { //Check validity of $unit
             $unit = $unit['id'];
-        } elseif (!eF_checkParameter($unit, 'id')) {
+        } elseif (!sC_checkParameter($unit, 'id')) {
             throw new MagesterContentException(_INVALIDID.": $unit", MagesterContentException::INVALID_ID);
         }
         if ($lesson instanceof MagesterLesson) { //Check validity of $lesson
             $lesson = $lesson->lesson['id'];
-        } elseif (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!sC_checkParameter($lesson, 'id')) {
             throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException::INVALID_ID);
         }
         $lessons = $this->getLessons();
         if (!in_array($lesson, array_keys($lessons))) { //Check if the user is actually registered in this lesson
             throw new MagesterUserException(_USERDOESNOTHAVETHISLESSON.": ".$lesson, MagesterUserException::USER_NOT_HAVE_LESSON);
         }
-        $result = eF_getTableData("users_to_lessons", "done_content, current_unit", "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lesson);
+        $result = sC_getTableData("users_to_lessons", "done_content, current_unit", "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lesson);
         sizeof($result) > 0 ? $doneContent = unserialize($result[0]['done_content']) : $doneContent = array();
         $current_unit = 0;
         if ($seen) {
@@ -3446,7 +3446,7 @@ class MagesterStudent extends MagesterLessonUser
             }
         }
         sizeof($doneContent) ? $doneContent = serialize($doneContent) : $doneContent = null;
-        eF_updateTableData("users_to_lessons", array('done_content' => $doneContent, 'current_unit' => $current_unit), "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lesson);
+        sC_updateTableData("users_to_lessons", array('done_content' => $doneContent, 'current_unit' => $current_unit), "users_LOGIN='".$this->user['login']."' and lessons_ID=".$lesson);
         //		$cacheKey = "user_lesson_status:lesson:".$lesson."user:".$this->user['login'];
         //		Cache::resetCache($cacheKey);
         if ($current_unit) {
@@ -3516,7 +3516,7 @@ class MagesterResponsible extends MagesterStudent
 
         $childUser = MagesterUserFactory::factory($studentLogin);
 
-        $linkData = eF_getTableData("c_users_link", '*',
+        $linkData = sC_getTableData("c_users_link", '*',
             "parent_id = '" . $this->user['id'] . "'" .
             "AND child_id = '" . $childUser->user['id'] . "'"
         );
@@ -3529,7 +3529,7 @@ class MagesterResponsible extends MagesterStudent
             'child_id'	=> $childUser->user['id']
         );
 
-        return eF_insertTableData("c_users_link", $linkInsert);
+        return sC_insertTableData("c_users_link", $linkInsert);
     }
 }
 
@@ -3561,7 +3561,7 @@ class MagesterUserFactory
      * <br/>Example :
      * <code>
      * $user = MagesterUserFactory::factory('jdoe');			//Use factory function to instantiate user object with login 'jdoe'
-     * $userData = eF_getTableData("users", "*", "login='jdoe'");
+     * $userData = sC_getTableData("users", "*", "login='jdoe'");
      * $user = MagesterUserFactory::factory($userData[0]);	  //Use factory function to instantiate user object using prepared data
      * </code>
      *
@@ -3574,8 +3574,8 @@ class MagesterUserFactory
      * @static
      */
     public static function factory($user, $password = false, $forceType = false) {
-        if ((is_string($user) || is_numeric($user)) && eF_checkParameter($user, 'login')) {
-            $result = eF_getTableData("users", "*", "login='".$user."'");
+        if ((is_string($user) || is_numeric($user)) && sC_checkParameter($user, 'login')) {
+            $result = sC_getTableData("users", "*", "login='".$user."'");
             if (sizeof($result) == 0) {
                 throw new MagesterUserException(_USERDOESNOTEXIST.': '.$user, MagesterUserException::USER_NOT_EXISTS);
             } elseif ($password !== false && $password != $result[0]['password']) {
@@ -3612,21 +3612,21 @@ class MagesterUserFactory
 class MagesterUserDetails extends MagesterUser
 {
     public static function deleteDetails($id) {
-        eF_deleteTableData("module_xuser", "id='" . $id . "'");
+        sC_deleteTableData("module_xuser", "id='" . $id . "'");
     }
     public static function injectDetails($login, $userProperties) {
         $user = MagesterUserFactory::factory($login);
         $userProperties['id']	= $user->user['id'];
 
         self::deleteDetails($userProperties['id']);
-        eF_insertTableData("module_xuser", $userProperties);
+        sC_insertTableData("module_xuser", $userProperties);
 
         return true;
     }
     public static function getUserDetails($login) {
         $user = MagesterUserFactory::factory($login);
 
-        $result = eF_getTableData("module_xuser", "*", "id='" . $user->user['id'] . "'");
+        $result = sC_getTableData("module_xuser", "*", "id='" . $user->user['id'] . "'");
 
         if (count($result) > 0) {
             return $result[0];

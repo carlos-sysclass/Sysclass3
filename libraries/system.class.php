@@ -96,14 +96,14 @@ class MagesterSystem
      $directory = new MagesterDirectory($tempDir);
      $tables = $GLOBALS['db'] -> GetCol("show tables"); //Get the database tables
         foreach ($tables as $table) {
-            $data = eF_getTableData($table, "count(*)");
+            $data = sC_getTableData($table, "count(*)");
             $unfold = 1000;
             $limit = ceil($data[0]['count(*)'] / $unfold);
             for ($i = 0; $i < $limit; $i++) {
-                $data = eF_getTableData($table, "*", "", "'' limit $unfold offset ".($i*$unfold));
+                $data = sC_getTableData($table, "*", "", "'' limit $unfold offset ".($i*$unfold));
                 file_put_contents($tempDir.'db_backup/'.$table.'.'.$i, serialize($data), FILE_APPEND);
             }
-            $result = eF_ExecuteNew("show create table $table");
+            $result = sC_ExecuteNew("show create table $table");
             $temp = $result -> GetAll();
             $definition[] = "drop table ".$temp[0]['Table'];
             $definition[] = $temp[0]['Create Table'];
@@ -112,11 +112,11 @@ class MagesterSystem
 
 		foreach ($tables as $table) {
 
-			$data = eF_getTableData($table);
+			$data = sC_getTableData($table);
 
 			file_put_contents($tempDir.'db_backup/'.$table, serialize($data));
 
-			$result       = eF_ExecuteNew("show create table $table");
+			$result       = sC_ExecuteNew("show create table $table");
 
 			$temp         = $result -> GetAll();
 
@@ -210,32 +210,32 @@ class MagesterSystem
       $tableName = preg_replace("/\.\d+/", "", basename($file));
       if (isset($sql[$tableName])) {
           try {
-              eF_executeNew($sql[$tableName][0]);
+              sC_executeNew($sql[$tableName][0]);
           } catch (Exception $e) {/*Don't halt for missing tables that can't be deleted*/}
-          eF_executeNew($sql[$tableName][1]);
+          sC_executeNew($sql[$tableName][1]);
           unset($sql[$tableName]);
       }
       if (strpos($file, 'sql.txt') === false && strpos($file, 'version.txt') === false) {
           $data = unserialize(file_get_contents($file));
           $tableExists = false;
           try {
-           $tableExists = eF_describeTable($tableName);
+           $tableExists = sC_describeTable($tableName);
           } catch (Exception $e) {}
           if ($tableExists !== false) {
-           eF_insertTableDataMultiple($tableName, $data);
+           sC_insertTableDataMultiple($tableName, $data);
           }
       }
   }
   //Turn off foreign key checks in order to be able to run "drop table" queries
-  eF_executeNew("SET FOREIGN_KEY_CHECKS = 0;");
+  sC_executeNew("SET FOREIGN_KEY_CHECKS = 0;");
   //For each one of the tables that don't have backup data, simply recreate
   foreach ($sql as $tableName => $query) {
       try {
-          eF_executeNew($query[0]);
+          sC_executeNew($query[0]);
       } catch (Exception $e) {/*Don't halt for missing tables that can't be deleted*/}
-      eF_executeNew($query[1]);
+      sC_executeNew($query[1]);
   }
-  eF_executeNew("SET FOREIGN_KEY_CHECKS = 1;");
+  sC_executeNew("SET FOREIGN_KEY_CHECKS = 1;");
   if (is_dir(G_BACKUPPATH.'temp/upload')) {
       $dir = new MagesterDirectory(G_BACKUPPATH.'temp/upload');
       $dir -> copy(G_ROOTPATH.'upload', true);
@@ -299,18 +299,18 @@ class MagesterSystem
      if (!($file instanceof MagesterFile)) {
          $file = new MagesterFile($file);
      }
-        $usersTable = eF_getTableData("users", "*", "");
+        $usersTable = sC_getTableData("users", "*", "");
         $tableFields = array_keys($usersTable[0]);
         // Get user types to check if they exist
-        $userTypesTable = eF_getTableData("user_types", "*", "");
+        $userTypesTable = sC_getTableData("user_types", "*", "");
         // Set the userTypesTable to find in O(1) the existence or not of a user-type according to its name
         foreach ($userTypesTable as $key => $userType) {
             $userTypesTable[$userType['name']] = $userType;
         }
         // If we work on the enterprise version we need to distinguish between users and module_hcd_employees tables fields
         //$userFields = array('login', 'password','email','languages_NAME','name','surname','active','comments','user_type','timestamp','avatar','pending','user_types_ID');
-        $userFields = eF_getTableFields('users');
-        $existingUsers = eF_getTableDataFlat("users", "login");
+        $userFields = sC_getTableFields('users');
+        $existingUsers = sC_getTableDataFlat("users", "login");
      $fileContents = file_get_contents($file['path']);
      $fileContents = explode("\n", trim($fileContents));
         $separator = ";";
@@ -425,7 +425,7 @@ class MagesterSystem
      */
  public static function exportUsers($separator)
  {
-         $users = eF_getTableData("users LEFT OUTER JOIN user_types ON users.user_types_ID = user_types.id", "users.*, user_types.name as user_type_name");
+         $users = sC_getTableData("users LEFT OUTER JOIN user_types ON users.user_types_ID = user_types.id", "users.*, user_types.name as user_type_name");
      foreach ($users as $user) {
          unset($user['password']);
          unset($user['user_types_ID']);
@@ -517,16 +517,16 @@ class MagesterSystem
  {
      $languages = array();
   if ($only_active) {
-   $result = eF_getTableData("languages", "*", "active=1", "translation asc");
+   $result = sC_getTableData("languages", "*", "active=1", "translation asc");
   } else {
-   $result = eF_getTableData("languages", "*", "", "translation asc");
+   $result = sC_getTableData("languages", "*", "", "translation asc");
      }
   foreach ($result as $value) {
          if (is_file(G_ROOTPATH.'libraries/language/lang-'.$value['name'].'.php.inc')) {
              $value['file_path'] = G_ROOTPATH.'libraries/language/lang-'.$value['name'].'.php.inc';
              $languages[$value['name']] = $value;
          } else {
-             eF_deleteTableData("languages", "name='".$value['name']."'");
+             sC_deleteTableData("languages", "name='".$value['name']."'");
          }
      }
      if ($reduced) {
@@ -567,7 +567,7 @@ class MagesterSystem
 	 */
  public static function getAdministrator()
  {
-     $admins = eF_getTableData("users", "*", "user_type = 'administrator' and user_types_ID = 0", "timestamp");
+     $admins = sC_getTableData("users", "*", "user_type = 'administrator' and user_types_ID = 0", "timestamp");
      $admin = MagesterUserFactory :: factory($admins[0]);
 
      return $admin;
@@ -731,17 +731,17 @@ class MagesterSystem
 	 */
  public static function setVersionKey($key)
  {
-     if (!$key || !eF_checkParameter($key, 'alnum')) {
+     if (!$key || !sC_checkParameter($key, 'alnum')) {
          throw new MagesterSystemException(_INVALIDVERSIONKEY.': '.$key, MagesterSystemException::INVALID_VERSION_KEY);
      }
-     //$versionData = eF_checkVersionKey($key);
+     //$versionData = sC_checkVersionKey($key);
      $versionData = self :: checkVersionKey($key);
         if (G_VERSIONTYPE != $versionData['type']) {
             throw new MagesterSystemException(_KEYISNOTFORTHISEDITION, MagesterSystemException::INVALID_VERSION_KEY);
         }
-     if ((!$versionData['users'] || !eF_checkParameter($versionData['users'], 'int')) ||
+     if ((!$versionData['users'] || !sC_checkParameter($versionData['users'], 'int')) ||
          (!$versionData['type'] || !isset($versionData['type'])) ||
-         (!$versionData['serial'] || !eF_checkParameter($versionData['serial'], 'int'))) {
+         (!$versionData['serial'] || !sC_checkParameter($versionData['serial'], 'int'))) {
               throw new MagesterSystemException(_INVALIDVERSIONKEY.': '.$key, MagesterSystemException::INVALID_VERSION_KEY);
      }
      //debug();
@@ -755,7 +755,7 @@ class MagesterSystem
      //MagesterConfiguration :: setValue('version_hcd',    $versionData['hcd']);
      // Going to educational version: check the existence of lesson and course skills
      if ($versionData['type'] == "educational") {
-         eF_insertAutoLessonCourseSkills();
+         sC_insertAutoLessonCourseSkills();
      }
 
      return true;

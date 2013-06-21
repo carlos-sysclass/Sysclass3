@@ -1,6 +1,6 @@
 {include  file = "includes/header.tpl"}
         {if ( $T_ACCESS == '-1')}
-            {eF_template_printMessage message=$smarty.const._YOUCANTDOTHESURVEYCONTACTLESSONPROFESSOR type='failure'}
+            {sC_template_printMessage message=$smarty.const._YOUCANTDOTHESURVEYCONTACTLESSONPROFESSOR type='failure'}
         {else}
             {if ($T_SCREEN == '1')}
                 {assign var = "title" value = '<a class="titleLink" href ="#">'|cat:$smarty.const._SURVEY|cat:'</a>&nbsp;&raquo&nbsp;<a class="titleLink" href="#">'|cat:$T_SURVEYNAME|cat:'</a>'}
@@ -39,11 +39,11 @@
                     <tr><td colspan="2" class="horizontalSeparator"></td></tr>
                     <tr><td colspan="2">&nbsp;</td></tr>
                     </table>
-                    {eF_template_printSurvey questions=$T_SURVEY_QUESTIONS intro=$T_SURVEY_STARTTEXT user_type='external' coupon=$smarty.get.coupon username=$smarty.get.username surveys_ID=$smarty.get.surveys_ID}
+                    {sC_template_printSurvey questions=$T_SURVEY_QUESTIONS intro=$T_SURVEY_STARTTEXT user_type='external' coupon=$smarty.get.coupon username=$smarty.get.username surveys_ID=$smarty.get.surveys_ID}
          {/if}
          {if ($T_SCREEN == '3')}
             {assign var = "title" value = '<a class="titleLink" href ="#">'|cat:$smarty.const._SURVEY|cat:'</a>&nbsp;&raquo&nbsp;<a class="titleLink" href="#">'|cat:$T_SURVEYNAME|cat:'</a>'}
-                {eF_template_printMessage message=$smarty.const._SURVEYSUBMISSIONSUCCESSFUL type='success'}
+                {sC_template_printMessage message=$smarty.const._SURVEYSUBMISSIONSUCCESSFUL type='success'}
                 <table align="center" widht="100%">    
                     {section name='survey_screen_3' loop=$T_SURVEY_INFO}
                         <tr>

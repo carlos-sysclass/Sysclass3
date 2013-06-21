@@ -9,11 +9,11 @@
 			{*assign var=t_status value=$T_PROCESS_FILE_STATUS.header*}
 			<div class="grid_12">
 				<label><strong>Retorno:</strong></label>
-				<span>{$t_header.cod_retorno.formatteddata} - {$T_XPAY_BOLETO_CEF_SIGCB_RETORNO[$t_header.cod_retorno.parseddata]}</span>
+				<span>{$t_header.cod_retorno.formatteddata} - {$T_XPAY_BOLETO_CsC_SIGCB_RETORNO[$t_header.cod_retorno.parseddata]}</span>
 			</div>
 			<div class="grid_12">
 				<label><strong>Serviço:</strong></label>
-				<span>{$t_status.cod_servico.formatteddata} - {$T_XPAY_BOLETO_CEF_SIGCB_SERVICOS[$t_status.cod_servico.parseddata]}</span>
+				<span>{$t_status.cod_servico.formatteddata} - {$T_XPAY_BOLETO_CsC_SIGCB_SERVICOS[$t_status.cod_servico.parseddata]}</span>
 			</div>
 			<div class="grid_12">
 				<label><strong>Nome do Banco:</strong></label>
@@ -80,7 +80,7 @@
 							<td align="center">{$item.data_ocorrencia.formatteddata}</td>
 							<td align="center">
 								{if ($item.banco_receptor.parseddata)}
-									{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]|eF_truncate:35}
+									{$item.banco_receptor.formatteddata} - {$T_BASE_BANCOS[$item.banco_receptor.parseddata]|sC_truncate:35}
 								{/if}
 							</td>
 							<td align="center">{$item.valor_titulo.formatteddata}</td>

@@ -56,7 +56,7 @@ function showalllinks(el, response) {
  for (var i = 0; i < tables; i++) {
   if (sortedTables[i].id.match('usersTable') && ajaxUrl[i]) {
 
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }

@@ -77,27 +77,27 @@
 
 {if $smarty.get.createLog==1}
 		<div class="tabbertab">
-		{eF_template_printBlock tabber = "chat_engine_rate" title=$smarty.const._CHAT_MODULE_RATES data=$smarty.capture.t_set_chatheartbeat image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "chat_engine_rate" title=$smarty.const._CHAT_MODULE_RATES data=$smarty.capture.t_set_chatheartbeat image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 		<div class="tabbertab tabbertabdefault">
-		{eF_template_printBlock tabber = "create_log" title=$smarty.const._CHAT_CREATE_LOG data=$smarty.capture.t_create_log image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "create_log" title=$smarty.const._CHAT_CREATE_LOG data=$smarty.capture.t_create_log image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 		<div class="tabbertab">
-		{eF_template_printBlock tabber = "clear_logs" title=$smarty.const._CHAT_CLEAR_HISTORY data=$smarty.capture.t_clear_logs image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "clear_logs" title=$smarty.const._CHAT_CLEAR_HISTORY data=$smarty.capture.t_clear_logs image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 {else}
 		<div class="tabbertab">
-		{eF_template_printBlock tabber = "chat_engine_rate" title=$smarty.const._CHAT_MODULE_RATES data=$smarty.capture.t_set_chatheartbeat image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "chat_engine_rate" title=$smarty.const._CHAT_MODULE_RATES data=$smarty.capture.t_set_chatheartbeat image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 		<div class="tabbertab">
-		{eF_template_printBlock tabber = "create_log" title=$smarty.const._CHAT_CREATE_LOG data=$smarty.capture.t_create_log image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "create_log" title=$smarty.const._CHAT_CREATE_LOG data=$smarty.capture.t_create_log image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 		<div class="tabbertab">
-		{eF_template_printBlock tabber = "clear_logs" title=$smarty.const._CHAT_CLEAR_HISTORY data=$smarty.capture.t_clear_logs image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
+		{sC_template_printBlock tabber = "clear_logs" title=$smarty.const._CHAT_CLEAR_HISTORY data=$smarty.capture.t_clear_logs image=$T_CHAT_BASELINK|cat:'img/chat.png' absoluteImagePath = 1}
 		</div>
 {/if}
 
 </div>
 
 {/capture}
-{eF_template_printBlock title=$smarty.const._CHAT_CHAT data=$smarty.capture.t_chat_tab_code help = 'Chat'}
+{sC_template_printBlock title=$smarty.const._CHAT_CHAT data=$smarty.capture.t_chat_tab_code help = 'Chat'}

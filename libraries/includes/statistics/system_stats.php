@@ -33,13 +33,13 @@ try {
     $smarty -> assign("T_ACTIONS", $actions);
 
     if (isset($_GET['showlog']) && $_GET['showlog'] == "true") {
-        $lessonNames = eF_getTableDataFlat("lessons", "id, name");
+        $lessonNames = sC_getTableDataFlat("lessons", "id, name");
         $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
-        $contentNames = eF_getTableDataFlat("content", "id, name");
+        $contentNames = sC_getTableDataFlat("content", "id, name");
         $contentNames = array_combine($contentNames['id'], $contentNames['name']);
-        $testNames = eF_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
+        $testNames = sC_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
         $testNames = array_combine($testNames['id'], $testNames['name']);
-        $result = eF_getTableData("logs", "*", "timestamp between $from and $to order by timestamp");
+        $result = sC_getTableData("logs", "*", "timestamp between $from and $to order by timestamp");
 
         foreach ($result as $key => $value) {
             $value['lessons_ID'] ? $result[$key]['lesson_name'] = $lessonNames[$value['lessons_ID']] : null;
@@ -52,7 +52,7 @@ try {
     }
 
     $users = array();
-    $result = eF_getTableData("logs, users", "users.name, users.surname, users.active, users_LOGIN, count(logs.id) as cnt ", "users.login=users_LOGIN and action = 'login' and logs.timestamp between $from and $to group by users_LOGIN order by count(logs.id) desc");
+    $result = sC_getTableData("logs, users", "users.name, users.surname, users.active, users_LOGIN, count(logs.id) as cnt ", "users.login=users_LOGIN and action = 'login' and logs.timestamp between $from and $to group by users_LOGIN order by count(logs.id) desc");
 //    $userTimes = MagesterUser :: getLoginTime(false, array('from' => $from, 'to' => $to));
 
     $timesReport = new MagesterTimes(array($from, $to));
@@ -67,7 +67,7 @@ try {
     }
 
     $lessons = array();
-    $result = eF_getTableData("logs", "*", "timestamp between $from and $to");
+    $result = sC_getTableData("logs", "*", "timestamp between $from and $to");
     foreach ($result as $value) {
 
         if ($value['lessons_ID']) {
@@ -77,7 +77,7 @@ try {
 
     $totalUserAccesses = $totalUserTime = 0;
     foreach ($users as $key => $user) {
-        $users[$key]['time'] = eF_convertIntervalToTime($user['seconds']);
+        $users[$key]['time'] = sC_convertIntervalToTime($user['seconds']);
         $totalUserAccesses += $user['accesses'];
         $totalUserTime += $user['seconds'];
     }
@@ -88,13 +88,13 @@ try {
 
     $smarty -> assign("T_ACTIVE_USERS", $users);
     $smarty -> assign("T_TOTAL_USER_ACCESSES", $totalUserAccesses);
-    $smarty -> assign("T_TOTAL_USER_TIME", eF_convertIntervalToTime($totalUserTime));
+    $smarty -> assign("T_TOTAL_USER_TIME", sC_convertIntervalToTime($totalUserTime));
     $smarty -> assign("T_USER_TIMES", array('logins' => implode(",", array_keys($userTimes)), 'times' => implode(",", $userTimes))); //Needed only for chart
 
     $directionsTree = new MagesterDirectionsTree();
     $directionsTreePaths = $directionsTree -> toPathString();
 
-    $result = eF_getTableDataFlat("lessons", "id, name, active, directions_ID");
+    $result = sC_getTableDataFlat("lessons", "id, name, active, directions_ID");
     $lessonNames = array_combine($result['id'], $result['name']);
     $lessonActive = array_combine($result['id'], $result['active']);
     $lessonCategory = array_combine($result['id'], $result['directions_ID']);
@@ -112,7 +112,7 @@ try {
     }
 
     foreach ($lessons as $key => $lesson) {
-        $lessons[$key]['time'] = eF_convertIntervalToTime($lesson['seconds']);
+        $lessons[$key]['time'] = sC_convertIntervalToTime($lesson['seconds']);
     }
     if (!isset($_GET['showlessons'])) {
         $lessons = array_slice($lessons, 0, 20);
@@ -120,12 +120,12 @@ try {
 
     $smarty -> assign("T_ACTIVE_LESSONS", $lessons);
 
-    $userTypes = eF_getTableData("users", "user_type, count(user_type) as num", "", "", "user_type");
+    $userTypes = sC_getTableData("users", "user_type, count(user_type) as num", "", "", "user_type");
     $smarty -> assign("T_USER_TYPES", $userTypes);
 
     try {
      if (isset($_GET['ajax']) && $_GET['ajax'] == 'graph_system_access') {
-      $result = eF_getTableData("logs", "*", "timestamp between $from and $to and action = 'login' order by timestamp");
+      $result = sC_getTableData("logs", "*", "timestamp between $from and $to and action = 'login' order by timestamp");
 
       //Assign the number of accesses to each week day
       foreach ($result as $value) {
@@ -169,7 +169,7 @@ try {
       echo json_encode($graph);
       exit;
      } elseif (isset($_GET['ajax']) && $_GET['ajax'] == 'graph_system_user_types') {
-   $result = eF_getTableData("users", "user_type, count(user_type) as num", "", "", "user_type");
+   $result = sC_getTableData("users", "user_type, count(user_type) as num", "", "", "user_type");
    $roles = MagesterUser::getRoles(true);
    $graph = new MagesterGraph();
       $graph -> type = 'bar';
@@ -191,6 +191,6 @@ try {
 
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

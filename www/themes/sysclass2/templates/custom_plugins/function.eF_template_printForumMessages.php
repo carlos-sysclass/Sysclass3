@@ -1,13 +1,13 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printForumMessages function.
+* Smarty plugin: smarty_function_sC_template_printForumMessages function.
 *
 * This function prints a list with forum messages titles and the corresponding list
 * It is used to both student and professor pages, at the front page, and wherever we need
 * a list of forum messages.
 *
 */
-function smarty_function_eF_template_printForumMessages($params, &$smarty)
+function smarty_function_sC_template_printForumMessages($params, &$smarty)
 {
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...
@@ -40,7 +40,7 @@ function smarty_function_eF_template_printForumMessages($params, &$smarty)
                 </td><td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';
         $title2 = '#filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
         //$str .= '<img src="images/16x16/calendar.png" title="'.$title2.'" alt="'.$title2.'" style = "vertical-align:middle"/>';
-        $str .= '<span title = "'.$title2.'">'.eF_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
+        $str .= '<span title = "'.$title2.'">'.sC_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
         $str .= '
                 </td></tr>';
     }

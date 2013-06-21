@@ -122,7 +122,7 @@ class module_complete_test extends MagesterModule
 					default:
 						if (isset($_GET['confirm'])) {
 							$testInstance = $test -> start($user -> user['login']);
-							eF_redirect("".$this -> moduleBaseUrl.'&login='.$_GET['login'].'&test='.$_GET['test']);
+							sC_redirect("".$this -> moduleBaseUrl.'&login='.$_GET['login'].'&test='.$_GET['test']);
 							exit;
 						} else {
 							$testInstance = $test;
@@ -166,7 +166,7 @@ class module_complete_test extends MagesterModule
 						$testInstance -> complete($values['question']);
 						$user  -> setSeenUnit($currentUnit, $currentLesson, 1);
 
-						eF_redirect("".$this -> moduleBaseUrl.'&login='.$_GET['login'].'&test='.$_GET['test']);
+						sC_redirect("".$this -> moduleBaseUrl.'&login='.$_GET['login'].'&test='.$_GET['test']);
 						exit;
 					}
 
@@ -211,21 +211,21 @@ class module_complete_test extends MagesterModule
 					$select_units -> loadArray($tests);
 					$smarty -> assign("T_TESTS_SELECT", $select_units -> toHTML());
 
-					isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+					isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-					if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+					if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
 						$sort = $_GET['sort'];
 						isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
 					} else {
 						$sort = 'login';
 					}
-					$lessonUsers = eF_multiSort($lessonUsers, $sort, $order);
+					$lessonUsers = sC_multiSort($lessonUsers, $sort, $order);
 					$smarty -> assign("T_USERS_SIZE", sizeof($lessonUsers));
 					if (isset($_GET['filter'])) {
-						$lessonUsers = eF_filterData($lessonUsers, $_GET['filter']);
+						$lessonUsers = sC_filterData($lessonUsers, $_GET['filter']);
 					}
-					if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-						isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+					if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+						isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
 						$lessonUsers = array_slice($lessonUsers, $offset, $limit);
 					}
 
@@ -487,7 +487,7 @@ class module_complete_test extends MagesterModule
 */
 	private function analyzeContentsToFindUserFormat($testUsers, $allUsers)
 	{
-		$allUsers = eF_getTableData("users", "login, name, surname");
+		$allUsers = sC_getTableData("users", "login, name, surname");
 		foreach ($allUsers as $value) {
 			$surnameName[$value['login']] = $value['surname'].', '.$value['name'];
 			$nameSurname[$value['login']] = $value['name'].', '.$value['surname'];

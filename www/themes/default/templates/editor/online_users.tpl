@@ -4,5 +4,5 @@
 
 
 <table width="20%"><tr><td>
-{eF_template_printBlock title = $smarty.const._ONLINEUSERS data = $smarty.capture.t_users_online image = '16x16/goto_student.png'}
+{sC_template_printBlock title = $smarty.const._ONLINEUSERS data = $smarty.capture.t_users_online image = '16x16/goto_student.png'}
 </td></tr></table>

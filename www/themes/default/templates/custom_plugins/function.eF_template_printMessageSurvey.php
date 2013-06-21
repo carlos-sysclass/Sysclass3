@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printMessage function
+* Smarty plugin: sC_template_printMessage function
 */
-function smarty_function_eF_template_printMessageSurvey($params, &$smarty)
+function smarty_function_sC_template_printMessageSurvey($params, &$smarty)
 {
 
     if (isset($params['message'])) {

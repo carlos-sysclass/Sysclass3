@@ -1,5 +1,5 @@
 //This function is used to show / hide the div popup
-function eF_js_showDivPopup(popup_title, popup_dim, popup_data_id) {
+function sC_js_showDivPopup(popup_title, popup_dim, popup_data_id) {
 
     parent.mainframe ? main_frame = parent.mainframe : main_frame = window;
     parent.sideframe ? side_frame = parent.sideframe : side_frame = window;
@@ -64,7 +64,7 @@ function eF_js_showDivPopup(popup_title, popup_dim, popup_data_id) {
     }
 }
 
-function eF_js_keypress(e) {
+function sC_js_keypress(e) {
     top.mainframe ? main_frame = top.mainframe : main_frame = window;
 
     var kC  = (window.event) ?    // MSIE or Firefox?
@@ -80,7 +80,7 @@ function eF_js_keypress(e) {
 /**
 * This function is used to resize scorm iframe, so that it spans through the entire page
 */
-function eF_js_setCorrectIframeSize()
+function sC_js_setCorrectIframeSize()
 {
     if (frame = window.document.getElementById('scormFrameID')) {
         innerDoc    = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
@@ -132,7 +132,7 @@ function show_hide(obj, name) {
 /**
 * Set element display to '' or 'none'
 */
-function eF_js_showHide(el_id) {
+function sC_js_showHide(el_id) {
     el = document.getElementById(el_id);
     if (el.style.display == 'none') {
         el.style.display = '';
@@ -144,7 +144,7 @@ function eF_js_showHide(el_id) {
 /**
 * Set element visibility to '' or 'none'
 */
-function eF_js_showHideVisible(el_id) {
+function sC_js_showHideVisible(el_id) {
     el = document.getElementById(el_id);
     if (el.style.visibility == 'hidden') {
         el.style.visibility = 'visible';
@@ -156,7 +156,7 @@ function eF_js_showHideVisible(el_id) {
 /**
 * Set element display to '' or 'none' and position it to the event coordinates
 */
-function eF_js_showHideDiv(target, el_id, e) {
+function sC_js_showHideDiv(target, el_id, e) {
 
     el = document.getElementById(el_id);
 
@@ -187,7 +187,7 @@ function eF_js_showHideDiv(target, el_id, e) {
 *
 * @param obj The checkbox that was clicked
 */
-function eF_js_selectAllChildren(obj) {
+function sC_js_selectAllChildren(obj) {
     if (obj.name == 'all') {                                            //If the check box name is 'all', then it is a checkbox that is used to check/uncheck all checkboxes
         var all_elements = document.getElementsByTagName('input');
 
@@ -289,11 +289,11 @@ function saveMyTree_byForm()
 /**
 * This function is used to display the main data table and hide the "please wait" table
 */
-function jeF_initialize()
+function jsC_initialize()
 {
     if (window._editor_url) initEditor();
 
-    //eF_js_setCorrectIframeSize();
+    //sC_js_setCorrectIframeSize();
     focus();                                                            //This is needed here in order for the body to catch onkeypress event
 
 //    if (changeImages)
@@ -317,7 +317,7 @@ function popUp(URL, width, height, resize)
 
 
 
-function eF_js_findPos(obj) {
+function sC_js_findPos(obj) {
 	var curleft = curtop = 0;
 	if (obj.offsetParent) {
 		curleft = obj.offsetLeft

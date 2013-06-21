@@ -91,6 +91,6 @@ function onProcessFailure(el, response) {
   $('progress_cell').hide();
   $('version_file_details').hide();
   $('version_contact_server').show();
-  eF_js_showDivPopup('', '');
+  sC_js_showDivPopup('', '');
  } catch (e) {alert(e);}
 }

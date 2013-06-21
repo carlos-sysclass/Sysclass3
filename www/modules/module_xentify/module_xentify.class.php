@@ -255,7 +255,7 @@ class scopedLesson extends scope implements IScopedEntify
 		}
 
 		if ($this->entify->lesson['ies_id'] == 0) { // TRY TO CHECK BY COURSE
-			$result = eF_getTableDataFlat("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "c.ies_id", "lc.lessons_ID = " . $this->entify->lesson['id']);
+			$result = sC_getTableDataFlat("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "c.ies_id", "lc.lessons_ID = " . $this->entify->lesson['id']);
 			if (count($result) == 1) {
 				$lessonIesId = reset($result['ies_id']);
 			} else {
@@ -331,7 +331,7 @@ class module_xentify extends MagesterExtendedModule
 			case 2 : {
 				$scopeFields = array('polo_id');
 
-				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
+				$polosData = sC_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
 				foreach ($polosData as $polo) {
 					$poloCombo[$polo['id']] = $polo['nome'];
@@ -340,7 +340,7 @@ class module_xentify extends MagesterExtendedModule
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
 				/*
-				$classeData = eF_getTableData(
+				$classeData = sC_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
 					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
@@ -363,7 +363,7 @@ class module_xentify extends MagesterExtendedModule
 			case 10 : {
 				$scopeFields = array('polo_id', 'classe_id');
 
-				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
+				$polosData = sC_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
 				foreach ($polosData as $polo) {
 					$poloCombo[$polo['id']] = $polo['nome'];
@@ -372,7 +372,7 @@ class module_xentify extends MagesterExtendedModule
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
 
-				$classeData = eF_getTableData(
+				$classeData = sC_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
 					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
@@ -407,7 +407,7 @@ class module_xentify extends MagesterExtendedModule
 			$where[] = 'active = ' . ($constraints['active'] ? '1' : 0);
 		}
 
-		$scopeDBData = eF_getTableData("module_xentify_scopes", "*", implode(" AND ", $where));
+		$scopeDBData = sC_getTableData("module_xentify_scopes", "*", implode(" AND ", $where));
 
 		foreach ($scopeDBData as &$scope) {
 			$scope['fields'] = $this->getScopeFields($scope['id']);
@@ -453,7 +453,7 @@ class module_xentify extends MagesterExtendedModule
     			} else {
 					$value = "'" . $scopeValues[$scope['id']] . "'";
     			}
-    			$scopeTagsDB = ef_getTableDataFlat(
+    			$scopeTagsDB = sC_getTableDataFlat(
     				"module_xentify_scope_tags",
     				"tag",
    					sprintf("xentify_scope_id = %d AND xentify_id IN (%s)", $scope['id'], $value)
@@ -725,11 +725,11 @@ class module_xentify extends MagesterExtendedModule
 
     	$data = array();
 
-    	if (eF_checkParameter($scopeData['polo_id'], 'id')) {
-    		list($data['polo']) = eF_getTableData("module_polos", "*", 'id = ' . $scopeData['polo_id']);
+    	if (sC_checkParameter($scopeData['polo_id'], 'id')) {
+    		list($data['polo']) = sC_getTableData("module_polos", "*", 'id = ' . $scopeData['polo_id']);
     	}
-    	if (eF_checkParameter($scopeData['classe_id'], 'id')) {
-    		list($data['classe']) = eF_getTableData("classes", "*", 'id = ' . $scopeData['classe_id']);
+    	if (sC_checkParameter($scopeData['classe_id'], 'id')) {
+    		list($data['classe']) = sC_getTableData("classes", "*", 'id = ' . $scopeData['classe_id']);
     	}
 
     	return $data;
@@ -783,7 +783,7 @@ class module_xentify extends MagesterExtendedModule
 
 		$from = "users u";
   		$select = "u.*";
-		$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, "", $limit);
+		$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, "", $limit);
 
 		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == false) {
    			return MagesterUser :: convertDatabaseResultToUserArray($result);
@@ -882,7 +882,7 @@ class module_xentify extends MagesterExtendedModule
 	
     private function getUserNegociationsIndex($user)
     {
-    	$result = eF_getTableDataFlat("module_xpay_course_negociation", "id", sprintf("user_id = %d", $user->user['id']));
+    	$result = sC_getTableDataFlat("module_xpay_course_negociation", "id", sprintf("user_id = %d", $user->user['id']));
     	return $result['id'];
     }
     private function checkUserScopeSameNegociation($user, $negociation_id)

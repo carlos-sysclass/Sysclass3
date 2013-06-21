@@ -91,7 +91,7 @@ class glossary extends MagesterEntity
                         "lessons_ID" => $fields['lessons_ID'],
                         "type" => isset($fields['type']) && $fields['type'] ? $fields['type'] : "general");
                     //    "active"     => isset($fields['active'])&& $fields['active'] ? 1 : 0);  //not implemented yet
-        $newId = eF_insertTableData("glossary", $fields);
+        $newId = sC_insertTableData("glossary", $fields);
         $glossary = new glossary($newId);
   //pr($glossary);exit;
   MagesterSearch :: insertText($glossary -> glossary['name'], $glossary -> glossary['id'], "glossary", "title");
@@ -273,7 +273,7 @@ class glossary extends MagesterEntity
      */
     public static function applyGlossary($text, $lessonId)
     {
-        $glossary_words = eF_getTableData("glossary", "name,info", "lessons_ID=".$lessonId); //Get all the glossary words of this lesson
+        $glossary_words = sC_getTableData("glossary", "name,info", "lessons_ID=".$lessonId); //Get all the glossary words of this lesson
         $searchdata = array();
         $searchdatanext = array();
         $replacedata = array();
@@ -400,12 +400,12 @@ class glossary extends MagesterEntity
     {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson -> lesson['id'];
-     } elseif (eF_checkParameter($lesson, 'id')) {
+     } elseif (sC_checkParameter($lesson, 'id')) {
       $lessonId = $lesson;
      } else {
       throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException :: INVALID_ID);
      }
-     $result = eF_getTableData("glossary", "*", "lessons_ID=".$lessonId, "id");
+     $result = sC_getTableData("glossary", "*", "lessons_ID=".$lessonId, "id");
      foreach ($result as $value) {
       $glossaryTerms[$value['id']] = $value;
          $id = $value['id'];

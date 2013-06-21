@@ -50,12 +50,12 @@ var enableMyJobSelect = false;
 					{else}
                     	{assign var="calendar_ctg" value = "personal"}
                     {/if}
-                    {eF_template_printCalendar ctg=$calendar_ctg events=$T_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR}
+                    {sC_template_printCalendar ctg=$calendar_ctg events=$T_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR}
 
 				{/capture}
                 {assign var="calendar_title" value = `$smarty.const._CALENDAR`&nbsp;(#filter:timestamp-`$T_VIEW_CALENDAR`#)}
 
-                {eF_template_printBlock title=$calendar_title data=$smarty.capture.t_calendar_code image='32x32/calendar.png' options=$T_CALENDAR_OPTIONS link=$T_CALENDAR_LINK}
+                {sC_template_printBlock title=$calendar_title data=$smarty.capture.t_calendar_code image='32x32/calendar.png' options=$T_CALENDAR_OPTIONS link=$T_CALENDAR_LINK}
 
                 </td></tr>
 		{/capture}
@@ -71,14 +71,14 @@ var enableMyJobSelect = false;
                                            {capture name='t_news_code'}
                                          <table class = "cpanelTable">
                                          {foreach name = 'news_list' item = "item" key = "key" from = $T_NEWS}
-                                          <tr><td>{$smarty.foreach.news_list.iteration}. <a title = "{$item.title}" href = "{$smarty.server.PHP_SELF}?ctg=news&view={$item.id}&lessons_ID=all&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">{$item.title}</a></td>
+                                          <tr><td>{$smarty.foreach.news_list.iteration}. <a title = "{$item.title}" href = "{$smarty.server.PHP_SELF}?ctg=news&view={$item.id}&lessons_ID=all&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ANNOUNCEMENT}', 1);">{$item.title}</a></td>
                                            <td class = "cpanelTime">#filter:user_login-{$item.users_LOGIN}#, <span title = "#filter:timestamp_time-{$item.timestamp}#">{$item.time_since}</span></td></tr>
                                          {foreachelse}
                                           <tr><td class = "emptyCategory">{$smarty.const._NOANNOUNCEMENTSPOSTED}</td></tr>
                                          {/foreach}
                                          </table>
                                            {/capture}
-                                             {eF_template_printBlock title=$smarty.const._ANNOUNCEMENTS data=$smarty.capture.t_news_code image='32x32/announcements.png' array=$T_NEWS options = $T_NEWS_OPTIONS link = $T_NEWS_LINK}
+                                             {sC_template_printBlock title=$smarty.const._ANNOUNCEMENTS data=$smarty.capture.t_news_code image='32x32/announcements.png' array=$T_NEWS options = $T_NEWS_OPTIONS link = $T_NEWS_LINK}
                                    </td></tr>
     	{/capture}
 	{/if}
@@ -160,7 +160,7 @@ var enableMyJobSelect = false;
 	{/if}
 	<li onmousedown = "showBorders(event)" onmouseup = "hideBorders(event)" id="secondlist_newsletterslinks">
     	<table class = "singleColumnData">
-        	{eF_template_printBlock 
+        	{sC_template_printBlock 
 				title = $smarty.const._NEWSLETTERS_LINKS 
 				data= $smarty.capture.t_newsletters_links_code
 			}
@@ -233,4 +233,4 @@ var currentOperation ='{$T_OP}';
 </script>
 {/capture}
 {*------------------------------------------------------- ACTUAL PRESENTATION ---------------------------------------------------------------*}
-{eF_template_printBlock title = $smarty.const._EDITUSER data = $smarty.capture.t_user_code image='32x32/tools.png' }
+{sC_template_printBlock title = $smarty.const._EDITUSER data = $smarty.capture.t_user_code image='32x32/tools.png' }

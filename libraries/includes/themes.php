@@ -4,7 +4,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 if (isset($currentUser -> coreAccess['themes']) && $currentUser -> coreAccess['themes'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     exit;
 }
 
@@ -109,15 +109,15 @@ try {
          handleAjaxExceptions($e);
         }
 
-        if (isset($_GET['add_page']) || (isset($_GET['edit_page']) && in_array($_GET['edit_page'], $pages) && eF_checkParameter($_GET['edit_page'], 'filename'))) {
+        if (isset($_GET['add_page']) || (isset($_GET['edit_page']) && in_array($_GET['edit_page'], $pages) && sC_checkParameter($_GET['edit_page'], 'filename'))) {
             if (isset($currentUser -> coreAccess['cms']) && $currentUser -> coreAccess['cms'] != 'change') {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
             }
             $load_editor = true;
             isset($_GET['edit_page']) ? $post_target = '&edit_page='.$_GET['edit_page'] : $post_target = '&add_page=1';
 
             $form = new HTML_QuickForm("add_page_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$currentSetTheme -> {$currentSetTheme -> entity}['id']."&tab=external".$post_target, "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
             $form -> addElement('text', 'name', _FILENAME, 'class = "inputText"');
             $form -> addRule('name', _THEFIELD.' '._FILENAME.' '._ISMANDATORY, 'required', null, 'client');
             $form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
@@ -146,7 +146,7 @@ try {
                 file_put_contents($filename, $newContent);
                 chmod($filename, 0644);
                 try {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$currentSetTheme -> {$currentSetTheme -> entity}['id']."&tab=external&message=".urlencode(_SUCCESFULLYADDEDPAGE)."&message_type=success");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$currentSetTheme -> {$currentSetTheme -> entity}['id']."&tab=external&message=".urlencode(_SUCCESFULLYADDEDPAGE)."&message_type=success");
                 } catch (Exception $e) {
                     $message = $e -> getMessage().'('.$e -> getCode().')';
                     $message_type = 'failure';
@@ -246,7 +246,7 @@ try {
         $load_editor = true;
 
         $layout_form = new HTML_QuickForm("add_block_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$layoutTheme -> {$layoutTheme -> entity}['id'].(isset($_GET['edit_block']) ? '&edit_block='.$_GET['edit_block'] : '&add_block=1'), "", null, true);
-        $layout_form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+        $layout_form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
         $layout_form -> addElement('text', 'title', _BLOCKTITLE, 'class = "inputText"');
         $layout_form -> addElement('textarea', 'content', _BLOCKCONTENT, 'id="editor_data" class = "mceEditor" style = "width:100%;height:300px;"');
@@ -278,7 +278,7 @@ try {
             $layoutTheme -> layout['custom_blocks'] = $customBlocks;
             $layoutTheme -> persist();
 
-            eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$layoutTheme -> {$layoutTheme -> entity}['id']);
+            sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$layoutTheme -> {$layoutTheme -> entity}['id']);
         }
 
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -308,7 +308,7 @@ try {
                     $layoutTheme -> persist();
                 }
 
-                eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$layoutTheme -> {$layoutTheme -> entity}['id']."&message=".rawurlencode(_SETTINGSIMPORTEDSUCCESFULLY)."&message_type=success");
+                sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes&theme=".$layoutTheme -> {$layoutTheme -> entity}['id']."&message=".rawurlencode(_SETTINGSIMPORTEDSUCCESFULLY)."&message_type=success");
                 //$message      = _SETTINGSIMPORTEDSUCCESFULLY;
                 //$message_type = 'success';
             } catch (Exception $e) {
@@ -468,7 +468,7 @@ try {
             }
 
             if (!isset($_GET['ajax'])) {
-                eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes");
+                sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=themes");
             }
 
         } catch (Exception $e) {

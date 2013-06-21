@@ -305,7 +305,7 @@ function refreshEventResults(action)
      for (i = 0; i < tables; i++) {
          if (sortedTables[i].id == 'foundEvents') {
           ajaxUrl[i] = url;
-             eF_js_rebuildTable(i, 0, 'null', 'desc');
+             sC_js_rebuildTable(i, 0, 'null', 'desc');
          }
      }
  }
@@ -353,7 +353,7 @@ function showOnlyForUsers(el, table, option) {
  for (i = 0; i < tables; i++) {
         if (sortedTables[i].id == table) {
          ajaxUrl[i] = url;
-            eF_js_rebuildTable(i, 0, 'null', 'desc');
+            sC_js_rebuildTable(i, 0, 'null', 'desc');
         }
     }
 

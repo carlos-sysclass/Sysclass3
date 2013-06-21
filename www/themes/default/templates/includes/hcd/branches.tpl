@@ -55,7 +55,7 @@
     {if $smarty.get.add_branch || $smarty.get.edit_branch}
 
   {capture name = 't_branch_code'}
-   {eF_template_printForm form=$T_BRANCH_FORM}
+   {sC_template_printForm form=$T_BRANCH_FORM}
 
       {if $smarty.get.edit_branch}
           {literal}
@@ -276,38 +276,38 @@
                         <div class="tabber">
                             <div class="tabbertab">
                                 <h3>{$smarty.const._EDITBRANCH}</h3>
-                                {eF_template_printBlock title = $smarty.const._BRANCHRECORD|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_code image = '32x32/branch.png' options = $T_DELETE_LINK}
-                                {eF_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._ATBRANCH|cat:"<span class='innerTableName'>&quot;`$T_BRANCH_NAME`&quot;</span><span id='andSubbranchesTitle' style='visibility:hidden'>&nbsp;`$smarty.const._ANDSUBBRANCHES`</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png' options = $T_SUBBRANCHES_LINK}
+                                {sC_template_printBlock title = $smarty.const._BRANCHRECORD|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_code image = '32x32/branch.png' options = $T_DELETE_LINK}
+                                {sC_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._ATBRANCH|cat:"<span class='innerTableName'>&quot;`$T_BRANCH_NAME`&quot;</span><span id='andSubbranchesTitle' style='visibility:hidden'>&nbsp;`$smarty.const._ANDSUBBRANCHES`</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png' options = $T_SUBBRANCHES_LINK}
                             </div>
                             <div class="tabbertab {if ($smarty.get.tab == "assign_employees"  || isset($smarty.post.employees_to_branches)) } tabbertabdefault {/if}">
                                 <script>var myform = "branch_to_employees";</script>
                                 <h3>{$smarty.const._ASSIGNEMPLOYEES}</h3>
-                                {eF_template_printBlock title = $smarty.const._ASSIGNEMPLOYEESTOBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_employees_to_branch image = '32x32/tools.png'}
+                                {sC_template_printBlock title = $smarty.const._ASSIGNEMPLOYEESTOBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_employees_to_branch image = '32x32/tools.png'}
                             </div>
                             <div class="tabbertab {if ($smarty.get.tab == "subbranches")} tabbertabdefault {/if}">
                                 <h3>{$smarty.const._SUBBRANCHES}</h3>
-                                {eF_template_printBlock title = $smarty.const._SUBBRANCHES|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_subbranches_code image = '32x32/branch.png'}
+                                {sC_template_printBlock title = $smarty.const._SUBBRANCHES|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_subbranches_code image = '32x32/branch.png'}
                             </div>
                             <div class="tabbertab {if ($smarty.get.tab == "jobs")} tabbertabdefault {/if}">
                                 <h3>{$smarty.const._JOBDESCRIPTIONS}</h3>
-                                {eF_template_printBlock title = $smarty.const._JOBDESCRIPTIONS|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_jobs image = '32x32/note.png'}
+                                {sC_template_printBlock title = $smarty.const._JOBDESCRIPTIONS|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_jobs image = '32x32/note.png'}
                             </div>
 {*
                             <div class="tabbertab {if ($smarty.get.tab == "lessons")} tabbertabdefault {/if}">
                                 <h3>{$smarty.const._LESSONS}</h3>
-                                {eF_template_printBlock title = $smarty.const._LESSONS|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_lessons image = '32x32/lesson.png'}
+                                {sC_template_printBlock title = $smarty.const._LESSONS|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_lessons image = '32x32/lesson.png'}
                             </div>
 *}
                             <div class="tabbertab {if ($smarty.get.tab == "courses")} tabbertabdefault {/if}">
                                 <h3>{$smarty.const._COURSES}</h3>
-                                {eF_template_printBlock title = $smarty.const._COURSES|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_courses image = '32x32/courses.png'}
+                                {sC_template_printBlock title = $smarty.const._COURSES|cat:$smarty.const._OFBRANCH|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_branch_courses image = '32x32/courses.png'}
                             </div>
 
                         </div>
     {/capture}
-    {eF_template_printBlock title = $smarty.const._BRANCHRECORD data = $smarty.capture.t_branch_properties_code image = '32x32/branch.png'}
+    {sC_template_printBlock title = $smarty.const._BRANCHRECORD data = $smarty.capture.t_branch_properties_code image = '32x32/branch.png'}
    {else}
-                {eF_template_printBlock title = $smarty.const._BRANCHRECORD data = $smarty.capture.t_branch_code image = '32x32/branch.png'}
+                {sC_template_printBlock title = $smarty.const._BRANCHRECORD data = $smarty.capture.t_branch_code image = '32x32/branch.png'}
             {/if}
    </td></tr>
   </table>
@@ -328,9 +328,9 @@
 
         {/capture}
         {if $smarty.session.employee_type != _EMPLOYEE}
-           {eF_template_printBlock title = $smarty.const._UPDATEBRANCHES data = $smarty.capture.t_branches_code image = '32x32/branch.png'}
+           {sC_template_printBlock title = $smarty.const._UPDATEBRANCHES data = $smarty.capture.t_branches_code image = '32x32/branch.png'}
         {else}
-           {eF_template_printBlock title = $smarty.const._VIEWBRANCHES data = $smarty.capture.t_branches_code image = '32x32/branch.png'}
+           {sC_template_printBlock title = $smarty.const._VIEWBRANCHES data = $smarty.capture.t_branches_code image = '32x32/branch.png'}
         {/if}
 
     {/if}

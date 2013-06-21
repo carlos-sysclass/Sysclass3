@@ -23,7 +23,7 @@ if ($_GET['scorm_review']) {
         $scormContentIds[] = $key;
     }
     if (sizeof($scormContentIds)) {
-        $result = eF_getTableData("scorm_data, content, users", "scorm_data.*, content.name as content_name, users.name, users.surname", "scorm_data.users_LOGIN != '' and scorm_data.content_ID IN (".implode(",", $scormContentIds).") and content_ID=content.id and users.login=scorm_data.users_LOGIN");
+        $result = sC_getTableData("scorm_data, content, users", "scorm_data.*, content.name as content_name, users.name, users.surname", "scorm_data.users_LOGIN != '' and scorm_data.content_ID IN (".implode(",", $scormContentIds).") and content_ID=content.id and users.login=scorm_data.users_LOGIN");
         $scormData = $result;
     } else {
         $scormData = array();
@@ -34,21 +34,21 @@ if ($_GET['scorm_review']) {
 
     //$smarty -> assign("T_SCORM_DATA", $scormData);
     if (isset($_GET['ajax']) && $_GET['ajax'] == 'scormUsersTable') {
-        isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-        if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
             $sort = $_GET['sort'];
             isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
         } else {
             $sort = 'login';
         }
-        $scormData = eF_multiSort($scormData, $sort, $order);
+        $scormData = sC_multiSort($scormData, $sort, $order);
         $smarty -> assign("T_USERS_SIZE", sizeof($scormData));
         if (isset($_GET['filter'])) {
-            $scormData = eF_filterData($scormData, $_GET['filter']);
+            $scormData = sC_filterData($scormData, $_GET['filter']);
         }
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $scormData = array_slice($scormData, $offset, $limit);
         }
         $smarty -> assign("T_SCORM_DATA", $scormData);
@@ -61,14 +61,14 @@ if ($_GET['scorm_review']) {
     }
 
     if (isset($_GET['delete']) && in_array($_GET['delete'], $scormIds)) {
-        eF_deleteTableData("scorm_data", "id=".$_GET['delete']);
+        sC_deleteTableData("scorm_data", "id=".$_GET['delete']);
         $user = MagesterUserFactory::factory($scormData[0]['users_LOGIN']);
         $user -> setSeenUnit($scormData[0]['content_ID'], $currentLesson, false);
         exit;
     }
 } elseif ($_GET['scorm_import']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
 
     try {
@@ -76,7 +76,7 @@ if ($_GET['scorm_review']) {
         $maxUploads = 10;
 
         $form = new HTML_QuickForm("upload_scorm_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=scorm&scorm_import=1', "", null, true);
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
   $form -> addElement('file', 'scorm_file[0]', _UPLOADTHESCORMFILEINZIPFORMAT);
         //$form -> addRule('scorm_file[0]', _THEFIELD.' "'._UPLOADTHESCORMFILEINZIPFORMAT.'" '._ISMANDATORY, 'required', null, 'client');
@@ -148,10 +148,10 @@ if ($_GET['scorm_review']) {
                     $manifestFile = new MagesterFile($scormPath.'imsmanifest.xml');
                     MagesterScorm :: import($currentLesson, $manifestFile, $scormFolderName, array('embed_type' => $values['embed_type'], 'popup_parameters' => $values['popup_parameters']));
                 }
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=scorm&message=".urlencode(_SUCCESSFULLYIMPORTEDSCORMFILE)."&message_type=success");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=scorm&message=".urlencode(_SUCCESSFULLYIMPORTEDSCORMFILE)."&message_type=success");
             } catch (Exception $e) {
                 $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = failure;
             }
 
@@ -172,15 +172,15 @@ if ($_GET['scorm_review']) {
         $smarty -> assign('T_UPLOAD_SCORM_FORM', $renderer -> toArray());
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
 } elseif ($_GET['scorm_export']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     $form = new HTML_QuickForm("export_scorm_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=scorm&scorm_export=1', "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form -> addElement('submit', 'submit_export_scorm', _EXPORT, 'class = "flatButton"');
     if ($form -> isSubmitted() && $form -> validate()) {
         define ('SCORM_FOLDER', G_ROOTPATH."www/content/scorm_data");
@@ -201,7 +201,7 @@ if ($_GET['scorm_review']) {
                 ($value instanceOf MagesterDirectory) ? $filelist[] = preg_replace("#".$currentLesson -> getDirectory()."#", "", $key).'/' : $filelist[] = preg_replace("#".$currentLesson -> getDirectory()."#", "", $key);
             }
 
-            $lesson_entries = eF_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and ctg_type!='scorm_test' and ctg_type!='scorm' and active=1");
+            $lesson_entries = sC_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and ctg_type!='scorm_test' and ctg_type!='scorm' and active=1");
 
             require_once 'scorm_tools.php';
             create_manifest($lessons_id, $lesson_entries, $filelist, SCORM_FOLDER);
@@ -216,7 +216,7 @@ if ($_GET['scorm_review']) {
             $smarty -> assign("T_MESSAGE_TYPE", "success");
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = "failure";
         }
     }
@@ -254,13 +254,13 @@ if ($_GET['scorm_review']) {
             exit;
         }
         if (isset($_GET['reset_scorm']) && isset($_GET['id']) && in_array($_GET['id'], $valid12Units)) {
-         //eF_deleteTableData("scorm_data", "id=".$_GET['delete']);
+         //sC_deleteTableData("scorm_data", "id=".$_GET['delete']);
          //$user = MagesterUserFactory::factory($scormData[0]['users_LOGIN']);
          //$user -> setSeenUnit($scormData[0]['content_ID'], $currentLesson, false);
         }
         //Reset scorm data
         if (isset($_GET['reset_scorm']) && isset($_GET['id']) && in_array($_GET['id'], $valid2004Units)) {
-            if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+            if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
                 //MagesterContentTreeSCORM :: resetSCORMContentOrganization($currentLesson, $_GET['id'], $_GET['login']);
    } else {
                 MagesterContentTreeSCORM :: resetSCORMContentOrganization($currentLesson, $_GET['id']);
@@ -275,6 +275,6 @@ if ($_GET['scorm_review']) {
     $smarty -> assign("T_SCORM_TREE", $currentContent -> toHTML($iterator, false, $options));
 }
 
-//$scormOptions[] = array('text' => _SCORMEXPORT,       'image' => "32x32/export.png",         'href' => "scorm_export.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "eF_js_showDivPopup('"._SCORMEXPORT."',     2)", 'target' => 'POPUP_FRAME');
-//$scormOptions[] = array('text' => _SCORMIMPORT,       'image' => "32x32/import.png",         'href' => "scorm_import.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "eF_js_showDivPopup('"._SCORMIMPORT."',     2)", 'target' => 'POPUP_FRAME');
-//$scormOptions[] = array('text' => _REVIEWSCORMDATA,   'image' => "32x32/unit.png",   'href' => "scorm_review.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "eF_js_showDivPopup('"._REVIEWSCORMDATA."', 2)", 'target' => 'POPUP_FRAME');
+//$scormOptions[] = array('text' => _SCORMEXPORT,       'image' => "32x32/export.png",         'href' => "scorm_export.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "sC_js_showDivPopup('"._SCORMEXPORT."',     2)", 'target' => 'POPUP_FRAME');
+//$scormOptions[] = array('text' => _SCORMIMPORT,       'image' => "32x32/import.png",         'href' => "scorm_import.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "sC_js_showDivPopup('"._SCORMIMPORT."',     2)", 'target' => 'POPUP_FRAME');
+//$scormOptions[] = array('text' => _REVIEWSCORMDATA,   'image' => "32x32/unit.png",   'href' => "scorm_review.php?lessons_ID=".$_SESSION['s_lessons_ID'], 'onClick' => "sC_js_showDivPopup('"._REVIEWSCORMDATA."', 2)", 'target' => 'POPUP_FRAME');

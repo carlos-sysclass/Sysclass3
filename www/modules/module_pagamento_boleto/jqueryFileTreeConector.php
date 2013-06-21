@@ -28,7 +28,7 @@ $path = "../../../libraries/";
 
 require_once $path."configuration.php";
 
-$modulesDB = eF_getTableData("modules", "*", "className = 'module_language' AND active=1");
+$modulesDB = sC_getTableData("modules", "*", "className = 'module_language' AND active=1");
 foreach ($modulesDB as $module) {
 	$folder = $module['position'];
 	$className = $module['className'];
@@ -53,10 +53,10 @@ $folderProcess = array('unknown');
 if ($_SESSION['s_login']) {
 	$userLogged = MagesterUserFactory::factory($_SESSION['s_login']);
 
- 	$iesData = eF_getTableDataFlat("module_xies_to_users", "ies_id", "user_id = " . $userLogged->user['id']);
+ 	$iesData = sC_getTableDataFlat("module_xies_to_users", "ies_id", "user_id = " . $userLogged->user['id']);
 
  	if (count($iesData) > 0) {
- 		$paymentTypes = eF_getTableDataFlat("module_xpayment_types_to_xies", "payment_type_id", "ies_id IN(" . implode(', ', $iesData['ies_id']) . ')');
+ 		$paymentTypes = sC_getTableDataFlat("module_xpayment_types_to_xies", "payment_type_id", "ies_id IN(" . implode(', ', $iesData['ies_id']) . ')');
  		$folderProcess = array_merge($folderProcess, $paymentTypes['payment_type_id']);
 
  	}
@@ -64,7 +64,7 @@ if ($_SESSION['s_login']) {
 
 $folderProcess = array_unique($folderProcess);
 
-//eF_getTableData($table)
+//sC_getTableData($table)
 
 $root = dirname(__FILE__) . '/';
 

@@ -18,7 +18,7 @@ if ($GLOBALS['configuration']['webserver_registration']) {
  //Check the user_type. If it's an id, it means that it's not one of the basic user types; so derive the basic user type and populate the user_types_ID field
  $defaultUserType = $GLOBALS['configuration']['default_type'];
  if (is_numeric($defaultUserType)) {
-  $result = eF_getTableData("user_types", "id, basic_user_type", "id=".$defaultUserType);
+  $result = sC_getTableData("user_types", "id, basic_user_type", "id=".$defaultUserType);
   if (sizeof($result) > 0) {
    $user_data['user_type'] = $result[0]['basic_user_type'];
    $user_data['user_types_ID'] = $result[0]['id'];

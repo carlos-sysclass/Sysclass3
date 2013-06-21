@@ -95,7 +95,7 @@ if ($GLOBALS['configuration']['eliminate_post_xss']) {
 }
 //Language settings. $GLOBALS['loadLanguage'] can be used to exclude language files from loading, for example during certain ajax calls
 if (!isset($GLOBALS['loadLanguage']) || $GLOBALS['loadLanguage']) {
-    if (isset($_GET['bypass_language']) && eF_checkParameter($_GET['bypass_language'], 'filename') && is_file($path."language/lang-".$_GET['bypass_language'].".php.inc")) {
+    if (isset($_GET['bypass_language']) && sC_checkParameter($_GET['bypass_language'], 'filename') && is_file($path."language/lang-".$_GET['bypass_language'].".php.inc")) {
         /** We can bypass the current language any time by specifing 'bypass_language=<lang>' in the query string*/
         require_once $path."language/lang-".$_GET['bypass_language'].".php.inc";
         $setLanguage = $_GET['bypass_language'];
@@ -169,26 +169,26 @@ require_once $path."includes/currencies.php";
 //Load filters if smarty is set
 if (isset($smarty)) {
     //Convert normal images to css sprites
-    $smarty -> load_filter('output', 'eF_template_applyImageMap');
+    $smarty -> load_filter('output', 'sC_template_applyImageMap');
     //Convert plain urls to theme-specific urls
-    $smarty -> load_filter('output', 'eF_template_applyThemeToImages');
+    $smarty -> load_filter('output', 'sC_template_applyThemeToImages');
     //Format the timestamps according to system settings
-    $smarty -> load_filter('output', 'eF_template_formatTimestamp');
+    $smarty -> load_filter('output', 'sC_template_formatTimestamp');
     //Format datetime strings according to system settings
-    $smarty -> load_filter('output', 'eF_template_formatDatetime');
+    $smarty -> load_filter('output', 'sC_template_formatDatetime');
     //Format currency strings according to system settings
-    $smarty -> load_filter('output', 'eF_template_formatCurrency');
+    $smarty -> load_filter('output', 'sC_template_formatCurrency');
 
     //Convert logins to personal-message enabled clickable links
-    $smarty -> load_filter('output', 'eF_template_loginToMessageLink');
+    $smarty -> load_filter('output', 'sC_template_loginToMessageLink');
     //Format logins according to system settings
-    $smarty -> load_filter('output', 'eF_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
+    $smarty -> load_filter('output', 'sC_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
     //Format scores according to system settings
-    $smarty -> load_filter('output', 'eF_template_formatScore');
+    $smarty -> load_filter('output', 'sC_template_formatScore');
     //Selectively include some javascripts based on whether they are actually needed
-    $smarty -> load_filter('output', 'eF_template_includeScripts');
+    $smarty -> load_filter('output', 'sC_template_includeScripts');
 
-    $smarty -> load_filter('output', 'eF_template_sanitizeDOMString');
+    $smarty -> load_filter('output', 'sC_template_sanitizeDOMString');
 
     $browser = detectBrowser();
     if ($browser == 'ie6') {
@@ -202,7 +202,7 @@ if (isset($smarty)) {
     }
     $smarty -> assign("T_BROWSER", $browser);
     $smarty -> assign("T_VERSION_TYPE", $GLOBALS['versionTypes'][G_VERSIONTYPE]);
-    $smarty -> assign("T_DATE_FORMATGENERAL", eF_dateFormat(false));
+    $smarty -> assign("T_DATE_FORMATGENERAL", sC_dateFormat(false));
 }
 // SysClass social activation codes
 define("SOCIAL_FUNC_EVENTS", 1);
@@ -348,7 +348,7 @@ function setupThemes($overrideTheme = null)
 		$currentTheme = new themes($GLOBALS['configuration']['theme']);
     } catch (Exception $e) {
         try {
-            $result = eF_getTableData("themes", "*", "name = 'default'");
+            $result = sC_getTableData("themes", "*", "name = 'default'");
             if (sizeof($result) == 0) {
                 throw new Exception(); //To be caught right below. This way, the catch() code gets executed either if the result is empty or if there is a db error
             }
@@ -544,7 +544,7 @@ function __autoload($className)
         require_once 'group.class.php';
     } elseif (strpos($className, "magestermanifest") !== false) {
         require_once 'manifest.class.php';
-    } elseif (strpos($className, "ef_personalmessage") !== false) {
+    } elseif (strpos($className, "sC_personalmessage") !== false) {
         require_once 'PersonalMessage.class.php';
     } elseif (strpos($className, "magesterconfiguration") !== false) {
         require_once 'configuration.class.php';

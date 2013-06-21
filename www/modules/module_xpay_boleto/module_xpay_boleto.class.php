@@ -104,11 +104,11 @@ abstract class module_xpay_boleto_default_return_processor
 	abstract public function import($fileStatus, $xpayModule);
 }
 
-class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_default_return_processor
+class module_xpay_boleto_csC_sigcb_return_processor extends module_xpay_boleto_default_return_processor
 {
 	public function __construct($filename = null)
 	{
-		$this->instance_id = 1; // == cef_sigcb
+		$this->instance_id = 1; // == csC_sigcb
 
 		parent::__construct($filename);
 	}
@@ -195,14 +195,14 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 				//					var_dump($course_id, $invoice_index, $user_id, $negociation_id);
 
 				// STEP 1 - CHECK IF IS ALREADY IMPORTED
-				$countReturn = ef_getTableData(
+				$countReturn = sC_getTableData(
 					"module_xpay_boleto_transactions",
 					"id",
 					sprintf("nosso_numero = '%s'", $registro['nosso_numero']['parseddata'])
 				);
 
 				// STEP 2 - CHECK IF INVOICE EXISTS, AND INVESTIGATE INVOICE VALUES.
-				$invoiceData = eF_getTableData(
+				$invoiceData = sC_getTableData(
 					"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
 					"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
 					sprintf("neg.id = %d AND neg.course_id = %d AND neg.user_id = %d AND inv.invoice_index = %d",
@@ -212,12 +212,12 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 
 				if (count($invoiceData) > 0) {
 					if (count($countReturn) == 0) {
-						$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
+						$boletoTransID = sC_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
 					} else {
 						$boletoTransID = $countReturn[0]['id'];
 					}
 
-					$countPaid = ef_getTableData(
+					$countPaid = sC_getTableData(
 						"module_xpay_paid_items",
 						"id",
 						sprintf("transaction_id = '%s' AND method_id = 'boleto'", $boletoTransID)
@@ -232,7 +232,7 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 								'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
 						);
 
-						$paidID = ef_insertTableData(
+						$paidID = sC_insertTableData(
 								"module_xpay_paid_items",
 								$paid_items
 						);
@@ -242,7 +242,7 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 						$paid_items = array(
 							'paid' 			=> $registro['valor_pago']['parseddata'],
 						);
-						ef_updateTableData(
+						sC_updateTableData(
 							"module_xpay_paid_items",
 							$paid_items,
 							sprintf("id = %d", $paidID)
@@ -271,7 +271,7 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 								$item['full_value']	= $paidInvoice['valor'];
 							}
 
-							$countInv2Paid = ef_getTableData(
+							$countInv2Paid = sC_getTableData(
 								"module_xpay_invoices_to_paid",
 								"negociation_id",
 								sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
@@ -279,13 +279,13 @@ class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_d
 							);
 
 							if (count($countInv2Paid) == 0) {
-								ef_insertTableData(
+								sC_insertTableData(
 								"module_xpay_invoices_to_paid",
 								$item
 								);
 							} else {
 								/*
-								 ef_updateTableData(
+								 sC_updateTableData(
 								 		"module_xpay_invoices_to_paid",
 								 		array(),
 								 		sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
@@ -1341,7 +1341,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 			);
 
 			// STEP 1 - CHECK IF IS ALREADY IMPORTED
-			$countReturn = ef_getTableData(
+			$countReturn = sC_getTableData(
 				"module_xpay_boleto_transactions",
 				"id",
 				sprintf("nosso_numero = '%s'", $registro['nosso_numero']['parseddata'])
@@ -1355,7 +1355,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 				sprintf("invoice_id LIKE '%%%s'", $registro['nosso_numero']['parseddata'])
 			);
 			*/
-			$invoiceData = eF_getTableData(
+			$invoiceData = sC_getTableData(
 				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
 				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
 				sprintf("invoice_id LIKE '%%%s'", $registro['nosso_numero']['parseddata'])
@@ -1366,12 +1366,12 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 			*/
 			if (count($invoiceData) > 0) {
 				if (count($countReturn) == 0) {
-					$boletoTransID = eF_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
+					$boletoTransID = sC_insertTableData("module_xpay_boleto_transactions", $boletoTransaction);
 				} else {
 					$boletoTransID = $countReturn[0]['id'];
 				}
 
-				$countPaid = ef_getTableData(
+				$countPaid = sC_getTableData(
 					"module_xpay_paid_items",
 					"id",
 					sprintf("transaction_id = '%s' AND method_id = 'boleto'", $boletoTransID)
@@ -1385,7 +1385,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 						'start_timestamp' 	=> $registro['data_ocorrencia']['parseddata']
 					);
 
-					$paidID = ef_insertTableData(
+					$paidID = sC_insertTableData(
 						"module_xpay_paid_items",
 						$paid_items
 					);
@@ -1395,7 +1395,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 					$paid_items = array(
 						'paid' 			=> $registro['valor_total']['parseddata'] + $registro['valor_tarifas']['parseddata']
 					);
-					ef_updateTableData(
+					sC_updateTableData(
 						"module_xpay_paid_items",
 						$paid_items,
 						sprintf("id = %d", $paidID)
@@ -1433,7 +1433,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 							$item['full_value']	= $paidInvoice['valor'];
 						}
 
-						$countInv2Paid = ef_getTableData(
+						$countInv2Paid = sC_getTableData(
 							"module_xpay_invoices_to_paid",
 							"negociation_id",
 							sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
@@ -1441,13 +1441,13 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 						);
 
 						if (count($countInv2Paid) == 0) {
-							ef_insertTableData(
+							sC_insertTableData(
 								"module_xpay_invoices_to_paid",
 								$item
 							);
 						} else {
 							/*
-							ef_updateTableData(
+							sC_updateTableData(
 								"module_xpay_invoices_to_paid",
 								array(),
 								sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
@@ -1465,7 +1465,7 @@ class module_xpay_boleto_itau_return_processor extends module_xpay_boleto_defaul
 
 	public function getPaymentVars($nosso_numero)
 	{
-		$invoiceData = eF_getTableData(
+		$invoiceData = sC_getTableData(
 				"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation neg ON (neg.id = inv.negociation_id)",
 				"inv.negociation_id, neg.user_id, neg.course_id, neg.lesson_id, inv.invoice_index",
 				sprintf("invoice_id LIKE '%%%s'", $nosso_numero)
@@ -2250,13 +2250,13 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		));
 
 		if ($totalProcessed > 0) {
-			eF_redirect(sprintf(
+			sC_redirect(sprintf(
 				$this->moduleBaseUrl . "&action=send_return_file&message=%s&message_type=%s",
 				sprintf(__XPAY_BOLETO_X_FILE_RETURNS, $totalProcessed),
 				"success"
 			));
 		} else {
-			eF_redirect(sprintf(
+			sC_redirect(sprintf(
 				$this->moduleBaseUrl . "&action=send_return_file&message=%s&message_type=%s",
 				__XPAY_BOLETO_NO_FILE_QUEUE,
 				"warning"
@@ -2330,7 +2330,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 
 				$identifiers = $processor->getPaymentVars($nosso_numero);
 
-				$invoiceResult = eF_getTableData(
+				$invoiceResult = sC_getTableData(
 						"`module_xpay_invoices` inv
 						JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
 						JOIN users u ON (neg.user_id = u.id)",
@@ -2345,7 +2345,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 			}
 
 		}
-		$invoiceResult = eF_getTableData(
+		$invoiceResult = sC_getTableData(
 			"`module_xpay_invoices` inv
 			JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
 			JOIN users u ON (neg.user_id = u.id)",
@@ -2421,21 +2421,21 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$tplFile = sprintf($this->moduleBaseDir . "templates/includes/%s.file_analyze.tpl", $instance_id);
 		$smarty -> assign("T_PROCESS_FILE_STATUS", $fileStatus);
 
-		$ocorrencias = eF_getTableData("module_xpay_boleto_ocorrencias", "id, description");
+		$ocorrencias = sC_getTableData("module_xpay_boleto_ocorrencias", "id, description");
 
 		foreach ($ocorrencias as $ocorrencia) {
 			$base_ocorrencias[$ocorrencia['id']] = $ocorrencia['description'];
 		}
 		$smarty -> assign("T_BASE_OCORRENCIAS", $base_ocorrencias);
 
-		$liquidacoes = eF_getTableData("module_xpay_boleto_liquidacao", "id, description");
+		$liquidacoes = sC_getTableData("module_xpay_boleto_liquidacao", "id, description");
 
 		foreach ($liquidacoes as $liquidacao) {
 			$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
 		}
 		$smarty -> assign("T_BASE_LIQUIDACAO", $base_liquidacao);
 
-		$bancos = eF_getTableData("module_xpay_boleto_bancos", "id, description");
+		$bancos = sC_getTableData("module_xpay_boleto_bancos", "id, description");
 
 		foreach ($bancos as $banco) {
 			$base_bancos[$banco['id']] = $banco['description'];
@@ -2443,14 +2443,14 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$smarty -> assign("T_BASE_BANCOS", $base_bancos);
 
 		/** @todo MAKE THIS CALL SUB-METHOD AWARE */
-		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_SERVICOS", array(
+		$smarty -> assign("T_XPAY_BOLETO_CsC_SIGCB_SERVICOS", array(
 			1 => "Cobrança",
 			2 => "Cobrança Sem Registro / Serviços",
 			3 => "Desconto de Títulos",
 			4 => "Caução de Títulos"
 		));
 
-		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_RETORNO", array(
+		$smarty -> assign("T_XPAY_BOLETO_CsC_SIGCB_RETORNO", array(
 			1 => "Remessa (Cliente &raquo; Banco)",
 			2 => "Retorno (Banco &raquo; Cliente)",
 			3 => "Remessa Processada (Banco &raquo; Cliente - Pré-crítica)",
@@ -2501,9 +2501,9 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return array(
 			//'title'		=> __XPAY_PAYPAL_DO_PAYMENT,
 			'baselink'	=> $this->moduleBaseLink,
-			'default'	=> 'cef_sigcb',
+			'default'	=> 'csC_sigcb',
 			'options'	=> array (
-				"cef_sigcb"	=> array(
+				"csC_sigcb"	=> array(
 					"name" 			=> "Boleto Bancário",
 					"fullname" 		=> "Boleto Caixa Extensão",
 					"image_name"	=> "boleto",
@@ -2618,7 +2618,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		if (is_null($invoiceData['invoice_id'])) {
 			$invoiceData['invoice_id'] = $this->getParent()->_createInvoiceID($negociation_id, $invoice_index);
 
-			eF_updateTableData(
+			sC_updateTableData(
 		               "module_xpay_invoices",
                                 array(
                                         'invoice_id'   => $invoiceData['invoice_id']
@@ -2869,7 +2869,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 
 					$url = $this->moduleBaseUrl . "&action=check_processed_file&filename=" . urlencode($returnFileName);
 
-					eF_redirect($url);
+					sC_redirect($url);
 					exit;
 					*/
 				} else {

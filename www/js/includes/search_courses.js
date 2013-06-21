@@ -85,7 +85,7 @@ function ajaxPostDelCriterium(id, el) {
             if (sortedTables[i].id.match('usersTable')) {
                 ajaxUrl[i] = url;
                 //sortedTables[i].url = url;
-                eF_js_rebuildTable(i, 0, 'null', 'desc');
+                sC_js_rebuildTable(i, 0, 'null', 'desc');
             }
         }
     }
@@ -217,7 +217,7 @@ function ajaxPostSearch(id, el) {
             if (sortedTables[i].id.match('usersTable')) {
                 ajaxUrl[i] = url;
                 //sortedTables[i].url = url;
-                eF_js_rebuildTable(i, 0, 'null', 'desc');
+                sC_js_rebuildTable(i, 0, 'null', 'desc');
             }
         }
     }

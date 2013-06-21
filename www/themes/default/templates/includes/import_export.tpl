@@ -47,7 +47,7 @@
                             <tr><td id ="password_explaination" style="display:none">({$smarty.const._IFEMPTYNEWPASSWORD})</td></tr>
                         </table>
      {/capture}
-     {eF_template_printBlock tabber = "import" title=$smarty.const._IMPORTDATA data=$smarty.capture.t_import_code image='32x32/import.png'}
+     {sC_template_printBlock tabber = "import" title=$smarty.const._IMPORTDATA data=$smarty.capture.t_import_code image='32x32/import.png'}
                 {/if}
     {capture name = "t_export_code"}
      {$T_EXPORT_FORM.javascript}
@@ -69,10 +69,10 @@
                         </form>
     {/capture}
 
-    {eF_template_printBlock tabber = "export" title=$smarty.const._EXPORTDATA data=$smarty.capture.t_export_code image='32x32/export.png'}
+    {sC_template_printBlock tabber = "export" title=$smarty.const._EXPORTDATA data=$smarty.capture.t_export_code image='32x32/export.png'}
            </div>
                         {/capture}
 
-                {eF_template_printBlock title=$smarty.const._EXPORTIMPORTDATA data=$smarty.capture.t_import_export_users_code image='32x32/import_export.png' help = 'Export-import'}
+                {sC_template_printBlock title=$smarty.const._EXPORTIMPORTDATA data=$smarty.capture.t_import_export_users_code image='32x32/import_export.png' help = 'Export-import'}
         </td></tr>
     {/capture}

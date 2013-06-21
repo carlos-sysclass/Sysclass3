@@ -18,7 +18,7 @@ try {
 
  } elseif (isset($_GET['course'])) {
   $currentCourse = new MagesterCourse($_GET['course']);
-  $result = eF_getTableData("users_to_courses", "user_type", "users_LOGIN='".$currentUser -> user['login']."' and courses_ID=".$currentCourse -> course['id']);
+  $result = sC_getTableData("users_to_courses", "user_type", "users_LOGIN='".$currentUser -> user['login']."' and courses_ID=".$currentCourse -> course['id']);
   if (empty($result) || $roles[$result[0]['user_type']] != 'professor') {
    throw new Exception(_UNAUTHORIZEDACCESS);
   }

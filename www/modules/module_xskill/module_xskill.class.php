@@ -25,8 +25,8 @@ class module_xskill extends MagesterExtendedModule
     /* DATA MODEL FUNCTIONS /*/
     public function loadCourseSkills($course_id)
     {
-    	if (eF_checkParameter($course_id, "id")) {
-	    	$course_skills = eF_getTableData(
+    	if (sC_checkParameter($course_id, "id")) {
+	    	$course_skills = sC_getTableData(
 	    		"module_xskill_course2skills c2skl LEFT JOIN module_xskill skl ON c2skl.skill_id = skl.id",
 	    		"skl.id, c2skl.course_id, skl.name, skl.description, c2skl.require, c2skl.provide",
 	    		sprintf("c2skl.course_id = %d", $course_id)
@@ -47,8 +47,8 @@ class module_xskill extends MagesterExtendedModule
     }
     public function loadUserSkills($user_id)
     {
-    	if (eF_checkParameter($user_id, "id")) {
-	    	$users_skills = eF_getTableData(
+    	if (sC_checkParameter($user_id, "id")) {
+	    	$users_skills = sC_getTableData(
 	    		"module_xskill_users u2skl LEFT JOIN module_xskill skl ON u2skl.skill_id = skl.id",
 	    		"skl.id, u2skl.user_id, skl.name, skl.description",
 	    		sprintf("u2skl.user_id = %d", $user_id)

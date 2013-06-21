@@ -13,7 +13,7 @@
 {/capture}
 
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__LANGUAGE_CONFIGURATION_BLOCK_TITLE
 	data			= $smarty.capture.t_config_language_block
 }

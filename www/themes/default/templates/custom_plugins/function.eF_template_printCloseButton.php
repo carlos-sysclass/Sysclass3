@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printCloseButton function
+* Smarty plugin: sC_template_printCloseButton function
 */
-function smarty_function_eF_template_printCloseButton($params, &$smarty)
+function smarty_function_sC_template_printCloseButton($params, &$smarty)
 {
     if (!isset($params['reload']) || !$params['reload']) {
         $onclick_str = 'javascript:window.close()';

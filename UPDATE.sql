@@ -2296,7 +2296,7 @@ ALTER TABLE `module_xpay_invoices` ADD `locked` TINYINT( 1 ) NOT NULL DEFAULT '0
 
 /* 2012-04-24 */
 ALTER TABLE `module_pagamento` ADD `migrated` TINYINT( 1 ) NOT NULL DEFAULT '0';
-ALTER TABLE `module_xpay_course_negociation` ADD `ref_payment_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0';
+ALTER TABLE `module_xpay_course_negociation` ADD `rsC_payment_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0';
 
 
 CREATE TABLE IF NOT EXISTS `module_xpay_boleto_transactions` (

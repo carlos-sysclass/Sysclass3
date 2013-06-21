@@ -709,7 +709,7 @@ abstract class OAuthStoreOracle extends OAuthStoreAbstract
             $sql = "BEGIN SP_UPDATE_SERVER(:P_CONSUMER_KEY, :P_USER_ID, :P_OCR_ID, :P_USER_IS_ADMIN,
                  :P_OCR_CONSUMER_SECRET, :P_OCR_SERVER_URI, :P_OCR_SERVER_URI_HOST, :P_OCR_SERVER_URI_PATH,
                  :P_OCR_REQUEST_TOKEN_URI, :P_OCR_AUTHORIZE_URI, :P_OCR_ACCESS_TOKEN_URI, :P_OCR_SIGNATURE_METHODS,
-                 :P_OCR_USA_ID_REF, :P_UPDATE_P_OCR_USA_ID_REF_FLAG, :P_RESULT); END;";
+                 :P_OCR_USA_ID_REF, :P_UPDATE_P_OCR_USA_ID_RsC_FLAG, :P_RESULT); END;";
 
             // parse sql
             $stmt = oci_parse($this->conn, $sql) or die ('Can not parse query');
@@ -730,7 +730,7 @@ abstract class OAuthStoreOracle extends OAuthStoreAbstract
             oci_bind_by_name($stmt, ':P_OCR_ACCESS_TOKEN_URI', $server['access_token_uri'], 255);
             oci_bind_by_name($stmt, ':P_OCR_SIGNATURE_METHODS', $server['signature_methods'], 255);
             oci_bind_by_name($stmt, ':P_OCR_USA_ID_REF', $ocr_usa_id_ref, 40);
-            oci_bind_by_name($stmt, ':P_UPDATE_P_OCR_USA_ID_REF_FLAG', $flag, 40);
+            oci_bind_by_name($stmt, ':P_UPDATE_P_OCR_USA_ID_RsC_FLAG', $flag, 40);
             oci_bind_by_name($stmt, ':P_RESULT', $result, 20);
 
             //Execute the statement

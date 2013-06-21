@@ -2,7 +2,7 @@ CREATE OR REPLACE PROCEDURE SP_LIST_SERVERS
 (
 P_Q                         IN        VARCHAR2,
 P_USER_ID                   IN        NUMBER,
-P_ROWS                      OUT       TYPES.REF_CURSOR,
+P_ROWS                      OUT       TYPES.RsC_CURSOR,
 P_RESULT                    OUT       NUMBER
 )
 AS

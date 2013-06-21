@@ -24,7 +24,7 @@ class module_quick_mails extends MagesterExtendedModule
 		}
 
 		$xentifyModule = $this->loadModule("xentify");
-		$contactListData = ef_getTableData(
+		$contactListData = sC_getTableData(
 				"module_quick_mails_scope scope
 				LEFT JOIN module_quick_mails_recipients qmr ON (scope.recipient_id = qmr.id)
 				LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qmr.id = qml.recipient_id)
@@ -72,7 +72,7 @@ class module_quick_mails extends MagesterExtendedModule
 			$contactList = $this->getUserContactList();
 		/*
 		} else {
-			$contactList = eF_getTableData(
+			$contactList = sC_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 				"qm.*, COUNT(qml.user_id)",
 				sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
@@ -135,7 +135,7 @@ class module_quick_mails extends MagesterExtendedModule
 
 		} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
 
-			$feedbackList = eF_getTableData(
+			$feedbackList = sC_getTableData(
 	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 	    			"qm.*, COUNT(qml.user_id)",
 			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'feedback'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
@@ -155,7 +155,7 @@ class module_quick_mails extends MagesterExtendedModule
 	    			}
 		} else {
 
-			$feedbackList = eF_getTableData(
+			$feedbackList = sC_getTableData(
 	    			"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 	    			"qm.*, COUNT(qml.user_id)",
 			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'feedback'", $this->modules['xuser']->getExtendedTypeID($currentUser)),
@@ -246,7 +246,7 @@ class module_quick_mails extends MagesterExtendedModule
 				*/
 			if (is_numeric($values['recipients'])) {
 
-				$recipients = eF_getTableData(
+				$recipients = sC_getTableData(
 					"module_quick_mails_recipients qm, module_quick_mails_recipients_list qml, users u",
 					"u.name, u.surname, u.login, u.email, qm.qm_group",
 					sprintf("qm.id = qml.recipient_id AND qml.recipient_id = %d AND qml.user_id = u.id", $values['recipients'])
@@ -299,7 +299,7 @@ class module_quick_mails extends MagesterExtendedModule
 				$message_type = 'failure';
 			} else {
 
-				$pm = new eF_PersonalMessage($this->getCurrentUser()->user['login'], $user_recipients, $values['subject'], $values['body'], true);
+				$pm = new sC_PersonalMessage($this->getCurrentUser()->user['login'], $user_recipients, $values['subject'], $values['body'], true);
 
 				$attachFile = array();
 
@@ -365,7 +365,7 @@ class module_quick_mails extends MagesterExtendedModule
 							"Corpo da Mensagem:\n<br /><br />" .
 						$values['body'];
 
-						$result = $result && eF_mail(
+						$result = $result && sC_mail(
 						// CHECK IF IS NECESSARY TO CHANGE DE SENDER E-MAIL
 						//sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
 						null,
@@ -427,7 +427,7 @@ class module_quick_mails extends MagesterExtendedModule
 		$this->loadModule('xuser');
 
 		if (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_student', 'student', 'professor'))) {
-			$contactList = eF_getTableData(
+			$contactList = sC_getTableData(
 				"module_quick_mails_recipients qm LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qm.id = qml.recipient_id)",
 				"qm.*, COUNT(qml.user_id)",
 			sprintf("qm.xuser_type LIKE '%%%s%%' AND qm.qm_type = 'contact'", $this->modules['xuser']->getExtendedTypeID($currentUser)),

@@ -26,16 +26,16 @@ try {
 try {
     if (isset($_GET['test_id'])) {
         $test = new MagesterTest($_GET['test_id']);
-        $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
+        $doneTests = sC_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
 //        $test -> setDone($_GET['user']);
     } elseif (isset($_GET['content_id'])) {
         $test = new MagesterTest($_GET['content_id'], true);
-        $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
+        $doneTests = sC_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$_GET['user']."' and tests_ID=".$test -> test['id']);
 //        $test -> setDone($_GET['user']);
     } elseif (isset($_GET['done_test_id'])) {
-        $result = eF_getTableData("completed_tests", "*", "status != 'deleted' and id=".$_GET['done_test_id']);
+        $result = sC_getTableData("completed_tests", "*", "status != 'deleted' and id=".$_GET['done_test_id']);
         $test = new MagesterTest($result[0]['tests_ID']);
-        $doneTests = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$result[0]['users_LOGIN']."' and tests_ID=".$test -> test['id']);
+        $doneTests = sC_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '".$result[0]['users_LOGIN']."' and tests_ID=".$test -> test['id']);
         $_GET['user'] = $result[0]['users_LOGIN'];
         //        $test -> setDone($result[0]['users_LOGIN']);
     } else {
@@ -60,7 +60,7 @@ try {
     //Check if current user is eligible to see this test
     if ($_SESSION['s_type'] != 'administrator') {
         //$currentUser = MagesterUserFactory :: factory($_SESSION['s_login'], false);
-        $result = eF_getTableData("content", "lessons_ID", "id=".$test -> test['content_ID']);
+        $result = sC_getTableData("content", "lessons_ID", "id=".$test -> test['content_ID']);
         $testLesson = new MagesterLesson($result[0]['lessons_ID']);
         $lessonUsers = $testLesson -> getUsers();
 
@@ -108,7 +108,7 @@ try {
 
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 $smarty -> assign("T_MESSAGE", $message);

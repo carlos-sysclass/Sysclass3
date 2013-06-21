@@ -1,10 +1,10 @@
 <?php
 /**
 
-* Smarty plugin: eF_template_printSide function
+* Smarty plugin: sC_template_printSide function
 
 */
-function smarty_function_eF_template_printPreviousNext($params, &$smarty)
+function smarty_function_sC_template_printPreviousNext($params, &$smarty)
 {
  mb_strlen($params['previous']['name']) - 3 > MagesterUnit::MAXIMUM_NAME_LENGTH ? $params['previous']['name'] = mb_substr($params['previous']['name'], 0, MagesterUnit::MAXIMUM_NAME_LENGTH).'...' : null;
  mb_strlen($params['next']['name']) - 3 > MagesterUnit::MAXIMUM_NAME_LENGTH ? $params['next']['name'] = mb_substr($params['next']['name'], 0, MagesterUnit::MAXIMUM_NAME_LENGTH).'...' : null;

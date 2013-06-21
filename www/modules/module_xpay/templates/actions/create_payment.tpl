@@ -4,7 +4,7 @@ var message = {$T_XPAY_MESSAGE};
 		var message = {$T_XPAY_MESSAGE};
 		{literal}
 	    //popup_table = window.parent.jQuery('#popup_table').hide();
-	    window.parent.eF_js_showDivPopup();
+	    window.parent.sC_js_showDivPopup();
 		window.parent.jQuery.messaging.show(message);
 
 		window.setparent.jQuery.messaging.show(message);
@@ -47,7 +47,7 @@ var message = {$T_XPAY_MESSAGE};
 		</div>
 	{/capture}
 	<div align="center">
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 			= $smarty.const.__XPAY_DO_PAYMENT
 		data			= $smarty.capture.t_xpay_create_payment
 		contentclass	= "blockContents "

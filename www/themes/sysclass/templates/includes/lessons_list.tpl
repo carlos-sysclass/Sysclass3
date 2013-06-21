@@ -34,7 +34,7 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
                                 </td></tr>
                             </table>
     {/capture}
-    {eF_template_printBlock title=$T_TEST_DATA->test.name data = $smarty.capture.t_unsolved_skill_gap_code image='32x32/skill_gap.png'}
+    {sC_template_printBlock title=$T_TEST_DATA->test.name data = $smarty.capture.t_unsolved_skill_gap_code image='32x32/skill_gap.png'}
 
             {elseif $smarty.get.test_analysis}
                         {capture name = "t_test_analysis_code"}
@@ -48,7 +48,7 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
                             </table>
                         {/capture}
 
-                        {eF_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = "innerTableName">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = "innerTableName">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
+                        {sC_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = "innerTableName">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = "innerTableName">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
             {else}
     {capture name = "t_skill_gap_test_code"}
                     {if $T_TEST_STATUS.status == '' || $T_TEST_STATUS.status == 'incomplete'}
@@ -68,19 +68,19 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
                         </form>
                  {/if}
     {/capture}
-    {eF_template_printBlock title=$T_TEST_DATA->test.name data = $smarty.capture.t_skill_gap_test_code image='32x32/skill_gap.png'}
+    {sC_template_printBlock title=$T_TEST_DATA->test.name data = $smarty.capture.t_skill_gap_test_code image='32x32/skill_gap.png'}
             {/if}
          {else}
 
             {if $T_TESTS}
-             {eF_template_printBlock title=$smarty.const._SKILLGAPTESTSTOBECOMPLETED columns=3 links=$T_TESTS image='32x32/skill_gap.png'}
+             {sC_template_printBlock title=$smarty.const._SKILLGAPTESTSTOBECOMPLETED columns=3 links=$T_TESTS image='32x32/skill_gap.png'}
             {else}
     {capture name = "t_no_skill_gap_test_code"}
                  <table width = "100%">
                      <tr><td class = "emptyCategory">{$smarty.const._NOSKILLGAPTESTSASSIGNEDTOYOU}</td></tr>
                  </table>
     {/capture}
-    {eF_template_printBlock title=$smarty.const._NOSKILLGAPTESTSASSIGNEDTOYOU data = $smarty.capture.t_no_skill_gap_test_code image='32x32/skill_gap.png'}
+    {sC_template_printBlock title=$smarty.const._NOSKILLGAPTESTSASSIGNEDTOYOU data = $smarty.capture.t_no_skill_gap_test_code image='32x32/skill_gap.png'}
             {/if}
          {/if}
 
@@ -107,14 +107,14 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
        </table>
    {/capture}
    <div id = 'group_key_enter' style = "display:none;">
-     {eF_template_printBlock title = $smarty.const._ENTERGROUPKEY data = $smarty.capture.t_group_key_code image = '32x32/key.png'}
+     {sC_template_printBlock title = $smarty.const._ENTERGROUPKEY data = $smarty.capture.t_group_key_code image = '32x32/key.png'}
    </div>
 
 
        {if $smarty.get.catalog}
     {if $smarty.get.checkout}
      {include file = "includes/blocks/cart.tpl" assign = "cart"}
-     {eF_template_printBlock title = $smarty.const._SELECTEDLESSONS data = $cart image = '32x32/catalog.png'}
+     {sC_template_printBlock title = $smarty.const._SELECTEDLESSONS data = $cart image = '32x32/catalog.png'}
     {else}
      {if $smarty.get.info_lesson || $smarty.get.info_course}
          {capture name = 't_lesson_info_code'}
@@ -127,19 +127,19 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
        {assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a href = '`$smarty.server.PHP_SELF`?ctg=lessons'>`$smarty.const._LESSONS`</a><span>&nbsp;&raquo;&nbsp;</span><a href = '`$smarty.server.PHP_SELF`?ctg=lesson_info&courses_ID=`$smarty.get.courses_ID`'>`$smarty.const._INFOFORCOURSE`: &quot;`$T_COURSE->course.name`&quot;</a>"}
        {assign var = "lesson_title" value = "`$smarty.const._INFORMATIONFORCOURSE` <span class = 'innerTableName'>&quot;`$T_COURSE->course.name`&quot;</span>"}
       {/if}
-         {eF_template_printBlock title = $lesson_title data = $smarty.capture.t_lesson_info_code image = "32x32/information.png"}
+         {sC_template_printBlock title = $lesson_title data = $smarty.capture.t_lesson_info_code image = "32x32/information.png"}
      {else}
       {*
       {capture name = "t_catalog_code"}
-       {eF_template_printCatalog source = $T_DIRECTIONS}
+       {sC_template_printCatalog source = $T_DIRECTIONS}
       {/capture}
-      {eF_template_printBlock title = $smarty.const._COURSECATALOG data = $smarty.capture.t_catalog_code image = '32x32/catalog.png'}
+      {sC_template_printBlock title = $smarty.const._COURSECATALOG data = $smarty.capture.t_catalog_code image = '32x32/catalog.png'}
       *}
-      {eF_template_printBlock title = $smarty.const._COURSECATALOG data = $T_DIRECTIONS_TREE image = '32x32/catalog.png'}
+      {sC_template_printBlock title = $smarty.const._COURSECATALOG data = $T_DIRECTIONS_TREE image = '32x32/catalog.png'}
      {/if}
      {capture name = "moduleSideOperations"}
       {include file = "includes/blocks/cart.tpl" assign = "cart"}
-         {eF_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $cart image = "32x32/shopping_basket.png"}
+         {sC_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $cart image = "32x32/shopping_basket.png"}
      {/capture}
     {/if}
        {elseif $T_DIRECTIONS_TREE}
@@ -161,10 +161,10 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
       <table class = "lessonListOptions">
         <tr>
       {if $T_SUPERVISOR_APPROVALS}
-                 <td class = "lessonListOption"><a href = "javascript:void(0)" title="{$smarty.const._SUPERVISORAPPROVAL}" onclick = "eF_js_showDivPopup('{$smarty.const._SUPERVISORAPPROVAL}', 2, 'supervisor_approvals_list')"><img class = "handle" src = "images/32x32/success.png" title = "{$smarty.const._SUPERVISORAPPROVAL}" alt = "{$smarty.const._SUPERVISORAPPROVAL}"></a></td>
+                 <td class = "lessonListOption"><a href = "javascript:void(0)" title="{$smarty.const._SUPERVISORAPPROVAL}" onclick = "sC_js_showDivPopup('{$smarty.const._SUPERVISORAPPROVAL}', 2, 'supervisor_approvals_list')"><img class = "handle" src = "images/32x32/success.png" title = "{$smarty.const._SUPERVISORAPPROVAL}" alt = "{$smarty.const._SUPERVISORAPPROVAL}"></a></td>
                  <td>
                   <script>translations['_SOMEPROBLEMOCCURED'] = '{$smarty.const._SOMEPROBLEMOCCURED}';</script>
-                  <a href = "javascript:void(0)" title="{$smarty.const._SUPERVISORAPPROVAL}" onclick = "eF_js_showDivPopup('asd', 1, 'supervisor_approvals_list')">{$smarty.const._SUPERVISORAPPROVAL}</a>
+                  <a href = "javascript:void(0)" title="{$smarty.const._SUPERVISORAPPROVAL}" onclick = "sC_js_showDivPopup('asd', 1, 'supervisor_approvals_list')">{$smarty.const._SUPERVISORAPPROVAL}</a>
                   <div id = "supervisor_approvals_list" style = "display:none">
                    {capture name = "t_supervisor_approvals_code"}
                    <table style = "width:100%">
@@ -176,7 +176,7 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
                   {/foreach}
                    </table>
                    {/capture}
-                   {eF_template_printBlock title = $smarty.const._SUPERVISORAPPROVAL data = $smarty.capture.t_supervisor_approvals_code image = '32x32/success.png'}
+                   {sC_template_printBlock title = $smarty.const._SUPERVISORAPPROVAL data = $smarty.capture.t_supervisor_approvals_code image = '32x32/success.png'}
                   </div>
                  </td>
       {/if}
@@ -190,8 +190,8 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
             {/if}
 
        {if $T_CONFIGURATION.insert_group_key != 0}
-                  <td class = "lessonListOption"><a href = "javascript:void(0)" onclick = "eF_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}"><img class = "handle" src = "images/32x32/key.png" title = "{$smarty.const._ENTERGROUPKEY}" alt = "{$smarty.const._ENTERGROUPKEY}" /></a></td>
-                    <td><a href = "javascript:void(0)" onclick = "eF_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}">{$smarty.const._ENTERGROUPKEY}</a></td>
+                  <td class = "lessonListOption"><a href = "javascript:void(0)" onclick = "sC_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}"><img class = "handle" src = "images/32x32/key.png" title = "{$smarty.const._ENTERGROUPKEY}" alt = "{$smarty.const._ENTERGROUPKEY}" /></a></td>
+                    <td><a href = "javascript:void(0)" onclick = "sC_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}">{$smarty.const._ENTERGROUPKEY}</a></td>
                 {/if}
 
             {if $T_CONFIGURATION.lessons_directory != 0}
@@ -220,7 +220,7 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
 
 
        {/foreach}
-    {eF_template_printBlock title = $smarty.const._MYCOURSES data = $smarty.capture.t_directions_tree_code image = '32x32/theory.png'}
+    {sC_template_printBlock title = $smarty.const._MYCOURSES data = $smarty.capture.t_directions_tree_code image = '32x32/theory.png'}
 
    {elseif $T_OP == 'search'}
            {assign var = "title" value = $title|cat:'&nbsp;&raquo;&nbsp;'|cat:'<a class = "titleLink" href ="javascript:void(0)" onclick = "location.reload()">'|cat:$smarty.const._SEARCHRESULTS|cat:'</a>'}
@@ -251,8 +251,8 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
            {/if}
            {if $T_CONFIGURATION.insert_group_key}
                <tr><td class = "lessonListOption">
-                   <a href = "javascript:void(0)" onclick = "eF_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}"><img class = "handle" src = "images/32x32/key.png" title = "{$smarty.const._ENTERGROUPKEY}" alt = "{$smarty.const._ENTERGROUPKEY}" /></a>
-                   <div><a href = "javascript:void(0)" onclick = "eF_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}">{$smarty.const._ENTERGROUPKEY}</a></div>
+                   <a href = "javascript:void(0)" onclick = "sC_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}"><img class = "handle" src = "images/32x32/key.png" title = "{$smarty.const._ENTERGROUPKEY}" alt = "{$smarty.const._ENTERGROUPKEY}" /></a>
+                   <div><a href = "javascript:void(0)" onclick = "sC_js_showDivPopup('{$smarty.const._ENTERGROUPKEY}', 0, 'group_key_enter')" title = "{$smarty.const._ENTERGROUPKEY}">{$smarty.const._ENTERGROUPKEY}</a></div>
                </td></tr>
            {/if}
            {if $T_SKILLGAP_TESTS}
@@ -267,7 +267,7 @@ translations['_YOUHAVEBEENSUCCESSFULLYADDEDTOTHEGROUP'] = '{$smarty.const._YOUHA
            {/if}
         </table>
        {/capture}
-       {eF_template_printBlock title = $smarty.const._MYCOURSES data = $smarty.capture.t_empty_lessons_list_code image = '32x32/catalog.png'}
+       {sC_template_printBlock title = $smarty.const._MYCOURSES data = $smarty.capture.t_empty_lessons_list_code image = '32x32/catalog.png'}
    {/if}
   {/if}
  </td></tr>

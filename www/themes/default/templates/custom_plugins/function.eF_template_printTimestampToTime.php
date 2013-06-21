@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printTimestampToTime function
+* Smarty plugin: sC_template_printTimestampToTime function
 */
-function smarty_function_eF_template_printTimestampToTime($params, &$smarty)
+function smarty_function_sC_template_printTimestampToTime($params, &$smarty)
 {
 	//echo "<pre>";print_r($params[params]);echo "</pre>";
 	echo $timestamp;

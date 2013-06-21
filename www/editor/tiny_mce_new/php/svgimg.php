@@ -21,4 +21,4 @@
 			$AS->outputimage($imgdir.$fn.'.png');
 		}
 	}
-	eF_redirect(" http://$host$uri/$imgdir$fn.png");
+	sC_redirect(" http://$host$uri/$imgdir$fn.png");

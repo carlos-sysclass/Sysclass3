@@ -16,7 +16,7 @@ $path = "../libraries/";
 $loadLanguage = false;
 /** Configuration file.*/
 require_once $path."configuration.php";
-if (!isset($_SESSION['s_login']) || !eF_checkParameter($_SESSION['s_login'], 'login')) {
+if (!isset($_SESSION['s_login']) || !sC_checkParameter($_SESSION['s_login'], 'login')) {
     echo "No active session found";
     exit;
 }
@@ -31,7 +31,7 @@ try {
 
     if ($_SESSION['timestamp']) {
         $entity = getUserTimeTarget($_SERVER['HTTP_REFERER']);
-        eF_updateTableData(
+        sC_updateTableData(
             "user_times",
             array(
                 'timestamp_now' => time(),
@@ -41,7 +41,7 @@ try {
         );
     }
 
-    $messages = eF_getTableData(
+    $messages = sC_getTableData(
         "f_personal_messages pm, f_folders ff",
         "count(*)",
         "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'"

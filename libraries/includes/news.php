@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 $load_editor = true;
 if ($GLOBALS['configuration']['disable_news'] == 1 || (isset($currentUser->coreAccess['news']) && $currentUser->coreAccess['content'] == 'news')) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 //Create shorthands for user access rights, to avoid long variable names
 !isset($currentUser->coreAccess['news']) || $currentUser->coreAccess['news'] == 'change' ? $_change_ = 1 : $_change_ = 0;

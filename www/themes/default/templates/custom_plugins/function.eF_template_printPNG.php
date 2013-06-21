@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printPNG function
+* Smarty plugin: sC_template_printPNG function
 */
-function smarty_function_eF_template_printPNG($params, &$smarty)
+function smarty_function_sC_template_printPNG($params, &$smarty)
 {
     $x = $params['data'];
     $img_path = '';//$params['img_path'];// ? $params['img_path'] : '';

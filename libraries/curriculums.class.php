@@ -35,14 +35,14 @@ class curriculums extends MagesterEntity
     {
         $courses = MagesterCourse :: verifyCoursesList($courses);
         foreach ($courses as $course) {
-            eF_insertTableData("curriculums_to_courses", array("curriculums_ID" => $this->curriculums['id'], "courses_ID" => $course->course['id']));
+            sC_insertTableData("curriculums_to_courses", array("curriculums_ID" => $this->curriculums['id'], "courses_ID" => $course->course['id']));
         }
     }
     public function removeCourses($courses)
     {
         $courses = MagesterCourse :: verifyCoursesList($courses);
         foreach ($courses as $course) {
-            eF_deleteTableData("curriculums_to_courses", "curriculums_ID=".$this->curriculums['id']." and courses_ID=".$course->course['id']);
+            sC_deleteTableData("curriculums_to_courses", "curriculums_ID=".$this->curriculums['id']." and courses_ID=".$course->course['id']);
         }
     }
     public function assignToUser($user)
@@ -53,7 +53,7 @@ class curriculums extends MagesterEntity
         } else {
             throw new MagesterCurriculumException(_YOUCANNOTASSIGNUSERSBECAUSECURRICULUMISEMPTY, MagesterCurriculumException :: EMPTY_COURSE);
         }
-        eF_insertTableData("curriculums_to_users", array("users_LOGIN" => $user->user['login'], "curriculums_ID" => $this->curriculums['id']));
+        sC_insertTableData("curriculums_to_users", array("users_LOGIN" => $user->user['login'], "curriculums_ID" => $this->curriculums['id']));
     }
     public function removeFromUser($user)
     {
@@ -63,7 +63,7 @@ class curriculums extends MagesterEntity
         } else {
             throw new MagesterCurriculumException(_YOUCANNOTASSIGNUSERSBECAUSECURRICULUMISEMPTY, MagesterCurriculumException :: EMPTY_COURSE);
         }
-        eF_deleteTableData("curriculums_to_users", "curriculums_ID=".$this->curriculums['id']);
+        sC_deleteTableData("curriculums_to_users", "curriculums_ID=".$this->curriculums['id']);
     }
     public function assignToGroup($group)
     {
@@ -76,7 +76,7 @@ class curriculums extends MagesterEntity
         list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
         $select = "c.*, cc.courses_ID, 1 as has_course";
         $where[] = "c.id=cc.courses_ID and cc.curriculums_ID='".$this->curriculums['id']."'";
-        $result = eF_getTableData("courses c, curriculums_to_courses cc", $select,
+        $result = sC_getTableData("courses c, curriculums_to_courses cc", $select,
             implode(" and ", $where), $orderby, $groupby, $limit);
 
         return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
@@ -86,7 +86,7 @@ class curriculums extends MagesterEntity
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
         $where[] = "c.id=cc.courses_ID and cc.curriculums_ID='".$this->curriculums['id']."'";
-        $result = eF_countTableData("courses c, curriculums_to_courses cc", "c.id",
+        $result = sC_countTableData("courses c, curriculums_to_courses cc", "c.id",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -96,7 +96,7 @@ class curriculums extends MagesterEntity
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
         $select = "c.*, r.courses_ID is not null as has_course";
-        $result = eF_getTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this->curriculums['id']."') r on c.id=r.courses_ID ", $select,
+        $result = sC_getTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this->curriculums['id']."') r on c.id=r.courses_ID ", $select,
             implode(" and ", $where), $orderby, "", $limit);
 
         return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
@@ -106,7 +106,7 @@ class curriculums extends MagesterEntity
     {
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
-        $result = eF_countTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this->curriculums['id']."') r on c.id=r.courses_ID ", "c.id",
+        $result = sC_countTableData("courses c left outer join (select courses_ID from curriculums_to_courses where curriculums_ID='".$this->curriculums['id']."') r on c.id=r.courses_ID ", "c.id",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -119,7 +119,7 @@ class curriculums extends MagesterEntity
         list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
         $select = "u.*, cu.users_LOGIN, 1 as has_user";
         $where[] = "u.login=cu.users_LOGIN and cu.curriculums_ID='".$this->curriculums['id']."'";
-        $result = eF_getTableData("users u, curriculums_to_users cu", $select,
+        $result = sC_getTableData("users u, curriculums_to_users cu", $select,
             implode(" and ", $where), $orderby, $groupby, $limit);
 
         return MagesterUser :: convertDatabaseResultToUserObjects($result);
@@ -130,7 +130,7 @@ class curriculums extends MagesterEntity
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
         $where[] = "u.login=cu.users_LOGIN and cu.curriculums_ID='".$this->curriculums['id']."'";
-        $result = eF_countTableData("users u, curriculums_to_users cu", "u.login",
+        $result = sC_countTableData("users u, curriculums_to_users cu", "u.login",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -143,7 +143,7 @@ class curriculums extends MagesterEntity
         list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
         $select = "u.*, r.users_LOGIN is not null as has_user";
         $where[] = "u.user_type != 'administrator'";
-        $result = eF_getTableData("users u left outer join (select users_LOGIN from curriculums_to_users where curriculums_ID='".$this->curriculums['id']."') r on u.login=r.users_LOGIN ", $select,
+        $result = sC_getTableData("users u left outer join (select users_LOGIN from curriculums_to_users where curriculums_ID='".$this->curriculums['id']."') r on u.login=r.users_LOGIN ", $select,
             implode(" and ", $where), $orderby, "", $limit);
 
         return MagesterUser :: convertDatabaseResultToUserObjects($result);
@@ -154,7 +154,7 @@ class curriculums extends MagesterEntity
         !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
         list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
         $where[] = "u.user_type != 'administrator'";
-        $result = eF_countTableData("users u left outer join (select users_LOGIN from curriculums_to_users where curriculums_ID='".$this->curriculums['id']."') r on u.login=r.users_LOGIN ", "u.login",
+        $result = sC_countTableData("users u left outer join (select users_LOGIN from curriculums_to_users where curriculums_ID='".$this->curriculums['id']."') r on u.login=r.users_LOGIN ", "u.login",
             implode(" and ", $where));
 
         return $result[0]['count'];
@@ -176,8 +176,8 @@ class curriculums extends MagesterEntity
         $fields = array('name' => $fields['name'],
             'active' => $fields['active'] ? $fields['active'] : 1,
             'description' => $fields['description']);
-        $newId = eF_insertTableData("curriculums", $fields);
-        $result = eF_getTableData("curriculums", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+        $newId = sC_insertTableData("curriculums", $fields);
+        $result = sC_getTableData("curriculums", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $curriculums = new curriculums($result[0]['id']);
 
         return $curriculums;

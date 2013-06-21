@@ -15,7 +15,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if ($GLOBALS['configuration']['disable_calendar'] == 1 || (isset($currentUser -> coreAccess['calendar']) && $currentUser -> coreAccess['calendar'] == 'hidden')) {
- eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+ sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 $loadScripts[] = 'scriptaculous/controls';
@@ -25,7 +25,7 @@ $loadScripts[] = 'includes/calendar';
 !isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 $smarty -> assign("_change_", $_change_);
 
-if (eF_checkParameter($_GET['view_calendar'], 'timestamp')) { //If a specific calendar date is not defined in the GET, set as the current day to be today
+if (sC_checkParameter($_GET['view_calendar'], 'timestamp')) { //If a specific calendar date is not defined in the GET, set as the current day to be today
  $viewCalendar = $_GET['view_calendar'];
 } else {
  $today = getdate(time()); //Get current time in an array

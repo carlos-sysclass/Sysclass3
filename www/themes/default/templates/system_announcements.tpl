@@ -9,7 +9,7 @@
             !re.test(parent.location) ? parent.location = parent.location+'?message={$T_MESSAGE}&message_type={$T_MESSAGE_TYPE}' : parent.location = parent.location+'&message={$T_MESSAGE}&message_type={$T_MESSAGE_TYPE}';            
         </script>
     {else}
-        {eF_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}    
+        {sC_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}    
     {/if}
 {/if}
 
@@ -31,5 +31,5 @@
     </table>
 </form>
 {elseif !isset($smarty.get.op) && $T_MESSAGE_TYPE != 'failure'}
-    {eF_template_printBlock title=$T_ANNOUNCEMENT.title data=$T_ANNOUNCEMENT.data image='32x32/announcements.png'}
+    {sC_template_printBlock title=$T_ANNOUNCEMENT.title data=$T_ANNOUNCEMENT.data image='32x32/announcements.png'}
 {/if}

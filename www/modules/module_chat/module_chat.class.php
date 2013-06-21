@@ -22,8 +22,8 @@ class module_chat extends MagesterExtendedModule
 
 	public function onInstall()
 	{
-		eF_executeNew("drop table if exists module_chat");
-		$res1 = eF_executeNew("CREATE TABLE module_chat (
+		sC_executeNew("drop table if exists module_chat");
+		$res1 = sC_executeNew("CREATE TABLE module_chat (
 							id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 							from_user VARCHAR(255) NOT NULL DEFAULT '',
 							to_user VARCHAR(255) NOT NULL DEFAULT '',
@@ -34,20 +34,20 @@ class module_chat extends MagesterExtendedModule
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8"
 							);
 
-		eF_executeNew("drop table if exists module_chat_users");
-		$res2 = eF_executeNew("CREATE TABLE module_chat_users (username VARCHAR(100) NOT NULL,
+		sC_executeNew("drop table if exists module_chat_users");
+		$res2 = sC_executeNew("CREATE TABLE module_chat_users (username VARCHAR(100) NOT NULL,
 							timestamp_ TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 							UNIQUE (username)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8"
 							);
 
-		eF_executeNew("drop table if exists module_chat_config");
-		$res3 = eF_executeNew("CREATE TABLE module_chat_config (status INT NOT NULL DEFAULT  '1',
+		sC_executeNew("drop table if exists module_chat_config");
+		$res3 = sC_executeNew("CREATE TABLE module_chat_config (status INT NOT NULL DEFAULT  '1',
 							chatHeartbeatTime INT NOT NULL DEFAULT  '1500',
 							refresh_rate INT NOT NULL DEFAULT  '60000'
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8"
 							);
-		$res4 = eF_executeNew("INSERT INTO  module_chat_config
+		$res4 = sC_executeNew("INSERT INTO  module_chat_config
 							(status, chatHeartbeatTime, refresh_rate) VALUES
 							('1', '2000', '30000')"
 							);
@@ -57,9 +57,9 @@ class module_chat extends MagesterExtendedModule
 
 	public function onUninstall()
 	{
-            $res1 = eF_executeNew("DROP TABLE module_chat;");
-			$res2 = eF_executeNew("DROP TABLE module_chat_users;");
-			$res3 = eF_executeNew("DROP TABLE module_chat_config;");
+            $res1 = sC_executeNew("DROP TABLE module_chat;");
+			$res2 = sC_executeNew("DROP TABLE module_chat_users;");
+			$res3 = sC_executeNew("DROP TABLE module_chat_config;");
 
 			return ($res1 && $res2 && $res3);
     }
@@ -113,13 +113,13 @@ class module_chat extends MagesterExtendedModule
 		$all_users = array();
 		$users_lessons ;
 
-		$result = eF_executeNew ("SELECT lessons_ID FROM users_to_lessons where archive=0 and users_LOGIN='$user'");
+		$result = sC_executeNew ("SELECT lessons_ID FROM users_to_lessons where archive=0 and users_LOGIN='$user'");
 
 		foreach ($result as $value) {
 			$currentUserLessons[] = ($value["lessons_ID"]);
 		}
 
-		$result = eF_executeNew ("SELECT login FROM users");
+		$result = sC_executeNew ("SELECT login FROM users");
 
 		foreach ($result as $value) {
 			if ($value["login"] != $user) {
@@ -127,7 +127,7 @@ class module_chat extends MagesterExtendedModule
 
 				$rate = 0;
 
-				$result2 = eF_executeNew ("SELECT lessons_ID FROM users_to_lessons WHERE archive=0 and users_LOGIN='".$value['login']."'");
+				$result2 = sC_executeNew ("SELECT lessons_ID FROM users_to_lessons WHERE archive=0 and users_LOGIN='".$value['login']."'");
 
 				foreach ($result2 as $value2) {
 					$users_lessons[] = $value2["lessons_ID"];
@@ -194,14 +194,14 @@ class module_chat extends MagesterExtendedModule
 			$_SESSION['chatter'] = $currentUser -> login;
 			$_SESSION['utype'] = $currentUser -> getType();
 			$this -> calculateCommonality($currentUser -> login);
-			eF_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
+			sC_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
 		} else {
 			$currentUser = $this -> getCurrentUser();
 			if ($_SESSION['chatter'] != $currentUser -> login) {
 				$_SESSION['chatter'] = $currentUser -> login;
 				$_SESSION['utype'] = $currentUser -> getType();
 				$this -> calculateCommonality($currentUser -> login);
-				eF_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
+				sC_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
 			}
 		}
 
@@ -374,7 +374,7 @@ class module_chat extends MagesterExtendedModule
 
 	private function getChatHeartbeat()
 	{
-		$rate = eF_getTableData("module_chat_config", "chatHeartbeatTime", "1");
+		$rate = sC_getTableData("module_chat_config", "chatHeartbeatTime", "1");
 		foreach ($rate as $r) {
 			return $r['chatHeartbeatTime'];
 		}
@@ -383,7 +383,7 @@ class module_chat extends MagesterExtendedModule
 
 	private function getRefresh_rate()
 	{
-		$rate = eF_getTableData("module_chat_config", "refresh_rate", "1");
+		$rate = sC_getTableData("module_chat_config", "refresh_rate", "1");
 		foreach ($rate as $r) {
 			return $r['refresh_rate'];
 		}
@@ -403,7 +403,7 @@ class module_chat extends MagesterExtendedModule
 
 	private function getLessonsCatalogue()
 	{
-		$lsn = eF_getTableData("lessons", "name", "1");
+		$lsn = sC_getTableData("lessons", "name", "1");
 
 		$lessons = array();
 

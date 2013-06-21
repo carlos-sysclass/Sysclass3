@@ -122,7 +122,7 @@ class module_pagamento extends MagesterExtendedModule
 
 		$enrollmentModule = $this->loadModule('xenrollment');
 
-		if (eF_checkParameter($enrollment_id_or_token, 'id')) {
+		if (sC_checkParameter($enrollment_id_or_token, 'id')) {
 			$enrollmentData = $enrollmentModule->getEnrollmentById($enrollment_id_or_token);
 		} else {
 			$enrollmentData = $enrollmentModule->getEnrollmentByToken($enrollment_id_or_token);
@@ -198,11 +198,11 @@ class module_pagamento extends MagesterExtendedModule
 			$fields = $_POST;
 		}
 
-		if (eF_checkParameter($enrollment_id_or_token, 'id')) {
+		if (sC_checkParameter($enrollment_id_or_token, 'id')) {
 			$enrollmentData = $enrollmentModule->getEnrollmentById($enrollment_id_or_token);
 		} elseif (!empty($enrollment_id_or_token)) {
 			$enrollmentData = $enrollmentModule->getEnrollmentByToken($enrollment_id_or_token);
-		} elseif (eF_checkParameter($fields['enrollment_id'], 'id')) {
+		} elseif (sC_checkParameter($fields['enrollment_id'], 'id')) {
 			$enrollmentData = $enrollmentModule->getEnrollmentById($fields['enrollment_id']);
 		}
 
@@ -245,7 +245,7 @@ class module_pagamento extends MagesterExtendedModule
 			}
 		}
 
-		$payment_id = eF_insertTableData("module_pagamento", $paymentToInsert);
+		$payment_id = sC_insertTableData("module_pagamento", $paymentToInsert);
 
 		// LINK WITH COURSES
 		/** @todo IGNORE THIS LINKED DATA... LINK IS IN xenrollment MODULE */
@@ -256,7 +256,7 @@ class module_pagamento extends MagesterExtendedModule
 				'course_id'		=> $enrollmentData['courses_id']
 			);
 		//}
-		$result = eF_insertTableDataMultiple("module_pagamento_courses_to_payments", $insertCourses);
+		$result = sC_insertTableDataMultiple("module_pagamento_courses_to_payments", $insertCourses);
 
 		// GET USER LOGIN
 		$userModule = $this->loadModule('xuser');
@@ -352,7 +352,7 @@ class module_pagamento extends MagesterExtendedModule
    			$invoices[] = $invoiceInsert;
    			break;
    		}
-   		$result = eF_insertTableDataMultiple("module_pagamento_invoices", $invoices);
+   		$result = sC_insertTableDataMultiple("module_pagamento_invoices", $invoices);
 
    		if ($updateEnrollPayment || $enrollmentData['payment_id'] == 0) {
 
@@ -379,11 +379,11 @@ class module_pagamento extends MagesterExtendedModule
 			$fields = $_POST;
 		}
 
-		if (eF_checkParameter($enrollment_id_or_token, 'id')) {
+		if (sC_checkParameter($enrollment_id_or_token, 'id')) {
 			$enrollmentData = $enrollmentModule->getEnrollmentById($enrollment_id_or_token);
 		} elseif (!empty($enrollment_id_or_token)) {
 			$enrollmentData = $enrollmentModule->getEnrollmentByToken($enrollment_id_or_token);
-		} elseif (eF_checkParameter($fields['enrollment_id'], 'id')) {
+		} elseif (sC_checkParameter($fields['enrollment_id'], 'id')) {
 			$enrollmentData = $enrollmentModule->getEnrollmentById($fields['enrollment_id']);
 		}
 
@@ -488,7 +488,7 @@ class module_pagamento extends MagesterExtendedModule
    				)
    			);
 			*/
-   			$invoicesCount = eF_countTableData("module_pagamento_invoices", "payment_id",
+   			$invoicesCount = sC_countTableData("module_pagamento_invoices", "payment_id",
    				sprintf(
    					"payment_id = %d AND parcela_index = %d",
    					$invoiceInsert['payment_id'],
@@ -497,7 +497,7 @@ class module_pagamento extends MagesterExtendedModule
    			);
 
    			if ($invoicesCount[0]['count'] > 0) {
-   				eF_updateTableData("module_pagamento_invoices", $invoiceInsert, sprintf(
+   				sC_updateTableData("module_pagamento_invoices", $invoiceInsert, sprintf(
    					"payment_id = %d AND parcela_index = %d",
    					$invoiceInsert['payment_id'],
    					$invoiceInsert['parcela_index']
@@ -508,7 +508,7 @@ class module_pagamento extends MagesterExtendedModule
    		}
    		/*
    		*/
-   		$result = eF_insertTableDataMultiple("module_pagamento_invoices", $invoices);
+   		$result = sC_insertTableDataMultiple("module_pagamento_invoices", $invoices);
 
    		/*
    		if ($updateEnrollPayment) {
@@ -577,7 +577,7 @@ class module_pagamento extends MagesterExtendedModule
 		$where = array_merge($where, $formWhere);
 
 		//echo prepareGetTableData($table, implode(', ', $fields), implode(" AND ", $where), "ret.data_pagamento DESC, users.name ASC", "ret.payment_id, ret.parcela_index");
-		$paidInvoicesData = eF_getTableData($table, implode(', ', $fields), implode(" AND ", $where), "ret.data_pagamento DESC, users.name ASC", "ret.payment_id, ret.parcela_index");
+		$paidInvoicesData = sC_getTableData($table, implode(', ', $fields), implode(" AND ", $where), "ret.data_pagamento DESC, users.name ASC", "ret.payment_id, ret.parcela_index");
 
 		foreach ($paidInvoicesData as &$invoiceItem) {
 			$invoiceItem['username']	= formatLogin(null, $invoiceItem);
@@ -643,7 +643,7 @@ class module_pagamento extends MagesterExtendedModule
 		);
 
 		//echo prepareGetTableData($table, implode(', ', $fields), implode(" AND ", $where), "inv.data_vencimento DESC", implode(", ", $group));
-		$unpaidInvoicesData = eF_getTableData($table, implode(', ', $fields), implode(" AND ", $where), "inv.data_vencimento DESC", implode(", ", $group));
+		$unpaidInvoicesData = sC_getTableData($table, implode(', ', $fields), implode(" AND ", $where), "inv.data_vencimento DESC", implode(", ", $group));
 
 		foreach ($unpaidInvoicesData as &$invoiceItem) {
 			$invoiceItem['username']	= formatLogin(null, $invoiceItem);
@@ -657,7 +657,7 @@ class module_pagamento extends MagesterExtendedModule
 
 		$this->makePaymentOptions();
 
-		$emailList = eF_getTableData(
+		$emailList = sC_getTableData(
 			"module_xpayment_send_invoices_log log
 			LEFT JOIN users u ON (log.user_send_id = u.id)
 			LEFT JOIN module_xpayment_send_invoices_log_item item ON (log.id = item.send_invoice_id)",
@@ -733,7 +733,7 @@ class module_pagamento extends MagesterExtendedModule
 			implode(", ", $order)
 		);
 */
-		$toSendList = eF_getTableData(
+		$toSendList = sC_getTableData(
 			implode(" ", $tables),
 			implode(", ", $fields),
 			implode(" AND ", $where),
@@ -768,7 +768,7 @@ class module_pagamento extends MagesterExtendedModule
 		// GETTING CURRENT LIST
 
 		// GET LAST SEND_ID, OR CREATE IF NULL
-		$sendIDData = eF_getTableData(
+		$sendIDData = sC_getTableData(
 			"module_xpayment_to_send_list",
 			"id",
 			sprintf("user_id = %d", $this->getCurrentUser()->user['id']),
@@ -794,14 +794,14 @@ class module_pagamento extends MagesterExtendedModule
 				"inv.valor"
 			);
 
-			$toSendList = eF_getTableData(
+			$toSendList = sC_getTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),
 				sprintf("list.user_id = %d AND send.send_id = %d", $this->getCurrentUser()->user['id'], $send_id)
 			);
 		} else {
 			$toSendList = array();
-			//$data['send_id'] = eF_insertTableData("module_xpayment_to_send_list", array('data_envio' => date('Y-m-d', time() + (60*60*24*10)  )));
+			//$data['send_id'] = sC_insertTableData("module_xpayment_to_send_list", array('data_envio' => date('Y-m-d', time() + (60*60*24*10)  )));
 		}
 
 		$smarty->assign("T_XPAYMENT_TO_SEND_LIST", $toSendList);
@@ -817,7 +817,7 @@ class module_pagamento extends MagesterExtendedModule
 
 		if (is_null($data['send_id'])) {
 			// GET LAST SEND_ID, OR CREATE IF NULL
-			$sendIDData = eF_getTableData(
+			$sendIDData = sC_getTableData(
 				"module_xpayment_to_send_list",
 				"id",
 				sprintf("user_id = %d", $this->getCurrentUser()->user['id']),
@@ -827,12 +827,12 @@ class module_pagamento extends MagesterExtendedModule
 			if (count($sendIDData) > 0) {
 				$data['send_id'] = $sendIDData[0]['id'];
 			} else {
-				$data['send_id'] = eF_insertTableData("module_xpayment_to_send_list", array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*10)  )));
+				$data['send_id'] = sC_insertTableData("module_xpayment_to_send_list", array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*10)  )));
 
 			}
 		}
 
-		$result = eF_countTableData(
+		$result = sC_countTableData(
 			"module_xpayment_to_send_list_item",
 			"payment_id, parcela_index",
 			sprintf(
@@ -842,7 +842,7 @@ class module_pagamento extends MagesterExtendedModule
 		);
 
 		if ($result[0]['count'] == 0) {
-			eF_insertTableData("module_xpayment_to_send_list_item", $data);
+			sC_insertTableData("module_xpayment_to_send_list_item", $data);
 		}
 		echo json_encode(array(
 			'message'		=> 'Fatura incluída com sucesso',
@@ -860,7 +860,7 @@ class module_pagamento extends MagesterExtendedModule
 
 		if (is_null($data['send_id'])) {
 			// GET LAST SEND_ID
-			$sendIDData = eF_getTableData(
+			$sendIDData = sC_getTableData(
 				"module_xpayment_to_send_list_item",
 				"send_id",
 				sprintf(
@@ -876,7 +876,7 @@ class module_pagamento extends MagesterExtendedModule
 				return false;
 			}
 		}
-		$result = eF_countTableData(
+		$result = sC_countTableData(
 			"module_xpayment_to_send_list_item",
 			"payment_id, parcela_index",
 			sprintf(
@@ -886,7 +886,7 @@ class module_pagamento extends MagesterExtendedModule
 		);
 
 		if ($result[0]['count'] > 0) {
-			eF_deleteTableData("module_xpayment_to_send_list_item", sprintf(
+			sC_deleteTableData("module_xpayment_to_send_list_item", sprintf(
 				"send_id = %d AND payment_id = %d AND parcela_index =%d",
 				$data['send_id'], $data['payment_id'], $data['parcela_index']
 			));
@@ -903,8 +903,8 @@ class module_pagamento extends MagesterExtendedModule
 	{
 		//$data['payment_id'], $data['parcela_index']
 
-		if (eF_checkParameter($data['payment_id'], 'id')) {
-			$dataReturn = eF_updateTableData(
+		if (sC_checkParameter($data['payment_id'], 'id')) {
+			$dataReturn = sC_updateTableData(
 				"module_pagamento_invoices",
 				array(
 					"pago" 		=> self::_XPAYMENT_AUTOPAY,
@@ -916,10 +916,10 @@ class module_pagamento extends MagesterExtendedModule
 
 			// GET EDITED USER
 			$paymentData = $this->getPaymentById($data['payment_id']);
-			if (!eF_checkParameter($data['user_id'], 'id')) {
+			if (!sC_checkParameter($data['user_id'], 'id')) {
 				$data['user_id'] = $paymentData['user_id'];
 			}
-			if (!eF_checkParameter($data['enrollment_id'], 'id')) {
+			if (!sC_checkParameter($data['enrollment_id'], 'id')) {
 				$data['enrollment_id'] = $paymentData['enrollment_id'];
 			}
 		}
@@ -1066,7 +1066,7 @@ class module_pagamento extends MagesterExtendedModule
 			/** @TODO CHECAR SE O FOI PASSADO O "invoice_id" OU SE FOI PASSADO "payment_id, parcela_index" */
 
 			if (
-				eF_checkParameter($_GET['payment_id'], 'id') &&
+				sC_checkParameter($_GET['payment_id'], 'id') &&
 				$paymentData = $this->getPaymentById($_GET['payment_id'])
 			) {
 
@@ -1153,7 +1153,7 @@ AND u.active = 1))");
 
 			//IN (SELECT id FROM module_xpayment_to_send_list WHERE user_id = %d)", $this->getCurrentUser()->user['id'])
 
-			$sendIDData = eF_getTableData(
+			$sendIDData = sC_getTableData(
 				"module_xpayment_to_send_list",
 				"id",
 				sprintf("user_id = %d", $this->getCurrentUser()->user['id']),
@@ -1167,7 +1167,7 @@ AND u.active = 1))");
 				$send_id = $sendIDData[0]['id'];
 			}
 
-			$payments = eF_getTableData(
+			$payments = sC_getTableData(
 				"module_xpayment_to_send_list_item",
 				"payment_id, parcela_index",
 				sprintf("send_id = %d", $send_id)
@@ -1181,7 +1181,7 @@ AND u.active = 1))");
 					ini_set("display_errors", true);
 						define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 
-				$sendInvoiceId = eF_insertTableData("module_xpayment_send_invoices_log", array(
+				$sendInvoiceId = sC_insertTableData("module_xpayment_send_invoices_log", array(
 					'user_send_id'	=> $this->getCurrentUser()->user['id']
 				));
 				//$payments = $this->getPayments("payment_id IN ()");
@@ -1235,7 +1235,7 @@ AND u.active = 1))");
 					);
 
 
-					//eF_getTableData("module_xuser_responsible", "*", "type = 'financial' AND id = ")
+					//sC_getTableData("module_xuser_responsible", "*", "type = 'financial' AND id = ")
 
 					// ATUALIZANDO STATUS PARA EMITIDO
 					$this->updateInvoiceById($payment['payment_id'], $invoice_index, array('status_id' => 2));
@@ -1268,11 +1268,11 @@ AND u.active = 1))");
 						'send'				=> 1
 					);
 
-					eF_insertTableData("module_xpayment_send_invoices_log_item", $log_fields);
+					sC_insertTableData("module_xpayment_send_invoices_log_item", $log_fields);
 					$result = file_put_contents($filename, $result['html']);
 
 					if (!$result) {
-						eF_updateTableData(
+						sC_updateTableData(
 							"module_xpayment_send_invoices_log_item",
 							array('send' => 0),
 							sprintf("
@@ -1457,7 +1457,7 @@ AND u.active = 1))");
 			            	}
 						} else {
 							$error++;
-							eF_updateTableData(
+							sC_updateTableData(
 								"module_xpayment_send_invoices_log_item",
 								array('send' => 0),
 								sprintf("
@@ -1469,7 +1469,7 @@ AND u.active = 1))");
 							);
 						}
 
-						eF_deleteTableData(
+						sC_deleteTableData(
 							"module_xpayment_to_send_list_item",
 							sprintf("send_id =%d AND payment_id = %d AND parcela_index = %d", $send_id, $payment['payment_id'], $payment['parcela_index'])
 						);
@@ -1487,8 +1487,8 @@ AND u.active = 1))");
 		) {
 
 			if (
-				eF_checkParameter($_GET['payment_id'], 'id') &&
-				eF_checkParameter($_GET['invoice_index'], 'id')
+				sC_checkParameter($_GET['payment_id'], 'id') &&
+				sC_checkParameter($_GET['invoice_index'], 'id')
 			) {
 				$result = true;
 				if (is_numeric($_POST['status_id'])) {
@@ -1513,8 +1513,8 @@ AND u.active = 1))");
 			!($this -> getCurrentUser()->isStudentRole($userRole) || $this -> getCurrentUser()->isProfessorRole($userRole))
 		) {
 			if (
-				eF_checkParameter($_POST['payment_id'], 'id') &&
-				eF_checkParameter($_POST['parcela_index'], 'id') &&
+				sC_checkParameter($_POST['payment_id'], 'id') &&
+				sC_checkParameter($_POST['parcela_index'], 'id') &&
 				is_array($_POST['fields'])
 			) {
 				$result = true;
@@ -1555,7 +1555,7 @@ AND u.active = 1))");
 			// SAVE PAYMENT, RETURN STATUS AND A STRING WITH METHOD DESCRIPTION
 			//if (array_key_exists('_qf__module_pagamento_payment_type_select', $_POST)) { // TO CHECK FORM ORIGIN
 
-				if (eF_checkParameter($_GET['xuser_login'], 'login')) {
+				if (sC_checkParameter($_GET['xuser_login'], 'login')) {
 
 					$userObject = MagesterUserFactory::factory($_GET['xuser_login']);
 
@@ -1576,13 +1576,13 @@ AND u.active = 1))");
 
 					$payment_parcelas = is_numeric($_POST['parcelas']) ? $_POST['parcelas'] : 10;
 
-					if (eF_checkParameter($_GET['payment_id'], 'id')) {
+					if (sC_checkParameter($_GET['payment_id'], 'id')) {
 						// Payment ID Sent. UPDATE!!!
 						$payment_id = $_GET['payment_id'];
 						// GET TOTAL DE PARCELAS, E DESCONTO, TO CHANGE DE ACORDO
 
 						// UPDATE PAYMENT_TABLE
-						eF_updateTableData("module_pagamento", $payment_data, "payment_id = " . $payment_id);
+						sC_updateTableData("module_pagamento", $payment_data, "payment_id = " . $payment_id);
 
 
 						// RECALCULATE VENCIMENTOS
@@ -1617,7 +1617,7 @@ AND u.active = 1))");
 	   							}
    							}
 
-	   						eF_updateTableData(
+	   						sC_updateTableData(
 	   							"module_pagamento_invoices",
 	   							$invoicesUpdate,
 	   							sprintf("payment_id = %d AND parcela_index = %d", $payment_id, $index)
@@ -1627,7 +1627,7 @@ AND u.active = 1))");
 						// RECALCULATE INVOICES
 
 						// RECALCULATE DESCONTO
-						eF_executeNew(
+						sC_executeNew(
 							'UPDATE module_pagamento_invoices ' .
 							'SET valor_desconto = valor - (valor * (' . $payment_data['desconto'] . ' / 100)) ' .
 							'WHERE ' . sprintf("payment_id = %s AND status_id IN (%s)", $payment_id, implode(',', array(1,5)))
@@ -1670,7 +1670,7 @@ AND u.active = 1))");
 	   							}
    							}
 
-	   						eF_updateTableData(
+	   						sC_updateTableData(
 	   							"module_pagamento_invoices",
 	   							$invoicesUpdate,
 	   							sprintf("payment_id = %d AND parcela_index = %d", $payment_id, $index)
@@ -1767,7 +1767,7 @@ AND u.active = 1))");
 						$this->setMessageVar(_MODULE_PAGAMENTO_NO_SUBMODULES_FOUND, 'warning');
 					}
 				} elseif ($selectedAction == self::GET_PAYMENT_TYPES) {
-					$payment_types = eF_getTableData(
+					$payment_types = sC_getTableData(
 						"module_pagamento_types",
 						"payment_type_id, data_registro, title, comments, module_class_name",
 						"active = 1",
@@ -1777,8 +1777,8 @@ AND u.active = 1))");
 					$smarty -> assign("T_MODULE_PAGAMENTO_PAYMENTS_TYPES", $payment_types);
 
 				} elseif ($selectedAction == self::DELETE_PAYMENT_TYPE) {
-					if (eF_checkParameter($_GET['payment_type_id'], 'id')) {
-						if (eF_deleteTableData("module_pagamento_types", sprintf("payment_type_id = %d", $_GET['payment_type_id']))) {
+					if (sC_checkParameter($_GET['payment_type_id'], 'id')) {
+						if (sC_deleteTableData("module_pagamento_types", sprintf("payment_type_id = %d", $_GET['payment_type_id']))) {
 							$this->setMessageVar(_MODULE_PAGAMENTO_PAYMENT_TYPE_DELETE_SUCCESS, 'success');
 
 							$url = sprintf(
@@ -1788,7 +1788,7 @@ AND u.active = 1))");
 								'success'
 							);
 
-							eF_redirect($url);
+							sC_redirect($url);
 						} else {
 							$this->setMessageVar(_UNDEFINEDERROR, 'warning');
 						}
@@ -1826,10 +1826,10 @@ AND u.active = 1))");
 							'active'			=> 1
 						));
 					} elseif ($selectedAction == self::EDIT_PAYMENT_TYPE) {
-						if (eF_checkParameter($_GET['payment_type_id'], 'id')) {
+						if (sC_checkParameter($_GET['payment_type_id'], 'id')) {
 							$form->getElement('module_class_name')->freeze();
 
-							$defaults = eF_getTableData("module_pagamento_types", "*", sprintf("payment_type_id = %d", $_GET['payment_type_id']));
+							$defaults = sC_getTableData("module_pagamento_types", "*", sprintf("payment_type_id = %d", $_GET['payment_type_id']));
 
 							$form->setDefaults($defaults[0]);
 							// LOAD SUB-MODULE FORM TO EDITING
@@ -1874,7 +1874,7 @@ AND u.active = 1))");
 							);
 
 							if ($selectedAction == self::CREATE_PAYMENT_TYPE) {
-								$result = eF_insertTableData("module_pagamento_types", $paymentData);
+								$result = sC_insertTableData("module_pagamento_types", $paymentData);
 
 								if (!$result) {
 									$this->setMessageVar(_UNDEFINEDERROR, 'warning');
@@ -1889,10 +1889,10 @@ AND u.active = 1))");
 										'success'
 									);
 
-									eF_redirect($url);
+									sC_redirect($url);
 								}
 							} elseif ($selectedAction == self::EDIT_PAYMENT_TYPE) {
-								$result = eF_updateTableData("module_pagamento_types", $paymentData, sprintf("payment_type_id = %d", $values['payment_type_id']));
+								$result = sC_updateTableData("module_pagamento_types", $paymentData, sprintf("payment_type_id = %d", $values['payment_type_id']));
 
 								if (!$result) {
 									$this->setMessageVar(_UNDEFINEDERROR, 'warning');
@@ -2327,7 +2327,7 @@ AND u.active = 1))");
 				PRIMARY KEY  (`ies_id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 			 */
-			$iesDefaults = eF_getTableData(
+			$iesDefaults = sC_getTableData(
 				"module_xpayment_ies_defaults",
 				"vencimento, desconto, parcelas, payment_type_id, emitir_vencidos",
 				"ies_id = " . $ies_id);
@@ -2355,7 +2355,7 @@ AND u.active = 1))");
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 			*/
 
-			$courseDefaults = eF_getTableData(
+			$courseDefaults = sC_getTableData(
 				"module_xpayment_course_defaults def " .
 				"LEFT JOIN courses cour ON ( def.course_id = cour.id )",
 				"cour.id as course_id, cour.start_date, def.vencimento, def.desconto, def.parcelas, def.payment_type_id, def.emitir_vencidos",
@@ -2379,7 +2379,7 @@ AND u.active = 1))");
 		count($defaults) == 0 ? $defaults = $this->getPaymentRootDefault() : $defaults;
 
 		if (!is_null($course_id)) {
-			//$classeDefaults = eF_getTableData("module_xpayment_classe_defaults", "*", "classe_id = " . $classe_id);
+			//$classeDefaults = sC_getTableData("module_xpayment_classe_defaults", "*", "classe_id = " . $classe_id);
 			if ($classeDefaults) {
 				return array_merge($defaults, $classeDefaults);
 			}
@@ -2424,8 +2424,8 @@ AND u.active = 1))");
     /* PAYMENT MANIPULATION FUNCTIONS */
 	public function getPaymentTypeById($payment_type_id)
 	{
-		if (eF_checkParameter($payment_type_id, 'id')) {
-			$paymentData = eF_getTableData(
+		if (sC_checkParameter($payment_type_id, 'id')) {
+			$paymentData = sC_getTableData(
 				"module_pagamento_types",
 				"*",
 				sprintf("payment_type_id = %d AND active = 1", $payment_type_id)
@@ -2444,7 +2444,7 @@ AND u.active = 1))");
 
 	public static function getPaymentTypes()
 	{
-		$paymentData = eF_getTableData(
+		$paymentData = sC_getTableData(
 			"module_pagamento_types",
 			"*",
 			"active = 1"
@@ -2466,8 +2466,8 @@ AND u.active = 1))");
 
 	public function updatePaymentTypeById($payment_type_id, $fields)
 	{
-		if (eF_checkParameter($payment_type_id, 'id')) {
-			$result = eF_updateTableData(
+		if (sC_checkParameter($payment_type_id, 'id')) {
+			$result = sC_updateTableData(
 				"module_pagamento_types",
 				$fields,
 				sprintf("payment_type_id = %d", $payment_type_id)
@@ -2482,7 +2482,7 @@ AND u.active = 1))");
 
 	public function getPaymentIdByInvoiceId($invoice_id)
 	{
-		$invoiceResult = eF_getTableDataFlat(
+		$invoiceResult = sC_getTableDataFlat(
 			"`module_pagamento_invoices` inv",
 			"inv.payment_id",
 			sprintf("inv.invoice_id = '%s'", $invoice_id)
@@ -2502,9 +2502,9 @@ AND u.active = 1))");
 
 	public function getPaymentById($payment_id)
 	{
-		if (eF_checkParameter($payment_id, 'id')) {
+		if (sC_checkParameter($payment_id, 'id')) {
 			// RETURS ONE REGISTER PER INVOICE.....
-			$paymentResult = eF_getTableData("
+			$paymentResult = sC_getTableData("
 				`module_pagamento` pag,
 				`module_pagamento_types` pag_typ,
 				/* `module_pagamento_types_details` pag_typ_det, */
@@ -2603,7 +2603,7 @@ AND u.active = 1))");
 
 				if ($paymentData['send_to'] == 'parent' && $paymentResult[0]['not_18'] == 1) {
 					// BUSCAR RESPONSÁVEL
-					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='parent' AND id = ".  $paymentResult[0]['user_id']);
+					$responsibleData 		= sC_getTableData("module_xuser_responsible", "*", "type='parent' AND id = ".  $paymentResult[0]['user_id']);
 					$paymentData['cliente']	= $responsibleData[0];
 					/*
 					$paymentData['minor']					= $paymentData['usuario'];
@@ -2613,7 +2613,7 @@ AND u.active = 1))");
 					$paymentData['cliente']['email'] 		= $responsibleData[0]['email'];
 					*/
 				} elseif ($paymentData['send_to'] == 'financial') {
-					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='financial' AND id = ".  $paymentResult[0]['user_id']);
+					$responsibleData 		= sC_getTableData("module_xuser_responsible", "*", "type='financial' AND id = ".  $paymentResult[0]['user_id']);
 					$paymentData['cliente']	= $responsibleData[0];
 				} else {
 					$paymentData['cliente']	= $paymentData['usuario'];
@@ -2697,14 +2697,14 @@ AND u.active = 1))");
 
 	public function getPaymentsByUserId($userID, $completeData = true)
 	{
-		if (eF_checkParameter($userID, 'id')) {
+		if (sC_checkParameter($userID, 'id')) {
 			$result = array();
 
 			if (!$completeData) {
 				return $this->getPayments('user_id = ' . $userID);
 			}
 
-			$paymentIDs = eF_getTableData("module_pagamento", 'payment_id', 'user_id = ' . $userID);
+			$paymentIDs = sC_getTableData("module_pagamento", 'payment_id', 'user_id = ' . $userID);
 
 			foreach ($paymentIDs as $payment) {
 
@@ -2755,7 +2755,7 @@ AND u.active = 1))");
 		);
 */
 
-		$paymentDbResult = eF_getTableData(
+		$paymentDbResult = sC_getTableData(
 			"`module_pagamento` pag, `users`",
 			implode(', ', $fields),
 			sprintf("pag.user_id = users.id", $payment_id) . (!is_null($filter) ? ' AND ' . $filter : "")
@@ -2774,8 +2774,8 @@ AND u.active = 1))");
 
 	public function updateInvoiceById($payment_id, $parcela_index, $fields)
 	{
-		if (eF_checkParameter($payment_id, 'id')) {
-			$result = eF_updateTableData(
+		if (sC_checkParameter($payment_id, 'id')) {
+			$result = sC_updateTableData(
 				"module_pagamento_invoices",
 				$fields,
 				sprintf("
@@ -2806,7 +2806,7 @@ AND u.active = 1))");
 
    	public static function getAllInvoiceStatus()
    	{
-   		return eF_getTableData("module_pagamento_invoices_status", "*");
+   		return sC_getTableData("module_pagamento_invoices_status", "*");
    	}
 
    	public function filterInvoiceByStatus($invoices, $filters, $include = true)
@@ -3177,7 +3177,7 @@ AND u.active = 1))");
 					);
 
 
-   					$userAmmount = ef_getTableData("module_xpayment_user_ammount_types", "user_id, ammount_type, value", "user_id = " . $context->getEditedUser()->user['id']);
+   					$userAmmount = sC_getTableData("module_xpayment_user_ammount_types", "user_id, ammount_type, value", "user_id = " . $context->getEditedUser()->user['id']);
 
 					if (count($userAmmount) > 0) {
 						foreach ($userAmmount as $item) {
@@ -3222,7 +3222,7 @@ AND u.active = 1))");
 
 						foreach ($userPayments as $payment) {
 							// UPDATE send_to FIELD
-							eF_updateTableData("module_pagamento", array(
+							sC_updateTableData("module_pagamento", array(
 								'send_to' => $values['sender_sacado'],
 							), sprintf("payment_id = %d", $payment['payment_id']));
 							$defaults['sender_sacado'] = $values['sender_sacado'];
@@ -3239,7 +3239,7 @@ AND u.active = 1))");
 									($values['sender_parent'] == 1 ? $values['sender_parent_ammount'] : 0) -
 									($values['sender_financial'] == 1 ? $values['sender_financial_ammount'] : 0);
 						}
-						ef_deleteTableData("module_xpayment_user_ammount_types", "user_id = " . $context->getEditedUser()->user['id']);
+						sC_deleteTableData("module_xpayment_user_ammount_types", "user_id = " . $context->getEditedUser()->user['id']);
 
 						if ($values['sender_parent'] == 1 && $values['sender_parent_ammount'] > 0) {
 							$data[] = array(
@@ -3281,7 +3281,7 @@ AND u.active = 1))");
 							$defaults['sender_student_ammount']	= $values['sender_student_ammount'];
 						}
 						if (count($data) > 0) {
-							ef_insertTableDataMultiple("module_xpayment_user_ammount_types", $data);
+							sC_insertTableDataMultiple("module_xpayment_user_ammount_types", $data);
 						}
 					}
 					$formSenderUpdate -> setDefaults($defaults);
@@ -3360,7 +3360,7 @@ AND u.active = 1))");
 			'user_id'	=> $user->user['id']
 		);
 
-		$payment_id = eF_insertTableData("c_payments", $paymentData);
+		$payment_id = sC_insertTableData("c_payments", $paymentData);
 
 		// 2. link courses on payments
 		foreach ($courses as $courseID) {
@@ -3368,7 +3368,7 @@ AND u.active = 1))");
 				'payment_id'	=> $payment_id,
 				'course_id'		=> $courseID
 			);
-			eF_insertTableData("c_payments_courses", $paymentCourseData);
+			sC_insertTableData("c_payments_courses", $paymentCourseData);
 		}
 
 		// 3. inject parcelas and values
@@ -3399,7 +3399,7 @@ AND u.active = 1))");
 					'status'			=> 2 // 1. registrado, 2. Pendente, 3. Pago, 4. Cancelado
 				);
 
-				eF_insertTableData("c_payments_parcelas", $paymentParcelasData);
+				sC_insertTableData("c_payments_parcelas", $paymentParcelasData);
 
 
 				break;
@@ -3420,7 +3420,7 @@ AND u.active = 1))");
 					'status'			=> 2 // 1. registrado, 2. Pendente, 3. Pago, 4. Cancelado
 				);
 
-				eF_insertTableData("c_payments_parcelas", $paymentParcelasData);
+				sC_insertTableData("c_payments_parcelas", $paymentParcelasData);
 
 				// INSERE MENSALIDADES
 				$mensalidade 			= ( $selectedTotalValue - $matricula ) / 9;
@@ -3437,7 +3437,7 @@ AND u.active = 1))");
 						'status'			=> 1 // 1. registrado, 2. Pendente, 3. Pago, 4. Cancelado
 					);
 
-					eF_insertTableData("c_payments_parcelas", $paymentParcelasData);
+					sC_insertTableData("c_payments_parcelas", $paymentParcelasData);
 				}
 
 				break;
@@ -3462,7 +3462,7 @@ AND u.active = 1))");
 					'status'			=> 2 // 1. registrado, 2. Pendente, 3. Pago, 4. Cancelado
 				);
 
-				eF_insertTableData("c_payments_parcelas", $paymentParcelasData);
+				sC_insertTableData("c_payments_parcelas", $paymentParcelasData);
 
 				// INSERE MENSALIDADES
 				for ($idx = 2; $idx <= $total_parcelas; $idx++) {
@@ -3476,7 +3476,7 @@ AND u.active = 1))");
 						'status'			=> 1 // 1. registrado, 2. Emitido, 3. Pago, 4. Cancelado
 					);
 
-					eF_insertTableData("c_payments_parcelas", $paymentParcelasData);
+					sC_insertTableData("c_payments_parcelas", $paymentParcelasData);
 				}
 				break;
 			}
@@ -3503,7 +3503,7 @@ AND u.active = 1))");
    			// LOAD FROM $payment_id
    		}
 
-   		$data = eF_getTableData(
+   		$data = sC_getTableData(
    			"c_payments_types, c_payments_types_details",
    			"module_class_name",
    			"c_payments_types.payment_type_id = c_payments_types_details.payment_type_id
@@ -3513,7 +3513,7 @@ AND u.active = 1))");
    		if (count($data) > 0 && isset($data[0]['module_class_name'])) {
    			$module_name = $data[0]['module_class_name'];
 
-   			$modules = eF_loadAllModules(true);
+   			$modules = sC_loadAllModules(true);
 
    			if (array_key_exists($module_name, $modules)) {
 				//$folder = $modules[$module_name]->moduleBaseDir;

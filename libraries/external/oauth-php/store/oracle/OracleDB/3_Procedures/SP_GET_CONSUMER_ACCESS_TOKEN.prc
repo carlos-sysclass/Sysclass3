@@ -2,7 +2,7 @@ CREATE OR REPLACE PROCEDURE SP_GET_CONSUMER_ACCESS_TOKEN
 (
 P_USER_ID                      IN        NUMBER,
 P_TOKEN                        IN        VARCHAR2,
-P_ROWS                         OUT       TYPES.REF_CURSOR,
+P_ROWS                         OUT       TYPES.RsC_CURSOR,
 P_RESULT                       OUT       NUMBER
 )
 AS

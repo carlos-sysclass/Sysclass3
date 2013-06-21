@@ -27,7 +27,7 @@ $loadScripts[] = 'js/jquery';
   $smarty -> assign("T_SYSTEM_AVATARS", $systemAvatars);
  } catch (Exception $e) {
   $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-  $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+  $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
  }
 
   if ($editedUser -> user['login'] == $currentUser -> user['login']) { //The user is editing himself
@@ -54,7 +54,7 @@ $loadScripts[] = 'js/jquery';
   }
   $baseUrl = "ctg=users&edit_user=".$editedUser -> user['login'];
  }
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
  $form -> addElement('file', 'file_upload', _IMAGEFILE, 'class = "inputText"');
  $form -> addElement('advcheckbox', 'delete_avatar', _DELETECURRENTAVATAR, null, 'class = "inputCheckbox"', array(0, 1));
 
@@ -144,7 +144,7 @@ $loadScripts[] = 'js/jquery';
      $filesystem = new FileSystemTree($avatarDirectory);
      $uploadedFile = $filesystem -> uploadFile('file_upload', $avatarDirectory);
      // Normalize avatar picture to 150xDimY or DimX x 100
-     eF_normalizeImage($avatarDirectory . "/" . $uploadedFile['name'], $uploadedFile['extension'], 150, 100);
+     sC_normalizeImage($avatarDirectory . "/" . $uploadedFile['name'], $uploadedFile['extension'], 150, 100);
      $editedUser -> user['avatar'] = $uploadedFile['id'];
      MagesterEvent::triggerEvent(array("type" => MagesterEvent::AVATAR_CHANGE, "users_LOGIN" => $editedUser -> user['login'], "users_name" => $editedUser->user['name'], "users_surname" => $editedUser->user['surname'], "lessons_ID" => 0, "lessons_name" => "", "entity_ID" => $editedUser -> user['avatar']));
      if ($personal_profile_form) {
@@ -182,7 +182,7 @@ $loadScripts[] = 'js/jquery';
     }
    } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
    }
   }
 

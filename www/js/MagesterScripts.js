@@ -1,4 +1,4 @@
-function eF_js_showDivPopup2(popup_title, size, popup_data_id) { 
+function sC_js_showDivPopup2(popup_title, size, popup_data_id) { 
     var sizes = [{width:500, height:300},
         {width:640, height:420},
         {width:720, height:480},
@@ -83,7 +83,7 @@ function getDocHeight(D) {
             );
 }
 
-function eF_js_showDivPopup(popup_title, size, popup_data_id) {
+function sC_js_showDivPopup(popup_title, size, popup_data_id) {
 
     //From now on there are only 3 possible sizes: small, medium, big. Old values are automatically converted to one of them
     var sizes = [new Array('500px', '300px'), new Array('1050px', '500px'), new Array('720px', '500px'), new Array('800px', '550px'), new Array('1024px', '900px')];
@@ -174,7 +174,7 @@ function eF_js_showDivPopup(popup_title, size, popup_data_id) {
 }
 
 
-function eF_js_keypress(e) {
+function sC_js_keypress(e) {
     var kC = (window.event) ? // MSIE or Firefox?
         event.keyCode : e.keyCode;
     var Esc = (window.event) ?
@@ -205,7 +205,7 @@ function show_hide(obj, name) {
  * Set element display to '' or 'none'
 
 */
-function eF_js_showHide(el_id) {
+function sC_js_showHide(el_id) {
     el = document.getElementById(el_id);
     if (el.style.display == 'none') {
         el.style.display = '';
@@ -218,7 +218,7 @@ function eF_js_showHide(el_id) {
  * Set element display to '' or 'none' and position it to the event coordinates
 
 */
-function eF_js_showHideDiv(target, el_id, e) {
+function sC_js_showHideDiv(target, el_id, e) {
     Event.pointerX(e) + $(el_id).getWidth() > Element.getWidth(document.body) ? x = Event.pointerX(e) - $(el_id).getWidth() : x = Event.pointerX(e);
     Event.pointerY(e) + $(el_id).getHeight() > Element.getHeight(document.body) ? y = Event.pointerY(e) - $(el_id).getHeight() : y = Event.pointerY(e);
     $(el_id).setStyle({left:x+'px', top:y+'px'}).toggle();
@@ -245,7 +245,7 @@ function toggleVisibility(obj, img)
     }
 }
 
-function eF_js_findPos(obj) {
+function sC_js_findPos(obj) {
     var curleft = curtop = 0;
     if (obj.offsetParent) {
         curleft = obj.offsetLeft
@@ -319,7 +319,7 @@ function showMessage(message, type) {
         message = '<div class = "success" style = "font-size:16px"><img src = "themes/default/images/32x32/success.png" style = "float:left"><span style = "vertical-align:middle">'+message+'</span></div>'
     }
     $('showMessageDiv').update(message);
-    eF_js_showDivPopup('', 0, 'showMessageDiv');
+    sC_js_showDivPopup('', 0, 'showMessageDiv');
 }
 
 
@@ -497,7 +497,7 @@ function onGetBookmarks(el, response) {
         } else {
             bookmarks.insert(new Element('div').update(NODATAFOUND).addClassName('emptyCategory'));
         }
-        eF_js_showDivPopup(BOOKMARKTRANSLATION, 1, 'bookmarks_div_code');
+        sC_js_showDivPopup(BOOKMARKTRANSLATION, 1, 'bookmarks_div_code');
     }
 }
 
@@ -553,7 +553,7 @@ function handleException(e) {
             errorDetails += e[i] + '<br>';
         }
         $('defaultExceptionHandlerDiv').update(errorDetails);
-        eF_js_showDivPopup('Error details', 2, 'defaultExceptionHandlerDiv');
+        sC_js_showDivPopup('Error details', 2, 'defaultExceptionHandlerDiv');
     } else {
         alert(e);
     }

@@ -277,7 +277,7 @@ if (top.sideframe && top.sideframe.document.getElementById('hasLoaded')) {
         {assign var = "title" value = $title|cat:' &raquo; <a class = "titleLink" href ="'|cat:$smarty.server.PHP_SELF|cat:'?ctg=content">'|cat:$smarty.const._CONTENT|cat:'</a>'}
  {else}
         {section name = 'parents_list' loop = $T_PARENT_LIST step = "-1"}
-            {assign var = "truncated_name" value = $T_PARENT_LIST[parents_list].name|eF_truncate:40}
+            {assign var = "truncated_name" value = $T_PARENT_LIST[parents_list].name|sC_truncate:40}
             {if $T_PARENT_LIST[parents_list].data != '' || $T_PARENT_LIST[parents_list].ctg_type == 'tests'}
                 {assign var = "title" value = "`$title`&nbsp;&raquo;&nbsp;<a class = \"titleLink\" href = \"`$smarty.server.PHP_SELF`?ctg=content&view_unit=`$T_PARENT_LIST[parents_list].id`\" title = \"`$T_PARENT_LIST[parents_list].name`\">`$truncated_name`</a>"}
             {elseif $T_SCORM_2004_TITLE}
@@ -746,15 +746,15 @@ if (top.sideframe && top.sideframe.document.getElementById('hasLoaded')) {
 {capture name = "t_bookmarks_code"}
  <div id = "bookmarks_div"></div>
 {/capture}
-{eF_template_printBlock title = $smarty.const._SHOWBOOKMARKS data = $smarty.capture.t_bookmarks_code image = "32x32/bookmark.png"}
+{sC_template_printBlock title = $smarty.const._SHOWBOOKMARKS data = $smarty.capture.t_bookmarks_code image = "32x32/bookmark.png"}
 </div>
 {if !$T_LAYOUT_CLASS}{assign var = "layoutClass" value = "centerFull"}{else}{assign var = "layoutClass" value = $T_LAYOUT_CLASS}{/if}
 {capture name = "center_code"}
- {if $smarty.get.message}{eF_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
- {if $T_MESSAGE}{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
+ {if $smarty.get.message}{sC_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
+ {if $T_MESSAGE}{sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
  {if $T_SEARCH_MESSAGE || $smarty.get.search_message}
      {if $smarty.get.search_message}{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}{/if}
-  {eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
+  {sC_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
  {/if}
  <div>
   {$smarty.capture.moduleControlPanel}

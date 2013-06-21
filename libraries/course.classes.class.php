@@ -97,7 +97,7 @@ class MagesterCourseClass
 			$this -> classe = $classe;
 			if (!isset($this -> classe['schedules'])) {
 			// GET SCHEDULES FRO CLASSE
-				$schedules = eF_getTableData("classes_schedules", "id, week_day, start, end", "classes_ID = " . $this -> classe['id'], "week_day ASC, start ASC");
+				$schedules = sC_getTableData("classes_schedules", "id, week_day, start, end", "classes_ID = " . $this -> classe['id'], "week_day ASC, start ASC");
 				$this -> classe['schedules'] = $schedules;
 			}
 		} elseif (!$this -> validateId($classe)) {
@@ -111,7 +111,7 @@ class MagesterCourseClass
 
 			$select = implode(', ', $fields);
 
-			$classe = eF_getTableData("classes c", $select, "id = " . $classe);
+			$classe = sC_getTableData("classes c", $select, "id = " . $classe);
 
 			if (empty($classe)) {
 				throw new MagesterCourseClassException(_LESSONDOESNOTEXIST, MagesterCourseClassException :: LESSON_NOT_EXISTS);
@@ -119,7 +119,7 @@ class MagesterCourseClass
 			$this -> classe = $classe[0];
 
 			// GET SCHEDULES FRO CLASSE
-			$schedules = eF_getTableData("classes_schedules", "id, week_day, start, end", "classes_ID = " . $this -> classe['id'], "start");
+			$schedules = sC_getTableData("classes_schedules", "id, week_day, start, end", "classes_ID = " . $this -> classe['id'], "start");
 			$this -> classe['schedules'] = $schedules;
 		}
 	}
@@ -245,7 +245,7 @@ class MagesterCourseClass
 
  private static function validateId($field)
  {
-  !eF_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
@@ -267,7 +267,7 @@ class MagesterCourseClass
  }
  private static function validateTimestamp($field)
  {
-  !eF_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
@@ -304,31 +304,31 @@ class MagesterCourseClass
  }
  private static function validateDirectionsForeignKey($field)
  {
-  !eF_checkParameter($field, 'id') || sizeof(eF_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'id') || sizeof(sC_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
  private static function validateLessonsForeignKey($field)
  {
-  !eF_checkParameter($field, 'id') || sizeof(eF_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'id') || sizeof(sC_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
  private static function validateCoursesForeignKey($field)
  {
-  !eF_checkParameter($field, 'id') || sizeof(eF_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'id') || sizeof(sC_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
  private static function validateLanguagesForeignKey($field)
  {
-  !eF_checkParameter($field, 'login') || sizeof(eF_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'login') || sizeof(sC_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
  private static function validateUsersForeignKey($field)
  {
-  !eF_checkParameter($field, 'login') || sizeof(eF_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
+  !sC_checkParameter($field, 'login') || sizeof(sC_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
 
   return $returnValue;
  }
@@ -422,7 +422,7 @@ class MagesterCourseClass
 		$fields['id'] = self::computeNewCourseClassId();
 		$fields = self::validateAndSanitizeCourseClassFields($fields);
 
-		$courseclassId = eF_insertTableData("classes", $fields);
+		$courseclassId = sC_insertTableData("classes", $fields);
 
 		$newLesson = new MagesterCourseClass($courseclassId);
 		MagesterSearch :: insertText($fields['name'], $courseclassId, "courseclasses", "title");
@@ -457,7 +457,7 @@ class MagesterCourseClass
 			}
 		}
 
-		$result = eF_getTableData("classes", "max(id) as max_id");
+		$result = sC_getTableData("classes", "max(id) as max_id");
 		$firstFreeSlot = (max($result[0]['max_id'], max($directories))) + 1;
 		return $firstFreeSlot;
 	}
@@ -487,7 +487,7 @@ class MagesterCourseClass
 
 	public function persistSchedule()
 	{
-		eF_deleteTableData("classes_schedules", "classes_ID = " . $this->classe['id']);
+		sC_deleteTableData("classes_schedules", "classes_ID = " . $this->classe['id']);
 
 //		var_dump($this -> classe['schedules']);
 
@@ -500,13 +500,13 @@ class MagesterCourseClass
 				'end'		=> $scheduleItem['end']
 			);
 		}
-		return eF_insertTableDataMultiple("classes_schedules", $fields);
+		return sC_insertTableDataMultiple("classes_schedules", $fields);
 	}
 
  private static function notifyModuleListenersForCourseClassCreation($courseclass)
  {
   // Get all modules (NOT only the ones that have to do with the user type)
-  $modules = eF_loadAllModules();
+  $modules = sC_loadAllModules();
   // Trigger all necessary events. If the function has not been re-defined in the derived module class, nothing will happen
   foreach ($modules as $module) {
    $module -> onNewCourseClass($courseclass -> classe['id']);
@@ -515,7 +515,7 @@ class MagesterCourseClass
 	public function delete($removeFromCourse = true)
 	{
 		//$this -> initialize('all');
-		eF_deleteTableData("classes", "id=".$this -> classe['id']);
+		sC_deleteTableData("classes", "id=".$this -> classe['id']);
 		MagesterSearch :: removeText('courseclasses', $this -> classe['id'], 'title');
 	}
 
@@ -538,7 +538,7 @@ class MagesterCourseClass
 			'archive'			=> $this -> classe['archive']
 		);
 
-		if (!eF_updateTableData("classes", $fields, "id=".$this -> classe['id'])) {
+		if (!sC_updateTableData("classes", $fields, "id=".$this -> classe['id'])) {
 			throw new MagesterUserException(_DATABASEERROR, MagesterUserException :: DATABASE_ERROR);
 		}
 		MagesterSearch :: removeText('courseclasses', $this -> classe['id'], 'title'); //Refresh the search keywords
@@ -549,7 +549,7 @@ class MagesterCourseClass
  {
   if ($this -> users === false || $refresh) { //Make a database query only if the variable is not initialized, or it is explicitly asked
    $this -> users = array();
-   $result = eF_getTableData("users u, users_to_course uc, classes c", "u.*, uc.*", "u.user_type != 'administrator' and c.archive = 0 and uc.archive = 0 and u.archive = 0 and u.login = uc.users_LOGIN and uc.classe_id=".$this -> classe['id']);
+   $result = sC_getTableData("users u, users_to_course uc, classes c", "u.*, uc.*", "u.user_type != 'administrator' and c.archive = 0 and uc.archive = 0 and u.archive = 0 and u.login = uc.users_LOGIN and uc.classe_id=".$this -> classe['id']);
    foreach ($result as $value) {
    	/** @todo Inject here course-class data */
     $this -> users[$value['login']] = array(
@@ -628,7 +628,7 @@ class MagesterCourseClass
   $where[] = "user_type != 'administrator'";
   $select = "u.login";
   $from = "users u left outer join (select completed,score,lessons_ID,from_timestamp,users_LOGIN from users_to_lessons where lessons_ID='".$this -> lesson['id']."' and archive=0) r on u.login=r.users_LOGIN";
-  $result = eF_countTableData($from, $select, implode(" and ", $where));
+  $result = sC_countTableData($from, $select, implode(" and ", $where));
 
   return $result[0]['count'];
  }
@@ -652,7 +652,7 @@ class MagesterCourseClass
  {
   $this -> lesson['total_students'] = $this -> lesson['total_professors'] = 0;
   $roles = MagesterLessonUser :: getLessonsRoles();
-  $result = eF_getTableData("users_to_lessons ul, users u", "u.*, u.user_type as basic_user_type, ul.user_type as role, ul.from_timestamp as active_in_lesson, ul.score, ul.completed", "u.archive = 0 and ul.archive = 0 and ul.users_LOGIN = u.login and ul.lessons_ID=".$this -> lesson['id']);
+  $result = sC_getTableData("users_to_lessons ul, users u", "u.*, u.user_type as basic_user_type, ul.user_type as role, ul.from_timestamp as active_in_lesson, ul.score, ul.completed", "u.archive = 0 and ul.archive = 0 and ul.users_LOGIN = u.login and ul.lessons_ID=".$this -> lesson['id']);
   foreach ($result as $value) {
    $this -> users[$value['login']] = $value;
    if ($roles[$value['role']] == 'student') {
@@ -727,7 +727,7 @@ public function addUser($user, $roles = 'student', $confirmed = true)
 
 	public static function getClassForUserCourse($users_ID, $courses_ID, $constraints = array())
 	{
-		$userLogin = eF_getTableData("users", "login", "id='".$users_ID."'");
+		$userLogin = sC_getTableData("users", "login", "id='".$users_ID."'");
 
 		if (count($userLogin) > 0) {
 			$userLogin = $userLogin[0]['login'];
@@ -744,7 +744,7 @@ public function addUser($user, $roles = 'student', $confirmed = true)
 		$select = implode(', ', $fields);
 		$where[] = sprintf('c.courses_ID = \'%1$d\' AND id IN (SELECT classe_id FROM users_to_courses WHERE courses_ID = \'%1$d\' AND users_LOGIN = \'%2$s\')', $courses_ID, $userLogin);
 		//echo prepareGetTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
-		$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
+		$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
 		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
 			return MagesterCourse :: convertDatabaseResultToClassesObjects($result);
@@ -791,7 +791,7 @@ public function addUser($user, $roles = 'student', $confirmed = true)
 		$select = implode(', ', $fields);
 		//$where[] = sprintf('c.courses_ID = \'%1$d\' AND id IN (SELECT classe_id FROM users_to_courses WHERE courses_ID = \'%1$d\' AND users_LOGIN = \'%2$s\')', $courses_ID, $userLogin);
 		//echo prepareGetTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
-		$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
+		$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
 		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
 			return MagesterCourse :: convertDatabaseResultToClassesObjects($result);

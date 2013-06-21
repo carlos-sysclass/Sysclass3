@@ -102,7 +102,7 @@ function init() {
  document.getElementById('active_color_pickcontainer').innerHTML = getColorPickerHTML('active_color_pick','active_color');
  document.getElementById('textcolor_pickcontainer').innerHTML = getColorPickerHTML('textcolor_pick','textcolor');
  document.getElementById('stylesheet_browsercontainer').innerHTML = getBrowserHTML('stylesheetbrowser','stylesheet','file','fullpage');
- document.getElementById('link_href_pickcontainer').innerHTML = getBrowserHTML('link_href_browser','element_link_href','file','fullpage');
+ document.getElementById('link_hrsC_pickcontainer').innerHTML = getBrowserHTML('link_hrsC_browser','element_link_href','file','fullpage');
  document.getElementById('script_src_pickcontainer').innerHTML = getBrowserHTML('script_src_browser','element_script_src','file','fullpage');
  document.getElementById('bgimage_pickcontainer').innerHTML = getBrowserHTML('bgimage_browser','bgimage','image','fullpage');
 
@@ -110,7 +110,7 @@ function init() {
  if (isVisible('stylesheetbrowser'))
   document.getElementById('stylesheet').style.width = '220px';
 
- if (isVisible('link_href_browser'))
+ if (isVisible('link_hrsC_browser'))
   document.getElementById('element_link_href').style.width = '230px';
 
  if (isVisible('bgimage_browser'))

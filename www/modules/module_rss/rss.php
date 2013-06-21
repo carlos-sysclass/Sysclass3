@@ -4,7 +4,7 @@ $path = "../../../libraries/";
 require_once($path."configuration.php");
 //debug();
 
-$result = eF_getTableData("modules", "*", "name='module_rss'");
+$result = sC_getTableData("modules", "*", "name='module_rss'");
 $module = $result[0];
 if ($module['active']) {
  $folder = $module['position'];

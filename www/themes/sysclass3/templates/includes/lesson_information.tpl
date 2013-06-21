@@ -22,7 +22,7 @@
                                     </fieldset>
 *}
                                 {/capture}
-                                {eF_template_printBlock title = $smarty.const._INFORMATIONFORLESSON|cat:' &quot;'|cat:$T_CURRENT_LESSON->lesson.name|cat:'&quot;' data = $smarty.capture.t_lesson_info_code image = '32x32/information.png'}
+                                {sC_template_printBlock title = $smarty.const._INFORMATIONFORLESSON|cat:' &quot;'|cat:$T_CURRENT_LESSON->lesson.name|cat:'&quot;' data = $smarty.capture.t_lesson_info_code image = '32x32/information.png'}
 {else}
  {capture name = 't_lesson_info_code'}
      {*if $T_LESSON_PASSED}<div style = "padding-bottom:10px" class = "centerAlign success mediumHeader">{$smarty.const._YOUHAVECOMPLETEDTHELESSON}</div>{/if*}
@@ -96,7 +96,7 @@
          {/if}
      </table>
  {/capture}
- {eF_template_printBlock title = $smarty.const._INFORMATIONFORLESSON|cat:' &quot;'|cat:$T_CURRENT_LESSON->lesson.name|cat:'&quot;' data = $smarty.capture.t_lesson_info_code image = '32x32/information.png' help = 'Lesson_information'}
+ {sC_template_printBlock title = $smarty.const._INFORMATIONFORLESSON|cat:' &quot;'|cat:$T_CURRENT_LESSON->lesson.name|cat:'&quot;' data = $smarty.capture.t_lesson_info_code image = '32x32/information.png' help = 'Lesson_information'}
 {/if}
                                 </td></tr>
         {/capture}

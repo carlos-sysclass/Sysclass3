@@ -34,7 +34,7 @@ class module_xprojects extends MagesterExtendedModule
 		$currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student" || $currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
 
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -42,7 +42,7 @@ class module_xprojects extends MagesterExtendedModule
 
         	if ($count[0]['count'] > 0) {
 
-	        	$result = ef_getTableData(
+	        	$result = sC_getTableData(
 	        		"module_xprojects_groups_to_users grp2user, module_xprojects_topics top",
 	        		"*",
 	        		sprintf("grp2user.topic_id = top.id AND grp2user.user_id = %d", $currentUser->user['id'])
@@ -126,14 +126,14 @@ class module_xprojects extends MagesterExtendedModule
     	$currentUser	= $this->getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
 
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
         	);
 
         	if ($count[0]['count'] > 0) {
-        		$topicData = eF_getTableData(
+        		$topicData = sC_getTableData(
         			"module_xprojects_groups_to_users grp_usr,
         			module_xprojects_groups grp,
         			module_xprojects_topics top,
@@ -167,11 +167,11 @@ class module_xprojects extends MagesterExtendedModule
 		    		'contentclass'	=> 'blockContents'
 		    	), $blockIndex);
 	      	} else {
-	      		 eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+	      		 sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         		exit;
 	      	}
         } elseif ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -179,7 +179,7 @@ class module_xprojects extends MagesterExtendedModule
 
         	var_dump($count);
         } else {
-        	eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+        	sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         	exit;
         }
 
@@ -191,7 +191,7 @@ class module_xprojects extends MagesterExtendedModule
     	$currentUser	= $this->getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
 
-        	$topicUser = eF_getTableData(
+        	$topicUser = sC_getTableData(
         		"module_xprojects_groups_to_users",
         		"user_id, topic_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -201,7 +201,7 @@ class module_xprojects extends MagesterExtendedModule
         		// GET
         		$topic_id = $topicUser[0]['topic_id'];
 
-        		$membersData = eF_getTableData(
+        		$membersData = sC_getTableData(
         			"module_xprojects_groups_to_users grp_usr,
         			users u",
         			"
@@ -227,12 +227,12 @@ class module_xprojects extends MagesterExtendedModule
 		    		'contentclass'	=> 'blockContents'
 		    	), $blockIndex);
 	      	} else {
-	      		 eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+	      		 sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         		exit;
 	      	}
         } elseif ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
         } else {
-        	eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+        	sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         	exit;
         }
 
@@ -243,7 +243,7 @@ class module_xprojects extends MagesterExtendedModule
     	$smarty 		= $this->getSmartyVar();
     	$currentUser	= $this->getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
-        	$topicUser = eF_getTableData(
+        	$topicUser = sC_getTableData(
         		"module_xprojects_groups_to_users",
         		"user_id, topic_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -259,9 +259,9 @@ class module_xprojects extends MagesterExtendedModule
 	            if ((!isset($currentUser -> coreAccess['forum']) || $currentUser -> coreAccess['forum'] != 'hidden') && $GLOBALS['configuration']['disable_forum'] != 1) {
 	                //changed  l.name as show_lessons_name to l.name as lessons_name
 	    			$forum_messages =
-	    				eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.group_topic_id = '".$topic_id."'", "fm.timestamp desc");
+	    				sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.group_topic_id = '".$topic_id."'", "fm.timestamp desc");
 
-	                $forum_topic_ID = eF_getTableData("f_forums", "id", "group_topic_id=".$topic_id);
+	                $forum_topic_ID = sC_getTableData("f_forums", "id", "group_topic_id=".$topic_id);
 	                $smarty -> assign("T_FORUM_MESSAGES", $forum_messages);
 
 	                $smarty -> assign("T_FORUM_LESSONS_ID", $forum_topic_ID[0]['id']);
@@ -269,7 +269,7 @@ class module_xprojects extends MagesterExtendedModule
 	                $forumOptions = array();
 	                if ($forum_lessons_ID[0]['id']) {
 	                    if (!isset($currentUser -> coreAccess['forum']) || $currentUser -> coreAccess['forum'] == 'change') {
-	                        $forumOptions[] = array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum&add=1&type=topic&forum_id=".$forum_topic_ID[0]['id']."&popup=1", 'onclick' => "eF_js_showDivPopup('"._NEWMESSAGE."', 2)", 'target' => 'POPUP_FRAME');
+	                        $forumOptions[] = array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum&add=1&type=topic&forum_id=".$forum_topic_ID[0]['id']."&popup=1", 'onclick' => "sC_js_showDivPopup('"._NEWMESSAGE."', 2)", 'target' => 'POPUP_FRAME');
 	                    }
 	                }
 	                $forumOptions[] = (array('text' => _GOTOFORUM, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum"));
@@ -291,12 +291,12 @@ class module_xprojects extends MagesterExtendedModule
 		    		return true;
 	            }
 	      	} else {
-	      		 eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+	      		 sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         		exit;
 	      	}
         } elseif ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
         } else {
-        	eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+        	sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         	exit;
         }
 
@@ -308,7 +308,7 @@ class module_xprojects extends MagesterExtendedModule
     	$currentUser	= $this->getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
 
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -316,7 +316,7 @@ class module_xprojects extends MagesterExtendedModule
 
         	if ($count[0]['count'] > 0) {
         		/*
-        		$topicData = eF_getTableData(
+        		$topicData = sC_getTableData(
         			"module_xprojects_groups_to_users grp_usr,
         			module_xprojects_groups grp,
         			module_xprojects_topics top,
@@ -362,12 +362,12 @@ class module_xprojects extends MagesterExtendedModule
 		    		'contentclass'	=> 'blockContents'
 		    	), $blockIndex);
 	      	} else {
-				eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+				sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         		exit;
 	      	}
         } elseif ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
         } else {
-        	eF_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
+        	sC_redirect($_SESSION['s_type'] . '.php?ctg=control_panel');
         	exit;
         }
 
@@ -382,7 +382,7 @@ class module_xprojects extends MagesterExtendedModule
 		$currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student" || $currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
 
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
@@ -390,7 +390,7 @@ class module_xprojects extends MagesterExtendedModule
 
         	if ($count[0]['count'] > 0) {
 
-	        	$user_groups = ef_getTableData(
+	        	$user_groups = sC_getTableData(
 	        		"module_xprojects_groups_to_users grp2user, module_xprojects_topics top, module_xprojects_groups grp",
 	        		"*",
 	        		sprintf("grp.topic_id = top.id AND grp2user.topic_id = top.id AND grp2user.user_id = %d", $currentUser->user['id'])
@@ -413,14 +413,14 @@ class module_xprojects extends MagesterExtendedModule
     	$currentUser	= $this->getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
 
-        	$count = eF_countTableData(
+        	$count = sC_countTableData(
         		"module_xprojects_groups_to_users",
         		"user_id",
         		sprintf("user_id = %d", $currentUser->user['id'])
         	);
 
         	if ($count[0]['count'] > 0) {
-        		$topicData = eF_getTableData(
+        		$topicData = sC_getTableData(
         			"module_xprojects_groups_to_users grp_usr,
         			module_xprojects_groups grp,
         			module_xprojects_topics top,
@@ -559,7 +559,7 @@ class module_xprojects extends MagesterExtendedModule
     }
     public function getCourseProjects($course_id = null)
     {
-    	if (eF_checkParameter($course_id, 'id')) {
+    	if (sC_checkParameter($course_id, 'id')) {
     		$editcourse = $this->getEditedCourse(null, $course_id);
     	} else {
     		$editcourse = $this->getEditedCourse();

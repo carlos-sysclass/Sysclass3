@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 $customizationDisableForm = new HTML_QuickForm("customization_disable_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=customization&tab=disable", "", null, true);
-$customizationDisableForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$customizationDisableForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $customizationDisableForm -> addElement("advcheckbox", "disable_projects", _PROJECTS, null, 'class = "inputCheckBox"', array(0, 1));
 $customizationDisableForm -> addElement("advcheckbox", "disable_bookmarks", _BOOKMARKS, null, 'class = "inputCheckBox"', array(0, 1));
 $customizationDisableForm -> addElement("advcheckbox", "disable_comments", _COMMENTS, null, 'class = "inputCheckBox"', array(0, 1));
@@ -37,10 +37,10 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
    MagesterConfiguration :: setValue($key, $value);
   }
   if ($values['disable_payments'] == 1) {
-   eF_updateTableData("lessons", array('price' => 0), "id=id");
-   eF_updateTableData("courses", array('price' => 0), "id=id");
+   sC_updateTableData("lessons", array('price' => 0), "id=id");
+   sC_updateTableData("courses", array('price' => 0), "id=id");
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=customization&tab=disable&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=customization&tab=disable&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
  $smarty -> assign("T_CUSTOMIZATION_DISABLE_FORM", $customizationDisableForm -> toArray());
 }

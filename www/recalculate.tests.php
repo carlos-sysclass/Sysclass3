@@ -17,7 +17,7 @@ $TestID		= 192;
 $test = new MagesterTest($TestID);
 $testQuestions = $test->getQuestions();
 
-$completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
+$completedTests = sC_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
 foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
@@ -66,7 +66,7 @@ $TestID		= 436;
 $test = new MagesterTest($TestID);
 $testQuestions = $test->getQuestions();
 
-$completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
+$completedTests = sC_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
 foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
@@ -131,7 +131,7 @@ $TestID		= 208;
 $test = new MagesterTest($TestID);
 $testQuestions = $test->getQuestions();
 
-$completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
+$completedTests = sC_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
 foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);
@@ -189,7 +189,7 @@ $TestID		= 207;
 $test = new MagesterTest($TestID);
 $testQuestions = $test->getQuestions();
 
-$completedTests = eF_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
+$completedTests = sC_getTableData("completed_tests", "*", "tests_ID=" . $TestID);
 
 foreach ($completedTests as $testData) {
 	$showTest = unserialize($testData['test']);

@@ -6,7 +6,7 @@
                         <div class = "headerTools">
                             <span>
                                 <img src = "images/16x16/add.png" alt = "{$smarty.const._ADDLANGUAGE}" title = "{$smarty.const._ADDLANGUAGE}">
-                                <a href = "javascript:void(0)" title = "{$smarty.const._ADDLANGUAGE}" onclick = "eF_js_showDivPopup('{$smarty.const._ADDLANGUAGE}', 0, 'language_table');$('language_name').value = '';$('language_translation').value = '';$('selected_language').value = '';$('language_rtl').checked = '';">{$smarty.const._ADDLANGUAGE}</a>
+                                <a href = "javascript:void(0)" title = "{$smarty.const._ADDLANGUAGE}" onclick = "sC_js_showDivPopup('{$smarty.const._ADDLANGUAGE}', 0, 'language_table');$('language_name').value = '';$('language_translation').value = '';$('selected_language').value = '';$('language_rtl').checked = '';">{$smarty.const._ADDLANGUAGE}</a>
                             </span>
                         </div>
 
@@ -37,7 +37,7 @@
                                 <td class = "centerAlign">
                                     <a href = "view_file.php?file={$language.file_path}&action=download"><img src = "images/16x16/import.png" title = "{$smarty.const._DOWNLOADLANGUAGEFILE}" alt = "{$smarty.const._DOWNLOADLANGUAGEFILE}" /></a>
                         {if $name != 'english'}
-                                    <img class = "ajaxHandle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 0, 'language_table');$('language_name').value = '{$language.name}';$('language_translation').value = '{$language.translation}';$('selected_language').value = '{$language.name}';$('language_rtl').checked = {$language.rtl};"/>
+                                    <img class = "ajaxHandle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 0, 'language_table');$('language_name').value = '{$language.name}';$('language_translation').value = '{$language.translation}';$('selected_language').value = '{$language.name}';$('language_rtl').checked = {$language.rtl};"/>
                                     <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm ('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteLanguage(this, '{$language.name}')"/>
                         {/if}
                                 </td>
@@ -73,11 +73,11 @@
                                 </table>
                             </form>
       {/capture}
-      {eF_template_printBlock title = $smarty.const._LANGUAGEADMINISTRATION data = $smarty.capture.language_code image = '32x32/languages.png'}
+      {sC_template_printBlock title = $smarty.const._LANGUAGEADMINISTRATION data = $smarty.capture.language_code image = '32x32/languages.png'}
                         </div>
 
                  {/capture}
 
-                {eF_template_printBlock title = $smarty.const._LANGUAGEADMINISTRATION data = $smarty.capture.languageAdmin image = '32x32/languages.png' help = 'Languages'}
+                {sC_template_printBlock title = $smarty.const._LANGUAGEADMINISTRATION data = $smarty.capture.languageAdmin image = '32x32/languages.png' help = 'Languages'}
             </td></tr>
         {/capture}

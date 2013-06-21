@@ -3,7 +3,7 @@
 * prints a block
 *
 */
-function smarty_function_eF_template_printMessageBlock($params, &$smarty)
+function smarty_function_sC_template_printMessageBlock($params, &$smarty)
 {
     !isset($params['type']) || !$params['type'] ? $params['type'] = 'failure' : null;
     if ($params['type'] == 'success') {

@@ -102,9 +102,9 @@
       {/foreach}
       {foreach name = 'profile_fields' key = key item = item from = $T_USER_PROFILE_DATES }
        <tr><td class = "labelCell">{$item.name}:&nbsp;</td>
-        <td class = "elementCell" NOWRAP>{eF_template_html_select_date searchtype=1 prefix=$item.prefix emptyvalues="1" time=0 start_year="-45" end_year="+10" field_order = $T_DATE_FORMATGENERAL onChange="javascript:onDateUpdated(this)"}</td></tr>
+        <td class = "elementCell" NOWRAP>{sC_template_html_select_date searchtype=1 prefix=$item.prefix emptyvalues="1" time=0 start_year="-45" end_year="+10" field_order = $T_DATE_FORMATGENERAL onChange="javascript:onDateUpdated(this)"}</td></tr>
       {/foreach}
-      <tr><td class = "labelCell">{$T_REPORT_FORM.registration.label}:&nbsp;</td><td NOWRAP>{eF_template_html_select_date searchtype=1 prefix="timestamp" emptyvalues="1" time=0 start_year="-10" end_year="+10" field_order = $T_DATE_FORMATGENERAL onChange="javascript:onDateUpdated(this)"}</td></tr>
+      <tr><td class = "labelCell">{$T_REPORT_FORM.registration.label}:&nbsp;</td><td NOWRAP>{sC_template_html_select_date searchtype=1 prefix="timestamp" emptyvalues="1" time=0 start_year="-10" end_year="+10" field_order = $T_DATE_FORMATGENERAL onChange="javascript:onDateUpdated(this)"}</td></tr>
      </td>
     </tr>
    </table> {* And of main table of class = formelements *}
@@ -120,7 +120,7 @@
   <div class = "headerTools" id = "groupUsersMsgId">
             <span>
                 <img src = "images/16x16/add.png" title = "{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}" alt = "{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}">
-                <a href = "javascript:void(0)" onClick = "eF_js_showDivPopup('{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}', 0, 'insert_into_group')" target = 'POPUP_FRAME'>{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}</a>
+                <a href = "javascript:void(0)" onClick = "sC_js_showDivPopup('{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}', 0, 'insert_into_group')" target = 'POPUP_FRAME'>{$smarty.const._SETFOUNDEMPLOYEESINTOGROUP}</a>
             </span>
         </div>
 {if !$T_SORTED_TABLE || $T_SORTED_TABLE == 'foundEmployees'}
@@ -149,7 +149,7 @@
    </td>
    <td>{$user.languages_NAME}</td>
    {if !$T_CONFIGURATION.disable_messages}
-   <td align="center"><a style="" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$user.login}&popup=1" onclick='eF_js_showDivPopup("{$smarty.const._SENDMESSAGE}", 2)' target="POPUP_FRAME"><img src="images/16x16/mail.png" border="0"></a></td>
+   <td align="center"><a style="" href="{$smarty.server.PHP_SELF}?ctg=messages&add=1&recipient={$user.login}&popup=1" onclick='sC_js_showDivPopup("{$smarty.const._SENDMESSAGE}", 2)' target="POPUP_FRAME"><img src="images/16x16/mail.png" border="0"></a></td>
    {/if}
    <td align="center"><a href="{$smarty.session.s_type}.php?ctg=statistics&option=user&sel_user={$user.login}"><img border = "0" src = "images/16x16/reports.png" title = "{$smarty.const._STATISTICS}" alt = "{$smarty.const._STATISTICS}" /></a></td>
    <td class="centerAlign">
@@ -315,23 +315,23 @@
  {$T_REPORT_FORM.javascript}
   <form {$T_REPORT_FORM.attributes}>
    {$T_REPORT_FORM.hidden}
-     {eF_template_printBlock title = $smarty.const._SEARCHCRITERIA data = $smarty.capture.t_reports_advanced_search image = '32x32/search.png'}
+     {sC_template_printBlock title = $smarty.const._SEARCHCRITERIA data = $smarty.capture.t_reports_advanced_search image = '32x32/search.png'}
     <br>
     <div class="tabber">
      <div class="tabbertab" title="{$smarty.const._SEARCHRESULTS}">
-      {eF_template_printBlock title = $smarty.const._EMPLOYEESFULFILLINGCRITERIA data = $smarty.capture.t_employees_code image = '32x32/user.png' options = $T_SENDALLMAIL_LINK}
+      {sC_template_printBlock title = $smarty.const._EMPLOYEESFULFILLINGCRITERIA data = $smarty.capture.t_employees_code image = '32x32/user.png' options = $T_SENDALLMAIL_LINK}
      </div>
      <div class="tabbertab" title="{$smarty.const._ASSIGNCOURSES}">
-      {eF_template_printBlock title = $smarty.const._MASSCOURSESASSIGNMENTINFO data = $smarty.capture.t_courses_to_be_assigned_code image = '32x32/courses.png'}
+      {sC_template_printBlock title = $smarty.const._MASSCOURSESASSIGNMENTINFO data = $smarty.capture.t_courses_to_be_assigned_code image = '32x32/courses.png'}
      </div>
      <div class="tabbertab">
       <h3>{$smarty.const._USERSTRAFFIC}</h3>
-      {eF_template_printBlock title = $smarty.const._USERSTRAFFIC data = $smarty.capture.t_custom_group_stats_code image = '32x32/search.png'}
+      {sC_template_printBlock title = $smarty.const._USERSTRAFFIC data = $smarty.capture.t_custom_group_stats_code image = '32x32/search.png'}
      </div>
     </div>
   </form>
 {/capture}
-    {eF_template_printBlock title = $smarty.const._FINDEMPLOYEES data = $smarty.capture.t_search_all image = '32x32/scorm.png' main_options = $T_TABLE_OPTIONS}
+    {sC_template_printBlock title = $smarty.const._FINDEMPLOYEES data = $smarty.capture.t_search_all image = '32x32/scorm.png' main_options = $T_TABLE_OPTIONS}
 <div id='insert_into_group' style="display:none">
 {capture name = 't_insert_into_group_code'}
  {$T_INSERT_INTO_GROUP_POPUP_FORM.javascript}
@@ -345,5 +345,5 @@
    </table>
   </form>
 {/capture}
-{eF_template_printBlock title = $smarty.const._INSERTINTOGROUP data = $smarty.capture.t_insert_into_group_code image = '32x32/users.png'}
+{sC_template_printBlock title = $smarty.const._INSERTINTOGROUP data = $smarty.capture.t_insert_into_group_code image = '32x32/users.png'}
 </div>

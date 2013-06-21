@@ -5,10 +5,10 @@
 						{if $T_SHOW_CONFIRMATION}
 									{assign var = 't_show_side_menu' value = true}
 										{capture name = "sideContentTree"}
-											{eF_template_printSide title = $smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE id = 'current_content'}
+											{sC_template_printSide title = $smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE id = 'current_content'}
 										{/capture}
 										<table class = "navigationHandles">
-											<tr><td>{eF_template_printPreviousNext previous = $T_PREVIOUS_UNIT next = $T_NEXT_UNIT}</td></tr>
+											<tr><td>{sC_template_printPreviousNext previous = $T_PREVIOUS_UNIT next = $T_NEXT_UNIT}</td></tr>
 										</table>
 										<table class = "testHeader">
 											<tr><td id = "testName">{$T_TEST_DATA->test.name}</td></tr>
@@ -79,7 +79,7 @@
 										</table>
 									{/capture}
 
-									{eF_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` &quot;`$T_TEST_DATA->test.name`&quot; `$smarty.const._ANDUSER` &quot;`$T_TEST_DATA->completedTest.login`&quot;" data = $smarty.capture.t_test_analysis_code image= $T_COMPLETETEST_BASELINK|cat:'images/tests.png' absoluteImagePath = 1}
+									{sC_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` &quot;`$T_TEST_DATA->test.name`&quot; `$smarty.const._ANDUSER` &quot;`$T_TEST_DATA->completedTest.login`&quot;" data = $smarty.capture.t_test_analysis_code image= $T_COMPLETETEST_BASELINK|cat:'images/tests.png' absoluteImagePath = 1}
 						{else}
 							{if $T_TEST_STATUS.status == '' || $T_TEST_STATUS.status == 'incomplete'}
 									{capture name = "test_footer"}
@@ -91,10 +91,10 @@
 								{else}
 									{assign var = 't_show_side_menu' value = true}
 									{capture name = "sideContentTree"}
-										{eF_template_printSide title=$smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE}
+										{sC_template_printSide title=$smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE}
 									{/capture}
 									<table class = "navigationHandles">
-										<tr><td>{eF_template_printPreviousNext previous = $T_PREVIOUS_UNIT next = $T_NEXT_UNIT}</td></tr>
+										<tr><td>{sC_template_printPreviousNext previous = $T_PREVIOUS_UNIT next = $T_NEXT_UNIT}</td></tr>
 									</table>
 								{/if}
 								{if !$T_NO_TEST}
@@ -107,7 +107,7 @@
 								{/if}
 						{/if}
 			{/capture}
-			{eF_template_printBlock title = "`$smarty.const._COMPLETE_TEST_SETVALUES`" data = $smarty.capture.t_test_code image = $T_COMPLETETEST_BASELINK|cat:'images/theory.png' absoluteImagePath = 1 main_options = $T_TABLE_OPTIONS}
+			{sC_template_printBlock title = "`$smarty.const._COMPLETE_TEST_SETVALUES`" data = $smarty.capture.t_test_code image = $T_COMPLETETEST_BASELINK|cat:'images/theory.png' absoluteImagePath = 1 main_options = $T_TABLE_OPTIONS}
 {else}
 							  {capture name = 't_users_code'}
 	{capture name = 't_upload_form_code'}
@@ -198,8 +198,8 @@
 							<div id = "user_source" style = "display:none">Click on the column that will serve as <b>User name</b><span id = "user_source_result">: </span></div>
 							<div id = "score_source" style = "display:none">Click on the column that will serve as <b>Test score</b><span id = "score_source_result">: </span></div>
 						{foreach name = 'test_questions_loop' item = "question" key = "id" from = $T_TEST_QUESTIONS}
-							<div id = "{$id}_answer_source" style = "display:none">Click on the column that will serve as answer for question <b>{$question.text|@strip_tags|eF_truncate:30}</b><span id = "{$id}_answer_source_result">: </span></div>
-							<div id = "{$id}_score_source" style = "display:none">Click on the column that will serve as score for question <b>{$question.text|@strip_tags|eF_truncate:30}</b><span id = "{$id}_score_source_result">: </span></div>
+							<div id = "{$id}_answer_source" style = "display:none">Click on the column that will serve as answer for question <b>{$question.text|@strip_tags|sC_truncate:30}</b><span id = "{$id}_answer_source_result">: </span></div>
+							<div id = "{$id}_score_source" style = "display:none">Click on the column that will serve as score for question <b>{$question.text|@strip_tags|sC_truncate:30}</b><span id = "{$id}_score_source_result">: </span></div>
 						{/foreach}
 							<div id = "continue_button" style = "display:none">{$T_CORRELATE_FORM.submit.html}</div>
 					</td></tr>
@@ -259,11 +259,11 @@
 
 {capture name = "t_complete_test_code"}
 <div class = "tabber">
-	{eF_template_printBlock tabber = "main" title = "`$smarty.const._LESSONUSERS`" data = $smarty.capture.t_users_code image = $T_COMPLETETEST_BASELINK|cat:'images/theory.png' absoluteImagePath = 1 main_options = $T_TABLE_OPTIONS}
-	{eF_template_printBlock tabber = "import" title = "`$smarty.const._COMPLETE_TEST_IMPORTFILE`" data = $smarty.capture.t_upload_form_code image = "32x32/import.png"}
+	{sC_template_printBlock tabber = "main" title = "`$smarty.const._LESSONUSERS`" data = $smarty.capture.t_users_code image = $T_COMPLETETEST_BASELINK|cat:'images/theory.png' absoluteImagePath = 1 main_options = $T_TABLE_OPTIONS}
+	{sC_template_printBlock tabber = "import" title = "`$smarty.const._COMPLETE_TEST_IMPORTFILE`" data = $smarty.capture.t_upload_form_code image = "32x32/import.png"}
 </div>
 {/capture}
-{eF_template_printBlock title = "`$smarty.const._COMPLETE_TEST`" data = $smarty.capture.t_complete_test_code image = "32x32/tests.png"}
+{sC_template_printBlock title = "`$smarty.const._COMPLETE_TEST`" data = $smarty.capture.t_complete_test_code image = "32x32/tests.png"}
 
 {/if}
 

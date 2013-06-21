@@ -70,15 +70,15 @@
  <div class="tabbertab">
 {if isset($smarty.get.add_item)}
   <h3>{$smarty.const._WORKBOOK_ADD_ITEM}</h3>
-  {eF_template_printBlock title=$smarty.const._WORKBOOK_ADD_ITEM_FORM data=$smarty.capture.t_add_edit_item_code image=$T_WORKBOOK_BASELINK|cat:'images/add32x32.png' absoluteImagePath=1}
+  {sC_template_printBlock title=$smarty.const._WORKBOOK_ADD_ITEM_FORM data=$smarty.capture.t_add_edit_item_code image=$T_WORKBOOK_BASELINK|cat:'images/add32x32.png' absoluteImagePath=1}
 {else}
   <h3>{$smarty.const._WORKBOOK_EDIT_ITEM}</h3>
-  {eF_template_printBlock title=$smarty.const._WORKBOOK_EDIT_ITEM_FORM data=$smarty.capture.t_add_edit_item_code image=$T_WORKBOOK_BASELINK|cat:'images/edit32x32.png' absoluteImagePath=1}
+  {sC_template_printBlock title=$smarty.const._WORKBOOK_EDIT_ITEM_FORM data=$smarty.capture.t_add_edit_item_code image=$T_WORKBOOK_BASELINK|cat:'images/edit32x32.png' absoluteImagePath=1}
 {/if}
  </div>
 </div>
 {/capture}
-{eF_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_tab_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath=1}
+{sC_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_tab_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath=1}
 
 {elseif isset($smarty.get.edit_settings)}
 
@@ -109,7 +109,7 @@
  </table>
 </form>
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_edit_settings_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_edit_settings_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {elseif isset($smarty.get.reuse_item)}
 
@@ -132,7 +132,7 @@
  </table>
 </form>
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_reuse_item_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_reuse_item_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {elseif isset($smarty.get.move_item)}
 
@@ -159,7 +159,7 @@
 </form>
 {/if}
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_move_item_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_move_item_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {elseif isset($smarty.get.popup_info)}
 
@@ -246,7 +246,7 @@
 </script>
 
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_popup_info image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_popup_info image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {elseif isset($smarty.get.check_workbook_progress)}
 
@@ -262,7 +262,7 @@
  <tr id="row_{$student.login}" class="{cycle values = "oddRowColor, evenRowColor"}">
   <td>#filter:login-{$student.login}#</td>
   <td>{$student.progress}</td>
-  <td class="centerAlign"><a href="{$T_WORKBOOK_BASEURL}&preview_workbook=1&student={$student.login}&popup=1" onclick="eF_js_showDivPopup('{$smarty.const._PREVIEW}', 3)" target="POPUP_FRAME"><img src="{$T_WORKBOOK_BASELINK|cat:'images/info.png'}" alt="{$smarty.const._PREVIEW}" title="{$smarty.const._PREVIEW}" style="vertical-align:middle" /></a></td>
+  <td class="centerAlign"><a href="{$T_WORKBOOK_BASEURL}&preview_workbook=1&student={$student.login}&popup=1" onclick="sC_js_showDivPopup('{$smarty.const._PREVIEW}', 3)" target="POPUP_FRAME"><img src="{$T_WORKBOOK_BASELINK|cat:'images/info.png'}" alt="{$smarty.const._PREVIEW}" title="{$smarty.const._PREVIEW}" style="vertical-align:middle" /></a></td>
  </tr>
 {foreachelse}
  <tr class="defaultRowHeight oddRowColor">
@@ -272,7 +272,7 @@
 </table>
 
 {/capture}
-{eF_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_check_workbook_progress_info image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_check_workbook_progress_info image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {elseif isset($smarty.get.preview_workbook)}
 
@@ -320,7 +320,7 @@
 {/foreach}
 
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_preview_workbook_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_preview_workbook_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {else}
 {capture name = 't_workbook_professor_code'}
@@ -330,7 +330,7 @@
 {if $T_WORKBOOK_IS_PUBLISHED == 0}
    <img src="{$T_WORKBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._WORKBOOK_ADD_ITEM}" title="{$smarty.const._WORKBOOK_ADD_ITEM}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&add_item=1">{$smarty.const._WORKBOOK_ADD_ITEM}</a>
    &nbsp;<div class="options_separator"></div>&nbsp;
-   <img src="{$T_WORKBOOK_BASELINK|cat:'images/reuse.png'}" alt="{$smarty.const._WORKBOOK_REUSE_ITEM}" title="{$smarty.const._WORKBOOK_REUSE_ITEM}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&reuse_item=1&popup=1" onclick="eF_js_showDivPopup('{$smarty.const._WORKBOOK_REUSE_ITEM}', 0)" target="POPUP_FRAME">{$smarty.const._WORKBOOK_REUSE_ITEM}</a>
+   <img src="{$T_WORKBOOK_BASELINK|cat:'images/reuse.png'}" alt="{$smarty.const._WORKBOOK_REUSE_ITEM}" title="{$smarty.const._WORKBOOK_REUSE_ITEM}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&reuse_item=1&popup=1" onclick="sC_js_showDivPopup('{$smarty.const._WORKBOOK_REUSE_ITEM}', 0)" target="POPUP_FRAME">{$smarty.const._WORKBOOK_REUSE_ITEM}</a>
 {/if}
 {if sizeof($T_WORKBOOK_LESSONS) != 2}
    {if $T_WORKBOOK_IS_PUBLISHED == 0}&nbsp;<div class="options_separator"></div>&nbsp;{/if}
@@ -371,7 +371,7 @@
    <img src="{$T_WORKBOOK_BASELINK|cat:'images/delete.png'}" alt="{$smarty.const._REMOVE}" title="{$smarty.const._REMOVE}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&delete_item={$item.id}" onclick="return confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}');">{$smarty.const._REMOVE}</a>
    &nbsp;<div class="actions_separator"></div>&nbsp;
 {/if}
-   <img src="{$T_WORKBOOK_BASELINK|cat:'images/move.png'}" alt="{$smarty.const._MOVE}" title="{$smarty.const._MOVE}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&move_item={$item.id}&popup=1" onclick="eF_js_showDivPopup('{$smarty.const._WORKBOOK_MOVE_ITEM}', 0)" target="POPUP_FRAME">{$smarty.const._MOVE}</a>
+   <img src="{$T_WORKBOOK_BASELINK|cat:'images/move.png'}" alt="{$smarty.const._MOVE}" title="{$smarty.const._MOVE}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&move_item={$item.id}&popup=1" onclick="sC_js_showDivPopup('{$smarty.const._WORKBOOK_MOVE_ITEM}', 0)" target="POPUP_FRAME">{$smarty.const._MOVE}</a>
    &nbsp;<div class="actions_separator"></div>&nbsp;
    <img src="{$T_WORKBOOK_BASELINK|cat:'images/edit.png'}" alt="{$smarty.const._EDIT}" title="{$smarty.const._EDIT}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&edit_item={$item.id}">{$smarty.const._EDIT}</a>
   </div>
@@ -398,7 +398,7 @@
 {/foreach}
 
 {/capture}
-{eF_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_professor_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1 options=$T_WORKBOOK_OPTIONS}
+{sC_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_professor_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1 options=$T_WORKBOOK_OPTIONS}
 {/if}
 
 <script>

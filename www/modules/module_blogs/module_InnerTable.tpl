@@ -15,4 +15,4 @@
 </table>
 {/capture}
 
-{eF_template_printBlock title = '<a href='|cat:$T_MODULE_BLOGS_BASEURL|cat:'>'|cat:$smarty.const._BLOGS_BLOG|cat:'</a>' data = $smarty.capture.t_inner_table_blogs_pages   image = $T_MODULE_BLOGS_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1 options = $T_BLOGS_INNERTABLE_OPTIONS}
+{sC_template_printBlock title = '<a href='|cat:$T_MODULE_BLOGS_BASEURL|cat:'>'|cat:$smarty.const._BLOGS_BLOG|cat:'</a>' data = $smarty.capture.t_inner_table_blogs_pages   image = $T_MODULE_BLOGS_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1 options = $T_BLOGS_INNERTABLE_OPTIONS}

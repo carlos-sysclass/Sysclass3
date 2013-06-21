@@ -98,7 +98,7 @@
 	<table width=666 cellspacing=5 cellpadding=0 border=0 align=Default>
 		<tr>
 			<td width=41><IMG
-				SRC="{$T_XPAY_BOLETO_BASELINK}images/layouts/boleto_cef_sigcb.logo.png">
+				SRC="{$T_XPAY_BOLETO_BASELINK}images/layouts/boleto_csC_sigcb.logo.png">
 			</td>
 			<td class=ti width=455>{$T_XPAY_BOLETO_CFG.identificacao} 
 			{if 	isset($T_XPAY_BOLETO_CFG.cpf_cnpj)}<br>{$T_XPAY_BOLETO_CFG.cpf_cnpj}{/if}<br>
@@ -1106,7 +1106,7 @@
 		<TBODY>
 			<TR>
 				<TD vAlign=bottom align=left height=50>
-					{xpay_boleto_cef_sigcb_FBarCode
+					{xpay_boleto_csC_sigcb_FBarCode
 						barcode=$T_XPAY_BOLETO_CFG.codigo_barras
 						module_link=$T_XPAY_BOLETO_BASELINK 
 					}

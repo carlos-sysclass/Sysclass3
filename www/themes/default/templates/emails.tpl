@@ -2,7 +2,7 @@
 <script>
 {literal}
 <!--
-function eF_js_selectRecipients(recipient) {
+function sC_js_selectRecipients(recipient) {
     {/literal}
     {literal}
     switch (recipient) {
@@ -50,7 +50,7 @@ function eF_js_selectRecipients(recipient) {
                                  <tr><td>{$T_EMAIL_FORM.recipients.specific_user.html} </td><td>{$smarty.const._SPECIFICUSER}:&nbsp;</td><td>{$T_EMAIL_FORM.user.html}</td></tr>
                         </table>
         {/capture}
-                        {eF_template_printBlock title = $smarty.const._RECIPIENTSSELECTION data = $smarty.capture.t_recipients_code image = '32x32/directory.png'}
+                        {sC_template_printBlock title = $smarty.const._RECIPIENTSSELECTION data = $smarty.capture.t_recipients_code image = '32x32/directory.png'}
                         <br/>
         {capture name = 't_email_code'}
                         <table class = "formElements" style = "width:100%">
@@ -62,6 +62,6 @@ function eF_js_selectRecipients(recipient) {
                             <tr><td></td><td class = "submitCell">{$T_EMAIL_FORM.send_email.html}</td></tr>
                         </table>
         {/capture}
-                        {eF_template_printBlock title = $smarty.const._EMAILBODY data = $smarty.capture.t_email_code image = '32x32/mail.png'}
+                        {sC_template_printBlock title = $smarty.const._EMAILBODY data = $smarty.capture.t_email_code image = '32x32/mail.png'}
                 </form>
 {/capture}

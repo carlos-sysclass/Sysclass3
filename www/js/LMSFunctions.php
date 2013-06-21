@@ -8,11 +8,11 @@ $path = "../../libraries/"; //Define default path
 require_once $path."configuration.php";
 
 /*These lines read SCO data for this student and pass them to the javascript code through the LMSToSCOValues variable*/
-$result = eF_getTableData("scorm_data", "*", "users_LOGIN = '".$_SESSION['s_login']."' AND content_ID = '".$_GET['view_unit']."'");
+$result = sC_getTableData("scorm_data", "*", "users_LOGIN = '".$_SESSION['s_login']."' AND content_ID = '".$_GET['view_unit']."'");
 sizeof($result) ? $LMSToSCOValues = $result[0] : $LMSToSCOValues = array();
 
 /*These lines read global SCO data and pass them to the javascript through the $SCOValues variable.*/
-$result = eF_getTableData("scorm_data", "*", "users_LOGIN is null AND content_ID = '".$_GET['view_unit']."'");
+$result = sC_getTableData("scorm_data", "*", "users_LOGIN is null AND content_ID = '".$_GET['view_unit']."'");
 sizeof($result) ? $SCOValues = $result[0] : $SCOValues = array();
 
 $SCOState = 'var SCOState = new Array();';
@@ -819,7 +819,7 @@ function myCmi()
             this.set = function(param) { throw new myError('403'); }
             <?php
                 /*Get the user name from the database*/
-                $result = eF_getTableData("users", 'name, surname', 'login="' .$_SESSION['s_login']. '"');
+                $result = sC_getTableData("users", 'name, surname', 'login="' .$_SESSION['s_login']. '"');
                 $student_name = $result[0]['surname'].' '.$result[0]['name'];
             ?>
             var value = "<?php echo $student_name; ?>";

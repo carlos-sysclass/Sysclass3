@@ -21,7 +21,7 @@
 		{foreach item="invoice" from=$T_XPAY_LAST_PAYMENTS}
 			<tr class="{if $invoice.locked}locked{/if}">
 				<td>{$invoice.polo}</td>
-				<td>{$invoice.course_name}&nbsp;&raquo;&nbsp;{$invoice.class_name|eF_truncate:20}</td>
+				<td>{$invoice.course_name}&nbsp;&raquo;&nbsp;{$invoice.class_name|sC_truncate:20}</td>
 				<!-- <td>{$invoice.invoice_id}</td>  -->
 				<td><a href="{$T_XPAY_BASEURL}&action=view_user_course_statement&xuser_id={$invoice.user_id}&xcourse_id={$invoice.course_id}">{$invoice.login}</a></td>
 				<td align="center">
@@ -72,7 +72,7 @@
 </table>
 {/capture}
 	
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XPAY_LAST_PAYMENTS
 	data=$smarty.capture.t_xpay_last_payments_widget
 }

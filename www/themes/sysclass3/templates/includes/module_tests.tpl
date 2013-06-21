@@ -43,7 +43,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                     <td class = "elementCell">{$T_QUICKTEST_FORM.assign_to_new.html}</td></tr>
                 <tr><td class = "labelCell">{$smarty.const._AUTOMATICALLYASSIGNLESSONS}:&nbsp;</td>
                     <td class = "elementCell"><table align="left"><tr><td>{$T_QUICKTEST_FORM.automatic_assignment.html}</td>
-                    <td align="left"><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, 'automatic_assignment_info', event)"><div id = 'automatic_assignment_info' onclick = "eF_js_showHideDiv(this, 'automatic_assignment_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;height:50px;position:absolute;display:none">{$smarty.const._AUTOMATICASSIGNMENTINFO}</div></td></tr></table></td>
+                    <td align="left"><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, 'automatic_assignment_info', event)"><div id = 'automatic_assignment_info' onclick = "sC_js_showHideDiv(this, 'automatic_assignment_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;height:50px;position:absolute;display:none">{$smarty.const._AUTOMATICASSIGNMENTINFO}</div></td></tr></table></td>
 *}
                 <tr><td class = "labelCell">{$smarty.const._DESCRIPTION}:&nbsp;</td>
                     <td class = "elementCell">{$T_QUICKTEST_FORM.description.html}</td></tr>
@@ -81,9 +81,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
     {*</div>*}
     {/capture}
  {*</div>*}
- {eF_template_printBlock title = $smarty.const._ADDQUICKSKILLGAP data = $smarty.capture.t_create_quick_test_code image = '32x32/wizard.png'}
+ {sC_template_printBlock title = $smarty.const._ADDQUICKSKILLGAP data = $smarty.capture.t_create_quick_test_code image = '32x32/wizard.png'}
  <br />
- {eF_template_printBlock title = $smarty.const._SELECTQUESTIONSBASEDONLESSONS data = $smarty.capture.t_create_quick_test_code_lessons image = '32x32/lessons.png'}
+ {sC_template_printBlock title = $smarty.const._SELECTQUESTIONSBASEDONLESSONS data = $smarty.capture.t_create_quick_test_code_lessons image = '32x32/lessons.png'}
  <br />
  <table width ="100%">
   <tr><td align="center"><input type="submit" value="{$smarty.const._CREATETEST}" name="submit_test" class="flatButton" onClick = "if(checkQuickTestForm()) return true; else return false;"/></td></tr>
@@ -129,7 +129,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
      <tr><td class = "labelCell">{$smarty.const._ASSIGNTOALLNEWSTUDENTS}:&nbsp;</td>
       <td class = "elementCell">{$T_TEST_FORM.assign_to_new.html}</td></tr>
      <tr><td class = "labelCell">{$smarty.const._AUTOMATICALLYASSIGNLESSONS}:&nbsp;</td>
-      <td class = "elementCell">{$T_TEST_FORM.automatic_assignment.html}<img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, 'automatic_assignment_info', event)"><div id = 'automatic_assignment_info' onclick = "eF_js_showHideDiv(this, 'automatic_assignment_info', event)" class = "popUpInfoDiv" style = "display:none">{$smarty.const._AUTOMATICASSIGNMENTINFO}</div></td>
+      <td class = "elementCell">{$T_TEST_FORM.automatic_assignment.html}<img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, 'automatic_assignment_info', event)"><div id = 'automatic_assignment_info' onclick = "sC_js_showHideDiv(this, 'automatic_assignment_info', event)" class = "popUpInfoDiv" style = "display:none">{$smarty.const._AUTOMATICASSIGNMENTINFO}</div></td>
     {/if}
      <tr><td></td><td class = "elementCell">
       <span>
@@ -265,7 +265,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
        </tr>
        {foreach name = "units_list" item = "unit" key = "id" from = $T_UNITS_NAMES}
   {if $T_UNITS_TO_QUESTIONS_DIFFICULTIES[$id]}
-       <tr><td style = "text-align:left"><input type = "checkbox" name = "unit[{$id}]" checked> <span>{$unit|eF_truncate:30}</span></td>
+       <tr><td style = "text-align:left"><input type = "checkbox" name = "unit[{$id}]" checked> <span>{$unit|sC_truncate:30}</span></td>
         {foreach name = "question_difficulties" item = "item" key = "difficulty" from = "$T_QUESTION_DIFFICULTIES"}
         <td>
    {if $T_UNITS_TO_QUESTIONS_DIFFICULTIES[$id].$difficulty}
@@ -298,7 +298,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
        </tr>
        {foreach name = "units_list" item = "unit" key = "id" from = $T_UNITS_NAMES}
   {if $T_UNITS_TO_QUESTIONS_TYPES[$id]}
-       <tr><td style = "text-align:left"><input type = "checkbox" name = "unit[{$id}]" checked> <span>{$unit|eF_truncate:30}</span></td>
+       <tr><td style = "text-align:left"><input type = "checkbox" name = "unit[{$id}]" checked> <span>{$unit|sC_truncate:30}</span></td>
         {foreach name = "question_types" item = "item" key = "type" from = $T_QUESTION_TYPES}
         <td>
    {if $T_UNITS_TO_QUESTIONS_TYPES[$id].$type}
@@ -326,7 +326,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
        <tr><td>{$smarty.const._UNITS}</td><td>{$smarty.const._QUESTIONPERCENTAGE} (%)</td><td>{$smarty.const._ACCURATEPERCENTAGE}</td></tr>
        {foreach name = "units_list" item = "unit" key = "id" from = $T_UNITS_NAMES}
   {if $T_UNITS_TO_QUESTIONS_TYPES[$id]}
-       <tr><td style = "text-align:left"><span>{$unit|eF_truncate:30}</span></td>
+       <tr><td style = "text-align:left"><span>{$unit|sC_truncate:30}</span></td>
         <td><select name = "unit_to_percentage[{$id}]" id = "unit_to_percentage[{$id}]">
           <option value = "0">0</option>
           {section name = "questions_list" loop = 10}
@@ -365,7 +365,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
     <span {if !$T_TEST_QUESTIONS_STATISTICS.random_pool}style = "display:none"{/if}>{$smarty.const._WHEREARANDOMPOOLOF} <span>{$T_TEST_QUESTIONS_STATISTICS.random_pool}</span> {$smarty.const._QUESTIONSISUSEDEACHTIME}</span>
    </div>
   {/capture}
-   {eF_template_printBlock title = $smarty.const._ADJUSTQUESTIONS data = $smarty.capture.t_random_test_wizard_code image = '32x32/tests.png'}
+   {sC_template_printBlock title = $smarty.const._ADJUSTQUESTIONS data = $smarty.capture.t_random_test_wizard_code image = '32x32/tests.png'}
   </div>
  {/capture}
  {capture name = "t_test_questions"}
@@ -373,7 +373,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
       {if !$T_SKILLGAP_TEST && $T_CTG != 'feedback'}
         <span>
     <img src = "images/16x16/rules.png" title = "{$smarty.const._ADJUSTQUESTIONS}" alt = "{$smarty.const._ADJUSTQUESTIONS}"/>
-          <a href = "javascript:void(0)" onclick = "initSlider();eF_js_showDivPopup('{$smarty.const._ADJUSTQUESTIONS}', 2, 'random_wizard_div')">{$smarty.const._ADJUSTQUESTIONS}</a>
+          <a href = "javascript:void(0)" onclick = "initSlider();sC_js_showDivPopup('{$smarty.const._ADJUSTQUESTIONS}', 2, 'random_wizard_div')">{$smarty.const._ADJUSTQUESTIONS}</a>
          </span>
          {/if}
    {if $T_CTG != 'feedback'}
@@ -425,7 +425,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
    {foreach name = "questions_list" key = "key" item = "item" from = $T_UNIT_QUESTIONS}
             {if $T_CTG == 'tests' || ($T_CTG == 'feedback' && $item.type != 'true_false')}
     <tr class = "{cycle name = "main_cycle" values="oddRowColor, evenRowColor"}">
-     <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$item.id}&question_type={$item.type}&lessonId={$item.lessons_ID}" title="{$item.text}"> {$item.text|eF_truncate:50}</a></td>
+     <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$item.id}&question_type={$item.type}&lessonId={$item.lessons_ID}" title="{$item.text}"> {$item.text|sC_truncate:50}</a></td>
     {if !$T_SKILLGAP_TEST && $T_CTG != 'feedback'}
      <td>{if $item.parent_name}{$item.parent_name}{else}{$smarty.const._NONE}{/if}</td>
     {elseif $T_SKILLGAP_TEST}
@@ -459,9 +459,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
      <td class = "centerAlign">{if $item.estimate_interval.minutes}{$item.estimate_interval.minutes}{$smarty.const._MINUTESSHORTHAND}{/if} {if $item.estimate_interval.seconds}{$item.estimate_interval.seconds}{$smarty.const._SECONDSSHORTHAND}{/if}</td>
     {/if}
      <td class = "centerAlign">
-      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&show_question={$item.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._PREVIEW}', 2)"><img src = "images/16x16/search.png" alt = "{$smarty.const._PREVIEW}" title = "{$smarty.const._PREVIEW}" /></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&show_question={$item.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._PREVIEW}', 2)"><img src = "images/16x16/search.png" alt = "{$smarty.const._PREVIEW}" title = "{$smarty.const._PREVIEW}" /></a>
     {if $T_SKILLGAP_TEST}
-      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$item.id}&lessonId={$item.lessons_ID}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CORRELATESKILLSTOQUESTION}', 2)"><img src = "images/16x16/tools.png" alt = "{$smarty.const._CORRELATESKILLSTOQUESTION}" title = "{$smarty.const._CORRELATESKILLSTOQUESTION}" /></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$item.id}&lessonId={$item.lessons_ID}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CORRELATESKILLSTOQUESTION}', 2)"><img src = "images/16x16/tools.png" alt = "{$smarty.const._CORRELATESKILLSTOQUESTION}" title = "{$smarty.const._CORRELATESKILLSTOQUESTION}" /></a>
     {/if}
     {if $T_CTG != 'feedback'}
      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$item.id}&question_type={$item.type}&lessonId={$item.lessons_ID}"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}"/></a>
@@ -487,11 +487,11 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
   {/if}
   <div class = "tabber">
          <div class = "tabbertab" id="test_options" title = "{$tempTitle}">
-    {eF_template_printBlock title=$tempTitle data=$smarty.capture.t_test_properties image='32x32/generic.png'}
+    {sC_template_printBlock title=$tempTitle data=$smarty.capture.t_test_properties image='32x32/generic.png'}
             </div>
         {if $smarty.get.edit_test}
          <div class = "tabbertab {if $smarty.get.tab == 'question' || $smarty.get.tab == 'questions'}tabbertabdefault{/if}" id = "test_questions" title = "{$questionsTitle}">
-    {eF_template_printBlock title=$questionsTitle data=$smarty.capture.t_test_questions image='32x32/question_and_answer.png'}
+    {sC_template_printBlock title=$questionsTitle data=$smarty.capture.t_test_questions image='32x32/question_and_answer.png'}
             </div>
   {/if}
   {*Interface to ajax-assign users to a test*}
@@ -524,7 +524,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
 {/if}
    {/capture}
          <div class = "tabbertab" id = "test_users" title = "{$smarty.const._USERS}">
-    {eF_template_printBlock title=$smarty.const._USERS data=$smarty.capture.t_test_users_code image='32x32/users.png'}
+    {sC_template_printBlock title=$smarty.const._USERS data=$smarty.capture.t_test_users_code image='32x32/users.png'}
       </div>
      {/if}
   </div>
@@ -532,19 +532,19 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
  {* Different icons and titles used between lesson and skillgap tests *}
  {if $smarty.get.edit_test}
      {if $T_SKILLGAP_TEST}
-         {eF_template_printBlock title = "`$smarty.const._OPTIONSFORSKILLGAPTEST` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data=$smarty.capture.t_edit_test_code image='32x32/skill_gap.png'}
+         {sC_template_printBlock title = "`$smarty.const._OPTIONSFORSKILLGAPTEST` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data=$smarty.capture.t_edit_test_code image='32x32/skill_gap.png'}
      {elseif $T_CTG != "feedback"}
-         {eF_template_printBlock title = "`$smarty.const._OPTIONSFORTEST` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
+         {sC_template_printBlock title = "`$smarty.const._OPTIONSFORTEST` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
      {else}
-    {eF_template_printBlock title = "`$smarty.const._OPTIONSFORFEEDBACK` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data = $smarty.capture.t_edit_test_code image = '32x32/feedback.png'}
+    {sC_template_printBlock title = "`$smarty.const._OPTIONSFORFEEDBACK` <span class = 'innerTableName'>&quot;`$T_CURRENT_TEST->test.name`&quot;</span>" data = $smarty.capture.t_edit_test_code image = '32x32/feedback.png'}
   {/if}
  {elseif $smarty.get.add_test}
      {if $T_SKILLGAP_TEST}
-         {eF_template_printBlock title = "`$smarty.const._ADDSKILLGAPTEST`" data=$smarty.capture.t_edit_test_code image='32x32/skill_gap.png'}
+         {sC_template_printBlock title = "`$smarty.const._ADDSKILLGAPTEST`" data=$smarty.capture.t_edit_test_code image='32x32/skill_gap.png'}
      {elseif $T_CTG != "feedback"}
-         {eF_template_printBlock title = $smarty.const._ADDTEST data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
+         {sC_template_printBlock title = $smarty.const._ADDTEST data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
   {else}
-   {eF_template_printBlock title = $smarty.const._ADDFEEDBACK data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
+   {sC_template_printBlock title = $smarty.const._ADDFEEDBACK data = $smarty.capture.t_edit_test_code image = '32x32/tests.png'}
      {/if}
  {/if}
 {elseif $smarty.get.add_question || $smarty.get.edit_question}
@@ -632,7 +632,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
            <tr><td>{$item.html}</td>
             <td>
    {if $smarty.foreach.multiple_one_list.iteration > 2} {*The if smarty.iteration is put here, so that the user cannot remove that last 2 rows *}
-                        <a href = "javascript:void(0)" onclick = "eF_js_removeImgNode(this, 'multiple_one')">
+                        <a href = "javascript:void(0)" onclick = "sC_js_removeImgNode(this, 'multiple_one')">
                          <img src = "images/16x16/error_delete.png" alt = "{$smarty.const._REMOVECHOICE}" title = "{$smarty.const._REMOVECHOICE}" />
                         </a>
             {/if}
@@ -645,9 +645,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                 </table>
              </td></tr>
          <tr><td class = "labelCell">
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_one')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_one')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
              </td><td>
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_one')">{$smarty.const._ADDOPTION}</a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_one')">{$smarty.const._ADDOPTION}</a>
              </td></tr>
          <tr><td colspan = "2">&nbsp;</td></tr>
          <tr><td class = "labelCell">{$T_QUESTION_FORM.correct_multiple_one.label}:&nbsp;</td>
@@ -660,7 +660,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                         <td style = "width:1%">{$T_QUESTION_FORM.correct_multiple_many.$key.html}</td>
                         <td style = "width:1%">
    {if $smarty.foreach.multiple_many_list.iteration > 2} {*The if smarty.iteration is put here, so that the user cannot remove that last 2 rows *}
-                            <a href = "javascript:void(0)" onclick = "eF_js_removeImgNode(this, 'multiple_many')">
+                            <a href = "javascript:void(0)" onclick = "sC_js_removeImgNode(this, 'multiple_many')">
                                 <img src = "images/16x16/error_delete.png" alt = "{$smarty.const._REMOVECHOICE}" title = "{$smarty.const._REMOVECHOICE}" /></a>
             {/if}
                         </td><td style = "padding-left:30px">
@@ -672,9 +672,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                 </table>
             </td></tr>
             <tr><td class = "labelCell">
-                <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_many')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
+                <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_many')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
             </td><td>
-                <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_many')">{$smarty.const._ADDOPTION}</a>
+                <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_many')">{$smarty.const._ADDOPTION}</a>
             </td></tr>
    <tr><td class = "labelCell">{$T_QUESTION_FORM.answers_or.label}:&nbsp;</td>
              <td class = "elementCell">{$T_QUESTION_FORM.answers_or.html}</td></tr>
@@ -688,7 +688,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                         <td style = "width:1%;white-space:nowrap">{$T_QUESTION_FORM.correct_match[match_list].html}</td>
                         <td style = "width:1%;white-space:nowrap">
          {if $smarty.section.match_list.iteration > 2} {*The if smarty.iteration is put here, so that the user cannot remove that last 2 rows*}
-                            <a href = "javascript:void(0)" onclick = "eF_js_removeImgNode(this, 'match')">
+                            <a href = "javascript:void(0)" onclick = "sC_js_removeImgNode(this, 'match')">
                                 <img src = "images/16x16/error_delete.png" border = "no" alt = "{$smarty.const._REMOVECHOICE}" title = "{$smarty.const._REMOVECHOICE}" /></a>
             {/if}
                         </td><td style = "padding-left:30px">
@@ -700,9 +700,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                 </table>
              </td></tr>
              <tr><td class = "labelCell">
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('match')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('match')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
              </td><td>
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('match')">{$smarty.const._ADDOPTION}</a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('match')">{$smarty.const._ADDOPTION}</a>
              </td></tr>
  {elseif $smarty.get.question_type == 'drag_drop'}
          <tr><td class = "labelCell questionLabel">{$smarty.const._INSERTDRAGDROPCOUPLES}:</td>
@@ -713,7 +713,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                         <td style = "width:1%;white-space:nowrap">{$T_QUESTION_FORM.correct_drag_drop[drag_drop_list].html}</td>
                         <td style = "width:1%;white-space:nowrap">
          {if $smarty.section.drag_drop_list.iteration > 2} {*The if smarty.iteration is put here, so that the user cannot remove that last 2 rows*}
-                            <a href = "javascript:void(0)" onclick = "eF_js_removeImgNode(this, 'drag_drop')">
+                            <a href = "javascript:void(0)" onclick = "sC_js_removeImgNode(this, 'drag_drop')">
                                 <img src = "images/16x16/error_delete.png" border = "no" alt = "{$smarty.const._REMOVECHOICE}" title = "{$smarty.const._REMOVECHOICE}" /></a>
             {/if}
                         </td><td style = "padding-left:30px">
@@ -725,9 +725,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                 </table>
              </td></tr>
              <tr><td class = "labelCell">
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('drag_drop')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('drag_drop')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
              </td><td>
-                 <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('drag_drop')">{$smarty.const._ADDOPTION}</a>
+                 <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('drag_drop')">{$smarty.const._ADDOPTION}</a>
              </td></tr>
     {/if}
          <tr><td colspan = "2" >&nbsp;</td></tr>
@@ -735,7 +735,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
          <div class = "headerTools">
           <span>
            <img src = "images/16x16/add.png" alt = "{$smarty.const._INSERTEXPLANATION}" title = "{$smarty.const._INSERTEXPLANATION}">
-           <a href = "javascript:void(0)" onclick = "eF_js_showHide('explanation');">{$smarty.const._INSERTEXPLANATION}</a>
+           <a href = "javascript:void(0)" onclick = "sC_js_showHide('explanation');">{$smarty.const._INSERTEXPLANATION}</a>
           </span>
    </div>
    <div class="clear"></div>
@@ -765,7 +765,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
              <h3>{$smarty.const._QUESTIONINFO}</h3>
      {/if}
      {if !isset($smarty.get.popup)}
-         {eF_template_printBlock title = $smarty.const._QUESTIONINFO data = $smarty.capture.t_questions_info image = '32x32/question_and_answer.png'}
+         {sC_template_printBlock title = $smarty.const._QUESTIONINFO data = $smarty.capture.t_questions_info image = '32x32/question_and_answer.png'}
      {/if}
      {if $T_SKILLGAP_TEST}
          </div>
@@ -802,7 +802,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
              {/foreach}
          </table>
          {/capture}
-         {eF_template_printBlock title = $smarty.const._CORRELATESKILLSTOQUESTION|cat:':&nbsp;<i>'|cat:$T_QUESTION_TEXT|cat:'</i>' data = $smarty.capture.t_skills_to_questions image = '32x32/generic.png' options = $T_SUGGEST_QUESTION_SKILLS}
+         {sC_template_printBlock title = $smarty.const._CORRELATESKILLSTOQUESTION|cat:':&nbsp;<i>'|cat:$T_QUESTION_TEXT|cat:'</i>' data = $smarty.capture.t_skills_to_questions image = '32x32/generic.png' options = $T_SUGGEST_QUESTION_SKILLS}
              {if !isset($smarty.get.popup)}
              </div>
              {/if}
@@ -872,7 +872,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
      </td></tr>
  </table>
  {/capture}
- {eF_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_show_test image = '32x32/generic.png'}
+ {sC_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_show_test image = '32x32/generic.png'}
  <br/><br/>
 {elseif $smarty.get.quick_test_add}
  {capture name = 't_random_questions_from_skills'}
@@ -894,7 +894,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
      {/foreach}
  </table>
  {/capture}
- {eF_template_printBlock title = $smarty.const._CORRELATETOQUESTION|cat:':&nbsp;<i>'|cat:$T_QUESTION_TEXT|cat:'</i>' data = $smarty.capture.t_random_questions_from_skills image = '32x32/generic.png' options = $T_SUGGEST_QUESTION_}
+ {sC_template_printBlock title = $smarty.const._CORRELATETOQUESTION|cat:':&nbsp;<i>'|cat:$T_QUESTION_TEXT|cat:'</i>' data = $smarty.capture.t_random_questions_from_skills image = '32x32/generic.png' options = $T_SUGGEST_QUESTION_}
 {elseif $smarty.get.show_solved_test}
  {if !$smarty.get.test_analysis}
   {capture name = "t_solved_test_code"}
@@ -916,9 +916,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
       {/if}
      {/capture}
    {if $T_CTG != "feedback"}
-    {eF_template_printBlock title = "`$smarty.const._SOLVEDTEST` `$smarty.const._FORTEST` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_solved_test_code image='32x32/tests.png'}
+    {sC_template_printBlock title = "`$smarty.const._SOLVEDTEST` `$smarty.const._FORTEST` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_solved_test_code image='32x32/tests.png'}
    {else}
-    {eF_template_printBlock title = "`$smarty.const._FEEDBACK` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_solved_test_code image='32x32/feedback.png'}
+    {sC_template_printBlock title = "`$smarty.const._FEEDBACK` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_solved_test_code image='32x32/feedback.png'}
    {/if}
   {else}
      {if $T_SKILLGAP_TEST}
@@ -940,7 +940,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                     <span class = "progressNumber">#filter:score-{$skill.score}#%</span>
                                     <span id="{$skill.id}_bar" class = "progressBar" style = "background-color:{if $skill.score >= $T_TEST_DATA->options.general_threshold}#00FF00{else}#FF0000{/if};width:{$skill.score}px;">&nbsp;</span>&nbsp;
                                 </td>
-                                <td><input type="text" id="{$skill.id}_threshold" value="{$T_TEST_DATA->options.general_threshold}" onChange="eF_thresholdChange('{$skill.id}', '{$skill.score}',true)" />&nbsp;%<input type="hidden" id="{$skill.id}_previous_threshold" value = "{$T_TEST_DATA->options.general_threshold}" /></td>
+                                <td><input type="text" id="{$skill.id}_threshold" value="{$T_TEST_DATA->options.general_threshold}" onChange="sC_thresholdChange('{$skill.id}', '{$skill.score}',true)" />&nbsp;%<input type="hidden" id="{$skill.id}_previous_threshold" value = "{$T_TEST_DATA->options.general_threshold}" /></td>
                             </tr>
                             {foreachelse}
                             <tr class = "defaultRowHeight oddRowColor"><td class = "emptyCategory" colspan = "100%">{$smarty.const._NOSKILLSCORRELATEDWITHTHETESTSQUESTIONS}</td></tr>
@@ -951,7 +951,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                         <table>
                             <tr>
                                 <td>{$smarty.const._GENERALTHRESHOLD}:&nbsp;</td>
-                                <td><input type="text" id="shold" value="{$T_TEST_DATA->options.general_threshold}" onChange="javascript:eF_generalThresholdChange(this.value)" />&nbsp;%<input type="hidden" id="general_previous_threshold" value = "{$T_TEST_DATA->options.general_threshold}" /></td>
+                                <td><input type="text" id="shold" value="{$T_TEST_DATA->options.general_threshold}" onChange="javascript:sC_generalThresholdChange(this.value)" />&nbsp;%<input type="hidden" id="general_previous_threshold" value = "{$T_TEST_DATA->options.general_threshold}" /></td>
                             </tr>
                         </table>
                         {/if}
@@ -1082,7 +1082,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                     </div>
                 </div>
             {/capture}
-            {eF_template_printBlock title = $smarty.const._SKILLGAPANALYSISFORUSER|cat:'&nbsp;<i>'|cat:$T_USER_INFO.name|cat:'&nbsp;'|cat:$T_USER_INFO.surname|cat:'</i>&nbsp;'|cat:$smarty.const._ACCORDINGTOTEST|cat:'&nbsp;<i>'|cat:$T_TEST_DATA->test.name|cat:'</i>' data = $smarty.capture.t_user_code image = '32x32/profile.png' options=$T_USER_LINK}
+            {sC_template_printBlock title = $smarty.const._SKILLGAPANALYSISFORUSER|cat:'&nbsp;<i>'|cat:$T_USER_INFO.name|cat:'&nbsp;'|cat:$T_USER_INFO.surname|cat:'</i>&nbsp;'|cat:$smarty.const._ACCORDINGTOTEST|cat:'&nbsp;<i>'|cat:$T_TEST_DATA->test.name|cat:'</i>' data = $smarty.capture.t_user_code image = '32x32/profile.png' options=$T_USER_LINK}
   {else}
    {assign var = 'title' value = "`$title`&nbsp;&raquo;&nbsp;<a class = 'titleLink' href = '`$smarty.server.PHP_SELF`?ctg=tests&show_solved_test=`$T_TEST_DATA->completedTest.id`&test_analysis=1'>`$smarty.const._TESTANALYSISFORTEST` &quot;`$T_TEST_DATA->test.name`&quot;</a>"}
    {capture name = "t_test_analysis_code"}
@@ -1114,7 +1114,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                     <tr><td style = "vertical-align:top"><iframe width = "750px" height = "550px" id = "analysis_frame" frameborder = "no" src = "{$smarty.server.PHP_SELF}?ctg=tests&show_solved_test={$smarty.get.show_solved_test}&test_analysis={$T_TEST_DATA->completedTest.id}&selected_unit={$smarty.get.selected_unit}&display_chart=1"></iframe></td></tr>
                 </table>
             {/capture}
-            {eF_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
+            {sC_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = \"innerTableName\">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = \"innerTableName\">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
         {/if}
     {/if}
 {elseif $smarty.get.questions_order}
@@ -1122,7 +1122,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                     <ul id = "dhtmlgoodies_question_tree" class = "dhtmlgoodies_tree">
                                     {foreach name = 'questions_list' key = 'id' item = 'question' from = $T_QUESTIONS}
                                         <li id = "dragtree_{$id}" noChildren = "true">
-                                            <a class = "drag_tree_questions" href = "javascript:void(0)" onmouseover = "eF_js_showHideDiv(this, 'div_{$id}', event)" onmouseout = "$('div_{$id}').hide()">: {$question.text|eF_truncate:100}</a>
+                                            <a class = "drag_tree_questions" href = "javascript:void(0)" onmouseover = "sC_js_showHideDiv(this, 'div_{$id}', event)" onmouseout = "$('div_{$id}').hide()">: {$question.text|sC_truncate:100}</a>
                                         </li>
                                     {/foreach}
                                     </ul>
@@ -1142,7 +1142,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                 </table>
                                 {*<div id = "expand_collapse_div" style = "display:none"></div>*}
         {/capture}
-        {eF_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.questions_treeTotal image = '32x32/order.png'}
+        {sC_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.questions_treeTotal image = '32x32/order.png'}
                                 <script>
                                 {literal}
                                 function saveQuestionTree() {
@@ -1168,7 +1168,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                         </td></tr>
                                     </table>
         {/capture}
-        {eF_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_show_question_code image = '32x32/search.png'}
+        {sC_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_show_question_code image = '32x32/search.png'}
                                 <br/><br/>
                             {* Show results for all users of each specific*}
 {elseif $smarty.get.test_results}
@@ -1230,9 +1230,9 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                     </table>
                                 {/capture}
         {if $T_CTG != 'feedback'}
-         {eF_template_printBlock title = $smarty.const._TESTRESULTS data = $smarty.capture.t_test_results_code image='32x32/tests.png'}
+         {sC_template_printBlock title = $smarty.const._TESTRESULTS data = $smarty.capture.t_test_results_code image='32x32/tests.png'}
         {else}
-         {eF_template_printBlock title = $smarty.const._FEEDBACKRESULTS data = $smarty.capture.t_test_results_code image='32x32/feedback.png'}
+         {sC_template_printBlock title = $smarty.const._FEEDBACKRESULTS data = $smarty.capture.t_test_results_code image='32x32/feedback.png'}
         {/if}
        {* Show list of all solved tests *}
 {elseif $smarty.get.solved_tests}
@@ -1265,7 +1265,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
                                     {/foreach}
                                                 </table>
                                 {/capture}
-                                {eF_template_printBlock title=$smarty.const._SKILLGAPTESTS data=$smarty.capture.t_recently_completed image='32x32/skill_gap.png'}
+                                {sC_template_printBlock title=$smarty.const._SKILLGAPTESTS data=$smarty.capture.t_recently_completed image='32x32/skill_gap.png'}
 {else}
  {capture name = 't_tests_code'}
   <script>var published = '{$smarty.const._PUBLISHED}';var notpublished = '{$smarty.const._NOTPUBLISHED}';</script>
@@ -1309,7 +1309,7 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
          </tr>
    {foreach name = 'tests_list' key = "key" item = "test" from = $T_TESTS}
          <tr class = "{cycle name = "main_cycle" values="oddRowColor,evenRowColor"} defaultRowHeight">
-             <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&edit_test={$test.id}">{$test.name|eF_truncate:40}</a></td>
+             <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&edit_test={$test.id}">{$test.name|sC_truncate:40}</a></td>
          {if !$T_SKILLGAP_TEST && $T_CTG != "feedback"}
              <td>{$test.parent_unit}</td>
          {elseif $T_CTG != "feedback"}
@@ -1323,10 +1323,10 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
     <td class = "noWrap centerAlign">
                  <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&test_results={$test.id}"><img src = "images/16x16/unit.png" alt = "{$smarty.const._RESULTS}" title = "{$smarty.const._RESULTS}" /></a>
                  <a href = "{$smarty.server.PHP_SELF}?{if !$T_SKILLGAP_TEST}view_unit={$test.content_ID}{else}ctg={$T_CTG}&show_test={$test.id}{/if}"><img src = "images/16x16/search.png" alt = "{$smarty.const._PREVIEW}" title = "{$smarty.const._PREVIEW}"/></a>
-                 <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&show_test={$test.id}&print=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._PRINT}', 2)"><img src = "images/16x16/printer.png" alt = "{$smarty.const._PRINT}" title = "{$smarty.const._PRINT}" /></a>
+                 <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&show_test={$test.id}&print=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._PRINT}', 2)"><img src = "images/16x16/printer.png" alt = "{$smarty.const._PRINT}" title = "{$smarty.const._PRINT}" /></a>
          {if $_change_}
                  {if !$test.options.shuffle_questions && !$test.options.random_pool}
-                 <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&questions_order={$test.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CHANGEORDER}', 2)"><img src = "images/16x16/order.png" alt = "{$smarty.const._CHANGEORDER}" title = "{$smarty.const._CHANGEORDER}"/></a>
+                 <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&questions_order={$test.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CHANGEORDER}', 2)"><img src = "images/16x16/order.png" alt = "{$smarty.const._CHANGEORDER}" title = "{$smarty.const._CHANGEORDER}"/></a>
                  {/if}
                  <a href = "{$smarty.server.PHP_SELF}?ctg={$T_CTG}&edit_test={$test.id}"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" /></a>
                  <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteTest(this, '{$test.id}');"/>
@@ -1372,8 +1372,8 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
     <tr class = "{cycle name = "main_cycle" values="oddRowColor,evenRowColor"} defaultRowHeight">
      <td>
     {if $_change_}
-      <a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$question.id}&question_type={$question.type}&lessonId={$question.lessons_ID}" title= "{$question.text}">{$question.text|eF_truncate:70}</a>
-    {else}{$question.text|eF_truncate:70}{/if}
+      <a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$question.id}&question_type={$question.type}&lessonId={$question.lessons_ID}" title= "{$question.text}">{$question.text|sC_truncate:70}</a>
+    {else}{$question.text|sC_truncate:70}{/if}
      </td>
     {if !$T_SKILLGAP_TEST && $T_CTG != 'feedback'}
      <td>{$question.parent_unit}</td>
@@ -1403,10 +1403,10 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
      <td class = "centerAlign">{if $question.estimate_interval.minutes}{$question.estimate_interval.minutes}{$smarty.const._MINUTESSHORTHAND}{/if} {if $question.estimate_interval.seconds}{$question.estimate_interval.seconds}{$smarty.const._SECONDSSHORTHAND}{/if}</td>
     {/if}
        <td class = "centerAlign noWrap">
-      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&show_question={$question.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._PREVIEW}', 1)"><img src = "images/16x16/search.png" alt = "{$smarty.const._PREVIEW}" title = "{$smarty.const._PREVIEW}" /></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&show_question={$question.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._PREVIEW}', 1)"><img src = "images/16x16/search.png" alt = "{$smarty.const._PREVIEW}" title = "{$smarty.const._PREVIEW}" /></a>
      {if !isset($T_CURRENT_USER->coreAccess.content) || $T_CURRENT_USER->coreAccess.content == 'change'}
       {if $T_SKILLGAP_TEST && (!isset($T_CURRENT_USER->coreAccess.skillgaptests) || $T_CURRENT_USER->coreAccess.skillgaptests == 'change')}
-      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$question.id}&lessonId={$question.lessons_ID}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CORRELATESKILLSTOQUESTION}', 2)"><img src = "images/16x16/tools.png" alt = "{$smarty.const._CORRELATESKILLSTOQUESTION}" title = "{$smarty.const._CORRELATESKILLSTOQUESTION}" /></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$question.id}&lessonId={$question.lessons_ID}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CORRELATESKILLSTOQUESTION}', 2)"><img src = "images/16x16/tools.png" alt = "{$smarty.const._CORRELATESKILLSTOQUESTION}" title = "{$smarty.const._CORRELATESKILLSTOQUESTION}" /></a>
       {/if}
       {if $T_CTG != 'feedback'}
        <a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=tests&edit_question={$question.id}&question_type={$question.type}&lessonId={$question.lessons_ID}"><img src = "images/16x16/edit.png" alt = "{$smarty.const._CORRECTION}" title = "{$smarty.const._CORRECTION}"/></a>
@@ -1479,11 +1479,11 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
 <!--/ajax:pendingTable-->
     {/capture}
     {if $T_SKILLGAP_TEST}
-              {eF_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDSKILLGAP data=$smarty.capture.t_pending_tests image='32x32/skill_gap.png' options = $T_RECENTLY_SKILLGAP_OPTIONS}
+              {sC_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDSKILLGAP data=$smarty.capture.t_pending_tests image='32x32/skill_gap.png' options = $T_RECENTLY_SKILLGAP_OPTIONS}
           {elseif $T_CTG != "feedback"}
-              {eF_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDTESTS data=$smarty.capture.t_pending_tests image='32x32/tests.png'}
+              {sC_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDTESTS data=$smarty.capture.t_pending_tests image='32x32/tests.png'}
           {else}
-     {eF_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDFEEDBACK data=$smarty.capture.t_pending_tests image='32x32/feedback.png'}
+     {sC_template_printBlock title=$smarty.const._RECENTLYCOMPLETEDFEEDBACK data=$smarty.capture.t_pending_tests image='32x32/feedback.png'}
     {/if}
   {/capture}
   {if $T_CTG != "feedback"}
@@ -1495,21 +1495,21 @@ var quickformSkillQuestCount = '{$T_QUICKTEST_FORM.skill_questions_count_row.htm
   {/if}
   <div class = "tabber">
       <div class = "tabbertab" title = "{$tempTitle}" id = "tests">
-    {eF_template_printBlock title=$tempTitle data=$smarty.capture.t_all_tests_code image="32x32/`$tempImage`.png"}
+    {sC_template_printBlock title=$tempTitle data=$smarty.capture.t_all_tests_code image="32x32/`$tempImage`.png"}
    </div>
       <div title = "{$smarty.const._QUESTIONS}" class = "tabbertab {if $smarty.get.tab == 'question' || $smarty.get.tab == 'questions'} tabbertabdefault{/if}" id = "question" title = "{$smarty.const._QUESTIONS}">
-    {eF_template_printBlock title=$smarty.const._QUESTIONS data=$smarty.capture.t_questions_code image='32x32/question_and_answer.png'}
+    {sC_template_printBlock title=$smarty.const._QUESTIONS data=$smarty.capture.t_questions_code image='32x32/question_and_answer.png'}
       </div>
   </div>
  {/capture}
  {*Exclude from skillgap tests*}
  {if !$T_SKILLGAP_TEST}
   {if $T_CTG != "feedback"}
-   {eF_template_printBlock title=$smarty.const._UNITANDSUBUNITSTESTS data=$smarty.capture.t_tests_and_questions_code image='32x32/tests.png' help = 'Tests'}
+   {sC_template_printBlock title=$smarty.const._UNITANDSUBUNITSTESTS data=$smarty.capture.t_tests_and_questions_code image='32x32/tests.png' help = 'Tests'}
   {else}
-   {eF_template_printBlock title=$smarty.const._FEEDBACK data=$smarty.capture.t_tests_and_questions_code image='32x32/feedback.png' help = 'Feedback'}
+   {sC_template_printBlock title=$smarty.const._FEEDBACK data=$smarty.capture.t_tests_and_questions_code image='32x32/feedback.png' help = 'Feedback'}
   {/if}
  {else}
-  {eF_template_printBlock title=$smarty.const._SKILLGAPTESTS data=$smarty.capture.t_tests_and_questions_code image='32x32/skill_gap.png' help = 'Skill_gap_tests'}
+  {sC_template_printBlock title=$smarty.const._SKILLGAPTESTS data=$smarty.capture.t_tests_and_questions_code image='32x32/skill_gap.png' help = 'Skill_gap_tests'}
  {/if}
 {/if}

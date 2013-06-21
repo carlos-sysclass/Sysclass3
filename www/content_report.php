@@ -28,7 +28,7 @@ try {
 
     $form = new HTML_QuickForm("content_report_form", "post", "content_report.php", "", null, true);
 
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
     //$form -> addElement('text', 'topic', _TOPIC, 'class = "inputText"');
  //$form -> addRule('topic', _THEFIELD.' "'._TOPIC.'" '._ISMANDATORY, 'required', null, 'client');
@@ -55,7 +55,7 @@ try {
                 $contentId = mb_substr($values['page'],10);
                 preg_match("/.*view_unit=(\d+).*/", $values['page'], $matches);
 
-                $resultType = eF_getTableData("content", "ctg_type", "id=".$matches[1]);
+                $resultType = sC_getTableData("content", "ctg_type", "id=".$matches[1]);
                 if ($resultType[0]['ctg_type'] == "tests") {
                     $title = _ERRORREPORTFOR.'&nbsp;'.$lesson -> lesson['name'].'&nbsp;['._TESTS.']';
                 } else {
@@ -68,7 +68,7 @@ try {
 
             $data = '<a href="professor.php?lessons_ID='.$_SESSION['s_lessons_ID'].'&'.$values['page'].'">'._LINKTOTOPIC.'</a><br><br>'._NOTES.':&nbsp;'.$values['notes'];
 
-            $pm = new eF_PersonalMessage($_SESSION['s_login'], $recipients, $title, $data);
+            $pm = new sC_PersonalMessage($_SESSION['s_login'], $recipients, $title, $data);
 
             if ($pm -> send()) {
                 $message = _SUCCESFULLYSENDREPORT;

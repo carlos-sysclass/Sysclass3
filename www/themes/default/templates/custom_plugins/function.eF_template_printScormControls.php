@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printSide function
+* Smarty plugin: sC_template_printSide function
 */
-function smarty_function_eF_template_printScormControls($params, &$smarty)
+function smarty_function_sC_template_printScormControls($params, &$smarty)
 {
 
 	$params['exit'] ? $exitStr = '[<a href = "" ">exit</a>]' : $exitStr = '';

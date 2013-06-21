@@ -98,10 +98,10 @@ $command_array_keys = array_keys($command_array);
 if (isset($_POST['search_text']) && mb_strlen(trim($_POST['search_text'])) <= 3) {
         $message = _SEARCHTEXTMUSTBENONEMPTYANDMORETHAN;
         if (sizeof(explode("?", $_POST['current_location'])) > 1) { //Check if there is a query string after the url, so we can append the message using a '&' or a '?'
-            eF_redirect($_POST['current_location']."&message=".urlencode($message));
+            sC_redirect($_POST['current_location']."&message=".urlencode($message));
    exit;
         } else {
-            eF_redirect($_POST['current_location']."?message=".urlencode($message));
+            sC_redirect($_POST['current_location']."?message=".urlencode($message));
    exit;
         }
 }
@@ -122,16 +122,16 @@ if (isset($_POST['search_text'])) {
  if (isset($right_key)) {
  //pr($query_array[0]);pr($command_array_keys[$right_key]);return;
   if (strcmp($query_array[0], $command_array_keys[$right_key]) == 0) {
-   eF_redirect("".$command_array_values[$right_key]);return;
+   sC_redirect("".$command_array_values[$right_key]);return;
   } else {
 
    $argument = mb_substr($query_array[0], -(mb_strlen($query_array[0])- mb_strlen($command_array_keys[$right_key]))+1);
    $opcode = $command_array_keys[$right_key];
 
    if (strpos($opcode,"lesson")!== false) {
-    $result_command = eF_getTableData("lessons","id,name","name like'%".$argument."%'");
+    $result_command = sC_getTableData("lessons","id,name","name like'%".$argument."%'");
     if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -140,9 +140,9 @@ if (isset($_POST['search_text'])) {
      //pr($result_command);pr($command_array_values[$right_key]);return;
     }
    } elseif (strpos($opcode,"user")!== false) {
-    $result_command = eF_getTableData("users","login","login like'%".$argument."%'");
+    $result_command = sC_getTableData("users","login","login like'%".$argument."%'");
     if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['login']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['login']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -150,9 +150,9 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "login");
     }
    } elseif (strpos($opcode,"category")!== false) {
-    $result_command = eF_getTableData("directions","id,name","name like'%".$argument."%'");
+    $result_command = sC_getTableData("directions","id,name","name like'%".$argument."%'");
      if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -160,9 +160,9 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
     }
    } elseif (strpos($opcode,"course")!== false) {
-    $result_command = eF_getTableData("courses","id,name","name like'%".$argument."%'");
+    $result_command = sC_getTableData("courses","id,name","name like'%".$argument."%'");
     if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -170,9 +170,9 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_KEY2", "name");
     }
    } elseif (strpos($opcode,"test")!== false) {
-    $result_command = eF_getTableData("tests,content","tests.id,content.name,content.lessons_ID","tests.content_ID=content.id and content.name like'%".$argument."%'");
+    $result_command = sC_getTableData("tests,content","tests.id,content.name,content.lessons_ID","tests.content_ID=content.id and content.name like'%".$argument."%'");
      if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
      } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -181,9 +181,9 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
    } elseif (strpos($opcode,"unit")!== false) {
-    $result_command = eF_getTableData("content","id,name,lessons_ID","ctg_type!='tests' and name like'%".$argument."%'");
+    $result_command = sC_getTableData("content","id,name,lessons_ID","ctg_type!='tests' and name like'%".$argument."%'");
     if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -192,10 +192,10 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
    } elseif (strpos($opcode,"project")!== false) {
-    $result_command = eF_getTableData("projects","id,title,lessons_ID","title like'%".$argument."%'");
+    $result_command = sC_getTableData("projects","id,title,lessons_ID","title like'%".$argument."%'");
     //pr($result_command);
     if (sizeof($result_command) == 1) {
-     eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
+     sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -204,9 +204,9 @@ if (isset($_POST['search_text'])) {
      $smarty -> assign("T_SEARCH_COMMAND_CHANGELESSON", true);
     }
    } elseif (strpos($opcode,"question")!== false) {
-    $result_command = eF_getTableData("questions","id,text,type,lessons_ID","text like'%".$argument."%'");
+    $result_command = sC_getTableData("questions","id,text,type,lessons_ID","text like'%".$argument."%'");
      if (sizeof($result_command) == 1) {
-      eF_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&question_type=".$result[0]['type']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
+      sC_redirect("".$command_array_values[$right_key].$result_command[0]['id']."&question_type=".$result[0]['type']."&lessons_ID=".$result_command[0]['lessons_ID']);return;
     } elseif (sizeof($result_command) > 1) {
      $smarty -> assign("T_SEARCH_COMMAND", $result_command);
      $smarty -> assign("T_SEARCH_COMMAND_LOCATION", $command_array_values[$right_key]);
@@ -219,7 +219,7 @@ if (isset($_POST['search_text'])) {
   }
 
   //pr($command_array_values[$right_key]);
-  //eF_redirect("".$command_array_values[$right_key]);return;
+  //sC_redirect("".$command_array_values[$right_key]);return;
  }
 
     $search_results_data = array();
@@ -273,50 +273,50 @@ if (isset($_POST['search_text'])) {
     if ($results) {
         for ($i = 0; $i < sizeof($results); $i++) {
             if ($results[$i]['table_name'] == "comments") {
-                $res1 = eF_getTableData("content,comments", "content.name AS name,content.id AS id,content.lessons_ID AS lessons_ID", "comments.content_ID=content.id AND comments.id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData("content,comments", "content.name AS name,content.id AS id,content.lessons_ID AS lessons_ID", "comments.content_ID=content.id AND comments.id=".$results[$i]['foreign_ID']);
                 $type_str = _COMMENTS;
             } elseif ($results[$i]['table_name'] == "news") {
-                $res1 = eF_getTableData($results[$i]['table_name'], "id,title AS name,lessons_ID, data", "id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData($results[$i]['table_name'], "id,title AS name,lessons_ID, data", "id=".$results[$i]['foreign_ID']);
                 $type_str = _ANNOUNCEMENTS;
             } elseif ($results[$i]['table_name'] == "content") {
-                $res1 = eF_getTableData($results[$i]['table_name'], "id,name,lessons_ID,ctg_type, data", "id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData($results[$i]['table_name'], "id,name,lessons_ID,ctg_type, data", "id=".$results[$i]['foreign_ID']);
                 $type_str = _LESSONCONTENT;
             } elseif ($results[$i]['table_name'] == "f_messages") {
-                $res1 = eF_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.body, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_messages.id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.body, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_messages.id=".$results[$i]['foreign_ID']);
                 $type_str = _MESSAGESATFORUM;
             } elseif ($results[$i]['table_name'] == "f_personal_messages") {
-                $res1 = eF_getTableData("f_personal_messages, f_folders", "f_personal_messages.id, f_personal_messages.title, f_personal_messages.users_LOGIN, f_personal_messages.body, f_personal_messages.sender, f_personal_messages.recipient , f_folders.name, f_folders.id as folder_id", "f_personal_messages.f_folders_ID = f_folders.id and f_personal_messages.id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData("f_personal_messages, f_folders", "f_personal_messages.id, f_personal_messages.title, f_personal_messages.users_LOGIN, f_personal_messages.body, f_personal_messages.sender, f_personal_messages.recipient , f_folders.name, f_folders.id as folder_id", "f_personal_messages.f_folders_ID = f_folders.id and f_personal_messages.id=".$results[$i]['foreign_ID']);
                 $type_str = _MESSAGESATFORUM;
             } elseif ($results[$i]['table_name'] == "lessons") {
-                $res1 = eF_getTableData($results[$i]['table_name'], "id as lessons_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
+                $res1 = sC_getTableData($results[$i]['table_name'], "id as lessons_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
                 $type_str = _LESSON;
             } elseif ($results[$i]['table_name'] == "courses") {
-                $res1 = eF_getTableData($results[$i]['table_name'], "id as courses_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
+                $res1 = sC_getTableData($results[$i]['table_name'], "id as courses_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
                 $type_str = _LESSON;
             } /*elseif ($results[$i]['table_name'] == "f_topics") {  changed my makriria to exclude topics 2008/11/4
 
-                $res1     = eF_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_topics.id=".$results[$i]['foreign_ID']);
+                $res1     = sC_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_topics.id=".$results[$i]['foreign_ID']);
 
                 $type_str = _MESSAGESATFORUM;
 
             }*/ elseif ($results[$i]['table_name'] == "f_forums") {
-                $res1 = eF_getTableData("f_forums", "f_forums.id as category_id,lessons_ID", "id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData("f_forums", "f_forums.id as category_id,lessons_ID", "id=".$results[$i]['foreign_ID']);
                 $type_str = _MESSAGESATFORUM;
    } elseif ($results[$i]['table_name'] == "files") {
-                $res1 = eF_getTableData("files", "*", "id=".$results[$i]['foreign_ID']);
+                $res1 = sC_getTableData("files", "*", "id=".$results[$i]['foreign_ID']);
                 $type_str = _FILES;
    } elseif ($results[$i]['table_name'] == "questions") {
-    $res1 = eF_getTableData("questions", "id,text as name, type, lessons_ID", "id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData("questions", "id,text as name, type, lessons_ID", "id=".$results[$i]['foreign_ID']);
     $type_str = _QUESTIONS;
    } elseif ($results[$i]['table_name'] == "glossary") {
-    $res1 = eF_getTableData("glossary", "id,name, info, lessons_ID", "id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData("glossary", "id,name, info, lessons_ID", "id=".$results[$i]['foreign_ID']);
     $type_str = _GLOSSARY;
    }
             if (sizeof($res1) > 0) {
                 $results[$i]['position'] == 0 ? $position_str = _TITLE : $position_str = _TEXT;
                 if ((isset($res1[0]['lessons_ID']) && in_array($res1[0]['lessons_ID'], $lessons_have) || $res1[0]['lessons_ID'] == '0') || ($results[$i]['table_name'] == "f_messages" && $_SESSION['s_type'] == "administrator") || ($results[$i]['table_name'] == "f_topics" && $_SESSION['s_type'] == "administrator") || (isset($res1[0]['lessons_ID']) && $_SESSION['s_type'] == "administrator") || (isset($res1[0]['courses_ID']) && (in_array($res1[0]['courses_ID'], $courses_have) || $_SESSION['s_type'] == "administrator"))) {
                     if ($res1[0]['lessons_ID']) {
-                        $lesson = eF_getTableData("lessons", "name,id", "id=".$res1[0]['lessons_ID']);
+                        $lesson = sC_getTableData("lessons", "name,id", "id=".$res1[0]['lessons_ID']);
                     }
                     if (strlen($lesson[0]['name']) < 2) {
                         $lesson[0]['name'] = _ALL;
@@ -327,7 +327,7 @@ if (isset($_POST['search_text'])) {
                                                           'name' => $res1[0]['name']);
                     } elseif ($results[$i]['table_name'] != 'f_messages' && $results[$i]['table_name'] != 'f_topics' && $results[$i]['table_name'] != 'f_forums') {
                         if ($results[$i]['table_name'] == "lessons") {
-                            $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
+                            $basic_user_type = sC_getUserBasicType(false, $res1[0]['lessons_ID']);
                                 $tmp_data = array('id' => $res1[0]['id'],
                                                                'name' => MagesterSearch :: highlightText($res1[0]['name'],$cr, 'resultsTitleBold'),
                                                                'table_name' => $results[$i]['table_name'],
@@ -346,7 +346,7 @@ if (isset($_POST['search_text'])) {
                                     $current_lesson_name = $lesson[0]['name'];
                                 }
                         } elseif ($results[$i]['table_name'] == "glossary") {
-                            $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
+                            $basic_user_type = sC_getUserBasicType(false, $res1[0]['lessons_ID']);
        $stripedContent = MagesterSearch :: resultsTextLimit(preg_replace("#<script.*?>.*?</script>#", "", $res1[0]['info']), $cr, 'resultsText');
        if (strcmp($stripedContent, "...") == 0) {
                              $stripedContent = _SEARCHTEXTWASINSCRIPT;
@@ -375,8 +375,8 @@ if (isset($_POST['search_text'])) {
                                     $current_lesson_name = $lesson[0]['name'];
 
                                 }*/
-                        } elseif ($results[$i]['table_name'] != "lessons" && $results[$i]['table_name'] != "questions" /*&& eF_isDoneContent($res1[0]['id'])*/) {
-                            $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
+                        } elseif ($results[$i]['table_name'] != "lessons" && $results[$i]['table_name'] != "questions" /*&& sC_isDoneContent($res1[0]['id'])*/) {
+                            $basic_user_type = sC_getUserBasicType(false, $res1[0]['lessons_ID']);
        $stripedContent = MagesterSearch :: resultsTextLimit(preg_replace("#<script.*?>.*?</script>#", "", $res1[0]['data']), $cr, 'resultsText');
        if (strcmp($stripedContent, "...") == 0) {
                              $stripedContent = _SEARCHTEXTWASINSCRIPT;
@@ -403,7 +403,7 @@ if (isset($_POST['search_text'])) {
                                     $current_lesson_name = $lesson[0]['name'];
                                 }
                         } elseif ($results[$i]['table_name'] == "questions" && $_SESSION['s_type'] == 'professor') {
-                            $basic_user_type = eF_getUserBasicType(false, $res1[0]['lessons_ID']);
+                            $basic_user_type = sC_getUserBasicType(false, $res1[0]['lessons_ID']);
        $stripedContent = MagesterSearch :: resultsTextLimit(preg_replace("#<script.*?>.*?</script>#", "", $res1[0]['name']), $cr, 'resultsText');
        if (strcmp($stripedContent, "...") == 0) {
                              $stripedContent = _SEARCHTEXTWASINSCRIPT;
@@ -435,7 +435,7 @@ if (isset($_POST['search_text'])) {
        } else {
         $lesson[0]['id'] = 0;
        }
-       $forumTitle = eF_getTableData("f_forums","title","id=".$res1[0]['category_id']);
+       $forumTitle = sC_getTableData("f_forums","title","id=".$res1[0]['category_id']);
        if ($_SESSION['s_type'] != "student" || $lessonTemp -> options['forum'] != 0 || $lesson[0]['id'] == 0) {
         $f_messageBody = MagesterSearch :: resultsTextLimit($res1[0]['body'], $cr, 'resultsText');
         $search_results_forum[] = array('category_id' => $res1[0]['category_id'],
@@ -506,15 +506,15 @@ if (isset($_POST['search_text'])) {
     }
     //sort results by score
     foreach ($search_results_lessons as $key => $value) {
-  $search_results_lessons[$key] = eF_multiSort($search_results_lessons[$key], 'score', 'asc', true);
+  $search_results_lessons[$key] = sC_multiSort($search_results_lessons[$key], 'score', 'asc', true);
  }
  foreach ($search_results_current_lesson as $key => $value) {
-  $search_results_current_lesson[$key] = eF_multiSort($search_results_current_lesson[$key], 'score', 'asc', true);
+  $search_results_current_lesson[$key] = sC_multiSort($search_results_current_lesson[$key], 'score', 'asc', true);
  }
  foreach ($search_results_courses as $key => $value) {
-  $search_results_courses[$key] = eF_multiSort($search_results_courses[$key], 'score', 'asc', true);
+  $search_results_courses[$key] = sC_multiSort($search_results_courses[$key], 'score', 'asc', true);
  }
- $search_results_forum = eF_multiSort($search_results_forum, 'body', 'desc');
+ $search_results_forum = sC_multiSort($search_results_forum, 'body', 'desc');
 //pr($search_results_lessons);
  //highlight_search(word_limiter(substr($text,strpos($text, "Breathing"),1000), 20), $cr);
     $smarty -> assign("T_SEARCH_RESULTS_USERS", $results_users);
@@ -532,9 +532,9 @@ if (isset($_POST['search_text'])) {
     if (!$search_results_data AND !$search_results_glossary AND !$search_results_forum AND !$search_results_pmsgs AND !$search_results_courses AND !$result_command AND !$search_results_files) {
         $message = _NOSEARCHRESULTSFOUND;
         if (sizeof(explode("?", $_POST['current_location'])) > 1) { //Check if there is a query string after the url, so we can append the message using a '&' or a '?'
-            eF_redirect($_POST['current_location']."&message=".urlencode($message));
+            sC_redirect($_POST['current_location']."&message=".urlencode($message));
         } else {
-            eF_redirect($_POST['current_location']."?message=".urlencode($message));
+            sC_redirect($_POST['current_location']."?message=".urlencode($message));
         }
     }
 }

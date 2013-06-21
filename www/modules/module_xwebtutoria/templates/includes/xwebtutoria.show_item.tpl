@@ -44,7 +44,7 @@
 <div class="clear"></div>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	id 			= "dasdas"
 	data			= $smarty.capture.xwebtutoria_item
 	contentclass	= "xwebtutoria-list"

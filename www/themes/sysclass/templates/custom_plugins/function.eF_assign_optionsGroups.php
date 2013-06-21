@@ -6,7 +6,7 @@
 *
 
 */
-function smarty_function_eF_assign_optionsGroups($params, &$smarty)
+function smarty_function_sC_assign_optionsGroups($params, &$smarty)
 {
 	foreach ($params['groups'] as $groupId => $groupName) {
 		$groupedParams = array(
@@ -28,7 +28,7 @@ function smarty_function_eF_assign_optionsGroups($params, &$smarty)
 			}
 		}
 		if (count($groupedParams["links"]) > 0) {
-			$result[urlencode($groupedParams['title'])] = smarty_function_eF_template_printBlock($groupedParams, &$smarty);
+			$result[urlencode($groupedParams['title'])] = smarty_function_sC_template_printBlock($groupedParams, &$smarty);
 		}
 
 	}

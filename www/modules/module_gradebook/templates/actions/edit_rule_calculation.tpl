@@ -46,7 +46,7 @@
 <div class="headerTools">
 	<span>
 		<img src="{$T_GRADEBOOK_BASELINK|cat:'images/add.png'}" alt="{$smarty.const._GRADEBOOK_ADD_COLUMN}" title="{$smarty.const._GRADEBOOK_ADD_COLUMN}" style="vertical-align:middle">
-		<a href="{$T_GRADEBOOK_BASEURL}&action=add_column&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 2)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
+		<a href="{$T_GRADEBOOK_BASEURL}&action=add_column&popup=1" target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$smarty.const._GRADEBOOK_ADD_COLUMN}', 2)">{$smarty.const._GRADEBOOK_ADD_COLUMN}</a>&nbsp;
 	</span>
 	<!-- 
 	<span>
@@ -71,5 +71,5 @@
 <div style="clear: both; height: 5px;"></div>
 {/capture}
 
-{eF_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._GRADEBOOK_NAME data=$smarty.capture.t_gradebook_code image=$T_GRADEBOOK_BASELINK|cat:'images/gradebook_logo.png' absoluteImagePath = 1}
 {include file="$T_GRADEBOOK_BASEDIR/templates/includes/javascript.tpl"}

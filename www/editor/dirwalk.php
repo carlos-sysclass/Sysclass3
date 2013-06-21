@@ -18,7 +18,7 @@ session_start();
 $path = "../../libraries/";
 /** The configuration file.*/
 include_once $path."configuration.php";
-eF_printHeader();
+sC_printHeader();
 /**
 
 * Utility function. Returns the path minus root folder path
@@ -175,7 +175,7 @@ function display_directory($dir, $valid_file_types, $type, $lessons_ID)
 
 
         if (is_dir("$dir/$entry") && $entry != '.' && $entry != '..') {
-            $contents = eF_getDirContents($dir.'/'.$entry.'/');
+            $contents = sC_getDirContents($dir.'/'.$entry.'/');
             if (sizeof($contents) > 0) {
                 $confirm_msg = _THISFOLDERCONTAINS.' '.sizeof($contents).' '._FILESANDSUBFOLDERS.'! ';
             }
@@ -341,13 +341,13 @@ function print_file_name($path, $name)
 
 * <code>
 
-* $file_list = eF_getDirContents();                 //return current directory contents
+* $file_list = sC_getDirContents();                 //return current directory contents
 
-* $file_list = eF_getDirContents('/tmp');           //return /tmp directory contents
+* $file_list = sC_getDirContents('/tmp');           //return /tmp directory contents
 
-* $file_list = eF_getDirContents(false, 'php');     //return files with extension php in the current directory and subdirectories
+* $file_list = sC_getDirContents(false, 'php');     //return files with extension php in the current directory and subdirectories
 
-* $file_list = eF_getDirContents(false, array('php', 'html'));     //return files with extension php or html in the current directory and subdirectories
+* $file_list = sC_getDirContents(false, array('php', 'html'));     //return files with extension php or html in the current directory and subdirectories
 
 * </code>
 
@@ -394,7 +394,7 @@ function print_file_name($path, $name)
 * - Added $ext parameter
 
 */
-function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse = true)
+function sC_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse = true)
 {
     if ($dir) {
         $handle = opendir($dir);
@@ -405,7 +405,7 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
     while (false !== ($file = readdir($handle))) {
         if ($file != "." AND $file != ".." AND $file != '.svn') {
             if (is_dir($dir.$file) && $recurse) {//echo "!$dir . $file@<br>";
-                $temp = eF_getDirContents($dir.$file.'/', $ext, $get_dir);
+                $temp = sC_getDirContents($dir.$file.'/', $ext, $get_dir);
                 $get_dir ? $filelist[] = $dir.$file.'/' : $filelist[] = $file.'/';
                 if (!$ext) { //It is put here for empty directories (when $ext is not specified), or, if $ext is specified, to not return directories
                     $filelist = array_merge($filelist, $temp);
@@ -444,7 +444,7 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
 
 * $timestamp = time();
 
-* list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads("file_upload", "uploads/", $timestamp."_");  //This will upload all the files specified in the "file_upload" form field, move them to the "uploads" directory and append to their name the current timestamp.
+* list($ok, $upload_messages, $upload_messages_type, $filename) = sC_handleUploads("file_upload", "uploads/", $timestamp."_");  //This will upload all the files specified in the "file_upload" form field, move them to the "uploads" directory and append to their name the current timestamp.
 
 * //$uploaded_messages is an array with the error or succes message corresponding to each of the uploaded files
 
@@ -473,7 +473,7 @@ function eF_getDirContents($dir = false, $ext = false, $get_dir = true, $recurse
 * @version 0.9
 
 */
-function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filename = '', $ext=false)
+function sC_handleUploads($field_name, $target_dir, $prefix = '', $target_filename = '', $ext=false)
 {
     $ok = false;
     $upload_messages = array();
@@ -486,8 +486,8 @@ function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filena
     if ($target_filename && sizeof($_FILES[$field_name]['name']) > 1) {
         $target_filename = '';
     }
-    $allowed_extensions = eF_getTableData("configuration", "value", "name='allowed_extensions'");
-    $disallowed_extensions = eF_getTableData("configuration", "value", "name='disallowed_extensions'");
+    $allowed_extensions = sC_getTableData("configuration", "value", "name='allowed_extensions'");
+    $disallowed_extensions = sC_getTableData("configuration", "value", "name='disallowed_extensions'");
     if (sizeof($allowed_extensions) == 0 || $allowed_extensions[0]['value'] == '') {
         unset ($allowed_extensions);
     }
@@ -532,7 +532,7 @@ function eF_handleUploads($field_name, $target_dir, $prefix = '', $target_filena
                 $upload_messages[$count] = _YOUCANNOTUPLOADFILESWITHTHISEXTENSION.': .'.$path_parts['extension'].' ('.$file['name'].')<br/>';
             } elseif (isset($allowed_extensions) && $path_parts && !in_array($path_parts['extension'], explode(",", preg_replace("/\s+/", "", $allowed_extensions[0]['value'])))) {
                 $upload_messages[$count] = _YOUMAYONLYUPLOADFILESWITHEXTENSION.': '.$allowed_extensions[0]['value'].'<br/>';
-            } elseif (!eF_checkParameter($file['name'], 'filename')) {
+            } elseif (!sC_checkParameter($file['name'], 'filename')) {
                 $upload_messages[$count] = _INVALIDFILENAME;
             } elseif ( isset($ext) && $path_parts && !in_array($path_parts['extension'], explode(",", preg_replace("/\s+/", "", $ext)))) {
                 $upload_messages[$count] = _YOUMAYONLYUPLOADFILESWITHEXTENSION.': '.$ext.'<br/>';

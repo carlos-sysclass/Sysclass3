@@ -16,7 +16,7 @@ if (!is_file($path."configuration.php")) { //If the configuration file does not 
  require_once $path."configuration.php";
 }
 
-$modulesDB = eF_getTableData("modules","*","className = 'module_language' AND active=1");
+$modulesDB = sC_getTableData("modules","*","className = 'module_language' AND active=1");
 foreach ($modulesDB as $module) {
 	$folder = $module['position'];
 	$className = $module['className'];

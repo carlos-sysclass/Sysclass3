@@ -4,7 +4,7 @@ P_CONSUMER_KEY      IN        VARCHAR2,
 P_TOKEN             IN        VARCHAR2,
 P_TOKEN_TYPE        IN        VARCHAR2,
 P_USER_ID           IN        NUMBER,
-P_ROWS              OUT       TYPES.REF_CURSOR,
+P_ROWS              OUT       TYPES.RsC_CURSOR,
 P_RESULT            OUT       NUMBER
 )
 AS

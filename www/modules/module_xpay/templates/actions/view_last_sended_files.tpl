@@ -34,7 +34,7 @@
 </table>
 {/capture}
 	
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XPAY_LAST_PAYMENTS
 	data=$smarty.capture.t_xpay_last_payments_widget
 }

@@ -13,7 +13,7 @@ class Cache
  {
   $key = self :: encode($parameters);
 
-  $result = eF_getTableData("cache", "value, timestamp, timeout", "cache_key='".$key."'");
+  $result = sC_getTableData("cache", "value, timestamp, timeout", "cache_key='".$key."'");
   if (sizeof($result) > 0 && time() - $result[0]['timestamp'] <= self :: $cacheTimeout && ($result[0]['timeout'] && time() - $result[0]['timestamp'] <= $result[0]['timeout'])) {
    return $result[0]['value'];
   } else {
@@ -25,14 +25,14 @@ class Cache
  {
   $key = self :: encode($parameters);
   $values = array("cache_key" => $key, "value" => $data, "timestamp" => time());
-  if ($timeout && eF_checkParameter($timeout, 'int')) {
+  if ($timeout && sC_checkParameter($timeout, 'int')) {
    $values['timeout'] = $timeout;
   }
 
-  if (sizeof(eF_getTableData("cache", "value", "cache_key='".$key."'")) > 0) {
-   $result = eF_updateTableData("cache", $values, "cache_key='$key'");
+  if (sizeof(sC_getTableData("cache", "value", "cache_key='".$key."'")) > 0) {
+   $result = sC_updateTableData("cache", $values, "cache_key='$key'");
   } else {
-   $result = eF_insertTableData("cache", $values);
+   $result = sC_insertTableData("cache", $values);
   }
 
   return $result;
@@ -42,7 +42,7 @@ class Cache
  {
   $key = self :: encode($parameters);
 
-  eF_deleteTableData("cache", "cache_key='".$key."'");
+  sC_deleteTableData("cache", "cache_key='".$key."'");
  }
 
  private static function encode($parameters)
@@ -92,9 +92,9 @@ class MagesterCacheDB extends MagesterCache
   $values = array("cache_key" => $key, "value" => serialize($entity), "timestamp" => time());
 
   if ($this -> get($parameters)) {
-   $result = eF_updateTableData("cache", $values, "cache_key='$key'");
+   $result = sC_updateTableData("cache", $values, "cache_key='$key'");
   } else {
-   $result = eF_insertTableData("cache", $values);
+   $result = sC_insertTableData("cache", $values);
   }
 
   return $result;
@@ -103,12 +103,12 @@ class MagesterCacheDB extends MagesterCache
 
     public function deleteCache($key)
     {
-        eF_deleteTableData("cache", "cache_key='".$key."'");
+        sC_deleteTableData("cache", "cache_key='".$key."'");
     }
 
     public function getCache($key)
     {
-  $result = eF_getTableData("cache", "value, timestamp", "cache_key='".$key."'");
+  $result = sC_getTableData("cache", "value, timestamp", "cache_key='".$key."'");
   if (sizeof($result) > 0 || time() - $result['timestamp'] <= $this -> cacheTimeout) {
    if ($result[0]['value'] !== serialize(false)) {
        $result[0]['value'] = unserialize($result[0]['value']);
@@ -131,7 +131,7 @@ class MagesterCacheDB extends MagesterCache
 
     public function deleteCacheBasedOnKeyFilter($filter)
     {
-        //eF_deleteTableData("cache")
+        //sC_deleteTableData("cache")
     }
 }
 /*

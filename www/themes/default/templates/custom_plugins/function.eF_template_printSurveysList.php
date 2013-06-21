@@ -1,10 +1,10 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printSurveysList function. Prints surveys
+* Smarty plugin: smarty_function_sC_template_printSurveysList function. Prints surveys
 *
 */
 
-function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
+function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
 {
 
     $str = '';
@@ -62,8 +62,8 @@ function smarty_function_eF_template_printSurveysList($params ,  &$smarty)
                                 $str .= '<tr class="evenRowColor">';
                             }
                         }
-                        $users = array('total_users' => eF_getTableData("users_to_surveys","count(*)","surveys_ID=".intVal($params['data'][$i]['id'])),
-                                   'done_users' => eF_getTableData("users_to_done_surveys","count(*)"," done=1 AND surveys_ID=".intVal($params['data'][$i]['id'])));
+                        $users = array('total_users' => sC_getTableData("users_to_surveys","count(*)","surveys_ID=".intVal($params['data'][$i]['id'])),
+                                   'done_users' => sC_getTableData("users_to_done_surveys","count(*)"," done=1 AND surveys_ID=".intVal($params['data'][$i]['id'])));
                         foreach ($params['data'][$i] as $key => $value) {
                             if ($key == 'survey_code') {
                                 $str .= '<td align="left">'.$value.'</td>';

@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printMenu function
+* Smarty plugin: sC_template_printMenu function
 */
-function smarty_function_eF_template_printMenu($params, &$smarty)
+function smarty_function_sC_template_printMenu($params, &$smarty)
 {
     //if (mb_strlen($params['lesson_name']) > 23) {
     //    $params['lesson_name'] = mb_substr($params['lesson_name'], 0, 20).'...';

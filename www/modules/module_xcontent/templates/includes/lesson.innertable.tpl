@@ -45,7 +45,7 @@
 </form>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $T_XCONTENT_SCHEDULE_ITEM
 	data			= $smarty.capture.t_xcontent_schedule
 	contentclass	= "blockContents"

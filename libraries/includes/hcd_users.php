@@ -27,11 +27,11 @@ $currentEmployee = $currentUser -> aspects['hcd'];
 if ($_SESSION['s_type'] != "administrator" && $currentEmployee -> getType() != _SUPERVISOR && !($currentEmployee -> getType() == _EMPLOYEE && (isset($_GET['add_evaluation'])||isset($_GET['edit_evaluation']) || isset($_GET['delete_evaluation'])) && $_SESSION['s_type']=="professor" )) {
  $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
  $message_type = "failure";
- eF_redirect("".$_SERVER['HTTP_REFERER']."&message=".$message."&message_type=".$message_type);
+ sC_redirect("".$_SERVER['HTTP_REFERER']."&message=".$message."&message_type=".$message_type);
  exit;
 } else {
  $loadScripts[] = 'includes/users';
- if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'login')) { //The administrator asked to delete a user
+ if (isset($_GET['delete_user']) && sC_checkParameter($_GET['delete_user'], 'login')) { //The administrator asked to delete a user
   try {
    if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] != 'change') {
     throw new Exception(_UNAUTHORIZEDACCESS);
@@ -45,7 +45,7 @@ if ($_SESSION['s_type'] != "administrator" && $currentEmployee -> getType() != _
    handleAjaxExceptions($e);
   }
   exit;
- } elseif (isset($_GET['archive_user']) && eF_checkParameter($_GET['archive_user'], 'login')) { //The administrator asked to delete a user
+ } elseif (isset($_GET['archive_user']) && sC_checkParameter($_GET['archive_user'], 'login')) { //The administrator asked to delete a user
   try {
    if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] != 'change') {
     throw new Exception(_UNAUTHORIZEDACCESS);
@@ -59,7 +59,7 @@ if ($_SESSION['s_type'] != "administrator" && $currentEmployee -> getType() != _
    handleAjaxExceptions($e);
   }
   exit;
- } elseif (isset($_GET['deactivate_user']) && eF_checkParameter($_GET['deactivate_user'], 'login') && ($_GET['deactivate_user'] != $_SESSION['s_login'])) { //The administrator asked to deactivate a user
+ } elseif (isset($_GET['deactivate_user']) && sC_checkParameter($_GET['deactivate_user'], 'login') && ($_GET['deactivate_user'] != $_SESSION['s_login'])) { //The administrator asked to deactivate a user
   if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] != 'change') {
    echo urlencode(_UNAUTHORIZEDACCESS);exit;
   }
@@ -71,7 +71,7 @@ if ($_SESSION['s_type'] != "administrator" && $currentEmployee -> getType() != _
    handleAjaxExceptions($e);
   }
   exit;
- } elseif (isset($_GET['activate_user']) && eF_checkParameter($_GET['activate_user'], 'login')) { //The administrator asked to activate a user
+ } elseif (isset($_GET['activate_user']) && sC_checkParameter($_GET['activate_user'], 'login')) { //The administrator asked to activate a user
   if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] != 'change') {
    echo urlencode(_UNAUTHORIZEDACCESS);exit;
   }
@@ -83,7 +83,7 @@ if ($_SESSION['s_type'] != "administrator" && $currentEmployee -> getType() != _
    handleAjaxExceptions($e);
   }
   exit;
- } elseif (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $login = eF_checkParameter($_GET['edit_user'], 'login')) && !$unprivileged) { //The administrator asked to add a new user or to edit a user
+ } elseif (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $login = sC_checkParameter($_GET['edit_user'], 'login')) && !$unprivileged) { //The administrator asked to add a new user or to edit a user
   $smarty -> assign("T_PERSONAL", true);
   /**Include the personal settings file*/
   include 'includes/personal.php'; //User addition and manipulation is done through personal.

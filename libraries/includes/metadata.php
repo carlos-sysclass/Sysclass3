@@ -46,7 +46,7 @@ try {
             exit;
         }
     } else {
-        //eF_redirect("".$_SERVER['PHP_SELF'].".php");
+        //sC_redirect("".$_SERVER['PHP_SELF'].".php");
     }
 } catch (Exception $e) {
  handleNormalFlowExceptions($e);

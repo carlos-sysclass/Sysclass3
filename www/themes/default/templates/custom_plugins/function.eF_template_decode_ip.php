@@ -1,8 +1,8 @@
 <?php
 /*
-{eF_template_decode_ip ip='3e674945'}
+{sC_template_decode_ip ip='3e674945'}
 */
-function smarty_function_eF_template_decode_ip($params, &$smarty)
+function smarty_function_sC_template_decode_ip($params, &$smarty)
 {
 	$hex_ip = $params['ip'];
     if (!$hex_ip) {

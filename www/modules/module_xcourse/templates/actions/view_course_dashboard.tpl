@@ -31,7 +31,7 @@
 	</div>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $T_XCOURSE_BLOCK_TITLE
 	data			= $smarty.capture.t_course_dashboard
 	contentclass	= "block"

@@ -73,14 +73,14 @@ function showMessage(folder_id, p_message_id) {
 
             ajaxUrl[0] = 'forum/messages_index.php?ajax=messagesTable&limit=20&offset=0&sort=null&order=desc&folder='+folder_id+'&';
 
-            eF_js_rebuildTable(0, 0, null, 'desc');
+            sC_js_rebuildTable(0, 0, null, 'desc');
 
-    //eF_js_rebuildTable(1, 0, 'null', 'desc');
+    //sC_js_rebuildTable(1, 0, 'null', 'desc');
 
 }
 
 */
-function eF_js_checkRecipients() {
+function sC_js_checkRecipients() {
     if (document.forms[0].recipients[0].checked && document.getElementById('autocomplete').value == "") {
         alert(norecipients);
         return false;
@@ -115,7 +115,7 @@ function show_hide_additional_recipients() {
             $('only_specific_users').checked = "true";
    $('arrow_down').writeAttribute({alt:showrecipients, title:showrecipients});
    setImageSrc($('arrow_down'), 16, 'navigate_down.png');
-   eF_js_selectRecipients('only_specific_users');
+   sC_js_selectRecipients('only_specific_users');
    if (!is_ie) {
           $('all_active_users').focus();
          }
@@ -123,7 +123,7 @@ function show_hide_additional_recipients() {
     }
     setTimeout(function(){ additional_recipients_lock = 1;}, 1001);
 }
-function eF_js_selectRecipients(recipient) {
+function sC_js_selectRecipients(recipient) {
     if (enterprise) {
         $('lesson_recipients').disabled = 'disabled';
         $('user_type_recipients').disabled = 'disabled';

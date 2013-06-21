@@ -5,7 +5,7 @@
 	
 		{include file=$module.template assign="templateData"}
 		
-		{eF_template_printBlock 
+		{sC_template_printBlock 
 			tabber = $module.title
 			title = $module.title
 			data = $templateData
@@ -15,7 +15,7 @@
 	{/foreach}
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title =	$smarty.const._MODULE_PAGAMENTO_INVOICES_STATUS
 	data  =	$smarty.capture.t_update_invoices_tabbers
 	tabs  =	$T_MODULE_PAGAMENTO_INVOICE_SUBMODULES

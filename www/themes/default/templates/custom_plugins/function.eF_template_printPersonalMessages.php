@@ -1,9 +1,9 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printPersonalMessages function. Prints inner table
+* Smarty plugin: smarty_function_sC_template_printPersonalMessages function. Prints inner table
 *
 */
-function smarty_function_eF_template_printPersonalMessages($params, &$smarty)
+function smarty_function_sC_template_printPersonalMessages($params, &$smarty)
 {
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...
@@ -29,7 +29,7 @@ function smarty_function_eF_template_printPersonalMessages($params, &$smarty)
                     <span class = "counter">'.($i + 1).'.</span> <a title="'.$title_message.'" href = "'.basename($_SERVER['PHP_SELF']).'?ctg=messages&view='.$params['data'][$i]['id'].'">'.$params['data'][$i]['title'].'</a></td>
                 <td align = "right">#filter:user_login-'.$params['data'][$i]['sender'].'#, ';
         $title2 = ' #filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
-        $str .= '<span title = "'.$title2.'">'.eF_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
+        $str .= '<span title = "'.$title2.'">'.sC_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
         //$str .= '<img src="images/16x16/calendar.png" title="'.$title2.'" alt="'.$title2.'" style = "vertical-align:middle"/>
         $str .= '</td></tr>';
     }

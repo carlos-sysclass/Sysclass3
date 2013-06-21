@@ -4,7 +4,7 @@
 * Replaces occurences of the form #filter:datetime-1132843907# with the current date
 
 */
-function smarty_outputfilter_eF_template_formatCurrency($compiled, &$smarty)
+function smarty_outputfilter_sC_template_formatCurrency($compiled, &$smarty)
 {
 	$decimal_sep	= isset($GLOBALS['configuration']["decimal_point"]) ? $GLOBALS['configuration']["decimal_point"] : '.';
 	$thousando_sep 	= isset($GLOBALS['configuration']["thousands_sep"]) ? $GLOBALS['configuration']["thousands_sep"] : '';

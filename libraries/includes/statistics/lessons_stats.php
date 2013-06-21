@@ -148,7 +148,7 @@ try {
             }
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
         }
 
@@ -165,7 +165,7 @@ try {
             }
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
         }
 
@@ -191,11 +191,11 @@ try {
                                      'lastmove' => _NAVIGATEDSYSTEM);
             $smarty -> assign("T_ACTIONS", $actions);
             if (isset($_GET['showlog']) && $_GET['showlog'] == "true") {
-                $contentNames = eF_getTableDataFlat("content", "id, name");
+                $contentNames = sC_getTableDataFlat("content", "id, name");
                 $contentNames = array_combine($contentNames['id'], $contentNames['name']);
-                $testNames = eF_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
+                $testNames = sC_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
                 $testNames = array_combine($testNames['id'], $testNames['name']);
-                $result = eF_getTableData("logs", "*", "timestamp between $from and $to and lessons_ID='".$infoLesson -> lesson['id']."' order by timestamp desc");
+                $result = sC_getTableData("logs", "*", "timestamp between $from and $to and lessons_ID='".$infoLesson -> lesson['id']."' order by timestamp desc");
 
                 foreach ($result as $key => $value) {
                     if ($value['action'] == 'content') {
@@ -227,7 +227,7 @@ try {
             foreach ($traffic['users'] as $value) {
                 $traffic['total_seconds'] += $value['total_seconds'];
             }
-            $traffic['total_time'] = eF_convertIntervalToTime($traffic['total_seconds']);
+            $traffic['total_time'] = sC_convertIntervalToTime($traffic['total_seconds']);
 
             try {
 /*
@@ -383,7 +383,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'lesson') {
     $workSheet -> setColumn(1, 2, 30);
 
 
-    $directionName = eF_getTableData("directions", "name", "id=".$infoLesson -> lesson['directions_ID']);
+    $directionName = sC_getTableData("directions", "name", "id=".$infoLesson -> lesson['directions_ID']);
     $languages = MagesterSystem :: getLanguages(true);
 
     // Get only filtered users

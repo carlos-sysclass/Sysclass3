@@ -24,11 +24,11 @@ if (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
         $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
     } catch (MagesterException $e) {
         $message = $e -> getMessage().' ('.$e -> getCode().')';
-        eF_redirect("index.php?message=".urlencode($message)."&message_type=failure");
+        sC_redirect("index.php?message=".urlencode($message)."&message_type=failure");
         exit;
     }
 } else {
-    eF_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
+    sC_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
     exit;
 }
 

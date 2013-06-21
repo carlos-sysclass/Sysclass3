@@ -134,10 +134,10 @@ class MagesterGroup
         if (is_array($group_id)) {
             $group[0] = $group_id;
         } else {
-         if (!eF_checkParameter($group_id, 'id')) {
+         if (!sC_checkParameter($group_id, 'id')) {
              throw new MagesterGroupException(_INVALIDID.": $group_id", MagesterGroupException :: INVALID_ID);
          }
-            $group = eF_getTableData("groups", "*", "id = $group_id");
+            $group = sC_getTableData("groups", "*", "id = $group_id");
         }
         if (sizeof($group) == 0) {
             throw new MagesterGroupException(_GROUPDOESNOTEXIST, MagesterGroupException :: GROUP_NOT_EXISTS);
@@ -196,9 +196,9 @@ class MagesterGroup
     {
         $fields['name'] = trim($fields['name']);
         !isset($fields['name']) ? $fields['name'] = 'Default name' : null;
-        $result = eF_getTableData("groups", "id", "unique_key != '' and unique_key is not null and unique_key='".$fields['unique_key']."'");
+        $result = sC_getTableData("groups", "id", "unique_key != '' and unique_key is not null and unique_key='".$fields['unique_key']."'");
         if (sizeof($result) == 0) {
-         $group_id = eF_insertTableData("groups", $fields); //Insert the group to the database
+         $group_id = sC_insertTableData("groups", $fields); //Insert the group to the database
          $newGroup = new MagesterGroup($group_id);
 
          return $newGroup;
@@ -250,12 +250,12 @@ class MagesterGroup
     public static function deleteDynamicGroup($group = false)
     {
      if ($group) {
-      eF_deleteTableData("groups", "id=".$_SESSION['dynamic_group']);
-      eF_deleteTableData("users_to_groups", "groups_id=".$_SESSION['dynamic_group']);
+      sC_deleteTableData("groups", "id=".$_SESSION['dynamic_group']);
+      sC_deleteTableData("users_to_groups", "groups_id=".$_SESSION['dynamic_group']);
       unset($_SESSION['dynamic_group']);
      } else {
-      eF_deleteTableData("groups", "dynamic=1 and created is not null and created < ".(time() - 360));
-      eF_deleteTableData("users_to_groups", "groups_id in (select id from groups where dynamic=1 and created is not null and created < ".(time() - 360).")");
+      sC_deleteTableData("groups", "dynamic=1 and created is not null and created < ".(time() - 360));
+      sC_deleteTableData("users_to_groups", "groups_id in (select id from groups where dynamic=1 and created is not null and created < ".(time() - 360).")");
      }
     }
     /**
@@ -301,10 +301,10 @@ class MagesterGroup
      */
     public function delete()
     {
-        eF_deleteTableData("lessons_to_groups", "groups_ID=".$this -> group['id']);
-        eF_deleteTableData("courses_to_groups", "groups_ID=".$this -> group['id']);
-     eF_deleteTableData("users_to_groups", "groups_ID=".$this -> group['id']);
-        eF_deleteTableData("groups", "id=".$this -> group['id']);
+        sC_deleteTableData("lessons_to_groups", "groups_ID=".$this -> group['id']);
+        sC_deleteTableData("courses_to_groups", "groups_ID=".$this -> group['id']);
+     sC_deleteTableData("users_to_groups", "groups_ID=".$this -> group['id']);
+        sC_deleteTableData("groups", "id=".$this -> group['id']);
 
         return true;
     }
@@ -367,7 +367,7 @@ class MagesterGroup
     {
         if ($this -> users === false || $refresh) { //Make a database query only if the variable is not initialized, or it is explicitly asked
             $this -> users = array('professor' => array(), 'student' => array());
-            $result = eF_getTableData("users_to_groups ug, users u", "ug.*, u.user_type", "u.login=ug.users_LOGIN and groups_ID=".$this -> group['id']);
+            $result = sC_getTableData("users_to_groups ug, users u", "ug.*, u.user_type", "u.login=ug.users_LOGIN and groups_ID=".$this -> group['id']);
             foreach ($result as $value) {
                 $this -> users[$value['user_type']][] = $value['users_LOGIN'];
             }
@@ -413,7 +413,7 @@ class MagesterGroup
       return true;
      }
   $users = MagesterUser::verifyUsersList($users);
-  $groupUsers = eF_getTableDataFlat("users_to_groups", "users_LOGIN", "groups_ID=".$this -> group['id']);
+  $groupUsers = sC_getTableDataFlat("users_to_groups", "users_LOGIN", "groups_ID=".$this -> group['id']);
         $errors = array();
         foreach ($users as $key => $user) {
          if (!in_array($user, $groupUsers['users_LOGIN'])) {
@@ -421,7 +421,7 @@ class MagesterGroup
                                'users_LOGIN' => $user);
          }
         }
-  eF_insertTableDataMultiple("users_to_groups", $fields);
+  sC_insertTableDataMultiple("users_to_groups", $fields);
         foreach ($this -> getCourses(true, true) as $course) {
          $course -> addUsers($users, $userTypeInCourses, 1);
         }
@@ -467,7 +467,7 @@ class MagesterGroup
     {
      $users = MagesterUser::verifyUsersList($users);
         foreach ($users as $user) {
-         eF_deleteTableData("users_to_groups", "users_LOGIN='".$user."' and groups_ID=".$this -> group['id']);
+         sC_deleteTableData("users_to_groups", "users_LOGIN='".$user."' and groups_ID=".$this -> group['id']);
         }
 
         return true;
@@ -485,7 +485,7 @@ class MagesterGroup
      */
     public function removeAllUsers()
     {
-     eF_deleteTableData("users_to_groups", "groups_ID=".$this -> group['id']);
+     sC_deleteTableData("users_to_groups", "groups_ID=".$this -> group['id']);
     }
     /**
 
@@ -535,7 +535,7 @@ class MagesterGroup
          if ($this -> group['user_types_ID']) {
              // If we have a custom user type
              if ($this -> group['user_types_ID'] != 'student' && $this -> group['user_types_ID'] != 'professor') {
-              $basic_type = eF_getTableData("user_types", "basic_user_type", "id = '" . $this -> group['user_types_ID'] . "'");
+              $basic_type = sC_getTableData("user_types", "basic_user_type", "id = '" . $this -> group['user_types_ID'] . "'");
               if (sizeof($basic_type)) {
                   $fields["user_type"] = $basic_type[0]['basic_user_type'];
                   $fields["user_types_ID"] = $this -> group['user_types_ID'];
@@ -554,7 +554,7 @@ class MagesterGroup
          }
          // If at least one value greater than zero
          if (sizeof($fields)) {
-             return eF_updateTableData("users", $fields, "login IN ('". implode("','", $users) ."')");
+             return sC_updateTableData("users", $fields, "login IN ('". implode("','", $users) ."')");
          }
         }
 
@@ -652,7 +652,7 @@ class MagesterGroup
     public function getLessons($returnObjects = false, $refresh = false)
     {
         if ($this -> lessons === false || $refresh) { //Make a database query only if the variable is not initialized, or it is explicitly asked
-            $result = eF_getTableData("lessons_to_groups lg, lessons l", "lg.*, l.id, l.name, l.active", "l.archive=0 and lg.lessons_ID = l.id and lg.groups_ID=".$this -> group['id']);
+            $result = sC_getTableData("lessons_to_groups lg, lessons l", "lg.*, l.id, l.name, l.active", "l.archive=0 and lg.lessons_ID = l.id and lg.groups_ID=".$this -> group['id']);
             $this -> lessons = array();
             foreach ($result as $value) {
              if ($returnObjects) {
@@ -702,7 +702,7 @@ class MagesterGroup
             // If the lesson is already assigned check if you need
             // to update the user type for this lesson
             if ($lessons[$lessons_ID]['user_type'] != $user_type) {
-                $ok = eF_updateTableData("lessons_to_groups", array("user_type" => $user_type), "lessons_ID = " . $lessons_ID);
+                $ok = sC_updateTableData("lessons_to_groups", array("user_type" => $user_type), "lessons_ID = " . $lessons_ID);
                 $this -> lessons[$lessons_ID]['user_type'] = $user_type;
 
                 return $ok;
@@ -711,7 +711,7 @@ class MagesterGroup
             $fields = array('lessons_ID' => $lessons_ID,
                 'user_type' => $user_type,
                 'groups_ID' => $this -> group['id']);
-            if ($ok = eF_insertTableData("lessons_to_groups", $fields)) {
+            if ($ok = sC_insertTableData("lessons_to_groups", $fields)) {
                 $newLesson = new MagesterLesson($lessons_ID);
                 $this -> lessons[$lessons_ID] = array('lessons_ID' => $lessons_ID,'lessons_name'=> $newLesson -> lesson['name'], 'user_type' => $user_type);
             }
@@ -762,8 +762,8 @@ class MagesterGroup
             if ($lesson instanceof MagesterLesson) {
                 $lesson = $lesson -> lesson['id'];
             }
-            if (eF_checkParameter($lesson, 'id')) {
-                eF_deleteTableData("lessons_to_groups", "lessons_ID ='".$lesson."' and groups_ID=".$this -> group['id']);
+            if (sC_checkParameter($lesson, 'id')) {
+                sC_deleteTableData("lessons_to_groups", "lessons_ID ='".$lesson."' and groups_ID=".$this -> group['id']);
             }
         }
 
@@ -823,7 +823,7 @@ class MagesterGroup
     public function getCourses($returnObjects = false, $refresh = false)
     {
         if ($this -> courses === false || $refresh) { //Make a database query only if the variable is not initialized, or it is explicitly asked
-            $result = eF_getTableData("courses_to_groups cg, courses c", "cg.*, c.*", "c.archive=0 and cg.courses_ID = c.id and cg.groups_ID=".$this -> group['id']);
+            $result = sC_getTableData("courses_to_groups cg, courses c", "cg.*, c.*", "c.archive=0 and cg.courses_ID = c.id and cg.groups_ID=".$this -> group['id']);
             $this -> courses = array();
             foreach ($result as $value) {
              if ($returnObjects) {
@@ -859,7 +859,7 @@ class MagesterGroup
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
   $where[] = "ug.users_LOGIN=u.login";
   $where[] = "ug.groups_ID=".$this -> group['id'];
-  $result = eF_getTableData("users u, users_to_groups ug", "u.*, 1 as has_group", implode(" and ", $where), $orderby, "", $limit);
+  $result = sC_getTableData("users u, users_to_groups ug", "u.*, 1 as has_group", implode(" and ", $where), $orderby, "", $limit);
   if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
    return MagesterUser :: convertDatabaseResultToUserObjects($result);
   } else {
@@ -885,7 +885,7 @@ class MagesterGroup
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
   $where[] = "ug.users_LOGIN=u.login";
   $where[] = "ug.groups_ID=".$this -> group['id'];
-  $result = eF_countTableData("users u, users_to_groups ug", "u.login, 1 as has_group", implode(" and ", $where), $orderby, "", $limit);
+  $result = sC_countTableData("users u, users_to_groups ug", "u.login, 1 as has_group", implode(" and ", $where), $orderby, "", $limit);
 
   return $result[0]['count'];
     }
@@ -908,10 +908,10 @@ class MagesterGroup
     {
      if ($userToCheck instanceOf MagesterUser) {
       $userToCheck = $userToCheck -> user['login'];
-     } elseif (!eF_checkParameter($userToCheck, 'login')) {
+     } elseif (!sC_checkParameter($userToCheck, 'login')) {
       throw new Exception(_INVALIDUSER.': '.$userToCheck, MagesterGroupException::INVALID_USER);
      }
-     $result = eF_getTableData("users_to_groups", "users_LOGIN", "users_LOGIN='".$userToCheck."' and groups_ID=".$this -> group['id']);
+     $result = sC_getTableData("users_to_groups", "users_LOGIN", "users_LOGIN='".$userToCheck."' and groups_ID=".$this -> group['id']);
      if (sizeof($result) > 0) {
       return true;
      } else {
@@ -939,7 +939,7 @@ class MagesterGroup
     {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
-     $result = eF_getTableData("users u left outer join (select * from users_to_groups ug where groups_ID=".$this -> group['id'].") r on r.users_LOGIN=u.login", "u.*, r.groups_ID is not null as has_group", implode(" and ", $where), $orderby, "", $limit);
+     $result = sC_getTableData("users u left outer join (select * from users_to_groups ug where groups_ID=".$this -> group['id'].") r on r.users_LOGIN=u.login", "u.*, r.groups_ID is not null as has_group", implode(" and ", $where), $orderby, "", $limit);
      if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
       return MagesterUser :: convertDatabaseResultToUserObjects($result);
      } else {
@@ -963,7 +963,7 @@ class MagesterGroup
     {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
   list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
-     $result = eF_countTableData("users u left outer join (select * from users_to_groups ug where groups_ID=".$this -> group['id'].") r on r.users_LOGIN=u.login", "u.login, r.groups_ID is not null as has_group", implode(" and ", $where), $orderby, "", $limit);
+     $result = sC_countTableData("users u left outer join (select * from users_to_groups ug where groups_ID=".$this -> group['id'].") r on r.users_LOGIN=u.login", "u.login, r.groups_ID is not null as has_group", implode(" and ", $where), $orderby, "", $limit);
 
      return $result[0]['count'];
     }
@@ -983,7 +983,7 @@ class MagesterGroup
   $select['num_completed'] = "(select count( * ) from users_to_courses uc, users u, users_to_groups ug where uc.courses_ID=c.id and u.archive=0 and uc.archive=0 and u.login=uc.users_LOGIN and u.user_type='student' and uc.completed=1 and u.login=ug.users_LOGIN and ug.groups_ID = ". $this -> group['id'].") as num_completed";
   $select = MagesterCourse :: convertCourseConstraintsToRequiredFields($constraints, $select);
   list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
-  $result = eF_getTableData("courses c", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
+  $result = sC_getTableData("courses c", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
   if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
    return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
   } else {
@@ -1021,7 +1021,7 @@ class MagesterGroup
        (select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.login=uc.users_LOGIN and u.user_type='student')
          as num_students";
   $where[] = "c.id=cg.courses_ID and cg.groups_ID=".$this -> group['id'];
-     $result = eF_getTableData("courses c, courses_to_groups cg", $select, implode(" and ", $where), $orderby, $groupby, $limit);
+     $result = sC_getTableData("courses c, courses_to_groups cg", $select, implode(" and ", $where), $orderby, $groupby, $limit);
      if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
       return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
      } else {
@@ -1046,7 +1046,7 @@ class MagesterGroup
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
   $where[] = "c.id=cg.courses_ID and cg.groups_ID=".$this -> group['id'];
-     $result = eF_countTableData("courses c, courses_to_groups cg", "c.id", implode(" and ", $where));
+     $result = sC_countTableData("courses c, courses_to_groups cg", "c.id", implode(" and ", $where));
 
   return $result[0]['count'];
     }
@@ -1080,7 +1080,7 @@ class MagesterGroup
          as num_lessons,
        (select count( * ) from users_to_courses uc, users u where uc.courses_ID=c.id and u.archive=0 and u.login=uc.users_LOGIN and u.user_type='student')
          as num_students";
-     $result = eF_getTableData("courses c left outer join (select courses_ID from courses_to_groups where groups_ID=".$this -> group['id'].") r on c.id=r.courses_ID", $select,
+     $result = sC_getTableData("courses c left outer join (select courses_ID from courses_to_groups where groups_ID=".$this -> group['id'].") r on c.id=r.courses_ID", $select,
          implode(" and ", $where), $orderby, $groupby, $limit);
 
   return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
@@ -1102,7 +1102,7 @@ class MagesterGroup
     {
      !empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
      list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
-     $result = eF_countTableData("courses c left outer join (select courses_ID from courses_to_groups where groups_ID=".$this -> group['id'].") r on c.id=r.courses_ID", "c.id",
+     $result = sC_countTableData("courses c left outer join (select courses_ID from courses_to_groups where groups_ID=".$this -> group['id'].") r on c.id=r.courses_ID", "c.id",
          implode(" and ", $where));
 
   return $result[0]['count'];
@@ -1144,7 +1144,7 @@ class MagesterGroup
             // If the course is already assigned check if you need
             // to update the user type for this course
             if ($courses[$courses_ID]['user_type'] != $user_type) {
-                $ok = eF_updateTableData("courses_to_groups", array("user_type" => $user_type), "courses_ID = " . $courses_ID);
+                $ok = sC_updateTableData("courses_to_groups", array("user_type" => $user_type), "courses_ID = " . $courses_ID);
                 $this -> courses[$courses_ID]['user_type'] = $user_type;
 
                 return $ok;
@@ -1153,7 +1153,7 @@ class MagesterGroup
             $fields = array('courses_ID' => $courses_ID,
                 'user_type' => $user_type,
                 'groups_ID' => $this -> group['id']);
-            if ($ok = eF_insertTableData("courses_to_groups", $fields)) {
+            if ($ok = sC_insertTableData("courses_to_groups", $fields)) {
                 $newCourse = new MagesterCourse($courses_ID);
                 $this -> courses[$courses_ID] = array('courses_ID' => $courses_ID,'courses_name'=> $newCourse -> course['name'], 'user_type' => $user_type);
             }
@@ -1204,8 +1204,8 @@ class MagesterGroup
             if ($course instanceof MagesterCourse) {
                 $course = $course -> course['id'];
             }
-            if (eF_checkParameter($course, 'id')) {
-                eF_deleteTableData("courses_to_groups", "courses_ID ='".$course."' and groups_ID=".$this -> group['id']);
+            if (sC_checkParameter($course, 'id')) {
+                sC_deleteTableData("courses_to_groups", "courses_ID ='".$course."' and groups_ID=".$this -> group['id']);
             }
         }
 
@@ -1258,9 +1258,9 @@ class MagesterGroup
     {
         // Remove the current default group
         if ($this -> group['is_default']) {
-            eF_updateTableData("groups", array("is_default" => 0), "1=1");
+            sC_updateTableData("groups", array("is_default" => 0), "1=1");
         }
-        $ok = eF_updateTableData("groups", $this -> group, "id=".$this -> group['id']);
+        $ok = sC_updateTableData("groups", $this -> group, "id=".$this -> group['id']);
 
         return $ok;
     }
@@ -1302,7 +1302,7 @@ class MagesterGroup
     {
      // Get the default SysClass group
      if (!$default_group) {
-      $default_group = eF_getTableData("groups", "*", "is_default = 1 AND active = 1");
+      $default_group = sC_getTableData("groups", "*", "is_default = 1 AND active = 1");
       if (sizeof($default_group)) {
        $default_group = $default_group[0];
       } else {
@@ -1354,9 +1354,9 @@ class MagesterGroup
     {
         $groups = array();
         if ($returnDisabled) {
-            $data = ef_getTableData("groups", "id, name");
+            $data = sC_getTableData("groups", "id, name");
         } else {
-            $data = ef_getTableData("groups", "id, name", "active = 1");
+            $data = sC_getTableData("groups", "id, name", "active = 1");
         }
         if ($returnObjects) {
             foreach ($data as $group_info) {
@@ -1404,9 +1404,9 @@ class MagesterGroup
     {
         $lessons = array();
         if ($returnDisabled) {
-            $data = eF_getTableData("lessons JOIN users_to_lessons ON lessons.id = users_to_lessons.lessons_ID JOIN users_to_groups ON users_to_groups.users_LOGIN = users_to_lessons.users_LOGIN", "lessons.*, count(users_to_lessons.users_LOGIN) as group_users_count", "users_to_lessons.archive=0 and groups_ID = ". $this -> group['id'], "", "lessons_ID");
+            $data = sC_getTableData("lessons JOIN users_to_lessons ON lessons.id = users_to_lessons.lessons_ID JOIN users_to_groups ON users_to_groups.users_LOGIN = users_to_lessons.users_LOGIN", "lessons.*, count(users_to_lessons.users_LOGIN) as group_users_count", "users_to_lessons.archive=0 and groups_ID = ". $this -> group['id'], "", "lessons_ID");
         } else {
-            $data = eF_getTableData("lessons JOIN users_to_lessons ON lessons.id = users_to_lessons.lessons_ID JOIN users_to_groups ON users_to_groups.users_LOGIN = users_to_lessons.users_LOGIN", "lessons.*, count(users_to_lessons.users_LOGIN) as group_users_count", "users_to_lessons.archive=0 and lessons.active = 1 AND groups_ID = ". $this -> group['id'], "", "lessons_ID");
+            $data = sC_getTableData("lessons JOIN users_to_lessons ON lessons.id = users_to_lessons.lessons_ID JOIN users_to_groups ON users_to_groups.users_LOGIN = users_to_lessons.users_LOGIN", "lessons.*, count(users_to_lessons.users_LOGIN) as group_users_count", "users_to_lessons.archive=0 and lessons.active = 1 AND groups_ID = ". $this -> group['id'], "", "lessons_ID");
         }
         if ($returnObjects) {
             foreach ($data as $lesson_info) {

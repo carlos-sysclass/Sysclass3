@@ -16,8 +16,8 @@ class module_cep extends MagesterModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_cep_logradouros");
-        $a = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_cep_logradouros` (
+        sC_executeNew("drop table if exists module_cep_logradouros");
+        $a = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_cep_logradouros` (
   			`id` mediumint(8) NOT NULL auto_increment,
 			`cep` varchar(9) NOT NULL,
 			`tipo_logradouro` varchar(250) NOT NULL,
@@ -38,8 +38,8 @@ class module_cep extends MagesterModule
 
     public function onUninstall()
     {
-        $a = eF_executeNew("drop table module_cep_logradouros;");
-        $b = eF_deleteTableData("configuration", "name IN ('module_cep_webservice_url', 'module_cep_webservice_format')");
+        $a = sC_executeNew("drop table module_cep_logradouros;");
+        $b = sC_deleteTableData("configuration", "name IN ('module_cep_webservice_url', 'module_cep_webservice_format')");
 
         return $a && $b;
     }
@@ -50,7 +50,7 @@ class module_cep extends MagesterModule
     	// SANITIZE CEP
 		$cep	= preg_replace('/\D/', '', $cep);
 
-    	$resultCep = eF_getTableData("module_cep_logradouros", "*", sprintf("cep = '%s'", $cep));
+    	$resultCep = sC_getTableData("module_cep_logradouros", "*", sprintf("cep = '%s'", $cep));
 
     	if (count($resultCep) > 0) {
     		// @todo: CHECK FOR OLD RECORDS
@@ -87,13 +87,13 @@ class module_cep extends MagesterModule
 						'logradouro'		=> (string) $xml->logradouro
 					);
 					// INSERE INFORMAÇÕES NO BANCO DE DADOS, PARA CONSULTA FUTURA
-					eF_insertTableData("module_cep_logradouros", $cepData);
+					sC_insertTableData("module_cep_logradouros", $cepData);
 				} else { // ERROR
 
 					// CHECK THE maguser_cep BASE
 					$cep = $_GET['cep'];
 
-					$resultCep = eF_getTableData("module_cep_logradouros_base", "*", sprintf("cep = '%s'", $cep));
+					$resultCep = sC_getTableData("module_cep_logradouros_base", "*", sprintf("cep = '%s'", $cep));
 
 					if (count($resultCep) > 0) {
 						$cepData = $resultCep[0];
@@ -107,12 +107,12 @@ class module_cep extends MagesterModule
 							'logradouro'		=> $cepData['logradouro'],
 						);
 						// INSERE INFORMAÇÕES NO BANCO DE DADOS, PARA CONSULTA FUTURA
-						$countCep = eF_countTableData("module_cep_logradouros", "*", sprintf("cep = '%s'", preg_replace('/\D/', '', $cep)));
+						$countCep = sC_countTableData("module_cep_logradouros", "*", sprintf("cep = '%s'", preg_replace('/\D/', '', $cep)));
 
 						if ($countCep > 0) {
-							eF_updateTableData("module_cep_logradouros", $cepData, sprintf("cep = '%s'", preg_replace('/\D/', '', $cep)));
+							sC_updateTableData("module_cep_logradouros", $cepData, sprintf("cep = '%s'", preg_replace('/\D/', '', $cep)));
 						} else {
-							eF_insertTableData("module_cep_logradouros", $cepData);
+							sC_insertTableData("module_cep_logradouros", $cepData);
 						}
 
 					} else {

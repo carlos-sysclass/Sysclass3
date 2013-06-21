@@ -25,7 +25,7 @@ try {
 }
 $current_dir = getcwd();
 chdir(G_SYSTEMAVATARSPATH);
-$avatar_files = eF_getDirContents(false, 'png');
+$avatar_files = sC_getDirContents(false, 'png');
 chdir($current_dir);
 
 $smarty -> assign("T_SYSTEM_AVATARS", $avatar_files);

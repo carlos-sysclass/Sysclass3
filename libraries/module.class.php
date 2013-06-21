@@ -167,7 +167,7 @@ abstract class MagesterModule
     {
         // TRY TO LOAD FILE FROM module_language
         /*
-        $modules = eF_loadAllModules(true);
+        $modules = sC_loadAllModules(true);
 
         var_dump($modules['module_language']);
         exit;
@@ -244,7 +244,7 @@ abstract class MagesterModule
             $userDetailData = MagesterUserDetails::getUserDetails($userData->user['login']);
 
             $currentIesID = !empty($userDetailData['ies_id']) && is_numeric($userDetailData['ies_id']) ? $userDetailData['ies_id'] : 1;
-            list($currentIES) = eF_getTableData("module_ies", "*", "id = " . $currentIesID);
+            list($currentIES) = sC_getTableData("module_ies", "*", "id = " . $currentIesID);
         }
         return $currentIES;
     }
@@ -909,7 +909,7 @@ abstract class MagesterModule
      *  Example implementation:
      * <code>
      * public function onExportLesson($lessonId) {
-     *     $data = eF_getTableData("myModule", "*", "lessons_ID = $lessonId");
+     *     $data = sC_getTableData("myModule", "*", "lessons_ID = $lessonId");
      *     $data['myModuleVersion'] = "3.5beta";
      *     return $data;
      * }
@@ -935,7 +935,7 @@ abstract class MagesterModule
      *     echo "My module's version is {$data['myModuleVersion']}";
      *     unset($data['myModuleVersion']);
      *     foreach ($data as $record) {
-     *         eF_insertTableData("myModule", $record);
+     *         sC_insertTableData("myModule", $record);
      *     }
      *     return true;
      * }

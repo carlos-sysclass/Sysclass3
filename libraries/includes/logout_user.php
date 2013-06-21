@@ -14,7 +14,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 $admins = array(); $logged_in_admins = array();
 $professors = array(); $logged_in_professors = array();
 $students = array(); $logged_in_students = array();
-//$result = eF_getTableData("users_online, users", "users_online.users_LOGIN, users.user_type", "users.login = users_online.users_LOGIN");
+//$result = sC_getTableData("users_online, users", "users_online.users_LOGIN, users.user_type", "users.login = users_online.users_LOGIN");
 // pr($result);
 $onlineUsers = MagesterUser :: getUsersOnline($GLOBALS['configuration']['autologout_time'] * 60);
 foreach ($onlineUsers as $value) {

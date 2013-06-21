@@ -46,7 +46,7 @@
 	{$smarty.capture.t_xwebtutoria_register_form}
 {else}
 	{if isset($T_XWEBTUTORIA_QUESTION)}
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.const.__XWEBTUTORIA_QUESTION_TO_ANSWER
 			data			= $smarty.capture.webtutoria_question
 			contentclass	= "xwebtutoria-list"
@@ -56,7 +56,7 @@
 		}
 	{/if}
 
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 			= $T_XWEBTUTORIA_BODY_TITLE
 		data			= $smarty.capture.t_xwebtutoria_register_form
 	}

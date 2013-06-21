@@ -11,8 +11,8 @@
    <tr><td class = "labelCell">{$T_SKILLS_FORM.category.label}:&nbsp;</td>
     <td class = "elementCell">
      {$T_SKILLS_FORM.category.html}
-     <a href="{$smarty.session.s_type}.php?ctg=module_hcd&op=skill_cat&add_skill_cat=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._ADDSKILLCATEGORY}', 2)" target = "POPUP_FRAME"><img src='images/16x16/add.png' title= '{$smarty.const._ADDSKILLCATEGORY}' alt = '{$smarty.const._ADDSKILLCATEGORY}' border='0' /></a>
-       <a id = "edit_skill_cat" href="{$smarty.session.s_type}.php?ctg=module_hcd&op=skill_cat&edit_skill_cat={$T_DEFAULT_CATEGORY}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDITSKILLCATEGORY}', 2)" target = "POPUP_FRAME" {if $T_DEFAULT_CATEGORY == ""}style="visibility:hidden"{/if}><img src='images/16x16/edit.png' title= '{$smarty.const._EDITSKILLCATEGORY}' alt = '{$smarty.const._EDITSKILLCATEGORY}' border='0' /></a>
+     <a href="{$smarty.session.s_type}.php?ctg=module_hcd&op=skill_cat&add_skill_cat=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._ADDSKILLCATEGORY}', 2)" target = "POPUP_FRAME"><img src='images/16x16/add.png' title= '{$smarty.const._ADDSKILLCATEGORY}' alt = '{$smarty.const._ADDSKILLCATEGORY}' border='0' /></a>
+       <a id = "edit_skill_cat" href="{$smarty.session.s_type}.php?ctg=module_hcd&op=skill_cat&edit_skill_cat={$T_DEFAULT_CATEGORY}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDITSKILLCATEGORY}', 2)" target = "POPUP_FRAME" {if $T_DEFAULT_CATEGORY == ""}style="visibility:hidden"{/if}><img src='images/16x16/edit.png' title= '{$smarty.const._EDITSKILLCATEGORY}' alt = '{$smarty.const._EDITSKILLCATEGORY}' border='0' /></a>
        <a id = "del_skill_cat" href="{$smarty.session.s_type}.php?ctg=module_hcd&op=skill_cat&del_skill_cat={$T_DEFAULT_CATEGORY}" onclick = "return confirm('{$smarty.const._AREYOUSUREYOUWANTTODISMISSTHISSKILLCATEGORY}')" {if $T_DEFAULT_CATEGORY == ""}style="visibility:hidden"{/if}><img src='images/16x16/error_delete.png' title= '{$smarty.const._DELETESKILLCATEGORY}' alt = '{$smarty.const._DELETESKILLCATEGORY}' border='0' /></a>
     </td>
    </tr>
@@ -116,19 +116,19 @@
  {capture name = "t_edit_skill_code"}
  <div class="tabber">
   {if $smarty.get.add_skill}
-   {eF_template_printBlock tabber = "skills" title = $smarty.const._NEWSKILL data = $smarty.capture.t_skill_code image = '32x32/tools.png'}
+   {sC_template_printBlock tabber = "skills" title = $smarty.const._NEWSKILL data = $smarty.capture.t_skill_code image = '32x32/tools.png'}
   {else}
    <div class="tabbertab">
     <h3>{$smarty.const._EDITSKILL}</h3>
-    {eF_template_printBlock title = $smarty.const._EDITSKILL|cat:"&nbsp;<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_skill_code image = '32x32/tools.png'}
-    {eF_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._HAVINGSKILL|cat:"<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png'}
+    {sC_template_printBlock title = $smarty.const._EDITSKILL|cat:"&nbsp;<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_skill_code image = '32x32/tools.png'}
+    {sC_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._HAVINGSKILL|cat:"<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png'}
    </div>
    <script> var myform = "employees_to_skill";</script>
-   {eF_template_printBlock tabber = "assign_employees" title = $smarty.const._ASSIGNEMPLOYEESTHESKILL|cat:"<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_employees_to_skill image = '32x32/tools.png'}
+   {sC_template_printBlock tabber = "assign_employees" title = $smarty.const._ASSIGNEMPLOYEESTHESKILL|cat:"<span class='innerTableName'>&quot;`$T_SKILL_NAME`&quot;</span>" data = $smarty.capture.t_employees_to_skill image = '32x32/tools.png'}
   {/if}
   <div>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._EDITSKILL data = $smarty.capture.t_edit_skill_code image = '32x32/tools.png'}
+  {sC_template_printBlock title = $smarty.const._EDITSKILL data = $smarty.capture.t_edit_skill_code image = '32x32/tools.png'}
 
 {else}
 
@@ -170,5 +170,5 @@
 {/if}
  {/capture}
 
- {eF_template_printBlock title = $smarty.const._SKILLS data = $smarty.capture.t_skills_code image = '32x32/tools.png'}
+ {sC_template_printBlock title = $smarty.const._SKILLS data = $smarty.capture.t_skills_code image = '32x32/tools.png'}
 {/if}

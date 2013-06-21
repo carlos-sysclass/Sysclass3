@@ -53,7 +53,7 @@ class module_administrator_tools extends MagesterExtendedModule
 
      * public function onInstall() {
 
-     *   return eF_executeNew("CREATE TABLE module_mymodule (
+     *   return sC_executeNew("CREATE TABLE module_mymodule (
 
      *                    id int(11) NOT NULL auto_increment,
 
@@ -82,7 +82,7 @@ class module_administrator_tools extends MagesterExtendedModule
 
      * public function onUninstall() {
 
-     *   return eF_executeNew("DROP TABLE module_mymodule;");
+     *   return sC_executeNew("DROP TABLE module_mymodule;");
 
      * }
 
@@ -93,7 +93,7 @@ class module_administrator_tools extends MagesterExtendedModule
      */
     public function onUninstall()
     {
-  //eF_executeNew("DROP TABLE ;");
+  //sC_executeNew("DROP TABLE ;");
     }
     /*
 
@@ -221,18 +221,18 @@ class module_administrator_tools extends MagesterExtendedModule
         $fields = $GLOBALS['db'] -> GetCol("describe $table");
         foreach ($fields as $value) {
          if (stripos($value, 'login') !== false) {
-          eF_updateTableData($table, array($value => $values['new_login']), "$value = '".$values['users_LOGIN']."'");
+          sC_updateTableData($table, array($value => $values['new_login']), "$value = '".$values['users_LOGIN']."'");
          }
         }
         if ($table == 'f_personal_messages') {
          //@todo:recipient
-         eF_updateTableData($table, array("sender" => $values['new_login']), "sender = '".$values['users_LOGIN']."'");
+         sC_updateTableData($table, array("sender" => $values['new_login']), "sender = '".$values['users_LOGIN']."'");
         }
         if ($table == 'notifications' || $table == 'sent_notifications') {
-         eF_updateTableData($table, array("recipient" => $values['new_login']), "recipient = '".$values['users_LOGIN']."'");
+         sC_updateTableData($table, array("recipient" => $values['new_login']), "recipient = '".$values['users_LOGIN']."'");
         }
         if ($table == 'surveys' || $table == 'module_hcd_events') {
-         eF_updateTableData($table, array("author" => $values['new_login']), "author = '".$values['users_LOGIN']."'");
+         sC_updateTableData($table, array("author" => $values['new_login']), "author = '".$values['users_LOGIN']."'");
         }
        }
       } catch (Exception $e) {
@@ -248,13 +248,13 @@ class module_administrator_tools extends MagesterExtendedModule
      }
     } catch (Exception $e) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
      $message_type = 'failure';
     }
    }
    $smarty -> assign("T_TOOLS_FORM", $form -> toArray());
       try {
-       if (isset($_GET['ajax']) && isset($_GET['user']) && eF_checkParameter($_GET['user'], 'login')) {
+       if (isset($_GET['ajax']) && isset($_GET['user']) && sC_checkParameter($_GET['user'], 'login')) {
         $user = MagesterUserFactory::factory($_GET['user']);
         echo json_encode(array('status' => 1, 'supervisors' => $supervisors, 'supervisor_names' => $supervisorNames));
         exit;
@@ -301,30 +301,30 @@ class module_administrator_tools extends MagesterExtendedModule
      }
     } catch (Exception $e) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
      $message_type = 'failure';
     }
    }
    $smarty -> assign("T_SQL_FORM", $sqlForm -> toArray());
      } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
      }
      $this -> setMessageVar($message, $message_type);
     }
     private function toggleSetting($setting, $enable)
     {
-     $result = eF_getTableData("lessons", "id, options");
+     $result = sC_getTableData("lessons", "id, options");
      foreach ($result as $value) {
       $options = unserialize($value['options']);
       $enable ? $options[$setting] = 1 : $options[$setting] = 0;
-      eF_updateTableData("lessons", array("options" => serialize($options)), "id=".$value['id']);
+      sC_updateTableData("lessons", array("options" => serialize($options)), "id=".$value['id']);
       if ($setting == 'chat') {
        if ($enable) {
-        eF_updateTableData("chatrooms", array("active" => 1), "lessons_ID = '".$value['id']."'");
+        sC_updateTableData("chatrooms", array("active" => 1), "lessons_ID = '".$value['id']."'");
        } else {
-           eF_updateTableData("chatrooms", array("active" => 0), "lessons_ID = '".$value['id']."'");
+           sC_updateTableData("chatrooms", array("active" => 0), "lessons_ID = '".$value['id']."'");
        }
       }
      }
@@ -385,7 +385,7 @@ class module_administrator_tools extends MagesterExtendedModule
      if ($GLOBALS['currentTheme'] -> options['sidebar_interface'] == 1 || $GLOBALS['currentTheme'] -> options['sidebar_interface'] == 2) {
       $lessonSettings['show_horizontal_bar'] = array('text' => _SHOWHORIZONTALBAR, 'image' => "32x32/export.png", 'onClick' => 'activate(this, \'show_horizontal_bar\')', 'title' => _CLICKTOTOGGLE, 'group' => 1, 'class' => 'inactiveImage');
      }
-     foreach (eF_loadAllModules(true) as $module) {
+     foreach (sC_loadAllModules(true) as $module) {
       if ($module -> isLessonModule()) {
        // The $setLanguage variable is defined in globals.php
        if (!in_array("administrator", $module -> getPermittedRoles())) {

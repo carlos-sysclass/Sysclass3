@@ -32,8 +32,8 @@ class coupons extends MagesterEntity
     public $coupons = array();
     public function __construct($param, $isCouponCode)
     {
-     if ($isCouponCode && eF_checkParameter($param, 'text')) {
-      $result = eF_getTableData("coupons", "*", "code='".$param."'");
+     if ($isCouponCode && sC_checkParameter($param, 'text')) {
+      $result = sC_getTableData("coupons", "*", "code='".$param."'");
       $param = $result[0];
      }
      parent :: __construct($param);
@@ -79,7 +79,7 @@ class coupons extends MagesterEntity
     }
     public function getTotalUsedTimes()
     {
-     $result = eF_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."'");
+     $result = sC_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."'");
 
      return $result[0]['count(*)'];
     }
@@ -88,7 +88,7 @@ class coupons extends MagesterEntity
      if (!($user instanceOf MagesterUser)) {
       $user = Magester:: factory($user);
      }
-     $result = eF_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."' and users_ID=".$user -> user['id']);
+     $result = sC_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."' and users_ID=".$user -> user['id']);
 
      return $result[0]['count(*)'];
     }
@@ -105,7 +105,7 @@ class coupons extends MagesterEntity
          'payments_ID' => $payment -> {$payment -> entity}['id'],
          'products_list' => serialize($productsList),
          'timestamp' => time());
-     eF_insertTableData("users_to_coupons", $fields);
+     sC_insertTableData("users_to_coupons", $fields);
      MagesterEvent::triggerEvent(array("type" => MagesterEvent::COUPON_USAGE,
              "users_LOGIN" => $user -> user['login'],
              "users_name" => $user -> user['name'],
@@ -116,7 +116,7 @@ class coupons extends MagesterEntity
 
     public function getCouponStatistics()
     {
-        $result = eF_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
+        $result = sC_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
         $stats = array('total_uses' => sizeof($result),
                        'remaining_uses' => $this -> {$this -> entity}['max_uses'] - sizeof($result) >= 0 ? $this -> {$this -> entity}['max_uses'] - sizeof($result) : 0,
                        'expired' => !$this -> checkExpired(),
@@ -129,9 +129,9 @@ class coupons extends MagesterEntity
     public function getCouponCourses()
     {
         $couponCourses = array();
-        $courseNames = eF_getTableDataFlat("courses", "id,name");
+        $courseNames = sC_getTableDataFlat("courses", "id,name");
         $courseNames = array_combine($courseNames['id'], $courseNames['name']);
-        $result = eF_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
+        $result = sC_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
         foreach ($result as $value) {
             $products = unserialize($value['products_list']);
             foreach ($products['courses'] as $id) {
@@ -145,9 +145,9 @@ class coupons extends MagesterEntity
     public function getCouponLessons()
     {
         $couponLessons = array();
-        $lessonNames = eF_getTableDataFlat("lessons", "id,name");
+        $lessonNames = sC_getTableDataFlat("lessons", "id,name");
         $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
-        $result = eF_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
+        $result = sC_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
         foreach ($result as $value) {
             $products = unserialize($value['products_list']);
             foreach ($products['lessons'] as $id) {
@@ -189,8 +189,8 @@ class coupons extends MagesterEntity
             'discount' => $fields['discount'] ? $fields['discount'] : 0,
                         'description' => $fields['description'],
                         'active' => $fields['active'] ? $fields['active'] : 1);
-        $newId = eF_insertTableData("coupons", $fields);
-        $result = eF_getTableData("coupons", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+        $newId = sC_insertTableData("coupons", $fields);
+        $result = sC_getTableData("coupons", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $coupons = new coupons($result[0]['id']);
 
         return $coupons;

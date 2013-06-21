@@ -3,7 +3,7 @@
  <tr><td class = "moduleCell">
  {if !$smarty.get.type}
 
-  {eF_template_printBlock title=$smarty.const._ARCHIVE columns=3 links=$T_ARCHIVE_OPTIONS image='32x32/options.png' help = 'Archive'}
+  {sC_template_printBlock title=$smarty.const._ARCHIVE columns=3 links=$T_ARCHIVE_OPTIONS image='32x32/options.png' help = 'Archive'}
 
  {else}
 
@@ -55,7 +55,7 @@
              </div>
          {/if}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._ARCHIVE data = $smarty.capture.t_archive_list_code image='32x32/generic.png'}
+  {sC_template_printBlock title = $smarty.const._ARCHIVE data = $smarty.capture.t_archive_list_code image='32x32/generic.png'}
 
  {/if}
 

@@ -192,25 +192,25 @@ class ADODB_ldap extends ADOConnection
         $version = array();
         /*
         Determines how aliases are handled during search.
-        LDAP_DEREF_NEVER (0x00)
-        LDAP_DEREF_SEARCHING (0x01)
-        LDAP_DEREF_FINDING (0x02)
-        LDAP_DEREF_ALWAYS (0x03)
-        The LDAP_DEREF_SEARCHING value means aliases are dereferenced during the search but
-        not when locating the base object of the search. The LDAP_DEREF_FINDING value means
+        LDAP_DERsC_NEVER (0x00)
+        LDAP_DERsC_SEARCHING (0x01)
+        LDAP_DERsC_FINDING (0x02)
+        LDAP_DERsC_ALWAYS (0x03)
+        The LDAP_DERsC_SEARCHING value means aliases are dereferenced during the search but
+        not when locating the base object of the search. The LDAP_DERsC_FINDING value means
         aliases are dereferenced when locating the base object but not during the search.
-        Default: LDAP_DEREF_NEVER
+        Default: LDAP_DERsC_NEVER
         */
         ldap_get_option( $this->_connectionID, LDAP_OPT_DEREF, $version['LDAP_OPT_DEREF'] ) ;
         switch ($version['LDAP_OPT_DEREF']) {
           case 0:
-            $version['LDAP_OPT_DEREF'] = 'LDAP_DEREF_NEVER';
+            $version['LDAP_OPT_DEREF'] = 'LDAP_DERsC_NEVER';
           case 1:
-            $version['LDAP_OPT_DEREF'] = 'LDAP_DEREF_SEARCHING';
+            $version['LDAP_OPT_DEREF'] = 'LDAP_DERsC_SEARCHING';
           case 2:
-            $version['LDAP_OPT_DEREF'] = 'LDAP_DEREF_FINDING';
+            $version['LDAP_OPT_DEREF'] = 'LDAP_DERsC_FINDING';
           case 3:
-            $version['LDAP_OPT_DEREF'] = 'LDAP_DEREF_ALWAYS';
+            $version['LDAP_OPT_DEREF'] = 'LDAP_DERsC_ALWAYS';
         }
 
         /*

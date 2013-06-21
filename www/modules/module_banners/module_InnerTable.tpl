@@ -31,4 +31,4 @@
     </table>
 {/capture}
 
-{eF_template_printBlock title = $smarty.const._BANNERS_BANNERS data = $smarty.capture.t_inner_table_code image = $T_BANNERS_BASELINK|cat:'images/banners32.png' options = $T_BANNERS_INNERTABLE_OPTIONS absoluteImagePath = 1}
+{sC_template_printBlock title = $smarty.const._BANNERS_BANNERS data = $smarty.capture.t_inner_table_code image = $T_BANNERS_BASELINK|cat:'images/banners32.png' options = $T_BANNERS_INNERTABLE_OPTIONS absoluteImagePath = 1}

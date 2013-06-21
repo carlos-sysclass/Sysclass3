@@ -25,7 +25,7 @@
                                         <td class = "elementCell">{$T_ADD_PROJECT_FORM.auto_assign.html}</td></tr>
                                     <tr><td class = "labelCell">{$smarty.const._DEADLINE}:&nbsp;</td>
                                 {if $_change_}
-                                        <td class = "elementCell">{eF_template_html_select_date prefix="deadline_" time=$T_DEADLINE_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="deadline_" time = $T_DEADLINE_TIMESTAMP display_seconds = false}</td></tr>
+                                        <td class = "elementCell">{sC_template_html_select_date prefix="deadline_" time=$T_DEADLINE_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="deadline_" time = $T_DEADLINE_TIMESTAMP display_seconds = false}</td></tr>
                                 {else}
                                         <td class = "elementCell">#filter:timestamp_time-{$T_DEADLINE_TIMESTAMP}#</td></tr>
                                 {/if}
@@ -52,7 +52,7 @@
                                 </form>
                                 <div id = "fmInitial"><div id = "filemanager_div" style = "display:none;">{$T_FILE_MANAGER}</div></div>
        {/capture}
-       {eF_template_printBlock tabber = "projects" title=$smarty.const._PROJECT data=$smarty.capture.t_projects_code image='32x32/projects.png'}
+       {sC_template_printBlock tabber = "projects" title=$smarty.const._PROJECT data=$smarty.capture.t_projects_code image='32x32/projects.png'}
 
                     {if $smarty.get.edit_project}
                       <script>var editProject = '{$smarty.get.edit_project}';</script>
@@ -80,13 +80,13 @@
                                 </table>
 <!--/ajax:usersTable-->
        {/capture}
-       {eF_template_printBlock tabber = "project_users" title=$smarty.const._USERS data=$smarty.capture.t_project_users_code image='32x32/users.png'}
+       {sC_template_printBlock tabber = "project_users" title=$smarty.const._USERS data=$smarty.capture.t_project_users_code image='32x32/users.png'}
 
                     {/if}
                         </div>
                 {/capture}
                 {if $smarty.get.add_project}{assign var = "innerTableTitle" value = $smarty.const._ADDPROJECT}{else}{assign var = "innerTableTitle" value = "`$smarty.const._OPTIONSFORPROJECT`<span class='innerTableName'> &quot;`$T_CURRENT_PROJECT->project.title`&quot;</span>"}{/if}
-                {eF_template_printBlock title=$innerTableTitle data=$smarty.capture.t_add_project_code image='32x32/projects.png'}
+                {sC_template_printBlock title=$innerTableTitle data=$smarty.capture.t_add_project_code image='32x32/projects.png'}
 
             {elseif $_professor_ && $smarty.get.project_results}
              <script>var editProject = '{$smarty.get.project_results}';</script>
@@ -122,14 +122,14 @@
                                     <tr class = "defaultRowHeight {cycle values = "oddRowColor, evenRowColor"} {if !$user.active}deactivatedTableElement{/if}">
                                         <td>#filter:login-{$user.users_LOGIN}#</td>
                                         <td>{if $user.filename}
-                                            <a href = "view_file.php?file={$user.filename}" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$user.file}', 2)">{$user.file}</a>
+                                            <a href = "view_file.php?file={$user.filename}" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$user.file}', 2)">{$user.file}</a>
                                             <a href = "view_file.php?file={$user.filename}&action=download" target = "POPUP_FRAME"><img src = "images/16x16/import.png" alt = "{$smarty.const._DOWNLOADFILE} {$user.file}" title = "{$smarty.const._DOWNLOADFILE} {$user.file}" border = "0" style = "vertical-align:middle"></a>
                                             {/if}
                                         </td>
                                         <td>{if $user.upload_timestamp != 'empty'}#filter:timestamp_time-{$user.upload_timestamp}#{/if}</td> {*'empty' is set inside the php file, so that the sorting can be done correctly*}
                                     {if $_change_}
 
-          <td><span id = "comments_{$user.users_LOGIN}">{$user.comments|@strip_tags|eF_truncate:30}</span>&nbsp;<a href = "{$smarty.server.PHP_SELF}?ctg=projects&project_results={$smarty.get.project_results}&login={$user.users_LOGIN}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1)" target = "POPUP_FRAME" ><img style="vertical-align:middle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a></td>
+          <td><span id = "comments_{$user.users_LOGIN}">{$user.comments|@strip_tags|sC_truncate:30}</span>&nbsp;<a href = "{$smarty.server.PHP_SELF}?ctg=projects&project_results={$smarty.get.project_results}&login={$user.users_LOGIN}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1)" target = "POPUP_FRAME" ><img style="vertical-align:middle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a></td>
 
                                         <td><input type = "text" id = "grade_{$user.users_LOGIN}" value = "{$user.grade}" size = "5" maxlength = "5" /></td>
                                         <td class = "centerAlign">
@@ -149,7 +149,7 @@
 <!--/ajax:resultsTable-->
     {/if}
                 {/capture}
-                {eF_template_printBlock title=$smarty.const._RESULTSFORPROJECT|cat:' &quot;'|cat:$T_CURRENT_PROJECT->project.title|cat:'&quot;' data=$smarty.capture.t_project_results_code image='32x32/projects.png'}
+                {sC_template_printBlock title=$smarty.const._RESULTSFORPROJECT|cat:' &quot;'|cat:$T_CURRENT_PROJECT->project.title|cat:'&quot;' data=$smarty.capture.t_project_results_code image='32x32/projects.png'}
 
             {elseif $smarty.get.view_project}
                 {capture name = "t_view_project_code"}
@@ -206,7 +206,7 @@
 
 
                 {/capture}
-                {eF_template_printBlock title="`$smarty.const._VIEWPROJECT`: `$T_CURRENT_PROJECT->project.title`" data=$smarty.capture.t_view_project_code image='32x32/projects.png'}
+                {sC_template_printBlock title="`$smarty.const._VIEWPROJECT`: `$T_CURRENT_PROJECT->project.title`" data=$smarty.capture.t_view_project_code image='32x32/projects.png'}
 
             {else}
                 {capture name = "t_print_projects_code"}
@@ -269,7 +269,7 @@
                         {/foreach}
                                     </table>
         {/capture}
-        {eF_template_printBlock tabber = "active" title="`$smarty.const._ACTIVE_PROJECTS` (`$T_ACTIVE_COUNT`)" data=$smarty.capture.t_active_projects_code image='32x32/projects.png'}
+        {sC_template_printBlock tabber = "active" title="`$smarty.const._ACTIVE_PROJECTS` (`$T_ACTIVE_COUNT`)" data=$smarty.capture.t_active_projects_code image='32x32/projects.png'}
 
                                 {capture name = "t_inactive_projects_code"}
          <table class = "sortedTable" width = "100%">
@@ -320,12 +320,12 @@
                         {/foreach}
                                     </table>
         {/capture}
-                                {eF_template_printBlock tabber = "inactive" title="`$smarty.const._INACTIVE_PROJECTS` (`$T_INACTIVE_COUNT`)" data=$smarty.capture.t_inactive_projects_code image='32x32/projects.png'}
+                                {sC_template_printBlock tabber = "inactive" title="`$smarty.const._INACTIVE_PROJECTS` (`$T_INACTIVE_COUNT`)" data=$smarty.capture.t_inactive_projects_code image='32x32/projects.png'}
 
                                 </div>
                 {/capture}
 
-                {eF_template_printBlock title=$smarty.const._PROJECTS data=$smarty.capture.t_print_projects_code image='32x32/projects.png' help='Projects'}
+                {sC_template_printBlock title=$smarty.const._PROJECTS data=$smarty.capture.t_print_projects_code image='32x32/projects.png' help='Projects'}
             {/if}
                                 </td></tr>
         {/capture}

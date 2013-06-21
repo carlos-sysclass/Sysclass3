@@ -112,7 +112,7 @@
 				<!-- Botão meu perfil ( fim ) -->
 
 				{if $smarty.session.s_type == 'student'}
-				<a target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._INFOFORLESSON}', 2)" href="javascript: void(0);" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" id="xcourse_lesso_info_link">
+				<a target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$smarty.const._INFOFORLESSON}', 2)" href="javascript: void(0);" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" id="xcourse_lesso_info_link">
 					<button class="inputo-top-info" type="button">
 						<img class="inputo-top-info-icon" src="images/others/transparent.png" alt="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}">
 					</button>

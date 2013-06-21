@@ -41,7 +41,7 @@
 </div>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XREQUEST_TYPES
 	data			= $smarty.capture.t_xrequest_body
 }

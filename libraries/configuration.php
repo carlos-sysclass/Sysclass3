@@ -152,7 +152,7 @@ define('G_DBPREFIX', $configuration['dbprefix']);
 
 /* Access Protocol (http | https) */
 if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
-	//eF_redirect($url)
+	//sC_redirect($url)
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;

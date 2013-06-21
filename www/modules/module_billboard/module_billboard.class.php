@@ -34,13 +34,13 @@ class module_billboard extends MagesterExtendedModule
 			$courseIds[] = $courseObject->course['id'];
 		}
 
-        $billboard = eF_getTableData("module_billboard", "*", "lessons_ID = -2");
+        $billboard = sC_getTableData("module_billboard", "*", "lessons_ID = -2");
 
 		if (count($courseIds) > 0) {
-			$billboard = eF_getTableData("module_billboard", "*", sprintf("course_id IN (%s)", implode(", ", $courseIds)));
+			$billboard = sC_getTableData("module_billboard", "*", sprintf("course_id IN (%s)", implode(", ", $courseIds)));
 			if ($currentCourse = $this -> getCurrentCourse()) {
 				if (in_array($currentCourse->course['id'], $currentCourse)) {
-					$billboard = eF_getTableData("module_billboard", "*", "course_id = " . $currentCourse->course['id']);
+					$billboard = sC_getTableData("module_billboard", "*", "course_id = " . $currentCourse->course['id']);
 				}
 			}
 		}
@@ -83,9 +83,9 @@ class module_billboard extends MagesterExtendedModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_billboard");
+        sC_executeNew("drop table if exists module_billboard");
 
-        return eF_executeNew("CREATE TABLE module_billboard (
+        return sC_executeNew("CREATE TABLE module_billboard (
                           lessons_ID int(11) not null,
                           data longtext default NULL,
                           PRIMARY KEY  (lessons_ID)
@@ -95,19 +95,19 @@ class module_billboard extends MagesterExtendedModule
     // And on deleting the module
     public function onUninstall()
     {
-        return eF_executeNew("DROP TABLE module_billboard;");
+        return sC_executeNew("DROP TABLE module_billboard;");
     }
 
     // On deleting a lesson
     public function onDeleteLesson($lessonId)
     {
-        return eF_deleteTableData("module_billboard", "lessons_ID=".$lessonId);
+        return sC_deleteTableData("module_billboard", "lessons_ID=".$lessonId);
     }
 
     // On exporting a lesson
     public function onExportLesson($lessonId)
     {
-        $data = eF_getTableData("module_billboard", "*","lessons_ID=".$lessonId);
+        $data = sC_getTableData("module_billboard", "*","lessons_ID=".$lessonId);
 
         return $data;
     }
@@ -122,7 +122,7 @@ class module_billboard extends MagesterExtendedModule
             $data[0]['data'] = str_replace("lessons\\".$data[0]['lessons_ID']."\\", "lessons\\".$lessonId."\\", $data[0]['data']."\\");
         }
         $data[0]['lessons_ID'] = $lessonId;
-        eF_insertOrupdateTableData("module_billboard",$data[0], "lessons_ID=$lessonId");
+        sC_insertOrupdateTableData("module_billboard",$data[0], "lessons_ID=$lessonId");
 
         return true;
     }
@@ -180,7 +180,7 @@ class module_billboard extends MagesterExtendedModule
         //$smarty -> assign("T_HEADER_EDITOR", $load_editor);
 
         $form = new HTML_QuickForm("billboard_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
 
         $form -> addElement('textarea', 'data', _BILLBOARDCONTENT, 'class = "inputContentTextarea mceEditor" style = "width:100%;height:300px;"');      //The unit content itself
         $form -> addElement('submit', 'submit_billboard', _SUBMIT, 'class = "flatButton"');
@@ -201,7 +201,7 @@ class module_billboard extends MagesterExtendedModule
         	$billboardID = $currentLesson -> lesson['id'];
         }
 
-        $billboard = eF_getTableData("module_billboard", "*", "lessons_ID=".$billboardID);
+        $billboard = sC_getTableData("module_billboard", "*", "lessons_ID=".$billboardID);
         $form -> setDefaults(array('data' => $billboard[0]['data']));
 
         if ($form -> isSubmitted() && $form -> validate()) {
@@ -209,15 +209,15 @@ class module_billboard extends MagesterExtendedModule
                             'data'     => $form -> exportValue('data'));
 
             if ($billboard[0]['data'] != "") {
-                if (eF_updateTableData("module_billboard", $fields, "lessons_ID=".$billboardID)) {
-                    eF_redirect("professor.php?ctg=control_panel&message=".urlencode(_BILLBOARD_SUCCESFULLYUPDATEDBILLBOARDENTRY)."&message_type=success");
+                if (sC_updateTableData("module_billboard", $fields, "lessons_ID=".$billboardID)) {
+                    sC_redirect("professor.php?ctg=control_panel&message=".urlencode(_BILLBOARD_SUCCESFULLYUPDATEDBILLBOARDENTRY)."&message_type=success");
                 } else {
                     $this -> setMessageVar(_BILLBOARD_PROBLEMUPDATINGBILLBOARDENTRY, 'failure');
                 }
             } else {
-                if (eF_insertTableData("module_billboard", $fields)) {
-                    eF_redirect("professor.php?ctg=control_panel&message=".urlencode(_BILLBOARD_SUCCESFULLYUPDATEDBILLBOARDENTRY)."&message_type=success");
-                    //eF_redirect("".$this -> moduleBaseUrl."&message="._BILLBOARD_SUCCESFULLYINSERTEDBILLBOARDENTRY."&message_type=success");
+                if (sC_insertTableData("module_billboard", $fields)) {
+                    sC_redirect("professor.php?ctg=control_panel&message=".urlencode(_BILLBOARD_SUCCESFULLYUPDATEDBILLBOARDENTRY)."&message_type=success");
+                    //sC_redirect("".$this -> moduleBaseUrl."&message="._BILLBOARD_SUCCESFULLYINSERTEDBILLBOARDENTRY."&message_type=success");
                 } else {
                     $this -> setMessageVar(_BILLBOARD_PROBLEMINSERTINGBILLBOARDENTRY, 'failure');
                 }
@@ -250,7 +250,7 @@ class module_billboard extends MagesterExtendedModule
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
 
-        $billboard = eF_getTableData("module_billboard", "*", "lessons_ID=".$currentLesson -> lesson['id']);
+        $billboard = sC_getTableData("module_billboard", "*", "lessons_ID=".$currentLesson -> lesson['id']);
 
         // Only professors may edit
         $currentUser = $this -> getCurrentUser();
@@ -289,7 +289,7 @@ class module_billboard extends MagesterExtendedModule
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
 
-        $billboard = eF_getTableData("module_billboard", "*", "lessons_ID = -1");
+        $billboard = sC_getTableData("module_billboard", "*", "lessons_ID = -1");
 
         // Only professors may edit
         $currentUser = $this -> getCurrentUser();

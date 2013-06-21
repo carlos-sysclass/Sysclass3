@@ -50,63 +50,63 @@ class MagesterTimes
 
  public function getUserTotalSessionTime($user)
  {
-  $result = eF_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."'");
+  $result = sC_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."'");
 
   return $result[0]['sum(time)'];
  }
 
  public function getUserSessionTimeInCourse($user, $course)
  {
-  $result = eF_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and courses_ID = ".$course);
+  $result = sC_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and courses_ID = ".$course);
 
   return $result[0]['sum(time)'];
  }
 
  public function getUserSessionTimeInLesson($user, $lesson)
  {
-  $result = eF_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID = ".$lesson);
+  $result = sC_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID = ".$lesson);
 
   return $result[0]['sum(time)'];
  }
 
  public function getUserSessionTimeInUnit($user, $unit)
  {
-  $result = eF_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit' and entity_ID = ".$unit);
+  $result = sC_getTableData("user_times", "sum(time)", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit' and entity_ID = ".$unit);
 
   return $result[0]['sum(time)'];
  }
 
  public function getUserSessionTimeInCourses($user)
  {
-  $result = eF_getTableData("user_times", "courses_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and courses_ID is not null", "", "courses_ID");
+  $result = sC_getTableData("user_times", "courses_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and courses_ID is not null", "", "courses_ID");
 
   return $result;
  }
 
  public function getUserSessionTimeInLessons($user)
  {
-  $result = eF_getTableData("user_times", "lessons_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID is not null", "", "lessons_ID");
+  $result = sC_getTableData("user_times", "lessons_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID is not null", "", "lessons_ID");
 
   return $result;
  }
 
  public function getUserSessionTimeInUnits($user)
  {
-  $result = eF_getTableData("user_times", "entity_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit'", "", "entity_ID");
+  $result = sC_getTableData("user_times", "entity_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit'", "", "entity_ID");
 
   return $result;
  }
 
  public function getUserSessionTimeInUnitsForLesson($user, $lesson)
  {
-  $result = eF_getTableData("user_times", "entity_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit' and lessons_ID=".$lesson, "", "entity_ID");
+  $result = sC_getTableData("user_times", "entity_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and entity = 'unit' and lessons_ID=".$lesson, "", "entity_ID");
 
   return $result;
  }
 
  public function getSystemSessionTimesForUsers()
  {
-  $result = eF_getTableDataFlat("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp, "", "users_LOGIN");
+  $result = sC_getTableDataFlat("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp, "", "users_LOGIN");
   if (sizeof($result['users_LOGIN']) > 0) {
    $result = array_combine($result['users_LOGIN'], $result['time']);
   } else {
@@ -118,7 +118,7 @@ class MagesterTimes
 
  public function getSystemSessionTimesForLessons()
  {
-  $result = eF_getTableDataFlat("user_times", "lessons_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID is not null", "", "lessons_ID");
+  $result = sC_getTableDataFlat("user_times", "lessons_ID, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID is not null", "", "lessons_ID");
   if (sizeof($result['lessons_ID']) > 0) {
    $result = array_combine($result['lessons_ID'], $result['time']);
   } else {
@@ -130,28 +130,28 @@ class MagesterTimes
 
  public function getCourseSessionTimesForUsers($course)
  {
-  $result = eF_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and courses_ID = ".$course, "", "users_LOGIN");
+  $result = sC_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and courses_ID = ".$course, "", "users_LOGIN");
 
   return $result;
  }
 
  public function getLessonSessionTimesForUsers($lesson)
  {
-  $result = eF_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID = ".$lesson, "", "users_LOGIN");
+  $result = sC_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID = ".$lesson, "", "users_LOGIN");
 
   return $result;
  }
 
  public function getUnitSessionTimesForUsers($unit)
  {
-  $result = eF_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and entity = 'unit' and entity_ID = ".$unit, "", "users_LOGIN");
+  $result = sC_getTableData("user_times", "users_LOGIN, sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and entity = 'unit' and entity_ID = ".$unit, "", "users_LOGIN");
 
   return $result;
  }
 
  public function getUserSessionTimes($user)
  {
-  $result = eF_getTableData("user_times", "session_id,sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."'", "", "session_id");
+  $result = sC_getTableData("user_times", "session_id,sum(time) as time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."'", "", "session_id");
 
   return $result;
  }
@@ -174,7 +174,7 @@ class MagesterTimes
  {
   list($startDay, $endDay) = $this -> convertBoundariesToDays();
 
-  $result = eF_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID is not null");
+  $result = sC_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID is not null");
   foreach ($result as $value) {
    for ($i = $startDay; $i <= $endDay; $i += 86400) {
     isset($timesPerDay[$value['lessons_ID']][$i]) OR $timesPerDay[$value['lessons_ID']][$i] = 0;
@@ -191,7 +191,7 @@ class MagesterTimes
  {
   list($startDay, $endDay) = $this -> convertBoundariesToDays();
 
-  $result = eF_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID = ".$lesson);
+  $result = sC_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and lessons_ID = ".$lesson);
   foreach ($result as $value) {
    for ($i = $startDay; $i <= $endDay; $i += 86400) {
     isset($timesPerDay[$value['users_LOGIN']][$i]) OR $timesPerDay[$value['users_LOGIN']][$i] = 0;
@@ -208,7 +208,7 @@ class MagesterTimes
  {
   list($startDay, $endDay) = $this -> convertBoundariesToDays();
 
-  $result = eF_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID=".$lesson);
+  $result = sC_getTableData("user_times", "session_timestamp, lessons_ID, time", "session_timestamp < ".$this -> toTimestamp." and session_timestamp > ".$this -> fromTimestamp." and users_LOGIN = '".$user."' and lessons_ID=".$lesson);
   foreach ($result as $value) {
    for ($i = $startDay; $i <= $endDay; $i += 86400) {
     isset($timesPerDay[$i]) OR $timesPerDay[$i] = 0;
@@ -266,12 +266,12 @@ class MagesterTimes
   }
 
   //Get the first log entry
-  $result = eF_getTableData("logs", "timestamp", "", "timestamp", "", "1");
+  $result = sC_getTableData("logs", "timestamp", "", "timestamp", "", "1");
   $dateParts = getdate($result[0]['timestamp']);
   $firstDay = mktime(0, 0, 0, $dateParts['mon'], $dateParts['mday'], $dateParts['year']);
 
   //Delete old upgrade attempts
-  eF_deleteTableData("user_times");
+  sC_deleteTableData("user_times");
 
   //Get system times for users
   $timeNow = time();
@@ -291,12 +291,12 @@ class MagesterTimes
         'courses_ID' => NULL,
         'entity' => 'system',
         'entity_ID' => 0);
-    eF_insertTableData("user_times", $fields);
+    sC_insertTableData("user_times", $fields);
    }
   }
 
   //Get times spent in SCORM
-  $scormTimes = eF_getTableData("scorm_data sd, content c", "sd.total_time, sd.users_LOGIN, c.lessons_ID", "c.id=sd.content_ID");
+  $scormTimes = sC_getTableData("scorm_data sd, content c", "sd.total_time, sd.users_LOGIN, c.lessons_ID", "c.id=sd.content_ID");
   $scormSeconds = array();
   foreach ($scormTimes as $value) {
    if (!isset($scormSeconds[$value['lessons_ID']][$value['users_LOGIN']])) {
@@ -326,7 +326,7 @@ class MagesterTimes
         'courses_ID' => NULL,
         'entity' => 'lesson',
         'entity_ID' => $lessonId);
-     eF_insertTableData("user_times", $fields);
+     sC_insertTableData("user_times", $fields);
     }
    }
   }
@@ -342,7 +342,7 @@ class MagesterTimes
  private static function getDeprecatedUserTimesPerDay($interval)
  {
 /*
-		$scormTimes = eF_getTableData("scorm_data sd, content c", "sd.total_time", "c.id=sd.content_ID and users_LOGIN = '".$user['login']."' and c.lessons_ID=".$this -> lesson['id']);
+		$scormTimes = sC_getTableData("scorm_data sd, content c", "sd.total_time", "c.id=sd.content_ID and users_LOGIN = '".$user['login']."' and c.lessons_ID=".$this -> lesson['id']);
 		$scormSeconds = 0;
 		foreach ($scormTimes as $value) {
 			$scormSeconds += convertTimeToSeconds($value['total_time']);
@@ -366,7 +366,7 @@ class MagesterTimes
 
 */
 
-  if ($interval && eF_checkParameter($interval['from'], 'timestamp') && eF_checkParameter($interval['to'], 'timestamp')) {
+  if ($interval && sC_checkParameter($interval['from'], 'timestamp') && sC_checkParameter($interval['to'], 'timestamp')) {
    $from = $interval['from'];
    $to = $interval['to'];
   } else {
@@ -374,10 +374,10 @@ class MagesterTimes
    $to = time();
   }
 
-  if ($login && eF_checkParameter($login, 'login')) {
-   $result = eF_getTableData("logs", "users_LOGIN, id, timestamp, action", "users_LOGIN = '$login' and timestamp between $from and $to", "id");
+  if ($login && sC_checkParameter($login, 'login')) {
+   $result = sC_getTableData("logs", "users_LOGIN, id, timestamp, action", "users_LOGIN = '$login' and timestamp between $from and $to", "id");
   } else {
-   $result = eF_getTableData("logs", "users_LOGIN, id, timestamp, action", "timestamp between $from and $to", "id");
+   $result = sC_getTableData("logs", "users_LOGIN, id, timestamp, action", "timestamp between $from and $to", "id");
   }
   $userTimes = array();
   foreach ($result as $value) {
@@ -417,7 +417,7 @@ class MagesterTimes
     }
    }
 
-   $userTimes[$user] = eF_convertIntervalToTime($totalTime);
+   $userTimes[$user] = sC_convertIntervalToTime($totalTime);
    $userTimes[$user]['total_seconds'] = $totalTime;
   }
 
@@ -436,7 +436,7 @@ class MagesterTimes
  private static function getDeprecatedUserTimesPerDay2($firstDay)
  {
      for ($t = $firstDay; $t <= time(); $t+=86400) {
-      $logs = eF_getTableData("logs", "timestamp, action, users_LOGIN", "timestamp >= ".$t." and timestamp < ".($t+86400), "timestamp");
+      $logs = sC_getTableData("logs", "timestamp, action, users_LOGIN", "timestamp >= ".$t." and timestamp < ".($t+86400), "timestamp");
    $timesPerUser = $resultPerUser = array();
       foreach ($logs as $key => $value) {
        $resultPerUser[$value['users_LOGIN']]['timestamp'][] = $value['timestamp'];

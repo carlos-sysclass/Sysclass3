@@ -280,7 +280,7 @@ class Facebook
       // get a frame within a frame.
       echo "<script type=\"text/javascript\">\ntop.location.href = \"$url\";\n</script>";
     } else {
-      eF_redirect(' ' . $url);
+      sC_redirect(' ' . $url);
     }
     exit;
   }

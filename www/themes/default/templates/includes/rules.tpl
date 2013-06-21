@@ -53,7 +53,7 @@
          {/if}
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._RULEPROPERTIES data=$smarty.capture.t_add_rule_code image='32x32/rules.png' help = 'Lesson_rules'}
+        {sC_template_printBlock title=$smarty.const._RULEPROPERTIES data=$smarty.capture.t_add_rule_code image='32x32/rules.png' help = 'Lesson_rules'}
     {elseif $smarty.get.add_condition || $smarty.get.edit_condition}
 
         {capture name = 't_add_condition_code'}
@@ -87,7 +87,7 @@
             </form>
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._CONDITIONPROPERTIES data=$smarty.capture.t_add_condition_code image='32x32/rules.png'}
+        {sC_template_printBlock title=$smarty.const._CONDITIONPROPERTIES data=$smarty.capture.t_add_condition_code image='32x32/rules.png'}
     {else}
         {capture name = 't_conditions_code'}
             {if !isset($T_CURRENT_USER->coreAccess.content) || $T_CURRENT_USER->coreAccess.content == 'change'}
@@ -193,12 +193,12 @@
 
   {capture name = 't_rules_code'}
         <div class = "tabber">
-   {eF_template_printBlock tabber = "rules" title=$smarty.const._CONTENTTRAVERSINGRULES data=$smarty.capture.t_lesson_rules image='32x32/content.png'}
-   {eF_template_printBlock tabber = "conditions" title=$smarty.const._LESSONCONDITIONS data=$smarty.capture.t_conditions_code image='32x32/graduation.png'}
+   {sC_template_printBlock tabber = "rules" title=$smarty.const._CONTENTTRAVERSINGRULES data=$smarty.capture.t_lesson_rules image='32x32/content.png'}
+   {sC_template_printBlock tabber = "conditions" title=$smarty.const._LESSONCONDITIONS data=$smarty.capture.t_conditions_code image='32x32/graduation.png'}
 
         </div>
         {/capture}
-  {eF_template_printBlock title = $smarty.const._RULES data = $smarty.capture.t_rules_code image = '32x32/rules.png' help = 'Lesson_rules'}
+  {sC_template_printBlock title = $smarty.const._RULES data = $smarty.capture.t_rules_code image = '32x32/rules.png' help = 'Lesson_rules'}
 
     {/if}
     </td></tr>

@@ -27,16 +27,16 @@ $_change_ = $_hidden_ = 0;
 if (!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess['content'] == 'change') {
     $_change_ = 1;
 } elseif ($GLOBALS['configuration']['disable_news'] == 1 || (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] == 'hidden')) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 if ($currentUser -> coreAccess['content'] == 'hidden') {
- eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+ sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 $basedir = $currentLesson -> getDirectory();
 
 try {
- $result = eF_getTableData("files", "*", "shared=".$currentLesson -> lesson['id']);
+ $result = sC_getTableData("files", "*", "shared=".$currentLesson -> lesson['id']);
 
  foreach ($result as $value) {
   $sharedFiles[G_ROOTPATH.$value['path']] = new MagesterFile($value['id']);
@@ -54,6 +54,6 @@ try {
  }
 } catch (Exception $e) {
  $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
- $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+ $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
  $message_type = 'failure';
 }

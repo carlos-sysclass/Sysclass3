@@ -23,29 +23,29 @@ class module_blogs extends MagesterModule
             $role = $currentUser -> getRole($this -> getCurrentLesson());
         }
 
-		if (isset($_GET['delete_blog']) && eF_checkParameter($_GET['delete_blog'], 'id')) {
-			$blog 		= eF_getTableData("module_blogs","users_LOGIN","id=".$_GET['delete_blog']);
+		if (isset($_GET['delete_blog']) && sC_checkParameter($_GET['delete_blog'], 'id')) {
+			$blog 		= sC_getTableData("module_blogs","users_LOGIN","id=".$_GET['delete_blog']);
 			if ($blog[0]['users_LOGIN'] != $_SESSION['s_login']) {
-				eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
 				exit;
 			}
-			$articles 	= eF_getTableDataFlat("module_blogs_articles","id","blogs_ID=".$_GET['delete_blog']);
+			$articles 	= sC_getTableDataFlat("module_blogs_articles","id","blogs_ID=".$_GET['delete_blog']);
 
 			if (sizeof($articles) > 0) {
 				$articlesList 	= implode(",",$articles['id']);
-				eF_deleteTableData("module_blogs_comments", "blogs_articles_ID IN ($articlesList)");
+				sC_deleteTableData("module_blogs_comments", "blogs_articles_ID IN ($articlesList)");
 			}
-			eF_deleteTableData("module_blogs_articles", "blogs_ID=".$_GET['delete_blog']);
-			eF_deleteTableData("module_blogs", "id=".$_GET['delete_blog']);
+			sC_deleteTableData("module_blogs_articles", "blogs_ID=".$_GET['delete_blog']);
+			sC_deleteTableData("module_blogs", "id=".$_GET['delete_blog']);
 		}
 
-		if (isset($_GET['deactivate_blog']) && eF_checkParameter($_GET['deactivate_blog'], 'id')) {
-			$blog 		= eF_getTableData("module_blogs","users_LOGIN","id=".$_GET['deactivate_blog']);
+		if (isset($_GET['deactivate_blog']) && sC_checkParameter($_GET['deactivate_blog'], 'id')) {
+			$blog 		= sC_getTableData("module_blogs","users_LOGIN","id=".$_GET['deactivate_blog']);
 			if ($blog[0]['users_LOGIN'] != $_SESSION['s_login']) {
-				eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
 				exit;
 			}
-			if (eF_updateTableData("module_blogs", array('active' => 0), "id=".$_GET['deactivate_blog'])) {
+			if (sC_updateTableData("module_blogs", array('active' => 0), "id=".$_GET['deactivate_blog'])) {
                 $message      = _BLOGS_BLOGDEACTIVATED;
                 $message_type = 'success';
             } else {
@@ -54,13 +54,13 @@ class module_blogs extends MagesterModule
             }
 		}
 
-		if (isset($_GET['activate_blog']) && eF_checkParameter($_GET['activate_blog'], 'id')) {
-			$blog 		= eF_getTableData("module_blogs","users_LOGIN","id=".$_GET['activate_blog']);
+		if (isset($_GET['activate_blog']) && sC_checkParameter($_GET['activate_blog'], 'id')) {
+			$blog 		= sC_getTableData("module_blogs","users_LOGIN","id=".$_GET['activate_blog']);
 			if ($blog[0]['users_LOGIN'] != $_SESSION['s_login']) {
-				eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
 				exit;
 			}
-			if (eF_updateTableData("module_blogs", array('active' => 1), "id=".$_GET['activate_blog'])) {
+			if (sC_updateTableData("module_blogs", array('active' => 1), "id=".$_GET['activate_blog'])) {
                 $message      = _BLOGS_BLOGACTIVATED;
                 $message_type = 'success';
             } else {
@@ -69,45 +69,45 @@ class module_blogs extends MagesterModule
             }
 		}
 
-		if (isset($_GET['delete_article']) && eF_checkParameter($_GET['delete_article'], 'id')) {
-			$blog 			= eF_getTableData("module_blogs_articles","blogs_ID,users_LOGIN","id=".$_GET['delete_article']);
+		if (isset($_GET['delete_article']) && sC_checkParameter($_GET['delete_article'], 'id')) {
+			$blog 			= sC_getTableData("module_blogs_articles","blogs_ID,users_LOGIN","id=".$_GET['delete_article']);
 
-			$blogTemp 		= eF_getTableData("module_blogs","users_LOGIN","id=".$blog[0]['blogs_ID']);
+			$blogTemp 		= sC_getTableData("module_blogs","users_LOGIN","id=".$blog[0]['blogs_ID']);
 			if ($blog[0]['users_LOGIN'] != $_SESSION['s_login'] && $blogTemp[0]['users_LOGIN'] != $_SESSION['s_login']) {
-				eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$blog[0]['blogs_ID']."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$blog[0]['blogs_ID']."&message=".urlencode(_BLOGS_NOACCESS));
 				exit;
 			}
 
-			eF_deleteTableData("module_blogs_comments", "blogs_articles_ID=".$_GET['delete_article']);
-			eF_deleteTableData("module_blogs_articles", "id=".$_GET['delete_article']);
+			sC_deleteTableData("module_blogs_comments", "blogs_articles_ID=".$_GET['delete_article']);
+			sC_deleteTableData("module_blogs_articles", "id=".$_GET['delete_article']);
 			$message 		= _BLOGS_ARTICLEWASDELETEDSUCCESSFULLY;
 			$message_type 	= "success";
-			eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$blog[0]['blogs_ID']."&message=".$message."&message_type=".$message_type);
+			sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$blog[0]['blogs_ID']."&message=".$message."&message_type=".$message_type);
 		}
 
-		if (isset($_GET['delete_comment']) && eF_checkParameter($_GET['delete_comment'], 'id')) {
-			$article 		= eF_getTableData("module_blogs_articles","blogs_ID,users_LOGIN","id=".$_GET['article_id']);
-			$blogTemp 		= eF_getTableData("module_blogs","users_LOGIN","id=".$article[0]['blogs_ID']);
-			$commentTemp 	= eF_getTableData("module_blogs_comments","users_LOGIN","id=".$_GET['delete_comment']);
+		if (isset($_GET['delete_comment']) && sC_checkParameter($_GET['delete_comment'], 'id')) {
+			$article 		= sC_getTableData("module_blogs_articles","blogs_ID,users_LOGIN","id=".$_GET['article_id']);
+			$blogTemp 		= sC_getTableData("module_blogs","users_LOGIN","id=".$article[0]['blogs_ID']);
+			$commentTemp 	= sC_getTableData("module_blogs_comments","users_LOGIN","id=".$_GET['delete_comment']);
 			if ($commentTemp[0]['users_LOGIN'] != $_SESSION['s_login'] && $blogTemp[0]['users_LOGIN'] != $_SESSION['s_login']) {
-				eF_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".urlencode(_BLOGS_NOACCESS));
 				exit;
 			}
-			eF_deleteTableData("module_blogs_comments", "id=".$_GET['delete_comment']);
+			sC_deleteTableData("module_blogs_comments", "id=".$_GET['delete_comment']);
 
 			$message 		= _BLOGS_COMMENTWASDELETEDSUCCESSFULLY;
 			$message_type 	= "success";
-			eF_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
+			sC_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
 		}
 
 		if ((isset($_GET['add_blog']) || isset($_GET['edit_blog']))) {
 			if (isset($_GET['add_blog']) && $_SESSION['s_type'] != "professor") {
-				eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
+				sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
 			}
 			if (isset($_GET['edit_blog'])) {
-				$blog_data  = eF_getTableData("module_blogs", "*", "id=".$_GET['edit_blog']);
+				$blog_data  = sC_getTableData("module_blogs", "*", "id=".$_GET['edit_blog']);
 				if ($blog_data[0]['users_LOGIN'] != $_SESSION['s_login']) {
-					eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
+					sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_BLOGS_NOACCESS));
 				}
 				$post_target =  $this -> moduleBaseUrl.'&edit_blog='.$_GET['edit_blog'];
 			} else {
@@ -137,27 +137,27 @@ class module_blogs extends MagesterModule
 							"registered"    => $values['registered']);
 
 				if (isset($_GET['edit_blog'])) {
-					if (eF_updateTableData("module_blogs", $fields, "id=".$_GET['edit_blog'])) {
+					if (sC_updateTableData("module_blogs", $fields, "id=".$_GET['edit_blog'])) {
 						$message      = _BLOGS_BLOGUPDATEDSUCCESSFULLY;
 						$message_type = 'success';
 					} else {
 						$message      = _BLOGS_BLOGNOTUPDATED;
 						$message_type = 'failure';
 					}
-						eF_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type);
+						sC_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type);
 				} else {
 					$fields['users_LOGIN'] 	= $_SESSION['s_login'];
 					$fields['timestamp'] 	= time();
 					//pr($fields);
-					$new_id 		= eF_insertTableData("module_blogs", $fields);
+					$new_id 		= sC_insertTableData("module_blogs", $fields);
 					if ($new_id) {
 						$message      	= _BLOGS_BLOGADDEDSUCCESSFULLY;
 						$message_type = 'success';
-						eF_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type."&edit_blog=".$new_id."&tab=blog_creators");
+						sC_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type."&edit_blog=".$new_id."&tab=blog_creators");
 					} else {
 						$message      	= _BLOGS_BLOGNOTADDED;
 						$message_type = 'failure';
-						eF_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type);
+						sC_redirect("".$this -> moduleBaseUrl."&message=".$message."&message_type=".$message_type);
 					}
 
 				}
@@ -179,7 +179,7 @@ class module_blogs extends MagesterModule
 				unset($lessonUsers[$currentUser -> login]);                        //Remove the current user from the list, he can't set parameters for his self!
 				$users            = $lessonUsers;
 
-				$blogsCreators = eF_getTableDataFlat("module_blogs_users","*","blogs_ID=".$_GET['edit_blog']);
+				$blogsCreators = sC_getTableDataFlat("module_blogs_users","*","blogs_ID=".$_GET['edit_blog']);
 				$creatorsAssoc = array_combine(array_values($blogsCreators['users_LOGIN']), array_values($blogsCreators['users_LOGIN']));
 
 				$nonBlogsCreators 	= array_diff_key($users,$creatorsAssoc);
@@ -191,28 +191,28 @@ class module_blogs extends MagesterModule
 
 
 //pr($users);
-				$roles = eF_getTableDataFlat("user_types","name","active=1 AND basic_user_type!='administrator'");    //Get available roles
+				$roles = sC_getTableDataFlat("user_types","name","active=1 AND basic_user_type!='administrator'");    //Get available roles
 				if (sizeof($roles) > 0) {
 					$roles = array_combine($roles['name'], $roles['name']);                                          //Match keys with values, it's more practical this way
 				}
 				$roles = array_merge(array('student' => _STUDENT, 'professor' => _PROFESSOR), $roles);                     //Append basic user types to the beginning of the array
 //pr($roles);
 				if (isset($_GET['ajax']) && $_GET['ajax'] == 'usersTable') {
-					isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+					isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-					if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+					if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
 						$sort = $_GET['sort'];
 						isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
 					} else {
 						$sort = 'login';
 					}
-					$users = eF_multiSort($users, $sort, $order);
+					$users = sC_multiSort($users, $sort, $order);
 					$smarty -> assign("T_USERS_SIZE", sizeof($users));
 					if (isset($_GET['filter'])) {
-						$users = eF_filterData($users, $_GET['filter']);
+						$users = sC_filterData($users, $_GET['filter']);
 					}
-					if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-						isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+					if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+						isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
 						$users = array_slice($users, $offset, $limit);
 					}
 					$smarty -> assign("T_ROLES", $roles);
@@ -226,33 +226,33 @@ class module_blogs extends MagesterModule
 
 			} catch (Exception $e) {
 				$smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-				$message      = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+				$message      = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
 				$message_type = 'failure';
 			}
 
 			if (isset($_GET['postAjaxRequest'])) {
 				try {
-				if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+				if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
 						if (!in_array($_GET['login'], array_values($blogsCreators['users_LOGIN']))) {
 							$fields = array ('blogs_ID' 	=> 	$_GET['edit_blog'],
 											'users_login'	=>	$_GET['login']);
-							$res = eF_insertTableData("module_blogs_users",$fields);
+							$res = sC_insertTableData("module_blogs_users",$fields);
 
 						}
 						if (in_array($_GET['login'], array_values($blogsCreators['users_LOGIN']))) {
-							eF_deleteTableData("module_blogs_users", "blogs_ID=".$_GET['edit_blog']." AND users_LOGIN='".$_GET['login']."'");
+							sC_deleteTableData("module_blogs_users", "blogs_ID=".$_GET['edit_blog']." AND users_LOGIN='".$_GET['login']."'");
 						}
 					} elseif (isset($_GET['addAll'])) {
-						isset($_GET['filter']) ? $nonBlogsCreators = eF_filterData($nonBlogsCreators, $_GET['filter']) : null;
+						isset($_GET['filter']) ? $nonBlogsCreators = sC_filterData($nonBlogsCreators, $_GET['filter']) : null;
 						foreach ($nonBlogsCreators as $key => $value) {
 							$fields = array ('blogs_ID' 	=> 	$_GET['edit_blog'],
 											'users_login'	=>	$key);
-							$res = eF_insertTableData("module_blogs_users",$fields);
+							$res = sC_insertTableData("module_blogs_users",$fields);
 						}
 					} elseif (isset($_GET['removeAll'])) {
-						isset($_GET['filter']) ? $blogCreators = eF_filterData($blogsCreatorsTemp, $_GET['filter']) : null;
+						isset($_GET['filter']) ? $blogCreators = sC_filterData($blogsCreatorsTemp, $_GET['filter']) : null;
 						foreach ($blogsCreatorsTemp as $key => $value) {
-							eF_deleteTableData("module_blogs_users", "blogs_ID=".$_GET['edit_blog']." AND users_LOGIN='".$key."'");
+							sC_deleteTableData("module_blogs_users", "blogs_ID=".$_GET['edit_blog']." AND users_LOGIN='".$key."'");
 						}
 					}
 				} catch (Exception $e) {
@@ -262,17 +262,17 @@ class module_blogs extends MagesterModule
 				exit;
 			}
 		} elseif ((isset($_GET['add_article']) || isset($_GET['edit_article']))) {
-			$resAccess  = eF_getTableData("module_blogs", "*", "id=".$_GET['blog_id']);
+			$resAccess  = sC_getTableData("module_blogs", "*", "id=".$_GET['blog_id']);
 			if (isset($_GET['edit_article'])) {
-				$article_data  = eF_getTableData("module_blogs_articles", "*", "id=".$_GET['edit_article']);
+				$article_data  = sC_getTableData("module_blogs_articles", "*", "id=".$_GET['edit_article']);
 				if ($resAccess[0]['users_LOGIN'] != $_SESSION['s_login'] && $article_data[0]['users_LOGIN'] != $_SESSION['s_login']) {
-					eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".urlencode(_BLOGS_NOACCESS));
+					sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".urlencode(_BLOGS_NOACCESS));
 				}
 				$post_target =  $this -> moduleBaseUrl.'&edit_article='.$_GET['edit_article'];
 			} else {
-				$creator		= eF_getTableData("module_blogs_users","*", "blogs_ID=".$_GET['blog_id']." and users_LOGIN='".$_SESSION['s_login']."'");
+				$creator		= sC_getTableData("module_blogs_users","*", "blogs_ID=".$_GET['blog_id']." and users_LOGIN='".$_SESSION['s_login']."'");
 				if ($resAccess[0]['users_LOGIN'] != $_SESSION['s_login'] &&  sizeof($creator) == 0) {
-					eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".urlencode(_BLOGS_NOACCESS));
+					sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".urlencode(_BLOGS_NOACCESS));
 				}
 				$post_target = $this -> moduleBaseUrl.'&add_article';
 			}
@@ -296,7 +296,7 @@ class module_blogs extends MagesterModule
 							"data"			=> $values['data']);
 
 				if (isset($_GET['edit_article'])) {
-				if (eF_updateTableData("module_blogs_articles", $fields, "id=".$_GET['edit_article'])) {
+				if (sC_updateTableData("module_blogs_articles", $fields, "id=".$_GET['edit_article'])) {
 						$message      = _BLOGS_ARTICLEUPDATEDSUCCESSFULLY;
 						$message_type = 'success';
 					} else {
@@ -304,13 +304,13 @@ class module_blogs extends MagesterModule
 						$message_type = 'failure';
 					}
 
-						eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".$message."&message_type=".$message_type);
+						sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".$message."&message_type=".$message_type);
 				} else {
 					$fields['users_LOGIN'] = $_SESSION['s_login'];
 					$fields['timestamp'] = time();
 					$fields['blogs_ID'] = $_GET['blog_id'];
 					//pr($fields);exit;
-					$new_id 		= eF_insertTableData("module_blogs_articles", $fields);
+					$new_id 		= sC_insertTableData("module_blogs_articles", $fields);
 					if ($new_id) {
 						$message      	= _BLOGS_ARTICLEADDEDSUCCESSFULLY;
 						$message_type = 'success';
@@ -318,7 +318,7 @@ class module_blogs extends MagesterModule
 						$message      	= _BLOGS_ARTICLENOTADDED;
 						$message_type = 'failure';
 					}
-					eF_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".$message."&message_type=".$message_type);
+					sC_redirect("".$this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']."&message=".$message."&message_type=".$message_type);
 				}
 			}
 
@@ -334,10 +334,10 @@ class module_blogs extends MagesterModule
 			$smarty -> assign('T_ARTICLE_ADD_FORM', $renderer -> toArray());                     //Assign the form to the template
 		} elseif ((isset($_GET['add_comment']) || isset($_GET['edit_comment']))) {
 			if (isset($_GET['edit_comment'])) {
-				$comment_data  	= eF_getTableData("module_blogs_comments", "*", "id=".$_GET['edit_comment']);
-				$blogAccess		= eF_getTableData("module_blogs_articles", "*", "id=".$_GET['article_id']);
+				$comment_data  	= sC_getTableData("module_blogs_comments", "*", "id=".$_GET['edit_comment']);
+				$blogAccess		= sC_getTableData("module_blogs_articles", "*", "id=".$_GET['article_id']);
 				if ($comment_data[0]['users_LOGIN'] != $_SESSION['s_login'] && $blogAccess[0]['users_LOGIN'] != $_SESSION['s_login']) {
-					eF_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".urlencode(_BLOGS_NOACCESS));
+					sC_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".urlencode(_BLOGS_NOACCESS));
 				}
 				$post_target =  $this -> moduleBaseUrl.'&edit_comment='.$_GET['edit_comment'];
 			} else {
@@ -362,17 +362,17 @@ class module_blogs extends MagesterModule
 							"timestamp"    		=> time());
 
 				if (isset($_GET['edit_comment'])) {
-					if (eF_updateTableData("module_blogs_comments", $fields, "id=".$_GET['edit_comment'])) {
+					if (sC_updateTableData("module_blogs_comments", $fields, "id=".$_GET['edit_comment'])) {
 						$message      = _BLOGS_COMMENTUPDATEDSUCCESSFULLY;
 						$message_type = 'success';
 					} else {
 						$message      = _BLOGS_COMMENTNOTUPDATED;
 						$message_type = 'failure';
 					}
-						eF_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
+						sC_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
 				} else {
 					//pr($fields);
-					$new_id 		= eF_insertTableData("module_blogs_comments", $fields);
+					$new_id 		= sC_insertTableData("module_blogs_comments", $fields);
 					if ($new_id) {
 						$message      	= _BLOGS_COMMENTADDEDSUCCESSFULLY;
 						$message_type = 'success';
@@ -380,7 +380,7 @@ class module_blogs extends MagesterModule
 						$message      	= _BLOGS_COMMENTNOTADDED;
 						$message_type = 'failure';
 					}
-					eF_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
+					sC_redirect("".$this -> moduleBaseUrl."&view_article=".$_GET['article_id']."&message=".$message."&message_type=".$message_type);
 				}
 			}
 
@@ -396,13 +396,13 @@ class module_blogs extends MagesterModule
 			$smarty -> assign('T_COMMENT_ADD_FORM', $renderer -> toArray());                     //Assign the form to the template
 
 
-			$article				= eF_getTableData("module_blogs_articles", "*", "id=".$_GET['article_id']);
+			$article				= sC_getTableData("module_blogs_articles", "*", "id=".$_GET['article_id']);
 
-			$blogComments			= eF_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$_GET['article_id'],"timestamp asc");
+			$blogComments			= sC_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$_GET['article_id'],"timestamp asc");
 			$article[0]['comments'] = sizeof($blogComments);
-			$blog					= eF_getTableData("module_blogs", "*", "id=".$article[0]['blogs_ID']);
+			$blog					= sC_getTableData("module_blogs", "*", "id=".$article[0]['blogs_ID']);
 
-			$creator		= eF_getTableData("module_blogs_users","*", "blogs_ID=".$article[0]['blogs_ID']." and users_LOGIN='".$_SESSION['s_login']."'");
+			$creator		= sC_getTableData("module_blogs_users","*", "blogs_ID=".$article[0]['blogs_ID']." and users_LOGIN='".$_SESSION['s_login']."'");
 			if (sizeof($creator) > 0) {
 				$smarty -> assign("T_BLOGS_ISBLOGCREATOR", 1);
 			}
@@ -411,38 +411,38 @@ class module_blogs extends MagesterModule
 			$smarty -> assign("T_BLOGS_COMMENTS", $blogComments);
 
 		} elseif (isset($_GET['view_blog'])) {
-			$blog			= eF_getTableData("module_blogs", "*", "id=".$_GET['view_blog']);
-			$creator		= eF_getTableData("module_blogs_users","*", "blogs_ID=".$_GET['view_blog']." and users_LOGIN='".$_SESSION['s_login']."'");
+			$blog			= sC_getTableData("module_blogs", "*", "id=".$_GET['view_blog']);
+			$creator		= sC_getTableData("module_blogs_users","*", "blogs_ID=".$_GET['view_blog']." and users_LOGIN='".$_SESSION['s_login']."'");
 			if (sizeof($creator) > 0) {
 				$smarty -> assign("T_BLOGS_ISBLOGCREATOR", 1);
 			}
-			$blogPosts		= eF_getTableData("module_blogs_articles", "*", "blogs_ID=".$_GET['view_blog'],"timestamp desc");
+			$blogPosts		= sC_getTableData("module_blogs_articles", "*", "blogs_ID=".$_GET['view_blog'],"timestamp desc");
 //pr($blogPosts);
 			$indexing = array();
 
 			foreach ($blogPosts as $key => $value) {
 				$indexing[date('Y',$blogPosts[$key]['timestamp'])][date('F',$blogPosts[$key]['timestamp'])][$value['id']] = $value['title'];
 
-				$blogComments 	= eF_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$value['id'], "timestamp desc");
+				$blogComments 	= sC_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$value['id'], "timestamp desc");
 				$blogPosts[$key]['last_comment'] = $blogComments[0];
 				$blogPosts[$key]['comments'] = sizeof($blogComments);
 			}
 			//pr($indexing);
 
 			//pr($blogPosts);
-			$lastComments			= eF_getTableData("module_blogs_comments as com,module_blogs_articles as art", "com.id as comment_id,com.data,com.timestamp,art.id as article_id,art.title,com.users_LOGIN", "com.blogs_articles_ID=art.id and art.blogs_ID=".$_GET['view_blog'],"com.timestamp desc");
+			$lastComments			= sC_getTableData("module_blogs_comments as com,module_blogs_articles as art", "com.id as comment_id,com.data,com.timestamp,art.id as article_id,art.title,com.users_LOGIN", "com.blogs_articles_ID=art.id and art.blogs_ID=".$_GET['view_blog'],"com.timestamp desc");
 			$smarty -> assign("T_BLOGS_INDEXING", $indexing);
 			$smarty -> assign("T_BLOGS_LASTCOMMENTS", $lastComments);
 			$smarty -> assign("T_BLOGS_BLOG", $blog[0]);
 			$smarty -> assign("T_BLOGS_POSTS", $blogPosts);
 		} elseif (isset($_GET['view_article'])) {
-			$article				= eF_getTableData("module_blogs_articles", "*", "id=".$_GET['view_article']);
+			$article				= sC_getTableData("module_blogs_articles", "*", "id=".$_GET['view_article']);
 
-			$blogComments			= eF_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$_GET['view_article'],"timestamp asc");
+			$blogComments			= sC_getTableData("module_blogs_comments", "*", "blogs_articles_ID=".$_GET['view_article'],"timestamp asc");
 			$article[0]['comments'] = sizeof($blogComments);
-			$blog					= eF_getTableData("module_blogs", "*", "id=".$article[0]['blogs_ID']);
+			$blog					= sC_getTableData("module_blogs", "*", "id=".$article[0]['blogs_ID']);
 
-			$creator		= eF_getTableData("module_blogs_users","*", "blogs_ID=".$article[0]['blogs_ID']." and users_LOGIN='".$_SESSION['s_login']."'");
+			$creator		= sC_getTableData("module_blogs_users","*", "blogs_ID=".$article[0]['blogs_ID']." and users_LOGIN='".$_SESSION['s_login']."'");
 			if (sizeof($creator) > 0) {
 				$smarty -> assign("T_BLOGS_ISBLOGCREATOR", 1);
 			}
@@ -453,12 +453,12 @@ class module_blogs extends MagesterModule
 
 
 		} else {
-			$lessonBlogs = eF_getTableData("module_blogs", "*", "lessons_ID=".$currentLesson->lesson['id']);
+			$lessonBlogs = sC_getTableData("module_blogs", "*", "lessons_ID=".$currentLesson->lesson['id']);
 			foreach ($lessonBlogs as $key => $value) {
 			//echo $value['id'];
-				$res = eF_getTableData("module_blogs_articles", "*", "blogs_ID=".$value['id'], "timestamp desc");
+				$res = sC_getTableData("module_blogs_articles", "*", "blogs_ID=".$value['id'], "timestamp desc");
 				$lessonBlogs[$key]['last_article'] = $res[0];
-		/*		$creators  = eF_getTableData("module_blogs_users","*","blogs_ID=".$value['id']." and users_LOGIN='".$_SESSION['s_login']."'");
+		/*		$creators  = sC_getTableData("module_blogs_users","*","blogs_ID=".$value['id']." and users_LOGIN='".$_SESSION['s_login']."'");
 				if (sizeof($creators) > 0) {
 					$lessonBlogs[$key]['is_creator'] = 1;
 				} else {
@@ -496,7 +496,7 @@ class module_blogs extends MagesterModule
         $smarty -> assign("T_BLOGS_INNERTABLE_OPTIONS", $inner_table_options);
         $smarty -> assign("T_MODULE_BLOGS_BLOGPAGES" , $blogPages);
 
-        $blogs = eF_getTableData("module_blogs","*","lessons_ID=".$_SESSION['s_lessons_ID'],"timestamp desc");
+        $blogs = sC_getTableData("module_blogs","*","lessons_ID=".$_SESSION['s_lessons_ID'],"timestamp desc");
 
 		$smarty -> assign("T_BLOGS_BLOGS", $blogs);
 
@@ -522,7 +522,7 @@ class module_blogs extends MagesterModule
         $smarty -> assign("T_BLOGS_INNERTABLE_OPTIONS", $inner_table_options);
         $smarty -> assign("T_MODULE_BLOGS_BLOGPAGES" , $blogPages);
 
-        $blogs = eF_getTableData("module_blogs","*","lessons_ID IS NULL","timestamp desc");
+        $blogs = sC_getTableData("module_blogs","*","lessons_ID IS NULL","timestamp desc");
 
 		$smarty -> assign("T_BLOGS_BLOGS", $blogs);
 
@@ -553,15 +553,15 @@ class module_blogs extends MagesterModule
         $currentUser = $this -> getCurrentUser();
 		$currentLesson = $this -> getCurrentLesson();
         if (isset($_GET['view_blog'])) {
-			$res = eF_getTableData("module_blogs","name","id=".$_GET['view_blog']);
+			$res = sC_getTableData("module_blogs","name","id=".$_GET['view_blog']);
 
             return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 							array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getRole($this -> getCurrentLesson()) . ".php?ctg=control_panel"),
 							array ('title' => _BLOGS_BLOG, 'link'  => $this -> moduleBaseUrl),
 							array ('title' => $res[0]['name'], 'link'  => $this -> moduleBaseUrl."&view_blog=".$_GET['view_blog']));
         } elseif (isset($_GET['view_article'])) {
-			$resArticle = eF_getTableData("module_blogs_articles","title,blogs_ID","id=".$_GET['view_article']);
-			$resBlog 	= eF_getTableData("module_blogs","name","id=".$resArticle[0]['blogs_ID']);
+			$resArticle = sC_getTableData("module_blogs_articles","title,blogs_ID","id=".$_GET['view_article']);
+			$resBlog 	= sC_getTableData("module_blogs","name","id=".$resArticle[0]['blogs_ID']);
 
             return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 							array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getRole($this -> getCurrentLesson()) . ".php?ctg=control_panel"),
@@ -574,15 +574,15 @@ class module_blogs extends MagesterModule
 							array ('title' => _BLOGS_BLOG, 'link'  => $this -> moduleBaseUrl),
 							array ('title' => _BLOGS_EDITBLOG, 'link'  => $_SERVER['REQUEST_URI']));
 		} elseif (isset($_GET['add_article']) || isset($_GET['edit_article'])) {
-			$resBlog 	= eF_getTableData("module_blogs","name","id=".$_GET['blog_id']);
+			$resBlog 	= sC_getTableData("module_blogs","name","id=".$_GET['blog_id']);
 			return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 							array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getRole($this -> getCurrentLesson()) . ".php?ctg=control_panel"),
 							array ('title' => _BLOGS_BLOG, 'link'  => $this -> moduleBaseUrl),
 							array ('title' => $resBlog[0]['name'], 'link'  => $this -> moduleBaseUrl."&view_blog=".$_GET['blog_id']),
 							array ('title' => _BLOGS_EDITARTICLE, 'link'  => $_SERVER['REQUEST_URI']));
 		} elseif (isset($_GET['add_comment']) || isset($_GET['edit_comment'])) {
-			$resArticle = eF_getTableData("module_blogs_articles","title,blogs_ID","id=".$_GET['article_id']);
-			$resBlog 	= eF_getTableData("module_blogs","name","id=".$resArticle[0]['blogs_ID']);
+			$resArticle = sC_getTableData("module_blogs_articles","title,blogs_ID","id=".$_GET['article_id']);
+			$resBlog 	= sC_getTableData("module_blogs","name","id=".$resArticle[0]['blogs_ID']);
 			return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 							array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getRole($this -> getCurrentLesson()) . ".php?ctg=control_panel"),
 							array ('title' => _BLOGS_BLOG, 'link'  => $this -> moduleBaseUrl),
@@ -615,8 +615,8 @@ class module_blogs extends MagesterModule
 
 	public function onInstall()
 	{
-		eF_executeNew("drop table if exists module_blogs ");
-		$res1 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs` (
+		sC_executeNew("drop table if exists module_blogs ");
+		$res1 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs` (
 								`id` int(11) NOT NULL auto_increment,
 								`name` varchar(255) NOT NULL,
 								`lessons_ID` int(11) NOT NULL default '0',
@@ -627,8 +627,8 @@ class module_blogs extends MagesterModule
 								`timestamp` varchar(10) NOT NULL,
 								PRIMARY KEY  (`id`)
 								) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
-        eF_executeNew("drop table if exists module_blogs_articles ");
-		$res2 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_articles` (
+        sC_executeNew("drop table if exists module_blogs_articles ");
+		$res2 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_articles` (
 							`id` int(11) NOT NULL auto_increment,
 							`title` varchar(255) NOT NULL,
 							`blogs_ID` int(11) NOT NULL default '0',
@@ -638,8 +638,8 @@ class module_blogs extends MagesterModule
 							`active` tinyint(1) NOT NULL default '1',
 							PRIMARY KEY  (`id`)
 							) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
-		eF_executeNew("drop table if exists module_blogs_comments");
-		$res3 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_comments` (
+		sC_executeNew("drop table if exists module_blogs_comments");
+		$res3 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_comments` (
 							`id` int(11) NOT NULL auto_increment,
 							`blogs_articles_ID` int(11) NOT NULL default '0',
 							`users_LOGIN` varchar(255) NOT NULL,
@@ -648,8 +648,8 @@ class module_blogs extends MagesterModule
 							`active` tinyint(1) NOT NULL default '1',
 							PRIMARY KEY  (`id`)
 							) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
-        eF_executeNew("drop table if exists module_blogs_users");
-		$res4 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_users` (
+        sC_executeNew("drop table if exists module_blogs_users");
+		$res4 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_blogs_users` (
 							`blogs_ID` int(11) NOT NULL default '0',
 							`users_LOGIN` varchar(255) NOT NULL,
 							primary key (`users_LOGIN`, `blogs_ID`)
@@ -661,10 +661,10 @@ class module_blogs extends MagesterModule
 
 	public function onUninstall()
 	{
-        $res1 = eF_executeNew("DROP TABLE module_blogs_comments;");
-        $res2 = eF_executeNew("DROP TABLE module_blogs_articles;");
-		$res3 = eF_executeNew("DROP TABLE module_blogs");
-		$res4 = eF_executeNew("DROP TABLE module_blogs_users");
+        $res1 = sC_executeNew("DROP TABLE module_blogs_comments;");
+        $res2 = sC_executeNew("DROP TABLE module_blogs_articles;");
+		$res3 = sC_executeNew("DROP TABLE module_blogs");
+		$res4 = sC_executeNew("DROP TABLE module_blogs_users");
 
         return ($res1 && $res2 && $res3 && $res4);
     }

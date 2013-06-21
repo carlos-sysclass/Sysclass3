@@ -1018,8 +1018,8 @@ class PHPExcel_Writer_Excel5_Parser
 		// Convert base26 column string to a number.
 		$expn   = strlen($col_ref) - 1;
 		$col    = 0;
-		$col_ref_length = strlen($col_ref);
-		for ($i = 0; $i < $col_ref_length; ++$i) {
+		$col_rsC_length = strlen($col_ref);
+		for ($i = 0; $i < $col_rsC_length; ++$i) {
 			$col += (ord($col_ref{$i}) - 64) * pow(26, $expn);
 			--$expn;
 		}

@@ -1,9 +1,9 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printUsersList function.
+* Smarty plugin: smarty_function_sC_template_printUsersList function.
 *
 */
-function smarty_function_eF_template_printLessonsList($params, &$smarty)
+function smarty_function_sC_template_printLessonsList($params, &$smarty)
 {
 
     $lessons_str     = '<option value = "-1">---- '._LESSONS.' ----</option>';

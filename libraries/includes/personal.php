@@ -55,7 +55,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 if ($currentUser -> coreAccess['dashboard'] == 'hidden') {
- eF_redirect($_SESSION['s_type'].".php");
+ sC_redirect($_SESSION['s_type'].".php");
 }
 !isset($currentUser -> coreAccess['users']) || $currentUser -> coreAccess['users'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 $smarty -> assign("_change_", $_change_);
@@ -85,13 +85,13 @@ if (isset($currentUser -> login) && $_SESSION['s_password']) {
   $currentEmployee = $currentUser -> aspects['hcd'];
  } catch (MagesterException $e) {
   $message = $e -> getMessage().' ('.$e -> getCode().')';
-  eF_redirect("index.php?message=".urlencode($message)."&message_type=failure");
+  sC_redirect("index.php?message=".urlencode($message)."&message_type=failure");
   exit;
  }
 } else {
 	echo 1;
 	echo("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
- //eF_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
+ //sC_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
  exit;
 }
 if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
@@ -110,12 +110,12 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $load_editor = true;
  $form -> addElement('textarea', 'specification', _EVALUATIONCOMMENT, 'class = "simpleEditor inputTextArea" style = "width:100%;height:14em;"');
  if (isset($_GET['edit_evaluation'])) {
-  $evaluations = eF_getTableData("module_hcd_events","*","event_ID = '".$_GET['edit_evaluation']."'");
+  $evaluations = sC_getTableData("module_hcd_events","*","event_ID = '".$_GET['edit_evaluation']."'");
   if ($currentUser -> getType() != 'administrator' && ($evaluations[0]['author'] != $currentUser -> login)) {
    $message = _YOUCANNOTEDITSOMEELSESEVALUATION;
    $message_type = 'failure';
-   eF_redirect("".basename($form->exportValue('previous_url'))."&message=". $message . "&message_type=" . $message_type . "&tab=evaluations");
-   //eF_redirect("".$_SERVER['HTTP_REFERER']."&tab=evaluations&message=". $message . "&message_type=" . $message_type);
+   sC_redirect("".basename($form->exportValue('previous_url'))."&message=". $message . "&message_type=" . $message_type . "&tab=evaluations");
+   //sC_redirect("".$_SERVER['HTTP_REFERER']."&tab=evaluations&message=". $message . "&message_type=" . $message_type);
    exit;
   }
   $form -> setDefaults( array('specification' => $evaluations[0]['specification']));
@@ -140,7 +140,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
                                         'author' => $currentUser -> login,
                                         'timestamp' => time());
    if (isset($_GET['add_evaluation'])) {
-    if ($ok = eF_insertTableData("module_hcd_events", $evaluation_content)) {
+    if ($ok = sC_insertTableData("module_hcd_events", $evaluation_content)) {
      $message = _SUCCESSFULLYCREATEDEVALUATION;
      $message_type = 'success';
     } else {
@@ -148,12 +148,12 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      $message_type = 'failure';
     }
    } elseif (isset($_GET['edit_evaluation'])) {
-    eF_updateTableData("module_hcd_events", $evaluation_content, "event_ID = '" . $_GET['edit_evaluation']. "'");
+    sC_updateTableData("module_hcd_events", $evaluation_content, "event_ID = '" . $_GET['edit_evaluation']. "'");
     $message = _EVALUATIONDATAUPDATED;
     $message_type = 'success';
    }
    // A little risky, but i think that all urls have sth like ?ctg= , so np
-   //eF_redirect("".basename($form->exportValue('previous_url'))."&message=". $message . "&message_type=" . $message_type . "&tab=evaluations");
+   //sC_redirect("".basename($form->exportValue('previous_url'))."&message=". $message . "&message_type=" . $message_type . "&tab=evaluations");
    //exit;
   }
  }
@@ -219,7 +219,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $smarty -> assign("T_SYSTEM_AVATARS", $systemAvatars);
  } catch (Exception $e) {
   $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-  $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+  $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
  }
  /**
 
@@ -253,7 +253,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   }
   $baseUrl = "ctg=users&edit_user=".$editedUser -> user['login'];
  }
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
  $form -> addElement('file', 'file_upload', _IMAGEFILE, 'class = "inputText"');
  $form -> addElement('advcheckbox', 'delete_avatar', _DELETECURRENTAVATAR, null, 'class = "inputCheckbox"', array(0, 1));
 
@@ -385,7 +385,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      $filesystem = new FileSystemTree($avatarDirectory);
      $uploadedFile = $filesystem -> uploadFile('file_upload', $avatarDirectory);
      // Normalize avatar picture to 150xDimY or DimX x 100
-     eF_normalizeImage($avatarDirectory . "/" . $uploadedFile['name'], $uploadedFile['extension'], 150, 100);
+     sC_normalizeImage($avatarDirectory . "/" . $uploadedFile['name'], $uploadedFile['extension'], 150, 100);
      $editedUser -> user['avatar'] = $uploadedFile['id'];
      MagesterEvent::triggerEvent(array("type" => MagesterEvent::AVATAR_CHANGE, "users_LOGIN" => $editedUser -> user['login'], "users_name" => $editedUser->user['name'], "users_surname" => $editedUser->user['surname'], "lessons_ID" => 0, "lessons_name" => "", "entity_ID" => $editedUser -> user['avatar']));
      if ($personal_profile_form) {
@@ -430,7 +430,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
     }
    } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
    }
   }
  }
@@ -459,7 +459,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      $skills = $editedEmployee -> getSkills();
      $skills = array_keys($skills);
      $allSkills = MagesterSkill::getAllSkills();
-     isset($_GET['filter']) ? $allSkills = eF_filterData($allSkills, $_GET['filter']) : null;
+     isset($_GET['filter']) ? $allSkills = sC_filterData($allSkills, $_GET['filter']) : null;
      foreach ($allSkills as $skill) {
       if (!in_array($skill['skill_ID'], $skills)) {
        $editedEmployee -> addSkills($skill['skill_ID'], "");
@@ -469,7 +469,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      $skills = $editedEmployee -> getSkills();
      $skills = array_keys($skills);
      $allSkills = MagesterSkill::getAllSkills();
-     isset($_GET['filter']) ? $allSkills = eF_filterData($allSkills, $_GET['filter']) : null;
+     isset($_GET['filter']) ? $allSkills = sC_filterData($allSkills, $_GET['filter']) : null;
      foreach ($allSkills as $skill) {
       if (in_array($skill['skill_ID'], $skills)) {
        $editedEmployee -> removeSkills($skill['skill_ID']);
@@ -499,12 +499,12 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
     } elseif ($_GET['insert'] == "false") {
      $editedUser -> removeGroups($_GET['add_group']);
     } elseif (isset($_GET['addAll'])) {
-     $groups = eF_getTableDataFlat("groups", "id", "active=1");
-     isset($_GET['filter']) ? $groups = eF_filterData($groups, $_GET['filter']) : null;
+     $groups = sC_getTableDataFlat("groups", "id", "active=1");
+     isset($_GET['filter']) ? $groups = sC_filterData($groups, $_GET['filter']) : null;
      $editedUser -> addGroups($groups['id']);
     } elseif (isset($_GET['removeAll'])) {
-     $groups = eF_getTableDataFlat("groups", "id", "active=1");
-     isset($_GET['filter']) ? $groups = eF_filterData($groups, $_GET['filter']) : null;
+     $groups = sC_getTableDataFlat("groups", "id", "active=1");
+     isset($_GET['filter']) ? $groups = sC_filterData($groups, $_GET['filter']) : null;
      $editedUser -> removeGroups($groups['id']);
     }
     exit;
@@ -530,8 +530,8 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $edit_user= $_GET['edit_user'];
  // Create ajax enabled table for employees
  if (isset($_GET['ajax']) && $_GET['ajax'] == 'skillsTable') {
-  isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-  if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+  isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+  if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
    $sort = $_GET['sort'];
    isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
   } else {
@@ -539,15 +539,15 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   }
   // ** Get skills **
   // We do not use the getSkills() method, because it will only return the skills of the employee and we need to present them ALL
-  //$skill_categories = eF_getTableData("module_hcd_skill_categories", "*", "", "description","");
-  $skills = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_skill_categories ON module_hcd_skill_categories.id = module_hcd_skills.categories_ID LEFT OUTER JOIN module_hcd_employee_has_skill ON (module_hcd_employee_has_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_employee_has_skill.users_login='$edit_user') LEFT JOIN users ON module_hcd_employee_has_skill.author_login = users.login", "users_login, module_hcd_skills.description, module_hcd_skill_categories.description as category, specification, module_hcd_skills.skill_ID, categories_ID, users.surname, users.name","");
-  $skills = eF_multiSort($skills, $sort, $order);
+  //$skill_categories = sC_getTableData("module_hcd_skill_categories", "*", "", "description","");
+  $skills = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_skill_categories ON module_hcd_skill_categories.id = module_hcd_skills.categories_ID LEFT OUTER JOIN module_hcd_employee_has_skill ON (module_hcd_employee_has_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_employee_has_skill.users_login='$edit_user') LEFT JOIN users ON module_hcd_employee_has_skill.author_login = users.login", "users_login, module_hcd_skills.description, module_hcd_skill_categories.description as category, specification, module_hcd_skills.skill_ID, categories_ID, users.surname, users.name","");
+  $skills = sC_multiSort($skills, $sort, $order);
   $smarty -> assign("T_SKILLS_SIZE", sizeof($skills));
   if (isset($_GET['filter'])) {
-   $skills = eF_filterData($skills, $_GET['filter']);
+   $skills = sC_filterData($skills, $_GET['filter']);
   }
-  if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-   isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+  if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+   isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
    $skills = array_slice($skills, $offset, $limit);
   }
   if (!empty($skills)) {
@@ -558,8 +558,8 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  }
  /** Get the employees history by ajax **/
  if (isset($_GET['ajax']) && $_GET['ajax'] == 'historyFormTable') {
-  isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-  if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+  isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+  if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
    $sort = $_GET['sort'];
    isset($_GET['order']) && $_GET['order'] == 'asc' ? $order = 'asc' : $order = 'desc';
   } else {
@@ -569,8 +569,8 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $history = array();
   // Get history from events table - 3.6 and on
   // type > 300 is the HCD events
-  $history_from_events = eF_getTableData("events", "*", "users_LOGIN = '".$_GET['edit_user']."' AND type > 300");
-  $allModules = eF_loadAllModules();
+  $history_from_events = sC_getTableData("events", "*", "users_LOGIN = '".$_GET['edit_user']."' AND type > 300");
+  $allModules = sC_loadAllModules();
   foreach ($history_from_events as $key => $event) {
    $eventObject = new MagesterEvent($event);
    $history[$key]['event_ID'] = "_" . $event['id'];
@@ -578,19 +578,19 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    $history[$key]['message'] = $eventObject ->createMessage($allModules);
   }
   // Get history from module_hcd_events table - for before 3.6
-  $history_hcd_events = eF_getTableData("module_hcd_events", "*", "users_login = '".$_GET['edit_user']."' AND event_code <10");
+  $history_hcd_events = sC_getTableData("module_hcd_events", "*", "users_login = '".$_GET['edit_user']."' AND event_code <10");
   foreach ($history_hcd_events as $key => $event) {
    $history['_' . $key]['event_ID'] = $event['event_ID'];
    $history['_' . $key]['timestamp'] = $event['timestamp'];
    $history['_' . $key]['message'] = $event['specification'];
   }
-  $history = eF_multiSort($history, $sort, $order);
+  $history = sC_multiSort($history, $sort, $order);
   if (isset($_GET['filter'])) {
-   $history = eF_filterData($history , $_GET['filter']);
+   $history = sC_filterData($history , $_GET['filter']);
   }
   $smarty -> assign('T_HISTORY_SIZE', sizeof($history));
-  if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-   isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+  if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+   isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
    $history = array_slice($history, $offset, $limit);
   }
   if (!empty($history)) {
@@ -615,7 +615,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    } else {
     $lesson = new MagesterLesson($_GET['id']);
     $lesson -> confirm($editedUser);
-    //eF_updateTableData("users_to_lessons", array("from_timestamp" => time()), "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_GET['id']." and from_timestamp=0");
+    //sC_updateTableData("users_to_lessons", array("from_timestamp" => time()), "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_GET['id']." and from_timestamp=0");
    }
   } catch (Exception $e) {
    header("HTTP/1.0 500");
@@ -630,7 +630,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    } else {
     $lesson = new MagesterLesson($_GET['id']);
     $lesson -> unConfirm($editedUser);
-    //eF_updateTableData("users_to_lessons", array("from_timestamp" => time()), "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_GET['id']." and from_timestamp=0");
+    //sC_updateTableData("users_to_lessons", array("from_timestamp" => time()), "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_GET['id']." and from_timestamp=0");
    }
   } catch (Exception $e) {
    header("HTTP/1.0 500");
@@ -643,11 +643,11 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  /****************************************************************************************************************************************************/
  if (isset($_GET['add_user'])) { //We add a new user, so we need to display login field. Only an administrator has the ability to add a user.
   $form = new HTML_QuickForm("add_users_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=users&add_user=1", "", null, true);
-  $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+  $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
   $form -> addElement('text', 'new_login', _LOGIN, 'class = "inputText"');
   $form -> addRule('new_login', _THEFIELD.' '._LOGIN.' '._ISMANDATORY, 'required', null, 'client');
   $form -> addRule('new_login', _INVALIDFIELDDATA, 'checkParameter', 'login');
-  $form -> registerRule('checkNotExist', 'callback', 'eF_checkNotExist');
+  $form -> registerRule('checkNotExist', 'callback', 'sC_checkNotExist');
   $form -> addRule('new_login', _THELOGIN.' &quot;'.($form -> exportValue('new_login')).'&quot; '._ALREADYEXISTS, 'checkNotExist', 'login');
 
 	$newPassword = MagesterUser::generateMD5Password(7);
@@ -664,11 +664,11 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $form -> addRule('passrepeat', _THEFIELD.' '._REPEATPASSWORD.' '._ISMANDATORY, 'required', null, 'client');
   $form -> addRule(array('password_', 'passrepeat'), _PASSWORDSDONOTMATCH, 'compare', null, 'client');
 */
- } elseif (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login')) {
+ } elseif (isset($_GET['edit_user']) && sC_checkParameter($_GET['edit_user'], 'login')) {
    // In classic SysClass, only the administrator may change someone else's data
    ($currentUser -> getType() == "administrator") ? $post_target = "?ctg=users&edit_user=".$_GET['edit_user'] : $post_target = "?ctg=personal&op=account";
   $form = new HTML_QuickForm("change_users_form", "post", basename($_SERVER['PHP_SELF']).$post_target, "", null, true);
-  $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+  $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
   if (!$editedUser -> isLdapUser) { //needs to check ldap
    $form -> addElement('password', 'password_', _PASSWORDLEAVEBLANK, 'autocomplete="off" class = "inputText"');
    $form -> addElement('password', 'passrepeat', _REPEATPASSWORD, 'class = "inputText "');
@@ -702,7 +702,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    list($width, $height) = getimagesize($avatar['path']);
    if ($width > 200 || $height > 100) {
     // Get normalized dimensions
-    list($newwidth, $newheight) = eF_getNormalizedDims($avatar['path'], 200, 100);
+    list($newwidth, $newheight) = sC_getNormalizedDims($avatar['path'], 200, 100);
     // The template will check if they are defined and normalize the picture only if needed
     $smarty -> assign("T_NEWWIDTH", $newwidth);
     $smarty -> assign("T_NEWHEIGHT", $newheight);
@@ -720,7 +720,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $form -> addElement('text', 'email', _EMAILADDRESS, 'class = "inputText"');
  // Find all groups available to create the select-group drop down
  if (!isset($groups_table)) {
-  $groups_table = eF_getTableData("groups", "id, name", "active=1");
+  $groups_table = sC_getTableData("groups", "id, name", "active=1");
  }
  if (!empty($groups_table)) {
   $groups = array ("" => "");
@@ -748,13 +748,13 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    $form -> setDefaults(array('user_type' => $editedUser -> user['user_types_ID']));
   }
  }
- $resultRole = eF_getTableData("users", "user_types_ID", "login='".$currentUser -> login."'");
+ $resultRole = sC_getTableData("users", "user_types_ID", "login='".$currentUser -> login."'");
  $smarty -> assign("T_CURRENTUSERROLEID", $resultRole[0]['user_types_ID']);
  // In HCD mode supervisors - and not only administrators - may create employees
  if ($currentUser -> getType() == "administrator" || (G_VERSIONTYPE == 'enterprise' && $ctg != "personal")) {
   $rolesTypes = MagesterUser :: getRoles();
   if ($resultRole[0]['user_types_ID'] == 0 || $rolesTypes[$resultRole[0]['user_types_ID']] == "administrator") {
-   $roles = eF_getTableDataFlat("user_types", "*");
+   $roles = sC_getTableDataFlat("user_types", "*");
    $roles_array['student'] = _STUDENT;
    $roles_array['professor'] = _PROFESSOR;
    // Only the administrator may assign administrator rights
@@ -786,7 +786,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    $form -> setDefaults(array('languages_NAME' => $GLOBALS['configuration']['default_language']));
   }
  }
- $timezones = eF_getTimezones();
+ $timezones = sC_getTimezones();
  $form -> addElement("select", "timezone", _TIMEZONE, $timezones, 'class = "inputText" style="width:20em"');
  // Set default values for new users
  if (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $editedUser -> user['timezone'] == "")) {
@@ -806,10 +806,10 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $form -> addElement('submit', 'submit_personal_details', _SUBMIT, 'class = "flatButton"');
   if ($form -> isSubmitted() && $form -> validate()) {
    $values = $form -> exportValues();
-    $user_profile = eF_getTableData("user_profile", "*", "active=1"); //Get admin-defined form fields for user registration
+    $user_profile = sC_getTableData("user_profile", "*", "active=1"); //Get admin-defined form fields for user registration
    //Check the user_type. If it's an id, it means that it's not one of the basic user types; so derive the basic user type and populate the user_types_ID field
    if (is_numeric($values['user_type'])) {
-    $result = eF_getTableData("user_types", "id, basic_user_type", "id=".$values['user_type']);
+    $result = sC_getTableData("user_types", "id, basic_user_type", "id=".$values['user_type']);
     if (sizeof($result) > 0) {
      $values['user_type'] = $result[0]['basic_user_type'];
      $values['user_types_ID'] = $result[0]['id'];
@@ -871,11 +871,11 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
       $group = new MagesterGroup($values['group']);
       $group -> addUsers($values['new_login']);
      }
-      eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=users&edit_user=".$values['new_login']."&tab=lessons&message=".urlencode(_USERCREATED)."&message_type=success");
+      sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=users&edit_user=".$values['new_login']."&tab=lessons&message=".urlencode(_USERCREATED)."&message_type=success");
      exit;
     } catch (Exception $e) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+     $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
      $message_type = 'failure';
     }
     /***********************************/
@@ -914,7 +914,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
       $_SESSION['s_language'] = $values['languages_NAME'];
      }
     }
-    eF_updateTableData("users", $users_content, "login='".$_GET['edit_user']."'");
+    sC_updateTableData("users", $users_content, "login='".$_GET['edit_user']."'");
 
      $user_details = array(
 		'data_nascimento'	=> $values['data_nascimento']['Y'] . '-' . $values['data_nascimento']['M'] . '-' . $values['data_nascimento']['d'],
@@ -955,7 +955,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      if ($values['group']) {
       $editedUser -> addGroups($values['group']);
      } else {
-      $groups = eF_getTableDataFlat("groups","id","");
+      $groups = sC_getTableDataFlat("groups","id","");
       $editedUser -> removeGroups($groups['id']);
      }
     }
@@ -1034,7 +1034,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   try {
    if (isset($_GET['ajax']) && $_GET['ajax'] == "groupsTable") {
     /** Get groups **/
-    $groups = eF_getTableData("groups", "*", "active=1");
+    $groups = sC_getTableData("groups", "*", "active=1");
     $user_groups = $editedUser -> getGroups();
     for ($k = 0; $k < sizeof($groups); $k++) {
      $groups[$k]['partof'] = 0;

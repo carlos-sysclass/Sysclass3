@@ -1,9 +1,9 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printNewContent function. Prints inner table
+* Smarty plugin: smarty_function_sC_template_printNewContent function. Prints inner table
 *
 */
-function smarty_function_eF_template_printNewContent($params, &$smarty)
+function smarty_function_sC_template_printNewContent($params, &$smarty)
 {
 
     $max_title_size = 50;                                           //The maximum length of the title, after which it is cropped with ...

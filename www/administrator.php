@@ -35,7 +35,7 @@ try {
     if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
         setcookie('c_request', http_build_query($_GET), time() + 300);
     }
-    eF_redirect("index.php?message=" . urlencode($message = $e->getMessage() . ' (' . $e->getCode() . ')') . "&message_type=failure", true);
+    sC_redirect("index.php?message=" . urlencode($message = $e->getMessage() . ' (' . $e->getCode() . ')') . "&message_type=failure", true);
     exit;
 }
 
@@ -46,9 +46,9 @@ if (!isset($_GET['ajax']) && !isset($_GET['postAjaxRequest']) && !isset($popup) 
 if (isset($_COOKIE['c_request']) && $_COOKIE['c_request']) {
     setcookie('c_request', '', time() - 86400);
     if (mb_strpos($_COOKIE['c_request'], '.php') !== false) {
-        eF_redirect("" . $_COOKIE['c_request']);
+        sC_redirect("" . $_COOKIE['c_request']);
     } else {
-        eF_redirect("" . $_SESSION['s_type'] . '.php?' . $_COOKIE['c_request']);
+        sC_redirect("" . $_SESSION['s_type'] . '.php?' . $_COOKIE['c_request']);
     }
 }
 
@@ -131,7 +131,7 @@ $smarty->assign("_admin_", $_admin_);
 
 if (!$GLOBALS['configuration']['disable_messages']) {
     if (($currentUser->coreAccess['personal_messages']) || $currentUser->coreAccess['personal_messages'] != 'hidden') {
-        $unreadMessages = $messages = eF_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
+        $unreadMessages = $messages = sC_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
         $smarty->assign("T_UNREAD_MESSAGES", $messages[0]['count(*)']);
         if ($messages[0]['count(*)'] == 1) {
             $smarty->assign("T_UNREAD_MESSAGES_TEXT", _YOUHAVE_ONE_UNREADMESSAGE);
@@ -231,7 +231,7 @@ try {
     } elseif ($ctg == 'logout_user') {
 
         // Done here to include administrator.php access control
-        if ($_GET['ajax'] == "ajax" && eF_checkParameter($_GET['user'], "login")) {
+        if ($_GET['ajax'] == "ajax" && sC_checkParameter($_GET['user'], "login")) {
             $user = MagesterUserFactory :: factory($_GET['user']);
             $user->logout();
             exit;
@@ -250,7 +250,7 @@ try {
             /*			 * */
             require_once 'calendar.php';
         } else {
-            eF_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
+            sC_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
         }
     } elseif ($ctg == 'search_courses') {
         /*		 * Search courses is used to find the course users that fulfill an arbitrary number of criteria */
@@ -262,7 +262,7 @@ try {
         require_once 'digests.php';
     } elseif ($ctg == 'statistics') {
         if (isset($currentUser->coreAccess['statistics']) && $currentUser->coreAccess['statistics'] == 'hidden') {
-            eF_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
+            sC_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=control_panel&message=" . urlencode(_UNAUTHORIZEDACCESS) . "&message_type=failure");
         }
         /** Statistics is the page that calculates and displays the system statistics. */
         require_once 'statistics.php';
@@ -290,13 +290,13 @@ try {
       'timestamp'   => time(),
       'action'      => 'lastmove',
       'comments'    => 0,
-      'session_ip'  => eF_encodeIP($_SERVER['REMOTE_ADDR']));
-      eF_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
-      eF_insertTableData("logs", $fields_log);
+      'session_ip'  => sC_encodeIP($_SERVER['REMOTE_ADDR']));
+      sC_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
+      sC_insertTableData("logs", $fields_log);
      */
 } catch (Exception $e) {
     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-    $message = $e->getMessage() . ' (' . $e->getCode() . ') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\'' . _ERRORDETAILS . '\', 2, \'error_details\')">' . _MOREINFO . '</a>';
+    $message = $e->getMessage() . ' (' . $e->getCode() . ') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\'' . _ERRORDETAILS . '\', 2, \'error_details\')">' . _MOREINFO . '</a>';
     $message_type = 'failure';
 }
 $smarty->assign("T_HEADER_EDITOR", $load_editor); //Specify whether we need to load the editor
@@ -335,7 +335,7 @@ $smarty->assign("T_HEADER_LOAD_STYLESHEETS", implode(",", array_unique($loadStyl
 
 $smarty->assign("T_CURRENT_CTG", $ctg);
 $smarty->assign("T_MENUCTG", $ctg);
-//$smarty->assign("T_MENU", eF_getMenu());
+//$smarty->assign("T_MENU", sC_getMenu());
 //$smarty->assign("T_QUERIES", $numberOfQueries);
 $smarty->assign("T_MESSAGE", $message);
 $smarty->assign("T_MESSAGE_TYPE", $message_type);
@@ -380,7 +380,7 @@ $smarty->assign("T_CHECK_VIEW_LINK_CHAT", $viewLink);
 $user_avatar = array();
 try {
     $file = new MagesterFile($currentUser->user['avatar']);
-    list($user_avatar['width'], $user_avatar['height']) = eF_getNormalizedDims($file['path'], 80, 50);
+    list($user_avatar['width'], $user_avatar['height']) = sC_getNormalizedDims($file['path'], 80, 50);
     $user_avatar['avatar'] = $currentUser->user['avatar'];
 } catch (MagesterFileException $e) {
     $user_avatar = array(

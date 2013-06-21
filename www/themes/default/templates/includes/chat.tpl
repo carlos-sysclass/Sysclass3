@@ -3,7 +3,7 @@
     {capture name = "moduleShowRoom"}
                             <tr><td class = "moduleCell" >
        {assign var = 't_show_side_menu' value = true}
-       {assign var = "room_title" value = $T_ROOM_TITLE|eF_truncate:30:"...":true}
+       {assign var = "room_title" value = $T_ROOM_TITLE|sC_truncate:30:"...":true}
        {assign var = "title" value ='&nbsp;&raquo;&nbsp;'|cat:$room_title}
                             {capture name = 't_input_code'}
                                     <table border = "0">
@@ -18,7 +18,7 @@
                                             </td>
                                             </form>
                                             <td>
-                                                <a href = "smilies.php" onclick = "eF_js_showDivPopup('{$smarty.const._SMILIES}', 1)" target = "POPUP_FRAME"><img src = "images/smilies/icon_smile.gif" border = "0"/></a>
+                                                <a href = "smilies.php" onclick = "sC_js_showDivPopup('{$smarty.const._SMILIES}', 1)" target = "POPUP_FRAME"><img src = "images/smilies/icon_smile.gif" border = "0"/></a>
                                             </td>
                                         </tr>
                                     </table>
@@ -104,19 +104,19 @@
                                         {*<tr><td><span class = "counter">{counter}.</span> <a href = "javascript:void(0)" onclick = "resizeChild()">{$smarty.const._ADJUSTTOPAGE}</a></td></tr>*}
                             {if !$T_CURRENT_USER->coreAccess.chat || $T_CURRENT_USER->coreAccess.chat == 'change'}
                                 {if $smarty.session.s_type != 'student'}
-                                        <tr><td><span class = "counter">{counter}.</span> <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_public_room=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CREATEPUBLICROOM}', 1)" >{$smarty.const._CREATEPUBLICROOM}</a></td></tr>
+                                        <tr><td><span class = "counter">{counter}.</span> <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_public_room=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CREATEPUBLICROOM}', 1)" >{$smarty.const._CREATEPUBLICROOM}</a></td></tr>
                                 {/if}
-                                        <tr><td><span class = "counter">{counter}.</span> <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_private_room=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CREATEPRIVATEROOM}', 1)" >{$smarty.const._CREATEPRIVATEROOM}</a></td></tr>
+                                        <tr><td><span class = "counter">{counter}.</span> <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_private_room=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CREATEPRIVATEROOM}', 1)" >{$smarty.const._CREATEPRIVATEROOM}</a></td></tr>
                             {/if}
                                         <tr><td><span class = "counter">{counter}.</span> <a href = "{$smarty.server.PHP_SELF}?ctg=chat">{$smarty.const._GOTOCHATROOMSLIST}</a></td></tr>
                                     </table>
                             {/capture}
 
                                             {assign var = 't_rooms_span' value = '<span id = "rooms_list"></span>'}
-                                            {eF_template_printSide title=$smarty.const._OPENROOMS data=$t_rooms_span id = 'open_rooms'}
-                                            {eF_template_printSide title=$smarty.const._OPTIONS data=$smarty.capture.t_functions_code id = 'functions_list'}
+                                            {sC_template_printSide title=$smarty.const._OPENROOMS data=$t_rooms_span id = 'open_rooms'}
+                                            {sC_template_printSide title=$smarty.const._OPTIONS data=$smarty.capture.t_functions_code id = 'functions_list'}
                                             {assign var = 't_users_span' value = '<span id = "users_list"></span>'}
-                                            {eF_template_printSide title=$smarty.const._OTHERUSERSINROOM data=$t_users_span id = 'other_users'}
+                                            {sC_template_printSide title=$smarty.const._OTHERUSERSINROOM data=$t_users_span id = 'other_users'}
                                             <span id = "notice"></span>
     {/capture}
 {/if}
@@ -143,7 +143,7 @@
          <input type = "hidden" name = "chat_room_type" value = "{$T_ROOM_TYPE}" />
          </form>
   {/capture}
-  {eF_template_printBlock title=$smarty.const._NEWPUBLICROOM data=$smarty.capture.t_new_public_room_code image='32x32/chat.png'}
+  {sC_template_printBlock title=$smarty.const._NEWPUBLICROOM data=$smarty.capture.t_new_public_room_code image='32x32/chat.png'}
  {/if}
 
  {if $smarty.get.past_messages}
@@ -159,15 +159,15 @@
                      </select>
              </td></tr>
              <tr><td class = "labelCell">{$smarty.const._FROM}:&nbsp;</td>
-                 <td class = "elementCell">{eF_template_html_select_date prefix="from_date_" time = $T_DAY_BEFORE start_year="-2" field_order = $T_DATE_FORMATGENERAL}, {html_select_time prefix="from_time_"}</td>
+                 <td class = "elementCell">{sC_template_html_select_date prefix="from_date_" time = $T_DAY_BEFORE start_year="-2" field_order = $T_DATE_FORMATGENERAL}, {html_select_time prefix="from_time_"}</td>
              <tr><td class = "labelCell">{$smarty.const._TOCAPITAL}:&nbsp;</td>
-                 <td class = "elementCell">{eF_template_html_select_date prefix="to_date_" start_year="-2" field_order = $T_DATE_FORMATGENERAL}, {html_select_time prefix="to_time_"}
+                 <td class = "elementCell">{sC_template_html_select_date prefix="to_date_" start_year="-2" field_order = $T_DATE_FORMATGENERAL}, {html_select_time prefix="to_time_"}
              </td></tr>
              <tr style="display:none">
               <td class = "labelCell">{$smarty.const._ANDTHEMESSAGESOFUSER}:</td>
                  <td class = "elementCell"><select name = "select_user" id="select_user_id" {if $smarty.const.MSIE_BROWSER == 1}onChange="restoreSelection(this);"{/if}>
                          <option value = "0">{$smarty.const._ALLUSERS}</option>
-                         {eF_template_printUsersList data = $T_USERS selected = $smarty.post.select_user}
+                         {sC_template_printUsersList data = $T_USERS selected = $smarty.post.select_user}
                      </select>
              </td></tr>
              <tr><td></td>
@@ -179,7 +179,7 @@
             <input class = "flatButton" type = "submit" name = "chat_submit_export_messages" value = "{$smarty.const._EXPORT}" />
               </td></tr>
          </table>
-         {*Disappearing them here instead of changing the eF_template is used also in news.tpl*}
+         {*Disappearing them here instead of changing the sC_template is used also in news.tpl*}
     {literal}
           <script>
            document.getElementsByName("from_time_Second")[0].style.display = "none";
@@ -188,7 +188,7 @@
           {/literal}
          </form>
   {/capture}
-  {eF_template_printBlock title=$smarty.const._EXPORTCHATCONVERSATIONS data=$smarty.capture.t_past_messages_code image='32x32/chat.png'}
+  {sC_template_printBlock title=$smarty.const._EXPORTCHATCONVERSATIONS data=$smarty.capture.t_past_messages_code image='32x32/chat.png'}
 
   {if $smarty.post.chat_submit_show_messages}
          <table border = "0" align = "left">
@@ -269,11 +269,11 @@
    <div class = "headerTools">
     <span>
      <img src = "images/16x16/add.png" alt = "{$smarty.const._ADDROOM}" title = "{$smarty.const._ADDROOM}"/>
-     <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_public_room=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDROOM}', 0)">{$smarty.const._ADDROOM}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&new_public_room=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDROOM}', 0)">{$smarty.const._ADDROOM}</a>
     </span>
     <span>
      <img src = "images/16x16/generic.png" alt = "{$smarty.const._MANAGEPASTCOVERSATIONS}" title = "{$smarty.const._MANAGEPASTCOVERSATIONS}"/>
-     <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&past_messages=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._MANAGEPASTCOVERSATIONS}', 2)">{$smarty.const._MANAGEPASTCOVERSATIONS}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=chat&chat_room_options=1&popup=1&past_messages=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._MANAGEPASTCOVERSATIONS}', 2)">{$smarty.const._MANAGEPASTCOVERSATIONS}</a>
     </span>
     <span>
     {if $T_CHAT_ENABLED}
@@ -314,7 +314,7 @@
      {/if}
       <a class = "activateLink" href = "{$smarty.server.PHP_SELF}?ctg=chat&id={$T_PUBLIC_ROOMS[public_rooms_list].id}&activate={if $T_PUBLIC_ROOMS[public_rooms_list].active}0{else}1{/if}">{$smarty.capture.t_assign}</a>
                  {if $T_PUBLIC_ROOMS[public_rooms_list].active}
-                     <a class = "inviteLink" href = "{$smarty.server.PHP_SELF}?ctg=messages&add=1&chat_invite={$T_PUBLIC_ROOMS[public_rooms_list].id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._INVITEUSERS}', 3)">
+                     <a class = "inviteLink" href = "{$smarty.server.PHP_SELF}?ctg=messages&add=1&chat_invite={$T_PUBLIC_ROOMS[public_rooms_list].id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._INVITEUSERS}', 3)">
                       <img src = "images/16x16/mail.png" alt = "{$smarty.const._INVITEUSERS}" title = "{$smarty.const._INVITEUSERS}" class = "handle"/></a>
                  {/if}
              {/if}
@@ -328,7 +328,7 @@
          {/section}
    </table>
   {/capture}
-  {eF_template_printBlock title=$smarty.const._ROOMS data=$smarty.capture.t_public_rooms_code image='32x32/chat.png'}
+  {sC_template_printBlock title=$smarty.const._ROOMS data=$smarty.capture.t_public_rooms_code image='32x32/chat.png'}
     </td></tr>
     {/capture}
 {/if}

@@ -56,7 +56,7 @@ try {
        $dataSource = $users;
        $smarty -> assign("T_TABLE_SIZE", $totalEntries);
       }
-      if (isset($_GET['ajax']) && $_GET['ajax'] == 'instanceUsersTable' && eF_checkParameter($_GET['instanceUsersTable_source'], 'login')) {
+      if (isset($_GET['ajax']) && $_GET['ajax'] == 'instanceUsersTable' && sC_checkParameter($_GET['instanceUsersTable_source'], 'login')) {
        $smarty -> assign("T_DATASOURCE_COLUMNS", array('name', 'user_type', 'location', 'active_in_course', 'completed', 'score', 'operations', 'to_timestamp', 'active_in_course'));
        $smarty -> assign("T_DATASOURCE_OPERATIONS", array('statistics'));
        $smarty -> assign("T_SHOW_COURSE_LESSONS", true);
@@ -71,7 +71,7 @@ try {
        $dataSource = $courses;
        $smarty -> assign("T_TABLE_SIZE", $totalEntries);
       }
-      if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsUsersTable' && eF_checkParameter($_GET['courseLessonsUsersTable_source'], 'id')) {
+      if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsUsersTable' && sC_checkParameter($_GET['courseLessonsUsersTable_source'], 'id')) {
        $smarty -> assign("T_DATASOURCE_COLUMNS", array('name', 'time_in_lesson', 'overall_progress', 'test_status', 'project_status', 'completed', 'score', 'user_type'));
        $infoUser = MagesterUserFactory :: factory($_GET['courseLessonsUsersTable_login']);
        $lessons = $infoUser -> getUserStatusInCourseLessons(new MagesterCourse($_GET['courseLessonsUsersTable_source']));
@@ -91,7 +91,7 @@ try {
        array_walk($courses, create_function('&$v,$k', '$v["has_instances"] = 0;')); //Eliminate the information on whether this course has instances, since this table only lists a course's instances anyway (and we want the + to expand its lessons always)
        $dataSource = $courses;
       }
-      if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && eF_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
+      if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && sC_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
        $smarty -> assign("T_DATASOURCE_COLUMNS", array('name'));
        $lessons = $infoCourse -> getCourseLessons();
        $lessons = MagesterLesson :: convertLessonObjectsToArrays($lessons);
@@ -293,7 +293,7 @@ if (isset($_GET['excel'])) {
  } elseif ($branchName) {
   $reportTitle .= " "._FORBRANCH.": ".$branchName;
  }
-//	$directionName = eF_getTableData("directions", "name", "id=".$infoLesson -> lesson['directions_ID']);
+//	$directionName = sC_getTableData("directions", "name", "id=".$infoLesson -> lesson['directions_ID']);
  $languages = MagesterSystem :: getLanguages(true);
  $pdf = new MagesterPdf($reportTitle);
  $info = array(array(_COURSE, $infoCourse -> course['name']),

@@ -120,9 +120,9 @@ function ajaxPostDelJob(id, el) {
                       var i;
                       for (i = 0; i < tables; i++) {
                           if (sortedTables[i].id.match('JobsFormTable')) {
-                              eF_js_rebuildTable(i, 0, 'null', 'desc');
+                              sC_js_rebuildTable(i, 0, 'null', 'desc');
                           } else if (sortedTables[i].id.match('historyFormTable')) {
-                              eF_js_rebuildTable(i, 0, 'timestamp', 'asc');
+                              sC_js_rebuildTable(i, 0, 'timestamp', 'asc');
                           }
                       }
         },
@@ -137,7 +137,7 @@ function ajaxPostDelJob(id, el) {
 
 
 
-    var img_position = eF_js_findPos(el);
+    var img_position = sC_js_findPos(el);
 
 
 
@@ -247,11 +247,11 @@ function ajaxPostDelJob(id, el) {
 
                     if (sortedTables[i].id.match('JobsFormTable')) {
 
-                        eF_js_rebuildTable(i, 0, 'null', 'desc');
+                        sC_js_rebuildTable(i, 0, 'null', 'desc');
 
                     } else if (sortedTables[i].id.match('historyFormTable')) {
 
-                        eF_js_rebuildTable(i, 0, 'timestamp', 'asc');
+                        sC_js_rebuildTable(i, 0, 'timestamp', 'asc');
 
                     }
 
@@ -347,9 +347,9 @@ function ajaxPostJob(id, el) {
                       for (i = 0; i < tables; i++) {
                           if (sortedTables[i].id) {
                               if (sortedTables[i].id.match('JobsFormTable')) {
-                                  eF_js_rebuildTable(i, 0, 'null', 'desc');
+                                  sC_js_rebuildTable(i, 0, 'null', 'desc');
                               } else if (sortedTables[i].id.match('historyFormTable')) {
-                                  eF_js_rebuildTable(i, 0, 'timestamp', 'asc');
+                                  sC_js_rebuildTable(i, 0, 'timestamp', 'asc');
                               }
                           }
                       }
@@ -376,7 +376,7 @@ function ajaxPostJob(id, el) {
                 });
 /*
 
-    var img_position = eF_js_findPos(el);
+    var img_position = sC_js_findPos(el);
 
     var img      = document.createElement("img");
 
@@ -434,11 +434,11 @@ function ajaxPostJob(id, el) {
 
                         if (sortedTables[i].id.match('JobsFormTable')) {
 
-                            eF_js_rebuildTable(i, 0, 'null', 'desc');
+                            sC_js_rebuildTable(i, 0, 'null', 'desc');
 
                         } else if (sortedTables[i].id.match('historyFormTable')) {
 
-                            eF_js_rebuildTable(i, 0, 'timestamp', 'asc');
+                            sC_js_rebuildTable(i, 0, 'timestamp', 'asc');
 
                         }
 
@@ -830,9 +830,9 @@ function ajaxUserPost(type, id, el, table_id) {
                              }
                              for (i = 0; i < tables; i++) {
                                  if (sortedTables[i].id.match(tableToUpload)) {
-                                     eF_js_rebuildTable(i, 0, 'null', 'desc');
+                                     sC_js_rebuildTable(i, 0, 'null', 'desc');
                                  } else if (sortedTables[i].id.match('historyFormTable')) {
-                                     eF_js_rebuildTable(i, 0, 'timestamp', 'asc');
+                                     sC_js_rebuildTable(i, 0, 'timestamp', 'asc');
                                  }
                              }
                          } else if (type == 'course') {
@@ -840,7 +840,7 @@ function ajaxUserPost(type, id, el, table_id) {
                              var i;
                              for (i = 0; i < tables; i++) {
                                  if (sortedTables[i].id == 'lessonsTable') {
-                                     //eF_js_rebuildTable(i, 0, 'null', 'desc');
+                                     //sC_js_rebuildTable(i, 0, 'null', 'desc');
                                  }
                              }
                          } else if (type == 'group') {
@@ -1118,8 +1118,8 @@ function usersCourseClassAjaxPost(login, course, courseclass, el, table_id) {
 		Object.extend(parameters, {user_type: userType});
 		
 		ajaxRequest(el, url, parameters, function() {
-			eF_js_redrawPage('classesuserTable', true);	
-			eF_js_redrawPage('coursesTable', true);
+			sC_js_redrawPage('classesuserTable', true);	
+			sC_js_redrawPage('coursesTable', true);
 		});
 	}
 }

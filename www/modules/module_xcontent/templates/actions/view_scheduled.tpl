@@ -46,7 +46,7 @@
 					</td>
 					{foreach item="field" from=$scope.fields}
 						{assign var="field_name" value="`$field.name`"}
-						<td align="center">{$schedule.$field_name.value|eF_truncate:40}</td>
+						<td align="center">{$schedule.$field_name.value|sC_truncate:40}</td>
 					{/foreach}			
 					<td>
 						<div>
@@ -75,7 +75,7 @@
 	{/if}
 {/foreach}
 {/capture}
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCONTENT_VIEW_SCHEDULED
 	data			= $smarty.capture.t_view_scheduled
 	contentclass	= "blockContents"

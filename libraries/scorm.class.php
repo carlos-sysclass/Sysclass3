@@ -355,9 +355,9 @@ class MagesterScorm
                             }
                         }
                     }
-                    //$total_fields[$key]['data'] = eF_postProcess(str_replace("'","&#039;",$data));
+                    //$total_fields[$key]['data'] = sC_postProcess(str_replace("'","&#039;",$data));
                     if ($parameters['embed_type'] == 'iframe') {
-                        $total_fields[$key]['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$currentLesson -> getDirectoryUrl()."/".$scormFolderName.'/'.$primitive_hrefs[$ref].'" onload = "if (window.eF_js_setCorrectIframeSize) {eF_js_setCorrectIframeSize();} else {setIframeSize = true;}"></iframe>';
+                        $total_fields[$key]['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$currentLesson -> getDirectoryUrl()."/".$scormFolderName.'/'.$primitive_hrefs[$ref].'" onload = "if (window.sC_js_setCorrectIframeSize) {sC_js_setCorrectIframeSize();} else {setIframeSize = true;}"></iframe>';
                     } else {
                         $total_fields[$key]['data'] = '
                             <div style = "text-align:center;height:300px">
@@ -377,7 +377,7 @@ class MagesterScorm
                         $total_fields[$key]['parent_content_ID'] = 0;
                     }
                     $total_fields[$key]['options'] = serialize(array('hide_complete_unit' => 1));
-                    $this_id = eF_insertTableData("content", $total_fields[$key]);
+                    $this_id = sC_insertTableData("content", $total_fields[$key]);
                     $tagArray[$key]['this_id'] = $this_id;
                     foreach ($tagArray[$key]['children'] as $key2 => $value2) {
                         if (isset($total_fields[$value2])) {
@@ -415,9 +415,9 @@ class MagesterScorm
                 $fields_insert[$content_ID]['datafromlms'] = $value;
             }
             foreach ($fields_insert as $key => $value) {
-                eF_insertTableData("scorm_data", $value);
+                sC_insertTableData("scorm_data", $value);
                 if (isset($value['masteryscore']) && $value['masteryscore']) {
-                    eF_updateTableData("content", array("ctg_type" => "scorm_test"), "id=".$value['content_ID']);
+                    sC_updateTableData("content", array("ctg_type" => "scorm_test"), "id=".$value['content_ID']);
                 }
             }
             foreach ($prerequisites as $key => $value) {
@@ -429,7 +429,7 @@ class MagesterScorm
                         $fields_insert['rule_type'] = "hasnot_seen";
                         $fields_insert['rule_content_ID'] = $value2['this_id'];
                         $fields_insert['rule_option'] = 0;
-                        eF_insertTableData("rules", $fields_insert);
+                        sC_insertTableData("rules", $fields_insert);
                     }
                 }
             }

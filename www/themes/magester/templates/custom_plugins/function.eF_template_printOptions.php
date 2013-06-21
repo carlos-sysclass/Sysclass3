@@ -6,7 +6,7 @@
 *
 
 */
-function smarty_function_eF_template_printOptions($params, &$smarty)
+function smarty_function_sC_template_printOptions($params, &$smarty)
 {
 
 	//var_dump($params);
@@ -28,7 +28,7 @@ function smarty_function_eF_template_printOptions($params, &$smarty)
 			}
 		}
 		if (count($groupedParams["links"]) > 0) {
-			$result[urlencode($groupedParams['title'])] = smarty_function_eF_template_printBlock($groupedParams, &$smarty);
+			$result[urlencode($groupedParams['title'])] = smarty_function_sC_template_printBlock($groupedParams, &$smarty);
 		}
 	}
 	echo '<pre>';

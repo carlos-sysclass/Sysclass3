@@ -44,7 +44,7 @@ if ($_GET['action'] == "getrefreshrate") { getRefresh_rate(); }
 
 function getChatHeartbeat()
 {
-	$rate = eF_getTableData("module_chat_config", "chatHeartbeatTime", "1");
+	$rate = sC_getTableData("module_chat_config", "chatHeartbeatTime", "1");
 	foreach ($rate as $r) {
 		echo($r['chatHeartbeatTime']);
 	}
@@ -52,7 +52,7 @@ function getChatHeartbeat()
 
 function getRefresh_rate()
 {
-	$rate = eF_getTableData("module_chat_config", "refresh_rate", "1");
+	$rate = sC_getTableData("module_chat_config", "refresh_rate", "1");
 	foreach ($rate as $r) {
 		echo $r['refresh_rate'];
 	}
@@ -61,12 +61,12 @@ function getRefresh_rate()
 
 function logoutFromChat()
 {
-		eF_executeNew("DELETE FROM module_chat_users WHERE username='".$_SESSION['chatter']."'");
+		sC_executeNew("DELETE FROM module_chat_users WHERE username='".$_SESSION['chatter']."'");
 }
 
 function loginToChat()
 {
-		eF_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
+		sC_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
 }
 
 function chatHeartbeat()

@@ -25,7 +25,7 @@ require_once $path."configuration.php";
 try {
  $currentUser = MagesterUser :: checkUserAccess();
 } catch (Exception $e) {
- eF_redirect("index.php?message=".urlencode($message = $e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure", true);
+ sC_redirect("index.php?message=".urlencode($message = $e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure", true);
  exit;
 }
 //pr($_SERVER);pr($_GET);exit;

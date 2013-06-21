@@ -191,7 +191,7 @@ EOD;
 
 	);
 
-	$insert = eF_insertTableData("module_xlivechat_messagechat", $fields);
+	$insert = sC_insertTableData("module_xlivechat_messagechat", $fields);
 
 	//$sql = "insert into chat_jquery (chat.from,chat.to,message,sent) values ('".mysql_real_escape_string($from)."', '".mysql_real_escape_string($to)."','".mysql_real_escape_string($message)."',NOW())";
 	//$query = mysql_query($sql);

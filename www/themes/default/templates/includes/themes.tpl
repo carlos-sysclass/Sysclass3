@@ -25,7 +25,7 @@
   </form>
  {/capture}
  {if $smarty.get.edit}{assign var = "block_title" value = $smarty.const._UPDATETHEME}{else}{assign var = "block_title" value = $smarty.const._INSTALLTHEME}{/if}
- {eF_template_printBlock title=$block_title data=$smarty.capture.t_add_theme_code image='32x32/themes.png'}
+ {sC_template_printBlock title=$block_title data=$smarty.capture.t_add_theme_code image='32x32/themes.png'}
 {else}
  {capture name = "t_layout_tab"}
   {include file = "includes/layout.tpl"}
@@ -70,9 +70,9 @@
        {/capture}
 
        {if $smarty.get.edit_page != ""}
-           {eF_template_printBlock title = "`$smarty.const._UPDATEPAGE` <span class = 'innerTableName'>&quot;`$smarty.get.edit_page` &quot;</span>" data = $smarty.capture.t_new_page_code image = '32x32/unit.png'}
+           {sC_template_printBlock title = "`$smarty.const._UPDATEPAGE` <span class = 'innerTableName'>&quot;`$smarty.get.edit_page` &quot;</span>" data = $smarty.capture.t_new_page_code image = '32x32/unit.png'}
        {else}
-           {eF_template_printBlock title = $smarty.const._NEWPAGE data = $smarty.capture.t_new_page_code image = '32x32/unit.png'}
+           {sC_template_printBlock title = $smarty.const._NEWPAGE data = $smarty.capture.t_new_page_code image = '32x32/unit.png'}
        {/if}
    {else}
        {capture name = 't_cms_code'}
@@ -107,7 +107,7 @@
                        {/if}
                    </td>
                    <td class = "centerAlign">
-                       <a href = "{$smarty.const.G_SERVERNAME}{$smarty.const.G_CURRENTTHEMEURL}external/{$page}.php" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._PREVIEW}', 2)"><img src = "images/16x16/search.png" title = "{$smarty.const._PREVIEW}" alt = "{$smarty.const._PREVIEW}" /></a>
+                       <a href = "{$smarty.const.G_SERVERNAME}{$smarty.const.G_CURRENTTHEMEURL}external/{$page}.php" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._PREVIEW}', 2)"><img src = "images/16x16/search.png" title = "{$smarty.const._PREVIEW}" alt = "{$smarty.const._PREVIEW}" /></a>
                    {if $_change_}
                        <a href = "administrator.php?ctg=themes&tab=external&edit_page={$page}"><img src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
                        <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSUREYOUWANTTODELETEPAGE}')) deleteEntity(this, '{$page}');"/>
@@ -120,7 +120,7 @@
            </table>
        {/capture}
 
-       {eF_template_printBlock title = $smarty.const._UPDATEPAGES data = $smarty.capture.t_cms_code image = '32x32/unit.png'}
+       {sC_template_printBlock title = $smarty.const._UPDATEPAGES data = $smarty.capture.t_cms_code image = '32x32/unit.png'}
    {/if}
   {/capture}
  {/if}
@@ -132,7 +132,7 @@
   <div class = "headerTools">
    <span>
     <img src = "images/16x16/add.png" title = "{$smarty.const._INSTALLTHEME}" alt = "{$smarty.const._INSTALLTHEME}"/>
-    <a href = "{$smarty.server.PHP_SELF}?ctg=themes&add=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._INSTALLTHEME}', 2)" title = "{$smarty.const._INSTALLTHEME}" target = "POPUP_FRAME">{$smarty.const._INSTALLTHEME}</a>
+    <a href = "{$smarty.server.PHP_SELF}?ctg=themes&add=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._INSTALLTHEME}', 2)" title = "{$smarty.const._INSTALLTHEME}" target = "POPUP_FRAME">{$smarty.const._INSTALLTHEME}</a>
    </span>
   </div>
   {/if}
@@ -197,7 +197,7 @@
    {/foreach}
   </table>
   {/capture}
-  {eF_template_printBlock title=$smarty.const._THEMESELECTION data=$smarty.capture.t_themes_code image='32x32/themes.png'}
+  {sC_template_printBlock title=$smarty.const._THEMESELECTION data=$smarty.capture.t_themes_code image='32x32/themes.png'}
  {/capture}
  {capture name = "t_theme_divs_code"}
  <div class = "tabber">
@@ -208,5 +208,5 @@
         <div class="tabbertab {if (isset($smarty.get.tab) &&  $smarty.get.tab == 'set_theme')} tabbertabdefault{/if}" title = "{$smarty.const._CHANGETHEME}">{$smarty.capture.t_change_theme_tab}</div>
  </div>
  {/capture}
- {eF_template_printBlock title = $smarty.const._THEMES data = $smarty.capture.t_theme_divs_code image = '32x32/themes.png' help='Themes' options = $T_APPEARANCE_LINK}
+ {sC_template_printBlock title = $smarty.const._THEMES data = $smarty.capture.t_theme_divs_code image = '32x32/themes.png' help='Themes' options = $T_APPEARANCE_LINK}
 {/if}

@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE SP_GET_SERVER_FOR_URI
 P_HOST                      IN        VARCHAR2,
 P_PATH                      IN        VARCHAR2,
 P_USER_ID                   IN        NUMBER,
-P_ROWS                      OUT       TYPES.REF_CURSOR,
+P_ROWS                      OUT       TYPES.RsC_CURSOR,
 P_RESULT                    OUT       NUMBER
 )
 AS

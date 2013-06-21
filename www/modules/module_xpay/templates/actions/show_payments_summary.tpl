@@ -44,28 +44,28 @@
 	{include file="$T_XPAY_BASEDIR/templates/includes/options.links.tpl"}
 
 	<div class="grid_12">
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const.__XPAY_LAST_PAYMENTS
 		data=$smarty.capture.t_xpay_last_payments_widget
 	}
 	</div>
 
 	<div class="grid_12">
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const.__XPAY_LAST_FILES
 		data=$smarty.capture.t_xpay_last_files_widget
 	}
 	</div>
 	<div class="clear"></div>
 	<div class="grid_12">
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const.__XPAY_USER_DEBTS
 		data=$smarty.capture.t_xpay_user_debts
 	}
 	</div>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XPAY_SUMMARY_LIST
 	data=$smarty.capture.t_xpay_summary_list
 }

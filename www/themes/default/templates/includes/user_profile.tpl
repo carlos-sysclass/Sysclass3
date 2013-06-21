@@ -62,7 +62,7 @@
                                 {if isset($T_SELECT_OPTIONS)}elementCount = {$T_SELECT_OPTIONS};{/if}
                                 </script>
                             {/capture}
-                            {eF_template_printBlock title = $smarty.const._CUSTOMIZEUSERSPROFILE data = $smarty.capture.field_form_code image = '32x32/profile_add.png'}
+                            {sC_template_printBlock title = $smarty.const._CUSTOMIZEUSERSPROFILE data = $smarty.capture.field_form_code image = '32x32/profile_add.png'}
                 {else}
                     {capture name = 't_fields_list'}
                         {if !isset($T_CURRENT_USER->coreAccess.configuration) || $T_CURRENT_USER->coreAccess.configuration == 'change'}
@@ -95,7 +95,7 @@
                                             {$field.name}
                                     {/if}
                                         </td>
-                                        <td>{$field.description|eF_truncate:40}</td>
+                                        <td>{$field.description|sC_truncate:40}</td>
                                         <td>
            {if $field.type == 'text'}{$smarty.const._TEXTBOX}
            {elseif $field.type == 'select'}{$smarty.const._SELECTBOX}
@@ -123,7 +123,7 @@
                     {/foreach}
                                 </table>
                         {/capture}
-                        {eF_template_printBlock title = $smarty.const._CUSTOMIZEUSERSPROFILE data = $smarty.capture.t_fields_list image = '32x32/profile_add.png' help = 'Extend_user_profile'}
+                        {sC_template_printBlock title = $smarty.const._CUSTOMIZEUSERSPROFILE data = $smarty.capture.t_fields_list image = '32x32/profile_add.png' help = 'Extend_user_profile'}
                 {/if}
             </td></tr>
         {/capture}

@@ -66,7 +66,7 @@ if (!$smarty->is_cached('index.tpl', $cacheId) || !$GLOBALS['configuration']['sm
     $smarty->assign("T_LANGUAGES", $languages);
     $debug_InitTime = microtime(true) - $debug_TimeStart;
     if ($configuration['cms_page'] != "" && sizeof($_GET) == 0 && file_exists(G_CURRENTTHEMEPATH."external/".$GLOBALS['configuration']['cms_page'].".php")) { //if there is cms page and no get parameter defined
-        eF_redirect("".G_SERVERNAME.G_CURRENTTHEMEURL."external/".$configuration['cms_page'].".php");
+        sC_redirect("".G_SERVERNAME.G_CURRENTTHEMEURL."external/".$configuration['cms_page'].".php");
     }
     if (isset($_GET['logout']) && !isset($_POST['submit_login'])) { //If user wants to log out
         if (isset($_SESSION['s_login']) && $_SESSION['s_login']) {
@@ -109,8 +109,8 @@ if (MagesterNotification::shouldSendNextNotifications()) {
 }
 //if there is cms page and no get parameter defined, redirect to the cms page
 if ($configuration['cms_page'] != "" && sizeof($_GET) == 0 && file_exists(G_CURRENTTHEMEPATH."external/".$GLOBALS['configuration']['cms_page'].".php")) { //check also if file exists to prevent from broken link
-    //eF_redirect("".G_RELATIVEADMINLINK.$GLOBALS['configuration']['cms_page'].".php");
-    eF_redirect("".G_SERVERNAME.G_CURRENTTHEMEURL."external/".$configuration['cms_page'].".php");
+    //sC_redirect("".G_RELATIVEADMINLINK.$GLOBALS['configuration']['cms_page'].".php");
+    sC_redirect("".G_SERVERNAME.G_CURRENTTHEMEURL."external/".$configuration['cms_page'].".php");
 }
 //The user logged out
 if (isset($_GET['logout']) && !isset($_POST['submit_login'])) {
@@ -124,7 +124,7 @@ if (isset($_GET['logout']) && !isset($_POST['submit_login'])) {
                 if ($GLOBALS['configuration']['logout_redirect'] == 'close') {
                     echo "<script>window.close();</script>";
                 } else {
-                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ? eF_redirect("".$GLOBALS['configuration']['logout_redirect']) : header("location:http://".$GLOBALS['configuration']['logout_redirect']);
+                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ? sC_redirect("".$GLOBALS['configuration']['logout_redirect']) : header("location:http://".$GLOBALS['configuration']['logout_redirect']);
                 }
             }
         } catch (MagesterUserException $e) {
@@ -181,9 +181,9 @@ if ( !empty( $_GET['urlmaker'] ) ) {
 
 
 /* -------------------------------------------------------Login part-------------------------------------------------------------------*/
-if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
+if (isset($_GET['autologin']) && sC_checkParameter($_GET['autologin'], 'hex')) {
     try {
-        $result = eF_getTableDataFlat("users", "login,autologin,password,user_type", "active=1 and autologin !=''");
+        $result = sC_getTableDataFlat("users", "login,autologin,password,user_type", "active=1 and autologin !=''");
         $autolinks = $result['autologin'];
         $key = array_search($_GET['autologin'], $autolinks);
 
@@ -194,7 +194,7 @@ if (isset($_GET['autologin']) && eF_checkParameter($_GET['autologin'], 'hex')) {
             if (strcmp($pattern, $_GET['autologin']) == 0) {
                 $user->login($user->user['password'], true);
 
-                //if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
+                //if (isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id')) {
                 //check for valid lesson
                 $urlArray = array();
                 foreach ($_GET as $key => $item) {
@@ -221,10 +221,10 @@ if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
         $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
         $user->login($_COOKIE['cookie_password'], true);
         if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
-            eF_redirect("index.php?ctg=agreement");
+            sC_redirect("index.php?ctg=agreement");
         } else {
             // Check if the mobile version of SysClass is required - if so set a session variable accordingly
-            //eF_setMobile();
+            //sC_setMobile();
             MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
             LoginRedirect($user->user['user_type']);
         }
@@ -254,7 +254,7 @@ if (isset($_GET['register_lessons'])) {
 isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
 $form = new HTML_QuickForm("login_form", "post", $postTarget, "", "class = 'indexForm'", true);
 $form->removeAttribute('name');
-$form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 $form->addElement('text', 'login', _LOGIN, 'class = "indent round_all" ');
 $form->addRule('login', _THEFIELD.' "'._LOGIN.'" '._ISMANDATORY, 'required', null, 'client');
 $form->addRule('login', _INVALIDLOGIN, 'checkParameter', 'login');
@@ -266,7 +266,7 @@ if ($form->isSubmitted() && $form->validate()) {
     try {
         $user = MagesterUserFactory :: factory(trim($form->exportValue('login')));
         if ($GLOBALS['configuration']['lock_down'] && $user->user['user_type'] != 'administrator') {
-            eF_redirect("index.php?message=".urlencode(_LOCKDOWNONLYADMINISTRATORSCANLOGIN)."&message_type=failure");
+            sC_redirect("index.php?message=".urlencode(_LOCKDOWNONLYADMINISTRATORSCANLOGIN)."&message_type=failure");
             exit;
         }
         $user->login($form->exportValue('password'));
@@ -279,11 +279,11 @@ if ($form->isSubmitted() && $form->validate()) {
             setcookie("cookie_password", '', time() - 3600);
         }
         // Check if the mobile version of SysClass is required - if so set a session variable accordingly
-        //eF_setMobile();
+        //sC_setMobile();
         if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
-            eF_redirect("index.php?ctg=agreement");
+            sC_redirect("index.php?ctg=agreement");
         } elseif ($_SESSION['login_mode']) {
-            eF_redirect("index.php?ctg=checkout&checkout=1");
+            sC_redirect("index.php?ctg=checkout&checkout=1");
         } else {
             MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
             LoginRedirect($user->user['user_type']);
@@ -295,10 +295,10 @@ if ($form->isSubmitted() && $form->validate()) {
                 $message = $e->getMessage().'<br/>'._LDAPEXTENSIONNOTLOADED;
                 $message_type = 'failure';
             } else {
-                $result = eF_checkUserLdap($form->exportValue('login'), $form->exportValue('password'));
+                $result = sC_checkUserLdap($form->exportValue('login'), $form->exportValue('password'));
                 if ($result) { //The user exists in the LDAP server
                     $_SESSION['ldap_user_pwd'] = $form->exportValue('password'); //Keep the password temporarily in the session, it will be used in the next step
-                    eF_redirect("index.php?ctg=signup&ldap=1&login=".$form->exportValue('login'));
+                    sC_redirect("index.php?ctg=signup&ldap=1&login=".$form->exportValue('login'));
                 } else {
                     $message = _LOGINERRORPLEASEMAKESURECAPSLOCKISOFF;
                     $message_type = 'failure';
@@ -317,7 +317,7 @@ if ($form->isSubmitted() && $form->validate()) {
         $form->setConstants(array("login" => $values['login'], "password" => ""));
     } catch (Exception $e) {
         $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
 }
@@ -340,28 +340,28 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'agreement' && $_SESSION['s_login']) 
                 $user->user['viewed_license'] = 1;
                 $user->persist();
                 // Check if the mobile version of SysClass is required - if so set a session variable accordingly
-                //eF_setMobile();
+                //sC_setMobile();
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
                 if ($_SESSION['login_mode']) {
-                    eF_redirect("index.php?ctg=checkout&checkout=1");
+                    sC_redirect("index.php?ctg=checkout&checkout=1");
                 }
                 LoginRedirect($user->user['user_type']);
             } else {
                 $user->logout();
-                eF_redirect("index.php");
+                sC_redirect("index.php");
             }
         }
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
         $agreementForm->accept($renderer);
         $smarty->assign('T_AGREEMENT_FORM', $renderer->toArray());
     } catch (Exception $e) {
-        eF_redirect("index.php?message=".urlencode($e->getMessage()." (".$e->getCode().")")."&message_type=failure");
+        sC_redirect("index.php?message=".urlencode($e->getMessage()." (".$e->getCode().")")."&message_type=failure");
     }
 }
 /* ---------------------------------------------------------Activation by email part--------------------------------------------------------- */
-if (isset($_GET['account']) && isset($_GET['key']) && eF_checkParameter($_GET['account'], 'login') && eF_checkParameter($_GET['key'], 'timestamp')) {
+if (isset($_GET['account']) && isset($_GET['key']) && sC_checkParameter($_GET['account'], 'login') && sC_checkParameter($_GET['key'], 'timestamp')) {
     if (($configuration['activation'] == 0 && $configuration['mail_activation'] == 1) || $configuration['supervisor_mail_activation'] == 1) {
-        $result = eF_getTableData("users", "timestamp, active", "login='".$_GET['account']."'");
+        $result = sC_getTableData("users", "timestamp, active", "login='".$_GET['account']."'");
         if ($result[0]['active'] == 0 && $result[0]['timestamp'] == $_GET['key']) {
             try {
                 $user = MagesterUserFactory :: factory($_GET['account']);//new MagesterUser($_GET['login']);
@@ -372,7 +372,7 @@ if (isset($_GET['account']) && isset($_GET['key']) && eF_checkParameter($_GET['a
                     $message = _ACCOUNTSUCCESSFULLYACTIVATED;
                 }
                 $message_type = 'success';
-                eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
             } catch (MagesterException $e) {
                 $message = _PROBLEMACTIVATINGACCOUNT.': '.$e->getMessage().' ('.$e->getCode().')';
                 $message_type = 'failure';
@@ -380,7 +380,7 @@ if (isset($_GET['account']) && isset($_GET['key']) && eF_checkParameter($_GET['a
         }
     } else {
         $message = _YOUCANNOTACCESSTHISPAGE;
-        eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=failure');
+        sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=failure');
     }
 }
 /* ---------------------------------------------------------Reset Password part--------------------------------------------------------- */
@@ -388,7 +388,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'reset_pwd' && $GLOBALS['configuratio
     $smarty->assign('T_CTG', 'reset_pwd');
     $form = new HTML_QuickForm("reset_password_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=reset_pwd", "", "class = 'indexForm'", true);
     $form->removeAttribute('name');
-    $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form->addElement('text', 'login_or_pwd', _LOGINOREMAIL, 'class = "inputText"');
     $form->addRule('login_or_pwd', _THEFIELD.' '._ISMANDATORY, 'required', null, 'client');
     $form->addRule('login_or_pwd', _INVALIDFIELDDATA, 'checkParameter', 'text');
@@ -396,48 +396,48 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'reset_pwd' && $GLOBALS['configuratio
     if ($form->isSubmitted() && $form->validate()) {
         $input = $form->exportValue("login_or_pwd");
         try {
-            if (eF_checkParameter($input, 'email')) { //The user entered an email address
-                $result = eF_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
+            if (sC_checkParameter($input, 'email')) { //The user entered an email address
+                $result = sC_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
                 if (sizeof($result) > 1) {
                     $message = _MORETHANONEUSERWITHSAMEMAILENTERLOGIN;
                     $message_type = 'failure';
-                    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
+                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
                     exit;
                 } else {
                     $user = MagesterUserFactory :: factory($result[0]['login']);
                 }
-            } elseif (eF_checkParameter($input, 'login')) { //The user entered his login name
+            } elseif (sC_checkParameter($input, 'login')) { //The user entered his login name
                 $user = MagesterUserFactory :: factory($input);
             }
             if ($user->isLdapUser) {
-                eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode(_LDAPUSERMUSTCONTACTADMIN.$GLOBALS['configuration']['system_email']).'&message_type=failure');
+                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode(_LDAPUSERMUSTCONTACTADMIN.$GLOBALS['configuration']['system_email']).'&message_type=failure');
             } else {
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
                 $message = _ANEMAILHASBEENSENT;
                 $message_type = 'success';
                 if ($_SESSION['login_mode'] != 1) {
-                    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type='.$message_type);
+                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type='.$message_type);
                 }
             }
         } catch (Exception $e) {
             $message = _NONEXISTINGMAIL;
             $message_type = 'failure';
-            eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
+            sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
         }
     } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
         $login = $_GET['login'];
-        if (!eF_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
+        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
             $message = _INVALIDUSER;
             $message_type = 'failure';
         } else {
-            $user = eF_getTableData("users", "email, name", "login='".$login."'");
+            $user = sC_getTableData("users", "email, name", "login='".$login."'");
             if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
                 $password = mb_substr(md5($login.time()), 0, 8);
                 $password_encrypted = MagesterUser::createPassword($password);
-                eF_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
+                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
                 $message = _EMAILWITHPASSWORDSENT;
-                eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
             } else {
                 $message = _INVALIDUSER;
                 $message_type = 'failure';
@@ -457,12 +457,12 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'reset_pwd' && $GLOBALS['configuratio
 /* -------------------------------------------------------End of Reset Password part--------------------------------------------------------- */
 /* -----------------------------------------------------Sign up part--------------------------------------------------------- */
 if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup']) {
-    $users = eF_countTableData("users", "login", "active=1 and archive=0");
+    $users = sC_countTableData("users", "login", "active=1 and archive=0");
     $smarty->assign("T_CTG", "signup");
     $form = new HTML_QuickForm("signup_register_personal_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=signup".(isset($_GET['ldap']) ? '&ldap=1' : ''), "", "class = 'indexForm'", true);
     $form->removeAttribute('name');
-    $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
-    $form->registerRule('checkNotExist', 'callback', 'eF_checkNotExist'); //This rule is using our function, eF_checkNotExist, to ensure that no duplicate values are inserted in unique fields, such as login and email
+    $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
+    $form->registerRule('checkNotExist', 'callback', 'sC_checkNotExist'); //This rule is using our function, sC_checkNotExist, to ensure that no duplicate values are inserted in unique fields, such as login and email
     $form->addElement('text', 'login', _LOGIN, (isset($_GET['ldap']) ? 'class = "inputText inactiveElement" readonly' : 'class = "inputText"'));
     $form->addRule('login', _THEFIELD.' '._LOGIN.' '._ISMANDATORY, 'required', null, 'client');
     $form->addRule('login', _THEFIELD.' "'._LOGIN.'" '._MUSTBESMALLERTHAN.' 50 '.mb_strtolower(_CHARACTERS), 'maxlength', 50, 'client');
@@ -508,7 +508,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
     $element->setRows(2);
     $form->addElement('submit', 'submit_register', _REGISTER, 'class = "flatButton"');
     if (isset($_GET['ldap'])) {
-        $result = eF_getLdapValues($GLOBALS['configuration']['ldap_uid'].'='.$_GET['login'], array($GLOBALS['configuration']['ldap_preferredlanguage'],
+        $result = sC_getLdapValues($GLOBALS['configuration']['ldap_uid'].'='.$_GET['login'], array($GLOBALS['configuration']['ldap_preferredlanguage'],
             $GLOBALS['configuration']['ldap_mail'],
             $GLOBALS['configuration']['ldap_cn'],
             $GLOBALS['configuration']['ldap_uid']));
@@ -530,7 +530,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
     } elseif ($configuration['only_ldap']) {
         $message = _ONLYLDAPREGISTRATIONPERMITTED;
         $message_type = 'failure';
-        eF_redirect(basename($_SERVER['PHP_SELF'])."?message=".urlencode($message)."&message_type=$message_type");
+        sC_redirect(basename($_SERVER['PHP_SELF'])."?message=".urlencode($message)."&message_type=$message_type");
     }
     if ($form->isSubmitted()) {
         if ($form->validate()) {
@@ -542,7 +542,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
             //Check the user_type. If it's an id, it means that it's not one of the basic user types; so derive the basic user type and populate the user_types_ID field
             $defaultUserType = $GLOBALS['configuration']['default_type'];
             if (is_numeric($defaultUserType)) {
-                $result = eF_getTableData("user_types", "id, basic_user_type", "id=".$defaultUserType);
+                $result = sC_getTableData("user_types", "id, basic_user_type", "id=".$defaultUserType);
                 if (sizeof($result) > 0) {
                     $values['user_type'] = $result[0]['basic_user_type'];
                     $values['user_types_ID'] = $result[0]['id'];
@@ -576,14 +576,14 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
                 //pr($self_registered_jobs);
                 if ($configuration['activation'] == 0) {
                     if ($configuration['mail_activation'] == 1) {
-                        $tmp = eF_getTableData("users","timestamp","login='".$user_data['login']."'");
+                        $tmp = sC_getTableData("users","timestamp","login='".$user_data['login']."'");
                         $timestamp = $tmp[0]["timestamp"];
                         MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_ON_EMAIL_ACTIVATION, "users_LOGIN" => $tmp[0]['login'], "users_name" => $tmp[0]['name'], "users_surname" => $tmp[0]['surname'], "timestamp" => $timestamp, "entity_name" => $timestamp));
                         $message = _YOUWILLRECEIVEMAILFORACCOUNTACTIVATION;
                     } else {
                         $message = _ADMINISTRATORWILLACTIVATEYOURACCOUNT;
                     }
-                    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
                 } else {
                     $message = _SUCCESSREGISTER;
                     $message_type = 'success';
@@ -595,16 +595,16 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
                         $newUser->login($user_data['password'], $encrypted);
                     }
                     if ($GLOBALS['configuration']['show_license_note'] && $newUser->user['viewed_license'] == 0) {
-                        eF_redirect("index.php?ctg=agreement&message=".urlencode($message)."&message_type=".$message_type);
+                        sC_redirect("index.php?ctg=agreement&message=".urlencode($message)."&message_type=".$message_type);
                     } elseif ($_SESSION['login_mode']) {
-                        eF_redirect("index.php?ctg=checkout&checkout=1&message=".urlencode($message)."&message_type=".$message_type);
+                        sC_redirect("index.php?ctg=checkout&checkout=1&message=".urlencode($message)."&message_type=".$message_type);
                     } else {
-                        eF_redirect("userpage.php?message=".urlencode($message)."&message_type=".$message_type);
+                        sC_redirect("userpage.php?message=".urlencode($message)."&message_type=".$message_type);
                     }
                 }
             } catch (Exception $e) {
                 $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = failure;
             }
         }
@@ -625,7 +625,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'contact') { //The user asked to display the contact form
     $smarty->assign('T_CTG', 'contact');
     $form = new HTML_QuickForm("contact_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=contact", "", "class = 'indexForm'", true);
-    $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form->addElement('text', 'email', _YOUREMAIL, 'class = "inputText"');
     $form->addRule('email', _THEFIELD.' "'._EMAIL.'" '._ISMANDATORY, 'required');
     $form->addRule('email', _INVALIDFIELDDATA, 'checkParameter', 'email');
@@ -638,10 +638,10 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'contact') { //The user asked to disp
             $to = $form->exportValue("email");
             $subject = $form->exportValue("message_subject");
             $body = $form->exportValue("message_body");
-            if (eF_mail($to, $GLOBALS['configuration']['system_email'], $subject." ["._FROM.": ".$sender."]", $body, false, true)) {
+            if (sC_mail($to, $GLOBALS['configuration']['system_email'], $subject." ["._FROM.": ".$sender."]", $body, false, true)) {
                 $message = _SENDSUCCESS;
                 $message_type = 'success';
-                eF_redirect(basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type='.$message_type);
+                sC_redirect(basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type='.$message_type);
             } else {
                 $message = _SENDFAILURE;
                 $message_type = 'failure';
@@ -736,7 +736,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'lesson_info') { //The user asked to 
             }
         } catch (Exception $e) {
             $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-            $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = failure;
         }
     }
@@ -772,7 +772,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'checkout' && $_GET['checkout'] && $_
         include 'catalog.php';
     } catch (Exception $e) {
         $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
 } else {
@@ -786,7 +786,7 @@ if ($GLOBALS['currentTheme']->options['sidebar_interface'] == 2 && $GLOBALS['cur
                 if (unserialize($currentUser->user['additional_accounts'])) {
                     $accounts = unserialize($currentUser->user['additional_accounts']);
                     $queryString = "'".implode("','", array_values($accounts))."'";
-                    $result = eF_getTableData("users", "login, user_type", "login in (".$queryString.")");
+                    $result = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
                     $smarty->assign("T_BAR_ADDITIONAL_ACCOUNTS", $result);
                 }
             }
@@ -837,10 +837,10 @@ function LoginRedirect($user_type)
     $redirectPage = $GLOBALS['configuration']['login_redirect_page'];
 
     if ($redirectPage == "user_dashboard" && $user_type != "administrator") {
-        eF_redirect("userpage.php?ctg=personal");
+        sC_redirect("userpage.php?ctg=personal");
     } elseif (strpos($redirectPage, "module") !== false) {
-        eF_redirect("userpage.php?ctg=landing_page");
+        sC_redirect("userpage.php?ctg=landing_page");
     } else {
-        eF_redirect("userpage.php");
+        sC_redirect("userpage.php");
     }
 }

@@ -50,12 +50,12 @@
 	{/capture}
 	
 	{if $T_XPAY_IS_ADMIN}
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_USER_STATEMENT
 			data			= $smarty.capture.t_xpay_view_statement
 		}
 	{else}
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_MY_STATEMENT
 			data			= $smarty.capture.t_xpay_view_statement
 		}

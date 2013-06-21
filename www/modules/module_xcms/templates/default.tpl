@@ -11,7 +11,7 @@
 		{include file=$item.template}
 	{/capture}
 			
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 				= $item.title
 		sub_title			= $item.sub_title
 		data				= $smarty.capture.$index
@@ -33,7 +33,7 @@
 							{include file=$item.template}
 						{/capture}
 						
-						{eF_template_printBlock
+						{sC_template_printBlock
 							title 			= $item.title
 							sub_title		= $item.sub_title
 							data			= $smarty.capture.$index
@@ -44,7 +44,7 @@
 							absoluteImagePath	= $item.absoluteImagePath
 						}
 					{elseif $item.links}
-						{eF_template_printBlock 
+						{sC_template_printBlock 
 							title = $item.title
 							columns = $item.columns
 							links = $item.links
@@ -57,7 +57,7 @@
 		<div class="clear">
 	{*/capture*}
 	
-	{*eF_template_printBlock 
+	{*sC_template_printBlock 
 		title=$smarty.const.__XCMS_TABS
 		data=$smarty.capture.t_cms_tabbers
 	*}

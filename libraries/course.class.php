@@ -144,7 +144,7 @@ class MagesterCourse
     	} elseif (!$this -> validateId($source)) {
     		throw new MagesterCourseException(_INVALIDID, MagesterCourseException :: INVALID_ID);
     	} else {
-    		$source = eF_getTableData("courses", "*", "id = $source");
+    		$source = sC_getTableData("courses", "*", "id = $source");
     		if (empty($source)) {
     			throw new MagesterCourseException(_COURSEDOESNOTEXIST, MagesterCourseException :: COURSE_NOT_EXISTS);
     		}
@@ -173,7 +173,7 @@ class MagesterCourse
     			$this -> persist();
     		}
     	} else {
-    		$result = eF_getTableData("directions", "id", "active=1", "", "", 1);
+    		$result = sC_getTableData("directions", "id", "active=1", "", "", 1);
     		if (!empty($result)) {
     			$this -> course['directions_ID'] = $result[0]['id'];
     			$this -> persist();
@@ -274,7 +274,7 @@ class MagesterCourse
 
     	$from = "lessons_to_courses lc, lessons l";
     	$where[] = "l.archive = 0 and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
-    	$result = eF_getTableData(
+    	$result = sC_getTableData(
     		$from,
     		"lc.start_date, lc.end_date, lc.previous_lessons_ID, l.*",
     		implode(" and ", $where),
@@ -306,7 +306,7 @@ class MagesterCourse
     	list($where, $limit, $orderby) = MagesterCourse :: convertLessonConstraintsToSqlParameters($constraints);
     	$from = "lessons_to_courses lc, lessons l";
     	$where[] = "l.archive = 0 and l.course_only=1 and l.id=lc.lessons_ID and courses_ID=".$this -> course['id'];
-    	$result = eF_countTableData($from, "l.id",
+    	$result = sC_countTableData($from, "l.id",
     	implode(" and ", $where));
 
     	return $result[0]['count'];
@@ -347,7 +347,7 @@ class MagesterCourse
     	$from = "lessons l left outer join (select lessons_ID from lessons_to_courses where courses_ID='".$this -> course['id']."') r on l.id=r.lessons_ID ";
     	$select = "l.*, r.lessons_ID is not null as has_lesson";
     	$where[] = "l.course_only=1";
-    	$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
+    	$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterCourse :: convertDatabaseResultToLessonObjects($result);
@@ -373,7 +373,7 @@ class MagesterCourse
     	$from = "lessons l left outer join (select lessons_ID from lessons_to_courses where courses_ID='".$this -> course['id']."') r on l.id=r.lessons_ID ";
     	$select = "l.id";
     	$where[] = "l.course_only=1";
-    	$result = eF_countTableData($from, $select, implode(" and ", $where));
+    	$result = sC_countTableData($from, $select, implode(" and ", $where));
 
     	return $result[0]['count'];
     }
@@ -390,7 +390,7 @@ class MagesterCourse
     {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
 
-    	$result = eF_getTableData("lessons_to_courses", "start_date, end_date", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson -> lesson['id']);
+    	$result = sC_getTableData("lessons_to_courses", "start_date, end_date", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson -> lesson['id']);
     	return $result[0];
     }
 
@@ -491,10 +491,10 @@ class MagesterCourse
     	$lastLessonId = $this -> getCourseLastLesson();
     	$courseUsers = $this -> getUsers();
 
-    	$result = eF_getTableDataFlat("lessons_to_courses", "lessons_ID", "courses_ID=".$this -> course['id']); //We don't call getCourseLessons() because we need all and every lesson, so this is faster
+    	$result = sC_getTableDataFlat("lessons_to_courses", "lessons_ID", "courses_ID=".$this -> course['id']); //We don't call getCourseLessons() because we need all and every lesson, so this is faster
     	foreach ($lessonObjects as $key => $lesson) {
     		if (!in_array($key, $result['lessons_ID'])) {
-    			eF_insertTableData("lessons_to_courses", array('courses_ID' => $this -> course['id'],
+    			sC_insertTableData("lessons_to_courses", array('courses_ID' => $this -> course['id'],
                                     'lessons_ID' => $key,
                   'previous_lessons_ID' => $lastLessonId));
     			$this -> addCourseUsersToLesson($lesson, $courseUsers);
@@ -543,7 +543,7 @@ class MagesterCourse
 
 
 
-    		eF_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$key);
+    		sC_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$key);
 
     		$fields = array("previous_lessons_ID" => $previousLessons[$key]);
     		$where = "courses_ID=".$this -> course['id']." and previous_lessons_ID=$key";
@@ -625,7 +625,7 @@ class MagesterCourse
      */
     private function countLessonsOccurencesInCourses()
     {
-    	$result = eF_getTableDataFlat("lessons_to_courses lc", "lc.lessons_ID, count(lc.lessons_ID)", "", "", "lc.lessons_ID");
+    	$result = sC_getTableDataFlat("lessons_to_courses lc", "lc.lessons_ID, count(lc.lessons_ID)", "", "", "lc.lessons_ID");
     	$lessonsToCourses = array_combine($result['lessons_ID'], $result['count(lc.lessons_ID)']);
     	return $lessonsToCourses;
     }
@@ -736,10 +736,10 @@ class MagesterCourse
     {
     	// If insertion of a self-contained course add the corresponding skill
     	// Insert the corresponding course skill to the skill and course_offers_skill tables
-    	$courseSkillId = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " ". $this -> course['name'], "categories_ID" => -1));
+    	$courseSkillId = sC_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " ". $this -> course['name'], "categories_ID" => -1));
 
     	// Insert question to course skill records for all course questions
-    	$questions = eF_getTableData("questions", "id", "lessons_ID in ('". implode("','", array_keys($this->getCourseLessons())) . "')");
+    	$questions = sC_getTableData("questions", "id", "lessons_ID in ('". implode("','", array_keys($this->getCourseLessons())) . "')");
     	$insert_string = "";
     	foreach ($questions as $question) {
     		if ($insert_string != "") {
@@ -750,10 +750,10 @@ class MagesterCourse
     	}
 
     	if ($insert_string != "") {
-    		eF_executeNew("INSERT INTO questions_to_skills VALUES " . $insert_string);
+    		sC_executeNew("INSERT INTO questions_to_skills VALUES " . $insert_string);
     	}
 
-    	return eF_insertTableData("module_hcd_course_offers_skill", array("courses_ID" => $this -> course['id'], "skill_ID" => $courseSkillId));
+    	return sC_insertTableData("module_hcd_course_offers_skill", array("courses_ID" => $this -> course['id'], "skill_ID" => $courseSkillId));
     }
 
     /**
@@ -781,7 +781,7 @@ class MagesterCourse
      */
     private function addLessonQuestionsToCourseSkill($lesson)
     {
-    	$lessonQuestions = eF_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
+    	$lessonQuestions = sC_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
     	$courseSkill = $this -> getCourseSkill();
     	// Get course specific skill
     	foreach ($lessonQuestions['id'] as $questionId) {
@@ -789,7 +789,7 @@ class MagesterCourse
          "skills_ID" => $courseSkill['courses_ID'],
          "relevance" => 2);
     	}
-    	eF_insertTableDataMultiple("questions_to_skills", $fields);
+    	sC_insertTableDataMultiple("questions_to_skills", $fields);
     }
     /**
      * Remove the lesson's questions from the course's skill
@@ -800,10 +800,10 @@ class MagesterCourse
      */
     private function removeLessonQuestionsFromCourseSkill($lesson)
     {
-    	$lessonQuestions = eF_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
+    	$lessonQuestions = sC_getTableDataFlat("questions", "id", "lessons_ID = ". $lesson ->lesson['id']);
     	$courseSkill = $this -> getCourseSkill();
     	if (!empty($lessonQuestions['id'])) {
-    		eF_deleteTableData("questions_to_skills", "questions_id IN ('".implode("','",$lessonQuestions['id'])."') AND skills_ID = ".$courseSkill['skill_ID']);
+    		sC_deleteTableData("questions_to_skills", "questions_id IN ('".implode("','",$lessonQuestions['id'])."') AND skills_ID = ".$courseSkill['skill_ID']);
     	}
     }
     /**
@@ -955,7 +955,7 @@ class MagesterCourse
     	 $select .= ",e.*, e.users_LOGIN as has_hcd";
     	 #endif
     	 */
-    	$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, $groupby, $limit);
+    	$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, $groupby, $limit);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterUser :: convertDatabaseResultToUserObjects($result);
     	} else {
@@ -979,7 +979,7 @@ class MagesterCourse
     	$where[] = "u.login=r.users_LOGIN";
     	$select = "u.login";
     	$groupby = "r.users_LOGIN";
-    	$result = eF_countTableData($from, $select, implode(" and ", $where), false, $groupby);
+    	$result = sC_countTableData($from, $select, implode(" and ", $where), false, $groupby);
     	return $result[0]['count'];
     }
     /**
@@ -996,7 +996,7 @@ class MagesterCourse
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$select = "u.*, uc.courses_ID,uc.completed,uc.score,uc.user_type as role,uc.from_timestamp as active_in_course, uc.to_timestamp, uc.comments, uc.issued_certificate, 1 as has_course";
     	$where[] = "u.login=uc.users_LOGIN and uc.courses_ID='".$this -> course['id']."' and uc.archive=0";
-    	$result = eF_getTableData("users u, users_to_courses uc", $select,
+    	$result = sC_getTableData("users u, users_to_courses uc", $select,
     	implode(" and ", $where), $orderby, false, $limit);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterUser :: convertDatabaseResultToUserObjects($result);
@@ -1017,7 +1017,7 @@ class MagesterCourse
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	//$select  = "u.*, uc.courses_ID,uc.completed,uc.score,uc.user_type,uc.from_timestamp as active_in_course, 1 as has_course";
     	$where[] = "u.login=uc.users_LOGIN and uc.courses_ID='".$this -> course['id']."' and uc.archive=0";
-    	$result = eF_countTableData("users u, users_to_courses uc", "u.login", implode(" and ", $where));
+    	$result = sC_countTableData("users u, users_to_courses uc", "u.login", implode(" and ", $where));
     	return $result[0]['count'];
     }
     /**
@@ -1040,7 +1040,7 @@ class MagesterCourse
 
     	//echo $result = prepareGetTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
-    	$result = eF_getTableData($from, $select,
+    	$result = sC_getTableData($from, $select,
     	implode(" and ", $where), $orderby, false, $limit);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterUser :: convertDatabaseResultToUserObjects($result);
@@ -1062,7 +1062,7 @@ class MagesterCourse
     	$where[] = "user_type != 'administrator'";
     	$select = "u.login";
     	$from = "users u left outer join (select distinct completed,score,courses_ID,from_timestamp,users_LOGIN from users_to_courses where courses_ID='".$this -> course['id']."' and archive=0) r on u.login=r.users_LOGIN";
-    	$result = eF_countTableData($from, $select, implode(" and ", $where));
+    	$result = sC_countTableData($from, $select, implode(" and ", $where));
     	return $result[0]['count'];
     }
     /**
@@ -1082,7 +1082,7 @@ class MagesterCourse
      (select users_LOGIN,max(score) as score, max(completed) as completed, 1 as has_course from
       (select uc.user_type as role, uc.score,uc.completed,uc.users_LOGIN from courses c left outer join users_to_courses uc on uc.courses_ID=c.id where (c.id=".$this -> course['id']." or c.instance_source=".$this -> course['id'].") and uc.archive=0) foo
      group by users_LOGIN) r on u.login=r.users_login";
-    	$result = eF_getTableData($from, "u.*, r.*",
+    	$result = sC_getTableData($from, "u.*, r.*",
     	implode(" and ", $where), $orderby, $groupby, $limit);
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterUser :: convertDatabaseResultToUserObjects($result);
@@ -1130,7 +1130,7 @@ class MagesterCourse
     	$from = MagesterCourse :: appendTableFiltersUserConstraints($from, $constraints);
     	$select = "u.*, u.user_type as basic_user_type, uc.user_type as role, uc.from_timestamp as active_in_course, uc.score, uc.completed";
     	$where[] = "uc.archive = 0 and uc.users_LOGIN = u.login and uc.courses_ID=".$this -> course['id'];
-    	$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
+    	$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
     	foreach ($result as $value) {
     		$this -> users[$value['login']] = $value;
     		if ($roles[$value['role']] == 'student') {
@@ -1159,7 +1159,7 @@ class MagesterCourse
     public function getNonUsers($returnObjects = false)
     {
     	$subquery = "select u.*, u.user_type as basic_user_type,uc.courses_ID as has_course from users u left outer join users_to_courses uc on (uc.users_login=u.login and courses_id=".$this -> course['id']." and uc.archive != 0) where u.archive = 0 and u.active=1 and u.user_type != 'administrator'";
-    	$result = eF_getTableData("($subquery) s", "s.*, s.has_course is null");
+    	$result = sC_getTableData("($subquery) s", "s.*, s.has_course is null");
     	$users = array();
     	foreach ($result as $user) {
     		$user['user_types_ID'] ? $user['role'] = $user['user_types_ID'] : $user['role'] = $user['basic_user_type'];
@@ -1191,7 +1191,7 @@ class MagesterCourse
           'to_timestamp' => 0);
     			$where = "users_LOGIN='".$value['login']."' and courses_ID=".$this -> course['id'];
     			self::persistCourseUsers($updateFields, $where, $this -> course['id'], $value['login']);
-    			//eF_updateTableData("users_to_lessons", array("active" => 1, "archive" => 0), "users_LOGIN='".$value['login']."' and lessons_ID=".$this -> lesson['id']);
+    			//sC_updateTableData("users_to_lessons", array("active" => 1, "archive" => 0), "users_LOGIN='".$value['login']."' and lessons_ID=".$this -> lesson['id']);
     		} else {
     			$newUsers[] = $value['login'];
     			$fields[] = array('users_LOGIN' => $value['login'],
@@ -1208,7 +1208,7 @@ class MagesterCourse
     		}
     	}
     	if (!empty($newUsers)) {
-    		eF_insertTableDataMultiple("users_to_courses", $fields);
+    		sC_insertTableDataMultiple("users_to_courses", $fields);
     	}
     	if (!defined(_DISABLE_EVENTS) || _DISABLE_EVENTS !== true) {
     		foreach ($usersData as $value) {
@@ -1223,7 +1223,7 @@ class MagesterCourse
     }
     private function getArchivedUsers()
     {
-    	$result = eF_getTableDataFlat("users_to_courses", "users_LOGIN", "archive!=0 and courses_ID=".$this->course['id']);
+    	$result = sC_getTableDataFlat("users_to_courses", "users_LOGIN", "archive!=0 and courses_ID=".$this->course['id']);
     	if (empty($result)) {
     		return array();
     	} else {
@@ -1287,7 +1287,7 @@ class MagesterCourse
     	if (empty($users)) {
     		return false;
     	}
-    	$result = eF_getTableData("users_to_courses uc, users u", "uc.users_LOGIN, uc.archive, uc.user_type, uc.to_timestamp, u.archive as user_archive, uc.modality_id", "u.login=uc.users_LOGIN and uc.courses_ID=".$this->course['id']);
+    	$result = sC_getTableData("users_to_courses uc, users u", "uc.users_LOGIN, uc.archive, uc.user_type, uc.to_timestamp, u.archive as user_archive, uc.modality_id", "u.login=uc.users_LOGIN and uc.courses_ID=".$this->course['id']);
     	$courseUsers = array();
     	$courseRoles = $this -> getPossibleCourseRoles();
     	$courseStudents = 0;
@@ -1308,7 +1308,7 @@ class MagesterCourse
     	 +------------+------------+-------------+-----------+----------------+---------+
     	 So that it contains all the course's lessons and NULL for any lesson that does not have a user assigned
     	 */
-    	$result = eF_getTableData("lessons_to_courses lc left outer join users_to_lessons ul on lc.lessons_ID=ul.lessons_ID",
+    	$result = sC_getTableData("lessons_to_courses lc left outer join users_to_lessons ul on lc.lessons_ID=ul.lessons_ID",
           "lc.lessons_ID, ul.users_LOGIN, ul.user_type, ul.from_timestamp, ul.archive, ul.to_timestamp",
           "courses_ID = ".$this -> course['id']);
     	$courseLessonsToUsers = array();
@@ -1320,7 +1320,7 @@ class MagesterCourse
     		}
     	}
     	$courseLessons = array_unique(array_keys($courseLessonsToUsers));
-    	$result = eF_getTableData("projects", "id, lessons_ID", "auto_assign=1 and deadline < ".time()." and lessons_ID in (select lessons_ID from lessons_to_courses where courses_ID=".$this -> course['id'].")");
+    	$result = sC_getTableData("projects", "id, lessons_ID", "auto_assign=1 and deadline < ".time()." and lessons_ID in (select lessons_ID from lessons_to_courses where courses_ID=".$this -> course['id'].")");
     	foreach ($result as $value) {
     		$courseLessonsAutoAssignProjects[$value['lessons_ID']][] = $value['id'];
     	}
@@ -1394,15 +1394,15 @@ class MagesterCourse
          'user_type' => $roleInCourse,
          'from_timestamp' => $confirmed ? time() : 0);
     				!$courseLessonsToUsers[$id][$user]['archive'] OR $fields['to_timestamp'] = 0;
-    				eF_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$user."' and lessons_ID=".$id);
+    				sC_updateTableData("users_to_lessons", $fields, "users_LOGIN='".$user."' and lessons_ID=".$id);
     			}
     		}
     	}
     	if (!empty($newUsers)) {
-    		eF_insertTableDataMultiple("users_to_courses", $newUsers);
+    		sC_insertTableDataMultiple("users_to_courses", $newUsers);
     	}
     	if (!empty($newLessonUsers) && !$ignoreNewLessons) {
-    		eF_insertTableDataMultiple("users_to_lessons", $newLessonUsers);
+    		sC_insertTableDataMultiple("users_to_lessons", $newLessonUsers);
     	}
     	!isset($newUsers) ? $newUsers = array() : null;
     	!isset($existingUsers) ? $existingUsers = array() : null;
@@ -1420,7 +1420,7 @@ class MagesterCourse
 
     	// GET LIST OF MODULES AND CALL onNewUserOnCourse
     	//error_reporting(E_ALL); ini_set('display_errors', true);
-    	$cached_modules = eF_loadAllModules();
+    	$cached_modules = sC_loadAllModules();
 
     	// Trigger all necessary events. If the function has not been re-defined in the derived module class, nothing will happen
     	foreach ($cached_modules as $module) {
@@ -1448,7 +1448,7 @@ class MagesterCourse
     	$this -> removeUsersFromCourseLessons($users);
     	$this -> sendNotificationsRemoveCourseUsers($users);
     	foreach ($users as $user) {
-    		eF_deleteTableData("users_to_courses", "users_LOGIN='$user' and courses_ID=".$this -> course['id']);
+    		sC_deleteTableData("users_to_courses", "users_LOGIN='$user' and courses_ID=".$this -> course['id']);
     		//$cacheKey = "user_course_status:course:".$this -> course['id']."user:".$user;
     		//Cache::resetCache($cacheKey);
     	}
@@ -1498,7 +1498,7 @@ class MagesterCourse
     public function putUserInClass($user_login, $classe_id)
     {
     	if ($this->isStudentInCourse($user_login) || $this -> isProfessorInCourse($user_login)) {
-    		$result = eF_updateTableData(
+    		$result = sC_updateTableData(
 				"users_to_courses",
     		array('classe_id' => $classe_id),
     		sprintf("users_LOGIN = '%s' AND courses_ID = %d", $user_login, $this->course['id'])
@@ -1635,7 +1635,7 @@ class MagesterCourse
     {
     	if ($group instanceof MagesterGroup) {
     		$group = $group -> group['id'];
-    	} elseif (!eF_checkParameter($group, 'id')) {
+    	} elseif (!sC_checkParameter($group, 'id')) {
     		throw new MagesterGroupException(_INVALIDID, MagesterGroupException::INVALID_ID);
     	}
     	return $group;
@@ -1689,7 +1689,7 @@ class MagesterCourse
     	$this -> options ? $this -> course['options'] = serialize($this -> options) : $this -> course['options'] = null;
     	$this -> course['price'] = str_replace(array($GLOBALS['configuration']['decimal_point'], $GLOBALS['configuration']['thousands_sep']), array('.', ''), $this -> course['price']); //This way, you handle the case where the price is in the form 1,000.00
     	$fields = $this -> validateAndSanitizeCourseFields($this -> course);
-    	eF_updateTableData("courses", $fields, "id=".$this -> course['id']);
+    	sC_updateTableData("courses", $fields, "id=".$this -> course['id']);
     	if (!defined(_DISABLE_SEARCH) || _DISABLE_SEARCH !== true) {
     		MagesterSearch :: removeText('courses', $this -> course['id'], '');
     		MagesterSearch :: insertText($fields['name'], $this -> course['id'], "courses", "title");
@@ -1840,7 +1840,7 @@ class MagesterCourse
     }
     private static function validateId($field)
     {
-    	!eF_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'id') ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateName($field)
@@ -1859,7 +1859,7 @@ class MagesterCourse
     }
     private static function validateTimestamp($field)
     {
-    	!eF_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'timestamp') ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateSerialized($field)
@@ -1890,27 +1890,27 @@ class MagesterCourse
     }
     private static function validateDirectionsForeignKey($field)
     {
-    	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'id') || sizeof(sC_getTableData("directions", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateCoursesForeignKey($field)
     {
-    	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'id') || sizeof(sC_getTableData("courses", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateLessonsForeignKey($field)
     {
-    	!eF_checkParameter($field, 'id') || sizeof(eF_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'id') || sizeof(sC_getTableData("lessons", "id", "id=".$field)) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateLanguagesForeignKey($field)
     {
-    	!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'login') || sizeof(sC_getTableData("languages", "name", "name='".$field."'")) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     private static function validateUsersForeignKey($field)
     {
-    	!eF_checkParameter($field, 'login') || sizeof(eF_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
+    	!sC_checkParameter($field, 'login') || sizeof(sC_getTableData("users", "login", "login='$field'")) == 0 ? $returnValue = false : $returnValue = true;
     	return $returnValue;
     }
     /**
@@ -2035,7 +2035,7 @@ class MagesterCourse
      */
     private function archiveUniqueLessons()
     {
-    	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
+    	$result = sC_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
     		$value -> archive();
@@ -2060,7 +2060,7 @@ class MagesterCourse
     	$this -> course['archive'] = 0;
     	$this -> course['active'] = 1;
     	//Check whether the original category exists
-    	$result = eF_getTableDataFlat("directions", "id");
+    	$result = sC_getTableDataFlat("directions", "id");
     	if (in_array($this -> course['directions_ID'], $result['id'])) { // If the original category exists, no problem
     		$this -> persist();
     	} elseif (empty($result)) { //If no categories exist in the system, throw exception
@@ -2079,7 +2079,7 @@ class MagesterCourse
      */
     private function unarchiveUniqueLessons()
     {
-    	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
+    	$result = sC_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
     		$value -> unarchive();
@@ -2103,13 +2103,13 @@ class MagesterCourse
     public function delete()
     {
     	$this -> removeLessons(array_keys($this -> getCourseLessons()));
-    	$courseUsers = eF_getTableDataFlat("users_to_courses", "users_LOGIN", "courses_ID=".$this -> course['id']);
+    	$courseUsers = sC_getTableDataFlat("users_to_courses", "users_LOGIN", "courses_ID=".$this -> course['id']);
     	$this -> removeUsers($courseUsers["users_LOGIN"]);
     	$this -> deleteCourseInstances();
     	$this -> removeCourseSkills();
     	$this -> deleteUniqueLessons();
     	calendar::deleteCourseCalendarEvents($this);
-    	eF_deleteTableData("courses", "id=".$this -> course['id']);
+    	sC_deleteTableData("courses", "id=".$this -> course['id']);
     	MagesterSearch :: removeText('courses', $this -> course['id'], '');
     }
     /**
@@ -2120,7 +2120,7 @@ class MagesterCourse
      */
     private function deleteCourseInstances()
     {
-    	$result = eF_getTableData("courses", "*", "instance_source=".$this -> course['id']);
+    	$result = sC_getTableData("courses", "*", "instance_source=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterCourse($value);
     		$value -> delete();
@@ -2134,7 +2134,7 @@ class MagesterCourse
      */
     private function deleteUniqueLessons()
     {
-    	$result = eF_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
+    	$result = sC_getTableData("lessons", "*", "originating_course=".$this -> course['id']);
     	foreach ($result as $value) {
     		$value = new MagesterLesson($value);
     		$value -> delete(false);
@@ -2179,7 +2179,7 @@ class MagesterCourse
     private static function createDbEntryForInstance($instanceSource)
     {
     	$currentSourceInstances = sizeof($instanceSource -> getInstances());
-    	$result = eF_getTableData("courses", "*", "id=".$instanceSource -> course['id']); //Get all the fields of the course directly from the database
+    	$result = sC_getTableData("courses", "*", "id=".$instanceSource -> course['id']); //Get all the fields of the course directly from the database
     	unset($result[0]['id']);
     	$result[0]['name'] .= ' ('._INSTANCE.' #'.($currentSourceInstances+1).")";
     	$result[0]['instance_source'] = $instanceSource -> course['id'];
@@ -2192,7 +2192,7 @@ class MagesterCourse
     }
     private static function assignSourceLessonsToInstance($instanceSource, $instance)
     {
-    	$result = eF_getTableDataFlat("lessons_to_courses lc, lessons l", "l.id, l.instance_source", "l.id=lc.lessons_ID and lc.courses_ID=".$instanceSource -> course['id']);
+    	$result = sC_getTableDataFlat("lessons_to_courses lc, lessons l", "l.id, l.instance_source", "l.id=lc.lessons_ID and lc.courses_ID=".$instanceSource -> course['id']);
     	$instanceSourceLessonsThatAreUnique = array_combine($result['id'], $result['instance_source']);
     	$instanceSourceLessons = $instanceSource -> getCourseLessons();
     	$newLessons = array();
@@ -2450,7 +2450,7 @@ class MagesterCourse
     		}
     	} elseif (!is_null($this -> course['remaining']) && $roleBasicType == 'student') {
     		if ($this -> course['remaining'] > 0) {
-    			$courseString .= '<span style = "vertical-align:middle">&nbsp;('.eF_convertIntervalToTime($this -> course['remaining'], true).' '.mb_strtolower(_REMAINING).')</span>';
+    			$courseString .= '<span style = "vertical-align:middle">&nbsp;('.sC_convertIntervalToTime($this -> course['remaining'], true).' '.mb_strtolower(_REMAINING).')</span>';
     		} else {
     			$courseString .= '<span style = "vertical-align:middle">&nbsp;('._ACCESSEXPIRED.')</span>';
     			foreach ($eligible as $lessonId => $value) {
@@ -2617,7 +2617,7 @@ class MagesterCourse
     {
     	if (!isset($this -> branches) || !$this -> branches) {
     		$this -> branches = false; //Initialize branches to something
-    		$branches = eF_getTableData("module_hcd_branch LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID LEFT OUTER JOIN module_hcd_course_to_branch ON (module_hcd_course_to_branch.branches_ID = module_hcd_branch.branch_ID AND module_hcd_course_to_branch.courses_ID='".$this -> course['id']."')", "module_hcd_branch.*, module_hcd_branch.branch_ID as branches_ID, module_hcd_course_to_branch.courses_ID, branch1.name as father","");
+    		$branches = sC_getTableData("module_hcd_branch LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID LEFT OUTER JOIN module_hcd_course_to_branch ON (module_hcd_course_to_branch.branches_ID = module_hcd_branch.branch_ID AND module_hcd_course_to_branch.courses_ID='".$this -> course['id']."')", "module_hcd_branch.*, module_hcd_branch.branch_ID as branches_ID, module_hcd_course_to_branch.courses_ID, branch1.name as father","");
     		foreach ($branches as $key => $branch) {
     			if ($only_own && $branch['courses_ID'] != $this -> course['id']) {
     				unset($branches[$key]);
@@ -2777,7 +2777,7 @@ class MagesterCourse
     private function exportDatabaseData($courseTempDir)
     {
     	$data = array();
-    	$data['courses'] = eF_getTableData("courses", "*", "id=".$this -> course['id']);
+    	$data['courses'] = sC_getTableData("courses", "*", "id=".$this -> course['id']);
     	unset($data['courses'][0]['instance_source']);
     	foreach ($this -> getCourseLessons() as $value) {
     		$data['lessons_to_courses'][] = array('courses_ID' => $this -> course['id'], 'lessons_ID' => $value->lesson['id']);
@@ -2791,7 +2791,7 @@ class MagesterCourse
     	$newList = FileSystemTree :: importFiles($file['path']); //Import the file to the database, so we can download it
     	$file = new MagesterFile(current($newList));
     	$newFileName = MagesterFile :: encode($this -> course['name']).'.zip';
-    	if (!eF_checkParameter($newFileName, 'file')) {
+    	if (!sC_checkParameter($newFileName, 'file')) {
     		$newFileName = $file['name'];
     	}
     	$newFileName = str_replace(array('"', '>', '<', '*', '?', ':'), array('&quot;', '&gt;', '&lt;', '&#42;', '&#63;', '&#58;'), $newFileName);
@@ -3000,7 +3000,7 @@ class MagesterCourse
     	$fields['metadata'] = self::createCourseMetadata($fields);
     	$fields = self::validateAndSanitizeCourseFields($fields);
 
-    	$newId = eF_insertTableData("courses", $fields);
+    	$newId = sC_insertTableData("courses", $fields);
     	// Insert the corresponding lesson skill to the skill and lesson_offers_skill tables. Automatic skill generation only for the educational version
     	MagesterSearch :: insertText($fields['name'], $newId, "courses", "title");
     	$course = new MagesterCourse($newId);
@@ -3078,12 +3078,12 @@ class MagesterCourse
      * @todo deprecated
      */
     public static function getCourses($returnObjects = false) {
-        //$result = eF_getTableData(
+        //$result = sC_getTableData(
         //    "courses c, directions d",
         //    "c.*, d.name as direction_name, (select count( * ) from courses l where instance_source=c.id) as has_instances",
         //    "c.directions_ID=d.id and archive=0 and instance_source=0"
         //);
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "courses c",
             "c.*, (select count( * ) from courses l where instance_source=c.id) as has_instances",
             "archive=0 and instance_source=0"
@@ -3099,7 +3099,7 @@ class MagesterCourse
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$where[] = "uc.courses_ID=c.id and uc.from_timestamp=0";
     	$where[] = "uc.users_LOGIN=u.login and u.archive=0";
-    	$result = eF_getTableData("users u, courses c, users_to_courses uc", "c.*, uc.users_LOGIN", implode(" and ", $where), $orderby, $groupby, $limit);
+    	$result = sC_getTableData("users u, courses c, users_to_courses uc", "c.*, uc.users_LOGIN", implode(" and ", $where), $orderby, $groupby, $limit);
     	return $result;
     }
     public static function getCoursesWithPendingUsersForSupervisor($constraints = array(), $supervisor)
@@ -3109,7 +3109,7 @@ class MagesterCourse
     	$where[] = "uc.courses_ID=c.id and uc.from_timestamp=0";
     	$where[] = "uc.users_LOGIN=u.login and u.archive=0";
     	$where[] = "c.supervisor_LOGIN='$supervisor'";
-    	$result = eF_getTableData("users u, courses c, users_to_courses uc", "c.*, uc.users_LOGIN", implode(" and ", $where), $orderby, $groupby, $limit);
+    	$result = sC_getTableData("users u, courses c, users_to_courses uc", "c.*, uc.users_LOGIN", implode(" and ", $where), $orderby, $groupby, $limit);
     	return $result;
     }
     /**
@@ -3120,7 +3120,7 @@ class MagesterCourse
     	$login = MagesterUser::convertArgumentToUserLogin($login);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$innerQuery = "select courses_ID,completed,score,user_type,from_timestamp as active_in_course from users_to_courses where archive=0 and users_login='".$login."'";
-    	$result = eF_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
+    	$result = sC_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
     	return self :: convertDatabaseResultToCourseObjects($result);
     }
     public static function getCoursesWithSpecificGroupParticipation($constraints = array(), $group)
@@ -3128,7 +3128,7 @@ class MagesterCourse
     	$group = self :: convertArgumentToGroupId($group);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	$innerQuery = "select courses_ID,user_type from courses_to_groups where groups_ID='".$group."'";
-    	$result = eF_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
+    	$result = sC_getTableData("courses c left outer join ($innerQuery) r on c.id=r.courses_ID", "c.*,r.*,r.courses_ID is not null as has_course, (select count( * ) from courses l where instance_source=c.id) as has_instances", implode(" and ", $where), $orderby, $groupby, $limit);
     	return self :: convertDatabaseResultToCourseObjects($result);
     }
     private static function setCourseUserSelection(&$constraints = array())
@@ -3156,7 +3156,7 @@ class MagesterCourse
     	$select['num_students'] = MagesterCourse :: setCourseUserSelection($constraints);
     	$select = MagesterCourse :: convertCourseConstraintsToRequiredFields($constraints, $select);
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
-    	//$result = eF_getTableData("courses c", $select, implode(" and ", $where), $orderby, false, $limit);
+    	//$result = sC_getTableData("courses c", $select, implode(" and ", $where), $orderby, false, $limit);
     	//WITH THIS NEW QUERY, WE GET THE SLOW 'has_instances' PROPERTY AFTER FILTERING
     	$from = array("courses.*", "t.*");
     	if (in_array('has_instances', array_keys($select))) {
@@ -3165,7 +3165,7 @@ class MagesterCourse
     	}
     	$sql = prepareGetTableData("courses c", implode(",", $select), implode(" and ", $where), $orderby, false, $limit);
 
-    	$result = eF_getTableData("courses, ($sql) t", implode(",", $from), "courses.id=t.id");
+    	$result = sC_getTableData("courses, ($sql) t", implode(",", $from), "courses.id=t.id");
 
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterCourse :: convertDatabaseResultToCourseObjects($result);
@@ -3177,7 +3177,7 @@ class MagesterCourse
     {
     	list($where, $limit, $orderby) = MagesterCourse :: convertCourseConstraintsToSqlParameters($constraints);
     	//$where[] = "d.id=c.directions_ID";
-    	$result = eF_countTableData("courses c", "c.id", implode(" and ", $where));
+    	$result = sC_countTableData("courses c", "c.id", implode(" and ", $where));
     	return $result[0]['count'];
     }
     public static function convertDatabaseResultToLessonObjects($result)
@@ -3254,8 +3254,8 @@ class MagesterCourse
     	if (isset($constraints['active'])) {
     		$constraints['active'] ? $where[] = 'l.active=1' : $where[] = 'l.active=0';
     	}
-    	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
-    		$result = eF_describeTable("lessons");
+    	if (isset($constraints['filter']) && sC_checkParameter($constraints['filter'], 'text')) {
+    		$result = sC_describeTable("lessons");
     		$tableFields = array();
     		foreach ($result as $value) {
     			$tableFields[] = "l.".$value['Field'].' like "%'.$constraints['filter'].'%"';
@@ -3316,13 +3316,13 @@ class MagesterCourse
     			$where[] = 'c.instance_source!=0';
     		} elseif ($constraints['instance'] == false) {
     			$where[] = 'c.instance_source=0';
-    		} elseif (eF_checkParameter($constraints['instance'], 'id')) {
+    		} elseif (sC_checkParameter($constraints['instance'], 'id')) {
     			$where[] = '(c.instance_source='.$constraints['instance'].' or c.id='.$constraints['instance'].')';
     		}
     	}
-    	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
+    	if (isset($constraints['filter']) && sC_checkParameter($constraints['filter'], 'text')) {
     		$constraints['filter'] = trim($constraints['filter'], "||||");
-    		$result = eF_describeTable("courses");
+    		$result = sC_describeTable("courses");
     		$tableFields = array();
     		foreach ($result as $value) {
     			$tableFields[] = "c.".$value['Field'].' like "%'.$constraints['filter'].'%"';
@@ -3342,7 +3342,7 @@ class MagesterCourse
     private static function addSortOrderConditionToConstraints($constraints)
     {
     	$order = '';
-    	if (isset($constraints['sort']) && eF_checkParameter($constraints['sort'], 'alnum_with_spaces')) {
+    	if (isset($constraints['sort']) && sC_checkParameter($constraints['sort'], 'alnum_with_spaces')) {
     		$order = $constraints['sort'];
     		if (isset($constraints['order']) && in_array($constraints['order'], array('asc', 'desc'))) {
     			$order .= ' '.$constraints['order'];
@@ -3353,10 +3353,10 @@ class MagesterCourse
     private static function addLimitConditionToConstraints($constraints)
     {
     	$limit = '';
-    	if (isset($constraints['limit']) && eF_checkParameter($constraints['limit'], 'int') && $constraints['limit'] > 0) {
+    	if (isset($constraints['limit']) && sC_checkParameter($constraints['limit'], 'int') && $constraints['limit'] > 0) {
     		$limit = $constraints['limit'];
     	}
-    	if ($limit && isset($constraints['offset']) && eF_checkParameter($constraints['offset'], 'int') && $constraints['offset'] >= 0) {
+    	if ($limit && isset($constraints['offset']) && sC_checkParameter($constraints['offset'], 'int') && $constraints['offset'] >= 0) {
     		$limit = $constraints['offset'].','.$limit;
     	}
     	return $limit;
@@ -3378,7 +3378,7 @@ class MagesterCourse
     {
     	if (!isset($this -> skills) || !$this -> skills) {
     		$this -> skills = false; //Initialize skills to something
-    		$skills = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_skill_categories ON module_hcd_skill_categories.id = module_hcd_skills.categories_ID LEFT OUTER JOIN module_hcd_course_offers_skill ON (module_hcd_course_offers_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_course_offers_skill.courses_ID='".$this -> course['id']."')", "module_hcd_skills.description,specification, module_hcd_skills.skill_ID,courses_ID, categories_ID, module_hcd_skill_categories.description as category","");
+    		$skills = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_skill_categories ON module_hcd_skill_categories.id = module_hcd_skills.categories_ID LEFT OUTER JOIN module_hcd_course_offers_skill ON (module_hcd_course_offers_skill.skill_ID = module_hcd_skills.skill_ID AND module_hcd_course_offers_skill.courses_ID='".$this -> course['id']."')", "module_hcd_skills.description,specification, module_hcd_skills.skill_ID,courses_ID, categories_ID, module_hcd_skill_categories.description as category","");
     		foreach ($skills as $key => $skill) {
     			if ($only_own && $skill['courses_ID'] != $this -> course['id']) {
     				unset($skills[$key]);
@@ -3411,11 +3411,11 @@ class MagesterCourse
     	$this -> getSkills();
     	// Check if the skill is not assigned as offered by this course
     	if ($this -> skills[$skill_ID]['courses_ID'] == "") {
-    		eF_insertTableData("module_hcd_course_offers_skill", array("skill_ID" => $skill_ID, "courses_ID" => $this -> course['id'], "specification" => $specification));
+    		sC_insertTableData("module_hcd_course_offers_skill", array("skill_ID" => $skill_ID, "courses_ID" => $this -> course['id'], "specification" => $specification));
     		$this -> skills[$skill_ID]['courses_ID'] = $this -> course['id'];
     		$this -> skills[$skill_ID]['specification'] = $specification;
     	} else {
-    		eF_updateTableData("module_hcd_course_offers_skill", array("specification" => $specification), "skill_ID = '".$skill_ID."' AND courses_ID = '". $this -> course['id'] ."'");
+    		sC_updateTableData("module_hcd_course_offers_skill", array("specification" => $specification), "skill_ID = '".$skill_ID."' AND courses_ID = '". $this -> course['id'] ."'");
     		$this -> skills[$skill_ID]['specification'] = $specification;
     	}
     	return true;
@@ -3441,7 +3441,7 @@ class MagesterCourse
     	$this -> getSkills();
     	// Check if the skill is not assigned as offered by this course
     	if ($this -> skills[$skill_ID]['courses_ID'] == $this -> course['id']) {
-    		eF_deleteTableData("module_hcd_course_offers_skill", "skill_ID = '".$skill_ID."' AND courses_ID = '". $this -> course['id'] ."'");
+    		sC_deleteTableData("module_hcd_course_offers_skill", "skill_ID = '".$skill_ID."' AND courses_ID = '". $this -> course['id'] ."'");
     		$this -> skills[$skill_ID]['specification'] = "";
     		$this -> skills[$skill_ID]['courses_ID'] = "";
     	}
@@ -3468,7 +3468,7 @@ class MagesterCourse
     	$this -> getBranches();
     	// Check if the branch is not assigned as offered by this course
     	if ($this -> branches[$branch_ID]['courses_ID'] == "") {
-    		eF_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $branch_ID, "courses_ID" => $this -> course['id']));
+    		sC_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $branch_ID, "courses_ID" => $this -> course['id']));
     		$this -> branches[$branch_ID]['courses_ID'] = $this -> course['id'];
     		$newBranch = new MagesterBranch($branch_ID);
     		$employees = $newBranch ->getEmployees(false,true); //get data flat
@@ -3496,7 +3496,7 @@ class MagesterCourse
     	$this -> getBranches();
     	// Check if the branch is not assigned as offered by this course
     	if ($this -> branches[$branch_ID]['courses_ID'] == $this -> course['id']) {
-    		eF_deleteTableData("module_hcd_course_to_branch", "branches_ID = '".$branch_ID."' AND courses_ID = '". $this -> course['id'] ."'");
+    		sC_deleteTableData("module_hcd_course_to_branch", "branches_ID = '".$branch_ID."' AND courses_ID = '". $this -> course['id'] ."'");
     		$this -> branches[$branch_ID]['courses_ID'] = "";
     	}
     	return true;
@@ -3524,7 +3524,7 @@ class MagesterCourse
     	$courseInstances = self :: getAllCourses($constraints);
     	/*
     	 #ifdef ENTERPRISE
-    	 $result 	  = eF_getTableData("module_hcd_course_to_branch cb, module_hcd_branch b", "cb.branches_ID, cb.courses_ID, b.name", "b.branch_ID=cb.branches_ID");
+    	 $result 	  = sC_getTableData("module_hcd_course_to_branch cb, module_hcd_branch b", "cb.branches_ID, cb.courses_ID, b.name", "b.branch_ID=cb.branches_ID");
     	 $branchResult = array();
     	 foreach ($result as $value) {
     	 $branchResult[$value['courses_ID']][$value['branches_ID']] = $value['name'];
@@ -3604,7 +3604,7 @@ class MagesterCourse
     		throw new Exception(_YOUCANNOTCHANGEMODECOURSENOTEMPTY, MagesterCourseException::COURSE_NOT_EMPTY);
     	}
     	//First, search for any instances that where already defined for this lesson and course in the past
-    	$result = eF_getTableData("lessons", "*", "instance_source=".$lesson -> lesson['id']." and originating_course=".$this -> course['id']);
+    	$result = sC_getTableData("lessons", "*", "instance_source=".$lesson -> lesson['id']." and originating_course=".$this -> course['id']);
     	if (sizeof($result) > 0) {
     		$lessonInstance = new MagesterLesson($result[0]);
     		$this -> addLessons($lessonInstance);
@@ -3615,7 +3615,7 @@ class MagesterCourse
     	$this -> replaceLessonInCourseOrder($lesson, $lessonInstance);
     	$this -> replaceLessonInCourseRules($lesson, $lessonInstance); //Must be put *before* removeLessons()
     	//$this -> removeLessons($lesson);		//commented out because it was messing up with order
-    	eF_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson->lesson['id']);
+    	sC_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson->lesson['id']);
     }
     /**
      * Set the lesson mode to 'shared' in the course
@@ -3634,7 +3634,7 @@ class MagesterCourse
     	$this -> replaceLessonInCourseOrder($lesson, $lesson -> lesson['instance_source']);
     	$this -> replaceLessonInCourseRules($lesson, $lesson -> lesson['instance_source']); //Must be put *before* removeLessons()
     	//$this -> removeLessons($lesson);		//commented out because it was messing up with order
-    	eF_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson->lesson['id']);
+    	sC_deleteTableData("lessons_to_courses", "courses_ID=".$this -> course['id']." and lessons_ID=".$lesson->lesson['id']);
     }
     /**
      * Replace a lesson reference in rules for another lesson
@@ -3698,7 +3698,7 @@ class MagesterCourse
     {
     	if ($course instanceOf MagesterCourse) {
     		$course = $course -> course['id'];
-    	} elseif (!eF_checkParameter($course, 'id')) {
+    	} elseif (!sC_checkParameter($course, 'id')) {
     		throw new MagesterCourseException(_INVALIDID, MagesterCourseException :: INVALID_ID);
     	}
     	return $course;
@@ -3777,7 +3777,7 @@ class MagesterCourse
     public function isCourseLesson($lesson)
     {
     	$lesson = MagesterLesson::convertArgumentToLessonObject($lesson);
-    	$result = eF_getTableData("lessons_to_courses", "*", "lessons_ID=".$lesson -> lesson['id']." and courses_ID=".$this -> course['id']);
+    	$result = sC_getTableData("lessons_to_courses", "*", "lessons_ID=".$lesson -> lesson['id']." and courses_ID=".$this -> course['id']);
     	return !empty($result);
     }
     /**
@@ -3792,7 +3792,7 @@ class MagesterCourse
      */
     public static function persistCourseUsers($fields, $where, $courseId, $userLogin)
     {
-    	eF_updateTableData("users_to_courses", $fields, $where);
+    	sC_updateTableData("users_to_courses", $fields, $where);
     	//$cacheKey = "user_course_status:course:".$courseId."user:".$userLogin;
     	//Cache::resetCache($cacheKey);
     }
@@ -3808,11 +3808,11 @@ class MagesterCourse
      */
     public static function persistCourseLessons($fields, $where)
     {
-    	eF_updateTableData("lessons_to_courses", $fields, $where);
+    	sC_updateTableData("lessons_to_courses", $fields, $where);
     }
     public function handlePostAjaxRequestionForLessons()
     {
-    	if (isset($_GET['id']) && eF_checkParameter($_GET['id'], 'id')) {
+    	if (isset($_GET['id']) && sC_checkParameter($_GET['id'], 'id')) {
     		!$this -> isCourseLesson($_GET['id']) ? $this -> addLessons($_GET['id']) : $this -> removeLessons($_GET['id']) ;
     	} elseif (isset($_GET['addAll'])) {
     		$constraints = createConstraintsFromSortedTable() + array('archive' => false, 'active' => true);
@@ -3820,19 +3820,19 @@ class MagesterCourse
     		$this -> addCourseLessons($constraints);
     		/*
     		 $courseLessons = $this -> getCourseLessons();
-    		 $result = eF_getTableData("lessons", "*", "archive=0 and active=1 and course_only=1");
+    		 $result = sC_getTableData("lessons", "*", "archive=0 and active=1 and course_only=1");
     		 $lessons = array();
     		 foreach ($result as $lesson) {
     		 $lessons[$lesson['id']] = $lesson;
     		 }
-    		 isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
+    		 isset($_GET['filter']) ? $lessons = sC_filterData($lessons, $_GET['filter']) : null;
     		 $this -> addLessons(array_diff(array_keys($lessons), array_keys($courseLessons)));
     		 */
     	} elseif (isset($_GET['removeAll'])) {
     		//$constraints = createConstraintsFromSortedTable() + array('archive' => false, 'active' => true);
     		//$this -> removeCourseLessons($constraints);
     		$courseLessons = $this -> getCourseLessons();
-    		isset($_GET['filter']) ? $courseLessons = eF_filterData($courseLessons, $_GET['filter']) : null;
+    		isset($_GET['filter']) ? $courseLessons = sC_filterData($courseLessons, $_GET['filter']) : null;
     		$this -> removeLessons(array_keys($courseLessons));
     	}
     	$constraints = array('archive' => false, 'active' => true, 'return_objects' => false);
@@ -3846,7 +3846,7 @@ class MagesterCourse
     		$this -> removeSkill($_GET['add_skill']);
     	} elseif (isset($_GET['addAll'])) {
     		$skills = $this -> getSkills();
-    		isset($_GET['filter']) ? $skills = eF_filterData($skills, $_GET['filter']) : null;
+    		isset($_GET['filter']) ? $skills = sC_filterData($skills, $_GET['filter']) : null;
     		foreach ($skills as $skill) {
     			if (!$skill['courses_ID']) {
     				$this -> assignSkill($skill['skill_ID'], "");
@@ -3854,7 +3854,7 @@ class MagesterCourse
     		}
     	} elseif (isset($_GET['removeAll'])) {
     		$skills = $this -> getSkills();
-    		isset($_GET['filter']) ? $skills = eF_filterData($skills, $_GET['filter']) : null;
+    		isset($_GET['filter']) ? $skills = sC_filterData($skills, $_GET['filter']) : null;
     		foreach ($skills as $skill) {
     			if ($skill['courses_ID'] == $this -> course['id']) {
     				$this -> removeSkill($skill['skill_ID']);
@@ -3864,7 +3864,7 @@ class MagesterCourse
     }
     public function handlePostAjaxRequestForUsers()
     {
-    	if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+    	if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
     		$this -> handlePostAjaxRequestForSingleUser();
     	} elseif (isset($_GET['addAll'])) {
     		$this -> handlePostAjaxRequestForUsersAddAll();
@@ -3875,7 +3875,7 @@ class MagesterCourse
 
     public function handlePostAjaxRequestForUsersClasses()
     {
-    	if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+    	if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
     		$this -> handlePostAjaxRequestForSingleUserClasses();
     	} elseif (isset($_GET['addAll'])) {
     		//$this -> handlePostAjaxRequestForUsersAddAll();
@@ -3932,7 +3932,7 @@ class MagesterCourse
     	$constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null');
     	$users = $this -> getCourseUsersIncludingUnassigned($constraints);
     	$users = MagesterUser :: convertUserObjectsToArrays($users);
-    	isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
+    	isset($_GET['filter']) ? $users = sC_filterData($users, $_GET['filter']) : null;
     	$userTypes = array();
     	foreach ($users as $user) {
     		$user['user_types_ID'] ? $userTypes[] = $user['user_types_ID'] : $userTypes[] = $user['user_type'];
@@ -3951,7 +3951,7 @@ class MagesterCourse
     	$constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is not null');
     	$users = $this -> getCourseUsersIncludingUnassigned($constraints);
     	$users = MagesterUser :: convertUserObjectsToArrays($users);
-    	isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
+    	isset($_GET['filter']) ? $users = sC_filterData($users, $_GET['filter']) : null;
     	$this -> archiveCourseUsers(array_keys($users));
     }
 
@@ -3964,7 +3964,7 @@ class MagesterCourse
 			);
 
 			if ($constraints['users_ID']) {
-				$userLogin = eF_getTableData("users", "login", "id = " . $constraints['users_ID']);
+				$userLogin = sC_getTableData("users", "login", "id = " . $constraints['users_ID']);
 
 				$fields[] = sprintf(
 				"(SELECT COUNT(uc.users_ID) FROM users_to_courses uc WHERE uc.classe_id = c.id AND uc.users_LOGIN = '%s' AND uc.active = 1 AND uc.archive = 0) as user_has_class",
@@ -3980,7 +3980,7 @@ class MagesterCourse
 			$from = "classes c";
 			$select = implode(', ', $fields);
 			$where[] = "c.courses_ID = '" . $this -> course['id'] . "' OR c.courses_ID IS NULL";
-			$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
+			$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
 			if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
 				return MagesterCourse :: convertDatabaseResultToClassesObjects($result);
@@ -3997,14 +3997,14 @@ class MagesterCourse
     	$from = "classes c";
     	$select = "c.id";
     	$where[] = "c.courses_ID = '" . $this -> course['id'] . "' OR c.courses_ID IS NULL";
-    	$result = eF_countTableData($from, $select, implode(" and ", $where));
+    	$result = sC_countTableData($from, $select, implode(" and ", $where));
 
     	return $result[0]['count'];
     }
 
     public function setUserCourseClass($login, $course_id, $classe_id)
     {
-    	ef_updateTableData("users_to_courses", array("classe_id" => $classe_id), sprintf("users_LOGIN = '%s' AND courses_ID = %d", $login, $course_id));
+    	sC_updateTableData("users_to_courses", array("classe_id" => $classe_id), sprintf("users_LOGIN = '%s' AND courses_ID = %d", $login, $course_id));
     }
 
     public static function convertClassesConstraintsToSqlParameters($constraints)
@@ -4027,8 +4027,8 @@ class MagesterCourse
     		$constraints['course_id'] ? $where[] = 'c.courses_ID = ' . $constraints['course_id'] : null;
     	}
 
-    	if (isset($constraints['filter']) && eF_checkParameter($constraints['filter'], 'text')) {
-    		$result = eF_describeTable("classes");
+    	if (isset($constraints['filter']) && sC_checkParameter($constraints['filter'], 'text')) {
+    		$result = sC_describeTable("classes");
     		$tableFields = array();
     		foreach ($result as $value) {
     			$tableFields[] = "l.".$value['Field'].' like "%'.$constraints['filter'].'%"';

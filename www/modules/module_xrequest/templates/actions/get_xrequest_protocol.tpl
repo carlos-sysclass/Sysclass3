@@ -35,7 +35,7 @@
 {/capture}
 
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const._REQUEST_LIST_PROTOCOL
 	data			= $smarty.capture.t_xrequest_body
 }

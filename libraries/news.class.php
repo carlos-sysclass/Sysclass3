@@ -58,8 +58,8 @@ class news extends MagesterEntity
 			            'lessons_ID' 	=> $fields['lessons_ID'],
 			        	'classe_id' 	=> $fields['classe_id'],
                         'users_LOGIN' 	=> $fields['users_LOGIN']);
-		$newId 	= eF_insertTableData("news", $fields);
-		$result = eF_getTableData("news", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+		$newId 	= sC_insertTableData("news", $fields);
+		$result = sC_getTableData("news", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
 		$news = new news($result[0]['id']);
 		if ($news -> news['lessons_ID']) {
 			//MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_LESSON_ANNOUNCEMENT, "users_LOGIN" => $fields['users_LOGIN'], "users_name" => $currentUser -> user['name'], "users_surname" => $currentUser -> user['surname'], "lessons_ID" => $fields['lessons_ID'], "entity_ID" => $id, "entity_name" => $news_content['title']), isset($_POST['email']));
@@ -123,34 +123,34 @@ class news extends MagesterEntity
 	public function getForm($form)
 	{
 		if ($_SESSION['s_type'] == "professor") {
-			$lessonsID = eF_getTableDataFlat("users_to_lessons", "lessons_id", "active=1 and archive = 0 and users_LOGIN LIKE '".$_SESSION['s_login']."'");
+			$lessonsID = sC_getTableDataFlat("users_to_lessons", "lessons_id", "active=1 and archive = 0 and users_LOGIN LIKE '".$_SESSION['s_login']."'");
 			foreach ($lessonsID as $_lessonID) {
 				$lessonsID = $_lessonID;
 			}
-			$lessons = eF_getTableDataFlat("lessons", "id, name", "active=1 and id in (".implode(",", $lessonsID).")");
+			$lessons = sC_getTableDataFlat("lessons", "id, name", "active=1 and id in (".implode(",", $lessonsID).")");
 			if (sizeof($lessons) > 0) {
 				//Get every lesson's name
 				$lessons = array_combine($lessons['id'], $lessons['name']);
 			}
 
-			$courseID = eF_getTableDataFlat("users_to_courses", "courses_id", "active=1 and archive = 0  and users_LOGIN LIKE '".$_SESSION['s_login']."'");
+			$courseID = sC_getTableDataFlat("users_to_courses", "courses_id", "active=1 and archive = 0  and users_LOGIN LIKE '".$_SESSION['s_login']."'");
 			foreach ($courseID as $_courseID) {
 				$courseID = $_courseID;
 			}
 
-			$allClass = eF_getTableDataFlat("classes", "id, name", "active=1 and courses_id = ".$_SESSION['s_courses_ID']);
+			$allClass = sC_getTableDataFlat("classes", "id, name", "active=1 and courses_id = ".$_SESSION['s_courses_ID']);
 			if (sizeof($allClass) > 0) {
 				//Get every lesson's name
 				$allClass = array_combine($allClass['id'], $allClass['name']);
 			}
 		}
 		if ($_SESSION['s_type'] == "administrator") {
-			$lessons = eF_getTableDataFlat("lessons", "id, name", "active=1");
+			$lessons = sC_getTableDataFlat("lessons", "id, name", "active=1");
 			if (sizeof($lessons) > 0) {
 				//Get every lesson's name
 				$lessons = array_combine($lessons['id'], $lessons['name']);
 			}
-			$allClass = eF_getTableDataFlat("classes", "id, name", "active=1");
+			$allClass = sC_getTableDataFlat("classes", "id, name", "active=1");
 			if (sizeof($allClass) > 0) {
 				//Get every lesson's name
 				$allClass = array_combine($allClass['id'], $allClass['name']);
@@ -264,17 +264,17 @@ class news extends MagesterEntity
 		}
 		if (is_array($lessonId) && !empty($lessonId)) {
 			foreach ($lessonId as $key => $value) {
-				if (!eF_checkParameter($value, 'id')) {
+				if (!sC_checkParameter($value, 'id')) {
 					unset($lessonId[$key]);
 				}
 			}
 			if (!empty($lessonId)) {
-				//$result = eF_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID in (".implode(",", $lessonId).")", "n.timestamp desc, n.id desc");
-				$result = eF_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID in (".implode(",", $lessonId).")", "n.id desc");
+				//$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID in (".implode(",", $lessonId).")", "n.timestamp desc, n.id desc");
+				$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID in (".implode(",", $lessonId).")", "n.id desc");
 				$news = array();
 				foreach ($result as $value) {
 					$interval = time() - $value['timestamp'];
-					$value['time_since'] = eF_convertIntervalToTime(abs($interval), true).' '.($interval > 0 ? _AGO : _REMAININGPLURAL);
+					$value['time_since'] = sC_convertIntervalToTime(abs($interval), true).' '.($interval > 0 ? _AGO : _REMAININGPLURAL);
 					$news[$value['id']] = $value;
 					$news[$value['id']]['data_strip'] = strip_tags($value['data']);
 				}
@@ -282,14 +282,14 @@ class news extends MagesterEntity
 			return $news;
 		}
 		//We don't have an "else" statement here, because in case the check in the above if removed all elements of lessonId (they were not ids), this part of code will be executed and the function won't fail
-		if (!eF_checkParameter($lessonId, 'id')) {
+		if (!sC_checkParameter($lessonId, 'id')) {
 			$lessonId = 0;
 		}
-		$result = eF_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID=$lessonId", "n.timestamp desc, n.id desc");
+		$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID=$lessonId", "n.timestamp desc, n.id desc");
 		$news = array();
 		foreach ($result as $value) {
 			$interval = time() - $value['timestamp'];
-			$value['time_since'] = eF_convertIntervalToTime(abs($interval), true).' '.($interval > 0 ? _AGO : _REMAININGPLURAL);
+			$value['time_since'] = sC_convertIntervalToTime(abs($interval), true).' '.($interval > 0 ? _AGO : _REMAININGPLURAL);
 			$news[$value['id']] = $value;
 			$news[$value['id']]['data_strip'] = strip_tags($value['data']);
 		}

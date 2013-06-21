@@ -52,8 +52,8 @@ class module_onsync extends MagesterExtendedModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_onsync");
-        $a = eF_executeNew("CREATE TABLE module_onsync (
+        sC_executeNew("drop table if exists module_onsync");
+        $a = sC_executeNew("CREATE TABLE module_onsync (
         					internal_ID int(11) NOT NULL auto_increment,
 							account_ID int(11) NOT NULL,
 							onsync_ID int(11),
@@ -65,15 +65,15 @@ class module_onsync extends MagesterExtendedModule
 							password DEFAULT NULL,
                           	PRIMARY KEY  (internal_ID)
 		) DEFAULT CHARSET=utf8;");
-        eF_executeNew("drop table if exists module_onsync_users_to_meeting ");
-        $b = eF_executeNew("CREATE TABLE module_onsync_users_to_meeting (
+        sC_executeNew("drop table if exists module_onsync_users_to_meeting ");
+        $b = sC_executeNew("CREATE TABLE module_onsync_users_to_meeting (
                         users_LOGIN varchar(255) NOT NULL,
                         meeting_ID int(11) NOT NULL,
                         KEY (users_LOGIN,meeting_ID)
                        ) DEFAULT CHARSET=utf8;");
 
-        if (!($c = eF_executeNew("INSERT INTO configuration VALUES ('module_onsync_server','http://');"))) {
-            $c = eF_executeNew("UPDATE configuration SET value = 'http://' WHERE name = 'module_onsync_server';");
+        if (!($c = sC_executeNew("INSERT INTO configuration VALUES ('module_onsync_server','http://');"))) {
+            $c = sC_executeNew("UPDATE configuration SET value = 'http://' WHERE name = 'module_onsync_server';");
         }
 
         return $a && $b && $c;
@@ -82,9 +82,9 @@ class module_onsync extends MagesterExtendedModule
     // And on deleting the module
     public function onUninstall()
     {
-        $a = eF_executeNew("DROP TABLE module_onsync;");
-        $b = eF_executeNew("DROP TABLE module_onsync_users_to_meeting;");
-        $c = eF_executeNew("DELETE FROM configuration WHERE name='module_onsync_server';");
+        $a = sC_executeNew("DROP TABLE module_onsync;");
+        $b = sC_executeNew("DROP TABLE module_onsync_users_to_meeting;");
+        $c = sC_executeNew("DELETE FROM configuration WHERE name='module_onsync_server';");
 
         return $a && $b && $c;
     }
@@ -92,13 +92,13 @@ class module_onsync extends MagesterExtendedModule
     // On exporting a lesson
     public function onDeleteLesson($lessonId)
     {
-        $meetings_to_del = eF_getTableDataFlat("module_onsync", "*","lessons_ID='".$lessonId."'");
+        $meetings_to_del = sC_getTableDataFlat("module_onsync", "*","lessons_ID='".$lessonId."'");
 
         $this->deleteOnSyncConference($meetings_to_del['onsync_ID'], $meetings_to_del);
 
-        eF_deleteTableData("module_onsync", "lessons_ID='".$lessonId."'");
+        sC_deleteTableData("module_onsync", "lessons_ID='".$lessonId."'");
         $delmeet = implode($meetings_to_del['internal_ID'],"','");
-        eF_deleteTableData("module_onsync_users_to_meeting", "meeting_ID IN ('".$delmeet ."')");
+        sC_deleteTableData("module_onsync_users_to_meeting", "meeting_ID IN ('".$delmeet ."')");
 
         return true;
     }
@@ -107,8 +107,8 @@ class module_onsync extends MagesterExtendedModule
     public function onExportLesson($lessonId)
     {
         $data = array();
-        $data['meetings'] = eF_getTableData("module_onsync", "*","lessons_ID=".$lessonId);
-        $data['users_to_meetings'] = eF_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON module_onsync.internal_ID = module_onsync_users_to_meeting.meeting_ID", "module_onsync_users_to_meeting.*","lessons_ID=".$lessonId);
+        $data['meetings'] = sC_getTableData("module_onsync", "*","lessons_ID=".$lessonId);
+        $data['users_to_meetings'] = sC_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON module_onsync.internal_ID = module_onsync_users_to_meeting.meeting_ID", "module_onsync_users_to_meeting.*","lessons_ID=".$lessonId);
 
         return $data;
     }
@@ -124,7 +124,7 @@ class module_onsync extends MagesterExtendedModule
             $old_meeting_id = $meeting_record['id'];
             unset($meeting_record['id']);
             $meeting_record['lessons_ID'] = $lessonId;
-            $new_meeting_id = eF_insertTableData("module_onsync",$meeting_record);
+            $new_meeting_id = sC_insertTableData("module_onsync",$meeting_record);
 
             if ($new_meeting_id != $old_meeting_id) {
                 $changed_ids[$old_meeting_id] = $new_meeting_id;
@@ -136,7 +136,7 @@ class module_onsync extends MagesterExtendedModule
             if (isset($changed_ids[$users_to_meetings_record['meeting_ID']])) {
                 $users_to_meetings_record['meeting_ID'] = $changed_ids[$users_to_meetings_record['meeting_ID']];
             }
-            eF_insertTableData("module_onsync_users_to_meeting",$users_to_meetings_record);
+            sC_insertTableData("module_onsync_users_to_meeting",$users_to_meetings_record);
         }
 
         return true;
@@ -232,7 +232,7 @@ class module_onsync extends MagesterExtendedModule
     private function getOnsyncServer()
     {
         if (!$this -> onsync_server_host) {
-            $onsync_server = eF_getTableData("configuration", "value", "name = 'module_onsync_server'");
+            $onsync_server = sC_getTableData("configuration", "value", "name = 'module_onsync_server'");
             $this -> onsync_server_host = $onsync_server[0]['value'];
         }
 
@@ -278,7 +278,7 @@ class module_onsync extends MagesterExtendedModule
         if ($currentUser -> getType() == "administrator") {
 
             $form = new HTML_QuickForm("onsync_server_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
             $form -> addElement('text', 'server', null, 'class = "inputText" id="server_input"');
             $form -> addRule('server', _ONSYNCTHEFIELDNAMEISMANDATORY, 'required', null, 'client');
             $form -> addElement('submit', 'submit_onsync_server', _SUBMIT, 'class = "flatButton"');
@@ -288,7 +288,7 @@ class module_onsync extends MagesterExtendedModule
                 if ($server_name[strlen($server_name)-1] == "/") {
                     $server_name = substr($server_name, 0, strlen($server_name)-1);
                 }
-                eF_updateTableData("configuration", array("value" => $server_name), "name = 'module_onsync_server'");
+                sC_updateTableData("configuration", array("value" => $server_name), "name = 'module_onsync_server'");
                 $this -> setMessageVar(_ONSYNC_SUCCESFULLYCHANGEDSERVER, "success");
             }
 
@@ -304,25 +304,25 @@ class module_onsync extends MagesterExtendedModule
         if (isset($_GET['postAjaxRequest'])) {
             /** Post skill - Ajax skill **/
             if ($_GET['insert'] == "true") {
-                eF_insertTableData("module_onsync_users_to_meeting", array('users_LOGIN' => $_GET['user'], 'meeting_ID' => $_GET['edit_onsync']));
+                sC_insertTableData("module_onsync_users_to_meeting", array('users_LOGIN' => $_GET['user'], 'meeting_ID' => $_GET['edit_onsync']));
             } elseif ($_GET['insert'] == "false") {
-                eF_deleteTableData("module_onsync_users_to_meeting", "users_LOGIN = '". $_GET['user'] . "' AND meeting_ID = '".$_GET['edit_onsync']."'");
+                sC_deleteTableData("module_onsync_users_to_meeting", "users_LOGIN = '". $_GET['user'] . "' AND meeting_ID = '".$_GET['edit_onsync']."'");
             } elseif (isset($_GET['addAll'])) {
 
 /*
-                $users = eF_getTableData(
+                $users = sC_getTableData(
                 	"users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_onsync_users_to_meeting ON users.login = module_onsync_users_to_meeting.users_LOGIN",
                 	"users.login, users.name, users.surname, meeting_ID",
                 	"users_to_lessons.archive=0 and users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND (meeting_ID <> '".$_GET['edit_onsync']."' OR meeting_ID IS NULL)"
                 );
 */
 /*
-                $users_attending = eF_getTableDataFlat(
+                $users_attending = sC_getTableDataFlat(
                 	"users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_onsync_users_to_meeting ON users.login = module_onsync_users_to_meeting.users_LOGIN",
                 	"users.login",
                 	"users_to_lessons.archive=0 and users_to_lessons.lessons_ID = '".$_SESSION['s_lessons_ID']."' AND meeting_ID = '".$_GET['edit_onsync']."'");
 */
-				$users = eF_getTableData(
+				$users = sC_getTableData(
 					"users
 						JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                 		JOIN module_onsync ON module_onsync.lessons_ID = users_to_lessons.lessons_ID
@@ -338,7 +338,7 @@ class module_onsync extends MagesterExtendedModule
 					" AND module_onsync.internal_ID = '".$_GET['edit_onsync']."'"
 				);
 
-				$users_attending = eF_getTableDataFlat(
+				$users_attending = sC_getTableDataFlat(
 					"users
 						JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                 		JOIN module_onsync ON module_onsync.lessons_ID = users_to_lessons.lessons_ID
@@ -353,12 +353,12 @@ class module_onsync extends MagesterExtendedModule
 					" AND module_onsync_users_to_meeting.meeting_ID = '".$_GET['edit_onsync']."'"
 				);
 
-                isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $users = sC_filterData($users, $_GET['filter']) : null;
                 //$users_attending = $users_attending['login'];
 
                 foreach ($users as $user) {
                     if (!in_array($user['login'], $users_attending)) {
-                        eF_insertTableData("module_onsync_users_to_meeting", array('users_LOGIN' => $user['login'], 'meeting_ID' => $_GET['edit_onsync']));
+                        sC_insertTableData("module_onsync_users_to_meeting", array('users_LOGIN' => $user['login'], 'meeting_ID' => $_GET['edit_onsync']));
                         $users_attending[] = $user['login'];
                     }
                 }
@@ -367,7 +367,7 @@ class module_onsync extends MagesterExtendedModule
                 exit;
             } elseif (isset($_GET['removeAll'])) {
             	/*
-                $users_attending = eF_getTableData(
+                $users_attending = sC_getTableData(
                 	"users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN LEFT OUTER JOIN module_onsync_users_to_meeting ON users.login = module_onsync_users_to_meeting.users_LOGIN",
                 	"users.login",
                 	"users_to_lessons.archive=0
@@ -377,7 +377,7 @@ class module_onsync extends MagesterExtendedModule
                 );
                 */
 
-				$users_attending = eF_getTableData(
+				$users_attending = sC_getTableData(
 					"users
 						JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                 		JOIN module_onsync ON module_onsync.lessons_ID = users_to_lessons.lessons_ID
@@ -393,25 +393,25 @@ class module_onsync extends MagesterExtendedModule
 				);
 
                 //$users_attending = $users_attending['login'];
-                isset($_GET['filter']) ? $users_attending = eF_filterData($users_attending, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $users_attending = sC_filterData($users_attending, $_GET['filter']) : null;
 
                 $users_to_delete = array();
                 foreach ($users_attending as $user) {
                     $users_to_delete[] = $user['login'];
                 }
                 $users_to_delete = array_unique($users_to_delete);
-                eF_deleteTableData("module_onsync_users_to_meeting", "meeting_ID = '".$_GET['edit_onsync']."' AND users_LOGIN IN ('".implode("','", $users_to_delete)."')");
+                sC_deleteTableData("module_onsync_users_to_meeting", "meeting_ID = '".$_GET['edit_onsync']."' AND users_LOGIN IN ('".implode("','", $users_to_delete)."')");
 
                 // MAKE JSON MESSAGE
 
                 exit;
             } elseif (isset($_GET['mail_users']) && $_GET['mail_users'] == 1) {
                 $currentLesson = $this ->getCurrentLesson();
-                $meeting_users = eF_getTableData("module_onsync_users_to_meeting JOIN users ON module_onsync_users_to_meeting.users_LOGIN = users.login", "users.login, users.name, users.surname, users.email", "meeting_ID = ".$_GET['edit_onsync'] . " AND users.active = 1 AND users.login <> '". $currentUser -> user['login'] ."'");
+                $meeting_users = sC_getTableData("module_onsync_users_to_meeting JOIN users ON module_onsync_users_to_meeting.users_LOGIN = users.login", "users.login, users.name, users.surname, users.email", "meeting_ID = ".$_GET['edit_onsync'] . " AND users.active = 1 AND users.login <> '". $currentUser -> user['login'] ."'");
 
-                isset($_GET['filter']) ? $meeting_users  = eF_filterData($meeting_users , $_GET['filter']) : null;
+                isset($_GET['filter']) ? $meeting_users  = sC_filterData($meeting_users , $_GET['filter']) : null;
 
-                $meeting_info = eF_getTableData("module_onsync", "*", "internal_ID = ".$_GET['edit_onsync']);
+                $meeting_info = sC_getTableData("module_onsync", "*", "internal_ID = ".$_GET['edit_onsync']);
 
                 $meeting_info[0]['timestamp']	= strtotime($meeting_info[0]['start_time']);
 
@@ -461,17 +461,17 @@ class module_onsync extends MagesterExtendedModule
             }
         }
 		/*
-        if (isset($_GET['start_meeting']) && eF_checkParameter($_GET['start_meeting'], 'id')) {
+        if (isset($_GET['start_meeting']) && sC_checkParameter($_GET['start_meeting'], 'id')) {
 
 			$onsync_server = $this -> getOnsyncServer();
             if ($onsync_server != "") {
 
-                $onsync = eF_getTableData("module_onsync", "*", "internal_ID=".$_GET['start_meeting']);
+                $onsync = sC_getTableData("module_onsync", "*", "internal_ID=".$_GET['start_meeting']);
 				$onsync[0]['timestamp'] = strtotime($onsync[0]['start_time']);
                 if ($onsync[0]['timestamp'] >= time()) {
 
                     if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor" && $meeting_info['status'] == 0) {
-                        //eF_updateTableData("module_onsync", array('status' => '1'), "internal_ID=".$_GET['start_meeting']);
+                        //sC_updateTableData("module_onsync", array('status' => '1'), "internal_ID=".$_GET['start_meeting']);
                     }
                     $onsyncUrl = $this->accounts[$meeting_info['account_ID']]['link_baseurl'] . $meeting_info['friendly_url'];
 
@@ -485,9 +485,9 @@ class module_onsync extends MagesterExtendedModule
         }
 		*/
 		/*
-        if (isset($_GET['finished_meeting']) && eF_checkParameter($_GET['finished_meeting'], 'id')) {
+        if (isset($_GET['finished_meeting']) && sC_checkParameter($_GET['finished_meeting'], 'id')) {
             if ($userRole == "professor") {
-                eF_updateTableData("module_onsync", array('status' => '2'), "internal_ID=".$_GET['finished_meeting']);
+                sC_updateTableData("module_onsync", array('status' => '2'), "internal_ID=".$_GET['finished_meeting']);
             }
 
             $currentLesson = $this -> getCurrentLesson();
@@ -496,30 +496,30 @@ class module_onsync extends MagesterExtendedModule
             header("location:". $currentUser -> getType() . "page.php");
         }
 		*/
-        if (isset($_GET['delete_onsync']) && eF_checkParameter($_GET['delete_onsync'], 'id') && $userRole == "professor") {
-			$onsync_entry = eF_getTableData("module_onsync", "*", "internal_ID=".$_GET['delete_onsync']);
+        if (isset($_GET['delete_onsync']) && sC_checkParameter($_GET['delete_onsync'], 'id') && $userRole == "professor") {
+			$onsync_entry = sC_getTableData("module_onsync", "*", "internal_ID=".$_GET['delete_onsync']);
 
-            eF_deleteTableData("module_onsync", "internal_ID=".$_GET['delete_onsync']);
-            eF_deleteTableData("module_onsync_users_to_meeting", "meeting_ID=".$_GET['delete_onsync']);
+            sC_deleteTableData("module_onsync", "internal_ID=".$_GET['delete_onsync']);
+            sC_deleteTableData("module_onsync_users_to_meeting", "meeting_ID=".$_GET['delete_onsync']);
 
             $this->deleteOnSyncConference($onsync_entry[0]['onsync_ID'], $onsync_entry[0]);
 
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_ONSYNC_SUCCESFULLYDELETEDONSYNCENTRY)."&message_type=success");
-        } elseif ($userRole == "professor" && (isset($_GET['add_onsync']) || (isset($_GET['edit_onsync']) && eF_checkParameter($_GET['edit_onsync'], 'id')))) {
+        } elseif ($userRole == "professor" && (isset($_GET['add_onsync']) || (isset($_GET['edit_onsync']) && sC_checkParameter($_GET['edit_onsync'], 'id')))) {
 
             // Create ajax enabled table for meeting attendants
             if (isset($_GET['edit_onsync'])) {
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'onsyncUsersTable') {
-                    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-                    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                         $sort = $_GET['sort'];
                         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                     } else {
                         $sort = 'login';
                     }
 
-                    $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
+                    $users = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                                                     JOIN module_onsync ON module_onsync.lessons_ID = users_to_lessons.lessons_ID
                                                     LEFT OUTER JOIN module_onsync_users_to_meeting ON module_onsync.internal_ID = module_onsync_users_to_meeting.meeting_ID AND users.login = module_onsync_users_to_meeting.users_LOGIN",
 
@@ -532,15 +532,15 @@ class module_onsync extends MagesterExtendedModule
                                                     " AND module_onsync.internal_ID = '".$_GET['edit_onsync']."'"
 					);
 
-                    $users = eF_multiSort($users, $_GET['sort'], $order);
+                    $users = sC_multiSort($users, $_GET['sort'], $order);
                     if (isset($_GET['filter'])) {
-                        $users = eF_filterData($users , $_GET['filter']);
+                        $users = sC_filterData($users , $_GET['filter']);
                     }
 
                     $smarty -> assign("T_USERS_SIZE", sizeof($users));
 
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $users = array_slice($users, $offset, $limit);
                     }
 
@@ -549,7 +549,7 @@ class module_onsync extends MagesterExtendedModule
                     exit;
 
                 } else {
-                    $users = eF_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
+                    $users = sC_getTableData("users JOIN users_to_lessons ON users.login = users_to_lessons.users_LOGIN
                                                     JOIN module_onsync ON module_onsync.lessons_ID = users_to_lessons.lessons_ID
                                                     LEFT OUTER JOIN module_onsync_users_to_meeting ON module_onsync.internal_ID = module_onsync_users_to_meeting.meeting_ID AND users.login = module_onsync_users_to_meeting.users_LOGIN",
                                                     "users.login, users.name, users.surname, meeting_ID",
@@ -567,7 +567,7 @@ class module_onsync extends MagesterExtendedModule
             $form = new HTML_QuickForm("onsync_entry_form", "post", $_SERVER['REQUEST_URI']. "&tab=users", "", null, true);
 			$form -> addElement('hidden', 'onsync_ID');
 
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
 
             $accounts = array();
 
@@ -706,7 +706,7 @@ class module_onsync extends MagesterExtendedModule
             $form -> addElement('password', 'password', _ONSYNC_PASSWORD, 'class = "inputText"');
 
             $currentLesson = $this -> getCurrentLesson();
-            $students = eF_getTableData("users_to_lessons", "count(users_LOGIN) as total_students", "archive=0 and lessons_ID = '".$currentLesson -> lesson['id']."'");
+            $students = sC_getTableData("users_to_lessons", "count(users_LOGIN) as total_students", "archive=0 and lessons_ID = '".$currentLesson -> lesson['id']."'");
 
             $form -> addElement('submit', 'submit_onsync', _SUBMIT, 'class = "flatButton"');
 
@@ -714,7 +714,7 @@ class module_onsync extends MagesterExtendedModule
             	$form->getElement('account_ID')->freeze();
             	$form->getElement('classes_ID')->freeze();
 
-                $onsync_entry = eF_getTableData("module_onsync", "*", "internal_ID=".$_GET['edit_onsync']);
+                $onsync_entry = sC_getTableData("module_onsync", "*", "internal_ID=".$_GET['edit_onsync']);
                 $timestamp_info = getdate(strtotime($onsync_entry[0]['start_time']));
 
 				$defaults = array(
@@ -758,7 +758,7 @@ class module_onsync extends MagesterExtendedModule
 
             if ($form -> isSubmitted() && $form -> validate()) {
 
-               // if (eF_checkParameter($form -> exportValue('name'), 'text')) {
+               // if (sC_checkParameter($form -> exportValue('name'), 'text')) {
                     $smarty = $this -> getSmartyVar();
                     $currentLesson = $this -> getCurrentLesson();
 /*
@@ -799,7 +799,7 @@ class module_onsync extends MagesterExtendedModule
 
                     if (isset($_GET['edit_onsync'])) {
                     	// UPDATE ONSYNC CONFERENCE
-                        if ($this->updateOnSyncConference($fields['onsync_ID'], $fields) && eF_updateTableData("module_onsync", $fields, "internal_ID=".$_GET['edit_onsync'])) {
+                        if ($this->updateOnSyncConference($fields['onsync_ID'], $fields) && sC_updateTableData("module_onsync", $fields, "internal_ID=".$_GET['edit_onsync'])) {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_ONSYNC_SUCCESFULLYUPDATEDONSYNCENTRY)."&message_type=success");
                         } else {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_ONSYNC_PROBLEMUPDATINGONSYNCENTRY)."&message_type=failure");
@@ -810,7 +810,7 @@ class module_onsync extends MagesterExtendedModule
                         // INSERT ONSYNC CONFERENCE
                         $fields['onsync_ID']	= $this->insertOnSyncConference($fields);
 
-                        if ($fields['onsync_ID'] !== FALSE && $result = eF_insertTableData("module_onsync", $fields)) {
+                        if ($fields['onsync_ID'] !== FALSE && $result = sC_insertTableData("module_onsync", $fields)) {
                             header("location:".$this -> moduleBaseUrl."&edit_onsync=".$result."&message=".urlencode(_ONSYNC_SUCCESFULLYINSERTEDONSYNCENTRY)."&message_type=success&tab=users");
                         } else {
                             header("location:".$this -> moduleBaseUrl."&message=".urlencode(_ONSYNC_PROBLEMINSERTINGONSYNCENTRY)."&message_type=failure");
@@ -830,10 +830,10 @@ class module_onsync extends MagesterExtendedModule
             $currentLesson = $this -> getEditedLesson();
 
             if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
-                $onsync = eF_getTableData("module_onsync", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+                $onsync = sC_getTableData("module_onsync", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
                 $smarty -> assign("T_ONSYNC_CURRENTLESSONTYPE", "professor");
             } else {
-                $onsync = eF_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON internal_ID = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'");
+                $onsync = sC_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON internal_ID = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'");
                 $smarty -> assign("T_ONSYNC_CURRENTLESSONTYPE", "student");
             }
 
@@ -890,18 +890,18 @@ class module_onsync extends MagesterExtendedModule
             $smarty = $this -> getSmartyVar();
             $currentLesson = $this -> getCurrentLesson();
             if ($currentUser -> getRole($this -> getCurrentLesson()) == "student") {
-                $onsync = eF_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON internal_ID = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'", "start_time DESC");
+                $onsync = sC_getTableData("module_onsync_users_to_meeting JOIN module_onsync ON internal_ID = meeting_ID", "*", "lessons_ID = '".$currentLesson -> lesson['id']."' AND users_LOGIN='".$currentUser -> user['login']."'", "start_time DESC");
                 $smarty -> assign("T_ONSYNC_CURRENTLESSONTYPE", "student");
                 $now = time();
 
-                $onsync_server = eF_getTableData("configuration", "value", "name = 'module_onsync_server'");
+                $onsync_server = sC_getTableData("configuration", "value", "name = 'module_onsync_server'");
                 foreach ($onsync as $key => $meeting) {
                 	$onsync[$key]['timestamp'] = strtotime($meeting['start_time']);
             		$onsync[$key]['joining_url'] = $this->accounts[$meeting['account_ID']]['link_baseurl'] . $meeting['friendly_url'];
-                    $onsync[$key]['time_remaining'] = eF_convertIntervalToTime(time() - $onsync[$key]['timestamp'], true). ' '._AGO;
+                    $onsync[$key]['time_remaining'] = sC_convertIntervalToTime(time() - $onsync[$key]['timestamp'], true). ' '._AGO;
                 }
             } else {
-                $onsync = eF_getTableData("module_onsync", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'", "start_time DESC");
+                $onsync = sC_getTableData("module_onsync", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'", "start_time DESC");
                 $smarty -> assign("T_ONSYNC_CURRENTLESSONTYPE", "professor");
                 $now = time();
                 foreach ($onsync as $key => $meeting) {
@@ -915,7 +915,7 @@ class module_onsync extends MagesterExtendedModule
                         $onsync[$key]['mayStart'] = 0;
                     }
 
-                    $onsync[$key]['time_remaining'] = eF_convertIntervalToTime(time() - $onsync[$key]['timestamp'], true). ' '._AGO;
+                    $onsync[$key]['time_remaining'] = sC_convertIntervalToTime(time() - $onsync[$key]['timestamp'], true). ' '._AGO;
                 }
             }
 

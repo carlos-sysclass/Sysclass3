@@ -35,9 +35,9 @@
 	{/capture}
 
 	{if $smarty.get.add_range}
-	{eF_template_printBlock title=$smarty.const._XREQUEST_ADD_RANGE data=$smarty.capture.t_add_edit_range_code image=$T_XREQUEST_BASELINK|cat:'images/XREQUEST_logo.png' absoluteImagePath = 1}
+	{sC_template_printBlock title=$smarty.const._XREQUEST_ADD_RANGE data=$smarty.capture.t_add_edit_range_code image=$T_XREQUEST_BASELINK|cat:'images/XREQUEST_logo.png' absoluteImagePath = 1}
 	{else}
-	{eF_template_printBlock title=$smarty.const._XREQUEST_EDIT_RANGE data=$smarty.capture.t_add_edit_range_code image=$T_XREQUEST_BASELINK|cat:'images/XREQUEST_logo.png' absoluteImagePath = 1}
+	{sC_template_printBlock title=$smarty.const._XREQUEST_EDIT_RANGE data=$smarty.capture.t_add_edit_range_code image=$T_XREQUEST_BASELINK|cat:'images/XREQUEST_logo.png' absoluteImagePath = 1}
 	{/if}
 
 {else}
@@ -71,7 +71,7 @@
 		{/if}
 		
 		<td class="centerAlign">
-			<a href="{$T_XREQUEST_BASEURL}&action=edit_xrequest&id={$range.id}&popup=1" target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._XREQUEST_EDIT_RANGE}', 0)">
+			<a href="{$T_XREQUEST_BASEURL}&action=edit_xrequest&id={$range.id}&popup=1" target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$smarty.const._XREQUEST_EDIT_RANGE}', 0)">
 			<img class="sprite16 sprite16-edit" src="{$T_XREQUEST_BASELINK}images/transparent.png" alt="{$smarty.const._EDIT}" title="{$smarty.const._EDIT}" border="0">
 			
 			</a>
@@ -87,7 +87,7 @@
 </table>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XREQUEST_TYPES
 	data			= $smarty.capture.t_xrequest_body
 }

@@ -76,7 +76,7 @@ class comments extends MagesterEntity
                         "private" => $fields['private'],
                         "timestamp" => isset($fields['timestamp']) && $fields['timestamp'] ? $fields['timestamp'] : time(),
                         "active" => !isset($fields['active']) || $fields['active'] ? 1 : 0);
-        $newId = eF_insertTableData("comments", $fields);
+        $newId = sC_insertTableData("comments", $fields);
         $comments = new comments($newId);
   $sourceUnit = new MagesterUnit($fields['content_ID']);
   MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_COMMENT_WRITING, "lessons_ID" => $sourceUnit['lessons_ID'], "entity_ID" => $fields['content_ID'], "entity_name" => $sourceUnit['name']));
@@ -198,12 +198,12 @@ class comments extends MagesterEntity
     {
         if ($lesson instanceOf MagesterLesson) {
             $lesson = $lesson -> lesson['id'];
-        } elseif (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!sC_checkParameter($lesson, 'id')) {
             $lesson = $_SESSION['s_lessons_ID'];
         }
         if ($user instanceOf MagesterUser) {
             $user = $user -> user['login'];
-        } elseif (!eF_checkParameter($user, 'login')) {
+        } elseif (!sC_checkParameter($user, 'login')) {
             $user = '';
         }
         if ($user) {
@@ -211,12 +211,12 @@ class comments extends MagesterEntity
         } else {
             $login_str = '';
         }
-        if ($content_ID && eF_checkParameter($content_ID, 'id')) {
+        if ($content_ID && sC_checkParameter($content_ID, 'id')) {
             $content_ID_str = ' AND cn.id='.$content_ID;
         } else {
             $content_ID_str = '';
         }
-        if ($limit && eF_checkParameter($limit, 'uint')) {
+        if ($limit && sC_checkParameter($limit, 'uint')) {
             $limit_str = ' limit '.$limit;
         } else {
             $limit_str = '';
@@ -226,7 +226,7 @@ class comments extends MagesterEntity
         } else {
             $private = '';
         }
-        $comments = eF_getTableData("comments cm, content cn", "cm.id AS id, cm.data AS data, cm.users_LOGIN AS users_LOGIN, cm.timestamp AS timestamp, cn.name AS content_name, cn.id AS content_ID, cn.ctg_type AS content_type", "cn.lessons_ID=$lesson AND cm.content_ID=cn.id AND cn.active=1 AND cm.active=1".$private.$login_str.$content_ID_str, "cm.timestamp DESC".$limit_str);
+        $comments = sC_getTableData("comments cm, content cn", "cm.id AS id, cm.data AS data, cm.users_LOGIN AS users_LOGIN, cm.timestamp AS timestamp, cn.name AS content_name, cn.id AS content_ID, cn.ctg_type AS content_type", "cn.lessons_ID=$lesson AND cm.content_ID=cn.id AND cn.active=1 AND cm.active=1".$private.$login_str.$content_ID_str, "cm.timestamp DESC".$limit_str);
 
         return $comments;
     }
@@ -263,12 +263,12 @@ class comments extends MagesterEntity
     {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson -> lesson['id'];
-     } elseif (eF_checkParameter($lesson, 'id')) {
+     } elseif (sC_checkParameter($lesson, 'id')) {
       $lessonId = $lesson;
      } else {
       throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException :: INVALID_ID);
      }
-     $result = eF_getTableData("comments", "*", "lessons_ID=".$lessonId, "id");
+     $result = sC_getTableData("comments", "*", "lessons_ID=".$lessonId, "id");
      foreach ($result as $value) {
       $commentsTerms[$value['id']] = $value;
          $id = $value['id'];

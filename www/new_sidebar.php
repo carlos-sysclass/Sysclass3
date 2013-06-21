@@ -25,7 +25,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 require_once $path."menu.class.php";
 
 # Check module xchat is active
-$checkXchat = 	eF_getTableData(
+$checkXchat = 	sC_getTableData(
 					"modules",
 					"active",
 					"name = 'module_chat'"
@@ -53,7 +53,7 @@ try {
       		"entity" 			=> current($entity),
       		"entity_id" 		=> key($entity)
 		);
-		eF_insertTableData("user_times", $fields);
+		sC_insertTableData("user_times", $fields);
 		$_SESSION['time'] = 0;
 	} else {
 		$_SESSION['time'] = $lastTime;
@@ -70,7 +70,7 @@ try {
 		$currentUser -> applyRoleOptions(); //Initialize user's role options for this lesson
 	}
 } catch (Exception $e) {
-	eF_redirect("index.php?message=".urlencode($message = $e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure", true);
+	sC_redirect("index.php?message=".urlencode($message = $e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure", true);
 	exit;
 }
 if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
@@ -109,7 +109,7 @@ if ( !isset($horizontal_inframe_version) || !$horizontal_inframe_version ) {
 		list($width, $height) = getimagesize($avatar['path']);
 		if ($width > 200 || $height > 100) {
 			# Get normalized dimensions
-			list($newwidth, $newheight) = eF_getNormalizedDims($avatar['path'], 200, 100);
+			list($newwidth, $newheight) = sC_getNormalizedDims($avatar['path'], 200, 100);
 			# The template will check if they are defined and normalize the picture only if needed
 			$width = $newwidth;
 			$height = $newheight;
@@ -207,7 +207,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		//var_dump($systemMenu);
 		//adicionando itens do menu, conforme painel de controle
 		# Get system menu modules
-		$moduleMenus = eF_getModuleMenu($modules, "system");
+		$moduleMenus = sC_getModuleMenu($modules, "system");
 		foreach ($moduleMenus as $moduleMenu) {
 			$systemMenu[] = $moduleMenu;
 		}
@@ -220,7 +220,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			$contentMenu[] = array('id' => 'courses_a', 'title' => _COURSES, 'link' => "administrator.php?ctg=courses");
 			$contentMenu[] = array('id' => 'lessons_a', 'title' => _LESSONS, 'link' => "administrator.php?ctg=lessons");
 		}
-		$moduleMenus = eF_getModuleMenu($modules, "content");
+		$moduleMenus = sC_getModuleMenu($modules, "content");
 		foreach ($moduleMenus as $moduleMenu) {
 			$contentMenu[] = $moduleMenu;
 		}
@@ -249,7 +249,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			$userMenu[] = array("id" => "statistics_user_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=user", "title" => _USERSTATISTICS);
 		}
 		*/
-		$moduleMenus = eF_getModuleMenu($modules, "user");
+		$moduleMenus = sC_getModuleMenu($modules, "user");
 		foreach ($moduleMenus as $moduleMenu) {
 			$userMenu[] = $moduleMenu;
 		}
@@ -269,7 +269,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 				$communicationMenu[] = array('id' => 'chat_a', 'title' => _CHAT, 'link' => "administrator.php?ctg=chat");
 			}
 		}
-		$moduleMenus = eF_getModuleMenu($modules, "communication");
+		$moduleMenus = sC_getModuleMenu($modules, "communication");
 		foreach ($moduleMenus as $moduleMenu) {
 			$communicationMenu[] = $moduleMenu;
 		}
@@ -294,9 +294,9 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		if (!isset($currentLesson)) {
 			$currentLesson = new MagesterLesson($_GET['new_lesson_id']);
 		}
-		$lessonMenu = eF_getMenu();
+		$lessonMenu = sC_getMenu();
 		if ($_SESSION['s_type'] == 'professor' || $_SESSION['s_type'] == 'student') {
-			$lessons = 	eF_getTableData(
+			$lessons = 	sC_getTableData(
 							"users_to_lessons ul, lessons l",
 							"l.name",
 							"ul.archive =0 and ul.users_LOGIN='".$_SESSION['s_login']."' AND ul.active=1 AND l.id=ul.lessons_ID AND l.active=1 AND l.id = '".$_GET['new_lesson_id']."'"
@@ -307,7 +307,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 				array(	"id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId
 			);
 			// Get current lesson menu modules
-			$moduleMenus = eF_getModuleMenu($modules, "current_lesson");
+			$moduleMenus = sC_getModuleMenu($modules, "current_lesson");
 			foreach ($moduleMenus as $moduleMenu) {
 				$lessonMenu['lesson'][] = $moduleMenu;
 			}
@@ -316,7 +316,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 
 		// Insert blank option
 		//$newMenu -> insertMenuOptionAsRawHtml("<table height='8px'></table>", $lessonMenuId);
-		$userType = eF_getTableData("users", "user_type", "login='".$_SESSION['s_login']."'");
+		$userType = sC_getTableData("users", "user_type", "login='".$_SESSION['s_login']."'");
 		if (!isset($_SESSION['s_type'])) {
 			$_SESSION['s_type'] = $userType[0]['user_type'];
 		}
@@ -345,7 +345,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		// baltas: why was this commented out? is needed to be hidden behind lesson specific options so that change lesson does not trigger sidebar reloading
 		//$newMenu -> insertMenuOption(array("id" => "lessons_a", "image" => "lessons", "link" => $_SESSION['s_type'].".php?ctg=lessons", "title" => _MYCOURSES), $lessonMenuId);
 		// Get lessons menu modules
-		$moduleMenus = eF_getModuleMenu($modules, "lessons");
+		$moduleMenus = sC_getModuleMenu($modules, "lessons");
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $lessonMenuId);
 		}
@@ -365,7 +365,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			//}
 			// Get lessons menu modules
 			/*
-			$moduleMenus = eF_getModuleMenu($modules, "lessons");
+			$moduleMenus = sC_getModuleMenu($modules, "lessons");
 			foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $lessonMenuId);
 			}
@@ -384,7 +384,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			 //$newMenu -> insertMenuOption(array("id" => "home_page", "image" => "home", "link" => $_SESSION['s_type'].".php", "title" => __HOME), $lessonMenuId);
 			 //$newMenu -> insertMenuOption(array("id" => "lessons_a", "image" => "lessons", "link" => $_SESSION['s_type'].".php?ctg=lessons", "title" => _MYCOURSES), $lessonMenuId);
 			 // Get lessons menu modules
-			 $moduleMenus = eF_getModuleMenu($modules, "lessons");
+			 $moduleMenus = sC_getModuleMenu($modules, "lessons");
 			 foreach ($moduleMenus as $moduleMenu) {
 			 $newMenu -> insertMenuOption($moduleMenu, $lessonMenuId);
 			 }
@@ -416,7 +416,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		 //$usersMenu[4] = array("id" => "statistics_user_a", "image" => "reports", "link" => "administrator.php?ctg=statistics&option=user", "title" => _USERSTATISTICS);
 		 }
 		 // Get users menu modules
-		 $moduleMenus = eF_getModuleMenu($modules, "users");
+		 $moduleMenus = sC_getModuleMenu($modules, "users");
 		 foreach ($moduleMenus as $moduleMenu) {
 		 $usersMenu[] = $moduleMenu;
 		 }
@@ -454,7 +454,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			$newMenu -> insertMenuOption(array("id" => "messages_a", "image" => "mail", "link" => $_SESSION['s_type'].".php?ctg=messages", "title" => _MESSAGES), $toolsMenuId);
 		}
 	 // Get tools menu modules
-		$moduleMenus = eF_getModuleMenu($modules, "tools");
+		$moduleMenus = sC_getModuleMenu($modules, "tools");
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $toolsMenuId);
 		}
@@ -476,10 +476,10 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		$constraints = array('archive' => false, 'active' => true, 'condition' => "uc.user_type = 'student'", 'sort' => 'name');
 		$userCourses = $currentUser -> getUserCourses($constraints);
 		$courseLessonsMenu = array();
-		$modules = eF_loadAllModules(true);
+		$modules = sC_loadAllModules(true);
 		$xcourseModule = $modules['module_xcourse'];
 
-		$userActiveLessons = eF_getTableDataFlat("users_to_lessons", "lessons_ID", sprintf("active = 1 AND archive = 0 AND users_LOGIN = '%s'", $currentUser->user['login']));
+		$userActiveLessons = sC_getTableDataFlat("users_to_lessons", "lessons_ID", sprintf("active = 1 AND archive = 0 AND users_LOGIN = '%s'", $currentUser->user['login']));
 
 		foreach ($userCourses as $courseID => $course) {
 			$courseMenu = array(
@@ -582,7 +582,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 			//$newMenu -> insertMenuOption(array("id" => "messages_a", "image" => "mail", "link" => $_SESSION['s_type'].".php?ctg=messages", "title" => _MESSAGES), $toolsMenuId);
 		}
 	 // Get tools menu modules
-		$moduleMenus = eF_getModuleMenu($modules, "tools");
+		$moduleMenus = sC_getModuleMenu($modules, "tools");
 		foreach ($moduleMenus as $moduleMenu) {
 			$newMenu -> insertMenuOption($moduleMenu, $toolsMenuId);
 		}
@@ -622,7 +622,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 	 if (isset($sidebarLinks["links"])) {
 	 foreach ($sidebarLinks["links"] as $mod_link) {
 	 $other_menus["'".$menuTitle."'"][] = array("id" => $module -> className . (($mod_link['id'])? "_".$mod_link['id']:""),
-	 "image" => eF_getRelativeModuleImagePath($mod_link['image']),
+	 "image" => sC_getRelativeModuleImagePath($mod_link['image']),
 	 "link" => $mod_link['link'],
 	 "title" => $mod_link['title'],
 	 "moduleLink" => "1",
@@ -655,7 +655,7 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 		$lesson_name = "";
 	}
 	/*
-	 $modules = eF_loadAllModules(true);
+	 $modules = sC_loadAllModules(true);
 	 if (array_key_exists("module_bbb", array_keys($modules))) {
 
 	 $edScreenMenuId = $newMenu -> createMenu( array("title" => __EDSCREEN_MENU));
@@ -706,14 +706,14 @@ if (isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS[
 	$_SESSION['last_id'] = 0; // Each time the sidebar reloads you need to get the five last minuites
 	/*
 	if ($GLOBALS['configuration']['chat_enabled'] && (!isset($currentUser -> coreAccess['chat']) || $currentUser -> coreAccess['chat'] != 'hidden')) {
-	$rooms = eF_getTableData("chatrooms c LEFT OUTER JOIN users_to_chatrooms uc ON uc.chatrooms_ID = c.id", "c.id, c.name, count(uc.users_LOGIN) as users", "c.active=1 group by id");
+	$rooms = sC_getTableData("chatrooms c LEFT OUTER JOIN users_to_chatrooms uc ON uc.chatrooms_ID = c.id", "c.id, c.name, count(uc.users_LOGIN) as users", "c.active=1 group by id");
 
 	$smarty -> assign("T_CHATROOMS", $rooms);
 	// Set here the default chat - general if no lesson is selected, or the lesson's chat room instead
 	if (isset($_GET['new_lesson_id']) && $_GET['new_lesson_id']) {
 	$smarty -> assign("T_CHATROOMS_ID", $currentLesson -> getChatroom());
 	} else {
-	$current_room = eF_getTableData("users_to_chatrooms uc JOIN chatrooms c ON chatrooms_ID = id", "chatrooms_ID, c.users_LOGIN", "uc.users_LOGIN = '".$currentUser -> user['login']."'");
+	$current_room = sC_getTableData("users_to_chatrooms uc JOIN chatrooms c ON chatrooms_ID = id", "chatrooms_ID, c.users_LOGIN", "uc.users_LOGIN = '".$currentUser -> user['login']."'");
 
 	if (empty($current_room)) {
 	$smarty -> assign("T_CHATROOMS_ID",0);
@@ -755,7 +755,7 @@ if ((isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS
 		//$currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
 		$onlineUsers = MagesterUser :: getUsersOnline($GLOBALS['configuration']['autologout_time'] * 60);
 		if (!$_SESSION['s_login']) {
-			eF_redirect("index.php?message=".rawurlencode(_INACTIVITYLOGOUT));
+			sC_redirect("index.php?message=".rawurlencode(_INACTIVITYLOGOUT));
 		}
 		$size = sizeof($onlineUsers);
 		if ($size) {
@@ -768,7 +768,7 @@ if ((isset($GLOBALS['currentTheme'] -> options['sidebar_interface']) && $GLOBALS
 if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
 	if (!$GLOBALS['configuration']['disable_messages']) {
 		if (($currentUser -> coreAccess['personal_messages']) || $currentUser -> coreAccess['personal_messages'] != 'hidden') {
-			$unreadMessages = $messages = eF_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
+			$unreadMessages = $messages = sC_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
 			$smarty -> assign("T_UNREAD_MESSAGES", $messages[0]['count(*)']);
 			if ($messages[0]['count(*)'] == 1) {
 				$smarty -> assign("T_UNREAD_MESSAGES_TEXT", _YOUHAVE_ONE_UNREADMESSAGE);
@@ -781,7 +781,7 @@ if (!isset($horizontal_inframe_version) || !$horizontal_inframe_version) {
 	} else {
 		$smarty -> assign("T_NO_PERSONAL_MESSAGES", true);
 	}
-	$initwidth = eF_getTableData("configuration", "value", "name = 'sidebar_width'");
+	$initwidth = sC_getTableData("configuration", "value", "name = 'sidebar_width'");
 	if (empty($initwidth)) {
 		$sideframe_width = 175;
 	} else {
@@ -798,11 +798,11 @@ if ($GLOBALS['configuration']['social_modules_activated'] & FB_FUNC_CONNECT) {
 if (unserialize($currentUser -> user['additional_accounts'])) {
 	$accounts = unserialize($currentUser -> user['additional_accounts']);
 	$queryString = "'".implode("','", array_values($accounts))."'";
-	$bar_additional_accounts = eF_getTableData("users", "login, user_type", "login in (".$queryString.")");
+	$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
 	$smarty -> assign("T_BAR_ADDITIONAL_ACCOUNTS", $bar_additional_accounts);
 }
-$smarty -> load_filter('output', 'eF_template_formatTimestamp');
-$smarty -> load_filter('output', 'eF_template_formatLogins');
+$smarty -> load_filter('output', 'sC_template_formatTimestamp');
+$smarty -> load_filter('output', 'sC_template_formatLogins');
 $loadScripts[] = 'MagesterScripts';
 $loadScripts[] = 'print-script';
 $loadScripts[] = 'scriptaculous/prototype';

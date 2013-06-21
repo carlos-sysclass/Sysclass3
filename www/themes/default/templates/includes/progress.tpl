@@ -141,7 +141,7 @@
              </form>
          </fieldset>
      {/capture}
-     {eF_template_printBlock title = "`$smarty.const._PROGRESSFORUSER`: <span class = 'innerTableName'>&quot;#filter:login-`$T_USER_LESSONS_INFO.users_LOGIN`#&quot;</span>" data = $smarty.capture.t_edit_progress_code image = '32x32/users.png' help = 'Users_status'}
+     {sC_template_printBlock title = "`$smarty.const._PROGRESSFORUSER`: <span class = 'innerTableName'>&quot;#filter:login-`$T_USER_LESSONS_INFO.users_LOGIN`#&quot;</span>" data = $smarty.capture.t_edit_progress_code image = '32x32/users.png' help = 'Users_status'}
  {else}
          {capture name = 't_progress_code'}
  {if !$T_SORTED_TABLE || $T_SORTED_TABLE == 'usersTable'}
@@ -185,7 +185,7 @@
 <!--/ajax:usersTable-->
 {/if}
          {/capture}
-         {eF_template_printBlock title = $smarty.const._USERSPROGRESS data = $smarty.capture.t_progress_code image = '32x32/users.png' help = 'Users_status'}
+         {sC_template_printBlock title = $smarty.const._USERSPROGRESS data = $smarty.capture.t_progress_code image = '32x32/users.png' help = 'Users_status'}
  {/if}
  </td></tr>
  {/capture}

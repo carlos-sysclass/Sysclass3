@@ -23,7 +23,7 @@ if(
 	switch ($type) {
 		case "courses" : {
 			if ($_GET['subtype'] == "terms") {
-				$resultData = eF_getTableData("courses","terms","id=".$ID);
+				$resultData = sC_getTableData("courses","terms","id=".$ID);
 				echo $resultData[0]['terms'];
 			}
 			break;

@@ -3,7 +3,7 @@
 * Replaces images paths with correct ones for current theme
 */
 
-function smarty_outputfilter_eF_template_applyThemeToImages($compiled, &$smarty)
+function smarty_outputfilter_sC_template_applyThemeToImages($compiled, &$smarty)
 {
     preg_match_all('/(?<!\/)images(\/.*)?\/((.*)\.\w{3})/U', $compiled, $images);            // /U is necessary here
 //pr($images);exit;

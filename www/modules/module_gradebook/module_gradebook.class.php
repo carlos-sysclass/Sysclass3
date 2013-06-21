@@ -90,7 +90,7 @@ class module_gradebook extends MagesterExtendedModule {
         $smarty->assign("T_GRADEBOOK_RANGES", $ranges);
 
         /* Add new students to GradeBook related tables */
-        $result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
+        $result = sC_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
         $allLogins = array();
 
         foreach ($result as $user) {
@@ -109,7 +109,7 @@ class module_gradebook extends MagesterExtendedModule {
                             "grade" => '-1'
                     );
 
-                    $uid = eF_insertTableData("module_gradebook_users", $userFields);
+                    $uid = sC_insertTableData("module_gradebook_users", $userFields);
 
                     foreach ($lessonColumns as $key => $column) {
 
@@ -122,7 +122,7 @@ class module_gradebook extends MagesterExtendedModule {
                         $type = $column['refers_to_type'];
                         $id = $column['refers_to_id'];
 
-                        eF_insertTableData("module_gradebook_grades", $fieldsGrades);
+                        sC_insertTableData("module_gradebook_grades", $fieldsGrades);
 
                         if ($type != 'real_world') {
                             $this->importGrades($type, $id, $key, $userLogin);
@@ -260,7 +260,7 @@ class module_gradebook extends MagesterExtendedModule {
                     "pass_value"		=> $_POST['pass_value']
                 );
 
-                $fields['id'] = eF_insertTableData("module_gradebook_groups", $fields);
+                $fields['id'] = sC_insertTableData("module_gradebook_groups", $fields);
 
                 $return = array(
                     "message" 		=> "Registrado com sucesso",
@@ -286,7 +286,7 @@ class module_gradebook extends MagesterExtendedModule {
         }
         if (
             in_array($_POST['to'], array('up', 'down')) &&
-            eF_checkParameter($_POST['group_id'], "id")
+            sC_checkParameter($_POST['group_id'], "id")
         ) {
             $groupID = $_POST['group_id'];
 
@@ -323,7 +323,7 @@ class module_gradebook extends MagesterExtendedModule {
             }
             $currentClasseID = is_numeric($_SESSION["grade_classe_ID"]) ? $_SESSION["grade_classe_ID"] : 0;
 
-            eF_deleteTableData(
+            sC_deleteTableData(
                 "module_gradebook_groups_order",
                 sprintf(
                     "lesson_id =%d AND classe_id = %d",
@@ -342,7 +342,7 @@ class module_gradebook extends MagesterExtendedModule {
                     "order_index" => $order_index
                 );
             }
-            eF_insertTableDataMultiple("module_gradebook_groups_order", $insertFields);
+            sC_insertTableDataMultiple("module_gradebook_groups_order", $insertFields);
 
             $return = array(
                 "message" 		=> "Grupo movido com sucesso",
@@ -369,7 +369,7 @@ class module_gradebook extends MagesterExtendedModule {
         ) {
             $group_id = $_POST['group_id'];
 
-            $groupData = eF_getTableData(
+            $groupData = sC_getTableData(
                 "module_gradebook_groups",
                 "*",
                 sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id)
@@ -381,12 +381,12 @@ class module_gradebook extends MagesterExtendedModule {
                     "message_type" 	=> "failure"
                 );
             } else {
-                $updateStatus = eF_updateTableData(
+                $updateStatus = sC_updateTableData(
                     "module_gradebook_objects",
                     array("group_id" => 1),
                     sprintf("lessons_ID = %d AND group_id = %d", $_SESSION["grade_lessons_ID"], $group_id)
                 );
-                $deleteStatus = eF_deleteTableData(
+                $deleteStatus = sC_deleteTableData(
                     "module_gradebook_groups",
                     sprintf("lesson_id = %d AND id = %d", $_SESSION["grade_lessons_ID"], $group_id)
                 );
@@ -452,7 +452,7 @@ class module_gradebook extends MagesterExtendedModule {
 
             foreach ($scormTests as $key => $scormTest) {
 
-                $scorm = eF_getTableData("content", "name", "id=".$scormTest);
+                $scorm = sC_getTableData("content", "name", "id=".$scormTest);
                 $refersTo['scormtest_'.$scormTest] = _SCORM.' '._TEST.': '.$scorm[0]['name'];
             }
         }
@@ -494,7 +494,7 @@ class module_gradebook extends MagesterExtendedModule {
                 $fields['refers_to_id'] = $type[1];
             }
 
-            if (($objectID = eF_insertTableData("module_gradebook_objects", $fields))) {
+            if (($objectID = sC_insertTableData("module_gradebook_objects", $fields))) {
 
                 $smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
 
@@ -506,7 +506,7 @@ class module_gradebook extends MagesterExtendedModule {
                         "users_LOGIN" => $userLogin
                     );
 
-                    if (eF_insertTableData("module_gradebook_grades", $fieldsGrades)) {
+                    if (sC_insertTableData("module_gradebook_grades", $fieldsGrades)) {
                         $smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_COLUMN_SUCCESSFULLY_ADDED);
                     } else {
                         $message = _GRADEBOOK_COLUMN_ADD_PROBLEM;
@@ -545,19 +545,19 @@ class module_gradebook extends MagesterExtendedModule {
 
         if (
             isset($_POST['column_id']) &&
-            eF_checkParameter($_POST['column_id'], 'id') &&
+            sC_checkParameter($_POST['column_id'], 'id') &&
             in_array($_POST['column_id'], array_keys($lessonColumns))
         ) {
             $column_id = $_POST['column_id'];
-            $object = eF_getTableData("module_gradebook_objects", "creator", "id=".$column_id);
+            $object = sC_getTableData("module_gradebook_objects", "creator", "id=".$column_id);
 
             //   if ($object[0]['creator'] != $_SESSION['s_login']) {
-            //    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+            //    sC_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
             //    exit;
             //   }
 
-            eF_deleteTableData("module_gradebook_objects", "id=".$column_id);
-            eF_deleteTableData("module_gradebook_grades", "oid=".$column_id);
+            sC_deleteTableData("module_gradebook_objects", "id=".$column_id);
+            sC_deleteTableData("module_gradebook_grades", "oid=".$column_id);
 
             $return = array(
                 "message" 		=> "Coluna Excluída com sucesso",
@@ -683,13 +683,13 @@ class module_gradebook extends MagesterExtendedModule {
 
         if (
             isset($_POST['column_id']) &&
-            eF_checkParameter($_POST['column_id'], 'id')
+            sC_checkParameter($_POST['column_id'], 'id')
             && in_array($_POST['column_id'], array_keys($lessonColumns))
         ) {
             $lessonUsers = $currentLesson->getUsers('student');
             $column_ID = $_POST['column_id'];
 
-            $result = eF_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$column_ID);
+            $result = sC_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$column_ID);
 
             $type = $result[0]['refers_to_type'];
             $id = $result[0]['refers_to_id'];
@@ -728,13 +728,13 @@ class module_gradebook extends MagesterExtendedModule {
             try {
                 if ($newGrade != '') {
 
-                    if(eF_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
+                    if(sC_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
                         throw new MagesterContentException(_GRADEBOOK_INVALID_GRADE.': "'.$newGrade.'". '._GRADEBOOK_VALID_GRADE_SPECS,
                                 MagesterContentException :: INVALID_SCORE);
                 } else
                     $newGrade = -1;
 
-                eF_updateTableData("module_gradebook_grades", array("grade" => $newGrade), "gid=".$_GET['gid']);
+                sC_updateTableData("module_gradebook_grades", array("grade" => $newGrade), "gid=".$_GET['gid']);
 
                 $response = array(
                     "message" 		=> "Nota alterada com sucesso",
@@ -765,7 +765,7 @@ class module_gradebook extends MagesterExtendedModule {
         if ($currentUser->getType() == 'administrator' || $currentUser->getType() == 'professor') {
             try {
                 if ($newGrade != '') {
-                    if (eF_checkParameter($newGrade, 'uint') === false || $newGrade > 100) {
+                    if (sC_checkParameter($newGrade, 'uint') === false || $newGrade > 100) {
                         throw new MagesterContentException(
                             _GRADEBOOK_INVALID_GRADE . ': "' . $newGrade . '". ' ._GRADEBOOK_VALID_GRADE_SPECS,
                             MagesterContentException :: INVALID_SCORE
@@ -778,7 +778,7 @@ class module_gradebook extends MagesterExtendedModule {
                 $login 	= $_POST['login'];
                 $oid	= $_POST['oid'];
 
-                eF_insertOrupdateTableData(
+                sC_insertOrupdateTableData(
                     "module_gradebook_grades",
                     array(
                         "grade" 		=> $newGrade,
@@ -789,7 +789,7 @@ class module_gradebook extends MagesterExtendedModule {
                 );
 
                 // GET LESSONID BY OID
-                $lessonID = reset(eF_getTableData("module_gradebook_objects", "lessons_ID", sprintf("id = %d", $oid)));
+                $lessonID = reset(sC_getTableData("module_gradebook_objects", "lessons_ID", sprintf("id = %d", $oid)));
 
                 $response = array(
                     "message" 		=> "Nota alterada com sucesso",
@@ -875,7 +875,7 @@ class module_gradebook extends MagesterExtendedModule {
                     $courseLesson['groups'] = $this->getGradebookGroups($courseLesson['id']);
 
                     foreach ($courseLesson['columns'] as $key => $object) {
-                        $result = eF_getTableData(
+                        $result = sC_getTableData(
                             "module_gradebook_grades",
                             "grade",
                             "oid=".$object['id']." and users_LOGIN='".$userLogin."'"
@@ -900,7 +900,7 @@ class module_gradebook extends MagesterExtendedModule {
             }
         }
         $selectedUserClasses = array();
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "courses c, classes cl, users_to_courses uc",
             "cl.name as name",
             "c.id=cl.courses_ID and uc.classe_id = cl.id AND uc.archive=0 and uc.users_LOGIN like '" . $userLogin . "'"
@@ -972,7 +972,7 @@ class module_gradebook extends MagesterExtendedModule {
          */
         if (
             isset($_GET['lesson_id']) &&
-            eF_checkParameter($_GET['lesson_id'], 'id')
+            sC_checkParameter($_GET['lesson_id'], 'id')
         ) {
             $_SESSION["grade_lessons_ID"] = $_GET['lesson_id'];
         }
@@ -980,7 +980,7 @@ class module_gradebook extends MagesterExtendedModule {
         if (
 
             isset($_GET['classe_id']) &&
-            eF_checkParameter($_GET['classe_id'], 'id')/* &&
+            sC_checkParameter($_GET['classe_id'], 'id')/* &&
             in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */
         ) {
             $_SESSION["grade_classes_ID"] = $_GET['classe_id'];
@@ -990,7 +990,7 @@ class module_gradebook extends MagesterExtendedModule {
 
         if (
             isset($_GET['course_id']) &&
-            eF_checkParameter($_GET['course_id'], 'id')/* &&
+            sC_checkParameter($_GET['course_id'], 'id')/* &&
             in_array($_GET['classe_id'], array_keys($gradeBookClasses)) */
         ) {
             $_SESSION["grade_courses_ID"] = $_GET['course_id'];
@@ -999,9 +999,9 @@ class module_gradebook extends MagesterExtendedModule {
         }
 
         if (!empty($_GET['from'])) {
-            eF_redirect("location:".$this->moduleBaseUrl . "&action=" . $_GET['from']);
+            sC_redirect("location:".$this->moduleBaseUrl . "&action=" . $_GET['from']);
         } else {
-            eF_redirect("location:".$this->moduleBaseUrl);
+            sC_redirect("location:".$this->moduleBaseUrl);
         }
         exit;
     }
@@ -1109,18 +1109,18 @@ class module_gradebook extends MagesterExtendedModule {
 
         if (
             isset($_GET['import_grades']) &&
-            eF_checkParameter($_GET['import_grades'], 'id')
+            sC_checkParameter($_GET['import_grades'], 'id')
             && in_array($_GET['import_grades'], array_keys($lessonColumns))
         ) {
             /*
-            $object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['import_grades']);
+            $object = sC_getTableData("module_gradebook_objects", "creator", "id=".$_GET['import_grades']);
 
             //   if ($object[0]['creator'] != $_SESSION['s_login']) {
-            //    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+            //    sC_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
             //    exit;
             //   }
 
-            $result = eF_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$_GET['import_grades']);
+            $result = sC_getTableData("module_gradebook_objects", "refers_to_type, refers_to_id", "id=".$_GET['import_grades']);
             $type = $result[0]['refers_to_type'];
             $id = $result[0]['refers_to_id'];
             $oid = $_GET['import_grades'];
@@ -1132,18 +1132,18 @@ class module_gradebook extends MagesterExtendedModule {
              */
         } elseif (
             isset($_GET['delete_column']) &&
-            eF_checkParameter($_GET['delete_column'], 'id')
+            sC_checkParameter($_GET['delete_column'], 'id')
             && in_array($_GET['delete_column'], array_keys($lessonColumns))
         ) {
-            $object = eF_getTableData("module_gradebook_objects", "creator", "id=".$_GET['delete_column']);
+            $object = sC_getTableData("module_gradebook_objects", "creator", "id=".$_GET['delete_column']);
 
             //   if ($object[0]['creator'] != $_SESSION['s_login']) {
-            //    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
+            //    sC_redirect($this->moduleBaseUrl."&message=".urlencode(_GRADEBOOK_NOACCESS));
             //    exit;
             //   }
 
-            //eF_deleteTableData("module_gradebook_objects", "id=".$_GET['delete_column']);
-            //eF_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
+            //sC_deleteTableData("module_gradebook_objects", "id=".$_GET['delete_column']);
+            //sC_deleteTableData("module_gradebook_grades", "oid=".$_GET['delete_column']);
         } elseif (isset($_GET['compute_score_grade']) && $_GET['compute_score_grade'] == '1') {
 
             foreach ($allUsers as $uid => $student) {
@@ -1170,7 +1170,7 @@ class module_gradebook extends MagesterExtendedModule {
 
                     $subLesson = new MagesterLesson($key);
                     $subLessonUsers = $subLesson->getUsers('student'); // get all students that have this lesson
-                    $result = eF_getTableData("module_gradebook_users", "count(uid) as total_users", "lessons_ID=".$key);
+                    $result = sC_getTableData("module_gradebook_users", "count(uid) as total_users", "lessons_ID=".$key);
 
                     if ($result[0]['total_users'] != 0) { // module installed for this lesson
 
@@ -1205,7 +1205,7 @@ class module_gradebook extends MagesterExtendedModule {
                 foreach ($studentLessons as $key => $value) {
 
                     // Is GradeBook installed for this lesson ?
-                    $installed = eF_getTableData(
+                    $installed = sC_getTableData(
                         "module_gradebook_users",
                         "*",
                         "lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'"
@@ -1225,12 +1225,12 @@ class module_gradebook extends MagesterExtendedModule {
 
         if (
             isset($_GET['delete_range']) &&
-            eF_checkParameter($_GET['delete_range'], 'id') &&
+            sC_checkParameter($_GET['delete_range'], 'id') &&
             in_array($_GET['delete_range'], array_keys($ranges))
         ) {
 
             try {
-                eF_deleteTableData("module_gradebook_ranges", "id=".$_GET['delete_range']);
+                sC_deleteTableData("module_gradebook_ranges", "id=".$_GET['delete_range']);
             } catch (Exception $e) {
                 handleAjaxExceptions($e);
             }
@@ -1238,7 +1238,7 @@ class module_gradebook extends MagesterExtendedModule {
             exit;
         } elseif (
             isset($_GET['add_range']) ||
-            (isset($_GET['edit_range']) && eF_checkParameter($_GET['edit_range'], 'id') && in_array($_GET['edit_range'], array_keys($ranges)))
+            (isset($_GET['edit_range']) && sC_checkParameter($_GET['edit_range'], 'id') && in_array($_GET['edit_range'], array_keys($ranges)))
         ) {
 
             $grades = array();
@@ -1250,7 +1250,7 @@ class module_gradebook extends MagesterExtendedModule {
             isset($_GET['add_range']) ? $postTarget = "&add_range=1" : $postTarget = "&edit_range=".$_GET['edit_range'];
 
             $form = new HTML_QuickForm("add_range_form", "post", $this->moduleBaseUrl.$postTarget, "", null, true);
-            $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); // XXX
+            $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); // XXX
             $form->addElement('select', 'range_from', _GRADEBOOK_RANGE_FROM, $grades);
             $form->addElement('select', 'range_to', _GRADEBOOK_RANGE_TO, $grades);
             $form->addElement('text', 'grade', _GRADEBOOK_GRADE, 'class = "inputText"');
@@ -1325,14 +1325,14 @@ class module_gradebook extends MagesterExtendedModule {
 
                     if (isset($_GET['add_range'])) {
 
-                        if (eF_insertTableData("module_gradebook_ranges", $fields)) {
+                        if (sC_insertTableData("module_gradebook_ranges", $fields)) {
                             $smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_RANGE_SUCCESSFULLY_ADDED);
                         } else {
                             $message = _GRADEBOOK_RANGE_ADD_PROBLEM;
                             $message_type = 'failure';
                         }
                     } else {
-                        if (eF_updateTableData("module_gradebook_ranges", $fields, "id=".$_GET['edit_range'])) {
+                        if (sC_updateTableData("module_gradebook_ranges", $fields, "id=".$_GET['edit_range'])) {
                             $smarty->assign("T_GRADEBOOK_MESSAGE", _GRADEBOOK_RANGE_SUCCESSFULLY_EDITED);
                         } else {
                             $message = _GRADEBOOK_RANGE_EDIT_PROBLEM;
@@ -1350,11 +1350,11 @@ class module_gradebook extends MagesterExtendedModule {
             isset($_GET['edit_publish']) &&
             isset($_GET['uid']) &&
             isset($_GET['publish']) &&
-            eF_checkParameter($_GET['uid'], 'id') &&
+            sC_checkParameter($_GET['uid'], 'id') &&
             in_array($_GET['uid'], array_keys($allUsers))
         ) {
             try {
-                eF_updateTableData("module_gradebook_users", array("publish" => $_GET['publish']), "uid=".$_GET['uid']);
+                sC_updateTableData("module_gradebook_users", array("publish" => $_GET['publish']), "uid=".$_GET['uid']);
             } catch (Exception $e) {
                 handleAjaxExceptions($e);
             }
@@ -1363,20 +1363,20 @@ class module_gradebook extends MagesterExtendedModule {
         } elseif (
             isset($_GET['change_grade']) &&
             isset($_GET['grade']) &&
-            eF_checkParameter($_GET['change_grade'], 'id')
+            sC_checkParameter($_GET['change_grade'], 'id')
         ) {
             /*
             $newGrade = $_GET['grade'];
             try {
                 if ($newGrade != '') {
 
-                    if(eF_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
+                    if(sC_checkParameter($newGrade, 'uint') === false || $newGrade > 100)
                         throw new MagesterContentException(_GRADEBOOK_INVALID_GRADE.': "'.$newGrade.'". '._GRADEBOOK_VALID_GRADE_SPECS,
                                 MagesterContentException :: INVALID_SCORE);
                 } else
                     $newGrade = -1;
 
-                eF_updateTableData("module_gradebook_grades", array("grade" => $newGrade), "gid=".$_GET['change_grade']);
+                sC_updateTableData("module_gradebook_grades", array("grade" => $newGrade), "gid=".$_GET['change_grade']);
             } catch (Exception $e) {
                 header("HTTP/1.0 500");
                 echo rawurlencode($e->getMessage());
@@ -1390,7 +1390,7 @@ class module_gradebook extends MagesterExtendedModule {
             if ($currentUser->getRole($this->getCurrentLesson()) == 'professor' || $currentUser->getRole($this->getCurrentLesson()) == 'administrator') {
 
                 /* Add new students to GradeBook related tables */
-                $result = eF_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
+                $result = sC_getTableData("module_gradebook_users", "users_LOGIN", "lessons_ID=".$currentLessonID);
                 $allLogins = array();
 
                 foreach ($result as $user) {
@@ -1412,7 +1412,7 @@ class module_gradebook extends MagesterExtendedModule {
                                 "grade" => '-1'
                             );
 
-                            $uid = eF_insertTableData("module_gradebook_users", $userFields);
+                            $uid = sC_insertTableData("module_gradebook_users", $userFields);
 
                             foreach ($lessonColumns as $key => $column) {
 
@@ -1425,7 +1425,7 @@ class module_gradebook extends MagesterExtendedModule {
                                 $type = $column['refers_to_type'];
                                 $id = $column['refers_to_id'];
 
-                                eF_insertTableData("module_gradebook_grades", $fieldsGrades);
+                                sC_insertTableData("module_gradebook_grades", $fieldsGrades);
 
                                 if ($type != 'real_world') {
                                     $this->importGrades($type, $id, $key, $userLogin);
@@ -1478,7 +1478,7 @@ class module_gradebook extends MagesterExtendedModule {
                 foreach ($studentLessons as $key => $value) {
 
                     // Is GradeBook installed for this lesson ?
-                    $installed = eF_getTableData("module_gradebook_users", "*", "lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'");
+                    $installed = sC_getTableData("module_gradebook_users", "*", "lessons_ID=".$key." and users_LOGIN='".$currentUser->user['login']."'");
                     if (sizeof($installed) != 0) {
 
                         $lesson = new MagesterLesson($key);
@@ -1613,14 +1613,14 @@ class module_gradebook extends MagesterExtendedModule {
     }
     public function onDeleteUser($login)
     {
-        eF_deleteTableData("module_gradebook_users", "users_LOGIN='".$login."'");
-        eF_deleteTableData("module_gradebook_grades", "users_LOGIN='".$login."'");
+        sC_deleteTableData("module_gradebook_users", "users_LOGIN='".$login."'");
+        sC_deleteTableData("module_gradebook_grades", "users_LOGIN='".$login."'");
     }
     public function onInstall()
     {
         /*
-        eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
-        $t1 = eF_executeNew(
+        sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
+        $t1 = sC_executeNew(
             "CREATE TABLE IF NOT EXISTS `module_gradebook_ranges` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `range_from` int(3) NOT NULL,
@@ -1629,8 +1629,8 @@ class module_gradebook extends MagesterExtendedModule {
             PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-        eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_objects`");
-        $t2 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_objects` (
+        sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_objects`");
+        $t2 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_objects` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
                 `weight` int(2) NOT NULL,
@@ -1641,8 +1641,8 @@ class module_gradebook extends MagesterExtendedModule {
                 PRIMARY KEY (`id`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-        eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_grades`");
-        $t3 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_grades` (
+        sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_grades`");
+        $t3 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_grades` (
                 `gid` int(11) NOT NULL AUTO_INCREMENT,
                 `oid` int(11) NOT NULL,
                 `grade` int(3) NOT NULL,
@@ -1650,8 +1650,8 @@ class module_gradebook extends MagesterExtendedModule {
                 PRIMARY KEY (`gid`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-        eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_users`");
-        $t4 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_users` (
+        sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_users`");
+        $t4 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_gradebook_users` (
                 `uid` int(11) NOT NULL AUTO_INCREMENT,
                 `users_LOGIN` varchar(255) NOT NULL,
                 `lessons_ID` int(11) NOT NULL,
@@ -1667,10 +1667,10 @@ class module_gradebook extends MagesterExtendedModule {
     }
     public function onUninstall()
     {
-        $t1 = eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
-        $t2 = eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_objects`");
-        $t3 = eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_grades`");
-        $t4 = eF_executeNew("DROP TABLE IF EXISTS `module_gradebook_users`");
+        $t1 = sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_ranges`");
+        $t2 = sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_objects`");
+        $t3 = sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_grades`");
+        $t4 = sC_executeNew("DROP TABLE IF EXISTS `module_gradebook_users`");
 
         return($t1 && $t2 && $t3 && $t4);
     }
@@ -1746,7 +1746,7 @@ class module_gradebook extends MagesterExtendedModule {
 
     private function getRanges()
     {
-        $result = eF_getTableData("module_gradebook_ranges", "*", "", "range_from");
+        $result = sC_getTableData("module_gradebook_ranges", "*", "", "range_from");
         $ranges = array();
 
         foreach ($result as $value) {
@@ -1766,16 +1766,16 @@ class module_gradebook extends MagesterExtendedModule {
      */
     private function getLessonColumns($lessonID, $groupID = null) {
         if (is_null($groupID)) {
-            $result = eF_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID, "id");
+            $result = sC_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID, "id");
         } else {
-            $result = eF_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID." AND group_id = ".$groupID, "id");
+            $result = sC_getTableData("module_gradebook_objects", "*", "lessons_ID=".$lessonID." AND group_id = ".$groupID, "id");
         }
         $columns = array();
 
         foreach ($result as $value) {
             if (($value['content_name'] = $this->getColumnContent($value)) == false) {
                 // REMOVE COLUMN
-                ef_deleteTableData("module_gradebook_objects", "id = " . $value['id']);
+                sC_deleteTableData("module_gradebook_objects", "id = " . $value['id']);
             } else {
                 $columns[$value['id']] = $value;
             }
@@ -1830,7 +1830,7 @@ class module_gradebook extends MagesterExtendedModule {
             "uid"
         );
          */
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             sprintf("users u LEFT OUTER JOIN module_gradebook_users gbu ON (gbu.users_LOGIN = u.login AND gbu.lessons_ID = %d)", $lessonID),
             "gbu.uid, u.id, u.login as users_LOGIN, gbu.lessons_ID, gbu.score, gbu.grade, gbu.publish, u.active",
             implode(" AND ", $where),
@@ -1852,7 +1852,7 @@ class module_gradebook extends MagesterExtendedModule {
         $objectIds = implode(", ", $objectIds);
         if (strlen($objectIds)>0) {
 
-            $result_ = eF_getTableData(
+            $result_ = sC_getTableData(
                 "module_gradebook_grades",
                 "users_LOGIN, oid, gid, grade",
                 "oid IN ($objectIds) and users_LOGIN IN ($userNames)",
@@ -1905,7 +1905,7 @@ class module_gradebook extends MagesterExtendedModule {
                 /*
             foreach ($objects as $object) {
 
-                $result_ = eF_getTableData(
+                $result_ = sC_getTableData(
                     "module_gradebook_grades",
                     "gid, grade",
                     "oid = ".$object['id']." and users_LOGIN='".$value['users_LOGIN']."'"
@@ -1951,7 +1951,7 @@ class module_gradebook extends MagesterExtendedModule {
         $objectIds = implode(", ", $objectIds);
 
         if (strlen($objectIds)>0) {
-            $result_ = eF_getTableData(
+            $result_ = sC_getTableData(
                 "module_gradebook_grades",
                 "DISTINCT users_LOGIN, oid, grade",
                 "oid IN ($objectIds) and users_LOGIN IN ($lessonUsersLogins)"
@@ -1976,7 +1976,7 @@ class module_gradebook extends MagesterExtendedModule {
                     'publish'		=> 0
                 );
 
-                //$uid = eF_insertTableData("module_gradebook_users", $userFields);
+                //$uid = sC_insertTableData("module_gradebook_users", $userFields);
 
                 foreach ($objects as $key => $column) {
                     $fieldsGrades = array(
@@ -1988,7 +1988,7 @@ class module_gradebook extends MagesterExtendedModule {
                     // $type = $column['refers_to_type'];
                     // $id = $column['refers_to_id'];
 
-                    eF_insertTableData("module_gradebook_grades", $fieldsGrades);
+                    sC_insertTableData("module_gradebook_grades", $fieldsGrades);
 
                     //if($type != 'real_world')
                     //	$this->importGrades($type, $id, $key, $userLogin);
@@ -2004,7 +2004,7 @@ class module_gradebook extends MagesterExtendedModule {
 
     private function getNumberOfColumns($lessonID)
     {
-        $result = eF_getTableData("module_gradebook_objects", "count(id) as total_columns", "lessons_ID=".$lessonID);
+        $result = sC_getTableData("module_gradebook_objects", "count(id) as total_columns", "lessons_ID=".$lessonID);
         return $result[0]['total_columns'];
     }
     /*
@@ -2017,7 +2017,7 @@ class module_gradebook extends MagesterExtendedModule {
 
     $lesson = new MagesterLesson($key);
     $lessonUsers = $lesson->getUsers('student'); // get all students that have this lesson
-    $result = eF_getTableData("module_gradebook_users", "count(uid) as total_users", "lessons_ID=".$key);
+    $result = sC_getTableData("module_gradebook_users", "count(uid) as total_users", "lessons_ID=".$key);
 
     if($result[0]['total_users'] != 0) // module installed for this lesson
     $lessons[$key] = array("id" => $key, "name" => $lesson->lesson['name']);
@@ -2050,7 +2050,7 @@ class module_gradebook extends MagesterExtendedModule {
             "ord.order_index, grp.id"
         );
          */
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "module_gradebook_groups grp
             LEFT OUTER JOIN module_gradebook_groups_order ord ON (
                 grp.id = ord.group_id AND
@@ -2092,7 +2092,7 @@ class module_gradebook extends MagesterExtendedModule {
 
         $courses = MagesterCourse::getCourses(false);
 
-        $result = eF_getTableData(
+        $result = sC_getTableData(
             "lessons l LEFT OUTER JOIN module_gradebook_users a ON (a.lessons_ID = l.id)",
             "DISTINCT l.id as id, l.name, count(a.uid) as total_users,
             ( Select b.courses_ID from lessons_to_courses b Where b.lessons_ID = l.id LIMIT 1) as course_ID",
@@ -2120,13 +2120,13 @@ class module_gradebook extends MagesterExtendedModule {
     private function getStudentGrades($currentUser, $currentLessonID, $lessonColumns) {
         $grades = array();
         $i = 0;
-        $user = eF_getTableData("module_gradebook_users", "*", "lessons_ID=".$currentLessonID." and users_LOGIN='".$currentUser->user['login']."'");
+        $user = sC_getTableData("module_gradebook_users", "*", "lessons_ID=".$currentLessonID." and users_LOGIN='".$currentUser->user['login']."'");
 
         if ($user[0]['publish'] == 1) {
 
             foreach ($lessonColumns as $key => $column) {
 
-                $grade = eF_getTableData("module_gradebook_grades", "grade", "oid = ".$column['id']." and users_LOGIN='".$currentUser->user['login']."'");
+                $grade = sC_getTableData("module_gradebook_grades", "grade", "oid = ".$column['id']." and users_LOGIN='".$currentUser->user['login']."'");
 
                 if ($grade[0]['grade'] == -1) {
                     $grade[0]['grade'] = '-';
@@ -2283,7 +2283,7 @@ class module_gradebook extends MagesterExtendedModule {
             // XXX archive = 0 (means the last ?)
             $where = "users_LOGIN='".$userLogin."' and tests_ID=".$id." and (status='completed' or status='passed' or status='failed') ";
             $where .= "and archive=0";
-            $result = eF_getTableData("completed_tests", "score", $where);
+            $result = sC_getTableData("completed_tests", "score", $where);
 
             if (sizeof($result) != 0) {
                 $grade = round($result[0]['score']);
@@ -2294,7 +2294,7 @@ class module_gradebook extends MagesterExtendedModule {
         } elseif ($type == 'scormtest') {
 
             // XXX lesson_status field ?
-            $result = eF_getTableData("scorm_data", "score", "users_LOGIN='".$userLogin."' and content_ID=".$id);
+            $result = sC_getTableData("scorm_data", "score", "users_LOGIN='".$userLogin."' and content_ID=".$id);
 
             if (sizeof($result) != 0) {
 
@@ -2309,7 +2309,7 @@ class module_gradebook extends MagesterExtendedModule {
         } elseif ($type == 'project') {
 
             // XXX field status means ?
-            $result = eF_getTableData("users_to_projects", "grade", "users_LOGIN='".$userLogin."' and projects_ID=".$id);
+            $result = sC_getTableData("users_to_projects", "grade", "users_LOGIN='".$userLogin."' and projects_ID=".$id);
 
             if (sizeof($result) != 0) {
 
@@ -2328,7 +2328,7 @@ class module_gradebook extends MagesterExtendedModule {
             $grade = round($progress[$id]->lesson['overall_progress']['percentage']);
         }
 
-        eF_insertOrupdateTableData(
+        sC_insertOrupdateTableData(
             "module_gradebook_grades",
             array(
                 "oid" => $oid,
@@ -2347,7 +2347,7 @@ class module_gradebook extends MagesterExtendedModule {
         ///var_dump($lessonColumns);
 
         foreach ($lessonColumns as $key => $object) {
-            $result = eF_getTableData(
+            $result = sC_getTableData(
                 "module_gradebook_grades",
                 "grade",
                 "oid=".$object['id']." and users_LOGIN='".$userLogin."'"
@@ -2382,7 +2382,7 @@ class module_gradebook extends MagesterExtendedModule {
             $overallGrade = '-1';
         }
 
-        //eF_updateTableData("module_gradebook_users", array("score" => $overallScore, "grade" => $overallGrade), sprintf("users_LOGIN = '%s' AND lessons_ID = %d", $userLogin, $lessonID));
+        //sC_updateTableData("module_gradebook_users", array("score" => $overallScore, "grade" => $overallGrade), sprintf("users_LOGIN = '%s' AND lessons_ID = %d", $userLogin, $lessonID));
 
         return $overallScore;
 
@@ -2411,7 +2411,7 @@ class module_gradebook extends MagesterExtendedModule {
 
         $lessonColumns = array();
 
-        $allLessonUsers = eF_getTableData("users", "*", "login IN ('" . implode("', '", $allLessonLogins) . "')");
+        $allLessonUsers = sC_getTableData("users", "*", "login IN ('" . implode("', '", $allLessonLogins) . "')");
 
         foreach ($allLessonUsers as $user) {
             $login = $user['login'];

@@ -77,8 +77,8 @@ class themes extends MagesterEntity
     public function __construct($param)
     {
         //Special handling in case we are instantiating with string (name) instead of id
-        if (!eF_checkParameter($param, 'id') && eF_checkParameter($param, 'alnum_general')) {
-         $result = eF_getTableData("themes", "id", "name='".$param."'");
+        if (!sC_checkParameter($param, 'id') && sC_checkParameter($param, 'alnum_general')) {
+         $result = sC_getTableData("themes", "id", "name='".$param."'");
          if (sizeof($result) == 0) {
              throw new MagesterEntityException(_ENTITYNOTFOUND.': '.htmlspecialchars($param), MagesterEntityException :: ENTITY_NOT_EXIST);
          }
@@ -232,7 +232,7 @@ class themes extends MagesterEntity
     {
         $directory = new MagesterDirectory(G_THEMESPATH.$this -> {$this -> entity}['path']);
         $directory -> delete();
-        eF_deleteTableData($this -> entity, "id=".$this -> {$this -> entity}['id']);
+        sC_deleteTableData($this -> entity, "id=".$this -> {$this -> entity}['id']);
     }
     /**
 
@@ -253,9 +253,9 @@ class themes extends MagesterEntity
         }
         $fields = self :: validateFields($fields);
         if ($mode == 'layout') {
-            eF_updateTableData($this -> entity, array('layout' => $fields['layout']), "id=".$this -> {$this -> entity}['id']);
+            sC_updateTableData($this -> entity, array('layout' => $fields['layout']), "id=".$this -> {$this -> entity}['id']);
         } else {
-            eF_updateTableData($this -> entity, $fields, "id=".$this -> {$this -> entity}['id']);
+            sC_updateTableData($this -> entity, $fields, "id=".$this -> {$this -> entity}['id']);
         }
     }
     /**
@@ -287,7 +287,7 @@ class themes extends MagesterEntity
     public static function validateFields($fields)
     {
         //Check validity of parameters
-        if (!isset($fields['name']) || !eF_checkParameter($fields['name'], 'alnum_general')) {
+        if (!isset($fields['name']) || !sC_checkParameter($fields['name'], 'alnum_general')) {
             throw new Exception(_INVALIDNAME, MagesterEntityException :: INVALID_PARAMETER);
         }
         if (!isset($fields['options'])) {
@@ -358,9 +358,9 @@ class themes extends MagesterEntity
             $fields['options']['favicon'] = $fields['path'].'images/favicon.png';
         }
         $fields = self :: validateFields($fields);
-        $result = eF_getTableDataFlat("themes", "name");
+        $result = sC_getTableDataFlat("themes", "name");
         if (!in_array($fields['name'], $result['name'])) {
-            $id = eF_insertTableData("themes", $fields);
+            $id = sC_insertTableData("themes", $fields);
         } else {
    $id = array_search($fields['name'], $result['name']);
   }

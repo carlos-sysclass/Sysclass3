@@ -4,7 +4,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if (isset($currentUser -> coreAccess['progress']) && $currentUser -> coreAccess['progress'] == 'hidden') {
-    eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");exit;
+    sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");exit;
 }
 
 if ($_student_) {
@@ -13,7 +13,7 @@ if ($_student_) {
  $smarty -> assign("T_STUDENT_ROLE", true);
 }
 
-if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login')) {
+if (isset($_GET['edit_user']) && sC_checkParameter($_GET['edit_user'], 'login')) {
  $editedUser = MagesterUserFactory :: factory($_GET['edit_user']);
  $load_editor = true;
     //$lessonUser  = MagesterUserFactory :: factory($_GET['edit_user']);
@@ -38,7 +38,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
     $smarty -> assign("T_TREE_NAMES", array_combine($ids, $names));
 
     $form = new HTML_QuickForm("edit_user_complete_lesson_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=progress&edit_user='.$editedUser -> user['login'], "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
     $form -> addElement('advcheckbox', 'completed', _COMPLETED, null, 'class = "inputCheckbox"'); //Whether the user has completed the lesson
     $form -> addElement('text', 'score', _SCORE, 'class = "inputText"'); //The user lesson score
@@ -46,7 +46,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
     $form -> addRule('score', _RATEMUSTBEBETWEEN0100, 'callback', create_function('$a', 'return ($a >= 0 && $a <= 100);')); //The score must be between 0 and 100
     $form -> addElement('textarea', 'comments', _COMMENTS, 'class = "inputContentTextarea simpleEditor" style = "width:100%;height:5em;"'); //Comments on student's performance
 
-    //$user_data  = eF_getTableData("users_to_lessons", "*", "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_SESSION['s_lessons_ID']);
+    //$user_data  = sC_getTableData("users_to_lessons", "*", "users_LOGIN='".$editedUser -> user['login']."' and lessons_ID=".$_SESSION['s_lessons_ID']);
 //    $userStats  = MagesterStats::getUsersLessonStatus($currentLesson, $editedUser -> user['login']);
 //    pr($userStats);
     $userStats = $editedUser -> getUserStatusInLessons($currentLesson);
@@ -66,12 +66,12 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
                 $lessonUser = MagesterUserFactory :: factory($editedUser -> user['login'], false, 'student');
                 $lessonUser -> completeLesson($currentLesson -> lesson['id'], $form -> exportValue('score'), $form -> exportValue('comments'));
             } else {
-                eF_updateTableData("users_to_lessons", array('completed' => 0, 'score' => 0, 'to_timestamp' => null), "users_LOGIN = '".$editedUser -> user['login']."' and lessons_ID=".$currentLesson -> lesson['id']);
+                sC_updateTableData("users_to_lessons", array('completed' => 0, 'score' => 0, 'to_timestamp' => null), "users_LOGIN = '".$editedUser -> user['login']."' and lessons_ID=".$currentLesson -> lesson['id']);
 //		        $cacheKey = "user_lesson_status:lesson:".$currentLesson -> lesson['id']."user:".$editedUser -> user['login'];
 //		        Cache::resetCache($cacheKey);
             }
 
-            eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=progress&message='.urlencode(_STUDENTSTATUSCHANGED).'&message_type=success');
+            sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=progress&message='.urlencode(_STUDENTSTATUSCHANGED).'&message_type=success');
         }
     }
 
@@ -91,7 +91,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
         }
     }
 
-    $testNames = eF_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID and c.lessons_ID=".$currentLesson -> lesson['id']);
+    $testNames = sC_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID and c.lessons_ID=".$currentLesson -> lesson['id']);
     $testNames = array_combine($testNames['id'], $testNames['name']);
 
 
@@ -163,7 +163,7 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
 
 		$users = $users[$currentLesson -> lesson['id']];
 
-		$result 	= eF_getTableDataFlat("user_types", "id", "basic_user_type='student'");
+		$result 	= sC_getTableDataFlat("user_types", "id", "basic_user_type='student'");
 
 		$studentTypes	= $result["id"];
 
@@ -183,11 +183,11 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
 
 
 
-		isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+		isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
 
 
-		if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+		if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
 
 			$sort = $_GET['sort'];
 
@@ -199,19 +199,19 @@ if (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login'))
 
 		}
 
-		$users = eF_multiSort($users, $sort, $order);
+		$users = sC_multiSort($users, $sort, $order);
 
 		$smarty -> assign("T_USERS_SIZE", sizeof($users));
 
 		if (isset($_GET['filter'])) {
 
-			$users = eF_filterData($users, $_GET['filter']);
+			$users = sC_filterData($users, $_GET['filter']);
 
 		}
 
-		if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
+		if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
 
-			isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+			isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
 
 			$users = array_slice($users, $offset, $limit);
 

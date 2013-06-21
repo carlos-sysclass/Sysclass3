@@ -9,9 +9,9 @@
 	    	<span class="spanleft">Descrição:</span>
 	        <span class="spanright">
 	        	{if $smarty.get.output == 'dialog'}
-	        		{$T_XPAY_CIELO_TRANS.descricao|eF_truncate:50}
+	        		{$T_XPAY_CIELO_TRANS.descricao|sC_truncate:50}
 	        	{else}
-	        		{$T_XPAY_CIELO_TRANS.descricao|eF_truncate:100}
+	        		{$T_XPAY_CIELO_TRANS.descricao|sC_truncate:100}
 	        	{/if}
 	        </span>
 	    </div>
@@ -57,7 +57,7 @@
 	</div>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XPAY_CIELO_RETURN
 	data			= $smarty.capture.t_xpay_cielo_return
 }

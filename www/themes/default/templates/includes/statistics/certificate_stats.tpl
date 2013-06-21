@@ -44,7 +44,7 @@
         </table>
 
   {/capture}
-  {eF_template_printBlock title = "`$smarty.const._WANTUSERSCERTIFICATEDCOURSE` <span class=\"innerTableName\"> &quot;`$T_COURSE_NAME`&quot;</span> [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
+  {sC_template_printBlock title = "`$smarty.const._WANTUSERSCERTIFICATEDCOURSE` <span class=\"innerTableName\"> &quot;`$T_COURSE_NAME`&quot;</span> [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
  {elseif $smarty.get.query == "course_certificated_all"}
   {capture name = 'course_certificated_all'}
   <table class = "sortedTable" sortBy = "0" width="100%">
@@ -92,7 +92,7 @@
                     {/foreach}
         </table>
   {/capture}
-  {eF_template_printBlock title = "`$smarty.const._WANTUSERSCERTIFICATEDALLCOURSES` [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated_all image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
+  {sC_template_printBlock title = "`$smarty.const._WANTUSERSCERTIFICATEDALLCOURSES` [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated_all image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
  {elseif $smarty.get.query == "course_certificated_expire"}
   {capture name = 'course_certificated_expire'}
   <table class = "sortedTable" sortBy = "0" width="100%">
@@ -125,7 +125,7 @@
                     {/foreach}
         </table>
   {/capture}
-  {eF_template_printBlock title = "`$smarty.const._WANTCERTIFICATESEXPIRED` [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated_expire image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
+  {sC_template_printBlock title = "`$smarty.const._WANTCERTIFICATESEXPIRED` [#filter:timestamp-`$T_FROM_DATE`# - #filter:timestamp-`$T_TO_DATE`#]" data = $smarty.capture.course_certificated_expire image = '32x32/certificate.png' options=$T_COURSE_CERTIFICATED_OPTIONS}
 
  {elseif $smarty.get.query == "search_certificate_key"}
   {capture name = 'search_certificate_key'}
@@ -159,7 +159,7 @@
                     {/foreach}
         </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._SEARCHCERTIFICATESBYKEY data = $smarty.capture.search_certificate_key image = '32x32/certificate.png'}
+  {sC_template_printBlock title = $smarty.const._SEARCHCERTIFICATESBYKEY data = $smarty.capture.search_certificate_key image = '32x32/certificate.png'}
 
 
 
@@ -186,8 +186,8 @@
     </td>
     </tr><tr>
     <td>
-    {$smarty.const._FROM}</td><td> {eF_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
-    {$smarty.const._TO} {eF_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._FROM}</td><td> {sC_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._TO} {sC_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
     </td>
     </tr><tr>
     <td></td><td>
@@ -207,8 +207,8 @@
     </td><td></td>
     </tr><tr>
     <td>
-    {$smarty.const._FROM}</td><td> {eF_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
-    {$smarty.const._TO} {eF_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._FROM}</td><td> {sC_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._TO} {sC_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-4" end_year="+0" field_order = $T_DATE_FORMATGENERAL}
     </td>
     </tr><tr>
     <td>
@@ -229,8 +229,8 @@
     </td><td></td>
     </tr><tr>
     <td>
-    {$smarty.const._FROM}</td><td> {eF_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP_EXPIRE start_year="+0" end_year="+4" field_order = $T_DATE_FORMATGENERAL}
-    {$smarty.const._TO} {eF_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP_EXPIRE start_year="+0" end_year="+4" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._FROM}</td><td> {sC_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP_EXPIRE start_year="+0" end_year="+4" field_order = $T_DATE_FORMATGENERAL}
+    {$smarty.const._TO} {sC_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP_EXPIRE start_year="+0" end_year="+4" field_order = $T_DATE_FORMATGENERAL}
     </td>
     </tr><tr>
     <td>
@@ -268,6 +268,6 @@
 
    </table>
    {/capture}
-   {eF_template_printBlock title = $smarty.const._CERTIFICATESTATISTICS data = $smarty.capture.certificate_statistics image = '32x32/certificate.png' help = 'Reports'}
+   {sC_template_printBlock title = $smarty.const._CERTIFICATESTATISTICS data = $smarty.capture.certificate_statistics image = '32x32/certificate.png' help = 'Reports'}
 
  {/if}

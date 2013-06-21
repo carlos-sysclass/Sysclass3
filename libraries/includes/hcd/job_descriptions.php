@@ -15,7 +15,7 @@ try {
     if ($currentUser -> getType() != "administrator" && !($currentEmployee -> getType() == _SUPERVISOR && ((isset($_GET['add_job_description']) || (isset($currentJob) && in_array($currentJob -> job['branch_ID'], $currentEmployee -> supervisesBranches)) || (!isset($currentJob) && !isset($_GET['add_job_description'])))))) {
         $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
         $message_type = 'failure';
-        eF_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=".$message."&message_type=".$message_type);
+        sC_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=".$message."&message_type=".$message_type);
         exit;
     }
     if (isset($_GET['postAjaxRequest'])) {
@@ -27,7 +27,7 @@ try {
                     $currentJob -> removeSkill($_GET['add_skillID'], $_GET['apply_to_all_jd']);
                 } elseif (isset($_GET['addAll'] )) {
                     $skills = $currentJob -> getSkills();
-                    isset($_GET['filter']) ? $skills = eF_filterData($skills,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $skills = sC_filterData($skills,$_GET['filter']) : null;
                     foreach ($skills as $skill) {
                         if ($skill['job_description_ID'] == "") {
                             $currentJob -> assignSkill($skill['skill_ID'], $_GET['apply_to_all_jd']);
@@ -35,7 +35,7 @@ try {
                     }
                 } elseif (isset($_GET['removeAll'] )) {
                     $skills = $currentJob -> getSkills();
-                    isset($_GET['filter']) ? $skills = eF_filterData($skills,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $skills = sC_filterData($skills,$_GET['filter']) : null;
                     foreach ($skills as $skill) {
                         if ($skill['job_description_ID'] != "") {
                             $currentJob -> removeSkill($skill['skill_ID'], $_GET['apply_to_all_jd']);
@@ -50,13 +50,13 @@ try {
                 } elseif (isset($_GET['addAll'] )) {
                  $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.lessons_ID is null') + createConstraintsFromSortedTable();
                     $lessons = $currentJob -> getJobLessonsIncludingUnassigned($constraints);
-                    isset($_GET['filter']) ? $lessons = eF_filterData($lessons,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $lessons = sC_filterData($lessons,$_GET['filter']) : null;
 
                     $currentJob -> associateLessonsToJob($lessons, $_GET['apply_to_all_jd']);
                 } elseif (isset($_GET['removeAll'] )) {
                  $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
                     $lessons = $currentJob -> getJobLessons($constraints);
-                    isset($_GET['filter']) ? $lessons = eF_filterData($lessons,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $lessons = sC_filterData($lessons,$_GET['filter']) : null;
                     $currentJob -> removeLessonsFromJob($lessons, $_GET['apply_to_all_jd']);
                 }
             } elseif (isset($_GET['course'])) {
@@ -67,13 +67,13 @@ try {
                 } elseif (isset($_GET['addAll'] )) {
                  $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null') + createConstraintsFromSortedTable();
                     $courses = $currentJob -> getJobCoursesIncludingUnassigned($constraints);
-                    isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $courses = sC_filterData($courses,$_GET['filter']) : null;
                     $currentJob -> associateCoursesToJob($courses, $_GET['apply_to_all_jd']);
 
                 } elseif (isset($_GET['removeAll'] )) {
                  $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
                     $courses = $currentJob -> getJobCourses($constraints);
-                    isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
+                    isset($_GET['filter']) ? $courses = sC_filterData($courses,$_GET['filter']) : null;
                     $currentJob -> removeCoursesFromJob($courses, $_GET['apply_to_all_jd']);
                 }
             } elseif (isset($_GET['training'])) {
@@ -109,7 +109,7 @@ try {
         //TODO: well, export vacancies...
         /*
 
-        if ($ok = eF_insertTableData("module_hcd_vacancies", array("job_description_ID" => $_GET['export_vacancies_for_job_description'], "available_placements" => $_GET['available_placements']))) {
+        if ($ok = sC_insertTableData("module_hcd_vacancies", array("job_description_ID" => $_GET['export_vacancies_for_job_description'], "available_placements" => $_GET['available_placements']))) {
 
             $message      = _JOBDESCRIPTIONDELETED;
 
@@ -123,7 +123,7 @@ try {
 
         }
 
-        eF_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=".$message."&message_type=".$message_type);
+        sC_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=".$message."&message_type=".$message_type);
 
          */
     /*****************************************************
@@ -137,7 +137,7 @@ try {
         } else {
             $form = new HTML_QuickForm("job_description_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&edit_job_description=" . $_GET['edit_job_description'] , "", null, true);
         }
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
         $form -> addElement('text', 'job_description_name', _JOBDESCRIPTION, 'class = "inputText"');
         $form -> addElement('textarea', 'job_role_description', _JOBANALYTICALDESCRIPTION, 'class = "inputText"');
         $form -> addRule('job_description_name', _THEFIELD.' '._JOBDESCRIPTION.' '._ISMANDATORY, 'required', null, 'client');
@@ -149,7 +149,7 @@ try {
             if (isset($_GET['edit_job_description'])) {
                 $only_existing = 3;
             }
-            $form -> addElement('select', 'branch' , _BRANCHNAME, eF_createBranchesTreeSelect($branches, 3) , 'class = "inputText"  id="branch" onchange="javascript:change_branch(\'branch\',\'details_link\')"');
+            $form -> addElement('select', 'branch' , _BRANCHNAME, sC_createBranchesTreeSelect($branches, 3) , 'class = "inputText"  id="branch" onchange="javascript:change_branch(\'branch\',\'details_link\')"');
         } else {
             $message = _NOBRANCHESHAVEBEENREGISTERED;
             $message_type = 'failure';
@@ -158,7 +158,7 @@ try {
             } else {
                 unset($_GET['add_job_description']);
             }
-            eF_redirect($_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=". $message . "&message_type=failure");
+            sC_redirect($_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&message=". $message . "&message_type=failure");
             exit;
         }
         /* Get job description data */
@@ -184,9 +184,9 @@ try {
             try {
                 switch ($_GET['applytoallusers']) {
                  case 'course':
-                  $result = eF_getTableDataFlat("module_hcd_course_to_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
+                  $result = sC_getTableDataFlat("module_hcd_course_to_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
                   $jobcourses = $result['courses_ID'];
-                  $resultUsers = eF_getTableDataFlat("module_hcd_employee_has_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
+                  $resultUsers = sC_getTableDataFlat("module_hcd_employee_has_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
                   $jobusers = $resultUsers['users_login'];
                   foreach ($jobcourses as $value) {
                    $course = new MagesterCourse($value);
@@ -194,9 +194,9 @@ try {
                   }
                   break;
                  case 'lesson':
-                  $result = eF_getTableDataFlat("module_hcd_lesson_to_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
+                  $result = sC_getTableDataFlat("module_hcd_lesson_to_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
                   $joblessons = $result['lessons_ID'];
-                  $resultUsers = eF_getTableDataFlat("module_hcd_employee_has_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
+                  $resultUsers = sC_getTableDataFlat("module_hcd_employee_has_job_description", "*", "job_description_ID=".$_GET['edit_job_description']);
                   $jobusers = $resultUsers['users_login'];
                   foreach ($joblessons as $value) {
                    $lesson = new MagesterLesson($value);
@@ -233,7 +233,7 @@ try {
                    if ($_GET['ajax'] == 'coursesTable') {
                     $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => false);
                    }
-                   if ($_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+                   if ($_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
                     $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => $_GET['instancesTable_source']);
                    }
                    $courses = $currentJob -> getJobCoursesIncludingUnassigned($constraints);
@@ -253,15 +253,15 @@ try {
 
                         if (isset($_GET['sort'])) {
                             isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                            $skills = eF_multiSort($skills, $_GET['sort'], $order);
+                            $skills = sC_multiSort($skills, $_GET['sort'], $order);
                         }
                         if (isset($_GET['filter'])) {
-                            $skills = eF_filterData($skills, $_GET['filter']);
+                            $skills = sC_filterData($skills, $_GET['filter']);
                         }
 
                         $smarty -> assign("T_SKILLS_SIZE", sizeof($skills));
-                        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                             $skills = array_slice($skills, $offset, $limit);
                         }
                         $smarty -> assign("T_SKILLS", $skills);
@@ -391,7 +391,7 @@ try {
                     $message_type = 'success';
                 }
                 /* Instead of going back to the branches go the previous link */
-                eF_redirect("".basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=" . $message_type . "&tab=jobs");
+                sC_redirect("".basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=" . $message_type . "&tab=jobs");
                 exit;
 
             }
@@ -407,7 +407,7 @@ try {
 
       $job_descriptions = MagesterJob :: getAllJobs();
       foreach ($job_descriptions as $key => $value) {
-       $job_descriptions[$key]['branch_path'] = eF_truncatePath($branchPaths[$value['branch_ID']], 10);
+       $job_descriptions[$key]['branch_path'] = sC_truncatePath($branchPaths[$value['branch_ID']], 10);
       }
          $dataSource = $job_descriptions;
    $tableName = $_GET['ajax'];
@@ -417,6 +417,6 @@ try {
 } catch (MagesterJobException $e) {
     $message = $e -> getMessage().' ('.$e -> getCode().')';
     $message_type = 'failure';
-    eF_redirect("".basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=" . $message_type . "&tab=jobs");
+    sC_redirect("".basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=" . $message_type . "&tab=jobs");
     exit;
 }

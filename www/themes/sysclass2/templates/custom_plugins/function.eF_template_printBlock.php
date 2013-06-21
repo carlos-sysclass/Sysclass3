@@ -6,7 +6,7 @@
 *
 
 */
-function smarty_function_eF_template_printBlock($params, &$smarty)
+function smarty_function_sC_template_printBlock($params, &$smarty)
 {
 if (empty($params['id'])) {
 	$params['id'] = $params['title'];
@@ -95,7 +95,7 @@ if ($params['id'] == "") {
     }
 
     //$optionsString .= "<a href = 'http://docs.magester.net' target = '_new'><img src = 'images/16x16/help.png' title = '"._HELP."' alt = '"._HELP."' /></a>";
-    //$optionsString .= "<a href = 'javascript:void(0)' onclick = 'eF_js_showDivPopup(\"search\", 0, \"cse\")'><img src = 'images/16x16/help.png' title = '"._HELP."' alt = '"._HELP."' /></a>";
+    //$optionsString .= "<a href = 'javascript:void(0)' onclick = 'sC_js_showDivPopup(\"search\", 0, \"cse\")'><img src = 'images/16x16/help.png' title = '"._HELP."' alt = '"._HELP."' /></a>";
     /**
 
      * The "links" parameter is used to create an icon table, that is a block content that consists of rows of icons

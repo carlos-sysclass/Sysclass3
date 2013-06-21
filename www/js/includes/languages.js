@@ -25,6 +25,6 @@ function deleteLanguage(el, language) {
 function onDeleteLanguage(el, response) {
 	//new Effect.Fade(el.up().up());
 	try {
-		eF_js_changePage(0, 0);
+		sC_js_changePage(0, 0);
 	} catch (e) {alert(e);}
 }

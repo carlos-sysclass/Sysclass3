@@ -22,7 +22,7 @@
                             </table>
                         </form>
                     {/capture}
-                    {eF_template_printBlock title = $smarty.const._FORMATCERTIFICATE data = $smarty.capture.t_certificate_code image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png' absoluteImagePath=1  main_options = $T_TABLE_OPTIONS}
+                    {sC_template_printBlock title = $smarty.const._FORMATCERTIFICATE data = $smarty.capture.t_certificate_code image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png' absoluteImagePath=1  main_options = $T_TABLE_OPTIONS}
     {else}
         {if $smarty.get.edit_user}
             {capture name = 't_course_user_progress'}
@@ -66,7 +66,7 @@
                 </form>
             </fieldset>
             {/capture}
-            {eF_template_printBlock title = "`$T_USER_PROGRESS.name` `$T_USER_PROGRESS.surname`&#039s `$smarty.const._PROGRESS`" data = $smarty.capture.t_course_user_progress image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/users.png' absoluteImagePath=1}
+            {sC_template_printBlock title = "`$T_USER_PROGRESS.name` `$T_USER_PROGRESS.surname`&#039s `$smarty.const._PROGRESS`" data = $smarty.capture.t_course_user_progress image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/users.png' absoluteImagePath=1}
         {else}
             {capture name = 't_lesson_certificates_code'}
                                 <table>
@@ -96,7 +96,7 @@
                                     </tr>
                         {foreach name = 'users_progress_list' item = 'item' key = 'login' from = $T_USERS_PROGRESS}
                                     <tr class = "defaultRowHeight {cycle values = "oddRowColor, evenRowColor"} {if !$item.active}deactivatedTableElement{/if}">
-                                        <td>{$item.login} ({$item.surname} {$item.name|eF_truncate:1:""}.)</td>
+                                        <td>{$item.login} ({$item.surname} {$item.name|sC_truncate:1:""}.)</td>
                                         <td style = "text-align:center">
                                             {$item.conditions_passed}/{$item.total_conditions}
                                         </td>
@@ -138,7 +138,7 @@
                             </table>
 <!--/ajax:usersTable-->
             {/capture}
-            {eF_template_printBlock title = "&quot;`$T_CERTIFICATES_CURRENTLESSON->lesson.name`&quot; `$smarty.const._CERTIFICATES`" data = $smarty.capture.t_lesson_certificates_code absoluteImagePath=1 image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png'  main_options = $T_TABLE_OPTIONS}
+            {sC_template_printBlock title = "&quot;`$T_CERTIFICATES_CURRENTLESSON->lesson.name`&quot; `$smarty.const._CERTIFICATES`" data = $smarty.capture.t_lesson_certificates_code absoluteImagePath=1 image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png'  main_options = $T_TABLE_OPTIONS}
         {/if}
     {/if}
 {else}
@@ -157,5 +157,5 @@
             </tr>
         </table>
     {/capture}
-            {eF_template_printBlock title = "&quot;`$T_CERTIFICATES_CURRENTLESSON->lesson.name`&quot; `$smarty.const._CERTIFICATES`" data = $smarty.capture.t_userlesson_certificate absoluteImagePath=1 image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png'  main_options = $T_TABLE_OPTIONS}
+            {sC_template_printBlock title = "&quot;`$T_CERTIFICATES_CURRENTLESSON->lesson.name`&quot; `$smarty.const._CERTIFICATES`" data = $smarty.capture.t_userlesson_certificate absoluteImagePath=1 image = $T_CERTIFICATES_MODULE_BASELINK|cat:'images/certificate32.png'  main_options = $T_TABLE_OPTIONS}
 {/if}

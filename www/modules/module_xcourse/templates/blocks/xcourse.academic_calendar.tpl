@@ -17,9 +17,9 @@
 
 							<a href="{$T_XCOURSE_BASEURL}student.php?ctg=module&op=module_xcourse&action=load_academic_calendar_lesson&course_id={$course_id}&lesson_id={$lesson_id}&popup=1" 
 							   target="POPUP_FRAME"
-							   onclick="eF_js_showDivPopup('{$lessons_times.name}', 2)"
+							   onclick="sC_js_showDivPopup('{$lessons_times.name}', 2)"
 							>
-								{$lessons_times.name|eF_truncate:70}
+								{$lessons_times.name|sC_truncate:70}
 							</a>
 
 							
@@ -44,7 +44,7 @@
 		{capture name=$course_calendar_capture}
 			{foreach key="lesson_id" item="lessons_times" from=$course_academic.series}
 					<tr>
-						<td>{$lessons_times.name|eF_truncate:70}</td>
+						<td>{$lessons_times.name|sC_truncate:70}</td>
 						<td align="center">{if $lessons_times.start}#filter:date-{$lessons_times.start}#{else}N/A{/if}</td>
 						<td align="center">{if $lessons_times.end}#filter:date-{$lessons_times.end}#{else}N/A{/if}</td>
 					</tr>
@@ -70,10 +70,10 @@
 					<li>
 						{if $course_academic.lessons}
 							<!-- 
-							<div style="text-align: center">{$course_academic.course.name|eF_truncate:80}</div>
+							<div style="text-align: center">{$course_academic.course.name|sC_truncate:80}</div>
 							 -->
 						{elseif $course_academic.series}
-							<div style="text-align: center">{$course_academic.lesson.name|eF_truncate:80}</div>
+							<div style="text-align: center">{$course_academic.lesson.name|sC_truncate:80}</div>
 						{/if}
 					</li>
 					<li style="border-bottom: none;">

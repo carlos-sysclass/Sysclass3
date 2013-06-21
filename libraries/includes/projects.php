@@ -27,21 +27,21 @@ if (!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess[
 }
 
 if ($GLOBALS['configuration']['disable_projects'] == 1) {
-    eF_redirect("".basename($_SERVER['PHP_SELF']));
+    sC_redirect("".basename($_SERVER['PHP_SELF']));
 }
 
 if (!$currentLesson) {
-    eF_redirect("".basename($_SERVER['PHP_SELF']));
+    sC_redirect("".basename($_SERVER['PHP_SELF']));
 }
 if ($_hidden_) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 try {
     $_professor_ ? $projects = $currentLesson -> getProjects(true) : $projects = $currentLesson -> getProjects(true, $currentUser -> user['login']);
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 
@@ -78,10 +78,10 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         $zipFileName = $currentUser -> user['directory'].'/projects/'.MagesterFile :: encode($currentProject -> project['title']).'.zip';
         $zipFile = $projectDirectory -> compress($zipFileName, false, true);
         $projectDirectory -> delete();
-        eF_redirect("view_file.php?file=".urlencode($zipFile['path'])."&action=download");
+        sC_redirect("view_file.php?file=".urlencode($zipFile['path'])."&action=download");
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = _FILESCOULDNOTBEDOWNLOADED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = _FILESCOULDNOTBEDOWNLOADED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 } elseif ((isset($_GET['add_project']) || (isset($_GET['edit_project']) && in_array($_GET['edit_project'], array_keys($projects)))) && $_professor_) {
@@ -120,7 +120,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         $loadScripts[] = 'ASCIIMathML';
     }
     $form = new HTML_QuickForm("create_project_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=projects".(isset($_GET['add_project']) ? '&add_project=1' : '&edit_project='.$_GET['edit_project']), "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
     $form -> addElement('text', 'title', _PROJECTTITLE, 'class = "inputText"');
     $form -> addRule('title', _THEFIELD.' "'._TITLE.'" '._ISMANDATORY, 'required', null, 'client');
     $form -> addRule('title', _INVALIDFIELDDATA, 'checkParameter', 'text');
@@ -161,7 +161,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
 
                         $message = _PROJECTCREATEDSUCCESSFULLY;
                         $message_type = 'success';
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&edit_project=".$newProject -> project['id']."&tab=project_users&message=$message&message_type=$message_type");
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&edit_project=".$newProject -> project['id']."&tab=project_users&message=$message&message_type=$message_type");
                     } else {
                         $currentProject -> project['title'] = $values['title'];
                         $currentProject -> project['data'] = $values['data'];
@@ -171,7 +171,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
 
                         MagesterEvent::triggerEvent(array("type" => MagesterEvent::PROJECT_EXPIRY, "timestamp" => $deadline, "lessons_ID" => $currentLesson -> lesson['id'], "lessons_name" => $currentLesson -> lesson['name'], "entity_ID" => $_GET['edit_project'], "entity_name" => $values['title']));
                         $message = _PROJECTUPDATEDSUCCESSFULLY;
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&message=".urlencode($message)."&message_type=success");
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&message=".urlencode($message)."&message_type=success");
                     }
                 } catch (Exception $e) {
                  handleNormalFlowExceptions($e);
@@ -202,21 +202,21 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 unset($users[$key]);
             }
         }
-        isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-        if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
             $sort = $_GET['sort'];
             isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
         } else {
             $sort = 'login';
         }
-        $users = eF_multiSort($users, $sort, $order);
+        $users = sC_multiSort($users, $sort, $order);
         $smarty -> assign("T_USERS_SIZE", sizeof($users));
         if (isset($_GET['filter'])) {
-            $users = eF_filterData($users, $_GET['filter']);
+            $users = sC_filterData($users, $_GET['filter']);
         }
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $users = array_slice($users, $offset, $limit);
         }
 
@@ -230,17 +230,17 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         try {
             $users = $currentLesson -> getUsers('student');
             $projectUsers = $currentProject -> getUsers();
-            if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+            if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
                 if (in_array($_GET['login'], array_keys($projectUsers))) { //The user has the project, so remove him
                     $currentProject -> removeUsers($_GET['login']);
                 } elseif (in_array($_GET['login'], array_keys($users))) { //The user doesn't have the project, so add him
                     $currentProject -> addUsers($_GET['login']);
                 }
             } elseif (isset($_GET['addAll'])) {
-                isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $users = sC_filterData($users, $_GET['filter']) : null;
                 $currentProject -> addUsers(array_keys($users));
             } elseif (isset($_GET['removeAll'])) {
-                isset($_GET['filter']) ? $projectUsers = eF_filterData($projectUsers, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $projectUsers = sC_filterData($projectUsers, $_GET['filter']) : null;
                 $currentProject -> removeUsers(array_keys($projectUsers));
             }
         } catch (Exception $e) {
@@ -283,7 +283,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         include 'file_manager.php';
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 } elseif (isset($_GET['project_results']) && in_array($_GET['project_results'], array_keys($projects)) && $_professor_) {
@@ -300,9 +300,9 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
   if ($form -> isSubmitted() && $form -> validate()) { //If the form is submitted and validated
    $values = $form -> exportValues();
 
-   $result = eF_updateTableData("users_to_projects",array('comments' => $values['comments']), "projects_ID=".$_GET['project_results']." and users_LOGIN='".$_GET['login']."'");
+   $result = sC_updateTableData("users_to_projects",array('comments' => $values['comments']), "projects_ID=".$_GET['project_results']." and users_LOGIN='".$_GET['login']."'");
    if ($result) {
-    //eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=projects&project_results=".$_GET['project_results']."&message=".urlencode(_OPERATIONCOMPLETEDSUCCESFULLY)."&message_type=success");
+    //sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=projects&project_results=".$_GET['project_results']."&message=".urlencode(_OPERATIONCOMPLETEDSUCCESFULLY)."&message_type=success");
     $message = _OPERATIONCOMPLETEDSUCCESSFULLY;
              $message_type = 'success';
    }
@@ -315,7 +315,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
 
     if (isset($_GET['ajax']) && $_GET['ajax'] == 'resultsTable') {
         $users = $currentProject -> getUsers();
-        //$files          = eF_getTableDataFlat("files", "id,original_name");
+        //$files          = sC_getTableDataFlat("files", "id,original_name");
         sizeof($files) > 0 ? $files = array_combine($files['id'], $files['original_name']) : $files = array();
         foreach ($users as $key => $user) {
             if ($user['filename']) {
@@ -330,21 +330,21 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
             }
         }
 
-        isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-        if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
             $sort = $_GET['sort'];
             isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
         } else {
             $sort = 'login';
         }
-        $users = eF_multiSort($users, $sort, $order);
+        $users = sC_multiSort($users, $sort, $order);
         $smarty -> assign("T_USERS_SIZE", sizeof($users));
         if (isset($_GET['filter'])) {
-            $users = eF_filterData($users, $_GET['filter']);
+            $users = sC_filterData($users, $_GET['filter']);
         }
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $users = array_slice($users, $offset, $limit);
         }
 
@@ -357,9 +357,9 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
     if (isset($_GET['postAjaxRequest'])) {
         try {
             $projectUsers = $currentProject -> getUsers();
-   if (isset($_GET['reset_user']) && eF_checkParameter($_GET['reset_user'], 'login')) {
+   if (isset($_GET['reset_user']) && sC_checkParameter($_GET['reset_user'], 'login')) {
     $currentProject -> reset($_GET['reset_user']);
-            } elseif (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login') && in_array($_GET['login'], array_keys($projectUsers))) {
+            } elseif (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login') && in_array($_GET['login'], array_keys($projectUsers))) {
                 $currentProject -> grade($_GET['login'], $_GET['grade']);
             }
         } catch (Exception $e) {
@@ -387,12 +387,12 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 $smarty -> assign("T_PROJECT_FILE", $projectFile);
                 if (isset($_GET['delete_file']) && !$currentProject -> expired) {
                     $projectFile -> delete();
-                    eF_updateTableData("users_to_projects", array('filename' => '', 'upload_timestamp' => ''), "users_LOGIN='".$currentUser -> user['login']."' AND projects_ID=".$_GET['view_project']);
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&view_project=".$_GET['view_project']."&message=".urlencode(_FILEDELETEDSUCCESSFULLY)."&message_type=success");
+                    sC_updateTableData("users_to_projects", array('filename' => '', 'upload_timestamp' => ''), "users_LOGIN='".$currentUser -> user['login']."' AND projects_ID=".$_GET['view_project']);
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&view_project=".$_GET['view_project']."&message=".urlencode(_FILEDELETEDSUCCESSFULLY)."&message_type=success");
                 }
             } catch (MagesterFileException $e) {
                 $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = 'failure';
             }
         }
@@ -419,7 +419,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 $uploadedFile -> rename($uploadedFile['directory'].'/project_'.$currentProject -> project['id'].'.'.$uploadedFile['extension']);
                 $fields_update = array("filename" => $uploadedFile['id'],
                                            "upload_timestamp" => time());
-                eF_updateTableData("users_to_projects", $fields_update, "users_LOGIN='".$currentUser -> user['login']."' AND projects_ID=".$_GET['view_project']);
+                sC_updateTableData("users_to_projects", $fields_update, "users_LOGIN='".$currentUser -> user['login']."' AND projects_ID=".$_GET['view_project']);
 
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::PROJECT_SUBMISSION,
                    "users_LOGIN" => $currentUser -> user['login'],
@@ -428,10 +428,10 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                    "entity_ID" => $currentProject -> project['id'],
                    "entity_name" => $currentProject -> project['title']));
 
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&view_project=".$_GET['view_project']."&message=".urlencode(_FILEUPLOADED)."&message_type=success");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=projects&view_project=".$_GET['view_project']."&message=".urlencode(_FILEUPLOADED)."&message_type=success");
             } catch (MagesterFileException $e) {
                 $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = 'failure';
             }
         } elseif ($currentProject -> expired) {
@@ -451,7 +451,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
 
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 } else {

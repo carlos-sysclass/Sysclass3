@@ -2052,7 +2052,7 @@ function toggleDisplay(id, type)
   /**
    * Set a user preference.
    *
-   * @param  pref_id    preference identifier (0-200)
+   * @param  prsC_id    preference identifier (0-200)
    * @param  value      preferece's value
    * @param  uid        the user id (defaults to current session user)
    * @error
@@ -2062,9 +2062,9 @@ function toggleDisplay(id, type)
    *    API_EC_DATA_UNKNOWN_ERROR
    *    API_EC_PERMISSION_OTHER_USER
    */
-  public function &data_setUserPreference($pref_id, $value, $uid = null) {
+  public function &data_setUserPreference($prsC_id, $value, $uid = null) {
     return $this->call_method('facebook.data.setUserPreference',
-       array('pref_id' => $pref_id,
+       array('prsC_id' => $prsC_id,
              'value' => $value,
              'uid' => $this->get_uid($uid)));
   }
@@ -2095,7 +2095,7 @@ function toggleDisplay(id, type)
   /**
    * Get a user preference.
    *
-   * @param  pref_id    preference identifier (0-200)
+   * @param  prsC_id    preference identifier (0-200)
    * @param  uid        the user id (defaults to current session user)
    * @return            preference's value
    * @error
@@ -2105,9 +2105,9 @@ function toggleDisplay(id, type)
    *    API_EC_DATA_UNKNOWN_ERROR
    *    API_EC_PERMISSION_OTHER_USER
    */
-  public function &data_getUserPreference($pref_id, $uid = null) {
+  public function &data_getUserPreference($prsC_id, $uid = null) {
     return $this->call_method('facebook.data.getUserPreference',
-       array('pref_id' => $pref_id,
+       array('prsC_id' => $prsC_id,
              'uid' => $this->get_uid($uid)));
   }
 
@@ -3453,7 +3453,7 @@ class FacebookAPIErrorCodes
   const FQL_EC_EXTENDED_PERMISSION = 612;
   const FQL_EC_RATE_LIMIT_EXCEEDED = 613;
 
-  const API_EC_REF_SET_FAILED = 700;
+  const API_EC_RsC_SET_FAILED = 700;
 
   /**
    * DATA STORE API ERRORS

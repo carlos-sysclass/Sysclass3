@@ -10,7 +10,7 @@
 {include file = "includes/header.tpl"}          {*The inclusion is put here instead of the beginning in order to speed up reloading, in case of success*}
 
 {if $T_MESSAGE}
-        {eF_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}    
+        {sC_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}    
 {/if}
 
 

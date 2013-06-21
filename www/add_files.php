@@ -18,7 +18,7 @@ $path = "../libraries/";
 include_once $path."configuration.php";
 //error_reporting(E_ALL);
 //print_r($_POST);print_r($_GET);
-eF_printHeader();
+sC_printHeader();
 try {
     $currentUser = MagesterUser :: checkUserAccess();
 } catch (Exception $e) {
@@ -26,11 +26,11 @@ try {
     exit;
 }
 if (!isset($_SESSION['s_lessons_ID']) && $_SESSION['s_type'] == "professor") { //Check if a lesson is selected if user is a professor
-    eF_printMessage(_LESSONNOTSET);
+    sC_printMessage(_LESSONNOTSET);
     exit;
 }
-$allowed_extensions = eF_getTableData("configuration", "value", "name='allowed_extensions'"); //Get allowed and disallowed extensions, for the files that can be uploaded
-$disallowed_extensions = eF_getTableData("configuration", "value", "name='disallowed_extensions'");
+$allowed_extensions = sC_getTableData("configuration", "value", "name='allowed_extensions'"); //Get allowed and disallowed extensions, for the files that can be uploaded
+$disallowed_extensions = sC_getTableData("configuration", "value", "name='disallowed_extensions'");
 if (sizeof($allowed_extensions) == 0 || $allowed_extensions[0]['value'] == '') {
     unset ($allowed_extensions);
 }
@@ -38,11 +38,11 @@ if (sizeof($disallowed_extensions) == 0 || $disallowed_extensions[0]['value'] ==
     unset ($disallowed_extensions);
 }
 
-if (isset($_GET['filename']) && !eF_checkParameter($_GET['filename'], 'directory')) { //filename is a file or folder that was asked to be deleted. Check if it is properly formatted and if not, alert the administrator
-    eF_printMessage(_YOUCANNOTDELETETHISFILE);
+if (isset($_GET['filename']) && !sC_checkParameter($_GET['filename'], 'directory')) { //filename is a file or folder that was asked to be deleted. Check if it is properly formatted and if not, alert the administrator
+    sC_printMessage(_YOUCANNOTDELETETHISFILE);
 
     $alert_message = _TRIEDTODELETE.': '.$_GET['filename'];
-    //eF_alertAdmin($_SESSION['s_login'], time(), $alert_message);
+    //sC_alertAdmin($_SESSION['s_login'], time(), $alert_message);
 
     exit;
 }
@@ -53,11 +53,11 @@ if (!isset($_GET['dir']) && $_SESSION['s_type'] == "professor") {
     $dir = '/';
 } else {
     $dir = urldecode($_GET['dir']);
-    if (!eF_checkParameter($_GET['dir'], 'directory')) {
-        eF_printMessage(_YOUCANNOTACCESSTHISFOLDER);
+    if (!sC_checkParameter($_GET['dir'], 'directory')) {
+        sC_printMessage(_YOUCANNOTACCESSTHISFOLDER);
 
         $alert_message = _TRIEDTOACCESS.': '.$_GET['dir'];
-        //eF_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4);
+        //sC_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4);
         exit;
     }
 }
@@ -71,7 +71,7 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
         $smarty->assign("T_DELETE_MESSAGE_TYPE", 'failure');
     }
 } elseif (isset($_GET['op']) && $_GET['op'] == "deletefolder") {
-    if (eF_deleteFolder(G_LESSONSPATH.$_GET['filename'].'/')) {
+    if (sC_deleteFolder(G_LESSONSPATH.$_GET['filename'].'/')) {
         $smarty->assign("T_DELETEFOLDER_MESSAGE", _SUCCESFULLYDELETEDFOLDERWINDOWCLOSE5SECONDS);
         $smarty->assign("T_DELETEFOLDER_MESSAGE_TYPE", 'success');
     } else {
@@ -80,8 +80,8 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
     }
 } elseif (isset($_GET['op']) && $_GET['op'] == "createfolder") {
     if (isset($_POST['submit'])) {
-        if (!eF_checkParameter($_POST['foldername'], 'filename')) {
-            eF_printMessage(_INVALIDNAME);
+        if (!sC_checkParameter($_POST['foldername'], 'filename')) {
+            sC_printMessage(_INVALIDNAME);
             exit;
         }
         $foldername = $_POST['foldername'];
@@ -89,10 +89,10 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
 
         $pos = mb_strpos(mb_strtolower(str_replace('\\', '/', realpath(G_LESSONSPATH.dirname($dir_to_create)))), mb_strtolower(G_LESSONSPATH.$_SESSION['s_lessons_ID']));
         if ($pos === false) {
-            eF_printMessage(_YOUCANNOTCREATETHISFOLDER);
+            sC_printMessage(_YOUCANNOTCREATETHISFOLDER);
 
             $alert_message = _TRIEDTOCREATEFOLDER.': '.$dir_to_create;
-            //eF_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4);
+            //sC_alertAdmin($_SESSION['s_login'], time(), $alert_message, 4);
 
             exit;
         }
@@ -127,8 +127,8 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
     isset($image_files) ? $size = sizeof($image_files) : $size = 10;
 
     if (isset($_POST['submit'])) {
-        if (!eF_checkParameter($_POST['to_dir'], 'directory')) {
-            eF_printMessage(_INVALIDNAME);
+        if (!sC_checkParameter($_POST['to_dir'], 'directory')) {
+            sC_printMessage(_INVALIDNAME);
             exit;
         }
         if ($_SESSION['s_type'] == "professor") {
@@ -136,7 +136,7 @@ if (isset($_GET['op']) && $_GET['op'] == "delete") { //Delete file
         } elseif ($_SESSION['s_type'] == "administrator") {
             $target_dir = G_ADMINPATH.$_POST['to_dir'];
         }
-        list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads('fileupload', $target_dir);
+        list($ok, $upload_messages, $upload_messages_type, $filename) = sC_handleUploads('fileupload', $target_dir);
 
         $smarty->assign("T_UPLOAD_MESSAGES", $upload_messages);
         $smarty->assign("T_UPLOAD_MESSAGES_TYPE", $upload_messages_type);

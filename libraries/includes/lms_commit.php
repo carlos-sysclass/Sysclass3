@@ -40,7 +40,7 @@ try {
   unset($fields['score_scaled']);
   unset($fields['progress_measure']);
   unset($fields['finish']);
-  $result = eF_getTableData("scorm_data", "total_time,id", "content_ID=".$fields['content_ID']." AND users_LOGIN='".$fields['users_LOGIN']."'");
+  $result = sC_getTableData("scorm_data", "total_time,id", "content_ID=".$fields['content_ID']." AND users_LOGIN='".$fields['users_LOGIN']."'");
  }
  if (sizeof($result) > 0) { //This means that the students re-enters the unit
   if (isset($fields['total_time'])&&isset($fields['session_time']) && $fields['total_time'] && $fields['session_time']) { //Make sure that time is properly converted, for example 35+35 minutes become 1 hour 10 minutes, instead if 70 minutes
@@ -58,9 +58,9 @@ try {
   }
   unset($fields['session_time']);
   if ($_GET['scorm_version'] == '2004') {
-   eF_updateTableData("scorm_data_2004", $fields, "id=".$result[0]['id']); //Update old values with new ones
+   sC_updateTableData("scorm_data_2004", $fields, "id=".$result[0]['id']); //Update old values with new ones
   } else {
-   eF_updateTableData("scorm_data", $fields, "id=".$result[0]['id']); //Update old values with new ones
+   sC_updateTableData("scorm_data", $fields, "id=".$result[0]['id']); //Update old values with new ones
   }
  } else {
   if (isset($fields['total_time']) && $fields['total_time']) {
@@ -70,9 +70,9 @@ try {
   $fields['total_time'] = $fields['session_time'];
   unset($fields['session_time']);
   if ($_GET['scorm_version'] == '2004') {
-   $result = eF_insertTableData("scorm_data_2004", $fields); //Insert a new entry that relates the current user with this SCO
+   $result = sC_insertTableData("scorm_data_2004", $fields); //Insert a new entry that relates the current user with this SCO
   } else {
-   $result = eF_insertTableData("scorm_data", $fields); //Insert a new entry that relates the current user with this SCO
+   $result = sC_insertTableData("scorm_data", $fields); //Insert a new entry that relates the current user with this SCO
   }
  }
  $scoUser = MagesterUserFactory :: factory($_SESSION['s_login'], false, 'student');

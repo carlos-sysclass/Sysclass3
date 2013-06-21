@@ -44,9 +44,9 @@ function onAjaxPost(el, response) {
  tables = sortedTables.size();
  for (var i = 0; i < tables; i++) {
   if (sortedTables[i].id.match('lessonsTable') && ajaxUrl[i]) {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   } else if (sortedTables[i].id.match('coursesTable') && ajaxUrl[i]) {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }

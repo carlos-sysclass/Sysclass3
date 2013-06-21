@@ -4,12 +4,12 @@
 {capture name = "moduleSurvey"}
                 <tr><td class="moduleCell">
     {if ( $T_DO_TEST == '-1')}
-            {eF_template_printMessageSurvey message=$smarty.const._YOUCANTDOTHESURVEYCONTACTLESSONPROFESSOR type='failure'}
+            {sC_template_printMessageSurvey message=$smarty.const._YOUCANTDOTHESURVEYCONTACTLESSONPROFESSOR type='failure'}
 			{capture name = "t_survey_code"}
 				<br /><br />
 				<div class = "centerAlign"><input class="flatButton" type="button" value="{$smarty.const._RETURN}" onclick="Javascript:self.location='student.php'"></div>
 			{/capture}
-			{eF_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
+			{sC_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
         
 	{else}
         {if ($smarty.get.screen_survey == '1')}
@@ -31,7 +31,7 @@
                 </tr>
              </table>
 		{/capture}	
-		{eF_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}   		
+		{sC_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}   		
         {/if}
         {if ($smarty.get.screen_survey == '2')}
 		{capture name = "t_survey_code"}
@@ -41,13 +41,13 @@
                     <td><b>{$T_SURVEYNAME}<br>{$T_SURVEY_INFOTEXT}</b><br></td>
                 </tr>
             </table>
-            {eF_template_printSurvey questions=$T_SURVEY_QUESTIONS user_type=$T_USER intro=$T_SURVEY_STARTTEXT}
+            {sC_template_printSurvey questions=$T_SURVEY_QUESTIONS user_type=$T_USER intro=$T_SURVEY_STARTTEXT}
 		{/capture}
-			{eF_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
-            {*{eF_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS user_type=$T_USER} *}
+			{sC_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
+            {*{sC_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS user_type=$T_USER} *}
         {/if}
         {if ($smarty.get.screen_survey == '3')}
-            {eF_template_printMessageSurvey message=$smarty.const._SURVEYSUBMISSIONSUCCESSFUL type='success'}
+            {sC_template_printMessageSurvey message=$smarty.const._SURVEYSUBMISSIONSUCCESSFUL type='success'}
         {capture name = "t_survey_code"}
 			<br><br><br><br>
             <table class = "testHeader" width="50%">
@@ -66,7 +66,7 @@
              </table>
             </table>
 		{/capture}	
-		{eF_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
+		{sC_template_printBlock title = $smarty.const._SURVEY data = $smarty.capture.t_survey_code image = '32x32/survey.png'}
         {/if}
 	{/if}
                 </td></tr>

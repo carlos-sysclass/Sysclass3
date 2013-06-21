@@ -4,7 +4,7 @@
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
-    $result = eF_getTableData("completed_tests", "*", "status != 'deleted' and id=".$_GET['show_solved_test']);
+    $result = sC_getTableData("completed_tests", "*", "status != 'deleted' and id=".$_GET['show_solved_test']);
     if (sizeof($result) == 0) {
         throw new MagesterTestException(_NONEXISTENTTEST.': '.$_GET['show_solved_test'], MagesterTestException :: NOT_DONE_TEST);
     }
@@ -66,7 +66,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                     foreach ($_GET as $key => $value) {
                         // all skill-related posted values are just the skill_ID ~ a uint value
-                        if (eF_checkParameter($key, 'unit')) {
+                        if (sC_checkParameter($key, 'unit')) {
                             if ($value == 1) {
                                 $skills_missing[] = $key;
                                 $all_skills .= "&".$skill_item['id'] . "=1";
@@ -84,18 +84,18 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                     $user = MagesterUserFactory :: factory($_GET['user']);
                     $alredy_attending = implode("','", array_keys($user -> getLessons()));
 
-                    $lessons_proposed = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID JOIN lessons ON lessons.id = module_hcd_lesson_offers_skill.lesson_ID","module_hcd_lesson_offers_skill.lesson_ID, lessons.*, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$alredy_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
+                    $lessons_proposed = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID JOIN lessons ON lessons.id = module_hcd_lesson_offers_skill.lesson_ID","module_hcd_lesson_offers_skill.lesson_ID, lessons.*, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$alredy_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
 
                     if (isset($_GET['sort'])) {
                         isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                        $lessons_proposed = eF_multiSort($lessons_proposed, $_GET['sort'], $order);
+                        $lessons_proposed = sC_multiSort($lessons_proposed, $_GET['sort'], $order);
                     }
                     if (isset($_GET['filter'])) {
-                        $lessons_proposed = eF_filterData($lessons_proposed, $_GET['filter']);
+                        $lessons_proposed = sC_filterData($lessons_proposed, $_GET['filter']);
                     }
                     $smarty -> assign("T_PROPOSED_LESSONS_SIZE", sizeof($lessons_proposed));
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $lessons_proposed = array_slice($lessons_proposed, $offset, $limit);
                     }
                     foreach ($lessons_proposed as $key => $proposed_lesson) {
@@ -124,7 +124,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                     foreach ($_GET as $key => $value) {
                         // all skill-related posted values are just the skill_ID ~ a uint value
-                        if (eF_checkParameter($key, 'unit')) {
+                        if (sC_checkParameter($key, 'unit')) {
                             if ($value == 1) {
                                 $skills_missing[] = $key;
                                 $all_skills .= "&".$skill_item['id'] . "=1";
@@ -142,20 +142,20 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                     $user = MagesterUserFactory :: factory($_GET['user']);
 
                     $alredy_attending = implode("','", array_keys($user -> getUserCourses()));
-                    $courses_proposed = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID JOIN courses ON courses.id = module_hcd_course_offers_skill.courses_ID","module_hcd_course_offers_skill.courses_ID, courses.*, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$alredy_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
+                    $courses_proposed = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID JOIN courses ON courses.id = module_hcd_course_offers_skill.courses_ID","module_hcd_course_offers_skill.courses_ID, courses.*, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$alredy_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
 
                     if (isset($_GET['sort'])) {
                         isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                        $courses_proposed = eF_multiSort($courses_proposed, $_GET['sort'], $order);
+                        $courses_proposed = sC_multiSort($courses_proposed, $_GET['sort'], $order);
                     }
 
                     if (isset($_GET['filter'])) {
-                        $courses_proposed = eF_filterData($courses_proposed, $_GET['filter']);
+                        $courses_proposed = sC_filterData($courses_proposed, $_GET['filter']);
                     }
 
                     $smarty -> assign("T_PROPOSED_COURSES_SIZE", sizeof($courses_proposed));
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $courses_proposed = array_slice($courses_proposed, $offset, $limit);
                     }
 
@@ -230,14 +230,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                     if (isset($_GET['sort'])) {
                         isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                        $lessons = eF_multiSort($lessons, $_GET['sort'], $order);
+                        $lessons = sC_multiSort($lessons, $_GET['sort'], $order);
                     }
                     if (isset($_GET['filter'])) {
-                        $lessons = eF_filterData($lessons, $_GET['filter']);
+                        $lessons = sC_filterData($lessons, $_GET['filter']);
                     }
                     $smarty -> assign("T_ASSIGNED_LESSONS_SIZE", sizeof($lessons));
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $lessons = array_slice($lessons, $offset, $limit);
                     }
                     //foreach ($lessons as $key => $lesson) {
@@ -265,14 +265,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                     if (isset($_GET['sort'])) {
                         isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                        $courses = eF_multiSort($courses, $_GET['sort'], $order);
+                        $courses = sC_multiSort($courses, $_GET['sort'], $order);
                     }
                     if (isset($_GET['filter'])) {
-                        $courses = eF_filterData($courses, $_GET['filter']);
+                        $courses = sC_filterData($courses, $_GET['filter']);
                     }
                     $smarty -> assign("T_ASSIGNED_COURSES_SIZE", sizeof($courses));
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $courses = array_slice($courses, $offset, $limit);
                     }
                     //foreach ($courses as $key => $course) {
@@ -317,14 +317,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                     if (isset($_GET['sort'])) {
                         isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-                        $courses = eF_multiSort($courses, $_GET['sort'], $order);
+                        $courses = sC_multiSort($courses, $_GET['sort'], $order);
                     }
                     if (isset($_GET['filter'])) {
-                        $courses = eF_filterData($courses, $_GET['filter']);
+                        $courses = sC_filterData($courses, $_GET['filter']);
                     }
                     $smarty -> assign("T_COURSES_SIZE", sizeof($courses));
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $courses = array_slice($courses, $offset, $limit);
                     }
                     //foreach ($courses as $key => $course) {
@@ -338,7 +338,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                 }
 
                 // We change a bit the following typical query to acquire the latest options values for the test - in case a threshold has been changed
-                $result = eF_getTableData("completed_tests JOIN tests ON tests.id = completed_tests.tests_ID", "completed_tests.*, tests.options", "completed_tests.status != 'deleted' and completed_tests.id = '".$_GET['show_solved_test']."'");
+                $result = sC_getTableData("completed_tests JOIN tests ON tests.id = completed_tests.tests_ID", "completed_tests.*, tests.options", "completed_tests.status != 'deleted' and completed_tests.id = '".$_GET['show_solved_test']."'");
                 $completedTest = unserialize($result[0]['test']);
 
                 // Take the most recent set general threshold for this test
@@ -347,7 +347,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
                 $smarty -> assign("T_TEST_DATA",$completedTest);
 
-                $user = eF_getTableData("users", "*", "login = '".$_GET['user']."'");
+                $user = sC_getTableData("users", "*", "login = '".$_GET['user']."'");
                 $smarty -> assign("T_USER_INFO", $user[0]);
                 $analysisResults = $completedTest -> analyseSkillGapTest();
 

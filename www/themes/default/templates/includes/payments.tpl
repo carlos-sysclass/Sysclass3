@@ -2,7 +2,7 @@
    <div class = "headerTools">
     <span>
      <img src = "images/16x16/add.png" title = "{$smarty.const._ADDCOUPON}" alt = "{$smarty.const._ADDCOUPON}">
-     <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&add=1&popup=1" title = "{$smarty.const._ADDCOUPON}" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDCOUPON}', 2)">{$smarty.const._ADDCOUPON}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&add=1&popup=1" title = "{$smarty.const._ADDCOUPON}" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDCOUPON}', 2)">{$smarty.const._ADDCOUPON}</a>
     </span>
    </div>
 <!--ajax:couponsTable-->
@@ -19,7 +19,7 @@
     </tr>
     {foreach name = 'users_list' key = 'key' item = 'coupon' from = $T_DATA_SOURCE}
     <tr class = "{cycle values = "oddRowColor, evenRowColor"}">
-     <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&edit={$coupon.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 2)">{$coupon.code}</a></td>
+     <td><a class = "editLink" href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&edit={$coupon.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 2)">{$coupon.code}</a></td>
      <td class = "centerAlign">{if $coupon.max_uses}{$coupon.max_uses}{else}{$smarty.const._UNLIMITED}{/if}</td>
      <td class = "centerAlign">{if $coupon.max_uses}{$coupon.max_user_uses}{else}{$smarty.const._UNLIMITED}{/if}</td>
      <td>#filter:timestamp_time-{$coupon.from_timestamp}#</td>
@@ -30,8 +30,8 @@
       <img {if $coupon.active == 1}style = "display:none"{/if} class = "ajaxHandle" src = "images/16x16/trafficlight_red.png" alt = "{$smarty.const._ACTIVATE}" title = "{$smarty.const._ACTIVATE}" onclick = "activateEntity(this, '{$coupon.id}', {ldelim}coupons:1{rdelim})">
      </td>
      <td class = "centerAlign">
-      <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&reports={$coupon.id}&popup=1" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/reports.png" title = "{$smarty.const._reports}" alt = "{$smarty.const._REPORTS}" onclick = "eF_js_showDivPopup('{$smarty.const._REPORTS}', 2)"/></a>
-      <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&edit={$coupon.id}&popup=1" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 2)"/></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&reports={$coupon.id}&popup=1" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/reports.png" title = "{$smarty.const._reports}" alt = "{$smarty.const._REPORTS}" onclick = "sC_js_showDivPopup('{$smarty.const._REPORTS}', 2)"/></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=payments&coupons=1&edit={$coupon.id}&popup=1" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 2)"/></a>
       <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteEntity(this, '{$coupon.id}', {ldelim}coupons:1{rdelim})"/>
      </td>
     </tr>
@@ -56,7 +56,7 @@
     <tr><td class = "labelCell">{$T_ENTITY_FORM.max_user_uses.label}:&nbsp;</td>
      <td class = "elementCell">{$T_ENTITY_FORM.max_user_uses.html} {$smarty.const._BLANKFORUNLIMITED}</td></tr>
     <tr><td class = "labelCell">{$T_ENTITY_FORM.from_timestamp.label}:&nbsp;</td>
-     <td class = "elementCell">{eF_template_html_select_date prefix="from_timestamp_" time = $T_ENTITY_FORM.from_timestamp start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL}</td></tr>
+     <td class = "elementCell">{sC_template_html_select_date prefix="from_timestamp_" time = $T_ENTITY_FORM.from_timestamp start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL}</td></tr>
     <tr><td class = "labelCell">{$T_ENTITY_FORM.duration.label}:&nbsp;</td>
      <td class = "elementCell">{$T_ENTITY_FORM.duration.html} {$smarty.const._DAYS}</td></tr>
     <tr><td class = "labelCell">{$T_ENTITY_FORM.discount.label}:&nbsp;</td>
@@ -74,7 +74,7 @@
    <script>parent.location = parent.location+'&tab=coupons';</script>
   {/if}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._COUPONPROPERTIES data = $smarty.capture.t_add_code image = '32x32/shopping_basket_add.png'}
+  {sC_template_printBlock title = $smarty.const._COUPONPROPERTIES data = $smarty.capture.t_add_code image = '32x32/shopping_basket_add.png'}
 
  {else}
   {capture name = 't_add_code'}
@@ -83,7 +83,7 @@
     {$T_ENTITY_FORM.hidden}
     <table class = "formElements">
      <tr><td class = "labelCell">{$smarty.const._DATE}:&nbsp;</td>
-      <td class = "elementCell">{eF_template_html_select_date prefix="payment_" start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="payment_" display_seconds = false}</td></tr>
+      <td class = "elementCell">{sC_template_html_select_date prefix="payment_" start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="payment_" display_seconds = false}</td></tr>
      <tr><td class = "labelCell">{$smarty.const._USER}:&nbsp;</td>
       <td class = "elementCell">
        <input type = "text" id = "autocomplete" class = "autoCompleteTextBox" name = "user"/>
@@ -112,7 +112,7 @@
   {/if}
   {/capture}
 
-  {eF_template_printBlock title = $smarty.const._PAYMENT data = $smarty.capture.t_add_code image = '32x32/shopping_basket_add.png'}
+  {sC_template_printBlock title = $smarty.const._PAYMENT data = $smarty.capture.t_add_code image = '32x32/shopping_basket_add.png'}
  {/if}
 
 {elseif $smarty.get.reports}
@@ -167,14 +167,14 @@
    </table>
 <!--/ajax:usersCouponsTable-->
  {/capture}
- {eF_template_printBlock title = $smarty.const._REPORTS data = $smarty.capture.t_coupon_reports_code image = '32x32/reports.png'}
+ {sC_template_printBlock title = $smarty.const._REPORTS data = $smarty.capture.t_coupon_reports_code image = '32x32/reports.png'}
 
 {else}
  {capture name = "t_payments_history_code"}
    <div class = "headerTools">
     <span>
      <img src = "images/16x16/add.png" title = "{$smarty.const._ADDMANUALPAYMENT}" alt = "{$smarty.const._ADDMANUALPAYMENT}">
-     <a href = "{$smarty.server.PHP_SELF}?ctg=payments&add=1&popup=1" title = "{$smarty.const._ADDMANUALPAYMENT}" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDMANUALPAYMENT}', 2)">{$smarty.const._ADDMANUALPAYMENT}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=payments&add=1&popup=1" title = "{$smarty.const._ADDMANUALPAYMENT}" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDMANUALPAYMENT}', 2)">{$smarty.const._ADDMANUALPAYMENT}</a>
     </span>
     {if $T_TRANSACTIONS_LOG_FILE}
     <span>
@@ -202,9 +202,9 @@
      <td>{$payment.status}</td>
      <td class = "centerAlign">
       <div style = "display:none" id = "details_div_{$payment.id}">
-       {eF_template_printBlock title = $smarty.const._DETAILS data = "<pre>`$payment.comments`</pre>" image='32x32/information.png'}
+       {sC_template_printBlock title = $smarty.const._DETAILS data = "<pre>`$payment.comments`</pre>" image='32x32/information.png'}
       </div>
-      <img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" onclick = "eF_js_showDivPopup('{$smarty.const._DETAILS}', 1, 'details_div_{$payment.id}')"/>
+      <img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" onclick = "sC_js_showDivPopup('{$smarty.const._DETAILS}', 1, 'details_div_{$payment.id}')"/>
       <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteEntity(this, '{$payment.id}')"/>
      </td>
     </tr>
@@ -260,7 +260,7 @@
     <tr><td class = "labelCell">{$T_CONFIG_FORM_DEFAULT.total_discount.label} (%):&nbsp;</td>
      <td class = "elementCell">{$T_CONFIG_FORM_DEFAULT.total_discount.html}</td></tr>
     <tr><td class = "labelCell">{$smarty.const._DISCOUNTSTARTSAT}:&nbsp;</td>
-     <td class = "elementCell">{eF_template_html_select_date prefix="discount_" time = $T_CONFIGURATION.discount_start start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._ANDLASTS} {$T_CONFIG_FORM_DEFAULT.discount_period.html} {$smarty.const._DAYS}</td></tr>
+     <td class = "elementCell">{sC_template_html_select_date prefix="discount_" time = $T_CONFIGURATION.discount_start start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._ANDLASTS} {$T_CONFIG_FORM_DEFAULT.discount_period.html} {$smarty.const._DAYS}</td></tr>
     <tr><td class = "labelCell">{$T_CONFIG_FORM_DEFAULT.paypalbusiness.label}:&nbsp;</td>
      <td class = "elementCell">{$T_CONFIG_FORM_DEFAULT.paypalbusiness.html}</td></tr>
     <tr><td class = "labelCell">{$T_CONFIG_FORM_DEFAULT.paypalmode.label}:&nbsp;</td>
@@ -277,23 +277,23 @@
  {capture name = 't_payments_code'}
  <div class = "tabber">
   <div class = "tabbertab" title = "{$smarty.const._HISTORY}">
-   {eF_template_printBlock title = $smarty.const._HISTORY data = $smarty.capture.t_payments_history_code image='32x32/generic.png'}
+   {sC_template_printBlock title = $smarty.const._HISTORY data = $smarty.capture.t_payments_history_code image='32x32/generic.png'}
   </div>
   <div class = "tabbertab {if $smarty.get.tab == 'balance'}tabbertabdefault{/if}" title = "{$smarty.const._BALANCE}">
-   {eF_template_printBlock title = $smarty.const._BALANCE data = $smarty.capture.t_payment_accounts_code image='32x32/users.png'}
+   {sC_template_printBlock title = $smarty.const._BALANCE data = $smarty.capture.t_payment_accounts_code image='32x32/users.png'}
   </div>
 {*
   <div class = "tabbertab {if $smarty.get.tab == 'paypal'}tabbertabdefault{/if}" title = "{$smarty.const._PAYPAL}">
-   {eF_template_printBlock title = $smarty.const._PAYPALTITLE data = $smarty.capture.t_paypal_data image='32x32/paypal.png'}
+   {sC_template_printBlock title = $smarty.const._PAYPALTITLE data = $smarty.capture.t_paypal_data image='32x32/paypal.png'}
   </div>
 *}
   <div class = "tabbertab {if $smarty.get.tab == 'settings'}tabbertabdefault{/if}" title = "{$smarty.const._SETTINGS}">
-   {eF_template_printBlock title = $smarty.const._SETTINGS data = $smarty.capture.t_payment_settings_code image='32x32/settings.png'}
+   {sC_template_printBlock title = $smarty.const._SETTINGS data = $smarty.capture.t_payment_settings_code image='32x32/settings.png'}
   </div>
   <div class = "tabbertab {if $smarty.get.tab == 'coupons'}tabbertabdefault{/if}" title = "{$smarty.const._COUPONS}">
-   {eF_template_printBlock title = $smarty.const._COUPONS data = $smarty.capture.t_payment_coupons_code image='32x32/shopping_basket.png'}
+   {sC_template_printBlock title = $smarty.const._COUPONS data = $smarty.capture.t_payment_coupons_code image='32x32/shopping_basket.png'}
   </div>
  </div>
  {/capture}
- {eF_template_printBlock title = $smarty.const._PAYMENTS data = $smarty.capture.t_payments_code image='32x32/shopping_basket.png' help = 'Payments'}
+ {sC_template_printBlock title = $smarty.const._PAYMENTS data = $smarty.capture.t_payments_code image='32x32/shopping_basket.png' help = 'Payments'}
 {/if}

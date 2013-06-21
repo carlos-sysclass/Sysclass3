@@ -61,4 +61,4 @@
 	</form>
 </div>
 {/capture}
-{eF_template_printBlock title=$smarty.const._MAILS_MODULEMAILS data=$smarty.capture.t_module_email_code image='32x32/mail.png'}
+{sC_template_printBlock title=$smarty.const._MAILS_MODULEMAILS data=$smarty.capture.t_module_email_code image='32x32/mail.png'}

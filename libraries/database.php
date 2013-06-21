@@ -45,7 +45,7 @@ $GLOBALS['db']->databaseQueries = 0;
  * This function is used to execute an arbitrary SQL query
  * <br>Example:
  * <code>
- * $result = eF_execute('SELECT * FROM users WHERE id = 1');
+ * $result = sC_execute('SELECT * FROM users WHERE id = 1');
  * </code>
  *
  * @param string $sql the SQL query
@@ -54,12 +54,12 @@ $GLOBALS['db']->databaseQueries = 0;
  * @deprecated
  */
 
-function eF_executeNew($sql)
+function sC_executeNew($sql)
 {
     $thisQuery = microtime(true);
     $result = $GLOBALS['db']->Execute($sql);
     if (!$result && G_DEBUG) {
-        eF_printMessage(_PROBLEMQUERYINGDATABASE.": '".$sql."'<br> ".mysql_error());
+        sC_printMessage(_PROBLEMQUERYINGDATABASE.": '".$sql."'<br> ".mysql_error());
     }
     logProcess($thisQuery, $sql);
     return $result;
@@ -72,12 +72,12 @@ function eF_executeNew($sql)
  * @param $sql
  * @return unknown_type
  */
-function eF_execute($sql)
+function sC_execute($sql)
 {
     $db = mysql_connect(G_DBHOST, G_DBUSER, G_DBPASSWD);
     if ( (!$db) | (!mysql_select_db(G_DBNAME, $db)) ) {
         if (G_DEBUG) {
-            echo "Problem Connecting to Database. MySQL returned: ".mysql_error(); //If there is a problem with the database, then eF_printMessage and lanugage files may not have loaded, so we echo the error message
+            echo "Problem Connecting to Database. MySQL returned: ".mysql_error(); //If there is a problem with the database, then sC_printMessage and lanugage files may not have loaded, so we echo the error message
         } else {
             echo "Problem Connecting to Database.";
         }
@@ -86,9 +86,9 @@ function eF_execute($sql)
     $result = mysql_query($sql);
     if (!$result) {
         if (G_DEBUG) {
-            eF_printMessage(_PROBLEMQUERYINGDATABASE.": '".$sql."'<br> ".mysql_error());
+            sC_printMessage(_PROBLEMQUERYINGDATABASE.": '".$sql."'<br> ".mysql_error());
         } else {
-            eF_printMessage(_PROBLEMQUERYINGDATABASE);
+            sC_printMessage(_PROBLEMQUERYINGDATABASE);
         }
         exit;
     }
@@ -111,14 +111,14 @@ function escapemaDBFieldsArray($field)
  * <br>Example:
  * <code>
  * $fields = array('name' => 'john', 'surname' => 'doe');
- * $result = eF_insertTableData('users', $fields);
+ * $result = sC_insertTableData('users', $fields);
  * </code>
  * @param string $table The table to insert data into
  * @param array $fields An associative array with the table cell data
  * @return mixed The id of the insertion, if an AUTO_INCREMENT id field is set. Otherwise, true in success and false on failure
  * @version 1.0
  */
-function eF_insertTableData($table, $fields)
+function sC_insertTableData($table, $fields)
 {
     $thisQuery = microtime(true);
     //Prepend prefix to the table
@@ -128,7 +128,7 @@ function eF_insertTableData($table, $fields)
         return false;
     }
     isset($fields['id']) ? $customId = $fields['id'] : $customId = 0;
-    $fields = eF_addSlashes($fields);
+    $fields = sC_addSlashes($fields);
     array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1;'));
     $sql = "insert into $table (".implode(",", array_map("escapemaDBFieldsArray", array_keys($fields))).") values (".implode(",", ($fields)).")";
     $result = $GLOBALS['db']->Execute($sql);
@@ -166,7 +166,7 @@ function eF_insertTableData($table, $fields)
  *            'action' => 'lastmove1',
  *            'comments' => '0',
  *            'session_ip' => '7f000001');
- * eF_insertTableDataMultiple('logs', $data);
+ * sC_insertTableDataMultiple('logs', $data);
  * </code>
  *
  * @param string $table The table to insert values into
@@ -175,7 +175,7 @@ function eF_insertTableData($table, $fields)
  * @return boolean True if everything is ok
  * @since 3.5.0
  */
-function eF_insertTableDataMultiple($table, $fields, $checkGpc = true)
+function sC_insertTableDataMultiple($table, $fields, $checkGpc = true)
 {
     $thisQuery = microtime(true);
     //Prepend prefix to the table
@@ -191,10 +191,10 @@ function eF_insertTableDataMultiple($table, $fields, $checkGpc = true)
     $sql = "INSERT INTO ".$table." (".implode(",", array_keys($fields[0])).") values ";
     $currentLength[$table] = 0;
     foreach ($fields as $value) {
-        $value = eF_addSlashes($value, $checkGpc);
+        $value = sC_addSlashes($value, $checkGpc);
         //Quote strings and insert "null" where the value is null
         //$anon = create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null";');
-        array_walk($value, 'eF_NullifyRecursive');
+        array_walk($value, 'sC_NullifyRecursive');
         $valuesString = implode(",", $value);
         $currentLength[$table] += mb_strlen("('".$valuesString."')");
         if ($currentLength[$table] > G_MAXIMUMQUERYSIZE) {
@@ -220,7 +220,7 @@ function eF_insertTableDataMultiple($table, $fields, $checkGpc = true)
 }
 /**
  * Convert empty strings to nulls
- * This function is used as a callback to from eF_insertTableDataMultiple
+ * This function is used as a callback to from sC_insertTableDataMultiple
  * to convert empty strings to null values, as they should
  *
  * @param $v array value
@@ -228,7 +228,7 @@ function eF_insertTableDataMultiple($table, $fields, $checkGpc = true)
  * @return mixed the nullified value
  * @since 3.5
  */
-function eF_NullifyRecursive(&$v, $k)
+function sC_NullifyRecursive(&$v, $k)
 {
     if (is_string($v)) $v = "'".$v."'"; else if (is_null($v)) $v = "null";else if ($v === false) $v = 0; else if ($v === true) $v = 1;
 }
@@ -241,7 +241,7 @@ function eF_NullifyRecursive(&$v, $k)
  * <br>Example:
  * <code>
  * $fields = array('name' => 'john', 'surname' => 'doe');
- * $result = eF_updateTableData('users', $fields, 'login=jdoe');
+ * $result = sC_updateTableData('users', $fields, 'login=jdoe');
  * </code>
  * @param string $table The table to update data to
  * @param array $fields An associative array with the table cell data
@@ -249,7 +249,7 @@ function eF_NullifyRecursive(&$v, $k)
  * @return mixed The query result, usually true or false.
  * @version 1.0
  */
-function eF_updateTableData($table, $fields, $where)
+function sC_updateTableData($table, $fields, $where)
 {
     $thisQuery = microtime(true);
     //Prepend prefix to the table
@@ -258,7 +258,7 @@ function eF_updateTableData($table, $fields, $where)
         trigger_error(_EMPTYFIELDSLIST, E_USER_WARNING);
         return false;
     }
-    $fields = eF_addSlashes($fields);
+    $fields = sC_addSlashes($fields);
     //array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; $v=$k."=".$v;'));
     array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1; $v= escapemaDBFieldsArray($k)."=".$v;'));
     $sql = "update $table set ".implode(",", $fields)." where ".$where;
@@ -274,15 +274,15 @@ function eF_updateTableData($table, $fields, $where)
  * This function is used to delete the database data specified by the where clause.
  * <br>Example
  * <code>
- * $result = eF_deleteTableData('users');                  //Equivalent to truncate table "users".
- * $result = eF_deleteTableData('users', 'id = 1');        //Delete data from table users, where id = 1.
+ * $result = sC_deleteTableData('users');                  //Equivalent to truncate table "users".
+ * $result = sC_deleteTableData('users', 'id = 1');        //Delete data from table users, where id = 1.
  * </code>
  * @param string $table The table to dekete data from
  * @param string $where The where clause of the SQL Delete.
  * @return mixed The query result, usually true/false.
  * @version 1.0
  */
-function eF_deleteTableData($table, $where="")
+function sC_deleteTableData($table, $where="")
 {
     //Prepend prefix to the table
     $table = G_DBPREFIX.$table;
@@ -305,15 +305,15 @@ function eF_deleteTableData($table, $where="")
  * <br>Example:
  * <code>
  * //Retrieve all data from table users:
- * $result = eF_getTableData("users");
+ * $result = sC_getTableData("users");
  * //Retrieve all rows from table users, but only columns "name" and "surname"
- * $result = eF_getTableData("users", 'name, surname');
+ * $result = sC_getTableData("users", 'name, surname');
  * //Get the "name" and "surname" for user with login "jdoe"
- * $result = eF_getTableData("users", 'name, surname', 'login=jdoe');
+ * $result = sC_getTableData("users", 'name, surname', 'login=jdoe');
  * //Get the same information, but this time ordered by "name"
- * $result = eF_getTableData("users", 'name, surname', 'login=jdoe', 'name');
+ * $result = sC_getTableData("users", 'name, surname', 'login=jdoe', 'name');
  * //Get the same information, but this time grouped by "surname"
- * $result = eF_getTableData("users", 'name, surname', 'login=jdoe', '', 'surname');
+ * $result = sC_getTableData("users", 'name, surname', 'login=jdoe', '', 'surname');
  * </code>
  * @param string $table The table to retrieve data from
  * @param string $fields The fields to retrive, comma-separated string, defaults to *.
@@ -324,7 +324,7 @@ function eF_deleteTableData($table, $where="")
  * @return mixed an array holding the query result.
  * @version 1.0
  */
-function eF_getTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
+function sC_getTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 {
     $thisQuery = microtime(true);
     $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
@@ -352,7 +352,7 @@ function eF_getTableData($table, $fields = "*", $where = "", $order = "", $group
     }
 }
 
-function eF_countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
+function sC_countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 {
     $thisQuery = microtime(true);
     $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
@@ -393,12 +393,12 @@ function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $g
 /**
  * Retrieve table contents Flat
  *
- * This function, much similar to the eF_getTableData(), retrieves data from the designated
+ * This function, much similar to the sC_getTableData(), retrieves data from the designated
  * database table. The main difference lies at the result array format: This time, each
  * field in the result set corresponds to an array in the result array.
  * <br/>Example:
  * <code>
- * $result = eF_getTableDataFlat("users", "name, surname");
+ * $result = sC_getTableDataFlat("users", "name, surname");
  * print_r($result);
  * </code>
  * Returns:
@@ -425,11 +425,11 @@ function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $g
  * @param string $where The where clause of the SQL query.
  * @return array The query result table.
  * @version 2.0
- * @see eF_getTableData()
+ * @see sC_getTableData()
  * Changes from 1.0 to 2.0:
- * - Rewritten function in order to accelerate execution. It now uses eF_getTableData()
+ * - Rewritten function in order to accelerate execution. It now uses sC_getTableData()
  */
-function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="")
+function sC_getTableDataFlat($table, $fields="*", $where="", $order="", $group="")
 {
     $thisQuery = microtime(true);
     $sql = "SELECT ".$fields." FROM ".$table;
@@ -442,7 +442,7 @@ function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="
     if ($group != "") {
         $sql .= " GROUP BY ".$group;
     }
-    $result = eF_getTableData($table, $fields, $where, $order, $group);
+    $result = sC_getTableData($table, $fields, $where, $order, $group);
     $temp = array();
     for ($i = 0; $i < sizeof($result); $i++) {
         foreach ($result[$i] as $key => $value) {
@@ -460,7 +460,7 @@ function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="
  * a field is not specified.
  * <br />Example:
  * <code>
- * $desc = eF_describeTable("logs", array(0 => "id", "comments"));
+ * $desc = sC_describeTable("logs", array(0 => "id", "comments"));
  * print_r($desc);
  * //Prints something like:
  * Array
@@ -493,7 +493,7 @@ function eF_getTableDataFlat($table, $fields="*", $where="", $order="", $group="
  * @return array The field description
  * @version 1.0
  */
-function eF_describeTable($table, $fields = false)
+function sC_describeTable($table, $fields = false)
 {
     //Prepend prefix to the table
     $table = G_DBPREFIX.$table;
@@ -502,7 +502,7 @@ function eF_describeTable($table, $fields = false)
     } else {
         $desc = array();
         foreach ($fields as $field) {
-            //$result = eF_executeNew("describe $table $field");
+            //$result = sC_executeNew("describe $table $field");
             $desc = array_merge($desc, $GLOBALS['db']->GetAll("describe $table $field"));
         }
     }
@@ -518,7 +518,7 @@ function eF_describeTable($table, $fields = false)
  * @return array The table fields
  * @version 1.0
  */
-function eF_getTableFields($table)
+function sC_getTableFields($table)
 {
     //Prepend prefix to the table
     $table = G_DBPREFIX.$table;
@@ -532,7 +532,7 @@ function eF_getTableFields($table)
  * @return array The database tables
  * @since 3.6.0
  */
-function eF_showTables()
+function sC_showTables()
 {
     $tables = array();
     //Get the database tables
@@ -554,15 +554,15 @@ function eF_showTables()
  * @return mixed The query result, usually true or false.
  * @since 3.6.0
  */
-function eF_insertOrupdateTableData($table, $fields, $where)
+function sC_insertOrupdateTableData($table, $fields, $where)
 {
     //Prepend prefix to the table
     $table = G_DBPREFIX.$table;
-    $result = eF_getTableData($table, '*', $where);
+    $result = sC_getTableData($table, '*', $where);
     if (!empty($result)) {
-        return eF_updateTableData($table, $fields, $where);
+        return sC_updateTableData($table, $fields, $where);
     } else {
-        return eF_insertTableData($table, $fields);
+        return sC_insertTableData($table, $fields);
     }
 }
 
@@ -572,11 +572,11 @@ function eF_insertOrupdateTableData($table, $fields, $where)
  * This function is used to conditionally perform an addslashes() to the specfified parameter,
  * based on the get_magic_quotes_gpc directive status. If the parameter is an array, then the
  * function is applied recursively to all its elements
- * If $checkGpc is false, eF_addSlashes calls addslashes without checking get_magic_quotes_gpc
+ * If $checkGpc is false, sC_addSlashes calls addslashes without checking get_magic_quotes_gpc
  * $checkGpc should be false if Quickform exportValues is used (because exportValues performs a stripslashes operation)
  * <br>Example:
  * <code>
- * $values = eF_addSlashes($form->exportValues(), false);     //slash POST variables from HTML_Quickform
+ * $values = sC_addSlashes($form->exportValues(), false);     //slash POST variables from HTML_Quickform
  * </code>
  *
  * @param mixed $param The value to add slashes to, can be either a string or an array
@@ -584,14 +584,14 @@ function eF_insertOrupdateTableData($table, $fields, $where)
  * @return mixed the slashed parameter
  * @since 3.5.1
  */
-function eF_addSlashes($param, $checkGpc = true)
+function sC_addSlashes($param, $checkGpc = true)
 {
     if (get_magic_quotes_gpc() && $checkGpc) {
         return $param;
     } else {
         if (is_array($param)) {
             //$anon = create_function('&$v, $k', 'is_string($v) ? $v = addslashes($v) : null;');
-            array_walk_recursive($param, 'eF_addSlashesAux'); //We put the check here because addslashes returns string, thus destroying the real data type
+            array_walk_recursive($param, 'sC_addSlashesAux'); //We put the check here because addslashes returns string, thus destroying the real data type
             return $param;
         } else {
             return addslashes($param);
@@ -600,13 +600,13 @@ function eF_addSlashes($param, $checkGpc = true)
 }
 
 /**
- * Auxiliary function used by eF_addSlashes
+ * Auxiliary function used by sC_addSlashes
  *
  * @param $v
  * @param $k
  * @return unknown_type
  */
-function eF_addSlashesAux(&$v, $k)
+function sC_addSlashesAux(&$v, $k)
 {
     is_string($v) ? $v = addslashes($v) : null;
 }

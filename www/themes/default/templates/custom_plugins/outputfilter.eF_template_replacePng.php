@@ -3,7 +3,7 @@
 * Replaces PNGs with equivalent GIFs
 */
 
-function smarty_outputfilter_eF_template_replacePng($compiled, &$smarty)
+function smarty_outputfilter_sC_template_replacePng($compiled, &$smarty)
 {
     preg_match_all("/images(\/.*)?\/((.*)\.png)/U", $compiled, $images);            // /U is necessary here
 

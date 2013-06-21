@@ -18,7 +18,7 @@ require_once $path."configuration.php";
 $sha1_access = $_GET['id'];
 
 // GET IF HASH EXISTS IN TABLE
-$existsCount = eF_countTableData(
+$existsCount = sC_countTableData(
 	// table
 	"module_pagamento_invoices",
 	// fields
@@ -38,6 +38,6 @@ if ($totalcount > 0  && file_exists($filename)) {
 	echo $boleto_html;
 } else {
 	// ERRO. MOSTRAR NA PÁGINA
-	eF_redirect("index.php?message=Não existe o boleto específicado&message_type=failure");
+	sC_redirect("index.php?message=Não existe o boleto específicado&message_type=failure");
 }
 exit;

@@ -135,7 +135,7 @@
         {*********}
         {foreach name = 'outer_menu' key = 'menu_key' item = 'menu' from = $T_MENU}
         <div class = "verticalTab" id = "menu{$menu_key}">
-            <div class = "tabHeader" onclick = "move($('menu{$menu_key}'));" id="tabmenu{$menu_key}" title = "{$menu.title}">{$menu.title|eF_truncate:30}</div>
+            <div class = "tabHeader" onclick = "move($('menu{$menu_key}'));" id="tabmenu{$menu_key}" title = "{$menu.title}">{$menu.title|sC_truncate:30}</div>
             <div class = "menuList" id="listmenu{$menu_key}">
                 {foreach name = 'options_list' key = 'option_id' item = 'option' from = $menu.options}
                     {if isset($option.html)}
@@ -168,7 +168,7 @@
                           </td>
                           {/if}
                           <td class = "menuListOption" >
-                           <a href = "{$option.link}" title="{$option.title}" target="{$option.target}">{$option.title|eF_truncate:25}</a>
+                           <a href = "{$option.link}" title="{$option.title}" target="{$option.target}">{$option.title|sC_truncate:25}</a>
                           </td>
                         </tr>
                     </table>
@@ -210,18 +210,18 @@
                                             <a href = "javascript:void(0);" onclick= "ajaxGetRoomUsers(this,event)">
                                                 <img id = "room_users_image" src = "images/16x16/users.png" alt = "{$smarty.const._SHOWUSERSINROOM}" title = "{$smarty.const._SHOWUSERSINROOM}" border="0" style = "vertical-align:middle"/></a>
                                             {math assign='T_SB_WIDTH_MINUS_32' equation="x-32" x=$T_SIDEBARWIDTH}
-                                            <div id = 'room_users' onclick = "eF_js_showHideDiv(this, 'room_users', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:{$T_SB_WIDTH_MINUS_32}px;position:absolute;left:0px;top:0px;display:none"></div><!-width:143px;-->
+                                            <div id = 'room_users' onclick = "sC_js_showHideDiv(this, 'room_users', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:{$T_SB_WIDTH_MINUS_32}px;position:absolute;left:0px;top:0px;display:none"></div><!-width:143px;-->
                                         </td>
                                         <td {if $T_ONLY_VIEW_CHAT == 1 || $T_INVITE_DISABLED == 1}style="display:none"{/if}>
-                                         <a href = "javascript:void(0)" target = "POPUP_FRAME" onclick = "this.href = '{$smarty.session.s_type}.php?ctg=messages&add=1&popup=1&chat_invite='+$('current_chatroom_id').value;eF_js_showDivPopup('{$smarty.const._INVITEUSERS}', 3)">
+                                         <a href = "javascript:void(0)" target = "POPUP_FRAME" onclick = "this.href = '{$smarty.session.s_type}.php?ctg=messages&add=1&popup=1&chat_invite='+$('current_chatroom_id').value;sC_js_showDivPopup('{$smarty.const._INVITEUSERS}', 3)">
                                          <img class = "handle" src = "images/16x16/mail.png" alt = "{$smarty.const._INVITEUSERS}" title = "{$smarty.const._INVITEUSERS}" /></a>
                                         </td>
                                         <td {if $T_ONLY_VIEW_CHAT == 1}style="display:none"{/if}>
-                                            <a class = "inviteLink" href = "javascript:void(0)" target = "POPUP_FRAME" onclick = "exportChatRoomHistory(this);eF_js_showDivPopup('{$smarty.const._EXPORTCHATCONVERSATIONS}', 2)">
+                                            <a class = "inviteLink" href = "javascript:void(0)" target = "POPUP_FRAME" onclick = "exportChatRoomHistory(this);sC_js_showDivPopup('{$smarty.const._EXPORTCHATCONVERSATIONS}', 2)">
                                                 <img src="images/16x16/export.png" alt = "{$smarty.const._EXPORTCHATCONVERSATIONS}" title = "{$smarty.const._EXPORTCHATCONVERSATIONS}" class = "handle"/></a>
                                         </td>
                                         <td {if $T_ONLY_VIEW_CHAT == 1}style="display:none"{/if}>
-                                            <a href = "{$smarty.session.s_type}.php?ctg=chat&chat_room_options=1&new_public_room=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._NEWPUBLICROOM}', 0)" class = "innerTable">
+                                            <a href = "{$smarty.session.s_type}.php?ctg=chat&chat_room_options=1&new_public_room=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._NEWPUBLICROOM}', 0)" class = "innerTable">
                                              <img src = "images/16x16/add.png" alt = "{$smarty.const._NEWPUBLICROOM}" title = "{$smarty.const._NEWPUBLICROOM}" class = "handle"/></a>
                                         </td>
                                         <td><div id="delete_room" {if isset($T_CHATROOM_OWNED)}style="display:block"{else}style="display:none"{/if}><a href="javascript:void(0)" onClick="ajaxDeleteRoom()" ><img id="delete_room_image" src="images/16x16/error_delete.png" border="0" title="{$smart.const._DELETE}" alt="{$smart.const._DELETE}" style = "vertical-align:middle"/></a></div></td>
@@ -240,7 +240,7 @@
                                                 <option value="0" {if $T_CHATROOMS_ID == 0}selected{/if}>{$smarty.const._MAGESTERMAIN}</option>
                                                 {foreach name = 'chat_rooms' item = 'room' from = $T_CHATROOMS}
                                                     {if $room.users > 0}
-                                                    <option value="{$room.id}" {if $T_CHATROOMS_ID == $room.id}selected{/if}>{$room.name|eF_truncate:25}</option> {*>&nbsp;({$room.users})*}
+                                                    <option value="{$room.id}" {if $T_CHATROOMS_ID == $room.id}selected{/if}>{$room.name|sC_truncate:25}</option> {*>&nbsp;({$room.users})*}
                                                     {/if}
                                                 {/foreach}
                                                 </select>
@@ -253,7 +253,7 @@
                     <form style="display:inline;" name = "chat_form" action = "javascript:sendMessage(document.chat_form.chat_message.value,$('current_chatroom_id').value); " method = "post">
                     <tr {if $T_ONLY_VIEW_CHAT == 1}style="display:none"{/if}><td>
                         <table cellpadding="0" cellspacing="0" border="0"><tr>
-                        <td width="20"><a href = "smilies.php" onclick = "eF_js_showDivPopup('{$smarty.const._SMILIES}', 1)" target = "POPUP_FRAME"><img src = "images/smilies/icon_smile.gif" style="vertical-align:middle" border = "0"/></a></td>
+                        <td width="20"><a href = "smilies.php" onclick = "sC_js_showDivPopup('{$smarty.const._SMILIES}', 1)" target = "POPUP_FRAME"><img src = "images/smilies/icon_smile.gif" style="vertical-align:middle" border = "0"/></a></td>
                         {math assign='T_SB_WIDTH_MINUS_20' equation="x-20" x=$T_SIDEBARWIDTH}
                         <td align="left" width="{$T_SB_WIDTH_MINUS_20}" nowrap>
                             <input type = "text" name = "chat_message" width="{$T_SB_WIDTH_MINUS_20}" style = "width:97%" valign = "middle" onpaste = "javascript: document.chat_form.submit.disabled = false;" onKeyup = "javascript:enableButton();" onMouseup = "javascript:enableButton();"/>

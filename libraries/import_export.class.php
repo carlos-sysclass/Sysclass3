@@ -369,7 +369,7 @@ class MagesterImportCsv extends MagesterImport
      if (isset($data['password']) && $data['password'] != "") {
       $data['password'] = MagesterUser::createPassword($data['password']);
      }
-     eF_updateTableData("users", $data, "login='".$data['login']."'"); $this -> log["success"][] = _LINE . " $line: " . _REPLACEDUSER . " " . $data['login'];
+     sC_updateTableData("users", $data, "login='".$data['login']."'"); $this -> log["success"][] = _LINE . " $line: " . _REPLACEDUSER . " " . $data['login'];
      break;
     case "users_to_courses":
      $where = "users_login='".$data['users_login']."' AND courses_ID = " . $data['courses_ID'];
@@ -399,7 +399,7 @@ class MagesterImportCsv extends MagesterImport
      }
      break;
     case "users":
-     $existingUsers = eF_getTableDataFlat("users", "login, active, archive");
+     $existingUsers = sC_getTableDataFlat("users", "login, active, archive");
      $addedUsers = array();
      foreach ($data as $key => $value) {
       try {
@@ -421,7 +421,7 @@ class MagesterImportCsv extends MagesterImport
        }
       }
      }
-     $defaultGroup = eF_getTableData("groups", "id", "is_default = 1 AND active = 1");
+     $defaultGroup = sC_getTableData("groups", "id", "is_default = 1 AND active = 1");
      if (!empty($defaultGroup) && !empty($addedUsers)) {
       $defaultGroup = new MagesterGroup($defaultGroup[0]['id']);
       $defaultGroup -> addUsers($addedUsers);
@@ -843,12 +843,12 @@ class MagesterExportCsv extends MagesterExport
  {
   switch ($type) {
    case "users":
-     return eF_getTableData($type, implode(",", $this -> types), "archive = 0");
+     return sC_getTableData($type, implode(",", $this -> types), "archive = 0");
    case "users_to_courses":
-     return eF_getTableData("users_to_courses JOIN courses ON courses.id = users_to_courses.courses_ID", implode(",", $this -> types), "");
+     return sC_getTableData("users_to_courses JOIN courses ON courses.id = users_to_courses.courses_ID", implode(",", $this -> types), "");
    case "users_to_groups":
-     return eF_getTableData("users_to_groups JOIN groups ON groups.id = users_to_groups.groups_ID", implode(",", $this -> types), "");
-   return eF_getTableData($type, implode(",", $this -> types), "archive = 0");
+     return sC_getTableData("users_to_groups JOIN groups ON groups.id = users_to_groups.groups_ID", implode(",", $this -> types), "");
+   return sC_getTableData($type, implode(",", $this -> types), "archive = 0");
   }
  }
  /*

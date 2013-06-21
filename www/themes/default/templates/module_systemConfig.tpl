@@ -70,7 +70,7 @@ function setSecure(el) {
 </table>
 </form>
 {/capture}
-{eF_template_printBlock title=$smarty.const._CONFIGURATIONVARIABLES data=$smarty.capture.system_vars image='32x32/tests.png'}
+{sC_template_printBlock title=$smarty.const._CONFIGURATIONVARIABLES data=$smarty.capture.system_vars image='32x32/tests.png'}
 </div>
 
 <div class="tabbertab {if ($smarty.get.tab == 'ldap')}tabbertabdefault{/if}">
@@ -134,14 +134,14 @@ function setSecure(el) {
 </table>
 </form>
 {/capture}
-{eF_template_printBlock title=$smarty.const._LDAPVARIABLES data=$smarty.capture.ldap_vars image='32x32/directory.png'}
+{sC_template_printBlock title=$smarty.const._LDAPVARIABLES data=$smarty.capture.ldap_vars image='32x32/directory.png'}
 </div>
 
 <div class="tabbertab {if ($smarty.get.tab == 'smtp')}tabbertabdefault{/if}">
 	{if ($smarty.get.email_conf == '1')}
-		{eF_template_printMessage message=$smarty.const._SMTPCONFIGURATIONARECORRECT type='success'}
+		{sC_template_printMessage message=$smarty.const._SMTPCONFIGURATIONARECORRECT type='success'}
 	{elseif ($smarty.get.email_conf == '-1')}
-		{eF_template_printMessage message=$smarty.const._SMTPCONFIGURATIONERROR type='failure'}
+		{sC_template_printMessage message=$smarty.const._SMTPCONFIGURATIONERROR type='failure'}
 	{else}
 	{/if}
 	<h3>{$smarty.const._EMAILCONFIGURATIONS}</h3>
@@ -173,8 +173,8 @@ function setSecure(el) {
 </form>
 {/capture}
 
-{eF_template_printBlock title=$smarty.const._SMTPSERVERCONFIGURATIONS data=$smarty.capture.ldap_vars image='32x32/mail.png'}
+{sC_template_printBlock title=$smarty.const._SMTPSERVERCONFIGURATIONS data=$smarty.capture.ldap_vars image='32x32/mail.png'}
 </div>
 </div>
 {/capture}
-{eF_template_printBlock title = $smarty.const._CONFIGURATIONVARIABLES data = $smarty.capture.view_config image='32x32/edit.png'}
+{sC_template_printBlock title = $smarty.const._CONFIGURATIONVARIABLES data = $smarty.capture.view_config image='32x32/edit.png'}

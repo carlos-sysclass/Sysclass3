@@ -3,7 +3,7 @@
 * prints a form
 *
 */
-function smarty_function_eF_template_printForm($params, &$smarty)
+function smarty_function_sC_template_printForm($params, &$smarty)
 {
 	$hiddenString = $elementString = $submitString = '';
 

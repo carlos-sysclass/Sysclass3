@@ -9,7 +9,7 @@
  * Smarty truncate modifier plugin
  *
  * Type:     modifier<br>
- * Name:     eF_formatTitlePath<br>
+ * Name:     sC_formatTitlePath<br>
  * Purpose:  Format the top tilebar path using an algorithm to
  *			 cut each inner link if necessary.
  *
@@ -19,7 +19,7 @@
  * @param string
  * @return string
  */
-function smarty_modifier_eF_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...')
+function smarty_modifier_sC_formatTitlePath($string, $length = 80, $pathLimit = 6, $etc = '...')
 {
 	$piecesStart = explode("&raquo;&nbsp;", $string); // with tags
 	$stripped = strip_tags($string); //remove tags to count characters

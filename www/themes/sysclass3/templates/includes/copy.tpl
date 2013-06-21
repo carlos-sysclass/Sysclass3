@@ -21,8 +21,8 @@
         {if $smarty.get.from}
          <script>var TransferedNodes = "";</script>
          <table class = "copyContent">
-             <tr><td style = "width:50%">{eF_template_printBlock title = $smarty.const._DRAGAUNITTOCOPY data = $T_SOURCE_TREE image = "32x32/content.png" alt = '<span class = "emptyCategory">'|cat:$smarty.const._NOCONTENTFOUND|cat:'</span>'}</td>
-              <td style = "width:50%">{eF_template_printBlock title = $smarty.const._DROPAUNITTOCOPY data = $T_CONTENT_TREE image = "32x32/content.png" alt = '<span class = "emptyCategory">'|cat:$smarty.const._NOCONTENTFOUND|cat:'</span>'}</td></tr>
+             <tr><td style = "width:50%">{sC_template_printBlock title = $smarty.const._DRAGAUNITTOCOPY data = $T_SOURCE_TREE image = "32x32/content.png" alt = '<span class = "emptyCategory">'|cat:$smarty.const._NOCONTENTFOUND|cat:'</span>'}</td>
+              <td style = "width:50%">{sC_template_printBlock title = $smarty.const._DROPAUNITTOCOPY data = $T_CONTENT_TREE image = "32x32/content.png" alt = '<span class = "emptyCategory">'|cat:$smarty.const._NOCONTENTFOUND|cat:'</span>'}</td></tr>
              <tr><td></td><td><input id = "save_button" class = "flatButton" type = "button" onclick = "this.disabled=true;saveTree(this)" value = "{$smarty.const._SAVECHANGES}" /></td></tr>
          </table>
 
@@ -46,6 +46,6 @@
 
   {/if}
         {/capture}
-        {eF_template_printBlock title=$smarty.const._COPYFROMANOTHERLESSON data=$smarty.capture.t_copy_content_code image='32x32/lesson_copy.png' help = 'Copy_from_another_lesson'}
+        {sC_template_printBlock title=$smarty.const._COPYFROMANOTHERLESSON data=$smarty.capture.t_copy_content_code image='32x32/lesson_copy.png' help = 'Copy_from_another_lesson'}
  </td></tr>
 {/capture}

@@ -50,7 +50,7 @@
    </table>
    {/capture}
   <div class = "tabber">
-   {eF_template_printBlock tabber="lessons" title = "`$smarty.const._EDITLESSON`" data = $smarty.capture.t_edit_lesson_code image = '32x32/lessons.png'}
+   {sC_template_printBlock tabber="lessons" title = "`$smarty.const._EDITLESSON`" data = $smarty.capture.t_edit_lesson_code image = '32x32/lessons.png'}
    {capture name = 't_users_to_lessons_code'}
    <div class = "headerTools">
     <span>
@@ -105,15 +105,15 @@
         {if $smarty.get.edit_lesson && !$T_EDIT_LESSON->lesson.course_only}
         <div class="tabbertab {if $smarty.get.tab=='users'}tabbertabdefault{/if}">
          <h3>{$smarty.const._EDITUSERSLESSON}</h3>
-         {eF_template_printBlock title = $smarty.const._UPDATEUSERSTOLESSONS data = $smarty.capture.t_users_to_lessons_code image = '32x32/users.png'}
+         {sC_template_printBlock title = $smarty.const._UPDATEUSERSTOLESSONS data = $smarty.capture.t_users_to_lessons_code image = '32x32/users.png'}
         </div>
         {/if}
           </div>
        {/capture}
    {if $smarty.get.add_lesson}
-     {eF_template_printBlock title = $smarty.const._NEWLESSONOPTIONS data = $smarty.capture.t_lesson_code image = '32x32/lessons.png'}
+     {sC_template_printBlock title = $smarty.const._NEWLESSONOPTIONS data = $smarty.capture.t_lesson_code image = '32x32/lessons.png'}
    {else}
-     {eF_template_printBlock title = "`$smarty.const._LESSONOPTIONSFOR` <span class = 'innerTableName'>&quot;`$T_LESSON_FORM.name.value`&quot;</span>" data = $smarty.capture.t_lesson_code image = '32x32/lessons.png' options = $T_LESSON_OPTIONS}
+     {sC_template_printBlock title = "`$smarty.const._LESSONOPTIONSFOR` <span class = 'innerTableName'>&quot;`$T_LESSON_FORM.name.value`&quot;</span>" data = $smarty.capture.t_lesson_code image = '32x32/lessons.png' options = $T_LESSON_OPTIONS}
    {/if}
        </td></tr>
  {/capture}
@@ -139,7 +139,7 @@
          </span>
          <span>
           <img src = "images/16x16/import.png" title = "{$smarty.const._IMPORTLESSON}" alt = "{$smarty.const._IMPORTLESSON}">
-          <a href = "javascript:void(0)" title = "{$smarty.const._IMPORTLESSON}" onclick = "eF_js_showDivPopup('', 0, 'import_lesson_popup')">{$smarty.const._IMPORTLESSON}</a></a>
+          <a href = "javascript:void(0)" title = "{$smarty.const._IMPORTLESSON}" onclick = "sC_js_showDivPopup('', 0, 'import_lesson_popup')">{$smarty.const._IMPORTLESSON}</a></a>
          </span>
         
    </div>
@@ -158,7 +158,7 @@
           </table>
           </form>
          {/capture}
-         {eF_template_printBlock title = $smarty.const._IMPORTLESSON data = $smarty.capture.t_import_lesson_code image = '32x32/import.png'}
+         {sC_template_printBlock title = $smarty.const._IMPORTLESSON data = $smarty.capture.t_import_lesson_code image = '32x32/import.png'}
         </div>
         {assign var = "change_lessons" value = 1}
        {/if}
@@ -222,7 +222,7 @@
         </table>
 <!--/ajax:lessonsTable-->
          {/capture}
-         {eF_template_printBlock title = $smarty.const._UPDATELESSONS data = $smarty.capture.t_lessons_code image = '32x32/lessons.png' help = 'Lessons'}
+         {sC_template_printBlock title = $smarty.const._UPDATELESSONS data = $smarty.capture.t_lessons_code image = '32x32/lessons.png' help = 'Lessons'}
           </td></tr>
    {/if}
   {/capture}

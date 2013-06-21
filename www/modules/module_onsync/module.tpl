@@ -16,7 +16,7 @@
                 </form>
     {/capture}
 
-    {eF_template_printBlock title=$smarty.const._ONSYNC_ONSYNCSERVER data=$smarty.capture.t_onsync_server absoluteImagePath=1 image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
+    {sC_template_printBlock title=$smarty.const._ONSYNC_ONSYNCSERVER data=$smarty.capture.t_onsync_server absoluteImagePath=1 image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
 
 {else}
     {if $smarty.get.add_onsync || $smarty.get.edit_onsync}
@@ -168,7 +168,7 @@
 			             }
                      }
 
-                     var position = eF_js_findPos(el);
+                     var position = sC_js_findPos(el);
                      var img      = document.createElement("img");
 
                      img.style.position = 'absolute';
@@ -190,7 +190,7 @@
                                      var i;
                                      for (i = 0; i < tables; i++) {
                                          if (sortedTables[i].id == 'onsyncUsersTable') {
-                                             eF_js_rebuildTable(i, 0, 'null', 'desc');
+                                             sC_js_rebuildTable(i, 0, 'null', 'desc');
                                          }
                                      }
                                      */
@@ -213,18 +213,18 @@
             <div class="tabber" >
                <div class="tabbertab">
                     <h3>{$smarty.const._ONSYNC_SCHEDULEMEETING}</h3>
-                    {eF_template_printBlock title = $smarty.const._ONSYNC_SCHEDULEMEETING data = $smarty.capture.t_insert_onsync_code image = '32x32/calendar.png'}
+                    {sC_template_printBlock title = $smarty.const._ONSYNC_SCHEDULEMEETING data = $smarty.capture.t_insert_onsync_code image = '32x32/calendar.png'}
                 </div>
                 {if isset($smarty.get.edit_onsync)}
                     <div class="tabbertab{if $smarty.get.tab == "users" } tabbertabdefault {/if}">
                         <h3>{$smarty.const._ONSYNC_MEETINGATTENDANTS}</h3>
-                        {eF_template_printBlock title = $smarty.const._ONSYNC_MEETINGATTENDANTS data = $smarty.capture.t_onsync_users image = '32x32/users.png'}
+                        {sC_template_printBlock title = $smarty.const._ONSYNC_MEETINGATTENDANTS data = $smarty.capture.t_onsync_users image = '32x32/users.png'}
                     </div>
                 {/if}
             </div>
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._ONSYNC_ONSYNCMEETINGDATA data=$smarty.capture.t_onsync_tabber absoluteImagePath=1  image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
+        {sC_template_printBlock title=$smarty.const._ONSYNC_ONSYNCMEETINGDATA data=$smarty.capture.t_onsync_tabber absoluteImagePath=1  image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
 
     {else}
         {capture name = 't_onsync_list_code'}
@@ -284,7 +284,7 @@
         {/capture}
 
 
-        {eF_template_printBlock title=$smarty.const._ONSYNC_ONSYNCLIST data=$smarty.capture.t_onsync_list_code absoluteImagePath=1  image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
+        {sC_template_printBlock title=$smarty.const._ONSYNC_ONSYNCLIST data=$smarty.capture.t_onsync_list_code absoluteImagePath=1  image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png'}
     {/if}
 {/if}
 

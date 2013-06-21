@@ -43,7 +43,7 @@
           </td>
           <td>
           {if $smarty.foreach.folders_loop.iteration > 3}
-     <a href = "{$smarty.server.PHP_SELF}?ctg=messages&folders=1&edit={$id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 2)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=messages&folders=1&edit={$id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 2)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
      <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSURETODELETEFOLDER}&quot;{$folder.name}&quot;{$smarty.const._ANDALLCONTENTS}')) deleteFolder(this, '{$id}');"/>
     {/if}
           </td>
@@ -89,7 +89,7 @@
   {/if}
   {/capture}
 
-  {eF_template_printBlock title = $smarty.const._NEWFOLDER data = $smarty.capture.t_add_code image = '32x32/folders.png'}
+  {sC_template_printBlock title = $smarty.const._NEWFOLDER data = $smarty.capture.t_add_code image = '32x32/folders.png'}
 
  {elseif $smarty.get.add}
   {capture name = 't_recipients_code'}
@@ -181,10 +181,10 @@
   {/if}
         {/capture}
         {$T_ADD_MESSAGE_FORM.javascript}
-        <form {$T_ADD_MESSAGE_FORM.attributes} onSubmit = "return eF_js_checkRecipients()">
+        <form {$T_ADD_MESSAGE_FORM.attributes} onSubmit = "return sC_js_checkRecipients()">
         {$T_ADD_MESSAGE_FORM.hidden}
-            {eF_template_printBlock title = $smarty.const._RECIPIENTSSELECTION data = $smarty.capture.t_recipients_code image = '32x32/directory.png' help = 'Messages'}
-            {eF_template_printBlock title = $smarty.const._MESSAGEBODY data = $smarty.capture.t_new_message_code image = '32x32/mail.png' help = 'Messages'}
+            {sC_template_printBlock title = $smarty.const._RECIPIENTSSELECTION data = $smarty.capture.t_recipients_code image = '32x32/directory.png' help = 'Messages'}
+            {sC_template_printBlock title = $smarty.const._MESSAGEBODY data = $smarty.capture.t_new_message_code image = '32x32/mail.png' help = 'Messages'}
         </form>
  {elseif $smarty.get.view}
   {capture name = "t_messagesbody_code"}
@@ -224,10 +224,10 @@
    </div>
   {/capture}
   <table style = "width:100%;">
-   <tr><td style = "vertical-align:top;width:50%;">{eF_template_printBlock title = $smarty.const._FOLDERS data = $smarty.capture.t_folders_code image = "32x32/folders.png" navigation = $smarty.capture.t_folders_nav_code options = $T_FOLDERS_OPTIONS}</td>
-    <td style = "vertical-align:top;width:50%;">{eF_template_printBlock title = $smarty.const._SPACEUSAGE data = $smarty.capture.t_volume_code image = "32x32/status.png" navigation = $smarty.capture.t_usage_nav_code options = $T_VOLUME_OPTIONS}</td></tr>
+   <tr><td style = "vertical-align:top;width:50%;">{sC_template_printBlock title = $smarty.const._FOLDERS data = $smarty.capture.t_folders_code image = "32x32/folders.png" navigation = $smarty.capture.t_folders_nav_code options = $T_FOLDERS_OPTIONS}</td>
+    <td style = "vertical-align:top;width:50%;">{sC_template_printBlock title = $smarty.const._SPACEUSAGE data = $smarty.capture.t_volume_code image = "32x32/status.png" navigation = $smarty.capture.t_usage_nav_code options = $T_VOLUME_OPTIONS}</td></tr>
    <tr>
-    <td colspan = "2">{eF_template_printBlock title = $T_PERSONALMESSAGE.title data = $smarty.capture.t_messagesbody_code image = "32x32/mail.png"}</td></tr>
+    <td colspan = "2">{sC_template_printBlock title = $T_PERSONALMESSAGE.title data = $smarty.capture.t_messagesbody_code image = "32x32/mail.png"}</td></tr>
   </table>
  {else}
   {capture name = "t_messages_code"}
@@ -269,7 +269,7 @@
                         <a href = "{$smarty.server.PHP_SELF}?ctg=messages&view={$message.id}">{$message.title}</a>
                     </td>
                 {if $T_SENT_FOLDER == $smarty.get.folder}
-                 <td>{if $message.bcc}{$smarty.const._UNDISCLOSEDRECIPIENTS}{else}{$message.recipient|eF_truncate:30}{/if}</td>
+                 <td>{if $message.bcc}{$smarty.const._UNDISCLOSEDRECIPIENTS}{else}{$message.recipient|sC_truncate:30}{/if}</td>
                 {else}
                     <td>#filter:login-{$message.sender}#</td>
                 {/if}
@@ -302,10 +302,10 @@
              </div>
   {/capture}
   <table style = "width:100%;">
-   <tr><td style = "vertical-align:top;width:50%;">{eF_template_printBlock title = $smarty.const._FOLDERS data = $smarty.capture.t_folders_code image = "32x32/folders.png" navigation = $smarty.capture.t_folders_nav_code options = $T_FOLDERS_OPTIONS}</td>
-    <td style = "vertical-align:top;width:50%;">{eF_template_printBlock title = $smarty.const._SPACEUSAGE data = $smarty.capture.t_volume_code image = "32x32/status.png" navigation = $smarty.capture.t_usage_nav_code options = $T_VOLUME_OPTIONS}</td></tr>
+   <tr><td style = "vertical-align:top;width:50%;">{sC_template_printBlock title = $smarty.const._FOLDERS data = $smarty.capture.t_folders_code image = "32x32/folders.png" navigation = $smarty.capture.t_folders_nav_code options = $T_FOLDERS_OPTIONS}</td>
+    <td style = "vertical-align:top;width:50%;">{sC_template_printBlock title = $smarty.const._SPACEUSAGE data = $smarty.capture.t_volume_code image = "32x32/status.png" navigation = $smarty.capture.t_usage_nav_code options = $T_VOLUME_OPTIONS}</td></tr>
    <tr>
-    <td colspan = "2">{eF_template_printBlock title = $smarty.const._PERSONALMESSAGES data = $smarty.capture.t_messages_code image = "32x32/mailbox.png" help = 'Messages'}</td></tr>
+    <td colspan = "2">{sC_template_printBlock title = $smarty.const._PERSONALMESSAGES data = $smarty.capture.t_messages_code image = "32x32/mailbox.png" help = 'Messages'}</td></tr>
   </table>
  {/if}
  </td></tr>

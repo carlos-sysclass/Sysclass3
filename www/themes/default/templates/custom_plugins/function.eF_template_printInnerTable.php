@@ -1,15 +1,15 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printInnerTable function. Prints inner table
+* Smarty plugin: smarty_function_sC_template_printInnerTable function. Prints inner table
 *
 * $params is an array with fields: title, data, image, navigation (optional), is_last (optional), absoluteImagePath(optional)
 * $params['data'] is plain html
 */
-function smarty_function_eF_template_printInnerTable($params, &$smarty)
+function smarty_function_sC_template_printInnerTable($params, &$smarty)
 {
-	return smarty_function_eF_template_printBlock2($params, $smarty);
+	return smarty_function_sC_template_printBlock2($params, $smarty);
 }
-function smarty_function_eF_template_printBlock2($params, &$smarty)
+function smarty_function_sC_template_printBlock2($params, &$smarty)
 {
     $params['link'] ? $params['title'] 	 = '<a href = "'.$params['link'].'">'.$params['title'].'</a>' : null;
 	$params['data'] ? $params['content'] = $params['data'] 											  : null;		//'data' is used in printInnertable, and we put this here for compatibility

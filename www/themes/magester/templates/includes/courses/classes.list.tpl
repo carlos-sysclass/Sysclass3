@@ -60,7 +60,7 @@ $j(document).ready(function(jQuery) {
 						url,
 						{"schedules" : schedules},
 						function(data, response) {
-							eF_js_redrawPage('classesTable', true);
+							sC_js_redrawPage('classesTable', true);
 							
 						}
 					);
@@ -255,7 +255,7 @@ $j(document).ready(function(jQuery) {
 					<a 
 						target="POPUP_FRAME"
 						title = "{$smarty.const._EDITCOURSECLASS}" 
-						onclick="eF_js_showDivPopup('{$smarty.const._EDITCOURSECLASS}', 1)" 
+						onclick="sC_js_showDivPopup('{$smarty.const._EDITCOURSECLASS}', 1)" 
 						href="{$smarty.server.PHP_SELF}?ctg=courses&courseclass={$T_EDIT_COURSE->course.id}&edit_courseclass={$classe.id}&popup=1"
 						class = "editLink">
 							{$classe.name}

@@ -86,14 +86,14 @@
 											<a 
 												class="form-icon" 
 												href="{$T_XPAY_BASEURL}&action=edit_invoice&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-												onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
+												onclick = "sC_js_showDivPopup('{$smarty.const.__XPAY_EDIT_INVOICE}', 0)" 
 												target = "POPUP_FRAME"
 											><img src="images/others/transparent.gif" class="sprite16 sprite16-edit"></a>
 											{if $invoice.full_price > $invoice.paid}
 												<a 
 													class="form-icon" 
 													href="{$T_XPAY_BASEURL}&action=create_payment&negociation_id={$invoice.negociation_id}&invoice_index={$invoice.invoice_index}&popup=1"
-													onclick = "eF_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
+													onclick = "sC_js_showDivPopup('{$smarty.const.__XPAY_CREATE_PAYMENT}', 0)" 
 													target = "POPUP_FRAME"
 												><img src="images/others/transparent.gif" class="sprite16 sprite16-do_pay"></a>
 											{/if}
@@ -147,13 +147,13 @@
 		</table>
 	{/capture}
 	{if $T_XPAY_IS_ADMIN}
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_USER_COURSE_STATEMENT
 			options			= $T_XPAY_BLOCK_OPTIONS
 			data			= $smarty.capture.t_xpay_view_statement
 		}
 	{else}
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.const.__XPAY_VIEW_MY_COURSE_STATEMENT
 			data			= $smarty.capture.t_xpay_view_statement
 		}

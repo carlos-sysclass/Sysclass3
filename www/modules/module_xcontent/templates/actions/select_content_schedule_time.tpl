@@ -36,7 +36,7 @@
 </form>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCONTENT_SET_SCHEDULE_TIMES
 	data			= $smarty.capture.t_xcontent_schedule_times
 	contentclass	= ""

@@ -217,7 +217,7 @@
 			</div>
 		{/capture}
 		
-		{eF_template_printBlock 
+		{sC_template_printBlock 
 			title = $smarty.const.__PAGAMENTO_BOLETO_VIEW_FILE_DETAILS
 			data= $smarty.capture.preview_html
 			contentclass = "flat_area"
@@ -225,16 +225,16 @@
 		
 		
 		
-		{*eF_template_printBlock 
+		{*sC_template_printBlock 
 			title = $smarty.const._MODULE_PAGAMENTO_BOLETO_FILE_HEADER
 			data= $smarty.capture.preview_header
 		*}
-		{*eF_template_printBlock 
+		{*sC_template_printBlock 
 			title = $smarty.const._MODULE_PAGAMENTO_BOLETO_FILE_BODY
 			data= $smarty.capture.preview_registers
 			contentclass=""
 		*}
-		{*eF_template_printBlock
+		{*sC_template_printBlock
 			title = $smarty.const._MODULE_PAGAMENTO_BOLETO_FILE_FOOTER
 			data= $smarty.capture.preview_footer
 		*}

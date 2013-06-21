@@ -1,12 +1,12 @@
 <?php
 /**
 
- * Smarty plugin: smarty_function_eF_template_printCalendar function. Prints inner table
+ * Smarty plugin: smarty_function_sC_template_printCalendar function. Prints inner table
 
  *
 
  */
-function smarty_function_eF_template_printCalendar($params, &$smarty)
+function smarty_function_sC_template_printCalendar($params, &$smarty)
 {
  $events = $params['events'];
  //isset($params['ctg']) ? $current_ctg = $params['ctg'] : $current_ctg = 'control_panel';             //If a ctg is defined (e.g. ctg=calendar), use this as the links target. Otherwise, use control_panel (default)
@@ -42,7 +42,7 @@ function smarty_function_eF_template_printCalendar($params, &$smarty)
  $today = getdate(time());
  $today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 
- isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
+ isset($_GET['view_calendar']) && sC_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
  isset($_GET['show_interval']) ? $show_interval_link = '&show_interval='.$_GET['show_interval'] : $show_interval_link = '';
 
  $str = '

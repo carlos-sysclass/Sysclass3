@@ -75,17 +75,17 @@
 
  {capture name = "t_edit_curriculum_code"}
   <div class = "tabber">
-  {eF_template_printBlock tabber = "properties" title = $smarty.const._CURRICULUM data = $smarty.capture.t_add_code image = '32x32/theory.png'}
+  {sC_template_printBlock tabber = "properties" title = $smarty.const._CURRICULUM data = $smarty.capture.t_add_code image = '32x32/theory.png'}
   {if $smarty.get.edit}
-   {eF_template_printBlock tabber = "courses" title = $smarty.const._COURSES data = $smarty.capture.t_courses_code image = '32x32/courses.png'}
-   {eF_template_printBlock tabber = "users" title = $smarty.const._USERS data = $smarty.capture.t_users_code image = '32x32/users.png'}
+   {sC_template_printBlock tabber = "courses" title = $smarty.const._COURSES data = $smarty.capture.t_courses_code image = '32x32/courses.png'}
+   {sC_template_printBlock tabber = "users" title = $smarty.const._USERS data = $smarty.capture.t_users_code image = '32x32/users.png'}
  {*
-   {eF_template_printBlock tabber = "groups" title = $smarty.const._GROUPS data = $smarty.capture.t_groups_code image = '32x32/groups.png'}
+   {sC_template_printBlock tabber = "groups" title = $smarty.const._GROUPS data = $smarty.capture.t_groups_code image = '32x32/groups.png'}
  *}
   {/if}
   </div>
  {/capture}
- {eF_template_printBlock title = $smarty.const._CURRICULUMPROPERTIES data = $smarty.capture.t_edit_curriculum_code image = '32x32/theory.png' help = 'Curriculums'}
+ {sC_template_printBlock title = $smarty.const._CURRICULUMPROPERTIES data = $smarty.capture.t_edit_curriculum_code image = '32x32/theory.png' help = 'Curriculums'}
 {else}
  {capture name = "t_curriculums_code"}
   {if !isset($T_CURRENT_USER->coreAccess.lessons) || $T_CURRENT_USER->coreAccess.lessons== 'change'}
@@ -110,7 +110,7 @@
     {foreach name = 'users_list' key = 'key' item = 'curriculum' from = $T_DATA_SOURCE}
     <tr class = "{cycle values = "oddRowColor, evenRowColor"}">
      <td><a href = "{$smarty.server.PHP_SELF}?ctg=curriculums&edit={$curriculum.id}" class = "editLink">{$curriculum.name}</a></td>
-     <td>{$curriculum.description|eF_truncate:300}</td>
+     <td>{$curriculum.description|sC_truncate:300}</td>
      <td class = "centerAlign">
       <img {if $curriculum.active == 0}style = "display:none"{/if} class = "ajaxHandle" src = "images/16x16/trafficlight_green.png" alt = "{$smarty.const._DEACTIVATE}" title = "{$smarty.const._DEACTIVATE}" {if $change_lessons}onclick = "deactivateEntity(this, '{$curriculum.id}', {ldelim}curriculums:1{rdelim});"{/if}>
       <img {if $curriculum.active == 1}style = "display:none"{/if} class = "ajaxHandle" src = "images/16x16/trafficlight_red.png" alt = "{$smarty.const._ACTIVATE}" title = "{$smarty.const._ACTIVATE}" {if $change_lessons} onclick = "activateEntity(this, '{$curriculum.id}', {ldelim}curriculums:1{rdelim})" {/if}>
@@ -129,5 +129,5 @@
 <!--/ajax:curriculumsTable-->
  {/capture}
 
- {eF_template_printBlock title = $smarty.const._CURRICULUMS data = $smarty.capture.t_curriculums_code image='32x32/theory.png' help = 'Curriculums'}
+ {sC_template_printBlock title = $smarty.const._CURRICULUMS data = $smarty.capture.t_curriculums_code image='32x32/theory.png' help = 'Curriculums'}
 {/if}

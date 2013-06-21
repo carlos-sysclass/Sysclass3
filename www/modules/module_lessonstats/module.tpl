@@ -18,7 +18,7 @@
             {/section}
             </table>
 {/capture}
-{eF_template_printBlock title=$smarty.const._LESSONSTATS data=$smarty.capture.t_logins_list_code absoluteImagePath = 1 image = $T_LESSONSTATS_BASELINK|cat:'images/column-reports.png'}
+{sC_template_printBlock title=$smarty.const._LESSONSTATS data=$smarty.capture.t_logins_list_code absoluteImagePath = 1 image = $T_LESSONSTATS_BASELINK|cat:'images/column-reports.png'}
 
 
 

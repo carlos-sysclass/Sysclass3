@@ -32,7 +32,7 @@
  * @param Smarty
  * @return string
  */
-function smarty_function_eF_template_html_select_date($params, &$smarty)
+function smarty_function_sC_template_html_select_date($params, &$smarty)
 {
 
     require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');

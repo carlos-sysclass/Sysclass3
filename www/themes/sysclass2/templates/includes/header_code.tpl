@@ -31,7 +31,7 @@
 	{if !$hide_path}
 	<!-- 
 	<div id="header-breadcrumbs" class="grid_24">
-		{$smarty.const.__YOUAREIN_} {$title|eF_formatTitlePath}
+		{$smarty.const.__YOUAREIN_} {$title|sC_formatTitlePath}
 		<div id = "tab_handles_div" style = "float:right;">
 			{if $T_THEME_SETTINGS->options.sidebar_interface == 0 || $T_HEADER_CLASS == 'headerHidden'}
 				{$smarty.capture.t_path_additional_code}

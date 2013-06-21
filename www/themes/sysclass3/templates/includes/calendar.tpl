@@ -19,7 +19,7 @@
     <td>#filter:login-{$event.users_LOGIN}#</td>
     <td class = "centerAlign nowrap">
    {if ($smarty.session.s_type == 'administrator' || $smarty.session.s_login == $event.users_LOGIN) && $_change_}
-     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&edit={$id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDITEVENT}', 2)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITEVENT}" title = "{$smarty.const._EDITEVENT}" class = "hande"></a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&edit={$id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDITEVENT}', 2)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITEVENT}" title = "{$smarty.const._EDITEVENT}" class = "hande"></a>
      <img src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETEEVENT}" title = "{$smarty.const._DELETEEVENT}" class = "ajaxHandle" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteEntity(this, '{$id}')">
    {/if}
     </td>
@@ -36,14 +36,14 @@
  <tr><td class = "moduleCell">
  {if $smarty.get.add || $smarty.get.edit}
      {capture name = 't_add_code'}
-   {eF_template_printForm form = $T_ENTITY_FORM_ARRAY}
+   {sC_template_printForm form = $T_ENTITY_FORM_ARRAY}
 
    {if $T_MESSAGE_TYPE == 'success' && !$smarty.post.submit_another}
        <script>parent.location = parent.location;</script>
    {/if}
   {/capture}
   {if $smarty.get.add}{assign var = "block_title" value = $smarty.const._ADDEVENT}{else}{assign var = "block_title" value = $smarty.const._EDITEVENT}{/if}
-  {eF_template_printBlock title = $block_title data = $smarty.capture.t_add_code image = '32x32/calendar.png' help ='calendar'}
+  {sC_template_printBlock title = $block_title data = $smarty.capture.t_add_code image = '32x32/calendar.png' help ='calendar'}
   <div id = "autocomplete_calendar" class = "autocomplete"></div>
  {else}
   {capture name = 't_calendar_page_code'}
@@ -51,19 +51,19 @@
    <div class = "headerTools">
     <span>
      <img src = "images/16x16/add.png" title="{$smarty.const._ADDEVENT}" alt="{$smarty.const._ADDEVENT}"/>
-     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&view_calendar={$smarty.get.view_calendar}{if $smarty.get.show_interval}&show_interval={$smarty.get.show_interval}{/if}&add=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._ADDEVENT}', 2)" target = "POPUP_FRAME">{$smarty.const._ADDEVENT}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&view_calendar={$smarty.get.view_calendar}{if $smarty.get.show_interval}&show_interval={$smarty.get.show_interval}{/if}&add=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._ADDEVENT}', 2)" target = "POPUP_FRAME">{$smarty.const._ADDEVENT}</a>
     </span>
    </div>
    <br/>
    {/if}
    <table style = "width:100%">
     <tr>
-     <td style = "vertical-align:top">{eF_template_printCalendar events=$T_SORTED_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR }</td>
+     <td style = "vertical-align:top">{sC_template_printCalendar events=$T_SORTED_CALENDAR_EVENTS timestamp=$T_VIEW_CALENDAR }</td>
      <td style = "width:100%;vertical-align:top">{$smarty.capture.calendar_list}</td>
     </tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._CALENDAR data = $smarty.capture.t_calendar_page_code image = '32x32/calendar.png' main_options=$T_CALENDAR_OPTIONS help ='calendar'}
+  {sC_template_printBlock title = $smarty.const._CALENDAR data = $smarty.capture.t_calendar_page_code image = '32x32/calendar.png' main_options=$T_CALENDAR_OPTIONS help ='calendar'}
  {/if}
  </td></tr>
 {/capture}

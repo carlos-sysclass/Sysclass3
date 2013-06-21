@@ -8,14 +8,14 @@
 
 {if ($smarty.get.add_feed) || $smarty.get.edit_feed}
  {capture name = "t_add_feed_code"}
-  {eF_template_printForm form=$T_RSS_ADD_RSS_FORM}
+  {sC_template_printForm form=$T_RSS_ADD_RSS_FORM}
  {/capture}
- {eF_template_printBlock title=$smarty.const._RSS_ADDRSS data=$smarty.capture.t_add_feed_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
+ {sC_template_printBlock title=$smarty.const._RSS_ADDRSS data=$smarty.capture.t_add_feed_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
 {elseif ($smarty.get.add_feed_provider) || $smarty.get.edit_feed_provider}
  {capture name = "t_add_feed_code"}
-  {eF_template_printForm form=$T_RSS_PROVIDE_RSS_FORM}
+  {sC_template_printForm form=$T_RSS_PROVIDE_RSS_FORM}
  {/capture}
- {eF_template_printBlock title=$smarty.const._RSS_ADDRSS data=$smarty.capture.t_add_feed_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
+ {sC_template_printBlock title=$smarty.const._RSS_ADDRSS data=$smarty.capture.t_add_feed_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
 
 {else}
 
@@ -23,7 +23,7 @@
   <div class = "headerTools">
    <span>
     <img src = {$T_RSS_MODULE_BASELINK|cat:'images/add.png'} alt = "{$smarty.const._RSS_ADDFEED}" title = "{$smarty.const._RSS_ADDFEED}">
-    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._RSS_ADDFEED}', 0)">{$smarty.const._RSS_ADDFEED}</a>
+    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._RSS_ADDFEED}', 0)">{$smarty.const._RSS_ADDFEED}</a>
    </span>
   </div>
         <table class = "sortedTable" style = "width:100%">
@@ -48,7 +48,7 @@
        </td class = "centerAlign">
        <td class = "centerAlign">
        {if $T_RSS_USERTYPE == 'administrator' || $feed.lessons_ID > 0}
-        <a href = "{$T_RSS_MODULE_BASEURL}&edit_feed={$feed.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._RSS_EDITFEED}', 0)"><img src = "{$T_RSS_MODULE_BASELINK}images/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" border = "0"></a>
+        <a href = "{$T_RSS_MODULE_BASEURL}&edit_feed={$feed.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._RSS_EDITFEED}', 0)"><img src = "{$T_RSS_MODULE_BASELINK}images/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" border = "0"></a>
         <img class = "ajaxHandle" src = "{$T_RSS_MODULE_BASELINK}images/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteFeed(this, '{$feed.id}', 'client');">
        {/if}
        </td>
@@ -64,12 +64,12 @@
    {if $T_RSS_USERTYPE == 'administrator' || $feed.lessons_ID > 0}
    <span>
     <img src = {$T_RSS_MODULE_BASELINK|cat:'images/add.png'} alt = "{$smarty.const._RSS_PROVIDEFEED}" title = "{$smarty.const._RSS_PROVIDEFEED}">
-    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed_provider=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._RSS_PROVIDEFEED}', 0)">{$smarty.const._RSS_PROVIDEFEED}</a>
+    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed_provider=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._RSS_PROVIDEFEED}', 0)">{$smarty.const._RSS_PROVIDEFEED}</a>
    </span>
    {/if}
    <span>
     <img src = {$T_RSS_MODULE_BASELINK|cat:'images/add.png'} alt = "{$smarty.const._RSS_PROVIDELESSONFEED}" title = "{$smarty.const._RSS_PROVIDELESSONFEED}">
-    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed_provider=1&lesson=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._RSS_PROVIDELESSONFEED}', 1)">{$smarty.const._RSS_PROVIDELESSONFEED}</a>
+    <a href = "{$T_RSS_MODULE_BASEURL}&add_feed_provider=1&lesson=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._RSS_PROVIDELESSONFEED}', 1)">{$smarty.const._RSS_PROVIDELESSONFEED}</a>
    </span>
   </div>
         <table class = "sortedTable" style = "width:100%">
@@ -101,7 +101,7 @@
        </td class = "centerAlign">
        <td class = "centerAlign">
         {if $T_RSS_USERTYPE == 'administrator' || $feed.lessons_ID}
-        <a href = "{$T_RSS_MODULE_BASEURL}&edit_feed_provider={$feed.id}{if $feed.mode == 'lesson'}&lesson=1{/if}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._RSS_EDITFEED}', 0)"><img src = "{$T_RSS_MODULE_BASELINK}images/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}"></a>
+        <a href = "{$T_RSS_MODULE_BASEURL}&edit_feed_provider={$feed.id}{if $feed.mode == 'lesson'}&lesson=1{/if}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._RSS_EDITFEED}', 0)"><img src = "{$T_RSS_MODULE_BASELINK}images/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}"></a>
         <img class = "ajaxHandle" src = "{$T_RSS_MODULE_BASELINK}images/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteFeed(this, '{$feed.id}', 'provider');">
         {/if}
        </td>
@@ -114,10 +114,10 @@
 
  {capture name = 't_rss_tabs_code'}
  <div class = "tabber">
-     {eF_template_printBlock tabber = "rss_feeds" title=$smarty.const._RSS_RSSCLIENT data=$smarty.capture.t_rss_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
-     {eF_template_printBlock tabber = "rss_provider" title=$smarty.const._RSS_RSSPROVIDER data=$smarty.capture.t_rss_provider_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
+     {sC_template_printBlock tabber = "rss_feeds" title=$smarty.const._RSS_RSSCLIENT data=$smarty.capture.t_rss_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
+     {sC_template_printBlock tabber = "rss_provider" title=$smarty.const._RSS_RSSPROVIDER data=$smarty.capture.t_rss_provider_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
  </div>
  {/capture}
- {eF_template_printBlock title=$smarty.const._RSS_RSS data=$smarty.capture.t_rss_tabs_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
+ {sC_template_printBlock title=$smarty.const._RSS_RSS data=$smarty.capture.t_rss_tabs_code image=$T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1}
 
 {/if}

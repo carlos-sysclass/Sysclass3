@@ -1,9 +1,9 @@
 <?php
 /**
-* Smarty plugin: smarty_function_eF_template_printSurveysList function. Prints surveys
+* Smarty plugin: smarty_function_sC_template_printSurveysList function. Prints surveys
 *
 */
-function smarty_function_eF_template_printSurvey($params ,  &$smarty)
+function smarty_function_sC_template_printSurvey($params ,  &$smarty)
 {
     //$returnVal = '';
 

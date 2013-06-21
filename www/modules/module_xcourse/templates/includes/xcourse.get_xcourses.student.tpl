@@ -9,7 +9,7 @@
 {/capture}
 
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XCOURSE_SELECT_COURSE
 	data=$smarty.capture.t_xcourses_feature_list
 	contentclass="blockContents"

@@ -25,14 +25,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $loadScripts[] = 'includes/user_types';
 try {
     if (isset($currentUser -> coreAccess['user_types']) && $currentUser -> coreAccess['user_types'] == 'hidden') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
-    if (isset($_GET['delete_user_type']) && eF_checkParameter($_GET['delete_user_type'], 'id')) {
+    if (isset($_GET['delete_user_type']) && sC_checkParameter($_GET['delete_user_type'], 'id')) {
         if (isset($currentUser -> coreAccess['user_types']) && $currentUser -> coreAccess['user_types'] != 'change') {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
         }
         try {
-            eF_deleteTableData("user_types", "id='".$_GET['delete_user_type']."'") && eF_updateTableData("users", array("user_types_ID" => 0), "user_types_ID=".$_GET['delete_user_type']);
+            sC_deleteTableData("user_types", "id='".$_GET['delete_user_type']."'") && sC_updateTableData("users", array("user_types_ID" => 0), "user_types_ID=".$_GET['delete_user_type']);
             $message = _USERTYPEDELETED;
             $message_type = 'success';
         } catch (Exception $e) {
@@ -41,33 +41,33 @@ try {
             echo urlencode($e -> getMessage()).' ('.$e -> getCode().')';
         }
         exit;
-    } elseif (isset($_GET['deactivate_user_type']) && eF_checkParameter($_GET['deactivate_user_type'], 'id')) {
+    } elseif (isset($_GET['deactivate_user_type']) && sC_checkParameter($_GET['deactivate_user_type'], 'id')) {
         if (isset($currentUser -> coreAccess['user_types']) && $currentUser -> coreAccess['user_types'] != 'change') {
             echo _UNAUTHORIZEDACCESS;
             exit;
         }
         try {
-            eF_updateTableData("user_types", array('active' => 0), "id='".$_GET['deactivate_user_type']."'");
+            sC_updateTableData("user_types", array('active' => 0), "id='".$_GET['deactivate_user_type']."'");
             echo "0";
         } catch (Exception $e) {
             header("HTTP/1.0 500 ");
             echo _SOMEPROBLEMEMERGED;
         }
         exit;
-    } elseif (isset($_GET['activate_user_type']) && eF_checkParameter($_GET['activate_user_type'], 'id')) {
+    } elseif (isset($_GET['activate_user_type']) && sC_checkParameter($_GET['activate_user_type'], 'id')) {
         if (isset($currentUser -> coreAccess['user_types']) && $currentUser -> coreAccess['user_types'] != 'change') {
             echo _UNAUTHORIZEDACCESS;
             exit;
         }
         try {
-            eF_updateTableData("user_types", array('active' => 1), "id='".$_GET['activate_user_type']."'");
+            sC_updateTableData("user_types", array('active' => 1), "id='".$_GET['activate_user_type']."'");
             echo "1";
         } catch (Exception $e) {
             header("HTTP/1.0 500 ");
             echo _SOMEPROBLEMEMERGED;
         }
         exit;
-    } elseif (isset($_GET['add_user_type']) || (isset($_GET['edit_user_type']) && eF_checkParameter($_GET['edit_user_type'], 'text'))) {
+    } elseif (isset($_GET['add_user_type']) || (isset($_GET['edit_user_type']) && sC_checkParameter($_GET['edit_user_type'], 'text'))) {
         $studentOptions = array("content" => _CONTENT,
                                       //"calendar"          => _CALENDAR,
                                       "statistics" => _STATISTICS,
@@ -131,7 +131,7 @@ try {
   $GLOBALS['configuration']['disable_forum'] != 1 ? $administratorOptions["forum"] = _FORUM : null;
         $basicTypes = MagesterUser :: $basicUserTypesTranslations;
         if (isset($_GET['edit_user_type'])) {
-            $result = eF_getTableData("user_types", "*", "id='".$_GET['edit_user_type']."'");
+            $result = sC_getTableData("user_types", "*", "id='".$_GET['edit_user_type']."'");
             $basicType = $result[0]['basic_user_type'];
         } elseif (isset($_GET['basic_type']) && in_array($_GET['basic_type'], array_keys($basicTypes))) {
             $basicType = $_GET['basic_type'];
@@ -151,8 +151,8 @@ try {
         }
         isset($_GET['add_user_type']) ? $postTarget = 'add_user_type=1' : $postTarget = "edit_user_type=".$_GET['edit_user_type'];
         $form = new HTML_QuickForm("add_type_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=user_types&".$postTarget."&basic_type=".$basicType, "", null, true);
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
-        //$form -> registerRule('checkNotExist', 'callback', 'eF_checkNotExist');
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
+        //$form -> registerRule('checkNotExist', 'callback', 'sC_checkNotExist');
         $form -> addElement('text', 'name', _TYPENAME, 'class = "inputText"');
         $form -> addRule('name', _THEFIELD.' '._TYPENAME.' '._ISMANDATORY, 'required', null, 'client');
         //$form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
@@ -179,19 +179,19 @@ try {
                                 "basic_user_type" => $values['basic_user_type'],
                                 "core_access" => serialize($values['core_access']));
                 if (isset($_GET['edit_user_type'])) {
-                    if (eF_updateTableData("user_types", $fields, "id=".$_GET['edit_user_type'])) {
+                    if (sC_updateTableData("user_types", $fields, "id=".$_GET['edit_user_type'])) {
                         $message = _SUCCESFULLYUPDATEDUSERTYPE;
                         $message_type = 'success';
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=user_types&message=".urlencode($message)."&message_type=".$message_type);
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=user_types&message=".urlencode($message)."&message_type=".$message_type);
                     } else {
                         $message = _SOMEPROBLEMEMERGED;
                         $message_type = 'failure';
                     }
                 } else {
-                    if (eF_insertTableData("user_types", $fields)) {
+                    if (sC_insertTableData("user_types", $fields)) {
                         $message = _SUCCESFULLYADDEDUSERTYPE;
                         $message_type = 'success';
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=user_types&message=".urlencode($message)."&message_type=".$message_type);
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=user_types&message=".urlencode($message)."&message_type=".$message_type);
                     } else {
                         $message = _SOMEPROBLEMEMERGED;
                         $message_type = 'failure';
@@ -210,12 +210,12 @@ try {
         $smarty -> assign('T_USERTYPES_OPTIONS', $options);
         $smarty -> assign('T_USERTYPES_FORM', $renderer -> toArray());
     } else {
-        $result = eF_getTableData("user_types", "*");
+        $result = sC_getTableData("user_types", "*");
         $smarty -> assign("T_USERTYPES_DATA", $result);
         $smarty -> assign("T_BASIC_USER_TYPES", MagesterUser :: $basicUserTypesTranslations);
     }
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

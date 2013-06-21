@@ -1,8 +1,8 @@
 <?php
 /**
-* Smarty plugin: eF_template_printBackButton function
+* Smarty plugin: sC_template_printBackButton function
 */
-function smarty_function_eF_template_printBackButton($params, &$smarty)
+function smarty_function_sC_template_printBackButton($params, &$smarty)
 {
     switch ($params['type']) {
         case 'link':

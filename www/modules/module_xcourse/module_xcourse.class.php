@@ -153,7 +153,7 @@ class module_xcourse extends MagesterExtendedModule
 		}
 		// GET LAST MESSAGES FROM LESSON
 		if (!empty($_SESSION['s_lessons_ID'])) {
-			$forum_messages = eF_getTableData("	f_messages fm
+			$forum_messages = sC_getTableData("	f_messages fm
 											JOIN f_topics ft
 											JOIN f_forums ff
 											LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
@@ -385,7 +385,7 @@ class module_xcourse extends MagesterExtendedModule
 						$userProgress 	= $userProgress[$lesson['id']][$currentUser -> user['login']];
 						$seenContent 	= MagesterStats::getStudentsSeenContent($lesson['id'], $currentUser -> user['login']);
 						$seenContent 	= $seenContent[$lesson['id']][$currentUser -> user['login']];
-						$result 		= eF_getTableData("users_to_lessons", "current_unit", "users_LOGIN = '".$currentUser -> user['login']."' and lessons_ID = ".$lesson['id']);
+						$result 		= sC_getTableData("users_to_lessons", "current_unit", "users_LOGIN = '".$currentUser -> user['login']."' and lessons_ID = ".$lesson['id']);
 						sizeof($result) > 0 ? $userProgress['current_unit'] = $result[0]['current_unit'] : $userProgress['current_unit'] = false;
 						if ($userProgress['lesson_passed'] && !$userProgress['completed']) {
 							if (!$userProgress['completed'] && $currentLesson -> options['auto_complete']) {
@@ -405,7 +405,7 @@ class module_xcourse extends MagesterExtendedModule
 															'text' 		=> _LESSONCOMPLETE,
 															'image' 	=> '32x32/success.png',
 															'href' 		=> basename($_SERVER['PHP_SELF']).'?ctg=progress&popup=1',
-															'onclick' 	=> "eF_js_showDivPopup('"._LESSONINFORMATION."', 2)",
+															'onclick' 	=> "sC_js_showDivPopup('"._LESSONINFORMATION."', 2)",
 															'target' => 'POPUP_FRAME'
 														);
 						}
@@ -799,7 +799,7 @@ class module_xcourse extends MagesterExtendedModule
 		$roles 			= MagesterLessonUser :: getLessonsRoles();
 		$userLessons 	= $this->getCurrentUser() -> getLessons();
 		$userId			= $this->getCurrentUser() -> user['id'];
-		if ( isset($_POST['lesson_id']) && eF_checkParameter($_POST['lesson_id'], 'id') ) {
+		if ( isset($_POST['lesson_id']) && sC_checkParameter($_POST['lesson_id'], 'id') ) {
 			if ( !isset($_SESSION['s_lessons_ID']) || $_POST['lesson_id'] != $_SESSION['s_lessons_ID'] ) {
 				unset($_SESSION['s_courses_ID']);
 				if ( isset($_POST['course_id']) ) {
@@ -849,7 +849,7 @@ class module_xcourse extends MagesterExtendedModule
 			}
 		}
 		// registra ultimo curso acessado pelo aluno
-		eF_insertOrupdateTableData('user_last_access', array('lesson_ID'=> $_POST['lesson_id'],'course_ID'=>$_POST['course_id'],'user_ID'=>$userId), 'user_ID = '.$userId );
+		sC_insertOrupdateTableData('user_last_access', array('lesson_ID'=> $_POST['lesson_id'],'course_ID'=>$_POST['course_id'],'user_ID'=>$userId), 'user_ID = '.$userId );
 
 		header("Content-Type: application/json");
 		echo json_encode(array(
@@ -864,7 +864,7 @@ class module_xcourse extends MagesterExtendedModule
 		$currentUser = $this->getCurrentUser();
 		$constraints = array('archive' => false, 'active' => true, 'condition' => "uc.user_type = 'student'", 'sort' => 'name');
 		$userCourses = $currentUser -> getUserCourses($constraints);
-		$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
+		$classeData = sC_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
 		// GET USER CLASS
 		$courseClass = $classeData[0]['classe_id'];
 //		if ($_GET['debug'] == 10) {
@@ -1050,7 +1050,7 @@ function loadContentTreeXcourseFront2Action()
 		$currentUser = $this->getCurrentUser();
 		$constraints = array('archive' => false, 'active' => true, 'condition' => "uc.user_type = 'student'", 'sort' => 'name');
 		$userCourses = $currentUser -> getUserCourses($constraints);
-		$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
+		$classeData = sC_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
 		// GET USER CLASS
 		$courseClass = $classeData[0]['classe_id'];
 		$lessonID = $_POST["lesson_id"];
@@ -1223,7 +1223,7 @@ exit;
 				if ($centerLinkInfo) {
 					$controlPanelOption = array(
                     	'text' => $centerLinkInfo['title'],
-                    	'image' => eF_getRelativeModuleImagePath($centerLinkInfo['image']),
+                    	'image' => sC_getRelativeModuleImagePath($centerLinkInfo['image']),
                     	'href' => $centerLinkInfo['link'],
                     	'image_class' => $centerLinkInfo['image_class']
 					);
@@ -1282,7 +1282,7 @@ exit;
 			$fields = $_POST;
 		}
 
-		if (eF_checkParameter($fields['xcourse_id'], 'id') && eF_checkParameter($fields['xlesson_id'], 'id')) {
+		if (sC_checkParameter($fields['xcourse_id'], 'id') && sC_checkParameter($fields['xlesson_id'], 'id')) {
 			$editedCourse = $this->getEditedCourse(true, $fields['xcourse_id']);
 
 			try {
@@ -1321,7 +1321,7 @@ exit;
 		$smarty -> assign("T_MODULE_XCOURSE_ACTION", $selectedAction);
 
 		// LOAD L10N DATA
-		$modules = eF_loadAllModules(true);
+		$modules = sC_loadAllModules(true);
 		$l10nSection = $modules['module_language']->getSection("l10n");
 
 		$smarty -> assign("T_L10N_DATA", $l10nSection['data']);
@@ -1329,7 +1329,7 @@ exit;
 		// LOAD SCHEDULES FOR CLASS
 		$courseClasses = $this->getEditedCourse()->getCourseClasses();
 
-		if (eF_checkParameter($_GET['xcourse_class_id'], 'id')) {
+		if (sC_checkParameter($_GET['xcourse_class_id'], 'id')) {
 			$courseClassID = $_GET['xcourse_class_id'];
 
 			$smarty -> assign("T_XCOURSE_CLASS_SCHEDULES", $courseClasses[$courseClassID]->classe['schedules']);
@@ -1344,7 +1344,7 @@ exit;
 	}
 	public function saveClassSchedulesAction()
 	{
-		if (eF_checkParameter($_GET['xcourse_class_id'], 'id')) {
+		if (sC_checkParameter($_GET['xcourse_class_id'], 'id')) {
 			$insertData = array(
 				'week_day' 	=> $_POST['week_day']['new'],
 				'start'		=> $_POST['start']['new'],
@@ -1424,7 +1424,7 @@ exit;
 		$smarty = $this->getSmartyVar();
 
 		if (isset($this->getCurrentUser() -> coreAccess['lessons']) && $this->getCurrentUser() -> coreAccess['lessons'] == 'hidden') {
-			eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+			sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		} elseif (isset($this->getCurrentUser() -> coreAccess['lessons']) && $this->getCurrentUser() -> coreAccess['lessons'] != 'change') {
 			$_change_ = false;
 		} else {
@@ -1477,7 +1477,7 @@ exit;
 
 		if ($redirect) {
 			$url = $this->moduleBaseUrl . "&action=" . self::VIEW_COURSE_DASHBOARD	. "&xcourse_id=" . $selectCourse['id'];
-			eF_redirect($url);
+			sC_redirect($url);
 		}
 
 		$smarty -> assign("T_XCOURSE_USER_LIST", $userCourses);
@@ -1485,7 +1485,7 @@ exit;
 
 		/*
 		 if (isset($this->getCurrentUser() -> coreAccess['lessons']) && $this->getCurrentUser() -> coreAccess['lessons'] == 'hidden') {
-			eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+			sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 			} elseif (isset($this->getCurrentUser() -> coreAccess['lessons']) && $this->getCurrentUser() -> coreAccess['lessons'] != 'change') {
 			$_change_ = false;
 			} else {
@@ -1664,7 +1664,7 @@ exit;
 
 			if ($redirect) {
 			$url = $this->moduleBaseUrl . "&action=" . self::VIEW_COURSE_DASHBOARD	. "&xcourse_id=" . $selectCourse['id'];
-			eF_redirect($url);
+			sC_redirect($url);
 			}
 
 
@@ -1779,7 +1779,7 @@ exit;
 	{
 		$fields = $_POST;
 
-		if (eF_checkParameter($fields['xcourse_id'], 'id')) {
+		if (sC_checkParameter($fields['xcourse_id'], 'id')) {
 			$this->getEditedCourse(null, $fields['xcourse_id']);
 		}
 
@@ -1798,7 +1798,7 @@ exit;
 				} else {
 					$previous_lessons_ID = 0;
 				}
-				eF_updateTableData(
+				sC_updateTableData(
 					"lessons_to_courses",
 				array('previous_lessons_ID' => $previous_lessons_ID),
 				sprintf("courses_ID = %d AND lessons_ID = %d", $courseID, $item_id)
@@ -1825,21 +1825,21 @@ exit;
 		}
 
 
-		if (eF_checkParameter($fields['course_id'], 'id')) {
+		if (sC_checkParameter($fields['course_id'], 'id')) {
 			$this->getEditedCourse(null, $fields['course_id']);
 		}
 
 		if (
 		$this->getEditedCourse() &&
-		eF_checkParameter($fields['lesson_id'], 'id') &&
-		eF_checkParameter($fields['classe_id'], 'id') &&
-		eF_checkParameter($fields['serie_id'], 'id')
+		sC_checkParameter($fields['lesson_id'], 'id') &&
+		sC_checkParameter($fields['classe_id'], 'id') &&
+		sC_checkParameter($fields['serie_id'], 'id')
 		) {
 			if (
 			strtotime($fields['start_date']) !== FALSE &&
 			strtotime($fields['end_date']) !== FALSE
 			) {
-				$result = eF_updateTableData(
+				$result = sC_updateTableData(
 					"module_xcourse_lesson_class_calendar_series",
 				array(
 						'start_date'	=> $fields['start_date'],
@@ -1873,7 +1873,7 @@ exit;
 	}
 	public function getAcademicCalendarDataAction()
 	{
-		if ($this->getEditedCourse() && eF_checkParameter($_GET['xclasse_id'], 'id')) {
+		if ($this->getEditedCourse() && sC_checkParameter($_GET['xclasse_id'], 'id')) {
 
 			$fields = array(
 				"cla_series.course_id",
@@ -1916,7 +1916,7 @@ exit;
 				"end_date ASC"
 				);
 
-				$result = eF_getTableData(
+				$result = sC_getTableData(
 					$tables,
 					implode(",", $fields),
 					implode(" AND ", $wheres),
@@ -2012,7 +2012,7 @@ exit;
 		$selectedAction = $this->getCurrentAction();
 
 		if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
-			eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+			sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		} elseif (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
 			$_change_ = false;
 		} else {
@@ -2020,12 +2020,12 @@ exit;
 		}
 
 		$form = new HTML_QuickForm("add_courses_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 		$form -> addElement('text', 'name', _COURSENAME, 'class = "full"');
 		$form -> addRule('name', _THEFIELD.' "'._COURSENAME.'" '._ISMANDATORY, 'required', null, 'client');
 		//$form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
 
-		$schools = eF_getTableDataFlat("module_ies", "id, nome", "active = 1" );
+		$schools = sC_getTableDataFlat("module_ies", "id, nome", "active = 1" );
 
 		if (count($schools) > 0) {
 			$schools = array_merge(
@@ -2041,7 +2041,7 @@ exit;
 		try {
 			$directionsTree = new MagesterDirectionsTree();
 			if (sizeof($directionsTree -> tree) == 0) {
-				eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
+				sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_TOCREATECOURSEYOUMUSTFIRSTCREATECATEGORY).'&message_type=failure');
 			}
 			$directions = $directionsTree -> toPathString();
 		} catch (Exception $e) {
@@ -2196,7 +2196,7 @@ exit;
 						$editCourse -> course = array_merge($editCourse -> course, $fields);
 						/*
 							if ($courseSk = $editCourse -> getCourseSkill()) {
-							eF_updateTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " " .$form -> exportValue('name')), "skill_ID = " .$courseSk['skill_ID']) ;
+							sC_updateTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE . " " .$form -> exportValue('name')), "skill_ID = " .$courseSk['skill_ID']) ;
 							}
 							*/
 						$message = _COURSEUPDATED;
@@ -2228,22 +2228,22 @@ exit;
 					$editCourse -> persist();
 					/*
 						if (isset($updateCourseInstancesCategory) && $updateCourseInstancesCategory) {
-						eF_updateTableData("courses", array("directions_ID" => $editCourse -> course['directions_ID']), "instance_source=".$editCourse -> course['id']);
+						sC_updateTableData("courses", array("directions_ID" => $editCourse -> course['directions_ID']), "instance_source=".$editCourse -> course['id']);
 						}
 						*/
 					/*
-						if ($form -> exportValue('branches_ID') && eF_checkParameter($form -> exportValue('branches_ID'), 'id')) {
-						$result = eF_getTableDataFlat("module_hcd_course_to_branch", "branches_ID", "courses_ID=".$editCourse -> course['id']);
+						if ($form -> exportValue('branches_ID') && sC_checkParameter($form -> exportValue('branches_ID'), 'id')) {
+						$result = sC_getTableDataFlat("module_hcd_course_to_branch", "branches_ID", "courses_ID=".$editCourse -> course['id']);
 						if (sizeof($result['branches_ID']) == 0) {
-						eF_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID'), "courses_ID" => $editCourse -> course['id']));
+						sC_insertTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID'), "courses_ID" => $editCourse -> course['id']));
 						} elseif (sizeof($result) == 1) {
 						//Only one branch associated with this course, as a 'location'
-						eF_updateTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID')), "courses_ID=".$editCourse -> course['id']);
+						sC_updateTableData("module_hcd_course_to_branch", array("branches_ID" => $form -> exportValue('branches_ID')), "courses_ID=".$editCourse -> course['id']);
 						}
 						} else {
 						}
 						*/
-					!isset($redirect) OR eF_redirect($redirect);
+					!isset($redirect) OR sC_redirect($redirect);
 				} catch (Exception $e) {
 					handleNormalFlowExceptions($e);
 				}
@@ -2255,7 +2255,7 @@ exit;
 		$smarty -> assign('T_MODULE_XCOURSE_BASIC_FORM', $renderer -> toArray());
 
 		/*
-		 $modules = eF_loadAllModules(true);
+		 $modules = sC_loadAllModules(true);
 
 		 $templates = array();
 		 // ADD / EDIT COURSE
@@ -2365,7 +2365,7 @@ exit;
 		$smarty = $this->getSmartyVar();
 
 		if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
-			eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+			sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		} elseif (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
 			$_change_ = false;
 		} else {
@@ -2436,7 +2436,7 @@ exit;
 					$redirect = $this->moduleBaseUrl . "&action=" . self::EDIT_XCOURSE . "&xcourse_id=".$this->getEditedCourse() -> course['id']."&message=".urlencode(__XCOURSE_CLASS_INSERT_MESSAGE)."&message_type=success#" . __XCOURSE_EDITXCOURSECLASSES;
 				}
 
-				!isset($redirect) OR eF_redirect($redirect);
+				!isset($redirect) OR sC_redirect($redirect);
 
 				//$smarty -> assign("T_REDIRECT_PARENT_TO", basename($_SERVER['PHP_SELF'])."?ctg=courses&edit_course=" . $course->course['id'] );
 				// RELOAD CLASS LIST
@@ -2527,7 +2527,7 @@ exit;
 			$this->setCache("selected_course_id", $editCourse->course['id']);
 		}
 
-		if (eF_checkParameter($_GET['xclasse_id'], 'id')) {
+		if (sC_checkParameter($_GET['xclasse_id'], 'id')) {
 			$this->setCache("selected_class_id", $_GET['xclasse_id']);
 			$filterForm->setDefaults(array(
 				'classe_filter' => $_GET['xclasse_id']
@@ -2539,7 +2539,7 @@ exit;
 				$classe_id = key($courseClassesData);
 
 				$url = $this->moduleBaseUrl . "&action=" . $this->getCurrentAction() . "&xcourse_id=" . $editCourse->course['id'] . "&xclasse_id=" . $classe_id;
-				eF_redirect($url);
+				sC_redirect($url);
 				exit;
 			}
 		}
@@ -2573,7 +2573,7 @@ exit;
 					}
 
 
-					$result = eF_countTableData(
+					$result = sC_countTableData(
 						"module_xcourse_lesson_class_calendar",
 						"*",
 					sprintf(
@@ -2583,7 +2583,7 @@ exit;
 					);
 					if ($result[0]['count'] > 0) {
 						// UPDATE
-						$result = eF_updateTableData(
+						$result = sC_updateTableData(
 							"module_xcourse_lesson_class_calendar",
 						$updateFields,
 						sprintf(
@@ -2597,7 +2597,7 @@ exit;
 						$updateFields['lesson_id'] = $lesson_id;
 						$updateFields['classe_id'] = $fields['classe_id'];
 
-						$result = eF_insertTableData(
+						$result = sC_insertTableData(
 							"module_xcourse_lesson_class_calendar",
 						$updateFields
 						);
@@ -2607,7 +2607,7 @@ exit;
 
 					// SAVE COURSE/LESSONS?CLASS/SERIES DATA
 
-					//eF_deleteTableData($table)
+					//sC_deleteTableData($table)
 
 					$insertFields = array(
 						'course_id' => $this->getCache("selected_course_id"),
@@ -2615,7 +2615,7 @@ exit;
 						'classe_id'	=> $this->getCache("selected_class_id")
 					);
 
-					eF_deleteTableData("module_xcourse_lesson_class_calendar_series",
+					sC_deleteTableData("module_xcourse_lesson_class_calendar_series",
 					sprintf("course_id = %d AND lesson_id = %s AND classe_id = %d",
 					$insertFields['course_id'],
 					$insertFields['lesson_id'],
@@ -2650,7 +2650,7 @@ exit;
 							$insertMultipleSeries[] = array_merge($serieFields, $insertFields);
 						}
 					}
-					eF_insertTableDataMultiple("module_xcourse_lesson_class_calendar_series", $insertMultipleSeries);
+					sC_insertTableDataMultiple("module_xcourse_lesson_class_calendar_series", $insertMultipleSeries);
 				}
 			}
 		}
@@ -2729,7 +2729,7 @@ exit;
 			$wheres[] = "cal.lesson_id = " . $lesson['id'];
 			$wheres[] = "cal.classe_id = " . $class_id;
 
-			$calendarDB = eF_getTableData(
+			$calendarDB = sC_getTableData(
 				$tables,
 				implode(",", $fields),
 				implode(" AND ", $wheres),
@@ -2773,12 +2773,12 @@ exit;
 	private function getAcademicCalendarSeries($course, $class_id, $lesson_id = null, &$hasCalendar = null)
 	{
 		//module_xcourse_lesson_class_series
-		if (eF_checkParameter($course, 'id')) {
+		if (sC_checkParameter($course, 'id')) {
 			$editCourse = $this->getEditedCourse(null, $course);
 		} else {
 			$editCourse = $course;
 		}
-		if ($editCourse && eF_checkParameter($class_id, 'id')) {
+		if ($editCourse && sC_checkParameter($class_id, 'id')) {
 
 			$fields = array(
 				"series.id as serie_id",
@@ -2786,7 +2786,7 @@ exit;
 			);
 			$tables = "module_xcourse_lesson_class_series series";
 
-			$configSeries = eF_getTableData(
+			$configSeries = sC_getTableData(
 			$tables,
 			implode(",", $fields)
 			);
@@ -2813,7 +2813,7 @@ exit;
 
 				$showLessons = array();
 
-				if (eF_checkParameter($lesson_id, 'id')) {
+				if (sC_checkParameter($lesson_id, 'id')) {
 					//$lesson_id = $_GET['xlesson_id'];
 					$wheres[] = "cla_series.lesson_id = " . $lesson_id;
 
@@ -2837,7 +2837,7 @@ exit;
 				 implode(",", $orders)
 				 );
 				 */
-				$definedSeries = eF_getTableData(
+				$definedSeries = sC_getTableData(
 				$tables,
 				implode(",", $fields),
 				implode(" AND ", $wheres),
@@ -2888,7 +2888,7 @@ exit;
 	}
 	public function getUserById($userID)
 	{
-		$userData = eF_getTableData("users", "login", "id = " . $userID);
+		$userData = sC_getTableData("users", "login", "id = " . $userID);
 
 		if ($userData) {
 			return MagesterUserFactory::factory($userData[0]['login']);
@@ -2901,7 +2901,7 @@ exit;
 	{
 		/*
 		 $lessons = MagesterLesson :: getLessons();
-		 $lessons = eF_multiSort($lessons, 'id', 'desc');
+		 $lessons = sC_multiSort($lessons, 'id', 'desc');
 		 */
 		//    	error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 		if ($contraints['ies_id']) {

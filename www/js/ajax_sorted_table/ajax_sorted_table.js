@@ -71,7 +71,7 @@
                 }
                 anchor.style.verticalAlign = 'middle';
                 anchor.setAttribute('column_name', table.rows[0].cells[i].getAttribute('name'));
-                anchor.onclick = function () {eF_js_sortTable(this, other);}; //Add the sorting function to the onclick event
+                anchor.onclick = function () {sC_js_sortTable(this, other);}; //Add the sorting function to the onclick event
                 anchor.innerHTML = table.rows[0].cells[i].innerHTML; //Copy the cells content inside the link
                 table.rows[0].cells[i].innerHTML = ''; //Remove the cell content, since it was copied to the link
                 table.rows[0].cells[i].appendChild(anchor); //Append the link to the cell                
@@ -145,24 +145,24 @@
             }
             tableSize[tableIndex] = Math.ceil(table.getAttribute('size') / rowsPerPage[tableIndex]);
 
-            eF_js_pageTable(tableIndex); //Convert this table to paged table.
+            sC_js_pageTable(tableIndex); //Convert this table to paged table.
 
             if (sortBy && autoAjax[tableIndex]) {
-                eF_js_sortTable(sortBy);
+                sC_js_sortTable(sortBy);
             } else if (useAjax[tableIndex] && autoAjax[tableIndex]) {
-                eF_js_sortTable(null, other); //Ajax must be initialized some way, and sortBy is a convenient one.
+                sC_js_sortTable(null, other); //Ajax must be initialized some way, and sortBy is a convenient one.
             }
             sortBy = false;
 
 
         } else {
             tableSize[tableIndex] = Math.ceil(table.getAttribute('size') / rowsPerPage[tableIndex]);
-            eF_js_pageTable(tableIndex); //Convert this table to paged table.
+            sC_js_pageTable(tableIndex); //Convert this table to paged table.
         }
 
     }
     
-    function eF_js_setTableUrl(tableIndex, url) {
+    function sC_js_setTableUrl(tableIndex, url) {
     	if ($(tableIndex)) {
     	      for (var i = 0; i < sortedTables.size(); i++) {
     	          if (sortedTables[i].id.match(tableIndex)) {
@@ -173,7 +173,7 @@
     	ajaxUrl[tableIndex] = url;
     }
 
-    function eF_js_redrawPage(tableIndex, draw, other) {
+    function sC_js_redrawPage(tableIndex, draw, other) {
 
   if ($(tableIndex)) {
       for (var i = 0; i < sortedTables.size(); i++) {
@@ -186,13 +186,13 @@
    currentOther[tableIndex] = other;
   }
      if (draw) {
-      eF_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
+      sC_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
      } else {
-      eF_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex], true, true);
+      sC_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex], true, true);
   }
     }
 
-function eF_js_rebuildTable(tableIndex, offset, column_name, order, other, noDiv, noRefresh) {
+function sC_js_rebuildTable(tableIndex, offset, column_name, order, other, noDiv, noRefresh) {
     try {
 
         if ($(tableIndex)) {
@@ -206,7 +206,7 @@ function eF_js_rebuildTable(tableIndex, offset, column_name, order, other, noDiv
             window.onBeforeSortedTable(sortedTables[tableIndex]);
         }
 
-        //eF_js_getChecked (tableIndex);
+        //sC_js_getChecked (tableIndex);
         if (!column_name) {
             column_name = '';
         }
@@ -330,7 +330,7 @@ function eF_js_rebuildTable(tableIndex, offset, column_name, order, other, noDiv
 
 
 
-function eF_js_sortTable(el, other) {
+function sC_js_sortTable(el, other) {
  Element.extend(el);
  if (el) {
          tableIndex = el.getAttribute('tableIndex'); //Get the id of the element
@@ -346,7 +346,7 @@ function eF_js_sortTable(el, other) {
     //Element.extend(el).insert(new Element('img', {id: 'img_', src:'js/ajax_sorted_table/images/progress1.gif'}).setStyle({borderWidth:'0px', position:'absolute'}));
     Element.extend(el).addClassName('loadingImg').setStyle({background:'url("'+progressImg+'") center right no-repeat'});
    }
-            eF_js_rebuildTable(tableIndex, 0, column_name, order, other, true);
+            sC_js_rebuildTable(tableIndex, 0, column_name, order, other, true);
         } else {
 
             parentTable = sortedTables[tableIndex]; //Get the table object, depending on the array offset that el.getAttribute('tableIndex') represents
@@ -440,13 +440,13 @@ function eF_js_sortTable(el, other) {
                 counter--;
             }
 
-            eF_js_refreshPage(el.getAttribute('tableIndex')); //Refresh the current page so that it holds the correct data
+            sC_js_refreshPage(el.getAttribute('tableIndex')); //Refresh the current page so that it holds the correct data
         }
 
     }
 
 
-    function eF_js_refreshPage(tableIndex) {
+    function sC_js_refreshPage(tableIndex) {
 
         var parentTable = sortedTables[tableIndex]; //Get the current table
 
@@ -463,7 +463,7 @@ function eF_js_sortTable(el, other) {
         }
     }
 
-    function eF_js_changePage(tableIndex, page) {
+    function sC_js_changePage(tableIndex, page) {
 
         var parentTable = sortedTables[tableIndex]; //Get the current table
 
@@ -480,7 +480,7 @@ function eF_js_sortTable(el, other) {
         }
 
         if (useAjax[tableIndex] && !isNaN(currentOffset[tableIndex])) {
-            eF_js_rebuildTable(tableIndex, page * rowsPerPage[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
+            sC_js_rebuildTable(tableIndex, page * rowsPerPage[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
         } else {
         //alert(rowsPerPage[tableIndex]);
             for (var j = 1; j < parentTable.rows.length - 1; j++) { //Update the contents of the current page, by hiding each row that should not be part of it
@@ -503,7 +503,7 @@ function eF_js_sortTable(el, other) {
     }
 
 
-    function eF_js_selectAll (el, tableIndex) {
+    function sC_js_selectAll (el, tableIndex) {
      try {
       var table = sortedTables[tableIndex]; //Get the table to perform paging on
 
@@ -578,7 +578,7 @@ function eF_js_sortTable(el, other) {
     }
 /*
 
-    function eF_js_getChecked (tableIndex) {
+    function sC_js_getChecked (tableIndex) {
 
         var table = sortedTables[tableIndex];                                 //Get the table to perform paging on
 
@@ -606,7 +606,7 @@ function eF_js_sortTable(el, other) {
 
 
 
-    function eF_js_setChecked (tableIndex) {
+    function sC_js_setChecked (tableIndex) {
 
         var table = sortedTables[tableIndex];                                 //Get the table to perform paging on
 
@@ -637,7 +637,7 @@ function eF_js_sortTable(el, other) {
     }
 
 */
-    function eF_js_pageTable(tableIndex) {
+    function sC_js_pageTable(tableIndex) {
         var table = sortedTables[tableIndex]; //Get the table to perform paging on
         var checkboxesPositions = new Array(); //This array will hold the columns containing checkboxes, to later implement \"check all\" function
         if (table.rows.length > 1) {
@@ -661,10 +661,10 @@ function eF_js_sortTable(el, other) {
             var checkbox = document.createElement('input');
             checkbox.setAttribute('type', 'checkbox');
             //mpaltas
-            //checkbox.setAttribute('onclick', 'eF_js_selectAll(this, '+tableIndex+')');                  //Only workds in FF, not IE. the code below works in both browsers
+            //checkbox.setAttribute('onclick', 'sC_js_selectAll(this, '+tableIndex+')');                  //Only workds in FF, not IE. the code below works in both browsers
             checkbox.onclick = function () {
              if (!useAjax[tableIndex] || confirm(sorted_translations["operationaffectmany"])) {
-              eF_js_selectAll(this, tableIndex);
+              sC_js_selectAll(this, tableIndex);
              }
             };
             td_checkbox.appendChild(checkbox);
@@ -679,14 +679,14 @@ function eF_js_sortTable(el, other) {
 //							.setStyle({textAlign:'center'})
 //							.addClassName('sortedTableFooter')
 //							.insert(new Element('input', {type:'checkbox'}))
-//											.observe('onclick', function () {if (!useAjax[tableIndex] || confirm('<?php echo _OPERATIONWILLAFFECTMANYAREYOUSURE?>')) eF_js_selectAll(this, tableIndex)});
+//											.observe('onclick', function () {if (!useAjax[tableIndex] || confirm('<?php echo _OPERATIONWILLAFFECTMANYAREYOUSURE?>')) sC_js_selectAll(this, tableIndex)});
         var div = document.createElement('div');
         var input = document.createElement('input'); //Create a text box that will be used for the filtering function
         input.setAttribute('type', 'text');
         input.setAttribute('id', tableIndex+'_sortedTable_filter'); //Set its id to retrieve it easily
         //input.setAttribute('size', '10');           //Added by mpaltas **But removed from venakis due to IE incompatibility (sic)** to avoid overlapping - using a new table inside the td might be a better idea
-        //input.setAttribute('onkeypress', 'if (event.which == 13) eF_js_filterData('+tableIndex+')');
-        input.setAttribute('onkeypress', 'if (event.which == 13 || event.keyCode == 13) {eF_js_filterData('+tableIndex+'); return false;}'); //Set an onkeypress event, so that pressing \"enter\" fires the function. We put the return false here, so that if the table is inside a form, enter will not submit it 
+        //input.setAttribute('onkeypress', 'if (event.which == 13) sC_js_filterData('+tableIndex+')');
+        input.setAttribute('onkeypress', 'if (event.which == 13 || event.keyCode == 13) {sC_js_filterData('+tableIndex+'); return false;}'); //Set an onkeypress event, so that pressing \"enter\" fires the function. We put the return false here, so that if the table is inside a form, enter will not submit it 
         if (currentFilter[tableIndex] || currentBranchFilter[tableIndex] || currentJobFilter[tableIndex]) {
          input.setAttribute("value", currentFilter[tableIndex]);
          if (currentBranchFilter[tableIndex] || currentJobFilter[tableIndex]) {
@@ -731,7 +731,7 @@ function eF_js_sortTable(el, other) {
                 }
             }
             selectBranch.setAttribute('class', 'inputSelectMed');
-         selectBranch.setAttribute('onchange', 'eF_js_filterData('+tableIndex+'); return false;'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
+         selectBranch.setAttribute('onchange', 'sC_js_filterData('+tableIndex+'); return false;'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
          selectBranch.setAttribute('id', tableIndex+'_sortedTable_branchFilter'); //Set its id so we can retrieve its data easily
          if (currentBranchFilter[tableIndex]) {
           div.innerHTML += '<span style = "display:none" id = "'+table.id+'_currentBranchFilter">'+currentBranchFilter[tableIndex]+'</span>';
@@ -758,7 +758,7 @@ function eF_js_sortTable(el, other) {
                 }
             }
             selectJob.setAttribute('class', 'inputSelectMed');
-            selectJob.setAttribute('onchange', 'eF_js_filterData('+tableIndex+'); return false;'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
+            selectJob.setAttribute('onchange', 'sC_js_filterData('+tableIndex+'); return false;'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
          selectJob.setAttribute('id', tableIndex+'_sortedTable_jobFilter'); //Set its id so we can retrieve its data easily						
          if (currentJobFilter[tableIndex]) {
           div.innerHTML += '<span style = "display:none" id = "'+table.id+'_currentJobFilter">'+currentJobFilter[tableIndex]+'</span>';
@@ -801,7 +801,7 @@ function eF_js_sortTable(el, other) {
              option.setAttribute('selected', 'selected');
             }
         }
-        select.setAttribute('onchange', 'numRows = parseInt(this.options[this.selectedIndex].value);eF_js_changeRowsPerPage('+tableIndex+', numRows)'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
+        select.setAttribute('onchange', 'numRows = parseInt(this.options[this.selectedIndex].value);sC_js_changeRowsPerPage('+tableIndex+', numRows)'); //If we ommit parseInt, then rowsPerPage becomes string. So, if for example rowsPerPage is 10 and we add 5, it becoomes 105 instead of 15
         select.setAttribute('id', tableIndex+'_sortedTable_rowsPerPage'); //Set its id so we can retrieve its data easily
         select.style.verticalAlign = 'middle';
 
@@ -828,7 +828,7 @@ function eF_js_sortTable(el, other) {
 
         var select = document.createElement('select'); //Create a select element, that lists the pages
         select.setAttribute('id', tableIndex+'_sortedTable_currentPage');
-        select.setAttribute('onchange', 'eF_js_changePage('+tableIndex+', this.options[this.selectedIndex].value)'); //Set an onchange event, so that changing the value fires a change on the page
+        select.setAttribute('onchange', 'sC_js_changePage('+tableIndex+', this.options[this.selectedIndex].value)'); //Set an onchange event, so that changing the value fires a change on the page
         for (var i = 0; i < pages; i++) { //Add an option for each page
             var option = document.createElement('option');
             option.setAttribute('value', i);
@@ -839,12 +839,12 @@ function eF_js_sortTable(el, other) {
         select.style.verticalAlign = 'middle';
 
         td.innerHTML += '<span style = "vertical-align:middle">&nbsp;'+sorted_translations["displayingresults"]+':&nbsp;</span>';
-        td.innerHTML += '<a href = \"javascript:void(0)\" onclick = \"eF_js_changePage('+tableIndex+',0)\"><img src = "js/ajax_sorted_table/images/navigate_left2.png" border = "0" style = "vertical-align:middle" /></a>&nbsp;'; //Add a \"first page\" handler
-        td.innerHTML += '<a href = \"javascript:void(0)\" onclick = \"eF_js_changePage('+tableIndex+',\'previous\')\"><img src = "js/ajax_sorted_table/images/navigate_left.png" border = "0" style = "vertical-align:middle" /></a>&nbsp;'; //Add a \"previous page\" handler
+        td.innerHTML += '<a href = \"javascript:void(0)\" onclick = \"sC_js_changePage('+tableIndex+',0)\"><img src = "js/ajax_sorted_table/images/navigate_left2.png" border = "0" style = "vertical-align:middle" /></a>&nbsp;'; //Add a \"first page\" handler
+        td.innerHTML += '<a href = \"javascript:void(0)\" onclick = \"sC_js_changePage('+tableIndex+',\'previous\')\"><img src = "js/ajax_sorted_table/images/navigate_left.png" border = "0" style = "vertical-align:middle" /></a>&nbsp;'; //Add a \"previous page\" handler
         td.appendChild(select);
         td.innerHTML += '<span style = "vertical-align:middle">&nbsp;'+sorted_translations["outof"]+'&nbsp;' + (table.getAttribute('size') ? table.getAttribute('size') : table.rows.length-2) + '</span>';
-        td.innerHTML += '&nbsp;<a href = \"javascript:void(0)\" onclick = \"eF_js_changePage('+tableIndex+',\'next\')\"><img src = "js/ajax_sorted_table/images/navigate_right.png" border = "0" style = "vertical-align:middle" /></a>'; //Add a \"next page\" handler
-        td.innerHTML += '&nbsp;<a href = \"javascript:void(0)\" onclick = \"eF_js_changePage('+tableIndex+','+(pages - 1)+')\"><img src = "js/ajax_sorted_table/images/navigate_right2.png" border = "0" style = "vertical-align:middle" /></a>'; //Add a \"last page\" handler
+        td.innerHTML += '&nbsp;<a href = \"javascript:void(0)\" onclick = \"sC_js_changePage('+tableIndex+',\'next\')\"><img src = "js/ajax_sorted_table/images/navigate_right.png" border = "0" style = "vertical-align:middle" /></a>'; //Add a \"next page\" handler
+        td.innerHTML += '&nbsp;<a href = \"javascript:void(0)\" onclick = \"sC_js_changePage('+tableIndex+','+(pages - 1)+')\"><img src = "js/ajax_sorted_table/images/navigate_right2.png" border = "0" style = "vertical-align:middle" /></a>'; //Add a \"last page\" handler
 
         if (!Object.isUndefined(noFooter[tableIndex]) || ((table.rows.length < minimumRows + 2 || parseInt(table.getAttribute('size')) < minimumRows) && !currentFilter[tableIndex] && !currentOffset[tableIndex] && !currentBranchFilter[tableIndex] && !currentJobFilter[tableIndex] && !activeFilter[tableIndex])) {
             tr.style.display = 'none';
@@ -856,7 +856,7 @@ function eF_js_sortTable(el, other) {
         table.toolsCell = td; //Assign the current cell to a global variable
 
         if (!useAjax[tableIndex]) {
-            eF_js_changePage(tableIndex, 0); //Display the first page
+            sC_js_changePage(tableIndex, 0); //Display the first page
          table.style.visibility = 'visible'; //The table is not visible by default (to avoid displaying effects). Make the table visible
         }
 
@@ -866,7 +866,7 @@ function eF_js_sortTable(el, other) {
 
     }
 
-function eF_js_filterData(tableIndex) {
+function sC_js_filterData(tableIndex) {
     //debugger;
     if (useAjax[tableIndex]) {
         var showing_image = false;
@@ -896,7 +896,7 @@ function eF_js_filterData(tableIndex) {
         currentFilter[tableIndex] = str;
         currentOffset[tableIndex] = 0;
 
-        eF_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex], true);
+        sC_js_rebuildTable(tableIndex, currentOffset[tableIndex], currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex], true);
     } else {
         var table = sortedTables[tableIndex]; //Get the current table
         var str = document.getElementById(tableIndex+'_sortedTable_filter').value; //Get the filter value, from the corresponding text box
@@ -937,19 +937,19 @@ function eF_js_filterData(tableIndex) {
         }
 
         currentFilter[tableIndex] = str;
-        eF_js_pageTable(tableIndex);
+        sC_js_pageTable(tableIndex);
         document.getElementById(tableIndex+'_sortedTable_filter').value = str;
 
     }
     //Repage the table
 }
 
-function eF_js_changeRowsPerPage(tableIndex, numRows) {
+function sC_js_changeRowsPerPage(tableIndex, numRows) {
     rowsPerPage[tableIndex] = numRows;
     if (useAjax[tableIndex]) {
-        eF_js_rebuildTable(tableIndex, 0, currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
+        sC_js_rebuildTable(tableIndex, 0, currentSort[tableIndex], currentOrder[tableIndex], currentOther[tableIndex]);
     } else {
-        eF_js_pageTable(tableIndex);
+        sC_js_pageTable(tableIndex);
     }
     setCookie('cookieTableRows', numRows);
 }
@@ -1011,7 +1011,7 @@ function toggleSubSection(el, id, sectionId, trailUrl) {
    for (var i = 0; i < sortedTables.size(); i++) {
     if (sortedTables[i].id.match(sectionId) && ajaxUrl[i]) {
      ajaxUrl[i] = ajaxUrl[i] + sectionId+'_source=' + id + '&' + trailUrl + '&';
-     eF_js_rebuildTable(i, 0, column_name, order);
+     sC_js_rebuildTable(i, 0, column_name, order);
     }
    }
   } else {
@@ -1138,7 +1138,7 @@ function toggleActive(el, tableIndex) {
   el.writeAttribute({src:'js/ajax_sorted_table/images/trafficlight_green.png'});
   setCookie('toggle_active', 1);
  }
- eF_js_rebuildTable(tableIndex, 0, 'null', 'desc');
+ sC_js_rebuildTable(tableIndex, 0, 'null', 'desc');
 }
 
 function repositionFileManager(table) {
@@ -1159,10 +1159,10 @@ if (typeof(readCookieForSortedTablePreset) != 'undefined' && readCookie(readCook
 
  if ($(sort_id)) {
   if (sort_order == 'asc') {
-   eF_js_sortTable($(sort_id));
-   eF_js_sortTable($(sort_id));
+   sC_js_sortTable($(sort_id));
+   sC_js_sortTable($(sort_id));
   } else {
-   eF_js_sortTable($(sort_id));
+   sC_js_sortTable($(sort_id));
   }
   if (window.resetFormRows) {
    resetFormRows($(sort_id).up());
