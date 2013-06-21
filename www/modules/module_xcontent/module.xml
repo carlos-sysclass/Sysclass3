@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>eXtended Content Module</title>
-	<author>André Kucaniz</author>
-	<date>2011 11 24</date>
-	<version>0.1</version>
-	<description>Este módulo é usado para criar novas formas de visualização do conteúdo existente. Desde páginas customizadas de resultados, até configuração de e-mails baseados em resultado.</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xcontent</className>
 </module>

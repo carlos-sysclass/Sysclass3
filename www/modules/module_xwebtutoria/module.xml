@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>eXtended Webtutoria Module</title>
-	<author>André Kucaniz</author>
-	<date>2011 08 11</date>
-	<version>0.1</version>
-	<description>Este módulo disponibiliza funções para comunicação entre alunos e tutores (web-tutores)]</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xwebtutoria</className>
 </module>

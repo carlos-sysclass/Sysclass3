@@ -3,8 +3,6 @@
 	<head>
 		<base href = "{$smarty.const.G_SERVERNAME}">
 		<meta http-equiv = "Content-Language" content = "{$smarty.const._HEADERLANGUAGEHTMLTAG}">
-		<meta http-equiv = "keywords" content = "education">
-		<meta http-equiv = "description" content = "Collaborative Elearning Platform">
 		<meta http-equiv = "Content-Type" content = "text/html; charset = utf-8">
 		<link rel="shortcut icon" href="{if $T_FAVICON}{$T_FAVICON}{else}themes/default/images/favicon.png{/if}">
 		<!-- <link rel = "stylesheet" type = "text/css" href = "{$smarty.const.G_CURRENTTHEMECSS}" /> -->

@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
     <title>Módulo de Chat</title>
-    <author>ANdré Kucaniz</author>
-    <date>2012 05 29</date>
-    <version>0.1</version>
-    <description>SysClass Integrated Chat</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
     <className>module_chat</className>
 </module>

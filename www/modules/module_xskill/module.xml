@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>eXtended Skill Module</title>
-	<author>André Kucaniz</author>
-	<date>2011 11 30</date>
-	<version>0.1</version>
-	<description>Este módulo faz o gerenciamento de habilidades, controlando os pré-requisitos para conteúdos, disciplinas e cursos; e quais são as habilidades conquistadas.</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xskill</className>
 </module>
