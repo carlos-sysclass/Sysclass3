@@ -31,7 +31,7 @@ background-color:#00FF00;
 }
 
 .chatboxcontent {
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	color: #222222;
 	height:200px;
 	width:211px;
@@ -56,7 +56,7 @@ background-color:#00FF00;
 	border-bottom:1px solid #cccccc;
 	position:relative;
 	z-index:996;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .chatboxtextarea {
@@ -67,7 +67,7 @@ background-color:#00FF00;
 	margin: 1px;
 	overflow:hidden;
 	background-color:#FFFFFF;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	overflow-x:hidden;
 	color: #222222;
 	z-index:995;
@@ -76,7 +76,7 @@ background-color:#00FF00;
 .chatboxtextareaselected {
 	border: 2px solid #0066FF;
 	margin:0;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	overflow-x:hidden;
 	z-index:995;
 }
@@ -96,12 +96,12 @@ background-color:#00FF00;
 .chatboxmessagefrom {
 	margin-left:-1em;
 	font-weight: bold;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	z-index:995;
 }
 
 .chatboxmessagecontent {
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	z-index:995;
 }
 
@@ -129,7 +129,7 @@ background-color:#00FF00;
 	float: left;
 	padding-top:2px;
 	margin-left:2px;
-	font-family: Arial, Helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	max-width:190px;
 	z-index:-100;
 }
