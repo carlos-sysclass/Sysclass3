@@ -57,14 +57,14 @@
 					{/if}
 				</div>
 				{if $T_BAR_ADDITIONAL_ACCOUNTS|@count > 0}
-					<a href="#" title="Alterar acesso" id="changeAccount">
+					<a href="#" title="{$smarty.const._CHANGE_ACCOUNT} " id="changeAccount">
 						<button class="inputo-top-change-account" type="button" id="changeAccountBtn" style="color: #fff;">
-							<img  src="images/others/transparent.png" alt="Acessar como" title="Acesso como" />
+							<img  src="images/others/transparent.png" alt="Acessar como" title="{$smarty.const._CHANGE_ACCOUNT} " />
 						</button>
 					</a>
 					<div class="topMenuItensContainer" id="showAccountsContainer">
 						<span class="setaShowAccounts"></span>
-						<p class="altAcessoTitle">Alterar acesso</p>
+						<p class="altAcessoTitle">{$smarty.const._CHANGE_ACCOUNT}</p>
 						<ul class="dropdown">
 							{foreach name = 'additional_accounts' item = "item" key = "key" from = $T_BAR_ADDITIONAL_ACCOUNTS}
 							<li><a href="javascript: changeAccount('{$item.login}');">#filter:login-{$item.login}#</a></li>

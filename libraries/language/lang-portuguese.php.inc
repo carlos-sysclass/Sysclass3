@@ -18,6 +18,8 @@ define("_MODULE_ADMINISTRATOR_TOOLS_ROWSAFFECTED", "listas alteradas");
 define("_MODULE_ADMINISTRATOR_TOOLS_EMPTYSET", "Set vazio");
 define("_MODULE_ADMINISTRATOR_TOOLS_BULKCOMPLETECOURSES", "Concluir cursos e aluas em todo o sistema");
 
+define("_CHANGE_ACCOUNT", "Alterar Acesso");
+
 define("_3DAYS","3 dias");
 define("_5MOSTACTIVEUSERS","5 usuários mais ativos");
 define("_ABANDON","Rejeitar");

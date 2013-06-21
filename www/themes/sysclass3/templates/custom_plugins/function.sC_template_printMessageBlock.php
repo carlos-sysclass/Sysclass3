@@ -8,21 +8,21 @@ function smarty_function_sC_template_printMessageBlock($params, &$smarty)
     !isset($params['type']) || !$params['type'] ? $params['type'] = 'failure' : null;
     if ($params['type'] == 'success') {
         $messageImage 	= '<img src = "images/32x32/success.png" alt = "'._SUCCESS.'" title = "'._SUCCESS.'">';
-        $stringType		= 'sucesso';
+        $stringType		= _SUCCESS;
     } elseif ($params['type'] == 'warning') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Atenção';
+        $stringType		= _WARNING;
     } elseif ($params['type'] == 'information') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Informação';
+        $stringType		= _INFO;
 	} elseif ($params['type'] == 'failure') {
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Erro';
+        $stringType		= _ERROR;
     } else {
     	$params['type'] = "Other";
 
         $messageImage = '<img src = "images/32x32/warning.png" alt = "'._FAILURE.'" title = "'._FAILURE.'">';
-        $stringType		= 'Aviso';
+        $stringType		= _ADVISE;
     }
 
 	if (mb_strlen($params['content']) > 1000) {
