@@ -2615,6 +2615,20 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$invoiceOptions["nosso_numero2"]	= sprintf("%03d", substr($invoiceData['invoice_index'], 0, 3));
 		// user_id (5) + negociation_id(4)
 		$invoiceOptions["nosso_numero3"] 	= sprintf("%05d%04d", substr($invoiceData['user_id'], 0, 5), substr($invoiceData['negociation_id'], 0, 4));
+		if (is_null($invoiceData['invoice_id'])) {
+			$invoiceData['invoice_id'] = $this->getParent()->_createInvoiceID($negociation_id, $invoice_index);
+
+			eF_updateTableData(
+		               "module_xpay_invoices",
+                                array(
+                                        'invoice_id'   => $invoiceData['invoice_id']
+                                ),
+                                sprintf("negociation_id = %d AND invoice_index =%d",
+                                        $negociation_id,
+					$invoice_index
+                                )
+                        );
+		}
 
 		$invoiceOptions["nosso_numero"] = $invoiceOptions["numero_documento"] = $invoiceData['invoice_id'];	// Num do pedido ou do documento
 

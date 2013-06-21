@@ -3402,7 +3402,7 @@ class module_xpay extends MagesterExtendedModule
 		}
 		return $tags;
 	}
-	private function _createInvoiceID($negociation_id, $parcela_index)
+	public function _createInvoiceID($negociation_id, $parcela_index)
 	{
 		$i = 0;
 		do {
