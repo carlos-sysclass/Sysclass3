@@ -35,14 +35,25 @@ $configurationDefaults = array(
 		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
 	),
+	'sysclass.local'        => array(
+	    'dbname'        => 'sysclass_root',
+	    'overrideTheme' => (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+	),
 	'sysclass.com'	=> array(
 		'dbname'        => 'sysclass_root',
-		'overrideTheme' => 'sysclass3'
+		'overrideTheme' => 'sysclass3',
+		'https'         => 'required'
 	),
 	'www.sysclass.com'	=> array(
                 'dbname'        => 'sysclass_root',
-                'overrideTheme' => 'sysclass3'
+                'overrideTheme' => 'sysclass3',
+		'https'         => 'required'
 	),
+        '173.193.157.162'      => array(
+                'dbname'        => 'sysclass_root',
+                'overrideTheme' => 'sysclass3',
+                'https'         => 'none'
+        ),
 	'fati.sysclass.com'	=> array(
 		'dbname'        => 'sysclass_fati',
                 'overrideTheme' => 'sysclass3'
@@ -59,6 +70,14 @@ $configurationDefaults = array(
 		'dbname'        => 'sysclass_demo',
 		'overrideTheme' => 'sysclass3'
 	),
+	'fajar.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_fajar',
+		'overrideTheme' => 'sysclass3'
+	),
+	'comptia.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_comptia',
+		'overrideTheme' => 'sysclass3'
+	),
 	'spbc.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_spbc',
 		'overrideTheme' => 'sysclass3'
@@ -66,7 +85,7 @@ $configurationDefaults = array(
 	'www.spbc.sysclass.com'     => array(
 		'dbname'        => 'sysclass_spbc',
 		'overrideTheme' => 'sysclass3'
-	),		
+	),
 	'idiompro.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_idiompro',
 		'overrideTheme' => 'sysclass3'
@@ -118,7 +137,6 @@ if (array_key_exists('overrideTheme', $configuration)) {
 	$overrideTheme = null;
 }
 
-
 /** The database Host */
 define('G_DBTYPE', $configuration['dbtype']);
 /** The database Host */
@@ -146,17 +164,15 @@ if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_RED
 	define ("G_PROTOCOL", $protocol);
 	/** The server name*/
 	define('G_SERVERNAME', $configuration['server']);
-	
-	
+
 	//var_dump($configuration);
-	
+
 	/**Software root path*/
 	define("G_ROOTPATH", $configuration['root_path']);
-	
+
 	/**Current version*/
 	define('G_VERSION_NUM', $configuration['version']);
-	
+
 	/**Include function files*/
-	require_once('globals.php');
+	require_once 'globals.php';
 }
-?>

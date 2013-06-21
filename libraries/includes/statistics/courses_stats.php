@@ -42,7 +42,6 @@ try {
       $infoCourse -> course['users_per_role'] = $usersPerRole;
       $infoCourse -> course['num_users'] = array_sum($usersPerRole);
 
-
       $courseInstances = $infoCourse -> getInstances();
       $smarty -> assign("T_COURSE_INSTANCES", $courseInstances);
       $smarty -> assign("T_COURSE_HAS_INSTANCES", sizeof($courseInstances) > 1);
@@ -101,7 +100,7 @@ try {
 
       $tableName = $_GET['ajax'];
       $alreadySorted = true;
-      include("sorted_table.php");
+      include 'sorted_table.php';
      } catch (Exception $e) {
       handleAjaxExceptions($e);
      }
@@ -281,7 +280,7 @@ if (isset($_GET['excel'])) {
 */
     $workBook -> close();
     exit(0);
-} else if (isset($_GET['pdf'])) {
+} elseif (isset($_GET['pdf'])) {
  $groupname = $branchName = false;
  try {
   $group = new MagesterGroup($_GET['group_filter']);

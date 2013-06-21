@@ -1,18 +1,10 @@
 <?php
-/**
-$LastChangedRevision: 9001 $
-* File includes and configuration options
-*
-* This file is used to perform configuration and inclusion tasks.
-* @package SysClass
-*/
-
-
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
 
+spl_autoload_register ("__autoload" );
 
 //Used for debugging purposes only
 $debug_TimeStart = microtime(true);
@@ -33,15 +25,14 @@ header('Content-Type: text/html; charset=utf-8');
 
 error_reporting( E_ERROR );
 if ($_GET['debug'] == 10) {
-	error_reporting( E_ALL & ~E_NOTICE);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 }
-
 //Prepend the include path with magester folders
 set_include_path($path.'../PEAR/'
                 . PATH_SEPARATOR . $path.'includes/'
                 . PATH_SEPARATOR . $path
                 . PATH_SEPARATOR . get_include_path());
-                
+
 //var_dump(ini_set("upload_max_filesize", '64M'));
 //var_dump(ini_get("upload_max_filesize"));
 
@@ -54,11 +45,11 @@ set_exception_handler('defaultExceptionHandler');
 register_shutdown_function('shutdownFunction');
 
 /** General tools for system */
-require_once("tools.php");
+require_once 'tools.php';
 /** Database manipulation functions*/
-require_once("database.php");
+require_once 'database.php';
 /** General class representing an entity*/
-require_once("entity.class.php");
+require_once 'entity.class.php';
 
 //Get configuration values
 $configuration = MagesterConfiguration :: getValues();
@@ -72,7 +63,6 @@ if (isset($_GET['debug']) && $configuration['debug_mode']) {
 } else {
  define("G_DEBUG", 0);
 }
-
 
 //Turn on compressed output buffering, unless NO_OUTPUT_BUFFERING is defined or it's turned off from the configuration
 !defined('NO_OUTPUT_BUFFERING') && $configuration['gz_handler'] ? ob_start ("ob_gzhandler") : null;
@@ -151,7 +141,7 @@ try {
         $smarty -> assign("T_LOGO", 'images/'.$logoFile['physical_name']);
     }
 } catch (MagesterFileException $e) {
-    	  
+
 	      if ($_SERVER['HTTP_HOST'] == "SysClass.com") {
 		    $smarty -> assign("T_LOGO", "images/logo_idionpro.png");
 		  } elseif ($_SERVER['HTTP_HOST'] == "magester.net") {
@@ -159,7 +149,7 @@ try {
 		  } elseif ($_SERVER['HTTP_HOST'] == "local.SysClass.com") {
 		    $smarty -> assign("T_LOGO", "images/logo.png");
 		  }
-  	  	
+
 	//$smarty -> assign("T_LOGO", "images/logo.png");
 }
 try {
@@ -188,7 +178,7 @@ if (isset($smarty)) {
     $smarty -> load_filter('output', 'eF_template_formatDatetime');
     //Format currency strings according to system settings
     $smarty -> load_filter('output', 'eF_template_formatCurrency');
-    
+
     //Convert logins to personal-message enabled clickable links
     $smarty -> load_filter('output', 'eF_template_loginToMessageLink');
     //Format logins according to system settings
@@ -197,6 +187,9 @@ if (isset($smarty)) {
     $smarty -> load_filter('output', 'eF_template_formatScore');
     //Selectively include some javascripts based on whether they are actually needed
     $smarty -> load_filter('output', 'eF_template_includeScripts');
+
+    $smarty -> load_filter('output', 'eF_template_sanitizeDOMString');
+
     $browser = detectBrowser();
     if ($browser == 'ie6') {
         define("MSIE_BROWSER", 1);
@@ -244,7 +237,8 @@ $loadScripts = array();
  *
  * @since 3.6.0
  */
-function setupVersion() {
+function setupVersion()
+{
  define("G_VERSIONTYPE_CODEBASE", 'community');
  //Set the specific version parameters
     $GLOBALS['versionTypes'] = array('educational' => 'Educational',
@@ -270,7 +264,8 @@ function setupVersion() {
  *
  * @since 3.6.0
  */
-function setDefines() {
+function setDefines()
+{
     /*Get the build number*/
     preg_match("/(\d+)/", '$LastChangedRevision: 9001 $', $matches);
     $build = 0001;
@@ -280,11 +275,11 @@ function setDefines() {
     /** The full filesystem path of the lessons directory*/
     define("G_LESSONSPATH", G_ROOTPATH."www/content/lessons/");
     is_dir(G_LESSONSPATH) OR mkdir(G_LESSONSPATH, 0755);
-    
+
     /** The full filesystem path of the lessons directory*/
     define("G_COURSECLASSPATH", G_ROOTPATH."www/content/classes/");
     is_dir(G_COURSECLASSPATH) OR mkdir(G_COURSECLASSPATH, 0755);
-    
+
     /** The full URL to the folder containing the lessons*/
     define("G_LESSONSLINK", G_SERVERNAME."content/lessons/");
     /** The relative path (URL) to the lessons folder*/
@@ -343,7 +338,8 @@ function setDefines() {
  *
  * @since 3.6.0
  */
-function setupThemes($overrideTheme = null) {
+function setupThemes($overrideTheme = null)
+{
     /** The default theme path*/
     define("G_DEFAULTTHEMEPATH", G_THEMESPATH."default/");
     /** The default theme url*/
@@ -441,7 +437,8 @@ function setupThemes($overrideTheme = null) {
  * @param $e The uncaught exception
  * @since 3.5.4
  */
-function defaultExceptionHandler($e) {
+function defaultExceptionHandler($e)
+{
     //@todo: Database exceptions are not caught if thrown before smarty
     $tplFile = str_replace(".php", ".tpl", basename($_SERVER['PHP_SELF']));
     is_file($GLOBALS['smarty'] -> template_dir.$tplFile) ? $displayTpl = $tplFile : $displayTpl = 'index.tpl';
@@ -460,7 +457,8 @@ function defaultExceptionHandler($e) {
  *
  * @since 3.6.6
  */
-function shutDownFunction() {
+function shutdownFunction()
+{
  if (function_exists('error_get_last')) {
   $error = error_get_last();
   if ($error['type'] == 1) {
@@ -474,7 +472,8 @@ function shutDownFunction() {
  *
  * @since 3.5
  */
-function setRequestURI() {
+function setRequestURI()
+{
     //Sets $_SERVER['REQUEST_URI'] for IIS
     if (!isset($_SERVER['REQUEST_URI']) || !$_SERVER['REQUEST_URI']) {
         if (!($_SERVER['REQUEST_URI'] = @$_SERVER['PHP_SELF'])) {
@@ -485,7 +484,8 @@ function setRequestURI() {
         }
     }
 }
-function handleSEO() {
+function handleSEO()
+{
     if (!$GLOBALS['configuration']['seo'] && $_SERVER['PATH_INFO']) {
         $parts = explode("/", trim($_SERVER['PATH_INFO'], "/"));
         for ($i = 0; $i < sizeof($parts); $i+=2) {
@@ -505,65 +505,66 @@ function handleSEO() {
  * @param string $className the name of the class requested
  * @since 3.5.4
  */
-function __autoload($className) {
+function __autoload($className)
+{
     $className = strtolower($className);
-    
+
     if (strpos($className, "icronable") !== false) {
-    	require_once("interfaces/icronable.interface.php");
+    	require_once 'interfaces/icronable.interface.php';
     } elseif (strpos($className, "magestermodule") !== false) {
-        require_once("module.class.php");
-    } else if (strpos($className, "magesterextendedmodule") !== false) {
-		require_once("extended.module.class.php");
-    } else if (strpos($className, "quickform2") !== false) {
-        require_once("HTML/QuickForm2.php");
-        require_once("HTML/QuickForm2/Renderer.php");
+        require_once 'module.class.php';
+    } elseif (strpos($className, "magesterextendedmodule") !== false) {
+		require_once 'extended.module.class.php';
+    } elseif (strpos($className, "quickform2") !== false) {
+        require_once 'HTML/QuickForm2.php';
+        require_once 'HTML/QuickForm2/Renderer.php';
         $renderer = HTML_QuickForm2_Renderer::register('ArraySmarty', "HTML_QuickForm2_Renderer_ArraySmarty", "HTML/QuickForm2/Renderer/ArraySmarty.php");
-	} else if (strpos($className, "quickform") !== false) {
-        require_once("HTML/QuickForm.php");
-        require_once("HTML/QuickForm/Renderer/ArraySmarty.php");
-    } else if (strpos($className, "mail") !== false) {
-        require_once("Mail.php");
-        require_once("Mail/mime.php");
-    } else if (strpos($className, "magestersystem") !== false) {
-        require_once("system.class.php");
-    } else if (strpos($className, "magesterproject") !== false) {
-        require_once("project.class.php");
-    } else if (strpos($className, "magesterstats") !== false) {
-        require_once("statistics.class.php");
-    } else if (strpos($className, "magestertimes") !== false) {
-        require_once("times.class.php");
-    } else if (strpos($className, "magestersearch") !== false) {
-        require_once("search.class.php");
-    } else if (strpos($className, "magestercourse") !== false || strpos($className, "magestercourseclass") !== false) {
-    	require_once("course.classes.class.php");
-        require_once("course.class.php");
-    } else if (strpos($className, "magesterdirection") !== false) {
-        require_once("direction.class.php");
-    } else if (strpos($className, "magestergroup") !== false) {
-        require_once("group.class.php");
-    } else if (strpos($className, "magestermanifest") !== false) {
-        require_once("manifest.class.php");
-    } else if (strpos($className, "ef_personalmessage") !== false) {
-        require_once("PersonalMessage.class.php");
-    } else if (strpos($className, "magesterconfiguration") !== false) {
-        require_once("configuration.class.php");
-    } else if (strpos($className, "cache") !== false) {
-        require_once("cache.class.php");
-    } else if (strpos($className, "magestermenu") !== false) {
-        require_once("menu.class.php");
-    } else if (strpos($className, "magesterimport") !== false ||
+	} elseif (strpos($className, "quickform") !== false) {
+        require_once 'HTML/QuickForm.php';
+        require_once 'HTML/QuickForm/Renderer/ArraySmarty.php';
+    } elseif (strpos($className, "mail") !== false) {
+        require_once 'Mail.php';
+        require_once 'Mail/mime.php';
+    } elseif (strpos($className, "magestersystem") !== false) {
+        require_once 'system.class.php';
+    } elseif (strpos($className, "magesterproject") !== false) {
+        require_once 'project.class.php';
+    } elseif (strpos($className, "magesterstats") !== false) {
+        require_once 'statistics.class.php';
+    } elseif (strpos($className, "magestertimes") !== false) {
+        require_once 'times.class.php';
+    } elseif (strpos($className, "magestersearch") !== false) {
+        require_once 'search.class.php';
+    } elseif (strpos($className, "magestercourse") !== false || strpos($className, "magestercourseclass") !== false) {
+    	require_once 'course.classes.class.php';
+        require_once 'course.class.php';
+    } elseif (strpos($className, "magesterdirection") !== false) {
+        require_once 'direction.class.php';
+    } elseif (strpos($className, "magestergroup") !== false) {
+        require_once 'group.class.php';
+    } elseif (strpos($className, "magestermanifest") !== false) {
+        require_once 'manifest.class.php';
+    } elseif (strpos($className, "ef_personalmessage") !== false) {
+        require_once 'PersonalMessage.class.php';
+    } elseif (strpos($className, "magesterconfiguration") !== false) {
+        require_once 'configuration.class.php';
+    } elseif (strpos($className, "cache") !== false) {
+        require_once 'cache.class.php';
+    } elseif (strpos($className, "magestermenu") !== false) {
+        require_once 'menu.class.php';
+    } elseif (strpos($className, "magesterimport") !== false ||
                strpos($className, "magesterimportcsv") !== false) {
-        require_once("import_export.class.php");
-    } else if (strpos($className, "tcpdf") !== false) {
-        require_once("external/tcpdf5/tcpdf.php");
-    } else if (strpos($className, "magestercontenttreescorm") !== false || strpos($className, "navigation") !== false) {
-    } else if (strpos($className, "magesterfile") !== false ||
+        require_once 'import_export.class.php';
+    } elseif (strpos($className, "tcpdf") !== false) {
+        require_once 'external/tcpdf5/tcpdf.php';
+    } elseif (strpos($className, "magestercontenttreescorm") !== false || strpos($className, "navigation") !== false) {
+    } elseif (strpos($className, "magesterfile") !== false ||
                strpos($className, "magesterdirectory") !== false ||
                strpos($className, "filesystemtree") !== false ||
                strpos($className, "magesterrefilter") !== false ||
                strpos($className, "magesterdbonly") !== false) {
-        require_once("filesystem.class.php");
-    } else if (strpos($className, "magestercontent") !== false ||
+        require_once 'filesystem.class.php';
+    } elseif (strpos($className, "magestercontent") !== false ||
                strpos($className, "magesterunit") !== false ||
                strpos($className, "content") !== false ||
                strpos($className, "magestervisitable") !== false ||
@@ -574,88 +575,90 @@ function __autoload($className) {
                strpos($className, "magesterexample") !== false ||
                strpos($className, "magesterremovedata") !== false ||
                strpos($className, "magesterinarray") !== false) {
-        require_once("content.class.php");
-    } else if (strpos($className, "magesteruser") !== false ||
+        require_once 'content.class.php';
+    } elseif (strpos($className, "magesteruser") !== false ||
                strpos($className, "magesteradministrator") !== false ||
                strpos($className, "magesterprofessor") !== false ||
                strpos($className, "magesterstudent") !== false ||
                strpos($className, "magesterlessonuser") !== false) {
-        require_once("user.class.php");
-    } else if (strpos($className, "magesterinformation") !== false ||
+        require_once 'user.class.php';
+    } elseif (strpos($className, "magesterinformation") !== false ||
                strpos($className, "dublincoremetadata") !== false ||
                strpos($className, "learningobjectinformation") !== false) {
-        require_once("metadata.class.php");
-    } else if (strpos($className, "magestertree") !== false ||
+        require_once 'metadata.class.php';
+    } elseif (strpos($className, "magestertree") !== false ||
                strpos($className, "magesterattributesonly") !== false ||
                strpos($className, "magesterattribute") !== false ||
                strpos($className, "magesternode") !== false) {
-        require_once("tree.class.php");
-    } else if (strpos($className, "magestertest") !== false ||
+        require_once 'tree.class.php';
+    } elseif (strpos($className, "magestertest") !== false ||
                strpos($className, "magestercompletedtest") !== false ||
                strpos($className, "question") !== false ||
                strpos($className, "testfilter") !== false) {
-        require_once("test.class.php");
-    } else if (strpos($className, "magesterscorm") !== false) {
-        require_once("scorm.class.php");
- } else if (strpos($className, "magesterims") !== false) {
-        require_once("ims.class.php");
-    } else if (strpos($className, "magesterlesson") !== false) {
-        require_once("lesson.class.php");
-        require_once("deprecated.php");
-    } else if (strpos($className, "smarty") !== false) {
-        require_once "smarty/libs/Smarty.class.php";
-    } else if (strpos($className, "magesterbenchmark") !== false) {
-        require_once "benchmark.class.php";
-    } else if (strpos($className, "magesterform") !== false) {
-        require_once "form.class.php";
-    } else if (strpos($className, "event") !== false) {
+        require_once 'test.class.php';
+    } elseif (strpos($className, "magesterscorm") !== false) {
+        require_once 'scorm.class.php';
+ } elseif (strpos($className, "magesterims") !== false) {
+        require_once 'ims.class.php';
+    } elseif (strpos($className, "magesterlesson") !== false) {
+        require_once 'lesson.class.php';
+        require_once 'deprecated.php';
+    } elseif (strpos($className, "smarty") !== false) {
+        require_once 'smarty/libs/Smarty.class.php';
+    } elseif (strpos($className, "magesterbenchmark") !== false) {
+        require_once 'benchmark.class.php';
+    } elseif (strpos($className, "magesterform") !== false) {
+        require_once 'form.class.php';
+    } elseif (strpos($className, "event") !== false) {
         /** Events class */
-        require_once "events.class.php";
-    } else if (strpos($className, "notification") !== false) {
+        require_once 'events.class.php';
+    } elseif (strpos($className, "notification") !== false) {
         /** Notifications class */
-        require_once "notification.class.php";
-    } else if (strpos($className, "payments") !== false || strpos($className, "cart") !== false) {
+        require_once 'notification.class.php';
+    } elseif (strpos($className, "payments") !== false || strpos($className, "cart") !== false) {
         /** Payments class */
-        require_once "payments.class.php";
-    } else if (strpos($className, "curriculums") !== false) {
+        require_once 'payments.class.php';
+    } elseif (strpos($className, "curriculums") !== false) {
         /**curriculums class*/
-        require_once "curriculums.class.php";
-    } else if (strpos($className, "coupons") !== false) {
+        require_once 'curriculums.class.php';
+    } elseif (strpos($className, "coupons") !== false) {
         /**coupons class*/
-        require_once "coupons.class.php";
-    } else if (strpos($className, "news") !== false) {
+        require_once 'coupons.class.php';
+    } elseif (strpos($className, "news") !== false) {
         /**News (announcements) class*/
-        require_once "news.class.php";
-    } else if (strpos($className, "f_forums") !== false || strpos($className, "f_topics") !== false || strpos($className, "f_poll") !== false || strpos($className, "f_messages") !== false) {
+        require_once 'news.class.php';
+    } elseif (strpos($className, "f_forums") !== false || strpos($className, "f_topics") !== false || strpos($className, "f_poll") !== false || strpos($className, "f_messages") !== false) {
         /**Forum class*/
-        require_once "forum.class.php";
-    } else if (strpos($className, "f_personal_messages") !== false) {
+        require_once 'forum.class.php';
+    } elseif (strpos($className, "f_personal_messages") !== false) {
         /**Forum class*/
-        require_once "messages.class.php";
-    } else if (strpos($className, "themes") !== false) {
+        require_once 'messages.class.php';
+    } elseif (strpos($className, "themes") !== false) {
         /**Forum class*/
-        require_once "themes.class.php";
-    } else if (strpos($className, "comments") !== false) {
+        require_once 'themes.class.php';
+    } elseif (strpos($className, "comments") !== false) {
         /**Comments class*/
-        require_once "comments.class.php";
-    } else if (strpos($className, "bookmarks") !== false) {
+        require_once 'comments.class.php';
+    } elseif (strpos($className, "bookmarks") !== false) {
         /**Comments class*/
-        require_once "bookmarks.class.php";
-    } else if (strpos($className, "glossary") !== false) {
+        require_once 'bookmarks.class.php';
+    } elseif (strpos($className, "glossary") !== false) {
         /**Glossary class*/
-        require_once "glossary.class.php";
-    } else if (strpos($className, "graph") !== false) {
-     require_once "graph.class.php";
-    } else if (strpos($className, "sso") !== false) {
-        require_once "sso.class.php";
-    } else if (strpos($className, "sumtotal") !== false) {
-        require_once "versions/sso/sumtotal.class.php";
-    } else if (strpos($className, "calendar") !== false) {
-        require_once "calendar.class.php";
-    } else if (strpos($className, "magesterpdf") !== false) {
-     require_once "pdf.class.php";
-    } else if (strpos($className, "magesterfacebook") !== false) {
-    }
-    else if (strpos($className, "xmlexport") !== false) {
-    }
+        require_once 'glossary.class.php';
+    } elseif (strpos($className, "graph") !== false) {
+     require_once 'graph.class.php';
+    } elseif (strpos($className, "sso") !== false) {
+        require_once 'sso.class.php';
+    } elseif (strpos($className, "sumtotal") !== false) {
+        require_once 'versions/sso/sumtotal.class.php';
+    } elseif (strpos($className, "calendar") !== false) {
+        require_once 'calendar.class.php';
+    } elseif (strpos($className, "magesterpdf") !== false) {
+     require_once 'pdf.class.php';
+    } elseif (strpos($className, "magesterfacebook") !== false) {
+    } elseif (strpos($className, "xmlexport") !== false) {
+
+    } elseif (strpos($className, "firephp") !== false) {
+    	require_once 'FirePHPCore/FirePHP.class.php';
+	}
 }

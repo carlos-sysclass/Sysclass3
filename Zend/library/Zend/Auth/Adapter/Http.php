@@ -20,12 +20,10 @@
  * @version    $Id: Http.php 12503 2008-11-10 16:28:40Z matthew $
  */
 
-
 /**
  * @see Zend_Auth_Adapter_Interface
  */
 require_once 'Zend/Auth/Adapter/Interface.php';
-
 
 /**
  * HTTP Authentication Adapter
@@ -178,7 +176,6 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $this->_request  = null;
         $this->_response = null;
         $this->_ieNoOpaque = false;
-
 
         if (empty($config['accept_schemes'])) {
             /**
@@ -391,6 +388,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         // answer with only the selected auth scheme.
         if (!in_array($clientScheme, $this->_supportedSchemes)) {
             $this->_response->setHttpResponseCode(400);
+
             return new Zend_Auth_Result(
                 Zend_Auth_Result::FAILURE_UNCATEGORIZED,
                 array(),
@@ -403,7 +401,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
             // challenge again the client
             return $this->_challengeClient();
         }
-        
+
         switch ($clientScheme) {
             case 'basic':
                 $result = $this->_basicAuth($authHeader);
@@ -449,6 +447,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         if (in_array('digest', $this->_acceptSchemes)) {
             $this->_response->setHeader($headerName, $this->_digestHeader());
         }
+
         return new Zend_Auth_Result(
             Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
             array(),
@@ -540,6 +539,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $password = $this->_basicResolver->resolve($creds[0], $this->_realm);
         if ($password && $password == $creds[1]) {
             $identity = array('username'=>$creds[0], 'realm'=>$this->_realm);
+
             return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identity);
         } else {
             return $this->_challengeClient();
@@ -573,6 +573,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $data = $this->_parseDigestAuth($header);
         if ($data === false) {
             $this->_response->setHttpResponseCode(400);
+
             return new Zend_Auth_Result(
                 Zend_Auth_Result::FAILURE_UNCATEGORIZED,
                 array(),
@@ -632,7 +633,6 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         // easier
         $ha2 = hash('md5', $a2);
 
-
         // Calculate the server's version of the request-digest. This must
         // match $data['response']. See RFC 2617, section 3.2.2.1
         $message = $data['nonce'] . ':' . $data['nc'] . ':' . $data['cnonce'] . ':' . $data['qop'] . ':' . $ha2;
@@ -642,6 +642,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         // a 401 code and exit to prevent access to the protected resource.
         if ($digest == $data['response']) {
             $identity = array('username'=>$data['username'], 'realm'=>$data['realm']);
+
             return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identity);
         } else {
             return $this->_challengeClient();
@@ -667,6 +668,7 @@ class Zend_Auth_Adapter_Http implements Zend_Auth_Adapter_Interface
         $timeout = ceil(time() / $this->_nonceTimeout) * $this->_nonceTimeout;
 
         $nonce = hash('md5', $timeout . ':' . $this->_request->getServer('HTTP_USER_AGENT') . ':' . __CLASS__);
+
         return $nonce;
     }
 

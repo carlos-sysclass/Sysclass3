@@ -19,7 +19,6 @@
  * @version    $Id: Mail.php 14072 2009-02-12 22:23:49Z beberlei $
  */
 
-
 /**
  * @see Zend_Mail_Transport_Abstract
  */
@@ -39,7 +38,6 @@ require_once 'Zend/Mime/Message.php';
  * @see Zend_Mime_Part
  */
 require_once 'Zend/Mime/Part.php';
-
 
 /**
  * Class for sending an email.
@@ -153,7 +151,6 @@ class Zend_Mail extends Zend_Mime_Message
      */
     public $hasAttachments = false;
 
-
     /**
      * Sets the default mail transport for all following uses of
      * Zend_Mail::send();
@@ -212,6 +209,7 @@ class Zend_Mail extends Zend_Mime_Message
         }
 
         $this->_type = $type;
+
         return $this;
     }
 
@@ -344,6 +342,7 @@ class Zend_Mail extends Zend_Mime_Message
     {
         if ($textOnly && $this->_bodyText) {
             $body = $this->_bodyText;
+
             return $body->getContent();
         }
 
@@ -385,6 +384,7 @@ class Zend_Mail extends Zend_Mime_Message
     {
         if ($htmlOnly && $this->_bodyHtml) {
             $body = $this->_bodyHtml;
+
             return $body->getContent();
         }
 
@@ -500,7 +500,7 @@ class Zend_Mail extends Zend_Mime_Message
      */
     protected function _clearHeader($headerName)
     {
-        if (isset($this->_headers[$headerName])){
+        if (isset($this->_headers[$headerName])) {
             unset($this->_headers[$headerName]);
         }
     }
@@ -532,6 +532,7 @@ class Zend_Mail extends Zend_Mime_Message
     {
         $this->_addRecipientAndHeader('To', $email, $name);
         $this->_to[] = $email;
+
         return $this;
     }
 
@@ -545,6 +546,7 @@ class Zend_Mail extends Zend_Mime_Message
     public function addCc($email, $name='')
     {
         $this->_addRecipientAndHeader('Cc', $email, $name);
+
         return $this;
     }
 
@@ -557,6 +559,7 @@ class Zend_Mail extends Zend_Mime_Message
     public function addBcc($email)
     {
         $this->_addRecipientAndHeader('Bcc', $email, '');
+
         return $this;
     }
 
@@ -609,6 +612,7 @@ class Zend_Mail extends Zend_Mime_Message
             require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('From Header set twice');
         }
+
         return $this;
     }
 
@@ -655,6 +659,7 @@ class Zend_Mail extends Zend_Mime_Message
             require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Return-Path Header set twice');
         }
+
         return $this;
     }
 
@@ -707,6 +712,7 @@ class Zend_Mail extends Zend_Mime_Message
             require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('Subject set twice');
         }
+
         return $this;
     }
 
@@ -745,9 +751,9 @@ class Zend_Mail extends Zend_Mime_Message
         if ($this->_date === null) {
             if ($date === null) {
                 $date = date('r');
-            } else if (is_int($date)) {
+            } elseif (is_int($date)) {
                 $date = date('r', $date);
-            } else if (is_string($date)) {
+            } elseif (is_string($date)) {
                 $date = strtotime($date);
                 if ($date === false || $date < 0) {
 		            /**
@@ -758,7 +764,7 @@ class Zend_Mail extends Zend_Mime_Message
                                                   'strtotime()-compatible');
                 }
                 $date = date('r', $date);
-            } else if ($date instanceof Zend_Date) {
+            } elseif ($date instanceof Zend_Date) {
                 $date = $date->get(Zend_Date::RFC_2822);
             } else {
 	            /**
@@ -777,6 +783,7 @@ class Zend_Mail extends Zend_Mime_Message
         	require_once 'Zend/Mail/Exception.php';
         	throw new Zend_Mail_Exception('Date Header set twice');
         }
+
         return $this;
     }
 
@@ -847,7 +854,6 @@ class Zend_Mail extends Zend_Mime_Message
         return $this->_messageId;
     }
 
-
     /**
      * Clears the Message-ID from the message
      *
@@ -866,8 +872,8 @@ class Zend_Mail extends Zend_Mime_Message
      *
      * @return string
      */
-    public function createMessageId() {
-
+    public function createMessageId()
+    {
         $time = time();
 
         if ($this->_from !== null) {
@@ -1035,6 +1041,7 @@ class Zend_Mail extends Zend_Mime_Message
             } else {
                 $format = '%s <%s>';
             }
+
             return sprintf($format, $encodedName, $email);
         }
     }

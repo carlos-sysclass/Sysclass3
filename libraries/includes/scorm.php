@@ -66,7 +66,7 @@ if ($_GET['scorm_review']) {
         $user -> setSeenUnit($scormData[0]['content_ID'], $currentLesson, false);
         exit;
     }
-} else if ($_GET['scorm_import']) {
+} elseif ($_GET['scorm_import']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
@@ -103,7 +103,7 @@ if ($_GET['scorm_review']) {
                 $urlUpload = $form -> exportValue('url_upload');
 
                 $scormFiles = array();
-                if ($urlUpload != "" ) {
+                if ($urlUpload != "") {
                     FileSystemTree :: checkFile($urlUpload);
                     $urlArray = explode("/", $urlUpload);
                     $urlFile = urldecode($urlArray[sizeof($urlArray) - 1]);
@@ -175,7 +175,7 @@ if ($_GET['scorm_review']) {
         $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = failure;
     }
-} else if ($_GET['scorm_export']) {
+} elseif ($_GET['scorm_export']) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
@@ -203,7 +203,7 @@ if ($_GET['scorm_review']) {
 
             $lesson_entries = eF_getTableData("content", "id,name,data", "lessons_ID=" . $lessons_id . " and ctg_type!='tests' and ctg_type!='scorm_test' and ctg_type!='scorm' and active=1");
 
-            require_once("scorm_tools.php");
+            require_once 'scorm_tools.php';
             create_manifest($lessons_id, $lesson_entries, $filelist, SCORM_FOLDER);
 
             $scormDirectory = new MagesterDirectory(SCORM_FOLDER ."/lesson". $lessons_id."/");
@@ -227,7 +227,6 @@ if ($_GET['scorm_review']) {
 
 } else {
 
-
     $iterator = new MagesterSCORMFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST))); //Default iterator excludes non-active units
     $valid12Units = array();
     $valid2004Units = array();
@@ -235,11 +234,11 @@ if ($_GET['scorm_review']) {
         if (!$value['scorm_version'] || $value['scorm_version'] == '1.2') {
             if ($value['ctg_type'] == 'scorm') {
                 $options['custom'][$value['id']] = '<img style = "margin-left:30px" src = "images/16x16/tests.png" alt = "'._CONVERTTOSCORMTEST.'" title = "'._CONVERTTOSCORMTEST.'" onclick = "convertScorm(this, '.$value['id'].')" class = "ajaxHandle"/>';
-            } else if ($value['ctg_type'] == 'scorm_test') {
+            } elseif ($value['ctg_type'] == 'scorm_test') {
                 $options['custom'][$value['id']] = '<img style = "margin-left:30px" src = "images/16x16/theory.png" alt = "'._CONVERTTOSCORMTEST.'" title = "'._CONVERTTOSCORMCONTENT.'" onclick = "convertScorm(this, '.$value['id'].')" class = "ajaxHandle"/>';
             }
             $valid12Units[] = $value['id'];
-        } else if ($value['package_ID'] == $value['content_ID']) { //This is SCORM 2004 content's root (package) unit
+        } elseif ($value['package_ID'] == $value['content_ID']) { //This is SCORM 2004 content's root (package) unit
             $options['custom'][$value['id']] = '<img style = "margin-left:30px" src = "images/16x16/refresh.png" alt = "'._RESETSCORMDATA.'" title = "'._RESETSCORMDATA.'" onclick = "resetScorm(this, '.$value['id'].')" class = "ajaxHandle"/>';
             $valid2004Units[] = $value['id'];
         }

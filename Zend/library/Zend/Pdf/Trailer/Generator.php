@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Trailer */
 require_once 'Zend/Pdf/Trailer.php';
-
 
 /**
  * PDF file trailer generator (used for just created PDF)

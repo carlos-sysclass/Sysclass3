@@ -24,3 +24,22 @@
 .xcontentNoRequired span {
 	color: #339933;
 }
+
+
+
+
+._XCONTENT_SCHEDULE_LIST .waiting-selection {
+	opacity: 0.6;
+}
+._XCONTENT_SCHEDULE_LIST .waiting-selection td {
+	
+}
+
+
+._XCONTENT_SCHEDULE_LIST .waiting-selection:hover {
+	opacity: 1.0;
+}
+._XCONTENT_SCHEDULE_LIST .waiting-selection:hover td {
+	color: red;
+}
+

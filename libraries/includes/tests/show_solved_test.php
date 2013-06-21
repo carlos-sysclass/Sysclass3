@@ -8,11 +8,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     if (sizeof($result) == 0) {
         throw new MagesterTestException(_NONEXISTENTTEST.': '.$_GET['show_solved_test'], MagesterTestException :: NOT_DONE_TEST);
     }
-    
+
     //var_dump($result[0]['test']);
     //var_dump(unserialize($result[0]['test']));
     ///exit;
-    
+
     if (!$completedTest = unserialize($result[0]['test'])) {
         throw new MagesterTestException(_TESTCORRUPTEDORNOTACOMPLETEDTEST, MagesterTestException::CORRUPTED_TEST);
     }
@@ -177,7 +177,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                   $user = MagesterUserFactory :: factory($_GET['user']);
                   if (isset($_GET['add_lesson'])) {
                    $user -> addLessons($_GET['add_lesson'], $_GET['user_type'], 1);
-                  } else if (isset($_GET['add_course'])) {
+                  } elseif (isset($_GET['add_course'])) {
                    $user -> addCourses($_GET['add_course'], $_GET['user_type'], 1);
                   }
       exit;
@@ -185,7 +185,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                 } catch (Exception $e) {
                  handleAjaxExceptions($e);
                 }
-
 
                 // AJAX CODE TO RELOAD ALREADY ASSIGNED LESSONS
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'assignedLessonsTable') {
@@ -205,9 +204,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                             $lessons[$key]['user_type'] = $userLessons[$key] -> userStatus['user_type'];
                             $lessons[$key]['completed'] = $userLessons[$key] -> userStatus['completed'];
                             $lessons[$key]['score'] = $userLessons[$key] -> userStatus['score'];
-                        } else if ($currentUser -> user['user_type'] != 'administrator' || !$lesson['active']) {
+                        } elseif ($currentUser -> user['user_type'] != 'administrator' || !$lesson['active']) {
                             unset($lessons[$key]);
-                        } else if ($lesson['languages_NAME'] != $editedUser -> user['languages_NAME']) {
+                        } elseif ($lesson['languages_NAME'] != $editedUser -> user['languages_NAME']) {
                             unset($lessons[$key]);
                         }
                         if ($lesson['course_only']) {
@@ -286,7 +285,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                     exit;
                 }
 
-
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'coursesTable') {
                     $directionsTree = new MagesterDirectionsTree();
                     $directionPaths = $directionsTree -> toPathString();
@@ -304,9 +302,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                             $courses[$key]['user_type'] = $userCourses[$key] -> course['user_type'];
                             $courses[$key]['completed'] = $userCourses[$key] -> course['completed'];
                             $courses[$key]['score'] = $userCourses[$key] -> course['score'];
-                        } else if ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
+                        } elseif ($currentUser -> user['user_type'] != 'administrator' || !$course['active']) {
                             unset($courses[$key]);
-                        } else if ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
+                        } elseif ($course['languages_NAME'] != $editedUser -> user['languages_NAME']) {
                             unset($courses[$key]);
                         }
                     }

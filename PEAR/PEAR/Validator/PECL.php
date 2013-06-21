@@ -39,9 +39,11 @@ class PEAR_Validator_PECL extends PEAR_Validate
             if (substr($last, 1, 2) == 'rc') {
                 $this->_addFailure('version', 'Release Candidate versions must have ' .
                 'upper-case RC, not lower-case rc');
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -57,7 +59,7 @@ class PEAR_Validator_PECL extends PEAR_Validate
                     $this->_packagexml->getProvidesExtension() . '"');
             }
         }
+
         return $ret;
     }
 }
-?>

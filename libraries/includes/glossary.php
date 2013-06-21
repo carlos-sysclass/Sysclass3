@@ -1,7 +1,7 @@
 <?php
 /**
 
-* 
+*
 
 * @package SysClass
 
@@ -26,5 +26,4 @@ foreach ($glossary as $value) {
 $words = glossary :: getGlossaryWords($glossary);
 $smarty -> assign("T_GLOSSARY", $words);
 
-
-include("entity.php");
+include 'entity.php';

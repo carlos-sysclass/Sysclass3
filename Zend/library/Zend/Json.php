@@ -25,7 +25,6 @@
  */
 require_once 'Zend/Json/Expr.php';
 
-
 /**
  * Class for encoding to and decoding from JSON.
  *
@@ -75,6 +74,7 @@ class Zend_Json
         }
 
         require_once 'Zend/Json/Decoder.php';
+
         return Zend_Json_Decoder::decode($encodedValue, $objectDecodeType);
     }
 
@@ -112,7 +112,7 @@ class Zend_Json
             /**
              * @see Zend_Json_Encoder
              */
-            require_once "Zend/Json/Encoder.php";
+            require_once 'Zend/Json/Encoder.php';
             $valueToEncode = self::_recursiveJsonExprFinder($valueToEncode, $javascriptExpressions);
         }
 
@@ -127,7 +127,7 @@ class Zend_Json
         //only do post-proccessing to revert back the Zend_Json_Expr if any.
         if (count($javascriptExpressions) > 0) {
             $count = count($javascriptExpressions);
-            for($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 $magicKey = $javascriptExpressions[$i]['magicKey'];
                 $value    = $javascriptExpressions[$i]['value'];
 
@@ -179,6 +179,7 @@ class Zend_Json
                 $value->$k = self::_recursiveJsonExprFinder($value->$k, $javascriptExpressions, $k);
             }
         }
+
         return $value;
     }
 
@@ -208,7 +209,8 @@ class Zend_Json
      * @return mixed - JSON formatted string on success
      * @throws Zend_Json_Exception
      */
-    public static function fromXml ($xmlStringContents, $ignoreXmlAttributes=true) {
+    public static function fromXml ($xmlStringContents, $ignoreXmlAttributes=true)
+    {
         // Load the XML formatted string into a Simple XML Element object.
         $simpleXmlElementObject = simplexml_load_string($xmlStringContents);
 
@@ -226,6 +228,7 @@ class Zend_Json
         // Convert the PHP array to JSON using Zend_Json encode method.
         // It is just that simple.
         $jsonStringOutput = self::encode($resultArray);
+
         return($jsonStringOutput);
     } // End of function fromXml.
 
@@ -254,7 +257,8 @@ class Zend_Json
      * @return mixed - On success, a PHP associative array of traversed XML elements
      * @throws Zend_Json_Exception
      */
-    protected static function _processXml ($simpleXmlElementObject, $ignoreXmlAttributes, $recursionDepth=0) {
+    protected static function _processXml ($simpleXmlElementObject, $ignoreXmlAttributes, $recursionDepth=0)
+    {
         // Keep an eye on how deeply we are involved in recursion.
         if ($recursionDepth > self::$maxRecursionDepthAllowed) {
             // XML tree is too deep. Exit now by throwing an exception.
@@ -289,11 +293,11 @@ class Zend_Json
             } // End of if (count($simpleXmlElementObject) <= 0)
 
             // Let us walk through the child elements now.
-            foreach($simpleXmlElementObject as $key=>$value) {
+            foreach ($simpleXmlElementObject as $key=>$value) {
                 // Check if we need to ignore the XML attributes.
                 // If yes, you can skip processing the XML attributes.
                 // Otherwise, add the XML attributes to the result array.
-                if(($ignoreXmlAttributes == true) && (is_string($key)) && ($key == "@attributes")) {
+                if (($ignoreXmlAttributes == true) && (is_string($key)) && ($key == "@attributes")) {
                     continue;
                 } // End of if(($ignoreXmlAttributes == true) && ($key == "@attributes"))
 
@@ -304,7 +308,7 @@ class Zend_Json
 
                 // Decrease the recursion depth by one.
                 $recursionDepth--;
-            } // End of foreach($simpleXmlElementObject as $key=>$value) {
+            } // End of foreach ($simpleXmlElementObject as $key=>$value) {
 
             if ($recursionDepth == 0) {
                 // That is it. We are heading to the exit now.

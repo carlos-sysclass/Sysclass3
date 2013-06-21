@@ -91,6 +91,7 @@ class Zend_Crypt
         if ($binaryOutput) {
             return $binary;
         }
+
         return bin2hex($binary);
     }
 
@@ -99,6 +100,7 @@ class Zend_Crypt
         if ($algorithm == 'ripemd160') {
             $algorithm = 'rmd160';
         }
+
         return openssl_digest($data, $algorithm, $binaryOutput);
     }
 

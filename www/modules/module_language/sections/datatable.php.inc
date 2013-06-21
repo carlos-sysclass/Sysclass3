@@ -38,4 +38,3 @@ $result = array(
 );
 
 return $result;
-?>

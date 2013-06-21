@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Controller_Exception */
 require_once 'Zend/Exception.php';
-
 
 /**
  * @package    Zend_Memory
@@ -30,4 +28,3 @@ require_once 'Zend/Exception.php';
  */
 class Zend_Memory_Exception extends Zend_Exception
 {}
-

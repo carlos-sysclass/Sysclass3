@@ -114,29 +114,30 @@ class PEAR_RunTest
                 2 => array('pipe', 'w')
                 ), $pipes, null, $env, array("suppress_errors" => true));
         }
-    
+
         if (!$proc) {
             return false;
         }
-    
+
         if (is_string($stdin)) {
             fwrite($pipes[0], $stdin);
         }
         fclose($pipes[0]);
-    
+
         while (true) {
             /* hide errors from interrupted syscalls */
             $r = $pipes;
             $w = null;
             $e = null;
             $n = @stream_select($r, $w, $e, 60);
-    
+
             if ($n === 0) {
                 /* timed out */
                 $data .= "\n ** ERROR: process timed out **\n";
                 proc_terminate($proc);
+
                 return array(1234567890, $data);
-            } else if ($n > 0) {
+            } elseif ($n > 0) {
                 $line = fread($pipes[1], 8192);
                 if (strlen($line) == 0) {
                     /* EOF */
@@ -155,6 +156,7 @@ class PEAR_RunTest
         if (function_exists('proc_get_status')) {
             $code = $stat['exitcode'];
         }
+
         return array($code, $data);
     }
 
@@ -168,9 +170,10 @@ class PEAR_RunTest
                 $ini_settings[$name] = $value;
             }
         }
+
         return $ini_settings;
     }
-    
+
     function settings2params($ini_settings)
     {
         $settings = '';
@@ -178,6 +181,7 @@ class PEAR_RunTest
             $value = addslashes($value);
             $settings .= " -d \"$name=$value\"";
         }
+
         return $settings;
     }
 
@@ -195,11 +199,12 @@ class PEAR_RunTest
             if (isset($this->_logger)) {
                 $this->_logger->log(2, 'Running command "' . $cmd . '"');
             }
-    
+
             $savedir = getcwd(); // in case the test moves us around
             chdir(dirname($file));
             echo `$cmd`;
             chdir($savedir);
+
             return 'PASSED'; // we have no way of knowing this information so assume passing
         }
         $pass_options = '';
@@ -238,6 +243,7 @@ class PEAR_RunTest
                 continue;
             } elseif (empty($section)) {
                 fclose($fp);
+
                 return PEAR::raiseError("Invalid sections formats in test file: $file");
             }
 
@@ -275,6 +281,7 @@ class PEAR_RunTest
                 if (isset($this->_options['tapoutput'])) {
                     return array('ok', ' # skip --cgi option needed for this test, "pear help run-tests" for info');
                 }
+
                 return 'SKIPPED';
             }
             $php = $this->_options['cgi'];
@@ -295,7 +302,7 @@ class PEAR_RunTest
     	$test_clean        = $test_dir . DIRECTORY_SEPARATOR . $main_file_name.'clean.php';
     	$tmp_post          = $temp_dir . DIRECTORY_SEPARATOR . uniqid('phpt.');
 
-    	// unlink old test results	
+    	// unlink old test results
     	@unlink($diff_filename);
     	@unlink($log_filename);
     	@unlink($exp_filename);
@@ -329,6 +336,7 @@ class PEAR_RunTest
                     if (isset($this->_options['tapoutput'])) {
                         return array('ok', ' # skip ' . $reason);
                     }
+
                     return 'SKIPPED';
                 }
                 if (!strncasecmp('info', ltrim($output), 4)) {
@@ -366,7 +374,7 @@ class PEAR_RunTest
         $env['CONTENT_TYPE']='';
         $env['CONTENT_LENGTH']='';
         if (!empty($section_text['ENV'])) {
-            foreach(explode("\n", trim($section_text['ENV'])) as $e) {
+            foreach (explode("\n", trim($section_text['ENV'])) as $e) {
                 $e = explode('=',trim($e),2);
                 if (!empty($e[0]) && isset($e[1])) {
                     $env[$e[0]] = $e[1];
@@ -434,7 +442,7 @@ class PEAR_RunTest
         if (array_key_exists('POST_RAW', $section_text) && !empty($section_text['POST_RAW'])) {
             $post = trim($section_text['POST_RAW']);
             $raw_lines = explode("\n", $post);
-    
+
             $request = '';
             $started = false;
             foreach ($raw_lines as $i => $line) {
@@ -449,30 +457,30 @@ class PEAR_RunTest
                 $started = true;
                 $request .= $line;
             }
-    
+
             $env['CONTENT_LENGTH'] = strlen($request);
             $env['REQUEST_METHOD'] = 'POST';
 
             $this->save_text($tmp_post, $request);
             $cmd = "$php$pass_options$ini_settings -f \"$test_file\" 2>&1 < $tmp_post";
         } elseif (array_key_exists('POST', $section_text) && !empty($section_text['POST'])) {
-    
+
             $post = trim($section_text['POST']);
             $this->save_text($tmp_post, $post);
             $content_length = strlen($post);
-    
+
             $env['REQUEST_METHOD'] = 'POST';
             $env['CONTENT_TYPE']   = 'application/x-www-form-urlencoded';
             $env['CONTENT_LENGTH'] = $content_length;
-    
+
             $cmd = "$php$pass_options$ini_settings -f \"$test_file\" 2>&1 < $tmp_post";
-    
+
         } else {
-    
+
             $env['REQUEST_METHOD'] = 'GET';
             $env['CONTENT_TYPE']   = '';
             $env['CONTENT_LENGTH'] = '';
-    
+
             $cmd = "$php$pass_options$ini_settings -f \"$test_file\" $args 2>&1";
         }
         if (OS_WINDOWS && isset($section_text['RETURNS'])) {
@@ -562,6 +570,7 @@ class PEAR_RunTest
                     if (isset($this->_options['tapoutput'])) {
                         return array('ok', ' - ' . $tested);
                     }
+
                     return 'PASSED';
                 }
 
@@ -586,6 +595,7 @@ class PEAR_RunTest
                     if (isset($this->_options['tapoutput'])) {
                         return array('ok', ' - ' . $tested);
                     }
+
                     return 'PASSED';
                 }
             }
@@ -611,6 +621,7 @@ class PEAR_RunTest
                 if (isset($this->_options['tapoutput'])) {
                     return array('ok', ' - ' . $tested);
                 }
+
                 return 'PASSED';
             }
             unset($section_text['EXPECTF']);
@@ -717,8 +728,10 @@ $return_value
             $wanted = "# Expected output:\n#\n#" . implode("\n#", $wanted);
             $output = explode("\n", $output);
             $output = "#\n#\n# Actual output:\n#\n#" . implode("\n#", $output);
+
             return array($wanted . $output . 'not ok', ' - ' . $tested);
         }
+
         return $warn ? 'WARNED' : 'FAILED';
     }
 
@@ -731,13 +744,13 @@ $return_value
         $o1 = array_diff_assoc($o,$w);
         $w2 = array();
         $o2 = array();
-        foreach($w1 as $idx => $val) {
+        foreach ($w1 as $idx => $val) {
             if (!$wanted_re || !isset($wr[$idx]) || !isset($o1[$idx]) ||
                   !preg_match('/^' . $wr[$idx] . '$/', $o1[$idx])) {
                 $w2[sprintf("%03d<", $idx)] = sprintf("%03d- ", $idx + 1) . $val;
             }
         }
-        foreach($o1 as $idx => $val) {
+        foreach ($o1 as $idx => $val) {
             if (!$wanted_re || !isset($wr[$idx]) ||
                   !preg_match('/^' . $wr[$idx] . '$/', $val)) {
                 $o2[sprintf("%03d>", $idx)] = sprintf("%03d+ ", $idx + 1) . $val;
@@ -750,6 +763,7 @@ $return_value
         } else {
             $extra = '';
         }
+
         return implode("\r\n", $diff) . $extra;
     }
 
@@ -772,4 +786,3 @@ $text
     }
 
 }
-?>

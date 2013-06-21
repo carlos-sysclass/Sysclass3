@@ -1,7 +1,7 @@
 <?php
 /**
 
- * 
+ *
 
  */
 //This file cannot be called directly, only included.
@@ -10,7 +10,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 /**
 
- * 
+ *
 
  * @author user
 
@@ -25,7 +25,7 @@ class MagesterThemesException extends Exception
 }
 /**
 
- * 
+ *
 
  * @author user
 
@@ -36,7 +36,7 @@ class themes extends MagesterEntity
 {
     /**
 
-     * 
+     *
 
      * @var unknown_type
 
@@ -44,7 +44,7 @@ class themes extends MagesterEntity
     public $options = array();
     /**
 
-     * 
+     *
 
      * @var unknown_type
 
@@ -52,7 +52,7 @@ class themes extends MagesterEntity
     public $layout = array();
     /**
 
-     * 
+     *
 
      * @var unknown_type
 
@@ -67,14 +67,15 @@ class themes extends MagesterEntity
                               'mobile' => _MOBILECLIENT);
     /**
 
-     * 
+     *
 
      * @param $param
 
      * @return unknown_type
 
      */
-    public function __construct($param) {
+    public function __construct($param)
+    {
         //Special handling in case we are instantiating with string (name) instead of id
         if (!eF_checkParameter($param, 'id') && eF_checkParameter($param, 'alnum_general')) {
          $result = eF_getTableData("themes", "id", "name='".$param."'");
@@ -87,7 +88,7 @@ class themes extends MagesterEntity
         if (strpos($this -> {$this -> entity}['path'], 'http') === 0) {
             $this -> remote = 1;
         }
-/*        
+/*
 
         //Check whether this is a remote theme
 
@@ -103,7 +104,7 @@ class themes extends MagesterEntity
 
             }
 
-        }            
+        }
 
 */
         $this -> options = unserialize($this -> {$this -> entity}['options']);
@@ -114,7 +115,7 @@ class themes extends MagesterEntity
         if (!$this -> layout) {
             $this -> layout = array();
         }
-        //Check validity of current logo 
+        //Check validity of current logo
         try {
             if (isset($this -> options['logo'])) {
                 new MagesterFile($this -> options['logo']);
@@ -142,12 +143,14 @@ class themes extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
         //$system_form = new HTML_QuickForm("customization_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=themes&tab=customization", "", null, true);
   $form -> addElement('file', 'theme_file', _UPLOADTHEMEFILEZIPFORMAT);
   $form -> addElement('text', 'remote_theme', _ORSPECIFYREMOTETHEME, 'class = "inputText"');
   $form -> setMaxFileSize(FileSystemTree :: getUploadMaxSize() * 1024);
   $form -> addElement("submit", "submit_theme", _INSTALL, 'class = "flatButton"');
+
   return $form;
     }
     /**
@@ -157,7 +160,8 @@ class themes extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
         if ($form -> exportValue('remote_theme')) {
             $file = $form -> exportValue('remote_theme');
             if (!fopen($file, 'r')) {
@@ -194,7 +198,7 @@ class themes extends MagesterEntity
 
 	            $this -> options = array_merge($this -> options, $xmlValues);
 
-	            $this -> layout  = 
+	            $this -> layout  =
 
 	            $this -> persist();
 
@@ -211,7 +215,8 @@ class themes extends MagesterEntity
      * @see libraries/MagesterEntity#persist()
 
      */
-    public function persist() {
+    public function persist()
+    {
         $this -> {$this -> entity}['options'] = serialize($this -> options);
         $this -> {$this -> entity}['layout'] = serialize($this -> layout);
         parent :: persist();
@@ -223,19 +228,21 @@ class themes extends MagesterEntity
      * @see libraries/MagesterEntity#delete()
 
      */
-    public function delete() {
+    public function delete()
+    {
         $directory = new MagesterDirectory(G_THEMESPATH.$this -> {$this -> entity}['path']);
         $directory -> delete();
         eF_deleteTableData($this -> entity, "id=".$this -> {$this -> entity}['id']);
     }
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function applySettings($mode = false) {
+    public function applySettings($mode = false)
+    {
         $file = G_THEMESPATH.$this -> {$this -> entity}['path'].'theme.xml';
         $fields = self :: parseFile($file);
         if (is_file($fields['path'].'images/logo.png')) {
@@ -253,37 +260,40 @@ class themes extends MagesterEntity
     }
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public function export() {
+    public function export()
+    {
         if (!$this -> remote) {
             $directory = new MagesterDirectory(G_THEMESPATH.$this -> {$this -> entity}['path']);
             $file = $directory -> compress();
             //pr($file);
         }
+
         return $file;
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function validateFields($fields) {
-        //Check validity of parameters        
+    public static function validateFields($fields)
+    {
+        //Check validity of parameters
         if (!isset($fields['name']) || !eF_checkParameter($fields['name'], 'alnum_general')) {
             throw new Exception(_INVALIDNAME, MagesterEntityException :: INVALID_PARAMETER);
         }
         if (!isset($fields['options'])) {
             $fields['options'] = array();
         }
-        //!isset($fields['active']) ? $fields['active'] = 1 : null;        
+        //!isset($fields['active']) ? $fields['active'] = 1 : null;
         if (!isset($fields['options']['sidebar_width']) || $fields['options']['sidebar_width'] < 50 || $fields['options']['sidebar_width'] > 500) {
             $fields['options']['sidebar_width'] = 175;
         }
@@ -310,35 +320,37 @@ class themes extends MagesterEntity
         }
         if (!isset($fields['layout']['positions']['leftList'])) {
             $fields['layout']['positions']['leftList'] = array();
-        } else if (isset($fields['layout']['positions']['leftList']) && !is_array($fields['layout']['positions']['leftList'])) {
+        } elseif (isset($fields['layout']['positions']['leftList']) && !is_array($fields['layout']['positions']['leftList'])) {
             $fields['layout']['positions']['leftList'] = array($fields['layout']['positions']['leftList']);
         }
         if (!isset($fields['layout']['positions']['centerList'])) {
             $fields['layout']['positions']['centerList'] = array();
-        } else if (isset($fields['layout']['positions']['centerList']) && !is_array($fields['layout']['positions']['centerList'])) {
+        } elseif (isset($fields['layout']['positions']['centerList']) && !is_array($fields['layout']['positions']['centerList'])) {
             $fields['layout']['positions']['centerList'] = array($fields['layout']['positions']['centerList']);
         }
         if (!isset($fields['layout']['positions']['rightList'])) {
             $fields['layout']['positions']['rightList'] = array();
-        } else if (isset($fields['layout']['positions']['rightList']) && !is_array($fields['layout']['positions']['rightList'])) {
+        } elseif (isset($fields['layout']['positions']['rightList']) && !is_array($fields['layout']['positions']['rightList'])) {
             $fields['layout']['positions']['rightList'] = array($fields['layout']['positions']['rightList']);
         }
         //$fields['layout']['positions']['layout'] = $fields['layout']['selected_layout'];
-//pr($fields);exit;        
+//pr($fields);exit;
         $fields['options'] = serialize($fields['options']);
         $fields['layout'] = serialize($fields['layout']);
+
         return $fields;
     }
     /**
 
-     * 
+     *
 
      * @param $fields
 
      * @return unknown_type
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         if (is_file(G_THEMESPATH.$fields['path'].'images/logo.png')) {
             $fields['options']['logo'] = $fields['path'].'images/logo.png';
         }
@@ -353,44 +365,48 @@ class themes extends MagesterEntity
    $id = array_search($fields['name'], $result['name']);
   }
         $newTheme = new themes($id);
+
         return $newTheme;
     }
     /**
 
-     * 
+     *
 
      * @param $file
 
      * @return unknown_type
 
      */
-    public static function parseFile($file) {
+    public static function parseFile($file)
+    {
         if ($file instanceof MagesterFile) {
             $file = $file['path'];
         }
         $xml = new SimpleXMLIterator(file_get_contents($file));
-        //Remove comment nodes        
+        //Remove comment nodes
         foreach (new RecursiveIteratorIterator($xml, RecursiveIteratorIterator :: SELF_FIRST) as $key => $value) {
             unset($value->comment);
         }
-        $fields = array('name' => (string)$xml -> name ? (string)$xml -> name: basename($file),
-                  'title' => (string)$xml -> title,
-            'version' => (string)$xml -> version,
-               'author' => (string)$xml -> author,
+        $fields = array('name' => (string) $xml -> name ? (string) $xml -> name: basename($file),
+                  'title' => (string) $xml -> title,
+            'version' => (string) $xml -> version,
+               'author' => (string) $xml -> author,
                         'path' => str_replace(G_THEMESPATH, "", str_replace("\\", "/", dirname($file)).'/'),
-               'description' => (string)$xml -> description,
-         'options' => (array)$xml -> options,
-                        'layout' => array('positions' => (array)$xml -> layout -> positions));
+               'description' => (string) $xml -> description,
+         'options' => (array) $xml -> options,
+                        'layout' => array('positions' => (array) $xml -> layout -> positions));
+
         return $fields;
     }
     /**
 
-     * 
+     *
 
      * @return unknown_type
 
      */
-    public static function getAll() {
+    public static function getAll()
+    {
         $themes = parent :: getAll("themes", false);
         foreach ($themes as $key => $value) {
          unserialize($value['options']) ? $themes[$key]['options'] = unserialize($value['options']) : $themes[$key]['options'] = array();
@@ -398,6 +414,7 @@ class themes extends MagesterEntity
              $themes[$key]['remote'] = 1;
          }
         }
+
         return $themes;
     }
 }

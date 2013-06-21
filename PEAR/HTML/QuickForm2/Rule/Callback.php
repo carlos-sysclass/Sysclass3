@@ -96,7 +96,8 @@ class HTML_QuickForm2_Rule_Callback extends HTML_QuickForm2_Rule
     {
         $value  = $this->owner->getValue();
         $config = $this->getConfig();
-        return (bool)call_user_func_array(
+
+        return (bool) call_user_func_array(
             $config['callback'], array_merge(array($value), $config['arguments'])
         );
     }
@@ -110,6 +111,7 @@ class HTML_QuickForm2_Rule_Callback extends HTML_QuickForm2_Rule
         foreach ($config['arguments'] as $arg) {
             $arguments[] = HTML_QuickForm2_JavascriptBuilder::encode($arg);
         }
+
         return "function() { return " . $this->findJavascriptName() .
                "(" . implode(', ', $arguments) . "); }";
     }
@@ -172,6 +174,7 @@ class HTML_QuickForm2_Rule_Callback extends HTML_QuickForm2_Rule
                 }
             }
         }
+
         return false;
     }
 
@@ -210,10 +213,11 @@ class HTML_QuickForm2_Rule_Callback extends HTML_QuickForm2_Rule
             }
             if (self::arrayHasSomeKeys($localConfig, array('callback', 'arguments', 'js_callback'))) {
                 $config += $localConfig;
-            } elseif(isset($localConfig)) {
+            } elseif (isset($localConfig)) {
                 $config += array('callback' => $localConfig, 'arguments' => $localConfig);
             }
         }
+
         return $config;
     }
 
@@ -245,7 +249,7 @@ class HTML_QuickForm2_Rule_Callback extends HTML_QuickForm2_Rule
                 preg_replace('/\s+/', ' ', var_export($config['arguments'], true)) . ' given'
             );
         }
+
         return parent::setConfig($config + array('arguments' => array()));
     }
 }
-?>

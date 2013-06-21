@@ -84,7 +84,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function backup($backupName, $backupType = 0) {
+ public static function backup($backupName, $backupType = 0)
+ {
   $tempDir = G_BACKUPPATH.'temp/';
   if (is_dir($tempDir)) {
       $dir = new MagesterDirectory($tempDir);
@@ -137,7 +138,7 @@ class MagesterSystem
    $certificatesDir-> copy($tempDir.'certificate_templates');
    $editorTemplatesDir = new MagesterDirectory(G_ROOTPATH."www/content/editor_templates/");
    $editorTemplatesDir-> copy($tempDir.'editor_templates');
-  } else if ($backupType == 2) {
+  } elseif ($backupType == 2) {
    $rootDir = new MagesterDirectory(G_ROOTPATH);
    $rootDir -> copy($tempDir.'magester_root');
   }
@@ -170,7 +171,8 @@ class MagesterSystem
 	 * @access public
 
 	 */
- public static function restore($restoreFile, $force = false) {
+ public static function restore($restoreFile, $force = false)
+ {
   if (!($restoreFile instanceof MagesterFile)) {
    $restoreFile = new MagesterFile($restoreFile);
   }
@@ -256,6 +258,7 @@ class MagesterSystem
   }
   $dir = new MagesterDirectory($tempDir);
   $dir -> delete();
+
   return true;
  }
  /**
@@ -291,7 +294,8 @@ class MagesterSystem
 	 * @access public
 
 	 */
- public static function importUsers($file, $replaceUsers = false) {
+ public static function importUsers($file, $replaceUsers = false)
+ {
      if (!($file instanceof MagesterFile)) {
          $file = new MagesterFile($file);
      }
@@ -300,7 +304,7 @@ class MagesterSystem
         // Get user types to check if they exist
         $userTypesTable = eF_getTableData("user_types", "*", "");
         // Set the userTypesTable to find in O(1) the existence or not of a user-type according to its name
-        foreach($userTypesTable as $key => $userType) {
+        foreach ($userTypesTable as $key => $userType) {
             $userTypesTable[$userType['name']] = $userType;
         }
         // If we work on the enterprise version we need to distinguish between users and module_hcd_employees tables fields
@@ -372,19 +376,14 @@ class MagesterSystem
                 $csvEmployeeProperties = $csvUser;
                 // Delete and recreate $csvUser to keep only the fields in userFields
                 unset($csvUser);
-                foreach($userFields as $field) {
+                foreach ($userFields as $field) {
                  if (isset($csvEmployeeProperties[$field])) {
                   $csvUser[$field] = $csvEmployeeProperties[$field];
                  }
                 }
                 try {
 
-
-
-
-
                   $newUsers[] = MagesterUser :: createUser($csvUser);
-
 
                 } catch (Exception $e) {
                  $messages[] = '&quot;'.$csvUser['login'].'&quot;: '.$e -> getMessage().' ('.$e -> getCode().')';
@@ -424,7 +423,8 @@ class MagesterSystem
      * @access public
 
      */
- public static function exportUsers($separator) {
+ public static function exportUsers($separator)
+ {
          $users = eF_getTableData("users LEFT OUTER JOIN user_types ON users.user_types_ID = user_types.id", "users.*, user_types.name as user_type_name");
      foreach ($users as $user) {
          unset($user['password']);
@@ -438,6 +438,7 @@ class MagesterSystem
      }
      file_put_contents($GLOBALS['currentUser'] -> user['directory']."/temp/magester_users.csv", implode("\n", $lines));
      $file = new MagesterFile($GLOBALS['currentUser'] -> user['directory']."/temp/magester_users.csv");
+
      return $file;
  }
     /**
@@ -469,7 +470,8 @@ class MagesterSystem
      * @access public
 
      */
- public static function exportChat($messages) {
+ public static function exportChat($messages)
+ {
         $lines = array();
         foreach ($messages as $msg) {
             $lines[] = date("j M Y, G:i:s",$msg['timestamp']) . ", ". $msg['users_LOGIN'] . ": " . $msg['content'];
@@ -479,6 +481,7 @@ class MagesterSystem
      }
      file_put_contents($GLOBALS['currentUser'] -> user['directory']."/temp/chat_conversation.txt", implode("\r\n", $lines));
      $file = new MagesterFile($GLOBALS['currentUser'] -> user['directory']."/temp/chat_conversation.txt");
+
      return $file;
  }
  /**
@@ -510,11 +513,12 @@ class MagesterSystem
 	 * @access public
 
 	 */
- public static function getLanguages($reduced = false, $only_active = false) {
+ public static function getLanguages($reduced = false, $only_active = false)
+ {
      $languages = array();
   if ($only_active) {
    $result = eF_getTableData("languages", "*", "active=1", "translation asc");
-  } else{
+  } else {
    $result = eF_getTableData("languages", "*", "", "translation asc");
      }
   foreach ($result as $value) {
@@ -530,6 +534,7 @@ class MagesterSystem
          foreach ($languages as $key => $value) {
              $value['translation'] ? $reduced[$key] = $value['translation'] : $reduced[$key] = $key;
          }
+
          return $reduced;
      } else {
          return $languages;
@@ -560,9 +565,11 @@ class MagesterSystem
 	 * @since 3.5.2
 
 	 */
- public static function getAdministrator() {
+ public static function getAdministrator()
+ {
      $admins = eF_getTableData("users", "*", "user_type = 'administrator' and user_types_ID = 0", "timestamp");
      $admin = MagesterUserFactory :: factory($admins[0]);
+
      return $admin;
  }
  /**
@@ -596,7 +603,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function lockSystem($message, $logoutUsers) {
+ public static function lockSystem($message, $logoutUsers)
+ {
      MagesterConfiguration::setValue('lock_message', $message);
      MagesterConfiguration::setValue('lock_down', 1);
      if ($logoutUsers) {
@@ -634,7 +642,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function unlockSystem() {
+ public static function unlockSystem()
+ {
      MagesterConfiguration::setValue('lock_down', 0);
  }
  /**
@@ -668,7 +677,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function checkVersionKey($key) {
+ public static function checkVersionKey($key)
+ {
      if ($key) {
          $url = LICENSE_SERVER.'?key='.rawurlencode($key);
          try {
@@ -679,7 +689,8 @@ class MagesterSystem
          if ($versionData->status > 0) {
              throw new MagesterSystemException(_SETTINGKEYFAILEDWITHCODE.' '.$versionData->status.': '.$versionData->message, MagesterSystemException::INVALID_VERSION_KEY);
          }
-         return (array)$versionData;
+
+         return (array) $versionData;
      } else {
          //throw new MagesterSystemException(_INVALIDVERSIONKEY.': '.$key, MagesterSystemException::INVALID_VERSION_KEY);
          return array();
@@ -718,7 +729,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function setVersionKey($key) {
+ public static function setVersionKey($key)
+ {
      if (!$key || !eF_checkParameter($key, 'alnum')) {
          throw new MagesterSystemException(_INVALIDVERSIONKEY.': '.$key, MagesterSystemException::INVALID_VERSION_KEY);
      }
@@ -745,6 +757,7 @@ class MagesterSystem
      if ($versionData['type'] == "educational") {
          eF_insertAutoLessonCourseSkills();
      }
+
      return true;
  }
  /**
@@ -774,7 +787,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function deleteVersionKey() {
+ public static function deleteVersionKey()
+ {
      MagesterConfiguration :: setValue('version_key', '');
      MagesterConfiguration :: setValue('version_users', '');
      MagesterConfiguration :: setValue('version_serial', '');
@@ -803,7 +817,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function printErrorMessage($message) {
+ public static function printErrorMessage($message)
+ {
      $str = '
      <style>
      .singleMessage{width:100%;font-family:Arial, Helvetica,geneva;font-size:14px;border:1px solid red;background-color:#ffcccc;margin-top:10px}
@@ -815,9 +830,11 @@ class MagesterSystem
        <td><div style = "font-size:16px;font-weight:bold">An error occured:</div><div>'.$message.'</div></tr>
      </table>
      ';
+
      return $str;
  }
- public static function exportToXls($data, $file = false, $alignments = array()) {
+ public static function exportToXls($data, $file = false, $alignments = array())
+ {
   require_once 'Spreadsheet/Excel/Writer.php';
   $workBook = new Spreadsheet_Excel_Writer($file);
   $workBook -> setTempDir(G_UPLOADPATH);
@@ -865,7 +882,8 @@ class MagesterSystem
 	 * @static
 
 	 */
- public static function getSystemLogo() {
+ public static function getSystemLogo()
+ {
   try {
    $currentTheme = new themes(G_CURRENTTHEME);
    try {
@@ -876,6 +894,7 @@ class MagesterSystem
   } catch (MagesterFileException $e) {
    $logoFile = new MagesterFile(G_DEFAULTIMAGESPATH."logo.png");
   }
+
   return $logoFile;
  }
 }

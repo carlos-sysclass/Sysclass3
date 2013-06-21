@@ -29,7 +29,7 @@ if (($_zf['prepend'] = getenv('ZEND_TOOL_INCLUDE_PATH_PREPEND')) || ($_zf['whole
     } elseif (isset($_zf['whole']) && ($_zf['whole'] !== false) && (($_zf['wholeRealpath'] = realpath($_zf['whole'])) !== false)) {
         set_include_path($_zf['wholeRealpath']);
     }
-} 
+}
 
 // assume the include_path is good, and load the client/console
 if ((@include_once 'Zend/Tool/Framework/Client/Console.php') === false) {
@@ -43,11 +43,11 @@ if ((@include_once 'Zend/Tool/Framework/Client/Console.php') === false) {
 
 if (!class_exists('Zend_Tool_Framework_Client_Console')) {
     echo <<<EOS
-    
+
 ***************************** ZF ERROR ********************************
 In order to run the zf command, you need to ensure that Zend Framework
-is inside your include_path.  If you are running this tool without 
-ZendFramework in your include_path, you can alternatively set one of 
+is inside your include_path.  If you are running this tool without
+ZendFramework in your include_path, you can alternatively set one of
 two environment variables to for this tool to work:
 
 a) ZEND_TOOL_INCLUDE_PATH_PREPEND="/path/to/ZendFramework/library"
@@ -67,7 +67,7 @@ EOS;
     echo '    original include_path: ' . $_zf['original'] . PHP_EOL;
     echo '    attempted include_path: ' . get_include_path() . PHP_EOL;
     echo '    script location: ' . $_SERVER['SCRIPT_NAME'] . PHP_EOL;
-    exit(1);    
+    exit(1);
 }
 
 // cleanup the global space

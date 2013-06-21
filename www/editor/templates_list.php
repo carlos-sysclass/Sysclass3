@@ -19,4 +19,3 @@ if (substr($str , -1) == ",") {
 $str .= '];';
 
 print $str;
-?>

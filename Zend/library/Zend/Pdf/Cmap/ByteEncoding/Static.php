@@ -21,7 +21,6 @@
 /** Zend_Pdf_Cmap_ByteEncoding */
 require_once 'Zend/Pdf/Cmap/ByteEncoding.php';
 
-
 /**
  * Custom cmap type used for the Adobe Standard 14 PDF fonts.
  *
@@ -36,7 +35,6 @@ require_once 'Zend/Pdf/Cmap/ByteEncoding.php';
 class Zend_Pdf_Cmap_ByteEncoding_Static extends Zend_Pdf_Cmap_ByteEncoding
 {
   /**** Public Interface ****/
-
 
   /* Object Lifecycle */
 

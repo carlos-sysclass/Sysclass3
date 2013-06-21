@@ -21,7 +21,6 @@
 /** Zend_Pdf_Resource_Font_Simple_Standard */
 require_once 'Zend/Pdf/Resource/Font/Simple/Standard.php';
 
-
 /**
  * Implementation for the standard PDF font ZapfDingbats.
  *
@@ -43,7 +42,6 @@ require_once 'Zend/Pdf/Resource/Font/Simple/Standard.php';
 class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resource_Font_Simple_Standard
 {
   /**** Instance Variables ****/
-
 
     /**
      * Array for conversion from local encoding to special font encoding.
@@ -178,10 +176,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
             0xfb => "\x27\xbb",   0xfc => "\x27\xbc",   0xfd => "\x27\xbd",
             0xfe => "\x27\xbe");
 
-
-
   /**** Public Interface ****/
-
 
   /* Object Lifecycle */
 
@@ -191,7 +186,6 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
     public function __construct()
     {
         parent::__construct();
-
 
         /* Object properties */
 
@@ -369,7 +363,6 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
         $this->_cmap = Zend_Pdf_Cmap::cmapWithTypeData(
           Zend_Pdf_Cmap::TYPE_BYTE_ENCODING_STATIC, $cmapData);
 
-
         /* Resource dictionary */
 
         /* The resource dictionary for the standard fonts is sparse because PDF
@@ -422,6 +415,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
                  */
             }
         }
+
         return $encodedString;
     }
 
@@ -451,6 +445,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
         if ($charEncoding != 'UTF-16BE') {
             $decodedString = iconv('UTF-16BE', $charEncoding, $decodedString);
         }
+
         return $decodedString;
     }
 
@@ -479,6 +474,7 @@ class Zend_Pdf_Resource_Font_Simple_Standard_ZapfDingbats extends Zend_Pdf_Resou
         if ($charEncoding != 'ISO-8859-1') {
             $string = iconv($charEncoding, 'ISO-8859-1', $string);
         }
+
         return $this->decodeString($string, 'UTF-16BE');
     }
 

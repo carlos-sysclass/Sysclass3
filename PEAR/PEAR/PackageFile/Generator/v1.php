@@ -128,6 +128,7 @@ class PEAR_PackageFile_Generator_v1
             if (!$tar->addModify($filelist, $pkgver, $pkgdir)) {
                 return PEAR::raiseError('PEAR_Packagefile_v1::toTgz: tarball creation failed');
             }
+
             return $dest_package;
         }
     }
@@ -162,6 +163,7 @@ class PEAR_PackageFile_Generator_v1
         }
         fwrite($np, $this->toXml($state, true));
         fclose($np);
+
         return $newpkgfile;
     }
 
@@ -177,6 +179,7 @@ class PEAR_PackageFile_Generator_v1
         if (version_compare(phpversion(), '5.0.0', 'lt')) {
             $string = utf8_encode($string);
         }
+
         return strtr($string, array(
                                           '&'  => '&amp;',
                                           '>'  => '&gt;',
@@ -234,6 +237,7 @@ class PEAR_PackageFile_Generator_v1
             $ret .= " </changelog>\n";
         }
         $ret .= "</package>\n";
+
         return $ret;
     }
 
@@ -358,6 +362,7 @@ class PEAR_PackageFile_Generator_v1
             $ret .= "$indent  </filelist>\n";
         }
         $ret .= "$indent </release>\n";
+
         return $ret;
     }
 
@@ -371,6 +376,7 @@ class PEAR_PackageFile_Generator_v1
         foreach ($list as $file => $attributes) {
             $this->_addDir($this->_dirs, explode('/', dirname($file)), $file, $attributes);
         }
+
         return $this->_formatDir($this->_dirs);
     }
 
@@ -385,6 +391,7 @@ class PEAR_PackageFile_Generator_v1
     {
         if ($dir == array() || $dir == array('.')) {
             $dirs['files'][basename($file)] = $attributes;
+
             return;
         }
         $curdir = array_shift($dir);
@@ -421,6 +428,7 @@ class PEAR_PackageFile_Generator_v1
                 $ret .= $this->_formatFile($file, $attribs, $indent);
             }
         }
+
         return $ret;
     }
 
@@ -461,6 +469,7 @@ class PEAR_PackageFile_Generator_v1
             }
             $ret .= "$indent   </file>\n";
         }
+
         return $ret;
     }
 
@@ -487,6 +496,7 @@ class PEAR_PackageFile_Generator_v1
                 $data .= substr($line, $indent_len) . "\n";
             }
         }
+
         return $data;
     }
 
@@ -497,6 +507,7 @@ class PEAR_PackageFile_Generator_v1
     {
         $arr = array();
         $this->_convertDependencies2_0($arr);
+
         return $arr['dependencies'];
     }
 
@@ -518,6 +529,7 @@ class PEAR_PackageFile_Generator_v1
                 $a = PEAR::raiseError('invalid package.xml version 1.0 cannot be converted' .
                     ' to version 2.0', null, null, null,
                     $this->_packagefile->getValidationWarnings(true));
+
                 return $a;
             }
         }
@@ -687,6 +699,7 @@ class PEAR_PackageFile_Generator_v1
             $ret->setLogger($this->_packagefile->_logger);
         }
         $ret->fromArray($arr);
+
         return $ret;
     }
 
@@ -816,7 +829,7 @@ class PEAR_PackageFile_Generator_v1
             }
             $file = array('attribs' => $file);
             if (isset($repl)) {
-                foreach ($repl as $replace ) {
+                foreach ($repl as $replace) {
                     $file['tasks:replace'][] = array('attribs' => $replace);
                 }
                 if (count($repl) == 1) {
@@ -825,15 +838,16 @@ class PEAR_PackageFile_Generator_v1
             }
             $ret['dir']['file'][] = $file;
         }
+
         return $ret;
     }
 
     /**
      * Post-process special files with install-as/platform attributes and
      * make the release tag.
-     * 
+     *
      * This complex method follows this work-flow to create the release tags:
-     * 
+     *
      * <pre>
      * - if any install-as/platform exist, create a generic release and fill it with
      *   o <install as=..> tags for <file name=... install-as=...>
@@ -849,10 +863,10 @@ class PEAR_PackageFile_Generator_v1
      *   o <ignore> tags for <file name=... platform=other platform install-as=..>
      *   o <ignore> tags for <file name=... platform=!this platform install-as=..>
      * </pre>
-     * 
+     *
      * It does this by accessing the $package parameter, which contains an array with
      * indices:
-     * 
+     *
      *  - platform: mapping of file => OS the file should be installed on
      *  - install-as: mapping of file => installed name
      *  - osmap: mapping of OS => list of files that should be installed
@@ -866,7 +880,7 @@ class PEAR_PackageFile_Generator_v1
      */
     function _convertRelease2_0(&$release, $package)
     {
-        //- if any install-as/platform exist, create a generic release and fill it with 
+        //- if any install-as/platform exist, create a generic release and fill it with
         if (count($package['platform']) || count($package['install-as'])) {
             $generic = array();
             $genericIgnore = array();
@@ -1131,6 +1145,7 @@ class PEAR_PackageFile_Generator_v1
                 $php['conflicts'] = 'yes';
             break;
         }
+
         return $php;
     }
 
@@ -1191,6 +1206,7 @@ class PEAR_PackageFile_Generator_v1
         if (count($exclude)) {
             $php['exclude'] = $exclude;
         }
+
         return $php;
     }
 
@@ -1266,7 +1282,7 @@ class PEAR_PackageFile_Generator_v1
             }
             $ret[] = $php;
         }
+
         return $ret;
     }
 }
-?>

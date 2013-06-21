@@ -7,10 +7,10 @@ class hbar_value
 		$this->left = $left;
 		$this->right = $right;
 	}
-	
+
 	function set_colour( $colour )
 	{
-		$this->colour = $colour;	
+		$this->colour = $colour;
 	}
 }
 
@@ -22,17 +22,17 @@ class hbar
 		$this->values    = array();
 		$this->set_colour( $colour );
 	}
-	
+
 	function append_value( $v )
 	{
-		$this->values[] = $v;		
+		$this->values[] = $v;
 	}
-	
+
 	function set_colour( $colour )
 	{
-		$this->colour = $colour;	
+		$this->colour = $colour;
 	}
-	
+
 	function set_key( $text, $size )
 	{
 		$this->text = $text;
@@ -40,4 +40,3 @@ class hbar
 		$this->$tmp = $size;
 	}
 }
-

@@ -9,4 +9,3 @@ define("_LESSONSTATS_LOGINTIME","Login tid");//Login time
 define("_LESSONSTATS_LOGINDURATION","Login varighet");//Login duration
 define("_LESSONSTATS_NOLOGINSFOUND","Ingen lekse innlogginger funnet");//No lesson logins found
 define("_LESSONSTATS_GOTOLESSONSTATSPAGE","Gå til leksjon statistikk siden");//Go to Lesson statistics page
-?>

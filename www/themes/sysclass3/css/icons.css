@@ -11,7 +11,7 @@
 .sprite28 {background-image :url(../images/css_images/28x28map.png); width:28px; height:28px;}
 .sprite32 {background-image :url(../images/css_images/32x32map.png); width:32px; height:32px;}
 
-.sprite16-add { background-position: 0 -2500px; width: 16px; height: 16px; } 
+.sprite16-add { background-position: 0 0px; width: 16px; height: 16px; } 
 .sprite16-analysis { background-position: 0 -17px; width: 16px; height: 16px; } 
 .sprite16-arrow_left { background-position: 0 -34px; width: 16px; height: 16px; } 
 .sprite16-arrow_right { background-position: 0 -51px; width: 16px; height: 16px; } 

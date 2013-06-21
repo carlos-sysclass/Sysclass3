@@ -6,17 +6,18 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 $loadScripts[] = 'includes/modules';
 
-if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] == 'hidden') {
-    eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
-}
-
+if( (isset($currentUser->coreAccess['modules'])) &&
+    ($currentUser->coreAccess['modules'] == 'hidden') ) {
+        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message="
+            .urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    }
 
 try {
-    if (isset($_GET['delete_module']) && eF_checkParameter($_GET['delete_module'], 'filename')) {
-        if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
+    if( (isset($_GET['delete_module'])) && (eF_checkParameter($_GET['delete_module'], 'filename')) ) {
+        if( (isset($currentUser->coreAccess['modules'])) && ($currentUser->coreAccess['modules'] != 'change') ) {
             throw new MagesterSystemException(_UNAUTHORIZEDACCESS, MagesterSystemException::UNAUTHORIZED_ACCESS);
         }
-        $smarty -> assign("T_REFRESH_SIDE", true);
+        $smarty->assign("T_REFRESH_SIDE", true);
         $lesson_options = eF_getTableData("lessons", "options, id");
         foreach ($lesson_options as $value) {
             if ($value['options']) {
@@ -37,35 +38,35 @@ try {
         if (class_exists($className)) {
             $module = new $className("administrator.php?ctg=module&op=".$className, $folder);
             try {
-             $module -> onUninstall();
+                $module->onUninstall();
             } catch (Exception $e) {/*Do nothing*/}
         }
 
         // PROBLEM: if the folder is open and cannot be deleted then the module cannot be reinstalled
         $folder = new MagesterDirectory(G_MODULESPATH.$folder.'/');
-        $folder -> delete();
+        $folder->delete();
         eF_deleteTableData("modules", "className='".$className."'");
 
         exit;
-    } elseif(isset($_GET['activate_module']) && eF_checkParameter($_GET['activate_module'], 'filename')) {
-        if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
+    } elseif (isset($_GET['activate_module']) && eF_checkParameter($_GET['activate_module'], 'filename')) {
+        if (isset($currentUser->coreAccess['modules']) && $currentUser->coreAccess['modules'] != 'change') {
             throw new MagesterSystemException(_UNAUTHORIZEDACCESS, MagesterSystemException::UNAUTHORIZED_ACCESS);
         }
         eF_updateTableData("modules", array("active" => 1), "className = '".$_GET['activate_module']."'");
         echo "1";
         exit;
-    } elseif(isset($_GET['deactivate_module']) && eF_checkParameter($_GET['deactivate_module'], 'filename')) {
-        if (isset($currentUser -> coreAccess['modules']) && $currentUser -> coreAccess['modules'] != 'change') {
+    } elseif (isset($_GET['deactivate_module']) && eF_checkParameter($_GET['deactivate_module'], 'filename')) {
+        if (isset($currentUser->coreAccess['modules']) && $currentUser->coreAccess['modules'] != 'change') {
             throw new MagesterSystemException(_UNAUTHORIZEDACCESS, MagesterSystemException::UNAUTHORIZED_ACCESS);
         }
         eF_updateTableData("modules", array("active" => 0), "className = '".$_GET['deactivate_module']."'");
         echo "0";
         exit;
-    } elseif(isset($_GET['install_module']) && eF_checkParameter($_GET['install_module'], 'filename')) {
+    } elseif (isset($_GET['install_module']) && eF_checkParameter($_GET['install_module'], 'filename')) {
 
     }
 } catch (Exception $e) {
- handleAjaxExceptions($e);
+    handleAjaxExceptions($e);
 }
 
 $modulesList = eF_getTableData("modules", "*");
@@ -96,11 +97,11 @@ foreach ($modulesList as $key => $module) {
                 if (class_exists($className)) {
                     $moduleInstance = new $className($user_type.".php?ctg=module&op=".$className, $folder);
                     try {
-                     if (!$moduleInstance -> diagnose($error)) {
-                      $modulesList[$key]['errors'] = $error;
-                     }
+                        if (!$moduleInstance->diagnose($error)) {
+                            $modulesList[$key]['errors'] = $error;
+                        }
                     } catch (Exception $e) {
-                     $modulesList[$key]['errors'] = $e -> getMessage();
+                        $modulesList[$key]['errors'] = $e->getMessage();
                     }
                 } else {
                     $message = '"'.$className .'" '. _MODULECLASSNOTEXISTSIN . ' ' .G_MODULESPATH.$folder.'/'.$className.'.class.php';
@@ -120,26 +121,26 @@ $modulesFolder = new FilesystemTree(G_MODULESPATH, true);
 
 foreach ($modulesFolder->tree as $value) {
 
-	$modulesList[] = array('className' => $value['name'], 'not_installed' => 1, 'errors' => _MODULEFILESPRESENTNOTINSTALLED);
+    $modulesList[] = array('className' => $value['name'], 'not_installed' => 1, 'errors' => _MODULEFILESPRESENTNOTINSTALLED);
 
 }
 
-*/
-$smarty -> assign("T_MODULES", $modulesList);
+ */
+$smarty->assign("T_MODULES", $modulesList);
 $upload_form = new HTML_QuickForm("upload_file_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=modules', "", null, true);
-$upload_form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
-$upload_form -> addElement('file', 'file_upload[0]', null, 'class = "inputText"');
-$upload_form -> addElement('checkbox', 'overwrite', _OVERWRITEIFFOLDEREXISTS);
-$upload_form -> addElement('submit', 'submit_upload_file', _UPLOAD, 'class = "flatButton"');
-if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
+$upload_form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+$upload_form->addElement('file', 'file_upload[0]', null, 'class = "inputText"');
+$upload_form->addElement('checkbox', 'overwrite', _OVERWRITEIFFOLDEREXISTS);
+$upload_form->addElement('submit', 'submit_upload_file', _UPLOAD, 'class = "flatButton"');
+if ($upload_form->isSubmitted() && $upload_form->validate()) {
     $filesystem = new FileSystemTree(G_MODULESPATH);
     //pr($_FILES);exit;
-//debug();
-    $uploadedFile = $filesystem -> uploadFile('file_upload', G_MODULESPATH, 0);
+    //debug();
+    $uploadedFile = $filesystem->uploadFile('file_upload', G_MODULESPATH, 0);
     $ok = 1;
     //list($ok, $upload_messages, $upload_messages_type, $filename) = eF_handleUploads("file_upload", G_MODULESPATH);
-//pr($uploadedFile);exit;
-    if(isset($_GET['upgrade'])) {
+    //pr($uploadedFile);exit;
+    if (isset($_GET['upgrade'])) {
         $prev_module_version = eF_getTableData("modules", "position", "className = '".$_GET['upgrade']."'");
         $prev_module_folder = $prev_module_version[0]['position'];
         // The name of the temp folder to extract the new version of the module
@@ -157,16 +158,16 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
         $message_type = 'failure';
     } else {
         $zip = new ZipArchive;
-        if ($zip -> open($uploadedFile['path']) === TRUE) {
-            $zip -> extractTo(G_MODULESPATH.$module_folder);
-            $zip -> close();
+        if ($zip->open($uploadedFile['path']) === TRUE) {
+            $zip->extractTo(G_MODULESPATH.$module_folder);
+            $zip->close();
             if (is_file(G_MODULESPATH.$module_folder.'/module.xml')) {
 
                 $xml = simplexml_load_file(G_MODULESPATH.$module_folder.'/module.xml');
 
-                $className = (string)$xml -> className;
+                $className = (string) $xml->className;
                 $className = str_replace(" ", "", $className);
-                $database_file = (string)$xml -> database;
+                $database_file = (string) $xml->database;
                 if (is_file(G_MODULESPATH.$module_folder.'/'.$className. ".class.php")) {
                     $module_exists = 0;
 
@@ -178,7 +179,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                             }
                         }
                     }
-                    
+
                     if ($module_exists == 0) {
                         require_once G_MODULESPATH.$module_folder."/".$className.".class.php";
 
@@ -186,7 +187,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                             $module = new $className("administrator.php?ctg=module&op=".$className, $className);
 
                             // Check whether the roles defined are acceptable
-                            $roles = $module -> getPermittedRoles();
+                            $roles = $module->getPermittedRoles();
                             $roles_failure = 0;
                             if (sizeof($roles) == 0) {
                                 $message = _NOMODULEPERMITTEDROLESDEFINED;
@@ -203,44 +204,46 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                             }
 
                             if ($roles_failure) {
-                             $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-        $dir -> delete();
+                                $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
+                                $dir->delete();
                             } else {
 
-                                $fields = array('className' => $className,
-                                                             'db_file' => $database_file,
-                                                             'name' => $className,
-                                                             'active' => 1,
-                                                             'title' => ((string)$xml -> title)?(string)$xml -> title:" ",
-                                                             'author' => (string)$xml -> author,
-                                                             'version' => (string)$xml -> version,
-                                                             'description' => (string)$xml -> description,
-                                                             'position' => $module_position,
-                                                             'permissions' => implode(",", $module -> getPermittedRoles()));
+                                $fields = array(
+                                    'className' => $className,
+                                    'db_file' => $database_file,
+                                    'name' => $className,
+                                    'active' => 1,
+                                    'title' => ((string) $xml->title)?(string) $xml->title:" ",
+                                    'author' => (string) $xml->author,
+                                    'version' => (string) $xml->version,
+                                    'description' => (string) $xml->description,
+                                    'position' => $module_position,
+                                    'permissions' => implode(",", $module->getPermittedRoles())
+                                );
 
 
                                 if (!isset($_GET['upgrade'])) {
                                     // Install module database
-                                    if ($module -> onInstall()) {
+                                    if ($module->onInstall()) {
                                         if (eF_insertTableData("modules", $fields)) {
                                             $message = _MODULESUCCESFULLYINSTALLED;
                                             $message_type = 'success';
                                             eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=modules&message=".urlencode($message)."&message_type=".$message_type."&refresh_side=1");
                                         } else {
-                                            $module -> onUninstall();
+                                            $module->onUninstall();
                                             $message = _PROBLEMINSERTINGPARSEDXMLVALUESORMODULEEXISTS;
                                             $message_type = 'failure';
 
-                                $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-           $dir -> delete();
+                                            $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
+                                            $dir->delete();
                                             //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                                         }
                                     } else {
                                         $message = _MODULEDBERRORONINSTALL;
                                         $message_type = 'failure';
 
-                               $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-          $dir -> delete();
+                                        $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
+                                        $dir->delete();
                                         //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                                     }
                                 } else {
@@ -250,7 +253,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                                     // be aborted
 
                                     // If everything went ok, then upgrade the module
-                                    if ($module -> onUpgrade()) {
+                                    if ($module->onUpgrade()) {
 
                                         // If the upgrade is successful, then update the modules table
                                         if (eF_updateTableData("modules", $fields, "className ='".$_GET['upgrade']."'")) {
@@ -274,7 +277,7 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                             $message = '"'.$className .'" '. _MODULECLASSNOTEXISTSIN . ' ' .G_MODULESPATH.$module_folder.'/'.$className.'.class.php';
                             $message_type = 'failure';
                             $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-       $dir -> delete();
+                            $dir->delete();
                             //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                         }
                     } else {
@@ -282,23 +285,23 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
                         $message_type = 'failure';
                         //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                         $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-      $dir -> delete();
+                        $dir->delete();
                     }
                 } else {
                     $message = _NOMODULECLASSFOUND . ' "'. $className .'" : '.G_MODULESPATH.$module_folder;
                     $message_type = 'failure';
                     //$dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-     //$dir -> delete();
+                    //$dir->delete();
                     //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
                 }
-            } else if (!is_dir(G_MODULESPATH.$module_folder)) {
+            } elseif (!is_dir(G_MODULESPATH.$module_folder)) {
                 $message = _THISFOLDERDOESNOTEXIT.': '.G_MODULESPATH.$module_folder;
                 $message_type = 'failure';
             } else {
                 $message = _DESCRIPTIONFILECOULDNOTBEFOUND;
                 $message_type = 'failure';
                 $dir = new MagesterDirectory(G_MODULESPATH.$module_folder.'/');
-    $dir -> delete();
+                $dir->delete();
                 //eF_deleteFolder(G_MODULESPATH.$module_folder.'/');
             }
         } else {
@@ -310,6 +313,6 @@ if ($upload_form -> isSubmitted() && $upload_form -> validate()) {
 }
 
 $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-$upload_form -> accept($renderer);
+$upload_form->accept($renderer);
 
-$smarty -> assign('T_UPLOAD_FILE_FORM', $renderer -> toArray());
+$smarty->assign('T_UPLOAD_FILE_FORM', $renderer -> toArray());

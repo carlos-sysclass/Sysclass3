@@ -106,4 +106,3 @@ class HTML_QuickForm2_NotFoundException extends HTML_QuickForm2_Exception
 class HTML_QuickForm2_InvalidArgumentException extends HTML_QuickForm2_Exception
 {
 }
-?>

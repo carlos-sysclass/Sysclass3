@@ -43,7 +43,6 @@
  * @link       http://pear.php.net/package/HTML_QuickForm2
  */
 
-
 /**
  * Interface for Controller action handlers
  *
@@ -65,4 +64,3 @@ interface HTML_QuickForm2_Controller_Action
     */
     public function perform(HTML_QuickForm2_Controller_Page $page, $name);
 }
-?>

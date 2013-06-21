@@ -23,7 +23,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  * @package SysClass
 
  */
-class MagesterProject {
+class MagesterProject
+{
     /**
 
      * The number of users that has done this project
@@ -111,7 +112,8 @@ class MagesterProject {
      * @access public
 
      */
-    function __construct($project) {
+    function __construct($project)
+    {
         if (!is_array($project)) {
          if (!eF_checkParameter($project, 'id')) {
              throw new MagesterContentException(_INVALIDPROJECTID.': '.$project, MagesterContentException :: INVALID_ID);
@@ -159,7 +161,8 @@ class MagesterProject {
      * @access public
 
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         if ($this -> users === false) {
             $result = eF_getTableData("users_to_projects up, users", "up.*, users.name, users.surname, users.active", "users.login=up.users_LOGIN and projects_ID=".$this -> project['id']);
             foreach ($result as $value) {
@@ -168,6 +171,7 @@ class MagesterProject {
             }
             $this -> users = $projectUsers;
         }
+
         return $this -> users;
     }
     /**
@@ -203,7 +207,8 @@ class MagesterProject {
      * @access public
 
      */
-    public function addUsers($login) {
+    public function addUsers($login)
+    {
         if (!is_array($login)) {
             $login = array($login);
         }
@@ -214,6 +219,7 @@ class MagesterProject {
                 eF_insertTableData("users_to_projects", array("users_LOGIN" => $value, "projects_ID" => $this -> project['id']));
             }
         }
+
         return $this -> getUsers(true);
     }
     /**
@@ -249,7 +255,8 @@ class MagesterProject {
      * @access public
 
      */
-    public function removeUsers($login) {
+    public function removeUsers($login)
+    {
         if (!is_array($login)) {
             $login = array($login);
         }
@@ -260,6 +267,7 @@ class MagesterProject {
                 eF_deleteTableData("users_to_projects", "users_LOGIN = '$value' and projects_ID = ".$this -> project['id']);
             }
         }
+
         return $this -> getUsers(true);
     }
     /**
@@ -295,7 +303,8 @@ class MagesterProject {
      * @access public
 
      */
-    public function grade($login, $grade, $comments) {
+    public function grade($login, $grade, $comments)
+    {
         if (!in_array($login, array_keys($this -> getUsers()))) {
             throw new MagesterContentException(_USERDOESNOTHAVETHISPROJECT, MagesterContentException :: INVALID_LOGIN);
         }
@@ -353,8 +362,10 @@ class MagesterProject {
      * @access public
 
      */
-    public function getFiles() {
+    public function getFiles()
+    {
         $files = eF_getTableData("files f, users u, users_to_projects up", "f.*, u.name, u.surname, u.login, up.upload_timestamp", "up.filename = f.id and up.users_LOGIN = u.login and up.projects_ID=".$this -> project['id']);
+
         return $files;
     }
     /**
@@ -384,7 +395,8 @@ class MagesterProject {
      * @access public
 
      */
-    public static function createProject($fields = array()) {
+    public static function createProject($fields = array())
+    {
         $projectMetadata = array('title' => $fields['title'],
                                  'creator' => $GLOBALS['currentUser'] -> user['name'].' '.$GLOBALS['currentUser'] -> user['surname'],
                                  'publisher' => $GLOBALS['currentUser'] -> user['name'].' '.$GLOBALS['currentUser'] -> user['surname'],
@@ -396,6 +408,7 @@ class MagesterProject {
         $result = eF_getTableData("projects", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $project = new MagesterProject($result[0]['id']);
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::PROJECT_CREATION, "users_LOGIN" => $GLOBALS['currentUser'] -> user['login'], "users_name" => $GLOBALS['currentUser'] -> user['name'], "users_surname" => $GLOBALS['currentUser'] -> user['surname'], "lessons_ID" => $GLOBALS['currentLesson'] -> lesson['id'], "lessons_name" => $GLOBALS['currentLesson'] -> lesson['name'], "entity_name" => $fields['title'], "entity_ID" => $newId));
+
         return $project;
     }
     /**
@@ -427,7 +440,8 @@ class MagesterProject {
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         eF_updateTableData("projects", $this -> project, "id=".$this -> project['id']);
     }
     /**
@@ -461,13 +475,15 @@ class MagesterProject {
      * @todo delete project files
 
      */
-    public function delete() {
+    public function delete()
+    {
         foreach ($this -> getUsers() as $value) {
             if ($value['filename']) {
              try {
                  $file = new MagesterFile($value['filename']);
                  $file -> delete();
-             } catch (Exception $e) {/*bypass non-existing files*/}
+             } catch (Exception $e) {/*bypass non-existing files*/
+             }
             }
         }
         eF_deleteTableData("users_to_projects", "projects_ID=".$this -> project['id']);
@@ -504,7 +520,8 @@ class MagesterProject {
      * @todo delete project files
 
      */
-    public function reset($login = false) {
+    public function reset($login = false)
+    {
      $users = $this -> getUsers();
      if (!in_array($login, array_keys($users))) {
       throw new MagesterContentException(_USERDOESNOTHAVETHISPROJECT, MagesterContentException :: INVALID_LOGIN);
@@ -515,6 +532,7 @@ class MagesterProject {
       $file = new MagesterFile($users[$login]['filename']);
       $file -> delete();
      } catch (Exception $e) {/*Do nothing if a file does not exist*/}
+
      return true;
     }
 }

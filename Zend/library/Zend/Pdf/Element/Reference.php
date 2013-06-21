@@ -18,7 +18,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element */
 require_once 'Zend/Pdf/Element.php';
 
@@ -30,7 +29,6 @@ require_once 'Zend/Pdf/Element/Reference/Table.php';
 
 /** Zend_Pdf_ElementFactory */
 require_once 'Zend/Pdf/ElementFactory.php';
-
 
 /**
  * PDF file 'reference' element implementation
@@ -70,7 +68,6 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
      * @var Zend_Pdf_Element_Reference_Context
      */
     private $_context;
-
 
     /**
      * Reference to the factory.
@@ -169,8 +166,9 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
                        $this->_context
                                                       );
 
-        if ($obj === null ) {
+        if ($obj === null) {
             $this->_ref = new Zend_Pdf_Element_Null();
+
             return;
         }
 

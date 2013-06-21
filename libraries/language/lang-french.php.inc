@@ -4805,5 +4805,65 @@ define("_ZIPANDDOWNLOAD", "Compresser et télécharger le fichier");
 define("_ZIPHANDLING", "Zip Méthode de gestion");
 define("_YOUHAVE_ONE_UNREADMESSAGE", "Vous avez 1 nouveau message");
 define("_YOUHAVE_X_UNREADMESSAGES", "Vous avez% d messages nouveaux");
+define("_NEWSLETTERS_LINKS", "Lettres d'information");
+define("_SOCIALNETWORKS", "Réseaux sociaux");
+define("_TWITTER", "Twitter");
+define("_ORKUT", "Orkut");
+
+define("__XENROLLMENT_NAME", "Enrrolment");
+define("__XPAY_CONTROL_PANEL_TITLE", "Paiement");
+define("_MODULE_POLOS", "Satellite");
+define("__IES_MODULE_NAME", "Institution");
+define("__XCONTENT_VIEW_SCHEDULED", "Calendrier");
+define("__NEWS", "Nouvelles");
+define("__EDSCREEN", "EdScreen");
+define("__MODULE_XLIVECHAT_NAME", "T'Chat");
+define("_CHANGEAVATAR", "Modifier mon avatar");
+define("__XPAY_VIEW_MY_STATEMENT", "Voir ma déclaration");
+define("_MODULE_XLIVECHAT_NAME", "Chat en Direct");
+define("__WELCOME", "Bienvenue");
+define("__LOGGEDINAS", "Connecté en tant que");
+
+define("__XCOURSE_MODULE", "Cours 2");
+define("__XCOURSE_MODULES", "Cours 2");
+define("__XCOURSE_USER_ACTIVITY", "Activités Du Cours");
+define("__XCOURSE_ACADEMIC_CALENDAR_VIEW", "Calendrier Scolaire");
+define("__XFORUM_LAST_ENTRIES", "Forum");
+
+define("__QUICK_MAILS_FEEDBACK", "Améliorations");
+define("__QUICK_MAILS_FEEDBACK_US", "Donnez Votre Suggestion");
+define("__QUICK_MAILS_CONTACTS", "Contactez-Nous");
+define("__QUICK_MAILS_CONTACT_US", "Pouvons-Nous Vous Aider");
+define("__HOME", "Home");
+
+define("_MODULE_POLOS_MANAGEMENT", "Enrrolment");
+define("_MODULE_POLOS_ADDPOLO", "Paiement");
+define("__DATATABLES_sLengthMenu", "Satellite");
+define("__IES_MODULE_NAME", "Institution");
+define("__IES_NAME", "Calendrier");
+define("__STATE", "Nouvelles");
+define("__PHONE", "EdScreen");
+define("__DATATABLES_sInfo", "T'Chat");
+
+define("_XPAY_SUMMARY_LIST", "");
+define("__XPAY_LAST_PAYMENTS", "");
+define("__XPAY_VIEW_TO_SEND_INVOICES_LIST", "");
+define("__XPAY_VIEW_USERS_IN_DEBTS", "");
+define("__XPAY_VIEW_INVOICES_IN_DEBTS", "");
+define("__XPAY_LAST_PAYMENTS", "");
+define("__XPAY_VIEW_ALL_LIST", "");
+define("__XPAY_LAST_FILES", "");
+define("__XPAY_FILE_NAME", "");
+define("__XPAY_BOLETO_FILE_TIME", "");
+define("__XPAY_BOLETO_FILE_SIZE", "");
+define("__OPTIONS", "");
+define("__XPAY_PAYMENT_METHOD", "");
+define("__XPAY_VIEW_ALL_LIST", "");
+define("__XPAY_USER_DEBTS", "");
+define("__XPAY_VIEW_ALL_LIST", "");
+
+define("_MODULE_IES", "");
+define("__IES_MANAGEMENT", "");
+define("_IES_ADDIES", "");
 
 ?>

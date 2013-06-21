@@ -14,7 +14,7 @@ $loadScripts[] = 'includes/projects';
 $_student_ = $_professor_ = $_admin_ = 0;
 if ($_SESSION['s_lesson_user_type'] == 'student') {
     $_student_ = 1;
-} else if ($_SESSION['s_lesson_user_type'] == 'professor') {
+} elseif ($_SESSION['s_lesson_user_type'] == 'professor') {
     $_professor_ = 1;
 }
 
@@ -25,7 +25,6 @@ if (!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess[
 } elseif (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] == 'hidden') {
     $_hidden_ = 1;
 }
-
 
 if ($GLOBALS['configuration']['disable_projects'] == 1) {
     eF_redirect("".basename($_SERVER['PHP_SELF']));
@@ -54,7 +53,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
      handleAjaxExceptions($e);
     }
     exit;
-} else if (isset($_GET['compress_data']) && in_array($_GET['compress_data'], array_keys($projects)) && $_professor_) { //download project data
+} elseif (isset($_GET['compress_data']) && in_array($_GET['compress_data'], array_keys($projects)) && $_professor_) { //download project data
     try {
         $currentProject = $projects[$_GET['compress_data']];
         $projectFiles = $currentProject -> getFiles();
@@ -85,7 +84,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         $message = _FILESCOULDNOTBEDOWNLOADED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
-} else if ((isset($_GET['add_project']) || (isset($_GET['edit_project']) && in_array($_GET['edit_project'], array_keys($projects)))) && $_professor_) {
+} elseif ((isset($_GET['add_project']) || (isset($_GET['edit_project']) && in_array($_GET['edit_project'], array_keys($projects)))) && $_professor_) {
     //ajax request for inserting file in editor
 
     //This page has a file manager, so bring it on with the correct options
@@ -104,13 +103,13 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 'metadata' => 0);
     }
     //Default url for the file manager
-/*  
+/*
 
     $url = basename($_SERVER['PHP_SELF']).'?ctg=content&'.(isset($_GET['edit']) ? 'edit='.$_GET['edit'] : 'add=1');
 
     $extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
 
-    include "file_manager.php";
+    include 'file_manager.php';
 
 */
     //This page also needs an editor and ASCIIMathML
@@ -199,7 +198,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
             $users[$key]['checked'] = 0;
             if (in_array($key, array_keys($projectUsers))) { //Set the checked status, depending on whether the user has this project
                 $users[$key]['checked'] = 1;
-            } else if (!$user['active']) {
+            } elseif (!$user['active']) {
                 unset($users[$key]);
             }
         }
@@ -237,10 +236,10 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 } elseif (in_array($_GET['login'], array_keys($users))) { //The user doesn't have the project, so add him
                     $currentProject -> addUsers($_GET['login']);
                 }
-            } else if (isset($_GET['addAll'])) {
+            } elseif (isset($_GET['addAll'])) {
                 isset($_GET['filter']) ? $users = eF_filterData($users, $_GET['filter']) : null;
                 $currentProject -> addUsers(array_keys($users));
-            } else if (isset($_GET['removeAll'])) {
+            } elseif (isset($_GET['removeAll'])) {
                 isset($_GET['filter']) ? $projectUsers = eF_filterData($projectUsers, $_GET['filter']) : null;
                 $currentProject -> removeUsers(array_keys($projectUsers));
             }
@@ -281,13 +280,13 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
   $extraColumns = array(_INSERT);
         //$extraFileTools = array(array('image' => 'images/16x16/arrow_right.png', 'title' => _INSERTEDITOR, 'action' => 'insert_editor'));
         /**The file manager*/
-        include "file_manager.php";
+        include 'file_manager.php';
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
         $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
-} else if (isset($_GET['project_results']) && in_array($_GET['project_results'], array_keys($projects)) && $_professor_) {
+} elseif (isset($_GET['project_results']) && in_array($_GET['project_results'], array_keys($projects)) && $_professor_) {
     $currentProject = $projects[$_GET['project_results']];
     $smarty -> assign("T_CURRENT_PROJECT", $currentProject);
  if (isset($_GET['login'])) {
@@ -368,7 +367,7 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
         }
         exit;
     }
-} else if (isset($_GET['view_project']) && in_array($_GET['view_project'], array_keys($projects))) {
+} elseif (isset($_GET['view_project']) && in_array($_GET['view_project'], array_keys($projects))) {
     try {
         $currentProject = $projects[$_GET['view_project']];
 
@@ -421,7 +420,6 @@ if (isset($_GET['delete_project']) && in_array($_GET['delete_project'], array_ke
                 $fields_update = array("filename" => $uploadedFile['id'],
                                            "upload_timestamp" => time());
                 eF_updateTableData("users_to_projects", $fields_update, "users_LOGIN='".$currentUser -> user['login']."' AND projects_ID=".$_GET['view_project']);
-
 
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::PROJECT_SUBMISSION,
                    "users_LOGIN" => $currentUser -> user['login'],

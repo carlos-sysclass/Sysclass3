@@ -67,7 +67,7 @@ class PEAR_ChannelFile_Parser extends PEAR_XMLParser
         // make sure the filelist is in the easy to read format needed
         $ret->flattenFilelist();
         $ret->setPackagefile($file, $archive);
+
         return $ret;
     }
 }
-?>

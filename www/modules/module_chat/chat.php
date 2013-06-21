@@ -13,7 +13,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
 
 
-if (!isset($_SESSION['chatter'])){
+if (!isset($_SESSION['chatter'])) {
 	exit(1);
 }
 
@@ -42,41 +42,42 @@ if ($_GET['action'] == "getchatheartbeat") { getChatHeartbeat(); }
 if ($_GET['action'] == "getrefreshrate") { getRefresh_rate(); }
 
 
-function getChatHeartbeat(){
-	
+function getChatHeartbeat()
+{
 	$rate = eF_getTableData("module_chat_config", "chatHeartbeatTime", "1");
-	foreach( $rate as $r ){
+	foreach ($rate as $r) {
 		echo($r['chatHeartbeatTime']);
 	}
 }
 
-function getRefresh_rate(){
-
+function getRefresh_rate()
+{
 	$rate = eF_getTableData("module_chat_config", "refresh_rate", "1");
-	foreach( $rate as $r ){
+	foreach ($rate as $r) {
 		echo $r['refresh_rate'];
 	}
 }
 
 
-function logoutFromChat(){
+function logoutFromChat()
+{
 		eF_executeNew("DELETE FROM module_chat_users WHERE username='".$_SESSION['chatter']."'");
 }
 
-function loginToChat(){
+function loginToChat()
+{
 		eF_executeNew("INSERT IGNORE INTO module_chat_users (username ,timestamp_) VALUES ('".$_SESSION['chatter']."', CURRENT_TIMESTAMP);");
 }
 
-function chatHeartbeat() {
-
-
-	if (!$_SESSION['last_msg']){
+function chatHeartbeat()
+{
+	if (!$_SESSION['last_msg']) {
 		//$my_t=getdate();
 		//$_SESSION['last_msg'] = $my_t[year].'-'.$my_t[mon].'-'.$my_t[mday].' '.$my_t[hours].':'.$my_t[minutes].':'.$my_t[seconds];
 		$_SESSION['last_msg'] = date("Y-m-d H:i:s", time()-date("Z"));  //fix for timezone differences
 	}
 
-	if (!$_SESSION['last_lesson_msg']){
+	if (!$_SESSION['last_lesson_msg']) {
 		//$my_t=getdate();
 		//$_SESSION['last_lesson_msg'] = $my_t[year].'-'.$my_t[mon].'-'.$my_t[mday].' '.$my_t[hours].':'.$my_t[minutes].':'.$my_t[seconds];
 		$_SESSION['last_lesson_msg'] = date("Y-m-d H:i:s", time()-date("Z"));  //fix for timezone differences
@@ -84,10 +85,9 @@ function chatHeartbeat() {
 
 	$lesson_rooms = join("','",$_SESSION['lesson_rooms']);
 
-	if (!$_SESSION['s_lessons_ID']){
+	if (!$_SESSION['s_lessons_ID']) {
 		$sql = "select * from module_chat where (module_chat.to_user = '".mysql_real_escape_string($_SESSION['chatter'])."' AND sent>'".$_SESSION['last_msg']."') order by id ASC";
-	}
-	else{
+	} else {
 		$sql = "select * from module_chat where (module_chat.to_user = '".mysql_real_escape_string($_SESSION['chatter'])."' AND sent>'".$_SESSION['last_msg']."') OR (module_chat.to_user IN ('$lesson_rooms') AND module_chat.from_user != '".$_SESSION['chatter']."' AND sent>'".$_SESSION['last_lesson_msg']."') order by id ASC";
 	}
 	$query = mysql_query($sql);
@@ -100,8 +100,7 @@ function chatHeartbeat() {
 		if (in_array($chat['to_user'],$_SESSION['lesson_rooms'])) {
 			$title = $chat['to_user'];
 			$chatboxname = $_SESSION["room_".$title];
-		}
-		else {
+		} else {
 			$title = $chat['from_user'];
 			$chatboxname = $title;
 		}
@@ -131,7 +130,7 @@ EOD;
 	}
 
 
-	//if ($title == $chat['from_user']){ // Maybe add else with "t": {$title} -> "t": {$chat[from_user]}
+	//if ($title == $chat['from_user']) { // Maybe add else with "t": {$title} -> "t": {$chat[from_user]}
 
 			$_SESSION['chatHistory'][$title] .= <<<EOD
 						   {
@@ -145,7 +144,7 @@ EOD;
 	//}
 
 		//unset($_SESSION['tsChatBoxes'][$chat['from_user']]);
-		if (!isset( $_SESSION['openChatBoxes'][$title] )){
+		if (!isset( $_SESSION['openChatBoxes'][$title] )) {
 			$_SESSION['openChatBoxes'][$title] = $_SESSION['chatboxesnum'];
 			$_SESSION['chatboxesnum'] = $_SESSION['chatboxesnum'] + 10;
 		}
@@ -206,8 +205,8 @@ header('Content-type: application/json');
 
 
 
-function chatBoxSession($chatbox) {
-
+function chatBoxSession($chatbox)
+{
 	$items = '';
 
 	if (isset($_SESSION['chatHistory'][$chatbox])) {
@@ -217,7 +216,8 @@ function chatBoxSession($chatbox) {
 	return $items;
 }
 
-function startChatSession() {
+function startChatSession()
+{
 	$items = '';
 
 	asort($_SESSION['openChatBoxes']);
@@ -248,14 +248,14 @@ header('Content-type: application/json');
 	exit(0);
 }
 
-function sendChat() {
-
+function sendChat()
+{
 	$from = $_SESSION['chatter'];
 	$to = $_POST['to'];
 	$message = $_POST['message'];
 	$chatboxname = $_POST['chatboxname'];
 
-	if ( !isset($_SESSION['openChatBoxes'][$_POST['to']])){
+	if ( !isset($_SESSION['openChatBoxes'][$_POST['to']])) {
 		$_SESSION['openChatBoxes'][$_POST['to']] = $_SESSION['chatboxesnum'];
 		$_SESSION['chatboxesnum'] = $_SESSION['chatboxesnum'] + 10;
 	}
@@ -279,10 +279,9 @@ EOD;
 
 	//unset($_SESSION['tsChatBoxes'][$_POST['to']]);
 
-	if ($to != $_SESSION['lessonid']){
+	if ($to != $_SESSION['lessonid']) {
 		$sql = "insert into module_chat (module_chat.from_user,module_chat.to_user,message,sent,module_chat.isLesson) values ('".mysql_real_escape_string($from)."', '".mysql_real_escape_string($to)."','".mysql_real_escape_string($message)."','".date("Y-m-d H:i:s", time()-date("Z"))."', '0')";
-	}
-	else{
+	} else {
 		$sql = "insert into module_chat (module_chat.from_user,module_chat.to_user,message,sent,module_chat.isLesson) values ('".mysql_real_escape_string($from)."', '".mysql_real_escape_string($to)."','".mysql_real_escape_string($message)."','".date("Y-m-d H:i:s", time()-date("Z"))."', '1')";
 	}
 	$query = mysql_query($sql);
@@ -290,8 +289,8 @@ EOD;
 	exit(0);
 }
 
-function closeChat() {
-
+function closeChat()
+{
 	unset($_SESSION['openChatBoxes'][$_POST['chatbox']]);
 	if (str_replace(' ','_',$_POST['chatbox']) != $_SESSION["lessonid"] && in_array(str_replace(' ','_',$_POST['chatbox']),$_SESSION['lesson_rooms']))
 		$_SESSION['lesson_rooms'] = remove_item_by_value($_SESSION['lesson_rooms'], str_replace(' ','_',$_POST['chatbox']));
@@ -302,23 +301,23 @@ function closeChat() {
 }
 
 
-function remove_item_by_value($array, $val = '') {
+function remove_item_by_value($array, $val = '')
+{
 	if (empty($array) || !is_array($array)) return false;
 	if (!in_array($val, $array)) return $array;
 
-	foreach($array as $key => $value) {
+	foreach ($array as $key => $value) {
 		if ($value == $val) unset($array[$key]);
 	}
 
 	return array_values($array);
 }
 
-
-function sanitize($text) {
+function sanitize($text)
+{
 	$text = htmlspecialchars($text, ENT_QUOTES);
 	$text = str_replace("\n\r","\n",$text);
 	$text = str_replace("\r\n","\n",$text);
 	$text = str_replace("\n","<br>",$text);
 	return $text;
 }
-?>

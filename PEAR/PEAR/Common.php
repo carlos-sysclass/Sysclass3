@@ -259,6 +259,7 @@ class PEAR_Common extends PEAR
         if (!class_exists('System')) {
             require_once 'System.php';
         }
+
         return System::mkDir(array('-p', $dir));
     }
 
@@ -320,6 +321,7 @@ class PEAR_Common extends PEAR
             return false;
         }
         $this->addTempFile($tmpdir);
+
         return $tmpdir;
     }
 
@@ -365,8 +367,10 @@ class PEAR_Common extends PEAR
                     $e = $this->raiseError($error['message'], $error['code'], null, null, $error);
                 }
             }
+
             return $pf;
         }
+
         return $this->_postProcessValidPackagexml($pf);
     }
 
@@ -396,8 +400,10 @@ class PEAR_Common extends PEAR
                     $e = $this->raiseError($error['message'], $error['code'], null, null, $error);
                 }
             }
+
             return $pf;
         }
+
         return $this->_postProcessValidPackagexml($pf);
     }
 
@@ -427,8 +433,10 @@ class PEAR_Common extends PEAR
                     $e = $this->raiseError($error['message'], $error['code'], null, null, $error);
                 }
             }
+
             return $pf;
         }
+
         return $this->_postProcessValidPackagexml($pf);
     }
     // }}}
@@ -463,9 +471,11 @@ class PEAR_Common extends PEAR
             unset($arr['contributor']);
             $arr['filelist'] = $pf->getFilelist();
             $this->pkginfo = $arr;
+
             return $arr;
         } else {
             $this->pkginfo = $pf->toArray();
+
             return $this->pkginfo;
         }
     }
@@ -494,10 +504,13 @@ class PEAR_Common extends PEAR
                         $e = $this->raiseError($error['message'], $error['code'], null, null, $error);
                     }
                 }
+
                 return $pf;
             }
+
             return $this->_postProcessValidPackagexml($pf);
         }
+
         return $info;
     }
 
@@ -521,6 +534,7 @@ class PEAR_Common extends PEAR
         $packagefile = &new PEAR_PackageFile($config);
         $pf = &$packagefile->fromArray($pkginfo);
         $gen = &$pf->getDefaultGenerator();
+
         return $gen->toXml(PEAR_VALIDATE_PACKAGING);
     }
 
@@ -562,8 +576,10 @@ class PEAR_Common extends PEAR
                     }
                 }
             }
+
             return false;
         }
+
         return true;
     }
 
@@ -748,6 +764,7 @@ class PEAR_Common extends PEAR
                     if (($current_class_level != -1) || ($current_function_level != -1)) {
                         PEAR::raiseError("Parser error: invalid PHP found in file \"$file\"",
                             PEAR_COMMON_ERROR_INVALIDPHP);
+
                         return false;
                     }
                 case T_FUNCTION:
@@ -760,10 +777,11 @@ class PEAR_Common extends PEAR
                     if (version_compare(zend_version(), '2.0', '<')) {
                         if (in_array(strtolower($data),
                             array('public', 'private', 'protected', 'abstract',
-                                  'interface', 'implements', 'throw') 
+                                  'interface', 'implements', 'throw')
                                  )) {
-                            PEAR::raiseError('Error: PHP5 token encountered in ' . $file . 
+                            PEAR::raiseError('Error: PHP5 token encountered in ' . $file .
                             'packaging should be done in PHP 5');
+
                             return false;
                         }
                     }
@@ -813,6 +831,7 @@ class PEAR_Common extends PEAR
                     if (!($tokens[$i - 1][0] == T_WHITESPACE || $tokens[$i - 1][0] == T_STRING)) {
                         PEAR::raiseError("Parser error: invalid PHP found in file \"$file\"",
                             PEAR_COMMON_ERROR_INVALIDPHP);
+
                         return false;
                     }
                     $class = $tokens[$i - 1][1];
@@ -822,6 +841,7 @@ class PEAR_Common extends PEAR
                     continue 2;
             }
         }
+
         return array(
             "source_file" => $file,
             "declared_classes" => $declared_classes,
@@ -855,6 +875,7 @@ class PEAR_Common extends PEAR
         if ($include) {
             $i--;
         }
+
         return array_slice($states, $i + 1);
     }
 
@@ -885,6 +906,7 @@ class PEAR_Common extends PEAR
         $used_c = array_unique($used_c);
         $decl_c = array_unique($decl_c);
         $undecl_c = array_diff($used_c, $decl_c);
+
         return array('used_classes' => $used_c,
                      'declared_classes' => $decl_c,
                      'declared_methods' => $decl_m,
@@ -1020,7 +1042,7 @@ class PEAR_Common extends PEAR
      */
     function validPackageName($name)
     {
-        return (bool)preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name);
+        return (bool) preg_match(PEAR_COMMON_PACKAGE_NAME_PREG, $name);
     }
 
 
@@ -1038,7 +1060,7 @@ class PEAR_Common extends PEAR
      */
     function validPackageVersion($ver)
     {
-        return (bool)preg_match(PEAR_COMMON_PACKAGE_VERSION_PREG, $ver);
+        return (bool) preg_match(PEAR_COMMON_PACKAGE_VERSION_PREG, $ver);
     }
 
 
@@ -1096,6 +1118,7 @@ class PEAR_Common extends PEAR
         if (!class_exists('PEAR_Downloader')) {
             require_once 'PEAR/Downloader.php';
         }
+
         return PEAR_Downloader::downloadHttp($url, $ui, $save_dir, $callback);
     }
 
@@ -1118,9 +1141,9 @@ class PEAR_Common extends PEAR
                 return true;
             }
         }
+
         return false;
     }
 }
 require_once 'PEAR/Config.php';
 require_once 'PEAR/PackageFile.php';
-?>

@@ -66,4 +66,3 @@ class HTML_QuickForm2_Element_InputRadio extends HTML_QuickForm2_Element_InputCh
         'unchecked' => '<tt>(&nbsp;)</tt>'
     );
 }
-?>

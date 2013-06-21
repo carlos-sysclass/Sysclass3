@@ -26,7 +26,6 @@ require_once 'Zend/Memory/Container/Locked.php';
 /** Zend_Memory_AccessController */
 require_once 'Zend/Memory/AccessController.php';
 
-
 /**
  * Memory manager
  *
@@ -167,7 +166,7 @@ class Zend_Memory_Manager
 
         $memoryLimitStr = trim(ini_get('memory_limit'));
         if ($memoryLimitStr != '') {
-            $this->_memoryLimit = (integer)$memoryLimitStr;
+            $this->_memoryLimit = (integer) $memoryLimitStr;
             switch (strtolower($memoryLimitStr[strlen($memoryLimitStr)-1])) {
                 case 'g':
                     $this->_memoryLimit *= 1024;
@@ -183,7 +182,7 @@ class Zend_Memory_Manager
                     break;
             }
 
-            $this->_memoryLimit = (int)($this->_memoryLimit*2/3);
+            $this->_memoryLimit = (int) ($this->_memoryLimit*2/3);
         } // No limit otherwise
     }
 
@@ -311,6 +310,7 @@ class Zend_Memory_Manager
             // Drop all object modifications
             $this->_lastModified = null;
             unset($this->_sizes[$id]);
+
             return;
         }
 
@@ -342,7 +342,7 @@ class Zend_Memory_Manager
         }
 
         // Remove just updated object from list of candidates to unload
-        if( isset($this->_unloadCandidates[$id])) {
+        if ( isset($this->_unloadCandidates[$id])) {
             unset($this->_unloadCandidates[$id]);
         }
 
@@ -408,7 +408,6 @@ class Zend_Memory_Manager
         require_once 'Zend/Memory/Exception.php';
         throw new Zend_Memory_Exception('Memory manager can\'t get enough space.');
     }
-
 
     /**
      * Swap object data to disk

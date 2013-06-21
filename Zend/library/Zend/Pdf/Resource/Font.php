@@ -240,6 +240,7 @@ abstract class Zend_Pdf_Resource_Font extends Zend_Pdf_Resource
         if (($characterSet !== null) && ($characterSet != 'UTF-16BE') && PHP_OS != 'AIX') { // AIX knows not this charset
             $name = iconv('UTF-16BE', $characterSet, $name);
         }
+
         return $name;
     }
 
@@ -400,7 +401,6 @@ abstract class Zend_Pdf_Resource_Font extends Zend_Pdf_Resource
         return $this->_ascent - $this->_descent + $this->_lineGap;
     }
 
-
   /* Information and Conversion Methods */
 
     /**
@@ -497,10 +497,7 @@ abstract class Zend_Pdf_Resource_Font extends Zend_Pdf_Resource
      */
     abstract public function decodeString($string, $charEncoding);
 
-
-
   /**** Internal Methods ****/
-
 
     /**
      * If the font's glyph space is not 1000 units per em, converts the value.
@@ -514,7 +511,7 @@ abstract class Zend_Pdf_Resource_Font extends Zend_Pdf_Resource
         if ($this->_unitsPerEm == 1000) {
             return $value;
         }
+
         return ceil(($value / $this->_unitsPerEm) * 1000);    // always round up
     }
 }
-

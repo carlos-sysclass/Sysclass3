@@ -18,10 +18,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Element_String */
 require_once 'Zend/Pdf/Element/String.php';
-
 
 /**
  * PDF file 'binary string' element implementation
@@ -40,7 +38,6 @@ class Zend_Pdf_Element_String_Binary extends Zend_Pdf_Element_String
      */
     public $value;
 
-
     /**
      * Escape string according to the PDF rules
      *
@@ -54,9 +51,9 @@ class Zend_Pdf_Element_String_Binary extends Zend_Pdf_Element_String
         for ($count = 0; $count < strlen($inStr); $count++) {
             $outStr .= sprintf('%02X', ord($inStr[$count]));
         }
+
         return $outStr;
     }
-
 
     /**
      * Unescape string according to the PDF rules
@@ -96,7 +93,6 @@ class Zend_Pdf_Element_String_Binary extends Zend_Pdf_Element_String
         return $outStr;
     }
 
-
     /**
      * Return object as string
      *
@@ -105,6 +101,6 @@ class Zend_Pdf_Element_String_Binary extends Zend_Pdf_Element_String
      */
     public function toString($factory = null)
     {
-        return '<' . self::escape((string)$this->value) . '>';
+        return '<' . self::escape((string) $this->value) . '>';
     }
 }

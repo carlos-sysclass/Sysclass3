@@ -3,7 +3,7 @@
 //require_once 'pedido.php';
 //require_once 'logger.php';
 
-define('VERSAO', "1.1.0");
+define('VERSAO', "1.2.0");
 
 //session_start();
 /*
@@ -13,7 +13,7 @@ if(!isset($_SESSION["pedidos"]))
 }
 */
 // CONSTANTES
-if (defined("XPAY_CIELO_DEV")) {
+if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	define("ENDERECO_BASE", "https://qasecommerce.cielo.com.br");
 } else {
 	define("ENDERECO_BASE", "https://ecommerce.cbmp.com.br");
@@ -22,18 +22,19 @@ if (defined("XPAY_CIELO_DEV")) {
 define("ENDERECO", ENDERECO_BASE."/servicos/ecommwsec.do");
 
 // Envia requisiçãoo
-function httprequest($paEndereco, $paPost){
-
-	//error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
-	
+function httprequest($paEndereco, $paPost)
+{
+	# error_reporting( E_ALL);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);
+	//Uncomment this to get a full list of errors
 	$sessao_curl = curl_init();
+
 	curl_setopt($sessao_curl, CURLOPT_URL, $paEndereco);
 
 	curl_setopt($sessao_curl, CURLOPT_FAILONERROR, true);
 
 	//  CURLOPT_SSL_VERIFYPEER
 	//  verifica a validade do certificado
-	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYPEER, true);
+	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYPEER, false);
 	//  CURLOPPT_SSL_VERIFYHOST
 	//  verifica se a identidade do servidor bate com aquela informada no certificado
 	curl_setopt($sessao_curl, CURLOPT_SSL_VERIFYHOST, 2);
@@ -41,13 +42,10 @@ function httprequest($paEndereco, $paPost){
 	//  CURLOPT_SSL_CAINFO
 	//  informa a localização do certificado para verificação com o peer
 	
-	//echo dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt";
-	//var_dump(file_exists(dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt"));
-	//exit;
-	if (defined("XPAY_CIELO_DEV")) {
+	if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 		curl_setopt($sessao_curl, CURLOPT_CAINFO, dirname(__FILE__) . "/../ssl/VeriSignClass3PublicPrimaryCertificationAuthority-G5.crt");
 	} else {
-		curl_setopt($sessao_curl, CURLOPT_CAINFO, "/home/SysClass/ssl/certs/verisign.crt");
+		curl_setopt($sessao_curl, CURLOPT_CAINFO, dirname(__FILE__) . "/../ssl/verisign.crt");
 	}
 	curl_setopt($sessao_curl, CURLOPT_SSLVERSION, 3);
 
@@ -58,13 +56,12 @@ function httprequest($paEndereco, $paPost){
 	//  CURLOPT_TIMEOUT
 	//  o tempo máximo em segundos de espera para a execução da requisição (curl_exec)
 	curl_setopt($sessao_curl, CURLOPT_TIMEOUT, 400);
-	
-	
-	
+
+
 	//CURLOPT_HTTPHEADER 	An array of HTTP header fields to set, in the format
 	//curl_setopt($sessao_curl, CURLOPT_HTTPHEADER, array('Accept-Charset: ISO-8859-1'));
 	//curl_setopt($sessao_curl, CURLOPT_ENCODING, "UTF-8");
-	
+
 
 	//  CURLOPT_RETURNTRANSFER
 	//  TRUE para curl_exec retornar uma string de resultado em caso de sucesso, ao
@@ -74,9 +71,11 @@ function httprequest($paEndereco, $paPost){
 	curl_setopt($sessao_curl, CURLOPT_POST, true);
 	curl_setopt($sessao_curl, CURLOPT_POSTFIELDS, $paPost );
 
+	$fp = fopen(dirname(__FILE__).'/../logs/curlerror.txt', 'w');
+	curl_setopt($sessao_curl, CURLOPT_VERBOSE, 1);
+	curl_setopt($sessao_curl, CURLOPT_STDERR, $fp);
+
 	$resultado = curl_exec($sessao_curl);
-	
-	//var_dump($resultado);
 
 	if ($resultado) {
 		curl_close($sessao_curl);
@@ -118,6 +117,7 @@ function ReturnURL()
 
 	//$ReturnURL = str_replace($file, "retorno.php", $pageURL);
 	$ReturnURL = str_replace($_SERVER['QUERY_STRING'], "module/module_xpay_cielo/return_payment", $pageURL);
+	
 	$ReturnURL = str_replace("?", "?route=" , $ReturnURL);
 
 	return $ReturnURL;
@@ -145,6 +145,7 @@ function VerificaErro($vmPost, $vmResposta)
 		$error_msg = "     Codigo do erro: " . $ex->getCode() . "\n";
 		$error_msg .= "     Mensagem: " . $ex->getMessage() . "\n";
 
+		/*
 		// Gera p�gina HTML
 		echo '<html><head><title>Erro na transação</title></head><body>';
 		echo '<span style="color:red;, font-weight:bold;">Ocorreu um erro em sua transação!</span>' . '<br />';
@@ -156,11 +157,16 @@ function VerificaErro($vmPost, $vmResposta)
 				'window.close();}else{window.location.href=' . "'index.php';" . '}" />';
 		echo '</center></p></body></html>';
 		$error_msg .= "     XML de envio: " . "\n" . $vmPost;
-
+		
+		*/
+		
 		// Dispara o erro
 		trigger_error($error_msg, E_USER_ERROR);
-
-		return true;
+		
+		return array(
+			'message'		=> $ex->getMessage(),
+			'message_type'	=> 'failure'
+		);
 	}
 
 	if($objResposta->getName() == "erro")
@@ -244,6 +250,7 @@ function VerificaErro($vmPost, $vmResposta)
 		public $urlRetorno;
 		public $autorizar;
 		public $capturar;
+		public $gerarToken;
 		
 		public $campoLivre;
 		
@@ -306,6 +313,16 @@ function VerificaErro($vmPost, $vmResposta)
 			
 			$msg .= '</dados-portador>';
 			
+			return $msg;
+		}
+		private function XMLDadosToken()
+		{
+			$msg = '<dados-portador>' . "\n      " .
+						'<token>' .
+							$this->token .
+						'</token>' . "\n      " .
+					'</dados-portador>';
+				
 			return $msg;
 		}
 		
@@ -405,7 +422,12 @@ function VerificaErro($vmPost, $vmResposta)
 			
 			return $msg;
 		}
-		
+		private function XMLGerarToken()
+		{
+			$msg = '<gerar-token>' . $this->gerarToken . '</gerar-token>';
+				
+			return $msg;
+		}
 		private function XMLCampoLivre() {
 			$msg = '<campo-livre>' . $this->campoLivre . '</campo-livre>';
 			
@@ -417,44 +439,40 @@ function VerificaErro($vmPost, $vmResposta)
 		{
 			$this->logger->logWrite("ENVIO: " . $vmPost, $transacao);
 	
-			//echo ENDERECO;
-			//var_dump($vmPost);
-			///exit;
-			
-			// ENVIA REQUISIÇÂO SITE CIELO
+			// ENVIA REQUISIÇÃO SITE CIELO
 			$vmResposta = httprequest(ENDERECO, "mensagem=" . $vmPost);
 			
-			///var_dump($vmResposta);
 			$this->logger->logWrite("RESPOSTA: " . $vmResposta, $transacao);
 			
-			VerificaErro($vmPost, $vmResposta);
-	
+			$error_status = VerificaErro($vmPost, $vmResposta);
+			
 			return simplexml_load_string($vmResposta);
 		}
 		
 		// Requisições
-		public function RequisicaoTransacao($incluirPortador)
-		{
-			$msg = $this->XMLHeader() . "\n" .
-				   '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n   "
-				   		. $this->XMLDadosEc() . "\n   ";
-			if($incluirPortador == true)
-			{
-					//$msg .=	$this->XMLDadosPortador() . "\n   ";
-			}
-							
-			$msg .=		  $this->XMLDadosPedido() . "\n   "
-				   		. $this->XMLFormaPagamento() . "\n   "
-				   		. $this->XMLUrlRetorno() . "\n   "
-				   		. $this->XMLAutorizar() . "\n   "
-				   		. $this->XMLCapturar() . "\n " 
-				   		. $this->XMLCampoLivre() . "\n" ;
-			
-			$msg .= '</requisicao-transacao>';
-			
-			$objResposta = $this->Enviar($msg, "Transacao");
-			return $objResposta;
+	public function RequisicaoTransacao($modo = false)
+	{
+		$msg = $this->XMLHeader() . "\n" . '<requisicao-transacao id="' . md5(date("YmdHisu")) . '" versao="' . VERSAO . '">' . "\n" . $this->XMLDadosEc() . "\n";
+		
+		if ($modo == "portador") {
+			$msg .=	$this->XMLDadosPortador() . "\n   ";
+		} elseif ($modo == "token") {
+			$msg .=	$this->XMLDadosToken() . "\n   ";
 		}
+							
+		$msg .=		  $this->XMLDadosPedido() . "\n   "
+			   		. $this->XMLFormaPagamento() . "\n   "
+			   		. $this->XMLUrlRetorno() . "\n   "
+			   		. $this->XMLAutorizar() . "\n"
+			   		. $this->XMLCapturar() . "\n "
+			   		. $this->XMLCampoLivre() . "\n"
+			   		. $this->XMLGerarToken() . "\n " ;
+			
+		$msg .= '</requisicao-transacao>';
+		
+		$objResposta = $this->Enviar($msg, "Transacao");
+		return $objResposta;
+	}
 		
 		public function RequisicaoTid()
 		{
@@ -609,5 +627,4 @@ function VerificaErro($vmPost, $vmResposta)
 		}
 		
 	}
-	
 ?>

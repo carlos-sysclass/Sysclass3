@@ -17,9 +17,9 @@ $smarty -> assign("T_LESSON_NAME", $currentLesson -> lesson['name']);
 if (!$currentUnit) {
     if ($_GET['type'] == 'tests') {
         $iterator = new MagesterTestsFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))));
-    } else if ($_GET['type'] == 'theory') {
+    } elseif ($_GET['type'] == 'theory') {
         $iterator = new MagesterTheoryFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))));
-    } else if ($_GET['type'] == 'examples') {
+    } elseif ($_GET['type'] == 'examples') {
         $iterator = new MagesterExampleFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))));
     }
 
@@ -116,4 +116,3 @@ if (!$currentUnit) {
     }
 
 }
-?>

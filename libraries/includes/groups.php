@@ -4,7 +4,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
-
 $loadScripts[] = 'includes/groups';
     if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] == 'hidden') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
@@ -110,7 +109,7 @@ $loadScripts[] = 'includes/groups';
                $currentGroup = MagesterGroup::create($fields);
               }
               eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=user_groups&edit_user_group=".$currentGroup -> group['id']."&message=".urlencode(_OPERATIONCOMPLETEDSUCCESSFULLY)."&message_type=success");
-             } catch (Exception $e){
+             } catch (Exception $e) {
               handleNormalFlowExceptions($e);
              }
             }
@@ -131,7 +130,7 @@ $loadScripts[] = 'includes/groups';
               $tableName = $_GET['ajax'];
               $alreadySorted = 1;
               $smarty -> assign("T_TABLE_SIZE", $totalEntries);
-              include("sorted_table.php");
+              include 'sorted_table.php';
              }
              if (isset($_GET['ajax']) && $_GET['ajax'] == "lessonsTable") {
               $groupLessons = $currentGroup -> getLessons();
@@ -146,7 +145,7 @@ $loadScripts[] = 'includes/groups';
                 $lesson['in_group'] = true;
                 $lessons[$lesson['id']] = $lesson;
                 $lessons[$lesson['id']]['user_type'] = $groupLessons[$lesson['id']]['user_type'];
-               } else if ($lesson['active']) {
+               } elseif ($lesson['active']) {
                 $lessons[$lesson['id']] = $lesson;
                }
 
@@ -154,7 +153,7 @@ $loadScripts[] = 'includes/groups';
 
               $dataSource = $lessons;
               $tableName = $_GET['ajax'];
-              include("sorted_table.php");
+              include 'sorted_table.php';
              }
              if (isset($_GET['ajax']) && ($_GET['ajax'] == 'coursesTable' || $_GET['ajax'] == 'instancesTable')) {
      $_GET['sort'] != 'null' OR $_GET['sort'] = 'has_course';
@@ -171,7 +170,7 @@ $loadScripts[] = 'includes/groups';
               $smarty -> assign("T_TABLE_SIZE", $totalEntries);
               $alreadySorted = 1;
               $tableName = $_GET['ajax'];
-              include("sorted_table.php");
+              include 'sorted_table.php';
              }
 
              if (isset($_GET['postAjaxRequest'])) {
@@ -182,7 +181,7 @@ $loadScripts[] = 'includes/groups';
                } else {
                 $currentGroup -> addUsers($user, $user -> user['user_types_ID'] ? $user -> user['user_types_ID'] : $user -> user['user_type']);
                }
-              } else if (isset($_GET['addAll']) && $_GET['table'] == "usersTable") {
+              } elseif (isset($_GET['addAll']) && $_GET['table'] == "usersTable") {
                $constraints = array('archive' => false, 'return_objects' => false);// + createConstraintsFromSortedTable();
                $usersToAdd = array();
                foreach ($currentGroup -> getGroupUsersIncludingUnassigned($constraints) as $key => $user) {
@@ -193,17 +192,17 @@ $loadScripts[] = 'includes/groups';
 
                }
                $currentGroup -> addUsers($usersToAdd, $userTypes);
-              } else if (isset($_GET['removeAll'])) {
+              } elseif (isset($_GET['removeAll'])) {
                $currentGroup -> removeAllUsers();
 
-              } else if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
+              } elseif (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
                if ($_GET['insert'] == "1") {
                 $currentGroup -> addLesson($_GET['lessons_ID']);
                } else {
                 $currentGroup -> removeLessons($_GET['lessons_ID']);
                }
 
-              } else if (isset($_GET['addAll']) && $_GET['table'] == "lessonsTable") {
+              } elseif (isset($_GET['addAll']) && $_GET['table'] == "lessonsTable") {
                isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
                foreach ($lessons as $lesson) {
                 if (!$lesson['in_group']) {
@@ -211,18 +210,18 @@ $loadScripts[] = 'includes/groups';
                  echo "Added lesson ".$lesson['id']." to group";
                 }
                }
-              } else if (isset($_GET['removeAll']) && $_GET['table'] == "lessonsTable") {
+              } elseif (isset($_GET['removeAll']) && $_GET['table'] == "lessonsTable") {
                //isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
                eF_deleteTableData("lessons_to_groups", "groups_ID=".$_GET['edit_user_group']);
                echo "All lessons where deleted from group";
-              } else if (isset($_GET['courses_ID']) && eF_checkParameter($_GET['courses_ID'], 'id')) {
+              } elseif (isset($_GET['courses_ID']) && eF_checkParameter($_GET['courses_ID'], 'id')) {
                if ($_GET['insert'] == 1) {
                 $currentGroup -> addCourse($_GET['courses_ID']);
                } else {
                 $currentGroup -> removeCourses($_GET['courses_ID']);
                }
 
-              } else if (isset($_GET['addAll']) && $_GET['table'] == "coursesTable") {
+              } elseif (isset($_GET['addAll']) && $_GET['table'] == "coursesTable") {
                isset($_GET['filter']) ? $courses = eF_filterData($courses, $_GET['filter']) : null;
                foreach ($courses as $course) {
                 if (!$course['in_group']) {
@@ -230,11 +229,11 @@ $loadScripts[] = 'includes/groups';
                  echo "Added course ".$course['id']." to group";
                 }
                }
-              } else if (isset($_GET['removeAll']) && $_GET['table'] == "coursesTable") {
+              } elseif (isset($_GET['removeAll']) && $_GET['table'] == "coursesTable") {
                //isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
                eF_deleteTableData("courses_to_groups", "groups_ID=".$_GET['edit_user_group']);
                echo "All lessons where deleted from group";
-              } else if (isset($_GET['assign_to_all_users']) && $_GET['assign_to_all_users'] == "courses") {
+              } elseif (isset($_GET['assign_to_all_users']) && $_GET['assign_to_all_users'] == "courses") {
                $groupUsers = $currentGroup -> getGroupUsers();
                if ($currentGroup -> group['user_types_ID'] == '0') {
                 foreach ($groupUsers as $key => $user) {
@@ -251,7 +250,7 @@ $loadScripts[] = 'includes/groups';
                foreach ($currentGroup -> getGroupCourses() as $key => $course) {
                 $course -> addUsers($groupUsers, $userRoles, true);
                }
-              } else if (isset($_GET['assign_to_all_users']) && $_GET['assign_to_all_users'] == "lessons") {
+              } elseif (isset($_GET['assign_to_all_users']) && $_GET['assign_to_all_users'] == "lessons") {
                $groupUsers = $currentGroup -> getUsers();
                $groupUsers = array_merge($groupUsers['professor'], $groupUsers['student']);
                $groupLessons = $currentGroup -> getLessons();

@@ -3,7 +3,7 @@
 
 /**
  * Validates values using regular expressions
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE: This source file is subject to version 3.01 of the PHP license
@@ -22,7 +22,7 @@
  */
 
 /**
- * Abstract base class for QuickForm validation rules 
+ * Abstract base class for QuickForm validation rules
  */
 require_once 'HTML/QuickForm/Rule.php';
 
@@ -74,6 +74,7 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
                 return false;
             }
         }
+
         return true;
     } // end func validate
 
@@ -89,7 +90,6 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
         $this->_data[$name] = $pattern;
     } // end func addData
 
-
     function getValidationScript($options = null)
     {
         $regex = isset($this->_data[$this->name]) ? $this->_data[$this->name] : $options;
@@ -104,4 +104,3 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Regex
-?>

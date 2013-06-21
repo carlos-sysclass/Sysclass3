@@ -1,4 +1,7 @@
-/upload
+.buildpath
+.project
+/upload/*
+/upload.*
 /boletos
 /cache
 .settings/*

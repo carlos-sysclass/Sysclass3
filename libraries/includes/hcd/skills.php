@@ -4,7 +4,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-
 try {
     /* Check permissions: only admins have add/edit privileges. supervisors may only see skills */
     if ($currentEmployee -> getType() == _EMPLOYEE) {
@@ -29,7 +28,7 @@ try {
       handleAjaxExceptions($e);
      }
      exit;
-    } else if (isset($_GET['remove_user_skill'])) {
+    } elseif (isset($_GET['remove_user_skill'])) {
      try {
       $currentSkill = new MagesterSkill($_GET['remove_user_skill']);
       if (in_array($_GET['user'], array_keys($currentSkill -> getEmployees()))) {
@@ -39,7 +38,7 @@ try {
       handleAjaxExceptions($e);
      }
      exit;
-    } else if (isset($_GET['add_skill']) || isset($_GET['edit_skill'])) {
+    } elseif (isset($_GET['add_skill']) || isset($_GET['edit_skill'])) {
 
         if (isset($_GET['add_skill'])) {
             $form = new HTML_QuickForm("skill_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=skills&add_skill=1", "", null, true);
@@ -54,7 +53,7 @@ try {
 
         $result = eF_getTableData("module_hcd_skill_categories", "id, description", "");
         $skillCategories = array("0" => _SELECTSKILLCATEGORY);
-        foreach($result as $value) {
+        foreach ($result as $value) {
             $skillCategories[$value['id']]= $value['description'];
         }
         $form -> addElement('select', 'category' , _SKILLCATEGORY, $skillCategories , 'class = "inputText" id="skill_cat" onchange="javascript:change_skill_category(\'skill_cat\')" tabindex="2"');
@@ -64,9 +63,9 @@ try {
           try {
            if ($_GET['insert'] == "true") {
             $currentSkill -> assignToEmployee($_GET['add_user'], $_GET['specification']);
-           } else if ($_GET['insert'] == "false") {
+           } elseif ($_GET['insert'] == "false") {
             $currentSkill -> removeFromEmployee($_GET['add_user']);
-           } else if (isset($_GET['addAll'] )) {
+           } elseif (isset($_GET['addAll'] )) {
             $employees = $currentSkill -> getEmployees();
             isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
             foreach ($employees as $employee) {
@@ -74,7 +73,7 @@ try {
               $currentSkill -> assignToEmployee($employee['login'], "");
              }
             }
-           } else if (isset($_GET['removeAll'] )) {
+           } elseif (isset($_GET['removeAll'] )) {
             $employees = $currentSkill -> getEmployees();
             isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
             foreach ($employees as $employee) {
@@ -102,7 +101,7 @@ try {
                 }
           $dataSource = $employees;
     $tableName = $_GET['ajax'];
-    include("sorted_table.php");
+    include 'sorted_table.php';
             }
             $form -> setDefaults(array('skill_description' => $currentSkill -> skill['description'],
                                        'category' => $currentSkill -> skill['categories_ID']));
@@ -120,7 +119,7 @@ try {
         }
         $form -> setDefaults(array('previous_url' => $previous_url));
 
-        $form -> addElement('submit', 'submit_skill_details', _SUBMIT, 'class = "flatButton" tabindex="3" onClick="if(document.getElementById(\'skill_cat\').value==\'0\'){alert(\''._THEFIELD.' '._SKILLCATEGORY.' '._ISMANDATORY.'\');return false;}" ');
+        $form -> addElement('submit', 'submit_skill_details', _SUBMIT, 'class = "flatButton" tabindex="3" onClick="if (document.getElementById(\'skill_cat\').value==\'0\') {alert(\''._THEFIELD.' '._SKILLCATEGORY.' '._ISMANDATORY.'\');return false;}" ');
         $smarty -> assign("T_DEFAULT_CATEGORY", $currentSkill -> skill['categories_ID']);
 
         if ($form -> isSubmitted() && $form -> validate()) {
@@ -145,7 +144,7 @@ try {
          $skillset = MagesterSkill :: getAllSkills();
          $dataSource = $skillset;
    $tableName = $_GET['ajax'];
-   include("sorted_table.php");
+   include 'sorted_table.php';
         }
 
    }

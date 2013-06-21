@@ -53,6 +53,7 @@ class Mail
         $class = 'Mail_' . $driver;
         if (class_exists($class)) {
             $mailer = new $class($params);
+
             return $mailer;
         } else {
             return PEAR::raiseError('Unable to find class for driver ' . $driver);
@@ -104,7 +105,7 @@ class Mail
 
         // flatten the headers out.
         list(,$text_headers) = Mail::prepareHeaders($headers);
-        
+
         return mail($recipients, $subject, $body, $text_headers);
 
     }
@@ -171,8 +172,7 @@ class Mail
                     foreach ($value as $line) {
                         $received[] = $key . ': ' . $line;
                     }
-                }
-                else {
+                } else {
                     $received[] = $key . ': ' . $value;
                 }
                 // Put Received: headers at the top.  Spam detectors often

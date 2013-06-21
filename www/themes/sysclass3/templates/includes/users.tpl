@@ -43,7 +43,6 @@
                                         <td class = "topTitle" name = "user_type">{$smarty.const._USERTYPE}</td>
                                         <td class = "topTitle centerAlign" name = "lessons_num">{$smarty.const._LESSONS}</td>
                                         <td class = "topTitle centerAlign" name = "courses_num">{$smarty.const._COURSES}</td>
-                                        <td class = "topTitle centerAlign" name = "groups_num">{$smarty.const._GROUPS}</td>
                                         <td class = "topTitle" name = "last_login">{$smarty.const._LASTLOGIN}</td>
                                         <td class = "topTitle centerAlign" name = "active">{$smarty.const._ACTIVE2}</td>
                                     {if !isset($T_CURRENT_USER->coreAccess.statistics) || $T_CURRENT_USER->coreAccess.statistics != 'hidden'}
@@ -59,7 +58,6 @@
                                             <td>{if $user.user_types_ID}{$T_ROLES[$user.user_types_ID]}{else}{$T_ROLES[$user.user_type]}{/if}</td>
                                             <td class = "centerAlign">{$user.lessons_num}</td>
                                             <td class = "centerAlign">{$user.courses_num}</td>
-                                            <td class = "centerAlign">{$user.groups_num}</td>
                                             <td>{if $user.last_login}#filter:timestamp_time_nosec-{$user.last_login}#{else}{$smarty.const._NEVER}{/if}</td>
                                             <td class = "centerAlign">
            {if !($user.user_type == 'administrator' && $user.user_types_ID == 0 && $T_CURRENT_USER->user.user_type == 'administrator' && $T_CURRENT_USER->user.user_types_ID != 0)}
@@ -85,6 +83,12 @@
             {if !($user.user_type == 'administrator')}
                 <a href = "{$smarty.server.PHP_SELF}?ctg=module&op=module_xpay&action=view_user_statement&xuser_login={$user.login}" class = "editLink"><img border = "0" src = "images/16x16/do_pay.png" title = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" alt = "{$smarty.const.__XPAY_VIEW_USER_STATEMENT}" /></a>&nbsp;<br />
             {/if}
+            
+            {if ($user.user_type == 'student')}
+                <a href = "{$smarty.server.PHP_SELF}?ctg=module&op=module_gradebook&action=student_sheet&xuser_login={$user.login}" class = "editLink"><img border = "0" src = "images/16x16/certificate.png" title = "{$smarty.const.__GRADEBOOK_VIEW_SHEET}" alt = "{$smarty.const.__GRADEBOOK_VIEW_SHEET}" /></a>&nbsp;<br />
+            {/if}
+            
+            
             {if !($user.user_type == 'administrator' && $user.user_types_ID == 0 && $T_CURRENT_USER->user.user_type == 'administrator' && $T_CURRENT_USER->user.user_types_ID != 0)}
              {if $smarty.session.s_login != $user.login}
                <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSUREYOUWANTTODELETEUSER}')) deleteUser(this, '{$user.login}')"/>

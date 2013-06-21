@@ -25,8 +25,8 @@
  * @package Mail
  * @version $Revision: 1.2 $
  */
-class Mail_null extends Mail {
-
+class Mail_null extends Mail
+{
     /**
      * Implements Mail_null::send() function. Silently discards all
      * mail.

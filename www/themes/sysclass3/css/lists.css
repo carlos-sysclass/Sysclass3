@@ -22,3 +22,19 @@ ul.default-list li a.list-item img {
     float: left;
     margin: 3px 4px 0;
 }
+
+.ui-autocomplete-category {
+	font-weight: bold;
+	padding: .2em .4em;
+	margin: .8em 0 .2em;
+	line-height: 1.5;
+}
+
+.course-lesson-autocomplete-container label {
+	display: block;
+}
+
+.course-lesson-autocomplete {
+	height: 25px;
+	width: 100%;
+}

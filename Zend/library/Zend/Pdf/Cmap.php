@@ -285,6 +285,7 @@ abstract class Zend_Pdf_Cmap
         } else {
             $number = ($number << 8) | ord($data[++$index]);
         }
+
         return $number;
     }
 
@@ -307,6 +308,7 @@ abstract class Zend_Pdf_Cmap
                                          Zend_Pdf_Exception::INDEX_OUT_OF_RANGE);
         }
         $number = (ord($data[$index]) << 8) | ord($data[++$index]);
+
         return $number;
     }
 
@@ -335,6 +337,7 @@ abstract class Zend_Pdf_Cmap
         }
         $number = (ord($data[$index]) << 24) | (ord($data[++$index]) << 16) |
                   (ord($data[++$index]) << 8) | ord($data[++$index]);
+
         return $number;
     }
 

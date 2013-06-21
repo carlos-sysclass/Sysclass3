@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Cell_DataType
  *
@@ -57,7 +56,8 @@ class PHPExcel_Cell_DataType
 	 *
 	 * @return array
 	 */
-	public static function getErrorCodes() {
+	public static function getErrorCodes()
+	{
 		return self::$_errorCodes;
 	}
 
@@ -68,7 +68,8 @@ class PHPExcel_Cell_DataType
 	 * @param	mixed 	$pValue
 	 * @return 	int
 	 */
-	public static function dataTypeForValue($pValue = null) {
+	public static function dataTypeForValue($pValue = null)
+	{
 		return PHPExcel_Cell_DefaultValueBinder::dataTypeForValue($pValue);
 	}
 
@@ -102,7 +103,7 @@ class PHPExcel_Cell_DataType
 	 */
 	public static function checkErrorCode($pValue = null)
 	{
-		$pValue = (string)$pValue;
+		$pValue = (string) $pValue;
 
 		if ( !array_key_exists($pValue, self::$_errorCodes) ) {
 			$pValue = '#NULL!';

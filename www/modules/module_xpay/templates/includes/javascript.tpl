@@ -1,5 +1,5 @@
 <script>
-	$_xpay_mod_data = {Mag_Json_Encode data=$T_XPAY_MOD_DATA};
+	// $_xpay_mod_data = {Mag_Json_Encode data=$T_XPAY_MOD_DATA};
 
 	{literal}
 	if (typeof(window['_mod_data_']) == 'undefined') {

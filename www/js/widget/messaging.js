@@ -2,21 +2,26 @@
 	jQuery.extend({
 		messaging : {
 			show : function (structMessage) {
-				if (structMessage.message_type == 'success') {
-					$result = this.success(structMessage.message);
+				if (typeof(structMessage.message_type) != 'undefined') {
+					if (structMessage.message_type == 'success') {
+						$result = this.success(structMessage.message);
+					} else {
+						$result = this.error(structMessage.message);
+					}
+					var scrollTopIndex = 0;
+					if (jQuery(".messageBlock").size() > 0) {
+						scrollTopIndex = jQuery(".messageBlock").offset().top;	
+					}
+					scrollTopIndex = scrollTopIndex - jQuery("header#header").height() - 10;
+					
+					if (jQuery(window).scrollTop() > scrollTopIndex) {
+						jQuery(window).scrollTop(scrollTopIndex);
+					}
+					
+					return $result;
 				} else {
-					$result = this.error(structMessage.message);
+					return false;
 				}
-				var scrollTopIndex = 0;
-				if (jQuery(".messageBlock").size() > 0) {
-					scrollTopIndex = jQuery(".messageBlock").offset().top;	
-				}
-				scrollTopIndex = scrollTopIndex - jQuery("header#header").height() - 10;
-				
-				if (jQuery(window).scrollTop() > scrollTopIndex) {
-					jQuery(window).scrollTop(scrollTopIndex);
-				}
-				return $result;
 			},
 			success : function(text) {
 				

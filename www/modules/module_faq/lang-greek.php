@@ -1,12 +1,12 @@
 <?php
-define("_FAQ","Συχνές ερωτήσεις");
+define("_FAQ", "Συχνές ερωτήσεις");
 
 define("_FAQ_SYSTEMLINK1", "FAQ συστήματος 1");
 define("_FAQ_SYSTEMLINK2", "FAQ συστήματος 2");
 define("_FAQ_LESSONLINK", "FAQ μαθημάτων");
 define("_FAQ_MODULE", "FAQ άρθρωμα");
-define("_FAQ_MAIN","Κύρια σελίδα");
-define("_FAQ_MANAGEMENT","Διαχείριση");
+define("_FAQ_MAIN", "Κύρια σελίδα");
+define("_FAQ_MANAGEMENT", "Διαχείριση");
 
 define("_FAQ_SUCCESFULLYINSERTEDFAQENTRY", "Το FAQ ενημερώθηκε επιτυχώς");
 define("_FAQ_PROBLEMINSERTINGFAQENTRY", "Δεν ήταν δυνατόν να ενημερωθεί το FAQ");
@@ -27,5 +27,4 @@ define("_FAQ_SUCCESFULLYDELETEDFAQENTRY", "Η εγγραφή του FAQ διαγ
 define("_FAQ_SUCCESFULLYUPDATEDFAQENTRY", "Η εγγραφή του FAQ ενημερώθηκε επιτυχώς");
 define("_FAQ_PROBLEMUPDATINGFAQENTRY", "Η εγγραφή του FAQ δεν ήταν δυνατόν να ενημερωθεί");
 define("_FAQ_GENERAL_LESSON", "Γενικά για το μάθημα");
-define("_FAQ_REGARDING","Σχετική με");
-?>
+define("_FAQ_REGARDING", "Σχετική με");

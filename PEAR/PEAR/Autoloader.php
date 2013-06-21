@@ -31,7 +31,7 @@ if (!extension_loaded("overload")) {
 /**
  * Include for PEAR_Error and PEAR classes
  */
-require_once "PEAR.php";
+require_once 'PEAR.php';
 
 /**
  * This class is for objects where you want to separate the code for
@@ -123,6 +123,7 @@ class PEAR_Autoloader extends PEAR
         $method = strtolower($method);
         $ok = isset($this->_autoload_map[$method]);
         unset($this->_autoload_map[$method]);
+
         return $ok;
     }
 
@@ -182,6 +183,7 @@ class PEAR_Autoloader extends PEAR
                 $ok = true;
             }
         }
+
         return $ok;
     }
 
@@ -210,8 +212,10 @@ class PEAR_Autoloader extends PEAR
         }
         if (isset($this->_method_map[$method])) {
             $retval = call_user_func_array(array($this->_method_map[$method], $method), $args);
+
             return true;
         }
+
         return false;
     }
 
@@ -219,5 +223,3 @@ class PEAR_Autoloader extends PEAR
 }
 
 overload("PEAR_Autoloader");
-
-?>

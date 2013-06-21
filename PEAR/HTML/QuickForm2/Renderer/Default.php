@@ -176,6 +176,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     public function setTemplateForClass($className, $template)
     {
         $this->templatesForClass[strtolower($className)] = $template;
+
         return $this;
     }
 
@@ -193,6 +194,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     public function setTemplateForId($id, $template)
     {
         $this->templatesForId[$id] = $template;
+
         return $this;
     }
 
@@ -227,6 +229,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     public function setElementTemplateForGroupClass($groupClass, $elementClass, $template)
     {
         $this->elementTemplatesForGroupClass[strtolower($groupClass)][strtolower($elementClass)] = $template;
+
         return $this;
     }
 
@@ -246,6 +249,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
     public function setElementTemplateForGroupId($groupId, $elementClass, $template)
     {
         $this->elementTemplatesForGroupId[$groupId][strtolower($elementClass)] = $template;
+
         return $this;
     }
 
@@ -366,7 +370,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
         $separator = $group->getSeparator();
         $elements  = array_pop($this->html);
         if (!is_array($separator)) {
-            $content = implode((string)$separator, $elements);
+            $content = implode((string) $separator, $elements);
         } else {
             $content    = '';
             $cSeparator = count($separator);
@@ -452,6 +456,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             $errorHtml .= preg_replace('!<qf:message>.*</qf:message>!isU', '',
                                       $this->templatesForClass['special:error']['suffix']);
         }
+
         return $errorHtml;
     }
 
@@ -507,6 +512,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
                 }
             } while ($grClass = strtolower(get_parent_class($grClass)));
         }
+
         return $default;
     }
 
@@ -522,6 +528,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
         // if element is required
         $elTpl = $this->markRequired($elTpl, $element->isRequired());
         $elTpl = $this->outputError($elTpl, $element->getError());
+
         return $this->outputLabel($elTpl, $element->getLabel());
     }
 
@@ -541,6 +548,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
         } else {
             $elTpl = preg_replace('!<qf:required>.*</qf:required>!isU', '', $elTpl);
         }
+
         return $elTpl;
     }
 
@@ -562,6 +570,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             }
             $elTpl = preg_replace('!<qf:error>.*</qf:error>!isU', '', $elTpl);
         }
+
         return $elTpl;
     }
 
@@ -584,7 +593,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
             }
         }
         if (is_array($label)) {
-            foreach($label as $key => $text) {
+            foreach ($label as $key => $text) {
                 $key   = is_int($key)? $key + 2: $key;
                 $elTpl = str_replace(array('<qf:label_' . $key . '>', '</qf:label_' . $key . '>', '{label_' . $key . '}'),
                                      array('', '', $text), $elTpl);
@@ -593,7 +602,7 @@ class HTML_QuickForm2_Renderer_Default extends HTML_QuickForm2_Renderer
         if (strpos($elTpl, '{label_')) {
             $elTpl = preg_replace('!<qf:label_([^>]+)>.*</qf:label_\1>!isU', '', $elTpl);
         }
+
         return $elTpl;
     }
 }
-?>

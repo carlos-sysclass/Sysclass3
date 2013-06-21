@@ -1,6 +1,7 @@
 
 <ul class="default-list">
-	{foreach key = "week_day" item = "schedule_item" from=$T_XCONTENT_SCHEDULES}
+{foreach key = "schedule_date" item = "schedule_week" from=$T_XCONTENT_SCHEDULES}
+	{foreach key = "week_day" item = "schedule_item" from=$schedule_week}
 		{foreach name = "schedule_iterator" item = "schedule_item_hour" from=$schedule_item}
 			{if $smarty.foreach.schedule_iterator.first}		
 				<li>Dia #filter:date-{$schedule_item_hour.start}# ({$T_XCONTENT_WEEKNAMES[$week_day]})
@@ -20,4 +21,5 @@
 			{/if}
 		{/foreach}
 	{/foreach}
+{/foreach}
 </ul>

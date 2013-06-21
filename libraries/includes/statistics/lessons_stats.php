@@ -9,7 +9,7 @@ $smarty -> assign("T_OPTION", $_GET['option']);
 try {
     if ($currentUser -> user['user_type'] == 'administrator') {
         $lessons = MagesterLesson :: getLessons();
-    } else if ($isProfessor) {
+    } elseif ($isProfessor) {
         $lessons = $currentUser -> getLessons(true, 'professor');
     }
 
@@ -18,9 +18,9 @@ try {
         if (!($infoLesson instanceof MagesterLesson)) {
             $infoLesson = new MagesterLesson($infoLesson['id']);
         }
-    } else if (isset($_GET['sel_lesson']) && in_array($_GET['sel_lesson'], array_keys($lessons))) {
+    } elseif (isset($_GET['sel_lesson']) && in_array($_GET['sel_lesson'], array_keys($lessons))) {
         $infoLesson = new MagesterLesson($_GET['sel_lesson']);
-    } else if (isset($_SESSION['s_lessons_ID']) && in_array($_SESSION['s_lessons_ID'], array_keys($lessons))) {
+    } elseif (isset($_SESSION['s_lessons_ID']) && in_array($_SESSION['s_lessons_ID'], array_keys($lessons))) {
         $infoLesson = new MagesterLesson($_SESSION['s_lessons_ID']);
     }
 
@@ -88,12 +88,10 @@ try {
           $tableName = $_GET['ajax'];
          }
          $alreadySorted = true;
-         include("sorted_table.php");
+         include 'sorted_table.php';
         } catch (Exception $e) {
          handleAjaxExceptions($e);
         }
-
-
 
         /*
 
@@ -202,7 +200,7 @@ try {
                 foreach ($result as $key => $value) {
                     if ($value['action'] == 'content') {
                         $result[$key]['content_name'] = $contentNames[$value['comments']];
-                    } else if ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
+                    } elseif ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
                         $result[$key]['content_name'] = $testNames[$value['comments']];
                     }
                 }
@@ -287,7 +285,7 @@ try {
      $graph -> title = _MINUTESPERDAY;
      echo json_encode($graph);
      exit;
-             } else if (isset($_GET['ajax']) && $_GET['ajax'] == 'graph_test_questions') {
+             } elseif (isset($_GET['ajax']) && $_GET['ajax'] == 'graph_test_questions') {
               $test = new MagesterTest($_GET['entity']);
      $types = array();
               foreach ($test -> getQuestions() as $value) {
@@ -398,7 +396,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'lesson') {
      if ($user['user_type'] == "student") {
       $students[$user['login']] = $user;
 
-     } else if ($user['user_type'] == "professor") {
+     } elseif ($user['user_type'] == "professor") {
       $professors[$user['login']] = $user;
      }
     }
@@ -769,7 +767,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'lesson') {
     }
     $workBook -> close();
     exit(0);
-} else if (isset($_GET['pdf']) && $_GET['pdf'] == 'lesson') {
+} elseif (isset($_GET['pdf']) && $_GET['pdf'] == 'lesson') {
  $groupname = $branchName = false;
  try {
   $group = new MagesterGroup($_GET['group_filter']);
@@ -791,7 +789,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'lesson') {
     foreach ($filteredUsers as $user) {
      if ($user['user_type'] == "student") {
       $students[$user['login']] = $user;
-     } else if ($user['user_type'] == "professor") {
+     } elseif ($user['user_type'] == "professor") {
       $professors[$user['login']] = $user;
      }
     }

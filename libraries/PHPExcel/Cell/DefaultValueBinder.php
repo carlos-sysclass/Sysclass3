@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
 	/**
@@ -34,7 +33,6 @@ if (!defined('PHPEXCEL_ROOT')) {
 	define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
 	require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
-
 
 /**
  * PHPExcel_Cell_DefaultValueBinder
@@ -72,7 +70,8 @@ class PHPExcel_Cell_DefaultValueBinder implements PHPExcel_Cell_IValueBinder
 	 * @param	mixed 	$pValue
 	 * @return 	int
 	 */
-	public static function dataTypeForValue($pValue = null) {
+	public static function dataTypeForValue($pValue = null)
+	{
 		// Match the value against a few data types
 		if (is_null($pValue)) {
 			return PHPExcel_Cell_DataType::TYPE_NULL;

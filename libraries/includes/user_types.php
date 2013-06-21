@@ -98,8 +98,6 @@ try {
            "dashboard" => _DASHBOARD,
            "course_settings" => _COURSEOPTIONS);
 
-
-
   $GLOBALS['configuration']['disable_glossary'] != 1 ? $professorOptions["glossary"] = _GLOSSARY : null;
   $GLOBALS['configuration']['disable_calendar'] != 1 ? $professorOptions["calendar"] = _CALENDAR : null;
   $GLOBALS['configuration']['disable_surveys'] != 1 ? $professorOptions["surveys"] = _SURVEYS : null;
@@ -135,12 +133,12 @@ try {
         if (isset($_GET['edit_user_type'])) {
             $result = eF_getTableData("user_types", "*", "id='".$_GET['edit_user_type']."'");
             $basicType = $result[0]['basic_user_type'];
-        } else if (isset($_GET['basic_type']) && in_array($_GET['basic_type'], array_keys($basicTypes))) {
+        } elseif (isset($_GET['basic_type']) && in_array($_GET['basic_type'], array_keys($basicTypes))) {
             $basicType = $_GET['basic_type'];
         } else {
             $basicType = 'student';
         }
-        switch($basicType){
+        switch ($basicType) {
             case "administrator":
                 $options = $administratorOptions;
                 break;
@@ -160,7 +158,7 @@ try {
         //$form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
         //$form -> addRule('name', _USERTYPE.' &quot;'.($form -> exportValue('name')).'&quot; '._ALREADYEXISTS, 'checkNotExist', 'user_type');
         $form -> addElement('select', 'basic_user_type', _BASICUSERTYPE, $basicTypes, 'id="basic_user_type" class = "inputSelect" onchange = "location = \'administrator.php?ctg=user_types&'.$postTarget.'&basic_type=\'+this.options[this.selectedIndex].value+\'&name=\'+document.getElementsByName(\'name\')[0].value"');
-        foreach ($options as $key => $value){
+        foreach ($options as $key => $value) {
             $form -> addElement("select", "core_access[$key]", $value, array('change' => _CHANGE, 'view' => _VIEW, 'hidden' => _HIDE));
         }
         $form -> setDefaults(array('basic_user_type' => $basicType, 'name' => $_GET['name']));

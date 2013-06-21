@@ -39,7 +39,6 @@ class Zend_Memory_Container_Locked extends Zend_Memory_Container
      */
     public $value;
 
-
     /**
      * Object constructor
      *

@@ -21,4 +21,3 @@ define("_YOUTUBE_MANAGEMENT","Video förvaltning");//Video management
 define("_YOUTUBE_PREVIOUS","Föregående");//Previous
 define("_YOUTUBE_NEXT","Nästa");//Next
 define("_YOUTUBE_EXAMPLE","Exempel");//Example
-?>

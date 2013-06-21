@@ -83,6 +83,7 @@ class PEAR_Validate
                 return (bool) preg_match('/^[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*$/', $name);
             }
         }
+
         return $this->_validPackageName($name);
     }
 
@@ -162,6 +163,7 @@ class PEAR_Validate
     {
         $failures = $this->_failures;
         $this->_failures = array('warnings' => array(), 'errors' => array());
+
         return $failures;
     }
 
@@ -198,6 +200,7 @@ class PEAR_Validate
             //$this->validateGlobalTasks();
             $this->validateChangelog();
         }
+
         return !((bool) count($this->_failures['errors']));
     }
 
@@ -227,6 +230,7 @@ class PEAR_Validate
                         $this->_packagexml->getExtends() . ' and so the name should ' .
                         'have a postfix equal to the major version like "' .
                         $this->_packagexml->getExtends() . $test . '"');
+
                     return true;
                 } elseif (substr($name, 0, strlen($name) - $vlen) !=
                             $this->_packagexml->getExtends()) {
@@ -234,6 +238,7 @@ class PEAR_Validate
                         $this->_packagexml->getExtends() . ' and so the name must ' .
                         'be an extension like "' . $this->_packagexml->getExtends() .
                         $test . '"');
+
                     return true;
                 }
             }
@@ -241,6 +246,7 @@ class PEAR_Validate
         if (!$this->validPackageName($this->_packagexml->getPackage())) {
             $this->_addFailure('name', 'package name "' .
                 $this->_packagexml->getPackage() . '" is invalid');
+
             return false;
         }
     }
@@ -255,6 +261,7 @@ class PEAR_Validate
                 $this->_addFailure('version',
                     'Invalid version number "' . $this->_packagexml->getVersion() . '"');
             }
+
             return false;
         }
         $version = $this->_packagexml->getVersion();
@@ -262,6 +269,7 @@ class PEAR_Validate
         if (count($versioncomponents) != 3) {
             $this->_addWarning('version',
                 'A version number should have 3 decimals (x.y.z)');
+
             return true;
         }
         $name = $this->_packagexml->getPackage();
@@ -282,6 +290,7 @@ class PEAR_Validate
                     $this->_addWarning('version',
                         'packages with devel stability must be < version 1.0.0');
                 }
+
                 return true;
             break;
             case 'alpha' :
@@ -292,6 +301,7 @@ class PEAR_Validate
                     if (substr($versioncomponents[2], 1, 2) == 'rc') {
                         $this->_addFailure('version', 'Release Candidate versions ' .
                             'must have capital RC, not lower-case rc');
+
                         return false;
                     }
                 }
@@ -303,6 +313,7 @@ class PEAR_Validate
                                 $this->_addWarning('version',
                                     'version 1.' . $versioncomponents[1] .
                                         '.0 probably should not be alpha or beta');
+
                                 return true;
                             } elseif (strlen($versioncomponents[2]) > 1) {
                                 // version 1.*.0RC1 or 1.*.0beta24 etc.
@@ -312,18 +323,21 @@ class PEAR_Validate
                                 $this->_addWarning('version',
                                     'version 1.' . $versioncomponents[1] .
                                         '.0 probably should not be alpha or beta');
+
                                 return true;
                             }
                         } else {
                             $this->_addWarning('version',
                                 'bugfix versions (1.3.x where x > 0) probably should ' .
                                 'not be alpha or beta');
+
                             return true;
                         }
                     } elseif ($versioncomponents[0] != '0') {
                         $this->_addWarning('version',
                             'major versions greater than 1 are not allowed for packages ' .
                             'without an <extends> tag or an identical postfix (foo2 v2.0.0)');
+
                         return true;
                     }
                     if ($versioncomponents[0] . 'a' == '0a') {
@@ -346,6 +360,7 @@ class PEAR_Validate
                             $versioncomponents[0] . '" must match the postfix of ' .
                             'package name "' . $name . '" (' .
                             $majver . ')');
+
                         return true;
                     }
                     if ($versioncomponents[0] == $majver) {
@@ -355,6 +370,7 @@ class PEAR_Validate
                                 $this->_addWarning('version',
                                     "version $majver." . $versioncomponents[1] .
                                         '.0 probably should not be alpha or beta');
+
                                 return false;
                             } elseif (strlen($versioncomponents[2]) > 1) {
                                 // version 2.*.0RC1 or 2.*.0beta24 etc.
@@ -364,17 +380,20 @@ class PEAR_Validate
                                 $this->_addWarning('version',
                                     "version $majver." . $versioncomponents[1] .
                                         '.0 cannot be alpha or beta');
+
                                 return true;
                             }
                         } else {
                             $this->_addWarning('version',
                                 "bugfix versions ($majver.x.y where y > 0) should " .
                                 'not be alpha or beta');
+
                             return true;
                         }
                     } elseif ($versioncomponents[0] != '0') {
                         $this->_addWarning('version',
                             "only versions 0.x.y and $majver.x.y are allowed for alpha/beta releases");
+
                         return true;
                     }
                     if ($versioncomponents[0] . 'a' == '0a') {
@@ -387,12 +406,14 @@ class PEAR_Validate
                             implode('.' ,$versioncomponents) . '"');
                     }
                 }
+
                 return true;
             break;
             case 'stable' :
                 if ($versioncomponents[0] == '0') {
                     $this->_addWarning('version', 'versions less than 1.0.0 cannot ' .
                     'be stable');
+
                     return true;
                 }
                 if (!is_numeric($versioncomponents[2])) {
@@ -400,6 +421,7 @@ class PEAR_Validate
                           $versioncomponents[2])) {
                         $this->_addWarning('version', 'version "' . $version . '" or any ' .
                             'RC/beta/alpha version cannot be stable');
+
                         return true;
                     }
                 }
@@ -416,12 +438,14 @@ class PEAR_Validate
                             $versioncomponents[0] . '" must match the postfix of ' .
                             'package name "' . $name . '" (' .
                             $majver . ')');
+
                         return true;
                     }
                 } elseif ($versioncomponents[0] > 1) {
                     $this->_addWarning('version', 'major version x in x.y.z may not be greater than ' .
                         '1 for any package that does not have an <extends> tag');
                 }
+
                 return true;
             break;
             default :
@@ -455,9 +479,9 @@ class PEAR_Validate
                 ) {
                 $this->_addFailure('date', 'invalid release date "' .
                     $this->_packagexml->getDate() . '"');
+
                 return false;
             }
-
 
             if ($this->_state == PEAR_VALIDATE_PACKAGING &&
                   $this->_packagexml->getDate() != date('Y-m-d')) {
@@ -465,6 +489,7 @@ class PEAR_Validate
                     $this->_packagexml->getDate() . '" is not today');
             }
         }
+
         return true;
     }
 
@@ -484,14 +509,17 @@ class PEAR_Validate
                   $this->_packagexml->getTime())) {
                 $this->_addFailure('time', 'invalid release time "' .
                     $this->_packagexml->getTime() . '"');
+
                 return false;
             }
             if (strtotime($this->_packagexml->getTime()) == -1) {
                 $this->_addFailure('time', 'invalid release time "' .
                     $this->_packagexml->getTime() . '"');
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -509,8 +537,10 @@ class PEAR_Validate
             $this->_addFailure('state', 'invalid release state "' .
                 $this->_packagexml->getState() . '", must be one of: ' .
                 implode(', ', PEAR_Validate::getValidStates()));
+
             return false;
         }
+
         return true;
     }
 
@@ -536,6 +566,7 @@ class PEAR_Validate
                 implode(', ', $apistates));
             $ret = false;
         }
+
         return $ret;
     }
 
@@ -631,4 +662,3 @@ class PEAR_Validate
         return true;
     }
 }
-?>

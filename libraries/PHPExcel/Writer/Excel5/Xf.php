@@ -60,7 +60,6 @@
 // *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // */
 
-
 /**
  * PHPExcel_Writer_Excel5_Xf
  *
@@ -159,7 +158,6 @@ class PHPExcel_Writer_Excel5_Xf
 		$this->_style = $style;
 
 	}
-
 
 	/**
 	 * Generate an Excel BIFF XF record (style or cell).
@@ -403,7 +401,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param string $borderStyle
 	 * @return int
 	 */
-	private static function _mapBorderStyle($borderStyle) {
+	private static function _mapBorderStyle($borderStyle)
+	{
 		if (isset(self::$_mapBorderStyle[$borderStyle]))
 			return self::$_mapBorderStyle[$borderStyle];
 		return 0x00;
@@ -442,7 +441,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param string $fillType
 	 * @return int
 	 */
-	private static function _mapFillType($fillType) {
+	private static function _mapFillType($fillType)
+	{
 		if (isset(self::$_mapFillType[$fillType]))
 			return self::$_mapFillType[$fillType];
 		return 0x00;
@@ -489,7 +489,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param string $vAlign
 	 * @return int
 	 */
-	private static function _mapVAlign($vAlign) {
+	private static function _mapVAlign($vAlign)
+	{
 		if (isset(self::$_mapVAlign[$vAlign]))
 			return self::$_mapVAlign[$vAlign];
 		return 2;
@@ -501,7 +502,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param int $textRotation
 	 * @return int
 	 */
-	private static function _mapTextRotation($textRotation) {
+	private static function _mapTextRotation($textRotation)
+	{
 		if ($textRotation >= 0) {
 			return $textRotation;
 		}
@@ -519,7 +521,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param string
 	 * @return int
 	 */
-	private static function _mapLocked($locked) {
+	private static function _mapLocked($locked)
+	{
 		switch ($locked) {
 			case PHPExcel_Style_Protection::PROTECTION_INHERIT:		return 1;
 			case PHPExcel_Style_Protection::PROTECTION_PROTECTED:	return 1;
@@ -534,7 +537,8 @@ class PHPExcel_Writer_Excel5_Xf
 	 * @param string
 	 * @return int
 	 */
-	private static function _mapHidden($hidden) {
+	private static function _mapHidden($hidden)
+	{
 		switch ($hidden) {
 			case PHPExcel_Style_Protection::PROTECTION_INHERIT:		return 0;
 			case PHPExcel_Style_Protection::PROTECTION_PROTECTED:	return 1;

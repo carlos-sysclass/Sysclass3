@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Shared_Font
  *
@@ -238,8 +237,8 @@ class PHPExcel_Shared_Font
 	 * @param 	int		$rotation			Rotation angle
 	 * @return 	int		Column width
 	 */
-	public static function calculateColumnWidth(PHPExcel_Style_Font $font, $cellText = '', $rotation = 0, PHPExcel_Style_Font $defaultFont = null) {
-
+	public static function calculateColumnWidth(PHPExcel_Style_Font $font, $cellText = '', $rotation = 0, PHPExcel_Style_Font $defaultFont = null)
+	{
 		// If it is rich text, use plain text
 		if ($cellText instanceof PHPExcel_RichText) {
 			$cellText = $cellText->getPlainText();
@@ -292,7 +291,8 @@ class PHPExcel_Shared_Font
 	 * @return int
 	 * @throws Exception
 	 */
-	public static function getTextWidthPixelsExact($text, PHPExcel_Style_Font $font, $rotation = 0) {
+	public static function getTextWidthPixelsExact($text, PHPExcel_Style_Font $font, $rotation = 0)
+	{
 		if (!function_exists('imagettfbbox')) {
 			throw new Exception('GD library needs to be enabled');
 		}
@@ -381,7 +381,8 @@ class PHPExcel_Shared_Font
 	 * @param 	int		$fontSizeInPoints	Font size (in points)
 	 * @return 	int		Font size (in pixels)
 	 */
-	public static function fontSizeToPixels($fontSizeInPoints = 11) {
+	public static function fontSizeToPixels($fontSizeInPoints = 11)
+	{
 		return (int) ((4 / 3) * $fontSizeInPoints);
 	}
 
@@ -391,7 +392,8 @@ class PHPExcel_Shared_Font
 	 * @param 	int		$sizeInInch	Font size (in inch)
 	 * @return 	int		Size (in pixels)
 	 */
-	public static function inchSizeToPixels($sizeInInch = 1) {
+	public static function inchSizeToPixels($sizeInInch = 1)
+	{
 		return ($sizeInInch * 96);
 	}
 
@@ -401,7 +403,8 @@ class PHPExcel_Shared_Font
 	 * @param 	int		$sizeInCm	Font size (in centimeters)
 	 * @return 	int		Size (in pixels)
 	 */
-	public static function centimeterSizeToPixels($sizeInCm = 1) {
+	public static function centimeterSizeToPixels($sizeInCm = 1)
+	{
 		return ($sizeInCm * 37.795275591);
 	}
 
@@ -411,7 +414,8 @@ class PHPExcel_Shared_Font
 	 * @param PHPExcel_Style_Font
 	 * @return string Path to TrueType font file
 	 */
-	public static function getTrueTypeFontFileFromFont($font) {
+	public static function getTrueTypeFontFileFromFont($font)
+	{
 		if (!file_exists(self::$trueTypeFontPath) || !is_dir(self::$trueTypeFontPath)) {
 			throw new Exception('Valid directory to TrueType Font files not specified');
 		}

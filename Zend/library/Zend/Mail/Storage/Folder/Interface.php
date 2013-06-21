@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Interface.php 9098 2008-03-30 19:29:10Z thomas $
  */
-
 
 /**
  * @category   Zend
@@ -48,7 +47,6 @@ interface Zend_Mail_Storage_Folder_Interface
      * @throws Zend_Mail_Storage_Exception
      */
     public function selectFolder($globalName);
-
 
     /**
      * get Zend_Mail_Storage_Folder instance for current folder

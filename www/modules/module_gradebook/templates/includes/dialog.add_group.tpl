@@ -14,12 +14,20 @@
 			</select>
 		</div>
 		<div>
-			<label for="min_value">Nota Mínima</label>
+			<label for="min_value">Recuperação</label>
 			<select name="min_value" id="min_value">
 				{section name=waistsizes start=1 loop=101}
     				<option value="{$smarty.section.waistsizes.index}">{$smarty.section.waistsizes.index}</option>
     			{/section}
 			</select>
+			
+			<label for="pass_value">Aprovação</label>
+			<select name="pass_value" id="pass_value">
+				{section name=waistsizes start=1 loop=101}
+    				<option value="{$smarty.section.waistsizes.index}">{$smarty.section.waistsizes.index}</option>
+    			{/section}
+			</select>
+			
 		</div>		
 	</form>
 </div>

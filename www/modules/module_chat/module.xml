@@ -1,9 +1,9 @@
-<?xml version="1.0" ?> 
-<module> 
-    <title>Módulo de Chat</title> 
-    <author>ANdré Kucaniz</author> 
-    <date>2012 05 29</date> 
-    <version>0.1</version> 
-    <description>SysClass Integrated Chat</description> 
-    <className>module_chat</className> 
+<?xml version="1.0" ?>
+<module>
+    <title>Módulo de Chat</title>
+    <author>ANdré Kucaniz</author>
+    <date>2012 05 29</date>
+    <version>0.1</version>
+    <description>SysClass Integrated Chat</description>
+    <className>module_chat</className>
 </module>

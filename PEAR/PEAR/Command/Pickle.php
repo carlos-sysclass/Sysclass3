@@ -87,7 +87,6 @@ generate both package.xml.
         parent::PEAR_Command_Common($ui, $config);
     }
 
-
     /**
      * For unit-testing ease
      *
@@ -99,6 +98,7 @@ generate both package.xml.
             require_once 'PEAR/Packager.php';
         }
         $a = &new PEAR_Packager;
+
         return $a;
     }
 
@@ -122,6 +122,7 @@ generate both package.xml.
         $common = new PEAR_Common;
         $common->ui = $this->ui;
         $a->setLogger($common);
+
         return $a;
     }
 
@@ -142,6 +143,7 @@ generate both package.xml.
         if (isset($options['showname'])) {
             $this->ui->outputData($result, $command);
         }
+
         return true;
     }
 
@@ -306,7 +308,7 @@ generate both package.xml.
         $contents = $pf2->getContents();
         $release = $pf2->getReleases();
         if (isset($releases[0])) {
-            return $this->raiseError('Cannot safely process "' . $packagexml . '" contains ' 
+            return $this->raiseError('Cannot safely process "' . $packagexml . '" contains '
             . 'multiple extsrcrelease/zendextsrcrelease tags.  Using a PEAR_PackageFileManager-based script ' .
             'or the convert command is an option');
         }
@@ -317,7 +319,7 @@ generate both package.xml.
             }
         }
         if (isset($release['filelist']['ignore'])) {
-            return $this->raiseError('Cannot safely process "' . $packagexml . '" contains ' 
+            return $this->raiseError('Cannot safely process "' . $packagexml . '" contains '
             . 'ignore tags.  Using a PEAR_PackageFileManager-based script or the convert' .
             ' command is an option');
         }
@@ -372,5 +374,3 @@ generate both package.xml.
         $gen->toPackageFile('.');
     }
 }
-
-?>

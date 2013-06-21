@@ -11,7 +11,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- * 
+ *
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Transport
@@ -19,7 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Smtp.php 15577 2009-05-14 12:43:34Z matthew $
  */
-
 
 /**
  * @see Zend_Mime
@@ -35,7 +34,6 @@ require_once 'Zend/Mail/Protocol/Smtp.php';
  * @see Zend_Mail_Transport_Abstract
  */
 require_once 'Zend/Mail/Transport/Abstract.php';
-
 
 /**
  * SMTP connection object
@@ -64,14 +62,12 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_host;
 
-
     /**
      * Port number
      *
      * @var integer|null
      */
     protected $_port;
-
 
     /**
      * Local client hostname or i.p.
@@ -80,14 +76,12 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_name = 'localhost';
 
-
     /**
      * Authentication type OPTIONAL
      *
      * @var string
      */
     protected $_auth;
-
 
     /**
      * Config options for authentication
@@ -96,14 +90,12 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      */
     protected $_config;
 
-
     /**
      * Instance of Zend_Mail_Protocol_Smtp
      *
      * @var Zend_Mail_Protocol_Smtp
      */
     protected $_connection;
-
 
     /**
      * Constructor.
@@ -128,7 +120,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
         $this->_config = $config;
     }
 
-
     /**
      * Class destructor to ensure all open connections are closed
      *
@@ -146,7 +137,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
         }
     }
 
-
     /**
      * Sets the connection protocol instance
      *
@@ -158,7 +148,6 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
     {
         $this->_connection = $connection;
     }
-
 
     /**
      * Gets the connection protocol instance

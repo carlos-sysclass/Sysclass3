@@ -304,6 +304,7 @@ class HTML_QuickForm2_MessageProvider_Default implements HTML_QuickForm2_Message
             }
             $message = $message[$key];
         }
+
         return $message;
     }
 
@@ -347,6 +348,7 @@ class HTML_QuickForm2_MessageProvider_Default implements HTML_QuickForm2_Message
         if (empty(self::$instance)) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -364,4 +366,3 @@ class HTML_QuickForm2_MessageProvider_Default implements HTML_QuickForm2_Message
     {
     }
 }
-?>

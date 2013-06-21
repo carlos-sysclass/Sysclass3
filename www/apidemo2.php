@@ -6,7 +6,7 @@
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     $css = $GLOBALS['configuration']['css'];
-    if (strlen($css) > 0 && is_file(G_CUSTOMCSSPATH.$css)){
+    if (strlen($css) > 0 && is_file(G_CUSTOMCSSPATH.$css)) {
         $smarty->assign("T_CUSTOM_CSS", $css);
     }
     $loadScripts = array_merge($loadScripts, array('scriptaculous/prototype','scriptaculous/scriptaculous','scriptaculous/effects','scriptaculous/controls'));
@@ -44,15 +44,13 @@
 
     $smarty -> assign("T_ACTIONS", $actions);
 
-    if (isset($_GET['action'])){
+    if (isset($_GET['action'])) {
         $action = $actions[$_GET['action']];
         $action_id = $_GET['action'];
-    }
-    else if (isset($_POST['action'])){
+    } elseif (isset($_POST['action'])) {
         $action = $actions[$_POST['action']];
         $action_id = $_POST['action'];
-    }
-    else{
+    } else {
         $action = "token";
         $action_id = 0;
     }
@@ -60,12 +58,12 @@
 
     $postTarget = basename($_SERVER['PHP_SELF']);
     $form = new HTML_QuickForm("action_form", "post", $postTarget, "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter    
+    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
     $form -> addElement('select', 'action', _ACTION, $actions, 'class = "inputSelect" id = "action" onchange = "window.location = \''.basename($_SERVER['PHP_SELF']).'?action=\'+this.options[this.selectedIndex].value"'); //Depending on user selection, changing the question type reloads the page with the corresponding form fields
     $form -> addRule('action', _THEFIELD.' '._QUESTIONTYPE.' '._ISMANDATORY, 'required', null, 'client');
     $form -> addRule('action', _INVALIDFIELDDATA, 'callback', 'text');
     $output = "";
-    switch ($action){
+    switch ($action) {
         case 'token':{
             break;
         }
@@ -235,7 +233,7 @@
     if ($form -> isSubmitted()) {
         if ($form -> validate()) {
             $values = $form -> exportValues();
-            switch ($action){
+            switch ($action) {
                 case 'token':{
                     if ($stream = fopen(G_SERVERNAME.'api2.php?action=token', 'r')) {
                         $output = stream_get_contents($stream);
@@ -259,7 +257,7 @@
      $login = $values['login'];
      /*
 
-					 * WARNING: This will not work as expected: It will simply register the user as being login, without actually logging 
+					 * WARNING: This will not work as expected: It will simply register the user as being login, without actually logging
 
 					 * in the browser to the system, due to the inability to set session variables through fopen() (and streams in general).
 
@@ -291,7 +289,7 @@
 
 						<script type = "text/javascript" src = "js/scriptaculous/prototype.php"> </script>
 
-						<script>new Ajax.Request("api2.php?action=magesterlogin&token='.$token.'&login=professor")</script>';					
+						<script>new Ajax.Request("api2.php?action=magesterlogin&token='.$token.'&login=professor")</script>';
 
 					 */
                     break;
@@ -590,4 +588,3 @@
     $form -> accept($renderer);
     $smarty -> assign('T_ACTION_FORM', $renderer -> toArray());
     $smarty -> display('apidemo2.tpl');
-?>

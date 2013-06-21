@@ -4,7 +4,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
-
 $CURRENCYSYMBOLS = array('USD' => '$',
        'EUR' => '&euro;',
        'JPY' => '&yen;',
@@ -63,7 +62,6 @@ $CURRENCYSYMBOLS = array('USD' => '$',
        'PHP' => '&#8369;',
        'VEF' => '&#66;&#115;&#70;',
        '000' => '');
-
 
 $CURRENCYNAMES = array('USD' => 'US Dollars',
        'EUR' => 'Euros',

@@ -25,8 +25,9 @@
 // | Equipe Coordenação Projeto BoletoPhp: <boletophp@boletophp.com.br>   |
 // | Desenvolvimento Boleto Itaú: Glauber Portella		                  |
 // +----------------------------------------------------------------------+
-if (!function_exists('geraCodigoBanco')) { 
-	function geraCodigoBanco($numero) {
+if (!function_exists('geraCodigoBanco')) {
+	function geraCodigoBanco($numero)
+	{
 	    $parte1 = substr($numero, 0, 3);
 	    $parte2 = modulo_11($parte1);
 	    return $parte1 . "-" . $parte2;
@@ -34,8 +35,9 @@ if (!function_exists('geraCodigoBanco')) {
 }
 // FUNÇÕES
 // Algumas foram retiradas do Projeto PhpBoleto e modificadas para atender as particularidades de cada banco
-if (!function_exists('digitoVerificador_barra')) { 
-	function digitoVerificador_barra($numero) {
+if (!function_exists('digitoVerificador_barra')) {
+	function digitoVerificador_barra($numero)
+	{
 		$resto2 = modulo_11($numero, 9, 1);
 		$digito = 11 - $resto2;
 	     if ($digito == 0 || $digito == 1 || $digito == 10  || $digito == 11) {
@@ -46,12 +48,13 @@ if (!function_exists('digitoVerificador_barra')) {
 		 return $dv;
 	}
 }
-if (!function_exists('formata_numero')) { 
-	
-	function formata_numero($numero,$loop,$insert,$tipo = "geral") {
+if (!function_exists('formata_numero')) {
+
+	function formata_numero($numero,$loop,$insert,$tipo = "geral")
+	{
 		if ($tipo == "geral") {
 			$numero = str_replace(",","",$numero);
-			while(strlen($numero)<$loop){
+			while (strlen($numero)<$loop) {
 				$numero = $insert . $numero;
 			}
 		}
@@ -62,26 +65,26 @@ if (!function_exists('formata_numero')) {
 			preenche com zeros
 			*/
 			$numero = str_replace(",","",$numero);
-			while(strlen($numero)<$loop){
+			while (strlen($numero)<$loop) {
 				$numero = $insert . $numero;
 			}
 		}
 		if ($tipo == "convenio") {
-			while(strlen($numero)<$loop){
+			while (strlen($numero)<$loop) {
 				$numero = $numero . $insert;
 			}
 		}
 		return $numero;
 	}
 }
-if (!function_exists('fbarcode')) { 
+if (!function_exists('fbarcode')) {
 
-	function fbarcode($valor, $payment_module){
-	
+	function fbarcode($valor, $payment_module)
+	{
 	$fino = 1 ;
 	$largo = 3 ;
 	$altura = 50 ;
-	
+
 	  $barcodes[0] = "00110" ;
 	  $barcodes[1] = "10001" ;
 	  $barcodes[2] = "01001" ;
@@ -92,80 +95,81 @@ if (!function_exists('fbarcode')) {
 	  $barcodes[7] = "00011" ;
 	  $barcodes[8] = "10010" ;
 	  $barcodes[9] = "01010" ;
-	  for($f1=9;$f1>=0;$f1--){ 
-	    for($f2=9;$f2>=0;$f2--){  
+	  for ($f1=9;$f1>=0;$f1--) {
+	    for ($f2=9;$f2>=0;$f2--) {
 	      $f = ($f1 * 10) + $f2 ;
 	      $texto = "" ;
-	      for($i=1;$i<6;$i++){ 
+	      for ($i=1;$i<6;$i++) {
 	        $texto .=  substr($barcodes[$f1],($i-1),1) . substr($barcodes[$f2],($i-1),1);
 	      }
 	      $barcodes[$f] = $texto;
 	    }
 	  }
-	
-	
+
 	//Desenho da barra
-	
-	
+
 	//Guarda inicial
-	?><img src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img 
-	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img 
-	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img 
-	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img 
+	?><img src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img
+	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img
+	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img
+	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img
 	<?php
 	$texto = $valor ;
-	if((strlen($texto) % 2) <> 0){
+	if ((strlen($texto) % 2) <> 0) {
 		$texto = "0" . $texto;
 	}
-	
+
 	// Draw dos dados
 	while (strlen($texto) > 0) {
 	  $i = round(esquerda($texto,2));
 	  $texto = direita($texto,strlen($texto)-2);
 	  $f = $barcodes[$i];
-	  for($i=1;$i<11;$i+=2){
+	  for ($i=1;$i<11;$i+=2) {
 	    if (substr($f,($i-1),1) == "0") {
 	      $f1 = $fino ;
-	    }else{
+	    } else {
 	      $f1 = $largo ;
 	    }
 	?>
-	    src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $f1?> height=<?php echo $altura?> border=0><img 
+	    src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $f1?> height=<?php echo $altura?> border=0><img
 	<?php
 	    if (substr($f,$i,1) == "0") {
 	      $f2 = $fino ;
-	    }else{
+	    } else {
 	      $f2 = $largo ;
 	    }
 	?>
-	    src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $f2?> height=<?php echo $altura?> border=0><img 
+	    src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $f2?> height=<?php echo $altura?> border=0><img
 	<?php
 	  }
 	}
-	
+
 	// Draw guarda final
 	?>
-	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $largo?> height=<?php echo $altura?> border=0><img 
-	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img 
-	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo 1?> height=<?php echo $altura?> border=0> 
+	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo $largo?> height=<?php echo $altura?> border=0><img
+	src=<?php echo $payment_module->moduleBaseLink . "images/b.png"; ?> width=<?php echo $fino?> height=<?php echo $altura?> border=0><img
+	src=<?php echo $payment_module->moduleBaseLink . "images/p.png"; ?> width=<?php echo 1?> height=<?php echo $altura?> border=0>
 	  <?php
 	} //Fim da função
 }
-if (!function_exists('esquerda')) { 
-	
-	function esquerda($entra,$comp){
+if (!function_exists('esquerda')) {
+
+	function esquerda($entra,$comp)
+	{
 		return substr($entra,0,$comp);
 	}
 }
-if (!function_exists('direita')) { 
-	
-	function direita($entra,$comp){
+if (!function_exists('direita')) {
+
+	function direita($entra,$comp)
+	{
 		return substr($entra,strlen($entra)-$comp,$comp);
 	}
 }
-if (!function_exists('fator_vencimento')) { 
-	
-	function fator_vencimento($data) {
+if (!function_exists('fator_vencimento')) {
+
+	function fator_vencimento($data)
+	{
 		$data = explode("/",$data);
 		$ano = $data[2];
 		$mes = $data[1];
@@ -173,9 +177,10 @@ if (!function_exists('fator_vencimento')) {
 	    return(abs((_dateToDays("1997","10","07")) - (_dateToDays($ano, $mes, $dia))));
 	}
 }
-if (!function_exists('_dateToDays')) { 
-	
-	function _dateToDays($year,$month,$day) {
+if (!function_exists('_dateToDays')) {
+
+	function _dateToDays($year,$month,$day)
+	{
 	    $century = substr($year, 0, 2);
 	    $year = substr($year, 2, 2);
 	    if ($month > 2) {
@@ -195,9 +200,10 @@ if (!function_exists('_dateToDays')) {
 	                $day +  1721119);
 	}
 }
-if (!function_exists('itau_modulo10')) { 
-	
-	function itau_modulo10($num) {
+if (!function_exists('itau_modulo10')) {
+
+	function itau_modulo10($num)
+	{
 		return modulo_10($num);
 		$fator = 2;
 		$total = 0;
@@ -217,21 +223,22 @@ if (!function_exists('itau_modulo10')) {
 	    return $digito;
 	}
 }
-if (!function_exists('modulo_10')) { 
-	
-	function modulo_10($num) {
+if (!function_exists('modulo_10')) {
+
+	function modulo_10($num)
+	{
 			$numtotal10 = 0;
 	        $fator = 2;
-	
+
 	        // Separacao dos numeros
 	        for ($i = strlen($num); $i > 0; $i--) {
 	            // pega cada numero isoladamente
 	            $numeros[$i] = substr($num,$i-1,1);
 	            // Efetua multiplicacao do numero pelo (falor 10)
 	            // 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Itaú
-	            $temp = $numeros[$i] * $fator; 
+	            $temp = $numeros[$i] * $fator;
 	            $temp0=0;
-	            foreach (preg_split('//',$temp,-1,PREG_SPLIT_NO_EMPTY) as $k=>$v){ $temp0+=$v; }
+	            foreach (preg_split('//',$temp,-1,PREG_SPLIT_NO_EMPTY) as $k=>$v) { $temp0+=$v; }
 	            $parcial10[$i] = $temp0; //$numeros[$i] * $fator;
 	            // monta sequencia para soma dos digitos no (modulo 10)
 	            $numtotal10 += $parcial10[$i];
@@ -241,7 +248,7 @@ if (!function_exists('modulo_10')) {
 	                $fator = 2; // intercala fator de multiplicacao (modulo 10)
 	            }
 	        }
-			
+
 	        // várias linhas removidas, vide função original
 	        // Calculo do modulo 10
 	        $resto = $numtotal10 % 10;
@@ -249,22 +256,23 @@ if (!function_exists('modulo_10')) {
 	        if ($resto == 0) {
 	            $digito = 0;
 	        }
-			
+
 	        return $digito;
-			
+
 	}
 }
-if (!function_exists('modulo_11')) { 
-	
-	function modulo_11($num, $base=9, $r=0)  {
+if (!function_exists('modulo_11')) {
+
+	function modulo_11($num, $base=9, $r=0)
+	{
 	    /**
 	     *   Autor:
 	     *           Pablo Costa <pablo@users.sourceforge.net>
 	     *
 	     *   Função:
-	     *    Calculo do Modulo 11 para geracao do digito verificador 
-	     *    de boletos bancarios conforme documentos obtidos 
-	     *    da Febraban - www.febraban.org.br 
+	     *    Calculo do Modulo 11 para geracao do digito verificador
+	     *    de boletos bancarios conforme documentos obtidos
+	     *    da Febraban - www.febraban.org.br
 	     *
 	     *   Entrada:
 	     *     $num: string numérica para a qual se deseja calcularo digito verificador;
@@ -277,11 +285,11 @@ if (!function_exists('modulo_11')) {
 	     *   Observações:
 	     *     - Script desenvolvido sem nenhum reaproveitamento de código pré existente.
 	     *     - Assume-se que a verificação do formato das variáveis de entrada é feita antes da execução deste script.
-	     */                                        
-	
+	     */
+
 	    $soma = 0;
 	    $fator = 2;
-	
+
 	    /* Separacao dos numeros */
 	    for ($i = strlen($num); $i > 0; $i--) {
 	        // pega cada numero isoladamente
@@ -291,12 +299,12 @@ if (!function_exists('modulo_11')) {
 	        // Soma dos digitos
 	        $soma += $parcial[$i];
 	        if ($fator == $base) {
-	            // restaura fator de multiplicacao para 2 
+	            // restaura fator de multiplicacao para 2
 	            $fator = 1;
 	        }
 	        $fator++;
 	    }
-	
+
 	    /* Calculo do modulo 11 */
 	    if ($r == 0) {
 	        $soma *= 10;
@@ -305,16 +313,17 @@ if (!function_exists('modulo_11')) {
 	            $digito = 0;
 	        }
 	        return $digito;
-	    } elseif ($r == 1){
+	    } elseif ($r == 1) {
 	        $resto = $soma % 11;
 	        return $resto;
 	    }
 	}
 }
-if (!function_exists('monta_linha_digitavel')) { 
-	
+if (!function_exists('monta_linha_digitavel')) {
+
 	// Alterada por Glauber Portella para especificação do Itaú
-	function monta_linha_digitavel($codigo) {
+	function monta_linha_digitavel($codigo)
+	{
 			// campo 1
 	        $banco    = substr($codigo,0,3);
 	        $moeda    = substr($codigo,3,1);
@@ -336,19 +345,16 @@ if (!function_exists('monta_linha_digitavel')) {
 			// campo 5
 	        $fator    = substr($codigo,5,4);
 	        $valor    = substr($codigo,9,10);
-	        
-	        
+
 	        $campo1 = substr($banco.$moeda.$ccc.$ddnnum.$dv1,0,5) . '.' . substr($banco.$moeda.$ccc.$ddnnum.$dv1,5,5);
 	        $campo2 = substr($resnnum.$dac1.$dddag.$dv2,0,5) . '.' . substr($resnnum.$dac1.$dddag.$dv2,5,6);
 	        $campo3 = substr($resag.$contadac.$zeros.$dv3,0,5) . '.' . substr($resag.$contadac.$zeros.$dv3,5,6);
 	        $campo4 = $dv4;
 	        $campo5 = $fator.$valor;
-			
-	        return "$campo1 $campo2 $campo3 $campo4 $campo5"; 
+
+	        return "$campo1 $campo2 $campo3 $campo4 $campo5";
 	}
 }
-
-
 
 $codigobanco = "341";
 $codigo_banco_com_dv = geraCodigoBanco($codigobanco);
@@ -410,8 +416,6 @@ $dadosboleto["agencia_codigo"] = $agencia_codigo ;
 $dadosboleto["nosso_numero"] = $nossonumero;
 $dadosboleto["codigo_banco_com_dv"] = $codigo_banco_com_dv;
 
-
-	
 $dadosboleto['demonstrativo1'] = '';
 $dadosboleto['demonstrativo2'] = '';
 $dadosboleto['demonstrativo3'] = '';
@@ -420,5 +424,3 @@ $dadosboleto['instrucoes1'] = '';
 $dadosboleto['instrucoes2'] = '';
 $dadosboleto['instrucoes3'] = '';
 $dadosboleto['instrucoes4'] = '';
-
-?>

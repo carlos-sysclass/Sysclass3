@@ -5,24 +5,28 @@ define("_LINKS_CLICK", "Clique");
 define("_LINKS_HERE", "aqui");
 define("_LINKS_TOSHOW", "para visualizar.");
 
-class module_links extends MagesterExtendedModule {
-
+class module_links extends MagesterExtendedModule
+{
     // Mandatory functions required for module function
-    public function getName() {
+    public function getName()
+    {
         return "LINKS";
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("professor", "student");
     }
 
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
       return true;
     }
 
     // Optional functions
     // What should happen on installing the module
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_links");
         eF_executeNew("CREATE TABLE module_links (
                           id int(11) NOT NULL auto_increment,
@@ -32,38 +36,48 @@ class module_links extends MagesterExtendedModule {
                           description text,
                           PRIMARY KEY  (id)
                         ) DEFAULT CHARSET=utf8;");
+
         return true;
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         eF_executeNew("DROP TABLE module_links;");
+
         return true;
     }
 
     // On deleting a lesson
-    public function onDeleteLesson($lessonId) {
+    public function onDeleteLesson($lessonId)
+    {
         eF_deleteTableData("module_links", "lessons_ID=".$lessonId);
+
         return true;
     }
 
     // On exporting a lesson
-    public function onExportLesson($lessonId) {
+    public function onExportLesson($lessonId)
+    {
         $data = eF_getTableData("module_links", "*", "lessons_ID = ".$lessonId);
+
         return $data;
     }
 
     // On importing a lesson
-    public function onImportLesson($lessonId, $data) {
+    public function onImportLesson($lessonId, $data)
+    {
         foreach ($data as $record) {
             unset($record['id']);
             $record['lessons_ID'] = $lessonId;
             eF_insertTableData("module_links",$record);
         }
+
         return true;
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() == "professor") {
             return array('title' => _LINKS,
@@ -72,8 +86,8 @@ class module_links extends MagesterExtendedModule {
         }
     }
 
-
-    public function getSidebarLinkInfo() {
+    public function getSidebarLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() == "professor") {
 
@@ -84,7 +98,7 @@ class module_links extends MagesterExtendedModule {
                                                   'link'  => $this -> moduleBaseUrl));
 
             return array ( "current_lesson" => $link_of_menu_clesson);
-        } else if ($currentUser -> getType() == "student"){
+        } elseif ($currentUser -> getType() == "student") {
             $link_of_menu_clesson = array (array ('title' => _LINKS,
                                                  'image' => $this -> moduleBaseDir . 'images/link16',
                                                  '_magesterExtensions' => '1',
@@ -94,16 +108,19 @@ class module_links extends MagesterExtendedModule {
         }
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         $currentUser = $this -> getCurrentUser();
 		$currentLesson = $this -> getCurrentLesson();
+
         return array (	array ('title' => _MYLESSONS, 'onclick'  => "location='".$currentUser -> getRole($currentLesson).".php?ctg=lessons';top.sideframe.hideAllLessonSpecific();"),
 						array ('title' => $currentLesson -> lesson['name'], 'link'  => $currentUser -> getType() . ".php?ctg=control_panel"),
 						array ('title' => _LINKS, 'link'  => $this -> moduleBaseUrl));
     }
 
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
+    public function getModule()
+    {
         $currentLesson = $this -> getEditedLesson();
 
         $smarty = $this -> getSmartyVar();
@@ -113,21 +130,21 @@ class module_links extends MagesterExtendedModule {
             eF_deleteTableData("module_links", "id=".$_GET['delete_link']);
             $this -> setMessageVar(_LINKS_SUCCESFULLYDELETEDLINK, 'success');
             eF_redirect("". $this -> moduleBaseUrl ."&message=$message&message_type=$message_type");
-        } else if (isset($_GET['add_link']) || (isset($_GET['edit_link']) && eF_checkParameter($_GET['edit_link'], 'id'))) {
+        } elseif (isset($_GET['add_link']) || (isset($_GET['edit_link']) && eF_checkParameter($_GET['edit_link'], 'id'))) {
             $form = new HTML_QuickForm("link_entry_form", "POST", $_SERVER['REQUEST_URI'], "");
             $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
             $form -> addElement('text', 'display', null);
             $form -> addElement('text', 'link', null);
             $form -> addElement('textarea', 'description', null);
             $form -> addElement('submit', 'submit_link', _SUBMIT, 'class = "flatButton"');
-            
+
             $element = & $form->getElement('display');
             $element->setSize(50);
             $element = & $form->getElement('link');
             $element->setSize(50);
             $element = & $form->getElement('description');
             $element->setCols(50);
-        
+
             if (isset($_GET['edit_link'])) {
                 $link_entry = eF_getTableData("module_links", "*", "id=".$_GET['edit_link']);
                 $form -> setDefaults(array('display' => $link_entry[0]['display'],
@@ -136,7 +153,7 @@ class module_links extends MagesterExtendedModule {
             } else {
 				 $form -> setDefaults(array('link'   => "http://"));
 			}
-        
+
             if ($form -> isSubmitted() && $form -> validate()) {
                 $fields = array('lessons_ID' => $_SESSION['s_lessons_ID'],
                                 'display'   => $form -> exportValue('display'),
@@ -170,27 +187,30 @@ class module_links extends MagesterExtendedModule {
         } else {
             $links = eF_getTableDataFlat("module_links", "*", "lessons_ID = ".$this->getEditedLesson()->lesson['id']);
             $smarty -> assign("T_LINKS", $links);
-            
+
             if ($_GET['output'] == 'innerhtml') {
 				$result = $smarty -> fetch($this -> moduleBaseDir . "module.tpl");
 				echo $result;
 				exit;
         	}
         }
+
         return true;
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_LINKS_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_LINKS_BASEURL", $this -> moduleBaseUrl);
 		$smarty -> assign("T_LINKS_BASELINK" , $this -> moduleBaseLink);
 
-		return $this -> moduleBaseDir . "module.tpl";	
+		return $this -> moduleBaseDir . "module.tpl";
     }
-    
+
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getCourseDashboardLinkInfo() {
+    public function getCourseDashboardLinkInfo()
+    {
 		$currentUser = $this -> getCurrentUser();
         if ($currentUser -> getType() == "student") {
             return array(
@@ -199,18 +219,20 @@ class module_links extends MagesterExtendedModule {
                 'link'  => $this -> moduleBaseUrl
             );
         }
+
         return true;
     }
 
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
 
         $links = eF_getTableData("module_links", "*", "lessons_ID=".$currentLesson -> lesson['id']);
         $inner_table_options = array(
         	array(
-        		'text' => _LINKS_GOTOLINKSPAGE,  
+        		'text' => _LINKS_GOTOLINKSPAGE,
          		'image'	=> '16x16/go_into.png',
          		'href' => $this -> moduleBaseUrl
          	)
@@ -222,18 +244,17 @@ class module_links extends MagesterExtendedModule {
 
         $smarty -> assign ("T_LINKSCOUNTMESSAGE", sprintf(_LINKS_XFOUNDRESULTS, count($links)));
         $smarty -> assign ("T_LINKS_MAX_LINKS", 10);
-        
+
         return true;
     }
 
-
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_LINKS_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_LINKS_BASEURL" , $this -> moduleBaseUrl);
 		$smarty -> assign("T_LINKS_BASELINK" , $this -> moduleBaseLink);
-		
+
        	return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
 }
-?>

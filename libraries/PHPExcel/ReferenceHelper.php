@@ -25,7 +25,6 @@
  * @version	1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_ReferenceHelper (Singleton)
  *
@@ -54,7 +53,8 @@ class PHPExcel_ReferenceHelper
 	 *
 	 * @return PHPExcel_ReferenceHelper
 	 */
-	public static function getInstance() {
+	public static function getInstance()
+	{
 		if (!isset(self::$_instance) || (self::$_instance === NULL)) {
 			self::$_instance = new PHPExcel_ReferenceHelper();
 		}
@@ -65,7 +65,8 @@ class PHPExcel_ReferenceHelper
 	/**
 	 * Create a new PHPExcel_ReferenceHelper
 	 */
-	protected function __construct() {
+	protected function __construct()
+	{
 	}
 
 	/**
@@ -76,14 +77,14 @@ class PHPExcel_ReferenceHelper
 	 * @param	int	$pNumRows	Number of rows to insert
 	 * @throws	Exception
 	 */
-	public function insertNewBefore($pBefore = 'A1', $pNumCols = 0, $pNumRows = 0, PHPExcel_Worksheet $pSheet = null) {
+	public function insertNewBefore($pBefore = 'A1', $pNumCols = 0, $pNumRows = 0, PHPExcel_Worksheet $pSheet = null)
+	{
 		$aCellCollection = $pSheet->getCellCollection();
 
 		// Get coordinates of $pBefore
 		$beforeColumn	= 'A';
 		$beforeRow		= 1;
 		list($beforeColumn, $beforeRow) = PHPExcel_Cell::coordinateFromString( $pBefore );
-
 
 		// Clear cells if we are removing columns or rows
 		$highestColumn	= $pSheet->getHighestColumn();
@@ -116,7 +117,6 @@ class PHPExcel_ReferenceHelper
 				}
 			}
 		}
-
 
 		// Loop through cells, bottom-up, and change cell coordinates
 		while (($cellID = ($pNumCols < 0 || $pNumRows < 0) ? array_shift($aCellCollection) : array_pop($aCellCollection))) {
@@ -364,11 +364,12 @@ class PHPExcel_ReferenceHelper
 	 * @return	string	Updated formula
 	 * @throws	Exception
 	 */
-	public function updateFormulaReferences($pFormula = '', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0, $sheetName = '') {
+	public function updateFormulaReferences($pFormula = '', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0, $sheetName = '')
+	{
 		//	Update cell references in the formula
 		$formulaBlocks = explode('"',$pFormula);
 		$i = false;
-		foreach($formulaBlocks as &$formulaBlock) {
+		foreach ($formulaBlocks as &$formulaBlock) {
 			//	Ignore blocks that were enclosed in quotes (alternating entries in the $formulaBlocks array after the explode)
 			if ($i = !$i) {
 				$adjustCount = 0;
@@ -376,7 +377,7 @@ class PHPExcel_ReferenceHelper
 				//	Search for row ranges (e.g. 'Sheet1'!3:5 or 3:5) with or without $ absolutes (e.g. $3:5)
 				$matchCount = preg_match_all('/'.self::REFHELPER_REGEXP_ROWRANGE.'/i', ' '.$formulaBlock.' ', $matches, PREG_SET_ORDER);
 				if ($matchCount > 0) {
-					foreach($matches as $match) {
+					foreach ($matches as $match) {
 						$fromString = ($match[2] > '') ? $match[2].'!' : '';
 						$fromString .= $match[3].':'.$match[4];
 						$modified3 = substr($this->updateCellReference('$A'.$match[3],$pBefore,$pNumCols,$pNumRows),2);
@@ -401,7 +402,7 @@ class PHPExcel_ReferenceHelper
 				//	Search for column ranges (e.g. 'Sheet1'!C:E or C:E) with or without $ absolutes (e.g. $C:E)
 				$matchCount = preg_match_all('/'.self::REFHELPER_REGEXP_COLRANGE.'/i', ' '.$formulaBlock.' ', $matches, PREG_SET_ORDER);
 				if ($matchCount > 0) {
-					foreach($matches as $match) {
+					foreach ($matches as $match) {
 						$fromString = ($match[2] > '') ? $match[2].'!' : '';
 						$fromString .= $match[3].':'.$match[4];
 						$modified3 = substr($this->updateCellReference($match[3].'$1',$pBefore,$pNumCols,$pNumRows),0,-2);
@@ -426,7 +427,7 @@ class PHPExcel_ReferenceHelper
 				//	Search for cell ranges (e.g. 'Sheet1'!A3:C5 or A3:C5) with or without $ absolutes (e.g. $A1:C$5)
 				$matchCount = preg_match_all('/'.self::REFHELPER_REGEXP_CELLRANGE.'/i', ' '.$formulaBlock.' ', $matches, PREG_SET_ORDER);
 				if ($matchCount > 0) {
-					foreach($matches as $match) {
+					foreach ($matches as $match) {
 						$fromString = ($match[2] > '') ? $match[2].'!' : '';
 						$fromString .= $match[3].':'.$match[4];
 						$modified3 = $this->updateCellReference($match[3],$pBefore,$pNumCols,$pNumRows);
@@ -452,7 +453,7 @@ class PHPExcel_ReferenceHelper
 				//	Search for cell references (e.g. 'Sheet1'!A3 or C5) with or without $ absolutes (e.g. $A1 or C$5)
 				$matchCount = preg_match_all('/'.self::REFHELPER_REGEXP_CELLREF.'/i', ' '.$formulaBlock.' ', $matches, PREG_SET_ORDER);
 				if ($matchCount > 0) {
-					foreach($matches as $match) {
+					foreach ($matches as $match) {
 						$fromString = ($match[2] > '') ? $match[2].'!' : '';
 						$fromString .= $match[3];
 						$modified3 = $this->updateCellReference($match[3],$pBefore,$pNumCols,$pNumRows);
@@ -498,7 +499,8 @@ class PHPExcel_ReferenceHelper
 	 * @return	string	Updated cell range
 	 * @throws	Exception
 	 */
-	public function updateCellReference($pCellRange = 'A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0) {
+	public function updateCellReference($pCellRange = 'A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0)
+	{
 		// Is it in another worksheet? Will not have to update anything.
 		if (strpos($pCellRange, "!") !== false) {
 			return $pCellRange;
@@ -522,7 +524,8 @@ class PHPExcel_ReferenceHelper
 	 * @param string $oldName		Old name (name to replace)
 	 * @param string $newName		New name
 	 */
-	public function updateNamedFormulas(PHPExcel $pPhpExcel, $oldName = '', $newName = '') {
+	public function updateNamedFormulas(PHPExcel $pPhpExcel, $oldName = '', $newName = '')
+	{
 		if ($oldName == '') {
 			return;
 		}
@@ -552,7 +555,8 @@ class PHPExcel_ReferenceHelper
 	 * @return	string	Updated cell range
 	 * @throws	Exception
 	 */
-	private function _updateCellRange($pCellRange = 'A1:A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0) {
+	private function _updateCellRange($pCellRange = 'A1:A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0)
+	{
 		if (strpos($pCellRange,':') !== false || strpos($pCellRange, ',') !== false) {
 			// Update range
 			$range = PHPExcel_Cell::splitRange($pCellRange);
@@ -563,7 +567,7 @@ class PHPExcel_ReferenceHelper
 					if (ctype_alpha($range[$i][$j])) {
 						$r = PHPExcel_Cell::coordinateFromString($this->_updateSingleCellReference($range[$i][$j].'1', $pBefore, $pNumCols, $pNumRows));
 						$range[$i][$j] = $r[0];
-					} elseif(ctype_digit($range[$i][$j])) {
+					} elseif (ctype_digit($range[$i][$j])) {
 						$r = PHPExcel_Cell::coordinateFromString($this->_updateSingleCellReference('A'.$range[$i][$j], $pBefore, $pNumCols, $pNumRows));
 						$range[$i][$j] = $r[1];
 					} else {
@@ -589,7 +593,8 @@ class PHPExcel_ReferenceHelper
 	 * @return	string	Updated cell reference
 	 * @throws	Exception
 	 */
-	private function _updateSingleCellReference($pCellReference = 'A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0) {
+	private function _updateSingleCellReference($pCellReference = 'A1', $pBefore = 'A1', $pNumCols = 0, $pNumRows = 0)
+	{
 		if (strpos($pCellReference, ':') === false && strpos($pCellReference, ',') === false) {
 			// Get coordinates of $pBefore
 			list($beforeColumn, $beforeRow) = PHPExcel_Cell::coordinateFromString( $pBefore );
@@ -626,7 +631,8 @@ class PHPExcel_ReferenceHelper
 	 *
 	 * @throws	Exception
 	 */
-	public final function __clone() {
+	public final function __clone()
+	{
 		throw new Exception("Cloning a Singleton is not allowed!");
 	}
 }

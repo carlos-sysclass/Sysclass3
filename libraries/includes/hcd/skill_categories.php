@@ -4,9 +4,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-try{
+try {
  /* Check permissions: only admins have add/edit privileges. supervisors may only see skills */
- if($currentUser -> getType() != 'administrator') {
+ if ($currentUser -> getType() != 'administrator') {
   $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
   $message_type = 'failure';
   eF_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
@@ -30,7 +30,7 @@ try{
 		 ON INSERTING OR EDITING A SKILL CATEGORY
 
 		 **************************************************** */
- } else if (isset($_GET['add_skill_cat']) || isset($_GET['edit_skill_cat'])) {
+ } elseif (isset($_GET['add_skill_cat']) || isset($_GET['edit_skill_cat'])) {
   if (isset($_GET['add_skill_cat'])) {
    $form = new HTML_QuickForm("skill_cat_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=skill_cat&add_skill_cat=1", "",null, true);
   } else {

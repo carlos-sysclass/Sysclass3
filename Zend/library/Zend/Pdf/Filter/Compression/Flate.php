@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Filter_Compression */
 require_once 'Zend/Pdf/Filter/Compression.php';
-
 
 /**
  * Flate stream filter

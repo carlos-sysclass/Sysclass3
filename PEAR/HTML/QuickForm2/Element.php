@@ -61,8 +61,9 @@ abstract class HTML_QuickForm2_Element extends HTML_QuickForm2_Node
 {
     public function setName($name)
     {
-        $this->attributes['name'] = (string)$name;
+        $this->attributes['name'] = (string) $name;
         $this->updateValue();
+
         return $this;
     }
 
@@ -79,6 +80,7 @@ abstract class HTML_QuickForm2_Element extends HTML_QuickForm2_Node
         if (!$this->persistent || null === ($value = $this->getValue())) {
             return '';
         }
+
         return '<input type="hidden"' . self::getAttributesString(array(
             'name'  => $this->getName(),
             'value' => $value,
@@ -98,6 +100,7 @@ abstract class HTML_QuickForm2_Element extends HTML_QuickForm2_Node
         foreach ($this->getDataSources() as $ds) {
             if (null !== ($value = $ds->getValue($name))) {
                 $this->setValue($value);
+
                 return;
             }
         }
@@ -113,6 +116,7 @@ abstract class HTML_QuickForm2_Element extends HTML_QuickForm2_Node
     {
         $renderer->renderElement($this);
         $this->renderClientRules($renderer->getJavascriptBuilder());
+
         return $renderer;
     }
 
@@ -154,7 +158,7 @@ abstract class HTML_QuickForm2_Element extends HTML_QuickForm2_Node
                 self::applyFilter($value, null, $filter);
             }
         }
+
         return parent::applyFilters($value);
     }
 }
-?>

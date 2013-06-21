@@ -24,4 +24,3 @@ define("_RSS_FEEDMODE", "Feed mode");
 define("_RSS_PROVIDEDFEEDS", "Provided feeds");
 define("_RSS_RSSCLIENT", "RSS client");
 define("_FEEDALREADYEXISTS", "This feed already exists");
-?>

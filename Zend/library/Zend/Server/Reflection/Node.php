@@ -79,6 +79,7 @@ class Zend_Server_Reflection_Node
 
         if ($new) {
             $node->attachChild($this);
+
             return;
         }
     }

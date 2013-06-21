@@ -19,7 +19,7 @@
  *
  * For questions, help, comments, discussion, etc., please join the
  * Smarty mailing list. Send a blank e-mail to
- * smarty-discussion-subscribe@googlegroups.com 
+ * smarty-discussion-subscribe@googlegroups.com
  *
  * @link http://www.smarty.net/
  * @version 2.6.26
@@ -35,7 +35,8 @@
  * Config file reading class
  * @package Smarty
  */
-class Config_File {
+class Config_File
+{
     /**#@+
      * Options
      * @var boolean
@@ -79,7 +80,6 @@ class Config_File {
             $this->set_path($config_path);
     }
 
-
     /**
      * Set the path where configuration files can be found.
      *
@@ -90,16 +90,16 @@ class Config_File {
         if (!empty($config_path)) {
             if (!is_string($config_path) || !file_exists($config_path) || !is_dir($config_path)) {
                 $this->_trigger_error_msg("Bad config file path '$config_path'");
+
                 return;
             }
-            if(substr($config_path, -1) != DIRECTORY_SEPARATOR) {
+            if (substr($config_path, -1) != DIRECTORY_SEPARATOR) {
                 $config_path .= DIRECTORY_SEPARATOR;
             }
 
             $this->_config_path = $config_path;
         }
     }
-
 
     /**
      * Retrieves config info based on the file, section, and variable name.
@@ -113,6 +113,7 @@ class Config_File {
     {
         if (empty($file_name)) {
             $this->_trigger_error_msg('Empty config file name');
+
             return;
         } else {
             $file_name = $this->_config_path . $file_name;
@@ -125,22 +126,23 @@ class Config_File {
                 return $this->_config_data[$file_name]["vars"][$var_name];
             } else {
                 if(isset($this->_config_data[$file_name]["sections"][$section_name]["vars"][$var_name]))
+
                     return $this->_config_data[$file_name]["sections"][$section_name]["vars"][$var_name];
                 else
                     return array();
             }
         } else {
             if (empty($section_name)) {
-                return (array)$this->_config_data[$file_name]["vars"];
+                return (array) $this->_config_data[$file_name]["vars"];
             } else {
                 if(isset($this->_config_data[$file_name]["sections"][$section_name]["vars"]))
-                    return (array)$this->_config_data[$file_name]["sections"][$section_name]["vars"];
+
+                    return (array) $this->_config_data[$file_name]["sections"][$section_name]["vars"];
                 else
                     return array();
             }
         }
     }
-
 
     /**
      * Retrieves config info based on the key.
@@ -153,6 +155,7 @@ class Config_File {
     {
         list($file_name, $section_name, $var_name) = explode('/', $config_key, 3);
         $result = &$this->get($file_name, $section_name, $var_name);
+
         return $result;
     }
 
@@ -166,7 +169,6 @@ class Config_File {
         return array_keys($this->_config_data);
     }
 
-
     /**
      * Get all section names from a loaded file.
      *
@@ -178,12 +180,12 @@ class Config_File {
         $file_name = $this->_config_path . $file_name;
         if (!isset($this->_config_data[$file_name])) {
             $this->_trigger_error_msg("Unknown config file '$file_name'");
+
             return;
         }
 
         return array_keys($this->_config_data[$file_name]["sections"]);
     }
-
 
     /**
      * Get all global or section variable names.
@@ -196,9 +198,11 @@ class Config_File {
     {
         if (empty($file_name)) {
             $this->_trigger_error_msg('Empty config file name');
+
             return;
-        } else if (!isset($this->_config_data[$file_name])) {
+        } elseif (!isset($this->_config_data[$file_name])) {
             $this->_trigger_error_msg("Unknown config file '$file_name'");
+
             return;
         }
 
@@ -207,7 +211,6 @@ class Config_File {
         else
             return array_keys($this->_config_data[$file_name]["sections"][$section]["vars"]);
     }
-
 
     /**
      * Clear loaded config data for a certain file or all files.
@@ -221,7 +224,6 @@ class Config_File {
         else if (isset($this->_config_data[$file_name]))
             $this->_config_data[$file_name] = array();
     }
-
 
     /**
      * Load a configuration file manually.
@@ -241,6 +243,7 @@ class Config_File {
         $fp = @fopen($config_file, "r");
         if (!is_resource($fp)) {
             $this->_trigger_error_msg("Could not open config file '$config_file'");
+
             return false;
         }
 
@@ -248,6 +251,7 @@ class Config_File {
         fclose($fp);
 
         $this->_config_data[$config_file] = $this->parse_contents($contents);
+
         return true;
     }
 
@@ -260,6 +264,7 @@ class Config_File {
     function set_file_contents($config_file, $contents)
     {
         $this->_config_data[$config_file] = $this->parse_contents($contents);
+
         return true;
     }
 
@@ -270,7 +275,7 @@ class Config_File {
      */
     function parse_contents($contents)
     {
-        if($this->fix_newlines) {
+        if ($this->fix_newlines) {
             // fix mac/dos formatted newlines
             $contents = preg_replace('!\r\n?!', "\n", $contents);
         }
@@ -301,7 +306,7 @@ class Config_File {
                         $vars = array();
                         continue;
                     }
-                } else {                    
+                } else {
                     $section_name = $match[1];
                 }
                 if (!isset($config_data['sections'][$section_name]))
@@ -338,6 +343,7 @@ class Config_File {
             }
             /* else unparsable line / means it is a comment / means ignore it */
         }
+
         return $config_data;
     }
 
@@ -360,6 +366,7 @@ class Config_File {
 
         if (!preg_match("/^[a-zA-Z_]\w*$/", $var_name)) {
             $this->_trigger_error_msg("Bad variable name '$var_name'");
+
             return;
         }
 
@@ -389,5 +396,3 @@ class Config_File {
     }
     /**#@-*/
 }
-
-?>

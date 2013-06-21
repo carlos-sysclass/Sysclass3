@@ -1,12 +1,8 @@
 <?php
 /**
-
  * Respond to ajax query returing a list
-
  *
-
  * @package SysClass
-
  */
 session_cache_limiter('none');
 session_start();
@@ -16,14 +12,12 @@ $path = "../libraries/";
 /** Configuration file.*/
 include_once $path."configuration.php";
 
-
 try {
  $currentUser = MagesterUser :: checkUserAccess();
 } catch (Exception $e) {
  echo "<script>parent.location = 'index.php?message=".urlencode($e -> getMessage().' ('.$e -> getCode().')')."&message_type=failure'</script>"; //This way the frameset will revert back to single frame, and the annoying effect of 2 index.php, one in each frame, will not happen
  exit;
 }
-
 
 switch ($_GET['ask_type']) {
  case 'users': askUsers(); break;
@@ -37,14 +31,17 @@ switch ($_GET['ask_type']) {
  default: break;
 }
 
-function highlightSearch($search_results, $search_criteria, $bgcolor='Yellow'){
+function highlightSearch($search_results, $search_criteria, $bgcolor='Yellow')
+{
  $start_tag = '<span style="background-color: '.$bgcolor.'">';
  $end_tag = '</span>';
  $search_results = str_ireplace($search_criteria, $start_tag . $search_criteria . $end_tag, $search_results);
+
  return $search_results;
 }
 
-function askUsers() {
+function askUsers()
+{
 //	$_POST['preffix'] = "%";	// Useful for debugging
  if (isset($_POST['preffix'])) {
   if (mb_strpos($_POST['preffix'], ";") === false) {
@@ -78,7 +75,7 @@ function askUsers() {
     $logins = array();
     $size = sizeof($students);
     for ($i = 0; $i < $size; $i++) {
-     if (!in_array($students[$i], $logins)){
+     if (!in_array($students[$i], $logins)) {
       $logins[] = $students[$i];
      }
     }
@@ -111,8 +108,8 @@ function askUsers() {
      if (!empty($myLessonsIds)) {
       $result = eF_getTableDataFlat("users JOIN users_to_lessons", "distinct users_LOGIN", "users.archive=0 and users_to_lessons.archive=0 and users.login = users_to_lessons.users_LOGIN AND lessons_ID IN ('" . implode("','", $myLessonsIds) ."')");
 //						pr($result);
-      foreach($result['users_LOGIN'] as $login) {
-       if (!in_array($login, $logins)){
+      foreach ($result['users_LOGIN'] as $login) {
+       if (!in_array($login, $logins)) {
         $logins[] = $login;
        }
       }
@@ -123,8 +120,8 @@ function askUsers() {
      if (!empty($myCoursesIds)) {
       $result = eF_getTableDataFlat("users JOIN users_to_courses", "distinct users_LOGIN", "users.login = users_to_courses.users_LOGIN AND courses_ID IN ('" . implode("','", $myCoursesIds) ."')");
 //						pr($result);
-      foreach($result['users_LOGIN'] as $login) {
-       if (!in_array($login, $logins)){
+      foreach ($result['users_LOGIN'] as $login) {
+       if (!in_array($login, $logins)) {
         $logins[] = $login;
        }
       }
@@ -136,14 +133,14 @@ function askUsers() {
      $users = eF_getTableData("users", "distinct login,name,surname,user_type,user_types_ID", "login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%'", "login");
     }
    }
-   if($_SESSION['s_type'] == "professor"){
+   if ($_SESSION['s_type'] == "professor") {
     $users[] = array('login' => "[*]",'name' => _MYSTUDENTS, 'surname' => _MYSTUDENTS, 'user_type' => '[*]');
    }
    //pr($users);
   }
  }
  $str = '<ul>';
- for ($k = 0; $k < sizeof($users); $k++){
+ for ($k = 0; $k < sizeof($users); $k++) {
   /*$hilogin = highlightSearch($users[$k]['login'], $preffix);
 
 		 $hiname = highlightSearch($users[$k]['name'], $preffix);
@@ -168,16 +165,17 @@ function askUsers() {
    $formattedLogins[$key] = $value.' ('.$key.')';
   }
  }
- for ($k = 0; $k < sizeof($users); $k++){
+ for ($k = 0; $k < sizeof($users); $k++) {
   $str = $str.'<li id='.$users[$k]['login'].'>'.$formattedLogins[$users[$k]['login']].'</li>';
  }
  $str = $str.'</ul>';
  echo $str;
 }
-function askTests() {
+function askTests()
+{
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
- if ($_SESSION['s_type'] == "administrator"){
+ if ($_SESSION['s_type'] == "administrator") {
   $tests_info = eF_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND t.content_ID=c.id AND c.ctg_type='tests' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
   $scorm_tests_info = eF_getTableDataFlat("content c, lessons l", "c.id, c.name as test_name, l.name as lesson_name, l.originating_course ","c.active=1 and c.lessons_ID = l.id AND c.name like '%$preffix%' and c.ctg_type = 'scorm_test'", "c.name");
  } else {
@@ -200,7 +198,7 @@ function askTests() {
   $courseNames = array();
  }
  $info_array = array();
- for ($i = 0 ; $i < sizeof($tests_info['test_name']) ; $i ++){
+ for ($i = 0 ; $i < sizeof($tests_info['test_name']) ; $i ++) {
   $hiname = highlightSearch($tests_info['test_name'][$i], $preffix);
   $path_string = $tests_info['lesson_name'][$i]."&nbsp;&raquo;&nbsp;".$hiname;
   if ($courseNames[$tests_info['originating_course'][$i]]) {
@@ -210,7 +208,7 @@ function askTests() {
    $info_array[] = array('id' => $tests_info['id'][$i],'name' => $tests_info['test_name'][$i],'path_string' =>$path_string);
   }
  }
- for ($i = 0 ; $i < sizeof($scorm_tests_info['test_name']) ; $i ++){
+ for ($i = 0 ; $i < sizeof($scorm_tests_info['test_name']) ; $i ++) {
   $hiname = highlightSearch($scorm_tests_info['test_name'][$i], $preffix);
   $path_string = $scorm_tests_info['lesson_name'][$i]."&nbsp;&raquo;&nbsp;".$hiname;
   if ($courseNames[$scorm_tests_info['originating_course'][$i]]) {
@@ -221,16 +219,17 @@ function askTests() {
   }
  }
  $str = '<ul>';
- for ($k = 0; $k < sizeof($info_array); $k++){
+ for ($k = 0; $k < sizeof($info_array); $k++) {
   $str = $str.'<li id='.$info_array[$k]['id'].'>'.$info_array[$k]['path_string'].'</li>';
  }
  $str = $str.'</ul>';
  echo $str;
 }
-function askFeedback() {
+function askFeedback()
+{
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
- if ($_SESSION['s_type'] == "administrator"){
+ if ($_SESSION['s_type'] == "administrator") {
   $tests_info = eF_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND  t.content_ID=c.id AND c.ctg_type='feedback' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
   $legalTests = eF_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type='feedback'");
   $legalTestsId = $legalTests['id'];
@@ -251,7 +250,7 @@ function askFeedback() {
   $courseNames = array();
  }
  $info_array = array();
- for ($i = 0 ; $i < sizeof($tests_info['test_name']) ; $i ++){
+ for ($i = 0 ; $i < sizeof($tests_info['test_name']) ; $i ++) {
   $hiname = highlightSearch($tests_info['test_name'][$i], $preffix);
   $path_string = $tests_info['lesson_name'][$i]."&nbsp;&raquo;&nbsp;".$hiname;
   if ($courseNames[$tests_info['originating_course'][$i]]) {
@@ -262,13 +261,14 @@ function askFeedback() {
   }
  }
  $str = '<ul>';
- for ($k = 0; $k < sizeof($info_array); $k++){
+ for ($k = 0; $k < sizeof($info_array); $k++) {
   $str = $str.'<li id='.$info_array[$k]['id'].'>'.$info_array[$k]['path_string'].'</li>';
  }
  $str = $str.'</ul>';
  echo $str;
 }
-function askSuggestions() {
+function askSuggestions()
+{
  //header("Content-type: text/xml;charset=iso-8859-7");
  $ie = isset($_GET['ie']) ? true : false ;
  $search_results_data = array();
@@ -298,12 +298,10 @@ function askSuggestions() {
    } elseif ($results[$i]['table_name'] == "f_personal_messages") {
     $res1 = eF_getTableData("f_personal_messages, f_folders", "f_personal_messages.id, f_personal_messages.title, f_personal_messages.users_LOGIN, f_folders.name, f_folders.id as folder_id", "f_personal_messages.f_folders_ID = f_folders.id and f_personal_messages.id=".$results[$i]['foreign_ID']);
     $type_str = _MESSAGESATFORUM;
-   }
-   elseif ($results[$i]['table_name'] == "lessons") {
+   } elseif ($results[$i]['table_name'] == "lessons") {
     $res1 = eF_getTableData($results[$i]['table_name'], "id as lessons_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
     $type_str = _LESSON;
-   }
-   elseif ($results[$i]['table_name'] == "f_topics") {
+   } elseif ($results[$i]['table_name'] == "f_topics") {
     $res1 = $res1 = eF_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_topics.id=".$results[$i]['foreign_ID']);
     $type_str = _MESSAGESATFORUM;
    }
@@ -313,7 +311,7 @@ function askSuggestions() {
     if (isset($res1[0]['lessons_ID']) && in_array($res1[0]['lessons_ID'], $lessons_have)) {
      $lesson = eF_getTableData("lessons", "name", "id=".$res1[0]['lessons_ID']);
      if ($results[$i]['table_name'] != 'f_messages' && $results[$i]['table_name'] != 'f_topics') {
-      if($results[$i]['table_name'] == "lessons"){
+      if ($results[$i]['table_name'] == "lessons") {
        $search_results_data[] = array('id' => $res1[0]['id'],
                                                                'name' => $res1[0]['name'],
                                                                'table_name' => $results[$i]['table_name'],
@@ -322,7 +320,7 @@ function askSuggestions() {
                                                                'score' => sprintf("%.0f %%", $results[$i]['score'] * 100),
                                                                'type' => $type_str,
                                                                'position' => $position_str);
-      }elseif ($results[$i]['table_name'] != "lessons" /*&& eF_isDoneContent($res1[0]['id'])*/) {
+      } elseif ($results[$i]['table_name'] != "lessons" /*&& eF_isDoneContent($res1[0]['id'])*/) {
        //echo $res1[0]['id']."->".eF_isDoneContent($res1[0]['id']);
        $search_results_data[] = array('id' => $res1[0]['id'],
                                                                'name' => $res1[0]['name'],
@@ -356,8 +354,7 @@ function askSuggestions() {
  echo "<?xml version=\"1.0\" ?>";
  echo "<root>";
  echo "<search_results_data>";
- foreach($search_results_data as $key => $value)
- {
+ foreach ($search_results_data as $key => $value) {
   echo "<search_result_data>";
   echo "<id>".$value['id']."</id>";
   echo "<name>".$value['name']."</name>";
@@ -394,9 +391,7 @@ function askSuggestions() {
 
 	 echo "<id>".$id."</id>";
 
-	 }
-
-	 else
+	 } else
 
 	 {
 
@@ -419,30 +414,32 @@ function askSuggestions() {
 	 */
  echo "</root>";
 }
-function askProjects() {
+function askProjects()
+{
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
- if($_SESSION['s_type'] == "administrator"){
+ if ($_SESSION['s_type'] == "administrator") {
   $projects_info = eF_getTableDataFlat("projects p, lessons l", "p.id, p.title as project_title, l.name as lesson_name ","p.lessons_ID = l.id AND p.title like '%$preffix%'", "p.title");
  } else {
   $projects_info = eF_getTableDataFlat("projects p, users_to_lessons ul, lessons l", "p.id, p.title as project_title, l.name as lesson_name ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND p.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND p.title like '%$preffix%'", "p.title");
  }
  $info_array = array();
- for($i = 0 ; $i < sizeof($projects_info['project_title']) ; $i ++){
+ for ($i = 0 ; $i < sizeof($projects_info['project_title']) ; $i ++) {
   $hiname = highlightSearch($projects_info['project_title'][$i], $preffix);
   $path_string = $projects_info['lesson_name'][$i]."->".$hiname;
   $info_array[$i] = array('id' => $projects_info['id'][$i],'name' => $projects_info['project_title'][$i],'path_string' =>$path_string);
  }
  $str = '<ul>';
- for ($k = 0; $k < sizeof($info_array); $k++){
+ for ($k = 0; $k < sizeof($info_array); $k++) {
   $str = $str.'<li id='.$info_array[$k]['id'].'>'.$info_array[$k]['path_string'].'</li>';
  }
  $str = $str.'</ul>';
  echo $str;
 }
-function askLessons() {
+function askLessons()
+{
  eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
- if ($_SESSION['s_type'] == "administrator"){
+ if ($_SESSION['s_type'] == "administrator") {
   $result = eF_getTableData("lessons", "id,name,directions_ID","archive=0 and instance_source = 0 and active=1 AND name like '%$preffix%'", "name");
  } else {
   $result = eF_getTableData("users_to_lessons ul, lessons l", "l.id, l.name,l.directions_ID", "ul.archive=0 and l.archive=0 and l.instance_source = 0 and ul.users_LOGIN='".$_SESSION['s_login']."' and ul.user_type = 'professor' and ul.lessons_ID=l.id AND l.name like '%$preffix%'", "l.name");
@@ -459,15 +456,16 @@ function askLessons() {
  }
  $lessons = array_values(eF_multisort($lessons, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
- for ($k = 0; $k < sizeof($lessons); $k++){
+ for ($k = 0; $k < sizeof($lessons); $k++) {
   $str = $str.'<li id='.$lessons[$k]['id'].'>'.$lessons[$k]['path_string'].'</li>';
  }
  $str .= '</ul>';
  echo $str;
 }
-function askGroups() {
+function askGroups()
+{
  eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
- if($_SESSION['s_type'] == "administrator"){
+ if ($_SESSION['s_type'] == "administrator") {
   $result = array_values(MagesterGroup::getGroups());
  } else {
   $currentUser = MagesterUserFactory::factory($_SESSION['s_login']);
@@ -487,13 +485,14 @@ function askGroups() {
  }
  $groups = array_values(eF_multisort($groups, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
- for ($k = 0; $k < sizeof($groups); $k++){
+ for ($k = 0; $k < sizeof($groups); $k++) {
   $str = $str.'<li id='.$groups[$k]['id'].'>'.$groups[$k]['path_string'].'</li>';
  }
  $str .= '</ul>';
  echo $str;
 }
-function askCourses() {
+function askCourses()
+{
  eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
  if ($_SESSION['s_type'] == "administrator") {
   //$result = eF_getTableData("courses", "id, name, directions_ID","active=1 AND name like '%$preffix%'");
@@ -516,17 +515,18 @@ function askCourses() {
  }
  $courses = array_values(eF_multisort($courses, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
- for ($k = 0; $k < sizeof($courses); $k++){
+ for ($k = 0; $k < sizeof($courses); $k++) {
   $str = $str.'<li id='.$courses[$k]['id'].'>'.$courses[$k]['path_string'].'</li>';
  }
  $str .= '</ul>';
  echo $str;
 }
-function askChat() {
+function askChat()
+{
  $special_splitter = "||||";
  if (isset($_GET['chatrooms_ID'])) {
   $chatrooms_ID = $_GET['chatrooms_ID'];
- } else if (isset($_GET['bring_chatrooms'])){
+ } elseif (isset($_GET['bring_chatrooms'])) {
   // The chatrooms are all the ones with more than zero users and the ones you have created
   $rooms = eF_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
   //pr($rooms);
@@ -576,7 +576,7 @@ function askChat() {
   exit;
  }
  // Get online users of current room
- if(isset($_GET['get_users'])) {
+ if (isset($_GET['get_users'])) {
   // The room users of the SysClass general room are all users-the ones currently logged in to another channel
   $data = "";
   if ($_GET['chatrooms_ID'] == 0) {
@@ -613,7 +613,7 @@ function askChat() {
      echo _CHATROOMDOESNOTEXIST_ERROR . $special_splitter; // notify user that room was deleted
      $_SESSION['last_chat_msg_id'] = 0;
      exit;
-    } else if ($roomExists[0]['active'] == 0) {
+    } elseif ($roomExists[0]['active'] == 0) {
      echo _CHATROOMISNOTENABLED_ERROR . $special_splitter; // notify user that room is not active
      $_SESSION['last_chat_msg_id'] = 0;
      exit;
@@ -713,7 +713,8 @@ function askChat() {
  //echo $data.$special_splitter."new_limit: ".$new_limit."<br>all messages: ".$all_messages."<br>sent: ".$sent."<br>new_limit_flag: ".$new_limit_flag."-|*special_splitter*|-".$rooms_str."-|*special_splitter*|-".$new_limit."-|*special_splitter*|-".$sent;
  echo $data;
 }
-function askBranches() {
+function askBranches()
+{
  try {
   eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
   if ($_SESSION['s_type'] == "administrator") {
@@ -746,7 +747,8 @@ function askBranches() {
   handleAjaxExceptions($e);
  }
 }
-function askInformation() {
+function askInformation()
+{
  try {
   if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
    $lesson = new MagesterLesson($_GET['lessons_ID']);
@@ -860,4 +862,3 @@ function askInformation() {
   handleAjaxExceptions($e);
  }
 }
-?>

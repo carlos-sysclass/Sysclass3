@@ -21,13 +21,13 @@
 			{foreach name="it_course" key="course_id" item="by_course" from=$schedule.grouped_content}
 				<li>
 					<div class="grid_12">
-						<label>{$smarty.foreach.it_course.iteration}.</label>
+						<!-- <label>{$smarty.foreach.it_course.iteration}.</label> -->
 						<a href="javascript: void(0);" onclick="jQuery(this).parent().next().slideToggle('fast');">{$T_XCONTENT_COURSES[$course_id]}</a>
 					</div>
 					<div class="colapse" style="margin-left: 20px;">
 				{foreach name="it_lesson" key="lesson_id" item="by_lesson" from=$by_course}
 						<div class="grid_24">
-							<label>{$smarty.foreach.it_lesson.iteration}.</label>
+							<!-- <label>{$smarty.foreach.it_lesson.iteration}.</label> -->
 							<a href="javascript: void(0);" onclick="jQuery(this).parent().next().slideToggle('fast');">
 								{$T_XCONTENT_LESSONS[$lesson_id]} ({$by_lesson|@count} conteúdos)
 							</a>
@@ -37,7 +37,7 @@
 							{foreach name="it_content" item="content_data" from=$by_lesson}
 								<li style="margin-left: 40px;">
 									<div class="grid_24 {if $content_data.option_index > 0}xcontentAlreadyScheduled{else}xcontentNoScheduled{/if} {if $content_data.required == 1}xcontentRequired{elseif $content_data.required == 0}xcontentNoRequired{/if}">
-										<label>{$smarty.foreach.it_content.iteration}.</label>
+										<!-- <label>{$smarty.foreach.it_content.iteration}.</label> -->
 										<span>{$content_data.content}</span>
 										{if $content_data.option_index > 0}
 											Agendamento Realizado : Dia #filter:date-{$content_data.option_start}#, entre #filter:time-{$content_data.option_start}# e #filter:time-{$content_data.option_end}#

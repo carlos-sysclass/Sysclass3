@@ -2,7 +2,8 @@
 /**
 * Smarty plugin: eF_template_printMenu function
 */
-function smarty_function_eF_template_printMenu($params, &$smarty) {
+function smarty_function_eF_template_printMenu($params, &$smarty)
+{
     //if (mb_strlen($params['lesson_name']) > 23) {
     //    $params['lesson_name'] = mb_substr($params['lesson_name'], 0, 20).'...';
     //}
@@ -21,60 +22,50 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
     //      $str .= "var active_id = 'control'";
     $str .= "var active_id = 'something improbable';";
     $str .= '
-        function changeTDcolor(id) {
+        function changeTDcolor(id)
+        {
         alert(\'asdf\');
             var body_tag = document.getElementsByTagName(\'body\');                 //The body tag controls the current ctg colors. i.e. body_lessons sets the color to ctg="lessons" colors
             body_tag[0].id = "body_"+id;
             alert(active_id + " "+ id);
-                if(active_id != id)
-                {
-                        if(document.getElementById(active_id))
-                        {
+                if (active_id != id) {
+                        if (document.getElementById(active_id)) {
                                 document.getElementById(active_id).className = "menuTableInactive";
                         }
 
-                        if(document.getElementById(active_id+"_a"))
-                        {
+                        if (document.getElementById(active_id+"_a")) {
                                 document.getElementById(active_id+"_a").className = "menuLinkInactive";
                         }
                         active_id = id;
 
                         if(document.getElementById(id))
                                 document.getElementById(id).className = "topTitle rightAlign";
-                        if(document.getElementById(id+"_a"))
-                        {
+                        if (document.getElementById(id+"_a")) {
                                 document.getElementById(active_id+"_a").className = "menuLinkActive";
                         }
 
                 }
         }
 
-      function changeColorOnRefresh() {
+      function changeColorOnRefresh()
+      {
         ';
-        if($params['user_type']=='student')
-        {
+        if ($params['user_type']=='student') {
               $str .= "var temp_id = 'control_panel';
                 ";
-        }
-        else if($params['user_type']=='professor')
-        {
+        } elseif ($params['user_type']=='professor') {
               $str .= "var temp_id = 'control_panel';
                 ";
-        }
-        else
-        {
+        } else {
               $str .= "var temp_id = 'control';
                 ";
         }
 
-        if($params['ctg']=='lessons')
-        {
+        if ($params['ctg']=='lessons') {
             $str .= '
                 changeTDcolor(temp_id);
                 ';
-        }
-        else
-        {
+        } else {
             $str .= '
                 changeTDcolor("'.$params['ctg'].'");
                 ';
@@ -100,9 +91,9 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
         $maxlen = 16;
         $maxlen_title = 14;
 
-        $i_length = mb_substr_count($title,"i") + mb_substr_count($title,"é") + mb_substr_count($title,"ß");
+        $i_length = mb_substr_count($title,"i") + mb_substr_count($title,"ï¿½") + mb_substr_count($title,"ï¿½");
 
-        if (mb_strlen($title) - $i_length > $maxlen_title) {   // manos lines. Afairoume ta i,é,ß
+        if (mb_strlen($title) - $i_length > $maxlen_title) {   // manos lines. Afairoume ta i,ï¿½,ï¿½
             $str .= "<span class = 'title' title = '".$title."'><b>";
             $str .= "<img align = 'left' src = 'images/others/blank.gif' class='minus arrow' title='".$title."' alt='".$title."'/>";
             $str .= mb_substr($title, 0, $maxlen_title - 3 - mb_strlen($title) + $i_length)."...</b></span>";
@@ -112,7 +103,6 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
                   $str .= $title;
             $str .= "</b></span>";
             }
-
 
         $str .= '</td></tr>
 
@@ -136,12 +126,12 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
                     <tr height = "20">
                         <td id = "'.$key.'" class = "menuTableInactive" >
                             <a id = "'.$key.'_a" href = "'.$menu['link'].'" class = "menuLinkInactive" target = "mainframe"';
-                    $i_length = mb_substr_count($menu['title'],"i") + mb_substr_count($menu['title'],"é") + mb_substr_count($menu['title'],"ß");
+                    $i_length = mb_substr_count($menu['title'],"i") + mb_substr_count($menu['title'],"ï¿½") + mb_substr_count($menu['title'],"ï¿½");
                     if (mb_strlen($menu['title']) + (isset($menu['num'])? 2+mb_strlen($menu['num']) : 0 ) - $i_length> $maxlen) {
                         $str .= 'title = "'.$menu['title'].$str_num.'">'.mb_substr($menu['title'], 0, $maxlen - 3 - mb_strlen($menu['title']) + $i_length).'...';
-                        } else {
+					} else {
                               $str .= ' title="'.$str_num.'">'.$menu['title'];
-                        }
+                    }
                     $str .= '</a>';
                         //<!--<td width = "8" nowrap bgcolor = "'.$_SESSION['COLOR'][$key].'">&nbsp;</td></tr>-->
 
@@ -159,5 +149,3 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
 
     return $str;
 }
-
-?>

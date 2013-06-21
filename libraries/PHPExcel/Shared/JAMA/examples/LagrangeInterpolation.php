@@ -1,6 +1,6 @@
 <?php
 
-require_once "../Matrix.php";
+require_once '../Matrix.php';
 
 /**
  * Given n points (x0,y0)...(xn-1,yn-1), the following methid computes
@@ -18,9 +18,10 @@ require_once "../Matrix.php";
  * @param x[] float
  * @param y[] float
  */
-class LagrangeInterpolation {
-
-	public function findPolynomialFactors($x, $y) {
+class LagrangeInterpolation
+{
+	public function findPolynomialFactors($x, $y)
+	{
 		$n = count($x);
 
 		$data = array();  // double[n][n];
@@ -46,13 +47,11 @@ class LagrangeInterpolation {
 
 }	//	class LagrangeInterpolation
 
-
 $x = array(2.0, 1.0, 3.0);
 $y = array(3.0, 4.0, 7.0);
 
 $li = new LagrangeInterpolation;
 $f = $li->findPolynomialFactors($x, $y);
-
 
 for ($i = 0; $i < 3; ++$i) {
 	echo $f[$i]."<br />";

@@ -165,6 +165,7 @@ class PEAR_Downloader_Package
                         $this->_downloader->log(0, $origErr->getMessage());
                     }
                 }
+
                 return PEAR::raiseError('Cannot download non-local package "' . $param . '"');
             }
             $err = $this->_fromUrl($param);
@@ -175,6 +176,7 @@ class PEAR_Downloader_Package
                             $this->_downloader->log(0, $err->getMessage());
                         }
                     }
+
                     return PEAR::raiseError("Invalid or missing remote package file");
                 }
                 $err = $this->_fromString($param);
@@ -202,6 +204,7 @@ class PEAR_Downloader_Package
                             $param = $this->_registry->parsedPackageNameToString($param,
                                 true);
                         }
+
                         return PEAR::raiseError(
                             "Cannot initialize '$param', invalid or missing package file");
                     }
@@ -213,11 +216,13 @@ class PEAR_Downloader_Package
                     if (is_array($param)) {
                         $param = $this->_registry->parsedPackageNameToString($param, true);
                     }
+
                     return PEAR::raiseError(
                         "Cannot initialize '$param', invalid or missing package file");
                 }
             }
         }
+
         return true;
     }
 
@@ -251,6 +256,7 @@ class PEAR_Downloader_Package
                             break;
                         }
                     }
+
                     return PEAR::raiseError('CRITICAL ERROR: We are ' .
                         $this->_registry->parsedPackageNameToString($info) . ', but the file ' .
                         'downloaded claims to be ' .
@@ -262,6 +268,7 @@ class PEAR_Downloader_Package
             }
         }
         $this->_type = 'local';
+
         return $this->_packagefile;
     }
 
@@ -275,7 +282,7 @@ class PEAR_Downloader_Package
         return $this->_downloader;
     }
 
-    function getType() 
+    function getType()
     {
         return $this->_type;
     }
@@ -300,6 +307,7 @@ class PEAR_Downloader_Package
                 if (!isset($options['soft'])) {
                     $this->_downloader->log(0, $err->getMessage());
                 }
+
                 return PEAR::raiseError('Invalid uri dependency "' . $dep['uri'] . $ext . '", ' .
                     'cannot download');
             }
@@ -326,6 +334,7 @@ class PEAR_Downloader_Package
         }
         if (isset($options['offline'])) {
             $this->_downloader->log(3, 'Skipping dependency download check, --offline specified');
+
             return;
         }
         $pname = $this->getParsedPackage();
@@ -337,6 +346,7 @@ class PEAR_Downloader_Package
             return;
         }
         if (isset($deps['required'])) { // package.xml 2.0
+
             return $this->_detect2($deps, $pname, $options, $params);
         } else {
             return $this->_detect1($deps, $pname, $options, $params);
@@ -561,6 +571,7 @@ class PEAR_Downloader_Package
                     $this->_registry->parsedPackageNameToString($dep, true) .
                     '", will be installed');
             }
+
             return false;
         }
         $options = $this->_downloader->getOptions();
@@ -572,6 +583,7 @@ class PEAR_Downloader_Package
             $this->_downloader->_getDepPackageDownloadUrl($dep, $pname);
         if (PEAR::isError($url)) {
             PEAR::popErrorHandling();
+
             return $url;
         }
         $dep['package'] = $dep['name'];
@@ -582,6 +594,7 @@ class PEAR_Downloader_Package
             if (!isset($options['soft'])) {
                 $this->_downloader->log(0, $ret->getMessage());
             }
+
             return false;
         } else {
             // check to see if a dep is already installed and is the same or newer
@@ -604,12 +617,14 @@ class PEAR_Downloader_Package
                         '" version ' . $url['version'] . ', already installed as version ' .
                         $version);
                 }
+
                 return false;
             }
         }
         if (isset($dep['nodefault'])) {
             $ret['nodefault'] = true;
         }
+
         return $ret;
     }
 
@@ -823,12 +838,13 @@ class PEAR_Downloader_Package
     }
 
     function getParsedPackage()
-    {   
+    {
         if (isset($this->_packagefile) || isset($this->_parsedname)) {
             return array('channel' => $this->getChannel(),
                 'package' => $this->getPackage(),
                 'version' => $this->getVersion());
         }
+
         return false;
     }
 
@@ -844,6 +860,7 @@ class PEAR_Downloader_Package
                 return false;
             }
         }
+
         return true;
     }
 
@@ -1025,6 +1042,7 @@ class PEAR_Downloader_Package
                 if ($this->getChannel() != '__uri') {
                     return false;
                 }
+
                 return $param['uri'] == $this->getURI();
             }
             $package = isset($param['package']) ? $param['package'] :
@@ -1060,6 +1078,7 @@ class PEAR_Downloader_Package
                     $channel = 'pear.php.net';
                 }
             }
+
             return (strtolower($package) == strtolower($this->getPackage()) &&
                 $channel == $this->getChannel() &&
                 version_compare($newdep['min'], $this->getVersion(), '<=') &&
@@ -1139,11 +1158,14 @@ class PEAR_Downloader_Package
                           $dep['version'], '>=')) {
                         return true;
                     }
+
                     return false;
                 }
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -1252,6 +1274,7 @@ class PEAR_Downloader_Package
                 PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
                 if (PEAR::isError($dir = $dl->getDownloadDir())) {
                     PEAR::popErrorHandling();
+
                     return $dir;
                 }
                 $e = $obj->_fromFile($a = $dir . DIRECTORY_SEPARATOR . $file);
@@ -1320,12 +1343,12 @@ class PEAR_Downloader_Package
             foreach ($newparams as $i => $unused) {
                 $params[] = &$newparams[$i];
             }
+
             return true;
         } else {
             return false;
         }
     }
-
 
     /**
      * @static
@@ -1340,6 +1363,7 @@ class PEAR_Downloader_Package
                 return true;
             }
         }
+
         return false;
     }
 
@@ -1352,9 +1376,9 @@ class PEAR_Downloader_Package
     function &getPackagefileObject(&$c, $d, $t = false)
     {
         $a = &new PEAR_PackageFile($c, $d, $t);
+
         return $a;
     }
-
 
     /**
      * This will retrieve from a local file if possible, and parse out
@@ -1394,16 +1418,19 @@ class PEAR_Downloader_Package
                 if (PEAR::isError($pf)) {
                     $this->_valid = false;
                     $param = $saveparam;
+
                     return $pf;
                 }
                 $this->_packagefile = &$pf;
                 if (!$this->getGroup()) {
                     $this->setGroup('default'); // install the default dependency group
                 }
+
                 return $this->_valid = true;
             }
         }
         $param = $saveparam;
+
         return $this->_valid = false;
     }
 
@@ -1418,6 +1445,7 @@ class PEAR_Downloader_Package
             $this->_downloader->pushErrorHandling(PEAR_ERROR_RETURN);
             if (PEAR::isError($dir = $this->_downloader->getDownloadDir())) {
                 $this->_downloader->popErrorHandling();
+
                 return $dir;
             }
             $this->_downloader->log(3, 'Downloading "' . $param . '"');
@@ -1430,6 +1458,7 @@ class PEAR_Downloader_Package
                 }
                 $err = PEAR::raiseError('Could not download from "' . $param .
                     '"' . $saveparam . ' (' . $file->getMessage() . ')');
+
                     return $err;
             }
             if ($this->_rawpackagefile) {
@@ -1485,12 +1514,15 @@ class PEAR_Downloader_Package
                 $err = PEAR::raiseError('Download of "' . ($saveparam ? $saveparam :
                     $param) . '" succeeded, but it is not a valid package archive');
                 $this->_valid = false;
+
                 return $err;
             }
             $this->_packagefile = &$pf;
             $this->setGroup('default'); // install the default dependency group
+
             return $this->_valid = true;
         }
+
         return $this->_valid = false;
     }
 
@@ -1514,6 +1546,7 @@ class PEAR_Downloader_Package
         if (PEAR::isError($pname)) {
             if ($pname->getCode() == 'invalid') {
                 $this->_valid = false;
+
                 return false;
             }
             if ($pname->getCode() == 'channel') {
@@ -1543,6 +1576,7 @@ class PEAR_Downloader_Package
                     $err = PEAR::raiseError('invalid package name/package file "' .
                         $param . '"');
                     $this->_valid = false;
+
                     return $err;
                 }
             } else {
@@ -1552,6 +1586,7 @@ class PEAR_Downloader_Package
                 $err = PEAR::raiseError('invalid package name/package file "' .
                     $param . '"');
                 $this->_valid = false;
+
                 return $err;
             }
         }
@@ -1587,6 +1622,7 @@ class PEAR_Downloader_Package
                     $pname['channel'] = 'pear.php.net';
                 }
             }
+
             return $info;
         }
         $this->_rawpackagefile = $info['raw'];
@@ -1596,6 +1632,7 @@ class PEAR_Downloader_Package
         }
         if ($ret) {
             $this->_downloadURL = $ret;
+
             return $this->_valid = (bool) $ret;
         }
     }
@@ -1760,6 +1797,7 @@ class PEAR_Downloader_Package
                             array('channel' => $pname['channel'], 'package' => $pname['package'],
                             'version' => $info['version'])) . '" to install',
                             PEAR_DOWNLOADER_PACKAGE_STATE);
+
                     return $err;
                 }
                 $err = PEAR::raiseError(
@@ -1772,12 +1810,13 @@ class PEAR_Downloader_Package
                     $this->_registry->parsedPackageNameToString(
                         array('channel' => $pname['channel'], 'package' => $pname['package'],
                         'version' => $info['version'])) . '" to install');
+
                 return $err;
             }
         }
         if (isset($info['deprecated']) && $info['deprecated']) {
             $this->_downloader->log(0,
-                'WARNING: "' . 
+                'WARNING: "' .
                     $this->_registry->parsedPackageNameToString(
                             array('channel' => $info['info']->getChannel(),
                                   'package' => $info['info']->getPackage()), true) .
@@ -1785,7 +1824,7 @@ class PEAR_Downloader_Package
                     $this->_registry->parsedPackageNameToString($info['deprecated'], true) .
                 '"');
         }
+
         return $info;
     }
 }
-?>

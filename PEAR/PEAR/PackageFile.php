@@ -101,12 +101,14 @@ class PEAR_PackageFile
     {
         if (!in_array($version{0}, array('1', '2'))) {
             $a = false;
+
             return $a;
         }
-        include_once 'PEAR/PackageFile/Parser/v' . $version{0} . '.php';
+        include_once 'PEAR/PackageFile/Parser/v'. $version{0} . '.php';
         $version = $version{0};
         $class = "PEAR_PackageFile_Parser_v$version";
         $a = new $class;
+
         return $a;
     }
 
@@ -128,12 +130,14 @@ class PEAR_PackageFile
     {
         if (!in_array($version{0}, array('1', '2'))) {
             $a = false;
+
             return $a;
         }
-        include_once 'PEAR/PackageFile/v' . $version{0} . '.php';
+        include_once 'PEAR/PackageFile/v'. $version{0} . '.php';
         $version = $version{0};
         $class = $this->getClassPrefix() . $version;
         $a = new $class;
+
         return $a;
     }
 
@@ -155,6 +159,7 @@ class PEAR_PackageFile
             }
             $obj->setConfig($this->_config);
             $obj->fromArray($arr);
+
             return $obj;
         } else {
             if (isset($arr['package']['attribs']['version'])) {
@@ -167,6 +172,7 @@ class PEAR_PackageFile
             }
             $obj->setConfig($this->_config);
             $obj->fromArray($arr);
+
             return $obj;
         }
     }
@@ -213,6 +219,7 @@ class PEAR_PackageFile
                 if (method_exists($pf, 'flattenFilelist')) {
                     $pf->flattenFilelist(); // for v2
                 }
+
                 return $pf;
             } else {
                 if ($this->_config->get('verbose') > 0) {
@@ -226,11 +233,13 @@ class PEAR_PackageFile
                 }
                 $a = PEAR::raiseError('Parsing of package.xml from file "' . $file . '" failed',
                     2, null, null, $pf->getValidationWarnings());
+
                 return $a;
             }
         } elseif (preg_match('/<package[^>]+version="([^"]+)"/', $data, $packageversion)) {
             $a = PEAR::raiseError('package.xml file "' . $file .
                 '" has unsupported package.xml <package> version "' . $packageversion[1] . '"');
+
             return $a;
         } else {
             if (!class_exists('PEAR_ErrorStack')) {
@@ -260,10 +269,12 @@ class PEAR_PackageFile
                 if (method_exists($pf, 'flattenFilelist')) {
                     $pf->flattenFilelist(); // for v2
                 }
+
                 return $pf;
             } else {
                 $a = PEAR::raiseError('Parsing of package.xml from file "' . $file . '" failed',
                     2, null, null, $pf->getValidationWarnings());
+
                 return $a;
             }
         }
@@ -309,15 +320,18 @@ class PEAR_PackageFile
             if (is_string($file) && strlen($file < 255) &&
                   (!file_exists($file) || !@is_file($file))) {
                 $ret = PEAR::raiseError("could not open file \"$file\"");
+
                 return $ret;
             }
             $file = realpath($file);
             $ret = PEAR::raiseError("Could not get contents of package \"$file\"".
                                      '. Invalid tgz file.');
+
             return $ret;
         } else {
             if (!count($content) && !@is_file($file)) {
                 $ret = PEAR::raiseError("could not open file \"$file\"");
+
                 return $ret;
             }
         }
@@ -353,10 +367,12 @@ class PEAR_PackageFile
             PEAR::staticPopErrorHandling();
             $ret = PEAR::raiseError('could not extract the package.xml file from "' .
                 $origfile . '"' . $extra);
+
             return $ret;
         }
         PEAR::staticPopErrorHandling();
         $ret = &PEAR_PackageFile::fromPackageFile("$tmpdir/$xml", $state, $origfile);
+
         return $ret;
     }
 
@@ -380,6 +396,7 @@ class PEAR_PackageFile
         if ($err === null) {
             $e = $errors;
             $errors = array();
+
             return $e;
         }
         $errors[] = $err->getMessage();
@@ -403,6 +420,7 @@ class PEAR_PackageFile
              (!file_exists($descfile) || !is_file($descfile) || !is_readable($descfile) ||
              (!$fp = @fopen($descfile, 'r')))) {
             $a = PEAR::raiseError("Unable to open $descfile");
+
             return $a;
         }
 
@@ -411,9 +429,9 @@ class PEAR_PackageFile
         fclose($fp);
         $data = file_get_contents($descfile);
         $ret = &PEAR_PackageFile::fromXmlString($data, $state, $descfile, $archive);
+
         return $ret;
     }
-
 
     /**
      * Create a PEAR_PackageFile_v* from a .tgz archive or package.xml file.
@@ -439,6 +457,7 @@ class PEAR_PackageFile
             } else {
                 $info = PEAR::raiseError("No package definition found in '$info' directory");
             }
+
             return $info;
         }
 
@@ -465,10 +484,10 @@ class PEAR_PackageFile
             }
         } else {
             $info = PEAR::raiseError("Cannot open '$info' for parsing");
+
             return $info;
         }
+
         return $info;
     }
 }
-
-?>

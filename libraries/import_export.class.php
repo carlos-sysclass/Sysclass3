@@ -27,7 +27,6 @@ abstract class MagesterImport
 	 */
  protected $options;
 
-
  /**
 	 * Log where the results of the import are stored
 	 *
@@ -51,7 +50,6 @@ abstract class MagesterImport
      * @access public
      */
 
-
     /**
      * Get the log of the import operations
      *
@@ -65,27 +63,32 @@ abstract class MagesterImport
      * @since 3.6.1
      * @access public
      */
- public function getLogMessages() {
+ public function getLogMessages()
+ {
   return $this -> log;
  }
 
-
  private static $datatypes = false;
- public static function getImportTypes() {
+ public static function getImportTypes()
+ {
   if (!self::$datatypes) {
    self::$datatypes = array("anything" => _IMPORTANYTHING,
           "users" => _USERS,
           "users_to_courses" => _USERSTOCOURSES);
   }
+
   return self::$datatypes;
  }
- public function getImportTypeName($import_type) {
+ public function getImportTypeName($import_type)
+ {
   if (!$datatypes) {
    $datatypes = MagesterImport::getImportTypes();
   }
+
   return $datatypes[$import_type];
  }
- public function __construct($filename, $_options) {
+ public function __construct($filename, $_options)
+ {
   $this -> fileContents = file_get_contents($filename);
   $this -> options = $_options;
  }
@@ -93,11 +96,12 @@ abstract class MagesterImport
 	 * All following functions cache arrays of type "entity_name" => array("entity_ids of entities with name=entity_name")
 	 */
  protected $courseNamesToIds = false;
- protected function getCourseByName($courses_name) {
+ protected function getCourseByName($courses_name)
+ {
   if (!$this -> courseNamesToIds) {
    $constraints = array ('return_objects' => false);
    $courses = MagesterCourse::getAllCourses($constraints);
-   foreach($courses as $course) {
+   foreach ($courses as $course) {
     if (!isset($this -> courseNamesToIds[$course['name']])) {
      $this -> courseNamesToIds[$course['name']] = array($course['id']);
     } else {
@@ -105,13 +109,15 @@ abstract class MagesterImport
     }
    }
   }
+
   return $this -> courseNamesToIds[$courses_name];
  }
  private $groupNamesToIds = false;
- protected function getGroupByName($group_name) {
+ protected function getGroupByName($group_name)
+ {
   if (!$this -> groupNamesToIds) {
    $groups = MagesterGroup::getGroups();
-   foreach($groups as $group) {
+   foreach ($groups as $group) {
     if (!isset($this -> groupNamesToIds[$group['name']])) {
      $this -> groupNamesToIds[$group['name']] = array($group['id']);
     } else {
@@ -119,12 +125,14 @@ abstract class MagesterImport
     }
    }
   }
+
   return $this -> groupNamesToIds[$group_name];
  }
  /*
 	 * Convert dates of the form dd/mm/yy to timestamps
 	 */
-    protected function createTimestampFromDate($date_field) {
+    protected function createTimestampFromDate($date_field)
+    {
         // date of event if existing, else current time
         if ($date_field != "") {
          $date_field = trim($date_field);
@@ -135,11 +143,12 @@ abstract class MagesterImport
             }
             if ($this -> options['date_format'] == "MM/DD/YYYY") {
              $timestamp = mktime(0,0,0,$dateParts[0],$dateParts[1],$dateParts[2]);
-            } else if ($this -> options['date_format'] == "YYYY/MM/DD") {
+            } elseif ($this -> options['date_format'] == "YYYY/MM/DD") {
              $timestamp = mktime(0,0,0,$dateParts[2],$dateParts[0],$dateParts[1]);
             } else {
              $timestamp = mktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);
             }
+
             return $timestamp;
         } else {
          return "";
@@ -148,8 +157,9 @@ abstract class MagesterImport
  /*
 	 * Create the mappings between csv columns and db attributes
 	 */
- public static function getTypes($type) {
-  switch($type) {
+ public static function getTypes($type)
+ {
+  switch ($type) {
    case "users":
     $users_info = array("users_login" => "login",
            "password" => "password",
@@ -160,6 +170,7 @@ abstract class MagesterImport
            "active" => "active",
            "user_type" => "user_type",
            "registration_date" => "timestamp");
+
     return $users_info;
    case "users_to_courses":
     return array("users_login" => "users_login",
@@ -179,8 +190,9 @@ abstract class MagesterImport
     /*
      * Get array of fields that are mandatory to be defined for a successfull import according to the type of import
      */
- public static function getMandatoryFields($type) {
-  switch($type) {
+ public static function getMandatoryFields($type)
+ {
+  switch ($type) {
    case "users":
     return array("login" => "users_login");
    case "users_to_courses":
@@ -191,12 +203,14 @@ abstract class MagesterImport
         "groups.name" => "group_name");
   }
  }
- public static function getOptionalFields($type) {
+ public static function getOptionalFields($type)
+ {
   $all = MagesterImport::getTypes($type);
   $mandatory = MagesterImport::getMandatoryFields($type);
   foreach ($mandatory as $type_name => $column) {
    unset($all[$column]);
   }
+
   return array_keys($all);
  }
 }
@@ -229,7 +243,8 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Find the separator - either "," or ";"
 	 */
- private function getSeparator() {
+ private function getSeparator()
+ {
   if (!$this -> separator) {
    $this -> separator = ",";
    $test_line = explode($this -> separator, $this -> fileContents[0]);
@@ -243,12 +258,14 @@ class MagesterImportCsv extends MagesterImport
    }
    $this -> separator = false;
   }
+
   return $this -> separator;
  }
  /*
 	 * Get empty data - used for caching of initialization array
 	 */
- private function getEmptyData() {
+ private function getEmptyData()
+ {
   if (!$this -> empty_data) {
    $this -> empty_data = array();
    foreach ($this -> types as $key) {
@@ -257,12 +274,14 @@ class MagesterImportCsv extends MagesterImport
    unset($this -> empty_data['user_type']); // the default value should never be set to ""
    unset($this -> empty_data['password']); // the default value should never be set to ""
   }
+
   return $this -> empty_data;
  }
  /*
 	 * Split a line to its different strings as they are determined by the separator
 	 */
- private function explodeBySeparator($line) {
+ private function explodeBySeparator($line)
+ {
   if ($this -> separator) {
    return explode($this -> separator, $this -> fileContents[$line]);
   } else {
@@ -273,7 +292,8 @@ class MagesterImportCsv extends MagesterImport
 	 * Find the header line - the first non zero line of the csv that contains at least one of the import $type's column headers
 	 * @param: the line of the header
 	 */
- private function parseHeaderLine(&$headerLine) {
+ private function parseHeaderLine(&$headerLine)
+ {
   $this -> mappings = array();
   $this -> separator = $this -> getSeparator();
   $legitimate_column_names = array_keys($this -> types);
@@ -291,20 +311,24 @@ class MagesterImportCsv extends MagesterImport
    }
    if ($found_header) {
     $headerLine = $line;
+
     return $this -> mappings;
    }
   }
+
   return false;
  }
  /*
 	 * Utility function to initialize the $log array
 	 */
- private function clearLog() {
+ private function clearLog()
+ {
   $this -> log = array();
   $this -> log["success"] = array();
   $this -> log["failure"] = array();
  }
- private function clear() {
+ private function clear()
+ {
   $this -> clearLog();
   $this -> mappings = array();
   $this -> empty_data = false;
@@ -313,7 +337,8 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Get existence exception and compare it against the "already exists" exception of for each different import type
 	 */
- private function isAlreadyExistsException($exception_code, $type) {
+ private function isAlreadyExistsException($exception_code, $type)
+ {
   switch ($type) {
    case "users":
     if ($exception_code == MagesterUserException::USER_EXISTS) { return true; }
@@ -321,9 +346,11 @@ class MagesterImportCsv extends MagesterImport
    default:
     return false;
   }
+
   return false;
  }
- private function cleanUpEmptyValues(&$data) {
+ private function cleanUpEmptyValues(&$data)
+ {
   foreach ($data as $key => $info) {
    if ($info == "") {
     unset($data[$key]);
@@ -333,10 +360,11 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Update the data of an existing record
 	 */
- private function updateExistingData($line, $type, $data) {
+ private function updateExistingData($line, $type, $data)
+ {
   $this -> cleanUpEmptyValues(&$data);
   try {
-   switch($type) {
+   switch ($type) {
     case "users":
      if (isset($data['password']) && $data['password'] != "") {
       $data['password'] = MagesterUser::createPassword($data['password']);
@@ -355,9 +383,10 @@ class MagesterImportCsv extends MagesterImport
    $this -> log["failure"][] = _LINE . " $line: " . $e -> getMessage();
   }
  }
- private function importDataMultiple($type, $data) {
+ private function importDataMultiple($type, $data)
+ {
   try {
-   switch($type) {
+   switch ($type) {
     case "users_to_groups":
      foreach ($data as $value) {
       $groups_ID = current($this -> getGroupByName($value['groups.name']));
@@ -410,9 +439,10 @@ class MagesterImportCsv extends MagesterImport
 	 * @param type: the data of this line, formatted to be put directly into the SysClass db
 	 */
  //TODO: this should be moved to the MagesterImport base class - and be used by all - the $line should probably leave though
- private function importData($line, $type, $data) {
+ private function importData($line, $type, $data)
+ {
   try {
-   switch($type) {
+   switch ($type) {
     case "users":
      $newUser = MagesterUser::createUser($data);
      $this -> log["success"][] = _LINE . " $line: " . _IMPORTEDUSER . " " . $newUser -> login;
@@ -423,7 +453,7 @@ class MagesterImportCsv extends MagesterImport
      unset($data['course_name']);
      if ($courses_ID) {
 //debug();
-      foreach($courses_ID as $course_ID) {
+      foreach ($courses_ID as $course_ID) {
        $data['courses_ID'] = $course_ID;
        $course = new MagesterCourse($course_ID);
        $course -> addUsers($data['users_login'], (isset($data['user_type'])?$data['user_type']:"student"));
@@ -434,7 +464,7 @@ class MagesterImportCsv extends MagesterImport
 //exit;
        $this -> log["success"][] = _LINE . " $line: " . _NEWCOURSEASSIGNMENT . " " . $courses_name . " - " . $data['users_login'];
       }
-     } else if ($courses_name != "") {
+     } elseif ($courses_name != "") {
       $course = MagesterCourse::createCourse(array("name" => $courses_name));
       $this -> log["success"][] = _LINE . " $line: " . _NEWCOURSE . " " . $courses_name;
       $course -> addUsers($data['users_login'], (isset($data['user_type'])?$data['user_type']:"student"));
@@ -452,7 +482,7 @@ class MagesterImportCsv extends MagesterImport
      $groups_ID = $this -> getGroupByName($data['groups.name']);
      $group_name = $data['groups.name'];
      unset($data['groups.name']);
-     foreach($groups_ID as $group_ID) {
+     foreach ($groups_ID as $group_ID) {
       $data['groups_ID'] = $group_ID;
       $group = new MagesterGroup($group_ID);
       $group -> addUsers(array($data['users_login']));
@@ -476,7 +506,8 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Check whether the file contains the columns that are necessary for this import type
 	 */
- private function checkImportEssentialField($type) {
+ private function checkImportEssentialField($type)
+ {
   $mandatoryFields = MagesterImport::getMandatoryFields($type);
   $not_found = false;
   foreach ($mandatoryFields as $dbField => $columnName) {
@@ -487,6 +518,7 @@ class MagesterImportCsv extends MagesterImport
   }
   if ($not_found) {
    $this -> log["failure"]["headerproblem"] = _HEADERDOESNOTINCLUDEESSENTIALCOLUMN . ": " . implode(",", $mandatoryFields);
+
    return false;
   } else {
    return true;
@@ -495,7 +527,8 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Parse line data
 	 */
- private function parseDataLine($line) {
+ private function parseDataLine($line)
+ {
   $lineContents = $this -> explodeBySeparator($line);
   $data = $this -> getEmptyData();
   foreach ($this -> mappings as $dbAttribute => $fileInfo) {
@@ -511,7 +544,8 @@ class MagesterImportCsv extends MagesterImport
  /*
 	 * Main importing function
 	 */
- public function import($type) {
+ public function import($type)
+ {
   $this -> clear();
   if ($this -> lines == "") {
    $this -> log["failure"]["missingheader"] = _NOHEADERROWISDEFINEDORHEADERROWNOTCOMPATIBLEWITHIMPORTTYPE;
@@ -539,12 +573,14 @@ class MagesterImportCsv extends MagesterImport
     $this -> log["failure"]["missingheader"] = _NOHEADERROWISDEFINEDORHEADERROWNOTCOMPATIBLEWITHIMPORTTYPE;
    }
   }
+
   return $this -> log;
  }
  /*
 	 * Set the memory and time limits for an import according to the number of lines to be imported
 	 */
- private function setLimits($factor = false) {
+ private function setLimits($factor = false)
+ {
   if (!$factor) {
    $factor = $this->lines / 500;
   }
@@ -559,7 +595,8 @@ class MagesterImportCsv extends MagesterImport
   ini_set("memory_limit",$maxmemory . "M");
         ini_set("max_execution_time", $maxtime);
  }
- public function __construct($filename, $_options) {
+ public function __construct($filename, $_options)
+ {
   $this -> fileContents = file_get_contents($filename);
   $this -> fileContents = explode("\n", trim($this -> fileContents));
   $this -> lines = sizeof($this -> fileContents);
@@ -603,13 +640,15 @@ class MagesterImportFactory
      * @access public
      * @static
      */
-    public static function factory($importerType, $file, $options = false) {
+    public static function factory($importerType, $file, $options = false)
+    {
      if (!($file instanceof MagesterFile)) {
       $file = new MagesterFile($file);
      }
      switch ($importerType) {
       case 'csv' : $factory = new MagesterImportCsv($file['path'], $options); break;
      }
+
         return $factory;
     }
 }
@@ -653,16 +692,19 @@ abstract class MagesterExport
      * @access public
      */
  public abstract function export($type);
- public static function getExportTypes() {
+ public static function getExportTypes()
+ {
   $datatypes = array("users" => _USERS,
          "users_to_courses" => _USERSTOCOURSES);
+
   return $datatypes;
  }
  /*
 	 * Create the mappings between csv columns and db attributes
 	 */
- public static function getTypes($type) {
-  switch($type) {
+ public static function getTypes($type)
+ {
+  switch ($type) {
    case "users":
     $users_info = array("users_login" => "login",
            "password" => "password",
@@ -673,6 +715,7 @@ abstract class MagesterExport
            "active" => "active",
            "user_type" => "user_type",
            "registration_date" => "timestamp");
+
     return $users_info;
    case "users_to_courses":
     return array("users_login" => "users_login",
@@ -689,21 +732,23 @@ abstract class MagesterExport
         "group_name" => "groups.name");
   }
  }
- public function __construct($_options) {
+ public function __construct($_options)
+ {
   $this -> options = $_options;
   if ($this -> options['date_format'] == "MM/DD/YYYY") {
    $this -> options['date_new_format'] = "m/d/Y";
-  } else if ($this -> options['date_format'] == "YYYY/MM/DD") {
+  } elseif ($this -> options['date_format'] == "YYYY/MM/DD") {
    $this -> options['date_new_format'] = "Y/m/d";
   } else {
    $this -> options['date_new_format'] = "d/m/Y";
   }
  }
  private $courseNamesToIds = false;
- protected function getCourseByName($courses_name) {
+ protected function getCourseByName($courses_name)
+ {
   if (!$courseNamesToIds) {
    $courses = MagesterCourse::getCourses();
-   foreach($courses as $course) {
+   foreach ($courses as $course) {
     if (!isset($courseNamesToIds[$course['name']])) {
      $courseNamesToIds[$course['name']] = array($course['id']);
     } else {
@@ -711,13 +756,15 @@ abstract class MagesterExport
     }
    }
   }
+
   return $courseNamesToIds[$courses_name];
  }
  private $groupNamesToIds = false;
- protected function getGroupByName($group_name) {
+ protected function getGroupByName($group_name)
+ {
   if (!$groupNamesToIds) {
    $groups = MagesterGroup::getGroups();
-   foreach($groups as $group) {
+   foreach ($groups as $group) {
     if (!isset($groupNamesToIds[$group['name']])) {
      $groupNamesToIds[$group['name']] = array($group['id']);
     } else {
@@ -725,12 +772,14 @@ abstract class MagesterExport
     }
    }
   }
+
   return $groupNamesToIds[$group_name];
  }
  /*
 	 * Convert dates of the form dd/mm/yy to timestamps
 	 */
-    protected function createDatesFromTimestamp($timestamp) {
+    protected function createDatesFromTimestamp($timestamp)
+    {
         // date of event if existing, else current time
         if ($timestamp != "" && $timestamp != 0) {
    return date($this -> options['date_new_format'], $timestamp);
@@ -757,14 +806,16 @@ class MagesterExportCsv extends MagesterExport
 	 * Find the header line - the first non zero line of the csv that contains at least one of the export $type's column headers
 	 * @param: the line of the header
 	 */
- private function setHeaderLine($type) {
+ private function setHeaderLine($type)
+ {
   $this -> types = MagesterExport::getTypes($type);
   if ($type == "users") {
    unset($this -> types['password']);
   }
   $this -> lines[] = implode($this -> separator, array_keys($this -> types));
  }
- private function clear() {
+ private function clear()
+ {
   $this -> lines = array();
  }
  /*
@@ -773,7 +824,8 @@ class MagesterExportCsv extends MagesterExport
 	 * @param type: the export type
 	 * @param type: the data of this line, formatted to be put directly into the SysClass db
 	 */
- private function exportData($data) {
+ private function exportData($data)
+ {
   foreach ($data as $info) {
          unset($info['password']);
          foreach ($info as $field => $value) {
@@ -787,8 +839,9 @@ class MagesterExportCsv extends MagesterExport
  /*
 	 * Get data to be exported
 	 */
- private function getData($type) {
-  switch($type) {
+ private function getData($type)
+ {
+  switch ($type) {
    case "users":
      return eF_getTableData($type, implode(",", $this -> types), "archive = 0");
    case "users_to_courses":
@@ -801,29 +854,34 @@ class MagesterExportCsv extends MagesterExport
  /*
 	 * Write the exported file
 	 */
- private function writeFile($type) {
+ private function writeFile($type)
+ {
      if (!is_dir($GLOBALS['currentUser'] -> user['directory']."/temp")) {
          mkdir($GLOBALS['currentUser'] -> user['directory']."/temp", 0755);
      }
      file_put_contents($GLOBALS['currentUser'] -> user['directory']."/temp/magester_".$type.".csv", implode("\n", $this -> lines));
      $file = new MagesterFile($GLOBALS['currentUser'] -> user['directory']."/temp/magester_".$type.".csv");
+
      return $file;
  }
  /*
 	 * Main exporting function
 	 */
- public function export($type) {
+ public function export($type)
+ {
   $this -> clear();
   $this -> setHeaderLine($type);
   $data = $this -> getData($type);
   $this -> exportData($data);
+
   return $this -> writeFile($type);
  }
- public function __construct($_options) {
+ public function __construct($_options)
+ {
   $this -> options = $_options;
   if ($this -> options['date_format'] == "MM/DD/YYYY") {
    $this -> options['date_new_format'] = "m/d/Y";
-  } else if ($this -> options['date_format'] == "YYYY/MM/DD") {
+  } elseif ($this -> options['date_format'] == "YYYY/MM/DD") {
    $this -> options['date_new_format'] = "Y/m/d";
   } else {
    $this -> options['date_new_format'] = "d/m/Y";
@@ -871,10 +929,12 @@ class MagesterExportFactory
      * @access public
      * @static
      */
-    public static function factory($exporterType, $options = false) {
+    public static function factory($exporterType, $options = false)
+    {
      switch ($exporterType) {
       case 'csv' : $factory = new MagesterExportCsv($options); break;
      }
+
         return $factory;
     }
 }

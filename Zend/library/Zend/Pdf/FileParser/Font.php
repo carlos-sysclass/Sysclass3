@@ -37,7 +37,6 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
 {
   /**** Instance Variables ****/
 
-
     /**
      * Array of parsed font properties. Used with {@link __get()} and
      * {@link __set()}.
@@ -51,10 +50,7 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
      */
     private $_debug = false;
 
-
-
   /**** Public Interface ****/
-
 
   /* Object Lifecycle */
 
@@ -71,7 +67,6 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
         parent::__construct($dataSource);
         $this->fontType = Zend_Pdf_Font::TYPE_UNKNOWN;
     }
-
 
   /* Accessors */
 
@@ -91,7 +86,6 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
     }
 
     /* NOTE: The set handler is defined below in the internal methods group. */
-
 
   /* Parser Methods */
 
@@ -145,7 +139,6 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
         return parent::readStringPascal('UTF-16BE');
     }
 
-
   /* Utility Methods */
 
     /**
@@ -156,10 +149,7 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
         print_r($this->_fontProperties);
     }
 
-
-
   /**** Internal Methods ****/
-
 
   /* Internal Accessors */
 
@@ -180,7 +170,6 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
             $this->_fontProperties[$property] = $value;
         }
     }
-
 
   /* Internal Utility Methods */
 

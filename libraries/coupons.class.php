@@ -20,7 +20,7 @@ class coupons extends MagesterEntity
 
      * The coupons properties
 
-     * 
+     *
 
      * @since 3.6.0
 
@@ -30,33 +30,43 @@ class coupons extends MagesterEntity
 
      */
     public $coupons = array();
-    public function __construct($param, $isCouponCode) {
+    public function __construct($param, $isCouponCode)
+    {
      if ($isCouponCode && eF_checkParameter($param, 'text')) {
       $result = eF_getTableData("coupons", "*", "code='".$param."'");
       $param = $result[0];
      }
      parent :: __construct($param);
     }
-    public function checkEligibility($user = false) {
+    public function checkEligibility($user = false)
+    {
      $returnValue = $this -> checkStartDate() &&
                     $this -> checkActive() &&
                     $this -> checkExpired() &&
                     $this -> checkExceededUses();
+
   return $returnValue;
     }
-    private function checkStartDate() {
+    private function checkStartDate()
+    {
      $this -> {$this -> entity}['from_timestamp'] > time() ? $returnValue = false : $returnValue = true;
+
      return $returnValue;
     }
-    private function checkActive() {
+    private function checkActive()
+    {
      !$this -> {$this -> entity}['active'] ? $returnValue = false : $returnValue = true;
+
      return $returnValue;
     }
-    private function checkExpired() {
+    private function checkExpired()
+    {
      $this -> {$this -> entity}['duration'] && $this -> {$this -> entity}['from_timestamp'] + $this -> {$this -> entity}['duration']*24*3600 < time() ? $returnValue = false : $returnValue = true;
+
      return $returnValue;
     }
-    private function checkExceededUses() {
+    private function checkExceededUses()
+    {
         $returnValue = true;
   if ($this -> {$this -> entity}['max_uses'] && $this -> getTotalUsedTimes() >= $this -> {$this -> entity}['max_uses']) {
       $returnValue = false;
@@ -64,20 +74,26 @@ class coupons extends MagesterEntity
   if ($this -> {$this -> entity}['max_user_uses'] && ($user instanceOf MagesterUser) && $this -> getUserUsedTimes($user) >= $this -> {$this -> entity}['max_user_uses']) {
       $returnValue = false;
   }
+
   return $returnValue;
     }
-    public function getTotalUsedTimes() {
+    public function getTotalUsedTimes()
+    {
      $result = eF_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."'");
+
      return $result[0]['count(*)'];
     }
-    public function getUserUsedTimes($user) {
+    public function getUserUsedTimes($user)
+    {
      if (!($user instanceOf MagesterUser)) {
       $user = Magester:: factory($user);
      }
      $result = eF_getTableData("users_to_coupons", "count(*)", "coupons_ID='".$this -> {$this -> entity}['id']."' and users_ID=".$user -> user['id']);
+
      return $result[0]['count(*)'];
     }
-    public function useCoupon($user, $payment, $productsList) {
+    public function useCoupon($user, $payment, $productsList)
+    {
      if (!($user instanceOf MagesterUser)) {
       $user = Magester:: factory($user);
      }
@@ -98,17 +114,20 @@ class coupons extends MagesterEntity
              "entity_ID" => $this -> {$this -> entity}['id']));
     }
 
-    public function getCouponStatistics() {
+    public function getCouponStatistics()
+    {
         $result = eF_getTableData("users_to_coupons", "*", "coupons_ID=".$this -> {$this -> entity}['id']);
         $stats = array('total_uses' => sizeof($result),
                        'remaining_uses' => $this -> {$this -> entity}['max_uses'] - sizeof($result) >= 0 ? $this -> {$this -> entity}['max_uses'] - sizeof($result) : 0,
                        'expired' => !$this -> checkExpired(),
                        'valid_until' => $this -> {$this -> entity}['duration'] ? $this -> {$this -> entity}['from_timestamp'] + $this -> {$this -> entity}['duration']*24*3600 : false
         );
+
         return $stats;
     }
 
-    public function getCouponCourses() {
+    public function getCouponCourses()
+    {
         $couponCourses = array();
         $courseNames = eF_getTableDataFlat("courses", "id,name");
         $courseNames = array_combine($courseNames['id'], $courseNames['name']);
@@ -119,10 +138,12 @@ class coupons extends MagesterEntity
                 $couponCourses[$value['id']][] = $courseNames[$id];
             }
         }
+
         return $couponCourses;
     }
 
-    public function getCouponLessons() {
+    public function getCouponLessons()
+    {
         $couponLessons = array();
         $lessonNames = eF_getTableDataFlat("lessons", "id,name");
         $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
@@ -133,6 +154,7 @@ class coupons extends MagesterEntity
                 $couponLessons[$value['id']][] = $lessonNames[$id];
             }
         }
+
         return $couponLessons;
     }
 
@@ -140,11 +162,11 @@ class coupons extends MagesterEntity
 
      * Create coupons
 
-     * 
+     *
 
      * This function is used to create coupons
 
-     * 
+     *
 
      * @param $fields An array of data
 
@@ -157,7 +179,8 @@ class coupons extends MagesterEntity
      * @static
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $fields = array('code' => $fields['code'],
                         'max_uses' => $fields['max_uses'] ? $fields['max_uses'] : 0,
                         'max_user_uses' => $fields['max_user_uses'] ? $fields['max_user_uses'] : 0,
@@ -169,6 +192,7 @@ class coupons extends MagesterEntity
         $newId = eF_insertTableData("coupons", $fields);
         $result = eF_getTableData("coupons", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $coupons = new coupons($result[0]['id']);
+
         return $coupons;
     }
     /**
@@ -178,7 +202,8 @@ class coupons extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('text', 'code', _COUPONCODE, 'class = "inputText" id = "coupon_code"');
      $form -> addElement('text', 'max_uses', _TOTALUSES, 'class = "inputText" style = "width:50px"');
      $form -> addElement('text', 'max_user_uses', _TOTALUSESBYSINGLEUSER, 'class = "inputText" style = "width:50px"');
@@ -198,6 +223,7 @@ class coupons extends MagesterEntity
                'discount' => 0,
                'active' => 1));
      }
+
         return $form;
     }
     /**
@@ -207,7 +233,8 @@ class coupons extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form) {
+    public function handleForm($form)
+    {
      $values = $form -> exportValues();
         $values['from_timestamp'] = mktime(0, 0, 0, $_POST['from_timestamp_Month'], $_POST['from_timestamp_Day'], $_POST['from_timestamp_Year']);
         if (isset($_GET['edit'])) {

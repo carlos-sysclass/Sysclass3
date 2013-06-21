@@ -21,7 +21,6 @@
 /** Zend_Exception */
 require_once 'Zend/Exception.php';
 
-
 /**
  * Exception class for Zend_Pdf.
  *
@@ -49,7 +48,6 @@ require_once 'Zend/Exception.php';
 class Zend_Pdf_Exception extends Zend_Exception
 {
   /**** Class Constants ****/
-
 
   /* Generic Exceptions */
 
@@ -96,8 +94,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      * An array or string index was out of range.
      */
     const INDEX_OUT_OF_RANGE = 0x0008;
-
-
 
   /* Filesystem I/O */
 
@@ -174,8 +170,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      */
     const INSUFFICIENT_DATA = 0x010e;
 
-
-
   /* Zend_Pdf_FileParser */
 
     /**
@@ -209,8 +203,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      */
     const PARSED_OUT_OF_ORDER = 0x0206;
 
-
-
   /* Zend_Pdf_FileParser_Font and Subclasses */
 
     /**
@@ -242,8 +234,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      * Could not locate a usable character map for this font.
      */
     const CANT_FIND_GOOD_CMAP = 0x0305;
-
-
 
   /* Zend_Pdf_Cmap and Subclasses */
 
@@ -289,8 +279,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      */
     const CMAP_WRONG_ENTRY_COUNT = 0x0408;
 
-
-
   /* Zend_Pdf_Resource_Font and Subclasses */
 
     /**
@@ -305,8 +293,6 @@ class Zend_Pdf_Exception extends Zend_Exception
      */
     const FONT_CANT_BE_EMBEDDED = 0x0502;
 
-
-
   /* Zend_Pdf_Font */
 
     /**
@@ -320,14 +306,12 @@ class Zend_Pdf_Exception extends Zend_Exception
      */
     const CANT_DETERMINE_FONT_TYPE = 0x0602;
 
-
   /* Text Layout System */
 
     /**
      * The specified attribute value for the text object cannot be used.
      */
     const BAD_ATTRIBUTE_VALUE = 0x0701;
-
 
   /* Zend_Pdf_Image and Subclasses */
 
@@ -336,6 +320,4 @@ class Zend_Pdf_Exception extends Zend_Exception
     const UNSUPPORTED_IMAGE_ENCODING_OPTIONS = 0x0803;
     const IMAGE_FILE_CORRUPT = 0x0804;
 
-
 }
-

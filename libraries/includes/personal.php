@@ -143,8 +143,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
     if ($ok = eF_insertTableData("module_hcd_events", $evaluation_content)) {
      $message = _SUCCESSFULLYCREATEDEVALUATION;
      $message_type = 'success';
-    }
-    else {
+    } else {
      $message = _EVALUATIONCOULDNOTBECREATED.": ".$ok;
      $message_type = 'failure';
     }
@@ -164,32 +163,32 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $smarty -> assign('T_EVALUATIONS_FORM', $renderer -> toArray());
 } else {
 
-	
-	
+
+
 	if ($_GET['ajax'] == 'classesuserTable') {
 		$constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
-		
-		
+
+
 		if (isset($_GET['edit_user'])) {
 			// FILTER SELECTION ONLY BY THIS USER
 			$userFilter = MagesterUserFactory::factory($_GET['edit_user']);
 			$constraints['users_ID'] = $userFilter->user['id'];
-			
-			
-		
+
+
+
 			if (isset($_GET['edit_course'])) {
 				$editCourse = new MagesterCourse($_GET['edit_course']);
-				
+
 				$classes = $editCourse -> getCourseClasses($constraints);
-				
+
 				$totalEntries = $editCourse -> countCourseClasses($constraints);
 				$dataSource = MagesterCourseClass :: convertClassesObjectsToArrays($classes);
-				
+
 				$tableName = $_GET['ajax'];
 				$alreadySorted = 1;
 				$smarty -> assign("T_TABLE_SIZE", $totalEntries);
-				
-				include("sorted_table.php");
+
+				include 'sorted_table.php';
 			}
 		}
 	} else {
@@ -202,7 +201,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $_GET['edit_user'] = $currentUser -> login;
   $editedUser = $currentUser;
   $editedEmployee = $currentUser -> aspects['hcd'];
- } else if (isset($_GET['edit_user'])) {
+ } elseif (isset($_GET['edit_user'])) {
   // The $editedUser object will be set here if a user is changing his own data. Otherwise, it will be created here for the user under edition
   if (!isset($editedUser)) {
     $editedUser = MagesterUserFactory :: factory($_GET['edit_user']); //new MagesterUser();
@@ -259,7 +258,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $form -> addElement('advcheckbox', 'delete_avatar', _DELETECURRENTAVATAR, null, 'class = "inputCheckbox"', array(0, 1));
 
  $form -> addElement('select', 'system_avatar' , _ORSELECTONEFROMLIST, $systemAvatars, "id = 'select_avatar'");
- 
+
  $form -> setMaxFileSize(FileSystemTree :: getUploadMaxSize() * 1024); //getUploadMaxSize returns size in KB
  // Distinguishing between personal and other user administrator
 
@@ -267,7 +266,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   if (!isset($_GET['op'])) {
    $_GET['op'] = 'account';
   }
-  $options = array( 
+  $options = array(
 //  	array('image' => '16x16/home.png', 'title' => _DASHBOARD, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=dashboard', 'selected' => isset($_GET['op']) && $_GET['op'] == 'dashboard' ? true : false),
   	array('image' => '16x16/generic.png', 'title' => _MYACCOUNT, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=account', 'selected' => isset($_GET['op']) && $_GET['op'] == 'account' ? true : false)
 );
@@ -293,11 +292,11 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   	array('image' => '16x16/generic.png', 'title' => _EDITUSER, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=account', 'selected' => isset($_GET['op']) && $_GET['op'] == 'account' ? true : false),
   	array('image' => '16x16/user_timeline.png', 'title' => _LEARNINGSTATUS, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=status' , 'selected' => isset($_GET['op']) && $_GET['op'] == 'status' ? true : false)
   );
-  
-  if ($editedUser->getType() == 'student') {
+
+  if ($_GET['edit_user'] && $editedUser->getType() == 'student') {
   	$options[] = array('image' => '16x16/do_pay.png', 'title' => __XPAY_VIEW_USER_STATEMENT, 'link' => basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_xpay&action=view_user_statement&xuser_login=' . $editedUser->user['login'], 'selected' => false);
   }
-  
+
   $titles = array ( "account" => array("edituser" => _EDITUSER,
             "profile" => _USERPROFILE,
             "mapped" => _ADDITIONALACCOUNTS,
@@ -349,7 +348,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
 
 
 
-		 include "file_manager.php";
+		 include 'file_manager.php';
 
 		 */
   if (!($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_USERSTATUS)) {
@@ -454,9 +453,9 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    if (isset($_GET['add_skill'])) {
     if ($_GET['insert'] == "true") {
      $editedEmployee -> addSkills($_GET['add_skill'], $_GET['specification']);
-    } else if ($_GET['insert'] == "false") {
+    } elseif ($_GET['insert'] == "false") {
      $editedEmployee -> removeSkills($_GET['add_skill']);
-    } else if (isset($_GET['addAll'])) {
+    } elseif (isset($_GET['addAll'])) {
      $skills = $editedEmployee -> getSkills();
      $skills = array_keys($skills);
      $allSkills = MagesterSkill::getAllSkills();
@@ -466,7 +465,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
        $editedEmployee -> addSkills($skill['skill_ID'], "");
       }
      }
-    } else if (isset($_GET['removeAll'])) {
+    } elseif (isset($_GET['removeAll'])) {
      $skills = $editedEmployee -> getSkills();
      $skills = array_keys($skills);
      $allSkills = MagesterSkill::getAllSkills();
@@ -476,7 +475,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
        $editedEmployee -> removeSkills($skill['skill_ID']);
       }
      }
-    } else if (isset($_GET['from_skillgap_test'])) {
+    } elseif (isset($_GET['from_skillgap_test'])) {
      $skillsToAdd = array();
      foreach ($_GET as $getkey => $getvalue) {
       if (strpos($getkey,"skill") === 0) {
@@ -494,34 +493,34 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      }
     }
     exit;
-   } else if (isset($_GET['add_group'])) {
+   } elseif (isset($_GET['add_group'])) {
     if ($_GET['insert'] == "true") {
      $editedUser -> addGroups($_GET['add_group']);
-    } else if ($_GET['insert'] == "false") {
+    } elseif ($_GET['insert'] == "false") {
      $editedUser -> removeGroups($_GET['add_group']);
-    } else if (isset($_GET['addAll'])) {
+    } elseif (isset($_GET['addAll'])) {
      $groups = eF_getTableDataFlat("groups", "id", "active=1");
      isset($_GET['filter']) ? $groups = eF_filterData($groups, $_GET['filter']) : null;
      $editedUser -> addGroups($groups['id']);
-    } else if (isset($_GET['removeAll'])) {
+    } elseif (isset($_GET['removeAll'])) {
      $groups = eF_getTableDataFlat("groups", "id", "active=1");
      isset($_GET['filter']) ? $groups = eF_filterData($groups, $_GET['filter']) : null;
      $editedUser -> removeGroups($groups['id']);
     }
     exit;
-   } else if (isset($_GET['setStatus'])) {
+   } elseif (isset($_GET['setStatus'])) {
     $editedUser -> setStatus($_GET['setStatus']);
     exit;
-   
-	} else if (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'usersclasses') {
+
+	} elseif (isset($_GET['postAjaxRequest']) && $_GET['postAjaxRequest'] == 'usersclasses') {
 		//var_dump($_GET);
 		//exit;
 		$editCourse = new MagesterCourse($_GET['edit_course']);
-		
+
   		$editCourse -> handlePostAjaxRequestForUsers();
   		$editCourse -> handlePostAjaxRequestForUsersClasses();
   		exit;
-  		
+
    }
   } catch (Exception $e) {
    handleAjaxExceptions($e);
@@ -594,7 +593,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
    $history = array_slice($history, $offset, $limit);
   }
-  if(!empty($history)) {
+  if (!empty($history)) {
    $smarty -> assign("T_HISTORY", $history);
   }
   $smarty -> display($_SESSION['s_type'].'.tpl');
@@ -607,7 +606,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  } else {
   $showUnassigned = false;
  }
- require_once("includes/personal/user_courses.php");
+ require_once 'includes/personal/user_courses.php';
  if (isset($_GET['ajax']) && $_GET['ajax'] == 'confirm_user') {
   try {
    if ($_GET['type'] == 'course') {
@@ -623,7 +622,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    echo $e -> getMessage().' ('.$e -> getCode().')';
   }
   exit;
- } else if (isset($_GET['ajax']) && $_GET['ajax'] == 'unconfirm_user') {
+ } elseif (isset($_GET['ajax']) && $_GET['ajax'] == 'unconfirm_user') {
   try {
    if ($_GET['type'] == 'course') {
     $course = new MagesterCourse($_GET['id']);
@@ -652,19 +651,19 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $form -> addRule('new_login', _THELOGIN.' &quot;'.($form -> exportValue('new_login')).'&quot; '._ALREADYEXISTS, 'checkNotExist', 'login');
 
 	$newPassword = MagesterUser::generateMD5Password(7);
-  
-	$form -> addElement('hidden', 'password_', _PASSWORD);  
+
+	$form -> addElement('hidden', 'password_', _PASSWORD);
 	$form->setDefaults(array('password_' => $newPassword));
 
 	$smarty -> assign("T_NEW_PASSWORD", $newPassword);
-/*  
+/*
   $form -> addElement('password', 'password_', _PASSWORD, 'autocomplete="off" class = "inputText" readonly="readonly"');
   $form -> addRule('password_', _THEFIELD.' '._PASSWORD.' '._ISMANDATORY, 'required', null, 'client');
   $form -> addRule('password_', str_replace("%x", $GLOBALS['configuration']['password_length'], _PASSWORDMUSTBE6CHARACTERS), 'minlength', $GLOBALS['configuration']['password_length'], 'client');
   $form -> addElement('password', 'passrepeat', _REPEATPASSWORD, 'class = "inputText " readonly="readonly"');
   $form -> addRule('passrepeat', _THEFIELD.' '._REPEATPASSWORD.' '._ISMANDATORY, 'required', null, 'client');
   $form -> addRule(array('password_', 'passrepeat'), _PASSWORDSDONOTMATCH, 'compare', null, 'client');
-*/  
+*/
  } elseif (isset($_GET['edit_user']) && eF_checkParameter($_GET['edit_user'], 'login')) {
    // In classic SysClass, only the administrator may change someone else's data
    ($currentUser -> getType() == "administrator") ? $post_target = "?ctg=users&edit_user=".$_GET['edit_user'] : $post_target = "?ctg=personal&op=account";
@@ -674,7 +673,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    $form -> addElement('password', 'password_', _PASSWORDLEAVEBLANK, 'autocomplete="off" class = "inputText"');
    $form -> addElement('password', 'passrepeat', _REPEATPASSWORD, 'class = "inputText "');
    $form -> addRule(array('password_', 'passrepeat'), _PASSWORDSDONOTMATCH, 'compare', null, 'client');
-   
+
  // CREATE USER DETAILS FIELDS
  	$form -> addElement('date', 'data_nascimento', _USER_DATA_NASCIMENTO);
 	$form -> addElement('text', 'rg', _USER_RG, 'class = "inputText"');
@@ -688,9 +687,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
 	$form -> addElement('text', 'estado', _USER_ESTADO, 'class = "inputText"');
 	$form -> addElement('text', 'telefone', _USER_TELEFONE, 'class = "inputText"');
 	$form -> addElement('text', 'celular', _USER_CELULAR, 'class = "inputText"');
-	
 
-	
   } else {
    $smarty -> assign("T_LDAP_USER", true);
   }
@@ -866,7 +863,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
 		'telefone'			=> $values['telefone'],
 		'celular'			=> $values['celular']
      );
-     
+
      MagesterUserDetails :: injectDetails($values['new_login'], $user_details);
      */
      // Assignment of user group
@@ -933,9 +930,9 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
 		'telefone'			=> $values['telefone'],
 		'celular'			=> $values['celular']
      );
-     
+
      MagesterUserDetails :: injectDetails($_GET['edit_user'], $user_details);
-    
+
     // mpaltas temporary solution: manual OO to keep $editedUser object cache consistent
     if ($editedUser -> user['user_type'] != $values['user_type']) {
      // the new instance will be of the updated type
@@ -965,9 +962,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
    }
   }
  }
- 
 
- 
  $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
  $renderer -> setRequiredTemplate(
        '{$html}{if $required}
@@ -977,18 +972,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  $form -> setRequiredNote(_REQUIREDNOTE);
  $form -> accept($renderer);
  $smarty -> assign('T_PERSONAL_DATA_FORM', $renderer -> toArray());
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
  // Put in the end to include possible updated values
  if ($init_job['branch_ID']) {
   $smarty -> assign("T_BRANCH_INFO", "href=\"" . $currentUser -> getType(). ".php?ctg=module_hcd&op=branches&edit_branch=" . $my_branch_id . "\"");
@@ -1006,7 +990,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      if (isset($_GET['delete'])) {
       unset($additionalAccounts[array_search($_GET['login'], $additionalAccounts)]);
      } else {
-      if ($_GET['login'] == $_SESSION['s_login']){
+      if ($_GET['login'] == $_SESSION['s_login']) {
        throw new Exception(_CANNOTMAPSAMEACCOUNT);
       }
       if (array_search($_GET['login'], $additionalAccounts)) {
@@ -1056,13 +1040,13 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
      $groups[$k]['partof'] = 0;
      if (in_array($groups[$k]['id'], array_keys($user_groups))) {
       $groups[$k]['partof'] = 1;
-     } else if (!$groups[$k]['active'] || $currentUser -> getType() != "administrator") {
+     } elseif (!$groups[$k]['active'] || $currentUser -> getType() != "administrator") {
       unset($groups[$k]);
      }
     }
     $dataSource = $groups;
     $tableName = 'groupsTable';
-    include("sorted_table.php");
+    include 'sorted_table.php';
    }
   } catch (Exception $e) {
    handleAjaxExceptions($e);

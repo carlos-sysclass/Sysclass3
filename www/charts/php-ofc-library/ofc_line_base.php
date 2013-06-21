@@ -8,37 +8,37 @@ class line_base
 		$this->text      = "Page views";
 		$tmp = 'font-size';
 		$this->$tmp = 10;
-		
+
 		$this->values    = array(9,6,7,9,5,7,6,9,7);
 	}
-	
+
 	function set_values( $v )
 	{
-		$this->values = $v;		
+		$this->values = $v;
 	}
-	
+
 	function set_width( $width )
 	{
-		$this->width = $width;		
+		$this->width = $width;
 	}
-	
+
 	function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
+
 	function set_dot_size( $size )
 	{
 		$tmp = 'dot-size';
-		$this->$tmp = $size;		
+		$this->$tmp = $size;
 	}
-	
+
 	function set_halo_size( $size )
 	{
 		$tmp = 'halo-size';
-		$this->$tmp = $size;		
+		$this->$tmp = $size;
 	}
-	
+
 	function set_key( $text, $font_size )
 	{
 		$this->text      = $text;

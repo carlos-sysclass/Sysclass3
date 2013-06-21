@@ -24,7 +24,7 @@ if (!isset($currentUser -> coreAccess['course_settings']) || $currentUser -> cor
 
 $options[] = array('image' => '16x16/calendar.png', 'title' => _SCHEDULING, 'link' => $_GET['op'] != 'course_scheduling' ? basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_scheduling' : 'javascript:void(0)', 'selected' => $_GET['op'] != 'course_scheduling' ? false : true);
 if (!isset($currentUser -> coreAccess['course_settings']) || $currentUser -> coreAccess['course_settings'] == 'change') {
-	
+
 	$options[] = array('image' => '16x16/export.png', 'title' => _EXPORT, 'link' => $_GET['op'] != 'export_course' ? basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=export_course' : 'javascript:void(0)', 'selected' => $_GET['op'] != 'export_course' ? false : true);
 	$options[] = array('image' => '16x16/import.png', 'title' => _IMPORT, 'link' => $_GET['op'] != 'import_course' ? basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=import_course' : 'javascript:void(0)', 'selected' => $_GET['op'] != 'import_course' ? false : true);
 }
@@ -78,7 +78,7 @@ if ($_GET['op'] == 'course_info') {
         exit;
     }
 
-} else if ($_GET['op'] == 'course_certificates') {
+} elseif ($_GET['op'] == 'course_certificates') {
   $load_editor = 1;
   $defaultConstraints = array('active' => true, 'instance' => false);
   //$users = $currentCourse -> getCourseUsers($constraints);
@@ -146,7 +146,7 @@ if ($_GET['op'] == 'course_info') {
    $renderer = prepareFormRenderer($form);
    $smarty -> assign('T_COMPLETE_COURSE_FORM', $renderer -> toArray());
 
-  } else if (isset($_GET['issue_certificate']) && in_array($_GET['issue_certificate'], array_keys($users = $currentCourse -> getCourseUsers($defaultConstraints)))) {
+  } elseif (isset($_GET['issue_certificate']) && in_array($_GET['issue_certificate'], array_keys($users = $currentCourse -> getCourseUsers($defaultConstraints)))) {
    try {
     $certificate = $currentCourse -> prepareCertificate($_GET['issue_certificate']);
     $currentCourse -> issueCertificate($_GET['issue_certificate'], $certificate);
@@ -156,7 +156,7 @@ if ($_GET['op'] == 'course_info') {
     $message = _PROBLEMISSUINGCERTIFICATE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
    }
-  } else if (isset($_GET['revoke_certificate']) && in_array($_GET['revoke_certificate'], array_keys($users = $currentCourse -> getCourseUsers($defaultConstraints)))) {
+  } elseif (isset($_GET['revoke_certificate']) && in_array($_GET['revoke_certificate'], array_keys($users = $currentCourse -> getCourseUsers($defaultConstraints)))) {
    try {
     $currentCourse -> revokeCertificate($_GET['revoke_certificate']);
     eF_redirect(''.basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&reset_popup=1&message='.urlencode(_CERTIFICATEREVOKED).'&message_type=success');
@@ -165,7 +165,7 @@ if ($_GET['op'] == 'course_info') {
     $message = _PROBLEMREVOKINGCERTIFICATE.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
    }
-  } else if (isset($_GET['auto_complete'])) {
+  } elseif (isset($_GET['auto_complete'])) {
    try {
     if ($currentCourse -> options['auto_complete']) {
      $currentCourse -> options['auto_complete'] = 0;
@@ -184,7 +184,7 @@ if ($_GET['op'] == 'course_info') {
     handleAjaxExceptions($e);
    }
    exit;
-  } else if (isset($_GET['auto_certificate'])) {
+  } elseif (isset($_GET['auto_certificate'])) {
    try {
     if ($currentCourse -> options['auto_certificate']) {
      $currentCourse -> options['auto_certificate'] = 0;
@@ -197,7 +197,7 @@ if ($_GET['op'] == 'course_info') {
     handleAjaxExceptions($e);
    }
    exit;
-  } else if (isset($_GET['CertificateAll'])) {
+  } elseif (isset($_GET['CertificateAll'])) {
    try {
     $users = $currentCourse -> getCourseUsers($defaultConstraints);
     foreach ($users as $key => $value) {
@@ -210,7 +210,7 @@ if ($_GET['op'] == 'course_info') {
     handleAjaxExceptions($e);
    }
    exit;
-  } else if (isset($_GET['set_all_completed'])) {
+  } elseif (isset($_GET['set_all_completed'])) {
    try {
     $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
     $constraints['condition'] = "uc.user_type in ('".implode("','", $studentRoles)."')";
@@ -267,14 +267,14 @@ if ($_GET['op'] == 'course_info') {
    $dataSource = $users;
    $tableName = $_GET['ajax'];
    $alreadySorted = true;
-   include("sorted_table.php");
+   include 'sorted_table.php';
   }
 
   if (isset($_GET['export']) && $_GET['export'] == 'rtf') {
    $result = eF_getTableData("users_to_courses", "*", "users_LOGIN = '".$_GET['user']."' and courses_ID = '".$_GET['course']."' limit 1");
    if (sizeof($result) == 1 || isset($_GET['preview'])) {
     $course = new MagesterCourse($_GET['course']);
-    if (!isset($_GET['preview'])){
+    if (!isset($_GET['preview'])) {
      $certificate_tpl_id_rtf = $course -> options['certificate_tpl_id_rtf'];
      if ($certificate_tpl_id_rtf <= 0) {
       $cfile = new MagesterFile(G_CERTIFICATETEMPLATEPATH."certificate1.rtf");
@@ -283,7 +283,7 @@ if ($_GET['op'] == 'course_info') {
      }
      $template_data = file_get_contents($cfile['path']);
      $issued_data = unserialize($result[0]['issued_certificate']);
-     if (sizeof($issued_data) > 1){
+     if (sizeof($issued_data) > 1) {
       $certificate = $template_data;
       $certificate = str_replace("#organization#", utf8ToUnicode($issued_data['organization']), $certificate);
       $certificate = str_replace("#user_name#", utf8ToUnicode($issued_data['user_name']), $certificate);
@@ -335,19 +335,19 @@ if ($_GET['op'] == 'course_info') {
     }
    }
   }
-   if(isset($_GET['export']) && $_GET['export'] == 'xml'){
+   if (isset($_GET['export']) && $_GET['export'] == 'xml') {
 
   $result = eF_getTableData("users_to_courses", "*", "users_LOGIN='".$_GET['user']."' and courses_ID='".$_GET['course']."' limit 1");
 
-  if(sizeof($result) == 1 || isset($_GET['preview'])){
+  if (sizeof($result) == 1 || isset($_GET['preview'])) {
 
    $course = new MagesterCourse($_GET['course']);
 
-   if(!isset($_GET['preview'])){
+   if (!isset($_GET['preview'])) {
 
     $certificate_tpl_id = $course->options['certificate_tpl_id'];
 
-    if($certificate_tpl_id <= 0){
+    if ($certificate_tpl_id <= 0) {
 
      $mainTemplate = eF_getTableData("certificate_templates", "id",
           "certificate_name='".CERTIFICATES_MAIN_TEMPLATE_NAME."'"); // XXX
@@ -410,8 +410,7 @@ if ($_GET['op'] == 'course_info') {
     header("Content-disposition: attachment; filename=".$fileNamePdf);
     echo $pdf->Output('', 'S');
     exit(0);
-   }
-   else{
+   } else {
     $tmp = explode('-', $_GET['certificate_tpl']);
     $certificate_tpl_id = $tmp[0];
     $templateData = eF_getTableData("certificate_templates", "certificate_xml", "id=".$certificate_tpl_id);
@@ -458,16 +457,16 @@ if ($_GET['op'] == 'course_info') {
   }
  }
 
-} else if ($_GET['op'] == 'format_certificate'){
+} elseif ($_GET['op'] == 'format_certificate') {
 
  if($currentCourse->options['certificate_export_method'] == 'rtf' && !isset($_GET['switch']))
   eF_redirect(basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=format_certificate_docx");
-} else if ($_GET['op'] == 'format_certificate_docx') {
-} else if($_GET['op'] == 'add_certificate_template' || $_GET['op'] == 'edit_certificate_template'){
-} else if($_GET['op'] == 'rename_certificate_template'){
-} else if($_GET['op'] == 'clone_certificate_template'){
-} else if($_GET['op'] == 'delete_certificate_template'){
-} else if ($_GET['op'] == 'course_rules') {
+} elseif ($_GET['op'] == 'format_certificate_docx') {
+} elseif ($_GET['op'] == 'add_certificate_template' || $_GET['op'] == 'edit_certificate_template') {
+} elseif ($_GET['op'] == 'rename_certificate_template') {
+} elseif ($_GET['op'] == 'clone_certificate_template') {
+} elseif ($_GET['op'] == 'delete_certificate_template') {
+} elseif ($_GET['op'] == 'course_rules') {
     $courseLessons = $currentCourse -> getCourseLessons();
     $rules_form = new HTML_QuickForm("course_rules_form", "post", basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=course_rules", "", null, true);
     if (isset($currentUser -> coreAccess['course_settings']) && $currentUser -> coreAccess['course_settings'] != 'change') {
@@ -502,7 +501,7 @@ if ($_GET['op'] == 'course_info') {
     $smarty -> assign("T_COURSE_RULES", $currentCourse -> rules);
     $smarty -> assign('T_COURSE', $currentCourse -> course);
     $smarty -> assign("T_COURSE_LESSONS", MagesterCourse::convertLessonObjectsToArrays($courseLessons));
-} else if ($_GET['op'] == 'course_order') {
+} elseif ($_GET['op'] == 'course_order') {
     $courseLessons = $currentCourse -> getCourseLessons();
     $smarty -> assign('T_COURSE', $currentCourse -> course);
     $smarty -> assign('T_COURSE_LESSONS', MagesterCourse::convertLessonObjectsToArrays($courseLessons));
@@ -526,7 +525,7 @@ if ($_GET['op'] == 'course_info') {
         }
         exit;
     }
-} else if ($_GET['op'] == 'course_scheduling') {
+} elseif ($_GET['op'] == 'course_scheduling') {
     $courseLessons = $currentCourse -> getCourseLessons();
     $smarty -> assign("T_CURRENT_COURSE", $currentCourse);
     try {
@@ -553,7 +552,7 @@ if ($_GET['op'] == 'course_info') {
        echo _ENDDATEMUSTBEBEFORESTARTDATE;
       }
       exit;
-     } else if (isset($_GET['delete_schedule']) && in_array($_GET['delete_schedule'], array_keys($courseLessons))) {
+     } elseif (isset($_GET['delete_schedule']) && in_array($_GET['delete_schedule'], array_keys($courseLessons))) {
       $lesson = new MagesterLesson($_GET['delete_schedule']);
       $currentCourse -> unsetLessonScheduleInCourse($lesson);
 /*
@@ -569,7 +568,7 @@ if ($_GET['op'] == 'course_info') {
     		eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
 */
       exit;
-     } else if (isset($_GET['set_schedule']) && $_GET['set_schedule'] == 0) {
+     } elseif (isset($_GET['set_schedule']) && $_GET['set_schedule'] == 0) {
       $fromTimestamp = mktime($_GET['from_Hour'], $_GET['from_Minute'], 0, $_GET['from_Month'], $_GET['from_Day'], $_GET['from_Year']);
       $toTimestamp = mktime($_GET['to_Hour'], $_GET['to_Minute'], 0, $_GET['to_Month'], $_GET['to_Day'], $_GET['to_Year']);
       if ($fromTimestamp < $toTimestamp) {
@@ -586,7 +585,7 @@ if ($_GET['op'] == 'course_info') {
        echo _ENDDATEMUSTBEBEFORESTARTDATE;
       }
       exit;
-     } else if (isset($_GET['delete_schedule']) && $_GET['delete_schedule'] == 0) {
+     } elseif (isset($_GET['delete_schedule']) && $_GET['delete_schedule'] == 0) {
       $currentCourse -> course['start_date'] = '';
       $currentCourse -> course['end_date'] = '';
       $currentCourse -> persist();
@@ -598,7 +597,7 @@ if ($_GET['op'] == 'course_info') {
     }
     $smarty -> assign("T_COURSE_LESSONS", MagesterCourse::convertLessonObjectsToArrays($courseLessons));
     //pr($courseLessons);
-} else if ($_GET['op'] == 'export_course') {
+} elseif ($_GET['op'] == 'export_course') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
@@ -623,7 +622,7 @@ if ($_GET['op'] == 'course_info') {
     $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
     $form -> accept($renderer);
     $smarty -> assign('T_EXPORT_COURSE_FORM', $renderer -> toArray());
-} else if ($_GET['op'] == 'import_course') {
+} elseif ($_GET['op'] == 'import_course') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
         eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
@@ -655,12 +654,12 @@ if ($_GET['op'] == 'course_info') {
     $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
     $form -> accept($renderer);
     $smarty -> assign('T_IMPORT_COURSE_FORM', $renderer -> toArray());
-} else if ($_GET['op'] == 'course_classes') {
-	
+} elseif ($_GET['op'] == 'course_classes') {
+
 	$classes = $currentCourse -> getCourseClasses($constraints);
 	$totalEntries = $currentCourse -> countCourseClasses($constraints);
 	$xcourseClasses = MagesterCourseClass :: convertClassesObjectsToArrays($classes);
-		
-	$smarty -> assign ("T_XCOURSE_CLASSES_LIST", $xcourseClasses);		  
+
+	$smarty -> assign ("T_XCOURSE_CLASSES_LIST", $xcourseClasses);
 
 }

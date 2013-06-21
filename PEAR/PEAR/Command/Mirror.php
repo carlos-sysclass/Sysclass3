@@ -85,6 +85,7 @@ packages within preferred_state ({config preferred_state}) will be downloaded'
     function &factory($a)
     {
         $a = &PEAR_Command::factory($a, $this->config);
+
         return $a;
     }
 
@@ -98,7 +99,7 @@ packages within preferred_state ({config preferred_state}) will be downloaded'
     * @param array $options the command options before the command
     * @param array $params the stuff after the command name
     * @return bool true if succesful
-    * @throw PEAR_Error 
+    * @throw PEAR_Error
     */
     function doDownloadAll($command, $options, $params)
     {
@@ -108,6 +109,7 @@ packages within preferred_state ({config preferred_state}) will be downloaded'
             $this->config->get('default_channel');
         if (!$reg->channelExists($channel)) {
             $this->config->set('default_channel', $savechannel);
+
             return $this->raiseError('Channel "' . $channel . '" does not exist');
         }
         $this->config->set('default_channel', $channel);
@@ -136,7 +138,7 @@ packages within preferred_state ({config preferred_state}) will be downloaded'
             $this->config->get('preferred_state'));
         $this->ui->outputData('Gathering release information, please wait...');
         /**
-         * Error handling not necessary, because already done by 
+         * Error handling not necessary, because already done by
          * the download command
          */
         PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
@@ -146,6 +148,7 @@ packages within preferred_state ({config preferred_state}) will be downloaded'
         if (PEAR::isError($err)) {
             $this->ui->outputData($err->getMessage());
         }
+
         return true;
     }
 

@@ -65,15 +65,13 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
 
 	 */
 
- 
   $baseUrl = "ctg=personal";
   $smarty -> assign("T_PERSONAL_CTG", 1);
-
 
   if (!isset($_GET['op'])) {
    $_GET['op'] = 'dashboard';
   }
-  
+
   $options = array(array('image' => '16x16/generic.png', 'title' => _EDITUSER, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=account', 'selected' => isset($_GET['op']) && $_GET['op'] == 'account' ? true : false),
   array('image' => '16x16/user_timeline.png', 'title' => _LEARNINGSTATUS, 'link' => basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=status' , 'selected' => isset($_GET['op']) && $_GET['op'] == 'status' ? true : false));
   $titles = array ( "account" => array("edituser" => _EDITUSER,
@@ -89,7 +87,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
              "groups" => _GROUPS,
   			"courseclasses" => _COURSESCLASSES,
            "certifications"=> _CERTIFICATIONS));
- 
+
  $smarty -> assign("T_OP",$_GET['op']);
  $smarty -> assign("T_TABLE_OPTIONS", $options);
  $smarty -> assign("T_TITLES", $titles);
@@ -109,5 +107,5 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  /** Get the skill list by ajax **/
  $edit_user= $_GET['edit_user'];
  $courseUser = $editedUser;
- 
+
 }

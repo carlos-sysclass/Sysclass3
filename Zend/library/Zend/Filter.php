@@ -48,6 +48,7 @@ class Zend_Filter implements Zend_Filter_Interface
     public function addFilter(Zend_Filter_Interface $filter)
     {
         $this->_filters[] = $filter;
+
         return $this;
     }
 
@@ -65,6 +66,7 @@ class Zend_Filter implements Zend_Filter_Interface
         foreach ($this->_filters as $filter) {
             $valueFiltered = $filter->filter($valueFiltered);
         }
+
         return $valueFiltered;
     }
 
@@ -106,6 +108,7 @@ class Zend_Filter implements Zend_Filter_Interface
                 } else {
                     $object = $class->newInstance();
                 }
+
                 return $object->filter($value);
             }
         }

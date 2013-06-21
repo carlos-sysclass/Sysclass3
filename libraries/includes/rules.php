@@ -32,7 +32,6 @@ $condition_types = array('all_units' => _PASSEDALLUNITS,
 $smarty -> assign("T_LESSON_CONDITIONS", $conditions);
 $smarty -> assign("T_CONDITION_TYPES", $condition_types);
 
-
 //$legalValues = array_keys($rules);
 //include "entity.php";
 

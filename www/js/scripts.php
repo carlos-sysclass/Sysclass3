@@ -24,11 +24,12 @@ function cacheHeaders($lastModifiedDate) {
 // This function uses a static variable to track the most recent
 // last modification time
 function lastModificationTime($time=0) {
-    static $last_mod ;
+    static $last_mod;
     if (!isset($last_mod) || $time > $last_mod) {
-        $last_mod = $time ;
+        $last_mod = $time;
     }
-    return $last_mod ;
+
+    return $last_mod;
 }
 
 lastModificationTime(filemtime(__FILE__));
@@ -40,10 +41,8 @@ header("Content-type: text/javascript; charset: UTF-8");
 ob_start ("ob_gzhandler");
 
 foreach (explode(",", $_GET['load']) as $value) {
-	
-	
+
     lastModificationTime(filemtime("$value.js"));
 	echo file_get_contents($value . ".js");
     echo "\n";
 }
-?>

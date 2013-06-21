@@ -20,7 +20,6 @@
  * @version    $Id: Ldap.php 11765 2008-10-09 01:53:43Z miallen $
  */
 
-
 /**
  * @category   Zend
  * @package    Zend_Ldap
@@ -65,6 +64,7 @@ class Zend_Ldap
             }
             $ret .= $ch;
         }
+
         return $ret;
     }
 
@@ -94,24 +94,24 @@ class Zend_Ldap
                     if ($ch === '=') {
                         $key = trim(substr($dn, $ko, $di - $ko));
                         if ($keys !== null) {
-                            $keys[] = $key; 
+                            $keys[] = $key;
                         }
                         $state = 2;
                         $vo = $di + 1;
-                    } else if ($ch === ',' || $ch === ';') {
+                    } elseif ($ch === ',' || $ch === ';') {
                         return false;
                     }
                     break;
                 case 2: // collect value
                     if ($ch === '\\') {
                         $state = 3;
-                    } else if ($ch === ',' || $ch === ';' || $ch === 0) {
+                    } elseif ($ch === ',' || $ch === ';' || $ch === 0) {
                         if ($vals !== null) {
                             $vals[] = trim(substr($dn, $vo, $di - $vo));
                         }
                         $state = 1;
                         $ko = $di + 1;
-                    } else if ($ch === '=') {
+                    } elseif ($ch === '=') {
                         return false;
                     }
                     break;
@@ -121,7 +121,7 @@ class Zend_Ldap
             }
         }
 
-        return $state === 1 && $ko > 0; 
+        return $state === 1 && $ko > 0;
     }
 
     /**
@@ -192,7 +192,7 @@ class Zend_Ldap
                 switch ($key) {
                     case 'port':
                     case 'accountCanonicalForm':
-                        $options[$key] = (int)$options[$key];
+                        $options[$key] = (int) $options[$key];
                         break;
                     case 'useSsl':
                     case 'bindRequiresDn':
@@ -229,6 +229,7 @@ class Zend_Ldap
         /**
          * @todo by reference?
          */
+
         return $this->_resource;
     }
 
@@ -299,7 +300,7 @@ class Zend_Ldap
             $accountDomainNameShort = $this->_options['accountDomainNameShort'];
             if ($accountDomainNameShort) {
                 $accountCanonicalForm = Zend_Ldap::ACCTNAME_FORM_BACKSLASH;
-            } else if ($accountDomainName) {
+            } elseif ($accountDomainName) {
                 $accountCanonicalForm = Zend_Ldap::ACCTNAME_FORM_PRINCIPAL;
             } else {
                 $accountCanonicalForm = Zend_Ldap::ACCTNAME_FORM_USERNAME;
@@ -308,7 +309,6 @@ class Zend_Ldap
 
         return $accountCanonicalForm;
     }
-
 
     /**
      * @return string A format string for building an LDAP search filter to match an account
@@ -332,6 +332,7 @@ class Zend_Ldap
             // is there a better way to detect this?
             return "(&(objectClass=user)(sAMAccountName=$aname))";
         }
+
         return "(&(objectClass=posixAccount)(uid=$aname))";
     }
 
@@ -369,6 +370,7 @@ class Zend_Ldap
             return $acctname;
         $acctname = $this->getCanonicalAccountName($acctname, Zend_Ldap::ACCTNAME_FORM_USERNAME);
         $acct = $this->_getAccount($acctname, array('dn'));
+
         return $acct['dn'];
     }
 
@@ -439,6 +441,7 @@ class Zend_Ldap
                     require_once 'Zend/Ldap/Exception.php';
                     throw new Zend_Ldap_Exception(null, 'Option required: accountDomainNameShort');
                 }
+
                 return "$accountDomainNameShort\\$uname";
             case Zend_Ldap::ACCTNAME_FORM_PRINCIPAL:
                 $accountDomainName = $this->_options['accountDomainName'];
@@ -449,6 +452,7 @@ class Zend_Ldap
                     require_once 'Zend/Ldap/Exception.php';
                     throw new Zend_Ldap_Exception(null, 'Option required: accountDomainName');
                 }
+
                 return "$uname@$accountDomainName";
             default:
                 /**
@@ -520,9 +524,10 @@ class Zend_Ldap
                         $name = @ldap_next_attribute($resource, $entry, $berptr);
                     }
                     @ldap_free_result($result);
+
                     return $acct;
                 }
-            } else if ($count == 0) {
+            } elseif ($count == 0) {
                 /**
                  * @see Zend_Ldap_Exception
                  */
@@ -568,6 +573,7 @@ class Zend_Ldap
             @ldap_unbind($this->_resource);
         }
         $this->_resource = null;
+
         return $this;
     }
 
@@ -742,7 +748,7 @@ class Zend_Ldap
              * @see Zend_Ldap_Exception
              */
             require_once 'Zend/Ldap/Exception.php';
-    
+
             switch (Zend_Ldap_Exception::getLdapCode($this)) {
                 case Zend_Ldap_Exception::LDAP_SERVER_DOWN:
                     /* If the error is related to establishing a connection rather than binding,
@@ -750,7 +756,7 @@ class Zend_Ldap
                      */
                     $message = $this->_connectString;
             }
-    
+
             $zle = new Zend_Ldap_Exception($this->_resource, $message);
         }
         $this->disconnect();

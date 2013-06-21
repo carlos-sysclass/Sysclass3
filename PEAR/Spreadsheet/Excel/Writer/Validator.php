@@ -132,6 +132,7 @@ class Spreadsheet_Excel_Writer_Validator
         if (PEAR::isError($this->_formula1)) {
             return $this->_formula1;
         }
+
         return true;
     }
 
@@ -147,6 +148,7 @@ class Spreadsheet_Excel_Writer_Validator
         if (PEAR::isError($this->_formula2)) {
             return $this->_formula2;
         }
+
         return true;
     }
 
@@ -226,5 +228,3 @@ class Spreadsheet_Excel_Writer_Validator
       //$this->_formula1 = ...;
    }
 }*/
-
-?>

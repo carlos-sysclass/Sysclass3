@@ -20,12 +20,10 @@
  * @version    $Id: NonPersistent.php 8862 2008-03-16 15:36:00Z thomas $
  */
 
-
 /**
  * @see Zend_Auth_Storage_Interface
  */
 require_once 'Zend/Auth/Storage/Interface.php';
-
 
 /**
  * Non-Persistent Auth Storage
@@ -46,7 +44,6 @@ class Zend_Auth_Storage_NonPersistent implements Zend_Auth_Storage_Interface
      * Holds the actual auth data
      */
     protected $_data;
-
 
     /**
      * Returns true if and only if storage is empty

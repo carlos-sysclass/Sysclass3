@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_DocProps
  *
@@ -128,7 +127,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 					'hlink'		=> '0000FF',
 					'folHlink'	=> '800080',
 			);
-			
+
 	/**
 	 * Write theme to XML format
 	 *
@@ -476,8 +475,6 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 							$objWriter->endElement();
 
 						$objWriter->endElement();
-
-
 
 						// a:effectStyleLst
 						$objWriter->startElement('a:effectStyleLst');
@@ -839,7 +836,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 		$objWriter->writeAttribute('typeface', '');
 		$objWriter->endElement();
 
-		foreach($fontSet as $fontScript => $typeface) {
+		foreach ($fontSet as $fontScript => $typeface) {
 			$objWriter->startElement('a:font');
 				$objWriter->writeAttribute('script', $fontScript);
 				$objWriter->writeAttribute('typeface', $typeface);
@@ -857,7 +854,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 	 */
 	private function _writeColourScheme($objWriter)
 	{
-		foreach(self::$_colourScheme as $colourName => $colourValue) {
+		foreach (self::$_colourScheme as $colourName => $colourValue) {
 			$objWriter->startElement('a:'.$colourName);
 
 				$objWriter->startElement('a:srgbClr');
@@ -866,6 +863,6 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 
 			$objWriter->endElement();
 		}
-						
+
 	}
 }

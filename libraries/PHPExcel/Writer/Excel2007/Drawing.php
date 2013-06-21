@@ -25,7 +25,6 @@
  * @version    1.7.7, 2012-05-19
  */
 
-
 /**
  * PHPExcel_Writer_Excel2007_Drawing
  *
@@ -81,7 +80,6 @@ class PHPExcel_Writer_Excel2007_Drawing extends PHPExcel_Writer_Excel2007_Writer
 					}
 				}
 			}
-
 
 		$objWriter->endElement();
 
@@ -567,7 +565,6 @@ class PHPExcel_Writer_Excel2007_Drawing extends PHPExcel_Writer_Excel2007_Writer
 
 		$objWriter->endElement();
 	}
-
 
 	/**
 	 * Get an array of all drawings

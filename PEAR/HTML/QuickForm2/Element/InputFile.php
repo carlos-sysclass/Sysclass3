@@ -221,6 +221,7 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
                 $value = $ds->getUpload($this->getName());
                 if (null !== $value) {
                     $this->value = $value;
+
                     return;
                 }
             }
@@ -267,8 +268,10 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
                 }
             }
             $this->error = isset($size)? sprintf($errorMessage, $size): $errorMessage;
+
             return false;
         }
+
         return parent::validate();
     }
 
@@ -286,4 +289,3 @@ class HTML_QuickForm2_Element_InputFile extends HTML_QuickForm2_Element_Input
         );
     }
 }
-?>

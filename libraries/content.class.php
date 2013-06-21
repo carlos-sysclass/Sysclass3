@@ -1,33 +1,20 @@
 <?php
-
-
 /**
-
  * File for content classes
-
  *
-
  * @package SysClass
-
 */
 //This file cannot be called directly, only included.
 if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME']) {
-    exit;
+	exit;
 }
 /**
-
  * Magester content exceptions
-
  *
-
  * This class extends Exception to provide the exceptions related to content
-
  * @package SysClass
-
  *
-
  * @since 3.5.0
-
  */
 class MagesterContentException extends Exception
 {
@@ -170,7 +157,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    function __construct($array) {
+    function __construct($array)
+    {
         if (!is_array($array)) {
             if (eF_checkParameter($array, 'id')) {
                 $result = eF_getTableData("content", "*", "id=$array");
@@ -212,7 +200,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function convertToScorm($array) {
+    public function convertToScorm($array)
+    {
         $result = eF_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "*", "c.content_ID=".$array['id']." AND c.organization_content_ID = o.content_ID");
         $array['package_ID'] = $result[0]['content_ID'];
         $array['objectives_global_to_system'] = $result[0]['objectives_global_to_system'];
@@ -268,6 +257,7 @@ class MagesterUnit extends ArrayObject
             $result = eF_getTableData("scorm_sequencing_rule", "*", "scorm_sequencing_rules_ID = ".$value['id']);
             $array['rules'][$key]['rule'] = $result;
         }
+
         return $array;
     }
     /**
@@ -297,7 +287,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function persist() {
+    public function persist()
+    {
         $fields = array('name' => $this['name'],
                         'data' => $this['data'],
                         'parent_content_ID' => $this['parent_content_ID'],
@@ -315,6 +306,7 @@ class MagesterUnit extends ArrayObject
             unset($fields['data']);
         }
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::CONTENT_MODIFICATION, "lessons_ID" => $this['lessons_ID'], "entity_ID" => $this['id'], "entity_name" => $this['name']));
+
         return eF_updateTableData("content", $fields, "id=".$this['id']);
     }
     /**
@@ -352,7 +344,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function setSearchKeywords() {
+    public function setSearchKeywords()
+    {
         MagesterSearch :: removeText('content', $this['id'], 'data'); //Refresh the search keywords
         MagesterSearch :: insertText($this['data'], $this['id'], "content", "data");
         MagesterSearch :: removeText('content', $this['id'], 'title'); //Refresh the search keywords
@@ -383,7 +376,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function delete() {
+    public function delete()
+    {
         if ($this['ctg_type'] == 'tests' || $this['ctg_type'] == 'feedback') {
             $result = eF_getTableData("tests", "id, content_ID", "content_ID=".$this['id']);
             if (sizeof($result) > 0) {
@@ -427,7 +421,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function activate() {
+    public function activate()
+    {
         $this['active'] = 1;
         $this -> persist();
         if ($this['ctg_type'] == 'tests') {
@@ -467,7 +462,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function deactivate() {
+    public function deactivate()
+    {
         if ($this['ctg_type'] == 'tests') {
             $result = eF_getTableData("tests", "id", "content_ID=".$this['id']);
             if (sizeof($result) > 0) {
@@ -513,7 +509,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function getQuestions($returnObjects = false) {
+    public function getQuestions($returnObjects = false)
+    {
         $questions = array();
         $result = eF_getTableData("questions", "*", "content_ID=".$this['id']);
         if (sizeof($result) > 0) {
@@ -521,6 +518,7 @@ class MagesterUnit extends ArrayObject
                 $returnObjects ? $questions[$value['id']] = QuestionFactory :: factory($value) : $questions[$value['id']] = $value;
             }
         }
+
         return $questions;
     }
     /**
@@ -554,28 +552,31 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function isTest(){
-        if (parent::offsetGet('ctg_type') == "tests"){
+    public function isTest()
+    {
+        if (parent::offsetGet('ctg_type') == "tests") {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-    public function toXML(){
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' ."\n";
-        $xml .= "\t" . '<unit>';
-        $xml .= "\t\t<name>".parent::offsetGet('name')."</name>\n";
-        $xml .= "\t\t<ctg_type>".parent::offsetGet('ctg_type')."</ctg_type>\n";
-        $xml .= "\t</unit>";
+	public function toXML()
+	{
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>' ."\n";
+		$xml .= "\t" . '<unit>';
+		$xml .= "\t\t<name>".parent::offsetGet('name')."</name>\n";
+		$xml .= "\t\t<ctg_type>".parent::offsetGet('ctg_type')."</ctg_type>\n";
+		$xml .= "\t</unit>";
+
         return $xml;
-    }
-    public function fromXML($xmlstr){
-        $xml = new SimpleXMLElement($xmlstr);
-        parent::offsetSet('name', (string)$xml->unit->name);
-        parent::offsetSet('ctg_type', (string)$xml->unit->ctg_type);
-    }
-    /**
+	}
+	public function fromXML($xmlstr)
+	{
+		$xml = new SimpleXMLElement($xmlstr);
+		parent::offsetSet('name', (string) $xml->unit->name);
+		parent::offsetSet('ctg_type', (string) $xml->unit->ctg_type);
+	}
+	/**
 
      * Get the id of prerequisite unit for this unit
 
@@ -606,11 +607,12 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function getPrerequisite(){
-        if (parent::offsetGet('previous_content_ID') != "0"){
+    public function getPrerequisite()
+    {
+        if (parent::offsetGet('previous_content_ID') != "0") {
             return parent::offsetGet('previous_content_ID');
-        }
-        else
+        } else
+
             return false;
     }
    /**
@@ -640,7 +642,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public function getFiles($returnObjects = false) {
+    public function getFiles($returnObjects = false)
+    {
         $data = parent :: offsetGet('data');
         preg_match_all("/view_file\.php\?file=(\d+)/", $data, $matchesId);
         $filesId = $matchesId[1];
@@ -652,6 +655,7 @@ class MagesterUnit extends ArrayObject
         foreach ($filesPath as $file) {
             $returnObjects ? $files[] = new MagesterFile(G_LESSONSPATH.html_entity_decode($file)) : $files[] = G_LESSONSPATH.html_entity_decode($file);
         }
+
         return $files;
     }
     /**
@@ -683,7 +687,8 @@ class MagesterUnit extends ArrayObject
      * @access public
 
      */
-    public static function createUnit($fields = array()) {
+    public static function createUnit($fields = array())
+    {
         if (!isset($fields['lessons_ID'])) {
             return false;
         }
@@ -704,6 +709,7 @@ class MagesterUnit extends ArrayObject
         $unit = new MagesterUnit($result[0]);
         MagesterSearch :: insertText($fields['name'], $unit['id'], "content", "title");
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::CONTENT_CREATION, "lessons_ID" => $fields['lessons_ID'], "entity_ID" => $unit['id'], "entity_name" => $fields['name']));
+
         return $unit;
     }
 }
@@ -795,7 +801,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    function __construct($lesson, $data = false) {
+    function __construct($lesson, $data = false)
+    {
         if ($lesson instanceof MagesterLesson) {
             $lessonId = $lesson -> lesson['id'];
         } elseif (!eF_checkParameter($lesson, 'id')) {
@@ -852,11 +859,12 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function reset() {
+    public function reset()
+    {
         if ($this -> data) {
             $result = eF_getTableData(
-            	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)", 
-            	"*, data != '' as has_data, group_concat(cc.classe_id SEPARATOR ',') as content_classes", 
+            	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)",
+            	"*, data != '' as has_data, group_concat(cc.classe_id SEPARATOR ',') as content_classes",
             	"lessons_ID = '".$this -> lessonId."'",
             	"",
             	"c.id"
@@ -865,8 +873,8 @@ class MagesterContentTree extends MagesterTree
             $fields = eF_getTableFields("content");
             unset($fields[array_search('data', $fields)]);
             $result = eF_getTableData(
-            	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)", 
-            	implode(",", $fields).", group_concat(cc.classe_id SEPARATOR ',') as content_classes, data != '' as has_data", 
+            	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)",
+            	implode(",", $fields).", group_concat(cc.classe_id SEPARATOR ',') as content_classes, data != '' as has_data",
             	"lessons_ID = '".$this -> lessonId."'",
             	"",
             	"c.id"
@@ -874,19 +882,20 @@ class MagesterContentTree extends MagesterTree
         }
         if (sizeof($result) == 0) {
             $this -> tree = new RecursiveArrayIterator(array());
+
             return;
         }
-        
+
         $scorm2004Units = array();
         $units = array();
         foreach ($result as $unit) {
-        	
+
         	if (!empty($unit['content_classes'])) {
         		$unit['classes'] = explode(',', $unit['content_classes']);
         	} else {
         		$unit['classes'] = array();
         	}
-        	
+
             $units[$unit['id']] = $unit;
             // LOAD UNIT CLASS
         }
@@ -964,7 +973,7 @@ class MagesterContentTree extends MagesterTree
         $this -> immediateDescendants = array();
         $this -> nodeParents = array();
         foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($tree), RecursiveIteratorIterator :: SELF_FIRST)) as $key => $value) {
-            foreach(array_keys((array)$value) as $member) {
+            foreach (array_keys((array) $value) as $member) {
                 !is_numeric($member) OR $this -> immediateDescendants[$key][] = $member;
             }
             if (isset($this -> nodeParents[$value['parent_content_ID']]) && $this -> nodeParents[$value['parent_content_ID']]) {
@@ -976,7 +985,8 @@ class MagesterContentTree extends MagesterTree
         //pr($this -> nodeParents);
         //pr($this -> immediateDescendants);
     }
-    public function convertUnitsTo2004($units, $scorm2004Units) {
+    public function convertUnitsTo2004($units, $scorm2004Units)
+    {
         $scormContentIds = implode(",", $scorm2004Units);
   $result = eF_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "c.content_ID, c.organization_content_ID, o.objectives_global_to_system, o.shared_data_global_to_system", "c.content_ID in ($scormContentIds) AND c.organization_content_ID = o.content_ID");
   foreach ($result as $value) {
@@ -1087,6 +1097,7 @@ class MagesterContentTree extends MagesterTree
         }
 
 */
+
         return $units;
     }
     /**
@@ -1116,7 +1127,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function removeNode($removeId) {
+    public function removeNode($removeId)
+    {
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator($this -> tree, RecursiveIteratorIterator :: SELF_FIRST)); //Get an iterator for the current tree. This iterator returns only whole unit arrays and not unit members separately (such as id, timestamp etc)
         $iterator -> rewind(); //Initialize iterator
         while ($iterator -> valid() && $iterator -> key() != $removeId) { //Forward iterator index until you reach the designated element, which has an index equal to the unit id that will be removed
@@ -1196,7 +1208,8 @@ class MagesterContentTree extends MagesterTree
      * @todo implement $parentUnit/$preciousUnit functionality, when not present inside $unit
 
      */
-    public function insertNode($unit, $parentUnit = false, $previousUnit = false) {
+    public function insertNode($unit, $parentUnit = false, $previousUnit = false)
+    {
         if (!isset($unit['id'])) {
             if (!isset($unit['previous_content_ID'])) {
                 $unit['parent_content_ID'] ? $children = $this -> getNodeChildren($unit['parent_content_ID']) : $children = $this -> tree; //Get the new unit's parent children. If the parent unit is 0, then we will append it to the end of the tree
@@ -1218,6 +1231,7 @@ class MagesterContentTree extends MagesterTree
             $iterator -> current() -> persist(); //Store value to the database
         }
         $this -> reset(); //Rebuild content tree, so that the unit may appear to the right place
+
         return $this -> seekNode($unit['id']);
     }
     /**
@@ -1241,11 +1255,13 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function appendUnit($unit) {
+    public function appendUnit($unit)
+    {
         $lastUnit = $this -> getLastNode();
         $unit['parent_content_ID'] = 0;
         $unit['previous_content_ID'] = $lastUnit['id'];
         $newUnit = $this -> insertNode($unit);
+
         return $newUnit;
     }
     /**
@@ -1279,7 +1295,8 @@ class MagesterContentTree extends MagesterTree
      * @todo Correct it!
 
      */
-    public function getCurrentNode($queryUnit = false){
+    public function getCurrentNode($queryUnit = false)
+    {
         $queryUnit === false ? $unitId = $this -> currentUnitId : $unitId = $queryUnit;
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
@@ -1289,6 +1306,7 @@ class MagesterContentTree extends MagesterTree
         if ($iterator -> valid()) {
             $flatTree[] = $this -> filterOutChildren($iterator -> current());
         }
+
         return $flatTree;
     }
     /**
@@ -1324,7 +1342,8 @@ class MagesterContentTree extends MagesterTree
      * @todo Correct it!
 
      */
-    public function getNextNodes($queryUnit = false) {
+    public function getNextNodes($queryUnit = false)
+    {
         $queryUnit === false ? $unitId = $this -> currentUnitId : $unitId = $queryUnit; //If queryUnit is not specified, use the current unit
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
@@ -1341,8 +1360,10 @@ class MagesterContentTree extends MagesterTree
                 $flatTree[] = $this -> filterOutChildren($iterator -> current());
                 $iterator -> next();
             }
+
             return $flatTree;
         } else { //The unit was apparently the last unit; return an empty array
+
             return array();
         }
     }
@@ -1377,7 +1398,8 @@ class MagesterContentTree extends MagesterTree
      * @todo Correct it!
 
      */
-    public function getPreviousNodes($queryUnit = false) {
+    public function getPreviousNodes($queryUnit = false)
+    {
         $queryUnit === false ? $unitId = $this -> currentUnitId : $unitId = $queryUnit; //If queryUnit is not specified, use the current unit
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST)); //Create iterators for the tree
         $iterator -> rewind(); //Initialize iterator
@@ -1386,9 +1408,11 @@ class MagesterContentTree extends MagesterTree
             $iterator -> next();
         }
         if ($iterator -> valid()) { //We reached the designated unit, so return
+
             return $flatTree;
         } else {
             if (!isset($flatTree)) { //If iterator value is not valid, and $flatTree is not set, this means that the designated unit was the first, so return empty array
+
                 return array();
             } else { //If $flatTree is set and iterator is invalid, the unit speify did not exist
                 throw new MagesterContentException(_UNITDOESNOTEXIST.': '.$unitId, MagesterContentException :: UNIT_NOT_EXISTS);
@@ -1424,7 +1448,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function getRules($queryUnit = false) {
+    public function getRules($queryUnit = false)
+    {
         if ($this -> rules === false) {
             $contentIds = array();
             foreach (new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree)), 'id') as $key => $id) {
@@ -1449,6 +1474,7 @@ class MagesterContentTree extends MagesterTree
                     $unitRules[$key] = $rule;
                 }
             }
+
             return $unitRules;
         } else {
             return $this -> rules;
@@ -1483,7 +1509,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function deleteRules($rules) {
+    public function deleteRules($rules)
+    {
         if ($this -> rules === false) { //Initialize rules, if you haven't done so
             $this -> getRules();
         }
@@ -1496,6 +1523,7 @@ class MagesterContentTree extends MagesterTree
                 unset($this -> rules[$ruleId]);
             }
         }
+
         return $this -> rules;
     }
     /**
@@ -1515,7 +1543,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function checkRules($queryUnit, $seenContent) {
+    public function checkRules($queryUnit, $seenContent)
+    {
         $rules = $this -> getRules($queryUnit);
         $allow = true;
         foreach ($rules as $id => $rule) {
@@ -1566,6 +1595,7 @@ class MagesterContentTree extends MagesterTree
                 default: break;
             }
         }
+
         return true;
     }
     /**
@@ -1599,7 +1629,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function getComments($queryUnit = false) {
+    public function getComments($queryUnit = false)
+    {
         if ($queryUnit && eF_checkParameter($queryUnit, 'id')) {
             $result = eF_getTableData("comments", "*", "content_ID = ".$queryUnit);
         } else {
@@ -1618,6 +1649,7 @@ class MagesterContentTree extends MagesterTree
         foreach ($result as $value) {
             $comments[$value['id']] = $value;
         }
+
         return $comments;
     }
     /**
@@ -1653,7 +1685,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function deleteComments($comments) {
+    public function deleteComments($comments)
+    {
         if (!is_array($comments)) {
             $comments = array($comments);
         }
@@ -1701,7 +1734,8 @@ class MagesterContentTree extends MagesterTree
      * @static
 
      */
-    public function repairTree() {
+    public function repairTree()
+    {
         $units = eF_getTableData("content", "*", "lessons_ID=".$this -> lessonId); //Get all lesson units
         $previous = 0;
         foreach ($units as $key => $value) {
@@ -1738,13 +1772,16 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function markSeenNodes($user) {
+    public function markSeenNodes($user)
+    {
         $user instanceof MagesterUser ? $login = $user -> user['login'] : $login = $user;
         $seenContent = MagesterStats :: getStudentsSeenContent($this -> lessonId, $login);
-        
+
         $seenNodes = array_keys($seenContent[$this -> lessonId][$login]);
         $resultScorm = eF_getTabledataFlat("scorm_data", "content_ID, lesson_status", "users_LOGIN='$login'");
-        $resultScorm = array_combine($resultScorm['content_ID'], $resultScorm['lesson_status']);
+        if (is_array($resultScorm['content_ID'])) {
+        	$resultScorm = array_combine($resultScorm['content_ID'], $resultScorm['lesson_status']);
+        }
         $result = eF_getTableData("content c, completed_tests ct, tests t", "t.content_ID, ct.status, ct.timestamp", "ct.status != 'deleted' and ct.archive = 0 and c.id = t.content_ID and c.lessons_ID = ".$this -> lessonId." and ct.tests_ID = t.id and ct.users_LOGIN='$login'");
         foreach ($result as $value) {
             $resultTests[$value['content_ID']] = $value['status'];
@@ -1752,11 +1789,11 @@ class MagesterContentTree extends MagesterTree
         }
         $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST));
         foreach ($iterator as $key => $value) {
-            in_array($key, $seenNodes) || $resultScorm[$key] == 'completed' || $resultScorm[$key] == 'passed' ? $value['seen'] = 1 : $value['seen'] = 0;
+           	(is_array($seenNodes) && in_array($key, $seenNodes)) || $resultScorm[$key] == 'completed' || $resultScorm[$key] == 'passed' ? $value['seen'] = 1 : $value['seen'] = 0;
             if ($resultScorm[$key]) {
              $resultScorm[$key] == 'incomplete' ? $value['incomplete'] = 1 : $value['incomplete'] = 0;
              $resultScorm[$key] == 'failed' ? $value['failed'] = 1 : $value['failed'] = 0;
-            } else if ($resultTests[$key]) {
+            } elseif ($resultTests[$key]) {
              $resultTests[$key] == 'incomplete' ? $value['incomplete'] = $resultTestsTimes[$key] : $value['incomplete'] = 0;
              $resultTests[$key] == 'failed' ? $value['failed'] = 1 : $value['failed'] = 0;
             }
@@ -1795,7 +1832,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function copyTest($testId, $targetUnit = false, $copyQuestions = true) {
+    public function copyTest($testId, $targetUnit = false, $copyQuestions = true)
+    {
         $oldTest = new MagesterTest($testId);
         $oldUnit = $oldTest -> getUnit();
         $oldUnit['data'] = $oldTest -> test['description']; //Hack in order to successfully copy files. It will be removed when we implement the new copy/export framework
@@ -1814,7 +1852,7 @@ class MagesterContentTree extends MagesterTree
            unset($questionData[$value['id']]['id']);
           }
          }
-         foreach ($testQuestions as $key => $oldQuestion){
+         foreach ($testQuestions as $key => $oldQuestion) {
           $questionData[$key]['content_ID'] = $newUnit -> offsetGet('id');
           $questionData[$key]['lessons_ID'] = $newUnit -> offsetGet('lessons_ID');
           $questionData[$key]['text'] = $this -> copyQuestionFiles($questionData[$key]['text'], $oldUnit['lessons_ID']);
@@ -1825,9 +1863,11 @@ class MagesterContentTree extends MagesterTree
          }
          $newTest -> addQuestions($newQuestions);
         }
+
         return $newUnit;
     }
- public function copyQuestionFiles($data, $sourceId) {
+ public function copyQuestionFiles($data, $sourceId)
+ {
   //$data = $question['text'];
   preg_match_all("/view_file\.php\?file=(\d+)/", $data, $matchesId);
         $filesId = $matchesId[1];
@@ -1841,7 +1881,7 @@ class MagesterContentTree extends MagesterTree
         }
         $lesson = new MagesterLesson($this -> lessonId);
         //$data   = $unit -> offsetGet('data');
-        foreach ($files as $file){
+        foreach ($files as $file) {
          try {
           $sourceFile = new MagesterFile($file);
           $sourceFileOffset = preg_replace("#".G_LESSONSPATH."#", "", $sourceFile['directory']);
@@ -1901,17 +1941,20 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function copyUnit($sourceUnit, $targetUnit = false, $previousContentId = false) {
+    public function copyUnit($sourceUnit, $targetUnit = false, $previousContentId = false)
+    {
         if (!($sourceUnit instanceof MagesterUnit)) {
             $sourceUnit = new MagesterUnit($sourceUnit);
         }
         if ($sourceUnit -> offsetGet('ctg_type') == 'tests') {
             $tid = eF_getTableData("tests, content", "tests.id as id", "tests.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id'));
             $testUnit = $this -> copyTest($tid[0]['id'], $targetUnit);
+
             return $testUnit;
-        } else if ($sourceUnit -> offsetGet('ctg_type') == "scorm") {
+        } elseif ($sourceUnit -> offsetGet('ctg_type') == "scorm") {
             $sid = eF_getTableData("scorm_data, content", "scorm_data.id", "scorm_data.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id')." and scorm_data.users_LOGIN is null");
             $scormUnit = $this -> copyScorm($sid[0]['id'], $sourceUnit, $targetUnit);
+
             return $scormUnit;
         } else {
             if ($targetUnit) {
@@ -1926,11 +1969,12 @@ class MagesterContentTree extends MagesterTree
             $children = $sourceTree -> getNodeChildren($sourceUnit); //$children is a RecursiveArrayIterator
             while ($children -> valid()) {
                 $childUnit = $children -> current();
-                if ($childUnit instanceof MagesterUnit){
+                if ($childUnit instanceof MagesterUnit) {
                     $this -> copyUnit($childUnit, $newParentUnit);
                 }
                 $children -> next();
             }
+
             return $newParentUnit;
         }
     }
@@ -1973,7 +2017,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function copySimpleUnit($sourceUnit, $targetUnit = false, $previousUnit = false, $copyFiles = true, $copyQuestions = true) {
+    public function copySimpleUnit($sourceUnit, $targetUnit = false, $previousUnit = false, $copyFiles = true, $copyQuestions = true)
+    {
      if (!($sourceUnit instanceof MagesterUnit)) {
       $sourceUnit = new MagesterUnit($sourceUnit);
      }
@@ -1984,12 +2029,12 @@ class MagesterContentTree extends MagesterTree
         if ($targetUnit) {
             if ($targetUnit instanceOf MagesterUnit) {
                 $newUnit['parent_content_ID'] = $targetUnit -> offsetGet('id');
-            } else if (eF_checkParameter($targetUnit, 'id')) {
+            } elseif (eF_checkParameter($targetUnit, 'id')) {
                 $newUnit['parent_content_ID'] = $targetUnit;
             }
             if ($previousUnit instanceOf MagesterUnit) {
                 $newUnit['previous_content_ID'] = $previousUnit -> offsetGet('id');
-            } else if (eF_checkParameter($previousUnit, 'id')) {
+            } elseif (eF_checkParameter($previousUnit, 'id')) {
                 $newUnit['previous_content_ID'] = $previousUnit;
             }
             $unit = $this -> insertNode($newUnit);
@@ -2000,7 +2045,7 @@ class MagesterContentTree extends MagesterTree
             $files = $unit -> getFiles();
             $lesson = new MagesterLesson($this -> lessonId);
             $data = $unit -> offsetGet('data');
-            foreach ($files as $file){
+            foreach ($files as $file) {
                 try {
                     $sourceFile = new MagesterFile($file);
                     $sourceFileOffset = preg_replace("#".G_LESSONSPATH."#", "", $sourceFile['directory']);
@@ -2039,6 +2084,7 @@ class MagesterContentTree extends MagesterTree
     eF_insertTableData("questions",$questions[$k]);
    }
   }
+
         return $unit;
     }
     /**
@@ -2074,29 +2120,34 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function copyScorm($sid, $sourceUnit, $targetUnit){
+    public function copyScorm($sid, $sourceUnit, $targetUnit)
+    {
         $newUnit = $this -> copySimpleUnit($sourceUnit, $targetUnit, false);
         $data = eF_getTableData("scorm_data", "*", "id = ".$sid);
         $scorm_array = $data[0];
         unset($scorm_array['id']);
         $scorm_array['content_ID'] = $newUnit -> offsetGet('id');
         eF_insertTableData("scorm_data", $scorm_array);
+
         return $newUnit;
     }
-    public function fromXMLNode($node){
-        for ($i = 0; $i < sizeof($node->content->unit); $i++){
+    public function fromXMLNode($node)
+    {
+        for ($i = 0; $i < sizeof($node->content->unit); $i++) {
             importUnitFromXML($xml->unit[$i], 0);
         }
         $this -> reset();
     }
-    public function fromXML($xmlfile){
+    public function fromXML($xmlfile)
+    {
         $xml = simplexml_load_file($xmlfile);
-        for ($i = 0; $i < sizeof($xml->content->unit); $i++){
+        for ($i = 0; $i < sizeof($xml->content->unit); $i++) {
             importUnitFromXML($xml->unit[$i], 0);
         }
         $this -> reset();
     }
-    private function importUnitFromXML($unitelement, $parentid){
+    private function importUnitFromXML($unitelement, $parentid)
+    {
         $fields = array();
         $fields['name'] = (string) $unitelement->name;
         $fields['data'] = (string) $unitelement->data;
@@ -2105,7 +2156,7 @@ class MagesterContentTree extends MagesterTree
         $uid = ef_insertTableData("content", $fields);
         MagesterSearch :: insertText($fields['name'], $uid, "content", "title");
         MagesterSearch :: insertText($fields['data'], $uid, "content", "data");
-        if ($fields['ctg_type'] == 'tests'){
+        if ($fields['ctg_type'] == 'tests') {
             $testfields = array();
             $testfields['content_id'] = (string) $unitelement->id;
             $testfields['duration'] = (string) $unitelement->test[0]->duration;
@@ -2119,7 +2170,7 @@ class MagesterContentTree extends MagesterTree
             $tid = ef_insertTableData("tests", $testfields);
         }
         //import the subunits
-        for ($i = 0; $i < sizeof($unitelement->unit); $i++){
+        for ($i = 0; $i < sizeof($unitelement->unit); $i++) {
             importUnitFromXML($unitelement->unit[$i]);
         }
     }
@@ -2198,15 +2249,15 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function toHTML($iterator = false, $treeId = false, $options = array(), $scormState = array()) {
+    public function toHTML($iterator = false, $treeId = false, $options = array(), $scormState = array())
+    {
   !isset($options['hideFeedback']) ? $options['hideFeedback'] = false : null;
         !isset($options['onclick']) ? $options['onclick'] = false : null;
         !isset($options['custom']) ? $options['custom'] = false : null;
         !isset($options['tree_root']) ? $options['tree_root'] = false : null;
         isset($options['selectedNode']) OR $options['selectedNode'] = '';
         !isset($options['include_root_table']) ? $options['include_root_table'] = true : null;
-        
-        
+
   //Decide whether the tree is draggable
   isset($options['drag']) && $options['drag'] ? $nodrag = 'false' : $nodrag = 'true';
   //Should the tree expand
@@ -2278,7 +2329,7 @@ class MagesterContentTree extends MagesterTree
             //Set the display style according to whether the unit has data
             if ($current['data'] == '' && $current['ctg_type'] == 'scorm' && $scorm2004) {
                 $linkClass[] = 'treeHeader';
-            } else if ($current['data'] == '' && $current['ctg_type'] != 'tests' && $current['ctg_type'] != 'feedback') {
+            } elseif ($current['data'] == '' && $current['ctg_type'] != 'tests' && $current['ctg_type'] != 'feedback') {
                 $linkClass[] = 'treeNoContent';
                 $fullName.= ' ('._EMPTYUNIT.')';
                 $targetLink = 'javascript:void(0)';
@@ -2301,7 +2352,7 @@ class MagesterContentTree extends MagesterTree
             //Set the class name, based on the unit status
             if ($current['ctg_type'] == 'scorm') {
                 $ctgType = 'theory';
-            } else if ($current['ctg_type'] == 'scorm_test') {
+            } elseif ($current['ctg_type'] == 'scorm_test') {
                 $ctgType = 'tests';
             } else {
                 $ctgType = $current['ctg_type'];
@@ -2309,36 +2360,28 @@ class MagesterContentTree extends MagesterTree
             if (isset($current['incomplete']) && $current['incomplete']) {
                 $liClass[] = $ctgType.'_incomplete';
                 $tooltip[] = '('._TESTSTARTEDAT.': '.formatTimestamp($current['incomplete'], 'time').')';
-            } else if (isset($current['failed']) && $current['failed']) {
+            } elseif (isset($current['failed']) && $current['failed']) {
                 $liClass[] = $ctgType.'_failed';
-            } else if ((isset($current['seen']) && $current['seen']) || isset($current['completed']) && $current['completed']) {
+            } elseif ((isset($current['seen']) && $current['seen']) || isset($current['completed']) && $current['completed']) {
                 $liClass[] = $ctgType.'_passed';
             } else {
                 $liClass[] = $ctgType;
    }
    /*
 
-
-
             if ((isset($current['seen']) && $current['seen']) ||(isset($current['completed']) && $current['completed']) || (isset($current['passed']) && $current['passed'])) {
 
 				$liClass[] = $ctgType.'_passed';
 
-
-
-            } else if (isset($current['incomplete']) && $current['incomplete'] && !$current['failed']) {
+            } elseif (isset($current['incomplete']) && $current['incomplete'] && !$current['failed']) {
 
 				$liClass[] = $ctgType.'_incomplete';
 
 				$tooltip[] = '('._TESTSTARTEDAT.': '.formatTimestamp($current['incomplete'], 'time').')';
 
-
-
-            } else if (isset($current['failed']) && $current['failed']) {
+            } elseif (isset($current['failed']) && $current['failed']) {
 
 				$liClass[] = $ctgType.'_failed';
-
-
 
             } else {
 
@@ -2349,7 +2392,7 @@ class MagesterContentTree extends MagesterTree
  */
             if ($options['onclick']) {
                 $onclick = $options['onclick'];
-            } else if (in_array('treeUnclickable', $linkClass)) {
+            } elseif (in_array('treeUnclickable', $linkClass)) {
                 $onclick = 'return false';
             } else {
                 $onclick = '';
@@ -2374,7 +2417,7 @@ class MagesterContentTree extends MagesterTree
         if ($showHide) {
             $str .= '
                 <div id = "expand_collapse_div'.$treeId.'" '.(isset($expand) ? 'expand = "'.$expand.'"' : null).'>
-                    <b><a href = "javascript:void(0)" onclick = "treeObj.setTreeId(\''.$treeId.'\');treeObj.collapseAll();">'._HIDEALL.'</a></b> 
+                    <b><a href = "javascript:void(0)" onclick = "treeObj.setTreeId(\''.$treeId.'\');treeObj.collapseAll();">'._HIDEALL.'</a></b>
                     <b><a href = "javascript:void(0)" onclick = "treeObj.setTreeId(\''.$treeId.'\');treeObj.expandAll();" >'._SHOWALL.'</a></b><br/>
                 </div>';
         }
@@ -2396,8 +2439,8 @@ class MagesterContentTree extends MagesterTree
     	    $str .= '
 	            </td></tr>
             </table>';
-        }                    
-                
+        }
+
         return $str;
     }
     /**
@@ -2439,7 +2482,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function toHTMLSelectOptions($iterator = false) {
+    public function toHTMLSelectOptions($iterator = false)
+    {
         if (!$iterator) {
             $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1)); //Default iterator excludes non-active units
         }
@@ -2452,6 +2496,7 @@ class MagesterContentTree extends MagesterTree
                 $optionsArray[$value['id']] = $value['name'];
             }
         }
+
         return $optionsArray;
     }
     /**
@@ -2493,7 +2538,8 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
-    public function toPathStrings($iterator = false) {
+    public function toPathStrings($iterator = false)
+    {
         if (!$iterator) {
             $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1)); //Default iterator excludes non-active units
         }
@@ -2505,6 +2551,7 @@ class MagesterContentTree extends MagesterTree
             }
             $pathStrings[$value['id']] = implode("&nbsp;&raquo;&nbsp;", array_reverse($pathStrings[$value['id']]));
         }
+
         return $pathStrings;
     }
     /**
@@ -2528,13 +2575,15 @@ class MagesterContentTree extends MagesterTree
      * @access public
 
      */
- public function getNodeAncestors($node, $refresh = false) {
+ public function getNodeAncestors($node, $refresh = false)
+ {
   $node instanceof ArrayObject ? $nodeId = $node['id'] : $nodeId = $node;
   if (isset($this -> cacheNodeAncestors[$nodeId]) && $this -> cacheNodeAncestors[$nodeId] && !$refresh) {
    return $this -> cacheNodeAncestors[$nodeId];
   } else {
    $parents = parent :: getNodeAncestors($nodeId);
    $this -> cacheNodeAncestors[$nodeId] = $parents;
+
    return $parents;
   }
  }
@@ -2559,7 +2608,8 @@ class MagesterContentTree extends MagesterTree
 	 * @access public
 
 	 */
-    public function createEmptyUnits($structure, $lessons_ID) {
+    public function createEmptyUnits($structure, $lessons_ID)
+    {
         foreach ($structure as $key => $value) {
             $sizes[] = sizeof($value);
         }
@@ -2583,6 +2633,7 @@ class MagesterContentTree extends MagesterTree
              }
          }
         }
+
         return $treeStructure;
     }
 }
@@ -2612,8 +2663,10 @@ class MagesterVisitableAndEmptyFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         $current = $this -> current();
+
         return $current instanceof ArrayObject && ($current['active'] == 1 && $current['publish'] == 1);
     }
 }
@@ -2643,9 +2696,11 @@ class MagesterVisitableFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         $current = $this -> current();
         $scorm2004 = in_array($current['scorm_version'], MagesterContentTree::$scorm2004Versions);
+
         return $current instanceof ArrayObject && ($current['active'] == 1 && $current['publish'] == 1 && ($current['data'] != '' || $current['ctg_type'] == 'tests' || $scorm2004 || $current['ctg_type'] == 'feedback'));
     }
 }
@@ -2675,7 +2730,8 @@ class MagesterSCORMFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') == 'scorm' || $this -> current() -> offsetGet('ctg_type') == 'scorm_test') {
             return true;
         }
@@ -2707,7 +2763,8 @@ class MagesterNoSCORMFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') != 'scorm' && $this -> current() -> offsetGet('ctg_type') != 'scorm_test') {
             return true;
         }
@@ -2739,7 +2796,8 @@ class MagesterTestsFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') == 'tests' || $this -> current() -> offsetGet('ctg_type') == 'scorm_test') {
             return true;
         }
@@ -2771,7 +2829,8 @@ class MagesterNoTestsFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') != 'tests') {
             return true;
         }
@@ -2803,7 +2862,8 @@ class MagesterFeedbackFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') == 'feedback') {
             return true;
         }
@@ -2835,7 +2895,8 @@ class MagesterNoFeedbackFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') != 'feedback') {
             return true;
         }
@@ -2867,7 +2928,8 @@ class MagesterTheoryFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') == 'theory' || $this -> current() -> offsetGet('ctg_type') == 'scorm') {
             return true;
         }
@@ -2899,7 +2961,8 @@ class MagesterExampleFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') == 'examples') {
             return true;
         }
@@ -2931,27 +2994,30 @@ class MagesterContentFilterIterator extends FilterIterator
      * @access public
 
      */
-    function accept() {
+    function accept()
+    {
         if ($this -> current() -> offsetGet('ctg_type') != 'tests' && $this -> current() -> offsetGet('ctg_type') != 'scorm_test') {
             return true;
         }
     }
 }
 
-class MagesterContentCourseClassFilterIterator extends FilterIterator {
-
+class MagesterContentCourseClassFilterIterator extends FilterIterator
+{
 	protected $courseClass;
-	
-    public function __construct($it, $courseClass = 0) {
+
+    public function __construct($it, $courseClass = 0)
+    {
 		parent::__construct($it);
 		$this -> courseClass = $courseClass;
     }
-    
-    function accept() {
-    	//var_dump($this -> courseClass);
-    	//var_dump($this -> current() -> offsetGet('classes'));
+
+    function accept()
+    {
+	//    var_dump($this -> courseClass);
+	//    var_dump($this -> current() -> offsetGet('classes'));
     	$content_classes = $this -> current() -> offsetGet('classes');
-    	return 
+    	return
     		count($content_classes) == 0 ||
     		in_array($this -> courseClass, $content_classes);
     }
@@ -2970,8 +3036,10 @@ class MagesterContentCourseClassFilterIterator extends FilterIterator {
  */
 class MagesterRemoveDataFilterIterator extends FilterIterator
 {
- function accept() {
+ function accept()
+ {
   $this -> current() -> offsetSet('data', '');
+
   return true;
  }
 }
@@ -3009,11 +3077,13 @@ class MagesterInArrayFilterIterator extends FilterIterator
      * @param array $filter
 
      */
-    function __construct($it, $filter) {
+    function __construct($it, $filter)
+    {
         parent::__construct($it);
         !is_array($filter) ? $this -> filter = array() : $this -> filter = $filter;;
     }
- function accept() {
+ function accept()
+ {
   return in_array($this -> key(), $this -> filter);
  }
 }

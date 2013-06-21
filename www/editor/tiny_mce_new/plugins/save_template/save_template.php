@@ -13,7 +13,7 @@ if ($_POST['templateName']) {
 
  $filename = $dir.'/'.$_POST['templateName'].'.html';
  $templateContent = $_POST['templateContent'];
- if(file_exists($filename) === false) {
+ if (file_exists($filename) === false) {
   $ok = file_put_contents($filename, $templateContent);
   chmod($filename, 0644);
   if ($ok !== false) {

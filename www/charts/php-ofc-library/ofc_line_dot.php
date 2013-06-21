@@ -7,12 +7,12 @@ class dot_value
 		$this->value = $value;
 		$this->colour = $colour;
 	}
-	
+
 	function set_colour( $colour )
 	{
 		$this->colour = $colour;
 	}
-	
+
 	function set_size( $size )
 	{
 		$this->size = $size;

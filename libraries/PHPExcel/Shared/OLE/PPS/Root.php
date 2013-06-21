@@ -19,7 +19,6 @@
 //
 // $Id: Root.php,v 1.9 2005/04/23 21:53:49 dufuz Exp $
 
-
 /**
 * Class for creating Root PPS's for OLE containers
 *
@@ -78,7 +77,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 
 		if (is_resource($filename)) {
 		    $this->_FILEH_ = $filename;
-		} else if ($filename == '-' || $filename == '') {
+		} elseif ($filename == '-' || $filename == '') {
 			if ($this->_tmp_dir === NULL)
 				$this->_tmp_dir = PHPExcel_Shared_File::sys_get_temp_dir();
 			$this->_tmp_filename = tempnam($this->_tmp_dir, "OLE_PPS_Root");
@@ -271,7 +270,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 					//if (isset($raList[$i]->_PPS_FILE)) {
 					//	$iLen = 0;
 					//	fseek($raList[$i]->_PPS_FILE, 0); // To The Top
-					//	while($sBuff = fread($raList[$i]->_PPS_FILE, 4096)) {
+					//	while ($sBuff = fread($raList[$i]->_PPS_FILE, 4096)) {
 					//		$iLen += strlen($sBuff);
 					//		fwrite($FILE, $sBuff);
 					//	}

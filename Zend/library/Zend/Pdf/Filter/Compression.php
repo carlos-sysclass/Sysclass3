@@ -17,10 +17,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
 /** Zend_Pdf_Filter_Interface */
 require_once 'Zend/Pdf/Filter/Interface.php';
-
 
 /**
  * ASCII85 stream filter
@@ -51,13 +49,12 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
         // breaking ties in order a,b,c.
         if ($pa <= $pb && $pa <= $pc) {
             return $a;
-        } else if ($pb <= $pc) {
+        } elseif ($pb <= $pc) {
             return $b;
         } else {
             return $c;
         }
     }
-
 
     /**
      * Get Predictor decode param value
@@ -76,6 +73,7 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
                 $predictor != 13  &&  $predictor != 14  &&   $predictor != 15) {
                 throw new Zend_Pdf_Exception('Invalid value of \'Predictor\' decode param - ' . $predictor . '.' );
             }
+
             return $predictor;
         } else {
             return 1;
@@ -97,6 +95,7 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
             if ($colors != 1  &&  $colors != 2  &&  $colors != 3  &&  $colors != 4) {
                 throw new Zend_Pdf_Exception('Invalid value of \'Color\' decode param - ' . $colors . '.' );
             }
+
             return $colors;
         } else {
             return 1;
@@ -117,9 +116,10 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
 
             if ($bitsPerComponent != 1  &&  $bitsPerComponent != 2  &&
                 $bitsPerComponent != 4  &&  $bitsPerComponent != 8  &&
-                $bitsPerComponent != 16 ) {
+                $bitsPerComponent != 16) {
                 throw new Zend_Pdf_Exception('Invalid value of \'BitsPerComponent\' decode param - ' . $bitsPerComponent . '.' );
             }
+
             return $bitsPerComponent;
         } else {
             return 8;
@@ -141,7 +141,6 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
         }
     }
 
-
     /**
      * Convert stream data according to the filter params set before encoding.
      *
@@ -150,7 +149,8 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
      * @return string
      * @throws Zend_Pdf_Exception
      */
-    protected static function _applyEncodeParams($data, $params) {
+    protected static function _applyEncodeParams($data, $params)
+    {
         $predictor        = self::_getPredictorValue($params);
         $colors           = self::_getColorsValue($params);
         $bitsPerComponent = self::_getBitsPerComponentValue($params);
@@ -178,16 +178,16 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
             $predictor == 12 ||  /** Up prediction      */
             $predictor == 13 ||  /** Average prediction */
             $predictor == 14     /** Paeth prediction   */
-            ) {
+) {
             $predictor -= 10;
 
-            if($bitsPerComponent == 16) {
+            if ($bitsPerComponent == 16) {
                 throw new Zend_Pdf_Exception("PNG Prediction with bit depth greater than 8 not yet supported.");
             }
 
             $bitsPerSample  = $bitsPerComponent*$colors;
-            $bytesPerSample = (int)(($bitsPerSample + 7)/8);           // (int)ceil(...) emulation
-            $bytesPerRow    = (int)(($bitsPerSample*$columns + 7)/8);  // (int)ceil(...) emulation
+            $bytesPerSample = (int) (($bitsPerSample + 7)/8);           // (int) ceil(...) emulation
+            $bytesPerRow    = (int) (($bitsPerSample*$columns + 7)/8);  // (int) ceil(...) emulation
             $rows           = strlen($data)/$bytesPerRow;
             $output         = '';
             $offset         = 0;
@@ -268,6 +268,7 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
                     }
                     break;
             }
+
             return $output;
         }
 
@@ -281,7 +282,8 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
      * @param array $params
      * @return string
      */
-    protected static function _applyDecodeParams($data, $params) {
+    protected static function _applyDecodeParams($data, $params)
+    {
         $predictor        = self::_getPredictorValue($params);
         $colors           = self::_getColorsValue($params);
         $bitsPerComponent = self::_getBitsPerComponentValue($params);
@@ -372,6 +374,7 @@ abstract class Zend_Pdf_Filter_Compression implements Zend_Pdf_Filter_Interface
                         throw new Zend_Pdf_Exception('Unknown prediction tag.');
                 }
             }
+
             return $output;
         }
 

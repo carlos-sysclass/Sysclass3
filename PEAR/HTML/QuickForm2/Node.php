@@ -297,7 +297,6 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     */
     abstract public function getType();
 
-
    /**
     * Returns the element's name
     *
@@ -316,7 +315,6 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     * @return   HTML_QuickForm2_Node
     */
     abstract public function setName($name);
-
 
    /**
     * Returns the element's id
@@ -354,10 +352,10 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
         } else {
             self::storeId($id);
         }
-        $this->attributes['id'] = (string)$id;
+        $this->attributes['id'] = (string) $id;
+
         return $this;
     }
-
 
    /**
     * Returns the element's value without filters applied
@@ -374,6 +372,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     public function getValue()
     {
         $value = $this->getRawValue();
+
         return is_null($value)? null: $this->applyFilters($value);
     }
 
@@ -396,9 +395,9 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
         if (isset($this->data['label'])) {
             return $this->data['label'];
         }
+
         return null;
     }
-
 
    /**
     * Sets the element's label(s)
@@ -409,6 +408,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     public function setLabel($label)
     {
         $this->data['label'] = $label;
+
         return $this;
     }
 
@@ -425,8 +425,9 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     {
         $old = $this->frozen;
         if (null !== $freeze) {
-            $this->frozen = (bool)$freeze;
+            $this->frozen = (bool) $freeze;
         }
+
         return $old;
     }
 
@@ -446,8 +447,9 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     {
         $old = $this->persistent;
         if (null !== $persistent) {
-            $this->persistent = (bool)$persistent;
+            $this->persistent = (bool) $persistent;
         }
+
         return $old;
     }
 
@@ -545,6 +547,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
         }
 
         $this->rules[] = array($rule, $runAt);
+
         return $rule;
     }
 
@@ -565,6 +568,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
                 break;
             }
         }
+
         return $rule;
     }
 
@@ -605,6 +609,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
                 return true;
             }
         }
+
         return false;
     }
 
@@ -640,6 +645,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
                 $rule[0]->validate();
             }
         }
+
         return !strlen($this->error);
     }
 
@@ -651,7 +657,8 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
     */
     public function setError($error = null)
     {
-        $this->error = (string)$error;
+        $this->error = (string) $error;
+
         return $this;
     }
 
@@ -704,6 +711,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
             );
         }
         $this->filters[] = array($callback, $options);
+
         return $this;
     }
 
@@ -734,6 +742,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
             );
         }
         $this->recursiveFilters[] = array($callback, $options);
+
         return $this;
     }
 
@@ -764,7 +773,7 @@ abstract class HTML_QuickForm2_Node extends HTML_Common2
         foreach ($this->filters as $filter) {
             self::applyFilter($value, null, $filter);
         }
+
         return $value;
     }
 }
-?>

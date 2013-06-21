@@ -40,7 +40,6 @@ abstract class Zend_Pdf_FileParserDataSource
 {
   /**** Instance Variables ****/
 
-
     /**
      * Total size in bytes of the data source.
      * @var integer
@@ -53,10 +52,7 @@ abstract class Zend_Pdf_FileParserDataSource
      */
     protected $_offset = 0;
 
-
-
   /**** Public Interface ****/
-
 
   /* Abstract Methods */
 
@@ -110,7 +106,6 @@ abstract class Zend_Pdf_FileParserDataSource
      */
     abstract public function readAllBytes();
 
-
   /* Object Magic Methods */
 
     /**
@@ -125,7 +120,6 @@ abstract class Zend_Pdf_FileParserDataSource
     {
         return get_class($this);
     }
-
 
   /* Accessors */
 
@@ -149,7 +143,6 @@ abstract class Zend_Pdf_FileParserDataSource
     {
         return $this->_size;
     }
-
 
   /* Primitive Methods */
 

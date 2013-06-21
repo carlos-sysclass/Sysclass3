@@ -18,15 +18,22 @@
 				{/foreach}
 				
 				<div style="float: left;">
-					<button class="form-button icon-save openInvoiceDialog" type="submit">
+					<button class="form-button icon-save" id ="xpay-do-payment-button" type="submit">
 						<img width="29" height="29" src="images/transp.png">
-						<span>{$smarty.const.__XPAY_DO_PAY}</span>
+						{if $T_XPAY_INVOICE_IS_PAID}
+							<span>{$smarty.const.__XPAY_VIEW_COPY}</span>
+						{else}
+							<span>{$smarty.const.__XPAY_DO_PAY}</span>
+						{/if}
 					</button>
 				</div>					
-				
 			</div>
 			
 			{include file="`$T_XPAY_BASEDIR`templates/includes/user.course.options.tpl"}
+			<div class="clear"></div>
+			
+			<div id="xpay-submodule-options-container">sdfsdf</div>
+			<div class="clear"></div>
 			
 			<table class="style1">
 				<thead>
@@ -63,7 +70,7 @@
 					 	<td align="center">#filter:currency:{$invoice.total_reajuste}#
 						 	{if $invoice.applied_rules|@count > 0}
 						 		<a class="applied_rules_link" href="javascript: void(0);">?</a>
-					 			<div class="applied_rules" id="applied_rule_{$invoice_index}"> 
+					 			<div class="hover_tooltip applied_rules" id="applied_rule_{$invoice_index}"> 
 								 	<ul>
 									 	{foreach name="rule_it" item="applied_rule" from=$invoice.applied_rules}
 									 		<li>
@@ -95,6 +102,7 @@
 					</tr>
 				</tfoot>
 			</table>
+
 	<!-- 
 			<div class="form-field clear buttons">
 				<button class="" type="submit" name="{$T_XPAY_METHOD_FORM.xpay_submit.name}" value="{$T_XPAY_METHOD_FORM.xpay_submit.value}">

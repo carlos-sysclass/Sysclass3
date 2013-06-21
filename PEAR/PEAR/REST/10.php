@@ -122,6 +122,7 @@ class PEAR_REST_10
                 }
             }
         }
+
         return $this->_returnDownloadURL($base, $package, $release, $info, $found);
     }
 
@@ -248,6 +249,7 @@ class PEAR_REST_10
                 break;
             }
         }
+
         return $this->_returnDownloadURL($base, $package, $release, $info, $found);
     }
 
@@ -269,13 +271,13 @@ class PEAR_REST_10
         if (!$found) {
             $release = $info['r'][0];
         }
-        $pinfo = $this->_rest->retrieveCacheFirst($base . 'p/' . strtolower($package) . '/' . 
+        $pinfo = $this->_rest->retrieveCacheFirst($base . 'p/' . strtolower($package) . '/' .
             'info.xml');
         if (PEAR::isError($pinfo)) {
             return PEAR::raiseError('Package "' . $package .
                 '" does not have REST info xml available');
         }
-        $releaseinfo = $this->_rest->retrieveCacheFirst($base . 'r/' . strtolower($package) . '/' . 
+        $releaseinfo = $this->_rest->retrieveCacheFirst($base . 'r/' . strtolower($package) . '/' .
             $release['v'] . '.xml');
         if (PEAR::isError($releaseinfo)) {
             return PEAR::raiseError('Package "' . $package . '" Version "' . $release['v'] .
@@ -336,7 +338,7 @@ class PEAR_REST_10
             $deprecated = false;
         }
         if ($found) {
-            return 
+            return
                 array('version' => $releaseinfo['v'],
                       'info' => $packagexml,
                       'package' => $releaseinfo['p']['_content'],
@@ -369,6 +371,7 @@ class PEAR_REST_10
         if (!is_array($packagelist['p'])) {
             $packagelist['p'] = array($packagelist['p']);
         }
+
         return $packagelist['p'];
     }
 
@@ -418,6 +421,7 @@ class PEAR_REST_10
                 $inf = $this->_rest->retrieveData($base . 'p/' . strtolower($package) . '/info.xml');
                 if (PEAR::isError($inf)) {
                     PEAR::popErrorHandling();
+
                     return $inf;
                 }
                 if ($searchpackage) {
@@ -525,6 +529,7 @@ class PEAR_REST_10
             $ret[$package] = $info;
         }
         PEAR::popErrorHandling();
+
         return $ret;
     }
 
@@ -581,7 +586,7 @@ class PEAR_REST_10
             if (!$found) {
                 continue;
             }
-            $relinfo = $this->_rest->retrieveCacheFirst($base . 'r/' . strtolower($package) . '/' . 
+            $relinfo = $this->_rest->retrieveCacheFirst($base . 'r/' . strtolower($package) . '/' .
                 $release['v'] . '.xml');
             if (PEAR::isError($relinfo)) {
                 return $relinfo;
@@ -592,6 +597,7 @@ class PEAR_REST_10
                     'filesize' => $relinfo['f'],
                 );
         }
+
         return $ret;
     }
 
@@ -601,6 +607,7 @@ class PEAR_REST_10
         $pinfo = $this->_rest->retrieveData($base . 'p/' . strtolower($package) . '/info.xml');
         if (PEAR::isError($pinfo)) {
             PEAR::popErrorHandling();
+
             return PEAR::raiseError('Unknown package: "' . $package . '" (Debug: ' .
                 $pinfo->getMessage() . ')');
         }
@@ -657,6 +664,7 @@ class PEAR_REST_10
         } else {
             $deprecated = false;
         }
+
         return array(
             'name' => $pinfo['n'],
             'channel' => $pinfo['c'],
@@ -688,7 +696,7 @@ class PEAR_REST_10
         if ($include) {
             $i--;
         }
+
         return array_slice($states, $i + 1);
     }
 }
-?>

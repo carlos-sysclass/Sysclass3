@@ -23,9 +23,9 @@ try {
    if (isset($_GET['skill'])) {
                 if ($_GET['insert'] == 'true') {
                     $currentJob -> assignSkill($_GET['add_skillID'], $_GET['apply_to_all_jd']);
-                } else if ($_GET['insert'] == 'false') {
+                } elseif ($_GET['insert'] == 'false') {
                     $currentJob -> removeSkill($_GET['add_skillID'], $_GET['apply_to_all_jd']);
-                } else if (isset($_GET['addAll'] )) {
+                } elseif (isset($_GET['addAll'] )) {
                     $skills = $currentJob -> getSkills();
                     isset($_GET['filter']) ? $skills = eF_filterData($skills,$_GET['filter']) : null;
                     foreach ($skills as $skill) {
@@ -33,7 +33,7 @@ try {
                             $currentJob -> assignSkill($skill['skill_ID'], $_GET['apply_to_all_jd']);
                         }
                     }
-                } else if (isset($_GET['removeAll'] )) {
+                } elseif (isset($_GET['removeAll'] )) {
                     $skills = $currentJob -> getSkills();
                     isset($_GET['filter']) ? $skills = eF_filterData($skills,$_GET['filter']) : null;
                     foreach ($skills as $skill) {
@@ -42,41 +42,41 @@ try {
                         }
                     }
                 }
-            } else if (isset($_GET['lesson'])) {
+            } elseif (isset($_GET['lesson'])) {
                 if ($_GET['insert'] == 'true') {
                     $currentJob -> associateLessonsToJob($_GET['add_lessonID'], $_GET['apply_to_all_jd']);
-                } else if ($_GET['insert'] == 'false') {
+                } elseif ($_GET['insert'] == 'false') {
                     $currentJob -> removeLessonsFromJob($_GET['add_lessonID'], $_GET['apply_to_all_jd']);
-                } else if (isset($_GET['addAll'] )) {
+                } elseif (isset($_GET['addAll'] )) {
                  $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.lessons_ID is null') + createConstraintsFromSortedTable();
                     $lessons = $currentJob -> getJobLessonsIncludingUnassigned($constraints);
                     isset($_GET['filter']) ? $lessons = eF_filterData($lessons,$_GET['filter']) : null;
 
                     $currentJob -> associateLessonsToJob($lessons, $_GET['apply_to_all_jd']);
-                } else if (isset($_GET['removeAll'] )) {
+                } elseif (isset($_GET['removeAll'] )) {
                  $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
                     $lessons = $currentJob -> getJobLessons($constraints);
                     isset($_GET['filter']) ? $lessons = eF_filterData($lessons,$_GET['filter']) : null;
                     $currentJob -> removeLessonsFromJob($lessons, $_GET['apply_to_all_jd']);
                 }
-            } else if (isset($_GET['course'])) {
+            } elseif (isset($_GET['course'])) {
                 if ($_GET['insert'] == 'true') {
                     $currentJob -> associateCoursesToJob($_GET['add_courseID'], $_GET['apply_to_all_jd']);
-                } else if ($_GET['insert'] == 'false') {
+                } elseif ($_GET['insert'] == 'false') {
                     $currentJob -> removeCoursesFromJob($_GET['add_courseID'], $_GET['apply_to_all_jd']);
-                } else if (isset($_GET['addAll'] )) {
+                } elseif (isset($_GET['addAll'] )) {
                  $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null') + createConstraintsFromSortedTable();
                     $courses = $currentJob -> getJobCoursesIncludingUnassigned($constraints);
                     isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
                     $currentJob -> associateCoursesToJob($courses, $_GET['apply_to_all_jd']);
 
-                } else if (isset($_GET['removeAll'] )) {
+                } elseif (isset($_GET['removeAll'] )) {
                  $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
                     $courses = $currentJob -> getJobCourses($constraints);
                     isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
                     $currentJob -> removeCoursesFromJob($courses, $_GET['apply_to_all_jd']);
                 }
-            } else if (isset($_GET['training'])) {
+            } elseif (isset($_GET['training'])) {
              $currentJob -> setRequiredTraining($_GET['training'], $_GET['apply_to_all']);
             }
 
@@ -87,7 +87,6 @@ try {
 
     }
 
-
     if (isset($_GET['delete_job_description'])) {
   try {
       $currentJob = new MagesterJob($_GET['delete_job_description']);
@@ -96,7 +95,7 @@ try {
       handleAjaxExceptions($e);
      }
      exit;
-    } else if (isset($_GET['remove_user_job'])) {
+    } elseif (isset($_GET['remove_user_job'])) {
   try {
    $editedUser = MagesterUserFactory :: factory($_GET['user']);
    $editedEmployee = $editedUser -> aspects['hcd'];
@@ -105,7 +104,7 @@ try {
       handleAjaxExceptions($e);
      }
      exit;
-    } else if (isset($_GET['export_vacancies_for_job_description'])) {
+    } elseif (isset($_GET['export_vacancies_for_job_description'])) {
 
         //TODO: well, export vacancies...
         /*
@@ -132,7 +131,7 @@ try {
      ON INSERTING OR EDITING A JOB DESCRIPTION
 
      **************************************************** */
-    } else if (isset($_GET['add_job_description']) || isset($_GET['edit_job_description'])) {
+    } elseif (isset($_GET['add_job_description']) || isset($_GET['edit_job_description'])) {
         if (isset($_GET['add_job_description'])) {
             $form = new HTML_QuickForm("job_description_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=job_descriptions&add_job_description=1", "", null, true);
         } else {
@@ -167,7 +166,7 @@ try {
             $smarty -> assign("T_JOB_DESCRIPTION_BRANCH_NAME", $currentJob -> job['name']);
             $smarty -> assign("T_JOB_DESCRIPTION_NAME", $currentJob -> job['job_description']);
             $employees = $currentJob -> getEmployees(false, true);
-            if(!empty($employees)) {
+            if (!empty($employees)) {
                 $smarty -> assign("T_EMPLOYEES", $employees);
             }
             /* Create the html code for the "view branch details" lense icon on the right of the branches drop down */
@@ -221,7 +220,7 @@ try {
                    $dataSource = MagesterLesson :: convertLessonObjectsToArrays($lessons);
                    $tableName = $_GET['ajax'];
                    $alreadySorted = 1;
-                   include("sorted_table.php");
+                   include 'sorted_table.php';
                   } catch (Exception $e) {
                    handleAjaxExceptions($e);
                   }
@@ -243,7 +242,7 @@ try {
                    $dataSource = MagesterCourse :: convertCourseObjectsToArrays($courses);
                    $tableName = $_GET['ajax'];
                    $alreadySorted = 1;
-                   include("sorted_table.php");
+                   include 'sorted_table.php';
                   } catch (Exception $e) {
                    handleAjaxExceptions($e);
                   }
@@ -412,7 +411,7 @@ try {
       }
          $dataSource = $job_descriptions;
    $tableName = $_GET['ajax'];
-   include("sorted_table.php");
+   include 'sorted_table.php';
         }
     }
 } catch (MagesterJobException $e) {

@@ -52,14 +52,14 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function create($fields = array()) {
+ public static function create($fields = array())
+ {
   $fields = array('data' => $fields['data'],
                         'timestamp' => $fields['timestamp'] ? $fields['timestamp'] : time(),
                         'active' => isset($fields['active']) && $fields['active'] ? 1 : 0,
             'type' => $fields['type'],
             'foreign_ID' => $fields['foreign_ID'],
                         'users_LOGIN' => $fields['users_LOGIN']);
-
 
   $newId = eF_insertTableData("calendar", $fields);
   $result = eF_getTableData("calendar", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
@@ -68,12 +68,12 @@ class calendar extends MagesterEntity
   return $calendar;
  }
 
-
  /**
 	 * (non-PHPdoc)
 	 * @see libraries/MagesterEntity#getForm($form)
 	 */
- public function getForm($form) {
+ public function getForm($form)
+ {
   $GLOBALS['load_editor'] = true;
   $calendarTypes = $this -> filterCalendarTypes(MagesterUserFactory::factory($_SESSION['s_login']));
 
@@ -88,11 +88,11 @@ class calendar extends MagesterEntity
   if ($this -> calendar['type'] || isset($_GET['course'])) {
    $form -> addElement('text', 'selection', _SELECT, 'id = "autocomplete" onkeypress = "$(\'foreign_ID\').value = \'\'" class = "autoCompleteTextBox" style = "width:400px"' );
    if ($this -> calendar['foreign_ID'] && eF_checkParameter($this -> calendar['foreign_ID'], 'id')) {
-    switch($this -> calendar['type']) {
-     case 'lesson': $selection = eF_getTableData("lessons", "name", "id=".$this -> calendar['foreign_ID']); break;
-     case 'course': $selection = eF_getTableData("courses", "name", "id=".$this -> calendar['foreign_ID']); break;
-     case 'group' : $selection = eF_getTableData("groups", "name", "id=".$this -> calendar['foreign_ID']); break;
-     case 'branch': $selection = eF_getTableData("module_hcd_branch", "name", "branch_ID=".$this -> calendar['foreign_ID']); break;
+	switch ($this -> calendar['type']) {
+		case 'lesson': $selection = eF_getTableData("lessons", "name", "id=".$this -> calendar['foreign_ID']); break;
+		case 'course': $selection = eF_getTableData("courses", "name", "id=".$this -> calendar['foreign_ID']); break;
+		case 'group' : $selection = eF_getTableData("groups", "name", "id=".$this -> calendar['foreign_ID']); break;
+		case 'branch': $selection = eF_getTableData("module_hcd_branch", "name", "branch_ID=".$this -> calendar['foreign_ID']); break;
     }
    }
   } else {
@@ -118,7 +118,6 @@ class calendar extends MagesterEntity
    $form -> setDefaults(array('timestamp' => time()));
   }
 
-
   if (isset($_GET['add']) && isset($_GET['course']) && eF_checkParameter($_GET['course'], 'id')) {
    $course = new MagesterCourse($_GET['course']);
 
@@ -136,8 +135,8 @@ class calendar extends MagesterEntity
 	 * (non-PHPdoc)
 	 * @see libraries/MagesterEntity#handleForm($form)
 	 */
- public function handleForm($form) {
-
+ public function handleForm($form)
+ {
   $values = $form -> exportValues();
 
   $timestamp = mktime($values['timestamp']['H'] ? $values['timestamp']['H'] : 0,
@@ -171,28 +170,35 @@ class calendar extends MagesterEntity
 
  }
 
- public function checkCalendarValues($values) {
-  try {
-  switch ($values['type']) {
-   case 'course': new MagesterCourse($values['foreign_ID']); break;
-   case 'lesson': new MagesterLesson($values['foreign_ID']); break;
-   case 'group': new MagesterGroup($values['foreign_ID']); break;
-   case 'branch': new MagesterBranch($values['foreign_ID']); break;
-   default: break;
-  }
-  } catch (Exception $e) {
-   throw new Exception (_INVALIDSELECTIONPLEASEPICKFROMLIST);
-  }
- }
+	public function checkCalendarValues($values)
+	{
+		try {
+			switch ($values['type']) {
+				case 'course':
+					new MagesterCourse($values['foreign_ID']);
+					break;
+				case 'lesson':
+					new MagesterLesson($values['foreign_ID']);
+					break;
+				case 'group':
+					new MagesterGroup($values['foreign_ID']);
+					break;
+				case 'branch':
+					new MagesterBranch($values['foreign_ID']);
+					break;
+				default:
+					break;
+			}
+		} catch (Exception $e) {
+   			throw new Exception(INVALIDSELECTIONPLEASEPICKFROMLIST);
+		}
+	}
 
- public function filterCalendarTypes($user) {
+ public function filterCalendarTypes($user)
+ {
   $calendarTypes = self::$calendarTypes;
 
-
-
-
    unset($calendarTypes['branch']);
-
 
   if (!$supervisor) {
    unset($calendarTypes['branch']);
@@ -219,11 +225,13 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getGlobalCalendarEvents() {
+ public static function getGlobalCalendarEvents()
+ {
   $result = eF_getTableData("calendar c", "c.*", "type = 'global' and foreign_ID=0");
   foreach ($result as $value) {
    $globalEvents[$value['id']] = $value;
   }
+
   return $globalEvents;
  }
 
@@ -236,7 +244,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getUserCalendarEvents($user) {
+ public static function getUserCalendarEvents($user)
+ {
   $user = MagesterUser::convertArgumentToUserLogin($user);
    $result = eF_getTableData("calendar ca left outer join lessons l on ca.foreign_ID=l.id
                   left outer join courses c on ca.foreign_ID=c.id
@@ -244,6 +253,7 @@ class calendar extends MagesterEntity
               "ca.*, l.name as lesson_name, c.name as course_name, g.name as group_name",
               "users_LOGIN='".$user."'");
   $userCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $userCalendarEvents;
  }
  /**
@@ -255,11 +265,12 @@ class calendar extends MagesterEntity
 	 * @access private
 	 * @static
 	 */
- private static function functionCalculateEventTypeName($events) {
+ private static function functionCalculateEventTypeName($events)
+ {
   $userCalendarEvents = array();
   foreach ($events as $value) {
    $value['name'] = '';
-   switch($value['type']){
+   switch ($value['type']) {
     case 'lesson': $value['name'] = self::$calendarTypes[$value['type']].': '.$value['lesson_name']; break;
     case 'course': $value['name'] = self::$calendarTypes[$value['type']].': '.$value['course_name']; break;
     case 'group' : $value['name'] = self::$calendarTypes[$value['type']].': '.$value['group_name']; break;
@@ -268,6 +279,7 @@ class calendar extends MagesterEntity
    }
    $userCalendarEvents[$value['id']] = $value;
   }
+
   return $userCalendarEvents;
  }
  /**
@@ -278,7 +290,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function deleteUserCalendarEvents($user) {
+ public static function deleteUserCalendarEvents($user)
+ {
   $user = MagesterUser::convertArgumentToUserLogin($user);
   eF_deleteTableData("calendar", "users_LOGIN='$user'");
  }
@@ -291,10 +304,12 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getLessonCalendarEvents($lesson) {
+ public static function getLessonCalendarEvents($lesson)
+ {
   $lesson = MagesterLesson::convertArgumentToLessonId($lesson);
   $result = eF_getTableData("calendar ca left outer join lessons l on ca.foreign_ID=l.id", "ca.*, l.name as lesson_name", "type = 'lesson' and foreign_ID=".$lesson);
   $lessonCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $lessonCalendarEvents;
  }
  /**
@@ -305,7 +320,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function deleteLessonCalendarEvents($lesson) {
+ public static function deleteLessonCalendarEvents($lesson)
+ {
   $lesson = MagesterLesson::convertArgumentToLessonId($lesson);
   eF_deleteTableData("calendar", "type = 'lesson' and foreign_ID=".$lesson);
  }
@@ -317,9 +333,11 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCalendarEventsForAllLessons() {
+ public static function getCalendarEventsForAllLessons()
+ {
   $result = eF_getTableData("calendar ca left outer join lessons l on ca.foreign_ID=l.id", "ca.*, l.name as lesson_name", "type = 'lesson'");
   $lessonCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $lessonCalendarEvents;
  }
  /**
@@ -331,10 +349,12 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCourseCalendarEvents($course) {
+ public static function getCourseCalendarEvents($course)
+ {
   $course = MagesterCourse::convertArgumentToCourseId($course);
   $result = eF_getTableData("calendar ca left outer join coursers c on ca.foreign_ID=c.id", "ca.*, c.name as course_name", "type = 'course' and foreign_ID=".$course);
   $courseCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $courseCalendarEvents;
  }
  /**
@@ -345,7 +365,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function deleteCourseCalendarEvents($course) {
+ public static function deleteCourseCalendarEvents($course)
+ {
   $course = MagesterCourse::convertArgumentToCourseId($course);
   eF_deleteTableData("calendar", "type = 'course' and foreign_ID=".$course);
  }
@@ -358,10 +379,12 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getGroupCalendarEvents($group) {
+ public static function getGroupCalendarEvents($group)
+ {
   $group = MagesterGroup::convertArgumentToGroupId($group);
   $result = eF_getTableData("calendar ca left outer join grouprs c on ca.foreign_ID=c.id", "ca.*, c.name as group_name", "type = 'group' and foreign_ID=".$group);
   $groupCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $groupCalendarEvents;
  }
  /**
@@ -372,7 +395,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function deleteGroupCalendarEvents($group) {
+ public static function deleteGroupCalendarEvents($group)
+ {
   $group = MagesterGroup::convertArgumentToGroupId($group);
   eF_deleteTableData("calendar", "type = 'group' and foreign_ID=".$group);
  }
@@ -385,9 +409,11 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getBranchCalendarEvents($branch) {
+ public static function getBranchCalendarEvents($branch)
+ {
   $result = eF_getTableData("left outer join module_hcd_branch b on ca.foreign_ID=b.branch_ID", "ca.*, b.name as branch_name", "type = 'branch' and foreign_ID=".$branch);
   $branchCalendarEvents = self::functionCalculateEventTypeName($result);
+
   return $branchCalendarEvents;
  }
  /**
@@ -398,7 +424,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function deleteBranchCalendarEvents($branch) {
+ public static function deleteBranchCalendarEvents($branch)
+ {
   if (eF_checkParameter($branch, 'id')) {
    eF_deleteTableData("calendar", "type = 'branch' and foreign_ID=".$branch);
   }
@@ -413,7 +440,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCalendarEventsForUser($user) {
+ public static function getCalendarEventsForUser($user)
+ {
   if (!($user instanceOf MagesterUser)) {
    $user = MagesterUserFactory::factory($user);
   }
@@ -422,6 +450,7 @@ class calendar extends MagesterEntity
   } else {
    $events = self :: getCalendarEventsForNonAdmnistrator($user);
   }
+
   return $events;
  }
  /**
@@ -433,7 +462,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCalendarEventsForAdministrator($user) {
+ public static function getCalendarEventsForAdministrator($user)
+ {
   $user = MagesterUser::convertArgumentToUserLogin($user);
   $personalEvents = $allEvents = array();
    $result = eF_getTableData("calendar ca left outer join lessons l on ca.foreign_ID=l.id
@@ -443,6 +473,7 @@ class calendar extends MagesterEntity
   $allEvents = self::functionCalculateEventTypeName($result);
   $personalEvents = self :: getUserCalendarEvents($user);
   $userEvents = $personalEvents + $allEvents;
+
   return $userEvents;
  }
  /**
@@ -455,7 +486,8 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCalendarEventsForNonAdmnistrator($user) {
+ public static function getCalendarEventsForNonAdmnistrator($user)
+ {
   $user = MagesterUser::convertArgumentToUserLogin($user);
   $personalEvents = $globalEvents = $lessonEvents = $courseEvents = $groupEvents = $branchEvents = array();
   $result = eF_getTableData("calendar c", "c.*", "type = 'global' and foreign_ID=0");
@@ -476,6 +508,7 @@ class calendar extends MagesterEntity
   }
   $personalEvents = self :: getUserCalendarEvents($user);
   $userEvents = $personalEvents + $globalEvents + $lessonEvents + $courseEvents + $groupEvents + $branchEvents;
+
   return $userEvents;
  }
  /**
@@ -487,15 +520,18 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function sortCalendarEventsByTimestamp($unsortedEvents) {
+ public static function sortCalendarEventsByTimestamp($unsortedEvents)
+ {
   $events = array();
   foreach ($unsortedEvents as $event) {
    $events[$event['timestamp']]['id'][] = $event['id'];
    $events[$event['timestamp']]['data'][] = $event['data'];
   }
+
   return $events;
  }
- public static function filterCalendarEvents($events, $showInterval, $viewCalendar) {
+ public static function filterCalendarEvents($events, $showInterval, $viewCalendar)
+ {
   $timestampInfo = getdate($viewCalendar); //Extract date information from timestamp
   $timestampInfo['wday'] == 0 ? $timestampInfo['wday'] = 7 : ''; //getdate() returns week days from 0-6, with Sunday beeing 0. So, we convert Sunday to 7
   $monthStart = mktime(0, 0, 0, $timestampInfo['mon'], 1, $timestampInfo['year']);
@@ -523,6 +559,7 @@ class calendar extends MagesterEntity
    case 'day':
    default: $intervalEvents = $day_events; break;
   }
+
   return $intervalEvents;
  }
 }

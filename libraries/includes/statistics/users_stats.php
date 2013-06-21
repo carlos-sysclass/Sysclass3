@@ -4,15 +4,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  exit;
 }
 
-
 if ($currentUser -> user['user_type'] == 'administrator') {
  $validUsers = MagesterUser :: getUsers(true);
-} else if ($_SESSION['s_lessons_ID']) {
+} elseif ($_SESSION['s_lessons_ID']) {
  $statisticsLesson = new MagesterLesson($_SESSION['s_lessons_ID']);
  $lessonUsers = $statisticsLesson -> getUsers();
  if ($lessonRoles[$lessonUsers[$currentUser -> user['login']]['role']] == 'professor') {
   $validUsers = $lessonUsers;
- } else if ($lessonRoles[$lessonUsers[$currentUser -> user['login']]['role']] == 'student') {
+ } elseif ($lessonRoles[$lessonUsers[$currentUser -> user['login']]['role']] == 'student') {
   $validUsers[$currentUser -> user['login']] = $currentUser;
 
   if (!$isSupervisor) {
@@ -36,7 +35,6 @@ if ($currentUser -> user['user_type'] == 'administrator') {
   $validUsers = $users;
  }
 }
-
 
 if (isset($_GET['sel_user'])) {
  if ($currentUser -> user['user_type'] != 'administrator' && $isSupervisor) {
@@ -78,7 +76,6 @@ if (isset($_GET['sel_user'])) {
   $lessons = $infoUser -> getUserStatusInCourseLessons(new MagesterCourse($_GET['course']));
   $smarty -> assign ("T_USER_STATUS_IN_COURSE_LESSONS", $lessons);
  } else {
-
 
   try {
    $roles = MagesterLessonUser :: getLessonsRoles(true);
@@ -125,7 +122,7 @@ if (isset($_GET['sel_user'])) {
     $smarty -> assign("T_SHOW_COURSE_LESSONS", true);
    }
 
-   include("sorted_table.php");
+   include 'sorted_table.php';
 
   } catch (Exception $e) {
    handleAjaxExceptions($e);
@@ -262,7 +259,7 @@ if (isset($_GET['sel_user'])) {
      $value['lessons_ID'] ? $result[$key]['lesson_name'] = $lessonNames[$value['lessons_ID']] : null;
      if ($value['action'] == 'content') {
       $result[$key]['content_name'] = $contentNames[$value['comments']];
-     } else if ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
+     } elseif ($value['action'] == 'tests' || $value['action'] == 'test_begin') {
       $result[$key]['content_name'] = $testNames[$value['comments']];
      }
     }
@@ -438,7 +435,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'user') {
    if ($GLOBALS['configuration']['disable_tests'] != 1) {
     $workSheet -> write($row, 7, _TESTS, $titleCenterFormat);
    }
-   if($GLOBALS['configuration']['disable_projects'] != 1) {
+   if ($GLOBALS['configuration']['disable_projects'] != 1) {
     $workSheet -> write($row, 8, _PROJECTS, $titleCenterFormat);
    }
    $workSheet -> write($row, 9, _COMPLETED, $titleCenterFormat);
@@ -450,10 +447,10 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'user') {
      $workSheet -> write($row, 4, str_replace("&nbsp;&rarr;&nbsp;", " -> ", $lesson['name']), $fieldLeftFormat);
      $workSheet -> write($row, 5, $lesson['time_in_lesson']['time_string'], $fieldCenterFormat);
      $workSheet -> write($row, 6, formatScore($lesson['overall_progress']['percentage'])."%", $fieldCenterFormat);
-     if($GLOBALS['configuration']['disable_tests'] != 1) {
+     if ($GLOBALS['configuration']['disable_tests'] != 1) {
       $workSheet -> write($row, 7, formatScore($lesson['test_status']['mean_score'])."%", $fieldCenterFormat);
      }
-     if($GLOBALS['configuration']['disable_projects'] != 1) {
+     if ($GLOBALS['configuration']['disable_projects'] != 1) {
       $workSheet -> write($row, 8, formatScore($lesson['project_status']['mean_score'])."%", $fieldCenterFormat);
      }
      $workSheet -> write($row, 9, $lesson['completed'] ? _YES : _NO, $fieldCenterFormat);
@@ -654,11 +651,11 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'user') {
  }
  $workBook -> close();
  exit();
-} else if (isset($_GET['pdf']) && $_GET['pdf'] == 'user') {
+} elseif (isset($_GET['pdf']) && $_GET['pdf'] == 'user') {
  $pdf = new MagesterPdf(_REPORT.": ".formatLogin($infoUser -> user['login']));
  try {
   $avatarFile = new MagesterFile($infoUser -> user['avatar']);
- } catch(Exception $e) {
+ } catch (Exception $e) {
   $avatarFile = new MagesterFile(G_SYSTEMAVATARSPATH."unknown_small.png");
  }
  $info = array(array(_USERNAME, $userInfo['general']['fullname']),

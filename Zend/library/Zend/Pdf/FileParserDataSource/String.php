@@ -21,7 +21,6 @@
 /** Zend_Pdf_FileParserDataSource */
 require_once 'Zend/Pdf/FileParserDataSource.php';
 
-
 /**
  * Concrete subclass of {@link Zend_Pdf_FileParserDataSource} that provides an
  * interface to binary strings.
@@ -35,17 +34,13 @@ class Zend_Pdf_FileParserDataSource_String extends Zend_Pdf_FileParserDataSource
 {
   /**** Instance Variables ****/
 
-
     /**
      * The string to parse.
      * @var string
      */
     protected $_string = '';
 
-
-
   /**** Public Interface ****/
-
 
   /* Concrete Class Implementation */
 
@@ -95,6 +90,7 @@ class Zend_Pdf_FileParserDataSource_String extends Zend_Pdf_FileParserDataSource
         }
         $bytes = substr($this->_string, $this->_offset, $byteCount);
         $this->_offset += $byteCount;
+
         return $bytes;
     }
 
@@ -109,7 +105,6 @@ class Zend_Pdf_FileParserDataSource_String extends Zend_Pdf_FileParserDataSource
     {
         return $this->_string;
     }
-
 
   /* Object Magic Methods */
 

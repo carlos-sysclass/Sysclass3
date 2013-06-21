@@ -18,7 +18,6 @@ if (isset($_GET['delete_schedule']) && $_GET['delete_schedule']) {
         $currentLesson -> lesson['to_timestamp'] = null;
         $currentLesson -> lesson['shift'] = 0;
 
-
         // @TODO maybe proper class internal invalidation
         eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
         eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");

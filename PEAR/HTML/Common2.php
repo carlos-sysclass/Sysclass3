@@ -165,6 +165,7 @@ abstract class HTML_Common2
                 }
             }
         }
+
         return $attributes;
     }
 
@@ -186,10 +187,11 @@ abstract class HTML_Common2
                     $key = strtolower($value);
                     $prepared[$key] = $key;
                 } else {
-                    $prepared[strtolower($key)] = (string)$value;
+                    $prepared[strtolower($key)] = (string) $value;
                 }
             }
         }
+
         return $prepared;
     }
 
@@ -217,6 +219,7 @@ abstract class HTML_Common2
         foreach ($attributes as $key => $value) {
             $str .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
         }
+
         return $str;
     }
 
@@ -246,8 +249,9 @@ abstract class HTML_Common2
         if (in_array($name, $this->watchedAttributes)) {
             $this->onAttributeChange($name, $value);
         } else {
-            $this->attributes[$name] = (string)$value;
+            $this->attributes[$name] = (string) $value;
         }
+
         return $this;
     }
 
@@ -260,6 +264,7 @@ abstract class HTML_Common2
     public function getAttribute($name)
     {
         $name = strtolower($name);
+
         return isset($this->attributes[$name])? $this->attributes[$name]: null;
     }
 
@@ -285,6 +290,7 @@ abstract class HTML_Common2
             }
         }
         $this->attributes = array_merge($watched, $attributes);
+
         return $this;
     }
 
@@ -319,6 +325,7 @@ abstract class HTML_Common2
             }
         }
         $this->attributes = array_merge($this->attributes, $attributes);
+
         return $this;
     }
 
@@ -335,6 +342,7 @@ abstract class HTML_Common2
         } else {
             self::removeAttributeArray($this->attributes, $attribute);
         }
+
         return $this;
     }
 
@@ -350,6 +358,7 @@ abstract class HTML_Common2
         if (0 <= $level) {
             $this->_indentLevel = $level;
         }
+
         return $this;
     }
 
@@ -382,6 +391,7 @@ abstract class HTML_Common2
     public function setComment($comment)
     {
         $this->_comment = $comment;
+
         return $this;
     }
 
@@ -404,7 +414,8 @@ abstract class HTML_Common2
     public function hasClass($class)
     {
         $regex = '/(^|\s)' . preg_quote($class, '/') . '(\s|$)/';
-        return (bool)preg_match($regex, $this->getAttribute('class'));
+
+        return (bool) preg_match($regex, $this->getAttribute('class'));
     }
 
    /**
@@ -453,6 +464,7 @@ abstract class HTML_Common2
         } else {
             $this->setAttribute('class', implode(' ', $curClass));
         }
+
         return $this;
     }
 
@@ -483,4 +495,3 @@ abstract class HTML_Common2
     {
     }
 }
-?>

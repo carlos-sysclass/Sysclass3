@@ -87,5 +87,3 @@ class HTML_QuickForm2_Rule_Empty extends HTML_QuickForm2_Rule
         return "function() { return qf.rules.empty(" . $this->owner->getJavascriptValue() . "); }";
     }
 }
-
-?>

@@ -31,8 +31,8 @@ try {
 	}
 	if (isset($_GET['op']) && $_GET['op'] == 'search') {
 		/*		 * Functions to perform searches */
-		require_once "module_search.php";
-	} else if (isset($_GET['op']) && in_array($_GET['op'], array_keys($module_ctgs))) {
+		require_once 'module_search.php';
+	} elseif (isset($_GET['op']) && in_array($_GET['op'], array_keys($module_ctgs))) {
 		$module_mandatory = eF_getTableData("modules", "mandatory", "name = '" . $_GET['op'] . "'");
 		if ($module_mandatory[0]['mandatory'] != 'false' || isset($currentLesson->options[$_GET['op']]) || $_admin_) {
 			include(G_MODULESPATH . $_GET['op'] . '/module.php');
@@ -53,7 +53,7 @@ try {
 			$smarty->assign("T_PERSONAL_MESSAGES_LINK", basename($_SERVER['PHP_SELF']) . "?ctg=messages");
 		}
 		//News block (Common block)
-		
+
 		if ($GLOBALS['configuration']['disable_news'] != 1 && (!$_admin_ && $currentLesson->options['news'])) {
 			$news = news :: getNews(0, true);
 			if (!$_admin_) {
@@ -180,8 +180,6 @@ try {
 		}
 		//Student specific blocks
 
-
-
 		if ($_student_) {
 
 			$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
@@ -191,7 +189,7 @@ try {
 
 			$currentContent = new MagesterContentTree($currentLesson);
 			$currentContent->markSeenNodes($currentUser);
-			//Content tree block    
+			//Content tree block
 			if ($GLOBALS['configuration']['disable_tests'] != 1) {
 				$iterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableAndEmptyFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
 				$firstNodeIterator = new MagesterContentCourseClassFilterIterator(new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1))), $courseClass);
@@ -303,12 +301,10 @@ try {
 					$smarty->assign("T_FILES_LIST_OPTIONS", array(array('text' => _SHAREDFILES, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=digital_library")));
 					$smarty->assign("T_FILE_LIST_LINK", basename($_SERVER['PHP_SELF']) . "?ctg=digital_library");
 					/*					 * The file manager */
-					include ("file_manager.php");
+					include 'file_manager.php';
 				}
 			}
 		}
-
-
 
 		//This is a notifier for cookies handling the show/hide status of inner tables. It affects only control panel and is considered inside printInnerTable smarty plugin
 		$innerTableIdentifier = $currentUser->user['user_type'] . '_cpanel';
@@ -345,13 +341,13 @@ try {
 		}
 		$controlPanelGroups = array(0 => 0);
 
-		//$controlPanelGroups[2] = _CONFIGURATION;	
+		//$controlPanelGroups[2] = _CONFIGURATION;
 		//$controlPanelGroups[3] = _CONTENT;
 		//$controlPanelGroups[4] = _USER;
 		//$controlPanelGroups[5] = _COMMUNICATION;
 		//$controlPanelGroups[6] = _MODULES;
 		//$controlPanelGroups[7] = _VARIOUS;
-		
+
 		$controlPanelGroups[2] = array('title' => _CONFIGURATION, 'itens' => array());
 		$controlPanelGroups[3] = array('title' => _CONTENT, 'itens' => array());
 		$controlPanelGroups[4] = array('title' => _USER, 'itens' => array());
@@ -365,12 +361,11 @@ try {
 		 * Opções do sistema administrativo do SysClass
 		 */
 		if ($_admin_) {
-			
-			
+
 			if (!isset($currentUser->coreAccess['news']) || $currentUser->coreAccess['news'] != 'hidden') {
 				$controlPanelOptions[] = array('text' => __NEWS, 'image' => "32x32/news.png", 'href' => "administrator.php?ctg=news", 'group' => 5, 'class' => 'news');
-			}			
-			
+			}
+
 			if (!isset($currentUser->coreAccess['lessons']) || $currentUser->coreAccess['lessons'] != 'hidden') {
 				$controlPanelOptions[] = array('text' => _DIRECTIONS, 'image' => "32x32/categories.png", 'href' => "administrator.php?ctg=directions", 'group' => 3, 'class' => 'block');
 				$controlPanelOptions[] = array('text' => _COURSES, 'image' => "32x32/courses.png", 'href' => "administrator.php?ctg=courses", 'group' => 3, 'class' => 'books');
@@ -551,8 +546,8 @@ try {
 							case "module_gradebook" :
 							case "module_journal" :
 							case 'module_pagamento' :
-							case "module_administrator_tools" : 
-							case "module_xenrollment" : 
+							case "module_administrator_tools" :
+							case "module_xenrollment" :
 							case 'module_xpay' : {
 								$controlPanelOption['group'] = 2;
 								break;
@@ -593,22 +588,22 @@ try {
 		if (!empty($innertable_modules)) {
 			$smarty->assign("T_INNERTABLE_MODULES", $innertable_modules);
 		}
-		
-		foreach($controlPanelOptions as $option) {
+
+		foreach ($controlPanelOptions as $option) {
 			$controlPanelGroups[$option["group"]]["itens"][] = $option;
 		}
-		
+
 		$controlPanelGroupsOrder = array(
-            2 => $controlPanelGroups[2], 
-            4 => $controlPanelGroups[4], 
-            3 => $controlPanelGroups[3], 
+            2 => $controlPanelGroups[2],
+            4 => $controlPanelGroups[4],
+            3 => $controlPanelGroups[3],
             5 => $controlPanelGroups[5],
             6 => $controlPanelGroups[6],
             7 => $controlPanelGroups[7]
         );
-        
+
         $smarty->assign("T_CONTROL_PANEL_GROUPS_ORDER", $controlPanelGroupsOrder);
-        
+
         $smarty->assign("T_CONTROL_PANEL_GROUPS", $controlPanelGroups);
 		$smarty->assign("T_CONTROL_PANEL_OPTIONS", $controlPanelOptions);
 		$smarty->assign("T_HEADER_OPTIONS", $headerOptions);

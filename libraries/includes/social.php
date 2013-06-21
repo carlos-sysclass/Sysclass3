@@ -273,7 +273,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    $smarty -> assign ("T_EVENTS", $events);
   }
  /********************* SHOW PROFILE POPUP ******************/
- } else if ($_GET['op'] == "show_profile") {
+ } elseif ($_GET['op'] == "show_profile") {
   if (isset($_GET['user'])) {
    $shownUser = MagesterUserFactory::factory($_GET['user']);
 
@@ -321,7 +321,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    }
   }
  /********************* PROFILE COMMENTS POPUP ******************/
- } else if ($_GET['op'] == "comments") {
+ } elseif ($_GET['op'] == "comments") {
 
     if (isset($_GET['action']) && $_GET['action'] == "delete") {
    // Only allowed to delete comments referring to you
@@ -342,12 +342,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 
    }
-  } elseif(isset($_GET['action']) && ($_GET['action'] == 'insert' || $_GET['action'] == 'change') && isset($_GET['user'])) {
+  } elseif (isset($_GET['action']) && ($_GET['action'] == 'insert' || $_GET['action'] == 'change') && isset($_GET['user'])) {
    $load_editor = true;
 
    if (isset($_GET['action']) && $_GET['action'] == 'change' && isset($id)) {
     $form = new HTML_QuickForm("change_comments_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=social&op=comments&action=change&id=$id", "", null, true);
-   } else{
+   } else {
     $form = new HTML_QuickForm("add_comments_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=social&op=comments&action=insert&user=" .$_GET['user'], "", null, true);
    }
    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
@@ -423,7 +423,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
   }
  /********************* PEOPLE PAGE ******************/
- } else if ($_GET['op'] == "people") {
+ } elseif ($_GET['op'] == "people") {
 
   if (isset($_GET['ajax'])) {
    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
@@ -569,7 +569,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  //pr($options);
   $smarty -> assign("T_TABLE_OPTIONS", $options);
  /********************* TIMELINES: Lesson and System ******************/
- } else if ($_GET['op'] == "timeline") {
+ } elseif ($_GET['op'] == "timeline") {
   /******************* TIMELINE FOR CURRENT LESSON *****************/
   if (isset ($_GET['lessons_ID'])) {
    if ($currentLesson -> lesson['lesson_ID'] == $_GET['lessons_ID']) {
@@ -606,7 +606,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
       exit;
 
      }
-    } elseif(isset($_GET['action']) && ($_GET['action'] == 'insert' || $_GET['action'] == 'change')) {
+    } elseif (isset($_GET['action']) && ($_GET['action'] == 'insert' || $_GET['action'] == 'change')) {
      $load_editor = true;
 
      $result = eF_getTableData("lessons_timeline_topics", "title" , "id = " . $_GET['post_topic']);
@@ -621,7 +621,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
       $id = $_GET['id'];
       $form = new HTML_QuickForm("change_topics_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&post_topic=".$_GET['post_topic']."&topics_ID=".$_GET['post_topic']."&action=change&id=$id", "", null, true);
       $smarty -> assign("T_POST_TOPIC_TIMELINE_TITLE", _EDITMESSAGEFORLESSONTIMELINETOPIC . " \"" . $topic_name . "\"");
-     } else{
+     } else {
       $form = new HTML_QuickForm("add_topics_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&post_topic=".$_GET['post_topic']."&topics_ID=".$_GET['post_topic']."&action=insert", "", null, true);
          $smarty -> assign("T_POST_TOPIC_TIMELINE_TITLE", _ADDPOSTFORLESSONTOPIC . " \"" . $topic_name . "\"");
 
@@ -677,7 +677,6 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
      $smarty -> assign('T_POST_TIMELINE_TOPICS_FORM', $renderer -> toArray());
 
-
      $smarty -> assign("T_HEADER_LOAD_SCRIPTS", array());
      $smarty -> assign("T_HEADER_EDITOR", $load_editor);
      $smarty -> assign("T_MESSAGE", $message);
@@ -685,13 +684,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
     }
 
-
    }
 
    if (isset($_GET['add_topic']) || isset($_GET['del_topic']) || isset($_GET['edit_topic'])) {
 
     /* Check permissions: only professors are allowed to manage topics */
-    if($currentUser -> getType() != 'professor') {
+    if ($currentUser -> getType() != 'professor') {
      $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
      $message_type = 'failure';
      eF_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
@@ -710,7 +708,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
      eF_redirect("".$_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=".$message."&message_type=".$message_type);
      exit;
     //ON INSERTING OR EDITING A LESSONTIMELINE TOPIC
-    } else if (isset($_GET['add_topic']) || isset($_GET['edit_topic'])) {
+    } elseif (isset($_GET['add_topic']) || isset($_GET['edit_topic'])) {
 
      if (isset($_GET['add_topic'])) {
       $form = new HTML_QuickForm("topic_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_SESSION['s_lessons_ID']."&add_topic=1", "",null, true);
@@ -780,7 +778,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $form = new HTML_QuickForm("timeline_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID'] . "&all=1", "", null, true);
     $result = eF_getTableData("lessons_timeline_topics", "id, title", "lessons_ID = " . $editedLesson -> lesson['id']);
     $topics = array("0" => _ANYTOPIC);
-    foreach($result as $topic) {
+    foreach ($result as $topic) {
      $id = $topic['id'];
      $topics[$id]= $topic['title'];
     }
@@ -807,13 +805,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
 
     // No sorting needed: getEvents returns sorted results according to time
-    if(isset($_GET['all'])) {
+    if (isset($_GET['all'])) {
      $avatarNormalDims = 50;
     } else {
      $avatarNormalDims = 25; // innertable avatars smaller
     }
 
-    if(!isset($_GET['topics_ID']) || $_GET['topics_ID'] == 0) {
+    if (!isset($_GET['topics_ID']) || $_GET['topics_ID'] == 0) {
      if (isset($_GET['all'])) {
       $related_events = $editedLesson -> getEvents(false,true, $avatarNormalDims);
      } else {
@@ -839,7 +837,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
         $new_event['deletelink'] = $related_events[$key] ->event['deletelink'];
        }
 
-       if ($new_event['message'] != "" ){
+       if ($new_event['message'] != "") {
         $events[] = $new_event;
        }
       }
@@ -880,7 +878,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     if (isset($_GET['ajax'])) {
      $result = eF_getTableData("users", "login, avatar", "login IN ('".implode("','", $all_related_users). "')");
      $users_avatars = array();
-     foreach($result as $avatar) {
+     foreach ($result as $avatar) {
       $users_avatars[$avatar['login']] = $avatar['avatar'];
      }
     }
@@ -889,7 +887,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     if (isset($_GET['ajax'])) {
      $result = eF_getTableData("users", "login, avatar");
      $users_avatars = array();
-     foreach($result as $avatar) {
+     foreach ($result as $avatar) {
       $users_avatars[$avatar['login']] = $avatar['avatar'];
      }
     }
@@ -918,11 +916,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     }
    }
 
-
    if (isset($_GET['filter'])) {
     $events = eF_filterData($events , $_GET['filter']);
    }
-
 
    if (isset($_GET['ajax'])) {
     foreach ($events as $key => $event) {

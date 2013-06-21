@@ -192,6 +192,7 @@ and uninstall).
         }
 
         $this->ui->outputData($data, $command);
+
         return true;
     }
 
@@ -246,10 +247,12 @@ and uninstall).
         $failmsg = '';
         if (sizeof($params) < 2 || sizeof($params) > 3) {
             $failmsg .= "config-set expects 2 or 3 parameters";
+
             return PEAR::raiseError($failmsg);
         }
         if (isset($params[2]) && ($error = $this->_checkLayer($params[2]))) {
             $failmsg .= $error;
+
             return PEAR::raiseError("config-set:$failmsg");
         }
         $channel = isset($options['channel']) ? $options['channel'] :
@@ -270,8 +273,7 @@ and uninstall).
             $layer = $params[2];
         }
         array_push($params, $channel);
-        if (!call_user_func_array(array(&$this->config, 'set'), $params))
-        {
+        if (!call_user_func_array(array(&$this->config, 'set'), $params)) {
             array_pop($params);
             $failmsg = "config-set (" . implode(", ", $params) . ") failed, channel $channel";
         } else {
@@ -281,6 +283,7 @@ and uninstall).
             return $this->raiseError($failmsg);
         }
         $this->ui->outputData('config-set succeeded', $command);
+
         return true;
     }
 
@@ -391,6 +394,7 @@ and uninstall).
         }
 
         $this->ui->outputData($data, 'config-show');
+
         return true;
     }
     // {{{ _checkLayer()
@@ -409,10 +413,9 @@ and uninstall).
                 return " only the layers: \"" . implode('" or "', $layers) . "\" are supported";
             }
         }
+
         return false;
     }
 
     // }}}
 }
-
-?>

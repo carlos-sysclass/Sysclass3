@@ -84,10 +84,11 @@ class Spreadsheet_Excel_Writer extends Spreadsheet_Excel_Writer_Workbook
     function rowcolToCell($row, $col)
     {
         if ($col > 255) { //maximum column value exceeded
+
             return new PEAR_Error("Maximum column value exceeded: $col");
         }
 
-        $int = (int)($col / 26);
+        $int = (int) ($col / 26);
         $frac = $col % 26;
         $chr1 = '';
 
@@ -101,4 +102,3 @@ class Spreadsheet_Excel_Writer extends Spreadsheet_Excel_Writer_Workbook
         return $chr1 . $chr2 . $row;
     }
 }
-?>

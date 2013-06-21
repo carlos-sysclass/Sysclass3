@@ -598,8 +598,8 @@ class PHPExcel_Reader_Excel5_Escher
 	 * @param string $data Binary data
 	 * @param int $n Number of properties
 	 */
-	private function _readOfficeArtRGFOPTE($data, $n) {
-
+	private function _readOfficeArtRGFOPTE($data, $n)
+	{
 		$splicedComplexData = substr($data, 6 * $n);
 
 		// loop through property-value pairs

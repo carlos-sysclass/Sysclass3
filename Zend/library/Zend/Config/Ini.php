@@ -19,12 +19,10 @@
  * @version    $Id: Ini.php 14667 2009-04-05 09:18:21Z rob $
  */
 
-
 /**
  * @see Zend_Config
  */
 require_once 'Zend/Config.php';
-
 
 /**
  * @category   Zend
@@ -54,7 +52,7 @@ class Zend_Config_Ini extends Zend_Config
      * @var boolean
      */
     protected $_skipExtends = false;
-    
+
     /**
      * Loads the section $section from the config file $filename for
      * access facilitated by nested object properties.
@@ -128,7 +126,7 @@ class Zend_Config_Ini extends Zend_Config
             // Load entire file
             $dataArray = array();
             foreach ($iniArray as $sectionName => $sectionData) {
-                if(!is_array($sectionData)) {
+                if (!is_array($sectionData)) {
                     $dataArray = array_merge_recursive($dataArray, $this->_processKey(array(), $sectionName, $sectionData));
                 } else {
                     $dataArray[$sectionName] = $this->_processSection($iniArray, $sectionName);
@@ -153,7 +151,7 @@ class Zend_Config_Ini extends Zend_Config
 
             }
             parent::__construct($dataArray, $allowModifications);
-        } 
+        }
 
         $this->_loadedSection = $section;
     }
@@ -185,8 +183,7 @@ class Zend_Config_Ini extends Zend_Config
         }
 
         $iniArray = array();
-        foreach ($loaded as $key => $data)
-        {
+        foreach ($loaded as $key => $data) {
             $pieces = explode($this->_sectionSeparator, $key);
             $thisSection = trim($pieces[0]);
             switch (count($pieces)) {
@@ -210,7 +207,7 @@ class Zend_Config_Ini extends Zend_Config
 
         return $iniArray;
     }
-    
+
     /**
      * Process each element in the section and handle the ";extends" inheritance
      * key. Passes control to _processKey() to handle the nest separator
@@ -230,7 +227,7 @@ class Zend_Config_Ini extends Zend_Config
             if (strtolower($key) == ';extends') {
                 if (isset($iniArray[$value])) {
                     $this->_assertValidExtend($section, $value);
-                    
+
                     if (!$this->_skipExtends) {
                         $config = $this->_processSection($iniArray, $value, $config);
                     }
@@ -245,6 +242,7 @@ class Zend_Config_Ini extends Zend_Config
                 $config = $this->_processKey($config, $key, $value);
             }
         }
+
         return $config;
     }
 
@@ -288,6 +286,7 @@ class Zend_Config_Ini extends Zend_Config
         } else {
             $config[$key] = $value;
         }
+
         return $config;
     }
 }

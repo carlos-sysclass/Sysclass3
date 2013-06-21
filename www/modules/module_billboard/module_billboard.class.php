@@ -1,35 +1,36 @@
 <?php
 
-class module_billboard extends MagesterExtendedModule {
-
-
+class module_billboard extends MagesterExtendedModule
+{
     // Mandatory functions required for module function
-    public function getName() {
+    public function getName()
+    {
         return "BILLBOARD";
     }
 
-    public function getPermittedRoles() {
+    public function getPermittedRoles()
+    {
         return array("professor","student");
     }
 
-    public function isLessonModule() {
+    public function isLessonModule()
+    {
         return true;
     }
-    
-    public function loadMainBillboardBlock($blockIndex = null) {
+
+    public function loadMainBillboardBlock($blockIndex = null)
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
 		$currentUser = $this->getCurrentuser();
     	$xuserModule = $this->loadModule("xuser");
-    	
+
     	if ($xuserModule->getExtendedTypeID($currentUser) == 'polo') {
     		return false;
     	}
-    	
 
-		
 		$courseIds == array();
-		foreach($currentUser->getUserCourses() as $courseObject) {
+		foreach ($currentUser->getUserCourses() as $courseObject) {
 			$courseIds[] = $courseObject->course['id'];
 		}
 
@@ -39,8 +40,8 @@ class module_billboard extends MagesterExtendedModule {
 			$billboard = eF_getTableData("module_billboard", "*", sprintf("course_id IN (%s)", implode(", ", $courseIds)));
 			if ($currentCourse = $this -> getCurrentCourse()) {
 				if (in_array($currentCourse->course['id'], $currentCourse)) {
-					$billboard = eF_getTableData("module_billboard", "*", "course_id = " . $currentCourse->course['id']);		
-				} 
+					$billboard = eF_getTableData("module_billboard", "*", "course_id = " . $currentCourse->course['id']);
+				}
 			}
 		}
         // Only professors may edit
@@ -56,24 +57,23 @@ class module_billboard extends MagesterExtendedModule {
         } else {
           //  $smarty -> assign("T_BILLBOARD_INNERTABLE", '<table width="400px"><tr><td class = "emptyCategory">'._BILLBOARD_EMPTY.'</td></tr></table>');
         }
-        
+
 		$this->getParent()->appendTemplate(array(
 			'title'			=> __BILLBOARD_TITLE,
 			'template'		=> $this->moduleBaseDir . 'templates/blocks/billboard.main_billboard.tpl',
 			'contentclass'	=> 'blockContents'
 	   	), $blockIndex);
-	 
-		
+
 	   	$this->injectJS("jwplayer/jwplayer");
-		
-		foreach($billboard as $item) {
+
+		foreach ($billboard as $item) {
 		   	if (!empty($item['scripts'])) {
 		   		$this->injectScript(
 		   			$item['scripts']
 		   		);
 			}
 		}
-	   	
+
 	   	$this->assignSmartyModuleVariables();
 
         return true;
@@ -81,8 +81,10 @@ class module_billboard extends MagesterExtendedModule {
 
     // Optional functions
     // What should happen on installing the module
-    public function onInstall() {
+    public function onInstall()
+    {
         eF_executeNew("drop table if exists module_billboard");
+
         return eF_executeNew("CREATE TABLE module_billboard (
                           lessons_ID int(11) not null,
                           data longtext default NULL,
@@ -91,35 +93,42 @@ class module_billboard extends MagesterExtendedModule {
     }
 
     // And on deleting the module
-    public function onUninstall() {
+    public function onUninstall()
+    {
         return eF_executeNew("DROP TABLE module_billboard;");
     }
 
     // On deleting a lesson
-    public function onDeleteLesson($lessonId) {
+    public function onDeleteLesson($lessonId)
+    {
         return eF_deleteTableData("module_billboard", "lessons_ID=".$lessonId);
     }
 
     // On exporting a lesson
-    public function onExportLesson($lessonId) {
+    public function onExportLesson($lessonId)
+    {
         $data = eF_getTableData("module_billboard", "*","lessons_ID=".$lessonId);
+
         return $data;
     }
 
     // On importing a lesson
-    public function onImportLesson($lessonId, $data) {
+    public function onImportLesson($lessonId, $data)
+    {
         // Change all external content links to the folder of the newly imported lesson
         if (strpos($data[0]['data'],"lessons/".$data[0]['lessons_ID']."/")) {
             $data[0]['data'] = str_replace("lessons/".$data[0]['lessons_ID']."/", "lessons/".$lessonId."/", $data[0]['data']."/");
-        } else if (strpos($data[0]['data'],"lessons\\".$data[0]['lessons_ID']."\\")) {
+        } elseif (strpos($data[0]['data'],"lessons\\".$data[0]['lessons_ID']."\\")) {
             $data[0]['data'] = str_replace("lessons\\".$data[0]['lessons_ID']."\\", "lessons\\".$lessonId."\\", $data[0]['data']."\\");
         }
         $data[0]['lessons_ID'] = $lessonId;
         eF_insertOrupdateTableData("module_billboard",$data[0], "lessons_ID=$lessonId");
+
         return true;
     }
 
-    public function getLessonCenterLinkInfo() {
+    public function getLessonCenterLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == "professor") {
             return array('title' => _BILLBOARD,
@@ -128,8 +137,8 @@ class module_billboard extends MagesterExtendedModule {
         }
     }
 
-
-    public function getSidebarLinkInfo() {
+    public function getSidebarLinkInfo()
+    {
         $currentUser = $this -> getCurrentUser();
 
         if ($currentUser -> getRole($this -> getCurrentLesson()) == 'professor') {
@@ -143,7 +152,8 @@ class module_billboard extends MagesterExtendedModule {
         }
     }
 
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
 		$currentLesson = $this -> getCurrentLesson();
         $currentUser = $this -> getCurrentUser();
         if ($currentUser -> getRole($this -> getCurrentLesson()) == 'professor') {
@@ -153,13 +163,14 @@ class module_billboard extends MagesterExtendedModule {
         }
     }
 
-    public function getLinkToHighlight() {
+    public function getLinkToHighlight()
+    {
         return 'main_link_id';
     }
 
     /* MAIN-INDEPENDENT MODULE PAGES */
-    public function getModule() {
-
+    public function getModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
 
@@ -167,7 +178,6 @@ class module_billboard extends MagesterExtendedModule {
         global $load_editor;
         $load_editor = true;
         //$smarty -> assign("T_HEADER_EDITOR", $load_editor);
-
 
         $form = new HTML_QuickForm("billboard_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
         $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
@@ -177,20 +187,20 @@ class module_billboard extends MagesterExtendedModule {
 
         $currentLesson = $this -> getCurrentLesson();
         $currentUser = $this -> getCurrentUser();
-        
+
         if (is_null($currentLesson)) {
         	$billboardID = -1;
         	$this->loadModule("xuser");
-        	
+
         	if ($this->modules['xuser']->getExtendedTypeId($currentUser) != 'professor') {
         		$this -> setMessageVar(__BILLBOARD_YOU_DONT_HAVE_PERMISSION_TO_CHANGE, 'failure');
         		return false;
         	}
-        	
+
         } else {
         	$billboardID = $currentLesson -> lesson['id'];
         }
-        
+
         $billboard = eF_getTableData("module_billboard", "*", "lessons_ID=".$billboardID);
         $form -> setDefaults(array('data' => $billboard[0]['data']));
 
@@ -198,7 +208,6 @@ class module_billboard extends MagesterExtendedModule {
             $fields = array('lessons_ID' => $billboardID,
                             'data'     => $form -> exportValue('data'));
 
-            
             if ($billboard[0]['data'] != "") {
                 if (eF_updateTableData("module_billboard", $fields, "lessons_ID=".$billboardID)) {
                     eF_redirect("professor.php?ctg=control_panel&message=".urlencode(_BILLBOARD_SUCCESFULLYUPDATEDBILLBOARDENTRY)."&message_type=success");
@@ -215,8 +224,6 @@ class module_billboard extends MagesterExtendedModule {
             }
         }
 
-
-
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
         $form -> accept($renderer);
         $smarty -> assign('T_BILLBOARD_FORM', $renderer -> toArray());
@@ -226,16 +233,19 @@ class module_billboard extends MagesterExtendedModule {
 
     }
 
-    public function getSmartyTpl() {
+    public function getSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_BILLBOARD_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_BILLBOARD_MODULE_BASEURL" , $this -> moduleBaseUrl);
         $smarty -> assign("T_BILLBOARD_MODULE_BASELINK", $this -> moduleBaseLink);
+
         return $this -> moduleBaseDir . "module.tpl";
     }
 
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getLessonModule() {
+    public function getLessonModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
@@ -249,7 +259,6 @@ class module_billboard extends MagesterExtendedModule {
             $smarty -> assign("T_BILLBOARD_INNERTABLE_OPTIONS", $inner_table_options);
         }
 
-
         if (sizeof($billboard)) {
             $smarty -> assign("T_BILLBOARD_INNERTABLE", $billboard[0]['data']);
         } else {
@@ -259,7 +268,8 @@ class module_billboard extends MagesterExtendedModule {
         return true;
     }
 
-    public function getLessonSmartyTpl() {
+    public function getLessonSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_BILLBOARD_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_BILLBOARD_MODULE_BASEURL" , $this -> moduleBaseUrl);
@@ -268,11 +278,13 @@ class module_billboard extends MagesterExtendedModule {
         $currentUser = $this -> getCurrentUser();
 
         $smarty -> assign("T_USERLESSONTYPE", $currentUser -> getRole($this -> getCurrentLesson()));
+
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
-    
+
     /* CURRENT-LESSON ATTACHED MODULE PAGES */
-    public function getDashboardModule() {
+    public function getDashboardModule()
+    {
         // Get smarty variable
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
@@ -286,21 +298,17 @@ class module_billboard extends MagesterExtendedModule {
             $smarty -> assign("T_BILLBOARD_INNERTABLE_OPTIONS", $inner_table_options);
         }
 
-
         if (sizeof($billboard) > 0) {
             $smarty -> assign("T_BILLBOARD_INNERTABLE", $billboard[0]['data']);
         } else {
             $smarty -> assign("T_BILLBOARD_INNERTABLE", '<table width="400px"><tr><td class = "emptyCategory">'._BILLBOARD_EMPTY.'</td></tr></table>');
         }
 
-        
-        
-        
-
         return true;
     }
 
-    public function getDashboardSmartyTpl() {
+    public function getDashboardSmartyTpl()
+    {
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_BILLBOARD_MODULE_BASEDIR" , $this -> moduleBaseDir);
         $smarty -> assign("T_BILLBOARD_MODULE_BASEURL" , $this -> moduleBaseUrl);
@@ -309,8 +317,7 @@ class module_billboard extends MagesterExtendedModule {
         $currentUser = $this -> getCurrentUser();
 
         $smarty -> assign("T_USERLESSONTYPE", $currentUser -> user['user_type']);
+
         return $this -> moduleBaseDir . "module_InnerTable.tpl";
     }
-
 }
-?>

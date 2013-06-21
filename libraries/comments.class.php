@@ -16,7 +16,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 /**
 
- * 
+ *
 
  * @author user
 
@@ -29,7 +29,7 @@ class comments extends MagesterEntity
 
      * The comments properties
 
-     * 
+     *
 
      * @since 3.6.0
 
@@ -43,7 +43,7 @@ class comments extends MagesterEntity
 
      * Create comments
 
-     * 
+     *
 
      * This function is used to create comments
 
@@ -55,7 +55,7 @@ class comments extends MagesterEntity
 
      * </code>
 
-     * 
+     *
 
      * @param $fields An array of data
 
@@ -68,7 +68,8 @@ class comments extends MagesterEntity
      * @static
 
      */
-    public static function create($fields = array()) {
+    public static function create($fields = array())
+    {
         $fields = array("data" => $fields['data'],
                         "users_LOGIN" => $fields['users_LOGIN'],
                         "content_ID" => $fields['content_ID'],
@@ -79,6 +80,7 @@ class comments extends MagesterEntity
         $comments = new comments($newId);
   $sourceUnit = new MagesterUnit($fields['content_ID']);
   MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_COMMENT_WRITING, "lessons_ID" => $sourceUnit['lessons_ID'], "entity_ID" => $fields['content_ID'], "entity_name" => $sourceUnit['name']));
+
         return $comments;
     }
     /**
@@ -88,12 +90,14 @@ class comments extends MagesterEntity
      * @see libraries/MagesterEntity#getForm($form)
 
      */
-    public function getForm($form) {
+    public function getForm($form)
+    {
      $form -> addElement('textarea', 'data', _COMMENT, 'class = "simpleEditor inputTextarea"');
      $form -> addElement('advcheckbox', 'private', _PRIVATE, null, 'class = "inputCheckbox"', array(0, 1));
      $form -> addElement('submit', 'submit', _SUBMIT, 'class = "flatButton"');
      $form -> setDefaults(array('data' => $this -> comments['data'],
                                 'private' => $this -> comments['private']));
+
         return $form;
     }
     /**
@@ -103,7 +107,8 @@ class comments extends MagesterEntity
      * @see libraries/MagesterEntity#handleForm($form)
 
      */
-    public function handleForm($form, $values = false) {
+    public function handleForm($form, $values = false)
+    {
         if (!$values) {
             $values = $form -> exportValues();
         }
@@ -178,7 +183,7 @@ class comments extends MagesterEntity
 
 	 * @param mixed $limit The results limit or false
 
-	 * @param string $private false for returning only public comments, true for everything 
+	 * @param string $private false for returning only public comments, true for everything
 
 	 * @return array The comments array
 
@@ -189,10 +194,11 @@ class comments extends MagesterEntity
 	 * @static
 
      */
-    public static function getComments($lesson = false, $user = false, $content_ID = false, $limit = false, $private = true) {
+    public static function getComments($lesson = false, $user = false, $content_ID = false, $limit = false, $private = true)
+    {
         if ($lesson instanceOf MagesterLesson) {
             $lesson = $lesson -> lesson['id'];
-        } else if (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!eF_checkParameter($lesson, 'id')) {
             $lesson = $_SESSION['s_lessons_ID'];
         }
         if ($user instanceOf MagesterUser) {
@@ -221,13 +227,14 @@ class comments extends MagesterEntity
             $private = '';
         }
         $comments = eF_getTableData("comments cm, content cn", "cm.id AS id, cm.data AS data, cm.users_LOGIN AS users_LOGIN, cm.timestamp AS timestamp, cn.name AS content_name, cn.id AS content_ID, cn.ctg_type AS content_type", "cn.lessons_ID=$lesson AND cm.content_ID=cn.id AND cn.active=1 AND cm.active=1".$private.$login_str.$content_ID_str, "cm.timestamp DESC".$limit_str);
+
         return $comments;
     }
     /**
 
      * Clear duplicate comments
 
-     * 
+     *
 
      * There are times that the system may end up with duplicate comments, like when
 
@@ -241,7 +248,7 @@ class comments extends MagesterEntity
 
      * </code>
 
-     * 
+     *
 
      * @param mixed $lesson a lesson id or an MagesterLesson object
 
@@ -252,7 +259,8 @@ class comments extends MagesterEntity
      * @since 3.6.0
 
      */
-    public static function clearDuplicates($lesson) {
+    public static function clearDuplicates($lesson)
+    {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson -> lesson['id'];
      } elseif (eF_checkParameter($lesson, 'id')) {
@@ -274,7 +282,8 @@ class comments extends MagesterEntity
          $comments -> delete();
      }
     }
- public function persist() {
+ public function persist()
+ {
   parent :: persist();
   $sourceUnit = new MagesterUnit($this -> comments['content_ID']);
   MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_COMMENT_WRITING, "lessons_ID" => $sourceUnit['lessons_ID'], "entity_ID" => $this -> comments['content_ID'], "entity_name" => $sourceUnit['name']));

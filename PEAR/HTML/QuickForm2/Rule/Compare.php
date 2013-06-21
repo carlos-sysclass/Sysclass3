@@ -84,7 +84,6 @@ class HTML_QuickForm2_Rule_Compare extends HTML_QuickForm2_Rule
     */
     protected $operators = array('==', '!=', '===', '!==', '<', '<=', '>', '>=');
 
-
    /**
     * Validates the owner element
     *
@@ -103,6 +102,7 @@ class HTML_QuickForm2_Rule_Compare extends HTML_QuickForm2_Rule
                 '$a, $b', 'return strval($a) ' . $config['operator'] . ' strval($b);'
             );
         }
+
         return $compareFn($value, $config['operand'] instanceof HTML_QuickForm2_Node
                                   ? $config['operand']->getValue(): $config['operand']);
     }
@@ -133,6 +133,7 @@ class HTML_QuickForm2_Rule_Compare extends HTML_QuickForm2_Rule
         if ($config['operand'] instanceof HTML_QuickForm2_Node) {
             $triggers = array_merge($triggers, $config['operand']->getJavascriptTriggers());
         }
+
         return $triggers;
     }
 
@@ -168,6 +169,7 @@ class HTML_QuickForm2_Rule_Compare extends HTML_QuickForm2_Rule
             $config = (isset($config)? $config: array())
                       + self::toCanonicalForm($localConfig);
         }
+
         return $config;
     }
 
@@ -233,4 +235,3 @@ class HTML_QuickForm2_Rule_Compare extends HTML_QuickForm2_Rule
         return parent::setConfig($config);
     }
 }
-?>

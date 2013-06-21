@@ -20,12 +20,10 @@
  * @version    $Id: Abstract.php 15934 2009-06-08 02:05:48Z yoshida@zend.co.jp $
  */
 
-
 /**
  * @see Zend_Mime
  */
 require_once 'Zend/Mime.php';
-
 
 /**
  * Abstract for sending eMails through different
@@ -266,6 +264,7 @@ abstract class Zend_Mail_Transport_Abstract
 
             // Get headers
             $this->_headers = $this->_mail->getHeaders();
+
             return;
         }
 
