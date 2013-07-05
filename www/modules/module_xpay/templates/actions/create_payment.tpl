@@ -18,7 +18,6 @@ var message = {$T_XPAY_MESSAGE};
 			{$T_XPAY_CREATE_PAYMENT_FORM.javascript}
 			<form {$T_XPAY_CREATE_PAYMENT_FORM.attributes}>
 				{$T_XPAY_CREATE_PAYMENT_FORM.hidden|@implode}
-				
 					<div>
 						<label>{$T_XPAY_CREATE_PAYMENT_FORM.real_value.label}</label>
 						{$T_XPAY_CREATE_PAYMENT_FORM.real_value.html}

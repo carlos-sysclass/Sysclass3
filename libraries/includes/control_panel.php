@@ -534,6 +534,7 @@ try {
 							case "module_dimdim" :
 							case "module_chat" :
 							case "module_bbb" :
+							case "module_quick_mails" :
 							case "module_onsync" :
 							case "module_blogs" :
 							case "module_translate" :

@@ -6,6 +6,33 @@
 class module_quick_mails extends MagesterExtendedModule
 {
 	const GET_COURSE_ROLES_SEND_LIST = 'get_course_roles_send_list';
+	const VIEW_LIST = 'view_list';
+	const ADD_LIST_ITEM = 'add_list_item';
+	const EDIT_LIST_ITEM = 'edit_list_item';
+	const REMOVE_LIST_ITEM = 'remove_list_item';
+	const EDIT_ITEM_DESTINATION = 'edit_item_destination';
+	const TOGGLE_USER_IN_RECIPIENT_LIST = 'toggle_user_in_recipient_list';
+	
+	const ADD_NEW_SCOPE = 'add_new_scope';
+	const DELETE_SCOPE = 'delete_scope';
+	
+
+	public function __construct($defined_moduleBaseUrl, $defined_moduleFolder)
+	{
+		$this->migratedActions = array(
+			self::GET_COURSE_ROLES_SEND_LIST,
+			self::VIEW_LIST,
+			self::ADD_LIST_ITEM,
+			self::EDIT_LIST_ITEM,
+			self::REMOVE_LIST_ITEM,
+			self::EDIT_ITEM_DESTINATION,
+			self::TOGGLE_USER_IN_RECIPIENT_LIST,
+			self::ADD_NEW_SCOPE,
+			self::DELETE_SCOPE
+		);
+		parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
+
+	}
 
 	public function getName()
 	{
@@ -14,7 +41,7 @@ class module_quick_mails extends MagesterExtendedModule
 
 	public function getPermittedRoles()
 	{
-		return array("professor", "student");
+		return array("administrator", "professor", "student");
 	}
 
 	public function getUserContactList($user = null)
@@ -25,14 +52,13 @@ class module_quick_mails extends MagesterExtendedModule
 
 		$xentifyModule = $this->loadModule("xentify");
 		$contactListData = sC_getTableData(
-				"module_quick_mails_scope scope
-				LEFT JOIN module_quick_mails_recipients qmr ON (scope.recipient_id = qmr.id)
-				LEFT OUTER JOIN module_quick_mails_recipients_list qml ON (qmr.id = qml.recipient_id)
-				LEFT OUTER JOIN module_quick_mails_groups qmg ON (qmr.group_id = qmg.id)",
-				"scope.recipient_id, scope.xscope_id, scope.xentify_id, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name, COUNT(qml.user_id) as total_users",
-				"",
-				"",
-				"scope.recipient_id, scope.xscope_id, scope.xentify_id HAVING COUNT(qml.user_id) > 0"
+			"module_quick_mails_recipients qmr
+			LEFT JOIN module_quick_mails_scope scope ON (scope.recipient_id = qmr.id)
+			LEFT OUTER JOIN module_quick_mails_groups qmg ON (qmr.group_id = qmg.id)",
+			"scope.recipient_id, scope.xscope_id, scope.xentify_id, qmr.qm_type, qmr.link, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name",
+			"",
+			"",
+			"scope.recipient_id, scope.xscope_id, scope.xentify_id"
 		);
 
 		$contactList = array();
@@ -42,7 +68,11 @@ class module_quick_mails extends MagesterExtendedModule
 			if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
 				unset($contactListData[$key]);
 			} else {
-				$recp['href']	= $this->moduleBaseUrl . "&rec=" . $recp['recipient_id'] . "&popup=1";
+				if ($recp['qm_type'] == 'link') {
+					$recp['href'] = $recp['link'];
+				} else {
+					$recp['href']	= $this->moduleBaseUrl . "&rec=" . $recp['recipient_id'] . "&popup=1";	
+				}
 				$image = explode("/", $recp['image']);
 				$recp['image'] = array(
 						'size'	=> reset(explode("x", $image[0])),
@@ -69,6 +99,10 @@ class module_quick_mails extends MagesterExtendedModule
 		}
 		//if ($this->modules['xuser']->getExtendedTypeID($currentUser) == 'professor') {
 		//} elseif (in_array($this->modules['xuser']->getExtendedTypeID($currentUser), array('pre_enrollment', 'pre_student', 'student'))) {
+
+//var_dump($this->getUserLinkList());
+//	exit;
+
 			$contactList = $this->getUserContactList();
 		/*
 		} else {
@@ -204,9 +238,14 @@ class module_quick_mails extends MagesterExtendedModule
 		return true;
 	}
 
+	public function getDefaultAction()
+	{
+		return self::VIEW_LIST;
+	}
+
 	public function getModule()
 	{
-		if ($this->getCurrentAction() == self::GET_COURSE_ROLES_SEND_LIST) {
+		if (in_array($this->getCurrentAction(), $this->migratedActions)) {
 			return parent::getModule();
 		}
 		$smarty = $this -> getSmartyVar();
@@ -408,18 +447,21 @@ class module_quick_mails extends MagesterExtendedModule
 
 	public function getSmartyTpl()
 	{
+		if (in_array($this->getCurrentAction(), $this->migratedActions)) {
+			return parent::getSmartyTpl();
+		}
 		$smarty = $this -> getSmartyVar();
 		$smarty -> assign("T_MODULE_MAIL_BASEDIR" , $this -> moduleBaseDir);
 		$smarty -> assign("T_MODULE_MAIL_BASEURL" , $this -> moduleBaseUrl);
 		$smarty -> assign("T_MODULE_MAIL_BASELINK", $this -> moduleBaseLink);
 		return $this -> moduleBaseDir . "module.tpl";
 	}
-
+/*
 	public function getLessonModule()
 	{
 		return true;
 	}
-
+*/
 	public function getLessonSmartyTpl()
 	{
 		$smarty 		= $this->getSmartyVar();
@@ -505,6 +547,487 @@ class module_quick_mails extends MagesterExtendedModule
 			exit;
 		}
 	}
+	/* ACTIONS FUNCTIONS */
+	public function viewListAction()
+	{
+		$smarty = $this->getSmartyVar();
+
+		/// GET =
+		/*
+		 * negociation_id	228
+		 * invoice_index	3
+		*/
+		$listItems = sC_getTableData(
+			"module_quick_mails_recipients qm LEFT JOIN module_quick_mails_groups qmg ON (qm.group_id = qmg.id)",
+			"qm.id, qm.group_id, qmg.name as `group`, qm.title, qm.qm_type, qm.image"
+		);
+
+		$qmTypesOptions = array(
+			'contact'	=> __QUICK_MAILS_CONTACT_OPTION,
+			'feedback'	=> __QUICK_MAILS_FEEDBACK_OPTION,
+			'link'		=> __QUICK_MAILS_LINK_OPTION
+		);
+
+		$smarty->assign("T_LIST", $listItems);
+		$smarty->assign("T_LIST_TYPES", $qmTypesOptions);
+	}
+
+	public function addListItemAction()
+	{
+		$smarty = $this->getSmartyVar();
+
+		/// GET =
+		/*
+		 * negociation_id	228
+		 * invoice_index	3
+		*/
+		$qmGroupOptionsDB = sC_getTableData(
+			"module_quick_mails_groups",
+			"id, name"
+		);
+
+		$qmGroupOptions = array();
+		foreach($qmGroupOptionsDB as $item) {
+			$qmGroupOptions[$item['id']] = $item['name'];
+		}
+
+		$qmTypesOptions = array(
+			'contact'	=> __QUICK_MAILS_CONTACT_OPTION,
+			'feedback'	=> __QUICK_MAILS_FEEDBACK_OPTION,
+			'link'		=> __QUICK_MAILS_LINK_OPTION
+		);
+
+		$xentifyModule = $this->loadModule("xentify");
+
+		$entifyScopes = $xentifyModule->getScopes();
+
+		$itemScopes = sC_getTableData(
+			"module_quick_mails_scope",
+			"codigo, recipient_id, xscope_id, xentify_id",
+			sprintf("recipient_id = %d", $_GET['item_id'])
+		);
+
+		foreach($itemScopes as &$itemScoped) {
+			$itemScoped['description'] = $xentifyModule->getScopeFullDescription(null, $itemScoped['xscope_id'], $itemScoped['xentify_id']);
+
+		}
+
+		$smarty->assign("T_ITEM_SCOPES", $itemScopes);
+		
+
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
+		$form = new HTML_QuickForm2("quick_mail_edit_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+
+		$form
+			->addSelect('group_id', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_GROUP, 'options' => $qmGroupOptions));
+
+		$form
+			->addText('title', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_TITLE));
+
+		$form
+			->addSelect('qm_type', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_TYPE, 'options' => $qmTypesOptions));
+
+		$form -> addSubmit('_save', null, array('label'	=> __QUICK_MAILS_SAVE));
+
+		if ($form -> isSubmitted() && $form -> validate()) {
+			// VALIDATE
+			$values = $form->getValue();
+
+			$insertValues = array(
+				'group_id'	=> $values['group_id'],
+				'title'		=> $values['title'],
+				'qm_type'	=> $values['qm_type']
+			);
+
+			if ($values['image']) {
+				$insertValues['image']	= $values['image'];
+			}
+
+			$itemID = sC_insertTableData("module_quick_mails_recipients", $insertValues);
+
+			// INSERE VALORES E REDIRECIONA PARA
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&action=edit_list_item&item_id=%s&message=%s&message_type=success", $itemID,  __QUICK_MAILS_SUCCESS));
+			exit;
+		}
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_QUICK_MAILS_EDIT_FORM', $renderer -> toArray());
+
+		$this->assignSmartyModuleVariables();
+	}
+
+
+	public function editListItemAction()
+	{
+		$smarty = $this->getSmartyVar();
+
+		/// GET =
+		/*
+		 * negociation_id	228
+		 * invoice_index	3
+		*/
+		$itemID = $_GET['item_id'];
+		list($values) = sC_getTableData(
+			"module_quick_mails_recipients qm LEFT JOIN module_quick_mails_groups qmg ON (qm.group_id = qmg.id)",
+			"qm.id, qm.group_id, qmg.name as `group`, qm.title, qm.qm_type, qm.image, qm.link",
+			sprintf("qm.id = %d", $itemID)
+		);
+
+		$qmGroupOptionsDB = sC_getTableData(
+			"module_quick_mails_groups",
+			"id, name"
+		);
+
+		$qmGroupOptions = array();
+		foreach($qmGroupOptionsDB as $item) {
+			$qmGroupOptions[$item['id']] = $item['name'];
+		}
+
+		$qmTypesOptions = array(
+			'contact'	=> __QUICK_MAILS_CONTACT_OPTION,
+			'feedback'	=> __QUICK_MAILS_FEEDBACK_OPTION,
+			'link'		=> __QUICK_MAILS_LINK_OPTION
+		);
+
+		$xentifyModule = $this->loadModule("xentify");
+
+		$entifyScopes = $xentifyModule->getScopes();
+
+		$itemScopes = sC_getTableData(
+			"module_quick_mails_scope",
+			"codigo, recipient_id, xscope_id, xentify_id",
+			sprintf("recipient_id = %d", $_GET['item_id'])
+		);
+
+		foreach($itemScopes as &$itemScoped) {
+			$itemScoped['description'] = $xentifyModule->getScopeFullDescription(null, $itemScoped['xscope_id'], $itemScoped['xentify_id']);
+
+		}
+
+		$smarty->assign("T_ITEM_SCOPES", $itemScopes);
+
+		$smarty->assign("T_ITEM_TYPE", $values['qm_type']);
+
+		
+		// CRIAR FORMULÁRIO DE CAIXA DE DIALOGOS
+		$form = new HTML_QuickForm2("quick_mail_edit_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+		
+		$form -> addHidden('id')->setValue($values['id']);
+
+		$form
+			->addSelect('group_id', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_GROUP, 'options' => $qmGroupOptions))
+			->setValue($values['group_id']);
+
+		$form
+			->addText('title', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_TITLE))
+			->setValue($values['title']);
+
+		$form
+			->addStatic('qm_type', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_TYPE, 'options' => $qmTypesOptions))
+			->setValue($values['qm_type']);
+
+		if ($values['qm_type'] == 'link') {
+			var_dump($values['link']);
+			$form
+				->addText('link', array('class' => 'large'), array('label'	=> __QUICK_MAILS_FIELD_LINK))
+				->setValue($values['link']);
+		}
+
+		$form -> addSubmit('_save', null, array('label'	=> __QUICK_MAILS_SAVE));
+
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+
+		if ($form -> isSubmitted() && $form -> validate()) {
+			// VALIDATE
+			$values = $form->getValue();
+
+			$insertValues = array(
+				'group_id'	=> $values['group_id'],
+				'title'		=> $values['title']
+			);
+
+			if ($values['image']) {
+				$insertValues['image']	= $values['image'];
+			}
+			if ($values['link']) {
+				$insertValues['link']	= $values['link'];
+			}
+
+			sC_updateTableData("module_quick_mails_recipients", $insertValues, sprintf("id = %d", $itemID));
+
+			// INSERE VALORES E REDIRECIONA PARA
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&action=view_list&message=%s&message_type=success", __QUICK_MAILS_SUCCESS));
+			exit;
+		}
+		
+		// Set defaults for the form elements
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_QUICK_MAILS_EDIT_FORM', $renderer -> toArray());
+
+		$this->assignSmartyModuleVariables();
+	}
+
+	public function removeListItemAction()
+	{
+		$xuserModule = $this->loadModule("xuser");
+		$currentUser = $this->getCurrentUser();
+    	if (
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
+			$currentUser->moduleAccess['quick_mails'] != 'view' &&
+			$currentUser->moduleAccess['quick_mails'] != 'change'
+   		) {
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&message=%s&message_type=success", __QUICK_MAILS_ERROR_PERMISSION));
+			exit;
+		}
+		if (sC_checkParameter($_GET['item_id'], "id")) {
+			sc_deleteTableData(" module_quick_mails_recipients", "id = " . $_GET['item_id']);
+		}
+		header(sprintf("Location: " . $this->moduleBaseUrl . "&action=view_list&message=%s&message_type=success", __QUICK_MAILS_SUCCESS));
+		exit;
+	}
+
+	public function editItemDestinationAction()
+	{
+		$smarty = $this->getSmartyVar();
+
+		if (!sC_checkParameter($_GET['item_id'], 'id')) {
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&message=%s&message_type=success", __QUICK_MAILS_ERROR_PERMISSION));
+			exit;
+		}
+		$itemID = $_GET['item_id'];
+
+		// Assign the right values needed by the sql query
+        //$limit  = (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint'))  ? $_GET['limit']  : G_DEFAULT_TABLE_SIZE;
+        $sort   = (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text'))    ? $_GET['sort']   : 'login';
+        $order  = (isset($_GET['order']) && $_GET['order'] == 'desc')                   ? 'desc'          : 'asc';
+        //$offset = (isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int')) ? $_GET['offset'] : 0;
+        $where = array();
+        $where[] = "(qml.recipient_id = $itemID OR qml.recipient_id IS NULL)";
+        $where[] = "u.archive = 0";
+        $where = implode(" AND ", $where);
+
+        // Write the sql query
+		$users = sC_getTableData(
+			"users u LEFT JOIN `module_quick_mails_recipients_list` qml ON (u.id = qml.user_id)",
+			"qml.recipient_id, u.id, u.login, u.user_type, u.user_types_ID, u.email",
+			$where,
+			"qml.recipient_id DESC, $sort"
+		);
+        // Run the query and get the results
+
+/*
+		$totalUsers = sC_countTableData(
+			"users u LEFT JOIN `module_quick_mails_recipients_list` qml ON (u.id = qml.user_id)",
+			"u.id, u.login, u.user_type, u.user_types_ID",
+			$where
+		);
+        $totalUsers = $totalUsers[0]['count'];
+*/
+        // Assign the template data and display it
+        $languages = MagesterSystem::getLanguages(true);
+        //$smarty->assign("T_LANGUAGES", $languages);
+        //$smarty->assign("T_USERS_SIZE", $totalUsers);
+        $smarty->assign("T_QUICK_MAILS_USERS", $users);
+        $smarty->assign("T_ROLES", MagesterUser::getRoles(true));
+		//$smarty -> assign("T_TABLE_SIZE", $totalEntries);
+
+	}
+
+	public function toggleUserInRecipientListAction()
+	{
+		$xuserModule = $this->loadModule("xuser");
+		$currentUser = $this->getCurrentUser();
+    	if (
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
+			$currentUser->moduleAccess['quick_mails'] != 'view' &&
+			$currentUser->moduleAccess['quick_mails'] != 'change'
+   		) {
+			echo json_encode(
+				array(
+					'message'		=> __QUICK_MAILS_ERROR_PERMISSION,
+					'message_type'	=> 'error'
+				)
+			);
+			exit;
+		}
+
+  		if (!sC_checkParameter($_POST['recipient_id'], 'id') || !sC_checkParameter($_POST['user_id'], 'id')) {
+			echo json_encode(
+				array(
+					'message'		=> __QUICK_MAILS_PARAMS_ERROR,
+					'message_type'	=> 'error'
+				)
+			);
+			exit;
+		}
+
+		list($userInList) = sC_countTableData(
+			"module_quick_mails_recipients_list",
+			"recipient_id",
+			sprintf("recipient_id = %d AND user_id = %d", $_POST['recipient_id'], $_POST['user_id'])
+		);
+		if ($userInList['count'] == 0) {
+			sC_insertTableData(
+				"module_quick_mails_recipients_list",
+				array(
+					'recipient_id'	=> $_POST['recipient_id'],
+					'user_id'		=> $_POST['user_id']
+				)
+			);
+			echo json_encode(
+				array(
+					'message'		=> __QUICK_MAILS_SUCCESS_INSERT,
+					'message_type'	=> 'success'
+				)
+			);
+		} else {
+			sC_deleteTableData(
+				"module_quick_mails_recipients_list",
+				sprintf("recipient_id = %d AND user_id = %d", $_POST['recipient_id'], $_POST['user_id'])
+			);
+			echo json_encode(
+				array(
+					'message'		=> __QUICK_MAILS_SUCCESS_REMOVE,
+					'message_type'	=> 'success'
+				)
+			);
+
+		}
+		exit;
+
+
+
+		exit;
+	}
+
+
+	public function addNewScopeAction()
+	{
+		$smarty 		= $this->getSmartyVar();
+    	$currentUser	= $this->getCurrentUser();
+
+    	$xuserModule = $this->loadModule("xuser");
+    	$xentifyModule = $this->loadModule("xentify");
+
+    	$itemID = $_GET['item_id'];
+
+    	if (
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
+			$currentUser->moduleAccess['xentify'] != 'view' &&
+			$currentUser->moduleAccess['xentify'] != 'change'
+   		) {
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&message=%s&message_type=success", __QUICK_MAILS_ERROR_PERMISSION));
+			exit;
+		}
+
+    	// LOAD DATA FROM xentify Module
+    	$scopeData = sC_getTableData("module_xentify_scopes", "id, name, description, rules", "active = 1");
+    	$scopeCombo = array(-1	=> __SELECT_ONE_OPTION);
+    	foreach ($scopeData as $item) {
+    		$scopeCombo[$item['id']] = $item['name'];
+    	}
+
+    	$form = new HTML_QuickForm2("quickmail_new_scope_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
+
+		//$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
+
+		$form -> addElement('hidden', 'step_index');
+		$form -> addSelect('scope_id', null, array('label'	=> __QUICKMAIL_SCOPE, 'options'	=> $scopeCombo));
+
+		$form -> addSubmit('submit_scope', null, array('label'	=> __QUICK_MAILS_SAVE));
+
+		$scopeFields = array();
+
+		$values = $form->getValue();
+
+		if (is_numeric($values['scope_id']) && $values['scope_id'] > 0) {
+			// MAKE OPTIONS FOR SELECTED SCOPE
+			$scopeFields = $xentifyModule->makeScopeFormOptions($values['scope_id'], $form);
+			$values = $form->getValue();
+
+			$smarty -> assign("T_QUICK_MAIL_SCOPE_FIELDS", $scopeFields);
+
+			if ($form -> isSubmitted() && $form -> validate()) {
+				$xentifyValues = array();
+				foreach ($scopeFields as $field_name) {
+					$xentifyValues[] = $values[$field_name];
+				}
+
+				$insertValues = array(
+					'recipient_id'	=> $itemID,
+					'xscope_id'		=> $values['scope_id'],
+					'xentify_id'	=> implode(module_xentify::XENTIFY_SEP, $xentifyValues)
+				);
+
+				sC_insertTableData("module_quick_mails_scope", $insertValues);
+
+				// INSERE VALORES E REDIRECIONA PARA
+				header(sprintf("Location: " . $this->moduleBaseUrl . "&action=edit_list_item&item_id=%s", $itemID));
+				exit;
+			}
+
+		} else {
+			$values = array(
+				'step_index'	=> 1,
+				'scope_id'		=> -1
+			);
+		}
+
+		//$form->setDefaults($values);
+		$form->addDataSource(new HTML_QuickForm2_DataSource_Array($values));
+		// Set defaults for the form elements
+
+		$renderer = HTML_QuickForm2_Renderer::factory('ArraySmarty');
+
+		//$renderer = new HTML_QuickForm2_Renderer_ArraySmarty($smarty);
+		$form -> render($renderer);
+		$smarty -> assign('T_QUICK_MAIL_NEW_SCOPE_FORM', $renderer -> toArray());
+
+		return true;
+	}
+
+	public function deleteScopeAction() {
+		$xuserModule = $this->loadModule("xuser");
+		$currentUser = $this->getCurrentUser();
+    	if (
+			$xuserModule->getExtendedTypeID($currentUser) != "administrator" &&
+			$currentUser->moduleAccess['xentify'] != 'view' &&
+			$currentUser->moduleAccess['xentify'] != 'change'
+   		) {
+			header(sprintf("Location: " . $this->moduleBaseUrl . "&message=%s&message_type=success", __QUICK_MAILS_ERROR_PERMISSION));
+			exit;
+		}
+		if (sC_checkParameter($_GET['scope_id'], "id")) {
+			sc_deleteTableData("module_quick_mails_scope", "codigo = " . $_GET['scope_id']);
+		}
+		$itemID = $_GET['item_id'];
+		header(sprintf("Location: " . $this->moduleBaseUrl . "&action=edit_list_item&item_id=%s&message=%s&message_type=success", $itemID, __QUICK_MAILS_SUCCESS));
+		exit;
+	}
+	
+
 	/* HOOK ACTIONS FUNCTIONS */
 	/* DATA MODEL FUNCTIONS /*/
+
+	public function getCenterLinkInfo()
+	{
+		$currentUser = $this -> getCurrentUser();
+
+		$xuserModule = $this->loadModule("xuser");
+		if (
+				$xuserModule->getExtendedTypeID($currentUser) == "administrator"
+		) {
+			return array(
+				'title' => __QUICK_MAILS_CONTROL_PANEL_TITLE,
+				'image' => $this -> moduleBaseDir . 'images/quick_mails.png',
+				'link'  => $this -> moduleBaseUrl,
+				'class' => 'quick_mails'
+			);
+		}
+	}
 }

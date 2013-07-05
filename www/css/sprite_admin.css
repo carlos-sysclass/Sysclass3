@@ -78,3 +78,7 @@
 .sectionOption nav ul li a.optionLinkImage.optionLink-content span {
 	background-position: -500px -600px;
 }
+
+.sectionOption nav ul li a.optionLinkImage.optionLink-quick_mails span {
+	background-position: -414px -408px;
+}

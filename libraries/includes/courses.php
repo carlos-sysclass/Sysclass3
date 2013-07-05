@@ -147,8 +147,6 @@ else if (isset($_GET['ajax']) && isset($_GET['edit_course']) && $_change_) {
 		$constraints = array('archive' => false, 'active' => 1, 'return_objects' => false) + createConstraintsFromSortedTable();
 		$users = $editCourse -> getCourseUsersIncludingUnassigned($constraints);
 
-		var_dump($users);
-
 		$totalEntries = $editCourse -> countCourseUsersIncludingUnassigned($constraints);
 		$dataSource = $users;
 		$tableName = $_GET['ajax'];
