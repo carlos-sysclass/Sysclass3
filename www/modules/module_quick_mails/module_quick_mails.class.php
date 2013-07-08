@@ -240,7 +240,15 @@ class module_quick_mails extends MagesterExtendedModule
 
 	public function getDefaultAction()
 	{
-		return self::VIEW_LIST;
+		$xuserModule = $this->loadModule("xuser");
+		$currentUser = $this->getCurrentUser();
+    	if (
+			$xuserModule->getExtendedTypeID($currentUser) == "administrator" ||
+			$currentUser->moduleAccess['quick_mails'] == 'view' ||
+			$currentUser->moduleAccess['quick_mails'] == 'change'
+   		) {
+    		return self::VIEW_LIST;
+    	}
 	}
 
 	public function getModule()
