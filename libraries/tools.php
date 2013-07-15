@@ -2141,13 +2141,15 @@ function sC_mail($sender, $recipient, $subject, $body, $attachments = false, $on
     }
     $body = $mime->get($params);
     $hdrs = $mime->headers($hdrs);
-
+/*
     $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
         'host' => $GLOBALS['configuration']['smtp_host'],
         'password' => $GLOBALS['configuration']['smtp_pass'],
         'port' => $GLOBALS['configuration']['smtp_port'],
         'username' => $GLOBALS['configuration']['smtp_user'],
         'timeout' => $GLOBALS['configuration']['smtp_timeout']));
+*/
+    $smtp = Mail::factory('mail');
     //$smtp->debug= true;
     //	var_dump(get_class($smtp));
 
