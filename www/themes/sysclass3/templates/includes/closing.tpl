@@ -30,9 +30,13 @@
 <!-- 	<script type = "text/javascript" src = "{$item}"> </script>  -->
 {*/foreach*}
 
-{if isset($T_MODULE_JS_STRING)}
-	<script type = "text/javascript" src="/min/?f={$T_MODULE_JS_STRING}&debug"></script> {*///MODULES LINK JAVASCRIPT CODE*}
+
+{if isset($T_MODULE_JS_ARRAY)}
+    {foreach item=t_module_js from=$T_MODULE_JS_ARRAY}
+        <script type="text/javascript" src="/min/?f={$t_module_js}&debug"></script>
+    {/foreach}
 {/if}
+
 <script type = "text/javascript" src="/min/?f=themes/{$T_THEME_SETTINGS->themes.path}js/sysclass.js,js/script_jquery.js&debug"></script> {*///MODULES LINK JAVASCRIPT CODE*}
 
 {*if $T_HEADER_INJECT_SCRIPTS!@count > 0*}
