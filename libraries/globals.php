@@ -544,7 +544,7 @@ function __autoload($className)
         require_once 'group.class.php';
     } elseif (strpos($className, "magestermanifest") !== false) {
         require_once 'manifest.class.php';
-    } elseif (strpos($className, "sC_personalmessage") !== false) {
+    } elseif (strpos($className, "sc_personalmessage") !== false) {
         require_once 'PersonalMessage.class.php';
     } elseif (strpos($className, "magesterconfiguration") !== false) {
         require_once 'configuration.class.php';
