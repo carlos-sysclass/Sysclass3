@@ -37,7 +37,7 @@ if (!$modulesLanguage) {
 //$languages = $modulesLanguage->getDisponibleLanguages();
 
 //if (isset($_GET['language']) && in_array($_GET['language'], $languages)) {
-	$modulesLanguage->getLanguageFile($_GET['language'], true);
+	$modulesLanguage->getOldLanguageFile($_GET['language'], true);
 //} else {
 //	echo json_encode(array());
 //	exit;
@@ -50,7 +50,7 @@ $userConstants = $allConstants['user'];
 
 foreach ($userConstants as $key => $value) {
 	if (strpos($key, "_") === 0) {
-		$langConstants[$key] = $value;
+		$langConstants[trim($key)] = $value;
 	}
 }
 if (count($langConstants) == 0) {
