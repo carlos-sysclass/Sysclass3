@@ -4,7 +4,6 @@
 	margin: 0;
     border: 1px solid #AAAAAA;
     padding: 15px;
-    display: none;
     z-index: 10000;
     visibility: hidden;
 }
