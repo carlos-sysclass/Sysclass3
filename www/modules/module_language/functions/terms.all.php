@@ -37,7 +37,7 @@ if (!$modulesLanguage) {
 //$languages = $modulesLanguage->getDisponibleLanguages();
 
 //if (isset($_GET['language']) && in_array($_GET['language'], $languages)) {
-	$modulesLanguage->getOldLanguageFile($_GET['language'], true);
+	$modulesLanguage->getLanguageFile($_GET['language'], true);
 //} else {
 //	echo json_encode(array());
 //	exit;
