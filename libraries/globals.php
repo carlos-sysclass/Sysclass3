@@ -56,7 +56,7 @@ $configuration = MagesterConfiguration :: getValues();
 //Set debugging parameter
 if (isset($_GET['debug']) && $configuration['debug_mode']) {
     debug();
- define("NO_OUTPUT_BUFFERING", 1);
+    define("NO_OUTPUT_BUFFERING", 1);
     define("G_DEBUG", 1);
 } elseif ($configuration['debug_mode']) {
  define("G_DEBUG", 1);
@@ -93,27 +93,49 @@ if ($GLOBALS['configuration']['eliminate_post_xss']) {
      }
  }
 }
+
+// LOAD LANGUAGE MODULE
+$modulesDB = sC_getTableData("modules","*","className = 'module_language' AND active=1");
+foreach ($modulesDB as $module) {
+    $folder = $module['position'];
+    $className = $module['className'];
+
+    require_once G_MODULESPATH.$folder."/".$className.".class.php";
+    if (class_exists($className)) {
+        $languageModule = new $className("", $folder);
+    } else {
+        $languageModule = false;
+    }
+    break;
+}
+if (!$languageModule) {
+    echo "não foi possível carregar os arquivos de linguagem";
+    exit;
+}
+
 //Language settings. $GLOBALS['loadLanguage'] can be used to exclude language files from loading, for example during certain ajax calls
 if (!isset($GLOBALS['loadLanguage']) || $GLOBALS['loadLanguage']) {
-    if (isset($_GET['bypass_language']) && sC_checkParameter($_GET['bypass_language'], 'filename') && is_file($path."language/lang-".$_GET['bypass_language'].".php.inc")) {
+    if (isset($_GET['bypass_language']) && sC_checkParameter($_GET['bypass_language'], 'filename') /*&& is_file($path."language/lang-".$_GET['bypass_language'].".php.inc") */) {
         /** We can bypass the current language any time by specifing 'bypass_language=<lang>' in the query string*/
-        require_once $path."language/lang-".$_GET['bypass_language'].".php.inc";
         $setLanguage = $_GET['bypass_language'];
+        //require_once $path."language/lang-".$_GET['bypass_language'].".php.inc";
     } else {
-        if (isset($_SESSION['s_language']) && is_file($path."language/lang-".$_SESSION['s_language'].".php.inc")) {
+        if (isset($_SESSION['s_language']) /* && is_file($path."language/lang-".$_SESSION['s_language'].".php.inc") */) {
             /** If there is a current language in the session, use that*/
-            require_once $path."language/lang-".$_SESSION['s_language'].".php.inc";
+            //require_once $path."language/lang-".$_SESSION['s_language'].".php.inc";
             $setLanguage = $_SESSION['s_language'];
-        } elseif ($GLOBALS['configuration']['default_language'] && is_file($path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc")) {
+        } elseif ($GLOBALS['configuration']['default_language'] /*&& is_file($path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc")*/) {
             /** If there isn't a language in the session, use the default system language*/
-            require_once $path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc";
+            //require_once $path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc";
             $setLanguage = $GLOBALS['configuration']['default_language'];
         } else {
             //If there isn't neither a session language, or a default language in the configuration, use english by default
-            require_once $path."language/lang-english.php.inc";
+            //require_once $path."language/lang-english.php.inc";
             $setLanguage = "english";
         }
     }
+    
+    $languageModule->getLanguageFile($setLanguage);
 }
 //Set locale settings
 setlocale(LC_CTYPE, _HEADERLANGUAGETAG);
@@ -125,9 +147,13 @@ setupThemes($overrideTheme);
 require_once $path."smarty/smarty_config.php";
 //Assign the configuration variables to smarty
 $smarty -> assign("T_CONFIGURATION", $configuration); //Assign global configuration values to smarty
+
 //Initialize languages and notify smarty on weather we have an RTL language
-$languages = MagesterSystem :: getLanguages();
-!$languages[$setLanguage]['rtl'] OR $smarty -> assign("T_RTL", 1);
+//$languages = MagesterSystem :: getLanguages();
+//!$languages[$setLanguage]['rtl'] OR $smarty -> assign("T_RTL", 1);
+$languageModule->initTranslationSystem($setLanguage);
+
+
 //Instantiate current theme
 try {
     $currentTheme = new themes(G_CURRENTTHEME);
@@ -168,6 +194,9 @@ try {
 require_once $path."includes/currencies.php";
 //Load filters if smarty is set
 if (isset($smarty)) {
+
+    //$smarty -> load_filter('pre', 'sC_translationModeLinkify');
+    
     //Convert normal images to css sprites
     $smarty -> load_filter('output', 'sC_template_applyImageMap');
     //Convert plain urls to theme-specific urls
@@ -189,6 +218,8 @@ if (isset($smarty)) {
     $smarty -> load_filter('output', 'sC_template_includeScripts');
 
     $smarty -> load_filter('output', 'sC_template_sanitizeDOMString');
+
+    $smarty -> load_filter('output', 'sC_translationModeLinkify');
 
     $browser = detectBrowser();
     if ($browser == 'ie6') {

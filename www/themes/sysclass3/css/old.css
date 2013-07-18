@@ -944,6 +944,30 @@ button.xlivechat_button:hover{
 	height: 18px;
 }
 
+/* Inicio xlivechat */
+button.language_button {
+	background: #2c2c2c;
+	border: 1px solid #5a5a5a;
+	border-radius: 2px 2px 2px 2px;
+	float: left;
+	margin: 18px 2px 0 2px;
+	width: 33px;
+	height: 30px;
+}
+
+button.language_button:hover{
+	background-color:#5A5A5A;
+}
+
+.language_button-icon {
+	background-image: url("../images/icons/16x16_branco.png");
+	background-position: 0px -1767px;
+	vertical-align: middle;
+	width: 16px;
+	height: 18px;
+}
+
+
 
 
 
