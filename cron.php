@@ -1,11 +1,13 @@
 <?php
+$home = "/var/zpanel/hostdata/sysclass/public_html";
 $user_domains = array(
 	'ultbr'		=> 'ult.com.br',
-	'sysclass'	=> 'sysclass.com',
+	'sysclass_com'	=> 'sysclass.com',
 	'maguser'	=> 'magester.net',
 );
 $username = null;
-$result = sscanf(__FILE__, "/home/%[a-z]/cron.php", $username);
+$result = sscanf(__FILE__, $home . "/%[a-z_]/cron.php", $username);
+
 
 if (array_key_exists($username, $user_domains)) {
 	$domain_name = $user_domains[$username];
