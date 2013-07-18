@@ -320,7 +320,7 @@ class module_language extends MagesterExtendedModule
             $toFile = array();
             $insertData = array();
             foreach($tokens['terms'] as $key => $value) {
-                $value = str_replace("'", "\'", str_replace("\'", "\'", $value));
+                $value = str_replace("'", "\'", stripslashes($value));
                 $toFile[] = sprintf("define('%s', '%s');", $key, $value);
 
                 $insertData[] =  array(
