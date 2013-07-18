@@ -175,12 +175,12 @@ jQuery(function($) {
 					});
 		    	}
 
-		    if (hasTerms) {
+		    //if (hasTerms) {
 		    	jQuery("#translation_tooltip").css("visibility", "visible");
 		    	jQuery("#translation_tooltip").show();
-		    } else {
+		    //} else {
 	//	    	jQuery("#translation_tooltip").css("visibility", "hidden");
-		    }
+		    //}
 		},
 		startUI : function() {
 			// LOAD PAGE USED TERMS
