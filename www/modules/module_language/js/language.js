@@ -36,7 +36,6 @@ jQuery(function($) {
 				function(data, status) {
 					if (output == "json") { 
 						jQuery.messaging.show(data);
-						console.log(data);
 						if (data.reload) {
 							window.location.reload();
 						}
@@ -186,7 +185,6 @@ jQuery(function($) {
 			// LOAD PAGE USED TERMS
 			var self = this;
 			this._getAction("get_used_terms", {language : 'default'}, function(response, status) {
-				console.log(response, status);
 				self.setConfig("terms", response.terms);
 				self.setConfig("language", response.language);
 
