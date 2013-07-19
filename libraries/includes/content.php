@@ -4,7 +4,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if (!$currentLesson) {
-    eF_redirect("".basename($_SERVER['PHP_SELF']));
+    sC_redirect("".basename($_SERVER['PHP_SELF']));
 }
 if ($configuration['math_content'] && $configuration['math_images']) {
 	$loadScripts[] = 'ASCIIMath2Tex';
@@ -35,7 +35,7 @@ if (!$currentUnit) {
             $smarty -> assign("T_SCORM", $scorm_unit);
         }
         if ($currentLesson -> options['glossary']) {
-            $currentUnit['data'] = eF_applyGlossary($currentUnit['data']);        //If glossary is activated, transform content data accordingly
+            $currentUnit['data'] = sC_applyGlossary($currentUnit['data']);        //If glossary is activated, transform content data accordingly
         }
         $currentUnit['data'] = str_replace("##MAGESTERINNERLINK##", $_SESSION['s_type'], $currentUnit['data']);    //Replace inner links. Inner links are created when linking from one unit to another, so they must point either to professor.php or student.php, depending on the user viewing the content
 
@@ -112,7 +112,7 @@ if (!$currentUnit) {
         }
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = _ERRORLOADINGCONTENT.": ".$_SESSION['s_lessons_ID'].": ".$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = _ERRORLOADINGCONTENT.": ".$_SESSION['s_lessons_ID'].": ".$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     }
 
 }

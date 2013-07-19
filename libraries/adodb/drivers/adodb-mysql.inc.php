@@ -566,23 +566,23 @@ class ADODB_mysql extends ADOConnection
          $num_keys = count($matches[0]);
          for ($i = 0;  $i < $num_keys;  $i ++) {
              $my_field  = explode('`, `', $matches[1][$i]);
-             $ref_table = $matches[2][$i];
-             $ref_field = explode('`, `', $matches[3][$i]);
+             $rsC_table = $matches[2][$i];
+             $rsC_field = explode('`, `', $matches[3][$i]);
 
              if ($upper) {
-                 $ref_table = strtoupper($ref_table);
+                 $rsC_table = strtoupper($rsC_table);
              }
 
 			// see https://sourceforge.net/tracker/index.php?func=detail&aid=2287278&group_id=42718&atid=433976
-			if (!isset($foreign_keys[$ref_table])) {
-				$foreign_keys[$ref_table] = array();
+			if (!isset($foreign_keys[$rsC_table])) {
+				$foreign_keys[$rsC_table] = array();
 			}
             $num_fields = count($my_field);
             for ($j = 0;  $j < $num_fields;  $j ++) {
                  if ($associative) {
-                     $foreign_keys[$ref_table][$ref_field[$j]] = $my_field[$j];
+                     $foreign_keys[$rsC_table][$rsC_field[$j]] = $my_field[$j];
                  } else {
-                     $foreign_keys[$ref_table][] = "{$my_field[$j]}={$ref_field[$j]}";
+                     $foreign_keys[$rsC_table][] = "{$my_field[$j]}={$rsC_field[$j]}";
                  }
              }
          }

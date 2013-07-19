@@ -18,7 +18,7 @@ $loginRedirectArray['lesson_catalog'] = _LESSONSCATALOG;
 $loginRedirectArray['user_dashboard'] = _USERDASHBOARD;
 $loginRedirectArray['commom_dashboard'] = _DASHBOARD;
 $appearanceMainForm = new Html_QuickForm("appearance_main_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=main", "", null, true);
-$appearanceMainForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$appearanceMainForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $appearanceMainForm -> addElement("advcheckbox", "show_footer", _SHOWFOOTER, null, 'class = "inputCheckBox"', array(0, 1));
 $appearanceMainForm -> addElement("textarea", "additional_footer", _EDITFOOTER, 'style = "height:100px;width:500px;"');
 $appearanceMainForm -> addElement("text", "site_name", _SITENAME, 'class = "inputText"');
@@ -40,13 +40,13 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach ($values as $key => $value) {
    $result = MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_APPEARANCE_MAIN_FORM", $appearanceMainForm -> toArray());
 
 $appearanceLogoForm = new Html_QuickForm("appearance_logo_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=logo", "", null, true);
-$appearanceLogoForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$appearanceLogoForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $appearanceLogoForm -> addElement('file', 'logo', _FILENAME);
 $appearanceLogoForm -> addElement("static", "", _EACHFILESIZEMUSTBESMALLERTHAN.' <b>'.FileSystemTree::getUploadMaxSize().'</b> '._KB);
 //Don't show normalization if GD isn't set.
@@ -90,19 +90,19 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
    }
    // Normalize avatar picture to the dimensions set in the System Configuration menu. NOTE: the picture will be modified to match existing settings. Future higher settings will be disregarded, while lower ones might affect the quality of the displayed image
    if ($appearanceLogoForm -> exportValue("normalize_dimensions") == 1) {
-    eF_normalizeImage(G_LOGOPATH . $logoFile['name'], $logoFile['extension'], $appearanceLogoForm->exportValue("logo_max_width"), $appearanceLogoForm->exportValue("logo_max_height"));
+    sC_normalizeImage(G_LOGOPATH . $logoFile['name'], $logoFile['extension'], $appearanceLogoForm->exportValue("logo_max_width"), $appearanceLogoForm->exportValue("logo_max_height"));
    } else {
     list($width, $height) = getimagesize(G_LOGOPATH . $logoFile['name']);
-    eF_createImage(G_LOGOPATH . $logoFile['name'], $logoFile['extension'], $width, $height, $appearanceLogoForm->exportValue("logo_max_width"), $appearanceLogoForm->exportValue("logo_max_height"));
+    sC_createImage(G_LOGOPATH . $logoFile['name'], $logoFile['extension'], $width, $height, $appearanceLogoForm->exportValue("logo_max_width"), $appearanceLogoForm->exportValue("logo_max_height"));
    }
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=logo&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=logo&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_APPEARANCE_LOGO_FORM", $appearanceLogoForm -> toArray());
 
 $appearanceFaviconForm = new Html_QuickForm("appearance_favicon_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=favicon", "", null, true);
-$appearanceFaviconForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$appearanceFaviconForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $appearanceFaviconForm -> addElement('file', 'favicon', _FILENAME);
 $appearanceFaviconForm -> addElement("static", "", _EACHFILESIZEMUSTBESMALLERTHAN.' <b>'.FileSystemTree::getUploadMaxSize().'</b> '._KB);
 $appearanceFaviconForm -> addElement("advcheckbox", "default_favicon", _USEDEFAULTFAVICON, null, 'class = "inputCheckBox"  id = "set_default_favicon" onclick = "$(\'favicon_settings\').select(\'input\').each(function(s) {if (s.type != \'submit\' && s.id != \'set_default_favicon\') s.disabled ? s.disabled = \'\' : s.disabled = \'disabled\' })"', array(0, 1));
@@ -128,7 +128,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
     if ($e -> getCode() != UPLOAD_ERR_NO_FILE) {throw $e;}
    }
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=favicon&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=appearance&tab=favicon&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_APPEARANCE_FAVICON_FORM", $appearanceFaviconForm -> toArray());

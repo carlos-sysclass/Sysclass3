@@ -4,7 +4,7 @@ P_HOST                IN        VARCHAR2,
 P_PATH                IN        VARCHAR2,
 P_USER_ID             IN        NUMBER,
 P_NAME                IN        VARCHAR2,
-P_ROWS                OUT       TYPES.REF_CURSOR,
+P_ROWS                OUT       TYPES.RsC_CURSOR,
 P_RESULT              OUT       NUMBER
 )
 AS

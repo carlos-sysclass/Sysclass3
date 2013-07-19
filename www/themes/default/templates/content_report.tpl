@@ -4,7 +4,7 @@
 {include file = "includes/header.tpl"} {*The inclusion is put here instead of the beginning in order to speed up reloading, in case of success*}
 
 {if $T_MESSAGE}
-        {eF_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
+        {sC_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
 {/if}
 
 {if !$T_MESSAGE_TYPE == 'success'}
@@ -27,7 +27,7 @@
     </table>
 </form>
 {/capture}
- {eF_template_printBlock title = $smarty.const._CONTENTREPORT data = $smarty.capture.t_report_code image = '32x32/warning.png'}
+ {sC_template_printBlock title = $smarty.const._CONTENTREPORT data = $smarty.capture.t_report_code image = '32x32/warning.png'}
 {/if}
 
 {if $T_MESSAGE_TYPE == 'success'}

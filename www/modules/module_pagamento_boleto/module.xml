@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>Módulo para emissão de Boletos</title>
-	<author>ANDRE KUCANIZ</author>
-	<date>2011 01 13</date>
-	<version>1.0</version>
-	<description>Este módulo tem como função efetuar a emissão e receber retornos de boletos emitidos</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_pagamento_boleto</className>
 </module>

@@ -27,7 +27,7 @@
 
   {/capture}
 
-  {eF_template_printBlock title = $smarty.const._COMMENTPROPERTIES data = $smarty.capture.t_add_code image = '32x32/note.png'}
+  {sC_template_printBlock title = $smarty.const._COMMENTPROPERTIES data = $smarty.capture.t_add_code image = '32x32/note.png'}
  {/if}
  </td></tr>
 {/capture}

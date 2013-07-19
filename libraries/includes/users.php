@@ -7,16 +7,16 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 /*
 if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] == 'hidden' && $currentUser->user['login'] != $_GET['edit_user']) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 !isset($currentUser->coreAccess['users']) || $currentUser->coreAccess['users'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 $smarty->assign("_change_", $_change_);
  */
 if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 $loadScripts[] = 'includes/users';
-if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'login')) { //The administrator asked to delete a user
+if (isset($_GET['delete_user']) && sC_checkParameter($_GET['delete_user'], 'login')) { //The administrator asked to delete a user
     try {
         if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] != 'change') {
             throw new Exception(_UNAUTHORIZEDACCESS);
@@ -30,7 +30,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['archive_user']) && eF_checkParameter($_GET['archive_user'], 'login')) { //The administrator asked to delete a user
+} elseif (isset($_GET['archive_user']) && sC_checkParameter($_GET['archive_user'], 'login')) { //The administrator asked to delete a user
     try {
         if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] != 'change') {
             throw new Exception(_UNAUTHORIZEDACCESS);
@@ -44,7 +44,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['deactivate_user']) && eF_checkParameter($_GET['deactivate_user'], 'login') && ($_GET['deactivate_user'] != $_SESSION['s_login'])) { //The administrator asked to deactivate a user
+} elseif (isset($_GET['deactivate_user']) && sC_checkParameter($_GET['deactivate_user'], 'login') && ($_GET['deactivate_user'] != $_SESSION['s_login'])) { //The administrator asked to deactivate a user
     if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);exit;
     }
@@ -56,7 +56,7 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['activate_user']) && eF_checkParameter($_GET['activate_user'], 'login')) { //The administrator asked to activate a user
+} elseif (isset($_GET['activate_user']) && sC_checkParameter($_GET['activate_user'], 'login')) { //The administrator asked to activate a user
     if (isset($currentUser->coreAccess['users']) && $currentUser->coreAccess['users'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);exit;
     }
@@ -68,21 +68,21 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $login = eF_checkParameter($_GET['edit_user'], 'login'))) { //The administrator asked to add a new user or to edit a user
+} elseif (isset($_GET['add_user']) || (isset($_GET['edit_user']) && $login = sC_checkParameter($_GET['edit_user'], 'login'))) { //The administrator asked to add a new user or to edit a user
     $smarty->assign("T_PERSONAL", true);
     /**Include the personal settings file*/
     include 'includes/personal.php'; //User addition and manipulation is done through personal.
 } elseif (isset($_GET['ajax'])) { //The admin just asked to view the users
 
         // Assign the right values needed by the sql query
-        $limit  = (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint'))  ? $_GET['limit']  : G_DEFAULT_TABLE_SIZE;
-        $sort   = (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text'))    ? $_GET['sort']   : 'login';
+        $limit  = (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint'))  ? $_GET['limit']  : G_DEFAULT_TABLE_SIZE;
+        $sort   = (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text'))    ? $_GET['sort']   : 'login';
         $order  = (isset($_GET['order']) && $_GET['order'] == 'desc')                   ? 'desc'          : 'asc';
-        $offset = (isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int')) ? $_GET['offset'] : 0;
+        $offset = (isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int')) ? $_GET['offset'] : 0;
         $where = array();
         $where[] = "u.archive = 0";
         if (isset($_GET['filter'])) {
-            $searchFor = eF_addSlashes($_GET['filter']);
+            $searchFor = sC_addSlashes($_GET['filter']);
             $searchFor = explode(" ", $searchFor);
             foreach ($searchFor as $eachName) {
                 $where[] = "(u.login LIKE '%$eachName%' OR u.email LIKE '%$eachName%' OR

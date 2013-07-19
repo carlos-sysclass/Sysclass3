@@ -46,7 +46,7 @@ if (isset($_GET['sel_user'])) {
  if (in_array($_GET['sel_user'], array_keys($validUsers))) {
   $infoUser = MagesterUserFactory :: factory($_GET['sel_user']);
  } else {
-  eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=statistics&option=user&message='.urlencode(_USERISNOTVALIDORYOUCANNOTSEEUSER.": ".$_GET['sel_user']));
+  sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=statistics&option=user&message='.urlencode(_USERISNOTVALIDORYOUCANNOTSEEUSER.": ".$_GET['sel_user']));
   exit;
   //throw new MagesterUserException(_USERISNOTVALIDORYOUCANNOTSEEUSER.": ".$_GET['sel_user'], MagesterUserException :: INVALID_LOGIN);
  }
@@ -92,7 +92,7 @@ if (isset($_GET['sel_user'])) {
     $lessons = MagesterLesson :: convertLessonObjectsToArrays($lessons);
     $dataSource = $lessons;
    }
-   if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && eF_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
+   if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && sC_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
     $tableName = $_GET['ajax'];
     $smarty -> assign("T_DATASOURCE_COLUMNS", array('name', 'location', 'user_type', 'num_lessons', 'status', 'completed', 'score', 'operations', 'sort_by_column' => 4));
     $smarty -> assign("T_DATASOURCE_OPERATIONS", array('progress'));
@@ -111,7 +111,7 @@ if (isset($_GET['sel_user'])) {
      $courses = $infoUser -> getUserCoursesAggregatingResults($constraints);
     }
 
-    if (isset($_GET['ajax']) && $_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+    if (isset($_GET['ajax']) && $_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
      $constraints = array('archive' => false, 'active' => true, 'instance' => $_GET['instancesTable_source']) + createConstraintsFromSortedTable();
      $constraints['required_fields'] = array('num_lessons', 'location');
      $constraints['return_objects'] = false;
@@ -199,7 +199,7 @@ if (isset($_GET['sel_user'])) {
    $smarty -> assign('T_PREDEFINED_PERIODS', $periods);
    try {
     if (isset($_GET['ajax']) && $_GET['ajax'] == 'graph_access') {
-     $result = eF_getTableData("logs", "timestamp", "timestamp between ".$from." and ".$to." and action = 'login' and users_LOGIN = '".$infoUser -> user['login']."' order by timestamp");
+     $result = sC_getTableData("logs", "timestamp", "timestamp between ".$from." and ".$to." and action = 'login' and users_LOGIN = '".$infoUser -> user['login']."' order by timestamp");
      //Assign the number of accesses to each week day
      foreach ($result as $value) {
       $cnt = 0;
@@ -248,13 +248,13 @@ if (isset($_GET['sel_user'])) {
     handleAjaxExceptions($e);
    }
    if (isset($_GET['showlog']) && $_GET['showlog'] == "true") {
-    $lessonNames = eF_getTableDataFlat("lessons", "id, name");
+    $lessonNames = sC_getTableDataFlat("lessons", "id, name");
     $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
-    $contentNames = eF_getTableDataFlat("content", "id, name");
+    $contentNames = sC_getTableDataFlat("content", "id, name");
     $contentNames = array_combine($contentNames['id'], $contentNames['name']);
-    $testNames = eF_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
+    $testNames = sC_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
     $testNames = array_combine($testNames['id'], $testNames['name']);
-    $result = eF_getTableData("logs", "*", "timestamp between $from and $to and users_LOGIN='".$infoUser -> user['login']."' order by timestamp desc");
+    $result = sC_getTableData("logs", "*", "timestamp between $from and $to and users_LOGIN='".$infoUser -> user['login']."' order by timestamp desc");
     foreach ($result as $key => $value) {
      $value['lessons_ID'] ? $result[$key]['lesson_name'] = $lessonNames[$value['lessons_ID']] : null;
      if ($value['action'] == 'content') {
@@ -276,9 +276,9 @@ if (isset($_GET['sel_user'])) {
     $traffic['lessons'][$id]['name'] = $lesson -> lesson['name'];
     $traffic['lessons'][$id]['active'] = $lesson -> lesson['active'];
    }
-   $result = eF_getTableData("logs", "count(*)", "action = 'login' and timestamp between $from and $to and users_LOGIN='".$infoUser -> user['login']."' order by timestamp");
+   $result = sC_getTableData("logs", "count(*)", "action = 'login' and timestamp between $from and $to and users_LOGIN='".$infoUser -> user['login']."' order by timestamp");
    $traffic['total_logins'] = $result[0]['count(*)'];
-   $result = eF_getTableData("users_to_lessons", "lessons_ID, completed, to_timestamp", "archive=0 and users_LOGIN='".$infoUser -> user['login']."'");
+   $result = sC_getTableData("users_to_lessons", "lessons_ID, completed, to_timestamp", "archive=0 and users_LOGIN='".$infoUser -> user['login']."'");
    $completionData = array();
    foreach ($result as $value) {
     $completionData[$value['lessons_ID']] = $value;
@@ -461,7 +461,7 @@ if (isset($_GET['excel']) && $_GET['excel'] == 'user') {
    }
    $row++;
   }
-  $result = eF_getTableDataFlat("lessons", "id, name, active");
+  $result = sC_getTableDataFlat("lessons", "id, name, active");
   $lessonNames = array_combine($result['id'], $result['name']);
   //Done tests sheet
   $doneTests = MagesterStats :: getStudentsDoneTests(false, $infoUser -> user['login']);

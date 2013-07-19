@@ -45,4 +45,4 @@ function requestVideo(id) {
 </table>
 {/capture}
 
-{eF_template_printBlock title=$smarty.const._YOUTUBE data=$smarty.capture.t_youtube_list_code absoluteImagePath=1 image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png' options=$T_YOUTUBE_INNERTABLE_OPTIONS}
+{sC_template_printBlock title=$smarty.const._YOUTUBE data=$smarty.capture.t_youtube_list_code absoluteImagePath=1 image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png' options=$T_YOUTUBE_INNERTABLE_OPTIONS}

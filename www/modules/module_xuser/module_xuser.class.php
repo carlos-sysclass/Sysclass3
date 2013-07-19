@@ -240,15 +240,15 @@ class module_xuser extends MagesterExtendedModule
 			$fields['data_nascimento']	= $fields['data_nascimento']->format('Y-m-d');
 		}
 
-		$xuser_responsible_entry = eF_getTableData("module_xuser_responsible", "*", sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $fields['type']));
+		$xuser_responsible_entry = sC_getTableData("module_xuser_responsible", "*", sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $fields['type']));
 
 		//error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 
 		if (count($xuser_responsible_entry) == 0) {
 			$fields['id']	= $this->getEditedUser() -> user['id'];
-			$result = eF_insertTableData("module_xuser_responsible", $fields);
+			$result = sC_insertTableData("module_xuser_responsible", $fields);
 		} else {
-			$result = eF_updateTableData("module_xuser_responsible", $fields, sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $fields['type']));
+			$result = sC_updateTableData("module_xuser_responsible", $fields, sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $fields['type']));
 		}
 
 		if ($result) {
@@ -325,7 +325,7 @@ class module_xuser extends MagesterExtendedModule
     {
     	/*
     	 $lessons = MagesterLesson :: getLessons();
-    	$lessons = eF_multiSort($lessons, 'id', 'desc');
+    	$lessons = sC_multiSort($lessons, 'id', 'desc');
     	*/
     	//    	error_reporting( E_ALL & ~E_NOTICE );ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
     	if ($contraints['id']) {
@@ -341,7 +341,7 @@ class module_xuser extends MagesterExtendedModule
     		$where[]	= 'u.active = ' . $contraints['active'];
     	}
     	if (count($where))
-    	$result = ef_getTableData('users u', "login", implode(' AND ', $where));
+    	$result = sC_getTableData('users u', "login", implode(' AND ', $where));
 
     	if (count($result) > 0) {
     		$login = $result[0]['login'];
@@ -385,13 +385,13 @@ class module_xuser extends MagesterExtendedModule
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
 
-        if ($selectedAction == self::DELETE_XUSER && eF_checkParameter($_GET['xuser_id'], 'id')) {
+        if ($selectedAction == self::DELETE_XUSER && sC_checkParameter($_GET['xuser_id'], 'id')) {
         	// ENVIAR EVENTOS PARA TODO O SISTEMA, PARA DESMATRICULAR O USUÁRIO, NEGOCIAR DÉBITOS EM ABERTO, DESCONFIGURAR MÓDULOS, ETC..
-            eF_deleteTableData("module_xuser", "id=".$_GET['xuser_id']);
+            sC_deleteTableData("module_xuser", "id=".$_GET['xuser_id']);
 
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_MODULE_XUSERS_SUCCESFULLYDELETEDXUSERENTRY)."&message_type=success");
 
-        } elseif ($selectedAction == self::UPDATE_XUSER && eF_checkParameter($_GET['xuser_login'], 'login')) {
+        } elseif ($selectedAction == self::UPDATE_XUSER && sC_checkParameter($_GET['xuser_login'], 'login')) {
         	switch ($_GET['field']) {
         		case "user_course.course_type" : {
 
@@ -402,7 +402,7 @@ class module_xuser extends MagesterExtendedModule
         				$course_type = "";
         			}
 
-        			$result = eF_updateTableData(
+        			$result = sC_updateTableData(
         				"users_to_courses",
         				array('course_type' => $course_type),
         				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $user_login, $course_id)
@@ -433,8 +433,8 @@ class module_xuser extends MagesterExtendedModule
 
         } elseif (
         	$selectedAction == self::ADD_XUSER ||
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_id'], 'id')) ||
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_login'], 'login'))
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_id'], 'id')) ||
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_login'], 'login'))
         ) {
             //$result = $rendererBasic -> toArray();
             /*
@@ -461,8 +461,8 @@ class module_xuser extends MagesterExtendedModule
             }
 
             if (
-        		($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_id'], 'id')) ||
-        		($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_login'], 'login'))
+        		($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_id'], 'id')) ||
+        		($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_login'], 'login'))
         	) {
 	            if (
 	            	$this->getEditedUser()->getType() != "administrator" &&
@@ -520,7 +520,7 @@ class module_xuser extends MagesterExtendedModule
 	            }
         	}
 
-            $modules = eF_loadAllModules(true);
+            $modules = sC_loadAllModules(true);
             foreach ($modules as $module_name => $module) {
             	if (is_callable(array($module, "receiveEvent"))) {
             		$templates[] = $module->receiveEvent($this, $selectedAction, array('editedUser' => $this->getEditedUser()));
@@ -536,17 +536,17 @@ class module_xuser extends MagesterExtendedModule
 		} else {
 
         /*
-			$users = eF_getTableData("users", "*", "archive = 0");
-			$user_lessons = eF_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND l.archive=0", "", "ul.users_LOGIN");
-			$user_courses = eF_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND c.archive=0", "", "uc.users_LOGIN");
-			$user_groups = eF_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
+			$users = sC_getTableData("users", "*", "archive = 0");
+			$user_lessons = sC_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND l.archive=0", "", "ul.users_LOGIN");
+			$user_courses = sC_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND c.archive=0", "", "uc.users_LOGIN");
+			$user_groups = sC_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
 			$user_lessons = array_combine($user_lessons['users_LOGIN'], $user_lessons['lessons_num']);
 			$user_courses = array_combine($user_courses['users_LOGIN'], $user_courses['courses_num']);
 			$user_groups = array_combine($user_groups['users_LOGIN'], $user_groups['groups_num']);
 			array_walk($users, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["lessons_num"] = $s[$v["login"]] : $v["lessons_num"] = 0;'), $user_lessons); //Assign lessons number to users array (this way we eliminate the need for an expensive explicit loop)
 			array_walk($users, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["courses_num"] = $s[$v["login"]] : $v["courses_num"] = 0;'), $user_courses);
 			array_walk($users, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["groups_num"] = $s[$v["login"]] : $v["groups_num"] = 0;'), $user_groups);
-			$result = eF_getTableDataFlat("logs", "users_LOGIN, timestamp", "action = 'login'", "timestamp");
+			$result = sC_getTableDataFlat("logs", "users_LOGIN, timestamp", "action = 'login'", "timestamp");
 			$lastLogins = array_combine($result['users_LOGIN'], $result['timestamp']);
 
 			foreach ($users as $key => $value) {
@@ -607,8 +607,8 @@ class module_xuser extends MagesterExtendedModule
 		$smarty = $this -> getSmartyVar();
 
     	if (
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_id'], 'id')) ||
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_login'], 'login'))
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_id'], 'id')) ||
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_login'], 'login'))
         ) {
 			$options = array();
 /*
@@ -662,8 +662,8 @@ class module_xuser extends MagesterExtendedModule
 
     	if (
         	$selectedAction == self::ADD_XUSER ||
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_id'], 'id')) ||
-        	($selectedAction == self::EDIT_XUSER && eF_checkParameter($_GET['xuser_login'], 'login'))
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_id'], 'id')) ||
+        	($selectedAction == self::EDIT_XUSER && sC_checkParameter($_GET['xuser_login'], 'login'))
         ) {
 			$currentUser = $this->getCurrentUser();
 
@@ -673,12 +673,12 @@ class module_xuser extends MagesterExtendedModule
 				$form = new HTML_QuickForm("xuser_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, false);
 			}
 
-			//Register this rule for checking user input with our function, eF_checkParameter
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+			//Register this rule for checking user input with our function, sC_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
 			$form -> addElement('hidden', 'xuser_ID');
 
-			$schools = eF_getTableDataFlat("module_ies", "id, nome", "active = 1" );
+			$schools = sC_getTableDataFlat("module_ies", "id, nome", "active = 1" );
 
 			if (count($schools) > 0) {
 				$schools = array_merge(
@@ -689,7 +689,7 @@ class module_xuser extends MagesterExtendedModule
    				$schools = array(-1 => __NO_DISPONIBLE_OPTIONS, 0 => __IES_ALL_OPTIONS);
    			}
 
-			$polosData = eF_getTableData(
+			$polosData = sC_getTableData(
 				"`module_polos` pol LEFT OUTER JOIN `module_ies_to_polos` ies2pol ON (pol.id = ies2pol.polo_id)",
 				"pol.id, pol.nome, ies2pol.ies_id",
 				"pol.active = 1"
@@ -749,7 +749,7 @@ class module_xuser extends MagesterExtendedModule
 
         	// Find all groups available to create the select-group drop down
 			if (!isset($groups_table)) {
-				$groups_table = eF_getTableData("groups", "id, name", "active=1");
+				$groups_table = sC_getTableData("groups", "id, name", "active=1");
 			}
 			if (!empty($groups_table)) {
 				$groups = array ("" => "");
@@ -768,10 +768,10 @@ class module_xuser extends MagesterExtendedModule
 				$form -> setDefaults(array('group' => $init_group['groups_ID']));
 
 			}
-			$resultRole = eF_getTableData("users", "user_types_ID", "login='".$currentUser -> login."'");
+			$resultRole = sC_getTableData("users", "user_types_ID", "login='".$currentUser -> login."'");
 			$smarty -> assign("T_CURRENTUSERROLEID", $resultRole[0]['user_types_ID']);
 
-			$timezones = eF_getTimezones();
+			$timezones = sC_getTimezones();
 			$form -> addElement("select", "timezone", _TIMEZONE, $timezones, 'class = "large" style="width:20em"');
 			// Set default values for new users
 			if (($selectedAction == self::ADD_XUSER) || ($selectedAction == self::EDIT_XUSER && $this->getEditedUser() -> user['timezone'] == "")) {
@@ -795,7 +795,7 @@ class module_xuser extends MagesterExtendedModule
 	 		if ($currentUser -> getType() == "administrator") {
 	 			$rolesTypes = MagesterUser :: getRoles();
 	  			if ($resultRole[0]['user_types_ID'] == 0 || $rolesTypes[$resultRole[0]['user_types_ID']] == "administrator") {
-				   	$roles = eF_getTableDataFlat("user_types", "*");
+				   	$roles = sC_getTableDataFlat("user_types", "*");
 
 				   	$roles_array['student'] = _STUDENT;
 				   	$roles_array['professor'] = _PROFESSOR;
@@ -830,7 +830,7 @@ class module_xuser extends MagesterExtendedModule
 				   list($width, $height) = getimagesize($avatar['path']);
 	   				if ($width > 200 || $height > 100) {
 					    // Get normalized dimensions
-	    				list($newwidth, $newheight) = eF_getNormalizedDims($avatar['path'], 200, 100);
+	    				list($newwidth, $newheight) = sC_getNormalizedDims($avatar['path'], 200, 100);
 					    // The template will check if they are defined and normalize the picture only if needed
 	    				$smarty -> assign("T_NEWWIDTH", $newwidth);
 	    				$smarty -> assign("T_NEWHEIGHT", $newheight);
@@ -881,7 +881,7 @@ class module_xuser extends MagesterExtendedModule
       						$_SESSION['s_language'] = $values['languages_NAME'];
      					}
     				}
-    				eF_updateTableData("users", $users_content, "login='".$this->getEditedUser() -> login."'");
+    				sC_updateTableData("users", $users_content, "login='".$this->getEditedUser() -> login."'");
 
 	             	switch ($GLOBALS['configuration']['date_format']) {
 						case "YYYY/MM/DD": {
@@ -943,7 +943,7 @@ class module_xuser extends MagesterExtendedModule
 						if ($values['group']) {
 							$this->getEditedUser() -> addGroups($values['group']);
 						} else {
-							$groups = eF_getTableDataFlat("groups", "id", "");
+							$groups = sC_getTableDataFlat("groups", "id", "");
 							$this->getEditedUser() -> removeGroups($groups['id']);
 						}
 				    }
@@ -1022,16 +1022,16 @@ class module_xuser extends MagesterExtendedModule
 
 		     			//$this->setMessageVar(_USERCREATED, 'success');
 
-		     			eF_redirect($this->moduleBaseUrl . "&action=" . self::EDIT_XUSER . "&xuser_login=" . $values['new_login'] . "&message=".urlencode(_USERCREATED) . "&message_type=success");
+		     			sC_redirect($this->moduleBaseUrl . "&action=" . self::EDIT_XUSER . "&xuser_login=" . $values['new_login'] . "&message=".urlencode(_USERCREATED) . "&message_type=success");
 
 					} catch (Exception $e) {
 						$smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-						$message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+						$message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
 						$message_type = 'failure';
 						$this->setMessageVar($message, $message_type);
 					}
 					/*
-					if ($result = eF_insertTableData("module_xuser", $fields)) {
+					if ($result = sC_insertTableData("module_xuser", $fields)) {
 						header("location:".$this -> moduleBaseUrl."&action=" . self::EDIT_XUSER ."&xuser_id=".$result."&message=".urlencode(_MODULE_XUSERS_SUCCESFULLYINSERTEDXUSERENTRY)."&message_type=success&tab=users");
 					} else {
 						header("location:".$this -> moduleBaseUrl."&action=" . self::ADD_XUSER . "&message=".urlencode(_MODULE_XUSERS_PROBLEMINSERTINGXUSERENTRY)."&message_type=failure");
@@ -1056,7 +1056,7 @@ class module_xuser extends MagesterExtendedModule
 					$form -> setDefaults(array('user_type' => $this->getEditedUser() -> user['user_types_ID']));
 				}
 
-				$xuser_entry = eF_getTableData("module_xuser", "*", "id=".$this->getEditedUser() -> user['id']);
+				$xuser_entry = sC_getTableData("module_xuser", "*", "id=".$this->getEditedUser() -> user['id']);
 
 				$defaults = array(
 					'xuser_ID'			=> $xuser_entry[0]['id'],
@@ -1171,7 +1171,7 @@ class module_xuser extends MagesterExtendedModule
 	            }
 
 
-				$xuser_responsible_entry = eF_getTableData("module_xuser_responsible", "*", sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $respKey));
+				$xuser_responsible_entry = sC_getTableData("module_xuser_responsible", "*", sprintf("id=%d AND type = '%s'", $this->getEditedUser() -> user['id'], $respKey));
 
 				//var_dump($xuser_responsible_entry);
 
@@ -1366,7 +1366,7 @@ class module_xuser extends MagesterExtendedModule
 			$sLimit							// Limit
 		);
 
-		$entifySource = eF_getTableData(
+		$entifySource = sC_getTableData(
 			"users as usr",	// Table
 			"
 			usr.id, usr.login, usr.name, usr.surname, user_type, user_types_ID, user_type,
@@ -1384,13 +1384,13 @@ class module_xuser extends MagesterExtendedModule
 			$sLimit							// Limit
 		);
 
-		$entifyDisplayedCount = eF_countTableData(
+		$entifyDisplayedCount = sC_countTableData(
 			"users as usr", 		// Table
 			$sIndexColumn,	// Fields
 			$sWhere
 		);
 
-		$entifyCount = eF_countTableData(
+		$entifyCount = sC_countTableData(
 			"users as usr", 		// Table
 			$sIndexColumn,	// Fields
 			$sFixedWhere
@@ -1398,9 +1398,9 @@ class module_xuser extends MagesterExtendedModule
 
 
 
-//		$user_lessons = eF_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND l.archive=0", "", "ul.users_LOGIN");
-		$user_courses = eF_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND c.archive=0", "", "uc.users_LOGIN");
-//		$user_groups = eF_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
+//		$user_lessons = sC_getTableDataFlat("users_to_lessons as ul, lessons as l", "ul.users_LOGIN, count(ul.lessons_ID) as lessons_num", "ul.lessons_ID=l.id AND l.archive=0", "", "ul.users_LOGIN");
+		$user_courses = sC_getTableDataFlat("users_to_courses as uc, courses as c", "uc.users_LOGIN, count(uc.courses_ID) as courses_num", "uc.courses_ID=c.id AND c.archive=0", "", "uc.users_LOGIN");
+//		$user_groups = sC_getTableDataFlat("users_to_groups", "users_LOGIN, count(groups_ID) as groups_num", "", "", "users_LOGIN");
 //		$user_lessons = array_combine($user_lessons['users_LOGIN'], $user_lessons['lessons_num']);
 		$user_courses = array_combine($user_courses['users_LOGIN'], $user_courses['courses_num']);
 //		$user_groups = array_combine($user_groups['users_LOGIN'], $user_groups['groups_num']);
@@ -1408,7 +1408,7 @@ class module_xuser extends MagesterExtendedModule
 		array_walk($entifySource, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["courses_num"] = $s[$v["login"]] : $v["courses_num"] = 0;'), $user_courses);
 //		array_walk($users, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["groups_num"] = $s[$v["login"]] : $v["groups_num"] = 0;'), $user_groups);
 /*
-		$result = eF_getTableDataFlat("logs", "users_LOGIN, timestamp", "action = 'login'", "timestamp");
+		$result = sC_getTableDataFlat("logs", "users_LOGIN, timestamp", "action = 'login'", "timestamp");
 		$last_logins = array_combine($result['users_LOGIN'], $result['timestamp']);
 		array_walk($entifySource, create_function('&$v, $k, $s', '$s[$v["login"]] ? $v["last_login"] = $s[$v["login"]] : $v["last_login"] = null;'), $last_logins);
 */
@@ -1536,7 +1536,7 @@ class module_xuser extends MagesterExtendedModule
     /* Data Model functions */
 	public function getUserById($userID)
 	{
-		$userData = eF_getTableData("users", "login", "id = " . $userID);
+		$userData = sC_getTableData("users", "login", "id = " . $userID);
 
 		if ($userData) {
 			return MagesterUserFactory::factory($userData[0]['login']);
@@ -1547,7 +1547,7 @@ class module_xuser extends MagesterExtendedModule
 	public function getExtendedTypeID($userObject)
 	{
 		if (is_null(self::$roles)) {
-			$roles = eF_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
+			$roles = sC_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
 			self::$roles = array_combine($roles['id'], $roles['extended_user_type']);
 		}
 
@@ -1557,7 +1557,7 @@ class module_xuser extends MagesterExtendedModule
 	public function getExtendedTypeIDInCourse($userObject, $courseObject)
 	{
 		if (is_null(self::$roles)) {
-			$roles = eF_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
+			$roles = sC_getTableDataFlat("user_types", "*", "active=1"); //Get available roles
 			self::$roles = array_combine($roles['id'], $roles['extended_user_type']);
 		}
 		$userType = $userObject->getUserTypeInCourse($courseObject);
@@ -1595,7 +1595,7 @@ class module_xuser extends MagesterExtendedModule
     		return array();
     	}
 
-    	$userLogin = eF_getTableData("users", "login", "id = $userID");
+    	$userLogin = sC_getTableData("users", "login", "id = $userID");
 
     	$login = $userLogin[0]['login'];
 
@@ -1618,13 +1618,13 @@ class module_xuser extends MagesterExtendedModule
 			$user_details_type = 'parents';
 		}
 		if ($user_details_type == "self" || $user_details_type == "student") {
-			$respData = eF_getTableData(
+			$respData = sC_getTableData(
 				"module_xuser det JOIN users u ON (det.id = u.id)",
 				"u.name, u.surname, det.*",
 				sprintf("u.id = %d", $userID)
 			);
 		} else {
-			$respData = eF_getTableData(
+			$respData = sC_getTableData(
 				"module_xuser_responsible det JOIN users u ON (det.id = u.id)",
 				"u.name, u.surname, det.*",
 				sprintf("u.id = %d AND det.type = '%s'", $userID, $user_details_type)

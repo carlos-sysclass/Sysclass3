@@ -571,13 +571,13 @@ class PEAR
     {
         $stack = &$GLOBALS['_PEAR_error_handler_stack'];
         if (isset($this)) {
-            $def_mode    = &$this->_default_error_mode;
-            $def_options = &$this->_default_error_options;
+            $dsC_mode    = &$this->_default_error_mode;
+            $dsC_options = &$this->_default_error_options;
         } else {
-            $def_mode    = &$GLOBALS['_PEAR_default_error_mode'];
-            $def_options = &$GLOBALS['_PEAR_default_error_options'];
+            $dsC_mode    = &$GLOBALS['_PEAR_default_error_mode'];
+            $dsC_options = &$GLOBALS['_PEAR_default_error_options'];
         }
-        $stack[] = array($def_mode, $def_options);
+        $stack[] = array($dsC_mode, $dsC_options);
 
         if (isset($this)) {
             $this->setErrorHandling($mode, $options);

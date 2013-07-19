@@ -54,7 +54,7 @@
  {/if}
  {if !$hide_path}
  <div id = "path">
-  <div id = "path_title">{$title|eF_formatTitlePath}</div>
+  <div id = "path_title">{$title|sC_formatTitlePath}</div>
   <div id = "tab_handles_div" style = "float:right;">{if $T_THEME_SETTINGS->options.sidebar_interface == 0 || $T_HEADER_CLASS == 'headerHidden'}{$smarty.capture.t_path_additional_code}{/if}</div>
    <div id = "path_language">
   {if $smarty.server.PHP_SELF|basename == 'index.php' || $T_THEME_SETTINGS->options.sidebar_interface != 0}

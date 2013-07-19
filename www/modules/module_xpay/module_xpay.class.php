@@ -194,7 +194,7 @@ class module_xpay extends MagesterExtendedModule
 		}
 		$smarty->assign("T_XPAY_DEBTS_LIST", $debtsLists);
 
-		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
+		//sC_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
 	}
 	public function viewLastSendedFilesAction()
@@ -220,7 +220,7 @@ class module_xpay extends MagesterExtendedModule
 		// 1. Ultimos pagamentos recebidos
 		$lastPaymentsData = $this->_getLastPaymentsList();
 		$smarty -> assign("T_XPAY_LAST_PAYMENTS", $lastPaymentsData);
-		//eF_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
+		//sC_redirect($this->moduleBaseUrl . "&action=view_to_send_invoices_list");
 		//exit;
 	}
 	public function viewFileDetailsAction()
@@ -268,7 +268,7 @@ class module_xpay extends MagesterExtendedModule
 	/*
 	public function migrateToNewModelAction()
 	{
-		$paymentData = ef_getTableData(
+		$paymentData = sC_getTableData(
 			"users_to_courses uc
 			JOIN courses c ON (uc.courses_ID = c.id)
 			JOIN users u ON (uc.users_LOGIN = u.login)",
@@ -287,7 +287,7 @@ class module_xpay extends MagesterExtendedModule
 	private function _migrateOldPaymentToNegociation($user_id, $course_id)
 	{
 		// CHECK FOR USER PAYMENTS ON OLD TABLES
-		list($paymentData) = ef_getTableData(
+		list($paymentData) = sC_getTableData(
 				"module_pagamento",
 				"*",
 				sprintf("user_id = %d AND course_id = %d", $user_id, $course_id)
@@ -317,10 +317,10 @@ class module_xpay extends MagesterExtendedModule
 			'negociation_index'		=> 1,
 			'active'				=> 1,
 			//'vencimento_1_parcela'	=> null,
-			'ref_payment_id'		=> $paymentData['payment_id']
+			'rsC_payment_id'		=> $paymentData['payment_id']
 		);
 
-		$negociationID = eF_insertTableData("module_xpay_course_negociation", $negociationData);
+		$negociationID = sC_insertTableData("module_xpay_course_negociation", $negociationData);
 
 		// BUSCAR AS FATURAS E MIGRAR, INCLUINDO PAGAMENTOS (OPSS!!)
 		$paymentFull = $this->getPaymentById($paymentData['payment_id']);
@@ -356,13 +356,13 @@ class module_xpay extends MagesterExtendedModule
 				'data_vencimento'		=> $newInvoices[$oldInvoiceIndex - 1]['data_vencimento'],
 				'locked'				=> $oldInvoice['bloqueio']
 			);
-			eF_insertTableData("module_xpay_invoices", $insertData);
+			sC_insertTableData("module_xpay_invoices", $insertData);
 
 			if ($oldInvoice['pago'] == 1 || $oldInvoice['pago'] == 2) {
 				$doManual = false;
 				if ($oldInvoice['pago'] == 2) {
 					// BUSCA O RETORNO DO DB
-					list($transactionData) = ef_getTableData(
+					list($transactionData) = sC_getTableData(
 							"module_pagamento_boleto_invoices_return",
 							"*",
 							sprintf("payment_id = %d AND parcela_index = %d", $paymentData['payment_id'], $oldInvoiceIndex)
@@ -388,7 +388,7 @@ class module_xpay extends MagesterExtendedModule
 								'tag' 					=> $transactionData['tag'],
 								'filename' 				=> $transactionData['filename'],
 						);
-						$transactionID = ef_insertTableData(
+						$transactionID = sC_insertTableData(
 								"module_xpay_boleto_transactions",
 								$item
 						);
@@ -404,7 +404,7 @@ class module_xpay extends MagesterExtendedModule
 						'description'			=> "",
 						'filename'				=> null
 					);
-					$transactionID = ef_insertTableData(
+					$transactionID = sC_insertTableData(
 						"module_xpay_manual_transactions",
 						$item
 					);
@@ -420,7 +420,7 @@ class module_xpay extends MagesterExtendedModule
 					'start_timestamp' 	=> $start_timestamp
 				);
 
-				$paidID = ef_insertTableData(
+				$paidID = sC_insertTableData(
 						"module_xpay_paid_items",
 						$item
 				);
@@ -431,7 +431,7 @@ class module_xpay extends MagesterExtendedModule
 					'paid_id'			=> $paidID
 				);
 
-				ef_insertTableData(
+				sC_insertTableData(
 					"module_xpay_invoices_to_paid",
 					$item
 				);
@@ -450,11 +450,11 @@ class module_xpay extends MagesterExtendedModule
 			$editUser->addGroups($discountsToGroups[$currentDiscount]);
 		}
 		/*
-		eF_deleteTableData("module_xpay_course_negociation", "id = $negociationID");
-		eF_deleteTableData("module_xpay_invoices", "negociation_id = $negociationID");
-		eF_deleteTableData("module_xpay_boleto_transactions");
-		eF_deleteTableData("module_xpay_paid_items");
-		eF_deleteTableData("module_xpay_invoices_to_paid");
+		sC_deleteTableData("module_xpay_course_negociation", "id = $negociationID");
+		sC_deleteTableData("module_xpay_invoices", "negociation_id = $negociationID");
+		sC_deleteTableData("module_xpay_boleto_transactions");
+		sC_deleteTableData("module_xpay_paid_items");
+		sC_deleteTableData("module_xpay_invoices_to_paid");
 		exit;
 		*/
 		return true;
@@ -462,7 +462,7 @@ class module_xpay extends MagesterExtendedModule
 	public function migrateDiscountToNewModelAction()
 	{
 		// CHECK FOR USER WHICH HAVE MORE THAN 5 PERCENT
-		$paymentData = ef_getTableData(
+		$paymentData = sC_getTableData(
 				"users_to_courses uc
 				JOIN courses c ON (uc.courses_ID = c.id)
 				JOIN users u ON (uc.users_LOGIN = u.login)
@@ -471,7 +471,7 @@ class module_xpay extends MagesterExtendedModule
 				"uc.user_type = 'student' AND c.ies_id = 1 AND p.desconto <> 5 AND p.desconto <> 0 AND u.id NOT IN (SELECT rule_xentify_id FROM module_xpay_price_rules)"
 		);
 		foreach ($paymentData as $item) {
-			$ruleID = eF_insertTableData(
+			$ruleID = sC_insertTableData(
 				"module_xpay_price_rules",
 				array(
 					"description"			=> sprintf('Desconto de %d%% para pagamento pontual', $item['desconto']),
@@ -488,21 +488,21 @@ class module_xpay extends MagesterExtendedModule
 					"active"				=> 1,
 				)
 			);
-			eF_insertTableData(
+			sC_insertTableData(
 				"module_xuser_user_tags",
 				array(
 					'user_id'	=> $item['user_id'],
 					'tag'		=> 'is_custom'
 				)
 			);
-			eF_insertTableData(
+			sC_insertTableData(
 				"module_xpay_price_rules_tags",
 				array(
 					'rule_id'	=> $ruleID,
 					'tag'		=> 'is_not_overdue'
 				)
 			);
-			eF_insertTableData(
+			sC_insertTableData(
 				"module_xpay_price_rules_tags",
 				array(
 					'rule_id'	=> $ruleID,
@@ -656,7 +656,7 @@ class module_xpay extends MagesterExtendedModule
 			$smarty -> assign("T_XPAY_IS_ADMIN", true);
 			$editUser = $this->getEditedUser(true);
 		}
-		if (is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id")) {
+		if (is_numeric($_GET['negociation_id']) && sC_checkParameter($_GET['negociation_id'], "id")) {
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
 			if ($this->getCurrentUser()->getType() == 'administrator') {
 				$editUser = $this->getEditedUser(true, $userNegociation['user_id']);
@@ -747,7 +747,7 @@ class module_xpay extends MagesterExtendedModule
 			*/
 		}
 		/*
-		$groups = eF_getTableData("groups", "id, name", "active=1");
+		$groups = sC_getTableData("groups", "id, name", "active=1");
 		
 		$editUser->getGroups();
 		var_dump($editUser -> groups);
@@ -812,7 +812,7 @@ class module_xpay extends MagesterExtendedModule
 			'active'				=> 1
 		);
 
-		$negociationID = ef_insertTableData(
+		$negociationID = sC_insertTableData(
 			"module_xpay_course_negociation",
 			$negociation
 		);
@@ -820,7 +820,7 @@ class module_xpay extends MagesterExtendedModule
 		foreach ($negociationModules as &$module) {
 			$module['negociation_id'] = $negociationID;
 		}
-		eF_insertTableDataMultiple("module_xpay_negociation_modules", $negociationModules);
+		sC_insertTableDataMultiple("module_xpay_negociation_modules", $negociationModules);
 
 		$_GET['negociation_id'] = $negociationID;
 		$this->setCurrentAction("edit_negociation", true);
@@ -843,7 +843,7 @@ class module_xpay extends MagesterExtendedModule
 
 		if (
 			is_numeric($_GET['negociation_id']) &&
-			eF_checkParameter($_GET['negociation_id'], "id")
+			sC_checkParameter($_GET['negociation_id'], "id")
 		) {
 			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
@@ -1104,7 +1104,7 @@ class module_xpay extends MagesterExtendedModule
 		}
 		if (
 				is_numeric($_POST['negociation_id']) &&
-				eF_checkParameter($_POST['negociation_id'], "id")
+				sC_checkParameter($_POST['negociation_id'], "id")
 		) {
 			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
 			$userNegociation = $this->_getNegociationByID($_POST['negociation_id']);
@@ -1138,7 +1138,7 @@ class module_xpay extends MagesterExtendedModule
 			echo json_encode($result);
 			exit;
 		} else {
-			eF_updateTableData("module_xpay_course_negociation", $updateFields, sprintf('id = %d', $userNegociation['id']));
+			sC_updateTableData("module_xpay_course_negociation", $updateFields, sprintf('id = %d', $userNegociation['id']));
 			
 			$result = array(
 				"message"		=> "Negociação atualizada com sucesso.",
@@ -1165,8 +1165,8 @@ class module_xpay extends MagesterExtendedModule
 		//$this->saveSimulatedNegociation($userNegociation);
 		// UPDATE SIMULATION STATUS
 		/*
-		eF_updateTableData("module_xpay_course_negociation", array("is_simulation" => 2), sprintf("user_id = %d AND course_id = %d AND is_simulation = 0", $userNegociation['user_id'], $userNegociation['course_id']));
-		eF_updateTableData("module_xpay_course_negociation", array("is_simulation" => 0), sprintf("id = %d", $userNegociation['id']));
+		sC_updateTableData("module_xpay_course_negociation", array("is_simulation" => 2), sprintf("user_id = %d AND course_id = %d AND is_simulation = 0", $userNegociation['user_id'], $userNegociation['course_id']));
+		sC_updateTableData("module_xpay_course_negociation", array("is_simulation" => 0), sprintf("id = %d", $userNegociation['id']));
 		*/
 		// SAVE INVOICES
 		$newInvoicesIndexes = array();
@@ -1177,7 +1177,7 @@ class module_xpay extends MagesterExtendedModule
 				$newInvoicesIndexes[] = $invoice['invoice_index'];
 			} elseif ($invoice['sugested'] == 1) {
 				// DELETE OLD ONE
-				eF_deleteTableData(
+				sC_deleteTableData(
 					"module_xpay_invoices",
 					sprintf(
 						"negociation_id = %d AND invoice_index =%d",
@@ -1200,7 +1200,7 @@ class module_xpay extends MagesterExtendedModule
 				);
 			}
 
-			eF_updateTableData(
+			sC_updateTableData(
 				"module_xpay_invoices",
 				array(
 					'description' 	=> $invoice['description'],
@@ -1212,7 +1212,7 @@ class module_xpay extends MagesterExtendedModule
 				)
 			);
 		}
-		eF_deleteTableData(
+		sC_deleteTableData(
 			"module_xpay_invoices",
 			sprintf(
 				"negociation_id = %d AND invoice_index NOT IN (%s)",
@@ -1237,7 +1237,7 @@ class module_xpay extends MagesterExtendedModule
 	{
 		$smarty = $this->getSmartyVar();
 		/*
-		eF_insertTableData(
+		sC_insertTableData(
 			
 		);
 		*/
@@ -1342,9 +1342,9 @@ class module_xpay extends MagesterExtendedModule
 				$insertData['valor'] = (float) str_replace(",", ".", str_replace(".", "", $values['valor_absoluto']));
 			}
 			
-			$ruleID = eF_insertTableData("module_xpay_price_rules", $insertData);
+			$ruleID = sC_insertTableData("module_xpay_price_rules", $insertData);
 			
-			//eF_insertTableData("module_xpay_price_rules_tags");
+			//sC_insertTableData("module_xpay_price_rules_tags");
 
 			// INJECT USER ON CUSTOM??
 			
@@ -1485,7 +1485,7 @@ class module_xpay extends MagesterExtendedModule
 		$paymentMethods = array();
 
 		$form = new HTML_QuickForm("xpay_select_payment_method", "post", $_SERVER['REQUEST_URI'], "", null, true);
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
 		foreach ($negocData['invoices'] as $inv_index => $invoice) {
 			if ($invoice['full_price'] <= $invoice['paid']) {
@@ -1731,7 +1731,7 @@ class module_xpay extends MagesterExtendedModule
 				//'data_registro' 		=> $oldInvoice['data_vencimento'],
 				'description'			=> $values['description']
 			);
-			$transactionID = ef_insertTableData(
+			$transactionID = sC_insertTableData(
 				"module_xpay_manual_transactions",
 				$manualTransaction
 			);
@@ -1742,7 +1742,7 @@ class module_xpay extends MagesterExtendedModule
 				'paid' 				=> $values['real_value'],
 				'start_timestamp' 	=> time()
 			);
-			$paidID = ef_insertTableData(
+			$paidID = sC_insertTableData(
 				"module_xpay_paid_items",
 				$paidItem
 			);
@@ -1758,7 +1758,7 @@ class module_xpay extends MagesterExtendedModule
 				$invoiceToPaid['full_value'] = $values['subtract_value'];
 			}
 
-			ef_insertTableData(
+			sC_insertTableData(
 				"module_xpay_invoices_to_paid",
 				$invoiceToPaid
 			);
@@ -1831,7 +1831,7 @@ class module_xpay extends MagesterExtendedModule
 				$getValues['negociation_id'] == $values['negociation_id'] &&
 				$getValues['invoice_index'] == $values['invoice_index']
 ) {
-				ef_updateTableData(
+				sC_updateTableData(
 					"module_xpay_invoices",
 					array(
 						'valor'				=> $values['valor'],
@@ -1982,7 +1982,7 @@ class module_xpay extends MagesterExtendedModule
 				implode(", ", $group)
 		);
 	*/
-		$toSendList = eF_getTableData(
+		$toSendList = sC_getTableData(
 				implode(" ", $tables),
 				implode(", ", $fields),
 				implode(" AND ", $where),
@@ -2029,7 +2029,7 @@ class module_xpay extends MagesterExtendedModule
 			return false;
 		}
 		*/
-		$negociation_id = is_numeric($_GET['negociation_id']) && eF_checkParameter($_GET['negociation_id'], "id") ? $_GET['negociation_id'] : null;
+		$negociation_id = is_numeric($_GET['negociation_id']) && sC_checkParameter($_GET['negociation_id'], "id") ? $_GET['negociation_id'] : null;
 		$invoice_index = is_numeric($_GET['invoice_index']) ? $_GET['invoice_index'] : null;
 		
 		if ($this->getCurrentUser()->getType() == 'administrator') {
@@ -2122,7 +2122,7 @@ class module_xpay extends MagesterExtendedModule
 		);
 
 		// GET LAST SEND_ID, OR CREATE IF NULL
-		$sendIDData = eF_getTableData(
+		$sendIDData = sC_getTableData(
 			"module_xpay_to_send_list",
 			"id",
 			sprintf("user_id = %d", $this->getCurrentUser()->user['id']),
@@ -2132,14 +2132,14 @@ class module_xpay extends MagesterExtendedModule
 		if (count($sendIDData) > 0) {
 			$data['send_id'] = $sendIDData[0]['id'];
 		} else {
-			$data['send_id'] = eF_insertTableData(
+			$data['send_id'] = sC_insertTableData(
 				"module_xpay_to_send_list",
 				array('user_id' => $this->getCurrentUser()->user['id'], 'data_envio' => date('Y-m-d', time() + (60*60*24*5)))
 			);
 		}
 
 
-		$result = eF_countTableData(
+		$result = sC_countTableData(
 			"module_xpay_to_send_list_item",
 			"negociation_id, invoice_index",
 			sprintf(
@@ -2152,14 +2152,14 @@ class module_xpay extends MagesterExtendedModule
 
 		if ($result[0]['count'] == 0) {
 			if ($active == 1) {
-				eF_insertTableData("module_xpay_to_send_list_item", $data);
+				sC_insertTableData("module_xpay_to_send_list_item", $data);
 
 				$result = array(
 						'message'		=> 'Fatura incluída com sucesso',
 						'message_type'	=> 'success'
 				);
 			} else {
-				eF_deleteTableData(
+				sC_deleteTableData(
 					"module_xpay_to_send_list_item",
 					sprintf(
 						"send_id = %d AND negociation_id = %d AND invoice_index =%d",
@@ -2197,7 +2197,7 @@ class module_xpay extends MagesterExtendedModule
 		
 		if (
 				is_numeric($_GET['negociation_id']) &&
-				eF_checkParameter($_GET['negociation_id'], "id")
+				sC_checkParameter($_GET['negociation_id'], "id")
 		) {
 			/// VERIFICAR SE O USUÀRIO TEM ACESSO. PELA "ies_id"
 			$userNegociation = $this->_getNegociationByID($_GET['negociation_id']);
@@ -2250,8 +2250,8 @@ class module_xpay extends MagesterExtendedModule
 	{
 		//$data['payment_id'], $data['parcela_index']
 
-		if (eF_checkParameter($data['payment_id'], 'id')) {
-			$dataReturn = eF_updateTableData(
+		if (sC_checkParameter($data['payment_id'], 'id')) {
+			$dataReturn = sC_updateTableData(
 				"module_pagamento_invoices",
 				array(
 					"pago" 		=> self::_XPAY_AUTOPAY,
@@ -2264,10 +2264,10 @@ class module_xpay extends MagesterExtendedModule
 
 			// GET EDITED USER
 			$paymentData = $this->getPaymentById($data['payment_id']);
-			if (!eF_checkParameter($data['user_id'], 'id')) {
+			if (!sC_checkParameter($data['user_id'], 'id')) {
 				$data['user_id'] = $paymentData['user_id'];
 			}
-			if (!eF_checkParameter($data['enrollment_id'], 'id')) {
+			if (!sC_checkParameter($data['enrollment_id'], 'id')) {
 				$data['enrollment_id'] = $paymentData['enrollment_id'];
 			}
 		}
@@ -2329,7 +2329,7 @@ class module_xpay extends MagesterExtendedModule
 	public function lockInvoice($negociation_id, $invoice_index, $reason = _XPAY_BLOCK)
 	{
 		if (is_numeric($negociation_id) && is_numeric($invoice_index)) {
-			eF_updateTableData(
+			sC_updateTableData(
 				"module_xpay_invoices",
 				array(
 					'locked' => 1,
@@ -2344,7 +2344,7 @@ class module_xpay extends MagesterExtendedModule
 	public function unlockInvoice($negociation_id, $invoice_index)
 	{
 		if (is_numeric($negociation_id) && is_numeric($invoice_index)) {
-			eF_updateTableData(
+			sC_updateTableData(
 				"module_xpay_invoices",
 				array(
 					'locked' => 1,
@@ -2428,7 +2428,7 @@ class module_xpay extends MagesterExtendedModule
 
 		if ($persist) {
 			//sub-group invoice_info
-			eF_insertTableData("module_xpay_invoices", $insertData);
+			sC_insertTableData("module_xpay_invoices", $insertData);
 		}
 
 		// CALC FIELDS
@@ -2443,7 +2443,7 @@ class module_xpay extends MagesterExtendedModule
 	}
 	private function _countTotalInvoices($negociationID)
 	{
-		list($lastInvoice) = eF_getTableData(
+		list($lastInvoice) = sC_getTableData(
 			"module_xpay_invoices",
 			"MAX(invoice_index) as last_invoice",
 			sprintf("negociation_id = %d", $negociationID)
@@ -2458,7 +2458,7 @@ class module_xpay extends MagesterExtendedModule
 	private function initRuleSystem()
 	{
 		if (is_null($this->rules)) {
-			$allRules = eF_getTableData(
+			$allRules = sC_getTableData(
 				"module_xpay_price_rules",
 				"*",
 				"active=1",
@@ -2467,7 +2467,7 @@ class module_xpay extends MagesterExtendedModule
 			$this->rules = $allRules;
 		}
 		if (is_null($this->rulesTags)) {
-			$allRulesTags = eF_getTableData(
+			$allRulesTags = sC_getTableData(
 					"module_xpay_price_rules_tags",
 					"*"
 			);
@@ -2656,7 +2656,7 @@ class module_xpay extends MagesterExtendedModule
 		if (is_array($constraints["ies_id"]) && count($constraints["ies_id"]) > 0) {
 			$where[] = sprintf("ies_id IN (%s)", implode(", ", $constraints["ies_id"]));
 		}
-		$lastPaymentsList = eF_getTableData(
+		$lastPaymentsList = sC_getTableData(
 			"module_xpay_zzz_paid_items",
 			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto + tarifa as desconto, IFNULL(total, paid) as paid",
 			implode(" AND ", $where),
@@ -2687,7 +2687,7 @@ class module_xpay extends MagesterExtendedModule
 			$editedUser = $this->getEditedUser();
 		}
 
-		$courseItens = eF_getTableData(
+		$courseItens = sC_getTableData(
 			"users_to_courses uc
 			LEFT JOIN courses c ON (uc.courses_ID = c.id)
 			LEFT OUTER JOIN module_xpay_course_modality_prices cp ON (
@@ -2715,7 +2715,7 @@ class module_xpay extends MagesterExtendedModule
 			$courses_ID[] = $courseData['module_id'];
 		}
 
-		$lessonItens = eF_getTableData(
+		$lessonItens = sC_getTableData(
 			"users_to_lessons ul
 			LEFT join lessons l ON (ul.lessons_ID = l.id)
 			LEFT OUTER join module_xpay_lesson_modality_prices lp ON (
@@ -2767,7 +2767,7 @@ class module_xpay extends MagesterExtendedModule
 
 		/* FUNCTION WALKTHROUGH */
 		/* STEP 1. GET ALL USER NO-SIMULATED NEGOCIATIONS */
-		$userNegociations = eF_getTableDataFlat(
+		$userNegociations = sC_getTableDataFlat(
 			'module_xpay_course_negociation neg',
 			'neg.id',
 			sprintf('neg.user_id = %1$d AND neg.is_simulation = 0', $editedUser->user['id'])
@@ -2790,10 +2790,10 @@ class module_xpay extends MagesterExtendedModule
 	public function _getNegociationPayerByNegociationID($negociationID)
 	{
 		// CHECK IF IS A SINGLE OR MULTIPLE PAYER NEGOCIATION
-		if (eF_checkParameter($negociationID, 'id')) {
-			$sendToData = eF_getTableData(
+		if (sC_checkParameter($negociationID, 'id')) {
+			$sendToData = sC_getTableData(
 				"module_xpay_course_negociation",
-				"user_id, send_to, ref_payment_id",
+				"user_id, send_to, rsC_payment_id",
 				"id = " . $negociationID
 			);
 
@@ -2805,7 +2805,7 @@ class module_xpay extends MagesterExtendedModule
 			$studentID = $sendToData[0]['user_id'];
 			$xUserModule = $this->loadModule("xuser");
 			if (is_null($sendTo)) {
-				$oldSendTo = eF_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['ref_payment_id']);
+				$oldSendTo = sC_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['rsC_payment_id']);
 
 				if (count($oldSendTo) == 0) {
 					// DEFAULT TYPE
@@ -2899,7 +2899,7 @@ class module_xpay extends MagesterExtendedModule
 			"neg.id, u.id"
 		);
 		*/
-		$negociationData = ef_getTableData(
+		$negociationData = sC_getTableData(
 			"module_xpay_course_negociation neg
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
 			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
@@ -2928,7 +2928,7 @@ class module_xpay extends MagesterExtendedModule
 
 			if ($negociationData['lesson_id'] == 0 && $negociationData['course_id'] == 0) {
 				// SEARCH ON module_xpay_negociation_modules
-				$negociationData['modules'] = eF_getTableData(
+				$negociationData['modules'] = sC_getTableData(
 					"module_xpay_negociation_modules",
 					'lesson_id, course_id, module_type',
 					'negociation_id = ' . $negociationData['id']
@@ -2989,7 +2989,7 @@ class module_xpay extends MagesterExtendedModule
 			if (count($coursePriceID) > 0) {
 				$coursePriceWhere = array_merge($priceWhere, array(sprintf('c.id IN (%s)', implode(", ", $coursePriceID))));
 
-				$coursePriceInfo = ef_getTableData(
+				$coursePriceInfo = sC_getTableData(
 					"users u
 			 		LEFT OUTER JOIN users_to_courses uc ON (u.login = uc.users_LOGIN AND uc.modality_id <> 3)
 			 		LEFT OUTER JOIN courses c ON (uc.courses_ID = c.id)
@@ -3013,7 +3013,7 @@ class module_xpay extends MagesterExtendedModule
 			if (count($lessonPriceID) > 0) {
 				$lessonPriceWhere = array_merge($priceWhere, array(sprintf('l.id IN (%s)', implode(", ", $lessonPriceID))));
 
-				$lessonPriceInfo = ef_getTableData(
+				$lessonPriceInfo = sC_getTableData(
 					"users u
 			 		LEFT OUTER JOIN users_to_lessons ul ON (u.login = ul.users_LOGIN)
 			 		LEFT OUTER JOIN lessons l ON (ul.lessons_ID = l.id)
@@ -3180,7 +3180,7 @@ class module_xpay extends MagesterExtendedModule
 	}
 	private function getNegociationInvoices($nego_id)
 	{
-		$negoInvoices = eF_getTableData(
+		$negoInvoices = sC_getTableData(
 			"module_xpay_invoices inv
 			LEFT JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2paid ON (
@@ -3219,7 +3219,7 @@ class module_xpay extends MagesterExtendedModule
 	}
 	public function _getNegociationInvoiceByIndex($nego_id, $invoice_index)
 	{
-		$negoInvoices = eF_getTableData(
+		$negoInvoices = sC_getTableData(
 			"module_xpay_invoices inv
 			LEFT JOIN module_xpay_course_negociation neg ON (inv.negociation_id = neg.id)
 			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2paid ON (
@@ -3253,7 +3253,7 @@ class module_xpay extends MagesterExtendedModule
 			$user_id = $this->getCurrentUser()->user['id'];
 		}
 
-		return eF_getTableData(
+		return sC_getTableData(
 			"module_xpay_to_send_list_item send_item
 			LEFT JOIN module_xpay_to_send_list send ON (send_item.send_id = send.id)",
 			"send_item.send_id, send_item.negociation_id, send_item.invoice_index",
@@ -3410,7 +3410,7 @@ class module_xpay extends MagesterExtendedModule
 			$invoice_id = $invoice_id_sem_DV . $this->_module10($invoice_id_sem_DV);
 
 			// CHECK IF EXISTS, IF TRUE, GENERATE AGAIN
-			$existsCount = eF_countTableData(
+			$existsCount = sC_countTableData(
 					// table
 					"module_xpay_invoices",
 					// fields
@@ -3493,7 +3493,7 @@ class module_xpay extends MagesterExtendedModule
 		 		implode(", ", $group)
 		 );
 		*/
-		$debtsLists = eF_getTableData(
+		$debtsLists = sC_getTableData(
 			implode(" ", $tables),
 			implode(", ", $fields),
 			implode(" AND ", $where),
@@ -3574,7 +3574,7 @@ class module_xpay extends MagesterExtendedModule
 			 		implode(", ", $group)
 			 );
 				*/
-				$debtsLists = eF_getTableData(
+				$debtsLists = sC_getTableData(
 						implode(" ", $tables),
 						implode(", ", $fields),
 			implode(" AND ", $where),
@@ -3724,7 +3724,7 @@ class module_xpay extends MagesterExtendedModule
         	//$status = $smtp -> send("andre@ult.com.br", $header, $body);
 
 		if ($status && !is_null($send_id)) {
-			eF_deleteTableData(
+			sC_deleteTableData(
 					"module_xpay_to_send_list_item",
 					sprintf("send_id = %s AND negociation_id = %s AND invoice_index = %s", $send_id, $negociation_id, $invoice_index)
 			);
@@ -3739,7 +3739,7 @@ class module_xpay extends MagesterExtendedModule
 			'sent'				=> $status ? 1 : 0
 		);
 
-		eF_insertTableData("module_xpay_sent_invoices_log", $sentLOG);
+		sC_insertTableData("module_xpay_sent_invoices_log", $sentLOG);
 
 		return $sentLOG;
 	}
@@ -3768,7 +3768,7 @@ class module_xpay extends MagesterExtendedModule
 			$fields['hash'] = md5(mt_rand() . implode(":", $fields));
 		}
 
-		eF_insertTableData(
+		sC_insertTableData(
 			"service_direct_link_hash",
 			$fields
 		);
@@ -3834,7 +3834,7 @@ class module_xpay extends MagesterExtendedModule
 		} else {
 			return false;
 		}
-		$debtTimes = ef_getTableData(
+		$debtTimes = sC_getTableData(
 			"module_xpay_invoices inv LEFT JOIN module_xpay_course_negociation nego ON (inv.negociation_id = nego.id)",
 			"negociation_id, invoice_id, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(inv.data_vencimento) as debt_time",
 			sprintf("nego.user_id = %d", $user_id)
@@ -3881,7 +3881,7 @@ class module_xpay extends MagesterExtendedModule
 		//$negociation_index = $_GET['negociation_index'];
 
 		if (!empty($_GET['negociation_index'])) {
-			$hasNegociation = ef_countTableData(
+			$hasNegociation = sC_countTableData(
 					"module_xpay_course_negociation",
 					"negociation_index",
 					sprintf("user_id = %d AND %s_id = %d AND negociation_index = %d",
@@ -3898,7 +3898,7 @@ class module_xpay extends MagesterExtendedModule
 		}
 
 		if (!isset($negociation_index)) {
-			$negociationIndexNew = ef_getTableData(
+			$negociationIndexNew = sC_getTableData(
 					"module_xpay_course_negociation",
 					"IFNULL(MAX(negociation_index) + 1, 1) as new_index",
 					sprintf("user_id = %d AND %s_id = %d",
@@ -3924,7 +3924,7 @@ class module_xpay extends MagesterExtendedModule
 		);
 
 		if ($persist) {
-			$negociationID = ef_insertTableData(
+			$negociationID = sC_insertTableData(
 				"module_xpay_course_negociation",
 				$negociationData
 			);
@@ -3964,7 +3964,7 @@ class module_xpay extends MagesterExtendedModule
 		if (is_null(self::$subModules)) {
 			self::$subModules = array();
 			
-			$modulesDB = eF_getTableData("modules", "*", "active=1");
+			$modulesDB = sC_getTableData("modules", "*", "active=1");
 			$currentUser = $this->getCurrentUser();
 			
 			// Get all modules enabled
@@ -3988,9 +3988,9 @@ class module_xpay extends MagesterExtendedModule
 	}
 	public function getPaymentById($payment_id)
 	{
-		if (eF_checkParameter($payment_id, 'id')) {
+		if (sC_checkParameter($payment_id, 'id')) {
 			// RETURS ONE REGISTER PER INVOICE.....
-			$paymentResult = eF_getTableData(
+			$paymentResult = sC_getTableData(
 				"`module_pagamento` pag,
 				`module_pagamento_types` pag_typ,
 				/* `module_pagamento_types_details` pag_typ_det, */
@@ -4089,7 +4089,7 @@ class module_xpay extends MagesterExtendedModule
 
 				if ($paymentData['send_to'] == 'parent' && $paymentResult[0]['not_18'] == 1) {
 					// BUSCAR RESPONSÁVEL
-					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='parent' AND id = ".  $paymentResult[0]['user_id']);
+					$responsibleData 		= sC_getTableData("module_xuser_responsible", "*", "type='parent' AND id = ".  $paymentResult[0]['user_id']);
 					$paymentData['cliente']	= $responsibleData[0];
 					/*
 					$paymentData['minor']					= $paymentData['usuario'];
@@ -4099,7 +4099,7 @@ class module_xpay extends MagesterExtendedModule
 					$paymentData['cliente']['email'] 		= $responsibleData[0]['email'];
 					*/
 				} elseif ($paymentData['send_to'] == 'financial') {
-					$responsibleData 		= eF_getTableData("module_xuser_responsible", "*", "type='financial' AND id = ".  $paymentResult[0]['user_id']);
+					$responsibleData 		= sC_getTableData("module_xuser_responsible", "*", "type='financial' AND id = ".  $paymentResult[0]['user_id']);
 					$paymentData['cliente']	= $responsibleData[0];
 				} else {
 					$paymentData['cliente']	= $paymentData['usuario'];
@@ -4229,7 +4229,7 @@ class module_xpay extends MagesterExtendedModule
 		 );
 		*/
 
-		$paymentDbResult = eF_getTableData(
+		$paymentDbResult = sC_getTableData(
 				"`module_pagamento` pag, `users`",
 				implode(', ', $fields),
 				sprintf("pag.user_id = users.id", $payment_id) . (!is_null($filter) ? ' AND ' . $filter : "")
@@ -4247,14 +4247,14 @@ class module_xpay extends MagesterExtendedModule
 	}
 	public function getPaymentsByUserId($userID, $completeData = true)
 	{
-		if (eF_checkParameter($userID, 'id')) {
+		if (sC_checkParameter($userID, 'id')) {
 			$result = array();
 
 			if (!$completeData) {
 				return $this->getPayments('user_id = ' . $userID);
 			}
 
-			$paymentIDs = eF_getTableData("module_pagamento", 'payment_id', 'user_id = ' . $userID);
+			$paymentIDs = sC_getTableData("module_pagamento", 'payment_id', 'user_id = ' . $userID);
 
 			foreach ($paymentIDs as $payment) {
 
@@ -4267,10 +4267,10 @@ class module_xpay extends MagesterExtendedModule
 	public function getInvoiceById($payment_id, $invoice_id)
 	{
 		if (
-			eF_checkParameter($payment_id, 'id') &&
-			eF_checkParameter($invoice_id, 'id')
+			sC_checkParameter($payment_id, 'id') &&
+			sC_checkParameter($invoice_id, 'id')
 		) {
-			$result = eF_getTableData(
+			$result = sC_getTableData(
 				"module_pagamento_invoices inv
 				LEFT JOIN module_pagamento pag ON (inv.payment_id = pag.payment_id)
 				LEFT JOIN courses c ON (pag.course_id = c.id)
@@ -4299,7 +4299,7 @@ class module_xpay extends MagesterExtendedModule
 			$nosso_numero = $nosso_numero_sem_DV . $this->generateModule10($nosso_numero_sem_DV);
 
 			// CHECK IF EXISTS, IF TRUE, GENERATE AGAIN
-			$existsCount = eF_countTableData(
+			$existsCount = sC_countTableData(
 					// table
 					"module_pagamento_invoices",
 					// fields
@@ -4350,7 +4350,7 @@ class module_xpay extends MagesterExtendedModule
 	}
 	
 	public function insertInvoicePayment($negociation_id, $invoice_index, $paid, $method, $transactionID, $data) {
-		$countPaid = ef_getTableData(
+		$countPaid = sC_getTableData(
 			"module_xpay_paid_items",
 			"id",
 			sprintf("transaction_id = '%s' AND method_id = '%s'", $transactionID, $method)
@@ -4365,7 +4365,7 @@ class module_xpay extends MagesterExtendedModule
 				'start_timestamp' 	=> strtotime($data)
 			);
 	
-			$paidID = ef_insertTableData(
+			$paidID = sC_insertTableData(
 				"module_xpay_paid_items",
 				$paid_items
 			);
@@ -4375,7 +4375,7 @@ class module_xpay extends MagesterExtendedModule
 			$paid_items = array(
 				'paid' 			=> $paid,
 			);
-			ef_updateTableData(
+			sC_updateTableData(
 				"module_xpay_paid_items",
 				$paid_items,
 				sprintf("id = %d", $paidID)
@@ -4403,7 +4403,7 @@ class module_xpay extends MagesterExtendedModule
 					$item['full_value']	= $paidInvoice['valor'];
 				}
 						
-				$countInv2Paid = ef_getTableData(
+				$countInv2Paid = sC_getTableData(
 					"module_xpay_invoices_to_paid",
 					"negociation_id",
 					sprintf("negociation_id = %d AND invoice_index = %d AND paid_id = %d",
@@ -4411,7 +4411,7 @@ class module_xpay extends MagesterExtendedModule
 				);
 						
 				if (count($countInv2Paid) == 0) {
-					ef_insertTableData(
+					sC_insertTableData(
 					"module_xpay_invoices_to_paid",
 					$item
 				);

@@ -70,7 +70,7 @@ if (strpos($_SERVER['HTTP_REFERER'], 'edit_test') !== false) {
     }
 }
 $form = new HTML_QuickForm("question_form", "post", $postTarget, "", null, true);
-$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
 if (!$skillgap_tests) {
     $optionsArray = $currentContent -> toHTMLSelectOptions();
@@ -123,7 +123,7 @@ if (isset($currentQuestion)) { //If we are changing an existing question
                                'question_text' => $currentQuestion -> question['text'],
                                'explanation' => $currentQuestion -> question['explanation']));
     if ($currentQuestion -> question['estimate']) {
-        $interval = eF_convertIntervalToTime($currentQuestion -> question['estimate']);
+        $interval = sC_convertIntervalToTime($currentQuestion -> question['estimate']);
         $form -> setDefaults(array('estimate_min' => $interval['minutes'],
                                 'estimate_sec' => $interval['seconds']));
     }
@@ -337,7 +337,7 @@ switch ($_GET['question_type']) { //Depending on the question type, the user mig
         }
         break;
     case 'empty_spaces':
-        $form -> addElement('button', 'generate_empty_spaces', _CREATEEMPTYSPACES, 'class = "flatButton" onclick = "eF_js_createEmptySpaces()"');
+        $form -> addElement('button', 'generate_empty_spaces', _CREATEEMPTYSPACES, 'class = "flatButton" onclick = "sC_js_createEmptySpaces()"');
         if ($form -> isSubmitted() || isset($currentQuestion)) {
             if (isset($currentQuestion) && !$form -> isSubmitted()) {
                 $values['empty_spaces'] = unserialize($currentQuestion -> question['answer']);
@@ -411,11 +411,11 @@ if ($form -> isSubmitted() && $form -> validate()) {
             // -- add either question to lesson specific skill if lesson['course_only'] == 0
             // -- or question to course specific skill if lesson['course_only'] == 1
             // Automatic skill injection only for educational version
-            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests$location&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success&tab=question");
+            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests$location&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success&tab=question");
         } else {
             $currentQuestion -> question = array_merge($currentQuestion -> question, $question_values); //This way, latter values (new ones) replace former (current ones);
             $currentQuestion -> persist(); //Update the question
-            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests$location&message=".rawurlencode(_SUCCESFULLYUPDATEDQUESTION)."&message_type=success&tab=question"); //&question is used for the tabber to enable the correct tab
+            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests$location&message=".rawurlencode(_SUCCESFULLYUPDATEDQUESTION)."&message_type=success&tab=question"); //&question is used for the tabber to enable the correct tab
         }
     } else { //We are inserting a new question
         $newQuestion = Question :: createQuestion($question_values);
@@ -424,16 +424,16 @@ if ($form -> isSubmitted() && $form -> validate()) {
         // -- add either question to lesson specific skill if lesson['course_only'] == 0
         // -- or question to course specific skill if lesson['course_only'] == 1
         if ($form -> exportValue('submit_question')) {
-            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&from_unit=".$_GET['from_unit']."$location&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success&tab=question"); //&question is used for the tabber to enable the correct tab
+            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&from_unit=".$_GET['from_unit']."$location&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success&tab=question"); //&question is used for the tabber to enable the correct tab
         } else {
-            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&from_unit=".$_GET['from_unit']."&add_question=1&difficulty=".$question_values['difficulty']."&content_ID=".$question_values['content_ID']."&question_type=".$_GET['question_type']."&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success");
+            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&from_unit=".$_GET['from_unit']."&add_question=1&difficulty=".$question_values['difficulty']."&content_ID=".$question_values['content_ID']."&question_type=".$_GET['question_type']."&message=".rawurlencode(_SUCCESFULLYADDEDQUESTION)."&message_type=success");
         }
     }
 }
 if ($skillgap_tests && $_GET['edit_question']) {
     // Get the text of the question
     $smarty -> assign("T_QUESTION_TEXT", strip_tags($currentQuestion -> question['text']));
-    $skills = eF_getTableData("module_hcd_skills LEFT OUTER JOIN questions_to_skills ON skill_ID = skills_ID AND questions_ID = ".$currentQuestion -> question['id'], "distinct skill_ID, description, relevance, questions_ID", "");
+    $skills = sC_getTableData("module_hcd_skills LEFT OUTER JOIN questions_to_skills ON skill_ID = skills_ID AND questions_ID = ".$currentQuestion -> question['id'], "distinct skill_ID, description, relevance, questions_ID", "");
     if ($currentQuestion -> question['lessons_ID'] != 0) {
         $suggest_skills = array(array('image' => '16x16/examples.png', 'text' => _SUGGESTSKILLSACCORDINGTOLESSONS, 'title' => _SUGGESTSKILLSACCORDINGTOLESSONS, 'href' => 'javascript:void(0)', 'onClick' => 'checkSuggestedSkills(this)', 'id' => 'suggestedSkillsImage'));
         $smarty -> assign('T_SUGGEST_QUESTION_SKILLS',$suggest_skills);
@@ -468,7 +468,7 @@ if (!isset($currentUser -> coreAccess['files']) || $currentUser -> coreAccess['f
 }
 /** Get the suggested list in a form that javascript can then understand **/
 if (isset($_GET['postAjaxRequest']) && isset($_GET['get_proposed_skills'])) {
-    $question_lesson = eF_getTableData("questions", "lessons_ID", "id = ".$_GET['edit_question']);
+    $question_lesson = sC_getTableData("questions", "lessons_ID", "id = ".$_GET['edit_question']);
     if (!empty($question_lesson) && $question_lesson[0]['lessons_ID'] != 0) {
         $lesson = new MagesterLesson($question_lesson[0]['lessons_ID']);
         $skills_to_propose = array();
@@ -502,17 +502,17 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['get_proposed_skills'])) {
 /** Post skill to questions - Ajax skill **/
 if (isset($_GET['postAjaxRequest']) && isset($_GET['skill'])) {
     if ($_GET['insert'] == "true") {
-        eF_insertTableData("questions_to_skills", array("skills_ID" => $_GET['skill'], "questions_ID" => $_GET['edit_question'], "relevance" => $_GET['relevance']));
+        sC_insertTableData("questions_to_skills", array("skills_ID" => $_GET['skill'], "questions_ID" => $_GET['edit_question'], "relevance" => $_GET['relevance']));
     } elseif ($_GET['insert'] == "update") {
-        eF_updateTableData("questions_to_skills", array("relevance" => $_GET['relevance']), "skills_ID = '". $_GET['skill'] . "' AND questions_ID = '" . $_GET['edit_question'] . "'");
+        sC_updateTableData("questions_to_skills", array("relevance" => $_GET['relevance']), "skills_ID = '". $_GET['skill'] . "' AND questions_ID = '" . $_GET['edit_question'] . "'");
     } elseif ($_GET['insert'] == "false") {
-        eF_deleteTableData("questions_to_skills", "skills_ID = '" . $_GET['skill']. "' AND questions_ID = '" . $_GET['edit_question'] . "'");
+        sC_deleteTableData("questions_to_skills", "skills_ID = '" . $_GET['skill']. "' AND questions_ID = '" . $_GET['edit_question'] . "'");
     } elseif (isset($_GET['addAll'])) {
         // Different management if a users' filter is set or not
         if ($_GET['filter']) {
-            $existing_question_skills_r = eF_getTableData("questions_to_skills", "*", "questions_ID = '".$_GET['edit_question']."'");
+            $existing_question_skills_r = sC_getTableData("questions_to_skills", "*", "questions_ID = '".$_GET['edit_question']."'");
             if (!empty($existing_question_skills_r)) {
-                $existing_question_skills_r = eF_filterData($existing_question_skills_r,$_GET['filter']);
+                $existing_question_skills_r = sC_filterData($existing_question_skills_r,$_GET['filter']);
                 // Reversing the table
                 $existing_question_skills['skills_ID'] = array();
                 foreach ($existing_question_skills_r as $question_skill) {
@@ -521,16 +521,16 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['skill'])) {
             } else {
                 $existing_question_skills = array();
             }
-            $all_skills_r = eF_getTableData("module_hcd_skills", "*", "");
-            $all_skills_r = eF_filterData($all_skills_r,$_GET['filter']);
+            $all_skills_r = sC_getTableData("module_hcd_skills", "*", "");
+            $all_skills_r = sC_filterData($all_skills_r,$_GET['filter']);
             // Reversing the table
             $all_skills['skill_ID'] = array();
             foreach ($all_skills_r as $question_skill) {
                 $all_skills['skill_ID'][] = $question_skill['skill_ID'];
             }
         } else {
-            $existing_question_skills = eF_getTableDataFlat("questions_to_skills", "skills_ID", "questions_ID = '".$_GET['edit_question']."'");
-            $all_skills = eF_getTableDataFlat("module_hcd_skills", "skill_ID", "");
+            $existing_question_skills = sC_getTableDataFlat("questions_to_skills", "skills_ID", "questions_ID = '".$_GET['edit_question']."'");
+            $all_skills = sC_getTableDataFlat("module_hcd_skills", "skill_ID", "");
         }
         if (empty($existing_question_skills)) {
             $non_existing_skills = $all_skills['skill_ID'];
@@ -545,24 +545,24 @@ if (isset($_GET['postAjaxRequest']) && isset($_GET['skill'])) {
             }
         }
         if (isset($all_skills_to_add)) {
-            eF_execute("INSERT INTO questions_to_skills (questions_id, skills_ID, relevance) VALUES " . $all_skills_to_add);
+            sC_execute("INSERT INTO questions_to_skills (questions_id, skills_ID, relevance) VALUES " . $all_skills_to_add);
         }
     } elseif (isset($_GET['removeAll'])) {
         if ($_GET['filter']) {
-            $all_related_skills = eF_getTableData("questions_to_skills JOIN module_hcd_skills ON skills_ID = skill_ID","skills_ID, description", "questions_ID = '".$_GET['edit_question'] . "'");
+            $all_related_skills = sC_getTableData("questions_to_skills JOIN module_hcd_skills ON skills_ID = skill_ID","skills_ID, description", "questions_ID = '".$_GET['edit_question'] . "'");
             if (!empty($all_related_skills)) {
-                $all_related_skills = eF_filterData($all_related_skills,$_GET['filter']);
+                $all_related_skills = sC_filterData($all_related_skills,$_GET['filter']);
                 $skills_to_remove = array();
                 foreach ($all_related_skills as $skill) {
                     $skills_to_remove[] = $skill['skills_ID'];
                 }
                 if (!empty($skills_to_remove)) {
-                    eF_deleteTableData("questions_to_skills", "questions_ID = '".$_GET['edit_question'] . "' AND skills_ID IN ('".implode("','",$skills_to_remove)."')");
+                    sC_deleteTableData("questions_to_skills", "questions_ID = '".$_GET['edit_question'] . "' AND skills_ID IN ('".implode("','",$skills_to_remove)."')");
                 }
             }
         } else {
             // Remove all
-            eF_deleteTableData("questions_to_skills", "questions_ID = '".$_GET['edit_question'] . "'");
+            sC_deleteTableData("questions_to_skills", "questions_ID = '".$_GET['edit_question'] . "'");
         }
     }
     exit;

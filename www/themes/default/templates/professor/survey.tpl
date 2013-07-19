@@ -5,9 +5,9 @@
             {if (!isset($smarty.get.screen_survey) && !isset($smarty.get.action) && $smarty.get.screen_survey != '2')}
             {* Format T_SURVEY in html code *}
             {capture name='t_survey_code'}
-                {eF_template_printSurveysList data = $T_SURVEY_INFO questions = $T_SURVEY_QUESTIONS user_type = $T_CURRENT_USER->user.user_type lesson_id = $T_LESSON_ID}
+                {sC_template_printSurveysList data = $T_SURVEY_INFO questions = $T_SURVEY_QUESTIONS user_type = $T_CURRENT_USER->user.user_type lesson_id = $T_LESSON_ID}
             {/capture}
-            {eF_template_printBlock title=$smarty.const._SURVEYS data = $smarty.capture.t_survey_code image='32x32/surveys.png' help = 'Surveys'}
+            {sC_template_printBlock title=$smarty.const._SURVEYS data = $smarty.capture.t_survey_code image='32x32/surveys.png' help = 'Surveys'}
         {/if}
         {if (isset($smarty.get.screen_survey) && !isset($smarty.get.action) && $smarty.get.screen_survey == '2')}
 
@@ -78,7 +78,7 @@
             {/if}
    </td></tr></table>
         {/capture}
-        {eF_template_printBlock title=$smarty.const._CREATESURVEYQUESTION data=$smarty.capture.t_survey_questions image='32x32/surveys.png' help = 'Surveys'}
+        {sC_template_printBlock title=$smarty.const._CREATESURVEYQUESTION data=$smarty.capture.t_survey_questions image='32x32/surveys.png' help = 'Surveys'}
         {/if}
         {if ($smarty.get.action == 'question_create')}
             {if (isset($smarty.get.question_type) && $smarty.get.question_type == '-')}
@@ -121,7 +121,7 @@
                                 //}
 
 
-                                function eF_js_addAdditionalChoice(question_type) {
+                                function sC_js_addAdditionalChoice(question_type) {
                                     var els = document.getElementsByTagName('input'); //Find all 'input' elements in th document.
 
                                     var counter = 0;
@@ -150,8 +150,8 @@
                                         img.setAttribute('style','white-space:nowrap');
                                         img.setAttribute('title', '_REMOVECHOICE');
                                         img.setAttribute('src', 'images/16x16/error_delete.png'); //Set the icon source
-                                        img.setAttribute('onclick', 'eF_js_removeImgNode(this, "'+question_type+'")'); //Set the event that will trigger the deletion
-                                        img.onclick = function () {eF_js_removeImgNode(this, "'+question_type+'")}; //Set the event that will trigger the deletion
+                                        img.setAttribute('onclick', 'sC_js_removeImgNode(this, "'+question_type+'")'); //Set the event that will trigger the deletion
+                                        img.onclick = function () {sC_js_removeImgNode(this, "'+question_type+'")}; //Set the event that will trigger the deletion
                                         var img_td = document.createElement('td'); //Create a new table cell to hold the image element
                                         td.appendChild(img); //Append the <td> to the row
 
@@ -162,7 +162,7 @@
                                 }
 
                                 //This function removes the <tr> element that contains the inserted node.
-                                function eF_js_removeImgNode(el, question_type) {
+                                function sC_js_removeImgNode(el, question_type) {
                                     el.parentNode.parentNode.parentNode.removeChild(el.parentNode.parentNode); //It is <tr><td><img></td></tr>, so we need to remove the <tr> element, which is the el.parentNode.parentNode
 
                                     var els = document.getElementsByTagName('input'); //Find all 'input' elements in th document.
@@ -190,7 +190,7 @@
 
 
                                 //This function is used to create the text boxes that correspond to empty spaces.
-                                function eF_js_createEmptySpaces() {
+                                function sC_js_createEmptySpaces() {
 
                                     if (tinyMCE) { //Get the text from the editor
           var question_text = tinyMCE.get('question_text').getContent();
@@ -268,7 +268,7 @@
                                 {elseif ($smarty.foreach.drop_down_list.index == 1)}
                                     <tr><td></td><td>{$item.html}</td></tr>
                                 {else}
-                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="eF_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
+                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="sC_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
                                 {/if}
                             {/foreach}
                         {else}
@@ -281,9 +281,9 @@
                         {/if}
                         <tr id = "drop_down_last_node"></tr>
                         <tr><td width="5%" align="right">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('drop_down')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('drop_down')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a>
                         </td><td width="95%" align="left">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('drop_down')">{$smarty.const._ADDOPTION}</a></td></tr>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('drop_down')">{$smarty.const._ADDOPTION}</a></td></tr>
                     {/if}
                     {if ($smarty.get.question_type == 'multiple_one')}
                         {if ($smarty.get.question_action == 'update_question')}
@@ -294,7 +294,7 @@
                                 {elseif ($smarty.foreach.multiple_one_list.index == 1)}
                                     <tr><td></td><td>{$item.html}</td></tr>
                                 {else}
-                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="eF_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
+                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="sC_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
                                 {/if}
                             {/foreach}
                         {else}
@@ -303,9 +303,9 @@
                         {/if}
                         <tr id = "multiple_one_last_node"></tr>
                         <tr><td width="10%" align="right">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_one')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a></td>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_one')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a></td>
                         </td><td width="90%" align="left">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_one')">{$smarty.const._ADDOPTION}</a></td></tr>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_one')">{$smarty.const._ADDOPTION}</a></td></tr>
                     {/if}
                     {if ($smarty.get.question_type == 'multiple_many')}
                         {if ($smarty.get.question_action == 'update_question')}
@@ -316,7 +316,7 @@
                                 {elseif ($smarty.foreach.multiple_many_list.index == 1)}
                                     <tr><td></td><td>{$item.html}</td></tr>
                                 {else}
-                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="eF_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
+                                    <tr><td></td><td>{$item.html}<img style = "vertical-align:middle;" align="center" src="images/16x16/error_delete.png" border="0px" onclick="sC_js_removeImgNode(this, '{$smarty.get.question_type}')" ></td></tr>
                                 {/if}
                             {/foreach}
                         {else}
@@ -325,9 +325,9 @@
                         {/if}
                         <tr id = "multiple_many_last_node"></tr>
                         <tr><td width="10%" align="right">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_many')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a></td>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_many')"><img src = "images/16x16/add.png" alt = "{$smarty.const._ADDQUESTION}" title = "{$smarty.const._ADDQUESTION}" border = "0"/></a></td>
                         </td><td width="90%" align="left">
-                            <a href = "javascript:void(0)" onclick = "eF_js_addAdditionalChoice('multiple_many')">{$smarty.const._ADDOPTION}</a></td></tr>
+                            <a href = "javascript:void(0)" onclick = "sC_js_addAdditionalChoice('multiple_many')">{$smarty.const._ADDOPTION}</a></td></tr>
                     {/if}
                     <tr><td>&nbsp;</td></tr>
                     <tr>
@@ -338,7 +338,7 @@
                     </table>
                 </form>
             {/capture}
-            {eF_template_printBlock title=$smarty.const._CREATESURVEYQUESTION data=$smarty.capture.question image='32x32/surveys.png' help = 'Surveys'}
+            {sC_template_printBlock title=$smarty.const._CREATESURVEYQUESTION data=$smarty.capture.question image='32x32/surveys.png' help = 'Surveys'}
         {/if}
     {/if}
     {if ($smarty.get.action == 'create_survey' && $smarty.get.screen == '1')}
@@ -361,20 +361,20 @@
                 </tr>
                 {if ($smarty.get.survey_action == 'save')}
                     <tr>
-                        <td class = "labelCell">{$smarty.const._SURVEYAVALIABLEFROM}:</td>{eF_template_html_select_date instant='1' end_year='+3'}</td>
+                        <td class = "labelCell">{$smarty.const._SURVEYAVALIABLEFROM}:</td>{sC_template_html_select_date instant='1' end_year='+3'}</td>
                     </tr>
                     <tr>
                         <td class = "labelCell">{$smarty.const._SURVEYUNTIL}:</td>
-                        <td>{eF_template_html_select_date instant='2' end_year='+3'}</td>
+                        <td>{sC_template_html_select_date instant='2' end_year='+3'}</td>
                     </tr>
                 {else}
                     <tr>
                         <td class = "labelCell">{$smarty.const._SURVEYAVALIABLEFROM}:</td>
-                        <td>{eF_template_html_select_date instant='1' time=$T_START_DATE end_year='+3'} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_START_DATE display_seconds = false}</td>
+                        <td>{sC_template_html_select_date instant='1' time=$T_START_DATE end_year='+3'} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_START_DATE display_seconds = false}</td>
                     </tr>
                     <tr>
                         <td class = "labelCell">{$smarty.const._SURVEYUNTIL}:</td>
-                        <td>{eF_template_html_select_date instant='2' time=$T_END_DATE end_year='+3'} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_END_DATE display_seconds = false}</td>
+                        <td>{sC_template_html_select_date instant='2' time=$T_END_DATE end_year='+3'} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_END_DATE display_seconds = false}</td>
                     </tr>
                 {/if}
                 <tr>
@@ -390,17 +390,17 @@
                 </form>
             </table>
         {/capture}
-        {eF_template_printBlock title=$smarty.const._CREATESURVEY data=$smarty.capture.createSurveyForm image='32x32/surveys.png' help = 'Surveys'}
+        {sC_template_printBlock title=$smarty.const._CREATESURVEY data=$smarty.capture.createSurveyForm image='32x32/surveys.png' help = 'Surveys'}
     {/if}
     {if ($smarty.get.action == 'preview') }
         {capture name='t_no_questions'}
             {if ($T_SIZEOF_QUESTIONS != '0')}
-                {eF_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS user_type=$T_USER}
+                {sC_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS user_type=$T_USER}
             {else}
                 <table><tr><td class="emptyCategory">{$smarty.const._NOQUESTIONSFORSURVEY}</td></tr></table>
             {/if}
         {/capture}
-        {eF_template_printBlock title=$smarty.const._PREVIEW data=$smarty.capture.t_no_questions image='32x32/surveys.png' help = 'Surveys'}
+        {sC_template_printBlock title=$smarty.const._PREVIEW data=$smarty.capture.t_no_questions image='32x32/surveys.png' help = 'Surveys'}
     {/if}
     {if (isset($smarty.get.action) && $smarty.get.action == 'view_users') }
         {capture name='t_view_users'}
@@ -432,13 +432,13 @@
                 <table><tr><td class="emptyCategory">{$smarty.const._NOUSERFORTHISSURVEYYET}</td></tr></table>
             {/if}
         {/capture}
-            {eF_template_printBlock title=$smarty.const._DONESURVEYUSERS data=$smarty.capture.t_view_users image='32x32/surveys.png' help = 'Surveys'}
+            {sC_template_printBlock title=$smarty.const._DONESURVEYUSERS data=$smarty.capture.t_view_users image='32x32/surveys.png' help = 'Surveys'}
     {/if}
     {if ( isset($smarty.get.action) && $smarty.get.action == 'survey_preview' ) }
         {capture name='preview_survey'}
-                {eF_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS answers=$T_USER_ANSWERS user_type=$T_USER user=$smarty.get.user action=$smarty.get.action}
+                {sC_template_printSurvey data=$T_SURVEY_INFO questions=$T_SURVEY_QUESTIONS answers=$T_USER_ANSWERS user_type=$T_USER user=$smarty.get.user action=$smarty.get.action}
         {/capture}
-        {eF_template_printBlock title=$smarty.const._SURVEYPREVIEWFORUSER|cat:$smarty.get.user data=$smarty.capture.preview_survey image='32x32/surveys.png' help = 'Surveys'}
+        {sC_template_printBlock title=$smarty.const._SURVEYPREVIEWFORUSER|cat:$smarty.get.user data=$smarty.capture.preview_survey image='32x32/surveys.png' help = 'Surveys'}
     {/if}
     {if (isset($smarty.get.action) && $smarty.get.action == 'statistics') }
     {capture name='surveyStatistics'}
@@ -493,7 +493,7 @@
         {/if}
     </table>
     {/capture}
-        {eF_template_printBlock title=$smarty.const._SURVEYSTATISTICS data=$smarty.capture.surveyStatistics image='32x32/surveys.png' help = 'Surveys'}
+        {sC_template_printBlock title=$smarty.const._SURVEYSTATISTICS data=$smarty.capture.surveyStatistics image='32x32/surveys.png' help = 'Surveys'}
     {/if}
     {if (isset($smarty.get.action) && $smarty.get.action == 'publish') }
         {capture name='t_publish_survey'}
@@ -539,7 +539,7 @@
                 </table>
             </form>
         {/capture}
-            {eF_template_printBlock title=$smarty.const._ADDUSERSTOSURVEY data=$smarty.capture.t_publish_survey image='32x32/surveys.png' help = 'Surveys'}
+            {sC_template_printBlock title=$smarty.const._ADDUSERSTOSURVEY data=$smarty.capture.t_publish_survey image='32x32/surveys.png' help = 'Surveys'}
     {/if}
      </td></tr>
     {/capture}

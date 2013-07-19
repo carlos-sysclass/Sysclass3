@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>Módulo de integração com Boleto bancário (php-boleto)</title>
-	<author>André Kucaniz</author>
-	<date>2012 01 21</date>
-	<version>0.1</version>
-	<description>Submódulo de integração com boleto bancário</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xpay_boleto</className>
 </module>

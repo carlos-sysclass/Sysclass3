@@ -6,7 +6,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 $loadScripts[] = 'includes/maintenance';
 if (isset($currentUser -> coreAccess['maintenance']) && $currentUser -> coreAccess['maintenance'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 /**Functions to perform status check*/
 require_once 'check_status.php';
@@ -30,7 +30,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
     }
 
     $lockdown_form = new HTML_QuickForm("lockdown_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=lock_down", "", null, true); //Build the form
-    $lockdown_form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register our custom input check function
+    $lockdown_form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register our custom input check function
 
     $lockdown_form -> addElement('textarea', 'lock_message', _LOCKDOWNMESSAGE, 'class = "inputContentTextarea mceEditor" style = "width:100%;height:20em;"');
     $lockdown_form -> addElement('checkbox', 'logout_users', null, null, 'class = "inputCheckBox"');
@@ -48,7 +48,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         } else {
             MagesterSystem :: lockSystem($values['lock_message'], $values['logout_users']);
         }
-        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=lock_down");
+        sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=lock_down");
     }
 
     $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty); //Create a smarty renderer
@@ -57,8 +57,8 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
     $smarty -> assign('T_LOCKDOWN_FORM', $renderer -> toArray()); //Assign the form to the template
 
     //User check
-    $users = eF_getTableDataFlat("users", "login");
-    //$users_dir = eF_getDirContents(G_ROOTPATH.'upload/', '', false, false);
+    $users = sC_getTableDataFlat("users", "login");
+    //$users_dir = sC_getDirContents(G_ROOTPATH.'upload/', '', false, false);
     $users_dir = scandir(G_ROOTPATH.'upload/');
     foreach ($users_dir as $key => $value) {
         if (!is_dir(G_ROOTPATH.'upload/'.$value) || !is_dir(G_ROOTPATH.'upload/'.$value.'/message_attachments') || in_array($value, array('.', '..', '.svn'))) {
@@ -73,9 +73,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
     $smarty -> assign("T_ORPHAN_USER_FOLDERS", mb_strlen($orphanUserFoldersStr) > 200 ? mb_substr($orphanUserFoldersStr, 0, 200).'...' : $orphanUserFoldersStr);
 
     //Lessons check
-    $lessons = eF_getTableDataFlat("lessons", "id, name");
+    $lessons = sC_getTableDataFlat("lessons", "id, name");
     $lessons = array_combine($lessons['id'], $lessons['name']);
-    //$lessons_dir = eF_getDirContents(G_ROOTPATH.'www/content/lessons/', '', false, false);
+    //$lessons_dir = sC_getDirContents(G_ROOTPATH.'www/content/lessons/', '', false, false);
     $lessons_dir = scandir(G_LESSONSPATH);
     foreach ($lessons_dir as $key => $dir) { //Remove non-integer lessons from list (such as scorm_uploaded_files);
         if (!preg_match("/^\d+$/", $dir)) {
@@ -101,9 +101,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         }
         if ($_GET['cleanup'] != 'all') {
             if (!isset($errors)) {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPFOLDERS).'&message_type=success');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPFOLDERS).'&message_type=success');
             } else {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGFOLDERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGFOLDERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
             }
         }
     }
@@ -118,9 +118,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         }
         if ($_GET['cleanup'] != 'all') {
             if (!isset($errors)) {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPUSERS).'&message_type=success');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPUSERS).'&message_type=success');
             } else {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGUSERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGUSERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
             }
         }
     }
@@ -135,9 +135,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         }
         if ($_GET['cleanup'] != 'all') {
             if (!isset($errors)) {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPFOLDERS).'&message_type=success');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPFOLDERS).'&message_type=success');
             } else {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGFOLDERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGFOLDERSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
             }
         }
     }
@@ -152,9 +152,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         }
         if ($_GET['cleanup'] != 'all') {
             if (!isset($errors)) {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPLESSONS).'&message_type=success');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCLEANEDUPLESSONS).'&message_type=success');
             } else {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGLESSONSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGLESSONSCOULDNOTBEDELETED).': '.implode(", ", $errors).'&message_type=failure');
             }
         }
     }
@@ -179,9 +179,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
   if (empty($errors)) {unset($errors);}
 
         if (!isset($errors)) {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCREATEDUSERFOLDERS).'&message_type=success');
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCREATEDUSERFOLDERS).'&message_type=success');
         } else {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGUSERFOLDERSCOULDNOTBECREATED).': '.implode(", ", $errors).'&message_type=failure');
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGUSERFOLDERSCOULDNOTBECREATED).': '.implode(", ", $errors).'&message_type=failure');
         }
     }
     if (isset($_GET['create']) && $_GET['create'] == 'lesson_folders') {
@@ -191,62 +191,62 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
             }
         }
         if (!isset($errors)) {
-            eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCREATEDLESSONFOLDERS).'&message_type=success');
+            sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESFULLYCREATEDLESSONFOLDERS).'&message_type=success');
         } else {
-            eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGLESSONFOLDERSCOULDNOTBECREATED).': '.implode(", ", $errors).'&message_type=failure');
+            sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup&message=".urlencode(_THEFOLLOWINGLESSONFOLDERSCOULDNOTBECREATED).': '.implode(", ", $errors).'&message_type=failure');
         }
     }
 
-    $logSize = eF_countTableData("logs");
+    $logSize = sC_countTableData("logs");
     $smarty -> assign("T_LOG_SIZE", $logSize[0]['count']);
-    $lastLogEntry = eF_getTableData("logs", "timestamp", "", "timestamp", false, 1);
+    $lastLogEntry = sC_getTableData("logs", "timestamp", "", "timestamp", false, 1);
     $smarty -> assign("T_LAST_LOG_ENTRY", $lastLogEntry[0]['timestamp']);
     $cleanupForm = new HTML_QuickForm("cleanup_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup", "", null, true);
- $cleanupForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+ $cleanupForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
  $cleanupForm -> addElement("text", "logs_size", null, 'class = "inputText" style = "width:60px"');
     $cleanupForm -> addElement("submit", "submit", _SUBMIT, 'class = "flatButton"');
     if ($cleanupForm -> isSubmitted() && $cleanupForm -> validate()) {
      $timestamp = mktime(0, 0, 0, $_POST['purge_Month'], $_POST['purge_Day'], $_POST['purge_Year']);
-     if (eF_checkParameter($timestamp, 'int')) {
-      eF_deleteTableData("logs", "timestamp < $timestamp");
+     if (sC_checkParameter($timestamp, 'int')) {
+      sC_deleteTableData("logs", "timestamp < $timestamp");
      }
-     eF_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESSFULLYPURGEDLOGS)."&message_type=success"));
+     sC_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_SUCCESSFULLYPURGEDLOGS)."&message_type=success"));
     }
     $renderer = prepareFormRenderer($cleanupForm);
     $smarty -> assign("T_CLEANUP_FORM", $renderer -> toArray());
 
-    $notificationsSize = eF_countTableData("notifications");
+    $notificationsSize = sC_countTableData("notifications");
     $smarty -> assign("T_NOTIFICATIONS_SIZE", $notificationsSize[0]['count']);
-    $lastNotificationEntry = eF_getTableData("notifications", "timestamp", "", "timestamp", false, 1);
+    $lastNotificationEntry = sC_getTableData("notifications", "timestamp", "", "timestamp", false, 1);
     $smarty -> assign("T_LAST_NOTIFICATIONS_ENTRY", $lastNotificationEntry[0]['timestamp']);
     $form = new HTML_QuickForm("cleanup_notifications_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup", "", null, true);
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
  $form -> addElement("text", "notifications_size", null, 'class = "inputText" style = "width:60px"');
     $form -> addElement("submit", "submit", _SUBMIT, 'class = "flatButton"');
     if ($form -> isSubmitted() && $form -> validate()) {
      $timestamp = mktime(0, 0, 0, $_POST['purge_Month'], $_POST['purge_Day'], $_POST['purge_Year']);
-     if (eF_checkParameter($timestamp, 'int')) {
-      eF_deleteTableData("notifications", "timestamp < $timestamp");
+     if (sC_checkParameter($timestamp, 'int')) {
+      sC_deleteTableData("notifications", "timestamp < $timestamp");
      }
-     eF_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_OPERATIONCOMPLETEDSUCCESSFULLY)."&message_type=success"));
+     sC_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_OPERATIONCOMPLETEDSUCCESSFULLY)."&message_type=success"));
     }
     $renderer = prepareFormRenderer($form);
     $smarty -> assign("T_CLEANUP_NOTIFICATIONS_FORM", $renderer -> toArray());
 
-    $eventsSize = eF_countTableData("events", "timestamp");
+    $eventsSize = sC_countTableData("events", "timestamp");
     $smarty -> assign("T_EVENTS_SIZE", $eventsSize[0]['count']);
-    $lastEventEntry = eF_getTableData("events", "timestamp", "", "timestamp", false, 1);
+    $lastEventEntry = sC_getTableData("events", "timestamp", "", "timestamp", false, 1);
     $smarty -> assign("T_LAST_EVENTS_ENTRY", $lastEventEntry[0]['timestamp']);
     $form = new HTML_QuickForm("cleanup_events_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=maintenance&tab=cleanup", "", null, true);
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
  $form -> addElement("text", "events_size", null, 'class = "inputText" style = "width:60px"');
     $form -> addElement("submit", "submit", _SUBMIT, 'class = "flatButton"');
     if ($form -> isSubmitted() && $form -> validate()) {
      $timestamp = mktime(0, 0, 0, $_POST['purge_Month'], $_POST['purge_Day'], $_POST['purge_Year']);
-     if (eF_checkParameter($timestamp, 'int')) {
-      eF_deleteTableData("events", "timestamp < $timestamp");
+     if (sC_checkParameter($timestamp, 'int')) {
+      sC_deleteTableData("events", "timestamp < $timestamp");
      }
-     eF_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_OPERATIONCOMPLETEDSUCCESSFULLY)."&message_type=success"));
+     sC_redirect(basename($_SERVER['PHP_SELF']."?ctg=maintenance&tab=cleanup&message=".urlencode(_OPERATIONCOMPLETEDSUCCESSFULLY)."&message_type=success"));
     }
     $renderer = prepareFormRenderer($form);
     $smarty -> assign("T_CLEANUP_EVENTS_FORM", $renderer -> toArray());
@@ -265,9 +265,9 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
             if ($_GET['cache'] == 'templates') {
                 clearTemplatesCache();
             } elseif ($_GET['cache'] == 'tests') {
-                eF_deleteTableData("cache");
+                sC_deleteTableData("cache");
             } elseif ($_GET['cache'] == 'query') {
-             eF_executeNew("reset query cache");
+             sC_executeNew("reset query cache");
             }
         } catch (Exception $e) {
          handleAjaxExceptions($e);
@@ -321,27 +321,27 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
     }
 
  if (isset($_GET['autologin'])) {
-  $users = eF_getTableData("users", "login,name,surname,active,autologin,timestamp");
+  $users = sC_getTableData("users", "login,name,surname,active,autologin,timestamp");
   foreach ($users as $key => $value) {
    $usersArray[$value['login']] = $value;
   }
 //pr($usersArray);
   if (isset($_GET['ajax']) && $_GET['ajax'] == 'usersTable') {
-                isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-                if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                     $sort = $_GET['sort'];
                     isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                 } else {
                     $sort = 'login';
                 }
-                $users = eF_multiSort($users, $sort, $order);
+                $users = sC_multiSort($users, $sort, $order);
                 $smarty -> assign("T_USERS_SIZE", sizeof($users));
                 if (isset($_GET['filter'])) {
-                    $users = eF_filterData($users, $_GET['filter']);
+                    $users = sC_filterData($users, $_GET['filter']);
                 }
-                if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                     $users = array_slice($users, $offset, $limit);
                 }
 
@@ -351,7 +351,7 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
         }
   if (isset($_GET['postAjaxRequest'])) {
             try {
-                if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+                if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
      $user = MagesterUserFactory :: factory($_GET['login']);
      if ($user -> user['autologin'] == "") {
       $convert = $_GET['login']."_".$usersArray[$_GET['login']]['timestamp'];
@@ -363,20 +363,20 @@ if (!isset($currentUser -> coreAccess['maintenance']) || $currentUser -> coreAcc
      $user -> persist();
      echo $converted;
                 } elseif (isset($_GET['addAll'])) {
-     isset($_GET['filter']) ? $usersArray = eF_filterData($usersArray, $_GET['filter']) : null;
+     isset($_GET['filter']) ? $usersArray = sC_filterData($usersArray, $_GET['filter']) : null;
      foreach ($usersArray as $key => $value) {
       if ($value['autologin'] == "") {
        $autologin = md5($key."_".$value['timestamp'].G_MD5KEY);
-       eF_updateTableData("users", array('autologin' => $autologin), "login='".$key."'");
+       sC_updateTableData("users", array('autologin' => $autologin), "login='".$key."'");
       }
      }
                 } elseif (isset($_GET['removeAll'])) {
      if (isset($_GET['filter'])) {
-      $usersArray = eF_filterData($usersArray, $_GET['filter']);
+      $usersArray = sC_filterData($usersArray, $_GET['filter']);
       $queryString = "'".implode("','", array_keys($usersArray))."'";
-      eF_updateTableData("users", array('autologin' => ""),"login IN (".$queryString.")");
+      sC_updateTableData("users", array('autologin' => ""),"login IN (".$queryString.")");
      } else {
-      eF_updateTableData("users", array('autologin' => ""),"login !=''");
+      sC_updateTableData("users", array('autologin' => ""),"login !=''");
      }
                 }
                 exit;

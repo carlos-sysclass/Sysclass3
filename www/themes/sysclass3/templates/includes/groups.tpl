@@ -7,7 +7,7 @@
  <tr><td class = "moduleCell">
  {if $smarty.get.add_user_group || $smarty.get.edit_user_group}
   {capture name = "t_group_form"}
-   {eF_template_printForm form = $T_USERGROUPS_FORM}
+   {sC_template_printForm form = $T_USERGROUPS_FORM}
   {/capture}
 
   {capture name = "t_group_users_code"}
@@ -95,22 +95,22 @@
 
   {capture name='t_new_group_code'}
    <div class = "tabber">
-    {eF_template_printBlock tabber = "groups" title=$smarty.const._GROUPOPTIONS data=$smarty.capture.t_group_form image='32x32/generic.png' options = $T_STATS_LINK}
+    {sC_template_printBlock tabber = "groups" title=$smarty.const._GROUPOPTIONS data=$smarty.capture.t_group_form image='32x32/generic.png' options = $T_STATS_LINK}
 
    {if $smarty.get.edit_user_group}
     <script>var editGroup = '{$smarty.get.edit_user_group}';</script>
-    {eF_template_printBlock tabber = "users" title=$smarty.const._GROUPUSERS data=$smarty.capture.t_group_users_code image='32x32/users.png'}
+    {sC_template_printBlock tabber = "users" title=$smarty.const._GROUPUSERS data=$smarty.capture.t_group_users_code image='32x32/users.png'}
     {if $T_CONFIGURATION.lesson_enroll}
-    {eF_template_printBlock tabber = "lessons" title=$smarty.const._GROUPLESSONS data=$smarty.capture.t_group_lessons_code image='32x32/lessons.png'}
+    {sC_template_printBlock tabber = "lessons" title=$smarty.const._GROUPLESSONS data=$smarty.capture.t_group_lessons_code image='32x32/lessons.png'}
     {/if}
-    {eF_template_printBlock tabber = "courses" title=$smarty.const._GROUPCOURSES data=$smarty.capture.t_group_courses_code image='32x32/courses.png'}
+    {sC_template_printBlock tabber = "courses" title=$smarty.const._GROUPCOURSES data=$smarty.capture.t_group_courses_code image='32x32/courses.png'}
    {/if}
    </div>
   {/capture}
   {if $smarty.get.add_user_group}
-    {eF_template_printBlock title = $smarty.const._NEWGROUP data = $smarty.capture.t_new_group_code image = '32x32/users.png'}
+    {sC_template_printBlock title = $smarty.const._NEWGROUP data = $smarty.capture.t_new_group_code image = '32x32/users.png'}
   {else}
-    {eF_template_printBlock title = "`$smarty.const._OPTIONSFORGROUP` <span class = 'innerTableName'>&quot;`$T_CURRENT_GROUP->group.name`&quot;</span>" data = $smarty.capture.t_new_group_code image = '32x32/users.png'}
+    {sC_template_printBlock title = "`$smarty.const._OPTIONSFORGROUP` <span class = 'innerTableName'>&quot;`$T_CURRENT_GROUP->group.name`&quot;</span>" data = $smarty.capture.t_new_group_code image = '32x32/users.png'}
   {/if}
 
  {else}
@@ -173,7 +173,7 @@
   {/foreach}
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._UPDATEGROUPS data = $smarty.capture.t_groups_code image = '32x32/users.png' help = 'User_groups'}
+  {sC_template_printBlock title = $smarty.const._UPDATEGROUPS data = $smarty.capture.t_groups_code image = '32x32/users.png' help = 'User_groups'}
  {/if}
  </td></tr>
 {/capture}

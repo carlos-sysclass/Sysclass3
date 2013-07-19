@@ -93,24 +93,24 @@ class module_ies extends MagesterExtendedModule
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
 
-        if ($selectedAction == self::DELETE_IES && eF_checkParameter($_GET['ies_id'], 'id')) {
-            eF_deleteTableData("module_ies", "id=".$_GET['ies_id']);
+        if ($selectedAction == self::DELETE_IES && sC_checkParameter($_GET['ies_id'], 'id')) {
+            sC_deleteTableData("module_ies", "id=".$_GET['ies_id']);
 
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(__IES_SUCCESFULLYDELETEDIESENTRY)."&message_type=success");
         } elseif (
         	$selectedAction == self::ADD_IES ||
-        	($selectedAction == self::EDIT_IES && eF_checkParameter($_GET['ies_id'], 'id'))
+        	($selectedAction == self::EDIT_IES && sC_checkParameter($_GET['ies_id'], 'id'))
         ) {
 
             // Create ajax enabled table for meeting attendants
             /*
             if ($selectedAction == self::EDIT_IES) {
- 				$ies = eF_getTableData("module_ies", "*" );
+ 				$ies = sC_getTableData("module_ies", "*" );
                 $smarty -> assign("T_IES", $ies);
             }
             */
 
-			$modules = eF_loadAllModules(true);
+			$modules = sC_loadAllModules(true);
 
             $templates = array();
             // ADD / EDIT COURSE
@@ -136,7 +136,7 @@ class module_ies extends MagesterExtendedModule
 			);
 
         } else {
-			$ies = eF_getTableData("module_ies", "*" );
+			$ies = sC_getTableData("module_ies", "*" );
             $smarty -> assign("T_IES", $ies);
 
         }
@@ -171,15 +171,15 @@ class module_ies extends MagesterExtendedModule
     public function getEditedIes($reload = false, $iesID = null)
     {
     	if (!is_null($iesID)) {
-    		$ies_entry = eF_getTableData("module_ies", "*", "id=".$iesID);
+    		$ies_entry = sC_getTableData("module_ies", "*", "id=".$iesID);
     		return $this->editedIes = $ies_entry[0];
     	}
 
     	if (!is_null($this->editedIes) && !$reload) {
     		return $this->editedIes;
     	}
-    	if (eF_checkParameter($_GET['ies_id'], 'id')) {
-    		$ies_entry = eF_getTableData("module_ies", "*", "id=".$_GET['ies_id']);
+    	if (sC_checkParameter($_GET['ies_id'], 'id')) {
+    		$ies_entry = sC_getTableData("module_ies", "*", "id=".$_GET['ies_id']);
     		return $this->editedIes = $ies_entry[0];
 		}
 
@@ -193,7 +193,7 @@ class module_ies extends MagesterExtendedModule
 		$form = new HTML_QuickForm("ies_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
 		$form -> addElement('hidden', 'ies_ID');
 
-		$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+		$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
 
 		$stateList = localization::getStateList();
 
@@ -265,13 +265,13 @@ class module_ies extends MagesterExtendedModule
 			if ($selectedAction == self::EDIT_IES) {
             	$fields['id']	= $form -> exportValue('ies_ID');
 
-				if (eF_updateTableData("module_ies", $fields, "id=".$_GET['ies_id'])) {
+				if (sC_updateTableData("module_ies", $fields, "id=".$_GET['ies_id'])) {
 					header("location:".$this -> moduleBaseUrl."&message=".urlencode(__IES_SUCCESFULLYUPDATEDIESENTRY)."&message_type=success");
 				} else {
 					header("location:".$this -> moduleBaseUrl."&action=" . self::EDIT_IES ."&ies_id=".$_GET['ies_id']."&message=".urlencode(__IES_PROBLEMUPDATINGIESENTRY)."&message_type=failure");
 				}
 			} else {
-				if ($result = eF_insertTableData("module_ies", $fields)) {
+				if ($result = sC_insertTableData("module_ies", $fields)) {
 					header("location:".$this -> moduleBaseUrl."&action=" . self::EDIT_IES ."&ies_id=".$result."&message=".urlencode(_MODULE_IES_SUCCESFULLYINSERTEDIESENTRY)."&message_type=success&tab=users");
 				} else {
 					header("location:".$this -> moduleBaseUrl."&action=" . self::ADD_IES . "&message=".urlencode(__IES_PROBLEMINSERTINGIESENTRY)."&message_type=failure");

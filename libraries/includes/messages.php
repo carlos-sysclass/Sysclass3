@@ -13,12 +13,12 @@ $loadScripts[] = 'includes/messages';
 
 try {
     if ($GLOBALS['configuration']['disable_messages'] == 1) {
-       eF_redirect("".basename($_SERVER['PHP_SELF']));
+       sC_redirect("".basename($_SERVER['PHP_SELF']));
     }
 
     formatLogin();
 
-    $result = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."'", "priority desc, viewed,timestamp desc");
+    $result = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."'", "priority desc, viewed,timestamp desc");
 
     //An array of legal ids for editing entries
     $legalValues = array();
@@ -29,12 +29,12 @@ try {
 
 //---------------------------------------Start of Folders-------------------------------------------
 
-    $folders = eF_PersonalMessage :: getUserFolders($currentUser -> user['login']);
+    $folders = sC_PersonalMessage :: getUserFolders($currentUser -> user['login']);
     reset($folders);
     isset($_GET['folder']) && in_array($_GET['folder'], array_keys($folders)) ? $currentFolder = $_GET['folder'] : $currentFolder = key($folders); //key($folders) is the id of the first folder, which is always the Incoming
     $smarty -> assign("T_FOLDER", $currentFolder);
 
-    $smarty -> assign("T_FOLDERS_OPTIONS", array(array('text' => _NEWFOLDER, 'image' => "16x16/folder_add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=messages&folders=true&add=1&popup=1", 'onClick' => "eF_js_showDivPopup('"._CREATEFOLDER."', 0)", 'target' => 'POPUP_FRAME')));
+    $smarty -> assign("T_FOLDERS_OPTIONS", array(array('text' => _NEWFOLDER, 'image' => "16x16/folder_add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=messages&folders=true&add=1&popup=1", 'onClick' => "sC_js_showDivPopup('"._CREATEFOLDER."', 0)", 'target' => 'POPUP_FRAME')));
     $smarty -> assign("T_FOLDERS", $folders);
     next($folders);
     $smarty -> assign("T_SENT_FOLDER", key($folders));//The 'sent' folder is always the 2nd in the list
@@ -52,9 +52,9 @@ try {
 //---------------------------------------Start of Volume-------------------------------------------
 /*
 
-	$res1 = eF_getTableData("f_configuration", "value", "name='quota_num_of_messages'");
+	$res1 = sC_getTableData("f_configuration", "value", "name='quota_num_of_messages'");
 
-	$res2 = eF_getTableData("f_configuration", "value", "name='quota_kilobytes'");
+	$res2 = sC_getTableData("f_configuration", "value", "name='quota_kilobytes'");
 
 	$res1[0]['value'] = ($res1[0]['value'])? $res1[0]['value'] : G_QUOTA_NUM_OF_MESSAGES;
 
@@ -64,9 +64,9 @@ try {
 
 	$smarty -> assign("T_QUOTA_KILOBYTES", $res2[0]['value']);
 
-	$total_messages = eF_getTableData("f_personal_messages", "count(*)", "users_LOGIN='".$currentUser -> user['login']."'");
+	$total_messages = sC_getTableData("f_personal_messages", "count(*)", "users_LOGIN='".$currentUser -> user['login']."'");
 
-	$total_files    = eF_diveIntoDir(G_UPLOADPATH.$currentUser -> user['login'].'/message_attachments/');
+	$total_files    = sC_diveIntoDir(G_UPLOADPATH.$currentUser -> user['login'].'/message_attachments/');
 
 	$smarty -> assign("T_TOTAL_MESSAGES", $total_messages[0]['count(*)']);
 
@@ -80,7 +80,7 @@ try {
 
 	$smarty -> assign("T_TOTAL_FILES_PERCENTAGE", $total_files_percentage);
 
-	//$smarty -> assign("T_VOLUME_OPTIONS", array(array('text' => _VIEWFOLDERSTATISTICS, 'image' => "16x16/reports.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=messages&folder_statistics=1", 'onclick' => "eF_js_showDivPopup('"._FOLDERSTATISTICS."', 2)", 'target' => 'POPUP_FRAME')));
+	//$smarty -> assign("T_VOLUME_OPTIONS", array(array('text' => _VIEWFOLDERSTATISTICS, 'image' => "16x16/reports.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=messages&folder_statistics=1", 'onclick' => "sC_js_showDivPopup('"._FOLDERSTATISTICS."', 2)", 'target' => 'POPUP_FRAME')));
 
 */
 //---------------------------------------End of Volume-------------------------------------------
@@ -92,8 +92,8 @@ try {
   include 'entity.php';
  } elseif (isset($_GET['delete']) && in_array($_GET['delete'], $legalValues)) {
      try {
-         $result = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$_GET['delete']);
-         eF_deleteTableData("f_personal_messages", "id=".$_GET['delete']);
+         $result = sC_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$_GET['delete']);
+         sC_deleteTableData("f_personal_messages", "id=".$_GET['delete']);
          if ($result[0]['attachments'] != '') {
              $attached_file = new MagesterFile($result[0]['attachments']);
              $attached_file -> delete();
@@ -107,8 +107,8 @@ try {
   try {
    $messages = json_decode($_GET['delete_messages']);
    foreach ($messages as $message) {
-    $result = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$message);
-          eF_deleteTableData("f_personal_messages", "id=".$message);
+    $result = sC_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$message);
+          sC_deleteTableData("f_personal_messages", "id=".$message);
           if ($result[0]['attachments'] != '') {
               $attached_file = new MagesterFile($result[0]['attachments']);
               $attached_file -> delete();
@@ -121,7 +121,7 @@ try {
  } elseif (isset($_GET['move']) && in_array($_GET['move'], $legalValues) && isset($_GET['folder']) && in_array($_GET['folder'], $legalFolderValues)) {
      try {
       $message = $messages[$_GET['move']];
-      eF_updateTableData("f_personal_messages", array("f_folders_ID" => $_GET['folder']), "id=".$_GET['move']);
+      sC_updateTableData("f_personal_messages", array("f_folders_ID" => $_GET['folder']), "id=".$_GET['move']);
      } catch (Exception $e) {
             header("HTTP/1.0 500 ");
             echo rawurlencode($e -> getMessage()).' ('.$e -> getCode().')';
@@ -131,7 +131,7 @@ try {
      try {
       $message = $messages[$_GET['flag']];
       $message['priority'] ? $priority = 0 : $priority = 1;
-      eF_updateTableData("f_personal_messages", array("priority" => $priority), "id=".$_GET['flag']);
+      sC_updateTableData("f_personal_messages", array("priority" => $priority), "id=".$_GET['flag']);
       echo $priority;
      } catch (Exception $e) {
             header("HTTP/1.0 500 ");
@@ -140,7 +140,7 @@ try {
         exit;
     } elseif (isset($_GET['add'])) {
   if (!$_change_) {
-   eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+   sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
    exit;
   }
         $load_editor = true;
@@ -150,33 +150,33 @@ try {
         }
         if ($grant_full_access) {
             $smarty -> assign("T_FULL_ACCESS", 1);
-            $lessons = eF_getTableDataFlat("lessons", "id,name", "", "name");
-            $courses = eF_getTableDataFlat("courses", "id,name", "", "name");
+            $lessons = sC_getTableDataFlat("lessons", "id,name", "", "name");
+            $courses = sC_getTableDataFlat("courses", "id,name", "", "name");
             $users = MagesterUser :: getUsers(true);
             $roles = MagesterUser :: getRoles(true);
         } else {
             $smarty -> assign("T_FULL_ACCESS", 0);
-            $lessons = eF_getTableDataFlat("lessons JOIN users_to_lessons", "id,name", "users_to_lessons.archive=0 and lessons.archive=0 and lessons.id = users_to_lessons.lessons_ID AND users_LOGIN = '".$currentUser->user['login']."'", "name");
-            $courses = eF_getTableDataFlat("courses JOIN users_to_courses", "id,name", "users_to_courses.archive=0 and courses.archive=0 and courses.id = users_to_courses.courses_ID AND users_LOGIN = '".$currentUser->user['login']."'", "name");
+            $lessons = sC_getTableDataFlat("lessons JOIN users_to_lessons", "id,name", "users_to_lessons.archive=0 and lessons.archive=0 and lessons.id = users_to_lessons.lessons_ID AND users_LOGIN = '".$currentUser->user['login']."'", "name");
+            $courses = sC_getTableDataFlat("courses JOIN users_to_courses", "id,name", "users_to_courses.archive=0 and courses.archive=0 and courses.id = users_to_courses.courses_ID AND users_LOGIN = '".$currentUser->user['login']."'", "name");
         }
         sizeof($lessons) > 0 ? $lessons = array_combine($lessons['id'], $lessons['name']) : $lessons = array();
         sizeof($courses) > 0 ? $courses = array_combine($courses['id'], $courses['name']) : $courses = array();
         $smarty -> assign("T_LESSONS", $lessons);
         $smarty -> assign("T_COURSES", $courses);
         $form = new HTML_QuickForm("new_message_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=messages&add=1", "", "id = 'new_message_form'", true); //Build the form
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
         //$form -> addElement('advcheckbox', 'bcc', _UNDISCLOSEDRECIPIENTS, null, 'class = "inputCheckbox"');
 
         $form -> addElement('hidden', 'bcc', _UNDISCLOSEDRECIPIENTS);
         $form -> setDefaults( array('bcc' => '1') );
 
-		$form -> addElement('radio', 'recipients', null, null, 'only_specific_users', 'onclick = "eF_js_selectRecipients(\'only_specific_users\')" id = "only_specific_users"');
-	    $form -> addElement('radio', 'recipients', null, null, 'active_users', 'onclick = "eF_js_selectRecipients(\'active_users\')" 	     id = "all_active_users"');
-	    $form -> addElement('radio', 'recipients', null, null, 'specific_course', 'onclick = "eF_js_selectRecipients(\'specific_course\')"');
-	    $form -> addElement('radio', 'recipients', null, null, 'specific_lesson', 'onclick = "eF_js_selectRecipients(\'specific_lesson\')"');
-	    $form -> addElement('radio', 'recipients', null, null, 'specific_lesson_professor', 'onclick = "eF_js_selectRecipients(\'specific_lesson_professor\')"');
-	    $form -> addElement('radio', 'recipients', null, null, 'specific_type', 'onclick = "eF_js_selectRecipients(\'specific_type\')"');
+		$form -> addElement('radio', 'recipients', null, null, 'only_specific_users', 'onclick = "sC_js_selectRecipients(\'only_specific_users\')" id = "only_specific_users"');
+	    $form -> addElement('radio', 'recipients', null, null, 'active_users', 'onclick = "sC_js_selectRecipients(\'active_users\')" 	     id = "all_active_users"');
+	    $form -> addElement('radio', 'recipients', null, null, 'specific_course', 'onclick = "sC_js_selectRecipients(\'specific_course\')"');
+	    $form -> addElement('radio', 'recipients', null, null, 'specific_lesson', 'onclick = "sC_js_selectRecipients(\'specific_lesson\')"');
+	    $form -> addElement('radio', 'recipients', null, null, 'specific_lesson_professor', 'onclick = "sC_js_selectRecipients(\'specific_lesson_professor\')"');
+	    $form -> addElement('radio', 'recipients', null, null, 'specific_type', 'onclick = "sC_js_selectRecipients(\'specific_type\')"');
 	    $form -> addElement('select', 'user_type', null, $roles, 'id = "user_type_recipients" 		 class = "inputSelectLong" disabled = "disabled"');
 
 	    $form -> addElement('select', 'specific_course', null, $courses, 'id = "course_recipients" 			 class = "inputSelectLong" disabled = "disabled"');
@@ -189,7 +189,7 @@ try {
 		if ($_GET['specific_type'] && in_array($_GET['specific_type'], array_keys($roles))) {
 			$T_DESTINATARYALREADYSELECTED = 'specific_type';
 
-           // $form -> addElement('hidden', 'recipients', null, null, 'specific_type', 'onclick = "eF_js_selectRecipients(\'specific_type\')"');
+           // $form -> addElement('hidden', 'recipients', null, null, 'specific_type', 'onclick = "sC_js_selectRecipients(\'specific_type\')"');
            // $form -> addElement('hidden', 'user_type', null, $_GET['specific_type'], $_GET['specific_type'], 'id = "user_type_recipients"');
 
             $form -> setDefaults(array(
@@ -234,9 +234,9 @@ try {
         /**************************************************/
         // User groups in any case
         if ($grant_full_access) {
-            $groups = eF_getTableData("groups", "id, name", "active=1");
+            $groups = sC_getTableData("groups", "id, name", "active=1");
         } else {
-            $groups = eF_getTableData("groups JOIN users_to_groups", "id, name", "active=1 AND users_to_groups.groups_ID = groups.id AND users_to_groups.users_LOGIN = '".$currentUser->user['login']."'");
+            $groups = sC_getTableData("groups JOIN users_to_groups", "id, name", "active=1 AND users_to_groups.groups_ID = groups.id AND users_to_groups.users_LOGIN = '".$currentUser->user['login']."'");
         }
         $groups_list = array();
         if (!empty($groups)) {
@@ -248,7 +248,7 @@ try {
             $groups_list["0"] = _NOGROUPSDEFINED;
             $disable_groups = "disabled=\"disabled\"";
         }
-        $form -> addElement('radio', 'recipients', null, null, 'specific_group', $disable_groups . ' onclick = "eF_js_selectRecipients(\'specific_group\')"');
+        $form -> addElement('radio', 'recipients', null, null, 'specific_group', $disable_groups . ' onclick = "sC_js_selectRecipients(\'specific_group\')"');
         $form -> addElement('select', 'group_recipients', null, $groups_list, 'id = "group_recipients" class = "inputSelectLong" disabled = "disabled"');
   $form -> addElement('text', 'recipient', _RECIPIENT, 'id = "autocomplete" class = "inputText autoCompleteTextBox" onKeyDown="if (!additional_recipients_hidden) { show_hide_additional_recipients();}" ');
   //$form -> addElement('text', 'recipient_shown', _RECIPIENT, 'id = "autocomplete" class = "inputText autoCompleteTextBox" onKeyDown="if (!additional_recipients_hidden) { show_hide_additional_recipients();}" ');
@@ -259,12 +259,12 @@ try {
         $form -> addElement('textarea', 'body', _BODY, 'class = "simpleEditor" style = "width:100%;height:200px"');
         $form -> addElement('submit', 'submit_send_message', _SENDMESSAGE, 'class = "flatButton"');
         $form -> addElement('submit', 'submit_preview_message', _PREVIEWMESSAGE, 'class = "flatButton"');
-        if (isset($_GET['chat_invite']) && (eF_checkParameter($_GET['chat_invite'], id) || $_GET['chat_invite'] == 0) ) {
+        if (isset($_GET['chat_invite']) && (sC_checkParameter($_GET['chat_invite'], id) || $_GET['chat_invite'] == 0) ) {
             $subject_str = _CHATINVITATION;
             if ($_GET['chat_invite'] == 0) {
                 $room_name = _MAGESTERMAIN;
             } else {
-                $result = eF_getTableData("chatrooms", "name", "id = '".$_GET['chat_invite']."'");
+                $result = sC_getTableData("chatrooms", "name", "id = '".$_GET['chat_invite']."'");
                 $room_name = $result[0]['name'];
             }
             $body_str = _THEUSER." <i>".$_SESSION["s_login"]."</i> "._INVITESYOUTOJOINTHE." <b>" . $room_name . "</b>";
@@ -284,14 +284,14 @@ try {
             $form -> setDefaults(array('recipient' => $predefined_recipients));
         }
         if (isset($_GET['reply']) && in_array($_GET['reply'], $legalValues)) {
-            $recipient = eF_getTableData("f_personal_messages", "sender, title, body", "id=".$_GET['reply']);
+            $recipient = sC_getTableData("f_personal_messages", "sender, title, body", "id=".$_GET['reply']);
             $form -> setDefaults(array('recipient' => $GLOBALS['_usernames'][$recipient[0]['sender']]));
             $form -> setDefaults(array('subject' => "Re: " . $recipient[0]['title']));
             $previous_text = "\n\n\n------------------ " . _ORIGINALMESSAGE. " ------------------\n" . $recipient[0]['body'];
             $form -> setDefaults(array('body' => $previous_text));
         }
         if (isset($_GET['forward']) && in_array($_GET['forward'], $legalValues)) {
-            $recipient = eF_getTableData("f_personal_messages", "sender, title, body", "id=".$_GET['forward']);
+            $recipient = sC_getTableData("f_personal_messages", "sender, title, body", "id=".$_GET['forward']);
             //$form -> setDefaults(array('recipient' => $recipient[0]['sender']));
             $form -> setDefaults(array('subject' => "Fwd: " . $recipient[0]['title']));
             $previous_text = "\n\n\n------------------ " . _ORIGINALMESSAGE. " ------------------\n" . $recipient[0]['body'];
@@ -321,7 +321,7 @@ try {
     }
                 if (in_array("[*]", $recipients)) {
                     if ($_admin_) {
-                        $rec_users = eF_getTableDataFlat("users", "login", "active=1"); // entry [*] means message for all system users
+                        $rec_users = sC_getTableDataFlat("users", "login", "active=1"); // entry [*] means message for all system users
                         $recipients = array_merge($recipients, array_values($users));
                     } elseif ($_professor_) {
                         $rec_users = $currentUser -> getProfessorStudents();
@@ -334,14 +334,14 @@ try {
             //pr($recipients);
             switch ($form -> exportValue('recipients')) {
                 // case 'all_users':
-                //     $result = eF_getTableDataFlat("users", "login");
+                //     $result = sC_getTableDataFlat("users", "login");
                 //     break;
                 case 'active_users':
-                    $result = eF_getTableDataFlat("users", "login", "active=1");
+                    $result = sC_getTableDataFlat("users", "login", "active=1");
                     $values['body'] = _THISPMISSENTALLUSERS.'<br />'.$values['body'];
                     break;
                 case 'specific_lesson':
-                    $result = eF_getTableDataFlat("users, users_to_lessons,lessons", "login", "users_to_lessons.archive=0 and lessons.archive=0 and users.active=1 AND users_to_lessons.active=1 AND users.login=users_to_lessons.users_LOGIN AND users_to_lessons.lessons_ID=lessons.id AND users_to_lessons.lessons_ID=".($form -> exportValue('lesson')));
+                    $result = sC_getTableDataFlat("users, users_to_lessons,lessons", "login", "users_to_lessons.archive=0 and lessons.archive=0 and users.active=1 AND users_to_lessons.active=1 AND users.login=users_to_lessons.users_LOGIN AND users_to_lessons.lessons_ID=lessons.id AND users_to_lessons.lessons_ID=".($form -> exportValue('lesson')));
                     $lesson = new MagesterLesson($form -> exportValue('lesson'));
                     $values['body'] = _THISPMISSENTLESSONUSERS.' <a href='.G_SERVERNAME.'##MAGESTERINNERLINK##.php?lessons_ID='.$form -> exportValue('lesson').'>'.$lesson->lesson['name'].'</a><br />'.$values['body'];
                     break;
@@ -354,75 +354,75 @@ try {
                         $and_completed_criterium = " AND users_to_courses.completed = 0 ";
                         $values['body'] = _THISPMISSENTCOURSEUSERS.' '.$course->course['name'].'<br />'.$values['body'];
                     }
-                    $result = eF_getTableDataFlat("users, users_to_courses", "login", "users.active=1 AND users_to_courses.active=1 AND users_to_courses.archive=0 AND users.login=users_to_courses.users_LOGIN " . $and_completed_criterium . " AND users_to_courses.courses_ID=".($form -> exportValue('specific_course')));
+                    $result = sC_getTableDataFlat("users, users_to_courses", "login", "users.active=1 AND users_to_courses.active=1 AND users_to_courses.archive=0 AND users.login=users_to_courses.users_LOGIN " . $and_completed_criterium . " AND users_to_courses.courses_ID=".($form -> exportValue('specific_course')));
                     break;
                 case 'specific_lesson_professor':
-                     $result = eF_getTableDataFlat("users, users_to_lessons,lessons", "login", "users_to_lessons.archive=0 and lessons.archive=0 and users.active=1 AND users_to_lessons.active=1 AND users_to_lessons.user_type = 'professor' AND users.login=users_to_lessons.users_LOGIN AND users_to_lessons.lessons_ID=lessons.id  AND users_to_lessons.lessons_ID=".($form -> exportValue('professor')));
+                     $result = sC_getTableDataFlat("users, users_to_lessons,lessons", "login", "users_to_lessons.archive=0 and lessons.archive=0 and users.active=1 AND users_to_lessons.active=1 AND users_to_lessons.user_type = 'professor' AND users.login=users_to_lessons.users_LOGIN AND users_to_lessons.lessons_ID=lessons.id  AND users_to_lessons.lessons_ID=".($form -> exportValue('professor')));
                      $lesson = new MagesterLesson($form -> exportValue('professor'));
                     $values['body'] = _THISPMISSENTLESSONPROFESSORS.' <a href='.G_SERVERNAME.'##MAGESTERINNERLINK##.php?lessons_ID='.$form -> exportValue('professor').'>'.$lesson->lesson['name'].'</a><br />'.$values['body'];
                     break;
                 case 'specific_type':
                     if (!is_numeric($form -> exportValue('user_type'))) {
-                        $result = eF_getTableDataFlat("users", "login", "users.active=1 AND users.user_type='".($form -> exportValue('user_type'))."'");
+                        $result = sC_getTableDataFlat("users", "login", "users.active=1 AND users.user_type='".($form -> exportValue('user_type'))."'");
                         $values['body'] = _THISPMISSENTUSERTYPE.' '.$form -> exportValue('user_type').'<br />'.$values['body'];
                     } else {
-                        $result = eF_getTableDataFlat("users", "login", "users.active=1 AND users.user_types_ID='".($form -> exportValue('user_type'))."'");
-                        $userType = eF_getTableData("user_types","name","id=".$form -> exportValue('user_type'));
+                        $result = sC_getTableDataFlat("users", "login", "users.active=1 AND users.user_types_ID='".($form -> exportValue('user_type'))."'");
+                        $userType = sC_getTableData("user_types","name","id=".$form -> exportValue('user_type'));
                         $values['body'] = _THISPMISSENTUSERTYPE.' '.$userType[0]["name"].'<br />'.$values['body'];
                     }
                     break;
                 case 'specific_user':
-                    $result = eF_getTableDataFlat("users", "login", "login = '".($form -> exportValue('user'))."'");
+                    $result = sC_getTableDataFlat("users", "login", "login = '".($form -> exportValue('user'))."'");
                     $values['body'] = _THISPMISSENTSPECIFICUSERS.'<br />'.$values['body'];
                     break;
                 case 'specific_group':
-                    $result = eF_getTableDataFlat("users JOIN users_to_groups ON users.login = users_to_groups.users_LOGIN","distinct login", "users_to_groups.groups_ID = '".$form -> exportValue('group_recipients') ."'");
-                    $userGroup = eF_getTableData("groups","name","id=".$form -> exportValue('group_recipients'));
+                    $result = sC_getTableDataFlat("users JOIN users_to_groups ON users.login = users_to_groups.users_LOGIN","distinct login", "users_to_groups.groups_ID = '".$form -> exportValue('group_recipients') ."'");
+                    $userGroup = sC_getTableData("groups","name","id=".$form -> exportValue('group_recipients'));
                     $values['body'] = _THISPMISSENTUSERGROUP.' '.$userGroup[0]['name'].'<br />'.$values['body'];
                     break;
                     /** MODULE HCD: Create recipients list from the HCD selects -- NO if $module... needed here !!!**/
                 case 'to_supervisors':
                     // Find all branches where this employee works
-                    $branches_working = eF_getTableData("module_hcd_employee_works_at_branch JOIN module_hcd_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID","module_hcd_branch.*", "users_login = '".$currentUser -> user['login']."' AND assigned = '1'");
+                    $branches_working = sC_getTableData("module_hcd_employee_works_at_branch JOIN module_hcd_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID","module_hcd_branch.*", "users_login = '".$currentUser -> user['login']."' AND assigned = '1'");
                     $supervising_branches = array();
                     foreach ($branches_working as $branch) {
                         // The $branches variable is defined above
-                        $this_branch_sbs = eF_getBranchAncestors($branch, $branches);
+                        $this_branch_sbs = sC_getBranchAncestors($branch, $branches);
                         if ($this_branch_sbs) {
                             $supervising_branches = array_merge($supervising_branches, $this_branch_sbs);
                         }
                         $supervising_branches = array_merge($supervising_branches, array($branch['branch_ID'] => $branch['branch_ID']));
                     }
-                    $result = eF_getTableDataFlat("module_hcd_employee_works_at_branch", "distinct users_login as login", "supervisor = '1' AND branch_ID IN ('". implode( $supervising_branches, "','") ."')");
+                    $result = sC_getTableDataFlat("module_hcd_employee_works_at_branch", "distinct users_login as login", "supervisor = '1' AND branch_ID IN ('". implode( $supervising_branches, "','") ."')");
                     break;
                 case 'to_branch_supervisors':
                     // Find all branches where this employee works
-                    $branches_working = eF_getTableDataFlat("module_hcd_employee_works_at_branch JOIN module_hcd_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID","module_hcd_branch.branch_ID", "users_login = '".$currentUser -> user['login']."' AND assigned = '1'");
-                    $result = eF_getTableDataFlat("module_hcd_employee_works_at_branch", "distinct users_login as login", "supervisor = '1' AND assigned='1' AND branch_ID IN ('". implode( $branches_working['branch_ID'], "','") ."')");
+                    $branches_working = sC_getTableDataFlat("module_hcd_employee_works_at_branch JOIN module_hcd_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID","module_hcd_branch.branch_ID", "users_login = '".$currentUser -> user['login']."' AND assigned = '1'");
+                    $result = sC_getTableDataFlat("module_hcd_employee_works_at_branch", "distinct users_login as login", "supervisor = '1' AND assigned='1' AND branch_ID IN ('". implode( $branches_working['branch_ID'], "','") ."')");
                     break;
                 case 'specific_branch_job_description':
                     $branches_list = $form -> exportValue('branch_recipients');
                     if ($_POST['include_subbranches']) {
                         // Find all subbranches - the $branches array has been defined during the creation of the list
-                        $subbranches = eF_subBranches($form -> exportValue('branch_recipients'),$branches);
+                        $subbranches = sC_subBranches($form -> exportValue('branch_recipients'),$branches);
                         $subbranches[] = $form -> exportValue('branch_recipients');
                         $branches_list .= "','" . implode(",",$subbranches);
                     }
                     if ($form -> exportValue('job_description_recipients') != "" && $form -> exportValue('job_description_recipients') != "0") {
-                        $result = eF_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login JOIN module_hcd_job_description ON module_hcd_job_description.job_description_ID = module_hcd_employee_has_job_description.job_description_ID","distinct login", "users.active = 1 AND module_hcd_job_description.description = '".$form -> exportValue('job_description_recipients') ."' AND module_hcd_job_description.branch_ID IN ('".$branches_list."') ");
+                        $result = sC_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login JOIN module_hcd_job_description ON module_hcd_job_description.job_description_ID = module_hcd_employee_has_job_description.job_description_ID","distinct login", "users.active = 1 AND module_hcd_job_description.description = '".$form -> exportValue('job_description_recipients') ."' AND module_hcd_job_description.branch_ID IN ('".$branches_list."') ");
                     } else {
-                        $result = eF_getTableDataFlat("users JOIN module_hcd_employee_works_at_branch ON users.login = module_hcd_employee_works_at_branch.users_login","distinct login", "users.active = 1 AND module_hcd_employee_works_at_branch.branch_ID IN ('".$branches_list."') AND module_hcd_employee_works_at_branch.assigned = '1'");
+                        $result = sC_getTableDataFlat("users JOIN module_hcd_employee_works_at_branch ON users.login = module_hcd_employee_works_at_branch.users_login","distinct login", "users.active = 1 AND module_hcd_employee_works_at_branch.branch_ID IN ('".$branches_list."') AND module_hcd_employee_works_at_branch.assigned = '1'");
                     }
                     break;
                 case 'specific_job_description':
                     if ($form -> exportValue('job_description_recipients') != "0") {
-                        $result = eF_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login JOIN module_hcd_job_description ON module_hcd_job_description.job_description_ID = module_hcd_employee_has_job_description.job_description_ID","distinct login", "users.active = 1 AND module_hcd_job_description.description = '".$form -> exportValue('job_description_recipients') ."'");
+                        $result = sC_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login JOIN module_hcd_job_description ON module_hcd_job_description.job_description_ID = module_hcd_employee_has_job_description.job_description_ID","distinct login", "users.active = 1 AND module_hcd_job_description.description = '".$form -> exportValue('job_description_recipients') ."'");
                     } else {
-                        $result = eF_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login","distinct login", "users.active = 1");
+                        $result = sC_getTableDataFlat("users JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_login","distinct login", "users.active = 1");
                     }
                     break;
                 case 'specific_skill':
-                    $result = eF_getTableDataFlat("users JOIN module_hcd_employee_has_skill ON users.login = module_hcd_employee_has_skill.users_login","distinct login", "users.active = 1 AND module_hcd_employee_has_skill.skill_ID = '".$form -> exportValue('skill_recipients') ."'");
+                    $result = sC_getTableDataFlat("users JOIN module_hcd_employee_has_skill ON users.login = module_hcd_employee_has_skill.users_login","distinct login", "users.active = 1 AND module_hcd_employee_has_skill.skill_ID = '".$form -> exportValue('skill_recipients') ."'");
                     break;
                 default:
                     break;
@@ -440,7 +440,7 @@ try {
             // else the $recipients = $recipients
             // If only a massive sent selection was used and no employee was found
             if (isset($recipients)) {
-                $pm = new eF_PersonalMessage($currentUser -> user['login'], $recipients, $values['subject'], $values['body'], $values['bcc']);
+                $pm = new sC_PersonalMessage($currentUser -> user['login'], $recipients, $values['subject'], $values['body'], $values['bcc']);
                 if ($_FILES['attachment']['name'][0] != "") {
                     if ($_FILES['attachment']['size'][0] == 0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE) { //If the directory could not be created, display an erro message
                         $message = _EACHFILESIZEMUSTBESMALLERTHAN." ".G_MAXFILESIZE." Bytes";
@@ -466,7 +466,7 @@ try {
                     $message .= _MESSAGEWASSENT;
                     $message_type = 'success';
               if (!$popup) {
-                  eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".rawurlencode($message).'&message_type='.$message_type);
+                  sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".rawurlencode($message).'&message_type='.$message_type);
               }
                 } else {
                     $message .= $pm -> errorMessage;
@@ -482,17 +482,17 @@ try {
 
             if (strpos($form->exportValue('previous_url'), "new_message.php")) {
 
-                eF_redirect(" ".G_SERVERNAME."forum/messages_index.php?message=".urlencode($message)."&message_type=".$message_type);
+                sC_redirect(" ".G_SERVERNAME."forum/messages_index.php?message=".urlencode($message)."&message_type=".$message_type);
 
             } else {
 
                 if (strpos($form->exportValue('previous_url'), '?')) {
 
-                    eF_redirect(''.$form->exportValue('previous_url'). '&message='.urlencode($message).'&message_type='.$message_type);
+                    sC_redirect(''.$form->exportValue('previous_url'). '&message='.urlencode($message).'&message_type='.$message_type);
 
                 } else {
 
-                    eF_redirect(''.$form->exportValue('previous_url'). '?message='.urlencode($message).'&message_type='.$message_type);
+                    sC_redirect(''.$form->exportValue('previous_url'). '?message='.urlencode($message).'&message_type='.$message_type);
 
                 }
 
@@ -567,52 +567,52 @@ try {
                 $message_type = 'failure';
             }
         }
-        eF_updateTableData("f_personal_messages", array("viewed" => 1), "id=".$currentMessage['id']);
+        sC_updateTableData("f_personal_messages", array("viewed" => 1), "id=".$currentMessage['id']);
     } else {
-     $folderMessages = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$currentFolder, "priority desc, viewed,timestamp desc");
+     $folderMessages = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$currentFolder, "priority desc, viewed,timestamp desc");
 /*
 
-        if (isset($_GET['flag']) && eF_checkParameter($_GET['flag'], 'id')) {
+        if (isset($_GET['flag']) && sC_checkParameter($_GET['flag'], 'id')) {
 
-            eF_updateTableData("f_personal_messages", array('priority' => 1), "id=".$_GET['flag']);
+            sC_updateTableData("f_personal_messages", array('priority' => 1), "id=".$_GET['flag']);
 
-        } elseif (isset($_GET['unflag']) && eF_checkParameter($_GET['unflag'], 'id')) {
+        } elseif (isset($_GET['unflag']) && sC_checkParameter($_GET['unflag'], 'id')) {
 
-            eF_updateTableData("f_personal_messages", array('priority' => 0), "id=".$_GET['unflag']);
+            sC_updateTableData("f_personal_messages", array('priority' => 0), "id=".$_GET['unflag']);
 
-        } elseif (isset($_GET['read']) && eF_checkParameter($_GET['read'], 'id')) {
+        } elseif (isset($_GET['read']) && sC_checkParameter($_GET['read'], 'id')) {
 
-            eF_updateTableData("f_personal_messages", array('viewed' => 1), "id=".$_GET['read']);
+            sC_updateTableData("f_personal_messages", array('viewed' => 1), "id=".$_GET['read']);
 
-        } elseif (isset($_GET['unread']) && eF_checkParameter($_GET['unread'], 'id')) {
+        } elseif (isset($_GET['unread']) && sC_checkParameter($_GET['unread'], 'id')) {
 
-            eF_updateTableData("f_personal_messages", array('viewed' => 0), "id=".$_GET['unread']);
+            sC_updateTableData("f_personal_messages", array('viewed' => 0), "id=".$_GET['unread']);
 
         }
 
-        isset($_GET['page']) && eF_checkParameter($_GET['page'], 'uint') ? $page = $_GET['page'] : $page = 1;
+        isset($_GET['page']) && sC_checkParameter($_GET['page'], 'uint') ? $page = $_GET['page'] : $page = 1;
 
-        $p_messages_per_page = eF_getTableData("f_configuration", "value", "name='personal_messages_per_page'");
+        $p_messages_per_page = sC_getTableData("f_configuration", "value", "name='personal_messages_per_page'");
 
         $p_messages_per_page[0]['value'] ? $p_messages_per_page = $p_messages_per_page[0]['value'] : $p_messages_per_page = 20;
 
 */
         // Create ajax enabled table for employees
         if (isset($_GET['ajax']) && $_GET['ajax'] == 'messagesTable') {
-            isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-            if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+            isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+            if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                 $sort = $_GET['sort'];
                 isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
             } else {
                 $sort = 'priority';
             }
-            $folderMessages = eF_multiSort($folderMessages, $_GET['sort'], $order);
+            $folderMessages = sC_multiSort($folderMessages, $_GET['sort'], $order);
             if (isset($_GET['filter'])) {
-                $folderMessages = eF_filterData($folderMessages , $_GET['filter']);
+                $folderMessages = sC_filterData($folderMessages , $_GET['filter']);
             }
             $smarty -> assign("T_MESSAGES_SIZE", sizeof($folderMessages));
-            if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                 $folderMessages = array_slice($folderMessages, $offset, $limit);
             }
             // Keep only the first characters of the recipient's list
@@ -653,7 +653,7 @@ try {
 
         else {
 
-            $p_messages          = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$folder, "priority desc, viewed,timestamp desc");
+            $p_messages          = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$folder, "priority desc, viewed,timestamp desc");
 
 
 
@@ -700,15 +700,15 @@ try {
 */
 /*
 
-        $in_messages_count  = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$in_folder[0]['id']);
+        $in_messages_count  = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$in_folder[0]['id']);
 
 
 
-        $out_messages_count  = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$sent_folder[0]['id']);
+        $out_messages_count  = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$sent_folder[0]['id']);
 
 
 
-        $draft_messages_count  = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$draft_folder[0]['id']);
+        $draft_messages_count  = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$draft_folder[0]['id']);
 
 
 
@@ -722,7 +722,7 @@ try {
 
         for ($i = 3; $i < $folders_size; $i++) {
 
-            $temp_count  = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$folders[$i]['id']);
+            $temp_count  = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$folders[$i]['id']);
 
             $folders[$i]['count'] = sizeof($temp_count);
 
@@ -736,6 +736,6 @@ try {
     //include("entity.php");
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

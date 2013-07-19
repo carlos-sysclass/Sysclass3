@@ -151,7 +151,7 @@ class MagesterStats
     public static function getStudentsSeenContent($lessons = false, $users = false, $options = array())
     {
         if ($lessons == false) {
-            $lessons = eF_getTableDataFlat("lessons", "id");
+            $lessons = sC_getTableDataFlat("lessons", "id");
             $lessons = $lessons['id'];
         } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
@@ -159,7 +159,7 @@ class MagesterStats
         foreach ($lessons as $key => $lesson) {
             if ($lesson instanceof MagesterLesson) {
                 $lessons[$key] = $lesson -> lesson['id'];
-            } elseif (!eF_checkParameter($lesson, 'id')) {
+            } elseif (!sC_checkParameter($lesson, 'id')) {
                 throw new MagesterLessonException(_INVALIDID, MagesterLessonException :: INVALID_ID);
             } else {
                 $lessons[$key] = $lesson;
@@ -168,13 +168,13 @@ class MagesterStats
         if ($users != false) {
             !is_array($users) ? $users = array($users) : null; //Convert single login to array
   } else {
-    $users = eF_getTableDataFlat("users", "login");
+    $users = sC_getTableDataFlat("users", "login");
     $users = $users['login'];
   }
         foreach ($users as $key => $user) {
             if ($user instanceof MagesterUser) {
                 $users[$key] = $user -> user['login'];
-            } elseif (!eF_checkParameter($user, 'login')) {
+            } elseif (!sC_checkParameter($user, 'login')) {
                 throw new MagesterLessonException(_INVALIDLOGIN, MagesterUserException :: INVALID_LOGIN);
             } else {
                 $users[$key] = $user;
@@ -184,30 +184,30 @@ class MagesterStats
          $doneTests = array();
          //debug_print_backtrace();
          if (!isset($options['notests']) || !$options['notests']) {
-          $result = eF_getTableData("completed_tests ct, tests t", "ct.score, ct.users_LOGIN, t.lessons_ID, t.content_ID", "ct.status != 'deleted' and ct.status != 'incomplete' and ct.status != 'failed' and ct.archive = 0 and t.id=ct.tests_ID and t.lessons_ID in (".implode(",", $lessons).")");
+          $result = sC_getTableData("completed_tests ct, tests t", "ct.score, ct.users_LOGIN, t.lessons_ID, t.content_ID", "ct.status != 'deleted' and ct.status != 'incomplete' and ct.status != 'failed' and ct.archive = 0 and t.id=ct.tests_ID and t.lessons_ID in (".implode(",", $lessons).")");
           foreach ($result as $value) {
               $doneTests[$value['lessons_ID']][$value['users_LOGIN']][$value['content_ID']] = $value['score'];
           }
          }
-         $temp = eF_getTableData("user_types", "*");
+         $temp = sC_getTableData("user_types", "*");
    if (sizeof($temp) == 0) {
-    $result = eF_getTableData("users u, users_to_lessons ul", "u.login, ul.lessons_ID, ul.done_content", "ul.archive=0 and ul.user_type = 'student' and u.login = ul.users_LOGIN and u.login in ('".implode("','", $users)."') and ul.lessons_ID in (".implode(",", $lessons).")") ;
+    $result = sC_getTableData("users u, users_to_lessons ul", "u.login, ul.lessons_ID, ul.done_content", "ul.archive=0 and ul.user_type = 'student' and u.login = ul.users_LOGIN and u.login in ('".implode("','", $users)."') and ul.lessons_ID in (".implode(",", $lessons).")") ;
    } else {
-    $result = eF_getTableData("users u, users_to_lessons ul, user_types as ut", "u.login, ul.lessons_ID, ul.done_content", "ul.archive=0 and (ul.user_type = 'student' OR (ul.user_type=ut.id AND ut.basic_user_type = 'student')) and u.login = ul.users_LOGIN and u.login in ('".implode("','", $users)."') and ul.lessons_ID in (".implode(",", $lessons).")");
+    $result = sC_getTableData("users u, users_to_lessons ul, user_types as ut", "u.login, ul.lessons_ID, ul.done_content", "ul.archive=0 and (ul.user_type = 'student' OR (ul.user_type=ut.id AND ut.basic_user_type = 'student')) and u.login = ul.users_LOGIN and u.login in ('".implode("','", $users)."') and ul.lessons_ID in (".implode(",", $lessons).")");
       }
-   //$result           = eF_getTableData("users u, users_to_lessons ul, user_types as ut", "u.login, ul.lessons_ID, ul.done_content", "(ul.user_type = 'student' OR (ul.user_type=ut.id AND ut.basic_user_type = 'student')) and u.login = ul.users_LOGIN");
-         //$result           = eF_getTableData("users u, users_to_lessons ul", "u.login, ul.lessons_ID, ul.done_content", "ul.user_type = 'student' and u.login = ul.users_LOGIN");
+   //$result           = sC_getTableData("users u, users_to_lessons ul, user_types as ut", "u.login, ul.lessons_ID, ul.done_content", "(ul.user_type = 'student' OR (ul.user_type=ut.id AND ut.basic_user_type = 'student')) and u.login = ul.users_LOGIN");
+         //$result           = sC_getTableData("users u, users_to_lessons ul", "u.login, ul.lessons_ID, ul.done_content", "ul.user_type = 'student' and u.login = ul.users_LOGIN");
    $usersDoneContent = array();
          foreach ($result as $value) {
              $usersDoneContent[$value['lessons_ID']][$value['login']] = unserialize($value['done_content']);
          }
          //Get lessons content, in case a done unit is not part of a lesson anymore or is inactive
-         $result = eF_getTableData("content c", "id, lessons_ID", "lessons_ID in (".implode(",", $lessons).") and active=1");
+         $result = sC_getTableData("content c", "id, lessons_ID", "lessons_ID in (".implode(",", $lessons).") and active=1");
          $lessonContent = array();
          foreach ($result as $value) {
              $lessonContent[$value['lessons_ID']][] = $value['id'];
          }
-         $resultScorm = eF_getTableData("scorm_data sd, content c", "c.ctg_type, c.lessons_ID, content_ID, users_LOGIN, lesson_status, score, minscore, maxscore, masteryscore", "c.id=sd.content_ID and c.lessons_ID in (".implode(",", $lessons).") and sd.users_LOGIN in ('".implode("','", $users)."')");
+         $resultScorm = sC_getTableData("scorm_data sd, content c", "c.ctg_type, c.lessons_ID, content_ID, users_LOGIN, lesson_status, score, minscore, maxscore, masteryscore", "c.id=sd.content_ID and c.lessons_ID in (".implode(",", $lessons).") and sd.users_LOGIN in ('".implode("','", $users)."')");
          foreach ($resultScorm as $key => $value) {
              if ($value['lesson_status'] == 'passed' || $value['lesson_status'] == 'completed') {
                  if ($value['ctg_type'] == 'scorm') {
@@ -391,7 +391,7 @@ class MagesterStats
     public static function getStudentsDoneTests($lessons = false, $users = false)
     {
         if (!$users) {
-            $users = eF_getTableDataFlat("users", "login");
+            $users = sC_getTableDataFlat("users", "login");
             $users = $users['login'];
         } elseif (!(is_array($users))) {
             $users = array($users);
@@ -407,7 +407,7 @@ class MagesterStats
         }
 /*
 
-        $usersDoneTests = eF_getTableData("tests t, content c, done_tests dt", "c.lessons_ID, c.name, c.active, t.content_ID, dt.id as done_tests_ID, dt.tests_ID, dt.score, dt.comments, dt.users_LOGIN, dt.timestamp", "dt.tests_ID = t.id and t.content_ID = c.id".($lessonId ? " and c.lessons_ID in ($lessonId)" : ""));
+        $usersDoneTests = sC_getTableData("tests t, content c, done_tests dt", "c.lessons_ID, c.name, c.active, t.content_ID, dt.id as done_tests_ID, dt.tests_ID, dt.score, dt.comments, dt.users_LOGIN, dt.timestamp", "dt.tests_ID = t.id and t.content_ID = c.id".($lessonId ? " and c.lessons_ID in ($lessonId)" : ""));
 
         $doneTests      = array();
 
@@ -453,7 +453,7 @@ class MagesterStats
              }
             }
         }
-        $usersDoneScormTests = eF_getTableData("content c, scorm_data sd", "c.lessons_ID, c.name, c.active, sd.masteryscore, sd.lesson_status, sd.content_ID, sd.score, sd.minscore, sd.maxscore, sd.users_LOGIN, sd.timestamp", "sd.content_ID = c.id and c.ctg_type = 'scorm_test' and sd.users_LOGIN != ''".($lessonId ? " and c.lessons_ID in ($lessonId)" : ""));
+        $usersDoneScormTests = sC_getTableData("content c, scorm_data sd", "c.lessons_ID, c.name, c.active, sd.masteryscore, sd.lesson_status, sd.content_ID, sd.score, sd.minscore, sd.maxscore, sd.users_LOGIN, sd.timestamp", "sd.content_ID = c.id and c.ctg_type = 'scorm_test' and sd.users_LOGIN != ''".($lessonId ? " and c.lessons_ID in ($lessonId)" : ""));
         foreach ($usersDoneScormTests as $doneScormTest) {
             if (!$users || in_array($doneScormTest['users_LOGIN'], $users)) {
                 if (is_numeric($doneScormTest['minscore']) || is_numeric($doneScormTest['maxscore'])) {
@@ -547,7 +547,7 @@ class MagesterStats
      if ($users !== false) {
          if (is_array($users)) {
              foreach ($users as $key => $user) {
-                 if (!eF_checkParameter($user, 'login')) {
+                 if (!sC_checkParameter($user, 'login')) {
                      unset($users[$key]);
                  }
              }
@@ -556,7 +556,7 @@ class MagesterStats
              }
          } elseif ($users instanceof MagesterUser) {
              $users = array($users -> user['login']);
-         } elseif (!eF_checkParameter($users, 'login')) {
+         } elseif (!sC_checkParameter($users, 'login')) {
              throw new MagesterUserException(_INVALIDLOGIN.': '.$users, MagesterUserException :: INVALID_LOGIN);
          } else {
           $users = array($users);
@@ -566,7 +566,7 @@ class MagesterStats
      if ($test !== false) {
          if ($test instanceof MagesterTest) {
              $test = $test -> test['id'];
-         } elseif (!eF_checkParameter($test, 'id')) {
+         } elseif (!sC_checkParameter($test, 'id')) {
              throw new MagesterTestException(_INVALIDID.': '.$test, MagesterTestException :: INVALID_ID);
          }
      }
@@ -575,13 +575,13 @@ class MagesterStats
       $sql = ' and t.lessons_ID='.$lesson;
      }
      if ($user && $test) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
      } elseif ($user) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.users_LOGIN in ('$user') $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.users_LOGIN in ('$user') $sql");
      } elseif ($test) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id and ct.tests_ID=$test $sql");
      } else {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*, t.content_ID", "ct.status != 'deleted' and ct.tests_ID=t.id $sql");
      }
      //Unserialize MagesterCompletedTest objects
      $testResults = array();
@@ -695,7 +695,7 @@ class MagesterStats
      if ($users !== false) {
          if (is_array($users)) {
           foreach ($users as $key => $user) {
-                 if (!eF_checkParameter($user, 'login')) {
+                 if (!sC_checkParameter($user, 'login')) {
                      unset($users[$key]);
                  }
              }
@@ -704,7 +704,7 @@ class MagesterStats
              }
          } elseif ($users instanceof MagesterUser) {
              $users = array($users -> user['login']);
-         } elseif (!eF_checkParameter($users, 'login')) {
+         } elseif (!sC_checkParameter($users, 'login')) {
              throw new MagesterUserException(_INVALIDLOGIN.': '.$users, MagesterUserException :: INVALID_LOGIN);
          }
          $user = implode("','", $users);
@@ -712,7 +712,7 @@ class MagesterStats
      if ($test !== false) {
          if ($test instanceof MagesterTest) {
              $test = $test -> test['id'];
-         } elseif (!eF_checkParameter($test, 'id')) {
+         } elseif (!sC_checkParameter($test, 'id')) {
              throw new MagesterTestException(_INVALIDID.': '.$test, MagesterTestException :: INVALID_ID);
          }
      }
@@ -720,14 +720,14 @@ class MagesterStats
       $sql = ' and t.lessons_ID='.$lesson;
      }
      if ($user && $test) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test and ct.users_LOGIN in ('$user') $sql");
      } elseif ($user) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
-         //$result = eF_getTableData("completed_tests ct, tests t", "ct.users_LOGIN, ct.status, ct.timestamp, ct.archive, ct.time_start, ct.time_end, ct.time_spent, ct.score, ct.pending", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
+         //$result = sC_getTableData("completed_tests ct, tests t", "ct.users_LOGIN, ct.status, ct.timestamp, ct.archive, ct.time_start, ct.time_end, ct.time_spent, ct.score, ct.pending", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.users_LOGIN in ('$user') $sql");
      } elseif ($test) {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." and ct.tests_ID=$test $sql");
      } else {
-         $result = eF_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." $sql");
+         $result = sC_getTableData("completed_tests ct, tests t", "ct.*", "ct.status != 'deleted' and ct.tests_ID = t.id and ct.status != '' and ct.status != 'incomplete'".$timeString." $sql");
      }
      //Unserialize MagesterCompletedTest objects
      $testResults = array();
@@ -839,7 +839,7 @@ class MagesterStats
         !$fromTimestamp ? $fromTimestamp = mktime(0, 0, 0, 1, 1, 2000) : null;
         !$toTimestamp ? $toTimestamp = time() : null;
         !$users || empty($users) ? $usersSql = '' : $usersSql = "users_LOGIN in (\"".implode('","', $users)."\") and";
-        $result = eF_getTableData("logs", "*", "$usersSql timestamp between $fromTimestamp and $toTimestamp order by timestamp");
+        $result = sC_getTableData("logs", "*", "$usersSql timestamp between $fromTimestamp and $toTimestamp order by timestamp");
         foreach ($result as $value) {
             $logResults[$value['users_LOGIN']][] = $value;
             $resultLessons[$value['lessons_ID']] = $value['lessons_ID'];
@@ -848,7 +848,7 @@ class MagesterStats
         if (!$lessons) {
          $lessons = $resultLessons;
         }
-        $result = eF_getTableData("logs", "lessons_ID, users_LOGIN, count(id) as accesses", "$usersSql timestamp between $fromTimestamp and $toTimestamp group by lessons_ID, users_LOGIN order by users_LOGIN");
+        $result = sC_getTableData("logs", "lessons_ID, users_LOGIN, count(id) as accesses", "$usersSql timestamp between $fromTimestamp and $toTimestamp group by lessons_ID, users_LOGIN order by users_LOGIN");
         foreach ($result as $value) {
             $accessResults[$value['lessons_ID']][$value['users_LOGIN']]= $value['accesses'];
         }
@@ -863,9 +863,9 @@ class MagesterStats
                  foreach ($logResults[$login] as $value) {
                      if ($inLesson) {
                          if ($value['timestamp'] - $lessonStart >= 0) {
-                             $interval = eF_convertIntervalToTime($value['timestamp'] - $lessonStart);
+                             $interval = sC_convertIntervalToTime($value['timestamp'] - $lessonStart);
                          } else {
-                             $interval = eF_convertIntervalToTime(0); //This is to avoid negative times
+                             $interval = sC_convertIntervalToTime(0); //This is to avoid negative times
                          }
                          if ($interval['hours'] == 0 && $interval['minutes'] <= 30) { //not with $GLOBALS['configuration']['autologout_time'] because it may be changed
                              $totalTime['minutes'] += $interval['minutes'];
@@ -979,11 +979,11 @@ class MagesterStats
         }
         !$fromTimestamp ? $fromTimestamp = mktime(0, 0, 0, 1, 1, 1970) : null;
         !$toTimestamp ? $toTimestamp = time() : null;
-        $result = eF_getTableData("logs", "id, timestamp, lessons_ID, users_LOGIN", "users_LOGIN in (\"".implode('","', $users)."\") and timestamp between $fromTimestamp and $toTimestamp order by timestamp");
+        $result = sC_getTableData("logs", "id, timestamp, lessons_ID, users_LOGIN", "users_LOGIN in (\"".implode('","', $users)."\") and timestamp between $fromTimestamp and $toTimestamp order by timestamp");
         foreach ($result as $value) {
             $logResults[$value['users_LOGIN']][] = $value;
         }
-        $result = eF_getTableData("logs", "users_LOGIN, count(id) as accesses", "users_LOGIN in (\"".implode('","', $users)."\") and lessons_ID = $lessonId and timestamp between $fromTimestamp and $toTimestamp group by users_LOGIN order by users_LOGIN");
+        $result = sC_getTableData("logs", "users_LOGIN, count(id) as accesses", "users_LOGIN in (\"".implode('","', $users)."\") and lessons_ID = $lessonId and timestamp between $fromTimestamp and $toTimestamp group by users_LOGIN order by users_LOGIN");
         foreach ($result as $value) {
             $accessResults[$value['users_LOGIN']]= $value['accesses'];
         }
@@ -996,9 +996,9 @@ class MagesterStats
                 foreach ($logResults[$login] as $value) {
                     if ($inLesson) {
                         if ($value['timestamp'] - $lessonStart >= 0) {
-                            $interval = eF_convertIntervalToTime($value['timestamp'] - $lessonStart);
+                            $interval = sC_convertIntervalToTime($value['timestamp'] - $lessonStart);
                         } else {
-                            $interval = eF_convertIntervalToTime(0); //This is to avoid negative times
+                            $interval = sC_convertIntervalToTime(0); //This is to avoid negative times
                         }
                         if ($interval['hours'] == 0 && $interval['minutes'] <= 30) { //not with $GLOBALS['configuration']['autologout_time'] because it may be changed
                             $totalTime['minutes'] += $interval['minutes'];
@@ -1073,14 +1073,14 @@ class MagesterStats
     public static function getStudentsAssignedProjects($lessons = false, $users = false)
     {
         if (!$users) {
-            $users = eF_getTableDataFlat("users", "login");
+            $users = sC_getTableDataFlat("users", "login");
             $users = $users['login'];
         }
         if (!(is_array($users))) {
             $users = array($users);
         }
         if ($lessons === false) {
-            $usersAssignedProjects = eF_getTableData("projects p, users_to_projects up", "p.title, p.lessons_ID, up.projects_ID, up.grade, up.upload_timestamp, up.users_LOGIN as login, up.comments", "up.projects_ID = p.id");
+            $usersAssignedProjects = sC_getTableData("projects p, users_to_projects up", "p.title, p.lessons_ID, up.projects_ID, up.grade, up.upload_timestamp, up.users_LOGIN as login, up.comments", "up.projects_ID = p.id");
         } else {
             if (!is_array($lessons)) {
                 $lessons = array($lessons);
@@ -1089,7 +1089,7 @@ class MagesterStats
                 $lesson instanceOf MagesterLesson ? $lessons[$key] = $lesson -> lesson['id'] : null;
             }
             if (sizeof($lessons) > 0) {
-                $usersAssignedProjects = eF_getTableData("projects p, users_to_projects up", "p.title, p.lessons_ID, up.projects_ID, up.grade, up.upload_timestamp, up.users_LOGIN as login, up.comments", "up.projects_ID = p.id and p.lessons_ID in (".implode(",", $lessons).")");
+                $usersAssignedProjects = sC_getTableData("projects p, users_to_projects up", "p.title, p.lessons_ID, up.projects_ID, up.grade, up.upload_timestamp, up.users_LOGIN as login, up.comments", "up.projects_ID = p.id and p.lessons_ID in (".implode(",", $lessons).")");
             } else {
                 $usersAssignedProjects = array();
             }
@@ -1108,7 +1108,7 @@ class MagesterStats
     {
         //pr($lessonId);
   $total_posts = array();
-        $result = eF_getTableData("f_messages fm, f_topics ft, f_forums ff", "fm.users_LOGIN as login, count(*) as cnt", "fm.f_topics_ID = ft.id and ft.f_forums_ID = ff.id and ff.lessons_ID = ".$lessonId. " group by fm.users_LOGIN");
+        $result = sC_getTableData("f_messages fm, f_topics ft, f_forums ff", "fm.users_LOGIN as login, count(*) as cnt", "fm.f_topics_ID = ft.id and ft.f_forums_ID = ff.id and ff.lessons_ID = ".$lessonId. " group by fm.users_LOGIN");
     //pr($resul);
   foreach ($result as $data) {
             $total_posts[$data['login']] = $data['cnt'];
@@ -1124,7 +1124,7 @@ class MagesterStats
     public static function getUsersComments($lessonId, $users = false)
     {
         $total_comments = array();
-        $result = eF_getTableData("comments cm, content c", "cm.users_LOGIN as login, count(*) as cnt", "cm.content_id = c.id and c.lessons_ID = ".$lessonId. " group by cm.users_LOGIN");
+        $result = sC_getTableData("comments cm, content c", "cm.users_LOGIN as login, count(*) as cnt", "cm.content_id = c.id and c.lessons_ID = ".$lessonId. " group by cm.users_LOGIN");
         foreach ($result as $data) {
             $total_comments[$data['login']] = $data['cnt'];
         }
@@ -1182,14 +1182,14 @@ class MagesterStats
     public static function getUsersLessonStatus($lessons = false, $users = false, $options = array())
     {
         if ($lessons === false) {
-            $lessons = eF_getTableData("lessons", "*");
+            $lessons = sC_getTableData("lessons", "*");
         } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
         }
         if ($users != false) {
             !is_array($users) ? $users = array($users) : null; //Convert single login to array
         } else {
-            $users = eF_getTableDataFlat("users", "login", "user_type != 'administrator'");
+            $users = sC_getTableDataFlat("users", "login", "user_type != 'administrator'");
             $users = $users['login'];
         }
         foreach ($lessons as $lesson) {
@@ -1298,7 +1298,7 @@ class MagesterStats
         }
         $usersDoneTests = $temp;
         if ($lessons === false) {
-            $lessons = eF_getTableData("lessons", "*");
+            $lessons = sC_getTableData("lessons", "*");
         } elseif (!is_array($lessons)) {
             $lessons = array($lessons);
         }
@@ -1312,18 +1312,18 @@ class MagesterStats
         if ($users != false) {
             !is_array($users) ? $users = array($users) : null; //Convert single login to array
         } else {
-            $users = eF_getTableDataFlat("users", "login", "user_type != 'administrator'");
+            $users = sC_getTableDataFlat("users", "login", "user_type != 'administrator'");
             $users = $users['login'];
         }
         //Assign users their information
-        $result = eF_getTableData("users", "*", "login in ('".implode("','", $users)."') and user_type != 'administrator'");
+        $result = sC_getTableData("users", "*", "login in ('".implode("','", $users)."') and user_type != 'administrator'");
         $users = array();
         foreach ($result as $value) {
             $users[$value['login']] = $value;
         }
         //Get lessons info for users
         if (sizeof($lessons) > 0) {
-         $result = eF_getTableData("users_to_lessons", "*", "archive=0 and users_LOGIN in ('".implode("','", array_keys($users))."') and lessons_ID in (".implode(",", array_keys($lessons)).")");
+         $result = sC_getTableData("users_to_lessons", "*", "archive=0 and users_LOGIN in ('".implode("','", array_keys($users))."') and lessons_ID in (".implode(",", array_keys($lessons)).")");
          foreach ($result as $value) {
              if (in_array($value['users_LOGIN'], array_keys($users))) {
                  $lesson = $lessons[$value['lessons_ID']];
@@ -1343,7 +1343,7 @@ class MagesterStats
             }
         }
         //Build a caching set for conditions, so that we avoid looping queries inside $lesson -> getConditions();
-        $result = eF_getTableData("lesson_conditions", "*");
+        $result = sC_getTableData("lesson_conditions", "*");
   $conditions = array();
         foreach ($result as $value) {
          $conditions[$value['lessons_ID']][] = $value;
@@ -1569,7 +1569,7 @@ class MagesterStats
          $value == 'student' ? $studentLessonRoles[] = $key : null;
         }
         if ($courses === false) {
-            $courses = eF_getTableData("courses", "*");
+            $courses = sC_getTableData("courses", "*");
         } elseif (!is_array($courses)) {
             $courses = array($courses);
         }
@@ -1584,12 +1584,12 @@ class MagesterStats
         if ($users != false) {
             !is_array($users) ? $users = array($users) : null; //Convert single login to array
         } else {
-            $users = eF_getTableDataFlat("users", "login", "user_type != 'administrator'");
+            $users = sC_getTableDataFlat("users", "login", "user_type != 'administrator'");
             $users = $users['login'];
         }
 /*
 
-        $result  	    = eF_getTableDataFlat("users_to_lessons ul", "lessons_ID", "ul.lessons_ID in (".implode(",", array_keys($coursesLessons)).") and ul.users_LOGIN in ('".implode("','", $users)."') and ul.user_type in ('".implode("','", $studentLessonRoles)."')");
+        $result  	    = sC_getTableDataFlat("users_to_lessons ul", "lessons_ID", "ul.lessons_ID in (".implode(",", array_keys($coursesLessons)).") and ul.users_LOGIN in ('".implode("','", $users)."') and ul.user_type in ('".implode("','", $studentLessonRoles)."')");
 
         $studentLessons = array_combine($result['lessons_ID'], $result['lessons_ID']);
 
@@ -1603,13 +1603,13 @@ class MagesterStats
 
 */
         //Assign users their information
-        $result = eF_getTableData("users", "*", "login in ('".implode("','", $users)."') and user_type != 'administrator'");
+        $result = sC_getTableData("users", "*", "login in ('".implode("','", $users)."') and user_type != 'administrator'");
         $users = array();
         foreach ($result as $value) {
             $users[$value['login']] = $value;
         }
         //Get lessons info for users
-        $result = eF_getTableData("users_to_courses", "*");
+        $result = sC_getTableData("users_to_courses", "*");
         foreach ($result as $value) {
             if (in_array($value['users_LOGIN'], array_keys($users))) {
                 $course = $courses[$value['courses_ID']];
@@ -1732,7 +1732,7 @@ class MagesterStats
     public static function getUsersCourseStatus($courses = false, $users = false, $options = array())
     {
         if ($courses === false) {
-            $courses = eF_getTableData("courses", "*");
+            $courses = sC_getTableData("courses", "*");
         } elseif (!is_array($courses)) {
             $courses = array($courses);
         }
@@ -1748,7 +1748,7 @@ class MagesterStats
         if ($users != false) {
             !is_array($users) ? $users = array($users) : null; //Convert single login to array
         } else {
-            $users = eF_getTableDataFlat("users", "login", "user_type != 'administrator'");
+            $users = sC_getTableDataFlat("users", "login", "user_type != 'administrator'");
             $users = $users['login'];
         }
         foreach ($courses as $course) {
@@ -1789,7 +1789,7 @@ class MagesterStats
         }
         $courseLessons = $course -> getCourseLessons();
         $lessonsStatus = self :: getUsersLessonStatus($courseLessons, $user['login'], $options);
-        $result = eF_getTableData("users_to_courses", "*", "courses_ID = ".$course -> course['id']." and users_LOGIN='".$user['login']."'");
+        $result = sC_getTableData("users_to_courses", "*", "courses_ID = ".$course -> course['id']." and users_LOGIN='".$user['login']."'");
         if (sizeof($result) > 0) {
             if ($course -> course['duration'] && $result[0]['from_timestamp']) {
                 $result[0]['remaining'] = $result[0]['from_timestamp'] + $course -> course['duration']*3600*24 - time();
@@ -1907,7 +1907,7 @@ class MagesterStats
         if (!($lesson instanceof MagesterLesson)) {
             $lesson = new MagesterLesson($lesson);
         }
-        $result = eF_getTableData("users_to_lessons", "*", "users_LOGIN ='".$user['login']."' and lessons_ID = ".$lesson -> lesson['id']);
+        $result = sC_getTableData("users_to_lessons", "*", "users_LOGIN ='".$user['login']."' and lessons_ID = ".$lesson -> lesson['id']);
         if (sizeof($result[0]['users_LOGIN']) > 0) {
             if ($lesson -> lesson['duration'] && $result[0]['from_timestamp']) {
                 $result[0]['remaining'] = $result[0]['from_timestamp'] + $lesson -> lesson['duration']*3600*24 - time();
@@ -1923,7 +1923,7 @@ class MagesterStats
             }
         }
         //Build a caching set for conditions, so that we avoid looping queries inside $lesson -> getConditions();
-        $result = eF_getTableData("lesson_conditions", "*", "lessons_ID=".$lesson -> lesson['id']);
+        $result = sC_getTableData("lesson_conditions", "*", "lessons_ID=".$lesson -> lesson['id']);
   $conditions = array();
         foreach ($result as $value) {
          $conditions[$value['lessons_ID']][] = $value;
@@ -2171,33 +2171,33 @@ class MagesterStats
             $user = MagesterUserFactory :: factory($user);
         }
         $info = array();
-        $forum_info = eF_getTableData("f_messages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
+        $forum_info = sC_getTableData("f_messages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
         $forum_messages = array();
         foreach ($forum_info as $message) {
             $forum_messages[$message['id']] = $message;
         }
-        $personal_messages_info = eF_getTableData("f_personal_messages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
+        $personal_messages_info = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
         $personal_messages = array();
         foreach ($personal_messages_info as $message) {
             $personal_messages[$message['id']] = $message;
         }
-        $personal_folders_info = eF_getTableData("f_folders", "*", "users_LOGIN='".$user -> login."'");
+        $personal_folders_info = sC_getTableData("f_folders", "*", "users_LOGIN='".$user -> login."'");
         $personal_folders = array();
         foreach ($personal_folders_info as $folder) {
             $personal_folders[$folder['id']] = $folder;
         }
-        $file_info = eF_getTableData("files", "*", "users_LOGIN='".$user -> login."'");
+        $file_info = sC_getTableData("files", "*", "users_LOGIN='".$user -> login."'");
         $files = array();
         $size = 0;
         foreach ($file_info as $file) {
             $size += filesize($file['file']);
         }
-        $chat_messages_info = eF_getTableData("chatmessages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
+        $chat_messages_info = sC_getTableData("chatmessages", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
         $chat_messages = array();
         foreach ($chat_messages_info as $message) {
             $chat_messages[$message['id']] = $message;
         }
-        $comments_info = eF_getTableData("comments", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
+        $comments_info = sC_getTableData("comments", "*", "users_LOGIN='".$user -> login."'", "timestamp desc");
         $comments = array();
         foreach ($comments_info as $comment) {
             $comments[$comment['id']] = $comment;
@@ -2253,18 +2253,18 @@ class MagesterStats
             $user = MagesterUserFactory :: factory($user);
         }
         $info = array();
-        $login_info = eF_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login'", "timestamp desc");
-  $info['last_ip'] = eF_decodeIP($login_info[0]['session_ip']);
+        $login_info = sC_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login'", "timestamp desc");
+  $info['last_ip'] = sC_decodeIP($login_info[0]['session_ip']);
         $logins = array();
         foreach ($login_info as $login) {
             $logins[$login['id']] = $login;
         }
-        $month_login_info = eF_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login' and timestamp > ".(time() - 2592000)."");
+        $month_login_info = sC_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login' and timestamp > ".(time() - 2592000)."");
         $month_logins = array();
         foreach ($month_login_info as $login) {
             $month_logins[$login['id']] = $login;
         }
-        $week_login_info = eF_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login' and timestamp > ".(time() - 604800)."");
+        $week_login_info = sC_getTableData("logs", "*", "users_LOGIN='".$user -> login."' and action = 'login' and timestamp > ".(time() - 604800)."");
         $week_logins = array();
         foreach ($week_login_info as $login) {
             $week_logins[$login['id']] = $login;
@@ -2338,18 +2338,18 @@ class MagesterStats
     public static function getTestInfo($tests = false, $categories = false, $show_all = false, $lesson = false)
     {
         if ($tests == false) {
-            $tests = eF_getTableDataFlat("tests, content", "tests.id", "tests.content_ID=content.id and content.ctg_type = 'tests' and tests.lessons_ID != 0"); //This way we get tests that have a corresponding unit
+            $tests = sC_getTableDataFlat("tests, content", "tests.id", "tests.content_ID=content.id and content.ctg_type = 'tests' and tests.lessons_ID != 0"); //This way we get tests that have a corresponding unit
             $tests = $tests['id'];
         } elseif (!is_array($tests)) {
             $tests = array($tests);
         }
-        $lessonNames = eF_getTableDataFlat("lessons", "id,name");
+        $lessonNames = sC_getTableDataFlat("lessons", "id,name");
         sizeof($lessonNames) > 0 ? $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']) : $lessonNames = array();
         if ($lesson) {
-         $lessonUsers = eF_getTableDataFlat("users_to_lessons", "users_LOGIN", "lessons_ID=$lesson and archive=0");
+         $lessonUsers = sC_getTableDataFlat("users_to_lessons", "users_LOGIN", "lessons_ID=$lesson and archive=0");
          $users = array_combine($lessonUsers['users_LOGIN'], $lessonUsers['users_LOGIN']);
         } else {
-         $result = eF_getTableData("users", "name, surname, login");
+         $result = sC_getTableData("users", "name, surname, login");
          $users = array();
          foreach ($result as $user) {
           $users[$user['login']] = $user;
@@ -2367,7 +2367,7 @@ class MagesterStats
             $testInfo['general']['content_ID'] = $unit -> offsetGet('id');
             $testInfo['general']['lesson_name'] = $lessonNames[$unit -> offsetGet('lessons_ID')];
             $testInfo['general']['duration'] = $test -> options['duration'];
-            $testInfo['general']['duration_str'] = eF_convertIntervalToTime($test -> options['duration']);
+            $testInfo['general']['duration_str'] = sC_convertIntervalToTime($test -> options['duration']);
             $testInfo['general']['redoable'] = $test -> options['redoable'];
             $testInfo['general']['redoable_str'] = $test -> options['redoable'] >= 1 ? _YES : _NO;
             $testInfo['general']['onebyone'] = $test -> options['onebyone'];
@@ -2411,7 +2411,7 @@ class MagesterStats
             foreach ($doneTests[$id] as $user => $done) {
                 foreach ($done as $key => $dt) {
                  // Check that this $dt refers to a test occurence - and not average scores etc
-                    if (eF_checkParameter($key,"id") && ($show_all || $dt['archive'] == 0) && $dt['status'] != 'incomplete' && $dt['status'] != '' && $dt['test'] = unserialize($dt['test'])) {
+                    if (sC_checkParameter($key,"id") && ($show_all || $dt['archive'] == 0) && $dt['status'] != 'incomplete' && $dt['status'] != '' && $dt['test'] = unserialize($dt['test'])) {
                         $done_test = array('id' => $dt['id'],
                                            'users_LOGIN' => $dt['users_LOGIN'],
                                            'name' => $users[$dt['users_LOGIN']]['name'],
@@ -2480,14 +2480,14 @@ class MagesterStats
     {
         $tests_info = array();
         if ($tests === false) {
-            $tests = eF_getTableDataFlat("content","id", "ctg_type='scorm_test'");
+            $tests = sC_getTableDataFlat("content","id", "ctg_type='scorm_test'");
    $tests = $tests['id'];
         } elseif (!is_array($tests)) {
             $tests = array($tests);
         }
-        $lessonNames = eF_getTableDataFlat("lessons", "id,name");
+        $lessonNames = sC_getTableDataFlat("lessons", "id,name");
         sizeof($lessonNames) > 0 ? $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']) : $lessonNames = array();
-        $result = eF_getTableData("users", "name, surname, login");
+        $result = sC_getTableData("users", "name, surname, login");
         $users = array();
         foreach ($result as $user) {
             $users[$user['login']] = $user;
@@ -2495,7 +2495,7 @@ class MagesterStats
         foreach ($tests as $id) {
             $testInfo = array();
             $unit = new MagesterUnit($id);
-            $result = eF_getTableData("scorm_data", "*", "content_ID=$id and (users_LOGIN is null or users_LOGIN='')");
+            $result = sC_getTableData("scorm_data", "*", "content_ID=$id and (users_LOGIN is null or users_LOGIN='')");
             $testInfo['general']['content_ID'] = $id;
             $testInfo['general']['id'] = $id;
             $testInfo['general']['name'] = $unit -> offsetGet('name');
@@ -2504,10 +2504,10 @@ class MagesterStats
             if ($result[0]['maxtimeallowed']) {
                 $time_parts = explode(":", $result[0]['maxtimeallowed']);
                 $testInfo['general']['duration'] = $time_parts[0]*3600+$time_parts[1]*60+$time_parts[2];
-                $testInfo['general']['duration_str']= eF_convertIntervalToTime($testInfo['general']['duration']);
+                $testInfo['general']['duration_str']= sC_convertIntervalToTime($testInfo['general']['duration']);
             } else {
                 $testInfo['general']['duration'] = '';
-                $testInfo['general']['duration_str']= eF_convertIntervalToTime($testInfo['general']['duration']);
+                $testInfo['general']['duration_str']= sC_convertIntervalToTime($testInfo['general']['duration']);
             }
             // Create results score categories
             if ($categories) {
@@ -2521,7 +2521,7 @@ class MagesterStats
              }
             }
             $testInfo['done'] = array();
-            $done_info = eF_getTableData("scorm_data d, users u", "d.users_LOGIN, u.name, u.surname, d.score, d.timestamp, d.lesson_status, d.masteryscore, d.minscore, d.maxscore","d.users_LOGIN = u.LOGIN and d.content_ID = $id");
+            $done_info = sC_getTableData("scorm_data d, users u", "d.users_LOGIN, u.name, u.surname, d.score, d.timestamp, d.lesson_status, d.masteryscore, d.minscore, d.maxscore","d.users_LOGIN = u.LOGIN and d.content_ID = $id");
             foreach ($done_info as $done) {
                 $done_test = array();
                 $done_test['users_LOGIN'] = $done['users_LOGIN'];
@@ -2592,7 +2592,7 @@ class MagesterStats
     {
         $questions_info = array();
         if ($questions == false) {
-            $questions = eF_getTableData("questions", "id");
+            $questions = sC_getTableData("questions", "id");
         }
         foreach ($questions as $question_id) {
             $question_info = array();
@@ -2615,7 +2615,7 @@ class MagesterStats
         if ($lesson) {
          $sql = ' and lessons_ID='.$lesson;
         }
-        $completedTests = eF_getTableData("tests, completed_tests", "*", "tests.id=completed_tests.tests_ID and status != 'deleted' $sql");
+        $completedTests = sC_getTableData("tests, completed_tests", "*", "tests.id=completed_tests.tests_ID and status != 'deleted' $sql");
         foreach ($completedTests as $test) {
             $test['test'] = unserialize($test['test']);
             $testQuestions = $test['test'] -> questions;
@@ -2666,7 +2666,7 @@ class MagesterStats
     {
         $projects_info = array();
         if ($projects == false) {
-            $projects = eF_getTableData("projects","id");
+            $projects = sC_getTableData("projects","id");
         }
         foreach ($projects as $project_id) {
             $project_info = array();
@@ -2677,7 +2677,7 @@ class MagesterStats
             $project_info['general']['deadline'] = $project -> project['deadline'];
             $project_info['general']['auto_assign'] = $project -> project['auto_assign'];
             $project_info['done'] = array();
-            $assigned_data = eF_getTableData("users u, users_to_projects up, projects p, users_to_lessons ul", "u.LOGIN, u.name, u.surname, up.grade, up.upload_timestamp, up.status, up.comments", "p.id=up.projects_ID and ul.lessons_ID=p.lessons_ID and ul.users_LOGIN=u.login and ul.archive=0 and u.archive=0 and u.LOGIN = up.users_LOGIN and up.projects_ID=".$project_id);
+            $assigned_data = sC_getTableData("users u, users_to_projects up, projects p, users_to_lessons ul", "u.LOGIN, u.name, u.surname, up.grade, up.upload_timestamp, up.status, up.comments", "p.id=up.projects_ID and ul.lessons_ID=p.lessons_ID and ul.users_LOGIN=u.login and ul.archive=0 and u.archive=0 and u.LOGIN = up.users_LOGIN and up.projects_ID=".$project_id);
             foreach ($assigned_data as $data) {
                 $done_project = array();
                 $done_project['users_LOGIN'] = $data['LOGIN'];
@@ -2712,7 +2712,7 @@ class MagesterStats
 
      *
 
-     * $results = eF_getTableData("completed_tests", "*");									//Alternatively, you may pre-collect the required data from the database...
+     * $results = sC_getTableData("completed_tests", "*");									//Alternatively, you may pre-collect the required data from the database...
 
      * foreach ($results as $value) {
 
@@ -2861,8 +2861,8 @@ class MagesterStats
     {
         if (is_array($testInfo)) {
             $doneTests = $testInfo;
-        } elseif (eF_checkParameter($testInfo, 'id')) {
-            $results = eF_getTableData("completed_tests", "*", "status != 'deleted' and tests_ID=$testInfo");
+        } elseif (sC_checkParameter($testInfo, 'id')) {
+            $results = sC_getTableData("completed_tests", "*", "status != 'deleted' and tests_ID=$testInfo");
             foreach ($results as $value) {
                 $value['test'] = unserialize($value['test']);
                 $doneTests[$value['id']] = $value;
@@ -2911,7 +2911,7 @@ class MagesterStats
 
 	 * <code>
 
-	 * $result = eF_getTableData("completed_tests", "*", "id=32");
+	 * $result = sC_getTableData("completed_tests", "*", "id=32");
 
 	 * $completedTest = unserialize($result['test']);
 
@@ -3195,13 +3195,13 @@ class MagesterStats
  public static function getQuestionsStatistics($test = false)
  {
      if (!$test) {
-         $result = eF_getTableData("completed_tests", "*", "status != 'deleted'");
+         $result = sC_getTableData("completed_tests", "*", "status != 'deleted'");
      } else {
          $test instanceof MagesterTest ? $testId = $test -> test['id'] : $testId = $test;
-         if (!eF_checkParameter($testId, 'id')) {
+         if (!sC_checkParameter($testId, 'id')) {
              throw new MagesterTestException(_INVALIDID, MagesterLessonException :: INVALID_ID);
          }
-         $result = eF_getTableData("completed_tests", "*", "status != 'deleted' and tests_ID = $testId");
+         $result = sC_getTableData("completed_tests", "*", "status != 'deleted' and tests_ID = $testId");
      }
      $questionStats = array();
      foreach ($result as $value) {
@@ -3334,10 +3334,10 @@ class MagesterStats
  public static function getUserTimes($login, $interval = false)
  {
      $times = array('duration' => array(), 'time' => array(), 'session_ip' => array());
-     if (isset($interval['from']) && eF_checkParameter($interval['from'], 'timestamp') && isset($interval['to']) && eF_checkParameter($interval['to'], 'timestamp')) {
-         $result = eF_getTableDataFlat("logs", "timestamp, action, session_ip", "timestamp > ".$interval['from']." and timestamp < ".$interval['to']." and users_LOGIN='".$login."' and (action='login' or action = 'logout')", "timestamp");
+     if (isset($interval['from']) && sC_checkParameter($interval['from'], 'timestamp') && isset($interval['to']) && sC_checkParameter($interval['to'], 'timestamp')) {
+         $result = sC_getTableDataFlat("logs", "timestamp, action, session_ip", "timestamp > ".$interval['from']." and timestamp < ".$interval['to']." and users_LOGIN='".$login."' and (action='login' or action = 'logout')", "timestamp");
      } else {
-         $result = eF_getTableDataFlat("logs", "timestamp, action, session_ip", "users_LOGIN='".$login."' and (action='login' or action = 'logout')", "timestamp");
+         $result = sC_getTableDataFlat("logs", "timestamp, action, session_ip", "users_LOGIN='".$login."' and (action='login' or action = 'logout')", "timestamp");
      }
      if (sizeof($result) > 0) {
          for ($i = 0; $i < sizeof($result['action']) - 1; $i++) { //The algorithm goes like this: We search for the 'login' actions in the log. When one is found, then we search either for the next 'login' or 'logout' action, if there are no other actions, or the last non-login or logout action. This way, we calculate the true time spent inside the system. If we calculated only the logout-login times, then when a user had closed a window without logging out first, the online time would be reported falsely
@@ -3351,7 +3351,7 @@ class MagesterStats
                  if ($end_action - $result['timestamp'][$i] <= 3600) { //only take into account intervals less than one hour
                      $times['duration'][] = $end_action - $result['timestamp'][$i];
                      $times['time'][] = $result['timestamp'][$i];
-                     $times['session_ip'][] = eF_decodeIP($result['session_ip'][$i]);
+                     $times['session_ip'][] = sC_decodeIP($result['session_ip'][$i]);
                  }
              }
          }
@@ -3428,7 +3428,7 @@ class MagesterStats
   $eventTypes = array(27,38,30,31,75,77,100,101,103);
   $logins_string = "'".implode("','", $logins)."'";
   $event_types_string = implode(",", $eventTypes);
-  $result = eF_getTableData("events", "users_LOGIN,lessons_name,lessons_ID,type,count(*) as count", "timestamp between $from and $to and type IN (".$event_types_string.") group by users_LOGIN,lessons_ID,type");
+  $result = sC_getTableData("events", "users_LOGIN,lessons_name,lessons_ID,type,count(*) as count", "timestamp between $from and $to and type IN (".$event_types_string.") group by users_LOGIN,lessons_ID,type");
   $participation = array();
   foreach ($result as $key => $value) {
    $participation[$value['users_LOGIN']][$value['lessons_ID']][$value['type']] = $value;
@@ -3440,7 +3440,7 @@ class MagesterStats
  {
   $report['rules']['conditions'] = array_values($report['rules']['conditions']); //reindex array
   $report['rules']['columns'] = array_values($report['rules']['columns']); //reindex array
-  eF_updateTableData("advanced_user_reports", array('rules' => serialize($report['rules'])), "id=".$report['id']);
+  sC_updateTableData("advanced_user_reports", array('rules' => serialize($report['rules'])), "id=".$report['id']);
  }
  public static function getQuestionResponseDetails($testStats)
  {

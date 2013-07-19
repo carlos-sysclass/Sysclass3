@@ -22,8 +22,8 @@ class module_banners extends MagesterModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_banners");
-        eF_executeNew("CREATE TABLE module_banners (
+        sC_executeNew("drop table if exists module_banners");
+        sC_executeNew("CREATE TABLE module_banners (
                           id int(11) NOT NULL auto_increment,
                           lessons_ID int(11) not null,
                           image_id int(11) not null,
@@ -37,7 +37,7 @@ class module_banners extends MagesterModule
     // And on deleting the module
     public function onUninstall()
     {
-        eF_executeNew("DROP TABLE module_banners;");
+        sC_executeNew("DROP TABLE module_banners;");
 
         return true;
     }
@@ -45,7 +45,7 @@ class module_banners extends MagesterModule
     // On deleting a lesson
     public function onDeleteLesson($lessonId)
     {
-        eF_deleteTableData("module_banners", "lessons_ID=".$lessonId);
+        sC_deleteTableData("module_banners", "lessons_ID=".$lessonId);
 
         return true;
     }
@@ -99,11 +99,11 @@ class module_banners extends MagesterModule
         $smarty = $this -> getSmartyVar();
         $smarty -> assign("T_LESSON_ID", $currentLesson -> lesson['id']);
 
-        if (isset($_GET['delete_banner']) && eF_checkParameter($_GET['delete_banner'], 'id')) {
-            eF_deleteTableData("module_banners", "id=".$_GET['delete_banner']);
+        if (isset($_GET['delete_banner']) && sC_checkParameter($_GET['delete_banner'], 'id')) {
+            sC_deleteTableData("module_banners", "id=".$_GET['delete_banner']);
             $this -> setMessageVar(_BANNERS_SUCCESFULLYDELETEDBANNER, 'success');
-            eF_redirect("". $this -> moduleBaseUrl ."&message=$message&message_type=$message_type");
-        } elseif (isset($_GET['add_banner']) || (isset($_GET['edit_banner']) && eF_checkParameter($_GET['edit_banner'], 'id'))) {
+            sC_redirect("". $this -> moduleBaseUrl ."&message=$message&message_type=$message_type");
+        } elseif (isset($_GET['add_banner']) || (isset($_GET['edit_banner']) && sC_checkParameter($_GET['edit_banner'], 'id'))) {
             try {
                 $bannerFileSystemTree = new FileSystemTree($this -> moduleBaseDir . 'banners/');
                 $existingImages["--"] = "--";
@@ -112,11 +112,11 @@ class module_banners extends MagesterModule
                 }
             } catch (Exception $e) {
                 $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             }
 
             $form = new HTML_QuickForm("banner_entry_form", "POST", $_SERVER['REQUEST_URI'], "");
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
             $form -> addElement('file', 'file_upload', _BANNERS_IMAGE, 'class = "inputText"');
             $form -> addElement('select', 'existing_image', _ORSELECTONEFROMLIST, $existingImages, "id = 'select_image'");
             $form -> addElement('text', 'link', null);
@@ -126,7 +126,7 @@ class module_banners extends MagesterModule
             $element->setSize(50);
 
             if (isset($_GET['edit_banner'])) {
-                $banner_entry = eF_getTableData("module_banners", "*", "id=".$_GET['edit_banner']);
+                $banner_entry = sC_getTableData("module_banners", "*", "id=".$_GET['edit_banner']);
                 $imageFile = new MagesterFile($banner_entry[0]['image_id']);
                 $dname = $imageFile -> offsetGet('name');
                 $form -> setDefaults(array('link'   => $banner_entry[0]['link'],
@@ -153,31 +153,31 @@ class module_banners extends MagesterModule
                     }
                 } catch (Exception $e) {
                     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 }
 
                 $fields = array('lessons_ID' => $_SESSION['s_lessons_ID'],
                                 'link'   => $form -> exportValue('link'),
                                 'image_id'     => $imageid);
                 if (isset($_GET['edit_banner'])) {
-                    if (eF_updateTableData("module_banners", $fields, "id=".$_GET['edit_banner'])) {
+                    if (sC_updateTableData("module_banners", $fields, "id=".$_GET['edit_banner'])) {
                         $message      = _BANNERS_SUCCESFULLYUPDATEDBANNERENTRY;
                         $message_type = 'success';
-                        eF_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
+                        sC_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
                     } else {
                         $message      = _BANNERS_PROBLEMUPDATINGBANNERENTRY;
                         $message_type = 'failure';
-                        eF_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
+                        sC_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
                     }
                 } else {
-                    if (eF_insertTableData("module_banners", $fields)) {
+                    if (sC_insertTableData("module_banners", $fields)) {
                         $message      = _BANNERS_SUCCESFULLYINSERTEDBANNERENTRY;
                         $message_type = 'success';
-                        eF_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
+                        sC_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
                     } else {
                         $message      = _BANNERS_PROBLEMINSERTINGBANNERENTRY;
                         $message_type = 'failure';
-                        eF_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
+                        sC_redirect("".$_SERVER['PHP_SELF']."?ctg=module&op=module_banners&message=$message&message_type=$message_type");
                     }
                 }
             }
@@ -185,7 +185,7 @@ class module_banners extends MagesterModule
             $form -> accept($renderer);
             $smarty -> assign('T_BANNERS_FORM', $renderer -> toArray());
         } else {
-            $banners = eF_getTableDataFlat("module_banners", "*", "lessons_ID = ".$_SESSION['s_lessons_ID']);
+            $banners = sC_getTableDataFlat("module_banners", "*", "lessons_ID = ".$_SESSION['s_lessons_ID']);
             $banners['image_path'] = array();
             $bannerFileSystemTree = new FileSystemTree($this -> moduleBaseDir . 'banners/');
             for ($i = 0; $i < sizeof($banners['image_id']); $i++) {
@@ -217,7 +217,7 @@ class module_banners extends MagesterModule
         $smarty = $this -> getSmartyVar();
         $currentLesson = $this -> getCurrentLesson();
 
-        $banners = eF_getTableDataFlat("module_banners", "*", "lessons_ID=".$currentLesson -> lesson['id']);
+        $banners = sC_getTableDataFlat("module_banners", "*", "lessons_ID=".$currentLesson -> lesson['id']);
         $banners['image_path'] = array();
         $bannerFileSystemTree = new FileSystemTree($this -> moduleBaseDir . 'banners/');
         for ($i = 0; $i < sizeof($banners['image_id']); $i++) {

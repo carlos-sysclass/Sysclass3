@@ -18,7 +18,7 @@
                 </form>
 
     {/capture}
-    {eF_template_printBlock title=$smarty.const._LINKS_INSERTLINK data=$smarty.capture.t_insert_link_code absoluteImagePath = 1 image = $T_LINKS_BASELINK|cat:'images/link.png'}
+    {sC_template_printBlock title=$smarty.const._LINKS_INSERTLINK data=$smarty.capture.t_insert_link_code absoluteImagePath = 1 image = $T_LINKS_BASELINK|cat:'images/link.png'}
 {else}
     {capture name = 't_links_list_code'}
         {if $smarty.session.s_type != 'student'}
@@ -48,7 +48,7 @@
                     {/section}
                     </table>
     {/capture}
-    {eF_template_printBlock title=$smarty.const._LINKS_LINKLIST data=$smarty.capture.t_links_list_code absoluteImagePath = 1 image = $T_LINKS_BASELINK|cat:'images/link.png'}
+    {sC_template_printBlock title=$smarty.const._LINKS_LINKLIST data=$smarty.capture.t_links_list_code absoluteImagePath = 1 image = $T_LINKS_BASELINK|cat:'images/link.png'}
 {/if}
 
 

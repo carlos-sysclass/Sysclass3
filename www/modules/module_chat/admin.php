@@ -38,7 +38,7 @@ function clearAllLogs()
 //////////////////////////////////////////////////////////////////////////////
 function getLessonFromId()
 {
-	if (eF_checkParameter($_GET['loglessonid'], 'id')) {
+	if (sC_checkParameter($_GET['loglessonid'], 'id')) {
 		$id = $_GET["loglessonid"];
 		$sql = "SELECT name FROM lessons WHERE id='".$id."'";
 		$result = mysql_query($sql);

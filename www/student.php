@@ -39,7 +39,7 @@ try {
     if ($e->getCode() == MagesterUserException::USER_NOT_LOGGED_IN) {
         setcookie('c_request', http_build_query($_GET), time() + 300);
     }
-    eF_redirect("index.php?message=".urlencode($message = $e->getMessage().' ('.$e->getCode().')')."&message_type=failure", true);
+    sC_redirect("index.php?message=".urlencode($message = $e->getMessage().' ('.$e->getCode().')')."&message_type=failure", true);
     exit;
 }
 
@@ -54,10 +54,10 @@ if ( isset($_COOKIE['c_request'] ) && $_COOKIE['c_request'] != 'student.php') {
         if ( mb_strpos($_COOKIE['c_request'], 'index.php') !== false ) {
             echo "<script>top.location='".$_COOKIE['c_request']."';</script>";
         } else {
-            eF_redirect("".$_COOKIE['c_request']);
+            sC_redirect("".$_COOKIE['c_request']);
         }
     } else {
-        eF_redirect("".$_SESSION['s_type'].'.php?'.$_COOKIE['c_request']);
+        sC_redirect("".$_SESSION['s_type'].'.php?'.$_COOKIE['c_request']);
     }
     exit;
 }
@@ -68,7 +68,7 @@ $userLessons = $currentUser->getLessons();
 
 
 if ( count( $_GET ) == 0 ) {
-    $lastLessonViewed = eF_getTableData(	" user_last_access ",
+    $lastLessonViewed = sC_getTableData(	" user_last_access ",
         " lesson_ID , course_ID ",
         " user_ID = " . $currentUser->user['id'] );
     $_SESSION["s_lessons_ID"] = $lastLessonViewed[0]['lesson_ID'];
@@ -85,7 +85,7 @@ if ($_SESSION['s_lessons_ID']) {
 }
 
 #This is used to allow users to enter directly internal lesson specific pages from external pages
-if ( isset( $_GET['new_lessons_ID'] ) && eF_checkParameter( $_GET['new_lessons_ID'], 'id' ) ) {
+if ( isset( $_GET['new_lessons_ID'] ) && sC_checkParameter( $_GET['new_lessons_ID'], 'id' ) ) {
     if ($_GET['new_lessons_ID'] != $_SESSION['s_lessons_ID']) {
         $_SESSION['s_lessons_ID'] = $_GET['new_lessons_ID'];
         if ( isset($_GET['sbctg'] ) ) {
@@ -98,7 +98,7 @@ if ( isset( $_GET['new_lessons_ID'] ) && eF_checkParameter( $_GET['new_lessons_I
 }
 
 #This is the first time the professor enters this lesson, so register the lesson id to the session
-if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') ) {
+if ( isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id') ) {
     if (!isset($_SESSION['s_lessons_ID']) || $_GET['lessons_ID'] != $_SESSION['s_lessons_ID']) {
         unset($_SESSION['s_courses_ID']);
         if (isset($_GET['course']) || isset($_GET['from_course'])) {
@@ -112,14 +112,14 @@ if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') 
             if ($eligibility[$_GET['lessons_ID']] == 0) {
                 unset($_GET['lessons_ID']);
                 $message = _YOUCANNOTACCESSTHISLESSONBECAUSEOFCOURSERULES;
-                eF_redirect("student.php?ctg=lessons&message=".urlencode($message)."&message_type=failure");
+                sC_redirect("student.php?ctg=lessons&message=".urlencode($message)."&message_type=failure");
             }
             $_SESSION['s_courses_ID'] = $course->course['id'];
         }
         if (in_array($_GET['lessons_ID'], array_keys($userLessons))) {
             $newLesson = new MagesterLesson($_GET['lessons_ID']);
             if (!isset($_GET['course']) && !isset($_GET['from_course']) && $roles[$userLessons[$_GET['lessons_ID']]] == 'student' && (($newLesson->lesson['from_timestamp'] && $newLesson->lesson['from_timestamp'] > time()) || ($newLesson->lesson['to_timestamp'] && $newLesson->lesson['to_timestamp'] < time()))) {
-                eF_redirect("student.php?ctg=lessons&message=".urlencode(_YOUCANNOTACCESSTHISLESSONORITDOESNOTEXIST));
+                sC_redirect("student.php?ctg=lessons&message=".urlencode(_YOUCANNOTACCESSTHISLESSONORITDOESNOTEXIST));
             }
             $_SESSION['s_lessons_ID'] = $_GET['lessons_ID'];
             $_SESSION['s_type'] = $roles[$userLessons[$_GET['lessons_ID']]];
@@ -145,7 +145,7 @@ if ( isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id') 
 if (array_key_exists($_SESSION['s_lessons_ID'], $userLessons) && array_key_exists($userLessons[$_SESSION['s_lessons_ID']], $roles)) {
     if ($_SESSION['s_lessons_ID'] && $roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php' != basename($_SERVER['PHP_SELF']) ) {
         if ($_GET['ctg'] != 'lessons') {
-            eF_redirect(''.$roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php');
+            sC_redirect(''.$roles[$userLessons[$_SESSION['s_lessons_ID']]].'.php');
             exit;
         }
     }
@@ -154,19 +154,19 @@ if (array_key_exists($_SESSION['s_lessons_ID'], $userLessons) && array_key_exist
 if (isset($_SESSION['s_lessons_ID']) && $_SESSION['s_lessons_ID'] && $_GET['ctg'] != 'lessons') { //Check validity of current lesson
     $userLessons = $currentUser->getLessons();
     if (!isset($userLessons[$_SESSION['s_lessons_ID']]) || $roles[$userLessons[$_SESSION['s_lessons_ID']]] != 'student') {
-        //		eF_redirect("student.php?ctg=lessons"); //redirect to student's lessons page
+        //		sC_redirect("student.php?ctg=lessons"); //redirect to student's lessons page
         //		exit;
     }
     try {
         $currentUser->applyRoleOptions($userLessons[$_SESSION['s_lessons_ID']]); //Initialize user's role options for this lesson
         $currentLesson = new MagesterLesson($_SESSION['s_lessons_ID']); //Initialize lesson
         $smarty->assign("T_TITLE_BAR", $currentLesson->lesson['name']);
-        $_SESSION['s_lesson_user_type'] = $roles[$userLessons[$_SESSION['s_lessons_ID']]]; //needed for outputfilter.eF_template_setInnerLinks
+        $_SESSION['s_lesson_user_type'] = $roles[$userLessons[$_SESSION['s_lessons_ID']]]; //needed for outputfilter.sC_template_setInnerLinks
         $currentUser->coreAccess['content'] != 'change' ? $currentLesson->mode = 'browse' : $currentLesson->mode = 'normal'; //If the user type's setting is other than 'change' from content, then set lesson mode to 'browse', which means that no unit completion or ' or whatever progress is recorded
     } catch (Exception $e) {
         unset($_SESSION['s_lessons_ID']);
         $message = $e->getMessage().' ('.$e->getCode().')';
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?message=".urlencode($message)."&message_type=failure"); //redirect to user lessons page
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?message=".urlencode($message)."&message_type=failure"); //redirect to user lessons page
     }
 }
 
@@ -176,14 +176,14 @@ if (isset($_SESSION['package_ID']) && !$_GET['commit_lms']) {
 }
 
 try {
-    if (isset($_GET['view_unit']) && eF_checkParameter($_GET['view_unit'], 'id')) {
+    if (isset($_GET['view_unit']) && sC_checkParameter($_GET['view_unit'], 'id')) {
         $currentContent = new MagesterContentTree($currentLesson); //Initialize content
         $currentContent->markSeenNodes($currentUser);
         if ($currentUser->coreAccess['content'] == 'hidden') {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
         }
         if (!$currentLesson || !$currentContent) {
-            eF_redirect("".basename($_SERVER['PHP_SELF']));
+            sC_redirect("".basename($_SERVER['PHP_SELF']));
         }
         $currentUnit = $currentContent->seekNode($_GET['view_unit']); //Initialize current unit
         //The content tree does not hold data, so assign this unit its data
@@ -194,11 +194,11 @@ try {
         $currentCourse = new MagesterCourse($_SESSION['s_courses_ID']);
         $courseId = $currentCourse->course['id'];
 
-        $rulesCourse = eF_getTableData("courses", "rules", "id = $courseId");
+        $rulesCourse = sC_getTableData("courses", "rules", "id = $courseId");
 
         $user_login = $currentUser->user['login'];
 
-        $takeLesson = eF_getTableData("users_to_lessons", "completed", "lessons_ID = $licaoAnterior AND users_LOGIN = '$user_login' ");
+        $takeLesson = sC_getTableData("users_to_lessons", "completed", "lessons_ID = $licaoAnterior AND users_LOGIN = '$user_login' ");
 
         foreach ($takeLesson as $completedLesson) {
             $completed = $completedLesson['completed'];
@@ -242,7 +242,7 @@ try {
 } catch (Exception $e) {
     unset($_GET['view_unit']);
     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 
@@ -285,10 +285,10 @@ foreach ($loadedModules as $module) {
 /*Ajax call to enter group and get group lessons */
 if ( isset($_GET['ajax']) && isset($_GET['group_key']) ) {
     try {
-        if (!eF_checkParameter($_GET['group_key'], 'alnum_general')) {
+        if (!sC_checkParameter($_GET['group_key'], 'alnum_general')) {
             throw new Exception(_INVALIDDATA.': '.$_GET['group_key']);
         }
-        $result = eF_getTableData("groups", "*", "unique_key = '" . $_GET['group_key'] . "'");
+        $result = sC_getTableData("groups", "*", "unique_key = '" . $_GET['group_key'] . "'");
         $group = new MagesterGroup($result[0]);
         $group->useKeyForUser($currentUser);
     } catch (Exception $e) {
@@ -388,7 +388,7 @@ $smarty->assign("_admin_", $_admin_);
 
 if (!$GLOBALS['configuration']['disable_messages']) {
     if (($currentUser->coreAccess['personal_messages']) || $currentUser->coreAccess['personal_messages'] != 'hidden') {
-        $unreadMessages = $messages = eF_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
+        $unreadMessages = $messages = sC_getTableData("f_personal_messages pm, f_folders ff", "count(*)", "pm.users_LOGIN='".$_SESSION['s_login']."' and viewed='no' and f_folders_ID=ff.id and ff.name='Incoming'");
         $smarty->assign("T_UNREAD_MESSAGES", $messages[0]['count(*)']);
         if ($messages[0]['count(*)'] == 1) {
             $smarty->assign("T_UNREAD_MESSAGES_TEXT", _YOUHAVE_ONE_UNREADMESSAGE);
@@ -455,22 +455,22 @@ try {
         if ($currentUser->coreAccess['calendar'] != 'hidden' && $GLOBALS['configuration']['disable_calendar'] != 1) {
             require_once 'calendar.php';
         } else {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
         }
     } elseif ($ctg == 'glossary') {
         require_once 'glossary.php';
     } elseif ($ctg == 'survey') {
         if ($currentUser->coreAccess['surveys'] == 'hidden' || $GLOBALS['configuration']['disable_surveys'] == 1) {
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
         }
         $load_editor=true;
         include_once 'module_surveys.php';
     } elseif ($ctg == 'statistics') {
-        if (isset($_GET['show_solved_test']) && eF_checkParameter($_GET['show_solved_test'], 'id') && isset($_GET['lesson']) && eF_checkParameter($_GET['lesson'], 'id')) {
+        if (isset($_GET['show_solved_test']) && sC_checkParameter($_GET['show_solved_test'], 'id') && isset($_GET['lesson']) && sC_checkParameter($_GET['lesson'], 'id')) {
             try {
                 //pr($_GET['lesson']);pr($currentUser->getLessons());
                 if (in_array($_GET['lesson'], array_keys($currentUser->getLessons()))) {
-                    $result = eF_getTableData("done_tests, tests, content", "done_tests.tests_ID, done_tests.users_LOGIN", "content.id=tests.content_ID and content.lessons_ID=".$_GET['lesson']." and tests.id = done_tests.tests_ID and done_tests.users_LOGIN = '".$currentUser->user['login']."' and done_tests.id=".$_GET['show_solved_test']);
+                    $result = sC_getTableData("done_tests, tests, content", "done_tests.tests_ID, done_tests.users_LOGIN", "content.id=tests.content_ID and content.lessons_ID=".$_GET['lesson']." and tests.id = done_tests.tests_ID and done_tests.users_LOGIN = '".$currentUser->user['login']."' and done_tests.id=".$_GET['show_solved_test']);
                     if (sizeof($result) > 0) {
                         $showTest = new MagesterTest($result[0]['tests_ID']);
                         //Set "show answers" and "show given answers" to true, since if it is not the student that sees the test
@@ -492,7 +492,7 @@ try {
                 }
             } catch (Exception $e) {
                 $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 $message_type = 'failure';
             }
         } else {
@@ -500,7 +500,7 @@ try {
             if ($currentUser->coreAccess['statistics'] != 'hidden') {
                 require_once 'statistics.php';
             } else {
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
             }
         }
     } elseif ($ctg == 'personal') {
@@ -515,7 +515,7 @@ try {
         $log_comments = 1; //The $log_comments variable is used at the log entry.
     } elseif (sizeof($modules) > 0 && in_array($ctg, array_keys($module_ctgs))) {
         /* At this point, we apply module functionality */
-        $module_mandatory = eF_getTableData("modules", "mandatory", "name = '".$ctg."'");
+        $module_mandatory = sC_getTableData("modules", "mandatory", "name = '".$ctg."'");
         if ( $module_mandatory[0]['mandatory'] != 'false' || ($GLOBALS['currentLesson']->options[$ctg] ) ) {
             include( G_MODULESPATH.$ctg.'/module.php' );
             $smarty->assign("T_CTG_MODULE", $module_ctgs[$ctg]);
@@ -523,19 +523,19 @@ try {
     }
 
     //This is the log entry array
-    $fields_log = array ('users_LOGIN' => $_SESSION['s_login'], 'timestamp' => time(), 'session_ip' => eF_encodeIP($_SERVER['REMOTE_ADDR']));
+    $fields_log = array ('users_LOGIN' => $_SESSION['s_login'], 'timestamp' => time(), 'session_ip' => sC_encodeIP($_SERVER['REMOTE_ADDR']));
     /*
      if (isset($log_comments)) {                                         //If there is a $log_comments variable, it indicates the current action (i.e. the unit that the user saw)
      $fields_log['action']   = $ctg;
      $fields_log['comments'] = $log_comments;
      ($_SESSION['s_lessons_ID']) ? $fields_log['lessons_ID'] = $_SESSION['s_lessons_ID'] : $fields_log['lessons_ID'] = 0;
-     eF_insertTableData("logs", $fields_log);
+     sC_insertTableData("logs", $fields_log);
      } else {                                                            //Any other move, that has not set the $log_comments variable, is considered a 'lastmove' action
      $fields_log['action']   = "lastmove";
      $fields_log['comments'] = "";
      ($_SESSION['s_lessons_ID']) ? $fields_log['lessons_ID'] = $_SESSION['s_lessons_ID'] : $fields_log['lessons_ID'] = 0;
-     eF_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
-     eF_insertTableData("logs", $fields_log);
+     sC_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
+     sC_insertTableData("logs", $fields_log);
      }
      */
     $smarty->assign("T_HEADER_EDITOR", $load_editor); //Specify whether we need to load the editor
@@ -550,7 +550,7 @@ try {
     }
 } catch (Exception $e) {
     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 if (isset($_GET['refresh'])) {
@@ -589,7 +589,7 @@ $smarty->assign("T_HEADER_INJECT_SCRIPTS", array_unique($injectScripts)); //arra
 
 $smarty->assign("T_CURRENT_CTG", $ctg);
 $smarty->assign("T_MENUCTG", $ctg);
-//$smarty->assign("T_MENU", eF_getMenu());
+//$smarty->assign("T_MENU", sC_getMenu());
 //$smarty->assign("T_QUERIES", $numberOfQueries);
 $smarty->assign("T_MESSAGE", $message);
 $smarty->assign("T_MESSAGE_TYPE", $message_type);
@@ -601,7 +601,7 @@ $smarty->assign("T_CURRENT_USER", $currentUser);
 $user_ = array();
 try {
     $file = new MagesterFile($currentUser->user['']);
-    list($user_['width'], $user_['height']) = eF_getNormalizedDims($file['path'], 80, 50);
+    list($user_['width'], $user_['height']) = sC_getNormalizedDims($file['path'], 80, 50);
     $user_['']	= $currentUser->user[''];
 } catch (MagesterFileException $e) {
     $user_ = array(
@@ -626,9 +626,9 @@ if (isset($currentLesson)) {
         $smarty->assign("T_CURRENT_COURSE_ID", $currentCourse->course['id']);
     }
 }
-$smarty->load_filter('output', 'eF_template_formatTimestamp');
-$smarty->load_filter('output', 'eF_template_formatLogins');
-$smarty->load_filter('output', 'eF_template_setInnerLinks');
+$smarty->load_filter('output', 'sC_template_formatTimestamp');
+$smarty->load_filter('output', 'sC_template_formatLogins');
+$smarty->load_filter('output', 'sC_template_setInnerLinks');
 
 $module_append_templates = array();
 // Include module languages
@@ -660,7 +660,7 @@ if (array_key_exists("module_xlivechat", $userModules)) {
 $user_avatar = array();
 try {
     $file = new MagesterFile($currentUser->user['avatar']);
-    list($user_avatar['width'], $user_avatar['height']) = eF_getNormalizedDims($file['path'], 50, 50);
+    list($user_avatar['width'], $user_avatar['height']) = sC_getNormalizedDims($file['path'], 50, 50);
     $user_avatar['avatar'] = $currentUser->user['avatar'];
 } catch (MagesterFileException $e) {
     $user_avatar = array(

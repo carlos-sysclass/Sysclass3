@@ -7,44 +7,44 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 //pr($languages);
 $loadScripts[] = 'includes/languages';
 if (isset($currentUser -> coreAccess['languages']) && $currentUser -> coreAccess['languages'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 $languages = MagesterSystem :: getLanguages();
-if (isset($_GET['delete_language']) && eF_checkParameter($_GET['delete_language'], 'file') && in_array($_GET['delete_language'], array_keys($languages)) && $_GET['delete_language'] != 'english') {
+if (isset($_GET['delete_language']) && sC_checkParameter($_GET['delete_language'], 'file') && in_array($_GET['delete_language'], array_keys($languages)) && $_GET['delete_language'] != 'english') {
     if (isset($currentUser -> coreAccess['languages']) && $currentUser -> coreAccess['languages'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     try {
         $file = new MagesterFile(G_ROOTPATH.'/libraries/language/lang-'.$_GET['delete_language'].'.php.inc');
         $file -> delete();
-        eF_deleteTableData("languages", "name='".$_GET['delete_language']."'");
+        sC_deleteTableData("languages", "name='".$_GET['delete_language']."'");
     } catch (Exception $e) {
         header("HTTP/1.0 500 ");
         echo $e -> getMessage().' ('.$e -> getCode().')';
     }
     exit;
-} elseif (isset($_GET['deactivate_language']) && eF_checkParameter($_GET['deactivate_language'], 'file') && in_array($_GET['deactivate_language'], array_keys($languages))) {
+} elseif (isset($_GET['deactivate_language']) && sC_checkParameter($_GET['deactivate_language'], 'file') && in_array($_GET['deactivate_language'], array_keys($languages))) {
     if (isset($currentUser -> coreAccess['languages']) && $currentUser -> coreAccess['languages'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);
         exit;
     }
     //Although db operations do not support exceptions (yet), we leave this here for future support
     try {
-        eF_updateTableData("languages", array("active" => 0), "name='".$_GET['deactivate_language']."'");
+        sC_updateTableData("languages", array("active" => 0), "name='".$_GET['deactivate_language']."'");
         echo "0";
     } catch (Exception $e) {
         header("HTTP/1.0 500 ");
         echo $e -> getMessage().' ('.$e -> getCode().')';
     }
     exit;
-} elseif (isset($_GET['activate_language']) && eF_checkParameter($_GET['activate_language'], 'file') && in_array($_GET['activate_language'], array_keys($languages))) {
+} elseif (isset($_GET['activate_language']) && sC_checkParameter($_GET['activate_language'], 'file') && in_array($_GET['activate_language'], array_keys($languages))) {
     if (isset($currentUser -> coreAccess['languages']) && $currentUser -> coreAccess['languages'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);
         exit;
     }
     //Although db operations do not support exceptions (yet), we leave this here for future support
     try {
-        eF_updateTableData("languages", array("active" => 1), "name='".$_GET['activate_language']."'");
+        sC_updateTableData("languages", array("active" => 1), "name='".$_GET['activate_language']."'");
         echo "1";
     } catch (Exception $e) {
         header("HTTP/1.0 500 ");
@@ -54,7 +54,7 @@ if (isset($_GET['delete_language']) && eF_checkParameter($_GET['delete_language'
 }
 if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAccess['languages'] == 'change') {
     $createForm = new HTML_QuickForm("create_language_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=languages', "", null, true);
-    $createForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $createForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $createForm -> addElement('text', 'english_name', _ENGLISHNAME, 'class = "inputText" id = "language_name"');
     $createForm -> addElement('text', 'translation', _TRANSLATION, 'class = "inputText" id = "language_translation"');
     $createForm -> addElement("advcheckbox", "rtl", _RTLLANGUAGE, null, 'class = "inputCheckBox" id = "language_rtl"', array(0, 1));
@@ -80,10 +80,10 @@ if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAcces
                 $fields = array("name" => $values['english_name'],
                                         "translation" => $values['translation'],
                                         "rtl" => $values['rtl']);
-                eF_updateTableData("languages", $fields, "name='".$values['selected_language']."'");
+                sC_updateTableData("languages", $fields, "name='".$values['selected_language']."'");
                 //include "editor/tiny_mce/langs/language.php";
                 //$RetValues = file(G_SERVERNAME."/editor/tiny_mce/langs/language.php?langname=".$values['english_name']);
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=languages&message=".urlencode(_SUCCESSFULLYUPDATEDLANGUAGE)."&message_type=success");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=languages&message=".urlencode(_SUCCESSFULLYUPDATEDLANGUAGE)."&message_type=success");
             } else {
                 if ($_FILES['language_upload']['error'] == 0) {
                     $filesystem = new FileSystemTree(G_ROOTPATH.'libraries/language');
@@ -104,13 +104,13 @@ if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAcces
                                         "translation" => $values['translation'],
                                         "active" => 1,
                                         "rtl" => $values['rtl']);
-                eF_insertTableData("languages", $fields);
+                sC_insertTableData("languages", $fields);
                 //$RetValues = file(G_SERVERNAME."/editor/tiny_mce/langs/language.php?langname=".$values['english_name']);
-                eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=languages&message=".urlencode(_SUCCESSFULLYADDEDLANGUAGE)."&message_type=success");
+                sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=languages&message=".urlencode(_SUCCESSFULLYADDEDLANGUAGE)."&message_type=success");
             }
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
         }
     }

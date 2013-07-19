@@ -140,7 +140,7 @@ class MagesterUnit extends ArrayObject
 
      * <code>
 
-     * $content = eF_getTableData("content", "*");
+     * $content = sC_getTableData("content", "*");
 
      * $unit = new MagesterUnit($content[4]);             //The best way: instantiate unit using existing information
 
@@ -160,8 +160,8 @@ class MagesterUnit extends ArrayObject
     function __construct($array)
     {
         if (!is_array($array)) {
-            if (eF_checkParameter($array, 'id')) {
-                $result = eF_getTableData("content", "*", "id=$array");
+            if (sC_checkParameter($array, 'id')) {
+                $result = sC_getTableData("content", "*", "id=$array");
                 if (sizeof($result) == 0) {
                     throw new MagesterContentException(_UNITDOESNOTEXIST.": $array", MagesterContentException :: UNIT_NOT_EXISTS);
                 } else {
@@ -202,59 +202,59 @@ class MagesterUnit extends ArrayObject
      */
     public function convertToScorm($array)
     {
-        $result = eF_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "*", "c.content_ID=".$array['id']." AND c.organization_content_ID = o.content_ID");
+        $result = sC_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "*", "c.content_ID=".$array['id']." AND c.organization_content_ID = o.content_ID");
         $array['package_ID'] = $result[0]['content_ID'];
         $array['objectives_global_to_system'] = $result[0]['objectives_global_to_system'];
         $array['shared_data_global_to_system'] = $result[0]['shared_data_global_to_system'];
-        $result = eF_getTableData("scorm_sequencing_control_mode", "*", "content_ID=".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_control_mode", "*", "content_ID=".$array['id']);
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_constrained_choice", "*", "content_ID=".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_constrained_choice", "*", "content_ID=".$array['id']);
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_completion_threshold", "*", "content_ID=".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_completion_threshold", "*", "content_ID=".$array['id']);
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_delivery_controls", "*", "content_ID=".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_delivery_controls", "*", "content_ID=".$array['id']);
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_hide_lms_ui", "*", "content_ID=".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_hide_lms_ui", "*", "content_ID=".$array['id']);
         if (!empty($result)) {
             $array['hide_lms_ui'] = unserialize($result[0]['options']);
         } else {
             $array['hide_lms_ui'] = false;
         }
-        $limit_condition = eF_getTableData("scorm_sequencing_limit_conditions", "*", "content_ID = '".$array['id']."'");
+        $limit_condition = sC_getTableData("scorm_sequencing_limit_conditions", "*", "content_ID = '".$array['id']."'");
         if (empty($limit_condition)) {
             $array['limit_condition_attempt_control'] = 'false';
         } else {
             $array['limit_condition_attempt_control'] = 'true';
             $array = array_merge($array, $limit_condition[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_rollup_considerations", "*", "content_ID = '".$array['id']."'");
+        $result = sC_getTableData("scorm_sequencing_rollup_considerations", "*", "content_ID = '".$array['id']."'");
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
-        $result = eF_getTableData("scorm_sequencing_rollup_controls", "*", "content_ID = '".$array['id']."'");
+        $result = sC_getTableData("scorm_sequencing_rollup_controls", "*", "content_ID = '".$array['id']."'");
         if (!empty($result)) {
             $array = array_merge($array, $result[0]);
         }
         //SCORM 2004 Rollup rules
-        $result = eF_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID = ".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID = ".$array['id']);
         $array['rollup_rules'] = $result;
         foreach ($result as $key => $value) {
-            $result = eF_getTableData("scorm_sequencing_rollup_rule", "*", "scorm_sequencing_rollup_rules_ID = ".$value['id']);
+            $result = sC_getTableData("scorm_sequencing_rollup_rule", "*", "scorm_sequencing_rollup_rules_ID = ".$value['id']);
             $array['rollup_rules'][$key]['rollup_rule'] = $result;
         }
         //SCORM 2004 Rules
-        $result = eF_getTableData("scorm_sequencing_rules", "*", "content_ID = ".$array['id']);
+        $result = sC_getTableData("scorm_sequencing_rules", "*", "content_ID = ".$array['id']);
         $array['rules'] = $result;
         foreach ($result as $key => $value) {
-            $result = eF_getTableData("scorm_sequencing_rule", "*", "scorm_sequencing_rules_ID = ".$value['id']);
+            $result = sC_getTableData("scorm_sequencing_rule", "*", "scorm_sequencing_rules_ID = ".$value['id']);
             $array['rules'][$key]['rule'] = $result;
         }
 
@@ -307,7 +307,7 @@ class MagesterUnit extends ArrayObject
         }
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::CONTENT_MODIFICATION, "lessons_ID" => $this['lessons_ID'], "entity_ID" => $this['id'], "entity_name" => $this['name']));
 
-        return eF_updateTableData("content", $fields, "id=".$this['id']);
+        return sC_updateTableData("content", $fields, "id=".$this['id']);
     }
     /**
 
@@ -379,18 +379,18 @@ class MagesterUnit extends ArrayObject
     public function delete()
     {
         if ($this['ctg_type'] == 'tests' || $this['ctg_type'] == 'feedback') {
-            $result = eF_getTableData("tests", "id, content_ID", "content_ID=".$this['id']);
+            $result = sC_getTableData("tests", "id, content_ID", "content_ID=".$this['id']);
             if (sizeof($result) > 0) {
                 $test = new MagesterTest($result[0]);
                 $test -> delete();
             }
         }
-        eF_deleteTableData("content", "id=".$this['id']); //Delete Unit from database
-        eF_deleteTableData("scorm_data", "content_ID=".$this['id']); //Delete Unit from scorm_data
-  eF_deleteTableData("comments", "content_ID=".$this['id']); //Delete comments of this unit
-  eF_deleteTableData("rules", "content_ID=".$this['id']." OR rule_content_ID=".$this['id']); //Delete rules associated with this unit
-  //eF_deleteTableData("conditions", "content_ID=".$this['id']." OR rule_content_ID=".$this['id']); 		//Delete rules associated with this unit
-  eF_updateTableData("questions", array("content_ID" => 0), "content_ID=".$this['id']); //Remove association of questions with this unit but not delete them
+        sC_deleteTableData("content", "id=".$this['id']); //Delete Unit from database
+        sC_deleteTableData("scorm_data", "content_ID=".$this['id']); //Delete Unit from scorm_data
+  sC_deleteTableData("comments", "content_ID=".$this['id']); //Delete comments of this unit
+  sC_deleteTableData("rules", "content_ID=".$this['id']." OR rule_content_ID=".$this['id']); //Delete rules associated with this unit
+  //sC_deleteTableData("conditions", "content_ID=".$this['id']." OR rule_content_ID=".$this['id']); 		//Delete rules associated with this unit
+  sC_updateTableData("questions", array("content_ID" => 0), "content_ID=".$this['id']); //Remove association of questions with this unit but not delete them
   MagesterSearch :: removeText('content', $this['id'], ''); //Delete keywords
   //Delete scorm data related to the unit
     }
@@ -426,7 +426,7 @@ class MagesterUnit extends ArrayObject
         $this['active'] = 1;
         $this -> persist();
         if ($this['ctg_type'] == 'tests') {
-            $result = eF_getTableData("tests", "id", "content_ID=".$this['id']);
+            $result = sC_getTableData("tests", "id", "content_ID=".$this['id']);
             if (sizeof($result) > 0) {
                 $test = new MagesterTest($result[0]['id']);
                 if (!$test -> test['active']) {
@@ -465,7 +465,7 @@ class MagesterUnit extends ArrayObject
     public function deactivate()
     {
         if ($this['ctg_type'] == 'tests') {
-            $result = eF_getTableData("tests", "id", "content_ID=".$this['id']);
+            $result = sC_getTableData("tests", "id", "content_ID=".$this['id']);
             if (sizeof($result) > 0) {
                 $test = new MagesterTest($result[0]['id']);
                 if ($test -> test['active']) {
@@ -512,7 +512,7 @@ class MagesterUnit extends ArrayObject
     public function getQuestions($returnObjects = false)
     {
         $questions = array();
-        $result = eF_getTableData("questions", "*", "content_ID=".$this['id']);
+        $result = sC_getTableData("questions", "*", "content_ID=".$this['id']);
         if (sizeof($result) > 0) {
             foreach ($result as $value) {
                 $returnObjects ? $questions[$value['id']] = QuestionFactory :: factory($value) : $questions[$value['id']] = $value;
@@ -704,8 +704,8 @@ class MagesterUnit extends ArrayObject
                                      'type' => 'content');
             $fields['metadata'] = serialize($defaultMetadata);
         }
-        $newId = eF_insertTableData("content", $fields);
-        $result = eF_getTableData("content", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+        $newId = sC_insertTableData("content", $fields);
+        $result = sC_getTableData("content", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $unit = new MagesterUnit($result[0]);
         MagesterSearch :: insertText($fields['name'], $unit['id'], "content", "title");
         MagesterEvent::triggerEvent(array("type" => MagesterEvent::CONTENT_CREATION, "lessons_ID" => $fields['lessons_ID'], "entity_ID" => $unit['id'], "entity_name" => $fields['name']));
@@ -805,7 +805,7 @@ class MagesterContentTree extends MagesterTree
     {
         if ($lesson instanceof MagesterLesson) {
             $lessonId = $lesson -> lesson['id'];
-        } elseif (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!sC_checkParameter($lesson, 'id')) {
             throw new MagesterContentException(_INVALIDLESSONID.': '.$lesson, MagesterContentException :: INVALID_ID);
         } else {
             $lessonId = $lesson;
@@ -862,7 +862,7 @@ class MagesterContentTree extends MagesterTree
     public function reset()
     {
         if ($this -> data) {
-            $result = eF_getTableData(
+            $result = sC_getTableData(
             	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)",
             	"*, data != '' as has_data, group_concat(cc.classe_id SEPARATOR ',') as content_classes",
             	"lessons_ID = '".$this -> lessonId."'",
@@ -870,9 +870,9 @@ class MagesterContentTree extends MagesterTree
             	"c.id"
             );
         } else {
-            $fields = eF_getTableFields("content");
+            $fields = sC_getTableFields("content");
             unset($fields[array_search('data', $fields)]);
-            $result = eF_getTableData(
+            $result = sC_getTableData(
             	"content c LEFT OUTER JOIN classes_to_content cc ON (c.id = cc.content_id)",
             	implode(",", $fields).", group_concat(cc.classe_id SEPARATOR ',') as content_classes, data != '' as has_data",
             	"lessons_ID = '".$this -> lessonId."'",
@@ -902,7 +902,7 @@ class MagesterContentTree extends MagesterTree
         if (!empty($scorm2004Units)) {
             $units = $this -> convertUnitsTo2004($units, $scorm2004Units);
         }
-        //$units   = eF_getTableData("content", "id,name,parent_content_ID,lessons_ID,timestamp,ctg_type,active,previous_content_ID", "lessons_ID = '".$this -> lessonId."'");
+        //$units   = sC_getTableData("content", "id,name,parent_content_ID,lessons_ID,timestamp,ctg_type,active,previous_content_ID", "lessons_ID = '".$this -> lessonId."'");
         $rejected = array();
         foreach ($units as $node) { //Assign previous content ids as keys to the previousNodes array, which will be used for sorting afterwards
             if (!$this -> data) {
@@ -988,33 +988,33 @@ class MagesterContentTree extends MagesterTree
     public function convertUnitsTo2004($units, $scorm2004Units)
     {
         $scormContentIds = implode(",", $scorm2004Units);
-  $result = eF_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "c.content_ID, c.organization_content_ID, o.objectives_global_to_system, o.shared_data_global_to_system", "c.content_ID in ($scormContentIds) AND c.organization_content_ID = o.content_ID");
+  $result = sC_getTableData("scorm_sequencing_content_to_organization as c, scorm_sequencing_organizations as o", "c.content_ID, c.organization_content_ID, o.objectives_global_to_system, o.shared_data_global_to_system", "c.content_ID in ($scormContentIds) AND c.organization_content_ID = o.content_ID");
   foreach ($result as $value) {
    $units[$value['content_ID']]['package_ID'] = $value['organization_content_ID'];
             $array['objectives_global_to_system'] = $value['objectives_global_to_system'];
             $array['shared_data_global_to_system'] = $value['shared_data_global_to_system'];
         }
-        $result = eF_getTableData("scorm_sequencing_control_mode", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_control_mode", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_constrained_choice", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_constrained_choice", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_completion_threshold", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_completion_threshold", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_delivery_controls", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_delivery_controls", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_hide_lms_ui", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_hide_lms_ui", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']]['hide_lms_ui'] = unserialize($value['options']);
         }
-        $result = eF_getTableData("scorm_sequencing_limit_conditions", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_limit_conditions", "*", "content_ID in ($scormContentIds)");
         foreach ($scorm2004Units as $value) { //First, assign to every SCORM unit the 'false' for the limit_condition_attempt_control...
             $units[$value]['limit_condition_attempt_control'] = 'false';
         }
@@ -1022,23 +1022,23 @@ class MagesterContentTree extends MagesterTree
             $units[$value['content_ID']]['limit_condition_attempt_control'] = 'true';
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_rollup_considerations", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rollup_considerations", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
-        $result = eF_getTableData("scorm_sequencing_rollup_controls", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rollup_controls", "*", "content_ID in ($scormContentIds)");
         foreach ($result as $value) {
             $units[$value['content_ID']] = array_merge($units[$value['content_ID']], $value);
         }
         //SCORM 2004 Rollup rules
         //First get all rollup rules to an array and assign them to each rollup rull group, based on scorm_sequencing_rollup_rules_ID
         $allRollupRules = array();
-        $result = eF_getTableData("scorm_sequencing_rollup_rule", "*");
+        $result = sC_getTableData("scorm_sequencing_rollup_rule", "*");
   foreach ($result as $value) {
             $allRollupRules[$value['scorm_sequencing_rollup_rules_ID']][] = $value;
         }
         //Now, asssign the rollup rule and the group to the unit
-        $result = eF_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID in ($scormContentIds)");
   foreach ($result as $value) {
    $value['rollup_rule'] = $allRollupRules[$value['id']];
             $units[$value['content_ID']]['rollup_rules'][] = $value;
@@ -1047,13 +1047,13 @@ class MagesterContentTree extends MagesterTree
         }
         //First get all sequencing rules to an array and assign them to each sequencing rull group, based on scorm_sequencing_rules_ID
         $allRules = array();
-        $result = eF_getTableData("scorm_sequencing_rule", "*");
+        $result = sC_getTableData("scorm_sequencing_rule", "*");
   foreach ($result as $value) {
    $allRules[$value['scorm_sequencing_rules_ID']][] = $value;
             //$allRollupRules[$value['scorm_sequencing_rollup_rules_ID']][] = array('rollup_rule' => $value);
         }
         //Now, asssign the sequencing rule and the group to the unit
-        $result = eF_getTableData("scorm_sequencing_rules", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rules", "*", "content_ID in ($scormContentIds)");
   foreach ($result as $key => $value) {
    $value['rule'] = $allRules[$value['id']];
             $units[$value['content_ID']]['rules'][] = $value;
@@ -1068,13 +1068,13 @@ class MagesterContentTree extends MagesterTree
      //  pr($value);
 /*
 
-        $result = eF_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rollup_rules", "*", "content_ID in ($scormContentIds)");
 
         $array['rollup_rules'] = $result;
 
         foreach ($result as $key => $value) {
 
-            $result = eF_getTableData("scorm_sequencing_rollup_rule", "*", "scorm_sequencing_rollup_rules_ID = ".$value['id']);
+            $result = sC_getTableData("scorm_sequencing_rollup_rule", "*", "scorm_sequencing_rollup_rules_ID = ".$value['id']);
 
             $array['rollup_rules'][$key]['rollup_rule'] = $result;
 
@@ -1084,13 +1084,13 @@ class MagesterContentTree extends MagesterTree
 
         //SCORM 2004 Rules
 
-        $result = eF_getTableData("scorm_sequencing_rules", "*", "content_ID in ($scormContentIds)");
+        $result = sC_getTableData("scorm_sequencing_rules", "*", "content_ID in ($scormContentIds)");
 
         $array['rules'] = $result;
 
         foreach ($result as $key => $value) {
 
-            $result = eF_getTableData("scorm_sequencing_rule", "*", "scorm_sequencing_rules_ID = ".$value['id']);
+            $result = sC_getTableData("scorm_sequencing_rule", "*", "scorm_sequencing_rules_ID = ".$value['id']);
 
             $array['rules'][$key]['rule'] = $result;
 
@@ -1457,7 +1457,7 @@ class MagesterContentTree extends MagesterTree
             }
             $rules = array();
             if (sizeof($contentIds) > 0) {
-                $rules = eF_getTableData("rules", "*", "content_ID in (".implode(",", $contentIds).") or lessons_ID=".$this -> lessonId);
+                $rules = sC_getTableData("rules", "*", "content_ID in (".implode(",", $contentIds).") or lessons_ID=".$this -> lessonId);
             }
             if (sizeof($rules) > 0) {
                 foreach ($rules as $value) {
@@ -1518,8 +1518,8 @@ class MagesterContentTree extends MagesterTree
             $rules = array($rules);
         }
         foreach ($rules as $ruleId) {
-            if (eF_checkParameter($ruleId, 'id') && in_array($ruleId, array_keys($this -> rules))) {
-                eF_deleteTableData("rules", "id=$ruleId");
+            if (sC_checkParameter($ruleId, 'id') && in_array($ruleId, array_keys($this -> rules))) {
+                sC_deleteTableData("rules", "id=$ruleId");
                 unset($this -> rules[$ruleId]);
             }
         }
@@ -1631,8 +1631,8 @@ class MagesterContentTree extends MagesterTree
      */
     public function getComments($queryUnit = false)
     {
-        if ($queryUnit && eF_checkParameter($queryUnit, 'id')) {
-            $result = eF_getTableData("comments", "*", "content_ID = ".$queryUnit);
+        if ($queryUnit && sC_checkParameter($queryUnit, 'id')) {
+            $result = sC_getTableData("comments", "*", "content_ID = ".$queryUnit);
         } else {
             //Get all ids
             $contentIds = array();
@@ -1640,7 +1640,7 @@ class MagesterContentTree extends MagesterTree
                 $contentIds[] = $id;
             }
             if (sizeof($contentIds) > 0) {
-                $result = eF_getTableData("comments", "*", "content_ID in (".implode(",", $contentIds).")");
+                $result = sC_getTableData("comments", "*", "content_ID in (".implode(",", $contentIds).")");
             } else {
                 $result = array();
             }
@@ -1698,7 +1698,7 @@ class MagesterContentTree extends MagesterTree
             }
         }
         if (sizeof($ids) > 0) {
-            eF_deleteTableData("comments", "id in (".implode(",", $ids).")");
+            sC_deleteTableData("comments", "id in (".implode(",", $ids).")");
         }
     }
     /**
@@ -1736,10 +1736,10 @@ class MagesterContentTree extends MagesterTree
      */
     public function repairTree()
     {
-        $units = eF_getTableData("content", "*", "lessons_ID=".$this -> lessonId); //Get all lesson units
+        $units = sC_getTableData("content", "*", "lessons_ID=".$this -> lessonId); //Get all lesson units
         $previous = 0;
         foreach ($units as $key => $value) {
-            eF_updateTableData("content", array("previous_content_ID" => $previous, "parent_content_ID" => 0), "id=".$value['id']); //Update succession information and erase parent information
+            sC_updateTableData("content", array("previous_content_ID" => $previous, "parent_content_ID" => 0), "id=".$value['id']); //Update succession information and erase parent information
             $previous = $value['id'];
         }
     }
@@ -1778,11 +1778,11 @@ class MagesterContentTree extends MagesterTree
         $seenContent = MagesterStats :: getStudentsSeenContent($this -> lessonId, $login);
 
         $seenNodes = array_keys($seenContent[$this -> lessonId][$login]);
-        $resultScorm = eF_getTabledataFlat("scorm_data", "content_ID, lesson_status", "users_LOGIN='$login'");
+        $resultScorm = sC_getTabledataFlat("scorm_data", "content_ID, lesson_status", "users_LOGIN='$login'");
         if (is_array($resultScorm['content_ID'])) {
         	$resultScorm = array_combine($resultScorm['content_ID'], $resultScorm['lesson_status']);
         }
-        $result = eF_getTableData("content c, completed_tests ct, tests t", "t.content_ID, ct.status, ct.timestamp", "ct.status != 'deleted' and ct.archive = 0 and c.id = t.content_ID and c.lessons_ID = ".$this -> lessonId." and ct.tests_ID = t.id and ct.users_LOGIN='$login'");
+        $result = sC_getTableData("content c, completed_tests ct, tests t", "t.content_ID, ct.status, ct.timestamp", "ct.status != 'deleted' and ct.archive = 0 and c.id = t.content_ID and c.lessons_ID = ".$this -> lessonId." and ct.tests_ID = t.id and ct.users_LOGIN='$login'");
         foreach ($result as $value) {
             $resultTests[$value['content_ID']] = $value['status'];
             $resultTestsTimes[$value['content_ID']] = $value['timestamp'];
@@ -1846,7 +1846,7 @@ class MagesterContentTree extends MagesterTree
          $testQuestions = $oldTest -> getQuestions(true);
          $newQuestions = array();
          if (sizeof($testQuestions) > 0) {
-          $result = eF_getTableData("questions", "*", "id in (".implode(",", array_keys($testQuestions)).")");
+          $result = sC_getTableData("questions", "*", "id in (".implode(",", array_keys($testQuestions)).")");
           foreach ($result as $value) {
            $questionData[$value['id']] = $value;
            unset($questionData[$value['id']]['id']);
@@ -1947,12 +1947,12 @@ class MagesterContentTree extends MagesterTree
             $sourceUnit = new MagesterUnit($sourceUnit);
         }
         if ($sourceUnit -> offsetGet('ctg_type') == 'tests') {
-            $tid = eF_getTableData("tests, content", "tests.id as id", "tests.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id'));
+            $tid = sC_getTableData("tests, content", "tests.id as id", "tests.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id'));
             $testUnit = $this -> copyTest($tid[0]['id'], $targetUnit);
 
             return $testUnit;
         } elseif ($sourceUnit -> offsetGet('ctg_type') == "scorm") {
-            $sid = eF_getTableData("scorm_data, content", "scorm_data.id", "scorm_data.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id')." and scorm_data.users_LOGIN is null");
+            $sid = sC_getTableData("scorm_data, content", "scorm_data.id", "scorm_data.content_ID = content.id and content.id =".$sourceUnit -> offsetGet('id')." and scorm_data.users_LOGIN is null");
             $scormUnit = $this -> copyScorm($sid[0]['id'], $sourceUnit, $targetUnit);
 
             return $scormUnit;
@@ -2029,12 +2029,12 @@ class MagesterContentTree extends MagesterTree
         if ($targetUnit) {
             if ($targetUnit instanceOf MagesterUnit) {
                 $newUnit['parent_content_ID'] = $targetUnit -> offsetGet('id');
-            } elseif (eF_checkParameter($targetUnit, 'id')) {
+            } elseif (sC_checkParameter($targetUnit, 'id')) {
                 $newUnit['parent_content_ID'] = $targetUnit;
             }
             if ($previousUnit instanceOf MagesterUnit) {
                 $newUnit['previous_content_ID'] = $previousUnit -> offsetGet('id');
-            } elseif (eF_checkParameter($previousUnit, 'id')) {
+            } elseif (sC_checkParameter($previousUnit, 'id')) {
                 $newUnit['previous_content_ID'] = $previousUnit;
             }
             $unit = $this -> insertNode($newUnit);
@@ -2076,12 +2076,12 @@ class MagesterContentTree extends MagesterTree
         $unit -> persist();
   // copying questions that belong to this unit
   if ($copyQuestions) {
-   $questions = eF_getTableData("questions","*","content_ID=".$sourceUnit -> offsetGet('id'));
+   $questions = sC_getTableData("questions","*","content_ID=".$sourceUnit -> offsetGet('id'));
    for ($k = 0; $k < sizeof($questions); $k++) {
     $questions[$k]['content_ID'] = $unit-> offsetGet('id');
     $questions[$k]['lessons_ID'] = $unit-> offsetGet('lessons_ID');
     unset($questions[$k]['id']);
-    eF_insertTableData("questions",$questions[$k]);
+    sC_insertTableData("questions",$questions[$k]);
    }
   }
 
@@ -2123,11 +2123,11 @@ class MagesterContentTree extends MagesterTree
     public function copyScorm($sid, $sourceUnit, $targetUnit)
     {
         $newUnit = $this -> copySimpleUnit($sourceUnit, $targetUnit, false);
-        $data = eF_getTableData("scorm_data", "*", "id = ".$sid);
+        $data = sC_getTableData("scorm_data", "*", "id = ".$sid);
         $scorm_array = $data[0];
         unset($scorm_array['id']);
         $scorm_array['content_ID'] = $newUnit -> offsetGet('id');
-        eF_insertTableData("scorm_data", $scorm_array);
+        sC_insertTableData("scorm_data", $scorm_array);
 
         return $newUnit;
     }
@@ -2153,7 +2153,7 @@ class MagesterContentTree extends MagesterTree
         $fields['data'] = (string) $unitelement->data;
         $fields['ctg_type'] = (string) $unitelement->ctg_type;
         $fields['parent_content_ID'] = $parentid;
-        $uid = ef_insertTableData("content", $fields);
+        $uid = sC_insertTableData("content", $fields);
         MagesterSearch :: insertText($fields['name'], $uid, "content", "title");
         MagesterSearch :: insertText($fields['data'], $uid, "content", "data");
         if ($fields['ctg_type'] == 'tests') {
@@ -2167,7 +2167,7 @@ class MagesterContentTree extends MagesterTree
             $testfields['shuffle_questions'] = (string) $unitelement->test[0]->shuffle_questions;
             $testfields['shuffle_answers'] = (string) $unitelement->test[0]->shuffle_answers;
             $testfields['given_answers'] = (string) $unitelement->test[0]->given_answers;
-            $tid = ef_insertTableData("tests", $testfields);
+            $tid = sC_insertTableData("tests", $testfields);
         }
         //import the subunits
         for ($i = 0; $i < sizeof($unitelement->unit); $i++) {

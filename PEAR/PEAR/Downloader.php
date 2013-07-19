@@ -31,7 +31,7 @@ require_once 'PEAR/Common.php';
 define('PEAR_INSTALLER_OK',       1);
 define('PEAR_INSTALLER_FAILED',   0);
 define('PEAR_INSTALLER_SKIPPED', -1);
-define('PEAR_INSTALLER_ERROR_NO_PREF_STATE', 2);
+define('PEAR_INSTALLER_ERROR_NO_PRsC_STATE', 2);
 
 /**
  * Administration class used to download anything from the internet (PEAR Packages,

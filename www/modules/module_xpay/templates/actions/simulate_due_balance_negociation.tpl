@@ -110,7 +110,7 @@
 	</div>	
 	
 {/capture}
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XPAY_SIMULATE_NEGOCIATION
 	data			= $smarty.capture.t_xpay_simulate_statement
 }

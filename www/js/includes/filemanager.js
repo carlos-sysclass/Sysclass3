@@ -24,7 +24,7 @@ function pasteFiles(el, tableId) {
    el.previous().show();
    el.hide();
    el.addClassName('sprite16').setAttribute('src', 'themes/default/images/others/transparent.gif');
-   eF_js_rebuildTable($('filename_'+tableId).down().getAttribute('tableIndex'), 0, '', 'desc', $('copy_current_directory').value);
+   sC_js_rebuildTable($('filename_'+tableId).down().getAttribute('tableIndex'), 0, '', 'desc', $('copy_current_directory').value);
   }
  });
 }
@@ -104,14 +104,14 @@ function uncompressFile(el, id) {
  ajaxRequest(el, url, parameters, onUncompressFile);
 }
 function onUncompressFile(el, response) {
- eF_js_rebuildTable($("filename_"+tableId).down().getAttribute("tableIndex"), 0, "", "desc", $(tableId).getAttribute("currentDir"));
+ sC_js_rebuildTable($("filename_"+tableId).down().getAttribute("tableIndex"), 0, "", "desc", $(tableId).getAttribute("currentDir"));
 }
 function deleteFolder(el, id) {
  parameters = {delete_folder:id, method: 'get'};
  ajaxRequest(el, url, parameters, onDeleteFolder);
 }
 function onDeleteFolder(el, response) {
- eF_js_rebuildTable($("filename_"+tableId).down().getAttribute("tableIndex"), 0, "", "desc", "");
+ sC_js_rebuildTable($("filename_"+tableId).down().getAttribute("tableIndex"), 0, "", "desc", "");
 }
 function addUploadBox(el) {
  Element.extend(el);

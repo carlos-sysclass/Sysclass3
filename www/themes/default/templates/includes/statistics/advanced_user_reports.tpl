@@ -16,7 +16,7 @@
   </span>
  </div>
  {else}
- <div>{$smarty.const._NOREPORTSFOUNDINTHESYSTEM}. {if $smarty.session.s_type=='administrator'}<a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&tab=builder&add=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDREPORT}', 0)">{$smarty.const._YOUMAYCREATEONE}</a>{/if}</div>
+ <div>{$smarty.const._NOREPORTSFOUNDINTHESYSTEM}. {if $smarty.session.s_type=='administrator'}<a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&tab=builder&add=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDREPORT}', 0)">{$smarty.const._YOUMAYCREATEONE}</a>{/if}</div>
  {/if}
  {if $T_REPORT}
 
@@ -98,7 +98,7 @@
 <!--/ajax:usersTable-->
 
  <div class = ""><span>{$smarty.const._CURREPAGEOPERATIONS}:</span>
-  <img class = "ajaxHandle" src = "images/16x16/refresh.png" alt = "{$smarty.const._REFRESHTABLE}" title = "{$smarty.const._REFRESHTABLE}" onclick = "eF_js_rebuildTable('usersTable', 0, 'null', 'desc');"/>
+  <img class = "ajaxHandle" src = "images/16x16/refresh.png" alt = "{$smarty.const._REFRESHTABLE}" title = "{$smarty.const._REFRESHTABLE}" onclick = "sC_js_rebuildTable('usersTable', 0, 'null', 'desc');"/>
   <img class = "ajaxHandle" src = "images/file_types/xls.png" alt = "{$smarty.const._EXPORTTOXLS}" title = "{$smarty.const._EXPORTTOXLS}" onclick = "exportXls(this);"/>
   <img class = "ajaxHandle" src = "images/file_types/txt.png" alt = "{$smarty.const._EXPORTTOCSV}" title = "{$smarty.const._EXPORTTOCSV}" onclick = "exportCsv(this);"/>
   {if $smarty.session.s_type == 'administrator'}
@@ -107,11 +107,11 @@
    <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._ARCHIVE}" title = "{$smarty.const._ARCHIVE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) applyOperation(this, 'archive');"/>
   {/if}
   <img class = "ajaxHandle" src = "images/16x16/undo.png" alt = "{$smarty.const._RESETLEARNINGPROGRESS}" title = "{$smarty.const._RESETLEARNINGPROGRESS}"onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) applyOperation(this, 'reset');"/>
-  <img class = "ajaxHandle" src = "images/16x16/users.png" alt = "{$smarty.const._GROUPOPERATIONS}" title = "{$smarty.const._GROUPOPERATIONS}" onclick = "eF_js_showDivPopup('{$smarty.const._GROUPOPERATIONS}', 0, 'add_group_table')"/>
-  <img class = "ajaxHandle" src = "images/16x16/courses.png" alt = "{$smarty.const._COURSEOPERATIONS}" title = "{$smarty.const._COURSEOPERATIONS}" onclick = "eF_js_showDivPopup('{$smarty.const._COURSEOPERATIONS}', 0, 'add_course_table')"/>
-  <img class = "ajaxHandle" src = "images/16x16/lessons.png" alt = "{$smarty.const._LESSONOPERATIONS}" title = "{$smarty.const._LESSONOPERATIONS}" onclick = "eF_js_showDivPopup('{$smarty.const._LESSONOPERATIONS}', 0, 'add_lesson_table')"/>
-  {*<img class = "ajaxHandle" src = "images/16x16/certificate.png" alt = "{$smarty.const._CERTIFICATEOPERATIONS}" title = "{$smarty.const._CERTIFICATEOPERATIONS}"onclick = "eF_js_showDivPopup('{$smarty.const._CERTIFICATEOPERATIONS}', 0, 'add_certificate_table')"/>*}
-  {*<img class = "ajaxHandle" src = "images/16x16/mail.png" alt = "{$smarty.const._SENDEMAIL}" title = "{$smarty.const._SENDEMAIL}" onclick = "eF_js_showDivPopup('{$smarty.const._SENDEMAIL}', 2);$('popup_frame').src='{$smarty.server.PHP_SELF}?ctg=messages&add=1&popup=1';"/>*}
+  <img class = "ajaxHandle" src = "images/16x16/users.png" alt = "{$smarty.const._GROUPOPERATIONS}" title = "{$smarty.const._GROUPOPERATIONS}" onclick = "sC_js_showDivPopup('{$smarty.const._GROUPOPERATIONS}', 0, 'add_group_table')"/>
+  <img class = "ajaxHandle" src = "images/16x16/courses.png" alt = "{$smarty.const._COURSEOPERATIONS}" title = "{$smarty.const._COURSEOPERATIONS}" onclick = "sC_js_showDivPopup('{$smarty.const._COURSEOPERATIONS}', 0, 'add_course_table')"/>
+  <img class = "ajaxHandle" src = "images/16x16/lessons.png" alt = "{$smarty.const._LESSONOPERATIONS}" title = "{$smarty.const._LESSONOPERATIONS}" onclick = "sC_js_showDivPopup('{$smarty.const._LESSONOPERATIONS}', 0, 'add_lesson_table')"/>
+  {*<img class = "ajaxHandle" src = "images/16x16/certificate.png" alt = "{$smarty.const._CERTIFICATEOPERATIONS}" title = "{$smarty.const._CERTIFICATEOPERATIONS}"onclick = "sC_js_showDivPopup('{$smarty.const._CERTIFICATEOPERATIONS}', 0, 'add_certificate_table')"/>*}
+  {*<img class = "ajaxHandle" src = "images/16x16/mail.png" alt = "{$smarty.const._SENDEMAIL}" title = "{$smarty.const._SENDEMAIL}" onclick = "sC_js_showDivPopup('{$smarty.const._SENDEMAIL}', 2);$('popup_frame').src='{$smarty.server.PHP_SELF}?ctg=messages&add=1&popup=1';"/>*}
  </div>
  <div id = "add_group_table" style = "display:none">
   {capture name = "t_add_group_table_code"}
@@ -125,7 +125,7 @@
      <td class = "submitCell">{$T_GROUP_FORM.submit.html}</td></tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._GROUP data = $smarty.capture.t_add_group_table_code image = '32x32/groups.png'}
+  {sC_template_printBlock title = $smarty.const._GROUP data = $smarty.capture.t_add_group_table_code image = '32x32/groups.png'}
  </div>
  <div id = "add_course_table" style = "display:none">
   {capture name = "t_add_course_table_code"}
@@ -137,7 +137,7 @@
      <td class = "submitCell">{$T_COURSE_FORM.submit.html}</td></tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._COURSE data = $smarty.capture.t_add_course_table_code image = '32x32/courses.png'}
+  {sC_template_printBlock title = $smarty.const._COURSE data = $smarty.capture.t_add_course_table_code image = '32x32/courses.png'}
  </div>
  <div id = "add_lesson_table" style = "display:none">
   {capture name = "t_add_lesson_table_code"}
@@ -149,7 +149,7 @@
      <td class = "submitCell">{$T_LESSON_FORM.submit.html}</td></tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._LESSON data = $smarty.capture.t_add_lesson_table_code image = '32x32/lessons.png'}
+  {sC_template_printBlock title = $smarty.const._LESSON data = $smarty.capture.t_add_lesson_table_code image = '32x32/lessons.png'}
  </div>
  <div id = "add_certificate_table" style = "display:none">
   {capture name = "t_add_certificate_table_code"}
@@ -165,7 +165,7 @@
    </table>
   </form>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._CERTIFICATE data = $smarty.capture.t_add_certificate_table_code image = '32x32/certificates.png'}
+  {sC_template_printBlock title = $smarty.const._CERTIFICATE data = $smarty.capture.t_add_certificate_table_code image = '32x32/certificates.png'}
  </div>
  {/if}
 {/capture}
@@ -176,7 +176,7 @@
    <form onsubmit = "location = location.toString().replace(/&report=\d*/, '').replace(/&tab=\w*/, '')+'&tab=builder&report='+$('reports_list_edit').options[$('reports_list_edit').options.selectedIndex].value;return false">
   <span>
    <img src = "images/16x16/add.png" alt = "{$smarty.const._ADDREPORT}" title = "{$smarty.const._ADDREPORT}" />
-   <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._REPORT}', 0)">{$smarty.const._ADDREPORT}</a>
+   <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._REPORT}', 0)">{$smarty.const._ADDREPORT}</a>
   </span>
   {if $T_REPORT_NAMES}
   <span>
@@ -200,19 +200,19 @@
  {if $T_REPORT}
    <div class = "mediumHeader">
     <span>{$smarty.const._VIEWINGREPORT}: {$T_REPORT.name}</span>
-    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._REPORT}', 0)">
+    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._REPORT}', 0)">
      <img class = "handle" src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" onclick = ""/>
     </a>
    </div>
    <div class = "headerTools">
     <span>
      <img src = "images/16x16/add.png" alt = "{$smarty.const._ADDCONDITION}" title = "{$smarty.const._ADDCONDITION}" />
-     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add_condition=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDCONDITION}', 3)">{$smarty.const._ADDCONDITION}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add_condition=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDCONDITION}', 3)">{$smarty.const._ADDCONDITION}</a>
      {*<a href = "javascript:void(0)" onclick = "addCondition()">{$smarty.const._ADDCONDITION}</a>*}
     </span>
     <span>
      <img src = "images/16x16/order.png" alt = "{$smarty.const._CHANGECONDITIONORDER}" title = "{$smarty.const._CHANGECONDITIONORDER}" />
-     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&order_condition=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CHANGECONDITIONORDER}', 2)">{$smarty.const._CHANGECONDITIONORDER}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&order_condition=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CHANGECONDITIONORDER}', 2)">{$smarty.const._CHANGECONDITIONORDER}</a>
     </span>
    </div>
 
@@ -263,8 +263,8 @@
      <td class = "centerAlign">{$item.relation}</td>
      <td class = "centerAlign"><span style = "display:none">{$item.status}</span><img class = "ajaxHandle" src = "images/16x16/{if $item.status}trafficlight_green{else}trafficlight_red{/if}.png" alt = "{$smarty.const._STATUS}" title = "{$smarty.const._STATUS}" onclick = "setConditionStatus(this, '{$key}')"/></td>
      <td class = "centerAlign">
-      <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit_condition={$key}&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDCONDITION}', 3)">
-       <img class = "ajaxHandle" src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" onclick = "eF_js_showDivPopup();"/></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit_condition={$key}&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDCONDITION}', 3)">
+       <img class = "ajaxHandle" src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" onclick = "sC_js_showDivPopup();"/></a>
       <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "deleteCondition(this, '{$key}')"/>
      </td>
     </tr>
@@ -279,12 +279,12 @@
 {*
     <span>
      <img src = "images/16x16/add.png" alt = "{$smarty.const._ADDCOLUMN}" title = "{$smarty.const._ADDCOLUMN}" />
-     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add_column=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._ADDCOLUMN}', 2)">{$smarty.const._ADDCOLUMN}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&add_column=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._ADDCOLUMN}', 2)">{$smarty.const._ADDCOLUMN}</a>
     </span>
 *}
     <span>
      <img src = "images/16x16/order.png" alt = "{$smarty.const._CHANGECOLUMNORDER}" title = "{$smarty.const._CHANGECOLUMNORDER}" />
-     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&order_column=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._CHANGECOLUMNORDER}', 2)">{$smarty.const._CHANGECOLUMNORDER}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&order_column=1&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._CHANGECOLUMNORDER}', 2)">{$smarty.const._CHANGECOLUMNORDER}</a>
     </span>
    </div>
    <script>translations['left'] = '{$smarty.const._LEFT}';translations['center'] = '{$smarty.const._CENTER}';translations['right'] = '{$smarty.const._RIGHT}';</script>
@@ -316,8 +316,8 @@
      <td class = "centerAlign"><span style = "display:none">{$item.default_sort}</span><img class = "ajaxHandle" src = "images/16x16/{if $item.default_sort}pin_green{else}pin_red{/if}.png" alt = "{$smarty.const._DEFAULTSORT}" title = "{$smarty.const._DEFAULTSORT}" onclick = "setDefaultSort(this, '{$key}')"/></td>
      <td class = "centerAlign"><span style = "display:none">{$item.status}</span><img class = "ajaxHandle" src = "images/16x16/{if $item.status}trafficlight_green{else}trafficlight_red{/if}.png" alt = "{$smarty.const._STATUS}" title = "{$smarty.const._STATUS}" onclick = "setColumnStatus(this, '{$key}')"/></td>
      <td class = "centerAlign">
-      <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit_column={$key}&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._EDITCOLUMN}', 3)">
-       <img class = "ajaxHandle" src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" onclick = "eF_js_showDivPopup();"/></a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&edit_column={$key}&report={$smarty.get.report}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._EDITCOLUMN}', 3)">
+       <img class = "ajaxHandle" src = "images/16x16/edit.png" alt = "{$smarty.const._EDIT}" title = "{$smarty.const._EDIT}" onclick = "sC_js_showDivPopup();"/></a>
      </td>
     </tr>
     {foreachelse}
@@ -330,17 +330,17 @@
 
 {capture name = 't_tabber_code'}
 <div class = "tabber">
- {eF_template_printBlock tabber = "users" title = $smarty.const._REPORTS data = $smarty.capture.t_users_table_code image = '32x32/reports.png'}
- {eF_template_printBlock tabber = "builder" title = $smarty.const._BUILDER data = $smarty.capture.t_report_builder_code image = '32x32/generic.png'}
+ {sC_template_printBlock tabber = "users" title = $smarty.const._REPORTS data = $smarty.capture.t_users_table_code image = '32x32/reports.png'}
+ {sC_template_printBlock tabber = "builder" title = $smarty.const._BUILDER data = $smarty.capture.t_report_builder_code image = '32x32/generic.png'}
 </div>
 {/capture}
 
 
  {if $smarty.get.add || $smarty.get.edit}
   {capture name = 't_new_report_code'}
-   {eF_template_printForm form=$T_ADD_REPORTING_FORM}
+   {sC_template_printForm form=$T_ADD_REPORTING_FORM}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._REPORT data = $smarty.capture.t_new_report_code image = '32x32/reports.png'}
+  {sC_template_printBlock title = $smarty.const._REPORT data = $smarty.capture.t_new_report_code image = '32x32/reports.png'}
 
   {if $T_MESSAGE_TYPE == 'success'}
      <script>parent.location = '{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&report={$T_ADDED_REPORT}&tab=builder';</script>
@@ -380,11 +380,11 @@
        </select>
       {elseif $item.type == 'date'}
        <span id = "{$key}_first_date" {if $T_EDITED_CONDITION.additional != 'between'}style = "display:none"{/if}>
-       {eF_template_html_select_date prefix="from_$key" time=$FROM_TIMESTAMP start_year="-5" end_year="+1"}
+       {sC_template_html_select_date prefix="from_$key" time=$FROM_TIMESTAMP start_year="-5" end_year="+1"}
        </span>
        <span id = "{$key}_second_date" {if $T_EDITED_CONDITION.additional != 'between'}style = "display:none"{/if}>
        {$smarty.const._AND}
-       {eF_template_html_select_date prefix="to_$key" time=$TO_TIMESTAMP start_year="-5" end_year="+1"}
+       {sC_template_html_select_date prefix="to_$key" time=$TO_TIMESTAMP start_year="-5" end_year="+1"}
        </span>
       {/if}
       </td></tr>
@@ -399,7 +399,7 @@
    </form>
 
   {/capture}
-  {eF_template_printBlock title = $smarty.const._ADDCONDITION data = $smarty.capture.t_add_condition_code image = '32x32/add.png'}
+  {sC_template_printBlock title = $smarty.const._ADDCONDITION data = $smarty.capture.t_add_condition_code image = '32x32/add.png'}
 
   {if $smarty.get.message_type == 'success' && !$smarty.get.post_another}
      {*<script>parent.location = '{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&report={$smarty.get.report}&tab=builder';</script>*}
@@ -408,9 +408,9 @@
   {/if}
  {elseif (isset($smarty.get.edit_column) || isset($smarty.get.add_column)) && $smarty.get.report}
   {capture name = 't_add_column_code'}
-   {eF_template_printForm form=$T_ADD_COLUMN_FORM}
+   {sC_template_printForm form=$T_ADD_COLUMN_FORM}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._EDITCOLUMN data = $smarty.capture.t_add_column_code image = '32x32/add.png'}
+  {sC_template_printBlock title = $smarty.const._EDITCOLUMN data = $smarty.capture.t_add_column_code image = '32x32/add.png'}
 
   {if $smarty.get.message_type == 'success' && !$smarty.get.post_another}
      <script>parent.location = '{$smarty.server.PHP_SELF}?ctg=statistics&option=advanced_user_reports&report={$smarty.get.report}&tab=builder';</script>
@@ -440,7 +440,7 @@
     <tr><td><input class = "flatButton" type="button" onclick="saveConditionTree(this)" value="{$smarty.const._SAVECHANGES}"></td></tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.conditions_treeTotal image = '32x32/order.png'}
+  {sC_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.conditions_treeTotal image = '32x32/order.png'}
  {elseif $smarty.get.order_column && $smarty.get.report}
 
   {capture name = 'column_tree'}
@@ -465,11 +465,11 @@
     <tr><td><input class = "flatButton" type="button" onclick="saveColumnTree(this)" value="{$smarty.const._SAVECHANGES}"></td></tr>
    </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.columns_treeTotal image = '32x32/order.png'}
+  {sC_template_printBlock title = $smarty.const._CHANGEORDER data = $smarty.capture.columns_treeTotal image = '32x32/order.png'}
  {else}
   {if $smarty.session.s_type == 'administrator'}
-   {eF_template_printBlock title = $smarty.const._ADVANCEDUSERREPORTS data = $smarty.capture.t_tabber_code image = '32x32/users.png'}
+   {sC_template_printBlock title = $smarty.const._ADVANCEDUSERREPORTS data = $smarty.capture.t_tabber_code image = '32x32/users.png'}
   {else}
-   {eF_template_printBlock title = $smarty.const._REPORTS data = $smarty.capture.t_users_table_code image = '32x32/reports.png'}
+   {sC_template_printBlock title = $smarty.const._REPORTS data = $smarty.capture.t_users_table_code image = '32x32/reports.png'}
   {/if}
  {/if}

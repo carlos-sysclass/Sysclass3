@@ -18,6 +18,8 @@ define("_MODULE_ADMINISTRATOR_TOOLS_ROWSAFFECTED", "listas alteradas");
 define("_MODULE_ADMINISTRATOR_TOOLS_EMPTYSET", "Set vazio");
 define("_MODULE_ADMINISTRATOR_TOOLS_BULKCOMPLETECOURSES", "Concluir cursos e aluas em todo o sistema");
 
+define("_CHANGE_ACCOUNT", "Alterar Acesso");
+
 define("_3DAYS","3 dias");
 define("_5MOSTACTIVEUSERS","5 usuários mais ativos");
 define("_ABANDON","Rejeitar");
@@ -1384,11 +1386,11 @@ define("_EDITOR_INSERT_LINK_TARGET","Target");
 define("_EDITOR_INSERT_LINK_TITLE","Inserir/editar link");
 define("_EDITOR_INSERT_LINK_URL","Link URL");
 define("_EDITOR_INSERT","Inserir");
-define("_EDITOR_INSERTDATETIME_INSERTDATE_DEF_FMT","% Y-% m-% d");
+define("_EDITOR_INSERTDATETIME_INSERTDATE_DsC_FMT","% Y-% m-% d");
 define("_EDITOR_INSERTDATETIME_INSERTDATE_DESC","Inserir data");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_DAY_LONG","novo período (&#39;Domingo&#39;, &#39;Segunda&#39;, &#39;Terça&#39;, &#39;Quarta&#39;, &#39;Quinta&#39;, &#39;Sexta&#39;, &#39;Sábado&#39;, &#39;Domingo&#39;)");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_DAY_SHORT","novo período (&#39;Domingo&#39;, &#39;Segunda&#39;, &#39;Terça&#39;, &#39;Quarta&#39;, &#39;Quinta&#39;, &#39;Sexta&#39;, &#39;Sábado&#39;, &#39;Domingo&#39;)");
-define("_EDITOR_INSERTDATETIME_INSERTTIME_DEF_FMT","% H:% M:% S");
+define("_EDITOR_INSERTDATETIME_INSERTTIME_DsC_FMT","% H:% M:% S");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_DESC","Inserir hora");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_MONTHS_LONG","novo período ( &#39;Janeiro&#39;, &#39;Fevereiro&#39;, &#39;Março&#39;, &#39;Abril&#39;, &#39;Maio&#39;, &#39;Junho&#39;, &#39;Julho&#39;, &#39;Agosto&#39;, &#39;Setembro&#39;, &#39;Outubro&#39;, &#39;Novembro&#39;, &#39;Dezembro&#39; )");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_MONTHS_SHORT","novo período ( \"/ 01 /\", \"/ 02 /\", \"/ 03 /\", \"/ 04 /\", \"/ 05 /\", \"/ 06 /\", \"/ 07 /\", \"/ 08 /\", \"/ 09 /\", \"/ 10 /\", \"/ 11 /\", \"/ 12 /\" )");

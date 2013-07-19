@@ -62,7 +62,7 @@
                 var img_id   = 'img_selectAll';
             }
 
-            var position = eF_js_findPos(el);
+            var position = sC_js_findPos(el);
             var img      = document.createElement("img");
 
             img.style.position = 'absolute';
@@ -95,17 +95,17 @@
 <div class = "tabber">
 	<div class = "tabbertab">
         <h3>{$smarty.const._BLOGS_EDITBLOG}</h3>
-            {eF_template_printBlock title=$smarty.const._BLOGS_BLOGS_FORM data=$smarty.capture.t_module_blogs_addBlog image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+            {sC_template_printBlock title=$smarty.const._BLOGS_BLOGS_FORM data=$smarty.capture.t_module_blogs_addBlog image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 	</div>
 	{if isset($smarty.get.edit_blog)}
     <div class = "tabbertab{if $smarty.get.tab=='blog_creators'} tabbertabdefault{/if}">
         <h3>{$smarty.const._BLOGS_BLOGSCREATORS}</h3>
-        {eF_template_printBlock title = $smarty.const._BLOGS_SELECTBLOGCREATORS data = $smarty.capture.t_users_to_blogs_code image = $T_MODULE_BASELINK|cat:'images/book_blue_preferences.png' absoluteImagePath=1}
+        {sC_template_printBlock title = $smarty.const._BLOGS_SELECTBLOGCREATORS data = $smarty.capture.t_users_to_blogs_code image = $T_MODULE_BASELINK|cat:'images/book_blue_preferences.png' absoluteImagePath=1}
     </div>
 	{/if}
 </div>
 {/capture}
-{eF_template_printBlock title = $smarty.const._BLOGS_BLOG data = $smarty.capture.t_module_blogs_code image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title = $smarty.const._BLOGS_BLOG data = $smarty.capture.t_module_blogs_code image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
  
 {elseif isset($smarty.get.add_article) || isset($smarty.get.edit_article)}
 {capture name = 't_module_blogs_addArticle}
@@ -129,7 +129,7 @@
     </form>
 	
 {/capture}
-{eF_template_printBlock title=$smarty.const._BLOGS_ARTICLESFORM data=$smarty.capture.t_module_blogs_addArticle image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title=$smarty.const._BLOGS_ARTICLESFORM data=$smarty.capture.t_module_blogs_addArticle image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 
 {elseif isset($smarty.get.add_comment) || isset($smarty.get.edit_comment)}
 {capture name = 't_module_blogs_addComment}
@@ -180,7 +180,7 @@
 					{/foreach}
 	</table>
 {/capture}
-{eF_template_printBlock title=$smarty.const._BLOGS_COMMENTS_FORM data=$smarty.capture.t_module_blogs_addComment image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title=$smarty.const._BLOGS_COMMENTS_FORM data=$smarty.capture.t_module_blogs_addComment image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 {elseif (isset($smarty.get.view_blog))}	
 {capture name = 't_module_blogs_viewBlog}
 	<table width="100%" border="0" cellpadding="3px">
@@ -229,8 +229,8 @@
 				<tr><td valign="top"><span class="moduleblogsSubTitle">{$smarty.const._BLOGS_LASTCOMMENTS}</span></td></tr>
 				{foreach name = "blogLastComments_list" item = "comment" key = "key" from = $T_BLOGS_LASTCOMMENTS}
 					{if $smarty.foreach.blogLastComments_list.iteration <= 10}
-					{assign var="commentData" value=$comment.data|eF_truncate:40:"...":true}
-						<tr  class = "oddRowColor"><td valign="top"><span class="moduleblogsGray">{$comment.users_LOGIN} {$smarty.const._BLOGS_COMMENTEDON} <a href="{$T_MODULE_BASEURL}&view_article={$comment.article_id}">{$comment.title|eF_truncate:27:"...":true}</a></span><br />
+					{assign var="commentData" value=$comment.data|sC_truncate:40:"...":true}
+						<tr  class = "oddRowColor"><td valign="top"><span class="moduleblogsGray">{$comment.users_LOGIN} {$smarty.const._BLOGS_COMMENTEDON} <a href="{$T_MODULE_BASEURL}&view_article={$comment.article_id}">{$comment.title|sC_truncate:27:"...":true}</a></span><br />
 						<div><span style="float: left;"><a href="{$T_MODULE_BASEURL}&view_article={$comment.article_id}#{$comment.comment_id}">{$commentData|replace:'<p>':' '}</a></span><span class="moduleblogsGray" style="float: right;text-align: right;">#filter:timestamp_time-{$comment.timestamp}#</span></div></td></tr>
 					{/if}
 				{foreachelse}
@@ -240,7 +240,7 @@
 				<tr><td valign="top"><span class="moduleblogsSubTitle">{$smarty.const._BLOGS_LASTARTICLES}</span></td></tr>
 				{foreach name = "blogLastArticles_list" item = "article" key = "key" from = $T_BLOGS_POSTS}
 					{if $smarty.foreach.blogLastArticles_list.iteration <= 20}
-						<tr  class = "oddRowColor"><td valign="top"><div><span style="float: left;"><a href="{$T_MODULE_BASEURL}&view_article={$article.id}">{$article.title|eF_truncate:40:"...":true}</a></span><span class="moduleblogsGray" style="float: right;">#filter:timestamp_time-{$article.timestamp}#</span></div></td></tr>
+						<tr  class = "oddRowColor"><td valign="top"><div><span style="float: left;"><a href="{$T_MODULE_BASEURL}&view_article={$article.id}">{$article.title|sC_truncate:40:"...":true}</a></span><span class="moduleblogsGray" style="float: right;">#filter:timestamp_time-{$article.timestamp}#</span></div></td></tr>
 					{/if}
 				{foreachelse}
 					<tr class = "oddRowColor defaultRowHeight"><td colspan = "100%" class = "emptyCategory">{$smarty.const._BLOGS_NOARTICLESSFOUND}</td></tr>
@@ -274,7 +274,7 @@
 		</td></tr>
 	</table>
 {/capture}
-{eF_template_printBlock title=$T_BLOGS_BLOG.name data=$smarty.capture.t_module_blogs_viewBlog image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title=$T_BLOGS_BLOG.name data=$smarty.capture.t_module_blogs_viewBlog image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 {elseif (isset($smarty.get.view_article))}	
 {capture name = 't_module_blogs_viewArticle}
 	<table width="100%" border="0" cellpadding="3px">
@@ -315,7 +315,7 @@
 	</table>
 
 {/capture}	
-{eF_template_printBlock title=$T_BLOGS_BLOG.name|cat:" ("|cat:$T_BLOGS_ARTICLE.title|cat:")" data=$smarty.capture.t_module_blogs_viewArticle image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title=$T_BLOGS_BLOG.name|cat:" ("|cat:$T_BLOGS_ARTICLE.title|cat:")" data=$smarty.capture.t_module_blogs_viewArticle image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 {else}
 {capture name = 't_module_blogs_lessonBlogs}
 {if $smarty.session.s_type == "professor"}
@@ -362,5 +362,5 @@
 </table>
 {/capture}
 
-{eF_template_printBlock title=$smarty.const._BLOGS_BLOG data=$smarty.capture.t_module_blogs_lessonBlogs image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
+{sC_template_printBlock title=$smarty.const._BLOGS_BLOG data=$smarty.capture.t_module_blogs_lessonBlogs image=$T_MODULE_BASELINK|cat:'images/_magesterBlog32.png' absoluteImagePath=1}
 {/if}

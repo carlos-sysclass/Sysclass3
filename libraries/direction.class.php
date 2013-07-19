@@ -95,7 +95,7 @@ class MagesterDirection extends ArrayObject
 
 	 * <code>
 
-	 * $direction_array = eF_getTableData("directions", "*", "id=4");
+	 * $direction_array = sC_getTableData("directions", "*", "id=4");
 
 	 * $direction = new MagesterDirection($direction_array[0]);
 
@@ -113,10 +113,10 @@ class MagesterDirection extends ArrayObject
  function __construct($direction)
  {
   if (!is_array($direction)) {
-   if (!eF_checkParameter($direction, 'id')) {
+   if (!sC_checkParameter($direction, 'id')) {
     throw new MagesterLessonException(_INVALIDID.': '.$direction, MagesterDirectionException :: INVALID_ID);
    }
-   $result = eF_getTableData("directions", "*", "id=".$direction);
+   $result = sC_getTableData("directions", "*", "id=".$direction);
    if (sizeof($result) == 0) {
     throw new MagesterLessonException(_CATEGORYDOESNOTEXIST.': '.$direction, MagesterDirectionException :: DIRECTION_NOT_EXISTS);
    }
@@ -136,7 +136,7 @@ class MagesterDirection extends ArrayObject
 
 	 * <code>
 
-	 * $direction_array = eF_getTableData("directions", "*", "id=4");
+	 * $direction_array = sC_getTableData("directions", "*", "id=4");
 
 	 * $direction = new MagesterDirection($direction_array[0]);
 
@@ -158,7 +158,7 @@ class MagesterDirection extends ArrayObject
   foreach (new MagesterAttributesOnlyFilterIterator($this -> getIterator()) as $key => $value) {
    $fields[$key] = $value;
   }
-  eF_updateTableData("directions", $fields, "id=".$fields['id']);
+  sC_updateTableData("directions", $fields, "id=".$fields['id']);
  }
  /**
 
@@ -170,7 +170,7 @@ class MagesterDirection extends ArrayObject
 
 	 * <code>
 
-	 * $direction_array = eF_getTableData("directions", "*", "id=4");
+	 * $direction_array = sC_getTableData("directions", "*", "id=4");
 
 	 * $direction = new MagesterDirection($direction_array[0]);
 
@@ -188,9 +188,9 @@ class MagesterDirection extends ArrayObject
  function delete()
  {
   foreach (new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($this)), 'id') as $key => $value) {
-   eF_deleteTableData("directions", "id=".$value); //Delete Units from database
-   eF_updateTableData("lessons", array("directions_ID" => 0), "directions_ID=".$value);
-   eF_updateTableData("courses", array("directions_ID" => 0), "directions_ID=".$value);
+   sC_deleteTableData("directions", "id=".$value); //Delete Units from database
+   sC_updateTableData("lessons", array("directions_ID" => 0), "directions_ID=".$value);
+   sC_updateTableData("courses", array("directions_ID" => 0), "directions_ID=".$value);
   }
  }
  /**
@@ -227,14 +227,14 @@ class MagesterDirection extends ArrayObject
  function getLessons($returnObjects = false, $subDirections = false)
  {
   if (!$subDirections) {
-   $result = eF_getTableData("lessons", "id, name", "instance_source = 0 and archive = 0 && directions_ID=".$this['id']);
+   $result = sC_getTableData("lessons", "id, name", "instance_source = 0 and archive = 0 && directions_ID=".$this['id']);
   } else {
    $directions = new MagesterDirectionsTree();
    $children = $directions -> getNodeChildren($this['id']);
    foreach (new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($children)), array('id')) as $value) {
     $siblings[] = $value;
    }
-   $result = eF_getTableData("lessons", "id, name", "instance_source = 0 and archive = 0 && directions_ID in (".implode(",", $siblings).")");
+   $result = sC_getTableData("lessons", "id, name", "instance_source = 0 and archive = 0 && directions_ID in (".implode(",", $siblings).")");
   }
   $lessons = array();
   foreach ($result as $value) {
@@ -277,14 +277,14 @@ class MagesterDirection extends ArrayObject
  function getCourses($returnObjects = false, $subDirections = false)
  {
   if (!$subDirections) {
-   $result = eF_getTableData("courses", "id, name", "archive = 0 && instance_source = 0 && directions_ID=".$this['id']);
+   $result = sC_getTableData("courses", "id, name", "archive = 0 && instance_source = 0 && directions_ID=".$this['id']);
   } else {
    $directionsTree = new MagesterDirectionsTree();
    $children = $directionsTree -> getNodeChildren($this['id']);
    foreach (new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($children)), array('id')) as $value) {
     $siblings[] = $value;
    }
-   $result = eF_getTableData("courses", "id, name", "archive = 0 && instance_source = 0 && directions_ID in (".implode(",", $siblings).")");
+   $result = sC_getTableData("courses", "id, name", "archive = 0 && instance_source = 0 && directions_ID in (".implode(",", $siblings).")");
   }
   $courses = array();
   foreach ($result as $value) {
@@ -327,8 +327,8 @@ class MagesterDirection extends ArrayObject
  public static function createDirection($fields = array())
  {
   !isset($fields['name']) ? $fields['name'] = 'Default direction' : null;
-  $newId = eF_insertTableData("directions", $fields);
-  $result = eF_getTableData("directions", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+  $newId = sC_insertTableData("directions", $fields);
+  $result = sC_getTableData("directions", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
   $direction = new MagesterDirection($result[0]);
 
   return $direction;
@@ -448,7 +448,7 @@ class MagesterDirectionsTree extends MagesterTree
 	 */
  public function reset()
  {
-  $directions = eF_getTableData("directions", "*", "", "name");
+  $directions = sC_getTableData("directions", "*", "", "name");
   if (sizeof($directions) == 0) {
    $this -> tree = new RecursiveArrayIterator(array());
 
@@ -492,7 +492,7 @@ class MagesterDirectionsTree extends MagesterTree
   }
   if (sizeof($rejected) > 0) { //Append rejected nodes to the end of the tree array, updating their parent/previous information
    foreach ($rejected as $key => $value) {
-    eF_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
+    sC_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
     $value['parent_direction_ID'] = 0;
     $tree[0][] = $value;
    }
@@ -508,13 +508,13 @@ class MagesterDirectionsTree extends MagesterTree
 	 */
  public function reset2()
  {
-  $directions = eF_getTableData("directions", "*", "", "name");
-  $result = eF_getTableData("lessons", "*");
+  $directions = sC_getTableData("directions", "*", "", "name");
+  $result = sC_getTableData("lessons", "*");
   $lessons = array();
   foreach ($result as $value) {
    $lessons[$value['directions_ID']][] = new MagesterLesson($value);
   }
-  $result = eF_getTableData("courses", "*");
+  $result = sC_getTableData("courses", "*");
   $courses = array();
   foreach ($result as $value) {
    $courses[$value['directions_ID']][] = new MagesterCourse($value);
@@ -564,7 +564,7 @@ class MagesterDirectionsTree extends MagesterTree
   }
   if (sizeof($rejected) > 0) { //Append rejected nodes to the end of the tree array, updating their parent/previous information
    foreach ($rejected as $key => $value) {
-    eF_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
+    sC_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
     $value['parent_direction_ID'] = 0;
     $tree[0][] = $value;
    }
@@ -732,7 +732,7 @@ class MagesterDirectionsTree extends MagesterTree
  private function parseTreeLessons($lessons)
  {
   if ($lessons === false) { //If a lessons list is not specified, get all active lessons
-   $result = eF_getTableData("lessons", "*", "archive = 0 && active=1", "name"); //Get all lessons at once, thus avoiding looping queries
+   $result = sC_getTableData("lessons", "*", "archive = 0 && active=1", "name"); //Get all lessons at once, thus avoiding looping queries
    foreach ($result as $value) {
     $lessons[$value['id']] = new MagesterLesson($value); //Create an array of MagesterLesson objects
    }
@@ -765,7 +765,7 @@ class MagesterDirectionsTree extends MagesterTree
  private function parseTreeCourses($courses)
  {
   if ($courses === false) { //If a courses list is not specified, get all active courses
-   $result = eF_getTableData("courses", "*", "archive = 0 && active=1", "name"); //Get all courses at once, thus avoiding looping queries
+   $result = sC_getTableData("courses", "*", "archive = 0 && active=1", "name"); //Get all courses at once, thus avoiding looping queries
    foreach ($result as $value) {
     $courses[$value['id']] = new MagesterCourse($value); //Create an array of MagesterCourse objects
    }
@@ -1092,7 +1092,7 @@ class MagesterDirectionsTree extends MagesterTree
 	    $lessonsString .= $this -> printLessonBuyLink($treeLesson, $options);
 	    $lessonsString .= $this -> printLessonLink($treeLesson, $options, $roleBasicType);
 	    $lessonsString .= (isset($treeLesson -> lesson['different_role']) && $treeLesson -> lesson['different_role'] ? '&nbsp;<span class = "courseRole">('.$roleNames[$treeLesson -> lesson['user_type']].')</span>' : '').'
-	           '.(isset($treeLesson -> lesson['remaining']) && !is_null($treeLesson -> lesson['remaining']) && $roles[$treeLesson -> lesson['user_type']] == 'student' ? '<span class = "">('.eF_convertIntervalToTime($treeLesson -> lesson['remaining'], true).' '.mb_strtolower(_REMAINING).')</span>' : '').'
+	           '.(isset($treeLesson -> lesson['remaining']) && !is_null($treeLesson -> lesson['remaining']) && $roles[$treeLesson -> lesson['user_type']] == 'student' ? '<span class = "">('.sC_convertIntervalToTime($treeLesson -> lesson['remaining'], true).' '.mb_strtolower(_REMAINING).')</span>' : '').'
 	          </td>
 	         </tr>';
 	   //}
@@ -1243,9 +1243,9 @@ class MagesterDirectionsTree extends MagesterTree
   }
   if ($lessons === false) { //If a lessons list is not specified, get all active lessons
    if ($showQuestions) {
-    $result = eF_getTableData("lessons l JOIN questions q ON q.lessons_ID = l.id", "l.id, l.name, count(q.id) as questions", "q.type <> 'raw_text' AND l.archive = 0 AND l.active=1", "" , "l.name");
+    $result = sC_getTableData("lessons l JOIN questions q ON q.lessons_ID = l.id", "l.id, l.name, count(q.id) as questions", "q.type <> 'raw_text' AND l.archive = 0 AND l.active=1", "" , "l.name");
    } else {
-    $result = eF_getTableData("lessons", "*", "archive = 0 && active=1"); //Get all lessons at once, thus avoiding looping queries
+    $result = sC_getTableData("lessons", "*", "archive = 0 && active=1"); //Get all lessons at once, thus avoiding looping queries
    }
    foreach ($result as $value) {
     $value['name'] = str_replace("'","&#039;",$value['name']);
@@ -1271,13 +1271,13 @@ class MagesterDirectionsTree extends MagesterTree
   }
   if ($courses === false) { //If a courses list is not specified, get all active courses
    if ($showQuestions) {
-    $resultQuestions = eF_getTableData("courses c JOIN lessons_to_courses lc ON lc.courses_ID = c.id JOIN questions q ON q.lessons_ID = lc.lessons_ID", "c.id, count(q.id) as questions", "q.type <> 'raw_text' AND c.archive = 0 AND c.active=1", "" , "c.name");
+    $resultQuestions = sC_getTableData("courses c JOIN lessons_to_courses lc ON lc.courses_ID = c.id JOIN questions q ON q.lessons_ID = lc.lessons_ID", "c.id, count(q.id) as questions", "q.type <> 'raw_text' AND c.archive = 0 AND c.active=1", "" , "c.name");
     $coursesQuestions = array();
     foreach ($resultQuestions as $resultQs) {
      $coursesQuestions[$resultQs['id']] = $resultQs['questions'];
     }
    }
-   $result = eF_getTableData("courses", "*", "archive = 0 AND active=1"); //Get all courses at once, thus avoiding looping queries
+   $result = sC_getTableData("courses", "*", "archive = 0 AND active=1"); //Get all courses at once, thus avoiding looping queries
    foreach ($result as $value) {
     $value['name'] = str_replace("'","&#039;",$value['name']);
     $value['questions'] = ($coursesQuestions[$value['id']]!="")?$coursesQuestions[$value['id']]:0; // 0 + to cast empty values to 0
@@ -1365,7 +1365,7 @@ class MagesterDirectionsTree extends MagesterTree
   if ($returnClassedHTML) {
    $htmlString = '<select id= "educational_criteria_row" name ="educational_criteria_row" onchange="createQuestionsSelect(this)" mySelectedIndex = "0">';
    if ($showQuestions) {
-    $result = eF_getTableData("questions", "lessons_ID, count(lessons_ID) as quests", "type <> 'raw_text'", "", "lessons_ID");
+    $result = sC_getTableData("questions", "lessons_ID, count(lessons_ID) as quests", "type <> 'raw_text'", "", "lessons_ID");
     $lessonQuestions = array();
     foreach ($result as $lesson) {
      if ($lesson['quests'] > 0) {

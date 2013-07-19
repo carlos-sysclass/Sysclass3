@@ -17,7 +17,7 @@ try {
     if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
         setcookie('c_request', http_build_query($_GET), time() + 300);
     }
-    eF_redirect("index.php?message=".urlencode($message = $e->getMessage().' ('.$e->getCode().')')."&message_type=failure", true);
+    sC_redirect("index.php?message=".urlencode($message = $e->getMessage().' ('.$e->getCode().')')."&message_type=failure", true);
     exit;
 }
 
@@ -61,5 +61,5 @@ if (isset($_SESSION['s_type'])) {
 
     $smarty->display($displaypage."page.tpl");
 } else {
-    eF_redirect("index.php");
+    sC_redirect("index.php");
 }

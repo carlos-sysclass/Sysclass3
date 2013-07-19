@@ -61,8 +61,8 @@
    {/capture}
 
          <div class = "tabber">
-   {eF_template_printBlock tabber = "users" title=$smarty.const._USERS data = $smarty.capture.t_course_users_list_code image = '32x32/users.png'}
-   {eF_template_printBlock tabber = "instances" title=$smarty.const._COURSEINSTANCES data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
+   {sC_template_printBlock tabber = "users" title=$smarty.const._USERS data = $smarty.capture.t_course_users_list_code image = '32x32/users.png'}
+   {sC_template_printBlock tabber = "instances" title=$smarty.const._COURSEINSTANCES data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
    </div>
 
 
@@ -102,7 +102,7 @@
                             <span class = "progressBar" style = "width:{$info.score}px;">&nbsp;</span>&nbsp;
                         </td>
                         <td class = "centerAlign">
-       <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$login}&specific_course_info=1&course={$T_COURSE_ID}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._DETAILS}', 2)" target = "POPUP_FRAME">
+       <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$login}&specific_course_info=1&course={$T_COURSE_ID}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._DETAILS}', 2)" target = "POPUP_FRAME">
         <img src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}"></a>
                         </td>
                     </tr>
@@ -164,7 +164,7 @@
     {/capture}
 
     {if $T_CURRENT_COURSE}
-  {eF_template_printBlock title = "`$smarty.const._REPORTSFORCOURSE` <span class='innerTableName'>&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.course_statistics image = '32x32/courses.png' help = 'Reports'}
+  {sC_template_printBlock title = "`$smarty.const._REPORTSFORCOURSE` <span class='innerTableName'>&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.course_statistics image = '32x32/courses.png' help = 'Reports'}
     {else}
-     {eF_template_printBlock title = $smarty.const._COURSESTATISTICS data = $smarty.capture.course_statistics image = '32x32/courses.png' help = 'Reports'}
+     {sC_template_printBlock title = $smarty.const._COURSESTATISTICS data = $smarty.capture.course_statistics image = '32x32/courses.png' help = 'Reports'}
  {/if}

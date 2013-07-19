@@ -57,14 +57,14 @@
 					{/if}
 				</div>
 				{if $T_BAR_ADDITIONAL_ACCOUNTS|@count > 0}
-					<a href="#" title="Alterar acesso" id="changeAccount">
+					<a href="#" title="{$smarty.const._CHANGE_ACCOUNT} " id="changeAccount">
 						<button class="inputo-top-change-account" type="button" id="changeAccountBtn" style="color: #fff;">
-							<img  src="images/others/transparent.png" alt="Acessar como" title="Acesso como" />
+							<img  src="images/others/transparent.png" alt="Acessar como" title="{$smarty.const._CHANGE_ACCOUNT} " />
 						</button>
 					</a>
 					<div class="topMenuItensContainer" id="showAccountsContainer">
 						<span class="setaShowAccounts"></span>
-						<p class="altAcessoTitle">Alterar acesso</p>
+						<p class="altAcessoTitle">{$smarty.const._CHANGE_ACCOUNT}</p>
 						<ul class="dropdown">
 							{foreach name = 'additional_accounts' item = "item" key = "key" from = $T_BAR_ADDITIONAL_ACCOUNTS}
 							<li><a href="javascript: changeAccount('{$item.login}');">#filter:login-{$item.login}#</a></li>
@@ -112,7 +112,7 @@
 				<!-- Botão meu perfil ( fim ) -->
 
 				{if $smarty.session.s_type == 'student'}
-				<a target="POPUP_FRAME" onclick="eF_js_showDivPopup('{$smarty.const._INFOFORLESSON}', 2)" href="javascript: void(0);" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" id="xcourse_lesso_info_link">
+				<a target="POPUP_FRAME" onclick="sC_js_showDivPopup('{$smarty.const._INFOFORLESSON}', 2)" href="javascript: void(0);" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" id="xcourse_lesso_info_link">
 					<button class="inputo-top-info" type="button">
 						<img class="inputo-top-info-icon" src="images/others/transparent.png" alt="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}" title="{$smarty.const.__XCOURSE_STUDENT_GUIDANCE}">
 					</button>

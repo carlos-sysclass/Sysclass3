@@ -47,9 +47,9 @@
 				<tr>
 					<td align="center">#filter:datetime-{$datetime}#</td>
 					<td>{$scheduled_user.name} {$scheduled_user.surname}</td>
-					<td>{$scheduled_user.course|eF_truncate:40}</td>
-					<td>{$scheduled_user.lesson|eF_truncate:40}</td>
-					<td>{$scheduled_user.content|eF_truncate:40}</td>
+					<td>{$scheduled_user.course|sC_truncate:40}</td>
+					<td>{$scheduled_user.lesson|sC_truncate:40}</td>
+					<td>{$scheduled_user.content|sC_truncate:40}</td>
 					<td align="center">
 						<input 
 							type="checkbox" 
@@ -88,9 +88,9 @@
 					<tr>
 						<td align="center">n/a</td>
 						<td>{$scheduled_user.name} {$scheduled_user.surname}</td>
-						<td>{$scheduled_user.course|eF_truncate:60}</td>
-						<td>{$scheduled_user.lesson|eF_truncate:60}</td>
-						<td>{$scheduled_user.content|eF_truncate:60}</td>
+						<td>{$scheduled_user.course|sC_truncate:60}</td>
+						<td>{$scheduled_user.lesson|sC_truncate:60}</td>
+						<td>{$scheduled_user.content|sC_truncate:60}</td>
 						<td><input type="checkbox" name="xcontent_user_liberation" value="0" /></td>
 					</tr>
 					{/foreach}
@@ -99,7 +99,7 @@
 	{/foreach}
 </div>
 {/capture}
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCONTENT_VIEW_SCHEDULED_USERS
 	data			= $smarty.capture.t_edit_scheduled_users
 	contentclass	= "blockContents"

@@ -93,7 +93,40 @@ $configurationDefaults = array(
 	'www.idiompro.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_idiompro',
 		'overrideTheme' => 'sysclass3'
-	)
+	),
+		'demo1.sysclass.com'	=> array(
+				'dbname'	=> 'sysclass_demo1',
+				'overrideTheme' => 'sysclass3'
+		),
+		'www.demo1.sysclass.com'     => array(
+				'dbname'        => 'sysclass_demo1',
+				'overrideTheme' => 'sysclass3'
+		),
+		'demo2.sysclass.com'	=> array(
+				'dbname'	=> 'sysclass_demo2',
+				'overrideTheme' => 'sysclass3'
+		),
+		'www.demo2.sysclass.com'     => array(
+				'dbname'        => 'sysclass_demo2',
+				'overrideTheme' => 'sysclass3'
+		),
+		'demo3.sysclass.com'	=> array(
+				'dbname'	=> 'sysclass_demo3',
+				'overrideTheme' => 'sysclass3'
+		),
+		'www.demo3.sysclass.com'     => array(
+				'dbname'        => 'sysclass_demo3',
+				'overrideTheme' => 'sysclass3'
+		),
+		'demo4.sysclass.com'	=> array(
+				'dbname'	=> 'sysclass_demo4',
+				'overrideTheme' => 'sysclass3'
+		),
+		'www.demo4.sysclass.com'     => array(
+				'dbname'        => 'sysclass_demo4',
+				'overrideTheme' => 'sysclass3'
+		),
+		
 );
 
 $configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
@@ -119,7 +152,7 @@ define('G_DBPREFIX', $configuration['dbprefix']);
 
 /* Access Protocol (http | https) */
 if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
-	//eF_redirect($url)
+	//sC_redirect($url)
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;

@@ -18,5 +18,5 @@
     
     {$smarty.capture.t_rss_code}
     
-    {*eF_template_printBlock title=$smarty.const._RSS_RSS data= image= $T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1 options = $T_RSS_OPTIONS link = $T_RSS_MODULE_BASEURL*}
+    {*sC_template_printBlock title=$smarty.const._RSS_RSS data= image= $T_RSS_MODULE_BASELINK|cat:'images/rss32.png' absoluteImagePath = 1 options = $T_RSS_OPTIONS link = $T_RSS_MODULE_BASEURL*}
 {/if}

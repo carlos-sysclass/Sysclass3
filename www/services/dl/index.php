@@ -25,7 +25,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 $hashToCheck = filter_var($_GET['_chk'], FILTER_SANITIZE_MAGIC_QUOTES);
 unset($_GET['_chk']);
 
-$hashDB = eF_getTableData(
+$hashDB = sC_getTableData(
 	"service_direct_link_hash",
 	"id, user_login, user_type, query, expires",
 	sprintf("hash = '%s' AND expires > NOW()", $hashToCheck)

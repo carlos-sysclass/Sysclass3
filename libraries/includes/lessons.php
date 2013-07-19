@@ -8,12 +8,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 $loadScripts[] = 'includes/lessons';
 
 if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
-if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], 'id')) { //The administrator asked to delete a lesson
+if (isset($_GET['delete_lesson']) && sC_checkParameter($_GET['delete_lesson'], 'id')) { //The administrator asked to delete a lesson
     if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'change') {
-        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
         exit;
     }
     try {
@@ -25,7 +25,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         echo rawurlencode($e->getMessage()).' ('.$e->getCode().')';
     }
     exit;
-} elseif (isset($_GET['archive_lesson']) && eF_checkParameter($_GET['archive_lesson'], 'login')) { //The administrator asked to delete a lesson
+} elseif (isset($_GET['archive_lesson']) && sC_checkParameter($_GET['archive_lesson'], 'login')) { //The administrator asked to delete a lesson
     try {
         if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'change') {
             throw new Exception(_UNAUTHORIZEDACCESS);
@@ -37,7 +37,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         echo rawurlencode($e->getMessage()).' ('.$e->getCode().')';
     }
     exit;
-} elseif (isset($_GET['deactivate_lesson']) && eF_checkParameter($_GET['deactivate_lesson'], 'id')) { //The administrator asked to deactivate a lesson
+} elseif (isset($_GET['deactivate_lesson']) && sC_checkParameter($_GET['deactivate_lesson'], 'id')) { //The administrator asked to deactivate a lesson
     if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'hidden') {
         echo rawurlencode(_UNAUTHORIZEDACCESS);
         exit;
@@ -52,7 +52,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         echo urlencode($e->getMessage()).' ('.$e->getCode().')';
     }
     exit;
-} elseif (isset($_GET['activate_lesson']) && eF_checkParameter($_GET['activate_lesson'], 'id')) { //The administrator asked to activate a lesson
+} elseif (isset($_GET['activate_lesson']) && sC_checkParameter($_GET['activate_lesson'], 'id')) { //The administrator asked to activate a lesson
     if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);
         exit;
@@ -67,7 +67,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         echo urlencode($e->getMessage()).' ('.$e->getCode().')';
     }
     exit;
-} elseif (isset($_GET['unset_course_only']) && eF_checkParameter($_GET['unset_course_only'], 'id')) { //The administrator asked to deactivate a lesson
+} elseif (isset($_GET['unset_course_only']) && sC_checkParameter($_GET['unset_course_only'], 'id')) { //The administrator asked to deactivate a lesson
     if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);
         exit;
@@ -85,7 +85,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['set_course_only']) && eF_checkParameter($_GET['set_course_only'], 'id')) { //The administrator asked to activate a lesson
+} elseif (isset($_GET['set_course_only']) && sC_checkParameter($_GET['set_course_only'], 'id')) { //The administrator asked to activate a lesson
     if (isset($currentUser->coreAccess['lessons']) && $currentUser->coreAccess['lessons'] != 'change') {
         echo urlencode(_UNAUTHORIZEDACCESS);
         exit;
@@ -105,7 +105,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         handleAjaxExceptions($e);
     }
     exit;
-} elseif (isset($_GET['add_lesson']) || (isset($_GET['edit_lesson']) && eF_checkParameter($_GET['edit_lesson'], 'id'))) { //The administrator asked to add or edit a lesson
+} elseif (isset($_GET['add_lesson']) || (isset($_GET['edit_lesson']) && sC_checkParameter($_GET['edit_lesson'], 'id'))) { //The administrator asked to add or edit a lesson
 
     //Set the form post target in correspondance to the current function we are performing
     if (isset($_GET['add_lesson'])) {
@@ -116,7 +116,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
     }
 
     $form = new HTML_QuickForm("add_lessons_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=lessons&".$post_target, "", null, true); //Build the form
-    $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register our custom input check function
+    $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register our custom input check function
     $form->addElement('text', 'name', _LESSONNAME, 'class = "inputText"'); //The lesson name, it is required and of type 'text'
     $form->addRule('name', _THEFIELD.' "'._LESSONNAME.'" '._ISMANDATORY, 'required', null, 'client');
     $form->addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'noscript');
@@ -127,13 +127,13 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
     try { //If there are no direction set, redirect to add direction page
         $directionsTree = new MagesterDirectionsTree();
         if (sizeof($directionsTree->tree) == 0) {
-            eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_YOUMUSTFIRSTCREATEDIRECTION).'&message_type=failure');
+            sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_YOUMUSTFIRSTCREATEDIRECTION).'&message_type=failure');
             exit;
         }
         $form->addElement('select', 'directions_ID', _DIRECTION, $directionsTree->toPathString()); //Append a directions select box to the form
     } catch (Exception $e) {
         $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-        $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 
@@ -247,16 +247,16 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
                         $fields = array('lessons_ID' => $newLesson->lesson['id'],
                             'type' => 'all_units',
                             'relation' => 'and');
-                        eF_insertTableData('lesson_conditions', $fields);
+                        sC_insertTableData('lesson_conditions', $fields);
                     }
                     if ($newLesson->lesson['course_only']) { //For course-only lessons, redirect to lessons list, not to "edit lesson" page
-                        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&message=".urlencode(_SUCCESSFULLYCREATEDLESSON)."&message_type=success");
+                        sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&message=".urlencode(_SUCCESSFULLYCREATEDLESSON)."&message_type=success");
                     } else {
-                        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&edit_lesson=".($newLesson->lesson['id'])."&tab=users&message=".urlencode(_SUCCESSFULLYCREATEDLESSON)."&message_type=success");
+                        sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&edit_lesson=".($newLesson->lesson['id'])."&tab=users&message=".urlencode(_SUCCESSFULLYCREATEDLESSON)."&message_type=success");
                     }
                 } catch (Exception $e) {
                     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                    $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                     $message_type = 'failure';
                 }
             } elseif (isset($_GET['edit_lesson'])) { //The first case is when the administrator is editing a lesson
@@ -287,18 +287,18 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
                 }
                 try {
                     $editLesson->persist();
-                    $lesson_forum = eF_getTableData("f_forums", "id", "lessons_ID=".$_GET['edit_lesson']); //update lesson's forum and chat names as well
+                    $lesson_forum = sC_getTableData("f_forums", "id", "lessons_ID=".$_GET['edit_lesson']); //update lesson's forum and chat names as well
                     if (sizeof($lesson_forum) > 0) {
-                        eF_updateTableData("f_forums", array('title' => $form->exportValue('name')), "id=".$lesson_forum[0]['id']);
+                        sC_updateTableData("f_forums", array('title' => $form->exportValue('name')), "id=".$lesson_forum[0]['id']);
                     }
-                    $lesson_chat = eF_getTableData("chatrooms", "id", "lessons_ID=".$_GET['edit_lesson']);
+                    $lesson_chat = sC_getTableData("chatrooms", "id", "lessons_ID=".$_GET['edit_lesson']);
                     if (sizeof($lesson_chat) > 0) {
-                        eF_updateTableData("chatrooms", array('name' => $form->exportValue('name')), "id=".$lesson_chat[0]['id']);
+                        sC_updateTableData("chatrooms", array('name' => $form->exportValue('name')), "id=".$lesson_chat[0]['id']);
                     }
-                    eF_redirect(basename(basename($_SERVER['PHP_SELF'])).'?ctg=lessons&message='.urlencode(_LESSONUPDATED).'&message_type=success');
+                    sC_redirect(basename(basename($_SERVER['PHP_SELF'])).'?ctg=lessons&message='.urlencode(_LESSONUPDATED).'&message_type=success');
                 } catch (Exception $e) {
                     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                    $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message = _SOMEPROBLEMOCCURED.': '.$e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                     $message_type = 'failure';
                 }
             }
@@ -329,24 +329,24 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
             $nonLessonUsers = $editLesson->getNonUsers(); //Get all the users that can, but don't, have this lesson
             $users = array_merge($lessonUsers, $nonLessonUsers); //Merge users to a single array, which will be useful for displaying them
             $roles = MagesterLessonUser::getLessonsRoles(true);
-            //$roles = eF_getTableDataFlat("user_types", "*", "active=1 AND basic_user_type!='administrator'");    //Get available roles
+            //$roles = sC_getTableDataFlat("user_types", "*", "active=1 AND basic_user_type!='administrator'");    //Get available roles
             //sizeof($roles) > 0 ? $roles = array_combine($roles['id'], $roles['name']) : $roles = array();                                             //Match keys with values, it's more practical this way
             $roles = array('student' => _STUDENT, 'professor' => _PROFESSOR) + $roles; //Append basic user types to the beginning of the array
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'usersTable') {
-                isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-                if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                     $sort = $_GET['sort'];
                     isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                 } else {
                     $sort = 'login';
                 }
-                $users = eF_multiSort($users, $sort, $order);
+                $users = sC_multiSort($users, $sort, $order);
                 $smarty->assign("T_USERS_SIZE", sizeof($users));
                 if (isset($_GET['filter'])) {
-                    $users = eF_filterData($users, $_GET['filter']);
+                    $users = sC_filterData($users, $_GET['filter']);
                 }
-                if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                     $users = array_slice($users, $offset, $limit);
                 }
                 $smarty->assign("T_ROLES", $roles);
@@ -365,7 +365,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
                 exit;
             }
             if (isset($_GET['postAjaxRequest'])) {
-                if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+                if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
                     isset($_GET['user_type']) && in_array($_GET['user_type'], array_keys($roles)) ? $userType = $_GET['user_type'] : $userType = 'student';
                     if (in_array($_GET['login'], array_keys($nonLessonUsers))) {
                         $editLesson->addUsers($_GET['login'], $userType);
@@ -375,13 +375,13 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
                     }
                 } elseif (isset($_GET['addAll'])) {
                     $userTypes = array();
-                    isset($_GET['filter']) ? $nonLessonUsers = eF_filterData($nonLessonUsers, $_GET['filter']) : null;
+                    isset($_GET['filter']) ? $nonLessonUsers = sC_filterData($nonLessonUsers, $_GET['filter']) : null;
                     foreach ($nonLessonUsers as $user) {
                         $user['user_types_ID'] ? $userTypes[] = $user['user_types_ID'] : $userTypes[] = $user['basic_user_type'];
                     }
                     $editLesson->addUsers(array_keys($nonLessonUsers), $userTypes);
                 } elseif (isset($_GET['removeAll'])) {
-                    isset($_GET['filter']) ? $lessonUsers = eF_filterData($lessonUsers, $_GET['filter']) : null;
+                    isset($_GET['filter']) ? $lessonUsers = sC_filterData($lessonUsers, $_GET['filter']) : null;
                     $editLesson->archiveLessonUsers(array_keys($lessonUsers));
                 }
                 exit;
@@ -391,10 +391,10 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
             handleAjaxExceptions($e);
         }
     }
-} elseif (isset($_GET['lesson_info']) && eF_checkParameter($_GET['lesson_info'], 'id')) {
+} elseif (isset($_GET['lesson_info']) && sC_checkParameter($_GET['lesson_info'], 'id')) {
     /***/
     require_once 'lesson_information.php';
-} elseif (isset($_GET['lesson_settings']) && eF_checkParameter($_GET['lesson_settings'], 'id')) {
+} elseif (isset($_GET['lesson_settings']) && sC_checkParameter($_GET['lesson_settings'], 'id')) {
     $currentLesson = new MagesterLesson($_GET['lesson_settings']);
     $smarty->assign("T_CURRENT_LESSON", $currentLesson);
     $loadScripts[] = 'scriptaculous/scriptaculous';
@@ -411,7 +411,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         if ($form->isSubmitted() && $form->validate()) { //If the form is submitted and validated
             $directionsTree = new MagesterDirectionsTree();
             if (sizeof($directionsTree->tree) == 0) {
-                eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_YOUMUSTFIRSTCREATEDIRECTION).'&message_type=failure');
+                sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=directions&add_direction=1&message='.urlencode(_YOUMUSTFIRSTCREATEDIRECTION).'&message_type=failure');
                 exit;
             }
             $newLesson = MagesterLesson::createLesson();
@@ -444,7 +444,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
     $directionPaths = $directionsTree->toPathString();
     $languages = MagesterSystem::getLanguages(true);
     if (G_VERSIONTYPE == 'enterprise') {
-        $result = eF_getTableDataFlat("lessons LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_lesson_offers_skill.lesson_ID = lessons.id","lessons.id, count(skill_ID) as skills_offered","lessons.archive=0","","id");
+        $result = sC_getTableDataFlat("lessons LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_lesson_offers_skill.lesson_ID = lessons.id","lessons.id, count(skill_ID) as skills_offered","lessons.archive=0","","id");
         foreach ($result['id'] as $key => $lesson_id) {
             if (isset($lessons[$lesson_id])) {
                 $lessons[$lesson_id]['skills_offered'] = $result['skills_offered'][$key];
@@ -452,7 +452,7 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         }
     }
     //Perform a query to get all the 'student' and 'student-like' users of every lesson
-    $result = eF_getTableDataFlat("lessons l,users_to_lessons ul left outer join user_types ut on ul.user_type=ut.id", "l.id,count(*)", "ul.archive=0 and l.id=ul.lessons_ID and (ul.user_type='student' or (ul.user_type = ut.id and ut.basic_user_type = 'student'))", "", "l.id" );
+    $result = sC_getTableDataFlat("lessons l,users_to_lessons ul left outer join user_types ut on ul.user_type=ut.id", "l.id,count(*)", "ul.archive=0 and l.id=ul.lessons_ID and (ul.user_type='student' or (ul.user_type = ut.id and ut.basic_user_type = 'student'))", "", "l.id" );
     if (sizeof($result) > 0) {
         $lessonUsers = array_combine($result['id'], $result['count(*)']);
     }
@@ -481,14 +481,14 @@ if (isset($_GET['delete_lesson']) && eF_checkParameter($_GET['delete_lesson'], '
         isset($_GET['limit']) ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
         if (isset($_GET['sort'])) {
             isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-            $lessons = eF_multiSort($lessons, $_GET['sort'], $order);
+            $lessons = sC_multiSort($lessons, $_GET['sort'], $order);
         }
         if (isset($_GET['filter'])) {
-            $lessons = eF_filterData($lessons, $_GET['filter']);
+            $lessons = sC_filterData($lessons, $_GET['filter']);
         }
         $smarty->assign("T_LESSONS_SIZE", sizeof($lessons));
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $lessons = array_slice($lessons, $offset, $limit);
         }
         foreach ($lessons as $key => $lesson) {

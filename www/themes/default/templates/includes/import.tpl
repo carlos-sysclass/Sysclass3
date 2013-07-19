@@ -42,6 +42,6 @@
     <td class = "submitCell">{$T_ENTITY_FORM.import_submit.html}</td></tr>
   </table>
  {/capture}
- {eF_template_printBlock title=$smarty.const._IMPORT data=$smarty.capture.t_import_code image='32x32/import.png' help = 'Smart_content'}
+ {sC_template_printBlock title=$smarty.const._IMPORT data=$smarty.capture.t_import_code image='32x32/import.png' help = 'Smart_content'}
  </td></tr>
 {/capture}

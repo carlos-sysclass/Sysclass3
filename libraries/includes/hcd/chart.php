@@ -7,7 +7,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 /* Permission checking according to type and global settings */
 if ($currentEmployee -> getType() == _EMPLOYEE && isset($GLOBALS['configuration']['show_organization_chart']) && $GLOBALS['configuration']['show_organization_chart'] == 0) {
- eF_redirect($_SERVER['PHP_SELF']."?message=".urlencode(_SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION)."&message_type=failure");
+ sC_redirect($_SERVER['PHP_SELF']."?message=".urlencode(_SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION)."&message_type=failure");
  exit;
 }
 
@@ -16,7 +16,7 @@ if (!isset($_COOKIE['orgChartMode']) && stripos($_SERVER['HTTP_USER_AGENT'], 'ms
  $_COOKIE['orgChartMode'] = 1;
 }
 
-/* The chart will be created by the eF_createBranchesTree with arguments the data gathered */
+/* The chart will be created by the sC_createBranchesTree with arguments the data gathered */
 if ($_COOKIE['orgChartMode']) {
  $branchesTreePrintable = MagesterBranch :: createBranchesTree(true);
 } else {
@@ -27,6 +27,6 @@ if (isset($_GET['print'])) {
  $branchesTreePrintable = preg_replace("/<img[^>]+\>/i", " ", $branchesTreePrintable);
  $smarty -> assign("T_POPUP_MODE", 1);
 } else {
- $smarty -> assign("T_CHART_OPTIONS", array(array('text' => _PRINT, 'image' => "16x16/printer.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=chart&print=1", "onClick" => "eF_js_showDivPopup('"._PRINTCHART."', 2)", "target" => "POPUP_FRAME")));
+ $smarty -> assign("T_CHART_OPTIONS", array(array('text' => _PRINT, 'image' => "16x16/printer.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=chart&print=1", "onClick" => "sC_js_showDivPopup('"._PRINTCHART."', 2)", "target" => "POPUP_FRAME")));
 }
 $smarty -> assign('T_CHART_TREE', $branchesTreePrintable);

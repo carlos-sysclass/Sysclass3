@@ -615,9 +615,9 @@ class PEAR
     function staticPushErrorHandling($mode, $options = null)
     {
         $stack = &$GLOBALS['_PEAR_error_handler_stack'];
-        $def_mode    = &$GLOBALS['_PEAR_default_error_mode'];
-        $def_options = &$GLOBALS['_PEAR_default_error_options'];
-        $stack[] = array($def_mode, $def_options);
+        $dsC_mode    = &$GLOBALS['_PEAR_default_error_mode'];
+        $dsC_options = &$GLOBALS['_PEAR_default_error_options'];
+        $stack[] = array($dsC_mode, $dsC_options);
         switch ($mode) {
             case PEAR_ERROR_EXCEPTION:
             case PEAR_ERROR_RETURN:
@@ -625,15 +625,15 @@ class PEAR
             case PEAR_ERROR_TRIGGER:
             case PEAR_ERROR_DIE:
             case null:
-                $def_mode = $mode;
-                $def_options = $options;
+                $dsC_mode = $mode;
+                $dsC_options = $options;
                 break;
 
             case PEAR_ERROR_CALLBACK:
-                $def_mode = $mode;
+                $dsC_mode = $mode;
                 // class/object method callback
                 if (is_callable($options)) {
-                    $def_options = $options;
+                    $dsC_options = $options;
                 } else {
                     trigger_error("invalid error callback", E_USER_WARNING);
                 }
@@ -703,13 +703,13 @@ class PEAR
     {
         $stack = &$GLOBALS['_PEAR_error_handler_stack'];
         if (isset($this) && is_a($this, 'PEAR')) {
-            $def_mode    = &$this->_default_error_mode;
-            $def_options = &$this->_default_error_options;
+            $dsC_mode    = &$this->_default_error_mode;
+            $dsC_options = &$this->_default_error_options;
         } else {
-            $def_mode    = &$GLOBALS['_PEAR_default_error_mode'];
-            $def_options = &$GLOBALS['_PEAR_default_error_options'];
+            $dsC_mode    = &$GLOBALS['_PEAR_default_error_mode'];
+            $dsC_options = &$GLOBALS['_PEAR_default_error_options'];
         }
-        $stack[] = array($def_mode, $def_options);
+        $stack[] = array($dsC_mode, $dsC_options);
 
         if (isset($this) && is_a($this, 'PEAR')) {
             $this->setErrorHandling($mode, $options);

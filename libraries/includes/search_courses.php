@@ -26,8 +26,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 $loadScripts[] = 'includes/search_courses';
 $loadScripts[] = 'scriptaculous/prototype';
 if (isset($_GET['ajax'])) {
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
         $sort = $_GET['sort'];
         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
     } else {
@@ -113,7 +113,7 @@ if (isset($_GET['ajax'])) {
 
     if ($found) {
 
-        $employees = eF_getTableData($dif_tables, "users.*",$search_string,"");
+        $employees = sC_getTableData($dif_tables, "users.*",$search_string,"");
 
         // @todo: problem with professors in one and students in another course
         foreach ($employees as $userId => $employee) {
@@ -122,15 +122,15 @@ if (isset($_GET['ajax'])) {
             }
 
         }
-        $employees = eF_multiSort($employees, $_GET['sort'], $order);
+        $employees = sC_multiSort($employees, $_GET['sort'], $order);
         if (isset($_GET['filter'])) {
-            $employees = eF_filterData($employees , $_GET['filter']);
+            $employees = sC_filterData($employees , $_GET['filter']);
         }
 
         $smarty -> assign("T_EMPLOYEES_SIZE", sizeof($employees));
 
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $employees = array_slice($employees, $offset, $limit);
         }
 
@@ -156,7 +156,7 @@ if (isset($_GET['ajax'])) {
     exit;
 } else {
     $sendmail_link = array(
-         array('id' => 'sendToAllId', 'text' => _SENDMESSAGETOALLFOUNDEMPLOYEES, 'image' => "16x16/mail.png", 'href' => "javascript:void(0);", "onClick" => "this.href=document.getElementById('sendAllRecipients').value;eF_js_showDivPopup('"._SENDMESSAGE."', 2)", 'target' => 'POPUP_FRAME')
+         array('id' => 'sendToAllId', 'text' => _SENDMESSAGETOALLFOUNDEMPLOYEES, 'image' => "16x16/mail.png", 'href' => "javascript:void(0);", "onClick" => "this.href=document.getElementById('sendAllRecipients').value;sC_js_showDivPopup('"._SENDMESSAGE."', 2)", 'target' => 'POPUP_FRAME')
     );
     $smarty -> assign("T_SENDALLMAIL_LINK", $sendmail_link);
 

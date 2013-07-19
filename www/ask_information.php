@@ -12,7 +12,7 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 try {
  $languages = MagesterSystem::getLanguages(true);
 
- if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
+ if (isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id')) {
   $lesson = new MagesterLesson($_GET['lessons_ID']);
   $lessonInformation = $lesson -> getInformation();
 
@@ -79,7 +79,7 @@ try {
   }
  }
 
- if (isset($_GET['courses_ID']) && eF_checkParameter($_GET['courses_ID'], 'id')) {
+ if (isset($_GET['courses_ID']) && sC_checkParameter($_GET['courses_ID'], 'id')) {
   $course = new MagesterCourse($_GET['courses_ID']);
   $courseInformation = $course -> getInformation();
 
@@ -146,7 +146,7 @@ try {
 	if ($_GET['module'] == 'module_pagamento' && isset($_GET['hash_id'])) {
 
 		$currentUser = MagesterUserFactory::factory('admin');
-		$module = eF_loadAllModules(true);
+		$module = sC_loadAllModules(true);
 
 		if ($boletoData = $module['module_pagamento']->getBoletoParcelaDetails($_GET['hash_id'])) {
 			$tooltipInfo[] = '<div class = "infoEntry"><span>Forma de Pagamento</span><span>: ' . $boletoData['payment_type_name'] . '</span></div>';

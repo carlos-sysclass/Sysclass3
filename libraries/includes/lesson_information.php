@@ -18,7 +18,7 @@ $_change_ = 0;
 if (!isset($currentUser -> coreAccess['content']) || $currentUser -> coreAccess['content'] == 'change') {
     $_change_ = 1;
 } elseif (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 if (!isset($GLOBALS['currentLesson'])) {
     if (isset($_GET['lesson_info'])) {
@@ -26,7 +26,7 @@ if (!isset($GLOBALS['currentLesson'])) {
         $currentContent = new MagesterContentTree($currentLesson);
         $smarty -> assign("T_CURRENT_LESSON", $currentLesson);
     } else {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".rawurlencode(_INVALIDID)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".rawurlencode(_INVALIDID)."&message_type=failure");
     }
 }
 if ($_GET['edit_info'] && $_change_ && !$_student_) {
@@ -49,14 +49,14 @@ if ($_GET['edit_info'] && $_change_ && !$_student_) {
             }
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = "failure";
         }
 /*
 
         $lessonAvatarForm = new HTML_QuickForm("lesson_avatar_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=lesson_info', "", null, true);
 
-        $lessonAvatarForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+        $lessonAvatarForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
 
         $lessonAvatarForm -> addElement('file', 'file_upload', _IMAGEFILE, 'class = "inputText"');
 
@@ -129,7 +129,7 @@ if ($_GET['edit_info'] && $_change_ && !$_student_) {
     if (!$_admin_) {
         $seenContent = MagesterStats :: getStudentsSeenContent($currentLesson -> lesson['id'], $currentUser -> user['login']);
         //Get the passing score for each "specific_test" rule
-        $allTestsScore = eF_getTableDataFlat("tests", "content_ID,mastery_score");
+        $allTestsScore = sC_getTableDataFlat("tests", "content_ID,mastery_score");
         if (sizeof($allTestsScore) > 0) {
             $allTestsScore = array_combine($allTestsScore['content_ID'], $allTestsScore['mastery_score']);
         } else {

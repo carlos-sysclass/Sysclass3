@@ -135,7 +135,7 @@
      <script>var editPdfContent = {if $T_EDITPDFCONTENT}true{else}false{/if};</script>
      <div id = "fmInitial"><div id = "filemanager_div" style = "display:none;">{$T_FILE_MANAGER}</div></div>
     {/capture}
-    {eF_template_printBlock title=$smarty.const._UNITPROPERTIES data=$smarty.capture.t_insert_content_code image='32x32/edit.png' help ='Content'}
+    {sC_template_printBlock title=$smarty.const._UNITPROPERTIES data=$smarty.capture.t_insert_content_code image='32x32/edit.png' help ='Content'}
    </td></tr>
   {/capture}
 
@@ -159,7 +159,7 @@
     {capture name = 't_theory_tree_code'}
      {$T_THEORY_TREE}
     {/capture}
-    {eF_template_printBlock title=$specific_title data=$smarty.capture.t_theory_tree_code image=$image}
+    {sC_template_printBlock title=$specific_title data=$smarty.capture.t_theory_tree_code image=$image}
    </td></tr>
   {/capture}
  {elseif $smarty.get.bare}
@@ -234,7 +234,7 @@
      {if $T_PREVIOUS_UNIT}
      	{if $T_CHECKRULES_VALUE != 1 || !$_student_}
           <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_PREVIOUS_UNIT.id}" title = "{$T_PREVIOUS_UNIT.name}">
-           {$T_PREVIOUS_UNIT.name|eF_truncate:30}
+           {$T_PREVIOUS_UNIT.name|sC_truncate:30}
           </a>
         {/if}
      {/if}
@@ -274,7 +274,7 @@
      {if $T_NEXT_UNIT}
      	   {if $T_CHECKRULES_VALUE != 1 || !$_student_}
 	          <a href = "{$smarty.server.PHP_SELF}?view_unit={$T_NEXT_UNIT.id}" title = "{$T_NEXT_UNIT.name}">
-	           {$T_NEXT_UNIT.name|eF_truncate:30}
+	           {$T_NEXT_UNIT.name|sC_truncate:30}
 	          </a>
 	       {/if}   
      {/if}
@@ -301,7 +301,7 @@
        <td>
         <div style = "float:right">
         {if $T_COMMENTS[comments_list].users_LOGIN == $T_CURRENT_USER->user.login}
-         <a href = "{$smarty.server.PHP_SELF}?ctg=comments&edit={$T_COMMENTS[comments_list].id}&popup=1", onclick = "eF_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" alt = "{$smarty.const._CORRECTION}" title = "{$smarty.const._CORRECTION}"/></a>&nbsp;
+         <a href = "{$smarty.server.PHP_SELF}?ctg=comments&edit={$T_COMMENTS[comments_list].id}&popup=1", onclick = "sC_js_showDivPopup('{$smarty.const._EDITCOMMENT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" alt = "{$smarty.const._CORRECTION}" title = "{$smarty.const._CORRECTION}"/></a>&nbsp;
         {/if}
         {if $T_COMMENTS[comments_list].users_LOGIN == $T_CURRENT_USER->user.login || $_professor_}
          <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm ('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteComment(this, '{$T_COMMENTS[comments_list].id}')"/>
@@ -322,7 +322,7 @@
      <span class = "progressNumber">{$T_USER_PROGRESS.overall_progress}%</span>
      <span class = "progressBar" style = "width:{$T_USER_PROGRESS.overall_progress}px;">&nbsp;</span>&nbsp;
     {if $T_USER_PROGRESS.total_conditions > 0 && $T_CURRENT_LESSON->options.lesson_info}
-     <a id = "lesson_passed" href = "{$smarty.server.PHP_SELF}?ctg=lesson_information&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._LESSONINFORMATION}', 2)" target = "POPUP_FRAME">
+     <a id = "lesson_passed" href = "{$smarty.server.PHP_SELF}?ctg=lesson_information&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._LESSONINFORMATION}', 2)" target = "POPUP_FRAME">
       <span class = "{if $T_USER_PROGRESS.lesson_passed}success{else}failure{/if}">{$smarty.const._CONDITIONSCOMPLETED}: <span id = "passed_conditions">{$T_USER_PROGRESS.conditions_passed}</span> {$smarty.const._OUTOF} {$T_USER_PROGRESS.total_conditions}</span>
      </a>
     {/if}
@@ -335,16 +335,16 @@
 
   {capture name = 't_unit_operations'}
    {if $T_CURRENT_LESSON->options.print_content}
-    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=content&view_unit={$T_UNIT.id}&popup=1&print=1", onclick = "eF_js_showDivPopup('{$smarty.const._PRINTERFRIENDLY}', 2)" target = "POPUP_FRAME">{$smarty.const._PRINTERFRIENDLY}</a></div>
+    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=content&view_unit={$T_UNIT.id}&popup=1&print=1", onclick = "sC_js_showDivPopup('{$smarty.const._PRINTERFRIENDLY}', 2)" target = "POPUP_FRAME">{$smarty.const._PRINTERFRIENDLY}</a></div>
    {/if}
    {if $T_CONFIGURATION.disable_comments != 1 && $T_CURRENT_LESSON->options.comments && $_change_ && !$T_RULE_CHECK_FAILED}
-    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=comments&view_unit={$T_UNIT.id}&add=1&popup=1", onclick = "eF_js_showDivPopup('{$smarty.const._ADDCOMMENT}', 1)" target = "POPUP_FRAME">{$smarty.const._ADDCOMMENT}</a></div>
+    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=comments&view_unit={$T_UNIT.id}&add=1&popup=1", onclick = "sC_js_showDivPopup('{$smarty.const._ADDCOMMENT}', 1)" target = "POPUP_FRAME">{$smarty.const._ADDCOMMENT}</a></div>
    {/if}
    {if $_student_ && $T_CURRENT_LESSON->options.content_report}
-    <div>{counter name = "unit_operations"}. <a href = "content_report.php?{$smarty.server.QUERY_STRING}" onclick = "eF_js_showDivPopup('{$smarty.const._CONTENTREPORT}', 1)" target = "POPUP_FRAME">{$smarty.const._CONTENTREPORTTOPROFS}</a></div>
+    <div>{counter name = "unit_operations"}. <a href = "content_report.php?{$smarty.server.QUERY_STRING}" onclick = "sC_js_showDivPopup('{$smarty.const._CONTENTREPORT}', 1)" target = "POPUP_FRAME">{$smarty.const._CONTENTREPORTTOPROFS}</a></div>
    {/if}
    {if $T_LESSON_FORUM}
-    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=topic&forum_id={$T_LESSON_FORUM}&subject={$T_UNIT.name}", onclick = "eF_js_showDivPopup('{$smarty.const._ADDFORUMPOSTONTHISUNIT}', 2)" target = "POPUP_FRAME" title="{$smarty.const._ADDFORUMPOSTONTHISUNIT}">{$smarty.const._ADDFORUMPOSTONTHISUNIT|eF_truncate:25:"...":true}</a></div>
+    <div>{counter name = "unit_operations"}. <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=topic&forum_id={$T_LESSON_FORUM}&subject={$T_UNIT.name}", onclick = "sC_js_showDivPopup('{$smarty.const._ADDFORUMPOSTONTHISUNIT}', 2)" target = "POPUP_FRAME" title="{$smarty.const._ADDFORUMPOSTONTHISUNIT}">{$smarty.const._ADDFORUMPOSTONTHISUNIT|sC_truncate:25:"...":true}</a></div>
    {/if}
    {if !$T_SCORM}
    <div>{counter name = "unit_operations"}. <a href = "javascript:void(0)", onclick = "window.open('{$smarty.server.PHP_SELF}?ctg=content&view_unit={$T_UNIT.id}&popup=1','unit_popup','width=900,height=600,scrollbars=yes,resizable=yes,status=yes,toolbar=no,location=no,menubar=no')">{$smarty.const._OPENUNITINPOPUP}</a></div>
@@ -352,12 +352,12 @@
   {/capture}
 
   {capture name = "t_content_tools"}
-   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._UPLOADFILESANDIMAGES}" href = "{$smarty.server.PHP_SELF}?ctg=file_manager&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._UPLOADFILESANDIMAGES}', 3)" target = "POPUP_FRAME">{$smarty.const._UPLOADFILESANDIMAGES|eF_truncate:40}</a></div>
-   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._COPYFROMANOTHERLESSON}" href = "{$smarty.server.PHP_SELF}?ctg=copy">{$smarty.const._COPYFROMANOTHERLESSON|eF_truncate:40}</a></div>
-   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._CONTENTTREEMANAGEMENT}" href = "{$smarty.server.PHP_SELF}?ctg=order">{$smarty.const._CONTENTTREEMANAGEMENT|eF_truncate:40}</a></div>
+   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._UPLOADFILESANDIMAGES}" href = "{$smarty.server.PHP_SELF}?ctg=file_manager&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._UPLOADFILESANDIMAGES}', 3)" target = "POPUP_FRAME">{$smarty.const._UPLOADFILESANDIMAGES|sC_truncate:40}</a></div>
+   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._COPYFROMANOTHERLESSON}" href = "{$smarty.server.PHP_SELF}?ctg=copy">{$smarty.const._COPYFROMANOTHERLESSON|sC_truncate:40}</a></div>
+   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._CONTENTTREEMANAGEMENT}" href = "{$smarty.server.PHP_SELF}?ctg=order">{$smarty.const._CONTENTTREEMANAGEMENT|sC_truncate:40}</a></div>
    <div>{counter name = "content_tools"}. <a title = "{$smarty.const._SCORMIMPORT}" href = "{$smarty.server.PHP_SELF}?ctg=scorm&scorm_import=1">{$smarty.const._SCORMIMPORT}</a></div>
    {if $T_UNIT}
-   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._CONTENTMETADATA}" href = "{$smarty.server.PHP_SELF}?ctg=metadata&unit={$T_UNIT.id}">{$smarty.const._CONTENTMETADATA|eF_truncate:40}</a></div>
+   <div>{counter name = "content_tools"}. <a title = "{$smarty.const._CONTENTMETADATA}" href = "{$smarty.server.PHP_SELF}?ctg=metadata&unit={$T_UNIT.id}">{$smarty.const._CONTENTMETADATA|sC_truncate:40}</a></div>
    {/if}
   {/capture}
 
@@ -396,16 +396,16 @@
       {if $T_UNIT.ctg_type == 'tests' || $T_UNIT.ctg_type == 'feedback'}
        {include file = "includes/tests/show_unsolved_test.tpl"}
       {else}
-      {eF_template_printBlock title = $T_UNIT.name data = $T_UNIT.data image = '32x32/printer.png'}
+      {sC_template_printBlock title = $T_UNIT.name data = $T_UNIT.data image = '32x32/printer.png'}
       {/if}
         {else}
          <span id = "completed_block" {if !$T_USER_PROGRESS.lesson_passed && !$T_USER_PROGRESS.completed}style = "display:none"{/if}>
       {assign var = "cookie_value" value = "hide_complete_lesson_`$T_CURRENT_LESSON->lesson.id`"}
       {if !$smarty.cookies.$cookie_value}
-          {eF_template_printBlock title = $smarty.const._LESSONFINISHED data = $smarty.capture.t_end_of_lesson_code image = '32x32/information.png'}
+          {sC_template_printBlock title = $smarty.const._LESSONFINISHED data = $smarty.capture.t_end_of_lesson_code image = '32x32/information.png'}
          {/if}
          </span>
-      {eF_template_printBlock title = $unit_name data=$smarty.capture.t_content_code image=$image options = $unit_options settings = $T_UNIT_SETTINGS}
+      {sC_template_printBlock title = $unit_name data=$smarty.capture.t_content_code image=$image options = $unit_options settings = $T_UNIT_SETTINGS}
         {/if}
      </td>
      </tr>
@@ -415,21 +415,21 @@
     <tr>
      <td id = "sideColumn">
      {if !$_student_}
-      {eF_template_printBlock title = $smarty.const._CONTENTTOOLS data = $smarty.capture.t_content_tools image = "32x32/tools.png"}
+      {sC_template_printBlock title = $smarty.const._CONTENTTOOLS data = $smarty.capture.t_content_tools image = "32x32/tools.png"}
      {/if}
-      {eF_template_printBlock title = $smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE image = "32x32/theory.png"}
+      {sC_template_printBlock title = $smarty.const._LESSONMATERIAL data = $T_CONTENT_TREE image = "32x32/theory.png"}
      {if $_student_ && (!isset($T_CURRENT_LESSON->options.show_percentage) || $T_CURRENT_LESSON->options.show_percentage)}
-      {eF_template_printBlock title = $smarty.const._LESSONPROGRESS data = $smarty.capture.t_progress_bar image = "32x32/status.png"}
+      {sC_template_printBlock title = $smarty.const._LESSONPROGRESS data = $smarty.capture.t_progress_bar image = "32x32/status.png"}
      {/if}
      {if !isset($T_CURRENT_LESSON->options.show_content_tools) || $T_CURRENT_LESSON->options.show_content_tools}
-      {eF_template_printBlock title = $smarty.const._UNITOPERATIONS data = $smarty.capture.t_unit_operations image = "32x32/options.png"}
+      {sC_template_printBlock title = $smarty.const._UNITOPERATIONS data = $smarty.capture.t_unit_operations image = "32x32/options.png"}
       {*Content side table modules *}
       {foreach name = 'module_content_side_list' key = key item = moduleItem from = $T_CONTENT_SIDE_MODULES}
        {capture name = $key|replace:"_":""} {*We cut off the underscore, since scriptaculous does not seem to like them*}
         {assign var = module_name value = $key|replace:"_":""}
         {if $moduleItem.smarty_file}{include file = $moduleItem.smarty_file}{else}{$moduleItem.html_code}{/if}
        {/capture}
-       {eF_template_printBlock title = $moduleItem.title data = $smarty.capture.$module_name id = $module_name|cat:'_id'}
+       {sC_template_printBlock title = $moduleItem.title data = $smarty.capture.$module_name id = $module_name|cat:'_id'}
       {/foreach}
      {/if}
      </td>

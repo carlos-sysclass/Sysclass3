@@ -85,18 +85,18 @@
 
   {capture name = 't_direction_code'}
    <div class = "tabber">
-    {eF_template_printBlock tabber = "settings" title ="`$smarty.const._CATEGORYSETTINGS`" data = $smarty.capture.t_direction_settings_code image = '32x32/categories.png'}
+    {sC_template_printBlock tabber = "settings" title ="`$smarty.const._CATEGORYSETTINGS`" data = $smarty.capture.t_direction_settings_code image = '32x32/categories.png'}
    {if $smarty.get.edit_direction}
-    {eF_template_printBlock tabber = "lessons" title ="`$smarty.const._EDITLESSONSDIRECTION`" data = $smarty.capture.t_lessons_to_directions_code image = '32x32/lessons.png'}
-    {eF_template_printBlock tabber = "courses" title ="`$smarty.const._EDITCOURSESDIRECTION`" data = $smarty.capture.t_courses_to_directions_code image = '32x32/courses.png'}
+    {sC_template_printBlock tabber = "lessons" title ="`$smarty.const._EDITLESSONSDIRECTION`" data = $smarty.capture.t_lessons_to_directions_code image = '32x32/lessons.png'}
+    {sC_template_printBlock tabber = "courses" title ="`$smarty.const._EDITCOURSESDIRECTION`" data = $smarty.capture.t_courses_to_directions_code image = '32x32/courses.png'}
    {/if}
    </div>
   {/capture}
 
   {if $smarty.get.add_direction}
-   {eF_template_printBlock title = $smarty.const._NEWDIRECTIONOPTIONS data = $smarty.capture.t_direction_code image = '32x32/categories.png'}
+   {sC_template_printBlock title = $smarty.const._NEWDIRECTIONOPTIONS data = $smarty.capture.t_direction_code image = '32x32/categories.png'}
   {else}
-   {eF_template_printBlock title ="`$smarty.const._DIRECTIONOPTIONSFOR` <span class = 'innerTableName'>&quot;`$T_DIRECTIONS_FORM.name.value`&quot;</span>" data = $smarty.capture.t_direction_code image = '32x32/categories.png'}
+   {sC_template_printBlock title ="`$smarty.const._DIRECTIONOPTIONSFOR` <span class = 'innerTableName'>&quot;`$T_DIRECTIONS_FORM.name.value`&quot;</span>" data = $smarty.capture.t_direction_code image = '32x32/categories.png'}
   {/if}
 
  {else}
@@ -153,7 +153,7 @@
    {/foreach}
     </table>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._UPDATEDIRECTIONS data = $smarty.capture.t_directions_code image = '32x32/categories.png' help = 'Categories'}
+  {sC_template_printBlock title = $smarty.const._UPDATEDIRECTIONS data = $smarty.capture.t_directions_code image = '32x32/categories.png' help = 'Categories'}
  {/if}
 
 

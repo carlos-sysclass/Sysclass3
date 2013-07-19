@@ -87,7 +87,7 @@
      </span>
      <span class = "headerTools">
       <img src = "images/16x16/import.png" alt = "{$smarty.const._IMPORT}" title = "{$smarty.const._IMPORTSETTINGS}" />
-      <a href = "javascript:void(0);" onclick = "eF_js_showDivPopup('{$smarty.const._IMPORTSETTINGS}', 0, 'import_settings')">{$smarty.const._IMPORTSETTINGS}</a>
+      <a href = "javascript:void(0);" onclick = "sC_js_showDivPopup('{$smarty.const._IMPORTSETTINGS}', 0, 'import_settings')">{$smarty.const._IMPORTSETTINGS}</a>
      </span>
      <span class = "headerTools">
       <img src = "images/16x16/export.png" alt = "{$smarty.const._EXPORT}" title = "{$smarty.const._EXPORTSETTINGS}" />
@@ -152,7 +152,7 @@
     </table>
     {/capture}
 
-    {eF_template_printBlock title = "`$smarty.const._LAYOUTFORTHEME`<span class = 'innerTableName'>&nbsp;&quot;`$T_LAYOUT_THEME->themes.name`&quot;</span>" data = $smarty.capture.t_layout_code image = '32x32/layout.png'}
+    {sC_template_printBlock title = "`$smarty.const._LAYOUTFORTHEME`<span class = 'innerTableName'>&nbsp;&quot;`$T_LAYOUT_THEME->themes.name`&quot;</span>" data = $smarty.capture.t_layout_code image = '32x32/layout.png'}
 
     <script type="text/javascript">
      var edittag = '{$smarty.const._EDIT}';var deletetag = '{$smarty.const._DELETE}';var irreversible = '{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}';var toggletag='{$smarty.const._TOGGLEACCESSASSEPARATEPAGE}';

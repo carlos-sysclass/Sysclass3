@@ -44,7 +44,7 @@ class bookmarks extends MagesterEntity
      */
     public static function create($fields = array())
     {
-        $newId    = eF_insertTableData("bookmarks", $fields);
+        $newId    = sC_insertTableData("bookmarks", $fields);
         $bookmark = new bookmarks($newId);
 
         return $bookmarks;
@@ -100,17 +100,17 @@ class bookmarks extends MagesterEntity
     {
         if ($user instanceof MagesterUser) {
             $user = $user -> user['login'];
-        } elseif (!eF_checkParameter($user, 'login')) {
+        } elseif (!sC_checkParameter($user, 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.': '.$user['login'], MagesterUserException :: INVALID_LOGIN);
         }
         if ($lesson instanceof MagesterLesson) {
             $lesson = $lesson -> lesson['id'];
-        } elseif (!eF_checkParameter($lesson, 'id')) {
+        } elseif (!sC_checkParameter($lesson, 'id')) {
             throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException :: INVALID_ID);
         }
 
         $bookmarks = array();
-        $result    = eF_getTableData("bookmarks b, lessons l", "b.*, l.name as lesson_name", "b.lessons_ID=l.id and users_LOGIN='".$user."' and lessons_ID=".$lesson);
+        $result    = sC_getTableData("bookmarks b, lessons l", "b.*, l.name as lesson_name", "b.lessons_ID=l.id and users_LOGIN='".$user."' and lessons_ID=".$lesson);
         foreach ($result as $value) {
             $bookmarks[$value['id']] = $value;
         }

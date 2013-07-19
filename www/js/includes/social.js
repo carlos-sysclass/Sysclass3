@@ -92,7 +92,7 @@ function changePeopleDisplay(category, el) {
     for (i = 0; i < tables; i++) {
     if (sortedTables[i].id == 'peopleTable') {
         ajaxUrl[i] = newUrl;
-        eF_js_rebuildTable(i, 0, sortBy, sortOrder);
+        sC_js_rebuildTable(i, 0, sortBy, sortOrder);
     }
     }   
 }

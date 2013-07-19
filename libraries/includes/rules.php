@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 $loadScripts[] = 'includes/rules';
@@ -46,7 +46,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
     exit;
 } elseif (isset($_GET['delete_rule']) && in_array($_GET['delete_rule'], array_keys($rules))) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     try {
         $currentContent -> deleteRules($_GET['delete_rule']);
@@ -55,14 +55,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
         echo $e -> getMessage().' ('.$e -> getCode().')';
     }
     exit;
-} elseif (isset($_GET['add_rule']) || (isset($_GET['edit_rule']) && eF_checkParameter($_GET['edit_rule'], 'id'))) {
+} elseif (isset($_GET['add_rule']) || (isset($_GET['edit_rule']) && sC_checkParameter($_GET['edit_rule'], 'id'))) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     isset($_GET['add_rule']) ? $post_target = 'add_rule=1' : $post_target = 'edit_rule='.$_GET['edit_rule'];
 
     $form = new HTML_QuickForm("add_rule_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=rules&".$post_target, "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
     $form -> registerRule('in_array', 'callback', 'in_array');
 
     $users = $currentLesson -> getUsers('student');
@@ -133,19 +133,19 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
             }
 
             if (isset($_GET['edit_rule'])) {
-                if (eF_updateTableData("rules", $fields, "id=".$_GET['edit_rule'])) {
+                if (sC_updateTableData("rules", $fields, "id=".$_GET['edit_rule'])) {
                     $message = _SUCCESFULLYUPDATEDRULE;
                     $message_type = 'success';
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
                 } else {
                     $message = _SOMEPROBLEMEMERGED;
                     $message_type = 'failure';
                 }
             } else {
-                if (eF_insertTableData("rules", $fields)) {
+                if (sC_insertTableData("rules", $fields)) {
                     $message = _SUCCESFULLYINSERTEDRULE;
                     $message_type = 'success';
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
                 } else {
                     $message = _SOMEPROBLEMEMERGED;
                     $message_type = 'failure';
@@ -163,7 +163,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
     $smarty -> assign('T_ADD_RULE_FORM', $renderer -> toArray());
 
     $form = new HTML_QuickForm("add_ready_rule_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=rules&add_rule=1", "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
     $form -> addElement('radio', 'ready_rule', _SERIALRULE, null, 'serial', "checked");
     $form -> addElement('radio', 'ready_rule', _TREERULE, null, 'tree');
     $form -> addElement('submit', 'submit_ready_rule', _SUBMIT, 'class=flatButton');
@@ -180,10 +180,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
                 $fields['rule_type'] = 'serial';
                 break;
         }
-        if (eF_insertTableData("rules", $fields)) {
+        if (sC_insertTableData("rules", $fields)) {
             $message = _SUCCESFULLYINSERTEDRULE;
             $message_type = 'success';
-            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
+            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&message=".$message."&message_type=".$message_type);
         } else {
             $message = _SOMEPROBLEMEMERGED;
             $message_type = 'failure';
@@ -196,7 +196,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
 
 } elseif (isset($_GET['delete_condition']) && in_array($_GET['delete_condition'], array_keys($conditions))) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     try {
         $currentLesson -> deleteConditions($_GET['delete_condition']);
@@ -205,14 +205,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
         echo $e -> getMessage().' ('.$e -> getCode().')';
     }
     exit;
-} elseif (isset($_GET['add_condition']) || (isset($_GET['edit_condition']) && eF_checkParameter($_GET['edit_condition'], 'id'))) {
+} elseif (isset($_GET['add_condition']) || (isset($_GET['edit_condition']) && sC_checkParameter($_GET['edit_condition'], 'id'))) {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     isset($_GET['add_condition']) ? $post_target = 'add_condition=1' : $post_target = 'edit_condition='.$_GET['edit_condition'];
 
     $form = new HTML_QuickForm("complete_lesson_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=rules&tab=conditions&'.$post_target, "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form -> registerRule('in_array', 'callback', 'in_array');
 
     $testsIterator = new MagesterTestsFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('active' => 1)));
@@ -281,19 +281,19 @@ if (isset($_GET['action']) && $_GET['action'] == 'auto_complete') {
             }
 
             if (isset($_GET['add_condition'])) {
-                if (eF_insertTableData('lesson_conditions', $fields)) {
+                if (sC_insertTableData('lesson_conditions', $fields)) {
                     $message = _SUCCESFULLYADDEDCONDITION;
                     $message_type = 'success';
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&tab=conditions&message=".$message."&message_type=".$message_type);
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&tab=conditions&message=".$message."&message_type=".$message_type);
                 } else {
                     $message = _SOMEPROBLEMEMERGED;
                     $message_type = 'failure';
                 }
             } else {
-                if (eF_updateTableData('lesson_conditions', $fields, "id=".$_GET['edit_condition'])) {
+                if (sC_updateTableData('lesson_conditions', $fields, "id=".$_GET['edit_condition'])) {
                     $message = _SUCCESFULLYUPDATEDCONDITION;
                     $message_type = 'success';
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&tab=conditions&message=".$message."&message_type=".$message_type);
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=rules&tab=conditions&message=".$message."&message_type=".$message_type);
                 } else {
                     $message = _SOMEPROBLEMEMERGED;
                     $message_type = 'failure';

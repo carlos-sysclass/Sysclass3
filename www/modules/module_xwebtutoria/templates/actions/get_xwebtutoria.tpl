@@ -20,7 +20,7 @@
 			<div class="clear"></div>
 		{/capture}
 			
-		{eF_template_printBlock
+		{sC_template_printBlock
 			title 			= $smarty.capture.webtutoria_title
 			data			= $smarty.capture.webtutoria_body
 			contentclass	= ""

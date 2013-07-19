@@ -33,4 +33,4 @@ var errortranslating= '{$smarty.const._TRANSLATE_ERRORTRANSLATING}';
 
 {/capture}
 
-{eF_template_printBlock title = $smarty.const._TRANSLATE_TRANSLATE data = $smarty.capture.t_inner_table_code image = $T_MODULE_BASELINK|cat:'images/planet32.png' absoluteImagePath=1 options = $T_TRANSLATE_INNERTABLE_OPTIONS}
+{sC_template_printBlock title = $smarty.const._TRANSLATE_TRANSLATE data = $smarty.capture.t_inner_table_code image = $T_MODULE_BASELINK|cat:'images/planet32.png' absoluteImagePath=1 options = $T_TRANSLATE_INNERTABLE_OPTIONS}

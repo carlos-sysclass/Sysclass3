@@ -148,7 +148,7 @@ class MagesterIMS
     }
 
     if ($parameters['embed_type'] == 'iframe') {
-     $total_fields[$key]['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$currentLesson -> getDirectoryUrl()."/".$scormFolderName.'/'.$primitive_hrefs[$ref]. $value['PARAMETERS']. '" onload = "if (window.eF_js_setCorrectIframeSize) eF_js_setCorrectIframeSize(); else setIframeSize = true;"></iframe>';
+     $total_fields[$key]['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$currentLesson -> getDirectoryUrl()."/".$scormFolderName.'/'.$primitive_hrefs[$ref]. $value['PARAMETERS']. '" onload = "if (window.sC_js_setCorrectIframeSize) sC_js_setCorrectIframeSize(); else setIframeSize = true;"></iframe>';
     } else {
      $total_fields[$key]['data'] = '
       <div style = "text-align:center;height:300px">
@@ -172,7 +172,7 @@ class MagesterIMS
      $total_fields[$key]['parent_content_ID'] = 0;
     }
 
-    $this_id = eF_insertTableData("content", $total_fields[$key]);
+    $this_id = sC_insertTableData("content", $total_fields[$key]);
 
     //we want to have entry at scorm data even if all values are null
     $fields_insert[$this_id]['content_ID'] = $this_id;
@@ -206,7 +206,7 @@ class MagesterIMS
      $fields_insert['rule_type'] = "hasnot_seen";
      $fields_insert['rule_content_ID'] = $value2['this_id'];
      $fields_insert['rule_option'] = 0;
-     eF_insertTableData("rules", $fields_insert);
+     sC_insertTableData("rules", $fields_insert);
     }
    }
   }

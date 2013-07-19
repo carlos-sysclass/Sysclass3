@@ -422,7 +422,7 @@ function get_APIFunctions()
 * ���� �� �������� ��� manifest ��� ���� �� �� ��� ����������� array
 
 */
-function eF_local_parseManifest($path)
+function sC_local_parseManifest($path)
 {
     $filename = $path."/imsmanifest.xml";
     $data = iconv("ISO-8859-7", "UTF-8", implode("", file($filename)));
@@ -454,11 +454,11 @@ function eF_local_parseManifest($path)
     return $tagArray;
 }
 
-function eF_local_buildDirectories($new_absolute_dir, $scorm_dir)
+function sC_local_buildDirectories($new_absolute_dir, $scorm_dir)
 {
     $current_dir = getcwd();
     chdir($scorm_dir);
-    $path_array = eF_local_readDirRecursive();
+    $path_array = sC_local_readDirRecursive();
 
     chdir($new_absolute_dir);
 
@@ -476,7 +476,7 @@ function eF_local_buildDirectories($new_absolute_dir, $scorm_dir)
     }
 }
 
-function eF_local_readDirRecursive($path = '.')
+function sC_local_readDirRecursive($path = '.')
 {
     $count = 0;
     $path_array[0] = $path;
@@ -499,7 +499,7 @@ function eF_local_readDirRecursive($path = '.')
 function build_tarfile($lessons_id, $path)
 {
     $main_dirname = $path."/lesson" . $lessons_id . "/";
-    $filelist = eF_getDirContents($main_dirname);
+    $filelist = sC_getDirContents($main_dirname);
     $tarname = $main_dirname . "../scorm_lesson.tgz";
     $tar = new Archive_Tar($tarname, true);
     $tar -> createModify($filelist, "", $main_dirname);
@@ -755,7 +755,7 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
         fclose($fp);
     }
 
-    $questions = ef_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
+    $questions = sC_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
     for ($i = 0; $i < sizeof($questions); $i++) {
         $data = $questions[$i]['text'];
         /*Gia ka8e arxeio, an afto fainetai stin erotisi, alla3e to path kai vale to onoma toy sth lista tou periexomenou*/
@@ -776,7 +776,7 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
     }
 
     //create the test files
-    $tests = ef_getTableData("tests t, content c", "t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
+    $tests = sC_getTableData("tests t, content c", "t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
     for ($i = 0; $i < sizeof($tests); $i++) {
         $data = $tests[$i]['description'];
         /*Gia ka8e arxeio, an afto fainetai stin erotisi, alla3e to path kai vale to onoma toy sth lista tou periexomenou*/
@@ -849,7 +849,7 @@ function create_manifest($lessons_id, $lesson_entries, $filelist, $path)
 function get_prerequisites()
 {
     /*Pare olous tous kanones toy typoy "an den exei dei thn enothta"*/
-    $rules = eF_getTableData("rules", "content_ID,rule_content_ID", "rule_type='hasnot_seen'");
+    $rules = sC_getTableData("rules", "content_ID,rule_content_ID", "rule_type='hasnot_seen'");
     /*Vale tous se ena pinakaki, pou 8a xrhsimopoih8ei argotera*/
     foreach ($rules as $value) {
         $prerequisites[$value['content_ID']] = $value['rule_content_ID'];
@@ -961,7 +961,7 @@ function build_manifest_resources($lesson_entries, $tests, $questions, $files_di
 */
 function build_manifest_organizations($lessons_id, $prerequisites)
 {
-    $tree = eF_getContentTree($nouse, $lessons_id, 0);
+    $tree = sC_getContentTree($nouse, $lessons_id, 0);
     //$cTree = new MagesterContentTree($lessons_id);
     for ($i = 0 ; $i < sizeof($tree) ; $i++) {
         $levels[$i] = $tree[$i]['level'];
@@ -996,7 +996,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
     }
 
     //write out the questions
-    /*$questions = ef_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
+    /*$questions = sC_getTableData("questions q, content c", "q.*", "q.content_id = c.id and c.lessons_id=$lessons_id");
 
     for ($i = 0; $i < sizeof($questions); $i++) {
 
@@ -1004,7 +1004,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
 
     }*/
     //write the tests
-    /*$tests = ef_getTableData("tests t, content c", "c.name, t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
+    /*$tests = sC_getTableData("tests t, content c", "c.name, t.*", "t.content_id = c.id and c.lessons_id=$lessons_id");
 
     for ($i = 0; $i < sizeof($tests); $i++) {
 
@@ -1012,7 +1012,7 @@ function build_manifest_organizations($lessons_id, $prerequisites)
 
     }*/
     //write the projects
-    /*$projects = ef_getTableData("projects","*", "lessons_id=$lessons_id");
+    /*$projects = sC_getTableData("projects","*", "lessons_id=$lessons_id");
 
     for ($i = 0; $i < sizeof($projects); $i++) {
 

@@ -20,7 +20,7 @@ require_once $path."configuration.php";
 
 //- ARRUMAR CLASSES
 //	- COLOCAR TUDO NA TABELA USER_TO_COURSES E EXCLUIR TABELA USER_TO_CLASSES
-	$userToClasses = eF_getTableData("users_to_classes uc
+	$userToClasses = sC_getTableData("users_to_classes uc
 	LEFT JOIN classes c ON (uc.classes_ID = c.id)
 	LEFT JOIN users u ON (uc.users_ID = u.id)
 	", "*");
@@ -31,22 +31,22 @@ require_once $path."configuration.php";
 	//var_dump($userToClasses);
 	foreach ($userToClasses as $classeUser) {
 		//
-		$user2CourseCount = eF_countTableData("users_to_courses", "*",
+		$user2CourseCount = sC_countTableData("users_to_courses", "*",
 			sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 		);
 
 		if ($user2CourseCount[0]['count'] == 1) {
-			$user2Course = eF_getTableData("users_to_courses", "*",
+			$user2Course = sC_getTableData("users_to_courses", "*",
 				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 			);
 			if ($user2Course[0]['class_id'] == 0) {
 				// UPDATE
-				eF_updateTableData(
+				sC_updateTableData(
 					"users_to_courses",
 					array('classe_id' => $classeUser['classes_ID']),
 					sprintf("users_LOGIN = '%s' AND courses_ID = %d", $classeUser['login'], $classeUser['courses_ID'])
 				);
-				eF_deleteTableData(
+				sC_deleteTableData(
 					"users_to_classes",
 				 	sprintf("users_ID = %d AND classes_ID = %d", $classeUser['users_ID'], $classeUser['classes_ID'])
 				);
@@ -62,14 +62,14 @@ require_once $path."configuration.php";
 		} else {
 			$notFoundUsers[] = $classeUser['login'];
 			// ONLY DELETE
-			eF_deleteTableData(
+			sC_deleteTableData(
 				"users_to_classes",
 			 	sprintf("users_ID = %d AND classes_ID = %d", $classeUser['users_ID'], $classeUser['classes_ID'])
 			);
 		}
 	}
 	// CLEARING users_to_courses WITH NO COURSE
-	var_dump(eF_deleteTableData("users_to_courses", "courses_ID NOT IN (SELECT id FROM courses)"));
+	var_dump(sC_deleteTableData("users_to_courses", "courses_ID NOT IN (SELECT id FROM courses)"));
 
 	echo "\nUSUÀRIOS COM ERRO:\n";
 	echo implode("\n", $settedUsers);

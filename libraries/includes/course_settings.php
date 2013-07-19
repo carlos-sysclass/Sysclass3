@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if (isset($currentUser -> coreAccess['course_settings']) && $currentUser -> coreAccess['course_settings'] == 'hidden') {
- eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+ sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 $loadScripts[] = 'includes/course_settings';
@@ -98,7 +98,7 @@ if ($_GET['op'] == 'course_info') {
    $user = $users[$_GET['edit_user']];
    //pr($user -> getUserLessons());exit;
    $form = new HTML_QuickForm("edit_user_complete_course_form", "post", basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&edit_user='.$_GET['edit_user'].'&popup=1', "", null, true);
-   $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+   $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
    $form -> addElement('advcheckbox', 'completed', _COMPLETED, null, 'class = "inputCheckbox"'); //Whether the user has completed the course
    $form -> addElement('text', 'score', _SCORE, 'class = "inputTextScore"'); //The user course score
@@ -150,19 +150,19 @@ if ($_GET['op'] == 'course_info') {
    try {
     $certificate = $currentCourse -> prepareCertificate($_GET['issue_certificate']);
     $currentCourse -> issueCertificate($_GET['issue_certificate'], $certificate);
-    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&reset_popup=1&&message='.urlencode(_CERTIFICATEISSUEDSUCCESFULLY).'&message_type=success');
+    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&reset_popup=1&&message='.urlencode(_CERTIFICATEISSUEDSUCCESFULLY).'&message_type=success');
    } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = _PROBLEMISSUINGCERTIFICATE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = _PROBLEMISSUINGCERTIFICATE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
    }
   } elseif (isset($_GET['revoke_certificate']) && in_array($_GET['revoke_certificate'], array_keys($users = $currentCourse -> getCourseUsers($defaultConstraints)))) {
    try {
     $currentCourse -> revokeCertificate($_GET['revoke_certificate']);
-    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&reset_popup=1&message='.urlencode(_CERTIFICATEREVOKED).'&message_type=success');
+    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=course_certificates&reset_popup=1&message='.urlencode(_CERTIFICATEREVOKED).'&message_type=success');
    } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = _PROBLEMREVOKINGCERTIFICATE.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = _PROBLEMREVOKINGCERTIFICATE.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
    }
   } elseif (isset($_GET['auto_complete'])) {
@@ -248,8 +248,8 @@ if ($_GET['op'] == 'course_info') {
      $issuedData = unserialize($value -> user['issued_certificate']);
      $users[$key] -> user['serial_number'] = $issuedData['serial_number'];
 
-     //$dateFormat = eF_dateFormat();
-     if (eF_checkParameter($issuedData['date'], 'timestamp')) {
+     //$dateFormat = sC_dateFormat();
+     if (sC_checkParameter($issuedData['date'], 'timestamp')) {
       $expire_certificateTimestamp = $currentCourse -> course['certificate_expiration'] + $issuedData['date'];
       //$dateExpire = date($dateFormat, $expire_certificateTimestamp);
      } else {
@@ -271,7 +271,7 @@ if ($_GET['op'] == 'course_info') {
   }
 
   if (isset($_GET['export']) && $_GET['export'] == 'rtf') {
-   $result = eF_getTableData("users_to_courses", "*", "users_LOGIN = '".$_GET['user']."' and courses_ID = '".$_GET['course']."' limit 1");
+   $result = sC_getTableData("users_to_courses", "*", "users_LOGIN = '".$_GET['user']."' and courses_ID = '".$_GET['course']."' limit 1");
    if (sizeof($result) == 1 || isset($_GET['preview'])) {
     $course = new MagesterCourse($_GET['course']);
     if (!isset($_GET['preview'])) {
@@ -290,7 +290,7 @@ if ($_GET['op'] == 'course_info') {
       $certificate = str_replace("#user_surname#", utf8ToUnicode($issued_data['user_surname']), $certificate);
       $certificate = str_replace("#course_name#", utf8ToUnicode($issued_data['course_name']), $certificate);
       $certificate = str_replace("#grade#", utf8ToUnicode($issued_data['grade']), $certificate);
-      if (eF_checkParameter($issued_data['date'], 'timestamp')) {
+      if (sC_checkParameter($issued_data['date'], 'timestamp')) {
        $issued_data['date'] = formatTimestamp($issued_data['date']);
       }
       $certificate = str_replace("#date#", utf8ToUnicode($issued_data['date']), $certificate);
@@ -337,7 +337,7 @@ if ($_GET['op'] == 'course_info') {
   }
    if (isset($_GET['export']) && $_GET['export'] == 'xml') {
 
-  $result = eF_getTableData("users_to_courses", "*", "users_LOGIN='".$_GET['user']."' and courses_ID='".$_GET['course']."' limit 1");
+  $result = sC_getTableData("users_to_courses", "*", "users_LOGIN='".$_GET['user']."' and courses_ID='".$_GET['course']."' limit 1");
 
   if (sizeof($result) == 1 || isset($_GET['preview'])) {
 
@@ -349,20 +349,20 @@ if ($_GET['op'] == 'course_info') {
 
     if ($certificate_tpl_id <= 0) {
 
-     $mainTemplate = eF_getTableData("certificate_templates", "id",
+     $mainTemplate = sC_getTableData("certificate_templates", "id",
           "certificate_name='".CERTIFICATES_MAIN_TEMPLATE_NAME."'"); // XXX
      $certificate_tpl_id = $mainTemplate[0]['id'];
     }
 
     $issued_data = unserialize($result[0]['issued_certificate']);
-    $templateData = eF_getTableData("certificate_templates", "certificate_xml", "id=".$certificate_tpl_id);
+    $templateData = sC_getTableData("certificate_templates", "certificate_xml", "id=".$certificate_tpl_id);
     $userName = $issued_data['user_name'];
     $userSurName = $issued_data['user_surname'];
     $courseName = $issued_data['course_name'];
     $courseGrade = $issued_data['grade'];
     $serialNumber = $issued_data['serial_number'];
 
-    if(eF_checkParameter($issued_data['date'], 'timestamp'))
+    if(sC_checkParameter($issued_data['date'], 'timestamp'))
      $issued_data['date'] = formatTimestamp($issued_data['date']);
 
     $certificateDate = $issued_data['date'];
@@ -413,7 +413,7 @@ if ($_GET['op'] == 'course_info') {
    } else {
     $tmp = explode('-', $_GET['certificate_tpl']);
     $certificate_tpl_id = $tmp[0];
-    $templateData = eF_getTableData("certificate_templates", "certificate_xml", "id=".$certificate_tpl_id);
+    $templateData = sC_getTableData("certificate_templates", "certificate_xml", "id=".$certificate_tpl_id);
 
     $xmlExport = new XMLExport($templateData[0]['certificate_xml']);
     $creator = $xmlExport->getCreator();
@@ -460,7 +460,7 @@ if ($_GET['op'] == 'course_info') {
 } elseif ($_GET['op'] == 'format_certificate') {
 
  if($currentCourse->options['certificate_export_method'] == 'rtf' && !isset($_GET['switch']))
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=format_certificate_docx");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=format_certificate_docx");
 } elseif ($_GET['op'] == 'format_certificate_docx') {
 } elseif ($_GET['op'] == 'add_certificate_template' || $_GET['op'] == 'edit_certificate_template') {
 } elseif ($_GET['op'] == 'rename_certificate_template') {
@@ -483,10 +483,10 @@ if ($_GET['op'] == 'course_info') {
     try {
      $currentCourse -> rules = $_POST['rules'];
      $currentCourse -> persist();
-     eF_redirect("".basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=course_rules&message=".urlencode(_SUCCESFULLYSETORDER)."&message_type=success");
+     sC_redirect("".basename($_SERVER['PHP_SELF'])."?".$baseUrl."&op=course_rules&message=".urlencode(_SUCCESFULLYSETORDER)."&message_type=success");
     } catch (Exception $e) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-     $message = _PROBLEMSETTINGORDER.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+     $message = _PROBLEMSETTINGORDER.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
      $message_type = 'failure';
     }
    } else {
@@ -540,8 +540,8 @@ if ($_GET['op'] == 'course_info') {
     			$lesson -> lesson['to_timestamp']   = $toTimestamp;
     			$lesson -> persist();
 
-    			eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
-    			eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
+    			sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
+    			sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
 
     			MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_PROGRAMMED_START,  "timestamp" => $lesson -> lesson['from_timestamp'], "lessons_ID" => $lesson -> lesson['id'], "lessons_name" => $lesson -> lesson['name']));
     			MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_PROGRAMMED_EXPIRY, "timestamp" => $lesson -> lesson['to_timestamp'],   "lessons_ID" => $lesson -> lesson['id'], "lessons_name" => $lesson -> lesson['name']));
@@ -564,8 +564,8 @@ if ($_GET['op'] == 'course_info') {
     		$lesson -> persist();
 
     		// @TODO maybe proper class internal invalidation
-    		eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
-    		eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
+    		sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
+    		sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
 */
       exit;
      } elseif (isset($_GET['set_schedule']) && $_GET['set_schedule'] == 0) {
@@ -575,8 +575,8 @@ if ($_GET['op'] == 'course_info') {
        $currentCourse -> course['start_date'] = $fromTimestamp;
        $currentCourse -> course['end_date'] = $toTimestamp;
        $currentCourse -> persist();
-       eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_START . "_" . $currentCourse -> course['id']. "'");
-       eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_EXPIRY . "_" . $currentCourse -> course['id']. "'");
+       sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_START . "_" . $currentCourse -> course['id']. "'");
+       sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_EXPIRY . "_" . $currentCourse -> course['id']. "'");
        MagesterEvent::triggerEvent(array("type" => MagesterEvent::COURSE_PROGRAMMED_START, "timestamp" => $currentCourse -> course['start_date'], "lessons_ID" => $currentCourse -> course['id'], "lessons_name" => $currentCourse -> course['name']));
        MagesterEvent::triggerEvent(array("type" => MagesterEvent::COURSE_PROGRAMMED_EXPIRY, "timestamp" => $currentCourse -> course['end_date'], "lessons_ID" => $currentCourse -> course['id'], "lessons_name" => $currentCourse -> course['name']));
        echo _FROM.' '.formatTimestamp($fromTimestamp, 'time_nosec').' '._TO.' '.formatTimestamp($toTimestamp, 'time_nosec').'&nbsp;';
@@ -589,8 +589,8 @@ if ($_GET['op'] == 'course_info') {
       $currentCourse -> course['start_date'] = '';
       $currentCourse -> course['end_date'] = '';
       $currentCourse -> persist();
-      eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_START . "_" . $currentCourse -> course['id']. "'");
-      eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_EXPIRY . "_" . $currentCourse -> course['id']. "'");
+      sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_START . "_" . $currentCourse -> course['id']. "'");
+      sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::COURSE_PROGRAMMED_EXPIRY . "_" . $currentCourse -> course['id']. "'");
      }
     } catch (Exception $e) {
      handleAjaxExceptions($e);
@@ -599,7 +599,7 @@ if ($_GET['op'] == 'course_info') {
     //pr($courseLessons);
 } elseif ($_GET['op'] == 'export_course') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     /* Export part */
     $form = new HTML_QuickForm("export_course_form", "post", basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=export_course', "", null, true);
@@ -616,7 +616,7 @@ if ($_GET['op'] == 'course_info') {
             $message_type = 'success';
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         }
     }
     $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -624,7 +624,7 @@ if ($_GET['op'] == 'course_info') {
     $smarty -> assign('T_EXPORT_COURSE_FORM', $renderer -> toArray());
 } elseif ($_GET['op'] == 'import_course') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     /* Import part */
     $form = new HTML_QuickForm("import_course_form", "post", basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=import_course', "", null, true);
@@ -647,7 +647,7 @@ if ($_GET['op'] == 'course_info') {
             $message_type = 'success';
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = _PROBLEMIMPORTINGFILE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = _PROBLEMIMPORTINGFILE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
         }
     }

@@ -117,14 +117,14 @@ if (!$skillgap_tests) {
   $form -> addRule('parent_content', _INVALIDID, 'numeric');
 //	}
 
-    isset($_GET['from_unit']) && eF_checkParameter($_GET['from_unit'], 'id') ? $selectedUnit = $_GET['from_unit'] : $selectedUnit = 0;
+    isset($_GET['from_unit']) && sC_checkParameter($_GET['from_unit'], 'id') ? $selectedUnit = $_GET['from_unit'] : $selectedUnit = 0;
     $selectedUnit ? $units = $currentContent -> getNodeChildren($selectedUnit) : $units = $currentContent -> tree;
     foreach ($iterator = new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($units)), array('id', 'name')) as $key => $value) {
         $key == 'id' ? $ids[] = $value : $names[] = $value;
     }
     $unitNames = array_combine($ids, $names);
     $unitNames[0] = _NONEUNIT;
-    $result = eF_getTableData("questions", "*", "lessons_ID=".$currentLesson -> lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this unit or its subunits
+    $result = sC_getTableData("questions", "*", "lessons_ID=".$currentLesson -> lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this unit or its subunits
 
 } else {
 
@@ -137,7 +137,7 @@ if (!$skillgap_tests) {
     $form -> addElement('advcheckbox', 'assign_to_new', null, null, null, array(0, 1));
     $form -> addElement('advcheckbox', 'automatic_assignment', null, null, null, array(0, 1));
 
-    $result = eF_getTableData("questions LEFT OUTER JOIN lessons ON lessons.id = lessons_ID", "questions.*, lessons.name", "lessons.archive=0");
+    $result = sC_getTableData("questions LEFT OUTER JOIN lessons ON lessons.id = lessons_ID", "questions.*, lessons.name", "lessons.archive=0");
 }
 $unitsToQuestionsDifficulties = array();
 foreach ($result as $value) {
@@ -213,7 +213,7 @@ if (isset($_GET['add_test'])) {
 
     $testQuestions = $currentTest -> getQuestions();
     $stats = $currentTest -> questionsInfo();
-    $stats['duration'] = eF_convertIntervalToTime($stats['total_duration']);
+    $stats['duration'] = sC_convertIntervalToTime($stats['total_duration']);
     $stats['random_pool'] = $currentTest -> options['random_pool'];
     $stats['user_configurable'] = $currentTest -> options['user_configurable'];
 
@@ -280,7 +280,7 @@ if ($form -> isSubmitted() && $form -> validate()) {
   } else {
    $messageString = _SUCCESFULLYMODIFIEDFEEDBACK;
   }
-        eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=".$_GET['ctg']."&from_unit=".$_GET['from_unit']."&message=".urlencode($messageString)."&message_type=success");
+        sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=".$_GET['ctg']."&from_unit=".$_GET['from_unit']."&message=".urlencode($messageString)."&message_type=success");
     } else {
         $contentFields = array('data' => '',
                                        'name' => $values['name'],
@@ -311,15 +311,15 @@ if ($form -> isSubmitted() && $form -> validate()) {
             $newTest -> addQuestions($testQuestions);
             // ... and its users if it is a skillgap test
             if ($skillgap_tests) {
-                $testUsers = eF_getTableDataFlat("users_to_skillgap_tests", "users_LOGIN", "tests_ID = '".$_GET['edit_test']."'");
+                $testUsers = sC_getTableDataFlat("users_to_skillgap_tests", "users_LOGIN", "tests_ID = '".$_GET['edit_test']."'");
                 $fields = array();
                 foreach ($testUsers as $entry) {
                     $fields[] = array('tests_ID' => $newTest -> test['id'], 'users_LOGIN' => $entry['useres_LOGIN']);
                 }
                 if (sizeof($fields) > 0) {
-                    eF_insertTableDataMultiple("users_to_skillgap_tests", $fields);
+                    sC_insertTableDataMultiple("users_to_skillgap_tests", $fields);
                     //$insertString = "('" . $newTest->test['id'] . "', '" . implode("'),('" . $newTest -> test['id'] . "', '", $testUsers['users_LOGIN']) . "')";
-                    //eF_execute("INSERT INTO users_to_skillgap_tests (tests_ID,users_LOGIN) VALUES $insertString");
+                    //sC_execute("INSERT INTO users_to_skillgap_tests (tests_ID,users_LOGIN) VALUES $insertString");
                 }
             }
         }
@@ -328,7 +328,7 @@ if ($form -> isSubmitted() && $form -> validate()) {
   } else {
    $messageString = _SUCCESFULLYMODIFIEDFEEDBACK;
   }
-        eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=".$_GET['ctg']."&edit_test=".$newTest -> test['id']."&from_unit=".$_GET['from_unit']."&tab=questions&&message=".urlencode($messageString)."&message_type=success");
+        sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=".$_GET['ctg']."&edit_test=".$newTest -> test['id']."&from_unit=".$_GET['from_unit']."&tab=questions&&message=".urlencode($messageString)."&message_type=success");
     }
 }
 $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -343,32 +343,32 @@ $smarty -> assign('T_TEST_FORM', $renderer -> toArray());
 if ($skillgap_tests) {
     // AJAX CODE TO RELOAD SKILL-GAP TEST USERS
     if (isset($_GET['ajax']) && $_GET['ajax'] == 'testUsersTable') {
-        isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-        if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
             $sort = $_GET['sort'];
             isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
         } else {
             $sort = 'login';
         }
 
-        $testUsers = eF_getTableData("users LEFT OUTER JOIN users_to_skillgap_tests ON login = users_login AND tests_ID = '".$_GET['edit_test']."'", "distinct login, name,surname,tests_ID as partof, solved", "users.user_type = 'student' and users.archive=0 and users.active=1");
-        $test_info = eF_getTableData("completed_tests", "id, users_LOGIN", "status != 'deleted' and tests_ID = " . $_GET['edit_test']);
+        $testUsers = sC_getTableData("users LEFT OUTER JOIN users_to_skillgap_tests ON login = users_login AND tests_ID = '".$_GET['edit_test']."'", "distinct login, name,surname,tests_ID as partof, solved", "users.user_type = 'student' and users.archive=0 and users.active=1");
+        $test_info = sC_getTableData("completed_tests", "id, users_LOGIN", "status != 'deleted' and tests_ID = " . $_GET['edit_test']);
 
         if (isset($_GET['sort'])) {
             isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-            $testUsers = eF_multiSort($testUsers, $_GET['sort'], $order);
+            $testUsers = sC_multiSort($testUsers, $_GET['sort'], $order);
         }
 
         if (isset($_GET['filter'])) {
-            $testUsers = eF_filterData($testUsers, $_GET['filter']);
+            $testUsers = sC_filterData($testUsers, $_GET['filter']);
         }
 
         $smarty -> assign('T_USERS_SIZE', sizeof($testUsers));
 
         $smarty -> assign("T_PROPOSED_LESSONS_SIZE", sizeof($testUsers));
-        if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
             $testUsers = array_slice($testUsers, $offset, $limit);
         }
 
@@ -393,7 +393,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'questionsTable') {
         $questions[$qid]['parent_name'] = $unitNames[$question['content_ID']];
         $questions[$qid]['weight'] = $testQuestions[$qid]['weight'];
         $questions[$qid]['partof'] = 0;
-        $questions[$qid]['estimate_interval'] = eF_convertIntervalToTime($question['estimate']);
+        $questions[$qid]['estimate_interval'] = sC_convertIntervalToTime($question['estimate']);
         if ($question['lessons_ID'] == 0) {
             $questions[$qid]['name'] = _SKILLGAPTESTS;
         } else {
@@ -411,23 +411,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'questionsTable') {
         $questions[$testQuestion['id']]['partof'] = 1;
     }
 
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
         $sort = $_GET['sort'];
         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
     } else {
         $sort = 'text';
     }
-    $questions = eF_multiSort($questions, $sort, $order);
+    $questions = sC_multiSort($questions, $sort, $order);
 
     if (isset($_GET['filter'])) {
-        $questions = eF_filterData($questions, $_GET['filter']);
+        $questions = sC_filterData($questions, $_GET['filter']);
     }
 
     $smarty -> assign("T_QUESTIONS_SIZE", sizeof($questions));
-    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
         $questions = array_slice($questions, $offset, $limit, true);
     }
 
@@ -449,17 +449,17 @@ if (isset($_GET['postAjaxRequest'])) {
     // Ajax assignment of a skill gap test to a user
     if (isset($_GET['login'])) {
         if ($_GET['checked'] == "true") {
-            eF_insertTableData("users_to_skillgap_tests", array( "users_LOGIN" => $_GET['login'], "tests_ID" => $_GET['edit_test']));
+            sC_insertTableData("users_to_skillgap_tests", array( "users_LOGIN" => $_GET['login'], "tests_ID" => $_GET['edit_test']));
         } elseif ($_GET['checked'] == "false") {
-            eF_deleteTableData("users_to_skillgap_tests", "users_LOGIN = '". $_GET['login'] ."' AND tests_ID = '" .$_GET['edit_test'] . "'");
+            sC_deleteTableData("users_to_skillgap_tests", "users_LOGIN = '". $_GET['login'] ."' AND tests_ID = '" .$_GET['edit_test'] . "'");
 
         } elseif (isset($_GET['addAll'])) {
 
             // Different management if a users' filter is set or not
             if ($_GET['filter']) {
-                $existing_test_users_r = eF_getTableData("users_to_skillgap_tests", "*", "tests_ID = '".$_GET['edit_test']."'");
+                $existing_test_users_r = sC_getTableData("users_to_skillgap_tests", "*", "tests_ID = '".$_GET['edit_test']."'");
                 if (!empty($existing_test_users_r)) {
-                    $existing_test_users_r = eF_filterData($existing_test_users_r, $_GET['filter']);
+                    $existing_test_users_r = sC_filterData($existing_test_users_r, $_GET['filter']);
                     $existing_test_users['users_LOGIN'] = array();
                     foreach ($existing_test_users_r as $test_user) {
                         $existing_test_users['users_LOGIN'][] = $test_user['users_LOGIN'];
@@ -467,8 +467,8 @@ if (isset($_GET['postAjaxRequest'])) {
                 } else {
                     $existing_test_users = array();
                 }
-                $all_users_r = eF_getTableData("users", "*", "user_type = 'student'");
-                $all_users_r = eF_filterData($all_users_r, $_GET['filter']);
+                $all_users_r = sC_getTableData("users", "*", "user_type = 'student'");
+                $all_users_r = sC_filterData($all_users_r, $_GET['filter']);
 
                 $all_users['login'] = array();
                 foreach ($all_users_r as $test_user) {
@@ -476,8 +476,8 @@ if (isset($_GET['postAjaxRequest'])) {
                 }
 
             } else {
-                $existing_test_users = eF_getTableDataFlat("users_to_skillgap_tests", "users_LOGIN", "tests_ID = '".$_GET['edit_test']."'");
-                $all_users = eF_getTableDataFlat("users", "login", "user_type = 'student'");
+                $existing_test_users = sC_getTableDataFlat("users_to_skillgap_tests", "users_LOGIN", "tests_ID = '".$_GET['edit_test']."'");
+                $all_users = sC_getTableDataFlat("users", "login", "user_type = 'student'");
             }
 
             if (empty($existing_test_users)) {
@@ -495,25 +495,25 @@ if (isset($_GET['postAjaxRequest'])) {
             }
 
             if (isset($all_users_to_add)) {
-                eF_execute("INSERT INTO users_to_skillgap_tests (tests_ID, users_LOGIN, solved) VALUES " . $all_users_to_add);
+                sC_execute("INSERT INTO users_to_skillgap_tests (tests_ID, users_LOGIN, solved) VALUES " . $all_users_to_add);
             }
         } elseif (isset($_GET['removeAll'])) {
             // Different management if a users' filter is set or not
             if ($_GET['filter']) {
-                $all_current_users = eF_getTableData("users_to_skillgap_tests JOIN users ON users_LOGIN = login", "login, name, surname", "");
-                isset($_GET['filter']) ? $all_current_users = eF_filterData($all_current_users, $_GET['filter']) : null;
+                $all_current_users = sC_getTableData("users_to_skillgap_tests JOIN users ON users_LOGIN = login", "login, name, surname", "");
+                isset($_GET['filter']) ? $all_current_users = sC_filterData($all_current_users, $_GET['filter']) : null;
 
                 foreach ($all_current_users as $test_user) {
-                    eF_deleteTableData("users_to_skillgap_tests", "tests_ID = '".$_GET['edit_test'] . "' AND users_LOGIN = '". $test_user['login']."' ");
+                    sC_deleteTableData("users_to_skillgap_tests", "tests_ID = '".$_GET['edit_test'] . "' AND users_LOGIN = '". $test_user['login']."' ");
                 }
             } else {
-                eF_deleteTableData("users_to_skillgap_tests", "tests_ID = '".$_GET['edit_test'] . "'");
+                sC_deleteTableData("users_to_skillgap_tests", "tests_ID = '".$_GET['edit_test'] . "'");
             }
         }
 
     } else {
         try {
-            if (isset($_GET['question']) && eF_checkParameter($_GET['question'], 'id')) {
+            if (isset($_GET['question']) && sC_checkParameter($_GET['question'], 'id')) {
                 if ($_GET['remove'] && in_array($_GET['question'], array_keys($testQuestions))) { //The user has the project, so remove him
                     $currentTest -> removeQuestions(array($_GET['question']));
                 } else { //The user doesn't have the project, so add him
@@ -548,7 +548,7 @@ if (isset($_GET['postAjaxRequest'])) {
      }
      $nonTestQuestions = $nonTestQuestionsTemp;
     }
-                isset($_GET['filter']) ? $nonTestQuestions = eF_filterData($nonTestQuestions, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $nonTestQuestions = sC_filterData($nonTestQuestions, $_GET['filter']) : null;
                 $currentTest -> addQuestions(array_combine(array_keys($nonTestQuestions), array_fill(0, sizeof($nonTestQuestions), 1)));
             } elseif (isset($_GET['removeAll'])) {
                 $testQuestions = $currentTest -> getQuestions();
@@ -565,7 +565,7 @@ if (isset($_GET['postAjaxRequest'])) {
                     }
                 }
 
-                isset($_GET['filter']) ? $testQuestions = eF_filterData($testQuestions, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $testQuestions = sC_filterData($testQuestions, $_GET['filter']) : null;
                 $currentTest -> removeQuestions(array_keys($testQuestions));
             }
 
@@ -574,7 +574,7 @@ if (isset($_GET['postAjaxRequest'])) {
             $stats['difficulties'] = new ArrayObject($stats['difficulties']);
             $stats['types'] = new ArrayObject($stats['types']);
             $stats['percentage'] = new ArrayObject($stats['percentage']);
-            $stats['duration'] = eF_convertIntervalToTime($stats['total_duration']);
+            $stats['duration'] = sC_convertIntervalToTime($stats['total_duration']);
             $stats['random_pool'] = $currentTest -> options['random_pool'];
             $stats['test_duration'] = $currentTest -> options['duration'];
 
@@ -647,7 +647,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'randomize') {
         $stats['difficulties'] = new ArrayObject($stats['difficulties']);
         $stats['types'] = new ArrayObject($stats['types']);
         $stats['percentage'] = new ArrayObject($stats['percentage']);
-        $stats['duration'] = eF_convertIntervalToTime($stats['total_duration']);
+        $stats['duration'] = sC_convertIntervalToTime($stats['total_duration']);
         if ($currentTest -> options['random_pool'] > sizeof($currentTest -> getQuestions())) {
             $currentTest -> options['random_pool'] = sizeof($currentTest -> getQuestions());
             $currentTest -> persist();
@@ -686,7 +686,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'random_pool' && isset($_GET['rando
         $stats['difficulties'] = new ArrayObject($stats['difficulties']);
         $stats['types'] = new ArrayObject($stats['types']);
         $stats['percentage'] = new ArrayObject($stats['percentage']);
-        $stats['duration'] = eF_convertIntervalToTime($stats['total_duration']);
+        $stats['duration'] = sC_convertIntervalToTime($stats['total_duration']);
         $stats['random_pool'] = $currentTest -> options['random_pool'];
         //Set the test time to match questions time
         if ($_GET['update_test_time'] && $stats['total_duration'] > 0) {

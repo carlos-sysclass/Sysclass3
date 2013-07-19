@@ -62,16 +62,16 @@
 {/capture}
 {if $T_SELECTED_OPTION == 'pending_payments'}
 
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const._PAGAMENTO_ENVIAR_ARQUIVO_RETORNO
 		data=$smarty.capture.t_upload_return_file
 	}
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const._ULTIMOS_BOLETOS_PENDENTES
 		data=$smarty.capture.t_ultimos_pagamentos_registrados_table 
 	}
 {elseif $T_SELECTED_OPTION == 'pending_payments_preview'}
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const._PAGAMENTO_ENVIAR_ARQUIVO_RETORNO
 		data=$smarty.capture.t_upload_return_file
 	}
@@ -126,7 +126,7 @@
 			{$smarty.capture.preview_footer}
 		{/capture}
 		
-		{eF_template_printBlock 
+		{sC_template_printBlock 
 			title=$smarty.const._PAGAMENTO_RESULTADO_ENVIO_ARQUIVO_RETORNO
 			data=$smarty.capture.result_block
 		}

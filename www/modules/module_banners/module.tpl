@@ -18,7 +18,7 @@
                 </form>
 
     {/capture}
-    {eF_template_printBlock title=$smarty.const._BANNERS_ADDBANNER data=$smarty.capture.t_insert_banner_code image=$T_BANNERS_BASELINK|cat:'images/banners32.png' absoluteImagePath = 1}
+    {sC_template_printBlock title=$smarty.const._BANNERS_ADDBANNER data=$smarty.capture.t_insert_banner_code image=$T_BANNERS_BASELINK|cat:'images/banners32.png' absoluteImagePath = 1}
 {else}
     {capture name = 't_banners_list_code'}
         {if $smarty.session.s_type != 'student'}
@@ -77,7 +77,7 @@
             {/if}
         {/if}
     {/capture}
-    {eF_template_printBlock title=$smarty.const._BANNERS_BANNERS data=$smarty.capture.t_banners_list_code image= $T_BANNERS_BASELINK|cat:'images/banners32.png' absoluteImagePath = 1}
+    {sC_template_printBlock title=$smarty.const._BANNERS_BANNERS data=$smarty.capture.t_banners_list_code image= $T_BANNERS_BASELINK|cat:'images/banners32.png' absoluteImagePath = 1}
 {/if}
 
 

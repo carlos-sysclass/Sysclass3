@@ -9,7 +9,7 @@ try {
  if ($currentUser -> getType() != 'administrator') {
   $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
   $message_type = 'failure';
-  eF_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
+  sC_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
   exit;
  }
 
@@ -19,11 +19,11 @@ try {
 
 	 **************************************************** */
  if (isset($_GET['del_skill_cat'])) { //The administrator asked to delete a skill
-  eF_updateTableData("module_hcd_skills",array("categories_ID" => 0), "categories_ID = '". $_GET['del_skill_cat'] ."'");
-  eF_deleteTableData("module_hcd_skill_categories", "id = '".$_GET['del_skill_cat']."'");
+  sC_updateTableData("module_hcd_skills",array("categories_ID" => 0), "categories_ID = '". $_GET['del_skill_cat'] ."'");
+  sC_deleteTableData("module_hcd_skill_categories", "id = '".$_GET['del_skill_cat']."'");
   $message = _SKILLCATEGORYDELETED;
   $message_type = 'success';
-  eF_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=skills&message=".$message."&message_type=".$message_type);
+  sC_redirect("".$_SESSION['s_type'].".php?ctg=module_hcd&op=skills&message=".$message."&message_type=".$message_type);
   exit;
   /*****************************************************
 
@@ -35,9 +35,9 @@ try {
    $form = new HTML_QuickForm("skill_cat_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=skill_cat&add_skill_cat=1", "",null, true);
   } else {
    $form = new HTML_QuickForm("skill_cat_form", "post", $_SESSION['s_type'].".php?ctg=module_hcd&op=skill_cat&edit_skill_cat=" . $_GET['edit_skill_cat'] , "", null, true);
-   $skill_cat = eF_getTableData("module_hcd_skill_categories","description", "id ='".$_GET['edit_skill_cat']."'");
+   $skill_cat = sC_getTableData("module_hcd_skill_categories","description", "id ='".$_GET['edit_skill_cat']."'");
   }
-  $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+  $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
   $form -> addElement('text', 'skill_cat_description', _SKILLCATEGORY, 'id="skill_cat_description" class = "inputText" tabindex="1"');
   $form -> addRule('skill_cat_description', _THEFIELD.' '._SKILLCATEGORY.' '._ISMANDATORY, 'required', null, 'client');
   // Hidden for maintaining the previous_url value
@@ -69,18 +69,18 @@ try {
    if ($form -> validate()) {
     $skill_cat_content = array('description' => $form->exportValue('skill_cat_description'));
     if (isset($_GET['add_skill_cat'])) {
-     eF_insertTableData("module_hcd_skill_categories", $skill_cat_content);
+     sC_insertTableData("module_hcd_skill_categories", $skill_cat_content);
      $message = _SUCCESSFULLYCREATEDSKILLCATEGORY;
      $message_type = 'success';
     } elseif (isset($_GET['edit_skill_cat'])) {
-     eF_updateTableData("module_hcd_skill_categories", $skill_cat_content , "id = '".$_GET['edit_skill_cat']."'");
+     sC_updateTableData("module_hcd_skill_categories", $skill_cat_content , "id = '".$_GET['edit_skill_cat']."'");
      $message = _SKILLCATEGORYDATAUPDATED;
      $message_type = 'success';
     }
 
     // Return to previous url stored in a hidden - that way, after the insertion we can immediately return to where we were
     echo "<script>!/\?/.test(parent.location) ? parent.location = '". basename($form->exportValue('previous_url')) ."&message=".urlencode($message)."&message_type=".$message_type."' : parent.location = '".basename($form->exportValue('previous_url')) ."&message=".urlencode($message)."&message_type=".$message_type."';</script>";
-    //eF_redirect("".$form->exportValue('previous_url')."&message=". $message . "&message_type=" . $message_type . "&tab=skills");
+    //sC_redirect("".$form->exportValue('previous_url')."&message=". $message . "&message_type=" . $message_type . "&tab=skills");
     exit;
    }
   }

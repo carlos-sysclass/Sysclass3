@@ -12,7 +12,7 @@
    {else}
     <tr><td class = "topTitle defaultRowHeight" colspan = "3">
      <div style = "float:right;">{$smarty.capture.t_path_additional_code}</div>
-     {$title|eF_formatTitlePath}
+     {$title|sC_formatTitlePath}
     </td></tr>
    {/if}
    <tr><td class = "layoutColumn left">

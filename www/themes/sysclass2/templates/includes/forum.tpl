@@ -42,7 +42,7 @@
      <script>parent.location = parent.location;</script>
  {/if}
  {/capture}
- {eF_template_printBlock title = $smarty.const._FORUMPROPERTIES data = $smarty.capture.t_add_forum_code image = '32x32/forum.png' help = 'Forum'}
+ {sC_template_printBlock title = $smarty.const._FORUMPROPERTIES data = $smarty.capture.t_add_forum_code image = '32x32/forum.png' help = 'Forum'}
 {elseif $smarty.get.type == 'topic' && ($smarty.get.add || $smarty.get.edit)}
  {capture name = 't_add_topic_code'}
      {$T_ENTITY_FORM.javascript}
@@ -75,7 +75,7 @@
      <script>parent.location = parent.location;</script>
  {/if}
  {/capture}
- {eF_template_printBlock title = $smarty.const._TOPICPROPERTIES data = $smarty.capture.t_add_topic_code image = '32x32/forum.png' help = 'Forum'}
+ {sC_template_printBlock title = $smarty.const._TOPICPROPERTIES data = $smarty.capture.t_add_topic_code image = '32x32/forum.png' help = 'Forum'}
 {elseif $smarty.get.type == 'poll' && ($smarty.get.add || $smarty.get.edit)}
  {capture name = 't_add_poll_code'}
   <script>var twooptionsminimum = '{$smarty.const._TWOOPTIONSATMINIMUMREQUIRED}'; var removechoice= '{$smarty.const._REMOVECHOICE}';</script>
@@ -129,7 +129,7 @@
      <script>parent.location = parent.location;</script>
  {/if}
  {/capture}
- {eF_template_printBlock title = $smarty.const._POLLPROPERTIES data = $smarty.capture.t_add_poll_code image = '32x32/forum.png' help = 'Forum'}
+ {sC_template_printBlock title = $smarty.const._POLLPROPERTIES data = $smarty.capture.t_add_poll_code image = '32x32/forum.png' help = 'Forum'}
 {elseif $smarty.get.type == 'message' && ($smarty.get.add || $smarty.get.edit)}
  {capture name = 't_add_message_code'}
      {$T_ENTITY_FORM.javascript}
@@ -158,7 +158,7 @@
      <script>parent.location = parent.location;</script>
  {/if}
  {/capture}
- {eF_template_printBlock title = $smarty.const._MESSAGEPROPERTIES data = $smarty.capture.t_add_message_code image = '32x32/forum.png' help = 'Forum'}
+ {sC_template_printBlock title = $smarty.const._MESSAGEPROPERTIES data = $smarty.capture.t_add_message_code image = '32x32/forum.png' help = 'Forum'}
 {elseif $smarty.get.config}
 {capture name = 't_configuration_panel_code'}
  {$T_CONFIGURATION_FORM.javascript}
@@ -192,7 +192,7 @@
      </table>
  </form>
 {/capture}
-{eF_template_printBlock title = $smarty.const._FORUMCONFIGURATIONPANEL data = $smarty.capture.t_configuration_panel_code image = '32x32/edit.png' help = 'Forum'}
+{sC_template_printBlock title = $smarty.const._FORUMCONFIGURATIONPANEL data = $smarty.capture.t_configuration_panel_code image = '32x32/edit.png' help = 'Forum'}
 
 {else}
   {if $smarty.get.topic}
@@ -204,7 +204,7 @@
                     {if $T_TOPIC.status == '2'}
                   <a href = "javascript:void(0)" onclick = "alert('{$smarty.const._NONEWMESSAGELOCKED}')" class = "inactiveLink" >{$smarty.const._NEWMESSAGE}</a>
                     {else}
-                  <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._NEWMESSAGE}', 1)" target = "POPUP_FRAME" >{$smarty.const._NEWMESSAGE}</a>
+                  <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._NEWMESSAGE}', 1)" target = "POPUP_FRAME" >{$smarty.const._NEWMESSAGE}</a>
                     {/if}
      </span>
     </div>
@@ -220,11 +220,11 @@
                   {if $_change_}
                       <div class = "forumMessageTools">
                 {if $T_TOPIC.status != '2'}
-                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&replyto={$T_POSTS[messages_list].id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._REPLY}', 2)"><img class = "handle" src = "images/16x16/message.png" title = "{$smarty.const._REPLY}" alt = "{$smarty.const._REPLY}"/></a>
-                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&replyto={$T_POSTS[messages_list].id}&quote=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._REPLYWITHQUOTE}', 2)"><img class = "handle" src = "images/16x16/forums.png" title = "{$smarty.const._REPLYWITHQUOTE}" alt = "{$smarty.const._REPLYWITHQUOTE}"/></a>
+                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&replyto={$T_POSTS[messages_list].id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._REPLY}', 2)"><img class = "handle" src = "images/16x16/message.png" title = "{$smarty.const._REPLY}" alt = "{$smarty.const._REPLY}"/></a>
+                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=message&topic_id={$smarty.get.topic}&replyto={$T_POSTS[messages_list].id}&quote=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._REPLYWITHQUOTE}', 2)"><img class = "handle" src = "images/16x16/forums.png" title = "{$smarty.const._REPLYWITHQUOTE}" alt = "{$smarty.const._REPLYWITHQUOTE}"/></a>
                    {/if}
                    {if $smarty.session.s_type == 'administrator' || $smarty.session.s_login == $T_POSTS[messages_list].users_LOGIN}
-                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$T_POSTS[messages_list].id}&type=message&topic_id={$smarty.get.topic}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 2)" class = "editLink"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" /></a>
+                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$T_POSTS[messages_list].id}&type=message&topic_id={$smarty.get.topic}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 2)" class = "editLink"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" /></a>
                           <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSUREYOUWNATTODELETEMESSAGE} {$T_POSTS[messages_list].title}')) deleteForumMessage(this, '{$T_POSTS[messages_list].id}', 'message')"/>
                    {/if}
                       </div>
@@ -244,7 +244,7 @@
              {/section}
           </table>
    {/capture}
-         {eF_template_printBlock title = $smarty.const._TOPICS data = $smarty.capture.t_topic_code image = '32x32/forum.png' help = 'Forum'}
+         {sC_template_printBlock title = $smarty.const._TOPICS data = $smarty.capture.t_topic_code image = '32x32/forum.png' help = 'Forum'}
   {elseif $smarty.get.poll}
    {capture name = 't_poll_code'}
        {if $T_ACTION == 'view' || !$T_POLL.isopen}
@@ -310,7 +310,7 @@
            </form>
        {/if}
    {/capture}
-   {eF_template_printBlock title = $smarty.const._POLL data = $smarty.capture.t_poll_code image = '32x32/polls.png' help = 'Forum'}
+   {sC_template_printBlock title = $smarty.const._POLL data = $smarty.capture.t_poll_code image = '32x32/polls.png' help = 'Forum'}
  {else}
   {capture name = 't_forums_code'}
       {assign var = "current_forum" value = $smarty.get.forum}
@@ -327,7 +327,7 @@
       <a href = "javascript:void(0)" onclick = "alert('{$smarty.const._NONEWMESSAGELOCKED}')" class = "inactiveLink" >{$smarty.const._NEWTOPIC}</a>
                  {else}
       <img src = "images/16x16/add.png" alt = "{$smarty.const._NEWTOPIC}" title = "{$smarty.const._NEWTOPIC}"/>
-      <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=topic&forum_id={$T_PARENT_FORUM}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._NEWTOPIC}', 1)" target = "POPUP_FRAME">{$smarty.const._NEWTOPIC}</a>
+      <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=topic&forum_id={$T_PARENT_FORUM}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._NEWTOPIC}', 1)" target = "POPUP_FRAME">{$smarty.const._NEWTOPIC}</a>
      {/if}
      </span>
      {if !isset($T_FORUM_CONFIG.polls) || $T_FORUM_CONFIG.polls}
@@ -337,7 +337,7 @@
             <a href = "javascript:void(0)" onclick = "alert('{$smarty.const._NONEWPOLLLOCKED}')" class = "inactiveLink" >{$smarty.const._NEWPOLL}</a>
       {else}
       <img src = "images/16x16/add.png" alt = "{$smarty.const._NEWPOLL}" title = "{$smarty.const._NEWPOLL}"/>
-            <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=poll&forum_id={$T_PARENT_FORUM}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._NEWPOLL}', 2)" target = "POPUP_FRAME">{$smarty.const._NEWPOLL}</a>
+            <a href = "{$smarty.server.PHP_SELF}?ctg=forum&add=1&type=poll&forum_id={$T_PARENT_FORUM}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._NEWPOLL}', 2)" target = "POPUP_FRAME">{$smarty.const._NEWPOLL}</a>
       {/if}
      </span>
      {/if}
@@ -345,7 +345,7 @@
            {if $smarty.session.s_type == 'administrator'}
                     <span>
                         <img src = "images/16x16/edit.png" title = "{$smarty.const._FORUMCONFIGURATIONPANEL}" alt = "{$smarty.const._FORUMCONFIGURATIONPANEL}"/ >
-                        <a href = "{$smarty.server.PHP_SELF}?ctg=forum&config=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._FORUMCONFIGURATIONPANEL}', 1)" target = "POPUP_FRAME">{$smarty.const._FORUMCONFIGURATIONPANEL}</a>
+                        <a href = "{$smarty.server.PHP_SELF}?ctg=forum&config=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._FORUMCONFIGURATIONPANEL}', 1)" target = "POPUP_FRAME">{$smarty.const._FORUMCONFIGURATIONPANEL}</a>
                     </span>
             {/if}
 
@@ -387,7 +387,7 @@
       {if ($_change_) && !$_student_}
             <td class = "centerAlign">
                          {if $_admin_ || ($_professor_ && $smarty.session.s_login == $subforum.users_LOGIN)}
-                               <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$subforum.id}&type=forum&parent_forum_id={$T_PARENT_FORUM}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
+                               <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$subforum.id}&type=forum&parent_forum_id={$T_PARENT_FORUM}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
                                   <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "deleteForumEntity(this, '{$subforum.id}', 'forum');"/>
                          {/if}
                                              </td>
@@ -436,7 +436,7 @@
                                               <img class = "forumIcon" src = "images/32x32/polls.png" alt = "{$smarty.const._POLL}" title = "{$smarty.const._POLL}"/>
                                                  <div>
                                                   <a href = "{$smarty.server.PHP_SELF}?ctg=forum&poll={$poll.id}" class = "smallHeader" style = "white-space:normal">{$poll.title}</a>
-                                                  <p>{$poll.question|eF_truncate:50}</p>
+                                                  <p>{$poll.question|sC_truncate:50}</p>
                                                  </div>
                                              </td>
                                              <td>#filter:user_loginNoIcon-{$poll.users_LOGIN}#</td>
@@ -445,7 +445,7 @@
       {if $_change_}
                                              <td class = "centerAlign">
                          {if $smarty.session.s_type == 'administrator' || $smarty.session.s_login == $poll.users_LOGIN}
-                         <a href = "{$smarty.server.PHP_SELF}?ctg=forum&type=poll&edit={$poll.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 2)" class = "editLink" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
+                         <a href = "{$smarty.server.PHP_SELF}?ctg=forum&type=poll&edit={$poll.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 2)" class = "editLink" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
                          <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if(confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteForumEntity(this, '{$poll.id}', 'poll')"/>
                          {/if}
                                              </td>
@@ -474,7 +474,7 @@
                                               <img class = "forumIcon" src = "images/32x32/message.png" alt = "{$smarty.const._TOPIC}" title = "{$smarty.const._TOPIC}"/>
                                               <div>
                                                   <a href = "{$smarty.server.PHP_SELF}?ctg=forum&topic={$topic.id}" class = "smallHeader" style = "white-space:normal">{$topic.title}</a>
-                                                  <p>{$topic.first_message|eF_truncate:50}</p>
+                                                  <p>{$topic.first_message|sC_truncate:50}</p>
                                                  </div>
                                              </td>
                                              <td>{$topic.messages}&nbsp;{$smarty.const._POSTS}</td>
@@ -496,7 +496,7 @@
                                              <td class = "centerAlign">
                          {if $_change_}
                              {if $smarty.session.s_type == 'administrator' || ($smarty.session.s_login == $topic.users_LOGIN && $T_FORUMS.$current_forum.status != '2')}
-                <a href = "{$smarty.server.PHP_SELF}?ctg=forum&type=topic&edit={$topic.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 1)" class = "editLink" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
+                <a href = "{$smarty.server.PHP_SELF}?ctg=forum&type=topic&edit={$topic.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 1)" class = "editLink" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
                 <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteForumEntity(this, '{$topic.id}', 'topic')"/>
                              {/if}
                          {/if}
@@ -559,7 +559,7 @@
                          </td>
                       {if $_change_ && $_admin_}
                          <td class = "centerAlign">
-                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$subforum.id}&type=forum&parent_forum_id={$T_PARENT_FORUM}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDIT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
+                          <a href = "{$smarty.server.PHP_SELF}?ctg=forum&edit={$subforum.id}&type=forum&parent_forum_id={$T_PARENT_FORUM}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDIT}', 1)" target = "POPUP_FRAME"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
                              <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "deleteForumEntity(this, '{$subforum.id}', 'forum');"/>
                          </td>
                          {/if}
@@ -572,7 +572,7 @@
              {/if}
          {/capture}
 
-         {eF_template_printBlock title = $smarty.const._FORUMS data = $smarty.capture.t_forums_code image = '32x32/forum.png' options = $T_FORUM_OPTIONS help = 'Forum'}
+         {sC_template_printBlock title = $smarty.const._FORUMS data = $smarty.capture.t_forums_code image = '32x32/forum.png' options = $T_FORUM_OPTIONS help = 'Forum'}
  {/if}
 
 {/if}

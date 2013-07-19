@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 $userMainForm = new HTML_QuickForm("user_main_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=main", "", null, true);
-$userMainForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$userMainForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $userMainForm -> addElement("advcheckbox", "signup", _EXTERNALLYSIGNUP, null, 'class = "inputCheckBox"', array(0, 1));
 $userMainForm -> addElement('select', 'default_type', _DEFAULTUSERTYPE, MagesterUser :: getRoles(true), 'class = "inputCheckBox"');
 
@@ -29,20 +29,20 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
  if ($userMainForm -> isSubmitted() && $userMainForm -> validate()) {
   $values = $userMainForm -> exportValues();
   if ($values['reset_license_note']) {
-   eF_updateTableData("users", array("viewed_license" => 0), "viewed_license = 1");
+   sC_updateTableData("users", array("viewed_license" => 0), "viewed_license = 1");
   }
   unset($values['reset_license_note']); //Unset it, since we don't need to store this value to the database
   unset($values['submit']);
   foreach ($values as $key => $value) {
    MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_USER_MAIN_FORM", $userMainForm -> toArray());
 
 $userMultipleLoginsForm = new HTML_QuickForm("user_multiple_logins_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=multiple_logins", "", null, true);
-$userMultipleLoginsForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$userMultipleLoginsForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $groups = array();
 foreach (MagesterGroup::getGroups() as $value) {
  $groups[$value['id']] = $value['name'];
@@ -64,14 +64,14 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
         'user_types' => $values['user_types'],
         'groups' => $values['groups']);
   MagesterConfiguration :: setValue('multiple_logins', serialize($multipleLogins));
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=multiple_logins&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=multiple_logins&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_USER_MULTIPLE_LOGINS_FORM", $userMultipleLoginsForm -> toArray());
 
 
 $userWebserverAuthenticationForm = new HTML_QuickForm("user_webserver_authentication_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=webserver_authentication", "", null, true);
-$userWebserverAuthenticationForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$userWebserverAuthenticationForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $userWebserverAuthenticationForm -> addElement("advcheckbox", "webserver_auth", _WEBSERVERAUTHENTICATION, null, 'class = "inputCheckBox"', array(0, 1));
 $userWebserverAuthenticationForm -> addElement("advcheckbox", "webserver_registration", _WEBSERVERREGISTRATION, null, 'class = "inputCheckBox"', array(0, 1));
 $userWebserverAuthenticationForm -> addElement("text", "error_page", _ERRORPAGEFORINVALIDLOGIN, 'class = "inputText"');
@@ -91,7 +91,7 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach ($values as $key => $value) {
    MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=webserver_authentication&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=user&tab=webserver_authentication&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 

@@ -118,7 +118,7 @@
 		</form>
 	{/capture}
 	
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 			= $smarty.const.__XPAY_DO_PAYMENT
 		sub_title		= $smarty.const.__XPAY_DO_PAYMENT_INSTRUCTIONS
 		data			= $smarty.capture.t_xpay_do_payment

@@ -20,7 +20,7 @@
 	{capture name="t_action_tabs"}
 		<div class="tabber">
 			{foreach name = 'action_list' key = "actionIndex" item = "actionItem" from = $T_ACTION_VIEWS_OPTIONS}
-				{eF_template_printBlock 
+				{sC_template_printBlock 
 					tabber = $actionIndex 
 					title = $actionItem.title
 					data = $smarty.capture.$actionIndex
@@ -29,7 +29,7 @@
 		</div>
 	{/capture}
 	
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const._PAGAMENTO_CONFIG_TIPOS
 		data=$smarty.capture.t_action_tabs
 		link = $T_MODULE_PAGAMENTO_BASEURL

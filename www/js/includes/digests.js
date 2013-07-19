@@ -16,7 +16,7 @@ function sendQueueMessages(el) {
 }
 function onSendQueueMessages(el, response) {
  el.down().remove();
- eF_js_redrawPage('msgQueueTable', true);
+ sC_js_redrawPage('msgQueueTable', true);
 }
 function clearQueueMessages(el) {
  Element.extend(el).insert(new Element('img', {src:'themes/default/images/others/progress1.gif'}).addClassName('handle'));
@@ -27,7 +27,7 @@ function clearQueueMessages(el) {
 function onClearQueueMessages(el, response) {
  el.down().remove();
  if (response.evalJSON(true).status) {
-  eF_js_redrawPage('msgQueueTable', true);
+  sC_js_redrawPage('msgQueueTable', true);
  } else {
   alert('Some problem emerged');
  }
@@ -60,7 +60,7 @@ Function to check whether recipients have been selected and whether a subject ha
 Did not use rules of Quickform due to the fact that the first rule is a composite one
 */
 
-function eF_js_checkRecipients() {
+function sC_js_checkRecipients() {
     //if (document.forms[0].recipients[0].checked && document.getElementById('autocomplete').value == "") {
     if (document.forms[0].recipients[0].checked) {
         alert(noRecipientsHaveBeenSelected);
@@ -93,7 +93,7 @@ function show_hide_additional_recipients() {
             $('arrow_down').setStyle("display:block;");
             new Effect.toggle( $('additional_recipients_categories'),'BLIND',{queue:{scope:'myscope', position:'end', limit: 2}, duration:1.0});
             //$('only_specific_users').checked = "true";
-            eF_js_selectRecipients('active_users');
+            sC_js_selectRecipients('active_users');
         }
     }
     setTimeout(function(){ additional_recipients_lock = 1;}, 1001);
@@ -101,7 +101,7 @@ function show_hide_additional_recipients() {
 }
 
 
-function eF_js_selectRecipients(recipient) {
+function sC_js_selectRecipients(recipient) {
 
     // enterprise version: Initially disable all new HCD related recipient selects - the one needed will be enabled later
     document.getElementById('course_recipients').disabled = 'disabled';
@@ -438,7 +438,7 @@ function onActivateSuccess(el, responseText) {
     var i;
     for (i = 0; i < tables; i++) {
         if (sortedTables[i].id.match("msgQueueTable")) {
-            eF_js_rebuildTable(i, 0, 'null', 'desc');
+            sC_js_rebuildTable(i, 0, 'null', 'desc');
         }
     }
     // Change from activated to deactivated row
@@ -481,7 +481,7 @@ if (addEditNotification) {
   }
  } else {
   if (recipientsCategory != "active_users") {
-   eF_js_selectRecipients(recipientsCategory);
+   sC_js_selectRecipients(recipientsCategory);
    show_hide_additional_recipients();
   }
  }

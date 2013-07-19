@@ -5,7 +5,7 @@
 			href="{if $menu.link}{$menu.link}{else}javascript: void(0);{/if}" 
 			class="{if $menu.options|@count > 0}has_dropdown{/if}">
 			{* IMAGE *}
-			{$menu.title|eF_truncate:30}
+			{$menu.title|sC_truncate:30}
 		</a>
 		<ul class="dropdown ui-accordion ui-widget ui-helper-reset" role="tablist"  id="mag_list_menu{$menu_key}">
 		{foreach name = 'options_list' key = 'option_id' item = 'option' from = $menu.options}
@@ -13,7 +13,7 @@
 				<li class="ui-accordion-li-fix" {if $menu_key == 1 && $smarty.session.s_type != "administrator"}name="lessonSpecific"{/if}>{$option.html}</li>
 			{else}
 				<li class = "ui-accordion-li-fix">
-					<a href = "{$option.link}" title="{$option.title}">{$option.title|eF_truncate:25}</a>
+					<a href = "{$option.link}" title="{$option.title}">{$option.title|sC_truncate:25}</a>
 				</li>
 			{/if}
 		{/foreach}

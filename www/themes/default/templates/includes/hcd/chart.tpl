@@ -31,4 +31,4 @@
  {/if}
 {/capture}
 
-{eF_template_printBlock title = $smarty.const._ORGANIZATIONCHARTTREE data = $smarty.capture.t_chart_code image = '32x32/organization.png' options = $T_CHART_OPTIONS}
+{sC_template_printBlock title = $smarty.const._ORGANIZATIONCHARTTREE data = $smarty.capture.t_chart_code image = '32x32/organization.png' options = $T_CHART_OPTIONS}

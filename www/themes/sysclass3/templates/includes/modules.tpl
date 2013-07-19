@@ -6,7 +6,7 @@
                                 <div class = "headerTools">
                                     <span>
                                         <img src = "images/16x16/add.png" title = "{$smarty.const._INSTALLMODULE}" alt = "{$smarty.const._INSTALLMODULE}">
-                                        <a href = "javascript:void(0)" onclick = "document.getElementById('upload_file_form').action = '{$smarty.server.PHP_SELF}?ctg=modules'; eF_js_showDivPopup('{$smarty.const._INSTALLMODULE}', 0, 'upload_file_table')" title = "{$smarty.const._INSTALLMODULE}">{$smarty.const._INSTALLMODULE}</a>
+                                        <a href = "javascript:void(0)" onclick = "document.getElementById('upload_file_form').action = '{$smarty.server.PHP_SELF}?ctg=modules'; sC_js_showDivPopup('{$smarty.const._INSTALLMODULE}', 0, 'upload_file_table')" title = "{$smarty.const._INSTALLMODULE}">{$smarty.const._INSTALLMODULE}</a>
                                     </span>
                                 </div>
 								<div class="clear"></div>
@@ -42,9 +42,9 @@
                                     </td>
                                     <td class = "centerAlign">
                                 {if !$T_MODULES[modules_list].not_installed}
-                                        <img class = "ajaxHandle" src = "images/16x16/information.png" alt = "{$smarty.const._DESCRIPTION}" title = "{$smarty.const._DESCRIPTION}" onclick = "eF_js_showDivPopup('{$smarty.const._MODULEINFORMATION}', 1, 'module_info_table_{$smarty.section.modules_list.iteration}')"/>
+                                        <img class = "ajaxHandle" src = "images/16x16/information.png" alt = "{$smarty.const._DESCRIPTION}" title = "{$smarty.const._DESCRIPTION}" onclick = "sC_js_showDivPopup('{$smarty.const._MODULEINFORMATION}', 1, 'module_info_table_{$smarty.section.modules_list.iteration}')"/>
                                     {if $change_modules}
-                                        <img class = "ajaxHandle" src = "images/16x16/generic.png" title="{$smarty.const._UPGRADEMODULE}" alt="{$smarty.const._UPGRADEMODULE}" onclick = "document.getElementById('upload_file_form').action = '{$smarty.server.PHP_SELF}?ctg=modules&upgrade={$T_MODULES[modules_list].className}'; eF_js_showDivPopup('{$smarty.const._UPGRADEMODULE} {$T_MODULES[modules_list].className}', 0, 'upload_file_table')"/>
+                                        <img class = "ajaxHandle" src = "images/16x16/generic.png" title="{$smarty.const._UPGRADEMODULE}" alt="{$smarty.const._UPGRADEMODULE}" onclick = "document.getElementById('upload_file_form').action = '{$smarty.server.PHP_SELF}?ctg=modules&upgrade={$T_MODULES[modules_list].className}'; sC_js_showDivPopup('{$smarty.const._UPGRADEMODULE} {$T_MODULES[modules_list].className}', 0, 'upload_file_table')"/>
                                         <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm ('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteModule(this, '{$T_MODULES[modules_list].className}')"/>
                                     {/if}
                                         <div id = "module_info_table_{$smarty.section.modules_list.iteration}" style = "display:none">
@@ -57,7 +57,7 @@
                                                 <tr style = "border-bottom:1px dotted gray"><td>{$smarty.const._VALIDFOR}:&nbsp;</td><td>{$T_MODULES[modules_list].permissions}</td></tr>
                                             </table>
           {/capture}
-          {eF_template_printBlock title=$smarty.const._MODULEINFORMATION data=$smarty.capture.t_module_info_code image='32x32/addons.png'}
+          {sC_template_printBlock title=$smarty.const._MODULEINFORMATION data=$smarty.capture.t_module_info_code image='32x32/addons.png'}
                                         </div>
                                 {else}
                                     {if $change_modules}
@@ -88,10 +88,10 @@
                                     </table>
                                 </form>
        {/capture}
-       {eF_template_printBlock title=$smarty.const._INSTALLMODULE data=$smarty.capture.t_upload_module_code image='32x32/addons.png'}
+       {sC_template_printBlock title=$smarty.const._INSTALLMODULE data=$smarty.capture.t_upload_module_code image='32x32/addons.png'}
                             </div>
                         {/capture}
 
-                        {eF_template_printBlock title=$smarty.const._MODULES data=$smarty.capture.t_modules_code image='32x32/addons.png' help = 'Modules'}
+                        {sC_template_printBlock title=$smarty.const._MODULES data=$smarty.capture.t_modules_code image='32x32/addons.png' help = 'Modules'}
     </td></tr>
 {/capture}

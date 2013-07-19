@@ -17,7 +17,7 @@
 	</li>
 	{if $T_MODULE_POLOS_INFO_USER.email <> null }
 	<li>
-		<a title="{$T_MODULE_POLOS_INFO_USER.razao_social}" href = "{$T_MODULE_POLOS_INFO_USER_LINK}&rec=1" onclick = "eF_js_showDivPopup('{$smarty.const._MODULE_POLOS_EMAIL}', 1);" target = "POPUP_FRAME">
+		<a title="{$T_MODULE_POLOS_INFO_USER.razao_social}" href = "{$T_MODULE_POLOS_INFO_USER_LINK}&rec=1" onclick = "sC_js_showDivPopup('{$smarty.const._MODULE_POLOS_EMAIL}', 1);" target = "POPUP_FRAME">
 			<span>{$smarty.const._MODULE_POLOS_EMAIL}</span><br/>
 			<span class="info_polos_module_polos_user">
 			{$T_MODULE_POLOS_INFO_USER.email}

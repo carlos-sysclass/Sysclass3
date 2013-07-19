@@ -168,10 +168,10 @@ class MagesterEvent
         if (is_array($event)) {
             $this->event = $event;
         } else {
-            if (!eF_checkParameter($event, 'id')) {
+            if (!sC_checkParameter($event, 'id')) {
                 throw new MagesterEventException(_INVALIDID, MagesterEventException::INVALID_ID);
             }
-            $event = eF_getTableData("events", "*", "id = $event");
+            $event = sC_getTableData("events", "*", "id = $event");
             if (sizeof($event) == 0) {
                 throw new MagesterEventException(_EVENTDOESNOTEXIST, MagesterEventException::EVENT_NOT_EXISTS);
             }
@@ -275,7 +275,7 @@ class MagesterEvent
      */
     public function getLessons($returnObjects = false) {
         if ($this->lessons == false) {
-            $result = eF_getTableData("lessons_to_events lc, lessons l", "lc.previous_lessons_ID, l.*", "l.id=lc.lessons_ID and events_ID=".$this->event['id']);
+            $result = sC_getTableData("lessons_to_events lc, lessons l", "lc.previous_lessons_ID, l.*", "l.id=lc.lessons_ID and events_ID=".$this->event['id']);
             if (sizeof($result) > 0) {
                 $previous = 0; //Previous is only used when no previos_lessons_ID is set
                 foreach ($result as $value) {
@@ -296,7 +296,7 @@ class MagesterEvent
                 $this->lessons = $nodes;
                 if (sizeof($nodes) != sizeof($result)) { //If the ordering is messed up for some reason
                     $this->lessons = $eventLessons;
-                    eF_updateTableData("lessons_to_events", array("previous_lessons_ID" => NULL), "events_ID=".$this->event['id']);
+                    sC_updateTableData("lessons_to_events", array("previous_lessons_ID" => NULL), "events_ID=".$this->event['id']);
                 }
             } else {
                 $this->lessons = array();
@@ -341,9 +341,9 @@ class MagesterEvent
         }
         //@todo change de xreiazetai
         if ($max) {
-            $events = eF_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."')","timestamp DESC LIMIT $max");
+            $events = sC_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."')","timestamp DESC LIMIT $max");
         } else {
-            $events = eF_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."')","timestamp DESC");
+            $events = sC_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."')","timestamp DESC");
         }
         if ($returnObjects) {
             $eventObjects = array();
@@ -376,9 +376,9 @@ class MagesterEvent
         }
         //@todo change de xreiazetai
         if ($max) {
-            $events = eF_getTableData("events", "*", "", "timestamp DESC LIMIT $max");
+            $events = sC_getTableData("events", "*", "", "timestamp DESC LIMIT $max");
         } else {
-            $events = eF_getTableData("events", "*", "", "timestamp DESC");
+            $events = sC_getTableData("events", "*", "", "timestamp DESC");
         }
         if ($returnObjects) {
             $eventObjects = array();
@@ -419,9 +419,9 @@ class MagesterEvent
         //@todo change de xreiazetai
         $forum_events = array(MagesterEvent::NEW_FORUM,MagesterEvent::NEW_TOPIC, MagesterEvent::NEW_POLL);
         if ($max) {
-            $events = eF_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."') AND type IN ('".implode("','", $forum_events)."')","timestamp DESC LIMIT $max");
+            $events = sC_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."') AND type IN ('".implode("','", $forum_events)."')","timestamp DESC LIMIT $max");
         } else {
-            $events = eF_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."') AND type IN ('".implode("','", $forum_events)."')","timestamp DESC");
+            $events = sC_getTableData("events", "*", "users_LOGIN in ('".implode("','", $login)."') AND type IN ('".implode("','", $forum_events)."')","timestamp DESC");
         }
         if ($returnObjects) {
             $eventObjects = array();
@@ -467,7 +467,7 @@ class MagesterEvent
         }
         // If a users login is defined, but without any name/surname fields, then get them from the DB
         if (!isset($fields['users_name']) || !isset($fields['users_surname'])) {
-            $users_id = eF_getTableData("users", "name, surname", "login = '".$fields['users_LOGIN']."'");
+            $users_id = sC_getTableData("users", "name, surname", "login = '".$fields['users_LOGIN']."'");
             if ($users_id) {
                 $fields['users_name'] = $users_id[0]['name'];
                 $fields['users_surname'] = $users_id[0]['surname'];
@@ -487,7 +487,7 @@ class MagesterEvent
         if ($type['category'] == "courses") {
             // Allow multiple course ids for each event
             if (is_array($fields['lessons_ID'])) {
-                $event_courses = eF_getTableData("courses", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
+                $event_courses = sC_getTableData("courses", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
                 $result = true;
                 //$fields['lessons'] = array();
                 $fields['lessons_name'] = "";
@@ -501,14 +501,14 @@ class MagesterEvent
             } else {
                 // if not pre-defined
                 if (!isset($fields['lessons_name']) || $fields['lessons_name'] == "") {
-                    $event_courses = eF_getTableData("courses", "id, name" , "id = '". $fields['lessons_ID']."'");
+                    $event_courses = sC_getTableData("courses", "id, name" , "id = '". $fields['lessons_ID']."'");
                     $fields['lessons_name'] = $event_courses[0]['name'];
                 }
             }
         } else {
             // Allow multiple lesson ids for each event
             if (isset($fields['lessons_ID']) && is_array($fields['lessons_ID'])) {
-                $event_lessons = eF_getTableData("lessons", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
+                $event_lessons = sC_getTableData("lessons", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
                 $result = true;
                 //$fields['lessons'] = array();
                 $fields['lessons_name'] = "";
@@ -522,7 +522,7 @@ class MagesterEvent
             } else {
                 // if not pre-defined
                 if (isset($fields['lessons_ID']) && (!isset($fields['lessons_name']) || $fields['lessons_name'] == "")) {
-                    $event_lessons = eF_getTableData("lessons", "id, name" , "id = '". $fields['lessons_ID'] ."'");
+                    $event_lessons = sC_getTableData("lessons", "id, name" , "id = '". $fields['lessons_ID'] ."'");
                     $fields['lessons_name'] = $event_lessons[0]['name'];
                 }
             }
@@ -590,7 +590,7 @@ class MagesterEvent
             $subst_array['new_password'] = $this->event['entity_name'];
         }
         if ($this->event['type'] == MagesterEvent::NEW_FORUM_MESSAGE_POST) {
-            $new_forum_message = eF_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
+            $new_forum_message = sC_getTableData("f_messages", "*" , "id='". $this->event['entity_ID'] ."'");
             $new_forum_message = $new_forum_message[0];
 
             $new_forum_message['body'] = str_replace("[quote]", "<bloquote>", $new_forum_message['body']);
@@ -632,7 +632,7 @@ class MagesterEvent
             }
             if ($type['category'] == "news") {
                 $subst_array['announcement_title'] = $this->event['entity_name'];
-                $news = eF_getTableData("news", "data", "id = '". $this->event['entity_ID'] ."'");
+                $news = sC_getTableData("news", "data", "id = '". $this->event['entity_ID'] ."'");
                 if ($news[0]['data']) {
                     $subst_array['announcement_body'] = $news[0]['data'];
                 }
@@ -640,13 +640,13 @@ class MagesterEvent
             if ($type['category'] == "survey") {
                 $subst_array['survey_message'] = $this->event['entity_name'];
                 $subst_array['survey_id'] = $this->event['entity_ID'];
-                $survey = eF_getTableData("surveys", "survey_name", "id = '". $this->event['entity_ID'] ."'");
+                $survey = sC_getTableData("surveys", "survey_name", "id = '". $this->event['entity_ID'] ."'");
                 if ($survey[0]['survey_name']) {
                     $subst_array['survey_name'] = $survey[0]['survey_name'];
                 }
             }
             if ($type['category'] == "content") {
-                $content = eF_getTableData("content", "name, data", "id = '". $this->event['entity_ID'] ."'");
+                $content = sC_getTableData("content", "name, data", "id = '". $this->event['entity_ID'] ."'");
                 if ($content[0]['name']) {
                     $subst_array['unit_title'] = $content[0]['name'];
                     $subst_array['unit_content'] = $content[0]['data'];
@@ -677,10 +677,10 @@ class MagesterEvent
     public function appendNewNotification($event_types, $replace_notification = false, $create_negative = true) {
         if ($create_negative) {
             // Get all (positive and negative) notifications stored for this event (more than one are possible for each event)
-            $event_notifications = eF_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this->event['type'] ."' OR event_type = '".(-1) * $this->event['type'] ."')");
+            $event_notifications = sC_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this->event['type'] ."' OR event_type = '".(-1) * $this->event['type'] ."')");
         } else {
             // Get all notifications stored for exactly this event (only positive or negative though more than one are possible for each event)
-            $event_notifications = eF_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this->event['type'] ."')");
+            $event_notifications = sC_getTableData("event_notifications", "*", "active = 1 AND (event_type = '".$this->event['type'] ."')");
         }
 
         if (sizeof($event_notifications)) {
@@ -714,7 +714,7 @@ class MagesterEvent
                     if ($event_notification['event_type'] < 0 || $replace_notification) {
                         $event_notification['event_type'] = (-1) * $event_notification['event_type'];
                         // in that case delete the corresponding record in the table (if such exists)
-                        eF_deleteTableData("notifications", "id_type_entity= '".$event_notification['id_type_entity'] . "' AND recipient = '". $this->event['users_LOGIN'] ."'");
+                        sC_deleteTableData("notifications", "id_type_entity= '".$event_notification['id_type_entity'] . "' AND recipient = '". $this->event['users_LOGIN'] ."'");
                     }
                     // Set event notification recipients
                     if ($event_notification['send_recipients'] == MagesterNotification::TRIGGERINGUSER) {
@@ -771,8 +771,8 @@ class MagesterEvent
                     // Note: Recipient's specific information will be first replaced in layer 2 (before sending)
                     $template_formulations = $this->createSubstitutionsArray($event_types, $event_notification['send_recipients']);
 
-                    $subject = eF_formulateTemplateMessage($event_notification['subject'], $template_formulations);
-                    $message = eF_formulateTemplateMessage($event_notification['message'], $template_formulations);
+                    $subject = sC_formulateTemplateMessage($event_notification['subject'], $template_formulations);
+                    $message = sC_formulateTemplateMessage($event_notification['message'], $template_formulations);
                     $html_message = $event_notification['html_message'];
                     // Create a single array to implode it and insert it at once in the notifications queue table
                     //
@@ -795,9 +795,9 @@ class MagesterEvent
             }
 
             if (sizeof($notifications_to_send)) {
-                //eF_execute("INSERT INTO notifications (timestamp, id_type_entity, send_interval, send_conditions, recipient, subject, message, html_message) VALUES ('". implode("'),('", $notifications_to_send) . "')");
+                //sC_execute("INSERT INTO notifications (timestamp, id_type_entity, send_interval, send_conditions, recipient, subject, message, html_message) VALUES ('". implode("'),('", $notifications_to_send) . "')");
 
-                eF_insertTableDataMultiple("notifications", $notifications_to_send);
+                sC_insertTableDataMultiple("notifications", $notifications_to_send);
             }
         }
     }
@@ -819,7 +819,7 @@ class MagesterEvent
      */
     public static function logEvent($fields) {
         if ($fields['type'] == MagesterEvent::PROJECT_EXPIRY) {
-            eF_deleteTableData("events", "lessons_ID = ". $fields['lessons_ID'] . " AND type = ".MagesterEvent::PROJECT_EXPIRY . " AND entity_ID = " . $fields['entity_ID']);
+            sC_deleteTableData("events", "lessons_ID = ". $fields['lessons_ID'] . " AND type = ".MagesterEvent::PROJECT_EXPIRY . " AND entity_ID = " . $fields['entity_ID']);
         }
         if (!isset($fields['type'])) {
             throw new MagesterEventException(_NOEVENTCODEDEFINED, MagesterEventException::NOEVENTCODE_DEFINED);
@@ -831,7 +831,7 @@ class MagesterEvent
             $fields['users_surname'] = $GLOBALS['currentUser']->user['surname'];
         }
         if (!isset($fields['users_name']) || !isset($fields['users_surname'])) {
-            $users_id = eF_getTableData("users", "name, surname", "login = '".$fields['users_LOGIN']."'");
+            $users_id = sC_getTableData("users", "name, surname", "login = '".$fields['users_LOGIN']."'");
             $fields['users_name'] = $users_id[0]['name'];
             $fields['users_surname'] = $users_id[0]['surname'];
         }
@@ -840,12 +840,12 @@ class MagesterEvent
         }
         // Allow multiple lesson ids for each event
         if (isset($fields['lessons_ID']) && is_array($fields['lessons_ID'])) {
-            $event_lessons = eF_getTableData("lessons", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
+            $event_lessons = sC_getTableData("lessons", "id, name" , "id in (".implode(",", $fields['lessons_ID']).")");
             $result = true;
             foreach ($event_lessons as $lesson) {
                 $fields['lessons_ID'] = $lesson['id'];
                 $fields['lessons_name'] = $lesson['name'];
-                $result = $result & eF_insertTableData("events", $fields);
+                $result = $result & sC_insertTableData("events", $fields);
             }
 
             return $result;
@@ -855,7 +855,7 @@ class MagesterEvent
             //!isset($fields['lessons_name'])   ? $fields['lessons_name']    = $GLOBALS['currentLesson']->lesson['name'] : null;
             unset($fields['explicitly_selected']);
 
-            return eF_insertTableData("events", $fields);
+            return sC_insertTableData("events", $fields);
         }
         //MagesterSearch::insertText($fields['name'], $newId, "events", "title");
         // Insert the corresponding lesson skill to the skill and lesson_offers_skill tables
@@ -864,9 +864,9 @@ class MagesterEvent
 
 #ifdef EDUCATIONAL
 
-            $eventSkillId = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFEVENT . " ". $fields['name'], "categories_ID" => -1));
+            $eventSkillId = sC_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFEVENT . " ". $fields['name'], "categories_ID" => -1));
 
-            eF_insertTableData("module_hcd_event_offers_skill", array("events_ID" => $newId, "skill_ID" => $eventSkillId));
+            sC_insertTableData("module_hcd_event_offers_skill", array("events_ID" => $newId, "skill_ID" => $eventSkillId));
 
 #endif
 
@@ -918,7 +918,7 @@ class MagesterEvent
             if ($this->event['type'] != MagesterEvent::PROJECT_EXPIRY && $this->event['type'] != MagesterEvent::LESSON_PROGRAMMED_EXPIRY && $this->event['type'] != MagesterEvent::LESSON_PROGRAMMED_START) {
                 //changed to $_SESSION['s_type'] to work for different roles between lessons
                 formatLogin($this->event['users_LOGIN']) ? $formattedLogin = formatLogin($this->event['users_LOGIN']) : $formattedLogin = $this->event['users_name'].' '.$this->event['users_surname'].' ('.$this->event['users_LOGIN'].')';
-                $this->event['message'] = _NAMEARTICLE . " <b><a  href = \"".$_SESSION['s_type'].".php?ctg=social&op=show_profile&user=".$this->event['users_LOGIN']. "&popup=1\" onclick = \"eF_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ".$formattedLogin."</a></b> ";
+                $this->event['message'] = _NAMEARTICLE . " <b><a  href = \"".$_SESSION['s_type'].".php?ctg=social&op=show_profile&user=".$this->event['users_LOGIN']. "&popup=1\" onclick = \"sC_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ".$formattedLogin."</a></b> ";
             }
             if ($this->event['type'] == MagesterEvent::SYSTEM_JOIN) {
                 $this->event['message'] .= _HASJOINEDTHESYSTEM;
@@ -1007,7 +1007,7 @@ class MagesterEvent
                 $this->event['message'] .= _COMMENTEDONTHEPROFILEOF;
                 // Here check whether this is your own profile or not
                 if ($this->event['entity_ID'] != $currentUser->user['login']) {
-                    $this->event['message'] .= " <b><a  href = \"".$currentUser->getType().".php?ctg=social&op=show_profile&user=".$this->event['entity_ID']. "&popup=1\" onclick = \"eF_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ". $this->event['entity_name']. "</a></b> ";
+                    $this->event['message'] .= " <b><a  href = \"".$currentUser->getType().".php?ctg=social&op=show_profile&user=".$this->event['entity_ID']. "&popup=1\" onclick = \"sC_js_showDivPopup('" . _USERPROFILE . "', 1)\"  target = \"POPUP_FRAME\"> ". $this->event['entity_name']. "</a></b> ";
                 } else {
                     $this->event['message'] .= " <b>". $this->event['entity_name'] . "</b>";
                 }
@@ -1019,7 +1019,7 @@ class MagesterEvent
                 $topic_post = unserialize($this->event['entity_name']);
                 $this->event['message'] .= _POSTEDFORLESSONTOPIC . " <b>" . $topic_post['topic_title'] . "</b> " . _THEPOST . ": " . $topic_post['data'];
                 if ($this->event['users_LOGIN'] == $GLOBALS['currentUser']->user['login']) {
-                    $this->event['editlink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this->event['lessons_ID'] . "&post_topic=" . $this->event['entity_ID'] . "&action=change&popup=1&id=" . $topic_post['post_id'] ."' onclick = 'eF_js_showDivPopup(\""._EDITMESSAGEFORLESSONTIMELINETOPIC. "\", 1)'  target = 'POPUP_FRAME'><img src='images/16x16/edit.png' border='0' alt = '"._EDITMESSAGEFORLESSONTIMELINETOPIC."' title='"._EDITMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
+                    $this->event['editlink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this->event['lessons_ID'] . "&post_topic=" . $this->event['entity_ID'] . "&action=change&popup=1&id=" . $topic_post['post_id'] ."' onclick = 'sC_js_showDivPopup(\""._EDITMESSAGEFORLESSONTIMELINETOPIC. "\", 1)'  target = 'POPUP_FRAME'><img src='images/16x16/edit.png' border='0' alt = '"._EDITMESSAGEFORLESSONTIMELINETOPIC."' title='"._EDITMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
                     $this->event['deletelink'] = "<a href='".$_SESSION['s_type'] . ".php?ctg=social&op=timeline&lessons_ID=" . $this->event['lessons_ID'] . "&post_topic=" . $this->event['entity_ID'] . "&action=delete&id=" . $topic_post['post_id']."'><img src='images/16x16/error_delete.png' border='0' alt = '"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' title='"._DELETEMESSAGEFORLESSONTIMELINETOPIC."' /></a>";
                 }
             } elseif ($this->event['type'] == MagesterEvent::DELETE_POST_FROM_LESSON_TIMELINE) {
@@ -1064,7 +1064,7 @@ class MagesterEvent
                 return false;
             }
         }
-        $this->event['time'] = eF_convertIntervalToTime(time() - $this->event['timestamp'], true). ' '._AGO;
+        $this->event['time'] = sC_convertIntervalToTime(time() - $this->event['timestamp'], true). ' '._AGO;
 
         return $this->event['message'];
     }

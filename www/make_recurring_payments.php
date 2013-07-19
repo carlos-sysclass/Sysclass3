@@ -40,7 +40,7 @@ $paymentMaker = MagesterUserFactory::factory("admin");
 $paymentMaker->login("fep7_58A$");
 global $currentUser;
 $currentUser = $paymentMaker;
-$modules = eF_loadAllModules(true);
+$modules = sC_loadAllModules(true);
 
 //var_dump($modules);
 

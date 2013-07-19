@@ -10,11 +10,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 if (isset($_GET['fct'])) {
     $lessons = array();
     $courses = array();
-    $result = eF_getTableData("lessons", "*", "active=1 and publish=1");
+    $result = sC_getTableData("lessons", "*", "active=1 and publish=1");
     foreach ($result as $value) {
         $lessons[$value['id']] = $value;
     }
-    $result = eF_getTableData("courses", "*", "active=1 and publish=1");
+    $result = sC_getTableData("courses", "*", "active=1 and publish=1");
     foreach ($result as $value) {
         $courses[$value['id']] = $value;
     }
@@ -72,7 +72,7 @@ if (isset($_GET['fct'])) {
     } else {
      cart :: storeCart();
      unset($_SESSION['previousMainUrl']);
-     eF_redirect(G_SERVERNAME.'studentpage.php?message='.urlencode(_TRANSACTIONCOMPLETELESSONSWILLBEASSIGNED).'&message_type=success');
+     sC_redirect(G_SERVERNAME.'studentpage.php?message='.urlencode(_TRANSACTIONCOMPLETELESSONSWILLBEASSIGNED).'&message_type=success');
     }
 
 } elseif (isset($_GET['checkout'])) {
@@ -94,14 +94,14 @@ if (isset($_GET['fct'])) {
 
     $cart = cart :: prepareCart(false);
  if (!cart :: compactCart($cart)) {
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&catalog=1");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=lessons&catalog=1");
  }
 
  $cart = cart :: filterCart($cart, $lessons, $courses);
     cart :: storeCart($cart);
 
     if (empty($cart)) {
-        eF_redirect(basename($_SESSION['s_type'])."page.php?ctg=lessons&message=".rawurlencode(_SORRYYOUALREADYHAVETHELESSONSYOUSELECTED)."&message_type=failure", true);
+        sC_redirect(basename($_SESSION['s_type'])."page.php?ctg=lessons&message=".rawurlencode(_SORRYYOUALREADYHAVETHELESSONSYOUSELECTED)."&message_type=failure", true);
     }
 
     $cart = cart :: prepareCart(false);
@@ -184,16 +184,16 @@ if (isset($_GET['fct'])) {
        unset($cart['course'][$key]);
        cart :: storeCart($cart);
        if (basename($_SERVER['PHP_SELF']) == 'index.php') {
-        eF_redirect($_SESSION['s_type']."page.php?message=".rawurlencode(_SUCCESSFULLYENROLLED)."&message_type=success");
+        sC_redirect($_SESSION['s_type']."page.php?message=".rawurlencode(_SUCCESSFULLYENROLLED)."&message_type=success");
        } else {
-        eF_redirect(basename($_SERVER['PHP_SELF'])."?message=".rawurlencode(_SUCCESSFULLYENROLLED)."&message_type=success");
+        sC_redirect(basename($_SERVER['PHP_SELF'])."?message=".rawurlencode(_SUCCESSFULLYENROLLED)."&message_type=success");
        }
       } else {
        //$message = _FREELESSONSANDCOURSESWHEREASSIGNEDPLEASEREVIEWNONFREE;
        if (basename($_SERVER['PHP_SELF']) == 'index.php') {
-        eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=checkout&checkout=1&register_lessons=1&message='.rawurlencode(_FREELESSONSANDCOURSESWHEREASSIGNEDPLEASEREVIEWNONFREE)."&message_type=success");
+        sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=checkout&checkout=1&register_lessons=1&message='.rawurlencode(_FREELESSONSANDCOURSESWHEREASSIGNEDPLEASEREVIEWNONFREE)."&message_type=success");
        } else {
-        eF_redirect(basename($_SERVER['PHP_SELF']).'?ctg=lessons&catalog=1&checkout=1&message='.rawurlencode(_FREELESSONSANDCOURSESWHEREASSIGNEDPLEASEREVIEWNONFREE)."&message_type=success");
+        sC_redirect(basename($_SERVER['PHP_SELF']).'?ctg=lessons&catalog=1&checkout=1&message='.rawurlencode(_FREELESSONSANDCOURSESWHEREASSIGNEDPLEASEREVIEWNONFREE)."&message_type=success");
        }
       }
      } catch (Exception $e) {
@@ -260,9 +260,9 @@ if (isset($_GET['fct'])) {
             }
             cart :: storeCart($cart);
             if (basename($_SERVER['PHP_SELF']) == 'index.php') {
-                eF_redirect($_SESSION['s_type']."page.php?message=".rawurlencode($message)."&message_type=success");
+                sC_redirect($_SESSION['s_type']."page.php?message=".rawurlencode($message)."&message_type=success");
             } else {
-                eF_redirect(basename($_SERVER['PHP_SELF'])."?message=".rawurlencode($message)."&message_type=success");
+                sC_redirect(basename($_SERVER['PHP_SELF'])."?message=".rawurlencode($message)."&message_type=success");
             }
         } catch (Exception $e) {
          handleNormalFlowExceptions($e);

@@ -2,7 +2,7 @@
 {capture name = "moduleNewsPage"}
 <tr>
 	<td class="moduleCell">{if !$_student_ && ($smarty.get.add ||
-	$smarty.get.edit)} {capture name = 't_add_code'} {eF_template_printForm
+	$smarty.get.edit)} {capture name = 't_add_code'} {sC_template_printForm
 	form = $T_ENTITY_FORM_ARRAY} {* {$T_ENTITY_FORM.javascript}
 	<form{$T_ENTITY_FORM.attributes}>{$T_ENTITY_FORM.hidden}
 	<table class="formElements">
@@ -23,7 +23,7 @@
 		</tr>
 		<tr>
 			<td class="labelCell">{$smarty.const._FROM}:&nbsp;</td>
-			<td class="elementCell">{eF_template_html_select_date
+			<td class="elementCell">{sC_template_html_select_date
 			prefix="from_" time=$T_FROM_TIMESTAMP start_year="-1" end_year="+5"
 			field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}:
 			{html_select_time prefix="from_" time = $T_FROM_TIMESTAMP
@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 			<td class="labelCell">{$smarty.const._TO}:&nbsp;</td>
-			<td class="elementCell">{eF_template_html_select_date
+			<td class="elementCell">{sC_template_html_select_date
 			prefix="to_" time=$T_TO_TIMESTAMP start_year="-1" end_year="+5"
 			field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}:
 			{html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds
@@ -39,7 +39,7 @@
 		</tr>
 		<tr>
 			<td class="labelCell">{$smarty.const._DISPLAYONCALENDAR}:&nbsp;</td>
-			<td class="elementCell">{eF_template_html_select_date
+			<td class="elementCell">{sC_template_html_select_date
 			prefix="calendar_" time=$T_CALENDAR_TIMESTAMP start_year="-1"
 			end_year="+5" field_order = $T_DATE_FORMATGENERAL}
 			{$smarty.const._TIME}: {html_select_time prefix="to_" time =
@@ -56,17 +56,17 @@
 	</table>
 	</form>
 	*} {if $T_MESSAGE_TYPE == 'success'} <script>parent.location = parent.location;</script>
-	{/if} {/capture} {eF_template_printBlock title =
+	{/if} {/capture} {sC_template_printBlock title =
 	$smarty.const._ANNOUNCEMENT data = $smarty.capture.t_add_code image =
 	'32x32/announcements.png' help ='Announcements'} {elseif
-	$smarty.get.view} {eF_template_printBlock title = $T_NEWS.title data =
+	$smarty.get.view} {sC_template_printBlock title = $T_NEWS.title data =
 	$T_NEWS.data image = '32x32/announcements.png' help ='Announcements'}
 	{else} {capture name = "t_news_code"} {if !$_student_ && $_change_}
 	<div class="headerTools"><img src="images/16x16/add.png"
 		title="{$smarty.const._ANNOUNCEMENTADD}"
 		alt="{$smarty.const._ANNOUNCEMENTADD}" /> <a
 		href="{$smarty.server.PHP_SELF}?ctg=news&add=1&popup=1"
-		onclick="eF_js_showDivPopup('{$smarty.const._ANNOUNCEMENTADD}', 2)"
+		onclick="sC_js_showDivPopup('{$smarty.const._ANNOUNCEMENTADD}', 2)"
 		title="{$smarty.const._ANNOUNCEMENTADD}" target="POPUP_FRAME">{$smarty.const._ANNOUNCEMENTADD}</a>
 	</div>
 	{/if} <br />
@@ -103,7 +103,7 @@
 			'administrator'} <a
 				href="{$smarty.server.PHP_SELF}?ctg=news&edit={$item.id}&popup=1"
 				target="POPUP_FRAME"
-				onClick="eF_js_showDivPopup('{$smarty.const._EDITANNOUNCEMENT}', 2);"><img
+				onClick="sC_js_showDivPopup('{$smarty.const._EDITANNOUNCEMENT}', 2);"><img
 				src="images/16x16/edit.png" alt="{$smarty.const._EDIT}"
 				title="{$smarty.const._EDIT}" border="0" /></a>&nbsp; <img
 				class="ajaxHandle" src="images/16x16/error_delete.png"
@@ -118,7 +118,7 @@
 		</tr>
 		{/foreach}
 	</table>
-	{/capture} {eF_template_printBlock title = $smarty.const._ANNOUNCEMENTS
+	{/capture} {sC_template_printBlock title = $smarty.const._ANNOUNCEMENTS
 	data = $smarty.capture.t_news_code image = '32x32/announcements.png'
 	help = 'Announcements'} {/if}</td>
 </tr>

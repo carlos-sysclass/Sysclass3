@@ -195,7 +195,7 @@ abstract class MagesterExtendedModule extends MagesterModule
             }
         }
 
-        $modules = eF_loadAllModules(true);
+        $modules = sC_loadAllModules(true);
 
         $selectedAction = $this->getCurrentAction();
         $selectedActionFunction = $this->camelCasefying($selectedAction . "_action");
@@ -472,7 +472,7 @@ abstract class MagesterExtendedModule extends MagesterModule
             self::$allModules = $this->loadAllModules();
             /*
             if (count(self::$allModules) == 0) {
-                $modulesDB = eF_getTableData("modules","*", "active = 1");
+                $modulesDB = sC_getTableData("modules","*", "active = 1");
                 foreach ($modulesDB as $module) {
                     $folder = $module['position'];
                     $className = $module['className'];
@@ -496,10 +496,10 @@ abstract class MagesterExtendedModule extends MagesterModule
 
     protected function loadAllModules($onlyActive = true)
     {
-        $modules = eF_loadAllModules($onlyActive);
+        $modules = sC_loadAllModules($onlyActive);
 
         if (count($modules) == 0) {
-            $modulesDB = eF_getTableData("modules","*", $onlyActive ? "active = 1" : "");
+            $modulesDB = sC_getTableData("modules","*", $onlyActive ? "active = 1" : "");
             foreach ($modulesDB as $module) {
                 $folder = $module['position'];
                 $className = $module['className'];
@@ -568,14 +568,14 @@ abstract class MagesterExtendedModule extends MagesterModule
     public function getCurrentCourse()
     {
         global $currentCourse;
-        if (eF_checkParameter($_GET['xcourse_id'], 'id')) {
+        if (sC_checkParameter($_GET['xcourse_id'], 'id')) {
             self::setStaticCache("xcourse", "current_course_id", $_GET['xcourse_id']);
             return $currentCourse = new MagesterCourse($_GET['xcourse_id']);
         }
-        if (eF_checkParameter($_SESSION['s_courses_ID'], 'id')) {
+        if (sC_checkParameter($_SESSION['s_courses_ID'], 'id')) {
             return $currentCourse = new MagesterCourse($_SESSION['s_courses_ID']);
         }
-        if (eF_checkParameter($_GET['from_course'], 'id')) {
+        if (sC_checkParameter($_GET['from_course'], 'id')) {
             return $currentCourse = new MagesterCourse($_GET['from_course']);
         }
 
@@ -599,7 +599,7 @@ abstract class MagesterExtendedModule extends MagesterModule
     public function getCurrentClasse()
     {
         global $currentClasse;
-        if (eF_checkParameter($_GET['xclasse_id'], 'id')) {
+        if (sC_checkParameter($_GET['xclasse_id'], 'id')) {
             self::setStaticCache("xcourse", "current_classe_id", $_GET['xclasse_id']);
             return $currentClasse = new MagesterCourseClass($_GET['xclasse_id']);
         }
@@ -627,11 +627,11 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedPage) && !$reload) {
             return $this->editedPage;
         }
-        if (eF_checkParameter($_GET['xpage_id'], 'id') && !eF_checkParameter($page_ID, 'id')) {
+        if (sC_checkParameter($_GET['xpage_id'], 'id') && !sC_checkParameter($page_ID, 'id')) {
             $page_ID = $_GET['xpage_id'];
         }
-        if (eF_checkParameter($page_ID, 'id')) {
-            $result = eF_getTableData("module_xcms_pages", "*", "id = " . $page_ID);
+        if (sC_checkParameter($page_ID, 'id')) {
+            $result = sC_getTableData("module_xcms_pages", "*", "id = " . $page_ID);
             if (count($result) > 0) {
                 $result[0]['rules'] = json_decode($result[0]['rules'], true);
                 $result[0]['positions'] = json_decode($result[0]['positions'], true);
@@ -651,7 +651,7 @@ abstract class MagesterExtendedModule extends MagesterModule
                 $userObject->getType() != "administrator" &&
                 in_array($userObject->getType(), array_keys($userObject->getStudentRoles()))
             ) {
-                $userIES = eF_getTableDataFlat("courses c LEFT JOIN users_to_courses uc ON (c.id = uc.courses_ID)", "ies_id", "uc.users_LOGIN = '" . $userObject->user['login'] . "'");
+                $userIES = sC_getTableDataFlat("courses c LEFT JOIN users_to_courses uc ON (c.id = uc.courses_ID)", "ies_id", "uc.users_LOGIN = '" . $userObject->user['login'] . "'");
                 $currentUserIESIds = $userIES['ies_id'];
 /*
                 $xEnrollmentModule = $this->loadModule("xenrollment");
@@ -660,7 +660,7 @@ abstract class MagesterExtendedModule extends MagesterModule
                 $currentUserIESIds = $userIES;
  */
             } else {
-                $userIES = eF_getTableDataFlat("module_xies_to_users", "ies_id", "user_id = " . $userObject->user['id']);
+                $userIES = sC_getTableDataFlat("module_xies_to_users", "ies_id", "user_id = " . $userObject->user['id']);
                 $currentUserIESIds = $userIES['ies_id'];
             }
         }
@@ -678,9 +678,9 @@ abstract class MagesterExtendedModule extends MagesterModule
             ) {
                 $xEnrollmentModule = $this->loadModule("xenrollment");
                 $userIES = $xEnrollmentModule->getEnrollmentFieldByUserId($userObject->user['id'], "ies_id");
-                $currentUserIES = eF_getTableData("module_ies ies", "*", "id IN (" . implode(",", $userIES) . ")");
+                $currentUserIES = sC_getTableData("module_ies ies", "*", "id IN (" . implode(",", $userIES) . ")");
             } else {
-                $currentUserIES = eF_getTableData("module_xies_to_users ies2usr LEFT JOIN module_ies ies ON (ies2usr.ies_id = ies.id)", "ies2usr.ies_id, ies.*", "user_id = " . $userObject->user['id']);
+                $currentUserIES = sC_getTableData("module_xies_to_users ies2usr LEFT JOIN module_ies ies ON (ies2usr.ies_id = ies.id)", "ies2usr.ies_id, ies.*", "user_id = " . $userObject->user['id']);
             }
         }
         return $currentUserIES;
@@ -688,7 +688,7 @@ abstract class MagesterExtendedModule extends MagesterModule
     public function getEditedUser($reload = false, $login = null)
     {
         if (!is_null($login)) {
-            if (eF_checkParameter($login, 'id')) {
+            if (sC_checkParameter($login, 'id')) {
                 $xuserModule = $this->loadModule("xuser");
                 return $this->editedUser = $xuserModule->getUserById($login);
             } else {
@@ -699,11 +699,11 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedUser) && !$reload) {
             return $this->editedUser;
         }
-        if (eF_checkParameter($_GET['xuser_id'], 'id')) {
+        if (sC_checkParameter($_GET['xuser_id'], 'id')) {
             $xuserModule = $this->loadModule("xuser");
 
             return $this->editedUser = $xuserModule->getUserById($_GET['xuser_id']);
-        } elseif (eF_checkParameter($_GET['xuser_login'], 'login')) {
+        } elseif (sC_checkParameter($_GET['xuser_login'], 'login')) {
             return $this->editedUser = MagesterUserFactory::factory($_GET['xuser_login']);
         }
 
@@ -718,7 +718,7 @@ abstract class MagesterExtendedModule extends MagesterModule
             if (!is_null($this->editedCourse) && !$reload) {
                 return $this->editedCourse;
             }
-            if (eF_checkParameter($_GET['xcourse_id'], 'id')) {
+            if (sC_checkParameter($_GET['xcourse_id'], 'id')) {
                 return $this->editedCourse = new MagesterCourse($_GET['xcourse_id']);
             }
         } catch (Exception $e) {
@@ -734,11 +734,11 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedLesson) && !$reload) {
             return $this->editedLesson;
         }
-        if (eF_checkParameter($_GET['xlesson_id'], 'id')) {
+        if (sC_checkParameter($_GET['xlesson_id'], 'id')) {
             return $this->editedLesson = new MagesterLesson($_GET['xlesson_id']);
         }
         // COMPAT MODE
-        if (eF_checkParameter($_GET['lessons_ID'], 'id')) {
+        if (sC_checkParameter($_GET['lessons_ID'], 'id')) {
             return $this->editedLesson = new MagesterLesson($_GET['lessons_ID']);
         }
         if ($_SESSION['s_lessons_ID']) {
@@ -756,7 +756,7 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedPayment) && !$reload) {
             return $this->editedPayment;
         }
-        if (eF_checkParameter($_GET['xpayment_id'], 'id')) {
+        if (sC_checkParameter($_GET['xpayment_id'], 'id')) {
             $xPaymentModule = $this->loadModule("xpayment");
             return $this->editedPayment = $xPaymentModule->getPaymentById($_GET['xpayment_id']);
         }
@@ -770,7 +770,7 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedCourseClass) && !$reload) {
             return $this->editedCourseClass;
         }
-        if (eF_checkParameter($_GET['xclasse_id'], 'id')) {
+        if (sC_checkParameter($_GET['xclasse_id'], 'id')) {
             return $this->editedCourseClass = new MagesterCourseClass($_GET['xclasse_id']);
         }
         return false;
@@ -784,7 +784,7 @@ abstract class MagesterExtendedModule extends MagesterModule
         if (!is_null($this->editedEnrollment) && !$reload) {
             return $this->editedEnrollment;
         }
-        if (eF_checkParameter($_GET['xenrollment_id'], 'id')) {
+        if (sC_checkParameter($_GET['xenrollment_id'], 'id')) {
             $xEnrollmentModule = $this->loadModule("xenrollment");
             return $this->editedEnrollment = $xEnrollmentModule->getEnrollmentById($_GET['xenrollment_id']);
         }

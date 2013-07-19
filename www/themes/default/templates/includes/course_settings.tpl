@@ -9,7 +9,7 @@
    {$T_COURSE_METADATA_HTML}
   </fieldset>
  {/capture}
- {eF_template_printBlock title = "`$smarty.const._INFORMATIONFORCOURSE`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_info_code image = '32x32/information.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+ {sC_template_printBlock title = "`$smarty.const._INFORMATIONFORCOURSE`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_info_code image = '32x32/information.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {elseif $T_OP == 'course_certificates'}
  {if $smarty.get.edit_user}
   {capture name = 't_course_user_progress'}
@@ -69,7 +69,7 @@
    </form>
   </fieldset>
   {/capture}
-  {eF_template_printBlock title = "`$T_USER_COURSE->user.name` `$T_USER_COURSE->user.surname`&#039s `$smarty.const._PROGRESS`" data = $smarty.capture.t_course_user_progress image = '32x32/users.png' help='Course_actions'}
+  {sC_template_printBlock title = "`$T_USER_COURSE->user.name` `$T_USER_COURSE->user.surname`&#039s `$smarty.const._PROGRESS`" data = $smarty.capture.t_course_user_progress image = '32x32/users.png' help='Course_actions'}
  {if $T_MESSAGE_TYPE == 'success'}
  <script>
   re = /\?/;
@@ -97,7 +97,7 @@
    {assign var = "certificate_export_method" value = $T_CERTIFICATE_EXPORT_METHOD}
    {include file = "includes/common/course_users_list.tpl"}
   {/capture}
-  {eF_template_printBlock title = "`$smarty.const._COMPLETION`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_certificates_code image = '32x32/autocomplete.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+  {sC_template_printBlock title = "`$smarty.const._COMPLETION`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_certificates_code image = '32x32/autocomplete.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
  {/if}
 {elseif $T_OP == 'format_certificate'}
 {elseif $T_OP == 'format_certificate_docx'}
@@ -117,8 +117,8 @@
         <td id = "label_{$item.id}" style = "white-space:nowrap;">&nbsp;{$smarty.const._GENERALLYAVAILABLE}&nbsp;</td>
         <td id = "insert_node_{$item.id}"></td>
         <td id = "last_node_{$item.id}" style = "white-space:nowrap;text-align:right;vertical-align:bottom">
-         &nbsp;<img src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETECONDITION}" alt = "{$smarty.const._DELETECONDITION}" border = "0" id = "delete_icon_{$item.id}" onclick = "eF_js_removeCourseRule({$item.id})" style = "display:none"/>
-         {if $T_COURSE_LESSONS|@sizeof > 1}&nbsp;<img src = "images/16x16/add.png" title = "{$smarty.const._ADDCONDITION}" alt = "{$smarty.const._ADDCONDITION}" border = "0" id = "add_icon_{$item.id}" onclick = "eF_js_addCourseRule({$item.id})"/>{/if}
+         &nbsp;<img src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETECONDITION}" alt = "{$smarty.const._DELETECONDITION}" border = "0" id = "delete_icon_{$item.id}" onclick = "sC_js_removeCourseRule({$item.id})" style = "display:none"/>
+         {if $T_COURSE_LESSONS|@sizeof > 1}&nbsp;<img src = "images/16x16/add.png" title = "{$smarty.const._ADDCONDITION}" alt = "{$smarty.const._ADDCONDITION}" border = "0" id = "add_icon_{$item.id}" onclick = "sC_js_addCourseRule({$item.id})"/>{/if}
         </td>
        </tr>
     {/foreach}
@@ -147,7 +147,7 @@
       {/foreach}
       </script>
     {/capture}
-    {eF_template_printBlock title = $smarty.const._COURSERULES data = $smarty.capture.t_course_rules_code image = '32x32/rules.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+    {sC_template_printBlock title = $smarty.const._COURSERULES data = $smarty.capture.t_course_rules_code image = '32x32/rules.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {elseif $T_OP == 'course_order'}
  {assign var = "title" value = $title|cat:'&nbsp;&raquo;&nbsp;<a class = "titleLink" href = "'|cat:$smarty.server.PHP_SELF|cat:'?ctg=courses&course='|cat:$smarty.get.course|cat:'&op=course_order">'|cat:$smarty.const._ORDERFORCOURSE|cat:' &quot;'|cat:$T_CURRENT_COURSE->course.name|cat:'&quot;</a>'}
   {capture name = 't_course_rules_code'}
@@ -156,7 +156,7 @@
     <ul id = "dhtmlgoodies_lessons_tree" class = "dhtmlgoodies_tree">
     {foreach name = 'lessons_list' key = 'key' item = 'lesson' from = $T_COURSE_LESSONS}
      <li id = "dragtree_{$lesson.id}" noChildren = "true">
-      <a class = "{if !$lesson.active}deactivatedLinkElement{/if}" href = "javascript:void(0)">&nbsp;{$lesson.name|eF_truncate:100}</a>
+      <a class = "{if !$lesson.active}deactivatedLinkElement{/if}" href = "javascript:void(0)">&nbsp;{$lesson.name|sC_truncate:100}</a>
      </li>
     {/foreach}
     </ul>
@@ -166,7 +166,7 @@
    <input id = "save_button" class = "flatButton" type="button" onclick="saveQuestionTree(this)" value="{$smarty.const._SAVECHANGES}">
   {/if}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._COURSEORDER data = $smarty.capture.t_course_rules_code image = '32x32/order.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+  {sC_template_printBlock title = $smarty.const._COURSEORDER data = $smarty.capture.t_course_rules_code image = '32x32/order.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {elseif $T_OP == 'course_scheduling'}
   <script>var noscheduleset = '{$smarty.const._NOSCHEDULESET}';</script>
   {capture name = 't_course_scheduling_code'}
@@ -174,7 +174,7 @@
    {if !$T_CURRENT_USER->coreAccess.calendar == 'change' || $T_CURRENT_USER->coreAccess.calendar == 'change'}
     <span>
      <img src = "images/16x16/add.png" title = "{$smarty.const._ADDCALENDAR}" alt = "{$smarty.const._ADDCALENDAR}"/>
-     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&add=1&course={$smarty.get.course}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._ADDCALENDAR}', 2)" target = "POPUP_FRAME">{$smarty.const._ADDCALENDAR}</a>
+     <a href = "{$smarty.server.PHP_SELF}?ctg=calendar&add=1&course={$smarty.get.course}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._ADDCALENDAR}', 2)" target = "POPUP_FRAME">{$smarty.const._ADDCALENDAR}</a>
     </span>
    </div>
    {/if}
@@ -196,8 +196,8 @@
       {/if}&nbsp;
       </span>
       <table id = "schedule_dates_form_0" style = "display:none">
-       <tr><td>{$smarty.const._FROM}&nbsp;</td><td>{eF_template_html_select_date prefix="from_" time=$start_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $start_date display_seconds = false}&nbsp;</td></tr>
-       <tr><td>{$smarty.const._TO}&nbsp;</td><td>{eF_template_html_select_date prefix="to_" time=$end_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $end_date display_seconds = false}&nbsp;</td></tr>
+       <tr><td>{$smarty.const._FROM}&nbsp;</td><td>{sC_template_html_select_date prefix="from_" time=$start_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $start_date display_seconds = false}&nbsp;</td></tr>
+       <tr><td>{$smarty.const._TO}&nbsp;</td><td>{sC_template_html_select_date prefix="to_" time=$end_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $end_date display_seconds = false}&nbsp;</td></tr>
       </table>
      </td>
      <td>
@@ -231,8 +231,8 @@
       {/if}&nbsp;
       </span>
       <table id = "schedule_dates_form_{$id}" style = "display:none">
-       <tr><td>{$smarty.const._FROM}&nbsp;</td><td>{eF_template_html_select_date prefix="from_" time=$start_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $start_date display_seconds = false}&nbsp;</td></tr>
-       <tr><td>{$smarty.const._TO}&nbsp;</td><td>{eF_template_html_select_date prefix="to_" time=$end_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $end_date display_seconds = false}&nbsp;</td></tr>
+       <tr><td>{$smarty.const._FROM}&nbsp;</td><td>{sC_template_html_select_date prefix="from_" time=$start_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $start_date display_seconds = false}&nbsp;</td></tr>
+       <tr><td>{$smarty.const._TO}&nbsp;</td><td>{sC_template_html_select_date prefix="to_" time=$end_date start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $end_date display_seconds = false}&nbsp;</td></tr>
       </table>
      </td>
      <td>
@@ -249,7 +249,7 @@
    </table>
    </fieldset>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._COURSESCHEDULE data = $smarty.capture.t_course_scheduling_code image = '32x32/calendar.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+  {sC_template_printBlock title = $smarty.const._COURSESCHEDULE data = $smarty.capture.t_course_scheduling_code image = '32x32/calendar.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {elseif $T_OP == 'export_course'}
  {capture name = 't_export_course_code'}
   <fieldset class = "fieldsetSeparator">
@@ -268,7 +268,7 @@
   </form>
   </fieldset>
  {/capture}
- {eF_template_printBlock title = "`$smarty.const._EXPORTCOURSE`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_export_course_code image = '32x32/export.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+ {sC_template_printBlock title = "`$smarty.const._EXPORTCOURSE`<span class = 'innerTableName'>&nbsp;&quot;`$T_CURRENT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_export_course_code image = '32x32/export.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {elseif $T_OP == 'import_course'}
   {capture name = 't_import_course_code'}
    <fieldset class = "fieldsetSeparator">
@@ -287,5 +287,5 @@
    </form>
    </fieldset>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._IMPORTCOURSE data = $smarty.capture.t_import_course_code image = '32x32/import.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
+  {sC_template_printBlock title = $smarty.const._IMPORTCOURSE data = $smarty.capture.t_import_course_code image = '32x32/import.png' main_options = $T_TABLE_OPTIONS options = $T_COURSE_OPTIONS help='Course_actions'}
 {/if}

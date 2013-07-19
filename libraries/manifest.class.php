@@ -138,7 +138,7 @@ class MagesterManifest
 
      * based on a lesson id. If an entry with this id is not found in the database,
 
-     * an eF_ManifestException is thrown.
+     * an sC_ManifestException is thrown.
 
      * <br/>Example:
 
@@ -159,12 +159,12 @@ class MagesterManifest
      */
     function __construct($lesson_id)
     {
-        if (!eF_checkParameter($lesson_id, 'id')) {
-            throw new eF_ManifestException(_INVALIDID, eF_ManifestException :: INVALID_ID);
+        if (!sC_checkParameter($lesson_id, 'id')) {
+            throw new sC_ManifestException(_INVALIDID, sC_ManifestException :: INVALID_ID);
         }
-        $lesson = eF_getTableData("lessons", "*", "id = $lesson_id");
+        $lesson = sC_getTableData("lessons", "*", "id = $lesson_id");
         if (sizeof($lesson) == 0) {
-            throw new eF_ManifestException(_LESSONDOESNOTEXIST, eF_GroupException :: LESSON_NOT_EXISTS);
+            throw new sC_ManifestException(_LESSONDOESNOTEXIST, sC_GroupException :: LESSON_NOT_EXISTS);
         } else {
             $this -> lesson_id = $lesson_id;
             $content = new MagesterContentTree($this->lesson_id);
@@ -281,7 +281,7 @@ class MagesterManifest
     }
     function addProject($project_id)
     {
-        $pdata = ef_getTableData("projects", "*", "id=$project_id");
+        $pdata = sC_getTableData("projects", "*", "id=$project_id");
         $this->projects[$project_id] = $pdata[0];
     }
     function addUnitResource($filename, $uid)

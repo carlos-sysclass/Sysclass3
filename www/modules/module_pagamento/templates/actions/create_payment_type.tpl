@@ -36,7 +36,7 @@
 	</form>
 {/capture}
 		
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._MODULE_PAGAMENTO_ADD_PAYMENT_TYPE
 	data=$smarty.capture.t_create_payment_type_form
 }

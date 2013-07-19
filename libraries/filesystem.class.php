@@ -279,7 +279,7 @@ class MagesterFile extends ArrayObject
 
      * <code>
 
-     * $result = eF_getTableData("files", "*", "id=43");
+     * $result = sC_getTableData("files", "*", "id=43");
 
      * $file = new MagesterFile($result[0]);                          //Instantiate object using array of values
 
@@ -307,17 +307,17 @@ class MagesterFile extends ArrayObject
             }
             $fileArray = $file;
         } else {
-            if (eF_checkParameter($file, 'id')) { //Instantiate object based on id
-                $result = eF_getTableData("files", "*", "id=".$file);
-            } elseif (eF_checkParameter($file, 'path')) { //id-based instantiation failed; Check if the full path is specified
-                $result = eF_getTableData("files", "*", "path='".str_replace(G_ROOTPATH, '', eF_addSlashes(MagesterDirectory :: normalize($file)))."'"); //eF_addSlashes for files containing '
+            if (sC_checkParameter($file, 'id')) { //Instantiate object based on id
+                $result = sC_getTableData("files", "*", "id=".$file);
+            } elseif (sC_checkParameter($file, 'path')) { //id-based instantiation failed; Check if the full path is specified
+                $result = sC_getTableData("files", "*", "path='".str_replace(G_ROOTPATH, '', sC_addSlashes(MagesterDirectory :: normalize($file)))."'"); //sC_addSlashes for files containing '
             } else {
                 throw new MagesterFileException(_ILLEGALPATH.': '.$file, MagesterFileException :: ILLEGAL_PATH);
             }
             if (sizeof($result) > 0) {
                 if (sizeof($result) > 1) { //if for some reason there is more than 1 database entries for the same file, keep only the latest (based on id)
                     for ($i = 0; $i < sizeof($result) - 1; $i++) {
-                        eF_deleteTableData("files", "id=".$result[$i]['id']);
+                        sC_deleteTableData("files", "id=".$result[$i]['id']);
                         MagesterSearch :: removeText('files', $result[$i]['id'], 'data');
                         //unlink($result[$i]['file']);
                     }
@@ -354,7 +354,7 @@ class MagesterFile extends ArrayObject
         parent :: __construct($fileArray); //Create an ArrayObject from the given array
         if (!is_file($this['path'])) { //If the file does not actually exist, then delete it from database and issue exception
             if ($this['id'] != -1) {
-                eF_deleteTableData("files", "id=".$this['id']);
+                sC_deleteTableData("files", "id=".$this['id']);
                 MagesterSearch :: removeText('files', $this['id'], 'data');
             }
             throw new MagesterFileException(_FILEDOESNOTEXIST.': '.$this['path'], MagesterFileException :: FILE_DELETED);
@@ -397,7 +397,7 @@ class MagesterFile extends ArrayObject
             throw new MagesterFileException(_CANNOTDELETEFILE, MagesterFileException :: GENERAL_ERROR);
         }
         if ($this['id'] != -1) {
-             eF_deleteTableData("files", "path = '".str_replace(G_ROOTPATH, '', eF_addSlashes($this['path']))."' or id=".$this['id']); //Delete database representation of the file
+             sC_deleteTableData("files", "path = '".str_replace(G_ROOTPATH, '', sC_addSlashes($this['path']))."' or id=".$this['id']); //Delete database representation of the file
             MagesterSearch :: removeText('files', $this['id'], 'data');
         }
 
@@ -467,7 +467,7 @@ class MagesterFile extends ArrayObject
                                 "groups_ID" => $this['groups_ID'],
                                 "access" => $this['access'],
                                 "metadata" => $this['metadata']);
-                $fileId = eF_insertTableData("files", $fields);
+                $fileId = sC_insertTableData("files", $fields);
                 if ($fileId) {
                     $fileMetadataArray = unserialize($this['metadata']);
                     foreach ($fileMetadataArray as $key => $value) {
@@ -479,7 +479,7 @@ class MagesterFile extends ArrayObject
 
             return $file;
         } else {
-            //eF_deleteTableData("files", "id=$fileid");                                                //If copy failed, delete empty table entry
+            //sC_deleteTableData("files", "id=$fileid");                                                //If copy failed, delete empty table entry
             throw new MagesterFileException(_CANNOTCOPYFILE, MagesterFileException :: UNKNOWN_ERROR);
         }
     }
@@ -578,7 +578,7 @@ class MagesterFile extends ArrayObject
                         'access' => $this['access'],
                         'shared' => $this['shared'],
                         'metadata' => $this['metadata']);
-        $ok = eF_updateTableData("files", $fields, "id=".$this['id']);
+        $ok = sC_updateTableData("files", $fields, "id=".$this['id']);
         MagesterSearch :: removeText('files', $this['id'], 'data');
         $fileMetadataArray = unserialize($this['metadata']);
         foreach ($fileMetadataArray as $key => $value) {
@@ -607,7 +607,7 @@ class MagesterFile extends ArrayObject
 
      * $file = new MagesterFile(432);																//Instantiate object for file with id 432
 
-     * eF_updateTableData("files", array("original_name" => "new_name"), "id=".$file['id']);	//Change the file attributes without using the object. This way, the $file object becomes outdated
+     * sC_updateTableData("files", array("original_name" => "new_name"), "id=".$file['id']);	//Change the file attributes without using the object. This way, the $file object becomes outdated
 
      * $file -> refresh();																		//Refresh $file properties
 
@@ -623,7 +623,7 @@ class MagesterFile extends ArrayObject
     public function refresh()
     {
         if ($this['id'] != -1) {
-            $result = eF_getTableData("files", "*", "id=".$this['id']);
+            $result = sC_getTableData("files", "*", "id=".$this['id']);
             $this['path'] = G_ROOTPATH.$result[0]['path'];
             $this['description'] = $result[0]['description'];
             $this['groups_ID'] = $result[0]['groups_ID'];
@@ -999,7 +999,7 @@ class MagesterFile extends ArrayObject
             $classes[] = 'inactiveLink';
         }
         $tooltipString = '
-            <a href = "'.$link.'" class = "'.implode(" ", $classes).'" style = "vertical-align:middle;" '.($preview ? 'onclick = "eF_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\')" target = "PREVIEW_FRAME"' : '').'>
+            <a href = "'.$link.'" class = "'.implode(" ", $classes).'" style = "vertical-align:middle;" '.($preview ? 'onclick = "sC_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\')" target = "PREVIEW_FRAME"' : '').'>
                 '.$this -> offsetGet('name').'
                 <span class = "tooltipSpan">';
         foreach ($this as $key => $value) {
@@ -1216,7 +1216,7 @@ class MagesterDirectory extends ArrayObject
 
      * <code>
 
-     * $result = eF_getTableData("files", "*", "id=43");
+     * $result = sC_getTableData("files", "*", "id=43");
 
      * $file = new MagesterDirectory($result[0]);                          //Instantiate object using array of values
 
@@ -1343,7 +1343,7 @@ class MagesterDirectory extends ArrayObject
     {
         $it = new MagesterREFilterIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this['path']), RecursiveIteratorIterator :: SELF_FIRST), array('/.svn/'), false);
         $files = array();
-        $result = eF_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, '', $this['path'])."%'");
+        $result = sC_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, '', $this['path'])."%'");
         foreach ($result as $file) {
             $files[G_ROOTPATH.$file['path']] = $file;
         }
@@ -1891,9 +1891,9 @@ class FileSystemTree extends MagesterTree
     {
         //Get all files that are within the designated directory
         if ($this -> shallow) {
-         $result = eF_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%' and path not like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%/%'"); //not files inside subfolders
+         $result = sC_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%' and path not like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."/%/%'"); //not files inside subfolders
         } else {
-         $result = eF_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."%'");
+         $result = sC_getTableData("files", "*", "path like '".str_replace(G_ROOTPATH, "", $this -> dir['path'])."%'");
         }
         foreach ($result as $key => $file) {
             $file['path'] = G_ROOTPATH.$file['path'];
@@ -1954,7 +1954,7 @@ class FileSystemTree extends MagesterTree
         }
         if (sizeof($rejected) > 0) { //Append rejected nodes to the end of the tree array, updating their parent/previous information
             foreach ($rejected as $key => $value) {
-                //eF_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
+                //sC_updateTableData("directions", array("parent_direction_ID" => 0), "id=".$key);
                 //$value['parent_direction_ID'] = 0;
                 //$tree[0][] = $value;
             }
@@ -2007,7 +2007,7 @@ class FileSystemTree extends MagesterTree
      */
     public function getUploadForm(& $form)
     {
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
         $form -> addElement('file', 'file_upload[0]', null, 'class = "inputText"');
         $form -> addElement('file', 'file_upload[1]', null, 'class = "inputText"');
         $form -> addElement('file', 'file_upload[2]', null, 'class = "inputText"');
@@ -2150,7 +2150,7 @@ class FileSystemTree extends MagesterTree
      */
     protected function getCreateDirectoryForm(& $form)
     {
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
         $form -> addElement('text', 'create_directory', null, 'class = "inputText"');
         $form -> addElement('hidden', 'current_directory', null, 'id = "current_directory" class = "inputText"');
         $form -> addElement('submit', 'submit_create_directory', _CREATE, 'class = "flatButton"');
@@ -2543,14 +2543,14 @@ class FileSystemTree extends MagesterTree
             if ($uploadForm -> isSubmitted() && $uploadForm -> validate()) {
                 $uploadedFile = $this -> handleUploadForm($uploadForm);
                 $uploadFormString .= '<script type = "text/javascript" src = "js/scriptaculous/prototype.php"> </script>
-                   <script>if (window.name == "POPUP_FRAME") {(parent.eF_js_showDivPopup("", "", "upload_file_table_'.$tableId.'"));parent.eF_js_rebuildTable(parent.$(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($currentDirectory).'\');parent.$(\'uploading_image\').hide()}</script>';
+                   <script>if (window.name == "POPUP_FRAME") {(parent.sC_js_showDivPopup("", "", "upload_file_table_'.$tableId.'"));parent.sC_js_rebuildTable(parent.$(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($currentDirectory).'\');parent.$(\'uploading_image\').hide()}</script>';
             }
             $createFolderForm = new HTML_QuickForm("create_folder_form", "post", $url, "", "target = 'POPUP_FRAME'", true);
             $createFolderString = $this -> getCreateDirectoryForm($createFolderForm);
             if ($createFolderForm -> isSubmitted() && $createFolderForm -> validate()) {
                 $this -> handleCreateDirectoryForm($createFolderForm);
                 $createFolderString .= '<script type = "text/javascript" src = "js/scriptaculous/prototype.php"> </script>
-                   <script>if (window.name == "POPUP_FRAME") {(parent.eF_js_showDivPopup("", "", "create_directory_table_'.$tableId.'"));parent.eF_js_rebuildTable(parent.$(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($currentDirectory).'\');}</script>';
+                   <script>if (window.name == "POPUP_FRAME") {(parent.sC_js_showDivPopup("", "", "create_directory_table_'.$tableId.'"));parent.sC_js_rebuildTable(parent.$(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($currentDirectory).'\');}</script>';
             }
             /*
 
@@ -2586,7 +2586,7 @@ class FileSystemTree extends MagesterTree
             echo "<script>if (top && top.mainframe) {w=top.mainframe} else {w=parent;}w.document.getElementById('messageError').innerHTML = '".$e -> getMessage()."';parent.$('uploading_image').hide();</script>";
             //Don't halt for uploading and create directory errors
             $GLOBALS['smarty'] -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $GLOBALS['message'] = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $GLOBALS['message'] = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         }
         $files = array();
         $fileArrays = array();
@@ -2610,7 +2610,7 @@ class FileSystemTree extends MagesterTree
                 $current['shared'] = 10; //Add these 3 parameters, so that sorting below works correctly (10 means nothing, since a folder cannot be shared, but it is handy for sorting)
                 $foldersArray[] = (array) $current; //Array representation of directory objects, on which we can apply sorting, filtering, etc
            }
-           $foldersArray = eF_multiSort($foldersArray, 'name', 'asc');
+           $foldersArray = sC_multiSort($foldersArray, 'name', 'asc');
         }
         /*
         if ($defaultIterator) {
@@ -2635,7 +2635,7 @@ class FileSystemTree extends MagesterTree
             $filesArray[] = (array) $current; //Array representation of file objects, on which we can apply sorting, filtering, etc
         }
 
-        $filesArray = eF_multiSort($filesArray, 'name', 'asc');
+        $filesArray = sC_multiSort($filesArray, 'name', 'asc');
         $fileArrays = array_merge($foldersArray, $filesArray);
         isset($ajaxOptions['order']) && $ajaxOptions['order'] == 'asc' ? $ajaxOptions['order'] = 'asc' : $ajaxOptions['order'] = 'desc';
         !isset($ajaxOptions['sort']) ? $ajaxOptions['sort'] = 'name' : null;
@@ -2647,9 +2647,9 @@ class FileSystemTree extends MagesterTree
 
         if ($size) {
 
-         $fileArrays = eF_multiSort($fileArrays, $ajaxOptions['sort'], $ajaxOptions['order']);
+         $fileArrays = sC_multiSort($fileArrays, $ajaxOptions['sort'], $ajaxOptions['order']);
 
-         $ajaxOptions['filter'] ? $fileArrays = eF_filterData($fileArrays, $ajaxOptions['filter']) : null;
+         $ajaxOptions['filter'] ? $fileArrays = sC_filterData($fileArrays, $ajaxOptions['filter']) : null;
 
          $fileArrays = array_slice($fileArrays, $ajaxOptions['offset'], $ajaxOptions['limit']);
 
@@ -2678,13 +2678,13 @@ class FileSystemTree extends MagesterTree
                <tr class = "defaultRowHeight eventRowColor"><td class = "centerAlign" colspan = "100%">'._CURRENTLYBROWSINGFOLDER.': '.str_replace($this -> dir['path'], '', $currentDir['path']).'</td></tr>
                      <tr class = "defaultRowHeight oddRowColor">
                       <td class = "centerAlign"><span style = "display:none"></span><img src = "images/16x16/folder_up.png" alt = "'._UPONELEVEL.'" title = "'._UPONELEVEL.'"/></td>
-                      <td><a class="editLink" href = "javascript:void(0)" onclick = "eF_js_rebuildTable($(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($parentDir['path']).'\');">.. ('._UPONELEVEL.')</a></td>
+                      <td><a class="editLink" href = "javascript:void(0)" onclick = "sC_js_rebuildTable($(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($parentDir['path']).'\');">.. ('._UPONELEVEL.')</a></td>
                       <td colspan = "5"></td></tr>';
         }
         $i = 0;
   if ($_SESSION['supervises_branches'] != "") {
    $currentEmployee = MagesterUserFactory :: factory($_SESSION['s_login']);
-   $employees = eF_getTableData("users LEFT OUTER JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_LOGIN LEFT OUTER JOIN module_hcd_employee_works_at_branch ON users.login = module_hcd_employee_works_at_branch.users_LOGIN","users.*, count(job_description_ID) as jobs_num"," users.user_type <> 'administrator' AND ((module_hcd_employee_works_at_branch.branch_ID IN (" . $_SESSION['supervises_branches'] ." ) AND module_hcd_employee_works_at_branch.assigned='1') OR EXISTS (SELECT module_hcd_employees.users_login FROM module_hcd_employees LEFT OUTER JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.users_login = module_hcd_employees.users_login WHERE users.login=module_hcd_employees.users_login AND module_hcd_employee_works_at_branch.branch_ID IS NULL)) GROUP BY login", "login");
+   $employees = sC_getTableData("users LEFT OUTER JOIN module_hcd_employee_has_job_description ON users.login = module_hcd_employee_has_job_description.users_LOGIN LEFT OUTER JOIN module_hcd_employee_works_at_branch ON users.login = module_hcd_employee_works_at_branch.users_LOGIN","users.*, count(job_description_ID) as jobs_num"," users.user_type <> 'administrator' AND ((module_hcd_employee_works_at_branch.branch_ID IN (" . $_SESSION['supervises_branches'] ." ) AND module_hcd_employee_works_at_branch.assigned='1') OR EXISTS (SELECT module_hcd_employees.users_login FROM module_hcd_employees LEFT OUTER JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.users_login = module_hcd_employees.users_login WHERE users.login=module_hcd_employees.users_login AND module_hcd_employee_works_at_branch.branch_ID IS NULL)) GROUP BY login", "login");
    $supervisedLogins = array();
    foreach ($employees as $key2 => $value2) {
     if (!$value2['active'] || $value2['archive'] || !$value2['jobs_num']) {
@@ -2720,7 +2720,7 @@ class FileSystemTree extends MagesterTree
                       <img class = "ajaxHandle" src = "images/16x16/trafficlight_red.png" alt = "'._SHARE.'" title = "'._SHARE.'" onclick = "shareFile(this, $(\'span_'.urlencode($identifier).'\').innerHTML)" style = "'.($value['shared'] ? 'display:none' : null).'" />';
                 }
                 if ($options['metadata']) {
-                    $toolsString .= '<a href = "'.$url.'&popup=1&display_metadata='.urlencode($identifier).'" target = "POPUP_FRAME"><img src = "images/16x16/information.png" alt = "'._METADATA.'" title = "'._METADATA.'" onclick = "eF_js_showDivPopup(\''._METADATA.'\', 2)" border = "0"/></a>&nbsp;';
+                    $toolsString .= '<a href = "'.$url.'&popup=1&display_metadata='.urlencode($identifier).'" target = "POPUP_FRAME"><img src = "images/16x16/information.png" alt = "'._METADATA.'" title = "'._METADATA.'" onclick = "sC_js_showDivPopup(\''._METADATA.'\', 2)" border = "0"/></a>&nbsp;';
                 }
                 if ($options['edit'] && ($_SESSION['s_type'] == 'administrator' || (($value['users_LOGIN'] == $_SESSION['s_login'] || in_array($value['users_LOGIN'], $supervisedLogins)) && isset($value['users_LOGIN'])) || ($GLOBALS['configuration']['allow_users_to_delete_supervisor_files'] == 1))) {
                     $toolsString .= '<img class = "ajaxHandle edit" src = "images/16x16/edit.png" alt = "'._EDIT.'" title = "'._EDIT.'" onclick = "toggleEditBox(this, \''.urlencode($identifier).'\')"/>&nbsp;';
@@ -2751,7 +2751,7 @@ class FileSystemTree extends MagesterTree
                     strpos($value['mime_type'], "pdf") !== false ||
                     strpos($value['mime_type'], "html") !== false ||
                     strpos($value['mime_type'], "flash") !== false) {
-                        $filesCode .= '<a href = "javascript:void(0);" onclick = "eF_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\');$(\'preview_frame\').src = \''.$link.'\';" ><img src = "'.$value -> getTypeImage().'" alt = "'.$value['mime_type'].'" title = "'.$value['mime_type'].'" border = "0"/></a></td>';
+                        $filesCode .= '<a href = "javascript:void(0);" onclick = "sC_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\');$(\'preview_frame\').src = \''.$link.'\';" ><img src = "'.$value -> getTypeImage().'" alt = "'.$value['mime_type'].'" title = "'.$value['mime_type'].'" border = "0"/></a></td>';
                     } else {
                         $filesCode .= '<a href = "'.$url.'&download='.urlencode($identifier).'"><img src = "'.$value -> getTypeImage().'" alt = "'.$value['mime_type'].'" title = "'.$value['mime_type'].'" border = "0"/></a>';
                     }
@@ -2767,13 +2767,13 @@ class FileSystemTree extends MagesterTree
                         $filesCode .= $value -> toHTMLTooltipLink($link, true, $tableId);
                     } else {
                         if (strpos($value['mime_type'], "image") !== false || strpos($value['mime_type'], "text") !== false || strpos($value['mime_type'], "pdf") !== false || strpos($value['mime_type'], "flash") !== false) {
-                            $filesCode .= '<a href = "'.$link.'" target = "PREVIEW_FRAME" onclick = "eF_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\');">'.$value['name'].'</a>';
+                            $filesCode .= '<a href = "'.$link.'" target = "PREVIEW_FRAME" onclick = "sC_js_showDivPopup(\''._PREVIEW.'\', 2, \'preview_table_'.$tableId.'\');">'.$value['name'].'</a>';
                         } else {
                             $filesCode .= '<a target = "PREVIEW_FRAME" href = "'.$url.'&download='.urlencode($identifier).'">'.$value['name'].'</a>';
                         }
                     }
                 } else {
-                    $filesCode .= '<a class="editLink" href = "javascript:void(0)" onclick = "eF_js_rebuildTable($(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($identifier).'\');">'.$value['name'].'</a>';
+                    $filesCode .= '<a class="editLink" href = "javascript:void(0)" onclick = "sC_js_rebuildTable($(\'filename_'.$tableId.'\').down().getAttribute(\'tableIndex\'), 0, \'\', \'desc\', \''.urlencode($identifier).'\');">'.$value['name'].'</a>';
                 }
                 $filesCode .= '<span id = "edit_'.urlencode($identifier).'" style = "display:none"><input type = "text" value = "'.$value['name'].'" onkeypress = "if (event.which == 13 || event.keyCode == 13) {Element.extend(this).next().down().onclick(); return false;}"/>&nbsp;<a href = "javascript:void(0)"><img id = "editImage_'.urlencode($identifier).'"src = "images/16x16/success.png" style = "vertical-align:middle" onclick = "editFile(this, $(\'span_'.urlencode($identifier).'\').innerHTML, Element.extend(this).up().previous().value, \''.$value['type'].'\',\''.$value['name'].'\')" border = "0"></a></span></td>';
             }
@@ -2818,14 +2818,14 @@ class FileSystemTree extends MagesterTree
             $str .= '
           <span>
               <img src = "images/16x16/add.png" alt = "'._UPLOADFILE.'" title = "'._UPLOADFILE.'"/>
-           <a href = "javascript:void(0)" onclick = "$(\'url_upload\').value = \'\';$$(\'input\').each(function(s)  {if (s.type == \'file\') s.value = \'\'});$(\'upload_current_directory\').value = $(\''.$tableId.'\').getAttribute(\'currentDir\');eF_js_showDivPopup(\''._UPLOADFILE.'\', 0, \'upload_file_table_'.$tableId.'\')">'._UPLOADFILE.'</a>&nbsp;
+           <a href = "javascript:void(0)" onclick = "$(\'url_upload\').value = \'\';$$(\'input\').each(function(s)  {if (s.type == \'file\') s.value = \'\'});$(\'upload_current_directory\').value = $(\''.$tableId.'\').getAttribute(\'currentDir\');sC_js_showDivPopup(\''._UPLOADFILE.'\', 0, \'upload_file_table_'.$tableId.'\')">'._UPLOADFILE.'</a>&nbsp;
           </span>';
         }
         if ($options['create_folder']) {
             $str .= '
           <span>
            <img src = "images/16x16/folder_add.png" alt = "'._CREATEFOLDER.'" title = "'._CREATEFOLDER.'">
-           <a href = "javascript:void(0)" onclick = "$(\'current_directory\').value = $(\''.$tableId.'\').getAttribute(\'currentDir\');eF_js_showDivPopup(\''._CREATEFOLDER.'\', 0, \'create_directory_table_'.$tableId.'\')">'._CREATEFOLDER.'</a>&nbsp;
+           <a href = "javascript:void(0)" onclick = "$(\'current_directory\').value = $(\''.$tableId.'\').getAttribute(\'currentDir\');sC_js_showDivPopup(\''._CREATEFOLDER.'\', 0, \'create_directory_table_'.$tableId.'\')">'._CREATEFOLDER.'</a>&nbsp;
           </span>';
         }
         foreach ($extraHeaderOptions as $option) {
@@ -2858,17 +2858,17 @@ class FileSystemTree extends MagesterTree
 
         $GLOBALS['smarty'] -> assign("T_BLOCK_DATA", $uploadFormString);
 
-        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "upload_file_table_'.$tableId.'" style = "display:none;">{eF_template_printBlock title="'._UPLOADFILE.'" data=$T_BLOCK_DATA image="32x32/import.png"}</div>');
+        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "upload_file_table_'.$tableId.'" style = "display:none;">{sC_template_printBlock title="'._UPLOADFILE.'" data=$T_BLOCK_DATA image="32x32/import.png"}</div>');
 
         $str .= $GLOBALS['smarty'] -> fetch("display_code.tpl");
 
         $GLOBALS['smarty'] -> assign("T_BLOCK_DATA", $createFolderString);
 
-        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "create_directory_table_'.$tableId.'" style = "display:none;">{eF_template_printBlock title="'._CREATEFOLDER.'" data=$T_BLOCK_DATA image="32x32/folder.png"}</div>');
+        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "create_directory_table_'.$tableId.'" style = "display:none;">{sC_template_printBlock title="'._CREATEFOLDER.'" data=$T_BLOCK_DATA image="32x32/folder.png"}</div>');
 
         $str .= $GLOBALS['smarty'] -> fetch("display_code.tpl");
 
-        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "preview_table_'.$tableId.'" style = "display:none">{eF_template_printBlock title="'._PREVIEW.'" data="<iframe name = \"PREVIEW_FRAME\" id = \"preview_frame\" src = \"about:blank\" style = \"border-width:0px;width:100%;height:100%;padding:0px\">Sorry, but your browser needs to support iframes to see this</iframe>" image="32x32/folder.png"}</div>');
+        $GLOBALS['smarty'] -> assign("T_DISPLAY_BLOCK", '<div id = "preview_table_'.$tableId.'" style = "display:none">{sC_template_printBlock title="'._PREVIEW.'" data="<iframe name = \"PREVIEW_FRAME\" id = \"preview_frame\" src = \"about:blank\" style = \"border-width:0px;width:100%;height:100%;padding:0px\">Sorry, but your browser needs to support iframes to see this</iframe>" image="32x32/folder.png"}</div>');
 
         $str .= $GLOBALS['smarty'] -> fetch("display_code.tpl");
 
@@ -2911,7 +2911,7 @@ class FileSystemTree extends MagesterTree
      */
     public function handleAjaxActions($currentUser)
     {
-        if (isset($_GET['delete']) && (eF_checkParameter($_GET['delete'], 'id') || strpos(urldecode($_GET['delete']), $this -> dir['path']) !== false)) {
+        if (isset($_GET['delete']) && (sC_checkParameter($_GET['delete'], 'id') || strpos(urldecode($_GET['delete']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['delete']));
                 $file -> delete();
@@ -2919,7 +2919,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['share']) && (eF_checkParameter($_GET['share'], 'id') || strpos(urldecode($_GET['share']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['share']) && (sC_checkParameter($_GET['share'], 'id') || strpos(urldecode($_GET['share']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['share']));
                 $file -> share();
@@ -2927,7 +2927,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['unshare']) && (eF_checkParameter($_GET['unshare'], 'id') || strpos(urldecode($_GET['unshare']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['unshare']) && (sC_checkParameter($_GET['unshare'], 'id') || strpos(urldecode($_GET['unshare']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['unshare']));
                 $file -> unshare();
@@ -2935,7 +2935,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['uncompress']) && (eF_checkParameter($_GET['uncompress'], 'id') || strpos(urldecode($_GET['uncompress']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['uncompress']) && (sC_checkParameter($_GET['uncompress'], 'id') || strpos(urldecode($_GET['uncompress']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['uncompress']));
                 $file -> uncompress();
@@ -2943,7 +2943,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['delete_folder']) && (eF_checkParameter($_GET['delete_folder'], 'id') || strpos(urldecode($_GET['delete_folder']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['delete_folder']) && (sC_checkParameter($_GET['delete_folder'], 'id') || strpos(urldecode($_GET['delete_folder']), $this -> dir['path']) !== false)) {
             try {
                 $directory = new MagesterDirectory(urldecode($_GET['delete_folder']));
                 $directory -> delete();
@@ -2951,7 +2951,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['download']) && (eF_checkParameter($_GET['download'], 'id') || strpos(urldecode($_GET['download']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['download']) && (sC_checkParameter($_GET['download'], 'id') || strpos(urldecode($_GET['download']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['download']));
                 $file -> sendFile(true);
@@ -2959,7 +2959,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['view']) && (eF_checkParameter($_GET['view'], 'id') || strpos(urldecode($_GET['view']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['view']) && (sC_checkParameter($_GET['view'], 'id') || strpos(urldecode($_GET['view']), $this -> dir['path']) !== false)) {
             try {
                 $file = new MagesterFile(urldecode($_GET['view']));
                 $file -> sendFile(false);
@@ -2967,7 +2967,7 @@ class FileSystemTree extends MagesterTree
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['update']) && (eF_checkParameter($_GET['update'], 'id') || strpos(urldecode($_GET['update']), $this -> dir['path']) !== false)) {
+        } elseif (isset($_GET['update']) && (sC_checkParameter($_GET['update'], 'id') || strpos(urldecode($_GET['update']), $this -> dir['path']) !== false)) {
             try {
                 $_GET['type'] == 'file' ? $file = new MagesterFile(urldecode($_GET['update'])) : $file = new MagesterDirectory(urldecode($_GET['update']));
                 $previousName = $file['name'];
@@ -3084,10 +3084,10 @@ class FileSystemTree extends MagesterTree
                 }
             } elseif ($size == 0) {
                 throw new MagesterFileException(_FILEDOESNOTEXIST, MagesterFileException :: FILE_NOT_EXIST);
-            } elseif (!eF_checkParameter($name, 'filename')) {
+            } elseif (!sC_checkParameter($name, 'filename')) {
                 throw new MagesterFileException(_ILLEGALFILENAME, MagesterFileException :: ILLEGAL_FILE_NAME);
             } else {
-                //$id      = eF_insertTableData("files", array('file' => 'temp'));                        //Insert bogus entry
+                //$id      = sC_insertTableData("files", array('file' => 'temp'));                        //Insert bogus entry
                 /*
 
                  if (FileSystemTree :: mustTranslate($name)) {
@@ -3112,7 +3112,7 @@ class FileSystemTree extends MagesterTree
                     'users_LOGIN' => $_SESSION['s_login'],
                                 'timestamp' => time(),
                                 'metadata' => serialize($fileMetadata));
-                $id = eF_insertTableData("files", $fields);
+                $id = sC_insertTableData("files", $fields);
                 if ($id) {
                     foreach ($fileMetadata as $key => $value) {
                         MagesterSearch :: insertText($value, $id, "files", "data");
@@ -3332,7 +3332,7 @@ class FileSystemTree extends MagesterTree
         if (!is_array($list)) {
             $list = array($list);
         }
-        $allFiles = eF_getTableDataFlat("files", "path"); //Get all files, so that if a file already exists, a duplicate entry in the database won't be created
+        $allFiles = sC_getTableDataFlat("files", "path"); //Get all files, so that if a file already exists, a duplicate entry in the database won't be created
         for ($i = 0; $i < sizeof($list); $i++) {
             $list[$i] = MagesterFile :: encode($list[$i]);
             if (!in_array($list[$i], $allFiles['path']) && strpos(dirname($list[$i]), rtrim(G_ROOTPATH, "/")) !== false) {
@@ -3347,7 +3347,7 @@ class FileSystemTree extends MagesterTree
                                 'timestamp' => time(),
                                 'metadata' => serialize($fileMetadata));
                 isset($options['access']) ? $fields['access'] = $options['access'] : null;
-                $fileId = eF_insertTableData("files", $fields);
+                $fileId = sC_insertTableData("files", $fields);
                 if ($fileId) {
                     $newList[$fileId] = $list[$i];
                     foreach ($fileMetadata as $key => $value) {

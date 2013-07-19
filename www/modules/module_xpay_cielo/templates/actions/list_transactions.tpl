@@ -51,7 +51,7 @@
 </table>
 {/capture}
 	
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XPAY_CIELO_LAST_TRANSACTIONS
 	data=$smarty.capture.t_xpay_cielo_last_transactions
 }

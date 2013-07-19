@@ -31,14 +31,14 @@ try {
 }
 $special_splitter = "||||";
 if (isset($_GET['chatrooms_ID'])) {
-    if (eF_checkParameter($_GET['chatrooms_ID'], 'id')) {
+    if (sC_checkParameter($_GET['chatrooms_ID'], 'id')) {
      $chatrooms_ID = $_GET['chatrooms_ID'];
     } else {
      $chatrooms_ID = 0;
     }
 } elseif (isset($_GET['bring_chatrooms'])) {
     // The chatrooms are all the ones with more than zero users and the ones you have created
-    $rooms = eF_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
+    $rooms = sC_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
 //pr($rooms);
     $data = "";
     foreach ($rooms as $room) {
@@ -58,8 +58,8 @@ if (isset($_GET['chatrooms_ID'])) {
 }
 
 // Delete a user from a chat room - this happens on room deactivations
-if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'login')) {
-    eF_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$chatrooms_ID."' AND users_LOGIN = '".$_GET['delete_user']."'");
+if (isset($_GET['delete_user']) && sC_checkParameter($_GET['delete_user'], 'login')) {
+    sC_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$chatrooms_ID."' AND users_LOGIN = '".$_GET['delete_user']."'");
     exit;
 }
 
@@ -67,8 +67,8 @@ if (isset($_GET['delete_user']) && eF_checkParameter($_GET['delete_user'], 'logi
 if (isset($_GET['delete_room'])) {
 
     // The id check is inserted for security reasons - only if this session user is the owner will the channel be deleted
-    if (eF_deleteTableData("chatrooms", "users_LOGIN = '".$_SESSION['s_login']."' AND id = '".$chatrooms_ID."'")) {
-        eF_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$chatrooms_ID."'");
+    if (sC_deleteTableData("chatrooms", "users_LOGIN = '".$_SESSION['s_login']."' AND id = '".$chatrooms_ID."'")) {
+        sC_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$chatrooms_ID."'");
         $_SESSION['last_chat_msg_id'] = 0;
     }
 
@@ -76,8 +76,8 @@ if (isset($_GET['delete_room'])) {
 }
 
 // Insert into a new chatroom
-if (isset($_GET['add_user']) && isset($_GET['add_user_type']) && eF_checkParameter($_GET['add_user'], 'login') && eF_checkParameter($_GET['add_user_type'], 'alnum')) {
-    eF_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$_GET['add_user']."'");
+if (isset($_GET['add_user']) && isset($_GET['add_user_type']) && sC_checkParameter($_GET['add_user'], 'login') && sC_checkParameter($_GET['add_user_type'], 'alnum')) {
+    sC_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$_GET['add_user']."'");
 
     if ($chatrooms_ID != 0) {
      $userRecord = array("users_LOGIN" => $_GET['add_user'],
@@ -85,7 +85,7 @@ if (isset($_GET['add_user']) && isset($_GET['add_user_type']) && eF_checkParamet
                          "users_USER_TYPE" => $_GET['add_user_type'],
                          "timestamp" => time());
 
-        eF_insertTableData("users_to_chatrooms", $userRecord);
+        sC_insertTableData("users_to_chatrooms", $userRecord);
     }
 
     // Set last_id to zero to get correct last messages
@@ -100,9 +100,9 @@ if (isset($_GET['get_users'])) {
 
     if ($chatrooms_ID == 0) {
         // @performance: 2DB
-        //$all_users = eF_getTableDataFlat("users_online", "users_LOGIN");
-        $all_users = eF_getTableDataFlat("user_times", "users_LOGIN", "session_expired=0");
-        $other_room_users = eF_getTableDataFlat("users_to_chatrooms", "users_LOGIN", "");
+        //$all_users = sC_getTableDataFlat("users_online", "users_LOGIN");
+        $all_users = sC_getTableDataFlat("user_times", "users_LOGIN", "session_expired=0");
+        $other_room_users = sC_getTableDataFlat("users_to_chatrooms", "users_LOGIN", "");
         if (empty($other_room_users)) {
             $magester_general_users = $all_users['users_LOGIN'];
         } else {
@@ -113,7 +113,7 @@ if (isset($_GET['get_users'])) {
         }
     } else {
         // @performance: 1DB
-        $users = eF_getTableData("users_to_chatrooms", "users_LOGIN", "chatrooms_ID = '".$chatrooms_ID. "'");
+        $users = sC_getTableData("users_to_chatrooms", "users_LOGIN", "chatrooms_ID = '".$chatrooms_ID. "'");
         foreach ($users as $user) {
             $data .= $user['users_LOGIN'] . "<br>";
         }
@@ -131,7 +131,7 @@ if (isset($_POST['submit']) || isset($_POST['chat_message']) ) { //The user post
 
         // Check existence of room
         if ($chatrooms_ID != 0) { // the SysClass general room always exists
-         $roomExists = eF_getTableData("chatrooms", "active", "id = ". $chatrooms_ID);
+         $roomExists = sC_getTableData("chatrooms", "active", "id = ". $chatrooms_ID);
          if (empty($roomExists)) {
              echo _CHATROOMDOESNOTEXIST_ERROR . $special_splitter; // notify user that room was deleted
              $_SESSION['last_chat_msg_id'] = 0;
@@ -150,7 +150,7 @@ if (isset($_POST['submit']) || isset($_POST['chat_message']) ) { //The user post
                                'chatrooms_ID' => $chatrooms_ID);
      try {
       //pr($fields_insert);
-      eF_insertTableData("chatmessages", $fields_insert); //Insert the message into the database
+      sC_insertTableData("chatmessages", $fields_insert); //Insert the message into the database
      } catch (Exception $e) {
       handleAjaxExceptions($e);
      }
@@ -178,14 +178,14 @@ if ($last_id == 0 || $_GET['restart_session'] == 1) {
     $last_id = 0;
 }
 if (!isset($_POST['chat_message'])) {
-    $messages = eF_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC,id DESC LIMIT $messages_limit"); //Retrieve the recent messages
+    $messages = sC_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC,id DESC LIMIT $messages_limit"); //Retrieve the recent messages
     if (sizeof($messages)>0) {
         $new_id = $messages[0]['id'];
     } else {
         $new_id = $last_id;
     }
 } else {
-    $messages = eF_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC, id DESC"); //Retrieve the most recent message
+    $messages = sC_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC, id DESC"); //Retrieve the most recent message
     if (sizeof($messages) > 0) {
         $new_id = $messages[0]['id'];
     } else {
@@ -235,7 +235,7 @@ foreach ($messages as $value) { //Loop through messages, so that they are displa
         // Create links
 
         // Do it here for each icon
-        $value['content'] = eF_convertTextToSmilies($value['content']);
+        $value['content'] = sC_convertTextToSmilies($value['content']);
         $value['content'] = eregi_replace("www[.]([^[:space:]]*)([[:alnum:]#?/&=])","http://www.\\1\\2", $value['content']);
         $value['content'] = eregi_replace("([[:alnum:]]+)://([^[:space:]]*)([[:alnum:]#?/&=])","<a href=\"\\1://\\2\\3\" target=\"_blank\" > \\1://\\2\\3 </a> ", $value['content']);
         $data .= $value['users_LOGIN'].$special_splitter.$time_str.$special_splitter.$span_style.$special_splitter.$value['content'].$special_splitter; //Display the message, along with any notification message
@@ -245,7 +245,7 @@ foreach ($messages as $value) { //Loop through messages, so that they are displa
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 //header("Content-type: text/html;charset="._CHARSET);
 
-//$data = eF_convertTextToSmilies($data);
+//$data = sC_convertTextToSmilies($data);
 //$data = iconv("UTF-8",_CHARSET,$data);
 //echo $data.$special_splitter."new_limit: ".$new_limit."<br>all messages: ".$all_messages."<br>sent: ".$sent."<br>new_limit_flag: ".$new_limit_flag."-|*special_splitter*|-".$rooms_str."-|*special_splitter*|-".$new_limit."-|*special_splitter*|-".$sent;
 echo $data;

@@ -23,12 +23,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  */
 $loadScripts[] = 'includes/categories';
 if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
- eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+ sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 //Create shorthands for user access rights, to avoid long variable names
 !isset($currentUser -> coreAccess['lessons']) || $currentUser -> coreAccess['lessons'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 $smarty -> assign("_change_", $_change_);
-if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_direction'], 'id')) {
+if (isset($_GET['delete_direction']) && sC_checkParameter($_GET['delete_direction'], 'id')) {
  if (!$_change_) {
   throw new Exception(_UNAUTHORIZEDACCESS);
  }
@@ -45,7 +45,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   echo urlencode($e -> getMessage()).' ('.$e -> getCode().')';
  }
  exit;
-} elseif (isset($_GET['deactivate_direction']) && eF_checkParameter($_GET['deactivate_direction'], 'id')) {
+} elseif (isset($_GET['deactivate_direction']) && sC_checkParameter($_GET['deactivate_direction'], 'id')) {
  if (!$_change_) {
   throw new Exception(_UNAUTHORIZEDACCESS);
  }
@@ -64,7 +64,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   echo urlencode($e -> getMessage()).' ('.$e -> getCode().')';
  }
  exit;
-} elseif (isset($_GET['activate_direction']) && eF_checkParameter($_GET['activate_direction'], 'id')) {
+} elseif (isset($_GET['activate_direction']) && sC_checkParameter($_GET['activate_direction'], 'id')) {
  if (!$_change_) {
   throw new Exception(_UNAUTHORIZEDACCESS);
  }
@@ -79,7 +79,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   echo urlencode($e -> getMessage()).' ('.$e -> getCode().')';
  }
  exit;
-} elseif (isset($_GET['add_direction']) || (isset($_GET['edit_direction']) && eF_checkParameter($_GET['edit_direction'], 'id'))) {
+} elseif (isset($_GET['add_direction']) || (isset($_GET['edit_direction']) && sC_checkParameter($_GET['edit_direction'], 'id'))) {
  $directionsTree = new MagesterDirectionsTree();
  $directionsPaths = $directionsTree -> toPathString(true, true);
  if (isset($_GET['add_direction'])) {
@@ -100,7 +100,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   }
  }
  $form = new HTML_QuickForm("add_directions_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=directions&".$post_target, "", null, true);
- $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+ $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
  $form -> addElement('text', 'name', _DIRECTIONNAME, 'class = "inputText"');
  $form -> addRule('name', _THEFIELD.' '._DIRECTIONNAME.' '._ISMANDATORY, 'required', null, 'client');
  $form -> addRule('name', _INVALIDFIELDDATA, 'checkParameter', 'text');
@@ -127,7 +127,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
     $editDirection['active'] = $direction_content['active'];
     try {
      $editDirection -> persist();
-     eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=directions&message=".urlencode(_SUCCESFULLYUPDATEDDIRECTION)."&message_type=success");
+     sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=directions&message=".urlencode(_SUCCESFULLYUPDATEDDIRECTION)."&message_type=success");
     } catch (Exception $e) {
      $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().')';
      $message_type = 'failure';
@@ -135,7 +135,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
    } else {
     try {
      MagesterDirection :: createDirection($direction_content);
-     eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=directions&message=".urlencode(_SUCCESFULLYADDEDDIRECTION)."&message_type=success");
+     sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=directions&message=".urlencode(_SUCCESFULLYADDEDDIRECTION)."&message_type=success");
     } catch (Exception $e) {
      $message = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' ('.$e -> getCode().')';
      $message_type = 'failure';
@@ -170,14 +170,14 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
    isset($_GET['limit']) ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
    if (isset($_GET['sort'])) {
     isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-    $lessons = eF_multiSort($lessons, $_GET['sort'], $order);
+    $lessons = sC_multiSort($lessons, $_GET['sort'], $order);
    }
    if (isset($_GET['filter'])) {
-    $lessons = eF_filterData($lessons, $_GET['filter']);
+    $lessons = sC_filterData($lessons, $_GET['filter']);
    }
    $smarty -> assign("T_LESSONS_SIZE", sizeof($lessons));
-   if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+   if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
     $lessons = array_slice($lessons, $offset, $limit);
    }
    foreach ($lessons as $key => $lesson) {
@@ -193,14 +193,14 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
    isset($_GET['limit']) ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
    if (isset($_GET['sort'])) {
     isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-    $courses = eF_multiSort($courses, $_GET['sort'], $order);
+    $courses = sC_multiSort($courses, $_GET['sort'], $order);
    }
    if (isset($_GET['filter'])) {
-    $courses = eF_filterData($courses, $_GET['filter']);
+    $courses = sC_filterData($courses, $_GET['filter']);
    }
    $smarty -> assign("T_COURSES_SIZE", sizeof($courses));
-   if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+   if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
     $courses = array_slice($courses, $offset, $limit);
    }
    foreach ($courses as $key => $course) {
@@ -214,7 +214,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   }
   if (isset($_GET['lessonsPostAjaxRequest'])) {
    try {
-    if (isset($_GET['id']) && eF_checkParameter($_GET['id'], 'id') && isset($_GET['directions_ID']) && eF_checkParameter($_GET['directions_ID'], 'id')) {
+    if (isset($_GET['id']) && sC_checkParameter($_GET['id'], 'id') && isset($_GET['directions_ID']) && sC_checkParameter($_GET['directions_ID'], 'id')) {
      $lesson = new MagesterLesson($_GET['id']);
      if ($_GET['directions_ID'] != $lesson -> lesson['directions_ID']) {
       $updateLessonInstancesCategory = true; //This means we need to update instances to match the course's new category
@@ -222,7 +222,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
      $lesson -> lesson['directions_ID'] = $_GET['directions_ID'];
      $lesson -> persist();
      if (isset($updateLessonInstancesCategory) && $updateLessonInstancesCategory) {
-      eF_updateTableData("lessons", array("directions_ID" => $lesson -> lesson['directions_ID']), "instance_source=".$lesson -> lesson['id']);
+      sC_updateTableData("lessons", array("directions_ID" => $lesson -> lesson['directions_ID']), "instance_source=".$lesson -> lesson['id']);
      }
     }
     exit;
@@ -232,7 +232,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
   }
   if (isset($_GET['coursesPostAjaxRequest'])) {
    try {
-    if (isset($_GET['id']) && eF_checkParameter($_GET['id'], 'id') && isset($_GET['directions_ID']) && eF_checkParameter($_GET['directions_ID'], 'id')) {
+    if (isset($_GET['id']) && sC_checkParameter($_GET['id'], 'id') && isset($_GET['directions_ID']) && sC_checkParameter($_GET['directions_ID'], 'id')) {
      $course = new MagesterCourse($_GET['id']);
      if ($_GET['directions_ID'] != $course -> course['directions_ID']) {
       $updateCourseInstancesCategory = true; //This means we need to update instances to match the course's new category
@@ -240,7 +240,7 @@ if (isset($_GET['delete_direction']) && eF_checkParameter($_GET['delete_directio
      $course -> course['directions_ID'] = $_GET['directions_ID'];
      $course -> persist();
      if (isset($updateCourseInstancesCategory) && $updateCourseInstancesCategory) {
-      eF_updateTableData("courses", array("directions_ID" => $course -> course['directions_ID']), "instance_source=".$course -> course['id']);
+      sC_updateTableData("courses", array("directions_ID" => $course -> course['directions_ID']), "instance_source=".$course -> course['id']);
      }
 
     }

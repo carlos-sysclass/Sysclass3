@@ -123,7 +123,7 @@
 </table>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__PAGAMENTO_PAID_INVOICES_LIST
 	data=$smarty.capture.t_payments_table
 	contentclass="blockContents"

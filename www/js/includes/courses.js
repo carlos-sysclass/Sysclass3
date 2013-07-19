@@ -108,7 +108,7 @@ function onSetLessonMode(el, response) {
  tables = sortedTables.size();
  for (var i = 0; i < tables; i++) {
   if (sortedTables[i].id.match('lessonsTable') && ajaxUrl[i]) {
-   eF_js_rebuildTable(i, 0, 'has_lesson', 'desc');
+   sC_js_rebuildTable(i, 0, 'has_lesson', 'desc');
   }
  }
 }
@@ -133,8 +133,8 @@ function usersCourseClassAjaxPost(login, courseclass, el, table_id) {
 		
 		
 		ajaxRequest(el, url, parameters, function() {
-			eF_js_redrawPage('classesuserTable', true);	
-			eF_js_redrawPage('usersTable', true);
+			sC_js_redrawPage('classesuserTable', true);	
+			sC_js_redrawPage('usersTable', true);
 		});
 	}
 }
@@ -237,7 +237,7 @@ function onAddInstance(el, response) {
  tables = sortedTables.size();
  for (var i = 0; i < tables; i++) {
   if (sortedTables[i].id.match('instancesTable') && ajaxUrl[i]) {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }

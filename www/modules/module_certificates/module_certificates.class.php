@@ -22,15 +22,15 @@ class module_certificates extends MagesterModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_certificates ");
-        $res1 = eF_executeNew("CREATE TABLE if not exists module_certificates (
+        sC_executeNew("drop table if exists module_certificates ");
+        $res1 = sC_executeNew("CREATE TABLE if not exists module_certificates (
                           lessons_ID int(11) not null,
                           certificate_id int(11) not null,
 						  auto_certificate tinyint(1) default '0',
                           PRIMARY KEY  (lessons_ID)
                         ) DEFAULT CHARSET=utf8;");
-        eF_executeNew("drop table if exists module_certificates_users ");
-        $res2 = eF_executeNew("CREATE TABLE if not exists module_certificates_users (
+        sC_executeNew("drop table if exists module_certificates_users ");
+        $res2 = sC_executeNew("CREATE TABLE if not exists module_certificates_users (
                           lessons_ID int(11) not null,
                           users_LOGIN varchar(255) not null,
                           issued_certificate text,
@@ -43,8 +43,8 @@ class module_certificates extends MagesterModule
     // And on deleting the module
     public function onUninstall()
     {
-        $res1 = eF_executeNew("DROP TABLE module_certificates;");
-        $res2 = eF_executeNew("DROP TABLE module_certificates_users;");
+        $res1 = sC_executeNew("DROP TABLE module_certificates;");
+        $res2 = sC_executeNew("DROP TABLE module_certificates_users;");
 
         return ($res1 && $res2);
     }
@@ -52,8 +52,8 @@ class module_certificates extends MagesterModule
     // On deleting a lesson
     public function onDeleteLesson($lessonId)
     {
-        $res1 = eF_deleteTableData("module_certificates", "lessons_ID=".$lessonId);
-        $res2 = eF_deleteTableData("module_certificates_users", "lessons_ID=".$lessonId);
+        $res1 = sC_deleteTableData("module_certificates", "lessons_ID=".$lessonId);
+        $res2 = sC_deleteTableData("module_certificates_users", "lessons_ID=".$lessonId);
 
         return ($res1 && $res2);
     }
@@ -61,8 +61,8 @@ class module_certificates extends MagesterModule
     // On exporting a lesson
     public function onExportLesson($lessonId)
     {
-        $data['certificates'] = eF_getTableData("module_certificates", "*","lessons_ID=".$lessonId);
-        $data['certificates_users'] = eF_getTableData("module_certificates_users", "*","lessons_ID=".$lessonId);
+        $data['certificates'] = sC_getTableData("module_certificates", "*","lessons_ID=".$lessonId);
+        $data['certificates_users'] = sC_getTableData("module_certificates_users", "*","lessons_ID=".$lessonId);
 
         return serialize($data);
     }
@@ -73,11 +73,11 @@ class module_certificates extends MagesterModule
         $data = unserialize($data);
         foreach ($data['certificates'] as $record) {
             $record['lessons_ID'] = $lessonId;
-            eF_insertTableData("module_certificates", $record);
+            sC_insertTableData("module_certificates", $record);
         }
         foreach ($data['certificates_users'] as $record) {
             $record['lessons_ID'] = $lessonId;
-            eF_insertTableData("module_certificates_users", $record);
+            sC_insertTableData("module_certificates_users", $record);
         }
 
         return true;
@@ -129,10 +129,10 @@ class module_certificates extends MagesterModule
 
     public function issueCertificate($login, $certificate, $lesson_id)
     {
-        if (eF_checkParameter($login, 'login')) {
-			$chechExisted = eF_getTableData("module_certificates_users", "users_LOGIN,lessons_ID","users_LOGIN='".$login."' AND lessons_ID=".$lesson_id);
+        if (sC_checkParameter($login, 'login')) {
+			$chechExisted = sC_getTableData("module_certificates_users", "users_LOGIN,lessons_ID","users_LOGIN='".$login."' AND lessons_ID=".$lesson_id);
 			if (sizeof($chechExisted) == 0) {
-				eF_insertTableData("module_certificates_users", array("issued_certificate" => $certificate, "users_LOGIN" => $login, "lessons_ID" => $lesson_id));
+				sC_insertTableData("module_certificates_users", array("issued_certificate" => $certificate, "users_LOGIN" => $login, "lessons_ID" => $lesson_id));
 				return true;
 			}
         } else {
@@ -142,7 +142,7 @@ class module_certificates extends MagesterModule
 
     public function prepareCertificate($login, $currentLesson)
     {
-        if (eF_checkParameter($login, 'login')) {
+        if (sC_checkParameter($login, 'login')) {
             $data = array();
             $lessonUser  = MagesterUserFactory :: factory($login);
             $userStats   = MagesterStats::getUsersLessonStatus($currentLesson -> lesson['id'], $login);
@@ -162,8 +162,8 @@ class module_certificates extends MagesterModule
 
     public function revokeCertificate($login, $lesson_id)
     {
-        if (eF_checkParameter($login, 'login')) {
-            eF_deleteTableData("module_certificates_users", "users_LOGIN='".$login."' and lessons_ID=".$lesson_id);
+        if (sC_checkParameter($login, 'login')) {
+            sC_deleteTableData("module_certificates_users", "users_LOGIN='".$login."' and lessons_ID=".$lesson_id);
 
             return true;
         } else {
@@ -188,12 +188,12 @@ class module_certificates extends MagesterModule
         }
 
         if (isset($_GET['export']) && $_GET['export'] == 'rtf') {
-            $result = eF_getTableData("module_certificates_users", "*",
+            $result = sC_getTableData("module_certificates_users", "*",
             "users_LOGIN = '".$_GET['user']."' and lessons_ID = '".$currentLesson -> lesson['id']."' limit 1");
             if (sizeof($result) == 1 || isset($_GET['preview'])) {
                 if (!isset($_GET['preview'])) {
                     $certificate_id = 0;
-                    $data = ef_getTableData("module_certificates", "*", "lessons_id=".$currentLesson -> lesson['id']);
+                    $data = sC_getTableData("module_certificates", "*", "lessons_id=".$currentLesson -> lesson['id']);
                     if (sizeof($data) > 0) {
                         $certificate_id = $data[0]['certificate_id'];
                     }
@@ -252,7 +252,7 @@ class module_certificates extends MagesterModule
             $smarty -> assign("T_CERTIFICATES_PROFESSOR", "1");
             if ($_GET['modop'] == 'format_certificate') {
                 $certificate_id   = 0;
-                $certificate_data = ef_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
+                $certificate_data = sC_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
                 if (sizeof($certificate_data) > 0) {
                     $certificate_id = $certificate_data[0]['certificate_id'];
                     if ($certificate_id > 0) {
@@ -268,11 +268,11 @@ class module_certificates extends MagesterModule
                     }
                 } catch (Exception $e) {
                     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                 }
 
                 $form = new HTML_QuickForm("edit_lessons_certificate_form", "post", basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_certificates&modop=format_certificate', "", null, true);
-                $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+                $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
                 $form -> addElement('file', 'file_upload', _CERTIFICATETEMPLATE, 'class = "inputText"');
                 $form -> addElement('select', 'existing_certificate', _ORSELECTONEFROMLIST, $existingCertificates, "id = 'select_certificate'");
                 $form -> addElement('button', 'preview', _PREVIEW,
@@ -305,19 +305,19 @@ class module_certificates extends MagesterModule
                             }
                         }
 
-                        $certificate_data = ef_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
+                        $certificate_data = sC_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
                         if (sizeof($certificate_data) > 0) {
                             $update['certificate_id'] = $certificateid;
-                            ef_updateTableData("module_certificates", $update, "lessons_ID = ".$currentLesson -> lesson['id']);
+                            sC_updateTableData("module_certificates", $update, "lessons_ID = ".$currentLesson -> lesson['id']);
                         } else {
                             $insert['certificate_id'] = $certificateid;
                             $insert['lessons_ID']     = $currentLesson -> lesson['id'];
-                            ef_insertTableData("module_certificates", $insert);
+                            sC_insertTableData("module_certificates", $insert);
                         }
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=module&op=module_certificates&message=".urlencode(_SUCCESFULLYUPDATEDCERTIFICATE)."&message_type=success");
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=module&op=module_certificates&message=".urlencode(_SUCCESFULLYUPDATEDCERTIFICATE)."&message_type=success");
                     } catch (Exception $e) {
                         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                        $message      = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                        $message      = _SOMEPROBLEMEMERGED.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                         $message_type = 'failure';
                     }
                 }
@@ -334,24 +334,24 @@ class module_certificates extends MagesterModule
                 try {
                     $certificate = $this -> prepareCertificate($_GET['issue_certificate'], $currentLesson);
                     $this -> issueCertificate($_GET['issue_certificate'], $certificate, $currentLesson -> lesson['id']);
-                    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_certificates&message='.urlencode(_STUDENTSTATUSCHANGED).'&message_type=success');
+                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_certificates&message='.urlencode(_STUDENTSTATUSCHANGED).'&message_type=success');
                 } catch (Exception $e) {
                     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                    $message      = _PROBLEMISSUINGCERTIFICATE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message      = _PROBLEMISSUINGCERTIFICATE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                     $message_type = 'failure';
                 }
             } elseif (isset($_GET['revoke_certificate'])) {
                 try {
                     $this -> revokeCertificate($_GET['revoke_certificate'], $currentLesson -> lesson['id']);
-                    eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_certificates&message='.urlencode(_CERTIFICATEREVOKED).'&message_type=success');
+                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=module&op=module_certificates&message='.urlencode(_CERTIFICATEREVOKED).'&message_type=success');
                 } catch (Exception $e) {
                     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-                    $message      = _PROBLEMREVOKINGCERTIFICATE.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message      = _PROBLEMREVOKINGCERTIFICATE.': '.$e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                     $message_type = 'failure';
                 }
 			}
 
-            $certificate_data = eF_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
+            $certificate_data = sC_getTableData("module_certificates", "*", "lessons_ID = ".$currentLesson -> lesson['id']);
 			if (sizeof($certificate_data) > 0) {
 				$smarty -> assign("T_SHOW_AUTO", 1);
 			}
@@ -364,7 +364,7 @@ class module_certificates extends MagesterModule
                 } else {
                     $certificate_data[0]['auto_certificate'] = 1;
                 }
-                eF_updateTableData("module_certificates", array('auto_certificate' => $certificate_data[0]['auto_certificate']), "lessons_ID = ".$currentLesson -> lesson['id']);
+                sC_updateTableData("module_certificates", array('auto_certificate' => $certificate_data[0]['auto_certificate']), "lessons_ID = ".$currentLesson -> lesson['id']);
 			}
 	//pr($certificate_data);
 			$smarty -> assign("T_CERTIFICATE_DATA", $certificate_data);
@@ -378,26 +378,26 @@ class module_certificates extends MagesterModule
                     }
                 }
 
-                isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-                if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                     $sort = $_GET['sort'];
                     isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                 } else {
                     $sort = 'login';
                 }
-                $users = eF_multiSort($users, $sort, $order);
+                $users = sC_multiSort($users, $sort, $order);
                 $smarty -> assign("T_USERS_SIZE", sizeof($users));
                 if (isset($_GET['filter'])) {
-                    $users = eF_filterData($users, $_GET['filter']);
+                    $users = sC_filterData($users, $_GET['filter']);
                 }
-                if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                     $users = array_slice($users, $offset, $limit);
                 }
 
                 foreach ($users as $key => $value) {
-                    $data = ef_getTableData("module_certificates_users", "*", "users_LOGIN='$key' and lessons_ID=".$currentLesson -> lesson['id']);
+                    $data = sC_getTableData("module_certificates_users", "*", "users_LOGIN='$key' and lessons_ID=".$currentLesson -> lesson['id']);
                     if (sizeof($data) > 0) {
                         $users[$key]['issued_certificate'] = 1;
                     } else {
@@ -409,14 +409,14 @@ class module_certificates extends MagesterModule
 
             return true;
         } else {
-			$certificate_data 	= eF_getTableData("module_certificates", "auto_certificate", "lessons_ID = ".$currentLesson -> lesson['id']);
-			$completed 			= eF_getTableData("users_to_lessons","completed","lessons_ID=".$currentLesson -> lesson['id']." and users_LOGIN='".$currentUser -> user['login']."'");
+			$certificate_data 	= sC_getTableData("module_certificates", "auto_certificate", "lessons_ID = ".$currentLesson -> lesson['id']);
+			$completed 			= sC_getTableData("users_to_lessons","completed","lessons_ID=".$currentLesson -> lesson['id']." and users_LOGIN='".$currentUser -> user['login']."'");
 			//pr($completed);
 			if (isset($certificate_data[0]["auto_certificate"]) && $certificate_data[0]["auto_certificate"] == 1 && $completed[0]['completed'] == 1) {
 				$certificate = $this -> prepareCertificate($currentUser -> user['login'], $currentLesson);
 				$this -> issueCertificate($currentUser -> user['login'], $certificate, $currentLesson -> lesson['id']);
 			}
-            $data = ef_getTableData("module_certificates_users", "*", "users_LOGIN='".$currentUser -> user['login']."' and lessons_ID=".$currentLesson -> lesson['id']);
+            $data = sC_getTableData("module_certificates_users", "*", "users_LOGIN='".$currentUser -> user['login']."' and lessons_ID=".$currentLesson -> lesson['id']);
             if (sizeof($data) > 0) {
                 $smarty -> assign("T_USERLESSON_CERTIFICATE_EXISTS", "1");
                 $smarty -> assign("T_CERTIFICATES_USERLOGIN", $currentUser -> user['login']);
@@ -429,14 +429,14 @@ class module_certificates extends MagesterModule
 	{
 		$currentLesson = $this -> getCurrentLesson();
         //$currentUser   = $this -> getCurrentUser();
-			$certificate_data 	= eF_getTableData("module_certificates", "auto_certificate", "lessons_ID = ".$lessonId);
-			$completed 			= eF_getTableData("users_to_lessons","completed","lessons_ID=".$lessonId." and users_LOGIN='".$login."'");
+			$certificate_data 	= sC_getTableData("module_certificates", "auto_certificate", "lessons_ID = ".$lessonId);
+			$completed 			= sC_getTableData("users_to_lessons","completed","lessons_ID=".$lessonId." and users_LOGIN='".$login."'");
 			//pr($completed);
 			if (isset($certificate_data[0]["auto_certificate"]) && $certificate_data[0]["auto_certificate"] == 1 && $completed[0]['completed'] == 1) {
 				$certificate = $this -> prepareCertificate($login, $currentLesson);
 				$this -> issueCertificate($login, $certificate, $lessonId);
 			}
-            $data = ef_getTableData("module_certificates_users", "*", "users_LOGIN='".$login."' and lessons_ID=".$lessonId);
+            $data = sC_getTableData("module_certificates_users", "*", "users_LOGIN='".$login."' and lessons_ID=".$lessonId);
 
             return true;
 	}

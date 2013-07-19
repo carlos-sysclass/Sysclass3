@@ -59,10 +59,10 @@ function askUsers()
   // - supervisors: all supervised (in Enterprise)
   // - professors: students
   if (isset($_GET['supervisors'])) {
-   $users = eF_getTableData("users u, module_hcd_employee_works_at_branch wb", "distinct u.login,u.name,u.surname,u.user_type,u.user_types_ID", "u.login=wb.users_LOGIN and wb.supervisor=1 and u.active = 1 and (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
+   $users = sC_getTableData("users u, module_hcd_employee_works_at_branch wb", "distinct u.login,u.name,u.surname,u.user_type,u.user_types_ID", "u.login=wb.users_LOGIN and wb.supervisor=1 and u.active = 1 and (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
   } elseif (!isset($_GET['messaging'])) {
    if ($_SESSION['s_type'] == "administrator") {
-    $users = eF_getTableData("users", "login,name,surname,user_type,user_types_ID", "active = 1 and (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
+    $users = sC_getTableData("users", "login,name,surname,user_type,user_types_ID", "active = 1 and (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
    } else {
     // Get students of professor
     $user = MagesterUserFactory :: factory($_SESSION['s_login']);
@@ -82,7 +82,7 @@ function askUsers()
     $logins[] = $_SESSION['s_login'];
     //pr($logins);
     $students_list = "'".implode("','", $logins)."'";
-    $users = eF_getTableData("users", "login,name,surname,user_type,user_types_ID", "login IN ($students_list) AND (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
+    $users = sC_getTableData("users", "login,name,surname,user_type,user_types_ID", "login IN ($students_list) AND (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%' OR user_type like '$preffix%')", "login");
    }
   // Return active users for messaging:
   // - admins: all
@@ -90,7 +90,7 @@ function askUsers()
   // - users: other users with common group, lesson, course (or branch in Enterprise)
   } else {
    if ($_SESSION['s_type'] == "administrator") {
-    $users = eF_getTableData("users", "login,name,surname,user_type,user_types_ID", "login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%'", "login");
+    $users = sC_getTableData("users", "login,name,surname,user_type,user_types_ID", "login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%'", "login");
     $users[] = array('login' => "[*]",'name' => _ALLUSERS, 'surname' => _ALLUSERS);
    } else {
     $currentUser = MagesterUserFactory::factory($_SESSION['s_login']);
@@ -100,13 +100,13 @@ function askUsers()
      $myGroupsIds = array_keys($currentUser -> getGroups());
 //					echo "Groups<BR><BR><BR>";pr($myGroupsIds);
      if (!empty($myGroupsIds)) {
-      $result = eF_getTableDataFlat("users JOIN users_to_groups", "distinct users_LOGIN", "users.login = users_to_groups.users_LOGIN AND groups_ID IN ('" . implode("','", $myGroupsIds) ."')");
+      $result = sC_getTableDataFlat("users JOIN users_to_groups", "distinct users_LOGIN", "users.login = users_to_groups.users_LOGIN AND groups_ID IN ('" . implode("','", $myGroupsIds) ."')");
       $logins = $result['users_LOGIN'];
      }
      $myLessonsIds = array_keys($currentUser -> getLessons());
 //					pr($result);echo "Lessons<BR><BR><BR>";pr($myLessonsIds);
      if (!empty($myLessonsIds)) {
-      $result = eF_getTableDataFlat("users JOIN users_to_lessons", "distinct users_LOGIN", "users.archive=0 and users_to_lessons.archive=0 and users.login = users_to_lessons.users_LOGIN AND lessons_ID IN ('" . implode("','", $myLessonsIds) ."')");
+      $result = sC_getTableDataFlat("users JOIN users_to_lessons", "distinct users_LOGIN", "users.archive=0 and users_to_lessons.archive=0 and users.login = users_to_lessons.users_LOGIN AND lessons_ID IN ('" . implode("','", $myLessonsIds) ."')");
 //						pr($result);
       foreach ($result['users_LOGIN'] as $login) {
        if (!in_array($login, $logins)) {
@@ -114,11 +114,11 @@ function askUsers()
        }
       }
      }
-     $myCoursesIds = eF_getTableDataFlat("users_to_courses", "courses_ID", "users_LOGIN = '". $currentUser -> user['login']."'");
+     $myCoursesIds = sC_getTableDataFlat("users_to_courses", "courses_ID", "users_LOGIN = '". $currentUser -> user['login']."'");
      $myCoursesIds = $myCoursesIds['courses_ID'];
 //					echo "Courses<BR><BR><BR>";pr($myCoursesIds);
      if (!empty($myCoursesIds)) {
-      $result = eF_getTableDataFlat("users JOIN users_to_courses", "distinct users_LOGIN", "users.login = users_to_courses.users_LOGIN AND courses_ID IN ('" . implode("','", $myCoursesIds) ."')");
+      $result = sC_getTableDataFlat("users JOIN users_to_courses", "distinct users_LOGIN", "users.login = users_to_courses.users_LOGIN AND courses_ID IN ('" . implode("','", $myCoursesIds) ."')");
 //						pr($result);
       foreach ($result['users_LOGIN'] as $login) {
        if (!in_array($login, $logins)) {
@@ -128,9 +128,9 @@ function askUsers()
      }
 //					pr($logins);
      $related_users_list = "'".implode("','", $logins)."'";
-     $users = eF_getTableData("users", "distinct login,name,surname,user_type,user_types_ID", "(login IN (". $related_users_list . ") OR user_type <> 'student') AND (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%')", "login");
+     $users = sC_getTableData("users", "distinct login,name,surname,user_type,user_types_ID", "(login IN (". $related_users_list . ") OR user_type <> 'student') AND (login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%')", "login");
     } else {
-     $users = eF_getTableData("users", "distinct login,name,surname,user_type,user_types_ID", "login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%'", "login");
+     $users = sC_getTableData("users", "distinct login,name,surname,user_type,user_types_ID", "login like '$preffix%' OR name like '$preffix%' OR surname like '$preffix%'", "login");
     }
    }
    if ($_SESSION['s_type'] == "professor") {
@@ -176,22 +176,22 @@ function askTests()
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
  if ($_SESSION['s_type'] == "administrator") {
-  $tests_info = eF_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND t.content_ID=c.id AND c.ctg_type='tests' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
-  $scorm_tests_info = eF_getTableDataFlat("content c, lessons l", "c.id, c.name as test_name, l.name as lesson_name, l.originating_course ","c.active=1 and c.lessons_ID = l.id AND c.name like '%$preffix%' and c.ctg_type = 'scorm_test'", "c.name");
+  $tests_info = sC_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND t.content_ID=c.id AND c.ctg_type='tests' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
+  $scorm_tests_info = sC_getTableDataFlat("content c, lessons l", "c.id, c.name as test_name, l.name as lesson_name, l.originating_course ","c.active=1 and c.lessons_ID = l.id AND c.name like '%$preffix%' and c.ctg_type = 'scorm_test'", "c.name");
  } else {
-  $tests_info = eF_getTableDataFlat("tests t,   users_to_lessons ul, lessons l", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND t.active=1 and t.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND t.name like '%$preffix%'", "t.name");
-  $scorm_tests_info = eF_getTableDataFlat("content c, users_to_lessons ul, lessons l", "c.id, c.name as test_name, l.name as lesson_name, l.originating_course ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND c.active=1 and c.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND c.name like '%$preffix%' and c.ctg_type = 'scorm_test'", "c.name");
+  $tests_info = sC_getTableDataFlat("tests t,   users_to_lessons ul, lessons l", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND t.active=1 and t.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND t.name like '%$preffix%'", "t.name");
+  $scorm_tests_info = sC_getTableDataFlat("content c, users_to_lessons ul, lessons l", "c.id, c.name as test_name, l.name as lesson_name, l.originating_course ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND c.active=1 and c.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND c.name like '%$preffix%' and c.ctg_type = 'scorm_test'", "c.name");
   $lessons = $currentUser -> getLessons(false,'professor'); //must return tests for lessons that he has a professor role
   $lessons = array_keys($lessons);
   if (!empty($lessons)) {
    $lessonsStr = implode(',', $lessons);
-   $legalTests = eF_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type!='feedback' AND t.lessons_ID IN ($lessonsStr)");
+   $legalTests = sC_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type!='feedback' AND t.lessons_ID IN ($lessonsStr)");
    $legalTestsId = $legalTests['id'];
-   $legalScormTests = eF_getTableDataFlat("content","id","lessons_ID IN ($lessonsStr)");
+   $legalScormTests = sC_getTableDataFlat("content","id","lessons_ID IN ($lessonsStr)");
    $legalScormTestsId = $legalScormTests['id'];
   }
  }
- $result = eF_getTableDataFlat("courses", "id, name");
+ $result = sC_getTableDataFlat("courses", "id, name");
  if (!empty($result)) {
   $courseNames = array_combine($result['id'], $result['name']);
  } else {
@@ -230,20 +230,20 @@ function askFeedback()
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
  if ($_SESSION['s_type'] == "administrator") {
-  $tests_info = eF_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND  t.content_ID=c.id AND c.ctg_type='feedback' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
-  $legalTests = eF_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type='feedback'");
+  $tests_info = sC_getTableDataFlat("tests t,   lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ","c.lessons_ID=l.id AND  t.content_ID=c.id AND c.ctg_type='feedback' AND t.active=1 and t.lessons_ID = l.id AND t.name like '%$preffix%'", "t.name");
+  $legalTests = sC_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type='feedback'");
   $legalTestsId = $legalTests['id'];
  } else {
-  $tests_info = eF_getTableDataFlat("tests t,   users_to_lessons ul, lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ", "c.lessons_ID=l.id AND t.content_ID=c.id AND c.ctg_type='feedback' AND ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND t.active=1 and t.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND t.name like '%$preffix%'", "t.name");
+  $tests_info = sC_getTableDataFlat("tests t,   users_to_lessons ul, lessons l, content c", "t.id, t.name as test_name, l.name as lesson_name, l.originating_course ", "c.lessons_ID=l.id AND t.content_ID=c.id AND c.ctg_type='feedback' AND ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND t.active=1 and t.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND t.name like '%$preffix%'", "t.name");
   $lessons = $currentUser -> getLessons(false,'professor'); //must return tests for lessons that he has a professor role
   $lessons = array_keys($lessons);
   if (!empty($lessons)) {
    $lessonsStr = implode(',', $lessons);
-   $legalTests = eF_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type='feedback' AND t.lessons_ID IN ($lessonsStr)");
+   $legalTests = sC_getTableDataFlat("tests t, content c","t.id","t.content_ID=c.id AND c.ctg_type='feedback' AND t.lessons_ID IN ($lessonsStr)");
    $legalTestsId = $legalTests['id'];
   }
  }
- $result = eF_getTableDataFlat("courses", "id, name");
+ $result = sC_getTableDataFlat("courses", "id, name");
  if (!empty($result)) {
   $courseNames = array_combine($result['id'], $result['name']);
  } else {
@@ -275,8 +275,8 @@ function askSuggestions()
  $search_results_forum = array();
  $search_results_pmsgs = array();
  $results = MagesterSearch :: searchFull('');
- //$res     = eF_getTableData("users_to_lessons", "lessons_ID", "users_LOGIN='".$_SESSION['s_login']."'");
- $res = eF_getTableData("users_to_lessons,lessons", "lessons_ID", "users_to_lessons.archive=0 and lessons.archive=0 and users_LOGIN='".$_SESSION['s_login']."' and lessons.active=1 and lessons.id=users_to_lessons.lessons_ID"); // na min emfanizontai ta deactivated lessons
+ //$res     = sC_getTableData("users_to_lessons", "lessons_ID", "users_LOGIN='".$_SESSION['s_login']."'");
+ $res = sC_getTableData("users_to_lessons,lessons", "lessons_ID", "users_to_lessons.archive=0 and lessons.archive=0 and users_LOGIN='".$_SESSION['s_login']."' and lessons.active=1 and lessons.id=users_to_lessons.lessons_ID"); // na min emfanizontai ta deactivated lessons
  for ($i = 0; $i < sizeof($res); $i++) {
   $lessons_have[] = $res[$i]['lessons_ID'];
  }
@@ -284,32 +284,32 @@ function askSuggestions()
  if ($results) {
   for ($i = 0; $i < sizeof($results); $i++) {
    if ($results[$i]['table_name'] == "comments") {
-    $res1 = eF_getTableData("content,comments", "content.name AS name,content.id AS id,content.lessons_ID AS lessons_ID", "comments.content_ID=content.id AND comments.id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData("content,comments", "content.name AS name,content.id AS id,content.lessons_ID AS lessons_ID", "comments.content_ID=content.id AND comments.id=".$results[$i]['foreign_ID']);
     $type_str = _COMMENTS;
    } elseif ($results[$i]['table_name'] == "news") {
-    $res1 = eF_getTableData($results[$i]['table_name'], "id,title AS name,lessons_ID", "id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData($results[$i]['table_name'], "id,title AS name,lessons_ID", "id=".$results[$i]['foreign_ID']);
     $type_str = _ANNOUNCEMENTS;
    } elseif ($results[$i]['table_name'] == "content") {
-    $res1 = eF_getTableData($results[$i]['table_name'], "id,name,lessons_ID,ctg_type", "id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData($results[$i]['table_name'], "id,name,lessons_ID,ctg_type", "id=".$results[$i]['foreign_ID']);
     $type_str = _LESSONCONTENT;
    } elseif ($results[$i]['table_name'] == "f_messages") {
-    $res1 = eF_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_messages.id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_messages.id=".$results[$i]['foreign_ID']);
     $type_str = _MESSAGESATFORUM;
    } elseif ($results[$i]['table_name'] == "f_personal_messages") {
-    $res1 = eF_getTableData("f_personal_messages, f_folders", "f_personal_messages.id, f_personal_messages.title, f_personal_messages.users_LOGIN, f_folders.name, f_folders.id as folder_id", "f_personal_messages.f_folders_ID = f_folders.id and f_personal_messages.id=".$results[$i]['foreign_ID']);
+    $res1 = sC_getTableData("f_personal_messages, f_folders", "f_personal_messages.id, f_personal_messages.title, f_personal_messages.users_LOGIN, f_folders.name, f_folders.id as folder_id", "f_personal_messages.f_folders_ID = f_folders.id and f_personal_messages.id=".$results[$i]['foreign_ID']);
     $type_str = _MESSAGESATFORUM;
    } elseif ($results[$i]['table_name'] == "lessons") {
-    $res1 = eF_getTableData($results[$i]['table_name'], "id as lessons_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
+    $res1 = sC_getTableData($results[$i]['table_name'], "id as lessons_ID,name", "id=".$results[$i]['foreign_ID']." and active=1");
     $type_str = _LESSON;
    } elseif ($results[$i]['table_name'] == "f_topics") {
-    $res1 = $res1 = eF_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_topics.id=".$results[$i]['foreign_ID']);
+    $res1 = $res1 = sC_getTableData("f_messages, f_topics, f_forums", "f_forums.id as category_id, f_forums.lessons_ID, f_messages.id, f_messages.title, f_messages.f_topics_ID, f_topics.title as topic_title", "f_topics_ID = f_topics.id and f_forums.id = f_forums_ID and f_topics.id=".$results[$i]['foreign_ID']);
     $type_str = _MESSAGESATFORUM;
    }
    //print_r($res1);
    if (sizeof($res1) > 0) {
     $results[$i]['position'] == "title" ? $position_str = _TITLE : $position_str = _TEXT;
     if (isset($res1[0]['lessons_ID']) && in_array($res1[0]['lessons_ID'], $lessons_have)) {
-     $lesson = eF_getTableData("lessons", "name", "id=".$res1[0]['lessons_ID']);
+     $lesson = sC_getTableData("lessons", "name", "id=".$res1[0]['lessons_ID']);
      if ($results[$i]['table_name'] != 'f_messages' && $results[$i]['table_name'] != 'f_topics') {
       if ($results[$i]['table_name'] == "lessons") {
        $search_results_data[] = array('id' => $res1[0]['id'],
@@ -320,8 +320,8 @@ function askSuggestions()
                                                                'score' => sprintf("%.0f %%", $results[$i]['score'] * 100),
                                                                'type' => $type_str,
                                                                'position' => $position_str);
-      } elseif ($results[$i]['table_name'] != "lessons" /*&& eF_isDoneContent($res1[0]['id'])*/) {
-       //echo $res1[0]['id']."->".eF_isDoneContent($res1[0]['id']);
+      } elseif ($results[$i]['table_name'] != "lessons" /*&& sC_isDoneContent($res1[0]['id'])*/) {
+       //echo $res1[0]['id']."->".sC_isDoneContent($res1[0]['id']);
        $search_results_data[] = array('id' => $res1[0]['id'],
                                                                'name' => $res1[0]['name'],
                                                                'table_name' => $results[$i]['table_name'],
@@ -419,9 +419,9 @@ function askProjects()
  $preffix = $_POST['preffix'];
  $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
  if ($_SESSION['s_type'] == "administrator") {
-  $projects_info = eF_getTableDataFlat("projects p, lessons l", "p.id, p.title as project_title, l.name as lesson_name ","p.lessons_ID = l.id AND p.title like '%$preffix%'", "p.title");
+  $projects_info = sC_getTableDataFlat("projects p, lessons l", "p.id, p.title as project_title, l.name as lesson_name ","p.lessons_ID = l.id AND p.title like '%$preffix%'", "p.title");
  } else {
-  $projects_info = eF_getTableDataFlat("projects p, users_to_lessons ul, lessons l", "p.id, p.title as project_title, l.name as lesson_name ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND p.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND p.title like '%$preffix%'", "p.title");
+  $projects_info = sC_getTableDataFlat("projects p, users_to_lessons ul, lessons l", "p.id, p.title as project_title, l.name as lesson_name ", "ul.archive=0 and (ul.user_type = 'professor' OR ul.user_type =".$currentUser->user['user_types_ID'].") AND p.lessons_ID = l.id AND ul.users_LOGIN='".$_SESSION['s_login']."' and ul.lessons_ID=l.id AND p.title like '%$preffix%'", "p.title");
  }
  $info_array = array();
  for ($i = 0 ; $i < sizeof($projects_info['project_title']) ; $i ++) {
@@ -438,11 +438,11 @@ function askProjects()
 }
 function askLessons()
 {
- eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
+ sC_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
  if ($_SESSION['s_type'] == "administrator") {
-  $result = eF_getTableData("lessons", "id,name,directions_ID","archive=0 and instance_source = 0 and active=1 AND name like '%$preffix%'", "name");
+  $result = sC_getTableData("lessons", "id,name,directions_ID","archive=0 and instance_source = 0 and active=1 AND name like '%$preffix%'", "name");
  } else {
-  $result = eF_getTableData("users_to_lessons ul, lessons l", "l.id, l.name,l.directions_ID", "ul.archive=0 and l.archive=0 and l.instance_source = 0 and ul.users_LOGIN='".$_SESSION['s_login']."' and ul.user_type = 'professor' and ul.lessons_ID=l.id AND l.name like '%$preffix%'", "l.name");
+  $result = sC_getTableData("users_to_lessons ul, lessons l", "l.id, l.name,l.directions_ID", "ul.archive=0 and l.archive=0 and l.instance_source = 0 and ul.users_LOGIN='".$_SESSION['s_login']."' and ul.user_type = 'professor' and ul.lessons_ID=l.id AND l.name like '%$preffix%'", "l.name");
  }
  $lessons = array();
  $directionsTree = new MagesterDirectionsTree();
@@ -454,7 +454,7 @@ function askLessons()
           'name' => $result[$i]['name'],
           'path_string' => $pathString);
  }
- $lessons = array_values(eF_multisort($lessons, 'path_string', 'asc')); //Sort results based on path string
+ $lessons = array_values(sC_multisort($lessons, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
  for ($k = 0; $k < sizeof($lessons); $k++) {
   $str = $str.'<li id='.$lessons[$k]['id'].'>'.$lessons[$k]['path_string'].'</li>';
@@ -464,7 +464,7 @@ function askLessons()
 }
 function askGroups()
 {
- eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
+ sC_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
  if ($_SESSION['s_type'] == "administrator") {
   $result = array_values(MagesterGroup::getGroups());
  } else {
@@ -483,7 +483,7 @@ function askGroups()
           'name' => $result[$i]['name'],
           'path_string' => $hiname);
  }
- $groups = array_values(eF_multisort($groups, 'path_string', 'asc')); //Sort results based on path string
+ $groups = array_values(sC_multisort($groups, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
  for ($k = 0; $k < sizeof($groups); $k++) {
   $str = $str.'<li id='.$groups[$k]['id'].'>'.$groups[$k]['path_string'].'</li>';
@@ -493,14 +493,14 @@ function askGroups()
 }
 function askCourses()
 {
- eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
+ sC_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
  if ($_SESSION['s_type'] == "administrator") {
-  //$result = eF_getTableData("courses", "id, name, directions_ID","active=1 AND name like '%$preffix%'");
+  //$result = sC_getTableData("courses", "id, name, directions_ID","active=1 AND name like '%$preffix%'");
   $constraints = array("return_objects" => false, 'archive' => false, 'active' => true, 'filter' => $preffix);
   $result = MagesterCourse :: getAllCourses($constraints);
   //$result 	 = MagesterCourse :: convertCourseObjectsToArrays($courses);
  } else {
-  $result = eF_getTableData("courses c, users_to_courses uc", "c.id, c.name, c.directions_ID", "uc.user_type = 'professor' AND c.active=1 AND c.id = uc.courses_ID AND uc.users_LOGIN='".$_SESSION['s_login']."' AND c.name like '%$preffix%'");
+  $result = sC_getTableData("courses c, users_to_courses uc", "c.id, c.name, c.directions_ID", "uc.user_type = 'professor' AND c.active=1 AND c.id = uc.courses_ID AND uc.users_LOGIN='".$_SESSION['s_login']."' AND c.name like '%$preffix%'");
  }
  $courses = array();
  $directionsTree = new MagesterDirectionsTree();
@@ -513,7 +513,7 @@ function askCourses()
           'name' => $value['name'],
           'path_string' => $pathString);
  }
- $courses = array_values(eF_multisort($courses, 'path_string', 'asc')); //Sort results based on path string
+ $courses = array_values(sC_multisort($courses, 'path_string', 'asc')); //Sort results based on path string
  $str = '<ul>';
  for ($k = 0; $k < sizeof($courses); $k++) {
   $str = $str.'<li id='.$courses[$k]['id'].'>'.$courses[$k]['path_string'].'</li>';
@@ -528,7 +528,7 @@ function askChat()
   $chatrooms_ID = $_GET['chatrooms_ID'];
  } elseif (isset($_GET['bring_chatrooms'])) {
   // The chatrooms are all the ones with more than zero users and the ones you have created
-  $rooms = eF_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
+  $rooms = sC_getTableData("chatrooms LEFT OUTER JOIN users_to_chatrooms ON users_to_chatrooms.chatrooms_ID = chatrooms.id", "chatrooms.id, chatrooms.name, count(users_to_chatrooms.users_LOGIN) as users, chatrooms.users_LOGIN", "chatrooms.active=1 group by id");
   //pr($rooms);
   $data = "";
   foreach ($rooms as $room) {
@@ -548,28 +548,28 @@ function askChat()
  }
  // Delete a user from a chat room - this happens on room deactivations
  if (isset($_GET['delete_user'])) {
-  eF_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$_GET['chatrooms_ID']."' AND users_LOGIN = '".$_GET['delete_user']."'");
+  sC_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$_GET['chatrooms_ID']."' AND users_LOGIN = '".$_GET['delete_user']."'");
   exit;
  }
  // Delete a chat room
  if (isset($_GET['delete_room'])) {
   // Security measures?
   // The id check is inserted for security reasons - only if this session user is the owner will the channel be deleted
-  if (eF_deleteTableData("chatrooms", "users_LOGIN = '".$_SESSION['s_login']."' AND id = '".$_GET['chatrooms_ID']."'")) {
-   eF_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$_GET['chatrooms_ID']."'");
+  if (sC_deleteTableData("chatrooms", "users_LOGIN = '".$_SESSION['s_login']."' AND id = '".$_GET['chatrooms_ID']."'")) {
+   sC_deleteTableData("users_to_chatrooms", "chatrooms_ID = '".$_GET['chatrooms_ID']."'");
    $_SESSION['last_chat_msg_id'] = 0;
   }
   exit;
  }
  // Insert into a new chatroom
  if (isset($_GET['add_user']) && isset($_GET['add_user_type'])) {
-  eF_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$_GET['add_user']."'");
+  sC_deleteTableData("users_to_chatrooms", "users_LOGIN = '".$_GET['add_user']."'");
   if ($_GET['chatrooms_ID'] != 0) {
    $userRecord = array("users_LOGIN" => $_GET['add_user'],
                          "chatrooms_ID" => $_GET['chatrooms_ID'] ,
                          "users_USER_TYPE" => $_GET['add_user_type'],
                          "timestamp" => time());
-   eF_insertTableData("users_to_chatrooms", $userRecord);
+   sC_insertTableData("users_to_chatrooms", $userRecord);
   }
   // Set last_id to zero to get correct last messages
   $_SESSION['last_chat_msg_id'] = 0;
@@ -581,9 +581,9 @@ function askChat()
   $data = "";
   if ($_GET['chatrooms_ID'] == 0) {
    // @performance: 2DB
-   //$all_users = eF_getTableDataFlat("users_online", "users_LOGIN");
-   $all_users = eF_getTableDataFlat("user_times", "users_LOGIN", "session_expired=0");
-   $other_room_users = eF_getTableDataFlat("users_to_chatrooms", "users_LOGIN", "");
+   //$all_users = sC_getTableDataFlat("users_online", "users_LOGIN");
+   $all_users = sC_getTableDataFlat("user_times", "users_LOGIN", "session_expired=0");
+   $other_room_users = sC_getTableDataFlat("users_to_chatrooms", "users_LOGIN", "");
    if (empty($other_room_users)) {
     $magester_general_users = $all_users['users_LOGIN'];
    } else {
@@ -594,7 +594,7 @@ function askChat()
    }
   } else {
    // @performance: 1DB
-   $users = eF_getTableData("users_to_chatrooms", "users_LOGIN", "chatrooms_ID = '".$_GET['chatrooms_ID']. "'");
+   $users = sC_getTableData("users_to_chatrooms", "users_LOGIN", "chatrooms_ID = '".$_GET['chatrooms_ID']. "'");
    foreach ($users as $user) {
     $data .= $user['users_LOGIN'] . "<br>";
    }
@@ -608,7 +608,7 @@ function askChat()
   if ($_POST['chat_message']!='') {
    // Check existence of room
    if ($chatrooms_ID != 0) { // the SysClass general room always exists
-    $roomExists = eF_getTableData("chatrooms", "active", "id = ". $_GET['chatrooms_ID']);
+    $roomExists = sC_getTableData("chatrooms", "active", "id = ". $_GET['chatrooms_ID']);
     if (empty($roomExists)) {
      echo _CHATROOMDOESNOTEXIST_ERROR . $special_splitter; // notify user that room was deleted
      $_SESSION['last_chat_msg_id'] = 0;
@@ -625,7 +625,7 @@ function askChat()
                                'timestamp' => time(),
                                'chatrooms_ID' => $chatrooms_ID);
    try {
-    eF_insertTableData("chatmessages", $fields_insert); //Insert the message into the database
+    sC_insertTableData("chatmessages", $fields_insert); //Insert the message into the database
    } catch (Exception $e) {
     echo $e->getTraceAsString();
    }
@@ -649,14 +649,14 @@ function askChat()
   $last_id = 0;
  }
  if (!isset($_POST['chat_message'])) {
-  $messages = eF_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC,id DESC LIMIT $messages_limit"); //Retrieve the recent messages
+  $messages = sC_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC,id DESC LIMIT $messages_limit"); //Retrieve the recent messages
   if (sizeof($messages)>0) {
    $new_id = $messages[0]['id'];
   } else {
    $new_id = $last_id;
   }
  } else {
-  $messages = eF_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC, id DESC"); //Retrieve the most recent message
+  $messages = sC_getTableData("chatmessages", "users_LOGIN, users_USER_TYPE, timestamp, content, id", "chatrooms_ID = $chatrooms_ID AND id > $last_id $get_last_thirty_minutes", "timestamp DESC, id DESC"); //Retrieve the most recent message
   if (sizeof($messages) > 0) {
    $new_id = $messages[0]['id'];
   } else {
@@ -700,7 +700,7 @@ function askChat()
   if ($value['content'][0] != '#' || !preg_match("/^#for_user-(\S*):(\d+)#/", $value['content'], $matches) || ($matches[1] == $_SESSION['s_login'] && $value['content'] = mb_substr($value['content'], mb_strlen($matches[0])))) { //Explanation for this line: The first part, $value['content'][0] != '#' , is a fast check for the special character #. if it does not exist, proceed and display message. Otherwise, check if the character is followed by a specific sequence, of the form: #for_user-<login>#. If so, then display only the message to the current user (where $_SESSION['s_login'] == <login>) and finally delete the special sequence from the beginning of the message (the mb_substr part). otherwise (if it starts with # but is not a special message), display the message.
    // Create links
    // Do it here for each icon
-   $value['content'] = eF_convertTextToSmilies($value['content']);
+   $value['content'] = sC_convertTextToSmilies($value['content']);
    $value['content'] = eregi_replace("www[.]([^[:space:]]*)([[:alnum:]#?/&=])","http://www.\\1\\2", $value['content']);
    $value['content'] = eregi_replace("([[:alnum:]]+)://([^[:space:]]*)([[:alnum:]#?/&=])","<a href=\"\\1://\\2\\3\" target=\"_blank\" > \\1://\\2\\3 </a> ", $value['content']);
    $data .= $value['users_LOGIN'].$special_splitter.$time_str.$special_splitter.$span_style.$special_splitter.$value['content'].$special_splitter; //Display the message, along with any notification message
@@ -708,7 +708,7 @@ function askChat()
  }
  header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
  //header("Content-type: text/html;charset="._CHARSET);
- //$data = eF_convertTextToSmilies($data);
+ //$data = sC_convertTextToSmilies($data);
  //$data = iconv("UTF-8",_CHARSET,$data);
  //echo $data.$special_splitter."new_limit: ".$new_limit."<br>all messages: ".$all_messages."<br>sent: ".$sent."<br>new_limit_flag: ".$new_limit_flag."-|*special_splitter*|-".$rooms_str."-|*special_splitter*|-".$new_limit."-|*special_splitter*|-".$sent;
  echo $data;
@@ -716,11 +716,11 @@ function askChat()
 function askBranches()
 {
  try {
-  eF_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
+  sC_checkParameter($_POST['preffix'], 'text') ? $preffix = $_POST['preffix'] : $preffix = '%';
   if ($_SESSION['s_type'] == "administrator") {
-   $result = eF_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.branch_ID, module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees, branch1.branch_ID as father_ID, branch1.name as father, supervisor","");
+   $result = sC_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.branch_ID, module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees, branch1.branch_ID as father_ID, branch1.name as father, supervisor","");
   } else {
-   $result = eF_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID WHERE module_hcd_branch.branch_ID IN (".$_SESSION['supervises_branches'].") GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees,  module_hcd_branch.branch_ID, branch1.branch_ID as father_ID, branch1.name as father","");
+   $result = sC_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID WHERE module_hcd_branch.branch_ID IN (".$_SESSION['supervises_branches'].") GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees,  module_hcd_branch.branch_ID, branch1.branch_ID as father_ID, branch1.name as father","");
   }
   $branches = array();
   foreach ($result as $value) {
@@ -730,7 +730,7 @@ function askBranches()
   foreach ($tree -> toPathString() as $key => $branch) {
    if (in_array($key, array_keys($branches))) {
     if ($preffix == '%' || stripos($branch, $preffix) !== false) {
-     $hiname = highlightSearch(eF_truncatePath($branch, 80, 6, "...", "&nbsp;&rarr;&nbsp;"), $preffix);
+     $hiname = highlightSearch(sC_truncatePath($branch, 80, 6, "...", "&nbsp;&rarr;&nbsp;"), $preffix);
      $branches[$key] = array('branch_ID' => $key,
             'name' => $branch,
             'path_string' => $hiname);
@@ -750,7 +750,7 @@ function askBranches()
 function askInformation()
 {
  try {
-  if (isset($_GET['lessons_ID']) && eF_checkParameter($_GET['lessons_ID'], 'id')) {
+  if (isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id')) {
    $lesson = new MagesterLesson($_GET['lessons_ID']);
    $lessonInformation = $lesson -> getInformation();
    $languages = MagesterSystem::getLanguages(true);
@@ -801,7 +801,7 @@ function askInformation()
    } else {
     echo _NODATAFOUND;
    }
-  } if (isset($_GET['courses_ID']) && eF_checkParameter($_GET['courses_ID'], 'id')) {
+  } if (isset($_GET['courses_ID']) && sC_checkParameter($_GET['courses_ID'], 'id')) {
    $course = new MagesterCourse($_GET['courses_ID']);
    $courseInformation = $course -> getInformation();
    $languages = MagesterSystem::getLanguages(true);

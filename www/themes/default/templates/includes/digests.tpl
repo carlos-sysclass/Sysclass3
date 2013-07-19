@@ -66,7 +66,7 @@
                         <div id="event_recipients_div" {if !isset($T_EVENT_FORM)}style="display:none"{/if}>
        <table class="formElements">
                        <tr><td class = "fixedLabelCell" >{$T_DIGESTS_FORM.event_recipients.label}:&nbsp;</td>
-                           <td style="white-space:nowrap;">{$T_DIGESTS_FORM.event_recipients.html}</td><td id="explicitlySelectedHelp" {if $T_SHOW_EXPLICITLY_HELP != 1}style="display:none"{/if}><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, 'explicitly_selected_info', event)"><div id = 'explicitly_selected_info' onclick = "eF_js_showHideDiv(this, 'explicitly_selected_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;height:100px;position:absolute;display:none">{$smarty.const._EXPLICITLYSELECTEDINFO}</div></td></tr>
+                           <td style="white-space:nowrap;">{$T_DIGESTS_FORM.event_recipients.html}</td><td id="explicitlySelectedHelp" {if $T_SHOW_EXPLICITLY_HELP != 1}style="display:none"{/if}><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, 'explicitly_selected_info', event)"><div id = 'explicitly_selected_info' onclick = "sC_js_showHideDiv(this, 'explicitly_selected_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;height:100px;position:absolute;display:none">{$smarty.const._EXPLICITLYSELECTEDINFO}</div></td></tr>
                    </table>
       </div>
       </fieldset>
@@ -104,7 +104,7 @@
         <td class = "labelCell">{$T_DIGESTS_FORM.languages_NAME.label}:&nbsp;</td>
         <td class = "elementCell">
          {$T_DIGESTS_FORM.languages_NAME.html}
-         <a href= "" class = "info"><img src = "images/16x16/help.png" alt = "{$smarty.const._HELP}" title = "{$smarty.const._HELP}" onclick = "eF_js_showHideDiv(this, 'language_set_info', event)" ><span class = "tooltipSpan">{$smarty.const._NOTIFICATIONLANGUAGETEMPLATEINFO}</div></a>
+         <a href= "" class = "info"><img src = "images/16x16/help.png" alt = "{$smarty.const._HELP}" title = "{$smarty.const._HELP}" onclick = "sC_js_showHideDiv(this, 'language_set_info', event)" ><span class = "tooltipSpan">{$smarty.const._NOTIFICATIONLANGUAGETEMPLATEINFO}</div></a>
         </td>
        </tr>
        {/if}
@@ -114,7 +114,7 @@
       </fieldset>
   </form>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._EMAILDIGESTS data = $smarty.capture.t_main_digests_page image = '32x32/notifications.png'}
+  {sC_template_printBlock title = $smarty.const._EMAILDIGESTS data = $smarty.capture.t_main_digests_page image = '32x32/notifications.png'}
      <script language = "JavaScript" type = "text/javascript">
   var eventForm = "{$T_EVENT_FORM}";
   var eventCategory = "{$T_EVENT_CATEGORY}";
@@ -135,7 +135,7 @@
     </td></tr>
    </table>
    {/capture}
-   {eF_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_sent_notification_preview image = '32x32/notifications.png'}
+   {sC_template_printBlock title = $smarty.const._PREVIEW data = $smarty.capture.t_sent_notification_preview image = '32x32/notifications.png'}
   {/if}
  {else}
      <script language = "JavaScript" type = "text/javascript">
@@ -175,7 +175,7 @@
                    {/if}
                   </a>
      </td>
-                    {*<td >{$notification.subject|eF_truncate:40}</td>*}
+                    {*<td >{$notification.subject|sC_truncate:40}</td>*}
                     {if $_change_}
                     <td class = "centerAlign">
       <a href = "{$smarty.server.PHP_SELF}?ctg=digests&edit_notification={$notification.id}{if isset($notification.is_event)}&event=1{/if}" class = "editLink"><img class = "handle" src = "images/16x16/edit.png" title = "{$smarty.const._EDIT}" alt = "{$smarty.const._EDIT}" /></a>
@@ -220,7 +220,7 @@
           <tr class = "{cycle values = "oddRowColor, evenRowColor"}  {if $queue_message.timestamp && $queue_message.timestamp > $T_TIMESTAMP_NOW}deactivatedTableElement{/if}">
               <td >{if $queue_message.timestamp}#filter:timestamp_time-{$queue_message.timestamp}#{else}{$smarty.const._TOBESENTIMMEDIATELY}{/if}</td>
               <td >{$queue_message.recipients} {if isset($queue_message.recipients_count)}({$queue_message.recipients_count}){/if}</td>
-              <td >{$queue_message.subject|eF_truncate:40}</td>
+              <td >{$queue_message.subject|sC_truncate:40}</td>
               <td class = "centerAlign">
                      <img class ="ajaxHandle" src = "images/16x16/mail.png" title = "{$smarty.const._SEND}" alt = "{$smarty.const._SEND}" onclick = "sendQueueMessage(this, '{$queue_message.id}');"/>
                         <img class = "ajaxHandle" src = "images/16x16/error_delete.png" title = "{$smarty.const._DELETE}" alt = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._AREYOUSUREYOUWANTTOREMOVETHATNOTIFICATION}')) clearQueueMessage(this, '{$queue_message.id}');"/>
@@ -247,7 +247,7 @@
               <td >{$recent_message.subject}</td>
               <td class = "centerAlign">
                      <img class ="ajaxHandle" src = "images/16x16/mail.png" title = "{$smarty.const._RESEND}" alt = "{$smarty.const._RESEND}" onclick = "sendSentMessage(this, '{$recent_message.id}');"/>
-                        <a title="{$smarty.const._PREVIEW}" href = "{$smarty.server.PHP_SELF}?ctg=digests&op=preview&sent_id={$recent_message.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._PREVIEW}', 3)" target = "POPUP_FRAME" style = "vertical-align:middle">
+                        <a title="{$smarty.const._PREVIEW}" href = "{$smarty.server.PHP_SELF}?ctg=digests&op=preview&sent_id={$recent_message.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._PREVIEW}', 3)" target = "POPUP_FRAME" style = "vertical-align:middle">
                 <img src="images/16x16/search.png" class="handle" title="{$smarty.const._PREVIEW}" alt="{$smarty.const._PREVIEW}" />
                </a>
               </td>
@@ -267,7 +267,7 @@
                 {$T_NOTIFICATION_VARIABLES_FORM.hidden}
                 <table style = "width:100%">
                     <tr><td class = "labelCell">{$T_NOTIFICATION_VARIABLES_FORM.notifications_use_cron.label}:&nbsp;</td>
-                        <td class = "elementCell"><table><tr><td>{$T_NOTIFICATION_VARIABLES_FORM.notifications_use_cron.html}</td><td align="left"><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, 'use_cron_info', event)"><div id = 'use_cron_info' onclick = "eF_js_showHideDiv(this, 'use_cron_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:425px;height:175px;position:absolute;display:none"><table width="425px" height="175px" style="white-space: wrap;"><tr><td>{$smarty.const._USECRONINFO}</td></tr></table></div></td></tr></table></td></tr>
+                        <td class = "elementCell"><table><tr><td>{$T_NOTIFICATION_VARIABLES_FORM.notifications_use_cron.html}</td><td align="left"><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, 'use_cron_info', event)"><div id = 'use_cron_info' onclick = "sC_js_showHideDiv(this, 'use_cron_info', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:425px;height:175px;position:absolute;display:none"><table width="425px" height="175px" style="white-space: wrap;"><tr><td>{$smarty.const._USECRONINFO}</td></tr></table></div></td></tr></table></td></tr>
                     <tr><td class = "labelCell">{$T_NOTIFICATION_VARIABLES_FORM.notifications_pageloads.label}:&nbsp;</td>
                         <td class = "elementCell">{$T_NOTIFICATION_VARIABLES_FORM.notifications_pageloads.html}</td></tr>
                     {if $T_NOTIFICATION_VARIABLES_FORM.notifications_pageloads.error}<tr><td></td><td class = "formError">{$T_NOTIFICATION_VARIABLES_FORM.notifications_pageloads.error}</td></tr>{/if}
@@ -287,12 +287,12 @@
        {/capture}
   {capture name="t_notifications"}
   <div class="tabber" >
-   {eF_template_printBlock tabber = "registered" title = $smarty.const._REGISTERED data = $smarty.capture.t_notifications_code image = "32x32/notifications.png" options = $T_TABLE_OPTIONS}
-   {eF_template_printBlock tabber = "messages_queue" title = $smarty.const._MESSAGESQUEUE data = $smarty.capture.t_queue_messages_code image = "32x32/notifications.png"}
-   {eF_template_printBlock tabber = "recent_messages" title = $smarty.const._RECENTLYSENT data = $smarty.capture.t_sent_messages_code image = "32x32/notifications.png"}
-   {eF_template_printBlock tabber = "config_tab" title = $smarty.const._CONFIGURATIONOPTIONS data = $smarty.capture.t_configuration_form_code image = "32x32/notifications.png"}
+   {sC_template_printBlock tabber = "registered" title = $smarty.const._REGISTERED data = $smarty.capture.t_notifications_code image = "32x32/notifications.png" options = $T_TABLE_OPTIONS}
+   {sC_template_printBlock tabber = "messages_queue" title = $smarty.const._MESSAGESQUEUE data = $smarty.capture.t_queue_messages_code image = "32x32/notifications.png"}
+   {sC_template_printBlock tabber = "recent_messages" title = $smarty.const._RECENTLYSENT data = $smarty.capture.t_sent_messages_code image = "32x32/notifications.png"}
+   {sC_template_printBlock tabber = "config_tab" title = $smarty.const._CONFIGURATIONOPTIONS data = $smarty.capture.t_configuration_form_code image = "32x32/notifications.png"}
         </div>
         {/capture}
-        {eF_template_printBlock title = $smarty.const._EMAILDIGESTS data = $smarty.capture.t_notifications image = '32x32/notifications.png' help = 'Notifications'}
+        {sC_template_printBlock title = $smarty.const._EMAILDIGESTS data = $smarty.capture.t_notifications image = '32x32/notifications.png' help = 'Notifications'}
  {/if}
 {/if}

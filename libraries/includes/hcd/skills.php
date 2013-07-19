@@ -9,14 +9,14 @@ try {
     if ($currentEmployee -> getType() == _EMPLOYEE) {
         $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
         $message_type = 'failure';
-        eF_redirect($_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".urlencode($message)."&message_type=".$message_type);
+        sC_redirect($_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".urlencode($message)."&message_type=".$message_type);
         exit;
     }
 
     if ((isset($_GET['edit_skill']) && $currentEmployee -> getType() != _SUPERVISOR && $currentUser -> getType() != 'administrator') || (isset($_GET['delete_skill']) && $currentUser -> getType() != 'administrator')) {
         $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
         $message_type = 'failure';
-        eF_redirect($_SESSION['s_type'].".php?ctg=module_hcd&op=skills&message=".urlencode($message)."&message_type=".$message_type);
+        sC_redirect($_SESSION['s_type'].".php?ctg=module_hcd&op=skills&message=".urlencode($message)."&message_type=".$message_type);
         exit;
     }
 
@@ -47,11 +47,11 @@ try {
             $currentSkill = new MagesterSkill( $_GET['edit_skill']);
         }
 
-        $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+        $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
         $form -> addElement('text', 'skill_description', _SKILLDESCRIPTION, 'id="skill_description" class = "inputText" tabindex="1"');
         $form -> addRule('skill_description', _THEFIELD.' '._SKILLDESCRIPTION.' '._ISMANDATORY, 'required', null, 'client');
 
-        $result = eF_getTableData("module_hcd_skill_categories", "id, description", "");
+        $result = sC_getTableData("module_hcd_skill_categories", "id, description", "");
         $skillCategories = array("0" => _SELECTSKILLCATEGORY);
         foreach ($result as $value) {
             $skillCategories[$value['id']]= $value['description'];
@@ -67,7 +67,7 @@ try {
             $currentSkill -> removeFromEmployee($_GET['add_user']);
            } elseif (isset($_GET['addAll'] )) {
             $employees = $currentSkill -> getEmployees();
-            isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
+            isset($_GET['filter']) ? $employees = sC_filterData($employees,$_GET['filter']) : null;
             foreach ($employees as $employee) {
              if ($employee['skill_ID'] == "") {
               $currentSkill -> assignToEmployee($employee['login'], "");
@@ -75,7 +75,7 @@ try {
             }
            } elseif (isset($_GET['removeAll'] )) {
             $employees = $currentSkill -> getEmployees();
-            isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
+            isset($_GET['filter']) ? $employees = sC_filterData($employees,$_GET['filter']) : null;
             foreach ($employees as $employee) {
              if ($employee['skill_ID'] != "") {
               $currentSkill -> removeFromEmployee($employee['login']);
@@ -133,7 +133,7 @@ try {
           $message = _SKILLDATAUPDATED;
          }
          // Return to previous url stored in a hidden - that way, after the insertion we can immediately return to where we were
-         eF_redirect(basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=success&tab=skills");
+         sC_redirect(basename($form->exportValue('previous_url'))."&message=". urlencode($message) . "&message_type=success&tab=skills");
         }
 
         $renderer = prepareFormRenderer($form);

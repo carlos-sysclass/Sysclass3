@@ -64,7 +64,7 @@
 {/capture}
 
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCLASSE_NEWCLASS
 	data			= $smarty.capture.t_new_class_form
 	class			= $item.class

@@ -40,12 +40,12 @@
 {/capture}
 
 {capture name="t_edit_payment_tabbers"}
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		tabber = $T_EDIT_TABS[0].title
 		title= $smarty.const._MODULE_PAGAMENTO_EDIT_PAYMENT_TYPE
 		data=$smarty.capture.t_edit_payment_type_form
 	}
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		tabber = $T_EDIT_TABS[1].title
 		title = $T_SUBMODULE_TITLE
 		data = $smarty.capture.t_edit_payment_type_submodule_form
@@ -53,7 +53,7 @@
 {/capture}
 
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._PAGAMENTO_CONFIG_TIPOS
 	data=$smarty.capture.t_edit_payment_tabbers
 	tabs = $T_EDIT_TABS

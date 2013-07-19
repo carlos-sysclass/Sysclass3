@@ -62,7 +62,7 @@ function saveConditionTree(el) {
  ajaxRequest(el, location.toString(), parameters, onSaveConditionTree);
 }
 function onSaveConditionTree(el, response) {
-    parent.eF_js_redrawPage('conditionsTable', true);
+    parent.sC_js_redrawPage('conditionsTable', true);
 }
 function setAlign(el, column) {
  parameters = {'set_align':column, ajax:1, method: 'get'};
@@ -107,13 +107,13 @@ function onSetStatus(el, response) {
 }
 
 function exportCsv(el) {
- eF_js_redrawPage('usersTable', false, 'csv');
+ sC_js_redrawPage('usersTable', false, 'csv');
     currentOther = new Array();
 
     $('popup_frame').src = location.toString()+'&ajax=1&csv=1';
 }
 function exportXls(el) {
- eF_js_redrawPage('usersTable', false, 'xls');
+ sC_js_redrawPage('usersTable', false, 'xls');
     currentOther = new Array();
 
     $('popup_frame').src = location.toString()+'&ajax=1&xls=1';
@@ -131,9 +131,9 @@ function applyOperation(el, operation) {
 }
 function onApplyOperation(el, response) {
  if (response.evalJSON(true).table_name) {
-  eF_js_showDivPopup('', '', response.evalJSON(true).table_name);
+  sC_js_showDivPopup('', '', response.evalJSON(true).table_name);
  }
- eF_js_redrawPage('usersTable', true);
+ sC_js_redrawPage('usersTable', true);
 }
 
 function ajaxPost(foo, el) {
@@ -144,7 +144,7 @@ function toggleUserDynamicGroup(el, allUsers) {
  user = el.id.replace('check_', '');
  if (allUsers) {
   if (el.checked) {
-   eF_js_redrawPage('usersTable', false, 'dynamic');
+   sC_js_redrawPage('usersTable', false, 'dynamic');
    currentOther = new Array();
   } else {
    parameters = {toggle_user_to_dynamic_group:1, status:0, allUsers:1, ajax:1, method: 'get'};
@@ -168,8 +168,8 @@ function onRemoveFromSet(el, response) {
 }
 */
 function onFinishedAddingConditions() {
- eF_js_showDivPopup('', '');
- eF_js_redrawPage('conditionsTable', true);
+ sC_js_showDivPopup('', '');
+ sC_js_redrawPage('conditionsTable', true);
 }
 
 if (typeof(finishedAddingConditions) != 'undefined' && finishedAddingConditions) {

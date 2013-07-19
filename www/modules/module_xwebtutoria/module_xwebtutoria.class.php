@@ -321,7 +321,7 @@ class module_xwebtutoria extends MagesterExtendedModule
 				'avaliation_id'	=> $values['avaliation_id'],
 				'body'			=> $values['body']
 			);
-			eF_insertTableData("module_xwebtutoria", $fields);
+			sC_insertTableData("module_xwebtutoria", $fields);
 		}
         // UPDATE DEFAULT VALUES
 		$tutoriaForm -> setDefaults( $defaults );
@@ -334,9 +334,9 @@ class module_xwebtutoria extends MagesterExtendedModule
 
     public function getEditedXwebtutoria()
     {
-		if (eF_checkParameter($_GET['xwebtutoria_id'], 'id')) {
+		if (sC_checkParameter($_GET['xwebtutoria_id'], 'id')) {
 			return $this->getXwebtutoriaById($_GET['xwebtutoria_id']);
-		} elseif (eF_checkParameter($_POST['xwebtutoria_id'], 'id')) {
+		} elseif (sC_checkParameter($_POST['xwebtutoria_id'], 'id')) {
 			return $this->getXwebtutoriaById($_POST['xwebtutoria_id']);
 		}
     	return false;
@@ -405,7 +405,7 @@ class module_xwebtutoria extends MagesterExtendedModule
 		return $result;
 			/*
 
-    	$data = eF_getTableData(
+    	$data = sC_getTableData(
 	    	"module_xwebtutoria wt
 	    	LEFT JOIN users u ON (wt.user_id = u.id)
 	    	LEFT JOIN classes cl ON (wt.classe_id = cl.id)
@@ -425,7 +425,7 @@ class module_xwebtutoria extends MagesterExtendedModule
 
 				try {
 					$file = new MagesterFile($item['avatar']);
-					list($item['avatar_width'], $item['avatar_height']) = eF_getNormalizedDims($file['path'], 50, 50);
+					list($item['avatar_width'], $item['avatar_height']) = sC_getNormalizedDims($file['path'], 50, 50);
 				} catch (MagesterFileException $e) {
 					$item['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
 					$item['avatar_width'] = 50;
@@ -455,7 +455,7 @@ class module_xwebtutoria extends MagesterExtendedModule
     		sprintf("%s = '%s'", $field, $value)
     	);
 		 * */
-    	$data = eF_getTableData(
+    	$data = sC_getTableData(
 	    	"module_xwebtutoria wt
 	    	LEFT JOIN users u ON (wt.user_id = u.id)
 	    	LEFT JOIN classes cl ON (wt.classe_id = cl.id)
@@ -475,7 +475,7 @@ class module_xwebtutoria extends MagesterExtendedModule
 
 				try {
 					$file = new MagesterFile($item['avatar']);
-					list($item['avatar_width'], $item['avatar_height']) = eF_getNormalizedDims($file['path'], 50, 50);
+					list($item['avatar_width'], $item['avatar_height']) = sC_getNormalizedDims($file['path'], 50, 50);
 				} catch (MagesterFileException $e) {
 					$item['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
 					$item['avatar_width'] = 50;

@@ -166,6 +166,6 @@ function setAllUsersStatusCompleted(el) {
 function onSetAllUsersStatusCompleted(el, response) {
  if (response.evalJSON(true).status) {
   el.down().remove();
-  eF_js_redrawPage('usersTable', true);
+  sC_js_redrawPage('usersTable', true);
  }
 }

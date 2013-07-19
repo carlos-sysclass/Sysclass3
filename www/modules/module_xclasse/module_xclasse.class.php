@@ -133,7 +133,7 @@ class module_xclasse extends MagesterExtendedModule
 			$redirect = "administrator.php?ctg=courses&course=" . $this->getEditedCourse() -> course['id'] . "&op=course_classes&message=".urlencode(__XCLASSE_ERROR_DELETE_MESSAGE)."&message_type=failure";
 		}
 
-		eF_redirect($redirect);
+		sC_redirect($redirect);
 		exit;
     }
 
@@ -143,7 +143,7 @@ class module_xclasse extends MagesterExtendedModule
 		$smarty -> assign("T_MODULE_XCOURSE_ACTION", $selectedAction);
 
 		// LOAD L10N DATA
-        $modules = eF_loadAllModules(true);
+        $modules = sC_loadAllModules(true);
         $l10nSection = $modules['module_language']->getSection("l10n");
 
         $smarty -> assign("T_L10N_DATA", $l10nSection['data']);
@@ -151,7 +151,7 @@ class module_xclasse extends MagesterExtendedModule
         // LOAD SCHEDULES FOR CLASS
 		$courseClasses = $this->getEditedCourse()->getCourseClasses();
 
-		if (eF_checkParameter($_GET['xcourse_class_id'], 'id')) {
+		if (sC_checkParameter($_GET['xcourse_class_id'], 'id')) {
 			$courseClassID = $_GET['xcourse_class_id'];
 
 			$smarty -> assign("T_XCOURSE_CLASS_SCHEDULES", $courseClasses[$courseClassID]->classe['schedules']);
@@ -166,7 +166,7 @@ class module_xclasse extends MagesterExtendedModule
     }
     public function saveClassSchedulesAction()
     {
-		if (eF_checkParameter($_GET['xcourse_class_id'], 'id')) {
+		if (sC_checkParameter($_GET['xcourse_class_id'], 'id')) {
 			$insertData = array(
 				'week_day' 	=> $_POST['week_day']['new'],
 				'start'		=> $_POST['start']['new'],
@@ -245,7 +245,7 @@ class module_xclasse extends MagesterExtendedModule
     	$smarty = $this->getSmartyVar();
 
     	if (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] == 'hidden') {
-			eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+			sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 		} elseif (isset($currentUser -> coreAccess['lessons']) && $currentUser -> coreAccess['lessons'] != 'change') {
 			$_change_ = false;
 		} else {
@@ -321,7 +321,7 @@ class module_xclasse extends MagesterExtendedModule
 					$redirect = "administrator.php?ctg=courses&course=" . $this->getEditedCourse() -> course['id'] . "&op=course_classes&message=".urlencode(__XCLASSE_UPDATE_MESSAGE)."&message_type=success";
 				}
 
-				!isset($redirect) OR eF_redirect($redirect);
+				!isset($redirect) OR sC_redirect($redirect);
 
 				//$smarty -> assign("T_REDIRECT_PARENT_TO", basename($_SERVER['PHP_SELF'])."?ctg=courses&edit_course=" . $course->course['id'] );
 				// RELOAD CLASS LIST

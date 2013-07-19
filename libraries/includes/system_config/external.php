@@ -5,7 +5,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 $externalMainForm = new Html_QuickForm("external_main_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=main", "", null, true);
-$externalMainForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$externalMainForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $externalMainForm -> addElement("advcheckbox", "api", _ENABLEDAPI, null, 'class = "inputCheckBox"', array(0, 1));
 $externalMainForm -> addElement("select", "editor_type", _EDITORTYPE, array('tinymce' => G_TINYMCE, 'tinymce_new' => G_NEWTINYMCE), 'class = "inputCheckBox"');
 //If we are on a windows system, and the zip_method is already PHP, then don't display option to change it
@@ -30,13 +30,13 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach (new MagesterDirectoryOnlyFilterIterator($cacheTree -> tree) as $value) {
    $value -> delete();
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=main&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_EXTERNAL_MAIN_FORM", $externalMainForm -> toArray());
 
 $externalMathForm = new Html_QuickForm("external_math_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=math", "", null, true);
-$externalMathForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$externalMathForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $externalMathForm -> addElement("advcheckbox", "math_content", _ENABLEMATHCONTENT, null, 'class = "inputCheckBox"', array(0, 1));
 $externalMathForm -> addElement("advcheckbox", "math_images", _LOADMATHTYPESASIMAGES, null, 'class = "inputCheckBox"', array(0, 1));
 $externalMathForm -> addElement("static", "", _MATHIMAGESINFO);
@@ -53,13 +53,13 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
   foreach ($values as $key => $value) {
    MagesterConfiguration :: setValue($key, $value);
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=math&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=math&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_EXTERNAL_MATH_FORM", $externalMathForm -> toArray());
 
 $externalLiveDocxForm = new Html_QuickForm("external_livedocx_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=livedocx", "", null, true);
-$externalLiveDocxForm -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$externalLiveDocxForm -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 $externalLiveDocxForm -> addElement("text", "phplivedocx_server", _PHPLIVEDOCXSERVER, 'class = "inputText"');
 $externalLiveDocxForm -> addElement("text", "phplivedocx_username",_USERNAME);
 $externalLiveDocxForm -> addElement("password", "phplivedocx_password",_PASSWORD);
@@ -86,7 +86,7 @@ define("PHPLIVEDOCXAPI","'.$values['phplivedocx_server'].'");
   } else {
    $message = _PHPLIVEDOCXCONFIGURATIONFILEISNOTWRITABLE;
   }
-  eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=livedocx&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
+  sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=system_config&op=external&tab=livedocx&message=".urlencode(_SUCCESFULLYUPDATECONFIGURATION)."&message_type=success");
  }
 }
 $smarty -> assign("T_EXTERNAL_LIVEDOCX_FORM", $externalLiveDocxForm -> toArray());

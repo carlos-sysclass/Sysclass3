@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE SP_GET_CONSUMER
 (
 P_CONSUMER_KEY              IN        STRING,
-P_ROWS                      OUT       TYPES.REF_CURSOR,
+P_ROWS                      OUT       TYPES.RsC_CURSOR,
 P_RESULT                    OUT       NUMBER
 )
 AS

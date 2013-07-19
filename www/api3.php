@@ -83,7 +83,7 @@ In case of error it returns also a message entity with description of the error 
 */
 $path = "../libraries/";
 require_once $path."configuration.php";
-$data = eF_getTableData("configuration", "value", "name='api'"); //Read current values
+$data = sC_getTableData("configuration", "value", "name='api'"); //Read current values
 $api = $data[0]['value'];
 if ($api == 1) {
 	if (isset($_GET['module'])) {
@@ -94,7 +94,7 @@ if ($api == 1) {
 		$password = $currentUser -> user['password'];
 		$ok = $currentUser -> login($password, true);
 
-		$modules = eF_loadAllModules(true);
+		$modules = sC_loadAllModules(true);
 
 		if (array_key_exists("module_" . $_GET['module'], $modules)) {
 
@@ -118,7 +118,7 @@ if ($api == 1) {
 					$insert['status'] = "unlogged";
 					$insert['expired'] = 0;
 					$insert['create_timestamp'] = time();
-					eF_insertTableData("tokens", $insert);
+					sC_insertTableData("tokens", $insert);
 					echo "<xml>";
 					echo "<token>".$token."</token>";
 					echo "</xml>";
@@ -129,7 +129,7 @@ if ($api == 1) {
 			case 'magesterlogin':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$token = $_GET['token'];
-					$creds = eF_getTableData("tokens t, users u", "u.login, u.password, u.user_type", "t.users_LOGIN = u.LOGIN and t.token='$token'");
+					$creds = sC_getTableData("tokens t, users u", "u.login, u.password, u.user_type", "t.users_LOGIN = u.LOGIN and t.token='$token'");
 					if (sizeof($creds) == 0) {
 						echo "<xml>";
 						echo "<status>error</status>";
@@ -237,9 +237,9 @@ if ($api == 1) {
 						$login = $_GET['username'];
 						$password = MagesterUser::createPassword($_GET['password']);
 						$token = $_GET['token'];
-						$tmp = eF_getTableData("tokens","token","status='unlogged'");
-						$result = eF_getTableData("tokens","token","status='logged' and users_LOGIN='".$login."'");
-						$tmp2 = eF_getTableData("users", "password","login='$login'");
+						$tmp = sC_getTableData("tokens","token","status='unlogged'");
+						$result = sC_getTableData("tokens","token","status='logged' and users_LOGIN='".$login."'");
+						$tmp2 = sC_getTableData("users", "password","login='$login'");
 						$pwd = $tmp2[0]['password'];
 						if ($pwd != $password) {
 							echo "<xml>";
@@ -255,11 +255,11 @@ if ($api == 1) {
 							echo "</xml>";
 							exit;
 						} elseif (sizeof($tmp2) > 0 ) {
-							if (eF_checkParameter($login, 'login')) {
+							if (sC_checkParameter($login, 'login')) {
 								if ($pwd == $password) {
 									$update['status'] = "logged";
 									$update['users_LOGIN'] = $login;
-									eF_updateTableData("tokens",$update,"token='$token'");
+									sC_updateTableData("tokens",$update,"token='$token'");
 									echo "<xml>";
 									echo "<status>ok</status>";
 									echo "</xml>";
@@ -294,7 +294,7 @@ if ($api == 1) {
 			case 'create_lesson':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['name']) && isset($_GET['category']) && isset($_GET['course_only']) && isset($_GET['language'])) {
-						if (!eF_checkParameter($_GET['category'], 'uint')) {
+						if (!sC_checkParameter($_GET['category'], 'uint')) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid category</message>";
@@ -306,7 +306,7 @@ if ($api == 1) {
 						$insert['course_only'] = $_GET['course_only'];
 						$insert['languages_NAME'] = $_GET['language'];
 						$insert['created'] = time();
-						if (isset($_GET['price']) && eF_checkParameter($_GET['price'], 'uint')) {
+						if (isset($_GET['price']) && sC_checkParameter($_GET['price'], 'uint')) {
 							$insert['price'] = $_GET['price'];
 						}
 						$fields = array( 'name' => $insert['name'],
@@ -1005,7 +1005,7 @@ if ($api == 1) {
 			case 'group_info':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['group'])) {
-						if (eF_checkParameter($_GET['group'], 'id') == false) {
+						if (sC_checkParameter($_GET['group'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid group id</message>";
@@ -1061,14 +1061,14 @@ if ($api == 1) {
 			case 'group_to_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['group'])) {
-						if (eF_checkParameter($_GET['group'], 'id') == false) {
+						if (sC_checkParameter($_GET['group'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid group id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1121,14 +1121,14 @@ if ($api == 1) {
 			case 'group_from_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['group'])) {
-						if (eF_checkParameter($_GET['group'], 'id') == false) {
+						if (sC_checkParameter($_GET['group'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid group id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1185,14 +1185,14 @@ if ($api == 1) {
 			case 'lesson_to_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
-						if (eF_checkParameter($_GET['lesson'], 'id') == false) {
+						if (sC_checkParameter($_GET['lesson'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid lesson id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1258,14 +1258,14 @@ if ($api == 1) {
 			case 'deactivate_user_lesson':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
-						if (eF_checkParameter($_GET['lesson'], 'id') == false) {
+						if (sC_checkParameter($_GET['lesson'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid lesson id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1273,7 +1273,7 @@ if ($api == 1) {
 							exit;
 						}
 						$update['from_timestamp'] = 0;
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
+						if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
@@ -1304,14 +1304,14 @@ if ($api == 1) {
 			case 'activate_user_lesson':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
-						if (eF_checkParameter($_GET['lesson'], 'id') == false) {
+						if (sC_checkParameter($_GET['lesson'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid lesson id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1319,7 +1319,7 @@ if ($api == 1) {
 							exit;
 						}
 						$update['from_timestamp'] = time();
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
+						if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
@@ -1349,14 +1349,14 @@ if ($api == 1) {
 			/*
 			case 'lesson_from_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
-					if (eF_checkParameter($_GET['lesson'], 'id') == false) {
+					if (sC_checkParameter($_GET['lesson'], 'id') == false) {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Invalid lesson id</message>";
 						echo "</xml>";
 						exit;
 					}
-					if (eF_checkParameter($_GET['login'], 'login') == false) {
+					if (sC_checkParameter($_GET['login'], 'login') == false) {
 						echo "<xml>";
 						echo "<status>error</status>";
 						echo "<message>Invalid login format</message>";
@@ -1397,7 +1397,7 @@ if ($api == 1) {
 			case 'user_lessons':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login'])) {
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1461,7 +1461,7 @@ if ($api == 1) {
 			case 'lesson_info':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['lesson'])) {
-						if (eF_checkParameter($_GET['lesson'], 'id') == false) {
+						if (sC_checkParameter($_GET['lesson'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid lesson id</message>";
@@ -1519,7 +1519,7 @@ if ($api == 1) {
 			case 'user_courses':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login'])) {
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1633,7 +1633,7 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 
 					$lessons = MagesterLesson :: getLessons();
-					$lessons = eF_multiSort($lessons, 'id', 'desc');
+					$lessons = sC_multiSort($lessons, 'id', 'desc');
 
 					$courses = MagesterCourse :: getAllCourses();
 
@@ -1749,7 +1749,7 @@ if ($api == 1) {
 			case 'lessons':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$lessons = MagesterLesson :: getLessons();
-					$lessons = eF_multiSort($lessons, 'id', 'desc');
+					$lessons = sC_multiSort($lessons, 'id', 'desc');
 					echo "<xml>";
 					echo "<lessons>";
 					foreach ($lessons as $key => $lesson) {
@@ -1814,7 +1814,7 @@ if ($api == 1) {
 			case 'course_info':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
@@ -1872,7 +1872,7 @@ if ($api == 1) {
 			case 'course_lessons':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
@@ -1921,14 +1921,14 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 
 					if (isset($_GET['login']) && isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -1998,14 +1998,14 @@ if ($api == 1) {
 			case 'activate_user_course':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -2013,9 +2013,9 @@ if ($api == 1) {
 							exit;
 						}
 						$update['from_timestamp'] = time();
-						$courses = eF_getTableData("lessons_to_courses","lessons_id", "courses_ID=".$_GET['course']);
+						$courses = sC_getTableData("lessons_to_courses","lessons_id", "courses_ID=".$_GET['course']);
 						for ($i=0; $i < sizeof($courses);$i++) {
-							if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
+							if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
 								$cacheKey = "user_lesson_status:lesson:".$courses[$i]['lessons_id']."user:".$_GET['login'];
 								Cache::resetCache($cacheKey);
 							}
@@ -2042,14 +2042,14 @@ if ($api == 1) {
 			case 'deactivate_user_course':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -2057,9 +2057,9 @@ if ($api == 1) {
 							exit;
 						}
 						$update['from_timestamp'] = 0;
-						$courses = eF_getTableData("lessons_to_courses","lessons_id", "courses_ID=".$_GET['course']);
+						$courses = sC_getTableData("lessons_to_courses","lessons_id", "courses_ID=".$_GET['course']);
 						for ($i=0; $i < sizeof($courses);$i++) {
-							if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
+							if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
 								$cacheKey = "user_lesson_status:lesson:".$courses[$i]['lessons_id']."user:".$_GET['login'];
 								Cache::resetCache($cacheKey);
 							}
@@ -2086,14 +2086,14 @@ if ($api == 1) {
 			case 'course_from_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['course'])) {
-						if (eF_checkParameter($_GET['course'], 'id') == false) {
+						if (sC_checkParameter($_GET['course'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid course id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -2140,14 +2140,14 @@ if ($api == 1) {
 			case 'curriculum_to_user':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['curriculum'])) {
-						if (eF_checkParameter($_GET['curriculum'], 'id') == false) {
+						if (sC_checkParameter($_GET['curriculum'], 'id') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid curriculum id</message>";
 							echo "</xml>";
 							exit;
 						}
-						if (eF_checkParameter($_GET['login'], 'login') == false) {
+						if (sC_checkParameter($_GET['login'], 'login') == false) {
 							echo "<xml>";
 							echo "<status>error</status>";
 							echo "<message>Invalid login format</message>";
@@ -2193,7 +2193,7 @@ if ($api == 1) {
 			case 'logout':{
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$token = $_GET['token'];
-					eF_deleteTableData("tokens","token='$token'");
+					sC_deleteTableData("tokens","token='$token'");
 					echo "<xml>";
 					echo "<status>ok</status>";
 					echo "</xml>";
@@ -2237,7 +2237,7 @@ function createToken($length)
 }
 function checkToken($token)
 {
-	$tmp = eF_getTableData("tokens","status, users_LOGIN","token='$token'");
+	$tmp = sC_getTableData("tokens","status, users_LOGIN","token='$token'");
 	$token = $tmp[0]['status'];
 	if ($token == 'logged') {
 		global $currentUser;

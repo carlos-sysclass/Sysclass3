@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>eXtended Forum Module</title>
-	<author>André Kucaniz</author>
-	<date>2011 08 11</date>
-	<version>0.1</version>
-	<description>Este módulo é usado para controlar os Forums abertos do sistema, seja por instituição, grupos, cursos, turmas, disciplinas, etc...</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xforum</className>
 </module>

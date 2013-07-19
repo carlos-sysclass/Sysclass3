@@ -6,7 +6,7 @@ P_OSR_CONSUMER_KEY             IN        VARCHAR2,
 P_OCR_CONSUMER_KEY             IN        VARCHAR2,
 P_OST_TOKEN                    IN        VARCHAR2,
 P_OCT_TOKEN                    IN        VARCHAR2,
-P_ROWS                         OUT       TYPES.REF_CURSOR,
+P_ROWS                         OUT       TYPES.RsC_CURSOR,
 P_RESULT                       OUT       NUMBER
 )
 AS

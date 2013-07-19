@@ -56,7 +56,7 @@
 	</div>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__IES_MANAGEMENT
 	data=$smarty.capture.t_ies_table
 	contentclass=""

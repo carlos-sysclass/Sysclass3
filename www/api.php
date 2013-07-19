@@ -84,7 +84,7 @@ In case of error it returns also a message entity with description of the error 
 */
 $path = "../libraries/";
 require_once $path."configuration.php";
-$data = eF_getTableData("configuration", "value", "name='api'"); //Read current values
+$data = sC_getTableData("configuration", "value", "name='api'"); //Read current values
 $api = $data[0]['value'];
 if ($api == 1) {
 	if (isset($_GET['action'])) {
@@ -97,7 +97,7 @@ if ($api == 1) {
 					$insert['status'] = "unlogged";
 					$insert['expired'] = 0;
 					$insert['create_timestamp'] = time();
-					eF_insertTableData("tokens", $insert);
+					sC_insertTableData("tokens", $insert);
 					echo "<xml>";
 					echo "<token>".$token."</token>";
 					echo "</xml>";
@@ -106,7 +106,7 @@ if ($api == 1) {
 			case 'magesterlogin' :
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					$token = $_GET['token'];
-					$creds = eF_getTableData("tokens t, users u", "u.login, u.password, u.user_type", "t.users_LOGIN = u.LOGIN and t.token='$token'");
+					$creds = sC_getTableData("tokens t, users u", "u.login, u.password, u.user_type", "t.users_LOGIN = u.LOGIN and t.token='$token'");
 					if (sizeof($creds) == 0) {
 						echo "<xml>";
 						echo "<status>error</status>";
@@ -191,15 +191,15 @@ if ($api == 1) {
 						$login = $_GET['username'];
 						$password = MagesterUser::createPassword($_GET['password']);
 						$token = $_GET['token'];
-						$tmp = eF_getTableData("tokens","token","status='unlogged'");
+						$tmp = sC_getTableData("tokens","token","status='unlogged'");
 						if (sizeof($tmp) > 0) {
-							if (eF_checkParameter($login, 'login')) {
-								$tmp = eF_getTableData("users", "password","login='$login'");
+							if (sC_checkParameter($login, 'login')) {
+								$tmp = sC_getTableData("users", "password","login='$login'");
 								$pwd = $tmp[0]['password'];
 								if ($pwd == $password) {
 									$update['status'] = "logged";
 									$update['users_LOGIN'] = $login;
-									eF_updateTableData("tokens",$update,"token='$token'");
+									sC_updateTableData("tokens",$update,"token='$token'");
 									echo "<xml>";
 									echo "<status>ok</status>";
 									echo "</xml>";
@@ -237,7 +237,7 @@ if ($api == 1) {
 			case 'create_lesson':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['name']) && isset($_GET['category']) && isset($_GET['course_only']) && isset($_GET['language'])) {
-						if (!eF_checkParameter($_GET['category'], 'uint')) {
+						if (!sC_checkParameter($_GET['category'], 'uint')) {
 							echo "<xml>";
 							echo "<status>Invalid category</status>";
 							echo "</xml>";
@@ -248,10 +248,10 @@ if ($api == 1) {
 						$insert['course_only'] = $_GET['course_only'];
 						$insert['languages_NAME'] = $_GET['language'];
 						$insert['created'] = time();
-						if (isset($_GET['price']) && eF_checkParameter($_GET['price'], 'uint')) {
+						if (isset($_GET['price']) && sC_checkParameter($_GET['price'], 'uint')) {
 							$insert['price'] = $_GET['price'];
 						}
-						if (eF_insertTableData("lessons", $insert)) {
+						if (sC_insertTableData("lessons", $insert)) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -283,7 +283,7 @@ if ($api == 1) {
 						$insert['languages_NAME'] = $_GET['languages'];
 						$insert['name'] = $_GET['name'];
 						$insert['surname'] = $_GET['surname'];
-						if (eF_insertTableData("users", $insert)) {
+						if (sC_insertTableData("users", $insert)) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -313,7 +313,7 @@ if ($api == 1) {
 						$fields['email'] = $_GET['email'];
 						$fields['name'] = $_GET['name'];
 						$fields['surname'] = $_GET['surname'];
-						if (eF_updateTableData("users", $fields, "login='".$_GET['login']."'")) {
+						if (sC_updateTableData("users", $fields, "login='".$_GET['login']."'")) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -341,7 +341,7 @@ if ($api == 1) {
 					if (isset($_GET['login'])) {
 						$login = $_GET['login'];
 						$update['active'] = 0;
-						if (eF_updateTableData("users", $update, "login='$login'")) {
+						if (sC_updateTableData("users", $update, "login='$login'")) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -369,7 +369,7 @@ if ($api == 1) {
 					if (isset($_GET['login'])) {
 						$login = $_GET['login'];
 						$update['active'] = 1;
-						if (eF_updateTableData("users", $update, "login='$login'")) {
+						if (sC_updateTableData("users", $update, "login='$login'")) {
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -415,7 +415,7 @@ if ($api == 1) {
 				break;
 			case 'groups':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
-					$groups = eF_getTableData("groups", "id, name");
+					$groups = sC_getTableData("groups", "id, name");
 					echo "<xml>";
 					echo "<groups>";
 					for ($i=0; $i < sizeof($groups); $i++) {
@@ -437,7 +437,7 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['group'])) {
 						try {
-							$group = eF_getTableData("groups","name, description, languages_NAME,unique_key");
+							$group = sC_getTableData("groups","name, description, languages_NAME,unique_key");
 							echo "<xml>";
 							echo "<general_info>";
 							echo "<name>".$group[0]['name']."</name>";
@@ -470,9 +470,9 @@ if ($api == 1) {
 					if (isset($_GET['login']) && isset($_GET['group'])) {
 						$insert['users_LOGIN'] = $_GET['login'];
 						$insert['groups_ID'] = $_GET['group'];
-						$res = eF_getTableData("users_to_groups", "*", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
+						$res = sC_getTableData("users_to_groups", "*", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
 						if (sizeof($res) == 0) {
-							eF_insertTableData("users_to_groups",$insert);
+							sC_insertTableData("users_to_groups",$insert);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -498,7 +498,7 @@ if ($api == 1) {
 			case 'group_from_user':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['group'])) {
-						$res = eF_deleteTableData("users_to_groups", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
+						$res = sC_deleteTableData("users_to_groups", "users_LOGIN='".$_GET['login']."' and groups_ID=".$_GET['group']);
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
@@ -522,9 +522,9 @@ if ($api == 1) {
 						$insert['lessons_ID'] = $_GET['lesson'];
 						$insert['active'] = '1';
 						$insert['from_timestamp'] = time();
-						$res = eF_getTableData("users_to_lessons", "*", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
+						$res = sC_getTableData("users_to_lessons", "*", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
 						if (sizeof($res) == 0) {
-							eF_insertTableData("users_to_lessons",$insert);
+							sC_insertTableData("users_to_lessons",$insert);
 							echo "<xml>";
 							echo "<status>ok</status>";
 							echo "</xml>";
@@ -551,7 +551,7 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$update['from_timestamp'] = 0;
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
+						if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
@@ -580,7 +580,7 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
 						$update['from_timestamp'] = time();
-						if (eF_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
+						if (sC_updateTableData("users_to_lessons",$update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson'])) {
 							$cacheKey = "user_lesson_status:lesson:".$_GET['lesson']."user:".$_GET['login'];
 							Cache::resetCache($cacheKey);
 							echo "<xml>";
@@ -608,7 +608,7 @@ if ($api == 1) {
 			case 'lesson_from_user':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['lesson'])) {
-						$res = eF_deleteTableData("users_to_lessons", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
+						$res = sC_deleteTableData("users_to_lessons", "users_LOGIN='".$_GET['login']."' and lessons_ID=".$_GET['lesson']);
 						echo "<xml>";
 						echo "<status>ok</status>";
 						echo "</xml>";
@@ -628,7 +628,7 @@ if ($api == 1) {
 			case 'user_lessons':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login'])) {
-						$lessons = eF_getTableData("users_to_lessons ul, lessons l", "l.name", "ul.lessons_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
+						$lessons = sC_getTableData("users_to_lessons ul, lessons l", "l.name", "ul.lessons_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
 						echo "<xml>";
 						for ($i=0; $i<sizeof($lessons); $i++) {
 							echo "<lesson>".$lessons[$i]['name']."</lesson>";
@@ -683,7 +683,7 @@ if ($api == 1) {
 			case 'user_courses':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login'])) {
-						$courses = eF_getTableData("users_to_courses ul, courses l", "l.name", "ul.courses_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
+						$courses = sC_getTableData("users_to_courses ul, courses l", "l.name", "ul.courses_ID = l.ID and ul.users_LOGIN='".$_GET['login']."'");
 						echo "<xml>";
 						for ($i=0; $i<sizeof($courses); $i++) {
 							echo "<course>".$courses[$i]['name']."</course>";
@@ -735,8 +735,8 @@ if ($api == 1) {
 				break;
 			case 'catalog':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
-					$courses = eF_getTableData("courses", "id, name");
-					$lessons = eF_getTableData("lessons", "id, name");
+					$courses = sC_getTableData("courses", "id, name");
+					$lessons = sC_getTableData("lessons", "id, name");
 					echo "<xml>";
 					echo "<catalog>";
 					echo "<courses>";
@@ -766,7 +766,7 @@ if ($api == 1) {
 				break;
 			case 'lessons':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
-					$lessons = eF_getTableData("lessons", "id, name");
+					$lessons = sC_getTableData("lessons", "id, name");
 					echo "<xml>";
 					echo "<lessons>";
 					for ($i=0; $i < sizeof($lessons); $i++) {
@@ -786,7 +786,7 @@ if ($api == 1) {
 				break;
 			case 'courses':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
-					$courses = eF_getTableData("courses", "id, name");
+					$courses = sC_getTableData("courses", "id, name");
 					echo "<xml>";
 					echo "<courses>";
 					for ($i=0; $i < sizeof($courses); $i++) {
@@ -807,7 +807,7 @@ if ($api == 1) {
 			case 'course_info':
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['course'])) {
-						$course = eF_getTableData("courses", "id, name, info, price, active, languages_NAME", "id ='".$_GET['course']."'");
+						$course = sC_getTableData("courses", "id, name, info, price, active, languages_NAME", "id ='".$_GET['course']."'");
 						echo "<xml>";
 						echo "<general_info>";
 						echo "<id>".$course[0]['id']."</id>";
@@ -857,7 +857,7 @@ if ($api == 1) {
 						echo "</xml>";
 						/*
 
-						$lessons = eF_getTableData("lessons_to_courses", "courses_ID, lessons_ID, previous_lessons_ID", "courses_ID ='".$_GET['course']."'");
+						$lessons = sC_getTableData("lessons_to_courses", "courses_ID, lessons_ID, previous_lessons_ID", "courses_ID ='".$_GET['course']."'");
 
 						echo "<xml>";
 
@@ -947,9 +947,9 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['course'])) {
 						$update['from_timestamp'] = time();
-						$courses = eF_getTableData("lessons_to_courses", "lessons_id", "courses_ID=".$_GET['course']);
+						$courses = sC_getTableData("lessons_to_courses", "lessons_id", "courses_ID=".$_GET['course']);
 						for ($i=0; $i < sizeof($courses); $i++) {
-							if (eF_updateTableData("users_to_lessons", $update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
+							if (sC_updateTableData("users_to_lessons", $update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
 								$cacheKey = "user_lesson_status:lesson:".$courses[$i]['lessons_id']."user:".$_GET['login'];
 								Cache::resetCache($cacheKey);
 							}
@@ -974,9 +974,9 @@ if ($api == 1) {
 				if (isset($_GET['token']) && checkToken($_GET['token'])) {
 					if (isset($_GET['login']) && isset($_GET['course'])) {
 						$update['from_timestamp'] = 0;
-						$courses = eF_getTableData("lessons_to_courses", "lessons_id", "courses_ID=".$_GET['course']);
+						$courses = sC_getTableData("lessons_to_courses", "lessons_id", "courses_ID=".$_GET['course']);
 						for ($i=0; $i < sizeof($courses); $i++) {
-							if (eF_updateTableData("users_to_lessons", $update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
+							if (sC_updateTableData("users_to_lessons", $update, "users_LOGIN='".$_GET['login']."' and lessons_ID=".$courses[$i]['lessons_id'])) {
 								$cacheKey = "user_lesson_status:lesson:".$courses[$i]['lessons_id']."user:".$_GET['login'];
 								Cache::resetCache($cacheKey);
 							}
@@ -1028,7 +1028,7 @@ if ($api == 1) {
 			case 'logout':
 				if (isset($_GET['token'])) {
 					$token = $_GET['token'];
-					eF_deleteTableData("tokens", "token='$token'");
+					sC_deleteTableData("tokens", "token='$token'");
 					echo "<xml>";
 					echo "<status>ok</status>";
 					echo "</xml>";
@@ -1070,7 +1070,7 @@ function createToken($length)
 }
 function checkToken($token)
 {
-	$tmp = ef_getTableData("tokens", "status", "token='$token'");
+	$tmp = sC_getTableData("tokens", "status", "token='$token'");
 	$token = $tmp[0]['status'];
 	if ($token == 'logged') {
 		return true;

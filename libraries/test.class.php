@@ -111,7 +111,7 @@ class MagesterTest {
      * <code>
      * $test   = new MagesterTest(4);                         //Instantiate test using test id
      *
-     * $result = eF_getTableData("tests", "*", "id=4");
+     * $result = sC_getTableData("tests", "*", "id=4");
      * $test   = new MagesterTest($result[0]);                //Instantiate test using test array
      *
      * $test = new MagesterTest(54, true);                    //Instantiate test, only this time specify content id
@@ -125,15 +125,15 @@ class MagesterTest {
     function __construct($test, $isContentId = false) {
         if (is_array($test)) {
             $this->test = $test;
-        } elseif (!eF_checkParameter($test, 'id')) {
+        } elseif (!sC_checkParameter($test, 'id')) {
             throw new MagesterTestException(_INVALIDID.': '.$test, MagesterTestException::INVALID_ID);
         } else {
             if ($isContentId) {
-                $result = eF_getTableData("tests t, content c", "t.*, c.name", "c.id = t.content_ID and content_ID=".$test);
+                $result = sC_getTableData("tests t, content c", "t.*, c.name", "c.id = t.content_ID and content_ID=".$test);
             } else {
-                $result = eF_getTableData("tests t, content c", "t.*, c.name", "c.id=t.content_ID and t.id=".$test);
+                $result = sC_getTableData("tests t, content c", "t.*, c.name", "c.id=t.content_ID and t.id=".$test);
                 if (sizeof($result) == 0) {
-                    $result = eF_getTableData("tests", "*", "id=".$test);
+                    $result = sC_getTableData("tests", "*", "id=".$test);
                 }
             }
             if (sizeof($result) == 0) {
@@ -147,7 +147,7 @@ class MagesterTest {
             $this->options = $options + $newOptions; //Set test options
         }
         if ($this->options['duration']) {
-            $this->convertedDuration = eF_convertIntervalToTime($this->options['duration']);
+            $this->convertedDuration = sC_convertIntervalToTime($this->options['duration']);
         }
     }
 
@@ -166,11 +166,11 @@ class MagesterTest {
      * @access public
      */
     public function delete() {
-        eF_deleteTableData("tests_to_questions", "tests_ID=".$this->test['id']);
-        eF_deleteTableData("done_tests", "tests_ID=".$this->test['id']);
-        eF_deleteTableData("completed_tests", "tests_ID=".$this->test['id']);
-        eF_deleteTableData("content", "id=".$this->test['content_ID']);
-        eF_deleteTableData("tests", "id=".$this->test['id']);
+        sC_deleteTableData("tests_to_questions", "tests_ID=".$this->test['id']);
+        sC_deleteTableData("done_tests", "tests_ID=".$this->test['id']);
+        sC_deleteTableData("completed_tests", "tests_ID=".$this->test['id']);
+        sC_deleteTableData("content", "id=".$this->test['content_ID']);
+        sC_deleteTableData("tests", "id=".$this->test['id']);
         Cache::resetCache('test:'.$this->test['id']);
 
         return true;
@@ -272,7 +272,7 @@ class MagesterTest {
             'publish' => $this->test['publish']);
         Cache::resetCache('test:'.$this->test['id']);
 
-        return eF_updateTableData("tests", $fields, "id=".$this->test['id']) && eF_updateTableData("content", array("publish" => $this->test['publish']), "id=".$this->test['content_ID']);
+        return sC_updateTableData("tests", $fields, "id=".$this->test['id']) && sC_updateTableData("content", array("publish" => $this->test['publish']), "id=".$this->test['content_ID']);
     }
     /**
 
@@ -309,12 +309,12 @@ class MagesterTest {
     {
         if ($this->questions === false) {
             //Get content unit names, to be assigned to questions for easy access
-            $contentNames = eF_getTableDataFlat("content", "id, name", "lessons_ID=".$this->test['lessons_ID']);
+            $contentNames = sC_getTableDataFlat("content", "id, name", "lessons_ID=".$this->test['lessons_ID']);
             if (sizeof($contentNames) > 0) {
                 $contentNames = array_combine($contentNames['id'], $contentNames['name']);
             }
             //Get test questions
-            $result = eF_getTableData("tests_to_questions tq, questions q", "q.*, tq.weight, tq.previous_question_ID", "tq.questions_ID=q.id and tq.tests_ID=".$this->test['id']);
+            $result = sC_getTableData("tests_to_questions tq, questions q", "q.*, tq.weight, tq.previous_question_ID", "tq.questions_ID=q.id and tq.tests_ID=".$this->test['id']);
             $rejected = array();
             if (sizeof($result) > 0) {
                 foreach ($result as $value) {
@@ -350,7 +350,7 @@ class MagesterTest {
                         $value['previous_question_ID'] = $previousNode['id'];
                         $nodes[$id] = $value;
                         $previousNode = $value;
-                        eF_updateTableData("tests_to_questions", array("previous_question_ID" => $previousNode['id']), "questions_ID = ".$value['id']." and tests_ID=".$this->test['id']);
+                        sC_updateTableData("tests_to_questions", array("previous_question_ID" => $previousNode['id']), "questions_ID = ".$value['id']." and tests_ID=".$this->test['id']);
                     }
                 }
                 $this->questions = $nodes;
@@ -403,22 +403,22 @@ class MagesterTest {
         $lesson = $this->getLesson();
         $testQuestions = $this->getQuestions();
         //Get content unit names, to be assigned to questions for easy access
-        $contentNames = eF_getTableDataFlat("content", "id, name", "lessons_ID=".$this->test['lessons_ID']);
+        $contentNames = sC_getTableDataFlat("content", "id, name", "lessons_ID=".$this->test['lessons_ID']);
         if (sizeof($contentNames) > 0) {
             $contentNames = array_combine($contentNames['id'], $contentNames['name']);
         }
         if (sizeof($testQuestions) > 0) {
             // The check is here to include skill gap test management with lesson_ID = 0
             if (!empty($lesson)) {
-                $result = eF_getTableData("questions", "*", "id not in (".implode(",", array_keys($testQuestions)).") and lessons_ID=".key($lesson));
+                $result = sC_getTableData("questions", "*", "id not in (".implode(",", array_keys($testQuestions)).") and lessons_ID=".key($lesson));
             } else {
-                $result = eF_getTableData("questions", "*", "id not in (".implode(",", array_keys($testQuestions)).")");
+                $result = sC_getTableData("questions", "*", "id not in (".implode(",", array_keys($testQuestions)).")");
             }
         } else {
             if (!empty($lesson)) {
-                $result = eF_getTableData("questions", "*", "lessons_ID=".key($lesson));
+                $result = sC_getTableData("questions", "*", "lessons_ID=".key($lesson));
             } else {
-                $result = eF_getTableData("questions", "*", "");
+                $result = sC_getTableData("questions", "*", "");
             }
         }
         $nonQuestions = array();
@@ -480,10 +480,10 @@ class MagesterTest {
                 "weight" => $weight && is_numeric($weight) ? $weight : 1);
             if (!in_array($id, array_keys($testQuestions))) { //We are adding a new question
                 $fields["previous_question_ID"] = $previousId;
-                eF_insertTableData("tests_to_questions", $fields);
+                sC_insertTableData("tests_to_questions", $fields);
                 $previousId = $id;
             } else { //We are changing a question's weight
-                eF_updateTableData("tests_to_questions", $fields, "tests_ID=".$this->test['id']." and questions_ID=".$id);
+                sC_updateTableData("tests_to_questions", $fields, "tests_ID=".$this->test['id']." and questions_ID=".$id);
             }
         }
         //In order to refresh questions
@@ -530,7 +530,7 @@ class MagesterTest {
     {
         Cache::resetCache('test:'.$this->test['id']);
         if ($questionIds === false) {
-            eF_deleteTableData("tests_to_questions", "tests_ID = ".$this->test['id']);
+            sC_deleteTableData("tests_to_questions", "tests_ID = ".$this->test['id']);
             $this->questions = false; //Reset questions information
 
             return array();
@@ -539,8 +539,8 @@ class MagesterTest {
             foreach ($questionIds as $id) {
                 if (in_array($id, array_keys($testQuestions))) {
                     $previousQuestion = $testQuestions[$id]['previous_question_ID'];
-                    eF_deleteTableData("tests_to_questions", "tests_ID = ".$this->test['id']." and questions_ID=$id");
-                    eF_updateTableData("tests_to_questions", array("previous_question_ID" => $previousQuestion), "tests_ID = ".$this->test['id']." and previous_question_ID=".$id);
+                    sC_deleteTableData("tests_to_questions", "tests_ID = ".$this->test['id']." and questions_ID=$id");
+                    sC_updateTableData("tests_to_questions", array("previous_question_ID" => $previousQuestion), "tests_ID = ".$this->test['id']." and previous_question_ID=".$id);
                 }
             }
             $this->questions = false; //Reset questions information
@@ -612,7 +612,7 @@ class MagesterTest {
     {
 /*
 
-        $result = eF_getTableData("lessons, content", "lessons.id, lessons.name", "lessons.id=content.lessons_ID and content.id=".$this->test['content_ID']);
+        $result = sC_getTableData("lessons, content", "lessons.id, lessons.name", "lessons.id=content.lessons_ID and content.id=".$this->test['content_ID']);
 
         if ($result[0]['id']) {
 
@@ -628,7 +628,7 @@ class MagesterTest {
         // This check is used to discriminate skill gap tests
         if ($this->test['lessons_ID'] != 0) {
             $this->lesson = $this->test['lessons_ID'];
-            $result = eF_getTableData("lessons", "*", "id=".$this->lesson);
+            $result = sC_getTableData("lessons", "*", "id=".$this->lesson);
             if (sizeof($result) == 0) {
                 throw new MagesterLessonException(_LESSONDOESNOTEXIST.": ".$this->lesson, MagesterLessonException::LESSON_NOT_EXISTS);
             }
@@ -696,7 +696,7 @@ class MagesterTest {
             $test['lessons_ID'] = $unit['lessons_ID'];
         }
         unset($test['id']);
-        if ($newId = eF_insertTableData("tests", $test)) {
+        if ($newId = sC_insertTableData("tests", $test)) {
             if ($test['lessons_ID'] != 0) {
                 MagesterEvent::triggerEvent(array("type" => MagesterEvent::TEST_CREATION, "users_LOGIN" => $GLOBALS['currentUser']->user['login'], "lessons_ID" => $test['lessons_ID']));
             } else {
@@ -729,7 +729,7 @@ class MagesterTest {
 
      * foreach ($tests as $test) {
 
-     *      eF_insertTableData("users_to_skillgap_tests", array("users_LOGIN" => $user->user['login'], "tests_ID" => $test['id']));
+     *      sC_insertTableData("users_to_skillgap_tests", array("users_LOGIN" => $user->user['login'], "tests_ID" => $test['id']));
 
      * }
 
@@ -749,7 +749,7 @@ class MagesterTest {
     {
         // Skillgap tests have lessons_ID equal to zero by default
         if (!$auto_assigned) {
-            $all_skillgaps = eF_getTableData("tests", "id, options", "lessons_ID = 0");
+            $all_skillgaps = sC_getTableData("tests", "id, options", "lessons_ID = 0");
             $auto_assigned = array();
             foreach ($all_skillgaps as $skillgap) {
                 $options = unserialize($skillgap['options']);
@@ -844,7 +844,7 @@ class MagesterTest {
     {
         //Get all questions and assign them to an array where keys are their ids. At the same time,
         //calculate the time estimates sum for questions, which will be used in normalization.
-        $result = eF_getTableData("questions", "*", "lessons_ID=".$this->test['lessons_ID']);
+        $result = sC_getTableData("questions", "*", "lessons_ID=".$this->test['lessons_ID']);
         $sum = 0;
         foreach ($result as $value) {
             $questions[$value['id']] = QuestionFactory::factory($value);
@@ -1230,18 +1230,18 @@ class MagesterTest {
     {
         if ($user instanceof MagesterUser) {
             $login = $user->user['login'];
-        } elseif (!eF_checkParameter($user, 'login')) {
+        } elseif (!sC_checkParameter($user, 'login')) {
             throw new MagesterTestException(_INVALIDLOGIN.': '.$user, MagesterTestException::INVALID_LOGIN);
         } else {
             $login = $user;
         }
-        $result = eF_getTableData("done_tests dt, users_to_done_tests udt, users u", "dt.*, u.name as user_name, u.surname as user_surname, udt.times, udt.answers_order, udt.questions_order", "u.login = udt.users_LOGIN and udt.users_LOGIN=dt.users_LOGIN and dt.users_LOGIN = '$login' and dt.tests_ID = udt.tests_ID and dt.tests_ID=".$this->test['id']."");
+        $result = sC_getTableData("done_tests dt, users_to_done_tests udt, users u", "dt.*, u.name as user_name, u.surname as user_surname, udt.times, udt.answers_order, udt.questions_order", "u.login = udt.users_LOGIN and udt.users_LOGIN=dt.users_LOGIN and dt.users_LOGIN = '$login' and dt.tests_ID = udt.tests_ID and dt.tests_ID=".$this->test['id']."");
         if (sizeof($result) > 0) { //Get the done information for this test
             $this->doneInfo = $result[0];
             $this->doneInfo['score'] = round(100 * ($this->doneInfo['score']), 2) / 100;
             unserialize($this->doneInfo['answers_order']) !== false ? $this->doneInfo['answers_order'] = unserialize($this->doneInfo['answers_order']) : null;
             unserialize($this->doneInfo['questions_order']) !== false ? $this->doneInfo['questions_order'] = unserialize($this->doneInfo['questions_order']) : null;
-            $result = eF_getTableDataFlat("done_questions", "distinct questions_ID", "score = -1 and done_tests_ID=".$this->doneInfo['id']);
+            $result = sC_getTableDataFlat("done_questions", "distinct questions_ID", "score = -1 and done_tests_ID=".$this->doneInfo['id']);
             if (sizeof($result) > 0) {
                 foreach ($result['questions_ID'] as $id) {
                     $potentialScore += $this->getQuestionWeight($id);
@@ -1249,7 +1249,7 @@ class MagesterTest {
                 $this->doneInfo['potential_score'] = round(100 * ($this->doneInfo['score'] + $potentialScore), 2) / 100;
             }
         } else { //Otherwise, just find out how many times the user has done this test, which is an information kept always (even if a test is reset)
-            $result = eF_getTableData("users_to_done_tests", "times", "users_LOGIN = '$login' and tests_ID=".$this->test['id']);
+            $result = sC_getTableData("users_to_done_tests", "times", "users_LOGIN = '$login' and tests_ID=".$this->test['id']);
             if (sizeof($result) > 0) {
                 $this->doneInfo = $result[0];
             } else {
@@ -1290,7 +1290,7 @@ class MagesterTest {
     {
         if ($user instanceof MagesterUser) {
             $login = $user->user['login'];
-        } elseif (eF_checkParameter($user, 'login')) {
+        } elseif (sC_checkParameter($user, 'login')) {
             $login = $user;
         } else {
             throw new MagesterTestException(_INVALIDLOGIN.': '.$user, MagesterTestException::INVALID_LOGIN);
@@ -1306,20 +1306,20 @@ class MagesterTest {
             $user = MagesterUserFactory::factory($login, false, 'student');
         }
         $user->setSeenUnit($this->test['content_ID'], key($this->getLesson()), 0);
-        $check_redoOnlyWrong = eF_getTableData("completed_tests","test","archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
+        $check_redoOnlyWrong = sC_getTableData("completed_tests","test","archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
         $testObject = unserialize($check_redoOnlyWrong[0]['test']);
         if ($testObject->redoOnlyWrong == 1) {
             unset($testObject->redoOnlyWrong);
-            eF_updateTableData("completed_tests", array("test" => serialize($testObject), "archive" => 1), "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
+            sC_updateTableData("completed_tests", array("test" => serialize($testObject), "archive" => 1), "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
         } else {
-            eF_updateTableData("completed_tests", array("archive" => 1), "tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
+            sC_updateTableData("completed_tests", array("archive" => 1), "tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
         }
     }
     public function redoOnlyWrong($user)
     {
         if ($user instanceof MagesterUser) {
             $login = $user->user['login'];
-        } elseif (eF_checkParameter($user, 'login')) {
+        } elseif (sC_checkParameter($user, 'login')) {
             $login = $user;
         } else {
             throw new MagesterTestException(_INVALIDLOGIN.': '.$user, MagesterTestException::INVALID_LOGIN);
@@ -1335,10 +1335,10 @@ class MagesterTest {
             $user = MagesterUserFactory::factory($login, false, 'student');
         }
         $user->setSeenUnit($this->test['content_ID'], key($this->getLesson()), 0);
-        $result = eF_getTableData("completed_tests", "test", "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
+        $result = sC_getTableData("completed_tests", "test", "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
         $testObject = unserialize($result[0]['test']);
         $testObject->redoOnlyWrong = true;
-        eF_updateTableData("completed_tests", array("test" => serialize($testObject), "archive" => 1), "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
+        sC_updateTableData("completed_tests", array("test" => serialize($testObject), "archive" => 1), "archive=0 AND tests_ID=".($this->test['id'])." and users_LOGIN='".$login."'");
     }
     /**
 
@@ -1375,13 +1375,13 @@ class MagesterTest {
     {
         if ($user instanceof MagesterUser) {
             $login = $user->user['login'];
-        } elseif (eF_checkParameter($user, 'login')) {
+        } elseif (sC_checkParameter($user, 'login')) {
             $login = $user;
         } else {
             throw new MagesterTestException(_INVALIDLOGIN.': '.$user, MagesterTestException::INVALID_LOGIN);
         }
         if (!$instance) {
-            $result = eF_getTableData("completed_tests", "id", "users_LOGIN='".$login."' and tests_ID=".$this->test['id']);
+            $result = sC_getTableData("completed_tests", "id", "users_LOGIN='".$login."' and tests_ID=".$this->test['id']);
             foreach ($result as $value) {
                 if (is_dir(G_UPLOADPATH.$login.'/tests/'.$value['id'])) {
                     try {
@@ -1395,12 +1395,12 @@ class MagesterTest {
                 $user = MagesterUserFactory::factory($login, false, 'student');
             }
             $user->setSeenUnit($this->test['content_ID'], key($this->getLesson()), 0);
-            eF_deleteTableData("completed_tests", "users_LOGIN='".$login."' and tests_ID=".$this->test['id']);
+            sC_deleteTableData("completed_tests", "users_LOGIN='".$login."' and tests_ID=".$this->test['id']);
         } else {
-            if (!eF_checkParameter($instance, 'id')) {
+            if (!sC_checkParameter($instance, 'id')) {
                 throw new MagesterTestException(_INVALIDID.': '.$instance, MagesterTestException::INVALID_ID);
             }
-            $result = eF_getTableData("completed_tests", "*", "users_LOGIN='".$login."' and id = ".$instance);
+            $result = sC_getTableData("completed_tests", "*", "users_LOGIN='".$login."' and id = ".$instance);
             if (sizeof($result) == 0) {
                 throw new MagesterTestException(_USERHASNOTDONETEST.': '.$login, MagesterTestException::NOT_DONE_TEST);
             }
@@ -1422,7 +1422,7 @@ class MagesterTest {
                 }
                 $user->setSeenUnit($this->test['content_ID'], key($this->getLesson()), 0);
             }
-            eF_deleteTableData("completed_tests", "id=".$instance);
+            sC_deleteTableData("completed_tests", "id=".$instance);
         }
     }
     /**
@@ -1521,7 +1521,7 @@ class MagesterTest {
         //        $completedTest->completedTest['archive'] = '0';                              //The test just started; So set its status to 'incomplete'
         $testQuestions = $this->getQuestions(true);
         // lines added for redo only wrong questions
-        $resultCompleted = eF_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
+        $resultCompleted = sC_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
         $recentlyCompleted = unserialize($resultCompleted[0]['test']);
         //1. Get the random pool questions
         if ($this->options['random_pool']) {
@@ -1634,17 +1634,17 @@ class MagesterTest {
     {
         if ($user instanceof MagesterUser) {
             $login = $user->user['login'];
-        } elseif (!eF_checkParameter($user, 'login')) {
+        } elseif (!sC_checkParameter($user, 'login')) {
             throw new MagesterTestException(_INVALIDLOGIN.': '.$user, MagesterTestException::INVALID_LOGIN);
         } else {
             $login = $user;
         }
         if ($onlySolved) {
-            $result = eF_getTableData("completed_tests", "*", "status != '' and status != 'incomplete' and status != 'deleted' and users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
+            $result = sC_getTableData("completed_tests", "*", "status != '' and status != 'incomplete' and status != 'deleted' and users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
         } else {
-            $result = eF_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
+            $result = sC_getTableData("completed_tests", "*", "status != 'deleted' and users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
         }
-        $timesDone = eF_getTableData("completed_tests", "count(*)", "users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
+        $timesDone = sC_getTableData("completed_tests", "count(*)", "users_LOGIN = '$login' and tests_ID=".($this->test['id']), "id");
         $timesDone = $timesDone[0]['count(*)'];
         $status = '';
         $lastTest = false;
@@ -1746,7 +1746,7 @@ class MagesterTest {
         //$allTestQuestionsFilter = $allTestQuestions;
         // lines added for redo only wrong questions
         $allTestQuestionsFilter = array();
-        $resultCompleted = eF_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
+        $resultCompleted = sC_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
         $recentlyCompleted = unserialize($resultCompleted[0]['test']);
         if ($recentlyCompleted->redoOnlyWrong == true && !$done) {
             foreach ($recentlyCompleted->questions as $key => $value) {
@@ -1794,7 +1794,7 @@ class MagesterTest {
             }
             $weight = round(10000 * $this->getQuestionWeight($question->question['id'])) / 100;
             if ($question->time) {
-                $timeSpent = eF_convertIntervalToTime($question->question['estimate'] - $question->time);
+                $timeSpent = sC_convertIntervalToTime($question->question['estimate'] - $question->time);
                 $timeSpentString = '';
                 $timeSpent['hours'] ? $timeSpentString .= $timeSpent['hours']._HOURSSHORTHAND.'&nbsp;' : null;
                 $timeSpent['minutes'] ? $timeSpentString .= $timeSpent['minutes']._MINUTESSHORTHAND.'&nbsp;' : null;
@@ -1814,7 +1814,7 @@ class MagesterTest {
             $testString .= '<span style = "vertical-align:middle;font-weight:bold">'._QUESTION.'&nbsp;'. ($count++).'</span>
                 '.($this->options['display_weights'] || $done && !$isFeedback ? '<span style = "vertical-align:middle;margin-left:10px">('._WEIGHT.'&nbsp;'.$weight.'%)</span>' : '').'
                 '.($units[$question->question['content_ID']] && $done ? '<span style = "vertical-align:middle;margin-left:10px">'._UNIT.' "'.$units[$question->question['content_ID']].'"</span>' : '').'
-                '.(($_SESSION['s_type'] == "student" && $currentLesson->options['content_report'] == 1)? '<a href = "content_report.php?ctg=tests&edit_question='.$question->question['id'].'&question_type='.$question->question['type'].'&lessons_Id='.$_SESSION['s_lessons_ID'].'" onclick = "eF_js_showDivPopup(\''._CONTENTREPORT.'\', 1)" target = "POPUP_FRAME"><img src = "images/16x16/warning.png" border=0 style = "vertical-align:middle" alt = "'._CONTENTREPORT.'" title = "'._CONTENTREPORT.'"/></a>' : '').'
+                '.(($_SESSION['s_type'] == "student" && $currentLesson->options['content_report'] == 1)? '<a href = "content_report.php?ctg=tests&edit_question='.$question->question['id'].'&question_type='.$question->question['type'].'&lessons_Id='.$_SESSION['s_lessons_ID'].'" onclick = "sC_js_showDivPopup(\''._CONTENTREPORT.'\', 1)" target = "POPUP_FRAME"><img src = "images/16x16/warning.png" border=0 style = "vertical-align:middle" alt = "'._CONTENTREPORT.'" title = "'._CONTENTREPORT.'"/></a>' : '').'
                 </td></tr>
                 </table>'.($done ? $question->toHTMLSolved(new HTML_QuickForm(), $this->options['answers'], $this->options['given_answers']) : $question->toHTML($form)).'<br/></div>';
             if ($done && !$isFeedback) {
@@ -1992,13 +1992,13 @@ translations['areyousureyouwanttosubmittest'] = '"._AREYOUSUREYOUWANTTOSUBMITTES
             </table>';
         if ($this->options['duration']) {
             if (!$remainingTime) {
-                $remainingTime = eF_convertIntervalToTime($this->options['duration']);
+                $remainingTime = sC_convertIntervalToTime($this->options['duration']);
             } else {
-                $remainingTime = eF_convertIntervalToTime($remainingTime);
+                $remainingTime = sC_convertIntervalToTime($remainingTime);
             }
 /*
 
-            $duration        = eF_convertIntervalToTime($this->options['duration']);
+            $duration        = sC_convertIntervalToTime($this->options['duration']);
 
             $durationString .= _TESTSHOULDCOMPLETEIN.' ';
 
@@ -2044,7 +2044,7 @@ function initTimer()
         $str .= '
             var min = new String(3);
         var sec = new String(3);
-        eF_js_printTimer();
+        sC_js_printTimer();
     }';
     }
         }
@@ -2142,7 +2142,7 @@ class MagesterCompletedTest extends MagesterTest
         $this->completedTest['login'] = $login;
         $this->completedTest['testsId'] = $this->test['id'];
         if ($this->options['duration']) {
-            $this->convertedDuration = eF_convertIntervalToTime($this->options['duration']);
+            $this->convertedDuration = sC_convertIntervalToTime($this->options['duration']);
         }
     }
     /**
@@ -2329,7 +2329,7 @@ class MagesterCompletedTest extends MagesterTest
      */
     public function complete($userAnswers)
     {
-        $resultCompleted = eF_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
+        $resultCompleted = sC_getTableData("completed_tests", "test", "archive=1 AND users_LOGIN='".$_SESSION['s_login']."' AND tests_ID=".$this->test['id'], "timestamp desc");
         $recentlyCompleted = unserialize($resultCompleted[0]['test']);
         //Assign user answers to each question object, as a member
         foreach ($userAnswers as $id => $answer) {
@@ -2402,7 +2402,7 @@ class MagesterCompletedTest extends MagesterTest
 
      * <code>
 
-     * eF_updateTableData("completed_tests", $fields, "id=".$this->completedTest['id']);$test = new MagesterTest(23);
+     * sC_updateTableData("completed_tests", $fields, "id=".$this->completedTest['id']);$test = new MagesterTest(23);
 
      * $completedTest = $test->start('jdoe');
 
@@ -2433,7 +2433,7 @@ class MagesterCompletedTest extends MagesterTest
                 'time_spent' => $this->time['spent'] ? $this->time['spent'] : null,
                 'pending' => $this->completedTest['pending'] ? $this->completedTest['pending'] : 0,
                 'score' => $this->completedTest['score'] ? $this->completedTest['score'] : null);
-            eF_updateTableData("completed_tests", $fields, "id=".$this->completedTest['id']);
+            sC_updateTableData("completed_tests", $fields, "id=".$this->completedTest['id']);
         } else {
          $fields = array('tests_ID' => $this->completedTest['testsId'],
                             'users_LOGIN' => $this->completedTest['login'],
@@ -2445,14 +2445,14 @@ class MagesterCompletedTest extends MagesterTest
                 'pending' => $this->completedTest['pending'] ? $this->completedTest['pending'] : 0,
              'score' => $this->completedTest['score'] ? $this->completedTest['score'] : null);
 
-         $id = eF_insertTableData("completed_tests", $fields);
+         $id = sC_insertTableData("completed_tests", $fields);
          $this->completedTest['id'] = $id;
          $this->save();
             if ($this->options['maintain_history']) {
-          $result = eF_getTableDataFlat("completed_tests", "id", "users_LOGIN = '".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId'], "timestamp desc");
+          $result = sC_getTableDataFlat("completed_tests", "id", "users_LOGIN = '".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId'], "timestamp desc");
           if (sizeof($result['id']) > $this->options['maintain_history']) {
               $deleteThreshold = $result['id'][$this->options['maintain_history']];
-              eF_updateTableData("completed_tests", array("test" => '', 'status' => 'deleted'), "users_LOGIN = '".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId']." and id <= $deleteThreshold");
+              sC_updateTableData("completed_tests", array("test" => '', 'status' => 'deleted'), "users_LOGIN = '".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId']." and id <= $deleteThreshold");
           }
             }
         }
@@ -2516,7 +2516,7 @@ class MagesterCompletedTest extends MagesterTest
 
      * <code>
 
-     * $result = eF_getTableData("completed_tests", "*", "id=32");
+     * $result = sC_getTableData("completed_tests", "*", "id=32");
 
      * $showTest = unserialize($result[0]['test']);
 
@@ -2580,7 +2580,7 @@ class MagesterCompletedTest extends MagesterTest
 
         if ($this->options['duration']) {
 
-            $duration  = eF_convertIntervalToTime($this->options['duration']);
+            $duration  = sC_convertIntervalToTime($this->options['duration']);
 
             $durationString .= _HASMAXIMUMDURATION.' ';
 
@@ -2595,7 +2595,7 @@ class MagesterCompletedTest extends MagesterTest
         }
 
 */
-        $timeSpent = eF_convertIntervalToTime($this->time['spent']);
+        $timeSpent = sC_convertIntervalToTime($this->time['spent']);
         $completedString = ' '._ANDUSERDIDITIN.' ';
         $timeSpent['hours'] ? $completedString .= $timeSpent['hours']._HOURSSHORTHAND : null;
         $timeSpent['minutes'] ? $completedString .= $timeSpent['minutes']._MINUTESSHORTHAND.' ' : null;
@@ -2637,7 +2637,7 @@ class MagesterCompletedTest extends MagesterTest
             $editHandlesString .= '
                             <span>
                                 <img src = "images/16x16/printer.png" alt = "'._PRINT.'" title = "'._PRINT.'" border = "0" style = "vertical-align:middle">
-                                <a id = "printLink" href = "'.$url.'&print=1&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup(\''._PRINT.'\', 2)" style = "vertical-align:middle">'._PRINT.'</a></span>
+                                <a id = "printLink" href = "'.$url.'&print=1&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup(\''._PRINT.'\', 2)" style = "vertical-align:middle">'._PRINT.'</a></span>
                 <span>
                                 <img src = "images/16x16/error_delete.png" alt = "'._RESETTESTSTATUS.'" title = "'._RESETTESTSTATUS.'" border = "0" style = "vertical-align:middle">
                                 <a id = "deleteLink" href = "javascript:void(0)" onclick = "if (confirm(\''._IRREVERSIBLEACTIONAREYOUSURE.'\')) {deleteDoneTest(this)}" style = "vertical-align:middle">'._RESETTESTSTATUS.'</a></span>
@@ -2982,7 +2982,7 @@ function deleteDoneTest(el, all)
 
      * <code>
 
-     * $result     = eF_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
+     * $result     = sC_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
 
      * $showTest   = unserialize($result[0]['test']);
 
@@ -3036,23 +3036,23 @@ function deleteDoneTest(el, all)
         $this->save();
         echo $utf8Transliterate;
         exit;
-      } elseif (isset($_GET['redo_test']) && eF_checkParameter($_GET['redo_test'], 'id')) {
-       $result = eF_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_test']);
+      } elseif (isset($_GET['redo_test']) && sC_checkParameter($_GET['redo_test'], 'id')) {
+       $result = sC_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_test']);
        $test = new MagesterTest($result[0]['tests_ID']);
        $test->redo($result[0]['users_LOGIN']);
        exit;
-      } elseif (isset($_GET['redo_wrong_test']) && eF_checkParameter($_GET['redo_wrong_test'], 'id')) {
-       $result = eF_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_wrong_test']);
+      } elseif (isset($_GET['redo_wrong_test']) && sC_checkParameter($_GET['redo_wrong_test'], 'id')) {
+       $result = sC_getTableData("completed_tests", "tests_ID, users_LOGIN", "id=".$_GET['redo_wrong_test']);
        $test = new MagesterTest($result[0]['tests_ID']);
        $test->redoOnlyWrong($result[0]['users_LOGIN']);
        exit;
       } elseif (isset($_GET['delete_done_test'])) {
        if (isset($_GET['all'])) {
         $this->undo($this->completedTest['login']);
-        //eF_deleteTableData("completed_tests", "users_LOGIN='".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId']);
+        //sC_deleteTableData("completed_tests", "users_LOGIN='".$this->completedTest['login']."' and tests_ID=".$this->completedTest['testsId']);
        } else {
         $this->undo($this->completedTest['login'], $this->completedTest['id']);
-        //eF_deleteTableData("completed_tests", "id=".$this->completedTest['id']);
+        //sC_deleteTableData("completed_tests", "id=".$this->completedTest['id']);
        }
        exit;
       } elseif (isset($_GET['question_score'])) {
@@ -3395,7 +3395,7 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
 
      * <code>
 
-     * $result     = eF_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
+     * $result     = sC_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
 
      * $showTest   = unserialize($result[0]['test']);
 
@@ -3424,7 +3424,7 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
             $questionsAnswered[$qid] = ($question->score/100);
         }
         // Acquire from the DB all skills related to the questions so that you can do the all the analysis based on the resulting skills table
-        $all_related_skills = eF_getTableData("module_hcd_skills JOIN questions_to_skills ON skills_ID = skill_ID", "*", "questions_ID IN ('".implode("','", array_keys($questionsAnswered))."')");
+        $all_related_skills = sC_getTableData("module_hcd_skills JOIN questions_to_skills ON skills_ID = skill_ID", "*", "questions_ID IN ('".implode("','", array_keys($questionsAnswered))."')");
         $skills = array();
         foreach ($questionsAnswered as $qid => $questions) {
             foreach ($all_related_skills as $skill) {
@@ -3445,7 +3445,7 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
         $analysisResults = array();
         $analysisResults['testSkills'] = $skills;
         // Get this test's general threshold
-        $testOrig = eF_getTableData("tests", "options","id = '".$this->completedTest['testsId']."'");
+        $testOrig = sC_getTableData("tests", "options","id = '".$this->completedTest['testsId']."'");
         $temp = unserialize($testOrig[0]['options']);
         $this->options['general_threshold'] = $temp['general_threshold'];
         // Get the missing skills according to the analysis
@@ -3465,9 +3465,9 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
         $user = MagesterUserFactory::factory($this->completedTest['login']);
         // SUB-COMPONENT 3: Propose lessons and courses
         $lessons_attending = implode("','", array_keys($user->getLessons()));
-        $analysisResults['lessons'] = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID","module_hcd_lesson_offers_skill.lesson_ID, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$lessons_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
+        $analysisResults['lessons'] = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID","module_hcd_lesson_offers_skill.lesson_ID, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$lessons_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
         $courses_attending = implode("','", array_keys($user->getUserCourses()));
-        $analysisResults['courses'] = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID","module_hcd_course_offers_skill.courses_ID, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$courses_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
+        $analysisResults['courses'] = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID","module_hcd_course_offers_skill.courses_ID, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$courses_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
 
         return $analysisResults;
     }
@@ -6604,7 +6604,7 @@ abstract class Question
 
      * $question = QuestionFactory::factory(4);                   //Instantiate question using question id
 
-     * $result   = eF_getTableData("questions", "*", "id=4");
+     * $result   = sC_getTableData("questions", "*", "id=4");
 
      * $question = QuestionFactory::factory($result[0]);          //Instantiate question using question array
 
@@ -6625,10 +6625,10 @@ abstract class Question
     {
         if (is_array($question)) {
             $this->question = $question;
-        } elseif (!eF_checkParameter($question, 'id')) {
+        } elseif (!sC_checkParameter($question, 'id')) {
             throw new MagesterTestException(_INVALIDID.': '.$question, MagesterTestException::INVALID_ID);
         } else {
-            $result = eF_getTableData("questions", "*", "id=".$question);
+            $result = sC_getTableData("questions", "*", "id=".$question);
             if (sizeof($result) == 0) {
                 throw new MagesterTestException(_INVALIDID.': '.$question, MagesterTestException::QUESTION_NOT_EXISTS);
             } else {
@@ -6645,7 +6645,7 @@ abstract class Question
             $plainText = mb_substr($plainText, 0, self::maxQuestionText).'...';
         }
         $this->question['plain_text'] = $plainText;
-        $this->question['estimate_interval'] = eF_convertIntervalToTime($this->question['estimate']);
+        $this->question['estimate_interval'] = sC_convertIntervalToTime($this->question['estimate']);
         if ($this->question['answers_explanation']) {
          $this->answers_explanation = unserialize($this->question['answers_explanation']);
         }
@@ -6678,10 +6678,10 @@ abstract class Question
      */
     public function delete()
     {
-        eF_deleteTableData("questions", "id=".$this->question['id']);
-        eF_deleteTableData("done_questions", "id=".$this->question['id']);
-        eF_deleteTableData("tests_to_questions", "questions_ID=".$this->question['id']);
-        eF_deleteTableData("questions_to_skills", "questions_ID=".$this->question['id']);
+        sC_deleteTableData("questions", "id=".$this->question['id']);
+        sC_deleteTableData("done_questions", "id=".$this->question['id']);
+        sC_deleteTableData("tests_to_questions", "questions_ID=".$this->question['id']);
+        sC_deleteTableData("questions_to_skills", "questions_ID=".$this->question['id']);
 
         return true;
     }
@@ -6728,7 +6728,7 @@ abstract class Question
         foreach ($this->getTests() as $id => $test) {
          Cache::resetCache('test:'.$id);
         }
-        $result = eF_updateTableData("questions", $fields, "id=".$this->question['id']);
+        $result = sC_updateTableData("questions", $fields, "id=".$this->question['id']);
 
         return $result;
     }
@@ -6761,7 +6761,7 @@ abstract class Question
      */
     public function getTests()
     {
-        $result = eF_getTableData("tests_to_questions tq, tests t", "t.*", "t.id=tq.tests_ID and tq.questions_ID=".$this->question['id']);
+        $result = sC_getTableData("tests_to_questions tq, tests t", "t.*", "t.id=tq.tests_ID and tq.questions_ID=".$this->question['id']);
         $tests = array();
         foreach ($result as $value) {
             $tests[$value['id']] = $value;
@@ -6852,7 +6852,7 @@ abstract class Question
       $timeInterval = $this->question['estimate_interval'];
       $duration = $this->question['estimate'];
       if (isset($this->time)) {
-       $timeInterval = eF_convertIntervalToTime($this->time); //The time spent in this question
+       $timeInterval = sC_convertIntervalToTime($this->time); //The time spent in this question
        $duration = $this->time;
       }
       $counterStr = '
@@ -6863,7 +6863,7 @@ questionSeconds['.$this->question['id'].'] = "'.$timeInterval['seconds'].'";
 questionDuration['.$this->question['id'].'] = "'.$duration.'";
 questionMin['.$this->question['id'].'] = new String(3);
 questionSec['.$this->question['id'].'] = new String(3);
-//eF_js_printQuestionTimer('.$this->question['id'].');
+//sC_js_printQuestionTimer('.$this->question['id'].');
 </script>';
 
       return $counterStr;
@@ -6905,7 +6905,7 @@ questionSec['.$this->question['id'].'] = new String(3);
     public static function createQuestion($question)
     {
         !isset($question['difficulty']) ? $question['difficulty'] = 'medium' : null;
-        if ($newId = eF_insertTableData("questions", $question)) {
+        if ($newId = sC_insertTableData("questions", $question)) {
    MagesterSearch::insertText($question['text'], $newId, "questions", "title");
 
          return QuestionFactory::factory($newId);
@@ -6946,12 +6946,12 @@ questionSec['.$this->question['id'].'] = new String(3);
     {
      if ($lesson instanceOf MagesterLesson) {
       $lessonId = $lesson->lesson['id'];
-     } elseif (eF_checkParameter($lesson, 'id')) {
+     } elseif (sC_checkParameter($lesson, 'id')) {
       $lessonId = $lesson;
      } else {
       throw new MagesterLessonException(_INVALIDID.": $lesson", MagesterLessonException::INVALID_ID);
      }
-     $result = eF_getTableData("questions", "*", "lessons_ID=".$lessonId, "id");
+     $result = sC_getTableData("questions", "*", "lessons_ID=".$lessonId, "id");
      foreach ($result as $value) {
    $id = $value['id'];
    unset($value['id']);
@@ -6962,8 +6962,8 @@ questionSec['.$this->question['id'].'] = new String(3);
      $duplicates = array_diff_key($checksums, $uniques);
      foreach ($duplicates as $key => $value) {
       $original = array_search($value, $uniques);
-      eF_updateTableData("tests_to_questions", array("questions_ID" => $original), "questions_ID=".$key);
-      eF_deleteTableData("questions", "id=".$key);
+      sC_updateTableData("tests_to_questions", array("questions_ID" => $original), "questions_ID=".$key);
+      sC_deleteTableData("questions", "id=".$key);
      }
     }
 }
@@ -7000,7 +7000,7 @@ class QuestionFactory
 
      * $question = QuestionFactory::factory(43);                      //Use factory function to instantiate question object with id 43
 
-     * $questionData = eF_getTableData("questions", "*", "id=43");
+     * $questionData = sC_getTableData("questions", "*", "id=43");
 
      * $question = QuestionFactory::factory($$questionData[0]);      //Use factory function to instantiate user object using prepared data
 
@@ -7022,8 +7022,8 @@ class QuestionFactory
     public static function factory($question)
     {
         if (!is_array($question)) {
-            if (eF_checkParameter($question, 'id')) {
-                $result = eF_getTableData("questions", "*", "id='".$question."'");
+            if (sC_checkParameter($question, 'id')) {
+                $result = sC_getTableData("questions", "*", "id='".$question."'");
                 if (sizeof($result) == 0) {
                     throw new MagesterTestException(_INVALIDID.': '.$question, MagesterTestException::QUESTION_NOT_EXISTS);
                 }

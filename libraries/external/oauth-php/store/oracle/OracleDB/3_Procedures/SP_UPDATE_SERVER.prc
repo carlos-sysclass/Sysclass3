@@ -13,7 +13,7 @@ P_OCR_AUTHORIZE_URI                     IN        VARCHAR2,
 P_OCR_ACCESS_TOKEN_URI                  IN        VARCHAR2,
 P_OCR_SIGNATURE_METHODS                 IN        VARCHAR2,
 P_OCR_USA_ID_REF                        IN        NUMBER,
-P_UPDATE_P_OCR_USA_ID_REF_FLAG          IN        NUMBER, -- 1:TRUE; 0:FALSE
+P_UPDATE_P_OCR_USA_ID_RsC_FLAG          IN        NUMBER, -- 1:TRUE; 0:FALSE
 P_RESULT                                OUT       NUMBER
 )
 AS
@@ -76,7 +76,7 @@ V_OCR_USA_ID_REF := P_OCR_USA_ID_REF;
             END IF;
          END IF; 
          
-         IF P_UPDATE_P_OCR_USA_ID_REF_FLAG = 0 THEN
+         IF P_UPDATE_P_OCR_USA_ID_RsC_FLAG = 0 THEN
          
             UPDATE OAUTH_CONSUMER_REGISTRY
               SET OCR_CONSUMER_KEY  = P_CONSUMER_KEY,
@@ -91,7 +91,7 @@ V_OCR_USA_ID_REF := P_OCR_USA_ID_REF;
               OCR_SIGNATURE_METHODS	= P_OCR_SIGNATURE_METHODS
               WHERE OCR_ID = P_OCR_ID;
                   
-         ELSIF P_UPDATE_P_OCR_USA_ID_REF_FLAG = 1 THEN
+         ELSIF P_UPDATE_P_OCR_USA_ID_RsC_FLAG = 1 THEN
              UPDATE OAUTH_CONSUMER_REGISTRY
               SET OCR_CONSUMER_KEY  = P_CONSUMER_KEY,
               OCR_CONSUMER_SECRET 	= P_OCR_CONSUMER_SECRET,
@@ -109,7 +109,7 @@ V_OCR_USA_ID_REF := P_OCR_USA_ID_REF;
          END IF;
       
       ELSE
-          IF P_UPDATE_P_OCR_USA_ID_REF_FLAG = 0 THEN
+          IF P_UPDATE_P_OCR_USA_ID_RsC_FLAG = 0 THEN
              V_OCR_USA_ID_REF := P_USER_ID;
           END IF;
           

@@ -22,7 +22,7 @@
                 </form>
     {/capture}
 
-    {eF_template_printBlock title=$smarty.const._BBB_BBBSERVER data=$smarty.capture.t_BBB_server absoluteImagePath=1 image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
+    {sC_template_printBlock title=$smarty.const._BBB_BBBSERVER data=$smarty.capture.t_BBB_server absoluteImagePath=1 image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
 
 {else}
     {if $smarty.get.add_BBB || $smarty.get.edit_BBB}
@@ -156,7 +156,7 @@
 			             }
                      }
 
-                     var position = eF_js_findPos(el);
+                     var position = sC_js_findPos(el);
                      var img      = document.createElement("img");
 
                      img.style.position = 'absolute';
@@ -178,7 +178,7 @@
                                      var i;
                                      for (i = 0; i < tables; i++) {
                                          if (sortedTables[i].id == 'BBBUsersTable') {
-                                             eF_js_rebuildTable(i, 0, 'null', 'desc');
+                                             sC_js_rebuildTable(i, 0, 'null', 'desc');
                                          }
                                      }
                                      */
@@ -201,18 +201,18 @@
             <div class="tabber" >
                <div class="tabbertab">
                     <h3>{$smarty.const._BBB_SCHEDULEMEETING}</h3>
-                    {eF_template_printBlock title = $smarty.const._BBB_SCHEDULEMEETING data = $smarty.capture.t_insert_BBB_code image = '32x32/calendar.png'}
+                    {sC_template_printBlock title = $smarty.const._BBB_SCHEDULEMEETING data = $smarty.capture.t_insert_BBB_code image = '32x32/calendar.png'}
                 </div>
                 {if isset($smarty.get.edit_BBB)}
                     <div class="tabbertab{if $smarty.get.tab == "users" } tabbertabdefault {/if}">
                         <h3>{$smarty.const._BBB_MEETINGATTENDANTS}</h3>
-                        {eF_template_printBlock title = $smarty.const._BBB_MEETINGATTENDANTS data = $smarty.capture.t_BBB_users image = '32x32/users.png'}
+                        {sC_template_printBlock title = $smarty.const._BBB_MEETINGATTENDANTS data = $smarty.capture.t_BBB_users image = '32x32/users.png'}
                     </div>
                 {/if}
             </div>
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._BBB_BBBMEETINGDATA data=$smarty.capture.t_BBB_tabber absoluteImagePath=1  image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
+        {sC_template_printBlock title=$smarty.const._BBB_BBBMEETINGDATA data=$smarty.capture.t_BBB_tabber absoluteImagePath=1  image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
 
     {else}
         {capture name = 't_BBB_list_code'}
@@ -286,7 +286,7 @@
         {/capture}
 
 
-        {eF_template_printBlock title=$smarty.const._BBB_BBBLIST data=$smarty.capture.t_BBB_list_code absoluteImagePath=1  image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
+        {sC_template_printBlock title=$smarty.const._BBB_BBBLIST data=$smarty.capture.t_BBB_list_code absoluteImagePath=1  image=$T_BBB_MODULE_BASELINK|cat:'images/BBB32.png'}
     {/if}
 {/if}
 

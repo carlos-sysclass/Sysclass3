@@ -84,7 +84,7 @@
                         </script>
                         {/literal}
 
-                        {eF_template_printIconTable title = $smarty.const._OPTIONSFORSOCIALMODULE columns = 4 links = $T_SOCIAL_SETTINGS image='32x32/environment.png'}
+                        {sC_template_printIconTable title = $smarty.const._OPTIONSFORSOCIALMODULE columns = 4 links = $T_SOCIAL_SETTINGS image='32x32/environment.png'}
 
                     </td></tr>
         {/capture}

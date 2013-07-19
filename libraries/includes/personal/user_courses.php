@@ -21,7 +21,7 @@ try {
      }
     }
 
-    isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
+    isset($_GET['filter']) ? $lessons = sC_filterData($lessons, $_GET['filter']) : null;
     $courseUser -> addLessons(array_keys($lessons), $courseUser -> user['user_types_ID'] ? $courseUser -> user['user_types_ID'] : $courseUser -> user['user_type'], 1);
    } elseif (isset($_GET['removeAll'])) {
     $userLessons = $courseUser -> getLessons(true);
@@ -31,7 +31,7 @@ try {
       $lessons[$lesson -> lesson['id']] = $lesson -> lesson;
      }
     }
-    isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
+    isset($_GET['filter']) ? $lessons = sC_filterData($lessons, $_GET['filter']) : null;
     $courseUser -> archiveUserLessons(array_keys($lessons));
    } elseif (isset($_GET['addAllLessonsFromTest'])) {
     // The missing and required skill set is sent over with the ajax request
@@ -39,7 +39,7 @@ try {
     $all_skills = "";
     foreach ($_GET as $key => $value) {
      // all skill-related posted values are just the skill_ID ~ a uint value
-     if (eF_checkParameter($key, 'unit')) {
+     if (sC_checkParameter($key, 'unit')) {
       if ($value == 1) {
        $skills_missing[] = $key;
       }
@@ -53,7 +53,7 @@ try {
     $alredy_attending = implode("','", array_keys($courseUser -> getLessons()));
 
     // Thus we can find the missing courses to fill the skill gap
-    $lessons_proposed = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID JOIN lessons ON lessons.id = module_hcd_lesson_offers_skill.lesson_ID","module_hcd_lesson_offers_skill.lesson_ID, lessons.*, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$alredy_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
+    $lessons_proposed = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_lesson_offers_skill ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID JOIN lessons ON lessons.id = module_hcd_lesson_offers_skill.lesson_ID","module_hcd_lesson_offers_skill.lesson_ID, lessons.*, count(module_hcd_lesson_offers_skill.skill_ID) as skills_offered", "module_hcd_lesson_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_lesson_offers_skill.lesson_ID NOT IN ('".$alredy_attending."')","","module_hcd_lesson_offers_skill.lesson_ID ORDER BY skills_offered DESC");
 
     // And assign them
     foreach ($lessons_proposed as $lesson) {
@@ -81,7 +81,7 @@ try {
     $all_skills = "";
     foreach ($_GET as $key => $value) {
      // all skill-related posted values are just the skill_ID ~ a uint value
-     if (eF_checkParameter($key, 'unit')) {
+     if (sC_checkParameter($key, 'unit')) {
       if ($value == 1) {
        $skills_missing[] = $key;
       }
@@ -95,7 +95,7 @@ try {
     $alredy_attending = implode("','", array_keys($courseUser -> getUserCourses()));
 
     // Thus we can find the missing courses to fill the skill gap
-    $courses_proposed = eF_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID JOIN courses ON courses.id = module_hcd_course_offers_skill.courses_ID","module_hcd_course_offers_skill.courses_ID, courses.*, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$alredy_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
+    $courses_proposed = sC_getTableData("module_hcd_skills LEFT OUTER JOIN module_hcd_course_offers_skill ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID JOIN courses ON courses.id = module_hcd_course_offers_skill.courses_ID","module_hcd_course_offers_skill.courses_ID, courses.*, count(module_hcd_course_offers_skill.skill_ID) as skills_offered", "module_hcd_course_offers_skill.skill_ID IN ('".$skills_missing."') AND module_hcd_course_offers_skill.courses_ID NOT IN ('".$alredy_attending."')","","module_hcd_course_offers_skill.courses_ID ORDER BY skills_offered DESC");
 
     // And assign them
     foreach ($courses_proposed as $course) {
@@ -138,7 +138,7 @@ try {
    }
    $dataSource = $lessons;
   }
-  if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && eF_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
+  if (isset($_GET['ajax']) && $_GET['ajax'] == 'courseLessonsTable' && sC_checkParameter($_GET['courseLessonsTable_source'], 'id')) {
    $smarty -> assign("T_DATASOURCE_COLUMNS", array('name', 'completed', 'score'));
    $course = new MagesterCourse($_GET['courseLessonsTable_source']);
    $courseLessons = $course -> getCourseLessons();
@@ -165,7 +165,7 @@ try {
      $totalEntries = $courseUser -> countUserCoursesAggregatingResults($constraints);
     }
    }
-   if (isset($_GET['ajax']) && $_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+   if (isset($_GET['ajax']) && $_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
     $constraints = array('archive' => false, 'active' => true, 'instance' => $_GET['instancesTable_source']) + createConstraintsFromSortedTable();
     $constraints['required_fields'] = array('has_instances', 'location', 'active_in_course', 'user_type', 'completed', 'score', 'has_course', 'num_lessons');
     $constraints['return_objects'] = false;

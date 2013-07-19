@@ -31,4 +31,4 @@
 
  {/capture}
  {/if}
-{eF_template_printBlock title = $smarty.const._UPDATESKILLSCATEGORY data = $smarty.capture.t_skill_cat_code image = '32x32/tools.png'}
+{sC_template_printBlock title = $smarty.const._UPDATESKILLSCATEGORY data = $smarty.capture.t_skill_cat_code image = '32x32/tools.png'}

@@ -19,4 +19,4 @@
             {/section}
             </table>
 {/capture}
-{eF_template_printBlock title = $smarty.const._LESSONSTATS data = $smarty.capture.t_inner_table_code absoluteImagePath = 1 image = $T_LESSONSTATS_BASELINK|cat:'images/column-reports.png' options = $T_LESSONSTATS_INNERTABLE_OPTIONS}
+{sC_template_printBlock title = $smarty.const._LESSONSTATS data = $smarty.capture.t_inner_table_code absoluteImagePath = 1 image = $T_LESSONSTATS_BASELINK|cat:'images/column-reports.png' options = $T_LESSONSTATS_INNERTABLE_OPTIONS}

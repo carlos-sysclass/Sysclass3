@@ -238,14 +238,14 @@
                                 {$T_FILE_METADATA_HTML}
                             </fieldset>
                         {/capture}
-                        {eF_template_printBlock title = $smarty.const._INFORMATIONFORFILE|cat:' &quot;'|cat:$T_FILE_METADATA.name|cat:'&quot;' data = $smarty.capture.t_file_info_code image = '32x32/information.png'}
+                        {sC_template_printBlock title = $smarty.const._INFORMATIONFORFILE|cat:' &quot;'|cat:$T_FILE_METADATA.name|cat:'&quot;' data = $smarty.capture.t_file_info_code image = '32x32/information.png'}
                     </td></tr>
             {else}
                     <tr><td class = "moduleCell">
                         {capture name = 't_file_manager_code'}
                             {$T_FILE_MANAGER}
                         {/capture}
-                        {eF_template_printBlock title=$smarty.const._FILEMANAGER data=$smarty.capture.t_file_manager_code image='32x32/file_explorer.png'}
+                        {sC_template_printBlock title=$smarty.const._FILEMANAGER data=$smarty.capture.t_file_manager_code image='32x32/file_explorer.png'}
                     </td></tr>
             {/if}
         {/capture}
@@ -454,9 +454,9 @@
 
 
 
-                                    {eF_template_printBlock title=$smarty.const._FINDEMPLOYEES data=$smarty.capture.t_search_course_code image='32x32/scorm.png' main_options=$T_TABLE_OPTIONS}
+                                    {sC_template_printBlock title=$smarty.const._FINDEMPLOYEES data=$smarty.capture.t_search_course_code image='32x32/scorm.png' main_options=$T_TABLE_OPTIONS}
                                     <br />
-                                    {eF_template_printBlock title=$smarty.const._USERSFULFILLINGCRITERIA data=$smarty.capture.t_found_employees_code image='32x32/user.png' options = $T_SENDALLMAIL_LINK}
+                                    {sC_template_printBlock title=$smarty.const._USERSFULFILLINGCRITERIA data=$smarty.capture.t_found_employees_code image='32x32/user.png' options = $T_SENDALLMAIL_LINK}
 
                             </td></tr>
     {/capture}
@@ -562,11 +562,11 @@
 {*-----------------------------Part 3: Display table-------------------------------------------------*}
 {if !$T_LAYOUT_CLASS}{assign var = "layoutClass" value = "centerFull"}{else}{assign var = "layoutClass" value = $T_LAYOUT}{/if}
 {capture name = "center_code"}
- {if $smarty.get.message}{eF_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
- {if $T_MESSAGE}{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
+ {if $smarty.get.message}{sC_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
+ {if $T_MESSAGE}{sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
  {if $T_SEARCH_MESSAGE || $smarty.get.search_message}
      {if $smarty.get.search_message}{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}{/if}
-  {eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
+  {sC_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
  {/if}
  <div>
   {$smarty.capture.moduleArchive}

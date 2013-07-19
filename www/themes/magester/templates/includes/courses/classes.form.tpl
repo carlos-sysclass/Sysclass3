@@ -6,8 +6,8 @@
 
 <script>
 	{if $T_REDIRECT_PARENT_TO}
-		window.parent.eF_js_redrawPage(0, true);
-		window.parent.eF_js_showDivPopup('{$smarty.const._NEWCOURSECLASS}');
+		window.parent.sC_js_redrawPage(0, true);
+		window.parent.sC_js_showDivPopup('{$smarty.const._NEWCOURSECLASS}');
 	{/if}
 
 	var slider_value = {$T_COURSE_FORM.max_users.value};

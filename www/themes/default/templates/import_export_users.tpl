@@ -11,8 +11,8 @@
 
 
 {if $T_MESSAGE}                            
-    {eF_template_printMessage message=$T_MESSAGE type = $T_MESSAGE_TYPE}
-    <center>{eF_template_printCloseButton reload = false}</center>
+    {sC_template_printMessage message=$T_MESSAGE type = $T_MESSAGE_TYPE}
+    <center>{sC_template_printCloseButton reload = false}</center>
     <meta http-equiv = "refresh" CONTENT = "5;URL=/import_export_users.php?close=true" />
 {/if}                                    
 

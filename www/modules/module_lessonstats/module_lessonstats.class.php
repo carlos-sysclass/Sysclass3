@@ -68,7 +68,7 @@ class module_lessonstats extends MagesterModule
         $inner_table_options = array(array('text' => _LESSONSTATS,
          'image' => $this -> moduleBaseDir . 'images/stats16', 'href' => $this -> moduleBaseUrl));
                 $currentLesson = $this -> getCurrentLesson();
-        $data = ef_getTableData("logs", "*", "action in ('login', 'logout', 'lesson')", "id desc");
+        $data = sC_getTableData("logs", "*", "action in ('login', 'logout', 'lesson')", "id desc");
         $cnt = 0;
         $logins = array();
         for ($i = 0; ( ($i < sizeof($data)) && $cnt < 20); $i++) {
@@ -94,7 +94,7 @@ class module_lessonstats extends MagesterModule
                     if ($time_diff > 3600) {
                         $time_diff = 3600;
                     }
-                    $logins[$i]['time'] = eF_convertIntervalToTime($time_diff);
+                    $logins[$i]['time'] = sC_convertIntervalToTime($time_diff);
                     break;
                 }
             }
@@ -122,7 +122,7 @@ class module_lessonstats extends MagesterModule
         $inner_table_options = array(array('text' => _LESSONSTATS_GOTOLESSONSTATSPAGE,
         'image' => $this -> moduleBaseLink."images/redo.png", 'href' => $this -> moduleBaseUrl));
         $currentLesson = $this -> getCurrentLesson();
-        $data = ef_getTableData("logs", "*", "action in ('login', 'logout', 'lesson')", "id desc");
+        $data = sC_getTableData("logs", "*", "action in ('login', 'logout', 'lesson')", "id desc");
         $cnt = 0;
         $logins = array();
         for ($i = 0; ( ($i < sizeof($data)) && $cnt < 5); $i++) {
@@ -148,7 +148,7 @@ class module_lessonstats extends MagesterModule
                     if ($time_diff > 3600) {
                         $time_diff = 3600;
                     }
-                    $logins[$i]['time'] = eF_convertIntervalToTime($time_diff);
+                    $logins[$i]['time'] = sC_convertIntervalToTime($time_diff);
                     break;
                 }
             }

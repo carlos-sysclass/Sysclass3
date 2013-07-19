@@ -78,7 +78,7 @@ class module_xcms extends MagesterExtendedModule
 		$news = news :: getNews(0, true) + news :: getNews($_SESSION['s_lessons_ID'], false);
 
 		# Filtra comunicado pela classe do aluno
-		$userClasses = ef_getTableDataFlat(
+		$userClasses = sC_getTableDataFlat(
 			"users_to_courses",
 			"classe_id",
 			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
@@ -145,14 +145,14 @@ class module_xcms extends MagesterExtendedModule
 			# Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
 			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 			# If a specific calendar date is not defined in the GET, set as the current day to be today
-			isset( $_GET['view_calendar'] ) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
+			isset( $_GET['view_calendar'] ) && sC_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today;
 			$calendarOptions = array();
 			if ( !isset( $currentUser->coreAccess['calendar'] ) || $currentUser -> coreAccess['calendar'] == 'change' ) {
 				$calendarOptions[] = array(
 					'text' 		=> _ADDCALENDAR,
 					'image' 	=> '16x16/add.png',
 					'href' 		=> basename($_SERVER['PHP_SELF']).'?ctg=calendar&add=1&view_calendar='.$view_calendar.'&popup=1',
-					'onClick' 	=> "eF_js_showDivPopup('"._ADDCALENDAR."', 2)",
+					'onClick' 	=> "sC_js_showDivPopup('"._ADDCALENDAR."', 2)",
 					'target' 	=> 'POPUP_FRAME'
 				);
 			}
@@ -190,11 +190,11 @@ class module_xcms extends MagesterExtendedModule
 		if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] != 'hidden') {
 			$today = getdate(time()); //Get current time in an array
 			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); //Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
-			isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
+			isset($_GET['view_calendar']) && sC_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
 
 			$calendarOptions = array();
 			if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] == 'change') {
-				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "eF_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
+				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "sC_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
 			}
 			$calendarOptions[] = array('text' => _GOTOCALENDAR, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar");
 
@@ -498,7 +498,7 @@ class module_xcms extends MagesterExtendedModule
 			$page_id = $editedpage['id'];
 		}
 
-		$pageBlocks = eF_getTableData(
+		$pageBlocks = sC_getTableData(
     		"module_xcms_pages_to_blocks pg2block
     		LEFT JOIN module_xcms_blocks block ON (pg2block.block_id = block.id)",
     		"pg2block.page_id, block.name, block.module, block.action, pg2block.xscope_id, pg2block.xentify_id, block.tag as block_tag, pg2block.tag as custom_tag",
@@ -537,7 +537,7 @@ class module_xcms extends MagesterExtendedModule
 			$page_id = $editedpage['id'];
 		}
 		$pageFields = $this->preFilterPageFields($editedpage);
-		eF_updateTableData("module_xcms_pages", $pageFields, "id = " . $page_id);
+		sC_updateTableData("module_xcms_pages", $pageFields, "id = " . $page_id);
 	}
 	public function getPageByPageTypeId($page_bit)
 	{
@@ -560,7 +560,7 @@ class module_xcms extends MagesterExtendedModule
 	/*
 	 public function updatePageFieldById($page_id, $fields)
 	 {
-	 eF_updateTableData("module_xcms_pages", $fields, "id = " . $page_id);
+	 sC_updateTableData("module_xcms_pages", $fields, "id = " . $page_id);
 	 }
 	 */
 }

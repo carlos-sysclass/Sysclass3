@@ -49,7 +49,7 @@
 		</table>
 	{/capture}
 
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 			= $smarty.const.__XPAY_CREATE_NEGOCIATION
 		data			= $smarty.capture.t_xpay_view_statement
 	}

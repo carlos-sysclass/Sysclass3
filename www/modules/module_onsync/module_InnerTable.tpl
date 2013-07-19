@@ -34,4 +34,4 @@
 {/capture}
 
 
-{eF_template_printBlock title=$smarty.const._ONSYNC_ONSYNCLIST data=$smarty.capture.t_onsync_list_code absoluteImagePath=1 image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png' options=$T_MODULE_ONSYNC_INNERTABLE_OPTIONS}
+{sC_template_printBlock title=$smarty.const._ONSYNC_ONSYNCLIST data=$smarty.capture.t_onsync_list_code absoluteImagePath=1 image=$T_ONSYNC_MODULE_BASELINK|cat:'images/onsync32.png' options=$T_MODULE_ONSYNC_INNERTABLE_OPTIONS}

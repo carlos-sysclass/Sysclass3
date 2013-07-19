@@ -93,7 +93,7 @@ class module_language extends MagesterModule
         if (!$force && array_key_exists($section_ID, $this->sections)) {
         	 return $this->sections[$section_ID];
         }
-        if (eF_checkParameter($section_ID, 'directory')) {
+        if (sC_checkParameter($section_ID, 'directory')) {
         	$filename = $this->moduleBaseDir . "sections/" . $section_ID . ".php.inc";
         	if (file_exists($filename)) {
         		return $this->sections[$section_ID] = require_once($filename);
@@ -235,7 +235,7 @@ class module_language extends MagesterModule
     }
     public function getLocalizedLanguageName($language_name)
     {
-    	$language_entry = eF_getTableData("languages", "translation", sprintf("name = '%s'", $language_name));
+    	$language_entry = sC_getTableData("languages", "translation", sprintf("name = '%s'", $language_name));
     	if (count($language_entry) == 0) {
 			return $language_name;
     	} else {
@@ -298,7 +298,7 @@ class module_language extends MagesterModule
     	if ($force || $this->totalLanguageModules[$language_name] < 0) {
     		$totalmodules = 0;
 
-    		$modules = eF_getTableDataFlat("modules","name","active=1");
+    		$modules = sC_getTableDataFlat("modules","name","active=1");
     		$moduleNames = $modules['name'];
 
 	    	$directory = $this->moduleBaseDir . "languages/" . $language_name;
@@ -320,7 +320,7 @@ class module_language extends MagesterModule
 	{
     	// DO A SUB-REQUEST TO ONLY DEFINE module_language TERMS
     	if ($force || $this->totalModules < 0) {
-			$modules = eF_countTableData("modules","*","active=1");
+			$modules = sC_countTableData("modules","*","active=1");
 			$this->totalModules = $modules[0]['count'];
     	}
     	return $this->totalModules;

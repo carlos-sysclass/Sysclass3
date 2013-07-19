@@ -66,7 +66,7 @@
 		</table>    
     {/capture}
 
-    {eF_template_printBlock 
+    {sC_template_printBlock 
     	title=$smarty.const.__PAGAMENTO_DASHBOARD_LIST 
     	data=$smarty.capture.t_payments_list_code 
     	contentclass = "no_padding"

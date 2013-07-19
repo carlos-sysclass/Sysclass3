@@ -20,7 +20,7 @@
 			{include file=$item.template}
 		{/capture}
 	
-		{eF_template_printBlock
+		{sC_template_printBlock
 			tabber 			= $item.title 
 			title 			= $item.title
 			data			= $smarty.capture.$index
@@ -30,7 +30,7 @@
 {/capture}
 
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._MODULE_XUSER_EDITXUSER
 	data=$smarty.capture.t_edit_user_tabbers
 	tabs = $T_MODULE_XUSER_FORM_TABS

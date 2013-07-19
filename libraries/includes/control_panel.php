@@ -19,13 +19,13 @@ try {
 
 		  'comments'    => 0,
 
-		  'session_ip'  => eF_encodeIP($_SERVER['REMOTE_ADDR']),
+		  'session_ip'  => sC_encodeIP($_SERVER['REMOTE_ADDR']),
 
 		  'lessons_ID'  => $_SESSION['s_lessons_ID']);
 
-		  eF_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
+		  sC_deleteTableData("logs", "users_LOGIN='".$_SESSION['s_login']."' AND action='lastmove'"); //Only one lastmove action interests us, so delete any other
 
-		  eF_insertTableData("logs", $fields_log);
+		  sC_insertTableData("logs", $fields_log);
 
 		 */
 	}
@@ -33,7 +33,7 @@ try {
 		/*		 * Functions to perform searches */
 		require_once 'module_search.php';
 	} elseif (isset($_GET['op']) && in_array($_GET['op'], array_keys($module_ctgs))) {
-		$module_mandatory = eF_getTableData("modules", "mandatory", "name = '" . $_GET['op'] . "'");
+		$module_mandatory = sC_getTableData("modules", "mandatory", "name = '" . $_GET['op'] . "'");
 		if ($module_mandatory[0]['mandatory'] != 'false' || isset($currentLesson->options[$_GET['op']]) || $_admin_) {
 			include(G_MODULESPATH . $_GET['op'] . '/module.php');
 			$smarty->assign("T_OP_MODULE", $module_ctgs[$_GET['op']]);
@@ -42,11 +42,11 @@ try {
 		$headerOptions = $controlPanelOptions = array();
 		//Personal messages block (Common block)(
 		if ((!isset($currentUser->coreAccess['personal_messages']) || $currentUser->coreAccess['personal_messages'] != 'hidden') && $GLOBALS['configuration']['disable_messages'] != 1) {
-			$personal_messages = eF_getTableData("f_personal_messages pm, f_folders ff", "pm.title, pm.id, pm.timestamp, pm.sender", "pm.users_LOGIN='" . $currentUser->user['login'] . "' and f_folders_ID=ff.id and ff.name='Incoming' and viewed='no'", "pm.timestamp desc limit 10"); //Get unseen messages in Incoming folder
+			$personal_messages = sC_getTableData("f_personal_messages pm, f_folders ff", "pm.title, pm.id, pm.timestamp, pm.sender", "pm.users_LOGIN='" . $currentUser->user['login'] . "' and f_folders_ID=ff.id and ff.name='Incoming' and viewed='no'", "pm.timestamp desc limit 10"); //Get unseen messages in Incoming folder
 			$smarty->assign("T_PERSONAL_MESSAGES", $personal_messages);
 
 			$personal_message_options = array(
-				array('text' => _MESSAGES, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=messages&add=1&popup=1", 'onClick' => "eF_js_showDivPopup('" . _NEWMESSAGE . "', 2)", 'target' => 'POPUP_FRAME'),
+				array('text' => _MESSAGES, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=messages&add=1&popup=1", 'onClick' => "sC_js_showDivPopup('" . _NEWMESSAGE . "', 2)", 'target' => 'POPUP_FRAME'),
 				array('text' => _GOTOINBOX, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=messages")
 			);
 			$smarty->assign("T_PERSONAL_MESSAGES_OPTIONS", $personal_message_options);
@@ -61,7 +61,7 @@ try {
 				$news = array_merge($news, news :: getNews($currentLesson->lesson['id'], true));
 			}
 			if (!$_student_ && !isset($currentUser->coreAccess['news']) || $currentUser->coreAccess['news'] == 'change') {
-				$newsOptions[] = array('text' => _ANNOUNCEMENTADD, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=news&add=1&popup=1", 'onClick' => "eF_js_showDivPopup('" . _ANNOUNCEMENTADD . "', 1)", 'target' => 'POPUP_FRAME');
+				$newsOptions[] = array('text' => _ANNOUNCEMENTADD, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=news&add=1&popup=1", 'onClick' => "sC_js_showDivPopup('" . _ANNOUNCEMENTADD . "', 1)", 'target' => 'POPUP_FRAME');
 			}
 			$newsOptions[] = array('text' => _ANNOUNCEMENTGO, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=news");
 			$smarty->assign("T_NEWS", $news);
@@ -73,11 +73,11 @@ try {
 		if (!isset($currentUser->coreAccess['calendar']) || $currentUser->coreAccess['calendar'] != 'hidden') {
 			$today = getdate(time()); //Get current time in an array
 			$today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); //Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
-			isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
+			isset($_GET['view_calendar']) && sC_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
 
 			$calendarOptions = array();
 			if (!isset($currentUser->coreAccess['calendar']) || $currentUser->coreAccess['calendar'] == 'change') {
-				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=calendar&add=1&view_calendar=" . $view_calendar . "&popup=1", "onClick" => "eF_js_showDivPopup('" . _ADDCALENDAR . "', 3)", "target" => "POPUP_FRAME");
+				$calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=calendar&add=1&view_calendar=" . $view_calendar . "&popup=1", "onClick" => "sC_js_showDivPopup('" . _ADDCALENDAR . "', 3)", "target" => "POPUP_FRAME");
 			}
 			$calendarOptions[] = array('text' => _GOTOCALENDAR, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=calendar");
 
@@ -99,13 +99,13 @@ try {
 		if ($_admin_) {
 			//New users block (Admin block)
 			if (!isset($currentUser->coreAccess['users']) || $currentUser->coreAccess['users'] != 'hidden') {
-				$users = eF_getTableData("users", "login, surname, name, timestamp", "pending=1 and archive=0", "timestamp DESC"); //Find every user that is not active... new way
+				$users = sC_getTableData("users", "login, surname, name, timestamp", "pending=1 and archive=0", "timestamp DESC"); //Find every user that is not active... new way
 				$smarty->assign("T_INACTIVE_USERS", $users); //Assign them to smarty, to be displayed at the first page
 				$smarty->assign("T_INACTIVE_USERS_LINK", basename($_SERVER['PHP_SELF']) . "?ctg=users");
 			}
 			//New lessons block (Admin block)
 			if (!isset($currentUser->coreAccess['lessons']) || $currentUser->coreAccess['lessons'] != 'hidden') {
-				$lessons = eF_getTableData("users_to_lessons ul, lessons l, users u", "DISTINCT users_LOGIN,  count(lessons_ID) AS count", "ul.users_LOGIN=u.login and u.archive=0 and ul.archive=0 and l.archive=0 and ul.lessons_ID = l.id and l.course_only = 0 and ul.from_timestamp=0", "", "users_LOGIN"); //Get the new lesson registrations
+				$lessons = sC_getTableData("users_to_lessons ul, lessons l, users u", "DISTINCT users_LOGIN,  count(lessons_ID) AS count", "ul.users_LOGIN=u.login and u.archive=0 and ul.archive=0 and l.archive=0 and ul.lessons_ID = l.id and l.course_only = 0 and ul.from_timestamp=0", "", "users_LOGIN"); //Get the new lesson registrations
 				$smarty->assign("T_NEW_LESSONS", $lessons); //Assign the list to smarty, to be displayed at the first page
 
 				$constraints = array('archive' => false, 'active' => true);
@@ -119,7 +119,7 @@ try {
 			//Projects block
 			if ($currentLesson->options['projects'] && $GLOBALS['configuration']['disable_projects'] != 1) {
 				if ($_professor_) {
-					$result = eF_getTableData("users_to_projects as up,projects as p", "p.title,p.id,up.users_LOGIN,up.upload_timestamp", "p.lessons_ID=" . $_SESSION['s_lessons_ID'] . " and p.id=up.projects_ID and filename!=''", "up.upload_timestamp desc");
+					$result = sC_getTableData("users_to_projects as up,projects as p", "p.title,p.id,up.users_LOGIN,up.upload_timestamp", "p.lessons_ID=" . $_SESSION['s_lessons_ID'] . " and p.id=up.projects_ID and filename!=''", "up.upload_timestamp desc");
 					foreach ($result as $value) {
 						$projects[$value['id']] = $value;
 					}
@@ -142,9 +142,9 @@ try {
 			if ((!isset($currentUser->coreAccess['forum']) || $currentUser->coreAccess['forum'] != 'hidden') && $GLOBALS['configuration']['disable_forum'] != 1) {
 				//changed  l.name as show_lessons_name to l.name as lessons_name
 				$forum_messages =
-						eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID = '" . $currentLesson->lesson['id'] . "'", "fm.timestamp desc");
+						sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID = '" . $currentLesson->lesson['id'] . "'", "fm.timestamp desc");
 
-				$forum_lessons_ID = eF_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
+				$forum_lessons_ID = sC_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
 				$smarty->assign("T_FORUM_MESSAGES", $forum_messages);
 
 				$smarty->assign("T_FORUM_LESSONS_ID", $forum_lessons_ID[0]['id']);
@@ -152,7 +152,7 @@ try {
 				$forumOptions = array();
 				if ($forum_lessons_ID[0]['id']) {
 					if (!isset($currentUser->coreAccess['forum']) || $currentUser->coreAccess['forum'] == 'change') {
-						$forumOptions[] = array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=forum&add=1&type=topic&forum_id=" . $forum_lessons_ID[0]['id'] . "&popup=1", 'onclick' => "eF_js_showDivPopup('" . _NEWMESSAGE . "', 2)", 'target' => 'POPUP_FRAME');
+						$forumOptions[] = array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=forum&add=1&type=topic&forum_id=" . $forum_lessons_ID[0]['id'] . "&popup=1", 'onclick' => "sC_js_showDivPopup('" . _NEWMESSAGE . "', 2)", 'target' => 'POPUP_FRAME');
 					}
 				}
 				$forumOptions[] = (array('text' => _GOTOFORUM, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=forum"));
@@ -173,7 +173,7 @@ try {
 			if (!isset($currentUser->coreAccess['content']) || $currentUser->coreAccess['content'] != 'hidden') {
 				$testIds = $currentLesson->getTests(false, true);
 				if (sizeof($testIds) > 0) {
-					$result = eF_getTableData("completed_tests ct, tests t", "ct.id, ct.users_LOGIN, ct.timestamp, ct.status, t.name", "ct.status != 'deleted' and ct.pending=1 and ct.status != 'incomplete' and ct.archive = 0 and ct.tests_ID = t.id and ct.tests_ID in (" . implode(",", $testIds) . ")", "", "ct.timestamp DESC limit 10");
+					$result = sC_getTableData("completed_tests ct, tests t", "ct.id, ct.users_LOGIN, ct.timestamp, ct.status, t.name", "ct.status != 'deleted' and ct.pending=1 and ct.status != 'incomplete' and ct.archive = 0 and ct.tests_ID = t.id and ct.tests_ID in (" . implode(",", $testIds) . ")", "", "ct.timestamp DESC limit 10");
 					$smarty->assign("T_COMPLETED_TESTS", $result);
 				}
 			}
@@ -182,7 +182,7 @@ try {
 
 		if ($_student_) {
 
-			$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
+			$classeData = sC_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
 
 			// GET USER CLASS
 			$courseClass = $classeData[0]['classe_id'];
@@ -227,13 +227,13 @@ try {
 			}
 			//Progress, status and start/continue block
 			if (!$currentLesson->options['tracking'] || $currentUser->coreAccess['content'] == 'hidden') {
-				$currentLesson->options['lesson_info'] ? $controlPanelOptions[] = array('text' => _LESSONINFORMATION, 'image' => '32x32/information.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information', 'onClick' => "eF_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME') : null;
+				$currentLesson->options['lesson_info'] ? $controlPanelOptions[] = array('text' => _LESSONINFORMATION, 'image' => '32x32/information.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information', 'onClick' => "sC_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME') : null;
 			} else {
 				$userProgress = MagesterStats :: getUsersLessonStatus($currentLesson, $currentUser->user['login']);
 				$userProgress = $userProgress[$currentLesson->lesson['id']][$currentUser->user['login']];
 				$seenContent = MagesterStats::getStudentsSeenContent($currentLesson, $currentUser);
 				$seenContent = $seenContent[$currentLesson->lesson['id']][$currentUser->user['login']];
-				$result = eF_getTableData("users_to_lessons", "current_unit", "users_LOGIN = '" . $currentUser->user['login'] . "' and lessons_ID = " . $currentLesson->lesson['id']);
+				$result = sC_getTableData("users_to_lessons", "current_unit", "users_LOGIN = '" . $currentUser->user['login'] . "' and lessons_ID = " . $currentLesson->lesson['id']);
 				sizeof($result) > 0 ? $userProgress['current_unit'] = $result[0]['current_unit'] : $userProgress['current_unit'] = false;
 				if ($userProgress['lesson_passed'] && !$userProgress['completed']) {
 					if (!$userProgress['completed'] && $currentLesson->options['auto_complete']) {
@@ -245,14 +245,14 @@ try {
 						$userProgress['comments'] = $timestamp;
 					} else {
 						if ($currentLesson->options['show_percentage']) {
-							$headerOptions[] = array('text' => _YOUHAVEMETCONDITIONS, 'image' => '32x32/semi_success.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information&popup=1', 'onClick' => "eF_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME');
+							$headerOptions[] = array('text' => _YOUHAVEMETCONDITIONS, 'image' => '32x32/semi_success.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information&popup=1', 'onClick' => "sC_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME');
 						}
 					}
 				}
 				//Separate if because it might have just been set completed, from the previous if
 				if ($userProgress['completed']) {
 					$smarty->assign("T_LESSON_COMPLETED", $userProgress['completed']);
-					$headerOptions[] = array('text' => _LESSONCOMPLETE, 'image' => '32x32/success.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=progress&popup=1', 'onclick' => "eF_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME');
+					$headerOptions[] = array('text' => _LESSONCOMPLETE, 'image' => '32x32/success.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=progress&popup=1', 'onclick' => "sC_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME');
 				}
 				if ($userProgress['current_unit']) { //If there exists a value within the 'current_unit' attribute, it means that the student was in the lesson before. Seek the first unit that he hasn't seen yet
 					$firstUnseenUnit = $currentContent->getFirstNode($firstNodeIterator);
@@ -277,14 +277,14 @@ try {
 				}
 
 				if (isset($currentLesson->options['show_dashboard']) && !$currentLesson->options['show_dashboard']) {
-					eF_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=content&view_unit=" . $firstUnseenUnit['id']);
+					sC_redirect("" . basename($_SERVER['PHP_SELF']) . "?ctg=content&view_unit=" . $firstUnseenUnit['id']);
 				}
 
-				$currentLesson->options['lesson_info'] ? $headerOptions[] = array('text' => _LESSONINFORMATION, 'image' => '32x32/information.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information&popup=1', 'onClick' => "eF_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME') : null;
+				$currentLesson->options['lesson_info'] ? $headerOptions[] = array('text' => _LESSONINFORMATION, 'image' => '32x32/information.png', 'href' => basename($_SERVER['PHP_SELF']) . '?ctg=lesson_information&popup=1', 'onClick' => "sC_js_showDivPopup('" . _LESSONINFORMATION . "', 2)", 'target' => 'POPUP_FRAME') : null;
 			}
 			//Digital library mini file manager block
 			if ($currentLesson->options['digital_library'] && $currentUser->coreAccess['content'] != 'hidden') { //If the lesson digital library is enabled
-				$result = eF_getTableData("files", "*", "shared=" . $currentLesson->lesson['id']);
+				$result = sC_getTableData("files", "*", "shared=" . $currentLesson->lesson['id']);
 				foreach ($result as $value) {
 					try {
 						$sharedFiles[G_ROOTPATH . $value['path']] = new MagesterFile($value['id']);
@@ -310,10 +310,10 @@ try {
 		$innerTableIdentifier = $currentUser->user['user_type'] . '_cpanel';
 		//Calculate element positions, so they can be rearreanged accordingly to the user selection
 		if ($_admin_) {
-			$elementPositions = eF_getTableData("configuration", "value", "name='" . $_SESSION['s_login'] . "_positions'");
+			$elementPositions = sC_getTableData("configuration", "value", "name='" . $_SESSION['s_login'] . "_positions'");
 			$elementPositions[0]['positions'] = $elementPositions[0]['value'];
 		} else {
-			$elementPositions = eF_getTableData("users_to_lessons", "positions", "lessons_ID=" . $currentLesson->lesson['id'] . " AND users_LOGIN='" . $currentUser->user['login'] . "'");
+			$elementPositions = sC_getTableData("users_to_lessons", "positions", "lessons_ID=" . $currentLesson->lesson['id'] . " AND users_LOGIN='" . $currentUser->user['login'] . "'");
 			if ($_student_ && sizeof($elementPositions) == 0 && $currentLesson->options['default_positions']) {
 				$elementPositions[0]['positions'] = $currentLesson->options['default_positions'];
 			}
@@ -332,7 +332,7 @@ try {
 					setcookie("innerTables[$key]", "", time() - 86400, "/");
 				}
 				unset($elementPositions['update']);
-				eF_updateTableData("users_to_lessons", array("positions" => serialize($elementPositions)), "lessons_ID=" . $currentLesson->lesson['id'] . " AND users_LOGIN='" . $currentUser->user['login'] . "'");
+				sC_updateTableData("users_to_lessons", array("positions" => serialize($elementPositions)), "lessons_ID=" . $currentLesson->lesson['id'] . " AND users_LOGIN='" . $currentUser->user['login'] . "'");
 				//$cacheKey = "user_lesson_status:lesson:".$currentLesson -> lesson['id']."user:".$currentUser -> user['login'];
 				//Cache::resetCache($cacheKey);
 			}
@@ -396,7 +396,7 @@ try {
 			}
 			/*
 			  if (!isset($currentUser -> coreAccess['logout_user']) || $currentUser -> coreAccess['logout_user'] == 'view') {
-			  $controlPanelOptions[] = array('text' => _LOGOUTUSER, 'image' => "32x32/logout.png", 'href' => "administrator.php?ctg=logout_user&popup=1", 'onClick' => "eF_js_showDivPopup('"._LOGOUTUSER."', 0)", 'target' => 'POPUP_FRAME', 'group' => 2);
+			  $controlPanelOptions[] = array('text' => _LOGOUTUSER, 'image' => "32x32/logout.png", 'href' => "administrator.php?ctg=logout_user&popup=1", 'onClick' => "sC_js_showDivPopup('"._LOGOUTUSER."', 0)", 'target' => 'POPUP_FRAME', 'group' => 2);
 			  }
 			 */
 			if (!isset($currentUser->coreAccess['backup']) || $currentUser->coreAccess['backup'] != 'hidden') {
@@ -468,7 +468,7 @@ try {
 				$controlPanelOptions[12] = array('text' => _USERSPROGRESS, 'image' => "32x32/status.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=progress", 'group' => 4);
 			}
 			if ($currentUser->coreAccess['forum'] != 'hidden' && $GLOBALS['configuration']['disable_forum'] != 1) {
-				$resultForum = eF_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
+				$resultForum = sC_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
 				$currentLesson->options['forum'] ? $controlPanelOptions[18] = array('text' => _FORUM, 'image' => "32x32/forum.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=forum&forum=" . $resultForum[0]['id'], 'group' => 5) : null;
 			}
 			if ((!isset($currentUser->coreAccess['personal_messages']) || $currentUser->coreAccess['personal_messages'] != 'hidden') && $GLOBALS['configuration']['disable_messages'] != 1) {
@@ -488,7 +488,7 @@ try {
 				$headerOptions[] = $option;
 			}
 			if ($currentUser->coreAccess['forum'] != 'hidden' && $GLOBALS['configuration']['disable_forum'] != 1 && $currentLesson->options['forum']) {
-				$resultForum = eF_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
+				$resultForum = sC_getTableData("f_forums", "id", "lessons_ID=" . $_SESSION['s_lessons_ID']);
 				$option = array('text' => _FORUM, 'image' => "32x32/forum.png", 'href' => basename($_SERVER['PHP_SELF']) . "?ctg=forum&forum=" . $resultForum[0]['id'], 'group' => 5);
 				$controlPanelOptions[] = $option;
 				$headerOptions[] = $option;
@@ -524,7 +524,7 @@ try {
 				if ($centerLinkInfo) {
 					$controlPanelOption = array(
 						'text' => $centerLinkInfo['title'],
-						'image' => eF_getRelativeModuleImagePath($centerLinkInfo['image']),
+						'image' => sC_getRelativeModuleImagePath($centerLinkInfo['image']),
 						'href' => $centerLinkInfo['link'],
 						'image_class' => $centerLinkInfo['image_class'],
 						'class' => $centerLinkInfo['class']
@@ -534,6 +534,7 @@ try {
 							case "module_dimdim" :
 							case "module_chat" :
 							case "module_bbb" :
+							case "module_quick_mails" :
 							case "module_onsync" :
 							case "module_blogs" :
 							case "module_translate" :
@@ -610,6 +611,6 @@ try {
 	}
 } catch (Exception $e) {
 	$smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-	$message = _SOMEPROBLEMOCCURED . ': ' . $e->getMessage() . ' (' . $e->getCode() . ') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\'' . _ERRORDETAILS . '\', 2, \'error_details\')">' . _MOREINFO . '</a>';
+	$message = _SOMEPROBLEMOCCURED . ': ' . $e->getMessage() . ' (' . $e->getCode() . ') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\'' . _ERRORDETAILS . '\', 2, \'error_details\')">' . _MOREINFO . '</a>';
 	$message_type = 'failure';
 }

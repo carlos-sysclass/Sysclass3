@@ -24,9 +24,9 @@ function formatStaticText($value) {
 }
 
 function filterSortPage($dataSource) {
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-    if (isset($_GET['sort']) && $_GET['sort'] && eF_checkParameter($_GET['sort'], 'text')) {
+    if (isset($_GET['sort']) && $_GET['sort'] && sC_checkParameter($_GET['sort'], 'text')) {
         $sort = $_GET['sort'];
         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
     } else {
@@ -34,14 +34,14 @@ function filterSortPage($dataSource) {
         $order = 'desc';
     }
 
-    $dataSource = eF_multiSort($dataSource, $sort, $order);
+    $dataSource = sC_multiSort($dataSource, $sort, $order);
     if (isset($_GET['filter'])) {
-        $dataSource = eF_filterData($dataSource, $_GET['filter']);
+        $dataSource = sC_filterData($dataSource, $_GET['filter']);
     }
     $tableSize = sizeof($dataSource);
 
-    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
         $dataSource = array_slice($dataSource, $offset, $limit, true);
     }
 
@@ -72,9 +72,9 @@ function prepareFormRenderer($form) {
 function createConstraintsFromSortedTable() {
     $constraints = array();
 
-    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $constraints['offset'] = $_GET['offset'] : null;
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int') ? $constraints['limit'] = $_GET['limit'] : $constraints['limit'] = G_DEFAULT_TABLE_SIZE;
-    isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'alnum_with_spaces') ? $constraints['sort'] = $_GET['sort'] : null;
+    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $constraints['offset'] = $_GET['offset'] : null;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int') ? $constraints['limit'] = $_GET['limit'] : $constraints['limit'] = G_DEFAULT_TABLE_SIZE;
+    isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'alnum_with_spaces') ? $constraints['sort'] = $_GET['sort'] : null;
     isset($_GET['filter']) ? $constraints['filter'] = $_GET['filter'] : null;
     isset($_GET['order']) && in_array($_GET['order'], array('asc', 'desc')) ? $constraints['order'] = $_GET['order'] : $constraints['order'] = 'asc';
 
@@ -108,7 +108,7 @@ function handleNormalFlowExceptions($e) {
     $GLOBALS['smarty']->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
     $GLOBALS['message'] = $e->getMessage();
     if ($e->getCode()) {
-        $GLOBALS['message'] .= ' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $GLOBALS['message'] .= ' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     }
     $GLOBALS['message_type'] = 'failure';
 }
@@ -121,7 +121,7 @@ function handleNormalFlowExceptions($e) {
  * @param: message the templated message to be formulated
  * @param: template_substituions: the array in the form array("fieldA" => "valueA",...) to substitute ###fieldA### with valueA
  */
-function eF_formulateTemplateMessage($message, $template_substitutions) {
+function sC_formulateTemplateMessage($message, $template_substitutions) {
     foreach ($template_substitutions as $field => $value) {
         $message = str_replace("###" . $field . "###", $value, $message);
     }
@@ -158,7 +158,7 @@ function profile($start = true, &$path) {
  * <br/>Example:
  * <code>
  * debug();
- * eF_getTableData("users", "*", "");
+ * sC_getTableData("users", "*", "");
  * debug(false);
  * </code>
  *
@@ -181,7 +181,7 @@ function debug($mode = true, $level = E_ALL) {
     }
 }
 
-function eF_truncatePath($string, $length = 40, $pathLimit = 6, $etc = '...', $delimiter = "&nbsp;&rarr;&nbsp;") {
+function sC_truncatePath($string, $length = 40, $pathLimit = 6, $etc = '...', $delimiter = "&nbsp;&rarr;&nbsp;") {
     $stripped = strip_tags($string); //remove tags to count characters
     $piecesStripped = explode($delimiter, $stripped);
     if (mb_strlen($stripped) <= $length) {
@@ -257,7 +257,7 @@ function formatLogin($login, $fields = array(), $duplicate = true) {
     } else {
         if (!isset($GLOBALS['_usernames'])) {
             $GLOBALS['_usernames'] = array();
-            $result = eF_getTableDataFlat("users", "login, name, surname, user_type");
+            $result = sC_getTableDataFlat("users", "login, name, surname, user_type");
             foreach ($result['login'] as $key => $value) {
                 $replacements = array($result['surname'][$key], $result['name'][$key], $value, mb_substr($result['name'][$key], 0, 1), $roles[$result['user_type'][$key]]);
                 $format = trim(str_replace($tags, $replacements, $GLOBALS['configuration']['username_format']));
@@ -451,7 +451,7 @@ function formatHTMLTableToText($table) {
 /**
  * Sort multi-dimensional arrays
  */
-function eF_multiSort($array, $sort_by, $sort_order = 'asc') {
+function sC_multiSort($array, $sort_by, $sort_order = 'asc') {
     if (!in_array($sort_by, array_keys(current($array)))) {
         return $array;
     }
@@ -546,14 +546,14 @@ function checkPermissions($dir) {
  * This function takes an IP representation and converts it to its hexadecimal equivalent
  * <br/> Example:
  * <code>
- * eF_encodeIP('127.0.0.1');         //Outputs: 7f000001
+ * sC_encodeIP('127.0.0.1');         //Outputs: 7f000001
  * </code>
  *
  * @param string $dotquad_ip The string representing the IP
  * @return string The hexadecimal representation of the IP
  * @version 1.0
  */
-function eF_encodeIP($dotquad_ip) {
+function sC_encodeIP($dotquad_ip) {
     $ip_sep = explode('.', $dotquad_ip);
 
     return sprintf('%02x%02x%02x%02x', $ip_sep[0], $ip_sep[1], $ip_sep[2], $ip_sep[3]);
@@ -566,14 +566,14 @@ function eF_encodeIP($dotquad_ip) {
  * equivalent human readable format.
  * <br/> Example:
  * <code>
- * eF_decodeIP('7f000001');         //Outputs: 127.0.0.1
+ * sC_decodeIP('7f000001');         //Outputs: 127.0.0.1
  * </code>
  *
  * @param string $hex_ip The hexadecimal representation of the IP
  * @return string The human readable representation of the IP
  * @version 1.0
  */
-function eF_decodeIP($hex_ip) {
+function sC_decodeIP($hex_ip) {
     if (!$hex_ip) {
         return '';
     }
@@ -594,7 +594,7 @@ function eF_decodeIP($hex_ip) {
  * @return bool true if the client may access the system
  * @version 1.0
  */
-function eF_checkIP() {
+function sC_checkIP() {
     $client_ip = $_SERVER['REMOTE_ADDR'];
     $allowedIPs = $GLOBALS['configuration']['ip_white_list']; //Read the allowed IPs
     if (!$allowedIPs || !$client_ip) { //If the database doesn't
@@ -650,7 +650,7 @@ function eF_checkIP() {
  * @return string The string returned
  * @version 0.8
  */
-function eF_convertTextToSmilies($str) {
+function sC_convertTextToSmilies($str) {
     $img_str = ' <image src = "'.G_CURRENTTHEMEURL.'images/smilies/icon_';
     $text_array = array(':)', ':-)',
         ':(', ':-(',
@@ -702,11 +702,11 @@ function eF_convertTextToSmilies($str) {
  * @todo implementation
  * @todo Remove the global variable...
  */
-function eF_checkUserLdap($login, $password) {
+function sC_checkUserLdap($login, $password) {
     $basedn = $GLOBALS['configuration']['ldap_basedn'];
     $ldap_uid = $GLOBALS['configuration']['ldap_uid'];
     ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
-    $ds = eF_ldapConnect();
+    $ds = sC_ldapConnect();
     $sr = ldap_search($ds, $basedn, "$ldap_uid=$login");
     if (ldap_count_entries($ds, $sr) != 1) {
         return false; //User either does not exist or more than 1 users found
@@ -731,9 +731,9 @@ function eF_checkUserLdap($login, $password) {
  * @return array The array of attribute values
  * @version 1.0
  */
-function eF_getLdapValues($filter, $attributes) {
+function sC_getLdapValues($filter, $attributes) {
     $basedn = $GLOBALS['configuration']['ldap_basedn']; //The base DN is needed to perform searches
-    $ds = eF_ldapConnect();
+    $ds = sC_ldapConnect();
     $sr = ldap_search($ds, $basedn, $filter, $attributes);
     $result = ldap_get_entries($ds, $sr);
 
@@ -748,12 +748,12 @@ function eF_getLdapValues($filter, $attributes) {
  * @return resource The LDAP link identifier
  * @version 1.0
  */
-function eF_ldapConnect() {
-    $server = eF_getTableData("configuration", "value", "name='ldap_server'");
-    $port = eF_getTableData("configuration", "value", "name='ldap_port'");
-    $binddn = eF_getTableData("configuration", "value", "name='ldap_binddn'");
-    $bind_pwd = eF_getTableData("configuration", "value", "name='ldap_password'");
-    $protocol = eF_getTableData("configuration", "value", "name='ldap_protocol'");
+function sC_ldapConnect() {
+    $server = sC_getTableData("configuration", "value", "name='ldap_server'");
+    $port = sC_getTableData("configuration", "value", "name='ldap_port'");
+    $binddn = sC_getTableData("configuration", "value", "name='ldap_binddn'");
+    $bind_pwd = sC_getTableData("configuration", "value", "name='ldap_password'");
+    $protocol = sC_getTableData("configuration", "value", "name='ldap_protocol'");
     $ds = ldap_connect($GLOBALS['configuration']['ldap_server'], $GLOBALS['configuration']['ldap_port']);
     ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, $GLOBALS['configuration']['ldap_protocol']);
     ldap_set_option($ds, LDAP_OPT_TIMELIMIT, 10);
@@ -784,12 +784,12 @@ function eF_ldapConnect() {
  * <br>Example:
  * <code>
  * $param = 'Hello world!';
- * if (eF_checkParameter($param, 'string')) {
+ * if (sC_checkParameter($param, 'string')) {
  *     echo "Parameter is String";
  * }
  *
  * $param = '123';
- * if (eF_checkParameter($param, 'unit')) {
+ * if (sC_checkParameter($param, 'unit')) {
  *     echo "Parameter is Unsigned integer";
  * }
  *
@@ -797,11 +797,11 @@ function eF_ldapConnect() {
  * But be careful:
  * <code>
  * $param = '0';
- * if (eF_checkParameter($param, 'unit')) {                      //Wrong way! This will not evalute to true, since eF_checkParameter will return $param, which is 0.
+ * if (sC_checkParameter($param, 'unit')) {                      //Wrong way! This will not evalute to true, since sC_checkParameter will return $param, which is 0.
  *     echo "Parameter is Unsigned integer";
  * }
  *
- * if (eF_checkParameter($param, 'unit') !== false) {             //Correct way, since we make sure that the value returned is actually false.
+ * if (sC_checkParameter($param, 'unit') !== false) {             //Correct way, since we make sure that the value returned is actually false.
  *     echo "Parameter is Unsigned integer";
  * }
  * </code>
@@ -813,7 +813,7 @@ function eF_ldapConnect() {
  * Changes from 1.0 to 1.1:
  * - Modified email declaration, so it can detect emails that have a dot (.) in the first part (before the '@').
  */
-function eF_checkParameter($parameter, $type, $correct = false) {
+function sC_checkParameter($parameter, $type, $correct = false) {
     switch ($type) {
     case 'string':
         if (!preg_match("/^[A-Za-z]{1,100}$/", $parameter)) {
@@ -954,7 +954,7 @@ function strip_script_tags($str) {
  * @return array The navigation menu
  * @version 0.5
  */
-function eF_getMenu() {
+function sC_getMenu() {
     $menu = array();
     switch ($_SESSION['s_type']) {
     case 'administrator':
@@ -1005,7 +1005,7 @@ function eF_getMenu() {
                 $menu['lesson']['glossary'] = array('title' => _GLOSSARY, 'link' => 'professor.php?ctg=glossary', 'image' => 'glossary', 'id' => 'glossary_a');
             }
             if ($GLOBALS['currentLesson']->options['forum'] && (!isset($GLOBALS['currentUser']->coreAccess['forum']) || $GLOBALS['currentUser']->coreAccess['forum'] != 'hidden') && $GLOBALS['configuration']['disable_forum'] != 1) {
-                $forums_id = eF_getTableData("f_forums", "id", "lessons_ID=".$_SESSION['s_lessons_ID']);
+                $forums_id = sC_getTableData("f_forums", "id", "lessons_ID=".$_SESSION['s_lessons_ID']);
                 if (sizeof($forums_id) > 0) {
                     $menu['lesson']['forum'] = array('title' => _FORUM, 'link' => $_SESSION['s_type'].'.php?ctg=forum&forum='.$forums_id[0]['id'],'image' => 'message', 'id' => 'forum_a');
                 } else {
@@ -1085,7 +1085,7 @@ function eF_getMenu() {
                 }
             }
             if ($GLOBALS['currentLesson']->options['forum'] && (!isset($GLOBALS['currentUser']->coreAccess['forum']) || $GLOBALS['currentUser']->coreAccess['forum'] != 'hidden') && $GLOBALS['configuration']['disable_forum'] != 1) {
-                $forums_id = eF_getTableData("f_forums", "id", "lessons_ID=".$_SESSION['s_lessons_ID']);
+                $forums_id = sC_getTableData("f_forums", "id", "lessons_ID=".$_SESSION['s_lessons_ID']);
                 if (sizeof($forums_id) > 0) {
                     $menu['lesson']['forum'] = array('title' => _FORUM, 'link' => $_SESSION['s_type'].'.php?ctg=forum&forum='.$forums_id[0]['id'], 'image' => 'message', 'target' => "mainframe", 'id' => 'forum_a');
                 } else {
@@ -1130,7 +1130,7 @@ function eF_getMenu() {
  * $timestamp_from = mktime(10, 34, 27, 10, 7, 2005);
  * $timestamp_to = mktime(11, 47, 4, 10, 7, 2005);
  * $interval = $timestamp_to - $timestamp_from;
- * print_r(eF_convertIntervalToTime($interval));
+ * print_r(sC_convertIntervalToTime($interval));
  * </code>
  * Returns:
  * <code>
@@ -1142,7 +1142,7 @@ function eF_getMenu() {
  *)
  * </code>
  */
-function eF_convertIntervalToTime($interval, $ago = false) {
+function sC_convertIntervalToTime($interval, $ago = false) {
     $seconds = $interval % 60;
     $minutes = (($interval - $seconds) / 60) % 60;
     $hours = ($interval - $seconds - ($minutes * 60)) / 3600;
@@ -1166,19 +1166,19 @@ function eF_convertIntervalToTime($interval, $ago = false) {
     }
 }
 
-function eF_getSurveyInfo($lesson_id) {
-    $survey_about = eF_getTableData("surveys","id,survey_code,survey_name,start_date,end_date,status","lessons_ID=".$lesson_id);
+function sC_getSurveyInfo($lesson_id) {
+    $survey_about = sC_getTableData("surveys","id,survey_code,survey_name,start_date,end_date,status","lessons_ID=".$lesson_id);
     $survey_questions = array();
     for($i = 0 ; $i < sizeof($survey_about) ; $i ++)
-        $survey_questions[$i] = eF_getTableData("questions_to_surveys","count(*)","surveys_ID=".$survey_about[$i]['id']);
+        $survey_questions[$i] = sC_getTableData("questions_to_surveys","count(*)","surveys_ID=".$survey_about[$i]['id']);
     $data = array('survey_info' => $survey_about,
         'survey_questions' => $survey_questions);
 
     return $data;
 }
 
-function eF_getSurveyQuestions($survey_id) {
-    $data = eF_getTableData("questions_to_surveys","id,surveys_ID,father_ID,type,question,answers,created,info","surveys_ID=".$survey_id,"father_ID ASC");
+function sC_getSurveyQuestions($survey_id) {
+    $data = sC_getTableData("questions_to_surveys","id,surveys_ID,father_ID,type,question,answers,created,info","surveys_ID=".$survey_id,"father_ID ASC");
     if(sizeof($data) == 0)
 
         return 0;
@@ -1186,13 +1186,13 @@ function eF_getSurveyQuestions($survey_id) {
         return $data;
 }
 
-function eF_getSurveyStatistics($survey_id) {
-    $survey_questions = eF_getTableData("questions_to_surveys","type,question,answers","surveys_ID=".$survey_id,"father_ID ASC");
-    $done_users = eF_getTableData("users_to_done_surveys","users_LOGIN","surveys_ID=".$survey_id);
+function sC_getSurveyStatistics($survey_id) {
+    $survey_questions = sC_getTableData("questions_to_surveys","type,question,answers","surveys_ID=".$survey_id,"father_ID ASC");
+    $done_users = sC_getTableData("users_to_done_surveys","users_LOGIN","surveys_ID=".$survey_id);
     $votes = array();
     for ($i = 0 ; $i < sizeof($done_users) ; $i +=1) {
         $user = '"'.$done_users[$i]['users_LOGIN'].'"';
-        $user_answers = eF_getTableData("survey_questions_done sqd ,questions_to_surveys qts","sqd.user_answers,qts.type","sqd.question_ID = qts.id AND sqd.surveys_ID=".$survey_id." AND qts.surveys_ID=".$survey_id." AND qts.surveys_ID=sqd.surveys_ID AND sqd.users_LOGIN=".$user,"qts.father_ID ASC");
+        $user_answers = sC_getTableData("survey_questions_done sqd ,questions_to_surveys qts","sqd.user_answers,qts.type","sqd.question_ID = qts.id AND sqd.surveys_ID=".$survey_id." AND qts.surveys_ID=".$survey_id." AND qts.surveys_ID=sqd.surveys_ID AND sqd.users_LOGIN=".$user,"qts.father_ID ASC");
         $vote = array();
         for ($j = 0 ; $j < sizeof($survey_questions) ; $j+=1) {
             if ($user_answers[$j]['type'] == 'multiple_many') {
@@ -1234,8 +1234,8 @@ function eF_getSurveyStatistics($survey_id) {
  * Type may be one of login, mail
  * Example:<br>
  * <code>
- * eF_checkNotExist('john', 'login');                  //returns true if it exists
- * eF_checkNotExist('jdoe@somewhere.net', 'mail');     //returns true if it exists
+ * sC_checkNotExist('john', 'login');                  //returns true if it exists
+ * sC_checkNotExist('jdoe@somewhere.net', 'mail');     //returns true if it exists
  * </code>
  *
  * @param string $needle The string to check for
@@ -1243,19 +1243,19 @@ function eF_getSurveyStatistics($survey_id) {
  * @return bool True if the string exists
  * @version 1.0
  */
-function eF_checkNotExist($needle, $type) {
+function sC_checkNotExist($needle, $type) {
     switch ($type) {
     case 'login':
-        $result = eF_getTableData("users", "login", "login='$needle' and archive=0");
+        $result = sC_getTableData("users", "login", "login='$needle' and archive=0");
         break;
     case 'email':
-        $result = eF_getTableData("users", "email", "email='$needle'");
+        $result = sC_getTableData("users", "email", "email='$needle'");
         break;
     case 'user_type':
-        $result = eF_getTableData("user_types", "user_type", "user_type='$needle'");
+        $result = sC_getTableData("user_types", "user_type", "user_type='$needle'");
         break;
     case 'course':
-        $result = eF_getTableData("courses", "name", "name='$needle'");
+        $result = sC_getTableData("courses", "name", "name='$needle'");
         break;
     default:
         $result = array();
@@ -1296,7 +1296,7 @@ function vd($ar) {
  * @return array The new array
  * @version 1.0
  */
-function eF_filterData($data, $filter) {
+function sC_filterData($data, $filter) {
     $filter = trim(mb_strtolower($filter), '||');
     if ($filter) {
         foreach ($data as $key => $value) {
@@ -1320,7 +1320,7 @@ function eF_filterData($data, $filter) {
  * @version 1.0
  *
  **/
-function eF_getRelativeModuleImagePath($imageFile) {
+function sC_getRelativeModuleImagePath($imageFile) {
     // If an image inside hte
     if ($position = strpos($imageFile, "modules")) {
         $image_path = G_SERVERNAME.substr($imageFile, $position);
@@ -1338,7 +1338,7 @@ function eF_getRelativeModuleImagePath($imageFile) {
  *
  *<br>Example:
  * $modules = $user->getModules();
- * $sysMenus = eF_getModuleMenu($modules, "system");
+ * $sysMenus = sC_getModuleMenu($modules, "system");
  *
  * @param $modules the module list,
  *        $menu_category: one of "system" | "lessons" | "users" | "organization" | "tools" | "current_lesson" | "links" (for "other" menus)
@@ -1346,7 +1346,7 @@ function eF_getRelativeModuleImagePath($imageFile) {
  * @version 1.0
  *
  **/
-function eF_getModuleMenu($modules, $menu_category) {
+function sC_getModuleMenu($modules, $menu_category) {
     $links = array();
     foreach ($modules as $module) {
         if ($menu_category != "current_lesson" || ($menu_category == "current_lesson" && $GLOBALS['currentLesson']->options[$module->className])) {
@@ -1356,7 +1356,7 @@ function eF_getModuleMenu($modules, $menu_category) {
             foreach ($sidebarLinks as $mod_link) {
                 // The "moduleLink" in the following array denotes special treatment
                 $links[] = array("id" => $module->className . (($mod_link['id'])? "_".$mod_link['id']:""),
-                    "image" => eF_getRelativeModuleImagePath($mod_link['image']),
+                    "image" => sC_getRelativeModuleImagePath($mod_link['image']),
                     "link" => $mod_link['link'],
                     "title" => $mod_link['title'],
                     "moduleLink" => "1",
@@ -1375,11 +1375,11 @@ function eF_getModuleMenu($modules, $menu_category) {
  * and not only the ones for this user type
  * Used for checking for events to be executed
  */
-function eF_loadAllModules($onlyActive = false) {
+function sC_loadAllModules($onlyActive = false) {
     if ($onlyActive) {
-        $modulesDB = eF_getTableData("modules","*","active=1");
+        $modulesDB = sC_getTableData("modules","*","active=1");
     } else {
-        $modulesDB = eF_getTableData("modules","*","");
+        $modulesDB = sC_getTableData("modules","*","");
     }
     $modules = array();
     global $currentUser;
@@ -1491,7 +1491,7 @@ function printInPdfRows($str, $pdf, $row_chars = false) {
 }
 
 // Normalize picture to $maxNewWidth x $maxNewHeightof dimensions
-function eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight) {
+function sC_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight) {
     list($width, $height) = getimagesize($filename);
     $newwidth = $width;
     $newheight = $height;
@@ -1512,20 +1512,20 @@ function eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight) {
 // Normalize picture of type $extension (png, gif, jpg or jpeg) with $filename
 // to dimensions to $maxNewWidth x DimY or DimX x $maxNewHeight
 // and overwriting existing picture with the normalized one
-function eF_normalizeImage($filename, $extension, $maxNewWidth, $maxNewHeight) {
+function sC_normalizeImage($filename, $extension, $maxNewWidth, $maxNewHeight) {
     if (!extension_loaded('gd') && !extension_loaded('gd2')) {
         return false;
     }
     // Get current dimensions
     list($width, $height) = getimagesize($filename);
     // Get normalized dimensions
-    list($newwidth, $newheight) = eF_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight);
+    list($newwidth, $newheight) = sC_getNormalizedDims($filename, $maxNewWidth, $maxNewHeight);
 
-    return eF_createImage($filename, $extension, $width, $height, $newwidth, $newheight);
+    return sC_createImage($filename, $extension, $width, $height, $newwidth, $newheight);
 }
 
 // Recreate an image (width x height) with new dimensions (newwidth x newheight)
-function eF_createImage($filename, $extension, $width, $height, $newwidth, $newheight) {
+function sC_createImage($filename, $extension, $width, $height, $newwidth, $newheight) {
     if (!extension_loaded('gd') && !extension_loaded('gd2')) {
         return false;
     }
@@ -1673,13 +1673,13 @@ function utf8ToUnicode(&$str) {
 
 /**
  * Returns appropriate date format string for functions
- * Quickformat (AddElement with 'date' parameter and eF_template_html_select_date
+ * Quickformat (AddElement with 'date' parameter and sC_template_html_select_date
  * for field_order parameter
- * @param bool $returnSpaces If it is true it returns string valid for AddElement, else valid for eF_template_html_select_date
+ * @param bool $returnSpaces If it is true it returns string valid for AddElement, else valid for sC_template_html_select_date
  * @param string $format Input date format string (in the format of database). By default $GLOBALS['configuration']['date_format']
  * @return string The appropriate date format string
  */
-function eF_dateFormat($returnSpaces = true, $format = false) {
+function sC_dateFormat($returnSpaces = true, $format = false) {
     if ($format == false) {
         $format = $GLOBALS['configuration']['date_format'];
     }
@@ -1718,20 +1718,20 @@ function eF_dateFormat($returnSpaces = true, $format = false) {
     return $output;
 }
 
-function eF_assignSupervisorMissingSubBranchesRecursive() {
+function sC_assignSupervisorMissingSubBranchesRecursive() {
     $count = 0;
     $fixed = true;
     while ($fixed && $count++ < 10) {
-        $fixed = eF_assignSupervisorMissingSubBranches();
-        eF_getRights();
+        $fixed = sC_assignSupervisorMissingSubBranches();
+        sC_getRights();
     }
     //exit;
 }
 
-function eF_assignSupervisorMissingSubBranches() {
+function sC_assignSupervisorMissingSubBranches() {
     //pr($_SESSION['supervises_branches']);
     $currentUser = $GLOBALS['currentUser'];
-    $supervisor_at_branches = eF_getRights();
+    $supervisor_at_branches = sC_getRights();
     if (($currentUser->aspects['hcd'] instanceOf MagesterSupervisor) || ($currentUser->aspects['hcd'] instanceOf MagesterHcdAdministrator)) {
         $derivedSupervisorAtBranches = array_keys($currentUser->aspects['hcd']->getSupervisedBranchesRecursive()); //This dynamically calculates the branches that the user is supervisor. It is used to automatically fix discrepancies (for example, when a user is supervisor in branch A and not in branch A->B->C)
     } else {
@@ -1744,7 +1744,7 @@ function eF_assignSupervisorMissingSubBranches() {
                 'supervisor' => 1,
                 'assigned' => 0,
                 'branch_ID' => $branchId);
-            eF_insertTableData("module_hcd_employee_works_at_branch", $fields);
+            sC_insertTableData("module_hcd_employee_works_at_branch", $fields);
             $fixed = true;
         }
     }
@@ -1756,20 +1756,20 @@ function eF_assignSupervisorMissingSubBranches() {
  * Function that inserts automatic lesson skills and course skills
  * for the educational version, if they do not already exist
  */
-function eF_insertAutoLessonCourseSkills() {
+function sC_insertAutoLessonCourseSkills() {
     // Skillgap tests related code
     // Two conditions must be fulfilled - for educational version:
     // - every lesson offers a lesson specific skill [I](Knowledge of lesson: xxx) (and every course the same [II])
     // - every question is automatically linked to the skill of the lesson is belongs to [III]
     // [I] Check and addition of all existing lesson related skills
-    $lessons = eF_getTableData("lessons","*","");
-    $lesson_skills = eF_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_lesson_offers_skill", "*", "categories_ID = -1");
+    $lessons = sC_getTableData("lessons","*","");
+    $lesson_skills = sC_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_lesson_offers_skill", "*", "categories_ID = -1");
     foreach ($lessons as $lesson) {
         // If the lesson is not provided only through a course - where the course skill applies
         if ($lesson['course_only'] == 0) {
             // If the lesson's skill is not currently logged to the table of lesson-skills
             if (!in_array($lesson['id'], $lesson_skills['lesson_ID'])) {
-                $new_skill_id = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFLESSON . " ". $lesson['name'], "categories_ID" => -1));
+                $new_skill_id = sC_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFLESSON . " ". $lesson['name'], "categories_ID" => -1));
                 if (!$to_add_to_lesson_offers) {
                     $to_add_to_lesson_offers = "('".$lesson['id'] . "','". $new_skill_id . "')";
                 } else {
@@ -1779,17 +1779,17 @@ function eF_insertAutoLessonCourseSkills() {
         }
     }
     if (isset($to_add_to_lesson_offers)) {
-        eF_executeNew("INSERT INTO module_hcd_lesson_offers_skill (lesson_ID,skill_ID) VALUES " . $to_add_to_lesson_offers);
+        sC_executeNew("INSERT INTO module_hcd_lesson_offers_skill (lesson_ID,skill_ID) VALUES " . $to_add_to_lesson_offers);
     }
     // [II] Check and addition of all existing course related skills
-    $courses = eF_getTableData("courses","*","");
-    $course_skills = eF_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_course_offers_skill", "*", "categories_ID = -1");
+    $courses = sC_getTableData("courses","*","");
+    $course_skills = sC_getTableDataFlat("module_hcd_skills NATURAL JOIN module_hcd_course_offers_skill", "*", "categories_ID = -1");
     foreach ($courses as $course) {
         // If the course is not provided only through a course - where the course skill applies
         if ($course['course_only'] == 0) {
             // If the course's skill is not currently logged to the table of course-skills
             if (!in_array($course['id'], $course_skills['courses_ID'])) {
-                $new_skill_id = eF_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE. " ". $course['name'], "categories_ID" => -1));
+                $new_skill_id = sC_insertTableData("module_hcd_skills", array("description" => _KNOWLEDGEOFCOURSE. " ". $course['name'], "categories_ID" => -1));
                 if (!$to_add_to_course_offers) {
                     $to_add_to_course_offers = "('".$course['id'] . "','". $new_skill_id . "')";
                 } else {
@@ -1799,14 +1799,14 @@ function eF_insertAutoLessonCourseSkills() {
         }
     }
     if (isset($to_add_to_course_offers)) {
-        eF_executeNew("INSERT INTO module_hcd_course_offers_skill (courses_ID,skill_ID) VALUES " . $to_add_to_course_offers);
+        sC_executeNew("INSERT INTO module_hcd_course_offers_skill (courses_ID,skill_ID) VALUES " . $to_add_to_course_offers);
     }
     /// [III] Each question should offer the skill of the lesson it belongs or of the course its lesson belongs
     // ATTENTION: The following works correctly because it succeeds the code where all lessons have a corresponding skill - otherwise problem
-    $questions = eF_getTableData("questions LEFT OUTER JOIN questions_to_skills ON questions.id = questions_to_skills.questions_ID JOIN lessons ON lessons.id = questions.lessons_ID","questions.id, lessons.course_only, questions.lessons_ID, questions_to_skills.skills_ID", "questions.lessons_ID <> 0");
+    $questions = sC_getTableData("questions LEFT OUTER JOIN questions_to_skills ON questions.id = questions_to_skills.questions_ID JOIN lessons ON lessons.id = questions.lessons_ID","questions.id, lessons.course_only, questions.lessons_ID, questions_to_skills.skills_ID", "questions.lessons_ID <> 0");
     // This returns a 1-1 table: 1 lesson to its 1 corresponding skill
-    $result = eF_getTableData("module_hcd_lesson_offers_skill JOIN module_hcd_skills ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID", "module_hcd_lesson_offers_skill.*", "module_hcd_skills.categories_ID = -1");
-    //$skills = eF_getTableData("questions LEFT OUTER JOIN (questions_to_skills JOIN module_hcd_lesson_offers_skill ON questions_to_skills.skills_ID = module_hcd_lesson_offers_skill.skill_ID) ON questions.id = questions_to_skills.questions_ID JOIN lessons ON lessons.id = questions.lessons_ID WHERE questions.lessons_ID <> 0", "questions.id, questions.lessons_ID, module_hcd_lesson_offers_skill.lesson_ID,lessons.course_only", "");
+    $result = sC_getTableData("module_hcd_lesson_offers_skill JOIN module_hcd_skills ON module_hcd_skills.skill_ID = module_hcd_lesson_offers_skill.skill_ID", "module_hcd_lesson_offers_skill.*", "module_hcd_skills.categories_ID = -1");
+    //$skills = sC_getTableData("questions LEFT OUTER JOIN (questions_to_skills JOIN module_hcd_lesson_offers_skill ON questions_to_skills.skills_ID = module_hcd_lesson_offers_skill.skill_ID) ON questions.id = questions_to_skills.questions_ID JOIN lessons ON lessons.id = questions.lessons_ID WHERE questions.lessons_ID <> 0", "questions.id, questions.lessons_ID, module_hcd_lesson_offers_skill.lesson_ID,lessons.course_only", "");
     $lesson_to_skill = array();
     foreach ($result as $rid => $skill) {
         $lesson_to_skill[$skill['lesson_ID']] = $skill['skill_ID'];
@@ -1817,7 +1817,7 @@ function eF_insertAutoLessonCourseSkills() {
         //  The question belongs to a lesson outside a course with a skill_ID that is among the lesson related skill IDs or NULL and not equal to the skill of the specific lesson skill, then insert it
         if ($question['course_only'] == 0) {
             if ($question['skills_ID'] != $lesson_to_skill[$question['lessons_ID']] && (!$question['skills_ID'] || in_array($question['skills_ID'], $lesson_to_skill))) {
-                eF_insertTableData("questions_to_skills", array("questions_ID" => $question['id'], "skills_ID" => $lesson_to_skill[$question['lessons_ID']], "relevance" => 2));
+                sC_insertTableData("questions_to_skills", array("questions_ID" => $question['id'], "skills_ID" => $lesson_to_skill[$question['lessons_ID']], "relevance" => 2));
             }
             unset($questions[$qid]);
         } else {
@@ -1826,7 +1826,7 @@ function eF_insertAutoLessonCourseSkills() {
     }
     // Now correlate questions to the skills of courses that have course_only lessons with those questions
     // This returns a 1-1 table: 1 course to its 1 corresponding skill
-    $result = eF_getTableData("module_hcd_course_offers_skill JOIN module_hcd_skills ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID", "module_hcd_course_offers_skill.*", "module_hcd_skills.categories_ID = -1 AND module_hcd_course_offers_skill.courses_ID IN ('". implode("','", $lessons_only_from_courses) ."')");
+    $result = sC_getTableData("module_hcd_course_offers_skill JOIN module_hcd_skills ON module_hcd_skills.skill_ID = module_hcd_course_offers_skill.skill_ID", "module_hcd_course_offers_skill.*", "module_hcd_skills.categories_ID = -1 AND module_hcd_course_offers_skill.courses_ID IN ('". implode("','", $lessons_only_from_courses) ."')");
     $course_to_skill = array();
     foreach ($result as $rid => $skill) {
         $course_to_skill[$skill['courses_ID']] = $skill['skill_ID'];
@@ -1836,7 +1836,7 @@ function eF_insertAutoLessonCourseSkills() {
 /**
  * Function that checks that the value for an _magester social module is valid
  */
-function eF_checkSocialModuleExistance($value) {
+function sC_checkSocialModuleExistance($value) {
     // Value zero is used to denote all social modules
     if ($value == 0) {
         return true;
@@ -1853,7 +1853,7 @@ function eF_checkSocialModuleExistance($value) {
 /**
  * Returning an array with the world's timezones
  */
-function eF_getTimezones() {
+function sC_getTimezones() {
     $timezones = array();
     $timezones['Pacific/Kwajalein'] = "(GMT -12:00) Eniwetok, Kwajalein";
     $timezones['Pacific/Samoa'] = "(GMT -11:00) Midway Is, Samoa";
@@ -1967,7 +1967,7 @@ function detectBrowser() {
  * @param boolean $retainUrl Whether to retain the url as it is
  * @since 3.6.0
  */
-function eF_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
+function sC_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
     if (!$retainUrl) {
         $parts = parse_url($url);
         if (isset($parts['query']) && $parts['query']) {
@@ -2064,7 +2064,7 @@ function decryptUrl($url, $method = 'base64') {
  * @return string The string with the message
  * @version 1.0
  */
-function eF_printMessage($str, $print = true, $message_type = '') {
+function sC_printMessage($str, $print = true, $message_type = '') {
     if ($str) {
         if ($message_type == 'success') {
             $message = '
@@ -2099,7 +2099,7 @@ function eF_printMessage($str, $print = true, $message_type = '') {
  * This function is a custom wrapper function for PEAR::Mail class.
  * <br>Example:
  * <code>
- * eF_mail('admin@magester.com.br', 'Test email', 'Hello world!');
+ * sC_mail('admin@magester.com.br', 'Test email', 'Hello world!');
  * </code>
  * @param string $sender The email sender
  * @param string $recipient The email recipient. In case of multiple recipients, these are specified with a comma separated list
@@ -2112,7 +2112,7 @@ function eF_printMessage($str, $print = true, $message_type = '') {
  * - Fixed buggy behaviour
  * - Fixed return results
  */
-function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $onlyText = false, $bcc = false) {
+function sC_mail($sender, $recipient, $subject, $body, $attachments = false, $onlyText = false, $bcc = false) {
     if ($bcc) {
         $toField = 'Bcc';
     } else {
@@ -2141,13 +2141,15 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
     }
     $body = $mime->get($params);
     $hdrs = $mime->headers($hdrs);
-
+/*
     $smtp = Mail::factory('smtp', array('auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
         'host' => $GLOBALS['configuration']['smtp_host'],
         'password' => $GLOBALS['configuration']['smtp_pass'],
         'port' => $GLOBALS['configuration']['smtp_port'],
         'username' => $GLOBALS['configuration']['smtp_user'],
         'timeout' => $GLOBALS['configuration']['smtp_timeout']));
+*/
+    $smtp = Mail::factory('mail');
     //$smtp->debug= true;
     //	var_dump(get_class($smtp));
 
@@ -2161,7 +2163,7 @@ function eF_mail($sender, $recipient, $subject, $body, $attachments = false, $on
  * The language denoted by the argument is picked and returned if that language tag <----...----> exists
  * Otherwise the default language is returned
  */
-function eF_getCorrectLanguageMessage($message, $language) {
+function sC_getCorrectLanguageMessage($message, $language) {
     $language_tag = "<------------------------".$language."------------------------>";
     $pos = strpos($message, $language_tag);
     if ($pos) {
@@ -2189,7 +2191,7 @@ function eF_getCorrectLanguageMessage($message, $language) {
  * tag ###md5(...)###. The resulting string will remove the tag
  * and replace the inner bracket text with its md5 equivalent
  */
-function eF_replaceMD5($message) {
+function sC_replaceMD5($message) {
     $pos = strpos($message, "###md5(");
     //echo "*****".$pos."****<BR>";
     if ($pos) {
@@ -2198,7 +2200,7 @@ function eF_replaceMD5($message) {
         $pos2 = strpos($remaining_msg, ")###");
         //echo "*****".$pos2."****<BR>";
         if ($pos2) {
-            $message = substr($message, 0, $pos) . md5(substr($message, $pos+7, $pos2).G_MD5KEY) . eF_replaceMD5(substr($message, $pos+7+$pos2+4));
+            $message = substr($message, 0, $pos) . md5(substr($message, $pos+7, $pos2).G_MD5KEY) . sC_replaceMD5(substr($message, $pos+7+$pos2+4));
         }
     }
 
@@ -2217,7 +2219,7 @@ function eF_replaceMD5($message) {
  * @from now on, basic user_type is lesson specific.if value in users_to_lesson is NULL (because of an import), we take default basic user type from table users
  * @deprecated
  */
-function eF_getUserBasicType($login = false, $lessons_ID = false) {
+function sC_getUserBasicType($login = false, $lessons_ID = false) {
     if ($login == false) {
         $login = $_SESSION['s_login'];
     }
@@ -2233,7 +2235,7 @@ function eF_getUserBasicType($login = false, $lessons_ID = false) {
         $role = $user->user['user_type'];
     }
     if ($role != "student" && $role != "professor" && $role != "administrator") {
-        $res2 = eF_getTableData("user_types","basic_user_type","user_type='".$role."'");
+        $res2 = sC_getTableData("user_types","basic_user_type","user_type='".$role."'");
         $user_type = $res2[0]['basic_user_type'];
     } else {
         $user_type = $role;
@@ -2311,7 +2313,7 @@ function getUserTimeTarget($url) {
 }
 
 function getUserLastTimeInTarget($entity) {
-    $result = eF_getTableData("user_times", "time", "session_id = '".session_id()."' and users_LOGIN='".$_SESSION['s_login']."' and entity='".current($entity)."' and entity_id='".key($entity)."'");
+    $result = sC_getTableData("user_times", "time", "session_id = '".session_id()."' and users_LOGIN='".$_SESSION['s_login']."' and entity='".current($entity)."' and entity_id='".key($entity)."'");
     if (sizeof($result) > 0) {
         return $result[0]['time'];
     } else {

@@ -48,7 +48,7 @@
 {/capture}
 
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._MODULE_PAGAMENTO_PAYMENT_TYPES
 	data=$smarty.capture.t_payment_types_table
 	contentclass=""

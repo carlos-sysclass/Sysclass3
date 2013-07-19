@@ -4,9 +4,9 @@
                     <form name = "systemperiod">
                     <table class = "statisticsSelectDate">
                         <tr><td class = "labelCell">{$smarty.const._FROM}:&nbsp;</td>
-                            <td class = "elementCell">{eF_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
+                            <td class = "elementCell">{sC_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
                         <tr><td class = "labelCell">{$smarty.const._TO}:&nbsp;</td>
-                            <td class = "elementCell">{eF_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
+                            <td class = "elementCell">{sC_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
                         <tr><td class = "labelCell"></td>
                             <td class = "elementCell"><a href = "javascript:void(0)" onclick = "showSystemStats('day')">{$smarty.const._LAST24HOURS}</a> - <a href = "javascript:void(0)" onclick = "showSystemStats('week')">{$smarty.const._LASTWEEK}</a> - <a href = "javascript:void(0)" onclick = "showSystemStats('month')">{$smarty.const._LASTMONTH}</a></td></tr>
                         <tr><td></td>
@@ -22,7 +22,7 @@
                     </form>
                     <table class = "statisticsTools">
                        <tr><td id = "right">
-                             {$smarty.const._ACCESSSTATISTICS}: <img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_access');"/>
+                             {$smarty.const._ACCESSSTATISTICS}: <img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_access');"/>
                              <div id = "graph_table" style = "display:none"><div id = "proto_chart" class = "proto_graph"></div></div>
                             </td></tr>
                     </table>
@@ -49,7 +49,7 @@
                     <table class = "statisticsTools">
                      <tr><td>{if $smarty.get.showusers}{$smarty.const._USERSACTIVITY}{else}{$smarty.const._MOSTACTIVEUSERS}{/if}</td>
                             <td id = "right">
-         {$smarty.const._MOSTACTIVEUSERS}:<img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._MOSTACTIVEUSERS}" title = "{$smarty.const._MOSTACTIVEUSERS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_users_access');"/>
+         {$smarty.const._MOSTACTIVEUSERS}:<img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._MOSTACTIVEUSERS}" title = "{$smarty.const._MOSTACTIVEUSERS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_users_access');"/>
                             </td></tr>
                     </table>
                     <table class = "sortedTable">
@@ -123,7 +123,7 @@
                             <td>{$info.content_name}</td>
                             <td>{$T_ACTIONS[$info.action]}</td>
                             <td>#filter:timestamp_time-{$info.timestamp}#</td>
-                            <td>{$info.session_ip|eF_decodeIp}</td>
+                            <td>{$info.session_ip|sC_decodeIp}</td>
                         </tr>
                     {/foreach}
                     </table>
@@ -133,7 +133,7 @@
                 <div class = "statisticsDiv tabbertab {if (isset($smarty.get.tab) &&  $smarty.get.tab == 'user_types')} tabbertabdefault{/if}" title = "{$smarty.const._USERTYPES}">
                     <table class = "statisticsTools">
                         <tr><td id = "right">
-         {$smarty.const._USERSKIND}:<img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._USERSKIND}" title = "{$smarty.const._USERSKIND}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_user_types');"/>
+         {$smarty.const._USERSKIND}:<img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._USERSKIND}" title = "{$smarty.const._USERSKIND}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_system_user_types');"/>
                             </td></tr>
                     </table>
                     <table>
@@ -156,4 +156,4 @@
                 </div>
             </div>
         {/capture}
-        {eF_template_printBlock title = $smarty.const._SYSTEMSTATISTICS data = $smarty.capture.display_system_statistics image = '32x32/reports.png' help = 'Reports'}
+        {sC_template_printBlock title = $smarty.const._SYSTEMSTATISTICS data = $smarty.capture.display_system_statistics image = '32x32/reports.png' help = 'Reports'}

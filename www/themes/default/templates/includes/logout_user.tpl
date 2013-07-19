@@ -12,7 +12,7 @@
 {/capture}
 
 
-{eF_template_printBlock title = $smarty.const._LOGOUTUSER data = $smarty.capture.t_logout_user_code image = '32x32/logout.png'}
+{sC_template_printBlock title = $smarty.const._LOGOUTUSER data = $smarty.capture.t_logout_user_code image = '32x32/logout.png'}
 
 {if $T_MESSAGE}
     {if $T_MESSAGE_TYPE == 'success'}

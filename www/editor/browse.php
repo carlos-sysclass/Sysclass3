@@ -18,11 +18,11 @@ if (isset($_SESSION['s_login']) && $_SESSION['s_password']) {
         $currentUser = MagesterUserFactory :: factory($_SESSION['s_login']);
     } catch (MagesterException $e) {
         $message = $e -> getMessage().' ('.$e -> getCode().')';
-        eF_redirect("index.php?message=".urlencode($message)."&message_type=failure");
+        sC_redirect("index.php?message=".urlencode($message)."&message_type=failure");
         exit;
     }
 } else {
-    eF_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
+    sC_redirect("index.php?message=".urlencode(_YOUCANNOTACCESSTHISPAGE)."&message_type=failure");
     exit;
 }
 
@@ -87,7 +87,7 @@ try {
     $smarty -> assign("T_FILES", $files);
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 

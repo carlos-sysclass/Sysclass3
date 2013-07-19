@@ -23,7 +23,7 @@
 
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._YOUTUBE_YOUTUBEVIDEODATA data=$smarty.capture.t_insert_youtube_code absoluteImagePath=1  image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png'}
+        {sC_template_printBlock title=$smarty.const._YOUTUBE_YOUTUBEVIDEODATA data=$smarty.capture.t_insert_youtube_code absoluteImagePath=1  image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png'}
 
     {else}
         {capture name = 't_youtube_list_code'}
@@ -74,5 +74,5 @@
             </table>
         {/capture}
 
-        {eF_template_printBlock title=$smarty.const._YOUTUBE_YOUTUBELIST data=$smarty.capture.t_youtube_list_code absoluteImagePath=1  image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png'}
+        {sC_template_printBlock title=$smarty.const._YOUTUBE_YOUTUBELIST data=$smarty.capture.t_youtube_list_code absoluteImagePath=1  image=$T_YOUTUBE_MODULE_BASELINK|cat:'images/youtube32.png'}
     {/if}

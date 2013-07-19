@@ -35,8 +35,8 @@ class module_xrequest extends MagesterExtendedModule
 
 	public function onInstall()
 	{
-        eF_executeNew("drop table if exists module_xrequest");
-        $a = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest` (
+        sC_executeNew("drop table if exists module_xrequest");
+        $a = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest` (
 			`id` mediumint(8) NOT NULL AUTO_INCREMENT,
 			`name` varchar(255) NOT NULL,  `type` int(11) NOT NULL DEFAULT '0',
 			`email` varchar(255) NOT NULL,  `type` int(11) NOT NULL DEFAULT '0',
@@ -46,8 +46,8 @@ class module_xrequest extends MagesterExtendedModule
 			PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 			");
 
-        eF_executeNew("drop table if exists module_xrequest_historic");
-	    $b = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_historic` (
+        sC_executeNew("drop table if exists module_xrequest_historic");
+	    $b = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_historic` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `user_name` varchar(255) CHARACTER SET utf8 NOT NULL,
 					  `user_id` int(11) NOT NULL DEFAULT '0',
@@ -58,8 +58,8 @@ class module_xrequest extends MagesterExtendedModule
 
         ");
 
-	    eF_executeNew("drop table if exists module_xrequest_protocol");
-		$c = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_protocol` (
+	    sC_executeNew("drop table if exists module_xrequest_protocol");
+		$c = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_protocol` (
 			  `id` varchar(255) CHARACTER SET utf8 NOT NULL,
 			  `user_id` int(255) NOT NULL,
 			  `type` int(11) NOT NULL DEFAULT '0',
@@ -74,15 +74,15 @@ class module_xrequest extends MagesterExtendedModule
 
         ");
 
-		eF_executeNew("drop table if exists module_xrequest_status");
-		$d = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_status` (
+		sC_executeNew("drop table if exists module_xrequest_status");
+		$d = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_xrequest_status` (
 							`id` mediumint(8) NOT NULL,
 							`name` varchar(255) NOT NULL,
 							`status` int(11) DEFAULT '0',
 							PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
         ");
 
-		$e = eF_executeNew("INSERT INTO `module_xrequest_status` (`id`, `name`, `status`) VALUES
+		$e = sC_executeNew("INSERT INTO `module_xrequest_status` (`id`, `name`, `status`) VALUES
 							(1, 'Cancelado', 1),
 							(2, 'Em Andamento', 1),
 							(3, 'Aberto', 1),
@@ -96,10 +96,10 @@ class module_xrequest extends MagesterExtendedModule
     // And on deleting the module
     public function onUninstall()
     {
-        $a = eF_executeNew("drop table module_xrequest;");
-        $b = eF_executeNew("drop table module_xrequest_historic;");
-        $c = eF_executeNew("drop table module_xrequest_protocol;");
-		$d = eF_executeNew("drop table module_xrequest_status;");
+        $a = sC_executeNew("drop table module_xrequest;");
+        $b = sC_executeNew("drop table module_xrequest_historic;");
+        $c = sC_executeNew("drop table module_xrequest_protocol;");
+		$d = sC_executeNew("drop table module_xrequest_status;");
 
        return ($a && $b && $c && $d);
     }
@@ -177,7 +177,7 @@ class module_xrequest extends MagesterExtendedModule
     public function getXrequestAction($sendData)
     {
     	$smarty = $this->getSmartyVar();
-       	$object = eF_getTableData("module_xrequest", "*");
+       	$object = sC_getTableData("module_xrequest", "*");
        	$smarty -> assign("T_REQUEST_TYPES", $object);
        	return true;
 
@@ -187,7 +187,7 @@ class module_xrequest extends MagesterExtendedModule
      {
 		$smarty = $this->getSmartyVar();
 		$idRequest  = $_GET['id'];
-		$object = eF_getTableData("module_xrequest", "*", "id = $idRequest");
+		$object = sC_getTableData("module_xrequest", "*", "id = $idRequest");
 
 		echo $object[0]['name'];
 
@@ -212,7 +212,7 @@ class module_xrequest extends MagesterExtendedModule
 	          var_dump($fields);
 
 			 if ($selectedAction == self::EDIT_XREQUEST) {
-		        eF_updateTableData("module_xrequest", $fields, "id = $idRequest");
+		        sC_updateTableData("module_xrequest", $fields, "id = $idRequest");
 			 	$this->setMessageVar( __XREQUEST_ADDNEWREQUEST, "success");
 
 			}
@@ -230,9 +230,9 @@ class module_xrequest extends MagesterExtendedModule
 		$userID = $this->getCurrentUser()->user['id'];
 
 	   	if ($this->getCurrentUser()->getType() == 'administrator') {
-			$object = eF_getTableData("module_xrequest_protocol", "*", "", "data_open DESC");
+			$object = sC_getTableData("module_xrequest_protocol", "*", "", "data_open DESC");
 	   	} else {
-    	    $object = eF_getTableData("module_xrequest_protocol", "*", "user_id = $userID", "data_open DESC");
+    	    $object = sC_getTableData("module_xrequest_protocol", "*", "user_id = $userID", "data_open DESC");
 	   	}
 
 		$smarty = $this->getSmartyVar();
@@ -247,7 +247,7 @@ class module_xrequest extends MagesterExtendedModule
 		$userCurrent = $this->getCurrentUser()->user;
 
     	$smarty = $this->getSmartyVar();
-       	$object = eF_getTableData("module_xrequest_protocol", "*", "id = $requestID");
+       	$object = sC_getTableData("module_xrequest_protocol", "*", "id = $requestID");
 
        	$smarty -> assign("T_REQUEST_PROTCOL_LIST", $object);
 
@@ -259,7 +259,7 @@ class module_xrequest extends MagesterExtendedModule
 
        	/* Lista Históricos */
 
-       	$lisHistoric = eF_getTableData("module_xrequest_historic","*", "request_id = $requestID", "data_historic DESC" );
+       	$lisHistoric = sC_getTableData("module_xrequest_historic","*", "request_id = $requestID", "data_historic DESC" );
        	$smarty -> assign("T_LIST_HISTORIC", $lisHistoric);
 
        	$valueName =  $userCurrent['name'];
@@ -290,7 +290,7 @@ class module_xrequest extends MagesterExtendedModule
 							     'status' => "Finalizado",
 							     'status_id' => "5",
 			  				 );
-			eF_updateTableData("module_xrequest_protocol", $fishrequest, "id = $requestID");
+			sC_updateTableData("module_xrequest_protocol", $fishrequest, "id = $requestID");
 		}
 
 			if (count($lisHistoric) ==  0) {
@@ -299,11 +299,11 @@ class module_xrequest extends MagesterExtendedModule
 									   'status' => "Em andamento",
 										'status_id' => "2",
 					  				 );
-				 eF_updateTableData("module_xrequest_protocol", $desc_statusUp, "id = $requestID");
+				 sC_updateTableData("module_xrequest_protocol", $desc_statusUp, "id = $requestID");
 				}
 			}
 
-		        eF_insertTableData("module_xrequest_historic", $fields);
+		        sC_insertTableData("module_xrequest_historic", $fields);
 			 	$this->setMessageVar(__XREQUEST_ADDHISTORICPROTOCOL, "success");
 
 		}
@@ -319,7 +319,7 @@ class module_xrequest extends MagesterExtendedModule
 	public function getXrequestStatusAction($sendData)
 	{
     	$smarty = $this->getSmartyVar();
-       	$object = eF_getTableData("module_xrequest_status", "*");
+       	$object = sC_getTableData("module_xrequest_status", "*");
        	$smarty -> assign("T_REQUEST_STATUS", $object);
        	return true;
 
@@ -398,7 +398,7 @@ class module_xrequest extends MagesterExtendedModule
 			            );
 
 			 if ($selectedAction == self::STATUS_XREQUEST) {
-		        eF_insertTableData("module_xrequest_status", $fields);
+		        sC_insertTableData("module_xrequest_status", $fields);
 			 	$this->setMessageVar("_", $result['message_type']);
 
 			}
@@ -436,7 +436,7 @@ class module_xrequest extends MagesterExtendedModule
 			            );
 
 			 if ($selectedAction == self::ADD_XREQUEST) {
-		        eF_insertTableData("module_xrequest", $fields);
+		        sC_insertTableData("module_xrequest", $fields);
 			 	$this->setMessageVar( __XREQUEST_ADDNEWREQUEST, "success");
 
 			}
@@ -466,7 +466,7 @@ class module_xrequest extends MagesterExtendedModule
 		$course_id = $userCourse['id'];
 		$user_id = $userCurrent['id'];
 
-		$countRequest = eF_getTableData("module_xrequest_protocol", "id, user_id", "user_id = $user_id");
+		$countRequest = sC_getTableData("module_xrequest_protocol", "id, user_id", "user_id = $user_id");
 		$segNum = count($countRequest) + 1 ;
 
 		$modulo10 = $this->_module10($ano . $mes . $course_id . $user_id . $segNum );
@@ -482,7 +482,7 @@ class module_xrequest extends MagesterExtendedModule
 	    $addForm -> addElement('textarea', 'desc',  __XREQUEST_NAME_TYPE, array('id' => 'historic', 'class' => 'desc', 'cols' => 130, 'rows' => 4));
 	    $addForm -> addElement('hidden', 'user_ID', $userCurrent['id']);
 
-	    $typesRequest = eF_getTableDataFlat("module_xrequest", "id, name", "status = 1", "name DESC" );
+	    $typesRequest = sC_getTableDataFlat("module_xrequest", "id, name", "status = 1", "name DESC" );
 
 			if (count($typesRequest) > 0) {
 				$typesRequest_list = array_combine($typesRequest['id'], $typesRequest['name']);
@@ -502,7 +502,7 @@ class module_xrequest extends MagesterExtendedModule
 		if ($addForm -> isSubmitted() && $addForm -> validate()) {
 	         $values = $addForm->exportValues();
 	         $idType = $values['type'];
-	         $typesDesc = eF_getTableData("module_xrequest", "name, dias_prazo", "id = $idType", "name DESC" );
+	         $typesDesc = sC_getTableData("module_xrequest", "name, dias_prazo", "id = $idType", "name DESC" );
 
 	         $fields = array('id' => $numProtocol,
 			 				 'user_id' => $userCurrent['id'],
@@ -517,7 +517,7 @@ class module_xrequest extends MagesterExtendedModule
 			            );
 
 			    if ($selectedAction == self::NEW_XREQUEST) {
-		        eF_insertTableData("module_xrequest_protocol", $fields);
+		        sC_insertTableData("module_xrequest_protocol", $fields);
 			 	$this->setMessageVar(__XREQUEST_OPENPROTOCOL, $fields);
 
 			} else {

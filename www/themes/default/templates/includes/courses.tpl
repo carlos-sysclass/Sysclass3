@@ -31,7 +31,7 @@
      <tr><td></td>
       <td class = "submitCell">{$T_COURSE_FORM.submit_course.html}</td></tr>
     </table>
-    <div onclick = "eF_js_showHideDiv(this, 'course_branches_div', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;position:absolute;z-index:100;display:none" id = "course_branches_div">{$smarty.const._BRANCHES}: {$T_MORE_LOCATIONS}</div> </form>
+    <div onclick = "sC_js_showHideDiv(this, 'course_branches_div', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:450px;position:absolute;z-index:100;display:none" id = "course_branches_div">{$smarty.const._BRANCHES}: {$T_MORE_LOCATIONS}</div> </form>
   {/capture}
   {capture name = 't_lessons_to_courses_code'}
   {if !$T_SORTED_TABLE || $T_SORTED_TABLE == 'lessonsTable'}
@@ -159,18 +159,18 @@
    </div>
    {/if}
    <div class = "tabber">
-    {eF_template_printBlock tabber = "courses" title ="`$edit_block_title`" data = $smarty.capture.t_course_form_code image = '32x32/courses.png'}
+    {sC_template_printBlock tabber = "courses" title ="`$edit_block_title`" data = $smarty.capture.t_course_form_code image = '32x32/courses.png'}
    {if $smarty.get.edit_course}
     <script>var editCourse = '{$smarty.get.edit_course}';</script>
-    {eF_template_printBlock tabber = "lessons" title ="`$lessons_block_title`" data = $smarty.capture.t_lessons_to_courses_code image = '32x32/lessons.png'}
-    {eF_template_printBlock tabber = "users" title ="`$users_block_title`" data = $smarty.capture.t_users_to_courses_code image = '32x32/users.png'}
+    {sC_template_printBlock tabber = "lessons" title ="`$lessons_block_title`" data = $smarty.capture.t_lessons_to_courses_code image = '32x32/lessons.png'}
+    {sC_template_printBlock tabber = "users" title ="`$users_block_title`" data = $smarty.capture.t_users_to_courses_code image = '32x32/users.png'}
    {/if}
    </div>
   {/capture}
   {if $smarty.get.add_course}
-   {eF_template_printBlock title = $smarty.const._NEWCOURSEOPTIONS data = $smarty.capture.t_course_code image = '32x32/courses.png'}
+   {sC_template_printBlock title = $smarty.const._NEWCOURSEOPTIONS data = $smarty.capture.t_course_code image = '32x32/courses.png'}
   {else}
-   {eF_template_printBlock title ="`$course_options_title` <span class = 'innerTableName'>&quot;`$T_EDIT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_code image = '32x32/courses.png' options = $T_COURSE_OPTIONS}
+   {sC_template_printBlock title ="`$course_options_title` <span class = 'innerTableName'>&quot;`$T_EDIT_COURSE->course.name`&quot;</span>" data = $smarty.capture.t_course_code image = '32x32/courses.png' options = $T_COURSE_OPTIONS}
   {/if}
  {else} {*Main Courses List*}
   {capture name = 't_courses_code'}
@@ -183,7 +183,7 @@
      </span>
      <span>
       <img src = "images/16x16/import.png" title = "{$smarty.const._IMPORTCOURSE}" alt = "{$smarty.const._IMPORTCOURSE}">
-      <a href = "javascript:void(0)" title = "{$smarty.const._IMPORTCOURSE}" onclick = "eF_js_showDivPopup('', 0, 'import_course_popup')">{$smarty.const._IMPORTCOURSE}</a></a>
+      <a href = "javascript:void(0)" title = "{$smarty.const._IMPORTCOURSE}" onclick = "sC_js_showDivPopup('', 0, 'import_course_popup')">{$smarty.const._IMPORTCOURSE}</a></a>
      </span>
     </div>
     <div id = "import_course_popup" style = "display:none">
@@ -199,14 +199,14 @@
       </table>
       </form>
      {/capture}
-     {eF_template_printBlock title = $smarty.const._IMPORTCOURSE data = $smarty.capture.t_import_course_code image = '32x32/import.png'}
+     {sC_template_printBlock title = $smarty.const._IMPORTCOURSE data = $smarty.capture.t_import_course_code image = '32x32/import.png'}
     </div>
    {/if}
   {assign var = "courses_url" value = "`$smarty.server.PHP_SELF`?ctg=courses&"}
   {assign var = "_change_handles_" value = $_change_}
   {include file = "includes/common/courses_list.tpl"}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._UPDATECOURSES data = $smarty.capture.t_courses_code image = '32x32/courses.png' help = 'Courses'}
+  {sC_template_printBlock title = $smarty.const._UPDATECOURSES data = $smarty.capture.t_courses_code image = '32x32/courses.png' help = 'Courses'}
  {/if}
  </td></tr>
 {/capture}

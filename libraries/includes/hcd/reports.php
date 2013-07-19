@@ -15,7 +15,7 @@ if ($_GET['ajax'] == 'coursesTable' || $_GET['ajax'] == 'instancesTable') {
   if ($_GET['ajax'] == 'coursesTable') {
    $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => false);
   }
-  if ($_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+  if ($_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
    $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => $_GET['instancesTable_source']);
   }
   $constraints['required_fields'] = array('has_instances');
@@ -122,8 +122,8 @@ if (isset($_GET['search'])) {
   }
 //		echo $sql_query."<BR>";
   /*************** THE SEARCH QUERY ****************/
-   //$result = eF_getTableData("users","*", $sql_query . " LIMIT 100");
-   $result = eF_getTableData("users","*", "users.archive=0 and ".$sql_query);
+   //$result = sC_getTableData("users","*", $sql_query . " LIMIT 100");
+   $result = sC_getTableData("users","*", "users.archive=0 and ".$sql_query);
    $employees = $result;
   //pr($result);
  }
@@ -141,14 +141,14 @@ if (isset($_GET['search'])) {
   include 'sorted_table.php';
  } elseif (isset($_GET['stats']) && $_GET['stats'] == 1) {
   $user_logins = $recipients_array;
-  $lessonNames = eF_getTableDataFlat("lessons", "id, name");
+  $lessonNames = sC_getTableDataFlat("lessons", "id, name");
   $lessonNames = array_combine($lessonNames['id'], $lessonNames['name']);
-  $contentNames = eF_getTableDataFlat("content", "id, name");
+  $contentNames = sC_getTableDataFlat("content", "id, name");
   $contentNames = array_combine($contentNames['id'], $contentNames['name']);
-  $testNames = eF_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
+  $testNames = sC_getTableDataFlat("tests t, content c", "t.id, c.name", "c.id=t.content_ID");
   $testNames = array_combine($testNames['id'], $testNames['name']);
-  //$result = eF_getTableData("logs", "*", "timestamp between $from and $to and users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp desc");
-  $result = eF_getTableData("logs", "*", "users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp desc");
+  //$result = sC_getTableData("logs", "*", "timestamp between $from and $to and users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp desc");
+  $result = sC_getTableData("logs", "*", "users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp desc");
   foreach ($result as $key => $value) {
    $value['lessons_ID'] ? $result[$key]['lesson_name'] = $lessonNames[$value['lessons_ID']] : null;
    if ($value['action'] == 'content') {
@@ -186,7 +186,7 @@ if (isset($_GET['search'])) {
    }
   }
   //and timestamp between $from and $to
-  $result = eF_getTableData("logs", "count(*)", "action = 'login' and users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp");
+  $result = sC_getTableData("logs", "count(*)", "action = 'login' and users_LOGIN in ('".implode("','", $user_logins)."') order by timestamp");
   $traffic['total_logins'] = $result[0]['count(*)'];
   $smarty -> assign("T_USER_TRAFFIC", $traffic);
   $actions = array('login' => _LOGIN,
@@ -242,7 +242,7 @@ $form -> addElement('text', 'new_login', _LOGIN, 'class = "inputText" id="new_lo
 $form -> addElement('text', 'name', _FIRSTNAME, 'class = "inputText" id="name" onChange="javascript:setAdvancedCriterion(this);"');
 $form -> addElement('text', 'surname', _SURNAME, 'class = "inputText" id="surname" onChange="javascript:setAdvancedCriterion(this);"');
 $form -> addElement('text', 'email', _EMAILADDRESS, 'class = "inputText" id="email" onChange="javascript:setAdvancedCriterion(this);"');
-$roles = eF_getTableDataFlat("user_types", "*");
+$roles = sC_getTableDataFlat("user_types", "*");
 $roles_array[''] = "";
 $roles_array['student'] = _STUDENT;
 $roles_array['professor'] = _PROFESSOR;
@@ -258,7 +258,7 @@ for ($k = 0; $k < sizeof($roles['id']); $k++) {
 $form -> addElement('select', 'user_type', _USERTYPE, $roles_array, 'id="user_type" onChange="javascript:setAdvancedCriterion(this);"');
 /*
 
- $roles = eF_getTableDataFlat("user_types", "user_type", "active=1");
+ $roles = sC_getTableDataFlat("user_types", "user_type", "active=1");
 
 
 
@@ -293,8 +293,8 @@ $renderer -> setRequiredTemplate(
             {/if}');
 // Management of the 'send email to all found' link icon on the top right of the table
 // During page load create the item
-$mass_operations = array(array('id' => 'groupUsersId', 'text' => _SETFOUNDEMPLOYEESINTOGROUP, 'image' => "16x16/users.png", 'href' => "javascript:void(0);", "onclick" => "eF_js_showDivPopup('"._SETFOUNDEMPLOYEESINTOGROUP."', 0, 'insert_into_group')", 'target' => 'POPUP_FRAME'),
-        array('id' => 'sendToAllId', 'text' => _SENDMESSAGETOALLFOUNDEMPLOYEES, 'image' => "16x16/mail.png", 'href' => "javascript:void(0);", "onclick" => "this.href='".$currentUser->getType().".php?ctg=messages&add=1&recipient='+document.getElementById('usersFound').value;eF_js_showDivPopup('"._SENDMESSAGE."', 2)", 'target' => 'POPUP_FRAME'));
+$mass_operations = array(array('id' => 'groupUsersId', 'text' => _SETFOUNDEMPLOYEESINTOGROUP, 'image' => "16x16/users.png", 'href' => "javascript:void(0);", "onclick" => "sC_js_showDivPopup('"._SETFOUNDEMPLOYEESINTOGROUP."', 0, 'insert_into_group')", 'target' => 'POPUP_FRAME'),
+        array('id' => 'sendToAllId', 'text' => _SENDMESSAGETOALLFOUNDEMPLOYEES, 'image' => "16x16/mail.png", 'href' => "javascript:void(0);", "onclick" => "this.href='".$currentUser->getType().".php?ctg=messages&add=1&recipient='+document.getElementById('usersFound').value;sC_js_showDivPopup('"._SENDMESSAGE."', 2)", 'target' => 'POPUP_FRAME'));
 $smarty -> assign("T_SENDALLMAIL_LINK", $mass_operations);
 $form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
 $form -> setRequiredNote(_REQUIREDNOTE);

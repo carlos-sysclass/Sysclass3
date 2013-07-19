@@ -58,7 +58,7 @@
 
     $postTarget = basename($_SERVER['PHP_SELF']);
     $form = new HTML_QuickForm("action_form", "post", $postTarget, "", null, true);
-    $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+    $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
     $form -> addElement('select', 'action', _ACTION, $actions, 'class = "inputSelect" id = "action" onchange = "window.location = \''.basename($_SERVER['PHP_SELF']).'?action=\'+this.options[this.selectedIndex].value"'); //Depending on user selection, changing the question type reloads the page with the corresponding form fields
     $form -> addRule('action', _THEFIELD.' '._QUESTIONTYPE.' '._ISMANDATORY, 'required', null, 'client');
     $form -> addRule('action', _INVALIDFIELDDATA, 'callback', 'text');

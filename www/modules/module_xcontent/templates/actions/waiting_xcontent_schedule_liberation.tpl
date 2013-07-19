@@ -18,7 +18,7 @@
 
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title 			= $smarty.const.__XCONTENT_WAITING_LIBERATION
 	data			= $smarty.capture.t_xcontent_schedule
 	contentclass	= "blockContents"

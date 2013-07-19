@@ -37,7 +37,7 @@ class MagesterBenchmark
 
 	public function display()
 	{
-		$GLOBALS['db'] -> queries = eF_multisort($GLOBALS['db'] -> queries, 'times', 'asc');
+		$GLOBALS['db'] -> queries = sC_multisort($GLOBALS['db'] -> queries, 'times', 'asc');
 		foreach ($GLOBALS['db'] -> queries as $value) {
 			if ($value['times'] > 0.05) {
 				$heavyQueries[] = $value;
@@ -50,7 +50,7 @@ class MagesterBenchmark
          <tr><th colspan = '100%'>Benchmarking info (click to remove)</th></tr>
          <tr><td>Initialization time: </td><td>".round($this -> times['init'] - $this -> times['start'], 5)." sec</td></tr>
          <tr><td>Script time: </td><td>".round($this -> times['script'] - $this -> times['init'], 5)." sec</td></tr>
-         <tr><td>Database time (".$this -> dbtimes['queries']." q): </td><td>".($this -> dbtimes['time'] > 100 ? 0 : round($this -> dbtimes['time'], 5))." sec (<a href = 'javascript:void(0)' onclick = 'eF_js_showDivPopup(\"Queries\", 2, \"queries_table\");return false;'>show queries</a>)</td></tr>
+         <tr><td>Database time (".$this -> dbtimes['queries']." q): </td><td>".($this -> dbtimes['time'] > 100 ? 0 : round($this -> dbtimes['time'], 5))." sec (<a href = 'javascript:void(0)' onclick = 'sC_js_showDivPopup(\"Queries\", 2, \"queries_table\");return false;'>show queries</a>)</td></tr>
          <tr><td>Smarty time: </td><td>".round($this -> times['smarty'] - $this -> times['script'], 5)." sec</td></tr>
          <tr><td colspan = \"2\" class = \"horizontalSeparator\"></td></tr>
          <tr><td>Total execution time: </td><td>".round($this -> times['end'] - $this -> times['start'], 5)." sec</td></tr>
@@ -98,9 +98,9 @@ class MagesterBenchmark
 
 		try {
 
-		eF_insertTableData("benchmark", $fields);
+		sC_insertTableData("benchmark", $fields);
 
-		eF_deleteTableData("benchmark", "timestamp < ".(time() - 3600*24*7));	//Keep a week's data only
+		sC_deleteTableData("benchmark", "timestamp < ".(time() - 3600*24*7));	//Keep a week's data only
 
 		} catch (Exception $e) {}
 

@@ -64,7 +64,7 @@
   {/if}
    <td class = "centerAlign nowrap">
   {if $user.login != $smarty.session.s_login && $user.user_type != 'administrator'}
-    <a href="{$smarty.session.s_type}.php?ctg=users&edit_user={$user.login}&op=status&print_preview=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EMPLOYEEFORMPRINTPREVIEW}', 2)" target = "POPUP_FRAME"><img class = "handle" src='images/16x16/printer.png' title= '{$smarty.const._PRINTPREVIEW}' alt = '{$smarty.const._PRINTPREVIEW}' /></a>
+    <a href="{$smarty.session.s_type}.php?ctg=users&edit_user={$user.login}&op=status&print_preview=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EMPLOYEEFORMPRINTPREVIEW}', 2)" target = "POPUP_FRAME"><img class = "handle" src='images/16x16/printer.png' title= '{$smarty.const._PRINTPREVIEW}' alt = '{$smarty.const._PRINTPREVIEW}' /></a>
   {/if}
   {if !isset($T_CURRENT_USER->coreAccess.statistics) || $T_CURRENT_USER->coreAccess.statistics != 'hidden'}
     <a href="{$smarty.session.s_type}.php?ctg=statistics&option=user&sel_user={$user.login}"><img class = "handle" src = "images/16x16/reports.png" title = "{$smarty.const._STATISTICS}" alt = "{$smarty.const._STATISTICS}" /></a>
@@ -97,7 +97,7 @@
  <tr>
   <td style = "vertical-align:top">
   {if $smarty.session.s_type == "administrator"}
-   {eF_template_printBlock title = $smarty.const._UPDATEEMPLOYEES data = $smarty.capture.t_employees_code image = '32x32/user.png' help = 'Users'}
+   {sC_template_printBlock title = $smarty.const._UPDATEEMPLOYEES data = $smarty.capture.t_employees_code image = '32x32/user.png' help = 'Users'}
   {else}
 
    {capture name = "t_supervisor_employees"}
@@ -148,7 +148,7 @@
       <td>{if $user.last_login}#filter:timestamp_time_nosec-{$user.last_login}#{else}{$smarty.const._NEVER}{/if}</td>
       <td class = "centerAlign">
        {if $user.login != $smarty.session.s_login && $user.user_type != 'administrator'}
-        <a href="{$smarty.session.s_type}.php?ctg=users&edit_user={$user.login}&op=status&print_preview=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EMPLOYEEFORMPRINTPREVIEW}', 2)" target = "POPUP_FRAME"><img src='images/16x16/printer.png' title= '{$smarty.const._PRINTPREVIEW}' alt = '{$smarty.const._PRINTPREVIEW}' border='0' /></a>
+        <a href="{$smarty.session.s_type}.php?ctg=users&edit_user={$user.login}&op=status&print_preview=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EMPLOYEEFORMPRINTPREVIEW}', 2)" target = "POPUP_FRAME"><img src='images/16x16/printer.png' title= '{$smarty.const._PRINTPREVIEW}' alt = '{$smarty.const._PRINTPREVIEW}' border='0' /></a>
        {else}
         <img class="handle" src='images/16x16/printer.png' title= '{$smarty.const._PRINTPREVIEW}' alt = '{$smarty.const._PRINTPREVIEW}' border='0' />
        {/if}
@@ -172,7 +172,7 @@
    </div>
    {/if}
    {/capture}
-   {eF_template_printBlock title = $smarty.const._EMPLOYEES data = $smarty.capture.t_supervisor_employees image = '32x32/user.png' options = $T_SUBBRANCHES_LINK}
+   {sC_template_printBlock title = $smarty.const._EMPLOYEES data = $smarty.capture.t_supervisor_employees image = '32x32/user.png' options = $T_SUBBRANCHES_LINK}
 
 
   {/if}

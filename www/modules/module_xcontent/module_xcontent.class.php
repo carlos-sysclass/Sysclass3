@@ -86,7 +86,7 @@ class module_xcontent extends MagesterExtendedModule
     	try {
     		$userTest = new MagesterTest($testContentID);
 
-    		$recentUserTests = eF_getTableData(
+    		$recentUserTests = sC_getTableData(
     			"completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login",
     			"completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN",
     			"completed_tests.status != 'deleted' and completed_tests.users_LOGIN = '" . $this->getCurrentUser()->user['login'] . "' and completed_tests.tests_id = " . $userTest->test['id'], "timestamp DESC");
@@ -245,14 +245,14 @@ class module_xcontent extends MagesterExtendedModule
     		return false;
     	}
 
-    	$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
+    	$userContentID = sC_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
 
-    	$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
+    	$userCoursesID = sC_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
 
     	if (count($userCoursesID) == 0) {
     		$result = array();
     	} else {
-	    	$result = eF_getTableData(
+	    	$result = sC_getTableData(
 		    	"module_xcontent_schedule sch
 		    	LEFT JOIN module_xentify_scopes scop ON sch.xentify_scope_id = scop.id
 	    			/*
@@ -423,7 +423,7 @@ class module_xcontent extends MagesterExtendedModule
 		}
 
     	// LOAD DATA FROM xentify Module
-    	$scopeData = eF_getTableData("module_xentify_scopes", "id, name, description, rules", "active = 1");
+    	$scopeData = sC_getTableData("module_xentify_scopes", "id, name, description, rules", "active = 1");
     	$scopeCombo = array(-1	=> __SELECT_ONE_OPTION);
     	foreach ($scopeData as $item) {
     		$scopeCombo[$item['id']] = $item['name'];
@@ -432,7 +432,7 @@ class module_xcontent extends MagesterExtendedModule
     	//$form = new HTML_QuickForm2("xcontent_new_schedule_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
     	$form = new HTML_QuickForm2("xcontent_new_schedule_form", "post", array("action" => $_SERVER['REQUEST_URI']), true);
 
-		//$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+		//$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
 		$form -> addElement('hidden', 'step_index');
 		$form -> addSelect('scope_id', null, array('label'	=> __XCONTENT_SCOPE, 'options'	=> $scopeCombo));
@@ -491,7 +491,7 @@ class module_xcontent extends MagesterExtendedModule
 					$insertValues['end'] = $end_date->format("Y-m-d");
 				}
 				//var_dump($insertValues);
-				$xScheduleID = eF_insertTableData("module_xcontent_schedule", $insertValues);
+				$xScheduleID = sC_insertTableData("module_xcontent_schedule", $insertValues);
 
 				// INSERE VALORES E REDIRECIONA PARA
 				header(sprintf("Location: " . $this->moduleBaseUrl . "&action=edit_schedule_times&xschedule_id=%s", $xScheduleID));
@@ -535,7 +535,7 @@ class module_xcontent extends MagesterExtendedModule
 			exit;
 		}
         // LOAD SCHEDULES FOR CLASS
-        if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
+        if (!sC_checkParameter($_GET['xschedule_id'], 'id')) {
         	header("Location: " . $this->moduleBaseUrl);
 			exit;
 
@@ -544,7 +544,7 @@ class module_xcontent extends MagesterExtendedModule
 
         $smarty -> assign("T_XCONTENT_SCHEDULE_ID", $scheduleID);
 /*
-        list($scheduleData) = eF_getTableData(
+        list($scheduleData) = sC_getTableData(
         	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)
         	LEFT JOIN content ct ON (sch.content_id = ct.id)
@@ -553,7 +553,7 @@ class module_xcontent extends MagesterExtendedModule
         	sprintf("sch.id = '%s'", $scheduleID)
         );
 */
-        list($scheduleData) = eF_getTableData(
+        list($scheduleData) = sC_getTableData(
         	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)",
         	"sch.id, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
@@ -589,7 +589,7 @@ class module_xcontent extends MagesterExtendedModule
 
 		$smarty -> assign("T_XCONTENT_SCHEDULE", $scheduleData);
 
-		$scheduleTimesData = eF_getTableData(
+		$scheduleTimesData = sC_getTableData(
 			"module_xcontent_schedule_itens",
 			"schedule_id, `index`, start, end, active",
 			sprintf("schedule_id = %d", $scheduleID),
@@ -650,7 +650,7 @@ class module_xcontent extends MagesterExtendedModule
 				'required'		=> $values['required']
 			);
 
-			ef_insertTableData(
+			sC_insertTableData(
 				"module_xcontent_schedule_contents",
 				$insertData
 			);
@@ -694,7 +694,7 @@ class module_xcontent extends MagesterExtendedModule
     }
     public function saveScheduleTimeAction()
     {
-		if (eF_checkParameter($_POST['xschedule_id'], 'id')) {
+		if (sC_checkParameter($_POST['xschedule_id'], 'id')) {
 
 			$schedule_id = $_POST['xschedule_id'];
 			$newData = array(
@@ -744,7 +744,7 @@ class module_xcontent extends MagesterExtendedModule
 
 			if ($newData['index'] < 1) {
 				// INSERT
-				list($indexData) = eF_getTableData("module_xcontent_schedule_itens", "MAX(`index`) + 1 as newIndex", "schedule_id = " . $schedule_id);
+				list($indexData) = sC_getTableData("module_xcontent_schedule_itens", "MAX(`index`) + 1 as newIndex", "schedule_id = " . $schedule_id);
 
 				if (is_null($indexData['newIndex'])) {
 					$index = 1;
@@ -760,7 +760,7 @@ class module_xcontent extends MagesterExtendedModule
 					'active'		=> 1
 				);
 
-				eF_insertTableData("module_xcontent_schedule_itens", $insertData);
+				sC_insertTableData("module_xcontent_schedule_itens", $insertData);
 			} else {
 				// UPDATE
 				$index = $newData['index'];
@@ -777,7 +777,7 @@ class module_xcontent extends MagesterExtendedModule
 					'start'			=> $insertData['start'], // CALC
 					'end'	 		=> $insertData['end']
 				);
-				eF_updateTableData("module_xcontent_schedule_itens", $updateData, sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
+				sC_updateTableData("module_xcontent_schedule_itens", $updateData, sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
 			}
 			$insertData['success'] = true;
 			echo json_encode(
@@ -802,14 +802,14 @@ class module_xcontent extends MagesterExtendedModule
     }
     public function deleteScheduleTimeAction()
     {
-		if (eF_checkParameter($_POST['xschedule_id'], 'id') && eF_checkParameter($_POST['index'], 'id')) {
+		if (sC_checkParameter($_POST['xschedule_id'], 'id') && sC_checkParameter($_POST['index'], 'id')) {
 
 			$schedule_id 	= $_POST['xschedule_id'];
 			$index 			= $_POST['index'];
 
-			list($insertData) = eF_getTableData("module_xcontent_schedule_itens", "*", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
+			list($insertData) = sC_getTableData("module_xcontent_schedule_itens", "*", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
 
-			$insertData['success'] = (bool) eF_deleteTableData("module_xcontent_schedule_itens", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
+			$insertData['success'] = (bool) sC_deleteTableData("module_xcontent_schedule_itens", sprintf("schedule_id = %d AND `index` = %d", $schedule_id, $index));
 			echo json_encode(
 				array_merge(
 					$insertData,
@@ -837,13 +837,13 @@ class module_xcontent extends MagesterExtendedModule
 			$course_id 		= $_POST['course_id'];
 			$content_id 	= $_POST['content_id'];
 
-			list($insertData) = eF_getTableData(
+			list($insertData) = sC_getTableData(
 				"module_xcontent_schedule_contents",
 				"*",
 				sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id)
 			);
 
-			$insertData['success'] = (bool) eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id));
+			$insertData['success'] = (bool) sC_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d AND course_id = %d AND content_id = %d", $schedule_id, $course_id, $content_id));
 			$insertData['success'] = true;
 			echo json_encode(
 				array_merge(
@@ -871,14 +871,14 @@ class module_xcontent extends MagesterExtendedModule
 		$xuserModule = $this->loadModule("xuser");
 
         // LOAD SCHEDULES FOR CLASS
-        if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
+        if (!sC_checkParameter($_GET['xschedule_id'], 'id')) {
         	return false;
         }
         $scheduleID = $_GET['xschedule_id'];
 
         $smarty -> assign("T_XCONTENT_SCHEDULE_ID", $scheduleID);
 /*
-        list($scheduleData) = eF_getTableData(
+        list($scheduleData) = sC_getTableData(
         	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)
         	LEFT JOIN content ct ON (sch.content_id = ct.id)
@@ -887,7 +887,7 @@ class module_xcontent extends MagesterExtendedModule
         	sprintf("sch.id = '%s'", $scheduleID)
         );
 */
-        list($scheduleData) = eF_getTableData(
+        list($scheduleData) = sC_getTableData(
         	"module_xcontent_schedule sch
         	LEFT JOIN module_xentify_scopes scp ON (sch.xentify_scope_id = scp.id)",
         	"sch.id, sch.xentify_scope_id, scp.name as scope, sch.xentify_id, sch.start, sch.end, sch.block_html, sch.active",
@@ -915,7 +915,7 @@ class module_xcontent extends MagesterExtendedModule
 
 		$smarty -> assign("T_XCONTENT_SCHEDULE", $scheduleData);
 
-		$scheduleTimesUsersData = eF_getTableData(
+		$scheduleTimesUsersData = sC_getTableData(
 			"module_xcontent_schedule_users sch_u
 			LEFT JOIN module_xcontent_schedule_itens it ON (it.schedule_id = sch_u.schedule_id AND it.`index` = sch_u.`index`)
 			LEFT JOIN module_xcontent_schedule_contents sch_c ON (sch_u.schedule_id = sch_c.schedule_id AND sch_u.content_id = sch_c.content_id)
@@ -928,7 +928,7 @@ class module_xcontent extends MagesterExtendedModule
 			"start ASC, course_id ASC, content_id ASC"
 		);
 
-		$coursesID = eF_getTableDataFlat(
+		$coursesID = sC_getTableDataFlat(
 			"module_xcontent_schedule_contents",
 			"course_id",
 			sprintf("schedule_id = %d", $scheduleID)
@@ -972,7 +972,7 @@ class module_xcontent extends MagesterExtendedModule
 
 		    // FILTER COURSES BY SCHEDULE CONTENT IDs
 			// GET USER COURSE
-			$userCourseClasseData = ef_getTableData(
+			$userCourseClasseData = sC_getTableData(
 				"users_to_courses uc LEFT JOIN courses c ON (uc.courses_ID = c.id) LEFT JOIN classes cl ON (uc.classe_id = cl.id)",
 				"c.id as course_id, c.name as course_name, uc.classe_id, cl.name as classe_name",
 				sprintf("uc.users_LOGIN = '%s' AND c.id IN (%s)", $scopedItem['login'], implode(", ", $coursesID['course_id']))
@@ -1054,7 +1054,7 @@ class module_xcontent extends MagesterExtendedModule
 						'user_id'		=> $currentUser->user['id'],
 						'`index`'		=> $schedule_index
 	    			);
-	    			eF_deleteTableData(
+	    			sC_deleteTableData(
 	    				"module_xcontent_schedule_users",
 	    				sprintf(
 	    					"schedule_id = %d AND user_id = %d",
@@ -1064,7 +1064,7 @@ class module_xcontent extends MagesterExtendedModule
 	    			);
 	    			// INSERIR EVENTO NA AGENDA
 	    		}
-	    		eF_insertTableDataMultiple("module_xcontent_schedule_users", $schedulesToInsert);
+	    		sC_insertTableDataMultiple("module_xcontent_schedule_users", $schedulesToInsert);
 
 	    		$this->setMessageVar(__XCONTENT_SUCCESS_SCHEDULE_REGISTERED, "success");
 	    	}
@@ -1078,9 +1078,9 @@ class module_xcontent extends MagesterExtendedModule
     			$currentLessonsID = array_keys($currentUser->getLessons(false, 'student'));
     		}
 
-    		$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
+    		$userCoursesID = sC_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
 
-    		$result = eF_getTableData(
+    		$result = sC_getTableData(
     				"module_xcontent_schedule sch
     				LEFT JOIN module_xentify_scopes scop ON (sch.xentify_scope_id = scop.id)
     				LEFT JOIN module_xcontent_schedule_itens cont_item ON (sch.id = cont_item.schedule_id)",
@@ -1097,9 +1097,9 @@ class module_xcontent extends MagesterExtendedModule
 
     		/*
 
-    		$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
+    		$userContentID = sC_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
 
-    		$result = eF_getTableData(
+    		$result = sC_getTableData(
 	    		"module_xcontent_schedule schedl
 	    		LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
 	    		LEFT JOIN content cont ON schedl.content_id = cont.id
@@ -1131,7 +1131,7 @@ class module_xcontent extends MagesterExtendedModule
 
 	    			// CHECK IF USER ALREADY SCHEDULED THIS CONTENT
 	    			$contentSchedules =
-		    			eF_getTableData(
+		    			sC_getTableData(
 		    				"module_xcontent_schedule_itens schedl",
 		    				"schedl.*, DAYOFWEEK(schedl.start) as week_day",
 		    				sprintf("schedl.schedule_id = %d", $contentToSchedule['id'])
@@ -1233,13 +1233,13 @@ class module_xcontent extends MagesterExtendedModule
     {
     	$smarty = $this->getSmartyVar();
 
-    	if (!eF_checkParameter($_GET['xschedule_id'], 'id')) {
+    	if (!sC_checkParameter($_GET['xschedule_id'], 'id')) {
     		header("Location : " . $this->moduleBaseUrl . "&action=register_xcontent_schedule");
     		exit;
     	}
     	$schedule_id = $_GET['xschedule_id'];
 
-    	if (!eF_checkParameter($_GET['xcontent_id'], 'id')) {
+    	if (!sC_checkParameter($_GET['xcontent_id'], 'id')) {
     		header("Location : " . $this->moduleBaseUrl . "&action=register_xcontent_schedule");
     		exit;
     	}
@@ -1247,7 +1247,7 @@ class module_xcontent extends MagesterExtendedModule
 
     	if (count($_POST) > 0) {
     		// FORM IS SUBMITTED
-    		list($totalData) = eF_countTableData(
+    		list($totalData) = sC_countTableData(
     			"module_xcontent_schedule_users",
     			"schedule_id as total",
     			sprintf(
@@ -1260,7 +1260,7 @@ class module_xcontent extends MagesterExtendedModule
 	   			$updateData = array(
 		    		'`index`'	=> $_POST['xcontent_schedule_item']
 	   			);
-	   			$result = eF_updateTableData(
+	   			$result = sC_updateTableData(
 	   				"module_xcontent_schedule_users",
 	   				$updateData,
 	   				sprintf(
@@ -1276,7 +1276,7 @@ class module_xcontent extends MagesterExtendedModule
 		    		'`index`'		=> $_POST['xcontent_schedule_item'],
 	    			'liberation'	=> 0
 	    		);
-	    		$result = eF_insertTableData("module_xcontent_schedule_users", $insertData);
+	    		$result = sC_insertTableData("module_xcontent_schedule_users", $insertData);
 	   		}
 
 	   		if ($result) {
@@ -1290,7 +1290,7 @@ class module_xcontent extends MagesterExtendedModule
 	   		}
     	}
 
-   		list($selectedOption) = eF_getTableData(
+   		list($selectedOption) = sC_getTableData(
    			"module_xcontent_schedule_users",
    			"`index`",
    			sprintf(
@@ -1319,7 +1319,7 @@ class module_xcontent extends MagesterExtendedModule
     	*/
 
     	$contentSchedules =
-    		eF_getTableData(
+    		sC_getTableData(
     			"module_xcontent_schedule_itens schedl",
     			"DATE(start) as data, schedl.*, DAYOFWEEK(schedl.start) as week_day",
     			sprintf("schedl.schedule_id = %d", $schedule_id),
@@ -1362,14 +1362,14 @@ class module_xcontent extends MagesterExtendedModule
     {
     	$fields = $_POST;
 
-    	$userContent = eF_getTableData(
+    	$userContent = sC_getTableData(
 			"module_xcontent_schedule_users",
 			"*",
 			sprintf("schedule_id = %d AND user_id = %d AND content_id = %d", $fields['schedule_id'], $fields['user_id'], $fields['content_id'])
 		);
 
     	if (count($userContent)  == 1) {
-    		eF_updateTableData(
+    		sC_updateTableData(
 				"module_xcontent_schedule_users",
 				array('liberation' => $fields['liberation']),
 				sprintf("schedule_id = %d AND user_id = %d", $fields['schedule_id'], $fields['user_id'])
@@ -1392,14 +1392,14 @@ class module_xcontent extends MagesterExtendedModule
     {
     	$fields = $_POST;
 
-    	$userContent = eF_getTableData(
+    	$userContent = sC_getTableData(
 			"module_xcontent_schedule_users",
 			"*",
 			sprintf("schedule_id = %d AND user_id = %d AND content_id = %d", $fields['schedule_id'], $fields['user_id'], $fields['content_id'])
 		);
 
     	if (count($userContent)  == 1) {
-    		eF_updateTableData(
+    		sC_updateTableData(
 				"module_xcontent_schedule_users",
 				array('liberation' => $fields['liberation']),
 				sprintf("schedule_id = %d AND user_id = %d", $fields['schedule_id'], $fields['user_id'])
@@ -1444,9 +1444,9 @@ class module_xcontent extends MagesterExtendedModule
     			$currentLessonsID = array_keys(MagesterLesson::getLessons(false));
     		}
 
-    		$userContentID = eF_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
+    		$userContentID = sC_getTableDataFlat("content", "id", sprintf("lessons_ID IN (%s)", implode(", ", $currentLessonsID)));
     		/*
-    		$result = eF_getTableData(
+    		$result = sC_getTableData(
 	    		"module_xcontent_schedule schedl
 	    		LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
 	    		",
@@ -1458,9 +1458,9 @@ class module_xcontent extends MagesterExtendedModule
 	    		)
 	    	);
 	    	*/
-    		$userCoursesID = eF_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
+    		$userCoursesID = sC_getTableDataFlat("users_to_courses", "courses_ID as course_id", sprintf("users_LOGIN = '%s'", $currentUser->user['login']));
 
-    		$result = eF_getTableData(
+    		$result = sC_getTableData(
     				"module_xcontent_schedule sch
     				LEFT JOIN module_xentify_scopes scop ON (sch.xentify_scope_id = scop.id)
 
@@ -1478,7 +1478,7 @@ class module_xcontent extends MagesterExtendedModule
     		$AllCourses = MagesterCourse::getAllCourses(array('return_objects' => false));
     		$AllLessons = MagesterLesson::getLessons(true);
     		$AllClasses = MagesterCourseClass::getAllClasses(array('return_objects' => false));
-    		$AllUsersClassesDB = eF_getTableData("users_to_courses", "users_LOGIN, classe_id", "classe_id <> 0");
+    		$AllUsersClassesDB = sC_getTableData("users_to_courses", "users_LOGIN, classe_id", "classe_id <> 0");
 	   		$paidUsers = array();
 
     		foreach ($AllUsersClassesDB as $userClass) {
@@ -1493,7 +1493,7 @@ class module_xcontent extends MagesterExtendedModule
 
     			$allPolos[$userPolo['id']] = $userPolo;
     		} else {
-    			$allPolosDB = eF_getTableData(
+    			$allPolosDB = sC_getTableData(
     					"module_polos polo",
     					"polo.*",
     					"polo.active = 1"
@@ -1539,12 +1539,12 @@ class module_xcontent extends MagesterExtendedModule
 	    				$lessonsUsers = $AllLessons[$contentToSchedule['lesson_id']]->getLessonUsers(array('return_objects' => false, 'condition' => sprintf("u.id IN (SELECT id FROM module_xuser WHERE polo_id = %s)", $userPolo['id'])));
 
 	    				if (!array_key_exists($courseID, $paidUsers)) {
-	    					$paidUserCourse = eF_getTableDataFlat("module_xenrollment enr LEFT JOIN users u ON (enr.users_id = u.id)", "u.login", sprintf("courses_id = %d AND status_id = 4", $courseID));
+	    					$paidUserCourse = sC_getTableDataFlat("module_xenrollment enr LEFT JOIN users u ON (enr.users_id = u.id)", "u.login", sprintf("courses_id = %d AND status_id = 4", $courseID));
 
 	    					$paidUsers[$courseID] = $paidUserCourse['login'];
 	    				}
 
-	    				$userContentSchedules =	eF_getTableData(
+	    				$userContentSchedules =	sC_getTableData(
 	    					"module_xcontent_schedule_users sch_u
 	    					LEFT JOIN module_xcontent_schedule_itens sch_item ON (sch_u.schedule_id = sch_item.schedule_id AND sch_u.index = sch_item.index)
 	    					LEFT JOIN users u ON (sch_u.user_id = u.id)",
@@ -1554,7 +1554,7 @@ class module_xcontent extends MagesterExtendedModule
 	    			//} else {
 	    			//	$lessonsUsers = $AllLessons[$contentToSchedule['lesson_id']]->getLessonUsers(array('return_objects' => false));
 /*
-	    				$userContentSchedules =	eF_getTableData(
+	    				$userContentSchedules =	sC_getTableData(
 	    					"module_xcontent_schedule_users sch_u
 	    					LEFT JOIN module_xcontent_schedule_itens sch_item ON (sch_u.schedule_id = sch_item.schedule_id AND sch_u.index = sch_item.index)
 	    					LEFT JOIN users u ON (sch_u.user_id = u.id)
@@ -1663,7 +1663,7 @@ class module_xcontent extends MagesterExtendedModule
 		try {
 			$userTest = new MagesterTest($testContentID);
 
-			$recentUserTests = eF_getTableData(
+			$recentUserTests = sC_getTableData(
 					"completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login",
 					"completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN",
 					"completed_tests.status != 'deleted' and completed_tests.users_LOGIN = '" . $currentUser->user['login'] . "' and completed_tests.tests_id = " . $userTest->test['id'], "timestamp DESC");
@@ -1707,11 +1707,11 @@ class module_xcontent extends MagesterExtendedModule
 						'skill_id'	=> $skill
 					);
 				}
-				ef_deleteTableData(
+				sC_deleteTableData(
 					"module_xskill_users",
 					sprintf("user_id = %d AND skill_id IN (1,2,3,4)", $currentUser->user['id'])
 				);
-				ef_insertTableDataMultiple("module_xskill_users", $skillToInsert);
+				sC_insertTableDataMultiple("module_xskill_users", $skillToInsert);
 
 				// APPEND SKILLS TO USER, BASED ON SCORE
 				if ($userScore <= 40) {
@@ -1756,15 +1756,15 @@ class module_xcontent extends MagesterExtendedModule
 		$fromID = $_POST['orig'];
 		$toID = $_POST['dest'];
 
-		$contentToInsert = eF_getTableData(
+		$contentToInsert = sC_getTableData(
 			"module_xcontent_schedule_contents",
 			sprintf("%d as schedule_id, course_id, content_id, required", $toID),
 			sprintf("schedule_id = %d", $fromID)
 		);
 
 		try {
-			eF_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d", $toID));
-			eF_insertTableDataMultiple("module_xcontent_schedule_contents", $contentToInsert);
+			sC_deleteTableData("module_xcontent_schedule_contents", sprintf("schedule_id = %d", $toID));
+			sC_insertTableDataMultiple("module_xcontent_schedule_contents", $contentToInsert);
 
 			$response = array(
 				'message' => __XCONTENT_SCHEDULE_COPIED_SUCESSFULLY,
@@ -1817,7 +1817,7 @@ class module_xcontent extends MagesterExtendedModule
         ));
 */
 
-        $contentData = eF_getTableData(
+        $contentData = sC_getTableData(
         	"module_xcontent_schedule sch
         	JOIN module_xcontent_schedule_contents sch_c ON  (sch.id = sch_c.schedule_id)
         	LEFT JOIN content ct ON (sch_c.content_id = ct.id)
@@ -1853,7 +1853,7 @@ class module_xcontent extends MagesterExtendedModule
 			$where[] = sprintf("schedl.xentify_scope_id IN (%s)", implode(", ", $scopeID));
 		}
 /*
-    	$scheduleData = eF_getTableData(
+    	$scheduleData = sC_getTableData(
 	    	"module_xcontent_schedule schedl
 	    	LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
 	    	LEFT JOIN content cont ON schedl.content_id = cont.id
@@ -1883,7 +1883,7 @@ class module_xcontent extends MagesterExtendedModule
 		);
 		exit;
 */
-    	$scheduleData = eF_getTableData(
+    	$scheduleData = sC_getTableData(
    			"module_xcontent_schedule schedl
    			LEFT JOIN module_xentify_scopes scop ON schedl.xentify_scope_id = scop.id
    			LEFT OUTER JOIN module_xcontent_schedule_contents sch_ct ON (schedl.id = sch_ct.schedule_id)
@@ -1922,7 +1922,7 @@ class module_xcontent extends MagesterExtendedModule
 			case 2 : {
 				$scopeFields = array('polo_id');
 
-				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
+				$polosData = sC_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
 				foreach ($polosData as $polo) {
 					$poloCombo[$polo['id']] = $polo['nome'];
@@ -1931,7 +1931,7 @@ class module_xcontent extends MagesterExtendedModule
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
 				/*
-				$classeData = eF_getTableData(
+				$classeData = sC_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
 					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
@@ -1954,7 +1954,7 @@ class module_xcontent extends MagesterExtendedModule
 			case 10 : {
 				$scopeFields = array('polo_id', 'classe_id');
 
-				$polosData = eF_getTableData("module_polos", "id, nome", "active = 1");
+				$polosData = sC_getTableData("module_polos", "id, nome", "active = 1");
 				$poloCombo = array(-1 => __SELECT_ONE_OPTION);
 				foreach ($polosData as $polo) {
 					$poloCombo[$polo['id']] = $polo['nome'];
@@ -1963,7 +1963,7 @@ class module_xcontent extends MagesterExtendedModule
 					->addSelect('polo_id', null, array('label'	=> __XCONTENT_POLO, 'options'	=> $poloCombo))
 					->addRule('gt', __XCONTENT_MORE_THAN_ZERO, 0);
 
-				$classeData = eF_getTableData(
+				$classeData = sC_getTableData(
 					"classes cl LEFT JOIN courses c ON (cl.courses_ID = c.id)",
 					"cl.id, c.name as course_name, cl.name as classe_name",
 					"c.active = 1 AND cl.active = 1",
@@ -1998,7 +1998,7 @@ class module_xcontent extends MagesterExtendedModule
 			$where[] = 'active = ' . ($constraints['active'] ? '1' : 0);
 		}
 
-		$scopeDBData = eF_getTableData("module_xentify_scopes", "*", implode(" AND ", $where));
+		$scopeDBData = sC_getTableData("module_xentify_scopes", "*", implode(" AND ", $where));
 
 		foreach ($scopeDBData as &$scope) {
 			$scope['fields'] = $this->getScopeFields($scope['id']);
@@ -2130,11 +2130,11 @@ class module_xcontent extends MagesterExtendedModule
 
     	$data = array();
 
-    	if (eF_checkParameter($scopeData['polo_id'], 'id')) {
-    		list($data['polo']) = eF_getTableData("module_polos", "*", 'id = ' . $scopeData['polo_id']);
+    	if (sC_checkParameter($scopeData['polo_id'], 'id')) {
+    		list($data['polo']) = sC_getTableData("module_polos", "*", 'id = ' . $scopeData['polo_id']);
     	}
-    	if (eF_checkParameter($scopeData['classe_id'], 'id')) {
-    		list($data['classe']) = eF_getTableData("classes", "*", 'id = ' . $scopeData['classe_id']);
+    	if (sC_checkParameter($scopeData['classe_id'], 'id')) {
+    		list($data['classe']) = sC_getTableData("classes", "*", 'id = ' . $scopeData['classe_id']);
     	}
 
     	return $data;
@@ -2188,7 +2188,7 @@ class module_xcontent extends MagesterExtendedModule
 
 		$from = "users u";
   		$select = "u.*";
-		$result = eF_getTableData($from, $select, implode(" and ", $where), $orderby, "", $limit);
+		$result = sC_getTableData($from, $select, implode(" and ", $where), $orderby, "", $limit);
 
 		if (!isset($constraints['return_objects']) || $constraints['return_objects'] == false) {
    			return MagesterUser :: convertDatabaseResultToUserArray($result);

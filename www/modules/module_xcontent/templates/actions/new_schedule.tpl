@@ -49,7 +49,7 @@
 	</form>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const.__XCONTENT_NEW_SCHEDULE
 	data=$smarty.capture.t_xcontent_new_schedule_form
 	contentclass="blockContents"

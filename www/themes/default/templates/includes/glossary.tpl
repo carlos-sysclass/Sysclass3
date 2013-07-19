@@ -33,13 +33,13 @@ var tabberLoadingConst = "{$smarty.const._LOADINGDATA}";
        </table>
    </form>
   {/capture}
-  {eF_template_printBlock title = $smarty.const._GLOSSARY data = $smarty.capture.t_glossary_add_code image = '32x32/glossary.png' help = 'Glossary'}
+  {sC_template_printBlock title = $smarty.const._GLOSSARY data = $smarty.capture.t_glossary_add_code image = '32x32/glossary.png' help = 'Glossary'}
  {else}
   {capture name='t_glossary_code'}
    {if !$_student_ && $_change_}
              <div class = "headerTools">
                  <img src = "images/16x16/add.png" title = "{$smarty.const._ANNOUNCEMENTADD}" alt = "{$smarty.const._ANNOUNCEMENTADD}"/>
-                 <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&add=1&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._ADDDEFINITION}', 2)" title = "{$smarty.const._ADDDEFINITION}" target = "POPUP_FRAME">{$smarty.const._ADDDEFINITION}</a>
+                 <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&add=1&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._ADDDEFINITION}', 2)" title = "{$smarty.const._ADDDEFINITION}" target = "POPUP_FRAME">{$smarty.const._ADDDEFINITION}</a>
              </div>
             {/if}
 
@@ -72,7 +72,7 @@ var tabberLoadingConst = "{$smarty.const._LOADINGDATA}";
                             <td>{$term.info}</td>
        {if !$_student_ && $_change_}
                             <td class = "centerAlign" class = "nowrap">
-                               <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&edit={$term.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDITDEFINITION}', 1)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITDEFINITION}" title = "{$smarty.const._EDITDEFINITION}" /></a>
+                               <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&edit={$term.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDITDEFINITION}', 1)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITDEFINITION}" title = "{$smarty.const._EDITDEFINITION}" /></a>
                                <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteEntity(this, '{$term.id}');"/>
                             </td>
        {/if}
@@ -92,7 +92,7 @@ var tabberLoadingConst = "{$smarty.const._LOADINGDATA}";
                             <td>{$term.info}</td>
        {if !$_student_ && $_change_}
                             <td class = "centerAlign" class = "nowrap">
-                               <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&edit={$term.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._EDITDEFINITION}', 1)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITDEFINITION}" title = "{$smarty.const._EDITDEFINITION}" /></a>
+                               <a href = "{$smarty.server.PHP_SELF}?ctg=glossary&edit={$term.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._EDITDEFINITION}', 1)" target = "POPUP_FRAME"><img src = "images/16x16/edit.png" alt = "{$smarty.const._EDITDEFINITION}" title = "{$smarty.const._EDITDEFINITION}" /></a>
                                <img class = "ajaxHandle" src = "images/16x16/error_delete.png" alt = "{$smarty.const._DELETE}" title = "{$smarty.const._DELETE}" onclick = "if (confirm('{$smarty.const._IRREVERSIBLEACTIONAREYOUSURE}')) deleteEntity(this, '{$term.id}');"/>
                             </td>
        {/if}
@@ -101,7 +101,7 @@ var tabberLoadingConst = "{$smarty.const._LOADINGDATA}";
     {/if}
      </table>
  {/capture}
- {eF_template_printBlock title=$key data=$smarty.capture.t_term_code image='32x32/glossary.png'}
+ {sC_template_printBlock title=$key data=$smarty.capture.t_term_code image='32x32/glossary.png'}
 
 {/if}
 
@@ -116,7 +116,7 @@ var tabberLoadingConst = "{$smarty.const._LOADINGDATA}";
              {if $smarty.foreach.glossary_list.first}
              </div>
              {/if}
-  {eF_template_printBlock title = $smarty.const._GLOSSARY data = $smarty.capture.t_glossary_code image = '32x32/glossary.png' help = 'Glossary'}
+  {sC_template_printBlock title = $smarty.const._GLOSSARY data = $smarty.capture.t_glossary_code image = '32x32/glossary.png' help = 'Glossary'}
   {* Hidden used for the add info popup to define whether this page should be reloaded on popup close or not *}
   <input type = "hidden" id = "reloadHidden" value = "" />
  {/if}

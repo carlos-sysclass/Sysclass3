@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <module>
 	<title>eXtended CMS Module</title>
-	<author>André Kucaniz</author>
-	<date>2011 08 15</date>
-	<version>0.1</version>
-	<description>Este módulo que disponibiliza paginas, através de blocos exportados por outros módulos</description>
+	<author>ULT Team</author>
+	<date>2013 01 01</date>
+	<version>3.0</version>
 	<className>module_xcms</className>
 </module>

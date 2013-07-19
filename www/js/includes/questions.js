@@ -30,7 +30,7 @@ Array.prototype.shuffle = function() {
  }
 }
 
-function eF_js_addAdditionalChoice(question_type) {
+function sC_js_addAdditionalChoice(question_type) {
  var els = document.getElementsByTagName('input'); //Find all 'input' elements in th document.
 
  var counter = 0;
@@ -99,7 +99,7 @@ function eF_js_addAdditionalChoice(question_type) {
   var img = new Element('img'); //Create an image element, that will hold the "delete" icon
   img.writeAttribute({alt:removechoice, title: removechoice, src:'themes/default/images/others/transparent.gif'});
   setImageSrc(img, 16, 'error_delete');
-  img.onclick = function () {eF_js_removeImgNode(this, question_type);}; //Set the event that will trigger the deletion
+  img.onclick = function () {sC_js_removeImgNode(this, question_type);}; //Set the event that will trigger the deletion
   var img_td = document.createElement('td'); //Create a new table cell to hold the image element
   img_td.appendChild(img); //Append the image to this cell
   tr.appendChild(img_td); //Append the <td> to the row
@@ -115,7 +115,7 @@ function eF_js_addAdditionalChoice(question_type) {
 }
 
 //This function removes the <tr> element that contains the inserted node.
-function eF_js_removeImgNode(el, question_type) {
+function sC_js_removeImgNode(el, question_type) {
  el.parentNode.parentNode.parentNode.removeChild(el.parentNode.parentNode); //It is <tr><td><img></td></tr>, so we need to remove the <tr> element, which is the el.parentNode.parentNode
 
  var els = document.getElementsByTagName('input'); //Find all 'input' elements in th document.
@@ -158,7 +158,7 @@ function eF_js_removeImgNode(el, question_type) {
 }
 
 //This function is used to create the text boxes that correspond to empty spaces.
-function eF_js_createEmptySpaces() {
+function sC_js_createEmptySpaces() {
 
  if (tinyMCE) { //Get the text from the editor
   var question_text = tinyMCE.get('editor_content_data').getContent();

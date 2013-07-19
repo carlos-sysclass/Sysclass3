@@ -20,7 +20,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  /********************* DASHBOARD PAGE ******************/
  if ($_GET['op'] == "dashboard") {
   //Calculate element positions, so they can be rearreanged accordingly to the user selection
-  //$elementPositions = eF_getTableData("users_to_lessons", "positions", "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
+  //$elementPositions = sC_getTableData("users_to_lessons", "positions", "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
   $elementPositions = $currentUser -> user['dashboard_positions'];
   if (sizeof($elementPositions) > 0) {
    $elementPositions = unserialize($elementPositions); //Get the inner tables positions, stored by the user.
@@ -42,10 +42,10 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   if ($GLOBALS['configuration']['disable_projects'] != 1 && !empty($lessons_list)) {
    if ($currentUser -> getType() == "student") {
     // See projects assigned to you
-    $not_expired_projects = eF_getTableData("projects p, users_to_projects up, lessons", "p.*, up.grade, up.comments, up.filename, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "up.users_LOGIN = '$login' AND up.projects_ID = p.id AND p.lessons_ID = lessons.id AND lessons.id IN ('" . implode("','", $lessons_list). "') AND p.deadline > ".time()." ORDER BY p.deadline ASC LIMIT 5");
+    $not_expired_projects = sC_getTableData("projects p, users_to_projects up, lessons", "p.*, up.grade, up.comments, up.filename, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "up.users_LOGIN = '$login' AND up.projects_ID = p.id AND p.lessons_ID = lessons.id AND lessons.id IN ('" . implode("','", $lessons_list). "') AND p.deadline > ".time()." ORDER BY p.deadline ASC LIMIT 5");
    } else {
     // See projects related to your lessons
-    $not_expired_projects = eF_getTableData("projects p, lessons", "p.*, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "p.lessons_ID = lessons.id AND lessons.id IN ('" . implode("','", $lessons_list). "') AND p.deadline > ".time()." ORDER BY p.deadline ASC LIMIT 5");
+    $not_expired_projects = sC_getTableData("projects p, lessons", "p.*, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "p.lessons_ID = lessons.id AND lessons.id IN ('" . implode("','", $lessons_list). "') AND p.deadline > ".time()." ORDER BY p.deadline ASC LIMIT 5");
    }
 
    if (!empty($not_expired_projects)) {
@@ -57,9 +57,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   /*Forum messages list*/
   // Users see forum messages from the system forum and their own lessons while administrators for all
   if (!empty($lessons_list)) {
-   $forum_messages = eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as show_lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN ('0', '".implode("','", $lessons_list)."')", "fm.timestamp desc LIMIT 5");
+   $forum_messages = sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as show_lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN ('0', '".implode("','", $lessons_list)."')", "fm.timestamp desc LIMIT 5");
   } elseif ($_admin_) { //This is the admin speaking
-   $forum_messages = eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as show_lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id", "fm.timestamp desc LIMIT 5");
+   $forum_messages = sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as show_lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id", "fm.timestamp desc LIMIT 5");
   }
   $smarty -> assign("T_FORUM_MESSAGES", $forum_messages); //Assign forum messages and categoru information to smarty
 
@@ -68,7 +68,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    $smarty -> assign("T_FORUM_LINK", basename($_SERVER['PHP_SELF'])."?ctg=forum&forum=".$forum_lessons_ID[0]['id']);
    $forum_options = array(
      array('text' => _GOTOFORUM, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum"),
-     array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum&add=1&type=topic&category=".$forum_lessons_ID[0]['id'], 'onClick' => "eF_js_showDivPopup('"._NEWMESSAGE."', new Array('650px', '450px'));", 'target' => 'POPUP_FRAME')
+     array('text' => _SENDMESSAGEATFORUM, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=forum&add=1&type=topic&category=".$forum_lessons_ID[0]['id'], 'onClick' => "sC_js_showDivPopup('"._NEWMESSAGE."', new Array('650px', '450px'));", 'target' => 'POPUP_FRAME')
      );
   } else { //If there isn't a forum caegory associated to this lesson, only display a link to forum
    $smarty -> assign("T_FORUM_LINK", basename($_SERVER['PHP_SELF'])."?ctg=forum");
@@ -88,11 +88,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
      //See both expired and non-expired news
      $news = news :: getNews(0, true) + news :: getNews($lessons_list, false);
     }
-    //$announcements		 = eF_getTableData("news n JOIN users u LEFT OUTER JOIN lessons ON n.lessons_ID = lessons.id", "n.*, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "n.users_LOGIN = u.login AND n.lessons_ID IN ('0', '".$lessons_list."')", "n.timestamp desc, n.id desc LIMIT 5");															//Get lesson announcements
+    //$announcements		 = sC_getTableData("news n JOIN users u LEFT OUTER JOIN lessons ON n.lessons_ID = lessons.id", "n.*, lessons.name as show_lessons_name, lessons.id as show_lessons_id", "n.users_LOGIN = u.login AND n.lessons_ID IN ('0', '".$lessons_list."')", "n.timestamp desc, n.id desc LIMIT 5");															//Get lesson announcements
    } else {
     //Administrator news, he doesn't have to see lesson news (since he can't actually access them)
     $news = news :: getNews(0, true);
-    //$announcements		 = eF_getTableData("users u, news n LEFT OUTER JOIN lessons l ON n.lessons_ID = l.id", "n.*, l.name as show_lessons_name, l.id as show_lessons_id", "n.users_LOGIN = u.login", "n.timestamp desc, n.id desc LIMIT 5");
+    //$announcements		 = sC_getTableData("users u, news n LEFT OUTER JOIN lessons l ON n.lessons_ID = l.id", "n.*, l.name as show_lessons_name, l.id as show_lessons_id", "n.users_LOGIN = u.login", "n.timestamp desc, n.id desc LIMIT 5");
    }
 
    $announcements_options = array(array('text' => _ANNOUNCEMENTGO, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=news&lessons_ID=all"));
@@ -103,7 +103,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   }
   /*Comments list*/
   if (!empty($lessons_list)) {
-   $comments = eF_getTableData("comments cm JOIN content c JOIN lessons l ON c.lessons_ID = l.id", "cm.id AS id, cm.data AS data, cm.users_LOGIN AS users_LOGIN, cm.timestamp AS timestamp, c.name AS content_name, c.id AS content_ID, c.ctg_type AS content_type, l.name as show_lessons_name, l.id as show_lessons_id", "c.lessons_ID IN ('".implode("','", $lessons_list)."') AND cm.content_ID=c.id AND c.active=1 AND cm.active=1 AND cm.private=0", "cm.timestamp DESC LIMIT 5");
+   $comments = sC_getTableData("comments cm JOIN content c JOIN lessons l ON c.lessons_ID = l.id", "cm.id AS id, cm.data AS data, cm.users_LOGIN AS users_LOGIN, cm.timestamp AS timestamp, c.name AS content_name, c.id AS content_ID, c.ctg_type AS content_type, l.name as show_lessons_name, l.id as show_lessons_id", "c.lessons_ID IN ('".implode("','", $lessons_list)."') AND cm.content_ID=c.id AND c.active=1 AND cm.active=1 AND cm.private=0", "cm.timestamp DESC LIMIT 5");
   }
   $smarty -> assign("T_LESSON_COMMENTS", $comments); //Assign to smarty
 
@@ -111,11 +111,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] != 'hidden') {
    $today = getdate(time()); //Get current time in an array
    $today = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']); //Create a timestamp that is today, 00:00. this will be used in calendar for displaying today
-   isset($_GET['view_calendar']) && eF_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
+   isset($_GET['view_calendar']) && sC_checkParameter($_GET['view_calendar'], 'timestamp') ? $view_calendar = $_GET['view_calendar'] : $view_calendar = $today; //If a specific calendar date is not defined in the GET, set as the current day to be today
 
    $calendarOptions = array();
    if (!isset($currentUser -> coreAccess['calendar']) || $currentUser -> coreAccess['calendar'] == 'change') {
-    $calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "eF_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
+    $calendarOptions[] = array('text' => _ADDCALENDAR, 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar&add=1&view_calendar=".$view_calendar."&popup=1", "onClick" => "sC_js_showDivPopup('"._ADDCALENDAR."', 2)", "target" => "POPUP_FRAME");
    }
    $calendarOptions[] = array('text' => _GOTOCALENDAR, 'image' => "16x16/go_into.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=calendar");
 
@@ -177,20 +177,20 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   }
 
   if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_COMMENTS) {
-   $my_info_options = array(array('text' => _ADDCOMMENTTOMYPROFILE, 'image' => "16x16/edit.png", 'href' => $_SESSION['s_type'].".php?ctg=social&op=comments&action=insert&popup=1&user=". $currentUser -> user['login'], 'onClick' => "eF_js_showDivPopup('"._USERPROFILE."', 1)", 'target' => 'POPUP_FRAME'));
+   $my_info_options = array(array('text' => _ADDCOMMENTTOMYPROFILE, 'image' => "16x16/edit.png", 'href' => $_SESSION['s_type'].".php?ctg=social&op=comments&action=insert&popup=1&user=". $currentUser -> user['login'], 'onClick' => "sC_js_showDivPopup('"._USERPROFILE."', 1)", 'target' => 'POPUP_FRAME'));
 
    $comments = $currentUser -> getProfileComments();
    if (sizeof($comments) > 0) {
        foreach ($comments as $id => $comment) {
         try {
       $file = new MagesterFile($comment['avatar']);
-      list($comments[$id]['avatar_width'], $comments[$id]['avatar_height']) = eF_getNormalizedDims($file['path'],25,25);
+      list($comments[$id]['avatar_width'], $comments[$id]['avatar_height']) = sC_getNormalizedDims($file['path'],25,25);
      } catch (MagesterFileException $e) {
       $comments[$id]['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
       $comments[$id]['avatar_width'] = 25;
       $comments[$id]['avatar_height'] = 25;
      }
-     $comments[$id]['time_ago'] = eF_convertIntervalToTime(time() - $comment['timestamp'], true). ' '._AGO;
+     $comments[$id]['time_ago'] = sC_convertIntervalToTime(time() - $comment['timestamp'], true). ' '._AGO;
        }
     $smarty -> assign("T_COMMENTS", $comments);
    } else {
@@ -221,11 +221,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $related_users = $all_related_users;
    }
 
-   $my_related_users = eF_getTableData("users", "login, name, surname, avatar, status", "archive=0 AND login IN ('".implode("','", $related_users)."')");
+   $my_related_users = sC_getTableData("users", "login, name, surname, avatar, status", "archive=0 AND login IN ('".implode("','", $related_users)."')");
    foreach ($my_related_users as $key => $user) {
     try {
      $file = new MagesterFile($user['avatar']);
-     list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = eF_getNormalizedDims($file['path'],50,50);
+     list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = sC_getNormalizedDims($file['path'],50,50);
     } catch (MagesterFileException $e) {
      $my_related_users[$key]['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
      $my_related_users[$key]['avatar_width'] = 50;
@@ -246,7 +246,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
   if ($GLOBALS['configuration']['social_modules_activated'] & SOCIAL_FUNC_SYSTEM_TIMELINES) {
    $events = array();
    $myEvents = MagesterEvent::getEvents($all_related_users, true, 5);
-   $allModules = eF_loadAllModules();
+   $allModules = sC_loadAllModules();
    $eventMessages = array();
 
    foreach ($myEvents as $key => $event) {
@@ -279,7 +279,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
    // If chat is enabled
    if ($GLOBALS['configuration']['chat_enabled']) {
-    $current_room = eF_getTableData("users_to_chatrooms" ,"chatrooms_ID","users_LOGIN = '".$shownUser -> user['login']."'");
+    $current_room = sC_getTableData("users_to_chatrooms" ,"chatrooms_ID","users_LOGIN = '".$shownUser -> user['login']."'");
     if (!empty($current_room)) {
      $smarty -> assign("T_CURRENT_CHATROOM", $current_room[0]['chatrooms_ID']);
     } else {
@@ -306,13 +306,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     foreach ($comments as $id => $comment) {
      try {
       $file = new MagesterFile($comment['avatar']);
-      list($comments[$id]['avatar_width'], $comments[$id]['avatar_height']) = eF_getNormalizedDims($file['path'],25,25);
+      list($comments[$id]['avatar_width'], $comments[$id]['avatar_height']) = sC_getNormalizedDims($file['path'],25,25);
      } catch (MagesterFileException $e) {
       $comments[$id]['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
       $comments[$id]['avatar_width'] = 25;
       $comments[$id]['avatar_height'] = 25;
      }
-     $comments[$id]['time_ago'] = eF_convertIntervalToTime(time() - $comment['timestamp'], true). ' '._AGO;
+     $comments[$id]['time_ago'] = sC_convertIntervalToTime(time() - $comment['timestamp'], true). ' '._AGO;
     }
     $smarty -> assign("T_COMMENTS", $comments);
    } else {
@@ -325,9 +325,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
     if (isset($_GET['action']) && $_GET['action'] == "delete") {
    // Only allowed to delete comments referring to you
-   if (sizeof(eF_getTableData("profile_comments", "*", "id=".$_GET['id']." and users_LOGIN='".$_SESSION['s_login']."'")) > 0) {
-    eF_deleteTableData("profile_comments", "id=".$_GET['id']);
-    //eF_deleteTableData("search_keywords", "foreign_ID=".$id." AND table_name='comments'");
+   if (sizeof(sC_getTableData("profile_comments", "*", "id=".$_GET['id']." and users_LOGIN='".$_SESSION['s_login']."'")) > 0) {
+    sC_deleteTableData("profile_comments", "id=".$_GET['id']);
+    //sC_deleteTableData("search_keywords", "foreign_ID=".$id." AND table_name='comments'");
     $message = _COMMENTDELETED;
     $message_type = 'success';
 
@@ -335,9 +335,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     MagesterEvent::triggerEvent(array("type" => MagesterEvent::DELETE_PROFILE_COMMENT_FOR_SELF, "users_LOGIN" => $_SESSION['s_login'], "users_name" => $currentUser -> user['name'], "users_surname" => $currentUser -> user['surname']));
 
     if ($currentUser -> getType() == "administrator") {
-     eF_redirect($currentUser -> getType() . ".php?ctg=users&edit_user=".$currentUser->user['login']."&message=".urlencode($message)."&message_type=".$message_type);
+     sC_redirect($currentUser -> getType() . ".php?ctg=users&edit_user=".$currentUser->user['login']."&message=".urlencode($message)."&message_type=".$message_type);
     } else {
-     eF_redirect($currentUser -> getType() . ".php?ctg=personal&message=".urlencode($message)."&message_type=".$message_type);
+     sC_redirect($currentUser -> getType() . ".php?ctg=personal&message=".urlencode($message)."&message_type=".$message_type);
     }
     exit;
 
@@ -350,14 +350,14 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    } else {
     $form = new HTML_QuickForm("add_comments_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=social&op=comments&action=insert&user=" .$_GET['user'], "", null, true);
    }
-   $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+   $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
 
    $form -> addElement('textarea', 'data', _ADDYOURCOMMENT, 'class = "simpleEditor inputTextArea" style="width:35em;height:10em;"');
    $form -> addElement('submit', 'submit_comments', _COMMENTADD, 'class = "flatButton"');
 
    if (isset($_GET['action']) && $_GET['action'] == 'change' && isset($id)) {
-    $comments_content = eF_getTableData("profile_comments", "*", "id=".$id);
+    $comments_content = sC_getTableData("profile_comments", "*", "id=".$id);
     $form -> setDefaults(array('data' => $comments_content[0]['data']));
    }
 
@@ -366,7 +366,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
      if (isset($_GET['action']) && $_GET['action'] == 'change' && isset($id)) {
       $comments_content = array("data" => $form -> exportValue('data'));
 
-      if (eF_updateTableData("profile_comments", $comments_content, "id=".$id)) {
+      if (sC_updateTableData("profile_comments", $comments_content, "id=".$id)) {
        $message = _SUCCESFULLYUPDATEDCOMMENT;
        $message_type = 'success';
       } else {
@@ -379,7 +379,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
               "authors_LOGIN" => $_SESSION['s_login'],
               "users_LOGIN" => $_GET['user']);
 
-      if (eF_insertTableData("profile_comments", $comments_content)) {
+      if (sC_insertTableData("profile_comments", $comments_content)) {
 
        // Timelines add event
        if ($_SESSION['s_login'] == $_GET['user']) {
@@ -398,9 +398,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 
       if ($currentUser -> getType() == "administrator") {
-       //eF_redirect(" ". $currentUser -> getType() . ".php?ctg=users&edit_user=".$currentUser->user['login']."&message=".urlencode($message)."&message_type=".$message_type);
+       //sC_redirect(" ". $currentUser -> getType() . ".php?ctg=users&edit_user=".$currentUser->user['login']."&message=".urlencode($message)."&message_type=".$message_type);
       } else {
-       //eF_redirect(" ". $currentUser -> getType() . ".php?ctg=personal&message=".urlencode($message)."&message_type=".$message_type);
+       //sC_redirect(" ". $currentUser -> getType() . ".php?ctg=personal&message=".urlencode($message)."&message_type=".$message_type);
       }
 
      }
@@ -426,9 +426,9 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  } elseif ($_GET['op'] == "people") {
 
   if (isset($_GET['ajax'])) {
-   isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
+   isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
 
-   if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+   if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
     $sort = $_GET['sort'];
     isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
    } else {
@@ -449,21 +449,21 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $all_related_users = $currentUser ->getRelatedUsers();
    }
 
-   $temp_related_users = eF_getTableData("users", "login, name, surname, avatar, status", "login IN ('".implode("','", $all_related_users)."')");
+   $temp_related_users = sC_getTableData("users", "login, name, surname, avatar, status", "login IN ('".implode("','", $all_related_users)."')");
    $my_related_users = array();
    foreach ($temp_related_users as $user) {
     $key = $user['login'];
     $my_related_users[$key] = $user;
     try {
      $file = new MagesterFile($user['avatar']);
-     list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = eF_getNormalizedDims($file['path'],50,50);
+     list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = sC_getNormalizedDims($file['path'],50,50);
     } catch (MagesterFileException $e) {
      $my_related_users[$key]['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
      $my_related_users[$key]['avatar_width'] = 50;
      $my_related_users[$key]['avatar_height'] = 50;
     }
    }
-   $related_users_events = eF_getTableData("events", "users_LOGIN, timestamp", "users_LOGIN IN ('".implode("','", $all_related_users)."') AND type IN ('".MagesterEvent::PROFILE_CHANGE."', '".MagesterEvent::AVATAR_CHANGE."', '".MagesterEvent::STATUS_CHANGE."')", "timestamp DESC");
+   $related_users_events = sC_getTableData("events", "users_LOGIN, timestamp", "users_LOGIN IN ('".implode("','", $all_related_users)."') AND type IN ('".MagesterEvent::PROFILE_CHANGE."', '".MagesterEvent::AVATAR_CHANGE."', '".MagesterEvent::STATUS_CHANGE."')", "timestamp DESC");
    foreach ($related_users_events as $events) {
     $login = $events['users_LOGIN'];
     // The first value will be the one to set - the most recent - the rest will be disregarded
@@ -473,17 +473,17 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    }
 
 
-   $my_related_users = eF_multiSort($my_related_users, $_GET['sort'], $order);
+   $my_related_users = sC_multiSort($my_related_users, $_GET['sort'], $order);
 
    if (isset($_GET['filter'])) {
-    $my_related_users = eF_filterData($my_related_users , $_GET['filter']);
+    $my_related_users = sC_filterData($my_related_users , $_GET['filter']);
    }
  //	   $this -> event['time'] =
 
    $filtered_users_array = array();
    foreach ($my_related_users as $login => $user) {
     if ($user['timestamp']) {
-     $my_related_users[$login]['time_ago'] = eF_convertIntervalToTime(time() - $user['timestamp'], true). ' '._AGO;
+     $my_related_users[$login]['time_ago'] = sC_convertIntervalToTime(time() - $user['timestamp'], true). ' '._AGO;
      $filtered_users_array[] = $login;
     } else {
      // For the most recently changed display, remove the ones that have not changed their display
@@ -495,15 +495,15 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     }
    }
 
-   $common_lessons_result = eF_getTableData("users_to_lessons as ul1, users_to_lessons as ul2", "ul2.users_LOGIN, count(ul1.users_LOGIN) as common_lessons", "ul1.archive=0 and ul2.archive=0 and ul1.users_LOGIN = '".$currentUser->user['login']."' AND ul2.users_LOGIN IN ('".implode("','", $filtered_users_array) ."') AND ul1.lessons_ID = ul2.lessons_ID", "" , "ul2.users_LOGIN");
+   $common_lessons_result = sC_getTableData("users_to_lessons as ul1, users_to_lessons as ul2", "ul2.users_LOGIN, count(ul1.users_LOGIN) as common_lessons", "ul1.archive=0 and ul2.archive=0 and ul1.users_LOGIN = '".$currentUser->user['login']."' AND ul2.users_LOGIN IN ('".implode("','", $filtered_users_array) ."') AND ul1.lessons_ID = ul2.lessons_ID", "" , "ul2.users_LOGIN");
    foreach ($common_lessons_result as $common_lessons) {
     $my_related_users[$common_lessons['users_LOGIN']]['common_lessons'] = $common_lessons['common_lessons'];
    }
    $count = sizeof($my_related_users);
    $smarty -> assign("T_MY_RELATED_USERS_SIZE", $count);
 
-   if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+   if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
     $my_related_users = array_slice($my_related_users, $offset, $limit);
    }
 
@@ -528,7 +528,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    } else {
     $all_related_users = $currentUser ->getRelatedUsers();
    }
-   //$my_related_users = eF_getTableData("users", "login, name, surname, avatar, status", "login IN ('".implode("','", $all_related_users)."')");
+   //$my_related_users = sC_getTableData("users", "login, name, surname, avatar, status", "login IN ('".implode("','", $all_related_users)."')");
    /*
 
 			foreach ($my_related_users as $key => $user) {
@@ -537,7 +537,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
 					$file = new MagesterFile($user['avatar']);
 
-					list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = eF_getNormalizedDims($file['path'],50,50);
+					list($my_related_users[$key]['avatar_width'], $my_related_users[$key]['avatar_height']) = sC_getNormalizedDims($file['path'],50,50);
 
 				} else {
 
@@ -587,29 +587,29 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     //$form = new HTML_QuickForm("topic_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_SESSION['s_lessons_ID']."&post_topic=1", "",null, true);
       if (isset($_GET['action']) && $_GET['action'] == "delete") {
      // Only allowed to delete comments referring to you
-     $result = eF_getTableData("lessons_timeline_topics_data", "*", "id=".$_GET['id']." and users_LOGIN='".$_SESSION['s_login']."'");
+     $result = sC_getTableData("lessons_timeline_topics_data", "*", "id=".$_GET['id']." and users_LOGIN='".$_SESSION['s_login']."'");
      if (sizeof($result) > 0) {
-      $result = eF_getTableData("lessons_timeline_topics", "title", "id = " . $result[0]['topics_ID']);
+      $result = sC_getTableData("lessons_timeline_topics", "title", "id = " . $result[0]['topics_ID']);
       $topic_title = $result[0]['title'];
-      eF_deleteTableData("lessons_timeline_topics_data", "id=".$_GET['id']);
-      //eF_deleteTableData("search_keywords", "foreign_ID=".$id." AND table_name='comments'");
+      sC_deleteTableData("lessons_timeline_topics_data", "id=".$_GET['id']);
+      //sC_deleteTableData("search_keywords", "foreign_ID=".$id." AND table_name='comments'");
       $message = _COMMENTDELETED;
       $message_type = 'success';
       // Timelines add event
       MagesterEvent::triggerEvent(array("type" => MagesterEvent::DELETE_POST_FROM_LESSON_TIMELINE, "entity_ID" => $_GET['post_topic'], "entity_name" => $topic_title, "users_LOGIN" => $_SESSION['s_login'], "users_name" => $currentUser -> user['name'], "users_surname" => $currentUser -> user['surname']));
-      eF_redirect("". $currentUser -> getType() . ".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=$message&message_type=$message_type");
+      sC_redirect("". $currentUser -> getType() . ".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=$message&message_type=$message_type");
       exit;
      } else {
       $message = _TOPICPOSTDOESNOTEXISTANYMORE;
       $message_type = 'failure';
-      eF_redirect("". $currentUser -> getType() . ".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=$message&message_type=$message_type");
+      sC_redirect("". $currentUser -> getType() . ".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=$message&message_type=$message_type");
       exit;
 
      }
     } elseif (isset($_GET['action']) && ($_GET['action'] == 'insert' || $_GET['action'] == 'change')) {
      $load_editor = true;
 
-     $result = eF_getTableData("lessons_timeline_topics", "title" , "id = " . $_GET['post_topic']);
+     $result = sC_getTableData("lessons_timeline_topics", "title" , "id = " . $_GET['post_topic']);
      if ($result[0]['title'] == "") {
       // @todo problem
       echo "No such topic id";
@@ -626,13 +626,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
          $smarty -> assign("T_POST_TOPIC_TIMELINE_TITLE", _ADDPOSTFORLESSONTOPIC . " \"" . $topic_name . "\"");
 
      }
-     $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+     $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
      $form -> addElement('textarea', 'data', _MESSAGE, 'class = "simpleEditor inputTextArea" style="width:40em;height:10em;"');
      $form -> addElement('submit', 'submit_topics', _SUBMIT, 'class = "flatButton"');
 
      if (isset($_GET['action']) && $_GET['action'] == 'change' && isset($id)) {
-      $topics_content = eF_getTableData("lessons_timeline_topics_data", "*", "id=".$id);
+      $topics_content = sC_getTableData("lessons_timeline_topics_data", "*", "id=".$id);
       $form -> setDefaults(array('data' => $topics_content[0]['data']));
      }
 
@@ -641,7 +641,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
        if (isset($_GET['action']) && $_GET['action'] == 'change' && isset($id)) {
         $topics_content = array("data" => $form -> exportValue('data'));
 
-        if (eF_updateTableData("lessons_timeline_topics_data", $topics_content, "id=".$id)) {
+        if (sC_updateTableData("lessons_timeline_topics_data", $topics_content, "id=".$id)) {
          $_GET['topics_ID'] = $_GET['post_topic'];
 
          $message = _SUCCESFULLYUPDATEDTOPIC;
@@ -655,7 +655,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
               "topics_ID" => $_GET['post_topic'],
               "users_LOGIN" => $currentUser -> user['login']);
 
-        if ($id = eF_insertTableData("lessons_timeline_topics_data", $topics_content)) {
+        if ($id = sC_insertTableData("lessons_timeline_topics_data", $topics_content)) {
          // Timelines add event
          MagesterEvent::triggerEvent(array("type" => MagesterEvent::NEW_POST_FOR_LESSON_TIMELINE_TOPIC, "entity_ID" => $_GET['post_topic'], "entity_name" => serialize(array("post_id" => $id, "data" => $form -> exportValue('data'), "topic_title" => $topic_name)), "lessons_ID" => $currentLesson -> lesson['id'], "lessons_name" => $currentLesson -> lesson['name'], "users_LOGIN" => $_SESSION['s_login'], "users_name" => $currentUser -> user['name'], "users_surname" => $currentUser -> user['surname']));
 
@@ -692,7 +692,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     if ($currentUser -> getType() != 'professor') {
      $message = _SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION;
      $message_type = 'failure';
-     eF_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
+     sC_redirect("".$_SESSION['s_type'].".php?ctg=personal&tab=skills&message=".$message."&message_type=".$message_type);
      exit;
     }
 
@@ -700,12 +700,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     if (isset($_GET['del_topic'])) { //The administrator asked to delete a skill
 
      //@todo: delete events too?
-     //eF_deleteTableData("lessons_timeline_topics", "type = " . . "  AND lessons_ID = ". ." AND entity_ID = '".$_GET['del_topic']."'");
-     eF_deleteTableData("lessons_timeline_topics_data", "topics_ID = '".$_GET['del_topic']."'");
-     eF_deleteTableData("lessons_timeline_topics", "id = '".$_GET['del_topic']."'");
+     //sC_deleteTableData("lessons_timeline_topics", "type = " . . "  AND lessons_ID = ". ." AND entity_ID = '".$_GET['del_topic']."'");
+     sC_deleteTableData("lessons_timeline_topics_data", "topics_ID = '".$_GET['del_topic']."'");
+     sC_deleteTableData("lessons_timeline_topics", "id = '".$_GET['del_topic']."'");
      $message = _LESSONTIMELINETOPICDELETED;
      $message_type = 'success';
-     eF_redirect("".$_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=".$message."&message_type=".$message_type);
+     sC_redirect("".$_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID']."&all=1&message=".$message."&message_type=".$message_type);
      exit;
     //ON INSERTING OR EDITING A LESSONTIMELINE TOPIC
     } elseif (isset($_GET['add_topic']) || isset($_GET['edit_topic'])) {
@@ -714,10 +714,10 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
       $form = new HTML_QuickForm("topic_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_SESSION['s_lessons_ID']."&add_topic=1", "",null, true);
      } else {
       $form = new HTML_QuickForm("topic_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_SESSION['s_lessons_ID']."&edit_topic=" . $_GET['edit_topic'] , "", null, true);
-      $topic = eF_getTableData("lessons_timeline_topics","title", "id ='".$_GET['edit_topic']."'");
+      $topic = sC_getTableData("lessons_timeline_topics","title", "id ='".$_GET['edit_topic']."'");
      }
 
-     $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+     $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
      $form -> addElement('text', 'topic_description', _LESSONTIMELINETOPIC, 'id="topic_description" class = "inputText" tabindex="1"');
      $form -> addRule('topic_description', _THEFIELD.' '._LESSONTIMELINETOPIC.' '._ISMANDATORY, 'required', null, 'client');
 
@@ -748,19 +748,19 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
                'lessons_ID' => $currentLesson -> lesson['id']);
 
        if (isset($_GET['add_topic'])) {
-        eF_insertTableData("lessons_timeline_topics", $topic_content);
+        sC_insertTableData("lessons_timeline_topics", $topic_content);
         $message = _SUCCESSFULLYCREATEDLESSONTIMELINETOPIC;
         $message_type = 'success';
 
        } elseif (isset($_GET['edit_topic'])) {
-        eF_updateTableData("lessons_timeline_topics", $topic_content , "id = '".$_GET['edit_topic']."'");
+        sC_updateTableData("lessons_timeline_topics", $topic_content , "id = '".$_GET['edit_topic']."'");
         $message = _LESSONTIMELINETOPICDATAUPDATED;
         $message_type = 'success';
        }
 
        // Return to previous url stored in a hidden - that way, after the insertion we can immediately return to where we were
        echo "<script>!/\?/.test(parent.location) ? parent.location = '". basename($form->exportValue('previous_url')) ."&message=".urlencode($message)."&message_type=".$message_type."' : parent.location = '".basename($form->exportValue('previous_url')) ."&message=".urlencode($message)."&message_type=".$message_type."';</script>";
-       //eF_redirect("".$form->exportValue('previous_url')."&message=". $message . "&message_type=" . $message_type . "&tab=skills");
+       //sC_redirect("".$form->exportValue('previous_url')."&message=". $message . "&message_type=" . $message_type . "&tab=skills");
        exit;
       }
      }
@@ -776,7 +776,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    // The main lesson timeline page contains also the form for inserting new topical timelines
    if (isset($_GET['all'])) {
     $form = new HTML_QuickForm("timeline_form", "post", $_SESSION['s_type'].".php?ctg=social&op=timeline&lessons_ID=".$_GET['lessons_ID'] . "&all=1", "", null, true);
-    $result = eF_getTableData("lessons_timeline_topics", "id, title", "lessons_ID = " . $editedLesson -> lesson['id']);
+    $result = sC_getTableData("lessons_timeline_topics", "id, title", "lessons_ID = " . $editedLesson -> lesson['id']);
     $topics = array("0" => _ANYTOPIC);
     foreach ($result as $topic) {
      $id = $topic['id'];
@@ -802,7 +802,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    /// Ajax getting lesson timeline events
    $loadScripts = array_merge($loadScripts, array('scriptaculous/prototype'));
    if (isset($_GET['ajax'])) {
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
 
     // No sorting needed: getEvents returns sorted results according to time
     if (isset($_GET['all'])) {
@@ -821,7 +821,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
      $related_events = $editedLesson -> getEvents($_GET['topics_ID'] ,true, $avatarNormalDims, 5);
     }
 
-    $allModules = eF_loadAllModules();
+    $allModules = sC_loadAllModules();
 
     $events = array();
 
@@ -846,13 +846,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     }
 
     if (isset($_GET['filter'])) {
-     $events = eF_filterData($events , $_GET['filter']);
+     $events = sC_filterData($events , $_GET['filter']);
     }
     $count = sizeof($events);
     $smarty -> assign("T_TIMELINE_EVENTS_SIZE", $count);
 
-    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-     isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+     isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
      $events = array_slice($events, $offset, $limit);
     }
 
@@ -870,13 +870,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 
       /// Ajax getting lesson timeline events
    if (isset($_GET['ajax'])) {
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = 10;
    }
 
    if ($_SESSION['s_type'] != 'administrator') {
     $all_related_users = $currentUser ->getRelatedUsers();
     if (isset($_GET['ajax'])) {
-     $result = eF_getTableData("users", "login, avatar", "login IN ('".implode("','", $all_related_users). "')");
+     $result = sC_getTableData("users", "login, avatar", "login IN ('".implode("','", $all_related_users). "')");
      $users_avatars = array();
      foreach ($result as $avatar) {
       $users_avatars[$avatar['login']] = $avatar['avatar'];
@@ -885,7 +885,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $myEvents = MagesterEvent::getEvents($all_related_users, true, 1000);
    } else {
     if (isset($_GET['ajax'])) {
-     $result = eF_getTableData("users", "login, avatar");
+     $result = sC_getTableData("users", "login, avatar");
      $users_avatars = array();
      foreach ($result as $avatar) {
       $users_avatars[$avatar['login']] = $avatar['avatar'];
@@ -894,7 +894,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     $myEvents = MagesterEvent::getEventsForAllUsers(true, 1000);
    }
 
-   $allModules = eF_loadAllModules();
+   $allModules = sC_loadAllModules();
    $eventMessages = array();
    foreach ($myEvents as $key => $event) {
 
@@ -917,7 +917,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    }
 
    if (isset($_GET['filter'])) {
-    $events = eF_filterData($events , $_GET['filter']);
+    $events = sC_filterData($events , $_GET['filter']);
    }
 
    if (isset($_GET['ajax'])) {
@@ -926,7 +926,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
      $events[$key]['avatar'] = $users_avatars[$event['users_LOGIN']];
      try {
       $file = new MagesterFile($events[$key]['avatar']);
-      list($events[$key]['avatar_width'], $events[$key]['avatar_height']) = eF_getNormalizedDims($file['path'],50,50);
+      list($events[$key]['avatar_width'], $events[$key]['avatar_height']) = sC_getNormalizedDims($file['path'],50,50);
      } catch (MagesterFileException $e) {
       $events[$key]['avatar'] = G_SYSTEMAVATARSPATH."unknown_small.png";
       $events[$key]['avatar_width'] = 50;
@@ -938,8 +938,8 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
    $count = sizeof($events);
    $smarty -> assign("T_TIMELINE_EVENTS_SIZE", $count);
 
-   if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-    isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+   if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+    isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
     $events = array_slice($events, $offset, $limit);
    }
 

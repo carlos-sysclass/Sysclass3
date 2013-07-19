@@ -68,7 +68,7 @@
 	</table>
 {/capture}
 
-{eF_template_printBlock
+{sC_template_printBlock
 	title      = $smarty.const.__XPAY_VIEW_TO_SEND_INVOICES_LIST
 	options    = $T_VIEW_TO_SEND_INVOICES_LIST_OPTIONS
 	data       = $smarty.capture.t_xpay_view_send_list

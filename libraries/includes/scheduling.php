@@ -4,7 +4,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if (isset($currentUser -> coreAccess['settings']) && $currentUser -> coreAccess['settings'] == 'hidden') {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 
 $loadScripts[] = 'includes/scheduling';
@@ -19,8 +19,8 @@ if (isset($_GET['delete_schedule']) && $_GET['delete_schedule']) {
         $currentLesson -> lesson['shift'] = 0;
 
         // @TODO maybe proper class internal invalidation
-        eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
-        eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
+        sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
+        sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
 
         $currentLesson -> persist();
     } catch (Exception $e) {
@@ -31,7 +31,7 @@ if (isset($_GET['delete_schedule']) && $_GET['delete_schedule']) {
     exit;
 }
 $form = new HTML_QuickForm("add_period_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=scheduling&", "", null, true);
-$form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+$form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
 
 $form -> addElement('text', 'from', _FROM, 'class = "inputText"');
 $form -> addElement('text', 'to', _TO, 'class = "inputText"');
@@ -63,10 +63,10 @@ if (isset($currentUser -> coreAccess['settings']) && $currentUser -> coreAccess[
 
             // Note: the semantics of the following event triggers: these triggerings are used to create future "before event" notifications now
             // For this reason the timestamp is set to the values of the lesson
-            eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
-            eF_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
+            sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_START . "_" . $lesson -> lesson['id']. "'");
+            sC_deleteTableData("notifications", "id_type_entity LIKE '%_". (-1) * MagesterEvent::LESSON_PROGRAMMED_EXPIRY . "_" . $lesson -> lesson['id']. "'");
 
-            eF_deleteTableData("events", "lessons_ID = ". $currentLesson -> lesson['id'] . " AND (type = '".MagesterEvent::LESSON_PROGRAMMED_START. "' OR type = '". MagesterEvent::LESSON_PROGRAMMED_EXPIRY. "')");
+            sC_deleteTableData("events", "lessons_ID = ". $currentLesson -> lesson['id'] . " AND (type = '".MagesterEvent::LESSON_PROGRAMMED_START. "' OR type = '". MagesterEvent::LESSON_PROGRAMMED_EXPIRY. "')");
 
             $currentLesson -> persist();
             MagesterEvent::triggerEvent(array("type" => MagesterEvent::LESSON_PROGRAMMED_START, "timestamp" => $fromTimestamp, "lessons_ID" => $currentLesson -> lesson['id'], "lessons_name" => $currentLesson -> lesson['name']));

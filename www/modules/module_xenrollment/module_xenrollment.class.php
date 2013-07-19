@@ -161,7 +161,7 @@ class module_xenrollment extends MagesterExtendedModule
 
 	protected function reportEnrollment($where=null)
 	{
-		return eF_getTableData("		users usr
+		return sC_getTableData("		users usr
 										LEFT JOIN users_to_lessons utl 	ON utl.users_LOGIN 	= usr.login
 										LEFT JOIN lessons les 			ON les.id 			= utl.lessons_ID
 										LEFT JOIN users_to_courses utc 	ON utc.users_LOGIN 	= usr.login
@@ -198,7 +198,7 @@ class module_xenrollment extends MagesterExtendedModule
 		$smarty->assign('T_XENROLLMENT_USERSINFO', $usersInfo);
 		unset($usersInfo);
 		# user types for filter
-		$db_userTypes = eF_getTableData(	"	user_types",
+		$db_userTypes = sC_getTableData(	"	user_types",
 				    						"	name",
 											"	basic_user_type = 'student'",
 				    						"	name");
@@ -211,7 +211,7 @@ class module_xenrollment extends MagesterExtendedModule
 		$smarty->assign('T_XENROLLMENT_USERTYPES', $userTypes);
 		unset($db_userTypes, $userTypes);
 		# cities for filter
-		$db_cities = eF_getTableData(	"	module_xuser mxu",
+		$db_cities = sC_getTableData(	"	module_xuser mxu",
 				    					"	DISTINCT( mxu.cidade ) name",
 										"	1 = 1",
 				    					"	mxu.cidade");
@@ -224,7 +224,7 @@ class module_xenrollment extends MagesterExtendedModule
 		$smarty->assign('T_XENROLLMENT_CITIES', $cities);
 		unset($db_cities, $cities);
 		# states for filter
-		$db_states = eF_getTableData(	"	module_xuser mxu",
+		$db_states = sC_getTableData(	"	module_xuser mxu",
 				    					"	DISTINCT( mxu.uf ) name",
 										"	1 = 1",
 				   						"	mxu.uf");
@@ -291,7 +291,7 @@ class module_xenrollment extends MagesterExtendedModule
 	{
 		$token = $this->createToken(30);
 
-		$newID = eF_insertTableData("module_xenrollment", array(
+		$newID = sC_insertTableData("module_xenrollment", array(
     		"token"	=> $token
 		));
 
@@ -310,9 +310,9 @@ class module_xenrollment extends MagesterExtendedModule
 			$fields = $_POST;
 		}
 
-		eF_updateTableData("module_xenrollment", $fields, "token = '" . $enrollment_token . "'");
+		sC_updateTableData("module_xenrollment", $fields, "token = '" . $enrollment_token . "'");
 
-		$result = eF_getTableData("module_xenrollment", "*", "token = '" . $enrollment_token . "'");
+		$result = sC_getTableData("module_xenrollment", "*", "token = '" . $enrollment_token . "'");
 
 		if ($result) {
 			return $result[0];
@@ -454,7 +454,7 @@ class module_xenrollment extends MagesterExtendedModule
 			$where[] = sprintf("enroll.status_id = %d", $_GET['enrollment_status']);
 		}
 
-		$lastEnrollmentsData = eF_getTableData(implode(' ', $table), implode(",", $fields), implode(" AND ", $where), implode(",", $order), "", $limit);
+		$lastEnrollmentsData = sC_getTableData(implode(' ', $table), implode(",", $fields), implode(" AND ", $where), implode(",", $order), "", $limit);
 
 		foreach ($lastEnrollmentsData as $key => $enrollItem) {
 			$lastEnrollmentsData[$key]['username'] = formatLogin(null, $enrollItem);
@@ -567,8 +567,8 @@ class module_xenrollment extends MagesterExtendedModule
 		}
 
 		if (
-		eF_checkParameter($fields['document_id'], 'id') &&
-		eF_checkParameter($fields['course_id'], 'id')
+		sC_checkParameter($fields['document_id'], 'id') &&
+		sC_checkParameter($fields['course_id'], 'id')
 		) {
 			$tableFields = array('document_id', 'course_id');
 			$insertFields = array();
@@ -578,7 +578,7 @@ class module_xenrollment extends MagesterExtendedModule
 				}
 			}
 
-			$result = eF_insertTableData(
+			$result = sC_insertTableData(
 				"module_xdocuments_to_courses",
 			$insertFields
 			);
@@ -604,8 +604,8 @@ class module_xenrollment extends MagesterExtendedModule
 		}
 
 		if (
-		eF_checkParameter($fields['document_id'], 'id') &&
-		eF_checkParameter($fields['enrollment_id'], 'id')
+		sC_checkParameter($fields['document_id'], 'id') &&
+		sC_checkParameter($fields['enrollment_id'], 'id')
 		) {
 			$tableFields = array('status_id');
 
@@ -618,7 +618,7 @@ class module_xenrollment extends MagesterExtendedModule
 			if (
 			$this->getDocumentsByEnrollmentId($fields['enrollment_id'], $fields['document_id']) == FALSE
 			) {
-				$result = eF_insertTableData(
+				$result = sC_insertTableData(
 					"module_xenrollment_documents_status",
 				array_merge(
 				array(
@@ -629,7 +629,7 @@ class module_xenrollment extends MagesterExtendedModule
 				)
 				);
 			} else {
-				$result = eF_updateTableData(
+				$result = sC_updateTableData(
 					"module_xenrollment_documents_status",
 				$updateFields,
 				sprintf("document_id = %d AND enrollment_id = %d", $fields['document_id'], $fields['enrollment_id'])
@@ -660,8 +660,8 @@ class module_xenrollment extends MagesterExtendedModule
 		}
 
 		if (
-		eF_checkParameter($fields['document_id'], 'id') &&
-		eF_checkParameter($fields['course_id'], 'id')
+		sC_checkParameter($fields['document_id'], 'id') &&
+		sC_checkParameter($fields['course_id'], 'id')
 		) {
 			$tableFields = array('required');
 
@@ -671,7 +671,7 @@ class module_xenrollment extends MagesterExtendedModule
 				}
 			}
 
-			$result = eF_updateTableData(
+			$result = sC_updateTableData(
 				"module_xdocuments_to_courses",
 			$updateFields,
 			sprintf("document_id = %d AND course_id = %d", $fields['document_id'], $fields['course_id'])
@@ -699,11 +699,11 @@ class module_xenrollment extends MagesterExtendedModule
 		}
 
 		if (
-		eF_checkParameter($fields['document_id'], 'id') &&
-		eF_checkParameter($fields['course_id'], 'id')
+		sC_checkParameter($fields['document_id'], 'id') &&
+		sC_checkParameter($fields['course_id'], 'id')
 		) {
 
-			$result = eF_deleteTableData(
+			$result = sC_deleteTableData(
 				"module_xdocuments_to_courses", sprintf("document_id = %d AND course_id = %d", $fields['document_id'], $fields['course_id'])
 			);
 
@@ -837,8 +837,8 @@ class module_xenrollment extends MagesterExtendedModule
 
 	public function onPaymentReceivedEvent($context, $data)
 	{
-		if (eF_checkParameter($data['enrollment_id'], 'id')) {
-			if (eF_checkParameter($data['parcela_index'], 'id') && $data['parcela_index'] == 1) {
+		if (sC_checkParameter($data['enrollment_id'], 'id')) {
+			if (sC_checkParameter($data['parcela_index'], 'id') && $data['parcela_index'] == 1) {
 				$this->addEnrollmentHistory(
 				$data['enrollment_id'],
 				array(
@@ -1043,7 +1043,7 @@ class module_xenrollment extends MagesterExtendedModule
 				$values = $historyForm->exportValues();
 
 				if ($enroll['status_id'] != $values['status_id'] && $values['status_id'] != 0) {
-					eF_updateTableData(
+					sC_updateTableData(
 					"module_xenrollment",
 					array('status_id' => $values['status_id']),
 					'id = ' . $enroll['id']
@@ -1055,7 +1055,7 @@ class module_xenrollment extends MagesterExtendedModule
 				'status_id' 	=> $values['status_id'],
 				'body'			=> $values['body']
 				);
-				eF_insertTableData("module_xenrollment_history", $fields);
+				sC_insertTableData("module_xenrollment_history", $fields);
 				if (empty($message)) {
 					$message = __XENROLLMENT_HISTORY_SAVE_SUCCESS;
 				}
@@ -1085,23 +1085,23 @@ class module_xenrollment extends MagesterExtendedModule
 		 PRIMARY KEY (`id`)
 		 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		 */
-		$countEnroll = eF_countTableData("module_xenrollment", "id", sprintf('id = %d AND status_id = %d',  $enroll_id, $fields['status_id']));
+		$countEnroll = sC_countTableData("module_xenrollment", "id", sprintf('id = %d AND status_id = %d',  $enroll_id, $fields['status_id']));
 		if ($countEnroll[0]['count'] == 0) {
 			/** @todo Checar se a mudança de status é permitida */
-			 eF_updateTableData("module_xenrollment",
+			 sC_updateTableData("module_xenrollment",
 			 array('status_id' => $fields['status_id']),
 			 sprintf('id = %d',  $enroll_id)
 			 );
 			 }
 
-			 $countHistory = eF_countTableData("module_xenrollment_history", "id", sprintf("enrollment_id = %d AND status_id = %d", $enroll_id, $fields['status_id']));
+			 $countHistory = sC_countTableData("module_xenrollment_history", "id", sprintf("enrollment_id = %d AND status_id = %d", $enroll_id, $fields['status_id']));
 			 if ($countHistory[0]['count'] == 0) {
 			 $insertFields = array_merge(array(
 			 'enrollment_id' => $enroll_id,
 			 'message'		=> ''
 			 ), $fields);
 
-			 eF_insertTableData("module_xenrollment_history", $insertFields);
+			 sC_insertTableData("module_xenrollment_history", $insertFields);
 
 			 return true;
 			 } else {
@@ -1112,7 +1112,7 @@ class module_xenrollment extends MagesterExtendedModule
 
 			 public function getEnrollmentById($enrollment_id)
 			 {
-			 $result = eF_getTableData("module_xenrollment", "*", "id = '" . $enrollment_id . "'");
+			 $result = sC_getTableData("module_xenrollment", "*", "id = '" . $enrollment_id . "'");
 
 			 if ($result) {
 			 return $result[0];
@@ -1122,7 +1122,7 @@ class module_xenrollment extends MagesterExtendedModule
 			 }
 			 public function getEnrollmentByToken($enrollment_token)
 			 {
-			 $result = eF_getTableData("module_xenrollment", "*", "token = '" . $enrollment_token . "'");
+			 $result = sC_getTableData("module_xenrollment", "*", "token = '" . $enrollment_token . "'");
 
 			 if ($result) {
 			 return $result[0];
@@ -1132,7 +1132,7 @@ class module_xenrollment extends MagesterExtendedModule
 			 }
 			 public function getEnrollmentByUserAndCourseID($user_id, $course_id)
 			 {
-			 $result = eF_getTableData("module_xenrollment", "*", "users_id = '" . $user_id . "' AND courses_id = '" . $course_id . "'");
+			 $result = sC_getTableData("module_xenrollment", "*", "users_id = '" . $user_id . "' AND courses_id = '" . $course_id . "'");
 
 			 if ($result) {
 			 return $result[0];
@@ -1142,7 +1142,7 @@ class module_xenrollment extends MagesterExtendedModule
 			 }
 			 public function getEnrollmentIDsByUserId($user_id)
 			 {
-			 $result = eF_getTableDataFlat("module_xenrollment", "id", "users_id = '" . $user_id . "'");
+			 $result = sC_getTableDataFlat("module_xenrollment", "id", "users_id = '" . $user_id . "'");
 
 			 if ($result) {
 			 return $result['id'];
@@ -1153,7 +1153,7 @@ class module_xenrollment extends MagesterExtendedModule
 			 public function getEnrollmentFieldByUserId($user_id, $field)
 			 {
 			 //		echo prepareGetTableData("module_xenrollment", $field, "users_id = '" . $user_id . "'");
-			 $result = eF_getTableDataFlat("module_xenrollment", $field, "users_id = '" . $user_id . "'");
+			 $result = sC_getTableDataFlat("module_xenrollment", $field, "users_id = '" . $user_id . "'");
 
 			 if ($result) {
 			 return $result[$field];
@@ -1172,7 +1172,7 @@ class module_xenrollment extends MagesterExtendedModule
 			 {
 			 $xuserModule = $this->loadModule("xuser");
 			 if ($xuserObject = $xuserModule->getUserById($user_id)) {
-			 $result = eF_getTableDataFlat(
+			 $result = sC_getTableDataFlat(
 				"users_to_courses",
 				"classe_id",
 				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $xuserObject->user['login'], $course_id)
@@ -1188,7 +1188,7 @@ class module_xenrollment extends MagesterExtendedModule
 				{
 				$xuserModule = $this->loadModule("xuser");
 				if ($xuserObject = $xuserModule->getUserById($user_id)) {
-				$result = eF_getTableData(
+				$result = sC_getTableData(
 				"users_to_courses",
 				"*",
 				sprintf("users_LOGIN = '%s' AND courses_ID = %d", $xuserObject->user['login'], $course_id)
@@ -1278,7 +1278,7 @@ class module_xenrollment extends MagesterExtendedModule
 				implode(', ', $order)
 				);
 				*/
-			$result = eF_getTableData(
+			$result = sC_getTableData(
 			implode(' ', $tables),
 			implode(', ', $fields),
 			implode(' AND ', $where),
@@ -1319,7 +1319,7 @@ class module_xenrollment extends MagesterExtendedModule
 			"LEFT JOIN module_xdocuments_types doc_typ ON (doc.type_id = doc_typ.id)",
 			);
 
-			$documentsData = eF_getTableData(implode(" ", $tables),
+			$documentsData = sC_getTableData(implode(" ", $tables),
     		'doc.document_id, doc.name, doc.description, doc.data_registro, doc.type_id,
     		doc_typ.name as type, doc.required, doc.user_responsible, doc.user_authority'
     		);
@@ -1328,14 +1328,14 @@ class module_xenrollment extends MagesterExtendedModule
 		}
 		public function getCourseDocumentList($course_id)
 		{
-			if (eF_checkParameter($course_id, 'id')) {
+			if (sC_checkParameter($course_id, 'id')) {
 				$tables = array(
 				"module_xdocuments doc",
 				"LEFT JOIN module_xdocuments_types doc_typ ON (doc.type_id = doc_typ.id)",
 				"LEFT JOIN module_xdocuments_to_courses doc_course ON (doc.document_id = doc_course.document_id)",
 				);
 
-				$documentsData = eF_getTableData(implode(" ", $tables),
+				$documentsData = sC_getTableData(implode(" ", $tables),
 	    		'doc_course.course_id, doc.document_id, doc.name, doc.description, doc.data_registro, doc.type_id,
 	    		doc_typ.name as type, doc_course.required, doc.user_responsible, doc.user_authority',
 	    		"doc_course.course_id = " . $course_id
@@ -1356,7 +1356,7 @@ class module_xenrollment extends MagesterExtendedModule
 
 			if (count($enrollIDs) > 0) {
 
-				$docStatusData = eF_getTableData(
+				$docStatusData = sC_getTableData(
 	    		"module_xenrollment enr " .
 	    		"LEFT OUTER JOIN module_xenrollment_documents_status enr_stat ON (enr.id = enr_stat.enrollment_id)" .
 	    		"LEFT JOIN module_xdocuments_status doc_stat ON (enr_stat.status_id = doc_stat.id)",
@@ -1389,17 +1389,17 @@ class module_xenrollment extends MagesterExtendedModule
 		public function getDocumentsByEnrollmentId($enrollment_id, $document_id = null)
 		{
 			//$enrollmentData = $this->getUserEnrollmentsByUserId($user_id);
-			if (eF_checkParameter($enrollment_id, 'id')) {
+			if (sC_checkParameter($enrollment_id, 'id')) {
 				$enrollData = $this->getEnrollmentById($enrollment_id);
 
 				$courseDocsData = $this->getCourseDocumentList($enrollData['courses_id']);
 
 				$where = array();
 				$where[] = sprintf("enr.id IN (%s)", $enrollment_id);
-				if (!is_null($document_id) && eF_checkParameter($document_id, 'id')) {
+				if (!is_null($document_id) && sC_checkParameter($document_id, 'id')) {
 					$where[] = sprintf("enr_stat.document_id IN (%s)", $document_id);
 				}
-				$docStatusData = eF_getTableData(
+				$docStatusData = sC_getTableData(
 		    	"module_xenrollment enr " .
 		    	"LEFT OUTER JOIN module_xenrollment_documents_status enr_stat ON (enr.id = enr_stat.enrollment_id)" .
 		    	"LEFT JOIN module_xdocuments_status doc_stat ON (enr_stat.status_id = doc_stat.id)",
@@ -1428,7 +1428,7 @@ class module_xenrollment extends MagesterExtendedModule
 				return false;
 			}
 
-			if (!is_null($document_id) && eF_checkParameter($document_id, 'id')) {
+			if (!is_null($document_id) && sC_checkParameter($document_id, 'id')) {
 				return reset($docList);
 			}
 

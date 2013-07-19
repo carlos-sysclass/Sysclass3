@@ -1,6 +1,6 @@
 {include file = "includes/header.tpl"}
 {if $T_MESSAGE}
-        {eF_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
+        {sC_template_printMessage message = $T_MESSAGE type = $T_MESSAGE_TYPE}
 {/if}
 
 {if $smarty.get.test_analysis}
@@ -30,9 +30,9 @@
         </table>
     {/capture}
 
-    {eF_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = "innerTableName">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = "innerTableName">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
+    {sC_template_printBlock title = "`$smarty.const._TESTANALYSIS` `$smarty.const._FORTEST` <span class = "innerTableName">&quot;`$T_TEST_DATA->test.name`&quot;</span> `$smarty.const._ANDUSER` <span class = "innerTableName">&quot;#filter:login-`$T_TEST_DATA->completedTest.login`#&quot;</span>" data = $smarty.capture.t_test_analysis_code image='32x32/tests.png'}
 {else}
- {eF_template_printBlock title = $smarty.const._SOLVEDTEST data = $T_SOLVED_TEST image='32x32/tests.png'}
+ {sC_template_printBlock title = $smarty.const._SOLVEDTEST data = $T_SOLVED_TEST image='32x32/tests.png'}
 {/if}
 
 

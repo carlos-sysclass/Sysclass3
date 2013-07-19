@@ -22,9 +22,9 @@ class module_youtube extends MagesterModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_youtube");
+        sC_executeNew("drop table if exists module_youtube");
 
-        return eF_executeNew("CREATE TABLE module_youtube (
+        return sC_executeNew("CREATE TABLE module_youtube (
                           id int(11) NOT NULL auto_increment,
                           lessons_ID int(11) NOT NULL,
                           title varchar(255) NOT NULL,
@@ -37,14 +37,14 @@ class module_youtube extends MagesterModule
     // And on deleting the module
     public function onUninstall()
     {
-        return eF_executeNew("DROP TABLE module_youtube;");
+        return sC_executeNew("DROP TABLE module_youtube;");
     }
 
     // On exporting a lesson
     public function onDeleteLesson($lessonId)
     {
-        $links_to_del = eF_getTableDataFlat("module_youtube", "id","lessons_ID='".$lessonId."'");
-        eF_deleteTableData("module_youtube", "lessons_ID='".$lessonId."'");
+        $links_to_del = sC_getTableDataFlat("module_youtube", "id","lessons_ID='".$lessonId."'");
+        sC_deleteTableData("module_youtube", "lessons_ID='".$lessonId."'");
 
         return true;
     }
@@ -52,7 +52,7 @@ class module_youtube extends MagesterModule
     // On exporting a lesson
     public function onExportLesson($lessonId)
     {
-        $data = eF_getTableData("module_youtube", "*","lessons_ID=".$lessonId);
+        $data = sC_getTableData("module_youtube", "*","lessons_ID=".$lessonId);
 
         return $data;
     }
@@ -66,7 +66,7 @@ class module_youtube extends MagesterModule
             // Keep the old id
             unset($link_record['id']);
             $link_record['lessons_ID'] = $lessonId;
-            $new_meeting_id = eF_insertTableData("module_youtube", $link_record);
+            $new_meeting_id = sC_insertTableData("module_youtube", $link_record);
         }
 
         return true;
@@ -135,7 +135,7 @@ class module_youtube extends MagesterModule
 
   if (isset($_GET['postAjaxRequest']) && isset($_GET['id'])) {
             $currentLesson = $this -> getCurrentLesson();
-            $youtube = eF_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+            $youtube = sC_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
 
    // Find the video with the requested id
    foreach ($youtube as $id => $video) {
@@ -170,14 +170,14 @@ class module_youtube extends MagesterModule
 
   }
 
-        if (isset($_GET['delete_youtube']) && eF_checkParameter($_GET['delete_youtube'], 'id')) {
-            eF_deleteTableData("module_youtube", "id=".$_GET['delete_youtube']);
-            eF_deleteTableData("module_youtube_users_to_meeting", "meeting_ID=".$_GET['delete_youtube']);
-            eF_redirect("". $this -> moduleBaseUrl ."&message=".urlencode(_YOUTUBE_SUCCESFULLYDELETEDYOUTUBEENTRY)."&message_type=success");
-        } elseif (isset($_GET['add_youtube']) || (isset($_GET['edit_youtube']) && eF_checkParameter($_GET['edit_youtube'], 'id'))) {
+        if (isset($_GET['delete_youtube']) && sC_checkParameter($_GET['delete_youtube'], 'id')) {
+            sC_deleteTableData("module_youtube", "id=".$_GET['delete_youtube']);
+            sC_deleteTableData("module_youtube_users_to_meeting", "meeting_ID=".$_GET['delete_youtube']);
+            sC_redirect("". $this -> moduleBaseUrl ."&message=".urlencode(_YOUTUBE_SUCCESFULLYDELETEDYOUTUBEENTRY)."&message_type=success");
+        } elseif (isset($_GET['add_youtube']) || (isset($_GET['edit_youtube']) && sC_checkParameter($_GET['edit_youtube'], 'id'))) {
 
    $form = new HTML_QuickForm("youtube_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
-   $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+   $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
    $form -> addElement('text', 'title', null, 'class = "inputText"');
    $form -> addRule('title', _YOUTUBETHEFIELDNAMEISMANDATORY, 'required', null, 'client');
 
@@ -190,7 +190,7 @@ class module_youtube extends MagesterModule
 
             if (isset($_GET['edit_youtube'])) {
 
-                $youtube_entry = eF_getTableData("module_youtube", "*", "id=".$_GET['edit_youtube']);
+                $youtube_entry = sC_getTableData("module_youtube", "*", "id=".$_GET['edit_youtube']);
                 $timestamp_info = getdate($youtube_entry[0]['timestamp']);
 
                 $form -> setDefaults(array('title' => $youtube_entry[0]['title'],
@@ -217,22 +217,22 @@ class module_youtube extends MagesterModule
           'description' => $form -> exportValue('description'));
 
       if (isset($_GET['edit_youtube'])) {
-       if (eF_updateTableData("module_youtube", $fields, "id=".$_GET['edit_youtube'])) {
-        eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_SUCCESFULLYUPDATEDYOUTUBEENTRY)."&message_type=success");
+       if (sC_updateTableData("module_youtube", $fields, "id=".$_GET['edit_youtube'])) {
+        sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_SUCCESFULLYUPDATEDYOUTUBEENTRY)."&message_type=success");
        } else {
-        eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMUPDATINGYOUTUBEENTRY)."&message_type=failure");
+        sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMUPDATINGYOUTUBEENTRY)."&message_type=failure");
        }
       } else {
        // The key will be the current time when the event was set concatenated with the initial timestamp for the meeting
        // If the latter changes after an event editing the key will not be changed
-       if ($result = eF_insertTableData("module_youtube", $fields)) {
-        eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_SUCCESFULLYINSERTEDYOUTUBEENTRY)."&message_type=success");
+       if ($result = sC_insertTableData("module_youtube", $fields)) {
+        sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_SUCCESFULLYINSERTEDYOUTUBEENTRY)."&message_type=success");
        } else {
-        eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMINSERTINGYOUTUBEENTRY)."&message_type=failure");
+        sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMINSERTINGYOUTUBEENTRY)."&message_type=failure");
        }
       }
      } else {
-      eF_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMINSERTINGYOUTUBEENTRY)."&message_type=failure");
+      sC_redirect("".$this -> moduleBaseUrl."&message=".urlencode(_YOUTUBE_PROBLEMINSERTINGYOUTUBEENTRY)."&message_type=failure");
      }
             }
             $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -243,7 +243,7 @@ class module_youtube extends MagesterModule
             $currentUser = $this -> getCurrentUser();
             $currentLesson = $this -> getCurrentLesson();
 
-            $youtube = eF_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+            $youtube = sC_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
 
    $smarty -> assign("T_USERLESSONTYPE", $currentUser -> getRole($currentLesson));
             $smarty -> assign("T_YOUTUBE", $youtube);
@@ -288,7 +288,7 @@ class module_youtube extends MagesterModule
             $smarty = $this -> getSmartyVar();
             $currentLesson = $this -> getCurrentLesson();
 
-            $youtube = eF_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
+            $youtube = sC_getTableData("module_youtube", "*", "lessons_ID = '".$currentLesson -> lesson['id']."'");
 
    if (sizeof($youtube) > 0) {
     $smarty -> assign("T_VIDEOLINK", $youtube[0]['link']);
@@ -334,7 +334,7 @@ class module_youtube extends MagesterModule
             $smarty = $this -> getSmartyVar();
             $currentLesson = $this -> getCurrentLesson();
 
-            $youtube = eF_getTableData("module_youtube", "*", 'lessons_ID IS NULL');
+            $youtube = sC_getTableData("module_youtube", "*", 'lessons_ID IS NULL');
 
 	   if (sizeof($youtube) > 0) {
 	    $smarty -> assign("T_VIDEOLINK", $youtube[0]['link']);

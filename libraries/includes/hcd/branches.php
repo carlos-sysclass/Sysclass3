@@ -6,7 +6,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if ($currentUser -> getType() != "administrator" && (($currentEmployee -> getType() != _SUPERVISOR) ||(isset($currentBranch) && !$currentEmployee -> supervisesBranch($currentBranch->branch['branch_ID']) ))) {
- eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=chart&message=".urlencode(_SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION)."&message_type=failure");
+ sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=chart&message=".urlencode(_SORRYYOUDONOTHAVEPERMISSIONTOPERFORMTHISACTION)."&message_type=failure");
  exit;
 }
 
@@ -61,7 +61,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
       echo $currentBranch -> removeLesson($_GET['add_lesson']);
      } elseif (isset($_GET['addAll'])) {
       $lessons = $currentBranch -> getAllLessons();
-      isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
+      isset($_GET['filter']) ? $lessons = sC_filterData($lessons, $_GET['filter']) : null;
       foreach ($lessons as $lesson) {
        if ($lesson['branches_ID'] == "") {
         $currentBranch -> assignLesson($lesson['id']);
@@ -70,7 +70,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
       echo "-1";
      } elseif (isset($_GET['removeAll'])) {
       $lessons = $currentBranch -> getAllLessons();
-      isset($_GET['filter']) ? $lessons = eF_filterData($lessons, $_GET['filter']) : null;
+      isset($_GET['filter']) ? $lessons = sC_filterData($lessons, $_GET['filter']) : null;
       foreach ($lessons as $lesson) {
        if ($lesson['branches_ID'] == $currentBranch -> branch['branch_ID']) {
         $currentBranch -> removeLesson($lesson['id']);
@@ -89,13 +89,13 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      } elseif (isset($_GET['addAll'])) {
       $constraints = array('archive' => false, 'active' => true, 'condition' => 'r.courses_ID is null') + createConstraintsFromSortedTable();
       $courses = $currentBranch -> getBranchCoursesIncludingUnassigned($constraints);
-      isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
+      isset($_GET['filter']) ? $courses = sC_filterData($courses,$_GET['filter']) : null;
       $currentBranch -> addCoursesToBranch($courses);
      } elseif (isset($_GET['removeAll'])) {
       $constraints = array('archive' => false, 'active' => true) + createConstraintsFromSortedTable();
       $courses = $currentBranch -> getBranchCoursesIncludingUnassigned($constraints);
 
-      isset($_GET['filter']) ? $courses = eF_filterData($courses,$_GET['filter']) : null;
+      isset($_GET['filter']) ? $courses = sC_filterData($courses,$_GET['filter']) : null;
       $currentBranch -> removeCoursesFromBranch($courses);
      }
      exit;
@@ -121,12 +121,12 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
        if ($_GET['default_job'] != '') {
 
         if ($_GET['default_job'] != $_GET['add_job'] || $_GET['default_position'] != $_GET['add_position']) {
-         $old_job_description_ID = eF_getJobDescriptionId($_GET['default_job'], $_GET['edit_branch']);
+         $old_job_description_ID = sC_getJobDescriptionId($_GET['default_job'], $_GET['edit_branch']);
          $editedEmployee = $editedEmployee -> removeJob ($old_job_description_ID);
         }
        }
 
-       $new_job_description_ID = eF_getJobDescriptionId($_GET['add_job'], $_GET['edit_branch']);
+       $new_job_description_ID = sC_getJobDescriptionId($_GET['add_job'], $_GET['edit_branch']);
        $editedEmployee = $editedEmployee -> addJob ($editedUser, $new_job_description_ID, $_GET['edit_branch'], $_GET['add_position']);
       } else {
        header("HTTP/1.0 500 ");
@@ -138,14 +138,14 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
 
       $editedUser = MagesterUserFactory :: factory($_GET['add_employee']);
       $editedEmployee = $editedUser -> aspects['hcd'];
-      $old_job_description_ID = eF_getJobDescriptionId($_GET['add_job'], $_GET['edit_branch']);
+      $old_job_description_ID = sC_getJobDescriptionId($_GET['add_job'], $_GET['edit_branch']);
       $editedEmployee = $editedEmployee -> removeJob ($old_job_description_ID);
       exit;
      } elseif (isset($_GET['addAll'] )) {
 
       $employees = $currentBranch -> getEmployeesWithJobs();
       // Filter all employee according to the filter
-      isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
+      isset($_GET['filter']) ? $employees = sC_filterData($employees,$_GET['filter']) : null;
       $jobs = $currentBranch -> getJobDescriptions();
 
       foreach ($employees as $employee) {
@@ -161,7 +161,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
       exit;
      } elseif (isset($_GET['removeAll'] )) {
       $employees = $currentBranch -> getEmployeesWithJobs();
-      isset($_GET['filter']) ? $employees = eF_filterData($employees,$_GET['filter']) : null;
+      isset($_GET['filter']) ? $employees = sC_filterData($employees,$_GET['filter']) : null;
 
       foreach ($employees as $employee) {
        if ($employee['job_description_ID'] != "") {
@@ -194,7 +194,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      if ($_GET['ajax'] == 'coursesTable') {
       $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => false);
      }
-     if ($_GET['ajax'] == 'instancesTable' && eF_checkParameter($_GET['instancesTable_source'], 'id')) {
+     if ($_GET['ajax'] == 'instancesTable' && sC_checkParameter($_GET['instancesTable_source'], 'id')) {
       $constraints = createConstraintsFromSortedTable() + array('archive' => false, 'instance' => $_GET['instancesTable_source']);
      }
      $courses = $currentBranch -> getBranchCoursesIncludingUnassigned($constraints);
@@ -216,15 +216,15 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
 
     if (isset($_GET['sort'])) {
      isset($_GET['order']) ? $order = $_GET['order'] : $order = 'asc';
-     $lessons = eF_multiSort($lessons, $_GET['sort'], $order);
+     $lessons = sC_multiSort($lessons, $_GET['sort'], $order);
     }
 
     if (isset($_GET['filter'])) {
-     $lessons = eF_filterData($lessons, $_GET['filter']);
+     $lessons = sC_filterData($lessons, $_GET['filter']);
     }
     $smarty -> assign("T_LESSONS_SIZE", sizeof($lessons));
-    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-     isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+     isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
      $lessons = array_slice($lessons, $offset, $limit);
     }
 
@@ -249,10 +249,10 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     if ($currentEmployee -> getType() == _SUPERVISOR) {
      $sbranchesList = implode("','", $currentEmployee -> supervisesBranches);
      $exclude_admin_condition = " AND users.user_type != 'administrator'";
-     $result = eF_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID IN ('". $sbranchesList ."') AND module_hcd_job_description.branch_ID = '". $currentBranch -> branch['branch_ID'] . "' AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login " . $exclude_admin_condition ,"","");
+     $result = sC_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID IN ('". $sbranchesList ."') AND module_hcd_job_description.branch_ID = '". $currentBranch -> branch['branch_ID'] . "' AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login " . $exclude_admin_condition ,"","");
 
     } else {
-     $result = eF_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description  ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID = '". $currentBranch -> branch['branch_ID'] . "' AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login" ,"","");
+     $result = sC_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description  ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID = '". $currentBranch -> branch['branch_ID'] . "' AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login" ,"","");
     }
     foreach ($result as $value) {
      $employees[$value['login']] = $value;
@@ -261,7 +261,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     // Both roles are allowed to view all subbranches, if this is asked
     if ($_GET['showAllEmployees'] == 1) {
      $sbranchesList = implode("','", $currentBranch -> getAllSubbranches());
-     $subbranches_employees = eF_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description  ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID IN ('". $sbranchesList ."') AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login " . $exclude_admin_condition ,"","");
+     $subbranches_employees = sC_getTableData("users JOIN (module_hcd_employee_has_job_description JOIN module_hcd_job_description  ON module_hcd_employee_has_job_description.job_description_ID = module_hcd_job_description.job_description_ID JOIN module_hcd_branch ON module_hcd_job_description.branch_ID = module_hcd_branch.branch_ID JOIN module_hcd_employee_works_at_branch ON module_hcd_employee_works_at_branch.branch_ID = module_hcd_branch.branch_ID) ON users.login = module_hcd_employee_has_job_description.users_login", "distinct users.login, users.name, users.surname, users.pending, users.active, module_hcd_job_description.description, module_hcd_job_description.job_description_ID, module_hcd_branch.name as bname, module_hcd_job_description.branch_ID, module_hcd_employee_works_at_branch.supervisor", "users.archive = 0 AND module_hcd_job_description.branch_ID IN ('". $sbranchesList ."') AND  users.login = module_hcd_employee_works_at_branch.users_login AND users.login = module_hcd_employee_has_job_description.users_login " . $exclude_admin_condition ,"","");
      foreach ($subbranches_employees as $sub_employee) {
       $employees[$sub_employee['login']] = $sub_employee;
      }
@@ -274,9 +274,9 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
    // Create ajax enabled table for employees
    if (isset($_GET['ajax']) && $_GET['ajax'] == 'branchJobsTable') {
 
-    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
      $sort = $_GET['sort'];
      isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
     } else {
@@ -292,17 +292,17 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
      }
     }
 
-    $employees = eF_multiSort($employees, $_GET['sort'], $order);
+    $employees = sC_multiSort($employees, $_GET['sort'], $order);
 
     if (isset($_GET['filter'])) {
-     $employees = eF_filterData($employees, $_GET['filter']);
+     $employees = sC_filterData($employees, $_GET['filter']);
     }
 
 
     $smarty -> assign("T_EMPLOYEES_SIZE", sizeof($employees));
 
-    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-     isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+     isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
      $employees = array_slice($employees, $offset, $limit);
     }
 
@@ -326,7 +326,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
 
   $target = basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=branches&".(isset($_GET['add_branch']) ? "add_branch=1" : "edit_branch=".$_GET['edit_branch']);
   $form = new HTML_QuickForm("branch_form", "post", $target, "", null, true);
-  $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+  $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
   $form -> addElement('text', 'branch_name', _BRANCHNAME, 'class = "inputText"');
   $form -> addRule('branch_name', _THEFIELD.' "'._BRANCHNAME.'" '._ISMANDATORY, 'required', null, 'client');
   $form -> addRule('branch_name', _INVALIDFIELDDATA, 'checkParameter', 'text'); /*mandatory me if*/
@@ -375,7 +375,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
   $forbidden_link = "";
   /* Select or possible father branches (the ones this supervisor manages) or all (if user is administrator)*/
   if ($currentEmployee -> getType() == _SUPERVISOR) {
-   $father_branches = eF_getTableData("module_hcd_branch", "branch_ID, name, father_branch_ID","branch_ID IN (" . implode(",",$currentEmployee -> supervisesBranches). ")", "father_branch_ID ASC,branch_ID ASC");
+   $father_branches = sC_getTableData("module_hcd_branch", "branch_ID, name, father_branch_ID","branch_ID IN (" . implode(",",$currentEmployee -> supervisesBranches). ")", "father_branch_ID ASC,branch_ID ASC");
 
    // Show only existing branches
    $only_existing = 1;
@@ -389,7 +389,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     $forbidden_link = $currentBranch -> branch['father_branch_ID'];
    }
   } else {
-   $father_branches = eF_getTableData("module_hcd_branch", "branch_ID, name, father_branch_ID", "", "father_branch_ID ASC,branch_ID ASC");
+   $father_branches = sC_getTableData("module_hcd_branch", "branch_ID, name, father_branch_ID", "", "father_branch_ID ASC,branch_ID ASC");
    // Show all branches
    $only_existing = 0;
   }
@@ -413,7 +413,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
    }
    $handle = '<a id = "details_link" name = "details_link" '.$details_link.$handleVisibility.'><img src = "images/16x16/search.png" class = "handle" title="'._DETAILS.'" alt="'._DETAILS.'" ></a>';
       $form -> addElement('static', 'sidenote', $handle);
-   $form -> addElement('select', 'fatherBranch' , _FATHERBRANCH, eF_createBranchesTreeSelect($father_branches, $only_existing),'class = "inputText"  id="fatherBranch" onchange="javascript:change_branch(\'fatherBranch\',\'details_link\',\''.$forbidden_link.'\')"');
+   $form -> addElement('select', 'fatherBranch' , _FATHERBRANCH, sC_createBranchesTreeSelect($father_branches, $only_existing),'class = "inputText"  id="fatherBranch" onchange="javascript:change_branch(\'fatherBranch\',\'details_link\',\''.$forbidden_link.'\')"');
   } else {
    $first_branch = 1;
   }
@@ -443,7 +443,7 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
     $currentBranch -> updateBranchData($branch_content);
     $message = _BRANCHDATAUPDATED;
    }
-   eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=branches&edit_branch=".$currentBranch -> branch['branch_ID']."&message=". urlencode($message) . "&message_type=success");
+   sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=module_hcd&op=branches&edit_branch=".$currentBranch -> branch['branch_ID']."&message=". urlencode($message) . "&message_type=success");
    exit;
   } catch (MagesterBranchException $e) {
    handleNormalFlowExceptions($e);
@@ -458,9 +458,9 @@ if (isset($_GET['delete_branch'])) { //The administrator asked to delete a branc
 
  if (isset($_GET['ajax']) && $_GET['ajax'] == 'branchesTable') {
   if ($_SESSION['s_type'] == "administrator") {
-   $branches = eF_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.branch_ID, module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees, branch1.branch_ID as father_ID, branch1.name as father, supervisor","");
+   $branches = sC_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.branch_ID, module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees, branch1.branch_ID as father_ID, branch1.name as father, supervisor","");
   } else {
-   $branches = eF_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID WHERE module_hcd_branch.branch_ID IN (".$_SESSION['supervises_branches'].") GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees,  module_hcd_branch.branch_ID, branch1.branch_ID as father_ID, branch1.name as father, 1 as supervisor", "");
+   $branches = sC_getTableData("(module_hcd_branch LEFT OUTER JOIN (module_hcd_employee_works_at_branch JOIN users ON module_hcd_employee_works_at_branch.users_LOGIN = users.login) ON module_hcd_branch.branch_ID = module_hcd_employee_works_at_branch.branch_ID AND module_hcd_employee_works_at_branch.assigned = '1') LEFT OUTER JOIN module_hcd_branch as branch1 ON module_hcd_branch.father_branch_ID = branch1.branch_ID WHERE module_hcd_branch.branch_ID IN (".$_SESSION['supervises_branches'].") GROUP BY module_hcd_branch.branch_ID ORDER BY branch1.branch_ID", "module_hcd_branch.name, module_hcd_branch.city, module_hcd_branch.address,  sum(CASE WHEN users.active=1 THEN 1 END) as employees, sum(CASE WHEN users.active=0 THEN 1 END) as inactive_employees,  module_hcd_branch.branch_ID, branch1.branch_ID as father_ID, branch1.name as father, 1 as supervisor", "");
   }
   $dataSource = $branches;
   $tableName = $_GET['ajax'];

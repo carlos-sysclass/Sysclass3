@@ -65,14 +65,14 @@ $$('div.block').ancestors().each(function (s) {
         <tr><td align = "left" id = "user_box" style = "padding:3px 3px 4px 5px;"></td></tr>
     </table>
 {/capture}
-{eF_template_printBlock title = $smarty.const._INFO data = $smarty.capture.t_users_table_code image = '32x32/user.png'}
+{sC_template_printBlock title = $smarty.const._INFO data = $smarty.capture.t_users_table_code image = '32x32/user.png'}
 </div>
 {*This table is used to display popups*}
 
 <table id = "popup_table" class = "divPopup" style = "display:none;" >
     <tr class = "defaultRowHeight">
         <td class = "topTitle" id = "popup_title"></td>
-        <td class = "topTitle" id = "popup_close_cell"><img src = "images/16x16/close.png" alt = "{$smarty.const._CLOSE}" name = "" id = "popup_close" title = "{$smarty.const._CLOSE}" onclick = "if (document.getElementById('reloadHidden') && document.getElementById('reloadHidden').value == '1')  {ldelim}parent.frames[1].location = parent.frames[1].location{rdelim};eF_js_showDivPopup('', '', this.name);"/>
+        <td class = "topTitle" id = "popup_close_cell"><img src = "images/16x16/close.png" alt = "{$smarty.const._CLOSE}" name = "" id = "popup_close" title = "{$smarty.const._CLOSE}" onclick = "if (document.getElementById('reloadHidden') && document.getElementById('reloadHidden').value == '1')  {ldelim}parent.frames[1].location = parent.frames[1].location{rdelim};sC_js_showDivPopup('', '', this.name);"/>
     </td></tr>
     <tr><td colspan = "2" id = "popup_data" style = ""></td></tr>
     <tr><td colspan = "2" id = "frame_data" style = "display:none;">
@@ -80,7 +80,7 @@ $$('div.block').ancestors().each(function (s) {
     </td></tr>
 </table>
 <div id = "error_details" style = "display:none">
-{eF_template_printBlock title=$smarty.const._ERRORDETAILS data="`$T_EXCEPTION_TRACE`" image='32x32/error_delete.png'}</div>
+{sC_template_printBlock title=$smarty.const._ERRORDETAILS data="`$T_EXCEPTION_TRACE`" image='32x32/error_delete.png'}</div>
 <div id = 'showMessageDiv' style = "display:none"></div>
 <div id="dimmer" class = "dimmerDiv" style = "display:none;"></div>
 <div id = "defaultExceptionHandlerDiv" style = "color:#ffffff;display:none"></div>
@@ -91,7 +91,7 @@ $$('div.block').ancestors().each(function (s) {
  document.getElementById('popup_frame').src ="{$smarty.session.s_type}.php?ctg=calendar&view_calendar={$T_VIEW_CALENDAR}{if $smarty.get.show_interval}&show_interval={$smarty.get.show_interval}{/if}&add_calendar=1{$T_CALENDAR_TYPE_LINK}&message={$smarty.get.pmessage}&message_type={$smarty.get.pmessage_type}";
 {/if}
 {if isset($div_error)}
- eF_js_showDivPopup('{$div_error}');
+ sC_js_showDivPopup('{$div_error}');
 {/if}
 
 //if (parent.frames[0].document.getElementById('dimmer'))
@@ -101,7 +101,7 @@ $$('div.block').ancestors().each(function (s) {
 if (top.sideframe && top.sideframe.document && top.sideframe.document.getElementById('loading_sidebar'))
     top.sideframe.document.getElementById('loading_sidebar').style.display = 'none'; //no prototype here please
 
-{* Let outputfilter.eF_template_includeScripts.php know to send notifications, after sending for ajax tables *}
+{* Let outputfilter.sC_template_includeScripts.php know to send notifications, after sending for ajax tables *}
 {if ($T_TRIGGER_NEXT_NOTIFICATIONS_SEND == 1)}
     var __shouldTriggerNextNotifications = true;
 {else}
@@ -130,9 +130,9 @@ if (top.sideframe && top.sideframe.document && top.sideframe.document.getElement
 <script>
 {if $T_FACEBOOK_ACCOUNT_MERGE_POPUP}
  {if $T_FACEBOOK_EXTERNAL_LOGIN}
- eF_js_showDivPopup('{$smarty.const._FACEBOOKMERGEACCOUNT}', 2, 'facebook_login');
+ sC_js_showDivPopup('{$smarty.const._FACEBOOKMERGEACCOUNT}', 2, 'facebook_login');
  {else}
- eF_js_showDivPopup('{$smarty.const._FACEBOOKMERGEACCOUNT}', 0, 'facebook_login');
+ sC_js_showDivPopup('{$smarty.const._FACEBOOKMERGEACCOUNT}', 0, 'facebook_login');
  {/if}
 {/if}
 

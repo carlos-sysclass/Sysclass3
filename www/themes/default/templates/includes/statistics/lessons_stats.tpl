@@ -133,7 +133,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
          {$smarty.const._TEST}: {$test_info.general.name}</a>
                             </td>
                             <td id = "right">
-                                {$smarty.const._QUESTIONSKIND}: <img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._QUESTIONSKIND}" title = "{$smarty.const._QUESTIONSKIND}" onclick = "eF_js_showDivPopup('{$smarty.const._QUESTIONTYPES}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_test_questions', '{$test_info.general.id}');"/>
+                                {$smarty.const._QUESTIONSKIND}: <img class = "ajaxHandle" src = "images/16x16/reports.png" alt = "{$smarty.const._QUESTIONSKIND}" title = "{$smarty.const._QUESTIONSKIND}" onclick = "sC_js_showDivPopup('{$smarty.const._QUESTIONTYPES}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_test_questions', '{$test_info.general.id}');"/>
                             </td>
                     </table>
                     <table class = "statisticsSubInfo" id = "tinfo{$test_id}" style = "display:none">
@@ -194,7 +194,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
                          <td>#filter:timestamp_time-{$done_test.timestamp}#</td>
                          <td class = "centerAlign">
                           {if !$test_info.general.scorm}
-                                <a href = "view_test.php?done_test_id={$done_test.id}&popup=1" onclick = "eF_js_showDivPopup('{$smarty.const._VIEWTEST}', 3)" target = "POPUP_FRAME">
+                                <a href = "view_test.php?done_test_id={$done_test.id}&popup=1" onclick = "sC_js_showDivPopup('{$smarty.const._VIEWTEST}', 3)" target = "POPUP_FRAME">
                                  <img src = "images/16x16/search.png" alt = "{$smarty.const._VIEWTEST}" title = "{$smarty.const._VIEWTEST}" /></a>
                              {/if}
                          </td>
@@ -376,9 +376,9 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
                     <form name = "period">
                     <table class = "statisticsSelectDate">
                         <tr><td class = "labelCell">{$smarty.const._FROM}:&nbsp;</td>
-                            <td class = "elementCell">{eF_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
+                            <td class = "elementCell">{sC_template_html_select_date prefix="from_" time=$T_FROM_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="from_" time = $T_FROM_TIMESTAMP display_seconds = false}</td></tr>
                         <tr><td class = "labelCell">{$smarty.const._TO}:&nbsp;</td>
-                            <td class = "elementCell">{eF_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
+                            <td class = "elementCell">{sC_template_html_select_date prefix="to_" time=$T_TO_TIMESTAMP start_year="-2" end_year="+2" field_order = $T_DATE_FORMATGENERAL} {$smarty.const._TIME}: {html_select_time prefix="to_" time = $T_TO_TIMESTAMP display_seconds = false}</td></tr>
                         <tr><td class = "labelCell">{$smarty.const._ANALYTICLOG}:</td>
                          <td class = "elementCell"><input class = "inputCheckbox" type = "checkbox" id = "showLog" {if ( isset($T_LESSON_LOG))} checked="true" {/if}></td></tr>
                         <tr><td colspan = "2">&nbsp;</td></tr>
@@ -391,7 +391,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
 {*
                     <table class = "statisticsTools">
                         <tr><td id = "right">
-        {$smarty.const._ACCESSSTATISTICS}: <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_access');"/>
+        {$smarty.const._ACCESSSTATISTICS}: <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_access');"/>
        </td>
                         </tr>
                     </table>
@@ -418,7 +418,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
 {*
                     {if $T_LESSON_TRAFFIC.total_seconds > 0 }
                             <td id = "right">
-                                <a href = "display_chart.php?id=5&lesson_id={$smarty.get.sel_lesson}&from={$T_FROM_TIMESTAMP}&to={$T_TO_TIMESTAMP}" onclick = "eF_js_showDivPopup('{$smarty.const._MOSTACTIVEUSERS}', 2)", target = "POPUP_FRAME" style = "vertical-align:middle">
+                                <a href = "display_chart.php?id=5&lesson_id={$smarty.get.sel_lesson}&from={$T_FROM_TIMESTAMP}&to={$T_TO_TIMESTAMP}" onclick = "sC_js_showDivPopup('{$smarty.const._MOSTACTIVEUSERS}', 2)", target = "POPUP_FRAME" style = "vertical-align:middle">
                                  {$smarty.const._MOSTACTIVEUSERS}: <img src = "images/16x16/reports.png" alt = "{$smarty.const._MOSTACTIVEUSERS}" title = "{$smarty.const._MOSTACTIVEUSERS}"/></a>
                             </td>
                     {/if}
@@ -444,7 +444,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
                                     {/if}
                                 {/strip}</td>
                                 <td class = "centerAlign">
-                                    <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "eF_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_user_access', '{$login}');"/>
+                                    <img class = "handle" src = "images/16x16/reports.png" alt = "{$smarty.const._ACCESSSTATISTICS}" title = "{$smarty.const._ACCESSSTATISTICS}" onclick = "sC_js_showDivPopup('{$smarty.const._ACCESSSTATISTICS}', 2, 'graph_table');showGraph($('proto_chart'), 'graph_user_access', '{$login}');"/>
                                 </td>
                             </tr>
                         {foreachelse}
@@ -470,7 +470,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
                             <td>{$info.content_name}</td>
                             <td>{$T_ACTIONS[$info.action]}</td>
                             <td>#filter:timestamp_time-{$info.timestamp}#</td>
-                            <td>{$info.session_ip|eF_decodeIp}</td>
+                            <td>{$info.session_ip|sC_decodeIp}</td>
                         </tr>
                         {foreachelse}
                         <tr class = "oddRowColor defaultRowHeight"><td colspan = "100%" class = "emptyCategory">{$smarty.const._NODATAFOUND}</td></tr>
@@ -484,7 +484,7 @@ table#lessonUsersTable td.score{width:5%;text-align:center;}
   <div id = "graph_table" style = "display:none"><div id = "proto_chart" class = "proto_graph"></div></div>
     {/capture}
     {if $T_CURRENT_LESSON_INFO}
-     {eF_template_printBlock title = "`$smarty.const._STATISTICSFORLESSON` <span class='innerTableName'>&quot;`$T_CURRENT_LESSON_INFO->lesson.name`&quot;</span>" data = $smarty.capture.lesson_statistics image = '32x32/reports.png' help = 'Reports'}
+     {sC_template_printBlock title = "`$smarty.const._STATISTICSFORLESSON` <span class='innerTableName'>&quot;`$T_CURRENT_LESSON_INFO->lesson.name`&quot;</span>" data = $smarty.capture.lesson_statistics image = '32x32/reports.png' help = 'Reports'}
     {else}
-     {eF_template_printBlock title = "`$smarty.const._STATISTICSFORLESSON`" data = $smarty.capture.lesson_statistics image = '32x32/reports.png' help = 'Reports'}
+     {sC_template_printBlock title = "`$smarty.const._STATISTICSFORLESSON`" data = $smarty.capture.lesson_statistics image = '32x32/reports.png' help = 'Reports'}
     {/if}

@@ -28,7 +28,7 @@ if (!isset($currentContent)) {
 }
 
 //Legal values are the array of entities that the current user may actually edit or change.
-$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
+$classeData = sC_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
 
 // GET USER CLASS
 $courseClass = $classeData[0]['classe_id'];
@@ -156,7 +156,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 
      //Set elements default values
      $form -> setDefaults($currentUnit['options']);
-     preg_match("/eF_js_setCorrectIframeSize\((.*)\)/", $currentUnit['data'], $matches);
+     preg_match("/sC_js_setCorrectIframeSize\((.*)\)/", $currentUnit['data'], $matches);
      $form -> setDefaults(array('scorm_size' => isset($matches[1]) ? $matches[1] : null,
                                 'data' => $currentUnit['data'],
               'name' => $currentUnit['name'],
@@ -200,7 +200,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
                  }
              } else {
                  $message = _YOUMUSTUPLOADAPDFFILE;
-                 eF_redirect("".basename($_SERVER['PHP_SELF']).'?ctg=content&'.$post_target."&message=".urlencode($message)."&message_type=failure");
+                 sC_redirect("".basename($_SERVER['PHP_SELF']).'?ctg=content&'.$post_target."&message=".urlencode($message)."&message_type=failure");
                  exit;
              }
          }
@@ -224,7 +224,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
      if ($values['embed_type'] == 'iframe' && strpos($currentUnit['data'], 'window.open') !== false) {
       preg_match("/window.open\(.*,/U", $currentUnit['data'], $matches);
       $scormValue = str_replace(array('window.open("', '",'),"",$matches[0]);
-      $currentUnit['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$scormValue. '" onload = "if (window.eF_js_setCorrectIframeSize) {eF_js_setCorrectIframeSize();} else {setIframeSize = true;}"></iframe>';
+      $currentUnit['data'] = '<iframe height = "100%"  width = "100%" frameborder = "no" name = "scormFrameName" id = "scormFrameID" src = "'.$scormValue. '" onload = "if (window.sC_js_setCorrectIframeSize) {sC_js_setCorrectIframeSize();} else {setIframeSize = true;}"></iframe>';
      } elseif ($values['embed_type'] == 'popup' && strpos($currentUnit['data'], 'iframe') !== false) {
       preg_match("/src.*onload/U", $currentUnit['data'], $matches);
       $scormValue = str_replace(array('src = "', '" onload'),"",$matches[0]);
@@ -237,7 +237,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
       preg_match("/\"scormFrameName\".*\"\)'/U", $currentUnit['data'], $matches);
       $currentUnit['data'] = preg_replace("/\"scormFrameName\".*\"\)'/U", '"scormFrameName", "'.$values['popup_parameters'].'")\'' , $currentUnit['data']);
      }
-                 $currentUnit['data'] = preg_replace("/eF_js_setCorrectIframeSize\(.*\)/", "eF_js_setCorrectIframeSize(".$values['scorm_size'].")", $currentUnit['data']);
+                 $currentUnit['data'] = preg_replace("/sC_js_setCorrectIframeSize\(.*\)/", "sC_js_setCorrectIframeSize(".$values['scorm_size'].")", $currentUnit['data']);
              }
              $values['ctg_type'] ? $currentUnit['ctg_type'] = $values['ctg_type'] : null;
              $values['name'] ? $currentUnit['name'] = $values['name'] : null;
@@ -260,7 +260,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
          $message = _OPERATIONCOMPLETEDSUCCESSFULLY;
          $message_type = 'success';
 
-         eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=content&view_unit='.$currentUnit['id'].'&message='.urlencode($message).'&message_type=success');
+         sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=content&view_unit='.$currentUnit['id'].'&message='.urlencode($message).'&message_type=success');
      }
 
      $form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
@@ -284,7 +284,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 
  } catch (Exception $e) {
      $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-     $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+     $message = _SOMEPROBLEMOCCURED.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
      $message_type = 'failure';
  }
 
@@ -292,7 +292,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 
     $basicIterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent -> tree), RecursiveIteratorIterator :: SELF_FIRST));
 
-   	$classeData = ef_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
+   	$classeData = sC_getTableData("users_to_courses", "classe_id", sprintf("users_LOGIN = '%s'", $currentUser -> user['login']));
 
    	// GET USER CLASS
    	$courseClass = $classeData[0]['classe_id'];
@@ -321,7 +321,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 } else {
 	if (!is_null($currentUnit) && $_student_) {
 
-		$modules = eF_loadAllModules(true);
+		$modules = sC_loadAllModules(true);
 
 		$xUserModule = $modules['module_xuser'];
 		// CHECK FOR USER-TYPE LIBERATION
@@ -344,7 +344,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 			$url = sprintf("student.php?message=%s&message_type=failure",
 				urlencode("Você ainda não está autorizado a visualizar este conteúdo.")
 			);
-			eF_redirect($url);
+			sC_redirect($url);
 			exit;
 		}
 
@@ -356,7 +356,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 */
 
 			// CHECK FOR SCHEDULED CONTENT
-			$total_scheduled = eF_getTableData(
+			$total_scheduled = sC_getTableData(
 				"module_xcontent_schedule schl
 				LEFT JOIN module_xcontent_schedule_contents cnt ON (schl.id = cnt.schedule_id)",
 				"schl.id, schl.xentify_scope_id, schl.xentify_id, cnt.content_id, schl.end",
@@ -364,7 +364,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 			);
 
 			/*
-			$total_scheduled = eF_getTableData(
+			$total_scheduled = sC_getTableData(
 				"module_xcontent_schedule schl LEFT OUTER JOIN module_xcontent_schedule_users schl2u ON (schl.id = schl2u.schedule_id)",
 				"*",
 				sprintf("schl.content_id = %d AND schl2u.user_id = %d", $currentUnit->offsetGet('id'), $currentUser->user['id'])
@@ -393,7 +393,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 			} else {
 				$contentToSchedule = reset($total_scheduled);
 
-				$userSchedule = eF_getTableData(
+				$userSchedule = sC_getTableData(
 					"module_xcontent_schedule_users schl2u",
 					"schl2u.schedule_id, schl2u.user_id, schl2u.`index`, schl2u.liberation, schl2u.content_id",
 					sprintf("schl2u.schedule_id = %d AND schl2u.content_id = %d AND schl2u.user_id = %d", $contentToSchedule['id'], $contentToSchedule['content_id'], $currentUser->user['id'])
@@ -412,7 +412,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 							sprintf("schl2u.schedule_id = %d AND schl2u.content_id = %d AND schl2u.user_id = %d", $contentToSchedule['id'], $contentToSchedule['content_id'], $currentUser->user['id'])
 					);
 					*/
-					eF_redirect($url);
+					sC_redirect($url);
 					exit;
 				} else {
 					// USUÁRIO JÁ AGENDOU... CHECAR SE ESTÀ LIBERADO.
@@ -426,13 +426,13 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 							urlencode("Você ainda não está autorizado a visualizar essa prova, favor entrar em contato com o responsável do seu Polo.")
 						);
 
-						eF_redirect($url);
+						sC_redirect($url);
 						exit;
 					}
 				}
 			}
 			//exit;
-		$contentClasses = eF_getTableDataFlat("classes_to_content", "classe_id", sprintf("content_id = %d", $currentUnit->offsetGet('id')));
+		$contentClasses = sC_getTableDataFlat("classes_to_content", "classe_id", sprintf("content_id = %d", $currentUnit->offsetGet('id')));
 
 		if ($contentClasses) {
 			if (
@@ -441,7 +441,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
 			) {
 			} else {
 				$message = _CANNOTACCESSRESOURCE;
-				eF_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=content&message='.urlencode($message).'&message_type=failure');
+				sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=content&message='.urlencode($message).'&message_type=failure');
 				exit;
 			}
 	    }
@@ -619,13 +619,13 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
         }
         $options = array();
         if ($_student_ && $currentLesson -> options['content_report'] && $ruleCheck) {
-            $options[] = array('text' => _CONTENTREPORT, 'image' => "16x16/warning.png", 'href' => "content_report.php?".http_build_query($_GET), 'onclick' => "eF_js_showDivPopup('"._CONTENTREPORT."', 1)", "target" => "POPUP_FRAME");
+            $options[] = array('text' => _CONTENTREPORT, 'image' => "16x16/warning.png", 'href' => "content_report.php?".http_build_query($_GET), 'onclick' => "sC_js_showDivPopup('"._CONTENTREPORT."', 1)", "target" => "POPUP_FRAME");
         }
         if ($currentLesson -> options['bookmarking'] && !$GLOBALS['configuration']['disable_bookmarks'] && $ruleCheck) {
          $options[] = array('text' => _ADDTHISPAGETOYOURBOOKMARKS, 'image' => "16x16/bookmark_add.png", 'onclick' => "addBookmark(this)");
         }
         if ($currentLesson -> options['comments'] && !$GLOBALS['configuration']['disable_comments'] && $ruleCheck) {
-            $options[] = array('text' => _ADDCOMMENT, 'image' => "16x16/comment_add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=comments&view_unit=".$_GET['view_unit']."&add=1&popup=1", 'onclick' => "eF_js_showDivPopup('"._ADDCOMMENT."', 1)", "target" => "POPUP_FRAME");
+            $options[] = array('text' => _ADDCOMMENT, 'image' => "16x16/comment_add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=comments&view_unit=".$_GET['view_unit']."&add=1&popup=1", 'onclick' => "sC_js_showDivPopup('"._ADDCOMMENT."', 1)", "target" => "POPUP_FRAME");
         }
         //$options[] = array('text' => "open window", 'image' => "16x16/add.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=content&view_unit=".$_GET['view_unit']."&bare=1&popup=1", 'onclick' => "window.open('about:blank', 'testme', 'width=800, height=600')", "target" => "testme");
         if (!$scorm2004) {
@@ -691,7 +691,7 @@ if (isset($_GET['add']) || (isset($_GET['edit']) && in_array($_GET['edit'], $leg
         }
     } catch (Exception $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 }

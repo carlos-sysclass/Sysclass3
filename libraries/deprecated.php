@@ -36,12 +36,12 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 *
 
 */
-function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_active = true)
+function sC_createContentStructure($content_ID = 0, $lessons_ID = '', $only_active = true)
 {
-    if (!$lessons_ID || !eF_checkParameter($lessons_ID, 'id')) {
+    if (!$lessons_ID || !sC_checkParameter($lessons_ID, 'id')) {
         $lessons_ID = $_SESSION['s_lessons_ID'];
     }
-    $units = eF_getTableData("content", "id, name, parent_content_ID, ctg_type, active, previous_content_ID, data", "lessons_ID=".$lessons_ID, "parent_content_ID, previous_content_ID"); //Get all the lesson units
+    $units = sC_getTableData("content", "id, name, parent_content_ID, ctg_type, active, previous_content_ID, data", "lessons_ID=".$lessons_ID, "parent_content_ID, previous_content_ID"); //Get all the lesson units
     for ($i = 0; $i < sizeof($units); $i++) { //Initialize the nodes array
         $units[$i]['data'] == '' ? $units[$i]['data'] = false : $units[$i]['data'] = true; //Set data bit, if the node has data.
         $nodes[$units[$i]['id']] = $units[$i];
@@ -49,7 +49,7 @@ function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_acti
     }
     $q = 0;
     while (sizeof($units) > 0 && $q++ < 1000 && !isset($wanted)) { //$q is put here to prevent an infinite loop
-        $leaves = eF_findLeaves($units); //Get the leaf nodes of the tree
+        $leaves = sC_findLeaves($units); //Get the leaf nodes of the tree
         foreach ($leaves as $leaf) {
             $nodes[$leaf['parent_content_ID']]['children'][$nodes[$leaf['id']]['id']] = $nodes[$leaf['id']];
             if ($leaf['id'] == $content_ID) { //If the user asked for the tree below a specified content id, then put it in $wanted
@@ -60,9 +60,9 @@ function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_acti
     }
     isset($wanted) ? $nodes = array(0 => $wanted) : $nodes = $nodes[0]['children']; //$nodes now has either the whole tree (which was put in $nodes[0]['children'] from the loop above), or the branch under the specified content_ID (which was put in $wanted)
     $tree = array();
-    $tree = eF_makeCompatibleTree($tree, $nodes, 0); //Convert the tree from its multidimensional form to its flat form, which is used throughout SysClass
+    $tree = sC_makeCompatibleTree($tree, $nodes, 0); //Convert the tree from its multidimensional form to its flat form, which is used throughout SysClass
     if (sizeof($tree) > 0) {
-        $tree = eF_putInCorrectOrder($tree, $only_active); //Reorder the units to match the content series
+        $tree = sC_putInCorrectOrder($tree, $only_active); //Reorder the units to match the content series
     }
 
     return $tree;
@@ -91,7 +91,7 @@ function eF_createContentStructure($content_ID = 0, $lessons_ID = '', $only_acti
 * @deprecated
 
 */
-function eF_makeCompatibleTree(&$tree, $nodes, $level = 0)
+function sC_makeCompatibleTree(&$tree, $nodes, $level = 0)
 {
     foreach ($nodes as $node) {
         $new_node = array('id' => $node['id'],
@@ -104,7 +104,7 @@ function eF_makeCompatibleTree(&$tree, $nodes, $level = 0)
         if (!isset($tree[$node['previous_content_ID']])) {
             $tree[$node['previous_content_ID']] = $new_node;
         }
-        eF_makeCompatibleTree($tree, $node['children'], $level + 1);
+        sC_makeCompatibleTree($tree, $node['children'], $level + 1);
     }
 
     return $tree;
@@ -119,11 +119,11 @@ function eF_makeCompatibleTree(&$tree, $nodes, $level = 0)
 
 * match the content sucession. The reordering is done based on array indexes, as returned
 
-* by eF_makeCompatibleTree
+* by sC_makeCompatibleTree
 
 *
 
-* @param array $tree The content tree, as returned by eF_makeCompatibleTree
+* @param array $tree The content tree, as returned by sC_makeCompatibleTree
 
 * @param bool $only_active Whether the tree should contain only active units
 
@@ -138,7 +138,7 @@ function eF_makeCompatibleTree(&$tree, $nodes, $level = 0)
 * - Added the check if the first unit is active
 
 */
-function eF_putInCorrectOrder($tree, $only_active)
+function sC_putInCorrectOrder($tree, $only_active)
 {
     $current_unit = $tree[0];
     if ($current_unit['active'] || !$only_active) {
@@ -181,10 +181,10 @@ function eF_putInCorrectOrder($tree, $only_active)
 * @deprecated
 
 */
-function eF_getSeenContent($login, $lessons_ID)
+function sC_getSeenContent($login, $lessons_ID)
 {
-    $done_content = eF_getTableDataFlat("users_to_lessons", "done_content", "users_LOGIN='".$login."' and lessons_ID=".$lessons_ID);
-    $done_tests = eF_getTableDataFlat("done_tests as dt,tests as t, content as c", "c.id", "dt.users_LOGIN='".$login."' AND t.content_ID = c.id AND c.lessons_ID = ".$lessons_ID." AND t.id=dt.tests_ID");
+    $done_content = sC_getTableDataFlat("users_to_lessons", "done_content", "users_LOGIN='".$login."' and lessons_ID=".$lessons_ID);
+    $done_tests = sC_getTableDataFlat("done_tests as dt,tests as t, content as c", "c.id", "dt.users_LOGIN='".$login."' AND t.content_ID = c.id AND c.lessons_ID = ".$lessons_ID." AND t.id=dt.tests_ID");
     (sizeof($done_content['done_content'][0]) > 0 && $done_content['done_content'][0]) ? $done_content = unserialize($done_content['done_content'][0]) : $done_content = array();
     sizeof($done_tests['id'][0]) > 0 ? $done_tests = array_combine($done_tests['id'], $done_tests['id']) : $done_tests = array();
  if ($done_content == false) { // in case $done_content is false from a "b:0;" value in database
@@ -239,7 +239,7 @@ function eF_getSeenContent($login, $lessons_ID)
 
 * // This call returns the full lesson tree, only active and done units.
 
-* eF_getContentTree($nouse, $lessons_ID, 0, false, true, false, true, false);
+* sC_getContentTree($nouse, $lessons_ID, 0, false, true, false, true, false);
 
 * </code>
 
@@ -290,7 +290,7 @@ function eF_getSeenContent($login, $lessons_ID)
 *
 
 */
-function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, $ctg = false, $only_active = true, $only_current = false, $only_done = false, $only_period = false, $only_unseen = false)
+function sC_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, $ctg = false, $only_active = true, $only_current = false, $only_done = false, $only_period = false, $only_unseen = false)
 {
     if (!$lessons_ID) {
         return "";
@@ -300,9 +300,9 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     }
     $counter = 0;
     $level = 0;
-    $tree = eF_createContentStructure($content_ID, $lessons_ID, $only_active); //New way of getting the tree, at least 5 times faster (and many lines of code less)!
+    $tree = sC_createContentStructure($content_ID, $lessons_ID, $only_active); //New way of getting the tree, at least 5 times faster (and many lines of code less)!
     if ($_SESSION['s_type'] == 'student') {
-        $seen_content = eF_getSeenContent($_SESSION['s_login'], $lessons_ID);
+        $seen_content = sC_getSeenContent($_SESSION['s_login'], $lessons_ID);
         //print_r($seen_content);
         foreach ($tree as $key => $value) {
             if (in_array($value['id'], $seen_content)) {
@@ -333,7 +333,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     if ($only_current) {
         $counter = 0;
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
-            //if (!eF_isCurrentContent($tree[$i]['id'])) {
+            //if (!sC_isCurrentContent($tree[$i]['id'])) {
             if (!$tree[$i]['isCurrentContent']) {
                 $parent_keep = false;
                 for ($k = 0; $k < sizeof($keep) AND !$parent_keep; $k++) {
@@ -358,7 +358,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     if ($only_done) {
         $counter = 0;
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
-            //if (!eF_isDoneContent($tree[$i]['id'])) {
+            //if (!sC_isDoneContent($tree[$i]['id'])) {
             if (!($tree[$i]['isDoneContent'])) {
                 $parent_keep = false;
                 for ($k = 0; $k < sizeof($keep) AND !$parent_keep; $k++) {
@@ -381,7 +381,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     if ($only_active) {
         $counter = 0;
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
-            //if (!eF_isDoneContent($tree[$i]['id'])) {
+            //if (!sC_isDoneContent($tree[$i]['id'])) {
             if (!$tree[$i]['isDoneContent']) {
                 $parent_keep = false;
                 for ($k = 0; $k < sizeof($keep) AND !$parent_keep; $k++) {
@@ -402,13 +402,13 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     }
     $keep = array();
     if ($only_period AND $only_period === true) {
-        $result = eF_getTableData("current_content", "content_ID");
+        $result = sC_getTableData("current_content", "content_ID");
         for ($i = 0; $i < sizeof($result); $i++) {
             $currentContent[$result[$i]['content_ID']] = $result[$i]['content_ID'];
         }
         $counter = 0;
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
-            //$res = eF_getTableData("current_content", "content_ID", "content_ID=".$tree[$i]['id']);
+            //$res = sC_getTableData("current_content", "content_ID", "content_ID=".$tree[$i]['id']);
             //if (sizeof($res) == 0) {
             if (!isset($currentContent[$tree[$i]['id']])) {
                 $parent_keep = false;
@@ -432,7 +432,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
     } elseif ($only_period) {
         $counter = 0;
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
-            $res = eF_getTableData("current_content", "content_ID", "content_ID=".$tree[$i]['id']." AND periods_ID=$only_period");
+            $res = sC_getTableData("current_content", "content_ID", "content_ID=".$tree[$i]['id']." AND periods_ID=$only_period");
             if (sizeof($res) == 0) {
                 $parent_keep = false;
                 $keep = array();
@@ -463,7 +463,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
 
         for ($i = sizeof($tree) - 1; $i >= 0; $i--) {
 
-            $res = eF_getTableData("logs","count(*) as times","(action='content' OR action='lessons' OR action = 'tests') AND users_LOGIN='".$only_unseen."' AND comments=".$tree[$i]['id']);
+            $res = sC_getTableData("logs","count(*) as times","(action='content' OR action='lessons' OR action = 'tests') AND users_LOGIN='".$only_unseen."' AND comments=".$tree[$i]['id']);
 
             if ($res[0]['times'] > 0 OR ($tree[$i]['data'] == false && $tree[$i]['ctg_type'] != 'tests')) {
 
@@ -581,7 +581,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
 
 * <code>
 
-* $parents = eF_getParents(213);
+* $parents = sC_getParents(213);
 
 * print_r($parents);
 
@@ -620,7 +620,7 @@ function eF_getContentTree(&$ctg_in_tree, $lessons_ID = false, $content_ID = 0, 
 * - Rewritten so that if $tree is specified, it doesn't perform any database queries
 
 */
-function eF_getParents($content_ID, $tree = null, $tree_indexes = null)
+function sC_getParents($content_ID, $tree = null, $tree_indexes = null)
 {
     if ($tree) {
         if (!$tree_indexes) {
@@ -641,7 +641,7 @@ function eF_getParents($content_ID, $tree = null, $tree_indexes = null)
         $parents['id'][0] = $content_ID;
         while ($now <= $count) {
             $child = $parents['id'][$now];
-            $res = eF_getTableData("content", "parent_content_ID, name", "id=$child");
+            $res = sC_getTableData("content", "parent_content_ID, name", "id=$child");
             for ($i = 0; $i < sizeof($res) && $res[$i]['parent_content_ID'] != 0; $i++) {
                 $parents['name'][$count] = $res[$i]['name'];
                 $count++;
@@ -679,13 +679,13 @@ function eF_getParents($content_ID, $tree = null, $tree_indexes = null)
 * @deprecated
 
 */
-function eF_getOffset()
+function sC_getOffset()
 {
     if ($GLOBALS['currentLesson'] -> options['dynamic_periods']) {
-        $res = eF_getTableData("users_to_lessons", "from_timestamp", "lessons_ID=".$_SESSION['s_lessons_ID']." AND users_LOGIN='".$_SESSION['s_login']."'");
+        $res = sC_getTableData("users_to_lessons", "from_timestamp", "lessons_ID=".$_SESSION['s_lessons_ID']." AND users_LOGIN='".$_SESSION['s_login']."'");
         $new_timestamp = $res[0]['from_timestamp'];
         if ($new_timestamp > 0) {
-            $periods = eF_getTableData("periods", "id, name, from_timestamp, to_timestamp", "lessons_ID=".$_SESSION['s_lessons_ID'], "from_timestamp ASC");
+            $periods = sC_getTableData("periods", "id, name, from_timestamp, to_timestamp", "lessons_ID=".$_SESSION['s_lessons_ID'], "from_timestamp ASC");
             if (sizeof ($periods) > 0) {
                 $old_timestamp = $periods[0]['from_timestamp'];
                 $temp = $new_timestamp - $old_timestamp;
@@ -715,14 +715,14 @@ function getLessonContentUnits($lessons_ID = false, $nonempty = false)
     }
     ($nonempty) ? $nonempty = " AND content.data != '' " : $nonempty = "";
     $time = time();
-    $offset = eF_getOffset();
-    $result = eF_getTableData("periods", "id", "lessons_ID=".$lessons_ID);
+    $offset = sC_getOffset();
+    $result = sC_getTableData("periods", "id", "lessons_ID=".$lessons_ID);
     if (sizeof($result) > 0) {
-        $units = eF_getTableData("current_content,periods,content", "count(*)", "ctg_type != 'tests' AND periods.lessons_ID = ".$lessons_ID." AND current_content.periods_ID=periods.id AND periods.from_timestamp+$offset<=$time AND periods.to_timestamp+$offset>$time AND content.id=current_content.content_ID AND content.active=1".$nonempty);
-        $tests = eF_getTableData("current_content,periods,content", "count(*)", "ctg_type = 'tests' AND periods.lessons_ID = ".$lessons_ID." AND current_content.periods_ID=periods.id AND periods.from_timestamp+$offset<=$time AND periods.to_timestamp+$offset>$time AND content.id=current_content.content_ID AND content.active=1");
+        $units = sC_getTableData("current_content,periods,content", "count(*)", "ctg_type != 'tests' AND periods.lessons_ID = ".$lessons_ID." AND current_content.periods_ID=periods.id AND periods.from_timestamp+$offset<=$time AND periods.to_timestamp+$offset>$time AND content.id=current_content.content_ID AND content.active=1".$nonempty);
+        $tests = sC_getTableData("current_content,periods,content", "count(*)", "ctg_type = 'tests' AND periods.lessons_ID = ".$lessons_ID." AND current_content.periods_ID=periods.id AND periods.from_timestamp+$offset<=$time AND periods.to_timestamp+$offset>$time AND content.id=current_content.content_ID AND content.active=1");
     } else {
-        $units = eF_getTableData("content", "count(*)", "ctg_type != 'tests' and lessons_ID = $lessons_ID and active = 1".$nonempty);
-        $tests = eF_getTableData("content", "count(*)", "ctg_type = 'tests' and lessons_ID = $lessons_ID and active = 1");
+        $units = sC_getTableData("content", "count(*)", "ctg_type != 'tests' and lessons_ID = $lessons_ID and active = 1".$nonempty);
+        $tests = sC_getTableData("content", "count(*)", "ctg_type = 'tests' and lessons_ID = $lessons_ID and active = 1");
     }
 
     return array('units' => $units[0]['count(*)'], 'tests' => $tests[0]['count(*)']);
@@ -738,7 +738,7 @@ function getLessonContentUnits($lessons_ID = false, $nonempty = false)
 * @DEPRECATED!!!
 
 */
-function eF_printHeader($editor = false)
+function sC_printHeader($editor = false)
 {
     global $path, $COLOR, $ctg;
     //$marginstr = isset($_POST['standalone'])? "" : " style = 'margin-left: -5px;'";
@@ -760,9 +760,9 @@ function eF_printHeader($editor = false)
     <LINK rel="stylesheet" type="text/css" href="css/css_global.css" />
     <LINK rel="stylesheet" type="text/css" href="css/css_global_temp.css" />
     ';
-    $css = eF_getTableData("configuration", "value", "name='css'");
+    $css = sC_getTableData("configuration", "value", "name='css'");
     $css = $css[0]['value'];
-    if ($css && eF_checkParameter($css, 'filename') && is_file(G_ROOTPATH.'www/css/custom_css/'.$css)) {
+    if ($css && sC_checkParameter($css, 'filename') && is_file(G_ROOTPATH.'www/css/custom_css/'.$css)) {
         print '<LINK rel="stylesheet" type="text/css" href="css/custom_css/'.$css.'" />';
     } else {
         print '<LINK rel="stylesheet" type="text/css" href="css/custom_css/normal.css" />';
@@ -933,8 +933,8 @@ function eF_printHeader($editor = false)
         $ctg = "lessons";
     }
     if (!$COLOR[$ctg] OR $COLOR[$ctg] == "") {
-        //$DEF_COLOR   = eF_getDefaultColors();
-        $COLOR[$ctg] = $DEF_COLOR["lessons"];
+        //$DsC_COLOR   = sC_getDefaultColors();
+        $COLOR[$ctg] = $DsC_COLOR["lessons"];
     }
     $COLOR['messages'] = $COLOR['forum'];
     print '<style type="text/css">
@@ -946,7 +946,7 @@ function eF_printHeader($editor = false)
             }
             </style>';
 print'        </HEAD>
-            <BODY id = "body_'.$ctg.'" onload = "jeF_initialize()" '.$marginstr.'>
+            <BODY id = "body_'.$ctg.'" onload = "jsC_initialize()" '.$marginstr.'>
         <script type="text/javascript" src="js/PieNG.js"></script>
         <script type="text/javascript" src="js/tabber.js"></script>
         <script type="text/javascript" LANGUAGE="JavaScript">
@@ -962,7 +962,7 @@ print'        </HEAD>
             ';
         //echo $ctg." ".$COLOR[$ctg];
     print " <SCRIPT LANGUAGE=\"JavaScript\">
-            function jeF_initialize()
+            function jsC_initialize()
             {
                 if (el = document.getElementById('main_table'))
                     el.style.display = '';
@@ -1021,7 +1021,7 @@ print'        </HEAD>
 * @return array The tree leaves
 
 */
-function eF_findLeaves(&$units)
+function sC_findLeaves(&$units)
 {
     for ($i = 0; $i < sizeof($units); $i++) {
         $ok = true;
@@ -1054,7 +1054,7 @@ function eF_findLeaves(&$units)
 
 * <code>
 
-* eF_deleteFolder('/tmp/useless_dir/');
+* sC_deleteFolder('/tmp/useless_dir/');
 
 * </code>
 
@@ -1064,15 +1064,15 @@ function eF_findLeaves(&$units)
 
 * @return bool true if everythin is ok.
 
-* @see eF_getDirContents
+* @see sC_getDirContents
 
 * @todo return other than true
 
 */
-function eF_deleteFolder($folder)
+function sC_deleteFolder($folder)
 {
     $folder = $folder.'/';
-    $filelist = eF_getDirContents($folder);
+    $filelist = sC_getDirContents($folder);
     for ($i = 0; $i < sizeof($filelist); $i++) {
         unlink($filelist[$i]);
     }

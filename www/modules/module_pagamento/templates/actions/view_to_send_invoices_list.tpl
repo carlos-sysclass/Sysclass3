@@ -73,7 +73,7 @@
 </table>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._MODULE_PAGAMENTO_PAYMENTS
 	data=$smarty.capture.t_payments_table
 	contentclass="blockContents"

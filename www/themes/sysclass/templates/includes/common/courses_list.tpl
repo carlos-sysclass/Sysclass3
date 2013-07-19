@@ -200,7 +200,7 @@ table#coursesTable td.has_course,table#instancesTable td.has_course{width:10%;te
    <td class = "operations">{strip}
  {if !isset($T_DATASOURCE_OPERATIONS) || in_array('progress', $T_DATASOURCE_OPERATIONS)}
    {if !$course.has_instances || $T_SORTED_TABLE == 'instancesTable'}
-    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$smarty.get.sel_user}&specific_course_info=1&course={$course.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._DETAILS}', 2)"><img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" /></a>&nbsp;
+    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$smarty.get.sel_user}&specific_course_info=1&course={$course.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._DETAILS}', 2)"><img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" /></a>&nbsp;
    {/if}
  {/if}
  {if !isset($T_DATASOURCE_OPERATIONS) || in_array('statistics', $T_DATASOURCE_OPERATIONS)}
@@ -235,7 +235,7 @@ table#coursesTable td.has_course,table#instancesTable td.has_course{width:10%;te
     			src = "images/16x16/generic.png" 
     			title = "{$smarty.const._PUT_USER_IN_COURSE}" 
     			alt = "{$smarty.const._PUT_USER_IN_COURSE}" 
-    			onclick = "eF_js_setTableUrl('classesuserTable', '{$smarty.server.PHP_SELF}?ctg=users&op=status&edit_user={$smarty.get.edit_user}&edit_course={$course.id}&'); eF_js_redrawPage('classesuserTable', true); eF_js_showDivPopup('{$smarty.const._SELECTCLASSESCOURSE}', 2, 'user_class_select_dialog')"/>
+    			onclick = "sC_js_setTableUrl('classesuserTable', '{$smarty.server.PHP_SELF}?ctg=users&op=status&edit_user={$smarty.get.edit_user}&edit_course={$course.id}&'); sC_js_redrawPage('classesuserTable', true); sC_js_showDivPopup('{$smarty.const._SELECTCLASSESCOURSE}', 2, 'user_class_select_dialog')"/>
 			
         {/if}
        {elseif $course.has_course == 1}
@@ -373,7 +373,7 @@ table#lessonsTable td.has_lesson,table#courseLessons td.has_lesson{width:5%;text
 {if in_array('operations', $T_DATASOURCE_COLUMNS)}
    <td class = "operations">{strip}
  {if !isset($T_DATASOURCE_OPERATIONS) || in_array('progress', $T_DATASOURCE_OPERATIONS)}
-    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$smarty.get.sel_user}&specific_lesson_info=1&lesson={$lesson.id}&popup=1" target = "POPUP_FRAME" onclick = "eF_js_showDivPopup('{$smarty.const._DETAILS}', 2)"><img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" /></a>
+    <a href = "{$smarty.server.PHP_SELF}?ctg=statistics&option=user&sel_user={$smarty.get.sel_user}&specific_lesson_info=1&lesson={$lesson.id}&popup=1" target = "POPUP_FRAME" onclick = "sC_js_showDivPopup('{$smarty.const._DETAILS}', 2)"><img class = "handle" src = "images/16x16/information.png" title = "{$smarty.const._DETAILS}" alt = "{$smarty.const._DETAILS}" /></a>
  {/if}
    {/strip}</td>
 {/if}

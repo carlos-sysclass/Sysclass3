@@ -125,7 +125,7 @@ var enableMyJobSelect = false;
     {/foreach}
     {foreach name = 'profile_fields' key = key item = item from = $T_USER_PROFILE_DATES }
      <tr><td class = "labelCell">{$item.name}:&nbsp;</td>
-      <td class = "elementCell">{eF_template_html_select_date prefix=$item.prefix emptyvalues="1" time=$item.value start_year="-45" end_year="+10" field_order = $T_DATE_FORMATGENERAL}</td></tr>
+      <td class = "elementCell">{sC_template_html_select_date prefix=$item.prefix emptyvalues="1" time=$item.value start_year="-45" end_year="+10" field_order = $T_DATE_FORMATGENERAL}</td></tr>
     {/foreach}
     {if (!isset($smarty.get.add_user))}
     <tr><td class = "labelCell">{$smarty.const._REGISTRATIONDATE}:&nbsp;</td>
@@ -351,11 +351,11 @@ var enableMyJobSelect = false;
   {elseif $T_OP == "account"}
    <div class="tabber">
     <div class="tabbertab" title="{$T_TITLES.account.edituser}">
-     {eF_template_printBlock title = $T_TITLES.account.edituser data = $smarty.capture.t_personal_data_code image = '32x32/profile.png'}
+     {sC_template_printBlock title = $T_TITLES.account.edituser data = $smarty.capture.t_personal_data_code image = '32x32/profile.png'}
     </div>
     {if isset($T_ADDITIONAL_ACCOUNTS) && $T_CONFIGURATION.mapped_accounts == 0 || ($T_CONFIGURATION.mapped_accounts == 1 && $T_CURRENT_USER->user.user_type != 'student') || ($T_CONFIGURATION.mapped_accounts == 2 && $_admin_)}
     <div class="tabbertab{if ($smarty.get.tab == "mapped_accounts")} tabbertabdefault {/if}" title = "{$T_TITLES.account.mapped}">
-     {eF_template_printBlock title = $T_TITLES.account.mapped data = $smarty.capture.t_additional_accounts_code image = '32x32/users.png'}
+     {sC_template_printBlock title = $T_TITLES.account.mapped data = $smarty.capture.t_additional_accounts_code image = '32x32/users.png'}
     </div>
     {/if}
    </div>
@@ -363,15 +363,15 @@ var enableMyJobSelect = false;
   {elseif $T_OP == "status"}
    <div class="tabber">
    {if !$_admin_}
-    {eF_template_printBlock tabber="courses" title = $T_TITLES.status.courses data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
+    {sC_template_printBlock tabber="courses" title = $T_TITLES.status.courses data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
     {if $T_CONFIGURATION.lesson_enroll}
-     {eF_template_printBlock tabber="lessons" title = $T_TITLES.status.lessons data = $smarty.capture.t_lessons_code image = '32x32/lessons.png'}
+     {sC_template_printBlock tabber="lessons" title = $T_TITLES.status.lessons data = $smarty.capture.t_lessons_code image = '32x32/lessons.png'}
     {/if}
    {/if}
-   {eF_template_printBlock tabber="groups" title = $T_TITLES.status.groups data = $smarty.capture.t_users_to_groups_code image = '32x32/users.png'}
+   {sC_template_printBlock tabber="groups" title = $T_TITLES.status.groups data = $smarty.capture.t_users_to_groups_code image = '32x32/users.png'}
     {if ($T_SHOW_USER_FORM)}
     <div class="tabbertab {if $smarty.get.tab=='user_form'}tabbertabdefault{/if}" title="{$smarty.const._MYEMPLOYEEFORM}">
-     {eF_template_printBlock alt= $T_USERNAME title = $smarty.const._USERFORM titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
+     {sC_template_printBlock alt= $T_USERNAME title = $smarty.const._USERFORM titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
     </div>
     {/if}
    </div>
@@ -381,18 +381,18 @@ var enableMyJobSelect = false;
   {*** Account ***}
   {if $T_OP == "account"}
   <div class="tabber">
-   {eF_template_printBlock tabber = "personal" title = $T_TITLES.account.edituser data = $smarty.capture.t_personal_data_code image = '32x32/profile.png'}
+   {sC_template_printBlock tabber = "personal" title = $T_TITLES.account.edituser data = $smarty.capture.t_personal_data_code image = '32x32/profile.png'}
   </div>
   {*** Status ***}
   {elseif $T_OP == "status"}
   <div class="tabber">
    {if $T_EDITEDUSER->user.user_type != 'administrator'}
-    {eF_template_printBlock tabber="courses" title = $T_TITLES.status.courses data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
+    {sC_template_printBlock tabber="courses" title = $T_TITLES.status.courses data = $smarty.capture.t_courses_list_code image = '32x32/courses.png'}
     {if $T_CONFIGURATION.lesson_enroll}
-     {eF_template_printBlock tabber="lessons" title = $T_TITLES.status.lessons data = $smarty.capture.t_lessons_code image = '32x32/lessons.png'}
+     {sC_template_printBlock tabber="lessons" title = $T_TITLES.status.lessons data = $smarty.capture.t_lessons_code image = '32x32/lessons.png'}
     {/if}
    {/if}
-   {eF_template_printBlock tabber="groups" title = $T_TITLES.status.groups data = $smarty.capture.t_users_to_groups_code image = '32x32/users.png'}
+   {sC_template_printBlock tabber="groups" title = $T_TITLES.status.groups data = $smarty.capture.t_users_to_groups_code image = '32x32/users.png'}
   </div>
   {/if}
  {/if}
@@ -400,7 +400,7 @@ var enableMyJobSelect = false;
 {*------------------------------------------------------- ACTUAL PRESENTATION ---------------------------------------------------------------*}
 {*** Evaluations popup (maybe this should leave from here) ***}
 {if (isset($smarty.get.add_evaluation) || isset($smarty.get.edit_evaluation))}
- {eF_template_printBlock title = $smarty.const._EVALUATIONOFEMPLOYEE|cat:'&nbsp;'|cat:$smarty.get.edit_user data = $smarty.capture.t_evaluations_code image = '32x32/catalog.png'}
+ {sC_template_printBlock title = $smarty.const._EVALUATIONOFEMPLOYEE|cat:'&nbsp;'|cat:$smarty.get.edit_user data = $smarty.capture.t_evaluations_code image = '32x32/catalog.png'}
 {*** System avatars popup (maybe this should leave from here) ***}
 {elseif $smarty.get.show_avatars_list}
  <table width = "100%" cellpadding = "5" class = "filemanagerBlock">
@@ -411,24 +411,24 @@ var enableMyJobSelect = false;
   </tr>
  </table>
 {elseif $smarty.get.printable}
- {eF_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
+ {sC_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
 {else}
 {*** The user page appearance ***}
  {if isset($smarty.get.add_user)}
-  {eF_template_printBlock title = $smarty.const._NEWUSER data = $smarty.capture.t_user_code image = '32x32/user.png'}
+  {sC_template_printBlock title = $smarty.const._NEWUSER data = $smarty.capture.t_user_code image = '32x32/user.png'}
  {elseif $T_PERSONAL_CTG}
    {* Change user status interface *}
    {if $T_SOCIAL_INTERFACE}
    {$smarty.capture.t_status_change_interface}
    {/if}
-  {eF_template_printBlock title = $smarty.const._PERSONALDATA data = $smarty.capture.t_user_code image = '32x32/profile.png' main_options = $T_TABLE_OPTIONS help = 'Dashboard'}
+  {sC_template_printBlock title = $smarty.const._PERSONALDATA data = $smarty.capture.t_user_code image = '32x32/profile.png' main_options = $T_TABLE_OPTIONS help = 'Dashboard'}
  {else}
   {if $smarty.get.print_preview == 1}
-   {eF_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
+   {sC_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
   {elseif $smarty.get.print == 1}
-   {eF_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
+   {sC_template_printBlock alt= $T_USERNAME title = $T_EMPLOYEE_FORM_CAPTION titleStyle = 'font-size:16px;font-weight:bold;' data = $smarty.capture.t_personal_form_data_code image = $T_SYSTEMLOGO options=$T_EMPLOYEE_FORM_OPTIONS}
   {else}
-   {eF_template_printBlock title = "`$smarty.const._USEROPTIONSFOR`<span class = 'innerTableName'>&nbsp;&quot;#filter:login-`$T_EDITEDUSER->user.login`#&quot;</span>" data = $smarty.capture.t_user_code image = '32x32/profile.png' main_options = $T_TABLE_OPTIONS options = $T_STATISTICS_LINK}
+   {sC_template_printBlock title = "`$smarty.const._USEROPTIONSFOR`<span class = 'innerTableName'>&nbsp;&quot;#filter:login-`$T_EDITEDUSER->user.login`#&quot;</span>" data = $smarty.capture.t_user_code image = '32x32/profile.png' main_options = $T_TABLE_OPTIONS options = $T_STATISTICS_LINK}
   {/if}
  {/if}
 {/if}

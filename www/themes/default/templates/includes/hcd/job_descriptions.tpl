@@ -333,33 +333,33 @@
        {if $smarty.get.edit_job_description != ""}
 
 
-        {eF_template_printBlock title = $smarty.const._JOBDESCRIPTIONDATA|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_description_code image = '32x32/note.png'}
-        {eF_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._HAVINGJOBDESCRIPTION|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png'}
+        {sC_template_printBlock title = $smarty.const._JOBDESCRIPTIONDATA|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_description_code image = '32x32/note.png'}
+        {sC_template_printBlock title = $smarty.const._EMPLOYEES|cat:$smarty.const._HAVINGJOBDESCRIPTION|cat:"<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_employees_code image = '32x32/user.png'}
        {else}
-        {eF_template_printBlock title = $smarty.const._NEWJOBDESCRIPTION data = $smarty.capture.t_job_description_code image = '32x32/note.png'}
+        {sC_template_printBlock title = $smarty.const._NEWJOBDESCRIPTION data = $smarty.capture.t_job_description_code image = '32x32/note.png'}
        {/if}
       </div>
 
       {if $smarty.get.edit_job_description}
       <div class="tabbertab {if ($smarty.get.tab == "skills"  || isset($smarty.post.job_to_skills)) } tabbertabdefault {/if}">
        <h3>{$smarty.const._SKILLSREQUIRED}</h3>
-       {eF_template_printBlock title = $smarty.const._SKILLSREQUIRED|cat:"&nbsp;`$smarty.const._FORTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_skills image = '32x32/tools.png'}
+       {sC_template_printBlock title = $smarty.const._SKILLSREQUIRED|cat:"&nbsp;`$smarty.const._FORTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_skills image = '32x32/tools.png'}
       </div>
 
        {if $smarty.session.s_type == "administrator"}
         <div class="tabbertab {if ($smarty.get.tab == "lessons"  || isset($smarty.post.job_to_lessons)) } tabbertabdefault {/if}">
          <h3>{$smarty.const._ASSOCIATEDLESSONS}</h3>
-         {eF_template_printBlock title = $smarty.const._ASSOCIATEDLESSONS|cat:"&nbsp;`$smarty.const._WITHTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_lessons image = '32x32/lessons.png'}
+         {sC_template_printBlock title = $smarty.const._ASSOCIATEDLESSONS|cat:"&nbsp;`$smarty.const._WITHTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_lessons image = '32x32/lessons.png'}
         </div>
 
         <div class="tabbertab {if ($smarty.get.tab == "courses"  || isset($smarty.post.job_to_courses)) } tabbertabdefault {/if}">
          <h3>{$smarty.const._ASSOCIATEDCOURSES}</h3>
-         {eF_template_printBlock title = $smarty.const._ASSOCIATEDCOURSES|cat:"&nbsp;`$smarty.const._WITHTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_courses image = '32x32/courses.png'}
+         {sC_template_printBlock title = $smarty.const._ASSOCIATEDCOURSES|cat:"&nbsp;`$smarty.const._WITHTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_to_courses image = '32x32/courses.png'}
         </div>
 
         <div class="tabbertab {if $smarty.get.tab == "training"} tabbertabdefault {/if}">
          <h3>{$smarty.const._REQUIREDTRAINING}</h3>
-         {eF_template_printBlock title = $smarty.const._REQUIREDTRAINING|cat:"&nbsp;`$smarty.const._FORTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_prerequisites image = '32x32/courses.png'}
+         {sC_template_printBlock title = $smarty.const._REQUIREDTRAINING|cat:"&nbsp;`$smarty.const._FORTHEJOBDESCRIPTION`&nbsp;<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_NAME`&quot;</span>&nbsp;`$smarty.const._ATBRANCH`<span class='innerTableName'>&nbsp;&quot;`$T_JOB_DESCRIPTION_BRANCH_NAME`&quot;</span>" data = $smarty.capture.t_job_prerequisites image = '32x32/courses.png'}
         </div>
 
        {/if}
@@ -370,7 +370,7 @@
        </tr>
     </table>
     {/capture}
-    {eF_template_printBlock title = $smarty.const._JOBDESCRIPTIONDATA data = $smarty.capture.t_add_job_description_code image = '32x32/courses.png'}
+    {sC_template_printBlock title = $smarty.const._JOBDESCRIPTIONDATA data = $smarty.capture.t_add_job_description_code image = '32x32/courses.png'}
  {else}
   {*moduleAllSkills: Show job_descriptions *}
   {capture name = 't_job_descriptions_code'}
@@ -411,5 +411,5 @@
 <!--/ajax:jobsTable-->
 {/if}
   {/capture}
-  {eF_template_printBlock title = $smarty.const._UPDATEJOBDESCRIPTIONS data = $smarty.capture.t_job_descriptions_code image = '32x32/note.png'}
+  {sC_template_printBlock title = $smarty.const._UPDATEJOBDESCRIPTIONS data = $smarty.capture.t_job_descriptions_code image = '32x32/note.png'}
  {/if}

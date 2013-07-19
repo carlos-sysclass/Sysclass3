@@ -35,7 +35,7 @@ try {
         throw new Exception();
     }
 } catch (Exception $e) {
-    eF_redirect("index.php?message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("index.php?message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     exit;
 }
 try {
@@ -51,15 +51,15 @@ try {
 
         //Dashboard positions
         if ($_POST['dashboard']) {
-            eF_updateTableData("users", array('dashboard_positions' => $positions), "login='".($currentUser -> user['login'])."'");
+            sC_updateTableData("users", array('dashboard_positions' => $positions), "login='".($currentUser -> user['login'])."'");
         }
         //administrator control panel positions
         else if ($currentUser -> user['user_type'] == 'administrator' && !isset($_POST['lessons_ID'])) {
-            $result = eF_getTableData("configuration", "value", "name = '".$currentUser -> user['login']."_positions'");
+            $result = sC_getTableData("configuration", "value", "name = '".$currentUser -> user['login']."_positions'");
             if (sizeof($result) > 0) {
-                $result = eF_updateTableData("configuration", array('value' => $positions), "name = '".$currentUser -> user['login']."_positions'");
+                $result = sC_updateTableData("configuration", array('value' => $positions), "name = '".$currentUser -> user['login']."_positions'");
             } else {
-                $result = eF_insertTableData("configuration", array('name' => $currentUser -> user['login'].'_positions', 'value' => $positions));
+                $result = sC_insertTableData("configuration", array('name' => $currentUser -> user['login'].'_positions', 'value' => $positions));
             }
         }
         //lesson control panel positions
@@ -70,11 +70,11 @@ try {
                 $lessonStudents = $currentLesson -> getUsers('student');
                 if (sizeof($lessonStudents) > 0) {
                     $users = implode("','", array_keys($lessonStudents));
-                    eF_updateTableData("users_to_lessons", array('positions' => $positions), "users_LOGIN in ('".$users."') and lessons_ID=".$currentLesson -> lesson['id']);
+                    sC_updateTableData("users_to_lessons", array('positions' => $positions), "users_LOGIN in ('".$users."') and lessons_ID=".$currentLesson -> lesson['id']);
                 }
             } else {
                 if (!$visibility) {
-                    $result = eF_getTableData("users_to_lessons", "positions", "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
+                    $result = sC_getTableData("users_to_lessons", "positions", "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
                     $result = unserialize($result[0]['positions']);
                     $visibility = $result['visibility'];
                     if (isset($result['visibility'])) {
@@ -82,7 +82,7 @@ try {
                     }
 
                 }
-                eF_updateTableData("users_to_lessons", array('positions' => $positions), "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
+                sC_updateTableData("users_to_lessons", array('positions' => $positions), "lessons_ID=".$currentLesson -> lesson['id']." AND users_LOGIN='".$currentUser -> user['login']."'");
             }
         }
 

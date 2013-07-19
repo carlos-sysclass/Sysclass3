@@ -4,12 +4,12 @@
 {if $smarty.get.upgrade}{assign var = "upgrade" value = "&upgrade=1"}{/if}
 {capture name = "center_code"}
     {if $T_MESSAGE}
-      {eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
+      {sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
     {/if}
 
  {if $smarty.get.step == 1}
      {if $T_CONFIGURATION_EXISTS && !$smarty.get.upgrade && $smarty.get.step == 1}
-      {eF_template_printMessageBlock content = "An existing configuration file was found, which probably means an existing installation is already in place. If you continue, it will be overwritten. Perhaps you prefer to <a href = '`$smarty.server.PHP_SELF`?step=`$smarty.get.step`&upgrade=1'>upgrade</a>?" type = "failure"}
+      {sC_template_printMessageBlock content = "An existing configuration file was found, which probably means an existing installation is already in place. If you continue, it will be overwritten. Perhaps you prefer to <a href = '`$smarty.server.PHP_SELF`?step=`$smarty.get.step`&upgrade=1'>upgrade</a>?" type = "failure"}
       {/if}
   {capture name = 'step_1_code'}
   {assign var = "path_title" value = "`$path_title`&nbsp;&raquo;&nbsp;<a href = '`$smarty.server.PHP_SELF`?step=1`$upgrade`'>Step 1/2</a>"}
@@ -27,7 +27,7 @@
 
   <div style = "text-align:right"><input type = "submit" name = "next_step" value = "Continue &raquo;" onclick = "{if $T_MISSING_SETTINGS}if (confirm('Some mandatory elements were not found. Are you sure you want to continue?')){/if}window.location = '{$smarty.server.PHP_SELF}?step=2{if $smarty.get.upgrade}&upgrade=1{/if}'" class = "flatButton {if $T_MISSING_SETTINGS}inactiveElement{/if}"></div>
   {/capture}
-  {eF_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.step_1_code image = '32x32/options.png'}
+  {sC_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.step_1_code image = '32x32/options.png'}
   <script>
   {literal}
   function setErrorReporting(el) {
@@ -222,7 +222,7 @@
                 </table>
 *}
   {/capture}
-  {eF_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.step_2_code image = '32x32/options.png'}
+  {sC_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.step_2_code image = '32x32/options.png'}
  {elseif $smarty.get.restore}
   {assign var = "path_title" value = "`$path_title`&nbsp;&raquo;&nbsp;<a href = '`$smarty.server.PHP_SELF`?restore=1'>Emergency restore</a>"}
   <table style = "width:100%">
@@ -248,7 +248,7 @@
    <p>Click <a href = "index.php?delete_install=1" style = "font-weight:bold;text-decoration:underline">here</a> to delete the installation directory automatically and navigate to the system <a href = "index.php">index page</a>.</p>
   </div>
   {/capture}
-  {eF_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.finish_code image = '32x32/options.png'}
+  {sC_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.finish_code image = '32x32/options.png'}
  {else}
   {capture name = 'start_code'}
   <div style = "text-align:center;font-size:14px;">
@@ -268,7 +268,7 @@
    <p>Need help? Check the <a style = "color:blue" target = "new" href = "http://docs.magester.net/index.php/Main_Page#Installation_.26_upgrading">documentation</a> or ask the <a style = "color:blue" target = "new" href = "http://forum.magester.net/index.php">support forums</a>!</p>
   </div>
   {/capture}
-  {eF_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.start_code image = '32x32/options.png' options = $T_INSTALLATION_OPTIONS}
+  {sC_template_printBlock title = 'Magester Installation Wizard' content = $smarty.capture.start_code image = '32x32/options.png' options = $T_INSTALLATION_OPTIONS}
  {/if}
 {/capture}
 
@@ -298,11 +298,11 @@
 </table>
 
 <div id = "error_details" style = "display:none"><pre>{$T_EXCEPTION_TRACE}</pre></div>
-<script>if (document.getElementById('dimmer') && document.getElementById('dimmer').style.display != 'none') eF_js_showDivPopup();</script>
+<script>if (document.getElementById('dimmer') && document.getElementById('dimmer').style.display != 'none') sC_js_showDivPopup();</script>
 <table id = "popup_table" class = "divPopup" style = "display:none;">
     <tr class = "defaultRowHeight">
         <td class = "topTitle" id = "popup_title"></td>
-        <td class = "topTitle" style = "width:1%;"><img src = "images/16x16/close.png" alt = "Close" name = "" id = "popup_close" title = "Close" onclick = "eF_js_showDivPopup('', '', this.name)"/>
+        <td class = "topTitle" style = "width:1%;"><img src = "images/16x16/close.png" alt = "Close" name = "" id = "popup_close" title = "Close" onclick = "sC_js_showDivPopup('', '', this.name)"/>
     </td></tr>
     <tr><td colspan = "2" id = "popup_data" style = "vertical-align:top;"></td></tr>
     <tr><td colspan = "2" id = "frame_data" style = "width:100%;height:100%">

@@ -34,7 +34,7 @@ header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 //debug();
 $lowest_possible_time = time() - 21600; // last acceptable time - pending 6 hours in the queue to be sent
-//eF_deleteTableData("notifications", "timestamp != 0 AND timestamp <" . $lowest_possible_time);
+//sC_deleteTableData("notifications", "timestamp != 0 AND timestamp <" . $lowest_possible_time);
 
 //echo G_SERVERNAME;
 if (isset($_GET['notification_id'])) {
@@ -60,14 +60,14 @@ if (isset($_GET['notification_id'])) {
             $notification -> scheduleNext();
         } else {
             // Pop this notification - delete it
-            eF_deleteTableData("notifications", "id = '". $notification -> notification['id']."'");
+            sC_deleteTableData("notifications", "id = '". $notification -> notification['id']."'");
         }
     } catch (MagesterNotificationException $e) {
         $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     }
 } elseif (isset($_GET['sent_notification_id'])) {
-    $sent_notification = eF_getTableData("sent_notifications", "*", "id = " . $_GET['sent_notification_id']);
+    $sent_notification = sC_getTableData("sent_notifications", "*", "id = " . $_GET['sent_notification_id']);
     if (!empty ($sent_notification)) {
         $notification = $sent_notification[0];
         // Get recipient's email
@@ -80,7 +80,7 @@ if (isset($_GET['notification_id'])) {
             $onlyText = true;
         }
 
-        if (eF_mail($GLOBALS['configuration']['system_email'], $recipient, $notification['subject'], $notification['body'], false, $onlyText)) {
+        if (sC_mail($GLOBALS['configuration']['system_email'], $recipient, $notification['subject'], $notification['body'], false, $onlyText)) {
             $sent_messages = 1;
         } else {
             $sent_messages = 0;
@@ -111,7 +111,7 @@ if ((!isset($hide_messages) || !$hide_messages) && !isset($_GET['ajax']) && (bas
         $message = "No notification emails have been sent";
         $message_type = "failure";
     }
-    eF_redirect($_SESSION['s_type'] .".php?ctg=digests&message=$message&message_type=$message_type&tab=messages_queue");
+    sC_redirect($_SESSION['s_type'] .".php?ctg=digests&message=$message&message_type=$message_type&tab=messages_queue");
 } else {
     if (!isset($message)) {
         $message = '';

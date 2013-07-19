@@ -8,7 +8,7 @@
 		{include file=$item.template}
 	{/capture}
 	
-	{eF_template_printBlock
+	{sC_template_printBlock
 		title 			= $item.title
 		data			= $smarty.capture.item_block_data
 		contentclass	= $item.contentclass
@@ -22,7 +22,7 @@
 				{include file=$item.template}
 			{/capture}
 		
-			{eF_template_printBlock
+			{sC_template_printBlock
 				tabber 			= $item.title 
 				title 			= $item.title
 				data			= $smarty.capture.$index
@@ -32,7 +32,7 @@
 		{/foreach}
 	{/capture}
 	
-	{eF_template_printBlock 
+	{sC_template_printBlock 
 		title=$smarty.const.__ENROLLMENT_TABS
 		data=$smarty.capture.t_enrollment_tabbers
 		tabs = $T_XWEBTUTORIA_TEMPLATES

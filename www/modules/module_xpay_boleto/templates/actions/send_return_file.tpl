@@ -25,7 +25,7 @@
 	<div class="clear"></div>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title =	$smarty.const.__XPAY_BOLETO_INVOICES_STATUS
 	data  =	$smarty.capture.t_send_return_file
 }
@@ -72,7 +72,7 @@
 	</table>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title =	$smarty.const.__XPAY_BOLETO_FILE_QUEUE_LIST
 	data  =	$smarty.capture.t_file_list_queue
 }

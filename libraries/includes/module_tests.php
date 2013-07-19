@@ -10,7 +10,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
  * - Remove unserializations of completed tests where unnecessary
  */
 if (($GLOBALS['configuration']['disable_tests'] == 1 && $_GET['ctg'] == 'tests') || ($GLOBALS['configuration']['disable_feedback'] == 1 && $_GET['ctg'] == 'feedback')|| (isset($currentUser->coreAccess['tests']) && $currentUser->coreAccess['tests'] == 'hidden')) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
 }
 //Create shorthands for user access rights, to avoid long variable names
 !isset($currentUser->coreAccess['tests']) || $currentUser->coreAccess['tests'] == 'change' ? $_change_ = 1 : $_change_ = 0;
@@ -31,24 +31,24 @@ try {
             $currentContent = new MagesterContentTree($currentLesson);
         }
         $lessonTests = $legalValues = $currentLesson->getTests(); //Lesson's tests
-        $legalQuestions = eF_getTableDataFlat('questions', "id", 'lessons_ID='.$currentLesson->lesson['id']);
+        $legalQuestions = sC_getTableDataFlat('questions', "id", 'lessons_ID='.$currentLesson->lesson['id']);
         $legalUnits = array(); //Lesson's units
         foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator::SELF_FIRST)) as $key => $value) {
             $legalUnits[] = $key;
         }
         if (!empty($legalValues)) {
-            $legalSolvedValues = eF_getTableDataFlat("completed_tests", "id", "tests_ID in (".implode(",", $legalValues).")");
+            $legalSolvedValues = sC_getTableDataFlat("completed_tests", "id", "tests_ID in (".implode(",", $legalValues).")");
             $legalSolvedValues = $legalSolvedValues['id'];
         }
     } else {
-        $result = eF_getTableDataFlat("tests", "id", "lessons_ID=0");
+        $result = sC_getTableDataFlat("tests", "id", "lessons_ID=0");
         $legalValues = $result['id'];
         if (!empty($legalValues)) {
 
-            $legalSolvedValues = eF_getTableDataFlat("completed_tests JOIN users_to_skillgap_tests ON completed_tests.tests_ID = users_to_skillgap_tests.tests_ID AND users_to_skillgap_tests.solved = 1", "completed_tests.id", "users_to_skillgap_tests.tests_ID in (".implode(",", $legalValues).")");
+            $legalSolvedValues = sC_getTableDataFlat("completed_tests JOIN users_to_skillgap_tests ON completed_tests.tests_ID = users_to_skillgap_tests.tests_ID AND users_to_skillgap_tests.solved = 1", "completed_tests.id", "users_to_skillgap_tests.tests_ID in (".implode(",", $legalValues).")");
             $legalSolvedValues = $legalSolvedValues['id'];
         }
-        $legalQuestions = eF_getTableDataFlat('questions', "id");
+        $legalQuestions = sC_getTableDataFlat('questions', "id");
     }
 
     $legalQuestions = $legalQuestions['id']; //Lesson's questions
@@ -163,7 +163,7 @@ try {
                 foreach ($order as $value) {
                     $result = explode("-", $value);
                     if (in_array($value, array_keys($questions))) {
-                        eF_updateTableData("tests_to_questions", array("previous_question_ID" => $previous), "tests_ID=".$currentTest->test['id']." and questions_ID=".$result[0]);
+                        sC_updateTableData("tests_to_questions", array("previous_question_ID" => $previous), "tests_ID=".$currentTest->test['id']." and questions_ID=".$result[0]);
                     }
                     $previous = $result[0];
                 }
@@ -184,7 +184,7 @@ try {
         unset($doneTests[$currentTest->test['id']]['average_score']);
 
         // Get all user names
-        $result = eF_getTableData("users", "login, surname, name" , "login in ('".implode("','", array_keys($doneTests[$currentTest->test['id']]))."')");
+        $result = sC_getTableData("users", "login, surname, name" , "login in ('".implode("','", array_keys($doneTests[$currentTest->test['id']]))."')");
 
         // Set the table to have key their login
         $all_users = array();
@@ -236,7 +236,7 @@ try {
 
         // Get skillgap test related information
 
-        $tests     = eF_getTableData("tests", "*", "lessons_ID=0");
+        $tests     = sC_getTableData("tests", "*", "lessons_ID=0");
 
         // Get all recently completed skill gap tests
 
@@ -250,7 +250,7 @@ try {
 
         if (!empty($test_ids)) {
 
-            $recentTests = eF_getTableData("completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login JOIN users_to_skillgap_tests ON completed_tests.users_LOGIN = users_to_skillgap_tests.users_LOGIN AND users_to_skillgap_tests.tests_ID = tests.id AND users_to_skillgap_tests.solved = 1", "completed_tests.id, completed_tests.test, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", "completed_tests.tests_id IN ('". implode("','", $test_ids) ."')", "timestamp DESC");
+            $recentTests = sC_getTableData("completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login JOIN users_to_skillgap_tests ON completed_tests.users_LOGIN = users_to_skillgap_tests.users_LOGIN AND users_to_skillgap_tests.tests_ID = tests.id AND users_to_skillgap_tests.solved = 1", "completed_tests.id, completed_tests.test, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", "completed_tests.tests_id IN ('". implode("','", $test_ids) ."')", "timestamp DESC");
 
             foreach ($recentTests as $rtid => $rtest) {
 
@@ -269,19 +269,19 @@ try {
         if (!$skillgap_tests) {
             //Get the available questions (only questions from the selected unit, if there is one)
             try {
-                isset($_GET['from_unit']) && eF_checkParameter($_GET['from_unit'], 'id') ? $selectedUnit = $_GET['from_unit'] : $selectedUnit = 0;
+                isset($_GET['from_unit']) && sC_checkParameter($_GET['from_unit'], 'id') ? $selectedUnit = $_GET['from_unit'] : $selectedUnit = 0;
                 $siblings = $currentContent->getNodeChildren($selectedUnit);
                 $children[] = $siblings['id'];
                 foreach (new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($siblings), RecursiveIteratorIterator::SELF_FIRST)) as $key => $value) {
                     $children[] = $key;
                 }
                 if (sizeof($children) > 0) {
-                    $questions = eF_getTableData("questions", "*", "content_ID in (".implode(",", $children).") and lessons_ID=".$currentLesson->lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this unit or its subunits
+                    $questions = sC_getTableData("questions", "*", "content_ID in (".implode(",", $children).") and lessons_ID=".$currentLesson->lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this unit or its subunits
                 } else {
                     throw new Exception();//This jumps to the catch block right below
                 }
             } catch (Exception $e) {
-                $questions = eF_getTableData("questions", "*", "lessons_ID = ".$currentLesson->lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this lesson
+                $questions = sC_getTableData("questions", "*", "lessons_ID = ".$currentLesson->lesson['id'], "content_ID ASC"); //Retrieve all questions that belong to this lesson
             }
             //Assign the content units so that we can build the units select box for the "from_unit" option
             $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator::SELF_FIRST)); //Default iterator excludes non-active units
@@ -302,9 +302,9 @@ try {
                 foreach ($iterator = new MagesterAttributeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($units)), array('id', 'name')) as $key => $value) {
                     $key == 'id' ? $ids[] = $value : $names[] = $value;
                 }
-                $tests = eF_getTableData("content c,tests t", "c.id as content_ID, c.name, t.id, t.active, t.publish, t.mastery_score, t.description, t.options", "ctg_type='".$_GET['ctg']."' AND c.id IN (".implode(",", $ids).") AND c.active=1 and c.id=t.content_ID", "c.id ASC");
+                $tests = sC_getTableData("content c,tests t", "c.id as content_ID, c.name, t.id, t.active, t.publish, t.mastery_score, t.description, t.options", "ctg_type='".$_GET['ctg']."' AND c.id IN (".implode(",", $ids).") AND c.active=1 and c.id=t.content_ID", "c.id ASC");
             }
-            $result = eF_getTableData("tests_to_questions", "tests_ID, count(*)", "", "", "tests_ID");
+            $result = sC_getTableData("tests_to_questions", "tests_ID, count(*)", "", "", "tests_ID");
             foreach ($result as $value) {
                 $testQuestions[$value['tests_ID']] = $value['count(*)'];
             }
@@ -317,7 +317,7 @@ try {
                 $tests[$key]['questions_num'] = $testQuestions[$test['id']] ? $testQuestions[$test['id']] : 0;
             }
         } else {
-            $questions = eF_getTableData("questions LEFT OUTER JOIN lessons ON lessons.id = lessons_ID", "questions.*, lessons.name", "type <> 'raw_text'", ""); //Retrieve all questions that belong to this unit or its subunits
+            $questions = sC_getTableData("questions LEFT OUTER JOIN lessons ON lessons.id = lessons_ID", "questions.*, lessons.name", "type <> 'raw_text'", ""); //Retrieve all questions that belong to this unit or its subunits
             // If no lesson then define the current lesson name => _SKILLGAPTESTS (used for correct filtering)
             foreach ($questions as $qid => $question) {
                 if ($question['lessons_ID'] == 0) {
@@ -328,7 +328,7 @@ try {
             }
             // The test name requirement is to help avoid problems with databases where tests wiht lessons_ID=0 somehow exist.
             // Skillgap tests have mandatory name so the condition is correct
-            $tests = eF_getTableData("tests LEFT OUTER JOIN tests_to_questions ON tests.id = tests_to_questions.tests_ID", "tests.*, count(questions_ID) as questions_num", "lessons_ID=0 AND tests.name <> '' GROUP BY tests.id");
+            $tests = sC_getTableData("tests LEFT OUTER JOIN tests_to_questions ON tests.id = tests_to_questions.tests_ID", "tests.*, count(questions_ID) as questions_num", "lessons_ID=0 AND tests.name <> '' GROUP BY tests.id");
             //$smarty->assign("T_RECENTLY_SKILLGAP_OPTIONS", array(array('text' => _SHOWALLSOLVEDSKILLGAPTESTS,   'image' => "16x16/search.png", 'href' => basename($_SERVER['PHP_SELF'])."?ctg=tests&solved_tests=1")));
         }
         $testIds = array();
@@ -347,14 +347,14 @@ try {
             if (!isset($tests[$key]['options']['general_threshold'])) {
                 $tests[$key]['options']['general_threshold'] = 50;
                 $newOptions = serialize($tests[$key]['options']);
-                eF_updateTableData("tests", array("options" => $newOptions), "id = '".$test['id']."'");
+                sC_updateTableData("tests", array("options" => $newOptions), "id = '".$test['id']."'");
             }
         }
         $smarty->assign("T_QUESTIONTYPESTRANSLATIONS", Question::$questionTypes);
         $smarty->assign("T_TESTS", $tests);
         if (isset($_GET['ajax']) && $_GET['ajax'] == 'questionsTable') {
-            isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-            if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+            isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+            if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                 $sort = $_GET['sort'];
                 isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
             } else {
@@ -373,13 +373,13 @@ try {
                     $questions[$key]['parent_unit'] = "";
                 }
                 $questions[$key]['text'] = strip_tags($question['text']); //Strip tags from the question text, so they do not display in the list
-                $questions[$key]['estimate_interval'] = eF_convertIntervalToTime($questions[$key]['estimate']);
+                $questions[$key]['estimate_interval'] = sC_convertIntervalToTime($questions[$key]['estimate']);
             }
             //remove questions from inactive and archived lessons
             if ($skillgap_tests) {
                 $questionsTemp = array();
                 //remove inactive and archived lessons
-                $result = eF_getTableDataFlat("lessons","id","active=0 OR archive!=''");
+                $result = sC_getTableDataFlat("lessons","id","active=0 OR archive!=''");
                 if (!empty($result['id'])) {
                     foreach ($questions as $key => $value) {
                         if (in_array($value['lessons_ID'],$result['id']) === false) {
@@ -389,13 +389,13 @@ try {
                 }
                 $questions = $questionsTemp;
             }
-            $questions = eF_multiSort($questions, $sort, $order);
+            $questions = sC_multiSort($questions, $sort, $order);
             if (isset($_GET['filter'])) {
-                $questions = eF_filterData($questions, $_GET['filter']);
+                $questions = sC_filterData($questions, $_GET['filter']);
             }
             $smarty->assign("T_QUESTIONS_SIZE", sizeof($questions));
-            if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                 $questions = array_slice($questions, $offset, $limit, true);
             }
             $smarty->assign('T_QUESTIONS', $questions);
@@ -405,27 +405,27 @@ try {
         if (isset($_GET['ajax']) && $_GET['ajax'] == 'pendingTable') {
             if (!empty($testIds)) {
                 if (!$skillgap_tests) {
-                    $recentTests = eF_getTableData("completed_tests ct, tests t, users u, users_to_lessons ul", "t.name, u.name as username, u.surname, ct.id, ct.status, ct.tests_ID, ct.score, ct.time_end, ct.users_LOGIN, ct.pending", "u.login=ul.users_login and ul.archive=0 and ul.lessons_ID=t.lessons_ID and ct.status != 'deleted' and ct.status != 'incomplete' and t.id = ct.tests_ID AND ct.users_login = u.login AND u.archive=0 and ct.tests_id IN ('". implode("','", $testIds) ."')", "ct.pending DESC");
+                    $recentTests = sC_getTableData("completed_tests ct, tests t, users u, users_to_lessons ul", "t.name, u.name as username, u.surname, ct.id, ct.status, ct.tests_ID, ct.score, ct.time_end, ct.users_LOGIN, ct.pending", "u.login=ul.users_login and ul.archive=0 and ul.lessons_ID=t.lessons_ID and ct.status != 'deleted' and ct.status != 'incomplete' and t.id = ct.tests_ID AND ct.users_login = u.login AND u.archive=0 and ct.tests_id IN ('". implode("','", $testIds) ."')", "ct.pending DESC");
                 } else {
-                    $recentTests = eF_getTableData("completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login JOIN users_to_skillgap_tests ON completed_tests.users_LOGIN = users_to_skillgap_tests.users_LOGIN AND users_to_skillgap_tests.tests_ID = tests.id AND users_to_skillgap_tests.solved = 1", "completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", "completed_tests.status != 'deleted' and completed_tests.tests_id IN ('". implode("','", $testIds) ."')", "timestamp DESC");
+                    $recentTests = sC_getTableData("completed_tests JOIN tests ON tests_id = tests.id JOIN users ON completed_tests.users_LOGIN = users.login JOIN users_to_skillgap_tests ON completed_tests.users_LOGIN = users_to_skillgap_tests.users_LOGIN AND users_to_skillgap_tests.tests_ID = tests.id AND users_to_skillgap_tests.solved = 1", "completed_tests.id, completed_tests.test, completed_tests.score, users.name as username, users.surname, completed_tests.tests_ID, tests.name, completed_tests.timestamp, completed_tests.users_LOGIN", "completed_tests.status != 'deleted' and completed_tests.tests_id IN ('". implode("','", $testIds) ."')", "timestamp DESC");
                 }
             }
-            isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-            if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+            isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+            if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                 $sort = $_GET['sort'];
                 isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
             } else {
                 $sort = 'text';
             }
-            $recentTests = eF_multiSort($recentTests, $sort, $order);
+            $recentTests = sC_multiSort($recentTests, $sort, $order);
 
             if (isset($_GET['filter'])) {
-                $recentTests = eF_filterData($recentTests, $_GET['filter']);
+                $recentTests = sC_filterData($recentTests, $_GET['filter']);
             }
 
             $smarty->assign("T_PENDING_SIZE", sizeof($recentTests));
-            if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                 $recentTests = array_slice($recentTests, $offset, $limit, true);
             }
 
@@ -436,7 +436,7 @@ try {
     }
 } catch (Exception $e) {
     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-    $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }
 
@@ -449,7 +449,7 @@ if (true) {
             if ($currentLesson->options['rules']) {
                 $ruleCheck = $currentContent->checkRules($currentUnit['id'], $seenContent);
             }
-            if (isset($_GET['view_unit']) && eF_checkParameter($_GET['view_unit'], 'id') && (!($GLOBALS['currentLesson']->options['rules']) || $ruleCheck === true)) {
+            if (isset($_GET['view_unit']) && sC_checkParameter($_GET['view_unit'], 'id') && (!($GLOBALS['currentLesson']->options['rules']) || $ruleCheck === true)) {
                 $visitableIterator = new MagesterVisitableFilterIterator(new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($currentContent->tree), RecursiveIteratorIterator::SELF_FIRST)));
                 $smarty->assign("T_CONTENT_TREE", $currentContent->toHTML(false, 'dhtmlContentTree', array('truncateNames' => 25, 'selectedNode' => $currentUnit['id'])));
                 $smarty->assign("T_UNIT", $currentUnit);
@@ -484,7 +484,7 @@ if (true) {
                         $values = $form->exportValues();
                         $testInstance->complete($values['question']);
                         $currentUser->setSeenUnit($currentUnit, $currentLesson, 1);
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
                         exit; //<-- This exit is necessary here, otherwise test might be counted twice
                     }
 
@@ -524,7 +524,7 @@ if (true) {
                 default:
                     if (isset($_GET['confirm'])) {
                         $testInstance = $test->start($currentUser->user['login']);
-                        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
+                        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
                         exit;
                     } else {
                         $testInstance = $test;
@@ -573,12 +573,12 @@ if (true) {
 
                         if (isset($values['pause_test'])) {
                             $testInstance->pause($values['question'], $_POST['goto_question']);
-                            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=content&type=tests");
+                            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=content&type=tests");
                         } else {
                             //Set the unit as "seen"
                             $testInstance->complete($values['question']);
                             $currentUser->setSeenUnit($currentUnit, $currentLesson, 1);
-                            eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
+                            sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=tests&view_unit=".$_GET['view_unit']);
                         }
                     }
 
@@ -610,10 +610,10 @@ if (true) {
             // Delete all questions from the posted form
             if (isset($_POST['selected_action']) && $_POST['selected_action'] == 'delete') { //Mass deletion of questions
                 if (isset($currentUser->coreAccess['content']) && $currentUser->coreAccess['content'] != 'change') {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                 }
                 if (isset($currentUser->coreAccess['skillgaptests']) && $currentUser->coreAccess['skillgaptests'] != 'change') {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                 }
 
                 foreach ($_POST['questions'] as $key => $value) {
@@ -635,19 +635,19 @@ if (true) {
             }
 
             // Optionally ajaxed request - if not ajaxed then it should show the tests list
-            if ( isset($_GET['delete_solved_test']) && eF_checkParameter($_GET['delete_solved_test'], 'id')) {
+            if ( isset($_GET['delete_solved_test']) && sC_checkParameter($_GET['delete_solved_test'], 'id')) {
                 if (isset($currentUser->coreAccess['skillgaptests']) && $currentUser->coreAccess['skillgaptests'] != 'change') {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                     exit;
                 }
                 try {
-                    //eF_deleteTableData("completed_tests", "id = " . $_GET['delete_solved_test']);
+                    //sC_deleteTableData("completed_tests", "id = " . $_GET['delete_solved_test']);
                     $currentTest = new MagesterTest($_GET['test_id']);
 
                     $currentTest->undo($_GET['users_login'], $_GET['delete_solved_test']);
                     if ($skillgap_tests) {
                         // Remove a solved test from the users_to_skillgap list
-                        eF_updateTableData("users_to_skillgap_tests" , array("solved" => 0), "tests_id = " . $_GET['test_id']. " AND users_login = '".$_GET['users_login']."'");
+                        sC_updateTableData("users_to_skillgap_tests" , array("solved" => 0), "tests_id = " . $_GET['test_id']. " AND users_login = '".$_GET['users_login']."'");
                     }
                 } catch (Exception $e) {
                     if ($_GET['postAjaxRequest']) {
@@ -670,7 +670,7 @@ if (true) {
 
             //Get the list of valid tests for the current lesson.
             if (isset($currentContent)) {
-                $result = eF_getTableData("tests t, content c", "t.*", "t.content_ID=c.id and c.lessons_ID=".$currentLesson->lesson['id']);
+                $result = sC_getTableData("tests t, content c", "t.*", "t.content_ID=c.id and c.lessons_ID=".$currentLesson->lesson['id']);
                 foreach ($result as $value) {
                     $allTests[$value['content_ID']] = $value;
                 }
@@ -683,7 +683,7 @@ if (true) {
                 $smarty->assign("T_SET_CONTENT", true);
             } else {
                 // Get skillgap tests
-                $result = eF_getTableData("tests", "*", "lessons_ID = 0 AND name <> ''");
+                $result = sC_getTableData("tests", "*", "lessons_ID = 0 AND name <> ''");
 
                 foreach ($result as $value) {
                     $availableTests[] = $value['id'];
@@ -691,26 +691,26 @@ if (true) {
                 $smarty->assign("T_SET_CONTENT", false);
             }
 
-            if ($skillgap_tests && isset($_GET['create_random_test']) && isset($_GET['create_random_test']) && eF_checkParameter($_GET['create_random_test'], 'id') && in_array($_GET['create_random_test'], $availableTests)) {
+            if ($skillgap_tests && isset($_GET['create_random_test']) && isset($_GET['create_random_test']) && sC_checkParameter($_GET['create_random_test'], 'id') && in_array($_GET['create_random_test'], $availableTests)) {
                 if (isset($currentUser->coreAccess['skillgaptests']) && $currentUser->coreAccess['skillgaptests'] != 'change') {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                     exit;
                 }
 
                 if (isset($_GET['from_skills'])) {
                     //11111111111
-                    $skills = eF_getTableData("module_hcd_skills", "skill_ID, description", "");
+                    $skills = sC_getTableData("module_hcd_skills", "skill_ID, description", "");
                     $smarty->assign('T_QUESTION_SKILLS', $skills);
                 }
             } elseif ($skillgap_tests && isset($_GET['add_test']) && isset($_GET['create_quick_test'])) {
                 // Quick test generator code
                 if (isset($currentUser->coreAccess['skillgaptests']) && $currentUser->coreAccess['skillgaptests'] != 'change') {
-                    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+                    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
                     exit;
                 }
 
                 $form = new HTML_QuickForm("question_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=tests&add_test=1&create_quick_test=1", "", null, true);
-                $form->registerRule('checkParameter', 'callback', 'eF_checkParameter'); //Register this rule for checking user input with our function, eF_checkParameter
+                $form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 
                 $form->addElement('text', 'name', null, 'class = "inputText" id= "testName"');
                 //        $form->addRule('name', _THEFIELD.' "'._NAME.'" '._ISMANDATORY, 'required', null, 'client');
@@ -827,7 +827,7 @@ if (true) {
                     }
                     // End of step 1: we have created the lessons_to_cover array with all lessons that will be implicated
                     /********* STEP 2: Get questions for each implicated lesson ***********/
-                    $all_implicated_questions = eF_getTableData("questions", "id, lessons_ID", "lessons_ID in ('".implode("','", array_keys($lessons_to_cover)) ."') AND type <> 'raw_text'");
+                    $all_implicated_questions = sC_getTableData("questions", "id, lessons_ID", "lessons_ID in ('".implode("','", array_keys($lessons_to_cover)) ."') AND type <> 'raw_text'");
                     foreach ($all_implicated_questions as $question) {
                         $lessons_to_cover[$question['lessons_ID']]['total_questions']++;
                         $lessons_to_cover[$question['lessons_ID']]['questions'][] = $question['id'];
@@ -969,20 +969,20 @@ if (true) {
                         }
                         $newTest ->addQuestions($questions_to_assign);
                         if (isset($_GET['redirect_to_edit'])) {
-                            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&edit_test=".$newTest ->test['id']."&message=".urlencode(_SUCCESFULLYADDEDTEST)."&message_type=success");
+                            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&edit_test=".$newTest ->test['id']."&message=".urlencode(_SUCCESFULLYADDEDTEST)."&message_type=success");
                         } else {
-                            eF_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&message=".urlencode(_SUCCESFULLYADDEDTEST)."&message_type=success");
+                            sC_redirect("".ltrim(basename($_SERVER['PHP_SELF']), "/")."?ctg=tests&message=".urlencode(_SUCCESFULLYADDEDTEST)."&message_type=success");
                         }
                     } catch (Exception $e) {
                         $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                         $message_type = 'failure';
                     }
                     // The list according to the
                     //pr($questions_to_assign);
                 /*
 
-                 $all_implicated_questions = eF_getTableData("questions", "id, lessons_ID", "id in ('".implode("','", $questions_to_assign) ."')");
+                 $all_implicated_questions = sC_getTableData("questions", "id, lessons_ID", "id in ('".implode("','", $questions_to_assign) ."')");
 
                  pr($all_implicated_questions);
 
@@ -1002,14 +1002,14 @@ if (true) {
                 try {
                 } catch (Exception $e) {
                     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-                    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+                    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
                     $message_type = 'failure';
                 }
             }
         }
     } catch (Exception $e) {
         $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
         $message_type = 'failure';
     }
 }

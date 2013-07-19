@@ -162,14 +162,14 @@
 		        {* MENUS *}
 		        {*********}
 				{foreach name = 'outer_menu' key = 'menu_key' item = 'menu' from = $T_MENU}
-				<li><a class="tabHeader nav-top-item" href="#" style="padding-right: 15px;">{$menu.title|eF_truncate:30}</a>
+				<li><a class="tabHeader nav-top-item" href="#" style="padding-right: 15px;">{$menu.title|sC_truncate:30}</a>
 					<ul style="display: none;" class="menuList" id="mag_list_menu{$menu_key}">
 						{foreach name = 'options_list' key = 'option_id' item = 'option' from = $menu.options}
 		                    {if isset($option.html)}
 		                        <li class = "menuOption" {if $menu_key == 1 && $smarty.session.s_type != "administrator"}name="lessonSpecific"{/if}>{$option.html}</li>
 		                    {else}
 								<li class = "menuOption">
-									<a href = "{$option.link}" title="{$option.title}" target="{$option.target}">{$option.title|eF_truncate:25}</a>
+									<a href = "{$option.link}" title="{$option.title}" target="{$option.target}">{$option.title|sC_truncate:25}</a>
 								</li>
 							{/if}
 						{/foreach}

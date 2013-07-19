@@ -51,7 +51,7 @@
 		{/foreach}
 	</table>
 {/capture} 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title=$smarty.const._ULTIMOS_PAGAMENTOS
 	data=$smarty.capture.t_ultimos_pagamentos_registrados_table 
 	image=$T_MODULE_PAGAMENTO_BASELINK|cat:'images/pagamento.png'

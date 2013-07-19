@@ -16,7 +16,7 @@
     </table>
 {/capture}
 
-{eF_template_printBlock 
+{sC_template_printBlock 
 	title = $smarty.const._LINKS_LINKSPAGE 
 	data = $smarty.capture.t_inner_table_code 
 

@@ -65,7 +65,7 @@ div.menu-dropdown-subitem {
         								href="{if $menu.link}{$menu.link}{else}javascript: void(0);{/if}" 
         								class="{if $menu.options|@count > 0}has_dropdown{/if}">
         								{* IMAGE *}
-        								{$menu.title|eF_truncate:30}
+        								{$menu.title|sC_truncate:30}
         							</a>
         							{if $menu.options}
         							<ul class="dropdown ui-accordion ui-widget ui-helper-reset" role="tablist"  id="mag_list_menu{$menu_key}">
@@ -162,7 +162,7 @@ div.menu-dropdown-subitem {
 			<div class="bread-links pagesize">
 				<ul class="clear">
 					<li class="first">{$smarty.const.__YOUAREIN_}</li>
-					<li>{$title|eF_formatTitlePath}</li>
+					<li>{$title|sC_formatTitlePath}</li>
 				</ul>
 			</div>
 		</div>

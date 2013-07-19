@@ -109,10 +109,10 @@ class MagesterSearch
   }
   //Querying for all values may be very slow; this is why we added this 20 values limit
    if (sizeof($terms) > 20) {
-    $result = eF_getTableDataFlat("search_invertedindex", "id,keyword");
+    $result = sC_getTableDataFlat("search_invertedindex", "id,keyword");
    } else {
-   	if (array_walk($terms, 'eF_addSlashes')) {
-   		$result = eF_getTableDataFlat("search_invertedindex", "id,keyword", "keyword in ('".implode("','", $terms)."')");
+   	if (array_walk($terms, 'sC_addSlashes')) {
+   		$result = sC_getTableDataFlat("search_invertedindex", "id,keyword", "keyword in ('".implode("','", $terms)."')");
    	}
    }
       isset($result["keyword"]) && $result["keyword"] ? $allTerms = $result["keyword"] : $allTerms = array();
@@ -120,7 +120,7 @@ class MagesterSearch
           foreach ($terms as $key => $value) {
               $position = array_search( $value, $allTerms); //array_search may also return null!
               if ($position === false && !is_null($position)) {
-                  $newId = eF_insertTableData("search_invertedindex", array("keyword" => $value));
+                  $newId = sC_insertTableData("search_invertedindex", array("keyword" => $value));
                   //$fields['keyword'] = $newId;
                   $allFields[] = $fields + array('keyword' => $newId);
                   //$rows[] = "('".implode("','",$fields)."')";
@@ -130,8 +130,8 @@ class MagesterSearch
                   //$rows[] = "('".implode("','",$fields)."')";
               }
           }
-          //$res = eF_executeNew("insert into search_keywords (".implode(",", array_keys($fields)).") values ".implode(",",$rows)."");
-          eF_insertTableDataMultiple("search_keywords", $allFields);
+          //$res = sC_executeNew("insert into search_keywords (".implode(",", array_keys($fields)).") values ".implode(",",$rows)."");
+          sC_insertTableDataMultiple("search_keywords", $allFields);
       }
 
   return true;
@@ -171,9 +171,9 @@ class MagesterSearch
    ($position == "title") ? $position_str = "position = 0 and " : $position_str = "position = 1 and ";
   }
   if ($morefIds == true) {
-   eF_deleteTableData("search_keywords", $position_str."foreign_ID in (".$foreignID.") and table_name = '". MagesterSearch :: $tableAssoc[$tableName]."'");
+   sC_deleteTableData("search_keywords", $position_str."foreign_ID in (".$foreignID.") and table_name = '". MagesterSearch :: $tableAssoc[$tableName]."'");
   } else {
-   eF_deleteTableData("search_keywords", $position_str."foreign_ID = '".$foreignID."' and table_name = '". MagesterSearch :: $tableAssoc[$tableName]."'");
+   sC_deleteTableData("search_keywords", $position_str."foreign_ID = '".$foreignID."' and table_name = '". MagesterSearch :: $tableAssoc[$tableName]."'");
   }
  }
  /**
@@ -198,10 +198,10 @@ class MagesterSearch
  public static function searchForOneWord($word, $maxres, $tableName, $position)
  {
   ($position == "title") ? $position_str = 0 : $position_str = 1;
-  $res = eF_getTableDataFlat("search_invertedindex","id","keyword like '%$word%'");
+  $res = sC_getTableDataFlat("search_invertedindex","id","keyword like '%$word%'");
   if (sizeof($res) > 0) {
       $idsList = implode(",", $res['id']);
-      $result = eF_getTableDataFlat("search_keywords", "foreign_ID, count(keyword) AS score, table_name, position", "keyword IN ($idsList)".($position ? ' and position='.$position_str : '').($tableName ? ' and table_name='. MagesterSearch :: $tableAssoc[$tableName] : '')."", "", "foreign_ID,table_name limit $maxres");
+      $result = sC_getTableDataFlat("search_keywords", "foreign_ID, count(keyword) AS score, table_name, position", "keyword IN ($idsList)".($position ? ' and position='.$position_str : '').($tableName ? ' and table_name='. MagesterSearch :: $tableAssoc[$tableName] : '')."", "", "foreign_ID,table_name limit $maxres");
   }
 
   return $result;
@@ -316,7 +316,7 @@ class MagesterSearch
   }
   $where = substr($where,0,(strLen($where)-4)); //this will eat the last OR
   $where .= ") ORDER BY login DESC";
-  $result = eF_getTableData("users", "*", $where);
+  $result = sC_getTableData("users", "*", $where);
 
   return $result;
  }
@@ -471,33 +471,33 @@ class MagesterSearch
      */
  public static function reBuiltIndex ()
  {
-     eF_deleteTableData("search_keywords"); //Delete old search terms
-//		eF_deleteTableData("search");
+     sC_deleteTableData("search_keywords"); //Delete old search terms
+//		sC_deleteTableData("search");
   $GLOBALS['db'] -> Execute("truncate table search_invertedindex");
   //Courses Data
-  $courses = eF_getTableData("courses", "id,name");
+  $courses = sC_getTableData("courses", "id,name");
   for ($i = 0; $i < sizeof($courses); $i++) {
    MagesterSearch :: insertText($courses[$i]['name'], $courses[$i]['id'], "courses", "title");
   }
   //Lesson Data
-  $lessons = eF_getTableData("lessons", "id,name");
+  $lessons = sC_getTableData("lessons", "id,name");
   for ($i = 0; $i < sizeof($lessons); $i++) {
    MagesterSearch :: insertText($lessons[$i]['name'], $lessons[$i]['id'], "lessons", "title");
   }
   //Content Data
-  $content = eF_getTableData("content", "id,name,data");
+  $content = sC_getTableData("content", "id,name,data");
   for ($i = 0; $i < sizeof($content); $i++) {
    MagesterSearch :: insertText($content[$i]['name'], $content[$i]['id'], "content", "title");
    MagesterSearch :: insertText(strip_tags($content[$i]['data']), $content[$i]['id'], "content", "data");
   }
   //Forum Messages
-  $forum_messages = eF_getTableData("f_messages", "id, title, body");
+  $forum_messages = sC_getTableData("f_messages", "id, title, body");
   for ($i = 0; $i < sizeof($forum_messages); $i++) {
    MagesterSearch :: insertText(strip_tags($forum_messages[$i]['body']), $forum_messages[$i]['id'], "f_messages", "data");
    MagesterSearch :: insertText($forum_messages[$i]['title'], $forum_messages[$i]['id'], "f_messages", "title");
   }
   //Forums
-  $forums = eF_getTableData("f_forums", "id, title, comments");
+  $forums = sC_getTableData("f_forums", "id, title, comments");
   for ($i = 0; $i < sizeof($forums); $i++) {
    MagesterSearch :: insertText($forums[$i]['title'], $forums[$i]['id'], "f_forums", "title");
    if (strlen($forums[$i]['comments'])>3) {
@@ -505,7 +505,7 @@ class MagesterSearch
    }
   }
   //Forums Topics
-  $f_topics = eF_getTableData("f_topics", "id, title, comments");
+  $f_topics = sC_getTableData("f_topics", "id, title, comments");
   for ($i = 0; $i < sizeof($f_topics); $i++) {
    MagesterSearch :: insertText($f_topics[$i]['title'], $f_topics[$i]['id'], "f_topics", "title");
    if (strlen($f_topics[$i]['comments'])>3) {
@@ -513,7 +513,7 @@ class MagesterSearch
    }
   }
   //Forums Polls
-  $f_poll = eF_getTableData("f_poll", "id, title, question");
+  $f_poll = sC_getTableData("f_poll", "id, title, question");
   for ($i = 0; $i < sizeof($f_poll); $i++) {
    MagesterSearch :: insertText($f_poll[$i]['title'], $f_poll[$i]['id'], "f_poll", "title");
    if (strlen($f_poll[$i]['question'])>3) {
@@ -521,18 +521,18 @@ class MagesterSearch
    }
   }
   //Personal Messages
-  $personal_messages = eF_getTableData("f_personal_messages", "id, title, body"); //Get all the personal messages
+  $personal_messages = sC_getTableData("f_personal_messages", "id, title, body"); //Get all the personal messages
   for ($i = 0; $i < sizeof($personal_messages); $i++) {
    MagesterSearch :: insertText($personal_messages[$i]['body'], $personal_messages[$i]['id'], "f_personal_messages", "data");
    MagesterSearch :: insertText($personal_messages[$i]['title'], $personal_messages[$i]['id'], "f_personal_messages", "title");
   }
   //Questions
-  $questions = eF_getTableData("questions", "id, text");
+  $questions = sC_getTableData("questions", "id, text");
   for ($i = 0; $i < sizeof($questions); $i++) {
    MagesterSearch :: insertText(strip_tags($questions[$i]['data']), $questions[$i]['id'], "questions", "data");
   }
   //Glossary terms
-  $glossary = eF_getTableData("glossary", "id, name, info");
+  $glossary = sC_getTableData("glossary", "id, name, info");
   for ($i = 0; $i < sizeof($glossary); $i++) {
    MagesterSearch :: insertText(strip_tags($glossary[$i]['info']), $glossary[$i]['id'], "glossary", "data");
    MagesterSearch :: insertText($glossary[$i]['name'], $glossary[$i]['id'], "glossary", "title");

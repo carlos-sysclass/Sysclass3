@@ -33,7 +33,7 @@ $smarty -> assign("T_TABLE_OPTIONS", $options);
 
 if ($_GET['op'] == 'reset_lesson') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     /*Reset lesson part*/
     $form = new HTML_QuickForm("reset_lesson_form", "post", basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=reset_lesson', "", null, true);
@@ -87,7 +87,7 @@ if ($_GET['op'] == 'reset_lesson') {
     $smarty -> assign('T_RESET_LESSON_FORM', $renderer -> toArray());
 } elseif ($_GET['op'] == 'import_lesson') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     /* Import part */
     $form = new HTML_QuickForm("import_lesson_form", "post", basename($_SERVER['PHP_SELF']).'?'.$baseUrl.'&op=import_lesson', "", null, true);
@@ -146,7 +146,7 @@ if ($_GET['op'] == 'reset_lesson') {
             $message_type = 'success';
         } catch (Exception $e) {
             $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-            $message = _PROBLEMIMPORTINGFILE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+            $message = _PROBLEMIMPORTINGFILE.': '.$e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
             $message_type = 'failure';
         }
     }
@@ -156,7 +156,7 @@ if ($_GET['op'] == 'reset_lesson') {
     $smarty -> assign('T_IMPORT_LESSON_FORM', $renderer -> toArray());
 } elseif ($_GET['op'] == 'export_lesson') {
     if (isset($currentUser -> coreAccess['content']) && $currentUser -> coreAccess['content'] != 'change') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
 
     /* Export part */
@@ -187,7 +187,7 @@ if ($_GET['op'] == 'reset_lesson') {
 
 } elseif ($_GET['op'] == 'lesson_users') {
     if (isset($currentUser -> coreAccess['users']) && $currentUser -> coreAccess['users'] == 'hidden') {
-        eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+        sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     }
     if ($_admin_) {
         $smarty -> assign("T_BASE_URL", 'ctg=lessons&lesson_settings='.$currentLesson -> lesson['id']);
@@ -209,21 +209,21 @@ if ($_GET['op'] == 'reset_lesson') {
   $roles = MagesterUser::getRoles(true);
 
         if (isset($_GET['ajax']) && $_GET['ajax'] == 'usersTable') {
-            isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+            isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-            if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+            if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                 $sort = $_GET['sort'];
                 isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
             } else {
                 $sort = 'login';
             }
-            $users = eF_multiSort($users, $sort, $order);
+            $users = sC_multiSort($users, $sort, $order);
             $smarty -> assign("T_USERS_SIZE", sizeof($users));
             if (isset($_GET['filter'])) {
-                $users = eF_filterData($users, $_GET['filter']);
+                $users = sC_filterData($users, $_GET['filter']);
             }
-            if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                 $users = array_slice($users, $offset, $limit);
             }
 
@@ -246,7 +246,7 @@ if ($_GET['op'] == 'reset_lesson') {
 
     if (isset($_GET['postAjaxRequest'])) {
         try {
-            if (isset($_GET['login']) && eF_checkParameter($_GET['login'], 'login')) {
+            if (isset($_GET['login']) && sC_checkParameter($_GET['login'], 'login')) {
                 isset($_GET['user_type']) && in_array($_GET['user_type'], array_keys($roles)) ? $userType = $_GET['user_type'] : $userType = 'student';
                 if (in_array($_GET['login'], array_keys($nonLessonUsers))) {
                     $currentLesson -> addUsers($_GET['login'], $userType);
@@ -255,10 +255,10 @@ if ($_GET['op'] == 'reset_lesson') {
                     $userType != $lessonUsers[$_GET['login']]['role'] ? $currentLesson -> setRoles($_GET['login'], $userType) : $currentLesson -> archiveLessonUsers($_GET['login']);
                 }
             } elseif (isset($_GET['addAll'])) {
-                isset($_GET['filter']) ? $nonLessonUsers = eF_filterData($nonLessonUsers, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $nonLessonUsers = sC_filterData($nonLessonUsers, $_GET['filter']) : null;
                 $currentLesson -> addUsers(array_keys($nonLessonUsers));
             } elseif (isset($_GET['removeAll'])) {
-                isset($_GET['filter']) ? $lessonUsers = eF_filterData($lessonUsers, $_GET['filter']) : null;
+                isset($_GET['filter']) ? $lessonUsers = sC_filterData($lessonUsers, $_GET['filter']) : null;
                 $currentLesson -> archiveLessonUsers(array_keys($lessonUsers));
             }
         } catch (Exception $e) {
@@ -269,13 +269,13 @@ if ($_GET['op'] == 'reset_lesson') {
 } elseif ($_GET['op'] == 'lesson_layout') {
     $defaultPositions = unserialize($currentLesson -> options['default_positions']);
 //pr($defaultPositions);
-    $result = eF_getTableData("modules", "*");
+    $result = sC_getTableData("modules", "*");
     foreach ($result as $value) {
         $moduleInfo[$value['className']] = $value;
     }
     $curretType = $currentUser -> user['user_type'];
     $currentUser -> user['user_type'] = 'student';
-    $modules = eF_loadAllModules();
+    $modules = sC_loadAllModules();
 
     foreach ($modules as $key => $module) {
         if (method_exists($module, 'getLessonModule') && $currentLesson -> options[$key]) {
@@ -332,7 +332,7 @@ if ($_GET['op'] == 'reset_lesson') {
 
     $lessonSettings['scorm'] = array('text' => _SCORM, 'image' => "32x32/scorm.png", 'onClick' => 'activate(this, \'scorm\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['scorm']) && $currentLesson -> options['scorm'] ? null : 'inactiveImage');
 
-    if (sizeof(eF_getTableData("files", "id", "shared=".$currentLesson -> lesson['id'])) > 0) {
+    if (sizeof(sC_getTableData("files", "id", "shared=".$currentLesson -> lesson['id'])) > 0) {
         $lessonSettings['digital_library'] = array('text' => _DIGITALLIBRARY, 'image' => "32x32/file_explorer.png", 'onClick' => 'activate(this, \'digital_library\')', 'title' => _CLICKTOTOGGLE, 'group' => 2, 'class' => isset($currentLesson -> options['digital_library']) && $currentLesson -> options['digital_library'] ? null : 'inactiveImage');
     }
     if ($GLOBALS['configuration']['disable_calendar'] != 1) {
@@ -366,7 +366,7 @@ if ($_GET['op'] == 'reset_lesson') {
 
     ///MODULES6
     if ($currentUser -> getType() == "administrator") {
-        $loadedModules = eF_loadAllModules(true);
+        $loadedModules = sC_loadAllModules(true);
     }
 
     foreach ($loadedModules as $module) {

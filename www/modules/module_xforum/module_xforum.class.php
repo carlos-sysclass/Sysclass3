@@ -45,7 +45,7 @@ class module_xforum extends MagesterExtendedModule
     	$moduleData = $this->getModuleData();
 
     	$forum_messages =
-    		eF_getTableData(
+    		sC_getTableData(
     			"f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
     			"fm.title, fm.id, ft.id as topic_id, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id",
     			"ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID = '".$currentLesson -> lesson['id']."'",

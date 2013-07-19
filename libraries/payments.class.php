@@ -108,14 +108,14 @@ class payments extends MagesterEntity
     {
      $fields['lessons'] = array_filter($fields['lessons'], 'is_numeric');
      if (isset($fields['lessons']) && sizeof($fields['lessons']) > 0) {
-      $lessonNames = eF_getTableDataFlat("lessons", "name", "id in (".implode(",", $fields['lessons']).")");
+      $lessonNames = sC_getTableDataFlat("lessons", "name", "id in (".implode(",", $fields['lessons']).")");
      }
      $fields['courses'] = array_filter($fields['courses'], 'is_numeric');
      if (isset($fields['courses']) && sizeof($fields['courses']) > 0) {
-      $courseNames = eF_getTableDataFlat("courses", "name", "id in (".implode(",", $fields['courses']).")");
+      $courseNames = sC_getTableDataFlat("courses", "name", "id in (".implode(",", $fields['courses']).")");
      }
-     $fields = array('timestamp' => isset($fields['timestamp']) && eF_checkParameter($fields['timestamp'], 'timestamp') ? $fields['timestamp'] : time(),
-                        'users_LOGIN' => isset($fields['users_LOGIN']) && eF_checkParameter($fields['users_LOGIN'], 'login') ? $fields['users_LOGIN'] : $_SESSION['s_login'],
+     $fields = array('timestamp' => isset($fields['timestamp']) && sC_checkParameter($fields['timestamp'], 'timestamp') ? $fields['timestamp'] : time(),
+                        'users_LOGIN' => isset($fields['users_LOGIN']) && sC_checkParameter($fields['users_LOGIN'], 'login') ? $fields['users_LOGIN'] : $_SESSION['s_login'],
                         'amount' => isset($fields['amount']) && is_numeric($fields['amount']) && $fields['amount'] > 0 ? $fields['amount'] : 0,
                         'status' => isset($fields['status']) && $fields['status'] ? $fields['status'] : 'completed',
                         'txn_id' => $fields['txn_id'],
@@ -130,8 +130,8 @@ class payments extends MagesterEntity
         } else {
          $eventType = false;
         }
-        $newId = eF_insertTableData("payments", $fields);
-        $result = eF_getTableData("payments", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
+        $newId = sC_insertTableData("payments", $fields);
+        $result = sC_getTableData("payments", "*", "id=".$newId); //We perform an extra step/query for retrieving data, sinve this way we make sure that the array fields will be in correct order (forst id, then name, etc)
         $payment = new payments($result[0]['id']);
         if ($eventType) {
          $event = array("type" => $eventType,
@@ -172,7 +172,7 @@ class cart
     public static function retrieveCart()
     {
         if (isset($_COOKIE['cart']) && is_numeric($_COOKIE['cart'])) {
-            $result = eF_getTableData("carts", "contents", "id=".$_COOKIE['cart']);
+            $result = sC_getTableData("carts", "contents", "id=".$_COOKIE['cart']);
             $cart = unserialize($result[0]['contents']);
         } else {
             $cart = array();
@@ -272,16 +272,16 @@ class cart
              setcookie("cart", "", time() - 3600);
          } else {
              //Check whether a cart for this session id exists and if yes update, otherwise create
-             $result = eF_getTableData("carts", "id", "session_id='".session_id()."'");
+             $result = sC_getTableData("carts", "id", "session_id='".session_id()."'");
              if (sizeof($result) > 0) {
-                 eF_updateTableData("carts", array("contents" => serialize($cart), "timestamp" => time()), "id=".$result[0]['id']);
+                 sC_updateTableData("carts", array("contents" => serialize($cart), "timestamp" => time()), "id=".$result[0]['id']);
                  $id = $result[0]['id'];
              } else {
-                 $id = eF_insertTableData("carts", array("contents" => serialize($cart), "timestamp" => time(), "session_id" => session_id()));
+                 $id = sC_insertTableData("carts", array("contents" => serialize($cart), "timestamp" => time(), "session_id" => session_id()));
              }
              setcookie("cart", $id, time() + 3600);
              //Delete carts older than a day
-             eF_deleteTableData("carts", "timestamp < ".(time() - 86400));
+             sC_deleteTableData("carts", "timestamp < ".(time() - 86400));
          }
         }
 

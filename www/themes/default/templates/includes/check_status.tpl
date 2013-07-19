@@ -23,7 +23,7 @@
                 {if $item.name == 'PHP'}<img src = "images/16x16/forbidden.png" alt = "Missing" title = "Missing" />{else}<img src = "images/16x16/warning.png" alt = "Missing" title = "Missing" />{/if}
             {/if}&nbsp;
             </td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 
@@ -41,7 +41,7 @@
             <td>{$item.name}</td>
 
             <td class = "centerAlign">{if $item.enabled}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/forbidden.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -60,7 +60,7 @@
             <td>{$item.name}</td>
 
             <td class = "centerAlign">{if $item.enabled}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/warning.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -82,7 +82,7 @@
             <td>{$item.recommended}</td>
 
             <td class = "centerAlign">{if $item.status}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/forbidden.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -104,7 +104,7 @@
             <td>{$item.recommended}</td>
 
             <td class = "centerAlign">{if $item.status}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/{if $item.name == 'memory_limit'}forbidden{else}warning{/if}.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -124,7 +124,7 @@
             <td>{if $item.writable}YES{else}NO{/if}</td>
 
             <td class = "centerAlign">{if $item.writable}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/forbidden.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -142,7 +142,7 @@
             <td>{$key}</td>
 
             <td class = "centerAlign">{if $item.exists}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/forbidden.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         </table>
 {/if}
@@ -177,7 +177,7 @@
             <td>{$item.locale}</td>
 
             <td class = "centerAlign">{if $item.locale}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/warning.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         <tr><td>&nbsp;</td></tr>
     </table>
@@ -196,7 +196,7 @@
             <td>{$item.locale}</td>
 
             <td class = "centerAlign">{if $item.locale}<img src = "images/16x16/success.png" alt = "OK" title = "OK" />{else}<img src = "images/16x16/warning.png" alt = "Missing" title = "Missing" />{/if}</td>
-            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "eF_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "eF_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
+            <td><img src = "images/16x16/help.png" alt = "help" title = "help" onclick = "sC_js_showHideDiv(this, '{$key}', event)"><div id = '{$key}' onclick = "sC_js_showHideDiv(this, '{$key}', event)" class = "popUpInfoDiv" style = "padding:1em 1em 1em 1em;width:300px;position:absolute;display:none">{$item.help}</div></td></tr>
     {/foreach}
         <tr><td>&nbsp;</td></tr>
     </table>
@@ -206,4 +206,4 @@
         <tr><td>&nbsp;</td></tr>
 </table>
 {/capture}
-{eF_template_printBlock title=$smarty.const._ENVIRONMENTALCHECK data=$smarty.capture.t_check_status_code image='32x32/generic.png'}
+{sC_template_printBlock title=$smarty.const._ENVIRONMENTALCHECK data=$smarty.capture.t_check_status_code image='32x32/generic.png'}

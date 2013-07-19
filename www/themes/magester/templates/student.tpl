@@ -39,7 +39,7 @@
                 {$T_FILE_MANAGER}
             {/capture}
 
-            {eF_template_printBlock title = $smarty.const._SHAREDFILES data = $smarty.capture.t_digital_library image = "32x32/file_explorer.png"}
+            {sC_template_printBlock title = $smarty.const._SHAREDFILES data = $smarty.capture.t_digital_library image = "32x32/file_explorer.png"}
     </td></tr>
     {/capture}
 
@@ -74,7 +74,7 @@
         {assign var = "title" value = $title|cat:' &raquo; <a class = "titleLink" href ="'|cat:$smarty.server.PHP_SELF|cat:'?ctg=content">'|cat:$smarty.const._CONTENT|cat:'</a>'}
  {else}
         {section name = 'parents_list' loop = $T_PARENT_LIST step = "-1"}
-            {assign var = "truncated_name" value = $T_PARENT_LIST[parents_list].name|eF_truncate:40}
+            {assign var = "truncated_name" value = $T_PARENT_LIST[parents_list].name|sC_truncate:40}
             {if $T_PARENT_LIST[parents_list].data != '' || $T_PARENT_LIST[parents_list].ctg_type == 'tests'}
                 {assign var = "title" value = "`$title`&nbsp;&raquo;&nbsp;<a class = \"titleLink\" href = \"`$smarty.server.PHP_SELF`?ctg=content&view_unit=`$T_PARENT_LIST[parents_list].id`\" title = \"`$T_PARENT_LIST[parents_list].name`\">`$truncated_name`</a>"}
             {else}
@@ -377,7 +377,7 @@
                 </table>
         {/if}
         {/capture}
-        {eF_template_printBlock title = $smarty.const._LESSONSELECT data = $smarty.capture.user_to_lesson image = '32x32/courses.png'}
+        {sC_template_printBlock title = $smarty.const._LESSONSELECT data = $smarty.capture.user_to_lesson image = '32x32/courses.png'}
     {/capture}
 {/if}
 {if (isset($T_CTG) && $T_CTG == 'social')}
@@ -472,12 +472,12 @@
     {capture name = "sideSolvedTests"}
                     {capture name='t_solved_tests_code'}
                         {section name = 'solved_tests_list' loop = $T_SOLVED_TESTS}
-                            <a href = "student.php?ctg=tests&view_unit={$T_SOLVED_TESTS[solved_tests_list].content_ID}" title="{$T_SOLVED_TESTS[solved_tests_list].name}">{$T_SOLVED_TESTS[solved_tests_list].name|eF_truncate:22:"...":true} ({$T_SOLVED_TESTS[solved_tests_list].score}%)</a><br/>
+                            <a href = "student.php?ctg=tests&view_unit={$T_SOLVED_TESTS[solved_tests_list].content_ID}" title="{$T_SOLVED_TESTS[solved_tests_list].name}">{$T_SOLVED_TESTS[solved_tests_list].name|sC_truncate:22:"...":true} ({$T_SOLVED_TESTS[solved_tests_list].score}%)</a><br/>
                         {sectionelse}
                             <tr><td class = "emptyCategory">{$smarty.const._NOSOLVEDTESTSFOUND}</td></tr>
                         {/section}
                     {/capture}
-                    {eF_template_printSide title = $smarty.const._SOLVEDTESTS data = $smarty.capture.t_solved_tests_code array = $T_SOLVED_TESTS id = 'solved_tests'}
+                    {sC_template_printSide title = $smarty.const._SOLVEDTESTS data = $smarty.capture.t_solved_tests_code array = $T_SOLVED_TESTS id = 'solved_tests'}
     {/capture}
 {/if}
 {if (isset($T_RELATED_POSTS))}
@@ -490,7 +490,7 @@
                         {/section}
                     {/capture}
                     {* Display seen content*}
-                    {eF_template_printSide title = $smarty.const._ATFORUM data = $smarty.capture.t_related_posts_code array = $T_RELATED_POSTS id = 'related_posts'}
+                    {sC_template_printSide title = $smarty.const._ATFORUM data = $smarty.capture.t_related_posts_code array = $T_RELATED_POSTS id = 'related_posts'}
     {/capture}
 {/if}
 {*///MODULES1*}
@@ -513,7 +513,7 @@
 {capture name = "t_bookmarks_code"}
  <div id = "bookmarks_div"></div>
 {/capture}
-{eF_template_printBlock title = $smarty.const._SHOWBOOKMARKS data = $smarty.capture.t_bookmarks_code image = "32x32/bookmark.png"}
+{sC_template_printBlock title = $smarty.const._SHOWBOOKMARKS data = $smarty.capture.t_bookmarks_code image = "32x32/bookmark.png"}
 </div>
 {* Javascript code for changing the category cell color onMouseover and onMouseout *}
 {literal}
@@ -525,11 +525,11 @@ function changeItemColor(item, color) {
 </script>
 {/literal}
 {capture name = "center_code"}
- {if $smarty.get.message}{eF_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
- {if $T_MESSAGE}{eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
+ {if $smarty.get.message}{sC_template_printMessageBlock content = $smarty.get.message type = $smarty.get.message_type}{/if}
+ {if $T_MESSAGE}{sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}{/if}
  {if $T_SEARCH_MESSAGE || $smarty.get.search_message}
      {if $smarty.get.search_message}{assign var = T_SEARCH_MESSAGE value = $smarty.get.search_message}{/if}
-  {eF_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
+  {sC_template_printMessageBlock content = $T_SEARCH_MESSAGE type = $T_MESSAGE_TYPE}
  {/if}
  <table class = "centerTable">
   {$smarty.capture.moduleControlPanel}

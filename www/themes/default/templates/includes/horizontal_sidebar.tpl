@@ -50,7 +50,7 @@
             <td width="175px">
              <table>
               <tr>
-               <td width="175px" class = "horizontalMenuOption" id="menuTitle{$menu_key}" height="32px" style="vertical-align:middle;"><a href="javascript:void(0)">{$menu.title|eF_truncate:30}</a></td>
+               <td width="175px" class = "horizontalMenuOption" id="menuTitle{$menu_key}" height="32px" style="vertical-align:middle;"><a href="javascript:void(0)">{$menu.title|sC_truncate:30}</a></td>
                <td valign="top" height="32px" >
                 <table id="listmenu{$menu_key}" style="background-color:#EEEEEE;z-index:300;position:absolute;border-style:solid;border-spacing:0 0 0 0;border-width:1px 1px 1px 1px;border-color:rgb(204, 204, 204);">
                  <tr><td>

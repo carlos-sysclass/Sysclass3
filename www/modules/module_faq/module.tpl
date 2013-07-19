@@ -21,7 +21,7 @@
 
     {/capture}
 
-    {eF_template_printBlock title=$smarty.const._FAQ_INSERTFAQ data=$smarty.capture.t_insert_faq_code image = $T_FAQ_MODULE_BASELINK|cat:'images/unknown32.png' absoluteImagePath = 1}
+    {sC_template_printBlock title=$smarty.const._FAQ_INSERTFAQ data=$smarty.capture.t_insert_faq_code image = $T_FAQ_MODULE_BASELINK|cat:'images/unknown32.png' absoluteImagePath = 1}
 {else}
     {capture name = 't_faq_list_code'}
         {if $T_FAQUSERLESSONROLE != 'student'}
@@ -59,7 +59,7 @@
         {/if}
     {/capture}
 
-    {eF_template_printBlock title=$smarty.const._FAQ_FAQLIST data=$smarty.capture.t_faq_list_code image = $T_FAQ_MODULE_BASELINK|cat:'images/unknown32.png' absoluteImagePath = 1}
+    {sC_template_printBlock title=$smarty.const._FAQ_FAQLIST data=$smarty.capture.t_faq_list_code image = $T_FAQ_MODULE_BASELINK|cat:'images/unknown32.png' absoluteImagePath = 1}
 {/if}
 
 

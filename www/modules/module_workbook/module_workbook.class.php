@@ -22,11 +22,11 @@ class module_workbook extends MagesterModule
 
   if ($currentUser->getRole($this->getCurrentLesson()) == 'professor') {
 
-   $result = eF_getTableData("module_workbook_settings", "id", "lessons_ID=".$currentLessonID);
+   $result = sC_getTableData("module_workbook_settings", "id", "lessons_ID=".$currentLessonID);
 
    if (sizeof($result) == 0) {
 
-    eF_insertTableData("module_workbook_settings", array('lessons_ID' => $currentLessonID, 'lesson_name' => $currentLessonName));
+    sC_insertTableData("module_workbook_settings", array('lessons_ID' => $currentLessonID, 'lesson_name' => $currentLessonName));
     $workbookLessonName = _WORKBOOK_NAME.' ['.$this->getWorkbookLessonName($currentLessonID).']';
     $smarty->assign("T_WORKBOOK_LESSON_NAME", $workbookLessonName);
    }
@@ -75,7 +75,7 @@ class module_workbook extends MagesterModule
   (isset($popup) && $popup == 1) ? $popup_ = '&popup=1' : $popup_ = '';
 
   if(isset($_REQUEST['question_preview']) && $_REQUEST['question_preview'] == '1' &&
-        isset($_REQUEST['question_id']) && eF_checkParameter($_REQUEST['question_id'], 'id')){
+        isset($_REQUEST['question_id']) && sC_checkParameter($_REQUEST['question_id'], 'id')){
 
    $id = $_REQUEST['question_id'];
 
@@ -126,7 +126,7 @@ class module_workbook extends MagesterModule
       "allow_export" => $values['allow_export']
      );
 
-    if (eF_updateTableData("module_workbook_settings", $fields, "id=".$workbookSettings['id'])) {
+    if (sC_updateTableData("module_workbook_settings", $fields, "id=".$workbookSettings['id'])) {
 
      $smarty->assign("T_WORKBOOK_MESSAGE", _WORKBOOK_SETTINGS_SUCCESSFULLY_EDITED);
      $smarty->assign("T_WORKBOOK_MESSAGE_TYPE", 'success');
@@ -181,7 +181,7 @@ class module_workbook extends MagesterModule
        "position" => $this->itemPosition($currentLessonID)
       );
 
-     if (eF_insertTableData("module_workbook_items", $fields)) {
+     if (sC_insertTableData("module_workbook_items", $fields)) {
 
       $smarty->assign("T_WORKBOOK_MESSAGE", _WORKBOOK_ITEM_SUCCESSFULLY_ADDED);
       $smarty->assign("T_WORKBOOK_MESSAGE_TYPE", 'success');
@@ -200,7 +200,7 @@ class module_workbook extends MagesterModule
    $smarty->assign('T_WORKBOOK_REUSE_ITEM_FORM', $renderer->toArray());
   }
 
-  if (isset($_GET['move_item']) && eF_checkParameter($_GET['move_item'], 'id') && in_array($_GET['move_item'], array_keys($workbookItems))) {
+  if (isset($_GET['move_item']) && sC_checkParameter($_GET['move_item'], 'id') && in_array($_GET['move_item'], array_keys($workbookItems))) {
 
    if ($_SESSION['s_type'] != 'professor') {
     $message = _WORKBOOK_NOACCESS;
@@ -232,17 +232,17 @@ class module_workbook extends MagesterModule
      foreach ($workbookItems as $key => $value) {
 
       if($value['position'] > $itemPosition && $value['position'] <= $newPosition)
-       eF_updateTableData("module_workbook_items", array('position' => $value['position'] - 1), "id=".$key);
+       sC_updateTableData("module_workbook_items", array('position' => $value['position'] - 1), "id=".$key);
      }
     } else {
      foreach ($workbookItems as $key => $value) {
 
       if($value['position'] < $itemPosition && $value['position'] >= $newPosition)
-       eF_updateTableData("module_workbook_items", array('position' => $value['position'] + 1), "id=".$key);
+       sC_updateTableData("module_workbook_items", array('position' => $value['position'] + 1), "id=".$key);
      }
     }
 
-    eF_updateTableData("module_workbook_items", array('position' => $newPosition), "id=".$_GET['move_item']);
+    sC_updateTableData("module_workbook_items", array('position' => $newPosition), "id=".$_GET['move_item']);
 
     $smarty->assign("T_WORKBOOK_MESSAGE", _WORKBOOK_ITEM_SUCCESSFULLY_MOVED);
     $smarty->assign("T_WORKBOOK_MESSAGE_TYPE", 'success');
@@ -256,7 +256,7 @@ class module_workbook extends MagesterModule
    $smarty->assign('T_WORKBOOK_MOVE_ITEM_FORM', $renderer->toArray());
   }
 
-  if(isset($_GET['delete_item']) && eF_checkParameter($_GET['delete_item'], 'id') &&
+  if(isset($_GET['delete_item']) && sC_checkParameter($_GET['delete_item'], 'id') &&
            in_array($_GET['delete_item'], array_keys($workbookItems))){
 
    $item_id = $_GET['delete_item'];
@@ -265,24 +265,24 @@ class module_workbook extends MagesterModule
    foreach ($workbookItems as $key => $value) {
 
     if($value['position'] > $itemPosition)
-     eF_updateTableData("module_workbook_items", array('position' => $value['position'] - 1), "id=".$key);
+     sC_updateTableData("module_workbook_items", array('position' => $value['position'] - 1), "id=".$key);
    }
 
-   eF_deleteTableData("module_workbook_items", "id=".$item_id);
+   sC_deleteTableData("module_workbook_items", "id=".$item_id);
   }
 
-  if(isset($_GET['switch_lesson']) && eF_checkParameter($_GET['switch_lesson'], 'id') &&
+  if(isset($_GET['switch_lesson']) && sC_checkParameter($_GET['switch_lesson'], 'id') &&
          in_array($_GET['switch_lesson'], array_keys($workbookLessons))){
 
    $lessonID = $_GET['switch_lesson'];
-   eF_redirect("location:".$this->moduleBaseUrl."&lessons_ID=".$lessonID.$popup_);
+   sC_redirect("location:".$this->moduleBaseUrl."&lessons_ID=".$lessonID.$popup_);
   }
 
   if((isset($_GET['add_item']) && $_GET['add_item'] == '1') ||
-  (isset($_GET['edit_item']) && eF_checkParameter($_GET['edit_item'], 'id') && in_array($_GET['edit_item'], array_keys($workbookItems)))){
+  (isset($_GET['edit_item']) && sC_checkParameter($_GET['edit_item'], 'id') && in_array($_GET['edit_item'], array_keys($workbookItems)))){
 
    if($_SESSION['s_type'] != "professor")
-    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_WORKBOOK_NOACCESS).$popup_);
+    sC_redirect($this->moduleBaseUrl."&message=".urlencode(_WORKBOOK_NOACCESS).$popup_);
 
    global $load_editor;
    $load_editor = true;
@@ -374,31 +374,31 @@ class module_workbook extends MagesterModule
      $message = _WORKBOOK_ITEM_EMPTY_FIELDS;
 
      if(isset($_GET['add_item']))
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure&add_item=1".$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure&add_item=1".$popup_);
      else{
       $itemID = $_GET['edit_item'];
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure&edit_item=".$itemID.$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure&edit_item=".$itemID.$popup_);
      }
     }
 
     if (isset($_GET['add_item'])) {
 
-     if (eF_insertTableData("module_workbook_items", $fields)) {
+     if (sC_insertTableData("module_workbook_items", $fields)) {
 
       $message = _WORKBOOK_ITEM_SUCCESSFULLY_ADDED;
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
      } else {
       $message = _WORKBOOK_ITEM_ADD_PROBLEM;
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
      }
     } else {
-     if (eF_updateTableData("module_workbook_items", $fields, "id=".$_GET['edit_item'])) {
+     if (sC_updateTableData("module_workbook_items", $fields, "id=".$_GET['edit_item'])) {
 
       $message = _WORKBOOK_ITEM_SUCCESSFULLY_EDITED;
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
      } else {
       $message = _WORKBOOK_ITEM_EDIT_PROBLEM;
-      eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
+      sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
      }
     }
    }
@@ -418,54 +418,54 @@ class module_workbook extends MagesterModule
 
   if (isset($_GET['publish_workbook']) && $_GET['publish_workbook'] == '1') {
 
-   $result = eF_getTableData("module_workbook_publish", "publish", "lessons_ID=".$currentLessonID);
+   $result = sC_getTableData("module_workbook_publish", "publish", "lessons_ID=".$currentLessonID);
 
    if (count($result) == 0) {
 
-    if (eF_insertTableData("module_workbook_publish", array('lessons_ID' => $currentLessonID, 'publish' => 1))) {
+    if (sC_insertTableData("module_workbook_publish", array('lessons_ID' => $currentLessonID, 'publish' => 1))) {
 
      $message = _WORKBOOK_SUCCESSFULLY_PUBLISHED;
-     eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
+     sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
     } else {
      $message = _WORKBOOK_PUBLISH_PROBLEM;
-     eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
+     sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
     }
    } else {
-    if (eF_updateTableData("module_workbook_publish", array('publish' => 1), "lessons_ID=".$currentLessonID)) {
+    if (sC_updateTableData("module_workbook_publish", array('publish' => 1), "lessons_ID=".$currentLessonID)) {
 
      $message = _WORKBOOK_SUCCESSFULLY_PUBLISHED;
-     eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
+     sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=success".$popup_);
     } else {
      $message = _WORKBOOK_PUBLISH_PROBLEM;
-     eF_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
+     sC_redirect($this->moduleBaseUrl."&message=".$message."&message_type=failure".$popup_);
     }
    }
   }
 
   if (isset($_GET['reset_workbook_professor']) && $_GET['reset_workbook_professor'] == '1') {
 
-   eF_updateTableData("module_workbook_publish", array('publish' => 0), "lessons_ID=".$currentLessonID);
+   sC_updateTableData("module_workbook_publish", array('publish' => 0), "lessons_ID=".$currentLessonID);
 
    foreach ($workbookItems as $key => $value) {
 
-    eF_deleteTableData("module_workbook_answers", "item_id=".$key);
-    eF_deleteTableData("module_workbook_autosave", "item_id=".$key);
-    eF_deleteTableData("module_workbook_progress", "lessons_ID=".$currentLessonID);
+    sC_deleteTableData("module_workbook_answers", "item_id=".$key);
+    sC_deleteTableData("module_workbook_autosave", "item_id=".$key);
+    sC_deleteTableData("module_workbook_progress", "lessons_ID=".$currentLessonID);
    }
   }
 
-  if (isset($_GET['reset_workbook_student']) && eF_checkParameter($_GET['reset_workbook_student'], 'id')) {
+  if (isset($_GET['reset_workbook_student']) && sC_checkParameter($_GET['reset_workbook_student'], 'id')) {
 
    $id = $_GET['reset_workbook_student'];
-   $result = eF_getTableData("module_workbook_progress", "users_LOGIN", "id=".$id);
+   $result = sC_getTableData("module_workbook_progress", "users_LOGIN", "id=".$id);
 
    if($result[0]['users_LOGIN'] != $currentUser->user['login'])
-    eF_redirect($this->moduleBaseUrl."&message=".urlencode(_WORKBOOK_NOACCESS).$popup_);
+    sC_redirect($this->moduleBaseUrl."&message=".urlencode(_WORKBOOK_NOACCESS).$popup_);
 
-   eF_deleteTableData("module_workbook_progress", "id=".$id);
+   sC_deleteTableData("module_workbook_progress", "id=".$id);
 
    foreach($workbookItems as $key => $value)
-    eF_deleteTableData("module_workbook_answers", "item_id=".$key." AND users_LOGIN='".$currentUser->user['login']."'");
+    sC_deleteTableData("module_workbook_answers", "item_id=".$key." AND users_LOGIN='".$currentUser->user['login']."'");
   }
 
   if (isset($_GET['download_as']) && $_GET['download_as'] == 'doc') {
@@ -588,7 +588,7 @@ class module_workbook extends MagesterModule
   }
 
   if(isset($_GET['preview_workbook']) && $_GET['preview_workbook'] == '1' &&
-   isset($_GET['student']) && eF_checkParameter($_GET['student'], 'login')){
+   isset($_GET['student']) && sC_checkParameter($_GET['student'], 'login')){
 
    $userLogin = $_GET['student'];
 
@@ -627,7 +627,7 @@ class module_workbook extends MagesterModule
       'users_LOGIN' => $currentUser->user['login'],
      );
 
-    eF_insertTableData("module_workbook_answers", $fields);
+    sC_insertTableData("module_workbook_answers", $fields);
 
     if($checkAnswer == '1')
      $this->updateStudentProgress($currentUser->user['login'], $currentLessonID,
@@ -635,7 +635,7 @@ class module_workbook extends MagesterModule
     echo $question->toHTMLSolved($form);
    }
 
-   eF_deleteTableData("module_workbook_autosave", "item_id=".$itemID." AND users_LOGIN='".$currentUser->user['login']."'");
+   sC_deleteTableData("module_workbook_autosave", "item_id=".$itemID." AND users_LOGIN='".$currentUser->user['login']."'");
    exit(0);
   }
 
@@ -654,8 +654,8 @@ class module_workbook extends MagesterModule
      'users_LOGIN' => $currentUser->user['login'],
     );
 
-   eF_deleteTableData("module_workbook_autosave", "item_id=".$itemID." AND users_LOGIN='".$currentUser->user['login']."'");
-   eF_insertTableData("module_workbook_autosave", $fields);
+   sC_deleteTableData("module_workbook_autosave", "item_id=".$itemID." AND users_LOGIN='".$currentUser->user['login']."'");
+   sC_insertTableData("module_workbook_autosave", $fields);
 
    exit(0);
   } else {
@@ -677,7 +677,7 @@ class module_workbook extends MagesterModule
       'text' => _SETTINGS,
       'image' => $this->moduleBaseLink.'images/settings.png',
       'href' => $this->moduleBaseUrl.'&edit_settings=1&popup=1',
-      'onClick' => "eF_js_showDivPopup('"._SETTINGS."', 0)",
+      'onClick' => "sC_js_showDivPopup('"._SETTINGS."', 0)",
       'target' => 'POPUP_FRAME',
       'id' => 'edit_settings'
      );
@@ -686,7 +686,7 @@ class module_workbook extends MagesterModule
       'text' => _WORKBOOK_POPUP_INFO,
       'image' => $this->moduleBaseLink.'images/info.png',
       'href' => $this->moduleBaseUrl.'&popup_info=1&popup=1',
-      'onClick' => "eF_js_showDivPopup('"._WORKBOOK_POPUP_INFO."', 2)",
+      'onClick' => "sC_js_showDivPopup('"._WORKBOOK_POPUP_INFO."', 2)",
       'target' => 'POPUP_FRAME',
       'id' => 'popup_info'
      );
@@ -723,8 +723,8 @@ class module_workbook extends MagesterModule
 
  public function onInstall()
  {
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_settings`");
-  $t1 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_settings` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_settings`");
+  $t1 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_settings` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `lessons_ID` int(11) NOT NULL,
      `lesson_name` varchar(255) NOT NULL,
@@ -733,8 +733,8 @@ class module_workbook extends MagesterModule
      PRIMARY KEY (`id`)
      ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_items`");
-  $t2 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_items` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_items`");
+  $t2 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_items` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `item_title` varchar(255) DEFAULT NULL,
      `item_text` text,
@@ -747,8 +747,8 @@ class module_workbook extends MagesterModule
      PRIMARY KEY (`id`)
      ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_answers`");
-  $t3 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_answers` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_answers`");
+  $t3 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_answers` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `item_id` int(11) NOT NULL,
      `html_solved` text,
@@ -756,8 +756,8 @@ class module_workbook extends MagesterModule
      PRIMARY KEY (`id`)
      ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_progress`");
-  $t4 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_progress` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_progress`");
+  $t4 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_progress` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `lessons_ID` int(11) NOT NULL,
      `users_LOGIN` varchar(255) NOT NULL,
@@ -766,16 +766,16 @@ class module_workbook extends MagesterModule
      PRIMARY KEY (`id`)
      ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_publish`");
-  $t5 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_publish` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_publish`");
+  $t5 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_publish` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `lessons_ID` int(11) NOT NULL,
      `publish` tinyint(1) NOT NULL,
      PRIMARY KEY (`id`)
      ) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 
-  eF_executeNew("DROP TABLE IF EXISTS `module_workbook_autosave`");
-  $t6 = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_autosave` (
+  sC_executeNew("DROP TABLE IF EXISTS `module_workbook_autosave`");
+  $t6 = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_workbook_autosave` (
      `id` int(11) NOT NULL AUTO_INCREMENT,
      `item_id` int(11) NOT NULL,
      `autosave_text` longtext NOT NULL,
@@ -788,12 +788,12 @@ class module_workbook extends MagesterModule
 
  public function onUninstall()
  {
-  $t1 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_settings`");
-  $t2 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_items`");
-  $t3 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_answers`");
-  $t4 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_progress`");
-  $t5 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_publish`");
-  $t6 = eF_executeNew("DROP TABLE IF EXISTS `module_workbook_autosave`");
+  $t1 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_settings`");
+  $t2 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_items`");
+  $t3 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_answers`");
+  $t4 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_progress`");
+  $t5 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_publish`");
+  $t6 = sC_executeNew("DROP TABLE IF EXISTS `module_workbook_autosave`");
 
   return($t1 && $t2 && $t3 && $t4 && $t5 && $t6);
  }
@@ -869,7 +869,7 @@ class module_workbook extends MagesterModule
 
  public function onExportLesson($lessonId)
  {
-  $data = eF_getTableData("module_workbook_items", "*", "lessons_ID=".$lessonId);
+  $data = sC_getTableData("module_workbook_items", "*", "lessons_ID=".$lessonId);
 
   return $data;
  }
@@ -880,7 +880,7 @@ class module_workbook extends MagesterModule
 
    unset($record['id']);
    $record['lessons_ID'] = $lessonId;
-   eF_insertTableData("module_workbook_items", $record);
+   sC_insertTableData("module_workbook_items", $record);
   }
 
   return true;
@@ -890,14 +890,14 @@ class module_workbook extends MagesterModule
  {
   $lessonQuestions = array();
   $itemsToDelete = array();
-  $result = eF_getTableData("module_workbook_items", "item_question", "lessons_ID=".$lessonId);
+  $result = sC_getTableData("module_workbook_items", "item_question", "lessons_ID=".$lessonId);
 
   foreach($result as $value)
    array_push($lessonQuestions, $value['item_question']);
 
   for ($i = 0; $i < count($lessonQuestions); $i++) {
 
-   $items = eF_getTableData("module_workbook_items", "id, lessons_ID", "item_question=".$lessonQuestions[$i]);
+   $items = sC_getTableData("module_workbook_items", "id, lessons_ID", "item_question=".$lessonQuestions[$i]);
 
    foreach($items as $item)
     $itemsToDelete[$item['id']] = $item;
@@ -909,21 +909,21 @@ class module_workbook extends MagesterModule
 
    foreach ($lessonItems as $key2 => $value2) {
 
-    eF_deleteTableData("module_workbook_answers", "item_id=".$key2);
-    eF_deleteTableData("module_workbook_autosave", "item_id=".$key2);
-    eF_deleteTableData("module_workbook_progress", "lessons_ID=".$value2['lessons_ID']);
+    sC_deleteTableData("module_workbook_answers", "item_id=".$key2);
+    sC_deleteTableData("module_workbook_autosave", "item_id=".$key2);
+    sC_deleteTableData("module_workbook_progress", "lessons_ID=".$value2['lessons_ID']);
    }
 
-   eF_deleteTableData("module_workbook_publish", "lessons_ID=".$value['lessons_ID']);
+   sC_deleteTableData("module_workbook_publish", "lessons_ID=".$value['lessons_ID']);
    $itemPosition = $lessonItems[$key]['position'];
 
    foreach ($lessonItems as $key2 => $value2) {
 
     if($value2['position'] > $itemPosition)
-     eF_updateTableData("module_workbook_items", array('position' => $value2['position'] - 1), "id=".$key2);
+     sC_updateTableData("module_workbook_items", array('position' => $value2['position'] - 1), "id=".$key2);
    }
 
-   eF_deleteTableData("module_workbook_items", "id=".$key);
+   sC_deleteTableData("module_workbook_items", "id=".$key);
   }
 
   return true;
@@ -933,14 +933,14 @@ class module_workbook extends MagesterModule
 
  function getWorkbookLessonName($lessonID)
  {
-  $result = eF_getTableData("module_workbook_settings", "lesson_name", "lessons_ID=".$lessonID);
+  $result = sC_getTableData("module_workbook_settings", "lesson_name", "lessons_ID=".$lessonID);
   //$lessonName = _WORKBOOK_NAME.' ['.$result[0]['lesson_name'].']';
   return $result[0]['lesson_name'];
  }
 
  function getWorkbookSettings($lessonID)
  {
-  $result = eF_getTableData("module_workbook_settings", "*", "lessons_ID=".$lessonID);
+  $result = sC_getTableData("module_workbook_settings", "*", "lessons_ID=".$lessonID);
 
   $settings = array(
     'id' => $result[0]['id'],
@@ -955,7 +955,7 @@ class module_workbook extends MagesterModule
  function getLessonQuestions($lessonID)
  {
   $type = "(type='multiple_one' OR type='multiple_many' OR type='raw_text') AND ";
-  $result = eF_getTableData("questions", "id, text, type", $type."lessons_ID=".$lessonID);
+  $result = sC_getTableData("questions", "id, text, type", $type."lessons_ID=".$lessonID);
   $questions = array();
 
   foreach($result as $value)
@@ -966,7 +966,7 @@ class module_workbook extends MagesterModule
 
  function getReusedQuestionDetails($questionID)
  {
-  $result = eF_getTableData("questions", "text, type", "id=".$questionID);
+  $result = sC_getTableData("questions", "text, type", "id=".$questionID);
 
   return array('id' => $questionID, 'text' => $result[0]['text'], 'type' => $result[0]['type']);
  }
@@ -995,7 +995,7 @@ class module_workbook extends MagesterModule
  {
   $existingIDs = array();
   $uniqueID = uniqid();
-  $result = eF_getTableData("module_workbook_items", "unique_ID");
+  $result = sC_getTableData("module_workbook_items", "unique_ID");
 
   foreach($result as $value)
    array_push($existingIDs, $value['unique_ID']);
@@ -1008,7 +1008,7 @@ class module_workbook extends MagesterModule
 
  function itemPosition($lessonID)
  {
-  $result = eF_getTableData("module_workbook_items", "position", "lessons_ID=".$lessonID);
+  $result = sC_getTableData("module_workbook_items", "position", "lessons_ID=".$lessonID);
 
   if(count($result) == 0)
 
@@ -1028,7 +1028,7 @@ class module_workbook extends MagesterModule
  function getItemsUniqueIDs()
  {
   $existingIDs = array();
-  $result = eF_getTableData("module_workbook_items", "unique_ID");
+  $result = sC_getTableData("module_workbook_items", "unique_ID");
 
   foreach($result as $value)
    array_push($existingIDs, $value['unique_ID']);
@@ -1038,14 +1038,14 @@ class module_workbook extends MagesterModule
 
  function getItemByUniqueID($uniqueID)
  {
-  $result = eF_getTableData("module_workbook_items", "*", "unique_ID='".$uniqueID."'");
+  $result = sC_getTableData("module_workbook_items", "*", "unique_ID='".$uniqueID."'");
 
   return $result[0];
  }
 
  function getWorkbookItems($lessonID)
  {
-  $result = eF_getTableData("module_workbook_items", "*", "lessons_ID=".$lessonID, "position");
+  $result = sC_getTableData("module_workbook_items", "*", "lessons_ID=".$lessonID, "position");
   $items = array();
 
   foreach($result as $value)
@@ -1097,7 +1097,7 @@ class module_workbook extends MagesterModule
 
   for ($i = 0; $i < count($itemIDs); $i++) {
 
-   $result = eF_getTableData("module_workbook_answers", "html_solved", "item_id=".$itemIDs[$i]." AND users_LOGIN='".$userLogin."'");
+   $result = sC_getTableData("module_workbook_answers", "html_solved", "item_id=".$itemIDs[$i]." AND users_LOGIN='".$userLogin."'");
 
    if(count($result) != 0)
     $answers[$itemIDs[$i]] = $result[0]['html_solved'];
@@ -1123,7 +1123,7 @@ class module_workbook extends MagesterModule
 
  function getStudentProgress($userLogin, $lessonID)
  {
-  $result = eF_getTableData("module_workbook_progress", "progress", "lessons_ID=".$lessonID." AND users_LOGIN='".$userLogin."'");
+  $result = sC_getTableData("module_workbook_progress", "progress", "lessons_ID=".$lessonID." AND users_LOGIN='".$userLogin."'");
 
   if(count($result) == 0)
 
@@ -1142,7 +1142,7 @@ class module_workbook extends MagesterModule
 
  function updateStudentProgress($userLogin, $lessonID, $percentage, $nonOptionalQuestionsNr)
  {
-  $result = eF_getTableData("module_workbook_progress", "id, progress, non_optional",
+  $result = sC_getTableData("module_workbook_progress", "id, progress, non_optional",
            "lessons_ID=".$lessonID." AND users_LOGIN='".$userLogin."'");
   if (count($result) == 0) {
 
@@ -1153,7 +1153,7 @@ class module_workbook extends MagesterModule
      'non_optional' => $nonOptionalQuestionsNr - 1
    );
 
-   eF_insertTableData("module_workbook_progress", $fields);
+   sC_insertTableData("module_workbook_progress", $fields);
   } else {
    $progress = $result[0]['progress'] + $percentage;
    $nonOptional = $result[0]['non_optional'] - 1;
@@ -1164,13 +1164,13 @@ class module_workbook extends MagesterModule
    if($nonOptional == 0)
     $progress = 100.00;
 
-   eF_updateTableData("module_workbook_progress", array('progress'=>$progress, 'non_optional'=>$nonOptional), "id=".$result[0]['id']);
+   sC_updateTableData("module_workbook_progress", array('progress'=>$progress, 'non_optional'=>$nonOptional), "id=".$result[0]['id']);
   }
  }
 
  function isWorkbookCompleted($userLogin, $lessonID)
  {
-  $result = eF_getTableData("module_workbook_progress", "id, non_optional", "lessons_ID=".$lessonID." AND users_LOGIN='".$userLogin."'");
+  $result = sC_getTableData("module_workbook_progress", "id, non_optional", "lessons_ID=".$lessonID." AND users_LOGIN='".$userLogin."'");
 
   if(count($result) != 0 && $result[0]['non_optional'] == '0')
 
@@ -1181,7 +1181,7 @@ class module_workbook extends MagesterModule
 
  function isWorkbookPublished($lessonID)
  {
-  $result = eF_getTableData("module_workbook_publish", "publish", "lessons_ID=".$lessonID);
+  $result = sC_getTableData("module_workbook_publish", "publish", "lessons_ID=".$lessonID);
 
   if(count($result) == 0)
 
@@ -1196,7 +1196,7 @@ class module_workbook extends MagesterModule
 
   for ($i = 0; $i < count($itemIDs); $i++) {
 
-   $result = eF_getTableData("module_workbook_autosave", "autosave_text", "item_id=".$itemIDs[$i]." AND users_LOGIN='".$userLogin."'");
+   $result = sC_getTableData("module_workbook_autosave", "autosave_text", "item_id=".$itemIDs[$i]." AND users_LOGIN='".$userLogin."'");
 
    if(count($result) != 0)
     $answers[$itemIDs[$i]] = $result[0]['autosave_text'];

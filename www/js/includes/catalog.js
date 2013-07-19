@@ -23,7 +23,7 @@ function onUpdateCoupon(el, response) {
   } else {
    $('enter_coupon_link').update(translations['_CLICKTOENTERDISCOUNTCOUPON']);
   }
-  eF_js_showDivPopup('', '', 'coupon_table');
+  sC_js_showDivPopup('', '', 'coupon_table');
  } catch (e) {alert(e);}
 }
 

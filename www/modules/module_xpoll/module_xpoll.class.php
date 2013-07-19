@@ -61,7 +61,7 @@ class module_xpoll extends MagesterExtendedModule
 		if (count($lessonsIDs) > 0) {
 			foreach ($lessonsIDs as $lesson_id) {
 //				echo prepareGetTableData("f_users_to_polls", "*", "users_LOGIN='".$currentUser->user['login']."' AND f_poll_ID IN (SELECT f_poll_ID FROM f_poll WHERE f_forums_ID IN (SELECT id FROM f_forums WHERE lessons_ID =".$lesson_id . "))");
-				$result = eF_getTableData("f_users_to_polls", "*", "users_LOGIN='".$currentUser->user['login']."' AND f_poll_ID IN (SELECT f_poll_ID FROM f_poll WHERE f_forums_ID IN (SELECT id FROM f_forums WHERE lessons_ID =".$lesson_id . "))");
+				$result = sC_getTableData("f_users_to_polls", "*", "users_LOGIN='".$currentUser->user['login']."' AND f_poll_ID IN (SELECT f_poll_ID FROM f_poll WHERE f_forums_ID IN (SELECT id FROM f_forums WHERE lessons_ID =".$lesson_id . "))");
 
 				if (count($result) == 0) {
 					///continue;
@@ -71,7 +71,7 @@ class module_xpoll extends MagesterExtendedModule
 					$smarty -> assign("T_ACTION", "view");
 				}
 
-				$poll_data = eF_getTableData("f_poll", "*", "f_forums_ID IN (SELECT id FROM f_forums WHERE lessons_ID =".$lesson_id . ")");
+				$poll_data = sC_getTableData("f_poll", "*", "f_forums_ID IN (SELECT id FROM f_forums WHERE lessons_ID =".$lesson_id . ")");
 
 				foreach ($poll_data as $poll_item) {
 					//$poll_item['timestamp_end'] > time() ? $poll_item['isopen'] = true : $poll_item['isopen'] = false;
@@ -91,7 +91,7 @@ class module_xpoll extends MagesterExtendedModule
 					$parent_forum = $currentPoll['f_forums_ID'];
 
 					$currentPoll['options'] = array_values(unserialize($currentPoll['options'])); //Array values are put here to reindex array, if the keys are not in order
-					$poll_votes = eF_getTableData("f_users_to_polls", "*", "f_poll_ID=".$currentPoll['id']);
+					$poll_votes = sC_getTableData("f_users_to_polls", "*", "f_poll_ID=".$currentPoll['id']);
 
 					$votes_distrib = array();
 					for ($i = 0; $i < sizeof($poll_data[0]['options']); $i++) {
@@ -127,7 +127,7 @@ class module_xpoll extends MagesterExtendedModule
 						$values = $form -> exportValues();
 						//pr($values);
 						//debug();
-						$res = eF_getTableData("f_users_to_polls", "*", "f_poll_ID=".$values['options']['vote']." and users_LOGIN='".$currentUser -> user['login']."'");
+						$res = sC_getTableData("f_users_to_polls", "*", "f_poll_ID=".$values['options']['vote']." and users_LOGIN='".$currentUser -> user['login']."'");
 						//debug(false);
 						if (sizeof($res) > 0) {
 							$message = _YOUHAVEALREADYVOTED;
@@ -139,10 +139,10 @@ class module_xpoll extends MagesterExtendedModule
 								'vote' => $values['options']['vote'],
 								'timestamp' => time()
 							);
-							if (eF_insertTableData("f_users_to_polls", $fields)) {
+							if (sC_insertTableData("f_users_to_polls", $fields)) {
 								$message = _SUCCESFULLYVOTED;
 								$message_type = 'success';
-								eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=forum&poll=".$_GET['poll']);
+								sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=forum&poll=".$_GET['poll']);
 							} else {
 								$message = _SOMEPROBLEMEMERGED;
 								$message_type = 'failure';

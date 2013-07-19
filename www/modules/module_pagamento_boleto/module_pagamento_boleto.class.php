@@ -99,14 +99,14 @@ class module_pagamento_boleto extends MagesterModule
 			$smarty -> assign("T_PROCESS_FILE", true);
 			$smarty -> assign("T_PROCESS_FILE_STATUS", $returnStatus);
 
-			$ocorrencias = eF_getTableData("module_pagamento_boleto_ocorrencias", "id, description");
+			$ocorrencias = sC_getTableData("module_pagamento_boleto_ocorrencias", "id, description");
 
 			foreach ($ocorrencias as $ocorrencia) {
 				$base_ocorrencias[$ocorrencia['id']] = $ocorrencia['description'];
 			}
 			$smarty -> assign("T_BASE_OCORRENCIAS", $base_ocorrencias);
 
-			$liquidacoes = eF_getTableData("module_pagamento_boleto_liquidacao", "id, description");
+			$liquidacoes = sC_getTableData("module_pagamento_boleto_liquidacao", "id, description");
 
 			foreach ($liquidacoes as $liquidacao) {
 				$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
@@ -151,14 +151,14 @@ class module_pagamento_boleto extends MagesterModule
 			$smarty -> assign("T_PROCESS_FILE", true);
 			$smarty -> assign("T_PROCESS_FILE_STATUS", $processStatusRegister);
 
-			$ocorrencias = eF_getTableData("module_pagamento_boleto_ocorrencias", "id, description");
+			$ocorrencias = sC_getTableData("module_pagamento_boleto_ocorrencias", "id, description");
 
 			foreach ($ocorrencias as $ocorrencia) {
 				$base_ocorrencias[$ocorrencia['id']] = $ocorrencia['description'];
 			}
 			$smarty -> assign("T_BASE_OCORRENCIAS", $base_ocorrencias);
 
-			$liquidacoes = eF_getTableData("module_pagamento_boleto_liquidacao", "id, description");
+			$liquidacoes = sC_getTableData("module_pagamento_boleto_liquidacao", "id, description");
 
 			foreach ($liquidacoes as $liquidacao) {
 				$base_liquidacao[$liquidacao['id']] = $liquidacao['description'];
@@ -235,7 +235,7 @@ class module_pagamento_boleto extends MagesterModule
 
 				if (
 					array_key_exists('payment_type_id', $nextInvoice) &&
-					eF_checkParameter($nextInvoice['payment_type_id'], 'id')
+					sC_checkParameter($nextInvoice['payment_type_id'], 'id')
 				) {
 					if ($boleto = $this->getBoletoByInvoice($getData, $nextInvoice)) {
 						return $boleto;
@@ -272,7 +272,7 @@ class module_pagamento_boleto extends MagesterModule
 			$nosso_numero = $nosso_numero_sem_DV . $this->generateModule10($nosso_numero_sem_DV);
 
 			// CHECK IF EXISTS, IF TRUE, GENERATE AGAIN
-			$existsCount = eF_countTableData(
+			$existsCount = sC_countTableData(
 				// table
 				"module_pagamento_invoices",
 				// fields
@@ -717,21 +717,21 @@ class module_pagamento_boleto extends MagesterModule
 
 					$url = $this->moduleBaseUrl . "&action=update_processed_file&filename=" . urlencode($returnFileName);
 
-					eF_redirect($url);
+					sC_redirect($url);
 					exit;
 
 /*
 
 					$smarty -> assign("T_PROCESS_FILE", true);
 					$smarty -> assign("T_IMPORT_FILE_STATUS", $returnStatus);
-					$ocorrencias = eF_getTableData("module_pagamento_boleto_ocorrencias", "*");
+					$ocorrencias = sC_getTableData("module_pagamento_boleto_ocorrencias", "*");
 
 					foreach ($ocorrencias as $ocorrencia) {
 						$base_ocorrencias[$ocorrencia['codigo']] = $ocorrencia['descricao'];
 					}
 					$smarty -> assign("T_BASE_OCORRENCIAS", $base_ocorrencias);
 
-					$liquidacoes = eF_getTableData("module_pagamento_boleto_liquidacao", "codigo, descricao");
+					$liquidacoes = sC_getTableData("module_pagamento_boleto_liquidacao", "codigo, descricao");
 
 					foreach ($liquidacoes as $liquidacao) {
 						$base_liquidacao[$liquidacao['codigo']] = $liquidacao['descricao'];
@@ -907,7 +907,7 @@ CREATE TABLE IF NOT EXISTS `module_pagamento_boleto_invoices_return`(
 		);
 
 		// SE REGISTRO DE RETORNO JÁ EXISTE, ENTÂO ATUALIZAR.
-		$dataReturn = eF_insertOrupdateTableData(
+		$dataReturn = sC_insertOrupdateTableData(
 			"module_pagamento_boleto_invoices_return",
 			$insertData,
 			sprintf("payment_id = %d AND parcela_index = %d", $insertData['payment_id'], $insertData['parcela_index'])

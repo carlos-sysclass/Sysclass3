@@ -4,7 +4,7 @@
 
 {if $T_MESSAGE}
                 <tr class = "messageRow">
-                    <td colspan = "2">{eF_template_printMessage message=$T_MESSAGE type=$T_MESSAGE_TYPE}</td>        {*Display Message, if any*}
+                    <td colspan = "2">{sC_template_printMessage message=$T_MESSAGE type=$T_MESSAGE_TYPE}</td>        {*Display Message, if any*}
                 </tr>
 {/if}
 

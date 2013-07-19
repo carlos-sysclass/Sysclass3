@@ -45,7 +45,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 			$smarty = $this->getSmartyVar();
 		
-			$transactions = eF_getTableData(
+			$transactions = sC_getTableData(
 				"module_xpay_cielo_transactions trans 
 				LEFT JOIN module_xpay_cielo_transactions_statuses stat ON (trans.status = stat.id) 
 				LEFT JOIN module_xpay_cielo_transactions_to_invoices trans2inv ON (trans2inv.transaction_id = trans.id)
@@ -69,7 +69,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	
 			$smarty -> assign("T_XPAY_CIELO_TRANSACTIONS", $transactions);
 			
-			$statusesDB = eF_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
+			$statusesDB = sC_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
 			$statuses = array();
 			foreach ($statusesDB as $statusDB) {
 				$statuses[] = $statusDB['nome'];
@@ -96,7 +96,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		// THE USER CAN SEARCH, VIEW, CAPTURE AND CANCEL TRANSACTIONS
 		if ($this->getCurrentUser()->getType() == 'administrator') {
 	
-			$transactions = eF_getTableData(
+			$transactions = sC_getTableData(
 				"module_xpay_cielo_transactions trans
 				LEFT JOIN module_xpay_cielo_transactions_statuses stat ON (trans.status = stat.id)
 				LEFT JOIN module_xpay_cielo_transactions_to_invoices trans2inv ON (trans2inv.transaction_id = trans.id)
@@ -162,7 +162,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 				$Pedido->tid = $tidKey;
 			
-				list($transaction) = eF_getTableData(
+				list($transaction) = sC_getTableData(
 					"module_xpay_cielo_transactions trn
 					LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
 					LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)",
@@ -195,7 +195,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 						);
 						
 						// ATUALIZAR STATUS NO BANCO DE DADOS
-						eF_updateTableData(
+						sC_updateTableData(
 							"module_xpay_cielo_transactions",
 							array("status" => $consultaArray['status']),
 							sprintf("tid = '%s'", $Pedido -> tid)
@@ -315,7 +315,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		require_once (dirname(__FILE__) . '/includes/module_xpay_cielo.pedido.model.php');
 		$smarty = $this->getSmartyVar();
 		
-		$transactions = eF_getTableData(
+		$transactions = sC_getTableData(
 			"module_xpay_cielo_transactions trn
 			LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
 			LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)",
@@ -412,7 +412,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			"status"			=> $Pedido->status,
 		);
 	
-		$transactionID = eF_insertTableData("module_xpay_cielo_transactions", $fields);
+		$transactionID = sC_insertTableData("module_xpay_cielo_transactions", $fields);
 		
 		$fieldsLink = array(
 			"negociation_id"	=> $payment_id,
@@ -420,12 +420,12 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			"transaction_id"	=> $transactionID
 		);
 		
-		eF_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
+		sC_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
 
         if (!$data['return_data']) {
             //echo $Pedido->urlAutenticacao;
             //  
-    		eF_redirect($Pedido->urlAutenticacao, false, false, true);
+    		sC_redirect($Pedido->urlAutenticacao, false, false, true);
 	    	exit;
         } else {
             return array(
@@ -523,7 +523,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         $doNormal = false;
         // TRANSACAO NORMAL OU COM TOKEN ??
         if (!empty($values['token'])) {
-        	list($tokenData) = eF_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
+        	list($tokenData) = sC_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
         	
         	if (count($tokenData) > 0) {
         		$Pedido->token = $values['token'];
@@ -590,7 +590,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         } else {
             // CHECAR TID PELO NEGOCIATION_ID, INVOICE_INDEX
 
-            $tidData = eF_getTableData(
+            $tidData = sC_getTableData(
                 "module_xpay_cielo_transactions_to_invoices trans2inv LEFT JOIN module_xpay_cielo_transactions trans ON (trans2inv.transaction_id = trans.id)
                 LEFT JOIN module_xpay_course_negociation neg ON (trans2inv.negociation_id = neg.id)
                 ",
@@ -629,13 +629,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			
 			//var_dump($consultaArray);
 			// ATUALIZAR STATUS NO BANCO DE DADOS
-			eF_updateTableData(
+			sC_updateTableData(
 				"module_xpay_cielo_transactions",
 				array("status" => $consultaArray['status']),
 				sprintf("tid = '%s'", $Pedido -> tid)
 			);
 
-			list($transaction) = eF_getTableData(
+			list($transaction) = sC_getTableData(
 				"module_xpay_cielo_transactions trn
 				LEFT JOIN module_xpay_cielo_transactions_to_invoices trn2inv ON (trn.id = trn2inv.transaction_id AND trn.negociation_id = trn2inv.negociation_id)
 				LEFT JOIN module_xpay_invoices inv ON (trn2inv.negociation_id = inv.negociation_id AND trn2inv.invoice_index = inv.invoice_index)",
@@ -781,7 +781,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	
 	private function saveTokenForUserCard($user_id, $token, $cartao, $bandeira, $status)
 	{
-		$tokenID = eF_insertTableData(
+		$tokenID = sC_insertTableData(
 			"module_xpay_cielo_card_tokens", 
 			array(
 				"user_id"	=> $user_id,

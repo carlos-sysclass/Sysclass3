@@ -4520,7 +4520,7 @@ define("_DRIVINGLICENSE", "Driver&#39;s license");
 define("_EDITOR_ADVLINK_POPUP_RETURN", "Insert \ &quot;return false \&quot;");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_DAY_LONG", "new period (&#39;Sunday&#39;, &#39;Monday&#39;, &#39;Tuesday&#39;, &#39;Wednesday&#39;, &#39;Thursday&#39;, &#39;Friday&#39;, &#39;Saturday&#39;, &#39;Sunday&#39;)");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_DAY_SHORT", "new period (&#39;Sunday&#39;, &#39;Monday&#39;, &#39;Tuesday&#39;, &#39;Wednesday&#39;, &#39;Thursday&#39;, &#39;Friday&#39;, &#39;Saturday&#39;, &#39;Sunday&#39;)");
-define("_EDITOR_INSERTDATETIME_INSERTTIME_DEF_FMT", "% H:% M:% S");
+define("_EDITOR_INSERTDATETIME_INSERTTIME_DsC_FMT", "% H:% M:% S");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_MONTHS_LONG", "further period (&#39;January&#39;, &#39;February&#39;, &#39;March&#39;, &#39;April&#39;, &#39;May&#39;, &#39;June&#39;, &#39;July&#39;, &#39;August&#39;, &#39;September&#39;, &#39;October&#39;, &#39;November&#39;, &#39;December&#39; )");
 define("_EDITOR_INSERTDATETIME_INSERTTIME_MONTHS_SHORT", "further period (\ &quot;/ 01/\&quot; \ &quot;/ 02/\&quot; \ &quot;/ 03/\&quot; \ &quot;/ 04/\&quot; \ &quot;/ 05/\&quot; \ &quot;/ 06/\&quot; , \ &quot;/ 07/\&quot; \ &quot;/ 08/\&quot; \ &quot;/ 09/\&quot; \ &quot;/ 10/\&quot; \ &quot;//11 \&quot; \ &quot;/ 12/\&quot;)");
 define("_ELIMINATEPOSTXSS", "Remove the post tags &lt;script&gt;");
@@ -4559,7 +4559,7 @@ define("_YOUAREREVISITINGCHANGESNOTTAKENINTOACCOUNT", "Note: you&#39;re just rev
 define("_YOUCANTDOTHESURVEYCONTACTLESSONPROFESSOR", "Or you&#39;ve already done the research or the search is down");
 define("_YOUMUSTPROVIDELOGINLINK", "You must provide the login link, otherwise you will not be able to connect. The login form is available here: &quot;. G_SERVERNAME.&quot; index.php? index_magester");
 define("_DIFFERENTVERSIONSUPGRADENEEDED", "The version of the database is different from the version of the code. Please run the script% link");
-define("_EDITOR_INSERTDATETIME_INSERTDATE_DEF_FMT", "% Y-% m-% d");
+define("_EDITOR_INSERTDATETIME_INSERTDATE_DsC_FMT", "% Y-% m-% d");
 define("_ONLYXCANBEAPPLIEDATATIME", "Only x% units were processed, which is also the limit for this operation");
 define("_STARTTYPINGFORRELEVENTMATCHES", "Start typing to get results automatically, or enter% to see all users");
 define("_YOUHAVE_X_UNREADMESSAGES", "You have% d new messages");

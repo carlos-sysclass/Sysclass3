@@ -27,8 +27,8 @@ class module_polos extends MagesterExtendedModule
     // What should happen on installing the module
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_polos");
-        $a = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_polos` (
+        sC_executeNew("drop table if exists module_polos");
+        $a = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_polos` (
 			`id` 			mediumint(8) 	NOT NULL,
 			`nome` 			varchar(250) 	NOT NULL,
 			`razao_social`	varchar(250) 	NOT NULL,
@@ -52,7 +52,7 @@ class module_polos extends MagesterExtendedModule
     // And on deleting the module
     public function onUninstall()
     {
-        $a = eF_executeNew("drop table module_polos;");
+        $a = sC_executeNew("drop table module_polos;");
 
         return $a;
     }
@@ -128,38 +128,38 @@ class module_polos extends MagesterExtendedModule
         // Get smarty global variable
         $smarty = $this -> getSmartyVar();
 
-        if ($selectedAction == self::DELETE_POLO && eF_checkParameter($_GET['polo_id'], 'id')) {
-            eF_deleteTableData("module_polos", "id=".$_GET['polo_id']);
+        if ($selectedAction == self::DELETE_POLO && sC_checkParameter($_GET['polo_id'], 'id')) {
+            sC_deleteTableData("module_polos", "id=".$_GET['polo_id']);
 
             header("location:". $this -> moduleBaseUrl ."&message=".urlencode(_MODULE_POLOS_SUCCESFULLYDELETEDPOLOENTRY)."&message_type=success");
         } elseif (
         	$selectedAction == self::ADD_POLO ||
-        	($selectedAction == self::EDIT_POLO && eF_checkParameter($_GET['polo_id'], 'id'))
+        	($selectedAction == self::EDIT_POLO && sC_checkParameter($_GET['polo_id'], 'id'))
         ) {
 
             // Create ajax enabled table for meeting attendants
             if ($selectedAction == self::EDIT_POLO) {
                 if (isset($_GET['ajax']) && $_GET['ajax'] == 'poloTable') {
-                    isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+                    isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
 
-                    if (isset($_GET['sort']) && eF_checkParameter($_GET['sort'], 'text')) {
+                    if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
                         $sort = $_GET['sort'];
                         isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
                     } else {
                         $sort = 'login';
                     }
 
-                    $polos = eF_getTableData("module_polos", "*" );
+                    $polos = sC_getTableData("module_polos", "*" );
 
-                    $users = eF_multiSort($users, $_GET['sort'], $order);
+                    $users = sC_multiSort($users, $_GET['sort'], $order);
                     if (isset($_GET['filter'])) {
-                        $users = eF_filterData($users , $_GET['filter']);
+                        $users = sC_filterData($users , $_GET['filter']);
                     }
 
                     $smarty -> assign("T_USERS_SIZE", sizeof($users));
 
-                    if (isset($_GET['limit']) && eF_checkParameter($_GET['limit'], 'int')) {
-                        isset($_GET['offset']) && eF_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+                    if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+                        isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
                         $users = array_slice($users, $offset, $limit);
                     }
 					$smarty -> assign("T_POLOS", $polos);
@@ -167,7 +167,7 @@ class module_polos extends MagesterExtendedModule
                     exit;
 
                 } else {
-                    $polos = eF_getTableData("module_polos", "*" );
+                    $polos = sC_getTableData("module_polos", "*" );
                     $smarty -> assign("T_POLOS", $polos);
                 }
             }
@@ -175,7 +175,7 @@ class module_polos extends MagesterExtendedModule
             $form = new HTML_QuickForm("polo_entry_form", "post", $_SERVER['REQUEST_URI'], "", null, true);
 			$form -> addElement('hidden', 'polo_ID');
 
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');                   //Register this rule for checking user input with our function, eF_checkParameter
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');                   //Register this rule for checking user input with our function, sC_checkParameter
             /*
             $accounts = array();
 
@@ -186,7 +186,7 @@ class module_polos extends MagesterExtendedModule
 
             $stateList = localization::getStateList();
 
-   			$schools = eF_getTableDataFlat("module_ies", "id, nome", "active = 1" );
+   			$schools = sC_getTableDataFlat("module_ies", "id, nome", "active = 1" );
    			$schools = array_merge(
    				array(-1 => __SELECT_ONE_OPTION),
    				array_combine($schools['id'], $schools['nome'])
@@ -213,7 +213,7 @@ class module_polos extends MagesterExtendedModule
             $form -> addElement('submit', 'submit_polo', _MODULE_POLOS_SAVE, 'class = "button_colour round_all"');
 
             if ($selectedAction == self::EDIT_POLO) {
-                $polo_entry = eF_getTableData("module_polos", "*", "id=".$_GET['polo_id']);
+                $polo_entry = sC_getTableData("module_polos", "*", "id=".$_GET['polo_id']);
 
 				$defaults = array(
 					'polo_ID'		=> $polo_entry[0]['id'],
@@ -285,13 +285,13 @@ class module_polos extends MagesterExtendedModule
              	if ($selectedAction == self::EDIT_POLO) {
              		$fields['id']	= $form -> exportValue('polo_ID');
 
-					if (eF_updateTableData("module_polos", $fields, "id=".$_GET['polo_id'])) {
+					if (sC_updateTableData("module_polos", $fields, "id=".$_GET['polo_id'])) {
 						header("location:".$this -> moduleBaseUrl."&message=".urlencode(_MODULE_POLOS_SUCCESFULLYUPDATEDPOLOENTRY)."&message_type=success");
 					} else {
 						header("location:".$this -> moduleBaseUrl."&action=" . self::EDIT_POLO ."&polo_id=".$_GET['polo_id']."&message=".urlencode(_MODULE_POLOS_PROBLEMUPDATINGPOLOENTRY)."&message_type=failure");
 					}
 				} else {
-					if ($result = eF_insertTableData("module_polos", $fields)) {
+					if ($result = sC_insertTableData("module_polos", $fields)) {
 						header("location:".$this -> moduleBaseUrl."&action=" . self::EDIT_POLO ."&polo_id=".$result."&message=".urlencode(_MODULE_POLOS_SUCCESFULLYINSERTEDPOLOENTRY)."&message_type=success&tab=users");
 					} else {
 						header("location:".$this -> moduleBaseUrl."&action=" . self::ADD_POLO . "&message=".urlencode(_MODULE_POLOS_PROBLEMINSERTINGPOLOENTRY)."&message_type=failure");
@@ -304,7 +304,7 @@ class module_polos extends MagesterExtendedModule
 
             $smarty -> assign('T_MODULE_POLOS_FORM', $renderer -> toArray());
         } else {
-			$polos = eF_getTableData("module_polos polo LEFT OUTER JOIN module_ies ies ON (polo.ies_id = ies.id)", "polo.*, ies.nome as ies" );
+			$polos = sC_getTableData("module_polos polo LEFT OUTER JOIN module_ies ies ON (polo.ies_id = ies.id)", "polo.*, ies.nome as ies" );
             $smarty -> assign("T_POLOS", $polos);
         }
 
@@ -326,7 +326,7 @@ class module_polos extends MagesterExtendedModule
 
     public function getPolos()
     {
-    	$polos_entry = eF_getTableData("module_polos", "*", "active=1");
+    	$polos_entry = sC_getTableData("module_polos", "*", "active=1");
     	return $polos_entry;
     }
 

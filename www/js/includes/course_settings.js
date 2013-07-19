@@ -51,7 +51,7 @@ function setAllUsersStatusCompleted(el) {
 function onSetAllUsersStatusCompleted(el, response) {
  if (response.evalJSON(true).status) {
   el.down().remove();
-  eF_js_redrawPage('courseUsersTable', true);
+  sC_js_redrawPage('courseUsersTable', true);
  }
 }
 
@@ -113,7 +113,7 @@ Array.prototype.inArray = function (value)
  return false;
 };
 
-function eF_js_removeCourseRule(id) {
+function sC_js_removeCourseRule(id) {
  var insertCell = document.getElementById('insert_node_' + id);
  var numConditions = Math.round(insertCell.parentNode.getElementsByTagName('select').length / 2);
 
@@ -131,7 +131,7 @@ function eF_js_removeCourseRule(id) {
  }
 }
 
-function eF_js_addCourseRule(id, selectedLesson, selectedCondition) {
+function sC_js_addCourseRule(id, selectedLesson, selectedCondition) {
 
  if (!selectedLesson) {
   selectedLesson = 0;
@@ -257,5 +257,5 @@ function showHideMainTemplatesOperations(){
 
 //Initialize display for existing course rules
 if (typeof(calls) != 'undefined') {
- calls.each(function (s) {eF_js_addCourseRule(s[0], s[1], s[2]);});
+ calls.each(function (s) {sC_js_addCourseRule(s[0], s[1], s[2]);});
 }

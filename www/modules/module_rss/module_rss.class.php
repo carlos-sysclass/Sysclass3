@@ -87,27 +87,27 @@ class module_rss extends MagesterExtendedModule
     public function onUpgrade()
     {
         try {
-         eF_executeNew("CREATE TABLE if not exists module_rss_provider(id int(11) not null auto_increment primary key,
+         sC_executeNew("CREATE TABLE if not exists module_rss_provider(id int(11) not null auto_increment primary key,
                     mode varchar(255),
                     type varchar(255),
                     active int(11) not null default 1,
                     lessons_ID int(11) default 0)");
-         eF_executeNew("alter table module_rss_feeds add (only_summary int(11) default 1)");
+         sC_executeNew("alter table module_rss_feeds add (only_summary int(11) default 1)");
         } catch (Exception $e) {}
     }
 
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_rss_feeds");
-        eF_executeNew("CREATE TABLE module_rss_feeds(id int(11) not null auto_increment primary key,
+        sC_executeNew("drop table if exists module_rss_feeds");
+        sC_executeNew("CREATE TABLE module_rss_feeds(id int(11) not null auto_increment primary key,
                     title varchar(255),
                     url text not null,
                     active int(11) not null default 1,
                     only_summary int(11) default 0,
                     lessons_ID int(11) default -1)");
-  eF_insertTableData("module_rss_feeds", array('title' => 'SysClass news', 'url' => 'http://www.magester.net/product/magester-news?format=feed&type=rss&install=1', 'active' => 1, 'lessons_ID' => -1));
-        eF_executeNew("drop table if exists module_rss_provider");
-        eF_executeNew("CREATE TABLE module_rss_provider(id int(11) not null auto_increment primary key,
+  sC_insertTableData("module_rss_feeds", array('title' => 'SysClass news', 'url' => 'http://www.magester.net/product/magester-news?format=feed&type=rss&install=1', 'active' => 1, 'lessons_ID' => -1));
+        sC_executeNew("drop table if exists module_rss_provider");
+        sC_executeNew("CREATE TABLE module_rss_provider(id int(11) not null auto_increment primary key,
                     mode varchar(255),
                     type varchar(255),
                     active int(11) not null default 1,
@@ -118,7 +118,7 @@ class module_rss extends MagesterExtendedModule
 
     public function onUnInstall()
     {
-        eF_executeNew("drop table module_rss_feeds");
+        sC_executeNew("drop table module_rss_feeds");
 
         return true;
     }
@@ -153,43 +153,43 @@ class module_rss extends MagesterExtendedModule
         $smarty -> assign("T_RSS_PROVIDED_FEEDS_TYPES", $this -> providedFeeds);
         $smarty -> assign("T_RSS_PROVIDED_FEEDS_LESSON_TYPES", $this -> lessonProvidedFeeds);
 
-        if (isset($_GET['delete_feed']) && eF_checkParameter($_GET['delete_feed'], 'id')) {
+        if (isset($_GET['delete_feed']) && sC_checkParameter($_GET['delete_feed'], 'id')) {
             try {
              if ($_GET['type'] == 'provider') {
-              eF_deleteTableData("module_rss_provider", "id=".$_GET['delete_feed']);
+              sC_deleteTableData("module_rss_provider", "id=".$_GET['delete_feed']);
              } else {
-                 eF_deleteTableData("module_rss_feeds", "id=".$_GET['delete_feed']);
+                 sC_deleteTableData("module_rss_feeds", "id=".$_GET['delete_feed']);
              }
             } catch (Exception $e) {
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['deactivate_feed']) && eF_checkParameter($_GET['deactivate_feed'], 'id')) {
+        } elseif (isset($_GET['deactivate_feed']) && sC_checkParameter($_GET['deactivate_feed'], 'id')) {
             try {
              if ($_GET['type'] == 'provider') {
-              eF_updateTableData("module_rss_provider", array("active" => 0), "id=".$_GET['deactivate_feed']);
+              sC_updateTableData("module_rss_provider", array("active" => 0), "id=".$_GET['deactivate_feed']);
              } else {
-              eF_updateTableData("module_rss_feeds", array("active" => 0), "id=".$_GET['deactivate_feed']);
+              sC_updateTableData("module_rss_feeds", array("active" => 0), "id=".$_GET['deactivate_feed']);
              }
              echo 0;
             } catch (Exception $e) {
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['activate_feed']) && eF_checkParameter($_GET['activate_feed'], 'file')) {
+        } elseif (isset($_GET['activate_feed']) && sC_checkParameter($_GET['activate_feed'], 'file')) {
             //Although db operations do not support exceptions (yet), we leave this here for future support
             try {
              if ($_GET['type'] == 'provider') {
-              eF_updateTableData("module_rss_provider", array("active" => 1), "id=".$_GET['activate_feed']);
+              sC_updateTableData("module_rss_provider", array("active" => 1), "id=".$_GET['activate_feed']);
              } else {
-              eF_updateTableData("module_rss_feeds", array("active" => 1), "id=".$_GET['activate_feed']);
+              sC_updateTableData("module_rss_feeds", array("active" => 1), "id=".$_GET['activate_feed']);
              }
              echo 1;
             } catch (Exception $e) {
              handleAjaxExceptions($e);
             }
             exit;
-        } elseif (isset($_GET['add_feed']) || (isset($_GET['edit_feed']) && eF_checkParameter($_GET['edit_feed'], 'id'))) {
+        } elseif (isset($_GET['add_feed']) || (isset($_GET['edit_feed']) && sC_checkParameter($_GET['edit_feed'], 'id'))) {
          if ($_SESSION['s_lesson_user_type']) {
           $type = $_SESSION['s_lesson_user_type'];
          } else {
@@ -207,7 +207,7 @@ class module_rss extends MagesterExtendedModule
 
             isset($_GET['add_feed']) ? $postTarget = "&add_feed=1" : $postTarget = "&edit_feed=".$_GET['edit_feed'];
             $form = new HTML_QuickForm("add_feed_form", "post", $this -> moduleBaseUrl.$postTarget, "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
             $form -> addElement('text', 'title', _RSS_FEEDTITLE, 'class = "inputText"');
             $form -> addElement('text', 'url', _RSS_FEEDURL, 'class = "inputText"');
             $form -> addElement('select', 'lessons_ID', _LESSON, $lessons);
@@ -238,16 +238,16 @@ class module_rss extends MagesterExtendedModule
                     "lessons_ID" => $values['lessons_ID']);
 
                 if (isset($_GET['add_feed'])) {
-                    eF_insertTableData("module_rss_feeds", $fields);
+                    sC_insertTableData("module_rss_feeds", $fields);
                     $smarty -> assign("T_RSS_RSS_MESSAGE", _RSS_SUCCESSFULLYADDEDFEED);
                 } else {
-                    eF_updateTableData("module_rss_feeds", $fields, "id=".$_GET['edit_feed']);
+                    sC_updateTableData("module_rss_feeds", $fields, "id=".$_GET['edit_feed']);
                     $smarty -> assign("T_RSS_RSS_MESSAGE", _RSS_SUCCESSFULLYEDITEDFEED);
                     Cache::resetCache('rss_cache:'.$_GET['edit_feed']);
                 }
             }
             $smarty -> assign("T_RSS_ADD_RSS_FORM", $form -> toArray());
-        } elseif (isset($_GET['add_feed_provider']) || (isset($_GET['edit_feed_provider']) && eF_checkParameter($_GET['edit_feed_provider'], 'id'))) {
+        } elseif (isset($_GET['add_feed_provider']) || (isset($_GET['edit_feed_provider']) && sC_checkParameter($_GET['edit_feed_provider'], 'id'))) {
          if ($_SESSION['s_lesson_user_type']) {
           $type = $_SESSION['s_lesson_user_type'];
          } else {
@@ -260,7 +260,7 @@ class module_rss extends MagesterExtendedModule
          isset($_GET['add_feed_provider']) ? $postTarget = "&add_feed_provider=1" : $postTarget = "&edit_feed_provider=".$_GET['edit_feed_provider'];
    !isset($_GET['lesson']) OR $postTarget .= '&lesson=1';
             $form = new HTML_QuickForm("add_feed_provider_form", "post", $this -> moduleBaseUrl.$postTarget.'&tab=rss_provider', "", null, true);
-            $form -> registerRule('checkParameter', 'callback', 'eF_checkParameter');
+            $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter');
    if ($_GET['lesson']) {
              $lessons = array(0 => _ALLLESSONS);
              $result = MagesterLesson :: getLessons();
@@ -301,16 +301,16 @@ class module_rss extends MagesterExtendedModule
               }
 
               if (isset($_GET['add_feed_provider'])) {
-               eF_insertTableData("module_rss_provider", $fields);
+               sC_insertTableData("module_rss_provider", $fields);
                $smarty -> assign("T_RSS_RSS_MESSAGE", _RSS_SUCCESSFULLYADDEDFEED);
               } else {
-               eF_updateTableData("module_rss_provider", $fields, "id=".$_GET['edit_feed_provider']);
+               sC_updateTableData("module_rss_provider", $fields, "id=".$_GET['edit_feed_provider']);
                $smarty -> assign("T_RSS_RSS_MESSAGE", _RSS_SUCCESSFULLYEDITEDFEED);
               }
              }
             } catch (Exception $e) {
              $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-             $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+             $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
              $message_type = 'failure';
             }
             $smarty -> assign("T_RSS_PROVIDE_RSS_FORM", $form -> toArray());
@@ -539,9 +539,9 @@ class module_rss extends MagesterExtendedModule
     public function getFeeds($onlyActive = false, $lessonId = false)
     {
         if ($onlyActive) {
-            $result = eF_getTableData("module_rss_feeds", "*", "active=1");
+            $result = sC_getTableData("module_rss_feeds", "*", "active=1");
         } else {
-            $result = eF_getTableData("module_rss_feeds", "*");
+            $result = sC_getTableData("module_rss_feeds", "*");
         }
         $feeds = array();
 
@@ -557,10 +557,10 @@ class module_rss extends MagesterExtendedModule
     public function getProvidedFeeds($lessonId = false)
     {
      try {
-      $result = eF_getTableData("module_rss_provider", "*");
+      $result = sC_getTableData("module_rss_provider", "*");
      } catch (Exception $e) {
       $this -> onUpgrade();
-      $result = eF_getTableData("module_rss_provider", "*");
+      $result = sC_getTableData("module_rss_provider", "*");
      }
         $feeds = array();
         foreach ($result as $key => $value) {
@@ -605,7 +605,7 @@ class module_rss extends MagesterExtendedModule
         if ($lesson) {
       $news = news :: getNews($lesson, true);
         } else {
-         $lessons = eF_getTableDataFlat("lessons", "id, name");
+         $lessons = sC_getTableDataFlat("lessons", "id, name");
          $lessonNames = array_combine($lessons['id'], $lessons['name']);
          $news = news :: getNews($lessons['id'], true);
         }
@@ -643,14 +643,14 @@ class module_rss extends MagesterExtendedModule
               'link' => G_SERVERNAME.'index.php?ctg=lesson_info&amp;courses_ID='.$value['id'],
               'description' => implode("<br>", unserialize($value['info'])));
        }
-       $result = eF_getTableData("lessons", "id,name,directions_ID, info","archive=0 and instance_source = 0 and active=1 and course_only=0", "name");
+       $result = sC_getTableData("lessons", "id,name,directions_ID, info","archive=0 and instance_source = 0 and active=1 and course_only=0", "name");
        foreach ($result as $value) {
         $pathString = $directionPaths[$value['directions_ID']].'&nbsp;&rarr;&nbsp;'.$value['name'];
         $data[] = array('title' => $pathString,
               'link' => G_SERVERNAME.'index.php?ctg=lesson_info&amp;lessons_ID='.$value['id'],
               'description' => implode("<br>", unserialize($value['info'])));
        }
-       $data = array_values(eF_multisort($data, 'title', 'asc')); //Sort results based on path string
+       $data = array_values(sC_multisort($data, 'title', 'asc')); //Sort results based on path string
        break;
       case 'calendar':
        if ($mode == 'system') {
@@ -679,7 +679,7 @@ class module_rss extends MagesterExtendedModule
 
 				$eventObjects = array();
 
-    			$result = eF_getTableData("events", "*", "", "timestamp DESC limit 100");
+    			$result = sC_getTableData("events", "*", "", "timestamp DESC limit 100");
 
 				foreach ($result as $value) {
 
@@ -707,12 +707,12 @@ class module_rss extends MagesterExtendedModule
        break;
       case 'forum':
        if ($mode == 'system') {
-        $result = eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id ", "fm.timestamp desc LIMIT 100");
+        $result = sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id ", "fm.timestamp desc LIMIT 100");
        } elseif ($mode == 'lesson') {
         if ($lesson) {
-         $result = eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID = '".$lesson."'", "fm.timestamp desc LIMIT 100");
+         $result = sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID = '".$lesson."'", "fm.timestamp desc LIMIT 100");
         } else {
-         $result = eF_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID != 0", "fm.timestamp desc LIMIT 100");
+         $result = sC_getTableData("f_messages fm JOIN f_topics ft JOIN f_forums ff LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id", "ff.title as forum_name, fm.body, fm.title, fm.id, ft.id as topic_id, ft.title as topic_title, fm.users_LOGIN, fm.timestamp, l.name as lessons_name, lessons_id as show_lessons_id", "ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID != 0", "fm.timestamp desc LIMIT 100");
         }
        }
        foreach ($result as $value) {

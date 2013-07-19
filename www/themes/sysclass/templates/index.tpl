@@ -74,17 +74,17 @@
             {foreach name = 'left_list' item = "item" key = "key" from = $T_POSITIONS.leftList}
              {assign var = "capture_name" value = "t_"|cat:$item|cat:"_code"}
           {if $smarty.capture.$capture_name}
-           {eF_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"}
+           {sC_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"}
           {else if $T_CUSTOM_BLOCKS[$item].content}
      {insert name = "customBlock" file = "`$T_CUSTOM_BLOCKS[$item].name`.tpl" assign = "content"}
-           {eF_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"}
+           {sC_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"}
           {/if}
             {/foreach}
         {else}
-         {*eF_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = $T_BLOCKS.login.image*}
+         {*sC_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = $T_BLOCKS.login.image*}
          {$smarty.capture.t_login_code}
    {if $T_CONFIGURATION.disable_online_users != 1}
-    {eF_template_printBlock title = $smarty.const._USERSONLINE content = $smarty.capture.t_online_code image = $T_BLOCKS.online.image}
+    {sC_template_printBlock title = $smarty.const._USERSONLINE content = $smarty.capture.t_online_code image = $T_BLOCKS.online.image}
    {/if}
   {/if}
     {/if}
@@ -92,20 +92,20 @@
 
 {capture name = "center_code"}
     {if $T_MESSAGE && !$T_FACEBOOK_ACCOUNT_MERGE_POPUP}
-      {eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
+      {sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
     {/if}
     {if $smarty.get.ctg == 'contact'}
 		{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=contact'>`$smarty.const._CONTACTUS`</a>"}
-		{eF_template_printBlock title = $smarty.const._CONTACTUS content = $smarty.capture.t_contact_code image = "32x32/mail.png"}
+		{sC_template_printBlock title = $smarty.const._CONTACTUS content = $smarty.capture.t_contact_code image = "32x32/mail.png"}
     {elseif $smarty.get.ctg == 'signup' && $T_CONFIGURATION.signup}
 		{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=signup'>`$smarty.const._SIGNUP`</a>"}
-		{eF_template_printBlock title = $smarty.const._REGISTERANEWACCOUNT content = $smarty.capture.t_signup_code image = "32x32/user.png"}
+		{sC_template_printBlock title = $smarty.const._REGISTERANEWACCOUNT content = $smarty.capture.t_signup_code image = "32x32/user.png"}
 	{elseif $smarty.get.ctg == 'reset_pwd'}
 		{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=reset_pwd'>`$smarty.const._RESETPASSWORD`</a>"}
-        {eF_template_printBlock title = $smarty.const._RESETPASSWORD content = $smarty.capture.t_reset_pwd_code image = "32x32/exclamation.png"}
+        {sC_template_printBlock title = $smarty.const._RESETPASSWORD content = $smarty.capture.t_reset_pwd_code image = "32x32/exclamation.png"}
 	{elseif $smarty.get.ctg == 'lessons' && $T_CONFIGURATION.lessons_directory == 1}
 		{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=lessons'>`$smarty.const._COURSES`</a>"}
-		{eF_template_printBlock title = $smarty.const._COURSES content = $smarty.capture.t_lessons_code image = $T_BLOCKS.lessons.image}
+		{sC_template_printBlock title = $smarty.const._COURSES content = $smarty.capture.t_lessons_code image = $T_BLOCKS.lessons.image}
 	{elseif $smarty.get.ctg == 'lesson_info' && $T_CONFIGURATION.lessons_directory == 1}
 		{if $T_LESSON_INFO}
 			{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=lessons'>`$smarty.const._COURSES`</a><span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=lesson_info&lessons_ID=`$smarty.get.lessons_ID`&course=`$smarty.get.course`'>`$smarty.const._INFOFORLESSON`: &quot;`$T_LESSON->lesson.name`&quot;</a>"}
@@ -114,9 +114,9 @@
 			{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=lessons'>`$smarty.const._COURSES`</a><span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=lesson_info&courses_ID=`$smarty.get.courses_ID`'>`$smarty.const._INFOFORCOURSE`: &quot;`$T_COURSE->course.name`&quot;</a>"}
 			{assign var = "lesson_title" value = "`$smarty.const._INFORMATIONFORCOURSE` <span class = 'innerTableName'>&quot;`$T_COURSE->course.name`&quot;</span>"}
 		{/if}
-		{eF_template_printBlock title = $lesson_title content = $smarty.capture.t_lesson_info_code image = "32x32/information.png"}
+		{sC_template_printBlock title = $lesson_title content = $smarty.capture.t_lesson_info_code image = "32x32/information.png"}
     {elseif $smarty.get.ctg == 'login'}
-        {*eF_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = "32x32/keys.png"*}
+        {*sC_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = "32x32/keys.png"*}
         	center_code
         P%C3%A1gina+de+acesso
         LOGIN CODE
@@ -126,22 +126,22 @@
     {elseif isset($smarty.get.ctg) && in_array($smarty.get.ctg, array_keys($T_POSITIONS.enabled))}
 		{include file = "`$smarty.const.G_EXTERNALPATH`/`$T_CUSTOM_BLOCKS[$smarty.get.ctg].name`.tpl" assign = "content"}
 		{assign var = "title" value = "`$title`<span>&nbsp;&raquo;&nbsp;</span><a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=`$smarty.get.ctg`'>`$T_CUSTOM_BLOCKS[$smarty.get.ctg].title`</a>"}
-		{eF_template_printBlock title = $T_CUSTOM_BLOCKS[$smarty.get.ctg].title content = $content image = "32x32/generic.png"}
+		{sC_template_printBlock title = $T_CUSTOM_BLOCKS[$smarty.get.ctg].title content = $content image = "32x32/generic.png"}
 	{else}
 		{if isset($T_POSITIONS.centerList)}
 			{foreach name = 'center_list' item = "item" key = "key" from = $T_POSITIONS.centerList}
 				{assign var = "capture_name" value = "t_"|cat:$item|cat:"_code"}
 				{if $smarty.capture.$capture_name}
-					{*eF_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"*}
+					{*sC_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"*}
 					{$smarty.capture.$capture_name}
 				{else if $T_CUSTOM_BLOCKS[$item].content}
 					{insert name = "customBlock" file = "`$T_CUSTOM_BLOCKS[$item].name`.tpl" assign = "content"}
-					{*eF_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"*}
+					{*sC_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"*}
 				{/if}
 			{/foreach}
 		{else}
 			{if $T_CONFIGURATION.lessons_directory == 1}
-				{eF_template_printBlock title = $smarty.const._COURSES content = $smarty.capture.t_lessons_code image = $T_BLOCKS.lessons.image}
+				{sC_template_printBlock title = $smarty.const._COURSES content = $smarty.capture.t_lessons_code image = $T_BLOCKS.lessons.image}
 			{/if}
 		{/if}
     {/if}
@@ -152,25 +152,25 @@
             {foreach name = 'right_list' item = "item" key = "key" from = $T_POSITIONS.rightList}
              {assign var = "capture_name" value = "t_"|cat:$item|cat:"_code"}
           {if $smarty.capture.$capture_name}
-           {eF_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"}
+           {sC_template_printBlock title = $T_BLOCKS[$item].title content = $smarty.capture.$capture_name image = "`$T_BLOCKS[$item].image`"}
           {else if $T_CUSTOM_BLOCKS[$item].content}
            {insert name = "customBlock" file = "`$T_CUSTOM_BLOCKS[$item].name`.tpl" assign = "content"}
-           {eF_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"}
+           {sC_template_printBlock title = $T_BLOCKS[$item].title content = $content image = "`$T_BLOCKS[$item].image`"}
           {/if}
             {/foreach}
         {else}
 
       {if $T_CONFIGURATION.disable_news != 1}
-    {eF_template_printBlock title = $smarty.const._SYSTEMNEWS content = $smarty.capture.t_news_code image = $T_BLOCKS.news.image}
+    {sC_template_printBlock title = $smarty.const._SYSTEMNEWS content = $smarty.capture.t_news_code image = $T_BLOCKS.news.image}
       {/if}
    {if $T_CONFIGURATION.lessons_directory == 1}
-       {eF_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $smarty.capture.t_selectedLessons_code image = $T_BLOCKS.selectedLessons.image}
+       {sC_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $smarty.capture.t_selectedLessons_code image = $T_BLOCKS.selectedLessons.image}
       {/if}
         {/if}
     {/if}
 {/capture}
 
-{*{eF_template_printBlock title = $smarty.const._SYSTEMNEWS content = $smarty.capture.t_custom_block_links_code image = $T_BLOCKS.news.image}*}
+{*{sC_template_printBlock title = $smarty.const._SYSTEMNEWS content = $smarty.capture.t_custom_block_links_code image = $T_BLOCKS.news.image}*}
 
 
 {if !$layoutClass && $T_POSITIONS.layout == 'left'}{assign var = "layoutClass" value = "hideRight"}
@@ -183,7 +183,7 @@
 {if $smarty.get.ctg == 'agreement' && $smarty.session.s_login}
     {capture name = "center_code"}
         {if $T_MESSAGE && !$T_FACEBOOK_ACCOUNT_MERGE_POPUP}
-          {eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
+          {sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
         {/if}
   {capture name = 'agreement_code'}
       <div class = "license">{$T_CONFIGURATION.license_note}</div>
@@ -195,7 +195,7 @@
                 </form>
       </div>
      {/capture}
-     {eF_template_printBlock title = $smarty.const._IMPORTANTNOTICE content = $smarty.capture.agreement_code image = "32x32/exclamation.png"}
+     {sC_template_printBlock title = $smarty.const._IMPORTANTNOTICE content = $smarty.capture.agreement_code image = "32x32/exclamation.png"}
      {assign var = "layoutClass" value = "hideBoth"}
     {/capture}
 {/if}
@@ -203,14 +203,14 @@
 {if $T_CONFIGURATION.lock_down}
     {capture name = "center_code"}
         {if $T_MESSAGE && !$T_FACEBOOK_ACCOUNT_MERGE_POPUP}
-          {eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
+          {sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
         {/if}
      {capture name = "lockdown_code"}
       <div class = "lock">{$T_CONFIGURATION.lock_message}. <a href = "index.php?ctg=login">{$smarty.const._LOGINASADMIN}</a></div>
      {/capture}
-     {eF_template_printBlock title = $smarty.const._LOCKDOWN content = $smarty.capture.lockdown_code image = "32x32/lock.png"}
+     {sC_template_printBlock title = $smarty.const._LOCKDOWN content = $smarty.capture.lockdown_code image = "32x32/lock.png"}
      {if $smarty.get.ctg == 'login'}
-   {*eF_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = "32x32/keys.png"*}
+   {*sC_template_printBlock title = $smarty.const._LOGINENTRANCE content = $smarty.capture.t_login_code image = "32x32/keys.png"*}
    {$smarty.capture.t_login_code}
   {/if}
      {assign var = "layoutClass" value = "hideBoth"}
@@ -221,9 +221,9 @@
  {assign var = "title" value = "`$title`<a class='titleLink' href = '`$smarty.server.PHP_SELF`?ctg=checkout&checkout=1'>`$smarty.const._REVIEWANDCHECKOUT`</a>"}
     {capture name = "center_code"}
         {if $T_MESSAGE && !$T_FACEBOOK_ACCOUNT_MERGE_POPUP}
-          {eF_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
+          {sC_template_printMessageBlock content = $T_MESSAGE type = $T_MESSAGE_TYPE}
         {/if}
-  {eF_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $smarty.capture.t_selectedLessons_code image = $T_BLOCKS.selectedLessons.image}
+  {sC_template_printBlock title = $smarty.const._SELECTEDLESSONS content = $smarty.capture.t_selectedLessons_code image = $T_BLOCKS.selectedLessons.image}
  {/capture}
 {/if}
 

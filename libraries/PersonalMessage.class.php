@@ -1,7 +1,7 @@
 <?php
 /**
 
-* eF_PersonalMessage Class file
+* sC_PersonalMessage Class file
 
 *
 
@@ -16,7 +16,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 /**
 
-* eF_PersonalMessage class
+* sC_PersonalMessage class
 
 *
 
@@ -29,7 +29,7 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 * @version 1.0
 
 */
-class eF_PersonalMessage
+class sC_PersonalMessage
 {
     /**
 
@@ -165,7 +165,7 @@ class eF_PersonalMessage
 
     * <code>
 
-    * $pm = new eF_PersonalMessage("professor", array("professor", "student", "admin"), 'Test subject', 'Test personal message body');
+    * $pm = new sC_PersonalMessage("professor", array("professor", "student", "admin"), 'Test subject', 'Test personal message body');
 
     * </code>
 
@@ -224,7 +224,7 @@ class eF_PersonalMessage
 
     * <code>
 
-    * $pm = new eF_PersonalMessage("professor", array("professor", "student", "admin"), 'Test subject', 'Test personal message body');
+    * $pm = new sC_PersonalMessage("professor", array("professor", "student", "admin"), 'Test subject', 'Test personal message body');
 
     * $pm -> send();
 
@@ -266,7 +266,7 @@ class eF_PersonalMessage
    	$this -> body;
    */
    $emailBody = str_replace('##MAGESTERINNERLINK##', 'student' ,$this -> body);
-   if (($result = eF_mail($this -> userData[$this -> sender]['email'], $recipientsList, $this -> subject, $emailBody, $this -> attachments, false, $this -> bcc)) !== true) {
+   if (($result = sC_mail($this -> userData[$this -> sender]['email'], $recipientsList, $this -> subject, $emailBody, $this -> attachments, false, $this -> bcc)) !== true) {
 
 //   				var_dump($this -> userData[$this -> sender]['email'], $recipientsList, $this -> subject, $emailBody, $this -> attachments, false, $this -> bcc);
                    $this -> errorMessage .= _THEMESSAGEWASNOTSENTASEMAIL.'<br/>';
@@ -290,7 +290,7 @@ class eF_PersonalMessage
                     $newFile = $attachment -> copy($recipient_dir, false, true);
                     $fields_insert["attachments"] = $newFile['id'];
                 }
-                $id = eF_insertTableData("f_personal_messages", $fields_insert);
+                $id = sC_insertTableData("f_personal_messages", $fields_insert);
                 MagesterSearch :: insertText($fields_insert['body'], $id, "f_personal_messages", "data");
                 MagesterSearch :: insertText($fields_insert['title'], $id, "f_personal_messages", "title");
             } else {
@@ -311,7 +311,7 @@ class eF_PersonalMessage
                 $attachment = new MagesterFile($this -> sender_attachment_fileId);
                 $fields_insert["attachments"] = $this -> sender_attachment_fileId;
             }
-            $id = eF_insertTableData("f_personal_messages", $fields_insert);
+            $id = sC_insertTableData("f_personal_messages", $fields_insert);
             MagesterSearch :: insertText($fields_insert['body'], $id, "f_personal_messages", "data");
             MagesterSearch :: insertText($fields_insert['title'], $id, "f_personal_messages", "title");
         } else {
@@ -357,7 +357,7 @@ class eF_PersonalMessage
     */
     private function checkRecipient($recipient)
     {
-        if (!eF_checkParameter($recipient, 'login')) { //Is it a well-formed login
+        if (!sC_checkParameter($recipient, 'login')) { //Is it a well-formed login
 
             return false;
         } else {
@@ -389,24 +389,24 @@ class eF_PersonalMessage
     */
     private function getUsersData()
     {
-        $result_folders = eF_getTableData("f_folders", "*"); //Get all user message folders
-        $result_users = eF_getTableData("users", "login, email, user_type"); //Get all user user information
-        $result_messages = eF_getTableDataFlat("f_personal_messages", "users_LOGIN");
+        $result_folders = sC_getTableData("f_folders", "*"); //Get all user message folders
+        $result_users = sC_getTableData("users", "login, email, user_type"); //Get all user user information
+        $result_messages = sC_getTableDataFlat("f_personal_messages", "users_LOGIN");
         $messages = array_count_values($result_messages['users_LOGIN']); //Count the number of messages for each user. Nice alternative to looping queries
         foreach ($result_folders as $folder) {
             $folders[$folder['users_LOGIN']][$folder['name']] = $folder['id'];
         }
         foreach ($result_users as $user) {
       if (!isset($folders[$user['login']]['Incoming'])) {
-       $id = eF_insertTableData("f_folders", array('name' => 'Incoming', 'users_LOGIN' => $user['login']));
+       $id = sC_insertTableData("f_folders", array('name' => 'Incoming', 'users_LOGIN' => $user['login']));
        $folders[$user['login']]['Incoming'] = $id;
       }
       if (!isset($folders[$user['login']]['Sent'])) {
-       $id = eF_insertTableData("f_folders", array('name' => 'Sent', 'users_LOGIN' => $user['login']));
+       $id = sC_insertTableData("f_folders", array('name' => 'Sent', 'users_LOGIN' => $user['login']));
        $folders[$user['login']]['Sent'] = $id;
       }
       if (!isset($folders[$user['login']]['Drafts'])) {
-       $id = eF_insertTableData("f_folders", array('name' => 'Drafts', 'users_LOGIN' => $user['login']));
+       $id = sC_insertTableData("f_folders", array('name' => 'Drafts', 'users_LOGIN' => $user['login']));
        $folders[$user['login']]['Drafts'] = $id;
       }
             $this -> userData[$user['login']] = $user;
@@ -433,7 +433,7 @@ class eF_PersonalMessage
     */
     private function getConfiguration()
     {
-        $result = eF_getTableDataFlat("f_configuration", "*");
+        $result = sC_getTableDataFlat("f_configuration", "*");
         sizeof($result) > 0 ? $this -> config = array_combine($result['name'], $result['value']) : $this -> config = array();
     }
     /**
@@ -462,7 +462,7 @@ class eF_PersonalMessage
     private function checkUserQuota($login, $check_attachment = false)
     {
         if ($check_attachment) {
-            $total_files = 0;//@todo: was: eF_diveIntoDir(G_UPLOADPATH.$login.'/message_attachments/');
+            $total_files = 0;//@todo: was: sC_diveIntoDir(G_UPLOADPATH.$login.'/message_attachments/');
             if ($this -> config['pm_attach_quota'] && $total_files[2] > $this -> config['pm_attach_quota'] * 1024) {
                 return false;
             }
@@ -491,7 +491,7 @@ class eF_PersonalMessage
 
      * <code>
 
-     * $userFolders = eF_PersonalMessage :: getUserFolders('jdoe');
+     * $userFolders = sC_PersonalMessage :: getUserFolders('jdoe');
 
      * // Returns something like: array(2 => 'Incoming', 3 => 'Sent', 4 => 'Drafts', 8 => 'My folder');
 
@@ -514,18 +514,18 @@ class eF_PersonalMessage
     {
         if ($user instanceof MagesterUser) {
             $user = $user -> user['login'];
-        } elseif (!eF_checkParameter($user, 'login')) {
+        } elseif (!sC_checkParameter($user, 'login')) {
             throw new MagesterUserException(_INVALIDLOGIN.": '".$user."'", MagesterUserException :: INVALID_LOGIN);
         }
      if (!is_dir(G_UPLOADPATH.$user.'/message_attachments/')) { //Check if the messages folder for this user exists on the disk
          mkdir(G_UPLOADPATH.$user.'/message_attachments/', 0755);
      }
-     $result = eF_getTableDataFlat("f_folders", "name", "users_LOGIN='$user'");
-     in_array('Incoming', $result['name']) OR eF_insertTableData("f_folders", array('name' => 'Incoming', 'users_LOGIN' => $user));
-     in_array('Sent', $result['name']) OR eF_insertTableData("f_folders", array('name' => 'Sent', 'users_LOGIN' => $user));
-     in_array('Drafts', $result['name']) OR eF_insertTableData("f_folders", array('name' => 'Drafts', 'users_LOGIN' => $user));
+     $result = sC_getTableDataFlat("f_folders", "name", "users_LOGIN='$user'");
+     in_array('Incoming', $result['name']) OR sC_insertTableData("f_folders", array('name' => 'Incoming', 'users_LOGIN' => $user));
+     in_array('Sent', $result['name']) OR sC_insertTableData("f_folders", array('name' => 'Sent', 'users_LOGIN' => $user));
+     in_array('Drafts', $result['name']) OR sC_insertTableData("f_folders", array('name' => 'Drafts', 'users_LOGIN' => $user));
      $folders = $incoming = $sent = $drafts = array();
-     $result = eF_getTableData("f_folders f left outer join f_personal_messages pm on pm.f_folders_ID=f.id", "f.*, count(pm.id) as messages_num", "f.users_LOGIN='".$user."'", "", "f.id");
+     $result = sC_getTableData("f_folders f left outer join f_personal_messages pm on pm.f_folders_ID=f.id", "f.*, count(pm.id) as messages_num", "f.users_LOGIN='".$user."'", "", "f.id");
      foreach ($result as $value) {
          $value['pathname'] = $value['name'];
          if (!is_dir(G_UPLOADPATH.$user.'/message_attachments/'.$value['name'])) { //Check whether the folders exist physically on the disk
@@ -578,12 +578,12 @@ class eF_PersonalMessage
 	* @deprecated
 
 	*/
-	public static function eF_deletePersonalMessage($msg_id)
+	public static function sC_deletePersonalMessage($msg_id)
 	{
-		if (eF_checkParameter($msg_id, 'id')) {
-			$res = eF_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$msg_id);
+		if (sC_checkParameter($msg_id, 'id')) {
+			$res = sC_getTableData("f_personal_messages", "users_LOGIN, attachments, f_folders_ID", "id=".$msg_id);
 			if ($_SESSION['s_login'] == $res[0]['users_LOGIN'] || $_SESSION['s_type'] == 'administrator') {
-				eF_deleteTableData("f_personal_messages", "id=".$msg_id);
+				sC_deleteTableData("f_personal_messages", "id=".$msg_id);
 				if ($res[0]['attachments'] != '') {
 					$attached_file = new MagesterFile($res[0]['attachments']);
                  	$attached_file -> delete();
@@ -619,9 +619,9 @@ class f_folders extends MagesterEntity
      */
     public function delete()
     {
-        $folderMessages = eF_getTableData("f_personal_messages", "id", "f_folders_ID=".$this -> {$this -> entity}['id']);
+        $folderMessages = sC_getTableData("f_personal_messages", "id", "f_folders_ID=".$this -> {$this -> entity}['id']);
         foreach ($folderMessages as $message) {
-            eF_PersonalMessage :: eF_deletePersonalMessage($message['id']);
+            sC_PersonalMessage :: sC_deletePersonalMessage($message['id']);
         }
         $folderDirectory = new MagesterDirectory(G_UPLOADPATH.$this -> {$this -> entity}['users_LOGIN'].'/message_attachments/'.$this -> {$this -> entity}['name']);
         $folderDirectory -> delete();
@@ -652,7 +652,7 @@ class f_folders extends MagesterEntity
     public function handleForm($form)
     {
         $values = $form -> exportValues();
-        if (!eF_checkParameter($values['name'], 'filename')) {
+        if (!sC_checkParameter($values['name'], 'filename')) {
             throw new MagesterFileException(_ILLEGALFILENAME.': '.$values['name'], MagesterFileException :: ILLEGAL_FILE_NAME);
         }
         $fields = array("name" => $values['name']);
@@ -676,11 +676,11 @@ class f_folders extends MagesterEntity
      */
     public static function create($fields = array())
     {
-        !isset($fields['users_LOGIN']) || !eF_checkParameter($fields['users_LOGIN'], 'login') ? $fields['users_LOGIN'] = $_SESSION['s_login'] : null;
+        !isset($fields['users_LOGIN']) || !sC_checkParameter($fields['users_LOGIN'], 'login') ? $fields['users_LOGIN'] = $_SESSION['s_login'] : null;
         $directory = G_UPLOADPATH.$fields['users_LOGIN'].'/message_attachments/'.$fields['name'];
         if (!mkdir($directory, 0755)) {
             throw new MagesterFileException(_COULDNOTCREATEDIRECTORY.': '.$directory, MagesterFileException :: GENERAL_ERROR);
         }
-        eF_insertTableData("f_folders", $fields);
+        sC_insertTableData("f_folders", $fields);
     }
 }

@@ -9,13 +9,13 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 !isset($currentUser->coreAccess['content']) || $currentUser->coreAccess['content'] == 'change' ? $_change_ = 1 : $_change_ = 0;
 $smarty->assign("_change_", $_change_);
 if (!$_change_) {
-    eF_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+    sC_redirect("".basename($_SERVER['PHP_SELF'])."?ctg=control_panel&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
     exit;
 }
 $loadScripts[] = 'includes/copy';
 try {
     //Get the user's lessons list, so that he can pick a lesson to copy from
-    $lessonToCoursesDB = ef_getTableData("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "lessons_ID, courses_ID, c.name as course_name");
+    $lessonToCoursesDB = sC_getTableData("lessons_to_courses lc LEFT JOIN courses c ON (lc.courses_ID = c.id)", "lessons_ID, courses_ID, c.name as course_name");
 
     $lessonToCourses = array();
 
@@ -55,11 +55,11 @@ try {
         //We asked to copy the glossary
         if (isset($_GET['entity']) && $_GET['entity'] == 'glossary') {
             try {
-                $result = eF_getTableData("glossary", "name, info, type, active", "lessons_ID = ".$_GET['from']);
+                $result = sC_getTableData("glossary", "name, info, type, active", "lessons_ID = ".$_GET['from']);
                 foreach ($result as $key => $value) {
                     $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
                 }
-                eF_insertTableDataMultiple("glossary", $result);
+                sC_insertTableDataMultiple("glossary", $result);
                 glossary::clearDuplicates($currentLesson);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
@@ -69,14 +69,14 @@ try {
             //We asked to copy the questions
         } elseif (isset($_GET['entity']) && $_GET['entity'] == 'questions') {
             try {
-                $result = eF_getTableData("questions", "*", "lessons_ID = ".$_GET['from']);
+                $result = sC_getTableData("questions", "*", "lessons_ID = ".$_GET['from']);
                 foreach ($result as $key => $value) {
                     $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
                     unset($result[$key]['content_ID']);
                     unset($result[$key]['id']);
                 }
 
-                eF_insertTableDataMultiple("questions", $result);
+                sC_insertTableDataMultiple("questions", $result);
                 glossary::clearDuplicates($currentLesson);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
@@ -86,12 +86,12 @@ try {
             //We asked to copy the surveys
         } elseif (isset($_GET['entity']) && $_GET['entity'] == 'surveys') {
             try {
-                $result = eF_getTableData("surveys", "*", "lessons_ID = ".$_GET['from']);
+                $result = sC_getTableData("surveys", "*", "lessons_ID = ".$_GET['from']);
                 foreach ($result as $key => $value) {
                     $result[$key]['lessons_ID'] = $currentLesson->lesson['id'];
                     unset($result[$key]['id']);
                 }
-                eF_insertTableDataMultiple("surveys", $result);
+                sC_insertTableDataMultiple("surveys", $result);
             } catch (Exception $e) {
                 header("HTTP/1.0 500 ");
                 echo $e->getMessage().' ('.$e->getCode().')';
@@ -142,7 +142,7 @@ try {
                     foreach ($nodeOrders as $value) {
                         list($id, $parentContentId) = explode("-", $value);
                         if (!in_array($id, $transferedNodesCheck)) {
-                            if (eF_checkParameter($id, 'id') !== false && eF_checkParameter($parentContentId, 'id') !== false && in_array($id, $sourceIds) && in_array($parentContentId, $currentIds)) {
+                            if (sC_checkParameter($id, 'id') !== false && sC_checkParameter($parentContentId, 'id') !== false && in_array($id, $sourceIds) && in_array($parentContentId, $currentIds)) {
                                 //echo "Copying $id to parent $parentContentId with previous $previousContentId\n";
                                 try {
                                     $createdUnit = $currentContent->copyUnit($id, $parentContentId, $previousContentId);
@@ -175,6 +175,6 @@ try {
     }
 } catch (Exception $e) {
     $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e->getMessage().' ('.$e->getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

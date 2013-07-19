@@ -39,9 +39,9 @@
                                  {/capture}
 
                                  {if $smarty.get.edit_user_type}
-                                    {eF_template_printBlock title = $smarty.const._OPTIONSUSERTYPEFOR|cat:"&nbsp;<span class = 'innerTableName'>&quot;"|cat:$T_USER_TYPE_NAME|cat:"&quot;</span>" data = $smarty.capture.t_new_role_code image = '32x32/user_types.png'}
+                                    {sC_template_printBlock title = $smarty.const._OPTIONSUSERTYPEFOR|cat:"&nbsp;<span class = 'innerTableName'>&quot;"|cat:$T_USER_TYPE_NAME|cat:"&quot;</span>" data = $smarty.capture.t_new_role_code image = '32x32/user_types.png'}
                                 {else}
-                                    {eF_template_printBlock title = $smarty.const._NEWUSERTYPE data = $smarty.capture.t_new_role_code image = '32x32/user_types.png'}
+                                    {sC_template_printBlock title = $smarty.const._NEWUSERTYPE data = $smarty.capture.t_new_role_code image = '32x32/user_types.png'}
                                 {/if}
 
                         {else}
@@ -95,7 +95,7 @@
                                 {/foreach}
                                                     </table>
                             {/capture}
-                            {eF_template_printBlock title = $smarty.const._UPDATEUSERTYPES data = $smarty.capture.t_roles_code image = '32x32/user_types.png' help = 'User_types'}
+                            {sC_template_printBlock title = $smarty.const._UPDATEUSERTYPES data = $smarty.capture.t_roles_code image = '32x32/user_types.png' help = 'User_types'}
                         {/if}
                             </td></tr>
         {/capture}

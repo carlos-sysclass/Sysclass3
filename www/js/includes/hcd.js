@@ -16,7 +16,7 @@ function onRemoveUserFromBranch(el, response) {
  var tables = sortedTables.size();
  for (i = 0; i < tables; i++) {
   if (sortedTables[i].id == 'branchUsersTable' || sortedTables[i].id == 'branchJobsTable') {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }
@@ -64,7 +64,7 @@ function deleteBranch(el, id, fatherId) {
 function onDeleteBranch(el, response) {
  for (var i = 0; i < sortedTables.size(); i++) {
   if (sortedTables[i].id == 'branchesTable') {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }
@@ -190,7 +190,7 @@ function refreshResults()
  for (i = 0; i < tables; i++) {
   if (sortedTables[i].id == 'foundEmployees') {
    ajaxUrl[i] = newUrl + "&";
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
  // Refresh statistics
@@ -224,7 +224,7 @@ function setAdvancedCriterion(el) {
  refreshResults();
  Element.extend(el);
  var img_id = 'img_'+ el.id;
- var img_position = eF_js_findPos(el);
+ var img_position = sC_js_findPos(el);
  var img = document.createElement("img");
  img.style.position = 'absolute';
  img.style.top = Element.positionedOffset(Element.extend(el)).top + 'px';
@@ -392,7 +392,7 @@ function branchJobsAjaxPost(id, el, table_id) {
   var i;
   for (i = 0; i < tables; i++) {
    if (sortedTables[i].id == 'branchUsersTable') {
-    eF_js_rebuildTable(i, 0, 'null', 'desc');
+    sC_js_rebuildTable(i, 0, 'null', 'desc');
    }
   }
   if (massive_operation) {
@@ -428,7 +428,7 @@ function ajaxShowAllSubbranches() {
  for (i = 0; i < tables; i++) {
   if ((sortedTables[i].id == 'branchUsersTable' || sortedTables[i].id == 'usersTable') && ajaxUrl[i]) {
    ajaxUrl[i] = ajaxUrl[i].replace("&showAllEmployees=" + prev, "&showAllEmployees=" + _showingAllEmployees);
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }
@@ -469,7 +469,7 @@ function ajaxSkillUserPost(type, id, el, table_id) {
   var i;
   for (i = 0; i < tables; i++) {
    if (sortedTables[i].id == 'usersSkillsTable') {
-    eF_js_rebuildTable(i, 0, 'null', 'desc');
+    sC_js_rebuildTable(i, 0, 'null', 'desc');
    }
   }
  });
@@ -507,7 +507,7 @@ function globalAjaxPost(id, el, table_id) {
   }
   parameters = {method: 'get'};
   ajaxRequest(el, url, parameters);
-  //        var position = eF_js_findPos(el);
+  //        var position = sC_js_findPos(el);
   //        var img      = document.createElement("img");
   //
   //        img.style.position = 'absolute';
@@ -619,7 +619,7 @@ function onBranchLessonAssignment(el, response) {
 //	var tables = sortedTables.size();
 //	for (i = 0; i < tables; i++) {
 //	if (sortedTables[i].id == 'lessonsTable') {
-//	eF_js_rebuildTable(i, 0, 'null', 'desc');
+//	sC_js_rebuildTable(i, 0, 'null', 'desc');
 //	}
 //	}
 }
@@ -661,7 +661,7 @@ function assignCourseToUsers(el, id) {
 //Function for inserting the new job row into the edit_user profile
 //The row argument denotes how many placements were initially present
 //so that only one extra job may be inserted each time
-var __eF_prerequisites_total_number = 0;
+var __sC_prerequisites_total_number = 0;
 function add_job_prerequisite() {
  if (!document.getElementById('noCourses')) {
   if ($('noFooterRow1')) {
@@ -675,7 +675,7 @@ function add_job_prerequisite() {
   var row = noOfRows;
   var x = table.insertRow(row);
   row = table.rows.length;
-  //row = (++__eF_prerequisites_total_number);
+  //row = (++__sC_prerequisites_total_number);
   x.setAttribute("id","row_"+row);
   newCell = x.insertCell(0);
   newCell.setAttribute("id","conditions_row_"+row);

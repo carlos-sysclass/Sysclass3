@@ -56,7 +56,7 @@ try {
   foreach ($lessons as $value) {
    $lessonNames[$value -> lesson['id']] = array('name' => $value -> lesson['name']);
   }
-  $filtered = array_keys(eF_filterData($lessonNames, $_GET['filter']));
+  $filtered = array_keys(sC_filterData($lessonNames, $_GET['filter']));
   foreach ($lessons as $key => $value) {
       if (!in_array($key, $filtered)) {
           unset($lessons[$key]);
@@ -66,7 +66,7 @@ try {
   foreach ($courses as $value) {
    $courseNames[$value -> course['id']] = array('name' => $value -> course['name']);
   }
-  $filtered = array_keys(eF_filterData($courseNames, $_GET['filter']));
+  $filtered = array_keys(sC_filterData($courseNames, $_GET['filter']));
   foreach ($courses as $key => $value) {
       if (!in_array($key, $filtered)) {
           unset($courses[$key]);
@@ -86,6 +86,6 @@ try {
  $smarty -> assign("T_DIRECTIONS_TREE", $directionsTree -> toHTML(false, $lessons, $courses, false, $options));
 } catch (Exception $e) {
     $smarty -> assign("T_EXCEPTION_TRACE", $e -> getTraceAsString());
-    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "eF_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
+    $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
     $message_type = 'failure';
 }

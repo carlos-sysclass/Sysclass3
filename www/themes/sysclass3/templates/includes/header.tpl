@@ -3,8 +3,6 @@
 	<head>
 		<base href = "{$smarty.const.G_SERVERNAME}">
 		<meta http-equiv = "Content-Language" content = "{$smarty.const._HEADERLANGUAGEHTMLTAG}">
-		<meta http-equiv = "keywords" content = "education">
-		<meta http-equiv = "description" content = "Collaborative Elearning Platform">
 		<meta http-equiv = "Content-Type" content = "text/html; charset = utf-8">
 		<link rel="shortcut icon" href="{if $T_FAVICON}{$T_FAVICON}{else}themes/default/images/favicon.png{/if}">
 		<!-- <link rel = "stylesheet" type = "text/css" href = "{$smarty.const.G_CURRENTTHEMECSS}" /> -->
@@ -114,7 +112,7 @@
 </head>
 {* Using that to avoid creating a body for the sidebar*}
 {if $smarty.server.PHP_SELF|@basename != 'new_sidebar.php'}
-	<body {if isset($T_CURRENT_CTG)}id = "body_{$T_CURRENT_CTG}"{elseif $smarty.server.PHP_SELF|basename == 'index.php'}id = "index_page"{/if} onkeypress = "if (window.eF_js_keypress) eF_js_keypress(event);" onbeforeunload = "if (window.getPeriodicData) getPeriodicData();" {if $_admin_} class="admin_page"{/if}>
+	<body {if isset($T_CURRENT_CTG)}id = "body_{$T_CURRENT_CTG}"{elseif $smarty.server.PHP_SELF|basename == 'index.php'}id = "index_page"{/if} onkeypress = "if (window.sC_js_keypress) sC_js_keypress(event);" onbeforeunload = "if (window.getPeriodicData) getPeriodicData();" {if $_admin_} class="admin_page"{/if}>
 	{/if}
 	
 	

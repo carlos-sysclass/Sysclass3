@@ -55,7 +55,7 @@
 {/foreach}
 
 {/capture}
-{eF_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_print_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$smarty.const._WORKBOOK_NAME data=$smarty.capture.t_print_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 
 {else}
 
@@ -101,7 +101,7 @@
 {/if}
 
 {if $T_WORKBOOK_SETTINGS.allow_print == '1'}
-    <img src="{$T_WORKBOOK_BASELINK|cat:'images/printer.png'}" alt="{$smarty.const._PRINT}" title="{$smarty.const._PRINT}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&print=1&popup=1" onclick="eF_js_showDivPopup('{$smarty.const._PRINT} {$smarty.const._WORKBOOK_NAME}', 3)" target="POPUP_FRAME">{$smarty.const._PRINT}</a>
+    <img src="{$T_WORKBOOK_BASELINK|cat:'images/printer.png'}" alt="{$smarty.const._PRINT}" title="{$smarty.const._PRINT}" style="vertical-align:middle" />&nbsp;<a href="{$T_WORKBOOK_BASEURL}&print=1&popup=1" onclick="sC_js_showDivPopup('{$smarty.const._PRINT} {$smarty.const._WORKBOOK_NAME}', 3)" target="POPUP_FRAME">{$smarty.const._PRINT}</a>
 {/if}
 {/if}
 
@@ -154,7 +154,7 @@
 {/if}
 
 {/capture}
-{eF_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_student_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
+{sC_template_printBlock title=$T_WORKBOOK_LESSON_NAME data=$smarty.capture.t_workbook_student_code image=$T_WORKBOOK_BASELINK|cat:'images/workbook_logo.png' absoluteImagePath = 1}
 {/if}
 
 <script>

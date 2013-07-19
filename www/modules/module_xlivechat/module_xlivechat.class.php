@@ -30,8 +30,8 @@ class module_xlivechat extends MagesterExtendedModule
 
     public function onInstall()
     {
-        eF_executeNew("drop table if exists module_xlivechat_messagechat");
-        $a = eF_executeNew("CREATE TABLE IF NOT EXISTS `module_xlivechat_messagechat` (
+        sC_executeNew("drop table if exists module_xlivechat_messagechat");
+        $a = sC_executeNew("CREATE TABLE IF NOT EXISTS `module_xlivechat_messagechat` (
 						  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 						  `from` varchar(255) NOT NULL DEFAULT '',
 						  `to` varchar(255) NOT NULL DEFAULT '',
@@ -50,7 +50,7 @@ class module_xlivechat extends MagesterExtendedModule
 
  	public function onUninstall()
  	{
-        $a = eF_executeNew("drop table module_xlivechat_messagechat;");
+        $a = sC_executeNew("drop table module_xlivechat_messagechat;");
 
         return $a;
     }
@@ -99,7 +99,7 @@ class module_xlivechat extends MagesterExtendedModule
 	public function listChatSuporteAction()
 	{
 	 	$smarty = $this -> getSmartyVar();
-	 	$listUser = eF_getTableData("module_xlivechat_messagechat", "*", "1","", "`from`");
+	 	$listUser = sC_getTableData("module_xlivechat_messagechat", "*", "1","", "`from`");
 
 		$smarty -> assign("T_LIST_USER", $listUser );
 
@@ -111,7 +111,7 @@ class module_xlivechat extends MagesterExtendedModule
 		$userqueue = $_POST['usersuport'];
 	 	$smarty = $this -> getSmartyVar();
 	 	$currentUser = $this->getCurrentUser()->user;
-		$listMessagens = eF_getTableData("module_xlivechat_messagechat", "*", "`from` = '$userqueue'"); 							 //"`from` = '$userLogin' AND `from` = 'suporteult' AND `from` = 'suporteult'");;
+		$listMessagens = sC_getTableData("module_xlivechat_messagechat", "*", "`from` = '$userqueue'"); 							 //"`from` = '$userLogin' AND `from` = 'suporteult' AND `from` = 'suporteult'");;
 		$smarty -> assign("T_LIST_MESSAGECHAT", $listMessagens );
 		$smarty -> assign("T_LIST_TEXT_ACTION", $userqueue );
 		echo $smarty->fetch($this->moduleBaseDir . "templates/includes/xlivechat_messagens.tpl");
@@ -130,7 +130,7 @@ class module_xlivechat extends MagesterExtendedModule
 
     public function getSupportUsers($onlyOnline)
     {
-    	$userChatList = ef_getTableDataFlat("users", "login", "user_type = 'professor' AND user_types_ID = " . $this->SUPPORT_USER_TYPE_ID);
+    	$userChatList = sC_getTableDataFlat("users", "login", "user_type = 'professor' AND user_types_ID = " . $this->SUPPORT_USER_TYPE_ID);
 
     	$usersLogins = array_keys(MagesterUser::getUsersOnline());
 

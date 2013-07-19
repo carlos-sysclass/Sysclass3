@@ -78,11 +78,11 @@ function onRandomize(el, response) {
     var i;
     for (i = 0; i < tables; i++) {
         if (sortedTables[i].id.match('questionsTable') && ajaxUrl[i]) {
-            eF_js_rebuildTable(i, 0, 'partof', 'asc');
+            sC_js_rebuildTable(i, 0, 'partof', 'asc');
         }
     }
 
-    eF_js_changePage(1, 0);
+    sC_js_changePage(1, 0);
 }
 
 function updateSettings(response) {
@@ -278,7 +278,7 @@ function usersAjaxPost(login, el, table_id) {
 // Function that changes the colour of the corresponding skill bar and reloads the proposed lessons
 // if the corresponding parameter=true nad if the threshold has changed in a way that a possible change
 // in the proposed lessons might have been triggered
-function eF_thresholdChange(skillName, skillScore, reloadProposals) {
+function sC_thresholdChange(skillName, skillScore, reloadProposals) {
     if ($(skillName+'_threshold').value.match(/^\d{1,2}(\.\d{1,2})?$/) ) {
         previous_val = parseFloat($(skillName+'_previous_threshold').value);
         new_val = parseFloat($(skillName+'_threshold').value);
@@ -307,7 +307,7 @@ function eF_thresholdChange(skillName, skillScore, reloadProposals) {
                     ajaxUrl[i] = ajaxUrl[i].replace("&" + skillName + "=" + (2-changed), "&" + skillName + "=" + (changed-1));
                     //ajaxUrl[i] = "administrator.php?ctg=tests&show_solved_test={/literal}{$smarty.get.show_solved_test}{literal}&test_analysis={/literal}{$smarty.get.test_analysis}&user={$smarty.get.user}{literal}"
                     if(reloadProposals) {
-                        eF_js_rebuildTable(i, 0, 'null', 'desc');
+                        sC_js_rebuildTable(i, 0, 'null', 'desc');
                     }
                 }
             }
@@ -321,7 +321,7 @@ function eF_thresholdChange(skillName, skillScore, reloadProposals) {
     return false;
 }
 
-function eF_addTestSkills() {
+function sC_addTestSkills() {
  // We will post an ajax request to include the results of the skill gap test in the skillset of the user
  var url = sessionType + ".php?ctg=users&edit_user=" + editedUser;
  var parameters = {postAjaxRequest:1, add_skill: 1, from_skillgap_test:1, method: 'get'};
@@ -349,7 +349,7 @@ function eF_addTestSkills() {
     ajaxRequest($('addToSkillSetImg'), url, parameters);
 }
 
-function eF_addSingleTestSkill(skillId) {
+function sC_addSingleTestSkill(skillId) {
  // We will post an ajax request to include the results of the skill gap test in the skillset of the user
  var url = sessionType + '.php?ctg=users&edit_user='+ editedUser +'&postAjaxRequest=1&add_skill=1&from_skillgap_test=1';
  var parameters = {postAjaxRequest:1, add_skill: 1, from_skillgap_test:1, method: 'get'};
@@ -365,7 +365,7 @@ function eF_addSingleTestSkill(skillId) {
 
     ajaxRequest($('addToSkillSetImg'+skillId), url, parameters);
 }
-function eF_generalThresholdChange(newThreshold) {
+function sC_generalThresholdChange(newThreshold) {
  // Acceptable formats: 2,23,23.1,23.10
  if (newThreshold.match(/^\d{1,2}(\.\d{1,2})?$/) ) {
         previous_val = parseFloat($('general_previous_threshold').value);
@@ -384,7 +384,7 @@ function eF_generalThresholdChange(newThreshold) {
                 skillTableInputs[i].value = newThreshold;
                 funcValues = funcName.split("'");
 
-                temp = eF_thresholdChange(funcValues[1],funcValues[3], false);
+                temp = sC_thresholdChange(funcValues[1],funcValues[3], false);
 
                 if (!anyChanges) {
                     anyChanges = temp;
@@ -397,7 +397,7 @@ function eF_generalThresholdChange(newThreshold) {
             var i;
             for (i = 0; i < tables; i++) {
                 if ((sortedTables[i].id.match('proposedLessonsTable') || sortedTables[i].id.match('proposedCoursesTable')) && ajaxUrl[i]) {
-                    eF_js_rebuildTable(i, 0, 'null', 'desc');
+                    sC_js_rebuildTable(i, 0, 'null', 'desc');
                 }
             }
         }
@@ -425,7 +425,7 @@ function onAjaxRemoveSolvedTest(el, response) {
  tables = sortedTables.size();
  for (var i = 0; i < tables; i++) {
   if (sortedTables[i].id.match('testUsersTable') || (sortedTables[i].id.match('pendingTable')) && ajaxUrl[i]) {
-   eF_js_rebuildTable(i, 0, 'null', 'desc');
+   sC_js_rebuildTable(i, 0, 'null', 'desc');
   }
  }
 }
@@ -691,7 +691,7 @@ function checkQuickTestForm() {
 
 }
 
-function eF_js_printTimer() {
+function sC_js_printTimer() {
     if (hours <= 0 && minutes <= 0 && seconds <= 0 && duration) {
         alert(timeup);
      document.test_form.submit();
@@ -712,12 +712,12 @@ function eF_js_printTimer() {
         if (sec.length == 1) {sec = "0" + sec;}
 
         $("time_left").update(hours + ":" + min + ":" + sec);
-        setTimeout("eF_js_printTimer()", 1000);
+        setTimeout("sC_js_printTimer()", 1000);
     }
 }
 
 
-function eF_js_printQuestionTimer(id) {
+function sC_js_printQuestionTimer(id) {
  //The time is up!
     if (questionHours[id] <= 0 && questionMinutes[id] <= 0 && questionSeconds[id] <= 0 && questionDuration[id]) {
 
@@ -746,7 +746,7 @@ function eF_js_printQuestionTimer(id) {
 
         $("question_"+id+"_time_left").update(questionHours[id] + ":" + questionMin[id] + ":" + questionSec[id]+ " "+remainingtime);
         $("question_"+id+"_time_left_input").value = parseInt(questionHours[id])*3600+parseInt(questionMinutes[id])*60+parseInt(questionSeconds[id]);
-        setTimeout("eF_js_printQuestionTimer("+id+")", 1000);
+        setTimeout("sC_js_printQuestionTimer("+id+")", 1000);
     }
 }
 
@@ -781,7 +781,7 @@ function showTestQuestion(question_num) {
     }
 
     if (questionDuration && questionDuration[questionId]) {
-     eF_js_printQuestionTimer(questionId);
+     sC_js_printQuestionTimer(questionId);
     }
 }
 

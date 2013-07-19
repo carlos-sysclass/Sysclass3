@@ -47,10 +47,10 @@ abstract class MagesterEntity {
             $this->entity = strtolower(str_replace('Magester', '', get_class($this)));
         }
         if (!is_array($param)) {
-            if (!eF_checkParameter($param, 'id')) {
+            if (!sC_checkParameter($param, 'id')) {
                 throw new MagesterEntityException(_INVALIDID.': '.$param, MagesterEntityException :: INVALID_ID);
             }
-            $result = eF_getTableData($this->entity, "*", "id=$param");
+            $result = sC_getTableData($this->entity, "*", "id=$param");
             if (sizeof($result) == 0) {
                 throw new MagesterEntityException(_ENTITYNOTFOUND.': '.htmlspecialchars($param), MagesterEntityException :: ENTITY_NOT_EXIST);
             }
@@ -67,7 +67,7 @@ abstract class MagesterEntity {
      * @access public
      */
     public function delete() {
-        eF_deleteTableData($this->entity, "id=".$this->{$this->entity}['id']);
+        sC_deleteTableData($this->entity, "id=".$this->{$this->entity}['id']);
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class MagesterEntity {
      * @access public
      */
     public function persist() {
-        eF_updateTableData($this->entity, $this->{$this->entity}, "id=".$this->{$this->entity}['id']);
+        sC_updateTableData($this->entity, $this->{$this->entity}, "id=".$this->{$this->entity}['id']);
     }
 
     /**
@@ -134,7 +134,7 @@ abstract class MagesterEntity {
      * @access public
      */
     public function export($type) {
-        $result = eF_getTableData($this->entity, "*");
+        $result = sC_getTableData($this->entity, "*");
         switch ($type) {
         case 'csv':
             break;
@@ -203,7 +203,7 @@ abstract class MagesterEntity {
      * @static
      */
     public static function getAll($name, $returnObjects = false) {
-        $result = eF_getTableData($name, "*");
+        $result = sC_getTableData($name, "*");
         $entity = array();
         foreach ($result as $value) {
             if ($returnObjects) {
@@ -217,7 +217,7 @@ abstract class MagesterEntity {
     }
 
     public static function getAllid($name, $where , $returnObjects = false) {
-        $result = eF_getTableData($name, "*", $where);
+        $result = sC_getTableData($name, "*", $where);
         $entity = array();
         foreach ($result as $value) {
             if ($returnObjects) {
