@@ -317,7 +317,7 @@ class module_xpay extends MagesterExtendedModule
 			'negociation_index'		=> 1,
 			'active'				=> 1,
 			//'vencimento_1_parcela'	=> null,
-			'rsC_payment_id'		=> $paymentData['payment_id']
+			'ref_payment_id'		=> $paymentData['payment_id']
 		);
 
 		$negociationID = sC_insertTableData("module_xpay_course_negociation", $negociationData);
@@ -2793,7 +2793,7 @@ class module_xpay extends MagesterExtendedModule
 		if (sC_checkParameter($negociationID, 'id')) {
 			$sendToData = sC_getTableData(
 				"module_xpay_course_negociation",
-				"user_id, send_to, rsC_payment_id",
+				"user_id, send_to, ref_payment_id",
 				"id = " . $negociationID
 			);
 
@@ -2805,7 +2805,7 @@ class module_xpay extends MagesterExtendedModule
 			$studentID = $sendToData[0]['user_id'];
 			$xUserModule = $this->loadModule("xuser");
 			if (is_null($sendTo)) {
-				$oldSendTo = sC_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['rsC_payment_id']);
+				$oldSendTo = sC_getTableData("module_pagamento", "send_to", "payment_id = " . $sendToData[0]['ref_payment_id']);
 
 				if (count($oldSendTo) == 0) {
 					// DEFAULT TYPE
