@@ -12,8 +12,9 @@ if (!is_file($path."configuration.php")) { //If the configuration file does not 
  is_file("install/index.php") ? header("location:install/index.php") : print('Failed locating configuration file <br/> Failed locating installation directory <br/> Please execute installation script manually <br/>');
  exit;
 } else {
- /** Configuration file */
- require_once $path."configuration.php";
+	$_SESSION['loadLanguage'] = FALSE;
+	/** Configuration file */
+	require_once $path."configuration.php";
 }
 
 $modulesDB = sC_getTableData("modules","*","className = 'module_language' AND active=1");
@@ -38,7 +39,7 @@ if (isset($_GET['language']) && in_array($_GET['language'], $languages)) {
 	$modulesLanguage->getLanguageFile($_GET['language']);
 } else {
 	foreach ($languages as $language) {
-		$modulesLanguage->getLanguageFile($language);
+		$modulesLanguage->getLanguageFile($language, $force = TRUE);
 	}
 }
 //$modulesLanguage->getLanguageFile($language);
@@ -48,7 +49,7 @@ $allConstants = get_defined_constants(true);
 $userConstants = $allConstants['user'];
 
 foreach ($userConstants as $key => $value) {
-	if (strpos($key, "__") === 0) {
+	if (strpos($key, "_") === 0) {
 		$langConstants[$key] = $value;
 	}
 }

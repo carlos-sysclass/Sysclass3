@@ -39,7 +39,9 @@
 				{$smarty.capture.center_code}
 			{/if}
 		</div>
+		{include file = "includes/common_dialogs.tpl"}
 	</section>
+
 	{include file = "includes/footer_code.tpl"}
 
 {else}

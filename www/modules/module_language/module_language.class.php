@@ -1,8 +1,9 @@
 <?php
 
-class module_language extends MagesterModule
+class module_language extends MagesterExtendedModule
 {
 	protected $sections;
+    protected static $languageIncluded = false;
 
 	protected $totalLanguageTerms = array();
 	protected $totalTerms = -1;
@@ -17,9 +18,28 @@ class module_language extends MagesterModule
 //	const DELETE_POLO				= 'delete_polo';
 
     // Mandatory functions required for module function
+    public function __construct($defined_moduleBaseUrl, $defined_moduleFolder)
+    {
+        parent::__construct($defined_moduleBaseUrl, $defined_moduleFolder);
+
+        $this->preActions[] = array($this, "initTranslationSystem");
+        
+    }
+    public function initTranslationSystem($baseLanguage) {
+        if ($_SESSION['translation_mode']) {
+            $smarty = $this->getSmartyVar();
+
+            $smarty->assign("T_LANGUAGE_LOAD_DIALOG", true);
+            $smarty->assign("T_BASE_LANGUAGE", $baseLanguage);
+            
+            $languages = $this->getDisponibleLanguages();
+            $smarty -> assign("T_LANGUAGE_LANGUAGES", $languages); //Assign global configuration values to smarty
+        }
+    }
+
     public function getName()
     {
-        return _MODULE_LANGUAGE;
+        return "LANGUAGE";
     }
 
     public function getPermittedRoles()
@@ -134,6 +154,204 @@ class module_language extends MagesterModule
 
     }
 
+    public function getDefaultAction() {
+        return "get_languages";
+    }
+
+    public function getLanguagesAction() {
+        $smarty = $this -> getSmartyVar();
+
+        $files = $this->getDisponibleLanguages();
+
+        $languages = array();
+        foreach ($files as $langName) {
+            $languages[] = array_merge(
+                array(
+                    'english_name'  => ucfirst($langName)
+                ),
+                $this->getAttributesForLanguage($langName)
+            );
+        }
+
+        $smarty -> assign ("T_LANGUAGES", $languages);    
+
+    }
+
+    public function setTranslationModeAction() {
+        $_SESSION['translation_mode'] = true;
+
+        header("Content-type: text/json");
+        return array(
+            'reload'    => true
+        );
+    }
+
+    public function setNormalModeAction() {
+        $_SESSION['translation_mode'] = false;
+        
+        $languages = $this->getDisponibleLanguages();
+        foreach($languages as $language) {
+            $this->updateFileAction($language);
+        }
+        
+
+        header("Content-type: text/json");
+        return array(
+            'reload'    => true
+        );
+    }
+    public function getTranslatedTokensAction($language = null) {
+        if (is_null($language)) {
+            $language = $_GET['language'];    
+        }
+
+        // DO A SUB-REQUEST TO ONLY DEFINE module_language TERMS
+        $array_index = 'terms';
+        $JsonUrl    = $this->moduleBaseLink . 'functions/terms.all.php?language=' . $language .'&index=' . $array_index;
+
+        if ($stream = fopen($JsonUrl, 'r')) {
+            $output = stream_get_contents($stream);
+            fclose($stream);
+            $result = json_decode($output, true);
+        }
+
+        // MERGE WITH DATABASE TERMS
+        $tokensDB = sC_getTableData(
+            "module_language_tokens",
+            "token, translated",
+            sprintf("language = '%s'", $language)
+        );
+        foreach($tokensDB as $tokenDB) {
+            $result['terms'][$tokenDB['token']] = $tokenDB['translated'];
+        }
+
+        return $result;
+    }
+
+    public function setUsedPageTerms($language, $terms) {
+        // CALLED BY AOUTPUT FILTER, SET PAGE USED TERMS
+        $this->usedTerms[$language] = $terms;
+
+        $this->setCache("usedTerms", $this->usedTerms);
+    }
+    public function setUsedDefaultLanguage($language) {
+        // CALLED BY AOUTPUT FILTER, SET PAGE USED TERMS
+        $this->setCache("language", $language);   
+    }
+    public function getUsedTermsAction() {
+        return array(
+            "terms"             => $this->getCache("usedTerms"),
+            "language"          => $this->getCache("language"),
+            "translation_mode"  => isset($_SESSION['translation_mode']) && $_SESSION['translation_mode'] ? true : false
+        );
+    }
+
+    public function saveTermsAction() {
+        $languages = $this->getDisponibleLanguages();
+
+        if (in_array($_GET['language'], $languages)) {
+            $language = $_GET['language'];
+            $tokens = $_POST['token'];
+
+            if (!is_array($tokens)) {
+                return array(
+                    'message'       => "Ocorreu um erro ao tentar salvar a sua informação. Por favor, tente novamente",
+                    'message_type'  => "error"
+                );
+            }
+
+            foreach($tokens as $token => $value) {
+                list($result) = sC_countTableData(
+                    "module_language_tokens",
+                    "token",
+                    sprintf("language = '%s' AND token = '%s'", $language, $token)
+                );
+                if ($result['count'] == 0) {
+                    sC_insertTableData(
+                        "module_language_tokens",
+                        array(
+                            "language"      => $language,
+                            "token"         => $token,
+                            "translated"    => $value
+                        )
+                    );
+                } else {
+                    sC_updateTableData(
+                        "module_language_tokens",
+                        array(
+                            "translated" => $value
+                        ),
+                        sprintf("language = '%s' AND token = '%s'", $language, $token)
+                    );
+                }
+            }
+
+            return array(
+                'message'       => "Salvo com sucesso",
+                'message_type'  => "success"
+            );
+        } else {
+            return array(
+                'message'       => "Idioma não encontrado",
+                'message_type'  => "error"
+            );
+        }
+    }
+
+    public function saveTermsFromFiles($language) {
+
+    }
+    public function updateFileAction($language = null) {
+        if (is_null($language)) {
+            $language = $_GET['language'];    
+        }
+        $languages = $this->getDisponibleLanguages();
+
+        //if (in_array($language, $languages)) {
+            // REMOVE OLD FILE
+
+            $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+            if (file_exists($filename)) {
+                unlink($filename);
+            }
+
+            // GET ALL LANGUAGE TERMS
+            $tokens = $this->getTranslatedTokensAction($language);
+            $toFile = array();
+            $insertData = array();
+            foreach($tokens['terms'] as $key => $value) {
+                $value = addslashes(stripslashes($value));
+                $toFile[] = sprintf("define('%s', '%s');", $key, $value);
+
+                $insertData[] =  array(
+                    "language"      => $language,
+                    "token"         => $key,
+                    "translated"    => $value
+                );
+            }
+
+            //SAVE AS PHP define FILE
+            file_put_contents($filename, "<?php\n" . implode("\n", $toFile) . "\n?>");
+            chmod($filename, 0777);
+
+            // REMOVE ENTRIES FROM DATABASE
+            sC_deleteTableData(
+                "module_language_tokens",
+                sprintf("language = '%s'", $language)
+            );
+            // SAVE ENTRIES IN DATABASE
+            sC_insertTableDataMultiple(
+                "module_language_tokens",
+                $insertData
+            );
+            return true;
+        //} else {
+        //    echo __LANGUAGE_NOT_FOUND;
+        //    exit;
+        //}
+    }
+
+
     /* MAIN-INDEPENDENT MODULE PAGES */
     public function getModule()
     {
@@ -168,19 +386,7 @@ class module_language extends MagesterModule
 
         	}
         } else {
-        	$files = $this->getDisponibleLanguages();
-
-        	$languages = array();
-        	foreach ($files as $langName) {
-        		$languages[] = array_merge(
-        			array(
-        				'english_name'	=> ucfirst($langName)
-        			),
-        			$this->getAttributesForLanguage($langName)
-        		);
-        	}
-
-        	$smarty -> assign ("T_LANGUAGES", $languages);
+            return parent::getModule();
 		}
 
         return true;
@@ -204,6 +410,14 @@ class module_language extends MagesterModule
 
     public function getDisponibleLanguages()
     {
+        $languages = MagesterSystem :: getLanguages();
+
+        foreach($languages as $lang) {
+            $return[] = $lang['name'];
+        }
+
+        return $return;
+/*
 		$directory = $this->moduleBaseDir . "languages/";
 
 		$langFiles = scandir($directory, 1);
@@ -218,6 +432,7 @@ class module_language extends MagesterModule
 		}
 
 		return $files;
+        */
     }
 
     public function getAttributesForLanguage($language_name)
@@ -329,26 +544,65 @@ class module_language extends MagesterModule
 	public function getTotalTranslatedLanguageSections($language_name, $force = false) {}
 	public function getTotalTranslatedSections($force = false) {}
 	*/
-    public function getLanguageFile($language = null)
+    public function getLanguageFile($language = null, $force = false)
     {
+        if (self::$languageIncluded && !$force) {
+            return;
+        }
     	if (is_null($language)) {
     		$language = $this->getCurrentLanguage();
     	}
 
+        if (isset($_SESSION['translation_mode']) && $_SESSION['translation_mode'] && !$force) {
+            return;
+        }
+
     	/** @todo CREATE A WRAPPER TO INCLUDE l10n DATA, LOCALIZED CONFIG DATA, ETC... */
 
+        $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+        include_once($filename);
+        /*
     	// REQUIRE ALL SECTIONS FILE TRANSLATED FILES
     	// READ DIRECTION language / $language /, AND INCLUDE FILES IN ORDER
     	$directory = $this->moduleBaseDir . "languages/" . $language;
 
     	$this->includeLanguageFiles($directory);
+        */
+        self::$languageIncluded = true;
+
 	}
+
+    public function getOldLanguageFile($language = null, $force = false)
+    {
+        if (self::$languageIncluded && !$force) {
+            return;
+        }
+        if (is_null($language)) {
+            $language = $this->getCurrentLanguage();
+        }
+
+        if (isset($_SESSION['translation_mode']) && $_SESSION['translation_mode'] && !$force) {
+            return;
+        }
+
+        //$filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+        //include_once($filename);
+        
+        // REQUIRE ALL SECTIONS FILE TRANSLATED FILES
+        // READ DIRECTION language / $language /, AND INCLUDE FILES IN ORDER
+        $directory = $this->moduleBaseDir . "languages/" . $language;
+
+        $this->includeLanguageFiles($directory);
+        
+        self::$languageIncluded = true;
+    }
 
     private function includeLanguageFiles($directory = null)
     {
     	if (is_null($directory)) {
     		$directory = $this->moduleBaseDir . "languages/" . $this->getCurrentLanguage();
     	}
+
 
     	$files = scandir($directory, 1);
     	natcasesort($files);
@@ -357,6 +611,7 @@ class module_language extends MagesterModule
     		if ($file == '.' || $file == '..' || strpos($file, '.') === 0) {
     			continue;
 			} elseif (is_dir($directory . '/' . $file)) {
+                //echo $directory . '/' . $file . "<br />";
     			$this->includeLanguageFiles($directory . '/' . $file);
     		} elseif (is_file($directory . '/' . $file)) {
     			include_once($directory . '/' . $file);

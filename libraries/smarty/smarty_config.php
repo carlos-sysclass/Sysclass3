@@ -15,6 +15,7 @@ $smarty->plugins_dir[] = G_DEFAULTTHEMEPATH.'templates/custom_plugins/';
 $smarty->compile_dir   = G_CURRENTTHEMECACHE.'templates_c/';
 $smarty->cache_dir     = G_CURRENTTHEMECACHE.'cache/';
 $smarty->config_dir    = $path.'smarty/configs/';
+//$smarty->debugging = true;
 
 //Create cache and template cache directories, if they don't exist
 is_dir(G_CURRENTTHEMECACHE)    or mkdir(G_CURRENTTHEMECACHE, 0755);

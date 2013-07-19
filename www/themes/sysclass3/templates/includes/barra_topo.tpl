@@ -72,6 +72,22 @@
 						</ul>
 					</div>
 				{/if}
+
+				{if $smarty.session.s_type == 'administrator'}
+					{if !$smarty.session.translation_mode}
+					<a href="javascript: _sysclass('load', 'language').setTranslationModeAction();" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}">
+						<button class="language_button" type="button" id="openTranslationListBtn">
+							<img class="language_button-icon" src="images/others/transparent.png" alt="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" />
+						</button>
+					</a>
+					{else}					
+					<a href="javascript: void(0);" title="{$smarty.const.__LANGUAGE_SAVE_UPDATES}">
+						<button class="language_button" type="button" id="language-save-updates">
+							<img class="language_button-icon" src="images/others/transparent.png" alt="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" />
+						</button>
+					</a>
+					{/if}
+				{/if}
 				<a href="{$smarty.const.G_SERVERNAME}index.php?logout=true" class="inputo-top-logout">
 					<img class="inputo-top-logout-icon " src="images/others/transparent.png" alt="{$smarty.const._LOGOUT}" title="{$smarty.const._LOGOUT}">
 					<span>{$smarty.const._LOGOUT}</span>
