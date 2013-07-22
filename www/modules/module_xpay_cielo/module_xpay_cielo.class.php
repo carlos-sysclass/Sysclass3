@@ -442,6 +442,9 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		require_once (dirname(__FILE__) . '/includes/module_xpay_cielo.pedido.model.php');
 
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
+
+		var_dump($invoiceData);
+		exit;
 		
         $Pedido = new Pedido_Model();
 
@@ -464,6 +467,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$Pedido->formaPagamentoProduto = $values["instance_option"];
 			$Pedido->formaPagamentoParcelas = 1;
 		}
+
+
 
 		$Pedido->dadosEcNumero = CIELO;
 		$Pedido->dadosEcChave = CIELO_CHAVE;
