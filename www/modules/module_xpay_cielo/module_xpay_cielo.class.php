@@ -493,8 +493,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 
 
-		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
-		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
+		var_dump($Pedido->dadosEcNumero = $chaves_cielo['CIELO']);
+		var_dump($Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE']);
 
 		$Pedido->capturar = $this->conf['auto_capture'];
 		$Pedido->autorizar = $this->conf['authorization'];
