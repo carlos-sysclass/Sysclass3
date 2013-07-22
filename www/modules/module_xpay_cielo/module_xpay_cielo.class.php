@@ -14,9 +14,9 @@ if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	define("CIELO_ULT", "1037979963");
 	define("CIELO_CHAVE_ULT", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
 
-	// DEBUG
-	define("CIELO_POS", "1001734898");
-	define("CIELO_CHAVE_POS", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
+	// DEBUG - BRASWELL
+	define("CIELO_POS", "1037979963");
+	define("CIELO_CHAVE_POS", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
 }
 
 class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
