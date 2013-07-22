@@ -5,11 +5,18 @@ define("XPAY_CIELO_DEV", false);
 
 if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	/* DEV KEYS */
-	define("CIELO", "1001734898");
-	define("CIELO_CHAVE", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
+	define("CIELO_ULT", "1001734898");
+	define("CIELO_CHAVE_ULT", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
+
+	define("CIELO_POS", "1001734898");
+	define("CIELO_CHAVE_POS", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
 } else {
-	define("CIELO", "1037979963");
-	define("CIELO_CHAVE", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
+	define("CIELO_ULT", "1037979963");
+	define("CIELO_CHAVE_ULT", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
+
+	// DEBUG
+	define("CIELO_POS", "1001734898");
+	define("CIELO_CHAVE_POS", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
 }
 
 class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
@@ -23,7 +30,17 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		//'authorization'					=> 4, // RECORRENTE (SOMENTE COM CAPTURA DO CARTÃO NA LOJA
 		'auto_capture'					=> "true",
 		// [A - Débito, 1- Crédito, 2 - loja, 3 - Administradora]
-		'payment_subdivision_method'	=> 2
+		'payment_subdivision_method'	=> 2,
+		'cielo_keys'					=> array(
+			1 => array(
+				"CIELO"			=> CIELO_ULT,
+				"CIELO_CHAVE"	=> CIELO_CHAVE_ULT
+			),
+			2 => array(
+				"CIELO"			=> CIELO_POS,
+				"CIELO_CHAVE"	=> CIELO_CHAVE_POS
+			)
+		)
 	);
 
 	public function getName()
@@ -444,8 +461,13 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
 
 		$course = new MagesterCourse($invoiceData['course_id']);
-		var_dump($course->course);
-		exit;
+
+		$ies_id = $course->course['ies_id'];
+		if (array_key_exists($ies_id, $this->conf['cielo_keys']))
+			$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
+		} else {
+			return false;
+		}
 		
         $Pedido = new Pedido_Model();
 
@@ -471,8 +493,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 
 
-		$Pedido->dadosEcNumero = CIELO;
-		$Pedido->dadosEcChave = CIELO_CHAVE;
+		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
 
 		$Pedido->capturar = $this->conf['auto_capture'];
 		$Pedido->autorizar = $this->conf['authorization'];
