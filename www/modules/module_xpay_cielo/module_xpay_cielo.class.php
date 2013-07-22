@@ -271,8 +271,10 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			'options'	=> array (
 				"visa"			=> array(
 					'name'	=> "Visa",
+					/*
 					"xscope_id"		=> 1,
 					"xentify_id"	=> 1,
+					*/
 					"options"	=> array(
 						"1"	=> "Crédito à Vista",
 						"A"	=> "Débito à Vista"
@@ -282,8 +284,10 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				),
 				"mastercard"	=> array(
 					"name"	=> "Mastercard",
+					/*
 					"xscope_id"		=> 1,
 					"xentify_id"	=> 1,
+					*/
 					"options"	=> array(
 						"1"	=> "Crédito à Vista",
 						"A"	=> "Débito à Vista"
@@ -493,8 +497,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 
 
-		var_dump($Pedido->dadosEcNumero = $chaves_cielo['CIELO']);
-		var_dump($Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE']);
+		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
 
 		$Pedido->capturar = $this->conf['auto_capture'];
 		$Pedido->autorizar = $this->conf['authorization'];
