@@ -443,7 +443,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
 
-		var_dump($invoiceData);
+		$course = new MagesterCourse($invoiceData['course_id');
+		var_dump($course->course);
 		exit;
 		
         $Pedido = new Pedido_Model();
