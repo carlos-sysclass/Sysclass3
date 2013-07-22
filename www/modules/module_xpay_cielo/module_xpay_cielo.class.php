@@ -463,7 +463,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		$course = new MagesterCourse($invoiceData['course_id']);
 
 		$ies_id = $course->course['ies_id'];
-		if (array_key_exists($ies_id, $this->conf['cielo_keys']))
+		if (array_key_exists($ies_id, $this->conf['cielo_keys'])) {
 			$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
 		} else {
 			return false;
