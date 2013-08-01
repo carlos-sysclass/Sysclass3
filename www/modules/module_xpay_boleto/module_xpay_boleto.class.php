@@ -104,11 +104,11 @@ abstract class module_xpay_boleto_default_return_processor
 	abstract public function import($fileStatus, $xpayModule);
 }
 
-class module_xpay_boleto_csC_sigcb_return_processor extends module_xpay_boleto_default_return_processor
+class module_xpay_boleto_cef_sigcb_return_processor extends module_xpay_boleto_default_return_processor
 {
 	public function __construct($filename = null)
 	{
-		$this->instance_id = 1; // == csC_sigcb
+		$this->instance_id = 1; // == cef_sigcb
 
 		parent::__construct($filename);
 	}
@@ -2443,14 +2443,14 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$smarty -> assign("T_BASE_BANCOS", $base_bancos);
 
 		/** @todo MAKE THIS CALL SUB-METHOD AWARE */
-		$smarty -> assign("T_XPAY_BOLETO_CsC_SIGCB_SERVICOS", array(
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_SERVICOS", array(
 			1 => "Cobrança",
 			2 => "Cobrança Sem Registro / Serviços",
 			3 => "Desconto de Títulos",
 			4 => "Caução de Títulos"
 		));
 
-		$smarty -> assign("T_XPAY_BOLETO_CsC_SIGCB_RETORNO", array(
+		$smarty -> assign("T_XPAY_BOLETO_CEF_SIGCB_RETORNO", array(
 			1 => "Remessa (Cliente &raquo; Banco)",
 			2 => "Retorno (Banco &raquo; Cliente)",
 			3 => "Remessa Processada (Banco &raquo; Cliente - Pré-crítica)",
@@ -2501,9 +2501,9 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		return array(
 			//'title'		=> __XPAY_PAYPAL_DO_PAYMENT,
 			'baselink'	=> $this->moduleBaseLink,
-			'default'	=> 'csC_sigcb',
+			'default'	=> 'cef_sigcb',
 			'options'	=> array (
-				"csC_sigcb"	=> array(
+				"cef_sigcb"	=> array(
 					"name" 			=> "Boleto Bancário",
 					"fullname" 		=> "Boleto Caixa Extensão",
 					"image_name"	=> "boleto",

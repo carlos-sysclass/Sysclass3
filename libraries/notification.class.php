@@ -940,14 +940,19 @@ class MagesterNotification {
             'Content-Transfer-Encoding' => '7bit'
         );
         if (!is_object($smtp)) {
+/*
             $smtp = Mail::factory('smtp', array(
                 'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
                 'host' => $GLOBALS['configuration']['smtp_host'],
                 'password' => $GLOBALS['configuration']['smtp_pass'],
                 'port' => $GLOBALS['configuration']['smtp_port'],
                 'username' => $GLOBALS['configuration']['smtp_user'],
-                'timeout' => $GLOBALS['configuration']['smtp_timeout'])
+                'timeout' => $GLOBALS['configuration']['smtp_timeout'],
+		'debug'	=> true
+		)
             );
+*/
+            $smtp = Mail::factory('mail');
         }
 
         // force url change for html messages
@@ -1025,7 +1030,8 @@ class MagesterNotification {
     public static function sendNextNotifications($limit = false) {
         // CONECTAR SOMENTE UMA VEZ AO SMTP
 
-        $smtp = Mail::factory('smtp', array(
+        $smtp = Mail::factory('mail');
+        /*$smtp = Mail::factory('smtp', array(
             'auth' => $GLOBALS['configuration']['smtp_auth'] ? true : false,
             'host' => $GLOBALS['configuration']['smtp_host'],
             'password' => $GLOBALS['configuration']['smtp_pass'],
@@ -1033,7 +1039,7 @@ class MagesterNotification {
             'username' => $GLOBALS['configuration']['smtp_user'],
             'timeout' => $GLOBALS['configuration']['smtp_timeout'],
             'persist' => true)
-        );
+        );*/
 
         if (!$limit) {
             $limit = 5;
