@@ -5,11 +5,18 @@ define("XPAY_CIELO_DEV", false);
 
 if (defined("XPAY_CIELO_DEV") && XPAY_CIELO_DEV) {
 	/* DEV KEYS */
-	define("CIELO", "1001734898");
-	define("CIELO_CHAVE", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
+	define("CIELO_ULT", "1001734898");
+	define("CIELO_CHAVE_ULT", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
+
+	define("CIELO_POS", "1001734898");
+	define("CIELO_CHAVE_POS", "e84827130b9837473681c2787007da5914d6359947015a5cdb2b8843db0fa832");
 } else {
-	define("CIELO", "1037979963");
-	define("CIELO_CHAVE", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
+	define("CIELO_ULT", "1037979963");
+	define("CIELO_CHAVE_ULT", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
+
+	// DEBUG - BRASWELL
+	define("CIELO_POS", "1037979963");
+	define("CIELO_CHAVE_POS", "dc5abfc09e0338763d5e83605af905bebc73cdf08cc31cc7eb51a00d55bb5b33");
 }
 
 class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
@@ -23,7 +30,17 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		//'authorization'					=> 4, // RECORRENTE (SOMENTE COM CAPTURA DO CARTÃO NA LOJA
 		'auto_capture'					=> "true",
 		// [A - Débito, 1- Crédito, 2 - loja, 3 - Administradora]
-		'payment_subdivision_method'	=> 2
+		'payment_subdivision_method'	=> 2,
+		'cielo_keys'					=> array(
+			1 => array(
+				"CIELO"			=> CIELO_ULT,
+				"CIELO_CHAVE"	=> CIELO_CHAVE_ULT
+			),
+			2 => array(
+				"CIELO"			=> CIELO_POS,
+				"CIELO_CHAVE"	=> CIELO_CHAVE_POS
+			)
+		)
 	);
 
 	public function getName()
@@ -157,10 +174,29 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				$tidKey = $_POST['transaction_tid'];
 			
 				$Pedido = new Pedido_Model();
-				$Pedido->dadosEcNumero = CIELO;
-				$Pedido->dadosEcChave = CIELO_CHAVE;
 			
 				$Pedido->tid = $tidKey;
+
+		        if (!is_null($Pedido->tid)) {
+					list($coursePay) = sC_getTableData(
+						"module_xpay_course_negociation", "course_id", 
+						sprintf("id IN (
+							SELECT negociation_id FROM `module_xpay_cielo_transactions` WHERE tid = '%s'
+						)", $Pedido->tid)
+					);
+
+
+					$course = new MagesterCourse($coursePay['course_id']);
+
+					$ies_id = $course->course['ies_id'];
+					if (array_key_exists($ies_id, $this->conf['cielo_keys'])) {
+						$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
+					} else {
+						return false;
+					}
+				}
+				$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+				$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
 			
 				list($transaction) = sC_getTableData(
 					"module_xpay_cielo_transactions trn
@@ -323,11 +359,24 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			inv.valor, inv.data_vencimento",
 			sprintf("inv.negociation_id = %d AND inv.invoice_index = %d", $negociation_id, $invoice_index)
 		);
+
+		$transaction = reset($transactions);
+
+		list($coursePay) = sC_getTableData("module_xpay_course_negociation", "course_id", sprintf("id = %d", $negociation_id));
+
+
+		$course = new MagesterCourse($coursePay['course_id']);
+
+		$ies_id = $course->course['ies_id'];
+		if (array_key_exists($ies_id, $this->conf['cielo_keys'])) {
+			$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
+		} else {
+			return false;
+		}
 		
-	
 		$Pedido = new Pedido_Model();
-		$Pedido->dadosEcNumero = CIELO;
-		$Pedido->dadosEcChave = CIELO_CHAVE;
+		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
 		$Pedido->tid = $transaction['tid'];
 		$objResposta = $Pedido->RequisicaoConsulta();
 		$consultaArray = $this->cieloReturnToArray($objResposta);
@@ -442,8 +491,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		require_once (dirname(__FILE__) . '/includes/module_xpay_cielo.pedido.model.php');
 
 		$invoiceData = $this->getParent()->_getNegociationInvoiceByIndex($payment_id, $invoice_id);
+
+		$course = new MagesterCourse($invoiceData['course_id']);
+
+		$ies_id = $course->course['ies_id'];
+		if (array_key_exists($ies_id, $this->conf['cielo_keys'])) {
+			$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
+		} else {
+			return false;
+		}
 		
         $Pedido = new Pedido_Model();
+
+		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
 
         if (empty($values["option"])) {
             $Pedido->formaPagamentoBandeira = $values["bandeira"];
@@ -464,9 +525,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$Pedido->formaPagamentoProduto = $values["instance_option"];
 			$Pedido->formaPagamentoParcelas = 1;
 		}
-
-		$Pedido->dadosEcNumero = CIELO;
-		$Pedido->dadosEcChave = CIELO_CHAVE;
 
 		$Pedido->capturar = $this->conf['auto_capture'];
 		$Pedido->autorizar = $this->conf['authorization'];
@@ -576,8 +634,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		//header("Content-type: text/plain");
 
 		$Pedido = new Pedido_Model();
-		$Pedido->dadosEcNumero = CIELO;
-		$Pedido->dadosEcChave = CIELO_CHAVE;
+
+
 
 		$tidKey = $this->getTidKey();
 
@@ -589,7 +647,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$Pedido->tid = $this->getCache($tidKey);
         } else {
             // CHECAR TID PELO NEGOCIATION_ID, INVOICE_INDEX
-
             $tidData = sC_getTableData(
                 "module_xpay_cielo_transactions_to_invoices trans2inv LEFT JOIN module_xpay_cielo_transactions trans ON (trans2inv.transaction_id = trans.id)
                 LEFT JOIN module_xpay_course_negociation neg ON (trans2inv.negociation_id = neg.id)
@@ -602,10 +659,32 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
             if (count($tidData) == 0) {
                 $Pedido->tid = null;
             } else {
-
                 $Pedido->tid = $tidData[0]['tid'];
             }
         }
+        if (!is_null($Pedido->tid)) {
+			list($coursePay) = sC_getTableData(
+				"module_xpay_course_negociation", "course_id", 
+				sprintf("id IN (
+					SELECT negociation_id FROM `module_xpay_cielo_transactions` WHERE tid = '%s'
+				)", $Pedido->tid)
+			);
+
+
+			$course = new MagesterCourse($coursePay['course_id']);
+
+			$ies_id = $course->course['ies_id'];
+			if (array_key_exists($ies_id, $this->conf['cielo_keys'])) {
+				$chaves_cielo = $this->conf['cielo_keys'][$ies_id];
+			} else {
+				return false;
+			}
+		}
+		$Pedido->dadosEcNumero = $chaves_cielo['CIELO'];
+		$Pedido->dadosEcChave = $chaves_cielo['CIELO_CHAVE'];
+
+
+
 		$status = -1;
 		// Consulta situação da transação
 

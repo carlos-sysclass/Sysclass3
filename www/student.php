@@ -35,6 +35,15 @@ try {
         throw new Exception(_ADMINISTRATORCANNOTACCESSLESSONPAGE, MagesterUserException::RESTRICTED_USER_TYPE);
     }
     $smarty->assign("T_CURRENT_USER", $currentUser);
+
+    $userGroups = $currentUser->getGroups();
+    $userGroupsIDs = array_keys($userGroups);
+    $translationModeGroup = 12;
+
+    $smarty->assign("T_CURRENT_USER_GROUPS", $userGroups);
+    $smarty->assign("T_CURRENT_USER_GROUPS_ID", $userGroupsIDs);
+    $smarty->assign("T_TRANSLATOR_GROUP", $translationModeGroup);
+    
 } catch (Exception $e) {
     if ($e->getCode() == MagesterUserException::USER_NOT_LOGGED_IN) {
         setcookie('c_request', http_build_query($_GET), time() + 300);

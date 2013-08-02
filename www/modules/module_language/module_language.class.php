@@ -4,6 +4,7 @@ class module_language extends MagesterExtendedModule
 {
 	protected $sections;
     protected static $languageIncluded = false;
+    protected static $parsedTokens = array();
 
 	protected $totalLanguageTerms = array();
 	protected $totalTerms = -1;
@@ -308,12 +309,9 @@ class module_language extends MagesterExtendedModule
         $languages = $this->getDisponibleLanguages();
 
         //if (in_array($language, $languages)) {
-            // REMOVE OLD FILE
+            
 
-            $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
-            if (file_exists($filename)) {
-                unlink($filename);
-            }
+
 
             // GET ALL LANGUAGE TERMS
             $tokens = $this->getTranslatedTokensAction($language);
@@ -329,7 +327,13 @@ class module_language extends MagesterExtendedModule
                     "translated"    => $value
                 );
             }
-
+            
+            // REMOVE OLD FILE
+            $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+            if (file_exists($filename)) {
+                unlink($filename);
+            }
+            
             //SAVE AS PHP define FILE
             file_put_contents($filename, "<?php\n" . implode("\n", $toFile) . "\n?>");
             chmod($filename, 0777);
@@ -349,6 +353,21 @@ class module_language extends MagesterExtendedModule
         //    echo __LANGUAGE_NOT_FOUND;
         //    exit;
         //}
+    }
+
+    public function parseTokensFromSource($reload = true) {
+        // PARSE ALL SOURCE AN GET ALL {$smart.const.*} TERMS. USED WITH CAUTION
+        if ($reload) {
+            // TRY TO EXEC 
+            $cmd = sprintf('egrep -h -o -r "[$]smarty\.const\.([_A-Z0-9]+)" %swww/themes/*/templates/* %swww/modules/*/* | cut -f3 -d . | sort -u', G_ROOTPATH, G_ROOTPATH);
+            $tokens = array();
+            $output = null;
+            exec($cmd, $tokens, $output);
+            if ($output == 0 && is_array($tokens)) {
+                self::$parsedTokens = array_combine($tokens, $tokens);
+            }
+        }
+        return self::$parsedTokens;
     }
 
 

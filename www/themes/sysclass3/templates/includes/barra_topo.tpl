@@ -73,7 +73,7 @@
 					</div>
 				{/if}
 
-				{if $smarty.session.s_type == 'administrator'}
+				{if $T_TRANSLATOR_GROUP|in_array:$T_CURRENT_USER_GROUPS_ID}
 					{if !$smarty.session.translation_mode}
 					<a href="javascript: _sysclass('load', 'language').setTranslationModeAction();" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}">
 						<button class="language_button" type="button" id="openTranslationListBtn">
@@ -83,7 +83,7 @@
 					{else}					
 					<a href="javascript: void(0);" title="{$smarty.const.__LANGUAGE_SAVE_UPDATES}">
 						<button class="language_button" type="button" id="language-save-updates">
-							<img class="language_button-icon" src="images/others/transparent.png" alt="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" />
+							<img class="language_button_save-icon" src="images/others/transparent.png" alt="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" title="{$smarty.const.__LANGUAGE_TRANSLATE_ITEMS}" />
 						</button>
 					</a>
 					{/if}
