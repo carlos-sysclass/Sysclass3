@@ -966,6 +966,13 @@ button.language_button:hover{
 	width: 16px;
 	height: 18px;
 }
+.language_button_save-icon {
+	background-image: url("../images/icons/16x16_branco.png");
+	background-position: 0 -951px;
+	vertical-align: middle;
+	width: 16px;
+	height: 18px;
+}
 
 
 
