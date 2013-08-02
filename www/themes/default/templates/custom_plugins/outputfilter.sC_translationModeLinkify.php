@@ -7,7 +7,7 @@ function smarty_outputfilter_sC_translationModeLinkify($compiled, &$smarty)
 {
 	global $currentUser;
 	$currentLanguage = $smarty->get_template_vars("T_BASE_LANGUAGE");
-
+//d
 	$userGroups = $currentUser->getGroups();
 	$userGroupsIDs = array_keys($userGroups);
 	$translationModeGroup = 12;
