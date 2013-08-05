@@ -355,6 +355,59 @@ class module_language extends MagesterExtendedModule
         //}
     }
 
+    public function getTranslationFileAction() {
+        $language = $_POST['language'];
+        if (is_null($language)) {
+            throw new Exception(__LANGUAGE_PLEASE_SELECT_A_LANGUAGE);
+            exit;
+        }
+        // @todo: filter POST parameters
+        $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+        if (file_exists($filename)) {
+            $filecontent = file_get_contents($filename);
+            echo $filecontent;
+            exit;
+        } else {
+            throw new Exception(__LANGUAGE_LANGUAGE_DOES_NOT_EXIST);
+        }
+    }
+    public function saveInlineEditorContentsAction() {
+        if ($this->getCurrentUser()->getType() == 'administrator') {
+            $language = $_POST['language'];
+            $contents = $_POST['contents'];
+
+            $contentsArray = explode("\n", $contents);
+
+            foreach($contentsArray as $contentLine) {
+                // SANITIZE AND REMOVE UNKNOW CODE
+                $tokens = sscanf($contentLine, "define('%s', '%s');");
+                var_dump($tokens);
+            }
+            $contents = addslashes(stripslashes(implode("\n", $contentsArray)));
+
+            // @todo: filter POST parameters
+            $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
+            
+            //if (file_put_contents($filename, $contents)) {
+            if (true) {
+                return array(
+                    'message'       => __LANGUAGE_FILE_SAVE_SUCCESSFULL,
+                    'message_type'  => 'success'
+                );
+            } else {
+                return array(
+                    'message'       => __LANGUAGE_FILE_WRITE_ERROR,
+                    'message_type'  => 'error'
+                );
+            }
+        } else {
+            return array(
+                'message'       => __LANGUAGE_PERMISSION_ERROR,
+                'message_type'  => 'error'
+            );
+        }
+    }
+
     public function parseTokensFromSource($reload = true) {
         // PARSE ALL SOURCE AN GET ALL {$smart.const.*} TERMS. USED WITH CAUTION
         if ($reload) {

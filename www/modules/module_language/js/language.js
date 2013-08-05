@@ -181,6 +181,34 @@ jQuery(function($) {
 	//	    	jQuery("#translation_tooltip").css("visibility", "hidden");
 		    //}
 		},
+		loadInlineEditor : function(language, editorSelector) {
+
+			//jQuery("#inline-code").remove();
+			//jQuery(":input[name='selected_language']", editorSelector).after('<textarea id="inline-code"></textarea>');
+			
+			this._loadAction("get_translation_file", {'language' : language}, "#inline-code", function(data, status) {
+				//console.log(e1, e2, e3);
+				_sysclass("load", "language").config("inlineEditor").setValue(data);
+			});
+
+			jQuery("#inlineEditor").dialog('open');
+			jQuery("#inlineEditor").dialog('option', 'width', 800);
+			jQuery("#inlineEditor").dialog('option', 'position', { my: "center", at: "center", of: window });
+
+			jQuery(":input[name='editor_selected_language']", editorSelector).val(language);
+		},
+		saveInlineEditorContents : function() {
+			this._postAction(
+				"save_inline_editor_contents",
+				{
+					language : jQuery(":input[name='editor_selected_language']").val(),
+					contents : jQuery("#inline-code").val()
+				},
+				function() {
+					jQuery("#inlineEditor").dialog('close');
+				}
+			);
+		},
 		startUI : function() {
 			// LOAD PAGE USED TERMS
 			var self = this;
@@ -217,6 +245,37 @@ jQuery(function($) {
 		    jQuery.datepicker.regional[""].dateFormat = 'dd/mm/yy';
 		    jQuery.datepicker.setDefaults($.datepicker.regional['']);
 			jQuery(".languageDataTable").dataTable( dataTableDefaults );
+
+			if (jQuery("#inline-code").size() > 0) {
+				_sysclass("load", "language").setConfig(
+					"inlineEditor", 
+					CodeMirror.fromTextArea(document.getElementById("inline-code"), {
+		        		lineNumbers: true,
+		        		matchBrackets: true,
+		        		mode: "application/x-httpd-php",
+		        		indentUnit: 4,
+						indentWithTabs: true,
+						enterMode: "keep",
+						tabMode: "shift"
+					})
+				);
+			}
+
+			jQuery("#inlineEditor").dialog({
+				width: 'auto',
+				maxWidth: '800',
+				autoOpen: false,
+				resizable : false,
+				draggable : true,
+				buttons :{
+					save : function() {
+						_sysclass("load", "language").saveInlineEditorContents();
+					},
+					cancel : function() {
+						jQuery(this).dialog("close");
+					}
+				}
+			});
 		}
 	};
 

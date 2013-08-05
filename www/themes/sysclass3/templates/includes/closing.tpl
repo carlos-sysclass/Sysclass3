@@ -22,6 +22,14 @@
  {/if}
 {/if}
 
+<!-- CODE MIRROR INCLUDE -->
+<link rel="stylesheet" href="js/codemirror/codemirror.css">
+<link rel="stylesheet" href="js/codemirror/theme/eclipse.css">
+<script src="js/codemirror/codemirror.js"></script>
+
+<script src="js/codemirror/modes/clike.js"></script>
+<script src="js/codemirror/modes/php.js"></script>
+
 
 {if $T_HEADER_LOAD_SCRIPTS}<script type = "text/javascript" src = "js/scripts.php?build={$smarty.const.G_BUILD}&load={$T_HEADER_LOAD_SCRIPTS}"> </script>{/if}
 
@@ -158,7 +166,6 @@ if (top.sideframe && top.sideframe.document && top.sideframe.document.getElement
 
 {/if}
 </script>
-
 
 <script>
 
