@@ -108,7 +108,22 @@
 			jQuery(".xpay-cielo-do-capture-link").click(function() {
 				var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
 				
-			})
+			});
+
+			jQuery("#xpay-cielo-repeatable-table").dataTable(dataTablePaidDefaults)
+			/* Deve-se atrasar a inicialização para atualização por JSON */
+			.columnFilter({ 
+				aoColumns: [
+				    { type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+				    { type: "date-range", sRangeFormat: "De: {from}<br />Até: {to}" },
+					{ type: "text" },
+					{ type: "select", values: this.opt.bandeiras },
+					{ type: "text" },
+					{ type: "text" },
+					null
+				]
+			});
+
 			
 		},
 		doCaptureAction : function(transTID) {

@@ -105,6 +105,116 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$this->addModuleData("bandeiras", $bandeiras);
 		}
 	}
+
+	public function viewRepeatableInvoicesListAction()
+	{
+		/** @todo THIS LIST MUST BE LOADED BY AJAX */
+		// SHOW A LIST OF ALL USERS WITH CC METHODS AND REGISTERED TOKENS
+		// THE USER CAN SEARCH, VIEW, CAPTURE AND CANCEL TRANSACTIONS
+		if ($this->getCurrentUser()->getType() == 'administrator') {
+
+			// GET THE LIST OFF ALL PAYMENT WITH CC METHODS
+			
+			if (is_null($this->getParent())) {
+            	$xpayModule = $this->loadModule("xpay");
+            	$this->setParent($xpayModule);
+			}
+			
+			
+			
+			echo prepareGetTableData(
+				"module_xpay_cielo_card_tokens tok LEFT join users u ON (tok.user_id = u.id) 
+				LEFT join module_xpay_course_negociation neg ON (tok.user_id = neg.user_id)",
+				"tok.user_id, 
+				u.login,
+				neg.id as negociation_id,
+				(SELECT data FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as last_payment,
+				(SELECT valor FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as valor,
+				tok.bandeira,
+				tok.cartao",
+				"neg.id IN (SELECT negociation_id FROM module_xpay_cielo_transactions WHERE status = 6)"
+			);
+		
+			$transactions = sC_getTableData(
+				"module_xpay_cielo_card_tokens tok LEFT join users u ON (tok.user_id = u.id) 
+				LEFT join module_xpay_course_negociation neg ON (tok.user_id = neg.user_id)",
+				"tok.user_id, 
+				u.login,
+				neg.id as negociation_id,
+				(SELECT data FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as last_payment,
+				(SELECT valor FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as valor,
+				tok.bandeira,
+				tok.cartao",
+				"neg.id IN (SELECT negociation_id FROM module_xpay_cielo_transactions WHERE status = 6)"
+			);
+
+
+			foreach($transactions as $index => $trans) {
+				list($nextInvoice) = sC_getTableData(
+					"module_xpay_invoices inv
+					LEFT JOIN module_xpay_invoices_to_paid invpd ON (inv.negociation_id = invpd.negociation_id AND inv.invoice_index = invpd.invoice_index)
+					LEFT JOIN module_xpay_paid_items pd ON (invpd.paid_id = pd.id)",
+					"inv.invoice_index as next_invoice, inv.data_vencimento as next_payment, inv.valor as next_value, inv.invoice_id as next_invoice, inv.data_vencimento < NOW() as overdue",
+					sprintf("inv.negociation_id = %d AND (paid IS NULL OR valor > IFNULL(invpd.full_value, pd.paid))", $trans['negociation_id']),
+					"inv.data_vencimento ASC",
+					null,
+					"1"
+				);
+				if (!is_null($nextInvoice)) {
+					$transactions[$index] = array_merge($trans, $nextInvoice);
+				} else {
+					/*
+					$transactions[$index] = array_merge($trans, array(
+						
+					));
+					*/
+				}
+				
+			}
+	
+			$instances = $this->getPaymentInstances();
+			
+			/*		
+			foreach ($transactions as &$trans) {
+				if (array_key_exists($trans['produto'], $instances['options'][$trans['bandeira']]['options'])) {
+					$trans['forma_pagamento'] = $instances['options'][$trans['bandeira']]['options'][$trans['produto']];
+				} else { // PARCELAMENTO
+					$trans['forma_pagamento'] = sprintf("Parcelado %dx", $trans['parcelas']);
+				}
+			}
+			*/
+
+			$smarty = $this->getSmartyVar();
+			$smarty -> assign("T_XPAY_CIELO_TRANSACTIONS", $transactions);
+			
+			$statusesDB = sC_getTableData("module_xpay_cielo_transactions_statuses", "id, nome");
+			$statuses = array();
+			foreach ($statusesDB as $statusDB) {
+				$statuses[] = $statusDB['nome'];
+			}
+			$this->addModuleData("statuses", $statuses);
+
+			foreach ($instances['options'] as $bandeira) {
+				foreach ($bandeira['options'] as $forma) {
+					$formas_pagamento[] = $forma;
+				}
+			}
+			$formas_pagamento = array_unique($formas_pagamento);
+			$this->addModuleData("formas_pagamento", $formas_pagamento);
+			
+			$bandeiras = array_keys($instances['options']);
+			$this->addModuleData("bandeiras", $bandeiras);
+
+
+			$xpayModule->assignSmartyModuleVariables();
+		}
+	}
+
+
+
+
+
+
 	/* REST API */
 	public function loadTransactionsAction()
 	{
@@ -333,8 +443,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 	public function getPaymentInstanceOptions($instance_id)
 	{
 		$instances = $this->getPaymentInstances($instance_id);
-		
-		return $instances[$instance_id]['options'];
+
+		return $instances['options'];
 	}
 	public function fetchPaymentInstanceOptionsTemplate($instance_id)
 	{

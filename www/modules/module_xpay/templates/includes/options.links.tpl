@@ -34,6 +34,14 @@
 		/>				
 		<a href="{$T_XPAY_BASEURL}&action=view_unpaid_invoices">{$smarty.const.__XPAY_VIEW_INVOICES_IN_DEBTS}</a>
 	</span>
+	<span>
+		<img 
+			src = "images/others/transparent.png"
+			class="imgs_cont sprite16 sprite16-go_into"
+			border = "0"
+		/>				
+		<a href="{$T_XPAY_BASEURL}_cielo&action=view_repeatable_invoices_list">{$smarty.const.__XPAY_CIELO_VIEW_REPEATABLE_INVOICES_LIST}</a>
+	</span>
 </div>
 <div class="clear"></div>
 

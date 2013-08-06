@@ -2641,6 +2641,50 @@ class module_xpay extends MagesterExtendedModule
 		return $workflow;
 	}
 	/* GETTERS */
+	public function getNegociationList($constraints) {
+
+		$where = array();
+		if (is_null($constraints)) {
+			$constraints = array();
+		}
+
+
+		if (array_key_exists("default_method", $constraints)) {
+			if (!is_array($constraints["default_method"])) {
+				$constraints["default_method"] = array($constraints["default_method"]);
+			}
+			foreach($constraints["default_method"] as &$contraint) {
+				$contraint = "'" . $contraint . "'";
+			}
+			$where[] = sprintf("default_method IN (%s)", implode(", ", $constraints["default_method"]));
+		}
+		if (array_key_exists("filter", $constraints)) {
+			$where[] = $constraints['filter'];
+		}
+
+
+		$negociationData = sC_getTableData(
+			"module_xpay_course_negociation neg
+			LEFT OUTER JOIN module_xpay_invoices_to_paid inv2pd ON (inv2pd.negociation_id = neg.id)
+			LEFT OUTER JOIN module_xpay_paid_items pd ON (inv2pd.paid_id = pd.id)
+			LEFT JOIN users u ON (neg.user_id = u.id)
+			",
+			'neg.id, u.id as user_id, u.name, u.surname, u.login,
+			neg.is_simulation, neg.course_id, neg.lesson_id, neg.send_to, 
+			IFNULL(SUM(pd.paid), 0) as paid,
+			neg.negociation_index',
+			implode(" AND ", $where),
+			"negociation_index DESC",
+			"neg.id, u.id"
+		);
+
+		var_dump($negociationData);
+		exit;
+
+
+		return $negociationData;
+	}
+
 	private function _getLastPaymentsList($constraints, $limit = null)
 	{
 		//$limit = null MEANS "NO LIMIT"
@@ -2656,6 +2700,7 @@ class module_xpay extends MagesterExtendedModule
 		if (is_array($constraints["ies_id"]) && count($constraints["ies_id"]) > 0) {
 			$where[] = sprintf("ies_id IN (%s)", implode(", ", $constraints["ies_id"]));
 		}
+
 		$lastPaymentsList = sC_getTableData(
 			"module_xpay_zzz_paid_items",
 			"negociation_id, user_id, course_id, paid_id, method_id, ies_id, polo_id, polo, course_name, classe_name, nosso_numero, name, surname, login, invoice_id, invoice_index, total_parcelas, data_vencimento, data_pagamento, valor, desconto + tarifa as desconto, IFNULL(total, paid) as paid",
