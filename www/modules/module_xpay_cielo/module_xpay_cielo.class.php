@@ -446,14 +446,31 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 		return $instances['options'];
 	}
-	public function fetchPaymentInstanceOptionsTemplate($instance_id)
+	public function fetchPaymentInstanceOptionsTemplate($instance_id, $negociation_id)
 	{
 		$smarty = $this->getSmartyVar();
 		$instances = $this->getPaymentInstances();
 		$options = $instances['options'][$instance_id]['options'];
+		$defaultOption = $instances['options'][$instance_id]['default_option'];
+
+		// CHECK IF USER HAS A TOKENIZED CARD
+		if (is_numeric($negociation_id)) {
+			$xpayModule = $this->loadModule("xpay");
+
+			$negociation = $xpayModule->_getNegociationById($negociation_id);
+			$neg_user_id = $negociation['user_id'];
+
+			$tokenData = $this->getUserToken($neg_user_id, $instance_id);
+
+			if ($tokenData) {
+				$options["T"] = sprintf("Cartão Registrado: <strong>%s</strong>", $tokenData['cartao']);
+				$defaultOption = "T";
+			}
+		}
 		$tpl = $instances['options'][$instance_id]['template'];
 		$smarty -> assign("T_XPAY_CIELO_OPT", $options);
-		$smarty -> assign("T_XPAY_CIELO_DEFAULT_OPTION", $instances['options'][$instance_id]['default_option']);
+		$smarty -> assign("T_XPAY_CIELO_DEFAULT_OPTION", $defaultOption);
+
 		return $smarty -> fetch($tpl);
 	}
 	public function fetchPaymentReceiptTemplate($negociation_id, $invoice_index)
@@ -628,11 +645,15 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
             $values["instance_option"] = $values["instance_option"];
         }
         
-		if ($values["instance_option"] != "A" && $values["instance_option"] != "1") {
+		if ($values["instance_option"] != "A" && $values["instance_option"] != "1" && $values["instance_option"] != "T") {
 			$Pedido->formaPagamentoProduto = $this->conf['payment_subdivision_method'];
 			$Pedido->formaPagamentoParcelas = $values["instance_option"];
 		} else {
-			$Pedido->formaPagamentoProduto = $values["instance_option"];
+			if ($values["instance_option"] == 'T') {
+				$Pedido->formaPagamentoProduto = 1;
+			} else {
+				$Pedido->formaPagamentoProduto = $values["instance_option"];	
+			}
 			$Pedido->formaPagamentoParcelas = 1;
 		}
 
@@ -689,7 +710,19 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         }
 
         $doNormal = false;
+
+
+        if ($values['instance_option'] == 'T') {
+        	// TRY TO MAKE A TOKENIZED TRANSACTION
+        	$tokenData = $this->getUserToken($currentUser['id'], $values['option']);
+        	if ($tokenData) {
+	        	$values['token'] = $tokenData['token'];
+
+        	}
+        }
+
         // TRANSACAO NORMAL OU COM TOKEN ??
+
         if (!empty($values['token'])) {
         	list($tokenData) = sC_getTableData("module_xpay_cielo_card_tokens", "*", sprintf("token = '%s'", $values['token']));
         	
@@ -706,9 +739,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         	} else {
         		$doNormal = true;
         	}
-
-        	
-        	
         } else {
         	$doNormal = true;
         } 
@@ -729,6 +759,10 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			$this->setCache(md5($currentUser->user['login'] . date("Ymd")), $Pedido->tid);
 	
 			return $Pedido;
+        } else {
+        	// DO TOKENIZED
+
+        	exit;
         }
 		/*
 		// Serializa Pedido e guarda na SESSION
@@ -1037,17 +1071,16 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			)	
 		);
 	}
-
-	
-	
 	
 	public function paymentCanBeDone($payment_id, $invoice_id)
 	{
 		return true;
 	}
+
 	public function getInvoiceStatusById($payment_id, $invoice_id)
 	{
 	}
+
 	private function getTidKey($login)
     {
         if (!is_null($login)) {
@@ -1056,5 +1089,19 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
             $login = $currentUser->user['login'];
         }
 		return $tidKey = md5($login . date("Ymd"));
+	}
+
+	private function getUserToken($user_id, $bandeira) {
+		if (is_numeric($user_id)) {
+			$tokenDB = sC_getTableData(
+				"module_xpay_cielo_card_tokens",
+				"id, user_id, token, cartao, bandeira, status_id",
+				sprintf("user_id = %d AND bandeira = '%s'", $user_id, $bandeira)
+			);
+			if (count($tokenDB) > 0) {
+				return reset($tokenDB);
+			}
+		}
+		return false;
 	}
 }

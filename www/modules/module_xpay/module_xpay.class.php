@@ -746,6 +746,8 @@ class module_xpay extends MagesterExtendedModule
 			));
 			*/
 		}
+
+		$this->addModuleData("negociation_id", $userNegociation['id']);
 		/*
 		$groups = sC_getTableData("groups", "id, name", "active=1");
 		
@@ -1653,6 +1655,7 @@ class module_xpay extends MagesterExtendedModule
 	public function viewInstanceOptionsAction()
 	{
 		list($module_index, $module_option) = explode(":", $_POST['instance_index']);
+		$negociation_id = $_POST['negociation_id'];
 		/*
 		$module_index = "xpay_cielo";
 		$module_option = "visa";
@@ -1661,7 +1664,7 @@ class module_xpay extends MagesterExtendedModule
 		$currentModules = $this->getSubmodules();
 		
 		if (array_key_exists(strtoupper($module_index), $currentModules)) {
-			$subModuleTemplate = $currentModules[strtoupper($module_index)]->fetchPaymentInstanceOptionsTemplate($module_option);
+			$subModuleTemplate = $currentModules[strtoupper($module_index)]->fetchPaymentInstanceOptionsTemplate($module_option, $negociation_id);
 
 		}
 		if ($subModuleTemplate === false) {

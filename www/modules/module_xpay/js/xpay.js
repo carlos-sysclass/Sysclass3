@@ -437,10 +437,10 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				}
 			);
 		},
-		viewInstanceOptions : function(instance_index) {
+		viewInstanceOptions : function(instance_index, negociation_id) {
 			this._loadAction(
 				"view_instance_options",
-				{"instance_index" : instance_index},
+				{"instance_index" : instance_index, "negociation_id" : negociation_id},
 				"#xpay-submodule-options-container",
 				function() {
 					//jQuery("#xpay-file-details-container").dialog('open');		
@@ -527,7 +527,9 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 			
 			
 			jQuery(":input[name='pay_methods']").live('click', function() {
-				_sysclass("load", "xpay").viewInstanceOptions(jQuery(this).val());
+				config = _sysclass("load", "xpay").config();
+
+				_sysclass("load", "xpay").viewInstanceOptions(jQuery(this).val(), config["negociation_id"]);
 				
 				jQuery("#xpay-do-payment-button")
 					.removeAttr("disabled")

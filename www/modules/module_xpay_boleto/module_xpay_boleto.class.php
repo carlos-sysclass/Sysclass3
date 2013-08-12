@@ -2549,7 +2549,7 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		}
 		return false;
 	}
-	public function fetchPaymentInstanceOptionsTemplate($instance_id)
+	public function fetchPaymentInstanceOptionsTemplate($instance_id, $negociation_id)
 	{
 		// RETURN FALSE FOR "NO OPTIONS"
 		return false;
