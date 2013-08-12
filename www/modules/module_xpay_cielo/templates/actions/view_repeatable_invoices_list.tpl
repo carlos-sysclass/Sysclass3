@@ -24,7 +24,13 @@
 				</td>
 				<td>{$trans.login}</td>
 				<td align="center"><img src="{$T_XPAY_CIELO_BASELINK}images/{$trans.bandeira}.png" /></td>
-				<td align="center">#filter:currency:{$trans.valor}#</td>
+				 <td align="center">
+				{if !is_null($trans.next_value)}
+					#filter:currency:{$trans.next_value}#
+				{else}
+					#filter:currency:{$trans.valor}#
+				{/if}
+				</td>
 				<td align="center">{$trans.cartao}</td>
 				<td align="center">
 					<a class="form-icon editLink" href="{$T_XPAY_BASEURL}&action=view_user_statement&amp;xuser_login={$trans.login}"><img border="0" alt="Extrato do Aluno" title="Extrato do Aluno" class="sprite16 sprite16-do_pay" src="images/others/transparent.gif" /></a>
