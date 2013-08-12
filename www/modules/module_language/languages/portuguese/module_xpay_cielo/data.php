@@ -7,3 +7,4 @@ define("__XPAY_CIELO_MAKE", "Efetuar pagamento");
 define("__XPAY_CIELO_RETURN", "Resultado da transação");
 
 define("__XPAY_CIELO_LAST_TRANSACTIONS", "Últimas Transações");
+define("__XPAY_CIELO_VIEW_REPEATABLE_INVOICES_LIST", "Lista de transações recorrentes");
