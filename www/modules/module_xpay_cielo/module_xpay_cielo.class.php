@@ -120,21 +120,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
             	$this->setParent($xpayModule);
 			}
 			
-			
-			
-			echo prepareGetTableData(
-				"module_xpay_cielo_card_tokens tok LEFT join users u ON (tok.user_id = u.id) 
-				LEFT join module_xpay_course_negociation neg ON (tok.user_id = neg.user_id)",
-				"tok.user_id, 
-				u.login,
-				neg.id as negociation_id,
-				(SELECT data FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as last_payment,
-				(SELECT valor FROM module_xpay_cielo_transactions WHERE negociation_id = neg.id AND status = 6 ORDER BY data DESC LIMIT 1) as valor,
-				tok.bandeira,
-				tok.cartao",
-				"neg.id IN (SELECT negociation_id FROM module_xpay_cielo_transactions WHERE status = 6)"
-			);
-		
 			$transactions = sC_getTableData(
 				"module_xpay_cielo_card_tokens tok LEFT join users u ON (tok.user_id = u.id) 
 				LEFT join module_xpay_course_negociation neg ON (tok.user_id = neg.user_id)",

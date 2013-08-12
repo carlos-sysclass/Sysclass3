@@ -60,6 +60,9 @@
         config : function(name) {
             return this.opt;
         },
+        setConfig : function(name, value) {
+            this.opt[name] = value;
+        },
         sync: function(bSwitch) {
             if (typeof(bSwitch) != "boolean") {
                 output = "json";

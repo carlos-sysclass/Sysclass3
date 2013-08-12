@@ -29,18 +29,15 @@
 				<td align="center">
 					<a class="form-icon editLink" href="{$T_XPAY_BASEURL}&action=view_user_statement&amp;xuser_login={$trans.login}"><img border="0" alt="Extrato do Aluno" title="Extrato do Aluno" class="sprite16 sprite16-do_pay" src="images/others/transparent.gif" /></a>
 					{if $trans.status_id == 0}
-						{* EXCLUDE OPTION *}
 					{/if}
 					{if $trans.status_id == 4}
-					<!--
-						<a class="form-icon xpay-cielo-do-capture-link" onclick="_sysclass('load', 'xpay_cielo').doCaptureAction('{$trans.tid}');" href="javascript: void(0);">
-							<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
-						</a>
-					-->
 					{/if}
 					{if $trans.overdue == 1}
-						<a class="form-icon xpay-cielo-do-withdraw-link" onclick="_sysclass('load', 'xpay_cielo').doWithdrawAction('{$trans.negocioation}', '{$trans.next_invoice}');" href="javascript: void(0);"><img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right" alt="Tentar realizar pagamento" /></a>
 					{/if}
+					<a class="form-icon xpay-do_payment-options-dialog-link" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$trans.negociation_id}&invoice_index={$trans.next_invoice}&output=dialog" data-negociation-id="{$trans.negociation_id}">
+						<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
+					</a>
+
 				</td>
 			</tr>
 		{/foreach}
@@ -65,6 +62,15 @@
 	}
 {/literal}
 </style>
+<div id="xpay-do_payment-options-dialog" title="Pagamentos">
+	<div id="xpay-do_payment-options-dialog-loader">
+		<img src="images/progress.gif">
+		{$smarty.const._LOADING}
+	</div>
+	<div id="xpay-do_payment-options-dialog-inner">
+	</div>
+</div>
+
 {/capture}
 	
 {sC_template_printBlock 
