@@ -540,7 +540,7 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 					.removeAttr("disabled")
 					.removeClass("ui-state-disabled");
 			});
-			
+
 			// CREATE DIALOG FORM DO-PAY OPTIONS
 			jQuery("#xpay-do_payment-options-dialog").dialog({
 				autoOpen	: false,
@@ -556,6 +556,8 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 			jQuery("#xpay-do-payment-button")
 				.attr("disabled", "disabled")
 				.addClass("ui-state-disabled");
+
+			jQuery(":input[name='pay_methods']:checked").click();
 			
 			jQuery(".xpay-do_payment-options-dialog-link").click(function() {
 				var url = jQuery(this).attr("href");

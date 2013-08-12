@@ -1512,6 +1512,7 @@ class module_xpay extends MagesterExtendedModule
 			}
 
 			$paymentMethods[strtolower($selectedIndex)] = $selectedPaymentMethod->getPaymentInstances();
+//			var_dump( $paymentMethods);
 
 			$xentifyModule = $this->loadModule("xentify");
 
@@ -1538,15 +1539,21 @@ class module_xpay extends MagesterExtendedModule
 				if (
 					!$scopeUser->inScope($item['xscope_id'], $item['xentify_id'])
 				) {
-					continue;
+					/* HACK PARA ACESSO CIELO POS */
+					if ($negociationUser->user['id'] != 3775 || !in_array($key, array("visa", "mastercard"))) {
+						continue;
+					}
 				}
 				$breakOuterLoop = false;
 				foreach ($negocData['modules'] as $module) {
 					$scopeModule = $xentifyModule->create($module['module_type'], $module['module_id']);
+					/* HACK PARA ACESSO CIELO POS */
+					if ($negociationUser->user['id'] != 3775) {
 
-					if (!$scopeModule->inScope($item['xscope_id'], $item['xentify_id'])) {
-						$breakOuterLoop = true;
-						break;
+						if (!$scopeModule->inScope($item['xscope_id'], $item['xentify_id'])) {
+							$breakOuterLoop = true;
+							break;
+						}
 					}
 				}
 				if ($breakOuterLoop) {
