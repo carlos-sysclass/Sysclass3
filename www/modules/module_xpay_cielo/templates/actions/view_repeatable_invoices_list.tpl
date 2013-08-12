@@ -34,7 +34,7 @@
 					{/if}
 					{if $trans.overdue == 1}
 					{/if}
-					<a class="form-icon xpay-do_payment-options-dialog-link" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$trans.negociation_id}&invoice_index={$trans.next_invoice}&output=dialog" data-negociation-id="{$trans.negociation_id}">
+					<a class="form-icon xpay-do_payment-options-dialog-link" href="{$T_XPAY_BASEURL}&action=do_payment&negociation_id={$trans.negociation_id}&invoice_index={$trans.next_invoice_index}&output=dialog" data-negociation-id="{$trans.negociation_id}">
 						<img src="images/others/transparent.gif" class="sprite16 sprite16-arrow_right">
 					</a>
 

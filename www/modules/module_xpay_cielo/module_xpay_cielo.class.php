@@ -139,7 +139,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 					"module_xpay_invoices inv
 					LEFT JOIN module_xpay_invoices_to_paid invpd ON (inv.negociation_id = invpd.negociation_id AND inv.invoice_index = invpd.invoice_index)
 					LEFT JOIN module_xpay_paid_items pd ON (invpd.paid_id = pd.id)",
-					"inv.invoice_index as next_invoice, inv.data_vencimento as next_payment, inv.valor as next_value, inv.invoice_id as next_invoice, inv.data_vencimento < NOW() as overdue",
+					"inv.invoice_index as next_invoice_index, inv.data_vencimento as next_payment, inv.valor as next_value, inv.invoice_id as next_invoice_id, inv.data_vencimento < NOW() as overdue",
 					sprintf("inv.negociation_id = %d AND (paid IS NULL OR valor > IFNULL(invpd.full_value, pd.paid))", $trans['negociation_id']),
 					"inv.data_vencimento ASC",
 					null,
