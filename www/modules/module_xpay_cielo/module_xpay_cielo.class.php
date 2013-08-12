@@ -25,7 +25,7 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 	protected $conf = array(
 		// Opção => Autorizar transação autenticada e não-autenticada
-		'authorization'					=> 2, // AUTORIZAÇÃO E AUTENTICAÇÂO
+		'authorization'					=> 3, // AUTORIZAÇÃO E AUTENTICAÇÂO
 		'recurring_authorization'		=> 3,
 		//'authorization'					=> 4, // RECORRENTE (SOMENTE COM CAPTURA DO CARTÃO NA LOJA
 		'auto_capture'					=> "true",
