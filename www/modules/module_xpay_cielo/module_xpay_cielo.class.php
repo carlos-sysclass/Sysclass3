@@ -731,6 +731,15 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         		$Pedido->formaPagamentoBandeira = $tokenData["bandeira"];
         		$Pedido->autorizar = $this->conf['recurring_authorization'];
         		$objResposta = $Pedido->RequisicaoTransacao("token");
+
+        		$this->setCache(md5($currentUser['login'] . date("Ymd")), $Pedido->tid);
+
+
+        		echo $url = sprintf(
+        			"https://sysclass.com/administrator.php?route=module/module_xpay_cielo/return_payment&negociation_id=%d&invoice_index=%d",
+        			$payment_id,
+        			$invoice_id
+        		);
         		
         		var_dump($Pedido);
         		var_dump($objResposta);
