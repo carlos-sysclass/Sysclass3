@@ -599,8 +599,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 		sC_insertTableData("module_xpay_cielo_transactions_to_invoices", $fieldsLink);
 
         if (!$data['return_data']) {
-            //echo $Pedido->urlAutenticacao;
-            //  
     		sC_redirect($Pedido->urlAutenticacao, false, false, true);
 	    	exit;
         } else {
@@ -608,7 +606,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
                 'link'  => $Pedido->urlAutenticacao,
                 'tid'   => $Pedido->tid  
             );
-//            return $Pedido->urlAutenticacao;
         }
 
 	}
@@ -732,19 +729,20 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         		$Pedido->autorizar = $this->conf['recurring_authorization'];
         		$objResposta = $Pedido->RequisicaoTransacao("token");
 
-        		$this->setCache(md5($currentUser['login'] . date("Ymd")), $Pedido->tid);
+        		$this->setCache($this->getTidKey(), (string) $objResposta->tid);
 
+                        $Pedido->tid = (string) $objResposta->tid;
+                        $Pedido->pan = (string) $objResposta->pan;
+                        $Pedido->status = (string) $objResposta->status;
 
-        		echo $url = sprintf(
+			$Pedido->urlAutenticacao = sprintf(
         			"https://sysclass.com/administrator.php?route=module/module_xpay_cielo/return_payment&negociation_id=%d&invoice_index=%d",
         			$payment_id,
         			$invoice_id
         		);
         		
-        		var_dump($Pedido);
-        		var_dump($objResposta);
+        		return $Pedido;
         		
-        		exit;
         	} else {
         		$doNormal = true;
         	}
@@ -771,7 +769,6 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
         } else {
         	// DO TOKENIZED
 
-        	exit;
         }
 		/*
 		// Serializa Pedido e guarda na SESSION
@@ -840,11 +837,10 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 
 		$status = -1;
 		// Consulta situação da transação
-
 		if (!is_null($Pedido->tid)) {
 			$objResposta = $Pedido->RequisicaoConsulta();
 			$consultaArray = $this->cieloReturnToArray($objResposta);
-			
+
 			// DEPENDENDO DO VALOR DO STATUS, REALIZAR A CAPTURA
 			// A CAPTURA SERÁ FEITA POSTERIORMENTE
 			/*
