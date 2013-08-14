@@ -23,7 +23,10 @@
 
 				</td>
 				<td>{$trans.login}</td>
-				<td align="center"><img src="{$T_XPAY_CIELO_BASELINK}images/{$trans.bandeira}.png" /></td>
+				<td align="center">
+					<img src="{$T_XPAY_CIELO_BASELINK}images/{$trans.bandeira}.png" />
+					<span style="display:none;">{$trans.bandeira}</span>
+				</td>
 				 <td align="center">
 				{if !is_null($trans.next_value)}
 					#filter:currency:{$trans.next_value}#

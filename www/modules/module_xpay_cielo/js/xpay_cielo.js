@@ -23,75 +23,11 @@
 			};
 			
 		
-			dataTablePaidDefaults = jQuery.extend(true, dataTableDefaults, {
-				/* descomentar este código abaixo para liberar atualização por JSON */
-				/*
-				"aoColumns": [
-					{"mData": "tid"},
-					{sType: "date", "mData": "data"},
-					{"mData": "login"},
-					{sType : "img-src", sSortDataType : "img-src", "mData": "bandeira_image"},
-					{"mData": "forma_pagamento"},
-					{"mData": "valor"},
-					{"mData": "status"},
-					{"mData": "options"}
-				],
-		        "bProcessing": true,
-		        "sAjaxSource": this._getActionUrl("load_transactions", {output : 'json'})
-		        */
-				
-				
-				/*,
-				fnFooterCallback : function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
-					// Calculate the market share for browsers on this page
-					var iFilterValor = 0;
-					var iFilterPago = 0;
-					var iFilterSaldo = 0;
-					for ( var i=0 ; i<aiDisplay.length ; i++ )
-					{
-						iFilterValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
-						iFilterPago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
-						iFilterSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
-					}
-					
-					// Calculate the market share for browsers on this page
-					var iPageValor = 0;
-					var iPagePago = 0;
-					var iPageSaldo = 0;
-					for ( var i=iStart ; i<iEnd ; i++ ) {
-						iPageValor += parseFloat(aaData[ aiDisplay[i] ][6].replace('R$', '').replace('.', '').replace(',','.'));
-						iPagePago += parseFloat(aaData[ aiDisplay[i] ][7].replace('R$', '').replace('.', '').replace(',','.'));
-						iPageSaldo += parseFloat(aaData[ aiDisplay[i] ][8].replace('R$', '').replace('.', '').replace(',','.'));
-					}
-
-					jQuery(nRow).next().children().eq(1).html(
-						Globalize.format( iPageValor, "c" )
-					);
-					jQuery(nRow).next().children().eq(2).html(
-						Globalize.format( iPagePago, "c" )
-					);
-					jQuery(nRow).next().children().eq(3).html(
-						Globalize.format( iPageSaldo, "c" )
-					);
-					
-					jQuery(nRow).next().next().children().eq(1).html(
-						Globalize.format( iFilterValor, "c" )
-					);
-					jQuery(nRow).next().next().children().eq(2).html(
-						Globalize.format( iFilterPago, "c" )
-					);
-					jQuery(nRow).next().next().children().eq(3).html(
-						Globalize.format( iFilterSaldo, "c" )
-					);
-				}
-				*/
-
-			});
-			
-			//console.log(dataTablePaidDefaults);
+			dataTablePaidDefaults = jQuery.extend(true, dataTableDefaults);
 			
 			jQuery("#xpay-cielo-last-transactions-table").dataTable(dataTablePaidDefaults)
 			/* Deve-se atrasar a inicialização para atualização por JSON */
+			
 			.columnFilter({ 
 				aoColumns: [
 				    { type: "text" },
@@ -104,12 +40,12 @@
 					null
 				]
 			});
-
+/*
 			jQuery(".xpay-cielo-do-capture-link").click(function() {
-				var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
+				//var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
 				
 			});
-
+*/
 			jQuery("#xpay-cielo-repeatable-table").dataTable(dataTablePaidDefaults)
 			/* Deve-se atrasar a inicialização para atualização por JSON */
 			.columnFilter({ 
@@ -127,7 +63,7 @@
 			
 		},
 		doCaptureAction : function(transTID) {
-			var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
+			//var oTable = jQuery("#xpay-cielo-last-transactions-table").dataTable();
 			
 			this._postAction(
 				"do_capture",
