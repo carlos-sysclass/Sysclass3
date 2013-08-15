@@ -576,6 +576,10 @@ class module_xentify extends MagesterExtendedModule
     		case 16:// SAME NEGOCIATION
     			/** @todo Implementar checagem de inadimplência */
     			return $status['same_negociation_id'];
+    		case 17:// SAME NEGOCIATION
+    			/** @todo Implementar checagem de inadimplência */
+    			return $status['same_ies'] && $status['same_group'];
+
     		default : {
     			return false;
     		}
@@ -644,12 +648,10 @@ class module_xentify extends MagesterExtendedModule
     		case 16:
     			$status['same_negociation_id'] 		= $this->checkUserScopeSameNegociation($user, $data['negociation_id']);
     			break;
-    		/*
-   			case 17:
-   				$status['same_negociation_id'] 		= $this->checkUserScopeSameNegociation($user, $data['negociation_id']);
-   				$status['same_invoice_index'] 		= $this->checkUserScopeSameInvoice($user, $data['invoice_index']);
-   				break;
-   			*/
+    		case 17:
+    			$status['same_ies'] = $this->checkUserScopeSameIes($user, $data['ies_id']);
+    			$status['same_group']	= $this->checkUserScopeSameGroup($user, $data['group_id']);
+    			break;
     		default:
     			return false;
     	}
@@ -707,6 +709,9 @@ class module_xentify extends MagesterExtendedModule
     			break;
     		case 16:  // SAME NEGOCIATION
     			list($data['negociation_id']) = explode(';', $scope_id);
+    			break;
+    		case 17: // SAME GROUPS
+    			list($data['ies_id'], $data['group_id']) = explode(';', $scope_id);
     			break;
     		/*
    			case 17:  // SAME NEGOCIATION
@@ -846,7 +851,7 @@ class module_xentify extends MagesterExtendedModule
 	{
     	$scopeData = $this->getScopeEntifyNames(null, $scope_type, $scope_id);
 
-var_dump($scopeData);
+//var_dump($scopeData);
 
     	$result = array();
 
