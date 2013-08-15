@@ -385,8 +385,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 			'options'	=> array (
 				"visa"			=> array(
 					'name'	=> "Visa",
-					"xscope_id"		=> 1,
-					"xentify_id"	=> 1,
+					"xscope_id"		=> 0,
+					"xentify_id"	=> 0,
 					"options"	=> array(
 						"1"	=> "Crédito à Vista",
 						"A"	=> "Débito à Vista"
@@ -396,8 +396,8 @@ class module_xpay_cielo extends MagesterExtendedModule implements IxPaySubmodule
 				),
 				"mastercard"	=> array(
 					"name"	=> "Mastercard",
-					"xscope_id"		=> 1,
-					"xentify_id"	=> 1,
+					"xscope_id"		=> 0,
+					"xentify_id"	=> 0,
 					"options"	=> array(
 						"1"	=> "Crédito à Vista",
 						"A"	=> "Débito à Vista"

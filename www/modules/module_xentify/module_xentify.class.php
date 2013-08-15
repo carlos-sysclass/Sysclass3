@@ -839,10 +839,6 @@ class module_xentify extends MagesterExtendedModule
     		case 16:  // SAME NEGOCIATION
     			list($data['negociation_id']) = explode(';', $scope_id);
     			break;
-    		/*
-   			case 17:  // SAME NEGOCIATION
-   				list($data['negociation_id'], $data['invoice_index']) = explode(';', $scope_id);
-   				break;
    			*/
     	}
     	return $data;
