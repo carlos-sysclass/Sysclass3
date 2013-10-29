@@ -105,12 +105,16 @@ if (isset($currentUser -> coreAccess['configuration']) && $currentUser -> coreAc
          'Subject' => 'Test email',
          'Content-type' => 'text/plain;charset="UTF-8"', // if content-type is text/html, the message cannot be received by mail clients for Registration content
          'Content-Transfer-Encoding' => '7bit');
+
+   $smtp = Mail::factory('mail');
+/*
    $smtp = Mail::factory('smtp', array('auth' => $values['smtp_auth'] ? true : false,
              'host' => $values['smtp_host'],
              'password' => $values['smtp_pass'],
              'port' => $values['smtp_port'],
              'username' => $values['smtp_user'],
              'timeout' => $values['smtp_timeout']));
+*/
    $result = $smtp -> send($user_mail[0]['email'], $header, 'This is a test email sent from '.G_SERVERNAME.' to verify SMTP settings');
    if ($result === true) {
     $message = _EMAILSENDTOYOURADDRESS;
