@@ -124,17 +124,40 @@ if (!isset($GLOBALS['loadLanguage']) || $GLOBALS['loadLanguage']) {
             /** If there is a current language in the session, use that*/
             //require_once $path."language/lang-".$_SESSION['s_language'].".php.inc";
             $setLanguage = $_SESSION['s_language'];
-        } elseif ($GLOBALS['configuration']['default_language'] /*&& is_file($path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc")*/) {
-            /** If there isn't a language in the session, use the default system language*/
-            //require_once $path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc";
-            $setLanguage = $GLOBALS['configuration']['default_language'];
         } else {
-            //If there isn't neither a session language, or a default language in the configuration, use english by default
-            //require_once $path."language/lang-english.php.inc";
-            $setLanguage = "english";
+            $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+            preg_match_all('/(\W|^)([a-z]{2}(-[a-z]{2}){0,1})/six', $lang, $m, PREG_PATTERN_ORDER);
+
+            foreach($m[2] as $code) {
+                $language_entry = sC_getTableData("languages", "name", sprintf("code = '%s'", $code));
+                if (count($language_entry) > 0) {
+                    $setLanguage = $language_entry[0]['name'];
+                    break;
+                }
+            }
+            if (!isset($setLanguage)) {
+                foreach($m[2] as $code) {
+                    $code = substr($code, 0, 2);
+                    $language_entry = sC_getTableData("languages", "name", sprintf("code = '%s'", $code));
+                    if (count($language_entry) > 0) {
+                        $setLanguage = $language_entry[0]['name'];
+                        break;
+                    }
+                }
+                if (!isset($setLanguage)) {
+                    if ($GLOBALS['configuration']['default_language'] /*&& is_file($path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc")*/) {
+                        /** If there isn't a language in the session, use the default system language*/
+                        //require_once $path."language/lang-".$GLOBALS['configuration']['default_language'].".php.inc";
+                        $setLanguage = $GLOBALS['configuration']['default_language'];
+                    } else {
+                        //If there isn't neither a session language, or a default language in the configuration, use english by default
+                        //require_once $path."language/lang-english.php.inc";
+                        $setLanguage = "english";
+                    }
+                }
+            }
         }
     }
-    
     $languageModule->getLanguageFile($setLanguage);
 }
 //Set locale settings
