@@ -8,7 +8,7 @@ function direita($entra,$comp)
 {
 	return substr($entra,strlen($entra)-$comp,$comp);
 }
-function xpay_boleto_csC_sigcb_FBarCode($params, &$smarty)
+function xpay_boleto_cef_sigcb_FBarCode($params, &$smarty)
 {
 	$valor = $params['barcode'];
 	$baseModuleLink	= $params['module_link'];

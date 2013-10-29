@@ -18,7 +18,10 @@
 				<td>{$trans.tid}</td>
 				<td align="center">#filter:date-{$trans.data}#</td>
 				<td>{$trans.login}</td>
-				<td align="center"><img src="{$T_XPAY_CIELO_BASELINK}images/{$trans.bandeira}.png" /></td>
+				<td align="center">
+					<img src="{$T_XPAY_CIELO_BASELINK}images/{$trans.bandeira}.png" />
+					<span style="display:none;">{$trans.bandeira}</span>
+				</td>
 				<td align="center">{$trans.forma_pagamento}</td>
 				<td align="center">#filter:currency:{$trans.valor}#</td>
 				<td align="center">{$trans.status_id} - {$trans.status}</td>
@@ -41,7 +44,6 @@
 			<th style="text-align: center;">Data</th>
 			<th style="text-align: center;">Usuário</th>
 			<th style="text-align: center;">Bandeira</th>
-			</th>
 			<th style="text-align: center;">Forma</th>
 			<th style="text-align: center;">Valor</th>
 			<th style="text-align: center;">Status</th>

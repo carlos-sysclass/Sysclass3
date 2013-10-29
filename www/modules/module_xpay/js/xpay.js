@@ -437,10 +437,10 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 				}
 			);
 		},
-		viewInstanceOptions : function(instance_index) {
+		viewInstanceOptions : function(instance_index, negociation_id) {
 			this._loadAction(
 				"view_instance_options",
-				{"instance_index" : instance_index},
+				{"instance_index" : instance_index, "negociation_id" : negociation_id},
 				"#xpay-submodule-options-container",
 				function() {
 					//jQuery("#xpay-file-details-container").dialog('open');		
@@ -527,13 +527,20 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 			
 			
 			jQuery(":input[name='pay_methods']").live('click', function() {
-				_sysclass("load", "xpay").viewInstanceOptions(jQuery(this).val());
+				config = _sysclass("load", "xpay").config();
+				if (config['override_negociation_id'] != undefined) {
+					var negociation_id = config["override_negociation_id"];
+				} else {
+					var negociation_id = config["negociation_id"];
+				}
+
+				_sysclass("load", "xpay").viewInstanceOptions(jQuery(this).val(), negociation_id);
 				
 				jQuery("#xpay-do-payment-button")
 					.removeAttr("disabled")
 					.removeClass("ui-state-disabled");
 			});
-			
+
 			// CREATE DIALOG FORM DO-PAY OPTIONS
 			jQuery("#xpay-do_payment-options-dialog").dialog({
 				autoOpen	: false,
@@ -549,12 +556,18 @@ function xPayMailInvoicesAdviseAction(negociation_id, invoice_index) {
 			jQuery("#xpay-do-payment-button")
 				.attr("disabled", "disabled")
 				.addClass("ui-state-disabled");
+
+			jQuery(":input[name='pay_methods']:checked").click();
 			
 			jQuery(".xpay-do_payment-options-dialog-link").click(function() {
 				var url = jQuery(this).attr("href");
 				jQuery("#xpay-do_payment-options-dialog-inner").empty();
 				jQuery("#xpay-do_payment-options-dialog-loader").show();
 				jQuery("#xpay-do_payment-options-dialog").dialog('open');
+
+				if (jQuery(this).data("negociation-id") != undefined) {
+					_sysclass("load", "xpay").setConfig('override_negociation_id', jQuery(this).data("negociation-id"));
+				}
 				
 				jQuery("#xpay-do_payment-options-dialog-inner").load(url, function() {
 					jQuery("#xpay-do_payment-options-dialog-loader").hide();

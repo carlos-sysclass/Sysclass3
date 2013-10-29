@@ -69,6 +69,9 @@
                 this.opt[name] = value;
             }
         },
+        setConfig : function(name, value) {
+            this.opt[name] = value;
+        },
         sync: function(bSwitch) {
             if (typeof(bSwitch) != "boolean") {
                 output = "json";
