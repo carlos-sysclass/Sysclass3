@@ -386,7 +386,7 @@ class module_xcontent extends MagesterExtendedModule
 						continue;
 					}
 				}
-				if (strtotime($schedule['end']) < time()) {
+				if (strtotime($schedule['end']) < time() && strtotime($schedule['schedule_end']) < time()) {
 					unset($scoped_schedule[$scoped_index]);
 					continue;
 				}
@@ -399,8 +399,6 @@ class module_xcontent extends MagesterExtendedModule
 				$schedule = array_merge($schedule, $scopeData);
     		}
     	}
-
-    	//var_dump($currentUser);
 
     	$smarty -> assign("T_XCONTENT_SCHEDULES", $schedules);
 
@@ -1892,7 +1890,10 @@ class module_xcontent extends MagesterExtendedModule
    			"COUNT(DISTINCT sch_ct.course_id) as total_courses, " .
    			"COUNT(DISTINCT sch_ct.content_id) as total_contents,
    			(SELECT MIN(module_xcontent_schedule_itens.start) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as start,
-   			(SELECT MAX(module_xcontent_schedule_itens.end) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as end",
+   			(SELECT MAX(module_xcontent_schedule_itens.end) FROM module_xcontent_schedule_itens WHERE schedl.id = module_xcontent_schedule_itens.schedule_id) as end,
+			schedl.start as schedule_start,
+			schedl.end as schedule_end
+",
    			implode(" AND ", $where),
    			"schedl.start DESC",
    			"schedl.id, schedl.xentify_scope_id, schedl.xentify_id, schedl.start, schedl.block_html"
