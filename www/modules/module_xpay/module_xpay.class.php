@@ -3760,7 +3760,7 @@ class module_xpay extends MagesterExtendedModule
 			'Content-type'             	=> 'text/html;charset="UTF-8"',                       // if content-type is text/html, the message cannot be received by mail clients for Registration content
 			'Content-Transfer-Encoding' => '7bit'
 		);
-
+		/*
 		$smtp = Mail::factory('smtp', array(
 				'auth'      => true,
 				'host'      => "localhost",
@@ -3771,6 +3771,8 @@ class module_xpay extends MagesterExtendedModule
 				'persist' => true
 			)
 		);
+		*/
+		$smtp = Mail::factory('mail');
 
 		//$smtp->debug = true;
 

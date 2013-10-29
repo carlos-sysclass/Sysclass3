@@ -1358,7 +1358,7 @@ AND u.active = 1))");
 		                'Content-type'             	=> 'text/html;charset="UTF-8"',                       // if content-type is text/html, the message cannot be received by mail clients for Registration content
 		                'Content-Transfer-Encoding' => '7bit'
 					);
-
+	                /*
 	                $smtp = Mail::factory('smtp', array(
 	                	'auth'      => $GLOBALS['configuration']['smtp_auth'] ? true : false,
 	                	'host'      => $GLOBALS['configuration']['smtp_host'],
@@ -1367,6 +1367,8 @@ AND u.active = 1))");
 	                	'username'  => $GLOBALS['configuration']['smtp_user'],
 	                	'timeout'   => $GLOBALS['configuration']['smtp_timeout'])
 	                );
+	                */
+	                $smtp = Mail::factory('mail');
 
 					if ($smtp -> send($user_mail, $header, $body)) {
 	                	// CHECK IF USER IS 18 AGE OLDER.
