@@ -1,0 +1,9 @@
+#translation_tooltip {
+	background: #fff;
+	position: absolute;
+	margin: 0;
+    border: 1px solid #AAAAAA;
+    padding: 15px;
+    z-index: 10000;
+    visibility: hidden;
+}

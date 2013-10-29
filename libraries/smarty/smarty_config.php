@@ -5,16 +5,17 @@
 $smarty = new Smarty;
 
 //The templates can be read by the 'external/' directory as well
-$smarty->template_dir = array(G_CURRENTTHEMEPATH.'external/',
+$smarty->template_dir 	= array(G_CURRENTTHEMEPATH.'external/',
     G_CURRENTTHEMEPATH.'templates/');
 //$smarty->template_dir  = G_CURRENTTHEMEPATH.'templates/';
-$smarty->plugins_dir[] = G_CURRENTTHEMEPATH.'templates/custom_plugins/';
+$smarty->plugins_dir[] 	= G_CURRENTTHEMEPATH.'templates/custom_plugins/';
 //We add this to search for non-existent plugins to the default theme
-$smarty->plugins_dir[] = G_DEFAULTTHEMEPATH.'templates/custom_plugins/';
+$smarty->plugins_dir[] 	= G_DEFAULTTHEMEPATH.'templates/custom_plugins/';
 
-$smarty->compile_dir   = G_CURRENTTHEMECACHE.'templates_c/';
-$smarty->cache_dir     = G_CURRENTTHEMECACHE.'cache/';
-$smarty->config_dir    = $path.'smarty/configs/';
+$smarty->compile_dir   	= G_CURRENTTHEMECACHE.'templates_c/';
+$smarty->cache_dir     	= G_CURRENTTHEMECACHE.'cache/';
+$smarty->config_dir    	= $path.'smarty/configs/';
+$smarty->debugging 		= false;
 
 //Create cache and template cache directories, if they don't exist
 is_dir(G_CURRENTTHEMECACHE)    or mkdir(G_CURRENTTHEMECACHE, 0755);

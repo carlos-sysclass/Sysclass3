@@ -71,12 +71,18 @@ if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAcces
     if ($createForm -> isSubmitted() && $createForm -> validate()) {
         $values = $createForm -> exportValues();
         try {
+            $values['english_name'] = strtolower($values['english_name']);
+
             if ($values['selected_language']) {
+               
                 if ($_FILES['language_upload']['error'] == 0) {
                     $filesystem = new FileSystemTree(G_ROOTPATH.'libraries/language');
                     $uploadedFile = $filesystem -> uploadFile('language_upload', G_ROOTPATH.'libraries/language');
                     $uploadedFile -> rename(dirname($uploadedFile['path']).'/lang-'.$values['english_name'].'.php.inc', true);
                 }
+                $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $values['english_name']);
+                chmod($filename, 0777);
+
                 $fields = array("name" => $values['english_name'],
                                         "translation" => $values['translation'],
                                         "rtl" => $values['rtl']);
@@ -100,6 +106,10 @@ if (!isset($currentUser -> coreAccess['languages']) || $currentUser -> coreAcces
                     $file = new MagesterFile(G_ROOTPATH.'libraries/language/lang-english.php.inc');
                     $file -> copy(G_ROOTPATH.'libraries/language/lang-'.$values['english_name'].'.php.inc');
                 }
+
+                $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $values['english_name']);
+                chmod($filename, 0777);
+                
                 $fields = array("name" => $values['english_name'],
                                         "translation" => $values['translation'],
                                         "active" => 1,

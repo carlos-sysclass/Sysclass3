@@ -58,7 +58,16 @@
             return this.fake;
         },
         config : function(name) {
-            return this.opt;
+            if (name != undefined) {
+                return this.opt[name];
+            } else {
+                return this.opt;    
+            }
+        },
+        setConfig : function(name, value) {
+            if (name != undefined) {
+                this.opt[name] = value;
+            }
         },
         setConfig : function(name, value) {
             this.opt[name] = value;

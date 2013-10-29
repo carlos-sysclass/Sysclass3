@@ -232,7 +232,6 @@ class Smarty_Compiler extends Smarty
                 $this->php_handling = SMARTY_PHP_PASSTHRU;
             }
         }
-
         $this->_load_filters();
 
         $this->_current_file = $resource_name;
@@ -2241,6 +2240,7 @@ class Smarty_Compiler extends Smarty
                     unset($this->_plugins['prefilter'][$filter_name]);
                     $_params = array('plugins' => array(array('prefilter', $filter_name, null, null, false)));
                     require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+
                     smarty_core_load_plugins($_params, $this);
                 }
             }

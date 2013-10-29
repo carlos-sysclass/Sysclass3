@@ -15,12 +15,11 @@
 
 function smarty_core_load_plugins($params, &$smarty)
 {
-
     foreach ($params['plugins'] as $_plugin_info) {
         list($_type, $_name, $_tpl_file, $_tpl_line, $_delayed_loading) = $_plugin_info;
         $_plugin = &$smarty->_plugins[$_type][$_name];
 
-        /*
+       /*
          * We do not load plugin more than once for each instance of Smarty.
          * The following code checks for that. The plugin can also be
          * registered dynamically at runtime, in which case template file
@@ -56,6 +55,9 @@ function smarty_core_load_plugins($params, &$smarty)
 
         $_plugin_file = $smarty->_get_plugin_filepath($_type, $_name);
 
+        
+
+
         if (! $_found = ($_plugin_file != false)) {
             $_message = "could not load plugin file '$_type.$_name.php'\n";
         }
@@ -65,10 +67,17 @@ function smarty_core_load_plugins($params, &$smarty)
          * plugin function. In case it doesn't, simply output the error and
          * do not fall back on any other method.
          */
-        if ($_found) {
-            include_once $_plugin_file;
 
+        if ($_found) {
             $_plugin_func = 'smarty_' . $_type . '_' . $_name;
+
+            include_once $_plugin_file;    
+
+
+
+            
+
+
             if (!function_exists($_plugin_func)) {
                 $smarty->_trigger_fatal_error("[plugin] function $_plugin_func() not found in $_plugin_file", $_tpl_file, $_tpl_line, __FILE__, __LINE__);
                 continue;
@@ -116,6 +125,7 @@ function smarty_core_load_plugins($params, &$smarty)
         } else {
             // output error
             $smarty->_trigger_fatal_error('[plugin] ' . $_message, $_tpl_file, $_tpl_line, __FILE__, __LINE__);
+            
         }
     }
 }

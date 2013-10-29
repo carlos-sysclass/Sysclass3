@@ -2849,7 +2849,6 @@ class module_xpay extends MagesterExtendedModule
 			$sendToData = sC_getTableData(
 				"module_xpay_course_negociation",
 				"user_id, send_to, ref_payment_id",
-
 				"id = " . $negociationID
 			);
 
