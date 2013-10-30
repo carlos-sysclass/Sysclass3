@@ -528,7 +528,6 @@ html {
 	min-width:44px;
 }
 
-
 .inactiveImage, .inactiveImage img{opacity:0.2;filter:alpha(opacity=20);}
 
 /*autocomplete div*/
@@ -564,4 +563,8 @@ div.autocomplete ul li {
 
 input.autoCompleteTextBox {
 	width: 50%;
+}
+
+table.testInfo {
+	vertical-align: top !important;
 }
