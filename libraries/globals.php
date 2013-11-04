@@ -295,11 +295,11 @@ function setupVersion()
 {
  define("G_VERSIONTYPE_CODEBASE", 'community');
  //Set the specific version parameters
-    $GLOBALS['versionTypes'] = array('educational' => 'Educational',
-                          'enterprise' => 'Enterprise',
+    $GLOBALS['versionTypes'] = array('educational' => '',
+                          'enterprise' => '',
                           //'unregistered' => 'Unregistered',
-                          'standard' => 'Community++',
-                          'community' => 'Community');
+                          'standard' => '',
+                          'community' => '');
     //If we have set a version, it is stored in the configuration file
     if (isset($GLOBALS['configuration']['version_type']) && in_array($GLOBALS['configuration']['version_type'], array_keys($GLOBALS['versionTypes']))) {
         define("G_VERSIONTYPE", $GLOBALS['configuration']['version_type']);
