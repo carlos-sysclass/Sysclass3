@@ -815,14 +815,14 @@ class module_quick_mails extends MagesterExtendedModule
         $order  = (isset($_GET['order']) && $_GET['order'] == 'desc')                   ? 'desc'          : 'asc';
         //$offset = (isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int')) ? $_GET['offset'] : 0;
         $where = array();
-        $where[] = "(qml.recipient_id = $itemID OR qml.recipient_id IS NULL)";
+        //$where[] = "(qml.recipient_id = $itemID OR qml.recipient_id IS NULL)";
         $where[] = "u.archive = 0";
         $where = implode(" AND ", $where);
 
         // Write the sql query
 		$users = sC_getTableData(
 			"users u LEFT JOIN `module_quick_mails_recipients_list` qml ON (u.id = qml.user_id)",
-			"qml.recipient_id, u.id, u.login, u.user_type, u.user_types_ID, u.email",
+			"qml.recipient_id, u.id, u.login, u.user_type, u.user_types_ID, u.email, u.active",
 			$where,
 			"qml.recipient_id DESC, $sort"
 		);
@@ -953,14 +953,21 @@ class module_quick_mails extends MagesterExtendedModule
 
 		$values = $form->getValue();
 
+		var_dump($values);
+
 		if (is_numeric($values['scope_id']) && $values['scope_id'] > 0) {
 			// MAKE OPTIONS FOR SELECTED SCOPE
 			$scopeFields = $xentifyModule->makeScopeFormOptions($values['scope_id'], $form);
-			$values = $form->getValue();
+
+			
 
 			$smarty -> assign("T_QUICK_MAIL_SCOPE_FIELDS", $scopeFields);
 
-			if ($form -> isSubmitted() && $form -> validate()) {
+			if (count($scopeFields) == 0 || ($form -> isSubmitted() && $form -> validate())) {
+				if (count($scopeFields) > 0) {
+					$values = $form->getValue();
+				}
+
 				$xentifyValues = array();
 				foreach ($scopeFields as $field_name) {
 					$xentifyValues[] = $values[$field_name];

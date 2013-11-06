@@ -145,10 +145,13 @@ jQuery(function($) {
 
 			    }
 
-			    jQuery("#translation_tooltip select").val($language);
+				jQuery("#translation_tooltip select").val($language);
 
-			    _sysclass("load", "language").injectTerms(usedTerms, this);
-
+			    if (!hasTerms) {
+			    	// CREATE A INDEX WITH SELECTED TERM
+			    	usedTerms[$subject] = $subject;
+			    }
+				_sysclass("load", "language").injectTerms(usedTerms, this);			    	
 			    return false;
 			});
 		},

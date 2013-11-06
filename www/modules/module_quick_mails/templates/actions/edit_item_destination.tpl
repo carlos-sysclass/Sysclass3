@@ -19,7 +19,7 @@
                 <td>{if $user.user_types_ID}{$T_ROLES[$user.user_types_ID]}{else}{$T_ROLES[$user.user_type]}{/if}</td>
                 <td>{$user.email}</td>
                 <td class = "centerAlign">
-    				<input type = "checkbox" id = "{$lesson.id}" onclick = "_sysclass('load', 'quick_mails').toggleUserInRecipientList('{$smarty.get.item_id}', '{$user.id}', this);" {if $user.recipient_id}checked{/if}>{if $user.recipient_id}<span style = "display:none">checked</span>{/if} {*Span is for sorting here*}
+    				<input type = "checkbox" id = "{$lesson.id}" onclick = "_sysclass('load', 'quick_mails').toggleUserInRecipientList('{$smarty.get.item_id}', '{$user.id}', this);" {if $user.recipient_id == $smarty.get.item_id}checked{/if}>{if $user.recipient_id == $smarty.get.item_id}<span style = "display:none">checked</span>{/if} {*Span is for sorting here*}
      			</td>
 			</tr>
 		{/foreach}

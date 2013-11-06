@@ -537,7 +537,8 @@ class module_xentify extends MagesterExtendedModule
     	$status = $this->getUserScopeStatus($user, $scope_type, $scope_id);
 
     	switch ($scope_type) {
-    		case 0 : { // SAME POLO AND SAME CLASS
+    		case 0 :  // ALL USERS
+    		case 18 : { // ALL USERS
     			return true;
     		}
     		case 1 : { // SAME IES
@@ -840,6 +841,9 @@ class module_xentify extends MagesterExtendedModule
     			list($data['negociation_id']) = explode(';', $scope_id);
     			break;
    			*/
+    		case 18: // ALL USERS
+    			return str_replace($search, $replace, __XENTIFY_ALL_USERS_SCOPE);
+    			break;
     	}
     	return $data;
     }

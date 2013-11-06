@@ -306,7 +306,7 @@ function setupVersion()
     }
     //If we haven't set a version, then it is the community edition
     else {
-        define("G_VERSIONTYPE", 'community');
+        define("G_VERSIONTYPE", '');
         //define("G_VERSIONTYPE", "community");
     }
 }
