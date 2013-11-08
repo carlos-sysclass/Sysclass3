@@ -28,11 +28,12 @@ if ($_GET['debug'] == 10) {
 	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 }
 //Prepend the include path with magester folders
+/*
 set_include_path($path.'../PEAR/'
                 . PATH_SEPARATOR . $path.'includes/'
                 . PATH_SEPARATOR . $path
                 . PATH_SEPARATOR . get_include_path());
-
+*/
 //var_dump(ini_set("upload_max_filesize", '64M'));
 //var_dump(ini_get("upload_max_filesize"));
 
@@ -167,7 +168,10 @@ setlocale(LC_TIME, _HEADERLANGUAGETAG);
 
 setupThemes($overrideTheme);
 /**The smarty libraries -- must be below themes!*/
-require_once $path."smarty/smarty_config.php";
+//require_once $path."smarty/smarty_config.php";
+
+$smarty = ViewableContentManager::getSmarty();
+
 //Assign the configuration variables to smarty
 $smarty -> assign("T_CONFIGURATION", $configuration); //Assign global configuration values to smarty
 
@@ -494,6 +498,8 @@ function setupThemes($overrideTheme = null)
 function defaultExceptionHandler($e)
 {
     //@todo: Database exceptions are not caught if thrown before smarty
+    var_dump($e);
+    exit;
     $tplFile = str_replace(".php", ".tpl", basename($_SERVER['PHP_SELF']));
     is_file($GLOBALS['smarty'] -> template_dir.$tplFile) ? $displayTpl = $tplFile : $displayTpl = 'index.tpl';
     if ($GLOBALS['smarty']) {
