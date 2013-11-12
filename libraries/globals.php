@@ -25,15 +25,17 @@ header('Content-Type: text/html; charset=utf-8');
 
 error_reporting( E_ERROR );
 if ($_GET['debug'] == 10) {
-	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT);ini_set("display_errors", true);define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
+	error_reporting( E_ALL & ~E_STRICT & ~E_DEPRECATED );
+    ini_set("display_errors", true);
+    define("NO_OUTPUT_BUFFERING", true);        //Uncomment this to get a full list of errors
 }
 //Prepend the include path with magester folders
-/*
+
 set_include_path($path.'../PEAR/'
                 . PATH_SEPARATOR . $path.'includes/'
                 . PATH_SEPARATOR . $path
                 . PATH_SEPARATOR . get_include_path());
-*/
+
 //var_dump(ini_set("upload_max_filesize", '64M'));
 //var_dump(ini_get("upload_max_filesize"));
 
@@ -222,31 +224,31 @@ require_once $path."includes/currencies.php";
 //Load filters if smarty is set
 if (isset($smarty)) {
 
-    //$smarty -> load_filter('pre', 'sC_translationModeLinkify');
+    //$smarty -> loadFilter('pre', 'sC_translationModeLinkify');
     
     //Convert normal images to css sprites
-    $smarty -> load_filter('output', 'sC_template_applyImageMap');
+    $smarty -> loadFilter('output', 'sC_template_applyImageMap');
     //Convert plain urls to theme-specific urls
-    $smarty -> load_filter('output', 'sC_template_applyThemeToImages');
+    $smarty -> loadFilter('output', 'sC_template_applyThemeToImages');
     //Format the timestamps according to system settings
-    $smarty -> load_filter('output', 'sC_template_formatTimestamp');
+    $smarty -> loadFilter('output', 'sC_template_formatTimestamp');
     //Format datetime strings according to system settings
-    $smarty -> load_filter('output', 'sC_template_formatDatetime');
+    $smarty -> loadFilter('output', 'sC_template_formatDatetime');
     //Format currency strings according to system settings
-    $smarty -> load_filter('output', 'sC_template_formatCurrency');
+    $smarty -> loadFilter('output', 'sC_template_formatCurrency');
 
     //Convert logins to personal-message enabled clickable links
-    $smarty -> load_filter('output', 'sC_template_loginToMessageLink');
+    $smarty -> loadFilter('output', 'sC_template_loginToMessageLink');
     //Format logins according to system settings
-    $smarty -> load_filter('output', 'sC_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
+    $smarty -> loadFilter('output', 'sC_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
     //Format scores according to system settings
-    $smarty -> load_filter('output', 'sC_template_formatScore');
+    $smarty -> loadFilter('output', 'sC_template_formatScore');
     //Selectively include some javascripts based on whether they are actually needed
-    $smarty -> load_filter('output', 'sC_template_includeScripts');
+    $smarty -> loadFilter('output', 'sC_template_includeScripts');
 
-    $smarty -> load_filter('output', 'sC_template_sanitizeDOMString');
+    $smarty -> loadFilter('output', 'sC_template_sanitizeDOMString');
 
-    $smarty -> load_filter('output', 'sC_translationModeLinkify');
+    $smarty -> loadFilter('output', 'sC_translationModeLinkify');
 
     $browser = detectBrowser();
     if ($browser == 'ie6') {
@@ -663,8 +665,8 @@ function __autoload($className)
     } elseif (strpos($className, "magesterlesson") !== false) {
         require_once 'lesson.class.php';
         require_once 'deprecated.php';
-    } elseif (strpos($className, "smarty") !== false) {
-        require_once 'smarty/libs/Smarty.class.php';
+//    } elseif (strpos($className, "smarty") !== false) {
+//        require_once 'smarty/libs/Smarty.class.php';
     } elseif (strpos($className, "magesterbenchmark") !== false) {
         require_once 'benchmark.class.php';
     } elseif (strpos($className, "magesterform") !== false) {

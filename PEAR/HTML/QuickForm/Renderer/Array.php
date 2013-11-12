@@ -287,6 +287,8 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
             $ret['label'] = $labels;
         }
 
+        $ret['class'] = $element->_attributes['class'];
+
         // set the style for the element
         if (isset($this->_elementStyles[$ret['name']])) {
             $ret['style'] = $this->_elementStyles[$ret['name']];

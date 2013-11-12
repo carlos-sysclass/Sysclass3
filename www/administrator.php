@@ -116,7 +116,7 @@ if ($GLOBALS['currentTheme']->options['sidebar_interface'] == 1 || $GLOBALS['cur
 if ( !empty( $_GET['route'] ) ) {
     list($_GET['ctg'], $_GET['op'], $_GET['action'], $_GET['data']) = explode("/", $_GET['route'], 4);
 }
-
+/*
 //include "new_sidebar.php";
 //var_dump($GLOBALS['currentTheme']->options['sidebar_interface']);
 !isset($_GET['ctg']) ? $ctg = "control_panel" : $ctg = $_GET['ctg'];
@@ -136,7 +136,7 @@ if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] =
 $smarty->assign("_student_", $_student_);
 $smarty->assign("_professor_", $_professor_);
 $smarty->assign("_admin_", $_admin_);
-
+*/
 
 if (!$GLOBALS['configuration']['disable_messages']) {
     if (($currentUser->coreAccess['personal_messages']) || $currentUser->coreAccess['personal_messages'] != 'hidden') {
@@ -308,6 +308,7 @@ try {
     $message = $e->getMessage() . ' (' . $e->getCode() . ') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\'' . _ERRORDETAILS . '\', 2, \'error_details\')">' . _MOREINFO . '</a>';
     $message_type = 'failure';
 }
+
 $smarty->assign("T_HEADER_EDITOR", $load_editor); //Specify whether we need to load the editor
 if (isset($_GET['refresh']) || isset($_GET['refresh_side'])) {
     $smarty->assign("T_REFRESH_SIDE", "true");
@@ -321,6 +322,7 @@ if (class_exists("MagesterNotification") && MagesterNotification::shouldSendNext
     $smarty->assign("T_TRIGGER_NEXT_NOTIFICATIONS_SEND", 1);
     $_SESSION['send_next_notifications_now'] = 0; // the msg that triggered the immediate send should be sent now
 }
+
 ///MODULES5
 $smarty->assign("T_MODULE_CSS", $module_css_array);
 $smarty->assign("T_MODULE_CSS_STRING", implode(",",$module_css_array));

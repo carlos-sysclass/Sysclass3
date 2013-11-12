@@ -3,12 +3,13 @@
 
 $plicoLib = PlicoLib::instance();
 
-$plicoLib->set('theme', 'web');
+$plicoLib->set('theme', 'metronic');
 $plicoLib->set('client_name', 'Smart Solution');
 $plicoLib->set('app_name', 'Smart Solution');
 //$plicoLib->set('db_dsn', 'postgres://ssra:fep7_58A#@localhost/ssra_root');
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
+/*
 $plicoLib->set('mail/send/isSMTP', FALSE);
 $plicoLib->set('mail/send/debug', FALSE);
 $plicoLib->set('mail/send/do_auth', FALSE);
@@ -18,12 +19,13 @@ $plicoLib->set('mail/send/user', "website@ssra.com.br");
 $plicoLib->set('mail/send/pass', "JDEp3BMp98");
 $plicoLib->set('mail/send/from/email', "website@ssra.com.br");
 $plicoLib->set('mail/send/from/name', 'Web site ssra');
-
+*/
 // SETTING CONTROLLERS
 $plicoLib->concat(
 	'controller',
 	array(
-		'LoginController'
+		'LoginController',
+		'AdministratorController'
 /*
 		'TwitterController',
 		'AboutUsController',
@@ -64,8 +66,7 @@ $plicoLib->concat(
 		'plugins/jqvmap/jqvmap/jqvmap',
 		'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
- 
-		//<!-- BEGIN THEME STYLES -->
+ 		//<!-- BEGIN THEME STYLES -->
 		'css/style-metronic',
 		'css/style',
 		'css/style-responsive',
@@ -73,7 +74,6 @@ $plicoLib->concat(
 		'css/themes/default',
 		'css/custom'
 		//<!-- END THEME STYLES -->
-
 	)
 );
 
@@ -87,6 +87,10 @@ $plicoLib->concat(
 		'plugins/jquery-slimscroll/jquery.slimscroll.min',
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
-		'plugins/uniform/jquery.uniform.min'
+		'plugins/uniform/jquery.uniform.min',
+		'plugins/jquery-validation/dist/jquery.validate.min',
+		'plugins/backstretch/jquery.backstretch.min',
+		'plugins/select2/select2.min',
+		'scripts/app'
 	)
 );

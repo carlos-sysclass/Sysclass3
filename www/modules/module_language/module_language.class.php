@@ -631,7 +631,8 @@ class module_language extends MagesterExtendedModule
     	/** @todo CREATE A WRAPPER TO INCLUDE l10n DATA, LOCALIZED CONFIG DATA, ETC... */
 
         $filename = sprintf(G_ROOTPATH . "libraries/language/lang-%s.php.inc", $language);
-        include_once($filename);
+
+        require_once($filename);
         /*
     	// REQUIRE ALL SECTIONS FILE TRANSLATED FILES
     	// READ DIRECTION language / $language /, AND INCLUDE FILES IN ORDER

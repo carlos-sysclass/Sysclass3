@@ -763,57 +763,9 @@ function sC_ldapConnect() {
     return $ds;
 }
 
-/**
- * Check a parameter against a type
- *
- * This function accepts a parameter and a type. It then checks the parameter against a regular expression corresponding
- * to the type specified. If the regular expression is met, then the parameter is returned. Otherwise, false is returned
- * Supported types are:<br>
- * - string: Only characters, [A-Za-a]
- * - uint: Only positive numbers or zero, [0-9]
- * - id: Alias for uint
- * - login: Valid login names are made of alphanumeric characters and @, no spaces
- * - email: Valid email address
- * - filename: Valid filenames must not include special characters, such as /,\,..
- * - hex: Hexadecimal number
- * - alnum: Alphanumeric characters, [A-Za-z0-9]
- * - alnum_with_spaces: Alphanumeric characters, but spaces are valid as well, [A-Za-z0-9\s]
- * - ldap_attribute: Valid ldap attribute names
- * - text: A string with plain characters, digits, and symbols, but not quotes or other special characters (like $, / etc)
- *
- * <br>Example:
- * <code>
- * $param = 'Hello world!';
- * if (sC_checkParameter($param, 'string')) {
- *     echo "Parameter is String";
- * }
- *
- * $param = '123';
- * if (sC_checkParameter($param, 'unit')) {
- *     echo "Parameter is Unsigned integer";
- * }
- *
- * </code>
- * But be careful:
- * <code>
- * $param = '0';
- * if (sC_checkParameter($param, 'unit')) {                      //Wrong way! This will not evalute to true, since sC_checkParameter will return $param, which is 0.
- *     echo "Parameter is Unsigned integer";
- * }
- *
- * if (sC_checkParameter($param, 'unit') !== false) {             //Correct way, since we make sure that the value returned is actually false.
- *     echo "Parameter is Unsigned integer";
- * }
- * </code>
- *
- * @param mixed $param The parameter to check
- * @param string $type The parameter type (One of: string | uint | id | login | email | file | filename | directory | hex | timestamp | date | alnum | ldap_attribute | alnum_with_spaces | alnum_general | text | path)
- * @return mixed The parameter, if it is of the specified type, or false otherwise
- * @version 1.0.1
- * Changes from 1.0 to 1.1:
- * - Modified email declaration, so it can detect emails that have a dot (.) in the first part (before the '@').
- */
 function sC_checkParameter($parameter, $type, $correct = false) {
+    return StaticBCController::_checkParameter($parameter, $type, $correct);
+    /*
     switch ($type) {
     case 'string':
         if (!preg_match("/^[A-Za-z]{1,100}$/", $parameter)) {
@@ -909,6 +861,7 @@ function sC_checkParameter($parameter, $type, $correct = false) {
     }
 
     return $parameter;
+    */
 }
 
 function strip_script_tags($str) {
@@ -1968,24 +1921,7 @@ function detectBrowser() {
  * @since 3.6.0
  */
 function sC_redirect($url, $js = false, $target = 'top', $retainUrl = false) {
-    if (!$retainUrl) {
-        $parts = parse_url($url);
-        if (isset($parts['query']) && $parts['query']) {
-            if ($GLOBALS['configuration']['encrypt_url']) {
-                $parts['query'] = 'cru='.encryptString($parts['query']);
-            }
-            $parts['query'] = '?'.$parts['query'];
-        } else {
-            $parts['query'] = '';
-        }
-        $url = G_SERVERNAME.basename($parts['path']).$parts['query'];
-    }
-    if ($js) {
-        echo "<script language='JavaScript'>$target.location='$url'</script>";
-    } else {
-        header("location:$url");
-    }
-    exit;
+    StaticBCController::_redirect($url, $js, $target, $retainUrl);
 }
 
 /**

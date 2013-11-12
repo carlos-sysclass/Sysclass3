@@ -1,64 +1,87 @@
-{extends file="layout/default.tpl"}
+{extends file="layout/login.tpl"}
 {block name="content"}
 	<div class="content">
 		<!-- BEGIN LOGIN FORM -->
-		<form class="login-form" action="index.html" method="post">
-			<h3 class="form-title">Login to your account</h3>
-			<div class="alert alert-error hide">
-				<button class="close" data-dismiss="alert"></button>
-				<span>Enter any username and password.</span>
-			</div>
+		{$T_LOGIN_FORM.javascript}
+		<form {$T_LOGIN_FORM.attributes}>
+			{$T_LOGIN_FORM.hidden}
+			<h3 class="form-title">{translateToken value='Login to your account'}</h3>
+			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
+				<div class="alert alert-{$T_MESSAGE.type}">
+					<button class="close" data-dismiss="alert"></button>
+					<span>{$T_MESSAGE.message}</span>
+				</div>
+			{/if}
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">Username</label>
+				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.login.label}</label>
 				<div class="input-icon">
 					<i class="icon-user"></i>
-					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+					<input class="{$T_LOGIN_FORM.login.class}" type="{$T_LOGIN_FORM.login.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.login.label}" name="{$T_LOGIN_FORM.login.name}" id="{$T_LOGIN_FORM.login.name}"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Password</label>
+				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.password.label}</label>
 				<div class="input-icon">
 					<i class="icon-lock"></i>
-					<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
+					<input class="{$T_LOGIN_FORM.password.class}" type="{$T_LOGIN_FORM.password.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" />
 				</div>
 			</div>
 			<div class="form-actions">
 				<label class="checkbox">
-				<input type="checkbox" name="remember" value="1"/> Remember me
+					<input type="{$T_LOGIN_FORM.remember.type}" name="{$T_LOGIN_FORM.remember.name}" value="{$T_LOGIN_FORM.remember.value}"/> {translateToken value='Remember Me'}
 				</label>
-				<button type="submit" class="btn green pull-right">
-				Login <i class="m-icon-swapright m-icon-white"></i>
-				</button>            
+				<button name="{$T_LOGIN_FORM.submit_login.name}" type="submit" class="btn green pull-right" value="{$T_LOGIN_FORM.submit_login.value}" >
+					{$T_LOGIN_FORM.submit_login.value}<i class="m-icon-swapright m-icon-white"></i>
+				</button>
 			</div>
+
+			{if $T_CONFIGURATION.password_reminder && !$T_CONFIGURATION.only_ldap}
 			<div class="forget-password">
-				<h4>Forgot your password ?</h4>
+				<h4>{translateToken value="Forgot your password?"}</h4>
 				<p>
-					no worries, click <a href="javascript:;"  id="forget-password">here</a>
-					to reset your password.
+					{translateToken value='Click'} <a href="javascript:;"  id="forget-password">{translateToken value='here'}</a> {translateToken value='to reset your password'}
 				</p>
 			</div>
-			<div class="create-account">
-				<p>
-					Don't have an account yet ?&nbsp; 
-					<a href="javascript:;" id="register-btn" >Create an account</a>
-				</p>
-			</div>
+			{/if}
+			{if $T_CONFIGURATION.signup && !$T_CONFIGURATION.only_ldap}
+				<div class="create-account">
+					<p>
+						{translateToken value="Don't have an account?"}
+						<a href="/signup" id="register-btn" >{translateToken value='Create an account'}</a>
+					</p>
+				</div>
+			{/if}
+<!--
+    <div class="login_footer">
+		{if $T_CONFIGURATION.lessons_directory == 1}
+			<p style=" color: #848484; float: right;font-size: 11px; margin: 6px 0 0;">
+				<a href = "{$smarty.server.PHP_SELF}?ctg=lessons">{$smarty.const._LESSONSLIST}</a>
+			</p>
+		{/if}
+    </div>
+-->
 		</form>
 		<!-- END LOGIN FORM -->        
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<form class="forget-form" action="index.html" method="post">
-			<h3 >Forget Password ?</h3>
-			<p>Enter your e-mail address below to reset your password.</p>
+
+
+		{$T_RESET_PASSWORD_FORM.javascript}
+		<form {$T_RESET_PASSWORD_FORM.attributes}>
+			{$T_RESET_PASSWORD_FORM.hidden}
+			<h3 >{translateToken value="Forget your password?"}</h3>
+			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
 			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">{$T_RESET_PASSWORD_FORM.login_or_pwd.label}</label>
 				<div class="input-icon">
 					<i class="icon-envelope"></i>
-					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" />
+					<input class="{$T_RESET_PASSWORD_FORM.login_or_pwd.class}" type="{$T_RESET_PASSWORD_FORM.login_or_pwd.type}" autocomplete="off" placeholder="{$T_RESET_PASSWORD_FORM.login_or_pwd.label}" name="{$T_RESET_PASSWORD_FORM.login_or_pwd.name}" id="{$T_RESET_PASSWORD_FORM.login_or_pwd.name}" />
 				</div>
+
 			</div>
 			<div class="form-actions">
-				<button type="button" id="back-btn" class="btn"><i class="m-icon-swapleft"></i> Back</button>
-				<button type="submit" class="btn green pull-right">Submit<i class="m-icon-swapright m-icon-white"></i></button>
+				<button type="button" id="back-btn" class="btn"><i class="m-icon-swapleft"></i> {translateToken value="Back"}</button>
+				<button type="submit" class="btn green pull-right">{translateToken value="Submit"}<i class="m-icon-swapright m-icon-white"></i></button>
 			</div>
 		</form>
 		<!-- END FORGOT PASSWORD FORM -->

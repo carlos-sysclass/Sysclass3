@@ -181,6 +181,7 @@ if ( !empty( $_GET['urlmaker'] ) ) {
 
 
 /* -------------------------------------------------------Login part-------------------------------------------------------------------*/
+/*
 if (isset($_GET['autologin']) && sC_checkParameter($_GET['autologin'], 'hex')) {
     try {
         $result = sC_getTableDataFlat("users", "login,autologin,password,user_type", "active=1 and autologin !=''");
@@ -216,6 +217,8 @@ if (isset($_GET['autologin']) && sC_checkParameter($_GET['autologin'], 'hex')) {
         }
     } catch (MagesterUserException $e) {}
 }
+*/
+
 if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
     try {
         $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
@@ -251,6 +254,7 @@ if (isset($_GET['register_lessons'])) {
     //	setcookie('c_request', '', time() - 86400);
     $_SESSION['login_mode'] = '0';
 }
+/*
 isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
 $form = new HTML_QuickForm("login_form", "post", $postTarget, "", "class = 'indexForm'", true);
 $form->removeAttribute('name');
@@ -327,7 +331,9 @@ $form->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
 $form->setRequiredNote(_REQUIREDNOTE);
 $form->accept($renderer);
 $smarty->assign('T_LOGIN_FORM', $renderer->toArray());
+*/
 /* -----------------End of Login part-----------------------------*/
+
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'agreement' && $_SESSION['s_login']) { //Display license agreement
     try {
         $user = MagesterUserFactory :: factory($_SESSION['s_login']);
@@ -384,6 +390,7 @@ if (isset($_GET['account']) && isset($_GET['key']) && sC_checkParameter($_GET['a
     }
 }
 /* ---------------------------------------------------------Reset Password part--------------------------------------------------------- */
+/*
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'reset_pwd' && $GLOBALS['configuration']['password_reminder'] && !$GLOBALS['configuration']['only_ldap']) { //The user asked to display the contact form
     $smarty->assign('T_CTG', 'reset_pwd');
     $form = new HTML_QuickForm("reset_password_form", "post", basename($_SERVER['PHP_SELF'])."?ctg=reset_pwd", "", "class = 'indexForm'", true);
@@ -454,7 +461,9 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'reset_pwd' && $GLOBALS['configuratio
     $form->accept($renderer);
     $smarty->assign('T_RESET_PASSWORD_FORM', $renderer->toArray());
 }
+*/
 /* -------------------------------------------------------End of Reset Password part--------------------------------------------------------- */
+
 /* -----------------------------------------------------Sign up part--------------------------------------------------------- */
 if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup']) {
     $users = sC_countTableData("users", "login", "active=1 and archive=0");
@@ -742,6 +751,7 @@ if (isset($_GET['ctg']) && $_GET['ctg'] == 'lesson_info') { //The user asked to 
     }
 }
 /* -------------------------------------------------------End of Lesson information part--------------------------------------------------------- */
+
 if (isset($_GET['message'])) {
     $message ? $message .= '<br>'.$_GET['message'] : $message = $_GET['message'];
     $message_type = $_GET['message_type'];
