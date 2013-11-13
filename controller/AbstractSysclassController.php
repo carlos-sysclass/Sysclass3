@@ -75,7 +75,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 
 	}
-
+	/*
 	// ABSTRACT - MUST IMPLEMENT METHODS!
 	public function authorize()
 	{
@@ -93,7 +93,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 		return TRUE;
 	}
-
+	*/
 	protected function onThemeRequest()
 	{
 		$this->setTheme('metronic');
