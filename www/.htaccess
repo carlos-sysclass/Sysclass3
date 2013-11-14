@@ -1,8 +1,6 @@
 Options Indexes FollowSymLinks
 DirectoryIndex index2.php
-AllowOverride All
 Require all granted
-php_admin_flag display_errors on
 <IfModule mod_rewrite.c>
         RewriteEngine on
         RewriteCond %{REQUEST_FILENAME} !-f
