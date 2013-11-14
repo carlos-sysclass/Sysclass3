@@ -25,6 +25,7 @@ $plicoLib->concat(
 	'controller',
 	array(
 		'LoginController',
+		'HomeController',
 		'AdministratorController',
 		'StudentController'
 /*

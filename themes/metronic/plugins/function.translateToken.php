@@ -2,6 +2,7 @@
 /**
 * Smarty plugin: sC_template_printBackButton function
 */
+/// GET A GLOBAL REFERENCE FROM TranslateModel
 function smarty_function_translateToken($params, &$smarty)
 {
     $token = $params['value'];

@@ -35,8 +35,12 @@ Error Pages
 }
 
 .page-500 .number {  
+  position: relative;
+  top: 35px;
   display: inline-block;
   letter-spacing: -10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
   line-height: 128px;
   font-size: 128px;
   font-weight: 300;

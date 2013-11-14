@@ -1,6 +1,8 @@
 <?php 
 abstract class AbstractSysclassController extends AbstractDatabaseController
 {
+	protected $current_user = null;
+	public static $t = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="")
 	{
 		parent::init($url, $method, $format, $root, $basePath);
@@ -73,17 +75,18 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    }
 		    $languageModule->getLanguageFile($setLanguage);
 		}
-
+		if (is_null(self::$t)) {
+			self::$t = $this->model("translate");
+		}
 	}
-	/*
-	// ABSTRACT - MUST IMPLEMENT METHODS!
+	
 	public function authorize()
 	{
+		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		try {
-		    $currentUser = MagesterUser :: checkUserAccess('administrator');
-		    $smarty = $this->getSmarty();
-		    $smarty->assign("T_CURRENT_USER", $currentUser);
+		    $this->current_user 	= MagesterUser::checkUserAccess();
+		    $smarty->assign("T_CURRENT_USER", $this->current_user);
 		} catch (Exception $e) {
 		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
 		        setcookie('c_request', http_build_query($_GET), time() + 300);
@@ -93,7 +96,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 		return TRUE;
 	}
-	*/
+
 	protected function onThemeRequest()
 	{
 		$this->setTheme('metronic');
