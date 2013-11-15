@@ -67,15 +67,13 @@ class StudentController extends AbstractSysclassController
         ), 2);
 
         $this->addWidget("blank", array(
-        	"title" => "System Improvements"
+                "title" => "System Improvements"
         ), 2);
 
         $this->addWidget("blank", array(
-        	"title" => "Calendar"
+               	"title" => "Calendar"
         ), 3);
-
-
-        $this->addWidget("blank", array(), 2);
+        
 
         parent::display('pages/dashboard/student.tpl');
 	}

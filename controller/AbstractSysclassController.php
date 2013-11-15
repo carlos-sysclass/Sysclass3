@@ -91,7 +91,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
 		        setcookie('c_request', http_build_query($_GET), time() + 300);
 		    }
-		    $this->redirect("login", $e->getMessage() . ' (' . $e->getCode() . ')', "failure");
+		    $this->redirect("login", $e->getMessage() . ' (' . $e->getCode() . ')', "danger");
 		    exit;
 		}
 		return TRUE;

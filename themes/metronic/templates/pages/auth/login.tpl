@@ -29,7 +29,7 @@
 			</div>
 			<div class="form-actions">
 				<label class="checkbox">
-					<input type="{$T_LOGIN_FORM.remember.type}" name="{$T_LOGIN_FORM.remember.name}" value="{$T_LOGIN_FORM.remember.value}"/> {translateToken value='Remember Me'}
+					<input type="{$T_LOGIN_FORM.remember.type}" name="{$T_LOGIN_FORM.remember.name}" value="1"/> {translateToken value='Remember Me'}
 				</label>
 				<button name="{$T_LOGIN_FORM.submit_login.name}" type="submit" class="btn green pull-right" value="{$T_LOGIN_FORM.submit_login.value}" >
 					{$T_LOGIN_FORM.submit_login.value}<i class="m-icon-swapright m-icon-white"></i>

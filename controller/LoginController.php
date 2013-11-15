@@ -21,7 +21,7 @@ class LoginController extends AbstractSysclassController
 		//$form->addRule('login', _INVALIDLOGIN, 'checkParameter', 'login');
 		$form->addElement('password', 'password', _PASSWORD, 'class = "form-control placeholder-no-fix" tabindex = "0"');
 		//$form->addRule('password', _THEFIELD.' "'._PASSWORD.'" '._ISMANDATORY, 'required', null, 'client');
-		$form->addElement('checkbox', 'remember', _REMEMBERME, null, 'class = "inputCheckbox"');
+		$form->addElement('checkbox', 'remember', _REMEMBERME, 1, 'class = "inputCheckbox"');
 		$form->addElement('submit', 'submit_login', _ENTER, 'class = "flatButton"');
 
 		return $form;
@@ -43,11 +43,29 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /
 	 * @url GET /login
 	 */
 	public function loginPage()
 	{
+		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
+		    try {
+		        $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
+		        $user->login($_COOKIE['cookie_password'], true);
+		        if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
+		            //sC_redirect("index.php?ctg=agreement");
+		            $this->redirect("agreement");
+		        } else {
+		            // Check if the mobile version of SysClass is required - if so set a session variable accordingly
+		            //sC_setMobile();
+		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
+		            //LoginRedirect($user->user['user_type']);
+		            $this->redirect($user->user['user_type']);
+		        }
+		        exit;
+		    } catch (MagesterUserException $e) {}
+		}
+
+
 		// CREATE LOGIC AND CALL VIEW.
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/login");
@@ -118,7 +136,8 @@ class LoginController extends AbstractSysclassController
 		    try {
 		        $user = MagesterUserFactory :: factory(trim($form->exportValue('login')));
 		        if ($GLOBALS['configuration']['lock_down'] && $user->user['user_type'] != 'administrator') {
-		            sC_redirect("index.php?message=".urlencode(_LOCKDOWNONLYADMINISTRATORSCANLOGIN)."&message_type=failure");
+		            //sC_redirect("index.php?message=".urlencode()."&message_type=failure");
+		            $this->redirect("checkout", self::$t->translate("_LOCKDOWNONLYADMINISTRATORSCANLOGIN"), "danger");
 		            exit;
 		        }
 		        $user->login($form->exportValue('password'));
@@ -133,9 +152,11 @@ class LoginController extends AbstractSysclassController
 		        // Check if the mobile version of SysClass is required - if so set a session variable accordingly
 		        //sC_setMobile();
 		        if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
-		            sC_redirect("index.php?ctg=agreement");
+		            //sC_redirect("index.php?ctg=agreement");
+		            $this->redirect("agreement");
 		        } elseif ($_SESSION['login_mode']) {
-		            sC_redirect("index.php?ctg=checkout&checkout=1");
+		            //sC_redirect("index.php?ctg=checkout&checkout=1");
+		            $this->redirect("checkout/do");
 		        } else {
 		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
 		            //LoginRedirect($user->user['user_type']);
@@ -145,34 +166,35 @@ class LoginController extends AbstractSysclassController
 		    } catch (MagesterUserException $e) {
 		        if ($GLOBALS['configuration']['activate_ldap']) {
 		            if (!extension_loaded('ldap')) {
-		                $message = $e->getMessage().'<br/>'._LDAPEXTENSIONNOTLOADED;
-		                $message_type = 'failure';
+		                $message = $e->getMessage().'<br/>'. self::$t->translate("_LDAPEXTENSIONNOTLOADED");
+		                $message_type = 'danger';
 		            } else {
 		                $result = sC_checkUserLdap($form->exportValue('login'), $form->exportValue('password'));
 		                if ($result) { //The user exists in the LDAP server
 		                    $_SESSION['ldap_user_pwd'] = $form->exportValue('password'); //Keep the password temporarily in the session, it will be used in the next step
 		                    sC_redirect("index.php?ctg=signup&ldap=1&login=".$form->exportValue('login'));
 		                } else {
-		                    $message = _LOGINERRORPLEASEMAKESURECAPSLOCKISOFF;
-		                    $message_type = 'failure';
+		                    $message = self::$t->translate("_LOGINERRORPLEASEMAKESURECAPSLOCKISOFF");
+		                    $message_type = 'warning';
 		                }
 		            }
 		        } elseif ($e->getCode() == MagesterUserException :: USER_PENDING) {
 		            $message = $e->getMessage();
-		            $message_type = 'failure';
+		            $message_type = 'warning';
 		        } elseif ($e->getCode() == MagesterUserException :: USER_INACTIVE) {
 		            $message = $e->getMessage();
-		            $message_type = 'failure';
+		            $message_type = 'warning';
 		        } else {
-		            $message = _LOGINERRORPLEASEMAKESURECAPSLOCKISOFF;
-		            $message_type = 'failure';
+		            $message = self::$t->translate("_LOGINERRORPLEASEMAKESURECAPSLOCKISOFF");
+		            $message_type = 'danger';
 		        }
 		        $form->setConstants(array("login" => $values['login'], "password" => ""));
 		    } catch (Exception $e) {
 		        $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
 		        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
-		        $message_type = failure;
+		        $message_type = "danger";
 		    }
+		    $this->redirect("login", $message, $message_type);
 		}
 
 	}
@@ -278,9 +300,10 @@ class LoginController extends AbstractSysclassController
 		        }
 		    } catch (MagesterUserException $e) {
 		    	var_dump($e);
+		    	exit;
 		    }
 		}
-
+		$this->redirect("login");
 	}
 
 
@@ -294,6 +317,50 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function logoutAction()
 	{
+	    //session_start();			//Isn't needed here if the head session_start() is in place
+	    if (isset($_SESSION['s_login']) && $_SESSION['s_login']) {
+	        try {
+	            $user = MagesterUserFactory :: factory($_SESSION['s_login']);
+	            $user->logout(false);
+                $_SESSION = array();
+                isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
+                //session_destroy();
+                setcookie ("cookie_login", "", time() - 3600);
+                setcookie ("cookie_password", "", time() - 3600);
+                if (isset($_COOKIE['c_request'])) {
+                    setcookie('c_request', '', time() - 86400);
+                    unset($_COOKIE['c_request']);
+                }
+                unset($_COOKIE['cookie_login']); //These 2 lines are necessary, so that index.php does not think they are set
+                unset($_COOKIE['cookie_password']);
+
+	            $message = self::$t->translate("You have been logged out successfully.");
+	            $message_type = 'success';
+
+	            //Redirect user to another page, if such a configuration setting exists
+	            /*
+	            if ($GLOBALS['configuration']['logout_redirect']) {
+	                if ($GLOBALS['configuration']['logout_redirect'] == 'close') {
+	                    echo "<script>window.close();</script>";
+	                } else {
+	                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ? 
+	                    sC_redirect("".$GLOBALS['configuration']['logout_redirect']) : 
+	                    header("location:http://".$GLOBALS['configuration']['logout_redirect']);
+	                }
+	            }
+	            */
+	        } catch (MagesterUserException $e) {
+	            $message = $e->getMessage();
+	            $message_type = 'danger';
+	        }
+	        // PUT HERE BECAUSE $user->logout(); destroy the session
+	        $this->redirect("login", $message, $message_type);
+	        var_dump($_SESSION);
+	        exit;
+	    } else {
+	    	$this->redirect("login");
+	    }
+/*
 		$result = $this->logoutUser();
 
 		if ($this->getRequestedFormat() == RestFormat::HTML) {
@@ -301,7 +368,6 @@ class LoginController extends AbstractSysclassController
 			header("Location: login");
 			exit;
 		}
-
-		return $result;
+*/
 	}
 }
