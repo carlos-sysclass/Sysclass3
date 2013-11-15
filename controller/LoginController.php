@@ -16,13 +16,13 @@ class LoginController extends AbstractSysclassController
 		$form = new HTML_QuickForm("login_form", "post", $postTarget, "", "class = 'login-form'", true);
 		$form->removeAttribute('name');
 		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login', _LOGIN, 'class = "form-control placeholder-no-fix" ');
+		$form->addElement('text', 'login', self::$t->translate("Login"), 'class = "form-control placeholder-no-fix" ');
 		//$form->addRule('login', _THEFIELD.' "'._LOGIN.'" '._ISMANDATORY, 'required', null, 'client');
 		//$form->addRule('login', _INVALIDLOGIN, 'checkParameter', 'login');
-		$form->addElement('password', 'password', _PASSWORD, 'class = "form-control placeholder-no-fix" tabindex = "0"');
+		$form->addElement('password', 'password', self::$t->translate("Password"), 'class = "form-control placeholder-no-fix" tabindex = "0"');
 		//$form->addRule('password', _THEFIELD.' "'._PASSWORD.'" '._ISMANDATORY, 'required', null, 'client');
-		$form->addElement('checkbox', 'remember', _REMEMBERME, 1, 'class = "inputCheckbox"');
-		$form->addElement('submit', 'submit_login', _ENTER, 'class = "flatButton"');
+		$form->addElement('checkbox', 'remember', self::$t->translate("Remember me"), 1, 'class = "inputCheckbox"');
+		$form->addElement('submit', 'submit_login', self::$t->translate("Click to access"));
 
 		return $form;
 	}
@@ -32,10 +32,10 @@ class LoginController extends AbstractSysclassController
 		$form = new HTML_QuickForm("reset_password_form", "post", $postTarget, "", "class = 'forget-form'", true);
 		$form->removeAttribute('name');
 		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login_or_pwd', _LOGINOREMAIL, 'class = "form-control placeholder-no-fix"');
+		$form->addElement('text', 'login_or_pwd', self::$t->translate("_LOGINOREMAIL"), 'class = "form-control placeholder-no-fix"');
 		//$form->addRule('login_or_pwd', _THEFIELD.' '._ISMANDATORY, 'required', null, 'client');
 		//$form->addRule('login_or_pwd', _INVALIDFIELDDATA, 'checkParameter', 'text');
-		$form->addElement('submit', 'submit_reset_password', _SUBMIT, 'class="flatButton"');
+		$form->addElement('submit', 'submit_reset_password', self::$t->translate("Send"), 'class="flatButton"');
 
 		return $form;
 	}
@@ -44,8 +44,9 @@ class LoginController extends AbstractSysclassController
 	 * Create login and reset password forms
 	 *
 	 * @url GET /login
+	 * @url GET /login/:reset
 	 */
-	public function loginPage()
+	public function loginPage($reset)
 	{
 		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
 		    try {
@@ -64,6 +65,8 @@ class LoginController extends AbstractSysclassController
 		        exit;
 		    } catch (MagesterUserException $e) {}
 		}
+		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
+		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
 
 
 		// CREATE LOGIC AND CALL VIEW.
@@ -92,6 +95,9 @@ class LoginController extends AbstractSysclassController
 		    $resetForm->setRequiredNote(_REQUIREDNOTE);
 		    $resetForm->accept($renderer);
 		    $smarty->assign('T_RESET_PASSWORD_FORM', $renderer->toArray());
+		}
+		if ($reset) {
+			$this->putItem("open_login_section", "reset");
 		}
 		parent::display('pages/auth/login.tpl');
 
@@ -215,9 +221,10 @@ class LoginController extends AbstractSysclassController
 		            if ($this->_checkParameter($input, 'email')) { //The user entered an email address
 		                $result = sC_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
 		                if (sizeof($result) > 1) {
-		                    $message = _MORETHANONEUSERWITHSAMEMAILENTERLOGIN;
-		                    $message_type = 'failure';
-		                    sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
+		                    $message = self::$t->translate("There is more than one user with the same data given. Please try to use e-mail or login.");
+		                    $message_type = 'warning';
+		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
+							$this->redirect("login/reset", $message, $message_type);
 		                    exit;
 		                } else {
 		                    $user = MagesterUserFactory :: factory($result[0]['login']);
@@ -229,7 +236,7 @@ class LoginController extends AbstractSysclassController
 		                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode(_LDAPUSERMUSTCONTACTADMIN.$GLOBALS['configuration']['system_email']).'&message_type=failure');
 		            } else {
 		                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
-		                $message = _ANEMAILHASBEENSENT;
+		                $message = self::$t->translate("Within minutes, you will receive an email with instructions to set your new password.");
 		                $message_type = 'success';
 		                if ($_SESSION['login_mode'] != 1) {
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='..'&message_type='.);
@@ -322,8 +329,9 @@ class LoginController extends AbstractSysclassController
 	        try {
 	            $user = MagesterUserFactory :: factory($_SESSION['s_login']);
 	            $user->logout(false);
-                $_SESSION = array();
-                isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
+
+                //$_SESSION = array();
+                //isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
                 //session_destroy();
                 setcookie ("cookie_login", "", time() - 3600);
                 setcookie ("cookie_password", "", time() - 3600);
@@ -333,7 +341,7 @@ class LoginController extends AbstractSysclassController
                 }
                 unset($_COOKIE['cookie_login']); //These 2 lines are necessary, so that index.php does not think they are set
                 unset($_COOKIE['cookie_password']);
-
+	
 	            $message = self::$t->translate("You have been logged out successfully.");
 	            $message_type = 'success';
 

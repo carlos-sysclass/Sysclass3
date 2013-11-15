@@ -75,9 +75,12 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    }
 		    $languageModule->getLanguageFile($setLanguage);
 		}
+		// LOAD TRANSLATE MODEL
 		if (is_null(self::$t)) {
 			self::$t = $this->model("translate");
 		}
+
+		// GET T_ADDITIONAL_ACCOUNTS 
 	}
 	
 	public function authorize()
@@ -100,6 +103,35 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	protected function onThemeRequest()
 	{
 		$this->setTheme('metronic');
+	}
+
+	protected function beforeDisplay() {
+		parent::beforeDisplay();
+
+		//$smarty = $this->getSmarty();
+
+		if (unserialize($this->current_user -> user['additional_accounts'])) {
+			$accounts = unserialize($this->current_user -> user['additional_accounts']);
+			$queryString = "'".implode("','", array_values($accounts))."'";
+			$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
+			$this -> putItem("additional_accounts", $bar_additional_accounts);
+		}
+
+		$this -> putItem("user_types_icons", array(
+			'administrator'	=> array(
+				"icon"	=> "rocket",
+				"color"	=> "danger"
+			),
+			'professor' => array(
+				"icon"	=> "plane",
+				"color"	=> "info"
+			),
+			'student' => array(
+				"icon"	=> "road",
+				"color"	=> "success"
+			)
+		));
+		
 	}
 
 }

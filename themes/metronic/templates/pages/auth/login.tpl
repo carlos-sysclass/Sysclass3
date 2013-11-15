@@ -92,5 +92,15 @@
 	<div class="copyright">
 		&copy; 2013 WiseFlex
 	</div>
+	{if $T_OPEN_LOGIN_SECTION == 'reset'}
+		<style type="text/css">
+			.login .content .forget-form {
+		    	display: block;
+			}
+			.login .content .login-form {
+				display: none;
+			}
+		</style>
+	{/if}
 	<!-- END COPYRIGHT -->
 {/block}

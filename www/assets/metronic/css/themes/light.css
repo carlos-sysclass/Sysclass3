@@ -276,8 +276,7 @@ Gritter Notifications
   }
   .page-boxed .page-container {
     background-color: #fafafa;
-    border-left: 1px solid #e2e2e2;
-    border-bottom: 1px solid #e2e2e2;
+    border: medium none;
   }
   .page-boxed .page-container .page-content {
     margin: 0;
