@@ -73,7 +73,7 @@ $plicoLib->concat(
 		'css/style',
 		'css/style-responsive',
 		'css/plugins',
-		'css/themes/default',
+		'css/themes/light',
 		'css/custom'
 		//<!-- END THEME STYLES -->
 	)

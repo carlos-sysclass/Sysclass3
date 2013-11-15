@@ -279,6 +279,9 @@ Gritter Notifications
     border-left: 1px solid #e2e2e2;
     border-bottom: 1px solid #e2e2e2;
   }
+  .page-boxed .page-container .page-content {
+    margin: 0;
+  }
   .page-boxed.page-sidebar-fixed .page-container {
     border-left: 0;
     border-bottom: 0;
