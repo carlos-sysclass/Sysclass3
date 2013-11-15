@@ -6,7 +6,7 @@ class StudentController extends AbstractSysclassController
 	{
 		if (parent::authorize()) {
 			// USER IS LOGGED IN, CHECK FOR TYPE
-			$currentUser 	= MagesterUser::checkUserAccess(false, 'student');
+			$this->current_user	= MagesterUser::checkUserAccess(false, 'student');
 			return $this->current_user->user['user_type'] == 'student';
 		}
 		return false;
@@ -73,8 +73,6 @@ class StudentController extends AbstractSysclassController
         $this->addWidget("blank", array(
         	"title" => "Calendar"
         ), 3);
-
-
 
 
         $this->addWidget("blank", array(), 2);

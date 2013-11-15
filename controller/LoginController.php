@@ -103,7 +103,6 @@ class LoginController extends AbstractSysclassController
 	}
 	*/
 
-
 	}
 
 	/**
@@ -175,7 +174,6 @@ class LoginController extends AbstractSysclassController
 		        $message_type = failure;
 		    }
 		}
-		parent::display('pages/auth/login.tpl');
 
 	}
 
