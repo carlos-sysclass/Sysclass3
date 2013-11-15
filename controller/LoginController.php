@@ -130,6 +130,60 @@ class LoginController extends AbstractSysclassController
 	}
 
 	/**
+	 * Create login and reset password forms
+	 *
+	 * @url GET /lock
+	 */
+	public function lockPage($reset)
+	{
+		parent::authorize();
+		$_SESSION['user_locked'] = true;
+		// CREATE LOGIC AND CALL VIEW.
+		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
+		$this->putCss("css/pages/lock");
+		$this->putScript("scripts/lock");
+		
+		$smarty = $this->getSmarty();
+		$loginForm = $this->createLoginForm();
+
+
+		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
+		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
+		$loginForm->setRequiredNote(_REQUIREDNOTE);
+		$loginForm->accept($renderer);
+		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
+
+		parent::display('pages/auth/lock.tpl');
+
+
+
+    /*
+    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
+        $login = $_GET['login'];
+        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
+            $message = _INVALIDUSER;
+            $message_type = 'failure';
+        } else {
+            $user = sC_getTableData("users", "email, name", "login='".$login."'");
+            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
+                $password = mb_substr(md5($login.time()), 0, 8);
+                $password_encrypted = MagesterUser::createPassword($password);
+                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
+                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
+                $message = _EMAILWITHPASSWORDSENT;
+                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+            } else {
+                $message = _INVALIDUSER;
+                $message_type = 'failure';
+            }
+        }
+    }
+	}
+	*/
+
+	}
+
+	/**
 	 * 
 	 *
 	 * @url POST /login
@@ -166,6 +220,7 @@ class LoginController extends AbstractSysclassController
 		        } else {
 		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
 		            //LoginRedirect($user->user['user_type']);
+					$_SESSION['user_locked'] = false;
 		            $this->redirect($user->user['user_type']);
 		        }
 		        exit;

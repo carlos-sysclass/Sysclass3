@@ -219,7 +219,8 @@
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 		   <li class="dropdown user">
 		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-		      <img alt="" src="{Plico_GetResource file='img/avatar1_small.jpg'}"/>
+		      <img alt="" src="{Plico_RelativePath file=$T_SMALL_USER_AVATAR.avatar}" width="{$T_SMALL_USER_AVATAR.width}"/>
+
 		      <span class="username">{$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname}</span>
 		      <i class="icon-angle-down"></i>
 		      </a>
@@ -245,7 +246,7 @@
 		            <a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> Full Screen</a>
 		         </li>
 		         <li>
-		            <a href="extra_lock.html"><i class="icon-lock"></i> Lock Screen</a>
+		            <a href="/lock"><i class="icon-lock"></i> Lock Screen</a>
 		         </li>
 		         <li>
 		            <a href="/logout"><i class="icon-key"></i> Log Out</a>

@@ -20,6 +20,9 @@
 	  if (typeof Login == 'object') {
 	  	Login.init();
 	  }
+	  if (typeof Lock == 'object') {
+	  	Lock.init();
+	  }
 	  if (typeof PortletDraggable == 'object') {
 	  	PortletDraggable.init();
 	  }

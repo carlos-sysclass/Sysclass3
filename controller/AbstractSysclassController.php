@@ -80,9 +80,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			self::$t = $this->model("translate");
 		}
 
-		// GET T_ADDITIONAL_ACCOUNTS 
 	}
-	
+
 	public function authorize()
 	{
 		$smarty = $this->getSmarty();
@@ -90,6 +89,13 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		try {
 		    $this->current_user 	= MagesterUser::checkUserAccess();
 		    $smarty->assign("T_CURRENT_USER", $this->current_user);
+
+		    if ($_SESSION['user_locked']) {
+		    	if ($this->context['url'] != "lock") {
+		    		$this->redirect("lock", self::$t->translate("You need to unlock your account first."), "info");
+		    		exit;
+		    	}
+		    }
 		} catch (Exception $e) {
 		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
 		        setcookie('c_request', http_build_query($_GET), time() + 300);
@@ -131,6 +137,30 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 				"color"	=> "success"
 			)
 		));
+
+		// CREATE USER TOP-BAR AVATAR
+		$small_user_avatar = $big_user_avatar = array();
+		try {
+		    $file = new MagesterFile($this->current_user->user['avatar']);
+		    list($small_user_avatar['width'], $small_user_avatar['height']) = sC_getNormalizedDims($file['path'], 29, 29);
+		    $small_user_avatar['avatar'] = $this->current_user->user['avatar'];
+
+		    list($big_user_avatar['width'], $big_user_avatar['height']) = sC_getNormalizedDims($file['path'], 200, 200);
+			$big_user_avatar['avatar'] = $this->current_user->user['avatar'];		    
+		} catch (MagesterFileException $e) {
+		    $small_user_avatar = array(
+		        'avatar' => "img/avatar_small.png",
+		        'width'  => 29,
+		        'height' => 29
+		    );
+		    $big_user_avatar = array(
+		        'avatar' => "img/avatar_big.png",
+		        'width'  => 200,
+		        'height' => 200
+		    );
+		}
+		$this->putItem("small_user_avatar", $small_user_avatar);
+		$this->putItem("big_user_avatar", $big_user_avatar);
 		
 	}
 

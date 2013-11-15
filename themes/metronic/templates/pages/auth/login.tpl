@@ -90,7 +90,7 @@
 	</div>
 	<!-- BEGIN COPYRIGHT -->
 	<div class="copyright">
-		&copy; 2013 WiseFlex
+		&copy; 2014 WiseFlex
 	</div>
 	{if $T_OPEN_LOGIN_SECTION == 'reset'}
 		<style type="text/css">
