@@ -8,17 +8,33 @@ var PortletDraggable = function () {
                 return;
             }
 
-            $("#sortable_portlets").sortable({
-                connectWith: ".portlet",
+            var handleEmptyList = function( event, ui ) {
+                $("#sortable_portlets .column").each(function(i, el) {
+                    jQuery(el).removeClass("sortable-box-placeholder round-all").css("height","");
+                    if (jQuery(el).find(":not(.sortable-box-placeholder)").size() == 0) {
+                        jQuery(el).addClass("sortable-box-placeholder round-all").css("height","100px");
+                    } else {
+                        //jQuery(el).text("");
+                    //jQuery(el).find(".sortable-box-placeholder").remove();
+                    }
+                });
+            }
+
+            $("#sortable_portlets .sortable").sortable({
+                connectWith: ".sortable",
                 items: ".portlet",
                 opacity: 0.8,
-                coneHelperSize: true,
+                forceHelperSize: true,
                 placeholder: 'sortable-box-placeholder round-all',
                 forcePlaceholderSize: true,
-                tolerance: "pointer"
+                tolerance: "intersect",
+                dropOnEmpty : true,
+                create: handleEmptyList,
+                update: handleEmptyList
             });
+            //$("#sortable_portlets .sortable").css("height", "100%");
 
-            $(".column").disableSelection();
+            $(".sortable").disableSelection();
 
         }
 

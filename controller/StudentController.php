@@ -22,6 +22,63 @@ class StudentController extends AbstractSysclassController
 	{
 		// DASHBOARD PAGE
         //require_once 'control_panel.php';
+        //$this->putScript("scripts/portlet-draggable");
+
+		$this->putItem("page_layout", array(
+			"rows" => array(
+				array(
+					1	=> array("weight" => "8"),
+					2	=> array("weight" => "4")
+				),
+				array(
+					3	=> array("weight" => "12")
+				),
+			),
+			'sortable'	=> false
+		));
+
+        $this->addWidget("blank", array(
+        	"title" => "User overview"
+        ), 1);
+        $this->addWidget("blank", array(
+        	"title" => "messages"
+        ), 1);
+        $this->addWidget("blank", array(
+        	"title" => "Course Overview"
+        ), 1);
+        $this->addWidget("blank", array(
+        	"title" => "Forums"
+        ), 1);
+
+        $this->addWidget("blank", array(
+        	"title" => "Institution Overview"
+        ), 2);
+
+        $this->addWidget("blank", array(
+        	"title" => "Ads"
+        ), 2);
+
+        $this->addWidget("blank", array(
+        	"title" => "Contact Us"
+        ), 2);
+
+        $this->addWidget("blank", array(
+        	"title" => "We are here to help"
+        ), 2);
+
+        $this->addWidget("blank", array(
+        	"title" => "System Improvements"
+        ), 2);
+
+        $this->addWidget("blank", array(
+        	"title" => "Calendar"
+        ), 3);
+
+
+
+
+        $this->addWidget("blank", array(), 2);
+
         parent::display('pages/dashboard/student.tpl');
 	}
 

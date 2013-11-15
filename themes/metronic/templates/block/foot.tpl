@@ -16,9 +16,12 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 	jQuery(document).ready(function() {     
-	  App.init();
+	  App.init("{$T_PATH.resource}");
 	  if (typeof Login == 'object') {
 	  	Login.init();
+	  }
+	  if (typeof PortletDraggable == 'object') {
+	  	PortletDraggable.init();
 	  }
 	});
 </script>

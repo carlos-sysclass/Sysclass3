@@ -28,4 +28,17 @@ class ErrorController extends AbstractSysclassController
 		parent::display('pages/error/main.tpl');
 	}
 
+	public function handle500()
+	{
+		parent::init("/500", "GET", "html");
+		$this->putCss("css/pages/error");
+
+		$this->putItem("error", "500");
+		$this->putItem("error_class", "500");
+		$this->putItem("error_title", self::$t->translate('Oops! But the system halted!'));
+		$this->putItem("error_message", self::$t->translate('We can not find the page you\'re looking for.'));
+
+		parent::display('pages/error/main.tpl');
+	}
+
 }

@@ -3,6 +3,7 @@ Core script to handle the entire theme and core functions
 **/
 var App = function () {
 
+    var themePath = null;
     // IE mode
     var isRTL = false;
     var isIE8 = false;
@@ -830,10 +831,10 @@ var App = function () {
     return {
 
         //main function to initiate the theme
-        init: function () {
+        init: function (_theme) {
 
             //IMPORTANT!!!: Do not modify the core handlers call order.
-
+            themePath = _theme
             //core handlers
             handleInit(); // initialize core variables
             handleResponsiveOnResize(); // set and handle responsive    
@@ -923,7 +924,7 @@ var App = function () {
                 centerY = true;
             }
             el.block({
-                message: '<img src="./assets/img/ajax-loading.gif" align="">',
+                message: '<img src="' + themePath + '/img/ajax-loading.gif" align="">',
                 centerY: centerY != undefined ? centerY : true,
                 css: {
                     top: '10%',
