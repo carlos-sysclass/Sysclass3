@@ -47,7 +47,7 @@ class MessagesModule extends SysclassModule implements ISectionMenu, IWidgetCont
             'messages.help' => array(
                 'title'     => self::$t->translate('We are here to help'),
                 'template'  => $this->template("contactus"),
-                'icon'      => 'help',
+                'icon'      => 'question',
                 //'box'       => 'blue',
                 'tools'     => array(
                     'reload'    => $this->getBasePath() . "/widget/refresh",
@@ -56,7 +56,7 @@ class MessagesModule extends SysclassModule implements ISectionMenu, IWidgetCont
             'messages.improvements' => array(
                 'title'     => self::$t->translate('System Improvements'),
                 'template'  => $this->template("contactus"),
-                'icon'      => 'envelope',
+                'icon'      => 'cog',
                 //'box'       => 'blue',
                 'tools'     => array(
                     'reload'    => $this->getBasePath() . "/widget/refresh",
