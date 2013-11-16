@@ -115,6 +115,9 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		parent::beforeDisplay();
 
 		//$smarty = $this->getSmarty();
+		// GET USER TOP BAR ICONS
+		
+		
 
 		if (unserialize($this->current_user -> user['additional_accounts'])) {
 			$accounts = unserialize($this->current_user -> user['additional_accounts']);

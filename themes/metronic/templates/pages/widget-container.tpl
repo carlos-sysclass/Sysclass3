@@ -9,7 +9,7 @@
 							{if isset($widget.template)}
 								{include file="`$widget.template`.tpl" T_DATA=$widget.data}
 							{else}
-								{include file="widgets/`$widget.type`.tpl" T_DATA=$widget.data}
+								{include file="widgets/widget.tpl" T_DATA=$widget.data}
 							{/if}
 						{/if}
 					{/foreach}
@@ -18,7 +18,6 @@
 			{/foreach}
 			</div>
 		{/foreach}
-
 	{else}
 		{if $T_WIDGETS|@count > 0}
 			{foreach $T_WIDGETS as $widget}
@@ -33,8 +32,8 @@
 					{/if}
 				{/if}
 				<div class="col-md-{$widget.weight}">
-					{if isset($widget.template)}
-						{include file="`$widget.template`.tpl" T_DATA=$widget.data}
+					{if isset($widget.data.template)}
+						{include file="`$widget.data.template`.tpl" T_DATA=$widget.data}
 					{else}
 						{include file="widgets/`$widget.type`.tpl" T_DATA=$widget.data}
 					{/if}

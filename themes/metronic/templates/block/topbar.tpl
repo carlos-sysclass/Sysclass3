@@ -7,77 +7,59 @@
 		</a>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER --> 
+		<!--
 		<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		   <img src="{Plico_GetResource file='img/menu-toggler.png'}" alt="" />
 		</a>
+		-->
 		<!-- END RESPONSIVE MENU TOGGLER -->
+
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<ul class="nav navbar-nav pull-right">
-		   <li class="dropdown" id="header_inbox_bar">
+			{foreach $T_TOPBAR_MENU as $key => $item}
+    		<li class="dropdown" id="header_inbox_bar">
 		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
 		         data-close-others="true">
-		      <i class="icon-envelope"></i>
-		      <span class="badge">5</span>
+		      <i class="icon-{$item.icon}"></i>
+		      <span class="badge">{$item.notif}</span>
 		      </a>
-		      <ul class="dropdown-menu extended inbox">
+		      <ul class="dropdown-menu extended {$item.type}">
 		         <li>
-		            <p>You have 12 new messages</p>
+		            <p>{$item.text}</p>
 		         </li>
 		         <li>
-		            <ul class="dropdown-menu-list scroller" style="height: 250px;">
-		               <li>  
-		                  <a href="inbox.html?a=view">
-		                  <span class="photo"><img src="{Plico_GetResource file='img/avatar2.jpg'}" alt=""/></span>
-		                  <span class="subject">
-		                  <span class="from">Lisa Wong</span>
-		                  <span class="time">Just Now</span>
-		                  </span>
-		                  <span class="message">
-		                  Vivamus sed auctor nibh congue nibh. auctor nibh
-		                  auctor nibh...
-		                  </span>  
-		                  </a>
-		               </li>
-		            </ul>
+		         	{if $item.items|@count > 0}
+			            <ul class="dropdown-menu-list scroller" style="height: 250px;">
+			            	{foreach $item.items as $subitem}
+			               <li>  
+			                  <a href="{$subitem.link}">
+			                  	{if $subitem.values|@count > 0}
+				                  	<span class="photo"><img src="{Plico_GetResource file=$subitem.values.photo}" alt=""/></span>
+				                  	<span class="subject">
+				                  		<span class="from">{$subitem.values.from}</span>
+				                  		<span class="time">{$subitem.values.time}</span>
+				                  	</span>
+				                  	<span class="message">
+				                  		{$subitem.values.message}
+				                  	</span>
+			                  	{/if}
+			                  </a>
+			               </li>
+			               {/foreach}
+			            </ul>
+		            {/if}
 		         </li>
+		         {if isset($item.external)}
 		         <li class="external">   
-		            <a href="inbox.html">See all messages <i class="m-icon-swapright"></i></a>
+		            <a href="{$item.external.link}">{$item.external.text} <i class="m-icon-swapright"></i></a>
 		         </li>
+		         {/if}
 		      </ul>
 		   </li>
+		   {/foreach}
+		   
 		   <!-- BEGIN FORUM DROPDOWN -->
-		   <li class="dropdown" id="header_notification_bar">
-		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-		         data-close-others="true">
-		      <i class="icon-comments"></i>
-		      <span class="badge">5</span>
-		      </a>
-		      <ul class="dropdown-menu extended inbox">
-		         <li>
-		            <p>You have 5 new forum posts</p>
-		         </li>
-		         <li>
-		            <ul class="dropdown-menu-list scroller" style="height: 250px;">
-		               <li>  
-		                  <a href="inbox.html?a=view">
-		                  <span class="photo"><img src="{Plico_GetResource file='img/avatar2.jpg'}" alt=""/></span>
-		                  <span class="subject">
-		                  <span class="from">Lisa Wong</span>
-		                  <span class="time">Just Now</span>
-		                  </span>
-		                  <span class="message">
-		                  Vivamus sed auctor nibh congue nibh. auctor nibh
-		                  auctor nibh...
-		                  </span>  
-		                  </a>
-		               </li>
-		            </ul>
-		         </li>
-		         <li class="external">   
-		            <a href="#">See all forums <i class="m-icon-swapright"></i></a>
-		         </li>
-		      </ul>
-		   </li>
+		   
 		   <!-- END FORUM DROPDOWN -->
 		   <!-- BEGIN PAYMENT DROPDOWN -->
 		   <li class="dropdown" id="header_notification_bar">

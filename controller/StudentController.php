@@ -23,23 +23,30 @@ class StudentController extends AbstractSysclassController
 		// DASHBOARD PAGE
         //require_once 'control_panel.php';
         //$this->putScript("scripts/portlet-draggable");
-        $messages = $this->module("messages");
+        $layoutManager = $this->module("layout");
 
+        $pageLayout = $layoutManager->getLayout();
+
+        $this->putItem("page_layout", $pageLayout);
+
+        $topbarMenu = $layoutManager->getMenuBySection("topbar");
+
+        $this->putItem("topbar_menu", $topbarMenu);
+
+        $widgets = $layoutManager->getPageWidgets();
+
+        foreach($widgets as $key => $widget) {
+            call_user_func_array(array($this, "addWidget"), $widget);
+        }
+
+        //var_dump($this->widgets);
+
+        
+/*
         var_dump($messages);
         exit;
-
-		$this->putItem("page_layout", array(
-			"rows" => array(
-				array(
-					1	=> array("weight" => "8"),
-					2	=> array("weight" => "4")
-				),
-				array(
-					3	=> array("weight" => "12")
-				),
-			),
-			'sortable'	=> false
-		));
+*/
+/*
 
         $this->addWidget("blank", array(
         	"title" => "User overview"
@@ -50,10 +57,13 @@ class StudentController extends AbstractSysclassController
         $this->addWidget("blank", array(
         	"title" => "Course Overview"
         ), 1);
+*/
+        /*
         $this->addWidget("blank", array(
         	"title" => "Forums"
         ), 1);
-
+        */
+/*
         $this->addWidget("blank", array(
         	"title" => "Institution Overview"
         ), 2);
@@ -77,7 +87,7 @@ class StudentController extends AbstractSysclassController
         $this->addWidget("blank", array(
                	"title" => "Calendar"
         ), 3);
-        
+*/
 
         parent::display('pages/dashboard/student.tpl');
 	}

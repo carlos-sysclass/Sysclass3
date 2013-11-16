@@ -2,13 +2,21 @@
 abstract class SysclassModule extends AbstractSysclassController
 {   
     protected $module_folder = null;
-    public function init($url, $method, $format, $root=NULL, $basePath="")
+    public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="")
     {
-        parent::init($url, $method, $format, $root, $basePath);
-
         $plico = PlicoLib::instance();
         $class_name = get_class($this);
         $this->module_folder = $plico->get("path/modules") .  strtolower(str_replace("Module", "", $class_name));
+
+        $baseUrl = $plico->get('module/base_path') . "/" . strtolower(str_replace("Module", "", $class_name));
+        if (is_null($url)) {
+            $url = $baseUrl;
+        }
+        if (empty($basePath)) {
+            $basePath = $baseUrl;
+        }
+
+        parent::init($url, $method, $format, $root, $basePath);
     }
     /**
      * Module Entry Point
@@ -24,8 +32,10 @@ abstract class SysclassModule extends AbstractSysclassController
     }
     protected function display($template=NULL)
     {
-        $template = $this->module_folder . "/templates/" . $template;
-        return parent::display($template);
+        return parent::display($this->template($template));
+    }
+    protected function template($template=NULL) {
+        return $this->module_folder . "/templates/" . $template;
     }
 
 
