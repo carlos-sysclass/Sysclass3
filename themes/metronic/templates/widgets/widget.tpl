@@ -1,8 +1,13 @@
-<div class="portlet">
+<div class="portlet {if isset($T_DATA.box)}box {$T_DATA.box}{/if}">
    {if isset($T_DATA.title) || isset($T_DATA.tools)}
    <div class="portlet-title">
       {if isset($T_DATA.title)}
-         <div class="caption"><i class="icon-comments"></i>{$T_DATA.title}</div>
+         <div class="caption">
+            {if isset($T_DATA.icon)}
+               <i class="icon-{$T_DATA.icon}"></i>
+            {/if}
+         {$T_DATA.title}
+         </div>
       {/if}
 
       {if isset($T_DATA.tools)}

@@ -6,11 +6,11 @@
       <i class="icon-angle-down"></i>
       </button>
       <ul role="menu" class="dropdown-menu pull-right">
-         <li><a href="#">Action</a></li>
-         <li><a href="#">Another action</a></li>
-         <li><a href="#">Something else here</a></li>
+         <li><a href="#">Class</a></li>
+         <li><a href="#">Topic</a></li>
+         <li><a href="#">Professor</a></li>
          <li class="divider"></li>
-         <li><a href="#">Separated link</a></li>
+         <li><a href="#">All</a></li>
       </ul>
    </div>
 </div>                  

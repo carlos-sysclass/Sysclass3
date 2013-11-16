@@ -38,6 +38,7 @@ class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContain
     		'forum' => array(
    				'title' 	=> 'Forums',
    				'template'	=> $this->template("lastest.posts"),
+                'icon'      => 'comments',
                 'tools'     => array(
                     'reload'    => $this->getBasePath() . "/widget/refresh",
                 )

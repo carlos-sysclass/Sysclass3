@@ -29,16 +29,16 @@ class LayoutModule extends SysclassModule
             'widgets' => array(
             	1 => array(
             		"blank",
-            		"blank",
+            		"news.latest",
             		"blank",
             		"forum"
             	),
             	2 => array(
             		"blank",
             		"blank",
-            		"blank",
-            		"blank",
-            		"blank"
+            		"messages.contactus",
+            		"messages.help",
+            		"messages.improvements"
             	),
             	3 => array(
             		"blank"

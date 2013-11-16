@@ -1,5 +1,5 @@
 <?php 
-class MessagesModule extends SysclassModule implements ISectionMenu
+class MessagesModule extends SysclassModule implements ISectionMenu, IWidgetContainer
 {
 
     // CREATE FUNCTION HERE
@@ -31,5 +31,37 @@ class MessagesModule extends SysclassModule implements ISectionMenu
     		return $menuItem;
     	}
     	return false;
+    }
+
+    public function getWidgets() {
+        return array(
+            'messages.contactus' => array(
+                'title'     => self::$t->translate('Contact Us'),
+                'template'  => $this->template("contactus"),
+                'icon'      => 'envelope',
+                //'box'       => 'blue',
+                'tools'     => array(
+                    'reload'    => $this->getBasePath() . "/widget/refresh",
+                )
+            ),
+            'messages.help' => array(
+                'title'     => self::$t->translate('We are here to help'),
+                'template'  => $this->template("contactus"),
+                'icon'      => 'help',
+                //'box'       => 'blue',
+                'tools'     => array(
+                    'reload'    => $this->getBasePath() . "/widget/refresh",
+                )
+            ),
+            'messages.improvements' => array(
+                'title'     => self::$t->translate('System Improvements'),
+                'template'  => $this->template("contactus"),
+                'icon'      => 'envelope',
+                //'box'       => 'blue',
+                'tools'     => array(
+                    'reload'    => $this->getBasePath() . "/widget/refresh",
+                )
+            )
+        );
     }
 }
