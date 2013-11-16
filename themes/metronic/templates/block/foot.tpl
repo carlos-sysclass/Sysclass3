@@ -27,5 +27,18 @@
 	  	PortletDraggable.init();
 	  }
 	});
+
+	jQuery('#lastest-news-pager').bootpag({
+    	maxVisible: 0,
+		next: '<i class="icon-angle-right"></i>',
+		prev: '<i class="icon-angle-left"></i>',
+		leaps: false,
+		total: 2,
+		page: 1,
+		cycle : true,
+		linkClass: 'btn btn-sm green'
+    }).on("page", function(event, num) {
+		$("#lastest-news-content").html("Page " + num + " content here"); // or some ajax content loading...
+	});
 </script>
 <!-- END JAVASCRIPTS -->

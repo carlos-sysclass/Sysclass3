@@ -9,11 +9,11 @@
          {$T_DATA.title}
          </div>
       {/if}
-
       {if isset($T_DATA.tools)}
       <div class="tools">
          {if isset($T_DATA.tools.collapse)}
          <a class="collapse" href="javascript:;"></a>
+
          {/if}
          {if isset($T_DATA.tools.config)}
          <a class="config" data-toggle="modal" href="#portlet-config"></a>
@@ -22,6 +22,10 @@
          <a class="reload" href="{$T_DATA.tools.reload}"></a>
          {/if}
       </div>
+      {/if}
+      {if isset($T_DATA.actions)}
+         <div class="actions">
+         </div>
       {/if}
    </div>
    {/if}
