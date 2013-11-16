@@ -23,6 +23,10 @@ class StudentController extends AbstractSysclassController
 		// DASHBOARD PAGE
         //require_once 'control_panel.php';
         //$this->putScript("scripts/portlet-draggable");
+        $messages = $this->module("messages");
+
+        var_dump($messages);
+        exit;
 
 		$this->putItem("page_layout", array(
 			"rows" => array(

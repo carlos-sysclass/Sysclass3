@@ -9,6 +9,7 @@ $plicoLib->set('app_name', 'Smart Solution');
 //$plicoLib->set('db_dsn', 'postgres://ssra:fep7_58A#@localhost/ssra_root');
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
+$plicoLib->add('path/modules', __DIR__ . '/modules/');
 /*
 $plicoLib->set('mail/send/isSMTP', FALSE);
 $plicoLib->set('mail/send/debug', FALSE);

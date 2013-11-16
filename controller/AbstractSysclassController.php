@@ -164,4 +164,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		
 	}
 
+	/* FRAMEWORK CANDIDATE FUNCTIONS - !MOVE TO plicolib if apply! */
+	
+
 }
