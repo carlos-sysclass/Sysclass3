@@ -3,3 +3,11 @@
 .well .pagination {
     margin: -9px 0 0;
 }
+
+@media (max-width: 767px) {
+
+	.page-boxed .header .dropdown .username {
+		display: none;
+	}	
+
+}
