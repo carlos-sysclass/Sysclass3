@@ -35,13 +35,13 @@ class LayoutModule extends SysclassModule
             	),
             	2 => array(
             		"blank",
-            		"blank",
+            		"advertising",
             		"messages.contactus",
             		"messages.help",
             		"messages.improvements"
             	),
             	3 => array(
-            		"blank"
+            		"calendar"
             	)
             ),
             'sortable'  => false

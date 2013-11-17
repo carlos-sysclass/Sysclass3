@@ -1,10 +1,10 @@
 <div class="navbar navbar-default" role="navigation">
    <!-- Brand and toggle get grouped for better mobile display -->
    <!-- Collect the nav links, forms, and other content for toggling -->
-   <div class="collapse navbar-collapse navbar-ex1-collapse  pull-right">
+   <div class="collapse navbar-collapse navbar-ex1-collapse">
       <form class="navbar-form navbar-left" role="search">
          <div class="input-group">
-            <input type="text" class="form-control input-large">
+            <input type="text" class="form-control input-xlarge">
             <div class="input-group-btn">
                <button tabindex="-1" class="btn blue" type="button">Search</button>
                <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">

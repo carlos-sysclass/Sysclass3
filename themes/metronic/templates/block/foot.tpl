@@ -23,10 +23,14 @@
 	  if (typeof Lock == 'object') {
 	  	Lock.init();
 	  }
+	  if (typeof Calendar == 'object') {
+	  	Calendar.init();
+	  }
 	  if (typeof PortletDraggable == 'object') {
 	  	PortletDraggable.init();
 	  }
-	});
+
+	
 
 	jQuery('#lastest-news-pager').bootpag({
     	maxVisible: 0,
@@ -36,9 +40,10 @@
 		total: 2,
 		page: 1,
 		cycle : true,
-		linkClass: 'btn btn-sm green'
+		linkClass: 'btn btn-sm yellow'
     }).on("page", function(event, num) {
 		$("#lastest-news-content").html("Page " + num + " content here"); // or some ajax content loading...
+	});
 	});
 </script>
 <!-- END JAVASCRIPTS -->

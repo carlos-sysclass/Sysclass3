@@ -12,7 +12,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer
                 'tools'		=> array(
                 	'reload'	=> true
                 ),
-                'box'       => 'green'
+                'box'       => 'yellow'
             )
         );
     }
