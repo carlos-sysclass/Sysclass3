@@ -39,54 +39,18 @@ class StudentController extends AbstractSysclassController
             call_user_func_array(array($this, "addWidget"), $widget);
         }
 
-        //var_dump($this->widgets);
-
-        
-/*
-        var_dump($messages);
-        exit;
-*/
 /*
 
         $this->addWidget("blank", array(
         	"title" => "User overview"
         ), 1);
         $this->addWidget("blank", array(
-        	"title" => "messages"
-        ), 1);
-        $this->addWidget("blank", array(
         	"title" => "Course Overview"
         ), 1);
-*/
-        /*
-        $this->addWidget("blank", array(
-        	"title" => "Forums"
-        ), 1);
-        */
-/*
         $this->addWidget("blank", array(
         	"title" => "Institution Overview"
         ), 2);
 
-        $this->addWidget("blank", array(
-        	"title" => "Ads"
-        ), 2);
-
-        $this->addWidget("blank", array(
-        	"title" => "Contact Us"
-        ), 2);
-
-        $this->addWidget("blank", array(
-        	"title" => "We are here to help"
-        ), 2);
-
-        $this->addWidget("blank", array(
-                "title" => "System Improvements"
-        ), 2);
-
-        $this->addWidget("blank", array(
-               	"title" => "Calendar"
-        ), 3);
 */
 
         parent::display('pages/dashboard/student.tpl');

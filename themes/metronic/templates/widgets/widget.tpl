@@ -1,35 +1,17 @@
-<div class="portlet {if isset($T_DATA.box)}box {$T_DATA.box}{/if}">
+{if isset($T_DATA.panel) && $T_DATA.panel}
+   {assign var="base_class" value="panel"}
+{else}
+   {assign var="base_class" value="portlet"}
+{/if}
+<div class="{$base_class} {if isset($T_DATA.panel)}panel-{if $T_DATA.panel|@is_string}{$T_DATA.panel}{else}default{/if}{/if} {if isset($T_DATA.box)}box {$T_DATA.box}{/if}">
    {if isset($T_DATA.title) || isset($T_DATA.tools)}
-   <div class="portlet-title">
-      {if isset($T_DATA.title)}
-         <div class="caption">
-            {if isset($T_DATA.icon)}
-               <i class="icon-{$T_DATA.icon}"></i>
-            {/if}
-         {$T_DATA.title}
-         </div>
+      {if isset($T_DATA.panel) && $T_DATA.panel}
+         {include file="widgets/panel-title.tpl" T_DATA=$T_DATA}
+      {else}
+         {include file="widgets/portlet-title.tpl" T_DATA=$T_DATA}
       {/if}
-      {if isset($T_DATA.tools)}
-      <div class="tools">
-         {if isset($T_DATA.tools.collapse)}
-         <a class="collapse" href="javascript:;"></a>
-
-         {/if}
-         {if isset($T_DATA.tools.config)}
-         <a class="config" data-toggle="modal" href="#portlet-config"></a>
-         {/if}
-         {if isset($T_DATA.tools.reload)}
-         <a class="reload" href="{$T_DATA.tools.reload}"></a>
-         {/if}
-      </div>
-      {/if}
-      {if isset($T_DATA.actions)}
-         <div class="actions">
-         </div>
-      {/if}
-   </div>
    {/if}
-   <div class="portlet-body">
+   <div class="{$base_class}-body">
       {if isset($T_DATA.template)}
          {include file="`$T_DATA.template`.tpl" T_DATA=$T_DATA}
       {else}

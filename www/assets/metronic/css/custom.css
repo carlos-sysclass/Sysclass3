@@ -4,6 +4,11 @@
     margin: -9px 0 0;
 }
 
+hr {
+	margin: 10px;
+
+}
+
 @media (max-width: 767px) {
 
 	.page-boxed .header .dropdown .username {
