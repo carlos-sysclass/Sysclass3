@@ -8,6 +8,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer
             'advertising' => array(
                 'title'     => self::$t->translate('Advertising'),
                 'template'  => $this->template("block"),
+                'panel'		=> true
             )
         );
     }

@@ -30,7 +30,7 @@ class LayoutModule extends SysclassModule
             	1 => array(
             		"users.overview",
             		"news.latest",
-            		"blank",
+            		"courses.overview",
             		"forum"
             	),
             	2 => array(

@@ -10,7 +10,8 @@ class NewsModule extends SysclassModule implements IWidgetContainer
                 'template'  => $this->template("lastest"),
                 'icon'      => 'bell',
                 'tools'		=> array(
-                	'reload'	=> true
+                	'reload'	=> true,
+                    'collapse'  => true
                 ),
                 'box'       => 'yellow'
             )

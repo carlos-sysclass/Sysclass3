@@ -3,16 +3,16 @@
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
     </div>    
 	<div class="col-md-7">
-		<ul class="list-group">
-            <li class="list-group-item">
+		<div class="list-group">
+            <a class="list-group-item" href="javascript: void(0);">
             	<span class="text-success"><i class="icon-ok-sign"></i></span>
             	Mentoring
-            </li>
-        	<li class="list-group-item">
+            </a>
+        	<a class="list-group-item" href="javascript: void(0);">
         		<span class="text-danger"><i class="icon-remove-sign"></i></span>
         		Technical Support
-        	</li>
-		</ul>
+        	</a>
+		</div>
 	</div>
 </div>
 

@@ -38,17 +38,23 @@ class MessagesModule extends SysclassModule implements ISectionMenu, IWidgetCont
             'messages.contactus' => array(
                 'title'     => self::$t->translate('Contact Us'),
                 'template'  => $this->template("contactus"),
-                'icon'      => 'envelope'
+                'icon'      => 'envelope',
+                'panel'     => true,
+                'body'      => false
             ),
             'messages.help' => array(
                 'title'     => self::$t->translate('We are here to help'),
                 'template'  => $this->template("contactus"),
-                'icon'      => 'question'
+                'icon'      => 'question',
+                'panel'     => true,
+                'body'      => false
             ),
             'messages.improvements' => array(
                 'title'     => self::$t->translate('System Improvements'),
                 'template'  => $this->template("contactus"),
-                'icon'      => 'cog'
+                'icon'      => 'cog',
+                'panel'     => true,
+                'body'      => false
             )
         );
     }

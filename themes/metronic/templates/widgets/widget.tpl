@@ -11,11 +11,15 @@
          {include file="widgets/portlet-title.tpl" T_DATA=$T_DATA}
       {/if}
    {/if}
-   <div class="{$base_class}-body">
+   {if !isset($T_DATA.body) || $T_DATA.body}
+   <div class="{$base_class}-body {if isset($T_DATA.body)}{$T_DATA.body}{/if}">
+   {/if}
       {if isset($T_DATA.template)}
          {include file="`$T_DATA.template`.tpl" T_DATA=$T_DATA}
       {else}
          {include file="widgets/`$widget.type`.tpl" T_DATA=$T_DATA}
       {/if}
+   {if !isset($T_DATA.body) || $T_DATA.body}
    </div>
+   {/if}
 </div>

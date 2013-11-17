@@ -65,7 +65,7 @@
 		   <li class="dropdown" id="header_notification_bar">
 		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
 		         data-close-others="true">
-		      <i class="icon-dollar"></i>
+		      <i class="icon-money"></i>
 		      <span class="badge">3</span>
 		      </a>
 		      <ul class="dropdown-menu extended notification" style="width:300px !important;">
