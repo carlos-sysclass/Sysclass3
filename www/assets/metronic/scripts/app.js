@@ -443,13 +443,45 @@ var App = function () {
 
     // Handles portlet tools & actions
     var handlePortletTools = function () {
+        jQuery('.portlet > .portlet-title > .tools > a.search').each(function (e) {
+            jQuery(this).popover(
+                jQuery.extend(
+                    jQuery(this).data(), 
+                    {content : jQuery("#" + jQuery(this).data("inject-selector")).html()}
+                )
+            ).on('show.bs.popover', function () {
+                // do something…
+                jQuery(this)
+                    .closest(".portlet")
+                    .animate({opacity: 0.4}, 600)
+                    .find(".tools a:not(.search)")
+                    .addClass("disabled");
+            }).on('shown.bs.popover', function () {
+                jQuery(this).data("bs.popover").$tip.find("input").focus();
+            }).on('hide.bs.popover', function () {
+                jQuery(this)
+                    .closest(".portlet")
+                    .animate({opacity: 1}, 600)
+                    .find(".tools a:not(.search)")
+                    .removeClass("disabled");
+            });
+
+        });
+
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.remove', function (e) {
             e.preventDefault();
+            if (jQuery(this).is(".disabled")) {
+                return;
+            }
             jQuery(this).closest(".portlet").remove();
         });
 
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.reload', function (e) {
             e.preventDefault();
+            if (jQuery(this).is(".disabled")) {
+                return;
+            }
+
             var el = jQuery(this).closest(".portlet").children(".portlet-body");
             App.blockUI(el);
             window.setTimeout(function () {
@@ -459,6 +491,10 @@ var App = function () {
 
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > .collapse, .portlet .portlet-title > .tools > .expand', function (e) {
             e.preventDefault();
+            if (jQuery(this).is(".disabled")) {
+                return;
+            }
+
             var el = jQuery(this).closest(".portlet").children(".portlet-body");
             if (jQuery(this).hasClass("collapse")) {
                 jQuery(this).removeClass("collapse").addClass("expand");
@@ -473,6 +509,11 @@ var App = function () {
         var easing = "linear";
 
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > .fullscreen, .portlet > .portlet-title > .tools > .normalscreen', function (e) {
+            e.preventDefault();
+            if (jQuery(this).is(".disabled")) {
+                return;
+            }
+
             var portlet = jQuery(this).closest(".portlet");
             var column = jQuery(this).closest("div[class^='col-md-']");
             var portlets = $(".page-content .row > div[class^='col-md-'] > .panel, .page-content .row > div[class^='col-md-'] > .portlet");
@@ -490,7 +531,8 @@ var App = function () {
             
                 portlets.fadeOut(timeout/2, function() {
                     column.removeClass(oldColumn).addClass("col-md-12");
-                    portlet.fadeIn(timeout/2); 
+                    portlet.fadeIn(timeout/2).addClass("portlet-fullscreen");
+
                 } );
                 
             } else {
@@ -501,7 +543,7 @@ var App = function () {
                      portlets.not(portlet).slideDown(timeout/2);
                 });
 */
-                portlet.fadeOut(timeout/2, function() {
+                portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
                     column.removeClass("col-md-12").addClass(oldColumn);
                     portlets.fadeIn(timeout/2); 
                 } );

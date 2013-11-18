@@ -9,9 +9,34 @@
    {/if}
    {if isset($T_DATA.tools)}
    <div class="tools">
+      {if isset($T_DATA.tools.search)}
+         <a class="search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-inject-selector="{$T_DATA.id}-search-form" href="javascript:;"></a>
+
+         <div class="hidden" id="{$T_DATA.id}-search-form">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+               <div class="input-group">
+                  <input type="text" name="portlet-tools-search-input" class="form-control" placeholder="Search...">
+                  <div class="input-group-btn">
+                     <button tabindex="-1" class="btn blue" type="button"><i class="icon-search"></i></button>
+                     <!--
+                     <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
+                        <i class="icon-angle-down"></i>
+                     </button>
+                     <ul role="menu" class="dropdown-menu pull-right">
+                        <li><a href="#">Class</a></li>
+                        <li><a href="#">Topic</a></li>
+                        <li><a href="#">Professor</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">All</a></li>
+                     </ul>
+                     -->
+                  </div>
+               </div> 
+         </div>
+      {/if}
       {if isset($T_DATA.tools.collapse)}
       <a class="collapse" href="javascript:;"></a>
-
       {/if}
       {if isset($T_DATA.tools.config)}
       <a class="config" data-toggle="modal" href="#portlet-config"></a>

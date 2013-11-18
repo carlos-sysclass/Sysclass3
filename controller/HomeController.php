@@ -13,8 +13,8 @@ class HomeController extends AbstractSysclassController
 	{
 		// DASHBOARD PAGE
 		//$currentUser = MagesterUser::checkUserAccess();
-		if (is_object($this->current_user)) {
-			$user_type = $this->current_user->user['user_type'];
+		if (is_object(self::$current_user)) {
+			$user_type = self::$current_user->user['user_type'];
 			if (!empty($user_type)) {
 				$this->redirect($user_type);
 				exit;

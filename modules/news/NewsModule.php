@@ -7,10 +7,10 @@ class NewsModule extends SysclassModule implements IWidgetContainer
         return array(
             'news.latest' => array(
                 'id'        => 'news-lastest',
-                'title'     => self::$t->translate('News Feed'),
-                'template'  => $this->template("lastest"),
+                'title'     => self::$t->translate('Announcements'),
+                'template'  => $this->template("news.widget"),
                 'icon'      => 'bell',
-                'box'       => 'blue',
+                'box'       => 'dark-blue',
                 'tools'		=> array(
                 	'reload'	=> 'javascript:void(0);',
                     'collapse'  => true,
@@ -26,7 +26,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer
      */
     public function dataAction()
     {
-        $currentUser    = $this->current_user;
+        $currentUser    = self::$current_user;
 
         # Carrega noticias da ultima licao selecionada
         $news = news :: getNews(0, false) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;

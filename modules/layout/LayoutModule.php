@@ -31,7 +31,7 @@ class LayoutModule extends SysclassModule
             		"users.overview",
             		"news.latest",
             		"courses.overview",
-            		"forum"
+            		"tutoria.widget"
             	),
             	2 => array(
             		"institution.overview",

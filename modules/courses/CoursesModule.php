@@ -43,7 +43,7 @@ class CoursesModule extends SysclassModule implements ISectionMenu, IWidgetConta
    				'title' 	=> 'Class: <strong>Managing Networks</strong>',
    				'template'	=> $this->template("overview"),
                 'icon'      => 'bolt',
-                'box'       => 'yellow',
+                'box'       => 'dark-blue',
                 'tools'     => array(
                     'reload'        => true,
                     'fullscreen'    => true

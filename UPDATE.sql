@@ -3131,3 +3131,49 @@ CREATE TABLE `sysclass_root`.`module_xpay_cielo_card_tokens` (
 
 ALTER TABLE `module_xpay_cielo_card_tokens` ADD `bandeira` VARCHAR( 20 ) NULL DEFAULT '' AFTER `cartao`;
 
+
+/* 2013-11-18 */
+-- phpMyAdmin SQL Dump
+-- version 4.0.6deb1
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tempo de Geração: 18/11/2013 às 21:32
+-- Versão do servidor: 5.5.34-0ubuntu0.13.10.1
+-- Versão do PHP: 5.5.3-1ubuntu2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Banco de dados: `sysclass_root`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `mod_tutoria`
+--
+
+CREATE TABLE IF NOT EXISTS `mod_tutoria` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_timestamp` int(10) unsigned NOT NULL,
+  `answer_timestamp` int(10) unsigned NOT NULL,
+  `lessons_ID` int(11) NOT NULL,
+  `unit_ID` int(11) DEFAULT NULL,
+  `title` varchar(300) NOT NULL,
+  `question_user_id` int(11) NOT NULL,
+  `question` text NOT NULL,
+  `answer_user_id` int(11) DEFAULT NULL,
+  `answer` text,
+  PRIMARY KEY (`id`),
+  KEY `question_user_id` (`question_user_id`),
+  KEY `awnser_user_id` (`answer_user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Fazendo dump de dados para tabela `mod_tutoria`
+--
+
+INSERT INTO `mod_tutoria` (`id`, `question_timestamp`, `answer_timestamp`, `lessons_ID`, `unit_ID`, `title`, `question_user_id`, `question`, `answer_user_id`, `answer`) VALUES
+(1, 1374587851, 1374587851, 90, NULL, 'Qual o segredo da vida, do Universo e de tudo o mais?', 48, 'Alguém pode em ajudar?', 0, 'Provavelmente é 42!');

@@ -6,8 +6,8 @@ class StudentController extends AbstractSysclassController
 	{
 		if (parent::authorize()) {
 			// USER IS LOGGED IN, CHECK FOR TYPE
-			$this->current_user	= MagesterUser::checkUserAccess(false, 'student');
-			return $this->current_user->user['user_type'] == 'student';
+			self::$current_user	= MagesterUser::checkUserAccess(false, 'student');
+			return self::$current_user->user['user_type'] == 'student';
 		}
 		return false;
 	}

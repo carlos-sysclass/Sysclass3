@@ -1294,6 +1294,7 @@ Portlets
 }
 
 .portlet.blue > .portlet-title > .caption, .portlet-title.blue > .caption, 
+.portlet.dark-blue > .portlet-title > .caption, .portlet-title.dark-blue > .caption, 
 .portlet.green > .portlet-title > .caption, .portlet-title.green > .caption,
 .portlet.yellow > .portlet-title > .caption, .portlet-title.yellow > .caption,
 .portlet.red > .portlet-title > .caption, .portlet-title.red > .caption,
@@ -1303,6 +1304,7 @@ Portlets
 }
 
 .portlet.box.blue > .portlet-title > .caption > i, 
+.portlet.box.dark-blue > .portlet-title > .caption > i, 
 .portlet.box.green > .portlet-title > .caption > i,
 .portlet.box.grey > .portlet-title > .caption > i,
 .portlet.box.yellow > .portlet-title > .caption > i, 
@@ -1423,6 +1425,11 @@ Portlets
   background-color: #4b8df8 !important;
 }
 
+
+.portlet > .portlet-body.dark-blue, .portlet.dark-blue {
+  background-color: #005991 !important;
+}
+
 .portlet > .portlet-body.red, .portlet.red {
   background-color: #e02222 !important;
 }
@@ -1513,6 +1520,10 @@ Solid colored portlet
 .portlet.solid.purple > .portlet-title > .caption > i,
 .portlet.solid.purple > .portlet-body,
 
+.portlet.solid.dark-blue > .portlet-title,
+.portlet.solid.dark-blue > .portlet-title > .caption > i,
+.portlet.solid.dark-blue > .portlet-body
+
 .portlet.solid.blue > .portlet-title,
 .portlet.solid.blue > .portlet-title > .caption > i,
 .portlet.solid.blue > .portlet-body {
@@ -1590,6 +1601,16 @@ Box portlet
    border: 1px solid #b4cef8;
    border-top: 0;
 }
+
+.portlet.box.dark-blue > .portlet-title {
+  background-color: #005991;
+} 
+
+.portlet.box.dark-blue {  
+   border: 1px solid #b4cef8;
+   border-top: 0;
+}
+
 
 .portlet.box.red > .portlet-title {
   background-color: #e02222;
@@ -2824,6 +2845,14 @@ Dashboard stats
 
 .dashboard-stat.blue .more { 
   background-color: #208dbe;
+} 
+
+.dashboard-stat.dark-blue {
+  background-color: #208dbe;
+}
+
+.dashboard-stat.dark-blue .more { 
+  background-color: #00591;
 } 
 
 .dashboard-stat.green {

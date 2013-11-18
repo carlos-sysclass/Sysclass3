@@ -10,7 +10,7 @@ class CalendarModule extends SysclassModule implements IWidgetContainer
                 'title'     => self::$t->translate('Calendar'),
                 'template'  => $this->template("calendar.block"),
                 'icon'      => 'calendar',
-                'box'       => 'red calendar'
+                'box'       => 'dark-blue calendar'
             )
         );
     }

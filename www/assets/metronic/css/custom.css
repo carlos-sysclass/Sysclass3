@@ -20,6 +20,19 @@ hr {
 
 }
 
+.portlet > .portlet-title > .tools > a.search {
+  	margin-bottom: 2px;
+/*  background-image:url(../img/portlet-fullscreen-icon.png); */
+	top: -3px;
+	width: 14px;
+	color: gray;
+}
+.portlet.box > .portlet-title > .tools > a.search,
+.portlet.solid > .portlet-title > .tools > a.search {
+	color: white;
+	text-decoration: none;
+}
+
 .portlet > .portlet-title > .tools > a.fullscreen {
   	margin-bottom: 2px;
 /*  background-image:url(../img/portlet-fullscreen-icon.png); */
@@ -44,4 +57,18 @@ hr {
 .portlet.solid > .portlet-title > .tools > a.normalscreen {
 	color: white;
 	text-decoration: none;
+}
+
+.popover-content {
+    padding: 9px 5px;
+}
+
+.chats li .title {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+}
+.chats li.out {
+	margin-bottom: 20px;
 }

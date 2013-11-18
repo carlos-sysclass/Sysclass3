@@ -1,7 +1,7 @@
 <?php 
 abstract class AbstractSysclassController extends AbstractDatabaseController
 {
-	protected $current_user = null;
+	protected static $current_user = null;
 	public static $t = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="")
 	{
@@ -87,8 +87,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		try {
-		    $this->current_user 	= MagesterUser::checkUserAccess();
-		    $smarty->assign("T_CURRENT_USER", $this->current_user);
+		    self::$current_user 	= MagesterUser::checkUserAccess();
+		    $smarty->assign("T_CURRENT_USER", self::$current_user);
 
 		    if ($_SESSION['user_locked']) {
 		    	if ($this->context['url'] != "lock") {
@@ -100,7 +100,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
 		        setcookie('c_request', http_build_query($_GET), time() + 300);
 		    }
-		    $this->redirect("login", $e->getMessage() . ' (' . $e->getCode() . ')', "danger");
+		    $this->redirect("/login", $e->getMessage() . ' (' . $e->getCode() . ')', "danger");
 		    exit;
 		}
 		return TRUE;
@@ -119,8 +119,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		
 		
 
-		if (unserialize($this->current_user -> user['additional_accounts'])) {
-			$accounts = unserialize($this->current_user -> user['additional_accounts']);
+		if (unserialize(self::$current_user -> user['additional_accounts'])) {
+			$accounts = unserialize(self::$current_user -> user['additional_accounts']);
 			$queryString = "'".implode("','", array_values($accounts))."'";
 			$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
 			$this -> putItem("additional_accounts", $bar_additional_accounts);
@@ -144,12 +144,12 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		// CREATE USER TOP-BAR AVATAR
 		$small_user_avatar = $big_user_avatar = array();
 		try {
-		    $file = new MagesterFile($this->current_user->user['avatar']);
+		    $file = new MagesterFile(self::$current_user->user['avatar']);
 		    list($small_user_avatar['width'], $small_user_avatar['height']) = sC_getNormalizedDims($file['path'], 29, 29);
-		    $small_user_avatar['avatar'] = $this->current_user->user['avatar'];
+		    $small_user_avatar['avatar'] = self::$current_user->user['avatar'];
 
 		    list($big_user_avatar['width'], $big_user_avatar['height']) = sC_getNormalizedDims($file['path'], 200, 200);
-			$big_user_avatar['avatar'] = $this->current_user->user['avatar'];		    
+			$big_user_avatar['avatar'] = self::$current_user->user['avatar'];		    
 		} catch (MagesterFileException $e) {
 		    $small_user_avatar = array(
 		        'avatar' => "img/avatar_small.png",

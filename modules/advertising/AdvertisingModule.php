@@ -6,9 +6,11 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer
     	$this->putScript("plugins/jquery-bootpag/jquery.bootpag");
         return array(
             'advertising' => array(
-                'title'     => self::$t->translate('Advertising'),
-                'template'  => $this->template("block"),
-                'panel'		=> true
+                //'title'     => self::$t->translate('Advertising'),
+                'template'  => $this->template("advertising.block"),
+                'tools'		=> array(
+                	
+                )
             )
         );
     }

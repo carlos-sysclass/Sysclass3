@@ -7,7 +7,7 @@ class AdministratorController extends AbstractSysclassController
 		if (parent::authorize()) {
 			// USER IS LOGGED IN, CHECK FOR TYPE
 			$currentUser 	= MagesterUser::checkUserAccess(false, 'student');
-			return $this->current_user->user['user_type'] == 'administrator';
+			return self::$current_user->user['user_type'] == 'administrator';
 		}
 		return false;
 	}
