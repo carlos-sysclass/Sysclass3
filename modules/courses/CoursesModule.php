@@ -44,8 +44,8 @@ class CoursesModule extends SysclassModule implements ISectionMenu, IWidgetConta
    				'template'	=> $this->template("overview"),
                 'tools'     => array(
                     'reload'    => true
-                )
-                //'box'       => 'blue'
+                ),
+                'box'       => 'blue'
     		)
     	);
     }

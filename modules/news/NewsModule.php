@@ -13,8 +13,9 @@ class NewsModule extends SysclassModule implements IWidgetContainer
                 'tools'		=> array(
                 	'reload'	=> 'javascript:void(0);',
                     'collapse'  => true
-                ),
+                )/*,
                 'box'       => 'yellow'
+                */
             )
         );
     }
