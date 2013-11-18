@@ -19,6 +19,11 @@
       {if isset($T_DATA.tools.reload)}
       <a class="reload" href="{$T_DATA.tools.reload}"></a>
       {/if}
+      {if isset($T_DATA.tools.fullscreen)}
+      <a class="fullscreen glyphicon glyphicon-fullscreen" href="javascript:void(0);"></a>
+      {/if}
+
+      
    </div>
    {/if}
    {if isset($T_DATA.actions)}

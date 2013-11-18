@@ -42,6 +42,7 @@ class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContain
                 'box'       => 'grey',
                 'tools'     => array(
                     'reload'    => $this->getBasePath() . "/widget/refresh",
+                    'fullscreen'    => true
                 )
     		)
     	);

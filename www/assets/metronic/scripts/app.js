@@ -468,6 +468,49 @@ var App = function () {
                 el.slideDown(200);
             }
         });
+        var oldColumn = "";
+        var timeout = 1000;
+        var easing = "linear";
+
+        jQuery('body').on('click', '.portlet > .portlet-title > .tools > .fullscreen, .portlet > .portlet-title > .tools > .normalscreen', function (e) {
+            var portlet = jQuery(this).closest(".portlet");
+            var column = jQuery(this).closest("div[class^='col-md-']");
+            var portlets = $(".page-content .row > div[class^='col-md-'] > .panel, .page-content .row > div[class^='col-md-'] > .portlet");
+            
+            if (jQuery(this).hasClass("fullscreen")) {
+                jQuery(this).removeClass("fullscreen").addClass("normalscreen");
+                jQuery(this).removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+
+                for(i = 1; i <=12; i++) {
+                    if (column.hasClass('col-md-' + i)) {
+                        oldColumn = 'col-md-' + i;
+                        break;
+                    }
+                }
+            
+                portlets.fadeOut(timeout/2, function() {
+                    column.removeClass(oldColumn).addClass("col-md-12");
+                    portlet.fadeIn(timeout/2); 
+                } );
+                
+            } else {
+                jQuery(this).removeClass("normalscreen").addClass("fullscreen");
+                jQuery(this).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+/*
+                column.switchClass( "col-md-12", oldColumn, timeout/2, easing, function() {
+                     portlets.not(portlet).slideDown(timeout/2);
+                });
+*/
+                portlet.fadeOut(timeout/2, function() {
+                    column.removeClass("col-md-12").addClass(oldColumn);
+                    portlets.fadeIn(timeout/2); 
+                } );
+            }
+            //toggleFullScreen();
+        //
+        });
+
+
     }
 
     // Handles custom checkboxes & radios using jQuery Uniform plugin
@@ -651,30 +694,29 @@ var App = function () {
         // mozfullscreenerror event handler
        
         // toggle full screen
-        function toggleFullScreen() {
-          if (!document.fullscreenElement &&    // alternative standard method
-              !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
-            if (document.documentElement.requestFullscreen) {
-              document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) {
-              document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) {
-              document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-            }
-          } else {
-            if (document.cancelFullScreen) {
-              document.cancelFullScreen();
-            } else if (document.mozCancelFullScreen) {
-              document.mozCancelFullScreen();
-            } else if (document.webkitCancelFullScreen) {
-              document.webkitCancelFullScreen();
-            }
-          }
-        }
-
         $('#trigger_fullscreen').click(function() {
             toggleFullScreen();
         });
+    }
+    var toggleFullScreen = function () {
+      if (!document.fullscreenElement &&    // alternative standard method
+          !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+      } else {
+        if (document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
     }
 
     // Handle Select2 Dropdowns
