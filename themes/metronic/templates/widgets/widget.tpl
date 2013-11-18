@@ -23,3 +23,7 @@
    </div>
    {/if}
 </div>
+{if !isset($T_DATA.box) && !isset($T_DATA.panel)}
+<hr />
+<br />
+{/if}

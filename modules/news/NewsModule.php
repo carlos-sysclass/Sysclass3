@@ -10,12 +10,11 @@ class NewsModule extends SysclassModule implements IWidgetContainer
                 'title'     => self::$t->translate('News Feed'),
                 'template'  => $this->template("lastest"),
                 'icon'      => 'bell',
+                'box'       => 'blue',
                 'tools'		=> array(
                 	'reload'	=> 'javascript:void(0);',
                     'collapse'  => true
-                )/*,
-                'box'       => 'yellow'
-                */
+                )
             )
         );
     }

@@ -42,7 +42,7 @@
             animate: 1000,
             size: 75,
             lineWidth: 3,
-            barColor: App.getLayoutColorCode('purple')
+            barColor: App.getLayoutColorCode('yellow')
         });
          
         $('.easy-pie-chart .number.bounce').easyPieChart({

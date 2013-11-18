@@ -40,12 +40,13 @@ class CoursesModule extends SysclassModule implements ISectionMenu, IWidgetConta
         $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
     	return array(
     		'courses.overview' => array(
-   				'title' 	=> 'Class: <span class="text-primary">Managing Network</span>',
+   				'title' 	=> 'Class: <strong>Managing Networks</strong>',
    				'template'	=> $this->template("overview"),
+                'icon'      => 'bolt',
+                'box'       => 'yellow',
                 'tools'     => array(
                     'reload'    => true
-                ),
-                'box'       => 'blue'
+                )
     		)
     	);
     }

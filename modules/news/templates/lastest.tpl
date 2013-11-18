@@ -2,8 +2,8 @@
 	<a class="news-title" class="btn btn-link" data-toggle="modal" href="#news-dialog"></a>
 </div>
 <ul class="pager">
-	<li class="previous"><a href="#">← Older</a></li>
-    <li class="next"><a href="#">Newer →</a></li>
+	<li class="previous"><a href="javascript:void(0);">← Older</a></li>
+    <li class="next"><a href="javascript:void(0);">Newer →</a></li>
 </ul>
 <div class="modal fade" id="news-dialog" tabindex="-1" role="basic" aria-hidden="true">
 	<div class="modal-dialog modal-wide">
@@ -17,8 +17,8 @@
 				<div class="news-data">
 				</div>
 				<ul class="pager">
-					<li class="previous"><a href="#">← Older</a></li>
-				    <li class="next"><a href="#">Newer →</a></li>
+					<li class="previous"><a href="javascript:void(0);">← Older</a></li>
+				    <li class="next"><a href="javascript:void(0);">Newer →</a></li>
 				</ul>
 			</div>
 			<div class="modal-footer">
