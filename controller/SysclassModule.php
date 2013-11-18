@@ -1,14 +1,16 @@
 <?php 
 abstract class SysclassModule extends AbstractSysclassController
 {   
+    protected $module_id = null;
     protected $module_folder = null;
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="")
     {
         $plico = PlicoLib::instance();
         $class_name = get_class($this);
-        $this->module_folder = $plico->get("path/modules") .  strtolower(str_replace("Module", "", $class_name));
+        $this->module_id = strtolower(str_replace("Module", "", $class_name));
+        $this->module_folder = $plico->get("path/modules") . $this->module_id;
 
-        $baseUrl = $plico->get('module/base_path') . "/" . strtolower(str_replace("Module", "", $class_name));
+        $baseUrl = $plico->get('module/base_path') . "/" . $this->module_id;
         if (is_null($url)) {
             $url = $baseUrl;
         }
@@ -17,6 +19,11 @@ abstract class SysclassModule extends AbstractSysclassController
         }
 
         parent::init($url, $method, $format, $root, $basePath);
+    }
+    protected function putModuleScript($script)
+    {
+        return parent::putModuleScript($this->getRequestedUrl() . "/js/" . $script);
+
     }
     /**
      * Module Entry Point
@@ -28,8 +35,37 @@ abstract class SysclassModule extends AbstractSysclassController
         // DASHBOARD PAGE
         //require_once 'control_panel.php';
         //$this->putScript("scripts/portlet-draggable");
-        $this->display('default.tpl');
+        //$this->display('default.tpl');
+        if ($this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
+            $jsFileName = $this->module_folder . "/scripts/" . $this->module_id . ".js";
+            if (file_exists($jsFileName)) {
+                echo file_get_contents($jsFileName);
+            }
+        }
+        exit;
     }
+    /**
+     * Module Entry Point
+     *
+     * @url GET /js
+     * @url GET /js/:filename
+     */
+    public function jsWrapperAction($filename = null)
+    {
+        if ($filename == 0 || $this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
+            header("Content-Type: application/javascript");
+            if ($filename == 0) {
+                $filename = $this->module_id;
+            }
+
+            $jsFileName = $this->module_folder . "/scripts/" . $this->module_id . ".js";
+            if (file_exists($jsFileName)) {
+                echo file_get_contents($jsFileName);
+            }
+        }
+        exit;
+    }
+
     protected function display($template=NULL)
     {
         return parent::display($this->template($template));

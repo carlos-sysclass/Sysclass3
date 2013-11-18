@@ -85,6 +85,8 @@ $plicoLib->concat(
 	array(
 		'plugins/jquery-1.10.2.min',
 		'plugins/jquery-migrate-1.2.1.min',
+		'plugins/backbone/underscore',
+		'plugins/backbone/backbone',
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min',

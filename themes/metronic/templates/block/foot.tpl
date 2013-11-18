@@ -7,6 +7,7 @@
 {foreach item="script" from=$T_SCRIPTS}
 	<script src="{Plico_GetResource file=$script}"></script>
 {/foreach}
+
 <!-- END CORE PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -30,21 +31,6 @@
 	  	PortletDraggable.init();
 	  }
 
-	
-
-		jQuery('#lastest-news-pager').bootpag({
-	    	maxVisible: 0,
-			next: '<i class="icon-angle-right"></i>',
-			prev: '<i class="icon-angle-left"></i>',
-			leaps: false,
-			total: 2,
-			page: 1,
-			cycle : true,
-			linkClass: 'btn btn-sm yellow'
-	    }).on("page", function(event, num) {
-			$("#lastest-news-content").html("Page " + num + " content here"); // or some ajax content loading...
-		});
-
         $('.easy-pie-chart .number.transactions').easyPieChart({
             animate: 1000,
             size: 75,
@@ -67,4 +53,8 @@
         });
 	});
 </script>
+
+{foreach item="script" from=$T_MODULE_SCRIPTS}
+    <script src="/{$script}"></script>
+{/foreach}
 <!-- END JAVASCRIPTS -->
