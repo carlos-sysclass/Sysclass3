@@ -45,6 +45,7 @@ class CoursesModule extends SysclassModule implements ISectionMenu, IWidgetConta
                 'icon'      => 'bolt',
                 'box'       => 'dark-blue',
                 'tools'     => array(
+                    'search'        => true,
                     'reload'        => true,
                     'fullscreen'    => true
                 )

@@ -1,6 +1,19 @@
 <?php 
-class NewsModule extends SysclassModule implements IWidgetContainer
+class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizable
 {
+    public function getSummary() {
+        $data = $this->dataAction();
+        return array(
+            'type'  => 'primary',
+            'count' => count($data),
+            'text'  => self::$t->translate('Announcements'),
+            'link'  => array(
+                'text'  => self::$t->translate('View'),
+                'link'  => $this->getBasePath() . '/all'
+            )
+        );
+    }
+
     public function getWidgets() {
         $this->putModuleScript("news");
         
@@ -12,8 +25,9 @@ class NewsModule extends SysclassModule implements IWidgetContainer
                 'icon'      => 'bell',
                 'box'       => 'dark-blue',
                 'tools'		=> array(
-                	'reload'	=> 'javascript:void(0);',
-                    'collapse'  => true,
+                    'search'        => true,
+                	'reload'	    => 'javascript:void(0);',
+                    'collapse'      => true,
                     'fullscreen'    => true
                 )
             )

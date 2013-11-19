@@ -1,6 +1,19 @@
 <?php 
-class MessagesModule extends SysclassModule implements ISectionMenu, IWidgetContainer
+class MessagesModule extends SysclassModule implements ISummarizable, ISectionMenu, IWidgetContainer
 {
+    public function getSummary() {
+        //$data = $this->dataAction();
+        return array(
+            'type'  => 'primary',
+            //'count' => count($data),
+            'count' => 12,
+            'text'  => self::$t->translate('Messages'),
+            'link'  => array(
+                'text'  => self::$t->translate('View'),
+                'link'  => $this->getBasePath() . '/all'
+            )
+        );
+    }
 
     // CREATE FUNCTION HERE
     public function getSectionMenu($section_id) {

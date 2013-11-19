@@ -444,6 +444,7 @@ var App = function () {
     // Handles portlet tools & actions
     var handlePortletTools = function () {
         jQuery('.portlet > .portlet-title > .tools > a.search').each(function (e) {
+
             jQuery(this).popover(
                 jQuery.extend(
                     jQuery(this).data(), 
@@ -457,7 +458,7 @@ var App = function () {
                     .find(".tools a:not(.search)")
                     .addClass("disabled");
             }).on('shown.bs.popover', function () {
-                jQuery(this).data("bs.popover").$tip.find("input").focus();
+                jQuery(this).data("bs.popover").tip().find("input").focus();
             }).on('hide.bs.popover', function () {
                 jQuery(this)
                     .closest(".portlet")
@@ -466,6 +467,27 @@ var App = function () {
                     .removeClass("disabled");
             });
 
+        });
+
+        jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.search', function (e) {
+            e.preventDefault();
+            if (jQuery(this).is(".disabled")) {
+                return;
+            }
+            if (jQuery(this).data("bs.popover").tip().hasClass("in")) {
+                jQuery(this).popover("hide");
+            } else {
+                jQuery(this).popover("show");
+                App.setLastPopedPopover(jQuery(this));
+                e.stopPropagation();
+
+                var self = this;
+                jQuery(this).data("bs.popover").tip().find("form").on("submit", function() {
+                    jQuery(self).popover("hide");
+                    return false;
+                })
+
+            }
         });
 
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.remove', function (e) {
@@ -652,9 +674,14 @@ var App = function () {
         jQuery('.popovers').popover();
 
         // close last poped popover
-
         $(document).on('click.bs.popover.data-api', function (e) {
-            if (lastPopedPopover) {
+            // PREVENTS CLICKS INSIDE A POPOVER TO CLOSE
+            if (jQuery(e.target).parents(".popover").size() == 0 && lastPopedPopover) {
+                lastPopedPopover.popover('hide');
+            }
+        });
+        $(document).on('keydown', function (e) {
+            if (e.keyCode == 27 && lastPopedPopover) {
                 lastPopedPopover.popover('hide');
             }
         });

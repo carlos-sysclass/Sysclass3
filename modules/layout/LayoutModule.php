@@ -7,6 +7,25 @@ class LayoutModule extends SysclassModule
 	protected $layoutSpec = null;
 	protected $blankWidget = null;
 	protected $widgets = null;
+
+    protected function getResource($resourceID) {
+        if (array_key_exists($resourceID, $this->layoutSpec['resources'])) {
+            return $this->layoutSpec['resources'][$resourceID];
+        } else {
+            return $this->layoutSpec['resources']['default'];
+        }
+    }
+    public function sortModules($sortId, $data) {
+        $resource = $this->getResource($sortId);
+        foreach($resource as $sortIndex) {
+            if (array_key_exists($sortIndex, $data)) {
+                $dataArray[$sortIndex] = $data[$sortIndex];
+            //} else {
+                //$dataArray[$sortIndex] = false;    
+            }
+        }
+        return $dataArray;
+    }
     // CREATE FUNCTION HERE
     protected function clearWidgets() {
     	$this->widgets = array();
@@ -15,8 +34,11 @@ class LayoutModule extends SysclassModule
     	);
     }
     public function getLayout() {
-
-    	return $this->layoutSpec = array(
+        $modules = $this->getModules();
+        $this->layoutSpec = array(
+            /**
+              * @todo THIS DATA MUST BE PERSITED ON DB, OR OTHER MEANS
+             */
             "rows" => array(
                 array(
                     1   => array("weight" => "8"),
@@ -44,9 +66,26 @@ class LayoutModule extends SysclassModule
             		"calendar"
             	)
             ),
-            'sortable'  => false
+            'sortable'  => false,
+            'resources' => array(
+                "default"   => array_keys($modules),
+                "layout.sections.topbar"    => array("messages", "forum"),
+                "users.overview.notification.order" => array("messages", "news")
+            )
         );
 
+        $modules_size = count($modules);
+        $defaultArray = $this->layoutSpec['resources']['default'];
+
+        foreach($this->layoutSpec['resources'] as $key => $resource) {
+            if ($key == "default") {
+                continue;
+            }
+            $sorterArray = array_unique(array_merge($resource, $defaultArray));
+            $this->layoutSpec['resources'][$key] = $sorterArray;
+        }
+
+        return $this->layoutSpec;
     }
     public function getMenuBySection($section) {
     	// LOAD MENUS
@@ -61,9 +100,8 @@ class LayoutModule extends SysclassModule
    				$menu_items[$index] = $menu_item;
    			}
     	}
+        $menu_items = $this->sortModules("layout.sections." . $section, $menu_items);
 
-    	$sorterArray = $this->getMenuOrderBySection($section, count($menu_items));
-    	array_multisort($sorterArray,$menu_items);
     	return $menu_items;
     }
     protected function getMenuOrderBySection($section, $size) {
@@ -84,7 +122,7 @@ class LayoutModule extends SysclassModule
     	// GET WIDGET BY COLUMN
     	$this->clearWidgets();
     	foreach($modules as $index => $module) {
-			$mod_widgets = $module->getWidgets($section);
+			$mod_widgets = $module->getWidgets();
    			if ($mod_widgets) {
    				$this->widgets = array_merge($this->widgets, $mod_widgets);
    			}

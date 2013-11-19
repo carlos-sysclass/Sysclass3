@@ -3133,28 +3133,6 @@ ALTER TABLE `module_xpay_cielo_card_tokens` ADD `bandeira` VARCHAR( 20 ) NULL DE
 
 
 /* 2013-11-18 */
--- phpMyAdmin SQL Dump
--- version 4.0.6deb1
--- http://www.phpmyadmin.net
---
--- Servidor: localhost
--- Tempo de Geração: 18/11/2013 às 21:32
--- Versão do servidor: 5.5.34-0ubuntu0.13.10.1
--- Versão do PHP: 5.5.3-1ubuntu2
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
---
--- Banco de dados: `sysclass_root`
---
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `mod_tutoria`
---
-
 CREATE TABLE IF NOT EXISTS `mod_tutoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_timestamp` int(10) unsigned NOT NULL,

@@ -37,11 +37,24 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
     }
 
     public function getWidgets() {
+       $modules = $this->getModules("ISummarizable");
+        
+        $data = array();
+        $data['notification'] = array();
+
+        foreach($modules as $key => $mod) {
+            $data['notification'][$key] = $mod->getSummary();
+        }
+        
+        $data['notification'] = $this->module("layout")
+            ->sortModules("users.overview.notification.order", $data['notification']);
+
     	return array(
     		'users.overview' => array(
    				//'title' 	=> 'User Overview',
-   				'template'	=> $this->template("overview"),
-   				'panel'		=> true
+   				'template'	=> $this->template("overview.widget"),
+   				'panel'		=> true,
+                'data'      => $data
                 //'box'       => 'blue'
     		)
     	);

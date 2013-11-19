@@ -1,7 +1,6 @@
 <?php 
 class TutoriaModule extends SysclassModule implements IWidgetContainer
 {
-
     public function getWidgets() {
         $tutorias = $this->dataAction();
         $this->putItem("tutoria", $tutorias);
@@ -14,7 +13,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
                 'icon'      => 'book',
                 'box'       => 'dark-blue',
                 'tools'     => array(
-                    'search'    => true,
+                    'search'        => true,
                     'collapse'      => true,
                     'reload'        => true,
                     'fullscreen'    => true

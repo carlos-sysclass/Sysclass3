@@ -10,15 +10,16 @@
    {if isset($T_DATA.tools)}
    <div class="tools">
       {if isset($T_DATA.tools.search)}
-         <a class="search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-inject-selector="{$T_DATA.id}-search-form" href="javascript:;"></a>
+         <a class="search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-trigger="manual" data-inject-selector="{$T_DATA.id}-search-form" href="javascript:;"></a>
 
          <div class="hidden" id="{$T_DATA.id}-search-form">
             <!-- Brand and toggle get grouped for better mobile display -->
             <!-- Collect the nav links, forms, and other content for toggling -->
+               <form>
                <div class="input-group">
                   <input type="text" name="portlet-tools-search-input" class="form-control" placeholder="Search...">
                   <div class="input-group-btn">
-                     <button tabindex="-1" class="btn blue" type="button"><i class="icon-search"></i></button>
+                     <button tabindex="-1" class="btn blue" type="submit"><i class="icon-search"></i></button>
                      <!--
                      <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
                         <i class="icon-angle-down"></i>
@@ -32,7 +33,8 @@
                      </ul>
                      -->
                   </div>
-               </div> 
+               </div>
+               </form> 
          </div>
       {/if}
       {if isset($T_DATA.tools.collapse)}

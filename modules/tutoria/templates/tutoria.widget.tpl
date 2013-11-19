@@ -29,12 +29,12 @@
    <div class="panel panel-default">
       <div class="panel-heading">
          <h4 class="panel-title">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-{$index}">
+            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-{$index}">
             {$tutoria.title}
             </a>
          </h4>
       </div>
-      <div id="tutoria-accordion-panel-{$index}" class="panel-collapse">
+      <div id="tutoria-accordion-panel-{$index}" class="panel-collapse collapse">
          <div class="panel-body">
             <ul class="chats">
                <li class="in">
