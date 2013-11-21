@@ -166,6 +166,16 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		$this->putItem("big_user_avatar", $big_user_avatar);
 		
 	}
+	public function getCurrentUser($object = false) {
+		if (is_null(self::$current_user)) {
+			$this->authorize();
+		}
+		if ($object) {
+			return self::$current_user;
+		} else {
+			return self::$current_user->user;
+		}
+	}
 
 	/* FRAMEWORK CANDIDATE FUNCTIONS - !MOVE TO plicolib if apply! */
 	

@@ -8,7 +8,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
     	return array(
     		'tutoria.widget' => array(
                 'id'        => 'tutoria-widget',
-   				'title' 	=> 'Questions & Awnsers',
+   				'title' 	=> self::$t->translate('Questions & Answers'),
    				'template'	=> $this->template("tutoria.widget"),
                 'icon'      => 'book',
                 'box'       => 'dark-blue',
@@ -22,8 +22,6 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
     		)
     	);
     }
-
-    
 
     /**
      * Module Entry Point
@@ -90,8 +88,6 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
                 );
             }
         }
-
-
 
         return $tutorias;
     }
