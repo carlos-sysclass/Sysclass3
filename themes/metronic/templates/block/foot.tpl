@@ -30,6 +30,11 @@
 	  if (typeof PortletDraggable == 'object') {
 	  	PortletDraggable.init();
 	  }
+      //if (typeof Inbox == 'object') {
+        //Inbox.init();
+      //}
+      if (jQuery.fn.easyPieChart) {
+
 
         $('.easy-pie-chart .number.transactions').easyPieChart({
             animate: 1000,
@@ -51,10 +56,12 @@
             lineWidth: 3,
             barColor: App.getLayoutColorCode('red')
         });
+      }
 	});
 </script>
 
 {foreach item="script" from=$T_MODULE_SCRIPTS}
-    <script src="/{$script}"></script>
+    {$script}
+    <script src="{$script}"></script>
 {/foreach}
 <!-- END JAVASCRIPTS -->

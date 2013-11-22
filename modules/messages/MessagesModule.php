@@ -3,14 +3,15 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 {
     public function getSummary() {
         //$data = $this->dataAction();
+        $total = $this->getTotalUnviewed();
         return array(
             'type'  => 'primary',
             //'count' => count($data),
-            'count' => 12,
+            'count' => $total,
             'text'  => self::$t->translate('Messages'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . '/all'
+                'link'  => $this->getBasePath() . '/inbox'
             )
         );
     }
@@ -321,4 +322,156 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         
         $this->display("send.form.tpl");
     }
+
+    /**
+     * Send Page Action
+     *
+     * @url GET /inbox
+     */
+    public function inboxPage($recipient_id) {
+        $this->putCss("css/pages/inbox");
+        $this->putScript("scripts/inbox");
+
+        $this->putModuleScript("inbox");
+        
+        $this->display("inbox.tpl");
+    }
+
+    /**
+     * Send Page Action
+     *
+     * @url GET /data/folders
+     */
+    public function dataFoldersAction() {
+        $currentUser = $this->getCurrentUser();
+        $currentFolder = $this->getDefaultFolder($currentUser);
+
+        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
+
+        return array_values($folders);
+    }
+/**
+     * Send Page Action
+     *
+     * @url GET /data/messages
+     */
+    public function dataAction() {
+        $currentUser = $this->getCurrentUser();
+        $currentFolder = $this->getDefaultFolder($currentUser);
+
+        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
+
+        $foldersID = array_keys($folders);
+
+        $folderMessages = sC_getTableData(
+            "f_personal_messages", 
+            "*", 
+            sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) ", $currentUser['login'], implode(",", $foldersID)),
+            "priority desc, viewed,timestamp desc"
+        );
+
+/*
+
+        if (isset($_GET['flag']) && sC_checkParameter($_GET['flag'], 'id')) {
+
+            sC_updateTableData("f_personal_messages", array('priority' => 1), "id=".$_GET['flag']);
+
+        } elseif (isset($_GET['unflag']) && sC_checkParameter($_GET['unflag'], 'id')) {
+
+            sC_updateTableData("f_personal_messages", array('priority' => 0), "id=".$_GET['unflag']);
+
+        } elseif (isset($_GET['read']) && sC_checkParameter($_GET['read'], 'id')) {
+
+            sC_updateTableData("f_personal_messages", array('viewed' => 1), "id=".$_GET['read']);
+
+        } elseif (isset($_GET['unread']) && sC_checkParameter($_GET['unread'], 'id')) {
+
+            sC_updateTableData("f_personal_messages", array('viewed' => 0), "id=".$_GET['unread']);
+
+        }
+
+        isset($_GET['page']) && sC_checkParameter($_GET['page'], 'uint') ? $page = $_GET['page'] : $page = 1;
+
+        $p_messages_per_page = sC_getTableData("f_configuration", "value", "name='personal_messages_per_page'");
+
+        $p_messages_per_page[0]['value'] ? $p_messages_per_page = $p_messages_per_page[0]['value'] : $p_messages_per_page = 20;
+
+*/
+        // Create ajax enabled table for employees
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
+            $sort = $_GET['sort'];
+            isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
+        } else {
+            $sort = 'priority';
+        }
+        $folderMessages = sC_multiSort($folderMessages, $_GET['sort'], $order);
+        if (isset($_GET['filter'])) {
+            $folderMessages = sC_filterData($folderMessages , $_GET['filter']);
+        }
+        //$smarty -> assign("T_MESSAGES_SIZE", sizeof($folderMessages));
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            $folderMessages = array_slice($folderMessages, $offset, $limit);
+        }
+        // Keep only the first characters of the recipient's list
+        //$subject_chars   = 50;
+        //$recipient_chars = 30;
+/*
+
+            foreach ($messages as $key => $p_message) {
+
+                if (strlen($p_message['title']) > ($subject_chars - (($p_message['attachments'])? 4:0))) {
+
+                    $messages[$key]['title'] = mb_substr($p_message['title'],0,$subject_chars - (($p_message['attachments'])? 4:0) - 3) . "...";
+
+                }
+
+                if (strlen($p_message['recipient']) > $recipient_chars) {
+
+                    $messages[$key]['recipient'] = mb_substr($p_message['recipient'],0,$recipient_chars - 3) . "...";
+
+                }
+
+            }
+
+*/
+        foreach ($folderMessages as $key => $value) {
+            $recipients = explode(",", $folderMessages[$key]['recipient']);
+            foreach ($recipients as $k => $login) {
+                $recipients[$k] = formatLogin(trim($login));
+            }
+            $folderMessages[$key]['recipient'] = implode(", ", $recipients);
+        }
+        //$smarty -> assign("T_MESSAGES", $folderMessages);
+        return $folderMessages;
+        
+        
+    }
+
+    /* MODEL FUNCTIONS */
+    public function getTotalUnviewed($currentUser = null, $folder = null)
+    {
+        if (is_null($currentUser)) {
+            $currentUser = $this->getCurrentUser(false);
+        }
+        if (is_null($folder)) {
+            $folder = $this->getDefaultFolder($currentUser);
+        }
+
+        /** @todo CHECK FOR TRANSLATION MODE */
+        $folderMessages = $this->_countTableData(
+            "f_personal_messages", 
+            "*", 
+            "'".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0", 
+            "priority desc, viewed,timestamp desc"
+        );
+        return $folderMessages[0]['count'];
+    }
+    public function getDefaultFolder($currentUser) {
+        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
+        reset($folders);
+        return $currentFolder = key($folders); //key($folders) is the id of the first folder, which is always the Incoming
+    }
+
 }

@@ -22,7 +22,7 @@ abstract class SysclassModule extends AbstractSysclassController
     }
     protected function putModuleScript($script)
     {
-        return parent::putModuleScript($this->getRequestedUrl() . "/js/" . $script);
+        return parent::putModuleScript($this->getBasePath() . "js/" . $script);
 
     }
     /**
@@ -33,15 +33,6 @@ abstract class SysclassModule extends AbstractSysclassController
     public function defaultPage()
     {
         // DASHBOARD PAGE
-        //require_once 'control_panel.php';
-        //$this->putScript("scripts/portlet-draggable");
-        //$this->display('default.tpl');
-        if ($this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
-            $jsFileName = $this->module_folder . "/scripts/" . $this->module_id . ".js";
-            if (file_exists($jsFileName)) {
-                echo file_get_contents($jsFileName);
-            }
-        }
         exit;
     }
     /**
@@ -54,11 +45,11 @@ abstract class SysclassModule extends AbstractSysclassController
     {
         if ($filename == 0 || $this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
             header("Content-Type: application/javascript");
-            if ($filename == 0) {
+            if ($filename === 0) {
                 $filename = $this->module_id;
             }
 
-            $jsFileName = $this->module_folder . "/scripts/" . $this->module_id . ".js";
+            $jsFileName = $this->module_folder . "/scripts/" . $filename . ".js";
             if (file_exists($jsFileName)) {
                 echo file_get_contents($jsFileName);
             }

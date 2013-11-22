@@ -3152,6 +3152,66 @@ CREATE TABLE IF NOT EXISTS `mod_tutoria` (
 --
 -- Fazendo dump de dados para tabela `mod_tutoria`
 --
-
+/*
 INSERT INTO `mod_tutoria` (`id`, `question_timestamp`, `answer_timestamp`, `lessons_ID`, `unit_ID`, `title`, `question_user_id`, `question`, `answer_user_id`, `answer`) VALUES
 (1, 1374587851, 1374587851, 90, NULL, 'Qual o segredo da vida, do Universo e de tudo o mais?', 48, 'Alguém pode em ajudar?', 0, 'Provavelmente é 42!');
+*/
+/* 2012-11-21 */
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE TABLE IF NOT EXISTS `mod_messages_groups` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `icon` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+INSERT INTO `mod_messages_groups` (`id`, `name`, `icon`) VALUES
+(1, 'Contact Us', 'envelope'),
+(2, 'We are here to help', 'question'),
+(3, 'System Improvements', 'cog');
+
+CREATE TABLE IF NOT EXISTS `mod_messages_recipients` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `group_id` mediumint(8) NOT NULL DEFAULT '0',
+  `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `xuser_type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `qm_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'contact',
+  `qm_group` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+
+INSERT INTO `mod_messages_recipients` (`id`, `group_id`, `title`, `image`, `xuser_type`, `qm_type`, `qm_group`, `link`) VALUES
+(1, 1, 'Office of President', 'heart/success', 'student,pre_student', 'contact', NULL, NULL),
+(2, 1, 'Dean for Academics', 'briefcase/warning', 'student,pre_student', 'contact', NULL, NULL),
+(3, 1, 'Financial', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
+(4, 2, 'Schedule Tests', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
+(5, 2, 'Missed Tests', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
+(6, 2, 'Transcripts', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
+(7, 3, 'Report a bug', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL),
+(8, 3, 'Suggest a new funcionality', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL),
+(9, 3, 'Improvements in navigation and layout', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL);
+
+CREATE TABLE IF NOT EXISTS `mod_messages_recipients_list` (
+  `codigo` bigint(20) NOT NULL AUTO_INCREMENT,
+  `recipient_id` mediumint(8) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `xscope_id` mediumint(8) NOT NULL,
+  `xentify_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+
+INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`, `xscope_id`, `xentify_id`) VALUES
+(2, 1, 1, 15, '1;student'),
+(4, 2, 1, 15, '1;student'),
+(6, 3, 1, 15, '1;student'),
+(8, 4, 1, 15, '1;student'),
+(9, 5, 1, 15, '1;student'),
+(27, 9, 1, 15, '1;student'),
+(26, 8, 1, 15, '1;student'),
+(25, 7, 1, 15, '1;student'),
+(24, 6, 1, 15, '1;student');

@@ -6,7 +6,7 @@ $plicoLib = PlicoLib::instance();
 $plicoLib->set('theme', 'metronic');
 $plicoLib->set('client_name', 'Smart Solution');
 $plicoLib->set('app_name', 'Smart Solution');
-//$plicoLib->set('db_dsn', 'postgres://ssra:fep7_58A#@localhost/ssra_root');
+$plicoLib->set('db_dsn', 'mysql://sysclass:WXubN7Ih@localhost/sysclass_root');
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
 $plicoLib->add('path/modules', __DIR__ . '/modules/');

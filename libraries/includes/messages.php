@@ -139,10 +139,10 @@ try {
      }
         exit;
     } elseif (isset($_GET['add'])) {
-  if (!$_change_) {
-   sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
-   exit;
-  }
+      if (!$_change_) {
+       sC_redirect(basename($_SERVER['PHP_SELF'])."?ctg=messages&message=".urlencode(_UNAUTHORIZEDACCESS)."&message_type=failure");
+       exit;
+      }
         $load_editor = true;
         $grant_full_access = false;
         if ($currentUser -> getType() == "administrator") {
@@ -569,7 +569,7 @@ try {
         }
         sC_updateTableData("f_personal_messages", array("viewed" => 1), "id=".$currentMessage['id']);
     } else {
-     $folderMessages = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$currentFolder, "priority desc, viewed,timestamp desc");
+        $folderMessages = sC_getTableData("f_personal_messages", "*", "users_LOGIN='".$currentUser -> user['login']."' and f_folders_ID=".$currentFolder, "priority desc, viewed,timestamp desc");
 /*
 
         if (isset($_GET['flag']) && sC_checkParameter($_GET['flag'], 'id')) {

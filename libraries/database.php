@@ -303,15 +303,7 @@ function sC_getTableData($table, $fields = "*", $where = "", $order = "", $group
 
 function sC_countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 {
-    $thisQuery = microtime(true);
-    $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
-    $result = $GLOBALS['db']->GetAll("select count(*) as count from ($sql) count_query");
-    logProcess($thisQuery, $sql);
-    if ($result == false) {
-        return array();
-    } else {
-        return $result;
-    }
+    return StaticBCController::_countTableData($table, $fields, $where, $order, $group, $limit);
 }
 
 function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")

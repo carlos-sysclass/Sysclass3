@@ -53,7 +53,7 @@
       this.refresh();
     },
     refresh: function() {
-      newsCollection.fetch();
+      this.collection.fetch();
     },
     go_to_previous : function() {
       if (this.$(".pager .previous").is(".disabled")) {

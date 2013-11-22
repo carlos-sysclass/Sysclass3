@@ -119,4 +119,16 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	        return $result;
 	    }
 	}
+	public function _countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
+	{
+	    $thisQuery = microtime(true);
+	    $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
+	    $result = $GLOBALS['db']->GetAll("select count(*) as count from ($sql) count_query");
+	    logProcess($thisQuery, $sql);
+	    if ($result == false) {
+	        return array();
+	    } else {
+	        return $result;
+	    }
+	}
 }
