@@ -85,7 +85,7 @@ $SC.module("portlet.tutoria", function(mod, MyApp, Backbone, Marionette, $, _) {
 						  function(response, status) {
 							//toastr[response.message_type](response.message);
 							$(form).find(":input").val("");
-							mod.collection.fetch();
+							//mod.collection.fetch();
 						  }
 						);
 					}

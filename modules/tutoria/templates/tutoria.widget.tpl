@@ -5,7 +5,7 @@
       <div class="input-group form-group">
          <input class="form-control" name="title" type="text" placeholder="{translateToken value='Type a question here...'}" />
          <span class="input-group-btn">
-            <button type="button" class="btn blue icn-only"><i class="icon-ok icon-white"></i></button>
+            <button type="submit" class="btn blue icn-only"><i class="icon-ok icon-white"></i></button>
          </span>
       </div>
    </div>
