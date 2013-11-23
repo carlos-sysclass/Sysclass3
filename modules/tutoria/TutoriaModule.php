@@ -2,11 +2,13 @@
 class TutoriaModule extends SysclassModule implements IWidgetContainer
 {
     public function getWidgets() {
+        $this->putModuleScript("tutoria");
         $tutorias = $this->dataAction();
-        $this->putItem("tutoria", $tutorias);
+        //$this->putItem("tutoria", $tutorias);
 
     	return array(
     		'tutoria.widget' => array(
+                'type'      => 'tutoria', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'tutoria-widget',
    				'title' 	=> self::$t->translate('Questions & Answers'),
    				'template'	=> $this->template("tutoria.widget"),
@@ -53,6 +55,8 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
             tt.question, 
             tt.answer_timestamp, 
             tt.answer_user_id, 
+            u2.name as answer_user_name,
+            u2.surname as answer_user_surname,
             u2.avatar as answer_avatar_id,
             tt.answer",
             sprintf("tt.lessons_ID IN (%s) ", implode(",", $lessonsIds)),

@@ -49,6 +49,9 @@
       {if isset($T_DATA.tools.fullscreen)}
       <a class="fullscreen glyphicon glyphicon-fullscreen" href="javascript:void(0);"></a>
       {/if}
+      {if isset($T_DATA.tools.remove)}
+      <a class="remove" href="javascript:void(0);"></a>
+      {/if}
 
       
    </div>

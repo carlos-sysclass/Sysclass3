@@ -87,6 +87,7 @@ $plicoLib->concat(
 		'plugins/jquery-migrate-1.2.1.min',
 		'plugins/backbone/underscore',
 		'plugins/backbone/backbone',
+		'plugins/backbone/marionette',
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min',
@@ -97,6 +98,8 @@ $plicoLib->concat(
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 		'plugins/select2/select2.min',
-		'scripts/app'
+		'scripts/app',
+		'scripts/sysclass',
+		'scripts/portlets'
 	)
 );

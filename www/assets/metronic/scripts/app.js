@@ -443,6 +443,7 @@ var App = function () {
 
     // Handles portlet tools & actions
     var handlePortletTools = function () {
+        /*
         jQuery('.portlet > .portlet-title > .tools > a.search').each(function (e) {
 
             jQuery(this).popover(
@@ -560,11 +561,7 @@ var App = function () {
             } else {
                 jQuery(this).removeClass("normalscreen").addClass("fullscreen");
                 jQuery(this).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-/*
-                column.switchClass( "col-md-12", oldColumn, timeout/2, easing, function() {
-                     portlets.not(portlet).slideDown(timeout/2);
-                });
-*/
+
                 portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
                     column.removeClass("col-md-12").addClass(oldColumn);
                     portlets.fadeIn(timeout/2); 
@@ -573,7 +570,7 @@ var App = function () {
             //toggleFullScreen();
         //
         });
-
+        */
 
     }
 
@@ -945,7 +942,7 @@ var App = function () {
         init: function (_theme) {
 
             //IMPORTANT!!!: Do not modify the core handlers call order.
-            themePath = _theme
+            themePath = _theme;
             //core handlers
             handleInit(); // initialize core variables
             handleResponsiveOnResize(); // set and handle responsive    
@@ -1140,8 +1137,7 @@ var App = function () {
             } else {
                 return '';
             }
-        },
-        handleScrollers : handleScrollers
+        }
     };
 
 }();

@@ -19,7 +19,8 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
         
         return array(
             'news.latest' => array(
-                'id'        => 'news-lastest',
+                'type'      => 'news', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                'id'        => 'news-widget',
                 'title'     => self::$t->translate('Announcements'),
                 'template'  => $this->template("news.widget"),
                 'icon'      => 'bell',
@@ -28,7 +29,8 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
                     'search'        => true,
                 	'reload'	    => 'javascript:void(0);',
                     'collapse'      => true,
-                    'fullscreen'    => true
+                    'fullscreen'    => true,
+                    'remove'        => true
                 )
             )
         );
