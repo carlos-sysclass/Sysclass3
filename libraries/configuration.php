@@ -32,7 +32,7 @@ $configurationDefaults = array(
 	),
 
 	'local.sysclass.com'	=> array(
-		'dbname'	=> 'sysclass_root',
+		'dbname'	=> 'sysclass_layout',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
 	),
 	'sysclass.local'        => array(

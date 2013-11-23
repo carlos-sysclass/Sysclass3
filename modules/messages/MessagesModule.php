@@ -11,7 +11,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
             'text'  => self::$t->translate('Messages'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . '/inbox'
+                'link'  => $this->getBasePath() . 'inbox'
             )
         );
     }
@@ -19,26 +19,37 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     // CREATE FUNCTION HERE
     public function getSectionMenu($section_id) {
     	if ($section_id == "topbar") {
+
+            $total = $this->getTotalUnviewed();
+
+            $currentUser = $this->getCurrentUser();
+            $currentFolder = $this->getDefaultFolder($currentUser);
+            
+            $messages = $this->getUnviewedMessages(array($currentFolder));
+
+            $items = array();
+            foreach($messages as $msg) {
+                $items[] = array(
+                    'link'      => $this->getBasePath() . "view/" . $msg['id'],
+                    'values' => array(
+                        'photo'     => 'img/avatar2.jpg',
+                        'from'      => $msg['sender'],
+                        'time'      => $msg['timestamp'],
+                        'message'   => substr(strip_tags($msg['body']), 0, 50) . "..."
+                    )
+                );
+            }
+
     		$menuItem = array(
     			'icon' 		=> 'envelope',
-    			'notif' 	=> 5,
-    			'text'		=> self::$t->translate('You have %s new messages', 12),
+    			'notif' 	=> $total,
+    			'text'		=> self::$t->translate('You have %s new messages', $total),
     			'external'	=> array(
-    				'link'	=> $this->getBasePath() . "/inbox",
+    				'link'	=> $this->getBasePath() . "inbox",
     				'text'	=> self::$t->translate('See all messages')
     			),
     			'type'		=> 'inbox',
-    			'items'		=> array(
-    				array(
-    					'link' 		=> $this->getBasePath() . "/inbox/1",
-    					'values' => array(
-	    					'photo'		=> 'img/avatar2.jpg',
-    						'from'		=> 'Lisa Wong',
-    						'time'		=> 'Just Now',
-	    					'message' 	=> 'Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh...'
-    					)
-    				)
-    			)
+    			'items'		=> $items
     		);
 
     		return $menuItem;
@@ -120,7 +131,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
                 if ($recp['qm_type'] == 'link') {
                     $item['href'] = $recp['link'];
                 } else {
-                    $item['link']   = $this->getBasePath() . "/send/" . $recp['recipient_id'] . "?popup";
+                    $item['link']   = $this->getBasePath() . "send/" . $recp['recipient_id'] . "?popup";
                 }
                 $image = explode("/", $recp['image']);
                 $item['icon'] = $image[0];
@@ -445,8 +456,6 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         }
         //$smarty -> assign("T_MESSAGES", $folderMessages);
         return $folderMessages;
-        
-        
     }
 
     /* MODEL FUNCTIONS */
@@ -463,10 +472,54 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         $folderMessages = $this->_countTableData(
             "f_personal_messages", 
             "*", 
-            "'".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0", 
+            "users_LOGIN = '".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0", 
             "priority desc, viewed,timestamp desc"
         );
         return $folderMessages[0]['count'];
+    }
+    public function getUnviewedMessages($foldersID = null) {
+        $currentUser = $this->getCurrentUser();
+        $currentFolder = $this->getDefaultFolder($currentUser);
+
+        if (is_null($foldersID)) {
+            $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
+            $foldersID = array_keys($folders);
+        }
+
+        $folderMessages = sC_getTableData(
+            "f_personal_messages", 
+            "*", 
+            sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) AND viewed = 0", $currentUser['login'], implode(",", $foldersID)),
+            "priority desc, viewed,timestamp desc"
+        );
+
+        // Create ajax enabled table for employees
+        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
+        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
+            $sort = $_GET['sort'];
+            isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
+        } else {
+            $sort = 'priority';
+        }
+        $folderMessages = sC_multiSort($folderMessages, $_GET['sort'], $order);
+        if (isset($_GET['filter'])) {
+            $folderMessages = sC_filterData($folderMessages , $_GET['filter']);
+        }
+        //$smarty -> assign("T_MESSAGES_SIZE", sizeof($folderMessages));
+        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
+            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
+            $folderMessages = array_slice($folderMessages, $offset, $limit);
+        }
+
+        foreach ($folderMessages as $key => $value) {
+            $recipients = explode(",", $folderMessages[$key]['recipient']);
+            foreach ($recipients as $k => $login) {
+                $recipients[$k] = formatLogin(trim($login));
+            }
+            $folderMessages[$key]['recipient'] = implode(", ", $recipients);
+        }
+        //$smarty -> assign("T_MESSAGES", $folderMessages);
+        return $folderMessages;
     }
     public function getDefaultFolder($currentUser) {
         $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);

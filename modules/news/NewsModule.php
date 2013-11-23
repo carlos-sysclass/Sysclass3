@@ -9,7 +9,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
             'text'  => self::$t->translate('Announcements'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . '/all'
+                'link'  => $this->getBasePath() . 'all'
             )
         );
     }

@@ -15,9 +15,8 @@ abstract class SysclassModule extends AbstractSysclassController
             $url = $baseUrl;
         }
         if (empty($basePath)) {
-            $basePath = $baseUrl;
+            $basePath = $baseUrl . "/";
         }
-
         parent::init($url, $method, $format, $root, $basePath);
     }
     protected function putModuleScript($script)

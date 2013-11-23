@@ -72,3 +72,11 @@ hr {
 .chats li.out {
 	margin-bottom: 20px;
 }
+
+/* MODULES CSS */
+#news-lastest .username-badge {
+	display: none;
+}
+.portlet-fullscreen#news-lastest .username-badge {
+	display: block;
+}

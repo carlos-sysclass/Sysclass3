@@ -22,6 +22,34 @@
       <div class="page-container">
          <!-- BEGIN PAGE -->
          <div class="page-content">
+            {block name="breadcrumb"}
+            <!--
+            <div class="row">
+               <div class="col-md-12">
+                  <ul class="page-breadcrumb breadcrumb">
+                     <li class="btn-group">
+                        <button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
+                        <span>Actions</span> <i class="icon-angle-down"></i>
+                        </button>
+                        <ul role="menu" class="dropdown-menu pull-right">
+                           <li><a href="#">Action</a></li>
+                           <li><a href="#">Another action</a></li>
+                           <li><a href="#">Something else here</a></li>
+                           <li class="divider"></li>
+                           <li><a href="#">Separated link</a></li>
+                        </ul>
+                     </li>
+                     <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a> 
+                        <i class="icon-angle-right"></i>
+                     </li>
+                     <li><a href="#">Inbox</a></li>
+                  </ul>
+               </div>
+            </div>
+            -->
+            {/block}
          	{block name="content"}
             {/block}
          </div>

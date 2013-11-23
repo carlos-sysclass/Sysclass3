@@ -87,11 +87,10 @@
       var self = this;
       
       this.folders.each(function(model,i) {
-        
         if (self.activeFolder == model.get("id")) {
-          console.log(model.get("pathname"));
+          //console.log(model.get("pathname"));
           self.$(".inbox-header h1").html(model.get("pathname"));
-
+          
           var vars = jQuery.extend(model.toJSON(), {active : true});
         } else {
           var vars = jQuery.extend(model.toJSON(), {active : false});
@@ -118,12 +117,20 @@
       if (this.activeFolder != null) {
         this.$("#messages-container tbody").empty();
 
-        console.log(this.messages.where({f_folders_ID: this.activeFolder}).length);
         this.messages.where({f_folders_ID: this.activeFolder}).map(function(model) {
           var messageView = new MessageView({model: model});
           this.$("#messages-container tbody").append(messageView.render().el);
         });
+
+        this.updateUnreads();
       }
+    },
+    updateUnreads : function() {
+      var self = this;
+      this.folders.each(function(model,i) {
+        var totalUnread = self.messages.where({f_folders_ID: model.get("id"), viewed: "0"}).length;
+        self.$(".folders-list [data-folder-id='" + model.get("id") + "'] .message-count").html(totalUnread);
+      });
     }
   });
   var inboxView = new InboxView();

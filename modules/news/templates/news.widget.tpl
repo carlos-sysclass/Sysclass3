@@ -1,10 +1,5 @@
-<div class="well">
-	<a class="news-title" class="btn btn-link" data-toggle="modal" href="#news-dialog"></a>
+<div class="scroller list-group" data-height="200px" data-always-visible="1" data-rail-visible="1" id="news-links">
 </div>
-<ul class="pager">
-	<li class="previous"><a href="javascript:void(0);">← Older</a></li>
-    <li class="next"><a href="javascript:void(0);">Newer →</a></li>
-</ul>
 <div class="modal fade" id="news-dialog" tabindex="-1" role="basic" aria-hidden="true">
 	<div class="modal-dialog modal-wide">
 		<div class="modal-content">
@@ -12,14 +7,9 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 				<h4 class="modal-title news-title"></h4>
 			</div>
-
 			<div class="modal-body">
 				<div class="news-data">
 				</div>
-				<ul class="pager">
-					<li class="previous"><a href="javascript:void(0);">← Older</a></li>
-				    <li class="next"><a href="javascript:void(0);">Newer →</a></li>
-				</ul>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn default" data-dismiss="modal">Close</button>
@@ -29,3 +19,17 @@
 	</div>
 <!-- /.modal-dialog -->
 </div>
+
+<script type="text/template" id="news-item-template">
+   <a class="list-group-item" data-toggle="modal" href="#news-dialog" data-news-id="<%= id %>">
+		<%= title %>
+		<span class="badge badge-info"><%= time_since %></span>
+		<span class="badge badge-success badge-roundless username-badge"><%= name %></span>
+   </a>
+</script>
+<script type="text/template" id="news-nofound-template">
+   <div class="alert alert-warning">
+   		<span class="text-warning"><i class="icon-warning-sign"></i></span>
+   		{translateToken value='Ops! Sorry, any data found!'}
+   </div>
+</script>

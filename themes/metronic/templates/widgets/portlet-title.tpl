@@ -16,24 +16,24 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <!-- Collect the nav links, forms, and other content for toggling -->
                <form>
-               <div class="input-group">
-                  <input type="text" name="portlet-tools-search-input" class="form-control" placeholder="Search...">
-                  <div class="input-group-btn">
-                     <button tabindex="-1" class="btn blue" type="submit"><i class="icon-search"></i></button>
-                     <!--
-                     <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
-                        <i class="icon-angle-down"></i>
-                     </button>
-                     <ul role="menu" class="dropdown-menu pull-right">
-                        <li><a href="#">Class</a></li>
-                        <li><a href="#">Topic</a></li>
-                        <li><a href="#">Professor</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">All</a></li>
-                     </ul>
-                     -->
+                  <div class="input-group">
+                     <input type="text" name="portlet-tools-search-input" class="form-control" placeholder="Search...">
+                     <div class="input-group-btn">
+                        <button tabindex="-1" class="btn blue portlet-tools-search-btn" type="submit"><i class="icon-search"></i></button>
+                        <!--
+                        <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
+                           <i class="icon-angle-down"></i>
+                        </button>
+                        <ul role="menu" class="dropdown-menu pull-right">
+                           <li><a href="#">Class</a></li>
+                           <li><a href="#">Topic</a></li>
+                           <li><a href="#">Professor</a></li>
+                           <li class="divider"></li>
+                           <li><a href="#">All</a></li>
+                        </ul>
+                        -->
+                     </div>
                   </div>
-               </div>
                </form> 
          </div>
       {/if}

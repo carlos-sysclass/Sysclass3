@@ -2,8 +2,8 @@
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner">
 		<!-- BEGIN LOGO -->  
-		<a class="navbar-brand" href="index.html">
-		<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
+		<a class="navbar-brand" href="/home">
+			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
 		</a>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER --> 
@@ -211,7 +211,7 @@
 		            <a href="/profile/me"><i class="icon-user"></i> My Profile</a>
 		         </li>
 		         <li>
-		            <a href="/inbox/me">
+		            <a href="/module/messages/inbox">
 		               <i class="icon-envelope"></i> 
 		               My Inbox <span class="badge badge-danger">3</span>
 		            </a>

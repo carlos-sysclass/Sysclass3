@@ -66,7 +66,7 @@
    <a class="list-group-item <%= active ? 'active' : '' %>" href="javascript:;" data-folder-id="<%= id %>" data-title="<%= pathname %>">
       <span><i class="folder-icon <%= active ? 'icon-folder-open' : 'icon-folder-close' %>"></i></span>
       <%= pathname %>
-      <span class="badge badge-info"><%= messages_num %></span>
+      <span class="badge badge-info message-count"><%= messages_num %></span>
    </a>
 </script>
 

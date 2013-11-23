@@ -61,7 +61,6 @@
 </script>
 
 {foreach item="script" from=$T_MODULE_SCRIPTS}
-    {$script}
     <script src="{$script}"></script>
 {/foreach}
 <!-- END JAVASCRIPTS -->

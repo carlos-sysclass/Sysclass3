@@ -466,7 +466,6 @@ var App = function () {
                     .find(".tools a:not(.search)")
                     .removeClass("disabled");
             });
-
         });
 
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.search', function (e) {
@@ -483,6 +482,7 @@ var App = function () {
 
                 var self = this;
                 jQuery(this).data("bs.popover").tip().find("form").on("submit", function() {
+                    jQuery(self).closest(".portlet").trigger("portlet.search", jQuery(this).find(":input").val());
                     jQuery(self).popover("hide");
                     return false;
                 })
@@ -1140,8 +1140,8 @@ var App = function () {
             } else {
                 return '';
             }
-        }
-
+        },
+        handleScrollers : handleScrollers
     };
 
 }();
