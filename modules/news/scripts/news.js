@@ -15,7 +15,7 @@ $SC.module("portlet.news", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    noDataFoundTemplate: _.template($('#news-nofound-template').html()),
 
 		    events: {
-		      "click #news-links a": "select"
+		      "click a.list-group-item": "select"
 		    },
 		    initialize: function() {
 				this.listenTo(mod.collection, 'sync', this.render);
@@ -23,7 +23,7 @@ $SC.module("portlet.news", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    },
 		    select : function(e) {
 		      // Get collection index from id
-		      var newsID = jQuery(e.currentTarget).data("news-id");
+		      var newsID = $(e.currentTarget).data("news-id");
 		      var model = this.collection.get(newsID);
 
 		      this.portlet.find(".news-title").html(model.get('title'));
@@ -47,18 +47,21 @@ $SC.module("portlet.news", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    }
 	  	});
 
-		mod.view = new mod.viewClass();
-	});
-	mod.searchBy = "title";
+		this.view = new mod.viewClass({collection: mod.collection});
+		this.searchBy = "title";
 
-	mod.onFullscreen = function(e, portlet) {
-		mod.view.$("#news-links,.slimScrollDiv").css({
-			'height': 720
-		});
-	};
-	mod.onRestorescreen = function(e, portlet) {
-		mod.view.$("#news-links,.slimScrollDiv").css({
-			'height': 200
-		});
-	};
+		this.onFullscreen = function(e, portlet) {
+			this.view.portlet.find("#news-links,.slimScrollDiv").css({
+				'height': 720
+			});
+		};
+		this.onRestorescreen = function(e, portlet) {
+			this.view.portlet.find("#news-links,.slimScrollDiv").css({
+				'height': 200
+			});
+		};
+	});
+	
+
+
 });

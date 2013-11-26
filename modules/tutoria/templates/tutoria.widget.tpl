@@ -62,3 +62,33 @@
       </div>
    </div>
 </script>
+
+<script type="text/template" id="tutoria-chat-template">
+<div class="portlet box dark-blue">
+   <div class="portlet-title">
+      <div class="caption"><i class="icon-comments"></i><%= title %></div>
+      <div class="tools">
+         <a class="collapse" href="javascript:;"></a>
+         <a class="remove" href="javascript:;"></a>
+      </div>
+   </div>
+   <div class="portlet-body">
+      <ul class="scroller chat-contents" data-height="200px" data-always-visible="1">
+      </ul>
+      <div class="send-block">
+         <div class="input-icon right">
+            <i class="icon-signin"></i>
+            <input type="text" class="form-control" />
+         </div>
+      </div>
+   </div>
+</div>
+</script>
+<script type="text/template" id="tutoria-chat-item-template">
+<div class="subject">
+   <span class="label label-default">Lisa Wong</span>
+   <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+</div>
+<div class="message"><%= message %></div>
+<hr />
+</script>

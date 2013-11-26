@@ -1137,7 +1137,8 @@ var App = function () {
             } else {
                 return '';
             }
-        }
+        },
+        handleScrollers : handleScrollers
     };
 
 }();

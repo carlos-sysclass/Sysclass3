@@ -80,3 +80,36 @@ hr {
 .portlet-fullscreen#news-lastest .username-badge {
 	display: block;
 }
+
+#off-windows {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+.chat-widget {
+	float: right;
+	margin-left: 5px;
+    margin-right: 0;
+	width: 250px;
+	min-height: 1px;
+}
+
+.chat-widget .portlet {
+    bottom: 0;
+    margin-bottom: 0;
+    position: absolute;
+    width: 250px;
+    z-index: 101;
+}
+
+.chat-widget li:first-child {
+	padding-top: 5px;
+}
+.chat-widget .send-block {
+	margin-top: 10px;
+	padding-right: 10px;
+}
+.chat-widget .portlet-body {
+	padding-right: 0 !important;
+	padding-top: 0 !important;
+}

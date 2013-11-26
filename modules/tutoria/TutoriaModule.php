@@ -2,6 +2,7 @@
 class TutoriaModule extends SysclassModule implements IWidgetContainer
 {
     public function getWidgets() {
+        $this->putScript("plugins/jquery.pulsate.min");
         $this->putModuleScript("tutoria");
         $tutorias = $this->dataAction();
         //$this->putItem("tutoria", $tutorias);
@@ -123,6 +124,20 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
             "fm.timestamp ASC"
         );
         return $forum_messages;
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /chat/pool/:chat_index
+     */
+    public function chatMessagesAction($chat_index)
+    {
+        $timestamp = $_GET['_'];
+        // CHECK LAST TIMESTAMP AND, IF HAS MESSAGES FROM THERE TO NOW, SEND THEN.
+
+        return array(
+        );
     }
         
 }

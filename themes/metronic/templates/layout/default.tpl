@@ -65,5 +65,75 @@
    		{include file="block/foot.tpl"}
    	{/block}
    </div>
+   <div id="off-windows">
+   <!--
+      <div class="chat-widget">
+         <div class="portlet box dark-blue">
+            <div class="portlet-title">
+               <div class="caption"><i class="icon-comments"></i>test</div>
+               <div class="tools">
+                  <a href="javascript:;" class="expand"></a>
+                  <a href="javascript:;" class="remove"></a>
+               </div>
+            </div>
+            <div class="portlet-body" style="display: none;">
+               <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                  <ul data-always-visible="1" data-height="200px" class="scroller chat-contents" style="overflow: hidden; width: auto; height: 200px;">
+                     <li>
+                        <div class="subject">
+                           <span class="label label-default">Lisa Wong</span>
+                           <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+                        </div>
+                        <div class="message">fdjksajfdassdsasddksljfksldjfkdls</div>
+                        <hr>
+                     </li>
+                  </ul>
+                  <div class="slimScrollBar" style="background: none repeat scroll 0% 0% rgb(161, 178, 189); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 111.111px;"></div>
+                  <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: none repeat scroll 0% 0% rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+               </div>
+               <div class="send-block">
+                  <div class="input-icon right">
+                     <i class="icon-microphone"></i>
+                     <input type="text" class="form-control">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="chat-widget">
+         <div class="portlet box dark-blue">
+            <div class="portlet-title">
+               <div class="caption"><i class="icon-comments"></i>test</div>
+               <div class="tools">
+                  <a href="javascript:;" class="expand"></a>
+                  <a href="javascript:;" class="remove"></a>
+               </div>
+            </div>
+            <div class="portlet-body" style="display: none;">
+               <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                  <ul data-always-visible="1" data-height="200px" class="scroller chat-contents" style="overflow: hidden; width: auto; height: 200px;">
+                     <li>
+                        <div class="subject">
+                           <span class="label label-default">Lisa Wong</span>
+                           <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+                        </div>
+                        <div class="message">fdjksajfdassdsasddksljfksldjfkdls</div>
+                        <hr>
+                     </li>
+                  </ul>
+                  <div class="slimScrollBar" style="background: none repeat scroll 0% 0% rgb(161, 178, 189); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 111.111px;"></div>
+                  <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: none repeat scroll 0% 0% rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+               </div>
+               <div class="send-block">
+                  <div class="input-icon right">
+                     <i class="icon-microphone"></i>
+                     <input type="text" class="form-control">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   -->
+   </div>
 <!-- END BODY -->
 </html>
