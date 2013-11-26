@@ -20,8 +20,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
                     'collapse'      => true,
                     'reload'        => true,
                     'fullscreen'    => true
-                ),
-                'data'  => $tutorias
+                )
     		)
     	);
     }

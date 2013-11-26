@@ -72,7 +72,7 @@ Calendar with full calendar
 /* begin: event element */
 .portlet.calendar .fc-event {
   border: 0px;
-  background-color: #69a4e0;
+/*  background-color: #69a4e0; */
   color: #fff;
 }
 
