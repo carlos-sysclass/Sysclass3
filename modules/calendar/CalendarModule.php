@@ -14,4 +14,19 @@ class CalendarModule extends SysclassModule implements IWidgetContainer
             )
         );
     }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /data
+     */
+    public function dataAction()
+    {
+        $currentUser    = $this->getCurrentUser();;
+
+        $events = calendar :: getCalendarEventsForUser($currentUser);
+        var_dump($events);
+        exit;
+    }
+
 }
