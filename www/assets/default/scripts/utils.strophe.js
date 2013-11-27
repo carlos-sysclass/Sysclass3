@@ -40,7 +40,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
         app.reqres.setHandler("xmpp:message:send", this.sendMessage);
     });
     this.sendMessage = function(message) {
-        mod.connection.messaging.send(message.to, message.body);
+        mod.connection.messaging.send(message.jid, message.body);
     }
 
 });
