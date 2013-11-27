@@ -9,7 +9,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
     this.on("start", function() {
         // SET REQUEST/RESPONSE HANDLERS
-        this.connection.connect('akucaniz@thesis.sysclass.com', '123456', function(status) {
+        this.connection.connect('akucaniz@layout.sysclass.com', '123456', function(status) {
             app.request("xmpp:connect:status", status);
 
             if (status == Strophe.Status.CONNECTING) {
