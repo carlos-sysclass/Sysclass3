@@ -3,7 +3,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
     this.startWithParent = false;
 
 	mod.addInitializer(function(){
-        var BOSH_SERVICE = '/chat-poll';
+        var BOSH_SERVICE = 'http://layout.sysclass.com/chat-poll';
         this.connection = new Strophe.Connection(BOSH_SERVICE);
   	});
 
