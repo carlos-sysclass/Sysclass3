@@ -98,8 +98,18 @@ $plicoLib->concat(
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 		'plugins/select2/select2.min',
+		
+		'plugins/strophe/strophe',
+		'plugins/strophe/strophe.roster',
+		'plugins/strophe/strophe.messaging',
+
 		'scripts/app',
 		'scripts/sysclass',
+		'scripts/utils.toastr',
+		'scripts/utils.strophe',
 		'scripts/portlets'
+
+
+
 	)
 );

@@ -23,6 +23,11 @@
          <h4 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-<%= id %>">
             <%= title %>
+            <% if (approved == 0 && (answer == "" || answer == null)) { %>
+               <span class="label label-danger pull-right">{translateToken value='Waiting Approval'}</span>
+            <% } else if (answer == "" || answer == null) {  %>
+               <span class="label label-warning pull-right">{translateToken value='Unanswered'}</span>
+            <% } %>
             </a>
          </h4>
       </div>
@@ -44,7 +49,7 @@
                      </span>
                   </div>
                </li>
-               <% if (answer != "") { %>
+               <% if (answer != "" && answer != null) { %>
                   <li class="out">
                      <img class="avatar img-responsive" alt="" src="<%= answer_avatar.avatar %>" width="<%= answer_avatar.width %>"/>
                      <div class="message">
@@ -78,7 +83,7 @@
       <div class="send-block">
          <div class="input-icon right">
             <i class="icon-signin"></i>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control"  />
          </div>
       </div>
    </div>
@@ -86,9 +91,23 @@
 </script>
 <script type="text/template" id="tutoria-chat-item-template">
 <div class="subject">
-   <span class="label label-default">Lisa Wong</span>
+   <span class="label label-default"><%= from %></span>
+   <!--
    <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+   -->
 </div>
-<div class="message"><%= message %></div>
+<div class="message"><%= body %></div>
 <hr />
 </script>
+<script type="text/template" id="tutoria-chat-status-template">
+<div class="subject">
+   <span class="label label-default"><%= from %></span>
+   <!--
+   <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+   -->
+</div>
+<div class="status">Changed its status to <strong><% if (status != null) { %><%= status %><% } else { %><%= show %><% } %></strong></div>
+<hr />
+</script>
+
+#

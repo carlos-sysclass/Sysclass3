@@ -3215,3 +3215,9 @@ INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`,
 (26, 8, 1, 15, '1;student'),
 (25, 7, 1, 15, '1;student'),
 (24, 6, 1, 15, '1;student');
+
+/* 2011-11-27 -*/
+ALTER TABLE `mod_tutoria` CHANGE `answer_timestamp` `answer_timestamp` INT( 10 ) UNSIGNED NULL ;
+ALTER TABLE `mod_tutoria` ADD `aproved` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER TABLE `mod_tutoria` CHANGE `aproved` `approved` TINYINT( 1 ) NOT NULL DEFAULT '0';
+

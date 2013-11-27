@@ -12,20 +12,6 @@
 	  "click .message-recipient-item": "openDialog"
 	},
 	initialize: function() {
-	  toastr.options = {
-		"closeButton": true,
-		"debug": false,
-		"positionClass": "toast-top-center",
-		"showDuration": "1000",
-		"hideDuration": "1000",
-		"timeOut": "5000",
-		"extendedTimeOut": "1000",
-		"showEasing": "swing",
-		"hideEasing": "linear",
-		"showMethod": "fadeIn",
-		"hideMethod": "fadeOut"
-	  };
-
 	  // APPEND DIALOG
 	  this._dialog = jQuery("<div></div>")
 		.attr("id", "message-contact-dialog")
@@ -91,7 +77,7 @@
 				  $(form).serialize(),
 				  function(response, status) {
 					self._dialog.modal('hide');
-					toastr[response.message_type](response.message);
+					$SC.request("toastr:message", response.message_type, response.message);
 
 				  },
 				  'json'

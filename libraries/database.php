@@ -120,33 +120,7 @@ function escapemaDBFieldsArray($field)
  */
 function sC_insertTableData($table, $fields)
 {
-    $thisQuery = microtime(true);
-    //Prepend prefix to the table
-    $table = G_DBPREFIX.$table;
-    if (sizeof($fields) < 1) {
-        trigger_error(_EMPTYFIELDSLIST, E_USER_WARNING);
-        return false;
-    }
-    isset($fields['id']) ? $customId = $fields['id'] : $customId = 0;
-    $fields = sC_addSlashes($fields);
-    array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1;'));
-    $sql = "insert into $table (".implode(",", array_map("escapemaDBFieldsArray", array_keys($fields))).") values (".implode(",", ($fields)).")";
-    $result = $GLOBALS['db']->Execute($sql);
-    logProcess($thisQuery, $sql);
-    if ($result) {
-        if (!$customId) {
-            $id = $GLOBALS['db']->Insert_ID();
-        } else {
-            $id = $customId;
-        }
-        if ($id == 0) {
-            return true;
-        } else {
-            return $id;
-        }
-    } else {
-        return false;
-    }
+    return StaticBCController::_insertTableData($table, $fields);
 }
 
 /**

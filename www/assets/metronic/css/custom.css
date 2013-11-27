@@ -74,10 +74,10 @@ hr {
 }
 
 /* MODULES CSS */
-#news-lastest .username-badge {
+#news-widget .username-badge {
 	display: none;
 }
-.portlet-fullscreen#news-lastest .username-badge {
+.portlet-fullscreen#news-widget .username-badge {
 	display: block;
 }
 

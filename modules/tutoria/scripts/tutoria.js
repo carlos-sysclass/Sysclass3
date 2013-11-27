@@ -83,9 +83,11 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 						  $(form).attr("action"),
 						  $(form).serialize(),
 						  function(response, status) {
-							//toastr[response.message_type](response.message);
 							$(form).find(":input").val("");
-							//mod.collection.fetch();
+							mod.collection.fetch();
+							if (response.action) {
+								$SC.request("toastr:message", response.action.type, response.action.message);
+							}
 						  }
 						);
 					}
@@ -101,16 +103,35 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.ChatCollectionClass = Backbone.Collection.extend({
 		initialize : function(models, options) {
-			this.url = "/module/tutoria/chat/pool/" + options.index;
+			$SC.module("utils.strophe").start();
+
+			app.reqres.setHandler("xmpp:connect:status", this.connectStatus);
+			app.reqres.setHandler("xmpp:presence", this.receivePresence);
+			app.reqres.setHandler("xmpp:message", this.receiveMessage);
 		},
-		fetch: function (options) {
-			if (options == undefined) {
-				options = {};
+		connectStatus : function(status) {
+			//console.log('fdks');
+		},
+		receivePresence : function(presence) {
+			var from = presence.jid.split("/");
+			chat_index = from[0];
+			username = from[0].split("@");
+			presence.from = username[0];
+			if (mod.chatCollections[chat_index]) {
+				mod.chatCollections[chat_index].add(presence);	
 			}
-        	options.cache = false;
-         	return Backbone.Collection.prototype.fetch.call(this, options);
-     	}
+			
+		},
+		receiveMessage : function(message) {
+			var from = message.jid.split("/");
+			chat_index = from[0];
+			username = from[0].split("@");
+			message.from = username[0];
+			mod.chatCollections[chat_index].add(message);
+		}
 	});
+
+	
 	// MODELS
 	mod.addInitializer(function() {
 	  	// VIEWS
@@ -122,13 +143,25 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    	return this;
 		    }
 	  	});
+		var statusViewClass = Backbone.View.extend({
+			tagName: "li",
+		    itemTemplate: _.template($('#tutoria-chat-status-template').html()),
+		    render: function() {
+		    	this.$el.append(this.itemTemplate(this.model.toJSON()));
+		    	return this;
+		    }
+	  	});
 
 	  	this.chatClass = Backbone.View.extend({
 
 		    chatTemplate: _.template($('#tutoria-chat-template').html()),
 		    collection 	: null,
+		    model 		: null,
 		    bbview		: null,
 		    isStarted 	: false,
+		    events : {
+		    	"keyup .send-block input" : "keyenter"
+		    },
 		    initialize: function(opt) {
 		    	this.bbview  = opt.bbview;
 		    	this.$el
@@ -137,9 +170,24 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    	this.render();
 
 		    	this.listenTo(this.collection, 'add', this.addOne);
-		    	this.collection.fetch();
+		    	//this.collection.fetch();
 
-		    	this.startPooling();
+		    	//this.startPooling();
+		    },
+		    keyenter: function(e,a,b,c) {
+		    	if ( e.which == 13 ) {
+					e.preventDefault();
+					var message = {
+						jid 	: this.$(".portlet").data("bbview"),
+						from 	: "me",
+						body 	: jQuery(e.currentTarget).val()
+					};
+					app.request("xmpp:message:send", message);
+
+					this.collection.add(message);
+
+					jQuery(e.currentTarget).val("");
+				}
 		    },
 			startPooling : function() {
 				if (this.pollInterval == undefined) {
@@ -186,14 +234,20 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            return this;
 		    },
 		    addOne: function(model) {
-		    	if (this.isStarted) {
+		    	//if (this.isStarted) {
                		this.$(".portlet-title").pulsate({
                    		color: "#399bc3",
                    		repeat: false
                		});
+		    	//}
+		    	if (!this.$el.is("visible")) {
+		    		this.$el.slideDown(200);
 		    	}
-		    	var view = new messageViewClass({model: model});
-
+		    	if (model.get("show")) {
+					var view = new statusViewClass({model: model});
+		    	} else {
+			    	var view = new messageViewClass({model: model});
+		    	}
 		    	this.$(".chat-contents").append(view.render().el);
 		    },
 		    open : function() {
@@ -201,9 +255,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
 				this.$(".portlet-body").slideDown(200);
 		    },
-		    destroy : function() {
-		    	this.stopPooling();
-		    	this.$el.remove();
+		    hide : function() {
+		    	this.$el.hide();
 		    }
 	  	});
 		/*
@@ -219,11 +272,14 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 		this.onRemove = function(e, portlet) {
 			var index = portlet.data("bbview");
-			this.chatViews[index].destroy();
+			this.chatViews[index].hide();
+			
+			//this.chatViews[index].destroy();
 
-			this.chatViews[index] = undefined;
-			this.chatCollections[index] = undefined;
-			return true;
+			//this.chatViews[index] = undefined;
+			//this.chatCollections[index] = undefined;
+
+			return false;
 		};
 
 		this.chatViews = [];
@@ -234,6 +290,9 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			// OPEN CHAT DIALOG WITH USER GROUP "data.systemgroup" OR
 			// OPEN CHAT DIALOG WITH USER NAME "data.lessongroup" OR
 			// OPEN CHAT DIALOG WITH USER NAME "data.usergroup"
+			//var usernameToChat = data.username;
+			var index = data.username;
+			/*
 			var index = "";
 			for (i in data) {
 				if (_.indexOf(["username","systemgroup","lessongroup","usergroup"], i) != -1) {
@@ -243,16 +302,22 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				}
 			}
+			*/
 			if (index == "") {
 				return false;
 			}
+
 			// FIRST OF ALL, CHECK IF THE USER HAS PRIVILEGES
 			if (mod.chatViews[index] == undefined) {
 				// CREATE THE COLLECTION TO HANDLE MESSAGES
 	  			mod.chatCollections[index] = new mod.ChatCollectionClass([], {
   					"index": index
 				});
-				mod.chatViews[index] = new mod.chatClass({bbview : index, collection : mod.chatCollections[index]});
+				mod.chatViews[index] = new mod.chatClass({
+					bbview 		: index, 
+					collection 	: mod.chatCollections[index],
+					model 		: mod.modelObserver
+				});
 				//mod.chatViews[index].render();
 			} else {
 				mod.chatViews[index].open();

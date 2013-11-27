@@ -1,7 +1,7 @@
 <div id="calendar"></div>
 
 <div class="modal fade" id="calendar-dialog" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-wide">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>

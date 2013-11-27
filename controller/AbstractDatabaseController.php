@@ -119,6 +119,52 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	        return $result;
 	    }
 	}
+	/**
+	 * Insert data to a database table
+	 *
+	 * This function is used to insert data to a database table. The data is formed as an associative
+	 * array, where the keys are column names and the values are the column data. The function returns
+	 * the auto_increment value of the insertion id, if one exists
+	 * <br>Example:
+	 * <code>
+	 * $fields = array('name' => 'john', 'surname' => 'doe');
+	 * $result = sC_insertTableData('users', $fields);
+	 * </code>
+	 * @param string $table The table to insert data into
+	 * @param array $fields An associative array with the table cell data
+	 * @return mixed The id of the insertion, if an AUTO_INCREMENT id field is set. Otherwise, true in success and false on failure
+	 * @version 1.0
+	 */
+	public function _insertTableData($table, $fields)
+	{
+	    $thisQuery = microtime(true);
+	    //Prepend prefix to the table
+	    $table = G_DBPREFIX.$table;
+	    if (sizeof($fields) < 1) {
+	        trigger_error(_EMPTYFIELDSLIST, E_USER_WARNING);
+	        return false;
+	    }
+	    isset($fields['id']) ? $customId = $fields['id'] : $customId = 0;
+	    $fields = sC_addSlashes($fields);
+	    array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1;'));
+	    $sql = "insert into $table (".implode(",", array_map("escapemaDBFieldsArray", array_keys($fields))).") values (".implode(",", ($fields)).")";
+	    $result = $GLOBALS['db']->Execute($sql);
+	    logProcess($thisQuery, $sql);
+	    if ($result) {
+	        if (!$customId) {
+	            $id = $GLOBALS['db']->Insert_ID();
+	        } else {
+	            $id = $customId;
+	        }
+	        if ($id == 0) {
+	            return true;
+	        } else {
+	            return $id;
+	        }
+	    } else {
+	        return false;
+	    }
+	}
 	public function _countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 	{
 	    $thisQuery = microtime(true);
