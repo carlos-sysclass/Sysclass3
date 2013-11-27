@@ -5,7 +5,7 @@
 	<div class="col-md-7">
 		<div class="list-group">
 			<!-- GET THIS LIST FROM TUTORIA/CHAT MODULE -->
-            <a class="list-group-item" href="javascript: void(0);" data-publish="tutoria:start" data-username="suporte@thesis.sysclass.com">
+            <a class="list-group-item" href="javascript: void(0);" data-publish="tutoria:start" data-username="suporte@layout.sysclass.com">
             	<span class="text-success"><i class="icon-ok-sign"></i></span>
             	Mentoring
             </a>
