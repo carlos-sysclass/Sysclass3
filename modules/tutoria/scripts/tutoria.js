@@ -170,7 +170,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    	this.render();
 	    	// ADD FIRST MESSAGES
 	    	this.updateStatus(this.model);
-	    	
+
 	    	this.collection.each(this.addOne.bind(this));
 			
 			this.listenTo(this.model, 'change:status', this.updateStatus);
@@ -222,11 +222,6 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    	var view = new messageViewClass({model: model});
 	    	}
 	    	this.$(".chat-contents").append(view.render().el);
-
-	    	// SCROLL MESSAGE BAR
-	    	var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
-			this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
-
 	    },
 	    focus : function() {
 	    	if (!this.$(".portlet").is(":visible")) {
@@ -239,6 +234,9 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	               	repeat: false
 				});
 			}
+
+	    	var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
+			this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
 	    }
   	});
 
