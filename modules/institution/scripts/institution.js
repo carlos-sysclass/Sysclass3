@@ -18,7 +18,8 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    update : function(model) {
 			var jid = model.get("id");
-	    	this.$("[data-username='" + jid + "']").replaceWith(this.itemTemplate(model.toJSON())).pulsate({
+	    	this.$("[data-username='" + jid + "']").replaceWith(this.itemTemplate(model.toJSON()));
+			this.$("[data-username='" + jid + "']").pulsate({
 				color: "#399bc3",
 	            repeat: false
 			});
