@@ -72,15 +72,7 @@
 <div class="portlet box dark-blue" style="display:hide;">
    <div class="portlet-title">
       <div class="caption">
-         <% if (status == 'online') { %>
-            <i class="icon-ok-sign"></i>
-         <% } else if (status == 'busy') { %>
-            <i class="icon-minus-sign"></i>
-         <% } else if (status == 'away') { %>
-            <i class="icon-time"></i>
-         <% } else if (status == 'offline') { %>
-            <i class="icon-remove-sign"></i>
-         <% } %>
+         <i class="icon-comments"></i>
          <%= name %>
       </div>
       <div class="tools">
@@ -129,4 +121,8 @@
 <hr />
 </script>
 
-#
+<div id="sounds" >
+   <audio id="ping">
+      <source type="audio/wave" src="{Plico_GetResource file='audio/ping.wav'}">
+   </audio>
+</div>

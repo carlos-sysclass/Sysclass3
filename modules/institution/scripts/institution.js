@@ -39,7 +39,10 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	});
 	this.on("start", function() {
 		$SC.module("utils.strophe").on("xmpp:roster:sync", function(col) {
-			mod.view = new RosterViewClass({collection : col});
+			if (mod.view == undefined) {
+				mod.view = new RosterViewClass({collection : col});
+			}
+			
 		});
 		/*
 		$SC.module("utils.strophe").on("xmpp:presence", function(presence) {

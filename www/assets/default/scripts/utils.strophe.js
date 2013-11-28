@@ -5,51 +5,60 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
     this.rosterCollection = new Backbone.Collection;
     var presences = {};
 
+    this.connectionHandler = function(status) {
+        if (status == Strophe.Status.CONNECTING) {
+            console.log('Strophe is connecting.');
+        } else if (status == Strophe.Status.CONNFAIL) {
+            console.log('Strophe failed to connect.');
+        } else if (status == Strophe.Status.DISCONNECTING) {
+            console.log('Strophe is disconnecting.');
+        } else if (status == Strophe.Status.DISCONNECTED) {
+            // TRY TO RECONNECT
+            mod.connection.connect('akucaniz@layout.sysclass.com', '123456', mod.connectionHandler);
+
+            
+        } else if (status == Strophe.Status.CONNECTED) {
+            console.log('Strophe is connected.');
+
+            this.send($pres().tree());
+
+            defered = this.roster.get();
+            defered.done(function(roster) {
+                var models = [];
+                var i = 0;
+                for(jid in roster) {
+                    if (presences[jid] != undefined) {
+                        var status = presences[jid];
+                    } else {
+                        var status = "offline"
+                    }
+                    models[i++] = {
+                        id          : jid,
+                        name        : roster[jid].name,
+                        status      : status,
+                        messages    : new Backbone.Collection
+                    };
+                }
+                console.log(models);
+                mod.rosterCollection.set(models);
+                mod.trigger("xmpp:roster:sync", mod.rosterCollection);
+            });
+
+            this.ping.addPingHandler( function(data) {
+                console.log('PING');
+                console.log(data);
+            });
+        }
+        mod.trigger("xmpp:connect:after", status);
+    };
+
 	this.addInitializer(function(){
         var BOSH_SERVICE = 'http://layout.sysclass.com/chat-poll';
         this.connection = new Strophe.Connection(BOSH_SERVICE);
 
         var self = this;
         self.trigger("xmpp:connect:before", status);
-        this.connection.connect('akucaniz@layout.sysclass.com', '123456', function(status) {
-            if (status == Strophe.Status.CONNECTING) {
-                console.log('Strophe is connecting.');
-            } else if (status == Strophe.Status.CONNFAIL) {
-                console.log('Strophe failed to connect.');
-            } else if (status == Strophe.Status.DISCONNECTING) {
-                console.log('Strophe is disconnecting.');
-            } else if (status == Strophe.Status.DISCONNECTED) {
-                console.log('Strophe is disconnected.');
-            } else if (status == Strophe.Status.CONNECTED) {
-                console.log('Strophe is connected.');
-
-                this.send($pres().tree());
-
-                defered = this.roster.get();
-                defered.done(function(roster) {
-                    for(jid in roster) {
-                        if (presences[jid] != undefined) {
-                            var status = presences[jid];
-                        } else {
-                            var status = "offline"
-                        }
-                        mod.rosterCollection.add({
-                            id          : jid,
-                            name        : roster[jid].name,
-                            status      : status,
-                            messages    : new Backbone.Collection
-                        });
-                    }
-                    self.trigger("xmpp:roster:sync", mod.rosterCollection);
-                });
-
-                this.ping.addPingHandler( function(data) {
-                    console.log('PING');
-                    console.log(data);
-                });
-            }
-            self.trigger("xmpp:connect:after", status);
-        });
+        this.connection.connect('akucaniz@layout.sysclass.com', '123456', this.connectionHandler);
   	});
 
     this.on("xmpp:connect:after", function(status) {

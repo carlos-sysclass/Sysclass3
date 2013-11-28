@@ -216,23 +216,21 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    	var view = new statusViewClass({model: model});
 	    	this.$(".chat-contents").append(view.render().el);
 
-	    	this.focus(false);
+	    	
 	    },
 	    addOne: function(model) {
-
-	    	if (model.get("show")) {
-				
-	    	} else {
-		    	var view = new messageViewClass({model: model});
-	    	}
+	    	var view = new messageViewClass({model: model});
 	    	this.$(".chat-contents").append(view.render().el);
 
-	    	this.focus();
+			document.getElementById('ping').play();
 	    },
 	    focus : function(restoreIfHidden) {
 	    	if (!this.$(".portlet").is(":visible") && restoreIfHidden != false) {
             	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
 				this.$(".portlet").slideDown(200);	
+			} else if (!this.$(".portlet > .portlet-body").is(":visible") && restoreIfHidden != false) {
+            	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
+				this.$(".portlet > .portlet-body").slideDown(200);	
 			} else {
 				this.$(".portlet-title").pulsate({
 	            	color: "#399bc3",
@@ -260,6 +258,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 				mod.chatViews[index] = new chatViewClass({
 					model 		: model
 				});
+			} else {
+				mod.chatViews[index].focus();	
 			}
 		});
 	});

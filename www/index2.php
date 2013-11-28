@@ -1,6 +1,13 @@
 <?php
 define("PLICOLIB_PATH", "/usr/local/share/plicolib/");
 
+/*
+var_dump(md5("fep7_58A$".'cDWQR#$Rcxsc'));
+var_dump(md5("fep7_58A$"));
+
+
+exit;
+*/
 require_once PLICOLIB_PATH . "startup.php";
 
 $plicoLib = PlicoLib::instance(__DIR__ . "/../");
