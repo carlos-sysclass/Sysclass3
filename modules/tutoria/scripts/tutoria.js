@@ -181,14 +181,16 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    	if ( e.which == 13 ) {
 				e.preventDefault();
 
-				var message = {
-					jid 	: this.model.get("id"),
-					from 	: "me",
-					body 	: jQuery(e.currentTarget).val()
-				};
-				$SC.module("utils.strophe").sendMessage(this.model.get("id"), jQuery(e.currentTarget).val());
-				//this.collection.add(message);
-				jQuery(e.currentTarget).val("");
+				if (jQuery(e.currentTarget).val() != "") {
+					var message = {
+						jid 	: this.model.get("id"),
+						from 	: "me",
+						body 	: jQuery(e.currentTarget).val()
+					};
+					$SC.module("utils.strophe").sendMessage(this.model.get("id"), jQuery(e.currentTarget).val());
+					//this.collection.add(message);
+					jQuery(e.currentTarget).val("");
+				}
 			}
 	    },
 	    render : function() {
