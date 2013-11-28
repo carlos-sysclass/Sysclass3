@@ -213,6 +213,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    updateStatus : function(model) {
 	    	var view = new statusViewClass({model: model});
 	    	this.$(".chat-contents").append(view.render().el);
+
+	    	this.focus();
 	    },
 	    addOne: function(model) {
 
@@ -222,6 +224,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    	var view = new messageViewClass({model: model});
 	    	}
 	    	this.$(".chat-contents").append(view.render().el);
+
+	    	this.focus();
 	    },
 	    focus : function() {
 	    	if (!this.$(".portlet").is(":visible")) {
@@ -256,7 +260,6 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 					model 		: model
 				});
 			}
-			mod.chatViews[index].focus();
 		});
 	});
 });
