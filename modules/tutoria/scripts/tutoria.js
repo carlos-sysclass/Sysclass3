@@ -100,7 +100,7 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 
 // THINK ABOUT BREAKING THIS MODULE IN TWO.
 $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
-
+/*
 	this.ChatCollectionClass = Backbone.Collection.extend({
 		initialize : function(models, options) {
 			$SC.module("utils.strophe").start();
@@ -123,220 +123,140 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		},
 		receiveMessage : function(message) {
-			var from = message.jid.split("/");
-			chat_index = from[0];
-			username = from[0].split("@");
-			message.from = username[0];
-			mod.chatCollections[chat_index].add(message);
+			var chat_index = message.from.barejid;
+			var username = message.from.node;
+			console.log(chat_index);
+			console.log(mod.chatCollections);
+			if (mod.chatCollections[chat_index]) {
+				mod.chatCollections[chat_index].add(message);
+			}
 		}
 	});
+*/
+
+	var messageViewClass = Backbone.View.extend({
+		tagName: "li",
+	    itemTemplate: _.template($('#tutoria-chat-item-template').html()),
+	    render: function() {
+	    	this.$el.append(this.itemTemplate(this.model.toJSON()));
+	    	return this;
+	    }
+  	});
+	var statusViewClass = Backbone.View.extend({
+		tagName: "li",
+	    itemTemplate: _.template($('#tutoria-chat-status-template').html()),
+	    render: function() {
+	    	this.$el.append(this.itemTemplate(this.model.toJSON()));
+	    	return this;
+	    }
+  	});
+
+  	var chatViewClass = Backbone.View.extend({
+
+	    chatTemplate: _.template($('#tutoria-chat-template').html()),
+	    collection 	: null,
+	    model 		: null,
+	    bbview		: null,
+	    isStarted 	: false,
+	    events : {
+	    	"keyup .send-block input" : "keyenter"
+	    },
+	    initialize: function(opt) {
+	    	//console.log(this.model.toJSON());
+	    	this.collection = this.model.get("messages");
+//		    	this.bbview  = opt.bbview;
+	    	this.$el.addClass("chat-widget");
+	    	
+	    	this.render();
+	    	// ADD FIRST MESSAGES
+	    	this.collection.each(this.addOne.bind(this));
+			this.updateStatus(this.model);
+			this.listenTo(this.model, 'change:status', this.updateStatus);
+	    	this.listenTo(this.collection, 'add', this.addOne);
+
+	    },
+	    keyenter: function(e,a,b,c) {
+	    	if ( e.which == 13 ) {
+				e.preventDefault();
+
+				var message = {
+					jid 	: this.model.get("id"),
+					from 	: "me",
+					body 	: jQuery(e.currentTarget).val()
+				};
+				$SC.module("utils.strophe").sendMessage(this.model.get("id"), jQuery(e.currentTarget).val());
+				//this.collection.add(message);
+				jQuery(e.currentTarget).val("");
+			}
+	    },
+	    render : function() {
+	    	this.$el.empty();
+	    	this.$el.append(this.chatTemplate(this.model.toJSON()));
+
+			$("#off-windows").append(this.$el);
+			this.$(".portlet").data("portlet-type", "chat");
+
+			var scroller = this.$(".scroller");
+			var height;
+        	if (scroller.attr("data-height")) {
+            	height = scroller.attr("data-height");
+        	} else {
+            	height = scroller.css('height');
+        	}
+
+        	App.handleScrollers();
+
+            return this;
+	    },
+	    updateStatus : function(model) {
+	    	var view = new statusViewClass({model: model});
+	    	this.$(".chat-contents").append(view.render().el);
+	    },
+	    addOne: function(model) {
+
+	    	if (model.get("show")) {
+				
+	    	} else {
+		    	var view = new messageViewClass({model: model});
+	    	}
+	    	this.$(".chat-contents").append(view.render().el);
+
+	    	// SCROLL MESSAGE BAR
+	    	var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
+			this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
+
+	    },
+	    focus : function() {
+	    	if (!this.$(".portlet").is(":visible")) {
+            	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
+				//this.$(".portlet-body").slideDown(200);
+	    		this.$(".portlet").slideDown(200);
+			} else {
+				this.$(".portlet-title").pulsate({
+	            	color: "#399bc3",
+	               	repeat: false
+				});
+			}
+	    }
+  	});
 
 	
-	// MODELS
-	mod.addInitializer(function() {
-	  	// VIEWS
-		var messageViewClass = Backbone.View.extend({
-			tagName: "li",
-		    itemTemplate: _.template($('#tutoria-chat-item-template').html()),
-		    render: function() {
-		    	this.$el.append(this.itemTemplate(this.model.toJSON()));
-		    	return this;
-		    }
-	  	});
-		var statusViewClass = Backbone.View.extend({
-			tagName: "li",
-		    itemTemplate: _.template($('#tutoria-chat-status-template').html()),
-		    render: function() {
-		    	this.$el.append(this.itemTemplate(this.model.toJSON()));
-		    	return this;
-		    }
-	  	});
+	this.onRemove = function(e, portlet) {
+		portlet.hide();
+		return false;
+	};
 
-	  	this.chatClass = Backbone.View.extend({
+	this.chatViews = [];
 
-		    chatTemplate: _.template($('#tutoria-chat-template').html()),
-		    collection 	: null,
-		    model 		: null,
-		    bbview		: null,
-		    isStarted 	: false,
-		    events : {
-		    	"keyup .send-block input" : "keyenter"
-		    },
-		    initialize: function(opt) {
-		    	console.log(this.model.toJSON());
-		    	this.bbview  = opt.bbview;
-		    	this.$el
-		    		.addClass("chat-widget");
-		    	
-		    	this.render();
-
-		    	this.listenTo(this.collection, 'add', this.addOne);
-		    	//this.collection.fetch();
-
-		    	//this.startPooling();
-		    },
-		    keyenter: function(e,a,b,c) {
-		    	if ( e.which == 13 ) {
-					e.preventDefault();
-
-					var message = {
-						jid 	: this.model.get("id"),
-						from 	: "me",
-						body 	: jQuery(e.currentTarget).val()
-					};
-					app.request("xmpp:message:send", message);
-
-					this.collection.add(message);
-
-					jQuery(e.currentTarget).val("");
-				}
-		    },
-			startPooling : function() {
-				if (this.pollInterval == undefined) {
-					this.isStarted = true;
-					var bbview = this.bbview;
-					this.pollInterval = setInterval(function () {
-					    mod.chatCollections[bbview].fetch();
-					}, 5000);
-				}
-		    },
-		    stopPooling : function() {
-		    	clearInterval(this.pollInterval);
-		    },
-		    render : function() {
-		    	this.$el.empty();
-		    	this.$el.append(this.chatTemplate(this.model.toJSON()));
-
-				$("#off-windows").append(this.$el);
-				this.$(".portlet")
-					.data("portlet-type", "chat")
-					.data("bbview", this.bbview);
-
-				var scroller = this.$(".scroller");
-				var height;
-            	if (scroller.attr("data-height")) {
-                	height = scroller.attr("data-height");
-            	} else {
-                	height = scroller.css('height');
-            	}
-
-            	App.handleScrollers();
-/*
-	            scroller.slimScroll({
-	                size: '7px',
-	                color: (scroller.attr("data-handle-color")  ? scroller.attr("data-handle-color") : '#a1b2bd'),
-	                railColor: (scroller.attr("data-rail-color")  ? scroller.attr("data-rail-color") : '#333'),
-	                position: isRTL ? 'left' : 'right',
-	                height: height,
-	                alwaysVisible: (scroller.attr("data-always-visible") == "1" ? true : false),
-	                railVisible: (scroller.attr("data-rail-visible") == "1" ? true : false),
-	                disableFadeOut: true
-	            });
-*/
-	            return this;
-		    },
-		    addOne: function(model) {
-		    	//if (this.isStarted) {
-               		this.$(".portlet-title").pulsate({
-                   		color: "#399bc3",
-                   		repeat: false
-               		});
-		    	//}
-		    	if (!this.$el.is("visible")) {
-		    		this.$el.slideDown(200);
-		    	}
-		    	if (model.get("show")) {
-					var view = new statusViewClass({model: model});
-		    	} else {
-			    	var view = new messageViewClass({model: model});
-		    	}
-		    	this.$(".chat-contents").append(view.render().el);
-		    },
-		    open : function() {
-		    	// EXPAND CHAT VIEW
-	            this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
-				this.$(".portlet-body").slideDown(200);
-		    },
-		    hide : function() {
-		    	this.$el.hide();
-		    }
-	  	});
-		/*
-		this.onCollapse = function(e, portlet) {
-			var index = portlet.data("bbview");
-			this.chatViews[index].stopPooling();
-		};
-		this.onExpand = function(e, portlet) {
-			var index = portlet.data("bbview");
-			this.chatViews[index].startPooling();
-		};
-		*/
-
-		this.onRemove = function(e, portlet) {
-			var index = portlet.data("bbview");
-			this.chatViews[index].hide();
-			
-			//this.chatViews[index].destroy();
-
-			//this.chatViews[index] = undefined;
-			//this.chatCollections[index] = undefined;
-
-			return false;
-		};
-
-		this.chatViews = [];
-		this.chatCollections = [];
-
-		this.startTutoria = function(data) {
-			// OPEN CHAT DIALOG WITH USER TYPE "data.username" OR
-			// OPEN CHAT DIALOG WITH USER GROUP "data.systemgroup" OR
-			// OPEN CHAT DIALOG WITH USER NAME "data.lessongroup" OR
-			// OPEN CHAT DIALOG WITH USER NAME "data.usergroup"
-			//var usernameToChat = data.username;
-			var index = data.jid;
-			console.log(data);
-			/*
-			var index = "";
-			for (i in data) {
-				if (_.indexOf(["username","systemgroup","lessongroup","usergroup"], i) != -1) {
-					if (data[i] != "") {
-						index = i + ":" + data[i];
-						break;
-					}
-				}
-			}
-			*/
-			if (index == "") {
-				return false;
-			}
-
-			// FIRST OF ALL, CHECK IF THE USER HAS PRIVILEGES
-			if (mod.chatViews[index] == undefined) {
-				// CREATE THE COLLECTION TO HANDLE MESSAGES
-	  			mod.chatCollections[index] = new mod.ChatCollectionClass([], {
-  					"index": index
-				});
-				mod.chatViews[index] = new mod.chatClass({
-					bbview 		: index, 
-					collection 	: mod.chatCollections[index],
-					model 		: data
-				});
-				//mod.chatViews[index].render();
-			} else {
-				mod.chatViews[index].open();
-			}
-
-		};
-		this.pauseTutoria = function(data) {
-		};
-		this.stopTutoria = function(data) {
-		};
-	});
 	this.on("start", function() {
-
-		// SET REQUEST/RESPONSE HANDLERS
-	  	app.reqres.setHandler("tutoria:start", this.startTutoria);
-	  	app.reqres.setHandler("tutoria:pause", this.pauseTutoria);
-	  	app.reqres.setHandler("tutoria:stop", this.stopTutoria);
+		$SC.module("utils.strophe").on("xmpp:message xmpp:startchat", function(model) {
+			var index = model.get("id");
+			if (mod.chatViews[index] == undefined) {
+				mod.chatViews[index] = new chatViewClass({
+					model 		: model
+				});
+			}
+			mod.chatViews[index].focus();
+		});
 	});
 });

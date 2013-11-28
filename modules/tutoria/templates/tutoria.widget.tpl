@@ -69,7 +69,7 @@
 </script>
 
 <script type="text/template" id="tutoria-chat-template">
-<div class="portlet box dark-blue">
+<div class="portlet box dark-blue" style="display:hide;">
    <div class="portlet-title">
       <div class="caption">
          <% if (status == 'online') { %>
@@ -94,7 +94,7 @@
       <div class="send-block">
          <div class="input-icon right">
             <i class="icon-signin"></i>
-            <input type="text" class="form-control"  />
+            <input type="text" class="form-control" placeholder="{translateToken value='Type your message here...'}" />
          </div>
       </div>
    </div>
@@ -102,7 +102,7 @@
 </script>
 <script type="text/template" id="tutoria-chat-item-template">
 <div class="subject">
-   <span class="label label-default"><%= from %></span>
+   <span class="label label-default"><%= from.node %></span>
    <!--
    <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
    -->
@@ -112,12 +112,20 @@
 </script>
 <script type="text/template" id="tutoria-chat-status-template">
 <div class="subject">
-   <span class="label label-default"><%= from %></span>
-   <!--
-   <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
-   -->
+   <span class="label label-default"><%= name %></span>
+   <i class="icon-arrow-right"></i>
+   <div class="pull-right">
+   <% if (status == 'online') { %>
+      <span class="badge badge-success"><%= status %></span>
+   <% } else if (status == 'busy') { %>
+      <span class="badge badge-danger"><%= status %></span>
+   <% } else if (status == 'away') { %>
+      <span class="badge badge-warning"><%= status %></span>
+   <% } else if (status == 'offline') { %>
+      <span class="badge badge-default"><%= status %></span>
+   <% } %>
+   </div>
 </div>
-<div class="status">Changed its status to <strong><% if (status != null) { %><%= status %><% } else { %><%= show %><% } %></strong></div>
 <hr />
 </script>
 

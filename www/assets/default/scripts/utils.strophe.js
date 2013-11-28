@@ -2,19 +2,16 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
     this.startWithParent = false;
 
-    console.log(this);
+    this.rosterCollection = new Backbone.Collection;
+    var presences = {};
 
-	mod.addInitializer(function(){
+	this.addInitializer(function(){
         var BOSH_SERVICE = 'http://layout.sysclass.com/chat-poll';
         this.connection = new Strophe.Connection(BOSH_SERVICE);
-  	});
 
-    this.on("start", function() {
-        // SET REQUEST/RESPONSE HANDLERS
         var self = this;
+        self.trigger("xmpp:connect:before", status);
         this.connection.connect('akucaniz@layout.sysclass.com', '123456', function(status) {
-            self.trigger("xmpp:connect", status);
-
             if (status == Strophe.Status.CONNECTING) {
                 console.log('Strophe is connecting.');
             } else if (status == Strophe.Status.CONNFAIL) {
@@ -25,34 +22,111 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                 console.log('Strophe is disconnected.');
             } else if (status == Strophe.Status.CONNECTED) {
                 console.log('Strophe is connected.');
-                //console.log(this);
 
-                //connection.addHandler(this.onMessage, null, 'message', null, null,  null); 
                 this.send($pres().tree());
-                //var presence = $pres().c("show").t("away").up().c("status").t("Volto Logo");
-                //this.send(presence);
-                
-                this.roster.on("xmpp:presence", function(data) {
-                    self.trigger("xmpp:presence", data);
+
+                defered = this.roster.get();
+                defered.done(function(roster) {
+                    for(jid in roster) {
+                        if (presences[jid] != undefined) {
+                            var status = presences[jid];
+                        } else {
+                            var status = "offline"
+                        }
+                        mod.rosterCollection.add({
+                            id          : jid,
+                            name        : roster[jid].name,
+                            status      : status,
+                            messages    : new Backbone.Collection
+                        });
+                    }
+                    self.trigger("xmpp:roster:sync", mod.rosterCollection);
                 });
 
-                this.messaging.on("xmpp:message", function(data) {
-                    self.trigger("xmpp:message", data);
+                this.ping.addPingHandler( function(data) {
+                    console.log('PING');
+                    console.log(data);
                 });
             }
+            self.trigger("xmpp:connect:after", status);
         });
-        app.reqres.setHandler("xmpp:message:send", this.sendMessage);
-    });
-    this.sendMessage = function(message) {
-        mod.connection.messaging.send(message.jid, message.body);
-    };
-    this.getRosterList = function(callback) {
-        defered = mod.connection.roster.get();
-        defered.done(function(roster) {
-            callback(roster);
-        });
-    };
+  	});
 
+    this.on("xmpp:connect:after", function(status) {
+        if (status == Strophe.Status.CONNECTED) {
+            var self = this;
+            this.connection.roster.on("xmpp:presence", function(presence) {
+                var model = mod.rosterCollection.get(presence.jid);
+                var status = "offline";
+                if (presence.priority == "1") {
+                    status = "online";
+                } else if (presence.show == "dnd") {
+                    status = "busy";
+                } else if (presence.show == "away" || presence.show == "xa") {
+                    status = "away";
+                } else {
+                    status = "offline";
+                }
+                if (model != undefined) {
+                    model.set("status", status);
+                } else {
+                    presences[presence.jid] = status;
+                }
+
+                self.trigger("xmpp:presence", presence);
+            });
+            this.connection.messaging.on("xmpp:message", function(message) {
+                var model = mod.rosterCollection.get(message.from.barejid);
+                if (model != undefined) {
+                    var col = model.get("messages");
+                    col.add(message);
+                }
+                self.trigger("xmpp:message", model);
+            });
+        }
+
+    })
+
+    this.on("start", function() {
+        //app.reqres.setHandler("xmpp:message:send", this.sendMessage);
+    });
+
+    this.startChat = function(who) {
+        var model = mod.rosterCollection.get(who);
+        this.trigger("xmpp:startchat", model);
+    }
+
+    this.sendMessage = function(to_jid, message) {
+        mod.connection.messaging.send(to_jid, message);
+
+        var from_jid = mod.connection.jid;
+        var message = {
+            //id:   message.getAttribute('id'),
+            from : {
+                jid:  from_jid,
+                barejid:  Strophe.getBareJidFromJid(from_jid),
+                node: Strophe.getNodeFromJid(from_jid),
+                domain: Strophe.getDomainFromJid(from_jid),
+                resource: Strophe.getResourceFromJid(from_jid)
+            },
+            to : {
+                jid:  to_jid,
+                barejid:  Strophe.getBareJidFromJid(to_jid),
+                node: Strophe.getNodeFromJid(to_jid),
+                domain: Strophe.getDomainFromJid(to_jid),
+                resource: Strophe.getResourceFromJid(to_jid)
+            },
+            type: "chat",
+            body: message,
+            html_body: null
+        };
+
+        var model = mod.rosterCollection.get(to_jid);
+        model.get("messages").add(message);
+
+        this.trigger("xmpp:message:sent", model);
+        return true;
+    };
     /* GETTING USER CHAT LIST */
 
 
