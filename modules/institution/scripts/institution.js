@@ -18,7 +18,10 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    update : function(model) {
 			var jid = model.get("id");
-	    	this.$("[data-username='" + jid + "']").replaceWith(this.itemTemplate(model.toJSON()));
+	    	this.$("[data-username='" + jid + "']").replaceWith(this.itemTemplate(model.toJSON())).pulsate({
+				color: "#399bc3",
+	            repeat: false
+			});
 	    },
 	    handleClick : function(e) {
 	    	if (jQuery(e.currentTarget).data("status") != "offline") {

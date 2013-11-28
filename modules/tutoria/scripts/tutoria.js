@@ -214,7 +214,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    	var view = new statusViewClass({model: model});
 	    	this.$(".chat-contents").append(view.render().el);
 
-	    	this.focus();
+	    	this.focus(false);
 	    },
 	    addOne: function(model) {
 
@@ -227,11 +227,10 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	    	this.focus();
 	    },
-	    focus : function() {
-	    	if (!this.$(".portlet").is(":visible")) {
+	    focus : function(restoreIfHidden) {
+	    	if (!this.$(".portlet").is(":visible") && restoreIfHidden != false) {
             	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
-				//this.$(".portlet-body").slideDown(200);
-	    		this.$(".portlet").slideDown(200);
+				this.$(".portlet").slideDown(200);	
 			} else {
 				this.$(".portlet-title").pulsate({
 	            	color: "#399bc3",
