@@ -3,22 +3,10 @@
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
     </div>    
 	<div class="col-md-7">
-		<div class="list-group">
-			<!-- GET THIS LIST FROM TUTORIA/CHAT MODULE -->
-            <a class="list-group-item" href="javascript: void(0);" data-publish="tutoria:start" data-username="suporte@layout.sysclass.com">
-            	<span class="text-success"><i class="icon-ok-sign"></i></span>
-            	Mentoring
-            </a>
-        	<a class="list-group-item" href="javascript: void(0);" data-publish="tutoria:start" data-username="aluno2">
-        		<span class="text-danger"><i class="icon-remove-sign"></i></span>
-        		Technical Support
-        	</a>
-		</div>
+		<div class="list-group" id="institution-chat-list"></div>
 	</div>
 </div>
-
 <hr />
-
 <!-- GET THIS DATA FROM PROCTORING MODULE -->
 <p>Your Proctoring Center is: <strong class="text-default">North Dallas</strong></p>
 <p class="text-center">
@@ -34,3 +22,19 @@
 	<a class="btn btn-xs btn-success" href="javascript:void(0);">Confirm</a>	
 	<a class="btn btn-xs btn-danger" href="javascript:void(0);">Re-Schedule</a>	
 </p>
+
+
+<script type="text/template" id="institution-status-item-template">
+<a class="list-group-item" href="javascript: void(0);" data-username="<%= id %>" data-status="<%= status %>">
+	<% if (status == 'online') { %>
+		<span class="text-success"><i class="icon-ok-sign"></i></span>
+	<% } else if (status == 'busy') { %>
+		<span class="text-danger"><i class="icon-minus-sign"></i></span>
+	<% } else if (status == 'away') { %>
+		<span class="text-warning"><i class="icon-time"></i></span>
+	<% } else if (status == 'offline') { %>
+		<span class=""><i class="icon-remove-sign"></i></span>
+	<% } %>
+	<%= name %>
+</a>
+</script>

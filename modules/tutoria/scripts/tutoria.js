@@ -106,21 +106,21 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			$SC.module("utils.strophe").start();
 
 			app.reqres.setHandler("xmpp:connect:status", this.connectStatus);
-			app.reqres.setHandler("xmpp:presence", this.receivePresence);
-			app.reqres.setHandler("xmpp:message", this.receiveMessage);
+			//app.reqres.setHandler("xmpp:message", this.receiveMessage);
+
+			$SC.module("utils.strophe").connection.messaging.on("xmpp:message", this.receiveMessage);
+			$SC.module("utils.strophe").connection.roster.on("xmpp:presence", this.receivePresence);
 		},
 		connectStatus : function(status) {
 			//console.log('fdks');
 		},
 		receivePresence : function(presence) {
-			var from = presence.jid.split("/");
-			chat_index = from[0];
-			username = from[0].split("@");
+			var chat_index = presence.jid;
+			var username = presence.jid.split("@");
 			presence.from = username[0];
 			if (mod.chatCollections[chat_index]) {
 				mod.chatCollections[chat_index].add(presence);	
 			}
-			
 		},
 		receiveMessage : function(message) {
 			var from = message.jid.split("/");
@@ -163,6 +163,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    	"keyup .send-block input" : "keyenter"
 		    },
 		    initialize: function(opt) {
+		    	console.log(this.model.toJSON());
 		    	this.bbview  = opt.bbview;
 		    	this.$el
 		    		.addClass("chat-widget");
@@ -177,8 +178,9 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    keyenter: function(e,a,b,c) {
 		    	if ( e.which == 13 ) {
 					e.preventDefault();
+
 					var message = {
-						jid 	: this.$(".portlet").data("bbview"),
+						jid 	: this.model.get("id"),
 						from 	: "me",
 						body 	: jQuery(e.currentTarget).val()
 					};
@@ -203,7 +205,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 		    },
 		    render : function() {
 		    	this.$el.empty();
-		    	this.$el.append(this.chatTemplate({title : "test"}));
+		    	this.$el.append(this.chatTemplate(this.model.toJSON()));
 
 				$("#off-windows").append(this.$el);
 				this.$(".portlet")
@@ -291,7 +293,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			// OPEN CHAT DIALOG WITH USER NAME "data.lessongroup" OR
 			// OPEN CHAT DIALOG WITH USER NAME "data.usergroup"
 			//var usernameToChat = data.username;
-			var index = data.username;
+			var index = data.jid;
+			console.log(data);
 			/*
 			var index = "";
 			for (i in data) {
@@ -316,7 +319,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 				mod.chatViews[index] = new mod.chatClass({
 					bbview 		: index, 
 					collection 	: mod.chatCollections[index],
-					model 		: mod.modelObserver
+					model 		: data
 				});
 				//mod.chatViews[index].render();
 			} else {

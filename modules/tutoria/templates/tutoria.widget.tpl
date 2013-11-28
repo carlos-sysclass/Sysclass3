@@ -71,7 +71,18 @@
 <script type="text/template" id="tutoria-chat-template">
 <div class="portlet box dark-blue">
    <div class="portlet-title">
-      <div class="caption"><i class="icon-comments"></i><%= title %></div>
+      <div class="caption">
+         <% if (status == 'online') { %>
+            <i class="icon-ok-sign"></i>
+         <% } else if (status == 'busy') { %>
+            <i class="icon-minus-sign"></i>
+         <% } else if (status == 'away') { %>
+            <i class="icon-time"></i>
+         <% } else if (status == 'offline') { %>
+            <i class="icon-remove-sign"></i>
+         <% } %>
+         <%= name %>
+      </div>
       <div class="tools">
          <a class="collapse" href="javascript:;"></a>
          <a class="remove" href="javascript:;"></a>

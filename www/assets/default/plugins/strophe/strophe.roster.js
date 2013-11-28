@@ -107,7 +107,10 @@
 
             // Always trigger an `xmpp:presence` event, regardless of the type of the event.
             this.trigger('xmpp:presence', {
-                jid: jid,
+                jid: Strophe.getBareJidFromJid(jid),
+                node: Strophe.getNodeFromJid(jid),
+                domain: Strophe.getDomainFromJid(jid),
+                resource: Strophe.getResourceFromJid(jid),
                 type: type,
                 show: show,
                 status: status,
