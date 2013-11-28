@@ -169,8 +169,10 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    	
 	    	this.render();
 	    	// ADD FIRST MESSAGES
+	    	this.updateStatus(this.model);
+	    	
 	    	this.collection.each(this.addOne.bind(this));
-			this.updateStatus(this.model);
+			
 			this.listenTo(this.model, 'change:status', this.updateStatus);
 	    	this.listenTo(this.collection, 'add', this.addOne);
 
