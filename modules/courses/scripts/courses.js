@@ -1,8 +1,16 @@
 $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 	// MODELS
+	this.courseID = null;
+	this.lessonID = null;
+
 	mod.addInitializer(function() {
-	  	mod.coursesCollection = new Backbone.Collection;
-		//mod.collection.url = "/module/courses/";
+		mod.coursesCollection = Backbone.Collection.extend({
+			url: "/module/list/courses"
+			parse: function(response) {
+				return response.results;
+			}
+		});
+		/*
 		mod.coursesCollection.add({
 			id: 1, 
 			name: "Curso 1",
@@ -53,11 +61,9 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				{id: 4, name: "Lição 4"}
 			])
 		});
-
+		*/
 	  	// VIEWS
 	  	var filterActionViewClass = Backbone.View.extend({
-		    // Instead of generating a new element, bind to the existing skeleton of
-		    // the App already present in the HTML.
 		    el: $('#courses-list'),
 		    portlet: $('#courses-widget'),
 		    viewMode : "course",
@@ -71,11 +77,12 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		      "click a.list-group-item": "select"
 		    },
 		    initialize: function() {
-				//this.listenTo(this.collection, 'sync', this.render.bind(this));
+				this.listenTo(this.collection, 'sync', this.render.bind(this));
 				//this.listenTo(this.collection, 'add', this.addOne.bind(this));
-                //mod.collection.fetch();
-                this.render(this.collection);
-				this.$el.hide();
+                mod.collection.fetch();
+
+                //this.render(this.collection);
+				//this.$el.hide();
 		    },
 		    reload : function() {
 		    	this.viewMode = "course";
@@ -87,8 +94,8 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    select : function(e) {
 				// Get collection index from id
 				if (this.viewMode == 'course') {
-					this.courseID = $(e.currentTarget).data("entity-id");
-					var model = this.collection.get(this.courseID);
+					mod.courseID = $(e.currentTarget).data("entity-id");
+					var model = this.collection.get(mod.courseID);
 					var lessonCollection = model.get("lessons");
 
 					this.portlet.find(".portlet-title > .caption #courses-title").html(model.get("name"));
@@ -102,16 +109,16 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					});
 					
 				} else if (this.viewMode == 'lesson') {
-					var model = this.collection.get(this.courseID);
+					var model = this.collection.get(mod.courseID);
 					var lessonCollection = model.get("lessons");
 
-					this.lessonID = $(e.currentTarget).data("entity-id");
-					var lessonModel = lessonCollection.get(this.lessonID);
+					mod.lessonID = $(e.currentTarget).data("entity-id");
+					var lessonModel = lessonCollection.get(mod.lessonID);
 
 					this.portlet.find(".portlet-title > .caption #lessons-title").html(lessonModel.get("name"));
 					
 					this.$el.fadeOut(500, function() {
-						mod.contentActionView.$el.show();
+						mod.contentActionView.reload();
 					});
 				}
 		    },
@@ -127,6 +134,12 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		var contentActionViewClass = Backbone.View.extend({
 			el: $('#courses-content'),
 		    portlet: $('#courses-widget'),
+		    reload : function() {
+			 	console.log(mod.courseID);
+				console.log(mod.lessonID);
+		    	this.$el.show();
+		    },
+
 		});
 
 		this.onFilter = function(e, portlet) {
