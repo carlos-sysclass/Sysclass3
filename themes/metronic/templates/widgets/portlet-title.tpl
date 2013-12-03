@@ -9,6 +9,9 @@
    {/if}
    {if isset($T_DATA.tools)}
    <div class="tools">
+      {if isset($T_DATA.tools.filter)}
+         <a class="filter glyphicon glyphicon-filter" href="javascript:void(0);"></a>
+      {/if}
       {if isset($T_DATA.tools.search)}
          <a class="search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-trigger="manual" data-inject-selector="{$T_DATA.id}-search-form" href="javascript:;"></a>
 
@@ -52,12 +55,13 @@
       {if isset($T_DATA.tools.remove)}
       <a class="remove" href="javascript:void(0);"></a>
       {/if}
-
-      
    </div>
    {/if}
    {if isset($T_DATA.actions)}
       <div class="actions">
+         {foreach $T_DATA.actions as $action_tpl}
+            {include file="`$action_tpl`.tpl" T_DATA=$T_DATA}
+         {/foreach}
       </div>
    {/if}
 </div>

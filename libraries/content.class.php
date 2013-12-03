@@ -3044,38 +3044,24 @@ class MagesterRemoveDataFilterIterator extends FilterIterator
  }
 }
 /**
-
  * Keeps node only if its key is listed inside the $filter array
-
  *
-
  * @package SysClass
-
  * @version 3.5.3
-
  */
 class MagesterInArrayFilterIterator extends FilterIterator
 {
  /**
-
 	 * Filter mode
-
 	 *
-
 	 * @var mixed filter mode
-
 	 */
     protected $filter;
     /**
-
      * Constructor
-
      *
-
      * @param Iterator $it
-
      * @param array $filter
-
      */
     function __construct($it, $filter)
     {

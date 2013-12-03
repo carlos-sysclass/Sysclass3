@@ -20,44 +20,18 @@ hr {
 
 }
 
-.portlet > .portlet-title > .tools > a.search {
+.portlet > .portlet-title > .tools a.glyphicon {
   	margin-bottom: 2px;
-/*  background-image:url(../img/portlet-fullscreen-icon.png); */
 	top: -3px;
 	width: 14px;
 	color: gray;
 }
-.portlet.box > .portlet-title > .tools > a.search,
-.portlet.solid > .portlet-title > .tools > a.search {
+.portlet.box > .portlet-title > .tools a.glyphicon,
+.portlet.solid > .portlet-title > .tools a.glyphicon {
 	color: white;
 	text-decoration: none;
 }
 
-.portlet > .portlet-title > .tools > a.fullscreen {
-  	margin-bottom: 2px;
-/*  background-image:url(../img/portlet-fullscreen-icon.png); */
-	top: -3px;
-	width: 14px;
-	color: gray;
-}
-.portlet.box > .portlet-title > .tools > a.fullscreen,
-.portlet.solid > .portlet-title > .tools > a.fullscreen {
-/*  background-image:url(../img/portlet-fullscreen-icon-white.png); */
-	color: white;
-	text-decoration: none;
-}
-
-.portlet > .portlet-title > .tools > a.normalscreen {
-  margin-bottom: 2px;
-  top: -3px;
-  width: 14px;
-  color: gray;
-}
-.portlet.box > .portlet-title > .tools > a.normalscreen,
-.portlet.solid > .portlet-title > .tools > a.normalscreen {
-	color: white;
-	text-decoration: none;
-}
 
 .popover-content {
     padding: 9px 5px;

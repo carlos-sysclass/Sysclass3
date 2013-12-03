@@ -38,17 +38,26 @@ class CoursesModule extends SysclassModule implements ISectionMenu, IWidgetConta
 
     public function getWidgets() {
         $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+
+        $this->putModuleScript("courses");
+
     	return array(
     		'courses.overview' => array(
-   				'title' 	=> 'Class: <strong>Managing Networks</strong>',
-   				'template'	=> $this->template("overview"),
+                'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                'id'        => 'courses-widget',
+   				'title' 	=> '<span id="courses-title">Course 1</span> <i class="icon-arrow-right" style="float: none"></i> <span id="lessons-title">Lesson 1</span>',
+   				'template'	=> $this->template("overview.widget"),
                 'icon'      => 'bolt',
                 'box'       => 'dark-blue',
                 'tools'     => array(
                     'search'        => true,
                     'reload'        => true,
-                    'fullscreen'    => true
-                )
+                    'fullscreen'    => true,
+                    'filter'        => true
+                )/*,
+                'actions'   => array(
+                    $this->template("overview.widget.actions"),
+                )*/
     		)
     	);
     }

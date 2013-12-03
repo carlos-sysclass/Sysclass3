@@ -20,6 +20,15 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
             el.slideUp(200);
 		}
 	};
+    mod.onFilter = function(e, portlet) {
+        if (jQuery(e.currentTarget).is(".disabled")) {
+            return false;
+        }
+        var type = portlet.data("portlet-type");
+
+        if (mod.triggerSubMethod(type, "filter", e, portlet)) {
+        }
+    };
 	mod.onExpand = function(e, portlet) {
 		if (jQuery(e.currentTarget).is(".disabled")) {
         	return false;
@@ -170,6 +179,11 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 			var portlet = jQuery(this).closest(".portlet");
 			mod.triggerMethod("expand", e, portlet);
 		});
+        jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.filter', function (e) {
+            e.preventDefault();
+            var portlet = jQuery(this).closest(".portlet");
+            mod.triggerMethod("filter", e, portlet);
+        });
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.remove', function (e) {
             e.preventDefault();
 			var portlet = jQuery(this).closest(".portlet");
