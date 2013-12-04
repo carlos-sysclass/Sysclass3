@@ -1,6 +1,6 @@
-<div class="header navbar navbar-inverse">
+<div class="header navbar navbar-inverse navbar-fixed-top">
 	<!-- BEGIN TOP NAVIGATION BAR -->
-	<div class="header-inner">
+	<div class="header-inner container">
 		<!-- BEGIN LOGO -->  
 		<a class="navbar-brand" href="/home">
 			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
