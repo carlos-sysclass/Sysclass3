@@ -16,7 +16,6 @@
          {include file="block/topbar.tpl"}
       {/block}
       <!-- END HEADER -->
-      <div class="clearfix"></div>
       <!-- BEGIN CONTAINER -->
    
       <div class="page-container">

@@ -4,13 +4,8 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 	this.lessonID = null;
 
 	mod.addInitializer(function() {
-		mod.coursesCollection = Backbone.Collection.extend({
-			url: "/module/list/courses"
-			parse: function(response) {
-				return response.results;
-			}
-		});
-		/*
+		mod.coursesCollection = new Backbone.Collection();
+
 		mod.coursesCollection.add({
 			id: 1, 
 			name: "Curso 1",
@@ -61,7 +56,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				{id: 4, name: "Lição 4"}
 			])
 		});
-		*/
+
 	  	// VIEWS
 	  	var filterActionViewClass = Backbone.View.extend({
 		    el: $('#courses-list'),
@@ -79,10 +74,10 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    initialize: function() {
 				this.listenTo(this.collection, 'sync', this.render.bind(this));
 				//this.listenTo(this.collection, 'add', this.addOne.bind(this));
-                mod.collection.fetch();
+                //mod.collection.fetch();
 
-                //this.render(this.collection);
-				//this.$el.hide();
+                this.render(this.collection);
+				this.$el.hide();
 		    },
 		    reload : function() {
 		    	this.viewMode = "course";
