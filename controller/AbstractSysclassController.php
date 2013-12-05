@@ -89,6 +89,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		try {
 		    self::$current_user 	= MagesterUser::checkUserAccess();
 		    $smarty->assign("T_CURRENT_USER", self::$current_user);
+		    $GLOBALS["currentUser"] = self::$current_user;
 
 		    if ($_SESSION['user_locked']) {
 		    	if ($this->context['url'] != "lock") {
@@ -105,19 +106,17 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 		return TRUE;
 	}
-
+/*
 	protected function onThemeRequest()
 	{
-		$this->setTheme('metronic');
+		//$this->setTheme('metronic');
 	}
-
+*/
 	protected function beforeDisplay() {
 		parent::beforeDisplay();
 
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
-		
-		
 
 		if (unserialize(self::$current_user -> user['additional_accounts'])) {
 			$accounts = unserialize(self::$current_user -> user['additional_accounts']);

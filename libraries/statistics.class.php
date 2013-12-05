@@ -1689,45 +1689,25 @@ class MagesterStats
         return $courseStatus;
     }
     /**
-
      * Get user(s) status in course(s)
-
      *
-
      * This function is used to calculate the user's status in the course, ie the score, completed
-
      * etc. It also calculates statistics for all lessons inside the course
-
      * <br>Example:
-
      * <code>
-
      * $status = MagesterStats :: getUsersCourseStatus(34, 'jdoe');		//Get the status for user jdoe in course with id 34
-
      * $status = MagesterStats :: getUsersCourseStatus(false, 'jdoe');	//Get the status for user jdoe in all courses
-
      * $status = MagesterStats :: getUsersCourseStatus(34);				//Get the status for all users in course with id 34
-
      * $status = MagesterStats :: getUsersCourseStatus();					//Get the status for all users in all courses
-
      *</code>
-
      * Note: This function is designed so that there is never the need to call it inside a loop
-
      * Since it is database-intensive, make sure that it is NEVER called inside a loop!
-
      *
-
      * @param mixed $courses an array of course ids or MagesterCourse objects
-
      * @param mixed $users an array of users logins
-
      * @return array The user status in courses
-
      * @since 3.5.0
-
      * @access public
-
      */
     public static function getUsersCourseStatus($courses = false, $users = false, $options = array())
     {

@@ -4,8 +4,19 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 	this.lessonID = null;
 
 	mod.addInitializer(function() {
-		mod.coursesCollection = new Backbone.Collection();
+		var coursesCollectionClass = Backbone.Collection.extend({
+			url : "/module/courses/list",
+			parse : function(response) {
+				console.log(response);
+				for (i in response) {
+					response[i].lessons = new Backbone.Collection(response[i].lessons);
+				}
+				return response;
+			}
+		});
 
+		mod.coursesCollection = new coursesCollectionClass;
+/*
 		mod.coursesCollection.add({
 			id: 1, 
 			name: "Curso 1",
@@ -56,7 +67,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				{id: 4, name: "Lição 4"}
 			])
 		});
-
+*/
 	  	// VIEWS
 	  	var filterActionViewClass = Backbone.View.extend({
 		    el: $('#courses-list'),
@@ -73,36 +84,46 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    },
 		    initialize: function() {
 				this.listenTo(this.collection, 'sync', this.render.bind(this));
-				//this.listenTo(this.collection, 'add', this.addOne.bind(this));
-                //mod.collection.fetch();
+				this.listenTo(this.collection, 'add', this.addOne.bind(this));
+                this.collection.fetch();
 
-                this.render(this.collection);
+                //this.render(this.collection);
 				this.$el.hide();
 		    },
-		    reload : function() {
-		    	this.viewMode = "course";
-				this.render(this.collection);
+		    reload : function(viewMode) {
+		    	if (viewMode == undefined || (viewMode != 'course' && viewMode != 'lesson') || mod.courseID == null) {
+					this.viewMode = "course";
+		    	} else {
+		    		this.viewMode = viewMode;
+		    	}
+				if (this.viewMode == 'lesson') {
+					this.openLessonViewMode();
+		    	} else {
+					this.render(this.collection);
+			    	this.portlet.find(".portlet-title > .caption #courses-title").html("Choose...");
+			    	this.portlet.find(".portlet-title > .caption #lessons-title").html("");
+		    	}
 		    	this.$el.slideDown(500);
-		    	this.portlet.find(".portlet-title > .caption #courses-title").html("Choose...");
-		    	this.portlet.find(".portlet-title > .caption #lessons-title").html("");
+		    },
+		    openLessonViewMode : function() {
+				var model = this.collection.get(mod.courseID);
+				var lessonCollection = model.get("lessons");
+
+				this.portlet.find(".portlet-title > .caption #courses-title").html(model.get("name"));
+				this.portlet.find(".portlet-title > .caption #lessons-title").html("Choose...");
+				
+				this.viewMode = "lesson";
+				var self = this;
+				this.$el.fadeOut(500, function() {
+					self.render(lessonCollection);
+					self.$el.fadeIn(500);
+				});
 		    },
 		    select : function(e) {
 				// Get collection index from id
 				if (this.viewMode == 'course') {
 					mod.courseID = $(e.currentTarget).data("entity-id");
-					var model = this.collection.get(mod.courseID);
-					var lessonCollection = model.get("lessons");
-
-					this.portlet.find(".portlet-title > .caption #courses-title").html(model.get("name"));
-					this.portlet.find(".portlet-title > .caption #lessons-title").html("Choose...");
-					
-					this.viewMode = "lesson";
-					var self = this;
-					this.$el.fadeOut(500, function() {
-						self.render(lessonCollection);
-						self.$el.fadeIn(500);
-					});
-					
+					this.openLessonViewMode();
 				} else if (this.viewMode == 'lesson') {
 					var model = this.collection.get(mod.courseID);
 					var lessonCollection = model.get("lessons");
@@ -140,7 +161,13 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		this.onFilter = function(e, portlet) {
 			// INJECT
 			this.contentActionView.$el.slideUp(500);
-			this.filterActionView.reload();
+			if ($(e.currentTarget).attr("id") == "lessons-title") {
+				this.filterActionView.reload("lesson");
+			} else {
+				this.filterActionView.reload();
+			}
+			
+			
 		};
 		this.onSearch = function(e, portlet) {
 			// INJECT

@@ -19,7 +19,10 @@ hr {
 	}	
 
 }
-
+.portlet > .portlet-title > .caption a {
+	color: white;
+	text-decoration: underline;
+}
 .portlet > .portlet-title > .tools a.glyphicon {
   	margin-bottom: 2px;
 	top: -3px;

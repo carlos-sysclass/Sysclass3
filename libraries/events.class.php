@@ -460,6 +460,7 @@ class MagesterEvent
         }
         //These are the mandatory fields. In case one of these is absent, fill it in with a default value
         // If no user is defined the currentuser will be used as user triggering the event
+
         if (!isset($fields['users_LOGIN'])) {
             $fields['users_LOGIN'] = $GLOBALS['currentUser']->user['login'];
             $fields['users_name'] = $GLOBALS['currentUser']->user['name'];

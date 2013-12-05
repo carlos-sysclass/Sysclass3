@@ -179,7 +179,7 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 			var portlet = jQuery(this).closest(".portlet");
 			mod.triggerMethod("expand", e, portlet);
 		});
-        jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.filter', function (e) {
+        jQuery('body').on('click', '.portlet > .portlet-title a.filter', function (e) {
             e.preventDefault();
             var portlet = jQuery(this).closest(".portlet");
             mod.triggerMethod("filter", e, portlet);

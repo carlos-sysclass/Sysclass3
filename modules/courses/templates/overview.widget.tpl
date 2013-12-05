@@ -53,8 +53,13 @@
 </div>
 <script type="text/template" id="courses-list-item-template">
 <a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
-	<dt class=""><%= name %></dt>
-	<!--<dd class="text-primary">Turma Fevereiro 2013</dd> -->
+
+	<span class="text-success"><i class="icon-ok-sign"></i></span>
+
+	<%= name %>
+	<% if (typeof lessons != 'undefined') { %>
+	<span class="badge badge-info"><%= lessons.length %></span>
+	<% } %>
 </a>
 </script>
 

@@ -3,9 +3,9 @@
 
 $plicoLib = PlicoLib::instance();
 
-$plicoLib->set('theme', 'metronic');
-$plicoLib->set('client_name', 'Smart Solution');
-$plicoLib->set('app_name', 'Smart Solution');
+$plicoLib->set('theme', 'sysclass.default');
+$plicoLib->set('client_name', 'Sysclass');
+$plicoLib->set('app_name', 'Sysclass');
 $plicoLib->set('db_dsn', 'mysql://sysclass:WXubN7Ih@localhost/sysclass_layout');
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
@@ -104,15 +104,12 @@ $plicoLib->concat(
 		'plugins/strophe/strophe.messaging',
 		
 //		'plugins/strophe/strophe.chatstates',
-		'plugins/strophe/strophe.ping',
+//		'plugins/strophe/strophe.ping',
 
 		'scripts/app',
 		'scripts/sysclass',
 		'scripts/utils.toastr',
 		'scripts/utils.strophe',
 		'scripts/portlets'
-
-
-
 	)
 );
