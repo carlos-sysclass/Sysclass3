@@ -1,10 +1,11 @@
 <div class="row" id="courses-list">
 	<div class="col-md-12">
-		<div class="scroller list-group" data-height="234px" data-always-visible="1">
+		<div class="scroller list-group" data-height="238px" data-always-visible="1">
 		</div>
 	</div>
 </div>
 <div id="courses-content">
+	<h4 class="text-center" id="lessons-title">jklasdf</h4>
 	<div class="row">
 		<div class="col-md-8">
 			<p class="text-center">THE CONTENT!!!!</p>
@@ -53,13 +54,35 @@
 </div>
 <script type="text/template" id="courses-list-item-template">
 <a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
-
+	<% if (stats.completed == 1) { %>
 	<span class="text-success"><i class="icon-ok-sign"></i></span>
-
-	<%= name %>
-	<% if (typeof lessons != 'undefined') { %>
-	<span class="badge badge-info"><%= lessons.length %></span>
+	<% } else { %>
+	<span class="text-danger"><i class="icon-remove-sign"></i></span>
 	<% } %>
+	<%= name %>
+	<!--
+	<% if (typeof lessons != 'undefined') { %>
+		<span class="badge badge-info"><%= lessons.length %></span>
+	<% } %>
+	-->
+	<% if (typeof stats.completed_lessons != 'undefined' && stats.total_lessons != undefined) { %>
+		<span class="badge badge-info"><%= stats.completed_lessons %> / <%= stats.total_lessons %></span>
+	<% } %>
+	<% if (typeof stats.overall_progress != 'undefined') { %>
+		<% 
+			if (stats.overall_progress < 40) {
+				classe = "danger";
+			} else if (stats.overall_progress < 70) {
+				classe = "warning";
+			} else if (stats.overall_progress < 100) {
+				classe = "info";
+			} else {
+				classe = "success";
+			}
+		%>
+		<span class="badge badge-<%= classe %>"><%= stats.overall_progress %> %</span>
+	<% } %>
+
 </a>
 </script>
 

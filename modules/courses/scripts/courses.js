@@ -99,9 +99,15 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				if (this.viewMode == 'lesson') {
 					this.openLessonViewMode();
 		    	} else {
-					this.render(this.collection);
-			    	this.portlet.find(".portlet-title > .caption #courses-title").html("Choose...");
-			    	this.portlet.find(".portlet-title > .caption #lessons-title").html("");
+		    		if (this.collection.size() > 1) {
+						this.render(this.collection);
+				    	this.portlet.find(".portlet-title > .caption #courses-title").html("Choose...");
+				    	this.portlet.find(".portlet-title > .caption #lessons-title").html("");
+		    		} else {
+		    			var model = this.collection.at(0);
+		    			mod.courseID = model.get("id");
+		    			this.openLessonViewMode();
+		    		}
 		    	}
 		    	this.$el.slideDown(500);
 		    },
@@ -131,7 +137,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					mod.lessonID = $(e.currentTarget).data("entity-id");
 					var lessonModel = lessonCollection.get(mod.lessonID);
 
-					this.portlet.find(".portlet-title > .caption #lessons-title").html(lessonModel.get("name"));
+					this.portlet.find("#lessons-title").html(lessonModel.get("name"));
 					
 					this.$el.fadeOut(500, function() {
 						mod.contentActionView.reload();
@@ -166,27 +172,29 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			} else {
 				this.filterActionView.reload();
 			}
-			
-			
 		};
+
 		this.onSearch = function(e, portlet) {
 			// INJECT
 			this.contentActionView.$el.hide();
 			this.filterActionView.reload();
 		};
 		this.onFullscreen = function(e, portlet) {
-			/*
-			this.view.portlet.find("#news-links, .slimScrollDiv").css({
+			this.filterActionView.portlet.find(".scroller, .slimScrollDiv").css({
 				'height': 720
 			});
-			*/
+			this.contentActionView.portlet.find(".scroller, .slimScrollDiv").css({
+				'height': 720
+			});
+
 		};
 		this.onRestorescreen = function(e, portlet) {
-			/*
-			this.view.portlet.find("#news-links,.slimScrollDiv").css({
-				'height': 200
+			this.filterActionView.portlet.find(".scroller, .slimScrollDiv").css({
+				'height': 238
 			});
-			*/
+			this.contentActionView.portlet.find(".scroller, .slimScrollDiv").css({
+				'height': 238
+			});
 		};
 
 		this.contentActionView = new contentActionViewClass({collection : mod.coursesCollection});

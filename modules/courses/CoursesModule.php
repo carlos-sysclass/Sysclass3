@@ -11,10 +11,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     		'courses.overview' => array(
                 'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'courses-widget',
-   				'title' 	=> '
-                    <a id="courses-title" href="javascript: void(0);" class="filter">Course 1</a> 
-                    <i class="icon-arrow-right" style="float: none"></i> 
-                    <a id="lessons-title" href="javascript: void(0);" class="filter">Lesson 1</a>',
+   				'title' 	=> '<a id="courses-title" href="javascript: void(0);" class="filter">Course 1</a>',
    				'template'	=> $this->template("overview.widget"),
                 'icon'      => 'bolt',
                 'box'       => 'dark-blue',
@@ -49,27 +46,29 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             'condition' => "(uc.user_type = 'student' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'student'))",
             'sort'      => 'name'
         );
+
         $login = $currentUser->user['login'];
         $userCourses    =   $currentUser -> getUserCourses($constraints);
         //var_dump($currentUser->user['login']);
         $courseStats = MagesterStats::getUsersCourseStatus($userCourses, $login);
-        var_dump($courseStats);
-exit;
+
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
 
         foreach($userCourses as $course) {
-            $course->course['lessons'] = array_values($course->getCourseLessons(array('return_objects' => false)));
-            $course->course['lesson_stats'] = $courseStats[$course->course['id']][$login]['lesson_stats'];
+            $course->course['lessons'] = array();
+            $lessons = $course->getCourseLessons(array('return_objects' => false));
+            
+            foreach($lessons as $lesson) {
+                if (in_array($lesson['id'], $lessonsIds)) {
+                    $lesson['stats'] = $courseStats[$course->course['id']][$login]['lesson_status'][$lesson['id']];
+                    $course->course['lessons'][] = $lesson;
+                }
+            }
+            unset($courseStats[$course->course['id']][$login]['lesson_status']);
+            $course->course['stats'] = $courseStats[$course->course['id']][$login];
             $courses[] = $course->course;
-
-
-
-            //$userLessonStats = MagesterStats ::getUsersLessonStatusAll($currentLessonObject, $currentUser->user['login']);
         }
-
-        //var_dump($userLessons);
-        //exit;
         return $courses;
     }
 }

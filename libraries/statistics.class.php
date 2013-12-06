@@ -1812,7 +1812,7 @@ class MagesterStats
                     $courseStatus['score'] = $value['score'];
                     $courseStatus['comments'] = $value['comments'];
                     $courseStatus['issued_certificate'] = $value['issued_certificate'];
-                    $courseStatus['total_lessons'] = sizeof($course -> countCourseLessons());
+                    $courseStatus['total_lessons'] = $course -> countCourseLessons();
                     //Count completed lessons
                     $completedLessons = 0;
                     if (isset($userLessonStatus)) {
