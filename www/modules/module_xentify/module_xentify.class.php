@@ -547,6 +547,9 @@ class module_xentify extends MagesterExtendedModule
     		case 2 : { // SAME POLO
     			return $status['same_polo'];
     		}
+    		case 3 : { // SAME POLO
+    			return $status['same_course'];
+    		}
     		case 7 : { // SAME USER
     			return $status['same_user'];
     		}
@@ -612,6 +615,10 @@ class module_xentify extends MagesterExtendedModule
     		}
     		case 2 : { // SAME POLO
     			$status['same_polo'] = $this->checkUserScopeSamePolo($user, $data['polo_id']);
+    			break;
+    		}
+    		case 3 : { // SAME POLO
+    			$status['same_course']	= $this->checkUserScopeSameCourse($user, $data['course_id']);
     			break;
     		}
     		case 7 : { // SAME USER (INDIVIDUAL)
@@ -685,6 +692,10 @@ class module_xentify extends MagesterExtendedModule
     		}
     		case 2 : { // SAME POLO AND SAME CLASS
     			list($data['polo_id']) = explode(';', $scope_id);
+    			break;
+    		}
+    		case 3 : { // SAME POLO AND SAME CLASS
+    			list($data['course_id']) = explode(';', $scope_id);
     			break;
     		}
     		case 7 : { // SAME POLO AND SAME CLASS
