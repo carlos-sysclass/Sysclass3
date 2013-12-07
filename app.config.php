@@ -68,6 +68,7 @@ $plicoLib->concat(
 		'plugins/fullcalendar/fullcalendar/fullcalendar',
 		'plugins/jqvmap/jqvmap/jqvmap',
 		'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
+		'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
  		//<!-- BEGIN THEME STYLES -->
 		'css/style-metronic',
