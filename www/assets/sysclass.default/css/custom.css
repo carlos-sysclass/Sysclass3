@@ -94,3 +94,10 @@ hr {
 	font-style: italic;
 	font-size: 90%;
 }
+#users-panel .profile-edit {
+    margin: 0 15px 0 0;
+    opacity: 0.7;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

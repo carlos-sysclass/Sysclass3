@@ -2,8 +2,9 @@
 	{assign var="notifications" value=$T_DATA.data.notification}
 {/if}
 <div class="row">
-	<div class="col-md-4">
-		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="90%" alt="">		
+	<div class="col-md-4" id="users-avatar">
+		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
+		<a class="profile-edit btn btn-xs btn-primary" href="/module/users/profile">Edit</a>
 	</div>
 	<div class="col-md-3">
 		<h4>{$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname}</h4>
@@ -60,5 +61,67 @@
         {else}
         {/if}
 	</div>
-
 </div>
+<!--
+<div id="users-edit-avatar-dialog" tabindex="-1" role="basic" aria-hidden="true" class="modal fade">
+	<div class="modal-dialog modal-wide">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        		<h4 class="modal-title">{translateToken value='Please select an option'}</h4>
+      		</div>
+      		<div class="modal-body form">
+        		<div class="content">
+	        		<div class="alert alert-danger display-hide">
+              			<button class="close" data-dismiss="alert"></button>
+              			{translateToken value='You have some form errors. Please check below.'}
+            		</div>
+					{*$T_MOD_MESSAGES_FORM.javascript*}
+					<form class="form-horizontal container" {*$T_MOD_MESSAGES_FORM.attributes*} >
+						{*T_MOD_MESSAGES_FORM.hidden*}
+						<div class="form-body">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="radio-list">
+			                                <label>
+			                                 	<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Upload a File
+			                                </label>
+
+											<div class="fileupload fileupload-new" data-provides="fileupload">
+												<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 400px; max-height: 300px; line-height: 20px;"></div>
+												<div>
+													<span class="btn default btn-file">
+														<span class="fileupload-new"><i class="icon-paper-clip"></i> Select image</span>
+														<span class="fileupload-exists"><i class="icon-undo"></i> Change</span>
+														<input type="file" class="default" />
+													</span>
+													<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="icon-trash"></i> Remove</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="radio-list">
+			                                <label>
+			                                 	<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> Set up your own gravatar
+			                                </label>
+			                            </div>
+			                        </div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+	      	</div>
+	      	<div class="modal-footer">
+	        	<button type="submit" class="btn blue">{translateToken value='Send'}</button>
+	        	<button type="button" class="btn default" data-dismiss="modal">{translateToken value='Close'}</button>
+				<div class="copyright pull-left">&copy; 2014 WiseFlex</div>
+	      	</div>
+	    </div>
+	</div>
+</div>
+-->

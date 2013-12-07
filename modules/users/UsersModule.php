@@ -37,8 +37,8 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
     }
 
     public function getWidgets() {
-       $modules = $this->getModules("ISummarizable");
-        
+        $modules = $this->getModules("ISummarizable");
+
         $data = array();
         $data['notification'] = array();
 
@@ -49,8 +49,12 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
         $data['notification'] = $this->module("layout")
             ->sortModules("users.overview.notification.order", $data['notification']);
 
+        $this->putModuleScript("users");
+
     	return array(
     		'users.overview' => array(
+                'id'        => 'users-panel',
+                'type'      => 'users',
    				//'title' 	=> 'User Overview',
    				'template'	=> $this->template("overview.widget"),
    				'panel'		=> true,
@@ -59,4 +63,17 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
     		)
     	);
     }
+    /**
+     * Module Entry Point
+     *
+     * @url GET /profile
+     */
+    public function profilePage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+        // PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
+        $this->putCss("css/pages/profile");
+        $this->display("profile.tpl");
+    }
+
 }
