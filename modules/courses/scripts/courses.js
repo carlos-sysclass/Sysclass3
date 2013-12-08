@@ -14,6 +14,9 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 
 		var contentModelClass = Backbone.Model.extend({
 			initialize: function() {
+				/**
+				  * @todo LISTEN TO COLLECTION, TO GRAB INITIAL COURSE AND LESSON AND IF FOUND, SET
+				 */
 				this.on("change:course_id", function() {
 					this.set({lesson_id : 0}, { silent: true });
 				}, this);
