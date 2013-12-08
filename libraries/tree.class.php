@@ -765,22 +765,16 @@ class MagesterAttributeFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Keep only nodes (and not leaves)
-
  *
-
  * @package SysClass
-
  */
 class MagesterNodeFilterIterator extends FilterIterator
 {
     protected $mode;
     protected $evaluate;
     /**
-
      * $evaluate sets if the mode will be evaluated to true or false
-
      */
     function __construct($it, $mode = false, $evaluate = true)
     {

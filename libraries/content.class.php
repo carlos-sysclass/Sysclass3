@@ -19,143 +19,87 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 class MagesterContentException extends Exception
 {
     /**
-
      * The id provided is not valid, for example it is not a number or it is 0
-
      * @since 3.5.0
-
      */
     const INVALID_ID = 501;
     /**
-
      * The unit requested does not exist
-
      * @since 3.5.0
-
      */
     const UNIT_NOT_EXISTS = 502;
     /**
-
      * The unit can not be inserted for some reason
-
      * @since 3.5.0
-
      */
     const CANNOT_INSERT_UNIT = 503;
     /**
-
      * The project requested does not exist
-
      * @since 3.5.0
-
      */
     const PROJECT_NOT_EXISTS = 504;
     /**
-
      * The user login provided is not valid or does not exist
-
      * @since 3.5.0
-
      */
     const INVALID_LOGIN = 505;
     /**
-
      * The score is not valid, for example it is not numeric
-
      * @since 3.5.0
-
      */
     const INVALID_SCORE = 506;
     /**
-
      * The data provided is not valid, for example quotes or other illegal characters
-
      * @since 3.5.0
-
      */
     const INVALID_DATA = 507;
     /**
-
      * An error originating in database actions
-
      * @since 3.5.0
-
      */
     const DATABASE_ERROR = 508;
     /**
-
      * Unsupported content type, for example SCORM 2004 in community edition
-
      * @since 3.6.0
-
      */
     const UNSUPPORTED_CONTENT = 509;
     /**
-
      * An unspecific error
-
      * @since 3.5.0
-
      */
     const GENERAL_ERROR = 599;
 }
 /**
-
  * This class represents a content unit in SysClass
-
  *
-
  * @package SysClass
-
  * @since 3.5.0
-
  */
 class MagesterUnit extends ArrayObject
 {
     /**
-
      * The maximum length for unit names. After that, the names appear truncated
-
      */
     const MAXIMUM_NAME_LENGTH = 40;
     /**
-
      * Class constructor
-
      *
-
      * This function is used to instantiate the unit object
-
      * Since the class inherits from ArrayObject, normally
-
      * an array should be provided for instantiation. However,
-
      * the choice of using a unit id has been added for greater
-
      * flexibility, but still you are advised to avoid doing so,
-
      * since it might lead to big and unnecessary database overhead
-
      * <br/>Example:
-
      * <code>
-
      * $content = sC_getTableData("content", "*");
-
      * $unit = new MagesterUnit($content[4]);             //The best way: instantiate unit using existing information
-
      * $unit = new MagesterUnit(7);                       //The bad way: Let class to retrieve information. Should be avoided unless we are dealing with a single unit
-
      * </code>
-
      *
-
      * @param mixed $array Either a unit information array, or a unit id
-
      * @since 3.5.0
-
      * @access public
-
      */
     function __construct($array)
     {
@@ -176,29 +120,19 @@ class MagesterUnit extends ArrayObject
             $array['options'] = unserialize($array['options']);
         } else {
             $array['options'] = false;
-  }
+        }
         parent :: __construct($array);
     }
     /**
-
      * Covert unit to SCORM unit
-
      *
-
      * This function augments a unit so that it includes
-
      * all the scorm-related fields
-
      *
-
      * @param array $array The original unit
-
      * @return array The unit augmented with scorm fields
-
      * @since 3.6.0
-
      * @access public
-
      */
     public function convertToScorm($array)
     {
@@ -261,31 +195,18 @@ class MagesterUnit extends ArrayObject
         return $array;
     }
     /**
-
      * Store changed values to the database
-
      *
-
      * This unit is used to stored any changed values to the database
-
      * <br/>Example:
-
      * <code>
-
      * $unit['name'] = 'new name';
-
      * $unit -> persist();
-
      * </code>
-
      *
-
      * @return boolean true if everything is ok
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function persist()
     {
@@ -310,39 +231,22 @@ class MagesterUnit extends ArrayObject
         return sC_updateTableData("content", $fields, "id=".$this['id']);
     }
     /**
-
      * Set search keywords
-
      *
-
      * This function updates the search keywords related to this unit's name and content.
-
      * It should be executed when and only when there is a change in any of the above fields,
-
      * since it performs excessive database queries.
-
      * <br>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(34);          //Instantiate unit with id 34
-
      * $unit['name'] = 'New unit name';     //Change unit name
-
      * $unit -> persist();                  //Store new data
-
      * $unit -> setSearchKeywords();        //Update keywords
-
      * </code>
-
      *
-
      * @return boolean true if everything is ok
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function setSearchKeywords()
     {
@@ -352,29 +256,17 @@ class MagesterUnit extends ArrayObject
         MagesterSearch :: insertText($this['name'], $this['id'], "content", "title");
     }
     /**
-
      * Delete unit
-
      *
-
      * This function is used to delete the current unit.
-
      * <br/>Example:
-
      * <code>
-
      * $unit -> delete();
-
      * </code>
-
      *
-
      * @return boolean true if everything is ok
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function delete()
     {
@@ -395,31 +287,18 @@ class MagesterUnit extends ArrayObject
   //Delete scorm data related to the unit
     }
     /**
-
      * Activate unit
-
      *
-
      * This function is used to activate the current unit.
-
      * If the unit is a test unit, the correspoding test is also activated
-
      * <br/>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(43);              //Instantiate object for unit with id 43
-
      * $unit -> activate();                     //Activate unit
-
      * </code>
-
      *
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function activate()
     {
@@ -436,31 +315,18 @@ class MagesterUnit extends ArrayObject
         }
     }
     /**
-
      * Deactivate unit
-
      *
-
      * This function is used to deactivate the current unit.
-
      * If the unit is a test unit, the correspoding test is also deactivated
-
      * <br/>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(43);              //Instantiate object for unit with id 43
-
      * $unit -> deactivate();                   //Deactivate unit
-
      * </code>
-
      *
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function deactivate()
     {
@@ -477,37 +343,21 @@ class MagesterUnit extends ArrayObject
         $this -> persist();
     }
     /**
-
      * Get unit questions
-
      *
-
      * This function returns a list with all the questions
-
      * that belong to this unit. If $returnObjects is true, then
-
      * Question objects are returned.
-
      * <br/>Example:
-
      * <code>
-
      * $questions = $this -> getQuestions();            //Get a simple list of questions
-
      * $questions = $this -> getQuestions(true);        //Get a list of Question objects
-
      * </code>
-
      *
-
      * @param boolean $returnObjects Whether to return Question objects
-
      * @return array An array of questions
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function getQuestions($returnObjects = false)
     {
@@ -522,35 +372,20 @@ class MagesterUnit extends ArrayObject
         return $questions;
     }
     /**
-
      * Query if the unit is a test
-
      *
-
      * This function returns true if the unit corresponds to a test,
-
      * otherwise it returns false
-
      * <br/>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(7);
-
      * $flg = $unit->isTest();
-
      * </code>
-
      *
-
      *
-
      * @return boolean A flag to indicate if the unit is test
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function isTest()
     {
@@ -577,35 +412,20 @@ class MagesterUnit extends ArrayObject
 		parent::offsetSet('ctg_type', (string) $xml->unit->ctg_type);
 	}
 	/**
-
      * Get the id of prerequisite unit for this unit
-
      *
-
      * This function returns false if there is no prerequisite unit,
-
      * otherwise returns the id of the prerequisite unit
-
      * <br/>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(7);
-
      * $pid = $unit->getPrerequisite();
-
      * </code>
-
      *
-
      *
-
      * @return mixed An integer id if there is a prerequisite, or false otherwise
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function getPrerequisite()
     {
@@ -616,31 +436,18 @@ class MagesterUnit extends ArrayObject
             return false;
     }
    /**
-
      * Get the lesson files
-
      *
-
      * This function returns an array of the file ids or paths which are used by this unit
-
      * <br/>Example:
-
      * <code>
-
      * $unit = new MagesterUnit(7);
-
      * $files = $unit -> getFiles();
-
      * </code>
-
      *
-
      * @return array An array with the file ids
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function getFiles($returnObjects = false)
     {
@@ -659,33 +466,19 @@ class MagesterUnit extends ArrayObject
         return $files;
     }
     /**
-
      * Create a new unit
-
      *
-
      * This function is used to create a new unit.
-
      * <br/>Example:
-
      * <code>
-
      * $fields = array('name' => 'new unit', 'ctg_type' => 'theory');
-
      * $unit = MagesterUnit :: createUnit($fields);
-
      * </code>
-
      *
-
      * @param array $fields The new unit fields
-
      * @return MagesterUnit The newly created unit
-
      * @since 3.5.0
-
      * @access public
-
      */
     public static function createUnit($fields = array())
     {
@@ -714,92 +507,53 @@ class MagesterUnit extends ArrayObject
     }
 }
 /**
-
  * This class represents the content tree and extends MagesterTree class
-
  * @package SysClass
-
  * @since 3.5.0
-
  */
 class MagesterContentTree extends MagesterTree
 {
     /**
-
      * The lesson id
-
      *
-
      * @var int
-
      * @since 3.5.0
-
      * @access public
-
      */
     public $lessonId = 0;
     /**
-
      * Content rules. The array is initialized only after the call to getRules()
-
      *
-
      * @since 3.5.0
-
      * @var array
-
      * @access public
-
      * @see getRules()
-
      */
     protected $rules = false;
     /**
-
      * These values signify the SCORM 2004 version
-
      *
-
      * @since 3.6.0
-
      * @var array
-
      * @access public
-
      * @static
-
      */
     public static $scorm2004Versions = array('CAM 1.3' , '2004 3rd Edition', '2004 4th Edition');
     /**
-
      * Instantiate tree object
-
      *
-
      * The constructor instantiates the tree based on the lesson id
-
      * <br/>Example:
-
      * <code>
-
      * $tree = new MagesterContentTree(23);                   //23 is the lesson id
-
      * $lesson = new MagesterLesson(23);                      //23 is the lesson id
-
      * $tree = new MagesterContentTree($lesson);              //Content may be alternatively instantiated using the lesson object
-
      * </code>
-
      *
-
      * @param mixed $lesson Either The lesson id or an MagesterLesson object
-
      * @param array $data If true, then the tree nodes hold data as well
-
      * @since 3.5.0
-
      * @access public
-
      */
     function __construct($lesson, $data = false)
     {
@@ -817,48 +571,27 @@ class MagesterContentTree extends MagesterTree
         $this -> currentUnitId = $firstUnit['id'];
     }
     /**
-
      * Construct content tree structure
-
      *
-
      * Creates a tree-like representation of the content, using arrays as MagesterUnit,
-
      * a class that extends ArrayObject.
-
      * Each unit is represented as an array with the appropriate fields
-
      * (id, name, timestamp etc). If the unit has children units, then
-
      * these are subarrays of the current unit array. All keys correspond
-
      * to unit ids.
-
      * If, for some reason, there are units with invalid succession data,
-
      * (parent or previous content ids), these are appended at the end of
-
      * the content tree.
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);                                 //Initialize content tree for lesson with id 4
-
      * //Do some nasty stuff with content tree
-
      * $content -> reset();                                                 //Reset content tree to its original state
-
      * </code>
-
      *
-
      * @since 3.5.0
-
      * @access public
-
-     */
+    */
     public function reset()
     {
         if ($this -> data) {
@@ -1101,31 +834,18 @@ class MagesterContentTree extends MagesterTree
         return $units;
     }
     /**
-
      * Remove unit
-
      *
-
      * This function is used to remove a unit from the content tree
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);                                 //Initialize content tree for lesson with id 4
-
      * $content -> removeNode(57);                                          //Remove the unit 57 and all of its subunits
-
      * </code>
-
      *
-
      * @param int $removeId The unit id that will be removed
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function removeNode($removeId)
     {
@@ -1156,57 +876,31 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Insert unit to tree
-
      *
-
      * This function is used to insert a new unit to the content tree
-
      * <br/>Example:
-
      * <code>
-
      * $unit = array("id"                  => 99,                           //Create the array of the new unit
-
      *               "name"                => "Test Insert Unit",
-
      *               "lessons_ID"          => 1,
-
      *               "timestamp"           => time(),
-
      *               "ctg_type"            => "theory",
-
      *               "active"              => 1,
-
      *               "parent_content_ID"   => 5,
-
      *               "previous_content_ID" => 5);
-
      *
-
      * $content = new MagesterContentTree(4);                                 //Initialize content tree for lesson with id 4
-
      * $content -> insertNode($unit);                                       //Insert the new unit
-
      * </code>
-
      *
-
      * @param array $unit The unit array
-
      * @param int $parentUnit The parent of the specified node, if it is not set inside the node (not used for the moment)
-
      * @param int $previousUnit The previous of the specified node, if it is not set inside the node (not used for the moment)
-
      * @return MagesterUnit The new unit
-
      * @since 3.5.0
-
      * @access public
-
      * @todo implement $parentUnit/$preciousUnit functionality, when not present inside $unit
-
      */
     public function insertNode($unit, $parentUnit = false, $previousUnit = false)
     {
@@ -1235,25 +929,15 @@ class MagesterContentTree extends MagesterTree
         return $this -> seekNode($unit['id']);
     }
     /**
-
      * Append unit to the end of the content tree
-
      *
-
      * This function is the same as insertNode(), only that it
-
      * resets parent and previous unit information so that the
-
      * unit is appended to the end of the content tree.
-
      *
-
      * @param array $unit The unit array
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function appendUnit($unit)
     {
@@ -1265,35 +949,20 @@ class MagesterContentTree extends MagesterTree
         return $newUnit;
     }
     /**
-
      * Get the current unit of the tree
-
      *
-
      * This function returns the current unit, in a flat array
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);             //Create the content tree for lesson with id 4
-
      * $unit = $content -> getCurrentNode();                //$unit now holds the first unit of the tree
-
      * </code>
-
      *
-
      * @param int $queryUnit A unit id, to get its array
-
      * @return array The current unit
-
      * @since 3.5.0
-
      * @access public
-
      * @todo Correct it!
-
      */
     public function getCurrentNode($queryUnit = false)
     {
@@ -1310,37 +979,21 @@ class MagesterContentTree extends MagesterTree
         return $flatTree;
     }
     /**
-
      * Get the next units in the tree
-
      *
-
      * This function returns the next units, in a flat array.
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);             //Create the content tree for lesson with id 4
-
      * $units = $content -> getNextNodes();             //$units now holds all the next units of the current unit
-
      * $units = $content -> getNextNodes(32);           //$units now holds all the next units of unit 32
-
      * </code>
-
      *
-
      * @param int $queryUnit A unit id, to get its next units
-
      * @return array The next units array
-
      * @since 3.5.0
-
      * @access public
-
      * @todo Correct it!
-
      */
     public function getNextNodes($queryUnit = false)
     {
@@ -1368,35 +1021,20 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Get the previous units
-
      *
-
      * This function returns the previous units, in a flat array.
-
      * <br/>Example:
-
      * <code>
-
      * $units = $content -> getPreviousNodes();             //$units now holds all the previous units of the current unit
-
      * $units = $content -> getPreviousNodes(32);           //$units now holds all the previous units of unit 32
-
      * </code>
-
      *
-
      * @param int $queryUnit A unit id, to get its previous units
-
      * @return array The previous units array
-
      * @since 3.5.0
-
      * @access public
-
      * @todo Correct it!
-
      */
     public function getPreviousNodes($queryUnit = false)
     {
@@ -1420,33 +1058,19 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Get content rules
-
      *
-
      * This function retrieves the content rules
-
      * <br/>Example:
-
      * <code>
-
      * $content -> getRules();              //Returns an array with lesson rules
-
      * $content -> getRules(43);            //Returns an array with lesson rules that refer to unit with id 43
-
      * </code>
-
      *
-
      * @param int $queryUnit If set, return rules for this unit only
-
      * @return array The lesson rules
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function getRules($queryUnit = false)
     {
@@ -1481,33 +1105,19 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Delete rules
-
      *
-
      * This function can be used to delete one or more rules
-
      * <br/>Example:
-
      * <code>
-
      * $content -> deleteRules(54);                                 //Delete rule with id 54
-
      * $content -> deleteRules(array(54,34,76));                    //Delete rules with specified ids
-
      * </code>
-
      *
-
      * @param mixed $rules one or more rule ids to delete
-
      * @return The content rules left
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function deleteRules($rules)
     {
@@ -1527,21 +1137,13 @@ class MagesterContentTree extends MagesterTree
         return $this -> rules;
     }
     /**
-
      * Check if the user can access the specified unit
-
      *
-
      * @param int $queryUnit The unit to check for
-
      * @param unknown_type $seenUnits
-
      * @return unknown
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function checkRules($queryUnit, $seenContent)
     {
@@ -1599,35 +1201,20 @@ class MagesterContentTree extends MagesterTree
         return true;
     }
     /**
-
      * Get content comments
-
      *
-
      * This function is used to retrive all the comments that have been posted
-
      * to the current content.
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(34);        //Initialize content for lesson with id 34
-
      * $comments = $content -> getComments();       //Return an array of arrays, each of which holds the comment data
-
      * </code>
-
      *
-
      * @param int $queryUnit If this parameter is specified, then only comments regarding the specified unit are returned
-
      * @return array The content comments
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function getComments($queryUnit = false)
     {
@@ -1653,37 +1240,21 @@ class MagesterContentTree extends MagesterTree
         return $comments;
     }
     /**
-
      * Delete comments from content
-
      *
-
      * This function is used to delete the specified comments from the
-
      * content.
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(34);        //Initialize content for lesson with id 34
-
      * $content -> deleteComments(4);   //Delete comment with ids 4
-
      * $content -> deleteComments(array(4,6,2));    //Delete comments with ids 4,6,2
-
      * $content -> deleteComments(array_keys($content -> getComments()));   //Delete all comments
-
      * </code>
-
      *
-
      * @param mixed $comments A comment id or an array of comment ids
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function deleteComments($comments)
     {
@@ -1702,37 +1273,21 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Repair tree
-
      *
-
      * This function is the "last resort": It rearranges all the
-
      * lesson's units so that they are visible to the system. It
-
      * revokes any succession information and creates a flat
-
      * tree, where units are arbitrarily sorted.
-
      * <br/>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);     //Create the content tree for lesson with id 4
-
      * $content -> repairTree();                //Repair tree. Now, the content tree will be flat, containing all the lesson units
-
      * </code>
-
      *
-
      * @since 3.5.0
-
      * @access public
-
      * @static
-
      */
     public function repairTree()
     {
@@ -1744,33 +1299,19 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Mark seen nodes
-
      *
-
      * This function gets the units that the user has seen
-
      * and sets the 'seen' property either to 1 or to 0.
-
      * <br/>Example:
-
      * <code>
-
      * $currentContent = new MagesterContentTree(5);           //Initialize content for lesson with id 5
-
      * $currentContent -> markSeenNodes($currentUser);       //Mark the seen content for user in object $currentUser
-
      * </cod>
-
      *
-
      * @param mixed $user Either a user login or an MagesterUser object
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function markSeenNodes($user)
     {
@@ -1800,37 +1341,21 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Copy test
-
      *
-
      * This function copies a test into the current content tree
-
      * <br/>Example:
-
      * <code>
-
      * $currentContent = new MagesterContentTree(5);           //Initialize content for lesson with id 5
-
      * $currentContent -> copyTest(3, false);   //Copy the corresponding test into the content tree (at its end)
-
      * </code>
-
      *
-
      * @param int $testId The id of the test to be copied
-
      * @param mixed $targetUnit The id of the parent unit (or the parent MagesterUnit)in which the new unit will be copied, or false (the unit will be appended at the end)
-
      * @param boolean $copyQuestions Whether to copy questions as well. Copied questions will be attached to the test itself as parent unit
-
      * @return MagesterUnit The newly created test unit object
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function copyTest($testId, $targetUnit = false, $copyQuestions = true)
     {
@@ -1907,39 +1432,22 @@ class MagesterContentTree extends MagesterTree
   return $data;
  }
     /**
-
      * Copy unit
-
      *
-
      * This function copies a unit (along with its children)into the current content tree
-
      * If the unit corresponds to a test, then it copies the corresponding test
-
      * <br/>Example:
-
      * <code>
-
      * $currentContent = new MagesterContentTree(5);           //Initialize content for lesson with id 5
-
      * $sourceUnit = new MagesterUnit(20);                     //Get the unit with id = 20
-
      * $currentContent -> copyUnit($sourceUnit, false);   //Copy the source unit into the content tree (at its end)
-
      * </code>
-
      *
-
      * @param MagesterUnit $sourceUnit The unit object to be copied
-
      * @param mixed $targetUnit The id of the parent unit (or the parent MagesterUnit)in which the new unit will be copied, or false (the unit will be appended at the end)
-
      * @return MagesterUnit The newly created unit object
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function copyUnit($sourceUnit, $targetUnit = false, $previousContentId = false)
     {
@@ -1979,43 +1487,24 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Copy simple unit
-
      *
-
      * This function copies a unit (NOT its children) into the current content tree
-
      * <br/>Example:
-
      * <code>
-
      * $currentContent = new MagesterContentTree(5);           //Initialize content for lesson with id 5
-
      * $sourceUnit = new MagesterUnit(20);                     //Get the unit with id = 20
-
      * $currentContent -> copySimpleUnit($sourceUnit, false);   //Copy the source unit into the content tree (at its end)
-
      * </code>
-
      *
-
      * @param MagesterUnit $sourceUnit The unit object to be copied
-
      * @param mixed $targetUnit The id of the parent unit (or the parent MagesterUnit)in which the new unit will be copied, or false (the unit will be appended at the end)
-
      * @param mixed $previousUnit The id of the previous unit (or the unit itself) of the new unit, or false (the unit will be put to the end of the units)
-
      * @param boolean $copyFiles whether to copy files as well.
-
      * @param boolean $copyQuestions Whether to copy questions as well
-
      * @return MagesterUnit The newly created unit object
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function copySimpleUnit($sourceUnit, $targetUnit = false, $previousUnit = false, $copyFiles = true, $copyQuestions = true)
     {
@@ -2088,37 +1577,21 @@ class MagesterContentTree extends MagesterTree
         return $unit;
     }
     /**
-
      * Copy a simple scorm unit or test
-
      *
-
      * This function copies a scorm unit/test (NOT its children) into the current content tree
-
      * <br/>Example:
-
      * <code>
-
      * $currentContent = new MagesterContentTree(5);           //Initialize content for lesson with id 5
-
      * $currentContent -> copySimpleUnit(3, false);   //Copy the scorm unit with id = 3 into the content tree (at its end)
-
      * </code>
-
      *
-
      * @param int The id of the scorm unit/test (in the scorm_data table)
-
      * @param MagesterUnit $sourceUnit The unit object to be copied
-
      * @param mixed $targetUnit The id of the parent unit (or the parent MagesterUnit)in which the new unit will be copied, or false (the unit will be appended at the end)
-
      * @return MagesterUnit The newly created unit object
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function copyScorm($sid, $sourceUnit, $targetUnit)
     {
@@ -2175,79 +1648,42 @@ class MagesterContentTree extends MagesterTree
         }
     }
     /**
-
      * Create HTML representation of the content tree
-
      *
-
      * This function is used to create an HTML representation of the content tree
-
      * The representation is based on javascript library drag_drop_folder_tree.js
-
      * If an iterator is not specified, then the tree displayed corrresponds to the default
-
      * tree (excluding inactive units). Otherwise, the specified iterator is used.
-
      * $treeId should be specified in case there will be more than one trees on the same page.
-
      * $options specifies the appearance and behaviour of the tree. Possible options are:
-
      * <br/>- edit   (true/false)
-
      * <br/>- delete (true/false)
-
      * <br/>- activate (true/false)
-
      * <br/>- drag (true/false)
-
      * <br/>- noclick (true/false)
-
      * <br/>- selectedNode (node id)
-
      * <br/>- truncateNames (maximum length)
-
      * <br/>- expand (true/false)
-
      * <br/>- tree_root (true/false) (whether to display a root node)
-
      * <br/>- show_hide (true/false) (whether to display the show/hide header)
-
      * <br/>- onclick (function)
-
      * <br/>- custom (any custom code to be put next to each unit name)
-
      * <br/>Example:
-
      * <code>
-
      * echo $content -> toHTML();                               //Display tree with all defaults
-
      * $iterator = new MagesterNodeFilterIterator(new RecursiveIteratorIterator(new RecursiveArrayIterator($content -> tree), RecursiveIteratorIterator :: SELF_FIRST), array('ctg_type' => 'theory'));
-
      * echo $content -> toHTML($iterator);                      //Display tree with only theory nodes
-
      * echo $content -> toHTML($iterator, 'theory_tree')        //Display tree with only theory nodes, having id 'theory_tree'
-
      * echo $content -> toHTML($iterator, 'theory_tree', array('edit' => 1, 'delete' => 1))     //Display tree with only theory nodes, having id 'theory_tree', and which is editable and deleteable
-
      * </code>
-
      *
-
      * @param RecursiveIteratorIterator $iterator The content tree iterator
-
      * @param string $treeId The HTML id that will be assigned to the tree
-
      * @param array $options Behaviour options for the tree
-
      * @param array $scormState An array that lists special parameters for depicting SCO state (applicable to scorm 2004 content only)
-
      * @return string The HTML code
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function toHTML($iterator = false, $treeId = false, $options = array(), $scormState = array())
     {
@@ -2444,43 +1880,24 @@ class MagesterContentTree extends MagesterTree
         return $str;
     }
     /**
-
      * Create array to be used for HTML options
-
      *
-
      * This function is used to create a structure that can be used
-
      * in select lists. The array is of the form [content id] => [content name string]
-
      * where content name is prepended with spaces and special characters "&raquo;" that
-
      * denote its depth.
-
      * <br/>Example:
-
      * <code>
-
      * $optionsArray = $content -> toHTMLSelectOptions();
-
      * </code>
-
      * An iterator may be optionally specified, in order to display specific units (by default
-
      * all active units are used).
-
      * Note that unit names more than 50 characters long are truncated.
-
      *
-
      * @param RecursiveIteratorIterator $iterator The tree iterator to be used
-
      * @return array The options array
-
      * @since 3.5.0
-
      * @access public
-
      */
     public function toHTMLSelectOptions($iterator = false)
     {
@@ -2500,43 +1917,24 @@ class MagesterContentTree extends MagesterTree
         return $optionsArray;
     }
     /**
-
      * Return path strings for each unit
-
      *
-
      * This function returns path strings for each unit, depicting its position in the content tree and
-
      * its parents.
-
      * <br>Example:
-
      * <code>
-
      * $content = new MagesterContentTree(4);                                 //Initialize content tree for lesson with id 4
-
      * $patString = $content -> toPathStrings();
-
      * //Returns an array with contents like:
-
      * //[364] => Unit 1: Overview
-
      * //[360] => Unit 2: Introduction to mathematics
-
      * //[361] => Unit 2: Introduction to mathematics » Unit 2.1: Geometry
-
      * </code>
-
      *
-
      * @param RecursiveIteratorIterator $iterator The tree iterator to be used
-
      * @return array The path strings array
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function toPathStrings($iterator = false)
     {
@@ -2555,25 +1953,15 @@ class MagesterContentTree extends MagesterTree
         return $pathStrings;
     }
     /**
-
      * Get node ancestors - cached
-
      *
-
      * This function overloads MagesterTree : getNodeAncestors to support for caching
-
      *
-
      * @param mixed $node Either the node id or an MagesterNode object
-
      * @param boolean $refresh Whether to refresh the cached copy
-
      * @see libraries/MagesterTree#getNodeAncestors()
-
      * @since 3.5.3
-
      * @access public
-
      */
  public function getNodeAncestors($node, $refresh = false)
  {
@@ -2588,25 +1976,15 @@ class MagesterContentTree extends MagesterTree
   }
  }
  /**
-
 	 * Create empty units from an array
-
 	 *
-
 	 * This functions takes a nested array of names and converts them to an hierarchy
-
 	 * of empty units.
-
 	 *
-
 	 * @param array $structure The names that will be converted to a units structure
-
 	 * @return array The structure
-
 	 * @since 3.6.0
-
 	 * @access public
-
 	 */
     public function createEmptyUnits($structure, $lessons_ID)
     {
@@ -2638,30 +2016,19 @@ class MagesterContentTree extends MagesterTree
     }
 }
 /**
-
  * Iterator Filter for traversing only visitable units, incuding empty ones
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterVisitableAndEmptyFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only units that may be visited, i.e. are active
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2671,30 +2038,19 @@ class MagesterVisitableAndEmptyFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only visitable units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterVisitableFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only units that may be visited, i.e. are active and either have content or are tests
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2705,30 +2061,19 @@ class MagesterVisitableFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only SCORM units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterSCORMFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only SCORM units
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2738,30 +2083,19 @@ class MagesterSCORMFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only non-SCORM units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterNoSCORMFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only non-SCORM units
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2771,30 +2105,19 @@ class MagesterNoSCORMFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only Test units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterTestsFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only test units (normal or SCORM)
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2804,30 +2127,19 @@ class MagesterTestsFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only non-Test units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterNoTestsFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only test units (normal or SCORM)
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2837,30 +2149,19 @@ class MagesterNoTestsFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only Feedback units
-
  *
-
  * @package SysClass
-
  * @version 3.6.3
-
  */
 class MagesterFeedbackFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only feedback units
-
      *
-
      * @return boolean
-
      * @since 3.6.3
-
      * @access public
-
      */
     function accept()
     {
@@ -2870,30 +2171,19 @@ class MagesterFeedbackFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only non-Feedback units
-
  *
-
  * @package SysClass
-
  * @version 3.6.3
-
  */
 class MagesterNoFeedbackFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only non-feedback units
-
      *
-
      * @return boolean
-
      * @since 3.6.3
-
      * @access public
-
      */
     function accept()
     {
@@ -2903,30 +2193,19 @@ class MagesterNoFeedbackFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only Theory units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterTheoryFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only theory and SCORM units
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2936,30 +2215,19 @@ class MagesterTheoryFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only Example units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterExampleFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts only examplesunits
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -2969,30 +2237,19 @@ class MagesterExampleFilterIterator extends FilterIterator
     }
 }
 /**
-
  * Iterator Filter for traversing only Content (theory, example and SCORM) units
-
  *
-
  * @package SysClass
-
  * @version 3.5.0
-
  */
 class MagesterContentFilterIterator extends FilterIterator
 {
     /**
-
      * Accepts content that is not tests
-
      *
-
      * @return boolean
-
      * @since 3.5.0
-
      * @access public
-
      */
     function accept()
     {
@@ -3024,15 +2281,10 @@ class MagesterContentCourseClassFilterIterator extends FilterIterator
 }
 
 /**
-
  * Iterator for removing data from nodes
-
  *
-
  * @package SysClass
-
  * @version 3.5.3
-
  */
 class MagesterRemoveDataFilterIterator extends FilterIterator
 {
@@ -3072,4 +2324,45 @@ class MagesterInArrayFilterIterator extends FilterIterator
  {
   return in_array($this -> key(), $this -> filter);
  }
+}
+
+/**
+ * Keeps node only if its not viewed.
+ *
+ * @package SysClass
+ * @version 3.5.3
+ */
+class MagesterUnseenFilterIterator extends FilterIterator
+{
+    /**
+     * Accepts content that is not viewed
+     *
+     * @return boolean
+     * @since 3.5.0
+     * @access public
+     */
+    function accept()
+    {
+        return $this -> current() -> offsetGet('seen') == 0;
+    }
+}
+/**
+ * Keeps node only if its viewed.
+ *
+ * @package SysClass
+ * @version 3.5.3
+ */
+class MagesterSeenFilterIterator extends FilterIterator
+{
+    /**
+     * Accepts content that is viewed
+     *
+     * @return boolean
+     * @since 3.5.0
+     * @access public
+     */
+    function accept()
+    {
+        return $this -> current() -> offsetGet('seen') == 1;
+    }
 }
