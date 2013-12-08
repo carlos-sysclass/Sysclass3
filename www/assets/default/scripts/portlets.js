@@ -67,7 +67,10 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
             
             portlets.fadeOut(timeout/2, function() {
                 column.removeClass(oldColumn).addClass("col-md-12");
-                portlet.fadeIn(timeout/2).addClass("portlet-fullscreen");
+                portlet.fadeIn(timeout/2, function() {
+                    mod.triggerSubMethod(type, "resized", e, portlet);
+                }).addClass("portlet-fullscreen");
+                
             });
         }
 	};
@@ -86,11 +89,14 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 
             portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
                 column.removeClass("col-md-12").addClass(oldColumn);
-                portlets.fadeIn(timeout/2); 
+                portlets.fadeIn(timeout/2, function() {
+                    mod.triggerSubMethod(type, "resized", e, portlet);
+                }); 
             } );
 
         }
 	};
+
 	mod.onReload = function(e, portlet) {
 		if (jQuery(e.currentTarget).is(".disabled")) {
         	return false;

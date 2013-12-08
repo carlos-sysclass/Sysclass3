@@ -40,113 +40,59 @@ class MagesterStatsException extends Exception
 class MagesterStats
 {
     /**
-
      * Get user seen content in lesson
-
      *
-
      * This function calulates the content done by the specified student(s) in the
-
      * specified lesson. If $users is not specified, then information on all users and/or lessons
-
      * is calculated.
-
      * <br/>Example:
-
      * <code>
-
      * MagesterStats :: getStudentsSeenContent(3, 'jdoe');                            //Get statistics for user jdoe in lesson 3
-
      * MagesterStats :: getStudentsSeenContent(3, array('jdoe', 'george'));           //Get statistics for users george and jdoe in lesson 3
-
      * MagesterStats :: getStudentsSeenContent(3);                                    //Get statistics for all users in lesson 3
-
      * MagesterStats :: getStudentsSeenContent();                                     //Get statistics for all users in all lessons
-
      * </code>
-
      * The resulting array is of the form array(lesson id => array(login => array(done content))):
-
      * <code>
-
      *  Array
-
      *  (
-
      * 		[32] => Array
-
      * 			(
-
      *      	[jdoe] => Array
-
      *       	   (
-
      *              	[1415] =>
-
      *          	    [1417] =>
-
      *      	        [1416] => 50
-
      *  	            [1412] =>
-
      *	                [1411] =>
-
      *              	[1413] =>
-
      *          	    [1420] => 100
-
      *      	    )
-
      *  	    [george] => Array
-
      *	           (
-
      *              	[1415] =>
-
      *              	[1417] =>
-
      *          	    [1416] => 66
-
      *      	        [1412] =>
-
      *  	            [1408] =>
-
      *	                [1409] =>
-
      *              	[1410] =>
-
      *          	    [1420] => 30
-
      *      	   )
-
      *  	 )
-
      * )
-
      * </code>
-
      *
-
      * This means that: very lesson is an array, where every student has a corresponding array, in which the keys represent the units he has
-
      * completed. For content units, the array values are empty. For test units, the array values contain the
-
      * users's score.
-
      *
-
      * @param mixed $lessons An array of lesson ids or MagesterLesson objects. If false, all lessons are considered
-
      * @param mixed $users One or more optional user logins
-
      * @return array The seen content per user login
-
      * @since 3.5.0
-
      * @access public
-
      * @static
-
      */
     public static function getStudentsSeenContent($lessons = false, $users = false, $options = array())
     {
@@ -260,133 +206,69 @@ class MagesterStats
         return $usersDoneContent;
     }
     /**
-
      * Get user done tests in lesson
-
      *
-
      * This function finds the done tests of the specified users.
-
      * If $users is not specified, then information on all users and/or lessons
-
      * is calculated.
-
      * <br/>Example:
-
      * <code>
-
      * MagesterStats :: getStudentsDoneTests(3, 'jdoe');                          //Get statistics for user jdoe in lesson 3
-
      * MagesterStats :: getStudentsDoneTests(3, array('jdoe', 'george'));         //Get statistics for users george and jdoe in lesson 3
-
      * MagesterStats :: getStudentsDoneTests(3);                                  //Get statistics for all users in lesson 3
-
      * </code>
-
      * The resulting array is of the form array(login => array(content id => array(results))):
-
      * <code>
-
      * Array
-
      * (
-
      *     [jdoe] => Array
-
      *         (
-
      *             [30] => Array
-
      *                 (
-
      *                     [lessons_ID] => 78
-
      *                     [name] => Maya History Test
-
      *                     [content_ID] => 30
-
      *                     [done_tests_ID] => 1
-
      *                     [tests_ID] => 2
-
      *                     [score] => 1
-
      *                     [comments] =>
-
      *                     [users_LOGIN] => jdoe
-
      *                 )
-
      *             [2] => Array
-
      *                 (
-
      *                     [lessons_ID] => 77
-
      *                     [name] => General concepts test
-
      *                     [content_ID] => 2
-
      *                     [done_tests_ID] => 2
-
      *                     [tests_ID] => 1
-
      *                     [score] => 0.333333
-
      *                     [comments] =>
-
      *                     [users_LOGIN] => jdoe
-
      *                 )
-
      *         )
-
      *     [george] => Array
-
      *         (
-
      *             [2] => Array
-
      *                 (
-
      *                     [lessons_ID] => 77
-
      *                     [name] => General concepts test
-
      *                     [content_ID] => 2
-
      *                     [done_tests_ID] => 3
-
      *                     [tests_ID] => 1
-
      *                     [score] => 1
-
      *                     [comments] =>
-
      *                     [users_LOGIN] => george
-
      *                 )
-
      *         )
-
      * )
-
      * </code>
-
      *
-
      * @param mixed $lessons Either the lesson id or an MagesterLesson object, or an array of such
-
      * @param mixed $users A single user login, an array of user logins or nothing for all users
-
      * @return array The done tests per user
-
      * @since 3.5.0
-
      * @access public
-
      * @static
-
      */
     public static function getStudentsDoneTests($lessons = false, $users = false)
     {
@@ -470,77 +352,41 @@ class MagesterStats
         return $doneTests;
     }
  /**
-
 	 * Get users' done tests
-
 	 *
-
 	 * This function is used to get the users' done tests.
-
 	 * <br/>Example:
-
 	 * <code>
-
 	 * $doneTests = MagesterStats :: getDoneTestsPerUser();				//Get done instances of all tests for all users
-
 	 * $doneTests = MagesterStats :: getDoneTestsPerUser('jdoe');		//Get done instances of all tests for user 'jdoe'
-
 	 * $doneTests = MagesterStats :: getDoneTestsPerUser(false, 23);		//Get done instances of test with id 23 for all users
-
 	 * $doneTests = MagesterStats :: getDoneTestsPerUser('jdoe', 23);	//Get done instances of test with id 23 for user 'jdoe'
-
 	 * //$doneTests now contains an array of the form:
-
 	 * Array
-
 	 * (
-
 	 * 		[jdoe] => Array
-
 	 * 			(
-
 	 * 				[23] => Array
-
 	 * 					(
-
 	 * 						[1] => Array
-
 	 * 							(
-
 	 * 								//Completed test with id 1...
-
 	 * 							)
-
 	 * 						[2] => Array
-
 	 * 							(
-
 	 * 								//Completed test with id 2...
-
 	 * 							)
-
 	 * 					)
-
 	 *			)
-
 	 * )
-
 	 * </code>
-
 	 *
-
 	 * @param mixed $user The user to get tests for, or all if false. Can be either the user login, or an MagesterUser object
-
 	 * @param mixed $test The test to get done tests for, or all if false. Can be either the test id, or an MagesterTest object
-
 	 * @return array The list of done tests, in a user => test id => tests form
-
 	 * @since 3.5.2
-
 	 * @access public
-
 	 * @static
-
 	 */
  public static function getDoneTestsPerUser($users = false, $test = false, $lesson = false)
  {
@@ -1137,47 +983,26 @@ class MagesterStats
         return $total_comments;
     }
     /**
-
      * Get lesson(s) status for user(s)
-
      *
-
      * This function is used to calculate the specified lessons status for the specified users
-
      * It calculates the progress, percentages, scores etc that describe the users' status
-
      * to the lesson.
-
      * <br/>Example:
-
      * <code>
-
      * $status = MagesterStats :: getUsersLessonStatus(34, 'jdoe');		//Get the status for user jdoe in lesson with id 34
-
      * $status = MagesterStats :: getUsersLessonStatus(false, 'jdoe');	//Get the status for user jdoe in all lessons
-
      * $status = MagesterStats :: getUsersLessonStatus(34);				//Get the status for all users in lesson with id 34
-
      * $status = MagesterStats :: getUsersLessonStatus();					//Get the status for all users in all lessons
-
      * </code>
-
      * Note: This function is designed so that there is never the need to call it inside a loop
-
      * Since it is database-intensive, make sure that it is NEVER called inside a loop!
-
      *
-
      * @param array $lessons an array of lesson ids or MagesterLesson objects
-
      * @param array $users An array of user logins
-
      * @return array The lesson status
-
      * @since 3.5.0
-
      * @access public
-
      */
     public static function getUsersLessonStatus($lessons = false, $users = false, $options = array())
     {
@@ -1206,47 +1031,26 @@ class MagesterStats
         return $lessonStatus;
     }
     /**
-
      * Get lesson(s) status for user(s)
-
      *
-
      * This function is used to calculate the specified lessons status for the specified users
-
      * It calculates the progress, percentages, scores etc that describe the users' status
-
      * to the lesson.
-
      * <br/>Example:
-
      * <code>
-
      * $status = MagesterStats :: getUsersLessonStatus(34, 'jdoe');		//Get the status for user jdoe in lesson with id 34
-
      * $status = MagesterStats :: getUsersLessonStatus(false, 'jdoe');	//Get the status for user jdoe in all lessons
-
      * $status = MagesterStats :: getUsersLessonStatus(34);				//Get the status for all users in lesson with id 34
-
      * $status = MagesterStats :: getUsersLessonStatus();					//Get the status for all users in all lessons
-
      * </code>
-
      * Note: This function is designed so that there is never the need to call it inside a loop
-
      * Since it is database-intensive, make sure that it is NEVER called inside a loop!
-
      *
-
      * @param array $lessons an array of lesson ids or MagesterLesson objects
-
      * @param array $users An array of user logins
-
      * @return array The lesson status
-
      * @since 3.5.0
-
      * @access public
-
      */
     public static function getUsersLessonStatusAll($lessons = false, $users = false, $options = array())
     {
