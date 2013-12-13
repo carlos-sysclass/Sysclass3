@@ -27,16 +27,6 @@ abstract class SysclassModule extends AbstractSysclassController
     /**
      * Module Entry Point
      *
-     * @url GET /
-     */
-    public function defaultPage()
-    {
-        // DASHBOARD PAGE
-        exit;
-    }
-    /**
-     * Module Entry Point
-     *
      * @url GET /js
      * @url GET /js/:filename
      */

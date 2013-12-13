@@ -6,7 +6,6 @@ class HomeController extends AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /
 	 * @url GET /home
 	 */
 	public function homeDashboardPage()
