@@ -58,9 +58,9 @@
                     </ul>
                 
                     <p class="light"></p>
-                    
+                    <!--
                     <a href="#we-are-sysclass" class="sysclass-button large outline white">SYSCLASS WEBSITE</a>
-                    
+                    -->
                     </div>
                 
                 </div>

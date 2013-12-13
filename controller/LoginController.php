@@ -18,9 +18,9 @@ class LoginController extends AbstractSysclassController
 	}
 
 	protected function createLoginForm() {
-		$postTarget = "/login?debug=10";
+		//$postTarget = "/login?debug=10";
 //		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
-		$form = new HTML_QuickForm("login_form", "post", $postTarget, "", "class = 'login-form'", true);
+		$form = new HTML_QuickForm("login_form", "post", $_SERVER['REQUEST_URI'], "", "class = 'login-form'", true);
 		$form->removeAttribute('name');
 		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
 		$form->addElement('text', 'login', self::$t->translate("Login"), 'class = "form-control placeholder-no-fix" ');
@@ -199,6 +199,7 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * 
 	 *
+	 * @url POST /
 	 * @url POST /login
 	 */
 	public function loginAction()
@@ -269,7 +270,7 @@ class LoginController extends AbstractSysclassController
 		        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
 		        $message_type = "danger";
 		    }
-		    $this->redirect("login", $message, $message_type);
+		    $this->redirect(null, $message, $message_type);
 		}
 
 	}
