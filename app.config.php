@@ -25,6 +25,7 @@ $plicoLib->set('mail/send/from/name', 'Web site ssra');
 $plicoLib->concat(
 	'controller',
 	array(
+//		'FrontendController',
 		'LoginController',
 		'HomeController',
 		'AdministratorController',
@@ -55,7 +56,7 @@ $plicoLib->add(
 );
 */
 $plicoLib->concat(
-	'resources/css',
+	'resources/sysclass.default/css',
 	array(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		'plugins/font-awesome/css/font-awesome.min',
@@ -82,7 +83,7 @@ $plicoLib->concat(
 );
 
 $plicoLib->concat(
-	'resources/js',
+	'resources/sysclass.default/js',
 	array(
 		'plugins/jquery-1.10.2.min',
 		'plugins/jquery-migrate-1.2.1.min',

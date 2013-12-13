@@ -117,52 +117,54 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
+		if ($this->getCurrentUser()) {
 
-		if (unserialize(self::$current_user -> user['additional_accounts'])) {
-			$accounts = unserialize(self::$current_user -> user['additional_accounts']);
-			$queryString = "'".implode("','", array_values($accounts))."'";
-			$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
-			$this -> putItem("additional_accounts", $bar_additional_accounts);
+			if (unserialize(self::$current_user -> user['additional_accounts'])) {
+				$accounts = unserialize(self::$current_user -> user['additional_accounts']);
+				$queryString = "'".implode("','", array_values($accounts))."'";
+				$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
+				$this -> putItem("additional_accounts", $bar_additional_accounts);
+			}
+
+			$this -> putItem("user_types_icons", array(
+				'administrator'	=> array(
+					"icon"	=> "rocket",
+					"color"	=> "danger"
+				),
+				'professor' => array(
+					"icon"	=> "plane",
+					"color"	=> "info"
+				),
+				'student' => array(
+					"icon"	=> "road",
+					"color"	=> "success"
+				)
+			));
+
+			// CREATE USER TOP-BAR AVATAR
+			$small_user_avatar = $big_user_avatar = array();
+			try {
+			    $file = new MagesterFile(self::$current_user->user['avatar']);
+			    list($small_user_avatar['width'], $small_user_avatar['height']) = sC_getNormalizedDims($file['path'], 29, 29);
+			    $small_user_avatar['avatar'] = self::$current_user->user['avatar'];
+
+			    list($big_user_avatar['width'], $big_user_avatar['height']) = sC_getNormalizedDims($file['path'], 200, 200);
+				$big_user_avatar['avatar'] = self::$current_user->user['avatar'];		    
+			} catch (MagesterFileException $e) {
+			    $small_user_avatar = array(
+			        'avatar' => "img/avatar_small.png",
+			        'width'  => 29,
+			        'height' => 29
+			    );
+			    $big_user_avatar = array(
+			        'avatar' => "img/avatar_big.png",
+			        'width'  => 200,
+			        'height' => 200
+			    );
+			}
+			$this->putItem("small_user_avatar", $small_user_avatar);
+			$this->putItem("big_user_avatar", $big_user_avatar);
 		}
-
-		$this -> putItem("user_types_icons", array(
-			'administrator'	=> array(
-				"icon"	=> "rocket",
-				"color"	=> "danger"
-			),
-			'professor' => array(
-				"icon"	=> "plane",
-				"color"	=> "info"
-			),
-			'student' => array(
-				"icon"	=> "road",
-				"color"	=> "success"
-			)
-		));
-
-		// CREATE USER TOP-BAR AVATAR
-		$small_user_avatar = $big_user_avatar = array();
-		try {
-		    $file = new MagesterFile(self::$current_user->user['avatar']);
-		    list($small_user_avatar['width'], $small_user_avatar['height']) = sC_getNormalizedDims($file['path'], 29, 29);
-		    $small_user_avatar['avatar'] = self::$current_user->user['avatar'];
-
-		    list($big_user_avatar['width'], $big_user_avatar['height']) = sC_getNormalizedDims($file['path'], 200, 200);
-			$big_user_avatar['avatar'] = self::$current_user->user['avatar'];		    
-		} catch (MagesterFileException $e) {
-		    $small_user_avatar = array(
-		        'avatar' => "img/avatar_small.png",
-		        'width'  => 29,
-		        'height' => 29
-		    );
-		    $big_user_avatar = array(
-		        'avatar' => "img/avatar_big.png",
-		        'width'  => 200,
-		        'height' => 200
-		    );
-		}
-		$this->putItem("small_user_avatar", $small_user_avatar);
-		$this->putItem("big_user_avatar", $big_user_avatar);
 		
 	}
 	public function getCurrentUser($object = false) {

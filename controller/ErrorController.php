@@ -1,6 +1,7 @@
 <?php 
 class ErrorController extends AbstractSysclassController
 {
+	protected $disallowed_extensions = array('css', 'js', 'png', 'jpeg', 'jpg', 'gif');
 
 	public function handle401()
 	{
@@ -17,6 +18,12 @@ class ErrorController extends AbstractSysclassController
 
 	public function handle404()
 	{
+		$ext = end(explode(".", $_SERVER['REQUEST_URI']));
+		if (in_array($ext, $this->disallowed_extensions)) {
+			header('HTTP/1.0 404 Not Found');
+			exit;
+		}
+
 		parent::init("/404", "GET", "html");
 		$this->putCss("css/pages/error");
 

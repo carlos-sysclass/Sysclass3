@@ -227,28 +227,28 @@ if (isset($smarty)) {
     //$smarty -> loadFilter('pre', 'sC_translationModeLinkify');
     
     //Convert normal images to css sprites
-    $smarty -> loadFilter('output', 'sC_template_applyImageMap');
+//    $smarty -> loadFilter('output', 'sC_template_applyImageMap');
     //Convert plain urls to theme-specific urls
-    $smarty -> loadFilter('output', 'sC_template_applyThemeToImages');
+//    $smarty -> loadFilter('output', 'sC_template_applyThemeToImages');
     //Format the timestamps according to system settings
-    $smarty -> loadFilter('output', 'sC_template_formatTimestamp');
+//    $smarty -> loadFilter('output', 'sC_template_formatTimestamp');
     //Format datetime strings according to system settings
-    $smarty -> loadFilter('output', 'sC_template_formatDatetime');
+//    $smarty -> loadFilter('output', 'sC_template_formatDatetime');
     //Format currency strings according to system settings
-    $smarty -> loadFilter('output', 'sC_template_formatCurrency');
+//    $smarty -> loadFilter('output', 'sC_template_formatCurrency');
 
     //Convert logins to personal-message enabled clickable links
-    $smarty -> loadFilter('output', 'sC_template_loginToMessageLink');
+//    $smarty -> loadFilter('output', 'sC_template_loginToMessageLink');
     //Format logins according to system settings
-    $smarty -> loadFilter('output', 'sC_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
+//    $smarty -> loadFilter('output', 'sC_template_formatLogins'); //Warning: To be put always after loginToMessageLink!
     //Format scores according to system settings
-    $smarty -> loadFilter('output', 'sC_template_formatScore');
+//    $smarty -> loadFilter('output', 'sC_template_formatScore');
     //Selectively include some javascripts based on whether they are actually needed
-    $smarty -> loadFilter('output', 'sC_template_includeScripts');
+//    $smarty -> loadFilter('output', 'sC_template_includeScripts');
 
-    $smarty -> loadFilter('output', 'sC_template_sanitizeDOMString');
+//    $smarty -> loadFilter('output', 'sC_template_sanitizeDOMString');
 
-    $smarty -> loadFilter('output', 'sC_translationModeLinkify');
+//    $smarty -> loadFilter('output', 'sC_translationModeLinkify');
 
     $browser = detectBrowser();
     if ($browser == 'ie6') {

@@ -10,8 +10,15 @@ class LoginController extends AbstractSysclassController
 
 	}
 
+	protected function onThemeRequest()
+	{
+		if ($this->getRequestedUrl() == "") {
+			$this->setTheme('sysclass.frontend');
+		}
+	}
+
 	protected function createLoginForm() {
-		$postTarget = "/login";
+		$postTarget = "/login?debug=10";
 //		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
 		$form = new HTML_QuickForm("login_form", "post", $postTarget, "", "class = 'login-form'", true);
 		$form->removeAttribute('name');
@@ -39,10 +46,10 @@ class LoginController extends AbstractSysclassController
 
 		return $form;
 	}
-
 	/**
 	 * Create login and reset password forms
 	 *
+	 * @url GET /
 	 * @url GET /login
 	 * @url GET /login/:reset
 	 */
@@ -100,9 +107,6 @@ class LoginController extends AbstractSysclassController
 			$this->putItem("open_login_section", "reset");
 		}
 		parent::display('pages/auth/login.tpl');
-
-
-
     /*
     } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
         $login = $_GET['login'];
@@ -127,6 +131,15 @@ class LoginController extends AbstractSysclassController
 	}
 	*/
 
+	}
+
+	protected function beforeDisplay() {
+		parent::beforeDisplay();
+		if ($this->getTheme() == "sysclass.frontend") {
+			$this->template = 'login.tpl';
+			// RETURN FALSE TO OVERRIDE TEMPLATE
+			return false;
+		}
 	}
 
 	/**
@@ -193,6 +206,7 @@ class LoginController extends AbstractSysclassController
 		$form = $this->createLoginForm();
 
 		if ($form->isSubmitted() && $form->validate()) {
+
 		    try {
 		        $user = MagesterUserFactory :: factory(trim($form->exportValue('login')));
 		        if ($GLOBALS['configuration']['lock_down'] && $user->user['user_type'] != 'administrator') {
