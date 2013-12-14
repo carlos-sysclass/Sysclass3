@@ -3,23 +3,43 @@
 	{$T_LOGIN_FORM.javascript}
 	<form {$T_LOGIN_FORM.attributes}>
 		{$T_LOGIN_FORM.hidden}
+	<div class="logo">
+		<img alt="" src="{PLico_GetResource file='/images/logo-login.png'}"> 
+	</div>
+
+		<div class="element_from_left" style="opacity: 1; left: 0px;">            
+			<input class="{$T_LOGIN_FORM.login.class}" type="{$T_LOGIN_FORM.login.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.login.label}" name="{$T_LOGIN_FORM.login.name}" id="{$T_LOGIN_FORM.login.name}"/>
+		</div>
+		<div class="element_from_left" style="opacity: 1; left: 0px;">   
+			<input class="{$T_LOGIN_FORM.password.class}" type="{$T_LOGIN_FORM.password.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" />
+		</div>
+		<div class="element_from_left" style="opacity: 1; left: 0px;">   
+			<input type="{$T_LOGIN_FORM.submit_login.type}" name="{$T_LOGIN_FORM.submit_login.name}" id="{$T_LOGIN_FORM.submit_login.name}" value="Go to Sysclass" class="btn-green" />
+ 		</div>
+
 		{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
-			<div class="alert alert-{$T_MESSAGE.type}">
-				<button class="close" data-dismiss="alert"></button>
-				<span>{$T_MESSAGE.message}</span>
+			<div class="alertboxes">
+				{if $T_MESSAGE.type == "error"}
+				<div class="shortcode_alertbox box_red">
+					{*$T_MESSAGE.message*}
+					Login and password supplied doesn't match!
+					<a href="javascript: void();" id="forget-password"><b>Forget your Password?</b></a>
+					<a class="box_close"></a>
+				</div>
+				{/if}
 			</div>
 		{/if}
 
-		<div class="element_from_left" style="opacity: 1; left: 0px;">            
-		
-			<input class="{$T_LOGIN_FORM.login.class}" type="{$T_LOGIN_FORM.login.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.login.label}" name="{$T_LOGIN_FORM.login.name}" id="{$T_LOGIN_FORM.login.name}"/>
 
-			<input class="{$T_LOGIN_FORM.password.class}" type="{$T_LOGIN_FORM.password.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" />
- 
-		</div>
-        <button name="{$T_LOGIN_FORM.submit_login.name}" type="submit" class="sysclass-button medium outline" value="{$T_LOGIN_FORM.submit_login.value}" >
-			{$T_LOGIN_FORM.submit_login.value}<i class="m-icon-swapright m-icon-white"></i>
+		<a class="sysclass-button large outline btn-blue" href="#we-are-sysclass">VISIT OUR WEBSITE</a>
+		<a class="sysclass-button large outline btn-blue" href="http://layout.sysclass.com/login">DEMO ENVIRONMENT</a>
+
+
+ 		<!--
+        <button name="" type="submit" class="sysclass-button medium outline" value="{$T_LOGIN_FORM.submit_login.value}" >
+			<i class="m-icon-swapright m-icon-white"></i>
 		</button>
+		-->
 
 <!--
 		{if $T_CONFIGURATION.password_reminder && !$T_CONFIGURATION.only_ldap}
