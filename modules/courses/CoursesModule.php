@@ -72,25 +72,76 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         return $courses;
     }
 
-/**
+    /**
+     * Module Entry Point
+     *
+     * @url GET /content
+     */
+    public function getContentBySettingsAction()
+    {
+        // RETURN JUST THE content ID
+        // SAVE COURSE AND LESSON, ON USERS SETTINGS
+        $settings = $this->module("settings")->getSettings(true);
+        return $this->getContent($settings['course_id'], $settings['lesson_id'], null);
+    }
+
+    /**
      * Module Entry Point
      *
      * @url GET /content/:course/:lesson
-     * @url GET /content/:course/:lesson/:set_as_current
      */
-    public function getContentByCourseAndLessonAction($course, $lesson, $set_as_current = false)
+    public function getContentByCourseAndLessonAction($course, $lesson)
     {
+        // RETURN JUST THE content ID
+        // SAVE COURSE AND LESSON, ON USERS SETTINGS
+        $this->module("settings")->put("course_id", $course);
+        $this->module("settings")->put("lesson_id", $lesson);
+        return $this->getContent($course, $lesson, null);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /content/:course/:lesson/:content
+     */
+    public function getContentAction($course, $lesson, $content)
+    {
+        $this->module("settings")->put("course_id", $course);
+        $this->module("settings")->put("lesson_id", $lesson);
+        $this->module("settings")->put("content_id", $content);
+
+        return $this->getContent($course, $lesson, $content);
+    }
+
+    protected function getContent($course = null, $lesson = null, $content = null) {
         /**
           * @todo Check for user access, if he is enrolled on the course, and check content rules
          */
         /**
           * @todo Migrar este código para um Model, dentro do módulo
          */
-        // SET CURRENT COURSE AND LESSON IF $set_as_current !== FALSE
-        if ($set_as_current !== FALSE) { 
+        $currentUser    = $this->getCurrentUser(true);
+        if (empty($lesson)) {
+            // GET LESSON ID FROM COURSE
+            if (empty($course)) {
+                // GET FIRST COURSE FROM USER
+                $userCourses = $currentUser->getUserCourses(array('return_objects' => true));
+                if (count($userCourses) == 0) {
+                    return false;
+                }
+                $firstCourse = reset($userCourses);
+                $course = $firstCourse->course['id'];
+            } else {
+                $firstCourse = new MagesterCourse($course);
+            }
+            $userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
+            reset($userLessons);
+            $lesson = key($userLessons);
+
+            $this->module("settings")->put("course_id", $course);
+            $this->module("settings")->put("lesson_id", $lesson);
 
         }
-        $currentUser    = $this->getCurrentUser(true);
 
         $currentLesson = new MagesterLesson($lesson);
         $currentContent = new MagesterContentTree($currentLesson);
@@ -102,7 +153,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         // GET USER CLASS
         $courseClass = $classeData[0]['classe_id'];
 
-        $filterIterator = new MagesterVisitableFilterIterator(
+        $filterIterator = //new MagesterVisitableFilterIterator(
             new MagesterContentCourseClassFilterIterator(
                 new MagesterNodeFilterIterator(
                     new RecursiveIteratorIterator(
@@ -111,37 +162,57 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                     )
                 ), 
                 $courseClass
-            )
-        );
+            );
+        //);
 
-        $unseenContent = array();
-        $contentID = false;
-        foreach (new MagesterUnseenFilterIterator($filterIterator) as $key => $value) {
-            $contentID = $key;
-            break;
-        }
-        if ($contentID == FALSE) {
-            foreach (new MagesterSeenFilterIterator($filterIterator) as $key => $value) {
-                $contentID = $key;
+        if (is_null($content)) {
+            $unseenContent = array();
+            $content = false;
+            foreach (new MagesterVisitableFilterIterator(new MagesterUnseenFilterIterator($filterIterator)) as $key => $value) {
+                $content = $key;
                 break;
             }
+            if ($content == FALSE) {
+                foreach (new MagesterVisitableFilterIterator(new MagesterSeenFilterIterator($filterIterator)) as $key => $value) {
+                    $content = $key;
+                    break;
+                }
+            }
+        } else {
+            $found = false;
+            foreach ($filterIterator as $key => $value) {
+                if ($content == $key) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                return $this->invalidRequestError();
+            }
         }
-        //var_dump($currentContent->getPreviousNodes($contentID));
-        //var_dump($currentContent->getNextNodes($contentID));
 
-        /**
-          * @todo ESPELHAR NESTE MÉTODO PARA GERAR A ÁRVORE DE CONTEÙDO, PARA VISUALIZAÇÃO 
-          * var_dump($currentContent->toPathStrings($filterIterator));
-         */
+        $prevNodes = $currentContent->getPreviousNodes($content);
+        //var_dump($prevNodes);
+        $prevNode = end($prevNodes);
+        $nextNodes = $currentContent->getNextNodes($content);
+        $nextNode = reset($nextNodes);
 
-        $currentUnit = new MagesterUnit($contentID);
+        $currentUnit = new MagesterUnit($content);
+
         $unitArray = $currentUnit->getArrayCopy();
+
+        $unitArray['prev'] = $prevNode;
+        $unitArray['next'] = $nextNode;
+
+        $unitArray['course_id'] = $course;
+        $unitArray['lesson_id'] = $lesson;
+
+        
 
         if (unserialize($unitArray['metadata'])) {
             $unitArray['metadata'] = unserialize($unitArray['metadata']);
         }
         return $unitArray;
-
     }
 
 }

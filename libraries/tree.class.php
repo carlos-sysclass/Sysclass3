@@ -778,8 +778,8 @@ class MagesterNodeFilterIterator extends FilterIterator
      */
     function __construct($it, $mode = false, $evaluate = true)
     {
-     parent::__construct($it);
-     $this -> mode = $mode;
+        parent::__construct($it);
+        $this -> mode = $mode;
         $this -> evaluate = $evaluate;
     }
     function accept()
