@@ -4,7 +4,7 @@
 	<form {$T_LOGIN_FORM.attributes}>
 		{$T_LOGIN_FORM.hidden}
 	<div class="logo">
-		<img alt="" src="{PLico_GetResource file='/images/logo-login.png'}"> 
+		<img alt="" src="{PLico_GetResource file='/images/logo_sysclass.png'}"> 
 	</div>
 
 		<div class="element_from_left" style="opacity: 1; left: 0px;">            
