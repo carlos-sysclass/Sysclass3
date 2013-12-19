@@ -282,8 +282,14 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
 				this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
 
-				this.collection.fetch();
-				this.model.fetch();
+				var self = this;
+
+				this.collection.fetch({
+					success : function(collection, response, options) {
+						self.model.fetch();
+					}
+				});
+				
 		    },
 			renderCourse : function() {
 				var model = this.collection.get(this.model.get("course_id"));
