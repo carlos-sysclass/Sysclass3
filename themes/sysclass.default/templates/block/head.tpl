@@ -6,6 +6,8 @@
 <meta content="" name="author" />
 <meta name="MobileOptimized" content="320">
 
+<link rel="icon" type="image/ico" href="{Plico_GetResource file='images/favicon.ico'}" />
+
 {foreach item="css" from=$T_STYLESHEETS}
 	<link rel="stylesheet" href="{Plico_GetResource file=$css}" />
 {/foreach}
