@@ -1,60 +1,56 @@
 #login_form {
-	width: 30%;
-	margin: 100px auto auto;
+	width:30%;
+	margin:10px auto auto;
 }
 #login_form	.logo img {
-	margin-bottom: 25px;
-	max-width: 450px;
+	margin-bottom:80px;
+	max-width:280px;
 }
-#login_form input[type="text"], #login_form input[type="password"], #login_form textarea, #login_form input[type="submit"]  {
-	color: #999999;
-	font-family: 'Montserrat', sans-serif;
-	font-size: 18px;
-	text-transform:uppercase;
-	height: auto;
-	padding: 10px 5%;
-	background:#fff;
-	border: 1px solid #9F9F9F;
-    border-radius: 7px;
-	margin-bottom:25px;
-
-	box-shadow: 0 0px 3px rgba(0, 0, 0, 0.22) inset;
-	-moz-box-shadow: 0 0px 3px rgba(0, 0, 0, 0.22) inset;
-	-webkit-box-shadow: 0 0px 3px rgba(0, 0, 0, 0.22) inset;
-	-o-box-shadow: 0 0px 3px rgba(0, 0, 0, 0.22) inset;
-	transition: all 0.2s linear;
-	-moz-transition: all 0.2s linear;
-	-webkit-transition: all 0.2s linear;
-	-o-transition: all 0.2s linear;
-	width: 50%;
-	text-align: center;
+#login_form input[type="text"],#login_form input[type="password"],#login_form textarea,#login_form input[type="submit"] {
+	color:#005999;
+	font-family:'Montserrat',sans-serif;
+	font-size:18px;
+	text-transform:inherit;
+	letter-spacing:2px;
+	height:auto;
+	padding:10px 0%;
+	background:rgba(255,255,255,1);
+	border:1px solid #9F9F9F;
+	border-radius:3px;
+	margin-bottom:20px;
+	box-shadow:0 0px 3px rgba(0,0,0,0.22) inset;
+	-moz-box-shadow:0 0px 3px rgba(0,0,0,0.22) inset;
+	-webkit-box-shadow:0 0px 3px rgba(0,0,0,0.22) inset;
+	-o-box-shadow:0 0px 3px rgba(0,0,0,0.22) inset;
+	transition:all 0.2s linear;
+	-moz-transition:all 0.2s linear;
+	-webkit-transition:all 0.2s linear;
+	-o-transition:all 0.2s linear;
+	width:60%;
+	text-align:center;
 }
 #login_form input[type="submit"] {
-	width: 60%;
+	width:60%;
 }
 #login_form input.btn-green {
 	background:#17a900;
-	color: #fff;
-	border-color: #959595;
+	color:#fff;
+	border-color:#959595;
 }
 #login_form .btn-blue {
 	background:#005991;
-	color: #fff;
-	border-color: #959595;
+	color:#fff;
+	border-color:#959595;
 }
-
-
-
-#login_form input[type=text]:focus, #login_form input[type=password]:focus, #login_form textarea:focus {
-	background-color: #e1e1e1;
+#login_form input[type=text]:focus,#login_form input[type=password]:focus,#login_form textarea:focus {
+	background-color:#ffffff;
 }
-
 #login_form textarea {
 	height:90px;
 	resize:none;
 }
 #login_form .shortcode_alertbox.box_red {
-    width: 78%;
-    margin-left: auto;
-    margin-right: auto;
+	width:78%;
+	margin-left:auto;
+	margin-right: auto;
 }

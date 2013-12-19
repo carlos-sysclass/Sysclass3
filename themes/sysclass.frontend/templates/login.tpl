@@ -14,7 +14,7 @@
 			<input class="{$T_LOGIN_FORM.password.class}" type="{$T_LOGIN_FORM.password.type}" autocomplete="off" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" />
 		</div>
 		<div class="element_from_left" style="opacity: 1; left: 0px;">   
-			<input type="{$T_LOGIN_FORM.submit_login.type}" name="{$T_LOGIN_FORM.submit_login.name}" id="{$T_LOGIN_FORM.submit_login.name}" value="Go to Sysclass" class="btn-green" />
+			<input type="{$T_LOGIN_FORM.submit_login.type}" name="{$T_LOGIN_FORM.submit_login.name}" id="{$T_LOGIN_FORM.submit_login.name}" value="Enter" class="btn-green" />
  		</div>
 
 		{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
@@ -29,11 +29,6 @@
 				{/if}
 			</div>
 		{/if}
-
-
-		<a class="sysclass-button large outline btn-blue" href="#we-are-sysclass">VISIT OUR WEBSITE</a>
-		<a class="sysclass-button large outline btn-blue" href="http://layout.sysclass.com/login">DEMO ENVIRONMENT</a>
-
 
  		<!--
         <button name="" type="submit" class="sysclass-button medium outline" value="{$T_LOGIN_FORM.submit_login.value}" >
