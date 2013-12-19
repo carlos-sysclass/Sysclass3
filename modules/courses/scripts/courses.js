@@ -286,7 +286,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'sync', function() {
 					self.renderCourse();
 					self.renderLesson();
-				);
+				});
 
 				var self = this;
 
