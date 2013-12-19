@@ -59,6 +59,19 @@
 			</a>
 		</div>
 	</div>
+	<div class="clearfix"></div>
+	<div class="col-md-12">
+		<% if (prev != null) { %>
+			<a href="#" class="btn btn-default prev">
+				<i class="icon-arrow-left"></i> Previous
+			</a>
+		<% } %>
+		<% if (next != null) { %>
+			<a href="#" class="btn btn-default pull-right next">
+				<i class="icon-arrow-right"></i> Next
+			</a>
+		<% } %>
+	</div>
 </script>
 <script type="text/template" id="courses-progress-item-template">
 	

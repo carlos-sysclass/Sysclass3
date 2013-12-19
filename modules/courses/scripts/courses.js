@@ -22,16 +22,28 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				}, this);
 
 				this.on("change:lesson_id", function() {
+					console.log("FETCHING CONTENT FROM LESSON");
+					this.unset("id");
+					this.fetch();
+				}, this);
+
+				this.on("change:id", function() {
 					console.log("FETCHING CONTENT");
 					this.fetch();
 				}, this);
 		    },
 		    defaults : {
-			    course_id : 0,
-			    lesson_id : 0
+			    course_id 	: 0,
+			    lesson_id 	: 0
 		    },
 		    urlRoot : function() {
-		    	return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");
+		    	/*
+		    	if (this.get("content_id") != undefined && this.get("content_id") != 0) {
+		    		return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id") + "/" + this.get("content_id");	
+		    	} else {
+		    		*/
+		    		return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");	
+		    	//}
 		    }
 			// 31/106
 		});
@@ -143,6 +155,10 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			el: $('#courses-content'),
 		    portlet: $('#courses-widget'),
 		    template: _.template($('#courses-content-template').html()),
+		    events : {
+		    	"click .prev"	: "prev",
+		    	"click .next" 	: "next"
+		    },
 		    initialize: function() {
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 
@@ -150,10 +166,22 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    },
 		    render : function() {
 		    	console.log(this.model.toJSON());
-		    	console.log(this.template(this.model.toJSON()));
+		    	//console.log(this.template(this.model.toJSON()));
 				this.$el.empty().show().append(
 		    		this.template(this.model.toJSON())
 		    	);
+		    },
+		    prev : function(e) {
+		    	e.preventDefault();
+		    	if (this.model.get("prev") != null) {
+		    		this.model.set("id", this.model.get("prev").id);	
+		    	}
+		    },
+		    next : function(e) {
+		    	e.preventDefault();
+				if (this.model.get("next") != null) {
+		    		this.model.set("id", this.model.get("next").id);
+		    	}
 		    }
 		});
 		var userProgressViewClass = Backbone.View.extend({

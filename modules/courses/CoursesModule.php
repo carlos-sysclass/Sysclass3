@@ -72,24 +72,34 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         return $courses;
     }
 
-/**
+    /**
      * Module Entry Point
      *
      * @url GET /content/:course/:lesson
-     * @url GET /content/:course/:lesson/:set_as_current
      */
-    public function getContentByCourseAndLessonAction($course, $lesson, $set_as_current = false)
+    public function getContentByCourseAndLessonAction($course, $lesson)
     {
+        // RETURN JUST THE content ID
+        return $this->getContent($course, $lesson, null);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /content/:course/:lesson/:content
+     */
+    public function getContentAction($course, $lesson, $content)
+    {
+        return $this->getContent($course, $lesson, $content);
+    }
+
+    protected function getContent($course, $lesson, $content = null) {
         /**
           * @todo Check for user access, if he is enrolled on the course, and check content rules
          */
         /**
           * @todo Migrar este código para um Model, dentro do módulo
          */
-        // SET CURRENT COURSE AND LESSON IF $set_as_current !== FALSE
-        if ($set_as_current !== FALSE) { 
-
-        }
         $currentUser    = $this->getCurrentUser(true);
 
         $currentLesson = new MagesterLesson($lesson);
@@ -102,7 +112,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         // GET USER CLASS
         $courseClass = $classeData[0]['classe_id'];
 
-        $filterIterator = new MagesterVisitableFilterIterator(
+        $filterIterator = //new MagesterVisitableFilterIterator(
             new MagesterContentCourseClassFilterIterator(
                 new MagesterNodeFilterIterator(
                     new RecursiveIteratorIterator(
@@ -111,37 +121,52 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                     )
                 ), 
                 $courseClass
-            )
-        );
+            );
+        //);
 
-        $unseenContent = array();
-        $contentID = false;
-        foreach (new MagesterUnseenFilterIterator($filterIterator) as $key => $value) {
-            $contentID = $key;
-            break;
-        }
-        if ($contentID == FALSE) {
-            foreach (new MagesterSeenFilterIterator($filterIterator) as $key => $value) {
-                $contentID = $key;
+        if (is_null($content)) {
+            $unseenContent = array();
+            $content = false;
+            foreach (new MagesterVisitableFilterIterator(new MagesterUnseenFilterIterator($filterIterator)) as $key => $value) {
+                $content = $key;
                 break;
             }
+            if ($content == FALSE) {
+                foreach (new MagesterVisitableFilterIterator(new MagesterSeenFilterIterator($filterIterator)) as $key => $value) {
+                    $content = $key;
+                    break;
+                }
+            }
+        } else {
+            $found = false;
+            foreach ($filterIterator as $key => $value) {
+                if ($content == $key) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                return $this->invalidRequestError();
+            }
         }
-        //var_dump($currentContent->getPreviousNodes($contentID));
-        //var_dump($currentContent->getNextNodes($contentID));
 
-        /**
-          * @todo ESPELHAR NESTE MÉTODO PARA GERAR A ÁRVORE DE CONTEÙDO, PARA VISUALIZAÇÃO 
-          * var_dump($currentContent->toPathStrings($filterIterator));
-         */
+        $prevNodes = $currentContent->getPreviousNodes($content);
+        //var_dump($prevNodes);
+        $prevNode = end($prevNodes);
+        $nextNodes = $currentContent->getNextNodes($content);
+        $nextNode = reset($nextNodes);
 
-        $currentUnit = new MagesterUnit($contentID);
+        $currentUnit = new MagesterUnit($content);
+
         $unitArray = $currentUnit->getArrayCopy();
+
+        $unitArray['prev'] = $prevNode;
+        $unitArray['next'] = $nextNode;
 
         if (unserialize($unitArray['metadata'])) {
             $unitArray['metadata'] = unserialize($unitArray['metadata']);
         }
         return $unitArray;
-
     }
 
 }
