@@ -3,6 +3,10 @@ abstract class SysclassModule extends AbstractSysclassController
 {   
     protected $module_id = null;
     protected $module_folder = null;
+    public function __construct() {
+        
+    }
+    
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="")
     {
         $plico = PlicoLib::instance();

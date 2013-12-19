@@ -75,11 +75,27 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     /**
      * Module Entry Point
      *
+     * @url GET /content
+     */
+    public function getContentBySettingsAction()
+    {
+        // RETURN JUST THE content ID
+        // SAVE COURSE AND LESSON, ON USERS SETTINGS
+        $settings = $this->module("settings")->getSettings(true);
+        return $this->getContent($settings['course_id'], $settings['lesson_id'], null);
+    }
+
+    /**
+     * Module Entry Point
+     *
      * @url GET /content/:course/:lesson
      */
     public function getContentByCourseAndLessonAction($course, $lesson)
     {
         // RETURN JUST THE content ID
+        // SAVE COURSE AND LESSON, ON USERS SETTINGS
+        $this->module("settings")->put("course_id", $course);
+        $this->module("settings")->put("lesson_id", $lesson);
         return $this->getContent($course, $lesson, null);
     }
 
@@ -90,10 +106,14 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
      */
     public function getContentAction($course, $lesson, $content)
     {
+        $this->module("settings")->put("course_id", $course);
+        $this->module("settings")->put("lesson_id", $lesson);
+        $this->module("settings")->put("content_id", $content);
+
         return $this->getContent($course, $lesson, $content);
     }
 
-    protected function getContent($course, $lesson, $content = null) {
+    protected function getContent($course = null, $lesson = null, $content = null) {
         /**
           * @todo Check for user access, if he is enrolled on the course, and check content rules
          */
@@ -101,6 +121,27 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
           * @todo Migrar este código para um Model, dentro do módulo
          */
         $currentUser    = $this->getCurrentUser(true);
+        if (empty($lesson)) {
+            // GET LESSON ID FROM COURSE
+            if (empty($course)) {
+                // GET FIRST COURSE FROM USER
+                $userCourses = $currentUser->getUserCourses(array('return_objects' => true));
+                if (count($userCourses) == 0) {
+                    return false;
+                }
+                $firstCourse = reset($userCourses);
+                $course = $firstCourse->course['id'];
+            } else {
+                $firstCourse = new MagesterCourse($course);
+            }
+            $userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
+            reset($userLessons);
+            $lesson = key($userLessons);
+
+            $this->module("settings")->put("course_id", $course);
+            $this->module("settings")->put("lesson_id", $lesson);
+
+        }
 
         $currentLesson = new MagesterLesson($lesson);
         $currentContent = new MagesterContentTree($currentLesson);
@@ -162,6 +203,11 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
 
         $unitArray['prev'] = $prevNode;
         $unitArray['next'] = $nextNode;
+
+        $unitArray['course_id'] = $course;
+        $unitArray['lesson_id'] = $lesson;
+
+        
 
         if (unserialize($unitArray['metadata'])) {
             $unitArray['metadata'] = unserialize($unitArray['metadata']);
