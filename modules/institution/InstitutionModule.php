@@ -38,13 +38,20 @@ class InstitutionModule extends SysclassModule implements ISectionMenu, IWidgetC
 
     public function getWidgets() {
         $this->putModuleScript("institution");
-        
+        $data = array();
+        // GET USER POLO
+        $currentUser = $this->getCurrentUser(true);
+
+        $data['polo'] = $currentUser->getUserPolo();
+        //var_dump($data['polo']);
+
     	return array(
     		'institution.overview' => array(
    				//'title' 	=> 'User Overview',
    				'template'	=> $this->template("overview.widget"),
-                'panel'     => true
+                'panel'     => true,
                 //'box'       => 'blue'
+                'data'      => $data
     		)
     	);
     }

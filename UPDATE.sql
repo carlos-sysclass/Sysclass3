@@ -3221,3 +3221,14 @@ ALTER TABLE `mod_tutoria` CHANGE `answer_timestamp` `answer_timestamp` INT( 10 )
 ALTER TABLE `mod_tutoria` ADD `aproved` TINYINT( 1 ) NOT NULL DEFAULT '0';
 ALTER TABLE `mod_tutoria` CHANGE `aproved` `approved` TINYINT( 1 ) NOT NULL DEFAULT '0';
 
+
+/* 2013-12-20 */
+CREATE TABLE IF NOT EXISTS `user_settings` (
+  `user_id` bigint(20) NOT NULL,
+  `item` varchar(100) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`user_id`,`item`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `module_xuser` ADD `country_code` VARCHAR( 3 ) NOT NULL DEFAULT 'BR' AFTER `uf` ;
+

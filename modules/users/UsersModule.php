@@ -72,6 +72,35 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
     {
         $currentUser    = $this->getCurrentUser(true);
         // PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
+        $this->putComponent("select2");
+        $this->putComponent("datepicker");
+
+        // GET SUMMARY
+        $summaryModules = $this->getModules("ISummarizable");
+        $summary = array();
+        foreach($summaryModules as $key => $mod) {
+            $summary[$key] = $mod->getSummary();
+        }
+        $summary = $this->module("layout")->sortModules("users.overview.notification.order", $summary);
+
+        $languages = MagesterSystem :: getLanguages(true, true);
+
+        $timezones = sC_getTimezones();
+
+        $userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
+        $edit_user = array_merge($currentUser->user, $userDetails);
+
+        $userPolo = $currentUser->getUserPolo();
+        var_dump($userPolo);
+
+        $this->putData(array(
+            'languages' => $languages,
+            'timezones' => $timezones,
+            'summary'   => $summary,
+            'edit_user' => $edit_user,
+            'user_polo' => $userPolo
+        ));
+
         $this->putCss("css/pages/profile");
         $this->display("profile.tpl");
     }

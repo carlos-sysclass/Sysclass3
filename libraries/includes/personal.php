@@ -1,53 +1,29 @@
 <?php
 
 /**
-
  * Module for personal information
-
  *
-
  * This file is used for user management - either personal or by an administrator
-
  *
-
  * Roadmap: (search for the following titles)
-
  * - Check the user type and define the currentUser instance
-
  * - [HCD] Access Control
-
  * - Tabberajax calculation
-
  * - [HCD] Evaluation Management -> exit
-
  * - Add User or Edit User
-
  * --- Create $editedUser, [HCD] $editedEmployee in case of submit
-
  *
-
  * --- Submit posted forms: lessons, courses, groups, avatar, [HCD] job descriptions, [HCD] skills
-
  * --- Create the add/edit user form
-
  * --- Submit posted form: personal information
-
  *
-
  * --- [HCD] Retrieve all Employee information to appear on the form: job descriptions, skills, evaluations
-
  * --- [HCD] Include file manager
-
  * --- Retrieve all User information to appear on the form: personal information, lessons, courses, certificates, groups
-
  * -
-
  *
-
  * @package SysClass
-
  * @version 1.0
-
  */
 
 //This file cannot be called directly, only included.
@@ -222,13 +198,9 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
   $message = $e -> getMessage().' ('.$e -> getCode().') &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
  }
  /**
-
 	 * The avatar form has changed since 3.6.0.
-
 	 * In the personal mode it is a part of the user profile tab and contains other information as well
-
 	 * which are submitted through it.
-
 	 */
  if ($editedUser -> user['login'] == $currentUser -> user['login']) { //The user is editing himself
   if ($currentUser -> getType() == "administrator") {
@@ -667,6 +639,7 @@ if (isset($_GET['add_evaluation']) || isset($_GET['edit_evaluation'])) {
  } elseif (isset($_GET['edit_user']) && sC_checkParameter($_GET['edit_user'], 'login')) {
    // In classic SysClass, only the administrator may change someone else's data
    ($currentUser -> getType() == "administrator") ? $post_target = "?ctg=users&edit_user=".$_GET['edit_user'] : $post_target = "?ctg=personal&op=account";
+
   $form = new HTML_QuickForm("change_users_form", "post", basename($_SERVER['PHP_SELF']).$post_target, "", null, true);
   $form -> registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
   if (!$editedUser -> isLdapUser) { //needs to check ldap

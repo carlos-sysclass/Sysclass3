@@ -8,6 +8,50 @@ class LayoutModule extends SysclassModule
 	protected $blankWidget = null;
 	protected $widgets = null;
 
+    public function init() {
+        // DEFAULT LAYOUT SPEC, MUST BE OVERRRIDEN
+        $modules = $this->getModules();
+        
+        $this->layoutSpec = array(
+            /**
+              * @todo THIS DATA MUST BE PERSITED ON DB, OR OTHER MEANS
+             */
+            "rows" => array(
+                array(
+                    1   => array("weight" => "8"),
+                    2   => array("weight" => "4")
+                ),
+                array(
+                    3   => array("weight" => "12")
+                ),
+            ),
+            'widgets' => array(
+                1 => array(
+                    "users.overview",
+                    "news.latest",
+                    "courses.overview",
+                    "tutoria.widget"
+                ),
+                2 => array(
+                    "institution.overview",
+                    "advertising",
+                    "messages.contactus",
+                    "messages.help",
+                    "messages.improvements"
+                ),
+                3 => array(
+                    "calendar"
+                )
+            ),
+            'sortable'  => false,
+            'resources' => array(
+                "default"   => array_keys($modules),
+                "layout.sections.topbar"    => array("messages", "forum"),
+                "users.overview.notification.order" => array("messages", "news")
+            )
+        );
+    }
+
     protected function getResource($resourceID) {
         if (array_key_exists($resourceID, $this->layoutSpec['resources'])) {
             return $this->layoutSpec['resources'][$resourceID];
@@ -35,44 +79,6 @@ class LayoutModule extends SysclassModule
     }
     public function getLayout() {
         $modules = $this->getModules();
-        $this->layoutSpec = array(
-            /**
-              * @todo THIS DATA MUST BE PERSITED ON DB, OR OTHER MEANS
-             */
-            "rows" => array(
-                array(
-                    1   => array("weight" => "8"),
-                    2   => array("weight" => "4")
-                ),
-                array(
-                    3   => array("weight" => "12")
-                ),
-            ),
-            'widgets' => array(
-            	1 => array(
-            		"users.overview",
-            		"news.latest",
-            		"courses.overview",
-            		"tutoria.widget"
-            	),
-            	2 => array(
-            		"institution.overview",
-            		"advertising",
-            		"messages.contactus",
-            		"messages.help",
-            		"messages.improvements"
-            	),
-            	3 => array(
-            		"calendar"
-            	)
-            ),
-            'sortable'  => false,
-            'resources' => array(
-                "default"   => array_keys($modules),
-                "layout.sections.topbar"    => array("messages", "forum"),
-                "users.overview.notification.order" => array("messages", "news")
-            )
-        );
 
         $modules_size = count($modules);
         $defaultArray = $this->layoutSpec['resources']['default'];

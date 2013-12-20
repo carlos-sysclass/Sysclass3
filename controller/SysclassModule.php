@@ -57,6 +57,12 @@ abstract class SysclassModule extends AbstractSysclassController
     protected function template($template=NULL) {
         return $this->module_folder . "/templates/" . $template;
     }
+    protected function beforeDisplay() {
+        parent::beforeDisplay();
 
+        $this->putItem("module_basepath", $this->getBasePath());
+        $this->putItem("module_fullpath", $this->module_folder);
+        $this->putItem("module_tplpath", $this->module_folder. "/templates/");
+    }
 
 }

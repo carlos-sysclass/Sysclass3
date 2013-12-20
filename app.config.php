@@ -55,6 +55,37 @@ $plicoLib->add(
 	'main'
 );
 */
+/*
+$plicoLib->add("resources/components", array(
+	'name'	=> 'icheck',
+	'css'	=> array('css/plugins/icheck/all'),
+	'js'	=> array('js/plugins/icheck/jquery.icheck.min')
+));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'validate',
+	'js'	=> array('js/plugins/validation/jquery.validate.min', 'js/plugins/validation/additional-methods.min')
+));
+*/
+$plicoLib->add("resources/components", array(
+	'name'	=> 'datepicker',
+	'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
+	'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
+));
+/*
+$plicoLib->add("resources/components", array(
+	'name'	=> 'timepicker',
+	'css'	=> array('css/plugins/datepicker/datepicker', 'css/plugins/timepicker/bootstrap-timepicker.min'),
+	'js'	=> array('js/plugins/datepicker/bootstrap-datepicker', 'js/plugins/timepicker/bootstrap-timepicker.min')
+));
+*/
+$plicoLib->add("resources/components", array(
+	'name'	=> 'select2',
+	'css'	=> array('plugins/select2/select2_metro'),
+	'js'	=> array('plugins/select2/select2.min')
+));
+
+
+
 $plicoLib->concat(
 	'resources/sysclass.default/css',
 	array(
@@ -99,7 +130,6 @@ $plicoLib->concat(
 		'plugins/uniform/jquery.uniform.min',
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
-		'plugins/select2/select2.min',
 		
 		'plugins/strophe/strophe',
 		'plugins/strophe/strophe.roster',
@@ -110,6 +140,7 @@ $plicoLib->concat(
 
 		'scripts/app',
 		'scripts/sysclass',
+		'scripts/ui',
 		'scripts/utils.toastr',
 		'scripts/utils.strophe',
 		'scripts/portlets'
