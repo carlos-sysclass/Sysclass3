@@ -42,7 +42,7 @@ class InstitutionModule extends SysclassModule implements ISectionMenu, IWidgetC
     	return array(
     		'institution.overview' => array(
    				//'title' 	=> 'User Overview',
-   				'template'	=> $this->template("overview"),
+   				'template'	=> $this->template("overview.widget"),
                 'panel'     => true
                 //'box'       => 'blue'
     		)

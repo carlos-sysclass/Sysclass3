@@ -13,7 +13,6 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	    	this.collection.each(this.addOne.bind(this));
 	    },
 	    addOne : function(model) {
-	    	console.log(model.toJSON());
 			this.$el.append(this.itemTemplate(model.toJSON()));
 	    },
 	    update : function(model) {
@@ -42,7 +41,6 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 			if (mod.view == undefined) {
 				mod.view = new RosterViewClass({collection : col});
 			}
-			
 		});
 		/*
 		$SC.module("utils.strophe").on("xmpp:presence", function(presence) {
