@@ -83,6 +83,12 @@ $plicoLib->add("resources/components", array(
 	'css'	=> array('plugins/select2/select2_metro'),
 	'js'	=> array('plugins/select2/select2.min')
 ));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'pwstrength',
+	'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
+));
+
+
 
 
 

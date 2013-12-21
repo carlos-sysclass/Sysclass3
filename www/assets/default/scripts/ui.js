@@ -140,13 +140,36 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		}
 	};
 
+    this.handlePasswordStrengthChecker = function (context) {
+    	if($('.password_strength', context).length > 0) {
+    		//$(':password').pwstrength();
+    		
+    		$(".password_strength", context).each(function(el, i) {
+				$(this).pwstrength({
+                    raisePower: 1.4,
+                    minChar: 6,
+                    verdicts: ["Weak", "Normal", "Medium", "Strong", "Very Strong"],
+                    scores: [11, 21, 33, 40, 55],
+                    bootstrap3: true,
+	                container: "#pwd-container",
+	                viewports: {
+	                    progress: ".pwstrength_viewport_progress",
+	                    verdict: ".pwstrength_viewport_verdict"
+	                },
+                });
+    		});
+			
+    	};
+    };
+
 	this.refresh = function(context) {
 		this.handleTooltips(context);
 		this.handleValidate(context);
 		this.handleiCheck(context);
 		this.handleSelect2(context);
 		this.handleDatepickers(context);
-		this.handleTabs(context);		
+		this.handleTabs(context);	
+		this.handlePasswordStrengthChecker(context);
 	};
 
 	this.handleAction = function(action) {

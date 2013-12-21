@@ -270,6 +270,9 @@ class LoginController extends AbstractSysclassController
 		        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
 		        $message_type = "danger";
 		    }
+		    var_dump(md5("123456".G_MD5KEY));
+		    var_dump($message, $message_type);
+		    exit;
 		    $this->redirect(null, $message, $message_type);
 		}
 

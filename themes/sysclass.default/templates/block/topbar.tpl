@@ -202,13 +202,12 @@
 		   <li class="dropdown user">
 		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 		      <img alt="" src="{Plico_RelativePath file=$T_SMALL_USER_AVATAR.avatar}" width="{$T_SMALL_USER_AVATAR.width}"/>
-
-		      <span class="username">{$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname}</span>
+		      <span class="username">{$T_CURRENT_USER->user.name}</span>
 		      <i class="icon-angle-down"></i>
 		      </a>
 		      <ul class="dropdown-menu">
 		         <li>
-		            <a href="/profile/me"><i class="icon-user"></i> My Profile</a>
+		            <a href="/module/users/profile"><i class="icon-user"></i> My Profile</a>
 		         </li>
 		         <li>
 		            <a href="/module/messages/inbox">

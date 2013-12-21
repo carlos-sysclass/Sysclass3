@@ -225,21 +225,7 @@ function sC_NullifyRecursive(&$v, $k)
  */
 function sC_updateTableData($table, $fields, $where)
 {
-    $thisQuery = microtime(true);
-    //Prepend prefix to the table
-    $table = G_DBPREFIX.$table;
-    if (sizeof($fields) < 1) {
-        trigger_error(_EMPTYFIELDSLIST, E_USER_WARNING);
-        return false;
-    }
-    $fields = sC_addSlashes($fields);
-    //array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; $v=$k."=".$v;'));
-    array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1; $v= escapemaDBFieldsArray($k)."=".$v;'));
-    $sql = "update $table set ".implode(",", $fields)." where ".$where;
-    $result = $GLOBALS['db']->Execute($sql);
-
-    logProcess($thisQuery, $sql);
-    return $result;
+    return StaticBCController::_updateTableData($table, $fields, $where);
 }
 
 /**

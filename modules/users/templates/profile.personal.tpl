@@ -1,6 +1,5 @@
-<form role="form" action="#">
+<form role="form" class="" method="post" action="{$T_FORM_ACTIONS.personal}">
 	<div class="form-body">
-
 		<div class="form-group">
 			<label class="control-label">First Name</label>
 			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="Name" class="form-control" />
@@ -21,15 +20,13 @@
 			<label class="control-label">Birthday</label>
 			<div class="input-group">                                       
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
-				<input type="text" readonly class="form-control datepick" data-format="mm/dd/yyyy" data-date-view-mode="years">
+				<input type="text" name="data_nascimento" value="{$T_EDIT_USER.data_nascimento}" readonly class="form-control datepick" data-format="{$T_SETTINGS_.js_date_fmt}" data-date-view-mode="years">
 			</div>
 		</div>
 
-
-
 		<div class="form-group">
 			<label class="control-label">Language</label>
-			<select name="language" class="form-control select2-me" data-placeholder="Select...">
+			<select name="languages_NAME" class="form-control select2-me" data-placeholder="Select...">
 			{foreach $T_LANGUAGES as $key => $value}
 				<option value="{$key}" {if $key == $T_EDIT_USER.languages_NAME}selected="selected"{/if}>{$value}</option>
 			{/foreach}
@@ -45,7 +42,7 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label">About You</label>
-			<textarea class="form-control" rows="4" placeholder="Talk about you.."></textarea>
+			<textarea class="form-control" name="short_description" rows="4" placeholder="Talk about you..">{$T_EDIT_USER.short_description}</textarea>
 		</div>
 		<!-- 
 Senha (deixe em branco para não alterar): 
@@ -96,5 +93,8 @@ Celular
 			<a href="#" class="btn default">Cancel</a>
 		</div>
 -->
+	</div>
+	<div class="margin-top-10">
+		<button class="btn green" type="submit">Save Changes</button>
 	</div>
 </form>

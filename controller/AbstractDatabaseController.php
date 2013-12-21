@@ -165,6 +165,40 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	        return false;
 	    }
 	}
+	/**
+	 * Update table data
+	 *
+	 * This function is used to update data to a database table. The data is formed as an associative
+	 * array, where the keys are column names and the values are the column data.
+	 * <br>Example:
+	 * <code>
+	 * $fields = array('name' => 'john', 'surname' => 'doe');
+	 * $result = sC_updateTableData('users', $fields, 'login=jdoe');
+	 * </code>
+	 * @param string $table The table to update data to
+	 * @param array $fields An associative array with the table cell data
+	 * @param string $where The where clause of the SQL Update.
+	 * @return mixed The query result, usually true or false.
+	 * @version 1.0
+	 */
+	public function _updateTableData($table, $fields, $where)
+	{
+	    $thisQuery = microtime(true);
+	    //Prepend prefix to the table
+	    $table = G_DBPREFIX.$table;
+	    if (sizeof($fields) < 1) {
+	        trigger_error(_EMPTYFIELDSLIST, E_USER_WARNING);
+	        return false;
+	    }
+	    $fields = sC_addSlashes($fields);
+	    //array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; $v=$k."=".$v;'));
+	    array_walk($fields, create_function('&$v, $k', 'if (is_string($v)) $v = "\'".$v."\'"; else if (is_null($v)) $v = "null"; else if ($v === false) $v = 0; else if ($v === true) $v = 1; $v= escapemaDBFieldsArray($k)."=".$v;'));
+	    $sql = "update $table set ".implode(",", $fields)." where ".$where;
+	    $result = $GLOBALS['db']->Execute($sql);
+
+	    logProcess($thisQuery, $sql);
+	    return $result;
+	}
 	public function _countTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 	{
 	    $thisQuery = microtime(true);

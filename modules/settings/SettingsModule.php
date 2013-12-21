@@ -1,4 +1,7 @@
 <?php 
+/**
+  * @todo think about move this module to PlicoLib
+ */
 class SettingsModule extends SysclassModule
 {
     protected $legalValues = array();
@@ -16,7 +19,11 @@ class SettingsModule extends SysclassModule
         $this->defaults = array(
             'course_id'     => null,
             'lesson_id'     => null,
-            'content_id'    => null
+            'content_id'    => null,
+            // @todo Create a hierachical method to get and save values
+            // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
+            'js_date_fmt'   => 'mm/dd/yyyy',
+            'php_date_fmt'  => 'm/d/Y'
         );
     }
     /**
@@ -96,6 +103,10 @@ class SettingsModule extends SysclassModule
                 $user['id'],
                 $key
             ));
+            if ($value === FALSE) {
+                // SEARCH ON DEFAULTS
+                return $this->defaults[$key];
+            }
             return $value;
         } else {
             return false;

@@ -90,6 +90,7 @@
 			</div>
 		</div>
 	</div>
+	<hr />
 	<div class="row" id="progress-content">
 		<div class="col-md-4">
 			<div class="easy-pie-chart">
@@ -135,24 +136,33 @@
 	</div>
 	<hr />
 	<div class="row">
-		<div class="col-md-8"><p><%= data %></p></div>
-
 		<div class="col-md-4">
 			<div class="list-group">
 				<a href="javascript: void(0);" class="list-group-item">
 					<dt class="text-center">{translateToken value='Topic'}:</dt>
 					<dd class="text-center text-primary"><%= name %></dd>
 				</a>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="list-group">
 				<a href="javascript: void(0);" class="list-group-item">
 					<dt class="text-center">{translateToken value='Professor'}:</dt>
 					<dd class="text-center text-primary"><%= metadata.publisher %></dd>
 				</a>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="list-group">
 				<a href="javascript: void(0);" class="list-group-item">
 					<dt class="text-center">{translateToken value='Conclusion'}:</dt>
 					<dd class="text-center text-primary">18/60</dd>
 				</a>
 			</div>
 		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12"><p><%= data %></p></div>
 	</div>
 </script>
 <script type="text/template" id="courses-progress-item-template">

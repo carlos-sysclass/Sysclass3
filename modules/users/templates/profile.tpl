@@ -34,8 +34,9 @@
                               Contact info
                            </a> 
                         </li>
-                        -->
+                        
                         <li ><a data-toggle="tab" href="#tab_3-2"><i class="icon-picture"></i> Change Avatar</a></li>
+                        -->
                         <li ><a data-toggle="tab" href="#tab_4-3"><i class="icon-lock"></i> Change Password</a></li>
                         <li ><a data-toggle="tab" href="#tab_5-4"><i class="icon-eye-open"></i> Privacity Settings</a></li>
                      </ul>
@@ -87,25 +88,8 @@
                            </form>
                         </div>
                         <div id="tab_4-3" class="tab-pane">
-                           <form action="#">
-                              <div class="form-group">
-                                 <label class="control-label">Current Password</label>
-                                 <input type="password" class="form-control" />
-                              </div>
-                              <div class="form-group">
-                                 <label class="control-label">New Password</label>
-                                 <input type="password" class="form-control" />
-                              </div>
-                              <div class="form-group">
-                                 <label class="control-label">Re-type New Password</label>
-                                 <input type="password" class="form-control" />
-                              </div>
-                              <div class="margin-top-10">
-                                 <a href="#" class="btn green">Change Password</a>
-                                 <a href="#" class="btn default">Cancel</a>
-                              </div>
-                           </form>
-                        </div>
+                           {include file="`$T_MODULE_TPLPATH`/profile.password.tpl"}
+                         </div>
                         <div id="tab_5-4" class="tab-pane">
                            <form action="#" class="">
                               <table class="table table-bordered table-striped">

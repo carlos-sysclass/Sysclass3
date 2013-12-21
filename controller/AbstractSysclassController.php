@@ -119,6 +119,10 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		// GET USER TOP BAR ICONS
 		if ($this->getCurrentUser()) {
 
+			$userSettings = $this->module("settings")->getSettings(true);
+
+			$this->putItem("SETTINGS_", $userSettings);
+
 			if (unserialize(self::$current_user -> user['additional_accounts'])) {
 				$accounts = unserialize(self::$current_user -> user['additional_accounts']);
 				$queryString = "'".implode("','", array_values($accounts))."'";

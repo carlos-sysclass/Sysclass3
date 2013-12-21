@@ -20,6 +20,12 @@
       <div class="page-container">
          <!-- BEGIN PAGE -->
          <div class="page-content">
+            {if isset($T_MESSAGE)}
+            <div class="alert alert-{$T_MESSAGE.type} alert-dismissable">
+               <button data-dismiss="alert" class="close" type="button"></button>
+               {$T_MESSAGE.message}
+            </div>
+            {/if}
             {block name="breadcrumb"}
             <!--
             <div class="row">
