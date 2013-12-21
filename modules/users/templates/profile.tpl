@@ -41,13 +41,13 @@
 		<!--BEGIN TABS-->
 		<div class="tabbable tabbable-custom tabbable-full-width">
 			<ul class="nav nav-tabs">
-				<li class=""><a href="#tab_1_1" data-toggle="tab">Overview</a></li>
+				<li class="active"><a href="#tab_1_1" data-toggle="tab">Overview</a></li>
 				<li class=""><a href="#tab_1_3" data-toggle="tab">Account</a></li>
-				<li class="active"><a href="#tab_1_4" data-toggle="tab">Your Courses</a></li>
+				<li class=""><a href="#tab_1_4" data-toggle="tab">Your Courses</a></li>
 				<li><a href="#tab_1_6" data-toggle="tab">Help</a></li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane" id="tab_1_1">
+				<div class="tab-pane active" id="tab_1_1">
 					{include file="`$T_MODULE_TPLPATH`/profile.overview.tpl"}
 				</div>
 				<!--tab_1_2-->
@@ -187,7 +187,7 @@
 					</div>
 				</div>
 				<!--end tab-pane-->
-				<div class="tab-pane active" id="tab_1_4">
+				<div class="tab-pane" id="tab_1_4">
 					{include file="`$T_MODULE_TPLPATH`/profile.courses.tpl"}
 				</div>
 				<!--end tab-pane-->

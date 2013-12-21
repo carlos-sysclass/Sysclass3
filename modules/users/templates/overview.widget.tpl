@@ -1,17 +1,18 @@
 {if isset($T_DATA.data.notification)}
 	{assign var="notifications" value=$T_DATA.data.notification}
 {/if}
+{assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
 	<div class="col-md-4" id="users-avatar">
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 		<a class="profile-edit btn btn-xs btn-primary" href="/module/users/profile">Edit</a>
 	</div>
 	<div class="col-md-3">
-		<h4>{$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname}</h4>
-		<p><strong>Class </strong>March 2013</p>
-		<p><strong>Location </strong>Dallas, TX, USA</p>
-		<p><strong>Language </strong>English</p>
-		<p><strong>GPA </strong>3.9</p>
+		<h4>{$user_details.name} {$user_details.surname}</h4>
+		<p><strong>Class </strong>XXXXXXX</p>
+		<p><strong>Location </strong>{$user_details.uf}, {$user_details.country_code}</p>
+		<p><strong>Language </strong>{$user_details.languages_NAME}</p>
+		<p><strong>GPA </strong>X.X</p>
 	</div>
 	<div class="col-md-5">
 		{if isset($notifications)}

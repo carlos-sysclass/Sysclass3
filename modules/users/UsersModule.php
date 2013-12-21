@@ -37,9 +37,15 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
 	}
 
 	public function getWidgets() {
+		$currentUser    = $this->getCurrentUser(true);
+
 		$modules = $this->getModules("ISummarizable");
 
+		$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
+		$userDetails = array_merge($currentUser->user, $userDetails);
+
 		$data = array();
+		$data['user_details'] = $userDetails;
 		$data['notification'] = array();
 
 		foreach($modules as $key => $mod) {
