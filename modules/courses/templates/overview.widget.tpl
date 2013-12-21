@@ -1,8 +1,8 @@
 <style type="text/css">
 	#courses-list {
-	    background: white;
-	    position: absolute;
-	    z-index: 100;
+		background: white;
+		position: absolute;
+		z-index: 100;
 	}
 
 </style>
@@ -17,6 +17,79 @@
 
 	</div>
 	<hr />
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-stat-col-5">
+			<div class="dashboard-stat dark-blue">
+				<div class="visual center">
+					<i class="icon-magic"></i>
+				</div>
+				<a href="#" class="more text-center">Classes</a>
+			</div>
+
+			<div class="dashboard-stat red">
+				<div class="visual center">
+					<i class="icon-picture"></i>
+				</div>
+				<a href="#" class="more text-center">Slides</a>
+			</div>
+
+			<div class="dashboard-stat purple">
+				<div class="visual center">
+					<i class="icon-pencil"></i>
+				</div>
+				<a href="#" class="more text-center">Exercises</a>
+			</div>
+
+			<div class="dashboard-stat green">
+				<div class="visual center">
+					<i class="icon-book"></i>
+				</div>
+				<a href="#" class="more text-center">Materials</a>
+			</div>
+
+			<div class="dashboard-stat yellow">
+				<div class="visual center">
+					<i class="icon-certificate"></i>
+				</div>
+				<a href="#" class="more text-center">Extras</a>
+			</div>
+
+			<div class="dashboard-stat yellow">
+				<div class="visual center">
+					<i class="icon-trophy"></i>
+				</div>
+				<a href="#" class="more text-center">Tests</a>
+			</div>
+
+			<div class="dashboard-stat green">
+				<div class="visual center">
+					<i class="icon-briefcase"></i>
+				</div>
+				<a href="#" class="more text-center">Grades</a>
+			</div>
+
+			<div class="dashboard-stat purple">
+				<div class="visual center">
+					<i class="icon-comments"></i>
+				</div>
+				<a href="#" class="more text-center">Attendance</a>
+			</div>
+
+			<div class="dashboard-stat red">
+				<div class="visual center">
+					<i class="icon-bar-chart"></i>
+				</div>
+				<a href="#" class="more text-center">Reports</a>
+			</div>
+
+			<div class="dashboard-stat dark-blue">
+				<div class="visual center">
+					<i class="icon-dropbox"></i>
+				</div>
+				<a href="#" class="more text-center">Dropbox</a>
+			</div>
+		</div>
+	</div>
 	<div class="row" id="progress-content">
 		<div class="col-md-4">
 			<div class="easy-pie-chart">

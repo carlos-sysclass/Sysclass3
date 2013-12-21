@@ -101,3 +101,14 @@ hr {
     right: 0;
     top: 0;
 }
+.dashboard-stat-col-5 .dashboard-stat {
+	float: left;
+    margin: 0 1% 12px;
+    width: 18%;
+}
+.dashboard-stat .visual.center {
+    float: none;
+    padding-left: 0;
+    width: auto;
+    text-align: center;
+}

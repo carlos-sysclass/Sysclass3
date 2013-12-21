@@ -3231,4 +3231,5 @@ CREATE TABLE IF NOT EXISTS `user_settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `module_xuser` ADD `country_code` VARCHAR( 3 ) NOT NULL DEFAULT 'BR' AFTER `uf` ;
+ALTER TABLE `module_xuser` ADD `website` VARCHAR( 150 ) NOT NULL ;
 

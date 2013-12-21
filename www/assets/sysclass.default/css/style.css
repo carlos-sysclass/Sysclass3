@@ -2852,7 +2852,7 @@ Dashboard stats
 }
 
 .dashboard-stat.dark-blue .more { 
-  background-color: #00591;
+  background-color: #005291;
 } 
 
 .dashboard-stat.green {
@@ -2885,6 +2885,14 @@ Dashboard stats
 
 .dashboard-stat.purple .more { 
   background-color: #6e1881;
+} 
+
+.dashboard-stat.dark {
+  background-color: #555555;
+}
+
+.dashboard-stat.dark .more { 
+  background-color: #222222;
 } 
 
 

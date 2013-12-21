@@ -91,7 +91,6 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
         $edit_user = array_merge($currentUser->user, $userDetails);
 
         $userPolo = $currentUser->getUserPolo();
-        var_dump($userPolo);
 
         $this->putData(array(
             'languages' => $languages,
