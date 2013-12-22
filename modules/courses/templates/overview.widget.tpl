@@ -11,85 +11,36 @@
 	</div>
 </div>
 
-<h4 class="text-center" id="lessons-title">jklasdf</h4>
+<h4 class="text-center" id="lessons-title"></h4>
 <div>
 	<div class="container" id="courses-content">
 
 	</div>
+	<!--
 	<hr />
-	<div class="row">
+	 <div class="row">                    
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-stat-col-5">
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-magic"></i>
-				</div>
-				<a href="#" class="more text-center">Classes</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-picture"></i>
-				</div>
-				<a href="#" class="more text-center">Slides</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
+			<div class="dashboard-stat dark-blue small">
 				<div class="visual center">
 					<i class="icon-pencil"></i>
 				</div>
 				<a href="#" class="more text-center">Exercises</a>
 			</div>
-
-			<div class="dashboard-stat dark-blue">
+			<div class="dashboard-stat dark-blue small">
 				<div class="visual center">
 					<i class="icon-book"></i>
 				</div>
 				<a href="#" class="more text-center">Materials</a>
 			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-certificate"></i>
-				</div>
-				<a href="#" class="more text-center">Extras</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
+			<div class="dashboard-stat dark-blue small">
 				<div class="visual center">
 					<i class="icon-trophy"></i>
 				</div>
 				<a href="#" class="more text-center">Tests</a>
 			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-briefcase"></i>
-				</div>
-				<a href="#" class="more text-center">Grades</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-comments"></i>
-				</div>
-				<a href="#" class="more text-center">Attendance</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-bar-chart"></i>
-				</div>
-				<a href="#" class="more text-center">Reports</a>
-			</div>
-
-			<div class="dashboard-stat dark-blue">
-				<div class="visual center">
-					<i class="icon-dropbox"></i>
-				</div>
-				<a href="#" class="more text-center">Dropbox</a>
-			</div>
 		</div>
 	</div>
+	-->
 	<hr />
 	<div class="row" id="progress-content">
 		<div class="col-md-4">
@@ -124,7 +75,7 @@
 			<% } %>
 		</div>
 		<div class="col-md-8">
-			<h5 class="text-center"><%= name %></h5>
+			<h5 class="text-center">{translateToken value='Topic'}:</strong> <%= name %></h5>
 		</div>
 		<div class="col-md-2">
 			<% if (next != null) { %>
@@ -136,33 +87,47 @@
 	</div>
 	<hr />
 	<div class="row">
-		<div class="col-md-4">
-			<div class="list-group">
-				<a href="javascript: void(0);" class="list-group-item">
-					<dt class="text-center">{translateToken value='Topic'}:</dt>
-					<dd class="text-center text-primary"><%= name %></dd>
-				</a>
-			</div>
+		<div class="col-md-12">
+			<div class="tabbable-custom ">
+				<ul class="nav nav-tabs ">
+					<li class="active">
+						<a data-toggle="tab" href="#tab_classes"><i class="icon-magic"></i> Classes</a>
+					</li>
+					<li class="">
+						<a data-toggle="tab" href="#tab_exercises"><i class="icon-pencil"></i> Exercises</a>
+					</li>
+					<li class="">
+						<a data-toggle="tab" href="#tab_materials"><i class="icon-book"></i> Materials</a>
+					</li>
+					<li class="pull-right">
+						<a data-toggle="tab" href="#tab_class_info">
+							<i class="icon-info-sign"></i> Class Info 
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+				   <div id="tab_classes" class="tab-pane active">
+					<p><%= data %></p>
+				   </div>
+				   <div id="tab_exercises" class="tab-pane">
+					   <div class="alert alert-info">
+							 <span class="text-info"><i class="icon-warning-sign"></i></span>
+							 Ops! There's any exercises posted for this class
+					   </div>
+				   </div>
+				   <div id="tab_materials" class="tab-pane">
+					   <div class="alert alert-info">
+							 <span class="text-info"><i class="icon-warning-sign"></i></span>
+							 Ops! There's any materials posted for this class
+					   </div>
+				   </div>
+				   <div id="tab_class_info" class="tab-pane">
+				   		@todo SHOW HERE CLASS INFO
+
+				   </div>
+				</div>
+			 </div>
 		</div>
-		<div class="col-md-4">
-			<div class="list-group">
-				<a href="javascript: void(0);" class="list-group-item">
-					<dt class="text-center">{translateToken value='Professor'}:</dt>
-					<dd class="text-center text-primary"><%= metadata.publisher %></dd>
-				</a>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="list-group">
-				<a href="javascript: void(0);" class="list-group-item">
-					<dt class="text-center">{translateToken value='Conclusion'}:</dt>
-					<dd class="text-center text-primary">18/60</dd>
-				</a>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12"><p><%= data %></p></div>
 	</div>
 </script>
 <script type="text/template" id="courses-progress-item-template">

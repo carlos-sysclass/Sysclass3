@@ -112,3 +112,20 @@ hr {
     width: auto;
     text-align: center;
 }
+
+.dashboard-stat.small .visual {
+    height: 55px;
+}
+
+.dashboard-stat.small .visual i {
+    color: #FFFFFF;
+    font-size: 40px;
+    line-height: 40px;
+}
+.navbar-nav.nopadding > li > a {
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+.tabbable-custom .nav-tabs > li { 
+	margin-right: 0px;
+}

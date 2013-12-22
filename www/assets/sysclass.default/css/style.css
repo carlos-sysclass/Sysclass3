@@ -1427,7 +1427,7 @@ Portlets
 
 
 .portlet > .portlet-body.dark-blue, .portlet.dark-blue {
-  background-color: #005991 !important;
+  background-color: #005999 !important;
 }
 
 .portlet > .portlet-body.red, .portlet.red {
@@ -1603,7 +1603,7 @@ Box portlet
 }
 
 .portlet.box.dark-blue > .portlet-title {
-  background-color: #005991;
+  background-color: #005999;
 } 
 
 .portlet.box.dark-blue {  
@@ -2852,7 +2852,7 @@ Dashboard stats
 }
 
 .dashboard-stat.dark-blue .more { 
-  background-color: #005291;
+  background-color: #005999;
 } 
 
 .dashboard-stat.green {
