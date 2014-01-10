@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-5">
-		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
+		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
 		<br />
 		<p class="text-center">
 			<a href="http://www.ult.edu.br" target="_blank">www.ult.edu.br</a>
