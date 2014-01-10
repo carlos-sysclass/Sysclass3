@@ -25,7 +25,8 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
                     'title'     => self::$t->translate('Announcements'),
                     'template'  => $this->template("news.widget"),
                     'icon'      => 'bell',
-                    'box'       => 'dark-blue',
+                    'box'       => 'dark-blue tabbable',
+                    
                     'tools'		=> array(
                         'search'        => true,
                     	'reload'	    => 'javascript:void(0);',

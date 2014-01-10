@@ -91,14 +91,18 @@
 			<div class="tabbable-custom ">
 				<ul class="nav nav-tabs ">
 					<li class="active">
-						<a data-toggle="tab" href="#tab_classes"><i class="icon-magic"></i> Classes</a>
+						<a data-toggle="tab" href="#tab_classes"><i class="icon-magic"></i> Video-Class</a>
+					</li>
+					<li class="">
+						<a data-toggle="tab" href="#tab_materials"><i class="icon-book"></i> Materials</a>
 					</li>
 					<li class="">
 						<a data-toggle="tab" href="#tab_exercises"><i class="icon-pencil"></i> Exercises</a>
 					</li>
 					<li class="">
-						<a data-toggle="tab" href="#tab_materials"><i class="icon-book"></i> Materials</a>
+						<a data-toggle="tab" href="#tab_roadmap"><i class="icon-road"></i> Roadmap</a>
 					</li>
+					
 					<li class="pull-right">
 						<a data-toggle="tab" href="#tab_class_info">
 							<i class="icon-info-sign"></i> Class Info 
@@ -106,24 +110,32 @@
 					</li>
 				</ul>
 				<div class="tab-content">
-				   <div id="tab_classes" class="tab-pane active">
-					<p><%= data %></p>
-				   </div>
+					<div id="tab_classes" class="tab-pane active">
+						<p><%= data %></p>
+				   	</div>
+				   	<div id="tab_materials" class="tab-pane">
+					   	<div class="alert alert-info">
+							<span class="text-info"><i class="icon-warning-sign"></i></span>
+							Ops! There's any materials posted for this class
+					   	</div>
+				   	</div>
 				   <div id="tab_exercises" class="tab-pane">
 					   <div class="alert alert-info">
 							 <span class="text-info"><i class="icon-warning-sign"></i></span>
 							 Ops! There's any exercises posted for this class
 					   </div>
 				   </div>
-				   <div id="tab_materials" class="tab-pane">
+				   <div id="tab_roadmap" class="tab-pane">
 					   <div class="alert alert-info">
 							 <span class="text-info"><i class="icon-warning-sign"></i></span>
-							 Ops! There's any materials posted for this class
+							 Ops! There's any roadmap configured for this class
 					   </div>
 				   </div>
 				   <div id="tab_class_info" class="tab-pane">
-				   		@todo SHOW HERE CLASS INFO
-
+					   <div class="alert alert-info">
+							 <span class="text-info"><i class="icon-warning-sign"></i></span>
+							 Ops! There's any class info registered for this class
+					   </div>
 				   </div>
 				</div>
 			 </div>
