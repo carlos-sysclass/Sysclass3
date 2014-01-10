@@ -46,7 +46,7 @@ class PaymentModule extends SysclassModule implements ISummarizable, ILinkable
                     array(
                         'count' => count($data),
                         'text'  => self::$t->translate('Payments'),
-                        'icon'  => 'icon-bell',
+                        'icon'  => 'icon-money',
                         'link'  => $this->getBasePath() . 'all'
                     )
                 )
