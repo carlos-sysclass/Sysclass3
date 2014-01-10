@@ -33,7 +33,7 @@ class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContain
     	return false;
     }
 
-    public function getWidgets() {
+    public function getWidgets($widgetsIndexes = array()) {
     	return array(
     		'forum' => array(
    				'title' 	=> 'Forums',

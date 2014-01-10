@@ -1,5 +1,5 @@
 <?php 
-class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContainer
+class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContainer, ILinkable
 {
 
 	// CREATE FUNCTION HERE
@@ -36,39 +36,69 @@ class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContain
 		return false;
 	}
 
-	public function getWidgets() {
-		$currentUser    = $this->getCurrentUser(true);
+	public function getWidgets($widgetsIndexes = array()) {
+		if (in_array('users.overview', $widgetsIndexes)) {
+			$currentUser    = $this->getCurrentUser(true);
 
-		$modules = $this->getModules("ISummarizable");
+			$modules = $this->getModules("ISummarizable");
 
-		$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
-		$userDetails = array_merge($currentUser->user, $userDetails);
+			$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
+			$userDetails = array_merge($currentUser->user, $userDetails);
 
-		$data = array();
-		$data['user_details'] = $userDetails;
-		$data['notification'] = array();
+			$data = array();
+			$data['user_details'] = $userDetails;
+			$data['notification'] = array();
 
-		foreach($modules as $key => $mod) {
-			$data['notification'][$key] = $mod->getSummary();
+			foreach($modules as $key => $mod) {
+				$data['notification'][$key] = $mod->getSummary();
+			}
+			
+			$data['notification'] = $this->module("layout")
+				->sortModules("users.overview.notification.order", $data['notification']);
+
+			$this->putModuleScript("users");
+
+			return array(
+				'users.overview' => array(
+					'id'        => 'users-panel',
+					'type'      => 'users',
+					//'title' 	=> 'User Overview',
+					'template'	=> $this->template("overview.widget"),
+					'panel'		=> true,
+					'data'      => $data
+					//'box'       => 'blue'
+				)
+			);
 		}
-		
-		$data['notification'] = $this->module("layout")
-			->sortModules("users.overview.notification.order", $data['notification']);
-
-		$this->putModuleScript("users");
-
-		return array(
-			'users.overview' => array(
-				'id'        => 'users-panel',
-				'type'      => 'users',
-				//'title' 	=> 'User Overview',
-				'template'	=> $this->template("overview.widget"),
-				'panel'		=> true,
-				'data'      => $data
-				//'box'       => 'blue'
-			)
-		);
 	}
+	public function getLinks() {
+        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            return array(
+                'users' => array(
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('My Profile'),
+                        'link'  => $this->getBasePath() . 'profile'
+                    ),
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users'),
+                        'link'  => $this->getBasePath() . 'view'
+                    ),
+					array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users Types'),
+                        'link'  => $this->getBasePath() . 'view/types'
+                    ),
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users Types'),
+                        'link'  => $this->getBasePath() . 'view/groups'
+                    )
+                )
+            );
+        //}
+    }
 	/**
 	 * Module Entry Point
 	 *

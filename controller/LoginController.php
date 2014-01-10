@@ -236,7 +236,8 @@ class LoginController extends AbstractSysclassController
 		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
 		            //LoginRedirect($user->user['user_type']);
 					$_SESSION['user_locked'] = false;
-		            $this->redirect($user->user['user_type']);
+		            //$this->redirect($user->user['user_type']);
+		            $this->redirect("/dashboard/" . $user->user['user_type']);
 		        }
 		        exit;
 		    } catch (MagesterUserException $e) {
@@ -270,9 +271,6 @@ class LoginController extends AbstractSysclassController
 		        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
 		        $message_type = "danger";
 		    }
-		    var_dump(md5("123456".G_MD5KEY));
-		    var_dump($message, $message_type);
-		    exit;
 		    $this->redirect(null, $message, $message_type);
 		}
 

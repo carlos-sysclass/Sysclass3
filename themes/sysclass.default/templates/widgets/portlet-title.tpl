@@ -4,7 +4,11 @@
          {if isset($T_DATA.icon)}
             <i class="icon-{$T_DATA.icon}"></i>
          {/if}
-      {$T_DATA.title}
+         {if $T_DATA.title === TRUE}
+            &nbsp;
+         {else}
+            {$T_DATA.title}
+         {/if}
       </div>
    {/if}
    {if isset($T_DATA.tools)}

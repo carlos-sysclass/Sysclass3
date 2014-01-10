@@ -2,7 +2,7 @@
 class CalendarModule extends SysclassModule implements IWidgetContainer
 {
 
-    public function getWidgets() {
+    public function getWidgets($widgetsIndexes = array()) {
         $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
     	//$this->putScript("scripts/calendar");
         $this->putModuleScript("calendar");

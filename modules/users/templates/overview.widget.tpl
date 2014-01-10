@@ -3,11 +3,11 @@
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
-	<div class="col-md-4" id="users-avatar">
+	<div class="col-md-3" id="users-avatar">
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 		<a class="profile-edit btn btn-xs btn-primary" href="/module/users/profile">Edit</a>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<h4>{$user_details.name} {$user_details.surname}</h4>
 		<p><strong>Class </strong>XXXXXXX</p>
 		<p><strong>Location </strong>{$user_details.uf}, {$user_details.country_code}</p>

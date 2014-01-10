@@ -1,28 +1,30 @@
 <?php 
 class TutoriaModule extends SysclassModule implements IWidgetContainer
 {
-    public function getWidgets() {
-        $this->putScript("plugins/jquery.pulsate.min");
-        $this->putModuleScript("tutoria");
-        $tutorias = $this->dataAction();
-        //$this->putItem("tutoria", $tutorias);
+    public function getWidgets($widgetsIndexes = array()) {
+        if (in_array('tutoria.widget', $widgetsIndexes)) {
+            $this->putScript("plugins/jquery.pulsate.min");
+            $this->putModuleScript("tutoria");
+            //$tutorias = $this->dataAction();
+            //$this->putItem("tutoria", $tutorias);
 
-    	return array(
-    		'tutoria.widget' => array(
-                'type'      => 'tutoria', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-                'id'        => 'tutoria-widget',
-   				'title' 	=> self::$t->translate('Questions & Answers'),
-   				'template'	=> $this->template("tutoria.widget"),
-                'icon'      => 'book',
-                'box'       => 'dark-blue',
-                'tools'     => array(
-                    'search'        => true,
-                    'collapse'      => true,
-                    'reload'        => true,
-                    'fullscreen'    => true
-                )
-    		)
-    	);
+        	return array(
+        		'tutoria.widget' => array(
+                    'type'      => 'tutoria', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                    'id'        => 'tutoria-widget',
+       				'title' 	=> self::$t->translate('Questions & Answers'),
+       				'template'	=> $this->template("tutoria.widget"),
+                    'icon'      => 'book',
+                    'box'       => 'dark-blue',
+                    'tools'     => array(
+                        'search'        => true,
+                        'collapse'      => true,
+                        'reload'        => true,
+                        'fullscreen'    => true
+                    )
+        		)
+        	);
+        }
     }
 
     /**

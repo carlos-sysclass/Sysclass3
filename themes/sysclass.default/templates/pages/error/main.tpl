@@ -9,7 +9,7 @@
             <h3>{$T_ERROR_TITLE}</h3>
             <p>
                {$T_ERROR_MESSAGE}<br>
-               <a href="/home">{translateToken value='Return home'}</a> {translateToken value='or try the search bar below.'}
+               <a href="/dashboard">{translateToken value='Return home'}</a> {translateToken value='or try the search bar below.'}
             </p>
             <form action="#">
                <div class="input-group input-medium">

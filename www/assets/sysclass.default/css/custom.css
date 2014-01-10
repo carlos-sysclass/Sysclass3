@@ -129,3 +129,17 @@ hr {
 .tabbable-custom .nav-tabs > li { 
 	margin-right: 0px;
 }
+.icon-btn {
+    padding: 20px 0 0;
+	height: 80px;
+	min-width: 100px;
+}
+.icon-btn i {
+	font-size: 30px;
+}
+.icon-btn div {
+    margin: 10px 0px;
+}
+h4.border-bottom {
+	border-bottom: 1px solid #ddd;
+}

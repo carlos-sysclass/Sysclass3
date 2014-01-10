@@ -2,15 +2,14 @@
 	<div class="col-md-5">
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
 		<br />
+		<p class="text-center">
+			<a href="http://www.ult.edu.br" target="_blank">www.ult.edu.br</a>
+		</p>
 		<p  class="text-center">
 			<a href="#" target="_blank">View map</a>
 		</p>
     </div>    
 	<div class="col-md-7">
-		<p class="text-center">
-			<a href="http://www.ult.edu.br" target="_blank">www.ult.edu.br</a>
-		</p>
-
 		<div class="list-group" id="institution-chat-list"></div>
 	</div>
 </div>

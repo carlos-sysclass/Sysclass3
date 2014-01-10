@@ -2,7 +2,7 @@
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner container">
 		<!-- BEGIN LOGO -->  
-		<a class="navbar-brand" href="/home">
+		<a class="navbar-brand" href="/dashboard">
 			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
 		</a>
 		<!-- END LOGO -->

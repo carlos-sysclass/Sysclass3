@@ -2,7 +2,7 @@
 class CoursesModule extends SysclassModule implements IWidgetContainer
 {
 
-    public function getWidgets() {
+    public function getWidgets($widgetsIndexes = array()) {
         $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
 
         $this->putModuleScript("courses");

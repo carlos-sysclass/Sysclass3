@@ -1,13 +1,7 @@
 <?php
 define("PLICOLIB_PATH", "/usr/local/share/plicolib/");
+//define("PLICOLIB_PATH", "/var/www/tests/codelockv2_7/encrypted/");
 
-/*
-var_dump(md5("fep7_58A$".'cDWQR#$Rcxsc'));
-var_dump(md5("fep7_58A$"));
-
-
-exit;
-*/
 require_once PLICOLIB_PATH . "startup.php";
 
 $plicoLib = PlicoLib::instance(__DIR__ . "/../");
@@ -32,7 +26,6 @@ if (!is_file($path."configuration.php")) { //If the configuration file does not 
 } else {
     /** Configuration file */
     require_once $path."configuration.php";
-
 }
 /*
 if ($GLOBALS['configuration']['webserver_auth']) {

@@ -57,7 +57,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     	return false;
     }
 
-    public function getWidgets() {
+    public function getWidgets($widgetsIndexes = array()) {
         $this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
         $this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
         $this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
@@ -114,7 +114,9 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
             LEFT OUTER JOIN mod_messages_recipients_list scope ON (scope.recipient_id = qmr.id)
             LEFT OUTER JOIN mod_messages_groups qmg ON (qmr.group_id = qmg.id)
             LEFT OUTER JOIN users u ON (scope.user_id = u.id)",
-            "qmr.id as recipient_id, scope.xscope_id, scope.xentify_id, qmr.qm_type, qmr.link, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name"
+            "qmr.id as recipient_id, scope.xscope_id, scope.xentify_id, qmr.qm_type, qmr.link, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name",
+            "",
+            "recipient_id ASC"
         );
 
         $contactList = array();
