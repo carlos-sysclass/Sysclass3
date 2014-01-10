@@ -237,7 +237,7 @@ class LoginController extends AbstractSysclassController
 		            //LoginRedirect($user->user['user_type']);
 					$_SESSION['user_locked'] = false;
 		            //$this->redirect($user->user['user_type']);
-		            $this->redirect("/dashboard/" . $user->user['user_type']);
+		            $this->redirect("/dashboard/" . $user->user['user_types_ID']);
 		        }
 		        exit;
 		    } catch (MagesterUserException $e) {
@@ -365,14 +365,14 @@ class LoginController extends AbstractSysclassController
 		                }
 		                //}
 
-		                $user_type = $user->user['user_type'];
+		                //$user_type = $user->user['user_types_ID'];
 
-					    $userTypes = array('administrator', 'professor', 'student');
-					    if (in_array($user_type, $userTypes)) {
-							$this->redirect($user_type);
-						} else {
-							$this->redirect("user");
-						}
+					    //$userTypes = array('administrator', 'professor', 'student');
+					    //if (in_array($user_type, $userTypes)) {
+							$this->redirect("/dashboard/" . $user->user['user_types_ID']);
+						//} else {
+						//	$this->redirect("user");
+						//}
 		                exit;
 		            }
 		        }
