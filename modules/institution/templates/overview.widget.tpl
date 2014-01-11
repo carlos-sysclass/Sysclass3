@@ -16,7 +16,7 @@
 <hr />
 <div class="row">
 	<div class="col-md-4">
-		<img class="avatar img-responsive" width="100%" alt="" src="{Plico_GetResource file='img/avatar_small.png'}" />
+		<img class="avatar img-responsive" width="100%" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
     </div>    
 	<div class="col-md-8">
 		<p>

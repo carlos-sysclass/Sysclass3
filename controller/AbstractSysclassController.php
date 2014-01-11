@@ -156,12 +156,12 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 				$big_user_avatar['avatar'] = self::$current_user->user['avatar'];		    
 			} catch (MagesterFileException $e) {
 			    $small_user_avatar = array(
-			        'avatar' => "img/avatar_small.png",
+			        'avatar' => "img/avatar_small.jpg",
 			        'width'  => 29,
 			        'height' => 29
 			    );
 			    $big_user_avatar = array(
-			        'avatar' => "img/avatar_big.png",
+			        'avatar' => "img/avatar_big.jpg",
 			        'width'  => 200,
 			        'height' => 200
 			    );
