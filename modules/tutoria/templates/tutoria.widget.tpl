@@ -35,7 +35,9 @@
          <div class="panel-body">
             <ul class="chats">
                <li class="in">
-                  <img class="avatar img-responsive" alt="" src="<%= question_avatar.avatar %>" width="<%= question_avatar.width %>"/>
+                  <!-- <img class="avatar img-responsive" alt="" src="<%= question_avatar.avatar %>" width="<%= question_avatar.width %>"/> -->
+                  <img class="avatar img-responsive" alt="" src="/assets/sysclass.default/img/avatar_small.jpg" width="<%= question_avatar.width %>"/>
+                  
                   <div class="message">
                      <span class="arrow"></span>
                      <a href="#" class="name"><%= question_user_name %> <%= question_user_surname %></a>
@@ -51,7 +53,8 @@
                </li>
                <% if (answer != "" && answer != null) { %>
                   <li class="out">
-                     <img class="avatar img-responsive" alt="" src="<%= answer_avatar.avatar %>" width="<%= answer_avatar.width %>"/>
+                     <!-- <img class="avatar img-responsive" alt="" src="<%= answer_avatar.avatar %>" width="<%= answer_avatar.width %>"/> -->
+                     <img class="avatar img-responsive" alt="" src="/assets/sysclass.default/img/avatar_medium.jpg" width="<%= question_avatar.width %>"/>
                      <div class="message">
                         <span class="arrow"></span>
                         <a href="#" class="name"><%= answer_user_name %> <%= answer_user_surname %></a>
