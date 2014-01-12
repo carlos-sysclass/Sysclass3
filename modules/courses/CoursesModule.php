@@ -178,7 +178,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                 $content = null;
             }
         }
-        $content = null;
+//        $content = null;
 
         if (is_null($content)) {
             $unseenContent = array();

@@ -2057,7 +2057,7 @@ class MagesterVisitableFilterIterator extends FilterIterator
         $current = $this -> current();
         $scorm2004 = in_array($current['scorm_version'], MagesterContentTree::$scorm2004Versions);
 
-        return $current instanceof ArrayObject && ($current['active'] == 1 && $current['publish'] == 1 && ($current['data'] != '' || $current['ctg_type'] == 'tests' || $scorm2004 || $current['ctg_type'] == 'feedback'));
+        return $current instanceof ArrayObject && ($current['active'] == 1 && $current['publish'] == 1 && ($current['data'] != '' || $current['ctg_type'] == 'tests' || $current['ctg_type'] == 'video' || $scorm2004 || $current['ctg_type'] == 'feedback'));
     }
 }
 /**
