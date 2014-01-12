@@ -82,7 +82,8 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         // RETURN JUST THE content ID
         // SAVE COURSE AND LESSON, ON USERS SETTINGS
         $settings = $this->module("settings")->getSettings(true);
-        return $this->getContent($settings['course_id'], $settings['lesson_id'], null);
+        //var_dump($settings);
+        return $this->getContent($settings['course_id'], $settings['lesson_id'], $settings['content_id']);
     }
 
     /**
@@ -275,7 +276,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             'width'     => 640,
             'height'    => 360,
             'controls'  => true,
-            'preload'   => 'auto',
+            'preload'   => 'metadata',
             'autoplay'  => false
         );
     }

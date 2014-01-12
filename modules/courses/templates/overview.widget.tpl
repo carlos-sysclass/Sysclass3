@@ -101,7 +101,7 @@
 </div>
 <script type="text/template" id="courses-content-navigation-template">
 	<div class="col-md-2">
-		<% if (prev != null) { %>
+		<% if (prev && prev != null) { %>
 			<a href="#" class="btn btn-primary prev">
 				<i class="icon-arrow-left"></i> {translateToken value='Previous'}
 			</a>
@@ -111,7 +111,7 @@
 		<h5 class="text-center">{translateToken value='Topic'}:</strong> <%= name %></h5>
 	</div>
 	<div class="col-md-2">
-		<% if (next != null) { %>
+		<% if (next && next != null) { %>
 			<a href="#" class="btn btn-primary pull-right next">
 				<i class="icon-arrow-right pull-right"></i> {translateToken value='Next'}
 			</a>

@@ -213,24 +213,43 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			}
 		});
 
+		var currentVideoJS = false;
+
 
 		var contentVideoViewClass = contentGenericViewClass.extend({
 			portlet: $('#courses-widget'),
 			template: _.template($('#courses-content-video-template').html()),
-			rendered : false,
+			videoJS : false,
 			initialize: function() {
 				console.info('portlet.courses/contentVideoViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
+				this.$el.empty();
 			},
 			render : function() {
 				console.info('portlet.courses/contentVideoViewClass::render');
-				contentGenericViewClass.prototype.render.apply(this);
+				//contentGenericViewClass.prototype.render.apply(this);
 
-				var videoData = _.pick(this.model.get("data"), "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
+				var videoDomID = "courses-content-video-" + this.model.get("id");
+				this.$(".video-js").hide();
 
-				videojs("courses-content-video-" + this.model.get("id"), videoData, function() {
-					//this.play();
-				});
+				if (this.$("#" + videoDomID).size() == 0) {
+					this.$el.append(
+						this.template(this.model.toJSON())
+					);
+					var videoData = _.pick(this.model.get("data"), "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
+					videojs(videoDomID, videoData, function() {
+						//this.play();
+					});
+				}
+
+				console.log(this.videoJS);
+				if (this.videoJS != false) {
+					this.videoJS.pause();
+				}
+				console.log(this.videoJS);
+				this.$("#" + videoDomID).show();
+
+				this.videoJS = videojs(videoDomID);
 					
 				return this;
 			}
@@ -246,7 +265,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentViewClass::initialize');
 				this.contentNavigationView = new contentNavigationViewClass({model : this.model, el: "#courses-content-navigation"});
-
+				this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
@@ -254,10 +273,10 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				this.contentNavigationView.render();
 
 				var content_type = this.model.get("ctg_type");
-
+				var contentTypeView = null;
 				switch(content_type) {
 					case "video" : {
-						var contentTypeView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+						this.contentVideoView.render();
 						break;
 					}
 					case "theory" : {
@@ -269,7 +288,9 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 						break;
 					}
 				}
-				contentTypeView.render();
+				if (contentTypeView != null) {
+					contentTypeView.render();
+				}
 				
 			}
 		});
