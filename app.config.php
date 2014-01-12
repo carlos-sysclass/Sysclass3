@@ -115,7 +115,8 @@ $plicoLib->concat(
 		'css/style-responsive',
 		'css/plugins',
 		'css/themes/light',
-		'css/custom'
+		'css/custom',
+		'css/videojs/video-js'
 		//<!-- END THEME STYLES -->
 	)
 );
@@ -138,9 +139,9 @@ $plicoLib->concat(
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 		
-		'plugins/strophe/strophe',
-		'plugins/strophe/strophe.roster',
-		'plugins/strophe/strophe.messaging',
+		//'plugins/strophe/strophe',
+		//'plugins/strophe/strophe.roster',
+		//'plugins/strophe/strophe.messaging',
 		
 //		'plugins/strophe/strophe.chatstates',
 //		'plugins/strophe/strophe.ping',
@@ -149,7 +150,7 @@ $plicoLib->concat(
 		'scripts/sysclass',
 		'scripts/ui',
 		'scripts/utils.toastr',
-		'scripts/utils.strophe',
+		//'scripts/utils.strophe',
 		'scripts/portlets'
 	)
 );

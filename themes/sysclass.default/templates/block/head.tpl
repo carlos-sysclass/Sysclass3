@@ -13,4 +13,10 @@
 {/foreach}
  
 <link rel="shortcut icon" href="favicon.ico" />
+
+<!-- THE VIDEO JS *MUST* BE ON HEAD TAG!! MAKE A WAY TO INJECT IT HERE -->
+<script src="{Plico_GetResource file='plugins/videojs/video.js'}"></script>
+<script>
+	videojs.options.flash.swf = "{Plico_GetResource file='plugins/videojs/video-js.swf'}";
+</script>
     

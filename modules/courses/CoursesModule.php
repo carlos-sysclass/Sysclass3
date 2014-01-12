@@ -212,7 +212,71 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         if (unserialize($unitArray['metadata'])) {
             $unitArray['metadata'] = unserialize($unitArray['metadata']);
         }
+        if ($unitArray['ctg_type'] == "video") {
+            //,file: 'http://aulas.sysclass.com/extensao/mainframe/web/sql/mainfweb_sql_aula01.flv',techOrder:['html5','flash'],'width':'640','height':'360'}
+
+            $unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);   
+            if (!is_array($unitArray['data'])) {
+                $unitArray['data'] = $this->getVideoDefaults();
+            } else {
+                $unitArray['data'] = array_merge($this->getVideoDefaults(), $unitArray['data']);
+            }
+
+            $unitArray['data']['video'] = $this->getVideoSource($course, $lesson, $content);
+        }
         return $unitArray;
     }
 
+    public function getVideoSource($course, $lesson, $content)
+    {
+        $urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/%s/", $course, $lesson, $content);
+        $urlRoot = sprintf("/video/%s/%s/", $lesson, $content);
+        
+        return array(
+            // @todo GET FORMATS QUERYING SERVER
+            "sources" => array(
+                "video/flv" => $urlRoot . "video.flv"
+                /*
+                "video/mp4" => $urlRoot . "video.mp4",
+                "video/webm" => $urlRoot . "video.webm",
+                "video/ogg" => $urlRoot . "video.ogg"
+                */
+            ),
+            "tracks"    => array(
+                /*
+                "captions" => array(
+                    "src"       => $urlRoot . "captions.en.vtt",
+                    "label"     => "English",
+                    "srclang"   => "en"
+                ),
+                */
+                "subtitles" => array(
+                    "src"       => $urlRoot . "captions.en.vtt",
+                    "label"     => "English",
+                    "srclang"   => "en"
+                )/*,
+                "chapters" => array(
+                    "src"       => $urlRoot . "chapters.en.vtt",
+                    "label"     => "English",
+                    "srclang"   => "en",
+                    "default"   => "default"
+                )
+                */
+            )
+        );
+    }
+    protected function getVideoDefaults() {
+        return array(
+            //'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
+            'poster'    =>  "/assets/sysclass.default/img/video-poster.png",
+            'techOrder' => array(
+                'html5', 'flash'
+            ),
+            'width'     => 640,
+            'height'    => 360,
+            'controls'  => true,
+            'preload'   => 'auto',
+            'autoplay'  => false
+        );
+    }
 }
