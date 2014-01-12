@@ -177,13 +177,16 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             if (!$found) {
                 $content = null;
             }
-        } 
+        }
+        $content = null;
+
         if (is_null($content)) {
             $unseenContent = array();
             $content = false;
             foreach (new MagesterVisitableFilterIterator(new MagesterUnseenFilterIterator($filterIterator)) as $key => $value) {
                 $content = $key;
                 break;
+
             }
             if ($content == FALSE) {
                 foreach (new MagesterVisitableFilterIterator(new MagesterSeenFilterIterator($filterIterator)) as $key => $value) {
@@ -191,7 +194,6 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                     break;
                 }
             }
-            
         }
 
         $prevNodes = $currentContent->getPreviousNodes($content);
