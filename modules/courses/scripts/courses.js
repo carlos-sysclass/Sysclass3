@@ -220,17 +220,21 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentVideoViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
-				this.$el.empty();
+				//this.$el.empty();
 			},
 			render : function() {
 				console.info('portlet.courses/contentVideoViewClass::render');
 				//contentGenericViewClass.prototype.render.apply(this);
 
 				var videoDomID = "courses-content-video-" + this.model.get("id");
-				this.$(".video-js").hide();
+				//this.$(".video-js").hide();
+
+				if (this.videoJS != false) {
+					this.videoJS.dispose();
+				}
 
 				if (this.$("#" + videoDomID).size() == 0) {
-					this.$el.append(
+					this.$el.empty().append(
 						this.template(this.model.toJSON())
 					);
 					var videoData = _.pick(this.model.get("data"), "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
@@ -239,9 +243,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					});
 				}
 
-				if (this.videoJS != false) {
-					this.videoJS.pause();
-				}
+
 				this.$("#" + videoDomID).show();
 
 				this.videoJS = videojs(videoDomID);
@@ -250,9 +252,11 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			},
 			destroy : function() {
 				console.info('portlet.courses/contentVideoViewClass::destroy');
-				if (this.videoJS != false) {
-					this.videoJS.pause();
-				}
+				this.$(".video-js").each(function(i, el) {
+					var player = videojs($(el).attr("id"));
+					player.dispose();
+				});
+
 				this.$el.empty();
 			}
 		});
@@ -268,7 +272,8 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentViewClass::initialize');
 				this.contentNavigationView = new contentNavigationViewClass({model : this.model, el: "#courses-content-navigation"});
-				
+				//this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
@@ -286,14 +291,18 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 						break;
 					}
 					case "theory" : {
-						this.contentVideoView.destroy();
-						this.contentVideoView = null;
+						if (this.contentVideoView != null) {
+							this.contentVideoView.destroy();
+							this.contentVideoView = null;
+						}
 						var contentTypeView = new contentTheoryViewClass({model : this.model, el : "#tab_class"});
 						break;
 					}
 					case "tests" : {
-						this.contentVideoView.destroy();
-						this.contentVideoView = null;
+						if (this.contentVideoView != null) {
+							this.contentVideoView.destroy();
+							this.contentVideoView = null;
+						}
 
 						var contentTypeView = new contentTestsViewClass({model : this.model, el : "#tab_class"});
 						break;
@@ -301,6 +310,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				}
 				if (contentTypeView != null) {
 					contentTypeView.render();
+					console.log(contentTypeView);
 				}
 				
 			}
