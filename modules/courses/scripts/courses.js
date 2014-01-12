@@ -213,9 +213,6 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			}
 		});
 
-		var currentVideoJS = false;
-
-
 		var contentVideoViewClass = contentGenericViewClass.extend({
 			portlet: $('#courses-widget'),
 			template: _.template($('#courses-content-video-template').html()),
@@ -242,16 +239,21 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					});
 				}
 
-				console.log(this.videoJS);
 				if (this.videoJS != false) {
 					this.videoJS.pause();
 				}
-				console.log(this.videoJS);
 				this.$("#" + videoDomID).show();
 
 				this.videoJS = videojs(videoDomID);
 					
 				return this;
+			},
+			destroy : function() {
+				console.info('portlet.courses/contentVideoViewClass::destroy');
+				if (this.videoJS != false) {
+					this.videoJS.pause();
+				}
+				this.$el.empty();
 			}
 		});
 		var contentTheoryViewClass = contentGenericViewClass.extend({});
@@ -261,11 +263,12 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			el: $('#courses-content'),
 			portlet: $('#courses-widget'),
 			//template: _.template($('#courses-content-template').html()),
+			contentVideoView : null,
 			rendered : false,
 			initialize: function() {
 				console.info('portlet.courses/contentViewClass::initialize');
 				this.contentNavigationView = new contentNavigationViewClass({model : this.model, el: "#courses-content-navigation"});
-				this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+				
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
@@ -276,14 +279,22 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				var contentTypeView = null;
 				switch(content_type) {
 					case "video" : {
+						if (this.contentVideoView == null) {
+							this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+						}
 						this.contentVideoView.render();
 						break;
 					}
 					case "theory" : {
+						this.contentVideoView.destroy();
+						this.contentVideoView = null;
 						var contentTypeView = new contentTheoryViewClass({model : this.model, el : "#tab_class"});
 						break;
 					}
 					case "tests" : {
+						this.contentVideoView.destroy();
+						this.contentVideoView = null;
+
 						var contentTypeView = new contentTestsViewClass({model : this.model, el : "#tab_class"});
 						break;
 					}
