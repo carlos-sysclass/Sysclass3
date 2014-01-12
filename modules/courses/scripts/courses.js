@@ -201,12 +201,12 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentGenericViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
-				this.$el.hide();
+				//this.$el.hide();
 			},
 			render : function() {
 				console.info('portlet.courses/contentGenericViewClass::render');
 
-				this.$el.empty().show().append(
+				this.$el.empty().append(
 					this.template(this.model.toJSON())
 				);
 				return this;

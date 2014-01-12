@@ -1576,59 +1576,32 @@ class MagesterTest {
         return $completedTest;
     }
     /**
-
      * Get test status for user
-
      *
-
      * This function is used to get the user's status in the current test.
-
      * The status consists of an array with the following fields:
-
      * <br/> 'status': Can be 'completed', 'incomplete', 'passed', 'failed' or '' (empty)
-
      * <br/> 'timesDone': The number of times the user has done this test
-
      * <br/> 'timesLeft': The number of times the user can do the test. If there is no such restriction, this is false
-
      * <br/> 'lastTest': The id of the last test, that is non-archived (and thus can be directly previewed, and sets the user to have it 'done'
-
      * <br/> 'completedTest': The database result, containing all the completed test information
-
      * <br/> 'testIds': An array with the ids of the done instances for this test
-
      * <br/> 'timestamps': An array with the timestamps that the done instances for this test ended on
-
      * <br/>Example:
-
      * </code>
-
      * $test = new MagesterTest(23);
-
      * $status = $test->getStatus('jdoe');
-
      * if ($status['status'] == 'passed') {
-
      *     $completedTest = unserialize($status['completedTest']['test']);
-
      * }
-
      * </code>
-
      *
-
      * @param mixed $user The user that the status is requested for, can be an MagesterUser object, or a string with the login
-
      * @param int $id Get the status for the completed test with the specified id
-
      * @param boolean $onlySolved If set, only solved tests are considered
-
      * @return array The status of the user in the test
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function getStatus($user, $id = false, $onlySolved = false)
     {
@@ -1652,6 +1625,7 @@ class MagesterTest {
         $testIds = array();
         $timestamps = array();
         foreach ($result as $value) {
+            $status = $value['status'];
             if (!$id && $value['archive'] == 0) {
                 $status = $value['status'];
                 $completedTest = $value;
@@ -2058,38 +2032,23 @@ function initTimer()
     }
 }
 /**
-
  * Class representing a completed test
-
  *
-
  * @package SysClass
-
  */
 class MagesterCompletedTest extends MagesterTest
 {
     /**
-
      * Times for the test.
-
      *
-
      * This array holds important timestamps for the test:
-
      * <br/>- 'start': The time that the test started
-
      * <br/>- 'end': The time that the test ended
-
      * <br/>- 'spent': The total time that the user actually spent on this test (not including the time between pauses)
-
      * <br/>- 'resume': The time that the user last resumed the test
-
      * @var array
-
      * @since 3.5.2
-
      * @access public
-
      */
     public $time = array('start' => '',
                          'end' => '',
@@ -2105,35 +2064,20 @@ class MagesterCompletedTest extends MagesterTest
                                   'score' => '',
                                   'feedback' => '');
     /**
-
      * Class constructor
-
      *
-
      * This class instantiates the object, based on an MagesterTest object and
-
      * the specified user
-
      * <br/>Example:
-
      * <code>
-
      * $test = new _MagesterTest(34);
-
      * $testInstance = new MagesterCompletedTest($test, 'jdoe');
-
      * </code>
-
      *
-
      * @param MagesterTest $sourceTest The test that the object is based on
-
      * @param string $login The user login
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function __construct(MagesterTest $sourceTest, $login)
     {
@@ -2146,35 +2090,20 @@ class MagesterCompletedTest extends MagesterTest
         }
     }
     /**
-
      * Get done test directory
-
      *
-
      * This function is used to get the done test's directory. This is the directory
-
      * where questions' files are uploaded.
-
      * <br/>Example:
-
      * <code>
-
      * $test = new MagesterTest(54);
-
      * $testInstance = new MagesterCompletedTest($test, 'jdoe');
-
      * $testInstance->getDirectory();
-
      * </code>
-
      *
-
      * @return MagesterDirectory The test's directory
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function getDirectory()
     {
@@ -2192,35 +2121,20 @@ class MagesterCompletedTest extends MagesterTest
         return $uploadDirectory;
     }
     /**
-
      * Pause the test
-
      *
-
      * This function takes the current test values and stores them,
-
      * so that the test can be later resumed
-
      * <br/>Example:
-
      * <code>
-
      * $test = new MagesterTest(54);
-
      * $testInstance = new MagesterCompletedTest($test, 'jdoe');
-
      * $testInstance->pause($userAnswers);
-
      * </code>
-
      *
-
      * @param array $userAnswers The user answers, in an array where keys are question ids and values are answers
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function pause($userAnswers, $currentQuestion = false)
     {
@@ -2241,35 +2155,20 @@ class MagesterCompletedTest extends MagesterTest
     }
 
     /**
-
      * Save the test State
-
      *
-
      * This function takes the current test values and stores them,
-
      * so that the test can be later resumed, in a case of session lost, user logout, etc....
-
      * <br/>Example:
-
      * <code>
-
      * $test = new MagesterTest(54);
-
      * $testInstance = new MagesterCompletedTest($test, 'jdoe');
-
      * $testInstance->tempStore($userAnswers);
-
      * </code>
-
      *
-
      * @param array $userAnswers The user answers, in an array where keys are question ids and values are answers
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function tempStore($userAnswers, $currentQuestion = false)
     {
@@ -2295,37 +2194,21 @@ class MagesterCompletedTest extends MagesterTest
 
 
     /**
-
      * Complete test
-
      *
-
      * This function is used to complete the current test. The user answers are
-
      * submitted, the test is graded and the results are stored.
-
      * <br/>Example:
-
      * <code>
-
      * $test = new MagesterTest(23);
-
      * $testInstance = new MagesterCompletedTest($test, 'jdoe');
-
      * $testInstance->complete($userAnswers);
-
      * </code>
-
      *
-
      * @param array $userAnswers The user answers, in an array where keys are question ids and values are answers
-
      * @since 3.5.2
-
      * @access public
-
      * @todo check if folder exists, handle uploaded files
-
      */
     public function complete($userAnswers)
     {
@@ -2391,33 +2274,19 @@ class MagesterCompletedTest extends MagesterTest
         $this->save(); //Save the test
     }
     /**
-
      * Save test
-
      *
-
      * This function is used to save the current test status
-
      * <br/>Example:
-
      * <code>
-
      * sC_updateTableData("completed_tests", $fields, "id=".$this->completedTest['id']);$test = new MagesterTest(23);
-
      * $completedTest = $test->start('jdoe');
-
      * $completedTest->pause($answers);
-
      * $completedTest->save();
-
      * </code>
-
      *
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function save()
     {
@@ -2458,31 +2327,18 @@ class MagesterCompletedTest extends MagesterTest
         }
     }
     /**
-
      * Get potential score
-
      *
-
      * This function calculates the potential maximum score, when taking into account pending free text
-
      * questions. If there are no pending free-text questions in the test, potential score equals test score.
-
      * <br/>Example:
-
      * <code>
-
      * $completedTest->getPotentialScore();
-
      * </code>
-
      *
-
      * @return float The potential score
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function getPotentialScore()
     {
@@ -2503,47 +2359,26 @@ class MagesterCompletedTest extends MagesterTest
         return $potentialTestScore;
     }
     /**
-
      * Print HTML version of test, along with header information
-
      *
-
      * This function enhances the toHTMLQuickForm() output, in that it adds
-
      * a header with test infor mation to the HTML code.
-
      * <br/>Example:
-
      * <code>
-
      * $result = sC_getTableData("completed_tests", "*", "id=32");
-
      * $showTest = unserialize($result[0]['test']);
-
      * $testString = $showTest->toHTMLQuickForm(new HTML_Quickform(), false, true);
-
      * $url = basename($_SERVER['PHP_SELF']).'?ctg=tests';
-
      * $testString = $showTest->toHTMLSolved($testString, true);
-
      * echo $testString;
-
      * </code>
-
      *
-
      * @param string $testString The test's HTML code, produced by toHTMLQuickForm()
-
      * @param boolean $editHandles Whether to display update score and feedback handles
-
      * @return string The HTML code of the test
-
      * @since 3.5.2
-
      * @access public
-
      * @see MagesterTest::toHTMLQuickForm()
-
      */
     public function toHTMLSolved($testString, $editHandles = false, $isFeedback = false)
     {
@@ -2969,43 +2804,24 @@ function deleteDoneTest(el, all)
         return $str;
     }
     /**
-
      * Handle AJAX actions
-
      *
-
      * This function is used to perform the necessary ajax actions,
-
      * that may be used in tests
-
      * <br/>Example:
-
      * <code>
-
      * $result     = sC_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
-
      * $showTest   = unserialize($result[0]['test']);
-
      * $status     = $showTest->getStatus($result[0]['users_LOGIN']);
-
      * $testString = $showTest->toHTMLQuickForm(new HTML_Quickform(), false, true, true);
-
      * $testString = $showTest->toHTMLSolved($testString, true);
-
      * if (isset($_GET['ajax'])) {
-
      *     $showTest->handleAjaxActions();
-
      * }
-
      * </code>
-
      *
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function handleAjaxActions()
     {
@@ -3128,37 +2944,21 @@ function deleteDoneTest(el, all)
      }
     }
  /**
-
      * Analyse completed test
-
      *
-
      * This function is used to analyse completed test. Scores are calculated for
-
      * each unit and subunit, based on the corresponding questions performance.
-
      * <br/>Example:
-
      * <code>
-
      * list($parentScores, $analysisCode) = $completedTest->analyseTest();
-
      * </code>
-
      * The function returns an array with 2 separate elements: The first element is the array
-
      * of scores per unit, which is needed in order to display the chart. The second element
-
      * is the content tree, where the scores per unit are depicted.
-
      *
-
      * @return array A results array.
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function analyseTest()
     {
@@ -3225,45 +3025,25 @@ function deleteDoneTest(el, all)
         return array($parentScores, $content->toHTML($iterator, false, $options));
     }
     /**
-
      * Display chart
-
      *
-
      * This function is used to display the HTML code needed to show
-
      * the chart of the test analysis
-
      * <br>Example:
-
      * <code>
-
      *   if (isset($_GET['display_chart'])) {
-
      *       $url = basename($_SERVER['PHP_SELF']).'?ctg=tests&show_solved_test='.$completedTest->completedTest['id'].'&test_analysis=1&selected_unit='.$_GET['selected_unit'].'&show_chart=1';
-
      *       echo $completedTest->displayChart($url);
-
      *       exit;
-
      *   }
-
      * </code>
-
      *
-
      * @param string $url The url where the data source will come from
-
      * @return string The HTML code that displays the chart
-
      * @since 3.5.2
-
      * @access public
-
      * @see analyseTest
-
      * @see calculateChart
-
      */
     public function displayChart($url)
     {
@@ -3283,49 +3063,27 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
         return $str;
     }
     /**
-
      * Calculate cart data
-
      *
-
      * This function is used to calculate the data needed to build the test analysis chart
-
      * <br/>Example:
-
      * <code>
-
      *  list($parentScores, $analysisCode) = $completedTest->analyseTest();
-
      *  if (isset($_GET['display_chart'])) {
-
      * 		$url = basename($_SERVER['PHP_SELF']).'?ctg=tests&show_solved_test='.$completedTest->completedTest['id'].'&test_analysis=1&selected_unit='.$_GET['selected_unit'].'&show_chart=1';
-
      *      echo $completedTest->displayChart($url);
-
      *      exit;
-
      *  } elseif (isset($_GET['show_chart'])) {
-
      *  	echo $completedTest->calculateChart($parentScores);
-
      *      exit;
-
      *  }
-
      * </code>
-
      *
-
      * @param array $parentScores The data source, an array of scores per unit
-
      * @since 3.5.2
-
      * @access public
-
      * @see displayChart
-
      * @see analyseTest
-
      */
     public function calculateChart($parentScores)
     {
@@ -3382,39 +3140,22 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
         echo $chart->toPrettyString();
     }
     /**
-
      * Analyse a completed test as a skill gap test
-
      *
-
      * This function is used to perform skill-gap analysis
-
      *
-
      * <br/>Example:
-
      * <code>
-
      * $result     = sC_getTableData("completed_tests", "*", "id=".$_GET['show_solved_test']);
-
      * $showTest   = unserialize($result[0]['test']);
-
      * $analysisResults = $showTest->analyseSkillGapTest();
-
      * $lessonsProposed = $analysisResults['lessons'];
-
      * $coursesProposed = $analysisResults['courses'];
-
      * </code>
-
      *
-
      * @return array containing the proposed all test related skills, all user missing skills, lesson and courses proposed for assignment in the form array( "testSkills" => array(...) , "missingSkills" => array(...), "lessons" => array(...), "courses" => array(...) )
-
      * @since 3.5.2
-
      * @access public
-
      */
     public function analyseSkillGapTest()
     {
@@ -3473,15 +3214,10 @@ swfobject.embedSWF("charts/open-flash-chart.swf", "my_chart", "700px", "500px", 
     }
 }
 /**
-
  * MultipleOneQuestion Class
-
  *
-
  * This class is used to manipulate a multiple choice / single answer question
-
  * @package SysClass
-
  */
 class MultipleOneQuestion extends Question implements iQuestion
 {

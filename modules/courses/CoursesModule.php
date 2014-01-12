@@ -178,7 +178,6 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                 $content = null;
             }
         }
-//        $content = null;
 
         if (is_null($content)) {
             $unseenContent = array();
@@ -218,8 +217,6 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             $unitArray['metadata'] = unserialize($unitArray['metadata']);
         }
         if ($unitArray['ctg_type'] == "video") {
-            //,file: 'http://aulas.sysclass.com/extensao/mainframe/web/sql/mainfweb_sql_aula01.flv',techOrder:['html5','flash'],'width':'640','height':'360'}
-
             $unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);   
             if (!is_array($unitArray['data'])) {
                 $unitArray['data'] = $this->getVideoDefaults();
@@ -228,6 +225,25 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             }
 
             $unitArray['data']['video'] = $this->getVideoSource($course, $lesson, $content);
+        } else if ($unitArray['ctg_type'] == "tests") {
+
+            $currentTest = new MagesterTest($unitArray['id'], true);
+            
+            $testStatus = $currentTest->getStatus($currentUser->user['login']);
+            //var_dump($currentUser->user['login']);
+            //$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
+            // CHECK FOR CONDITIONS HERE, IF THE USER CAN MAKE THE TEST, OR IF THE SYSTEM WILL JUST SHOW THE TESTS RESULTS
+            if ($testStatus['status'] == '') { // CAN BE 'completed', 'incomplete', 'passed', 'failed'
+                $unitArray['data'] = $currentTest->test['description'];
+            } else {
+                //$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
+                $unitArray['data'] = "<h4>TEST DONE!</h4>";
+                //$unitArray['data'] .= "<br />Score: " . $doneTests['score']; 
+                $unitArray['data'] .= "<br />Status: " . $testStatus['status']; 
+                //echo "<pre>";
+                
+                //$doneTests[$currentTest->test['id']][$currentUser->user['login']]
+            }
         }
         return $unitArray;
     }
