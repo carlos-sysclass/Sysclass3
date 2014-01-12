@@ -166,6 +166,18 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             );
         //);
 
+        if (!is_null($content)) {
+            $found = false;
+            foreach ($filterIterator as $key => $value) {
+                if ($content == $key) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $content = null;
+            }
+        } 
         if (is_null($content)) {
             $unseenContent = array();
             $content = false;
@@ -179,17 +191,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                     break;
                 }
             }
-        } else {
-            $found = false;
-            foreach ($filterIterator as $key => $value) {
-                if ($content == $key) {
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                return $this->invalidRequestError();
-            }
+            
         }
 
         $prevNodes = $currentContent->getPreviousNodes($content);
