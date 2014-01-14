@@ -47,10 +47,20 @@
 						   	</div>
 					   	</div>
 					   	<div id="tab_materials" class="tab-pane">
-						   	<div class="alert alert-info">
-								<span class="text-info"><i class="icon-warning-sign"></i></span>
-								Ops! There's any materials posted for this class
-						   	</div>
+							<div class="tree tree-plus-minus tree-no-line tree-unselectable">
+								<div class = "tree-folder" style="display:none;">
+									<div class="tree-folder-header">
+										<i class="icon-folder-close"></i>
+										<div class="tree-folder-name"></div>
+									</div>
+									<div class="tree-folder-content"></div>
+									<div class="tree-loader" style="display:none"></div>
+								</div>
+								<div class="tree-item" style="display:none;">
+									<div class="tree-item-base"></div>
+									<div class="tree-item-name"></div>
+								</div>
+							</div>
 					   	</div>
 					   <div id="tab_exercises" class="tab-pane">
 						   <div class="alert alert-info">

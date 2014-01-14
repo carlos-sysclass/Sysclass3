@@ -72,6 +72,12 @@ $plicoLib->add("resources/components", array(
 	'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
 	'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
 ));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'fuelux-tree',
+	'css'	=> array('plugins/fuelux/css/tree-metronic'),
+	'js'	=> array('plugins/fuelux/js/tree.min')
+));
+
 /*
 $plicoLib->add("resources/components", array(
 	'name'	=> 'timepicker',
@@ -90,14 +96,12 @@ $plicoLib->add("resources/components", array(
 ));
 
 
-
-
-
 $plicoLib->concat(
 	'resources/sysclass.default/css',
 	array(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		'plugins/font-awesome/css/font-awesome.min',
+		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/bootstrap/css/bootstrap.min',
 		'plugins/uniform/css/uniform.default',
 		//<!-- END GLOBAL MANDATORY STYLES -->

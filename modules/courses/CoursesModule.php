@@ -5,6 +5,9 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     public function getWidgets($widgetsIndexes = array()) {
         $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
 
+        $this->putComponent("fuelux-tree");
+        
+
         $this->putModuleScript("courses");
 
     	return array(
@@ -211,6 +214,9 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         $unitArray['course_id'] = $course;
         $unitArray['lesson_id'] = $lesson;
 
+        $unitArray['sources'] = array(
+            'materials' => $this->getMaterialsSource($course, $lesson, $content),
+        );
         
 
         if (unserialize($unitArray['metadata'])) {
@@ -224,7 +230,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                 $unitArray['data'] = array_merge($this->getVideoDefaults(), $unitArray['data']);
             }
 
-            $unitArray['data']['video'] = $this->getVideoSource($course, $lesson, $content);
+            $unitArray['data']['video'] = $this->getVideoSource($lesson, $content);
         } else if ($unitArray['ctg_type'] == "tests") {
 
             $currentTest = new MagesterTest($unitArray['id'], true);
@@ -248,10 +254,75 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         return $unitArray;
     }
 
-    public function getVideoSource($course, $lesson, $content)
+    /**
+     * Module Entry Point
+     *
+     * @url GET /materials/list/:course/:lesson/:content
+     */
+    public function getMaterialsAction($course, $lesson, $content)
     {
-        $urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/%s/", $course, $lesson, $content);
-        $urlRoot = sprintf("/video/%s/%s/", $lesson, $content);
+        $plico = PlicoLib::instance();
+        $basepath = realpath($plico->get("path/app") . "files");
+        $basedirpath = $basepath . sprintf("/%s/%s/materials", $lesson, $content);
+        //$basedirpath = realpath($dirpath);
+        $folder = "";
+        if (array_key_exists('type', $_GET) && $_GET['type'] == 'folder' && array_key_exists('filename', $_GET)) {
+            $folder = $_GET['filename'] . "/";
+            $dirpath = $basedirpath . "/" . $folder;
+            $dirpath = realpath($dirpath);
+        } else {
+            $dirpath = realpath($basedirpath);
+        }
+
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+
+        $mimeTypesIcons = array(
+            "default"                       => "icon-file-alt",
+            "application/vnd.ms-powerpoint" => "icon-ms-ppt",
+            "application/pdf"               => "icon-adobe-pdf"
+        );
+
+        if (strpos($dirpath, $basepath) == 0) {
+            //if (strpos($dirpath, $base_path))
+            $dirs = $files = array();
+            $directoryArray = scandir($dirpath);
+            foreach($directoryArray as $file) {
+                if (strpos($file, '.') === 0) {
+                    continue;
+                }
+                if (is_dir($dirpath . "/" . $file)) {
+                    $dirs[] = array(
+                        'name'      => $file,
+                        'filename'  => $folder . $file,
+                        'type'      => "folder"
+                    );
+                } else {
+                    $mime_type = $finfo->file($dirpath . "/" . $file);
+                    if (array_key_exists($mime_type, $mimeTypesIcons)) {
+                        $icon = $mimeTypesIcons[$mime_type];
+                    } else {
+                        $icon = $mimeTypesIcons["default"];
+                    }
+
+                    $files[] = array(
+                        'name'      => sprintf('<i class="%s"></i> %s', $icon, $file),
+                        'filename'  => $folder . $file,
+                        'type'      => "item"
+                    );
+                }
+            }
+            return array_merge($dirs, $files);
+        } else {
+            return $this->invalidRequestError();
+        }
+        exit;
+        //return $this->getContent($course, $lesson, $content);
+    }
+
+    public function getVideoSource($lesson, $content)
+    {
+        $urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
+        $urlRoot = sprintf("/files/%s/%s/video/", $lesson, $content);
         
         return array(
             // @todo GET FORMATS QUERYING SERVER
@@ -286,6 +357,14 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
             )
         );
     }
+
+    public function getMaterialsSource($course, $lesson, $content)
+    {
+        //$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
+        $urlRoot = sprintf("/module/courses/materials/list/%s/%s/%s", $course, $lesson, $content);
+        return $urlRoot;
+    }
+
     protected function getVideoDefaults() {
         return array(
             //'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",

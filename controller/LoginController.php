@@ -205,6 +205,8 @@ class LoginController extends AbstractSysclassController
 	public function loginAction()
 	{
 		$form = $this->createLoginForm();
+		var_dump($form->validate());
+		var_dump($form->isSubmitted());
 
 		if ($form->isSubmitted() && $form->validate()) {
 

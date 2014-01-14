@@ -1066,35 +1066,20 @@ class MagesterLesson
         return true;
     }
     /**
-
     * Get lesson directory
-
     *
-
     * This function returns the lesson directory, normally G_LESSONSPATH.$lesson['id']
-
     * <br/>Example:
-
     * <code>
-
     * $lesson = new MagesterLesson(43);          //Instantiate object for lesson with id 43
-
     * $lesson -> getDirectory();               //Returns something like /var/sites/magester/www/content/lessons/43
-
     * $lesson -> getDirectory(true);           //Returns MagesterDirectory object for lesson directory
-
     * </code>
-
     *
-
     * @param boolean $returnObject If true, an MagesterDirectory object is returned
-
     * @return mixed Either a string with the lesson directory, or the equivalent MagesterDirectory object
-
     * @since 3.5.0
-
     * @access public
-
      */
     public function getDirectory($returnObject = false)
     {
@@ -1105,23 +1090,14 @@ class MagesterLesson
         }
     }
     /**
-
     * Get url to lesson's directory
-
     *
-
     * This function is used to return the public url that this lesson uses
-
     * Since we may have shadow lessons, this url depends on the lesson directory
-
     *
-
     * @return string The lesson url
-
     * @since 3.6.0
-
     * @access public
-
      */
     public function getDirectoryUrl()
     {
@@ -1129,39 +1105,22 @@ class MagesterLesson
         return $url;
     }
     /**
-
     * Get lesson users
-
     *
-
     * This function returns an array with the lesson users.
-
     * <br/>Example:
-
     * <code>
-
     * $lesson = new MagesterLesson(32);                      //32 is a lesson id
-
     * $lessonUsers    = $lesson -> getUsers();             //Get the lesson users
-
     * $nonLessonUsers = $lesson -> getNonUsers();          //Get the users that don't have the lesson, but are eligible to
-
     * </code>
-
     * The returned array keys match the users logins
-
     *
-
     * @param string $basicType The user's basic type in the lesson
-
     * @param boolean $refresh Whether to explicitly refresh the object cached data set
-
     * @return array A 2-dimensional array with lesson users per type, or a 1-dimensional array with lesson users of the specified type
-
     * @since 3.5.0
-
     * @access public
-
      */
     public function getUsers($basicType = false, $refresh = false, $onlyActive = false)
     {
@@ -1218,19 +1177,12 @@ class MagesterLesson
         return $from;
     }
     /**
-
     * Get lesson users based on the specified constraints
-
     *
-
     * @param array $constraints The constraints for the query
-
     * @return array An array of MagesterUser objects
-
     * @since 3.6.2
-
     * @access public
-
      */
     public function getLessonUsers($constraints = array())
     {

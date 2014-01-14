@@ -58,6 +58,38 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 
 		mod.contentModel = new contentModelClass();
 
+		var fileTreeCollectionClass = Backbone.Collection.extend({
+			//url : "/module/courses/materials/filelist/",
+			_data: [
+                { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+            ],
+			initialize : function(opt) {
+				console.log(opt.source);
+				if (opt.source) {
+					this.url = opt.source;
+				}
+				//"/module/courses/materials/%s/%s/", $lesson, $content
+
+			},
+			data: function (options, callback) {
+				console.log(options);
+				this.fetch({
+					data : options,
+					success : function(collection,data) {
+						//console.log(a,b,c,d,e);
+						callback({ data: data });
+					}
+				})
+			}
+			
+		});
+
+		
+
 		// VIEWS
 		var filterActionViewClass = Backbone.View.extend({
 			el: $('#courses-list'),
@@ -260,6 +292,63 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		var contentTheoryViewClass = contentGenericViewClass.extend({});
 		var contentTestsViewClass = contentGenericViewClass.extend({});
 
+		var contentMaterialsViewClass = Backbone.View.extend({
+			//portlet: $('#courses-widget'),
+			//template: _.template($('#courses-content-generic-template').html()),
+			initialize: function() {
+				//this.$el.empty();
+				console.info('portlet.courses/contentMaterialsViewClass::initialize');
+				//this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function() {
+				console.info('portlet.courses/contentMaterialsViewClass::render');
+				var sources = this.model.get("sources");
+				if (typeof sources['materials'] != undefined) {
+					this.fileTree = new fileTreeCollectionClass({source: sources['materials']});
+					//this.fileTree.fetch();
+				} else {
+
+				}
+
+/*
+	            var DataSourceTree = function (options) {
+	                this._data  = options.data;
+	                this._delay = options.delay;
+	            };
+
+	            DataSourceTree.prototype = {
+	                data: function (options, callback) {
+	                    var self = this;
+
+	                    setTimeout(function () {
+	                        var data = $.extend(true, [], self._data);
+
+	                        callback({ data: data });
+
+	                    }, this._delay)
+	                }
+	            };
+	            var treeDataSource5 = new DataSourceTree({
+	                data: [
+	                    { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+	                    { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+	                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+	                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+	                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+	                ],
+	                delay: 400
+	            });
+		*/
+	            this.$('.tree').tree({
+	                selectable: false,
+	                dataSource: this.fileTree,
+	                //loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
+	            });
+			}
+		});
+
+
+
 		var contentViewClass = Backbone.View.extend({
 			el: $('#courses-content'),
 			portlet: $('#courses-widget'),
@@ -270,6 +359,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/contentViewClass::initialize');
 				this.contentNavigationView = new contentNavigationViewClass({model : this.model, el: "#courses-content-navigation"});
 				//this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+				this.contentMaterialsView = new contentMaterialsViewClass({model : this.model, el : "#tab_materials"});
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
@@ -309,6 +399,8 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					contentTypeView.render();
 					console.log(contentTypeView);
 				}
+				// @todo RENDER ONLY ON TAB CHANGE!
+				this.contentMaterialsView.render();
 				
 			}
 		});

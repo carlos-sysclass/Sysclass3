@@ -1,18 +1,11 @@
 <?php
 /**
-
 * View file
-
 *
-
 * This file offers the user the ability to view and/or download a file.
-
 *
-
 * @package SysClass
-
 * @version 1.0
-
 */
 //General initialization and parameters
 session_cache_limiter('none');
