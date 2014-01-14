@@ -59,36 +59,20 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 		mod.contentModel = new contentModelClass();
 
 		var fileTreeCollectionClass = Backbone.Collection.extend({
-			//url : "/module/courses/materials/filelist/",
-			_data: [
-                { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
-                { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
-                { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
-                { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
-                { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
-            ],
 			initialize : function(opt) {
-				console.log(opt.source);
 				if (opt.source) {
 					this.url = opt.source;
 				}
-				//"/module/courses/materials/%s/%s/", $lesson, $content
-
 			},
 			data: function (options, callback) {
-				console.log(options);
 				this.fetch({
 					data : options,
 					success : function(collection,data) {
-						//console.log(a,b,c,d,e);
 						callback({ data: data });
 					}
 				})
 			}
-			
 		});
-
-		
 
 		// VIEWS
 		var filterActionViewClass = Backbone.View.extend({
@@ -294,7 +278,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 
 		var contentMaterialsViewClass = Backbone.View.extend({
 			//portlet: $('#courses-widget'),
-			//template: _.template($('#courses-content-generic-template').html()),
+			template: _.template($('#courses-content-materials-template').html()),
 			initialize: function() {
 				//this.$el.empty();
 				console.info('portlet.courses/contentMaterialsViewClass::initialize');
@@ -310,39 +294,13 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 
 				}
 
-/*
-	            var DataSourceTree = function (options) {
-	                this._data  = options.data;
-	                this._delay = options.delay;
-	            };
-
-	            DataSourceTree.prototype = {
-	                data: function (options, callback) {
-	                    var self = this;
-
-	                    setTimeout(function () {
-	                        var data = $.extend(true, [], self._data);
-
-	                        callback({ data: data });
-
-	                    }, this._delay)
-	                }
-	            };
-	            var treeDataSource5 = new DataSourceTree({
-	                data: [
-	                    { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
-	                    { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
-	                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
-	                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
-	                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
-	                ],
-	                delay: 400
-	            });
-		*/
+				this.$el.empty().append(
+					this.template()
+				);
 	            this.$('.tree').tree({
 	                selectable: false,
 	                dataSource: this.fileTree,
-	                //loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
+	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
 	            });
 			}
 		});
@@ -397,7 +355,6 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				}
 				if (contentTypeView != null) {
 					contentTypeView.render();
-					console.log(contentTypeView);
 				}
 				// @todo RENDER ONLY ON TAB CHANGE!
 				this.contentMaterialsView.render();
@@ -511,7 +468,6 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 
 				this.collection.fetch({
 					success : function(collection, response, options) {
-						//console.log(this.model)
 						self.model.fetch({
 							success : function(model,b,c,d) {
 								model.bindEvents();

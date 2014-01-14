@@ -47,20 +47,7 @@
 						   	</div>
 					   	</div>
 					   	<div id="tab_materials" class="tab-pane">
-							<div class="tree tree-plus-minus tree-no-line tree-unselectable">
-								<div class = "tree-folder" style="display:none;">
-									<div class="tree-folder-header">
-										<i class="icon-folder-close"></i>
-										<div class="tree-folder-name"></div>
-									</div>
-									<div class="tree-folder-content"></div>
-									<div class="tree-loader" style="display:none"></div>
-								</div>
-								<div class="tree-item" style="display:none;">
-									<div class="tree-item-base"></div>
-									<div class="tree-item-name"></div>
-								</div>
-							</div>
+
 					   	</div>
 					   <div id="tab_exercises" class="tab-pane">
 						   <div class="alert alert-info">
@@ -109,6 +96,39 @@
 		</div>
 	</div>
 </div>
+<script type="text/template" id="courses-list-item-template">
+<a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
+	<% if (stats.completed == 1) { %>
+	<span class="text-success"><i class="icon-ok-sign"></i></span>
+	<% } else { %>
+	<span class="text-danger"><i class="icon-remove-sign"></i></span>
+	<% } %>
+	<%= name %>
+	<!--
+	<% if (typeof lessons != 'undefined') { %>
+		<span class="badge badge-info"><%= lessons.length %></span>
+	<% } %>
+	-->
+	<% if (typeof stats.completed_lessons != 'undefined' && stats.total_lessons != undefined) { %>
+		<span class="badge badge-info"><%= stats.completed_lessons %> / <%= stats.total_lessons %></span>
+	<% } %>
+	<% if (typeof stats.overall_progress != 'undefined') { %>
+		<% 
+			if (stats.overall_progress < 40) {
+				classe = "danger";
+			} else if (stats.overall_progress < 70) {
+				classe = "warning";
+			} else if (stats.overall_progress < 100) {
+				classe = "info";
+			} else {
+				classe = "success";
+			}
+		%>
+		<span class="badge badge-<%= classe %>"><%= stats.overall_progress %> %</span>
+	<% } %>
+
+</a>
+</script>
 <script type="text/template" id="courses-content-navigation-template">
 	<div class="col-md-2">
 		<% if (prev && prev != null) { %>
@@ -143,41 +163,22 @@
 	</video>
 </script>
 
-<script type="text/template" id="courses-progress-item-template">
-	
+<script type="text/template" id="courses-content-materials-template">
+	<div class="tree tree-plus-minus tree-no-line tree-unselectable">
+		<div class = "tree-folder" style="display:none;">
+			<div class="tree-folder-header">
+				<i class="icon-folder-close"></i>
+				<div class="tree-folder-name"></div>
+			</div>
+			<div class="tree-folder-content"></div>
+			<div class="tree-loader" style="display:none"></div>
+		</div>
+		<div class="tree-item" style="display:none;">
+			<i class="tree-dot"></i>
+			<div class="tree-item-name"></div>
+		</div>
+	</div>
 </script>
-<script type="text/template" id="courses-list-item-template">
-<a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
-	<% if (stats.completed == 1) { %>
-	<span class="text-success"><i class="icon-ok-sign"></i></span>
-	<% } else { %>
-	<span class="text-danger"><i class="icon-remove-sign"></i></span>
-	<% } %>
-	<%= name %>
-	<!--
-	<% if (typeof lessons != 'undefined') { %>
-		<span class="badge badge-info"><%= lessons.length %></span>
-	<% } %>
-	-->
-	<% if (typeof stats.completed_lessons != 'undefined' && stats.total_lessons != undefined) { %>
-		<span class="badge badge-info"><%= stats.completed_lessons %> / <%= stats.total_lessons %></span>
-	<% } %>
-	<% if (typeof stats.overall_progress != 'undefined') { %>
-		<% 
-			if (stats.overall_progress < 40) {
-				classe = "danger";
-			} else if (stats.overall_progress < 70) {
-				classe = "warning";
-			} else if (stats.overall_progress < 100) {
-				classe = "info";
-			} else {
-				classe = "success";
-			}
-		%>
-		<span class="badge badge-<%= classe %>"><%= stats.overall_progress %> %</span>
-	<% } %>
 
-</a>
-</script>
 
 
