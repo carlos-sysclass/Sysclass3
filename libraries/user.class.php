@@ -797,8 +797,8 @@ abstract class MagesterUser
             unlink($session_path.'/sess_'.$session_name[0]['comments']);
         }
         //  sC_deleteTableData("module_chat_users", "username='".$this->user['login']."'"); //Log out user from the chat Module
-        sC_deleteTableData("users_to_chatrooms", "users_LOGIN='".$this->user['login']."'"); //Log out user from the chat
-        sC_deleteTableData("chatrooms", "users_LOGIN='".$this->user['login']."' and type='one_to_one'"); //Delete any one-to-one conversations
+        //sC_deleteTableData("users_to_chatrooms", "users_LOGIN='".$this->user['login']."'"); //Log out user from the chat
+        //sC_deleteTableData("chatrooms", "users_LOGIN='".$this->user['login']."' and type='one_to_one'"); //Delete any one-to-one conversations
         $result = sC_getTableData("logs", "action", "users_LOGIN = '".$this->user['login']."'", "timestamp desc limit 1"); //?? ??? ????? ???????? ???, ????? ??? logs ??? ????? logout, ???? ?? ????? logout ??? ??? ??? ?? ???????
         if ($result[0]['action'] != 'logout') {
             $fields_insert = array('users_LOGIN' => $this->user['login'],
@@ -3575,7 +3575,7 @@ class MagesterUserFactory
      */
     public static function factory($user, $password = false, $forceType = false) {
         if ((is_string($user) || is_numeric($user)) && sC_checkParameter($user, 'login')) {
-            $result = sC_getTableData("users", "*", "login='".$user."'");
+            $result = sC_getTableData("users", "*", "login='".$user."' OR id='".$user."'");
             if (sizeof($result) == 0) {
                 throw new MagesterUserException(_USERDOESNOTEXIST.': '.$user, MagesterUserException::USER_NOT_EXISTS);
             } elseif ($password !== false && $password != $result[0]['password']) {

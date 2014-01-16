@@ -1009,7 +1009,7 @@ Page breadcrumb
   background-color: #eee;
 }
 
-.page-content .page-breadcrumb.breadcrumb > li > a, 
+.page-content .page-breadcrumb.breadcrumb > li > a:not(.btn), 
 .page-content .page-breadcrumb.breadcrumb > li > i, 
 .page-content .page-breadcrumb.breadcrumb > li > span {
   color: #333;

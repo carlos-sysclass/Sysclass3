@@ -49,6 +49,15 @@ $plicoLib->concat(
 */
 	)
 );
+
+$plicoLib->set("urls", 
+	array(
+		'default'	=> '/dashboard',
+		'home'		=> '/dashboard'
+	)
+);
+
+
 /*
 // WEB THEME SPECIFIC
 $plicoLib->add(
@@ -68,27 +77,44 @@ $plicoLib->add("resources/components", array(
 ));
 */
 $plicoLib->add("resources/components", array(
+	'name'	=> 'modal',
+	'css'	=> array('plugins/bootstrap-modal/css/bootstrap-modal-bs3patch', 'plugins/bootstrap-modal/css/bootstrap-modal'),
+	'js'	=> array('plugins/bootstrap-modal/js/bootstrap-modalmanager', 'plugins/bootstrap-modal/js/bootstrap-modal')
+));
+
+$plicoLib->add("resources/components", array(
+	'name'	=> 'validation',
+	'js'	=> array('plugins/jquery-validation/dist/jquery.validate.min', 'plugins/jquery-validation/dist/additional-methods.min')
+));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'data-tables',
+	'css'	=> array('plugins/data-tables/DT_bootstrap'),
+	'js'	=> array('plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
+));
+$plicoLib->add("resources/components", array(
 	'name'	=> 'datepicker',
 	'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
 	'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
+));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'timepicker',
+	'css'	=> array('plugins/bootstrap-timepicker/compiled/timepicker'),
+	'js'	=> array('plugins/bootstrap-timepicker/js/bootstrap-timepicker')
+));
+$plicoLib->add("resources/components", array(
+	'name'	=> 'wysihtml5',
+	'css'	=> array('plugins/bootstrap-wysihtml5/bootstrap-wysihtml5', 'plugins/bootstrap-wysihtml5/wysiwyg-color'),
+	'js'	=> array('plugins/bootstrap-wysihtml5/wysihtml5-0.3.0', 'plugins/bootstrap-wysihtml5/bootstrap-wysihtml5')
 ));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'fuelux-tree',
 	'css'	=> array('plugins/fuelux/css/tree-metronic'),
 	'js'	=> array('plugins/fuelux/js/tree.min')
 ));
-
-/*
-$plicoLib->add("resources/components", array(
-	'name'	=> 'timepicker',
-	'css'	=> array('css/plugins/datepicker/datepicker', 'css/plugins/timepicker/bootstrap-timepicker.min'),
-	'js'	=> array('js/plugins/datepicker/bootstrap-datepicker', 'js/plugins/timepicker/bootstrap-timepicker.min')
-));
-*/
 $plicoLib->add("resources/components", array(
 	'name'	=> 'select2',
 	'css'	=> array('plugins/select2/select2_metro'),
-	'js'	=> array('plugins/select2/select2.min')
+	'js'	=> array('plugins/select2/select2')
 ));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'pwstrength',
@@ -135,6 +161,8 @@ $plicoLib->concat(
 		'plugins/backbone/marionette',
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',
+		'plugins/moment/moment.min',
+
 		'plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min',
 		'plugins/jquery-slimscroll/jquery.slimscroll.min',
 		'plugins/jquery.blockui.min',

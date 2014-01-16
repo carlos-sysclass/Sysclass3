@@ -3,11 +3,12 @@ abstract class SysclassModule extends AbstractSysclassController
 {   
     protected $module_id = null;
     protected $module_folder = null;
+    protected $module_request;
     public function __construct() {
         
     }
     
-    public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="")
+    public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="", $urlMatch = null)
     {
         $plico = PlicoLib::instance();
         $class_name = get_class($this);
@@ -21,11 +22,24 @@ abstract class SysclassModule extends AbstractSysclassController
         if (empty($basePath)) {
             $basePath = $baseUrl . "/";
         }
-        parent::init($url, $method, $format, $root, $basePath);
+
+        $this->module_request = str_replace("module/" . $this->module_id . "/", "", $url);
+
+        $urlMatch = str_replace("module/" . $this->module_id . "/", "", $urlMatch);
+
+        parent::init($url, $method, $format, $root, $basePath, $urlMatch);
+
+        $this->context['module_id']         = $this->module_id;
+        $this->context['module_request']    = $this->module_request;
+        $this->context['module_folder']     = $this->module_folder;
     }
     protected function putModuleScript($script)
     {
         return parent::putModuleScript($this->getBasePath() . "js/" . $script);
+    }
+    protected function putCrossModuleScript($module, $script)
+    {
+        return parent::putModuleScript($this->module($module)->getBasePath() . "js/" . $script);
 
     }
     /**
@@ -54,6 +68,10 @@ abstract class SysclassModule extends AbstractSysclassController
     {
         return parent::display($this->template($template));
     }
+    protected function fetch($template=NULL)
+    {
+        return parent::fetch($this->template($template));
+    }
     protected function template($template=NULL) {
         return $this->module_folder . "/templates/" . $template;
     }
@@ -64,5 +82,14 @@ abstract class SysclassModule extends AbstractSysclassController
         $this->putItem("module_fullpath", $this->module_folder);
         $this->putItem("module_tplpath", $this->module_folder. "/templates/");
     }
+
+    protected function putSectionTemplate($key, $tpl) {
+        return parent::putSectionTemplate($key, $this->template($tpl));
+    }
+    protected function putCrossSectionTemplate($module, $key, $tpl)
+    {
+        return parent::putSectionTemplate($key, $this->module($module)->template($tpl));
+    }
+
 
 }

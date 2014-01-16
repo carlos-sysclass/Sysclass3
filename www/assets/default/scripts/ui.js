@@ -53,7 +53,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 				var opt = jQuery(this).data();
 
 				if (jQuery(this).is('[data-url]')) {
-					if (jQuery(this).data('select-search') == true) {
+					if (jQuery(this).is("[type='hidden']") || jQuery(this).data('select-search') == true) {
 						opt.ajax = { // instead of writing the function to execute the request we use Select2's convenient helper
 							url: jQuery(this).data('url'),
 							dataType: 'json',
@@ -64,18 +64,24 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 							},
 							results: function (data, page) { // parse the results into the format expected by Select2.
 								// since we are using custom formatting functions we do not need to alter remote JSON data
+								console.log(data);
 								return {results: data};
 							}
 						};
 						opt.formatResult = function (item, container, query, escapeMarkup) {
+							console.log(item, container, query, escapeMarkup);
             				var markup=[];
             				var terms = query.term.split("%");
-            				var text = item.name;
+            				if (item.text) {
+								return item.text;
+            				} else {
+	            				var text = item.name;
 
-            				for(q in terms) {
-            					term_markup = [];
-            					Select2.util.markMatch(text, terms[q], markup, escapeMarkup);
-								text = markup.pop();
+	            				for(q in terms) {
+	            					term_markup = [];
+	            					Select2.util.markMatch(text, terms[q], markup, escapeMarkup);
+									text = markup.pop();
+	            				}
             				}
 					        return markup.join("") + text;
 						}
@@ -83,25 +89,48 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 						$el.select2(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
+						console.log(opt);
 						mod.loadDatasourceInto(this, jQuery(this).data('url'), function() {
 							$el.select2(opt);
 						}, jQuery(this).data('url-cache'), jQuery(this).data('url-clear'));
 					}
 				} else {
 					opt.minimumResultsForSearch = 10;
+
 					$el.select2(opt);	
 				}
 			});
 		}
 	};
+
 	this.handleDatepickers = function(context) {
 		// datepicker
-		if($('.datepick', context).length > 0){
-			$('.datepick', context).datepicker()
+		if($('.date-picker', context).length > 0){
+			$('.date-picker', context).datepicker()
 			.on('changeDate', function(e) {
 				$(this).datepicker('hide');
 			});
 
+		}
+	};
+
+	this.handleTimepickers = function(context) {
+        if (jQuery().timepicker) {
+            $('.timepicker-default', context).timepicker({
+                autoclose: true
+            });
+            $('.timepicker-24', context).timepicker({
+                autoclose: true,
+                minuteStep: 1,
+                showSeconds: true,
+                showMeridian: false
+            });
+        }
+	};
+
+	this.handleWysihtml5 = function(context) {
+		if($('.wysihtml5', context).length > 0) {
+			$('.wysihtml5', context).wysihtml5();
 		}
 	};
 
@@ -139,11 +168,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 			}
 		}
 	};
-
     this.handlePasswordStrengthChecker = function (context) {
     	if($('.password_strength', context).length > 0) {
     		//$(':password').pwstrength();
-    		
     		$(".password_strength", context).each(function(el, i) {
 				$(this).pwstrength({
                     raisePower: 1.4,
@@ -168,7 +195,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleiCheck(context);
 		this.handleSelect2(context);
 		this.handleDatepickers(context);
-		this.handleTabs(context);	
+		this.handleTimepickers(context);
+		this.handleWysihtml5(context);
+		this.handleTabs(context);
 		this.handlePasswordStrengthChecker(context);
 	};
 
@@ -187,6 +216,17 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	}
 
 	this.on("start", function() {
+		
+		if ($.fn.modal && $.fn.modalmanager) {
+			$.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner = 
+			'<div class="loading-spinner" style="width: 200px; margin-left: -100px;">' +
+				'<div class="progress progress-striped active">' +
+					'<div class="progress-bar" style="width: 100%;"></div>' +
+				'</div>' +
+			'</div>';
+		}
+
+
 		/*
 		this.mobile = false,
 		this.tooltipOnlyForDesktop = true,

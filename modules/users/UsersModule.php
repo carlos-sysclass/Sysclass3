@@ -1,41 +1,77 @@
 <?php 
-class UsersModule extends SysclassModule implements ISectionMenu, IWidgetContainer, ILinkable
+class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer, ILinkable
 {
-
-	// CREATE FUNCTION HERE
-	public function getSectionMenu($section_id) {
-		// PROVIDE ADDITIONAL ACCOUNTS MENU
-		/*
-		if ($section_id == "topbar") {
-			$menuItem = array(
-				'icon' 		=> 'comments',
-				'notif' 	=> 20,
-				'text'		=> self::$t->translate('You have %d new forum posts', 12),
-				'external'	=> array(
-					'link'	=> $this->getBasePath() . "/timeline",
-					'text'	=> self::$t->translate('See all forums')
-				),
-				'type'		=> 'inbox',
-				'items'		=> array(
-					array(
-						'link' 		=> $this->getBasePath() . "/timeline/1",
-						
-						'values' => array(
-							'photo'		=> 'img/avatar2.jpg',
-							'from'		=> 'Lisa Wong',
-							'time'		=> 'Just Now',
-							'message' 	=> 'Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh...'
-						)
-					)
+	const PERMISSION_IN_LESSON = "PERMISSION_IN_LESSON";
+	public static $permissions = null;
+	// IPermissionChecker
+	public function getName() {
+		return self::$t->translate("Users");
+	}
+	public function getPermissions($index = null) {
+		if (is_null(self::$permissions)) {
+			self::$permissions = array(
+				self::PERMISSION_IN_LESSON => array(
+					'name'	=> "All students enrolled in a lesson",
+					'token'	=> "All students enrolled in the lesson '%s'"
 				)
 			);
-
-			return $menuItem;
 		}
-		*/
-		return false;
+		if (!array_key_exists($index, self::$permissions)) {
+			return self::$permissions;
+		} else {
+			return self::$permissions[$index];
+		}
 	}
 
+	public function getConditionText($condition_id, $data) {
+		$condition = $this->getPermissions(self::PERMISSION_IN_LESSON);
+
+		switch($condition_id) {
+			case self::PERMISSION_IN_LESSON : {
+				$lessonObject = $this->model("course/lessons")->getItem($data);
+				return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
+			}
+		}
+	}
+
+	public function checkCondition($condition_id, $data) {
+		$entity = $this->getCurrentUser();
+		return $this->checkConditionByEntityId($entity['id'], $condition_id, $data);
+	}
+
+	public function checkConditionByEntityId($entity_id, $condition_id, $data) {
+		$userModel = $this->model("users");
+		$userObject = $userModel->getItem($entity_id);
+
+		switch($condition_id) {
+			case self::PERMISSION_IN_LESSON : {
+				// CHECK IF 
+				$checkIDs = explode(";", $data);
+				
+				$userLessons = $userObject->getUserLessons(array("return_objects" => false));
+				$userLessonsId = array_keys($userLessons);
+
+				foreach($checkIDs as $lesson_id) {
+					if (!in_array($lesson_id, $userLessonsId)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			default : {
+				return true;
+			}
+		}
+	}
+
+	public function getPermissionForm($condition_id) {
+		if (array_key_exists($condition_id, $this->getPermissions())) {
+			return $this->fetch("permission/" . $condition_id . ".tpl");
+		} else {
+			return false;
+		}
+	}
+	
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->getCurrentUser(true);

@@ -8,67 +8,57 @@
 		{include file="block/head.tpl"}
 	{/block}
 </head>
-<!-- BEGIN BODY -->
 <body class="page-boxed page-header-fixed">
-   <!-- BEGIN HEADER -->
-   {block name="topbar"}
-      {include file="block/topbar.tpl"}
-   {/block}
-   <!-- END HEADER -->
-   <!-- BEGIN CONTAINER -->
-   <div class="container">
-      <div class="page-container">
-         <!-- BEGIN PAGE -->
-         <div class="page-content">
-            {if isset($T_MESSAGE)}
-            <div class="alert alert-{$T_MESSAGE.type} alert-dismissable">
-               <button data-dismiss="alert" class="close" type="button"></button>
-               {$T_MESSAGE.message}
-            </div>
-            {/if}
-            {block name="breadcrumb"}
-            <!--
-            <div class="row">
-               <div class="col-md-12">
-                  <ul class="page-breadcrumb breadcrumb">
-                     <li class="btn-group">
-                        <button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
-                        <span>Actions</span> <i class="icon-angle-down"></i>
-                        </button>
-                        <ul role="menu" class="dropdown-menu pull-right">
-                           <li><a href="#">Action</a></li>
-                           <li><a href="#">Another action</a></li>
-                           <li><a href="#">Something else here</a></li>
-                           <li class="divider"></li>
-                           <li><a href="#">Separated link</a></li>
-                        </ul>
-                     </li>
-                     <li>
-                        <i class="icon-home"></i>
-                        <a href="index.html">Home</a> 
-                        <i class="icon-angle-right"></i>
-                     </li>
-                     <li><a href="#">Inbox</a></li>
-                  </ul>
-               </div>
-            </div>
-            -->
-            {/block}
-         	{block name="content"}
-            {/block}
-         </div>
-         <!-- END PAGE -->
-      </div>
-	<!-- END CONTAINER -->
-	<!-- BEGIN FOOTER -->
-	{block name="footer"}
-		{include file="block/footer.tpl"}
+	<!-- BEGIN HEADER -->
+	{block name="topbar"}
+		{include file="block/topbar.tpl"}
 	{/block}
-	{block name="foot"}
-		{include file="block/foot.tpl"}
-	{/block}
-   </div>
-   <div id="off-windows">
-   </div>
-<!-- END BODY -->
+	<!-- END HEADER -->
+	<!-- BEGIN CONTAINER -->
+	<div class="container">
+		<div class="page-container">
+			<!-- BEGIN PAGE -->
+			<div class="page-content">
+				{if isset($T_MESSAGE)}
+				<div class="alert alert-{$T_MESSAGE.type} alert-dismissable">
+					<button data-dismiss="alert" class="close" type="button"></button>
+					{$T_MESSAGE.message}
+				</div>
+				{/if}
+					{block name="page-title"}
+						{include file="block/page-title.tpl"}
+					{/block}
+					{block name="breadcrumb"}
+						{include file="block/breadcrumb.tpl"}
+					{/block}
+				{block name="content"}
+				{/block}
+			</div>
+			<!-- END PAGE -->
+		</div>
+		<!-- END CONTAINER -->
+		{block name="underscore-templates"}
+		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
+		<script type="text/template" id="datatables-options-template">
+			<a class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>" href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>">
+				<% if (item.icon != undefined) { %>
+					<i class="<%= item.icon %>"></i>
+				<% } %>
+				<% if (item.text != undefined) { %>
+					<%= item.text %>
+				<% } %>
+			</a>
+		</script>
+		{/block}
+		<!-- BEGIN FOOTER -->
+		{block name="footer"}
+			{include file="block/footer.tpl"}
+		{/block}
+		{block name="foot"}
+			{include file="block/foot.tpl"}
+		{/block}
+	</div>
+	<div id="off-windows">
+	</div>
+</body>
 </html>

@@ -3,9 +3,9 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 {
 	protected static $current_user = null;
 	public static $t = null;
-	public function init($url, $method, $format, $root=NULL, $basePath="")
+	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
-		parent::init($url, $method, $format, $root, $basePath);
+		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
 		// LOAD LANGUAGE MODULE
 		
@@ -182,7 +182,16 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 	}
 
+	public function getSystemUrl($who = null) {
+		if (is_null($who)) {
+			$who = 'default';
+		}
+		$plico = PlicoLib::instance();
+		$urls = $plico->getArray('urls');
+		if (array_key_exists($who, $urls)) {
+			return $urls[$who];
+		}
+		return false;
+	}
 	/* FRAMEWORK CANDIDATE FUNCTIONS - !MOVE TO plicolib if apply! */
-	
-
 }

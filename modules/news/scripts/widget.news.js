@@ -1,8 +1,11 @@
-$SC.module("portlet.news", function(mod, MyApp, Backbone, Marionette, $, _) {
+$SC.module("portlet.news", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
+		/*
 	  	mod.collection = new Backbone.Collection;
 		mod.collection.url = "/module/news/data";
+		*/
+
 
 	  	// VIEWS
 	  	mod.viewClass = Backbone.View.extend({
@@ -47,7 +50,7 @@ $SC.module("portlet.news", function(mod, MyApp, Backbone, Marionette, $, _) {
 		    }
 	  	});
 
-		this.view = new mod.viewClass({collection: mod.collection});
+		this.view = new mod.viewClass({collection: app.module("models.news").itemsCollection});
 		this.searchBy = "title";
 
 		this.onFullscreen = function(e, portlet) {

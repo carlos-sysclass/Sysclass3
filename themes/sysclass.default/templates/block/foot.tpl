@@ -22,6 +22,14 @@
 {/foreach}
 <!-- END JAVASCRIPTS -->
 
+{if (isset($T_SECTION_TPL['foot']) &&  ($T_SECTION_TPL['foot']|@count > 0))}
+    <div id="foot-tempĺates">
+    {foreach $T_SECTION_TPL['foot'] as $template}
+        {include file=$template}
+    {/foreach}
+    </div>
+{/if}
+
 <script>
     jQuery(document).ready(function() {   
         var options = {
@@ -29,7 +37,7 @@
             theme_app  : App  
         };
         $SC.start(options);
-
+/*
         //App.init("{$T_PATH.resource}");
         if (typeof Login == 'object') {
             Login.init();
@@ -68,5 +76,6 @@
                 barColor: App.getLayoutColorCode('red')
             });
         }
+*/
     });
 </script>

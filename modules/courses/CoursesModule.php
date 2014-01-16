@@ -34,6 +34,49 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     /**
      * Module Entry Point
      *
+     * @url GET /combo/items
+     */
+    public function comboItensAction() {
+        $q = $_GET['q'];
+
+        $lessons = MagesterLesson::getLessons();
+        if (!empty($q)) {
+            $lessons = sC_filterData($lessons, $q);
+        }
+        $result = array();
+        foreach($lessons as $lesson_id => $lesson) {
+            // @todo Group by course 
+            $result[] = array(
+                'id'    => $lesson_id,
+                'name'  => $lesson['name']
+            );
+        }
+        return $result;
+        /*
+        $modules = $this->getModules("IPermissionChecker");
+        $permissions = array();
+        $results = array();
+        foreach ($modules as $key => $module) {
+            $permissions[$key] = $module->getPermissions();
+            $groupItem = array(
+                'text'  => $module->getName(),
+                'children'  => array()
+            );
+            foreach($permissions[$key] as $perm_id => $perm_item) {
+                $groupItem['children'][] = array(
+                    'id'    => $key."::".$perm_id,
+                    'name'  => $perm_item['name']
+                );
+            }
+            $results[] = $groupItem;
+        }
+        */
+        return $results;
+    }
+
+    /**
+     * Module Entry Point
+     *
      * @url GET /list
      */
     public function listCourseAction()

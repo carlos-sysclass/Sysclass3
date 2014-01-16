@@ -1,17 +1,74 @@
 /* Set the defaults for DataTables initialisation */
+var dataTableOptionsTemplate = _.template($("#datatables-options-template").html());
+//console.log($("#datatables-options-template").html());
+
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom": "<'row'<'col-md-6 col-sm-12'l><'col-md-12 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ records"
-	}
-} );
+	},
+	// DEFAULT COLUMN FORMATING
+	"aoColumnDefs": [
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					return moment.unix(data).fromNow();
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'unix-moment-since' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display') {
+					result = [];
+					for(i in data) {
+						result.push(dataTableOptionsTemplate({item: data[i], key : i}));
+					}
+					return result.join("");
+				}
+				return 'dfslçfklsd';
+			},
+			"bSearchable" 	: false,
+			"bSortable"		: false,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-options' ]
+		},
+		
+	],
+	"aaSorting": [[0, 'asc']],
+	/*
+	"aLengthMenu": [
+		[10, 15, 20, -1],
+		[10, 15, 20, "All"] // change per page values here
+	],
+	*/
+	// set the initial value
+	"iDisplayLength": 10
+});
 
 
 /* Default class modification */
 $.extend( $.fn.dataTableExt.oStdClasses, {
 	"sWrapper": "dataTables_wrapper form-inline"
 } );
+
+// SORTING FUNCTIONS
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "unix-moment-since-asc": function ( a, b ) {
+    	console.log(a,b);
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+ 
+    "unix-moment-since-desc": function ( a, b ) {
+    	//console.log(a,b);
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+});
 
 
 /* API method to get paging information */

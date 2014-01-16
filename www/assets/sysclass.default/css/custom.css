@@ -143,3 +143,24 @@ hr {
 h4.border-bottom {
 	border-bottom: 1px solid #ddd;
 }
+.page-content .page-breadcrumb.breadcrumb {
+    margin-bottom: 0;
+    margin-top: 0;
+    min-height: 37px;
+}
+
+.bootstrap-timepicker table td input {
+    margin: 0;
+    text-align: center;
+    width: 33px !important;
+    padding: 5px;
+
+    background-color: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 0;
+    box-shadow: none;
+    color: #333333;
+    /* font-size: 14px; */
+    font-weight: normal;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
