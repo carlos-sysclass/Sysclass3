@@ -235,10 +235,14 @@
 		      </ul>
 		   </li>
 		   <!-- END USER LOGIN DROPDOWN -->
-
-
 		</ul>
 		<!-- END TOP NAVIGATION MENU -->
+		<div class="ajax-loader">
+			<img src="{Plico_GetResource file='img/ajax-loader.gif'}">
+			{translateToken value='Loading'}
+		</div>
+
 	</div>
+
 	<!-- END TOP NAVIGATION BAR -->
 </div>

@@ -131,7 +131,10 @@ $plicoLib->concat(
 		'plugins/bootstrap/css/bootstrap.min',
 		'plugins/uniform/css/uniform.default',
 		//<!-- END GLOBAL MANDATORY STYLES -->
+
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+		// TODO GET ALL THIS CSS AND PUT ON A COMPONENTS BASIS
+		'plugins/bootstrap-toastr/toastr.min',
 		'plugins/gritter/css/jquery.gritter',
 		'plugins/bootstrap-daterangepicker/daterangepicker-bs3',
 		'plugins/fullcalendar/fullcalendar/fullcalendar',
@@ -163,6 +166,10 @@ $plicoLib->concat(
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/moment/moment.min',
 
+		//<!-- JGROWL notifications -->
+
+		// TODO GET ALL THIS JS AND PUT ON A COMPONENTS BASIS
+		'plugins/bootstrap-toastr/toastr.min',
 		'plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min',
 		'plugins/jquery-slimscroll/jquery.slimscroll.min',
 		'plugins/jquery.blockui.min',
@@ -180,7 +187,9 @@ $plicoLib->concat(
 
 		'scripts/app',
 		'scripts/sysclass',
-		'scripts/ui',
+		'scripts/models',
+		'scripts/ui', // TODO MERGE ui AND views
+		'scripts/views',
 		'scripts/utils.toastr',
 		//'scripts/utils.strophe',
 		'scripts/portlets'

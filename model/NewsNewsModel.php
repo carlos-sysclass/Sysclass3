@@ -7,18 +7,13 @@ class NewsNewsModel extends AbstractSysclassModel implements ISyncronizableModel
 		$this->id_field = "id";
 		$this->mapFields = array(
 			//"id"					=> false, // SET TO FALSE TO CLEAR FROM "TO-SAVE" RESOURCE
-			"login"					=> 'users_LOGIN',
-			'lesson_id'				=> 'lessons_ID'
+			"login"					=> 'users_LOGIN'
 		);
 
-		$this->selectSql = "SELECT `id`, `title`, `data`, `timestamp`, `expire`, `lessons_ID`, `classe_id`, `users_LOGIN` FROM `news`";
+		$this->selectSql = "SELECT `id`, `title`, `data`, `timestamp`, `expire`, `users_LOGIN`, `permission_access_mode` FROM `news`";
+		//`lessons_ID`, `classe_id`, 
 
 		parent::init();
 
-	}
-
-	public function setItem($data, $id) {
-		$data = $this->mapFields($data);
-		return $this->update($data, $id);
 	}
 }

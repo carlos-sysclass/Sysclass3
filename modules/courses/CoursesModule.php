@@ -35,23 +35,49 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
      * Module Entry Point
      *
      * @url GET /combo/items
+     * @url GET /combo/items/:type
      */
-    public function comboItensAction() {
+    public function comboItensAction($type) {
         $q = $_GET['q'];
 
-        $lessons = MagesterLesson::getLessons();
-        if (!empty($q)) {
-            $lessons = sC_filterData($lessons, $q);
+        switch ($type) {
+            case 'courses': {
+                $courses = MagesterCourse::getCourses();
+                if (!empty($q)) {
+                    $courses = sC_filterData($courses, $q);
+                }
+                $result = array();
+                foreach($courses as $course_id => $course) {
+                    // @todo Group by course 
+                    $result[] = array(
+                        'id'    => $course_id,
+                        'name'  => $course['name']
+                    );
+                }
+                return $result;
+            }
+            case 'lessons':
+            default : {
+                $lessons = MagesterLesson::getLessons();
+                if (!empty($q)) {
+                    $lessons = sC_filterData($lessons, $q);
+                }
+                $result = array();
+                foreach($lessons as $lesson_id => $lesson) {
+                    // @todo Group by course 
+                    $result[] = array(
+                        'id'    => $lesson_id,
+                        'name'  => $lesson['name']
+                    );
+                }
+                return $result;
+            }
+            
+                # code...
+                break;
         }
-        $result = array();
-        foreach($lessons as $lesson_id => $lesson) {
-            // @todo Group by course 
-            $result[] = array(
-                'id'    => $lesson_id,
-                'name'  => $lesson['name']
-            );
-        }
-        return $result;
+
+
         /*
         $modules = $this->getModules("IPermissionChecker");
         $permissions = array();

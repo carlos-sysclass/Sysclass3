@@ -33,8 +33,11 @@ abstract class SysclassModule extends AbstractSysclassController
         $this->context['module_request']    = $this->module_request;
         $this->context['module_folder']     = $this->module_folder;
     }
-    protected function putModuleScript($script)
+    protected function putModuleScript($script, $data = null)
     {
+        if (!is_null($data)) {
+            $this->setCache($script, $data);
+        }
         return parent::putModuleScript($this->getBasePath() . "js/" . $script);
     }
     protected function putCrossModuleScript($module, $script)
@@ -58,6 +61,13 @@ abstract class SysclassModule extends AbstractSysclassController
 
             $jsFileName = $this->module_folder . "/scripts/" . $filename . ".js";
             if (file_exists($jsFileName)) {
+                $sendData = $this->getCache($filename);
+
+                if (!is_null($sendData)) {
+                    $var_name = str_replace(".", "_", $filename);
+                    echo sprintf("var %s = %s;\n", $var_name, json_encode($sendData));
+                }
+
                 echo file_get_contents($jsFileName);
             }
         }
@@ -88,6 +98,9 @@ abstract class SysclassModule extends AbstractSysclassController
     }
     protected function putCrossSectionTemplate($module, $key, $tpl)
     {
+        if (is_null($key)) {
+            $key = $module;
+        }
         return parent::putSectionTemplate($key, $this->module($module)->template($tpl));
     }
 

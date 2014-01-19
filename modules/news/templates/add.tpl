@@ -40,55 +40,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="permission-block">
-			<h3 class="form-section">{translateToken value='Permission Rules'}
-				<small>- {translateToken value='Who can see your annoucement?'}</small>
-				<div class="pull-right">
-					<a class="btn btn-link new-permission-action" id="ajax-demo" data-toggle="modal">
-						<i class="icon-plus"></i>
-						{translateToken value='New Permission'}
-					</a>
-				</div>
-			</h3>
-			
-			<!-- INJECT A TABLE WITHIN TEMPLATES FOR PERMISSION MANAGEMENT -->
-			<div class="form-group">
-				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label control-inline">{translateToken value='Access mode:'}  </label>
-				<select class="select2-me input-xlarge" name="sexo" data-rule-required="1" data-rule-min="1">
-					<option value="1">Only users that match the permissions below</option>
-					<option value="2">Only users that do not match the permissions below</option>
-				</select>
-			</div>
-			<!--
-			<select class="select2-me input-xlarge" name="sexo" data-url="/module/permission/combo/items" data-select-search="true">
-			</select>
-			-->
-			
-			
-			<div class="table-responsive">
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>{translateToken value='Permission'}</th>
-							<th class="text-right">{translateToken value='Actions'}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>
-								
-							</td>
-							<td class="text-right">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
 <!--
 array(8) {
   ["id"]=>
@@ -107,6 +58,11 @@ array(8) {
   string(1) "0"
 }
 -->
+		{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
+		    {foreach $T_SECTION_TPL['permission'] as $template}
+		        {include file=$template}
+		    {/foreach}
+		{/if}
 	</div>
 	<div class="form-actions nobg">
 		<button class="btn btn-success" type="submit">{translateToken value='Save Changes'}</button>

@@ -17,7 +17,6 @@ $SC.module("utils.toastr", function(mod, app, Backbone, Marionette, $, _){
                 "hideMethod": "fadeOut"
             };
             this.message = function(type, message) {
-                console.log(type);
                 return toastr[type](message);
             }
         }

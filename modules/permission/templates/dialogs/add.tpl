@@ -20,7 +20,7 @@
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-success">Add</button>
+		<button type="button" class="btn btn-success save-permission-action">Add</button>
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 	</div>
 </div>

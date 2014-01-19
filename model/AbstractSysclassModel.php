@@ -3,7 +3,7 @@ abstract class AbstractSysclassModel extends ModelManager implements ISyncroniza
 	
 	protected $mapfields = array();
 	protected $where = array();
-	protected $mainTablePrefix = null;
+	public $mainTablePrefix = null;
 	protected $selectSql = null;
 
 	// ISyncronizableModel Methods
@@ -30,23 +30,46 @@ abstract class AbstractSysclassModel extends ModelManager implements ISyncroniza
 
         return $itemRow;
 	}
+
 	public function addItem($item) {
-		throw new Exception('Class' . get_class($this) . 'must implement "addItem($data)" method');
-		exit;
+		$item = $this->mapFields($item);
+		return $this->insert($item);
 	}
+
 	public function setItem($item, $id) {
-		throw new Exception('Class' . get_class($this) . 'must implement "setItem($data, $id)" method');
-		exit;
-	}	
+		$item = $this->mapFields($item);
+		return $this->update($item, $id);
+	}
+
 	public function deleteItem($id) {
-		throw new Exception('Class' . get_class($this) . 'must implement "deleteItem($id)" method');
-		exit;
+		return $this->delete(array(
+			$this->id_field => $id
+		));
 	}
 
 	// ISyncronizableCollection Methods
 	public function getItems($id) {
-		throw new Exception('Class' . get_class($this) . 'must implement "getItems($id)" method');
-		exit;
+		// !!!THIS METHODS DOES NOT VALIDATE IF THE USER HAS PERMISSION TO DO THAT, VALIDATE BEFORE!!! //
+		$sql = $this->selectSql;
+
+		if (count($this->joins) > 0) {
+			$sql .= " " . $this->wrapJoins();
+		}
+/*
+		$this->addFilter(array(
+			$this->id_field => $id
+		));
+*/
+		if (count($this->where) > 0) {
+	        $sql .= " WHERE " . implode(" AND ", $this->where);
+		}
+
+        $items = $this->db->GetArray($sql);
+        foreach($items as $index => $item) {
+			$items[$index] = $this->transfields($item);        	
+        }
+
+        return $items;
 	}
 	public function addItems($data) {
 		throw new Exception('Class' . get_class($this) . 'must implement "addItems($data)" method');
@@ -133,8 +156,8 @@ abstract class AbstractSysclassModel extends ModelManager implements ISyncroniza
 
 		$filterString = sprintf("%s %s (%s)", $field, $operator, $value);
 		return $filterString;
-
 	}
+
 	public function addFilter(array $filter, array $options = null) {
 		$filter = $this->mapFields($filter, $this->mainTablePrefix);
 		foreach ($filter as $field => $value) {

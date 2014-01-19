@@ -164,3 +164,22 @@ h4.border-bottom {
     font-weight: normal;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
+
+.header-inner .ajax-loader {
+    display: none;
+    float: left;
+    top: 0;
+    left: 50%;
+    margin: auto -3.5%;
+    width: 7%;
+    position: fixed;
+    text-decoration: none;
+    background: #fff;
+    padding: 4px 1%;
+    border: 1px solid #ddd;
+    z-index: 100;
+}
+.header-inner .ajax-loader img {
+    margin-right: 10px;
+
+}

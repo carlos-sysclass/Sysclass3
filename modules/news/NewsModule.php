@@ -26,6 +26,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 			);
 		}
 	}
+
 	/* ISummarizable */
 	public function getSummary() {
 		$data = $this->dataAction();
@@ -56,6 +57,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 			);
 		//}
 	}
+
 	/* IBreadcrumbable */
 	public function getBreadcrumb() {
 		$breadcrumbs = array(
@@ -81,9 +83,14 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 				$breadcrumbs[] = array('text'	=> self::$t->translate("New Annoucement"));
 				break;
 			}
+			case "edit" : {
+				$breadcrumbs[] = array('text'	=> self::$t->translate("Edit Annoucement"));
+				break;
+			}
 		}
 		return $breadcrumbs;
 	}
+
 	/* IActionable */
 	public function getActions() {
 		$request = $this->getMatchedUrl();
@@ -116,6 +123,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 	 * Module Entry Point
 	 *
 	 * @url GET /data
+	 * @deprecated Use GET /items/me entry point
 	 */
 	public function dataAction()
 	{
@@ -148,41 +156,81 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 		}
 		return array_values($news);
 	}
+
 	/**
-	 * Module Entry Point
+	 * Get all news visible to the current user
+	 *
+	 * @url GET /item/me/:id
+	 */
+	public function getItemAction($id) {
+
+		$editItem = $this->model("news")->getItem($id);		
+		// TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+		return $editItem;
+	}
+	/**
+	 * Insert a news model
+	 *
+	 * @url POST /item/me
+	 */
+	public function addItemAction($id)
+	{
+		if ($userData = $this->getCurrentUser()) {
+			$data = $this->getHttpData(func_get_args());
+
+			$itemModel = $this->model("news");
+			$data['login'] = $userData['login'];
+			if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+				return $this->createRedirectResponse(
+					$this->getBasePath() . "edit/" . $data['id'],
+					self::$t->translate("News saved with success"), 
+					"success"
+				);
+			} else {
+				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+				return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+			}
+		} else {
+			return $this->notAuthenticatedError();
+		}
+	}
+	/**
+	 * Update a news model
+	 *
+	 * @url PUT /item/me/:id
+	 */
+	public function setItemAction($id)
+	{
+		if ($userData = $this->getCurrentUser()) {
+			$data = $this->getHttpData(func_get_args());
+
+			$itemModel = $this->model("news");
+			if ($itemModel->setItem($data, $id) !== FALSE) {
+				$response = $this->createAdviseResponse(self::$t->translate("News updated with success"), "success");
+				return array_merge($response, $data);
+			} else {
+				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+				return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+			}
+		} else {
+			return $this->notAuthenticatedError();
+		}
+	}
+
+	/**
+	 * Get all news visible to the current user
 	 *
 	 * @url GET /items/me
 	 * @url GET /items/me/:datatable
 	 */
-	public function itemsAction($datatable)
+	public function getItemsAction($datatable)
 	{
 		$currentUser    = $this->getCurrentUser(true);
+		$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-		# Carrega noticias da ultima licao selecionada
-		$news = news :: getNews(0, false) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
+		$newsItens = $this->model("news")->getItems();
 
-		# Filtra comunicado pela classe do aluno
-		$userClasses = $this->_getTableDataFlat(
-			"users_to_courses",
-			"classe_id",
-			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
-		);
-		/*
-		$xentifyModule = $this->loadModule("xentify");
-		$user = $this->getCurrentUser();
-		*/
-		foreach ($news as $key => $noticia) {
-			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
-				unset($news[$key]);
-			//} elseif ($ajax && $noticia['classe_id']==0) {
-			//    unset($news[$key]);
-			}
-			/*
-			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
-				unset($news[$key]);
-			}
-			*/
-		}
+		$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
 
 		if ($datatable === 'datatable') {
 			$news = array_values($news);
@@ -190,6 +238,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 				$news[$key]['options'] = array(
 					'edit'	=> array(
 						'icon'	=> 'icon-edit',
+						'link'	=> $this->getBasePath() . "edit/" . $item['id'],
 						'class'	=> 'btn-sm btn-primary'
 					),
 					'remove'	=> array(
@@ -225,7 +274,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 			$this->putComponent("select2");
 			$this->putComponent("data-tables");
 			$this->putModuleScript("models.news");
-			$this->putModuleScript("page.news.view");
+			$this->putModuleScript("views.news.view");
 
 			# Carrega noticias da ultima licao selecionada
 			$news = news :: getNews(0, true) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
@@ -257,19 +306,54 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 	{
 		$currentUser    = $this->getCurrentUser(true);
 
-		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation", "modal");
-
-		$this->putCrossModuleScript("permission", "dialog.permission");
-		$this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
-
-
-		$this->putModuleScript("page.news.add");
+		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
+		$this->putModuleScript("models.news");
+//		$this->putModuleScript("views.news");
+		$this->putModuleScript("views.news.add");
 
 		$this->putItem("page_title", self::$t->translate('Announcements'));
 		$this->putItem("page_subtitle", self::$t->translate('Manage, review and publish your Announcements'));
 
 		//return array_values($news);
-		$this->display("add.tpl");
+		$this->display("form.tpl");
+	}
+
+	/**
+	 * Module Entry Point
+	 *
+	 * @url GET /edit/:id
+	 */
+	public function editPage($id)
+	{
+		$currentUser    = $this->getCurrentUser(true);
+
+		$editItem = $this->model("news")->getItem($id);
+		// TODO CHECK PERMISSION FOR OBJECT
+
+		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
+
+		// TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
+		// Ex: 
+		// $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
+		$this->putComponent("modal");
+		$this->putCrossModuleScript("permission", "dialog.permission");
+		$this->putCrossSectionTemplate("permission", null, "blocks/permission");
+		$this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
+
+		$this->putCrossModuleScript("permission", "dialog.permission");
+
+		$this->putModuleScript("models.news");
+		//$this->putModuleScript("views.news");
+		$this->putModuleScript("views.news.edit", array('id' => $id));
+
+		$this->putItem("page_title", self::$t->translate('Announcements'));
+		$this->putItem("page_subtitle", self::$t->translate('Manage, review and publish your Announcements'));
+
+		$this->putItem("form_action", $_SERVER['REQUEST_URI']);
+		//$this->putItem("entity", $editItem);
+
+		//return array_values($news);
+		$this->display("form.tpl");
 	}
 
 }

@@ -1,7 +1,10 @@
 <?php 
 class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer, ILinkable
 {
-	const PERMISSION_IN_LESSON = "PERMISSION_IN_LESSON";
+	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";
+	const PERMISSION_IN_COURSE 		= "PERMISSION_IN_COURSE";
+	const PERMISSION_SPECIFIC_TYPE 	= "PERMISSION_SPECIFIC_TYPE";
+	
 	public static $permissions = null;
 	// IPermissionChecker
 	public function getName() {
@@ -13,6 +16,14 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 				self::PERMISSION_IN_LESSON => array(
 					'name'	=> "All students enrolled in a lesson",
 					'token'	=> "All students enrolled in the lesson '%s'"
+				),
+				self::PERMISSION_IN_COURSE => array(
+					'name'	=> "All students enrolled in a course",
+					'token'	=> "All students enrolled in the course '%s'"
+				),
+				self::PERMISSION_SPECIFIC_TYPE => array(
+					'name'	=> "All users from specific type",
+					'token'	=> "All users of type '%s'"
 				)
 			);
 		}
@@ -24,12 +35,24 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	}
 
 	public function getConditionText($condition_id, $data) {
-		$condition = $this->getPermissions(self::PERMISSION_IN_LESSON);
+		
+		$condition = $this->getPermissions($condition_id);
 
 		switch($condition_id) {
 			case self::PERMISSION_IN_LESSON : {
 				$lessonObject = $this->model("course/lessons")->getItem($data);
 				return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
+			}
+			case self::PERMISSION_IN_COURSE : {
+				$courseObject = $this->model("course")->getItem($data);
+				return self::$t->translate($condition['token'], $courseObject->course['name']);
+			}
+			case self::PERMISSION_SPECIFIC_TYPE : {
+				$roles = MagesterUser::GetRoles(true);
+				return self::$t->translate($condition['token'], $roles[$data]);
+			}
+			default : {
+				return "Permission Unknown";
 			}
 		}
 	}
@@ -47,7 +70,9 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 			case self::PERMISSION_IN_LESSON : {
 				// CHECK IF 
 				$checkIDs = explode(";", $data);
-				
+				if ($userObject->getType() == 'administrator') {
+					return true;
+				}
 				$userLessons = $userObject->getUserLessons(array("return_objects" => false));
 				$userLessonsId = array_keys($userLessons);
 
@@ -58,20 +83,70 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 				}
 				return true;
 			}
+			case self::PERMISSION_IN_COURSE : {
+				// CHECK IF 
+				$checkIDs = explode(";", $data);
+				if ($userObject->getType() == 'administrator') {
+					return true;
+				}
+				$userCourses = $userObject->getUserCourses(array("return_objects" => false));
+				$userCoursesId = array_keys($userCourses);
+
+				foreach($checkIDs as $course_id) {
+					if (!in_array($course_id, $userCoursesId)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			case self::PERMISSION_SPECIFIC_TYPE : {
+				// CHECK IF 
+				$userType = $userObject->user['user_types_ID'] != 0 ? $userObject->user['user_types_ID'] : $userObject->getType();
+
+				if ($userType == $data) {
+					return true;
+				}
+				return false;
+			}
+
 			default : {
 				return true;
 			}
 		}
 	}
 
-	public function getPermissionForm($condition_id) {
+	public function getPermissionForm($condition_id, $data = array()) {
 		if (array_key_exists($condition_id, $this->getPermissions())) {
+			$this->putItem("data", $data);
 			return $this->fetch("permission/" . $condition_id . ".tpl");
 		} else {
 			return false;
 		}
 	}
-	
+	public function parseFormData($condition_id, $data) {
+		switch($condition_id) {
+			case self::PERMISSION_IN_LESSON : {
+				// CHECK IF 
+				$lesson_ids = explode(";", $data['lesson_id']);
+				return implode(";", $lesson_ids);
+			}
+			case self::PERMISSION_IN_COURSE : {
+				// CHECK IF 
+				$course_ids = explode(";", $data['course_id']);
+				return implode(";", $course_ids);
+			}
+			case self::PERMISSION_SPECIFIC_TYPE : {
+				// CHECK IF 
+				$user_type = explode(";", $data['user_type']);
+				return implode(";", $user_type);
+			}
+			default : {
+				return json_encode($data);
+			}
+		}
+	}
+
+	// IWidgetContainer
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->getCurrentUser(true);
@@ -107,6 +182,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 			);
 		}
 	}
+
 	public function getLinks() {
         //if ($this->getCurrentUser(true)->getType() == 'administrator') {
             return array(
@@ -134,6 +210,33 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
                 )
             );
         //}
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /combo/items
+     * @url GET /combo/items/:type
+     */
+    public function comboItensAction($type) {
+        $q = $_GET['q'];
+
+        switch ($type) {
+            case 'user_types': {
+                $roles = MagesterUser::GetRoles(true);
+                $result = array();
+                foreach($roles as $key => $value) {
+                	$result[] = array(
+                		'id'	=> $key,
+                		'name'	=> $value
+                	);
+                }
+                if (!empty($q)) {
+                    $result = sC_filterData($result, $q);
+                }
+                return array_values($result);
+            }
+        }
     }
 	/**
 	 * Module Entry Point

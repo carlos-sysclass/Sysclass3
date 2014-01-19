@@ -3233,3 +3233,23 @@ CREATE TABLE IF NOT EXISTS `user_settings` (
 ALTER TABLE `module_xuser` ADD `country_code` VARCHAR( 3 ) NOT NULL DEFAULT 'BR' AFTER `uf` ;
 ALTER TABLE `module_xuser` ADD `website` VARCHAR( 150 ) NOT NULL ;
 
+/* 2014-01-17 */
+CREATE TABLE IF NOT EXISTS `mod_permission_conditions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `condition_id` varchar(50) NOT NULL,
+  `module` varchar(50) NOT NULL,
+  `data` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+ALTER TABLE `mod_permission_conditions` DROP `module`;
+
+DROP TABLE IF EXISTS `mod_permission_entities`;
+CREATE TABLE IF NOT EXISTS `mod_permission_entities` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` varchar( 50 ) NOT NULL ,
+  `entity_id` varchar( 50 ) NOT NULL ,
+  `condition_id` bigint( 20 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '1' AFTER `id` ;

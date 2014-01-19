@@ -1,4 +1,4 @@
-$SC.module("page.news.view", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("views.news.view", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
         var tableViewClass = Backbone.View.extend({
@@ -32,7 +32,7 @@ $SC.module("page.news.view", function(mod, app, Backbone, Marionette, $, _) {
 		            { "mData": "title" },
 		            { "mData": "timestamp", 'sType' : 'unix-moment-since' },
 		            { "mData": "expire" , 'sType' : 'unix-moment-since'},
-		            { "mData": "users_LOGIN" },
+		            { "mData": "login" },
 		            { "mData": "options", 'sType' : 'table-options' },
 		        ]
         	}

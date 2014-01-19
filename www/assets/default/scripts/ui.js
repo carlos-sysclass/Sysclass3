@@ -1,28 +1,50 @@
 $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
   	this.handleValidate = function(context) {
 	  	// Validation
+	  	
+	  	/* 
 		if($('.form-validate', context).length > 0) {
 			$('.form-validate', context).each(function(){
-				var id = $(this).attr('id');
-				$("#"+id).validate({
+				//var id = $(this).attr('id');
+				$(this).validate({
 					ignore: null,
-					errorElement:'span',
-					errorClass: 'help-block error',
-					errorPlacement:function(error, element){
-						element.parents('.controls').append(error);
-					},
-					highlight: function(label) {
-						$(label).closest('.control-group').removeClass('error success').addClass('error');
-					},
-					success: function(label) {
-						label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
-					},
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block', // default input error message class
+
+	                errorPlacement: function (error, element) { // render error placement for each input type
+	                	
+	                    //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
+	                    //    error.insertAfter("#form_2_membership_error");
+	                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
+	                    	//console.log(element.data('wysihtml5').editor.composer.iframe);
+	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe); 
+	                    //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
+	                    //    error.insertAfter("#form_2_service_error");
+	                    } else {
+	                    	error.insertAfter(element); // for other inputs, just perform default behavior
+	                    }
+	                },
+
+	                highlight: function (element) { // hightlight error inputs
+	                   $(element)
+	                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+	                },
+	                unhighlight: function (element) { // revert the change done by hightlight
+	                    $(element)
+	                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+	                },
+	                success: function (label) {
+                        label
+                            .addClass('valid').addClass('help-block') // mark the current input as valid and display OK icon
+                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
+	                },
 					submitHandler : function(f) {
 						f.submit();
 					}
 				});
 			});
 		}
+		*/
 	};
 	this.handleiCheck = function(context) {
 		if($(".icheck-me", context).length > 0){
@@ -131,6 +153,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.handleWysihtml5 = function(context) {
 		if($('.wysihtml5', context).length > 0) {
 			$('.wysihtml5', context).wysihtml5();
+
+			//console.log(a.data('wysihtml5'));
 		}
 	};
 
@@ -205,10 +229,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		if (typeof action != 'undefined') {
 			if (action.intent == "redirect") {
 				window.location.href = action.data;
-			} else if (action.intent == "info") {
-				$.jGrowl(action.message, {
-					theme : action.type
-				});
+			} else if (action.intent == "advise") {
+				app.module("utils.toastr").message(action.type, action.message);
 			} else {
 				console.debug("@TODO: handleaction:", action);
 			}
@@ -227,7 +249,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		}
 
 
-		/*
 		this.mobile = false,
 		this.tooltipOnlyForDesktop = true,
 		this.notifyActivatedSelector = 'button-active';
@@ -235,7 +256,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
 			this.mobile = true;
 		}
-
+		/*
         $.extend(
         	$.jGrowl.defaults, {
         		closer : false,
@@ -249,17 +270,18 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         		position : "bottom-right"
         	}
         );
+		*/
 		$( document ).ajaxStart(function( event, xhr, settings ) {
 			$(".ajax-loader").stop(true, true).show();
 		});
 		$( document ).ajaxComplete(function( event, xhr, settings ) {
 			if (xhr.responseJSON) {
 				var json = xhr.responseJSON;
-				$CEPETI.module("pages").handleAction(json._response_);
+				app.module("ui").handleAction(json._response_);
 			}
 			$(".ajax-loader").fadeOut(1000);
 		});
-		*/
+
 		this.refresh(document);
 	});
 
