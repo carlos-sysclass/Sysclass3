@@ -1,5 +1,5 @@
 <?php 
-class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer, ILinkable
+class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer /*, ILinkable */
 {
 	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";
 	const PERMISSION_IN_COURSE 		= "PERMISSION_IN_COURSE";
@@ -182,7 +182,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 			);
 		}
 	}
-
+	/*
 	public function getLinks() {
         //if ($this->getCurrentUser(true)->getType() == 'administrator') {
             return array(
@@ -211,9 +211,9 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
             );
         //}
     }
-
+	*/
     /**
-     * Module Entry Point
+     * Entry point for 'select2' request data
      *
      * @url GET /combo/items
      * @url GET /combo/items/:type
@@ -222,7 +222,8 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
         $q = $_GET['q'];
 
         switch ($type) {
-            case 'user_types': {
+            case 'user_types': 
+            default : {
                 $roles = MagesterUser::GetRoles(true);
                 $result = array();
                 foreach($roles as $key => $value) {
