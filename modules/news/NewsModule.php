@@ -83,7 +83,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 				$breadcrumbs[] = array('text'	=> self::$t->translate("New Annoucement"));
 				break;
 			}
-			case "edit" : {
+			case "edit/:id" : {
 				$breadcrumbs[] = array('text'	=> self::$t->translate("Edit Annoucement"));
 				break;
 			}
