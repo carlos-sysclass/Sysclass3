@@ -13,10 +13,6 @@
 
 <div>
 	<div class="container" id="courses-content">
-
-
-
-
 		<div class="row" id="courses-content-navigation"></div>
 		<hr />
 		<div class="row">
@@ -65,33 +61,32 @@
 			</div>
 		</div>
 	</div>
-	<hr />
 	<div class="row" id="progress-content">
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number topic" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Lesson Progress <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Lesson <i class="m-icon-swapright"></i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Class Progress <i class="m-icon-swapright"></i></a>
-			</div>
-		</div>
-		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-3">
-			<div class="easy-pie-chart">
-				<div class="number course" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Course Progress <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Class <i class="m-icon-swapright"></i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number semester" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Semester Progress <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Semester <i class="m-icon-swapright"></i></a>
+			</div>
+		</div>
+		<div class="margin-bottom-10 visible-sm"></div>
+		<div class="col-md-3">
+			<div class="easy-pie-chart">
+				<div class="number course" data-percent="0">+<span>0</span>%</div>
+				<a class="title" href="#">Course <i class="m-icon-swapright"></i></a>
 			</div>
 		</div>
 	</div>

@@ -1,3 +1,4 @@
+<!--
 {if $T_DATA.data|@count > 0}
 <div class="list-group message-recipient-group">
   {foreach $T_DATA.data as $item}
@@ -10,7 +11,7 @@
   {/foreach}
 </div>
 {/if}
-<!--
+-->
 {if $T_DATA.data|@count > 0}
 	<ul class="message-recipient-group ver-inline-menu ver-inline-notabbable">
 		<li class="active">
@@ -31,4 +32,3 @@
 		{/foreach}
 	</ul>
 {/if}
--->

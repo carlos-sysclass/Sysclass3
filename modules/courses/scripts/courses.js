@@ -386,13 +386,13 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('yellow')
 					});
-					this.$(".course").easyPieChart({
+					this.$(".semester").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('red')
 					});
-					this.$(".semester").easyPieChart({
+					this.$(".course").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
