@@ -335,12 +335,11 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function autologinPage($hash)
 	{
-		if (isset($hash) && ($hash == 'demo-user' || $this->_checkParameter($hash, 'hex'))) {
+		if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
 		    try {
 		        $result = $this->_getTableDataFlat("users", "login,autologin,password,user_type", "active=1 and autologin !=''");
 		        $autolinks = $result['autologin'];
 		        $key = array_search($hash, $autolinks);
-
 
 		        if ($key !== false) {
 		            $user = MagesterUserFactory :: factory($result['login'][$key]);
@@ -348,7 +347,7 @@ class LoginController extends AbstractSysclassController
 		            $pattern = $user->user['login']."_".$user->user['timestamp'];
 		            $pattern = md5($pattern.G_MD5KEY);
 
-		            if ($hash == 'demo-user' || strcmp($pattern, $hash) == 0) {
+		            if ($hash == 'demo-user' || $hash == 'admin-user' || strcmp($pattern, $hash) == 0) {
 		                $user->login($user->user['password'], true);
 
 		                //if (isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id')) {

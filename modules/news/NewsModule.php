@@ -43,7 +43,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 
 	/* ILinkable */
 	public function getLinks() {
-		$data = $this->dataAction();
+		$data = $this->getItemsAction();
 		//if ($this->getCurrentUser(true)->getType() == 'administrator') {
 			return array(
 				'communication' => array(

@@ -6,7 +6,6 @@
     <span class="text-{$item.color}"><i class="icon-{$item.icon}"></i></span>
     {/if}
     {$item.text}
-
   </a>
   {/foreach}
 </div>

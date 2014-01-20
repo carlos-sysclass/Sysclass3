@@ -1,5 +1,5 @@
 <?php 
-class PaymentModule extends SysclassModule implements ISummarizable, ILinkable
+class PaymentModule extends SysclassModule implements ISummarizable
 {
     public function getSummary() {
         $data = array(1); // FAKE, PUT HERE DUE PAYMENTS
@@ -38,19 +38,4 @@ class PaymentModule extends SysclassModule implements ISummarizable, ILinkable
         }
     }
 */
-    public function getLinks() {
-        $data = array(1); // FAKE, PUT HERE DUE PAYMENTS
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            return array(
-                'payment' => array(
-                    array(
-                        'count' => count($data),
-                        'text'  => self::$t->translate('Payments'),
-                        'icon'  => 'icon-money',
-                        'link'  => $this->getBasePath() . 'all'
-                    )
-                )
-            );
-        //}
-    }
 }
