@@ -193,7 +193,7 @@ h4.border-bottom {
 .page-boxed .header .navbar-brand img {
     margin-left: 0;
 }
-.ver-inline-menu.ver-inline-notabbable li.active:after {
+.ver-inline-menu.message-recipient-group li.active:after {
     border-bottom: 0;
     border-left: 0;
     border-top: 0;
