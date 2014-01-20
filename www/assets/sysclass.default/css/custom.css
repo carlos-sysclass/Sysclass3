@@ -183,3 +183,29 @@ h4.border-bottom {
     margin-right: 10px;
 
 }
+.header .navbar-brand {
+    padding: 7px 0 0;
+}
+.header .navbar-brand img {
+    height: 36px;
+    margin-left: 0;
+}
+.page-boxed .header .navbar-brand img {
+    margin-left: 0;
+}
+.ver-inline-menu.ver-inline-notabbable li.active:after {
+    border-bottom: 0;
+    border-left: 0;
+    border-top: 0;
+}
+#courses-content-navigation ul.breadcrumb {
+    padding: 0;
+}
+
+.content-navigation-bar {
+    list-style: none outside none;
+    padding: 0;
+}
+.content-navigation-bar > li {
+    display: inline-block;
+}

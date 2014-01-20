@@ -11,9 +11,12 @@
 	</div>
 </div>
 
-<h4 class="text-center" id="lessons-title"></h4>
 <div>
 	<div class="container" id="courses-content">
+
+
+
+
 		<div class="row" id="courses-content-navigation"></div>
 		<hr />
 		<div class="row">
@@ -29,10 +32,6 @@
 						<li class="">
 							<a data-toggle="tab" href="#tab_exercises"><i class="icon-pencil"></i> Exercises</a>
 						</li>
-						<li class="">
-							<a data-toggle="tab" href="#tab_roadmap"><i class="icon-road"></i> Roadmap</a>
-						</li>
-						
 						<li class="pull-right">
 							<a data-toggle="tab" href="#tab_class_info">
 								<i class="icon-info-sign"></i> Class Info 
@@ -41,24 +40,18 @@
 					</ul>
 					<div class="tab-content">
 						<div id="tab_class" class="tab-pane active">
-						   	<div class="alert alert-info">
+							<div class="alert alert-info">
 								<span class="text-info"><i class="icon-warning-sign"></i></span>
 								Ops! There's any content for this class
-						   	</div>
-					   	</div>
-					   	<div id="tab_materials" class="tab-pane">
+							</div>
+						</div>
+						<div id="tab_materials" class="tab-pane">
 
-					   	</div>
+						</div>
 					   <div id="tab_exercises" class="tab-pane">
 						   <div class="alert alert-info">
 								 <span class="text-info"><i class="icon-warning-sign"></i></span>
 								 Ops! There's any exercises posted for this class
-						   </div>
-					   </div>
-					   <div id="tab_roadmap" class="tab-pane">
-						   <div class="alert alert-info">
-								 <span class="text-info"><i class="icon-warning-sign"></i></span>
-								 Ops! There's any roadmap configured for this class
 						   </div>
 					   </div>
 					   <div id="tab_class_info" class="tab-pane">
@@ -74,24 +67,31 @@
 	</div>
 	<hr />
 	<div class="row" id="progress-content">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number courses" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Course Progress <i class="m-icon-swapright"></i></a>
-			</div>
-		</div>
-		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-4">
-			<div class="easy-pie-chart">
-				<div class="number lessons" data-percent="0">+<span>0</span>%</div>
+				<div class="number topic" data-percent="0">+<span>0</span>%</div>
 				<a class="title" href="#">Lesson Progress <i class="m-icon-swapright"></i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-4">
-			<div class="easy-pie-chart topic">
-				<div class="number topics" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Topic Progress <i class="m-icon-swapright"></i></a>
+		<div class="col-md-3">
+			<div class="easy-pie-chart">
+				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
+				<a class="title" href="#">Class Progress <i class="m-icon-swapright"></i></a>
+			</div>
+		</div>
+		<div class="margin-bottom-10 visible-sm"></div>
+		<div class="col-md-3">
+			<div class="easy-pie-chart">
+				<div class="number course" data-percent="0">+<span>0</span>%</div>
+				<a class="title" href="#">Course Progress <i class="m-icon-swapright"></i></a>
+			</div>
+		</div>
+		<div class="margin-bottom-10 visible-sm"></div>
+		<div class="col-md-3">
+			<div class="easy-pie-chart">
+				<div class="number semester" data-percent="0">+<span>0</span>%</div>
+				<a class="title" href="#">Semester Progress <i class="m-icon-swapright"></i></a>
 			</div>
 		</div>
 	</div>
@@ -130,6 +130,79 @@
 </a>
 </script>
 <script type="text/template" id="courses-content-navigation-template">
+	<div class="col-md-12">
+		<ul class="content-navigation-bar">
+			<!--
+				<li class="btn-group">
+						<button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
+						<span>Actions</span> <i class="icon-angle-down"></i>
+						</button>
+						<ul role="menu" class="dropdown-menu pull-right">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+						</ul>
+				</li>
+										-->
+			<li>
+				<div class="btn-group">
+					<button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" type="button">
+						<i class="icon-home"></i><span id="courses-title">Course</span>
+						<i class="icon-angle-down"></i>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Dropdown link</a></li>
+						<li><a href="#">Dropdown link</a></li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="btn-group">
+					<button data-toggle="dropdown" class="btn btn-warning dropdown-toggle" type="button">
+						<i class="icon-home"></i><span id="lessons-title">Lesson</span>
+						<i class="icon-angle-down"></i>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Dropdown link</a></li>
+						<li><a href="#">Dropdown link</a></li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="btn-group">
+					<button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+						<i class="icon-home"></i><span id="content-title"><%= name %></span>
+						<i class="icon-angle-down"></i>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Dropdown link</a></li>
+						<li><a href="#">Dropdown link</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="pull-right">
+				<% if (prev && prev != null) { %>
+					<a href="#" class="btn btn-primary prev">
+						<i class="icon-arrow-left"></i>
+					</a>
+				<% } %>
+			</li>
+			<li class="pull-right">
+				<% if (next && next != null) { %>
+					<a href="#" class="btn btn-primary next">
+						<i class="icon-arrow-right"></i>
+					</a>
+				<% } %>
+			</li>
+		</ul>
+	</div>
+
+
+
+
+<!--
 	<div class="col-md-2">
 		<% if (prev && prev != null) { %>
 			<a href="#" class="btn btn-primary prev">
@@ -147,6 +220,9 @@
 			</a>
 		<% } %>
 	</div>
+-->
+
+
 </script>
 
 <script type="text/template" id="courses-content-generic-template">
@@ -154,12 +230,12 @@
 </script>
 <script type="text/template" id="courses-content-video-template">
 	<video id="courses-content-video-<%= id %>" class="video-js vjs-default-skin vjs-big-play-centered">
-        <% _.each(data.video.sources, function(src, type){ %>
-        	<source src="<%= src %>" type='<%= type %>' />    
-        <% }); %>
-        <% _.each(data.video.tracks, function(item, kind){ %>
-        	<track kind="<%= kind %>" src="<%= item.src %>" srclang="<%= item.srclang %>" label="<%= item.label %>" <% if (item.default != undefined) { %>default="<%= item.default %>"<% } %>></track>
-        <% }); %>
+		<% _.each(data.video.sources, function(src, type){ %>
+			<source src="<%= src %>" type='<%= type %>' />    
+		<% }); %>
+		<% _.each(data.video.tracks, function(item, kind){ %>
+			<track kind="<%= kind %>" src="<%= item.src %>" srclang="<%= item.srclang %>" label="<%= item.label %>" <% if (item.default != undefined) { %>default="<%= item.default %>"<% } %>></track>
+		<% }); %>
 	</video>
 </script>
 

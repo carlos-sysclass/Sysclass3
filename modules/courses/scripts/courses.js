@@ -366,19 +366,47 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			el: $('#progress-content'),
 			portlet: $('#courses-widget'),
 			initialize: function() {
+				this.listenTo(this.model, 'change', this.renderSemester.bind(this));
 				this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
 				this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
-				this.listenTo(this.model, 'change:id', this.renderContent.bind(this));
+				this.listenTo(this.model, 'change:id', this.renderTopic.bind(this));
 				this.render();
 			},
 			render : function() {
 				if (jQuery.fn.easyPieChart) {
-					this.$(".courses,.lessons,.topics").easyPieChart({
+					this.$(".topic").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
-						barColor: App.getLayoutColorCode('blue')
+						barColor: App.getLayoutColorCode('green')
 					});
+					this.$(".lesson").easyPieChart({
+						animate: 1000,
+						size: 75,
+						lineWidth: 3,
+						barColor: App.getLayoutColorCode('yellow')
+					});
+					this.$(".course").easyPieChart({
+						animate: 1000,
+						size: 75,
+						lineWidth: 3,
+						barColor: App.getLayoutColorCode('red')
+					});
+					this.$(".semester").easyPieChart({
+						animate: 1000,
+						size: 75,
+						lineWidth: 3,
+						barColor: App.getLayoutColorCode('grey')
+					});
+				}
+			},
+			renderSemester : function() {
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				percent = 40;
+				this.$(".semester span").html(percent);
+
+				if (jQuery.fn.easyPieChart) {
+					this.$(".semester").data('easyPieChart').update(percent);
 				}
 			},
 			renderCourse : function() {
@@ -398,10 +426,11 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					var percent = Math.round(lessonStatsAll / lessonsCollection.size());
 				}
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				this.$(".courses span").html(percent);
+				percent = 30;
+				this.$(".course span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
-					this.$(".courses").data('easyPieChart').update(percent);
+					this.$(".course").data('easyPieChart').update(percent);
 				}
 			},
 			renderLesson : function() {
@@ -417,34 +446,23 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 					var percent = Math.round(lessonStats.overall_progress);
 				}
 
+				percent = 20;
+
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				this.$(".lessons span").html(percent);
+				this.$(".lesson span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
-					this.$(".lessons").data('easyPieChart').update(percent);
+					this.$(".lesson").data('easyPieChart').update(percent);
 				}
 			},
-			renderContent : function() {
-				/*
-				var courseID = this.model.get("course_id");
-				var lessonID = this.model.get("lesson_id");
-				if (lessonID == 0) {
-					var percent = 0;
-				} else {
-					var courseModel = this.collection.get(courseID);
-					var lessonsCollection = courseModel.get("lessons");
-					var lessonModel = lessonsCollection.get(lessonID);
-					var lessonStats = lessonModel.get("stats");
-					var percent = Math.round(lessonStats.overall_progress);
-				}
-
+			renderTopic : function() {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				this.$(".lessons span").html(percent);
+				percent = 80;
+				this.$(".topic span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
-					this.$(".lessons").data('easyPieChart').update(percent);
+					this.$(".topic").data('easyPieChart').update(percent);
 				}
-				*/
 			}
 		});
 
@@ -479,7 +497,7 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 			},
 			renderCourse : function() {
 				var model = this.collection.get(this.model.get("course_id"));
-				this.$(".portlet-title > .caption #courses-title").html(model.get("name"));
+				this.$("#courses-title").html(model.get("name"));
 			},
 			renderLesson : function() {
 				var model = this.collection.get(this.model.get("course_id"));

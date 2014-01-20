@@ -3252,4 +3252,4 @@ CREATE TABLE IF NOT EXISTS `mod_permission_entities` (
 PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
-ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '1' AFTER `id` ;
+ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;

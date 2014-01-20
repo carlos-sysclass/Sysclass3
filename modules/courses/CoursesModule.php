@@ -14,7 +14,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     		'courses.overview' => array(
                 'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'courses-widget',
-   				'title' 	=> '<a id="courses-title" href="javascript: void(0);" class="filter"></a> <span class=""><i class="icon-sort-down"></i></span>',
+   				'title' 	=> 'Content',
    				'template'	=> $this->template("overview.widget"),
                 'icon'      => 'book',
                 'box'       => 'dark-blue',
@@ -437,7 +437,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
     protected function getVideoDefaults() {
         return array(
             //'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
-            'poster'    =>  "/assets/sysclass.default/img/video-poster.png",
+            'poster'    =>  "/assets/sysclass.default/img/video-poster.jpg",
             'techOrder' => array(
                 'html5', 'flash'
             ),

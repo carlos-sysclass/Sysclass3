@@ -23,7 +23,8 @@ var App = function () {
         'purple': '#852b99',
         'grey': '#555555',
         'light-grey': '#fafafa',
-        'yellow': '#ffb848'
+        'yellow': '#ffb848',
+        'black': '#000000'
     };
 
     // To get the correct viewport width based on  http://andylangton.co.uk/articles/javascript/get-viewport-size-javascript/

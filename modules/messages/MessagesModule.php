@@ -82,7 +82,8 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
         foreach($groups as $group) {
             $widgets[$widgetsNames[$group['id']]] = array(
-                'title'     => self::$t->translate($group['name']),
+                //'title'     => self::$t->translate($group['name']),
+                'header'    => self::$t->translate($group['name']),
                 'template'  => $this->template("contact-list.widget"),
                 'icon'      => $group['icon'],
                 'panel'     => true,
