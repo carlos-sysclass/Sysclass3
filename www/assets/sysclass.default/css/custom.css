@@ -209,3 +209,25 @@ h4.border-bottom {
 .content-navigation-bar > li {
     display: inline-block;
 }
+.portlet.box > .portlet-body.nopadding {
+    padding: 0;
+}
+
+.panel-dark-blue {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #B4CEF8 #B4CEF8;
+    border-image: none;
+    border-right: 1px solid #B4CEF8;
+    border-style: none solid solid;
+    border-width: 0 1px 1px;
+}
+
+.panel-dark-blue > .panel-heading {
+    background-color: #005999;
+    border-color: #005999;
+    color: #FFFFFF;
+    padding: 5px 10px 7px;
+}
