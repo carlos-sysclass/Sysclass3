@@ -127,69 +127,64 @@
 <script type="text/template" id="courses-content-navigation-template">
 	<div class="col-md-12">
 		<ul class="content-navigation-bar">
-			<!--
-				<li class="btn-group">
-						<button data-close-others="true" data-delay="1000" data-hover="dropdown" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
-						<span>Actions</span> <i class="icon-angle-down"></i>
-						</button>
-						<ul role="menu" class="dropdown-menu pull-right">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-						</ul>
-				</li>
-										-->
 			<li>
 				<div class="btn-group">
-					<button data-toggle="dropdown" class="btn btn-danger dropdown-toggle" type="button">
-						<i class="icon-home"></i><span id="courses-title">Course</span>
-						<i class="icon-angle-down"></i>
+					<button class="btn btn-default" type="button lesspadding">
+						<span id="courses-title">Lesson</span>
 					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Dropdown link</a></li>
-						<li><a href="#">Dropdown link</a></li>
-					</ul>
 				</div>
 			</li>
 			<li>
 				<div class="btn-group">
-					<button data-toggle="dropdown" class="btn btn-warning dropdown-toggle" type="button">
-						<i class="icon-home"></i><span id="lessons-title">Lesson</span>
-						<i class="icon-angle-down"></i>
+					<% if (prev && prev != null) { %>
+						<a href="#" class="btn btn-default prev-lesson lesspadding">
+							<i class="icon-caret-left"></i>
+						</a>
+					<% } else { %>
+						
+						<a href="#" class="btn btn-default disabled lesspadding">
+							<i class="icon-caret-left"></i>
+						</a>
+					<% } %>
+					<button class="btn btn-default" type="button lesspadding">
+						<span id="lessons-title">Lesson</span>
 					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Dropdown link</a></li>
-						<li><a href="#">Dropdown link</a></li>
-					</ul>
+					<% if (next && next != null) { %>
+						<a href="#" class="btn btn-default next-lesson lesspadding">
+							<i class="icon-caret-right"></i>
+						</a>
+					<% } else { %>
+						
+						<a href="#" class="btn btn-default disabled lesspadding">
+							<i class="icon-caret-right"></i>
+						</a>
+					<% } %>
 				</div>
 			</li>
 			<li>
 				<div class="btn-group">
-					<button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
-						<i class="icon-home"></i><span id="content-title"><%= name %></span>
-						<i class="icon-angle-down"></i>
+					<% if (prev && prev != null) { %>
+						<a href="#" class="btn btn-default prev lesspadding">
+							<i class="icon-caret-left"></i>
+						</a>
+					<% } else { %>
+						<a href="#" class="btn btn-default disabled lesspadding">
+							<i class="icon-caret-left"></i>
+						</a>
+					<% } %>
+					<button class="btn btn-default lesspadding" type="button">
+						<span id="content-title"><%= name %></span>
 					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Dropdown link</a></li>
-						<li><a href="#">Dropdown link</a></li>
-					</ul>
+					<% if (next && next != null) { %>
+						<a href="#" class="btn btn-default next lesspadding">
+							<i class="icon-caret-right"></i>
+						</a>
+					<% } else { %>
+						<a href="#" class="btn btn-default disabled lesspadding">
+							<i class="icon-caret-right"></i>
+						</a>
+					<% } %>
 				</div>
-			</li>
-			<li class="pull-right">
-				<% if (prev && prev != null) { %>
-					<a href="#" class="btn btn-primary prev">
-						<i class="icon-arrow-left"></i>
-					</a>
-				<% } %>
-			</li>
-			<li class="pull-right">
-				<% if (next && next != null) { %>
-					<a href="#" class="btn btn-primary next">
-						<i class="icon-arrow-right"></i>
-					</a>
-				<% } %>
 			</li>
 		</ul>
 	</div>

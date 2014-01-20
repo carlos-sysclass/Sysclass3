@@ -231,3 +231,19 @@ h4.border-bottom {
     color: #FFFFFF;
     padding: 5px 10px 7px;
 }
+
+.ver-inline-menu li.active i {
+    background-color: #005999 !important;
+}
+
+.ver-inline-menu li.active a {
+    border-left-color: #005999;
+}
+.ver-inline-menu li.active a {
+    background: none repeat scroll 0 0 #428BCA;
+}
+
+.content-navigation-bar .btn.lesspadding {
+    padding-left: 5px;
+    padding-right: 5px;
+}

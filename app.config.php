@@ -178,9 +178,9 @@ $plicoLib->concat(
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 		
-		//'plugins/strophe/strophe',
-		//'plugins/strophe/strophe.roster',
-		//'plugins/strophe/strophe.messaging',
+		'plugins/strophe/strophe',
+		'plugins/strophe/strophe.roster',
+		'plugins/strophe/strophe.messaging',
 		
 //		'plugins/strophe/strophe.chatstates',
 //		'plugins/strophe/strophe.ping',
@@ -191,7 +191,7 @@ $plicoLib->concat(
 		'scripts/ui', // TODO MERGE ui AND views
 		'scripts/views',
 		'scripts/utils.toastr',
-		//'scripts/utils.strophe',
+		'scripts/utils.strophe',
 		'scripts/portlets'
 	)
 );

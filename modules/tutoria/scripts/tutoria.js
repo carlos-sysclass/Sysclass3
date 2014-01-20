@@ -100,7 +100,7 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 
 // THINK ABOUT BREAKING THIS MODULE IN TWO.
 $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
-/*
+	/*
 	this.ChatCollectionClass = Backbone.Collection.extend({
 		initialize : function(models, options) {
 			$SC.module("utils.strophe").start();
@@ -132,8 +132,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		}
 	});
-*/
-
+	*/
 	var messageViewClass = Backbone.View.extend({
 		tagName: "li",
 	    itemTemplate: _.template($('#tutoria-chat-item-template').html()),
