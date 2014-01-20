@@ -127,14 +127,14 @@
 <script type="text/template" id="courses-content-navigation-template">
 	<div class="col-md-12">
 		<ul class="content-navigation-bar">
-			<li>
+			<li class="col-md-4">
 				<div class="btn-group">
-					<button class="btn btn-default" type="button lesspadding">
+					<button class="btn btn-link lesspadding" type="button ">
 						<span id="courses-title">Lesson</span>
 					</button>
 				</div>
 			</li>
-			<li>
+			<li class="col-md-4">
 				<div class="btn-group">
 					<% if (prev && prev != null) { %>
 						<a href="#" class="btn btn-default prev-lesson lesspadding">
@@ -146,7 +146,7 @@
 							<i class="icon-caret-left"></i>
 						</a>
 					<% } %>
-					<button class="btn btn-default" type="button lesspadding">
+					<button class="btn btn-link lesspadding" type="button">
 						<span id="lessons-title">Lesson</span>
 					</button>
 					<% if (next && next != null) { %>
@@ -161,7 +161,7 @@
 					<% } %>
 				</div>
 			</li>
-			<li>
+			<li class="col-md-4">
 				<div class="btn-group">
 					<% if (prev && prev != null) { %>
 						<a href="#" class="btn btn-default prev lesspadding">
@@ -172,7 +172,7 @@
 							<i class="icon-caret-left"></i>
 						</a>
 					<% } %>
-					<button class="btn btn-default lesspadding" type="button">
+					<button class="btn btn-link lesspadding" type="button">
 						<span id="content-title"><%= name %></span>
 					</button>
 					<% if (next && next != null) { %>
