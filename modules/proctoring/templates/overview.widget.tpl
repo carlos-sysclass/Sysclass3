@@ -1,17 +1,27 @@
 {if $T_DATA.data.polo|@count > 0}
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
+		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
+		<br />
+		<p class="text-center">
+			<a href="http://www.ult.edu.br" target="_blank">www.ult.edu.br</a>
+		</p>
+		<p  class="text-center">
+			<a href="#" target="_blank">View map</a>
+		</p>
+    </div>    
+	<div class="col-md-6">
 		<p>
-			<span>Proctoring Center:</span>
 			<strong class="text-default pull-right">{$T_DATA.data.polo['nome']}</strong>
 		</p>
 		<p>
-			<span>Phone:</span>
 			<strong class="text-default pull-right">{$T_DATA.data.polo['telefone']}</strong>
 		</p>
-		<p>
-			<a href="#" target="_blank">View map</a>
-		</p>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
 		<!-- GET THIS DATA FROM SCHEDULE/CALENDAR MODULE -->
 		<p>
 			<dt>Next Exam:</dt>

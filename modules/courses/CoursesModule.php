@@ -20,7 +20,7 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
                 'box'       => 'dark-blue',
                 'tools'     => array(
                     'search'        => true,
-                    'reload'        => true,
+                    //'reload'        => true,
                     'fullscreen'    => true/*,
                     'filter'        => true*/
                 )/*,

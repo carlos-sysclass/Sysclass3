@@ -247,3 +247,16 @@ h4.border-bottom {
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.btn-group-fixed-size {
+    
+}
+.btn-group-fixed-size span {
+    display: block;
+    text-align: left;
+}
+.btn-group-fixed-size span i {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}

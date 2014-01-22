@@ -91,8 +91,8 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 				),
 				2 => array(
 					"institution.overview",
-					"advisor.overview",
 					"proctoring.overview",
+					"advisor.overview",
 					"advertising",
 					"messages.contactus",
 					"messages.help",

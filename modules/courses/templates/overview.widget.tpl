@@ -20,7 +20,7 @@
 				<div class="tabbable-custom ">
 					<ul class="nav nav-tabs ">
 						<li class="active">
-							<a data-toggle="tab" href="#tab_class"><i class="icon-magic"></i> Video-Class</a>
+							<a data-toggle="tab" href="#tab_class"><i class="icon-magic"></i> Video Lesson</a>
 						</li>
 						<li class="">
 							<a data-toggle="tab" href="#tab_materials"><i class="icon-book"></i> Materials</a>
@@ -30,7 +30,7 @@
 						</li>
 						<li class="pull-right">
 							<a data-toggle="tab" href="#tab_class_info">
-								<i class="icon-info-sign"></i> Class Info 
+								<i class="icon-info-sign"></i> Lesson Info 
 							</a>
 						</li>
 					</ul>
@@ -65,28 +65,28 @@
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number topic" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Lesson <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Lesson </i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Class <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Class </i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number semester" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Semester <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Semester </i></a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number course" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Course <i class="m-icon-swapright"></i></a>
+				<a class="title" href="#">Course </i></a>
 			</div>
 		</div>
 	</div>
