@@ -1,30 +1,37 @@
 <div class="row">
-	<div class="col-md-4">
-		<img class="avatar img-responsive" width="100%" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
+	<div class="col-md-4 text-center">
+		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
     </div>    
 	<div class="col-md-8">
-		<p>
+		<p class="text-muted">
 			<span>Advisor:</span>
 			<strong class="text-default pull-right">Dr. Jonh Smith</strong>
 		</p>
-		<p>
+		<p class="text-muted">
 			<span>You have chated:</span>
 			<strong class="text-default pull-right">3 times</strong>
 		</p>
-		<p>
+		<p class="text-muted">
 			<span>You have talked:</span>
 			<strong class="text-default pull-right">4 times</strong>
 		</p>
 	</div>
 </div>
-<br />
+<hr />
 <div class="row">
-	<div class="col-md-12">
-		<p>
-			<dt>Next meeting:</dt>
-			<dd>Dez, 22 at 7:35PM Central Time</dd>
-		</p>
-		<a class="btn btn-sm btn-success" href="javascript:void(0);">Confirm</a>	
-		<a class="btn btn-sm btn-warning pull-right" href="javascript:void(0);">Re-Schedule</a>	
+	<div class="col-md-7">
+		<!-- GET THIS DATA FROM SCHEDULE/CALENDAR MODULE -->
+		<dt class="text-muted">Next meeting:</dt>
+		<dd class="text-muted">Dez, 22 at 7:35PM Central Time</dd>
+	</div>
+	<div class="col-md-5">
+		<div class="btn-group-vertical btn-group-fixed-size pull-right">
+			<a href="javascript: void(0);" class="btn btn-success btn-sm disabled">
+				<span><i class="icon-ok-sign"></i>Confirm</span>
+			</a>
+			<a href="javascript: void(0);" class="btn btn-warning btn-sm disabled">
+				<span><i class="icon-remove-sign"></i>Re-Schedule</span>
+			</a>
+		</div>
 	</div>
 </div>

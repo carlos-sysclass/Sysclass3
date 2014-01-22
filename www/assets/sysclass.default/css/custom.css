@@ -276,10 +276,10 @@ h4.border-bottom {
 .tabbable-left .portlet-tabs > .nav-tabs > li {
     float: left;
 }
-.tabbable-left > .nav-tabs > li > a {
-    margin-top: 4px;
-    padding-bottom: 11px;
-    padding-top: 8px;
+.tabbable-left .portlet-tabs > .nav-tabs > li > a {
+    margin-top: 9px;
+    padding-bottom: 12px;
+    padding-top: 5px;
 }
 
 .portlet-tabs > .nav-tabs > li.nav-text > a {

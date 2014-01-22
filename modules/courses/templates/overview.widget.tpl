@@ -65,28 +65,28 @@
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number topic" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Lesson </i></a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Class </i></a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number semester" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Semester </i></a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">Semester</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
 				<div class="number course" data-percent="0">+<span>0</span>%</div>
-				<a class="title" href="#">Course </i></a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">Course</a>
 			</div>
 		</div>
 	</div>
