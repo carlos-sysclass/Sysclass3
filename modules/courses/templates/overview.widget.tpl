@@ -15,7 +15,6 @@
 <div>
 	<div class="container" id="courses-content">
 		<div class="row" id="courses-content-navigation"></div>
-		<hr />
 		<div class="row">
 			<div class="col-md-12">
 				<div class="tabbable-custom ">
