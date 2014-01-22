@@ -1,34 +1,38 @@
 {if $T_DATA.data.polo|@count > 0}
 <div class="row">
 	<div class="col-md-6">
-		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
-		<br />
-		<p class="text-center">
-			<a href="http://www.ult.edu.br" target="_blank">www.ult.edu.br</a>
-		</p>
-		<p  class="text-center">
-			<a href="#" target="_blank">View map</a>
-		</p>
+		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-polo.png'}" />
     </div>    
 	<div class="col-md-6">
-		<p>
-			<strong class="text-default pull-right">{$T_DATA.data.polo['nome']}</strong>
-		</p>
-		<p>
-			<strong class="text-default pull-right">{$T_DATA.data.polo['telefone']}</strong>
-		</p>
+		<div class="btn-group-vertical btn-group-fixed-size">
+			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
+				<span class="text-muted"><i class="icon-link"></i>Proctoring Center</span>
+			</a>
+			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
+				<span class="text-muted"><i class="icon-map-marker"></i>View Map</span>
+			</a>
+			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
+				<span class="text-muted"><i class="icon-envelope"></i>Contact</span>
+			</a>
+		</div>
 	</div>
 </div>
 <hr />
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-7">
 		<!-- GET THIS DATA FROM SCHEDULE/CALENDAR MODULE -->
-		<p>
-			<dt>Next Exam:</dt>
-			<dd>Dez, 22 at 7:35PM Central Time</dd>
-		</p>
-		<a class="btn btn-sm btn-success btn-disabled" href="javascript:void(0);">Confirm</a>	
-		<a class="btn btn-sm btn-warning pull-right btn-disabled" href="javascript:void(0);">Re-Schedule</a>	
+		<dt class="text-muted">Next Exam:</dt>
+		<dd class="text-muted">Dez, 22 at 7:35PM Central Time</dd>
+	</div>
+	<div class="col-md-5">
+		<div class="btn-group-vertical btn-group-fixed-size pull-right">
+			<a href="javascript: void(0);" class="btn btn-success btn-sm disabled">
+				<span><i class="icon-ok-sign"></i>Confirm</span>
+			</a>
+			<a href="javascript: void(0);" class="btn btn-warning btn-sm disabled">
+				<span><i class="icon-remove-sign"></i>Re-Schedule</span>
+			</a>
+		</div>
 	</div>
 </div>
 {/if}
