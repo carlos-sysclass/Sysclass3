@@ -1,7 +1,7 @@
 {if $T_DATA.data.polo|@count > 0}
 <div class="row">
-	<div class="col-md-6">
-		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-polo.png'}" />
+	<div class="col-md-6 text-center">
+		<img class="" alt="" src="{Plico_GetResource file='img/logo-polo.png'}" />
     </div>    
 	<div class="col-md-6">
 		<div class="btn-group-vertical btn-group-fixed-size">

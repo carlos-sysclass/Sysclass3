@@ -7,16 +7,16 @@
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 		<a class="profile-edit btn btn-xs btn-primary" href="/module/users/profile">Edit</a>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-4 list-fixed-size">
 		<h4>{$user_details.name} {$user_details.surname}</h4>
-		<p><strong>Class </strong>Distance Learning</p>
-		<p><strong>Location </strong>{$user_details.uf}, {$user_details.country_code}</p>
-		<p><strong>Language </strong>{$user_details.languages_NAME}</p>
-		<p><strong>GPA </strong>3.6/95</p>
+		<p><strong>Class </strong><span>Distance Learning</span></p>
+		<p><strong>Location </strong><span>{$user_details.uf}, {$user_details.country_code}</span></p>
+		<p><strong>Language </strong><span>{$user_details.languages_NAME}</span></p>
+		<p><strong>GPA </strong><span>3.6/95</span></p>
 	</div>
 	<div class="col-md-5">
 		{if isset($notifications)}
-		<table class="table table-hover">
+		<table class="table table-hover no-space">
 	        <thead>
 				{foreach $notifications as $key => $notif}
 	           	<tr>

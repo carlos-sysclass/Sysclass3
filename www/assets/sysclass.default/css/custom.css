@@ -260,3 +260,14 @@ h4.border-bottom {
     display: inline-block;
     text-align: center;
 }
+.list-fixed-size {
+
+}
+.list-fixed-size strong {
+    width: 38%;
+    display: inline-block;
+}
+.list-fixed-size span {
+    width: 60%;
+
+}
