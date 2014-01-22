@@ -269,5 +269,28 @@ h4.border-bottom {
 }
 .list-fixed-size span {
     width: 60%;
+}
+.tabbable-left .portlet-tabs > .nav-tabs {
+    margin-left: 30px;
+}
+.tabbable-left .portlet-tabs > .nav-tabs > li {
+    float: left;
+}
+.tabbable-left > .nav-tabs > li > a {
+    margin-top: 4px;
+    padding-bottom: 11px;
+    padding-top: 8px;
+}
 
+.portlet-tabs > .nav-tabs > li.nav-text > a {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.portlet-tabs > .nav-tabs > li.nav-previous > a {
+    padding-left: 5px;
+    padding-right: 0px;
+}
+.portlet-tabs > .nav-tabs > li.nav-next > a {
+    padding-left: 0px;
+    padding-right: 5px;
 }

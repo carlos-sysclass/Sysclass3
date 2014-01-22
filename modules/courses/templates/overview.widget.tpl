@@ -4,13 +4,14 @@
 		position: absolute;
 		z-index: 100;
 	}
-
 </style>
+
+<!--
 <div id="courses-list">
 	<div class="scroller list-group" data-height="199px" data-always-visible="1">
 	</div>
 </div>
-
+-->
 <div>
 	<div class="container" id="courses-content">
 		<div class="row" id="courses-content-navigation"></div>
@@ -125,6 +126,67 @@
 </a>
 </script>
 <script type="text/template" id="courses-content-navigation-template">
+<div class=" portlet-tabs">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a data-toggle="tab" href="#course-tab"><span id="courses-title">Course</span></a>
+		</li>
+		<li class="nav-previous">
+			<% if (prev && prev != null) { %>
+				<a href="#" class="">
+					<i class="icon-caret-left"></i>
+				</a>
+			<% } else { %>
+				<a href="#" class="">
+					<i class="icon-caret-left"></i>
+				</a>
+			<% } %>
+		</li>
+		<li class="nav-text">
+			<a data-toggle="tab" href="#class-tab"><span id="lessons-title">Class</span> - 1 of 4</a>
+		</li>
+		<li class="nav-next">
+			<% if (next && next != null) { %>
+				<a href="#" class="">
+					<i class="icon-caret-right"></i>
+				</a>
+			<% } else { %>
+				<a href="#" class="">
+					<i class="icon-caret-right"></i>
+				</a>
+			<% } %>
+		</li>
+		<li class="nav-previous">
+			<% if (prev && prev != null) { %>
+				<a href="#" class="">
+					<i class="icon-caret-left"></i>
+				</a>
+			<% } else { %>
+				<a href="#" class="">
+					<i class="icon-caret-left"></i>
+				</a>
+			<% } %>
+		</li>
+		<li class="nav-text">
+			<a data-toggle="tab" href="#lesson-tab"><span id="lesson-title"><%= name %></span> -1 of 24</a>
+		</li>
+		<li class="nav-next">
+			<% if (next && next != null) { %>
+				<a href="#" class="">
+					<i class="icon-caret-right"></i>
+				</a>
+			<% } else { %>
+				<a href="#" class="">
+					<i class="icon-caret-right"></i>
+				</a>
+			<% } %>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div id="portlet_tab2" class="tab-pane"></div>
+	</div>
+</div>
+<!--
 	<div class="col-md-12">
 		<ul class="content-navigation-bar">
 			<li class="col-md-4">
@@ -147,7 +209,7 @@
 						</a>
 					<% } %>
 					<button class="btn btn-link lesspadding" type="button">
-						<span id="lessons-title">Lesson</span>
+						<span id="">Lesson</span>
 					</button>
 					<% if (next && next != null) { %>
 						<a href="#" class="btn btn-default next-lesson lesspadding">
@@ -162,7 +224,6 @@
 				</div>
 			</li>
 			<li class="col-md-4">
-				<div class="btn-group">
 					<% if (prev && prev != null) { %>
 						<a href="#" class="btn btn-default prev lesspadding">
 							<i class="icon-caret-left"></i>
@@ -173,7 +234,7 @@
 						</a>
 					<% } %>
 					<button class="btn btn-link lesspadding" type="button">
-						<span id="content-title"><%= name %></span>
+						<span id="content-title"><%= name %> 1 of 3</span>
 					</button>
 					<% if (next && next != null) { %>
 						<a href="#" class="btn btn-default next lesspadding">
@@ -184,11 +245,10 @@
 							<i class="icon-caret-right"></i>
 						</a>
 					<% } %>
-				</div>
 			</li>
 		</ul>
 	</div>
-
+-->
 
 
 
