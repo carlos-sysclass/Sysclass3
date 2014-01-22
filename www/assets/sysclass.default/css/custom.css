@@ -276,6 +276,7 @@ h4.border-bottom {
 .tabbable-left .portlet-tabs > .nav-tabs > li {
     float: left;
 }
+
 .tabbable-left .portlet-tabs > .nav-tabs > li > a {
     margin-top: 9px;
     padding-bottom: 12px;

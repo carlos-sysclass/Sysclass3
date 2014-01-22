@@ -1,4 +1,4 @@
-$SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
+$SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 		var coursesCollectionClass = Backbone.Collection.extend({
@@ -193,6 +193,9 @@ $SC.module("portlet.courses", function(mod, MyApp, Backbone, Marionette, $, _) {
 				this.$el.empty().show().append(
 					this.template(this.model.toJSON())
 				);
+
+				//app.module("ui").refresh(this.$el);
+
 				return this;
 			},
 			prev : function(e) {

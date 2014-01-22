@@ -188,7 +188,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.handleTooltips = function(context) {
 		if(this.tooltipOnlyForDesktop) {
 			if(!this.mobile) {
-				$('[rel=tooltip]', context).tooltip();
+				console.log(context);
+				console.log($('.tooltips', context));
+				$('.tooltips', context).tooltip();
 			}
 		}
 	};

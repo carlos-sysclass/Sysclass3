@@ -130,60 +130,29 @@
 		<li class="active">
 			<a data-toggle="tab" href="#course-tab"><span id="courses-title">Course</span></a>
 		</li>
-		<li class="nav-previous">
-			<% if (prev && prev != null) { %>
-				<a href="#" class="">
+		<li>
+			<a data-toggle="tab" href="#class-tab">
+				<span class="nav-button class-prev-action">
 					<i class="icon-caret-left"></i>
-				</a>
-			<% } else { %>
-				<a href="#" class="">
+				</span>
+				<span id="lessons-title">Class</span> - 1 of 4
+				<span class="nav-button class-next-action">
+					<i class="icon-caret-right"></i>
+				</span>
+			</a>
+		</li>
+		<li>
+			<a data-toggle="tab" href="#lesson-tab">
+				<span class="nav-button lesson-prev-action">
 					<i class="icon-caret-left"></i>
-				</a>
-			<% } %>
-		</li>
-		<li class="nav-text">
-			<a data-toggle="tab" href="#class-tab"><span id="lessons-title">Class</span> - 1 of 4</a>
-		</li>
-		<li class="nav-next">
-			<% if (next && next != null) { %>
-				<a href="#" class="">
+				</span>
+				<span id="lesson-title"><%= name %></span> -1 of 24
+				<span class="nav-button class-next-action">
 					<i class="icon-caret-right"></i>
-				</a>
-			<% } else { %>
-				<a href="#" class="">
-					<i class="icon-caret-right"></i>
-				</a>
-			<% } %>
-		</li>
-		<li class="nav-previous">
-			<% if (prev && prev != null) { %>
-				<a href="#" class="">
-					<i class="icon-caret-left"></i>
-				</a>
-			<% } else { %>
-				<a href="#" class="">
-					<i class="icon-caret-left"></i>
-				</a>
-			<% } %>
-		</li>
-		<li class="nav-text">
-			<a data-toggle="tab" href="#lesson-tab"><span id="lesson-title"><%= name %></span> -1 of 24</a>
-		</li>
-		<li class="nav-next">
-			<% if (next && next != null) { %>
-				<a href="#" class="">
-					<i class="icon-caret-right"></i>
-				</a>
-			<% } else { %>
-				<a href="#" class="">
-					<i class="icon-caret-right"></i>
-				</a>
-			<% } %>
+				</span>
+			</a>
 		</li>
 	</ul>
-	<div class="tab-content">
-		<div id="portlet_tab2" class="tab-pane"></div>
-	</div>
 </div>
 <!--
 	<div class="col-md-12">
