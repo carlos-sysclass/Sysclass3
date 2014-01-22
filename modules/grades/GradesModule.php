@@ -6,7 +6,7 @@ class GradesModule extends SysclassModule implements ISummarizable
 
         return array(
             'type'  => 'primary',
-            'count' => count($data),
+            'count' => $data[0],
             'text'  => self::$t->translate('Grades'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),

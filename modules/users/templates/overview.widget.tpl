@@ -9,10 +9,10 @@
 	</div>
 	<div class="col-md-4 list-fixed-size">
 		<h4>{$user_details.name} {$user_details.surname}</h4>
-		<p><strong>Class </strong><span>Distance Learning</span></p>
+		<p class="text-muted"><strong>Class </strong><span>Distance Learning</span></p>
 		<p><strong>Location </strong><span>{$user_details.uf}, {$user_details.country_code}</span></p>
 		<p><strong>Language </strong><span>{$user_details.languages_NAME}</span></p>
-		<p><strong>GPA </strong><span>3.6/95</span></p>
+		<p class="text-muted"><strong>GPA </strong><span>3.6/95</span></p>
 	</div>
 	<div class="col-md-5">
 		{if isset($notifications)}
