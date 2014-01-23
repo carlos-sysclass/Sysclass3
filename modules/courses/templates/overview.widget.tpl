@@ -1,11 +1,3 @@
-<style type="text/css">
-	#courses-list {
-		background: white;
-		position: absolute;
-		z-index: 100;
-	}
-</style>
-
 <!--
 <div id="courses-list">
 	<div class="scroller list-group" data-height="199px" data-always-visible="1">
@@ -14,7 +6,41 @@
 -->
 <div>
 	<div class="container" id="courses-content">
-		<div class="row" id="courses-content-navigation"></div>
+		<div class="row" id="courses-content-navigation">
+			<div class=" portlet-tabs">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#course-tab"><span class="course-title">Course</span></a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#class-tab">
+							<div class="nav-button class-prev-action">
+								<i class="icon-caret-left"></i>
+							</div>
+							<div class="nav-title">
+								<span class="tab-title class-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
+							</div>
+							<div class="nav-button class-next-action">
+								<i class="icon-caret-right"></i>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#lesson-tab">
+							<div class="nav-button lesson-prev-action">
+								<i class="icon-caret-left"></i>
+							</div>
+							<div class="nav-title">
+								<span class="tab-title lesson-title">Class</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
+							</div>
+							<div class="nav-button lesson-next-action">
+								<i class="icon-caret-right"></i>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>			
+		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="tabbable-custom ">
@@ -125,136 +151,23 @@
 </a>
 </script>
 <script type="text/template" id="courses-content-navigation-template">
-<div class=" portlet-tabs">
-	<ul class="nav nav-tabs">
-		<li class="active">
-			<a data-toggle="tab" href="#course-tab"><span id="courses-title">Course</span></a>
-		</li>
-		<li>
-			<a data-toggle="tab" href="#class-tab">
-				<span class="nav-button class-prev-action">
-					<i class="icon-caret-left"></i>
-				</span>
-				<span id="lessons-title">Class</span> - 1 of 4
-				<span class="nav-button class-next-action">
-					<i class="icon-caret-right"></i>
-				</span>
-			</a>
-		</li>
-		<li>
-			<a data-toggle="tab" href="#lesson-tab">
-				<span class="nav-button lesson-prev-action">
-					<i class="icon-caret-left"></i>
-				</span>
-				<span id="lesson-title"><%= name %></span> -1 of 24
-				<span class="nav-button class-next-action">
-					<i class="icon-caret-right"></i>
-				</span>
-			</a>
-		</li>
-	</ul>
-</div>
-<!--
-	<div class="col-md-12">
-		<ul class="content-navigation-bar">
-			<li class="col-md-4">
-				<div class="btn-group">
-					<button class="btn btn-link lesspadding" type="button ">
-						<span id="courses-title">Lesson</span>
-					</button>
-				</div>
-			</li>
-			<li class="col-md-4">
-				<div class="btn-group">
-					<% if (prev && prev != null) { %>
-						<a href="#" class="btn btn-default prev-lesson lesspadding">
-							<i class="icon-caret-left"></i>
-						</a>
-					<% } else { %>
-						
-						<a href="#" class="btn btn-default disabled lesspadding">
-							<i class="icon-caret-left"></i>
-						</a>
-					<% } %>
-					<button class="btn btn-link lesspadding" type="button">
-						<span id="">Lesson</span>
-					</button>
-					<% if (next && next != null) { %>
-						<a href="#" class="btn btn-default next-lesson lesspadding">
-							<i class="icon-caret-right"></i>
-						</a>
-					<% } else { %>
-						
-						<a href="#" class="btn btn-default disabled lesspadding">
-							<i class="icon-caret-right"></i>
-						</a>
-					<% } %>
-				</div>
-			</li>
-			<li class="col-md-4">
-					<% if (prev && prev != null) { %>
-						<a href="#" class="btn btn-default prev lesspadding">
-							<i class="icon-caret-left"></i>
-						</a>
-					<% } else { %>
-						<a href="#" class="btn btn-default disabled lesspadding">
-							<i class="icon-caret-left"></i>
-						</a>
-					<% } %>
-					<button class="btn btn-link lesspadding" type="button">
-						<span id="content-title"><%= name %> 1 of 3</span>
-					</button>
-					<% if (next && next != null) { %>
-						<a href="#" class="btn btn-default next lesspadding">
-							<i class="icon-caret-right"></i>
-						</a>
-					<% } else { %>
-						<a href="#" class="btn btn-default disabled lesspadding">
-							<i class="icon-caret-right"></i>
-						</a>
-					<% } %>
-			</li>
-		</ul>
-	</div>
--->
-
-
-
-<!--
-	<div class="col-md-2">
-		<% if (prev && prev != null) { %>
-			<a href="#" class="btn btn-primary prev">
-				<i class="icon-arrow-left"></i> {translateToken value='Previous'}
-			</a>
-		<% } %>
-	</div>
-	<div class="col-md-8">
-		<h5 class="text-center">{translateToken value='Topic'}:</strong> <%= name %></h5>
-	</div>
-	<div class="col-md-2">
-		<% if (next && next != null) { %>
-			<a href="#" class="btn btn-primary pull-right next">
-				<i class="icon-arrow-right pull-right"></i> {translateToken value='Next'}
-			</a>
-		<% } %>
-	</div>
--->
-
 
 </script>
 
 <script type="text/template" id="courses-content-generic-template">
-	<p><%= data %></p>
+	<p><%= data.data %></p>
 </script>
 <script type="text/template" id="courses-content-video-template">
-	<video id="courses-content-video-<%= id %>" class="video-js vjs-default-skin vjs-big-play-centered">
-		<% _.each(data.video.sources, function(src, type){ %>
+<div class="videocontent">
+	<video id="courses-content-video-<%= id %>" class="video-js vjs-default-skin vjs-big-play-centered" width="auto"  height="auto">
+		<% _.each(data.data.video.sources, function(src, type){ %>
 			<source src="<%= src %>" type='<%= type %>' />    
 		<% }); %>
-		<% _.each(data.video.tracks, function(item, kind){ %>
+		<% _.each(data.data.video.tracks, function(item, kind){ %>
 			<track kind="<%= kind %>" src="<%= item.src %>" srclang="<%= item.srclang %>" label="<%= item.label %>" <% if (item.default != undefined) { %>default="<%= item.default %>"<% } %>></track>
 		<% }); %>
 	</video>
+</div>
 </script>
 
 <script type="text/template" id="courses-content-materials-template">

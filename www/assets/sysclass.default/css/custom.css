@@ -275,14 +275,28 @@ h4.border-bottom {
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li {
     float: left;
+    max-width: 40%;
+}
+.tabbable-left .portlet-tabs > .nav-tabs > li .nav-button  {
+    float: left;
+    cursor: pointer;
+}
+.tabbable-left .portlet-tabs > .nav-tabs > li .nav-title  {
+    float: left;
+    max-width: 84%;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .tabbable-left .portlet-tabs > .nav-tabs > li > a {
-    margin-top: 9px;
-    padding-bottom: 12px;
-    padding-top: 5px;
+    height: 34px;
+    line-height: 35px;
+    margin-top: 8px;
+    padding: 0 2px;
 }
-
+.portlet-tabs {
+    float: left;
+}
 .portlet-tabs > .nav-tabs > li.nav-text > a {
     padding-left: 2px;
     padding-right: 2px;
@@ -295,3 +309,6 @@ h4.border-bottom {
     padding-left: 0px;
     padding-right: 5px;
 }
+
+
+

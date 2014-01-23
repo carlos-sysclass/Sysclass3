@@ -12,14 +12,14 @@ class SettingsModule extends SysclassModule
 
         $this->legalValues = array(
             'course_id', 
-            'lesson_id',
-            'content_id'
+            'class_id',
+            'lesson_id'
         );
 
         $this->defaults = array(
             'course_id'     => null,
+            'class_id'      => null,
             'lesson_id'     => null,
-            'content_id'    => null,
             // @todo Create a hierachical method to get and save values
             // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
             'js_date_fmt'   => 'mm/dd/yyyy',

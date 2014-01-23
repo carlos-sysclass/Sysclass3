@@ -14,9 +14,26 @@
  
 <link rel="shortcut icon" href="favicon.ico" />
 
+
 <!-- THE VIDEO JS *MUST* BE ON HEAD TAG!! MAKE A WAY TO INJECT IT HERE -->
 <script src="{Plico_GetResource file='plugins/videojs/video.js'}"></script>
 <script>
 	videojs.options.flash.swf = "{Plico_GetResource file='plugins/videojs/video-js.swf'}";
 </script>
-    
+<style type="text/css">
+/* RESPONSIVE VIDEO */
+.videocontent {
+    width: 100%;
+    margin: 0 auto;
+}
+.video-js { 
+    padding-top: 56.25%;
+}
+.vjs-fullscreen {
+    padding-top: 0px;
+}
+.vjs-poster { 
+    position: absolute;
+    top:0;
+}
+</style>

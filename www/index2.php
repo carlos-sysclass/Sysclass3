@@ -6,6 +6,7 @@ require_once PLICOLIB_PATH . "startup.php";
 
 $plicoLib = PlicoLib::instance(__DIR__ . "/../");
 
+
 //define("DEBUG", 1);
 
 //if (defined("DEBUG") && DEBUG == 1) {

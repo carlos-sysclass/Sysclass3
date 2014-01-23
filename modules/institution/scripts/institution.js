@@ -34,7 +34,7 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	});
 
 	mod.addInitializer(function() {
-		$SC.module("utils.strophe").start();
+//		$SC.module("utils.strophe").start();
 	});
 	this.on("start", function() {
 		$SC.module("utils.strophe").on("xmpp:roster:sync", function(col) {
