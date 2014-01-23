@@ -437,21 +437,21 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			el: $('#progress-content'),
 			portlet: $('#courses-widget'),
 			initialize: function() {
-				this.listenTo(this.model, 'change', this.renderSemester.bind(this));
-				this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
-				this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
-				this.listenTo(this.model, 'change:id', this.renderTopic.bind(this));
+				//this.listenTo(this.model, 'change', this.renderSemester.bind(this));
+				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
+				//this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
+				//this.listenTo(this.model, 'change:id', this.renderTopic.bind(this));
 				this.render();
 			},
 			render : function() {
 				if (jQuery.fn.easyPieChart) {
-					this.$(".topic").easyPieChart({
+					this.$(".lesson").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('green')
 					});
-					this.$(".lesson").easyPieChart({
+					this.$(".class").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
@@ -469,18 +469,16 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('grey')
 					});
-				}
-			},
-			renderSemester : function() {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				percent = 40;
-				this.$(".semester span").html(percent);
 
-				if (jQuery.fn.easyPieChart) {
-					this.$(".semester").data('easyPieChart').update(percent);
+					
+					this.renderCourse();
+					this.renderSemester();
+					this.renderClass();
+					this.renderLesson();
 				}
 			},
 			renderCourse : function() {
+				/*
 				var courseID = this.model.get("course_id");
 				if (courseID == 0) {
 					var percent = 0;
@@ -496,6 +494,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 					var percent = Math.round(lessonStatsAll / lessonsCollection.size());
 				}
+				*/
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				percent = 30;
 				this.$(".course span").html(percent);
@@ -504,7 +503,18 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".course").data('easyPieChart').update(percent);
 				}
 			},
-			renderLesson : function() {
+			renderSemester : function() {
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				percent = 40;
+				this.$(".semester span").html(percent);
+
+				if (jQuery.fn.easyPieChart) {
+					this.$(".semester").data('easyPieChart').update(percent);
+				}
+			},
+			
+			renderClass : function() {
+				/*
 				var courseID = this.model.get("course_id");
 				var lessonID = this.model.get("lesson_id");
 				if (lessonID == 0) {
@@ -516,23 +526,23 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					var lessonStats = lessonModel.get("stats");
 					var percent = Math.round(lessonStats.overall_progress);
 				}
-
+				*/
 				percent = 20;
 
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				this.$(".class span").html(percent);
+
+				if (jQuery.fn.easyPieChart) {
+					this.$(".class").data('easyPieChart').update(percent);
+				}
+			},
+			renderLesson : function() {
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				percent = 80;
 				this.$(".lesson span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
 					this.$(".lesson").data('easyPieChart').update(percent);
-				}
-			},
-			renderTopic : function() {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				percent = 80;
-				this.$(".topic span").html(percent);
-
-				if (jQuery.fn.easyPieChart) {
-					this.$(".topic").data('easyPieChart').update(percent);
 				}
 			}
 		});
@@ -552,7 +562,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.contentView = new contentViewClass({
 					model : opt.collections.lesson
 				});
-				//this.userProgressView = new userProgressViewClass({model : this.model, collection : this.collection});
+				this.userProgressView = new userProgressViewClass();
 				//this.filterActionView = new filterActionViewClass({collection : this.collection, model : this.model});
 
 				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));

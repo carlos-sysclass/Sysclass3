@@ -90,14 +90,14 @@
 	<div class="row" id="progress-content">
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number topic" data-percent="0">+<span>0</span>%</div>
+				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
+				<div class="number class" data-percent="0">+<span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
 			</div>
 		</div>
