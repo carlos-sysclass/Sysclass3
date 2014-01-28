@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
 class AdvisorModule extends SysclassModule implements IWidgetContainer
 {
 

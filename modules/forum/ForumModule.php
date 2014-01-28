@@ -1,8 +1,17 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
+
 class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContainer
 {
 
-    // CREATE FUNCTION HERE
+    /* ISectionMenu */
     public function getSectionMenu($section_id) {
     	if ($section_id == "topbar") {
     		$menuItem = array(
@@ -52,6 +61,7 @@ class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContain
      * Module Entry Point
      *
      * @url GET /data
+     * @deprecated Use /items/me entry point
      */
     public function dataAction()
     {

@@ -1,6 +1,12 @@
 <?php 
 /**
-  * @todo think about move this module to PlicoLib
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ * @todo think about move this module to PlicoLib
  */
 class SettingsModule extends SysclassModule
 {

@@ -1,4 +1,13 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ * @todo think about move this module to PlicoLib
+ */
 class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer /*, ILinkable */
 {
 	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";

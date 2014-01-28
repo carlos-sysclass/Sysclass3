@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
 class ProctoringModule extends SysclassModule implements IWidgetContainer
 {
 

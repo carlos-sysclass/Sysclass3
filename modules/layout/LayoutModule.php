@@ -1,10 +1,14 @@
 <?php 
 /**
-  * This module manage the pages layouts, create and save layout paterns, and manage layout sections
-*/
-/**
-  * @todo think about move this module to PlicoLib
+ * Module Class File
+ * @filesource
  */
+/**
+ * This module manage the pages layouts, create and save layout paterns, and manage layout sections
+ * @package Sysclass\Modules
+ * @todo think about move this module to PlicoLib
+ */
+
 class LayoutModule extends SysclassModule implements IWidgetContainer
 {
 	protected $layoutSpec = null;
@@ -16,6 +20,7 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
         $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
 
         $groupLabels = array(
+        	"general" 		=> self::$t->translate('General'),
         	"communication" => self::$t->translate('Communication'),
         	"users" 		=> self::$t->translate('Users')
         );
@@ -134,7 +139,7 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 			//	"layout.sections.topbar"    => array("messages", "forum"),
 			//	"users.overview.notification.order" => array("messages", "news")
 				'layout.linkable.order'			=> array("news", "users"),
-				"layout.linkable.groups.order" 	=> array("users", "communication")
+				"layout.linkable.groups.order" 	=> array("general", "users", "communication")
 			)
 		);
 

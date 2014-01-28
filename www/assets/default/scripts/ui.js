@@ -1,7 +1,6 @@
 $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
   	this.handleValidate = function(context) {
 	  	// Validation
-	  	
 	  	/* 
 		if($('.form-validate', context).length > 0) {
 			$('.form-validate', context).each(function(){
@@ -188,8 +187,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.handleTooltips = function(context) {
 		if(this.tooltipOnlyForDesktop) {
 			if(!this.mobile) {
-				console.log(context);
-				console.log($('.tooltips', context));
 				$('.tooltips', context).tooltip();
 			}
 		}

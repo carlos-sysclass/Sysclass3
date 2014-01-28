@@ -5,9 +5,7 @@
 		<h3 class="form-section">{translateToken value='General'}</h3>
 		<div class="form-group">
 			<label class="control-label">{translateToken value='Title'}</label>
-			
-				<input name="title" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="10" />
-			
+			<input name="title" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="10" />
 		</div>
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->

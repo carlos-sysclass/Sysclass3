@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
 class MessagesModule extends SysclassModule implements ISummarizable, ISectionMenu, IWidgetContainer
 {
     public function getSummary() {

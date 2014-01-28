@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+	<title>Plicolib Project</title>
+	<parser>
+		<target>/var/www/docs/sysclass</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+	</parser>
+	<transformer>
+		<target>/var/www/docs/sysclass</target>
+	</transformer>
+	<logging>
+		<level>warn</level>
+		<paths>
+		    <default>logs/phpdoc-{DATE}.log</default>
+		    <errors>logs/phpdoc-{DATE}.errors.log</errors>
+		</paths>
+	</logging>
+    <transformations>
+        <template name="responsive" />
+    </transformations>
+	<files>
+		<directory>controller</directory>
+		<directory>model</directory>
+		<directory>modules</directory>
+
+		<directory>/usr/local/share/plicolib/controller</directory>
+		<directory>/usr/local/share/plicolib/core-modules</directory>
+		<directory>/usr/local/share/plicolib/inc</directory>
+		<directory>/usr/local/share/plicolib/model</directory>
+	</files>
+</phpdoc>

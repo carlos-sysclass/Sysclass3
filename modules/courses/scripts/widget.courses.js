@@ -610,12 +610,13 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.courseWidgetView.filterActionView.toggle();
 			}
 		};
-		this.onSearch = function(e, portlet) {
+		this.onSearch = function(e, portlet,q) {
 			/*
 			// INJECT
 			this.contentView.$el.hide();
 			this.filterActionView.reload();
 			*/
+			console.log(e, portlet, q);
 			return false;
 		};
 		this.onResized = function(e, portlet) {

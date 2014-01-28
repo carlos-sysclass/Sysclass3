@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
 class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizable, ILinkable, IBreadcrumbable, IActionable
 {
 	/* IWidgetContainer */
@@ -218,6 +226,29 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 	}
 
 	/**
+	 * DELETE a news model
+	 *
+	 * @url DELETE /item/me/:id
+	 */
+	public function deleteItemAction($id)
+	{
+		if ($userData = $this->getCurrentUser()) {
+			$data = $this->getHttpData(func_get_args());
+
+			$itemModel = $this->model("news");
+			if ($itemModel->deleteItem($id) !== FALSE) {
+				$response = $this->createAdviseResponse(self::$t->translate("News removed with success"), "success");
+				return $response;
+			} else {
+				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+				return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+			}
+		} else {
+			return $this->notAuthenticatedError();
+		}
+	}
+
+	/**
 	 * Get all news visible to the current user
 	 *
 	 * @url GET /items/me
@@ -308,7 +339,6 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 
 		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
 		$this->putModuleScript("models.news");
-//		$this->putModuleScript("views.news");
 		$this->putModuleScript("views.news.add");
 
 		$this->putItem("page_title", self::$t->translate('Announcements'));
@@ -335,15 +365,9 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 		// TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
 		// Ex: 
 		// $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-		$this->putComponent("modal");
-		$this->putCrossModuleScript("permission", "dialog.permission");
-		$this->putCrossSectionTemplate("permission", null, "blocks/permission");
-		$this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
-
-		$this->putCrossModuleScript("permission", "dialog.permission");
+		$this->putBlock("permission.add");
 
 		$this->putModuleScript("models.news");
-		//$this->putModuleScript("views.news");
 		$this->putModuleScript("views.news.edit", array('id' => $id));
 
 		$this->putItem("page_title", self::$t->translate('Announcements'));

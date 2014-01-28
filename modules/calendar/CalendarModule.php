@@ -1,4 +1,13 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
+
 class CalendarModule extends SysclassModule implements IWidgetContainer
 {
 

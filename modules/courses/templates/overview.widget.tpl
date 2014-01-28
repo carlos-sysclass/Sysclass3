@@ -6,8 +6,7 @@
 -->
 <div>
 	<div class="container" id="courses-content">
-		<div class="row" id="courses-content-navigation">
-			<div class=" portlet-tabs">
+			<div class="portlet-tabs margin-bottom-20" id="courses-content-navigation">
 				<ul class="nav nav-tabs">
 					<li class="active">
 						<a data-toggle="tab" href="#course-tab"><span class="course-title">Course</span></a>
@@ -39,8 +38,8 @@
 						</a>
 					</li>
 				</ul>
-			</div>			
-		</div>
+			</div>
+			<div class="clearfix"></div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="tabbable-custom ">

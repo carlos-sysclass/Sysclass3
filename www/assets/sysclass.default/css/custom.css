@@ -1,7 +1,7 @@
 /* here you can put your own css to customize and override the theme */
 
 .well .pagination {
-    margin: -9px 0 0;
+	margin: -9px 0 0;
 }
 
 hr {
@@ -24,7 +24,7 @@ hr {
 	text-decoration: underline;
 }
 .portlet > .portlet-title > .tools a.glyphicon {
-  	margin-bottom: 2px;
+	margin-bottom: 2px;
 	top: -3px;
 	width: 14px;
 	color: gray;
@@ -37,14 +37,14 @@ hr {
 
 
 .popover-content {
-    padding: 9px 5px;
+	padding: 9px 5px;
 }
 
 .chats li .title {
-    color: #333333;
-    font-size: 14px;
-    font-weight: 600;
-    display: block;
+	color: #333333;
+	font-size: 14px;
+	font-weight: 600;
+	display: block;
 }
 .chats li.out {
 	margin-bottom: 20px;
@@ -66,17 +66,17 @@ hr {
 .chat-widget {
 	float: right;
 	margin-left: 5px;
-    margin-right: 0;
+	margin-right: 0;
 	width: 250px;
 	min-height: 1px;
 }
 
 .chat-widget .portlet {
-    bottom: 0;
-    margin-bottom: 0;
-    position: absolute;
-    width: 250px;
-    z-index: 101;
+	bottom: 0;
+	margin-bottom: 0;
+	position: absolute;
+	width: 250px;
+	z-index: 101;
 }
 
 .chat-widget li:first-child {
@@ -95,219 +95,221 @@ hr {
 	font-size: 90%;
 }
 #users-panel .profile-edit {
-    margin: 0 15px 0 0;
-    opacity: 0.7;
-    position: absolute;
-    right: 0;
-    top: 0;
+	margin: 0 15px 0 0;
+	opacity: 0.7;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 .dashboard-stat-col-5 .dashboard-stat {
 	float: left;
-    margin: 0 1% 12px;
-    width: 18%;
+	margin: 0 1% 12px;
+	width: 18%;
 }
 .dashboard-stat .visual.center {
-    float: none;
-    padding-left: 0;
-    width: auto;
-    text-align: center;
+	float: none;
+	padding-left: 0;
+	width: auto;
+	text-align: center;
 }
 
 .dashboard-stat.small .visual {
-    height: 55px;
+	height: 55px;
 }
 
 .dashboard-stat.small .visual i {
-    color: #FFFFFF;
-    font-size: 40px;
-    line-height: 40px;
+	color: #FFFFFF;
+	font-size: 40px;
+	line-height: 40px;
 }
 .navbar-nav.nopadding > li > a {
-    padding-bottom: 15px;
-    padding-top: 15px;
+	padding-bottom: 15px;
+	padding-top: 15px;
 }
 .tabbable-custom .nav-tabs > li { 
 	margin-right: 0px;
 }
 .icon-btn {
-    padding: 20px 0 0;
+	padding: 10px 0 0;
 	height: 80px;
 	min-width: 100px;
 }
 .icon-btn i {
 	font-size: 30px;
+	line-height: 30px;
 }
 .icon-btn div {
-    margin: 10px 0px;
+	margin: 10px 0px;
 }
 h4.border-bottom {
 	border-bottom: 1px solid #ddd;
 }
 .page-content .page-breadcrumb.breadcrumb {
-    margin-bottom: 0;
-    margin-top: 0;
-    min-height: 37px;
+	margin-bottom: 0;
+	margin-top: 0;
+	min-height: 37px;
 }
 
 .bootstrap-timepicker table td input {
-    margin: 0;
-    text-align: center;
-    width: 33px !important;
-    padding: 5px;
+	margin: 0;
+	text-align: center;
+	width: 33px !important;
+	padding: 5px;
 
-    background-color: #FFFFFF;
-    border: 1px solid #E5E5E5;
-    border-radius: 0;
-    box-shadow: none;
-    color: #333333;
-    /* font-size: 14px; */
-    font-weight: normal;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+	background-color: #FFFFFF;
+	border: 1px solid #E5E5E5;
+	border-radius: 0;
+	box-shadow: none;
+	color: #333333;
+	/* font-size: 14px; */
+	font-weight: normal;
+	transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
 
 .header-inner .ajax-loader {
-    display: none;
-    float: left;
-    top: 0;
-    left: 50%;
-    margin: auto -3.5%;
-    width: 7%;
-    position: fixed;
-    text-decoration: none;
-    background: #fff;
-    padding: 4px 1%;
-    border: 1px solid #ddd;
-    z-index: 100;
+	display: none;
+	float: left;
+	top: 0;
+	left: 50%;
+	margin: auto -3.5%;
+	width: 7%;
+	position: fixed;
+	text-decoration: none;
+	background: #fff;
+	padding: 4px 1%;
+	border: 1px solid #ddd;
+	z-index: 100;
 }
 .header-inner .ajax-loader img {
-    margin-right: 10px;
+	margin-right: 10px;
 
 }
 .header .navbar-brand {
-    padding: 10px 0 0;
+	padding: 10px 0 0;
 }
 .header .navbar-brand img {
-    height: 29px;
-    margin-left: 0;
+	height: 29px;
+	margin-left: 0;
 }
 .page-boxed .header .navbar-brand img {
-    margin-left: 0;
+	margin-left: 0;
 }
 .ver-inline-menu.message-recipient-group li.active:after {
-    border-bottom: 0;
-    border-left: 0;
-    border-top: 0;
+	border-bottom: 0;
+	border-left: 0;
+	border-top: 0;
 }
 #courses-content-navigation ul.breadcrumb {
-    padding: 0;
+	padding: 0;
 }
 
 .content-navigation-bar {
-    list-style: none outside none;
-    padding: 0;
+	list-style: none outside none;
+	padding: 0;
 }
 .content-navigation-bar > li {
-    display: inline-block;
+	display: inline-block;
 }
 .portlet.box > .portlet-body.nopadding {
-    padding: 0;
+	padding: 0;
 }
 
 .panel-dark-blue {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: -moz-use-text-color #B4CEF8 #B4CEF8;
-    border-image: none;
-    border-right: 1px solid #B4CEF8;
-    border-style: none solid solid;
-    border-width: 0 1px 1px;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: -moz-use-text-color #B4CEF8 #B4CEF8;
+	border-image: none;
+	border-right: 1px solid #B4CEF8;
+	border-style: none solid solid;
+	border-width: 0 1px 1px;
 }
 
 .panel-dark-blue > .panel-heading {
-    background-color: #005999;
-    border-color: #005999;
-    color: #FFFFFF;
-    padding: 5px 10px 7px;
+	background-color: #005999;
+	border-color: #005999;
+	color: #FFFFFF;
+	padding: 5px 10px 7px;
 }
 
 .ver-inline-menu li.active i {
-    background-color: #005999 !important;
+	background-color: #005999 !important;
 }
 
 .ver-inline-menu li.active a {
-    border-left-color: #005999;
+	border-left-color: #005999;
 }
 .ver-inline-menu li.active a {
-    background: none repeat scroll 0 0 #428BCA;
+	background: none repeat scroll 0 0 #428BCA;
 }
 
 .content-navigation-bar .btn.lesspadding {
-    padding-left: 5px;
-    padding-right: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .btn-group-fixed-size {
-    
+	
 }
 .btn-group-fixed-size span {
-    display: block;
-    text-align: left;
+	display: block;
+	text-align: left;
 }
 .btn-group-fixed-size span i {
-    width: 20px;
-    display: inline-block;
-    text-align: center;
+	width: 20px;
+	display: inline-block;
+	text-align: center;
 }
 .list-fixed-size {
 
 }
 .list-fixed-size strong {
-    width: 38%;
-    display: inline-block;
+	width: 38%;
+	display: inline-block;
 }
 .list-fixed-size span {
-    width: 60%;
+	width: 60%;
 }
 .tabbable-left .portlet-tabs > .nav-tabs {
-    margin-left: 30px;
+	margin-left: 30px;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li {
-    float: left;
-    max-width: 40%;
+	float: left;
+	max-width: 40%;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li .nav-button  {
-    float: left;
-    cursor: pointer;
+	float: left;
+	cursor: pointer;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li .nav-title  {
-    float: left;
-    max-width: 84%;
-    overflow: hidden;
-    white-space: nowrap;
+	float: left;
+	max-width: 84%;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .tabbable-left .portlet-tabs > .nav-tabs > li > a {
-    height: 34px;
-    line-height: 35px;
-    margin-top: 8px;
-    padding: 0 2px;
+	height: 34px;
+	line-height: 31px;
+	margin-top: 7px;
+	padding: 0 2px;
 }
 .portlet-tabs {
-    float: left;
+	float: left;
+	height: 0;
 }
 .portlet-tabs > .nav-tabs > li.nav-text > a {
-    padding-left: 2px;
-    padding-right: 2px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 .portlet-tabs > .nav-tabs > li.nav-previous > a {
-    padding-left: 5px;
-    padding-right: 0px;
+	padding-left: 5px;
+	padding-right: 0px;
 }
 .portlet-tabs > .nav-tabs > li.nav-next > a {
-    padding-left: 0px;
-    padding-right: 5px;
+	padding-left: 0px;
+	padding-right: 5px;
 }
 
 

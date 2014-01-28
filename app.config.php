@@ -6,7 +6,9 @@ $plicoLib = PlicoLib::instance();
 $plicoLib->set('theme', 'sysclass.default');
 $plicoLib->set('client_name', 'Sysclass');
 $plicoLib->set('app_name', 'Sysclass');
-$plicoLib->set('db_dsn', 'mysql://sysclass:WXubN7Ih@localhost/sysclass_layout');
+$plicoLib->set('db_dsn', 'mysql://sysclass:WXubN7Ih@localhost/sysclass_layout?persist');
+$plicoLib->set('db/charset', 'utf8');
+
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
 $plicoLib->add('path/modules', __DIR__ . '/modules/');

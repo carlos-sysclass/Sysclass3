@@ -67,7 +67,7 @@ class LoginController extends AbstractSysclassController
 		            //sC_setMobile();
 		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
 		            //LoginRedirect($user->user['user_type']);
-		            $this->redirect($user->user['user_type']);
+		            $this->redirect("/dashboard/" . $user->user['user_types_ID']);
 		        }
 		        exit;
 		    } catch (MagesterUserException $e) {}

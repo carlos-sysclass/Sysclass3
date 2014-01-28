@@ -1,4 +1,13 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
+
 class GradesModule extends SysclassModule implements ISummarizable
 {
     public function getSummary() {

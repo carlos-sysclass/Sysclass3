@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * Manage and control the advertising system strategy
+ * @package Sysclass\Modules
+ */
 class AdvertisingModule extends SysclassModule implements IWidgetContainer
 {
 

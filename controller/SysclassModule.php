@@ -7,7 +7,6 @@ abstract class SysclassModule extends AbstractSysclassController
     public function __construct() {
         
     }
-    
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="", $urlMatch = null)
     {
         $plico = PlicoLib::instance();
@@ -94,6 +93,9 @@ abstract class SysclassModule extends AbstractSysclassController
     }
 
     protected function putSectionTemplate($key, $tpl) {
+        if (is_null($key)) {
+            $key = $this->module_id;
+        }
         return parent::putSectionTemplate($key, $this->template($tpl));
     }
     protected function putCrossSectionTemplate($module, $key, $tpl)

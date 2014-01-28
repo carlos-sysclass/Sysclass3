@@ -1,10 +1,39 @@
 <?php 
-class PermissionModule extends SysclassModule
+/**
+ * Module Class File
+ * @filesource
+ */
+/**
+ * Manage and control the system permission system
+ * @package Sysclass\Modules
+ */
+class PermissionModule extends SysclassModule implements IBlockProvider
 {
 	const RULE_MATCH_ALL = 1;
 	const RULE_MATCH_ANY = 2;
 	const RULE_NOT_MATCH_ALL = 3;
 	const RULE_NOT_MATCH_ANY = 4;
+
+	// IBlockProvider
+	public function registerBlocks() {
+		return array(
+			'permission.add' => function() {
+				$this->putComponent("modal");
+        		$this->putModuleScript("dialog.permission");
+        		//$this->putSectionTemplate(null, "blocks/permission");
+        		$this->putSectionTemplate("foot", "dialogs/add");
+
+        		return $this->template("blocks/permission");
+        		
+			}
+		);
+	}
+
+	/**
+	 * Utility method to parse data for a condition_id string e return the struct
+	 * @param  string $condition_id The condition ID, in "{module_id}::{cond_id}" format
+	 * @return array Return the condition_id, the module name and the module itself.
+	 */
 	protected function getModuleByConditionId($condition_id) {
 		list($module, $condition_id) = explode("::", $condition_id);
 
@@ -14,6 +43,14 @@ class PermissionModule extends SysclassModule
 		}
 		return false;
 	}
+	/**
+	 * Receive a datasource e filter (un)matched rules
+	 * @param  array[] $dataItens   
+	 * @param  string $type        
+	 * @param  string $access_mode 
+	 * @param  string $id_field    
+	 * @return array[]              
+	 */
 	public function checkRules($dataItens, $type, $access_mode = 'permission_access_mode', $id_field = "id") {
 
 		$conditions = $this->model("permission/condition")->getItemsByType($type);
@@ -179,8 +216,9 @@ class PermissionModule extends SysclassModule
 		}
 	}
 	/**
-	 * REMOVE A OBJECT PERMISSION
-	 *
+	 * Deletes a permission/condition model
+	 * @param  id $id The permission/condition ID to remove
+	 * @return response     The status response from model;
 	 * @url DELETE /item/me/:id
 	 */
 	public function deleteModelAction($id)
@@ -197,6 +235,7 @@ class PermissionModule extends SysclassModule
 	 * GET ALL OR FILTERED PERMISSIONS
 	 *
 	 * @url GET /items/me
+	 * @return json[]
 	 */
 	public function getPermissionsAction()
 	{

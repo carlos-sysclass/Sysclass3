@@ -60,12 +60,10 @@ $.extend( $.fn.dataTableExt.oStdClasses, {
 // SORTING FUNCTIONS
 jQuery.extend( jQuery.fn.dataTableExt.oSort, {
     "unix-moment-since-asc": function ( a, b ) {
-    	console.log(a,b);
         return ((a < b) ? -1 : ((a > b) ? 1 : 0));
     },
  
     "unix-moment-since-desc": function ( a, b ) {
-    	//console.log(a,b);
         return ((a < b) ? 1 : ((a > b) ? -1 : 0));
     }
 });
