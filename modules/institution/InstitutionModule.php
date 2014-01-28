@@ -291,8 +291,9 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
         // Ex: 
         // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-        $this->putBlock("permission.add");
+        
         $this->putBlock("address.add");
+        $this->putBlock("permission.add");
 
 /*
         $this->putComponent("modal");

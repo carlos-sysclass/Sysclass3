@@ -23,7 +23,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
         		//$this->putSectionTemplate(null, "blocks/permission");
         		$this->putSectionTemplate("foot", "dialogs/add");
 
-        		return $this->template("blocks/permission");
+        		return $this->template("blocks/permission", true);
         		
 			}
 		);

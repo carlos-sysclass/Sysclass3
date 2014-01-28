@@ -17,16 +17,10 @@
 			<textarea class="wysihtml5 form-control placeholder-no-fix" id="observations" name="observations" rows="6" placeholder="{translateToken value='Put your observations here...'}" data-rule-required="true"></textarea>
 		</div>
 
-		{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
-			{foreach $T_SECTION_TPL['address'] as $template}
-				{include file=$template}
-			{/foreach}
-		{/if}
-		{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
-			{foreach $T_SECTION_TPL['permission'] as $template}
-				{include file=$template}
-			{/foreach}
-		{/if}
+		
+		{foreach $T_BLOCK_TEMPLATES as $template}
+			{include file=$template}
+		{/foreach}
 	</div>
 	<div class="form-actions nobg">
 		<button class="btn btn-success" type="submit">{translateToken value='Save Changes'}</button>
