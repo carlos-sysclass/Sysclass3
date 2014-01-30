@@ -229,7 +229,13 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.$el.slideDown(200);
 			} else if (!this.$(".portlet > .portlet-body").is(":visible") && restoreIfHidden != false) {
             	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
-				this.$(".portlet > .portlet-body").slideDown(200);	
+            	var self = this;
+				this.$(".portlet > .portlet-body").slideDown(200, function() {
+					self.$(".portlet-title").pulsate({
+	            		color: "#399bc3",
+	               		repeat: false
+					});
+				});	
 			} else {
 				this.$(".portlet-title").pulsate({
 	            	color: "#399bc3",
