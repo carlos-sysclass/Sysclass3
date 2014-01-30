@@ -167,18 +167,18 @@ h4.border-bottom {
 }
 
 .header-inner .ajax-loader {
-	display: none;
-	float: left;
-	top: 0;
-	left: 50%;
-	margin: auto -3.5%;
-	width: 7%;
-	position: fixed;
-	text-decoration: none;
-	background: #fff;
-	padding: 4px 1%;
-	border: 1px solid #ddd;
-	z-index: 100;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    display: none;
+    float: left;
+    left: 50%;
+    margin: auto -5%;
+    padding: 4px 1%;
+    position: fixed;
+    text-decoration: none;
+    top: 0;
+    width: 10%;
+    z-index: 100;
 }
 .header-inner .ajax-loader img {
 	margin-right: 10px;

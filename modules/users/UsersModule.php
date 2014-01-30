@@ -170,7 +170,10 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 			$data['notification'] = array();
 
 			foreach($modules as $key => $mod) {
-				$data['notification'][$key] = $mod->getSummary();
+				$notif = $mod->getSummary();
+				if (is_array($notif)) {
+					$data['notification'][$key] = $mod->getSummary();
+				}
 			}
 			
 			$data['notification'] = $this->module("layout")

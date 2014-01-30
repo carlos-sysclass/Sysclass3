@@ -11,6 +11,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 {
     public function getSummary() {
         //$data = $this->dataAction();
+        return false;
         $total = $this->getTotalUnviewed();
         return array(
             'type'  => 'primary',
