@@ -6,111 +6,182 @@
 -->
 <div>
 	<div class="container" id="courses-content">
-			<div class="portlet-tabs margin-bottom-20" id="courses-content-navigation">
-				<ul class="nav nav-tabs">
-					<li class="active">
-						<a data-toggle="tab" href="#course-tab"><span class="course-title">Course</span></a>
-					</li>
-					<li>
-						<a data-toggle="tab" href="#class-tab">
-							<div class="nav-button class-prev-action">
-								<i class="icon-caret-left"></i>
+		<div class="portlet-tabs" id="courses-content-navigation">
+			<ul class="nav nav-tabs">
+				<li class="the-course-tab active">
+					<a data-toggle="tab" href="#course-tab">
+						<div class="nav-title">
+							<span class="course-title">Course</span>
+						</div>
+					</a>
+				</li>
+				<li class="the-class-tab">
+					<a data-toggle="tab" href="#class-tab">
+						<div class="nav-title">
+							<span class="tab-title class-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
+						</div>
+					</a>
+				</li>
+				<li class="the-lesson-tab">
+					<a data-toggle="tab" href="#lesson-tab">
+						<!--
+						<div class="nav-button lesson-prev-action">
+							<i class="icon-caret-left"></i>
+						</div>
+						-->
+						<div class="nav-title">
+							<span class="tab-title lesson-title">Class</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
+						</div>
+						<!--
+						<div class="nav-button lesson-next-action">
+							<i class="icon-caret-right"></i>
+						</div>
+						-->
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-prev-action">
+						<i class="icon-angle-left"></i>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="nav-next-action">
+						<i class="icon-angle-right"></i>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="course-tab" class="tab-pane active">
+					
+						<div class="tabbable-custom ">
+							<ul class="nav nav-tabs ">
+								<li class="active">
+									<a data-toggle="tab" href="#tab_course_info"><i class="icon-info-sign"></i> Course Info </a>
+								</li>
+							</ul>
+							<div class="tab-content">
+								<div id="tab_course_info" class="tab-pane active">
+									<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+										<div class="alert alert-info">
+											<span class="text-info"><i class="icon-warning-sign"></i></span>
+											Ops! There's any info registered for this course
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="nav-title">
-								<span class="tab-title class-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
+						 </div>
+
+				</div>
+				<div id="class-tab" class="tab-pane">
+					<div class="tabbable-custom ">
+						<ul class="nav nav-tabs ">
+							<li class="active">
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Lesson Info </a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_roadmap"><i class="icon-road"></i> Roadmap</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div id="tab_class_info" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Ops! There's any info registered for this class
+									</div>
+								</div>
 							</div>
-							<div class="nav-button class-next-action">
-								<i class="icon-caret-right"></i>
+							<div id="tab_class_roadmap" class="tab-pane">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+							   		<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+									Ops! There's any roadmap registered for this class
+							   		</div>
+							   	</div>
 							</div>
-						</a>
-					</li>
-					<li>
-						<a data-toggle="tab" href="#lesson-tab">
-							<div class="nav-button lesson-prev-action">
-								<i class="icon-caret-left"></i>
+						</div>
+					</div>
+				</div>
+				<div id="lesson-tab" class="tab-pane">
+					<div class="tabbable-custom ">
+						<ul class="nav nav-tabs ">
+							<li class="active">
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> Video Lesson</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> Materials</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> Exercises</a>
+							</li>
+							<li class="pull-right">
+								<a data-toggle="tab" href="#tab_lesson_info">
+									<i class="icon-info-sign"></i> Lesson Info 
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div id="tab_lesson_content" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Ops! There's any content for this lesson
+									</div>
+								</div>
 							</div>
-							<div class="nav-title">
-								<span class="tab-title lesson-title">Class</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
+							<div id="tab_lesson_materials" class="tab-pane">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								</div>
+
 							</div>
-							<div class="nav-button lesson-next-action">
-								<i class="icon-caret-right"></i>
-							</div>
-						</a>
-					</li>
-				</ul>
+						    <div id="tab_lesson_exercises" class="tab-pane">
+						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								   	<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										 Ops! There's any exercises posted for this lesson
+								   	</div>
+							   	</div>
+						   	</div>
+						   	<div id="tab_lesson_info" class="tab-pane">
+						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+							   		<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+									 	Ops! There's any lesson info registered
+							   		</div>
+							   	</div>
+						   </div>
+						</div>
+					 </div>
+				</div>
 			</div>
 			<div class="clearfix"></div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="tabbable-custom ">
-					<ul class="nav nav-tabs ">
-						<li class="active">
-							<a data-toggle="tab" href="#tab_class"><i class="icon-magic"></i> Video Lesson</a>
-						</li>
-						<li class="">
-							<a data-toggle="tab" href="#tab_materials"><i class="icon-book"></i> Materials</a>
-						</li>
-						<li class="">
-							<a data-toggle="tab" href="#tab_exercises"><i class="icon-pencil"></i> Exercises</a>
-						</li>
-						<li class="pull-right">
-							<a data-toggle="tab" href="#tab_class_info">
-								<i class="icon-info-sign"></i> Lesson Info 
-							</a>
-						</li>
-					</ul>
-					<div class="tab-content">
-						<div id="tab_class" class="tab-pane active">
-							<div class="alert alert-info">
-								<span class="text-info"><i class="icon-warning-sign"></i></span>
-								Ops! There's any content for this class
-							</div>
-						</div>
-						<div id="tab_materials" class="tab-pane">
-
-						</div>
-					   <div id="tab_exercises" class="tab-pane">
-						   <div class="alert alert-info">
-								 <span class="text-info"><i class="icon-warning-sign"></i></span>
-								 Ops! There's any exercises posted for this class
-						   </div>
-					   </div>
-					   <div id="tab_class_info" class="tab-pane">
-						   <div class="alert alert-info">
-								 <span class="text-info"><i class="icon-warning-sign"></i></span>
-								 Ops! There's any class info registered for this class
-						   </div>
-					   </div>
-					</div>
-				 </div>
-			</div>
 		</div>
 	</div>
 	<div class="row" id="progress-content">
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number lesson" data-percent="0">+<span>0</span>%</div>
+				<div class="number lesson" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number class" data-percent="0">+<span>0</span>%</div>
+				<div class="number class" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number semester" data-percent="0">+<span>0</span>%</div>
+				<div class="number semester" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Semester</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
-				<div class="number course" data-percent="0">+<span>0</span>%</div>
+				<div class="number course" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Course</a>
 			</div>
 		</div>

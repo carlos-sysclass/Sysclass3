@@ -23,19 +23,12 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
 			'courses.overview' => array(
 				'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
 				'id'        => 'courses-widget',
-				'title' 	=> ' ',
 				'template'	=> $this->template("overview.widget"),
-				'icon'      => 'book',
 				'box'       => 'dark-blue tabbable tabbable-left',
 				'tools'     => array(
 					'search'        => true,
-					//'reload'        => true,
-					'fullscreen'    => true/*,
-					'filter'        => true*/
-				)/*,
-				'actions'   => array(
-					$this->template("overview.widget.actions"),
-				)*/
+					'fullscreen'    => true
+				)
 			)
 		);
 	}

@@ -2,15 +2,19 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 		var courseModelClass = Backbone.Model.extend({
-			urlRoot : "/module/courses/item/courses"
-			/*
-			parse : function(response) {
-				for (i in response) {
-					response[i].lessons = new Backbone.Collection(response[i].lessons);
+			urlRoot : "/module/courses/item/courses",
+			prev : function() {
+				if (this.get("prev") != null) {
+					this.set("id", this.get("prev"));
+					this.fetch();
 				}
-				return response;
+			},
+			next : function() {
+				if (this.get("next") != null) {
+					this.set("id", this.get("next"));
+					this.fetch();
+				}
 			}
-			*/
 		});
 		var classModelClass = Backbone.Model.extend({
 			initialize : function(opt) {
@@ -226,10 +230,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			portlet: $('#courses-widget'),
 			//template: _.template($('#courses-content-navigation-template').html()),
 			events : {
-				"click .class-prev-action"		: "prevClass",
-				"click .class-next-action"		: "nextClass",
-				"click .lesson-prev-action"		: "prevLesson",
-				"click .lesson-next-action" 	: "nextLesson"
+				//"click .class-prev-action"		: "prevClass",
+				//"click .class-next-action"		: "nextClass",
+				//"click .lesson-prev-action"		: "prevLesson",
+				//"click .lesson-next-action" 	: "nextLesson",
+				"click .nav-prev-action" 		: "prevItem",
+				"click .nav-next-action" 		: "nextItem"
 			},
 			initialize: function(opt) {
 				console.info('portlet.courses/contentNavigationViewClass::initialize');
@@ -260,21 +266,45 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var entityData = this.lesson.get("data");
 				this.$(".lesson-title").html(entityData['name']);
 			},
-			prevClass : function(e) {
-				e.preventDefault();
-				this.classe.prev();
-			},
-			nextClass : function(e) {
-				e.preventDefault();
-				this.classe.next();
-			},
-			prevLesson : function(e) {
-				e.preventDefault();
+			goToPrevLesson : function() {
 				this.lesson.prev();
 			},
-			nextLesson : function(e) {
-				e.preventDefault();
+			goToPrevClass : function() {
+				this.classe.prev();
+			},
+			goToPrevCourse : function() {
+				this.course.prev();
+			},			
+			goToNextLesson : function() {
 				this.lesson.next();
+			},
+			goToNextClass : function() {
+				this.classe.next();
+			},
+			goToNextCourse : function() {
+				this.course.next();
+			},
+			prevItem : function(e) {
+				e.preventDefault();
+				var activeTab = this.$(".nav-tabs li.active");
+				if (activeTab.is(".the-lesson-tab")) {
+					this.goToPrevLesson();
+				} else if (activeTab.is(".the-class-tab")) {
+					this.goToPrevClass();
+				} else if (activeTab.is(".the-course-tab")) {
+					this.goToPrevCourse();
+				}
+			},
+			nextItem : function(e) {
+				e.preventDefault();
+				var activeTab = this.$(".nav-tabs li.active");
+				if (activeTab.is(".the-lesson-tab")) {
+					this.goToNextLesson();
+				} else if (activeTab.is(".the-class-tab")) {
+					this.goToNextClass();
+				} else if (activeTab.is(".the-course-tab")) {
+					this.goToNextCourse();
+				}
 			}
 		});
 
@@ -289,7 +319,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				console.info('portlet.courses/contentGenericViewClass::render');
 
-				this.$el.empty().append(
+				this.$(".scroller").empty().append(
 					this.template(this.model.toJSON())
 				);
 				return this;
@@ -317,7 +347,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (this.$("#" + videoDomID).size() == 0) {
-					this.$el.empty().append(
+					this.$(".scroller").empty().append(
 						this.template(this.model.toJSON())
 					);
 
@@ -363,7 +393,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				}
 
-				this.$el.empty().append(
+				this.$(".scroller").empty().append(
 					this.template()
 				);
 	            this.$('.tree').tree({
@@ -385,8 +415,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentViewClass::initialize');
 				
-				//this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
-				this.contentMaterialsView = new contentMaterialsViewClass({model : this.model, el : "#tab_materials"});
+				this.contentMaterialsView = new contentMaterialsViewClass({model : this.model, el : "#tab_lesson_materials"});
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
@@ -401,7 +430,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				switch(content_type) {
 					case "video" : {
 						if (this.contentVideoView == null) {
-							this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_class"});
+							this.contentVideoView = new contentVideoViewClass({model : this.model, el : "#tab_lesson_content"});
 						}
 						this.contentVideoView.render();
 						break;
@@ -411,7 +440,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							this.contentVideoView.destroy();
 							this.contentVideoView = null;
 						}
-						var contentTypeView = new contentTheoryViewClass({model : this.model, el : "#tab_class"});
+						var contentTypeView = new contentTheoryViewClass({model : this.model, el : "#tab_lesson_content"});
 						break;
 					}
 					case "tests" : {
@@ -420,7 +449,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							this.contentVideoView = null;
 						}
 
-						var contentTypeView = new contentTestsViewClass({model : this.model, el : "#tab_class"});
+						var contentTypeView = new contentTestsViewClass({model : this.model, el : "#tab_lesson_content"});
 						break;
 					}
 				}
@@ -553,6 +582,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//opt.collections['course']
 				//opt.collections['class']
 				//opt.collections['lesson']
+				this.$(".portlet-title").height(26);
 
 				this.contentNavigationView = new contentNavigationViewClass({
 					collections : opt.collections,

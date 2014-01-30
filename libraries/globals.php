@@ -450,7 +450,7 @@ function setupThemes($overrideTheme = null)
     define("G_CURRENTTHEMEURL", !isset($currentTheme -> remote) || !$currentTheme -> remote ? "themes/".$currentTheme ->themes['path'] : $currentTheme -> {$currentTheme -> entity}['path']);
     /** The external pages path*/
     define("G_EXTERNALPATH", rtrim(G_CURRENTTHEMEPATH, '/')."/external/");
-    is_dir(G_EXTERNALPATH) OR mkdir(G_EXTERNALPATH, 0755);
+    //is_dir(G_EXTERNALPATH) OR mkdir(G_EXTERNALPATH, 0755);
     /** The external pages link*/
     define("G_EXTERNALURL", rtrim(G_CURRENTTHEMEURL, '/')."/external/");
     if ($fp = fopen(G_CURRENTTHEMEPATH."css/css_global.css", 'r')) {
@@ -500,8 +500,6 @@ function setupThemes($overrideTheme = null)
 function defaultExceptionHandler($e)
 {
     //@todo: Database exceptions are not caught if thrown before smarty
-    var_dump($e);
-    exit;
     $tplFile = str_replace(".php", ".tpl", basename($_SERVER['PHP_SELF']));
     is_file($GLOBALS['smarty'] -> template_dir.$tplFile) ? $displayTpl = $tplFile : $displayTpl = 'index.tpl';
     if ($GLOBALS['smarty']) {

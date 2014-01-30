@@ -3253,3 +3253,6 @@ PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
+
+/* 2014-01-30 */
+UPDATE `sysclass_layout`.`lessons` SET `name` = 'M1 - z/OS, TSO/ISPF e JCL' WHERE `lessons`.`id` =188;

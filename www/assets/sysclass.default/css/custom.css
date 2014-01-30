@@ -272,7 +272,6 @@ h4.border-bottom {
 	width: 60%;
 }
 .tabbable-left .portlet-tabs > .nav-tabs {
-	margin-left: 30px;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li {
 	float: left;
@@ -284,21 +283,22 @@ h4.border-bottom {
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li .nav-title  {
 	float: left;
-	max-width: 84%;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
 .tabbable-left .portlet-tabs > .nav-tabs > li > a {
-	height: 34px;
-	line-height: 31px;
-	margin-top: 7px;
-	padding: 0 2px;
+    height: 34px;
+    line-height: 31px;
+    margin-top: 8px;
+    padding: 0 7px;
 }
+/*
 .portlet-tabs {
 	float: left;
 	height: 0;
 }
+*/
 .portlet-tabs > .nav-tabs > li.nav-text > a {
 	padding-left: 2px;
 	padding-right: 2px;
@@ -312,5 +312,13 @@ h4.border-bottom {
 	padding-right: 5px;
 }
 
+.tabbable-left .portlet-tabs > .tab-content {
+    padding: 0px !important;
+    margin-top: -30px !important;
+}
 
 
+
+.nav-prev-action i, .nav-next-action i {
+	font-weight: bold;
+}
