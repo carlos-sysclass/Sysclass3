@@ -225,8 +225,8 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    focus : function(restoreIfHidden) {
 	    	if (!this.$(".portlet").is(":visible") && restoreIfHidden != false) {
-            	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
-				this.$(".portlet").slideDown(200);	
+            	//this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
+				this.$el.slideDown(200);
 			} else if (!this.$(".portlet > .portlet-body").is(":visible") && restoreIfHidden != false) {
             	this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
 				this.$(".portlet > .portlet-body").slideDown(200);	
@@ -244,7 +244,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	
 	this.onRemove = function(e, portlet) {
-		portlet.hide();
+		portlet.closest(".chat-widget").hide();
 		return false;
 	};
 
