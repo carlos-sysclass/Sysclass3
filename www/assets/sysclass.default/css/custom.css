@@ -272,6 +272,7 @@ h4.border-bottom {
 	width: 60%;
 }
 .tabbable-left .portlet-tabs > .nav-tabs {
+	margin-right: 50px;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li {
 	float: left;
@@ -321,4 +322,8 @@ h4.border-bottom {
 
 .nav-prev-action i, .nav-next-action i {
 	font-weight: bold;
+}
+
+.portlet.box.tabbable-left > .portlet-title > .tools {
+    margin-top: 6px;
 }
