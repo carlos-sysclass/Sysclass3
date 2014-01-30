@@ -14,7 +14,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             console.log('Strophe is disconnecting.');
         } else if (status == Strophe.Status.DISCONNECTED) {
             // TRY TO RECONNECT
-            mod.connection.connect('akucaniz@layout.sysclass.com', '123456', mod.connectionHandler);
+            mod.connection.connect('demo.user@layout.sysclass.com', '123456', mod.connectionHandler);
 
             
         } else if (status == Strophe.Status.CONNECTED) {
@@ -39,7 +39,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                         messages    : new Backbone.Collection
                     };
                 }
-                console.log(models);
+                //console.log(models);
                 mod.rosterCollection.set(models);
                 mod.trigger("xmpp:roster:sync", mod.rosterCollection);
             });
@@ -58,7 +58,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
         var self = this;
         self.trigger("xmpp:connect:before", status);
-        this.connection.connect('akucaniz@layout.sysclass.com', '123456', this.connectionHandler);
+        this.connection.connect('demo.user@layout.sysclass.com', '123456', this.connectionHandler);
   	});
 
     this.on("xmpp:connect:after", function(status) {

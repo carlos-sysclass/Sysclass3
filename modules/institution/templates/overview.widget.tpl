@@ -50,7 +50,8 @@
 	</div>
 </div>
 <script type="text/template" id="institution-status-item-template">
-<a href="javascript: void(0);" data-username="<%= id %>" data-status="<%= status %>" class="btn btn-link btn-sm disabled">
+<div>
+<a href="javascript: void(0);" data-username="<%= id %>" data-status="<%= status %>" class="btn btn-link btn-sm">
 	<% if (status == 'online') { %>
 		<span class="text-success"><i class="icon-ok-sign"></i>
 	<% } else if (status == 'busy') { %>
@@ -63,4 +64,5 @@
 	</span>
 
 </a>
+<div>
 </script>

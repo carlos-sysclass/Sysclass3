@@ -184,8 +184,8 @@ $plicoLib->concat(
 		'plugins/strophe/strophe.roster',
 		'plugins/strophe/strophe.messaging',
 		
-//		'plugins/strophe/strophe.chatstates',
-//		'plugins/strophe/strophe.ping',
+		'plugins/strophe/strophe.chatstates',
+		'plugins/strophe/strophe.ping',
 
 		'scripts/app',
 		'scripts/sysclass',
