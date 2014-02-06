@@ -8,7 +8,7 @@
 	<div class="container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
-				<li class="the-course-tab active">
+				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="course-title">Course</span>
@@ -22,7 +22,7 @@
 						</div>
 					</a>
 				</li>
-				<li class="the-lesson-tab">
+				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<!--
 						<div class="nav-button lesson-prev-action">
@@ -51,7 +51,7 @@
 				</li>
 			</ul>
 			<div class="tab-content">
-				<div id="course-tab" class="tab-pane active">
+				<div id="course-tab" class="tab-pane">
 					
 						<div class="tabbable-custom ">
 							<ul class="nav nav-tabs ">
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="lesson-tab" class="tab-pane">
+				<div id="lesson-tab" class="tab-pane active">
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
