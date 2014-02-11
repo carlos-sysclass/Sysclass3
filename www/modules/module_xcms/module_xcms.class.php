@@ -75,7 +75,7 @@ class module_xcms extends MagesterExtendedModule
 		$currentUser	= $this->getCurrentUser();
 
 		# Carrega noticias da ultima licao selecionada
-		$news = news :: getNews(0, true) + news :: getNews($_SESSION['s_lessons_ID'], false);
+		$news = news :: getNews(0, true) + news :: getNews($_SESSION['s_lessons_ID'], true);
 
 		# Filtra comunicado pela classe do aluno
 		$userClasses = sC_getTableDataFlat(
