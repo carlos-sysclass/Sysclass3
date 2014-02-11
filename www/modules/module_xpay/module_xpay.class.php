@@ -117,6 +117,8 @@ class module_xpay extends MagesterExtendedModule
 
 		$today = new DateTime("today");
 
+		$has_overdue = false;
+
 		foreach ($negocData['invoices'] as $invoiceIndex => $invoice) {
 			$negocData['invoices'][$invoiceIndex]['overdue'] = false;
 			if ($invoice['valor']+$invoice['total_reajuste'] <= $invoice['paid']) {
@@ -130,6 +132,8 @@ class module_xpay extends MagesterExtendedModule
 				if ($diff->invert == 1 && $diff->days > 20) {
 					unset($negocData['invoices'][$invoiceIndex]);
 				} elseif ($diff->invert == 0 && $diff->days > 0) { // IT'S OVERDUE
+					$has_overdue = true;
+					$overdueIndex = $invoiceIndex;
 					$negocData['invoices'][$invoiceIndex]['overdue'] = true;
 				}
 			}
@@ -138,6 +142,24 @@ class module_xpay extends MagesterExtendedModule
 		if (count($negocData['invoices']) == 0) {
 			return false;
 		}
+
+		if ($has_overdue) {
+			$url = sprintf(
+				$this->moduleBaseUrl . '&action=do_payment&negociation_id=%d&invoice_index=%d', 
+				$negocData['id'],
+				$overdueIndex
+			);
+
+			$message = sprintf(
+				"Existem mensalidades em atraso, <a href=\"%s\">clique aqui</a> para realizar o pagamento",
+				$url
+			);
+			$this->setMessageVar($message, "failure");
+		}
+
+		//$this->putMessage("teste", "error");
+//
+//		
 
 
 		$smarty -> assign("T_XPAY_STATEMENT", $negocData);
