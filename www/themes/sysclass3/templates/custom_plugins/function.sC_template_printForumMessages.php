@@ -36,7 +36,9 @@ function smarty_function_sC_template_printForumMessages($params, &$smarty)
         	$str .= "<b>".$params['data'][$i]['show_lessons_name'] . "</b>: ";
         }
         $str .= $title_message. '</a>
-                </td><td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';
+                </td>' . 
+                //<td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';
+                '<td align = "right">';
         $title2 = '#filter:timestamp_time-'.$params['data'][$i]['timestamp'].'#';
         //$str .= '<img src="images/16x16/calendar.png" title="'.$title2.'" alt="'.$title2.'" style = "vertical-align:middle"/>';
         $str .= '<span title = "'.$title2.'">'.sC_convertIntervalToTime(time() - $params['data'][$i]['timestamp'], true).' '._AGO."</span>";
