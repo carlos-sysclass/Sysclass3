@@ -123,6 +123,7 @@ class module_xpay extends MagesterExtendedModule
 			$negocData['invoices'][$invoiceIndex]['overdue'] = false;
 			if ($invoice['valor']+$invoice['total_reajuste'] <= $invoice['paid']) {
 				unset($negocData['invoices'][$invoiceIndex]);
+				continue;
 			}
 			$date = date_create_from_format("Y-m-d H:i:s", $invoice['data_vencimento']);
 
