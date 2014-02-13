@@ -596,7 +596,7 @@ class MagesterEvent
             $new_forum_message['body'] = str_replace("[quote]", "<bloquote>", $new_forum_message['body']);
             $new_forum_message['body'] = str_replace("[/quote]", "</bloquote>", $new_forum_message['body']);
 
-            $subst_array['new_forum_message_body'] = $new_forum_message['body'];
+//            $subst_array['new_forum_message_body'] = $new_forum_message['body'];
             $subst_array['new_forum_message_title'] = $new_forum_message['title'];
             $subst_array['new_forum_message_date'] = date("d/m/Y", $new_forum_message['timestamp']);
             $subst_array['new_forum_message_time'] = date("H:i:s", $new_forum_message['timestamp']);
