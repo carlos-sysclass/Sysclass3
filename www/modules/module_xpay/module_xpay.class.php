@@ -132,6 +132,8 @@ class module_xpay extends MagesterExtendedModule
 				if ($diff->invert == 1 && $diff->days > 20) {
 					unset($negocData['invoices'][$invoiceIndex]);
 				} elseif ($diff->invert == 0 && $diff->days > 0) { // IT'S OVERDUE
+					var_dump($diff);
+					var_dump($negocData['invoices'][$invoiceIndex]);
 					$has_overdue = true;
 					$overdueIndex = $invoiceIndex;
 					$negocData['invoices'][$invoiceIndex]['overdue'] = true;
