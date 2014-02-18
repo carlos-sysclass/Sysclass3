@@ -174,6 +174,7 @@ class news extends MagesterEntity
 		$form -> addElement('submit', 'submit', _ANNOUNCEMENTADD, 'class = "flatButton"');
 		$form -> setDefaults(array('title' => $this -> news['title'],
               'data' => $this -> news['data'],
+              'lessons'	=> $this -> news['lessons_ID'],
               'timestamp' => $this -> news['timestamp'] ? $this -> news['timestamp'] : time(),
               'expire' => $this -> news['timestamp'] ? $this -> news['expire'] : time()+(86400*30)));
 		return $form;
