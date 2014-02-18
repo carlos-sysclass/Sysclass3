@@ -160,7 +160,7 @@ class news extends MagesterEntity
 		$form -> addElement('text', 'title', _ANNOUNCEMENTTITLE, 'class = "inputText"');
 		if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "administrator") {
 			//$form -> addElement('select', 'courses', _LESSON, $courseID);
-			$form -> addElement('select', 'lessons', _LESSON, $lessons);
+			$form -> addElement('select', 'lessons', _LESSON, array(0 => "Todas as disciplinas" ) + $lessons);
 			$form -> addElement('select', 'classes', _COURSECLASS,array(0 => _COURSEALLCLASS ) + $allClass);
 		}
 		$form -> addRule('title', _THEFIELD.' "'._ANNOUNCEMENTTITLE.'" '._ISMANDATORY, 'required', null, 'client');
