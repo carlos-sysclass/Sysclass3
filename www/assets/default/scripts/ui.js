@@ -246,6 +246,19 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 				'</div>' +
 			'</div>';
 		}
+		
+		$("div.img-vertical-middle").each(function() {
+		    var $el = $(this);
+		    var $img = $el.find("img")
+		    var height = $el.parents("div").height()
+		    $el.height(height);
+		    
+		    var img_height = $img.height();
+		    
+		    var margin = (height - img_height) / 2;
+		    $img.css("margin-top", margin);
+		});
+
 
 
 		this.mobile = false,

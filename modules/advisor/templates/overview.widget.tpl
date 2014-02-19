@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-4 text-center">
+	<div class="col-md-4 text-center  img-vertical-middle">
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
     </div>    
 	<div class="col-md-8">

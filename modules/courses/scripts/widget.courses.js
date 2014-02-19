@@ -235,7 +235,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//"click .lesson-prev-action"		: "prevLesson",
 				//"click .lesson-next-action" 	: "nextLesson",
 				"click .nav-prev-action" 		: "prevItem",
-				"click .nav-next-action" 		: "nextItem"
+				"click .nav-next-action" 		: "nextItem",
+				"click .nav-next-action" 		: "searchItem"
 			},
 			initialize: function(opt) {
 				console.info('portlet.courses/contentNavigationViewClass::initialize');
@@ -305,7 +306,22 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else if (activeTab.is(".the-course-tab")) {
 					this.goToNextCourse();
 				}
-			}
+			},
+			searchItem : function(e) {
+				e.preventDefault();
+
+				
+
+				
+				var activeTab = this.$(".nav-tabs li.active");
+				if (activeTab.is(".the-lesson-tab")) {
+					this.goToNextLesson();
+				} else if (activeTab.is(".the-class-tab")) {
+					this.goToNextClass();
+				} else if (activeTab.is(".the-course-tab")) {
+					this.goToNextCourse();
+				}
+			},
 		});
 
 		var contentGenericViewClass = Backbone.View.extend({
@@ -339,6 +355,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/contentVideoViewClass::render');
 				//contentGenericViewClass.prototype.render.apply(this);
 				var videoDomID = "courses-content-video-" + this.model.get("id");
+				console.log(videoDomID);
 				//this.$(".video-js").hide();
 				var entityData = this.model.get("data");
 
@@ -350,6 +367,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".scroller").empty().append(
 						this.template(this.model.toJSON())
 					);
+					console.log(this.template(this.model.toJSON()));
 
 					var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
 					videojs(videoDomID, videoData, function() {
@@ -368,7 +386,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					player.dispose();
 				});
 
-				this.$el.empty();
+				this.$(".scroller").empty();
 			}
 		});
 		var contentTheoryViewClass = contentGenericViewClass.extend({});

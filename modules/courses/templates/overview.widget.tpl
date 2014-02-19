@@ -11,14 +11,14 @@
 				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
-							<span class="course-title">Course</span>
+							<span class="">Course</span>
 						</div>
 					</a>
 				</li>
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title class-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
+							<span class="tab-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
 						</div>
 					</a>
 				</li>
@@ -30,7 +30,7 @@
 						</div>
 						-->
 						<div class="nav-title">
-							<span class="tab-title lesson-title">Class</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
+							<span class="tab-title">Lesson</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
 						</div>
 						<!--
 						<div class="nav-button lesson-next-action">
@@ -52,27 +52,71 @@
 			</ul>
 			<div class="tab-content">
 				<div id="course-tab" class="tab-pane">
-					
-						<div class="tabbable-custom ">
-							<ul class="nav nav-tabs ">
-								<li class="active">
-									<a data-toggle="tab" href="#tab_course_info"><i class="icon-info-sign"></i> Course Info </a>
+					<div class="navbar navbar-default" role="navigation">
+						<div class="navbar-header">
+							<a href="#" class="navbar-brand course-title">
+								 Course
+							</a>
+						</div>
+						<div class="collapse navbar-collapse navbar-ex1-collapse">
+
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Course'}" data-placement="top">
+										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Course'}" data-placement="top">
+										<i class="icon-arrow-right"></i>
+									</a>
 								</li>
 							</ul>
-							<div class="tab-content">
-								<div id="tab_course_info" class="tab-pane active">
-									<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
-										<div class="alert alert-info">
-											<span class="text-info"><i class="icon-warning-sign"></i></span>
-											Ops! There's any info registered for this course
-										</div>
+						</div>
+					</div>
+						
+					<div class="tabbable-custom ">
+						<ul class="nav nav-tabs ">
+							<li class="active">
+								<a data-toggle="tab" href="#tab_course_info"><i class="icon-info-sign"></i> Course Info </a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div id="tab_course_info" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Ops! There's any info registered for this course
 									</div>
 								</div>
 							</div>
-						 </div>
-
+						</div>
+					 </div>
 				</div>
 				<div id="class-tab" class="tab-pane">
+					<div class="navbar navbar-default" role="navigation">
+						<div class="navbar-header">
+							<a href="#" class="navbar-brand class-title">
+								 Class
+							</a>
+						</div>
+						<div class="collapse navbar-collapse navbar-ex1-collapse">
+
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Class'}" data-placement="top">
+										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Class'}" data-placement="top">
+										<i class="icon-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
@@ -103,6 +147,33 @@
 					</div>
 				</div>
 				<div id="lesson-tab" class="tab-pane active">
+					<div class="navbar navbar-default" role="navigation">
+						<div class="navbar-header">
+							<a href="#" class="navbar-brand lesson-title">
+								 Lesson
+							</a>
+						</div>
+						<div class="collapse navbar-collapse navbar-ex1-collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Lesson'}" data-placement="top">
+										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Lesson'}" data-placement="top">
+										<i class="icon-arrow-right"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Search Lessons'}" data-placement="top" data-search>
+										<i class="icon-search"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">

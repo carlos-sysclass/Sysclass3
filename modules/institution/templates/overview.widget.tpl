@@ -1,7 +1,6 @@
-<div class="row">
-	<div class="col-md-7">
+<div class="row" style="position: relative">
+	<div class="col-md-7 text-center img-vertical-middle">
 		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
-		<br />
     </div>
 	<div class="col-md-5">
 		<div class="btn-group-vertical btn-group-fixed-size">
