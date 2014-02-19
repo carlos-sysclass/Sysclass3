@@ -301,10 +301,13 @@ h4.border-bottom {
 }
 
 .tabbable-left .portlet-tabs > .nav-tabs > li > a {
-    height: 34px;
-    line-height: 31px;
-    margin-top: 8px;
+    height: 35px;
+    line-height: 35px;
+    margin-top: 5px;
     padding: 0 7px;
+}
+.tabbable-left .portlet-tabs > .nav-tabs > li.active > a {
+    background-color: #F9F9F9;
 }
 /*
 .portlet-tabs {
