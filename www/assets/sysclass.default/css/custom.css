@@ -304,7 +304,7 @@ h4.border-bottom {
     height: 35px;
     line-height: 35px;
     margin-top: 5px;
-    padding: 0 7px;
+    padding: 0 12px;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li.active > a {
     background-color: #F9F9F9;
@@ -352,6 +352,18 @@ h3.course-title, h3.class-title, h3.lesson-title {
 	margin-bottom: 20px;
 }
 
+.navbar {
+    min-height: 36px;
+}
+.navbar-brand {
+    padding: 0 8px;
+    font-size: 14px;
+    line-height: 36px;
+}
+.navbar-nav > li > a {
+    padding-bottom: 7px;
+    padding-top: 8px;
+}
 
 /* BOOTSTRAP CUSTOM OPTIONS */
 .row {
@@ -363,4 +375,7 @@ h3.course-title, h3.class-title, h3.lesson-title {
     padding-left: 10px;
     padding-right: 10px;
     position: relative;
+}
+.page-content .page-breadcrumb.breadcrumb .btn-group {
+    right: 10px;
 }

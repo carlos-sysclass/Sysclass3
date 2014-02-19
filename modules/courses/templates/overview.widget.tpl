@@ -149,6 +149,10 @@
 				<div id="lesson-tab" class="tab-pane active">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
+							<a href="#" class="navbar-brand class-title">
+								Class
+							</a>
+							<a href="#" class="navbar-brand">&raquo;</a>
 							<a href="#" class="navbar-brand lesson-title">
 								 Lesson
 							</a>
