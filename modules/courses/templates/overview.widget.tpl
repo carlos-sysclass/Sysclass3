@@ -83,7 +83,7 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_course_info" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any info registered for this course
@@ -128,7 +128,7 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_class_info" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any info registered for this class
@@ -136,7 +136,7 @@
 								</div>
 							</div>
 							<div id="tab_class_roadmap" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 									Ops! There's any roadmap registered for this class
@@ -193,7 +193,7 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_lesson_content" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any content for this lesson
@@ -201,12 +201,12 @@
 								</div>
 							</div>
 							<div id="tab_lesson_materials" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 								</div>
 
 							</div>
 						    <div id="tab_lesson_exercises" class="tab-pane">
-						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										 Ops! There's any exercises posted for this lesson
@@ -214,7 +214,7 @@
 							   	</div>
 						   	</div>
 						   	<div id="tab_lesson_info" class="tab-pane">
-						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="370px">
+						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 									 	Ops! There's any lesson info registered

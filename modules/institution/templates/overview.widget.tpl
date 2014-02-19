@@ -23,7 +23,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span class=""><i class="icon-link"></i>Open a ticket</span>
+			<span class=""><i><strong>3</strong></i>{translateToken value='Open ticket(s)'}</span>
 		</a>
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
 			<span class=""><i class="icon-map-marker"></i>View Map</span>
