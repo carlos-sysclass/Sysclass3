@@ -1,6 +1,6 @@
 /* here you can put your own css to customize and override the theme */
 .page-content {
-    padding: 7px 20px 20px;
+    padding: 20px 20px 20px;
 }
 .page-boxed {
     background-color: #E8E8E8 !important;
@@ -11,6 +11,7 @@
     border-left: 1px solid #1C98E1;
     border-right: 1px solid #1C98E1;
 }
+
 .well .pagination {
 	margin: -9px 0 0;
 }
