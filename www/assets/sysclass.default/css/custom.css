@@ -13,7 +13,7 @@
 }
 
 .portlet.box.dark-blue {
-    border-color: #DDDDDD;
+    border-color: -moz-use-text-color #DDDDDD #DDDDDD;
     border-image: none;
     border-right: 1px solid #DDDDDD;
     border-style: none solid solid;
