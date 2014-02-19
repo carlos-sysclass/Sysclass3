@@ -39,21 +39,14 @@
 						-->
 					</a>
 				</li>
-				<li>
-					<a href="#" class="nav-prev-action">
-						<i class="icon-angle-left"></i>
-					</a>
-				</li>
-				<li>
-					<a href="#" class="nav-next-action">
-						<i class="icon-angle-right"></i>
-					</a>
-				</li>
 			</ul>
 			<div class="tab-content">
 				<div id="course-tab" class="tab-pane">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
+							<a href="#" class="navbar-brand disabled">
+								<strong>You're in: </strong>
+							</a>
 							<a href="#" class="navbar-brand course-title">
 								 Course
 							</a>
@@ -96,12 +89,18 @@
 				<div id="class-tab" class="tab-pane">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
+							<a href="#" class="navbar-brand disabled">
+								<strong>You're in: </strong>
+							</a>
+							<a href="#" class="navbar-brand course-title">
+								Course
+							</a>
+							<a href="#" class="navbar-brand">&raquo;</a>
 							<a href="#" class="navbar-brand class-title">
-								 Class
+								Class
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
-
 							<ul class="nav navbar-nav navbar-right">
 								<li>
 									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Class'}" data-placement="top">
