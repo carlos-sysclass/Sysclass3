@@ -149,7 +149,7 @@
 				<div id="lesson-tab" class="tab-pane active">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
-							<<a href="#" class="navbar-brand disabled">
+							<a href="#" class="navbar-brand disabled">
 								<strong>You're in: </strong>
 							</a>
 							<a href="#" class="navbar-brand class-title">
