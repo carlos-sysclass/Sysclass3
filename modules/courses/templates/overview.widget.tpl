@@ -18,7 +18,7 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">Class</span> - <span class="class-index">X</span> of <span class="class-total">X</span>
+							<span class="tab-title">Class</span>
 						</div>
 					</a>
 				</li>
@@ -30,7 +30,7 @@
 						</div>
 						-->
 						<div class="nav-title">
-							<span class="tab-title">Lesson</span> - <span class="lesson-index">X</span> of <span class="lesson-total">X</span>
+							<span class="tab-title">Lesson</span>
 						</div>
 						<!--
 						<div class="nav-button lesson-next-action">
@@ -169,9 +169,26 @@
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
+								<!--
 								<li>
 									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Search Lessons'}" data-placement="top" data-search>
 										<i class="icon-search"></i>
+									</a>
+								</li>
+								-->
+								<li>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Video Lesson'}" data-placement="top" data-search>
+										<i class="icon-magic"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Materials'}" data-placement="top" data-search>
+										<i class="icon-book"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Exercises'}" data-placement="top" data-search>
+										<i class="icon-pencil"></i>
 									</a>
 								</li>
 							</ul>
