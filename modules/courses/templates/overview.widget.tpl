@@ -11,14 +11,14 @@
 				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
-							<span class="">Course</span>
+							<span class="">Courses</span>
 						</div>
 					</a>
 				</li>
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">Class</span>
+							<span class="tab-title">Classes</span>
 						</div>
 					</a>
 				</li>
@@ -30,7 +30,7 @@
 						</div>
 						-->
 						<div class="nav-title">
-							<span class="tab-title">Lesson</span>
+							<span class="tab-title">Lessons</span>
 						</div>
 						<!--
 						<div class="nav-button lesson-next-action">
@@ -149,12 +149,15 @@
 				<div id="lesson-tab" class="tab-pane active">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
+							<<a href="#" class="navbar-brand disabled">
+								<strong>You're in: </strong>
+							</a>
 							<a href="#" class="navbar-brand class-title">
 								Class
 							</a>
 							<a href="#" class="navbar-brand">&raquo;</a>
 							<a href="#" class="navbar-brand lesson-title">
-								 Lesson
+								 Lessons
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -176,21 +179,6 @@
 									</a>
 								</li>
 								-->
-								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Video Lesson'}" data-placement="top" data-search>
-										<i class="icon-magic"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Materials'}" data-placement="top" data-search>
-										<i class="icon-book"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Exercises'}" data-placement="top" data-search>
-										<i class="icon-pencil"></i>
-									</a>
-								</li>
 							</ul>
 						</div>
 					</div>
