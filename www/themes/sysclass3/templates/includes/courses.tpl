@@ -77,6 +77,7 @@
            <td class = "topTitle centerAlign" name = "from_timestamp" style = "width:5%">{$smarty.const._STATUS}</td>
            <td class = "topTitle centerAlign" name = "completed" style = "width:5%">{$smarty.const._COMPLETED}</td>
            <td class = "topTitle centerAlign" name = "score" style = "width:5%">{$smarty.const._SCORE}</td>
+           <td class = "topTitle" name = "timestamp_estimated_end" style = "width:10%">Término Estimado</td>
      <td class = "topTitle centerAlign noSort">{$smarty.const._OPERATIONS}</td>
      <td class = "topTitle centerAlign" name = "active_in_course">{$smarty.const._CHECK}</td>
     </tr>
@@ -127,6 +128,17 @@
       {if $T_BASIC_ROLES_ARRAY[$user.user_type] == 'student'}#filter:score-{$user.score}#%{/if}
      {/if}
      </td>
+    <td style = "white-space:nowrap">
+      {if $user.timestamp_estimated_end < $smarty.now}
+        <span style="color:red;">
+      {/if}
+      #filter:timestamp-{$user.timestamp_estimated_end}#
+      {if $user.timestamp_estimated_end < $smarty.now}
+        </span>
+      {/if}
+    </td>
+
+
      <td class = "centerAlign">
      {if $T_BASIC_ROLES_ARRAY[$user.user_type] == 'student' && !$user.active_in_course|@is_null}
        <img class = "ajaxHandle" src="images/16x16/refresh.png" title="{$smarty.const._RESETPROGRESSDATA}" alt="{$smarty.const._RESETPROGRESSDATA}" onclick = "resetProgress(this, '{$user.login}');">
