@@ -18,7 +18,7 @@ $debug_TimeStart = microtime(true);
 
 //Initialize session
 session_cache_limiter('none');
-session_start();
+@session_start();
 
 //Define default path
 $path = "../libraries/";
