@@ -45,6 +45,26 @@ function getJqueryPeriodicData() {
 	);
 }
 
+	// GET datepicker LANGUAGE
+	//alert(window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datepicker&output=json");
+function handleDatepickers() {
+		/*
+		jQuery( ":input[alt='date']" ).each(function() {
+			alert(jQuery(this).val());
+		});
+		*/
+		jQuery.datepicker._defaults
+		jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(jQuery.datepicker._defaults);
+		defaultDatepicker = {};
+		defaultDatepicker.showButtonPanel 	= false;
+		defaultDatepicker.buttonImageOnly 	= false;
+		defaultDatepicker.showOn			= "focus";
+
+		jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(jQuery.extend(true, jQuery.datepicker._defaults, defaultDatepicker));
+
+}
+
+
 (function($) {
 	// CREATE JAVASCRIPT TIMER
 
@@ -191,63 +211,35 @@ function getJqueryPeriodicData() {
 	
 	jQuery('input:text').setMask({autoTab: false});
 	
-	// GET datepicker LANGUAGE
-	//alert(window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datepicker&output=json");
-	
 	jQuery.getJSON(
 		window.location.pathname + "?ctg=module&op=module_language&action=get_section&section_id=datepicker&output=json",
 		{},
 		function (data, status) {
-			defaultDatepicker = {
-				showButtonPanel		: true,
-				changeMonth			: true,
-				changeYear			: true,
-				showOtherMonths		: true,
-				selectOtherMonths	: true,
-				dateFormat			: 'dd/mm/yy',
-				firstDay			: 0,
-				isRTL				: false,
-				showMonthAfterYear	: false,
-				yearSuffix			: '',
-				yearRange			: "c-30:c+30",
-				showOn				: "button",
-				buttonImage: "/themes/sysclass/images/icons/small/others/calendar.gif",
-				buttonImageOnly: true
-			};
-			
-			/*
-			jQuery( ":input[alt='date']" ).each(function() {
-				alert(jQuery(this).val());
-			});
-			*/
-			
 			if (status == 'success') {
+				defaultDatepicker = {
+					showButtonPanel		: true,
+					changeMonth			: true,
+					changeYear			: true,
+					showOtherMonths		: true,
+					selectOtherMonths	: true,
+					dateFormat			: 'dd/mm/yy',
+					firstDay			: 0,
+					isRTL				: false,
+					showMonthAfterYear	: false,
+					yearSuffix			: '',
+					yearRange			: "c-30:c+30",
+					showOn				: "button",
+					buttonImage: "/themes/sysclass/images/icons/small/others/calendar.gif",
+					buttonImageOnly: true
+				};
 				datepickerData = jQuery.extend(true, jQuery.datepicker.regional[""], defaultDatepicker, data);
-				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(datepickerData);
-				
-				datepickerData.showButtonPanel 	= false;
-				datepickerData.buttonImageOnly 	= false;
-				datepickerData.showOn			= "focus";
-				
-				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(datepickerData);
 			} else {
 				datepickerData = jQuery.extend(true, jQuery.datepicker.regional[""], defaultDatepicker);
-				jQuery( ":input[alt='date']" ).filter(":not(.no-button)").datepicker(datepickerData);
-				
-				defaultDatepicker.showButtonPanel 	= false;
-				defaultDatepicker.buttonImageOnly 	= false;
-				defaultDatepicker.showOn			= "focus";
-
-				
-				jQuery( ":input[alt='date']" ).filter(".no-button").datepicker(datepickerData);
 			}
 			jQuery.datepicker.setDefaults(datepickerData);
 			jQuery.datepicker.regional[""] = datepickerData;
-			/*
-			jQuery( ":input[alt='date']" ).each(function() {
-				alert(jQuery(this).val());
-			});
-			*/
+
+			handleDatepickers();
 		}
 	);
 	

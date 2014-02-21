@@ -3916,13 +3916,30 @@ class MagesterCourse
 
     	$user = MagesterUserFactory :: factory($_GET['login']);
 
+        
+        $datetime = date_create_from_format('d/m/Y H:i:s', $_GET['estimated_end'] . " 23:59:59");
+        if ($datetime !== FALSE) {
+            $today = new DateTime();
+            if ($datetime->getTimestamp() > time()) {
+                // USER IS ACTIVE IN COURSE
+            } else {
+                $this -> archiveCourseUsers($user);
+               
+            }
+            sC_updateTableData("users_to_courses", 
+                array("end_timestamp" => $datetime->format('U')), 
+                sprintf("users_LOGIN = '%s' AND courses_ID = %d", $user->user['login'], $this->course['id'])
+            );
+        } else {
+
+        }
+
     	if (is_numeric($set_class_id)) {
     		$this->putUserInClass($user->user['login'], $set_class_id);
     	} else {
-
     		if (!$user -> hasCourse($this) || $user -> getUserTypeInCourse($this) != $userType) {
     			$this -> addUsers($user, $userType);
-    		} else {
+    		} elseif ($_GET['in_course'] == 'false') {
     			$this -> archiveCourseUsers($user);
     		}
     		$this->putUserInClass($user->user['login'], $class_id);

@@ -129,12 +129,8 @@
      {/if}
      </td>
     <td style = "white-space:nowrap">
-      {if $user.timestamp_estimated_end < $smarty.now}
-        <span style="color:red;">
-      {/if}
-      #filter:timestamp-{$user.timestamp_estimated_end}#
-      {if $user.timestamp_estimated_end < $smarty.now}
-        </span>
+      {if !$user.active_in_course|@is_null}
+        <input type="text" {if $user.timestamp_estimated_end < $smarty.now}style="color:red;"{/if} value="#filter:timestamp-{$user.timestamp_estimated_end}#" id = "estimated_end_{$user.login}" name="estimated_end" alt="date" class="small no-button" onchange="usersAjaxPost('{$user.login}', this);">
       {/if}
     </td>
 
