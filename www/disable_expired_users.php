@@ -44,7 +44,7 @@ $result = sC_getTableData(
 	"end_timestamp < UNIX_TIMESTAMP() AND user_type = 'student' AND archive = 0",
 	'courses_ID ASC',
 	'',
-	'2'
+	'20'
 );
 $row = array();
 foreach($result as $item) {
