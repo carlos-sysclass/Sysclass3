@@ -22,6 +22,7 @@ if ($start !== false) {
 	$sub = substr(dirname(__FILE__), $start);
 	$_SERVER['SERVER_NAME'] =  $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
 	include(dirname(__FILE__) . '/www/send_notifications.php');
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	exit;
 }
 
@@ -33,6 +34,7 @@ if ($start !== false) {
 	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
 
 	include(dirname(__FILE__) . '/www/send_notifications.php');
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	exit;
 }
 if (isset($domain_name)) {

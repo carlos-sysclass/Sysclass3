@@ -40,14 +40,46 @@ $lowest_possible_time = time() - 21600; // last acceptable time - pending 6 hour
 
 $result = sC_getTableData(
 	"users_to_courses",
-	"users_LOGIN, courses_ID",
-	"end_timestamp < UNIX_TIMESTAMP() AND user_type = 'student'"
+	"users_LOGIN, courses_ID, end_timestamp",
+	"end_timestamp < UNIX_TIMESTAMP() AND user_type = 'student' AND archive = 0",
+	'courses_ID ASC',
+	'',
+	'2'
 );
-
+$row = array();
 foreach($result as $item) {
 	$course = new MagesterCourse($item['courses_ID']);
 	$user = MagesterUserFactory :: factory($item['users_LOGIN']);
 	$course -> archiveCourseUsers($user);
+
+	$row[] = sprintf(
+		"%s\t%s %s(%s)\t%s", 
+		$course->course['name'], $user->user['name'], $user->user['surname'], $user->user['login'], date("d/m/Y", $item['end_timestamp'])
+	);
 }
 
-var_dump($result);
+$message = "Lista de usuários desativados por data de expiração\n\n";
+$message .= implode("\n", $row);
+
+
+$smtp = Mail::factory('mail');
+
+$header = array (
+	'From' => $GLOBALS['configuration']['system_email'],
+	'To' => 'andre@kucaniz.com',
+	'Subject' => 'Usuários Desativados',
+	'Content-Transfer-Encoding' => '7bit',
+	'Content-type' => 'text/plain;charset="UTF-8"'
+);
+
+$smtp->send('andre@kucaniz.com', $header, $message);
+
+$header = array (
+	'From' => $GLOBALS['configuration']['system_email'],
+	'To' => 'adriane@ult.com.br',
+	'Subject' => 'Usuários Desativados',
+	'Content-Transfer-Encoding' => '7bit',
+	'Content-type' => 'text/plain;charset="UTF-8"'
+);
+
+$smtp->send('adriane@ult.com.br', $header, $message);
