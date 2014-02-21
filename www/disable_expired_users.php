@@ -58,28 +58,30 @@ foreach($result as $item) {
 	);
 }
 
-$message = "Lista de usuários desativados por data de expiração\n\n";
-$message .= implode("\n", $row);
+if (count($row) > 0) {
+	$message = "Lista de usuários desativados por data de expiração\n\n";
+	$message .= implode("\n", $row);
 
 
-$smtp = Mail::factory('mail');
+	$smtp = Mail::factory('mail');
 
-$header = array (
-	'From' => $GLOBALS['configuration']['system_email'],
-	'To' => 'andre@kucaniz.com',
-	'Subject' => 'Usuários Desativados',
-	'Content-Transfer-Encoding' => '7bit',
-	'Content-type' => 'text/plain;charset="UTF-8"'
-);
+	$header = array (
+		'From' => $GLOBALS['configuration']['system_email'],
+		'To' => 'andre@kucaniz.com',
+		'Subject' => 'Usuários Desativados',
+		'Content-Transfer-Encoding' => '7bit',
+		'Content-type' => 'text/plain;charset="UTF-8"'
+	);
 
-$smtp->send('andre@kucaniz.com', $header, $message);
+	$smtp->send('andre@kucaniz.com', $header, $message);
 
-$header = array (
-	'From' => $GLOBALS['configuration']['system_email'],
-	'To' => 'adriane@ult.com.br',
-	'Subject' => 'Usuários Desativados',
-	'Content-Transfer-Encoding' => '7bit',
-	'Content-type' => 'text/plain;charset="UTF-8"'
-);
+	$header = array (
+		'From' => $GLOBALS['configuration']['system_email'],
+		'To' => 'adriane@ult.com.br',
+		'Subject' => 'Usuários Desativados',
+		'Content-Transfer-Encoding' => '7bit',
+		'Content-type' => 'text/plain;charset="UTF-8"'
+	);
 
-$smtp->send('adriane@ult.com.br', $header, $message);
+	$smtp->send('adriane@ult.com.br', $header, $message);
+}
