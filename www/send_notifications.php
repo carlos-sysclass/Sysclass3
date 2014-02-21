@@ -122,4 +122,4 @@ if ((!isset($hide_messages) || !$hide_messages) && !isset($_GET['ajax']) && (bas
 chdir($dir);
 
 //debug(false);
-exit;
+//exit;

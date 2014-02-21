@@ -42,6 +42,7 @@ if (isset($domain_name)) {
 		$_SERVER['HTTPS'] = 'on';
 	}
 	include(dirname(__FILE__) . '/www/send_notifications.php');
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	exit;
 }
 exit;
