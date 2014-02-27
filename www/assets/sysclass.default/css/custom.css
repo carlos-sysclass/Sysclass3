@@ -317,12 +317,8 @@ h4.border-bottom {
 .tabbable-left .portlet-tabs > .nav-tabs > li {
 	float: left;
 	max-width: 40%;
-	 margin: 0 22px;
 }
 
-.tabbable-left .portlet-tabs > .nav-tabs {
-    overflow: visible;
-}
 .tabbable-left .portlet-tabs > .nav-tabs .dropdown-menu {
     z-index: 1001;
 }
@@ -332,12 +328,12 @@ h4.border-bottom {
 	color: #555555;
 }
 
-
+/*
 .tabbable-left .portlet-tabs > .tab-content  {
 	position: relative;
 	top: -30px;
 }
-
+*/
 .tabbable-left .portlet-tabs > .nav-tabs > li .nav-button  {
 	float: left;
 	cursor: pointer;
@@ -357,13 +353,6 @@ h4.border-bottom {
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li.active > a {
     background-color: #F9F9F9;
-}
-
-.tabbable-left .portlet-tabs > .nav-tabs > li > a.nopadding-right {
-	padding-right: 0;
-}
-.tabbable-left .portlet-tabs > .nav-tabs > li > a.nopadding-left {
-	padding-left: 0;
 }
 /*
 .portlet-tabs {

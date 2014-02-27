@@ -15,7 +15,7 @@
 						</div>
 					</a>
 				</li>
-				
+				<!--
 				<li class="the-class-tab">
 
 						<a data-toggle="tab" href="#class-tab" class="nopadding-right">
@@ -39,11 +39,12 @@
 						 
 
 				</li>
-
+				-->
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">Classes</span>
+
 						</div>
 					</a>
 				</li>
@@ -208,15 +209,23 @@
 					</div>
 				</div>
 				<div id="lesson-tab" class="tab-pane active">
-					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
 								<strong>You're in: </strong>
 							</a>
-							<a href="#" class="navbar-brand class-title">
-								Class
+							<a href="#" data-toggle="dropdown" class="navbar-brand dropdown-toggle">
+								<span class="class-title">Class</span>
+								<i class="icon-refresh"></i>
 							</a>
+							<ul class="dropdown-menu" role="menu">
+						   		<li><a href="#">Action</a></li>
+							    <li><a href="#">Another action</a></li>
+							    <li><a href="#">Something else here</a></li>
+							    <li class="divider"></li>
+							    <li><a href="#">Separated link</a></li>
+						  	</ul>
+
 							<a href="#" class="navbar-brand">&raquo;</a>
 							<a href="#" class="navbar-brand lesson-title">
 								 Lessons
