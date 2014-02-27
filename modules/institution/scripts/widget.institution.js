@@ -7,18 +7,37 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 	    events : {
 	    	"click a" : "handleClick"
 	    },
-	    initialize: function(opt) {
-	    	this.listenTo(this.collection, 'add', this.addOne);
-	    	//this.listenTo(this.collection, 'sync', this.pulsateAll);
-	    	this.listenTo(this.collection, 'change', this.update);
-	    	this.collection.each(this.addOne.bind(this));
-	    	this.pulsateAll();
+	    initialize: function() {
+			App.blockUI({
+			    target: '#institution-chat-list',
+			    overlayColor: 'none',
+				iconOnly : true,
+			    boxed: true
+			});
+			this.started = false;
 	    },
-	    pulsateAll : function() {
+	    start : function(col) {
+	    	if (!this.started) {
+
+		    	this.started = true;
+		    	this.collection = col;
+
+		    	this.listenTo(this.collection, 'add', this.addOne);
+		    	//this.listenTo(this.collection, 'sync', this.pulsateAll);
+		    	this.listenTo(this.collection, 'change', this.update);
+
+		    	this.collection.each(this.addOne.bind(this));
+		    	this.unblock();
+	    	}
+	    },
+	    unblock : function() {
+			App.unblockUI('#institution-chat-list');
+			/*
 	    	this.$el.pulsate({
 				color: "#399bc3",
 		        repeat: false
 			});
+			*/
 	    },
 	    addOne : function(model) {
 			this.$el.append(this.itemTemplate(model.toJSON()));
@@ -46,15 +65,16 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 		$SC.module("utils.strophe").start();
 	});
 	this.on("start", function() {
+		//$("#institution-chat-list").blockUI();
+		mod.view = new RosterViewClass({el : '#institution-chat-list'});
+
 		$SC.module("utils.strophe").on("xmpp:roster:sync", function(col) {
-			if (mod.view == undefined) {
-				mod.view = new RosterViewClass({collection : col, el : '#institution-chat-list'});
-			}
+			mod.view.start(col);
 		});
 		
 		$SC.module("utils.strophe").on("xmpp:presence", function(presence) {
 			if (mod.view != undefined) {
-				console.log(presence);
+				//console.log(presence);
 				//console.log($SC.module("utils.strophe").rosterCollection == mod.view.collection);	
 			}
 		});

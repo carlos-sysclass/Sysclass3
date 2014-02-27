@@ -22,7 +22,7 @@
 	<div class="col-md-7">
 		<!-- GET THIS DATA FROM SCHEDULE/CALENDAR MODULE -->
 		<dt class="text-muted">Next meeting:</dt>
-		<dd class="text-muted">Dez, 22 at 7:35PM Central Time</dd>
+		<dd class="text-muted">Dez, 22nd (8:00am - 10:00am)</dd>
 	</div>
 	<div class="col-md-5">
 		<div class="btn-group-vertical btn-group-fixed-size pull-right">

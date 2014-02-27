@@ -12,6 +12,16 @@
     border-right: none;
 }
 
+.header {
+    background-color: #003355 !important;
+    background-image: none !important;
+    filter: none !important;
+}
+
+.header .navbar-nav li.dropdown .dropdown-toggle i {
+    color: #ffffff !important;
+}
+
 .portlet.box.dark-blue {
     border-color: -moz-use-text-color #DDDDDD #DDDDDD;
     border-image: none;
@@ -31,6 +41,8 @@ hr {
 .full-height {
 	height: 100%;
 }
+
+
 
 @media (max-width: 767px) {
 
@@ -387,4 +399,10 @@ h3.course-title, h3.class-title, h3.lesson-title {
 }
 .page-content .page-breadcrumb.breadcrumb .btn-group {
     right: 10px;
+}
+
+/* MODULE CSS */
+/* INSTITUTION */
+#institution-chat-list {
+	min-height: 30px;
 }

@@ -179,6 +179,8 @@ $plicoLib->concat(
 		'plugins/uniform/jquery.uniform.min',
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
+
+		'plugins/jquery.blockui.min',
 		
 		'plugins/strophe/strophe',
 		'plugins/strophe/strophe.roster',
