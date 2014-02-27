@@ -26,8 +26,8 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 					
 					'tools'		=> array(
 						'search'        => true,
-						'reload'	    => 'javascript:void(0);',
-						'collapse'      => true,
+						//'reload'	    => 'javascript:void(0);',
+						//'collapse'      => true,
 						'fullscreen'    => true
 					)
 				)

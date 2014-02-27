@@ -26,8 +26,8 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer
                     'box'       => 'dark-blue',
                     'tools'     => array(
                         'search'        => true,
-                        'collapse'      => true,
-                        'reload'        => true,
+                        //'collapse'      => true,
+                        //'reload'        => true,
                         'fullscreen'    => true
                     )
         		)

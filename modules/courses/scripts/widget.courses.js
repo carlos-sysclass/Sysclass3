@@ -551,6 +551,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderSemester : function() {
+				/*
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				percent = 40;
 				this.$(".semester span").html(percent);
@@ -558,6 +559,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					this.$(".semester").data('easyPieChart').update(percent);
 				}
+				*/
 			},
 			
 			renderClass : function() {

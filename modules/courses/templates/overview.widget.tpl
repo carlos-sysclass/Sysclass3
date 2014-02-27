@@ -71,15 +71,37 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_info"><i class="icon-info-sign"></i> Course Info </a>
+								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> Description</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> Classes</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_transcripts"><i class="icon-comments"></i> Transcripts</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_course_info" class="tab-pane active">
+							<div id="tab_course_description" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any info registered for this course
+									</div>
+								</div>
+							</div>
+							<div id="tab_course_classes" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Ops! There's any classes registered for this course
+									</div>
+								</div>
+							</div>
+							<div id="tab_course_transcripts" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Ops! There's any transcript registered for this course
 									</div>
 								</div>
 							</div>
@@ -119,10 +141,13 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Lesson Info </a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-magic"></i> Objectives</a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_roadmap"><i class="icon-road"></i> Roadmap</a>
+								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> General Info</a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -130,15 +155,23 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any info registered for this class
+										Ops! There's any objectives registered for this class
 									</div>
 								</div>
 							</div>
-							<div id="tab_class_roadmap" class="tab-pane">
+							<div id="tab_class_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-									Ops! There's any roadmap registered for this class
+									Ops! There's any instructor registered for this class
+							   		</div>
+							   	</div>
+							</div>
+							<div id="tab_class_info" class="tab-pane">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+							   		<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+									Ops! There's any info registered for this class
 							   		</div>
 							   	</div>
 							</div>
@@ -193,11 +226,16 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> Exercises</a>
 							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
+							</li>
+<!--
 							<li class="pull-right">
 								<a data-toggle="tab" href="#tab_lesson_info">
 									<i class="icon-info-sign"></i> Lesson Info 
 								</a>
 							</li>
+-->
 						</ul>
 						<div class="tab-content">
 							<div id="tab_lesson_content" class="tab-pane active">
@@ -221,11 +259,11 @@
 								   	</div>
 							   	</div>
 						   	</div>
-						   	<div id="tab_lesson_info" class="tab-pane">
+						   	<div id="tab_lesson_search" class="tab-pane">
 						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-									 	Ops! There's any lesson info registered
+									 	Under construction
 							   		</div>
 							   	</div>
 						   </div>
@@ -237,19 +275,20 @@
 		</div>
 	</div>
 	<div class="row" id="progress-content">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="easy-pie-chart">
 				<div class="number class" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
 			</div>
 		</div>
+		<!--
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-3">
 			<div class="easy-pie-chart">
@@ -257,14 +296,17 @@
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Semester</a>
 			</div>
 		</div>
+		-->
 		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="easy-pie-chart">
 				<div class="number course" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Course</a>
 			</div>
 		</div>
+			<div class="clearfix margin-bottom-10"></div>
 	</div>
+
 </div>
 <script type="text/template" id="courses-list-item-template">
 <a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">

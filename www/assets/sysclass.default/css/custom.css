@@ -30,6 +30,13 @@
     border-width: 0 1px 1px;
 }
 
+.easy-pie-chart .number {
+    display: inline-block;
+}
+.easy-pie-chart .title {
+    display: inline;
+ }
+
 .well .pagination {
 	margin: -9px 0 0;
 }
