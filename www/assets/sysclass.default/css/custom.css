@@ -22,6 +22,7 @@
     color: #ffffff !important;
 }
 
+
 .portlet.box.dark-blue {
     border-color: -moz-use-text-color #DDDDDD #DDDDDD;
     border-image: none;
@@ -316,7 +317,27 @@ h4.border-bottom {
 .tabbable-left .portlet-tabs > .nav-tabs > li {
 	float: left;
 	max-width: 40%;
+	 margin: 0 22px;
 }
+
+.tabbable-left .portlet-tabs > .nav-tabs {
+    overflow: visible;
+}
+.tabbable-left .portlet-tabs > .nav-tabs .dropdown-menu {
+    z-index: 1001;
+}
+
+.tabbable-left .portlet-tabs > .nav-tabs > li.open > a, .tabbable-left .portlet-tabs > .nav-tabs > li.open > a:hover, .tabbable-left .portlet-tabs > .nav-tabs > li.open > a:focus {
+	background-color: #F9F9F9;
+	color: #555555;
+}
+
+
+.tabbable-left .portlet-tabs > .tab-content  {
+	position: relative;
+	top: -30px;
+}
+
 .tabbable-left .portlet-tabs > .nav-tabs > li .nav-button  {
 	float: left;
 	cursor: pointer;
@@ -332,9 +353,17 @@ h4.border-bottom {
     line-height: 35px;
     margin-top: 5px;
     padding: 0 22px;
+    display: inline-block;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li.active > a {
     background-color: #F9F9F9;
+}
+
+.tabbable-left .portlet-tabs > .nav-tabs > li > a.nopadding-right {
+	padding-right: 0;
+}
+.tabbable-left .portlet-tabs > .nav-tabs > li > a.nopadding-left {
+	padding-left: 0;
 }
 /*
 .portlet-tabs {

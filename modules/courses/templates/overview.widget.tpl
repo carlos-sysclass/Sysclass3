@@ -15,6 +15,31 @@
 						</div>
 					</a>
 				</li>
+				
+				<li class="the-class-tab">
+
+						<a data-toggle="tab" href="#class-tab" class="nopadding-right">
+							<div class="nav-title">
+								<span class="tab-title2">Classes</span>
+							</div>
+						</a>
+						<a data-toggle="dropdown" class="dropdown-toggle nopadding-left">
+							<div class="nav-title">
+								<i class="icon-arrow-down"></i>
+							</div>
+						</a>
+						
+						  <ul class="dropdown-menu" role="menu">
+						    <li><a href="#">Action</a></li>
+						    <li><a href="#">Another action</a></li>
+						    <li><a href="#">Something else here</a></li>
+						    <li class="divider"></li>
+						    <li><a href="#">Separated link</a></li>
+						  </ul>
+						 
+
+				</li>
+
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
@@ -22,6 +47,7 @@
 						</div>
 					</a>
 				</li>
+
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<!--
@@ -40,8 +66,10 @@
 					</a>
 				</li>
 			</ul>
+			<div class="clearfix"></div>
 			<div class="tab-content">
 				<div id="course-tab" class="tab-pane">
+					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -68,8 +96,8 @@
 						</div>
 					</div>
 						
-					<div class="tabbable-custom ">
-						<ul class="nav nav-tabs ">
+					<div class="tabbable-custom">
+						<ul class="nav nav-tabs">
 							<li class="active">
 								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> Description</a>
 							</li>
@@ -109,6 +137,7 @@
 					 </div>
 				</div>
 				<div id="class-tab" class="tab-pane">
+					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -179,6 +208,7 @@
 					</div>
 				</div>
 				<div id="lesson-tab" class="tab-pane active">
+					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -229,13 +259,6 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
 							</li>
-<!--
-							<li class="pull-right">
-								<a data-toggle="tab" href="#tab_lesson_info">
-									<i class="icon-info-sign"></i> Lesson Info 
-								</a>
-							</li>
--->
 						</ul>
 						<div class="tab-content">
 							<div id="tab_lesson_content" class="tab-pane active">
