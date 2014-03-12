@@ -117,7 +117,7 @@ class module_xpay extends MagesterExtendedModule
 
 		$today = new DateTime("today");
 
-		$has_overdue = false;
+		$has_overdue = $has_overdue_message = false;
 
 		foreach ($negocData['invoices'] as $invoiceIndex => $invoice) {
 			$negocData['invoices'][$invoiceIndex]['overdue'] = false;
@@ -138,6 +138,9 @@ class module_xpay extends MagesterExtendedModule
 					$has_overdue = true;
 					$overdueIndex = $invoiceIndex;
 					$negocData['invoices'][$invoiceIndex]['overdue'] = true;
+					if ($diff->days > 5) { // IT'S OVERDUE, SHOW MESSAGE
+						$has_overdue_message = true;
+					}
 				}
 			}
 		}
@@ -146,7 +149,7 @@ class module_xpay extends MagesterExtendedModule
 			return false;
 		}
 
-		if ($has_overdue) {
+		if ($has_overdue_message) {
 			$url = sprintf(
 				$this->moduleBaseUrl . '&action=do_payment&negociation_id=%d&invoice_index=%d', 
 				$negocData['id'],
