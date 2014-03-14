@@ -3256,3 +3256,34 @@ ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT N
 
 /* 2014-01-30 */
 UPDATE `sysclass_layout`.`lessons` SET `name` = 'M1 - z/OS, TSO/ISPF e JCL' WHERE `lessons`.`id` =188;
+
+/* 2014-03-14 */
+CREATE TABLE IF NOT EXISTS `mod_institution` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `name` varchar(250) NOT NULL,
+  `formal_name` varchar(250) NOT NULL,
+  `contact` varchar(250) NOT NULL,
+  `observations` text,
+  `zip` varchar(15) NOT NULL,
+  `address` varchar(150) NOT NULL,
+  `number` varchar(15) NOT NULL,
+  `address2` varchar(50) DEFAULT NULL,
+  `city` varchar(100) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `country_code` varchar(3) NOT NULL DEFAULT 'BR',
+  `phone` varchar(20) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Fazendo dump de dados para tabela `mod_institution`
+--
+
+INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_name`, `contact`, `observations`, `zip`, `address`, `number`, `address2`, `city`, `state`, `country_code`, `phone`, `active`) VALUES
+(1, '4', 'ULT', 'ULT', '', '', '', '', '', '', 'Curitiba', 'PR', 'BR', '', 1),
+(2, '4', 'FATI', 'FATI', '', '', '', '', '', '', 'Arapoti', 'PR', 'BR', '', 1),
+(3, '4', 'FAJAR', 'FAJAR', '', '', '', '', '', '', 'Jaguariaíva', 'PR', 'BR', '', 1),
+(4, '4', '123456', '1234567890', '', 'gdfjlgjkdfjgkdfgkldjfgkjdfkljg<br>', '', '', '', NULL, '', '', 'BR', NULL, 1),
+(5, '4', '123456', '1234567890', '', 'gdfjlgjkdfjgkdfgkldjfgkjdfkljg<br>', '', '', '', NULL, '', '', 'BR', NULL, 1);
