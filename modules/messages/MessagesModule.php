@@ -95,7 +95,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
                 'header'    => self::$t->translate($group['name']),
                 'template'  => $this->template("contact-list.widget"),
                 'icon'      => $group['icon'],
-                'panel'     => 'dark-blue',
+                'panel'     => 'dark-blue messages-panel',
                 'body'      => false,
                 'data'      => $recipients[$group['id']]
             );

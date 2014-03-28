@@ -499,6 +499,7 @@ function setupThemes($overrideTheme = null)
  */
 function defaultExceptionHandler($e)
 {
+    var_dump($e);
     //@todo: Database exceptions are not caught if thrown before smarty
     $tplFile = str_replace(".php", ".tpl", basename($_SERVER['PHP_SELF']));
     is_file($GLOBALS['smarty'] -> template_dir.$tplFile) ? $displayTpl = $tplFile : $displayTpl = 'index.tpl';

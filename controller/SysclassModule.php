@@ -32,7 +32,7 @@ abstract class SysclassModule extends AbstractSysclassController
         $this->context['module_request']    = $this->module_request;
         $this->context['module_folder']     = $this->module_folder;
     }
-    protected function putModuleScript($script, $data = null)
+    public function putModuleScript($script, $data = null)
     {
         if (!is_null($data)) {
             $this->setCache($script, $data);
@@ -92,7 +92,7 @@ abstract class SysclassModule extends AbstractSysclassController
         $this->putItem("module_tplpath", $this->module_folder. "/templates/");
     }
 
-    protected function putSectionTemplate($key, $tpl) {
+    public function putSectionTemplate($key, $tpl) {
         if (is_null($key)) {
             $key = $this->module_id;
         }

@@ -17,6 +17,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         	return array(
         		'institution.overview' => array(
        				//'title' 	=> 'User Overview',
+                    'id'        => 'institution-widget',
        				'template'	=> $this->template("overview.widget"),
                     'panel'     => true
         		)
