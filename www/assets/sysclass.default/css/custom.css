@@ -431,3 +431,19 @@ h3.course-title, h3.class-title, h3.lesson-title {
 #institution-chat-list {
 	min-height: 30px;
 }
+
+
+
+.tlyPageGuideWelcome, #tlyPageGuideWelcome {
+	height: 450px;
+	width: 600px;
+	max-width: 600px;
+	padding: 20px 30px 50px;
+	line-height: 25px;
+}
+.tlyPageGuideWelcome ul {
+	padding: 0;
+}
+.tlyPageGuideWelcome li {
+	padding: 10px 0;
+}

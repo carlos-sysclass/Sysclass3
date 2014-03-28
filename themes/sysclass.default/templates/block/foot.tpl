@@ -55,6 +55,36 @@
     
 </ul>
 
+<div class="tlyPageGuideWelcome">
+    <button class="btn btn-sm btn-danger tlypageguide_ignore pull-right">[ Close ]</button>
+    <h2><strong>Welcome to SysClass</strong></h2>
+    <ul>
+        <li>This is a demo version of our new interface. There is a long way ahead, but we are working hard to have it ready for you this fall.</li>
+        <li>By clicking in the diferents fields, a number will appear with a description of the funcionalities on the bottom of the page. Easy!</li>
+        <li>If you have any sugestions, you can send us on the contact area on the right column of the page.</li>
+        <li>Don't forget to like us or follow us.</li>
+    </ul>
+    <p class="text-center">
+        <!-- <button class="btn btn-lg btn-warning tlypageguide_dismiss">No, thanks!</button> -->
+        <button class="btn btn-lg btn-success tlypageguide_start">Start Tour.</button>
+    </p>
+
+    <!--
+    <p>
+        This button will launch pageguide:
+        <button class="tlypageguide_start">let's go</button>
+    </p>
+    <p>
+        This button will close the modal without doing anything:
+        <button class="">not now</button>
+    </p>
+    <p>
+        This button will close the modal and prevent it from being opened again:
+        <button class="tlypageguide_dismiss">got it, thanks</button>
+    </p>
+    -->
+</div>
+
 {foreach item="script" from=$T_SCRIPTS}
 	<script src="{Plico_GetResource file=$script}"></script>
 {/foreach}

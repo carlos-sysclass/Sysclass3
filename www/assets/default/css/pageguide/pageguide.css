@@ -250,6 +250,20 @@
   -o-transition: all 0.2s linear;
   -ms-transition: all 0.2s linear;
   transition: all 0.2s linear;
+  /*
+        button {
+            background: fade(@pg-highlight-color, 95%);
+            .pg-rounded-corners(3px);
+            color: #fff;
+            font-size: 22px;
+            border: 0;
+            overflow: hidden;
+            text-align: center;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        */
 }
 .tlyPageGuideWelcome.open,
 #tlyPageGuideWelcome.open {
@@ -257,22 +271,6 @@
   -moz-opacity: 0.95;
   -khtml-opacity: 0.95;
   opacity: 0.95;
-}
-.tlyPageGuideWelcome button,
-#tlyPageGuideWelcome button {
-  background: rgba(0, 89, 153, 0.95);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  color: #fff;
-  font-size: 22px;
-  border: 0;
-  overflow: hidden;
-  text-align: center;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-family: Helvetica, Arial, sans-serif;
 }
 #tlyPageGuideOverlay {
   display: none;
