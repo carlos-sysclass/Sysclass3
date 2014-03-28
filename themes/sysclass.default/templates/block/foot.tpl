@@ -56,7 +56,7 @@
 </ul>
 
 <div class="tlyPageGuideWelcome">
-    <button class="btn btn-sm btn-danger tlypageguide_ignore pull-right">[ Close ]</button>
+    <button class="btn btn-sm btn-danger tlypageguide_dismiss pull-right">[ Close ]</button>
     <h2><strong>Welcome to SysClass</strong></h2>
     <ul>
         <li>This is a demo version of our new interface. There is a long way ahead, but we are working hard to have it ready for you this fall.</li>
