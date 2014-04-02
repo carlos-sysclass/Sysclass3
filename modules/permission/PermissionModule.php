@@ -17,7 +17,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	// IBlockProvider
 	public function registerBlocks() {
 		return array(
-			'permission.add' => function() {
+			'permission.add' => function($data, $self) {
 				$this->putComponent("modal");
         		$this->putModuleScript("dialog.permission");
         		//$this->putSectionTemplate(null, "blocks/permission");
@@ -52,7 +52,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * @return array[]              
 	 */
 	public function checkRules($dataItens, $type, $access_mode = 'permission_access_mode', $id_field = "id") {
-
+		// TODO MAKE A WAY TO CACHE getItemsByType, in the model
 		$conditions = $this->model("permission/condition")->getItemsByType($type);
 
 		if (is_numeric($access_mode)) {

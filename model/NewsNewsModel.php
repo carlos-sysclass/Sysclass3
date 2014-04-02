@@ -5,7 +5,7 @@ class NewsNewsModel extends AbstractSysclassModel implements ISyncronizableModel
 	{
 		$this->table_name = "news";
 		$this->id_field = "id";
-		$this->mapFields = array(
+		$this->fieldsMap = array(
 			//"id"					=> false, // SET TO FALSE TO CLEAR FROM "TO-SAVE" RESOURCE
 			"login"					=> 'users_LOGIN'
 		);

@@ -26,30 +26,34 @@ class PermissionConditionModel extends AbstractSysclassModel implements ISyncron
 	}
 
 	public function deleteItem($id) {
-		$this->model("permission/entity")->debug()->delete(array(
+		$this->model("permission/entity")->delete(array(
 			'condition_id' => $id
 		));
 		return parent::deleteItem($id);
 	}
 
 	public function getItemsByType($type) {
-		/*
-		$filter = $this->createFilter(
-			$this->mainTablePrefix . '.id', 
-			"ent.condition_id", 
-			array("operator" => "=", "quote" => false)
-		);
-		$this->createJoin('LEFT', "mod_permission_entities ent", $filter);
-		*/
-
-		$this->addFilter(
+		$params = array(
 			array(
 				'ent.type'		=> $type
 			), 
 			array("operator" => "=")
 		);
 
-		$items = $this->getItems($id);
+		$cacheHash = __METHOD__ . "/" . json_encode($params);
+
+		if ($this->cacheable() && $this->hasCache($cacheHash)) {
+			// TODO CHECK IF IS THERE A CACHE, AND RETURN IT.
+			return $this->getCache($cacheHash);
+		}
+
+		$this->addFilter($params[0], $params[1]);
+
+		$items = $this->getItems();
+		if ($this->cacheable()) {
+			// TODO CACHE RESULTS HERE
+			$this->setCache($cacheHash, $items);
+		}
 		return $items;
 	}
 }

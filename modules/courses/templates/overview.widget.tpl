@@ -8,7 +8,7 @@
 	<div class="container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
-				<li class="the-course-tab">
+				<li class="the-course-tab active">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">Courses</span>
@@ -49,7 +49,7 @@
 					</a>
 				</li>
 
-				<li class="the-lesson-tab active">
+				<li class="the-lesson-tab">
 					<a data-toggle="tab" href="#lesson-tab">
 						<!--
 						<div class="nav-button lesson-prev-action">
@@ -69,7 +69,7 @@
 			</ul>
 			<div class="clearfix"></div>
 			<div class="tab-content">
-				<div id="course-tab" class="tab-pane">
+				<div id="course-tab" class="tab-pane active">
 					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
@@ -106,7 +106,7 @@
 								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> Classes</a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_transcripts"><i class="icon-comments"></i> Transcripts</a>
+								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> Road Map</a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -118,15 +118,24 @@
 									</div>
 								</div>
 							</div>
-							<div id="tab_course_classes" class="tab-pane active">
+							<div id="tab_course_classes" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-									<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any classes registered for this course
-									</div>
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<th>Name</th>
+											<th class="text-center">Completed</th>
+											<th class="text-center">Attendence</th>
+											<th class="text-center">Grade</th>
+											<th class="text-center">Status</th>
+										</thead>
+										<tbody>
+											<tr>
+										</tbody>
+									</table>
+									
 								</div>
 							</div>
-							<div id="tab_course_transcripts" class="tab-pane active">
+							<div id="tab_course_roadmap" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -208,7 +217,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="lesson-tab" class="tab-pane active">
+				<div id="lesson-tab" class="tab-pane">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -338,8 +347,29 @@
 		</div>
 			<div class="clearfix margin-bottom-10"></div>
 	</div>
-
 </div>
+
+<script type="text/template" id="tab_course_description-template">
+	<%= description %>
+</script>
+
+
+<script type="text/template" id="tab_course_classes-nofound-template">
+	<td colspan="5"  class="alert alert-info">
+		<span class="text-info">
+			<i class="icon-warning-sign"></i>
+			{translateToken value='Ops! There\'s any classes registered for this course'}
+		</span>
+	</td>
+</script>
+<script type="text/template" id="tab_course_classes-item-template">
+	<td><a href="#class-tab" class="class-change-action" data-ref-id="<%= id %>" ><%= name %></a></td>
+	<td class="text-center"><span class="label label-danger">No</span></td>
+	<td class="text-center"></td>
+	<td class="text-center"></td>
+	<td class="text-center"><span class="label label-info">In Progress</span></td>
+</script>
+
 <script type="text/template" id="courses-list-item-template">
 <a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
 	<% if (stats.completed == 1) { %>

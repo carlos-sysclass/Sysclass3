@@ -5,7 +5,7 @@ class InstitutionInstitutionModel extends AbstractSysclassModel implements ISync
 	{
 		$this->table_name = "mod_institution";
 		$this->id_field = "id";
-		$this->mapFields = array();
+		//$this->fieldsMap = array();
 
 		$this->selectSql = "SELECT `id`, `permission_access_mode`, `name`, `formal_name`, `contact`, `observations`, `zip`, `address`, `number`, `address2`, `city`, `state`, `country_code`, `phone`, `active` FROM `mod_institution`";
 		//`lessons_ID`, `classe_id`, 

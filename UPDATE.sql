@@ -3287,3 +3287,7 @@ INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_n
 (3, '4', 'FAJAR', 'FAJAR', '', '', '', '', '', '', 'Jaguariaíva', 'PR', 'BR', '', 1),
 (4, '4', '123456', '1234567890', '', 'gdfjlgjkdfjgkdfgkldjfgkjdfkljg<br>', '', '', '', NULL, '', '', 'BR', NULL, 1),
 (5, '4', '123456', '1234567890', '', 'gdfjlgjkdfjgkdfgkldjfgkjdfkljg<br>', '', '', '', NULL, '', '', 'BR', NULL, 1);
+
+
+/* 2014-04-02 */
+ALTER TABLE `lessons` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;

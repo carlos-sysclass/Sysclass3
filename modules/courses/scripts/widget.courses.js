@@ -1,127 +1,6 @@
 $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
-		var courseModelClass = Backbone.Model.extend({
-			urlRoot : "/module/courses/item/courses",
-			prev : function() {
-				if (this.get("prev") != null) {
-					this.set("id", this.get("prev"));
-					this.fetch();
-				}
-			},
-			next : function() {
-				if (this.get("next") != null) {
-					this.set("id", this.get("next"));
-					this.fetch();
-				}
-			}
-		});
-		var classModelClass = Backbone.Model.extend({
-			initialize : function(opt) {
-				//this.courses = opt.courses;
-
-				this.listenTo(opt.courses, "change:id", function(model,course_id) {
-					this.set("course_id", course_id);
-					this.fetch();
-				}, this);
-				/*
-				this.on("change:id", function(model, id) {
-					if (model._changing) {
-						this.fetch();
-					}
-				}, this);
-				*/
-			},
-			urlRoot : function() {
-				if (this.get("course_id") == 0) {
-					return "/module/courses/item/classes";
-				} else {
-					return "/module/courses/item/classes/" + this.get("course_id");	
-				}
-			},
-			prev : function() {
-				if (this.get("prev") != null) {
-					this.set("id", this.get("prev"));
-					this.fetch();
-				}
-			},
-			next : function() {
-				if (this.get("next") != null) {
-					this.set("id", this.get("next"));
-					this.fetch();
-				}
-			}
-		});
-		var lessonModelClass = Backbone.Model.extend({
-			initialize : function(opt) {
-				//this.classes = opt.classes;
-
-				this.listenTo(opt.classes, "change:id change:course_id", function(model,class_id) {
-					this.set("course_id", opt.classes.get("course_id"));
-					this.set("class_id", opt.classes.get("id"));
-					this.fetch();
-				}, this);
-			},
-			urlRoot : function() {
-				if (this.get("class_id") == 0) {
-					return "/module/courses/item/lessons";
-				} else {
-					return "/module/courses/item/lessons/" + this.get("course_id") + "/" + this.get("class_id")
-				}
-			},
-			prev : function() {
-				if (this.get("prev") != null) {
-					this.set("id", this.get("prev"));
-					this.fetch();
-				}
-			},
-			next : function() {
-				if (this.get("next") != null) {
-					this.set("id", this.get("next"));
-					this.fetch();
-				}
-			}
-		});
-/*
-		var contentModelClass = Backbone.Model.extend({
-			initialize: function() {
-			},
-			bindEvents : function() {
-				this.on("change:id", function(a,b,c,d) {
-					this.fetch();
-				}, this);
-			},
-			defaults : {
-				course_id 	: 0,
-				lesson_id 	: 0
-			},
-			urlRoot : function() {
-				if (this.get("course_id") == 0 && this.get("lesson_id") == 0) {
-					return "/module/courses/content";
-				} else {
-					return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");	
-				}
-			}
-			// 31/106
-		});
-*/
-
-		var fileTreeCollectionClass = Backbone.Collection.extend({
-			initialize : function(opt) {
-				if (opt.source) {
-					this.url = opt.source;
-				}
-			},
-			data: function (options, callback) {
-				this.fetch({
-					data : options,
-					success : function(collection,data) {
-						callback({ data: data });
-					}
-				})
-			}
-		});
-
 		// VIEWS
 		//
 		/*
@@ -226,22 +105,23 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 		*/
+		// TODO THINK ABOUT MOVE THIS CLASS INTO THE MAIN VIEW
 		var contentNavigationViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
 			//template: _.template($('#courses-content-navigation-template').html()),
 			events : {
-				//"click .class-prev-action"		: "prevClass",
+				"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
 				//"click .lesson-prev-action"		: "prevLesson",
 				//"click .lesson-next-action" 	: "nextLesson",
 				"click .nav-prev-action" 		: "prevItem",
-				"click .nav-next-action" 		: "nextItem",
-				"click .nav-next-action" 		: "searchItem"
+				"click .nav-next-action" 		: "nextItem"
+				//"click .nav-next-action" 		: "searchItem"
 			},
 			initialize: function(opt) {
 				console.info('portlet.courses/contentNavigationViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
-				console.log(opt.collections);
+
 				this.course = opt.collections.course;
 				this.classe = opt.collections.class;
 				this.lesson = opt.collections.lesson;
@@ -307,6 +187,16 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.goToNextCourse();
 				}
 			},
+			goToClass : function(e) {
+				e.preventDefault();
+				var classId = $(e.currentTarget).data("refId");
+				if (!_.isUndefined(classId)) {
+					this.classe.goToID(classId);
+				}
+				// SELECTING THE CLASS TAB
+				this.$(".the-class-tab a").tab('show');
+
+			},
 			searchItem : function(e) {
 				e.preventDefault();
 
@@ -355,7 +245,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/contentVideoViewClass::render');
 				//contentGenericViewClass.prototype.render.apply(this);
 				var videoDomID = "courses-content-video-" + this.model.get("id");
-				console.log(videoDomID);
 				//this.$(".video-js").hide();
 				var entityData = this.model.get("data");
 
@@ -367,7 +256,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".scroller").empty().append(
 						this.template(this.model.toJSON())
 					);
-					console.log(this.template(this.model.toJSON()));
 
 					var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
 					videojs(videoDomID, videoData, function() {
@@ -405,6 +293,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var entityData = this.model.get("data");
 				var sources = entityData['sources'];
 				if (typeof sources['materials'] != undefined) {
+					var fileTreeCollectionClass = app.module("models.courses").fileTreeCollectionClass;
 					this.fileTree = new fileTreeCollectionClass({source: sources['materials']});
 					//this.fileTree.fetch();
 				} else {
@@ -441,7 +330,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/contentViewClass::render');
 				//this.contentNavigationView.render();
 				var entityData = this.model.get("data");
-				console.log(entityData["ctg_type"]);
+				// console.log(entityData["ctg_type"]);
 
 				var content_type = entityData["ctg_type"];
 				var contentTypeView = null;
@@ -477,6 +366,120 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				// @todo RENDER ONLY ON TAB CHANGE!
 				this.contentMaterialsView.render();
 				
+			}
+		});
+
+		var courseViewClass = Backbone.View.extend({
+			el: $('#course-tab'),
+			portlet: $('#courses-widget'),
+			//template: _.template($('#courses-content-template').html()),
+			//contentVideoView : null,
+			rendered : false,
+			courseClassesTabView : null,
+			initialize: function() {
+				console.info('portlet.courses/courseViewClass::initialize');
+
+				// TODO CREATE SUB VIEWS!!
+				this.courseDescriptionTabView 	= new courseDescriptionTabViewClass({
+					el : "#tab_course_description > .scroller",
+					model : this.model
+				});
+				this.courseRoadmapTabView 		= new courseRoadmapTabViewClass({el : "#tab_course_roadmap"});
+
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function(e) {
+				console.info('portlet.courses/courseViewClass::render');
+				console.warn(this.model.toJSON());
+
+				if (_.isNull(this.courseClassesTabView)) {
+					var classesCollectionClass = app.module("models.courses").classesCollectionClass;
+					var classesCollection = new classesCollectionClass();
+
+					this.courseClassesTabView = new courseClassesTabViewClass({
+						el : "#tab_course_classes table tbody",
+						collection : classesCollection
+					});
+				}
+				this.courseClassesTabView.setCourseID(this.model.get("id"));
+
+				//console.log(this.model.toJSON());
+
+				//this.courseDescriptionTabView.render();
+				//this.courseClassesTabView.render(); 
+				this.courseRoadmapTabView.render();
+			}
+		});
+
+		var courseDescriptionTabViewClass = Backbone.View.extend({
+			portlet: $('#courses-widget'),
+			template : _.template($("#tab_course_description-template").html()),
+			initialize: function() {
+				console.info('portlet.courses/courseDescriptionTabViewClass::initialize');
+
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function(e) {
+				console.info('portlet.courses/courseDescriptionTabViewClass::render');
+				var modelData = this.model.get("data");
+
+				this.$el.empty().append(this.template(modelData));
+			}
+		});
+		var courseClassesTabViewClass = Backbone.View.extend({
+			portlet: $('#courses-widget'),
+			nofoundTemplate : _.template($("#tab_course_classes-nofound-template").html()),
+
+			initialize: function(opt) {
+				console.info('portlet.courses/courseClassesTabViewClass::initialize');
+
+				this.template = _.has(opt, "template") ? opt.template : this.template;
+
+				this.collection.datatable = false;
+				
+				this.listenTo(this.collection, 'sync', this.render.bind(this));
+			},
+			setCourseID : function(course_id) {
+				console.info('portlet.courses/courseClassesTabViewClass::setCourseID');
+				this.collection.course_id = course_id;
+				this.collection.fetch();
+			},
+			render : function(e) {
+				console.info('portlet.courses/courseClassesTabViewClass::render');
+				this.$el.empty();
+
+				if (this.collection.size() == 0) {
+					this.$el.append(this.nofoundTemplate());
+				} else {
+					var self = this;
+					this.collection.each(function(model, i) {
+						var courseClassesTabViewItem = new courseClassesTabViewItemClass({model : model});
+						self.$el.append(courseClassesTabViewItem.render().el);
+						console.warn(model.toJSON());
+						console.warn(i);
+					});
+				}
+			}
+		});
+		var courseClassesTabViewItemClass = Backbone.View.extend({
+			tagName : "tr",
+			template 		: _.template($("#tab_course_classes-item-template").html()),
+
+			render : function(e) {
+				console.info('portlet.courses/courseClassesTabViewClass::render');
+				this.$el.append(
+					this.template(this.model.toJSON())
+				);
+				return this;
+			}
+		});
+		var courseRoadmapTabViewClass = Backbone.View.extend({
+			portlet: $('#courses-widget'),
+			initialize: function() {
+				console.info('portlet.courses/courseRoadmapTabViewClass::initialize');
+			},
+			render : function(e) {
+				console.info('portlet.courses/courseRoadmapTabViewClass::render');
 			}
 		});
 
@@ -596,7 +599,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-		var courseWidgetViewClass = Backbone.View.extend({
+		this.courseWidgetViewClass = Backbone.View.extend({
 			el: $('#courses-widget'),
 			initialize: function(opt) {
 				//opt.collections['course']
@@ -607,6 +610,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.contentNavigationView = new contentNavigationViewClass({
 					collections : opt.collections,
 					el: "#courses-content-navigation"
+				});
+
+				this.courseView = new courseViewClass({
+					model : opt.collections.course,
+					//classes : opt.collections.class,
 				});
 				
 				this.contentView = new contentViewClass({
@@ -634,7 +642,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 								opt.collections.lesson.fetch();
 							}
 						});
-*/
+						*/
 					}
 				});
 				
@@ -676,13 +684,20 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		};
 		this.onRestorescreen = function(e, portlet) {
 		};
+	});
+
+	mod.on("start", function() {
+		var coursesModule 		= app.module("models.courses");
+		var courseModelClass 	= coursesModule.courseModelClass;
+		var classModelClass		= coursesModule.classModelClass;
+		var lessonModelClass	= coursesModule.lessonModelClass;
 
 		this.courseModel = new courseModelClass;
 		this.classModel = new classModelClass({courses : this.courseModel});
 		this.lessonModel = new lessonModelClass({classes : this.classModel});
 		//this.contentModel = new contentModelClass();
 		
-		this.courseWidgetView = new courseWidgetViewClass({
+		this.courseWidgetView = new this.courseWidgetViewClass({
 			model : this.contentModel, 
 			collections : {
 				'course' 	: this.courseModel,
