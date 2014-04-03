@@ -99,18 +99,18 @@
 						
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
-							<li class="active">
+							<li class="">
 								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> Description</a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> Classes</a>
 							</li>
-							<li class="">
+							<li class="active">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> Road Map</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_course_description" class="tab-pane active">
+							<div id="tab_course_description" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -135,12 +135,106 @@
 									
 								</div>
 							</div>
-							<div id="tab_course_roadmap" class="tab-pane">
+							<div id="tab_course_roadmap" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-									<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any transcript registered for this course
+								<div id="tab_course_roadmap-accordion">
+									<h5>
+										<i class="icon-angle-down"></i>
+										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester1"> Semester #1 </a> <small>- 1 of 4 classes selected</small>
+									</h5>
+									<div id="semester1" class="in">
+										<div class="list-group">
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #1
+												</p>
+											</a>
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #2
+												</p>
+											</a>
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #3
+												</p>
+											</a>
+										</div>
 									</div>
+									<h5>
+										<i class="icon-angle-right"></i>
+										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester2">Semester #2</a> <small>- 2 of 4 classes selected</small>
+									</h5>
+									<div id="semester2" class="collapse">
+										<div class="list-group">
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #1
+												</p>
+											</a>
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #2
+												</p>
+											</a>
+											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+												<p class="list-group-item-text">
+													Class #3
+												</p>
+											</a>
+										</div>
+									</div>
+								</div>
+									<!--
+									<div class="dd nestable-me">
+										<ol class="dd-list">
+											<li class="dd-item dd3-item" data-id="13">
+												<div class="dd-handle dd3-handle">
+												</div>
+												<div class="dd3-content">
+													 Item 13
+												</div>
+											</li>
+											<li class="dd-item dd3-item" data-id="14">
+												<div class="dd-handle dd3-handle">
+												</div>
+												<div class="dd3-content">
+													 Item 14
+												</div>
+											</li>
+											<li class="dd-item dd3-item" data-id="15">
+												<div class="dd-handle dd3-handle">
+												</div>
+												<div class="dd3-content">
+													 Item 15
+												</div>
+												<ol class="dd-list">
+													<li class="dd-item dd3-item" data-id="16">
+														<div class="dd-handle dd3-handle">
+														</div>
+														<div class="dd3-content">
+															 Item 16
+														</div>
+													</li>
+													<li class="dd-item dd3-item" data-id="17">
+														<div class="dd-handle dd3-handle">
+														</div>
+														<div class="dd3-content">
+															 Item 17
+														</div>
+													</li>
+													<li class="dd-item dd3-item" data-id="18">
+														<div class="dd-handle dd3-handle">
+														</div>
+														<div class="dd3-content">
+															 Item 18
+														</div>
+													</li>
+												</ol>
+											</li>
+										</ol>
+									</div>
+									-->
 								</div>
 							</div>
 						</div>

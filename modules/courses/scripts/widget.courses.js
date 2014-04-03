@@ -195,7 +195,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				// SELECTING THE CLASS TAB
 				this.$(".the-class-tab a").tab('show');
-
 			},
 			searchItem : function(e) {
 				e.preventDefault();
@@ -375,39 +374,49 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			//template: _.template($('#courses-content-template').html()),
 			//contentVideoView : null,
 			rendered : false,
+			classesCollection : null,
 			courseClassesTabView : null,
+			courseRoadmapTabView : null,
 			initialize: function() {
 				console.info('portlet.courses/courseViewClass::initialize');
+
+				var classesCollectionClass = app.module("models.courses").classesCollectionClass;
+				this.classesCollection = new classesCollectionClass();
 
 				// TODO CREATE SUB VIEWS!!
 				this.courseDescriptionTabView 	= new courseDescriptionTabViewClass({
 					el : "#tab_course_description > .scroller",
 					model : this.model
 				});
-				this.courseRoadmapTabView 		= new courseRoadmapTabViewClass({el : "#tab_course_roadmap"});
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseViewClass::render');
-				console.warn(this.model.toJSON());
 
 				if (_.isNull(this.courseClassesTabView)) {
-					var classesCollectionClass = app.module("models.courses").classesCollectionClass;
-					var classesCollection = new classesCollectionClass();
-
 					this.courseClassesTabView = new courseClassesTabViewClass({
 						el : "#tab_course_classes table tbody",
-						collection : classesCollection
+						collection : this.classesCollection
 					});
 				}
-				this.courseClassesTabView.setCourseID(this.model.get("id"));
+				//this.courseClassesTabView.setCourseID(this.model.get("id"));
+
+				if (_.isNull(this.courseRoadmapTabView)) {
+					this.courseRoadmapTabView = new courseRoadmapTabViewClass({
+						el : "#tab_course_roadmap",
+						collection : this.classesCollection
+					});
+				}
+				//this.courseRoadmapTabView.setCourseID();
+
+				this.classesCollection.course_id = this.model.get("id");
+				this.classesCollection.fetch();
 
 				//console.log(this.model.toJSON());
 
 				//this.courseDescriptionTabView.render();
 				//this.courseClassesTabView.render(); 
-				this.courseRoadmapTabView.render();
 			}
 		});
 
@@ -438,11 +447,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.datatable = false;
 				
 				this.listenTo(this.collection, 'sync', this.render.bind(this));
-			},
-			setCourseID : function(course_id) {
-				console.info('portlet.courses/courseClassesTabViewClass::setCourseID');
-				this.collection.course_id = course_id;
-				this.collection.fetch();
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewClass::render');
@@ -477,9 +481,52 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			portlet: $('#courses-widget'),
 			initialize: function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::initialize');
+				console.warn(this.$());
+
+				var self = this;
+				this.$('#tab_course_roadmap-accordion').on('shown.bs.collapse', function (e) {
+					self.$("a[href='#" + e.target.id + "']").prev("i").removeClass("icon-angle-right").addClass("icon-angle-down");
+				});
+				this.$('#tab_course_roadmap-accordion').on('hidden.bs.collapse', function (e) {
+					self.$("a[href='#" + e.target.id + "']").prev("i").removeClass("icon-angle-down").addClass("icon-angle-right");
+				});
+
+			
+				this.listenTo(this.collection, 'sync', this.render.bind(this));
+
+	            this.$("#tab_course_roadmap-accordion").sortable({
+	                connectWith: ".list-group",
+	                items: ".list-group-item",
+	                opacity: 0.8,
+	                coneHelperSize: true,
+	                placeholder: 'list-group-item list-group-item btn btn-block btn-default',
+	                forcePlaceholderSize: true,
+	                tolerance: "pointer"
+	            });
+
+				//this.$el.nestable();
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseRoadmapTabViewClass::render');
+
+				// ORDER LESSONS BY SEMESTER
+
+				
+				//this.$el.empty();
+
+				if (this.collection.size() == 0) {
+					//this.$el.append(this.nofoundTemplate());
+				} else {
+					var self = this;
+					/*
+					this.collection.each(function(model, i) {
+						var courseClassesTabViewItem = new courseClassesTabViewItemClass({model : model});
+						self.$el.append(courseClassesTabViewItem.render().el);
+						console.warn(model.toJSON());
+						console.warn(i);
+					});
+					*/
+				}
 			}
 		});
 
@@ -678,7 +725,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			return false;
 		};
 		this.onResized = function(e, portlet) {
-			this.filterActionView.repaint();
+			//this.filterActionView.repaint();
 		};
 		this.onFullscreen = function(e, portlet) {
 		};

@@ -123,6 +123,12 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'jquery-nestable',
+	'css'	=> array('css/jquery-nestable/jquery.nestable'),
+	'js'	=> array('plugins/jquery-nestable/jquery.nestable')
+));
+
 
 $plicoLib->concat(
 	'resources/sysclass.default/css',

@@ -12,11 +12,14 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
 {
 
 	public function getWidgets($widgetsIndexes = array()) {
+		// TODO MOVE TO YOUR OWN COMPONENT
 		$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
 		$this->putComponent("fuelux-tree");
+		$this->putComponent("jquery-nestable");
 		
 		$this->putModuleScript("models.courses");
 		$this->putModuleScript("widget.courses");
+
 
 		return array(
 			'courses.overview' => array(

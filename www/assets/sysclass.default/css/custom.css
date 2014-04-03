@@ -447,3 +447,8 @@ h3.course-title, h3.class-title, h3.lesson-title {
 .tlyPageGuideWelcome li {
 	padding: 10px 0;
 }
+
+.btn .list-group-item-text {
+	text-align: left;
+	padding-left: 10px;
+}
