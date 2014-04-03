@@ -143,46 +143,60 @@
 										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester1"> Semester #1 </a> <small>- 1 of 4 classes selected</small>
 									</h5>
 									<div id="semester1" class="in">
-										<div class="list-group">
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+										<ul class="list-group">
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #1
+													<a class="" href="#">
+														Class #1
+													</a>
 												</p>
-											</a>
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+											</li>
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #2
+													<a class="" href="#">
+														Class #2
+													</a>
 												</p>
-											</a>
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+											</li>
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #3
+													<a class="" href="#">
+														Class #3
+													</a>
 												</p>
-											</a>
-										</div>
+											</li>
+										</ul>
 									</div>
+									<hr />
 									<h5>
 										<i class="icon-angle-right"></i>
 										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester2">Semester #2</a> <small>- 2 of 4 classes selected</small>
 									</h5>
 									<div id="semester2" class="collapse">
-										<div class="list-group">
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+										<ul class="list-group">
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #1
+													<a class="" href="#">
+														Class #1
+													</a>
 												</p>
-											</a>
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+											</li>
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #2
+													<a class="" href="#">
+														Class #2
+													</a>
 												</p>
-											</a>
-											<a class="list-group-item list-group-item btn btn-block btn-default red-stripe" href="#">
+											</li>
+											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
 												<p class="list-group-item-text">
-													Class #3
+													<a class="" href="#">
+														Class #3
+													</a>
 												</p>
-											</a>
-										</div>
+											</li>
+										</ul>
+
 									</div>
 								</div>
 									<!--

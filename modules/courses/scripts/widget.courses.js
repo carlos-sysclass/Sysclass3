@@ -329,7 +329,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/contentViewClass::render');
 				//this.contentNavigationView.render();
 				var entityData = this.model.get("data");
-				// console.log(entityData["ctg_type"]);
 
 				var content_type = entityData["ctg_type"];
 				var contentTypeView = null;
@@ -413,7 +412,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.classesCollection.course_id = this.model.get("id");
 				this.classesCollection.fetch();
 
-				//console.log(this.model.toJSON());
 
 				//this.courseDescriptionTabView.render();
 				//this.courseClassesTabView.render(); 
@@ -459,8 +457,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.collection.each(function(model, i) {
 						var courseClassesTabViewItem = new courseClassesTabViewItemClass({model : model});
 						self.$el.append(courseClassesTabViewItem.render().el);
-						console.warn(model.toJSON());
-						console.warn(i);
 					});
 				}
 			}
@@ -481,7 +477,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			portlet: $('#courses-widget'),
 			initialize: function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::initialize');
-				console.warn(this.$());
 
 				var self = this;
 				this.$('#tab_course_roadmap-accordion').on('shown.bs.collapse', function (e) {
@@ -522,8 +517,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.collection.each(function(model, i) {
 						var courseClassesTabViewItem = new courseClassesTabViewItemClass({model : model});
 						self.$el.append(courseClassesTabViewItem.render().el);
-						console.warn(model.toJSON());
-						console.warn(i);
 					});
 					*/
 				}
@@ -721,7 +714,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			this.contentView.$el.hide();
 			this.filterActionView.reload();
 			*/
-			//console.log(e, portlet, q);
 			return false;
 		};
 		this.onResized = function(e, portlet) {
