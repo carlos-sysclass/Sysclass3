@@ -213,6 +213,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 		});
 
+		/* CONTENT TABS VIEW CLASSES (TO_REVIEW ) */
 		var contentGenericViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
 			template: _.template($('#courses-content-generic-template').html()),
@@ -230,7 +231,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				return this;
 			}
 		});
-
 		var contentVideoViewClass = contentGenericViewClass.extend({
 			portlet: $('#courses-widget'),
 			template: _.template($('#courses-content-video-template').html()),
@@ -278,7 +278,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		var contentTheoryViewClass = contentGenericViewClass.extend({});
 		var contentTestsViewClass = contentGenericViewClass.extend({});
-
 		var contentMaterialsViewClass = Backbone.View.extend({
 			//portlet: $('#courses-widget'),
 			template: _.template($('#courses-content-materials-template').html()),
@@ -298,6 +297,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 
 				}
+				console.warn(sources['materials']);
 
 				this.$(".scroller").empty().append(
 					this.template()
@@ -309,9 +309,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	            });
 			}
 		});
-
-
-
 		var contentViewClass = Backbone.View.extend({
 			el: $('#courses-content'),
 			portlet: $('#courses-widget'),
@@ -363,10 +360,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				// @todo RENDER ONLY ON TAB CHANGE!
 				this.contentMaterialsView.render();
-				
 			}
 		});
 
+
+		/* COURSE TABS VIEW CLASSES */
 		var courseViewClass = Backbone.View.extend({
 			el: $('#course-tab'),
 			portlet: $('#courses-widget'),
@@ -424,7 +422,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//this.courseClassesTabView.render(); 
 			}
 		});
-
 		var courseDescriptionTabViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
 			template : _.template($("#tab_course_description-template").html()),
@@ -652,7 +649,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				);
 			}
 		});
-
 		var userProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
 			portlet: $('#courses-widget'),
@@ -769,6 +765,114 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
+		/* CLASSES TABS VIEW CLASSES */
+		/* COURSE TABS VIEW CLASSES */
+		var classViewClass = Backbone.View.extend({
+			el: $('#class-tab'),
+			portlet: $('#courses-widget'),
+			//template: _.template($('#courses-content-template').html()),
+			//contentVideoView : null,
+			//rendered : false,
+			//classesCollection : null,
+			//courseClassesTabView : null,
+			//courseRoadmapTabView : null,
+			initialize: function() {
+				console.info('portlet.courses/classViewClass::initialize');
+
+				//console.warn(this.model.toJSON());
+
+				/*
+				var classesCollectionClass = app.module("models.courses").classesCollectionClass;
+				this.classesCollection = new classesCollectionClass();
+
+				var seasonsCollectionClass = app.module("models.courses").seasonsCollectionClass;
+				this.seasonsCollection = new seasonsCollectionClass();
+				
+				// TODO CREATE SUB VIEWS!!
+				*/
+				this.classDropboxTabView 	= new classDropboxTabViewClass({
+					el : "#tab_class_dropbox > .scroller"/*,
+					model : this.model*/
+				});
+
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function(e) {
+				console.info('portlet.courses/classViewClass::render');
+
+				/*
+
+				if (_.isNull(this.courseClassesTabView)) {
+					this.courseClassesTabView = new courseClassesTabViewClass({
+						el : "#tab_course_classes table tbody",
+						collection : this.classesCollection
+					});
+				}
+				//this.courseClassesTabView.setCourseID(this.model.get("id"));
+
+				if (_.isNull(this.courseRoadmapTabView)) {
+					this.courseRoadmapTabView = new courseRoadmapTabViewClass({
+						el : "#tab_course_roadmap",
+						collections : {
+							seasons 	: this.seasonsCollection,
+							classes 	: this.classesCollection
+						}
+					});
+				}
+				//this.courseRoadmapTabView.setCourseID();
+				this.seasonsCollection.course_id = this.model.get("id");
+				this.seasonsCollection.fetch();
+
+				this.classesCollection.course_id = this.model.get("id");
+				this.classesCollection.fetch();
+				*/
+				//this.courseDescriptionTabView.render();
+				//this.courseClassesTabView.render(); 
+			}
+		});
+		var classDropboxTabViewClass = Backbone.View.extend({
+			//portlet: $('#courses-widget'),
+			//template: _.template($('#courses-content-materials-template').html()),
+			initialize: function() {
+				//this.$el.empty();
+				console.info('portlet.courses/contentMaterialsViewClass::initialize');
+				//this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				this.render();
+			},
+			render : function() {
+				console.info('portlet.courses/contentMaterialsViewClass::render');
+
+				//var entityData = this.model.get("data");
+				//var sources = entityData['sources'];
+				//if (typeof sources['materials'] != undefined) {
+					var fileTreeCollectionClass = app.module("models.courses").fileTreeCollectionClass;
+					// GET HERE SEND AND RECEIVED FILES FROM DROPBOX, BASED ON THIS CLASS
+					this.fileTree = new fileTreeCollectionClass({source: "/module/courses/materials/list/47/188/4297"});
+					//this.fileTree.fetch();
+				//} else {
+
+				//}
+				/*
+				this.$(".scroller").empty().append(
+					this.template()
+				);
+				*/
+	            this.$('.tree-professor').tree({
+	                selectable: false,
+	                dataSource: this.fileTree,
+	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
+	            });
+	            this.$('.tree-student').tree({
+	                selectable: false,
+	                dataSource: this.fileTree,
+	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
+	            });
+
+	            return this;
+			}
+		});
+
 		this.courseWidgetViewClass = Backbone.View.extend({
 			el: $('#courses-widget'),
 			initialize: function(opt) {
@@ -783,10 +887,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				this.courseView = new courseViewClass({
-					model : opt.collections.course,
+					model : opt.collections.course
 					//classes : opt.collections.class,
 				});
-				
+				this.classView = new classViewClass({
+					model : opt.collections['class']
+					//classes : opt.collections.class,
+				});
+
 				this.contentView = new contentViewClass({
 					model : opt.collections.lesson
 				});

@@ -8,7 +8,7 @@
 	<div class="container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
-				<li class="the-course-tab active">
+				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">Courses</span>
@@ -40,7 +40,7 @@
 
 				</li>
 				-->
-				<li class="the-class-tab">
+				<li class="the-class-tab active">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">Classes</span>
@@ -69,7 +69,7 @@
 			</ul>
 			<div class="clearfix"></div>
 			<div class="tab-content">
-				<div id="course-tab" class="tab-pane active">
+				<div id="course-tab" class="tab-pane">
 					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
@@ -99,18 +99,18 @@
 						
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
-							<li class="">
+							<li class="active">
 								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> Description</a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> Classes</a>
 							</li>
-							<li class="active">
+							<li class="">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> Road Map</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_course_description" class="tab-pane">
+							<div id="tab_course_description" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -122,11 +122,13 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
-											<th>Name</th>
-											<th class="text-center">Completed</th>
-											<th class="text-center">Attendence</th>
-											<th class="text-center">Grade</th>
-											<th class="text-center">Status</th>
+											<tr>
+												<th>Name</th>
+												<th class="text-center">Completed</th>
+												<th class="text-center">Attendence</th>
+												<th class="text-center">Grade</th>
+												<th class="text-center">Status</th>
+											</tr>
 										</thead>
 										<tbody>
 											<tr>
@@ -135,7 +137,7 @@
 									
 								</div>
 							</div>
-							<div id="tab_course_roadmap" class="tab-pane active">
+							<div id="tab_course_roadmap" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div id="tab_course_roadmap-accordion">
 									</div>
@@ -144,7 +146,7 @@
 						</div>
 					 </div>
 				</div>
-				<div id="class-tab" class="tab-pane">
+				<div id="class-tab" class="tab-pane active">
 					<div class="clearfix"></div>
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
@@ -175,8 +177,8 @@
 						</div>
 					</div>
 
-					<div class="tabbable-custom ">
-						<ul class="nav nav-tabs ">
+					<div class="tabbable-custom">
+						<ul class="nav nav-tabs">
 							<li class="active">
 								<a data-toggle="tab" href="#tab_class_info"><i class="icon-magic"></i> Objectives</a>
 							</li>
@@ -184,7 +186,26 @@
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> General Info</a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Info</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> Dropbox</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> Bibliography</a>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<i class="icon-ellipsis-horizontal"></i> More <i class="icon-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu pull-right" role="menu">
+									<li class="">
+										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> Attendence</a>
+									</li>
+									<li class="">
+										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> Exams</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -192,7 +213,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any objectives registered for this class
+										Sorry! Any data has been registered for this class yet.
 									</div>
 								</div>
 							</div>
@@ -200,7 +221,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-									Ops! There's any instructor registered for this class
+										Sorry! Any data has been registered for this class yet.
 							   		</div>
 							   	</div>
 							</div>
@@ -208,9 +229,149 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-									Ops! There's any info registered for this class
+										Sorry! Any data has been registered for this class yet.
 							   		</div>
 							   	</div>
+							</div>
+							<div id="tab_class_dropbox" class="tab-pane ">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
+									<!--
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<tr>
+												<th>File</th>
+												<th class="text-center">Date</th>
+												<th class="text-center">Owner</th>
+												<th class="text-center">Size</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Presentation.</td>
+												<td class="text-center">Joe Walton</td>
+												<td class="text-center"><span class="label label-danger">Required</span></td>
+											</tr>
+											<tr>
+												<td>History of Maps</td>
+												<td class="text-center">Mike Joshua</td>
+												<td class="text-center"><span class="label label-info">Suggested</span></td>
+											</tr>
+										</tbody>
+									</table>
+									-->
+									<h5>
+										<a href="javascript: void(0)"> Professor files </a> - 
+										<small>
+											<span class="size-counter">2</span> files
+
+										</small>
+									</h5>
+									<div class="tree tree-professor tree-plus-minus tree-no-line tree-unselectable">
+										<div class = "tree-folder" style="display:none;">
+											<div class="tree-folder-header">
+												<i class="icon-folder-close"></i>
+												<div class="tree-folder-name"></div>
+											</div>
+											<div class="tree-folder-content"></div>
+											<div class="tree-loader" style="display:none"></div>
+										</div>
+										<div class="tree-item" style="display:none;">
+											<i class="tree-dot"></i>
+											<div class="tree-item-name"></div>
+										</div>
+									</div>
+								</div>
+								<hr />
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
+									<h5>
+										<a href="javascript: void(0)">Your Files </a> - 
+										<small>
+											<span class="size-counter">2</span> files
+
+										</small>
+									</h5>
+									<div class="tree tree-student tree-plus-minus tree-no-line tree-unselectable">
+										<div class = "tree-folder" style="display:none;">
+											<div class="tree-folder-header">
+												<i class="icon-folder-close"></i>
+												<div class="tree-folder-name"></div>
+											</div>
+											<div class="tree-folder-content"></div>
+											<div class="tree-loader" style="display:none"></div>
+										</div>
+										<div class="tree-item" style="display:none;">
+											<i class="tree-dot"></i>
+											<div class="tree-item-name"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="tab_class_bibliography" class="tab-pane ">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<tr>
+												<th>Book</th>
+												<th class="text-center">Author</th>
+												<th class="text-center">Type</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>World Map</td>
+												<td class="text-center">Joe Walton</td>
+												<td class="text-center"><span class="label label-danger">Required</span></td>
+											</tr>
+											<tr>
+												<td>History of Maps</td>
+												<td class="text-center">Mike Joshua</td>
+												<td class="text-center"><span class="label label-info">Suggested</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div id="tab_class_attendence" class="tab-pane ">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										Sorry! Any data has been registered for this class yet.
+									</div>
+								</div>
+							</div>
+							<div id="tab_class_exams" class="tab-pane ">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<tr>
+												<th>Exams</th>
+												<th class="text-center">Date</th>
+												<th class="text-center">Status</th>
+												<th class="text-center">Grade</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Test #1</td>
+												<td class="text-center">13rd March, 2014</td>
+												<td class="text-center"><span class="label label-danger">Closed</span></td>
+												<td class="text-center"><span class="label label-warning">60</span></td>
+											</tr>
+											<tr>
+												<td>Test #2</td>
+												<td class="text-center">13rd May, 2014</td>
+												<td class="text-center"><span class="label label-success">Open</span></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td>Test #3</td>
+												<td class="text-center">13rd July, 2014</td>
+												<td class="text-center"><span class="label label-warning">Stand By</span></td>
+												<td class="text-center"></td>
+											</tr>
+										</tbody>
+									</table>   
+								</div>
 							</div>
 						</div>
 					</div>
@@ -288,7 +449,6 @@
 							<div id="tab_lesson_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 								</div>
-
 							</div>
 						    <div id="tab_lesson_exercises" class="tab-pane">
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
@@ -367,8 +527,6 @@
 	<td class="text-center"></td>
 	<td class="text-center"><span class="label label-info">In Progress</span></td>
 </script>
-
-
 
 <script type="text/template" id="tab_roadmap-season-template">
 	<h5>
