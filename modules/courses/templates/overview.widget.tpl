@@ -66,7 +66,7 @@
 						-->
 					</a>
 				</li>
-			</ul>
+			</ul> 
 			<div class="clearfix"></div>
 			<div class="tab-content">
 				<div id="course-tab" class="tab-pane">
