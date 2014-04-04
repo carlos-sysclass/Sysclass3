@@ -180,7 +180,7 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-magic"></i> Objectives</a>
+								<a data-toggle="tab" href="#tab_class_objectives"><i class="icon-magic"></i> Objectives</a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
@@ -209,7 +209,7 @@
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_class_info" class="tab-pane active">
+							<div id="tab_class_objectives" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -227,38 +227,50 @@
 							</div>
 							<div id="tab_class_info" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-							   		<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Sorry! Any data has been registered for this class yet.
-							   		</div>
+									<p class="">
+										<span>Prerequisite:</span>
+										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Credit Hours:</span>
+										<strong class="text-default pull-right">80h</strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Number of Classes:</span>
+										<strong class="text-default pull-right">3 of 24</strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Tests:</span>
+										<strong class="text-default pull-right">1 of 3</strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Papers:</span>
+										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Exams:</span>
+										<strong class="text-default pull-right">0 of 4</strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Books:</span>
+										<strong class="text-default pull-right">2</strong>
+									</p>
+									<hr />
+									<p class="">
+										<span>Required Equipment:</span>
+										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
+									</p>
+									<hr />
 							   	</div>
 							</div>
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
-									<!--
-									<table class="table table-striped table-bordered table-advance table-hover">
-										<thead>
-											<tr>
-												<th>File</th>
-												<th class="text-center">Date</th>
-												<th class="text-center">Owner</th>
-												<th class="text-center">Size</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Presentation.</td>
-												<td class="text-center">Joe Walton</td>
-												<td class="text-center"><span class="label label-danger">Required</span></td>
-											</tr>
-											<tr>
-												<td>History of Maps</td>
-												<td class="text-center">Mike Joshua</td>
-												<td class="text-center"><span class="label label-info">Suggested</span></td>
-											</tr>
-										</tbody>
-									</table>
-									-->
 									<h5>
 										<a href="javascript: void(0)"> Professor files </a> - 
 										<small>
