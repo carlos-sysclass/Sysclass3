@@ -5,14 +5,6 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 			course_id : 0,
 			datatable : false,
 
-			initialize : function(opt) {
-				/*
-				if (!_.isUndefined(opt)) {
-					this.course_id = _.has(opt, 'course_id') ? opt.course_id : 0;
-					this.datatable = _.has(opt, 'datatable') ? opt.datatable : false;
-				}
-				*/
-			},
 			url : function() {
 				var url = "/module/courses/items/classes/:courses/:datatable";
 				url = url.replace(":courses", JSON.stringify(this.course_id));
@@ -24,6 +16,24 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				return url;
 			}
 		});
+
+		this.seasonsCollectionClass = Backbone.Collection.extend({
+			course_id : 0,
+			datatable : false,
+
+			url : function() {
+				var url = "/module/courses/items/seasons/:courses/:datatable";
+				url = url.replace(":courses", JSON.stringify(this.course_id));
+				if (this.datatable) {
+					url = url.replace(":datatable", 'datatable');	
+				} else {
+					url = url.replace(":datatable", '');
+				}
+				return url;
+			}
+		});
+
+		
 
 		// TODO Change the way which the data cames from server
 		this.courseModelClass = Backbone.Model.extend({

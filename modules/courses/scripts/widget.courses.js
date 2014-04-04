@@ -382,6 +382,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var classesCollectionClass = app.module("models.courses").classesCollectionClass;
 				this.classesCollection = new classesCollectionClass();
 
+				var seasonsCollectionClass = app.module("models.courses").seasonsCollectionClass;
+				this.seasonsCollection = new seasonsCollectionClass();
+
 				// TODO CREATE SUB VIEWS!!
 				this.courseDescriptionTabView 	= new courseDescriptionTabViewClass({
 					el : "#tab_course_description > .scroller",
@@ -404,14 +407,18 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.isNull(this.courseRoadmapTabView)) {
 					this.courseRoadmapTabView = new courseRoadmapTabViewClass({
 						el : "#tab_course_roadmap",
-						collection : this.classesCollection
+						collections : {
+							seasons 	: this.seasonsCollection,
+							classes 	: this.classesCollection
+						}
 					});
 				}
 				//this.courseRoadmapTabView.setCourseID();
+				this.seasonsCollection.course_id = this.model.get("id");
+				this.seasonsCollection.fetch();
 
 				this.classesCollection.course_id = this.model.get("id");
 				this.classesCollection.fetch();
-
 
 				//this.courseDescriptionTabView.render();
 				//this.courseClassesTabView.render(); 
@@ -475,8 +482,13 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		var courseRoadmapTabViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
-			initialize: function() {
+			seasonsSynced	: false,
+			classesSynced	: false,
+			
+			initialize: function(opt) {
 				console.info('portlet.courses/courseRoadmapTabViewClass::initialize');
+
+				this.collections = opt.collections;
 
 				var self = this;
 				this.$('#tab_course_roadmap-accordion').on('shown.bs.collapse', function (e) {
@@ -486,42 +498,152 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					self.$("a[href='#" + e.target.id + "']").prev("i").removeClass("icon-angle-down").addClass("icon-angle-right");
 				});
 
+				this.listenTo(this.collections.seasons, 'request', (function() {
+					this.seasonsSynced = false;
+				}).bind(this));
+				this.listenTo(this.collections.classes, 'request', (function() {
+					this.classesSynced = false;
+				}).bind(this));
 			
-				this.listenTo(this.collection, 'sync', this.render.bind(this));
+				this.listenTo(this.collections.seasons, 'sync', this.renderSeasons.bind(this));
+				this.listenTo(this.collections.classes, 'sync', this.renderClasses.bind(this));
 
 	            this.$("#tab_course_roadmap-accordion").sortable({
 	                connectWith: ".list-group",
-	                items: ".list-group-item",
+	                items: "li.list-group-item",
 	                opacity: 0.8,
-	                coneHelperSize: true,
+	                axis : "y",
 	                placeholder: 'list-group-item list-group-item btn btn-block btn-default',
+	                dropOnEmpty : true,
+	                forceHelperSize : true,
 	                forcePlaceholderSize: true,
-	                tolerance: "pointer"
+	                tolerance: "intersect",
+					sort : function( event, ui ) {
+						console.warn(event, ui);
+					}
 	            });
 
 				//this.$el.nestable();
 			},
-			render : function(e) {
+			renderSeasons : function(e) {
+				this.seasonsSynced = true;
+				this.render();
+			},
+			renderClasses : function(e) {
+				this.classesSynced = true;
+				this.render();
+			},
+			render : function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::render');
+				if (this.seasonsSynced && this.classesSynced) {
+					// ORDER LESSONS BY SEMESTER
+					//this.$el.empty();
 
-				// ORDER LESSONS BY SEMESTER
+					if (this.collections.seasons.size() > 0) {
+						var self = this;
+						
+						this.collections.seasons.each((function (seasonModel, i) {
+							// FILTER CLASSES TO RETURN ONLY CLASSES IN THAT SEASON
+							/*
+							var classesArray = this.collections.classes.filter(function (classModel) {
+								console.warn(model.get("classes"), classModel.get("id"), _.contains(model.get("classes"), classModel.get("id")));
+								return _.contains(model.get("classes"), classModel.get("id"));
+							});
+							*/
+							var classesArray = [];
+							this.collections.classes.each(function(classModel, i) {
+								if (_.contains(seasonModel.get("classes"), classModel.get("id"))) {
+									classesArray.push(classModel.toJSON());
+								}
+							});
 
-				
-				//this.$el.empty();
 
-				if (this.collection.size() == 0) {
-					//this.$el.append(this.nofoundTemplate());
-				} else {
-					var self = this;
-					/*
-					this.collection.each(function(model, i) {
-						var courseClassesTabViewItem = new courseClassesTabViewItemClass({model : model});
-						self.$el.append(courseClassesTabViewItem.render().el);
+							var courseRoadmapTabSeasonView = new courseRoadmapTabSeasonViewClass({model : seasonModel, collection : classesArray});
+							self.$("#tab_course_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
+						}).bind(this));
+
+
+						/*
+						var classesArray = [];
+						this.collections.classes.each(function(classModel, i) {
+							if (_.contains(seasonModel.get("classes"), classModel.get("id"))) {
+								classesArray.push(classModel.toJSON());
+							}
+						});
+						*/
+						
+					}
+					// SHOW THE CLASSES BACKLOGS
+					// GET ALL CLASSES WITH SEASONS AND SHOW IN THE "BACKLOG"
+					var allSeasonClassesIds = this.collections.seasons.pluck("classes");
+					allSeasonClassesIds = _.flatten(allSeasonClassesIds);
+
+					var noSeasonClasses = [];
+					this.collections.classes.each(function(classModel, i) {
+						if (!_.contains(allSeasonClassesIds, classModel.get("id"))) {
+							noSeasonClasses.push(classModel.toJSON());
+						}
 					});
-					*/
+					var courseRoadmapTabSeasonView = new courseRoadmapTabSeasonViewClass({collection : noSeasonClasses});
+					self.$("#tab_course_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
+
+					this.$("#tab_course_roadmap-accordion ul.list-group").each(function() {
+						$(this).sortable({
+			                connectWith: ".list-group",
+			                items: "li.list-group-item",
+			                opacity: 0.8,
+			                axis : "y",
+			                placeholder: 'list-group-item list-group-item btn btn-block btn-default',
+			                dropOnEmpty : true,
+			                forceHelperSize : true,
+			                forcePlaceholderSize: true,
+			                tolerance: "intersect",
+			                helper : 'original',
+			                receive : function( event, ui ) {
+								$(this).removeClass("empty-list-group");
+							},
+							remove : function( event, ui ) {
+								console.warn(event, ui, this);
+								
+								if ($(this).children().size() == 0) {
+									$(this).addClass("empty-list-group");
+								}
+							},
+							over : function( event, ui ) {
+								$(this).addClass("ui-sortable-hover");
+							},
+							out  : function( event, ui ) {
+								$(this).removeClass("ui-sortable-hover");
+							},
+			            });
+					});
 				}
 			}
 		});
+		var courseRoadmapTabSeasonViewClass = Backbone.View.extend({
+			template : _.template($("#tab_roadmap-season-template").html()),
+			initialize : function() {
+				
+			},
+			render : function() {
+				console.info('portlet.courses/courseRoadmapTabSeasonViewClass::render');
+				if (_.isUndefined(this.model)) {
+					var modelData = {
+						"id"	: "all",
+						"name"	: "All other classes"
+					};
+				} else {
+					var modelData = this.model.toJSON();
+				}
+				this.$el.append(this.template(_.extend(
+					modelData,
+					{classes : this.collection }
+				)));
+				return this;
+			}
+		});
+
+
 
 		var userProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),

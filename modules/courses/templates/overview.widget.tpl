@@ -137,118 +137,8 @@
 							</div>
 							<div id="tab_course_roadmap" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-								<div id="tab_course_roadmap-accordion">
-									<h5>
-										<i class="icon-angle-down"></i>
-										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester1"> Semester #1 </a> <small>- 1 of 4 classes selected</small>
-									</h5>
-									<div id="semester1" class="in">
-										<ul class="list-group">
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #1
-													</a>
-												</p>
-											</li>
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #2
-													</a>
-												</p>
-											</li>
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #3
-													</a>
-												</p>
-											</li>
-										</ul>
+									<div id="tab_course_roadmap-accordion">
 									</div>
-									<hr />
-									<h5>
-										<i class="icon-angle-right"></i>
-										<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#semester2">Semester #2</a> <small>- 2 of 4 classes selected</small>
-									</h5>
-									<div id="semester2" class="collapse">
-										<ul class="list-group">
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #1
-													</a>
-												</p>
-											</li>
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #2
-													</a>
-												</p>
-											</li>
-											<li class="list-group-item draggable btn btn-block btn-default red-stripe">
-												<p class="list-group-item-text">
-													<a class="" href="#">
-														Class #3
-													</a>
-												</p>
-											</li>
-										</ul>
-
-									</div>
-								</div>
-									<!--
-									<div class="dd nestable-me">
-										<ol class="dd-list">
-											<li class="dd-item dd3-item" data-id="13">
-												<div class="dd-handle dd3-handle">
-												</div>
-												<div class="dd3-content">
-													 Item 13
-												</div>
-											</li>
-											<li class="dd-item dd3-item" data-id="14">
-												<div class="dd-handle dd3-handle">
-												</div>
-												<div class="dd3-content">
-													 Item 14
-												</div>
-											</li>
-											<li class="dd-item dd3-item" data-id="15">
-												<div class="dd-handle dd3-handle">
-												</div>
-												<div class="dd3-content">
-													 Item 15
-												</div>
-												<ol class="dd-list">
-													<li class="dd-item dd3-item" data-id="16">
-														<div class="dd-handle dd3-handle">
-														</div>
-														<div class="dd3-content">
-															 Item 16
-														</div>
-													</li>
-													<li class="dd-item dd3-item" data-id="17">
-														<div class="dd-handle dd3-handle">
-														</div>
-														<div class="dd3-content">
-															 Item 17
-														</div>
-													</li>
-													<li class="dd-item dd3-item" data-id="18">
-														<div class="dd-handle dd3-handle">
-														</div>
-														<div class="dd3-content">
-															 Item 18
-														</div>
-													</li>
-												</ol>
-											</li>
-										</ol>
-									</div>
-									-->
 								</div>
 							</div>
 						</div>
@@ -476,6 +366,38 @@
 	<td class="text-center"></td>
 	<td class="text-center"></td>
 	<td class="text-center"><span class="label label-info">In Progress</span></td>
+</script>
+
+
+
+<script type="text/template" id="tab_roadmap-season-template">
+	<h5>
+		<i class="icon-angle-down"></i>
+		<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= id %>"> <%= name %> </a>
+		<small>
+		<% if (typeof max_classes == 'undefined') { %>
+			<%= _.size(classes) %> total classes
+		<% } else { %>
+			<%= _.size(classes) %> / <%= max_classes %> classes selected
+		<% } %>
+		</small>
+	</h5>
+	<div id="season-<%= id %>" class="in">
+		<ul class="list-group <% if (_.size(classes)== 0) { %>empty-list-group<% } %>">
+			<% if (_.size(classes)== 0) { %>
+			<% } else { %>
+				<% _.each(classes, function (classe, i) { %>
+				<li class="list-group-item draggable btn btn-block btn-default red-stripe" data-class-id="<%= classe.id %>">
+					<p class="list-group-item-text">
+						<a class="" href="#">
+							<%= classe.name %>
+						</a>
+					</p>
+				</li>
+				<% }) %>
+			<% } %>
+		</ul>
+	</div>
 </script>
 
 <script type="text/template" id="courses-list-item-template">

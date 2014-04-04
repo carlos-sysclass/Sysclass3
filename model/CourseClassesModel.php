@@ -51,6 +51,7 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 	}
 	public function getItems() {
 		$items = parent::getItems();
+		// PUT 
 		// APPLY SORT BASED ON prev_lesson_id
 		// var_dump($items);
     	$previous = 0; //Previous is only used when no previous_lessons_ID is set

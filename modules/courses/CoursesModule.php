@@ -86,6 +86,56 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
         return array_values($items);
     }
 
+    /**
+     * Get all seasons from selected(s) course(s)
+     *
+     * @url GET /items/seasons/:courses
+     * @url GET /items/seasons/:courses/:datatable
+     */
+    public function getSeasonsItemsAction($courses, $datatable = null)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $courses = filter_var($courses, FILTER_DEFAULT);
+
+        if (!is_array($courses)) {
+			$courses = json_decode($courses, true);
+		}
+        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+        $itemsData = $this->model("course/seasons")->addFilter(array(
+            'active' 	=> 1,
+            'course_id'	=> $courses
+        ), array("operator" => "="))->getItems();
+
+        $items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+        /*
+        if ($datatable === 'datatable') {
+            $items = array_values($items);
+            foreach($items as $key => $item) {
+                $items[$key]['options'] = array(
+                    'edit'  => array(
+                        'icon'  => 'icon-edit',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm btn-primary'
+                    ),
+                    'remove'    => array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'                  
+                    )
+                );
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+        */
+        return array_values($items);
+    }
+
 
 
 	/**

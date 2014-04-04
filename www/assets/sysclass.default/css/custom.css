@@ -455,3 +455,11 @@ h3.course-title, h3.class-title, h3.lesson-title {
 .draggable {
 	cursor: move;
 }
+ul.list-group.empty-list-group {
+    border: 1px dashed #333333;
+    height: 34px;
+} 
+
+ul.list-group.empty-list-group.ui-sortable-hover {
+	background-color: #ff0000;
+}
