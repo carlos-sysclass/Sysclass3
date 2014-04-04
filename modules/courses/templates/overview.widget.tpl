@@ -376,9 +376,9 @@
 		<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= id %>"> <%= name %> </a>
 		<small>
 		<% if (typeof max_classes == 'undefined') { %>
-			<%= _.size(classes) %> total classes
+			<span class="size-counter"><%= _.size(classes) %></span> total classes
 		<% } else { %>
-			<%= _.size(classes) %> / <%= max_classes %> classes selected
+			<span class="size-counter"><%= _.size(classes) %></span> / <%= max_classes %> classes selected
 		<% } %>
 		</small>
 	</h5>
@@ -389,7 +389,7 @@
 				<% _.each(classes, function (classe, i) { %>
 				<li class="list-group-item draggable btn btn-block btn-default red-stripe" data-class-id="<%= classe.id %>">
 					<p class="list-group-item-text">
-						<a class="" href="#">
+						<a href="#class-tab" class="class-change-action" data-ref-id="<%= classe.id %>" >
 							<%= classe.name %>
 						</a>
 					</p>

@@ -588,34 +588,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					self.$("#tab_course_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
 
 					this.$("#tab_course_roadmap-accordion ul.list-group").each(function() {
-						$(this).sortable({
-			                connectWith: ".list-group",
-			                items: "li.list-group-item",
-			                opacity: 0.8,
-			                axis : "y",
-			                placeholder: 'list-group-item list-group-item btn btn-block btn-default',
-			                dropOnEmpty : true,
-			                forceHelperSize : true,
-			                forcePlaceholderSize: true,
-			                tolerance: "intersect",
-			                helper : 'original',
-			                receive : function( event, ui ) {
-								$(this).removeClass("empty-list-group");
-							},
-							remove : function( event, ui ) {
-								console.warn(event, ui, this);
-								
-								if ($(this).children().size() == 0) {
-									$(this).addClass("empty-list-group");
-								}
-							},
-							over : function( event, ui ) {
-								$(this).addClass("ui-sortable-hover");
-							},
-							out  : function( event, ui ) {
-								$(this).removeClass("ui-sortable-hover");
-							},
-			            });
+
 					});
 				}
 			}
@@ -639,11 +612,46 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					modelData,
 					{classes : this.collection }
 				)));
+
+				var self = this;
+
+				this.$(".list-group").sortable({
+	                connectWith: ".list-group",
+	                items: "li.list-group-item",
+	                opacity: 0.8,
+	                axis : "y",
+	                placeholder: 'list-group-item list-group-item btn btn-block btn-default',
+	                dropOnEmpty : true,
+	                forceHelperSize : true,
+	                forcePlaceholderSize: true,
+	                tolerance: "intersect",
+	                helper : 'original',
+	                receive : function( event, ui ) {
+						$(this).removeClass("empty-list-group");
+						self.refreshCounters();
+					},
+					remove : function( event, ui ) {
+						if ($(this).children().size() == 0) {
+							$(this).addClass("empty-list-group");
+						}
+						self.refreshCounters();
+					},
+					over : function( event, ui ) {
+						$(this).addClass("ui-sortable-hover");
+					},
+					out  : function( event, ui ) {
+						$(this).removeClass("ui-sortable-hover");
+					},
+	            });
+
 				return this;
+			},
+			refreshCounters : function() {
+				this.$(".size-counter").html(
+					this.$(".list-group").children().size()
+				);
 			}
 		});
-
-
 
 		var userProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
