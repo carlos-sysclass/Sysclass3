@@ -197,14 +197,11 @@
 
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
-							<li class="">
-								<a data-toggle="tab" href="#tab_class_objectives"><i class="icon-magic"></i> Objectives</a>
-							</li>
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Info</a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Info</a>
+								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> Dropbox</a>
@@ -212,30 +209,76 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> Bibliography</a>
 							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> Attendence</a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> Tests</a>
+							</li>
+							<!--
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									<i class="icon-ellipsis-horizontal"></i> More <i class="icon-angle-down"></i>
 								</a>
 								<ul class="dropdown-menu pull-right" role="menu">
-									<li class="">
-										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> Attendence</a>
-									</li>
-									<li class="">
-										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> Exams</a>
-									</li>
+
 								</ul>
 							</li>
+							-->
 						</ul>
 						<div class="tab-content">
 							<div id="tab_class_objectives" class="tab-pane ">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+
+								</div>
+							</div>
+							<div id="tab_class_info" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<h5>During this course you will...</h5>
 									<p class="">... be exposed to research methods and state of the art medical devices and technologies in diferent medical fields</p>
 									<p class="">... meet international researchers and interact with European students in an intercultural and interdisciplinary context</p>
 									<p class="">... and much more.</p>
-								</div>
+									<hr />
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<tbody>
+											<tr>
+												<td>Prerequisite(s):</td>
+												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+											</tr>
+											<tr>
+												<td>Credit Hours:</td>
+												<td><strong class="text-default pull-right">80h</strong></td>
+											</tr>
+											<tr>
+												<td>Number of Classes:</td>
+												<td><strong class="text-default pull-right">3 of 24</strong></td>
+											</tr>
+											<tr>
+												<td>Tests:</td>
+												<td><strong class="text-default pull-right">1 of 3</strong></td>
+											</tr>
+											<tr>
+												<td>Papers:</td>
+												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+											</tr>
+											<tr>
+												<td>Exams:</td>
+												<td><strong class="text-default pull-right">0 of 4</strong></td>
+											</tr>
+											<tr>
+												<td>Books:</td>
+												<td><strong class="text-default pull-right">2</strong></td>
+											</tr>
+											<tr>
+												<td>Required Equipment:</td>
+												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+											</tr>
+										</tbody>
+									</table>
+									<hr />
+							   	</div>
 							</div>
-							<div id="tab_class_instructor" class="tab-pane active">
+							<div id="tab_class_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<h5 class="text-danger block"><strong>Professor Dr. John Smith</strong></h5>
 
@@ -294,50 +337,6 @@
 											</div>
 										</li>
 									</ul>
-							   	</div>
-							</div>
-							<div id="tab_class_info" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-									<p class="">
-										<span>Prerequisite(s):</span>
-										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Credit Hours:</span>
-										<strong class="text-default pull-right">80h</strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Number of Classes:</span>
-										<strong class="text-default pull-right">3 of 24</strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Tests:</span>
-										<strong class="text-default pull-right">1 of 3</strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Papers:</span>
-										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Exams:</span>
-										<strong class="text-default pull-right">0 of 4</strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Books:</span>
-										<strong class="text-default pull-right">2</strong>
-									</p>
-									<hr />
-									<p class="">
-										<span>Required Equipment:</span>
-										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
-									</p>
-									<hr />
 							   	</div>
 							</div>
 							<div id="tab_class_dropbox" class="tab-pane ">
