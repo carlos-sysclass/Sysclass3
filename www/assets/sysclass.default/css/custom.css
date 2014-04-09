@@ -466,6 +466,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .portlet-tabs > .nav-tabs .dropdown-menu {
 	overflow: visible;
 }
-.tab-pane > .navbar {
-	height: 24px;
+.courses-container {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 15px;
+	padding-right: 15px;
 }

@@ -5,7 +5,7 @@
 </div>
 -->
 <div>
-	<div class="" id="courses-content">
+	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
 				<li class="the-course-tab">
