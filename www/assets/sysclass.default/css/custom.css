@@ -463,3 +463,9 @@ ul.list-group.empty-list-group {
 ul.list-group.empty-list-group.ui-sortable-hover {
 	background-color: #ff0000;
 }
+.portlet-tabs > .nav-tabs .dropdown-menu {
+	overflow: visible;
+}
+.tab-pane > .navbar {
+	height: 24px;
+}

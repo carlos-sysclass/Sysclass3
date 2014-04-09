@@ -299,7 +299,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				console.warn(sources['materials']);
 
-				this.$(".scroller").empty().append(
+				this.$el.empty().append(
 					this.template()
 				);
 	            this.$('.tree').tree({
@@ -318,7 +318,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/contentViewClass::initialize');
 				
-				this.contentMaterialsView = new contentMaterialsViewClass({model : this.model, el : "#tab_lesson_materials"});
+				this.contentMaterialsView = new contentMaterialsViewClass({model : this.model, el : "#tab_lesson_materials_container"});
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},

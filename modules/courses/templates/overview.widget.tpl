@@ -5,7 +5,7 @@
 </div>
 -->
 <div>
-	<div class="container" id="courses-content">
+	<div class="" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
 				<li class="the-course-tab">
@@ -40,11 +40,28 @@
 
 				</li>
 				-->
+				<!--
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+						<div class="nav-title">
+							<span class="tab-title">Classes</span>
+						</div>
+						<i class="icon-angle-down"></i>
+					</a>
+					<ul role="menu" class="dropdown-menu pull-right">
+						<li class="">
+							<a href="#tab_class_attendence" data-toggle="tab"><i class="icon-calendar"></i> Attendence</a>
+						</li>
+						<li class="">
+							<a href="#tab_class_exams" data-toggle="tab"><i class="icon-pencil"></i> Exams</a>
+						</li>
+					</ul>
+				</li>
+				-->
 				<li class="the-class-tab active">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">Classes</span>
-
 						</div>
 					</a>
 				</li>
@@ -147,7 +164,7 @@
 					 </div>
 				</div>
 				<div id="class-tab" class="tab-pane active">
-					<div class="clearfix"></div>
+					
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -176,13 +193,14 @@
 							</ul>
 						</div>
 					</div>
+					<div class="clearfix"></div>
 
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
-							<li class="active">
+							<li class="">
 								<a data-toggle="tab" href="#tab_class_objectives"><i class="icon-magic"></i> Objectives</a>
 							</li>
-							<li class="">
+							<li class="active">
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
 							</li>
 							<li class="">
@@ -209,26 +227,79 @@
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_class_objectives" class="tab-pane active">
+							<div id="tab_class_objectives" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-									<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Sorry! Any data has been registered for this class yet.
-									</div>
+									<h5>During this course you will...</h5>
+									<p class="">... be exposed to research methods and state of the art medical devices and technologies in diferent medical fields</p>
+									<p class="">... meet international researchers and interact with European students in an intercultural and interdisciplinary context</p>
+									<p class="">... and much more.</p>
 								</div>
 							</div>
-							<div id="tab_class_instructor" class="tab-pane">
+							<div id="tab_class_instructor" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
-							   		<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Sorry! Any data has been registered for this class yet.
-							   		</div>
+							   		<h5 class="text-danger block"><strong>Professor Dr. John Smith</strong></h5>
+
+							   		<ul class="media-list">
+										<li class="media">
+											<a href="#" class="pull-right">
+												<img class="media-object" src="holder.js/128x128" alt="No Photo">
+											</a>
+											<div class="media-body">
+												<p class="">
+													<span>Position:</span>
+													<strong class="text-default pull-right">Emeritus Professor</strong>
+												</p>
+												<hr />
+												<p class="">
+													<span>Division/Portifolio:</span>
+													<strong class="text-default pull-right">Division of Education, Arts and Social Sciences</strong>
+												</p>
+												<hr />
+												<p class="">
+													<span>School Unit:</span>
+													<strong class="text-default pull-right">School of Education</strong>
+												</p>
+												<hr />
+												<p class="">
+													<span>Campus:</span>
+													<strong class="text-default pull-right">Mawson Lakes Campus</strong>
+												</p>
+												<hr />
+												<p class="">
+													<span>Office:</span>
+													<span class="text-default pull-right">G3-12</span >
+												</p>
+												<hr />
+												<p class="">
+													<span>Telephone:</span>
+													<span class="text-default pull-right">+61 8 830 26431</span >
+												</p>
+												<hr />
+												<p class="">
+													<span>Fax:</span>
+													<span class="text-default pull-right">+61 8 830 26550</span >
+												</p>
+												<hr />
+												<p class="">
+													<span>Email:</span>
+													<a href="javascript:void(0);" class="pull-right">john.smith@unisa.edu.au</a>
+												</p>
+												<hr />
+												<p class="">
+													<span>URL for Business Card:</span>
+													<a href="javascript:void(0);" class="pull-right">http://people.unisa.edu.au/john.smith</a>
+												</p>
+												<hr />
+												
+											</div>
+										</li>
+									</ul>
 							   	</div>
 							</div>
 							<div id="tab_class_info" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 									<p class="">
-										<span>Prerequisite:</span>
+										<span>Prerequisite(s):</span>
 										<strong class="text-default pull-right"><span class="label label-success">None</span></strong>
 									</p>
 									<hr />
@@ -272,7 +343,7 @@
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
 									<h5>
-										<a href="javascript: void(0)"> Professor files </a> - 
+										<a href="javascript: void(0)"> Professor Files </a> - 
 										<small>
 											<span class="size-counter">2</span> files
 
@@ -394,21 +465,15 @@
 							<a href="#" class="navbar-brand disabled">
 								<strong>You're in: </strong>
 							</a>
-							<a href="#" data-toggle="dropdown" class="navbar-brand dropdown-toggle">
-								<span class="class-title">Class</span>
-								<i class="icon-refresh"></i>
+							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title">
+								Class
 							</a>
-							<ul class="dropdown-menu" role="menu">
-						   		<li><a href="#">Action</a></li>
-							    <li><a href="#">Another action</a></li>
-							    <li><a href="#">Something else here</a></li>
-							    <li class="divider"></li>
-							    <li><a href="#">Separated link</a></li>
-						  	</ul>
-
-							<a href="#" class="navbar-brand">&raquo;</a>
-							<a href="#" class="navbar-brand lesson-title">
+							<a href="javascript: void(0);" class="navbar-brand">&raquo;</a>
+							<a href="javascript: void(0);" class="navbar-brand lesson-title">
 								 Lessons
+							</a>
+							<a href="javascript: void(0);" class="navbar-brand"> 
+								<span class="label label-success"><i class="icon-ok-sign"></i>  Viewed</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -423,6 +488,7 @@
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
+
 								<!--
 								<li>
 									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Search Lessons'}" data-placement="top" data-search>
@@ -445,9 +511,11 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> Exercises</a>
 							</li>
+							<!--
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
 							</li>
+							-->
 						</ul>
 						<div class="tab-content">
 							<div id="tab_lesson_content" class="tab-pane active">
@@ -460,6 +528,13 @@
 							</div>
 							<div id="tab_lesson_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+									<h5>
+										<a href="javascript: void(0)"> Lesson Files </a> - 
+										<small>
+											<span class="size-counter">2</span> files
+										</small>
+									</h5>
+									<div id="tab_lesson_materials_container"></div>
 								</div>
 							</div>
 						    <div id="tab_lesson_exercises" class="tab-pane">
@@ -470,6 +545,7 @@
 								   	</div>
 							   	</div>
 						   	</div>
+						   	<!--
 						   	<div id="tab_lesson_search" class="tab-pane">
 						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
 							   		<div class="alert alert-info">
@@ -478,6 +554,7 @@
 							   		</div>
 							   	</div>
 						   </div>
+						   -->
 						</div>
 					 </div>
 				</div>

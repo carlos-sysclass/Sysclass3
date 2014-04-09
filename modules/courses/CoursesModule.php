@@ -16,6 +16,8 @@ class CoursesModule extends SysclassModule implements IWidgetContainer
 		$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
 		$this->putComponent("fuelux-tree");
 		$this->putComponent("jquery-nestable");
+
+		$this->putScript("plugins/holder");
 		
 		$this->putModuleScript("models.courses");
 		$this->putModuleScript("widget.courses");
