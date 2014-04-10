@@ -8,50 +8,67 @@
 <ul id="tlyPageGuide">
     <li class="tlypageguide_left" data-tourtarget="#users-panel">
         <div>
-        pageguide.js attaches CSS pseudo elements to whatever features you define on your pages.
-        The numbered arrows can be placed on top, bottom, left or right of whatever you are trying to highlight.
+        Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
         </div>
     </li>
     <li class="tlypageguide_left" data-tourtarget="#courses-widget">
         <div>
-        Change the style of the pageguide as much as you want. We include both CSS and LESS in the repo. We even attach a class
-        to the body of the page when the guide is open.
+        This area contains all the information about the course and the instructors teaching it. In this area you find the entire educational content, as well as the video class, materials, tests and grades.
         </div>
     </li>
     <li class="tlypageguide_left" data-tourtarget="#news-widget">
         <div>
-        We include custom tracking for all the actions of the pageguide. Simply toss in your tracking code from Mixpanel, KISSMetrics, HubSpot, etc.
-        and find out what people are interested in.
+        The announcements related to the course such as, holidays, special activities, meeting with advisors, and all information related to the course and school.
         </div>
     </li>
     <li class="tlypageguide_left" data-tourtarget="#tutoria-widget">
         <div>
-        We include custom tracking for all the actions of the pageguide. Simply toss in your tracking code from Mixpanel, KISSMetrics, HubSpot, etc.
-        and find out what people are interested in.
+        In this area the students can ask questions to the instructors or advisors. Depending on how the course is setup, only the instructor or advisor can answer questions, or other students can be allowed answer each other.
         </div>
     </li>
     <li class="tlypageguide_right" data-tourtarget="#institution-widget">
         <div>
-        The page guide also scrolls for you.  Just use the forward and back arrows on the left to move been elements.
+        This area is dedicated to the university, school, training center, or private teacher. Here you will find the name of the school, homepage, Facebook page, contact information, and everything you need to know about the institution hosting the course.
         </div>
     </li>
     <li class="tlypageguide_right" data-tourtarget="#advisor-widget">
         <div>
-        The page guide also scrolls for you.  Just use the forward and back arrows on the left to move been elements.
+        Here the student will find information about the instructor, advisor or coach. In this area you can also schedule meetings with your instructor or advisor, chat with him or her, and even have calls or videoconferences.
+        </div>
+    </li>
+    <li class="tlypageguide_right" data-tourtarget="#advertising-panel">
+        <div>
+        This area is dedicated to general advertising or advertising and promotions of the school or company hosting the program.
         </div>
     </li>
     <li class="tlypageguide_right" data-tourtarget=".messages-panel">
         <div>
-        The page guide also scrolls for you.  Just use the forward and back arrows on the left to move been elements.
+        Depending on how your course is set up, the school or instructor can determined what type of contact he or she will make available to the students.
         </div>
     </li>
     
     <li class="tlypageguide_left" data-tourtarget="#calendar-widget">
         <div>
-        We include custom tracking for all the actions of the pageguide. Simply toss in your tracking code from Mixpanel, KISSMetrics, HubSpot, etc.
-        and find out what people are interested in.
+        Here students and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other students, and meetings with instructors or advisors.    
         </div>
     </li>
+
+
+2. 
+
+3. 
+
+4. 
+
+5. 
+
+6. 
+
+7. 
+
+8. 
+
+9. 
     
 </ul>
 
@@ -118,7 +135,7 @@
             /* pg_caption : "" */
             custom_open_button : "#open-pageguide-action"
         });
-        
+
         var options = {
             theme_path : "{$T_PATH.resource}",
             theme_app  : App  
