@@ -10,7 +10,7 @@
         <div>
         Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
         </div>
-    </li>
+    </li> 
     <li class="tlypageguide_left" data-tourtarget="#courses-widget">
         <div>
         This area contains all the information about the course and the instructors teaching it. In this area you find the entire educational content, as well as the video class, materials, tests and grades.
