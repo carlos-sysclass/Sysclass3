@@ -472,3 +472,11 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-left: 15px;
 	padding-right: 15px;
 }
+
+#users-panel h3 {
+	margin-top: 5px;
+}
+
+.extended.notification {
+	min-width: 300px !important;
+}

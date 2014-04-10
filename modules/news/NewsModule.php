@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizable, ILinkable, IBreadcrumbable, IActionable
+class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummarizable, */ ILinkable, IBreadcrumbable, IActionable, ISectionMenu
 {
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
@@ -36,6 +36,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 	}
 
 	/* ISummarizable */
+	/*
 	public function getSummary() {
 		$data = $this->dataAction();
 		return array(
@@ -49,6 +50,49 @@ class NewsModule extends SysclassModule implements IWidgetContainer, ISummarizab
 		);
 	}
 
+	*/
+	/* ISectionMenu */
+	public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            //$total = $this->getTotalUnviewed();
+            
+            $news = $this->getItemsAction();
+            //var_dump($news);
+            //exit;
+            $total = count($news);
+
+            $currentUser = $this->getCurrentUser();
+            //$currentFolder = $this->getDefaultFolder($currentUser);
+            
+            //$messages = $this->getUnviewedMessages(array($currentFolder));
+
+            $items = array();
+            
+            foreach($news as $new) {
+                $items[] = array(
+                    'link'	=> $this->getBasePath() . "view/" . $new['id'],
+                    'text'	=> $new['title']
+                );
+            }
+            
+            $menuItem = array(
+                'icon'      => 'bell',
+                'notif'     => $total,
+                'text'      => self::$t->translate('You have %s Announcements', $total),
+                'external'  => array(
+                    'link'  => $this->getBasePath(),
+                    'text'  => self::$t->translate('See my statement')
+                ),
+                'type'      => 'notification',
+                'items'     => $items,
+                'extended'  => true
+            );
+
+            return $menuItem;
+        }
+        return false;
+    }
 	/* ILinkable */
 	public function getLinks() {
 		$data = $this->getItemsAction();

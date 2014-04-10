@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class PaymentModule extends SysclassModule implements ISectionMenu
+class TranslateModule extends SysclassModule implements ISectionMenu
 {
     // CREATE FUNCTION HERE
     public function getSectionMenu($section_id) {
@@ -22,6 +22,21 @@ class PaymentModule extends SysclassModule implements ISectionMenu
             //$messages = $this->getUnviewedMessages(array($currentFolder));
 
             //$items = array(1);
+            $items = array(
+                array(
+                    'id' => 'us',
+                    'name' => 'English',
+                    'selected'  => true
+                ),
+                array(
+                    'id' => 'br',
+                    'name' => 'Português'
+                ),
+                array(
+                    'id' => 'es',
+                    'name' => 'Español'
+                )
+            );
             /*
             foreach($messages as $msg) {
                 $items[] = array(
@@ -36,16 +51,16 @@ class PaymentModule extends SysclassModule implements ISectionMenu
             }
             */
             $menuItem = array(
-                'icon'      => 'money',
-                'notif'     => $total,
-                'text'      => self::$t->translate('You have %s due payment', $total),
-                'external'  => array(
-                    'link'  => $this->getBasePath(),
-                    'text'  => self::$t->translate('See my statement')
-                ),
-                'type'      => 'notification',
+                //'icon'      => 'money',
+                //'notif'     => $total,
+                //'text'      => self::$t->translate('You have %s due payment', $total),
+                //'external'  => array(
+                //    'link'  => $this->getBasePath(),
+                //    'text'  => self::$t->translate('See my statement')
+                //),
+                'type'      => 'language',
                 'items'     => $items,
-                'extended'  => true
+                'extended'  => false
             );
 
             return $menuItem;

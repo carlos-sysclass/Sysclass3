@@ -111,7 +111,7 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 			'resources' => array(
 				"default"   => array_keys($modules),
 				"layout.sections.topbar"    => array("messages", "forum"),
-				"users.overview.notification.order" => array("messages", "news", "roadmap", "payment")
+				"users.overview.notification.order" => array("courses", "tutoria", "calendar", "advisor", "tests")
 			)
 		);
 

@@ -6,17 +6,25 @@
 	<div class="col-md-3" id="users-avatar">
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 	</div>
-	<div class="col-md-4 list-fixed-size">
-		<h4>
+	<div class="col-md-3 list-fixed-size">
+		<h3 class="nomargin">
 			{$user_details.name} {$user_details.surname} 
+			<!--
 			<a class="btn btn-xs btn-link" href="/module/users/profile"><i class="icon-edit"></i> {translateToken value="Edit"}</a>
-		</h4>
+			-->
+		</h3>
+		<h4><a href="javascrit: void(0);">Course Name</a></h4>
+		<h4><a href="javascrit: void(0);">Grades</a></h4>
+		<h4><a href="javascrit: void(0);">Reports</a></h4>
+		<h4><a href="javascrit: void(0);">Roadmap</a></h4>
+		<!--
 		<p class="text-muted"><strong>Class </strong><span>Distance Learning</span></p>
 		<p><strong>Location </strong><span>{$user_details.uf}, {$user_details.country_code}</span></p>
 		<p><strong>Language </strong><span>{$user_details.languages_NAME}</span></p>
 		<p class="text-muted"><strong>GPA </strong><span>3.6/95</span></p>
+		-->
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-6">
 		{if isset($notifications)}
 		<table class="table table-hover no-space">
 	        <thead>

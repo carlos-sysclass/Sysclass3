@@ -8,9 +8,22 @@
  * @package Sysclass\Modules
  */
 
-class CalendarModule extends SysclassModule implements IWidgetContainer
+class CalendarModule extends SysclassModule implements ISummarizable, IWidgetContainer
 {
+    public function getSummary() {
+        $data = array(1); // FAKE, PUT HERE DUE PAYMENTS
 
+        return array(
+            'type'  => 'primary',
+            'count' => $data[0],
+            'text'  => self::$t->translate('Calendar Events'),
+            'link'  => array(
+                'text'  => self::$t->translate('View'),
+                'link'  => $this->getBasePath() . 'all'
+            )
+        );
+    }
+    
     public function getWidgets($widgetsIndexes = array()) {
         $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
     	//$this->putScript("scripts/calendar");

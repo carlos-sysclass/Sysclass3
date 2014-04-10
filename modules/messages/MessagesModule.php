@@ -58,7 +58,8 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     				'text'	=> self::$t->translate('See all messages')
     			),
     			'type'		=> 'inbox',
-    			'items'		=> $items
+    			'items'		=> $items,
+                'extended'  => true
     		);
 
     		return $menuItem;

@@ -162,6 +162,9 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 
 			$modules = $this->getModules("ISummarizable");
 
+			//var_dump(array_keys($modules));
+			//exit;
+
 			$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
 			$userDetails = array_merge($currentUser->user, $userDetails);
 

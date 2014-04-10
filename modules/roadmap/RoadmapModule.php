@@ -7,10 +7,11 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class RoadmapModule extends SysclassModule implements ISummarizable
+class RoadmapModule extends SysclassModule /* implements ISummarizable */
 {
+    /*
     public function getSummary() {
-        $data = array(1); // FAKE, PUT HERE DUE PAYMENTS
+        //$data = array(1); // FAKE, PUT HERE DUE PAYMENTS
 
         return array(
             'type'  => 'success',
@@ -22,4 +23,5 @@ class RoadmapModule extends SysclassModule implements ISummarizable
             )
         );
     }
+    */
 }

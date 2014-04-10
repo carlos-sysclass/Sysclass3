@@ -8,8 +8,21 @@
  * @package Sysclass\Modules
  */
 
-class CoursesModule extends SysclassModule implements IWidgetContainer
+class CoursesModule extends SysclassModule implements ISummarizable, IWidgetContainer
 {
+    public function getSummary() {
+        //$data = array(1); // FAKE, PUT HERE DUE PAYMENTS
+
+        return array(
+            'type'  => 'danger',
+            'count' => '<i class="icon-arrow-down"></i>',
+            'text'  => self::$t->translate('Work Due'),
+            'link'  => array(
+                'text'  => '35%',
+                'link'  => $this->getBasePath() . 'all'
+            )
+        );
+    }
 
 	public function getWidgets($widgetsIndexes = array()) {
 		// TODO MOVE TO YOUR OWN COMPONENT

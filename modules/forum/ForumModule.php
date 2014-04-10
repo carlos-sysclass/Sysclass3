@@ -8,10 +8,11 @@
  * @package Sysclass\Modules
  */
 
-class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContainer
+class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetContainer
 {
 
     /* ISectionMenu */
+    /*
     public function getSectionMenu($section_id) {
     	if ($section_id == "topbar") {
     		$menuItem = array(
@@ -41,7 +42,7 @@ class ForumModule extends SysclassModule implements ISectionMenu, IWidgetContain
     	}
     	return false;
     }
-
+    */
     public function getWidgets($widgetsIndexes = array()) {
     	return array(
     		'forum' => array(
