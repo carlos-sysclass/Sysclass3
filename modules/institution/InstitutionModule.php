@@ -8,8 +8,23 @@
  * @package Sysclass\Modules
  */
 
-class InstitutionModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
+class InstitutionModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'institution.social-gadgets' => function($data, $self) {
+                //$this->putComponent("modal");
+                //$this->putModuleScript("dialog.permission");
+                //$this->putSectionTemplate(null, "blocks/permission");
+                $self->putSectionTemplate("bottom", "blocks/social-gadgets");
+
+                return true;
+                
+            }
+        );
+    }
+
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('institution.overview', $widgetsIndexes)) {
             $this->putModuleScript("widget.institution");

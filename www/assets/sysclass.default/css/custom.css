@@ -480,3 +480,28 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .extended.notification {
 	min-width: 300px !important;
 }
+
+
+/* INSTITUTION MODULE */
+.social-gadgets {
+/*    display: block; */
+    position: fixed;
+    right: 0;
+    top: 84px;
+    width: 155px;
+    padding-left: 100px;
+    z-index: 9999;
+    overflow: visible;
+}
+.social-gadgets a.btn i {
+	font-size: 22px;
+	font-weight: bold;
+}
+.social-gadgets a.btn {
+	float: right;
+	transition: all 0.2s ease-in 0s;
+}
+.social-gadgets a.btn:hover {
+	width: 125%;
+	max-width: 125%;
+}

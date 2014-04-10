@@ -71,9 +71,13 @@ class DashboardController extends AbstractSysclassController
 
         $widgets = $layoutManager->getPageWidgets();
 
+
+
         foreach($widgets as $key => $widget) {
             call_user_func_array(array($this, "addWidget"), $widget);
         }
+
+        $this->putBlock("institution.social-gadgets");
 
         parent::display('pages/dashboard/default.tpl');
 	}

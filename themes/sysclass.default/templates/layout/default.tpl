@@ -60,5 +60,12 @@
 	</div>
 	<div id="off-windows">
 	</div>
+
+	{if (isset($T_SECTION_TPL['bottom']) &&  ($T_SECTION_TPL['bottom']|@count > 0))}
+	    {foreach $T_SECTION_TPL['bottom'] as $template}
+	        {include file=$template}
+	    {/foreach}
+	{/if}
+
 </body>
 </html>

@@ -5,7 +5,7 @@
 <script src="assets/metronic/plugins/excanvas.min.js"></script> 
 <![endif]-->
 
-<ul id="tlyPageGuide" data-tourtitle="Check sysclass blocks">
+<ul id="tlyPageGuide">
     <li class="tlypageguide_left" data-tourtarget="#users-panel">
         <div>
         pageguide.js attaches CSS pseudo elements to whatever features you define on your pages.
@@ -121,6 +121,7 @@
         // pageguide init
         tl.pg.init({
             /* pg_caption : "" */
+            custom_open_button : ".open-pageguide-action"
         });
 
     });
