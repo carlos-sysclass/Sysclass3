@@ -493,13 +493,17 @@ ul.list-group.empty-list-group.ui-sortable-hover {
     z-index: 9999;
     overflow: visible;
 }
+.social-gadgets.btn-group-vertical > .btn + .btn {
+	margin-top: 0;
+}
 .social-gadgets a.btn i {
 	font-size: 22px;
 	font-weight: bold;
 }
 .social-gadgets a.btn {
 	float: right;
-	transition: all 0.2s ease-in 0s;
+	margin-top: 0;
+	transition: width 0.3s ease-in-out 0s;
 }
 .social-gadgets a.btn:hover {
 	width: 125%;
