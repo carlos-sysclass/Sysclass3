@@ -58,7 +58,7 @@
 					</ul>
 				</li>
 				-->
-				<li class="the-class-tab active">
+				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">Classes</span>
@@ -66,7 +66,7 @@
 					</a>
 				</li>
 
-				<li class="the-lesson-tab">
+				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<!--
 						<div class="nav-button lesson-prev-action">
@@ -163,7 +163,7 @@
 						</div>
 					 </div>
 				</div>
-				<div id="class-tab" class="tab-pane active">
+				<div id="class-tab" class="tab-pane">
 					
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
@@ -458,7 +458,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="lesson-tab" class="tab-pane">
+				<div id="lesson-tab" class="tab-pane active">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
