@@ -261,6 +261,8 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	 */
 	public function profilePage()
 	{
+		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		exit;
 		$currentUser    = $this->getCurrentUser(true);
 		// PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
 		$this->putComponent("select2");
@@ -317,6 +319,8 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	 */
 	public function profilePersonalSaveAction()
 	{
+		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		exit;
 		/*
 		["name"]=> string(8) "VINICIOS" 
 		["surname"]=> string(13) "CUTRIM MENDES" 
@@ -365,6 +369,9 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	 */
 	public function profilePasswordSaveAction()
 	{
+		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		exit;
+
 		$currentUser = $this->getCurrentUser(true);
 		$values = $_POST;
 
