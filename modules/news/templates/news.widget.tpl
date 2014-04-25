@@ -23,8 +23,8 @@
 <script type="text/template" id="news-item-template">
    <a class="list-group-item" data-toggle="modal" href="#news-dialog" data-news-id="<%= id %>">
 		<%= title %>
-		<span class="badge badge-info"><%= moment.unix(timestamp).fromNow() %></span>
-		<span class="badge badge-success badge-roundless username-badge"><%= login %></span>
+		<span class="badge badge-info hidden-xs"><%= moment.unix(timestamp).fromNow() %></span>
+		<span class="badge badge-success badge-roundless username-badge hidden-xs"><%= login %></span>
    </a>
 </script>
 <script type="text/template" id="news-nofound-template">

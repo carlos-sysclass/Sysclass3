@@ -57,6 +57,10 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     				'link'	=> $this->getBasePath() . "inbox",
     				'text'	=> self::$t->translate('See all messages')
     			),
+                'link'  => array(
+                    'link'  => $this->getBasePath() . "inbox",
+                    'text'  => self::$t->translate('Messages')
+                ),
     			'type'		=> 'inbox',
     			'items'		=> $items,
                 'extended'  => true

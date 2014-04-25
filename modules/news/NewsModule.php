@@ -84,6 +84,10 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
                     'link'  => $this->getBasePath(),
                     'text'  => self::$t->translate('See my statement')
                 ),
+                'link'  => array(
+                    'link'  => $this->getBasePath(),
+                    'text'  => self::$t->translate('News')
+                ),
                 'type'      => 'notification',
                 'items'     => $items,
                 'extended'  => true

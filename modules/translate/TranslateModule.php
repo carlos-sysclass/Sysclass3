@@ -51,13 +51,17 @@ class TranslateModule extends SysclassModule implements ISectionMenu
             }
             */
             $menuItem = array(
-                //'icon'      => 'money',
-                //'notif'     => $total,
+                'icon'      => 'globe',
+                'notif'     => count($items),
                 //'text'      => self::$t->translate('You have %s due payment', $total),
                 //'external'  => array(
                 //    'link'  => $this->getBasePath(),
                 //    'text'  => self::$t->translate('See my statement')
                 //),
+                'link'  => array(
+                    'link'  => $this->getBasePath() . "change",
+                    'text'  => self::$t->translate('Languages') 
+                ),
                 'type'      => 'language',
                 'items'     => $items,
                 'extended'  => false

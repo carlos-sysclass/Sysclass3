@@ -43,6 +43,10 @@ class PaymentModule extends SysclassModule implements ISectionMenu
                     'link'  => $this->getBasePath(),
                     'text'  => self::$t->translate('See my statement')
                 ),
+                'link'  => array(
+                    'link'  => $this->getBasePath(),
+                    'text'  => self::$t->translate('Payments')
+                ),
                 'type'      => 'notification',
                 'items'     => $items,
                 'extended'  => true

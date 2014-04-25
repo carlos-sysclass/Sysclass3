@@ -18,7 +18,7 @@
 		<ul class="nav navbar-nav pull-right">
 			{foreach $T_TOPBAR_MENU as $key => $item}
     			{if $item.extended}
-    			<li class="dropdown">
+    			<li class="dropdown hidden-xs">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 			      		<i class="icon-{$item.icon}"></i>
 			      		<span class="badge">{$item.notif}</span>
@@ -66,7 +66,7 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown {$item.type}">
+				<li class="dropdown {$item.type} hidden-xs">
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -196,7 +196,19 @@
 						<a href="/module/users/profile"><i class="icon-user"></i> My Profile</a>
 					</li>
 					<li class="divider"></li>
-					<li>
+					{foreach $T_TOPBAR_MENU as $key => $item}
+				        {if isset($item.link)}
+							<li class="visible-xs">
+								<a href="{$item.link.link}">
+						      		<i class="icon-{$item.icon}"></i>
+						      		<span class="badge">{$item.notif}</span>
+						      		{$item.link.text}
+						      	</a>
+							</li>
+						{/if}
+					{/foreach}
+					<li class="divider visible-xs"></li>
+					<li class="hidden-sm hidden-xs">
 						<a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> Full Screen</a>
 					</li>
 					<li>

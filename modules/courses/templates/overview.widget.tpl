@@ -464,10 +464,10 @@
 							<a href="#" class="navbar-brand disabled">
 								<strong>You're in: </strong>
 							</a>
-							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title">
+							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title hidden-xs">
 								Class
 							</a>
-							<a href="javascript: void(0);" class="navbar-brand">&raquo;</a>
+							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
 								 Lessons
 							</a>
@@ -562,14 +562,14 @@
 		</div>
 	</div>
 	<div class="row" id="progress-content">
-		<div class="col-md-4">
+		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-4">
+		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number class" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
@@ -585,7 +585,7 @@
 		</div>
 		-->
 		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-4">
+		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number course" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">Course</a>

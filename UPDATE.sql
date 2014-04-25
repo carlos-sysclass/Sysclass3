@@ -3377,3 +3377,6 @@ INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`,
 (8, 8, 1, 15, '1;student'),
 (7, 7, 1, 15, '1;student'),
 (6, 6, 1, 15, '1;student');
+
+/* 2014-04-25 */
+UPDATE `sysclass_layout`.`configuration` SET `value` = 'Online Education' WHERE `configuration`.`name` = 'site_motto';

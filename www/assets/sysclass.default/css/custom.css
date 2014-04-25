@@ -488,9 +488,8 @@ ul.list-group.empty-list-group.ui-sortable-hover {
     position: fixed;
     right: 0;
     top: 84px;
-    width: 155px;
-    padding-left: 100px;
-    z-index: 9999;
+    width: 55px;
+    z-index: 1001;
     overflow: visible;
 }
 .social-gadgets.btn-group-vertical > .btn + .btn {
@@ -508,4 +507,55 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .social-gadgets a.btn:hover {
 	width: 125%;
 	max-width: 125%;
+}
+
+/* PAGEGUIDE RESPONSIVE */
+@media (max-width:991px) { 
+	.tlyPageGuideStepIndex {
+		background: rgba(0, 89, 153, 1);
+	}
+	.tlyPageGuideStepIndex.tlypageguide_left {
+		left: -10px;
+		top: -10px;
+		
+	}
+	.tlyPageGuideStepIndex.tlypageguide_left:after {
+		border: none;
+		right: 0;
+		top: 0;
+	}
+	.tlyPageGuideStepIndex.tlypageguide_right {
+		right: -10px;
+		top: -10px;
+	}
+	.tlyPageGuideStepIndex.tlypageguide_right:after {
+		border: none;
+		left: 0;
+		top: 0;
+	}
+}
+@media (max-width: 767px) {
+	.tabbable-left .portlet-tabs > .nav-tabs > li > a {
+	    padding: 0 5px;
+	}
+}
+
+.text-danger {
+  color: #dd252b;
+}
+
+.btn-danger {
+  color: #ffffff;
+  background-color: #dd252b;
+  border-color: #bc2925;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.open .dropdown-toggle.btn-danger {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
 }
