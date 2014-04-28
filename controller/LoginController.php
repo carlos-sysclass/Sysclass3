@@ -78,7 +78,7 @@ class LoginController extends AbstractSysclassController
 
 		// CREATE LOGIC AND CALL VIEW.
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
-		$this->putCss("css/pages/login-soft");
+		$this->putCss("css/pages/login");
 		//$this->putScript("scripts/login-soft");
 		
 		$smarty = $this->getSmarty();
