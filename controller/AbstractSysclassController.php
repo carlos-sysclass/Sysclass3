@@ -91,7 +91,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    $smarty->assign("T_CURRENT_USER", self::$current_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
-		    if (array_key_exists('user_locked', $_SESSION)) {
+		    if (array_key_exists('user_locked', $_SESSION) && $_SESSION['user_locked']) {
 		    	if ($this->context['url'] != "lock") {
 		    		$this->redirect("lock", self::$t->translate("You need to unlock your account first."), "info");
 		    		exit;

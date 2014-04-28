@@ -1,4 +1,27 @@
 $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
+	this.handleBackstrech = function(context) {
+		if ($(".backstrech-me", context).size() > 0) {
+			$(".backstrech-me", context).each(function() {
+				var defaults = {
+					backstrechDuration : 1000,
+					backstrechFade : 500,
+					backstrechImages : [
+					"assets/sysclass.default/img/bg/1.jpg",
+			    	"assets/sysclass.default/img/bg/2.jpg",
+			    	"assets/sysclass.default/img/bg/3.jpg",
+			    	"assets/sysclass.default/img/bg/4.jpg"
+					]
+				};
+				var data = _.extend(defaults, $(this).data());
+
+				$(this).backstretch(data.backstrechImages, {
+			    	fade: data.backstrechFade,
+			    	duration: data.backstrechDuration
+				});
+				
+			});
+		}
+	};
   	this.handleValidate = function(context) {
 	  	// Validation
 	  	/* 
@@ -214,6 +237,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     };
 
 	this.refresh = function(context) {
+		this.handleBackstrech(context);
 		this.handleTooltips(context);
 		this.handleValidate(context);
 		this.handleiCheck(context);

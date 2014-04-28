@@ -9,14 +9,14 @@ class LoginController extends AbstractSysclassController
 		return TRUE;
 
 	}
-
+	/*
 	protected function onThemeRequest()
 	{
 		if ($this->getRequestedUrl() == "") {
 			$this->setTheme('sysclass.frontend');
 		}
 	}
-
+	*/
 	protected function createLoginForm() {
 		//$postTarget = "/login?debug=10";
 //		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
@@ -79,7 +79,7 @@ class LoginController extends AbstractSysclassController
 		// CREATE LOGIC AND CALL VIEW.
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/login");
-		$this->putScript("scripts/login-soft");
+		//$this->putScript("scripts/login-soft");
 		
 		$smarty = $this->getSmarty();
 		$loginForm = $this->createLoginForm();
@@ -201,13 +201,11 @@ class LoginController extends AbstractSysclassController
 	 *
 	 * @url POST /
 	 * @url POST /login
+	 * @url POST /lock
 	 */
 	public function loginAction()
 	{
 		$form = $this->createLoginForm();
-		var_dump($form->validate());
-		var_dump($form->isSubmitted());
-
 		if ($form->isSubmitted() && $form->validate()) {
 
 		    try {
@@ -253,7 +251,7 @@ class LoginController extends AbstractSysclassController
 		                    $_SESSION['ldap_user_pwd'] = $form->exportValue('password'); //Keep the password temporarily in the session, it will be used in the next step
 		                    sC_redirect("index.php?ctg=signup&ldap=1&login=".$form->exportValue('login'));
 		                } else {
-		                    $message = self::$t->translate("_LOGINERRORPLEASEMAKESURECAPSLOCKISOFF");
+		                    $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
 		                    $message_type = 'warning';
 		                }
 		            }
@@ -264,7 +262,7 @@ class LoginController extends AbstractSysclassController
 		            $message = $e->getMessage();
 		            $message_type = 'warning';
 		        } else {
-		            $message = self::$t->translate("_LOGINERRORPLEASEMAKESURECAPSLOCKISOFF");
+		            $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
 		            $message_type = 'danger';
 		        }
 		        $form->setConstants(array("login" => $values['login'], "password" => ""));

@@ -3,7 +3,7 @@
   <div class="page-lock">
     <div class="page-logo">
       <a class="brand" href="index.html">
-      <img src="{Plico_GetResource file='img/logo-login.png'}" alt="logo" />
+      <img src="{Plico_GetResource file='img/logo.png'}" alt="logo" />
       </a>
     </div>
 

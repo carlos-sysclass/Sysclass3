@@ -10,7 +10,7 @@
 	<link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <!-- BEGIN BODY -->
-<body>
+<body class="backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/logout.png'}"]'>
 	<!-- BEGIN LOCK -->
 	{block name="content"}
 	{/block}

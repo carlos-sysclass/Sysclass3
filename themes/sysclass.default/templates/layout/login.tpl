@@ -9,10 +9,10 @@
 	{/block}
 </head>
 <!-- BEGIN BODY -->
-<body class="login">
+<body class="login backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/logout.png'}"]'>
 	<!-- BEGIN LOGO -->
 	<div class="logo">
-		<img src="{Plico_GetResource file='img/logo-login.png'}" alt="" /> 
+		<img src="{Plico_GetResource file='img/logo.png'}" alt="" /> 
 	</div>
 	<!-- END LOGO -->
 	<!-- BEGIN LOGIN -->
