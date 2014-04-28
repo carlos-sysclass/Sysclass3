@@ -1,4 +1,4 @@
-<div class="social-gadgets btn-group-vertical">
+<div class="social-gadgets btn-group-vertical hidden-xs">
 	<a class="btn btn-lg btn-primary" href="https://www.facebook.com/sysclass" target="_blank" >
 		<i class="icon-facebook tooltips" data-original-title="{translateToken value='Share on Facebbok'}" data-placement="left"></i>
 	</a>

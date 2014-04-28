@@ -6,7 +6,7 @@
 <![endif]-->
 
 <ul id="tlyPageGuide">
-    <li class="tlypageguide_left" data-tourtarget="#users-panel">
+    <li class="tlypageguide_left hidden-xs" data-tourtarget="#users-panel">
         <div>
         Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
         </div>
@@ -52,26 +52,9 @@
         Here students and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other students, and meetings with instructors or advisors.    
         </div>
     </li>
-
-
-2. 
-
-3. 
-
-4. 
-
-5. 
-
-6. 
-
-7. 
-
-8. 
-
-9. 
-    
+   
 </ul>
-
+<!--
 <div class="tlyPageGuideWelcome">
     <button class="btn btn-sm btn-danger tlypageguide_dismiss pull-right">[ Close ]</button>
     <h2><strong>Welcome to SysClass</strong></h2>
@@ -82,26 +65,11 @@
         <li>Don't forget to like us or follow us.</li>
     </ul>
     <p class="text-center">
-        <!-- <button class="btn btn-lg btn-warning tlypageguide_dismiss">No, thanks!</button> -->
         <button class="btn btn-lg btn-success tlypageguide_start">Start Tour.</button>
     </p>
 
-    <!--
-    <p>
-        This button will launch pageguide:
-        <button class="tlypageguide_start">let's go</button>
-    </p>
-    <p>
-        This button will close the modal without doing anything:
-        <button class="">not now</button>
-    </p>
-    <p>
-        This button will close the modal and prevent it from being opened again:
-        <button class="tlypageguide_dismiss">got it, thanks</button>
-    </p>
-    -->
 </div>
-
+-->
 {foreach item="script" from=$T_SCRIPTS}
 	<script src="{Plico_GetResource file=$script}"></script>
 {/foreach}
@@ -127,6 +95,8 @@
     {/foreach}
     </div>
 {/if}
+
+
 
 <script>
     jQuery(document).ready(function() {   

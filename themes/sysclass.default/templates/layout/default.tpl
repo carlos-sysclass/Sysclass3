@@ -67,5 +67,12 @@
 	    {/foreach}
 	{/if}
 
+	<div class="ajax-loader">
+	    <div class="inner-ajax-loader">
+	        <img src="{Plico_GetResource file='img/ajax-loader.gif'}">
+	        <span class="hidden-xs inline">{translateToken value='Loading'}</span>
+	    </div>
+	</div>
+
 </body>
 </html>

@@ -80,11 +80,26 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 			 */
 			"rows" => array(
 				array(
-					1   => array("weight" => "8"),
-					2   => array("weight" => "4")
+					1   => array("weight" => array(
+						'lg' => "8",
+						'md' => "8",
+						'sm' => "12",
+						'xs' => "12"
+					)),
+					2   => array("weight" => array(
+						'lg' => "4",
+						'md' => "4",
+						'sm' => "12",
+						'xs' => "12"
+					))
 				),
 				array(
-					3   => array("weight" => "12")
+					3   => array("weight" => array(
+						'lg' => "12",
+						'md' => "12",
+						'sm' => "12",
+						'xs' => "12"
+					))
 				),
 			),
 			'widgets' => array(

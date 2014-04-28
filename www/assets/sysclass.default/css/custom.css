@@ -206,24 +206,33 @@ h4.border-bottom {
 	transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
 
-.header-inner .ajax-loader {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #DDDDDD;
-    display: none;
-    float: left;
-    left: 50%;
-    margin: auto -5%;
-    padding: 4px 1%;
-    position: fixed;
+.ajax-loader {
+    padding: 4px;
+    position: absolute;
     text-decoration: none;
     top: 0;
-    width: 10%;
-    z-index: 100;
+    width: 100%;
+    z-index: 9996;
+    text-align: center;
 }
-.header-inner .ajax-loader img {
-	margin-right: 10px;
+.ajax-loader .inner-ajax-loader {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    margin: auto;
+    padding: 4px 1%;
+    position: relative;
+    text-decoration: none;
+    top: 0;
+/*    width: 10%; */
+    z-index: 100;
+    display: inline;
+}
+
+.ajax-loader span {
+	margin-left: 10px;
 
 }
+
 .header .navbar-brand {
 	padding: 10px 0 0;
 }
@@ -558,4 +567,77 @@ ul.list-group.empty-list-group.ui-sortable-hover {
   color: #ffffff;
   background-color: #d9534f;
   border-color: #d43f3a;
+}
+
+.default-stripe {
+	border-left: 5px solid #eeeeee;
+}
+.warning-stripe {
+	border-left: 5px solid #FCB322;
+}
+.info-stripe {
+	border-left: 5px solid #57B5E3;
+}
+.success-stripe {
+	border-left: 5px solid #3CC051;
+}
+.danger-stripe {
+	border-left: 5px solid #ED4E2A;
+}
+
+@media (min-width: 1200px) {
+	.visible-lg.inline {
+		display: inline !important;
+	}
+	.hidden-md.inline {
+		display: inline !important;
+	}
+	.hidden-sm.inline {
+		display: inline !important;
+	}
+	.hidden-xs.inline {
+		display: inline !important;
+	}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+	.hidden-lg.inline {
+		display: inline !important;
+	}
+	.visible-md.inline {
+		display: inline !important;
+	}
+	.hidden-sm.inline {
+		display: inline !important;
+	}
+	.hidden-xs.inline {
+		display: inline !important;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	.hidden-lg.inline {
+		display: inline !important;
+	}
+	.hidden-md.inline {
+		display: inline !important;
+	}
+	.visible-sm.inline {
+		display: inline !important;
+	}
+	.hidden-xs.inline {
+		display: inline !important;
+	}
+}
+@media (max-width: 767px) {
+	.hidden-lg.inline {
+		display: inline !important;
+	}
+	.hidden-md.inline {
+		display: inline !important;
+	}
+	.hidden-sm.inline {
+		display: inline !important;
+	}
+	.visible-xs.inline {
+		display: inline !important;
+	}
 }

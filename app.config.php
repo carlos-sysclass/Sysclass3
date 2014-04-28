@@ -203,6 +203,7 @@ $plicoLib->concat(
 		'scripts/models',
 		'scripts/ui', // TODO MERGE ui AND views
 		'scripts/views',
+		'scripts/utils',
 		'scripts/utils.toastr',
 		'scripts/utils.strophe',
 		'scripts/portlets'

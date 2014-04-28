@@ -18,15 +18,15 @@
 </script>
 
 <script type="text/template" id="tutoria-item-template">
-   <div class="panel panel-default">
+   <div class="panel panel-default <% if (approved == 0 && (answer == "" || answer == null)) { %>danger-stripe<% } else if (answer == "" || answer == null) {  %>warning-stripe<% } else { %>default-stripe<% } %>">
       <div class="panel-heading">
          <h4 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-<%= id %>">
             <%= title %>
             <% if (approved == 0 && (answer == "" || answer == null)) { %>
-               <span class="label label-danger pull-right">{translateToken value='Waiting Approval'}</span>
+               <span class="label label-danger pull-right hidden-xs hidden-sm">{translateToken value='Waiting Approval'}</span>
             <% } else if (answer == "" || answer == null) {  %>
-               <span class="label label-warning pull-right">{translateToken value='Unanswered'}</span>
+               <span class="label label-warning pull-right hidden-xs hidden-sm">{translateToken value='Unanswered'}</span>
             <% } %>
             </a>
          </h4>
@@ -41,7 +41,7 @@
                   <div class="message">
                      <span class="arrow"></span>
                      <a href="#" class="name"><%= question_user_name %> <%= question_user_surname %></a>
-                     <span class="datetime"><%= question_timestamp %></span>
+                     <span class="datetime"><%= moment.unix(question_timestamp).fromNow() %></span>
                      <span class="body">
                      <% if (question != "") { %>
                         <%= question %>
@@ -58,7 +58,7 @@
                      <div class="message">
                         <span class="arrow"></span>
                         <a href="#" class="name"><%= answer_user_name %> <%= answer_user_surname %></a>
-                        <span class="datetime"><%= answer_timestamp %></span>
+                        <span class="datetime"><%= moment.unix(answer_timestamp).fromNow() %></span>
                         <span class="body">
                            <%= answer %>
                         </span>

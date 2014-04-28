@@ -22,9 +22,9 @@
 
 <script type="text/template" id="news-item-template">
    <a class="list-group-item" data-toggle="modal" href="#news-dialog" data-news-id="<%= id %>">
-		<%= title %>
+		<%= $SC.module("utils").toggleAt(title, 75, "lg") %>
 		<span class="badge badge-info hidden-xs"><%= moment.unix(timestamp).fromNow() %></span>
-		<span class="badge badge-success badge-roundless username-badge hidden-xs"><%= login %></span>
+		<span class="badge badge-success badge-roundless username-badge visible-lg"><%= login %></span>
    </a>
 </script>
 <script type="text/template" id="news-nofound-template">

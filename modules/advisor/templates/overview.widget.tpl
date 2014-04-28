@@ -3,16 +3,16 @@
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
     </div>    
 	<div class="col-md-8 col-sm-7 col-xs-6">
-		<p class="text-muted">
-			<span>Advisor:</span>
-			<strong class="text-default pull-right">Dr. Jonh Smith</strong>
+		<p class="text-muted  text-right">
+			<span class="pull-left hidden-xs">Advisor:</span>
+			<strong class="text-default">Dr. Jonh Smith</strong>
 		</p>
 		<p class="text-muted">
-			<span><span class="hidden-xs">You have </span>Chated:</span>
+			<span><span class="visible-lg inline">You have </span>Chated:</span>
 			<strong class="text-default pull-right">3 times</strong>
 		</p>
 		<p class="text-muted">
-			<span><span class="hidden-xs">You have </span>Talked:</span>
+			<span><span class="visible-lg inline">You have </span>Talked:</span>
 			<strong class="text-default pull-right">4 times</strong>
 		</p>
 	</div>
@@ -35,3 +35,4 @@
 		</div>
 	</div>
 </div>
+		
