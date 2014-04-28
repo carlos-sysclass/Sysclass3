@@ -3,10 +3,10 @@
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
-	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
+	<div class="col-md-4 col-sm-5 col-xs-5" id="users-avatar">
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 	</div>
-	<div class="col-md-3 col-sm-7 col-xs-7 list-fixed-size">
+	<div class="col-md-4 col-sm-7 col-xs-7 list-fixed-size">
 		<h3 class="nomargin">
 			{$user_details.name} {$user_details.surname} 
 			<!--
@@ -24,7 +24,7 @@
 		<p class="text-muted"><strong>GPA </strong><span>3.6/95</span></p>
 		-->
 	</div>
-	<div class="col-md-6 col-sm-12">
+	<div class="col-md-4 col-sm-12">
 		{if isset($notifications)}
 		<table class="table table-hover no-space">
 	        <thead>
