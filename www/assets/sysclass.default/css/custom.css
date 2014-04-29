@@ -482,10 +482,6 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 15px;
 }
 
-#users-panel h3 {
-	margin-top: 5px;
-}
-
 .extended.notification {
 	min-width: 300px !important;
 }
@@ -714,4 +710,27 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	.nav > li.active > a > span.active-show-xs {
 		display: inline !important;
 	}
+}
+
+/* USER-WIDGET.css */
+ul.border-bottom li {
+	border-width: 0 0 1px;
+	margin-bottom: 0;
+}
+ul.border-bottom li:last-child {
+	border-width: 0px;
+}
+h3.users-panel-username {
+	padding: 5px 10px;
+	height: 36px;
+	margin: 0;
+}
+.users-panel-links li {
+	padding-top: 8px;
+	padding-bottom: 8px;
+	height: 36px;
+}
+table.users-panel-notification-table > thead > tr > td {
+	padding: 7px 5px;
+	height: 36px;
 }

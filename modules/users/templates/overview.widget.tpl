@@ -7,26 +7,26 @@
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 	</div>
 	<div class="col-md-4 col-sm-7 col-xs-7 list-fixed-size">
-		<h3 class="nomargin">
-			{$user_details.name} {$user_details.surname} 
-			<!--
-			<a class="btn btn-xs btn-link" href="/module/users/profile"><i class="icon-edit"></i> {translateToken value="Edit"}</a>
-			-->
-		</h3>
-		<h4><a href="javascrit: void(0);">Course Name</a></h4>
-		<h4><a href="javascrit: void(0);">Grades</a></h4>
-		<h4><a href="javascrit: void(0);">Reports</a></h4>
-		<h4><a href="javascrit: void(0);">Roadmap</a></h4>
-		<!--
-		<p class="text-muted"><strong>Class </strong><span>Distance Learning</span></p>
-		<p><strong>Location </strong><span>{$user_details.uf}, {$user_details.country_code}</span></p>
-		<p><strong>Language </strong><span>{$user_details.languages_NAME}</span></p>
-		<p class="text-muted"><strong>GPA </strong><span>3.6/95</span></p>
-		-->
+		<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
+
+		<ul class="list-group border-bottom users-panel-links">
+			<li class="list-group-item">
+				<a href="javascrit: void(0);">Course Name</a>
+			</li>
+			<li class="list-group-item">
+				<a href="javascrit: void(0);">Grades</a>
+			</li>
+			<li class="list-group-item">
+				<a href="javascrit: void(0);">Reports</a>
+			</li>
+			<li class="list-group-item">
+				<a href="javascrit: void(0);">Roadmap</a>
+			</li>
+		</ul>
 	</div>
 	<div class="col-md-4 col-sm-12">
 		{if isset($notifications)}
-		<table class="table table-hover no-space">
+		<table class="table table-hover no-space users-panel-notification-table">
 	        <thead>
 				{foreach $notifications as $key => $notif}
 	           	<tr>
@@ -39,34 +39,6 @@
 					</td>
 	           	</tr>
 	           	{/foreach}
-<!--
-				<tr>
-	              <td><strong>12</strong></td>
-	              <td>Messages</td>
-	              <td>
-	              	<a href="javascript:void(0);" class="btn btn-xs btn-primary">Read</a>	
-	              </td>
-	           </tr>
-	           <tr>
-	              <td><strong>3</strong></td>
-	              <td colspan="2">New Topics in the forum</td>
-	           </tr>
-	           <tr>
-	              <td><strong>16</strong></td>
-	              <td colspan="2">Credit hours completed</td>
-	           </tr>
-	           <tr>
-	              <td><strong>7</strong></td>
-	              <td colspan="2">New calendar events</td>
-	           </tr>
-	           <tr>
-	              <td><strong class="text-danger">2</strong></td>
-	              <td>Payments Due</td>
-	              <td>
-	              	<a class="btn btn-xs btn-danger" href="javascript:void(0);">Pay</a>	
-	              </td>
-	           </tr>
--->
 	        </thead>
         </table>
         {else}
