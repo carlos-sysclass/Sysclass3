@@ -130,6 +130,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.course, "sync", this.renderCourse.bind(this));
 				this.listenTo(this.classe, "sync", this.renderClass.bind(this));
 				this.listenTo(this.lesson, "sync", this.renderLesson.bind(this));
+
+				this.refreshScroll({
+					currentTarget : this.$("> .nav-tabs li.active [data-toggle='tab']")
+				});
+				
 			},
 			refreshScroll : function(e) {
 				console.info('portlet.courses/contentNavigationViewClass::refreshScroll');
