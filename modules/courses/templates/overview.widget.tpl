@@ -64,13 +64,13 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> Description</a>
+								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">Description</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> Classes</a>
+								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Classes</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> Road Map</a>
+								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">Road Map</span></a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -145,22 +145,37 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> Info</a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">Info</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> Instructor</a>
+								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">Instructor</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> Dropbox</a>
+								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> <span class="hidden-xs inline active-show-xs">Dropbox</span></a>
 							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> Bibliography</a>
+
+							<li class="hidden-xxs">
+								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Bibliography</span></a>
 							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> Attendence</a>
+							<li class="hidden-xxs hidden-md">
+								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="hidden-xs inline active-show-xs">Attendence</span></a>
 							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> Tests</a>
+							<li class="hidden-xxs hidden-md">
+								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">Tests</span></a>
+							</li>
+							<li class="visible-xxs visible-md">
+								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">More</span></a>
+								<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="">
+									<li class="visible-xs">
+										<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="">Bibliography</span></a>
+									</li>
+									<li class="">
+										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="">Attendence</span></a>
+									</li>
+									<li class="">
+										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="">Tests</span></a>
+									</li>
+  								</ul>
 							</li>
 							<!--
 							<li class="dropdown">
@@ -451,13 +466,13 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> Video Lesson</a>
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">Video Lesson</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> Materials</a>
+								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Materials</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> Exercises</a>
+								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">Exercises</span></a>
 							</li>
 							<!--
 							<li class="">
