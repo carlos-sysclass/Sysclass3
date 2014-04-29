@@ -15,49 +15,6 @@
 						</div>
 					</a>
 				</li>
-				<!--
-				<li class="the-class-tab">
-
-						<a data-toggle="tab" href="#class-tab" class="nopadding-right">
-							<div class="nav-title">
-								<span class="tab-title2">Classes</span>
-							</div>
-						</a>
-						<a data-toggle="dropdown" class="dropdown-toggle nopadding-left">
-							<div class="nav-title">
-								<i class="icon-arrow-down"></i>
-							</div>
-						</a>
-						
-						  <ul class="dropdown-menu" role="menu">
-						    <li><a href="#">Action</a></li>
-						    <li><a href="#">Another action</a></li>
-						    <li><a href="#">Something else here</a></li>
-						    <li class="divider"></li>
-						    <li><a href="#">Separated link</a></li>
-						  </ul>
-						 
-
-				</li>
-				-->
-				<!--
-				<li class="dropdown">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-						<div class="nav-title">
-							<span class="tab-title">Classes</span>
-						</div>
-						<i class="icon-angle-down"></i>
-					</a>
-					<ul role="menu" class="dropdown-menu pull-right">
-						<li class="">
-							<a href="#tab_class_attendence" data-toggle="tab"><i class="icon-calendar"></i> Attendence</a>
-						</li>
-						<li class="">
-							<a href="#tab_class_exams" data-toggle="tab"><i class="icon-pencil"></i> Exams</a>
-						</li>
-					</ul>
-				</li>
-				-->
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
@@ -68,19 +25,9 @@
 
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
-						<!--
-						<div class="nav-button lesson-prev-action">
-							<i class="icon-caret-left"></i>
-						</div>
-						-->
 						<div class="nav-title">
 							<span class="tab-title">Lessons</span>
 						</div>
-						<!--
-						<div class="nav-button lesson-next-action">
-							<i class="icon-caret-right"></i>
-						</div>
-						-->
 					</a>
 				</li>
 			</ul> 
@@ -128,7 +75,7 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_course_description" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any info registered for this course
@@ -136,7 +83,7 @@
 								</div>
 							</div>
 							<div id="tab_course_classes" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
@@ -155,7 +102,7 @@
 								</div>
 							</div>
 							<div id="tab_course_roadmap" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div id="tab_course_roadmap-accordion">
 									</div>
 								</div>
@@ -170,10 +117,10 @@
 							<a href="#" class="navbar-brand disabled">
 								<strong>You're in: </strong>
 							</a>
-							<a href="#" class="navbar-brand course-title">
+							<a href="#" class="navbar-brand course-title hidden-xs">
 								Course
 							</a>
-							<a href="#" class="navbar-brand">&raquo;</a>
+							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="#" class="navbar-brand class-title">
 								Class
 							</a>
@@ -228,12 +175,12 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_class_objectives" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 
 								</div>
 							</div>
 							<div id="tab_class_info" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>During this course you will...</h5>
 									<p class="">... be exposed to research methods and state of the art medical devices and technologies in diferent medical fields</p>
 									<p class="">... meet international researchers and interact with European students in an intercultural and interdisciplinary context</p>
@@ -279,7 +226,7 @@
 							   	</div>
 							</div>
 							<div id="tab_class_instructor" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 							   		<h5 class="text-danger block"><strong>Professor Dr. John Smith</strong></h5>
 
 							   		<ul class="media-list">
@@ -340,7 +287,7 @@
 							   	</div>
 							</div>
 							<div id="tab_class_dropbox" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
 										<a href="javascript: void(0)"> Professor Files </a> - 
 										<small>
@@ -362,9 +309,11 @@
 											<div class="tree-item-name"></div>
 										</div>
 									</div>
+									<!--
 								</div>
 								<hr />
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
+									-->
 									<h5>
 										<a href="javascript: void(0)">Your Files </a> - 
 										<small>
@@ -389,7 +338,7 @@
 								</div>
 							</div>
 							<div id="tab_class_bibliography" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
@@ -414,7 +363,7 @@
 								</div>
 							</div>
 							<div id="tab_class_attendence" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Sorry! Any data has been registered for this class yet.
@@ -422,7 +371,7 @@
 								</div>
 							</div>
 							<div id="tab_class_exams" class="tab-pane ">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
@@ -518,7 +467,7 @@
 						</ul>
 						<div class="tab-content">
 							<div id="tab_lesson_content" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										Ops! There's any content for this lesson
@@ -526,7 +475,7 @@
 								</div>
 							</div>
 							<div id="tab_lesson_materials" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
 										<a href="javascript: void(0)"> Lesson Files </a> - 
 										<small>
@@ -537,7 +486,7 @@
 								</div>
 							</div>
 						    <div id="tab_lesson_exercises" class="tab-pane">
-						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 										 Ops! There's any exercises posted for this lesson
@@ -546,7 +495,7 @@
 						   	</div>
 						   	<!--
 						   	<div id="tab_lesson_search" class="tab-pane">
-						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="400px">
+						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
 									 	Under construction

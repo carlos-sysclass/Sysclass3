@@ -211,7 +211,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		if(this.tooltipOnlyForDesktop) {
 			if(!this.mobile) {
 				$('.tooltips', context).tooltip();
-				console.log($('.tooltips', context));
 			}
 		}
 	};
@@ -236,6 +235,32 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     	};
     };
 
+    this.handleScrollers = function (context) {
+        $('.scroller', context).each(function () {
+            var height;
+            $(this).slimScroll({destroy: true});
+            if ($(this).attr("data-height")) {
+                height = $(this).attr("data-height");
+                if (height == "parent") {
+                	height = $(this).parent().outerHeight();
+                }
+            } else {
+                height = $(this).css('height');
+            }
+            $(this).slimScroll({
+                size: '7px',
+                color: ($(this).attr("data-handle-color")  ? $(this).attr("data-handle-color") : '#a1b2bd'),
+                railColor: ($(this).attr("data-rail-color")  ? $(this).attr("data-rail-color") : '#333'),
+                position: App.isRTL() ? 'left' : 'right',
+                height: height,
+                alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
+                railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
+                disableFadeOut: true,
+                allowPageScroll : true
+            });
+        });
+    }
+
 	this.refresh = function(context) {
 		this.handleBackstrech(context);
 		this.handleTooltips(context);
@@ -246,6 +271,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleTimepickers(context);
 		this.handleWysihtml5(context);
 		this.handleTabs(context);
+		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
 	};
 

@@ -657,3 +657,14 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 		display: inline !important;
 	}
 }
+
+
+
+/* COURSES-WIDGET.css */
+.scroller {
+	padding-right: 0;
+}
+#courses-content .tabbable-custom  .tab-content > .tab-pane {
+	padding-bottom: 57%;
+	height: 0;
+}

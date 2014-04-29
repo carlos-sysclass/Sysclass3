@@ -115,7 +115,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//"click .lesson-prev-action"		: "prevLesson",
 				//"click .lesson-next-action" 	: "nextLesson",
 				"click .nav-prev-action" 		: "prevItem",
-				"click .nav-next-action" 		: "nextItem"
+				"click .nav-next-action" 		: "nextItem",
+				"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
 				//"click .nav-next-action" 		: "searchItem"
 			},
 			initialize: function(opt) {
@@ -129,8 +130,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.course, "sync", this.renderCourse.bind(this));
 				this.listenTo(this.classe, "sync", this.renderClass.bind(this));
 				this.listenTo(this.lesson, "sync", this.renderLesson.bind(this));
-
-				//this.render();
+			},
+			refreshScroll : function(e) {
+				console.info('portlet.courses/contentNavigationViewClass::refreshScroll');
+				var context = $(e.currentTarget).attr("href");
+				app.module("ui").handleScrollers($(context));
 			},
 			renderCourse : function() {
 				console.info('portlet.courses/contentNavigationViewClass::renderCourse');
@@ -297,7 +301,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 
 				}
-				console.warn(sources['materials']);
 
 				this.$el.empty().append(
 					this.template()
@@ -766,7 +769,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		/* CLASSES TABS VIEW CLASSES */
-		/* COURSE TABS VIEW CLASSES */
 		var classViewClass = Backbone.View.extend({
 			el: $('#class-tab'),
 			portlet: $('#courses-widget'),

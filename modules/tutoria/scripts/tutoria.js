@@ -207,7 +207,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
             	height = scroller.css('height');
         	}
 
-        	App.handleScrollers();
+        	app.module("ui").handleScrollers(this.$el);
 
             return this;
 	    },

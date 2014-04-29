@@ -686,6 +686,7 @@ var App = function () {
     }
 
     // Handles scrollable contents using jQuery SlimScroll plugin.
+    /*
     var handleScrollers = function () {
         $('.scroller').each(function () {
             var height;
@@ -706,7 +707,7 @@ var App = function () {
             });
         });
     }
-
+    */
     // Handles Image Preview using jQuery Fancybox plugin
     var handleFancybox = function () {
         if (!jQuery.fancybox) {
@@ -948,7 +949,7 @@ var App = function () {
             handleInit(); // initialize core variables
             handleResponsiveOnResize(); // set and handle responsive    
             handleUniform(); // hanfle custom radio & checkboxes
-            handleScrollers(); // handles slim scrolling contents 
+            //handleScrollers(); // handles slim scrolling contents 
             handleResponsiveOnInit(); // handler responsive elements on page load
 
             //layout handlers
@@ -1203,8 +1204,8 @@ var App = function () {
             } else {
                 return '';
             }
-        },
-        handleScrollers : handleScrollers
+        }//,
+        //handleScrollers : handleScrollers
     };
 
 }();
