@@ -88,6 +88,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                 var model = mod.rosterCollection.get(message.from.barejid);
                 if (model != undefined) {
                     var col = model.get("messages");
+                    message.from_me = (message.from.barejid == Strophe.getBareJidFromJid(mod.connection.jid))
                     col.add(message);
                 }
                 self.trigger("xmpp:message", model);
@@ -127,7 +128,8 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             },
             type: "chat",
             body: message,
-            html_body: null
+            html_body: null,
+            from_me : (Strophe.getBareJidFromJid(from_jid) == Strophe.getBareJidFromJid(mod.connection.jid))
         };
 
         var model = mod.rosterCollection.get(to_jid);
@@ -136,6 +138,9 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
         this.trigger("xmpp:message:sent", model);
         return true;
     };
+    this.GetAmI = function() {
+        return Strophe.getBareJidFromJid(mod.connection.jid);
+    }
     /* GETTING USER CHAT LIST */
 
 

@@ -181,14 +181,19 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 				e.preventDefault();
 
 				if (jQuery(e.currentTarget).val() != "") {
+					/*
 					var message = {
 						jid 	: this.model.get("id"),
 						from 	: "me",
 						body 	: jQuery(e.currentTarget).val()
 					};
-					$SC.module("utils.strophe").sendMessage(this.model.get("id"), jQuery(e.currentTarget).val());
+					*/
+					app.module("utils.strophe").sendMessage(this.model.get("id"), jQuery(e.currentTarget).val());
 					//this.collection.add(message);
 					jQuery(e.currentTarget).val("");
+
+			    	var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
+					this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
 				}
 			}
 	    },
@@ -214,8 +219,6 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    updateStatus : function(model) {
 	    	var view = new statusViewClass({model: model});
 	    	this.$(".chat-contents").append(view.render().el);
-
-	    	
 	    },
 	    addOne: function(model) {
 	    	var view = new messageViewClass({model: model});

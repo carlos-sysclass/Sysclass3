@@ -97,7 +97,7 @@
 </script>
 <script type="text/template" id="tutoria-chat-item-template">
 <div class="subject">
-   <span class="label label-default"><%= from.node %></span>
+   <span class="label <% if (from_me) { %>label-primary<% } else { %>label-danger<% } %>"><%= from.node %></span>
    <!--
    <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
    -->
@@ -107,7 +107,7 @@
 </script>
 <script type="text/template" id="tutoria-chat-status-template">
 <div class="subject">
-   <span class="label label-default"><%= name %></span>
+   <span class="label label-danger"><%= name %></span>
    <i class="icon-arrow-right"></i>
    <div class="pull-right">
    <% if (status == 'online') { %>
