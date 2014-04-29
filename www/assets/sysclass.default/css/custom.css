@@ -565,6 +565,21 @@ ul.list-group.empty-list-group.ui-sortable-hover {
   color: #dd252b;
 }
 
+@media (max-width: 768px) {
+	.login .logo {
+		margin-top: 10px !important;
+	}
+	.page-lock .page-logo img {
+		width: 280px;
+	}
+}
+
+@media (max-width: 480px) {
+	.login .logo img {
+		width: 280px;
+	}
+}
+
 .btn-danger {
   color: #ffffff;
   background-color: #dd252b;
