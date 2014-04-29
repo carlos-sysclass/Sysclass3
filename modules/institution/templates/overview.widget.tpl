@@ -1,8 +1,8 @@
 <div class="row" style="position: relative">
-	<div class="col-md-7  col-sm-7 col-xs-7 text-center img-vertical-middle">
+	<div class="col-md-7  col-sm-7 col-xs-6 text-center">
 		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
     </div>
-	<div class="col-md-5 col-sm-5 col-xs-5">
+	<div class="col-md-5 col-sm-5 col-xs-6">
 		<div class="btn-group-vertical btn-group-fixed-size">
 			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
 				<span class="text-muted"><i class="icon-link"></i>Website</span>

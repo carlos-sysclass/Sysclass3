@@ -1,8 +1,8 @@
 <div class="row">
-	<div class="col-md-4 col-sm-5 col-xs-6  text-center  img-vertical-middle">
+	<div class="col-md-4 col-sm-5 col-xs-4  text-center">
 		<img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/avatar_medium.jpg'}" />
     </div>    
-	<div class="col-md-8 col-sm-7 col-xs-6">
+	<div class="col-md-8 col-sm-7 col-xs-8">
 		<p class="text-muted  text-right">
 			<span class="pull-left hidden-xs">Advisor:</span>
 			<strong class="text-default">Dr. Jonh Smith</strong>
