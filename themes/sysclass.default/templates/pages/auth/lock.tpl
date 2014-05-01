@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="page-footer">
-      &copy; 2014 WiseFlex
+      &copy; Copyright 2014 • WiseFlex Knowledge Systems LLC.
     </div>
   </div>
 {/block}

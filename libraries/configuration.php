@@ -22,6 +22,7 @@ $configurationDefaults = array(
 		'version'	=> '3.0.0',
 		'https'		=> 'none',
 	),
+	/*
 	'new.magester.net'	=> array(
 		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> 'sysclass'
@@ -30,7 +31,6 @@ $configurationDefaults = array(
 		'dbname'	=> 'sysclass_root',
 		'overrideTheme'	=> 'sysclass'
 	),
-
 	'local.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_layout',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
@@ -62,14 +62,18 @@ $configurationDefaults = array(
 		'dbname'        => 'sysclass_fati',
                 'overrideTheme' => 'sysclass3'
 	),
+	*/
 	'demo.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_demo',
-		'overrideTheme' => 'sysclass3'
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'required',
 	),
 	'www.demo.sysclass.com'     => array(
 		'dbname'        => 'sysclass_demo',
-		'overrideTheme' => 'sysclass3'
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'required',
 	),
+	/*
 	'fajar.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_fajar',
 		'overrideTheme' => 'sysclass3'
@@ -126,13 +130,16 @@ $configurationDefaults = array(
 			'dbname'        => 'sysclass_demo4',
 			'overrideTheme' => 'sysclass3'
 	),
+	*/
 	'layout.sysclass.com'	=> array(
 		'dbname'        => 'sysclass_layout',
-		'overrideTheme' => 'sysclass3'
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'optional'
 	),
 	'www.layout.sysclass.com'	=> array(
         'dbname'        => 'sysclass_layout',
-        'overrideTheme' => 'sysclass3'
+        'overrideTheme' => 'sysclass3',
+		'https'		=> 'optional'
 	)
 );
 

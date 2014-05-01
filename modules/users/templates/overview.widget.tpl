@@ -11,7 +11,7 @@
 
 		<ul class="list-group border-bottom users-panel-links">
 			<li class="list-group-item">
-				<a href="javascrit: void(0);">Course Name</a>
+				<a href="javascrit: void(0);">Course</a>
 			</li>
 			<li class="list-group-item">
 				<a href="javascrit: void(0);">Grades</a>

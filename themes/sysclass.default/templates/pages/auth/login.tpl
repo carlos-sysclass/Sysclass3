@@ -90,7 +90,7 @@
 	</div>
 	<!-- BEGIN COPYRIGHT -->
 	<div class="copyright">
-		&copy; 2014 WiseFlex
+		&copy; Copyright 2014 • WiseFlex Knowledge Systems LLC.
 	</div>
 	{if $T_OPEN_LOGIN_SECTION == 'reset'}
 		<style type="text/css">
