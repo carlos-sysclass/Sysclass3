@@ -37,7 +37,7 @@ $lowest_possible_time = time() - 21600; // last acceptable time - pending 6 hour
 //sC_deleteTableData("notifications", "timestamp != 0 AND timestamp <" . $lowest_possible_time);
 
 // CHECK EXPIRED USERS
-
+/*
 $result = sC_getTableData(
 	"users_to_courses",
 	"users_LOGIN, courses_ID, end_timestamp",
@@ -85,3 +85,4 @@ if (count($row) > 0) {
 
 	$smtp->send('adriane@ult.com.br', $header, $message);
 }
+ */

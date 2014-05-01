@@ -6,3 +6,4 @@
 /cache
 .settings/*
 libraries/language/*
+/logs

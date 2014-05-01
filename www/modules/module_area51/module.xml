@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<module>
+	<title>Area51</title>
+	<author>Andre Ribas</author>
+	<date>2013 07 08</date>
+	<version>0.1</version>
+	<description>An experimental module used just for development purposes</description>
+	<className>module_area51</className>
+</module>
