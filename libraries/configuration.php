@@ -49,6 +49,17 @@ $configurationDefaults = array(
                 'overrideTheme' => 'sysclass3',
 		'https'         => 'required'
 	),
+        'sysclass.com.br'  => array(
+                'dbname'        => 'sysclass_root',
+                'overrideTheme' => 'sysclass3',
+                'https'         => 'required'
+        ),
+        'www.sysclass.com.br'      => array(
+                'dbname'        => 'sysclass_root',
+                'overrideTheme' => 'sysclass3',
+                'https'         => 'required'
+        ),
+
         '173.193.157.162'      => array(
                 'dbname'        => 'sysclass_root',
                 'overrideTheme' => 'sysclass3',
