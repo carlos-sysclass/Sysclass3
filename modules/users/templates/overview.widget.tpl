@@ -3,7 +3,7 @@
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
-	<div class="col-md-4 col-sm-5 col-xs-5" id="users-avatar">
+	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
 		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
 	</div>
 	<div class="col-md-4 col-sm-7 col-xs-7 list-fixed-size">
@@ -24,7 +24,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="col-md-4 col-sm-12">
+	<div class="col-md-5 col-sm-12">
 		{if isset($notifications)}
 		<table class="table table-hover no-space users-panel-notification-table">
 	        <thead>

@@ -35,6 +35,10 @@ class TranslateModule extends SysclassModule implements ISectionMenu
                 array(
                     'id' => 'es',
                     'name' => 'Español'
+                ),
+                array(
+                    'id' => 'kr',
+                    'name' => '한국의'
                 )
             );
             /*

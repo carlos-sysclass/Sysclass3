@@ -3311,7 +3311,7 @@ define("_RESETTESTSTATUS", "Redefinir realizar este teste");
 define("_RESETTHEME", "Redefinir tema");
 define("_RESOURCEISNOTACCESSIBLEFROMOUTSIDE", "Esse recurso não é directamente acessível");
 define("_RESOURCEISNOTAVAILABLE", "Este recurso não está disponível");
-define("_RESOURCEREQUESTEDREQUIRESLOGIN", "O tempo autorizado expirou, favor refazer o login.");
+define("_RESOURCEREQUESTEDREQUIRESLOGIN", "The authorized time has expired. Please, login again.");
 define("_RESOURCES", "Sistema de transmissão");
 define("_RESTARTLESSON", "Parâmetros");
 define("_RESTARTLESSONCOMPLETED", "A lição é inicializado");
