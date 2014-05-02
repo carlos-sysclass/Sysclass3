@@ -53,7 +53,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
     };
 
 	this.addInitializer(function(){
-        var BOSH_SERVICE = 'http://layout.sysclass.com/chat-poll';
+        var BOSH_SERVICE = 'https://demo.sysclass.com/chat-poll';
         this.connection = new Strophe.Connection(BOSH_SERVICE);
 
         var self = this;
