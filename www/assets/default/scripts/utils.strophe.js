@@ -127,7 +127,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                 resource: Strophe.getResourceFromJid(to_jid)
             },
             type: "chat",
-            body:  ,
+            body:  message,
             html_body: null,
             from_me : (Strophe.getBareJidFromJid(from_jid) == Strophe.getBareJidFromJid(mod.connection.jid))
         };

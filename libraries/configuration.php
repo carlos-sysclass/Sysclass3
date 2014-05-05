@@ -33,7 +33,7 @@ $configurationDefaults = array(
 	),
 	*/
 	'local.sysclass.com'	=> array(
-		'dbname'	=> 'sysclass_layout',
+		'dbname'	=> 'sysclass_demo',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
 	),
 	/*

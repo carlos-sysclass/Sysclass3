@@ -269,6 +269,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					videojs(videoDomID, videoData, function() {
 						//this.play();
 					});
+
 				}
 
 				this.videoJS = videojs(videoDomID);

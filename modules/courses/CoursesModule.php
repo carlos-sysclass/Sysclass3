@@ -31,7 +31,9 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		$this->putComponent("jquery-nestable");
 
 		$this->putScript("plugins/holder");
-		
+
+		//$this->putScript("plugins/videojs/vjs.youtube");
+
 		$this->putModuleScript("models.courses");
 		$this->putModuleScript("widget.courses");
 
@@ -769,36 +771,34 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			"video/webm" => "webm"
 			
 		);
+		/*
 		foreach($sources_types as $type => $ext) { 
 			if (file_exists(realpath($plico->get('path/app') . $urlRoot . "video." . $ext))) {
 				$sources[$type] = $urlRoot . "video." . $ext;
 			}
 		}
-		
+		*/
+		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=056JIZCfzqk';
+
 		return array(
 			// @todo GET FORMATS QUERYING SERVER
 			"sources" => $sources,
+			/*
 			"tracks"    => array(
-				/*
+			
 				"captions" => array(
 					"src"       => $urlRoot . "captions.en.vtt",
 					"label"     => "English",
 					"srclang"   => "en"
 				),
-				*/
+			
 				"subtitles" => array(
 					"src"       => $urlRoot . "captions.en.vtt",
 					"label"     => "English",
 					"srclang"   => "en"
-				)/*,
-				"chapters" => array(
-					"src"       => $urlRoot . "chapters.en.vtt",
-					"label"     => "English",
-					"srclang"   => "en",
-					"default"   => "default"
-				)
-				*/
+				)/
 			)
+			*/
 		);
 	}
 
@@ -814,7 +814,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
 			'poster'    =>  "/assets/sysclass.default/img/video-poster.jpg",
 			'techOrder' => array(
-				'html5', 'flash'
+				'youtube', 'html5', 'flash'
 			),
 			'width'     => 'auto',
 			'height'    => 'auto',
