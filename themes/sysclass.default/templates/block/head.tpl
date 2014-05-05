@@ -20,7 +20,7 @@
 <script>
 	videojs.options.flash.swf = "{Plico_GetResource file='plugins/videojs/video-js.swf'}";
 </script>
-<script src="{Plico_GetResource file='plugins/videojs/vjs.youtube.js'}"></script>
+<script src="{Plico_GetResource file='plugins/videojs/youtube.js'}"></script>
 <style type="text/css">
 /* RESPONSIVE VIDEO */
 .videocontent {

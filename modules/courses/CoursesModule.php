@@ -814,7 +814,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
 			'poster'    =>  "/assets/sysclass.default/img/video-poster.jpg",
 			'techOrder' => array(
-				'youtube', 'html5', 'flash'
+				'youtube' //, 'html5', 'flash'
 			),
 			'width'     => 'auto',
 			'height'    => 'auto',

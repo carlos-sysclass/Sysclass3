@@ -256,6 +256,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//this.$(".video-js").hide();
 				var entityData = this.model.get("data");
 
+				console.warn(this.videoJS);
+
 				if (this.videoJS != false) {
 					this.videoJS.dispose();
 				}
