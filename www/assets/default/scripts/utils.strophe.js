@@ -111,7 +111,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
         var from_jid = mod.connection.jid;
         var message = {
-            //id:   message.getAttribute('id'),
+            //id:    .getAttribute('id'),
             from : {
                 jid:  from_jid,
                 barejid:  Strophe.getBareJidFromJid(from_jid),
@@ -127,7 +127,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                 resource: Strophe.getResourceFromJid(to_jid)
             },
             type: "chat",
-            body: message,
+            body:  ,
             html_body: null,
             from_me : (Strophe.getBareJidFromJid(from_jid) == Strophe.getBareJidFromJid(mod.connection.jid))
         };

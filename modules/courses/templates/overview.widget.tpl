@@ -277,22 +277,22 @@
 												<hr />
 												<p class="">
 													<span>Telephone:</span>
-													<span class="text-default pull-right">+61 8 830 26431</span >
+													<span class="text-default pull-right">(555) 555-5555</span >
 												</p>
 												<hr />
 												<p class="">
 													<span>Fax:</span>
-													<span class="text-default pull-right">+61 8 830 26550</span >
+													<span class="text-default pull-right">(555) 555-5555</span >
 												</p>
 												<hr />
 												<p class="">
 													<span>Email:</span>
-													<a href="javascript:void(0);" class="pull-right">john.smith@unisa.edu.au</a>
+													<a href="javascript:void(0);" class="pull-right">john.smith@lucent.edu</a>
 												</p>
 												<hr />
 												<p class="">
 													<span>URL for Business Card:</span>
-													<a href="javascript:void(0);" class="pull-right">http://people.unisa.edu.au/john.smith</a>
+													<a href="javascript:void(0);" class="pull-right">http://myname@myname.com</a>
 												</p>
 												<hr />
 												
