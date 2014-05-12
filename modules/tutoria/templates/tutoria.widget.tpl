@@ -40,7 +40,7 @@
                   
                   <div class="message">
                      <span class="arrow"></span>
-                     <a href="#" class="name"><%= question_user_name %> <%= question_user_surname %></a>
+                     <a href="javascript: void(0);" class="name"><%= question_user_name %> <%= question_user_surname %></a>
                      <span class="datetime"><%= moment.unix(question_timestamp).fromNow() %></span>
                      <span class="body">
                      <% if (question != "") { %>
@@ -57,7 +57,7 @@
                      <img class="avatar img-responsive" alt="" src="/assets/sysclass.default/img/avatar_medium.jpg" width="<%= question_avatar.width %>"/>
                      <div class="message">
                         <span class="arrow"></span>
-                        <a href="#" class="name"><%= answer_user_name %> <%= answer_user_surname %></a>
+                        <a href="javascript: void(0);" class="name"><%= answer_user_name %> <%= answer_user_surname %></a>
                         <span class="datetime"><%= moment.unix(answer_timestamp).fromNow() %></span>
                         <span class="body">
                            <%= answer %>

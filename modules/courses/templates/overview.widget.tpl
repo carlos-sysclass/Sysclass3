@@ -322,6 +322,10 @@
 										<div class="tree-item" style="display:none;">
 											<i class="tree-dot"></i>
 											<div class="tree-item-name"></div>
+											<div class="pull-right">
+												<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
+												<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+											</div>
 										</div>
 									</div>
 									<!--
@@ -348,6 +352,10 @@
 										<div class="tree-item" style="display:none;">
 											<i class="tree-dot"></i>
 											<div class="tree-item-name"></div>
+											<div class="pull-right">
+												<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
+												<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -676,6 +684,10 @@
 		<div class="tree-item" style="display:none;">
 			<i class="tree-dot"></i>
 			<div class="tree-item-name"></div>
+			<div class="pull-right">
+				<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
+				<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+			</div>
 		</div>
 	</div>
 </script>

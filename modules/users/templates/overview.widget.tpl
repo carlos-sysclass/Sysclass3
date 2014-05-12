@@ -11,16 +11,16 @@
 
 		<ul class="list-group border-bottom users-panel-links">
 			<li class="list-group-item">
-				<a href="javascrit: void(0);">Course</a>
+				<a href="javascript: void(0);">Course</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascrit: void(0);">Grades</a>
+				<a href="javascript: void(0);">Grades</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascrit: void(0);">Reports</a>
+				<a href="javascript: void(0);">Reports</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascrit: void(0);">Roadmap</a>
+				<a href="javascript: void(0);">Roadmap</a>
 			</li>
 		</ul>
 	</div>
