@@ -5,7 +5,7 @@
 	<div class="col-md-8 col-sm-7 col-xs-8">
 		<p class="text-muted  text-right">
 			<span class="pull-left hidden-xs">Advisor:</span>
-			<strong class="text-default">Dr. Jonh Smith</strong>
+			<strong class="text-default">Dr. Joe Walters</strong>
 		</p>
 		<p class="text-muted">
 			<span><span class="visible-lg inline">You have </span>Chated:</span>

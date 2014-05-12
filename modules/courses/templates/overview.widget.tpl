@@ -242,7 +242,7 @@
 							</div>
 							<div id="tab_class_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-							   		<h5 class="text-danger block"><strong>Professor Dr. John Smith</strong></h5>
+							   		<h5 class="text-danger block"><strong>Professor Dr. Joe Walters</strong></h5>
 
 							   		<ul class="media-list">
 										<li class="media">
@@ -287,7 +287,7 @@
 												<hr />
 												<p class="">
 													<span>Email:</span>
-													<a href="javascript:void(0);" class="pull-right">john.smith@lucent.edu</a>
+													<a href="javascript:void(0);" class="pull-right">joe.walters@lucent.edu</a>
 												</p>
 												<hr />
 												<p class="">

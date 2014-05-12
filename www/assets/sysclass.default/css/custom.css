@@ -741,6 +741,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 }
 
 /* USER-WIDGET.css */
+ul.border-bottom {
+	margin-bottom: 0px;
+}
 ul.border-bottom li {
 	border-width: 0 0 1px;
 	margin-bottom: 0;
