@@ -3,10 +3,69 @@
 
 $plicoLib = PlicoLib::instance();
 
+isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
+isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
+$configurationDefaults = array(
+	'_default'			=> array(
+		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/',
+		'dbtype'	=> 'mysql',
+		'dbhost'	=> 'localhost',
+		'dbuser'	=> 'sysclass',
+		'dbpass'	=> 'WXubN7Ih',
+		'dbname'	=> 'sysclass',
+		'dbprefix'	=> '',
+		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
+		'version'	=> '3.0.0',
+		'https'		=> 'none',
+	),
+	'local.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_demo',
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+	),
+	'demo.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_demo',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'required',
+	),
+	'www.demo.sysclass.com'     => array(
+		'dbname'        => 'sysclass_demo',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'required',
+	),
+	'biblemesh.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_biblemesh',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.biblemesh.sysclass.com'     => array(
+		'dbname'        => 'sysclass_biblemesh',
+		'overrideTheme' => 'sysclass3'
+	),
+	'layout.sysclass.com'	=> array(
+		'dbname'        => 'sysclass_layout',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'optional'
+	),
+	'www.layout.sysclass.com'	=> array(
+        'dbname'        => 'sysclass_layout',
+        'overrideTheme' => 'sysclass3',
+		'https'		=> 'optional'
+	)
+);
+
+$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
+$configuration['dsn'] = sprintf(
+	'%s://%s:%s@%s/%s?persist', 
+	$configuration['dbtype'],
+	$configuration['dbuser'],
+	$configuration['dbpass'],
+	$configuration['dbhost'],
+	$configuration['dbname']
+);
+
 $plicoLib->set('theme', 'sysclass.default');
 $plicoLib->set('client_name', 'Sysclass');
 $plicoLib->set('app_name', 'Sysclass');
-$plicoLib->set('db_dsn', 'mysql://sysclass:WXubN7Ih@localhost/sysclass_demo?persist');
+$plicoLib->set('db_dsn', $configuration['dsn']);
 $plicoLib->set('db/charset', 'utf8');
 
 $plicoLib->set('default/resource', '/assets/%s/');

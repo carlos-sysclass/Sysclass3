@@ -75,6 +75,14 @@ $configurationDefaults = array(
 		'overrideTheme' => 'sysclass3',
 		'https'		=> 'required',
 	),
+	'biblemesh.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_biblemesh',
+		'overrideTheme' => 'sysclass3'
+	),
+	'www.biblemesh.sysclass.com'     => array(
+		'dbname'        => 'sysclass_biblemesh',
+		'overrideTheme' => 'sysclass3'
+	),
 	/*
 	'fajar.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_fajar',
