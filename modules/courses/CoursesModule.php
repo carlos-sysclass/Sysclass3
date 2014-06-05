@@ -778,7 +778,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			}
 		}
 		*/
-		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=056JIZCfzqk';
+		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=2U5c7ZLbs0s';
 
 		return array(
 			// @todo GET FORMATS QUERYING SERVER
@@ -812,7 +812,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 	protected function getVideoDefaults() {
 		return array(
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
-			'poster'    =>  "/assets/sysclass.default/img/video-poster.jpg",
+			'poster'    =>  "/assets/sysclass.default/img/video-poster-indiegogo.jpg",
 			'techOrder' => array(
 				'youtube' //, 'html5', 'flash'
 			),
