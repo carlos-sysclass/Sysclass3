@@ -267,7 +267,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						this.template(this.model.toJSON())
 					);
 
-					var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height");
+					var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 					videojs(videoDomID, videoData, function() {
 						//this.play();
 					});

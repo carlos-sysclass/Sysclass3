@@ -812,15 +812,16 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 	protected function getVideoDefaults() {
 		return array(
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
-			'poster'    =>  "/assets/sysclass.default/img/video-poster-indiegogo.jpg",
-			'techOrder' => array(
+			'poster'    	=>  "/assets/sysclass.default/img/video-poster-indiegogo.jpg",
+			'techOrder' 	=> array(
 				'youtube' //, 'html5', 'flash'
 			),
-			'width'     => 'auto',
-			'height'    => 'auto',
-			'controls'  => true,
-			'preload'   => 'metadata',
-			'autoplay'  => false
+			'ytcontrols'	=> true,
+			'width'     	=> 'auto',
+			'height'   	 	=> 'auto',
+			'controls'  	=> true,
+			'preload'   	=> 'metadata',
+			'autoplay'  	=> false
 		);
 	}
 }
