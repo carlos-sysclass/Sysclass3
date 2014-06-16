@@ -778,7 +778,8 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			}
 		}
 		*/
-		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=2U5c7ZLbs0s';
+		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=tFxZuewrRE8';
+		
 
 		return array(
 			// @todo GET FORMATS QUERYING SERVER
