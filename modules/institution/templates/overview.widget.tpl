@@ -28,7 +28,7 @@
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm">
-			<span><i><strong class="text-danger">3</strong></i>{translateToken value='Open ticket(s)'}</span>
+			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Open ticket(s)"}</span>
 		</a>
 	</div>
 
@@ -37,7 +37,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span><i><strong class="text-danger">3</strong></i>{translateToken value='Docs Pending'}</span>
+			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs Pending"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">

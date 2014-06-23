@@ -31,14 +31,13 @@ $.extend( true, $.fn.dataTable.defaults, {
 					}
 					return result.join("");
 				}
-				return 'dfslçfklsd';
+				return data;
 			},
 			"bSearchable" 	: false,
 			"bSortable"		: false,
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-options' ]
 		},
-		
 	],
 	"aaSorting": [[0, 'asc']],
 	/*

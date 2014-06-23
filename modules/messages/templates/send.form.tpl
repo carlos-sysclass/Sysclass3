@@ -6,13 +6,13 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-	        <h4 class="modal-title">{translateToken value='Send Message'}</h4>
+	        <h4 class="modal-title">{translateToken value="Send Message"}</h4>
 	      </div>
 	      <div class="modal-body">
 	        <div class="content">
                <div class="alert alert-danger display-hide">
                   <button class="close" data-dismiss="alert"></button>
-                  {translateToken value='You have some form errors. Please check below.'}
+                  {translateToken value="You have some form errors. Please check below."}
                </div>
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
@@ -45,8 +45,8 @@
 			<!-- END COPYRIGHT -->
 	      </div>
 	      <div class="modal-footer">
-	        <button type="submit" class="btn blue">{translateToken value='Send'}</button>
-	        <button type="button" class="btn default" data-dismiss="modal">{translateToken value='Close'}</button>
+	        <button type="submit" class="btn blue">{translateToken value="Send"}</button>
+	        <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
 			<div class="copyright pull-left">
 				&copy; 2014 WiseFlex
 			</div>

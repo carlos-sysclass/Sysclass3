@@ -3380,3 +3380,16 @@ INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`,
 
 /* 2014-04-25 */
 UPDATE `sysclass_layout`.`configuration` SET `value` = 'Online Education' WHERE `configuration`.`name` = 'site_motto';
+
+
+/* 2014-06-17 */
+CREATE TABLE IF NOT EXISTS `mod_translate` (
+  `id` varchar(5) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `local_name` varchar(50) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `rtl` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `local_name` (`local_name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

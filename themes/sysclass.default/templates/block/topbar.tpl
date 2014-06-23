@@ -82,8 +82,8 @@
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && (!isset($subitem.selected) || !$subitem.selected)}
 							<li>
-								<a href="#">
-									<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/> {$subitem.name}
+								<a href="#" data-callback="change-language" data-language="{$subitem.id}">
+									<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/> {$subitem.local_name}
 								</a>
 							</li>
 						{/if}

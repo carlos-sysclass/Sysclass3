@@ -33,7 +33,7 @@
               </div>
           <!-- /input-group -->
               <div class="relogin">
-                <a href="/login">{translateToken value='Not'} {$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname} ?</a>
+                <a href="/login">{translateToken    value   =  "Not"} {$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname} ?</a>
               </div>
             </form>
 

@@ -104,12 +104,12 @@
 				<p>{$T_EDIT_USER.short_description}</p>
 				<p><a href="#">{$T_EDIT_USER.website}</a></p>
 				<ul class="list-inline">
-					<li class="tooltips" data-original-title="{translateToken value='Your Location'}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
+					<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
 					{if $T_EDIT_USER.data_nascimento}
 						<li><i class="icon-calendar"></i> {$T_EDIT_USER.data_nascimento}</li>
 					{/if}
 					{if $T_EDIT_USER.polo_id}
-						<li class="tooltips" data-original-title="{translateToken value='Your Proctoring Center'}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
+						<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
 					{/if}
 					<!--
 					<li><i class="icon-star"></i> Top Seller</li>

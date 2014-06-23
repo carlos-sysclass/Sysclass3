@@ -135,6 +135,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 		render: function(model) {
 	    	console.info('views/baseClass::render');
+	    	if (model == undefined) {
+	    		model = this.model;
+	    	}
 	    	var values = model.toJSON();
 	    	this.renderItens(values);
 	        return this;
@@ -201,20 +204,30 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
 
-	    	this.handleValidation();
+	    	if (this.$el.is("form") || this.$("form").size() > 0) {
+	    		if (this.$el.is("form")) {
+	    			this.oForm = this.$el;
+	    		} else {
+	    			this.oForm = this.$("form");
+	    		}
+
+	    		this.handleValidation();
+	    	}
 	    },
 	    handleValidation : function() {
 	    	console.info('views/baseFormClass::handleValidation');
 	    	var self = this;
-	    	if (this.$el.is("form")) {
 
-				this.$el.validate({
+	    	
+
+
+				this.oForm.validate({
 					ignore: null,
 	                errorElement: 'span', //default input error message container
 	                errorClass: 'help-block', // default input error message class
 
 	                errorPlacement: function (error, element) { // render error placement for each input type
-	                	
+	                	console.log('aa');
 	                    //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
 	                    //    error.insertAfter("#form_2_membership_error");
 	                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
@@ -244,11 +257,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 						self.save();
 					}
 				});
-	    	}
+
 		},
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
-	    	this.$el.submit();
+	    	this.oForm.submit();
 	    	e.preventDefault();
 	    }
   	});

@@ -3,7 +3,7 @@
 <form id="tutoria-widget-form" action="/module/tutoria/insert">
    <div class="chat-form">
       <div class="input-group form-group">
-         <input class="form-control" name="title" type="text" placeholder="{translateToken value='Type a question here...'}" />
+         <input class="form-control" name="title" type="text" placeholder="{translateToken value="Type a question here..."}" />
          <span class="input-group-btn">
             <button type="submit" class="btn blue icn-only"><i class="icon-ok icon-white"></i></button>
          </span>
@@ -13,7 +13,7 @@
 <script type="text/template" id="tutoria-nofound-template">
    <div class="alert alert-warning">
          <span class="text-warning"><i class="icon-warning-sign"></i></span>
-         {translateToken value='Ops! Sorry, any data found!'}
+         {translateToken value="Ops! Sorry, any data found!"}
    </div>
 </script>
 
@@ -24,9 +24,9 @@
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-<%= id %>">
             <%= title %>
             <% if (approved == 0 && (answer == "" || answer == null)) { %>
-               <span class="label label-danger pull-right hidden-xs hidden-sm">{translateToken value='Waiting Approval'}</span>
+               <span class="label label-danger pull-right hidden-xs hidden-sm">{translateToken value="Waiting Approval"}</span>
             <% } else if (answer == "" || answer == null) {  %>
-               <span class="label label-warning pull-right hidden-xs hidden-sm">{translateToken value='Unanswered'}</span>
+               <span class="label label-warning pull-right hidden-xs hidden-sm">{translateToken value="Unanswered"}</span>
             <% } %>
             </a>
          </h4>
@@ -89,7 +89,7 @@
       <div class="send-block">
          <div class="input-icon right">
             <i class="icon-signin"></i>
-            <input type="text" class="form-control" placeholder="{translateToken value='Type your message here...'}" />
+            <input type="text" class="form-control" placeholder="{translateToken value="Type your message here..."}" />
          </div>
       </div>
    </div>

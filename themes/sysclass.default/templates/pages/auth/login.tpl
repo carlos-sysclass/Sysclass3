@@ -5,7 +5,7 @@
 		{$T_LOGIN_FORM.javascript}
 		<form {$T_LOGIN_FORM.attributes}>
 			{$T_LOGIN_FORM.hidden}
-			<h3 class="form-title">{translateToken value='Login to your account'}</h3>
+			<h3 class="form-title">{translateToken value="Login to your account"}</h3>
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
 				<div class="alert alert-{$T_MESSAGE.type}">
 					<button class="close" data-dismiss="alert"></button>
@@ -29,7 +29,7 @@
 			</div>
 			<div class="form-actions">
 				<label class="checkbox">
-					<input type="{$T_LOGIN_FORM.remember.type}" name="{$T_LOGIN_FORM.remember.name}" value="1"/> {translateToken value='Remember Me'}
+					<input type="{$T_LOGIN_FORM.remember.type}" name="{$T_LOGIN_FORM.remember.name}" value="1"/> {translateToken value="Remember Me"}
 				</label>
 				<button name="{$T_LOGIN_FORM.submit_login.name}" type="submit" class="btn green pull-right" value="{$T_LOGIN_FORM.submit_login.value}" >
 					{$T_LOGIN_FORM.submit_login.value}<i class="m-icon-swapright m-icon-white"></i>
@@ -40,7 +40,7 @@
 			<div class="forget-password">
 				<h4>{translateToken value="Forgot your password?"}</h4>
 				<p>
-					{translateToken value='Click'} <a href="javascript:;"  id="forget-password">{translateToken value='here'}</a> {translateToken value='to reset your password'}
+					{translateToken value="Click"}<a href="javascript:;"  id="forget-password">{translateToken value="here"}</a> {translateToken value="to reset your password"}
 				</p>
 			</div>
 			{/if}
@@ -48,7 +48,7 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
-						<a href="/signup" id="register-btn" >{translateToken value='Create an account'}</a>
+						<a href="/signup" id="register-btn" >{translateToken value="Create an account"}</a>
 					</p>
 				</div>
 			{/if}

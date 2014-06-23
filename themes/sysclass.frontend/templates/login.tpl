@@ -41,7 +41,7 @@
 			<div class="forget-password">
 				<h4>{translateToken value="Forgot your password?"}</h4>
 				<p>
-					{translateToken value='Click'} <a href="javascript:;"  id="forget-password">{translateToken value='here'}</a> {translateToken value='to reset your password'}
+					{translateToken value="Click"} <a href="javascript:;"  id="forget-password">{translateToken value="here"}</a> {translateToken value="to reset your password"}
 				</p>
 			</div>
 		{/if}

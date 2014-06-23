@@ -11,16 +11,16 @@
 
 		<ul class="list-group border-bottom users-panel-links">
 			<li class="list-group-item">
-				<a href="javascript: void(0);">Course</a>
+				<a href="javascript: void(0);">{translateToken value="Course"}</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascript: void(0);">Grades</a>
+				<a href="javascript: void(0);">{translateToken value="Grades"}</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascript: void(0);">Reports</a>
+				<a href="javascript: void(0);">{translateToken value="Reports"}</a>
 			</li>
 			<li class="list-group-item">
-				<a href="javascript: void(0);">Roadmap</a>
+				<a href="javascript: void(0);">{translateToken value="Roadmap"}</a>
 			</li>
 		</ul>
 	</div>
@@ -51,13 +51,13 @@
     	<div class="modal-content">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        		<h4 class="modal-title">{translateToken value='Please select an option'}</h4>
+        		<h4 class="modal-title">{translateToken value="Please select an option %s" param1="1" }</h4>
       		</div>
       		<div class="modal-body form">
         		<div class="content">
 	        		<div class="alert alert-danger display-hide">
               			<button class="close" data-dismiss="alert"></button>
-              			{translateToken value='You have some form errors. Please check below.'}
+              			{translateToken value="You have some form errors. Please check below."}
             		</div>
 					{*$T_MOD_MESSAGES_FORM.javascript*}
 					<form class="form-horizontal container" {*$T_MOD_MESSAGES_FORM.attributes*} >
@@ -100,8 +100,8 @@
 				</div>
 	      	</div>
 	      	<div class="modal-footer">
-	        	<button type="submit" class="btn blue">{translateToken value='Send'}</button>
-	        	<button type="button" class="btn default" data-dismiss="modal">{translateToken value='Close'}</button>
+	        	<button type="submit" class="btn blue">{translateToken value="Send"}</button>
+	        	<button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
 				<div class="copyright pull-left">&copy; 2014 WiseFlex</div>
 	      	</div>
 	    </div>

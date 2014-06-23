@@ -48,12 +48,12 @@
 
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Course'}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Course'}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -128,12 +128,12 @@
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Class'}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Class"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Class'}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Class"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -450,19 +450,19 @@
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value='Previous Lesson'}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value='Next Lesson'}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
 
 								<!--
 								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value='Search Lessons'}" data-placement="top" data-search>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Lessons"}" data-placement="top" data-search>
 										<i class="icon-search"></i>
 									</a>
 								</li>
@@ -576,7 +576,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value='Ops! There\'s any classes registered for this course'}
+			{translateToken value="Ops! There's any classes registered for this course"}
 		</span>
 	</td>
 </script>

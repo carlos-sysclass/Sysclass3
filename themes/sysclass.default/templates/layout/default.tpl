@@ -40,7 +40,15 @@
 		{block name="underscore-templates"}
 		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
 		<script type="text/template" id="datatables-options-template">
-			<a class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>" href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>">
+			<a 
+				class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>" 
+				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>" 
+				<% if (item.attrs != undefined) { %>
+					<% _.each(item.attrs, function(value, tag) { %>
+						<%= tag %>="<%= value %>"
+					<% }); %>
+				<% } %>
+			>
 				<% if (item.icon != undefined) { %>
 					<i class="<%= item.icon %>"></i>
 				<% } %>
@@ -70,7 +78,7 @@
 	<div class="ajax-loader">
 	    <div class="inner-ajax-loader">
 	        <img src="{Plico_GetResource file='img/ajax-loader.gif'}">
-	        <span class="hidden-xs inline">{translateToken value='Loading'}</span>
+	        <span class="hidden-xs inline">{translateToken value="Loading"}</span>
 	    </div>
 	</div>
 
