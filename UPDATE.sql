@@ -3393,3 +3393,11 @@ CREATE TABLE IF NOT EXISTS `mod_translate` (
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `local_name` (`local_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+/* DROP TABLE `mod_translate_tokens`; */
+CREATE TABLE IF NOT EXISTS `mod_translate_tokens` (
+  `language_id` varchar(5) NOT NULL,
+  `token` varchar(980) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+  `text` varchar(980) NOT NULL,
+  PRIMARY KEY (`language_id`,`token`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

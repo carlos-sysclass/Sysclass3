@@ -13,9 +13,9 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     public function registerBlocks() {
         return array(
             'translate.edit.dialog' => function($data, $self) {
-                $this->putComponent("modal");
-                $this->putModuleScript("dialog.translate.edit");
-                $this->putSectionTemplate("foot", "dialogs/edit.token");
+                $self->putComponent("modal");
+                $self->putModuleScript("dialog.translate.edit");
+                $self->putSectionTemplate("foot", "dialogs/edit.token");
 
                 return true;
                 
