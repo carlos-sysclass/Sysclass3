@@ -44,6 +44,11 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 }
             }
 
+            $items[] = array(
+                'link'  => $this->getBasePath() . "view",
+                'text'  => self::$t->translate("Review translated terms")
+            );
+
             $menuItem = array(
                 'icon'      => 'globe',
                 'notif'     => count($items),

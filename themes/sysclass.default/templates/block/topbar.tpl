@@ -81,11 +81,18 @@
 					<ul class="dropdown-menu">
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && (!isset($subitem.selected) || !$subitem.selected)}
-							<li>
-								<a href="#" data-callback="change-language" data-language="{$subitem.id}">
-									<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/> {$subitem.local_name}
-								</a>
-							</li>
+				       		{if isset($subitem.id) && $subitem.id}
+								<li>
+									<a href="#" data-callback="change-language" data-language="{$subitem.id}">
+										<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/> {$subitem.local_name}
+									</a>
+								</li>
+							{else}
+								<li class="divider"></li>
+								<li>
+									<a href="{$subitem.link}">{$subitem.text}</a>
+								</li>
+							{/if}
 						{/if}
 				    {/foreach}
 				    </ul>

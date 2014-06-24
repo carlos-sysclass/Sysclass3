@@ -93,7 +93,8 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 			},
 			setDestinationColumn: function(mData) {
 				this.dstlang = mData;
-				this.recreateTable();
+				//this.recreateTable();
+				this.oTable.api().ajax.reload(null, false);
 			}
 		});
 
