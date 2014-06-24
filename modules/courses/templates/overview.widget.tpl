@@ -11,14 +11,14 @@
 				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
-							<span class="">Courses</span>
+							<span class="">{translateToken value="Courses"}</span>
 						</div>
 					</a>
 				</li>
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">Classes</span>
+							<span class="tab-title">{translateToken value="Classes"}</span>
 						</div>
 					</a>
 				</li>
@@ -26,7 +26,7 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">Lessons</span>
+							<span class="tab-title">{translateToken value="Lessons"}</span>
 						</div>
 					</a>
 				</li>
@@ -38,10 +38,10 @@
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
-								<strong>You're in: </strong>
+								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							<a href="#" class="navbar-brand course-title">
-								 Course
+								 {translateToken value="Course"}
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -64,13 +64,13 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">Description</span></a>
+								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Classes</span></a>
+								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Classes"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">Road Map</span></a>
+								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -78,7 +78,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any info registered for this course
+										{translateToken value="Ops! There's any info registered for this course"}
 									</div>
 								</div>
 							</div>
@@ -115,14 +115,14 @@
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
-								<strong>You're in: </strong>
+								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							<a href="#" class="navbar-brand course-title hidden-xs">
-								Course
+								{translateToken value="Course"}
 							</a>
 							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="#" class="navbar-brand class-title">
-								Class
+								{translateToken value="Class"}
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
