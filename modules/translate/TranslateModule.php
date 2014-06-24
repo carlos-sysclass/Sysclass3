@@ -173,6 +173,28 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         return array_values($files);
      }
 
+
+    /**
+     * Get all tokens processed by the system
+     *
+     * @url POST /item/token
+     */
+    public function insertTokenTranslationAction()
+    {
+        $data = $this->getHttpData(func_get_args());
+
+        // TODO CHECK PERMISSIONS
+        $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+        if (in_array($data['language_id'], $langCodes)) {
+            //var_dump($data);
+            $this->model("translate/tokens")->addToken($data, true);
+
+            return $this->createAdviseResponse(self::$t->translate("Token successfully updated!"), "success");
+
+        }
+        return $this->invalidRequestError();
+    }
+
     /**
      * Get all tokens processed by the system
      *

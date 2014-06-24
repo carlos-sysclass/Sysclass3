@@ -2,6 +2,7 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 	// MODELS
 	mod.addInitializer(function() {
 		var tableViewClass = Backbone.View.extend({
+			translateEditTokenDialog : null,
 			events : {
 				"click .datatable-option-edit" : "editItem"
 			},
@@ -44,13 +45,18 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 //				console.log(modelData);
 
 				var translateEditTokenModelClass = app.module("models.translate").translateEditTokenModelClass;
-				translateEditTokenModelClass = new translateEditTokenModelClass(modelData);
-
-				var translateEditTokenDialogClass = app.module("dialog.translate.edit").translateEditTokenDialogClass;
-				var translateEditTokenDialog = new translateEditTokenDialogClass;
-		 		translateEditTokenDialog.setModel(translateEditTokenModelClass);
-		 		translateEditTokenDialog.open();
+				var translateEditTokenModel = new translateEditTokenModelClass(modelData);
 				
+				if (this.translateEditTokenDialog == null) {
+					var translateEditTokenDialogClass = app.module("dialog.translate.edit").translateEditTokenDialogClass;
+					this.translateEditTokenDialog = new translateEditTokenDialogClass();
+					var self = this;
+					this.translateEditTokenDialog.on("token:save", function() {
+						self.oTable.api().ajax.reload(null, false);
+					});
+				}
+				this.translateEditTokenDialog.setModel(translateEditTokenModel);
+		 		this.translateEditTokenDialog.open();
 			},
 			/*
 			removeItem : function(e) {
@@ -82,7 +88,8 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 			},
 			setSourceColumn: function(mData) {
 				this.srclang = mData;
-				this.recreateTable();
+				//this.recreateTable();
+				this.oTable.api().ajax.reload(null, false);
 			},
 			setDestinationColumn: function(mData) {
 				this.dstlang = mData;

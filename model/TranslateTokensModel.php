@@ -36,13 +36,15 @@ class TranslateTokensModel extends ModelManager {
         return $tokens;
 	}
 
-	public function addToken($token) {
+	public function addToken($token, $force_update = false) {
         $id = array(
 			'language_id'	=> !isset($token['language_id']) ? $this->model("translate")->getSystemLanguageCode() : $token['language_id'],
-			'token' 		=> $token['token']
+			'token' 		=> $token['token'],
         );
         if (!$this->exists($id)) {
         	$this->addItem($token);	
+        } elseif ($force_update) {
+        	$this->setItem($token, $id);	
         }
         return $token;
 	}

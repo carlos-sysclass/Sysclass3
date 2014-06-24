@@ -2,7 +2,12 @@
 	<form role="form" class="form-horizontal" method="post" action="">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			<h4 class="modal-title">{translateToken value="Edit Token"} "<span  data-update="token"></span>"</h4>
+			<h4 class="modal-title">
+				{translateToken value="Edit Token"} "<span  data-update="token"></span>"
+				<small>
+					<span  data-update="srclang"></span> <span class="icon-arrow-right"><i></i></span> <span  data-update="dstlang"></span>
+				</small>
+			</h4>
 		</div>
 		<div class="modal-body">
 			<div class="form-body">

@@ -91,7 +91,9 @@ class TranslateTranslateModel extends ModelManager {
 	    } else {
 			//REGISTER TOKEN HERE, TO TRANSLATE LATER
 			$translateTokensModel->addToken(array(
-				'token'	=> $token
+				'language_id'	=> $language_id,
+				'token'			=> $token,
+				'text'			=> $token
 			));
 		}
 
