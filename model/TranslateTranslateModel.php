@@ -72,6 +72,7 @@ class TranslateTranslateModel extends ModelManager {
 
 	    // FIRST CHECK ON TRANSLATION HASH TABLE
 	    $controller = PlicoLib::handler();
+
 	    //$controller->model("translate")
 	    $translateModel = $controller->model("translate");
 		$translateTokensModel = $controller->model("translate/tokens");

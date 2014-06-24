@@ -178,6 +178,38 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         return array_values($files);
      }
 
+    /**
+     * Translate a simple term on desired backend
+     *
+     * @url GET /tt/:from/:to/
+     */
+    public function doTranslateAction($from, $to, $backend = 'bing') {
+        // TODO CREATE MULTIPLE TRANSLATIONS BACKENDS
+        $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+        if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
+            // VALIDATE TOKEN
+
+            $clientID     = "SysClass";
+            $clientSecret = "vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=";
+
+            $bingTranslateModel = $this->model("bing/translate")->credentials($clientID, $clientSecret);
+
+            $translatedTerm = $bingTranslateModel->translateText($_GET['st'], $from, $to);
+
+            $data = array(
+                "token"         => $_GET['tk'],
+                "text"          => (string) $translatedTerm,
+                "language_id"   => $to,
+                "srclang"       => $from,
+                "dstlang"       => $to
+            );
+
+            return $data;
+    
+        } else {
+            return $this->invalidRequestError();
+        }
+    }
 
     /**
      * Get all tokens processed by the system
@@ -224,8 +256,17 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
-                        'link'  => "#translate-edit-token-modal",
+                        //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-primary'/*,
+                        'attrs'  => array(
+                            'data-toggle' => "modal"
+                        )
+                        */
+                    ),
+                    'translate-windows'  => array(
+                        'icon'  => 'icon-windows',
+                        //'link'  => "#translate-edit-token-modal",
+                        'class' => 'btn-sm btn-info'/*,
                         'attrs'  => array(
                             'data-toggle' => "modal"
                         )

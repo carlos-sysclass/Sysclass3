@@ -4,7 +4,9 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 		var tableViewClass = Backbone.View.extend({
 			translateEditTokenDialog : null,
 			events : {
-				"click .datatable-option-edit" : "editItem"
+				"click .datatable-option-edit" 				: "editItem",
+				"click .datatable-option-translate-windows"	: "translateItemWindows",
+				
 			},
 			initialize : function(opt) {
 				//this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
@@ -57,6 +59,40 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 				}
 				this.translateEditTokenDialog.setModel(translateEditTokenModel);
 		 		this.translateEditTokenDialog.open();
+			},
+			translateItemWindows : function(e) {
+				var data = this.oTable._($(e.currentTarget).closest("tr"));
+				data = data[0];
+				//console.warn(data[0]);
+				e.preventDefault();
+
+				var modelData = {
+					token 		: data['token'],
+					text		: data[this.srclang],
+					language_id	: this.dstlang,
+					srclang 	: this.srclang,
+					dstlang 	: this.dstlang
+				};
+//				console.log(modelData);
+
+				var translateWindowsTokenModelClass = app.module("models.translate").translateWindowsTokenModelClass;
+				var translateWindowsTokenModel = new translateWindowsTokenModelClass(modelData);
+
+				if (this.translateEditTokenDialog == null) {
+					var translateEditTokenDialogClass = app.module("dialog.translate.edit").translateEditTokenDialogClass;
+					this.translateEditTokenDialog = new translateEditTokenDialogClass();
+					var self = this;
+					this.translateEditTokenDialog.on("token:save", function() {
+						self.oTable.api().ajax.reload(null, false);
+					});
+				}
+
+				this.listenToOnce(translateWindowsTokenModel, "sync", function() {
+					this.translateEditTokenDialog.setModel(translateWindowsTokenModel);
+			 		this.translateEditTokenDialog.open();
+				}, this);
+
+				translateWindowsTokenModel.fetch();
 			},
 			/*
 			removeItem : function(e) {
