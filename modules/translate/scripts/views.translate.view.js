@@ -119,6 +119,11 @@ $SC.module("views.translate.view", function(mod, app, Backbone, Marionette, $, _
 				this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 				this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
 
+				var self = this;
+				this.oTable.on( 'draw.dt', function () {
+					app.module("ui").refresh(self.$el);
+				});
+
 				//this.oSettings = this.oTable.api().settings();
 				//console.warn(this.oSettings);
 			},

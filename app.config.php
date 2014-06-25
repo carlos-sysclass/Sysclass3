@@ -195,6 +195,7 @@ $plicoLib->concat(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		'plugins/font-awesome/css/font-awesome.min',
 		'plugins/font-awesome-more/css/font-awesome-ext',
+		'plugins/font-awesome-more/css/font-awesome-corp',
 		'plugins/bootstrap/css/bootstrap.min',
 		'plugins/uniform/css/uniform.default',
 		//<!-- END GLOBAL MANDATORY STYLES -->

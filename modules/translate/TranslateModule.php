@@ -46,7 +46,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
             $items[] = array(
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Review translated terms")
+                'text'  => self::$t->translate("Review translation")
             );
 
             $menuItem = array(
@@ -92,7 +92,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Translate Table'));
+            $this->putItem("page_title", self::$t->translate('Translations'));
             $this->putItem("page_subtitle", self::$t->translate('Review translated terms'));
 
             $this->putComponent("select2");
@@ -226,7 +226,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             //var_dump($data);
             $this->model("translate/tokens")->addToken($data, true);
 
-            return $this->createAdviseResponse(self::$t->translate("Token successfully updated!"), "success");
+            return $this->createAdviseResponse(self::$t->translate("Translation saved!"), "success");
 
         }
         return $this->invalidRequestError();
@@ -257,20 +257,20 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                     'edit'  => array(
                         'icon'  => 'icon-edit',
                         //'link'  => "#translate-edit-token-modal",
-                        'class' => 'btn-sm btn-primary'/*,
+                        'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
-                            'data-toggle' => "modal"
+                            "data-placement"        => "top",
+                            'data-original-title'   => "Human Translation"
                         )
-                        */
                     ),
                     'translate-windows'  => array(
-                        'icon'  => 'icon-windows',
+                        'icon'  => 'icon-bing',
                         //'link'  => "#translate-edit-token-modal",
-                        'class' => 'btn-sm btn-info'/*,
+                        'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
-                            'data-toggle' => "modal"
+                            "data-placement"        => "top",
+                            'data-original-title'   => "Bing Translation"
                         )
-                        */
                     )
                 );
             }
