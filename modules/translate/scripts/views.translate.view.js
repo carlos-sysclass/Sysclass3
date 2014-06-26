@@ -35,11 +35,11 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 				e.preventDefault();
 
 				var modelData = {
-					token 		: data['token'],
-					text		: data[this.dstlang],
-					language_id	: this.dstlang,
-					srclang 	: this.srclang,
-					dstlang 	: this.dstlang
+					token 			: data['token'],
+					text			: data[this.dstlang],
+					language_code	: this.dstlang,
+					srclang 		: this.srclang,
+					dstlang 		: this.dstlang
 				};
 
 				var translateEditTokenModelClass = app.module("models.translate").translateEditTokenModelClass;
@@ -63,11 +63,11 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 				e.preventDefault();
 
 				var modelData = {
-					token 		: data['token'],
-					text		: data[this.srclang],
-					language_id	: this.dstlang,
-					srclang 	: this.srclang,
-					dstlang 	: this.dstlang
+					token 			: data['token'],
+					text			: data[this.srclang],
+					language_code	: this.dstlang,
+					srclang 		: this.srclang,
+					dstlang 		: this.dstlang
 				};
 
 				var translateWindowsTokenModelClass = app.module("models.translate").translateWindowsTokenModelClass;

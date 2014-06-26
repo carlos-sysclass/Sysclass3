@@ -49,14 +49,29 @@ class TranslateTokensModel extends ModelManager {
         return $token;
 	}
 
-	public function getItemsGroupByToken() {
-		$languages = $this->model("translate")->clear()->getItems();
-		$keys = array();
-		foreach($languages as $lang) {
-			$keys[] = $lang['code'];
+	public function getAssociativeLanguageTokens($language_code) {
+		$langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+		if (in_array($language_code, $langCodes)) {
+			$tokens = $this->getItemsGroupByToken($language_code);
+			$result = array();
+			foreach($tokens as $item) {
+				$result[$item['token']] = $item[$language_code];
+			}
+			return $result;
+		}
+		return array();
+	}
+
+	public function getItemsGroupByToken($language_code = null) {
+		$langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+		//$languages = $this->model("translate")->clear()->getItems();
+		if (!is_null($language_code) && in_array($language_code, $langCodes)) {
+			$keys = array($language_code);
+		} else {
+			$keys = $langCodes;
 		}
 
-		$cacheHash = __METHOD__;
+		$cacheHash = __METHOD__ . "/" . serialize(func_get_args());
 
 		if ($this->cacheable() && $this->hasCache($cacheHash)) {
 				// TODO CHECK IF IS THERE A CACHE, AND RETURN IT.
@@ -66,7 +81,9 @@ class TranslateTokensModel extends ModelManager {
 		}
 
 		$grouped = array();
-		$tokens = $this->getItems();
+		$tokens = $this->addFilter(array(
+			'language_code'	=> $keys
+		))->getItems();
 
 		foreach($tokens as $token) {
 			if (!array_key_exists($token['token'], $grouped)) {
@@ -77,6 +94,7 @@ class TranslateTokensModel extends ModelManager {
 				//var_dump($token);
 				$grouped[$token['token']]['token'] = $token['token'];
 			}
+			//if (in_array($token['language_code'])
 			$grouped[$token['token']][$token['language_code']] = $token['text'];
 		}
 		if ($this->cacheable()) {

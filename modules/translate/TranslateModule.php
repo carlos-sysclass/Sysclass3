@@ -410,7 +410,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 foreach($matches as $match) {
                     
                     $tokens[] = array(
-                        'language_id'   => $systemLang,
+                        'language_code'   => $systemLang,
                         //'filepath'      => $file,
                         'token'          => $match[1],
                         'text'          => $match[1]
@@ -437,9 +437,10 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
      *
      * @url GET /tt/:from/:to/
      */
-    public function doTranslateAction($from, $to, $backend = 'bing') {
+    public function doTranslateAction($from, $to) {
         // TODO CREATE MULTIPLE TRANSLATIONS BACKENDS
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+
         if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
             // VALIDATE TOKEN
             $bingTranslateModel = $this->model("bing/translate");
@@ -449,7 +450,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             $data = array(
                 "token"         => $_GET['tk'],
                 "text"          => (string) $translatedTerm,
-                "language_id"   => $to,
+                "language_code" => $to,
                 "srclang"       => $from,
                 "dstlang"       => $to
             );
@@ -460,6 +461,54 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             return $this->invalidRequestError();
         }
     }
+
+    /**
+     * Translate a simple term on desired backend
+     *
+     * @url GET /ttall/:from/:to/
+     * @url GET /ttall/:from/:to/:force
+     */
+    public function doTranslateAllAction($from, $to, $force = true) {
+        if ($force == 'false' || $force == "0") {
+            $force = false;
+        } else {
+            $force = true;
+        }
+
+        // TODO CREATE MULTIPLE TRANSLATIONS BACKENDS
+        $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+
+        if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
+            // VALIDATE TOKEN
+            $bingTranslateModel = $this->model("bing/translate");
+            $translateTokensModel = $this->model("translate/tokens");
+
+            // GET ALL TOKENS FROM SRC LANG
+            $translateTokens = $translateTokensModel->cache(false)->getAssociativeLanguageTokens($from);
+            $translateTokens = array_values($translateTokens);
+            
+            $translateTokens = array_slice($translateTokens, 0 , 5, true);
+
+            $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $from, $to);
+
+            foreach($translatedTerms as $token => $term) {
+                $data = array(
+                    "token"         => $token,
+                    "text"          => $term,
+                    "language_code" => $to,
+                    "srclang"       => $from,
+                    "dstlang"       => $to
+                );
+                // ADD THIS TOKEN
+                $translateTokensModel->addToken($data, $force);
+
+            }
+            return $this->createAdviseResponse(self::$t->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+        } else {
+            return $this->invalidRequestError();
+        }
+    }
+
 
     /**
      * Get all tokens processed by the system

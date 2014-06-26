@@ -44,7 +44,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					srclang 	: this.srclang,
 					dstlang 	: this.dstlang
 				};
-//				console.log(modelData);
 
 				var translateEditTokenModelClass = app.module("models.translate").translateEditTokenModelClass;
 				var translateEditTokenModel = new translateEditTokenModelClass(modelData);
@@ -73,7 +72,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					srclang 	: this.srclang,
 					dstlang 	: this.dstlang
 				};
-//				console.log(modelData);
 
 				var translateWindowsTokenModelClass = app.module("models.translate").translateWindowsTokenModelClass;
 				var translateWindowsTokenModel = new translateWindowsTokenModelClass(modelData);
@@ -136,15 +134,16 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 				this.dstlang = mData;
 				//this.recreateTable();
 				this.oTable.api().ajax.reload(null, false);
-			}
+			},
+			refreshTable : function() {
+				this.oTable.api().ajax.reload(null, false);
+			} 
 		});
 
 		var translateViewClass = Backbone.View.extend({
-			/*
 			events : {
-				"click .datatable-option-remove" : "removeItem"
+				"click .translate-automatic" : "triggerAutoTranslation"
 			},
-			*/
 			initialize : function(opt) {
 				//this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
 				var self = this;
@@ -162,6 +161,28 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					el : this.$("table#translate-token-table"),
 					datatable : opt.datatable
 				});
+			},
+			triggerAutoTranslation : function() {
+				var translateAllTokensModelClass = app.module("models.translate").translateAllTokensModelClass;
+
+				var src = this.$(".select2-me[name='src_language']").val();
+				var dst = this.$(".select2-me[name='dst_language']").val();
+
+				if (src != dst) {
+					var translateAllTokensModel = new translateAllTokensModelClass({
+						srclang : src,
+						dstlang : dst
+					});
+
+					this.listenToOnce(translateAllTokensModel, "sync", function() {
+						this.tableView.refreshTable();
+					}, this);
+
+					translateAllTokensModel.fetch();
+				} else {
+					bootbox.alert("Please select diferents source and destination languages!");
+				}
+
 			}
 		});
 

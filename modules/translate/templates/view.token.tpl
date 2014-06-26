@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="col-md-2 icon-form-container">
-				<span class="icon-exchange"></span>
+				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i> Auto Translation</a>
 			</div>
 			<div class="col-md-5 pull-right">
 				<div class="form-group">
