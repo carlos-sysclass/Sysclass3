@@ -18,11 +18,11 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	public function registerBlocks() {
 		return array(
 			'permission.add' => function($data, $self) {
-				$this->putComponent("modal");
-        		$this->putModuleScript("dialog.permission");
+				$self->putComponent("modal");
+        		$self->putModuleScript("dialog.permission");
         		//$this->putSectionTemplate(null, "blocks/permission");
-        		$this->putSectionTemplate("foot", "dialogs/add");
-        		$this->putSectionTemplate("permission", "blocks/permission");
+        		$self->putSectionTemplate("foot", "dialogs/add");
+        		$self->putSectionTemplate("permission", "blocks/permission");
 
         		return true;
         		

@@ -30,8 +30,8 @@ $.extend( true, $.fn.dataTable.defaults, {
 				}
 				return data;
 			},
-			"bSearchable" 	: false,
-			"bSortable"		: false,
+			"bSearchable" 	: true,
+			"bSortable"		: true,
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-image' ]
 		},
