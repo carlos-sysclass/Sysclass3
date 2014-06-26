@@ -507,7 +507,9 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 $translateTokensModel->addToken($data, $force);
 
             }
-            return $this->createAdviseResponse(self::$t->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse(self::$t->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+            $response['data'] = $translatedTerms;
+            return $response;
         } else {
             return $this->invalidRequestError();
         }
