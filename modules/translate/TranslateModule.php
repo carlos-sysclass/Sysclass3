@@ -491,7 +491,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             $translateTokens = $translateTokensModel->cache(false)->getAssociativeLanguageTokens($from);
             $translateTokens = array_values($translateTokens);
             
-            $translateTokens = array_slice($translateTokens, 0 , 5, true);
+            //$translateTokens = array_slice($translateTokens, 0 , 5, true);
 
             $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $from, $to);
 
