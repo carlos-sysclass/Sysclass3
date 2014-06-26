@@ -473,7 +473,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
      * @url GET /ttall/:from/:to/:force
      */
     public function doTranslateAllAction($from, $to, $force = true) {
-        if ($force == 'false' || $force == "0") {
+        if ($force === 'false' || $force === "0") {
             $force = false;
         } else {
             $force = true;
