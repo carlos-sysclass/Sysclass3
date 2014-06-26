@@ -349,8 +349,12 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             $this->putItem("page_title", self::$t->translate('Translations'));
             $this->putItem("page_subtitle", self::$t->translate('Review translated terms'));
 
+            //$this->putComponent("bootbox");
+
             $this->putComponent("select2");
             $this->putComponent("data-tables");
+
+            
 
             $this->putModuleScript("models.translate");
             $this->putModuleScript("views.translate.view.token");

@@ -180,7 +180,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 
 					translateAllTokensModel.fetch();
 				} else {
-					bootbox.alert("Please select diferents source and destination languages!");
+					alert("Please select diferents source and destination languages!");
 				}
 
 			}

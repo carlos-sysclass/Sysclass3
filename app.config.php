@@ -148,6 +148,13 @@ $plicoLib->add("resources/components", array(
 ));
 
 $plicoLib->add("resources/components", array(
+	'name'	=> 'bootbox',
+	'js'	=> array('plugins/bootbox/bootbox.min')
+));
+
+
+
+$plicoLib->add("resources/components", array(
 	'name'	=> 'validation',
 	'js'	=> array('plugins/jquery-validation/dist/jquery.validate.min', 'plugins/jquery-validation/dist/additional-methods.min')
 ));
