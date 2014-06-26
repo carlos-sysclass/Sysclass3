@@ -631,12 +631,12 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                         )
                     ),
                     'translate-windows'  => array(
-                        'icon'  => 'icon-bing',
+                        'icon'  => 'icon-reorder',
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Bing Translation"
+                            'data-original-title'   => "Eletronic Translation"
                         )
                     )
                 );
