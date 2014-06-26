@@ -16,7 +16,7 @@ $SC.module("dialog.permission", function(mod, app, Backbone, Marionette, $, _) {
 		 	events : {
 		 		"click .new-permission-action" : "open_dialog"
 		 	},
-		 	//nofoundTemplate : _.template($("#permission-block-nofound-template").html()),
+		 	nofoundTemplate : _.template($("#permission-block-nofound-template").html()),
 		 	initialize : function() {
 		 		var conditionModel = new conditionModelClass();
 		 		this.listenTo(this.collection, "sync", this.render.bind(this));
@@ -66,7 +66,7 @@ $SC.module("dialog.permission", function(mod, app, Backbone, Marionette, $, _) {
 		 		"click .permission-item-remove-action" : "destroy"
 		 	},
 		 	tagName : "tr",
-		 	//itemTemplate : _.template($("#permission-block-item-template").html()),
+		 	itemTemplate : _.template($("#permission-block-item-template").html()),
 		 	initialize : function() {
 		 		var conditionModel = new conditionModelClass();
 		 		//this.listenTo(this.collection, "sync", this.render.bind(this));

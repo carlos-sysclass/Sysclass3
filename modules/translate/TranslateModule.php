@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TranslateModule extends SysclassModule implements IBlockProvider, ISectionMenu
+class TranslateModule extends SysclassModule implements IBlockProvider, ISectionMenu, ILinkable, IBreadcrumbable, IActionable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -38,14 +38,14 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             $userLanguageCode =  self::$t->getUserLanguageCode();
 
             foreach($items as $key => &$value) {
-                if ($value['id'] == $userLanguageCode) {
+                if ($value['code'] == $userLanguageCode) {
                     $value['selected'] = true;
                     break;
                 }
             }
 
             $items[] = array(
-                'link'  => $this->getBasePath() . "view",
+                'link'  => $this->getBasePath() . "view/token",
                 'text'  => self::$t->translate("Review translation")
             );
 
@@ -66,14 +66,103 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         return false;
     }
 
+    /* ILinkable */
+    public function getLinks() {
+        $data = $this->getItemsAction();
+        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            return array(
+                'general' => array(
+                    array(
+                        'count' => count($data),
+                        'text'  => self::$t->translate('Languages'),
+                        'icon'  => 'icon-globe',
+                        'link'  => $this->getBasePath() . 'view'
+                    )
+                )
+            );
+        //}
+    }
+
+    /* IBreadcrumbable */
+    public function getBreadcrumb() {
+        $breadcrumbs = array(
+            array(
+                'icon'  => 'icon-home',
+                'link'  => $this->getSystemUrl('home'),
+                'text'  => self::$t->translate("Home")
+            ),
+            array(
+                'icon'  => 'icon-globe',
+                'link'  => $this->getBasePath() . "view",
+                'text'  => self::$t->translate("Languages")
+            )
+        );
+
+        $request = $this->getMatchedUrl();
+        switch($request) {
+            case "view" : {
+                $breadcrumbs[] = array('text' => self::$t->translate("View"));
+                break;
+            }
+            case "add" : {
+                $breadcrumbs[] = array('text' => self::$t->translate("New Language"));
+                break;
+            }
+            case "edit/:id" : {
+                $breadcrumbs[] = array('text' => self::$t->translate("Edit Language"));
+                break;
+            }
+            case "view/token" : {
+                $breadcrumbs[] = array('text' => self::$t->translate("View Translations"));
+            }
+        }
+        return $breadcrumbs;
+    }
+
+    /* IActionable */
+    public function getActions() {
+        $request = $this->getMatchedUrl();
+
+        $actions = array(
+            'view'  => array(
+                array(
+                    'text'  => self::$t->translate('New Language'),
+                    'link'  => $this->getBasePath() . "add",
+                    'icon'  => 'icon-plus'
+                ),
+                array(
+                    'separator' => true
+                ),
+                array(
+                    'text'  => self::$t->translate("Review translation"),
+                    'link'  => $this->getBasePath() . "view/token",
+                    'icon'  => 'icon-reorder'
+                )
+            ),
+            'view/token'  => array(
+                array(
+                    'text'  => self::$t->translate('New Language'),
+                    'link'  => $this->getBasePath() . "add",
+                    'class' => 'btn-primary',
+                    'icon'  => 'icon-plus'
+                )
+            )
+        );
+        
+
+
+        return $actions[$request];
+    }
+
+
     /**
      * Module Entry Point
      *
-     * @url PUT /change/:language_id
+     * @url PUT /change/:language_code
      */
-    public function changeLanguageAction($language_id)
+    public function changeLanguageAction($language_code)
     {
-        if (self::$t->setUserLanguageCode($language_id)) {
+        if (self::$t->setUserLanguageCode($language_code)) {
             // REDIRECT USER BY JAVASCRIPT.
             return $this->createRedirectResponse(null);
         }
@@ -82,7 +171,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Module Entry Point
+     * View Translations Tables
      *
      * @url GET /view
      */
@@ -92,8 +181,8 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Translations'));
-            $this->putItem("page_subtitle", self::$t->translate('Review translated terms'));
+            $this->putItem("page_title", self::$t->translate('Languages'));
+            $this->putItem("page_subtitle", self::$t->translate('View system languages'));
 
             $this->putComponent("select2");
             $this->putComponent("data-tables");
@@ -112,6 +201,171 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             ));
             
             $this->display("view.tpl");
+        //} else {
+        //    $this->redirect($this->getSystemUrl('home'), "", 401);
+        //}
+    }
+
+    /**
+     * Add a new Language Translation
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $this->putComponent("select2", "validation");
+
+        $country_codes = $this->model("i18n/country")->getItems();
+        $this->putItem("country_codes", $country_codes);
+
+        $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
+        $this->putItem("language_codes", $bingTranslationsCodes);
+
+        $this->putModuleScript("models.translate");
+        $this->putModuleScript("views.translate.add");
+
+        $this->putItem("page_title", self::$t->translate('Languages'));
+        $this->putItem("page_subtitle", self::$t->translate('View system languages'));
+
+        //return array_values($news);
+        $this->display("form.tpl");
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $editItem = $this->model("translate")->getItem($id);
+        // TODO CHECK PERMISSION FOR OBJECT
+
+        $this->putComponent("select2", "validation");
+
+        $country_codes = $this->model("i18n/country")->getItems();
+        $this->putItem("country_codes", $country_codes);
+
+        $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
+        $this->putItem("language_codes", $bingTranslationsCodes);
+
+        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
+        // Ex: 
+        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
+        $this->putBlock("permission.add");
+
+        $this->putModuleScript("models.translate");
+        $this->putModuleScript("views.translate.edit", array('id' => $id));
+
+        $this->putItem("page_title", self::$t->translate('Languages'));
+        $this->putItem("page_subtitle", self::$t->translate('View system languages'));
+
+        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
+        //$this->putItem("entity", $editItem);
+
+        //return array_values($news);
+        $this->display("form.tpl");
+    }
+
+    /**
+     * Get all translation visible to the current user
+     *
+     * @url GET /item/me/:id
+     */
+    public function getItemAction($id) {
+
+        $editItem = $this->model("translate")->getItem($id);     
+        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+        return $editItem;
+    }
+
+    /**
+     * Insert a news model
+     *
+     * @url POST /item/me
+     */
+    public function addItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("translate");
+            //$data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+                return $this->createRedirectResponse(
+                    $this->getBasePath() . "edit/" . $data['id'],
+                    self::$t->translate("Language saved with success"), 
+                    "success"
+                );
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("It was not possible to complete your request. Invalid data."), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * Update a news model
+     *
+     * @url PUT /item/me/:id
+     */
+    public function setItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("translate");
+            if ($itemModel->setItem($data, $id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Language updated with success"), "success");
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("It was not possible to complete your request. Invalid data."), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /view/token
+     */
+    public function viewTokensPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        // SHOW ANNOUCEMENTS BASED ON USER TYPE
+        //if ($currentUser->getType() == 'administrator') {
+            $this->putItem("page_title", self::$t->translate('Translations'));
+            $this->putItem("page_subtitle", self::$t->translate('Review translated terms'));
+
+            $this->putComponent("select2");
+            $this->putComponent("data-tables");
+
+            $this->putModuleScript("models.translate");
+            $this->putModuleScript("views.translate.view.token");
+            $this->putBlock("translate.edit.dialog");
+
+            $languages = self::$t->getItems();
+
+            $this->putItem("languages", $languages);
+
+            $this->putData(array(
+                'user_language'     => self::$t->getUserLanguageCode(),
+                'system_language'   => self::$t->getSystemLanguageCode()
+            ));
+            
+            $this->display("view.token.tpl");
         //} else {
         //    $this->redirect($this->getSystemUrl('home'), "", 401);
         //}
@@ -188,11 +442,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
         if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
             // VALIDATE TOKEN
-
-            $clientID     = "SysClass";
-            $clientSecret = "vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=";
-
-            $bingTranslateModel = $this->model("bing/translate")->credentials($clientID, $clientSecret);
+            $bingTranslateModel = $this->model("bing/translate");
 
             $translatedTerm = $bingTranslateModel->translateText($_GET['st'], $from, $to);
 
@@ -233,12 +483,74 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Get all tokens processed by the system
+     * Get all languages provided by the system
      *
      * @url GET /items/me
      * @url GET /items/me/:datatable
      */
     public function getItemsAction($datatable)
+    {
+        //$currentUser    = $this->getCurrentUser(true);
+        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+        //$newsItens = $this->model("news")->getItems();
+
+        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
+        $tokensModel = $this->model("translate");
+
+        $itemsData = $tokensModel->getItems();
+        
+        if ($datatable === 'datatable') {
+            $itemsData = array_values($itemsData);
+            foreach($itemsData as $key => $item) {
+                $itemsData[$key]['country_code'] = $this->translateHttpResource(sprintf(
+                    "img/flags/%s.png",
+                    strtolower($item['country_code'])
+                ));
+                    
+                $itemsData[$key]['options'] = array(
+                    'edit'  => array(
+                        'icon'  => 'icon-edit',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm btn-primary tooltips',
+                        'attrs'  => array(
+                            "data-placement"        => "top",
+                            'data-original-title'   => "Edit Language"
+                        )
+                    )
+                );
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($itemsData),
+                'iTotalDisplayRecords'  => count($itemsData),
+                'aaData'                => array_values($itemsData)
+            );
+        }
+        return array_values($itemsData);
+    }
+
+    // TODO MOVE THIS FUNCTION TO FRAMWORK (ALIAS TO {Plico_GetResource file=""})
+    public function translateHttpResource($file) {
+        $plico = PlicoLib::instance();
+        $templatedPath = $plico->get('default/resource') . $file;
+
+        $themedPath = sprintf($templatedPath, $plico->get('theme'));
+        
+        if (file_exists($plico->get('path/app/www') . $themedPath)) {
+            return $themedPath;
+        } else {
+            return sprintf($templatedPath, $plico->get('default/theme'));
+        }
+    }
+
+    /**
+     * Get all tokens processed by the system
+     *
+     * @url GET /items/token
+     * @url GET /items/token/:datatable
+     */
+    public function getItemsTokenAction($datatable)
     {
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);

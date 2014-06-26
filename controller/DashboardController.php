@@ -70,6 +70,8 @@ class DashboardController extends AbstractSysclassController
         $this->putItem("topbar_menu", $topbarMenu);
 
         $widgets = $layoutManager->getPageWidgets();
+        //var_dump($widgets);
+        //exit;
 
 
 

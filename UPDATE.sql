@@ -3401,3 +3401,16 @@ CREATE TABLE IF NOT EXISTS `mod_translate_tokens` (
   `text` varchar(980) NOT NULL,
   PRIMARY KEY (`language_id`,`token`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `mod_translate_backend` (
+  `backend_id` varchar(50) NOT NULL,
+  `language_id` varchar(5) NOT NULL,
+  `backend_language_id` varchar(5) NOT NULL, 
+  `backend_name` varchar(50) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`backend_id`, `language_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mod_translate` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
+ALTER TABLE `mod_translate` ADD `code` varchar(10) NOT NULL AFTER `id` ;
+UPDATE `mod_translate` SET `code`= `id`

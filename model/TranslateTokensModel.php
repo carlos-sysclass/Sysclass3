@@ -4,7 +4,7 @@ class TranslateTokensModel extends ModelManager {
 	public function init()
 	{
 		$this->table_name = "mod_translate_tokens";
-		$this->id_field = "language_id";
+		$this->id_field = "language_code";
 		/*
 		$this->fieldsMap = array(
 			//"id"					=> false, // SET TO FALSE TO CLEAR FROM "TO-SAVE" RESOURCE
@@ -38,7 +38,7 @@ class TranslateTokensModel extends ModelManager {
 
 	public function addToken($token, $force_update = false) {
         $id = array(
-			'language_id'	=> !isset($token['language_id']) ? $this->model("translate")->getSystemLanguageCode() : $token['language_id'],
+			'language_code'	=> !isset($token['language_code']) ? $this->model("translate")->getSystemLanguageCode() : $token['language_code'],
 			'token' 		=> $token['token'],
         );
         if (!$this->exists($id)) {
@@ -50,10 +50,10 @@ class TranslateTokensModel extends ModelManager {
 	}
 
 	public function getItemsGroupByToken() {
-		$languages = $this->model("translate")->getItems();
+		$languages = $this->model("translate")->clear()->getItems();
 		$keys = array();
 		foreach($languages as $lang) {
-			$keys[] = $lang['id'];
+			$keys[] = $lang['code'];
 		}
 
 		$cacheHash = __METHOD__;
@@ -77,7 +77,7 @@ class TranslateTokensModel extends ModelManager {
 				//var_dump($token);
 				$grouped[$token['token']]['token'] = $token['token'];
 			}
-			$grouped[$token['token']][$token['language_id']] = $token['text'];
+			$grouped[$token['token']][$token['language_code']] = $token['text'];
 		}
 		if ($this->cacheable()) {
 			// TODO CACHE RESULTS HERE

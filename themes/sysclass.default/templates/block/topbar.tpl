@@ -70,9 +70,9 @@
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-								<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/>
+								<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/>
 								<span class="username">
-									 {$subitem.id|@strtoupper}
+									 {$subitem.country_code|@strtoupper}
 								</span>
 								<i class="icon-angle-down"></i>
 							</a>
@@ -81,10 +81,10 @@
 					<ul class="dropdown-menu">
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && (!isset($subitem.selected) || !$subitem.selected)}
-				       		{if isset($subitem.id) && $subitem.id}
+				       		{if isset($subitem.code) && $subitem.code}
 								<li>
-									<a href="#" data-callback="change-language" data-language="{$subitem.id}">
-										<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.id`.png"}"/> {$subitem.local_name}
+									<a href="#" data-callback="change-language" data-language="{$subitem.code}">
+										<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/> {$subitem.local_name}
 									</a>
 								</li>
 							{else}

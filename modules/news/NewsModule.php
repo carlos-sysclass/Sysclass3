@@ -97,6 +97,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
         }
         return false;
     }
+    
 	/* ILinkable */
 	public function getLinks() {
 		$data = $this->getItemsAction();

@@ -1,6 +1,11 @@
 $SC.module("models.translate", function(mod, app, Backbone, Marionette, $, _) {
 	mod.addInitializer(function(collectionData) {
 
+		this.translateModelClass = Backbone.Model.extend({
+			urlRoot : "/module/translate/item/me"
+		});
+
+
 		this.translateLanguageModelClass = Backbone.Model.extend({
 			urlRoot : "/module/translate/change/"
 		});

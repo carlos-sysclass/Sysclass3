@@ -22,8 +22,9 @@ class PermissionModule extends SysclassModule implements IBlockProvider
         		$this->putModuleScript("dialog.permission");
         		//$this->putSectionTemplate(null, "blocks/permission");
         		$this->putSectionTemplate("foot", "dialogs/add");
+        		$this->putSectionTemplate("permission", "blocks/permission");
 
-        		return $this->template("blocks/permission", true);
+        		return true;
         		
 			}
 		);
@@ -250,7 +251,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 				return $this->invalidRequestError(self::$t->translate('An error ocurred. Please try reloading the page'), "error");
 			}
 
-			$entity_id = filter_input(INPUT_GET, 'entity_id', FILTER_VALIDATE_INT);
+			$entity_id = filter_input(INPUT_GET, 'entity_id', FILTER_DEFAULT);
 			if ($entity_id) {
 				$params['ent.entity_id'] = $entity_id;
 			} else {

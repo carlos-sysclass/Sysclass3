@@ -71,6 +71,10 @@ $plicoLib->set('db/charset', 'utf8');
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
 $plicoLib->add('path/modules', __DIR__ . '/modules/');
+
+$plicoLib->set('bing/client_id', 'SysClass');
+$plicoLib->set('bing/client_secret', 'vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=');
+
 /*
 $plicoLib->set('mail/send/isSMTP', FALSE);
 $plicoLib->set('mail/send/debug', FALSE);

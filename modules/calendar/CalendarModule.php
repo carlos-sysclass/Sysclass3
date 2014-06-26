@@ -25,19 +25,22 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     }
     
     public function getWidgets($widgetsIndexes = array()) {
-        $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
-    	//$this->putScript("scripts/calendar");
-        $this->putModuleScript("calendar");
-        return array(
-            'calendar' => array(
-                'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-                'id'        => 'calendar-widget',
-                'title'     => self::$t->translate('Calendar'),
-                'template'  => $this->template("calendar.block"),
-                'icon'      => 'calendar',
-                'box'       => 'dark-blue calendar'
-            )
-        );
+        if (in_array('calendar', $widgetsIndexes)) {
+            $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
+        	//$this->putScript("scripts/calendar");
+            $this->putModuleScript("calendar");
+            return array(
+                'calendar' => array(
+                    'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                    'id'        => 'calendar-widget',
+                    'title'     => self::$t->translate('Calendar'),
+                    'template'  => $this->template("calendar.block"),
+                    'icon'      => 'calendar',
+                    'box'       => 'dark-blue calendar'
+                )
+            );
+        }
+        return false;
     }
 
     /**

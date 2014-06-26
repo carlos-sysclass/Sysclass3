@@ -16,55 +16,57 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 	protected $widgets = null;
 
     public function getWidgets($widgetsIndexes = array()) {
-        $modules = $this->getModules("ILinkable");
-        $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
+    	if (in_array('layout.linkable.view', $widgetsIndexes)) {
+	        $modules = $this->getModules("ILinkable");
+	        $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
 
-        $groupLabels = array(
-        	"general" 		=> self::$t->translate('General'),
-        	"communication" => self::$t->translate('Communication'),
-        	"users" 		=> self::$t->translate('Users')
-        );
-        $modulesOrder = $this->getResource('layout.linkable.order');
+	        $groupLabels = array(
+	        	"general" 		=> self::$t->translate('General'),
+	        	"communication" => self::$t->translate('Communication'),
+	        	"users" 		=> self::$t->translate('Users')
+	        );
+	        $modulesOrder = $this->getResource('layout.linkable.order');
 
-		$links = array();
-		foreach($modulesOrder as $module_id) {
-			if (array_key_exists($module_id, $modules)) {
-				$links = array_merge_recursive($links, $modules[$module_id]->getLinks());
+			$links = array();
+			foreach($modulesOrder as $module_id) {
+				if (array_key_exists($module_id, $modules)) {
+					$links = array_merge_recursive($links, $modules[$module_id]->getLinks());
+				}
+				unset($modulesKeys[$module_id]);
 			}
-			unset($modulesKeys[$module_id]);
+
+	        $links = $this->sortModules("layout.linkable.groups.order", $links);
+
+	        foreach($links as $group_id => $group) {
+	        	if (array_key_exists($group_id, $groupLabels)) {
+	        		$groups[$group_id] = $groupLabels[$group_id];
+	        	} else {
+	        		$groups[$group_id] = self::$t->translate($group_id);
+	        	}
+	        }
+
+	        return array(
+	            'layout.linkable.view' => array(
+	                'type'      => 'control-panel', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+	                'id'        => 'layout-control-panel',
+	                //'title'     => true,
+	                //'icon'		=> 'th-large',
+	                'template'  => $this->template("layout.linkable.view.widget"),
+	                'panel'     => true,
+	                //'box'     	=> 'light-grey',
+	                'tools'		=> array(
+	                    'search'        => true,
+	                	'reload'	    => 'javascript:void(0);',
+	                    'collapse'      => true,
+	                    'fullscreen'    => true
+	                ),
+	                'data'		=> array(
+	                	'groups' 	=> $groups,
+	                	'links'		=> $links
+	                )
+	            )
+	        );
 		}
-
-        $links = $this->sortModules("layout.linkable.groups.order", $links);
-
-        foreach($links as $group_id => $group) {
-        	if (array_key_exists($group_id, $groupLabels)) {
-        		$groups[$group_id] = $groupLabels[$group_id];
-        	} else {
-        		$groups[$group_id] = self::$t->translate($group_id);
-        	}
-        }
-
-        return array(
-            'layout.linkable.view' => array(
-                'type'      => 'control-panel', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-                'id'        => 'layout-control-panel',
-                //'title'     => true,
-                //'icon'		=> 'th-large',
-                'template'  => $this->template("layout.linkable.view.widget"),
-                'panel'     => true,
-                //'box'     	=> 'light-grey',
-                'tools'		=> array(
-                    'search'        => true,
-                	'reload'	    => 'javascript:void(0);',
-                    'collapse'      => true,
-                    'fullscreen'    => true
-                ),
-                'data'		=> array(
-                	'groups' 	=> $groups,
-                	'links'		=> $links
-                )
-            )
-        );
     }
 
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="")
@@ -131,15 +133,35 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 		);
 
 		$dashboardAdministrator = array(
+			/*
 			"rows" => array(
 				array(
-					1   => array("weight" => "8")/*,
-					2   => array("weight" => "4")*/
+					1   => array("weight" => "8")
 				),
 				array(
 					3   => array("weight" => "12")
 				),
 			),
+			*/
+			"rows" => array(
+				array(
+					1   => array("weight" => array(
+						'lg' => "8",
+						'md' => "8",
+						'sm' => "12",
+						'xs' => "12"
+					))
+				),
+				array(
+					3   => array("weight" => array(
+						'lg' => "12",
+						'md' => "12",
+						'sm' => "12",
+						'xs' => "12"
+					))
+				),
+			),
+
 			'widgets' => array(
 				1 => array(
 					'users.overview'

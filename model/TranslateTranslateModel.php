@@ -11,7 +11,7 @@ class TranslateTranslateModel extends ModelManager {
 			"login"					=> 'users_LOGIN'
 		);
 		*/
-		$this->selectSql = "SELECT `id`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
+		$this->selectSql = "SELECT `id`, `code`, `country_code`, `permission_access_mode`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
 		//`lessons_ID`, `classe_id`, 
 
 		parent::init();
@@ -20,21 +20,21 @@ class TranslateTranslateModel extends ModelManager {
 
 	public function getSystemLanguageCode() {
 		// TODO Include code to get default system language
-		return "us";
+		return "en";
 	}
 
 	public function getUserLanguageCode() {
-		if ($this->hasCache("user_language_id")) {
-			return $this->getCache("user_language_id");
+		if ($this->hasCache("user_language_code")) {
+			return $this->getCache("user_language_code");
 		}
 		// TODO Include code to get default user language
 		return $this->getSystemLanguageCode();
 	}
 
-	public function setUserLanguageCode($language_id) {
-		$langCodes = $this->getDisponibleLanguagesCodes();
-        if (in_array($language_id, $langCodes)) {
-			$this->setCache("user_language_id", $language_id);
+	public function setUserLanguageCode($language_code) {
+		$langCodes = $this->cache(false)->getDisponibleLanguagesCodes();
+        if (in_array($language_code, $langCodes)) {
+			$this->setCache("user_language_code", $language_code);
 			return true;
 		}
 		return false;
@@ -51,7 +51,7 @@ class TranslateTranslateModel extends ModelManager {
 			$this->clearCache($cacheHash);
 		}
 		$languages = $this->getItems();
-		$langcodes = array_column($languages, "id");
+		$langcodes = array_column($languages, "code");
 
 		if ($this->cacheable()) {
 			// TODO CACHE RESULTS HERE
@@ -61,7 +61,7 @@ class TranslateTranslateModel extends ModelManager {
 
 	}
 
-	public static function translate($token, $vars = null, $language_id = null)
+	public static function translate($token, $vars = null, $language_code = null)
 	{
 	 	/** @todo CHECK FOR TRANSLATION MODE */
 	    if (array_key_exists('_translate', $_GET)) {
@@ -79,7 +79,8 @@ class TranslateTranslateModel extends ModelManager {
 
 		$langCodes = $translateModel->getDisponibleLanguagesCodes();
 
-	    $language_id = (is_null($language_id) || !in_array($language_id, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_id;
+	    $language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_code;
+
 	/*
 	    $tokens = $translateTokensModel->addFilter(array(
 	    	'language_id' => $language_id
@@ -88,11 +89,11 @@ class TranslateTranslateModel extends ModelManager {
 	    $tokens = $translateTokensModel->cache(false)->getItemsGroupByToken();
 
 	    if (array_key_exists($token, $tokens)) {
-	    	$token = $tokens[$token][$language_id];
+	    	$token = $tokens[$token][$language_code];
 	    } else {
 			//REGISTER TOKEN HERE, TO TRANSLATE LATER
 			$translateTokensModel->addToken(array(
-				'language_id'	=> $language_id,
+				'language_code'	=> $language_code,
 				'token'			=> $token,
 				'text'			=> $token
 			));

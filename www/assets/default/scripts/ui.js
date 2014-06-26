@@ -140,11 +140,25 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 					}
 				} else {
 					opt.minimumResultsForSearch = 10;
+					if (jQuery(this).is('[data-format-as]')) {
+						var formatAsCallback = jQuery(this).data('format-as');
+						var callbackFunction = mod.select2FormatFunctions[formatAsCallback];
+						opt.formatResult = callbackFunction;
+						opt.formatSelection = callbackFunction;
+					}
+
 
 					$el.select2(opt);	
 				}
 			});
 		}
+	};
+
+	this.select2FormatFunctions = {
+		"country-list" : function (state) {
+            if (!state.id) return state.text; // optgroup
+            return "<img class='flag' src='/assets/sysclass.default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
+        }
 	};
 
 	this.handleDatepickers = function(context) {

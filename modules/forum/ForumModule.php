@@ -44,18 +44,20 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
     }
     */
     public function getWidgets($widgetsIndexes = array()) {
-    	return array(
-    		'forum' => array(
-   				'title' 	=> 'Forums',
-   				'template'	=> $this->template("lastest.posts"),
-                'icon'      => 'comments',
-                'box'       => 'grey',
-                'tools'     => array(
-                    'reload'    => $this->getBasePath() . "/widget/refresh",
-                    'fullscreen'    => true
-                )
-    		)
-    	);
+        if (in_array('forum', $widgetsIndexes)) {
+        	return array(
+        		'forum' => array(
+       				'title' 	=> 'Forums',
+       				'template'	=> $this->template("lastest.posts"),
+                    'icon'      => 'comments',
+                    'box'       => 'grey',
+                    'tools'     => array(
+                        'reload'    => $this->getBasePath() . "/widget/refresh",
+                        'fullscreen'    => true
+                    )
+        		)
+        	);
+        }
     }
 
     /**

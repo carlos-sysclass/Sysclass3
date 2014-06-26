@@ -48,7 +48,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     array(
                         //'count' => '20',
                         'text'  => self::$t->translate('Institution'),
-                        'icon'  => 'glyphicon glyphicon-home',
+                        'icon'  => 'icon-home',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )

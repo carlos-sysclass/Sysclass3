@@ -4,16 +4,20 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 		var tableViewClass = Backbone.View.extend({
 			translateEditTokenDialog : null,
 			events : {
-				"click .datatable-option-remove"	: "removeItem"
+				"click .datatable-option-edit" 				: "editItem",
+				"click .datatable-option-translate-windows"	: "translateItemWindows",
+				
 			},
 			initialize : function(opt) {
 				//this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
+				this.srclang = this.$el.data("srclang");
+				this.dstlang = this.$el.data("dstlang");
+
 				var self = this;
 				this.oSettings = {};
 
 				if (opt.datatable != undefined) {
 					this.oSettings = opt.datatable;
-					/*
 					this.oSettings.columns = [
 						{ "name": "src", "render": function ( data, type, full, meta ) {
 	      					return full[self.srclang];
@@ -23,7 +27,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 	    				}},
 						{ "mData": "options", 'sType' : 'table-options' }
 					];
-					*/
 				}
 
 				this.recreateTable();
@@ -41,6 +44,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					srclang 	: this.srclang,
 					dstlang 	: this.dstlang
 				};
+//				console.log(modelData);
 
 				var translateEditTokenModelClass = app.module("models.translate").translateEditTokenModelClass;
 				var translateEditTokenModel = new translateEditTokenModelClass(modelData);
@@ -69,6 +73,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					srclang 	: this.srclang,
 					dstlang 	: this.dstlang
 				};
+//				console.log(modelData);
 
 				var translateWindowsTokenModelClass = app.module("models.translate").translateWindowsTokenModelClass;
 				var translateWindowsTokenModel = new translateWindowsTokenModelClass(modelData);
@@ -89,8 +94,8 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 
 				translateWindowsTokenModel.fetch();
 			},
+			/*
 			removeItem : function(e) {
-				/*
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				var newsModelClass = app.module("models.news").newsModelClass;
@@ -102,8 +107,8 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 						$(e.currentTarget).closest("tr").remove();
 					}
 				});
-				*/
 			},
+			*/
 			recreateTable : function() {
 				if ( $.fn.DataTable.isDataTable(this.el) ) {
 					this.$el.fnDestroy();
@@ -121,6 +126,16 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 
 				//this.oSettings = this.oTable.api().settings();
 				//console.warn(this.oSettings);
+			},
+			setSourceColumn: function(mData) {
+				this.srclang = mData;
+				//this.recreateTable();
+				this.oTable.api().ajax.reload(null, false);
+			},
+			setDestinationColumn: function(mData) {
+				this.dstlang = mData;
+				//this.recreateTable();
+				this.oTable.api().ajax.reload(null, false);
 			}
 		});
 
@@ -133,7 +148,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 			initialize : function(opt) {
 				//this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
 				var self = this;
-				/*
 				this.$(".select2-me[name='src_language']").on("change", function(e) {
 					self.tableView.setSourceColumn(e.val);
 					//self.$(".select2-me[name='dst_language'] option[value='" + e.val + "']").attr("disabled", "disabled");
@@ -143,27 +157,18 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 					self.tableView.setDestinationColumn(e.val);
 					//self.$(".select2-me[name='src_language'] option[value='" + e.val + "']").attr("disabled", "disabled");
 				});
-				*/
+
 				this.tableView = new tableViewClass({
-					el : this.$("table#translate-table"),
+					el : this.$("table#translate-token-table"),
 					datatable : opt.datatable
 				});
 			}
 		});
 
 		var translateView = new translateViewClass({
-			el : "#translate-view",
+			el : "#translate-token-view",
 			datatable : {
-				sAjaxSource	: "/module/translate/items/me/datatable",
-				columns 	: [
-					{ "name": "code", "mData": "code", "sClass" : "text-center"},
-					{ "name": "country_code", "mData": "country_code", 'sType' : 'table-image'},
-					{ "name": "name", "mData": "name"},
-					{ "name": "local_name", "mData": "local_name"},
-					{ "name": "rtl", "mData": "rtl", 'sType' : 'table-boolean'},
-					{ "name": "active", "mData": "active", 'sType' : 'table-boolean'},
-					{ "name": "options", "mData": "options", 'sType' : 'table-options' }
-				]
+				"sAjaxSource": "/module/translate/items/token/datatable"
 			}
 		});
 

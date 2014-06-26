@@ -72,41 +72,49 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     }
 
     public function getWidgets($widgetsIndexes = array()) {
-        $this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
-        $this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
-        $this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
-        $this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
-
-        $this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
-        $this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
-
-        $this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
-        $this->putScript("plugins/jquery-validation/dist/additional-methods.min");
-
-        $this->putCss("plugins/bootstrap-toastr/toastr.min");
-        $this->putScript("plugins/bootstrap-toastr/toastr.min");
-
-
-        $this->putModuleScript("messages");
-
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
-        $groups = $this->getMessageGroups();
 
-        $recipients = $this->getMessageReceivers();
+        if (
+            in_array($widgetsNames[1], $widgetsIndexes) ||
+            in_array($widgetsNames[2], $widgetsIndexes) || 
+            in_array($widgetsNames[3], $widgetsIndexes)
+        ) {
+            $this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
+            $this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
+            $this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
+            $this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
 
-        foreach($groups as $group) {
-            $widgets[$widgetsNames[$group['id']]] = array(
-                //'title'     => self::$t->translate($group['name']),
-                'header'    => self::$t->translate($group['name']),
-                'template'  => $this->template("contact-list.widget"),
-                'icon'      => $group['icon'],
-                'panel'     => 'dark-blue messages-panel',
-                'body'      => false,
-                'data'      => $recipients[$group['id']]
-            );
+            $this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
+            $this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
+
+            $this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
+            $this->putScript("plugins/jquery-validation/dist/additional-methods.min");
+
+            $this->putCss("plugins/bootstrap-toastr/toastr.min");
+            $this->putScript("plugins/bootstrap-toastr/toastr.min");
+
+
+            $this->putModuleScript("messages");
+
+            
+            $groups = $this->getMessageGroups();
+
+            $recipients = $this->getMessageReceivers();
+
+            foreach($groups as $group) {
+                $widgets[$widgetsNames[$group['id']]] = array(
+                    //'title'     => self::$t->translate($group['name']),
+                    'header'    => self::$t->translate($group['name']),
+                    'template'  => $this->template("contact-list.widget"),
+                    'icon'      => $group['icon'],
+                    'panel'     => 'dark-blue messages-panel',
+                    'body'      => false,
+                    'data'      => $recipients[$group['id']]
+                );
+            }
+
+            return $widgets;
         }
-
-        return $widgets;
     }
     protected function getMessageGroups() {
         return $this->_getTableData(

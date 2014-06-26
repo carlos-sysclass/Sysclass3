@@ -26,6 +26,19 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"mRender": function ( data, type, row ) {
 				if (type == 'display') {
 					result = [];
+					return '<img src="' + data + '" />';
+				}
+				return data;
+			},
+			"bSearchable" 	: false,
+			"bSortable"		: false,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-image' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display') {
+					result = [];
 					for(i in data) {
 						result.push(dataTableOptionsTemplate({item: data[i], key : i}));
 					}
@@ -38,6 +51,34 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-options' ]
 		},
+		{
+			"mRender": function ( data, type, row ) {
+				//console.log(data, type, row);
+				//if (type == 'display') {
+					// TODO GET THE MAP FROM TRANSLATION MODEL
+					var map = {
+						1 : "Yes",
+						0 : "No"
+					};
+					return map[data];
+					/*
+					result = [];
+					for(i in data) {
+						result.push(dataTableOptionsTemplate({item: data[i], key : i}));
+					}
+					return result.join("");
+					*/
+				//	return data;
+				//}
+
+				//return data;
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-boolean' ]
+		},
+
 	],
 	"aaSorting": [[0, 'asc']],
 	/*

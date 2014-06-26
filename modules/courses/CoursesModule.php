@@ -25,31 +25,34 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
 
 	public function getWidgets($widgetsIndexes = array()) {
-		// TODO MOVE TO YOUR OWN COMPONENT
-		$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
-		$this->putComponent("fuelux-tree");
-		$this->putComponent("jquery-nestable");
+		if (in_array('courses.overview', $widgetsIndexes)) {
+			// TODO MOVE TO YOUR OWN COMPONENT
+			$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+			$this->putComponent("fuelux-tree");
+			$this->putComponent("jquery-nestable");
 
-		$this->putScript("plugins/holder");
+			$this->putScript("plugins/holder");
 
-		//$this->putScript("plugins/videojs/vjs.youtube");
+			//$this->putScript("plugins/videojs/vjs.youtube");
 
-		$this->putModuleScript("models.courses");
-		$this->putModuleScript("widget.courses");
+			$this->putModuleScript("models.courses");
+			$this->putModuleScript("widget.courses");
 
 
-		return array(
-			'courses.overview' => array(
-				'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-				'id'        => 'courses-widget',
-				'template'	=> $this->template("overview.widget"),
-				'box'       => 'dark-blue tabbable tabbable-left',
-				'tools'     => array(
-					'search'        => true,
-					'fullscreen'    => true
+			return array(
+				'courses.overview' => array(
+					'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+					'id'        => 'courses-widget',
+					'template'	=> $this->template("overview.widget"),
+					'box'       => 'dark-blue tabbable tabbable-left',
+					'tools'     => array(
+						'search'        => true,
+						'fullscreen'    => true
+					)
 				)
-			)
-		);
+			);
+		}
+		return false;
 	}
 
 

@@ -214,6 +214,7 @@ h4.border-bottom {
     width: 100%;
     z-index: 9996;
     text-align: center;
+    display: none;
 }
 .ajax-loader .inner-ajax-loader {
     background: none repeat scroll 0 0 #FFFFFF;
