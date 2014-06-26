@@ -6,16 +6,16 @@
          <div class="input-group">
             <input type="text" class="form-control input-xlarge">
             <div class="input-group-btn">
-               <button tabindex="-1" class="btn blue" type="button">Search</button>
+               <button tabindex="-1" class="btn blue" type="button">{translateToken value="Search"}</button>
                <button tabindex="-1" data-toggle="dropdown" class="btn blue dropdown-toggle" type="button">
                <i class="icon-angle-down"></i>
                </button>
                <ul role="menu" class="dropdown-menu pull-right">
-                  <li><a href="#">Class</a></li>
-                  <li><a href="#">Topic</a></li>
-                  <li><a href="#">Professor</a></li>
+                  <li><a href="#">{translateToken value="Class"}</a></li>
+                  <li><a href="#">{translateToken value="Topic"}</a></li>
+                  <li><a href="#">{translateToken value="Professor"}</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">All</a></li>
+                  <li><a href="#">{translateToken value="All"}</a></li>
                </ul>
             </div>
          </div> 
@@ -120,7 +120,7 @@
 </div>
 <div class="chat-form">
    <div class="input-cont">   
-      <input class="form-control" type="text" placeholder="Type a message here..." />
+      <input class="form-control" type="text" placeholder="{translateToken value="Type a message here..."}" />
    </div>
    <div class="btn-cont"> 
       <span class="arrow"></span>

@@ -23,14 +23,14 @@
          <h1 class="pull-left">Inbox</h1>
          <form class="form-inline pull-right" action="index.html">
             <div class="input-group input-medium">
-               <input type="text" class="form-control" placeholder="Search...">
+               <input type="text" class="form-control" placeholder="{translateToken value="Search..."}">
                <span class="input-group-btn">                   
                <button type="submit" class="btn green"><i class="icon-search"></i></button>
                </span>
             </div>
          </form>
       </div>
-      <div class="inbox-loading">Loading...</div>
+      <div class="inbox-loading">{translateToken value="Loading..."}</div>
       <div class="inbox-content">
          <table class="table table-striped table-advance table-hover" id="messages-container">
             <thead>
@@ -38,14 +38,14 @@
                   <th colspan="3">
                   <input type="checkbox" class="mail-checkbox mail-group-checkbox">
                      <div class="btn-group">
-                        <a class="btn btn-sm blue" href="#" data-toggle="dropdown"> More
+                        <a class="btn btn-sm blue" href="#" data-toggle="dropdown"> {translateToken value="More"}
                            <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                           <li><a href="#"><i class="icon-pencil"></i> Mark as Read</a></li>
-                           <li><a href="#"><i class="icon-ban-circle"></i> Spam</a></li>
+                           <li><a href="#"><i class="icon-pencil"></i> {translateToken value="Mark as Read"}</a></li>
+                           <li><a href="#"><i class="icon-ban-circle"></i> {translateToken value="Spam"}</a></li>
                            <li class="divider"></li>
-                           <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                           <li><a href="#"><i class="icon-trash"></i> {translateToken value="Delete"}</a></li>
                         </ul>
                      </div>
                   </th>

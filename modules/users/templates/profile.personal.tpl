@@ -1,23 +1,23 @@
 <form role="form" class="" method="post" action="{$T_FORM_ACTIONS.personal}">
 	<div class="form-body">
 		<div class="form-group">
-			<label class="control-label">First Name</label>
-			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="Name" class="form-control" />
+			<label class="control-label">{translateToken value="First Name"}</label>
+			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
 		</div>
 
 		<div class="form-group">
-			<label class="control-label">Last Name</label>
-			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="Surname" class="form-control" />
+			<label class="control-label">{translateToken value="Last Name"}</label>
+			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Surname"}" class="form-control" />
 		</div>
 		<div class="form-group">
-			<label>Email Address</label>
+			<label>{translateToken value="Email Address"}</label>
 			<div class="input-group">
 				<span class="input-group-addon"><i class="icon-envelope"></i></span>
-				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="Email Address" class="form-control">
+				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email Address"}" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label">Birthday</label>
+			<label class="control-label">{translateToken value="Birthday"}</label>
 			<div class="input-group">                                       
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="text" name="data_nascimento" value="{$T_EDIT_USER.data_nascimento}" readonly class="form-control datepick" data-format="{$T_SETTINGS_.js_date_fmt}" data-date-view-mode="years">
@@ -25,24 +25,24 @@
 		</div>
 
 		<div class="form-group">
-			<label class="control-label">Language</label>
-			<select name="languages_NAME" class="form-control select2-me" data-placeholder="Select...">
+			<label class="control-label">{translateToken value="Language"}</label>
+			<select name="languages_NAME" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 			{foreach $T_LANGUAGES as $key => $value}
 				<option value="{$key}" {if $key == $T_EDIT_USER.languages_NAME}selected="selected"{/if}>{$value}</option>
 			{/foreach}
 			</select>
 		</div>
 		<div class="form-group">
-			<label class="control-label">Fuso horário</label>
-			<select name="timezone" class="form-control select2-me" data-placeholder="Select...">
+			<label class="control-label">{translateToken value="Timezone"}</label>
+			<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 			{foreach $T_TIMEZONES as $key => $value}
 				<option value="{$key}" {if $key == $T_EDIT_USER.timezone}selected="selected"{/if}>{$value}</option>
 			{/foreach}
 			</select>
 		</div>
 		<div class="form-group">
-			<label class="control-label">About You</label>
-			<textarea class="form-control" name="short_description" rows="4" placeholder="Talk about you..">{$T_EDIT_USER.short_description}</textarea>
+			<label class="control-label">{translateToken value="About You"}</label>
+			<textarea class="form-control" name="short_description" rows="4" placeholder="{translateToken value="Talk about you.."}">{$T_EDIT_USER.short_description}</textarea>
 		</div>
 		<!-- 
 Senha (deixe em branco para não alterar): 

@@ -5,7 +5,7 @@
 	<div class="col-md-12">
 		<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 		<h3 class="page-title">
-			Your Profile <small>See your profile info, change your password and more.</small>
+			{translateToken value="Your Profile"} <small>{translateToken value="See your profile info, change your password and more."}</small>
 		</h3>
 		<!--
 		<ul class="page-breadcrumb breadcrumb">
@@ -41,10 +41,10 @@
 		<!--BEGIN TABS-->
 		<div class="tabbable tabbable-custom tabbable-full-width">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab_1_1" data-toggle="tab">Overview</a></li>
-				<li class=""><a href="#tab_1_3" data-toggle="tab">Account</a></li>
-				<li class=""><a href="#tab_1_4" data-toggle="tab">Your Courses</a></li>
-				<li><a href="#tab_1_6" data-toggle="tab">Help</a></li>
+				<li class="active"><a href="#tab_1_1" data-toggle="tab">{translateToken value="Overview"}</a></li>
+				<li class=""><a href="#tab_1_3" data-toggle="tab">{translateToken value="Account"}</a></li>
+				<li class=""><a href="#tab_1_4" data-toggle="tab">{translateToken value="Your Courses"}</a></li>
+				<li><a href="#tab_1_6" data-toggle="tab">{translateToken value="Help"}</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab_1_1">
@@ -58,7 +58,7 @@
 								<li class="active">
 									<a data-toggle="tab" href="#tab_1-1">
 									<i class="icon-cog"></i> 
-									Personal info
+									{translateToken value="Personal info"}
 									</a> 
 									<span class="after"></span>
 								</li>
@@ -72,8 +72,8 @@
 								
 								<li ><a data-toggle="tab" href="#tab_3-2"><i class="icon-picture"></i> Change Avatar</a></li>
 								-->
-								<li ><a data-toggle="tab" href="#tab_4-3"><i class="icon-lock"></i> Change Password</a></li>
-								<li ><a data-toggle="tab" href="#tab_5-4"><i class="icon-eye-open"></i> Privacity Settings</a></li>
+								<li ><a data-toggle="tab" href="#tab_4-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
+								<li ><a data-toggle="tab" href="#tab_5-4"><i class="icon-eye-open"></i> {translateToken value="Privacity Settings"}</a></li>
 							</ul>
 						</div>
 						<div class="col-md-9">
@@ -102,11 +102,11 @@
 													</span>
 													</span>
 													<span class="btn default btn-file">
-													<span class="fileupload-new"><i class="icon-paper-clip"></i> Select file</span>
-													<span class="fileupload-exists"><i class="icon-undo"></i> Change</span>
+													<span class="fileupload-new"><i class="icon-paper-clip"></i> {translateToken value="Select file"}</span>
+													<span class="fileupload-exists"><i class="icon-undo"></i> {translateToken value="Change"}</span>
 													<input type="file" class="default" />
 													</span>
-													<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="icon-trash"></i> Remove</a>
+													<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="icon-trash"></i> {translateToken value="Remove"}</a>
 												</div>
 											</div>
 											<span class="label label-danger">NOTE!</span>

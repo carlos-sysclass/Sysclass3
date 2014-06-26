@@ -14,10 +14,10 @@
 		<label class="control-label control-inline">{translateToken value="Access mode:"} </label>
 
 		<select class="select2-me input-xlarge" name="permission_access_mode" data-rule-required="1" data-rule-min="1">
-			<option value="1">Only users that match the ALL the permissions below</option>
-			<option value="2">Only users that match at least ONE permission below</option>
-			<option value="3">Only users that do NOT match ALL the permissions below</option>
-			<option value="4">Only users that do NOT match at least ONE permission below</option>
+			<option value="1">{translateToken value="Only users that match the ALL the permissions below"}</option>
+			<option value="2">{translateToken value="Only users that match at least ONE permission below"}</option>
+			<option value="3">{translateToken value="Only users that do NOT match ALL the permissions below"}</option>
+			<option value="4">{translateToken value="Only users that do NOT match at least ONE permission below"}</option>
 		</select>
 	</div>
 	<div class="table-responsive">
@@ -37,7 +37,7 @@
 			<% if (typeof index != 'undefined') { %>
 				<%= index %>
 			<% } else { %>
-				<span class="label label-info">New</span>
+				<span class="label label-info">{translateToken value="New"}</span>
 			<% } %>
 		</td>
 		<td><%= text %></td>

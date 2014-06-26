@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="add-portfolio">
-			<span>New courses arrive this month</span>
-			<a href="#" class="btn icn-only green">Enroll a new Course <i class="m-icon-swapright m-icon-white"></i></a>                          
+			<span>{translateToken value="New courses arrive this month"}</span>
+			<a href="#" class="btn icn-only green">{translateToken value="Enroll a new Course"} <i class="m-icon-swapright m-icon-white"></i></a>                          
 		</div>
 	</div>
 </div>

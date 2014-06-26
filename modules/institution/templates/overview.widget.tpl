@@ -5,13 +5,13 @@
 	<div class="col-md-5 col-sm-5 col-xs-6">
 		<div class="btn-group-vertical btn-group-fixed-size">
 			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-link"></i>Website</span>
+				<span class="text-muted"><i class="icon-link"></i>{translateToken value="Website"}</span>
 			</a>
 			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-map-marker"></i>View Map</span>
+				<span class="text-muted"><i class="icon-map-marker"></i>{translateToken value="View Map"}</span>
 			</a>
 			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-facebook"></i>Facebook</span>
+				<span class="text-muted"><i class="icon-facebook"></i>{translateToken value="Facebook"}</span>
 			</a>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span class=""><i class="icon-map-marker"></i>Open a Ticket</span>
+			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a Ticket"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
@@ -42,7 +42,7 @@
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span><i class="icon-dropbox"></i><strong class="text-primary">3</strong> Docs In Box</span>
+			<span><i class="icon-dropbox"></i><strong class="text-primary">3</strong> {translateToken value="Docs In Box"}</span>
 		</a>
 	</div>
 </div>

@@ -87,11 +87,11 @@
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th>Name</th>
-												<th class="text-center">Completed</th>
-												<th class="text-center">Attendence</th>
-												<th class="text-center">Grade</th>
-												<th class="text-center">Status</th>
+												<th>{translateToken value="Name"}</th>
+												<th class="text-center">{translateToken value="Completed"}</th>
+												<th class="text-center">{translateToken value="Attendence"}</th>
+												<th class="text-center">{translateToken value="Grade"}</th>
+												<th class="text-center">{translateToken value="Status"}</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -145,35 +145,35 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">Info</span></a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">Instructor</span></a>
+								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> <span class="hidden-xs inline active-show-xs">Dropbox</span></a>
+								<a data-toggle="tab" href="#tab_class_dropbox"><i class="icon-dropbox"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Dropbox"}</span></a>
 							</li>
 
 							<li class="hidden-xxs">
-								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Bibliography</span></a>
+								<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Bibliography"}</span></a>
 							</li>
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="hidden-xs inline active-show-xs">Attendence</span></a>
+								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Attendence"}</span></a>
 							</li>
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">Tests</span></a>
+								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
 							<li class="visible-xxs visible-md">
-								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">More</span></a>
+								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">{translateToken value="More"}</span></a>
 								<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="">
 									<li class="visible-xs">
-										<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="">Bibliography</span></a>
+										<a data-toggle="tab" href="#tab_class_bibliography"><i class="icon-book"></i> <span class="">{translateToken value="Bibliography"}</span></a>
 									</li>
 									<li class="">
-										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="">Attendence</span></a>
+										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="">{translateToken value="Attendence"}</span></a>
 									</li>
 									<li class="">
-										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="">Tests</span></a>
+										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="">{translateToken value="Tests"}</span></a>
 									</li>
   								</ul>
 							</li>
@@ -204,36 +204,36 @@
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
 											<tr>
-												<td>Prerequisite(s):</td>
-												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+												<td>{translateToken value="Prerequisite(s):"}</td>
+												<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 											</tr>
 											<tr>
-												<td>Credit Hours:</td>
+												<td>{translateToken value="Credit Hours:"}</td>
 												<td><strong class="text-default pull-right">80h</strong></td>
 											</tr>
 											<tr>
-												<td>Number of Classes:</td>
+												<td>{translateToken value="Number of Classes:"}</td>
 												<td><strong class="text-default pull-right">3 of 24</strong></td>
 											</tr>
 											<tr>
-												<td>Tests:</td>
+												<td>{translateToken value="Tests:"}</td>
 												<td><strong class="text-default pull-right">1 of 3</strong></td>
 											</tr>
 											<tr>
-												<td>Papers:</td>
+												<td>{translateToken value="Papers:"}</td>
 												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
 											</tr>
 											<tr>
-												<td>Exams:</td>
+												<td>{translateToken value="Exams:"}</td>
 												<td><strong class="text-default pull-right">0 of 4</strong></td>
 											</tr>
 											<tr>
-												<td>Books:</td>
+												<td>{translateToken value="Books:"}</td>
 												<td><strong class="text-default pull-right">2</strong></td>
 											</tr>
 											<tr>
-												<td>Required Equipment:</td>
-												<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+												<td>{translateToken value="Required Equipment:"}</td>
+												<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 											</tr>
 										</tbody>
 									</table>
@@ -251,47 +251,47 @@
 											</a>
 											<div class="media-body">
 												<p class="">
-													<span>Position:</span>
+													<span>{translateToken value="Position:"}</span>
 													<strong class="text-default pull-right">Emeritus Professor</strong>
 												</p>
 												<hr />
 												<p class="">
-													<span>Division/Portifolio:</span>
+													<span>{translateToken value="Division/Portifolio:"}</span>
 													<strong class="text-default pull-right">Division of Education, Arts and Social Sciences</strong>
 												</p>
 												<hr />
 												<p class="">
-													<span>School Unit:</span>
+													<span>{translateToken value="School Unit:"}</span>
 													<strong class="text-default pull-right">School of Education</strong>
 												</p>
 												<hr />
 												<p class="">
-													<span>Campus:</span>
+													<span>{translateToken value="Campus:"}</span>
 													<strong class="text-default pull-right">Mawson Lakes Campus</strong>
 												</p>
 												<hr />
 												<p class="">
-													<span>Office:</span>
+													<span>{translateToken value="Office:"}</span>
 													<span class="text-default pull-right">G3-12</span >
 												</p>
 												<hr />
 												<p class="">
-													<span>Telephone:</span>
+													<span>{translateToken value="Telephone:"}</span>
 													<span class="text-default pull-right">(555) 555-5555</span >
 												</p>
 												<hr />
 												<p class="">
-													<span>Fax:</span>
+													<span>{translateToken value="Fax:"}</span>
 													<span class="text-default pull-right">(555) 555-5555</span >
 												</p>
 												<hr />
 												<p class="">
-													<span>Email:</span>
+													<span>{translateToken value="Email:"}</span>
 													<a href="javascript:void(0);" class="pull-right">joe.walters@lucent.edu</a>
 												</p>
 												<hr />
 												<p class="">
-													<span>URL for Business Card:</span>
+													<span>{translateToken value="URL for Business Card:"}</span>
 													<a href="javascript:void(0);" class="pull-right">http://myname@myname.com</a>
 												</p>
 												<hr />
@@ -304,9 +304,9 @@
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> Professor Files </a> - 
+										<a href="javascript: void(0)"> {translateToken value="Professor Files"} </a> - 
 										<small>
-											<span class="size-counter">2</span> files
+											<span class="size-counter">2</span> {translateToken value="files"}
 
 										</small>
 									</h5>
@@ -323,8 +323,8 @@
 											<i class="tree-dot"></i>
 											<div class="tree-item-name"></div>
 											<div class="pull-right">
-												<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
-												<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+												<a class="btn btn-sm btn-danger" href="javascript: void(0);">{translateToken value="View"}</a>
+												<a class="btn btn-sm btn-success" href="javascript: void(0);">{translateToken value="Download"}</a>
 											</div>
 										</div>
 									</div>
@@ -334,9 +334,9 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
 									-->
 									<h5>
-										<a href="javascript: void(0)">Your Files </a> - 
+										<a href="javascript: void(0)">{translateToken value="Your Files"} </a> - 
 										<small>
-											<span class="size-counter">2</span> files
+											<span class="size-counter">2</span> {translateToken value="files"}
 
 										</small>
 									</h5>
@@ -353,8 +353,8 @@
 											<i class="tree-dot"></i>
 											<div class="tree-item-name"></div>
 											<div class="pull-right">
-												<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
-												<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+												<a class="btn btn-sm btn-danger" href="javascript: void(0);">{translateToken value="View"}</a>
+												<a class="btn btn-sm btn-success" href="javascript: void(0);">{translateToken value="Download"}</a>
 											</div>
 										</div>
 									</div>
@@ -365,21 +365,21 @@
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th>Book</th>
-												<th class="text-center">Author</th>
-												<th class="text-center">Type</th>
+												<th>{translateToken value="Book"}</th>
+												<th class="text-center">{translateToken value="Author"}</th>
+												<th class="text-center">{translateToken value="Type"}</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td>World Map</td>
 												<td class="text-center">Joe Walton</td>
-												<td class="text-center"><span class="label label-danger">Required</span></td>
+												<td class="text-center"><span class="label label-danger">{translateToken value="Required"}</span></td>
 											</tr>
 											<tr>
 												<td>History of Maps</td>
 												<td class="text-center">Mike Joshua</td>
-												<td class="text-center"><span class="label label-info">Suggested</span></td>
+												<td class="text-center"><span class="label label-info">{translateToken value="Suggested"}</span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -389,7 +389,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Sorry! Any data has been registered for this class yet.
+										{translateToken value="Sorry! Any data has been registered for this class yet."}
 									</div>
 								</div>
 							</div>
@@ -398,29 +398,29 @@
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th>Exams</th>
-												<th class="text-center">Date</th>
-												<th class="text-center">Status</th>
-												<th class="text-center">Grade</th>
+												<th>{translateToken value="Exams"}</th>
+												<th class="text-center">{translateToken value="Date"}</th>
+												<th class="text-center">{translateToken value="Status"}</th>
+												<th class="text-center">{translateToken value="Grade"}</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td>Test #1</td>
 												<td class="text-center">13rd March, 2014</td>
-												<td class="text-center"><span class="label label-danger">Closed</span></td>
+												<td class="text-center"><span class="label label-danger">{translateToken value="Closed"}</span></td>
 												<td class="text-center"><span class="label label-warning">60</span></td>
 											</tr>
 											<tr>
 												<td>Test #2</td>
 												<td class="text-center">13rd May, 2014</td>
-												<td class="text-center"><span class="label label-success">Open</span></td>
+												<td class="text-center"><span class="label label-success">{translateToken value="Open"}</span></td>
 												<td class="text-center"></td>
 											</tr>
 											<tr>
 												<td>Test #3</td>
 												<td class="text-center">13rd July, 2014</td>
-												<td class="text-center"><span class="label label-warning">Stand By</span></td>
+												<td class="text-center"><span class="label label-warning">{translateToken value="Stand By"}</span></td>
 												<td class="text-center"></td>
 											</tr>
 										</tbody>
@@ -434,17 +434,17 @@
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
-								<strong>You're in: </strong>
+								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title hidden-xs">
-								Class
+								{translateToken value="Class"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
-								 Lessons
+								{translateToken value="Lessons"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand"> 
-								<span class="label label-success"><i class="icon-ok-sign"></i>  Viewed</span>
+								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -474,13 +474,13 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">Video Lesson</span></a>
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Lesson"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">Materials</span></a>
+								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">Exercises</span></a>
+								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
 							</li>
 							<!--
 							<li class="">
@@ -493,16 +493,16 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										Ops! There's any content for this lesson
+										{translateToken value="Ops! There's any content for this lesson"}
 									</div>
 								</div>
 							</div>
 							<div id="tab_lesson_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> Lesson Files </a> - 
+										<a href="javascript: void(0)"> {translateToken value="Lesson Files"} </a> - 
 										<small>
-											<span class="size-counter">2</span> files
+											<span class="size-counter">2</span> {translateToken value="files"}
 										</small>
 									</h5>
 									<div id="tab_lesson_materials_container"></div>
@@ -512,7 +512,7 @@
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 Ops! There's any exercises posted for this lesson
+										 {translateToken value="Ops! There's any exercises posted for this lesson"}
 								   	</div>
 							   	</div>
 						   	</div>
@@ -537,14 +537,14 @@
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">Lesson</a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Lesson"}</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number class" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">Class</a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Class"}</a>
 			</div>
 		</div>
 		<!--
@@ -560,7 +560,7 @@
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number course" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">Course</a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Course"}</a>
 			</div>
 		</div>
 			<div class="clearfix margin-bottom-10"></div>
@@ -582,10 +582,10 @@
 </script>
 <script type="text/template" id="tab_course_classes-item-template">
 	<td><a href="#class-tab" class="class-change-action" data-ref-id="<%= id %>" ><%= name %></a></td>
-	<td class="text-center"><span class="label label-danger">No</span></td>
+	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
-	<td class="text-center"><span class="label label-info">In Progress</span></td>
+	<td class="text-center"><span class="label label-info">{translateToken value="In Progress"}</span></td>
 </script>
 
 <script type="text/template" id="tab_roadmap-season-template">
@@ -594,9 +594,9 @@
 		<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= id %>"> <%= name %> </a>
 		<small>
 		<% if (typeof max_classes == 'undefined') { %>
-			<span class="size-counter"><%= _.size(classes) %></span> total classes
+			<span class="size-counter"><%= _.size(classes) %></span> {translateToken value="total classes"}
 		<% } else { %>
-			<span class="size-counter"><%= _.size(classes) %></span> / <%= max_classes %> classes selected
+			<span class="size-counter"><%= _.size(classes) %></span> / <%= max_classes %> {translateToken value="classes selected"}
 		<% } %>
 		</small>
 	</h5>
@@ -685,8 +685,8 @@
 			<i class="tree-dot"></i>
 			<div class="tree-item-name"></div>
 			<div class="pull-right">
-				<a class="btn btn-sm btn-danger" href="javascript: void(0);">View</a>
-				<a class="btn btn-sm btn-success" href="javascript: void(0);">Download</a>
+				<a class="btn btn-sm btn-danger" href="javascript: void(0);">{translateToken value="View"}</a>
+				<a class="btn btn-sm btn-success" href="javascript: void(0);">{translateToken value="Download"}</a>
 			</div>
 		</div>
 	</div>
