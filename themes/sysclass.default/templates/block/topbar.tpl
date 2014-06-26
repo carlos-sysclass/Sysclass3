@@ -66,7 +66,7 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown {$item.type} hidden-xs">
+				<li class="dropdown {$item.type}">
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
