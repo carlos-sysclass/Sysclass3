@@ -126,7 +126,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $actions = array(
             'view'  => array(
                 array(
-                    'text'  => self::$t->translate('New Language'),
+                    'text'  => self::$t->translate('Add Language'),
                     'link'  => $this->getBasePath() . "add",
                     'icon'  => 'icon-plus'
                 ),
@@ -141,7 +141,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             ),
             'view/token'  => array(
                 array(
-                    'text'  => self::$t->translate('New Language'),
+                    'text'  => self::$t->translate('Add Language'),
                     'link'  => $this->getBasePath() . "add",
                     'class' => 'btn-primary',
                     'icon'  => 'icon-plus'
