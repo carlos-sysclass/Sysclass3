@@ -774,35 +774,32 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			"video/webm" => "webm"
 			
 		);
-		/*
+		
 		foreach($sources_types as $type => $ext) { 
 			if (file_exists(realpath($plico->get('path/app') . $urlRoot . "video." . $ext))) {
 				$sources[$type] = $urlRoot . "video." . $ext;
 			}
 		}
-		*/
-		$sources['video/youtube'] = 'https://www.youtube.com/watch?v=tFxZuewrRE8';
+		//$sources['video/youtube'] = 'https://www.youtube.com/watch?v=tFxZuewrRE8';
 		
 
 		return array(
 			// @todo GET FORMATS QUERYING SERVER
 			"sources" => $sources,
-			/*
 			"tracks"    => array(
-			
+			/*
 				"captions" => array(
 					"src"       => $urlRoot . "captions.en.vtt",
 					"label"     => "English",
 					"srclang"   => "en"
 				),
-			
+			*/
 				"subtitles" => array(
 					"src"       => $urlRoot . "captions.en.vtt",
 					"label"     => "English",
 					"srclang"   => "en"
 				)/
 			)
-			*/
 		);
 	}
 
@@ -818,7 +815,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",
 			'poster'    	=>  "/assets/sysclass.default/img/video-poster-indiegogo.jpg",
 			'techOrder' 	=> array(
-				'youtube' //, 'html5', 'flash'
+				/* 'youtube' , */'html5', 'flash'
 			),
 			'ytcontrols'	=> true,
 			'width'     	=> 'auto',
