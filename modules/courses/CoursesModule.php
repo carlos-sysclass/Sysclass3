@@ -798,7 +798,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 					"src"       => $urlRoot . "captions.en.vtt",
 					"label"     => "English",
 					"srclang"   => "en"
-				)/
+				)
 			)
 		);
 	}
