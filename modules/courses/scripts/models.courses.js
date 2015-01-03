@@ -9,7 +9,7 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var url = "/module/courses/items/classes/:courses/:datatable";
 				url = url.replace(":courses", JSON.stringify(this.course_id));
 				if (this.datatable) {
-					url = url.replace(":datatable", 'datatable');	
+					url = url.replace(":datatable", 'datatable');
 				} else {
 					url = url.replace(":datatable", '');
 				}
@@ -25,7 +25,7 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var url = "/module/courses/items/seasons/:courses/:datatable";
 				url = url.replace(":courses", JSON.stringify(this.course_id));
 				if (this.datatable) {
-					url = url.replace(":datatable", 'datatable');	
+					url = url.replace(":datatable", 'datatable');
 				} else {
 					url = url.replace(":datatable", '');
 				}
@@ -33,7 +33,6 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-		
 
 		// TODO Change the way which the data cames from server
 		this.courseModelClass = Backbone.Model.extend({
@@ -71,7 +70,7 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (this.get("course_id") == 0) {
 					return "/module/courses/item/classes";
 				} else {
-					return "/module/courses/item/classes/" + this.get("course_id");	
+					return "/module/courses/item/classes/" + this.get("course_id");
 				}
 			},
 			goToID : function(id) {
@@ -136,7 +135,7 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (this.get("course_id") == 0 && this.get("lesson_id") == 0) {
 					return "/module/courses/content";
 				} else {
-					return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");	
+					return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");
 				}
 			}
 			// 31/106

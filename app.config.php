@@ -1,4 +1,4 @@
-<?php 
+<?php
 //define("DEBUG", 1);
 
 $plicoLib = PlicoLib::instance();
@@ -19,6 +19,10 @@ $configurationDefaults = array(
 		'https'		=> 'none',
 	),
 	'local.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_demo',
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+	),
+	'local.beta.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_demo',
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
 	),
@@ -54,7 +58,7 @@ $configurationDefaults = array(
 
 $configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
 $configuration['dsn'] = sprintf(
-	'%s://%s:%s@%s/%s?persist', 
+	'%s://%s:%s@%s/%s?persist',
 	$configuration['dbtype'],
 	$configuration['dbuser'],
 	$configuration['dbpass'],
@@ -115,7 +119,7 @@ $plicoLib->concat(
 	)
 );
 
-$plicoLib->set("urls", 
+$plicoLib->set("urls",
 	array(
 		'default'	=> '/dashboard',
 		'home'		=> '/dashboard'
@@ -259,11 +263,11 @@ $plicoLib->concat(
 		'plugins/backstretch/jquery.backstretch.min',
 
 		'plugins/jquery.blockui.min',
-		
+
 		'plugins/strophe/strophe',
 		'plugins/strophe/strophe.roster',
 		'plugins/strophe/strophe.messaging',
-		
+
 		'plugins/strophe/strophe.chatstates',
 		'plugins/strophe/strophe.ping',
 

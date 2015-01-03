@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -8,8 +8,9 @@
  * @package Sysclass\Modules
  */
 
-class CoursesModule extends SysclassModule implements ISummarizable, IWidgetContainer
+class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IWidgetContainer
 {
+    /* ISummarizable */
     public function getSummary() {
         //$data = array(1); // FAKE, PUT HERE DUE PAYMENTS
 
@@ -24,6 +25,24 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
         );
     }
 
+    /* ILinkable */
+    public function getLinks() {
+        //$data = $this->getItemsAction();
+        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            return array(
+                'general' => array(
+                    array(
+                        //'count' => '20',
+                        'text'  => self::$t->translate('Courses'),
+                        'icon'  => 'icon-home',
+                        'link'  => $this->getBasePath() . 'view'
+                    )
+                )
+            );
+        //}
+    }
+
+    /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('courses.overview', $widgetsIndexes)) {
 			// TODO MOVE TO YOUR OWN COMPONENT
@@ -54,6 +73,50 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		}
 		return false;
 	}
+
+    /**
+     * Get all courses visible to the current user
+     *
+     * @url GET /items/me
+     * @url GET /items/me/:datatable
+     */
+    public function getItemsAction($datatable)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+        $itemsData = $this->model("course")->addFilter(array(
+            'active' => 1
+        ))->getItems();
+        //echo "<pre>";
+        //var_dump($itemsData);
+
+        $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+
+        if ($datatable === 'datatable') {
+            $items = array_values($items);
+            foreach($items as $key => $item) {
+                $items[$key]['options'] = array(
+                    'edit'  => array(
+                        'icon'  => 'icon-edit',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm btn-primary'
+                    ),
+                    'remove'    => array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
+                    )
+                );
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+        return array_values($items);
+    }
 
 
     /**
@@ -91,7 +154,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
                     ),
                     'remove'    => array(
                         'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'                  
+                        'class' => 'btn-sm btn-danger'
                     )
                 );
             }
@@ -141,7 +204,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
                     ),
                     'remove'    => array(
                         'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'                  
+                        'class' => 'btn-sm btn-danger'
                     )
                 );
             }
@@ -175,7 +238,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 				}
 				$result = array();
 				foreach($courses as $course_id => $course) {
-					// @todo Group by course 
+					// @todo Group by course
 					$result[] = array(
 						'id'    => $course_id,
 						'name'  => $course['name']
@@ -191,7 +254,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 				}
 				$result = array();
 				foreach($lessons as $lesson_id => $lesson) {
-					// @todo Group by course 
+					// @todo Group by course
 					$result[] = array(
 						'id'    => $lesson_id,
 						'name'  => $lesson['name']
@@ -199,7 +262,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 				}
 				return $result;
 			}
-			
+
 				# code...
 				break;
 		}
@@ -294,11 +357,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			'active'    => true,
 			'condition' => sprintf("(l.id IN (%s))", implode(",", $userLessonsIDs))
 		);
-		
+
 		$userEntities = $course->getCourseLessons($constraints);
 		$userEntityIDs = array_keys($userEntities);
 		// TODO CHECK PERMISSION RULES HERE
-		
+
 		if (!in_array($id, $userEntityIDs)) {
 			if (count($userEntityIDs) == 0) {
 				return $this->invalidRequestError("You aren't enrolled in any class at the moment.");
@@ -355,7 +418,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		}
 		// TODO GET USERS CLASS IDS AND CHECK IF THIS ID MATCH
 		$userClasses    =   $currentUser -> getUserLessons($constraints);
-		$userClassesIDs = array_keys($userClasses);	
+		$userClassesIDs = array_keys($userClasses);
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
@@ -396,7 +459,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 				$id = null;
 			}
 		}
-		
+
 
 		if (is_null($id)) {
 			$unseenContent = array();
@@ -436,7 +499,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			$nextNode = reset($nextNodes);
 			$result['next'] = $nextNode['id'];
 		}
-		
+
 		$unitArray['sources'] = array(
 			'materials' => $this->getMaterialsSource($course_id, $class_id, $id),
 		);
@@ -445,7 +508,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			$unitArray['metadata'] = unserialize($unitArray['metadata']);
 		}
 		if ($unitArray['ctg_type'] == "video") {
-			$unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);   
+			$unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);
 			if (!is_array($unitArray['data'])) {
 				$unitArray['data'] = $this->getVideoDefaults();
 			} else {
@@ -456,7 +519,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		} else if ($unitArray['ctg_type'] == "tests") {
 
 			$currentTest = new MagesterTest($unitArray['id'], true);
-			
+
 			$testStatus = $currentTest->getStatus($currentUser->user['login']);
 			//var_dump($currentUser->user['login']);
 			//$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
@@ -466,16 +529,42 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			} else {
 				//$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
 				$unitArray['data'] = "<h4>TEST DONE!</h4>";
-				//$unitArray['data'] .= "<br />Score: " . $doneTests['score']; 
-				$unitArray['data'] .= "<br />Status: " . $testStatus['status']; 
+				//$unitArray['data'] .= "<br />Score: " . $doneTests['score'];
+				$unitArray['data'] .= "<br />Status: " . $testStatus['status'];
 				//echo "<pre>";
-				
+
 				//$doneTests[$currentTest->test['id']][$currentUser->user['login']]
 			}
 		}
 		$result['data'] = $unitArray;
-		return $result;		
+		return $result;
 	}
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /view
+     */
+    public function viewPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        // SHOW ANNOUCEMENTS BASED ON USER TYPE
+        if ($currentUser->getType() == 'administrator') {
+            $this->putItem("page_title", self::$t->translate('Institution'));
+            $this->putItem("page_subtitle", self::$t->translate('Manage your Institution(s)'));
+
+            $this->putComponent("select2");
+            $this->putComponent("data-tables");
+            $this->putModuleScript("models.courses");
+            $this->putModuleScript("views.courses.view");
+
+            //return array_values($news);
+            $this->display("view.tpl");
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
 
 	/**
 	 * Module Entry Point
@@ -488,7 +577,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		$per_page = 10;
 
 		$currentUser    = $this->getCurrentUser(true);
-		
+
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
@@ -507,7 +596,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		foreach($userCourses as $course) {
 			$course->course['lessons'] = array();
 			$lessons = $course->getCourseLessons(array('return_objects' => false));
-			
+
 			foreach($lessons as $lesson) {
 				if (in_array($lesson['id'], $lessonsIds)) {
 					$lesson['stats'] = $courseStats[$course->course['id']][$login]['lesson_status'][$lesson['id']];
@@ -605,7 +694,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 						new RecursiveArrayIterator($currentContent -> tree)
 						, RecursiveIteratorIterator :: SELF_FIRST
 					)
-				), 
+				),
 				$courseClass
 			);
 		//);
@@ -658,13 +747,13 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		$unitArray['sources'] = array(
 			'materials' => $this->getMaterialsSource($course, $lesson, $content),
 		);
-		
+
 
 		if (unserialize($unitArray['metadata'])) {
 			$unitArray['metadata'] = unserialize($unitArray['metadata']);
 		}
 		if ($unitArray['ctg_type'] == "video") {
-			$unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);   
+			$unitArray['data'] = json_decode(utf8_encode($unitArray['data']), true);
 			if (!is_array($unitArray['data'])) {
 				$unitArray['data'] = $this->getVideoDefaults();
 			} else {
@@ -675,7 +764,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		} else if ($unitArray['ctg_type'] == "tests") {
 
 			$currentTest = new MagesterTest($unitArray['id'], true);
-			
+
 			$testStatus = $currentTest->getStatus($currentUser->user['login']);
 			//var_dump($currentUser->user['login']);
 			//$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
@@ -685,10 +774,10 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 			} else {
 				//$doneTests = MagesterStats::getDoneTestsPerTest(array($currentUser->user['login']), $currentTest->test['id']);
 				$unitArray['data'] = "<h4>TEST DONE!</h4>";
-				//$unitArray['data'] .= "<br />Score: " . $doneTests['score']; 
-				$unitArray['data'] .= "<br />Status: " . $testStatus['status']; 
+				//$unitArray['data'] .= "<br />Score: " . $doneTests['score'];
+				$unitArray['data'] .= "<br />Status: " . $testStatus['status'];
 				//echo "<pre>";
-				
+
 				//$doneTests[$currentTest->test['id']][$currentUser->user['login']]
 			}
 		}
@@ -770,18 +859,18 @@ class CoursesModule extends SysclassModule implements ISummarizable, IWidgetCont
 		$sources = array();
 		$sources_types = array(
 			"video/flv" => "flv",
-			"video/mp4" => "mp4", 
+			"video/mp4" => "mp4",
 			"video/webm" => "webm"
-			
+
 		);
-		
-		foreach($sources_types as $type => $ext) { 
+
+		foreach($sources_types as $type => $ext) {
 			if (file_exists(realpath($plico->get('path/app') . $urlRoot . "video." . $ext))) {
 				$sources[$type] = $urlRoot . "video." . $ext;
 			}
 		}
 		//$sources['video/youtube'] = 'https://www.youtube.com/watch?v=tFxZuewrRE8';
-		
+
 
 		return array(
 			// @todo GET FORMATS QUERYING SERVER
