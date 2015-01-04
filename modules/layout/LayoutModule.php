@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -21,21 +21,26 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 	        $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
 
 	        $groupLabels = array(
-	        	"general" 		=> self::$t->translate('General'),
-	        	"communication" => self::$t->translate('Communication'),
-	        	"users" 		=> self::$t->translate('Users')
+	        	"content" 			=> self::$t->translate('Content'),
+	        	"administration" 	=> self::$t->translate('Administation'),
+	        	"communication" 	=> self::$t->translate('Communication'),
+	        	"users" 			=> self::$t->translate('Users'),
+	        	"not_classified" 	=> self::$t->translate('Not Classified')
 	        );
 	        $modulesOrder = $this->getResource('layout.linkable.order');
 
 			$links = array();
 			foreach($modulesOrder as $module_id) {
+				//var_dump($modulesOrder);
+				//var_dump(array_keys($modules));
+				//exit;
 				if (array_key_exists($module_id, $modules)) {
 					$links = array_merge_recursive($links, $modules[$module_id]->getLinks());
 				}
 				unset($modulesKeys[$module_id]);
 			}
 
-	        $links = $this->sortModules("layout.linkable.groups.order", $links);
+	        $links = $this->sortModules("layout.linkable.groups.order", $links, "not_classified");
 
 	        foreach($links as $group_id => $group) {
 	        	if (array_key_exists($group_id, $groupLabels)) {
@@ -175,8 +180,8 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 			//	"default"   => array_keys($modules),
 			//	"layout.sections.topbar"    => array("messages", "forum"),
 			//	"users.overview.notification.order" => array("messages", "news")
-				'layout.linkable.order'			=> array("news", "users"),
-				"layout.linkable.groups.order" 	=> array("general", "users", "communication")
+				'layout.linkable.order'			=> array("institution", "courses", "news", "users"),
+				"layout.linkable.groups.order" 	=> array("administration", "content", "users", "communication", "not_classified")
 			)
 		);
 
@@ -199,16 +204,25 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 			return $this->layoutSpec['resources']['default'];
 		}
 	}
-	public function sortModules($sortId, $data) {
+	public function sortModules($sortId, $data, $preserveUncontainedKey = false) {
 		$resource = $this->getResource($sortId);
 		$dataArray = array();
 		if ($resource) {
 			foreach($resource as $sortIndex) {
 				if (array_key_exists($sortIndex, $data)) {
 					$dataArray[$sortIndex] = $data[$sortIndex];
+					unset($data[$sortIndex]);
+				} else {
+
 				//} else {
-					//$dataArray[$sortIndex] = false;    
+					//$dataArray[$sortIndex] = false;
 				}
+			}
+		}
+		if (strlen($preserveUncontainedKey) > 0 && count($data) > 0) {
+			$dataArray[$preserveUncontainedKey] = array();
+			foreach($data as $key => $uncontained) {
+				$dataArray[$preserveUncontainedKey] = array_merge($dataArray[$preserveUncontainedKey], $uncontained);
 			}
 		}
 		return $dataArray;
@@ -224,7 +238,7 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 		return array_key_exists($layout_id, $this->layouts);
 	}
 	public function getLayout($layout_id = 'default') {
-		// CHECK AND MERGE LAYOUT 
+		// CHECK AND MERGE LAYOUT
 		$layoutPaths = explode(".", $layout_id);
 		for($i = count($layoutPaths); $i > 0; $i--) {
 			$path = array_slice ( $layoutPaths, 0, $i);
@@ -236,8 +250,8 @@ class LayoutModule extends SysclassModule implements IWidgetContainer
 		if (!$this->layoutExists($layout_id)) {
 			$layout_id = 'default';
 		}
-		$this->layoutSpec = $this->layouts[$layout_id];	
-		
+		$this->layoutSpec = $this->layouts[$layout_id];
+
 		$defaultArray = $this->layoutSpec['resources']['default'];
 
 		foreach($this->layoutSpec['resources'] as $key => $resource) {

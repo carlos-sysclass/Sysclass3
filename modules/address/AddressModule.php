@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -12,22 +12,10 @@ class AddressModule extends SysclassModule implements IBlockProvider
 	// IBlockProvider
 	public function registerBlocks() {
 		return array(
-			'address.add' => function($params) {
-				// TODO PUT A CONTRY SELECT AND OPEN FIELDS BASED ON CONTRY CONFIGURATION
-				/*
- 				contact
- 				phone
- 				zip
- 				address
- 				number
- 				address2
- 				city
- 				state
- 				country_code
- 				*/
- 				
-        		return $this->template("blocks/add", true);
-        		
+			'address.add' => function($data, $self) {
+        		$self->putSectionTemplate("address", "blocks/add");
+
+        		return true;
 			}
 		);
 	}

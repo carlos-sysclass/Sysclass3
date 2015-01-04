@@ -3472,3 +3472,6 @@ CREATE TABLE IF NOT EXISTS `mod_institution` (
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_name`, `contact`, `observations`, `zip`, `address`, `number`, `address2`, `city`, `state`, `country_code`, `phone`, `active`) VALUES
+(1, '4', 'Wiseflex', 'Wiseflex', '', '', '', '', '', '', 'Curitiba', 'PR', 'BR', '', 1);

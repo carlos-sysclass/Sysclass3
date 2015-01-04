@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -18,7 +18,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 $self->putSectionTemplate("foot", "dialogs/edit.token");
 
                 return true;
-                
+
             }
         );
     }
@@ -71,7 +71,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $data = $this->getItemsAction();
         //if ($this->getCurrentUser(true)->getType() == 'administrator') {
             return array(
-                'general' => array(
+                'administration' => array(
                     array(
                         'count' => count($data),
                         'text'  => self::$t->translate('Languages'),
@@ -148,7 +148,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 )
             )
         );
-        
+
 
 
         return $actions[$request];
@@ -199,7 +199,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 'user_language'     => self::$t->getUserLanguageCode(),
                 'system_language'   => self::$t->getSystemLanguageCode()
             ));
-            
+
             $this->display("view.tpl");
         //} else {
         //    $this->redirect($this->getSystemUrl('home'), "", 401);
@@ -254,7 +254,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $this->putItem("language_codes", $bingTranslationsCodes);
 
         // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-        // Ex: 
+        // Ex:
         // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
         $this->putBlock("permission.add");
 
@@ -278,7 +278,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
      */
     public function getItemAction($id) {
 
-        $editItem = $this->model("translate")->getItem($id);     
+        $editItem = $this->model("translate")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }
@@ -298,7 +298,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Language saved with success"), 
+                    self::$t->translate("Language saved with success"),
                     "success"
                 );
             } else {
@@ -354,7 +354,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             $this->putComponent("select2");
             $this->putComponent("data-tables");
 
-            
+
 
             $this->putModuleScript("models.translate");
             $this->putModuleScript("views.translate.view.token");
@@ -368,7 +368,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 'user_language'     => self::$t->getUserLanguageCode(),
                 'system_language'   => self::$t->getSystemLanguageCode()
             ));
-            
+
             $this->display("view.token.tpl");
         //} else {
         //    $this->redirect($this->getSystemUrl('home'), "", 401);
@@ -412,7 +412,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
                 //var_dump($matches);
                 foreach($matches as $match) {
-                    
+
                     $tokens[] = array(
                         'language_code'   => $systemLang,
                         //'filepath'      => $file,
@@ -428,7 +428,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
      private function getDirectoryTemplateFiles($dir) {
         $files = glob($dir . "*.tpl");
-       
+
         $directories = glob($dir . "*", GLOB_ONLYDIR + GLOB_MARK);
         foreach($directories as $dir) {
             $files = array_merge($files, $this->getDirectoryTemplateFiles($dir));
@@ -460,7 +460,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             );
 
             return $data;
-    
+
         } else {
             return $this->invalidRequestError();
         }
@@ -490,7 +490,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
             // GET ALL TOKENS FROM SRC LANG
             $translateTokens = $translateTokensModel->cache(false)->getAssociativeLanguageTokens($from);
             $translateTokens = array_values($translateTokens);
-            
+
             //$translateTokens = array_slice($translateTokens, 0 , 5, true);
 
             $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $from, $to);
@@ -554,7 +554,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $tokensModel = $this->model("translate");
 
         $itemsData = $tokensModel->getItems();
-        
+
         if ($datatable === 'datatable') {
             $itemsData = array_values($itemsData);
             foreach($itemsData as $key => $item) {
@@ -562,7 +562,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                     "img/flags/%s.png",
                     strtolower($item['country_code'])
                 ));
-                    
+
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
@@ -586,18 +586,6 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     // TODO MOVE THIS FUNCTION TO FRAMWORK (ALIAS TO {Plico_GetResource file=""})
-    public function translateHttpResource($file) {
-        $plico = PlicoLib::instance();
-        $templatedPath = $plico->get('default/resource') . $file;
-
-        $themedPath = sprintf($templatedPath, $plico->get('theme'));
-        
-        if (file_exists($plico->get('path/app/www') . $themedPath)) {
-            return $themedPath;
-        } else {
-            return sprintf($templatedPath, $plico->get('default/theme'));
-        }
-    }
 
     /**
      * Get all tokens processed by the system
@@ -616,7 +604,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         $tokensModel = $this->model("translate/tokens");
 
         $itemsData = $tokensModel->getItemsGroupByToken();
-        
+
         if ($datatable === 'datatable') {
             $itemsData = array_values($itemsData);
             foreach($itemsData as $key => $item) {

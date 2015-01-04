@@ -28,18 +28,23 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            $itemsData = $this->model("courses/collection")->addFilter(array(
+                'active'    => true
+            ))->getItems();
+            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+
             return array(
-                'general' => array(
+                'content' => array(
                     array(
-                        //'count' => '20',
+                        'count' => count($items),
                         'text'  => self::$t->translate('Courses'),
                         'icon'  => 'icon-home',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
             );
-        //}
+        }
     }
 
     /* IBreadcrumbable */
@@ -151,13 +156,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         //var_dump($itemsData);
 
         $itemsCollection = $this->model("courses/collection");
-
+        $itemsData = $itemsCollection->getItems();
+        $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
         if ($type === 'combo') {
             $q = $_GET['q'];
-
-            $itemsData = $itemsCollection->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             $items = $itemsCollection->filterCollection($items, $q);
 
@@ -170,8 +173,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
             }
             return $result;
         } elseif ($type === 'datatable') {
-            $itemsData = $itemsCollection->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             $items = array_values($items);
             foreach($items as $key => $item) {
@@ -194,9 +195,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
                 'aaData'                => array_values($items)
             );
         }
-
-        $itemsData = $itemsCollection->getItems();
-        $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
         return array_values($items);
     }
@@ -314,6 +312,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		$q = $_GET['q'];
 
 		switch ($type) {
+            /*
 			case 'courses': {
 				$courses = MagesterCourse::getCourses();
 				if (!empty($q)) {
@@ -329,6 +328,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 				}
 				return $result;
 			}
+            */
 			case 'lessons':
 			default : {
 				$lessons = MagesterLesson::getLessons();

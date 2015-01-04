@@ -42,18 +42,24 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+
+            $itemsData = $this->model("institution/collection")->addFilter(array(
+                'active'    => true
+            ))->getItems();
+            $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+
             return array(
-                'general' => array(
+                'administration' => array(
                     array(
-                        //'count' => '20',
+                        'count' => count($items),
                         'text'  => self::$t->translate('Institution'),
                         'icon'  => 'icon-home',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
             );
-        //}
+        }
     }
     /* IBreadcrumbable */
     public function getBreadcrumb() {
@@ -204,24 +210,42 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      * Get all news visible to the current user
      *
      * @url GET /items/me
-     * @url GET /items/me/:datatable
+     * @url GET /items/me/:type
      */
-    public function getItemsAction($datatable)
+    public function getItemsAction($type)
     {
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $itemsData = $this->model("institution")->addFilter(array(
-            'active' => 1
-        ))->getItems();
-        //echo "<pre>";
-        //var_dump($itemsData);
-
+        $itemsCollection = $this->model("institution/collection");
+        $itemsData = $itemsCollection->getItems();
         $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
-        if ($datatable === 'datatable') {
+        if ($type === 'combo') {
+            $q = $_GET['q'];
+
+            $items = $itemsCollection->filterCollection($items, $q);
+
+            foreach($items as $item) {
+                // @todo Group by course
+                $result[] = array(
+                    'id'    => intval($item['id']),
+                    'name'  => $item['name']
+                );
+            }
+            return $result;
+        } elseif ($type === 'datatable') {
+            $itemsData = $this->model("institution/collection")->getItems();
+            $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+
+
             $items = array_values($items);
             foreach($items as $key => $item) {
+                $items[$key]['country_code'] = $this->translateHttpResource(sprintf(
+                    "img/flags/%s.png",
+                    strtolower($item['country_code'])
+                ));
+
                 $items[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
@@ -241,6 +265,9 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 'aaData'                => array_values($items)
             );
         }
+        $itemsData = $this->model("institution/collection")->getItems();
+        $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+
         return array_values($items);
     }
 

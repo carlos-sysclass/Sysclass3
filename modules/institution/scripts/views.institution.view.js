@@ -47,9 +47,8 @@ $SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $,
 		            { "mData": "id", "sClass" : "text-center"},
 		            { "mData": "name" },
 		            { "mData": "city"},
-		            { "mData": "state"},
+		            { "mData": "state", "sClass" : "text-center"},
 		            { "mData": "country_code", "sClass" : "text-center"},
-		            { "mData": null, "sClass" : "text-center"},
 		            { "mData": "options", 'sType' : 'table-options' },
 		        ]
 		        		/*
@@ -60,7 +59,7 @@ $SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $,
 						<th class="text-center">{translateToken value="Country"}</th>
 						<th class="text-center">{translateToken value="Active"}</th>
 						<th class="text-center">{translateToken value="Enrolled Users"}</th>
-						<th class="text-center table-options">{translateToken value="Actions"}</th>	        
+						<th class="text-center table-options">{translateToken value="Actions"}</th>
 						*/
         	}
        	});
