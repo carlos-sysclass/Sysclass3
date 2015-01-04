@@ -1,19 +1,19 @@
 ALTER TABLE `module_pagamento_invoices` ADD `invoices_sha_access` TEXT NULL AFTER `invoice_id`;
-	
+
 RENAME TABLE `module_schools` TO `module_ies` ;
-	
+
 INSERT INTO `module_pagto_boleto_ocorrencias` (`codigo` , `descricao`) VALUES ('02', 'ENTRADA CONFIRMADA');
 INSERT INTO `module_pagto_boleto_ocorrencias` (`codigo` , `descricao`) VALUES ('09', 'BAIXA SIMPLES');
 INSERT INTO `module_pagto_boleto_ocorrencias` (`codigo` , `descricao`) VALUES ('54', 'TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA');
-	
+
 ALTER TABLE `module_pagto_boleto_ocorrencias` CHANGE `codigo` `id` VARCHAR( 3 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `module_pagto_boleto_ocorrencias` CHANGE `descricao` `description` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL; 
+ALTER TABLE `module_pagto_boleto_ocorrencias` CHANGE `descricao` `description` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
 ALTER TABLE `module_pagto_boleto_liquidacao` CHANGE `codigo` `id` VARCHAR( 3 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `module_pagto_boleto_liquidacao` CHANGE `descricao` `description` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
 RENAME TABLE `module_pagto_boleto_ocorrencias` TO `module_pagamento_boleto_ocorrencias`;
-RENAME TABLE `module_pagto_boleto_liquidacao` TO `module_pagamento_boleto_liquidacao`; 
+RENAME TABLE `module_pagto_boleto_liquidacao` TO `module_pagamento_boleto_liquidacao`;
 
 ALTER TABLE `module_pagamento_invoices` ADD FULLTEXT (`invoice_id`);
 
@@ -108,7 +108,7 @@ ALTER TABLE `module_xenrollment` ADD `ies_id` MEDIUMINT( 8 ) NOT NULL AFTER `tok
 ALTER TABLE `module_xenrollment` CHANGE `ies_id` `ies_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '1';
 
 ALTER TABLE `module_pagamento` ADD `enrollment_id` INT( 11 ) NULL DEFAULT NULL AFTER `payment_id`;
-ALTER TABLE `module_pagamento` ADD `course_id` INT( 11 ) NULL DEFAULT NULL AFTER `enrollment_id`; 
+ALTER TABLE `module_pagamento` ADD `course_id` INT( 11 ) NULL DEFAULT NULL AFTER `enrollment_id`;
 
 UPDATE `courses` SET `enable_registration` = 1, `price_registration` = '440' WHERE `courses`.`id` = 20;
 UPDATE `courses` SET `enable_registration` = 1, `price_registration` = '440' WHERE `courses`.`id` = 21;
@@ -132,7 +132,7 @@ INSERT INTO `module_xpayment_ies_defaults` (`ies_id` ,`vencimento` ,`desconto` ,
 
 INSERT INTO `module_xpayment_ies_defaults` (`ies_id` ,`vencimento` ,`desconto` ,`parcelas` ,`payment_type_id` ,`emitir_vencidos`) VALUES (
 '2', '5', '5.0000', '18', '2', '0');
- 
+
 INSERT INTO `module_xpayment_ies_defaults` (`ies_id` ,`vencimento` ,`desconto` ,`parcelas` ,`payment_type_id` ,`emitir_vencidos`) VALUES (
 '3', '5', '5.0000', '18', '2', '0');
 
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `module_xdocuments_to_courses` (
   PRIMARY KEY (`document_id`, `course_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO module_xdocuments_to_courses (course_id, document_id) 
+INSERT INTO module_xdocuments_to_courses (course_id, document_id)
 SELECT courses.`id` ,doc.`document_id` FROM `module_xdocuments` doc, courses;
 
 
@@ -216,7 +216,7 @@ INSERT INTO module_xdocuments_status (`id`, `name`) VALUES (3, 'em revisão');
 CREATE TABLE IF NOT EXISTS `module_xenrollment_documents_status` (
   `enrollment_id` mediumint(8) DEFAULT NULL,
   `document_id` mediumint(8) NOT NULL,
-  `status_id` smallint(4) default '1', 
+  `status_id` smallint(4) default '1',
   PRIMARY KEY (`enrollment_id`, `document_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -281,15 +281,15 @@ WHERE classe_id = 0;
 
 /* PEGAR MATRÍCULAS PELO SITE ULT */
 SELECT enroll.data_registro, enroll.status_id, enroll_stat.name as status, CONCAT_WS(' ', users.name, users.surname) as nome, users.login, users.email, det.telefone, c.name as curso, ut.name as status, users.active as ativo
-FROM users_to_courses uc 
-LEFT JOIN users ON (uc.users_LOGIN = users.login) 
+FROM users_to_courses uc
+LEFT JOIN users ON (uc.users_LOGIN = users.login)
 LEFT JOIN courses c ON (uc.courses_ID = c.id)
 LEFT JOIN user_types ut ON (users.user_types_ID  = ut.id)
 LEFT JOIN module_xuser det ON (users.id = det.id)
 LEFT OUTER JOIN module_xenrollment enroll ON (users.id = enroll.users_id AND uc.courses_ID = enroll.courses_id)
 LEFT OUTER JOIN module_xenrollment_statuses enroll_stat ON (enroll.status_id = enroll_stat.id)
-WHERE 
-    users.user_types_ID IN ( 6, 12, 10, 16 ) AND users.user_type = 'student' 
+WHERE
+    users.user_types_ID IN ( 6, 12, 10, 16 ) AND users.user_type = 'student'
 ORDER BY enroll.data_registro DESC;
 
 ALTER TABLE `module_xdocuments_to_courses` ADD `required` TINYINT( 1 ) NOT NULL DEFAULT '1'
@@ -466,7 +466,7 @@ CREATE TABLE IF NOT EXISTS `module_xprojects` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
-INSERT INTO  `module_xprojects` (`id` ,`title` ,`description` ,`scope_id`) VALUES (NULL ,  'Projeto teste',  
+INSERT INTO  `module_xprojects` (`id` ,`title` ,`description` ,`scope_id`) VALUES (NULL ,  'Projeto teste',
 'Teste de projeto... A descrição poderá ser alterada para cada um das instâncias de execução do projeto. Um grupo de alunos da mesma turma, ou da mesma instituição, ou do mesmo polo, etc...',  '6');
 
 CREATE TABLE IF NOT EXISTS `module_xprojects_topics` (
@@ -644,11 +644,11 @@ CREATE TABLE IF NOT EXISTS `module_xpayment_to_send_list` (
 ALTER TABLE `module_xpayment_to_send_list` DROP PRIMARY KEY;
 ALTER TABLE `module_xpayment_to_send_list` ADD `ID` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 ALTER TABLE `module_xpayment_to_send_list` CHANGE `ID` `id` BIGINT( 20 ) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `module_xpayment_to_send_list` ADD `data_envio` TIMESTAMP NOT NULL AFTER `id`;a 
-ALTER TABLE `module_xpayment_to_send_list` CHANGE `data_envio` `data_envio` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+ALTER TABLE `module_xpayment_to_send_list` ADD `data_envio` TIMESTAMP NOT NULL AFTER `id`;a
+ALTER TABLE `module_xpayment_to_send_list` CHANGE `data_envio` `data_envio` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 RENAME TABLE `module_xpayment_to_send_list` TO `maguser_root`.`module_xpayment_to_send_list_item` ;
 ALTER TABLE `module_xpayment_to_send_list_item` DROP `data_envio` ;
-ALTER TABLE `module_xpayment_to_send_list_item` CHANGE `id` `send_id` BIGINT( 20 ) NOT NULL AUTO_INCREMENT 
+ALTER TABLE `module_xpayment_to_send_list_item` CHANGE `id` `send_id` BIGINT( 20 ) NOT NULL AUTO_INCREMENT
 
 CREATE TABLE IF NOT EXISTS `module_xpayment_to_send_list` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -683,13 +683,13 @@ INSERT INTO `module_xcms_pages_to_blocks` (`page_id`, `block_id`, `tag`) VALUES 
 ----- SQL PARA ADAPTAR PARA O MODULO DE PAGAMENTO
 
 /*
-SELECT * FROM module_pagamento_invoices 
+SELECT * FROM module_pagamento_invoices
 WHERE pago = 2  AND parcela_index = 1
 ORDER BY pago DESC*/
 
 
 /*
-SELECT * FROM module_pagamento_invoices 
+SELECT * FROM module_pagamento_invoices
 WHERE payment_id NOT IN (SELECT payment_id FROM module_pagamento)
 */
 /*
@@ -700,23 +700,23 @@ LEFT JOIN module_pagamento_invoices inv ON (inv.payment_id = ret.payment_id AND 
 
 
 
-SELECT 
+SELECT
 enr.id, enr.status_id, enr.courses_id, enr.users_id,
 
 inv.payment_type_id, GROUP_CONCAT(pag2ies.ies_id ORDER BY pag2ies.ies_id ASC SEPARATOR ',') as ies_id, GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, inv.parcela_index, (select count(payment_id) FROM module_pagamento_invoices WHERE payment_id = inv.payment_id) as total_parcelas, inv.payment_id, inv.invoice_id AS nosso_numero, users.id as user_id, users.login, users.name, users.surname, inv.data_vencimento, inv.valor as valor_total
-FROM module_pagamento_invoices inv 
-JOIN module_pagamento pag ON (pag.payment_id = inv.payment_id) JOIN users ON (pag.user_id = users.id) 
+FROM module_pagamento_invoices inv
+JOIN module_pagamento pag ON (pag.payment_id = inv.payment_id) JOIN users ON (pag.user_id = users.id)
 JOIN module_xenrollment enr ON (inv.payment_id = enr.payment_id)
-LEFT OUTER JOIN module_xpayment_types_to_xies pag2ies ON (pag.payment_type_id = pag2ies.payment_type_id) LEFT OUTER JOIN module_ies ies ON (pag2ies.ies_id = ies.id) 
-WHERE pag2ies.ies_id IN (0,1) 
-AND inv.pago = 0 
+LEFT OUTER JOIN module_xpayment_types_to_xies pag2ies ON (pag.payment_type_id = pag2ies.payment_type_id) LEFT OUTER JOIN module_ies ies ON (pag2ies.ies_id = ies.id)
+WHERE pag2ies.ies_id IN (0,1)
+AND inv.pago = 0
 AND inv.data_vencimento > CURRENT_DATE
 AND inv.data_vencimento < DATE_ADD(CURRENT_DATE, INTERVAL '10' DAY)
-AND inv.data_vencimento <> '0000-00-00' 
-AND inv.data_vencimento <> '0000-00-00' 
-AND inv.parcela_index > 1 
+AND inv.data_vencimento <> '0000-00-00'
+AND inv.data_vencimento <> '0000-00-00'
+AND inv.parcela_index > 1
 -- AND enr.status_id = 4
-GROUP BY inv.payment_id, inv.parcela_index 
+GROUP BY inv.payment_id, inv.parcela_index
 ORDER BY enr.id, enr.status_id, enr.courses_id;
 
 
@@ -726,35 +726,35 @@ SELECT GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, 
 FROM module_pagamento pag
 JOIN module_xenrollment enr ON (pag.payment_id = enr.payment_id)
 JOIN courses c ON (c.id = enr.courses_id)
-LEFT join users ON (pag.user_id = users.id) 
-LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id) 
-LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id) 
-LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id) 
+LEFT join users ON (pag.user_id = users.id)
+LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id)
+LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id)
+LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id)
 
-WHERE 
-pag2ies.ies_id IN (0,1) 
-AND pag2ies.ies_id = 1 
-AND inv.parcela_index = 1 
-
-
+WHERE
+pag2ies.ies_id IN (0,1)
+AND pag2ies.ies_id = 1
+AND inv.parcela_index = 1
 
 
-GROUP BY ret.payment_id, ret.parcela_index 
+
+
+GROUP BY ret.payment_id, ret.parcela_index
 ORDER BY ret.data_pagamento DESC, users.name ASC ;
 
 
 
 /*
-DELETE FROM module_xenrollment 
-WHERE 
-users_id = 0 
+DELETE FROM module_xenrollment
+WHERE
+users_id = 0
 OR courses_id = 0;
 */
 
 /*
-SELECT 
+SELECT
 enr.id, enr.users_id, inv.pago, enr.courses_id, enr.payment_id, enr.status_id,
-inv.parcela_index, inv.invoice_id as nosso_numero, inv.data_vencimento, 
+inv.parcela_index, inv.invoice_id as nosso_numero, inv.data_vencimento,
 
 
 GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(users.name, ' ', users.surname) as aluno, users.login,  c.name as curso, (select count(payment_id) FROM module_pagamento_invoices WHERE payment_id = inv.payment_id) as total_parcelas
@@ -762,51 +762,51 @@ GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(
 FROM module_pagamento pag
 JOIN module_xenrollment enr ON (pag.payment_id = enr.payment_id)
 JOIN courses c ON (c.id = enr.courses_id)
-LEFT join users ON (pag.user_id = users.id) 
-LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id) 
-LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id) 
-LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id) 
+LEFT join users ON (pag.user_id = users.id)
+LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id)
+LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id)
+LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id)
 
-WHERE 
-pag2ies.ies_id IN (0,1) 
-AND pag2ies.ies_id = 1 
-AND inv.parcela_index = 1 
+WHERE
+pag2ies.ies_id IN (0,1)
+AND pag2ies.ies_id = 1
+AND inv.parcela_index = 1
 AND inv.pago <> 0
 AND inv.pago <> 2
 
-GROUP BY inv.payment_id, inv.parcela_index 
+GROUP BY inv.payment_id, inv.parcela_index
 ORDER BY inv.pago DESC, inv.data_vencimento DESC, users.name ASC ;
 */
 
 
 /*
-SELECT 
+SELECT
 
 GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(users.name, ' ', users.surname) as aluno, users.login,  c.name as curso, (select count(payment_id) FROM module_pagamento_invoices WHERE payment_id = inv.payment_id) as total_parcelas
 FROM module_pagamento pag
 JOIN module_xenrollment enr ON (pag.payment_id = enr.payment_id)
 JOIN courses c ON (c.id = enr.courses_id)
-LEFT join users ON (pag.user_id = users.id) 
-LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id) 
-LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id) 
-LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id) 
+LEFT join users ON (pag.user_id = users.id)
+LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id)
+LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id)
+LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id)
 
-WHERE 
-pag2ies.ies_id IN (0,1) 
-AND pag2ies.ies_id = 1 
-AND inv.parcela_index = 1 
+WHERE
+pag2ies.ies_id IN (0,1)
+AND pag2ies.ies_id = 1
+AND inv.parcela_index = 1
 AND inv.pago <> 0
 AND inv.pago <> 2
 
-GROUP BY inv.payment_id, inv.parcela_index 
+GROUP BY inv.payment_id, inv.parcela_index
 ORDER BY inv.pago DESC, inv.data_vencimento DESC, users.name ASC ;
 */
 
 
 /*
-SELECT 
+SELECT
 enr.id, enr.users_id, inv.pago, enr.courses_id, enr.payment_id, enr.status_id,
-inv.parcela_index, inv.invoice_id as nosso_numero, inv.data_vencimento, 
+inv.parcela_index, inv.invoice_id as nosso_numero, inv.data_vencimento,
 
 
 GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(users.name, ' ', users.surname) as aluno, users.login,  c.name as curso, (select count(payment_id) FROM module_pagamento_invoices WHERE payment_id = inv.payment_id) as total_parcelas
@@ -814,43 +814,43 @@ GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(
 FROM module_pagamento pag
 JOIN module_xenrollment enr ON (pag.payment_id = enr.payment_id)
 JOIN courses c ON (c.id = enr.courses_id)
-LEFT join users ON (pag.user_id = users.id) 
-LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id) 
-LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id) 
-LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id) 
+LEFT join users ON (pag.user_id = users.id)
+LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id)
+LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id)
+LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id)
 
-WHERE 
-pag2ies.ies_id IN (0,1) 
-AND pag2ies.ies_id = 1 
-AND inv.parcela_index = 1 
+WHERE
+pag2ies.ies_id IN (0,1)
+AND pag2ies.ies_id = 1
+AND inv.parcela_index = 1
 AND inv.pago <> 0
 AND inv.pago <> 2
 
-GROUP BY inv.payment_id, inv.parcela_index 
+GROUP BY inv.payment_id, inv.parcela_index
 ORDER BY inv.pago DESC, inv.data_vencimento DESC, users.name ASC ;
 */
 
 
 
-SELECT 
+SELECT
 
 GROUP_CONCAT(ies.nome ORDER BY pag2ies.ies_id ASC SEPARATOR '/') as ies, CONCAT(users.name, ' ', users.surname) as aluno, users.login,  c.name as curso, (select count(payment_id) FROM module_pagamento_invoices WHERE payment_id = inv.payment_id) as total_parcelas
 FROM module_pagamento pag
 JOIN module_xenrollment enr ON (pag.payment_id = enr.payment_id)
 JOIN courses c ON (c.id = enr.courses_id)
-LEFT join users ON (pag.user_id = users.id) 
-LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id) 
-LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id) 
-LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id) 
+LEFT join users ON (pag.user_id = users.id)
+LEFT join module_pagamento_invoices inv ON (inv.payment_id = pag.payment_id)
+LEFT OUTER join module_xpayment_types_to_xies pag2ies ON (inv.payment_type_id = pag2ies.payment_type_id)
+LEFT OUTER join module_ies ies ON (pag2ies.ies_id = ies.id)
 
-WHERE 
-pag2ies.ies_id IN (0,1) 
-AND pag2ies.ies_id = 1 
-AND inv.parcela_index = 1 
+WHERE
+pag2ies.ies_id IN (0,1)
+AND pag2ies.ies_id = 1
+AND inv.parcela_index = 1
 AND inv.pago <> 0
 AND inv.pago <> 2
 
-GROUP BY inv.payment_id, inv.parcela_index 
+GROUP BY inv.payment_id, inv.parcela_index
 ORDER BY inv.pago DESC, inv.data_vencimento DESC, users.name ASC;
 
 
@@ -859,7 +859,7 @@ ORDER BY inv.pago DESC, inv.data_vencimento DESC, users.name ASC;
 
 /* BOLETOS A PAGAR */
 /*
-SELECT pag.payment_id, c.id as course_id, u.id as user_id, CONCAT(u.name, ' ', u.surname) as aluno, u.login, c.name as curso, inv.invoice_id nosso_numero, 
+SELECT pag.payment_id, c.id as course_id, u.id as user_id, CONCAT(u.name, ' ', u.surname) as aluno, u.login, c.name as curso, inv.invoice_id nosso_numero,
 inv.data_vencimento,
 (SELECT status_id FROM module_pagamento_invoices WHERE parcela_index = 1 AND payment_id = inv.payment_id),
 CASE (SELECT pago FROM module_pagamento_invoices WHERE parcela_index = 1 AND payment_id = inv.payment_id)
@@ -880,7 +880,7 @@ AND u.active = 1
 ORDER BY u.name
 */
 
-SELECT pag.payment_id, c.id as course_id, u.id as user_id, u.active, CONCAT(u.name, ' ', u.surname) as aluno, u.login, c.name as curso, inv.invoice_id nosso_numero, inv.parcela_index, 
+SELECT pag.payment_id, c.id as course_id, u.id as user_id, u.active, CONCAT(u.name, ' ', u.surname) as aluno, u.login, c.name as curso, inv.invoice_id nosso_numero, inv.parcela_index,
 inv.data_vencimento,
 (SELECT data_vencimento FROM module_pagamento_invoices WHERE parcela_index = (inv.parcela_index-1) AND payment_id = inv.payment_id),
 CASE (SELECT pago FROM module_pagamento_invoices WHERE parcela_index = (inv.parcela_index-1) AND payment_id = inv.payment_id)
@@ -893,7 +893,7 @@ LEFT JOIN users u ON (pag.user_id = u.id)
 LEFT JOIN courses c ON (pag.course_id = c.id)
 WHERE inv.data_vencimento > '2011-09-05'
 AND inv.data_vencimento < '2011-09-30'
-/* AND parcela_index = 2 */ 
+/* AND parcela_index = 2 */
 /* AND pag.payment_type_id = 1 */
 AND (SELECT pago FROM module_pagamento_invoices WHERE parcela_index = (inv.parcela_index-1) AND payment_id = inv.payment_id) <> 0
 /* AND c.id NOT IN (26, 30) */
@@ -907,7 +907,7 @@ ORDER BY pag.payment_id, u.name
 
 
 - Email da Adriane
-[ ok ]	- Disponibilizar acesso a fati e fajar 
+[ ok ]	- Disponibilizar acesso a fati e fajar
 [ ok ] 	- Escolhas dos temas do grupo fora do fórum
 	- Domínio dos alunos para o projeto.
 [ ok ]	- Está aparecendo a aula inaugural (no mural) em todos os cursos.
@@ -932,7 +932,7 @@ CREATE TABLE IF NOT EXISTS `module_xprojects` (
 ) ENGINE=MyISAM;# MySQL returned an empty result set (i.e. zero rows).
 
 /*
-INSERT INTO  `module_xprojects` (`id` ,`title` ,`description` ,`scope_id`) VALUES (NULL ,  'Projeto teste',  
+INSERT INTO  `module_xprojects` (`id` ,`title` ,`description` ,`scope_id`) VALUES (NULL ,  'Projeto teste',
 'Teste de projeto... A descrição poderá ser alterada para cada um das instâncias de execução do projeto. Um grupo de alunos da mesma turma, ou da mesma instituição, ou do mesmo polo, etc...',  '6');
 */
 CREATE TABLE IF NOT EXISTS `module_xprojects_topics` (
@@ -1202,7 +1202,7 @@ CREATE TABLE IF NOT EXISTS `module_xcontent_schedule_users` (
 /*
 21 - Engenharia de Software - IBM
 	91 - Modelagem de Negócio e Gerência de Requisitos de Software com Casos de Uso
-		2067 - Avaliação Presencial	
+		2067 - Avaliação Presencial
 			15 => 2011/1
 	94 - Gerência de Projetos I (PMBOK)
 		2066 - Avaliação Presencial
@@ -1477,7 +1477,7 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 
 
 -- POLO 2
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (11, 1, '2011-12-12 14:00:00', '2011-12-12 17:00:00', 1),
 (11, 2, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
 (11, 3, '2011-12-13 14:00:00', '2011-12-13 17:00:00', 1),
@@ -1491,27 +1491,27 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (11, 11, '2011-12-17 09:00:00', '2011-12-17 12:00:00', 1),
 (11, 12, '2011-12-17 14:00:00', '2011-12-16 17:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 12, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 13, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 14, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 15, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 16, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 17, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 18, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 19, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 20, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 11;
 
 -- POLO 3
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (21, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (21, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (21, 3, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
@@ -1528,28 +1528,28 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (21, 14, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1),
 (21, 15, '2011-12-16 19:00:00', '2011-12-16 22:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 22, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 23, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 24, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 25, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 26, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 27, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 28, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 29, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 30, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 21;
 
 
 -- POLO 4
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (31, 1, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (31, 2, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
 (31, 3, '2011-12-13 09:00:00', '2011-12-13 12:00:00', 1),
@@ -1565,29 +1565,29 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (31, 13, '2011-12-17 09:00:00', '2011-12-17 12:00:00', 1),
 (31, 14, '2011-12-17 13:00:00', '2011-12-17 18:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 32, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 33, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 34, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 35, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 36, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 37, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 38, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 39, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 40, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 31;
 
 
 
 -- POLO 5
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (41, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (41, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (41, 3, '2011-12-13 09:00:00', '2011-12-13 12:00:00', 1),
@@ -1600,30 +1600,30 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (41, 10, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1);
 
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 42, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 43, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 44, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 45, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 46, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 47, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 48, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 49, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 50, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 41;
 
 
 
 
 -- POLO 6
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (51, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (51, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (51, 3, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
@@ -1640,30 +1640,30 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (51, 14, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1),
 (51, 15, '2011-12-17 12:00:00', '2011-12-17 12:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 52, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 53, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 54, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 55, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 56, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 57, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 58, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 59, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 60, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 51;
 
 
 
 
 -- POLO 9
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (61, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (61, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (61, 3, '2011-12-13 09:00:00', '2011-12-13 12:00:00', 1),
@@ -1678,28 +1678,28 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (61, 12, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1),
 
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 62, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 63, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 64, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 65, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 66, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 67, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 68, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 69, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 70, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 61;
 
 
 -- POLO 10
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (71, 1, '2011-12-13 09:00:00', '2011-12-13 12:00:00', 1),
 (71, 2, '2011-12-13 13:00:00', '2011-12-13 18:00:00', 1),
 (71, 3, '2011-12-14 09:00:00', '2011-12-14 12:00:00', 1),
@@ -1711,27 +1711,27 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (71, 9, '2011-12-16 09:00:00', '2011-12-16 12:00:00', 1),
 (71, 10, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 72, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 73, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 74, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 75, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 76, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 77, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 78, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 79, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 80, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 71;
 
 -- POLO 11
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (81, 1, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (81, 2, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
 (81, 3, '2011-12-13 13:00:00', '2011-12-13 18:00:00', 1),
@@ -1744,29 +1744,29 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (81, 10, '2011-12-16 19:00:00', '2011-12-16 22:00:00', 1),
 (81, 11, '2011-12-17 09:00:00', '2011-12-17 12:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 82, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 83, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 84, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 85, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 86, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 87, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 88, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 89, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 90, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 81;
 
 
 
 -- POLO 13
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (91, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (91, 2, '2011-12-12 14:00:00', '2011-12-12 18:00:00', 1),
 (91, 3, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
@@ -1783,23 +1783,23 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (91, 14, '2011-12-16 14:00:00', '2011-12-16 18:00:00', 1),
 (91, 15, '2011-12-17 08:00:00', '2011-12-17 12:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 92, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 93, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 94, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 95, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 96, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 97, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 98, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 99, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 100, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 91;
 
 
@@ -1807,35 +1807,35 @@ SELECT 100, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_ite
 
 
 -- POLO 14
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (101, 1, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
 (101, 2, '2011-12-13 19:00:00', '2011-12-13 22:00:00', 1),
 (101, 3, '2011-12-14 19:00:00', '2011-12-14 22:00:00', 1),
 (101, 4, '2011-12-15 19:00:00', '2011-12-15 22:00:00', 1),
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 102, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 103, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 104, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 105, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 106, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 107, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 108, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 109, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 110, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 101;
 
 
 
 -- POLO 15
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (111, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (111, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (111, 3, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
@@ -1852,82 +1852,82 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (111, 14, '2011-12-16 13:00:00', '2011-12-16 18:00:00', 1),
 (111, 15, '2011-12-16 19:00:00', '2011-12-16 22:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 112, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 113, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 114, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 115, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 116, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 117, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 118, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 119, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 120, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 111;
 
 
 
 -- POLO 17
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (121, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (121, 2, '2011-12-13 09:00:00', '2011-12-13 12:00:00', 1),
 (121, 3, '2011-12-16 09:00:00', '2011-12-16 12:00:00', 1),
 (121, 4, '2011-12-17 13:00:00', '2011-12-17 18:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 122, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 123, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 124, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 125, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 126, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 127, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 128, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 129, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 130, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 121;
 
 
 -- POLO 19
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (131, 1, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
 (131, 2, '2011-12-13 19:00:00', '2011-12-13 22:00:00', 1),
 (131, 3, '2011-12-14 19:00:00', '2011-12-14 22:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 132, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 133, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 134, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 135, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 136, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 137, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 138, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 139, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 140, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 131;
 
 
 -- POLO 20
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (141, 1, '2011-12-12 09:00:00', '2011-12-12 12:00:00', 1),
 (141, 2, '2011-12-12 13:00:00', '2011-12-12 18:00:00', 1),
 (141, 3, '2011-12-12 19:00:00', '2011-12-12 22:00:00', 1),
@@ -1945,23 +1945,23 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (141, 15, '2011-12-16 19:00:00', '2011-12-16 22:00:00', 1),
 (141, 16, '2011-12-17 09:00:00', '2011-12-17 12:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 142, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 143, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 144, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 145, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 146, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 147, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 148, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 149, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 150, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 141;
 
 
@@ -1996,7 +1996,7 @@ INSERT INTO `module_xcontent_schedule` (`id`, `content_id`, `xentify_scope_id`, 
 
 
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) VALUES
 (161, 1, '2011-12-14 13:00:00', '2011-12-14 18:00:00', 1),
 (161, 2, '2011-12-14 19:00:00', '2011-12-14 22:00:00', 1),
 (161, 3, '2011-12-15 13:00:00', '2011-12-15 18:00:00', 1),
@@ -2005,23 +2005,23 @@ INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `
 (161, 6, '2011-12-16 19:00:00', '2011-12-16 22:00:00', 1),
 (161, 7, '2011-12-17 09:00:00', '2011-12-17 12:00:00', 1);
 
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 162, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 163, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 164, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 165, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 166, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 167, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 168, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 169, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
-INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`) 
+INSERT INTO `module_xcontent_schedule_itens` (`schedule_id`, `index`, `start`, `end`, `active`)
 SELECT 170, `index`, `start`, `end`, `active` FROM `module_xcontent_schedule_itens` WHERE schedule_id = 161;
 
 
@@ -2094,7 +2094,7 @@ ALTER TABLE `module_xcontent_schedule_contents` DROP PRIMARY KEY ;
 
 ALTER TABLE `module_xcontent_schedule_contents` ADD PRIMARY KEY ( `schedule_id` , `course_id` , `content_id` ) ;
 
-UPDATE `module_xcontent_schedule_contents` 
+UPDATE `module_xcontent_schedule_contents`
 SET course_id = (SELECT courses_ID FROM lessons_to_courses WHERE lessons_ID = (SELECT lessons_ID FROM content WHERE id = `module_xcontent_schedule_contents`.content_id));
 
 -- 2012-03-06
@@ -2134,7 +2134,7 @@ ALTER TABLE `lessons` ADD `link` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `origina
 ALTER TABLE `lessons` CHANGE `link` `firstlink` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 
-INSERT INTO module_xcontent_schedule_contents(schedule_id, course_id, content_id) 
+INSERT INTO module_xcontent_schedule_contents(schedule_id, course_id, content_id)
 VALUES (172, 31, 2628), (173, 31, 2628), (174, 31, 2628), (175, 31, 2628), (176, 31, 2628), (177, 31, 2628), (178, 31, 2628), (179, 31, 2628), (180, 31, 2628), (181, 31, 2628), (182, 31, 2628), (183, 31, 2628), (184, 31, 2628);
 
 --2012-03-21
@@ -2158,7 +2158,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_course_negociation` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`user_id` mediumint(8) NOT NULL,
 	`course_id` mediumint(8) NOT NULL,
-	`negociation_index` smallint(4) NOT NULL, 
+	`negociation_index` smallint(4) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE(`negociation_index`, `user_id`, `course_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -2175,7 +2175,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_invoices` (
 	`invoice_index` mediumint(8) NOT NULL,
 	`invoice_id` text NULL,
 	`invoice_sha_access` text,
-	`valor` smallint(4) NOT NULL, 
+	`valor` smallint(4) NOT NULL,
 	`data_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`data_vencimento` timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (`negociation_id`, `invoice_index`),
@@ -2231,14 +2231,14 @@ INSERT INTO `module_xentify` (`id` ,`name`) VALUES ('4', 'Turma');
 
 
 
-INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES 
+INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES
 ('0', 'Todos os usuários', '%s será compartilhado entre todos os alunos', '{}', '1');
 UPDATE `module_xentify_scopes` SET `id` = '0' WHERE `module_xentify_scopes`.`id` =11;
 
-INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES 
+INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES
 ('11', 'Todos os usuários Adimplentes', '%s será compartilhado entre todos os alunos adimplentes', '{}', '1');
 
-INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES 
+INSERT INTO `module_xentify_scopes` (`id` ,`name` ,`description` ,`rules` ,`active`) VALUES
 ('12', 'Todos os usuários Inadimplentes', '%s será compartilhado entre todos os alunos inadimplentes', '{}', '1');
 
 INSERT INTO `module_xpay_price_rules` (`id`, `rule_xentify_scope_id`, `rule_xentify_id`, `entify_id`, `entify_absolute_id`, `order`, `active`) VALUES (1, 0, '0', 1, 1, 1, 1);
@@ -2257,7 +2257,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_invoices_templates` (
 	`invoice_index` mediumint(8) NOT NULL,
 	`invoice_id` text NULL,
 	`invoice_sha_access` text,
-	`valor` smallint(4) NOT NULL, 
+	`valor` smallint(4) NOT NULL,
 	`data_vencimento` timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (`negociation_id`, `invoice_index`),
 	FULLTEXT KEY `invoice_id` (`invoice_id`)
@@ -2270,7 +2270,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_negociation_params` (
 	`negociation_id` mediumint(8) NOT NULL,
 	`parcelas` mediumint(8) NOT NULL,
 	`registration_tax` float NOT NULL DEFAULT 0,
-	`valor` smallint(4) NOT NULL, 
+	`valor` smallint(4) NOT NULL,
 	`vencimento_1_parcela` timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (`negociation_id`, `invoice_index`),
 	FULLTEXT KEY `invoice_id` (`invoice_id`)
@@ -2301,7 +2301,7 @@ ALTER TABLE `module_xpay_course_negociation` ADD `rsC_payment_id` MEDIUMINT( 8 )
 
 CREATE TABLE IF NOT EXISTS `module_xpay_boleto_transactions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `instance_id` mediumint(8) NOT NULL,	
+  `instance_id` mediumint(8) NOT NULL,
   `data_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nosso_numero` text NOT NULL,
   `data_pagamento` timestamp NULL DEFAULT NULL,
@@ -2325,7 +2325,7 @@ ALTER TABLE `module_xpay_boleto_transactions` CHANGE `data_registro` `data_regis
 
 CREATE TABLE IF NOT EXISTS `module_xpay_manual_transactions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `instance_id` mediumint(8) NOT NULL,	
+  `instance_id` mediumint(8) NOT NULL,
   `data_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` text NOT NULL,
   `filename` varchar(200) DEFAULT NULL,
@@ -2521,7 +2521,7 @@ INSERT INTO `sysclass_root`.`module_xpay_price_rules_tags` (`rule_id`, `tag`) VA
 
 CREATE TABLE IF NOT EXISTS `module_xentify_scope_tags` (
 	`xentify_scope_id` mediumint(8) UNSIGNED ,
-	`xentify_id` varchar (100), 
+	`xentify_id` varchar (100),
 	`tag` enum('is_full_paid','is_not_full_paid','is_overdue','is_not_overdue','is_registration_tax','is_not_registration_tax','is_custom','is_not_custom') NOT NULL,
   PRIMARY KEY (`xentify_scope_id`,`xentify_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -2689,8 +2689,8 @@ ALTER TABLE `module_xcms_pages_to_blocks` ADD `xscope_id` MEDIUMINT( 8 ) NOT NUL
 ALTER TABLE `module_xcms_pages_to_blocks` ADD `xentify_id` TEXT NULL DEFAULT NULL AFTER `xscope_id`;
 
 /* module_pagamento is ONLY FOR POS */
-UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` 
-SET `xscope_id` = '1', `xentify_id` = '2' 
+UPDATE `sysclass_root`.`module_xcms_pages_to_blocks`
+SET `xscope_id` = '1', `xentify_id` = '2'
 WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_blocks`.`block_id` =15;
 
 INSERT INTO `sysclass_root`.`module_xcms_blocks` (`id`, `name`, `module`, `action`, `tag`) VALUES (NULL, 'SysclassXpayInvoices', 'xpay', 'load_invoices', NULL);
@@ -2741,22 +2741,22 @@ INSERT INTO module_xpay_invoices_to_invoices_group VALUES
 (868, 1, 1),
 (869, 1, 1);
 
-UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` SET `xentify_id` = NULL 
+UPDATE `sysclass_root`.`module_xcms_pages_to_blocks` SET `xentify_id` = NULL
 WHERE `module_xcms_pages_to_blocks`.`page_id` =1 AND `module_xcms_pages_to_blocks`.`block_id` =22;
 
 /* 2012-09-24 */
 
 DROP VIEW `zz_xpay_paid_items`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `zz_xpay_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id`, `cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` 
-join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) 
-join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) 
-join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) 
-left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) 
-join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) 
-left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) 
-join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) 
-join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) 
+CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `zz_xpay_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id`, `cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid`
+join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`)))
+join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`))))
+join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`)))
+left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto'))))
+join `users` `u` on((`u`.`id` = `cneg`.`user_id`)))
+left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual'))))
+join `courses` `c` on((`c`.`id` = `cneg`.`course_id`)))
+join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`))))
 left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
 
 
@@ -2778,10 +2778,10 @@ CREATE TABLE IF NOT EXISTS `module_gradebook_groups` (
 INSERT INTO `sysclass_root`.`module_gradebook_groups` (`id`, `lesson_id`, `classe_id`, `name`) VALUES (NULL, '0', '0', 'Nota Geral');
 
 /* 2012-09-27 */
-ALTER TABLE `module_gradebook_groups` 
-ADD `require_status` 
-SMALLINT( 4 ) NOT NULL 
-DEFAULT '1' 
+ALTER TABLE `module_gradebook_groups`
+ADD `require_status`
+SMALLINT( 4 ) NOT NULL
+DEFAULT '1'
 COMMENT '1 = obrigatório, 2 = obrigatorio se falhar no anterior, 3 = opcional';
 
 ALTER TABLE `module_gradebook_groups` ADD `min_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70';
@@ -2799,19 +2799,19 @@ CREATE TABLE IF NOT EXISTS `module_gradebook_groups_order` (
 
 /* 2012-10-01 */
 
-CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_liquidacao` (  
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_liquidacao` (
 	`id` varchar( 3  )  NOT  NULL ,
 	`description` varchar( 100  )  NOT  NULL ,
 	`disponivel` tinyint( 4  ) DEFAULT  '1',
-	PRIMARY  KEY (  `id`  )  
+	PRIMARY  KEY (  `id`  )
 ) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
 INSERT INTO `sysclass_root`.`module_xpay_boleto_liquidacao` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_liquidacao`;
 DROP TABLE `sysclass_root`.`module_pagamento_boleto_liquidacao`;
 
-CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_ocorrencias` (  
+CREATE  TABLE  `sysclass_root`.`module_xpay_boleto_ocorrencias` (
 	`id` varchar( 3  )  NOT  NULL ,
 	`description` varchar( 100  )  NOT  NULL ,
-	PRIMARY  KEY (  `id`  )  
+	PRIMARY  KEY (  `id`  )
 ) ENGINE  =  MyISAM  DEFAULT CHARSET  = latin1;
 INSERT INTO `sysclass_root`.`module_xpay_boleto_ocorrencias` SELECT * FROM `sysclass_root`.`module_pagamento_boleto_ocorrencias`;
 DROP TABLE `sysclass_root`.`module_pagamento_boleto_correncias`;-
@@ -2970,7 +2970,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_cielo_transactions_to_invoices` (
 PRIMARY KEY (`transaction_id`, `negociation_id`, `parcela_index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-ALTER TABLE `module_xpay_cielo_transactions` ADD `status` SMALLINT( 4 ) NOT NULL AFTER `parcelas`; 
+ALTER TABLE `module_xpay_cielo_transactions` ADD `status` SMALLINT( 4 ) NOT NULL AFTER `parcelas`;
 ALTER TABLE `module_xpay_cielo_transactions_to_invoices` CHANGE `parcela_index` `invoice_index` MEDIUMINT( 8 ) NOT NULL;
 
 CREATE TABLE IF NOT EXISTS `module_xpay_negociation_modules` (
@@ -2990,52 +2990,52 @@ INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`c
 INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '212','lesson');
 
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '1',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2012-11-15 00:00:00' 
+	`data_vencimento` = '2012-11-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =864 AND `module_xpay_invoices`.`invoice_index` =0;
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '2',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2012-12-15 00:00:00' 
+	`data_vencimento` = '2012-12-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =865 AND `module_xpay_invoices`.`invoice_index` =0;
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '3',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2013-01-15 00:00:00' 
+	`data_vencimento` = '2013-01-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =866 AND `module_xpay_invoices`.`invoice_index` =0;
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '4',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2013-02-15 00:00:00' 
+	`data_vencimento` = '2013-02-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =867 AND `module_xpay_invoices`.`invoice_index` =0;
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '5',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2013-03-15 00:00:00' 
+	`data_vencimento` = '2013-03-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =868 AND `module_xpay_invoices`.`invoice_index` =0;
 
-UPDATE `sysclass_root`.`module_xpay_invoices` 
+UPDATE `sysclass_root`.`module_xpay_invoices`
 SET `negociation_id` = '863',
 	`invoice_index` = '6',
 	`description` = '',
 	`valor` = '174.30',
-	`data_vencimento` = '2013-04-15 00:00:00' 
+	`data_vencimento` = '2013-04-15 00:00:00'
 WHERE `module_xpay_invoices`.`negociation_id` =869 AND `module_xpay_invoices`.`invoice_index` =0;
 
 
@@ -3048,9 +3048,9 @@ ALTER TABLE `module_xpay_invoices` ADD `is_registration_tax` TINYINT( 1 ) NOT NU
 UPDATE `module_xpay_invoices` SET `is_registration_tax` = 1 WHERE invoice_index = 0;
 
 DROP VIEW module_xpay_zzz_paid_items;
-CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id` AS `ies_id`,pl.id as polo_id, pl.nome as polo,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_id` AS `invoice_id`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto')))) 
-join `users` `u` on((`u`.`id` = `cneg`.`user_id`))) 
-LEFT join `module_xuser` `xu` on (`u`.`id` = `xu`.`id`) 
+CREATE ALGORITHM=UNDEFINED DEFINER=`sysclass`@`localhost` SQL SECURITY DEFINER VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`id` AS `negociation_id`,`cneg`.`user_id` AS `user_id`,`c`.`ies_id` AS `ies_id`,pl.id as polo_id, pl.nome as polo,`cneg`.`course_id` AS `course_id`,`paid`.`id` AS `paid_id`,`paid`.`method_id` AS `method_id`,`c`.`name` AS `course_name`,`cl`.`name` AS `classe_name`,`bolt`.`nosso_numero` AS `nosso_numero`,`u`.`name` AS `name`,`u`.`surname` AS `surname`,`u`.`login` AS `login`,`inv`.`invoice_id` AS `invoice_id`,`inv`.`invoice_index` AS `invoice_index`,(select count(`module_xpay_invoices`.`negociation_id`) from `module_xpay_invoices` where (`module_xpay_invoices`.`negociation_id` = `cneg`.`id`)) AS `total_parcelas`,`inv`.`data_vencimento` AS `data_vencimento`,from_unixtime(`paid`.`start_timestamp`) AS `data_pagamento`,`inv`.`valor` AS `valor`,(`inv`.`valor` - `paid`.`paid`) AS `desconto`,`paid`.`paid` AS `paid` from (((((((((`module_xpay_paid_items` `paid` join `module_xpay_invoices_to_paid` `inv_paid` on((`inv_paid`.`paid_id` = `paid`.`id`))) join `module_xpay_invoices` `inv` on(((`inv_paid`.`negociation_id` = `inv`.`negociation_id`) and (`inv_paid`.`invoice_index` = `inv`.`invoice_index`)))) join `module_xpay_course_negociation` `cneg` on((`inv`.`negociation_id` = `cneg`.`id`))) left join `module_xpay_boleto_transactions` `bolt` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'boleto'))))
+join `users` `u` on((`u`.`id` = `cneg`.`user_id`)))
+LEFT join `module_xuser` `xu` on (`u`.`id` = `xu`.`id`)
 LEFT join `module_polos` `pl` on (`xu`.`polo_id` = `pl`.`id`)
 left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` = `bolt`.`id`) and (`paid`.`method_id` = 'manual')))) join `courses` `c` on((`c`.`id` = `cneg`.`course_id`))) join `users_to_courses` `uc` on(((`uc`.`users_LOGIN` = `u`.`login`) and (`uc`.`courses_ID` = `cneg`.`course_id`)))) left join `classes` `cl` on(((`uc`.`classe_id` = `cl`.`id`) and (`uc`.`courses_ID` = `cl`.`courses_ID`)))) order by `paid`.`id` desc;
 
@@ -3405,7 +3405,7 @@ CREATE TABLE IF NOT EXISTS `mod_translate_tokens` (
 CREATE TABLE IF NOT EXISTS `mod_translate_backend` (
   `backend_id` varchar(50) NOT NULL,
   `language_id` varchar(5) NOT NULL,
-  `backend_language_id` varchar(5) NOT NULL, 
+  `backend_language_id` varchar(5) NOT NULL,
   `backend_name` varchar(50) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`backend_id`, `language_id`)
@@ -3414,3 +3414,61 @@ CREATE TABLE IF NOT EXISTS `mod_translate_backend` (
 ALTER TABLE `mod_translate` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
 ALTER TABLE `mod_translate` ADD `code` varchar(10) NOT NULL AFTER `id` ;
 UPDATE `mod_translate` SET `code`= `id`
+
+
+/* 2015-01-03 */
+
+CREATE TABLE `mod_courses` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `ies_id` mediumint(8) DEFAULT '0',
+  `name` varchar(150) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `archive` int(10) unsigned DEFAULT '0',
+  `created` int(10) unsigned DEFAULT NULL,
+  `start_date` int(10) unsigned DEFAULT NULL,
+  `end_date` int(10) unsigned DEFAULT NULL,
+  `options` text,
+  `metadata` text,
+  `description` text,
+  `info` text,
+  `price` float DEFAULT '0',
+  `enable_registration` tinyint(1) NOT NULL DEFAULT '1',
+  `price_registration` float NOT NULL DEFAULT '0',
+  `enable_presencial` tinyint(1) DEFAULT '1',
+  `price_presencial` float DEFAULT '0',
+  `enable_web` tinyint(1) DEFAULT '1',
+  `price_web` float DEFAULT '0',
+  `show_catalog` tinyint(1) NOT NULL DEFAULT '1',
+  `publish` tinyint(1) DEFAULT '1',
+  `directions_ID` mediumint(8) unsigned DEFAULT NULL,
+  `languages_NAME` varchar(50) NOT NULL,
+  `reset` tinyint(1) NOT NULL DEFAULT '0',
+  `certificate_expiration` int(10) unsigned DEFAULT NULL,
+  `max_users` int(10) unsigned DEFAULT NULL,
+  `rules` text,
+  `terms` text,
+  `instance_source` mediumint(8) unsigned DEFAULT '0',
+  `supervisor_LOGIN` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `instance_source` (`instance_source`)
+) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `mod_institution` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `name` varchar(250) NOT NULL,
+  `formal_name` varchar(250) NOT NULL,
+  `contact` varchar(250) NOT NULL,
+  `observations` text,
+  `zip` varchar(15) NOT NULL,
+  `address` varchar(150) NOT NULL,
+  `number` varchar(15) NOT NULL,
+  `address2` varchar(50) DEFAULT NULL,
+  `city` varchar(100) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `country_code` varchar(3) NOT NULL DEFAULT 'BR',
+  `phone` varchar(20) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;

@@ -1,5 +1,7 @@
 <?php
-define("PLICOLIB_PATH", "/usr/local/share/plicolib/");
+//define("PLICOLIB_PATH", "/usr/local/share/plicolib/");
+define("PLICOLIB_PATH", "/projects/repo/plico/plicolib.local/");
+
 //define("PLICOLIB_PATH", "/var/www/tests/codelockv2_7/encrypted/");
 
 require_once PLICOLIB_PATH . "startup.php";

@@ -33,7 +33,12 @@ $SC.module("views.news.view", function(mod, app, Backbone, Marionette, $, _) {
 				var model = new newsModelClass(data[0]);
 				model.destroy({
 					success : function() {
-						$(e.currentTarget).closest("tr").remove();
+						self.oTable
+							.api()
+							.row( $(e.currentTarget).closest("tr") )
+							.remove()
+							.draw();
+
 					}
 				});
 			}

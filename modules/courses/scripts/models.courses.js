@@ -1,6 +1,10 @@
 $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
+		this.itemModelClass = Backbone.Model.extend({
+			urlRoot : "/module/courses/item/me"
+		});
+
 		this.classesCollectionClass = Backbone.Collection.extend({
 			course_id : 0,
 			datatable : false,

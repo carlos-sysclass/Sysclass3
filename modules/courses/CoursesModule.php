@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  */
 
-class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IWidgetContainer
+class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IWidgetContainer
 {
     /* ISummarizable */
     public function getSummary() {
@@ -41,6 +41,67 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
             );
         //}
     }
+
+    /* IBreadcrumbable */
+    public function getBreadcrumb() {
+        $breadcrumbs = array(
+            array(
+                'icon'  => 'icon-home',
+                'link'  => $this->getSystemUrl('home'),
+                'text'  => self::$t->translate("Home")
+            ),
+            array(
+                'icon'  => 'glyphicon glyphicon-home',
+                'link'  => $this->getBasePath() . "view",
+                'text'  => self::$t->translate("Courses")
+            )
+        );
+
+        $request = $this->getMatchedUrl();
+        switch($request) {
+            case "view" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                break;
+            }
+            case "add" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Course"));
+                break;
+            }
+            case "edit/:id" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Course"));
+                break;
+            }
+        }
+        return $breadcrumbs;
+    }
+
+    /* IActionable */
+    public function getActions() {
+        $request = $this->getMatchedUrl();
+
+        $actions = array(
+            'view'  => array(
+                array(
+                    'text'      => self::$t->translate('New Course'),
+                    'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-primary",
+                    'icon'      => 'icon-plus'
+                )/*,
+                array(
+                    'separator' => true,
+                ),
+                array(
+                    'text'      => 'Add New 2',
+                    'link'      => $this->getBasePath() . "add",
+                    //'class'       => "btn-primary",
+                    //'icon'      => 'icon-plus'
+                )*/
+            )
+        );
+
+        return $actions[$request];
+    }
+
 
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
@@ -78,22 +139,40 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
      * Get all courses visible to the current user
      *
      * @url GET /items/me
-     * @url GET /items/me/:datatable
+     * @url GET /items/me/:type
      */
-    public function getItemsAction($datatable)
+    public function getItemsAction($type)
     {
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $itemsData = $this->model("course")->addFilter(array(
-            'active' => 1
-        ))->getItems();
+
         //echo "<pre>";
         //var_dump($itemsData);
 
-        $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+        $itemsCollection = $this->model("courses/collection");
 
-        if ($datatable === 'datatable') {
+
+        if ($type === 'combo') {
+            $q = $_GET['q'];
+
+            $itemsData = $itemsCollection->getItems();
+            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+
+            $items = $itemsCollection->filterCollection($items, $q);
+
+            foreach($items as $course) {
+                // @todo Group by course
+                $result[] = array(
+                    'id'    => intval($course['id']),
+                    'name'  => $course['name']
+                );
+            }
+            return $result;
+        } elseif ($type === 'datatable') {
+            $itemsData = $itemsCollection->getItems();
+            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+
             $items = array_values($items);
             foreach($items as $key => $item) {
                 $items[$key]['options'] = array(
@@ -115,6 +194,10 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
                 'aaData'                => array_values($items)
             );
         }
+
+        $itemsData = $itemsCollection->getItems();
+        $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+
         return array_values($items);
     }
 
@@ -268,6 +351,91 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		}
 		return $results;
 	}
+
+    /**
+     * Get the institution visible to the current user
+     *
+     * @url GET /item/me/:id
+     */
+    public function getItemAction($id) {
+
+        $editItem = $this->model("courses/collection")->getItem($id);
+        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+        return $editItem;
+    }
+
+    /**
+     * Insert a news model
+     *
+     * @url POST /item/me
+     */
+    public function addItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("course/item");
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+                return $this->createRedirectResponse(
+                    $this->getBasePath() . "edit/" . $data['id'],
+                    self::$t->translate("Course created with success"),
+                    "success"
+                );
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * Update a news model
+     *
+     * @url PUT /item/me/:id
+     */
+    public function setItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("course/item");
+            if ($itemModel->setItem($data, $id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Course updated with success"), "success");
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * DELETE a news model
+     *
+     * @url DELETE /item/me/:id
+     */
+    public function deleteItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("course/item");
+            if ($itemModel->deleteItem($id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Course removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
 
 	/**
 	 * Module Entry Point
@@ -551,11 +719,10 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Institution'));
-            $this->putItem("page_subtitle", self::$t->translate('Manage your Institution(s)'));
+            $this->putItem("page_title", self::$t->translate('Courses'));
+            $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
 
-            $this->putComponent("select2");
-            $this->putComponent("data-tables");
+            $this->putComponent("select2", "data-tables");
             $this->putModuleScript("models.courses");
             $this->putModuleScript("views.courses.view");
 
@@ -564,6 +731,68 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         } else {
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
+    }
+    /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $this->putComponent(/* "datepicker", "timepicker", "select2", */"wysihtml5", "validation");
+        $this->putModuleScript("models.courses");
+        $this->putModuleScript("views.courses.add");
+
+        $this->putItem("page_title", self::$t->translate('Courses'));
+        $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
+
+        //return array_values($news);
+        $this->display("form.tpl");
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $editItem = $this->model("courses/collection")->getItem($id);
+        // TODO CHECK PERMISSION FOR OBJECT
+
+        $this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
+
+        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
+        // Ex:
+        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
+
+        //$this->putBlock("address.add");
+        $this->putBlock("permission.add");
+
+/*
+        $this->putComponent("modal");
+        $this->putCrossModuleScript("permission", "dialog.permission");
+        $this->putCrossSectionTemplate("permission", null, "blocks/permission");
+        $this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
+        $this->putCrossModuleScript("permission", "dialog.permission");
+*/
+
+        $this->putModuleScript("models.courses");
+        //$this->putModuleScript("views.news");
+        $this->putModuleScript("views.courses.edit", array('id' => $id));
+
+        $this->putItem("page_title", self::$t->translate('Courses'));
+        $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
+
+        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
+        //$this->putItem("entity", $editItem);
+
+        //return array_values($news);
+        $this->display("form.tpl");
     }
 
 	/**

@@ -22,6 +22,26 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'unix-moment-since' ]
 		},
+
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					// CHECK IF ROW HAS A CURRENCY FIELD AND UPDATE BY TYPE
+					if (_.has(row, "currency")) {
+						numeral.language(row['currency']);
+					}
+					return numeral(data).format('$0,0.00');
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-currency' ]
+		},
+
 		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display') {
@@ -53,25 +73,21 @@ $.extend( true, $.fn.dataTable.defaults, {
 		},
 		{
 			"mRender": function ( data, type, row ) {
-				//console.log(data, type, row);
-				//if (type == 'display') {
-					// TODO GET THE MAP FROM TRANSLATION MODEL
-					var map = {
-						1 : "Yes",
-						0 : "No"
-					};
-					return map[data];
-					/*
-					result = [];
-					for(i in data) {
-						result.push(dataTableOptionsTemplate({item: data[i], key : i}));
-					}
-					return result.join("");
-					*/
-				//	return data;
-				//}
+				//console.warn(data, type, row);
+				// TODO GET THE MAP FROM TRANSLATION MODEL
+				var map = {
+					1 : "Yes",
+					0 : "No"
+				};
+				if (data == 1) {
+					return '<span class="label label-sm label-success">' + map[data] + '</span>';
+				} else if (data == 0) {
+					return '<span class="label label-sm label-danger">' + map[data] + '</span>';
+				} else {
+					return '<span class="label label-sm label-info">N/A</span>';
+				}
 
-				//return data;
+				return ;
 			},
 			"bSearchable" 	: true,
 			"bSortable"		: true,
@@ -102,7 +118,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
     "unix-moment-since-asc": function ( a, b ) {
         return ((a < b) ? -1 : ((a > b) ? 1 : 0));
     },
- 
+
     "unix-moment-since-desc": function ( a, b ) {
         return ((a < b) ? 1 : ((a > b) ? -1 : 0));
     }

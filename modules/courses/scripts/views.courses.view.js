@@ -27,13 +27,18 @@ $SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $,
 			removeItem : function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
-				var institutionModelClass = app.module("models.institution").institutionModelClass;
+				var itemModelClass = app.module("models.courses").itemModelClass;
 
 				var self = this;
-				var model = new institutionModelClass(data[0]);
+				var model = new itemModelClass(data[0]);
 				model.destroy({
 					success : function() {
-						$(e.currentTarget).closest("tr").remove();
+						// TODO REMOVE DATA FROM DATATABLE TOO
+						self.oTable
+							.api()
+							.row( $(e.currentTarget).closest("tr") )
+							.remove()
+							.draw();
 					}
 				});
 			}
@@ -46,10 +51,8 @@ $SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $,
 		        "aoColumns": [
 		            { "mData": "id", "sClass" : "text-center"},
 		            { "mData": "name" },
-		            { "mData": "city"},
-		            { "mData": "state"},
-		            { "mData": "country_code", "sClass" : "text-center"},
-		            { "mData": null, "sClass" : "text-center"},
+		            { "mData": "price", 'sType' : "table-currency"},
+		            { "mData": "active", 'sType' : "table-boolean"},
 		            { "mData": "options", 'sType' : 'table-options' },
 		        ]
 		        		/*

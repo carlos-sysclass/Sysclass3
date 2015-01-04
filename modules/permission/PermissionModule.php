@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -25,7 +25,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
         		$self->putSectionTemplate("permission", "blocks/permission");
 
         		return true;
-        		
+
 			}
 		);
 	}
@@ -46,11 +46,11 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	}
 	/**
 	 * Receive a datasource e filter (un)matched rules
-	 * @param  array[] $dataItens   
-	 * @param  string $type        
-	 * @param  string $access_mode 
-	 * @param  string $id_field    
-	 * @return array[]              
+	 * @param  array[] $dataItens
+	 * @param  string $type
+	 * @param  string $access_mode
+	 * @param  string $id_field
+	 * @return array[]
 	 */
 	public function checkRules($dataItens, $type, $access_mode = 'permission_access_mode', $id_field = "id") {
 		// TODO MAKE A WAY TO CACHE getItemsByType, in the model
@@ -61,7 +61,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 		} else {
 			$default_access_mode_code = self::RULE_MATCH_ALL;
 		}
-		
+
 		foreach($dataItens as $index => $item) {
 			//$item['id']
 			$has_condition = false;
@@ -70,7 +70,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 			foreach($conditions as $condition) {
 				if ($condition['entity_id'] == $item[$id_field]) {
 					// CHECK FOR CONDITION
-					//$match 
+					//$match
 					list($condition_id, $module_key, $module) = $this->getModuleByConditionId(
 						$condition['condition_id']
 					);
@@ -103,7 +103,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 			} else if ($access_mode_code == self::RULE_NOT_MATCH_ALL) {
 				if (count($matches) > 0 && is_numeric(array_search(true, $matches))) {
 					unset($dataItens[$index]);
-				}				
+				}
 			} else if ($access_mode_code == self::RULE_NOT_MATCH_ANY) {
 				if (count($matches) > 0 && array_search(false, $matches) === FALSE) {
 					unset($dataItens[$index]);
@@ -153,11 +153,11 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * Get the HTML snipet for a determinated condition
 	 * @param  string $condition_id
 	 * @return html
-	 * 
+	 *
 	 * @url GET /get/options/:condition_id
 	 */
 	public function getConditionOptions($condition_id) {
-		
+
 		list($condition_id, $module_key, $module) = $this->getModuleByConditionId($condition_id);
 		if ($module != false) {
 			$result = $module->getPermissionForm($condition_id, array('teste'));
@@ -183,8 +183,13 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 
 			list($condition_id, $module_key, $module) = $this->getModuleByConditionId($data['condition_id']);
 
+			//var_dump($condition_id, $module_key, $module);
+			//exit;
+
 			if ($module != false) {
+
 				$condition_data = $module->parseFormData($condition_id, $data['data']);
+
 				$permission = array(
 					'condition_id'	=> $data['condition_id'],
 					'data'			=> $condition_data
@@ -199,9 +204,8 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 					'entity_id'		=> $data['entity']['entity_id'],
 					'condition_id'	=> $permission['id']
 				);
-
 				$entity['id'] = $this->model("permission/entity")->addItem($entity);
-				
+
 
 				//unset($entity['condition_id']);
 				$permission['entity'] = $entity;
@@ -259,8 +263,8 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 			}
 			/*
 			$filter = $permissionConditionModel->createFilter(
-				$permissionConditionModel->mainTablePrefix . '.id', 
-				"ent.condition_id", 
+				$permissionConditionModel->mainTablePrefix . '.id',
+				"ent.condition_id",
 				array("operator" => "=", "quote" => false)
 			);
 			$permissionConditionModel->createJoin('LEFT', "mod_permission_entities ent", $filter);

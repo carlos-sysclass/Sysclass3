@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -13,7 +13,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";
 	const PERMISSION_IN_COURSE 		= "PERMISSION_IN_COURSE";
 	const PERMISSION_SPECIFIC_TYPE 	= "PERMISSION_SPECIFIC_TYPE";
-	
+
 	public static $permissions = null;
 	// IPermissionChecker
 	public function getName() {
@@ -44,7 +44,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	}
 
 	public function getConditionText($condition_id, $data) {
-		
+
 		$condition = $this->getPermissions($condition_id);
 
 		switch($condition_id) {
@@ -53,8 +53,8 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 				return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
 			}
 			case self::PERMISSION_IN_COURSE : {
-				$courseObject = $this->model("course")->getItem($data);
-				return self::$t->translate($condition['token'], $courseObject->course['name']);
+				$course = $this->model("course/item")->getItem($data);
+				return self::$t->translate($condition['token'], $course['name']);
 			}
 			case self::PERMISSION_SPECIFIC_TYPE : {
 				$roles = MagesterUser::GetRoles(true);
@@ -77,7 +77,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 
 		switch($condition_id) {
 			case self::PERMISSION_IN_LESSON : {
-				// CHECK IF 
+				// CHECK IF
 				$checkIDs = explode(";", $data);
 				if ($userObject->getType() == 'administrator') {
 					return true;
@@ -93,7 +93,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 				return true;
 			}
 			case self::PERMISSION_IN_COURSE : {
-				// CHECK IF 
+				// CHECK IF
 				$checkIDs = explode(";", $data);
 				if ($userObject->getType() == 'administrator') {
 					return true;
@@ -109,7 +109,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 				return true;
 			}
 			case self::PERMISSION_SPECIFIC_TYPE : {
-				// CHECK IF 
+				// CHECK IF
 				$userType = $userObject->user['user_types_ID'] != 0 ? $userObject->user['user_types_ID'] : $userObject->getType();
 
 				if ($userType == $data) {
@@ -135,17 +135,17 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 	public function parseFormData($condition_id, $data) {
 		switch($condition_id) {
 			case self::PERMISSION_IN_LESSON : {
-				// CHECK IF 
+				// CHECK IF
 				$lesson_ids = explode(";", $data['lesson_id']);
 				return implode(";", $lesson_ids);
 			}
 			case self::PERMISSION_IN_COURSE : {
-				// CHECK IF 
+				// CHECK IF
 				$course_ids = explode(";", $data['course_id']);
 				return implode(";", $course_ids);
 			}
 			case self::PERMISSION_SPECIFIC_TYPE : {
-				// CHECK IF 
+				// CHECK IF
 				$user_type = explode(";", $data['user_type']);
 				return implode(";", $user_type);
 			}
@@ -178,7 +178,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 					$data['notification'][$key] = $mod->getSummary();
 				}
 			}
-			
+
 			$data['notification'] = $this->module("layout")
 				->sortModules("users.overview.notification.order", $data['notification']);
 
@@ -237,7 +237,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
         $q = $_GET['q'];
 
         switch ($type) {
-            case 'user_types': 
+            case 'user_types':
             default : {
                 $roles = MagesterUser::GetRoles(true);
                 $result = array();
@@ -307,7 +307,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 			'password'  => $this->getBasePath() . 'profile/password'
 		);
 		$this->putItem("FORM_ACTIONS", $form_actions);
-		
+
 		$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
@@ -322,14 +322,14 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
 		exit;
 		/*
-		["name"]=> string(8) "VINICIOS" 
-		["surname"]=> string(13) "CUTRIM MENDES" 
-		["email"]=> string(28) "vinicioscmendes@yahoo.com.br" 
-		["language"]=> string(10) "portuguese" 
-		["timezone"]=> string(20) "America/Buenos_Aires" 
+		["name"]=> string(8) "VINICIOS"
+		["surname"]=> string(13) "CUTRIM MENDES"
+		["email"]=> string(28) "vinicioscmendes@yahoo.com.br"
+		["language"]=> string(10) "portuguese"
+		["timezone"]=> string(20) "America/Buenos_Aires"
 		["short_description"]=> string(31) "dfdfdfsdfsdfsdfsdfdfsdfsdfsdfdf"
 		// EXTENDED USER PROFILE
-		["data_nascimento"]=> string(10) "07/19/1984" 
+		["data_nascimento"]=> string(10) "07/19/1984"
 		*/
 		$values = $_POST;
 		// PUT ALL THIS DATA UNDER A MODEL, PLEASE!!!!!!

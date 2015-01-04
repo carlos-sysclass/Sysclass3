@@ -249,6 +249,8 @@ $plicoLib->concat(
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/moment/moment.min',
+		'plugins/numeral/numeral',
+		'plugins/numeral/languages',
 
 		//<!-- JGROWL notifications -->
 

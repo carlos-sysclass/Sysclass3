@@ -9,10 +9,8 @@
 					<tr>
 						<th class="text-center">#</th>
 						<th>{translateToken value="Name"}</th>
-						<th>{translateToken value="City"}</th>
-						<th>{translateToken value="State"}</th>
-						<th class="text-center">{translateToken value="Country"}</th>
-						<th class="text-center">{translateToken value="Enrolled Users"}</th>
+						<th class="table-currency">{translateToken value="Price"}</th>
+						<th class="table-boolean">{translateToken value="Active"}</th>
 						<th class="text-center table-options">{translateToken value="Actions"}</th>
 					</tr>
 				</thead>

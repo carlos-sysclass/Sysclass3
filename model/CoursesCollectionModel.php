@@ -1,9 +1,9 @@
 <?php
-class CourseCourseModel extends AbstractSysclassModel implements ISyncronizableModel {
+class CoursesCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->table_name = "mod_institution";
+        $this->table_name = "mod_courses";
         $this->id_field = "id";
         //$this->fieldsMap = array();
 
@@ -21,6 +21,7 @@ class CourseCourseModel extends AbstractSysclassModel implements ISyncronizableM
             `description`,
             `info`,
             `price`,
+            `currency`,
             `enable_registration`,
             `price_registration`,
             `enable_presencial`,
@@ -43,9 +44,4 @@ class CourseCourseModel extends AbstractSysclassModel implements ISyncronizableM
         parent::init();
 
     }
-
-	public function getItem($id) {
-		return new MagesterCourse($id);
-	}
-
 }

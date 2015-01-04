@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -20,7 +20,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 $self->putSectionTemplate("bottom", "blocks/social-gadgets");
 
                 return true;
-                
+
             }
         );
     }
@@ -122,7 +122,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      */
     public function getItemAction($id) {
 
-        $editItem = $this->model("institution")->getItem($id);     
+        $editItem = $this->model("institution")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }
@@ -141,7 +141,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Institution created with success"), 
+                    self::$t->translate("Institution created with success"),
                     "success"
                 );
             } else {
@@ -230,7 +230,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     ),
                     'remove'    => array(
                         'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'                  
+                        'class' => 'btn-sm btn-danger'
                     )
                 );
             }
@@ -299,15 +299,15 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     {
         $currentUser    = $this->getCurrentUser(true);
 
-        $editItem = $this->model("news")->getItem($id);
+        $editItem = $this->model("institution")->getItem($id);
         // TODO CHECK PERMISSION FOR OBJECT
 
         $this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
 
         // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-        // Ex: 
+        // Ex:
         // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-        
+
         $this->putBlock("address.add");
         $this->putBlock("permission.add");
 
