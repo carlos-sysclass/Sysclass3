@@ -340,6 +340,7 @@ class LoginController extends AbstractSysclassController
 		        $key = array_search($hash, $autolinks);
 
 		        if ($key !== false) {
+		        	var_dump($result['login'][$key]);
 		            $user = MagesterUserFactory :: factory($result['login'][$key]);
 
 		            $pattern = $user->user['login']."_".$user->user['timestamp'];
@@ -364,7 +365,7 @@ class LoginController extends AbstractSysclassController
 		                //}
 
 		                // UPDATE LAST LOGIN VALUE
-		                $this->model("users/item")->setItem(array('last_login' => date("Y-m-d H:i:s")), $user->user['id']);
+		                $this->model("user/item")->setItem(array('last_login' => date("Y-m-d H:i:s")), $user->user['id']);
 
 		                //$user_type = $user->user['user_types_ID'];
 

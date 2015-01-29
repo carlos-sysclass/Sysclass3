@@ -773,13 +773,13 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         //$this->putBlock("address.add");
         $this->putBlock("permission.add");
 
-/*
+        /*
         $this->putComponent("modal");
         $this->putCrossModuleScript("permission", "dialog.permission");
         $this->putCrossSectionTemplate("permission", null, "blocks/permission");
         $this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
         $this->putCrossModuleScript("permission", "dialog.permission");
-*/
+        */
 
         $this->putModuleScript("models.courses");
         //$this->putModuleScript("views.news");

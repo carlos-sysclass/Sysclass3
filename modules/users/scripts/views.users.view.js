@@ -1,4 +1,4 @@
-$SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
         var tableViewClass = Backbone.View.extend({
@@ -52,7 +52,7 @@ $SC.module("views.institution.view", function(mod, app, Backbone, Marionette, $,
 		            { "mData": "id", "sClass" : "text-center"},
 		            { "mData": "name" },
 		            { "mData": "login" },
-		            { "mData": "user_type" },
+		            { "mData": "extended_user_type" },
 		            { "mData": "creation_time", 'sType' : "unix-moment-since"},
 		            { "mData": "last_login", 'sType' : "table-datetime"},
 		            { "mData": "options", 'sType' : 'table-options' }

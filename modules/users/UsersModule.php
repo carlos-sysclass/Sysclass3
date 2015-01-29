@@ -15,7 +15,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("users/collection")->addFilter(array(
+            $items = $this->model("users/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
 //            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
@@ -339,9 +339,69 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         }
     }
 
+    /**
+     * Get the institution visible to the current user
+     *
+     * @url GET /item/me/:id
+     */
+    public function getItemAction($id) {
+
+        $editItem = $this->model("users/collection")->getItem($id);
+        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+        return $editItem;
+    }
 
     /**
-     * Get all courses visible to the current user
+     * Insert a news model
+     *
+     * @url POST /item/me
+     */
+    public function addItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("user/item");
+            //$data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->debug()->addItem($data)) !== FALSE) {
+                return $this->createRedirectResponse(
+                    $this->getBasePath() . "edit/" . $data['id'],
+                    self::$t->translate("User created with success"),
+                    "success"
+                );
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * Update a news model
+     *
+     * @url PUT /item/me/:id
+     */
+    public function setItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("user/item");
+            if ($itemModel->setItem($data, $id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+    /**
+     * Get all users visible to the current user
      *
      * @url GET /items/me
      * @url GET /items/me/:type
@@ -359,7 +419,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         $itemsData = $itemsCollection->getItems();
 
 
-//        $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
+ 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {
@@ -427,6 +487,61 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         } else {
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
+    }
+
+    /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $this->putComponent(/* "datepicker", "timepicker", "select2", "wysihtml5", */"validation");
+        $this->putModuleScript("models.users");
+        $this->putModuleScript("views.users.add");
+
+        $this->putItem("page_title", self::$t->translate('Users'));
+        $this->putItem("page_subtitle", self::$t->translate('Manage your Users'));
+
+        //return array_values($news);
+        $this->display("form.tpl");
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $editItem = $this->model("users/collection")->getItem($id);
+        // TODO CHECK PERMISSION FOR OBJECT
+
+        $this->putComponent(/*"datepicker", "timepicker", "select2", "wysihtml5", */ "validation");
+
+        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
+        // Ex:
+        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
+
+        //$this->putBlock("address.add");
+        //$this->putBlock("permission.add");
+
+        $this->putModuleScript("models.users");
+        //$this->putModuleScript("views.news");
+        $this->putModuleScript("views.users.edit", array('id' => $id));
+
+        $this->putItem("page_title", self::$t->translate('Users'));
+        $this->putItem("page_subtitle", self::$t->translate('Manage your Users'));
+
+        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
+        //$this->putItem("entity", $editItem);
+
+        //return array_values($news);
+        $this->display("form.tpl");
     }
 
 	/**
