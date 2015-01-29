@@ -8,14 +8,98 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetContainer /*, ILinkable */
+class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable,  IPermissionChecker, IWidgetContainer
 {
+
+    /* ILinkable */
+    public function getLinks() {
+        //$data = $this->getItemsAction();
+        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            $itemsData = $this->model("users/collection")->addFilter(array(
+                'active'    => true
+            ))->getItems();
+//            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+
+            return array(
+                'content' => array(
+                    array(
+                        'count' => count($items),
+                        'text'  => self::$t->translate('Users'),
+                        'icon'  => 'icon-user',
+                        'link'  => $this->getBasePath() . 'view'
+                    )
+                )
+            );
+        }
+    }
+
+    /* IBreadcrumbable */
+    public function getBreadcrumb() {
+        $breadcrumbs = array(
+            array(
+                'icon'  => 'icon-home',
+                'link'  => $this->getSystemUrl('home'),
+                'text'  => self::$t->translate("Home")
+            ),
+            array(
+                'icon'  => 'icon-user',
+                'link'  => $this->getBasePath() . "view",
+                'text'  => self::$t->translate("Users")
+            )
+        );
+
+        $request = $this->getMatchedUrl();
+        switch($request) {
+            case "view" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                break;
+            }
+            case "add" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("New User"));
+                break;
+            }
+            case "edit/:id" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit User"));
+                break;
+            }
+        }
+        return $breadcrumbs;
+    }
+
+    /* IActionable */
+    public function getActions() {
+        $request = $this->getMatchedUrl();
+
+        $actions = array(
+            'view'  => array(
+                array(
+                    'text'      => self::$t->translate('New User'),
+                    'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-primary",
+                    'icon'      => 'icon-plus'
+                )/*,
+                array(
+                    'separator' => true,
+                ),
+                array(
+                    'text'      => 'Add New 2',
+                    'link'      => $this->getBasePath() . "add",
+                    //'class'       => "btn-primary",
+                    //'icon'      => 'icon-plus'
+                )*/
+            )
+        );
+
+        return $actions[$request];
+    }
+
 	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";
 	const PERMISSION_IN_COURSE 		= "PERMISSION_IN_COURSE";
 	const PERMISSION_SPECIFIC_TYPE 	= "PERMISSION_SPECIFIC_TYPE";
 
 	public static $permissions = null;
-	// IPermissionChecker
+
+	/* IPermissionChecker */
 	public function getName() {
 		return self::$t->translate("Users");
 	}
@@ -155,7 +239,7 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
 		}
 	}
 
-	// IWidgetContainer
+	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->getCurrentUser(true);
@@ -254,6 +338,97 @@ class UsersModule extends SysclassModule implements IPermissionChecker, IWidgetC
             }
         }
     }
+
+
+    /**
+     * Get all courses visible to the current user
+     *
+     * @url GET /items/me
+     * @url GET /items/me/:type
+     */
+    public function getItemsAction($type)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+
+        //echo "<pre>";
+        //var_dump($itemsData);
+
+        $itemsCollection = $this->model("users/collection");
+        $itemsData = $itemsCollection->getItems();
+
+
+//        $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
+        $items = $itemsData;
+
+        if ($type === 'combo') {
+        	/*
+            $q = $_GET['q'];
+
+            $items = $itemsCollection->filterCollection($items, $q);
+
+            foreach($items as $course) {
+                // @todo Group by course
+                $result[] = array(
+                    'id'    => intval($course['id']),
+                    'name'  => $course['name']
+                );
+            }
+            return $result;
+            */
+        } elseif ($type === 'datatable') {
+
+            $items = array_values($items);
+            foreach($items as $key => $item) {
+                $items[$key]['options'] = array(
+                    'edit'  => array(
+                        'icon'  => 'icon-edit',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm btn-primary'
+                    ),
+                    'remove'    => array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
+                    )
+                );
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+
+        return array_values($items);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /view
+     */
+    public function viewPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        // SHOW ANNOUCEMENTS BASED ON USER TYPE
+        if ($currentUser->getType() == 'administrator') {
+            $this->putItem("page_title", self::$t->translate('Users'));
+            $this->putItem("page_subtitle", self::$t->translate('Manage your users'));
+
+            $this->putComponent("select2", "data-tables");
+            $this->putModuleScript("models.users");
+            $this->putModuleScript("views.users.view");
+
+            //return array_values($news);
+            $this->display("view.tpl");
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
 	/**
 	 * Module Entry Point
 	 *

@@ -12,6 +12,7 @@ $plicoLib = PlicoLib::instance(__DIR__ . "/../");
 //define("DEBUG", 1);
 
 //if (defined("DEBUG") && DEBUG == 1) {
+    error_reporting(E_ALL);
 	ini_set("display_errors", "1");
 //} else {
 //	ini_set("display_errors", "0");

@@ -3417,7 +3417,6 @@ UPDATE `mod_translate` SET `code`= `id`
 
 
 /* 2015-01-03 */
-
 CREATE TABLE `mod_courses` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
@@ -3475,3 +3474,7 @@ CREATE TABLE IF NOT EXISTS `mod_institution` (
 
 INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_name`, `contact`, `observations`, `zip`, `address`, `number`, `address2`, `city`, `state`, `country_code`, `phone`, `active`) VALUES
 (1, '4', 'Wiseflex', 'Wiseflex', '', '', '', '', '', '', 'Curitiba', 'PR', 'BR', '', 1);
+
+
+/* 2015-01-28 */
+ALTER TABLE `users` ADD COLUMN `last_login` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `autologin`;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 class LoginController extends AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
@@ -80,7 +80,7 @@ class LoginController extends AbstractSysclassController
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/login");
 		//$this->putScript("scripts/login-soft");
-		
+
 		$smarty = $this->getSmarty();
 		$loginForm = $this->createLoginForm();
 
@@ -155,7 +155,7 @@ class LoginController extends AbstractSysclassController
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/lock");
 		$this->putScript("scripts/lock");
-		
+
 		$smarty = $this->getSmarty();
 		$loginForm = $this->createLoginForm();
 
@@ -197,7 +197,7 @@ class LoginController extends AbstractSysclassController
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @url POST /
 	 * @url POST /login
@@ -277,7 +277,7 @@ class LoginController extends AbstractSysclassController
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @url POST /login/reset
 	 */
@@ -363,6 +363,9 @@ class LoginController extends AbstractSysclassController
 		                }
 		                //}
 
+		                // UPDATE LAST LOGIN VALUE
+		                $this->model("users/item")->setItem(array('last_login' => date("Y-m-d H:i:s")), $user->user['id']);
+
 		                //$user_type = $user->user['user_types_ID'];
 
 					    //$userTypes = array('administrator', 'professor', 'student');
@@ -410,7 +413,7 @@ class LoginController extends AbstractSysclassController
                 }
                 unset($_COOKIE['cookie_login']); //These 2 lines are necessary, so that index.php does not think they are set
                 unset($_COOKIE['cookie_password']);
-	
+
 	            $message = self::$t->translate("You have been logged out successfully.");
 	            $message_type = 'success';
 
@@ -420,8 +423,8 @@ class LoginController extends AbstractSysclassController
 	                if ($GLOBALS['configuration']['logout_redirect'] == 'close') {
 	                    echo "<script>window.close();</script>";
 	                } else {
-	                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ? 
-	                    sC_redirect("".$GLOBALS['configuration']['logout_redirect']) : 
+	                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ?
+	                    sC_redirect("".$GLOBALS['configuration']['logout_redirect']) :
 	                    header("location:http://".$GLOBALS['configuration']['logout_redirect']);
 	                }
 	            }

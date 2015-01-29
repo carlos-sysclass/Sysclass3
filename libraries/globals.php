@@ -44,8 +44,8 @@ setDefines();
 //Fix IIS bug by setting the request URI
 setRequestURI();
 //Set default exception handler to be defaultExceptionHandler() function
-set_exception_handler('defaultExceptionHandler');
-register_shutdown_function('shutdownFunction');
+//set_exception_handler('defaultExceptionHandler');
+//register_shutdown_function('shutdownFunction');
 
 /** General tools for system */
 require_once 'tools.php';
@@ -225,7 +225,7 @@ require_once $path."includes/currencies.php";
 if (isset($smarty)) {
 
     //$smarty -> loadFilter('pre', 'sC_translationModeLinkify');
-    
+
     //Convert normal images to css sprites
 //    $smarty -> loadFilter('output', 'sC_template_applyImageMap');
     //Convert plain urls to theme-specific urls
