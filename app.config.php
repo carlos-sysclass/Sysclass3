@@ -59,6 +59,11 @@ $configurationDefaults = array(
 		'overrideTheme' => 'sysclass3',
 		'https'		=> 'none',
 	),
+	'www.enterprise.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_enterprise',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'none',
+	)
 );
 
 $configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);

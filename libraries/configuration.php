@@ -154,6 +154,16 @@ $configurationDefaults = array(
         'dbname'        => 'sysclass_layout',
         'overrideTheme' => 'sysclass3',
 		'https'		=> 'optional'
+	),
+	'enterprise.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_enterprise',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'none',
+	),
+	'www.enterprise.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_enterprise',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'none',
 	)
 );
 
