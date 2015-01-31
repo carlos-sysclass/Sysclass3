@@ -2,36 +2,30 @@ $SC.module("views.users.edit", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 
-		var itemModelClass = $SC.module("models.users").itemModelClass;
-		var itemModel = new itemModelClass();
-
 		if (typeof views_users_edit != 'undefined') {
 			if (typeof views_users_edit.id != 'undefined') {
 				var ENTITY_ID = views_users_edit.id;
-				itemModel.set("id", ENTITY_ID);
+				var itemModelClass = $SC.module("models.users").userModelClass;
 
-				var baseFormClass = app.module("views").baseFormClass;
-				var formView = new baseFormClass({el : "#form-course", model: itemModel});
+				var formEl = "#form-user";
 
-				itemModel.fetch();
-				/*
+			} else if (typeof views_users_edit.group_id != 'undefined') {
+				var itemModelClass = $SC.module("models.users").userGroupModelClass;
+				var ENTITY_ID = views_users_edit.group_id;
 
-				// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-				app.module("dialog.permission").on("before:save", function(model) {
-					// SET MODEL PROPERTIES
-					//console.log(model);
-					model.set("entity", {
-						'type' 		: 'users',
-						'entity_id'	: itemModel.get("id")
-					});
-					return true;
-				});
-
-				//app.module("dialog.permission").setCollectionParam({data : });
-				app.module("dialog.permission").start({type : 'users', 'entity_id' : ENTITY_ID});
-				*/
-				//$SC.module("dialog.permission").conditionCollection.fetch();
+				var formEl = "#form-group-user";
+			} else {
+				return false;
 			}
+
+			var itemModel = new itemModelClass();
+
+			itemModel.set("id", ENTITY_ID);
+
+			var baseFormClass = app.module("views").baseFormClass;
+			var formView = new baseFormClass({el : formEl, model: itemModel});
+
+			itemModel.fetch();
 		}
 
 		// EXPORTS

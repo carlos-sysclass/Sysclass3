@@ -5,7 +5,7 @@ $SC.module("views.users.add", function(mod, app, Backbone, Marionette, $, _) {
 		var itemModel = new itemModelClass();
 
 		var baseFormClass = app.module("views").baseFormClass;
-		var newsFormView = new baseFormClass({el : "#form-course", model: itemModel});
+		var newsFormView = new baseFormClass({el : "#form-user", model: itemModel});
 
 		// EXPORTS
 		//this.itemModel = itemModel;

@@ -45,7 +45,7 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
         });
 
         var tableView = new tableViewClass({
-        	el : "#sample_2",
+        	el : "#view_table",
         	datatable : {
 		        "sAjaxSource": "/module/users/items/me/datatable",
 		        "aoColumns": [
@@ -55,6 +55,19 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
 		            { "mData": "extended_user_type" },
 		            { "mData": "creation_time", 'sType' : "unix-moment-since"},
 		            { "mData": "last_login", 'sType' : "table-datetime"},
+		            { "mData": "options", 'sType' : 'table-options' }
+		        ]
+        	}
+       	});
+		var tableView = new tableViewClass({
+        	el : "#group_view_table",
+        	datatable : {
+		        "sAjaxSource": "/module/users/groups/items/me/datatable",
+		        "aoColumns": [
+		            { "mData": "id", "sClass" : "text-center"},
+		            { "mData": "name" },
+		            { "mData": "description" },
+		            { "mData": "active", "sClass" : "text-center", 'sType' : "table-boolean" },
 		            { "mData": "options", 'sType' : 'table-options' }
 		        ]
 		        		/*

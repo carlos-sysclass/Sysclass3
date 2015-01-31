@@ -1,5 +1,5 @@
 <?php
-class UserItemModel extends AbstractSysclassModel implements ISyncronizableModel {
+class UsersGroupsCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {
@@ -11,5 +11,6 @@ class UserItemModel extends AbstractSysclassModel implements ISyncronizableModel
         $this->selectSql = "SELECT id, name, description, active FROM groups g";
 
         parent::init();
+
     }
 }

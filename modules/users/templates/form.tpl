@@ -1,6 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
-<form id="form-course" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+<form id="form-user" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<h3 class="form-section">{translateToken value="General"}</h3>
 		<div class="row">
