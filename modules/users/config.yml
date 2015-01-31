@@ -1,0 +1,70 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Users
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Manage your users
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: login
+          label: Login
+
+        - mData: extended_user_type
+          label: "User Type"
+
+        - mData: creation_time
+          sType: unix-moment-since
+          sClass: text-center
+          label: User Since
+
+        - mData: last_login
+          sType: table-datetime
+          sClass: text-center
+          label: Last Login
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["validation"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new User
+    'edit/:id':
+      components: ["validation"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Config and edit user info
+
+
+
+
+#        [
+#,
+
+#            ]
+
+#######################
+

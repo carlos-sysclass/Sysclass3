@@ -1,4 +1,7 @@
-$SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
+	this.config = $SC.module("crud.config").getConfig();
+    this.module_id = this.config.module_id;
+
 	// MODELS
 	mod.addInitializer(function() {
         var tableViewClass = Backbone.View.extend({
@@ -27,7 +30,7 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
 			removeItem : function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
-				var itemModelClass = app.module("models.courses").itemModelClass;
+				var itemModelClass = app.module("crud.models").itemModelClass;
 
 				var self = this;
 				var model = new itemModelClass(data[0]);
@@ -45,41 +48,10 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
         });
 
         var tableView = new tableViewClass({
-        	el : "#view_table",
+        	el : "#view-" + this.module_id,
         	datatable : {
-		        "sAjaxSource": "/module/users/items/me/datatable",
-		        "aoColumns": [
-		            { "mData": "id", "sClass" : "text-center"},
-		            { "mData": "name" },
-		            { "mData": "login" },
-		            { "mData": "extended_user_type" },
-		            { "mData": "creation_time", 'sType' : "unix-moment-since"},
-		            { "mData": "last_login", 'sType' : "table-datetime"},
-		            { "mData": "options", 'sType' : 'table-options' }
-		        ]
-        	}
-       	});
-		var tableView = new tableViewClass({
-        	el : "#group_view_table",
-        	datatable : {
-		        "sAjaxSource": "/module/users/groups/items/me/datatable",
-		        "aoColumns": [
-		            { "mData": "id", "sClass" : "text-center"},
-		            { "mData": "name" },
-		            { "mData": "description" },
-		            { "mData": "active", "sClass" : "text-center", 'sType' : "table-boolean" },
-		            { "mData": "options", 'sType' : 'table-options' }
-		        ]
-		        		/*
-						<th class="text-center">#</th>
-						<th>{translateToken value="Name"}</th>
-						<th class="text-center">{translateToken value="City"}</th>
-						<th class="text-center">{translateToken value="State"}</th>
-						<th class="text-center">{translateToken value="Country"}</th>
-						<th class="text-center">{translateToken value="Active"}</th>
-						<th class="text-center">{translateToken value="Enrolled Users"}</th>
-						<th class="text-center table-options">{translateToken value="Actions"}</th>
-						*/
+		        "sAjaxSource": "/module/" + this.module_id + "/items/me/datatable",
+		        "aoColumns": this.config.datatable_fields
         	}
        	});
 	});

@@ -31,12 +31,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                         'text'  => self::$t->translate('Users'),
                         'icon'  => 'icon-user',
                         'link'  => $this->getBasePath() . 'view'
-                    ),
-                    array(
-                        'count' => count($groupItems),
-                        'text'  => self::$t->translate('Groups'),
-                        'icon'  => 'icon-group',
-                        'link'  => $this->getBasePath() . 'groups/view'
                     )
                 )
             );
@@ -80,33 +74,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                     'text'  => self::$t->translate("Users")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit User"));
-                break;
-            }
-            case "groups/view" : {
-                $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
-                    'link'  => $this->getBasePath() . "groups/view",
-                    'text'  => self::$t->translate("Users Groups")
-                );
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
-                break;
-            }
-            case "groups/add" : {
-                $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
-                    'link'  => $this->getBasePath() . "groups/view",
-                    'text'  => self::$t->translate("Users Groups")
-                );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Group"));
-                break;
-            }
-            case "groups/edit/:id" : {
-                $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
-                    'link'  => $this->getBasePath() . "groups/view",
-                    'text'  => self::$t->translate("Users Groups")
-                );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Group"));
                 break;
             }
         }
@@ -390,10 +357,11 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
      * Get the institution visible to the current user
      *
      * @url GET /item/me/:id
-     * @url GET /groups/item/me/:id
     */
     public function getItemAction($id) {
-        if (strpos($request, "groups/") == 0) {
+        $request = $this->getMatchedUrl();
+
+        if (strpos($request, "groups/") === 0) {
             $editItem = $this->model("users/groups/collection")->getItem($id);
         } else {
             $editItem = $this->model("users/collection")->getItem($id);
@@ -409,7 +377,9 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
      */
     public function addItemAction($id)
     {
-        if (strpos($request, "groups/") == 0) {
+        $request = $this->getMatchedUrl();
+
+        if (strpos($request, "groups/") === 0) {
             $itemModel = $this->model("user/groups/item");
         } else {
             $itemModel = $this->model("user/item");
@@ -419,7 +389,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("user/item");
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->debug()->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
@@ -440,16 +409,12 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
      * Update a news model
      *
      * @url PUT /item/me/:id
-     * @url PUT /groups/item/me/:id
      */
     public function setItemAction($id)
     {
-        if (strpos($request, "groups/") == 0) {
-            $itemModel = $this->model("user/groups/item");
-        } else {
-            $itemModel = $this->model("user/item");
-            // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
-        }
+        $request = $this->getMatchedUrl();
+
+        $itemModel = $this->model("user/item");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -465,13 +430,34 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             return $this->notAuthenticatedError();
         }
     }
+
+    /**
+     * DELETE a news model
+     *
+     * @url DELETE /item/me/:id
+     */
+    public function deleteItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("user/item");
+            if ($itemModel->deleteItem($id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("User removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
     /**
      * Get all users visible to the current user
      *
      * @url GET /items/me
      * @url GET /items/me/:type
-     * @url GET /groups/items/me
-     * @url GET /groups/items/me/:type
      */
     public function getItemsAction($type)
     {
@@ -480,13 +466,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
         $request = $this->getMatchedUrl();
 
-        if (strpos($request, "groups/") == 0) {
-            $modelRoute = "users/groups/collection";
-            $baseLink = $this->getBasePath() . "groups/";
-        } else {
-            $modelRoute = "users/collection" ;
-            $baseLink = $this->getBasePath();
-        }
+        $modelRoute = "users/collection" ;
+        $baseLink = $this->getBasePath();
 
         $itemsCollection = $this->model($modelRoute);
         $itemsData = $itemsCollection->getItems();
@@ -537,112 +518,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         return array_values($items);
     }
 
-    /**
-     * Module Entry Point
-     *
-     * @url GET /view
-     * @url GET /groups/view
-     */
-    public function viewPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        // SHOW ANNOUCEMENTS BASED ON USER TYPE
-        if ($currentUser->getType() == 'administrator') {
-
-            $this->putComponent("select2", "data-tables");
-            $this->putModuleScript("models.users");
-            $this->putModuleScript("views.users.view");
-
-            if (strpos($request, "groups/") == 0) {
-                $this->putItem("page_title", self::$t->translate('User Groups'));
-                $this->putItem("page_subtitle", self::$t->translate('Manage your user\'s groups'));
-
-                $this->display("group_view.tpl");
-            } else {
-                $this->putItem("page_title", self::$t->translate('Users'));
-                $this->putItem("page_subtitle", self::$t->translate('Manage your users'));
-
-                 $this->display("view.tpl");
-            }
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-
-
-    /**
-     * New model entry point
-     *
-     * @url GET /add
-     * @url GET /groups/add
-     */
-    public function addPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        $this->putComponent(/* "datepicker", "timepicker", "select2", "wysihtml5", */"validation");
-        $this->putModuleScript("models.users");
-        $this->putModuleScript("views.users.add");
-
-        if (strpos($request, "groups/") == 0) {
-            $this->putComponent("wysihtml5");
-
-            $this->putItem("page_title", self::$t->translate('Users Groups'));
-            $this->putItem("page_subtitle", self::$t->translate('Create a new User Group'));
-
-            //return array_values($news);
-            $this->display("group_form.tpl");
-        } else {
-            $this->putItem("page_title", self::$t->translate('Users'));
-            $this->putItem("page_subtitle", self::$t->translate('Create a new User'));
-
-            //return array_values($news);
-            $this->display("form.tpl");
-
-        }
-    }
-
-    /**
-     * Module Entry Point
-     *
-     * @url GET /edit/:id
-     * @url GET /groups/edit/:id
-     */
-    public function editPage($id)
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        //$editItem = $this->model("users/collection")->getItem($id);
-        // TODO CHECK PERMISSION FOR OBJECT
-
-        $this->putComponent(/*"datepicker", "timepicker", "select2", "", */ "validation");
-
-        $this->putModuleScript("models.users");
-        //$this->putModuleScript("views.news");
-
-        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
-
-        if (strpos($request, "groups/") == 0) {
-            $this->putComponent("wysihtml5");
-
-            $this->putModuleScript("views.users.edit", array('group_id' => $id));
-
-            $this->putItem("page_title", self::$t->translate('Users Groups'));
-            $this->putItem("page_subtitle", self::$t->translate('Manage your User\'s Groups'));
-            $this->display("group_form.tpl");
-        } else {
-            $this->putModuleScript("views.users.edit", array('id' => $id));
-
-            $this->putItem("page_title", self::$t->translate('Users'));
-            $this->putItem("page_subtitle", self::$t->translate('Manage your Users'));
-            $this->display("form.tpl");
-        }
-
-
-        //return array_values($news);
-
-    }
 
 	/**
 	 * Module Entry Point

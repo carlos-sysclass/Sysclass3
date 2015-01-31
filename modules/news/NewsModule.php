@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -14,7 +14,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		if (in_array('news.latest', $widgetsIndexes)) {
 			$this->putModuleScript("models.news");
 			$this->putModuleScript("widget.news");
-			
+
 			return array(
 				'news.latest' => array(
 					'type'      => 'news', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -23,7 +23,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 					'template'  => $this->template("news.widget"),
 					'icon'      => 'bell',
 					'box'       => 'dark-blue tabbable',
-					
+
 					'tools'		=> array(
 						'search'        => true,
 						//'reload'	    => 'javascript:void(0);',
@@ -56,7 +56,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
         if ($section_id == "topbar") {
 
             //$total = $this->getTotalUnviewed();
-            
+
             $news = $this->getItemsAction();
             //var_dump($news);
             //exit;
@@ -64,18 +64,18 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 
             $currentUser = $this->getCurrentUser();
             //$currentFolder = $this->getDefaultFolder($currentUser);
-            
+
             //$messages = $this->getUnviewedMessages(array($currentFolder));
 
             $items = array();
-            
+
             foreach($news as $new) {
                 $items[] = array(
                     'link'	=> $this->getBasePath() . "view/" . $new['id'],
                     'text'	=> $new['title']
                 );
             }
-            
+
             $menuItem = array(
                 'icon'      => 'bell',
                 'notif'     => $total,
@@ -97,7 +97,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
         }
         return false;
     }
-    
+
 	/* ILinkable */
 	public function getLinks() {
 		$data = $this->getItemsAction();
@@ -171,7 +171,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 				)*/
 			)
 		);
-		
+
 
 
 		return $actions[$request];
@@ -221,7 +221,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	 */
 	public function getItemAction($id) {
 
-		$editItem = $this->model("news")->getItem($id);		
+		$editItem = $this->model("news")->getItem($id);
 		// TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
 		return $editItem;
 	}
@@ -240,7 +240,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 			if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
 				return $this->createRedirectResponse(
 					$this->getBasePath() . "edit/" . $data['id'],
-					self::$t->translate("News saved with success"), 
+					self::$t->translate("News saved with success"),
 					"success"
 				);
 			} else {
@@ -412,7 +412,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
 
 		// TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-		// Ex: 
+		// Ex:
 		// $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
 		$this->putBlock("permission.add");
 

@@ -34,6 +34,66 @@ abstract class SysclassModule extends BaseSysclassModule
         $this->context['module_folder']     = $this->module_folder;
     }
     */
+    public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="", $urlMatch = null)
+    {
+        parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
+        $this->createContext($this->module_id);
+    }
+
+    // CRUD FUNCIONS
+    /**
+     * Module Entry Point
+     *
+     * @url GET /view
+     */
+    public function viewPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+
+            $this->createClientContext("view");
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+    /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+            $this->createClientContext("add");
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+            $this->createClientContext("edit", array('entity_id' => $id));
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
 
 }
