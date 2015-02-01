@@ -1,4 +1,4 @@
-<?php 
+<?php
 class DashboardController extends AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
@@ -45,10 +45,11 @@ class DashboardController extends AbstractSysclassController
 	 *
 	 * @url GET /dashboard
      * @url GET /dashboard/:user_type
+     * @url GET /dashboard/:user_type/:clear
 	 */
-	public function dashboardPage($user_type)
+	public function dashboardPage($user_type, $clear)
 	{
-        $currentUser = $this->getCurrentUser(true);
+        $currentUser = $this->getLoggedUser(true);
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
 /*
         if ($user_type != 0 && ($user_type == $currentUser->user['user_types_ID'] || $user_type == $currentUser->getType())) {
@@ -56,30 +57,32 @@ class DashboardController extends AbstractSysclassController
             $user_type = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->user['user_types_ID'];
         }
 */
-        $layout_index = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->getType() . "." . $currentUser->user['user_types_ID'];
+        //$layout_index = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->getType() . "." . $currentUser->user['user_types_ID'];
 
-        $layoutManager = $this->module("layout");
+        $dashboardManager = $this->module("dashboard");
 
-        $pageLayout = $layoutManager->getLayout('dashboard.' . $layout_index);
-        //$pageLayout = $layoutManager->getLayout('stats');
+        $dashboard_id = $currentUser['dashboard_id'] == "default" ? $currentUser['user_type'] : $currentUser['dashboard_id'];
 
-        $this->putItem("page_layout", $pageLayout);
+        $pageLayout = $dashboardManager->loadLayout($dashboard_id, ($clear == "clear"));
 
-        $topbarMenu = $layoutManager->getMenuBySection("topbar");
-
-        $this->putItem("topbar_menu", $topbarMenu);
-
-        $widgets = $layoutManager->getPageWidgets();
-        //var_dump($widgets);
-        //exit;
-
+        $widgets = $dashboardManager->getPageWidgets();
 
 
         foreach($widgets as $key => $widget) {
             call_user_func_array(array($this, "addWidget"), $widget);
+
         }
 
-        $this->putBlock("institution.social-gadgets");
+        //$pageLayout = $layoutManager->getLayout('dashboard.' . $currentUser['dashboard_id']);
+        //$pageLayout = $layoutManager->getLayout('stats');
+
+        $this->putItem("page_layout", $pageLayout);
+
+        //$topbarMenu = $layoutManager->getMenuBySection("topbar");
+
+        //$this->putItem("topbar_menu", $topbarMenu);
+
+        //$this->putBlock("institution.social-gadgets");
 
         parent::display('pages/dashboard/default.tpl');
 	}

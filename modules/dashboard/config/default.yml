@@ -1,0 +1,6 @@
+dashboard:
+    sortable: false
+    merge_resource_with_modules: true
+    resources:
+        layout.linkable.order: ["institution", "courses", "news", "users"]
+        layout.linkable.groups.order: ["administration", "content", "users", "communication", "not_classified"]

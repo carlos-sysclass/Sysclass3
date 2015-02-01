@@ -1,0 +1,31 @@
+dashboard:
+    rows:
+        0:
+            1:
+                weight:
+                    lg: 8
+                    md: 8
+                    sm: 12
+                    xs: 12
+            2:
+                weight:
+                    lg: 4
+                    md: 4
+                    sm: 12
+                    xs: 12
+
+        1:
+            3:
+                weight:
+                    lg: 12
+                    md: 12
+                    sm: 12
+                    xs: 12
+    widgets:
+        1: ["users.overview", "courses.overview", "news.latest", "tutoria.widget"]
+        2: ["institution.overview", "advisor.overview", "advertising", "messages.contactus", "messages.help", "messages.improvements"] #"proctoring.overview",
+        3: ["calendar"]
+    sortable: false
+    resources:
+        layout.sections.topbar: ["messages", "forum"]
+        users.overview.notification.order: ["courses", "tutoria", "calendar", "advisor", "tests"]

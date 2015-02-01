@@ -24,17 +24,6 @@
 					<input name="email" value="" type="text" placeholder="{translateToken value='Email'}" class="form-control" data-rule-required="true" data-rule-email="true" />
 				</div>
 			</div>
-			<!--
-			<div class="col-md-6">
-				<div class="form-group">
-					<label class="control-label">{translateToken value="User Type"}</label>
-					<select class="select2-me form-control input-block-level" name="user_type" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='User Type'}" data-url="/module/user_types/items/me/select2">
-					</select>
-				</div>
-			</div>
-			-->
-		</div>
-		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Primary Group"}</label>
@@ -42,6 +31,8 @@
 					</select>
 				</div>
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Primary Language"}</label>
@@ -49,8 +40,6 @@
 					</select>
 				</div>
 			</div>
-		</div>
-		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>

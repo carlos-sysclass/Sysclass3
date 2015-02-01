@@ -9,7 +9,7 @@
  * @todo think about move this module to PlicoLib
  */
 
-class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable
 {
 
 
@@ -18,7 +18,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $groupItems = $this->model("users/groups/collection")->addFilter(array(
+            $items = $this->model("users/types/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
             // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
@@ -26,7 +26,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
             return array(
                 'users' => array(
                     array(
-                        'count' => count($groupItems),
+                        'count' => count($items),
                         'text'  => self::$t->translate('User Types'),
                         'icon'  => 'icon-group',
                         'link'  => $this->getBasePath() . 'view'
@@ -38,6 +38,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
     /* IBreadcrumbable */
     public function getBreadcrumb() {
+        // TODO  Think abaout ut this configuration into confi.yml
         $breadcrumbs = array(
             array(
                 'icon'  => 'icon-home',
@@ -52,49 +53,22 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
+                    'text'  => self::$t->translate("Users Types")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("View"));
-                break;
-            }
-            case "add" : {
-                $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
-                    'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
-                );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Group"));
                 break;
             }
             case "edit/:id" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
+                    'text'  => self::$t->translate("Users Types")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Group"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit User Type"));
                 break;
             }
         }
         return $breadcrumbs;
-    }
-
-    /* IActionable */
-    public function getActions() {
-        $request = $this->getMatchedUrl();
-
-        $actions = array(
-            'view'  => array(
-                array(
-                    'text'      => self::$t->translate('New Group'),
-                    'link'      => $this->getBasePath() . "add",
-                    'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
-                )
-            )
-        );
-
-        return $actions[$request];
     }
 
     /**
@@ -103,7 +77,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
      * @url GET /item/me/:id
     */
     public function getItemAction($id) {
-        $editItem = $this->model("users/groups/collection")->getItem($id);
+        $editItem = $this->model("users/types/collection")->getItem($id);
         return $editItem;
     }
 
@@ -116,7 +90,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
     {
         $request = $this->getMatchedUrl();
 
-        $itemModel = $this->model("user/groups/item");
+        $itemModel = $this->model("user/types/item");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -125,7 +99,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Group created with success"),
+                    self::$t->translate("User Type created with success"),
                     "success"
                 );
             } else {
@@ -144,13 +118,13 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
      */
     public function setItemAction($id)
     {
-        $itemModel = $this->model("user/groups/item");
+        $itemModel = $this->model("user/types/item");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group updated with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("User Type updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -171,9 +145,9 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("user/groups/item");
+            $itemModel = $this->model("user/types/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group removed with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("User Type removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -194,7 +168,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $modelRoute = "users/groups/collection";
+        $modelRoute = "users/types/collection";
         $baseLink = $this->getBasePath();
 
         $itemsCollection = $this->model($modelRoute);
@@ -205,20 +179,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
         $items = $itemsData;
 
         if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
 
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
-                );
-            }
-            return $result;
-            */
         } elseif ($type === 'datatable') {
 
             $items = array_values($items);

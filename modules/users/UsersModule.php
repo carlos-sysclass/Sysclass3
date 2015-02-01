@@ -279,7 +279,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 				}
 			}
 
-			$data['notification'] = $this->module("layout")
+			$data['notification'] = $this->module("dashboard")
 				->sortModules("users.overview.notification.order", $data['notification']);
 
 			$this->putModuleScript("users");

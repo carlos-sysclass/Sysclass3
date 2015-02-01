@@ -7,6 +7,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 {
 	protected static $logger = null;
 	protected static $current_user = null;
+	protected static $logged_user = null;
+
 	public static $t = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
@@ -92,8 +94,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		try {
+			// OLD CHECK STYLE
 		    self::$current_user 	= MagesterUser::checkUserAccess();
+		    self::$logged_user = $this->model("user/item")->getItem(self::$current_user->user['id']);
 		    $smarty->assign("T_CURRENT_USER", self::$current_user);
+		    $smarty->assign("T_LOGGED_USER", self::$logged_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
 		    if (array_key_exists('user_locked', $_SESSION) && $_SESSION['user_locked']) {
@@ -176,6 +181,10 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		}
 
 	}
+
+	/**
+	 * @deprecated
+	*/
 	public function getCurrentUser($object = false) {
 		if (is_null(self::$current_user)) {
 			$this->authorize();
@@ -185,6 +194,13 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		} else {
 			return self::$current_user->user;
 		}
+	}
+
+	public function getLoggedUser($object = false) {
+		if (is_null(self::$logged_user)) {
+			$this->authorize();
+		}
+		return self::$logged_user;
 	}
 
 	public function getSystemUrl($who = null) {

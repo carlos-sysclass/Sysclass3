@@ -1,6 +1,32 @@
-<?php 
+<?php
 abstract class AbstractToolsController extends PageController
 {
+
+    public function sortModules($sortId, $data, $preserveUncontainedKey = false) {
+        $resource = $this->getResource($sortId);
+
+        $dataArray = array();
+        if ($resource) {
+            foreach($resource as $sortIndex) {
+                if (array_key_exists($sortIndex, $data)) {
+                    $dataArray[$sortIndex] = $data[$sortIndex];
+                    unset($data[$sortIndex]);
+                } else {
+
+                //} else {
+                    //$dataArray[$sortIndex] = false;
+                }
+            }
+        }
+        if (strlen($preserveUncontainedKey) > 0 && count($data) > 0) {
+            $dataArray[$preserveUncontainedKey] = array();
+            foreach($data as $key => $uncontained) {
+                $dataArray[$preserveUncontainedKey] = array_merge($dataArray[$preserveUncontainedKey], $uncontained);
+            }
+        }
+        return $dataArray;
+    }
+
 	/* OLD FUNCTION WRAPPERS
 	/**
 	 * Check a parameter against a type

@@ -17,6 +17,7 @@ class UserItemModel extends AbstractSysclassModel implements ISyncronizableModel
             u.email,
             IFNULL(ut.basic_user_type, u.user_type) as user_type,
             group_id,
+            dashboard_id,
             language_id,
             IFNULL(ut.name, u.user_type) as extended_user_type,
             u.timestamp as creation_time,

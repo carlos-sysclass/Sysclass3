@@ -3481,4 +3481,5 @@ ALTER TABLE `users` ADD COLUMN `last_login` TIMESTAMP NULL DEFAULT CURRENT_TIMES
 
 ALTER TABLE `users` ADD COLUMN `group_id` integer NOT NULL DEFAULT 0 AFTER `user_type`;
 ALTER TABLE `users` ADD COLUMN `language_id` integer NOT NULL DEFAULT 0 AFTER `email`;
+ALTER TABLE `users` ADD COLUMN `dashboard_id` character varying(25) NOT NULL DEFAULT 'default' AFTER `email`;
 
