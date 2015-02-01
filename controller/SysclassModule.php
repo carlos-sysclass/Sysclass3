@@ -70,8 +70,11 @@ abstract class SysclassModule extends BaseSysclassModule
         $currentUser    = $this->getCurrentUser(true);
 
         if ($currentUser->getType() == 'administrator') {
-            $this->createClientContext("add");
+            if (!$this->createClientContext("add")) {
+                $this->entryPointNotFoundError($this->getSystemUrl('home'));
+            }
             $this->display($this->template);
+
         } else {
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }

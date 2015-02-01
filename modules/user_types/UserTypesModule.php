@@ -8,7 +8,6 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-error_reporting(E_ALL);
 
 class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
 {
@@ -16,6 +15,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
     /* ILinkable */
     public function getLinks() {
+
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
             $groupItems = $this->model("users/groups/collection")->addFilter(array(
@@ -27,7 +27,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
                 'users' => array(
                     array(
                         'count' => count($groupItems),
-                        'text'  => self::$t->translate('Groups'),
+                        'text'  => self::$t->translate('User Types'),
                         'icon'  => 'icon-group',
                         'link'  => $this->getBasePath() . 'view'
                     )

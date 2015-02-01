@@ -1,4 +1,4 @@
-<?php 
+<?php
 class ErrorController extends AbstractSysclassController
 {
 	protected $disallowed_extensions = array('css', 'js', 'png', 'jpeg', 'jpg', 'gif');

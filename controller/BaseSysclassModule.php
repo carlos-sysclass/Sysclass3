@@ -14,7 +14,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
     {
         $plico = PlicoLib::instance();
         $class_name = get_class($this);
-        $this->module_id = strtolower(str_replace("Module", "", $class_name));
+        $this->module_id = $plico->CamelDiscasefying(str_replace("Module", "", $class_name));
         $this->module_folder = $plico->get("path/modules") . $this->module_id;
 
         $baseUrl = $plico->get('module/base_path') . "/" . $this->module_id;
@@ -132,6 +132,10 @@ abstract class BaseSysclassModule extends AbstractSysclassController
     protected function createClientContext($operation, $data = null) {
         $config = $this->getConfig("crud\\routes\\" . $this->getMatchedUrl());
 
+        if ($config === FALSE) {
+            return false;
+        }
+
         $this->clientContext = $config['context'];
         $this->clientContext['module_id'] = $this->context['module_id'];
         if (is_array($data)) {
@@ -139,6 +143,8 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         }
 
         $this->injectObjects($operation);
+
+        return true;
     }
 
 

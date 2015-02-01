@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Groups
+      page_title: User Types
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your groups
+        page_subtitle: Manage your user types
       context:
         datatable_fields:
         - mData: id
@@ -35,17 +35,18 @@ crud:
           sType: table-options
           sClass: text-center
           label: Actions
-
-    add:
-      components: ["validation", "wysihtml5"]
-      template: form.tpl
+    add: false
+#    add:
+#      components: ["validation", "wysihtml5"]
+#      template: form.tpl
       #scripts: ["models.users", "views.users.add"]
-      variables:
-        page_subtitle: Create a new User
+#      variables:
+#        page_subtitle: Create a new user type
+
     'edit/:id':
       components: ["validation", "wysihtml5"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Config and edit group info
+        page_subtitle: Config and edit user type info
 
