@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * Module Class File
  * @filesource
@@ -495,11 +497,17 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
             $items = array_values($items);
             foreach($items as $key => $item) {
+                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                 $items[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
                         'link'  => $baseLink . "edit/" . $item['id'],
                         'class' => 'btn-sm btn-primary'
+                    ),
+                    'block'  => array(
+                        'icon'  => 'icon-lock',
+                        'link'  => $baseLink . "block/" . $item['id'],
+                        'class' => 'btn-sm btn-info'
                     ),
                     'remove'    => array(
                         'icon'  => 'icon-remove',
@@ -519,6 +527,22 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
 
 
+    // CRUD FUNCIONS
+    /**
+     * Module Entry Point
+     *
+     * @url GET /view
+     */
+    public function viewPage()
+    {
+        $this->putBlock("group.add");
+
+        parent::viewPage();
+
+    }
+
+
+
 	/**
 	 * Module Entry Point
 	 *
@@ -526,8 +550,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 	 */
 	public function profilePage()
 	{
-		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
-		exit;
+		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		//exit;
 		$currentUser    = $this->getCurrentUser(true);
 		// PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
 		$this->putComponent("select2");

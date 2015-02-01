@@ -1,6 +1,7 @@
 <?php
-//define("DEBUG", 1);
+require('vendor/autoload.php');
 
+//define("DEBUG", 1);
 $plicoLib = PlicoLib::instance();
 
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
@@ -167,7 +168,11 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/bootbox/bootbox.min')
 ));
 
-
+$plicoLib->add("resources/components", array(
+	'name'	=> 'icheck',
+	'css'	=> array('plugins/icheck/skins/all'),
+	'js'	=> array('plugins/icheck/icheck.min')
+));
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'validation',

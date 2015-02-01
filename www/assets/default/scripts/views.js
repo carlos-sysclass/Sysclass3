@@ -21,7 +21,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					//self.update()
 				});
 	    	});
-			
+
 	    },
 	    handleAction : function(action) {
 	    	console.info('views/baseClass::handleAction');
@@ -66,10 +66,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    renderItens : function(values) {
 	    	console.info('views/baseClass::renderItens');
 			// INJECT VALUES
-			
+
 	    	for (idx in values) {
 	    		if (
-	    			this.$(":input[data-update^='" + idx + "']").size() > 0 || 
+	    			this.$(":input[data-update^='" + idx + "']").size() > 0 ||
 	    			this.$(":input[name^='" + idx + "']").size() > 0
 	    		) {
 		    		if (this.$(":input[data-update^='" + idx + "']").size() > 0) {
@@ -88,27 +88,38 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                        // CORRETING TIMEZONE DIFF
 		                        date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
 
-		                        input.datepicker('setDate', date);    
+		                        input.datepicker('setDate', date);
 		                    }
 
 		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
+
 	                		if (values[idx] != null) {
 		                		if (input.hasClass("icheck-me")) {
 									input.filter("[value='" + values[idx] +"']").iCheck("check");
 		                		} else {
-			                		input.filter("[value='" + values[idx] +"']").attr("checked", "checked");	
+			                		input.filter("[value='" + values[idx] +"']").attr("checked", "checked");
+			                		if ($.uniform) {
+			                			$.uniform.update(input.filter("[value='" + values[idx] +"']"));
+			                		}
 			                	}
 		                	} else {
 		                		if (input.hasClass("icheck-me")) {
 		                			input.filter("[value='" + values[idx] +"']").iCheck("check");
 		                		} else {
-		                			input.filter("[value='']").attr("checked", "checked");	
+		                			input.filter("[value='']").attr("checked", "checked");
+			                		if ($.uniform) {
+			                			$.uniform.update(input.filter("[value='']"));
+			                		}
 		                		}
 		                	}
 		                } else if (input.hasClass("select2-me") && input.is("select")) {
 		                    input.select2("val", values[idx]);
+
 		                } else if (input.hasClass("select2-me") && input.is("[type='hidden']")) {
-							input.select2("data", values[idx]);
+							//input.select2("data", values[idx]);
+							//input.select2("data", {id : values[idx]});
+							//console.warn(values[idx]);
+
 						} else if (input.hasClass("wysihtml5")) {
 							var wysihtml5 = $(this).data('wysihtml5');
 							wysihtml5.editor.setValue(values[idx]);
@@ -120,15 +131,15 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                    }
 		                }
 		    		});
-	                
-	                
+
+
 	            }
 	            if (this.$("[data-update^='" + idx + "']").not(":input").size() > 0) {
 	            	var domField = this.$("[data-update^='" + idx + "']");
 	            	if (domField.is("[data-format]")) {
 	            		domField.html(this.formatValue(values[idx], domField.data("format"), domField.data("format-from")));
 	            	} else {
-	            		domField.html(values[idx]);	
+	            		domField.html(values[idx]);
 	            	}
 	            }
 	        }
@@ -218,7 +229,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::handleValidation');
 	    	var self = this;
 
-	    	
+
 
 
 				this.oForm.validate({
@@ -232,7 +243,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	                    //    error.insertAfter("#form_2_membership_error");
 	                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
 	                    	//console.log(element.data('wysihtml5').editor.composer.iframe);
-	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe); 
+	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
 	                    //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
 	                    //    error.insertAfter("#form_2_service_error");
 	                    } else {
@@ -354,7 +365,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			Backbone.Marionette.ItemView.prototype.initialize.apply(this);
 
 			// LISTEN TO MODEL CHANGES TO REFRESH UI
-			//this.$el.on("change", ":input", this.update.bind(this));			
+			//this.$el.on("change", ":input", this.update.bind(this));
 
 			this.$el.on("change", ":input", this.update.bind(this));
 			this.$el.on("click", ".remove", this.delete.bind(this));
@@ -368,7 +379,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	if (this._isViewUpdating) {
 	    		return;
 	    	}
-	    	
+
 	    	var $el = $(e.currentTarget);
 
 			if ($el.attr("name")) {
@@ -406,13 +417,13 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					if (inputField.hasClass("icheck-me")) {
 						inputField.filter("[value='" + value +"']").iCheck("check");
 					} else {
-						inputField.filter("[value='" + value +"']").attr("checked", "checked");	
+						inputField.filter("[value='" + value +"']").attr("checked", "checked");
 					}
 				} else {
 					if (inputField.hasClass("icheck-me")) {
 						inputField.filter("[value='" + value +"']").iCheck("check");
 					} else {
-					inputField.filter("[value='']").attr("checked", "checked");	
+					inputField.filter("[value='']").attr("checked", "checked");
 					}
 				}
 			} else if (inputField.hasClass("select2-me") && inputField.is("select")) {
@@ -438,7 +449,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		if ($el.attr("name")) {
 			        var matches = $el.attr("name").match(/[a-z_]+\[([a-z_]+)\]/);
 			        var prop = matches[1];
-			        
+
 			        self.updateView(prop, this);
 				}
 			});

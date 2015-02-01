@@ -3478,3 +3478,7 @@ INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_n
 
 /* 2015-01-28 */
 ALTER TABLE `users` ADD COLUMN `last_login` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `autologin`;
+
+ALTER TABLE `users` ADD COLUMN `group_id` integer NOT NULL DEFAULT 0 AFTER `user_type`;
+ALTER TABLE `users` ADD COLUMN `language_id` integer NOT NULL DEFAULT 0 AFTER `email`;
+

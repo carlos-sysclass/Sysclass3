@@ -1,0 +1,9 @@
+{
+    "require": {
+        "monolog/monolog": "1.12.*"
+    },
+    "require-dev": {
+
+        "phpdocumentor/phpdocumentor": "2.*"
+    }
+}

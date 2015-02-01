@@ -18,13 +18,13 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 			    	fade: data.backstrechFade,
 			    	duration: data.backstrechDuration
 				});
-				
+
 			});
 		}
 	};
   	this.handleValidate = function(context) {
 	  	// Validation
-	  	/* 
+	  	/*
 		if($('.form-validate', context).length > 0) {
 			$('.form-validate', context).each(function(){
 				//var id = $(this).attr('id');
@@ -34,12 +34,12 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	                errorClass: 'help-block', // default input error message class
 
 	                errorPlacement: function (error, element) { // render error placement for each input type
-	                	
+
 	                    //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
 	                    //    error.insertAfter("#form_2_membership_error");
 	                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
 	                    	//console.log(element.data('wysihtml5').editor.composer.iframe);
-	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe); 
+	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
 	                    //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
 	                    //    error.insertAfter("#form_2_service_error");
 	                    } else {
@@ -75,15 +75,10 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 				var skin = ($el.attr('data-skin') !== undefined) ? "_"+$el.attr('data-skin') : "",
 				color = ($el.attr('data-color') !== undefined) ? "-"+$el.attr('data-color') : "";
 
-				if (color == "") {
-					//console.log($("body").attr("data-theme"));
-					//console.log($CEPETI.module("system").context.get("layout_color"));
-				}
-
 				var opt = {
 					checkboxClass: 'icheckbox' + skin + color,
 					radioClass: 'iradio' + skin + color,
-					increaseArea: "10%"
+					increaseArea: "20%"
 				}
 
 				$el.iCheck(opt);
@@ -108,12 +103,15 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 							},
 							results: function (data, page) { // parse the results into the format expected by Select2.
 								// since we are using custom formatting functions we do not need to alter remote JSON data
-								console.log(data);
 								return {results: data};
 							}
 						};
+                        opt.initSelection = function (element, callback) {
+                            var data = { id: element.val(), text: element.val() };
+                            callback(data);
+                        };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
-							console.log(item, container, query, escapeMarkup);
+							///console.log(item, container, query, escapeMarkup);
             				var markup=[];
             				var terms = query.term.split("%");
             				if (item.text) {
@@ -133,7 +131,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 						$el.select2(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
-						console.log(opt);
 						mod.loadDatasourceInto(this, jQuery(this).data('url'), function() {
 							$el.select2(opt);
 						}, jQuery(this).data('url-cache'), jQuery(this).data('url-clear'));
@@ -148,7 +145,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 					}
 
 
-					$el.select2(opt);	
+					$el.select2(opt);
 				}
 			});
 		}
@@ -213,7 +210,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 						$(target).html(data);
 						// HANDLE ALL ELEMENTS ON THIS CONTENT
 						mod.refresh($(target));
-						
+
 
 					}
 				});
@@ -245,7 +242,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	                },
                 });
     		});
-			
+
     	};
     };
 
@@ -302,24 +299,24 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	}
 
 	this.on("start", function() {
-		
+
 		if ($.fn.modal && $.fn.modalmanager) {
-			$.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner = 
+			$.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner =
 			'<div class="loading-spinner" style="width: 200px; margin-left: -100px;">' +
 				'<div class="progress progress-striped active">' +
 					'<div class="progress-bar" style="width: 100%;"></div>' +
 				'</div>' +
 			'</div>';
 		}
-		
+
 		$("div.img-vertical-middle").each(function() {
 		    var $el = $(this);
 		    var $img = $el.find("img")
 		    var height = $el.parents("div").height()
 		    $el.height(height);
-		    
+
 		    var img_height = $img.height();
-		    
+
 		    var margin = (height - img_height) / 2;
 		    $img.css("margin-top", margin);
 		});
@@ -389,7 +386,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     	}
     	*/
     	if (reload) {
-			jQuery.ajax( 
+			jQuery.ajax(
 	            url,
 				{
 	            	async : false,
@@ -413,6 +410,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		}
     };
 
-  	
+
 
 });

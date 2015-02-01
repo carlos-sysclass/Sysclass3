@@ -1,6 +1,11 @@
-<?php 
+<?php
+use Monolog\Logger;
+use Monolog\Handler\FirePHPHandler;
+use Monolog\Formatter\WildfireFormatter;
+
 abstract class AbstractSysclassController extends AbstractDatabaseController
 {
+	protected static $logger = null;
 	protected static $current_user = null;
 	public static $t = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
@@ -8,7 +13,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
 		// LOAD LANGUAGE MODULE
-		
+
 		$modulesDB = $this->_getTableData("modules","*","className = 'module_language' AND active=1");
 
 		foreach ($modulesDB as $module) {
@@ -153,7 +158,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			    $small_user_avatar['avatar'] = self::$current_user->user['avatar'];
 
 			    list($big_user_avatar['width'], $big_user_avatar['height']) = sC_getNormalizedDims($file['path'], 200, 200);
-				$big_user_avatar['avatar'] = self::$current_user->user['avatar'];		    
+				$big_user_avatar['avatar'] = self::$current_user->user['avatar'];
 			} catch (MagesterFileException $e) {
 			    $small_user_avatar = array(
 			        'avatar' => "img/avatar_small.jpg",
@@ -169,7 +174,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$this->putItem("small_user_avatar", $small_user_avatar);
 			$this->putItem("big_user_avatar", $big_user_avatar);
 		}
-		
+
 	}
 	public function getCurrentUser($object = false) {
 		if (is_null(self::$current_user)) {
@@ -194,4 +199,17 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		return false;
 	}
 	/* FRAMEWORK CANDIDATE FUNCTIONS - !MOVE TO plicolib if apply! */
+	protected function log() {
+		if (is_null(self::$logger)) {
+	        // create a log channel
+
+	        // TODO LOAD LOG HANDLERS FROM CONFIGURATION
+	        $streamHandler = new FirePHPHandler();
+	        $streamHandler->setFormatter(new WildfireFormatter());
+
+	        self::$logger = new Logger('sysclass');
+	        self::$logger->pushHandler($streamHandler);
+		}
+		return self::$logger;
+    }
 }
