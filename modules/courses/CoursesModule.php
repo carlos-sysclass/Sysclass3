@@ -137,6 +137,35 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 				)
 			);
 		}
+        if (in_array("courses.administration", $widgetsIndexes)) {
+            // TODO MOVE TO YOUR OWN COMPONENT
+            $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+            $this->putComponent("fuelux-tree");
+            $this->putComponent("jquery-nestable");
+
+            $this->putScript("plugins/holder");
+
+            //$this->putScript("plugins/videojs/vjs.youtube");
+
+            $this->putModuleScript("models.courses");
+            $this->putModuleScript("widget.courses");
+
+
+            return array(
+                'courses.administration' => array(
+                    'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                    'id'        => 'courses-widget',
+                    'template'  => $this->template("overview.widget"),
+                    'box'       => 'dark-blue tabbable tabbable-left',
+                    'tools'     => array(
+                        'search'        => true,
+                        'fullscreen'    => true
+                    )
+                )
+            );
+        }
+
+
 		return false;
 	}
 

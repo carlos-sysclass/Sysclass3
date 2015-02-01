@@ -1,0 +1,25 @@
+dashboard:
+    rows:
+        0:
+            1:
+                weight:
+                    lg: 8
+                    md: 8
+                    sm: 12
+                    xs: 12
+
+        1:
+            2:
+                weight:
+                    lg: 12
+                    md: 12
+                    sm: 12
+                    xs: 12
+    widgets:
+        1: ['users.overview']
+        2: ["courses.administration"]
+    sortable: false
+    resources:
+        users.overview.notification.order: ["courses", "tutoria", "calendar", "advisor", "tests"]
+        dashboard.linkable.order: ["institution", "courses", "news", "users"]
+        dashboard.linkable.groups.order: ["administration", "content", "users", "communication", "not_classified"]

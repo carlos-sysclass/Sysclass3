@@ -44,10 +44,10 @@ class DashboardController extends AbstractSysclassController
 	 * Create login and reset password forms
 	 *
 	 * @url GET /dashboard
-     * @url GET /dashboard/:user_type
-     * @url GET /dashboard/:user_type/:clear
+     * @url GET /dashboard/:dashboard_id
+     * @url GET /dashboard/:dashboard_id/:clear
 	 */
-	public function dashboardPage($user_type, $clear)
+	public function dashboardPage($dashboard_id, $clear)
 	{
         $currentUser = $this->getLoggedUser(true);
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
@@ -61,7 +61,10 @@ class DashboardController extends AbstractSysclassController
 
         $dashboardManager = $this->module("dashboard");
 
-        $dashboard_id = $currentUser['dashboard_id'] == "default" ? $currentUser['user_type'] : $currentUser['dashboard_id'];
+        if ($dashboard_id !== 0 && $dashboardManager->layoutExists($dashboard_id)) {
+        } else {
+            $dashboard_id = $currentUser['dashboard_id'] == "default" ? $currentUser['user_type'] : $currentUser['dashboard_id'];
+        }
 
         $pageLayout = $dashboardManager->loadLayout($dashboard_id, ($clear == "clear"));
 

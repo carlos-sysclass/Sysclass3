@@ -158,6 +158,12 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
         return  $this->layoutSpec = $this->config['dashboard'];
     }
 
+    public function layoutExists($layout_id) {
+        $config = yaml_parse_file(__DIR__ . "/config/" . $layout_id . ".yml");
+
+        return (bool) $config;
+    }
+
     protected function loadConfig($use_cache = true) {
         $cached = $this->getCache("dashboard/{$this->layout_id}");
 
@@ -165,9 +171,6 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
 
             $defaultconfig = yaml_parse_file(__DIR__ . "/config/default.yml");
             $config = yaml_parse_file(__DIR__ . "/config/" . $this->layout_id . ".yml");
-
-
-
 
             $this->config = array_replace_recursive($defaultconfig, $config);
 
