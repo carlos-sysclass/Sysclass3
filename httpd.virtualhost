@@ -1,0 +1,30 @@
+<virtualhost *:80>
+    ServerName local.sysclass.com
+    ServerAlias www.local.sysclass.com
+    ServerAdmin andre@plico.com.br
+    DocumentRoot "/var/www/local.sysclass.com/httpdocs/www"
+    ErrorLog "/var/www/local.sysclass.com/logs/error.log"
+    CustomLog "/var/www/local.sysclass.com/logs/access.log" combined
+    <Directory />
+        Options FollowSymLinks Indexes
+        AllowOverride All
+        Order Allow,Deny
+        Allow from all
+    </Directory>
+    # Custom Global Settings (if any exist)
+
+    # FOR CHAT SYSTEM
+    ProxyPass /chat-poll http://thesis.sysclass.com:7070/http-bind/
+    ProxyPassReverse /chat-poll http://thesis.sysclass.com:7070/http-bind/
+    ProxyPass /presence/status http://thesis.sysclass.com:9090/plugins/presence/status
+    ProxyPassReverse /presence/status http://thesis.sysclass.com:9090/plugins/presence/status
+
+    # FILE ALIAS
+    Alias /files /var/www/local.sysclass.com/httpdocs/files/
+
+    <Directory /var/www/local.sysclass.com/httpdocs/files/>
+            Order Allow,Deny^M
+            Allow from all^M
+            Options -Indexes^M
+    </Directory>
+</virtualhost>
