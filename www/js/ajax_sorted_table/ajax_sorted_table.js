@@ -316,6 +316,7 @@ function sC_js_rebuildTable(tableIndex, offset, column_name, order, other, noDiv
                 if (window.onSortedTableComplete) {
                     window.onSortedTableComplete();
                 }
+                            handleDatepickers();
 
                 if (sortedTables[tableIndex].hasClassName('subSection')) {
                     onLoadSubSection(sortedTables[tableIndex]);

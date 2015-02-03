@@ -21,6 +21,7 @@ if ($start !== false) {
 
 	$sub = substr(dirname(__FILE__), $start);
 	$_SERVER['SERVER_NAME'] =  $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	include(dirname(__FILE__) . '/www/send_notifications.php');
 	exit;
 }
@@ -31,8 +32,9 @@ if ($start !== false) {
 
 	$sub = substr(dirname(__FILE__), $start);
 	$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] = $sub . '.' . $domain_name;
-
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	include(dirname(__FILE__) . '/www/send_notifications.php');
+	
 	exit;
 }
 if (isset($domain_name)) {
@@ -41,7 +43,9 @@ if (isset($domain_name)) {
 	if ($_SERVER['SERVER_NAME'] == 'sysclass.com') {
 		$_SERVER['HTTPS'] = 'on';
 	}
+	include(dirname(__FILE__) . '/www/disable_expired_users.php');
 	include(dirname(__FILE__) . '/www/send_notifications.php');
+	
 	exit;
 }
 exit;

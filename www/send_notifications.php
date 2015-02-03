@@ -18,7 +18,7 @@ $debug_TimeStart = microtime(true);
 
 //Initialize session
 session_cache_limiter('none');
-session_start();
+@session_start();
 
 //Define default path
 $path = "../libraries/";
@@ -122,4 +122,4 @@ if ((!isset($hide_messages) || !$hide_messages) && !isset($_GET['ajax']) && (bas
 chdir($dir);
 
 //debug(false);
-exit;
+//exit;

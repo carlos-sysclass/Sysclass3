@@ -2393,10 +2393,11 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$processor = new $proc_class_name($fullFileName);
 		$fileStatus = $processor->analyze();
 
-/*		echo "<pre>";
+		/*	
+		echo "<pre>";
 		var_dump($fileStatus);
 		echo "</pre>";
-*/
+		*/
 		if (array_key_exists("batch", $fileStatus)) {
 			foreach($fileStatus['batch'] as &$lote)
 				foreach ($lote['registros'] as &$register) {
@@ -2592,6 +2593,14 @@ class module_xpay_boleto extends MagesterExtendedModule implements IxPaySubmodul
 		$datavencimento = date_create_from_format("Y-m-d H:i:s", $invoiceData['data_vencimento']);
 		if (!$datavencimento) {
 			$datavencimento = date_create_from_format("Y-m-d", $invoiceData['data_vencimento']);
+		}
+
+		$weekday = $datavencimento->format("w");
+
+		if ($weekday == 0) {
+			$datavencimento->add(new DateInterval("P1D"));
+		} elseif ($weekday == 0) {
+			$datavencimento->add(new DateInterval("P2D"));
 		}
 
 		if ($invoice_index == 0) {

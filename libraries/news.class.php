@@ -160,7 +160,7 @@ class news extends MagesterEntity
 		$form -> addElement('text', 'title', _ANNOUNCEMENTTITLE, 'class = "inputText"');
 		if ($_SESSION['s_type'] == "professor" || $_SESSION['s_type'] == "administrator") {
 			//$form -> addElement('select', 'courses', _LESSON, $courseID);
-			$form -> addElement('select', 'lessons', _LESSON, $lessons);
+			$form -> addElement('select', 'lessons', _LESSON, array(0 => "Todas as disciplinas" ) + $lessons);
 			$form -> addElement('select', 'classes', _COURSECLASS,array(0 => _COURSEALLCLASS ) + $allClass);
 		}
 		$form -> addRule('title', _THEFIELD.' "'._ANNOUNCEMENTTITLE.'" '._ISMANDATORY, 'required', null, 'client');
@@ -174,6 +174,7 @@ class news extends MagesterEntity
 		$form -> addElement('submit', 'submit', _ANNOUNCEMENTADD, 'class = "flatButton"');
 		$form -> setDefaults(array('title' => $this -> news['title'],
               'data' => $this -> news['data'],
+              'lessons'	=> $this -> news['lessons_ID'],
               'timestamp' => $this -> news['timestamp'] ? $this -> news['timestamp'] : time(),
               'expire' => $this -> news['timestamp'] ? $this -> news['expire'] : time()+(86400*30)));
 		return $form;
@@ -282,10 +283,20 @@ class news extends MagesterEntity
 			return $news;
 		}
 		//We don't have an "else" statement here, because in case the check in the above if removed all elements of lessonId (they were not ids), this part of code will be executed and the function won't fail
+		if ($lessonId == -1) {
+			$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString, "n.timestamp desc, n.id desc");
+		} else {
+			if (!sC_checkParameter($lessonId, 'id')) {
+				$lessonId = 0;
+			}
+			$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID=$lessonId", "n.timestamp desc, n.id desc");
+		}
 		if (!sC_checkParameter($lessonId, 'id')) {
 			$lessonId = 0;
 		}
-		$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID=$lessonId", "n.timestamp desc, n.id desc");
+
+		//$result = sC_getTableData("news n, users u", "n.*, u.surname, u.name", "n.users_LOGIN = u.login".$expireString." and n.lessons_ID=$lessonId", "n.timestamp desc, n.id desc");
+
 		$news = array();
 		foreach ($result as $value) {
 			$interval = time() - $value['timestamp'];

@@ -1034,14 +1034,15 @@ class MagesterCourse
     	!empty($constraints) OR $constraints = array('archive' => false, 'active' => true);
     	list($where, $limit, $orderby) = MagesterUser :: convertUserConstraintsToSqlParameters($constraints);
     	$where[] = "user_type != 'administrator'";
-    	$select = "u.*, r.courses_ID is not null as has_course, r.classe_id, c.name as classe_name, r.completed,r.score, r.from_timestamp as active_in_course, r.to_timestamp as timestamp_completed, r.role";
-    	$from = "users u left outer join (select completed,score,courses_ID,classe_id,from_timestamp, to_timestamp,users_LOGIN,user_type as role from users_to_courses where courses_ID='".$this -> course['id']."' and archive=0) r on u.login=r.users_LOGIN
+    	$select = "u.*, r.courses_ID is not null as has_course, r.classe_id, c.name as classe_name, r.completed,r.score, r.from_timestamp as active_in_course, r.end_timestamp as timestamp_estimated_end, r.to_timestamp as timestamp_completed, r.role";
+    	$from = "users u left outer join (select completed,score,courses_ID,classe_id,from_timestamp, end_timestamp, to_timestamp,users_LOGIN,user_type as role from users_to_courses where courses_ID='".$this -> course['id']."' and archive=0) r on u.login=r.users_LOGIN
   		LEFT JOIN classes c ON (r.classe_id = c.id)";
 
     	//echo $result = prepareGetTableData($from, $select, implode(" and ", $where), $orderby, false, $limit);
 
     	$result = sC_getTableData($from, $select,
     	implode(" and ", $where), $orderby, false, $limit);
+
     	if (!isset($constraints['return_objects']) || $constraints['return_objects'] == true) {
     		return MagesterUser :: convertDatabaseResultToUserObjects($result);
     	} else {
@@ -3915,13 +3916,30 @@ class MagesterCourse
 
     	$user = MagesterUserFactory :: factory($_GET['login']);
 
+        
+        $datetime = date_create_from_format('d/m/Y H:i:s', $_GET['estimated_end'] . " 23:59:59");
+        if ($datetime !== FALSE) {
+            $today = new DateTime();
+            if ($datetime->getTimestamp() > time()) {
+                // USER IS ACTIVE IN COURSE
+            } else {
+                $this -> archiveCourseUsers($user);
+               
+            }
+            sC_updateTableData("users_to_courses", 
+                array("end_timestamp" => $datetime->format('U')), 
+                sprintf("users_LOGIN = '%s' AND courses_ID = %d", $user->user['login'], $this->course['id'])
+            );
+        } else {
+
+        }
+
     	if (is_numeric($set_class_id)) {
     		$this->putUserInClass($user->user['login'], $set_class_id);
     	} else {
-
     		if (!$user -> hasCourse($this) || $user -> getUserTypeInCourse($this) != $userType) {
     			$this -> addUsers($user, $userType);
-    		} else {
+    		} elseif ($_GET['in_course'] == 'false') {
     			$this -> archiveCourseUsers($user);
     		}
     		$this->putUserInClass($user->user['login'], $class_id);

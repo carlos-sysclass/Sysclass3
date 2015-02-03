@@ -69,6 +69,7 @@ function ajaxPost(id, el, table_id) {
     } else if (table_id == 'usersTable') {
         usersAjaxPost(id, el, table_id);
     }
+
 }
 
 function lessonsAjaxPost(id, el, table_id) {
@@ -158,8 +159,12 @@ function usersAjaxPost(login, el) {
         var userType = $('type_'+login).options[$('type_'+login).selectedIndex].value;
         var userClasse = $('classeid_'+login).options[$('classeid_'+login).selectedIndex].value;
         var inCourse = $('checked_'+login).checked;
-
-        Object.extend(parameters, {login: login, user_type: userType, class_id : userClasse, in_course: inCourse});
+        if ($('estimated_end_'+login)) {
+          var estimatedEnd = $('estimated_end_'+login).value;
+        } else {
+          var estimatedEnd = null;
+        }
+        Object.extend(parameters, {login: login, user_type: userType, class_id : userClasse, in_course: inCourse, estimated_end : estimatedEnd});
     }
     ajaxRequest(el, url, parameters);
 }

@@ -30,6 +30,7 @@ if ($_admin_) {
 } elseif ($_student_) {
     $news = news::getNews(0, true) + news::getNews($lessonId, true);
 }
+
 $smarty->assign("T_NEWS", $news);
 
 //An array of legal ids for editing entries

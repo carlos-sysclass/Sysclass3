@@ -8,3 +8,4 @@
 libraries/language/*
 files/*
 www/doc/*
+/logs
