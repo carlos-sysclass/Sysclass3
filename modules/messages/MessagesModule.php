@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -7,8 +7,9 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class MessagesModule extends SysclassModule implements ISummarizable, ISectionMenu, IWidgetContainer
+class MessagesModule extends SysclassModule implements ISummarizable, IBlockProvider, ISectionMenu, IWidgetContainer
 {
+    // ISummarizable
     public function getSummary() {
         //$data = $this->dataAction();
         return false;
@@ -25,7 +26,29 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         );
     }
 
-    // CREATE FUNCTION HERE
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'messages.group.allow' => function($data, $self) {
+                $self->putComponent("select2");
+                //$self->putModuleScript("dialog.permission");
+                //$this->putSectionTemplate(null, "blocks/permission");
+                //$self->putSectionTemplate("foot", "dialogs/add");
+                $messagesGroupsCollection = $self->model("messages/groups/collection");
+
+                $messageGroupItems = $messagesGroupsCollection->getItems();
+
+                $self->putItem("block_messages_groups", $messageGroupItems);
+
+                $self->putSectionTemplate("behaviours", "blocks/messages.group.allow");
+
+                return true;
+
+            }
+        );
+    }
+
+    // ISectionMenu
     public function getSectionMenu($section_id) {
     	if ($section_id == "topbar") {
 
@@ -33,7 +56,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
             $currentUser = $this->getCurrentUser();
             $currentFolder = $this->getDefaultFolder($currentUser);
-            
+
             $messages = $this->getUnviewedMessages(array($currentFolder));
 
             $items = array();
@@ -70,13 +93,13 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     	}
     	return false;
     }
-
+    // IWidgetContainer
     public function getWidgets($widgetsIndexes = array()) {
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
         if (
             in_array($widgetsNames[1], $widgetsIndexes) ||
-            in_array($widgetsNames[2], $widgetsIndexes) || 
+            in_array($widgetsNames[2], $widgetsIndexes) ||
             in_array($widgetsNames[3], $widgetsIndexes)
         ) {
             $this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
@@ -96,7 +119,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
             $this->putModuleScript("messages");
 
-            
+
             $groups = $this->getMessageGroups();
 
             $recipients = $this->getMessageReceivers();
@@ -116,6 +139,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
             return $widgets;
         }
     }
+
     protected function getMessageGroups() {
         return $this->_getTableData(
             "mod_messages_groups",
@@ -131,7 +155,12 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         }
         /* CREATE AN ENTRY POINT TO xentify Module */
         //$xentifyModule = $this->loadModule("xentify");
+        $receiversCollection = $this->model("messages/receivers/collection");
 
+        $contactListData = $receiversCollection->getItems();
+
+
+        /*
         $contactListData = $this->_getTableData(
             "mod_messages_recipients qmr
             LEFT OUTER JOIN mod_messages_recipients_list scope ON (scope.recipient_id = qmr.id)
@@ -141,7 +170,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
             "",
             "recipient_id ASC"
         );
-
+        */
         $contactList = array();
 
         foreach ($contactListData as $key => $recp) {
@@ -153,14 +182,14 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
                 $item['id']     = $recp['recipient_id'];
                 $item['text']   = self::$t->translate($recp['title']);
 
-                if ($recp['qm_type'] == 'link') {
-                    $item['href'] = $recp['link'];
-                } else {
-                    $item['link']   = $this->getBasePath() . "send/" . $recp['recipient_id'] . "?popup";
-                }
-                $image = explode("/", $recp['image']);
-                $item['icon'] = $image[0];
-                $item['color'] = $image[1];
+                //if ($recp['qm_type'] == 'link') {
+                //    $item['href'] = $recp['link'];
+                //} else {
+                $item['link']   = $this->getBasePath() . "send/" . $recp['recipient_id'] . "?popup";
+                //}
+                //$image = explode("/", $recp['image']);
+                $item['icon'] = $recp['image'];
+                $item['color'] = $recp['image_type'];
 
                 if (!is_array($contactList[$recp['group_id']])) {
                     $contactList[$recp['group_id']] = array();
@@ -171,7 +200,6 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         return $contactList;
 
     }
-
 
     /**
      * Send Page Action
@@ -197,21 +225,25 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         //$form -> addRule('subject',   _THEFIELD.' "'._SUBJECT.'" '._ISMANDATORY,   'required', null, 'client');
         //$form -> addRule('recipients',   _THEFIELD.' "'._RECIPIENTS.'" '._ISMANDATORY,   'required', null, 'client');
         $form -> addElement('file', 'attachment[0]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
+        //$form -> addElement('file', 'attachment[1]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
         $form -> addElement('submit', 'submit_mail', _SEND);
 
         //$contactList = $this->getUserContactList();
 
         if ($form -> isSubmitted() && $form -> validate()) {
             $values = $form -> exportValues();
-//            exit;
+
+            $userGroupsItemModel = $this->model("user/groups/item");
 
             if (is_numeric($values['recipients'])) {
+                $recipients = $userGroupsItemModel->getUsersInGroup($values['recipients']);
+                /*
                 $recipients = $this->_getTableData(
                     "mod_messages_recipients qm, mod_messages_recipients_list qml, users u",
                     "u.name, u.surname, u.login, u.email, qm.qm_group",
                     sprintf("qm.id = qml.recipient_id AND qml.recipient_id = %d AND qml.user_id = u.id", $values['recipients'])
                 );
-
+                */
                 if (count($recipients) > 0) {
 
                     foreach ($recipients as $recipient) {
@@ -247,6 +279,8 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
                 $attachFile = array();
 
+                /*
+
                 if ($_FILES['attachment']['name'][0] != "") {
                     if ($_FILES['attachment']['size'][0] ==0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE) {                                                           //If the directory could not be created, display an erro message
                         $message      = self::$t->translate("Each file size must be smaller than %d bytes", G_MAXFILESIZE);
@@ -254,17 +288,47 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
                     }
                     //Upload user avatar file
 
-                    $pm -> sender_attachment_timestamp = time();
+                    $pm->sender_attachment_timestamp = time();
 
-                    $user_dir = G_UPLOADPATH.$current_user->user['login'].'/message_attachments/Sent/'.$pm -> sender_attachment_timestamp.'/';
+                    var_dump(G_UPLOADPATH);
+                    exit;
+
+                    $user_dir = G_UPLOADPATH.$current_user->user['login'].'/message_attachments/Sent/'.$pm->sender_attachment_timestamp.'/';
                     mkdir($user_dir,0755,true);
                     $filesystem = new FileSystemTree($user_dir);
                     $uploadedFile = $filesystem -> uploadFile('attachment', $user_dir, 0);
 
-                    $pm -> sender_attachment_fileId =  $uploadedFile['id'];
-                    $pm -> setAttachment($uploadedFile['path']);
+                    $pm->sender_attachment_fileId =  $uploadedFile['id'];
+                    $pm->setAttachment($uploadedFile['path']);
 
                     $attachFile[] = $uploadedFile['path'];
+                }
+                */
+                if (count($_POST['attachment'])) {
+                    $user = $this->getCurrentUser();
+
+                    //if (!is_dir($user['directory'])) {
+                    //    mkdir($user['directory']);
+                    //}
+
+                    $fileWrapper = $this->helper("file/wrapper");
+
+                    foreach($_POST['attachment'] as $file_name) {
+                        $filesystem = new FileSystemTree($user['directory']);
+
+                        $file = array(
+                            'error'     => 0,
+                            'size'      => $fileWrapper->getFilesize($user['login'], $file_name),
+                            'name'      => $file_name,
+                            'tmp_name'  => $fileWrapper->getFullPath($user['login'], $file_name)
+                        );
+
+                        $uploadedFile = $filesystem -> uploadFile($file, $user_dir, 0, true);
+
+                        $pm->sender_attachment_fileId =  $uploadedFile['id'];
+                        $pm->setAttachment();
+                    }
+
                 }
 
                 $result = true;
@@ -355,9 +419,46 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         $this->putItem("MESSAGE_MAIL_TYPE" , $message_type);
 
         //var_dump($renderer -> toArray());
-        
+
         $this->display("send.form.tpl");
     }
+
+    /**
+     * Attach File Action
+     *
+     * @url POST /attach_file
+     */
+    public function attachFile($recipient_id) {
+        if (count($_FILES) > 0) {
+            $fileWrapper = $this->helper("file/wrapper");
+
+            $user = $this->getCurrentUser();
+            $result = array();
+            foreach($_FILES as $index => $file) {
+                /*
+                array(5) {
+                ["name"]=> string(14) "2014-11-28.txt"
+                ["type"]=> string(10) "text/plain"
+                ["tmp_name"]=> string(14) "/tmp/phpsYLhov"
+                ["error"]=> int(0)
+                ["size"]=> int(10423)
+                }
+                */
+
+                $result = $fileWrapper->uploadObjectByPath(
+                    $user['login'],
+                    $file['name'],
+                    $file['tmp_name']
+                );
+
+            }
+            return $result;
+        }
+
+        return $this->invalidRequestError();
+    }
+
+
 
     /**
      * Send Page Action
@@ -369,7 +470,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         $this->putScript("scripts/inbox");
 
         $this->putModuleScript("inbox");
-        
+
         $this->display("inbox.tpl");
     }
 
@@ -377,6 +478,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
      * Send Page Action
      *
      * @url GET /data/folders
+     * @deprecated
      */
     public function dataFoldersAction() {
         $currentUser = $this->getCurrentUser();
@@ -386,10 +488,11 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
         return array_values($folders);
     }
-/**
+    /**
      * Send Page Action
      *
      * @url GET /data/messages
+     * @deprecated
      */
     public function dataAction() {
         $currentUser = $this->getCurrentUser();
@@ -400,13 +503,13 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         $foldersID = array_keys($folders);
 
         $folderMessages = sC_getTableData(
-            "f_personal_messages", 
-            "*", 
+            "f_personal_messages",
+            "*",
             sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) ", $currentUser['login'], implode(",", $foldersID)),
             "priority desc, viewed,timestamp desc"
         );
 
-/*
+        /*
 
         if (isset($_GET['flag']) && sC_checkParameter($_GET['flag'], 'id')) {
 
@@ -432,7 +535,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
         $p_messages_per_page[0]['value'] ? $p_messages_per_page = $p_messages_per_page[0]['value'] : $p_messages_per_page = 20;
 
-*/
+        */
         // Create ajax enabled table for employees
         isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
         if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
@@ -453,7 +556,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         // Keep only the first characters of the recipient's list
         //$subject_chars   = 50;
         //$recipient_chars = 30;
-/*
+        /*
 
             foreach ($messages as $key => $p_message) {
 
@@ -471,7 +574,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
             }
 
-*/
+        */
         foreach ($folderMessages as $key => $value) {
             $recipients = explode(",", $folderMessages[$key]['recipient']);
             foreach ($recipients as $k => $login) {
@@ -484,6 +587,9 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
     }
 
     /* MODEL FUNCTIONS */
+    /**
+     * @deprecated
+     */
     public function getTotalUnviewed($currentUser = null, $folder = null)
     {
         if (is_null($currentUser)) {
@@ -495,13 +601,16 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
 
         /** @todo CHECK FOR TRANSLATION MODE */
         $folderMessages = $this->_countTableData(
-            "f_personal_messages", 
-            "*", 
-            "users_LOGIN = '".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0", 
+            "f_personal_messages",
+            "*",
+            "users_LOGIN = '".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0",
             "priority desc, viewed,timestamp desc"
         );
         return $folderMessages[0]['count'];
     }
+    /**
+     * @deprecated
+     */
     public function getUnviewedMessages($foldersID = null) {
         $currentUser = $this->getCurrentUser();
         $currentFolder = $this->getDefaultFolder($currentUser);
@@ -512,8 +621,8 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         }
 
         $folderMessages = sC_getTableData(
-            "f_personal_messages", 
-            "*", 
+            "f_personal_messages",
+            "*",
             sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) AND viewed = 0", $currentUser['login'], implode(",", $foldersID)),
             "priority desc, viewed,timestamp desc"
         );
@@ -546,6 +655,9 @@ class MessagesModule extends SysclassModule implements ISummarizable, ISectionMe
         //$smarty -> assign("T_MESSAGES", $folderMessages);
         return $folderMessages;
     }
+    /**
+     * @deprecated
+     */
     public function getDefaultFolder($currentUser) {
         $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
         reset($folders);

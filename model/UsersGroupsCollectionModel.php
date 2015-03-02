@@ -8,7 +8,7 @@ class UsersGroupsCollectionModel extends AbstractSysclassModel implements ISyncr
         $this->mainTablePrefix = "g";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, name, description, active FROM groups g";
+        $this->selectSql = "SELECT id, name, description, active, `behaviour_allow_messages` FROM groups g";
 
         parent::init();
 

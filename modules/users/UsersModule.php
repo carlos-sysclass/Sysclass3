@@ -10,7 +10,7 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable,  IPermissionChecker, IWidgetContainer
+class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, IBreadcrumbable, IActionable, IPermissionChecker, IWidgetContainer
 {
 
     /* ILinkable */
@@ -37,6 +37,26 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                 )
             );
         }
+    }
+
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'users.list.table' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("data-tables");
+                $self->putScript("scripts/utils.datatables");
+
+                $block_context = $self->getConfig("blocks\\users.list.table\context");
+                $self->putItem("users_block_context", $block_context);
+
+
+                $self->putSectionTemplate("users", "blocks/table");
+
+                return true;
+
+            }
+        );
     }
 
     /* IBreadcrumbable */
@@ -498,22 +518,32 @@ class UsersModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             $items = array_values($items);
             foreach($items as $key => $item) {
                 // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                $items[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $baseLink . "edit/" . $item['id'],
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'block'  => array(
-                        'icon'  => 'icon-lock',
-                        'link'  => $baseLink . "block/" . $item['id'],
-                        'class' => 'btn-sm btn-info'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
-                );
+                if (array_key_exists('block', $_GET)) {
+                    $items[$key]['options'] = array(
+                        'check'  => array(
+                            'icon'  => 'icon-check',
+                            'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                } else {
+                    $items[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'icon-edit',
+                            'link'  => $baseLink . "edit/" . $item['id'],
+                            'class' => 'btn-sm btn-primary'
+                        ),
+                        'block'  => array(
+                            'icon'  => 'icon-lock',
+                            'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-info'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
             }
             return array(
                 'sEcho'                 => 1,

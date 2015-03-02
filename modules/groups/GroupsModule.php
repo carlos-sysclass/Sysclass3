@@ -93,7 +93,57 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         return $actions[$request];
     }
+    /**
+     * Get the institution visible to the current user
+     *
+     * @url GET /item/users/:group_id
+    */
+    public function getUsersInGroup($group_id) {
+        $data = $this->getHttpData(func_get_args());
 
+        $userGroupModel = $this->model("user/groups/item");
+
+        $users = $userGroupModel->getUsersInGroup($group_id);
+
+        return $users;
+    }
+
+    /**
+     * Get the institution visible to the current user
+     *
+     * @url POST /item/users/switch
+    */
+    public function switchUserInGroup() {
+        $data = $this->getHttpData(func_get_args());
+
+        $userGroupModel = $this->model("user/groups/item");
+
+        $status = $userGroupModel->switchUserInGroup(
+            $data['group_id'],
+            $data['user_login']
+        );
+
+        if ($status == 1) {
+            // USER ADICIONANDO AO GRUPO
+            $info = array('insert' => true, "removed" => false);
+            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
+        } elseif ($status == -1) {
+            // USER EXCLUÍDO AO GRUPO
+            $info = array('insert' => false, "removed" => true);
+            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
+        }
+        return array_merge($response, $info);
+    }
+
+    /*
+    public function editPage($id)
+    {
+        parent::editPage($id);
+
+        $this->
+
+    }
+    */
     /**
      * Get the institution visible to the current user
      *

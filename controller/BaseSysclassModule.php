@@ -74,7 +74,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     }
 
-    protected function getConfig($path = null) {
+    public function getConfig($path = null) {
         if (is_null($path)) {
             return $this->context['*config*'];
         }
@@ -99,6 +99,10 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         // PROCESS ENTRIES
         foreach($config['components'] as $component) {
             $this->putComponent($component);
+        }
+
+        foreach($config['blocks'] as $block) {
+            $this->putBlock($block);
         }
 
         if (!is_null($page)) {

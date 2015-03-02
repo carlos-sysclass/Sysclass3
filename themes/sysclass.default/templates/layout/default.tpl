@@ -7,6 +7,9 @@
 	{block name="head"}
 		{include file="block/head.tpl"}
 	{/block}
+	<script>
+		_lazy_init_functions = [];
+	</script>
 </head>
 <body class="page-boxed page-header-fixed">
 	<!-- BEGIN HEADER -->
@@ -40,9 +43,9 @@
 		{block name="underscore-templates"}
 		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
 		<script type="text/template" id="datatables-options-template">
-			<a 
-				class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>" 
-				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>" 
+			<a
+				class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
+				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>"
 				<% if (item.attrs != undefined) { %>
 					<% _.each(item.attrs, function(value, tag) { %>
 						<%= tag %>="<%= value %>"

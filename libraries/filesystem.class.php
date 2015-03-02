@@ -2982,57 +2982,32 @@ class FileSystemTree extends MagesterTree
         }
     }
     /**
-
      * Handle uploaded file
-
      *
-
      * This function is used to handle an uploaded file. Given the name of the form field
-
      * that was used to upload the file, as well as the destination directory, the function
-
      * creates the corresponding database entry and moves the file to the designated position,
-
      * using the appropriate name.
-
      * <br/>Example:
-
      * <code>
-
      * $destinationDir = new MagesterDirectory(/path/to/destination/dir);                    //the directory to upload the file to.
-
      * $filesystem = new FileSystemTree('/path/to/some_dir');								//Create a FileSystemTree instance
-
      * try {
-
      *   $uploadedFile = $filesystem -> uploadFile('file_upload', $destinationDir);
-
      * } catch (MagesterFileException $e) {
-
      *   echo $e -> getMessage();
-
      * }
-
      * </code>
-
      *
-
      * @param string $fieldName The form file field name
-
      * @param mixed $destinationDirectory The destination for the uploaded file, either a string or an MagesterDirectory object
-
      * @param string $offset If the field name is on the form file[x] (array-like), then specifying specific offset (x) allows for handling of it
-
      * @return object An object of MagesterFile class, corresponding to the newly uploaded file.
-
      * @access public
-
      * @since 3.0
-
      * @static
-
      */
-    public function uploadFile($fieldName, $destinationDirectory = false, $offset = false)
+    public function uploadFile($fieldName, $destinationDirectory = false, $offset = false, $fieldNameIsFull = false)
     {
         if (!$destinationDirectory) {
             $destinationDirectory = $this -> dir;
@@ -3043,7 +3018,12 @@ class FileSystemTree extends MagesterTree
         if (strpos($destinationDirectory['path'], $this -> dir['path']) === false) {
             throw new MagesterFileException(_ILLEGALPATH.': '.$destinationDirectory['path'], MagesterFileException :: ILLEGAL_PATH);
         } else {
-            if ($offset !== false) {
+            if ($fieldNameIsFull) {
+                $error = $fieldName['error'];
+                $size = $fieldName['size'];
+                $name = $fieldName['name'];
+                $tmp_name = $fieldName['tmp_name'];
+            } elseif ($offset !== false) {
                 $error = $_FILES[$fieldName]['error'][$offset];
                 $size = $_FILES[$fieldName]['size'][$offset];
                 $name = $_FILES[$fieldName]['name'][$offset];
@@ -3100,7 +3080,12 @@ class FileSystemTree extends MagesterTree
 
                  */
                 $newName = MagesterFile :: encode($name);
-                move_uploaded_file($tmp_name, $destinationDirectory['path'].'/'.$newName);
+                if ($fieldNameIsFull) {
+                    copy($tmp_name, $destinationDirectory['path'].'/'.$newName);
+                } else {
+                    move_uploaded_file($tmp_name, $destinationDirectory['path'].'/'.$newName);
+                }
+
                 chmod($destinationDirectory['path'].'/'.$newName, 0644); //because of this http://bugs.php.net/bug.php?id=42291
                 $fileMetadata = array('title' => $name,
                                       'creator' => $GLOBALS['currentUser'] -> user['name'].' '.$GLOBALS['currentUser'] -> user['surname'],

@@ -3483,3 +3483,8 @@ ALTER TABLE `users` ADD COLUMN `group_id` integer NOT NULL DEFAULT 0 AFTER `user
 ALTER TABLE `users` ADD COLUMN `language_id` integer NOT NULL DEFAULT 0 AFTER `email`;
 ALTER TABLE `users` ADD COLUMN `dashboard_id` character varying(25) NOT NULL DEFAULT 'default' AFTER `email`;
 
+ALTER TABLE `groups` ADD COLUMN `behaviour_allow_messages` TINYINT(1) NULL DEFAULT 0 AFTER `key_current_usage`;
+
+ALTER TABLE `groups` ADD COLUMN `image` VARCHAR(20) NULL DEFAULT 'group' AFTER `behaviour_allow_messages`, ADD COLUMN `image_type` VARCHAR(20) NULL DEFAULT 'primary' AFTER `image`;
+
+

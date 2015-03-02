@@ -99,4 +99,11 @@ abstract class SysclassModule extends BaseSysclassModule
         }
     }
 
+
+
+
+    /** HELPER FUNCTIONS */
+    protected function getMyFilePath() {
+
+    }
 }

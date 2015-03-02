@@ -7,7 +7,7 @@
 	el: $('.message-recipient-group'),
 	_dialog : null,
 	// Delegated events for creating new items, and clearing completed ones.
-	
+
 	events: {
 	  "click .message-recipient-item": "openDialog"
 	},
@@ -37,6 +37,14 @@
 
 		var error1 = $('.alert-danger', self._dialog.find('form'));
 
+		var currentForm = self._dialog.find('form');
+		var files = {};
+
+		$('input[type=file]', currentForm).on('change', function(e) {
+			var name = $(this).attr("name");
+			files[name] = e.target.files;
+		});
+
 		self._dialog.find('form').validate({
 			errorElement: 'span', //default input error message container
 			errorClass: 'help-block', // default input error message class
@@ -52,7 +60,7 @@
 					required: true,
 				}
 			},
-			invalidHandler: function (event, validator) { //display error alert on form submit              
+			invalidHandler: function (event, validator) { //display error alert on form submit
 				//success1.hide();
 				error1.show();
 				App.scrollTo(error1, -200);
@@ -71,22 +79,89 @@
 			},
 
 			submitHandler: function (form) {
-				error1.hide();
-				jQuery.post(
-				  $(form).attr("action"),
-				  $(form).serialize(),
-				  function(response, status) {
-					self._dialog.modal('hide');
-					$SC.request("toastr:message", response.message_type, response.message);
+				var formData = {};
+				var TotalFiles = _.size(files);
+				if (files != null && TotalFiles > 0) {
+					$.each(files, function(index, file) {
 
-				  },
-				  'json'
-				);
+						var data = new FormData();
+						$.each(file, function(key, value)
+						{
+							data.append(key, value);
+						});
+
+						$.ajax({
+				            url: '/module/messages/attach_file',
+				            type: 'POST',
+				            data: data,
+				            cache: false,
+				            dataType: 'json',
+				            processData: false, // Don't process the files
+				            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+				            success: function(data, textStatus, jqXHR)
+				            {
+				            	if(typeof data.error === 'undefined')
+				            	{
+				            		// Success so call function to process the form
+				            		TotalFiles--;
+				            		formData[index] = data['file'];
+				            		if (TotalFiles == 0) {
+										// SEND THE FORM
+										$(form).find(":input").each(function() {
+											if ($(this).is("[type=file]")) {
+												return true;
+											}
+											formData[$(this).attr("name")] = $(this).val();
+										});
+
+										jQuery.post(
+										  $(form).attr("action"),
+										  formData,
+										  function(response, status) {
+											self._dialog.modal('hide');
+											$SC.request("toastr:message", response.message_type, response.message);
+
+										  },
+										  'json'
+										);
+				            		}
+				            	}
+				            	else
+				            	{
+				            		// Handle errors here
+				            		console.log('ERRORS: ' + data.error);
+				            	}
+				            },
+				            error: function(jqXHR, textStatus, errorThrown)
+				            {
+				            	// Handle errors here
+				            	console.log('ERRORS: ' + textStatus);
+				            	// STOP LOADING SPINNER
+				            }
+				        });
+					});
+				} else {
+					$(form).find(":input").each(function() {
+						if ($(this).is("[type=file]")) {
+							return true;
+						}
+						formData[$(this).attr("name")] = $(this).val();
+					});
+
+					jQuery.post(
+					  $(form).attr("action"),
+					  formData,
+					  function(response, status) {
+						self._dialog.modal('hide');
+						$SC.request("toastr:message", response.message_type, response.message);
+
+					  },
+					  'json'
+					);
+				}
 			}
-		});      
+		});
 	  }).modal("show");
-
-
 
 	  return false;
 
