@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
     });
 
 
-    if (typeof _lazy_init_functions != undefined) {
+    if (typeof _lazy_init_functions != "undefined") {
 
         for(i in _lazy_init_functions) {
             if (typeof _lazy_init_functions[i] == "function") {
