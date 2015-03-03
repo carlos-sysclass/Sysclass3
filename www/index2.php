@@ -3,7 +3,7 @@
 if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
     define("PLICOLIB_PATH", "/projects/repo/plico/plicolib.local/");
 } else {
-    define("PLICOLIB_PATH", "/usr/local/share/plicolib/");
+    define("PLICOLIB_PATH", __DIR__ . "/../plicolib/");
 }
 
 
