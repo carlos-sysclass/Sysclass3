@@ -37,7 +37,7 @@ crud:
       components: ["validation", "wysihtml5"]
       blocks: ["messages.event_type.allow", "users.list.table"]
       template: form.tpl
-      scripts: ["views.event_type.edit"]
+      scripts: ["views.eventtype.edit"]
       variables:
         page_subtitle: Config and edit event type
 

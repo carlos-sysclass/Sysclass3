@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class Event_TypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
 {
     /* ILinkable */
     public function getLinks()
@@ -16,11 +16,6 @@ class Event_TypesModule extends SysclassModule implements ILinkable, IBreadcrumb
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator')
         {
-            $eventTypesItems = $this->model("users/event_types/collection")->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
-
             return array
             (
                 'users' => array

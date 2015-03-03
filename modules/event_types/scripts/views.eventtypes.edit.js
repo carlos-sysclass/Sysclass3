@@ -1,4 +1,4 @@
-$SC.module("views.event_types.edit", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("views.eventtypes.edit", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
