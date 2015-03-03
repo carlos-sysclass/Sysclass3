@@ -3487,4 +3487,10 @@ ALTER TABLE `groups` ADD COLUMN `behaviour_allow_messages` TINYINT(1) NULL DEFAU
 
 ALTER TABLE `groups` ADD COLUMN `image` VARCHAR(20) NULL DEFAULT 'group' AFTER `behaviour_allow_messages`, ADD COLUMN `image_type` VARCHAR(20) NULL DEFAULT 'primary' AFTER `image`;
 
-
+/* 2015-03-03 */
+CREATE TABLE IF NOT EXISTS `module_event_types` (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  color VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT = 1;
