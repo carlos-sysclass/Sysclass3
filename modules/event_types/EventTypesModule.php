@@ -16,6 +16,8 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator')
         {
+            $eventTypesItems = $this->model("event/types/collection")->getItems();
+
             return array
             (
                 'users' => array
@@ -70,7 +72,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
                     'text'  => self::$t->translate("Event Types")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Event"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Event Type"));
 
                 break;
             }
@@ -83,7 +85,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
                     'text'  => self::$t->translate("Event Types")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event Type"));
 
                 break;
             }
@@ -102,7 +104,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             'view'  => array
             (
                 array(
-                    'text'      => self::$t->translate('New Event'),
+                    'text'      => self::$t->translate('New Event Type'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -121,7 +123,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     {
         $data = $this->getHttpData(func_get_args());
 
-        $eventTypesModel = $this->model("user/event_types/item");
+        $eventTypesModel = $this->model("event/types/item");
 
         $eventTypes = $eventTypesModel->getEvents();
 
@@ -131,47 +133,11 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     /**
      * Get the institution visible to the current user
      *
-     * @url POST /item/users/switch
-    */
-/*    public function switchUserInGroup() {
-        $data = $this->getHttpData(func_get_args());
-
-        $userGroupModel = $this->model("user/event_types/item");
-
-        $status = $userGroupModel->switchUserInGroup(
-            $data['group_id'],
-            $data['user_login']
-        );
-
-        if ($status == 1) {
-            // USER ADICIONANDO AO GRUPO
-            $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
-        } elseif ($status == -1) {
-            // USER EXCLUÍDO AO GRUPO
-            $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
-        }
-        return array_merge($response, $info);
-    }
-
-    /*
-    public function editPage($id)
-    {
-        parent::editPage($id);
-
-        $this->
-
-    }
-    */
-    /**
-     * Get the institution visible to the current user
-     *
      * @url GET /item/me/:id
     */
     public function getItemAction($id)
     {
-         $editItem = $this->model("users/event_types/collection")->getItem($id);
+         $editItem = $this->model("event/types/collection")->getItem($id);
          return $editItem;
     }
 
@@ -184,7 +150,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     {
         $request = $this->getMatchedUrl();
 
-        $itemModel = $this->model("module/event_types/item");
+        $itemModel = $this->model("event/types/item");
 
         if ($userData = $this->getCurrentUser())
         {
@@ -218,19 +184,25 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
      */
     public function setItemAction($id)
     {
-        $itemModel = $this->model("user/event_types/item");
+        $itemModel = $this->model("event/types/item");
 
-        if ($userData = $this->getCurrentUser()) {
+        if ($userData = $this->getCurrentUser())
+        {
             $data = $this->getHttpData(func_get_args());
 
-            if ($itemModel->setItem($data, $id) !== FALSE) {
+            if ($itemModel->setItem($data, $id) !== FALSE)
+            {
                 $response = $this->createAdviseResponse(self::$t->translate("Event Type updated with success"), "success");
                 return array_merge($response, $data);
-            } else {
+            }
+            else
+            {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
-        } else {
+        }
+        else
+        {
             return $this->notAuthenticatedError();
         }
     }
@@ -242,23 +214,29 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
      */
     public function deleteItemAction($id)
     {
-        if ($userData = $this->getCurrentUser()) {
+        if ($userData = $this->getCurrentUser())
+        {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("user/event_types/item");
-            if ($itemModel->deleteItem($id) !== FALSE) {
+            $itemModel = $this->model("event/types/item");
+            if ($itemModel->deleteItem($id) !== FALSE)
+            {
                 $response = $this->createAdviseResponse(self::$t->translate("Event Type removed with success"), "success");
                 return $response;
-            } else {
+            }
+            else
+            {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
             }
-        } else {
+        }
+        else
+        {
             return $this->notAuthenticatedError();
         }
     }
     /**
-     * Get all users visible to the current user
+     * Get all event type visible to the current user
      *
      * @url GET /items/me
      * @url GET /items/me/:type
@@ -268,17 +246,16 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $modelRoute = "users/event_types/collection";
+        $modelRoute = "event/types/collection";
         $baseLink = $this->getBasePath();
 
         $itemsCollection = $this->model($modelRoute);
         $itemsData = $itemsCollection->getItems();
 
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
-        if ($type === 'combo') {
+        if ($type === 'combo')
+        {
         	/*
             $q = $_GET['q'];
 
@@ -293,23 +270,29 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             }
             return $result;
             */
-        } elseif ($type === 'datatable') {
-
+        }
+        else if ($type === 'datatable')
+        {
             $items = array_values($items);
-            foreach($items as $key => $item) {
-                $items[$key]['options'] = array(
-                    'edit'  => array(
+            foreach($items as $key => $item)
+            {
+                $items[$key]['options'] = array
+                (
+                    'edit'  => array
+                    (
                         'icon'  => 'icon-edit',
                         'link'  => $baseLink . "edit/" . $item['id'],
                         'class' => 'btn-sm btn-primary'
                     ),
-                    'remove'    => array(
+                    'remove'    => array
+                    (
                         'icon'  => 'icon-remove',
                         'class' => 'btn-sm btn-danger'
                     )
                 );
             }
-            return array(
+            return array
+            (
                 'sEcho'                 => 1,
                 'iTotalRecords'         => count($items),
                 'iTotalDisplayRecords'  => count($items),
