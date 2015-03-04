@@ -28,14 +28,14 @@ crud:
 
     add:
       components: ["validation", "wysihtml5"]
-      blocks: ["messages.event_type.allow"]
+      blocks: ["messages.eventtype.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new Event
     'edit/:id':
       components: ["validation", "wysihtml5"]
-      blocks: ["messages.event_type.allow", "users.list.table"]
+      blocks: ["messages.eventtype.allow", "users.list.table"]
       template: form.tpl
       scripts: ["views.eventtype.edit"]
       variables:

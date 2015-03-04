@@ -119,13 +119,13 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     */
     public function getEvents()
     {
-    /*    $data = $this->getHttpData(func_get_args());
+        $data = $this->getHttpData(func_get_args());
 
-        $userEventTypesModel = $this->model("user/event_types/item");
+        $eventTypesModel = $this->model("user/event_types/item");
 
-        $eventTypes = $userEventTypesModel->getEvents();
+        $eventTypes = $eventTypesModel->getEvents();
 
-        return $$eventTypes;*/
+        return $$eventTypes;
     }
 
     /**
@@ -184,7 +184,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     {
         $request = $this->getMatchedUrl();
 
-        $itemModel = $this->model("user/event_types/item");
+        $itemModel = $this->model("module/event_types/item");
 
         if ($userData = $this->getCurrentUser())
         {

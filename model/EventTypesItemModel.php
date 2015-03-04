@@ -17,7 +17,9 @@ class EventTypesItemModel extends AbstractSysclassModel implements ISyncronizabl
     {
        $sql = sprintf(
            "SELECT
-               ID as event_type_id
+               ID as event_type_id,
+               name as event_type_name,
+               color as event_type_color
             FROM module_event_types et"
        );
 

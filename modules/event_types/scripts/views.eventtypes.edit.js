@@ -5,7 +5,7 @@ $SC.module("views.eventtypes.edit", function(mod, app, Backbone, Marionette, $, 
 	mod.addInitializer(function() {
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
 		var userEventTypesCollectionClass = Backbone.Collection.extend({
-			url : "/module/event_types/item/users/" + entity_id
+			url : "/module/event_types/item/" + entity_id
 		});
 		var userEventTypesCollection = new userEventTypesCollectionClass();
 		userEventTypesCollection.fetch();
