@@ -26,6 +26,11 @@ crud:
         - mData: color
           label: Color
 
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
     add:
       components: ["validation", "wysihtml5"]
       blocks: ["messages.eventtype.allow"]
