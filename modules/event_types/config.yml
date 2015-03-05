@@ -1,0 +1,48 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Event Type
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your event types
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: color
+          label: Color
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["validation", "wysihtml5"]
+      blocks: ["messages.eventtype.allow"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new Event
+    'edit/:id':
+      components: ["validation", "wysihtml5"]
+      blocks: ["messages.eventtype.allow", "users.list.table"]
+      template: form.tpl
+      scripts: ["views.eventtype.edit"]
+      variables:
+        page_subtitle: Config and edit event type
+
