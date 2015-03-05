@@ -13,7 +13,7 @@ class EventTypesItemModel extends AbstractSysclassModel implements ISyncronizabl
         parent::init();
     }
 
-    public function getEvents()
+    public function getEventTypes()
     {
        $sql = sprintf(
            "SELECT

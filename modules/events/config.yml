@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Event Type
+      page_title: Events
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your event types
+        page_subtitle: Manage your events
       context:
         datatable_fields:
         - mData: id
@@ -23,8 +23,14 @@ crud:
         - mData: name
           label: Name
 
-        - mData: color
-          label: Color
+        - mData: description
+          label: Description
+
+        - mData: date
+          label: Date
+
+        - mData: type_id
+          label: Type
 
         - mData: options
           sType: table-options
@@ -33,16 +39,16 @@ crud:
 
     add:
       components: ["validation", "wysihtml5"]
-      blocks: ["messages.eventtypes.allow"]
+      blocks: ["messages.events.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new Event
     'edit/:id':
       components: ["validation", "wysihtml5"]
-      blocks: ["messages.eventtypes.allow", "users.list.table"]
+      blocks: ["messages.events.allow", "users.list.table"]
       template: form.tpl
-      scripts: ["views.eventtypes.edit"]
+      scripts: ["views.events.edit"]
       variables:
-        page_subtitle: Config and edit event type
+        page_subtitle: Config and edit events
 

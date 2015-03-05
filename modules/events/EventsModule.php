@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
 {
     /* ILinkable */
     public function getLinks()
@@ -16,7 +16,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator')
         {
-            $eventTypesItems = $this->model("event/types/collection")->getItems();
+            $eventsItems = $this->model("events/collection")->getItems();
 
             return array
             (
@@ -24,9 +24,9 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
                 (
                     array
                     (
-                        'count' => count($eventTypesItems),
-                        'text'  => self::$t->translate('Event Type'),
-                        'icon'  => 'icon-event_types',
+                        'count' => count($eventsItems),
+                        'text'  => self::$t->translate('Event'),
+                        'icon'  => 'icon-event',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -54,9 +54,9 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event_types',
+                    'icon'  => 'icon-event',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => self::$t->translate("Event")
                 );
 
                 $breadcrumbs[] = array('text'   => self::$t->translate("View"));
@@ -67,12 +67,12 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event_types',
+                    'icon'  => 'icon-event',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => self::$t->translate("Event")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Event Type"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Event"));
 
                 break;
             }
@@ -80,12 +80,12 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event_types',
+                    'icon'  => 'icon-event',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => self::$t->translate("Event")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event Type"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event"));
 
                 break;
             }
@@ -104,7 +104,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             'view'  => array
             (
                 array(
-                    'text'      => self::$t->translate('New Event Type'),
+                    'text'      => self::$t->translate('New Event'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -119,11 +119,11 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
      *
      * @url GET /item/users/
     */
-    public function getEventTypes()
+    public function getEvents()
     {
         $data = $this->getHttpData(func_get_args());
 
-        $eventTypesModel = $this->model("event/types/item");
+        $eventTypesModel = $this->model("events/item");
 
         $eventTypes = $eventTypesModel->getEvents();
 
@@ -137,7 +137,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     */
     public function getItemAction($id)
     {
-         $editItem = $this->model("event/types/collection")->getItem($id);
+         $editItem = $this->model("events/collection")->getItem($id);
          return $editItem;
     }
 
@@ -150,7 +150,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     {
         $request = $this->getMatchedUrl();
 
-        $itemModel = $this->model("event/types/item");
+        $itemModel = $this->model("events/item");
 
         if ($userData = $this->getCurrentUser())
         {
@@ -161,7 +161,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
             {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Event Type created with success"),
+                    self::$t->translate("Event created with success"),
                     "success"
                 );
             }
@@ -184,7 +184,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
      */
     public function setItemAction($id)
     {
-        $itemModel = $this->model("event/types/item");
+        $itemModel = $this->model("events/item");
 
         if ($userData = $this->getCurrentUser())
         {
@@ -192,7 +192,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
 
             if ($itemModel->setItem($data, $id) !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event Type updated with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Event updated with success"), "success");
                 return array_merge($response, $data);
             }
             else
@@ -218,10 +218,10 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("event/types/item");
+            $itemModel = $this->model("events/item");
             if ($itemModel->deleteItem($id) !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event Type removed with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Event removed with success"), "success");
                 return $response;
             }
             else
@@ -246,7 +246,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $modelRoute = "event/types/collection";
+        $modelRoute = "events/collection";
         $baseLink = $this->getBasePath();
 
         $itemsCollection = $this->model($modelRoute);

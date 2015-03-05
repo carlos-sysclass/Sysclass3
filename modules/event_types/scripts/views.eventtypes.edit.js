@@ -1,47 +1,18 @@
-$SC.module("views.eventtypes.edit", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("views.eventtypes.edit", function(mod, app, Backbone, Marionette, $, _)
+{
 	// MODELS
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
-	mod.addInitializer(function() {
+
+	mod.addInitializer(function()
+	{
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-		var userEventTypesCollectionClass = Backbone.Collection.extend({
-			url : "/module/event_types/item/" + entity_id
-		});
-		var userEventTypesCollection = new userEventTypesCollectionClass();
-		userEventTypesCollection.fetch();
-/*
-		app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
-			var exists = userGroupsCollection.findWhere({user_login: data['login']});
-			if (typeof exists != "undefined") {
-				$(row).find(".datatable-option-check").removeClass("btn-danger").addClass("btn-success");
-			} else {
-				$(row).find(".datatable-option-check").removeClass("btn-success").addClass("btn-danger");
-			}
+		var eventTypesCollectionClass = Backbone.Collection.extend
+		({
+			url : "/module/event/types/item/" + entity_id
 		});
 
-
-		app.module("utils.datatables").on("datatable:item:check", function(data) {
-
-			var userGroupsSwitchModelClass = Backbone.Model.extend({
-				urlRoot : "/module/groups/item/users/switch"
-			});
-			var userGroupsSwitchModel = new userGroupsSwitchModelClass();
-			userGroupsSwitchModel.set("group_id", entity_id);
-			userGroupsSwitchModel.set("user_login", data['login']);
-			userGroupsSwitchModel.save();
-
-			var exists = userGroupsCollection.findWhere({user_login: data['login']});
-			if (typeof exists != "undefined") {
-				// REMOVE FROM COLLECTION
-				userGroupsCollection.remove(exists);
-			} else {
-				userGroupsCollection.add([{
-					"group_id"		: entity_id,
-					"user_login"	: data['login']
-
-				}]);
-			}
-		});
-
-	}); */
+		var eventTypesCollection = new eventTypesCollectionClass();
+		eventTypesCollection.fetch();
+	});
 });
