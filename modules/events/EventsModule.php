@@ -146,8 +146,16 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     public function editPage($id)
     {
         $items = $this->model("event/types/collection")->getItems();
-        var_dump($items);
-        exit;
+        
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $event_types = array();
+        foreach($items as $type)
+        {
+            $event_types[$type['id']] = $type['name'];
+        }
+        
+        $this->putItem("event_types", $event_types);
+        
         parent::editPage($id);
     }
 
@@ -164,7 +172,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         $eventTypes = $eventTypesModel->getEvents();
 
-        return $$eventTypes;
+        return $eventTypes;
     }
 
     /**
@@ -192,6 +200,8 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         if ($userData = $this->getCurrentUser())
         {
             $data = $this->getHttpData(func_get_args());
+
+            $data['date'] = date("y-m-d", strtotime($data['date']));
 
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
@@ -226,6 +236,8 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         if ($userData = $this->getCurrentUser())
         {
             $data = $this->getHttpData(func_get_args());
+
+            $data['date'] = date("y-m-d", strtotime($data['date']));
 
             if ($itemModel->setItem($data, $id) !== FALSE)
             {

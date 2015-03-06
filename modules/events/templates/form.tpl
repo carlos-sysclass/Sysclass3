@@ -16,7 +16,7 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Date"}</label>
-					<input class="form-control input-small date-picker"  size="16" type="text" name="date" data-update="date" data-format="date" data-format-from="unix-timestamp" data-rule-required="true" />
+					<input class="form-control input-small date-picker"  size="16" type="text" name="date" data-update="date" data-format="date" data-rule-required="true" />
 				</div>
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->

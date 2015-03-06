@@ -27,6 +27,7 @@ crud:
           label: Description
 
         - mData: date
+          sType: table-datetime
           label: Date
 
         - mData: type_id
@@ -38,15 +39,15 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5", "select2"]
+      components: ["validation", "wysihtml5", "select2", "datepicker", "timepicker"]
       blocks: ["messages.events.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new Event
     'edit/:id':
-      components: ["validation", "wysihtml5"]
-      blocks: ["messages.events.allow", "users.list.table"]
+      components: ["validation", "wysihtml5", "select2", "datepicker", "timepicker"]
+      blocks: ["messages.events.allow"]
       template: form.tpl
       scripts: ["views.events.edit"]
       variables:
