@@ -38,7 +38,7 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5"]
+      components: ["validation", "wysihtml5", "select2"]
       blocks: ["messages.events.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]

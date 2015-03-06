@@ -114,6 +114,43 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         return $actions[$request];
     }
+
+
+
+    /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        // GET THE MODEL DATA
+        $items = $this->model("event/types/collection")->getItems();
+
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $event_types = array();
+        foreach($items as $type) {
+            $event_types[$type['id']] = $type['name'];
+        }
+        $this->putItem("event_types", $event_types);
+
+        // HANDLE PAGE
+        parent::addPage($id);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $items = $this->model("event/types/collection")->getItems();
+        var_dump($items);
+        exit;
+        parent::editPage($id);
+    }
+
     /**
      * Get the institution visible to the current user
      *
