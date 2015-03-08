@@ -140,13 +140,25 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             return false;
         }
 
+
         $this->clientContext = $config['context'];
         $this->clientContext['module_id'] = $this->context['module_id'];
+        $this->clientContext['route'] = $this->getMatchedUrl();
+
+        if (array_key_exists("model-prefix", $config)) {
+            $this->clientContext['model-prefix'] = $config['model-prefix'];
+        }
         if (is_array($data)) {
             $this->clientContext = array_replace_recursive($this->clientContext, $data);
         }
 
-        $this->injectObjects($operation);
+        if (array_key_exists("override-route", $config)) {
+            $this->injectObjects($config["override-route"]);
+        } else {
+            $this->injectObjects($operation);
+        }
+
+        //$this->injectObjects($operation);
 
         return true;
     }

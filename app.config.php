@@ -219,6 +219,23 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/jquery-nestable/jquery.nestable')
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'jquery-multi-select',
+	'css'	=> array('css/jquery-multi-select/multi-select'),
+	'js'	=> array('plugins/jquery-multi-select/jquery.multi-select')
+));
+
+$plicoLib->add("resources/components", array(
+	'name'	=> 'bootstrap-switch',
+	'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
+	'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
+));
+
+
+
+
+
+
 
 $plicoLib->concat(
 	'resources/sysclass.default/css',
@@ -228,7 +245,7 @@ $plicoLib->concat(
 		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/font-awesome-more/css/font-awesome-corp',
 		'plugins/bootstrap/css/bootstrap.min',
-		'plugins/uniform/css/uniform.default',
+		//'plugins/uniform/css/uniform.default',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -276,7 +293,7 @@ $plicoLib->concat(
 		'plugins/jquery-slimscroll/jquery.slimscroll.min',
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
-		'plugins/uniform/jquery.uniform.min',
+		//'plugins/uniform/jquery.uniform.min',
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 

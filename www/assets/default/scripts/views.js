@@ -5,10 +5,32 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	"click .save-action" 	: "save"
 	    },
 	    initialize: function() {
+	    	var self = this;
 	    	console.info('views/baseClass::initialize');
 	    	if (this.model) {
 	    		this.listenToOnce(this.model, "sync", this.render.bind(this));
 	    	}
+	    	// HANDLE SPECIAL bootstrap-switchs CHANGE EVENTS
+			this.$('.bootstrap-switch-me').each(function() {
+				$(this).on('switchChange.bootstrapSwitch', function(e, state) {
+					console.log(this); // DOM element
+					console.log(e.currentTarget); // jQuery event
+					console.log(state); // true | false
+
+                    if (state) {
+                        $(this).attr("checked", "checked");
+                        $(this).val(1);
+                    } else {
+                        $(this).removeAttr("checked");
+                        $(this).val(0);
+                    }
+
+//					var changeEvt = jQuery.Event("change");
+//					$(e.currentTarget).trigger(changeEvt);
+					//console.warn($(this).change());
+					self.update(e)
+				});
+	    	});
 	    	// HANDLE SPECIAL wysihtml5 CHANGE EVENTS
 	    	this.$('.wysihtml5').each(function() {
 	    		var wysihtml5DOM = this;
@@ -90,12 +112,15 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 		                        input.datepicker('setDate', date);
 		                    }
-
 		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
+		                	console.warn(input, values[idx]);
 
 	                		if (values[idx] != null) {
 		                		if (input.hasClass("icheck-me")) {
 									input.filter("[value='" + values[idx] +"']").iCheck("check");
+								} else if (input.hasClass("bootstrap-switch-me")) {
+									//input.filter("[value='" + values[idx] +"']").iCheck("check");
+									input.bootstrapSwitch('state', (values[idx] == 1), true);
 		                		} else {
 			                		input.filter("[value='" + values[idx] +"']").attr("checked", "checked");
 			                		if ($.uniform) {

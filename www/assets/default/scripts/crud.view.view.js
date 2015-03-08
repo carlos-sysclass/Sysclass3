@@ -1,6 +1,8 @@
 $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 	this.config = $SC.module("crud.config").getConfig();
     this.module_id = this.config.module_id;
+    this.route = this.config['route'];
+    this.modelPrefix = this.config['model-prefix'];
 
 	// MODELS
 	mod.addInitializer(function() {
@@ -47,10 +49,16 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 			}
         });
 
+        if (typeof this.modelPrefix == "undefined") {
+        	var sAjaxSource = "/module/" + this.module_id + "/items/me/datatable";
+        } else {
+        	var sAjaxSource = "/module/" + this.module_id + "/" + this.modelPrefix + "/items/me/datatable";
+        }
+
         var tableView = new tableViewClass({
         	el : "#view-" + this.module_id,
         	datatable : {
-		        "sAjaxSource": "/module/" + this.module_id + "/items/me/datatable",
+		        "sAjaxSource": sAjaxSource,
 		        "aoColumns": this.config.datatable_fields
         	}
        	});

@@ -54,15 +54,15 @@ var App = function () {
         if (isIE10) {
             jQuery('html').addClass('ie10'); // detect IE10 version
         }
-        
+
         if (isIE10 || isIE9 || isIE8) {
             jQuery('html').addClass('ie'); // detect IE10 version
         }
 
         /*
           Virtual keyboards:
-          Also, note that if you're using inputs in your modal – iOS has a rendering bug which doesn't 
-          update the position of fixed elements when the virtual keyboard is triggered  
+          Also, note that if you're using inputs in your modal – iOS has a rendering bug which doesn't
+          update the position of fixed elements when the virtual keyboard is triggered
         */
         var deviceAgent = navigator.userAgent.toLowerCase();
         if (deviceAgent.match(/(iphone|ipod|ipad)/)) {
@@ -122,7 +122,7 @@ var App = function () {
                 }
                 resize = setTimeout(function () {
                     handleResponsive();
-                }, 50); // wait 50ms until window resize finishes.                
+                }, 50); // wait 50ms until window resize finishes.
                 currheight = document.documentElement.clientHeight; // store last body client height
             });
         } else {
@@ -449,7 +449,7 @@ var App = function () {
 
             jQuery(this).popover(
                 jQuery.extend(
-                    jQuery(this).data(), 
+                    jQuery(this).data(),
                     {content : jQuery("#" + jQuery(this).data("inject-selector")).html()}
                 )
             ).on('show.bs.popover', function () {
@@ -541,7 +541,7 @@ var App = function () {
             var portlet = jQuery(this).closest(".portlet");
             var column = jQuery(this).closest("div[class^='col-md-']");
             var portlets = $(".page-content .row > div[class^='col-md-'] > .panel, .page-content .row > div[class^='col-md-'] > .portlet");
-            
+
             if (jQuery(this).hasClass("fullscreen")) {
                 jQuery(this).removeClass("fullscreen").addClass("normalscreen");
                 jQuery(this).removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
@@ -552,20 +552,20 @@ var App = function () {
                         break;
                     }
                 }
-            
+
                 portlets.fadeOut(timeout/2, function() {
                     column.removeClass(oldColumn).addClass("col-md-12");
                     portlet.fadeIn(timeout/2).addClass("portlet-fullscreen");
 
                 } );
-                
+
             } else {
                 jQuery(this).removeClass("normalscreen").addClass("fullscreen");
                 jQuery(this).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 
                 portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
                     column.removeClass("col-md-12").addClass(oldColumn);
-                    portlets.fadeIn(timeout/2); 
+                    portlets.fadeIn(timeout/2);
                 } );
             }
             //toggleFullScreen();
@@ -580,6 +580,8 @@ var App = function () {
         if (!jQuery().uniform) {
             return;
         }
+        alert('fjdksjflksd');
+        /*
         var test = $("input[type=checkbox]:not(.toggle), input[type=radio]:not(.toggle, .star)");
         if (test.size() > 0) {
             test.each(function () {
@@ -589,6 +591,7 @@ var App = function () {
                 }
             });
         }
+        */
     }
 
     // Handles Bootstrap Accordions.
@@ -623,7 +626,7 @@ var App = function () {
     // Handles Bootstrap Modals.
     var handleModals = function () {
 
-        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
+        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class.
         $('body').on('hide.bs.modal', function () {
            if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') == false) {
               $('html').addClass('modal-open');
@@ -641,8 +644,8 @@ var App = function () {
     // Handles Bootstrap Dropdowns
     var handleDropdowns = function () {
         /*
-          For touch supported devices disable the 
-          hoverable dropdowns - data-hover="dropdown"  
+          For touch supported devices disable the
+          hoverable dropdowns - data-hover="dropdown"
         */
         if (App.isTouchDevice()) {
             $('[data-hover="dropdown"]').each(function(){
@@ -651,7 +654,7 @@ var App = function () {
             });
         }
         /*
-          Hold dropdown on click  
+          Hold dropdown on click
         */
         $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
             e.stopPropagation();
@@ -760,7 +763,7 @@ var App = function () {
     // Handle full screen mode toggle
     var handleFullScreenMode = function() {
         // mozfullscreenerror event handler
-       
+
         // toggle full screen
         $('#trigger_fullscreen').click(function() {
             toggleFullScreen();
@@ -892,14 +895,14 @@ var App = function () {
                 $("body").removeClass("page-sidebar-fixed");
             }
 
-            //footer 
+            //footer
             if (footerOption === 'fixed') {
                 $("body").addClass("page-footer-fixed");
             } else {
                 $("body").removeClass("page-footer-fixed");
             }
 
-            handleSidebarAndContentHeight(); // fix content height            
+            handleSidebarAndContentHeight(); // fix content height
             handleFixedSidebar(); // reinitialize fixed sidebar
             handleFixedSidebarHoverable(); // reinitialize fixed sidebar hover effect
         }
@@ -947,17 +950,17 @@ var App = function () {
             themePath = _theme;
             //core handlers
             handleInit(); // initialize core variables
-            handleResponsiveOnResize(); // set and handle responsive    
+            handleResponsiveOnResize(); // set and handle responsive
             handleUniform(); // hanfle custom radio & checkboxes
-            //handleScrollers(); // handles slim scrolling contents 
+            //handleScrollers(); // handles slim scrolling contents
             handleResponsiveOnInit(); // handler responsive elements on page load
 
             //layout handlers
             handleFixedSidebar(); // handles fixed sidebar menu
-            handleFixedSidebarHoverable(); // handles fixed sidebar on hover effect 
+            handleFixedSidebarHoverable(); // handles fixed sidebar on hover effect
             handleSidebarMenu(); // handles main menu
             handleHorizontalMenu(); // handles horizontal menu
-            handleSidebarToggler(); // handles sidebar hide/show            
+            handleSidebarToggler(); // handles sidebar hide/show
             handleFixInputPlaceholderForIE(); // fixes/enables html5 placeholder attribute for IE9, IE8
             handleGoTop(); //handles scroll to top functionality in the footer
             handleTheme(); // handles style customer tool
@@ -970,7 +973,7 @@ var App = function () {
             handleTabs(); // handle tabs
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
+            handleAccordions(); //handles accordions
             handleModals(); // handle modals
             handleFullScreenMode(); // handles full screen
         },
@@ -981,9 +984,9 @@ var App = function () {
             handleDropdowns(); // handle dropdowns
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
-            handleUniform(); // hanfle custom radio & checkboxes     
-            handleDropdownHover() // handles dropdown hover       
+            handleAccordions(); //handles accordions
+            handleUniform(); // hanfle custom radio & checkboxes
+            handleDropdownHover() // handles dropdown hover
         },
 
         //public function to fix the sidebar and content height accordingly
@@ -1035,7 +1038,7 @@ var App = function () {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img style="" src="/assets/sysclass.default/img/loading-spinner-blue.gif" align=""></div>';
             } else if (options.textOnly) {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-            } else {    
+            } else {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img style="" src="/assets/sysclass.default/img/loading-spinner-blue.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             }
 
@@ -1043,7 +1046,7 @@ var App = function () {
                 var el = jQuery(options.target);
                 if (el.height() <= ($(window).height())) {
                     options.cenrerY = true;
-                }            
+                }
                 el.block({
                     message: html,
                     baseZ: options.zIndex ? options.zIndex : 1000,
@@ -1056,7 +1059,7 @@ var App = function () {
                     },
                     overlayCSS: {
                         backgroundColor: options.overlayColor ? options.overlayColor : '#000',
-                        opacity: options.boxed ? 0.05 : 0.1, 
+                        opacity: options.boxed ? 0.05 : 0.1,
                         cursor: 'wait'
                     }
                 });
@@ -1075,9 +1078,9 @@ var App = function () {
                         cursor: 'wait'
                     }
                 });
-            }            
+            }
         },
-        
+
         // wrapper function to  un-block element(finish loading)
         unblockUI: function (target) {
             if (target) {
@@ -1114,7 +1117,7 @@ var App = function () {
                 }
             });
         },
-        
+
         // wrapper function to  un-block element(finish loading)
         unblockUI: function (el) {
             jQuery(el).unblock({

@@ -98,12 +98,4 @@ abstract class SysclassModule extends BaseSysclassModule
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
     }
-
-
-
-
-    /** HELPER FUNCTIONS */
-    protected function getMyFilePath() {
-
-    }
 }

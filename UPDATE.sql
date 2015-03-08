@@ -3506,3 +3506,17 @@ CREATE TABLE IF NOT EXISTS `module_events`
   `type_id` INT NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT = 1;
+
+
+/* 2015-03-08 */
+CREATE TABLE `mod_grades_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) NOT NULL,
+  `classe_id` mediumint(8) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `sysclass_demo`.`mod_grades_groups` CHANGE COLUMN `classe_id` `class_id` MEDIUMINT(8) NOT NULL DEFAULT '0' ;

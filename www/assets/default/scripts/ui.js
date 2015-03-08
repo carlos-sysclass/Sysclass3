@@ -68,6 +68,35 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		}
 		*/
 	};
+    this.handleMultipleSelect = function(context) {
+        if($(".multiple-select-me", context).length > 0){
+            $(".multiple-select-me", context).each(function() {
+                var $el = $(this);
+                $el.multiSelect();
+            });
+        }
+    };
+
+    this.handleBootstrapSwitch = function(context) {
+        if($(".bootstrap-switch-me", context).length > 0){
+            $(".bootstrap-switch-me", context).each(function() {
+                var $el = $(this);
+                $el.bootstrapSwitch(/*{
+                    onSwitchChange : function(event, state) {
+                        if (state) {
+                            $(this).attr("checked", "checked");
+                        } else {
+                            $(this).removeAttr("checked");
+                        }
+                        $(this).trigger("change");
+                        console.warn(event, state, this);
+                    }
+
+                }*/);
+            });
+        }
+    };
+
 	this.handleiCheck = function(context) {
 		if($(".icheck-me", context).length > 0){
 			$(".icheck-me", context).each(function() {
@@ -282,6 +311,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleTimepickers(context);
 		this.handleWysihtml5(context);
 		this.handleTabs(context);
+        this.handleMultipleSelect(context);
+        this.handleBootstrapSwitch(context);
 		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
 	};

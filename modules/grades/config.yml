@@ -42,12 +42,56 @@ crud:
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Create a new grade ruleset
+        page_subtitle: Create a new grade
     'edit/:id':
       components: ["validation", "wysihtml5"]
       blocks: ["users.list.table"]
       template: form.tpl
       scripts: ["views.groups.edit"]
       variables:
-        page_subtitle: Config and edit the grade ruleset
+        page_subtitle: Config and edit the grade
+    view-group:
+      components: ["select2","data-tables"]
+      override-route: "view"
+      model-prefix: "group"
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your grades groups
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
 
+        - mData: name
+          label: Name
+
+        - mData: description
+          label: Description
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: "Active"
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add-group:
+      components: ["validation", "wysihtml5", "bootstrap-switch"]
+      override-route: "add"
+      model-prefix: "group"
+      #blocks: ["messages.group.allow"]
+      template: form-group.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new grade group
+    'edit-group/:id':
+      components: ["validation", "wysihtml5", "bootstrap-switch"]
+      override-route: "edit"
+      model-prefix: "group"
+      #blocks: ["users.list.table"]
+      template: form-group.tpl
+      variables:
+        page_subtitle: Config and edit the grade group
