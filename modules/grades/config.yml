@@ -37,14 +37,14 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.group.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new grade
     'edit/:id':
-      components: ["validation", "wysihtml5"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       blocks: ["users.list.table"]
       template: form.tpl
       scripts: ["views.groups.edit"]
@@ -60,7 +60,7 @@ crud:
       context:
         datatable_fields:
         - mData: id
-          sClass: text-center
+          sClass: text-centerp
           label: "#"
 
         - mData: name
@@ -79,7 +79,7 @@ crud:
           sClass: text-center
           label: Actions
     add-group:
-      components: ["validation", "wysihtml5", "bootstrap-switch"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       override-route: "add"
       model-prefix: "group"
       #blocks: ["messages.group.allow"]
@@ -88,7 +88,7 @@ crud:
       variables:
         page_subtitle: Create a new grade group
     'edit-group/:id':
-      components: ["validation", "wysihtml5", "bootstrap-switch"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       override-route: "edit"
       model-prefix: "group"
       #blocks: ["users.list.table"]

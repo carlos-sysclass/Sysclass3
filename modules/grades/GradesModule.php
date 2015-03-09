@@ -115,10 +115,16 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Grade'),
+                    'text'      => self::$t->translate('New Grade Rule'),
                     'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-plus",
+                    'icon'      => 'icon-plus'
+                ),
+                array(
+                    'text'      => self::$t->translate('View Grade Groups'),
+                    'link'      => $this->getBasePath() . "view-group",
                     'class'     => "btn-default",
-                    'icon'      => 'icon-briefcase'
+                    'icon'      => 'icon-group'
                 ),
                 array(
                     'text'      => self::$t->translate('New Grade Group'),
@@ -126,9 +132,29 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                     'class'     => "btn-default",
                     'icon'      => 'icon-group'
                 )
+            ),
+            'view-group'  => array(
+                array(
+                    'text'      => self::$t->translate('New Grade Group'),
+                    'link'      => $this->getBasePath() . "add-group",
+                    'class'     => "btn-default",
+                    'icon'      => 'icon-plus'
+                ),
+                array(
+                    'text'      => self::$t->translate('View Grade Rules'),
+                    'link'      => $this->getBasePath() . "view",
+                    'class'     => "btn-default",
+                    'icon'      => 'icon-briefcase'
+                ),
+                array(
+                    'text'      => self::$t->translate('New Grade Rule'),
+                    'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-default",
+                    'icon'      => 'icon-briefcase'
+                ),
+
             )
         );
-        $actions['view-group'] = $actions['view'];
 
         return $actions[$request];
     }

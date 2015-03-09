@@ -13,10 +13,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	// HANDLE SPECIAL bootstrap-switchs CHANGE EVENTS
 			this.$('.bootstrap-switch-me').each(function() {
 				$(this).on('switchChange.bootstrapSwitch', function(e, state) {
-					console.log(this); // DOM element
-					console.log(e.currentTarget); // jQuery event
-					console.log(state); // true | false
-
                     if (state) {
                         $(this).attr("checked", "checked");
                         $(this).val(1);
@@ -25,9 +21,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                         $(this).val(0);
                     }
 
-//					var changeEvt = jQuery.Event("change");
-//					$(e.currentTarget).trigger(changeEvt);
-					//console.warn($(this).change());
 					self.update(e)
 				});
 	    	});

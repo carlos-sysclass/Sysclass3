@@ -572,7 +572,6 @@ var App = function () {
         //
         });
         */
-
     }
 
     // Handles custom checkboxes & radios using jQuery Uniform plugin
@@ -580,9 +579,8 @@ var App = function () {
         if (!jQuery().uniform) {
             return;
         }
-        alert('fjdksjflksd');
-        /*
-        var test = $("input[type=checkbox]:not(.toggle), input[type=radio]:not(.toggle, .star)");
+
+        var test = $("input[type=checkbox]:not(.toggle, .bootstrap-switch-me), input[type=radio]:not(.toggle, .star, .bootstrap-switch-me)");
         if (test.size() > 0) {
             test.each(function () {
                 if ($(this).parents(".checker").size() == 0) {
@@ -591,7 +589,6 @@ var App = function () {
                 }
             });
         }
-        */
     }
 
     // Handles Bootstrap Accordions.

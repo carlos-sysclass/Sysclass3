@@ -3520,3 +3520,26 @@ CREATE TABLE `mod_grades_groups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 ALTER TABLE `sysclass_demo`.`mod_grades_groups` CHANGE COLUMN `classe_id` `class_id` MEDIUMINT(8) NOT NULL DEFAULT '0' ;
+
+CREATE TABLE `mod_grades_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) NOT NULL,
+  `class_id` mediumint(8) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `mod_classes` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `ies_id` mediumint(8) NOT NULL DEFAULT '0',
+  `area_id` mediumint(8) unsigned DEFAULT '0',
+  `name` varchar(150) NOT NULL,
+  `description` text NOT NULL,
+  `info` text,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;

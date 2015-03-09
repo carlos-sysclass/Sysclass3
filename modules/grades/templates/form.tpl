@@ -25,8 +25,19 @@
 				</div>
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Classe"}</label>
+					<div class="controls">
+						<input type="hidden" class="select2-me form-control input-block-level" name="lesson_id" data-url="/module/classes/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." />
+					</div>
+				</div>
+				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
+				</div>
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Active"}</label>
+						<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
