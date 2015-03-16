@@ -30,7 +30,7 @@ crud:
           sType: table-datetime
           label: Date
 
-        - mData: type_id
+        - mData: event_type_name
           label: Type
 
         - mData: options

@@ -486,31 +486,44 @@ class calendar extends MagesterEntity
 	 * @access public
 	 * @static
 	 */
- public static function getCalendarEventsForNonAdmnistrator($user)
- {
-  $user = MagesterUser::convertArgumentToUserLogin($user);
-  $personalEvents = $globalEvents = $lessonEvents = $courseEvents = $groupEvents = $branchEvents = array();
-  $result = sC_getTableData("calendar c", "c.*", "type = 'global' and foreign_ID=0");
-  foreach ($result as $value) {
-   $globalEvents[$value['id']] = $value;
-  }
-  $result = sC_getTableData("lessons l, calendar ca, users_to_lessons ul", "ca.*, l.name", "ul.users_LOGIN='$user' and ca.foreign_ID=ul.lessons_ID and ul.lessons_ID=l.id and l.archive=0 and ul.archive=0 and ca.type = 'lesson'");
-  foreach ($result as $value) {
-   $lessonEvents[$value['id']] = $value;
-  }
-  $result = sC_getTableData("courses c, calendar ca, users_to_courses uc", "ca.*, c.name", "uc.users_LOGIN='$user' and ca.foreign_ID=uc.courses_ID and uc.courses_ID=c.id and c.archive=0 and uc.archive=0 and ca.type = 'course'");
-  foreach ($result as $value) {
-   $courseEvents[$value['id']] = $value;
-  }
-  $result = sC_getTableData("groups g, calendar ca, users_to_groups ug", "ca.*, g.name", "ug.users_LOGIN='$user' and ca.foreign_ID=ug.groups_ID and ug.groups_ID=g.id and ca.type = 'group'");
-  foreach ($result as $value) {
-   $groupEvents[$value['id']] = $value;
-  }
-  $personalEvents = self :: getUserCalendarEvents($user);
-  $userEvents = $personalEvents + $globalEvents + $lessonEvents + $courseEvents + $groupEvents + $branchEvents;
+public static function getCalendarEventsForNonAdmnistrator($user)
+{
+	$user = MagesterUser::convertArgumentToUserLogin($user);
 
-  return $userEvents;
- }
+	//$personalEvents = $globalEvents = $lessonEvents = $courseEvents = $groupEvents = $branchEvents = array();
+
+	/*$result = sC_getTableData("calendar c", "c.*", "type = 'global' and foreign_ID=0");
+	foreach ($result as $value) {
+	$globalEvents[$value['id']] = $value;
+	}
+	$result = sC_getTableData("lessons l, calendar ca, users_to_lessons ul", "ca.*, l.name", "ul.users_LOGIN='$user' and ca.foreign_ID=ul.lessons_ID and ul.lessons_ID=l.id and l.archive=0 and ul.archive=0 and ca.type = 'lesson'");
+	foreach ($result as $value) {
+	$lessonEvents[$value['id']] = $value;
+	}
+	$result = sC_getTableData("courses c, calendar ca, users_to_courses uc", "ca.*, c.name", "uc.users_LOGIN='$user' and ca.foreign_ID=uc.courses_ID and uc.courses_ID=c.id and c.archive=0 and uc.archive=0 and ca.type = 'course'");
+	foreach ($result as $value) {
+	$courseEvents[$value['id']] = $value;
+	}
+	$result = sC_getTableData("groups g, calendar ca, users_to_groups ug", "ca.*, g.name", "ug.users_LOGIN='$user' and ca.foreign_ID=ug.groups_ID and ug.groups_ID=g.id and ca.type = 'group'");
+	foreach ($result as $value) {
+	$groupEvents[$value['id']] = $value;
+	}*/
+
+	$result = sC_getTableData("module_events e, module_event_types et", "e.ID as event_id, e.name as event_name, e.description as event_description, e.date as event_date, et.name as event_type_name, et.color as event_type_color", "e.type_id = et.id");
+	
+	$customEvents = array();
+	
+	foreach ($result as $value)
+	{
+		$customEvents[$value['event_id']] = $value;
+	}
+
+	//$personalEvents = self :: getUserCalendarEvents($user);
+	//$userEvents = $personalEvents + $globalEvents + $lessonEvents + $courseEvents + $groupEvents + $branchEvents;
+
+	return $customEvents;
+}
+
  /**
 	 * Sort calendar events in a way suitable for calendar depiction
 	 *

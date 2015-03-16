@@ -8,7 +8,7 @@ class EventsItemModel extends AbstractSysclassModel implements ISyncronizableMod
         $this->mainTablePrefix = "e";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, name, description, date, type_id FROM module_events e";
+        $this->selectSql = "SELECT e.id, e.name, e.description, e.date, e.type_id, et.name as event_type_name FROM module_events e LEFT JOIN module_event_types et ON e.type_id = et.id";
 
         parent::init();
     }
