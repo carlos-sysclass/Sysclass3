@@ -24,13 +24,20 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
         );
     }
     
-    public function getWidgets($widgetsIndexes = array()) {
-        if (in_array('calendar', $widgetsIndexes)) {
+    public function getWidgets($widgetsIndexes = array())
+    {
+        $this->putComponent("select2");
+
+        if (in_array('calendar', $widgetsIndexes))
+        {
             $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
         	//$this->putScript("scripts/calendar");
             $this->putModuleScript("calendar");
-            return array(
-                'calendar' => array(
+        
+            return array
+            (
+                'calendar' => array
+                (
                     'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                     'id'        => 'calendar-widget',
                     'title'     => self::$t->translate('Calendar'),
@@ -72,6 +79,23 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
 
         return $items;
     }
+
+    /**
+     * Get the events
+     *
+     * @url GET 
+    */
+    public function getEvents()
+    {
+        $data = $this->getHttpData(func_get_args());
+
+        $eventTypesModel = $this->model("events/item");
+
+        $eventTypes = $eventTypesModel->getEvents();
+
+        return $eventTypes;
+    }
+
 /*
     public function addItemAction($id)
     {

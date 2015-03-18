@@ -44,17 +44,14 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Date"}</label>
-									<input id="event-date" readonly />
+									<input id="event-date" class="form-control" readonly />
 								</div>
+								
 								<div class="form-group">
-									<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-									<label class="control-label">{translateToken value="Type"}</label>
-									<!--<select class="select2-me form-control" name="type_id" data-rule-required="1" data-rule-min="1">
-										{foreach $T_EVENT_TYPES as $id => $name}
-											<option value="{$id}">{$name}</option>
-										{/foreach}
-
-									</select>-->
+									<label class="control-label">{translateToken value="Event Type"}</label>
+								 	<div class="controls">
+								 		<input type="hidden" class="select2-me form-control input-block-level" name="event_type" data-url="/module/event_types/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." />
+								 	</div>
 								</div>
 
 								{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}

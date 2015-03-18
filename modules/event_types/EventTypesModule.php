@@ -256,7 +256,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
 
         if ($type === 'combo')
         {
-        	/*
+        	
             $q = $_GET['q'];
 
             $items = $itemsCollection->filterCollection($items, $q);
@@ -269,7 +269,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
                 );
             }
             return $result;
-            */
+            
         }
         else if ($type === 'datatable')
         {
