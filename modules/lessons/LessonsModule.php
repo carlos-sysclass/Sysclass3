@@ -15,7 +15,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("courses/lessons/collection")->addFilter(array(
+            $itemsData = $this->model("classes/lessons/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
