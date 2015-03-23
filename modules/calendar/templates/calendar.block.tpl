@@ -1,5 +1,23 @@
 <div id="calendar"></div>
 
+<div id="event-filter" style="margin-top: 10px; margin-left: 2px;">
+	<form id="form-filter-events" role="form" class="form-validate" onsubmit="reloadCal()">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Filter Event Type"}</label>
+			<select class="select2-me form-control" name="event_type" data-url="/module/event_types/items/me/combo">
+				<option value="0">{translateToken value="All"}</option>
+				{foreach $T_EVENT_TYPES as $id => $name}
+					<option value="{$id}">{$name}</option>
+				{/foreach}
+
+			</select>
+		</div>
+		<div class="nobg">
+			<button class="btn btn-success" type="submit">{translateToken value="Filter"}</button>
+		</div>
+	</form>
+</div>
+
 <div class="modal fade" id="calendar-dialog" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
 	<div class="modal-dialog modal-wide">
 		<div class="modal-content">

@@ -305,20 +305,25 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         if ($type === 'combo')
         {
-        	/*
             $q = $_GET['q'];
 
             $items = $itemsCollection->filterCollection($items, $q);
 
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
+            foreach($items as $event) {
+                // Events
+                $result[] = array
+                (
+                    'id'            => intval($event['id']),
+                    'title'         => substr(str_replace("\n", " ", strip_tags($event['name'])), 0, 25),
+                    'description'   => $event['description'],
+                    'start'         => $event['date'],
+                    'allDay'        => true,
+                    'color'         => $event['event_type_color'],
+                    'editable'      => false
                 );
             }
+
             return $result;
-            */
         }
         else if ($type === 'datatable')
         {
@@ -352,4 +357,36 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         return array_values($items);
     }
 
+    /**
+     * Module Entry Point
+     *
+     * @url GET /data
+     */
+    public function dataAction($id)
+    {
+        $currentUser    = $this->getCurrentUser();
+
+        $events = calendar :: getCalendarEventsForUser($currentUser);
+
+        $items = array();
+
+        foreach($events aS $evt)
+        {
+            if($evt['event_id'] === '1')
+            {
+                $items[] = array
+                (
+                    'id'            => intval($evt['event_id']),
+                    'title'         => substr(str_replace("\n", " ", strip_tags($evt['event_name'])), 0, 25),
+                    'description'   => $evt['event_description'],
+                    'start'         => $evt['event_date'],
+                    'allDay'        => true,
+                    'color'         => $evt['event_type_color'],
+                    'editable'      => false
+                );
+            }
+        }
+
+        return $items;
+    }
 }

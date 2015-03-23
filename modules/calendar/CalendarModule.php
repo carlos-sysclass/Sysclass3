@@ -19,7 +19,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             'text'  => self::$t->translate('Calendar Events'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . 'all'
+                'link'  => $this->getBasePath() . 'all',
             )
         );
     }
@@ -27,6 +27,8 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     public function getWidgets($widgetsIndexes = array())
     {
         $this->putComponent("select2");
+
+            $this->putModuleScript("widget.news");
 
         if (in_array('calendar', $widgetsIndexes))
         {
@@ -80,23 +82,6 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
         return $items;
     }
 
-    /**
-     * Get the events
-     *
-     * @url GET 
-    */
-    public function getEvents()
-    {
-        $data = $this->getHttpData(func_get_args());
-
-        $eventTypesModel = $this->model("events/item");
-
-        $eventTypes = $eventTypesModel->getEvents();
-
-        return $eventTypes;
-    }
-
-/*
     public function addItemAction($id)
     {
         $request = $this->getMatchedUrl();
@@ -112,7 +97,11 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
             {
-                return $this->createRedirectResponse();
+                return $this->createRedirectResponse(
+                    $this->getBasePath() . "edit/" . $data['id'],
+                    self::$t->translate("Event created with success"),
+                    "success"
+                );
             }
             else
             {
@@ -125,26 +114,4 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             return $this->notAuthenticatedError();
         }
     }
-
-    /**
-     * New model entry point
-     *
-     * @url GET
-     */
-/*    public function addPage()
-    {
-        // GET THE MODEL DATA
-        $items = $this->model("event/types/collection")->getItems();
-
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        $event_types = array();
-        foreach($items as $type) {
-            $event_types[$type['id']] = $type['name'];
-        }
-        $this->putItem("event_types", $event_types);
-
-        // HANDLE PAGE
-        parent::addPage($id);
-    }
-*/
 }
