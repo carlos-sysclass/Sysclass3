@@ -10,6 +10,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		    el: $('#calendar'),
 		    portlet: $('#calendar-widget'),
 		    calendarDialog : $('#calendar-dialog'),
+		    calendarCreateDialog : $('#calendar-create-dialog'),
 		    calOptions : {},
 
 		    initialize: function() {
@@ -47,21 +48,30 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            }
-
-	            this.calOptions = { //re-initialize the calendar
+	            
+	            this.calOptions =
+	            { //re-initialize the calendar
 	                header: h,
 	                slotMinutes: 15,
 	                selectable: false,
 	                editable: false,
 	                droppable: false,
-	                eventSources: [
-						'/module/calendar/data'
-	                ],
-	                eventClick : function(event, jsEvent, view) {
+	                 eventSources:
+	                 [
+						 '/module/calendar/data'
+	                 ],
+	                eventClick : function(event, jsEvent, view)
+	                {
 	                	mod.view.calendarDialog.find(".event-description").html(event.description);
 	                	mod.view.calendarDialog.modal('show');
+	                },
+	                dayClick: function(date, jsEvent, view)
+	                {
+	                	mod.view.calendarCreateDialog.find("#event-date").val(date.toISOString().slice(0, 10));
+	                	mod.view.calendarCreateDialog.modal('show');
 	                }
 	            };
+	            
 		        this.render();
 		    },
 		    render: function() {
