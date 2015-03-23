@@ -240,6 +240,8 @@ $plicoLib->concat(
 		'plugins/font-awesome-more/css/font-awesome-corp',
 		'plugins/bootstrap/css/bootstrap.min',
 		'plugins/uniform/css/uniform.default',
+
+        'plugins/fa/css/font-awesome.min',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -273,6 +275,7 @@ $plicoLib->concat(
 		'plugins/backbone/underscore',
 		'plugins/backbone/backbone',
 		'plugins/backbone/marionette',
+		'plugins/backbone/backbone-nested-attributes',
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/moment/moment.min',

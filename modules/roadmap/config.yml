@@ -1,0 +1,7 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+blocks:
+  roadmap.courses.edit:
+    context:
+      block_id: "roadmap_course"

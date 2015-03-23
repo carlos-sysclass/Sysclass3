@@ -14,7 +14,5 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
                 urlRoot : "/module/" + this.module_id + "/" + this.modelPrefix + "/item/me"
             });
         }
-
-        console.warn(this.config);
     //});
 });

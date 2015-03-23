@@ -3543,3 +3543,53 @@ CREATE TABLE `mod_classes` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `users`  ADD COLUMN `can_be_instructor` TINYINT(1) NOT NULL DEFAULT 0 AFTER `last_login`;
+UPDATE users SET can_be_instructor = 1 WHERE user_type = 'professor'
+
+CREATE TABLE `mod_roadmap_courses_to_classes` (
+  `course_id` mediumint(8) unsigned NOT NULL,
+  `lesson_id` mediumint(8) unsigned NOT NULL,
+  /* `previous_lessons_ID` mediumint(8) unsigned DEFAULT '0', */
+  `start_date` int(10) unsigned DEFAULT NULL,
+  `end_date` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`course_id`,`lesson_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mod_roadmap_courses_to_classes` CHANGE COLUMN `lesson_id` `class_id` INT(11) UNSIGNED NOT NULL ;
+
+CREATE TABLE `mod_roadmap_courses_seasons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `name` character varying(100) NOT NULL,
+  `active`tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mod_roadmap_courses_seasons` ADD COLUMN `max_classes` INT(8) NULL DEFAULT -1 AFTER `name`;
+
+INSERT INTO mod_classes (id, permission_access_mode, ies_id, area_id, name, description, info, active)
+SELECT null, permission_access_mode, ies_id, directions_ID as area_id, name, '' as description, info, active FROM sysclass_demo.lessons;
+
+CREATE TABLE `mod_areas` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `name` varchar(150) NOT NULL,
+  `description` text NOT NULL,
+  `coordinator_id` int(11) NOT NULL,
+  `info` text,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `sysclass_demo`.`mod_courses` ADD COLUMN `area_id` MEDIUMINT(8) NULL DEFAULT 0 AFTER `permission_access_mode`;
+
+CREATE TABLE `mod_lessons` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
+  `class_id` mediumint(8) NOT NULL DEFAULT '0',
+  `name` varchar(150) NOT NULL,
+  `info` text,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

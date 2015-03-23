@@ -10,6 +10,7 @@ class CoursesCollectionModel extends AbstractSysclassModel implements ISyncroniz
         $this->selectSql = "SELECT `id`,
             `permission_access_mode`,
             `ies_id`,
+            `area_id`,
             `name`,
             `active`,
             `archive`,

@@ -117,7 +117,7 @@ $SC.module("dialog.permission", function(mod, app, Backbone, Marionette, $, _) {
 		    loadCondition : function(e) {
 	    		//console.info('views/baseSelect2CollectionViewClass::insertModel');
 	    		var condition_id = this.model.get("condition_id");
-	    		
+
 	    		this.$("#permission-add-dialog-options").load('/module/permission/get/options/' + condition_id, '', function() {
             		app.module("ui").refresh(this);
                 });
@@ -150,5 +150,30 @@ $SC.module("dialog.permission", function(mod, app, Backbone, Marionette, $, _) {
 		this.conditionCollection = conditionCollection;
 		this.conditionCollection.fetch({data : collectionData});
 
+
+		this.config = $SC.module("crud.config").getConfig();
+		var self = this;
+
+		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
+		this.on("before:save", function(model) {
+			// SET MODEL PROPERTIES
+			//console.log(model);
+			model.set("entity", {
+				'type' 		: self.config.module_id,
+				'entity_id'	: self.config.entity_id
+			});
+			return true;
+		});
+
+		//app.module("dialog.permission").setCollectionParam({data : });
 	});
+	//var config = app.module("crud.config").getConfig();
+
+	app.module("crud.config").on("start", function() {
+		var config = this.getConfig();
+
+		app.module("dialog.permission").start({type : config.module_id, 'entity_id' : config.entity_id});
+	});
+
+	//
 });

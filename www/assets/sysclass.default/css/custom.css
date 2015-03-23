@@ -774,3 +774,24 @@ table.users-panel-notification-table > thead > tr > td {
 .icon-form-container > span {
 	font-size: 150%;
 }
+
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+
+.floated-list {
+    float: left;
+    width: 100%;
+}
+
+.list-group-item-actions {
+    float: right;
+    margin-right: 10px;
+
+}
+.list-group-item-actions a {
+    margin: 0 2px;
+}

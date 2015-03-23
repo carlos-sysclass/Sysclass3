@@ -1,0 +1,53 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Knowlegde Areas
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your Knowlegde Areas
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: coordinator
+          label: Coordinator
+
+        - mData: courses_count
+          label: "# Courses"
+          sClass: text-center
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add:
+      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      template: form.tpl
+      variables:
+        page_subtitle: Create a new knowlegde area
+    'edit/:id':
+      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      blocks: ["permission.add"]
+      #scripts: ["views.courses.edit"]
+      template: form.tpl
+      variables:
+        page_subtitle: Edit your knowlegde area

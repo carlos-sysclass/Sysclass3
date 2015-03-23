@@ -98,7 +98,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 						if (input.hasClass("datepick")) {
 		                    if (values[idx] != null) {
-		                    	alert('fs');
 		                        var date = new Date(values[idx]);
 		                        // CORRETING TIMEZONE DIFF
 		                        date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
@@ -106,8 +105,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                        input.datepicker('setDate', date);
 		                    }
 		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
-		                	console.warn(input, values[idx]);
-
 	                		if (values[idx] != null) {
 		                		if (input.hasClass("icheck-me")) {
 									input.filter("[value='" + values[idx] +"']").iCheck("check");
@@ -137,6 +134,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 							//input.select2("data", values[idx]);
 							//input.select2("data", {id : values[idx]});
 							//console.warn(values[idx]);
+                            
+                            input.select2("val", values[idx]);
+
 
 						} else if (input.hasClass("wysihtml5")) {
 							var wysihtml5 = $(this).data('wysihtml5');

@@ -21,5 +21,5 @@ dashboard:
     sortable: false
     resources:
         users.overview.notification.order: ["courses", "tutoria", "calendar", "advisor", "tests"]
-        dashboard.linkable.order: ["institution", "courses", "news", "users"]
+        dashboard.linkable.order: ["institution", "areas", "courses", "classes", "lessons", "news", "users"]
         dashboard.linkable.groups.order: ["administration", "content", "users", "communication", "not_classified"]

@@ -82,7 +82,7 @@ blocks:
           label: User Since
 
         - mData: last_login
-          sType: table-datetime
+          sType: unix-moment-since
           sClass: text-center
           label: Last Login
 

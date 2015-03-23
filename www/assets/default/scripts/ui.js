@@ -24,10 +24,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	};
   	this.handleValidate = function(context) {
 	  	// Validation
-	  	/*
-		if($('.form-validate', context).length > 0) {
-			$('.form-validate', context).each(function(){
+
+		if($("[data-validate='true']", context).length > 0) {
+			$("[data-validate='true']", context).each(function(){
 				//var id = $(this).attr('id');
+                console.warn(this);
 				$(this).validate({
 					ignore: null,
 	                errorElement: 'span', //default input error message container
@@ -61,12 +62,14 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                             .closest('.form-group').removeClass('has-error'); // set success class to the control group
 	                },
 					submitHandler : function(f) {
-						f.submit();
+                        // trigger a global event
+						//f.submit();
+                        $(f).trigger("validate:submit")
+                        return false;
 					}
 				});
 			});
 		}
-		*/
 	};
     this.handleMultipleSelect = function(context) {
         if($(".multiple-select-me", context).length > 0){
@@ -157,11 +160,14 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 					        return markup.join("") + text;
 						}
 						opt.formatSelection = function (item) { return item.name; }
+                        //opt.minimumResultsForSearch = 3;
+                        //console.warn(opt);
 						$el.select2(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
 						mod.loadDatasourceInto(this, jQuery(this).data('url'), function() {
 							$el.select2(opt);
+                            $el.trigger("change");
 						}, jQuery(this).data('url-cache'), jQuery(this).data('url-clear'));
 					}
 				} else {
@@ -172,7 +178,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 						opt.formatResult = callbackFunction;
 						opt.formatSelection = callbackFunction;
 					}
-
 
 					$el.select2(opt);
 				}

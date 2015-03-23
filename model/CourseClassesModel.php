@@ -1,6 +1,7 @@
-<?php 
+<?php
 /**
   * This must be used as a "proxy design pattern" to libraries/lesson.class and some parts of libraries/user.class and libraries/course.class
+  * @deprecated
  */
 class CourseClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
@@ -14,31 +15,31 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 			SELECT %1$s.id, lc.courses_ID, %1$s.permission_access_mode, %1$s.name, %1$s.created, %1$s.archive, %1$s.active, previous_lessons_ID
 			FROM lessons %1$s
 			LEFT OUTER JOIN lessons_to_courses lc ON (%1$s.id = lc.lessons_ID)
-			LEFT OUTER JOIN courses c ON (lc.courses_ID = c.id) 	
+			LEFT OUTER JOIN courses c ON (lc.courses_ID = c.id)
 		', $this->mainTablePrefix);
 
 		// TODO REVIEW THESE FIELDS, BASECAUSE THEY WILL REDIRECTED TO ANOTHER MODULES/MODELS
 		/*
-		l.ies_id,   
+		l.ies_id,
 		l.info,
-		l.price, 
-		l.show_catalog, 
-		l.directions_ID, 
-		l.options, 
-		l.metadata, 
-		l.course_only, 
-		l.certificate, 
+		l.price,
+		l.show_catalog,
+		l.directions_ID,
+		l.options,
+		l.metadata,
+		l.course_only,
+		l.certificate,
 		l.instance_source,
 		l.originating_course
-		l.max_users, 
-		l.publish, 
+		l.max_users,
+		l.publish,
 		l.metadata,
 		l.from_timestamp,
-		l.to_timestamp, 
-		l.share_folder, 
-		l.shift, 
-		l.languages_NAME, 
-		l.duration, 
+		l.to_timestamp,
+		l.share_folder,
+		l.shift,
+		l.languages_NAME,
+		l.duration,
 		*/
 		$this->fieldsMap = array(
 			'course_id'			=> 'lc.courses_ID',
@@ -46,12 +47,12 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 		);
 
 		$this->order = array();
-			 
+
  		parent::init();
 	}
 	public function getItems() {
 		$items = parent::getItems();
-		// PUT 
+		// PUT
 		// APPLY SORT BASED ON prev_lesson_id
 		// var_dump($items);
     	$previous = 0; //Previous is only used when no previous_lessons_ID is set

@@ -22,7 +22,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'unix-moment-since' ]
 		},
-
 		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display' || type == 'filter') {
@@ -41,7 +40,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-currency' ]
 		},
-
 		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display') {
@@ -94,7 +92,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-boolean' ]
 		},
-
 	],
 	"aaSorting": [[0, 'asc']],
 	/*

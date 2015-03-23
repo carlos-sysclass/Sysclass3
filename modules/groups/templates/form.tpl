@@ -29,6 +29,11 @@
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div>
 
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Active"}</label>
+						<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+				</div>
+
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
@@ -44,13 +49,15 @@
 				    {/foreach}
 				{/if}
 			</div>
-			<div class="tab-pane fade in" id="tab_1_3">
-				{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
+
 				    {foreach $T_SECTION_TPL['users'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_USERS_BLOCK_CONTEXT T_MODULE_ID=$T_USERS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
-				{/if}
-			</div>
+
+				</div>
+			{/if}
 		</div>
 
 

@@ -663,7 +663,7 @@ $.extend($.validator, {
 			}
 			this.toHide = this.toHide.not( this.toShow );
 			if (this.settings.doNotHideMessage == true) { //this condition added by keenthemes in order to fix hidden success messages on tab switch.
-				// do not hide any error/success messages 
+				// do not hide any error/success messages
 			} else {
 				this.hideErrors();
 			}

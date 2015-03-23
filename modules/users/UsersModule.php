@@ -375,6 +375,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
         }
     }
 
+
+
     /**
      * Get the institution visible to the current user
      *

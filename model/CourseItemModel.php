@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated
+ */
 class CourseItemModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
@@ -44,4 +47,6 @@ class CourseItemModel extends AbstractSysclassModel implements ISyncronizableMod
         parent::init();
 
     }
+
+
 }
