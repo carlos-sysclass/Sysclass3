@@ -360,7 +360,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /**
      * Module Entry Point
      *
-     * @url GET /data
+     * @url GET /data/:id
      */
     public function dataAction($id)
     {
@@ -372,7 +372,20 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         foreach($events aS $evt)
         {
-            if($evt['event_id'] === '1')
+            if($id == 0)
+            {
+                $items[] = array
+                (
+                    'id'            => intval($evt['event_id']),
+                    'title'         => substr(str_replace("\n", " ", strip_tags($evt['event_name'])), 0, 25),
+                    'description'   => $evt['event_description'],
+                    'start'         => $evt['event_date'],
+                    'allDay'        => true,
+                    'color'         => $evt['event_type_color'],
+                    'editable'      => false
+                );
+            }
+            else if($evt['event_type_id'] === $id)
             {
                 $items[] = array
                 (

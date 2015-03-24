@@ -509,7 +509,7 @@ public static function getCalendarEventsForNonAdmnistrator($user)
 	$groupEvents[$value['id']] = $value;
 	}*/
 
-	$result = sC_getTableData("module_events e, module_event_types et", "e.ID as event_id, e.name as event_name, e.description as event_description, e.date as event_date, et.name as event_type_name, et.color as event_type_color", "e.type_id = et.id");
+	$result = sC_getTableData("module_events e, module_event_types et", "e.ID as event_id, e.name as event_name, e.description as event_description, e.date as event_date, e.type_id as event_type_id, et.name as event_type_name, et.color as event_type_color", "e.type_id = et.id");
 	
 	$customEvents = array();
 	

@@ -58,8 +58,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                droppable: false,
 	                 eventSources:
 	                 [
-						 '/module/calendar/data'/*,
-						 '/module/events/data'*/
+						 '/module/calendar/data'
 	                 ],
 	                eventClick : function(event, jsEvent, view)
 	                {
@@ -91,17 +90,13 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	});
 });
 
-function reloadCal()
-{
-	var curSource = new Array();
+jQuery("#event-to-filter").change
+(
+	function()
+	{
+		$('#calendar').fullCalendar('removeEvents');
 
-	curSource = '/module/events/data';
-
-	$('#calendar').fullCalendar('removeEventSource');
-    $('#calendar').fullCalendar('refetchEvents');
-
-    //attach the new eventSources
-    $('#calendar').fullCalendar('addEventSource', curSource);
-    $('#calendar').fullCalendar('refetchEvents');
-
-}
+		$('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
+    	//$('#calendar').fullCalendar('refetchEvents');
+	}
+);
