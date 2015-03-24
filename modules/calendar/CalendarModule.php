@@ -82,6 +82,11 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
         return $items;
     }
 
+    /**
+     * Insert a event model
+     *
+     * @url POST /item/me
+     */
     public function addItemAction($id)
     {
         $request = $this->getMatchedUrl();
@@ -98,7 +103,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
             {
                 return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
+                    $this->getBasePath(),
                     self::$t->translate("Event created with success"),
                     "success"
                 );

@@ -43,7 +43,7 @@
 				<h4 class="modal-title event-title">{translateToken value="Event Creation"}</h4>
 			</div>
 			<div class="modal-body">
-				<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+				<form id="form-calendar-event-creation" class="form-validate"><!---->
 					<div class="form-body">
 
 						<div class="tab-content">
@@ -59,13 +59,13 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Date"}</label>
-									<input id="event-date" class="form-control" readonly />
+									<input id="date" name="date" type="text" class="form-control" readonly />
 								</div>
 								
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Event Type"}</label>
 								 	<div class="controls">
-								 		<input type="hidden" class="select2-me form-control input-block-level" name="event_type" data-url="/module/event_types/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." />
+								 		<input type="hidden" class="select2-me form-control input-block-level" id="type_id" name="type_id" data-url="/module/event_types/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." />
 								 	</div>
 								</div>
 

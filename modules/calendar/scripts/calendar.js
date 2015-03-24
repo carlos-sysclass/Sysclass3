@@ -67,7 +67,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                },
 	                dayClick: function(date, jsEvent, view)
 	                {
-	                	mod.view.calendarCreateDialog.find("#event-date").val(date.toISOString().slice(0, 10));
+	                	mod.view.calendarCreateDialog.find("#date").val(date.toISOString().slice(0, 10));
 	                	mod.view.calendarCreateDialog.modal('show');
 	                }
 	            };
@@ -98,5 +98,30 @@ jQuery("#event-to-filter").change
 
 		$('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
     	//$('#calendar').fullCalendar('refetchEvents');
+	}
+);
+
+jQuery("#form-calendar-event-creation").submit
+(
+	function()
+	{
+		var name 		= document.getElementById("name-modal");
+        var description = document.getElementById("description");
+        var date 		= document.getElementById("date");
+        var type_id 	= document.getElementById("type_id");
+
+		$.ajax
+		(
+            {
+                url: "/item/me",
+                type: "POST",
+                dataType: "html",
+                data: { name: name.value, description: description.value, date: date.value, type_id: type_id.value },
+                success: function(data)
+                {
+                	alert("Foi!");
+                }
+            }
+        );
 	}
 );
