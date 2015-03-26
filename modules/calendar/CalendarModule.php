@@ -19,7 +19,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             'text'  => self::$t->translate('Calendar Events'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . 'all'
+                'link'  => $this->getBasePath() . 'all',
             )
         );
     }
@@ -27,6 +27,8 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     public function getWidgets($widgetsIndexes = array())
     {
         $this->putComponent("select2");
+
+            $this->putModuleScript("widget.news");
 
         if (in_array('calendar', $widgetsIndexes))
         {
@@ -81,22 +83,21 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     }
 
     /**
-     * Get the events
+     * Get the event according to the id
      *
-     * @url GET 
+     * @url GET /item/me/:id
     */
-    public function getEvents()
+    public function getItemAction($id)
     {
-        $data = $this->getHttpData(func_get_args());
-
-        $eventTypesModel = $this->model("events/item");
-
-        $eventTypes = $eventTypesModel->getEvents();
-
-        return $eventTypes;
+         $editItem = $this->model("events/collection")->getItem($id);
+         return $editItem;
     }
 
-/*
+    /**
+     * Insert a event model
+     *
+     * @url POST /item/me
+     */
     public function addItemAction($id)
     {
         $request = $this->getMatchedUrl();
@@ -112,7 +113,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
             {
-                return $this->createRedirectResponse();
+                return $this->createAdviseResponse(self::$t->translate("Event created with success"),
+                    "success"
+                );
+                
             }
             else
             {
@@ -125,26 +129,4 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             return $this->notAuthenticatedError();
         }
     }
-
-    /**
-     * New model entry point
-     *
-     * @url GET
-     */
-/*    public function addPage()
-    {
-        // GET THE MODEL DATA
-        $items = $this->model("event/types/collection")->getItems();
-
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        $event_types = array();
-        foreach($items as $type) {
-            $event_types[$type['id']] = $type['name'];
-        }
-        $this->putItem("event_types", $event_types);
-
-        // HANDLE PAGE
-        parent::addPage($id);
-    }
-*/
 }

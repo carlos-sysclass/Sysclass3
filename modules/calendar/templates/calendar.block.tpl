@@ -1,5 +1,20 @@
 <div id="calendar"></div>
 
+<div id="event-filter" style="margin-top: 10px; margin-left: 2px;">
+	<form id="form-filter-events" role="form" class="form-validate">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Filter Event Type"}</label>
+			<select id="event-to-filter" class="select2-me form-control" name="event_type" data-url="/module/event_types/items/me/combo">
+				<option value="0">{translateToken value="All"}</option>
+				{foreach $T_EVENT_TYPES as $id => $name}
+					<option value="{$id}">{$name}</option>
+				{/foreach}
+
+			</select>
+		</div>
+	</form>
+</div>
+
 <div class="modal fade" id="calendar-dialog" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
 	<div class="modal-dialog modal-wide">
 		<div class="modal-content">
@@ -28,7 +43,7 @@
 				<h4 class="modal-title event-title">{translateToken value="Event Creation"}</h4>
 			</div>
 			<div class="modal-body">
-				<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+				<form id="form-calendar-event-creation" role="form" class="form-validate">
 					<div class="form-body">
 
 						<div class="tab-content">
@@ -44,13 +59,13 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Date"}</label>
-									<input id="event-date" class="form-control" readonly />
+									<input id="date" name="date" type="text" class="form-control" readonly />
 								</div>
 								
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Event Type"}</label>
 								 	<div class="controls">
-								 		<input type="hidden" class="select2-me form-control input-block-level" name="event_type" data-url="/module/event_types/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." />
+								 		<input type="hidden" class="select2-me form-control input-block-level" id="type_id" name="type_id" data-url="/module/event_types/items/me/combo" data-select-search="true" data-placeholder="Pesquisar..." data-rule-required="true"/>
 								 	</div>
 								</div>
 
