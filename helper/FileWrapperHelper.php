@@ -10,6 +10,17 @@
 
 class FileWrapperHelper {
 
+    public function getLessonPath($lesson_id, $type = "default") {
+        $plicolib = PlicoLib::instance();
+
+        $path = $plicolib->get("path/files/public") . "/lessons/" . $lesson_id . "/" . $type;
+
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        return $path;
+    }
+
     protected function getUserPath($username) {
         $plicolib = PlicoLib::instance();
 

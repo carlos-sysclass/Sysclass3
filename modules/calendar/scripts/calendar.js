@@ -32,7 +32,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                        center: '',
 	                        left: 'agendaDay, agendaWeek, month, today, prev,next'
 	                    };
-	                }                
+	                }
 	            } else {
 	                 if (this.portlet.width() <= 720) {
 	                    h = {
@@ -48,7 +48,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            }
-	            
+
 	            this.calOptions =
 	            { //re-initialize the calendar
 	                header: h,
@@ -71,7 +71,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                	mod.view.calendarCreateDialog.modal('show');
 	                }
 	            };
-	            
+
 		        this.render();
 		    },
 		    render: function() {
@@ -87,44 +87,81 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 
 		this.view = new viewClass();
 		this.searchBy = "title";
+
+        /* TO: Lucas Eduardo... Semptre matenha código jQuery / Backbone / Undersocre dentro da função de inicialização do módulo */
+        jQuery("#event-to-filter").change
+        (
+            function()
+            {
+                $('#calendar').fullCalendar('removeEvents');
+
+                $('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
+                //$('#calendar').fullCalendar('refetchEvents');
+            }
+        );
+
+        $("#form-calendar-event-creation").validate({
+            ignore: null,
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+
+            errorPlacement: function (error, element) { // render error placement for each input type
+
+                //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
+                //    error.insertAfter("#form_2_membership_error");
+                if (element.hasClass("wysihtml5")) { // for wysiwyg editors
+                    //console.log(element.data('wysihtml5').editor.composer.iframe);
+                    error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
+                //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
+                //    error.insertAfter("#form_2_service_error");
+                } else {
+                    error.insertAfter(element); // for other inputs, just perform default behavior
+                }
+            },
+            highlight: function (element) { // hightlight error inputs
+               $(element)
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+            unhighlight: function (element) { // revert the change done by hightlight
+                $(element)
+                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+            },
+            success: function (label) {
+                label
+                    .addClass('valid').addClass('help-block') // mark the current input as valid and display OK icon
+                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+            },
+            submitHandler : function(f) {
+                //f.submit();
+
+                $.ajax({
+                    url: "/module/calendar/item/me/",
+                    type: "POST",
+                    data: $(f).serialize(),
+                    success: function(data)
+                    {
+                        alert("success");
+                    },
+                    error: function( XMLHttpRequest, textStatus, errorThrown)
+                    {
+                        alert("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " +textStatus + "\n" + "errorThrown: " + errorThrown);
+                    }
+                });
+            }
+        });
+        /*
+        jQuery("#form-calendar-event-creation").submit
+        (
+            function()
+            {
+                var name        = document.getElementById("name-modal").value;
+                var description = document.getElementById("description").value;
+                var date        = document.getElementById("date").value;
+                var type_id     = document.getElementById("type_id").value;
+            }
+        );
+        */
+
 	});
 });
 
-jQuery("#event-to-filter").change
-(
-	function()
-	{
-		$('#calendar').fullCalendar('removeEvents');
-
-		$('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
-    	//$('#calendar').fullCalendar('refetchEvents');
-	}
-);
-
-jQuery("#form-calendar-event-creation").submit
-(
-	function()
-	{
-		var name 		= document.getElementById("name-modal").value;
-        var description = document.getElementById("description").value;
-        var date 		= document.getElementById("date").value;
-        var type_id 	= document.getElementById("type_id").value;
-        
-		$.ajax
-		(
-            {
-                url: "/module/calendar/item/me/",
-                type: "POST",
-                data: { name: name, description: description, date: date, type_id: type_id },
-                success: function(data)
-                {
-                	alert("success");
-                },
-                error: function( XMLHttpRequest, textStatus, errorThrown)
-                {
-                	alert("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " +textStatus + "\n" + "errorThrown: " + errorThrown);
-                }
-            }
-        );
-	}
-);
