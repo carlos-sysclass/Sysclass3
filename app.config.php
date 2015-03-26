@@ -231,6 +231,32 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'jquery-file-upload',
+	'css'	=> array(
+		'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',
+		'plugins/jquery-file-upload/css/jquery.fileupload',
+		'plugins/jquery-file-upload/css/jquery.fileupload-ui'
+	),
+	'js'	=> array(
+		'plugins/jquery-file-upload/js/vendor/jquery.ui.widget',
+		//'plugins/jquery-file-upload/js/vendor/tmpl.min',
+		'plugins/jquery-file-upload/js/vendor/load-image.min',
+		'plugins/jquery-file-upload/js/vendor/canvas-to-blob.min',
+		'plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min',
+		'plugins/jquery-file-upload/js/jquery.iframe-transport',
+		'plugins/jquery-file-upload/js/jquery.fileupload',
+		'plugins/jquery-file-upload/js/jquery.fileupload-process',
+		'plugins/jquery-file-upload/js/jquery.fileupload-image',
+		'plugins/jquery-file-upload/js/jquery.fileupload-audio',
+		'plugins/jquery-file-upload/js/jquery.fileupload-video',
+		'plugins/jquery-file-upload/js/jquery.fileupload-validate',
+		'plugins/jquery-file-upload/js/jquery.fileupload-ui'
+	)
+));
+
+
+
 $plicoLib->concat(
 	'resources/sysclass.default/css',
 	array(

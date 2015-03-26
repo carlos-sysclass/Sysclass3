@@ -41,7 +41,7 @@ crud:
       variables:
         page_subtitle: Create a new lessons
     'edit/:id':
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["validation", "bootstrap-switch", "jquery-file-upload"]
       #blocks: ["permission.add", "users.list.table", "roadmap.courses.edit"]
       #scripts: ["views.courses.edit"]
       template: form.tpl

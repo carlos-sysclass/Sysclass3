@@ -198,6 +198,24 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return array_values($itemsData);
     }
 
+/**
+     * Get all users visible to the current user
+     *
+     * @url POST /upload/:id
+     * @url POST /upload/:id/:type
+     */
+    public function receiveFilesAction($id, $type = "default")
+    {
+        $helper = $this->helper("file/upload");
+        $filewrapper = $this->helper("file/wrapper");
+        $upload_dir = $filewrapper->getLessonPath($id, $type);
+        $helper->setOption('upload_dir', $upload_dir . "/");
+        $helper->execute();
+    }
+
+
+
+
 
     /**
      * Get the institution visible to the current user
