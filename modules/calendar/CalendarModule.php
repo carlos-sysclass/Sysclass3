@@ -83,6 +83,17 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     }
 
     /**
+     * Get the event according to the id
+     *
+     * @url GET /item/me/:id
+    */
+    public function getItemAction($id)
+    {
+         $editItem = $this->model("events/collection")->getItem($id);
+         return $editItem;
+    }
+
+    /**
      * Insert a event model
      *
      * @url POST /item/me
@@ -102,11 +113,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
             {
-                return $this->createRedirectResponse(
-                    $this->getBasePath(),
-                    self::$t->translate("Event created with success"),
+                return $this->createAdviseResponse(self::$t->translate("Event created with success"),
                     "success"
                 );
+                
             }
             else
             {

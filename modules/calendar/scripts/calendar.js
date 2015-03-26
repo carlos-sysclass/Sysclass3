@@ -105,21 +105,24 @@ jQuery("#form-calendar-event-creation").submit
 (
 	function()
 	{
-		var name 		= document.getElementById("name-modal");
-        var description = document.getElementById("description");
-        var date 		= document.getElementById("date");
-        var type_id 	= document.getElementById("type_id");
-
+		var name 		= document.getElementById("name-modal").value;
+        var description = document.getElementById("description").value;
+        var date 		= document.getElementById("date").value;
+        var type_id 	= document.getElementById("type_id").value;
+        
 		$.ajax
 		(
             {
-                url: "/item/me",
+                url: "/module/calendar/item/me/",
                 type: "POST",
-                dataType: "html",
-                data: { name: name.value, description: description.value, date: date.value, type_id: type_id.value },
+                data: { name: name, description: description, date: date, type_id: type_id },
                 success: function(data)
                 {
-                	alert("Foi!");
+                	alert("success");
+                },
+                error: function( XMLHttpRequest, textStatus, errorThrown)
+                {
+                	alert("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " +textStatus + "\n" + "errorThrown: " + errorThrown);
                 }
             }
         );
