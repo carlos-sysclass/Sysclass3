@@ -82,13 +82,12 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                     this.$el.removeClass("mobile");
                 }
 		        this.$el.fullCalendar(this.calOptions);
-		    }
+		    },
 	  	});
 
 		this.view = new viewClass();
 		this.searchBy = "title";
 
-        /* TO: Lucas Eduardo... Semptre matenha código jQuery / Backbone / Undersocre dentro da função de inicialização do módulo */
         jQuery("#event-to-filter").change
         (
             function()
@@ -96,7 +95,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                 $('#calendar').fullCalendar('removeEvents');
 
                 $('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
-                //$('#calendar').fullCalendar('refetchEvents');
             }
         );
 
@@ -140,28 +138,17 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                     data: $(f).serialize(),
                     success: function(data)
                     {
-                        alert("success");
+                        $('#calendar').fullCalendar('removeEvents');
+
+                        $('#calendar').fullCalendar('addEventSource', '/module/events/data/0');
                     },
                     error: function( XMLHttpRequest, textStatus, errorThrown)
                     {
-                        alert("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " +textStatus + "\n" + "errorThrown: " + errorThrown);
+                        alert("Não foi possível completar a sua requisição.");
                     }
                 });
             }
         });
-        /*
-        jQuery("#form-calendar-event-creation").submit
-        (
-            function()
-            {
-                var name        = document.getElementById("name-modal").value;
-                var description = document.getElementById("description").value;
-                var date        = document.getElementById("date").value;
-                var type_id     = document.getElementById("type_id").value;
-            }
-        );
-        */
-
 	});
 });
 
