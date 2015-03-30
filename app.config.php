@@ -67,7 +67,7 @@ $configurationDefaults = array(
 	)
 );
 
-$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["SERVER_NAME"]]);
+$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["HTTP_HOST"]]);
 $configuration['dsn'] = sprintf(
 	'%s://%s:%s@%s/%s?persist',
 	$configuration['dbtype'],
