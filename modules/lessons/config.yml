@@ -44,6 +44,7 @@ crud:
       components: ["validation", "bootstrap-switch", "jquery-file-upload"]
       #blocks: ["permission.add", "users.list.table", "roadmap.courses.edit"]
       #scripts: ["views.courses.edit"]
+      scripts: ["views.lessons.edit"]
       template: form.tpl
       variables:
         page_subtitle: Edit your lesson info

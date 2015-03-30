@@ -198,7 +198,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return array_values($itemsData);
     }
 
-/**
+    /**
      * Get all users visible to the current user
      *
      * @url POST /upload/:id
@@ -206,10 +206,18 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function receiveFilesAction($id, $type = "default")
     {
+        $param_name = $_GET['name'];
+
+        if (!in_array($type, array("video", "material", "default"))) {
+            $type = "default";
+        }
+
         $helper = $this->helper("file/upload");
         $filewrapper = $this->helper("file/wrapper");
         $upload_dir = $filewrapper->getLessonPath($id, $type);
         $helper->setOption('upload_dir', $upload_dir . "/");
+        $helper->setOption('param_name', $param_name);
+
         $helper->execute();
     }
 
@@ -220,11 +228,14 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * Get the institution visible to the current user
      *
-     * @url GET /item/me/:id
+     * @url GET /item/:model/:id
      */
-    public function getItemAction($id) {
+    public function getItemAction($model = "me", $id) {
 
         $editItem = $this->model("classes/lessons/collection")->getItem($id);
+        //if ($model == "content") {
+            $editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
+        //}
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }

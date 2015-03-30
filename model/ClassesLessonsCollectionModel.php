@@ -17,4 +17,12 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
         parent::init();
 
     }
+
+    public function loadContentFiles($id, $type = null) {
+        $filehelper = $this->helper("file/wrapper");
+        $path = $filehelper->getLessonPath($id, $type);
+
+        return $filehelper->listFiles($path);
+
+    }
 }

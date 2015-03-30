@@ -1,5 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
+<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
@@ -11,16 +12,14 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
-				<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
-					<div class="form-group">
-						<label class="control-label">{translateToken value="Name"}</label>
-						<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-					</div>
-					<div class="form-group">
-						<label class="control-label">{translateToken value="Active"}</label>
-						<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
-					</div>
-				</form>
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Name"}</label>
+					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+				</div>
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Active"}</label>
+					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+				</div>
 			</div>
 			<div class="tab-pane fade in" id="tab_1_2">
 				<div class="panel-group accordion" id="content-accordion-{$T_MODULE_ID}">
@@ -33,11 +32,12 @@
 						<div id="collapse_1" class="panel-collapse in">
 							<div class="panel-body">
 
-								<ul id="file-list" class="list-unstyled">
+								<ul id="video-file-list" class="list-unstyled">
+
 								</ul>
 
-								<div class="file-upload-widget">
-									<button class="btn blue upload-new-file input-block-level">
+								<div class="video-file-upload-widget">
+									<button class="btn blue upload-new-video-file input-block-level">
 		            					<i class="fa fa-upload"></i>
 		            					<span>Start</span>
 							        </button>
@@ -53,6 +53,16 @@
 						</div>
 						<div id="collapse_2" class="panel-collapse collapse">
 							<div class="panel-body">
+								<ul id="material-file-list" class="list-unstyled">
+
+								</ul>
+
+								<div class="material-file-upload-widget">
+									<button class="btn blue upload-new-material-file input-block-level">
+		            					<i class="fa fa-upload"></i>
+		            					<span>Start</span>
+							        </button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -64,6 +74,7 @@
 						</div>
 						<div id="collapse_3" class="panel-collapse collapse">
 							<div class="panel-body">
+								{translateToken value="Under Construction"}
 							</div>
 						</div>
 					</div>
@@ -77,7 +88,7 @@
 </form>
 <script type="text/template" id="file-upload-new-item">
 	<li class="row">
-		<div class="col-md-9 file-name">scxccxzsadsad</div>
+		<div class="col-md-9 file-name"></div>
 		<div class="col-md-3">
 			<div id="progress" style="height: 15px;">
 				<div class="progress-bar progress-bar-success"></div>
@@ -90,34 +101,15 @@
 		</div>
 	</li>
 </script>
-<script type="text/template" id="file-upload-file-item">
-	<tr class="template-upload fade in">
-        <td>
-            <p class="name">20140805_224258-1-1.jpg</p>
-            <strong class="error text-danger label label-danger"></strong>
-        </td>
-        <td>
-            <div style="width:0%;" class="progress-bar progress-bar-success"></div>
-            </div>
-        </td>
-        <td>
-            <p class="size">239.11 KB</p>
-            <div aria-valuenow="0" aria-valuemax="100" aria-valuemin="0" role="progressbar" class="progress progress-striped active">
-        </td>
-        <td>
-	        <button class="btn blue start">
-	            <i class="fa fa-upload"></i>
-	            <span>Start</span>
-	        </button>
 
-
-	        <button class="btn red cancel">
-	            <i class="fa fa-ban"></i>
-	            <span>Cancel</span>
-	        </button>
-        </td>
-	</tr>
+<script type="text/template" id="file-upload-item">
+	<li class="row">
+		<div class="col-md-12">
+			<a href="/module/lesson/view-file/<%= type %>?name=name" target="_blank"><%= name %></a>
+		</div>
+	</li>
 </script>
+
 {/block}
 
 

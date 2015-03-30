@@ -10,10 +10,14 @@
 
 class FileWrapperHelper {
 
-    public function getLessonPath($lesson_id, $type = "default") {
+    public function getLessonPath($lesson_id, $type = null) {
         $plicolib = PlicoLib::instance();
 
-        $path = $plicolib->get("path/files/public") . "/lessons/" . $lesson_id . "/" . $type;
+        $path = $plicolib->get("path/files/public") . "/lessons/" . $lesson_id;
+
+        if (!is_null($type)) {
+            $path .= "/" . $type;
+        }
 
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
@@ -67,6 +71,42 @@ class FileWrapperHelper {
             'user'  => $username,
             'file'  => $file_name
         );
+    }
+
+    public function listFiles($path) {
+        $realpath = realpath($path);
+
+        $plicolib = PlicoLib::instance();
+        $privatepath = $plicolib->get("path/files/public");
+        $publicpath = $plicolib->get("path/files/private");
+
+        if (strpos($realpath, $privatepath) !== FALSE || strpos($realpath, $publicpath) !== FALSE) {
+            return $this->fileTreeToArray($realpath);
+        }
+        return array();
+    }
+
+    protected function fileTreeToArray($dir) {
+
+       $result = array();
+
+       $cdir = scandir($dir);
+       foreach ($cdir as $key => $value)
+       {
+          if (!in_array($value,array(".","..")))
+          {
+             if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+             {
+                $result[$value] = $this->fileTreeToArray($dir . DIRECTORY_SEPARATOR . $value);
+             }
+             else
+             {
+                $result[] = $value;
+             }
+          }
+       }
+
+       return $result;
     }
 
 }

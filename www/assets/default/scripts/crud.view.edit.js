@@ -6,14 +6,13 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
     // MODELS
     mod.addInitializer(function() {
         var itemModelClass = $SC.module("crud.models").itemModelClass;
-        var itemModel = new itemModelClass();
+        this.itemModel = new itemModelClass();
 
-        itemModel.set("id", this.entity_id);
+        this.itemModel.set("id", this.entity_id);
 
         var baseFormClass = app.module("views").baseFormClass;
-        var newsFormView = new baseFormClass({el : "#form-" + this.module_id, model: itemModel});
+        var newsFormView = new baseFormClass({el : "#form-" + this.module_id, model: this.itemModel});
 
-
-        itemModel.fetch();
+        this.itemModel.fetch();
     });
 });
