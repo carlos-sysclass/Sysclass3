@@ -48,7 +48,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            }
-
+	            
 	            this.calOptions =
 	            { //re-initialize the calendar
 	                header: h,
@@ -58,7 +58,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                droppable: false,
 	                 eventSources:
 	                 [
-						 '/module/calendar/data'
+						'/module/calendar/data'
 	                 ],
 	                eventClick : function(event, jsEvent, view)
 	                {
@@ -82,16 +82,73 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                     this.$el.removeClass("mobile");
                 }
 		        this.$el.fullCalendar(this.calOptions);
-		    },
+		    }
 	  	});
 
 		this.view = new viewClass();
 		this.searchBy = "title";
+$('.fc-button-prev').click
+        (
+        	function()
+        	{
+        		$('#calendar').fullCalendar('removeEventSource');
+            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
+        		$('#calendar').fullCalendar('removeEvents');
+
+	         	var listOptions;
+		        var i;
+		        
+		        listOptions = document.getElementById("event-to-filter").options;
+
+			    $(".select2-chosen").html("All");
+	     		//$("#event-to-filter").val("0");
+
+	     		for(i = 0; i < listOptions.length; i++)
+        		{
+        			listOptions[i].selected = false;
+
+				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
+					$('#calendar').fullCalendar('removeEvents');
+				}
+        		
+        		listOptions[0].selected = true;
+			}
+		);
+
+		$('.fc-button-next').click
+		(
+			function()
+			{
+				$('#calendar').fullCalendar('removeEventSource');
+            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
+        		$('#calendar').fullCalendar('removeEvents');
+        		
+				var listOptions;
+		        var i;
+		        
+		        listOptions = document.getElementById("event-to-filter").options;
+
+			    $(".select2-chosen").html("All");
+	     		//$("#event-to-filter").val("0");
+
+	     		for(i = 0; i < listOptions.length; i++)
+        		{
+        			listOptions[i].selected = false;
+        			
+				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
+					$('#calendar').fullCalendar('removeEvents');
+				}
+        		
+        		listOptions[0].selected = true;
+			}
+		);
 
         jQuery("#event-to-filter").change
         (
             function()
             {
+            	$('#calendar').fullCalendar('removeEventSource');
+            	$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
                 $('#calendar').fullCalendar('removeEvents');
 
                 $('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
