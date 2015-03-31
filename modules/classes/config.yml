@@ -27,6 +27,9 @@ crud:
           sType: table-currency
           label: Price
 
+        - mData: course_name
+          label: Course
+
         - mData: active
           sType: table-boolean
           sClass: text-center

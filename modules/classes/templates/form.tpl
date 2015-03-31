@@ -53,6 +53,16 @@
 				-->
 
 				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Course"}</label>
+					<select class="select2-me form-control" name="course_id" data-rule-required="1" data-rule-min="1">
+						{foreach $T_COURSES as $id => $name}
+							<option value="{$id}">{$name}</option>
+						{/foreach}
+					</select>
+				</div>
+
+				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>

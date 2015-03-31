@@ -91,6 +91,47 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return $actions[$request];
     }
 
+    /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $items = $this->model("courses/collection")->getItems();
+        
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $courses = array();
+        foreach($items as $course)
+        {
+            $courses[$course['id']] = $course['name'];
+        }
+        
+        $this->putItem("courses", $courses);
+        
+        parent::editPage($id);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $items = $this->model("courses/collection")->getItems();
+        
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $courses = array();
+        foreach($items as $course)
+        {
+            $courses[$course['id']] = $course['name'];
+        }
+        
+        $this->putItem("courses", $courses);
+        
+        parent::editPage($id);
+    }
 
     /**
      * Get the institution visible to the current user

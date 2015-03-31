@@ -12,6 +12,7 @@ class CoursesCollectionModel extends AbstractSysclassModel implements ISyncroniz
             `ies_id`,
             `area_id`,
             `name`,
+            `name` as course_name,
             `active`,
             `archive`,
             `created`,
