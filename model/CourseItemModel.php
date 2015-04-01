@@ -14,6 +14,7 @@ class CourseItemModel extends AbstractSysclassModel implements ISyncronizableMod
             `permission_access_mode`,
             `ies_id`,
             `name`,
+            `name` as course_name,
             `active`,
             `archive`,
             `created`,
