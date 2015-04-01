@@ -5,14 +5,18 @@ require('vendor/autoload.php');
 $plicoLib = PlicoLib::instance();
 
 if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
-	$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+	$HTTP_HOST = $_SERVER['HTTP_X_FORWARDED_HOST'];
+	$disable_http_check = true;
+} else {
+	$HTTP_HOST = $_SERVER['HTTP_HOST'];
+	$disable_http_check = false;
 }
 
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
 isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
 $configurationDefaults = array(
 	'_default'			=> array(
-		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/',
+		'server'	=> $protocol.'://'.$HTTP_HOST.'/',
 		'dbtype'	=> 'mysql',
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'sysclass',
@@ -71,7 +75,7 @@ $configurationDefaults = array(
 	)
 );
 
-$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["HTTP_HOST"]]);
+$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$HTTP_HOST]);
 $configuration['dsn'] = sprintf(
 	'%s://%s:%s@%s/%s?persist',
 	$configuration['dbtype'],

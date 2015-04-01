@@ -5,7 +5,11 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
 }
 
 if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
-	$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+	$HTTP_HOST = $_SERVER['HTTP_X_FORWARDED_HOST'];
+	$disable_http_check = true;
+} else {
+	$HTTP_HOST = $_SERVER['HTTP_HOST'];
+	$disable_http_check = false;
 }
 
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
@@ -15,7 +19,7 @@ isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
 
 $configurationDefaults = array(
 	'_default'			=> array(
-		'server'	=> $protocol.'://'.$_SERVER["HTTP_HOST"].'/',
+		'server'	=> $protocol.'://'.$HTTP_HOST.'/',
 		'dbtype'	=> 'mysql',
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'sysclass',
@@ -182,7 +186,7 @@ $configurationDefaults = array(
 	)
 );
 
-$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$_SERVER["HTTP_HOST"]]);
+$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$HTTP_HOST]);
 
 if (array_key_exists('overrideTheme', $configuration)) {
 	$overrideTheme = $configuration['overrideTheme'];
@@ -204,15 +208,12 @@ define('G_DBNAME', $configuration['dbname']);
 define('G_DBPREFIX', $configuration['dbprefix']);
 
 /* Access Protocol (http | https) */
-if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
+if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true && $disable_http_check !== true) {
 	//sC_redirect($url)
-
-
-
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
-} elseif ($configuration['https'] == 'none' && $protocol != 'http' && $DO_NOT_REDIRECT !== true) {
+} elseif ($configuration['https'] == 'none' && $protocol != 'http' && $DO_NOT_REDIRECT !== true && $disable_http_check !== true) {
 	$url = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
