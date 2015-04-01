@@ -4,6 +4,10 @@ require('vendor/autoload.php');
 //define("DEBUG", 1);
 $plicoLib = PlicoLib::instance();
 
+if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
+	$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+}
+
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
 isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
 $configurationDefaults = array(
@@ -58,12 +62,12 @@ $configurationDefaults = array(
 	'enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'none',
+		'https'		=> 'required',
 	),
 	'www.enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'none',
+		'https'		=> 'required',
 	)
 );
 

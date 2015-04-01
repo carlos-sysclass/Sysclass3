@@ -4,6 +4,10 @@ if (str_replace(DIRECTORY_SEPARATOR, "/", __FILE__) == $_SERVER['SCRIPT_FILENAME
     exit;
 }
 
+if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
+	$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+}
+
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
 /** The protocol currently used*/
 
@@ -169,12 +173,12 @@ $configurationDefaults = array(
 	'enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'none',
+		'https'		=> 'required',
 	),
 	'www.enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'none',
+		'https'		=> 'required',
 	)
 );
 
@@ -202,6 +206,9 @@ define('G_DBPREFIX', $configuration['dbprefix']);
 /* Access Protocol (http | https) */
 if ($configuration['https'] == 'required' && $protocol != 'https' && $DO_NOT_REDIRECT !== true) {
 	//sC_redirect($url)
+
+
+
 	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	header("Location: {$url}");
 	exit;
