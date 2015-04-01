@@ -48,7 +48,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            }
-
+	            
 	            this.calOptions =
 	            { //re-initialize the calendar
 	                header: h,
@@ -56,10 +56,10 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                selectable: false,
 	                editable: false,
 	                droppable: false,
-	                eventSources:
-	                [
-						 '/module/calendar/data'
-	                ],
+	                 eventSources:
+	                 [
+						'/module/calendar/data'
+	                 ],
 	                eventClick : function(event, jsEvent, view)
 	                {
 	                	mod.view.calendarDialog.find(".event-description").html(event.description);
@@ -87,16 +87,71 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 
 		this.view = new viewClass();
 		this.searchBy = "title";
+$('.fc-button-prev').click
+        (
+        	function()
+        	{
+        		$('#calendar').fullCalendar('removeEventSource');
+            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
+        		$('#calendar').fullCalendar('removeEvents');
 
-        /* TO: Lucas Eduardo... Semptre matenha código jQuery / Backbone / Undersocre dentro da função de inicialização do módulo */
+	         	var listOptions;
+		        var i;
+		        
+		        listOptions = document.getElementById("event-to-filter").options;
+
+			    $(".select2-chosen").html("All");
+	     		//$("#event-to-filter").val("0");
+
+	     		for(i = 0; i < listOptions.length; i++)
+        		{
+        			listOptions[i].selected = false;
+
+				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
+					$('#calendar').fullCalendar('removeEvents');
+				}
+        		
+        		listOptions[0].selected = true;
+			}
+		);
+
+		$('.fc-button-next').click
+		(
+			function()
+			{
+				$('#calendar').fullCalendar('removeEventSource');
+            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
+        		$('#calendar').fullCalendar('removeEvents');
+        		
+				var listOptions;
+		        var i;
+		        
+		        listOptions = document.getElementById("event-to-filter").options;
+
+			    $(".select2-chosen").html("All");
+	     		//$("#event-to-filter").val("0");
+
+	     		for(i = 0; i < listOptions.length; i++)
+        		{
+        			listOptions[i].selected = false;
+        			
+				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
+					$('#calendar').fullCalendar('removeEvents');
+				}
+        		
+        		listOptions[0].selected = true;
+			}
+		);
+
         jQuery("#event-to-filter").change
         (
             function()
             {
+            	$('#calendar').fullCalendar('removeEventSource');
+            	$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
                 $('#calendar').fullCalendar('removeEvents');
 
                 $('#calendar').fullCalendar('addEventSource', '/module/events/data/' + $("#event-to-filter").val());
-                //$('#calendar').fullCalendar('refetchEvents');
             }
         );
 
@@ -140,28 +195,17 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                     data: $(f).serialize(),
                     success: function(data)
                     {
-                        alert("success");
+                        $('#calendar').fullCalendar('removeEvents');
+
+                        $('#calendar').fullCalendar('addEventSource', '/module/events/data/0');
                     },
                     error: function( XMLHttpRequest, textStatus, errorThrown)
                     {
-                        alert("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " +textStatus + "\n" + "errorThrown: " + errorThrown);
+                        alert("Não foi possível completar a sua requisição.");
                     }
                 });
             }
         });
-        /*
-        jQuery("#form-calendar-event-creation").submit
-        (
-            function()
-            {
-                var name        = document.getElementById("name-modal").value;
-                var description = document.getElementById("description").value;
-                var date        = document.getElementById("date").value;
-                var type_id     = document.getElementById("type_id").value;
-            }
-        );
-        */
-
 	});
 });
 

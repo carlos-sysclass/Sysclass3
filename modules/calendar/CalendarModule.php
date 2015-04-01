@@ -108,7 +108,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
         {
             $data = $this->getHttpData(func_get_args());
 
-            $data['date'] = date("y-m-d", strtotime($data['date']));
+            $data['date'] = date("Y-m-d H:i:s", strtotime($data['date']));
 
             //$data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
