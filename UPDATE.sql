@@ -3596,3 +3596,6 @@ CREATE TABLE `mod_lessons` (
 
 /* 2015-03-31 */
 ALTER TABLE `sysclass_demo`.`mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;
+
+/* 2015-04-01 */
+ALTER TABLE `sysclass_demo`.`mod_classes` ADD COLUMN `instructor_id` INT NOT NULL AFTER `course_id`;

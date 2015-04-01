@@ -19,13 +19,19 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         							cl.info,
         							cl.active,
         							cl.course_id,
-        							cour.name as course_name
+        							cl.instructor_id,
+        							cour.name as course_name,
+        							CONCAT_WS(' ', u.name, u.surname) AS instructor_name
     							FROM
     								mod_classes cl
 								LEFT JOIN
 									mod_courses cour
 								ON
 									(cour.id = cl.course_id)
+								LEFT JOIN
+									users u
+								ON
+									(cl.instructor_id = u.id)
 							";
 
         parent::init();

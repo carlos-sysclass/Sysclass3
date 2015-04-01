@@ -109,7 +109,20 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         
         $this->putItem("courses", $courses);
         
-        parent::editPage($id);
+        $items = $this->model("users/collection")->addFilter(array(
+                        'can_be_instructor' => true
+                    ))->getItems();
+        
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $instructors = array();
+        foreach($items as $instructor)
+        {
+            $instructors[$instructor['id']] = $instructor['name'] . " " . $instructor['surname'];
+        }
+        
+        $this->putItem("instructors", $instructors);
+        
+        parent::addPage($id);
     }
 
     /**
@@ -130,6 +143,19 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         
         $this->putItem("courses", $courses);
         
+        $items = $this->model("users/collection")->addFilter(array(
+                        'can_be_instructor' => true
+                    ))->getItems();
+        
+        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        $instructors = array();
+        foreach($items as $instructor)
+        {
+            $instructors[$instructor['id']] = $instructor['name'] . " " . $instructor['surname'];
+        }
+        
+        $this->putItem("instructors", $instructors);
+
         parent::editPage($id);
     }
 
