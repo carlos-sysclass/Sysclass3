@@ -3595,4 +3595,4 @@ CREATE TABLE `mod_lessons` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /* 2015-03-31 */
-ALTER TABLE `sysclass_demo`.`mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;
+ALTER TABLE `mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;

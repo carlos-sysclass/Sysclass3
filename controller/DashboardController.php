@@ -81,6 +81,10 @@ class DashboardController extends AbstractSysclassController
 
         $this->putItem("page_layout", $pageLayout);
 
+        if ($currentUser['user_type'] == "student") {
+            $this->putBlock("institution.social-gadgets");
+        }
+
         //$topbarMenu = $layoutManager->getMenuBySection("topbar");
 
         //$this->putItem("topbar_menu", $topbarMenu);

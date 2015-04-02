@@ -2,14 +2,14 @@
 	<div class="col-md-12">
 		<div class="add-portfolio">
 			<span>{translateToken value="New courses arrive this month"}</span>
-			<a href="#" class="btn icn-only green">{translateToken value="Enroll a new Course"} <i class="m-icon-swapright m-icon-white"></i></a>                          
+			<a href="#" class="btn icn-only green">{translateToken value="Enroll a new Course"} <i class="m-icon-swapright m-icon-white"></i></a>
 		</div>
 	</div>
 </div>
 <!--end add-portfolio-->
 {foreach $T_USER_COURSES as $id => $course}
 <div class="row portfolio-block">
-	<div class="col-md-7">
+	<div class="col-md-5">
 		<div class="portfolio-text">
 			{if $course.image}
 			<img src="{Plico_RelativePath file=$course.image}" alt="" />
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-7">
 		<div class="portfolio-info">
 			Enroll Date
 			<span>{formatTimestamp value=$course.active_in_course fmt=$T_SETTINGS_.php_date_fmt}</span>
@@ -37,7 +37,7 @@
 	<!--
 	<div class="col-md-2">
 		<div class="portfolio-btn">
-			<a href="#" class="btn bigicn-only"><span>Manage</span></a>                      
+			<a href="#" class="btn bigicn-only"><span>Manage</span></a>
 		</div>
 	</div>
 	-->
