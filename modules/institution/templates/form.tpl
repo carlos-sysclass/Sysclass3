@@ -17,11 +17,25 @@
 			<textarea class="wysihtml5 form-control placeholder-no-fix" id="observations" name="observations" rows="6" placeholder="{translateToken value="Put your observations here..."}" data-rule-required="true"></textarea>
 		</div>
 
-		{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
-		    {foreach $T_SECTION_TPL['address'] as $template}
-		        {include file=$template}
-		    {/foreach}
-		{/if}
+		<h3 class="form-section"><i class="icon-book"></i> Address Book</h3>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Address"}</label>
+			<input name="address" value="" type="text" placeholder="Address" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Address 2"}</label>
+			<input name="address2" value="" type="text" placeholder="Address 2" class="form-control" data-rule-minlength="3" />
+		</div>
+		
+		<h3 class="form-section">{translateToken value="Social"}</h3>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Website"}</label>
+			<input name="website" value="" type="text" placeholder="Website" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Facebook"}</label>
+			<input name="facebook" value="" type="text" placeholder="Facebook" class="form-control" />
+		</div>
 
 		{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 		    {foreach $T_SECTION_TPL['permission'] as $template}

@@ -255,6 +255,16 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     'remove'    => array(
                         'icon'  => 'icon-remove',
                         'class' => 'btn-sm btn-danger'
+                    ),
+                    'website'    => array(
+                        'icon'  => 'icon-link',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm'
+                    ),
+                    'facebook'    => array(
+                        'icon'  => 'icon-facebook',
+                        'link'  => $this->getBasePath() . "edit/" . $item['id'],
+                        'class' => 'btn-sm'
                     )
                 );
             }

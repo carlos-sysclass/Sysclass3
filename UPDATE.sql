@@ -3596,3 +3596,8 @@ CREATE TABLE `mod_lessons` (
 
 /* 2015-03-31 */
 ALTER TABLE `sysclass_demo`.`mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;
+
+/* 2015-04-02 */
+ALTER TABLE `sysclass_demo`.`mod_institution`
+  ADD COLUMN `website` VARCHAR(255) DEFAULT NULL AFTER `active`,
+  ADD COLUMN `facebook` VARCHAR(255) DEFAULT NULL AFTER `website`;
