@@ -1,12 +1,15 @@
 {extends file="layout/login.tpl"}
 {block name="content"}
 	<div class="content">
+		<div class="inside-logo">
+			<img src="{Plico_GetResource file='img/logo.png'}" alt="" style="max-width: 100%" />
+		</div>
 		<!-- BEGIN LOGIN FORM -->
 		{$T_LOGIN_FORM.javascript}
 		<form {$T_LOGIN_FORM.attributes}>
 			{$T_LOGIN_FORM.hidden}
 			<h3 class="form-title">{translateToken value="Login to your account"}</h3>
-			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
+			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">
 					<button class="close" data-dismiss="alert"></button>
 					<span>{$T_MESSAGE.message}</span>
@@ -62,7 +65,7 @@
     </div>
 -->
 		</form>
-		<!-- END LOGIN FORM -->        
+		<!-- END LOGIN FORM -->
 		<!-- BEGIN FORGOT PASSWORD FORM -->
 
 

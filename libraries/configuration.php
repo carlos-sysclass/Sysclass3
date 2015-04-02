@@ -177,12 +177,12 @@ $configurationDefaults = array(
 	'enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'required',
+		'https'		=> 'optional',
 	),
 	'www.enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
-		'https'		=> 'required',
+		'https'		=> 'optional',
 	)
 );
 

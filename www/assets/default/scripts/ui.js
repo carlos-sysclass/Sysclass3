@@ -452,6 +452,10 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 			$(".ajax-loader").fadeOut(1000);
 		});
 
+        for (i in this.submodules) {
+            this.submodules[i].start();
+        }
+
 		this.refresh(document);
 	});
 

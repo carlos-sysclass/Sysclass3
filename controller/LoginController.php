@@ -75,10 +75,19 @@ class LoginController extends AbstractSysclassController
 		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
 		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
 
-
 		// CREATE LOGIC AND CALL VIEW.
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/login");
+		$this->putCss("css/bigvideo/bigvideo");
+		$this->putScript("plugins/modernizr/modernizr");
+		$this->putScript("plugins/imagesloaded/imagesloaded");
+		$this->putScript("plugins/bigvideo/bigvideo");
+		//$this->putScript("plugins/videoBG/jquery.videoBG");
+		$this->putScript("scripts/pages/login");
+
+
+		// CREATE LOGIC AND CALL VIEW.
+		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		//$this->putScript("scripts/login-soft");
 
 		$smarty = $this->getSmarty();
