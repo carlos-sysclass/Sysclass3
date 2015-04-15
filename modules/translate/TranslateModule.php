@@ -75,7 +75,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                     array(
                         'count' => count($data),
                         'text'  => self::$t->translate('Languages'),
-                        'icon'  => 'icon-globe',
+                        'icon'  => 'fa fa-language',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )

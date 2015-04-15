@@ -25,7 +25,7 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                     array(
                         'count' => count($groupItems),
                         'text'  => self::$t->translate('Groups'),
-                        'icon'  => 'icon-group',
+                        'icon'  => 'fa fa-users',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )

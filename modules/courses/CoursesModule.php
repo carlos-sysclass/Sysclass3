@@ -170,6 +170,22 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
     /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $knowledgeAreas = $this->model("courses/areas/collection")->addFilter(array(
+            'active' => 1
+        ))->getItems();
+
+        $this->putitem("knowledge_areas", $knowledgeAreas);
+
+        parent::editPage($id);
+    }
+
+    /**
      * Get the institution visible to the current user
      *
      * @url GET /item/users/:course_id

@@ -36,7 +36,14 @@
 
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Knowledge Area"}</label>
+					<!--
 					<input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
+					-->
+					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Knowledge Area'}">
+					{foreach $T_KNOWLEDGE_AREAS as $knowledge}
+							<option value="{$knowledge.id}">{$knowledge.name}</option>
+					{/foreach}
+					</select>
 				</div>
 
 				<div class="form-group">
@@ -46,11 +53,9 @@
 			</div>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-<!--
 				    {foreach $T_SECTION_TPL['users'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_USERS_BLOCK_CONTEXT T_MODULE_ID=$T_USERS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
--->
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap']) &&  ($T_SECTION_TPL['roadmap']|@count > 0))}

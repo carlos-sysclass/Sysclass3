@@ -26,7 +26,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                     (
                         'count' => count($eventsItems),
                         'text'  => self::$t->translate('Event'),
-                        'icon'  => 'icon-event',
+                        'icon'  => 'fa fa-thumb-tack',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -146,16 +146,16 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     public function editPage($id)
     {
         $items = $this->model("event/types/collection")->getItems();
-        
+
         // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
         $event_types = array();
         foreach($items as $type)
         {
             $event_types[$type['id']] = $type['name'];
         }
-        
+
         $this->putItem("event_types", $event_types);
-        
+
         parent::editPage($id);
     }
 

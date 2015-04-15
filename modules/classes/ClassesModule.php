@@ -23,7 +23,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     array(
                         'count' => count($items),
                         'text'  => self::$t->translate('Classes'),
-                        'icon'  => 'icon-bookmark',
+                        'icon'  => 'fa fa-folder',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -99,16 +99,16 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function addPage()
     {
         $items = $this->model("courses/collection")->getItems();
-        
+
         // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
         $courses = array();
         foreach($items as $course)
         {
             $courses[$course['id']] = $course['name'];
         }
-        
+
         $this->putItem("courses", $courses);
-        
+
         parent::editPage($id);
     }
 
@@ -119,19 +119,24 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function editPage($id)
     {
-        $items = $this->model("courses/collection")->getItems();
-        
+        $items = $this->model("courses/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
+
         // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
         $courses = array();
         foreach($items as $course)
         {
             $courses[$course['id']] = $course['name'];
         }
-        
+
         $this->putItem("courses", $courses);
-        
+
         parent::editPage($id);
     }
+
+
+
 
     /**
      * Get the institution visible to the current user

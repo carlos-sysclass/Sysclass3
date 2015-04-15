@@ -23,14 +23,14 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                 'content' => array(
                     array(
                         'count' => 0, //count($groupItems),
-                        'text'  => self::$t->translate('Grades Rules'),
-                        'icon'  => 'icon-briefcase',
+                        'text'  => self::$t->translate('Grades Settings'),
+                        'icon'  => 'fa fa-cog',
                         'link'  => $this->getBasePath() . 'view'
                     ),
                     array(
                         'count' => count($groupItems),
                         'text'  => self::$t->translate('Grades Groups'),
-                        'icon'  => 'icon-briefcase',
+                        'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view-group'
                     )
                 )

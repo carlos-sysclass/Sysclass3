@@ -364,6 +364,15 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     };
 
+    this.handleActions = function (context) {
+        var self = this;
+        $('[data-action]', context).each(function () {
+            self.handleAction({
+                intent : $(this).data("intent"),
+                data: $(this).data("intent-data")
+            });
+        });
+    };
 
 	this.refresh = function(context) {
 		this.handleBackstrech(context);
@@ -380,7 +389,10 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         this.handleBootstrapSwitch(context);
 		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
+        this.handleActions(context);
 	};
+
+
 
 	this.handleAction = function(action) {
 		if (typeof action != 'undefined') {

@@ -18,8 +18,6 @@ class RoadmapCoursesSeasonsCollectionModel extends AbstractSysclassModel impleme
 
         $this->group_by = array("cr.id");
 
-
-
         parent::init();
 
     }
@@ -45,7 +43,7 @@ class RoadmapCoursesSeasonsCollectionModel extends AbstractSysclassModel impleme
 
     public function getItem($id) {
         $season = parent::getItem($id);
-        
+
         if (is_null($season['classes'])) {
             $season['classes'] = array();
             return $season;

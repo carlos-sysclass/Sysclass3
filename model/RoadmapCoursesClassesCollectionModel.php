@@ -57,4 +57,37 @@ class RoadmapCoursesClassesCollectionModel extends AbstractSysclassModel impleme
         $this->db->Execute($sql);
         return $result;
     }
+
+    public function removeClassInAllCourses($class_id) {
+        $sql = sprintf("DELETE FROM mod_roadmap_courses_to_classes WHERE class_id = %d", $class_id);
+        $this->db->Execute($sql);
+        return $result;
+    }
+
+    public function addClassInCourse($course_id, $class_id) {
+        $sql = "SELECT COUNT(*) FROM mod_roadmap_courses_to_classes WHERE course_id = %d AND class_id = %d";
+        $checkSql = sprintf(
+            $sql,
+            $course_id,
+            $class_id
+        );
+
+        $exists = $this->db->GetOne($checkSql);
+        $exists = ($exists == 1);
+
+        if ($exists) {
+            //$sql = sprintf("DELETE FROM mod_roadmap_courses_to_classes WHERE course_id = %d AND class_id = %d", $course_id, $class_id);
+            $result = -1;
+        } else {
+            $sql = sprintf("INSERT INTO mod_roadmap_courses_to_classes (course_id, class_id) VALUES (%d, %d)", $course_id, $class_id);
+            $result = 1;
+        }
+        $this->db->Execute($sql);
+        return $result;
+    }
+
+
+
+
+
 }

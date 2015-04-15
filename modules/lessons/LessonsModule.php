@@ -94,6 +94,38 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
+     * New model entry point
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $items = $this->model("courses/classes/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
+
+        $this->putItem("classes", $items);
+
+        parent::editPage($id);
+    }
+
+    /**
+     * Module Entry Point
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $items = $this->model("courses/classes/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
+
+        $this->putItem("classes", $items);
+
+        parent::editPage($id);
+    }
+
+    /**
      * Get the institution visible to the current user
      *
      * @url GET /item/users/:course_id
@@ -278,7 +310,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             $itemModel = $this->model("classes/lessons/collection");
-            if ($itemModel->setItem($data, $id) !== FALSE) {
+            if ($itemModel->debug()->setItem($data, $id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Lesson updated with success"), "success");
                 return array_merge($response, $data);
             } else {

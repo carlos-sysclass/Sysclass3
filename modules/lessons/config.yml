@@ -36,12 +36,12 @@ crud:
           sClass: text-center
           label: Actions
     add:
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["select2", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
         page_subtitle: Create a new lessons
     'edit/:id':
-      components: ["validation", "bootstrap-switch", "jquery-file-upload"]
+      components: ["validation", "bootstrap-switch", "jquery-file-upload", "select2"]
       #blocks: ["permission.add", "users.list.table", "roadmap.courses.edit"]
       #scripts: ["views.courses.edit"]
       scripts: ["views.lessons.edit"]

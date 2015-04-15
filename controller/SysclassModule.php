@@ -89,8 +89,6 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $currentUser    = $this->getCurrentUser(true);
 
-        $currentUser    = $this->getCurrentUser(true);
-
         if ($currentUser->getType() == 'administrator') {
             $this->createClientContext("edit", array('entity_id' => $id));
             $this->display($this->template);
