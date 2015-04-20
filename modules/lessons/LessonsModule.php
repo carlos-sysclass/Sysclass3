@@ -247,10 +247,25 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $helper = $this->helper("file/upload");
         $filewrapper = $this->helper("file/wrapper");
         $upload_dir = $filewrapper->getLessonPath($id, $type);
-        $helper->setOption('upload_dir', $upload_dir . "/");
-        $helper->setOption('param_name', $param_name);
+        $upload_url = $filewrapper->getLessonUrl($id, $type);
 
-        $helper->execute();
+        $helper->setOption('upload_dir', $upload_dir . "/");
+        $helper->setOption('upload_url', $upload_url . "/");
+
+        $helper->setOption('param_name', $param_name);
+        $helper->setOption('print_response', false);
+        // SAVE ON DB THE FILE NAME, IF WORKS
+        $result = $helper->execute();
+
+        $filedata = (array) reset($result[$param_name]);
+
+        if ($type == "video") {
+            $filedata['lesson_id'] = $id;
+            $filedata['upload_type'] = $type;
+            $this->model("lessons/files")->setVideo($filedata);
+        }
+
+        return $result;
     }
 
 
@@ -267,6 +282,16 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $editItem = $this->model("classes/lessons/collection")->getItem($id);
         //if ($model == "content") {
             $editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
+            $videos = $this->model("lessons/files")->addFilter(array(
+                'lesson_id'     => $id,
+                'upload_type'   => 'video',
+                'active'        => 1
+            ))->getItems();
+
+            $editItem['files'] = array(
+                'video' => $videos
+            );
+
         //}
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
@@ -310,7 +335,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             $itemModel = $this->model("classes/lessons/collection");
-            if ($itemModel->debug()->setItem($data, $id) !== FALSE) {
+            if ($itemModel->setItem($data, $id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Lesson updated with success"), "success");
                 return array_merge($response, $data);
             } else {

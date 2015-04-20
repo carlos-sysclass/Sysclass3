@@ -9,8 +9,9 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 
 		$(".upload-new-video-file").click(function() {
 			var index = $("#video-file-list li").size();
-			$("#video-file-list").append(
-			new_template({index : index})
+			var index = 0;
+			$("#video-file-list").html(
+				new_template({index : index})
 			);
 
 		  	$("#video-file-list [name='file_" + index + "']").fileupload({
@@ -23,10 +24,14 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 			      data.submit();
 			    },
 			    done: function (e, data) {
-			      console.warn(data);
-			      $.each(data.result.files, function (index, file) {
-			        data.context.text(file.name);
+			      console.warn(data.result['file_' + index]);
+			      var file_result = data.result['file_' + index];
+			      data.context.text(file_result.name);
+			      /*
+			      $.each(, function (index, file) {
+
 			      });
+				  */
 			    },
 			    progressall: function (e, data) {
 			      var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -37,7 +42,7 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 			    }
 			}).click();
 		});
-
+		/*
 		var materialurl = "/module/lessons/upload/1/material";
 
 		$(".upload-new-material-file").click(function() {
@@ -70,7 +75,7 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 			    }
 			}).click();
 		});
-
+		*/
 
 		var fileListViewClass = Backbone.View.extend({
 			template  : _.template($("#file-upload-item").html()),
@@ -96,11 +101,7 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 
 				this.$el.empty();
 				for (i in data) {
-					this.addOne({
-						name: data[i],
-						index : i,
-						type : this.type
-					});
+					this.addOne(data[i]);
 				}
 			}
 		});

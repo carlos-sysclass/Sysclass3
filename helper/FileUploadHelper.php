@@ -172,21 +172,21 @@ class FileUploadHelper
         switch ($this->get_server_var('REQUEST_METHOD')) {
             case 'OPTIONS':
             case 'HEAD':
-                $this->head();
+                return $this->head();
                 break;
             case 'GET':
-                $this->get($this->options['print_response']);
+                return $this->get($this->options['print_response']);
                 break;
             case 'PATCH':
             case 'PUT':
             case 'POST':
-                $this->post($this->options['print_response']);
+                return $this->post($this->options['print_response']);
                 break;
             case 'DELETE':
-                $this->delete($this->options['print_response']);
+                return $this->delete($this->options['print_response']);
                 break;
             default:
-                $this->header('HTTP/1.1 405 Method Not Allowed');
+                return $this->header('HTTP/1.1 405 Method Not Allowed');
         }
     }
 

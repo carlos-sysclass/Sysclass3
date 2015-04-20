@@ -6,6 +6,7 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
+
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Content"}</a>
 			</li>
@@ -25,12 +26,6 @@
 								<option value="{$classe.id}">{$classe.name}</option>
 							{/foreach}
 						</select>
-					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Knowledge Area'}">
-					{foreach $T_KNOWLEDGE_AREAS as $knowledge}
-							<option value="{$knowledge.id}">{$knowledge.name}</option>
-					{/foreach}
-					</select>
-
 					</div>
 					<div class="form-group">
 						<label class="control-label">{translateToken value="Active"}</label>
@@ -122,7 +117,7 @@
 <script type="text/template" id="file-upload-item">
 	<li class="row">
 		<div class="col-md-12">
-			<a href="/module/lesson/view-file/<%= type %>?name=name" target="_blank"><%= name %></a>
+			<a href="<%= url %>" target="_blank"><%= name %></a>
 		</div>
 	</li>
 </script>

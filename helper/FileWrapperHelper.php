@@ -24,6 +24,17 @@ class FileWrapperHelper {
         }
         return $path;
     }
+    public function getLessonUrl($lesson_id, $type = null) {
+        $plicolib = PlicoLib::instance();
+
+        $path = $plicolib->get("http/fqdn") . "/files/lessons/" . $lesson_id;
+
+        if (!is_null($type)) {
+            $path .= "/" . $type;
+        }
+
+        return $path;
+    }
 
     protected function getUserPath($username) {
         $plicolib = PlicoLib::instance();

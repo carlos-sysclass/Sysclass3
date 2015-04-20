@@ -3596,3 +3596,16 @@ CREATE TABLE `mod_lessons` (
 
 /* 2015-03-31 */
 ALTER TABLE `mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;
+
+/* 2015-04-20 */
+CREATE TABLE `mod_lessons_files` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) unsigned NOT NULL,
+  `upload_type` varchar(20) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `size` int(11) NOT NULL,
+  `url` varchar(300) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
