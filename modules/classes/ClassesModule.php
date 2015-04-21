@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
     /* ILinkable */
     public function getLinks() {
@@ -91,6 +91,24 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return $actions[$request];
     }
 
+    public function registerBlocks() {
+        return array(
+            'classes.lessons.edit' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                $self->putModuleScript("blocks.classes.lessons.edit");
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                //$self->putItem("classes_lessons_block_context", $block_context);
+
+                $self->putSectionTemplate("lessons", "blocks/lessons.edit");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                return true;
+            }
+        );
+    }
     /**
      * New model entry point
      *
@@ -101,13 +119,14 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $items = $this->model("courses/collection")->getItems();
 
         // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
+        /*
         $courses = array();
         foreach($items as $course)
         {
             $courses[$course['id']] = $course['name'];
         }
-
-        $this->putItem("courses", $courses);
+        */
+        $this->putItem("courses", $items);
 
         parent::editPage($id);
     }
@@ -122,15 +141,12 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $items = $this->model("courses/collection")->addFilter(array(
             'active' => true
         ))->getItems();
+        $this->putItem("courses", $items);
 
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        $courses = array();
-        foreach($items as $course)
-        {
-            $courses[$course['id']] = $course['name'];
-        }
-
-        $this->putItem("courses", $courses);
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_instructor' => true
+        ))->getItems();
+        $this->putItem("instructors", $items);
 
         parent::editPage($id);
     }
@@ -147,6 +163,11 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $editItem = $this->model("courses/classes/collection")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+
+        $editItem['lessons'] = $this->model("classes/lessons/collection")->addFilter(array(
+            'class_id' => $id
+        ))->getItems($id);
+
         return $editItem;
     }
 

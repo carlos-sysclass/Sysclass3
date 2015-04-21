@@ -81,8 +81,9 @@ class RoadmapCoursesClassesCollectionModel extends AbstractSysclassModel impleme
         } else {
             $sql = sprintf("INSERT INTO mod_roadmap_courses_to_classes (course_id, class_id) VALUES (%d, %d)", $course_id, $class_id);
             $result = 1;
+            $this->db->Execute($sql);
         }
-        $this->db->Execute($sql);
+
         return $result;
     }
 

@@ -19,6 +19,7 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
 				cl.info,
 				cl.active,
 				cl.course_id,
+                cl.instructor_id,
 				cour.name as course_name
 			FROM
 				mod_classes cl

@@ -3609,3 +3609,7 @@ CREATE TABLE `mod_lessons_files` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mod_classes`
+CHANGE COLUMN `course_id` `course_id` INT(11) DEFAULT NULL AFTER `info`,
+ADD COLUMN `instructor_id` INT(11) NULL DEFAULT NULL AFTER `course_id`;

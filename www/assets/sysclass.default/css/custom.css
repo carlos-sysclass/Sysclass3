@@ -805,6 +805,7 @@ table.users-panel-notification-table > thead > tr > td {
     padding: 10px 15px;
     position: relative;
     font-size: 14px;
+    list-style-type: none;
 }
 .list-file-item.green-stripe {
     border-left: 3px solid #35aa47;
@@ -819,4 +820,12 @@ table.users-panel-notification-table > thead > tr > td {
 }
 .list-file-item-options .btn-sm {
     margin-top: -3px;
+}
+
+.list-file-item.placeholder {
+    border: 1px dashed #999999;
+    background-color: #f6f6f6;
+}
+.list-group {
+    list-style-type: none;
 }

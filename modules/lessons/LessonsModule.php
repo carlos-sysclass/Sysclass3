@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  */
 
-class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
 
     /* ILinkable */
@@ -92,6 +92,25 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         return $actions[$request];
     }
+    public function registerBlocks() {
+        return array(
+            'lessons.content' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("jquery-file-upload");
+                //$self->putModuleScript("blocks.roadmap");
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                //$self->putItem("classes_lessons_block_context", $block_context);
+
+                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                return true;
+            }
+        );
+    }
+
 
     /**
      * New model entry point
@@ -351,7 +370,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      *
      * @url POST /item/me
      */
-    public function addItemAction($id)
+    public function addItemAction()
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -359,11 +378,17 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $itemModel = $this->model("classes/lessons/collection");
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Lesson created with success"),
-                    "success"
-                );
+                if ($_GET['redirect'] == 0) {
+                    $response = $this->createAdviseResponse(self::$t->translate("Lesson created with success"), "success");
+                    return array_merge($response, $data);
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        self::$t->translate("Lesson created with success"),
+                        "success"
+                    );
+
+                }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");

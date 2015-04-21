@@ -85,12 +85,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	for (idx in values) {
 	    		if (
 	    			this.$(":input[data-update^='" + idx + "']").size() > 0 ||
-	    			this.$(":input[name^='" + idx + "']").size() > 0
+	    			this.$(":input[name='" + idx + "']").size() > 0
 	    		) {
 		    		if (this.$(":input[data-update^='" + idx + "']").size() > 0) {
 		    			var inputField = this.$(":input[data-update^='" + idx + "']");
 		    		} else {
-		    			var inputField = this.$(":input[name^='" + idx + "']");
+		    			var inputField = this.$(":input[name='" + idx + "']");
 		    		}
 		    		var self = this;
 		    		inputField.each(function(el, i) {
@@ -134,7 +134,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 							//input.select2("data", values[idx]);
 							//input.select2("data", {id : values[idx]});
 							//console.warn(values[idx]);
-                            
+
                             input.select2("val", values[idx]);
 
 

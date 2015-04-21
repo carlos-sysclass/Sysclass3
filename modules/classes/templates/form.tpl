@@ -6,6 +6,7 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
+
 			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Lessons"}</a>
@@ -16,6 +17,7 @@
 				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
 			</li>
 			{/if}
+
 			{if (isset($T_SECTION_TPL['communications']) &&  ($T_SECTION_TPL['communications']|@count > 0))}
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
@@ -45,22 +47,26 @@
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div>
-				<!--
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Instructors"}</label>
-					<input type="hidden" class="select2-me form-control input-block-level" name="instructors" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="true" />
-				</div>
-				-->
 
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Course"}</label>
 					<select class="select2-me form-control" name="course_id" data-rule-required="1" data-rule-min="1">
-						{foreach $T_COURSES as $id => $name}
-							<option value="{$id}">{$name}</option>
+						{foreach $T_COURSES as $id => $course}
+							<option value="{$course.id}">{$course.name}</option>
 						{/foreach}
 					</select>
 				</div>
+
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Instructors"}</label>
+					<select class="select2-me form-control" name="instructor_id" data-rule-required="1" data-rule-min="1">
+						{foreach $T_INSTRUCTORS as $id => $instructor}
+							<option value="{$instructor.id}">{$instructor.name} {$instructor.surname} (id: {$instructor.id})</option>
+						{/foreach}
+					</select>
+				</div>
+
 
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>

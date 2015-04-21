@@ -40,15 +40,15 @@ crud:
           sClass: text-center
           label: Actions
     add:
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
         page_subtitle: Create a new class
     'edit/:id':
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       #blocks: ["permission.add", "users.list.table"]
-      blocks: ["permission.add"]
-      scripts: ["views.classes.edit"]
+      blocks: ["permission.add", "classes.lessons.edit"]
+      #scripts: ["views.classes.edit"]
       template: form.tpl
       variables:
         page_subtitle: Edit your class info
