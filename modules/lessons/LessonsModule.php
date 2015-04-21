@@ -255,19 +255,60 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $helper->setOption('param_name', $param_name);
         $helper->setOption('print_response', false);
         // SAVE ON DB THE FILE NAME, IF WORKS
+
         $result = $helper->execute();
 
-        $filedata = (array) reset($result[$param_name]);
+        //if ($type == "video") {
+            /*
+            $filedata = (array) reset($result[$param_name]);
 
-        if ($type == "video") {
             $filedata['lesson_id'] = $id;
             $filedata['upload_type'] = $type;
             $this->model("lessons/files")->setVideo($filedata);
-        }
+            */
 
-        return $result;
+        //} elseif ($type == "material") {
+            $file_result = array(
+                $param_name => array()
+            );
+            foreach($result[$param_name] as $fileObject) {
+                $filedata = (array) $fileObject;
+                $filedata['lesson_id'] = $id;
+                $filedata['upload_type'] = $type;
+                $filedata['id'] = $this->model("lessons/files")->addItem($filedata);
+
+                $file_result[$param_name][] = $filedata;
+            }
+        //}
+        return $file_result;
     }
 
+ /**
+     * Get all users visible to the current user
+     *
+     * @url DELETE /upload/:lesson_id/:file_id
+     */
+    public function removeFilesAction($lesson_id, $file_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $itemModel = $this->model("lessons/files");
+
+            $files = $itemModel->clear()->addFilter(array(
+                'lesson_id' => $lesson_id,
+                'id'        => $file_id
+            ))->getItems();
+
+            if (count($files) > 0 && $itemModel->deleteItem($file_id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("File removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
 
 
 
@@ -281,15 +322,23 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $editItem = $this->model("classes/lessons/collection")->getItem($id);
         //if ($model == "content") {
-            $editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
-            $videos = $this->model("lessons/files")->addFilter(array(
+            //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
+            $lessonFiles = $this->model("lessons/files");
+            $videos = $lessonFiles->clear()->addFilter(array(
                 'lesson_id'     => $id,
                 'upload_type'   => 'video',
                 'active'        => 1
             ))->getItems();
 
+            $materials = $lessonFiles->clear()->addFilter(array(
+                'lesson_id'     => $id,
+                'upload_type'   => 'material',
+                'active'        => 1
+            ))->getItems();
+
             $editItem['files'] = array(
-                'video' => $videos
+                'video' => $videos,
+                'material'  => $materials
             );
 
         //}

@@ -56,7 +56,7 @@ hr {
 
 	.page-boxed .header .dropdown .username {
 		display: none;
-	}	
+	}
 
 }
 .portlet > .portlet-title > .caption a {
@@ -166,7 +166,7 @@ hr {
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
-.tabbable-custom .nav-tabs > li { 
+.tabbable-custom .nav-tabs > li {
 	margin-right: 0px;
 }
 .icon-btn {
@@ -302,7 +302,7 @@ h4.border-bottom {
 }
 
 .btn-group-fixed-size {
-	
+
 }
 .btn-group-fixed-size span {
 	display: block;
@@ -470,7 +470,7 @@ h3.course-title, h3.class-title, h3.lesson-title {
 ul.list-group.empty-list-group {
     border: 1px dashed #333333;
     height: 34px;
-} 
+}
 
 ul.list-group.empty-list-group.ui-sortable-hover {
 	background-color: #ff0000;
@@ -492,7 +492,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 
 /* INSTITUTION MODULE */
 .social-gadgets {
-    display: block; 
+    display: block;
     position: fixed;
     right: 0;
     top: 84px;
@@ -518,14 +518,14 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 }
 
 /* PAGEGUIDE RESPONSIVE */
-@media (max-width:991px) { 
+@media (max-width:991px) {
 	.tlyPageGuideStepIndex {
 		background: rgba(0, 89, 153, 1);
 	}
 	.tlyPageGuideStepIndex.tlypageguide_left {
 		left: -10px;
 		top: -10px;
-		
+
 	}
 	.tlyPageGuideStepIndex.tlypageguide_left:after {
 		border: none;
@@ -641,7 +641,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	}
 	.hidden-xxs.inline {
 		display: inline !important;
-	}	
+	}
 }
 @media (min-width: 992px) and (max-width: 1199px) {
 	.hidden-lg.inline {
@@ -658,7 +658,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	}
 	.hidden-xxs.inline {
 		display: inline !important;
-	}	
+	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
 	.hidden-lg.inline {
@@ -675,7 +675,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	}
 	.hidden-xxs.inline {
 		display: inline !important;
-	}	
+	}
 }
 @media (max-width: 767px) {
 	.hidden-lg.inline {
@@ -692,7 +692,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	}
 	.hidden-xxs.inline {
 		display: inline !important;
-	}	
+	}
 }
 @media (max-width: 320px) {
 	.hidden-lg.inline {
@@ -794,4 +794,29 @@ table.users-panel-notification-table > thead > tr > td {
 }
 .list-group-item-actions a {
     margin: 0 2px;
+}
+
+
+.list-file-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: 3px;
+    padding: 10px 15px;
+    position: relative;
+    font-size: 14px;
+}
+.list-file-item.green-stripe {
+    border-left: 3px solid #35aa47;
+}
+
+.list-file-item.red-stripe {
+    border-left: 3px solid #d84a38;
+}
+
+.list-file-item-options {
+    float: right;
+}
+.list-file-item-options .btn-sm {
+    margin-top: -3px;
 }
