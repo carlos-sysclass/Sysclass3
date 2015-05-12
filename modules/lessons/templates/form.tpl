@@ -7,44 +7,52 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Content"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Text Content"}</a>
+			</li>
+			{/if}
+			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
+			<li>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Video Content"}</a>
 			</li>
 			{/if}
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
-
-					<div class="form-group">
-						<label class="control-label">{translateToken value="Name"}</label>
-						<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-					</div>
-					<div class="form-group">
-						<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-						<label class="control-label">{translateToken value="Class"}</label>
-						<select class="select2-me form-control" name="class_id" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Select Class"}">
-							<option value=""></option>
-							{foreach $T_CLASSES as $classe}
-								<option value="{$classe.id}">{$classe.name}</option>
-							{/foreach}
-						</select>
-					</div>
-					<div class="form-group">
-						<label class="control-label">{translateToken value="Active"}</label>
-						<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
-					</div>
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Name"}</label>
+					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+				</div>
+				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Class"}</label>
+					<select class="select2-me form-control" name="class_id" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Select Class"}">
+						<option value=""></option>
+						{foreach $T_CLASSES as $classe}
+							<option value="{$classe.id}">{$classe.name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Active"}</label>
+					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+				</div>
 			</div>
-			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-				    {foreach $T_SECTION_TPL['lessons_content'] as $template}
+				    {foreach $T_SECTION_TPL['lessons_content_text'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
 			{/if}
-			<div class="tab-pane fade in" id="tab_1_2">
-
-			</div>
+			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
+				    {foreach $T_SECTION_TPL['lessons_content_video'] as $template}
+				        {include file=$template}
+				    {/foreach}
+				</div>
+			{/if}
 		</div>
 	</div>
 	<div class="form-actions nobg">

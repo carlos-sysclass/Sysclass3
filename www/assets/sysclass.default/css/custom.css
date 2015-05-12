@@ -834,3 +834,7 @@ table.users-panel-notification-table > thead > tr > td {
 	float: right;
 	margin: -8px -8px 0 0;
 }
+
+.panel-heading .panel-buttons.panel-buttons-sm {
+    margin: -5px -8px 0 0;
+}

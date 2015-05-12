@@ -10,7 +10,8 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
 
         $this->selectSql =
         "SELECT
-            l.id, l.permission_access_mode, l.class_id, c.name as class, l.name, l.info, l.active
+            l.id, l.permission_access_mode, l.class_id, c.name as class, l.name, l.info, l.active,
+            l.`has_text_content`, l.`text_content`, l.`text_content_language_id`, l.`has_video_content`
         FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 

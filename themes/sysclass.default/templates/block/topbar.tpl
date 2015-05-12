@@ -1,12 +1,12 @@
 <div class="header navbar navbar-inverse navbar-fixed-top">
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner container">
-		<!-- BEGIN LOGO -->  
+		<!-- BEGIN LOGO -->
 		<a class="navbar-brand" href="/dashboard">
 			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
 		</a>
 		<!-- END LOGO -->
-		<!-- BEGIN RESPONSIVE MENU TOGGLER --> 
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<!--
 		<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		   <img src="{Plico_GetResource file='img/menu-toggler.png'}" alt="" />
@@ -32,7 +32,7 @@
 					            <ul class="dropdown-menu-list scroller" style="height: 250px;">
 					            	{foreach $item.items as $subitem}
 					            		{if $item.type == 'inbox'}
-							               <li>  
+							               <li>
 							                  <a href="{$subitem.link}">
 							                  	{if $subitem.values|@count > 0}
 								                  	<span class="photo"><img src="{Plico_GetResource file=$subitem.values.photo}" alt=""/></span>
@@ -47,7 +47,7 @@
 							                  </a>
 							               </li>
 							     		{elseif $item.type == 'notification'}
-											<li>  
+											<li>
 							                  	<a href="{$subitem.link}">
 							                  		<span class="label label-sm label-icon label-info"><i class="icon-warning-sign"></i></span>
 							                  		{$subitem.text}
@@ -59,7 +59,7 @@
 				            {/if}
 			         	</li>
 				         {if isset($item.external)}
-				         <li class="external">   
+				         <li class="external">
 				            <a href="{$item.external.link}">{$item.external.text} <i class="m-icon-swapright"></i></a>
 				         </li>
 				         {/if}
@@ -114,7 +114,7 @@
 		         </li>
 		         <li>
 		            <ul class="dropdown-menu-list scroller" style="height: 250px;">
-		               <li>  
+		               <li>
 		                  <a href="#">
 		                  <span class="label label-sm label-icon label-warning"><i class="icon-bolt"></i></span>
 		                  Please schedule your exams!
@@ -122,7 +122,7 @@
 		               </li>
 		            </ul>
 		         </li>
-		         <li class="external">   
+		         <li class="external">
 		            <a href="#">See all calendar events <i class="m-icon-swapright"></i></a>
 		         </li>
 		      </ul>
@@ -141,7 +141,7 @@
 		         <li>
 		            <ul class="dropdown-menu-list scroller" style="height: 214px;">
 						{foreach $T_ADDITIONAL_ACCOUNTS as $key => $item}
-			               	<li>  
+			               	<li>
 			                  <a href="javascript: changeAccount('{$item.login}');">
 			                     <span class="label label-sm label-icon label-{$T_USER_TYPES_ICONS[$item.user_type].color}"><i class="icon-{$T_USER_TYPES_ICONS[$item.user_type].icon}"></i></span>
 			                     #filter:login-{$item.login}#
@@ -169,7 +169,7 @@
 		         </li>
 		         <li>
 		            <ul class="dropdown-menu-list scroller" style="height: 250px;">
-		               <li>  
+		               <li>
 		                  <a href="#">
 		                  <span class="task">
 		                  <span class="desc">New release v1.2</span>
@@ -184,7 +184,7 @@
 		               </li>
 		            </ul>
 		         </li>
-		         <li class="external">   
+		         <li class="external">
 		            <a href="#">See all tasks <i class="m-icon-swapright"></i></a>
 		         </li>
 		      </ul>

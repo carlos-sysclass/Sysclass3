@@ -94,7 +94,27 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
     public function registerBlocks() {
         return array(
-            'lessons.content' => function($data, $self) {
+            'lessons.content.text' => function($data, $self) {
+                $items = $self::$t->getItems();
+
+                $userLanguageCode =  $self::$t->getUserLanguageCode();
+
+                $this->putItem("lessons_content_text_user_language", $userLanguageCode);
+                $this->putItem("lessons_content_text_languages", $items);
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("jquery-file-upload");
+                //$self->putModuleScript("blocks.roadmap");
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                //$self->putItem("classes_lessons_block_context", $block_context);
+
+                $self->putSectionTemplate("lessons_content_text", "blocks/lessons.content.text");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                return true;
+            },
+            'lessons.content.video' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("jquery-file-upload");
                 //$self->putModuleScript("blocks.roadmap");
@@ -102,7 +122,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 //$self->putItem("classes_lessons_block_context", $block_context);
 
-                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
+                $self->putSectionTemplate("lessons_content_video", "blocks/lessons.content.video");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
@@ -125,7 +145,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $this->putItem("classes", $items);
 
-        parent::editPage($id);
+        parent::addPage($id);
     }
 
     /**
