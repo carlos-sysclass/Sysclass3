@@ -190,6 +190,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			}
 			$this->putItem("small_user_avatar", $small_user_avatar);
 			$this->putItem("big_user_avatar", $big_user_avatar);
+		} else {
+			parent::beforeDisplay();
 		}
 
 	}
