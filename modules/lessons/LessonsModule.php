@@ -99,8 +99,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
                 $userLanguageCode =  $self::$t->getUserLanguageCode();
 
-                $this->putItem("lessons_content_text_user_language", $userLanguageCode);
-                $this->putItem("lessons_content_text_languages", $items);
+                $self->putItem("lessons_content_text_user_language", $userLanguageCode);
+                $self->putItem("lessons_content_text_languages", $items);
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("jquery-file-upload");
                 //$self->putModuleScript("blocks.roadmap");
