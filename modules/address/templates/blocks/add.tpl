@@ -1,6 +1,6 @@
 <div id="address-block">
 	<!-- INJECT A TABLE WITHIN TEMPLATES FOR PERMISSION MANAGEMENT -->
-	<h3 class="form-section"><i class="icon-book"></i> {translateToken value="Address Book"}</h3>
+	<!-- <h3 class="form-section"><i class="icon-book"></i> {translateToken value="Address Book"}</h3> -->
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Contact Name"}</label>
 		<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />

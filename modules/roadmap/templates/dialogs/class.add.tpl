@@ -7,7 +7,7 @@
         <div class="modal-body">
             <div class="form-body">
                 <div class="form-group">
-                    <label class="control-label">{translateToken value="Instructors"}</label>
+                    <label class="control-label">{translateToken value="Class"}</label>
                     <input type="hidden" class="select2-me form-control input-block-level" name="class" data-placeholder="{translateToken value='Please select..'}" data-url="/module/courses/items/classes/combo" data-minimum-results-for-search="4" />
                 </div>
             </div>

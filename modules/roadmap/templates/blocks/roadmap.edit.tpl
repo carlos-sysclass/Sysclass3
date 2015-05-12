@@ -1,36 +1,52 @@
 <div id="block_roadmap">
-    <div class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-        <!--
-            <a href="#" class="navbar-brand disabled">
-                <strong>{translateToken value="You're in:"} </strong>
-            </a>
-            <a href="#" class="navbar-brand course-title">
-                 {translateToken value="Course"}
-            </a>
-        -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label">{translateToken value="Course Grouping"} 
+                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new Course Grouping"} "><i class="fa fa-plus"></i></a>
+                </label>
+                <select class="select2-me form-control" name="roadmap_grouping_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Course Grouping'}">
+                    <option value="-1">All Groupings</option>
+                {foreach $T_ROADMAP_COURSES_GROUPING as $item}
+                        <option value="{$item.id}">{$item.name}</option>
+                {/foreach}
+                </select>
+            </div>
         </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <div class="nav navbar-nav navbar-right">
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {translateToken value="Roadmap for Course Grouping: "}<strong data-update="roadmap_grouping">All</strong>
+            <div class="panel-buttons">
                 <a class="btn btn-success roadmap-add-season" href="#">Add a Season</a>
                 <a class="btn btn-warning roadmap-add-class" href="#">Add a Class</a>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8">
-
-<!--    <div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent"> -->
-            <div id="block_roadmap-accordion">
+        <div class="panel-body">
+            <!--
+            <div class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                </div>
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <div class="nav navbar-nav navbar-right">
+                        <a class="btn btn-success roadmap-add-season" href="#">Add a Season</a>
+                        <a class="btn btn-warning roadmap-add-class" href="#">Add a Class</a>
+                    </div>
+                </div>
             </div>
-<!--    </div> -->
-        </div>
-        <div class="col-md-4">
-            <div id="block_roadmap-all_lessons-accordion">
+            -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="block_roadmap-accordion">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="block_roadmap-all_lessons-accordion">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
 <script type="text/template" id="tab_roadmap-season-template">
     <h5>

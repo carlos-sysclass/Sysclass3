@@ -16,7 +16,7 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        1: ['users.overview']
+        #1: ['users.overview']
         2: ["dashboard.linkable.view"]
     sortable: false
     resources:

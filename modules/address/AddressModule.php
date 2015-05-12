@@ -10,6 +10,10 @@
 class AddressModule extends SysclassModule implements IBlockProvider
 {
 	// IBlockProvider
+	/**
+	 * [registerBlocks description]
+	 * @return [type]
+	 */
 	public function registerBlocks() {
 		return array(
 			'address.add' => function($data, $self) {
@@ -20,4 +24,3 @@ class AddressModule extends SysclassModule implements IBlockProvider
 		);
 	}
 }
-

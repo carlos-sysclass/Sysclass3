@@ -84,6 +84,48 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
 
     // PRIVATE VIEWS
+    mod.groupingAddDialogClass = Backbone.View.extend({
+        initialize : function(opt) {
+            this.$el.modal({
+                show : false
+            });
+            this.$("form[data-validate='true']").on("validate:submit", this.save.bind(this));
+        },
+        save : function(e) {
+            /*
+            e.preventDefault();
+            var data = $(":input[name='class']").select2('data');
+
+            var modelClass = Backbone.Model.extend({
+              urlRoot : "/module/roadmap/item/class/" + mod.course_id
+            });
+
+            var model = new modelClass();
+
+            model.set("course_id", mod.course_id);
+            model.set("name", data['name']);
+            model.set("lesson_id", data['id']);
+
+            var self = this;
+
+            model.save(null, {
+                success : function() {
+                    self.collection.add(model);
+                    self.close();
+                }
+            });
+            */
+        },
+        open : function() {
+            this.$el.modal('show');
+
+        },
+        close : function() {
+            this.$el.modal('hide');
+        }
+    });
+
+    
     mod.seasonAddDialogClass = Backbone.View.extend({
         initialize : function(opt) {
             this.$el.modal({
@@ -164,24 +206,6 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
                     self.close();
                 }
             });
-
-            /*
-            var self = this;
-
-            // AJAX POST
-            $.ajax({
-                type: "POST",
-                url: "/module/roadmap/item/class/" + mod.course_id,
-                data : object,
-                error: function(data){
-                    alert("There was a problem");
-                },
-                success: function(data){
-                    self.collection.add(object);
-                    mod.close();
-                }
-            });
-            */
         },
         open : function() {
             this.$el.modal('show');
@@ -282,11 +306,13 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
     mod.courseRoadmapTabViewClass = Backbone.View.extend({
         //portlet: $('#courses-widget'),
         events : {
+            "click .roadmap-add-grouping" : "openNewGroupingDialog",
             "click .roadmap-add-season" : "openNewSeasonDialog",
             "click .roadmap-add-class" : "openNewClassDialog"
         },
         seasonsSynced   : false,
         classesSynced   : false,
+        groupingAddDialog : null,
         seasonAddDialog : null,
         classesAddDialog : null,
         noSeasonModel : null,
@@ -333,6 +359,15 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             });
             */
             //this.$el.nestable();
+        },
+        openNewGroupingDialog : function() {
+            if (_.isNull(this.groupingAddDialog)) {
+                this.groupingAddDialog = new mod.groupingAddDialogClass({
+                    /* collection : this.collections.seasons, */
+                    el : "#roadmap-grouping-dialog-modal"
+                });
+            }
+            this.groupingAddDialog.open();
         },
         openNewSeasonDialog : function() {
             if (_.isNull(this.seasonAddDialog)) {

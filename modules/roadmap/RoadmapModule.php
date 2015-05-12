@@ -15,6 +15,14 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             'roadmap.courses.edit' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("data-tables");
+
+
+                $grouping = $this->model("roadmap/courses/grouping")->addFilter(array(
+                    'active'    => true
+                ))->getItems();
+
+                $self->putItem("roadmap_courses_grouping", $grouping);
+
                 $self->putModuleScript("blocks.roadmap");
 
                 $block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
@@ -23,6 +31,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $self->putSectionTemplate("roadmap", "blocks/roadmap.edit");
                 $self->putSectionTemplate("foot", "dialogs/season.add");
                 $self->putSectionTemplate("foot", "dialogs/class.add");
+                $self->putSectionTemplate("foot", "dialogs/grouping.add");
 
                 return true;
             }
@@ -185,6 +194,5 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
         }
         return array_merge($response, $info);
     }
-
 
 }
