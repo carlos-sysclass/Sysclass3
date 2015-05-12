@@ -55,6 +55,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
 
+
             //$total = $this->getTotalUnviewed();
 
             $news = $this->getItemsAction();

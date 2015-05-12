@@ -397,7 +397,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.handleAction = function(action) {
 		if (typeof action != 'undefined') {
 			if (action.intent == "redirect") {
-				window.location.href = action.data;
+                if (_.isNull(action.data)) {
+                    window.location.reload();
+                } else {
+				    window.location.href = action.data;
+                }
 			} else if (action.intent == "advise") {
 				app.module("utils.toastr").message(action.type, action.message);
 			} else {

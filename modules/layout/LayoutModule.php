@@ -139,35 +139,5 @@ class LayoutModule extends SysclassModule
 		return array_key_exists($layout_id, $this->layouts);
 	}
 */
-	// TODO REVIEW MENUS... MUST APPPER ON ALL PAGES
-	public function getMenuBySection($section) {
-		// LOAD MENUS
-		$modules = array();
-		// GET ALL MODULES, CHECK FOR IMenu Interface, CHECK FOR SECTION
-		$modules = $this->getModules("ISectionMenu");
-
-		$menu_items = array();
-		foreach($modules as $index => $module) {
-			$menu_item = $module->getSectionMenu($section);
-			if ($menu_item) {
-				$menu_items[$index] = $menu_item;
-			}
-		}
-
-		$menu_items = $this->sortModules("layout.sections." . $section, $menu_items);
-
-		return $menu_items;
-	}
-
-	// TODO REVIEW MENUS... MUST APPPER ON ALL PAGES
-	protected function getMenuOrderBySection($section, $size) {
-		$sorterArray = array_fill(0, $size, "");
-		if ($section == "topbar") {
-			$sorterArray[0] = "messages";
-			$sorterArray[1] = "forum";
-		}
-		return array_slice($sorterArray, 0, $size);
-	}
-
 
 }

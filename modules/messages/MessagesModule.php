@@ -50,6 +50,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
     // ISectionMenu
     public function getSectionMenu($section_id) {
+        /*
     	if ($section_id == "topbar") {
 
             $total = $this->getTotalUnviewed();
@@ -91,6 +92,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
     		return $menuItem;
     	}
+        */
     	return false;
     }
     // IWidgetContainer

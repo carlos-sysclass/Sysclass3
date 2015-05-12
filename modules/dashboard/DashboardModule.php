@@ -38,8 +38,6 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
 
             $links = $this->sortModules("dashboard.linkable.groups.order", $links, "not_classified");
 
-
-
             foreach($links as $group_id => $group) {
                 if (array_key_exists($group_id, $groupLabels)) {
                     $groups[$group_id] = $groupLabels[$group_id];
@@ -72,9 +70,6 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
         }
     }
 
-    protected function getResource($resourceID) {
-        return $this->config['dashboard']['resources'][$resourceID];
-    }
     // CREATE FUNCTION HERE
     protected function clearWidgets() {
         $this->widgets = array();
@@ -94,6 +89,7 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
         foreach($this->layoutSpec['widgets'] as $column_id => $columnWidgets) {
             $widgetsIndexes = array_merge($widgetsIndexes, $columnWidgets);
         }
+
         $widgetsIndexes = array_unique($widgetsIndexes);
 
         // GET WIDGET BY COLUMN
@@ -140,44 +136,7 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
         return $widgetStruct;
     }
 
-    // CREATE FUNCTION HERE
-    public function loadLayout($layout_id = 'default', $use_cache = true) {
-        $this->layout_id = $layout_id;
-
-        $this->config = $this->loadConfig($use_cache);
-
-        if (@$this->config['dashboard']['merge_resource_with_modules']) {
-            $modules = $this->getModules();
-
-            $modules_keys = array_keys($modules);
-            foreach($this->config['dashboard']['resources'] as $index => $resource) {
-                $this->config['dashboard']['resources'][$index] = array_unique(array_merge($resource, $modules_keys));
-            }
-        }
-
-        return  $this->layoutSpec = $this->config['dashboard'];
-    }
-
-    public function layoutExists($layout_id) {
-        $config = yaml_parse_file(__DIR__ . "/config/" . $layout_id . ".yml");
-
-        return (bool) $config;
-    }
-
-    protected function loadConfig($use_cache = true) {
-        $cached = $this->getCache("dashboard/{$this->layout_id}");
-
-        if (is_null($cached) || $use_cache == false) {
-
-            $defaultconfig = yaml_parse_file(__DIR__ . "/config/default.yml");
-            $config = yaml_parse_file(__DIR__ . "/config/" . $this->layout_id . ".yml");
-
-            $this->config = array_replace_recursive($defaultconfig, $config);
-
-            $this->setCache("dashboard/{$this->layout_id}", $this->config);
-        } else {
-            $this->config = $cached;
-        }
-        return $this->config;
+    protected function getResource($resourceID) {
+        return $this->config['dashboard']['resources'][$resourceID];
     }
 }

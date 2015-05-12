@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -18,7 +18,7 @@ class PaymentModule extends SysclassModule implements ISectionMenu
 
             $currentUser = $this->getCurrentUser();
             //$currentFolder = $this->getDefaultFolder($currentUser);
-            
+
             //$messages = $this->getUnviewedMessages(array($currentFolder));
 
             //$items = array(1);
@@ -35,24 +35,28 @@ class PaymentModule extends SysclassModule implements ISectionMenu
                 );
             }
             */
-            $menuItem = array(
-                'icon'      => 'money',
-                'notif'     => $total,
-                'text'      => self::$t->translate('You have %s due payment', $total),
-                'external'  => array(
-                    'link'  => $this->getBasePath(),
-                    'text'  => self::$t->translate('See my statement')
-                ),
-                'link'  => array(
-                    'link'  => $this->getBasePath(),
-                    'text'  => self::$t->translate('Payments')
-                ),
-                'type'      => 'notification',
-                'items'     => $items,
-                'extended'  => true
-            );
+            if ($total > 0) {
 
-            return $menuItem;
+
+                $menuItem = array(
+                    'icon'      => 'money',
+                    'notif'     => $total,
+                    'text'      => self::$t->translate('You have %s due payment', $total),
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => self::$t->translate('See my statement')
+                    ),
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => self::$t->translate('Payments')
+                    ),
+                    'type'      => 'notification',
+                    'items'     => $items,
+                    'extended'  => true
+                );
+
+                return $menuItem;
+            }
         }
         return false;
     }

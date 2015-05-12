@@ -4,3 +4,6 @@ dashboard:
     resources:
         layout.linkable.order: ["institution", "courses", "news", "users"]
         layout.linkable.groups.order: ["administration", "content", "users", "communication", "not_classified"]
+global:
+    resources:
+        layout.sections.topbar: ["institution", "courses", "news", "translate"]

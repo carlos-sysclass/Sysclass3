@@ -70,7 +70,6 @@ class DashboardController extends AbstractSysclassController
 
         $widgets = $dashboardManager->getPageWidgets();
 
-
         foreach($widgets as $key => $widget) {
             call_user_func_array(array($this, "addWidget"), $widget);
 
@@ -81,9 +80,9 @@ class DashboardController extends AbstractSysclassController
 
         $this->putItem("page_layout", $pageLayout);
 
-        if ($currentUser['user_type'] == "student") {
+        //if ($currentUser['user_type'] == "student") {
             $this->putBlock("institution.social-gadgets");
-        }
+        //}
 
         //$topbarMenu = $layoutManager->getMenuBySection("topbar");
 

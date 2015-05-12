@@ -1,4 +1,4 @@
-<?php 
+<?php
 class TranslateTokensModel extends ModelManager {
 
 	public function init()
@@ -12,7 +12,7 @@ class TranslateTokensModel extends ModelManager {
 		);
 		*/
 		//$this->selectSql = "SELECT `id`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate_tokens`";
-		//`lessons_ID`, `classe_id`, 
+		//`lessons_ID`, `classe_id`,
 
 		parent::init();
 
@@ -29,7 +29,7 @@ class TranslateTokensModel extends ModelManager {
 				'token' 		=> $token['token']
             );
             if (!$this->exists($id)) {
-            	$this->addItem($token);	
+            	$this->addItem($token);
             }
             */
         }
@@ -42,9 +42,9 @@ class TranslateTokensModel extends ModelManager {
 			'token' 		=> $token['token'],
         );
         if (!$this->exists($id)) {
-        	$this->addItem($token);	
+        	$this->addItem($token);
         } elseif ($force_update) {
-        	$this->setItem($token, $id);	
+        	$this->setItem($token, $id);
         }
         return $token;
 	}

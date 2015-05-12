@@ -107,6 +107,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    		exit;
 		    	}
 		    }
+
+
 		} catch (Exception $e) {
 		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
 		        setcookie('c_request', http_build_query($_GET), time() + 300);
@@ -123,8 +125,6 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	}
 */
 	protected function beforeDisplay() {
-		parent::beforeDisplay();
-
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
 		if ($this->getCurrentUser()) {
@@ -132,6 +132,18 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$userSettings = $this->module("settings")->getSettings(true);
 
 			$this->putItem("SETTINGS_", $userSettings);
+
+			// GET TOPBAR
+			$layoutManager = $this->module("layout");
+
+			$currentUser = $this->getLoggedUser(true);
+			$dashboard_id = $currentUser['dashboard_id'] == "default" ? $currentUser['user_type'] : $currentUser['dashboard_id'];
+			$layoutManager->loadLayout($dashboard_id);
+
+			$topbarMenu = $layoutManager->getMenuBySection("topbar");
+        	$this->putItem("topbar_menu", $topbarMenu);
+
+        	parent::beforeDisplay();
 
 			if (unserialize(self::$current_user -> user['additional_accounts'])) {
 				$accounts = unserialize(self::$current_user -> user['additional_accounts']);

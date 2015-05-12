@@ -25,11 +25,11 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
     /* ISectionMenu */
     public function getSectionMenu($section_id) {
+
         if ($section_id == "topbar") {
 
             $this->putModuleScript("models.translate");
             $this->putModuleScript("menu.translate");
-
 
             $currentUser = $this->getCurrentUser();
 
@@ -508,6 +508,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
             }
             $response = $this->createAdviseResponse(self::$t->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+
             $response['data'] = $translatedTerms;
             return $response;
         } else {
