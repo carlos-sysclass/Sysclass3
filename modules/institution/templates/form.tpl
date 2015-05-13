@@ -34,6 +34,7 @@
 				</div>
 			</div>
 
+			<!--
 			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
 			    {foreach $T_SECTION_TPL['address'] as $template}
@@ -41,7 +42,7 @@
 			    {/foreach}
 			    </div>
 			{/if}
-		
+
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
 			    {foreach $T_SECTION_TPL['permission'] as $template}
@@ -49,7 +50,33 @@
 			    {/foreach}
 			    </div>
 			{/if}
+			-->
+		<h3 class="form-section"><i class="icon-book"></i> Address Book</h3>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Address"}</label>
+			<input name="address" value="" type="text" placeholder="Address" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Address 2"}</label>
+			<input name="address2" value="" type="text" placeholder="Address 2" class="form-control" data-rule-minlength="3" />
+		</div>
+
+		<h3 class="form-section">{translateToken value="Social"}</h3>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Website"}</label>
+			<input name="website" value="" type="text" placeholder="Website" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Facebook"}</label>
+			<input name="facebook" value="" type="text" placeholder="Facebook" class="form-control" />
+		</div>
+
+		{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
+		    {foreach $T_SECTION_TPL['permission'] as $template}
+		        {include file=$template}
+		    {/foreach}
+		{/if}
+
 	</div>
 	<div class="form-actions nobg">
 		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>

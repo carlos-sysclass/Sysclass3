@@ -4,15 +4,17 @@
     </div>
 	<div class="col-md-5 col-sm-5 col-xs-6">
 		<div class="btn-group-vertical btn-group-fixed-size">
-			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-link"></i>{translateToken value="Website"}</span>
-			</a>
-			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-map-marker"></i>{translateToken value="View Map"}</span>
-			</a>
-			<a href="javascript: void(0);" class="btn btn-link btn-sm disabled">
-				<span class="text-muted"><i class="icon-facebook"></i>{translateToken value="Facebook"}</span>
-			</a>
+			{foreach $T_INSTITUTION as $id => $institution}
+				<a href="{$institution.website}" target="_blank" class="btn btn-link btn-sm">
+					<span class="text"><i class="icon-link"></i>{translateToken value="Website"}</span>
+				</a>
+				<a href="https://www.google.com.br/maps/place/{$institution.address}" target="_blank" class="btn btn-link btn-sm">
+					<span class="text"><i class="icon-map-marker"></i>{translateToken value="View Map"}</span>
+				</a>
+				<a href="{$institution.facebook}" target="_blank" class="btn btn-link btn-sm">
+					<span class="text"><i class="icon-facebook"></i>{translateToken value="Facebook"}</span>
+				</a>
+			{/foreach}
 		</div>
 	</div>
 </div>

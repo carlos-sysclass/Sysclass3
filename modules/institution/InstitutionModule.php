@@ -25,7 +25,14 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         );
     }
 
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array())
+    {
+        $itemsData = $this->model("institution/collection")->addFilter(array(
+                'active'    => true
+            ))->getInstitution($userData['id']);
+
+        $this->putItem("institution", $itemsData);
+
         if (in_array('institution.overview', $widgetsIndexes)) {
             $this->putModuleScript("widget.institution");
 
@@ -34,7 +41,8 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
        				//'title' 	=> 'User Overview',
                     'id'        => 'institution-widget',
        				'template'	=> $this->template("overview.widget"),
-                    'panel'     => true
+                    'panel'     => true,
+                    'institution' => $itemsData
         		)
         	);
         }
@@ -144,6 +152,17 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
             $itemModel = $this->model("institution");
             $data['login'] = $userData['login'];
+
+            if (!preg_match('/(https:\/\/)/', $data['website']) && !preg_match('/(http:\/\/)/', $data['website']))
+            {
+                $data['website'] = 'http://' . $data['website'];
+            }
+
+            if (!preg_match('/(https:\/\/)/', $data['facebook']) && !preg_match('/(http:\/\/)/', $data['facebook']))
+            {
+                $data['facebook'] = 'https://' . $data['facebook'];
+            }
+
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
@@ -169,6 +188,17 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             $data = $this->getHttpData(func_get_args());
 
             $itemModel = $this->model("institution")->debug();
+
+            if (!preg_match('/(https:\/\/)/', $data['website']) && !preg_match('/(http:\/\/)/', $data['website']))
+            {
+                $data['website'] = 'http://' . $data['website'];
+            }
+
+            if (!preg_match('/(https:\/\/)/', $data['facebook']) && !preg_match('/(http:\/\/)/', $data['facebook']))
+            {
+                $data['facebook'] = 'https://' . $data['facebook'];
+            }
+
             if ($itemModel->setItem($data, $id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Institution updated with success"), "success");
                 return array_merge($response, $data);
@@ -255,6 +285,16 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     'remove'    => array(
                         'icon'  => 'icon-remove',
                         'class' => 'btn-sm btn-danger'
+                    ),
+                    'website'    => array(
+                        'icon'  => 'icon-link',
+                        'link'  => $item['website'],
+                        'class' => 'btn-sm'
+                    ),
+                    'facebook'    => array(
+                        'icon'  => 'icon-facebook',
+                        'link'  => $item['facebook'],
+                        'class' => 'btn-sm'
                     )
                 );
             }
