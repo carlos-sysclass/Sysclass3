@@ -3616,3 +3616,4 @@ ADD COLUMN `instructor_id` INT(11) NULL DEFAULT NULL AFTER `course_id`;
 
 /* 2015-04-02 */
 ALTER TABLE `mod_institution` ADD COLUMN `website` VARCHAR(255) DEFAULT NULL AFTER `active`, ADD COLUMN `facebook` VARCHAR(255) DEFAULT NULL AFTER `website`;
+

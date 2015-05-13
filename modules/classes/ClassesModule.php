@@ -128,7 +128,8 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         */
         $this->putItem("courses", $items);
 
-        parent::editPage($id);
+        parent::addPage($id);
+
     }
 
     /**

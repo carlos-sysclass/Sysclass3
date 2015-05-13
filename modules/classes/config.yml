@@ -30,6 +30,9 @@ crud:
         - mData: course_name
           label: Course
 
+        - mData: instructor_name
+          label: Instructor
+
         - mData: active
           sType: table-boolean
           sClass: text-center
