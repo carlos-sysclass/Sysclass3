@@ -9,7 +9,6 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         //$this->fieldsMap = array();
 
         $this->selectSql = "
-<<<<<<< HEAD
 			SELECT
 				cl.id,
 				cl.permission_access_mode,
@@ -20,41 +19,20 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
 				cl.info,
 				cl.active,
 				cl.course_id,
-                cl.instructor_id,
-				cour.name as course_name
+				cl.instructor_id,
+				cour.name as course_name,
+				CONCAT_WS(' ', u.name, u.surname) AS instructor_name
 			FROM
 				mod_classes cl
 			LEFT JOIN
 				mod_courses cour
 			ON
 				(cour.id = cl.course_id)
+			LEFT JOIN
+				users u
+			ON
+				(cl.instructor_id = u.id)
 		";
-=======
-        						SELECT
-        							cl.id,
-        							cl.permission_access_mode,
-        							cl.ies_id,
-        							cl.area_id,
-        							cl.name,
-        							cl.description,
-        							cl.info,
-        							cl.active,
-        							cl.course_id,
-        							cl.instructor_id,
-        							cour.name as course_name,
-        							CONCAT_WS(' ', u.name, u.surname) AS instructor_name
-    							FROM
-    								mod_classes cl
-								LEFT JOIN
-									mod_courses cour
-								ON
-									(cour.id = cl.course_id)
-								LEFT JOIN
-									users u
-								ON
-									(cl.instructor_id = u.id)
-							";
->>>>>>> origin/SC-99
 
         parent::init();
 

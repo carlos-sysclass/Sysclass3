@@ -7,5 +7,6 @@
 .settings/*
 libraries/language/*
 files/*
+files-private/*
 www/doc/*
 /logs

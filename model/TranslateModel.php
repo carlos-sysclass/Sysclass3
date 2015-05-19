@@ -1,5 +1,5 @@
-<?php 
-class TranslateTranslateModel extends ModelManager {
+<?php
+class TranslateModel extends ModelManager {
 
 	public function init()
 	{
@@ -12,7 +12,7 @@ class TranslateTranslateModel extends ModelManager {
 		);
 		*/
 		$this->selectSql = "SELECT `id`, `code`, `country_code`, `permission_access_mode`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
-		//`lessons_ID`, `classe_id`, 
+		//`lessons_ID`, `classe_id`,
 
 		parent::init();
 
@@ -103,7 +103,7 @@ class TranslateTranslateModel extends ModelManager {
 	    if (!is_null($vars)) {
 	    	if (!is_array($vars)) {
 	    		$vars = array($vars);
-	    	} 
+	    	}
     		return vsprintf($token, $vars);
 	    }
 	    return $token;

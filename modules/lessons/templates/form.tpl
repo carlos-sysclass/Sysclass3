@@ -7,14 +7,22 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
+			{if (isset($T_SECTION_TPL['lessons_content_dropbox']) &&  ($T_SECTION_TPL['lessons_content_dropbox']|@count > 0))}
+			<li>
+				<a href="#tab_1_2" data-toggle="tab">
+					<i class="fa fa-dropbox"></i>
+					{translateToken value="Dropbox"}
+				</a>
+			</li>
+			{/if}
 			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Text Content"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Text Content"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Video Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Video Content"}</a>
 			</li>
 			{/if}
 		</ul>
@@ -39,15 +47,23 @@
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 			</div>
-			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
+
+			{if (isset($T_SECTION_TPL['lessons_content_dropbox']) &&  ($T_SECTION_TPL['lessons_content_dropbox']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
+				    {foreach $T_SECTION_TPL['lessons_content_dropbox'] as $template}
+				        {include file=$template}
+				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
 				    {foreach $T_SECTION_TPL['lessons_content_text'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_3">
+				<div class="tab-pane fade in" id="tab_1_4">
 				    {foreach $T_SECTION_TPL['lessons_content_video'] as $template}
 				        {include file=$template}
 				    {/foreach}

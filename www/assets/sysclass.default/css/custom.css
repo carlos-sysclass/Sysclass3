@@ -838,3 +838,7 @@ table.users-panel-notification-table > thead > tr > td {
 .panel-heading .panel-buttons.panel-buttons-sm {
     margin: -5px -8px 0 0;
 }
+
+.season-item-block {
+    border: 1px #000 solid;
+}

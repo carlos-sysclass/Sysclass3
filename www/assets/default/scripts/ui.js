@@ -390,6 +390,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
         this.handleActions(context);
+
+        return context;
 	};
 
 

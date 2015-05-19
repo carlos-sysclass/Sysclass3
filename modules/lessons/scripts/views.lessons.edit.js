@@ -32,6 +32,7 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 				this.$el.fileupload({
 					url: opt.url,
 					paramName: opt.param_name,
+					acceptFileTypes : opt.acceptFileTypes,
 					dataType: 'json',
 					singleFileUploads: opt.singleUpload,
 					done: function (e, data) {
@@ -50,7 +51,6 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 									.attr("href", filelist[i].url)
 									.html(filelist[i].name);
 							*/
-
 						}
 
 						self.files = new Array();
@@ -96,9 +96,10 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 			addOne : function(data) {
 				console.info('views.lessons.edit/fileListView::addOne');
 
-				this.$("ul").append(
-					this.template(data)
-				);
+				var html = this.template(data);
+
+				$SC.module("ui").refresh( $(html).appendTo( this.$("ul") ) );
+
 			},
 			render: function() {
 				console.info('views.lessons.edit/fileListView::render');
@@ -119,105 +120,8 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 			}
 		});
 
-		/*
-		var new_video_template = _.template($("#file-upload-new-video-item").html());
-		var videourl = "/module/lessons/upload/1/video";
-
-		$(".upload-new-video-file").click(function() {
-			var index = $("#video-file-list li").size();
-			var index = 0;
-			$("#video-file-list").html(
-				new_video_template({index : index})
-			);
-
-		  	$("#video-file-list [name='file_" + index + "']").fileupload({
-			    url: videourl + "?name=file_" + index,
-			    dataType: 'json',
-			    paramName: "file_" + index,
-			    add: function (e, data) {
-			      data.context = $("[name='file_" + index + "']").parents("li");
-			      data.context.find(".file-name").html($(data.fileInput).val());
-			      data.submit();
-			    },
-			    done: function (e, data) {
-			      console.warn(data.result['file_' + index]);
-			      var file_result = data.result['file_' + index];
-			      data.context.text(file_result.name);
-			    },
-			    progressall: function (e, data) {
-			      var progress = parseInt(data.loaded / data.total * 100, 10);
-			      $('#progress .progress-bar').css(
-			        'width',
-			        progress + '%'
-			      );
-			    }
-			}).click();
-		});
-		*/
-
-		/*
-		$(".upload-new-material-file").click(function() {
-			var index = $("#material-file-list li").size();
-
-			$("#material-file-list").append(
-				new_material_template({index : index})
-			);
-
-		  	$("#material-file-list [name='file_material_" + index + "']").fileupload({
-			    url: materialurl + "?name=file_material_" + index,
-			    dataType: 'json',
-			    paramName: "file_material_" + index,
-			    add: function (e, data) {
-
-			      data.context = $("#file-upload-item-" + index);
-			      data.context.find(".file-name").html($(data.fileInput).val());
-			      data.submit();
-			    },
-			    done: function (e, data) {
-			    	console.warn(e, data);
-			    },
-			    progressall: function (e, data) {
-			      var progress = parseInt(data.loaded / data.total * 100, 10);
-			      $("#file-upload-item-" + index).find('.progress .progress-bar').css(
-			        'width',
-			        progress + '%'
-			      );
-			    }
-			}).click();
-		});
-
-		var fileListViewClass = Backbone.View.extend({
-			template  : _.template($("#file-upload-item").html()),
-			initialize: function(opt) {
-				console.info('views.lessons.edit/fileListView::initialize');
-
-				this.type = opt.type
-
-				this.listenTo(this.model, 'change:files', this.render.bind(this));
-			},
-			addOne : function(data) {
-				console.info('views.lessons.edit/fileListView::addOne');
-
-				this.$el.append(
-					this.template(data)
-				);
-			},
-			render: function() {
-				console.info('views.lessons.edit/fileListView::render');
-
-				var files = this.model.get("files");
-				var data = files[this.type];
-
-				this.$el.empty();
-				for (i in data) {
-					this.addOne(data[i]);
-				}
-			}
-		});
-		*/
 		$SC.module("crud.views.edit").on("start", function() {
 			// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-
 
 	        mod.materialFileUploadWidgetView = new fileUploadWidgetViewClass({
 				el : "#video-file-upload-widget",
@@ -225,9 +129,10 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 				param_name : "files_videos",
 				singleUpload : false,
 				type: "video",
+				acceptFileTypes: /(\.|\/)(mp4|webm)$/i,
 				model : this.itemModel
 			});
-
+	        /*
 	        mod.materialFileUploadWidgetView = new fileUploadWidgetViewClass({
 				el : "#material-file-upload-widget",
 				url : "/module/lessons/upload/" + mod.config.entity_id + "/material?name=files_materials",
@@ -236,7 +141,7 @@ $SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) 
 				type: "material",
 				model : this.itemModel
 			});
-
+			*/
 	        /*
 			mod.fileVideoListView = new fileListViewClass({
 				el: "#video-file-list",

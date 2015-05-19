@@ -105,6 +105,9 @@
     </div>
 </div>
 -->
+<a class="btn btn-sm btn-warning translate-file-action tooltips" data-original-title="Add a Legend" data-file-id="<%= id %>" href="javascript: void(0);">
+                <i class="fa fa-language"></i>
+            </a>
 <script type="text/template" id="file-upload-widget-item">
     <li <% if (typeof index !== 'undefined') { %>data-fileindex="<%= index %>" <% } %> class="list-file-item draggable <% if (typeof url !== 'undefined') { %>green-stripe<% } else { %>red-stripe<% } %>">
 
@@ -112,8 +115,8 @@
         [ <%= (size / 1024) + " kb" %> ]
         <div class="list-file-item-options">
         <% if (typeof id !== 'undefined') { %>
-            <a class="btn btn-sm btn-warning translate-file-action" data-file-id="<%= id %>" href="javascript: void(0);">
-                <i class="fa fa-globe"></i>
+            <a class="btn btn-sm btn-warning translate-file-action tooltips" data-original-title="Add a Legend" data-file-id="<%= id %>" href="javascript: void(0);">
+                <i class="fa fa-language"></i>
             </a>
             <a class="btn btn-sm btn-danger remove-file-action" data-file-id="<%= id %>" href="javascript: void(0);">
                 <i class="fa fa-trash"></i>

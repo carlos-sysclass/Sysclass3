@@ -1,5 +1,5 @@
-<?php 
-class NewsNewsModel extends AbstractSysclassModel implements ISyncronizableModel {
+<?php
+class NewsModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
 	{
@@ -11,7 +11,7 @@ class NewsNewsModel extends AbstractSysclassModel implements ISyncronizableModel
 		);
 
 		$this->selectSql = "SELECT `id`, `title`, `data`, `timestamp`, `expire`, `users_LOGIN`, `permission_access_mode` FROM `news`";
-		//`lessons_ID`, `classe_id`, 
+		//`lessons_ID`, `classe_id`,
 
 		parent::init();
 

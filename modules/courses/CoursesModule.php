@@ -1168,7 +1168,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 			"video/flv" => "flv",
 			"video/mp4" => "mp4",
 			"video/webm" => "webm"
-
 		);
 
 		foreach($sources_types as $type => $ext) {

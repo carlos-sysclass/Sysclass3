@@ -95,6 +95,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		try {
 			// OLD CHECK STYLE
+
 		    self::$current_user 	= MagesterUser::checkUserAccess();
 		    self::$logged_user = $this->model("user/item")->getItem(self::$current_user->user['id']);
 		    $smarty->assign("T_CURRENT_USER", self::$current_user);

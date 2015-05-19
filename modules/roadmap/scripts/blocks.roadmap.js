@@ -28,7 +28,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
         this.classesCollection.course_id = this.course_id;
         this.classesCollection.fetch();
     });
-    
+
     app.module("crud.config").on("start", function() {
         var config = this.getConfig();
 
@@ -36,7 +36,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             course_id : parseInt(config.entity_id)
         });
     });
-    
+
     // PRIVATE MODELS
     mod.classesCollectionClass = Backbone.Collection.extend({
         course_id : 0,
@@ -125,7 +125,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
         }
     });
 
-    
+
     mod.seasonAddDialogClass = Backbone.View.extend({
         initialize : function(opt) {
             this.$el.modal({
@@ -218,6 +218,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
     mod.courseRoadmapTabSeasonViewClass = Backbone.View.extend({
         template : _.template($("#tab_roadmap-season-template").html()),
+        className : "panel panel-default",
         initialize : function() {
             if (_.isUndefined(this.model)) {
                 this.model = mod.seasonsModelClass();
@@ -233,7 +234,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
             this.$el.empty().append(this.template(
                 modelData
-            ));            
+            ));
             /*
             this.$el.append(this.template(_.extend(
                 modelData,
@@ -271,7 +272,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
                         $(this).addClass("empty-list-group");
                     }
                     self.refreshCounters();
-                    
+
                     // HANDLE COLLECTIONS
                     var classe_id = ui.item.data('classId');
 
@@ -316,6 +317,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
         seasonAddDialog : null,
         classesAddDialog : null,
         noSeasonModel : null,
+        className : "teste",
 
         initialize: function(opt) {
             console.info('blocks.roadmap/courseRoadmapTabViewClass::initialize');
@@ -334,7 +336,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             this.listenTo(this.collections.seasons, 'request', (function() {
                 this.seasonsSynced = false;
             }).bind(this));
-            
+
             this.listenTo(this.collections.classes, 'request', (function() {
                 this.classesSynced = false;
             }).bind(this));
@@ -393,7 +395,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
             this.listenTo(this.collections.seasons, 'add', this.addSeason.bind(this));
         },
-        
+
         renderClasses : function(e) {
             this.classesSynced = true;
             this.render();

@@ -1,5 +1,5 @@
-<?php 
-class UsersUsersModel extends AbstractSysclassModel implements ISyncronizableModel {
+<?php
+class UsersModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
 	{

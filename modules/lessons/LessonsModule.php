@@ -94,6 +94,20 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
     public function registerBlocks() {
         return array(
+            'lessons.content.dropbox' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("jquery-file-upload");
+                //$self->putModuleScript("blocks.roadmap");
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                //$self->putItem("classes_lessons_block_context", $block_context);
+
+                $self->putSectionTemplate("lessons_content_dropbox", "blocks/lessons.content.dropbox");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                return true;
+            }/*,
             'lessons.content.text' => function($data, $self) {
                 $items = $self::$t->getItems();
 
@@ -128,6 +142,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
                 return true;
             }
+            */
         );
     }
 
@@ -293,7 +308,14 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $helper->setOption('param_name', $param_name);
         $helper->setOption('print_response', false);
-        // SAVE ON DB THE FILE NAME, IF WORKS
+
+        switch($type) {
+            case 'video' :{
+                $helper->setOption('accept_file_types', '/(\.|\/)(mp4|webm)$/i');
+                break;
+            }
+        }
+
 
         $result = $helper->execute();
 
