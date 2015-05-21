@@ -851,3 +851,8 @@ table.users-panel-notification-table > thead > tr > td {
     white-space: nowrap;
     width: 1%;
 }
+
+.file-upload-me .preview {
+    margin: auto;
+    text-align: center;
+}

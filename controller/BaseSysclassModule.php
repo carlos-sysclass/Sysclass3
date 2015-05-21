@@ -112,6 +112,11 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             $this->putModuleScript("scripts/crud.view." . $page, null, null);
         }
 
+
+        foreach($config['stylesheets'] as $stylesheet) {
+            $this->putCss($stylesheet);
+        }
+
         foreach($config['base_scripts'] as $script) {
             $this->putScript($script);
         }

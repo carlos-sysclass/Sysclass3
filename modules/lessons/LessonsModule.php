@@ -94,15 +94,16 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
     public function registerBlocks() {
         return array(
-            'lessons.content.dropbox' => function($data, $self) {
+            'lessons.content' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("jquery-file-upload");
-                //$self->putModuleScript("blocks.roadmap");
+                $self->putComponent("jquery-file-upload-image");
+                $self->putComponent("jquery-file-upload-video");
+                $self->putModuleScript("blocks.lessons.content");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 //$self->putItem("classes_lessons_block_context", $block_context);
 
-                $self->putSectionTemplate("lessons_content_dropbox", "blocks/lessons.content.dropbox");
+                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 

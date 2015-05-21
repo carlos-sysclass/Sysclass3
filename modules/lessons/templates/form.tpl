@@ -7,11 +7,11 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			{if (isset($T_SECTION_TPL['lessons_content_dropbox']) &&  ($T_SECTION_TPL['lessons_content_dropbox']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-dropbox"></i>
-					{translateToken value="Dropbox"}
+					{translateToken value="Content Editor"}
 				</a>
 			</li>
 			{/if}
@@ -48,9 +48,9 @@
 				</div>
 			</div>
 
-			{if (isset($T_SECTION_TPL['lessons_content_dropbox']) &&  ($T_SECTION_TPL['lessons_content_dropbox']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-				    {foreach $T_SECTION_TPL['lessons_content_dropbox'] as $template}
+				    {foreach $T_SECTION_TPL['lessons_content'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
