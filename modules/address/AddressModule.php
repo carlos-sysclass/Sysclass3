@@ -16,8 +16,11 @@ class AddressModule extends SysclassModule implements IBlockProvider
 	 */
 	public function registerBlocks() {
 		return array(
-			'address.add' => function($data, $self) {
-        		$self->putSectionTemplate("address", "blocks/add");
+			'address.book' => function($data, $self) {
+		        $country_codes = $self->model("i18n/country")->getItems();
+		        $self->putItem("country_codes", $country_codes);
+
+        		$self->putSectionTemplate("address", "blocks/book");
 
         		return true;
 			}

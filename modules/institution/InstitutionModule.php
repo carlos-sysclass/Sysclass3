@@ -138,6 +138,8 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
         $editItem = $this->model("institution")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+
+        //$editItem['logo'] = $this->model("dropbox")->getItem($editItem['logo_id']);
         return $editItem;
     }
     /**
@@ -192,11 +194,6 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             if (!preg_match('/(https:\/\/)/', $data['website']) && !preg_match('/(http:\/\/)/', $data['website']))
             {
                 $data['website'] = 'http://' . $data['website'];
-            }
-
-            if (!preg_match('/(https:\/\/)/', $data['facebook']) && !preg_match('/(http:\/\/)/', $data['facebook']))
-            {
-                $data['facebook'] = 'https://' . $data['facebook'];
             }
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
@@ -310,7 +307,14 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
         return array_values($items);
     }
+/*
+    public function addPage()
+    {
 
+
+        parent::addPage();
+    }
+*/
     /**
      * Module Entry Point
      *
@@ -336,32 +340,10 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
     }
-    /**
-     * New model entry point
-     *
-     * @url GET /add
-     */
-    public function addPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
 
-        $this->putComponent(/* "datepicker", "timepicker", "select2", */"wysihtml5", "validation");
-        $this->putModuleScript("models.institution");
-//      $this->putModuleScript("views.news");
-        $this->putModuleScript("views.institution.add");
 
-        $this->putItem("page_title", self::$t->translate('Institution'));
-        $this->putItem("page_subtitle", self::$t->translate('Manage your Institution(s)'));
 
-        //return array_values($news);
-        $this->display("form.tpl");
-    }
-
-    /**
-     * Module Entry Point
-     *
-     * @url GET /edit/:id
-     */
+    /*
     public function editPage($id)
     {
         $currentUser    = $this->getCurrentUser(true);
@@ -378,14 +360,6 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         $this->putBlock("address.add");
         $this->putBlock("permission.add");
 
-/*
-        $this->putComponent("modal");
-        $this->putCrossModuleScript("permission", "dialog.permission");
-        $this->putCrossSectionTemplate("permission", null, "blocks/permission");
-        $this->putCrossSectionTemplate("permission", "foot", "dialogs/add");
-        $this->putCrossModuleScript("permission", "dialog.permission");
-*/
-
         $this->putModuleScript("models.institution");
         //$this->putModuleScript("views.news");
         $this->putModuleScript("views.institution.edit", array('id' => $id));
@@ -399,4 +373,5 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         //return array_values($news);
         $this->display("form.tpl");
     }
+    */
 }

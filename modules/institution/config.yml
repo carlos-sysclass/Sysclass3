@@ -1,0 +1,53 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Institution
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your Institution(s)
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: price
+          sType: table-currency
+          label: Price
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add:
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
+      blocks: ["address.book"]
+      scripts: ["views.courses.edit"]
+      template: form.tpl
+      variables:
+        page_subtitle: Create a new Institution
+    'edit/:id':
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
+      #blocks: ["permission.add", "users.list.table", "roadmap.courses.edit"]
+      blocks: ["address.book"]
+      #scripts: ["views.courses.edit"]
+      template: form.tpl
+      variables:
+        page_subtitle: Edit your Institution

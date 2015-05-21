@@ -842,3 +842,12 @@ table.users-panel-notification-table > thead > tr > td {
 .season-item-block {
     border: 1px #000 solid;
 }
+
+.input-group .input-group-text {
+    display: table-cell;
+    padding: 7px 14px;
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 1%;
+}

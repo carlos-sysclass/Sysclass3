@@ -167,6 +167,13 @@ class FileUploadHelper
     public function setOption($name, $value) {
         $this->options[$name] = $value;
     }
+    public function enableThumbnail() {
+        $this->options['image_versions']['thumbnail'] = array(
+            'upload_dir'    => $this->options['upload_dir'] . "thumb/",
+            'upload_url'    => $this->options['upload_url'] . "thumb/",
+            'max_height'    => 80
+        );
+    }
 
     public function execute() {
         switch ($this->get_server_var('REQUEST_METHOD')) {
@@ -844,6 +851,7 @@ class FileUploadHelper
     protected function imagick_create_scaled_image($file_name, $version, $options) {
         list($file_path, $new_file_path) =
             $this->get_scaled_image_file_paths($file_name, $version);
+
         $image = $this->imagick_get_image_object(
             $file_path,
             !empty($options['no_cache'])
@@ -887,6 +895,7 @@ class FileUploadHelper
                 $y = ($img_height / ($img_width / $max_width) - $max_height) / 2;
             }
         }
+
         $success = $image->resizeImage(
             $new_width,
             $new_height,
@@ -905,6 +914,7 @@ class FileUploadHelper
                 $success = $image->setImagePage($max_width, $max_height, 0, 0);
             }
         }
+
         $type = strtolower(substr(strrchr($file_name, '.'), 1));
         switch ($type) {
             case 'jpg':
@@ -1005,7 +1015,6 @@ class FileUploadHelper
             return $this->imagemagick_create_scaled_image($file_name, $version, $options);
         }
         if ($this->options['image_library'] && extension_loaded('imagick')) {
-
             return $this->imagick_create_scaled_image($file_name, $version, $options);
         }
         return $this->gd_create_scaled_image($file_name, $version, $options);

@@ -10,6 +10,33 @@
 
 class FileWrapperHelper {
 
+    public function getPublicPath($type = null) {
+        $plicolib = PlicoLib::instance();
+
+        $path = $plicolib->get("path/files/public") . "/";
+
+        if (!is_null($type)) {
+            $path .= "/" . $type;
+        }
+
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        return $path;
+    }
+
+    public function getPublicUrl($type = null) {
+        $plicolib = PlicoLib::instance();
+
+        $path = $plicolib->get("http/fqdn") . "/files";
+
+        if (!is_null($type)) {
+            $path .= "/" . $type;
+        }
+
+        return $path;
+    }
+
     public function getLessonPath($lesson_id, $type = null) {
         $plicolib = PlicoLib::instance();
 
