@@ -345,7 +345,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return $file_result;
     }
 
- /**
+    /**
      * Get all users visible to the current user
      *
      * @url DELETE /upload/:lesson_id/:file_id
@@ -411,14 +411,20 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * Insert a news model
      *
-     * @url POST /item/me
+     * @url POST /item/:type
      */
-    public function addItemAction()
+    public function addItemAction($type)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("classes/lessons/collection");
+            if ($type == "me") {
+                $itemModel = $this->model("classes/lessons/collection");
+            } elseif ($type == "lesson-items") {
+                $itemModel = $this->model("lessons/items");
+            }
+
+
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 if ($_GET['redirect'] == 0) {
