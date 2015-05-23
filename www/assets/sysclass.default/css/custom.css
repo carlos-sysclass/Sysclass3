@@ -856,3 +856,7 @@ table.users-panel-notification-table > thead > tr > td {
     margin: auto;
     text-align: center;
 }
+
+.timeline-body-head-actions .btn-group {
+    margin-top: 0 !important;
+}

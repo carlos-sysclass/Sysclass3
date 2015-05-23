@@ -5,6 +5,28 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         this.config = $SC.module("crud.config").getConfig();
         var entity_id = mod.config.entity_id;
 
+        var lessonModel = app.module("crud.views.edit").itemModel;
+
+        var lessonContentCollectionClass = Backbone.Collection.extend({
+            initialize: function(opt) {
+                this.lesson_id = opt.lesson_id;
+            },
+            url: function() {
+                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
+            }
+        });
+        console.log(lessonModel)
+
+        this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
+            mod.lessonContentCollection = new lessonContentCollectionClass({
+                lesson_id : entity_id
+            });
+            mod.lessonContentCollection.fetch();
+        });
+
+
+
+
 
         var textContentTimelineViewClass = Backbone.View.extend({
             template : _.template($("#text-timeline-item").html()),
@@ -29,7 +51,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             initEditor : function() {
                 var self = this;
-                console.warn(this.$el);
                 app.module("ui").refresh(this.$el);
 
                 this.wysihtml5 = this.$(".wysihtml5").data('wysihtml5');
@@ -167,10 +188,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.trigger("timeline-text-content:delete", this.model);
             }
         });
+
         var contentTimelineViewClass = Backbone.View.extend({
             events : {
                 "click .timeline-addtext" : "addTextContent",
-                "click .timeline-addexercise" : "addExercisesContent"
+                "click .timeline-addexercise" : "addExercisesContent",
+
+                "click .timeline-expand" : "expandAll",
+                "click .timeline-collapse" : "collapseAll"
             },
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
@@ -185,6 +210,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             initializeSortable : function() {
                 this.$el.sortable({
                     //connectWith: ".list-group",
+                    handle : ".drag-handler",
                     items: "div.timeline-item",
                     opacity: 0.8,
                     /* axis : "y", */
@@ -287,10 +313,34 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     }
                 };
 
-                this.$el.fileupload(opt).bind('fileuploadalways', function (e, data) {
+
+
+                this.$el.fileupload(opt)
+                .bind('fileuploadadd', function (e, data) {
+                    console.warn("fileuploadadd");
+                })
+                .bind('fileuploaddone', function (e, data) {
+                    console.warn("fileuploaddone");
+                })
+                .bind('fileuploadfail', function (e, data) {
+                    console.warn("fileuploadfail");
+                })
+                .bind('fileuploadalways', function (e, data) {
+                    console.warn("fileuploadalways");
                     // var fieldName = $(self).data("fileuploadField");
                     // $(":input[name='" + fieldName + "']").change();
+                })
+                .bind('fileuploadprogress', function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    data.context.find(".load-percent").html(progress);
                 });
+
+            },
+            expandAll : function() {
+                this.$(".content-timeline-items .timeline-body-content-wrapper").removeClass("hidden");
+            },
+            collapseAll : function() {
+                this.$(".content-timeline-items .timeline-body-content-wrapper").addClass("hidden");
             },
             addTextContent : function(e) {
                 var self = this;
@@ -362,5 +412,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
     });
     $SC.module("crud.views.edit").on("start", function() {
         mod.start();
+
+
     });
 });

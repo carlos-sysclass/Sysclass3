@@ -1,4 +1,4 @@
-CREATE TABLE `mod_lessons_itens` (
+CREATE TABLE `mod_lessons_content` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `lesson_id` mediumint(8) unsigned NOT NULL,
   `type` varchar(20) NOT NULL,

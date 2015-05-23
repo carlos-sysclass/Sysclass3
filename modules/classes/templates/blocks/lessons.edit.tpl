@@ -30,12 +30,12 @@
 
 <script type="text/template" id="lessons-edit-item">
     <li class="list-file-item draggable <% if (data.active == "1") { %>green-stripe<% } else { %>red-stripe<% } %>">
-        <a href="<% if (typeof data.id !== 'undefined') { %>module/lessons/edit/<%= data.id %><% } else { %>javascript: void(0);<% } %>"><%= data.name %></a>
+        <a href="<% if (typeof data.id !== 'undefined') { %>/module/lessons/edit/<%= data.id %><% } else { %>javascript: void(0);<% } %>"><%= data.name %></a>
         <div class="list-file-item-options">
             <% if (typeof data.id !== 'undefined') { %>
                 <% if (data.active == "1") { %>
                     <a class="btn btn-sm btn-danger remove-file-action" data-file-id="<%= data.id %>" href="javascript: void(0);">
-                        <i class="fa fa-times"></i>
+                        <i class="fa fa-trash"></i>
                     </a>
                 <% } else { %>
                     <a class="btn btn-sm btn-success remove-file-action" data-file-id="<%= data.id %>" href="javascript: void(0);">

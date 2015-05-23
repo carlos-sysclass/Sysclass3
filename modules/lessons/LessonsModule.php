@@ -98,6 +98,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("jquery-file-upload-image");
                 $self->putComponent("jquery-file-upload-video");
+                $self->putComponent("jquery-file-upload-audio");
                 $self->putModuleScript("blocks.lessons.content");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
@@ -233,12 +234,29 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        $modelRoute = "classes/lessons/collection";
-        $optionsRoute = "edit";
+        if ($model == "me") {
+            $modelRoute = "classes/lessons/collection";
+            $optionsRoute = "edit";
 
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-        $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+            $itemsCollection = $this->model($modelRoute);
+            $itemsData = $itemsCollection->getItems();
+            $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+        } elseif ($model == "lesson-content") {
+            $modelRoute = "lessons/content";
+            $optionsRoute = "edit";
+
+            $itemsCollection = $this->model($modelRoute);
+            // APPLY FILTER
+            if (is_null($filter) || !is_numeric($filter)) {
+                return $this->invalidRequestError();
+            }
+            $itemsData = $itemsCollection->addFilter(array(
+                'active'    => 1,
+                'lesson_id' => $filter
+            ))->getItems();
+
+            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+        }
 
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
