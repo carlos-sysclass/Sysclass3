@@ -364,6 +364,14 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     };
 
+    this.handleBootstrapConfirmation = function(context) {
+        if ($("[data-toggle=confirmation]", context).size() > 0) {
+            $("[data-toggle='confirmation']", context).each(function() {
+                $(this).confirmation();
+            });
+        }
+    };
+
     this.handleActions = function (context) {
         var self = this;
         $('[data-action]', context).each(function () {
@@ -381,7 +389,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleiCheck(context);
 		this.handleSelect2(context);
         this.handleJqueryFileUpload(context);
-		this.handleDatepickers(context);
+        this.handleBootstrapConfirmation(context);
+        this.handleDatepickers(context);
 		this.handleTimepickers(context);
 		this.handleWysihtml5(context);
 		this.handleTabs(context);

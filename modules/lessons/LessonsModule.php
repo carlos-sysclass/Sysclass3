@@ -99,6 +99,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 $self->putComponent("jquery-file-upload-image");
                 $self->putComponent("jquery-file-upload-video");
                 $self->putComponent("jquery-file-upload-audio");
+                $self->putComponent("bootstrap-confirmation");
                 $self->putModuleScript("blocks.lessons.content");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
@@ -306,8 +307,43 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * Get all users visible to the current user
      *
+     * @url PUT /items/lesson-content/set-order/:lesson_id
+     */
+    public function setContentOrderAction($lesson_id)
+    {
+        $modelRoute = "lessons/content";
+        $optionsRoute = "edit";
+
+        $itemsCollection = $this->model($modelRoute);
+        // APPLY FILTER
+        if (is_null($lesson_id) || !is_numeric($lesson_id)) {
+            return $this->invalidRequestError();
+        }
+        $itemsData = $itemsCollection->addFilter(array(
+            'active'    => 1,
+            'lesson_id' => $lesson_id
+        ))->getItems();
+
+        $messages = array(
+            'success' => "Lesson content order updated with success",
+            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+        );
+
+        $data = $this->getHttpData(func_get_args());
+
+        if ($itemsCollection->setContentOrder($lesson_id, $data['position'])) {
+            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+        } else {
+            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+        }
+    }
+
+    /**
+     * Get all users visible to the current user
+     *
      * @url POST /upload/:id
      * @url POST /upload/:id/:type
+     * @deprecated
      */
     public function receiveFilesAction($id, $type = "default")
     {
@@ -367,6 +403,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      * Get all users visible to the current user
      *
      * @url DELETE /upload/:lesson_id/:file_id
+     * @deprecated
      */
     public function removeFilesAction($lesson_id, $file_id)
     {
@@ -390,11 +427,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         }
     }
 
-
-
-
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/:model/:id
      */
@@ -427,38 +461,48 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
-     * @url POST /item/:type
+     * @url POST /item/:model
      */
-    public function addItemAction($type)
+    public function addItemAction($model, $type)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            if ($type == "me") {
+            if ($model == "me") {
                 $itemModel = $this->model("classes/lessons/collection");
-            } elseif ($type == "lesson-items") {
-                $itemModel = $this->model("lessons/items");
+                $messages = array(
+                    'success' => "Lesson created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "lesson-content") {
+                $itemModel = $this->model("lessons/content");
+                $messages = array(
+                    'success' => "Lesson content created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $_GET['redirect'] = 0;
             }
 
 
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 if ($_GET['redirect'] == 0) {
-                    $response = $this->createAdviseResponse(self::$t->translate("Lesson created with success"), "success");
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                     return array_merge($response, $data);
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Lesson created with success"),
+                        self::$t->translate($messages['success']),
                         "success"
                     );
 
                 }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
+                return $this->invalidRequestError($messages['error'], "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -466,22 +510,36 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
-     * @url PUT /item/me/:id
+     * @url PUT /item/:model/:id
      */
-    public function setItemAction($id)
+    public function setItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("classes/lessons/collection");
+            if ($model == "me") {
+                $itemModel = $this->model("classes/lessons/collection");
+                $messages = array(
+                    'success' => "Lesson updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "lesson-content") {
+                $itemModel = $this->model("lessons/content");
+                $messages = array(
+                    'success' => "Lesson content updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+            }
+
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Lesson updated with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -491,14 +549,28 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * DELETE a news model
      *
-     * @url DELETE /item/me/:id
+     * @url DELETE /item/:model/:id
      */
-    public function deleteItemAction($id)
+    public function deleteItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
+           if ($model == "me") {
+                $itemModel = $this->model("classes/lessons/collection");
+                $messages = array(
+                    'success' => "Lesson removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } elseif ($model == "lesson-content") {
+                $itemModel = $this->model("lessons/content");
+                $messages = array(
+                    'success' => "Lesson content removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+
+            }
+
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("classes/lessons/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Lesson removed with success"), "success");
                 return $response;

@@ -335,11 +335,12 @@ $plicoLib->add("resources/components", array(
 	)
 ));
 
-
-
-
-
-
+$plicoLib->add("resources/components", array(
+	'name'	=> 'bootstrap-confirmation',
+	'js'	=> array(
+		'plugins/bootstrap-confirmation/bootstrap-confirmation'
+	)
+));
 
 
 $plicoLib->concat(
