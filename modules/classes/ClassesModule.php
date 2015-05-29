@@ -98,6 +98,9 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 //$self->putComponent("data-tables");
                 $self->putModuleScript("blocks.classes.lessons.edit");
 
+
+                $self->putBlock("lessons.content");
+
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 //$self->putItem("classes_lessons_block_context", $block_context);
 

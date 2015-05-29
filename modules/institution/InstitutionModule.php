@@ -155,15 +155,16 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             $itemModel = $this->model("institution");
             $data['login'] = $userData['login'];
 
-            if (!preg_match('/(https:\/\/)/', $data['website']) && !preg_match('/(http:\/\/)/', $data['website']))
+            if (!empty($data['website']) && !preg_match('/(http[s]?:\/\/)/', $data['website']))
             {
                 $data['website'] = 'http://' . $data['website'];
             }
 
-            if (!preg_match('/(https:\/\/)/', $data['facebook']) && !preg_match('/(http:\/\/)/', $data['facebook']))
+            /*if (!preg_match('/(https:\/\/)/', $data['facebook']) && !preg_match('/(http:\/\/)/', $data['facebook']))
             {
                 $data['facebook'] = 'https://' . $data['facebook'];
             }
+            */
 
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
@@ -189,9 +190,9 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("institution")->debug();
+            $itemModel = $this->model("institution");
 
-            if (!preg_match('/(https:\/\/)/', $data['website']) && !preg_match('/(http:\/\/)/', $data['website']))
+            if (!empty($data['website']) && !preg_match('/(http[s]?:\/\/)/', $data['website']))
             {
                 $data['website'] = 'http://' . $data['website'];
             }

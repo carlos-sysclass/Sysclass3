@@ -45,9 +45,7 @@ crud:
         page_subtitle: Create a new Institution
     'edit/:id':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
-      #blocks: ["permission.add", "users.list.table", "roadmap.courses.edit"]
-      blocks: ["address.book"]
-      #scripts: ["views.courses.edit"]
+      blocks: ["dropbox.upload", "address.book"]
       template: form.tpl
       variables:
         page_subtitle: Edit your Institution

@@ -608,19 +608,21 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		$date_fmt = $this->module("settings")->get("php_date_fmt");
 		$edit_user['data_nascimento'] = date_create_from_format("Y-m-d", $edit_user['data_nascimento'])->format($date_fmt);
 
-		$userPolo = $currentUser->getUserPolo();
+		//$userPolo = $currentUser->getUserPolo();
 
 		$constraints = array('active' => true, 'return_objects' => false);
 		$constraints['required_fields'] = array('location', 'active_in_course', 'user_type', 'completed', 'score', 'has_course', 'num_lessons');
-		$userCourses = $currentUser->getUserCoursesAggregatingResults($constraints);
+		//$userCourses = $currentUser->getUserCoursesAggregatingResults($constraints);
 
 		$this->putData(array(
 			'languages' 	=> $languages,
 			'timezones' 	=> $timezones,
 			'summary'   	=> $summary,
 			'edit_user' 	=> $edit_user,
-			'user_polo' 	=> $userPolo,
-			'user_courses'	=> $userCourses
+			//'user_polo' 	=> $userPolo,
+            'user_polo'     => array(),
+			//'user_courses'	=> $userCourses
+            'user_courses'  => array()
 		));
 
 		$form_actions = array(

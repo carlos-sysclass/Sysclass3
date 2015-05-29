@@ -8,11 +8,75 @@
  * @package Sysclass\Modules
  */
 
-class DropboxModule extends SysclassModule /* implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider */
+class DropboxModule extends SysclassModule implements IBlockProvider /* implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider */
 {
 
+    public function registerBlocks() {
+        return array(
+            'dropbox.upload' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("jquery-file-upload-image");
+                $self->putComponent("jquery-file-upload-video");
+                $self->putComponent("jquery-file-upload-audio");
+                $self->putComponent("bootstrap-confirmation");
+
+                $self->putModuleScript("blocks.dropbox.upload");
+
+                $self->putSectionTemplate("foot", "blocks/dropbox.upload");
+
+                return true;
+            }
+        );
+    }
+
     /**
-     * Get all users visible to the current user
+     * [add a description]
+     *
+     * @url GET /item/:model/:id
+     */
+    public function getItemAction($model = "me", $id)
+    {
+        if ($model == "me") {
+            $itemModel = $this->model("dropbox");
+            return $itemModel->getItem($id);
+        }
+        return $this->invalidRequestError();
+    }
+
+    /**
+     * DELETE a news model
+     *
+     * @url DELETE /item/:model/:id
+     */
+    public function deleteItemAction($model = "me", $id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+           if ($model == "me") {
+                $itemModel = $this->model("dropbox");
+                $messages = array(
+                    'success' => "File removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your file. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            $data = $this->getHttpData(func_get_args());
+
+            if ($itemModel->deleteItem($id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [add a description]
      *
      * @url POST /upload/
      * @url POST /upload/:type
@@ -80,7 +144,7 @@ class DropboxModule extends SysclassModule /* implements ILinkable, IBreadcrumba
     }
 
     /**
-     * Get all users visible to the current user
+     * [add a description]
      *
      * @url DELETE /upload/:lesson_id/:file_id
      */
