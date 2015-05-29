@@ -118,7 +118,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 return this;
             },
-
             render : function() {
                 if (this.upload) {
                     this.$el.removeClass("template-download");
@@ -356,6 +355,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
+            jqXHR : null,
             initialize: function(opt) {
                 console.info('blocks.lessons.content/contentTimelineViewClass::initialize');
 
@@ -403,44 +403,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     done: function() {
 
                     },
-
-                    //uploadTemplateId: null,
-                    //downloadTemplateId: null,
-                    //
-                    /*
-                    uploadTemplate: function (o) {
-                        // CREATE VIEW HERE
-                        var rows = $();
-                        // REMOVE OLD FILES
-                        if (o.singleFileUploads) {
-                          //this.$("div.content-timeline-items .fileupload-item").remove();
-                        }
-                        $.each(o.files, function (index, file) {
-                            rows = rows.add($(self.addFileContent({
-                                upload : true,
-                                file: file,
-                                opt : o,
-                                index : index
-                            })));
-
-                        });
-                        return rows;
-                    },
-                    */
-                    /*
-                    downloadTemplate: function (o) {
-                        var rows = $();
-                        $.each(o.files, function (index, file) {
-                          rows = rows.add($(self.downloadTemplate({
-                            file: file,
-                            opt : o,
-                            index : index
-                          })));
-                        });
-
-                        return rows;
-                    }
-                    */
                 };
 
                 this.$el.fileupload(opt)
@@ -456,7 +418,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             })));
                         });
                         o.context = rows;
-                        o.submit();
+                        self.jqXHR = o.submit();
                     })
                     .bind('fileuploaddone', function (e, data) {
                         var files = data.getFilesFromResponse(data);
@@ -472,6 +434,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                             viewObject.completeEvents();
                         });
+                        self.jqXHR = null;
 
                     })
                     .bind('fileuploadfail', function (e, data) {
@@ -482,6 +445,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
+                        console.warn(progress);
                         data.context.find(".load-percent").html(progress);
                     });
             },
@@ -534,6 +498,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
 
                 this.listenTo(fileContentTimelineView, "timeline-file-content:delete", function(model) {
+                    if (!_.isNull(self.jqXHR)) {
+                        self.jqXHR.abort();
+                    }
                     model.destroy();
                     self.collection.remove(model, options);
                     fileContentTimelineView.remove();

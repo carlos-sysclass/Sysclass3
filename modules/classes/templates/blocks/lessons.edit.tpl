@@ -73,3 +73,11 @@ _lazy_init_functions.push(function() {
 */
 </script>
 {/if}
+
+
+{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
+    {foreach $T_SECTION_TPL['lessons_content'] as $template}
+        {include file=$template}
+    {/foreach}
+{/if}
+

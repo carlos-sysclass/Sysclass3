@@ -9,7 +9,7 @@ CREATE TABLE `mod_lessons_content` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDb DEFAULT CHARSET=utf8;
 
-ALTER TABLE `sysclass_demo`.`mod_lessons_content` 
+ALTER TABLE `mod_lessons_content` 
 CHANGE COLUMN `type` `content_type` VARCHAR(20) NOT NULL ,
 CHANGE COLUMN `order` `position` INT(11) NOT NULL ;
 
