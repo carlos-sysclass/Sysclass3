@@ -2,15 +2,8 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	// MODELS
 	this.startWithParent = false;
 
-    app.module("crud.config").on("start", function() {
-        var config = this.getConfig();
-
-        mod.start({
-        	config : config
-        });
-    });
-
-    mod.on("start", function(opt){
+    mod.on("start", function(opt) {
+    	/*
 		this.config = opt.config;
 
 		var entity_id = mod.config.entity_id;
@@ -18,9 +11,51 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 		var lessonModelClass = Backbone.Model.extend({
 			url : "/module/lessons/item/me?redirect=0"
 		});
+		*/
+	    mod.lessonsCollectionClass = Backbone.Collection.extend({
+	        initialize: function(opt) {
+	            this.class_id = opt.class_id;
+	            this.listenTo(this, "add", function(model, collection, opt) {
+	                model.set("class_id", this.class_id);
+	            });
+	        },
+	        url: function() {
+	            return "/module/lessons/items/me/default/" + JSON.stringify({ class_id : this.class_id });
+	        },
+	        setContentOrder : function(order) {
+	            $.ajax(
+	                "/module/classes/items/lessons/set-order/" + this.class_id,
+	                {
+	                    data: {
+	                        position: order
+	                    },
+	                    method : "PUT"
+	                }
+	            );
+	        }
+	    });
 
-		var lessonsEditViewClass = Backbone.View.extend({
-			template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
+	    mod.classLessonsItemViewClass = Backbone.View.extend({
+	    	template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
+	    	tagName : "li",
+	    	className : "list-file-item draggable green-stripe",
+			initialize: function(opt) {
+				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
+
+				//this.param = opt.param;
+
+				//this.listen(this.model, 'sync', this.render.bind(this));
+			},
+			render : function() {
+				this.$el.html(this.template(this.model.toJSON()));
+				this.$el.data("lessonId", this.model.get("id"));
+
+				return this;
+			}
+	    });
+
+		mod.classLessonsViewClass = Backbone.View.extend({
+
 			newtemplate : _.template($("#lessons-edit-add-item").html(), {variable: 'data'}),
 
 			events : {
@@ -28,23 +63,35 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				"confirmed.bs.confirmation .remove-item-action" : "remove"
 			},
 			initialize: function(opt) {
-				console.info('blocks.classes.lessons.edit/lessonsEditViewClass::initialize');
+				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
 
-				this.param = opt.param;
+				//this.param = opt.param;
 
-				this.listenToOnce(this.model, 'change:lessons', this.render.bind(this));
+				this.listenToOnce(this.collection, 'sync', this.render.bind(this));
+
+				this.initializeSortable();
+			},
+			initializeSortable : function() {
+                var self = this;
 
 				this.$(".list-group").sortable({
 	                //connectWith: ".list-group",
+	                //handle : ".drag-handler",
 	                items: "li.list-file-item.draggable",
 	                opacity: 0.8,
-	                /* axis : "y", */
+	                // axis : "y",
 	                placeholder: 'list-file-item placeholder',
 	                dropOnEmpty : true,
 	                forceHelperSize : true,
 	                forcePlaceholderSize: true,
 	                tolerance: "intersect",
-	                /* helper : 'original',  */
+                    update : function( event, ui ) {
+                        var contentOrder = $(this).sortable("toArray", {attribute : "data-lesson-id"});
+
+                        self.collection.setContentOrder(contentOrder);
+                    },
+	                // helper : 'original',
+	                /*
 	                receive : function( event, ui ) {
 	                    $(this).removeClass("empty-list-group");
 	                    self.refreshCounters();
@@ -78,15 +125,31 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
 	                    self.model.set('classes', remainingClasses);
 	                },
+	                */
 	                over : function( event, ui ) {
 	                    $(this).addClass("ui-sortable-hover");
 	                },
 	                out  : function( event, ui ) {
 	                    $(this).removeClass("ui-sortable-hover");
-	                },
+	                }
 	            });
 
-			},
+
+                this.$("div.content-timeline-items").sortable({
+                    //connectWith: ".list-group",
+                    handle : ".drag-handler",
+                    items: "div.timeline-item",
+                    opacity: 0.8,
+                    /* axis : "y", */
+                    placeholder: 'list-file-item placeholder',
+                    dropOnEmpty : true,
+                    forceHelperSize : true,
+                    forcePlaceholderSize: true,
+                    tolerance: "intersect",
+                    /* helper : 'original',  */
+
+                });
+            },
 			addItem : function(e) {
 				var self = this;
 				this.lessonModel = new lessonModelClass({
@@ -126,47 +189,28 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 					}
 				});
 				//$(".new-lesson-input-container button").on("click", saveLessonAction);
-				/*
-				$("[name='new-lesson-input']").on("keyup", function(e) {
-					e.preventDefault();
-					if ($(this).valid() && e.keyCode == 13) {
-						// ADD INPUT SPINNER
-						$(this).addClass("spinner");
-						// SAVE THE NEW LESSON
-						var name = $(this).val();
-
-						self.lessonModel.set("name", name);
-						self.lessonModel.save(null, {
-							success: function(model, response) {
-								$(".new-lesson-input-container").fadeOut(500);
-								self.addOne(model.toJSON());
-							}
-						});
-
-						// REMOVE VIEW, ADD TO COLLECTION
-					}
-				});
-*/
  			},
-			addOne : function(data) {
-				console.info('blocks.classes.lessons.edit/lessonsEditViewClass::addOne');
+			addOne : function(model) {
+				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
 
-				var html = this.template(data);
+				var classLessonsItemView = new mod.classLessonsItemViewClass({
+					model : model
+				});
 
 				app.module("ui").refresh(
-					$(html).appendTo(
+					$(classLessonsItemView.render().el).appendTo(
 						this.$("ul")
 					)
 				);
 			},
 			render: function() {
-				console.info('blocks.classes.lessons.edit/lessonsEditViewClass::render');
+				console.info('blocks.classes.lessons.edit/classLessonsView::render');
 
-				var data = this.model.get(this.param);
-				//this.$el.empty();
-				for (i in data) {
-					this.addOne(data[i]);
-				}
+				var self = this;
+
+				this.collection.each(function(model, i) {
+					self.addOne(model);
+				});
 			},
 			remove : function(e) {
 				var fileId = $(e.currentTarget).data("fileId");
@@ -177,6 +221,9 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			}
 		});
 
+
+/*
+
 		$SC.module("crud.views.edit").on("start", function() {
 			// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
 	        mod.lessonsEditView = new lessonsEditViewClass({
@@ -185,6 +232,46 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				model : this.itemModel
 			});
 		});
+		*/
+
+		$("[data-widget-id='lessons-edit-widget']").each(function() {
+			mod.createWidget(this, {
+				class_id : $(this).data("classId")
+			});
+		});
 
     });
+
+	mod.createWidget = function(el, data) {
+
+		var lessonsCollection = new mod.lessonsCollectionClass({
+			class_id : data.class_id
+		});
+
+		var classLessonsView = new mod.classLessonsViewClass({
+			collection : lessonsCollection,
+			el : el
+		});
+
+
+		lessonsCollection.fetch();
+	};
+	/*
+    app.module("crud.config").on("start", function() {
+        var config = this.getConfig();
+
+        mod.start({
+        	config : config
+        });
+    });
+	*/
+    app.module("crud.views.edit").on("start", function() {
+    	var self = this;
+        mod.listenToOnce(this.getForm(), "form:rendered", function() {
+        	console.warn(self.itemModel);
+            mod.start();
+        });
+    });
+
+    //
 });

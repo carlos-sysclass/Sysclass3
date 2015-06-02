@@ -1,4 +1,4 @@
-<div id="block_lessons_edit">
+<div id="block_lessons_edit" data-widget-id="lessons-edit-widget" data-class-id="227">
     <!--
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -22,42 +22,43 @@
                 Create Lesson
             </a>
 
-
 <!--    </div> -->
         </div>
     </div>
 </div>
 
 <script type="text/template" id="lessons-edit-item">
-    <li class="list-file-item draggable <% if (data.active == "1") { %>green-stripe<% } else { %>red-stripe<% } %>">
-        <a href="<% if (typeof data.id !== 'undefined') { %>/module/lessons/edit/<%= data.id %><% } else { %>javascript: void(0);<% } %>"><%= data.name %></a>
-        <div class="list-file-item-options">
-            <% if (typeof data.id !== 'undefined') { %>
-                <% if (data.active == "1") { %>
-                    <a class="btn btn-sm btn-danger remove-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);"
-                        data-toggle="confirmation"
-                        data-original-title="{translateToken value="Are you sure?"}"
-                        data-placement="left"
-                        data-singleton="true"
-                        data-popout="true"
-                        data-btn-ok-icon="fa fa-trash"
-                        data-btn-ok-class="btn-sm btn-danger"
-                        data-btn-cancel-icon="fa fa-times"
-                        data-btn-cancel-class="btn-sm btn-warning"
-                        data-btn-ok-label="{translateToken value="Yes"}"
-                        data-btn-cancel-label="{translateToken value="No"}"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </a>
-                <% } else { %>
-                    <a class="btn btn-sm btn-success remove-file-action" data-item-id="<%= data.id %>" href="javascript: void(0);">
-                        <i class="fa fa-check"></i>
-                    </a>
-                <% } %>
-            <% } %>
+    <a href="#" data-type="text" data-name="name" data-url="/module/lessons/item/me/<%= data.id %>" data-pk="<%= data.id %>" data-original-title="Enter username" class="editable-me" data-inputclass="form-control"><%= data.name %></a>
+    <div class="list-file-item-options">
+        <% if (typeof data.id !== 'undefined') { %>
 
-        </div>
-    </li>
+            <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= data.id %>" data-original-title="Edit lesson info">
+                <i class="fa fa-edit"></i>
+            </a>
+            <% if (data.active == "1") { %>
+                <a class="btn btn-sm btn-danger remove-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                >
+                    <i class="fa fa-trash"></i>
+                </a>
+            <% } else { %>
+                <a class="btn btn-sm btn-success enable-file-action" data-item-id="<%= data.id %>" href="javascript: void(0);">
+                    <i class="fa fa-check"></i>
+                </a>
+            <% } %>
+        <% } %>
+
+    </div>
 </script>
 
 
@@ -89,7 +90,7 @@ _lazy_init_functions.push(function() {
 
 {if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
     {foreach $T_SECTION_TPL['lessons_content'] as $template}
-        {include file=$template}
+        {*include file=$template*}
     {/foreach}
 {/if}
 

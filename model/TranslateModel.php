@@ -86,7 +86,7 @@ class TranslateModel extends ModelManager {
 	    	'language_id' => $language_id
 	    ))->getItems();
 	*/
-	    $tokens = $translateTokensModel->cache(false)->getItemsGroupByToken();
+	    $tokens = $translateTokensModel->clear()->cache(true)->getItemsGroupByToken();
 
 	    if (array_key_exists($token, $tokens)) {
 	    	$token = $tokens[$token][$language_code];

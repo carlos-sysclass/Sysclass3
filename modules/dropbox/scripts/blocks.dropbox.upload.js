@@ -258,7 +258,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
 
             fileUploadItemView.on("file-upload:change", function(data) {
                 if (updateField) {
-                    console.warn("set to", data.id);
                     $(self).find(":input[type='hidden']").val(data.id);
                     $(self).find(":input[type='hidden']").change();
                 } else {

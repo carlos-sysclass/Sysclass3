@@ -15,6 +15,8 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
         FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 
+        $this->order = array("l.position");
+
         parent::init();
 
     }
@@ -24,6 +26,29 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
         $path = $filehelper->getLessonPath($id, $type);
 
         return $filehelper->listFiles($path);
+
+    }
+
+    protected function resetContentOrder($class_id) {
+        $this->setItem(array(
+            'position' => -1
+        ), array(
+            'class_id' => $class_id
+        ));
+    }
+
+    public function setContentOrder($class_id, array $order_ids) {
+        $this->resetContentOrder($class_id);
+        foreach($order_ids as $index => $lesson_id) {
+            $this->setItem(array(
+                'position' => $index + 1
+            ), array(
+                'id' => $lesson_id,
+                'class_id' => $class_id
+            ));
+        }
+
+        return true;
 
     }
 }

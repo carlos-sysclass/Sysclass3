@@ -240,8 +240,18 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
+            if (!empty($filter)) {
+                $filter = json_decode($filter, true);
+                if (is_array($filter)) {
+                    // SANITIZE ARRAY
+                    $itemsCollection->addFilter($filter);
+                }
+            }
+            //var_dump($filter);
+            //exit;
             $itemsData = $itemsCollection->getItems();
             $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+
         } elseif ($model == "lesson-content") {
             $modelRoute = "lessons/content";
             $optionsRoute = "edit";

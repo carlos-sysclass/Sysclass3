@@ -96,17 +96,11 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
             'classes.lessons.edit' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
+
                 $self->putModuleScript("blocks.classes.lessons.edit");
 
-
-                //$self->putBlock("lessons.content");
-
-                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
-                //$self->putItem("classes_lessons_block_context", $block_context);
-
                 $self->putSectionTemplate("lessons", "blocks/lessons.edit");
-                //$self->putSectionTemplate("foot", "dialogs/season.add");
-                //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 return true;
             }
@@ -310,6 +304,35 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         }
 
         return array_values($items);
+    }
+
+    /**
+     * Get all users visible to the current user
+     *
+     * @url PUT /items/lessons/set-order/:class_id
+     */
+    public function setLessonOrderAction($class_id)
+    {
+        $modelRoute = "classes/lessons/collection";
+
+        $itemsCollection = $this->model($modelRoute);
+        // APPLY FILTER
+        if (is_null($class_id) || !is_numeric($class_id)) {
+            return $this->invalidRequestError();
+        }
+
+        $messages = array(
+            'success' => "Lesson order updated with success",
+            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+        );
+
+        $data = $this->getHttpData(func_get_args());
+
+        if ($itemsCollection->setContentOrder($class_id, $data['position'])) {
+            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+        } else {
+            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+        }
     }
 
 }

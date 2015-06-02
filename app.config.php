@@ -240,6 +240,12 @@ $plicoLib->add("resources/components", array(
 ));
 
 $plicoLib->add("resources/components", array(
+	'name'	=> 'bootstrap-editable',
+	'css'	=> array('plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable'),
+	'js'	=> array('plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable')
+));
+
+$plicoLib->add("resources/components", array(
 	'name'	=> 'jquery-file-upload',
 	'css'	=> array(
 		'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',

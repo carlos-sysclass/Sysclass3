@@ -372,6 +372,18 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     };
 
+    this.handleBootstrapEditable = function(context) {
+        $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+
+        if ($(".editable-me", context).size() > 0) {
+            $(".editable-me", context).each(function() {
+                $(this).editable();
+            });
+        }
+    };
+
+
+
     this.handleActions = function (context) {
         var self = this;
         $('[data-action]', context).each(function () {
@@ -390,6 +402,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleSelect2(context);
         this.handleJqueryFileUpload(context);
         this.handleBootstrapConfirmation(context);
+        this.handleBootstrapEditable(context);
         this.handleDatepickers(context);
 		this.handleTimepickers(context);
 		this.handleWysihtml5(context);

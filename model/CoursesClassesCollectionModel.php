@@ -60,4 +60,5 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         }
         return $result;
     }
+
 }
