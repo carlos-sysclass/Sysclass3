@@ -263,7 +263,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
             $itemModel = $this->model("courses/areas/collection");
             //$data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+            if (($data['id'] = $itemModel->debug()->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
                     self::$t->translate("Knowlegde Area created with success"),
@@ -311,7 +311,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("course/item");
+            $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Knowlegde Area removed with success"), "success");
                 return $response;

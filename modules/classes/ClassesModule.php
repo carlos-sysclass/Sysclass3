@@ -95,11 +95,11 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         return array(
             'classes.lessons.edit' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                //$self->putComponent("data-tables");
+                $self->putComponent("bootstrap-confirmation");
                 $self->putModuleScript("blocks.classes.lessons.edit");
 
 
-                $self->putBlock("lessons.content");
+                //$self->putBlock("lessons.content");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 //$self->putItem("classes_lessons_block_context", $block_context);
@@ -119,17 +119,15 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function addPage()
     {
-        $items = $this->model("courses/collection")->getItems();
-
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        /*
-        $courses = array();
-        foreach($items as $course)
-        {
-            $courses[$course['id']] = $course['name'];
-        }
-        */
+        $items = $this->model("courses/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
         $this->putItem("courses", $items);
+
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_instructor' => true
+        ))->getItems();
+        $this->putItem("instructors", $items);
 
         parent::addPage($id);
 

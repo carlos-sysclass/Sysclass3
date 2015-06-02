@@ -24,7 +24,8 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			newtemplate : _.template($("#lessons-edit-add-item").html(), {variable: 'data'}),
 
 			events : {
-				"click .add-item-action" : "addItem"
+				"click .add-item-action" : "addItem",
+				"confirmed.bs.confirmation .remove-item-action" : "remove"
 			},
 			initialize: function(opt) {
 				console.info('blocks.classes.lessons.edit/lessonsEditViewClass::initialize');
@@ -150,8 +151,12 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			addOne : function(data) {
 				console.info('blocks.classes.lessons.edit/lessonsEditViewClass::addOne');
 
-				this.$("ul").append(
-					this.template(data)
+				var html = this.template(data);
+
+				app.module("ui").refresh(
+					$(html).appendTo(
+						this.$("ul")
+					)
 				);
 			},
 			render: function() {
@@ -164,13 +169,11 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				}
 			},
 			remove : function(e) {
-				/*
 				var fileId = $(e.currentTarget).data("fileId");
 				var fileObject = new mod.lessonFileModelClass();
 				fileObject.set("id", fileId);
 				fileObject.destroy();
 				$(e.currentTarget).parents("li").remove();
-				*/
 			}
 		});
 

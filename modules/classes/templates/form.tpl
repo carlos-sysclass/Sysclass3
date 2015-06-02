@@ -50,31 +50,23 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
 					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
-					<select class="select2-me form-control" name="instructor_id" data-rule-required="1" data-rule-min="1">
-						{foreach $T_INSTRUCTORS as $id => $name}
-							<option value="{$id}">{$name}</option>
+					<select class="select2-me form-control" name="instructor_id" data-rule-min="1">
+						<option value="">{translateToken value="Please Select"}</option>
+						{foreach $T_INSTRUCTORS as $id => $instructor}
+							<option value="{$id}">{$instructor.name} {$instructor.surname}</option>
 						{/foreach}
 					</select>
 				</div>
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Course"}</label>
-					<select class="select2-me form-control" name="course_id" data-rule-required="1" data-rule-min="1">
+					<select class="select2-me form-control" name="course_id" data-rule-min="1">
+						<option value="">{translateToken value="Please Select"}</option>
 						{foreach $T_COURSES as $id => $course}
 							<option value="{$course.id}">{$course.name}</option>
 						{/foreach}
 					</select>
 				</div>
-
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Instructors"}</label>
-					<select class="select2-me form-control" name="instructor_id" data-rule-required="1" data-rule-min="1">
-						{foreach $T_INSTRUCTORS as $id => $instructor}
-							<option value="{$instructor.id}">{$instructor.name} {$instructor.surname} (id: {$instructor.id})</option>
-						{/foreach}
-					</select>
-				</div>
-
 
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>
