@@ -1,4 +1,4 @@
-<div class="table-responsive backgrid-table">
+<div class="backgrid-table">
     <table class="table table-striped table-bordered table-hover table-full-width data-table" id="view-{$T_MODULE_ID}">
         <thead>
             <tr>

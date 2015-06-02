@@ -23,9 +23,16 @@ crud:
         - mData: name
           label: Name
 
-        - mData: price
-          sType: table-currency
-          label: Price
+        - mData: city
+          label: City
+
+        - mData: state
+          label: State
+
+        - mData: country_code
+          sType: table-image
+          sClass: text-center
+          label: Country
 
         - mData: active
           sType: table-boolean
@@ -36,6 +43,7 @@ crud:
           sType: table-options
           sClass: text-center
           label: Actions
+
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
       blocks: ["address.book"]

@@ -283,7 +283,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     'remove'    => array(
                         'icon'  => 'icon-remove',
                         'class' => 'btn-sm btn-danger'
-                    ),
+                    )/*,
                     'website'    => array(
                         'icon'  => 'icon-link',
                         'link'  => $item['website'],
@@ -294,6 +294,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                         'link'  => $item['facebook'],
                         'class' => 'btn-sm'
                     )
+                    */
                 );
             }
             return array(
@@ -321,6 +322,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      *
      * @url GET /view
      */
+/*
     public function viewPage()
     {
         $currentUser    = $this->getCurrentUser(true);
@@ -341,7 +343,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
     }
-
+*/
 
 
     /*

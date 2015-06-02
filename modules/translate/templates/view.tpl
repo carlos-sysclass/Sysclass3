@@ -3,7 +3,7 @@
 <div id="translate-view">
 	<div class="row margin-top-20">
 		<div class="col-md-12">
-			<div class="table-responsive backgrid-table">
+			<div class="backgrid-table">
 				<table class="table table-striped table-bordered table-hover table-full-width data-table" id="translate-table">
 					<thead>
 						<tr>

@@ -189,7 +189,7 @@ $plicoLib->add("resources/components", array(
 $plicoLib->add("resources/components", array(
 	'name'	=> 'data-tables',
 	'css'	=> array('plugins/data-tables/DT_bootstrap'),
-	'js'	=> array('plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
+	'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
 ));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'datepicker',

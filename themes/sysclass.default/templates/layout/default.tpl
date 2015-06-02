@@ -43,6 +43,39 @@
 		{block name="underscore-templates"}
 		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
 		<script type="text/template" id="datatables-options-template">
+				<a
+					class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
+					href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>"
+					<% if (key == "remove") { %>
+	                    data-toggle="confirmation"
+	                    data-original-title="{translateToken value="Are you sure?"}"
+	                    data-placement="left"
+	                    data-singleton="true"
+	                    data-popout="true"
+	                    data-btn-ok-icon="fa fa-trash"
+	                    data-btn-ok-class="btn-sm btn-danger"
+	                    data-btn-cancel-icon="fa fa-times"
+	                    data-btn-cancel-class="btn-sm btn-warning"
+	                    data-btn-ok-label="{translateToken value="Yes"}"
+	                    data-btn-cancel-label="{translateToken value="No"}"
+					<% } else { %>
+
+					<% } %>
+					<% if (item.attrs != undefined) { %>
+						<% _.each(item.attrs, function(value, tag) { %>
+							<%= tag %>="<%= value %>"
+						<% }); %>
+					<% } %>
+				>
+				<% if (item.icon != undefined) { %>
+					<i class="<%= item.icon %>"></i>
+				<% } %>
+				<% if (item.text != undefined) { %>
+					<%= item.text %>
+				<% } %>
+			</a>
+		</script>
+		<script type="text/template" id="datatables-options-template">
 			<a
 				class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
 				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>"
@@ -60,6 +93,7 @@
 				<% } %>
 			</a>
 		</script>
+
 		{/block}
 		<!-- BEGIN FOOTER -->
 		{block name="footer"}

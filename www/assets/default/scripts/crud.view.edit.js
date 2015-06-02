@@ -11,8 +11,11 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
         this.itemModel.set("id", this.entity_id);
 
         var baseFormClass = app.module("views").baseFormClass;
-        var newsFormView = new baseFormClass({el : "#form-" + this.module_id, model: this.itemModel});
+        mod.formView = new baseFormClass({el : "#form-" + this.module_id, model: this.itemModel});
 
         this.itemModel.fetch();
     });
+    mod.getForm = function() {
+        return this.formView;
+    };
 });

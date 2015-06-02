@@ -161,6 +161,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	            	}
 	            }
 	        }
+	        this.trigger("form:rendered");
+
 	    },
 		render: function(model) {
 	    	console.info('views/baseClass::render');

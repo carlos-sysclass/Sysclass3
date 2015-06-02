@@ -7,7 +7,7 @@ $SC.module("views.crud.add", function(mod, app, Backbone, Marionette, $, _) {
         var itemModel = new itemModelClass();
 
         var baseFormClass = app.module("views").baseFormClass;
-        var newsFormView = new baseFormClass({el : "#form-" + this.module_id, model: itemModel});
+        mod.formView = new baseFormClass({el : "#form-" + this.module_id, model: itemModel});
 
         // EXPORTS
         //this.itemModel = itemModel;

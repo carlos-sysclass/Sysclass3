@@ -44,6 +44,38 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
     }
 
     /**
+     * [ add a description ]
+     *
+     * @url PUT /item/:model/:id
+     */
+    public function setItemAction($model, $id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($model == "me") {
+                $itemModel = $this->model("dropbox");
+                $messages = array(
+                    'success' => "File updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            if ($itemModel->setItem($data, $id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
      * DELETE a news model
      *
      * @url DELETE /item/:model/:id

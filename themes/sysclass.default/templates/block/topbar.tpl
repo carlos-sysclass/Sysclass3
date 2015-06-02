@@ -66,7 +66,7 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown {$item.type}">
+				<li class="dropdown {$item.type} hidden-xs">
 					{foreach $item.items as $subitem}
 				       	{if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -194,7 +194,7 @@
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-					<img alt="" src="{Plico_RelativePath file=$T_SMALL_USER_AVATAR.avatar}" width="{$T_SMALL_USER_AVATAR.width}"/>
+					<img alt="" src="{Plico_RelativePath file=$T_SMALL_USER_AVATAR.avatar}" width="{$T_SMALL_USER_AVATAR.width}" class="hidden-xs" />
 					<span class="username">{$T_CURRENT_USER->user.name}</span>
 					<i class="icon-angle-down"></i>
 				</a>

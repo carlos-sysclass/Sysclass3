@@ -8,7 +8,7 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 	mod.addInitializer(function() {
         var tableViewClass = Backbone.View.extend({
 			events : {
-				"click .datatable-option-remove" : "removeItem"
+				"confirmed.bs.confirmation .datatable-option-remove" : "removeItem"
 			},
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
@@ -28,6 +28,10 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 		            oTable.fnSetColumnVis(iCol, (bVis ? false : true));
 		        });
 				*/
+
+
+
+
         	},
 			removeItem : function(e) {
 				e.preventDefault();

@@ -101,7 +101,11 @@ $.extend( true, $.fn.dataTable.defaults, {
 	],
 	*/
 	// set the initial value
-	"iDisplayLength": 10
+	"iDisplayLength": 10,
+	"createdRow": function( row, data, dataIndex ) {
+		$SC.module("ui").refresh(row);
+   		//console.warn(row, data, dataIndex);
+	}
 });
 
 

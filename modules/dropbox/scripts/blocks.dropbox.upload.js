@@ -1,17 +1,11 @@
 $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, _) {
     // MODELS
-    //this.startWithParent = false;
-    /*
-    mod.addInitializer(function() {
+    this.startWithParent = false;
 
-    });
-    */
-    this.loadFileContent = function(file_id) {
-        // GET REMOTE FILE FROM ID
+    mod.addInitializer(function() {
         var dropboxItemModelClass = Backbone.Model.extend({
             urlRoot: "/module/dropbox/item/me/"
         });
-
         var fileContentViewClass = Backbone.View.extend({
             uploadTemplate : _.template($("#block-dropbox-upload-upload").html()),
             downloadTemplate : _.template($("#block-dropbox-upload-download").html()),
@@ -110,7 +104,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.trigger("file-content:delete", this.model);
             }
         });
-
         var fileUploadItemViewClass = Backbone.View.extend({
             uploadTemplate : _.template($("#block-dropbox-upload-upload").html()),
             downloadTemplate : _.template($("#block-dropbox-upload-download").html()),
@@ -123,6 +116,8 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.initializeFileUpload();
 
                 this.listenToOnce(this.model, "sync", this.render.bind(this));
+
+                this.render();
 
             },
             initializeFileUpload : function() {
@@ -224,7 +219,12 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
 
 
                 this.listenTo(fileContentView, "file-content:save", function(model) {
-                    model.save();
+                    model.save(null, {
+                        success : function() {
+                            self.trigger("file-upload:change", model.toJSON());
+                        }
+                    });
+
                 });
 
                 this.listenTo(fileContentView, "file-content:delete", function(model) {
@@ -239,22 +239,54 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             }
         });
 
+        $(".fileupload-me").each(function() {
+            var self = this;
+
+            var dropboxItemModel = new dropboxItemModelClass();
+            var fileId = $(this).find(":input[type='hidden']").val();
+            var updateField = true;
+            if (_.isEmpty(fileId)) {
+                fileId = $(this).data("fileId");
+                updateField = false;
+            }
+            dropboxItemModel.set("id", fileId);
+
+            var fileUploadItemView = new fileUploadItemViewClass({
+                model : dropboxItemModel,
+                el : $(this)
+            });
+
+            fileUploadItemView.on("file-upload:change", function(data) {
+                if (updateField) {
+                    console.warn("set to", data.id);
+                    $(self).find(":input[type='hidden']").val(data.id);
+                    $(self).find(":input[type='hidden']").change();
+                } else {
+                    $(self).data("fileId", data.id);
+                }
+            });
+
+            dropboxItemModel.fetch();
+        });
+    });
+/*
+    this.loadFileContent = function(file_id) {
+        // GET REMOTE FILE FROM ID
+
         var dropboxItemModel = new dropboxItemModelClass({
             id : file_id
         });
 
-        var fileUploadItemView = new fileUploadItemViewClass({
-            model : dropboxItemModel,
-            el : "#file-test"
-        });
 
-        dropboxItemModel.fetch();
+
+
     }
-    /*
+*/
+
+
     $SC.module("crud.views.edit").on("start", function() {
-        mod.start();
-
-
+        mod.listenTo(this.getForm(), "form:rendered", function() {
+            mod.start();
+        });
     });
-    */
 });
