@@ -815,6 +815,10 @@ table.users-panel-notification-table > thead > tr > td {
     border-left: 3px solid #d84a38;
 }
 
+.list-file-item.blue-stripe {
+    border-left: 3px solid #4b8df8;
+}
+
 .list-file-item.black-stripe {
     border-left: 3px solid #333333;
 }

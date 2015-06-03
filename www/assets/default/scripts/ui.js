@@ -373,7 +373,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     };
 
     this.handleBootstrapEditable = function(context) {
-        $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+        if ($.fn.editable) {
+            $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+        }
 
         if ($(".editable-me", context).size() > 0) {
             $(".editable-me", context).each(function() {

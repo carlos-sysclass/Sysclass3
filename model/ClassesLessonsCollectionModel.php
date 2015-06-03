@@ -15,7 +15,7 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
         FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 
-        $this->order = array("l.position");
+        $this->order = array("-l.position DESC");
 
         parent::init();
 

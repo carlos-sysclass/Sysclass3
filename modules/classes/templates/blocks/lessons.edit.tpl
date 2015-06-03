@@ -28,15 +28,30 @@
 </div>
 
 <script type="text/template" id="lessons-edit-item">
-    <a href="#" data-type="text" data-name="name" data-url="/module/lessons/item/me/<%= data.id %>" data-pk="<%= data.id %>" data-original-title="Enter username" class="editable-me" data-inputclass="form-control"><%= data.name %></a>
+    <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+        data-type="text"
+        data-name="name"
+        <% if (typeof data.id !== 'undefined') { %>
+        data-url="/module/lessons/item/me/<%= data.id %>"
+        data-pk="<%= data.id %>"
+        data-method="put"
+        <% } else { %>
+        data-url="/module/lessons/item/me"
+        data-pk=""
+        data-method="post"
+        <% } %>
+        data-original-title="Enter username"
+        data-inputclass="form-control"
+    >
+        <%= data.name %>
+    </a>
     <div class="list-file-item-options">
         <% if (typeof data.id !== 'undefined') { %>
-
             <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= data.id %>" data-original-title="Edit lesson info">
                 <i class="fa fa-edit"></i>
             </a>
             <% if (data.active == "1") { %>
-                <a class="btn btn-sm btn-danger remove-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);"
+                <a class="btn btn-sm btn-danger disable-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
                     data-placement="left"
@@ -49,10 +64,10 @@
                     data-btn-ok-label="{translateToken value="Yes"}"
                     data-btn-cancel-label="{translateToken value="No"}"
                 >
-                    <i class="fa fa-trash"></i>
+                    <i class="fa fa-times"></i>
                 </a>
             <% } else { %>
-                <a class="btn btn-sm btn-success enable-file-action" data-item-id="<%= data.id %>" href="javascript: void(0);">
+                <a class="btn btn-sm btn-success enable-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);">
                     <i class="fa fa-check"></i>
                 </a>
             <% } %>
@@ -63,17 +78,14 @@
 
 
 <script type="text/template" id="lessons-edit-add-item">
-    <li class="new-lesson-input-container">
-        <div class="input-group">
-            <span class="input-group-btn" style="vertical-align: top;">
-                <button type="button" class="btn btn-primary">
-                    <i class="fa fa-check"></i>
-                </button>
-            </span>
-            <input name="new-lesson-input" value="" type="text" placeholder="Type the lesson name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-
-        </div>
-    </li>
+    <div class="input-group">
+        <span class="input-group-btn" style="vertical-align: top;">
+            <button type="button" class="btn btn-primary">
+                <i class="fa fa-check"></i>
+            </button>
+        </span>
+        <input name="new-lesson-input" value="" type="text" placeholder="Type the lesson name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+    </div>
 </script>
 
 

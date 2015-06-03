@@ -3,15 +3,17 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	this.startWithParent = false;
 
     mod.on("start", function(opt) {
-    	/*
-		this.config = opt.config;
 
-		var entity_id = mod.config.entity_id;
-
-		var lessonModelClass = Backbone.Model.extend({
-			url : "/module/lessons/item/me?redirect=0"
+		mod.lessonModelClass = Backbone.Model.extend({
+			urlRoot : function() {
+				if (this.get("id")) {
+					return "/module/lessons/item/me";
+				} else {
+					return "/module/lessons/item/me?redirect=0";
+				}
+			}
 		});
-		*/
+
 	    mod.lessonsCollectionClass = Backbone.Collection.extend({
 	        initialize: function(opt) {
 	            this.class_id = opt.class_id;
@@ -19,6 +21,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	                model.set("class_id", this.class_id);
 	            });
 	        },
+	        model : mod.lessonModelClass,
 	        url: function() {
 	            return "/module/lessons/items/me/default/" + JSON.stringify({ class_id : this.class_id });
 	        },
@@ -36,9 +39,86 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	    });
 
 	    mod.classLessonsItemViewClass = Backbone.View.extend({
+			events : {
+				"click .enable-item-action" : "enable",
+				"confirmed.bs.confirmation .disable-item-action" : "disable"
+			},
 	    	template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
 	    	tagName : "li",
-	    	className : "list-file-item draggable green-stripe",
+	    	className : "list-file-item draggable blue-stripe",
+			initialize: function(opt) {
+				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
+
+				this.opened = opt.opened ? opt.opened : false;
+
+				//this.listen(this.model, 'sync', this.render.bind(this));
+			},
+			render : function() {
+				this.$el.html(this.template(this.model.toJSON()));
+				if (this.model.get("id")) {
+					if (this.model.get("active") == 0) {
+						this.$el.removeClass("green-stripe");
+						this.$el.removeClass("blue-stripe");
+						this.$el.addClass("red-stripe");
+					} else {
+						this.$el.removeClass("red-stripe");
+						this.$el.removeClass("blue-stripe");
+						this.$el.addClass("green-stripe");
+					}
+				}
+				//this.$el.data("lessonId", this.model.get("id"));
+				this.$el.attr("data-lesson-id", this.model.get("id"));
+
+				if (this.$el.length) {
+					app.module("ui").refresh(this.$el);
+				}
+
+				return this;
+			},
+			start : function() {
+				var editableItem = this.$(".editable-me");
+
+				if (this.opened) {
+					window.setTimeout(function() {
+						editableItem.editable('show');
+					}, 350);
+				}
+
+				editableItem.editable("option", "ajaxOptions", {
+					type: editableItem.data("method")
+				});
+
+				var self = this;
+			    editableItem.on('save', function(e, params) {
+			        //console.warn(e, params);
+			        if (!self.model.get("id")) {
+			        	var response = params.response;
+			        	self.model.set(response);
+			        	self.trigger("lesson:add", self.model);
+			        	self.render();
+			        }
+			    });
+
+				if (this.$el.length) {
+					app.module("ui").refresh(this.$el);
+				}
+			},
+			enable: function() {
+				this.model.set("active", 1);
+				this.model.save();
+				this.render();
+			},
+			disable: function() {
+				this.model.set("active", 0);
+				this.model.save();
+				this.render();
+			}
+	    });
+		/*
+	    mod.classLessonsNewItemViewClass = Backbone.View.extend({
+	    	newtemplate : _.template($("#lessons-edit-add-item").html(), {variable: 'data'}),
+	    	tagName : "li",
+	    	className : "new-lesson-input-container",
 			initialize: function(opt) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
 
@@ -47,17 +127,48 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				//this.listen(this.model, 'sync', this.render.bind(this));
 			},
 			render : function() {
-				this.$el.html(this.template(this.model.toJSON()));
-				this.$el.data("lessonId", this.model.get("id"));
+				this.$el.html(this.newtemplate(this.model.toJSON()));
 
 				return this;
+			},
+			start : function() {
+				this.$("[name='new-lesson-input']").focus();
+
+				var saveLessonAction = function(e) {
+
+				};
+
+				this.$("[name='new-lesson-input']").on("blur", this.save.bind(this));
+				$("[name='new-lesson-input']").on("keyup", function(e) {
+					if (e.keyCode == 27) {
+						$(".new-lesson-input-container").unbind().remove();
+					}
+				});
+
+				//$(".new-lesson-input-container button").on("click", saveLessonAction);
+			},
+			save : function(e) {
+				e.preventDefault();
+				if ($("[name='new-lesson-input']").valid()) {
+					// ADD INPUT SPINNER
+					$("[name='new-lesson-input']").addClass("spinner");
+					// SAVE THE NEW LESSON
+					var name = $("[name='new-lesson-input']").val();
+
+					self.lessonModel.set("name", name);
+					self.lessonModel.save(null, {
+						success: function(model, response) {
+							$(".new-lesson-input-container").remove()
+							self.addOne(model.toJSON());
+						}
+					});
+
+					// REMOVE VIEW, ADD TO COLLECTION
+				}
 			}
 	    });
-
+		*/
 		mod.classLessonsViewClass = Backbone.View.extend({
-
-			newtemplate : _.template($("#lessons-edit-add-item").html(), {variable: 'data'}),
-
 			events : {
 				"click .add-item-action" : "addItem",
 				"confirmed.bs.confirmation .remove-item-action" : "remove"
@@ -152,43 +263,27 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
             },
 			addItem : function(e) {
 				var self = this;
-				this.lessonModel = new lessonModelClass({
-					class_id : entity_id,
+
+				var lessonModel = new mod.lessonModelClass({
 					active : 1
 				});
 
-				this.$("ul").append(
-					this.newtemplate(this.lessonModel.toJSON())
-				);
-				$("[name='new-lesson-input']").focus();
-
-				var saveLessonAction = function(e) {
-					e.preventDefault();
-					if ($("[name='new-lesson-input']").valid()) {
-						// ADD INPUT SPINNER
-						$("[name='new-lesson-input']").addClass("spinner");
-						// SAVE THE NEW LESSON
-						var name = $("[name='new-lesson-input']").val();
-
-						self.lessonModel.set("name", name);
-						self.lessonModel.save(null, {
-							success: function(model, response) {
-								$(".new-lesson-input-container").remove()
-								self.addOne(model.toJSON());
-							}
-						});
-
-						// REMOVE VIEW, ADD TO COLLECTION
-					}
-				};
-
-				$("[name='new-lesson-input']").on("blur", saveLessonAction);
-				$("[name='new-lesson-input']").on("keyup", function(e) {
-					if (e.keyCode == 27) {
-						$(".new-lesson-input-container").unbind().remove();
-					}
+				var classLessonsNewItemView = new mod.classLessonsItemViewClass({
+					model : lessonModel,
+					opened : true
 				});
-				//$(".new-lesson-input-container button").on("click", saveLessonAction);
+
+				app.module("ui").refresh(
+					$(classLessonsNewItemView.render().el).appendTo( this.$("ul") )
+				);
+
+				this.listenTo(classLessonsNewItemView, "lesson:add", function(model) {
+					self.collection.add(model);
+					model.save();
+					console.warn(self.collection.toJSON());
+				});
+
+				classLessonsNewItemView.start();
  			},
 			addOne : function(model) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
@@ -197,11 +292,12 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 					model : model
 				});
 
-				app.module("ui").refresh(
+				//app.module("ui").refresh(
 					$(classLessonsItemView.render().el).appendTo(
 						this.$("ul")
 					)
-				);
+				//);
+
 			},
 			render: function() {
 				console.info('blocks.classes.lessons.edit/classLessonsView::render');
@@ -211,6 +307,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				this.collection.each(function(model, i) {
 					self.addOne(model);
 				});
+				app.module("ui").refresh( this.$("ul") );
 			},
 			remove : function(e) {
 				var fileId = $(e.currentTarget).data("fileId");
