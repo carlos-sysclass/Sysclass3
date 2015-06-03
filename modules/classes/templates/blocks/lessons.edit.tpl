@@ -51,27 +51,30 @@
                 <i class="fa fa-edit"></i>
             </a>
             <% if (data.active == "1") { %>
-                <a class="btn btn-sm btn-danger disable-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);"
-                    data-toggle="confirmation"
-                    data-original-title="{translateToken value="Are you sure?"}"
-                    data-placement="left"
-                    data-singleton="true"
-                    data-popout="true"
-                    data-btn-ok-icon="fa fa-trash"
-                    data-btn-ok-class="btn-sm btn-danger"
-                    data-btn-cancel-icon="fa fa-times"
-                    data-btn-cancel-class="btn-sm btn-warning"
-                    data-btn-ok-label="{translateToken value="Yes"}"
-                    data-btn-cancel-label="{translateToken value="No"}"
-                >
+                <a class="btn btn-sm btn-warning disable-item-action" href="javascript: void(0);">
                     <i class="fa fa-times"></i>
                 </a>
             <% } else { %>
-                <a class="btn btn-sm btn-success enable-item-action" data-item-id="<%= data.id %>" href="javascript: void(0);">
+                <a class="btn btn-sm btn-success enable-item-action" href="javascript: void(0);">
                     <i class="fa fa-check"></i>
                 </a>
             <% } %>
         <% } %>
+        <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
 
     </div>
 </script>

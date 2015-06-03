@@ -20,6 +20,9 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	            this.listenTo(this, "add", function(model, collection, opt) {
 	                model.set("class_id", this.class_id);
 	            });
+	            this.listenTo(this, "remove", function(model, collection, opt) {
+	                console.warn(model);
+	            });
 	        },
 	        model : mod.lessonModelClass,
 	        url: function() {
@@ -41,7 +44,8 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 	    mod.classLessonsItemViewClass = Backbone.View.extend({
 			events : {
 				"click .enable-item-action" : "enable",
-				"confirmed.bs.confirmation .disable-item-action" : "disable"
+				"click .disable-item-action" : "disable",
+				"confirmed.bs.confirmation .delete-item-action" : "delete"
 			},
 	    	template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
 	    	tagName : "li",
@@ -94,7 +98,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			        if (!self.model.get("id")) {
 			        	var response = params.response;
 			        	self.model.set(response);
-			        	self.trigger("lesson:add", self.model);
+			        	self.trigger("lesson:added", self.model);
 			        	self.render();
 			        }
 			    });
@@ -112,6 +116,11 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				this.model.set("active", 0);
 				this.model.save();
 				this.render();
+			},
+			delete: function() {
+				this.model.destroy();
+				this.trigger("lesson:removed", this.model);
+				this.remove();
 			}
 	    });
 		/*
@@ -277,10 +286,12 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 					$(classLessonsNewItemView.render().el).appendTo( this.$("ul") )
 				);
 
-				this.listenTo(classLessonsNewItemView, "lesson:add", function(model) {
+				this.listenTo(classLessonsNewItemView, "lesson:added", function(model) {
 					self.collection.add(model);
 					model.save();
-					console.warn(self.collection.toJSON());
+				});
+				this.listenTo(classLessonsNewItemView, "lesson:removed", function(model) {
+					self.collection.remove(model);
 				});
 
 				classLessonsNewItemView.start();
@@ -288,8 +299,15 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			addOne : function(model) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
 
+				var self = this;
+
+
 				var classLessonsItemView = new mod.classLessonsItemViewClass({
 					model : model
+				});
+
+				this.listenTo(classLessonsItemView, "lesson:removed", function(model) {
+					self.collection.remove(model);
 				});
 
 				//app.module("ui").refresh(
