@@ -77,8 +77,11 @@
 
             // Callback to retrieve the list of files from the server response:
             getFilesFromResponse: function (data) {
+                var obj = (typeof this == "undefined") ? data : this;
                 if (data.result && $.isArray(data.result.files)) {
                     return data.result.files;
+                } else if (data.result && $.isArray(data.result[obj.paramName[0]])) {
+                    return data.result[obj.paramName[0]];
                 }
                 return [];
             },

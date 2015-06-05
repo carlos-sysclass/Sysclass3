@@ -1,10 +1,10 @@
-<div class="form-group" id="content-timeline" data-fileupload-url="/module/dropbox/upload/lesson">
+<div class="form-group" id="content-timeline">
     <!--
     <ul class="list-group ui-sortable margin-top-20">
     </ul>
     -->
     <div class="pull-left">
-        <span class="btn btn-sm btn-link fileinput-button">
+        <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/lesson">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add File"}</span>
             <input type="file" name="files[]">
@@ -189,7 +189,7 @@
                 <span class="timeline-body-time font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
             </div>
             <div class="timeline-body-head-actions">
-                <span class="btn btn-sm btn-default text-loading">
+                <span class="btn btn-sm btn-default disabled text-loading">
                     <i class="fa fa-spinner fa-spin"></i>
                     <span class="load-percent">0</span>{translateToken value="% Complete"}
                 </span>
@@ -226,15 +226,28 @@
 </script>
 <script type="text/template" id="fileupload-download-timeline-item">
     <% var file = model.file %>
+    <%
+        var file_type = "other";
+        if (/^video\/.*$/.test(file.type)) {
+            file_type = "video";
+        } else if (/^image\/.*$/.test(file.type)) {
+            file_type = "image";
+        } else if (/^audio\/.*$/.test(file.type)) {
+            file_type = "audio";
+        } else if (/.*\/pdf$/.test(file.type)) {
+            file_type = "pdf";
+        }
+    %>
+
     <div class="timeline-badge">
         <div class="timeline-icon">
-            <% if (/^video\/.*$/.test(file.type)) { %>
+            <% if (file_type == "video") { %>
                 <i class="fa fa-file-video-o"></i>
-            <% } else if (/^image\/.*$/.test(file.type)) { %>
+            <% } else if (file_type == "image") { %>
                 <i class="fa fa-file-image-o"></i>
-            <% } else if (/^audio\/.*$/.test(file.type)) { %>
+            <% } else if (file_type == "audio") { %>
                 <i class="fa fa-file-sound-o"></i>
-            <% } else if (/.*\/pdf$/.test(file.type)) { %>
+            <% } else if (file_type == "pdf") { %>
                 <i class="fa fa-file-pdf-o"></i>
             <% } else { %>
                 <i class="fa fa-file-o"></i>
@@ -254,7 +267,13 @@
                 <span class="timeline-body-time font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
             </div>
             <div class="timeline-body-head-actions">
-
+                <% if (file_type == "video") { %>
+                    <span class="btn btn-sm btn-primary fileinput-button fileupload-subtitle" id="fileupload"  data-fileupload-url="/module/dropbox/upload/subtitle">
+                        <i class="fa fa-language"></i>
+                        {translateToken value="Add Subtitles"}
+                        <input type="file" name="subtitles[]">
+                    </span>
+                <% }  %>
                 <a class="btn btn-sm btn-danger delete-file-content" href="javascript: void(0);"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
@@ -273,21 +292,116 @@
             </div>
         </div>
         <div class="timeline-body-content">
-            <div class="timeline-body-content-wrapper">
-                <div class="preview">
-                <% if (/^video\/.*$/.test(file.type)) { %>
-                    <video src="<%= file.url %>" style="max-width: 40%;" controls="true"></video>
-                <% } else if (/^image\/.*$/.test(file.type)) { %>
-                    <img src="<%= file.url %>" style="max-width: 40%;" />
-                <% } else if (/^audio\/.*$/.test(file.type)) { %>
-                    <audio src="<%= file.url %>" style="max-width: 40%;" controls="true"></audio>
-                <% } else if (/.*\/pdf$/.test(file.type)) { %>
-                    <a href="<%= file.url %>" target="_blank">View File</a>
-                <% } else { %>
-                    <a href="<%= file.url %>" target="_blank">View File</a>
-                <% }  %>
+            <div class="timeline-body-content-wrapper row">
+                <div class="preview col-md-6">
+                    <% if (file_type == "video") { %>
+                        <video src="<%= file.url %>" style="max-width: 100%;" controls="true"></video>
+                    <% } else if (file_type == "image") { %>
+                        <img src="<%= file.url %>" style="max-width: 100%;" />
+                    <% } else if (file_type == "audio") { %>
+                        <audio src="<%= file.url %>" style="max-width: 100%;" controls="true"></audio>
+                    <% } else if (file_type == "pdf") { %>
+                        <a href="<%= file.url %>" target="_blank">View File</a>
+                    <% } else { %>
+                        <a href="<%= file.url %>" target="_blank">View File</a>
+                    <% }  %>
+                </div>
+                <div class="preview col-md-6">
+                    <% if (file_type == "video") { %>
+                    <ul class="list-group ui-sortable margin-bottom-10 content-subtitles-items"></ul>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
 </script>
+
+<script type="text/template" id="fileupload-upload-related-item">
+    <%
+        var file_type = "other";
+        if (/^video\/.*$/.test(file.type)) {
+            file_type = "video";
+        } else if (/^image\/.*$/.test(file.type)) {
+            file_type = "image";
+        } else if (/^audio\/.*$/.test(file.type)) {
+            file_type = "audio";
+        } else if (/.*\/pdf$/.test(file.type)) {
+            file_type = "pdf";
+        }
+    %>
+    <% if (file_type == "video") { %>
+        <i class="fa fa-file-video-o"></i>
+    <% } else if (file_type == "image") { %>
+        <i class="fa fa-file-image-o"></i>
+    <% } else if (file_type == "audio") { %>
+        <i class="fa fa-file-sound-o"></i>
+    <% } else if (file_type == "pdf") { %>
+        <i class="fa fa-file-pdf-o"></i>
+    <% } else { %>
+        <i class="fa fa-file-o"></i>
+    <% }  %>
+    <span class="text-danger">
+        <%= file.name %>
+    </span>
+    <span class="font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
+    <div class="list-file-item-options">
+        <span class="btn btn-sm btn-default disabled text-loading">
+            <i class="fa fa-spinner fa-spin"></i>
+            <span class="load-percent">0</span>%
+        </span>
+        <a class="btn btn-sm btn-danger delete-file-content" href="javascript: void(0);">
+            <i class="fa fa-times"></i>
+        </a>
+    </div>
+</script>
+
+
+<script type="text/template" id="fileupload-download-related-item">
+    <% var file = model.file %>
+    <%
+        var file_type = "other";
+        if (/^video\/.*$/.test(file.type)) {
+            file_type = "video";
+        } else if (/^image\/.*$/.test(file.type)) {
+            file_type = "image";
+        } else if (/^audio\/.*$/.test(file.type)) {
+            file_type = "audio";
+        } else if (/.*\/pdf$/.test(file.type)) {
+            file_type = "pdf";
+        }
+    %>
+    <a class="btn btn-sm btn-warning text-uppercase dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" >
+        <%= model.language_code %>
+        <i class="fa fa-angle-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="btn btn-sm btn-warning text-uppercase" href="/module/users/profile">PT</a>
+        </li>
+    </ul>
+
+
+    <span class="text-danger">
+        <%= file.name %>
+    </span>
+    <span class="font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
+    <div class="list-file-item-options">
+        <a class="btn btn-sm btn-danger delete-file-content" href="javascript: void(0);"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
+
+</script>
+

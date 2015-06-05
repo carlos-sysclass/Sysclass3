@@ -13,9 +13,11 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
             SELECT
                 lc.`id`,
                 lc.`lesson_id`,
+                lc.`parent_id`,
                 lc.`content_type`,
                 lc.`title`,
                 lc.`info`,
+                lc.`language_code`,
                 lc.`position`,
                 lc.`active`,
                 lf.id as 'file#id',
@@ -30,7 +32,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
             LEFT JOIN `mod_dropbox` lf ON (lf.id = lcf.file_id)
 		";
 
-        $this->order = array("lc.`position`");
+        $this->order = array("-lc.`position` DESC");
 
         parent::init();
 
@@ -40,6 +42,9 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         $id = parent::addItem($data);
 
         $type = $data['content_type'];
+        if ($type == "subtitle") {
+            $type = "file";
+        }
         if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {
             $innerModel = $this->model("lessons/content/" . $type);
             $innerData = array(

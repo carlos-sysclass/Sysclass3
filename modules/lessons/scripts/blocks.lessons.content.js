@@ -3,7 +3,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
     this.startWithParent = false;
     mod.addInitializer(function() {
         this.config = $SC.module("crud.config").getConfig();
-        var entity_id = mod.config.entity_id;
+        mod.entity_id = mod.config.entity_id;
 
         var lessonModel = app.module("crud.views.edit").itemModel;
 
@@ -15,8 +15,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     content_type    : null,
                     title           : '',
                     info            : '',
-                    position        : -1,
-                    active          : 1
+                    position        : null,
+                    active          : 1,
+                    parent_id       : null,
+                    childs          : []
                 };
             },
             urlRoot: "/module/lessons/item/lesson-content/"
@@ -35,6 +37,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        var lessonFileSubtitleContentModelClass = lessonFileContentModelClass.extend({
+            defaults : function() {
+                var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
+                defaults['content_type'] = 'subtitle';
+                return defaults;
+            }
+        });
+
         var lessonTextContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
@@ -44,7 +54,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         var lessonContentCollectionClass = Backbone.Collection.extend({
-            initialize: function(opt) {
+            initialize: function(data, opt) {
                 this.lesson_id = opt.lesson_id;
                 this.listenTo(this, "add", function(model, collection, opt) {
                     model.set("lesson_id", this.lesson_id);
@@ -57,8 +67,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             model: function(attrs, options) {
                 if (options.add) {
-                    if (attrs.content_type == "file") {
+                    if (attrs.content_type == "file" || attrs.content_type == "subtitle") {
                         return new lessonFileContentModelClass(attrs, _.extend(options, {
+                            collection: this,
+                        }));
+                    } else if (attrs.content_type == "subtitle") {
+                        return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "text") {
@@ -92,18 +106,21 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             className : "timeline-item fileupload-item",
             tagName : "div",
             upload : true,
+            uploadClass : [ "template-upload" ],
+            downloadClass : [ "template-download" ],
             fuploadFile : null,
             fuploadOptions : null,
+            jqXHR : null,
             events : {
                 "confirmed.bs.confirmation .delete-file-content"    : "delete"
             },
-
             initialize: function(opt) {
                 console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
                 this.setOptions(opt);
 
                 this.listenTo(this.model, "sync", function(a,b,c) {
                     this.$el.attr("data-content-id", this.model.get("id"));
+                    this.render();
                 });
             },
             setOptions : function(opt) {
@@ -119,8 +136,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 return this;
             },
             render : function() {
+                var self = this;
                 if (this.upload) {
-                    this.$el.removeClass("template-download");
+
+                    _.each(this.downloadClass, function(item) {
+                        self.$el.removeClass(item);
+                    });
+
 
                     this.$el.html(this.uploadTemplate({
                         model: this.model.toJSON(),
@@ -128,15 +150,47 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         opt  : this.fuploadOptions
                     }));
 
-                    this.$el.addClass("template-upload");
+                    _.each(this.uploadClass, function(item) {
+                        self.$el.addClass(item);
+                    });
+
                 } else {
-                    this.$el.removeClass("template-upload");
+                    _.each(this.uploadClass, function(item) {
+                        self.$el.removeClass(item);
+                    });
+
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
                         opt  : { formatFileSize : this.formatFileSize }
                     }));
-                    this.$el.addClass("template-download");
+
+                    _.each(this.downloadClass, function(item) {
+                        self.$el.addClass(item);
+                    });
+
+                    // IF IS A VIDEO, RENDER
+                    if (/^video\/.*$/.test(this.model.get("file").type)) {
+                        this.initializeFileUpload();
+                    }
+
+                    // RENDER SUBFILES VIEW
+                    var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
+
+
+                    var collection = new lessonContentCollectionClass(subfiles, {
+                        lesson_id : mod.entity_id
+                    });
+
+                    collection.each(function(model, i) {
+                        var view_type = model.get("content_type");
+
+                        if (view_type == "subtitle") {
+                            this.renderRelatedFileContent(model, {upload : false});
+                        }
+                    }, this);
+
+
                 }
 
                 app.module("ui").refresh(this.$el);
@@ -144,6 +198,141 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.$el.attr("data-content-id", this.model.get("id"));
                 this.$el.data("viewObject", this);
                 return this;
+            },
+            initializeFileUpload : function() {
+                var self = this;
+                var fileUploadItem = this.$(".fileupload-subtitle");
+                var url = fileUploadItem.data("fileuploadUrl");
+
+
+                var opt = {
+                    url: url,
+                    paramName : "subtitles",
+                    dataType: 'json',
+                    singleFileUploads: true,
+                    autoUpload : true,
+                    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
+                    filesContainer: this.$("ul.content-subtitles-items"),
+                    downloadTemplateId: null,
+                    uploadTemplate: function (o) {
+                        return fileUploadItem.data("upload-contexts");
+                    },
+                    /*
+                    downloadTemplate: function (o) {
+                        return fileUploadItem.data("download-contexts");
+                    },
+                    */
+                    done: function() {
+
+                    }
+                };
+
+                fileUploadItem.fileupload(opt)
+                    .bind('fileuploadadd', function (e, o) {
+                        var rows = $();
+
+                        $.each(o.files, function (index, file) {
+                            //rows = rows.add("<p>FILE: " + file.name + "</p>");
+                            rows = rows.add($(self.addRelatedFileContent({
+                                upload : true,
+                                file: file,
+                                opt : o
+                            })));
+                        });
+
+                        $(this).data("upload-contexts", rows);
+
+                        o.context = rows;
+                        //e.stopPropagation();
+                        self.jqXHR = o.submit();
+                        return rows;
+                    })
+                    .bind('fileuploaddone', function (e, data) {
+                        var files = data.getFilesFromResponse(data);
+                        var rows = $();
+                        var viewObject = data.context.data("viewObject");
+
+                        if (files.length == 0) {
+                            window.setTimeout(function() {
+                                viewObject.delete();
+                            }, 500);
+
+                        } else {
+                            $.each(files, function (index, file) {
+                                viewObject.model.mergeWithinFileObject(file);
+                                viewObject.setOptions({
+                                    upload : false,
+                                    file: file,
+                                    opt : data
+                                })//.render();
+
+                                viewObject.completeEvents();
+                            });
+                            $(this).data("download-contexts", rows);
+                        }
+                        self.jqXHR = null;
+                        return rows;
+                    })
+                    .bind('fileuploadfail', function (e, data) {
+                        //console.warn("fileuploadfail");
+                    })
+                    .bind('fileuploadalways', function (e, data) {
+                        //console.warn("fileuploadalways");
+                    })
+                    .bind('fileuploadprogress', function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        data.context.find(".load-percent").html(progress);
+                    });
+            },
+            addRelatedFileContent : function(options) {
+                var self = this;
+                // TODO: INJECT FILES DATA ON MODEL
+                var model = new lessonFileSubtitleContentModelClass({
+                    parent_id : this.model.get("id"),
+                    lesson_id : this.model.get("lesson_id")
+                });
+
+                model.mergeWithinFileObject(options.file);
+
+                return this.renderRelatedFileContent(model, options);
+            },
+            renderRelatedFileContent : function(model, options) {
+                var self = this;
+
+                if (!_.isObject(options)) {
+                    options = {};
+                }
+
+                var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
+                    model : model
+                }));
+
+                this.$("ul.content-subtitles-items").append(fileContentTimelineView.render().el);
+
+
+                this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
+                    var self = this;
+
+                    model.save(null, {
+                        success : function() {
+                            var childs = self.model.get("childs");
+                            childs.push(model.get("id"));
+                            self.model.set("childs", childs);
+                        }
+                    });
+                });
+
+                this.listenTo(fileContentTimelineView, "timeline-file-content:delete", function(model) {
+                    if (!_.isNull(self.jqXHR) && !_.isNull(self.jqXHR)) {
+                        self.jqXHR.abort();
+                    }
+                    model.destroy();
+                    //self.collection.remove(model, options);
+                    fileContentTimelineView.remove();
+                    //self.collection.add(model, "text");
+                });
+
+                return fileContentTimelineView.el;
             },
             formatFileSize: function (bytes) {
                 if (typeof bytes !== 'number') {
@@ -164,6 +353,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
             }
+        });
+
+        var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+            uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
+            downloadTemplate : _.template($("#fileupload-download-related-item").html()),
+            className : "list-file-item",
+            tagName : "li",
+            uploadClass : [ "template-upload red-stripe" ],
+            downloadClass : [ "template-download green-stripe" ],
         });
 
         var lessonTextContentTimelineViewClass = Backbone.View.extend({
@@ -355,9 +553,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
+            collectionFilter : null,
             jqXHR : null,
             initialize: function(opt) {
                 console.info('blocks.lessons.content/contentTimelineViewClass::initialize');
+
+                this.collectionFilter = opt.collectionFilter ? opt.collectionFilter : null;
 
                 this.initializeSortable();
                 this.initializeFileUpload();
@@ -388,7 +589,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             initializeFileUpload : function() {
                 // CREATE FILEUPLOAD WIDGET
-                var url = this.$el.data("fileuploadUrl");
+                var fileUploadItem = this.$(".fileupload");
+                var url = fileUploadItem.data("fileuploadUrl");
 
                 var self = this;
 
@@ -400,12 +602,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     autoUpload : true,
                     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
                     filesContainer: this.$("div.content-timeline-items"),
+                    uploadTemplate: function (o) {
+                        return fileUploadItem.data("upload-contexts");
+                    },
                     done: function() {
 
-                    },
+                    }
                 };
 
-                this.$el.fileupload(opt)
+                fileUploadItem.fileupload(opt)
                     .bind('fileuploadadd', function (e, o) {
                         var rows = $();
 
@@ -417,8 +622,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                                 //index : index
                             })));
                         });
+                        $(this).data("upload-contexts", rows);
+
                         o.context = rows;
-                        self.jqXHR = o.submit();
+                        //self.jqXHR = o.submit();
                     })
                     .bind('fileuploaddone', function (e, data) {
                         var files = data.getFilesFromResponse(data);
@@ -430,7 +637,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                                 upload : false,
                                 file: file,
                                 opt : data
-                            }).render();
+                            });//.render();
 
                             viewObject.completeEvents();
                         });
@@ -445,11 +652,21 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
-                        console.warn(progress);
                         data.context.find(".load-percent").html(progress);
                     });
             },
             render : function(collection, models, options) {
+
+                if (this.collectionFilter) {
+                    var data = this.collection.where(this.collectionFilter);
+                } else {
+                    var data = this.collection.toJSON();
+                }
+
+                var collection = new lessonContentCollectionClass(data, {
+                    lesson_id : this.collection.lesson_id
+                });
+
                 collection.each(function(model, i) {
                     var view_type = model.get("content_type");
 
@@ -562,11 +779,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
 
                 this.listenTo(exercisesContentTimelineView, "timeline-exercise-content:save", function(e, model) {
-                    console.warn(e, model);
                     self.collection.add(model);
                 });
                 this.listenTo(exercisesContentTimelineView, "timeline-exercise-content:delete", function(e, model) {
-                    console.warn(e, model);
                     self.collection.add(model);
                 });
 
@@ -577,8 +792,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        mod.lessonContentCollection = new lessonContentCollectionClass({
-            lesson_id : entity_id
+        mod.lessonContentCollection = new lessonContentCollectionClass([], {
+            lesson_id :  mod.entity_id
         });
 
         this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
@@ -587,8 +802,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         mod.contentTimelineView = new contentTimelineViewClass({
             el : "#content-timeline",
-            collection : mod.lessonContentCollection
+            collection : mod.lessonContentCollection,
+            collectionFilter : {parent_id: null}
         });
+
+var contents = $SC.module("blocks.lessons.content").lessonContentCollection.where({
+  parent_id: "22"
+});
+
+_.each(contents, function(item) {
+  console.log(item);
+});
+
+
 
     });
     $SC.module("crud.views.edit").on("start", function() {

@@ -29,6 +29,7 @@ class FileUploadHelper
         'max_file_size' => 'File is too big',
         'min_file_size' => 'File is too small',
         'accept_file_types' => 'Filetype not allowed',
+        'accept_file_content_types' => 'File content type not allowed',
         'max_number_of_files' => 'Maximum number of files exceeded',
         'max_width' => 'Image exceeds maximum width',
         'min_width' => 'Image requires a minimum width',
@@ -82,6 +83,8 @@ class FileUploadHelper
             'inline_file_types' => '/\.(gif|jpe?g|png)$/i',
             // Defines which files (based on their names) are accepted for upload:
             'accept_file_types' => '/.+$/i',
+            // Defines which files (based on their names) are accepted for upload:
+            'accept_file_content_types' => '/.+$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
             'max_file_size' => null,
@@ -380,10 +383,16 @@ class FileUploadHelper
             $file->error = $this->get_error_message('post_max_size');
             return false;
         }
+
         if (!preg_match($this->options['accept_file_types'], $file->name)) {
             $file->error = $this->get_error_message('accept_file_types');
             return false;
         }
+        if (!preg_match($this->options['accept_file_content_types'], $file->type)) {
+            $file->error = $this->get_error_message('accept_file_content_types');
+            return false;
+        }
+
         if ($uploaded_file && is_uploaded_file($uploaded_file)) {
             $file_size = $this->get_file_size($uploaded_file);
         } else {

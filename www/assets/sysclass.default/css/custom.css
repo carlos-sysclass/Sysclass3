@@ -869,3 +869,7 @@ table.users-panel-notification-table > thead > tr > td {
 .timeline-body-head-actions .btn-group {
     margin-top: 0 !important;
 }
+
+li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" fa-"], li [class*=" glyphicon-"], li [class*=" icon-"] {
+    width: 1em;
+}

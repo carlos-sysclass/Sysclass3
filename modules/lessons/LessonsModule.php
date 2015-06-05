@@ -263,7 +263,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             }
             $itemsData = $itemsCollection->addFilter(array(
                 'active'    => 1,
-                'lesson_id' => $filter
+                'lesson_id' => $filter/*,
+                "parent_id" => null*/
             ))->getItems();
 
             //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
@@ -492,6 +493,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'success' => "Lesson content created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+
+                $data['language_code'] = self::$t->getUserLanguageCode();
 
                 $_GET['redirect'] = 0;
             }

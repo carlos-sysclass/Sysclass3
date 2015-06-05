@@ -491,8 +491,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 				var json = xhr.responseJSON;
 				app.module("ui").handleAction(json._response_);
 			}
-			$(".ajax-loader").fadeOut(1000);
 		});
+        $( document ).ajaxStop(function( event, xhr, settings ) {
+            $(".ajax-loader").fadeOut(1000);
+        });
+
 
         for (i in this.submodules) {
             this.submodules[i].start();

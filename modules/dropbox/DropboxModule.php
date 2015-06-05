@@ -117,14 +117,16 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
     {
         $param_name = array_key_exists("name", $_GET) ? $_GET['name'] : "files";
 
-        if (!in_array($type, array("video", "image", "material", "default"))) {
+        if (!array_key_exists($param_name, $_FILES)) {
+            $param_name = reset(array_keys($_FILES));
+        }
+
+        if (!in_array($type, array("video", "subtitle", "image", "material", "default"))) {
             $type = "default";
         }
 
         $helper = $this->helper("file/upload");
         $filewrapper = $this->helper("file/wrapper");
-
-
 
         $upload_dir = $filewrapper->getPublicPath($type);
         $upload_url = $filewrapper->getPublicUrl($type);
@@ -138,6 +140,10 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
         switch($type) {
             case 'video' :{
                 $helper->setOption('accept_file_types', '/(\.|\/)(mp4|webm)$/i');
+                break;
+            }
+            case 'subtitle' :{
+                $helper->setOption('accept_file_content_types', '/text\/vtt/i');
                 break;
             }
             case 'image' :{
@@ -158,11 +164,23 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             $filedata['upload_type'] = $type;
             $this->model("lessons/files")->setVideo($filedata);
             */
+        $file_result = array(
+            $param_name => array()
+        );
 
-        //} elseif ($type == "material") {
-            $file_result = array(
-                $param_name => array()
-            );
+        if ($result[$param_name][0]->error) {
+            foreach($result[$param_name] as $fileObject) {
+                $filedata = (array) $fileObject;
+                //$filedata['lesson_id'] = $id;
+                $filedata['upload_type'] = $type;
+
+                $file_result[$param_name][] = $filedata;
+
+                $error = $filedata['error'];
+            }
+            return array_merge($filedata, $this->invalidRequestError($error, "warning"));
+        } else {
+
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
                 //$filedata['lesson_id'] = $id;
@@ -171,7 +189,8 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
 
                 $file_result[$param_name][] = $filedata;
             }
-        //}
+        }
+
         return $file_result;
     }
 

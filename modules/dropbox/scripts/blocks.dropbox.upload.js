@@ -176,7 +176,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                             viewObject.completeEvents();
                         });
                         self.jqXHR = null;
-
                     })
                     .bind('fileuploadfail', function (e, data) {
                         //console.warn("fileuploadfail");
