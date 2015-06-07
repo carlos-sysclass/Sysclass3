@@ -11,6 +11,8 @@
 class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
 
+    private static $suitable_translate_contents = array("subtitle");
+
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
@@ -100,7 +102,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 $self->putComponent("jquery-file-upload-video");
                 $self->putComponent("jquery-file-upload-audio");
                 $self->putComponent("bootstrap-confirmation");
+
+                $self->putModuleScript("translate", "models.translate");
+
                 $self->putModuleScript("blocks.lessons.content");
+
 
 
                 $languages = self::$t->getItems();
@@ -608,6 +614,114 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         } else {
             return $this->notAuthenticatedError();
         }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /item/lesson-content/:id/translate
+     * @url PUT /item/lesson-content/:id/translate
+     */
+    public function translateContent($model, $id) {
+        $modelRoute = "lessons/content";
+
+        $item = $this->model($modelRoute);
+
+        $http_data = $this->getHttpData(func_get_args());
+
+
+        // 1. GET FILE DATA
+        $contentData = $item->getItem($id);
+        if (in_array($contentData['content_type'], self::$suitable_translate_contents)) {
+            //var_dump($contentData);
+            if (array_key_exists("file", $contentData) && is_array($contentData['file']) && is_numeric($contentData['file']['id'])) {
+                $fileInfo = $this->model("dropbox")->getItem($contentData['file']['id']);
+                //$fileInfo = $this->model("dropbox")->getItem(1453485);
+                if (count($fileInfo) > 0) {
+                    $filestream = $this->model("dropbox")->getFileContents($fileInfo);
+                    $parsed = $this->parseWebVTTFile($filestream);
+
+                    $tokens = array_column($parsed, "text");
+                    // TRANSLATE TOKENS
+
+                    $translatedFilestream = $this->makeWebVTTFile($parsed);
+                    var_dump($translatedFilestream);
+                    exit;
+                }
+                exit;
+
+            }
+            return $this->invalidRequestError(self::$t->translate("The system can't translate this content. PLease try again"), "info");
+        } else {
+            return $this->invalidRequestError(self::$t->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
+        }
+
+
+
+
+        //
+        // 2. PARSE INTO A ARRAY
+        // 3. SEND TO TRANSLATE SERVICE, PASS A CALLBACK TO RECEIVE THE RESULTS (THE CALLBACK WILL CREATE A NEW FILE IN THE SAME FORMAT)
+        // 4. RETURN THE SERVICE INFO TO UI PROCESSING
+        exit;
+        // APPLY FILTER
+        if (is_null($filter) || !is_numeric($filter)) {
+            return $this->invalidRequestError();
+        }
+        $itemsData = $itemsCollection->addFilter(array(
+            'active'    => 1,
+            'lesson_id' => $filter/*,
+            "parent_id" => null*/
+        ))->getItems();
+    }
+    /**
+     * This function parse a WEBVTT File into a array
+     * @todo  Must be moved to a proper helper
+     * @return array [description]
+     */
+    protected function parseWebVTTFile($filestream) {
+        echo "<pre>";
+
+        if (is_string($filestream) && !empty($filestream)) {
+
+            $lines = explode("\n", $filestream);
+            //echo $filestream;
+
+            $lines = preg_split("/\r?\n^$\r?\n/m", $filestream);
+
+            //var_dump($lines);
+            //exit;
+            $filestruct = array();
+
+            foreach($lines as $line) {
+                if (preg_match('/(\d*)\n*^(\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3}) --> (\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3})$\r?\n(.*)/ms', $line, $match)) {
+                    $filestruct[] = array(
+                        "index" => $match[1],
+                        "from"  => $match[2],
+                        "to"    => $match[3],
+                        "text"  => $match[4]
+                    );
+                }
+            }
+            return $filestruct;
+        }
+        return false;
+    }
+    /**
+     * Create a string containing a webvtt structure
+     * @param  array $filestruct The same structure returned by the function parseWebVTTFile
+     * @return string
+     */
+    protected function makeWebVTTFile($filestruct) {
+        $lines = array("WEBVTT");
+        foreach($filestruct as $fileitem) {
+            $item = sprintf("%s --> %s\n%s", $fileitem['from'], $fileitem['to'], $fileitem['text']);
+            if (is_numeric($fileitem['index'])) {
+                $item = $fileitem['index'] . "\n" . $item;
+            }
+            $lines[] = $item;
+        }
+        return implode("\n\n", $lines);
     }
 
 }

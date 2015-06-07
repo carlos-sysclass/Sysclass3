@@ -1,23 +1,38 @@
 <?php
 /**
- * File Wrapper Helper File
+ * File "Local Backend" Helper File
  * @filesource
  */
 /**
- * Provides functions to manipulate files in a backend-agnostic way.
+ * Provides functions to manipulate files in local backend
+ *
+ * The interface IFileBackendInterface isn't not created yet, this file will be the based to it.
  * @package Sysclass\Helpers
  */
+class FileBackendLocalHelper /* implements IFileBackendInterface */ {
 
-class FileWrapperHelper {
     /**
      * Use as Interface Method
+     *
      */
-    getFileReference
-
-    public function getFileContents($)
-
-
-
+    //public function getFileContents($)
+    public function getFileContents($fileinfo) {
+        if ($this->fileExists($fileinfo)) {
+            $type = $fileinfo['upload_type'];
+            $fullpath = realpath($this->getPublicPath($type) . "/" . $fileinfo['name']);
+            return file_get_contents($fullpath);
+        }
+        return false;
+    }
+    /**
+     * Use as Interface Method
+     *
+     */
+    public function fileExists($fileinfo) {
+        $type = $fileinfo['upload_type'];
+        $fullpath = realpath($this->getPublicPath($type) . "/" . $fileinfo['name']);
+        return file_exists($fullpath);
+    }
 
     public function getPublicPath($type = null) {
         $plicolib = PlicoLib::instance();

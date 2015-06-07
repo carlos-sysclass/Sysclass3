@@ -1960,6 +1960,241 @@
  <error line="320" column="189" severity="warning" message="Line exceeds 120 characters; contains 189 characters" source="Generic.Files.LineLength.TooLong"/>
  <error line="327" column="1" severity="error" message="The closing brace for the class must go on the next line after the body" source="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
 </file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/app.config.php">
+ <error line="116" column="1" severity="error" message="Multi-line function call not indented correctly; expected 4 spaces but found 0" source="PSR2.Methods.FunctionCallSignature.Indent"/>
+ <error line="123" column="1" severity="error" message="Multi-line function call not indented correctly; expected 4 spaces but found 0" source="PSR2.Methods.FunctionCallSignature.Indent"/>
+ <error line="138" column="1" severity="error" message="Multi-line function call not indented correctly; expected 4 spaces but found 0" source="PSR2.Methods.FunctionCallSignature.Indent"/>
+ <error line="142" column="12" severity="error" message="Opening parenthesis of a multi-line function call must be the last content on the line" source="PSR2.Methods.FunctionCallSignature.ContentAfterOpenBracket"/>
+ <error line="170" column="124" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="187" column="131" severity="warning" message="Line exceeds 120 characters; contains 131 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="192" column="158" severity="warning" message="Line exceeds 120 characters; contains 158 characters" source="Generic.Files.LineLength.TooLong"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/BaseSysclassModule.php">
+ <error line="2" column="10" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="10" column="35" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="13" column="76" severity="error" message="Incorrect spacing between argument &quot;$root&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="13" column="76" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$root&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="13" column="77" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="13" column="92" severity="error" message="Incorrect spacing between argument &quot;$basePath&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="13" column="92" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$basePath&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="37" column="57" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="66" column="41" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="77" column="45" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="85" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="92" column="52" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="100" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="104" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="116" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="120" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="124" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="130" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="141" column="70" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="144" column="25" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;false&quot; but found &quot;FALSE&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="172" column="39" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="175" column="40" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="254" column="41" severity="error" message="Incorrect spacing between argument &quot;$template&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="254" column="41" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$template&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="254" column="42" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="258" column="39" severity="error" message="Incorrect spacing between argument &quot;$template&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="258" column="39" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$template&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="258" column="40" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="262" column="42" severity="error" message="Incorrect spacing between argument &quot;$template&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="262" column="42" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$template&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="262" column="43" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="262" column="66" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="265" column="40" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="273" column="52" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="288" column="1" severity="error" message="The closing brace for the class must go on the next line after the body" source="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/StaticBCController.php">
+ <error line="1" column="1" severity="error" message="Whitespace found at end of line" source="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
+ <error line="2" column="1" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/DashboardController.php">
+ <error line="2" column="1" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="29" column="1" severity="warning" message="Line exceeds 120 characters; contains 184 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="31" column="1" severity="warning" message="Line exceeds 120 characters; contains 194 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="55" column="1" severity="warning" message="Line exceeds 120 characters; contains 126 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="57" column="1" severity="warning" message="Line exceeds 120 characters; contains 130 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="60" column="9" severity="warning" message="Line exceeds 120 characters; contains 163 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="66" column="129" severity="warning" message="Line exceeds 120 characters; contains 129 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="73" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="96" column="1" severity="error" message="The closing brace for the class must go on the next line after the body" source="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/FrontendController.php">
+ <error line="1" column="1" severity="error" message="Whitespace found at end of line" source="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
+ <error line="2" column="1" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="9" column="16" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;true&quot; but found &quot;TRUE&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="28" column="1" severity="error" message="The closing brace for the class must go on the next line after the body" source="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/AbstractSysclassController.php">
+ <error line="6" column="10" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="13" column="55" severity="error" message="Incorrect spacing between argument &quot;$root&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="13" column="55" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$root&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="13" column="56" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="13" column="71" severity="error" message="Incorrect spacing between argument &quot;$basePath&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="13" column="71" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$basePath&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="19" column="52" severity="error" message="No space found after comma in function call" source="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma"/>
+ <error line="19" column="56" severity="error" message="No space found after comma in function call" source="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma"/>
+ <error line="38" column="9" severity="warning" message="Line exceeds 120 characters; contains 143 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="40" column="107" severity="error" message="Expected 0 spaces before closing bracket; 1 found" source="PSR2.ControlStructures.ControlStructureSpacing.SpaceBeforeCloseBrace"/>
+ <error line="45" column="51" severity="error" message="Expected 0 spaces before closing bracket; 1 found" source="PSR2.ControlStructures.ControlStructureSpacing.SpaceBeforeCloseBrace"/>
+ <error line="53" column="21" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="61" column="25" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="72" column="33" severity="warning" message="Line exceeds 120 characters; contains 127 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="75" column="33" severity="warning" message="Line exceeds 120 characters; contains 143 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="120" column="16" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;true&quot; but found &quot;TRUE&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="128" column="40" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="131" column="38" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="141" column="129" severity="warning" message="Line exceeds 120 characters; contains 129 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="175" column="126" severity="warning" message="Line exceeds 120 characters; contains 126 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="178" column="124" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="203" column="53" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="214" column="52" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="221" column="47" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="233" column="30" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/AbstractToolsController.php">
+ <error line="2" column="10" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="6" column="75" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="15" column="13" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="23" column="46" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="29" column="54" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="32" column="54" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="47" column="49" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="52" column="48" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="59" column="9" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="71" column="82" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="76" column="13" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="80" column="24" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="89" column="13" severity="error" message="Expected 1 space after FOREACH keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="100" column="1" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="101" column="1" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="113" column="1" severity="warning" message="Line exceeds 120 characters; contains 126 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="131" column="1" severity="warning" message="Line exceeds 120 characters; contains 168 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="135" column="1" severity="warning" message="Line exceeds 120 characters; contains 146 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="141" column="1" severity="warning" message="Line exceeds 120 characters; contains 220 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="147" column="5" severity="warning" message="Method name &quot;_checkParameter&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="147" column="5" severity="error" message="Visibility must be declared on method &quot;_checkParameter&quot;" source="Squiz.Scope.MethodScope.Missing"/>
+ <error line="147" column="67" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="149" column="9" severity="error" message="Line indented incorrectly; expected 12 spaces, found 8" source="Generic.WhiteSpace.ScopeIndent.IncorrectExact"/>
+ <error line="150" column="13" severity="error" message="Line indented incorrectly; expected 16 spaces, found 12" source="Generic.WhiteSpace.ScopeIndent.IncorrectExact"/>
+ <error line="151" column="17" severity="error" message="Line indented incorrectly; expected at least 20 spaces, found 16" source="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
+ <error line="153" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="156" column="62" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="156" column="64" severity="warning" message="Line exceeds 120 characters; contains 170 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="160" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="162" column="13" severity="warning" message="Line exceeds 120 characters; contains 248 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="163" column="102" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="163" column="104" severity="warning" message="Line exceeds 120 characters; contains 258 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="167" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="169" column="113" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="169" column="115" severity="warning" message="Line exceeds 120 characters; contains 346 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="173" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="176" column="72" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="176" column="74" severity="warning" message="Line exceeds 120 characters; contains 127 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="180" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="182" column="67" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="182" column="69" severity="warning" message="Line exceeds 120 characters; contains 147 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="186" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="191" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="196" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="201" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="206" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="208" column="73" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="208" column="75" severity="warning" message="Line exceeds 120 characters; contains 125 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="210" column="13" severity="error" message="Line indented incorrectly; expected at least 16 spaces, found 12" source="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
+ <error line="212" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="217" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="222" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="227" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="232" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="237" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="239" column="13" severity="error" message="Terminating statement must be indented to the same level as the CASE body" source="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+ <error line="255" column="15" severity="warning" message="Line exceeds 120 characters; contains 127 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="259" column="5" severity="warning" message="Method name &quot;_redirect&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="259" column="5" severity="error" message="Visibility must be declared on method &quot;_redirect&quot;" source="Squiz.Scope.MethodScope.Missing"/>
+ <error line="259" column="80" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="283" column="1" severity="error" message="The closing brace for the class must go on the next line after the body" source="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/LoginController.php">
+ <error line="2" column="1" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="9" column="16" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;true&quot; but found &quot;TRUE&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="20" column="42" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="22" column="1" severity="warning" message="Line exceeds 120 characters; contains 176 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="25" column="9" severity="warning" message="Line exceeds 120 characters; contains 163 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="29" column="143" severity="warning" message="Line exceeds 120 characters; contains 143 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="37" column="50" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="41" column="9" severity="warning" message="Line exceeds 120 characters; contains 163 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="42" column="133" severity="warning" message="Line exceeds 120 characters; contains 133 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="68" column="215" severity="warning" message="Line exceeds 120 characters; contains 215 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="73" column="48" severity="error" message="Expected 1 newline after opening brace; 0 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="73" column="49" severity="error" message="Closing brace must be on a line by itself" source="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore"/>
+ <error line="103" column="106" severity="warning" message="Line exceeds 120 characters; contains 149 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="109" column="27" severity="error" message="Closing parenthesis of a multi-line function call must be on a line by itself" source="PSR2.Methods.FunctionCallSignature.CloseBracketLine"/>
+ <error line="120" column="1" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="131" column="1" severity="warning" message="Line exceeds 120 characters; contains 158 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="145" column="40" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="183" column="1" severity="warning" message="Line exceeds 120 characters; contains 124 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="194" column="1" severity="warning" message="Line exceeds 120 characters; contains 158 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="218" column="56" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+ <error line="245" column="215" severity="warning" message="Line exceeds 120 characters; contains 215 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="260" column="90" severity="warning" message="Line exceeds 120 characters; contains 169 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="263" column="137" severity="warning" message="Line exceeds 120 characters; contains 137 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="274" column="129" severity="warning" message="Line exceeds 120 characters; contains 129 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="280" column="178" severity="warning" message="Line exceeds 120 characters; contains 178 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="295" column="106" severity="warning" message="Line exceeds 120 characters; contains 149 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="304" column="151" severity="warning" message="Line exceeds 120 characters; contains 151 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="306" column="29" severity="warning" message="Line exceeds 120 characters; contains 154 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="316" column="186" severity="warning" message="Line exceeds 120 characters; contains 186 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="318" column="230" severity="warning" message="Line exceeds 120 characters; contains 230 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="319" column="144" severity="warning" message="Line exceeds 120 characters; contains 144 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="329" column="144" severity="warning" message="Line exceeds 120 characters; contains 144 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="347" column="129" severity="warning" message="Line exceeds 120 characters; contains 129 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="370" column="125" severity="warning" message="Line exceeds 120 characters; contains 125 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="377" column="122" severity="warning" message="Line exceeds 120 characters; contains 122 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="418" column="17" severity="error" message="Space before opening parenthesis of function call prohibited" source="PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket"/>
+ <error line="419" column="17" severity="error" message="Space before opening parenthesis of function call prohibited" source="PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket"/>
+ <error line="424" column="50" severity="warning" message="Line exceeds 120 characters; contains 125 characters" source="Generic.Files.LineLength.TooLong"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/SysclassModule.php">
+ <error line="2" column="10" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="7" column="35" severity="error" message="Opening brace should be on a new line" source="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+ <error line="37" column="76" severity="error" message="Incorrect spacing between argument &quot;$root&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="37" column="76" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$root&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="37" column="77" severity="error" message="TRUE, FALSE and NULL must be lowercase; expected &quot;null&quot; but found &quot;NULL&quot;" source="Generic.PHP.LowerCaseConstant.Found"/>
+ <error line="37" column="92" severity="error" message="Incorrect spacing between argument &quot;$basePath&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="37" column="92" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$basePath&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="54" column="57" severity="error" message="Expected 1 newline after opening brace; 2 found" source="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/ErrorController.php">
+ <error line="2" column="1" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+</file>
+<file name="/var/www/local.sysclass.com/current/build/dist/sysclass/sysclass/controller/AbstractDatabaseController.php">
+ <error line="1" column="1" severity="error" message="Whitespace found at end of line" source="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
+ <error line="2" column="10" severity="error" message="Each class must be in a namespace of at least one level (a top-level vendor name)" source="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+ <error line="43" column="5" severity="warning" message="Method name &quot;_getTableDataFlat&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="43" column="5" severity="error" message="Visibility must be declared on method &quot;_getTableDataFlat&quot;" source="Squiz.Scope.MethodScope.Missing"/>
+ <error line="43" column="47" severity="error" message="Incorrect spacing between argument &quot;$fields&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="43" column="47" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$fields&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="43" column="59" severity="error" message="Incorrect spacing between argument &quot;$where&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="43" column="59" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$where&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="43" column="70" severity="error" message="Incorrect spacing between argument &quot;$order&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="43" column="70" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$order&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="43" column="81" severity="error" message="Incorrect spacing between argument &quot;$group&quot; and equals sign; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
+ <error line="43" column="81" severity="error" message="Incorrect spacing between default value and equals sign for argument &quot;$group&quot;; expected 1 but found 0" source="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterDefault"/>
+ <error line="95" column="5" severity="warning" message="Method name &quot;_getTableData&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="95" column="5" severity="error" message="Visibility must be declared on method &quot;_getTableData&quot;" source="Squiz.Scope.MethodScope.Missing"/>
+ <error line="106" column="13" severity="error" message="Expected 1 space after WHILE keyword; 0 found" source="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword"/>
+ <error line="135" column="16" severity="warning" message="Line exceeds 120 characters; contains 131 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="138" column="12" severity="warning" message="Method name &quot;_insertTableData&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="149" column="193" severity="warning" message="Line exceeds 120 characters; contains 193 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="150" column="149" severity="warning" message="Line exceeds 120 characters; contains 149 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="184" column="12" severity="warning" message="Method name &quot;_updateTableData&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+ <error line="194" column="9" severity="warning" message="Line exceeds 120 characters; contains 148 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="195" column="231" severity="warning" message="Line exceeds 120 characters; contains 231 characters" source="Generic.Files.LineLength.TooLong"/>
+ <error line="202" column="12" severity="warning" message="Method name &quot;_countTableData&quot; should not be prefixed with an underscore to indicate visibility" source="PSR2.Methods.MethodDeclaration.Underscore"/>
+</file>
 <file name="/var/www/local.sysclass.com/current/app.config.php">
  <error line="116" column="1" severity="error" message="Multi-line function call not indented correctly; expected 4 spaces but found 0" source="PSR2.Methods.FunctionCallSignature.Indent"/>
  <error line="123" column="1" severity="error" message="Multi-line function call not indented correctly; expected 4 spaces but found 0" source="PSR2.Methods.FunctionCallSignature.Indent"/>

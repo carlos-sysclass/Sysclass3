@@ -15,7 +15,7 @@ $SC.module("models.translate", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.translateAllTokensModelClass = this.translateEditTokenModelClass.extend({
-			translateURL : "/module/translate/ttall",	
+			translateURL : "/module/translate/ttall",
 			sync : function (method, model, options) {
 				//console.info('models.scores/scoreModelClass::sync');
 				//if (method == "read") {
@@ -41,7 +41,7 @@ $SC.module("models.translate", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.translateWindowsTokenModelClass = this.translateEditTokenModelClass.extend({
-			translateURL : "/module/translate/tt",	
+			translateURL : "/module/translate/tt",
 			sync : function (method, model, options) {
 				//console.info('models.scores/scoreModelClass::sync');
 				if (method == "read") {
@@ -65,5 +65,6 @@ $SC.module("models.translate", function(mod, app, Backbone, Marionette, $, _) {
 				return Backbone.sync(method, model, options);
 			}
 		});
+
 	});
 });

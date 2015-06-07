@@ -42,6 +42,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'subtitle';
                 return defaults;
+            },
+            urlRoot: "/module/lessons/item/lesson-content/",
+            translate : function(from, to) {
+                $.ajax(
+                    this.url() + "/translate",
+                    {
+                        data: {
+                            from: from,
+                            to: to
+                        },
+                        method : "PUT"
+                    }
+                );
             }
         });
 
@@ -67,11 +80,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             model: function(attrs, options) {
                 if (options.add) {
-                    if (attrs.content_type == "file" || attrs.content_type == "subtitle") {
+                    if (attrs.content_type == "file") {
                         return new lessonFileContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "subtitle") {
+
                         return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
@@ -368,6 +382,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             translate_contents : function() {
                 // REQUEST FILE TRANSLATION SERVICE
+                // GET FROM AND TO VALUES, CHECK FOR EQUALITY AND REQUEST TRANSLATION
+                //var translateServiceModelClass = app.module("models.translate").translateServiceModelClass;
+                console.warn(this.model);
+                this.model.translate("en", "pt");
 
             }
         });

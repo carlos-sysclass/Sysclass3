@@ -1,4 +1,12 @@
 <?php
+/**
+ * Dropbox Model File
+ * @filesource
+ */
+/**
+ * Provides functions to manipulate files in a backend-agnostic way.
+ * @package Sysclass\Models
+ */
 class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
@@ -21,6 +29,34 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel 
 		";
 
         parent::init();
+
+    }
+    /**
+     * [getFileContents description]
+     * @param  array|int $id The file id or file array contents
+     * @return string     All the file contents
+     * @throws FileBackendNotFoundException
+     */
+    public function getFileContents($id) {
+        if (is_array($id)) {
+            $data = $id;
+        } else {
+            $data = $this->getItem($id);
+        }
+        /**
+         * For now, the backend is hard-coded, but will be a value from database
+         * @var string
+         */
+        $backend = "local";
+        //$backend = $data['backend'];
+
+        // THE BACKEND MUST BE LOADED LIKE A SERVICE, A HELPER, A PLUGIN OR A MODULE
+        $fileHelper = $this->helper("file/backend/" . $backend);
+        if ($fileHelper) {
+            return $fileHelper->getFileContents($data);
+        } else {
+            throw new FileBackendNotFoundException("The file backend {$backend} wasn't found");
+        }
 
     }
 /*
