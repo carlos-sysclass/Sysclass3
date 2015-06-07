@@ -72,7 +72,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
     */
@@ -82,7 +82,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -112,7 +112,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -136,7 +136,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -158,7 +158,7 @@ class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbab
         }
     }
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type

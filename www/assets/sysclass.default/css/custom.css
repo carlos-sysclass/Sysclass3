@@ -826,6 +826,10 @@ table.users-panel-notification-table > thead > tr > td {
 
 .list-file-item-options {
     float: right;
+    margin: 0 0 0 4px;
+}
+.list-file-item-options.pull-left {
+    margin: 0 4px 0 0;
 }
 .list-file-item-options .btn-sm {
     margin-top: -3px;
@@ -872,4 +876,67 @@ table.users-panel-notification-table > thead > tr > td {
 
 li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" fa-"], li [class*=" glyphicon-"], li [class*=" icon-"] {
     width: 1em;
+}
+
+/* MEGA MENU */
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu {
+  left: auto;
+  width: auto;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content {
+  font-family: "Open Sans", sans-serif;
+  padding: 15px;
+  margin: 0;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content.mega-menu-responsive-content {
+  padding: 10px 18px 10px 45px;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu {
+  padding: 0;
+  margin: 0;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu:last-child {
+  border-right: 0;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li {
+  padding: 1px !important;
+  margin: 0 !important;
+  list-style: none;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > h3 {
+  margin-top: 5px;
+  padding-left: 6px;
+  font-size: 15px;
+  font-weight: 400;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a {
+  white-space: normal;
+  font-family: "Open Sans", sans-serif;
+  padding: 7px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 300;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a.iconify {
+  padding: 7px 7px 7px 30px;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a.iconify > i {
+  position: absolute;
+  top: auto !important;
+  margin-left: -24px;
+  font-size: 15px;
+  margin-top: 3px !important;
+}
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a .badge,
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a .label {
+  margin-left: 5px;
+}
+.navbar-nav > li.mega-menu-dropdown.mega-menu-full .dropdown-menu {
+  left: 20px;
+  right: 20px;
+}
+
+.nav.tabs-sm > li > a.btn-sm {
+    padding: 4px 10px 5px;
+    position: relative;
 }

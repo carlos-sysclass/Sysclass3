@@ -10,3 +10,6 @@ files/*
 files-private/*
 www/doc/*
 /logs
+vendor/*
+/build/dist/*
+/build/temp/*

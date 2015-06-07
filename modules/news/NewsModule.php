@@ -178,7 +178,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		return $actions[$request];
 	}
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /data
 	 * @deprecated Use GET /items/me entry point
@@ -227,7 +227,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		return $editItem;
 	}
 	/**
-	 * Insert a news model
+	 * [ add a description ]
 	 *
 	 * @url POST /item/me
 	 */
@@ -253,7 +253,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		}
 	}
 	/**
-	 * Update a news model
+	 * [ add a description ]
 	 *
 	 * @url PUT /item/me/:id
 	 */
@@ -276,7 +276,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	}
 
 	/**
-	 * DELETE a news model
+	 * [ add a description ]
 	 *
 	 * @url DELETE /item/me/:id
 	 */
@@ -339,7 +339,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /view
 	 */
@@ -379,7 +379,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		}
 	}
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /add
 	 */
@@ -399,7 +399,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /edit/:id
 	 */

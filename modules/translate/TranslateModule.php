@@ -49,6 +49,8 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 'text'  => self::$t->translate("Review translation")
             );
 
+            $this->putSectionTemplate("translate-menu", "menu/language.switch");
+
             $menuItem = array(
                 'icon'      => 'globe',
                 'notif'     => count($items),
@@ -58,7 +60,8 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                 ),
                 'type'      => 'language',
                 'items'     => $items,
-                'extended'  => false
+                'extended'  => false,
+                'template'  => "translate-menu"
             );
 
             return $menuItem;
@@ -156,7 +159,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url PUT /change/:language_code
      */
@@ -234,7 +237,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */
@@ -284,7 +287,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -311,7 +314,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -336,7 +339,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /view/token
      */
@@ -376,7 +379,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
     }
 
     /**
-     * Get all seasons from selected(s) course(s)
+     * [ add a description ]
      *
      * @url GET /refresh
      */

@@ -170,7 +170,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /add
      */
@@ -186,7 +186,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */
@@ -202,7 +202,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/users/:course_id
     */
@@ -217,7 +217,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url POST /item/users/switch
     */
@@ -244,7 +244,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/:model
      * @url GET /items/:model/:type
@@ -408,7 +408,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /combo/items
 	 * @url GET /combo/items/:type
@@ -459,7 +459,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
      */
@@ -471,7 +471,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -498,7 +498,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -521,7 +521,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -544,7 +544,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /item/courses
 	 * @url GET /item/courses/:id
@@ -885,7 +885,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     }
     */
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /list
      * @deprecated
@@ -930,7 +930,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /content
      * @deprecated
@@ -945,7 +945,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /content/:course/:lesson
      * @deprecated
@@ -960,7 +960,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /content/:course/:lesson/:content
      * @deprecated
@@ -1107,7 +1107,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /materials/list/:course/:lesson/:content
      * @deprecated
@@ -1238,7 +1238,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	}
 
     /**
-     * Get all seasons from selected(s) course(s)
+     * [ add a description ]
      *
      * @url GET /items/seasons/:courses
      * @url GET /items/seasons/:courses/:datatable

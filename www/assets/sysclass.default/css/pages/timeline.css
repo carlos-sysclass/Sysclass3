@@ -142,26 +142,48 @@ New Timeline
 }
 
 @media (max-width: 768px) {
+  .timeline:before {
+    background: none;
+  }
+  .timeline-badge {
+    display: none;
+  }
+
+  .timeline-body {
+    margin-left: 0;
+    padding: 10px
+  }
+  .timeline-body-head {
+      margin-bottom: 0;
+  }
   .timeline-body-head-caption {
-    width: 100%;
+    /* width: 100%; */
   }
 
   .timeline-body-head-actions {
-    float: left;
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    float: right;
+/*    width: 100%; */
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .timeline-body-arrow {
+    display: none;
+  }
+  .timeline-body-content {
+    margin-top: 35px;
   }
 }
 @media (max-width: 480px) {
   .timeline:before {
     margin-left: 28px;
+    background: none;
   }
 
   .timeline-badge {
     padding-right: 40px;
     width: 60px;
     height: 60px;
+    display: none;
   }
 
   .timeline-badge-userpic {
@@ -180,10 +202,12 @@ New Timeline
   }
 
   .timeline-body {
-    margin-left: 80px;
+    margin-left: 0;
   }
 
   .timeline-body-arrow {
     top: 17px;
+    display: none;
   }
+
 }

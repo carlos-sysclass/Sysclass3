@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -22,7 +22,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             )
         );
     }
-    
+
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('tutoria.widget', $widgetsIndexes)) {
             $this->putScript("plugins/jquery.pulsate.min");
@@ -50,7 +50,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data
      */
@@ -60,7 +60,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
         $per_page = 10;
 
         $currentUser    = $this->getCurrentUser(true);
-        
+
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
@@ -70,15 +70,15 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
             LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)",
-            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title, 
-            tt.question_timestamp, 
-            tt.question_user_id, 
+            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title,
+            tt.question_timestamp,
+            tt.question_user_id,
             u1.name as question_user_name,
             u1.surname as question_user_surname,
-            u1.avatar as question_avatar_id, 
-            tt.question, 
-            tt.answer_timestamp, 
-            tt.answer_user_id, 
+            u1.avatar as question_avatar_id,
+            tt.question,
+            tt.answer_timestamp,
+            tt.answer_user_id,
             u2.name as answer_user_name,
             u2.surname as answer_user_surname,
             u2.avatar as answer_avatar_id,
@@ -121,7 +121,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
         return $tutorias;
     }
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data/:topic
      */
@@ -133,7 +133,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
         }
 
         $currentUser    = self::$current_user;
-        
+
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
@@ -152,10 +152,10 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
     */
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url POST /insert
-     */   
+     */
     public function insertTutoriaAction()
     {
         if ($currentUser    = $this->getCurrentUser()) {
@@ -195,15 +195,15 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
             LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)",
-            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title, 
-            tt.question_timestamp, 
-            tt.question_user_id, 
+            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title,
+            tt.question_timestamp,
+            tt.question_user_id,
             u1.name as question_user_name,
             u1.surname as question_user_surname,
-            u1.avatar as question_avatar_id, 
-            tt.question, 
-            tt.answer_timestamp, 
-            tt.answer_user_id, 
+            u1.avatar as question_avatar_id,
+            tt.question,
+            tt.answer_timestamp,
+            tt.answer_user_id,
             u2.name as answer_user_name,
             u2.surname as answer_user_surname,
             u2.avatar as answer_avatar_id,
@@ -213,7 +213,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             "",
             sprintf("%d, %d", ($page - 1) * $per_page, $per_page)
         );
-        
+
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
@@ -233,7 +233,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /chat/pool/:chat_index
      */
@@ -245,5 +245,5 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
         return array(
         );
     }
-        
+
 }

@@ -190,7 +190,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     }
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /js
      * @url GET /js/:filename
@@ -219,7 +219,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /scripts/:filename
      */

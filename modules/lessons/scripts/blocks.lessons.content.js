@@ -362,6 +362,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             tagName : "li",
             uploadClass : [ "template-upload red-stripe" ],
             downloadClass : [ "template-download green-stripe" ],
+            events : {
+                "confirmed.bs.confirmation .delete-file-content"    : "delete",
+                "click .translate-file-content"                     : "translate_contents"
+            },
+            translate_contents : function() {
+                // REQUEST FILE TRANSLATION SERVICE
+
+            }
         });
 
         var lessonTextContentTimelineViewClass = Backbone.View.extend({

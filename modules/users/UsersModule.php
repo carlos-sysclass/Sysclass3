@@ -163,6 +163,12 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		}
 	}
 
+    /**
+     * [getConditionText description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
 	public function getConditionText($condition_id, $data) {
 
 		$condition = $this->getPermissions($condition_id);
@@ -186,11 +192,24 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		}
 	}
 
+    /**
+     * [checkCondition description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
 	public function checkCondition($condition_id, $data) {
 		$entity = $this->getCurrentUser();
 		return $this->checkConditionByEntityId($entity['id'], $condition_id, $data);
 	}
 
+    /**
+     * [checkConditionByEntityId description]
+     * @param  [type] $entity_id    [description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
 	public function checkConditionByEntityId($entity_id, $condition_id, $data) {
 		$userModel = $this->model("users");
 		$userObject = $userModel->getItem($entity_id);
@@ -244,6 +263,12 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		}
 	}
 
+    /**
+     * [getPermissionForm description]
+     * @param  [type] $condition_id [description]
+     * @param  array  $data         [description]
+     * @return [type]               [description]
+     */
 	public function getPermissionForm($condition_id, $data = array()) {
 		if (array_key_exists($condition_id, $this->getPermissions())) {
 			$this->putItem("data", $data);
@@ -252,6 +277,13 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			return false;
 		}
 	}
+
+    /**
+     * [parseFormData description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
 	public function parseFormData($condition_id, $data) {
 		switch($condition_id) {
 			case self::PERMISSION_IN_LESSON : {
@@ -276,6 +308,12 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 	}
 
 	/* IWidgetContainer */
+    /**
+     * [getWidgets description]
+     * @param  array  $widgetsIndexes [description]
+     * @return [type]                 [description]
+     * @implemen
+     */
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->getCurrentUser(true);
@@ -352,6 +390,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
      *
      * @url GET /combo/items
      * @url GET /combo/items/:type
+     * @deprecated 3.0.0.0
      */
     public function comboItensAction($type) {
         $q = $_GET['q'];
@@ -378,7 +417,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
     */
@@ -395,7 +434,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -430,7 +469,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -456,7 +495,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -478,7 +517,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
         }
     }
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type
@@ -561,7 +600,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 
     // CRUD FUNCIONS
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /view
      */
@@ -576,7 +615,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /profile
 	 */
@@ -636,7 +675,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url POST /profile/personal
 	 */
@@ -686,7 +725,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		exit;
 	}
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url POST /profile/password
 	 */

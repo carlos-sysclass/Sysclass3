@@ -93,7 +93,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/users/:course_id
     */
@@ -109,7 +109,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
     */
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url POST /item/users/switch
     */
@@ -137,7 +137,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
     */
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/:model
      * @url GET /items/:model/:type
@@ -240,7 +240,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         return array_values($itemsData);
     }
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
      */
@@ -252,7 +252,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -279,7 +279,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -302,7 +302,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */

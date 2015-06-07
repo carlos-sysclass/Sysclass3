@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -23,7 +23,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             )
         );
     }
-    
+
     public function getWidgets($widgetsIndexes = array())
     {
         $this->putComponent("select2");
@@ -35,7 +35,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             $this->putScript("plugins/fullcalendar/fullcalendar/fullcalendar.min");
         	//$this->putScript("scripts/calendar");
             $this->putModuleScript("calendar");
-        
+
             return array
             (
                 'calendar' => array
@@ -53,7 +53,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data
      */
@@ -116,7 +116,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
                 return $this->createAdviseResponse(self::$t->translate("Event created with success"),
                     "success"
                 );
-                
+
             }
             else
             {

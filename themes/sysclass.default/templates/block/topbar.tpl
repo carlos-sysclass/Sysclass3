@@ -17,7 +17,11 @@
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<ul class="nav navbar-nav pull-right">
 			{foreach $T_TOPBAR_MENU as $key => $item}
-    			{if $item.extended}
+				{if $item.template && (isset($T_SECTION_TPL[$item.template]) &&  ($T_SECTION_TPL[$item.template]|@count > 0))}
+					{foreach $T_SECTION_TPL[$item.template] as $template}
+						{include file=$template T_MENU_ITEM=$item T_MENU_INDEX=$key}
+					{/foreach}
+    			{elseif $item.extended}
     			<li class="dropdown hidden-xs">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 			      		<i class="icon-{$item.icon}"></i>
@@ -68,32 +72,9 @@
 				{else}
 				<li class="dropdown {$item.type} hidden-xs">
 					{foreach $item.items as $subitem}
-				       	{if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-								<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/>
-								<span class="username">
-									 {$subitem.country_code|@strtoupper}
-								</span>
-								<i class="icon-angle-down"></i>
-							</a>
-						{/if}
-					{/foreach}
-					<ul class="dropdown-menu">
-					{foreach $item.items as $subitem}
-				       	{if $item.type == 'language' && (!isset($subitem.selected) || !$subitem.selected)}
-				       		{if isset($subitem.code) && $subitem.code}
-								<li>
-									<a href="#" data-callback="change-language" data-language="{$subitem.code}">
-										<img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/> {$subitem.local_name}
-									</a>
-								</li>
-							{else}
-								<li class="divider"></li>
-								<li>
-									<a href="{$subitem.link}">{$subitem.text}</a>
-								</li>
-							{/if}
-						{/if}
+						<li>
+							<a href="{$subitem.link}">{$subitem.text}</a>
+						</li>
 				    {/foreach}
 				    </ul>
 				</li>

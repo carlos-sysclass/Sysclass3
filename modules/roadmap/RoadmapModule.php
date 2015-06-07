@@ -39,7 +39,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/:model
      * @url GET /items/:model/:type
@@ -137,7 +137,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/season
      */
@@ -151,7 +151,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
 
                 $data = $itemModel->getItem($data['id']);
-                
+
                 return array_merge(
                     $data,
                     $this->createAdviseResponse(
@@ -169,7 +169,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/class/:id
      */

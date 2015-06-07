@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -27,7 +27,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
     			'items'		=> array(
     				array(
     					'link' 		=> $this->getBasePath() . "/timeline/1",
-    					
+
     					'values' => array(
 	    					'photo'		=> 'img/avatar2.jpg',
     						'from'		=> 'Lisa Wong',
@@ -61,7 +61,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data
      * @deprecated Use /items/me entry point
@@ -72,7 +72,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $per_page = 10;
 
         $currentUser    = self::$current_user;
-        
+
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
@@ -92,7 +92,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         return $forum_messages;
     }
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data/:topic
      */
@@ -103,7 +103,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         }
 
         $currentUser    = self::$current_user;
-        
+
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
@@ -120,5 +120,5 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         );
         return $forum_messages;
     }
-        
+
 }

@@ -118,7 +118,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
 
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /add
      */
@@ -139,7 +139,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */
@@ -160,7 +160,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/users/
     */
@@ -176,7 +176,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
     */
@@ -187,7 +187,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -225,7 +225,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -257,7 +257,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -358,7 +358,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /data/:id
      */

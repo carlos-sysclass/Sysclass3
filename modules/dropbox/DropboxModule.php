@@ -76,7 +76,7 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/:model/:id
      */

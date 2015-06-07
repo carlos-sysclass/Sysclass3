@@ -115,7 +115,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
         return $actions[$request];
     }
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/users/
     */
@@ -131,7 +131,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
     */
@@ -142,7 +142,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -178,7 +178,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -208,7 +208,7 @@ class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumba
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */

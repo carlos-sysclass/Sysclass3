@@ -160,7 +160,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /view-group
      */
@@ -179,7 +179,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
 
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /add-group
      */
@@ -199,7 +199,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /edit-group/:id
      */
@@ -219,7 +219,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
      * @url GET /group/item/me/:id
@@ -237,7 +237,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      * @url POST /group/item/me
@@ -278,7 +278,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      * @url PUT /group/item/me/:id
@@ -315,7 +315,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      * @url DELETE /group/item/me/:id
@@ -351,7 +351,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         }
     }
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type

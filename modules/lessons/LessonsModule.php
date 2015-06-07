@@ -102,8 +102,22 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 $self->putComponent("bootstrap-confirmation");
                 $self->putModuleScript("blocks.lessons.content");
 
+
+                $languages = self::$t->getItems();
+
+                $userLanguageCode =  self::$t->getUserLanguageCode();
+
+
+
+                foreach($languages as $key => &$value) {
+                    if ($value['code'] == $userLanguageCode) {
+                        $value['selected'] = true;
+                        break;
+                    }
+                }
+
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
-                //$self->putItem("classes_lessons_block_context", $block_context);
+                $self->putItem("languages", $languages);
 
                 $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
@@ -151,7 +165,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /add
      */
@@ -167,7 +181,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */
@@ -183,7 +197,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/users/:course_id
     */
@@ -199,7 +213,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
     */
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url POST /item/users/switch
     */
@@ -227,7 +241,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
     */
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/:model
      * @url GET /items/:model/:type
@@ -316,7 +330,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url PUT /items/lesson-content/set-order/:lesson_id
      */
@@ -350,7 +364,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url POST /upload/:id
      * @url POST /upload/:id/:type
@@ -411,7 +425,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url DELETE /upload/:lesson_id/:file_id
      * @deprecated
@@ -560,7 +574,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/:model/:id
      */

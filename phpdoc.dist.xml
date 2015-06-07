@@ -23,6 +23,7 @@
 	<files>
 		<directory>controller</directory>
 		<directory>model</directory>
+        <directory>helper</directory>
 		<directory>modules</directory>
 <!--
 		<directory>/usr/local/share/plicolib/controller</directory>

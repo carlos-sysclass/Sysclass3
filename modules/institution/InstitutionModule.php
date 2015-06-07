@@ -130,7 +130,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     }
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
      */
@@ -143,7 +143,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         return $editItem;
     }
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -181,7 +181,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         }
     }
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -211,7 +211,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -318,7 +318,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     }
 */
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /view
      */

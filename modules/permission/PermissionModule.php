@@ -114,7 +114,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	}
 
 	/**
-	 * Module Entry Point
+	 * [ add a description ]
 	 *
 	 * @url GET /combo/items
 	 */

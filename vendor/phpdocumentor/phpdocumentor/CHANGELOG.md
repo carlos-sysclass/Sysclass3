@@ -1,7 +1,19 @@
-Unreleased
-----------
+2014-11-23: Version 2.8.2
+-------------------------
 
 ```
+FIXED:     Self-update for PHAR files
+FIXED:     Log now shows which elements do not have a summary
+FIXED:     When omitting markers the code now automatically picks TODO and FIXME
+FIXED:     Missing assets in new-black and abstract template
+FIXED:     phpDocumentor will error if the iconv extension is missing.
+```
+
+2014-11-13: Version 2.8.1
+-------------------------
+
+```
+FIXED:     Fatal error in phar file when used from a folder containing a composer.json
 ```
 
 2014-10-29: Version 2.8.0

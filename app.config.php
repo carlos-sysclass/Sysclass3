@@ -378,6 +378,7 @@ $plicoLib->concat(
 		'css/style',
 		'css/style-responsive',
 		'css/plugins',
+		'css/layout',
 		'css/themes/blue',
 		'css/custom',
 		'css/videojs/video-js'

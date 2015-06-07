@@ -43,7 +43,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
     // CRUD FUNCIONS
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /view
      */
@@ -61,7 +61,7 @@ abstract class SysclassModule extends BaseSysclassModule
     }
 
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /add
      */
@@ -81,7 +81,7 @@ abstract class SysclassModule extends BaseSysclassModule
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */

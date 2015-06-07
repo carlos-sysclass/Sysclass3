@@ -2,15 +2,15 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-use Behat\Behat\Context\BehatContext;
-use Behat\Behat\Exception\PendingException;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -19,7 +19,7 @@ use Symfony\Component\Process\Process;
 /**
  * Context class for the phpDocumentor Features.
  */
-class FeatureContext extends BehatContext
+class FeatureContext implements Context
 {
     /** @var Process the process used to execute phpDocumentor */
     protected $process;
@@ -47,9 +47,11 @@ class FeatureContext extends BehatContext
      */
     public function beforeScenario()
     {
+        self::cleanTestFolders();
         $this->binaryPath = __DIR__ . '/../../bin/phpdoc';
         $this->process = new Process(null);
         $this->process->setWorkingDirectory($this->getTmpFolder());
+        chdir($this->getTmpFolder());
     }
 
     /**
@@ -61,7 +63,8 @@ class FeatureContext extends BehatContext
      */
     public function iAmInThePhpdocumentorRootDirectory()
     {
-        chdir(__DIR__.'/../..');
+        chdir(__DIR__ . '/../..');
+        $this->process->setWorkingDirectory(__DIR__ . '/../..');
     }
 
     /**
@@ -231,6 +234,7 @@ class FeatureContext extends BehatContext
      */
     public function iRunPhpdoc($argumentsString = '')
     {
+        $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, array('\'' => '"'));
 
         // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
@@ -308,7 +312,7 @@ class FeatureContext extends BehatContext
     {
         $tmp = self::getTmpFolder();
         $this->iRunPhpdoc(
-            "-f $file_path -t $tmp --config=--config='{$this->getTempXmlConfigurationPath()}' --force $options"
+            "-f $file_path -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force $options"
         );
     }
 
@@ -325,7 +329,7 @@ class FeatureContext extends BehatContext
     {
         $tmp = self::getTmpFolder();
         $this->iRunPhpdoc(
-            "-d $folder_path -t $tmp --config=--config='{$this->getTempXmlConfigurationPath()}' --force"
+            "-d $folder_path -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force --template=xml"
         );
     }
 
@@ -371,7 +375,7 @@ class FeatureContext extends BehatContext
         if ($this->getReturnCode() != 0) {
             throw new \Exception(
                 'Return code was ' . $this->getReturnCode() . ' with output '
-                .$this->getOutput()
+                .$this->getOutput() . $this->process->getOutput()
             );
         }
     }
@@ -478,6 +482,16 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^the application returns an error containing '([^']*)'$/
+     */
+    public function theApplicationReturnsAnErrorContaining($arg1)
+    {
+        if (strpos($this->process->getErrorOutput(), $arg1) === false) {
+            throw new \Exception($this->process->getOutput() . $this->process->getErrorOutput());
+        }
+    }
+
+    /**
      * @Given /^a source file containing validation errors$/
      */
     public function aSourceFileContainingValidationErrors()
@@ -548,27 +562,26 @@ class FeatureContext extends BehatContext
     /**
      * @Then /^the AST has an expression "([^"]*)" with value:$/
      */
-    public function theAstHasAnExpressionWithValue($arg1, PyStringNode $string)
+    public function theAstHasAnExpressionWithValuePyString($expression, PyStringNode $value)
     {
-        $expression = new ExpressionLanguage();
-        $expressionResult = $expression->evaluate($arg1, array('project' => $this->getAst()));
-
-        if ($expressionResult === null) {
-            throw new Exception('Expression "' . $arg1 . '" does not match any content in the AST');
-        }
-
-        if ($expressionResult != (string) $string) {
-            throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $string . '\'');
-        }
+        $this->theAstHasAnExpressionWithValue($expression, $value->getRaw());
     }
 
     /**
      * @Then /^the AST has an expression "([^"]*)" with value: "([^"]*)"$/
      */
-    public function theAstHasAnExpressionWithValue2($arg1, $arg2)
+    public function theAstHasAnExpressionWithValue($expression, $value)
     {
-        $string = new PyStringNode($arg2);
-        $this->theAstHasAnExpressionWithValue($arg1, $string);
+        $expressionLanguage = new ExpressionLanguage();
+        $expressionResult = $expressionLanguage->evaluate($expression, array('project' => $this->getAst()));
+
+        if ($expressionResult === null) {
+            throw new Exception('Expression "' . $expression . '" does not match any content in the AST');
+        }
+
+        if ($expressionResult != (string) $value) {
+            throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $value . '\'');
+        }
     }
 
     /**
@@ -630,7 +643,8 @@ XML
      *
      * @param string $path
      *
-     * @see https://github.com/Behat/Behat/blob/3.0/features/bootstrap/FeatureContext.php#L280 for the original method.
+     * @see https://github.com/Behat/Behat/blob/master/features/bootstrap/FeatureContext.php#L291 for the original
+     * method.
      *
      * @return void
      */
@@ -649,7 +663,9 @@ XML
             }
         }
 
-        rmdir($path);
+        if (!@rmdir($path)) {
+            unlink($path);
+        }
     }
 
     /**
@@ -657,7 +673,15 @@ XML
      */
     protected function getAst()
     {
-        return unserialize(file_get_contents(self::getTmpFolder() . '/ast.dump'));
+        $file = self::getTmpFolder() . '/ast.dump';
+        if (!file_exists($file)) {
+            throw new \Exception(
+                'The output of phpDocumentor was not generated, this probably means that the execution failed. '
+                . 'The error output was: ' . $this->process->getErrorOutput()
+            );
+        }
+
+        return unserialize(file_get_contents($file));
     }
 
     /**
@@ -690,5 +714,73 @@ XML
         if ($expressionResult instanceof $descriptorClass) {
             throw new Exception('The value at the given expression is a \'' . $arg1. '\' while this was not expected');
         }
+    }
+
+    /**
+     * @When /^I download "([^"]*)" to "([^"]*)"$/
+     */
+    public function iDownloadTo($arg1, $arg2)
+    {
+        file_put_contents($arg2, file_get_contents($arg1));
+    }
+
+    /**
+     * @When /^I execute "([^"]*)"$/
+     */
+    public function iExecute($arg1)
+    {
+        $this->process->setCommandLine($arg1);
+        $this->process->start();
+        $this->process->wait();
+    }
+
+    /**
+     * Prints last command output string.
+     *
+     * @Then display last command output
+     */
+    public function displayLastCommandOutput()
+    {
+        $this->printDebug("`" . $this->process->getCommandLine() . "`:\n" . $this->process->getOutput());
+    }
+
+    /**
+     * @Given /^the output should contain:$/
+     */
+    public function theOutputShouldContain(PyStringNode $string)
+    {
+        if (strpos($this->process->getOutput(), $string->getRaw()) === false) {
+            throw new \Exception(
+                'Expected to find string "' . $string->getRaw() . '" in output: ' . $this->process->getOutput()
+            );
+        }
+    }
+
+    /**
+     * @Given /^file "([^"]*)" should exist$/
+     */
+    public function fileShouldExist($arg1)
+    {
+        if (! file_exists($arg1)) {
+            throw new \Exception('File with name "' . $arg1 . '" does not exist');
+        }
+    }
+
+    /**
+     * @Given /^a directory "([^"]*)"$/
+     */
+    public function aDirectory($arg1)
+    {
+        if (! file_exists($arg1)) {
+            mkdir($arg1, 0777, true);
+        }
+    }
+
+    /**
+     * @Then /^the project has the title "([^"]*)"$/
+     */
+    public function theProjectHasTheTitle($arg1)
+    {
+        $this->theAstHasAnExpressionWithValue('project.getName()', $arg1);
     }
 }

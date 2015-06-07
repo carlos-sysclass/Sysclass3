@@ -107,7 +107,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         );
     }
     /**
-     * New model entry point
+     * [ add a description ]
      *
      * @url GET /add
      */
@@ -128,7 +128,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Module Entry Point
+     * [ add a description ]
      *
      * @url GET /edit/:id
      */
@@ -151,7 +151,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
     /**
-     * Get the institution visible to the current user
+     * [ add a description ]
      *
      * @url GET /item/me/:id
      */
@@ -168,7 +168,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Insert a news model
+     * [ add a description ]
      *
      * @url POST /item/me
      */
@@ -195,7 +195,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Update a news model
+     * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
@@ -218,7 +218,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * DELETE a news model
+     * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
@@ -241,7 +241,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type
@@ -307,7 +307,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /**
-     * Get all users visible to the current user
+     * [ add a description ]
      *
      * @url PUT /items/lessons/set-order/:class_id
      */

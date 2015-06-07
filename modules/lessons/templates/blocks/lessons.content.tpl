@@ -49,7 +49,20 @@
         <div class="timeline-body-head">
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-primary">
-                    <span class="btn btn-sm btn-default drag-handler">
+                    <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
+                        <% if (file_type == "video") { %>
+                            <i class="fa fa-file-video-o"></i>
+                        <% } else if (file_type == "image") { %>
+                            <i class="fa fa-file-image-o"></i>
+                        <% } else if (file_type == "audio") { %>
+                            <i class="fa fa-file-sound-o"></i>
+                        <% } else if (file_type == "pdf") { %>
+                            <i class="fa fa-file-pdf-o"></i>
+                        <% } else { %>
+                            <i class="fa fa-file-o"></i>
+                        <% }  %>
+                    </span>
+                     <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
                     </span>
                     Content
@@ -111,7 +124,20 @@
         <div class="timeline-body-head">
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-primary">
-                    <span class="btn btn-sm btn-default drag-handler">
+                    <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
+                        <% if (file_type == "video") { %>
+                            <i class="fa fa-file-video-o"></i>
+                        <% } else if (file_type == "image") { %>
+                            <i class="fa fa-file-image-o"></i>
+                        <% } else if (file_type == "audio") { %>
+                            <i class="fa fa-file-sound-o"></i>
+                        <% } else if (file_type == "pdf") { %>
+                            <i class="fa fa-file-pdf-o"></i>
+                        <% } else { %>
+                            <i class="fa fa-file-o"></i>
+                        <% }  %>
+                    </span>
+                     <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
                     </span>
                     Exercises
@@ -180,7 +206,20 @@
         <div class="timeline-body-head">
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-danger">
-                    <span class="btn btn-sm btn-default drag-handler">
+                    <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
+                        <% if (file_type == "video") { %>
+                            <i class="fa fa-file-video-o"></i>
+                        <% } else if (file_type == "image") { %>
+                            <i class="fa fa-file-image-o"></i>
+                        <% } else if (file_type == "audio") { %>
+                            <i class="fa fa-file-sound-o"></i>
+                        <% } else if (file_type == "pdf") { %>
+                            <i class="fa fa-file-pdf-o"></i>
+                        <% } else { %>
+                            <i class="fa fa-file-o"></i>
+                        <% }  %>
+                    </span>
+                    <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
                     </span>
 
@@ -259,7 +298,21 @@
         <div class="timeline-body-head">
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-success">
-                    <span class="btn btn-sm btn-default drag-handler">
+                    <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
+                        <% if (file_type == "video") { %>
+                            <i class="fa fa-file-video-o"></i>
+                        <% } else if (file_type == "image") { %>
+                            <i class="fa fa-file-image-o"></i>
+                        <% } else if (file_type == "audio") { %>
+                            <i class="fa fa-file-sound-o"></i>
+                        <% } else if (file_type == "pdf") { %>
+                            <i class="fa fa-file-pdf-o"></i>
+                        <% } else { %>
+                            <i class="fa fa-file-o"></i>
+                        <% }  %>
+                    </span>
+
+                    <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
                     </span>
                     <%= file.name %>
@@ -270,7 +323,9 @@
                 <% if (file_type == "video") { %>
                     <span class="btn btn-sm btn-primary fileinput-button fileupload-subtitle" id="fileupload"  data-fileupload-url="/module/dropbox/upload/subtitle">
                         <i class="fa fa-language"></i>
+                        <span class="hidden-xs">
                         {translateToken value="Add Subtitles"}
+                        </span>
                         <input type="file" name="subtitles[]">
                     </span>
                 <% }  %>
@@ -354,8 +409,6 @@
         </a>
     </div>
 </script>
-
-
 <script type="text/template" id="fileupload-download-related-item">
     <% var file = model.file %>
     <%
@@ -370,38 +423,79 @@
             file_type = "pdf";
         }
     %>
-    <a class="btn btn-sm btn-warning text-uppercase dropdown-toggle" data-close-others="true" data-hover="dropdown" data-toggle="dropdown" >
-        <%= model.language_code %>
-        <i class="fa fa-angle-down"></i>
-    </a>
-    <ul class="dropdown-menu">
-        <li>
-            <a class="btn btn-sm btn-warning text-uppercase" href="/module/users/profile">PT</a>
+    <ul class="nav nav-tabs tabs-sm">
+        <li class="active">
+            <a href="#subtitle-translate-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm edit-subtitle-content tooltips">
+                <i class="fa fa-language"></i>
+            </a>
         </li>
+        <li class="">
+            <a href="#subtitle-edit-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm edit-subtitle-content tooltips">
+                <i class="fa fa-edit"></i>
+            </a>
+        </li>
+        <li class="pull-right text-success">
+            <%= file.name %>
+            <a class="btn btn-sm text-danger delete-file-content" href="javascript: void(0);"
+                data-toggle="confirmation"
+                data-original-title="{translateToken value="Are you sure?"}"
+                data-placement="left"
+                data-singleton="true"
+                data-popout="true"
+                data-btn-ok-icon="fa fa-trash"
+                data-btn-ok-class="btn-sm btn-danger"
+                data-btn-cancel-icon="fa fa-times"
+                data-btn-cancel-class="btn-sm btn-warning"
+                data-btn-ok-label="{translateToken value="Yes"}"
+                data-btn-cancel-label="{translateToken value="No"}"
+                style="display: inline-block;"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+        </li>
+
     </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="subtitle-translate-<%= model.id %>">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                        <label class="control-label">{translateToken value="Subtitle Language"}</label>
+                        <select class="select2-me form-control" name="related[lang_from]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
+                            {foreach $T_LANGUAGES as $lang}
+                                <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">{translateToken value="Automatic translate to"}</label>
+                        <div class="input-group ">
+                            <select class="select2-me form-control" name="related[lang_to]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
+                                {foreach $T_LANGUAGES as $lang}
+                                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                                {/foreach}
+                            </select>
+                            <div class="input-group-btn">
+                                <button class="btn green translate-file-content" type="button">
+                                    <i class="fa fa-language"></i>
+                                    Translate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="subtitle-edit-<%= model.id %>">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning" role="alert">
+                        Not implemented yet!
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-    <span class="text-danger">
-        <%= file.name %>
-    </span>
-    <span class="font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
-    <div class="list-file-item-options">
-        <a class="btn btn-sm btn-danger delete-file-content" href="javascript: void(0);"
-            data-toggle="confirmation"
-            data-original-title="{translateToken value="Are you sure?"}"
-            data-placement="left"
-            data-singleton="true"
-            data-popout="true"
-            data-btn-ok-icon="fa fa-trash"
-            data-btn-ok-class="btn-sm btn-danger"
-            data-btn-cancel-icon="fa fa-times"
-            data-btn-cancel-class="btn-sm btn-warning"
-            data-btn-ok-label="{translateToken value="Yes"}"
-            data-btn-cancel-label="{translateToken value="No"}"
-        >
-            <i class="fa fa-trash"></i>
-        </a>
     </div>
-
 </script>
-
