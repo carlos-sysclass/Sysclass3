@@ -50,17 +50,7 @@
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-primary">
                     <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
-                        <% if (file_type == "video") { %>
-                            <i class="fa fa-file-video-o"></i>
-                        <% } else if (file_type == "image") { %>
-                            <i class="fa fa-file-image-o"></i>
-                        <% } else if (file_type == "audio") { %>
-                            <i class="fa fa-file-sound-o"></i>
-                        <% } else if (file_type == "pdf") { %>
-                            <i class="fa fa-file-pdf-o"></i>
-                        <% } else { %>
-                            <i class="fa fa-file-o"></i>
-                        <% }  %>
+                        <i class="fa fa-file-video-o"></i>
                     </span>
                      <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
@@ -125,17 +115,7 @@
             <div class="timeline-body-head-caption">
                 <span class="timeline-body-alerttitle text-primary">
                     <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
-                        <% if (file_type == "video") { %>
-                            <i class="fa fa-file-video-o"></i>
-                        <% } else if (file_type == "image") { %>
-                            <i class="fa fa-file-image-o"></i>
-                        <% } else if (file_type == "audio") { %>
-                            <i class="fa fa-file-sound-o"></i>
-                        <% } else if (file_type == "pdf") { %>
-                            <i class="fa fa-file-pdf-o"></i>
-                        <% } else { %>
-                            <i class="fa fa-file-o"></i>
-                        <% }  %>
+                           <i class="fa fa-file-video-o"></i>
                     </span>
                      <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
                         <i class="fa fa-arrows"></i>
@@ -186,6 +166,18 @@
 </script>
 
 <script type="text/template" id="fileupload-upload-timeline-item">
+    <%
+        var file_type = "other";
+        if (/^video\/.*$/.test(file.type)) {
+            file_type = "video";
+        } else if (/^image\/.*$/.test(file.type)) {
+            file_type = "image";
+        } else if (/^audio\/.*$/.test(file.type)) {
+            file_type = "audio";
+        } else if (/.*\/pdf$/.test(file.type)) {
+            file_type = "pdf";
+        }
+    %>
     <div class="timeline-badge">
         <div class="timeline-icon">
             <% if (/^video\/.*$/.test(file.type)) { %>
@@ -280,7 +272,7 @@
 
     <div class="timeline-badge">
         <div class="timeline-icon">
-            <% if (file_type == "video") { %>
+            <% if (file_type == "video1") { %>
                 <i class="fa fa-file-video-o"></i>
             <% } else if (file_type == "image") { %>
                 <i class="fa fa-file-image-o"></i>
@@ -425,12 +417,12 @@
     %>
     <ul class="nav nav-tabs tabs-sm">
         <li class="active">
-            <a href="#subtitle-translate-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm edit-subtitle-content tooltips">
+            <a href="#subtitle-translate-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm tooltips">
                 <i class="fa fa-language"></i>
             </a>
         </li>
         <li class="">
-            <a href="#subtitle-edit-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm edit-subtitle-content tooltips">
+            <a href="#subtitle-edit-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm tooltips">
                 <i class="fa fa-edit"></i>
             </a>
         </li>
@@ -473,7 +465,7 @@
                         <div class="input-group ">
                             <select class="select2-me form-control" name="related[lang_to]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
-                                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                                    <option value="{$lang.code}" <% if (model.language_code != '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
                                 {/foreach}
                             </select>
                             <div class="input-group-btn">

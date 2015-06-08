@@ -10,11 +10,11 @@
 
 class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
-
     private static $suitable_translate_contents = array("subtitle");
 
     /* ILinkable */
-    public function getLinks() {
+    public function getLinks()
+    {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
             $itemsData = $this->model("classes/lessons/collection")->addFilter(array(
@@ -36,7 +36,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     }
 
     /* IBreadcrumbable */
-    public function getBreadcrumb() {
+    public function getBreadcrumb()
+    {
         $breadcrumbs = array(
             array(
                 'icon'  => 'fa fa-home',
@@ -51,25 +52,23 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         );
 
         $request = $this->getMatchedUrl();
-        switch($request) {
-            case "view" : {
+        switch ($request) {
+            case "view":
                 $breadcrumbs[] = array('text'   => self::$t->translate("View"));
                 break;
-            }
-            case "add" : {
+            case "add":
                 $breadcrumbs[] = array('text'   => self::$t->translate("New Lesson"));
                 break;
-            }
-            case "edit/:id" : {
+            case "edit/:id":
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Lesson"));
                 break;
-            }
         }
         return $breadcrumbs;
     }
 
     /* IActionable */
-    public function getActions() {
+    public function getActions()
+    {
         $request = $this->getMatchedUrl();
 
         $actions = array(
@@ -94,9 +93,10 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         return $actions[$request];
     }
-    public function registerBlocks() {
+    public function registerBlocks()
+    {
         return array(
-            'lessons.content' => function($data, $self) {
+            'lessons.content' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("jquery-file-upload-image");
                 $self->putComponent("jquery-file-upload-video");
@@ -115,7 +115,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
 
-                foreach($languages as $key => &$value) {
+                foreach ($languages as &$value) {
                     if ($value['code'] == $userLanguageCode) {
                         $value['selected'] = true;
                         break;
@@ -271,7 +271,6 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             //exit;
             $itemsData = $itemsCollection->getItems();
             $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
-
         } elseif ($model == "lesson-content") {
             $modelRoute = "lessons/content";
             $optionsRoute = "edit";
@@ -300,7 +299,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
             $result = array();
 
-            foreach($itemsData as $item) {
+            foreach ($itemsData as $item) {
                 // @todo Group by course
                 $result[] = array(
                     'id'    => intval($item['id']),
@@ -309,9 +308,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             }
             return $result;
         } elseif ($type === 'datatable') {
-
             $itemsData = array_values($itemsData);
-            foreach($itemsData as $key => $item) {
+            foreach ($itemsData as $key => $item) {
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
@@ -395,11 +393,10 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $helper->setOption('param_name', $param_name);
         $helper->setOption('print_response', false);
 
-        switch($type) {
-            case 'video' :{
+        switch ($type) {
+            case 'video':
                 $helper->setOption('accept_file_types', '/(\.|\/)(mp4|webm)$/i');
                 break;
-            }
         }
 
 
@@ -415,17 +412,17 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             */
 
         //} elseif ($type == "material") {
-            $file_result = array(
-                $param_name => array()
-            );
-            foreach($result[$param_name] as $fileObject) {
-                $filedata = (array) $fileObject;
-                $filedata['lesson_id'] = $id;
-                $filedata['upload_type'] = $type;
-                $filedata['id'] = $this->model("lessons/files")->addItem($filedata);
+        $file_result = array(
+            $param_name => array()
+        );
+        foreach ($result[$param_name] as $fileObject) {
+            $filedata = (array) $fileObject;
+            $filedata['lesson_id'] = $id;
+            $filedata['upload_type'] = $type;
+            $filedata['id'] = $this->model("lessons/files")->addItem($filedata);
 
-                $file_result[$param_name][] = $filedata;
-            }
+            $file_result[$param_name][] = $filedata;
+        }
         //}
         return $file_result;
     }
@@ -446,7 +443,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 'id'        => $file_id
             ))->getItems();
 
-            if (count($files) > 0 && $itemModel->deleteItem($file_id) !== FALSE) {
+            if (count($files) > 0 && $itemModel->deleteItem($file_id) !== false) {
                 $response = $this->createAdviseResponse(self::$t->translate("File removed with success"), "success");
                 return $response;
             } else {
@@ -463,25 +460,25 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      *
      * @url GET /item/:model/:id
      */
-    public function getItemAction($model = "me", $id) {
-
+    public function getItemAction($model = "me", $id = null)
+    {
         $editItem = $this->model("classes/lessons/collection")->getItem($id);
         //if ($model == "content") {
             //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
             $lessonFiles = $this->model("lessons/files");
-            $videos = $lessonFiles->clear()->addFilter(array(
+        $videos = $lessonFiles->clear()->addFilter(array(
                 'lesson_id'     => $id,
                 'upload_type'   => 'video',
                 'active'        => 1
             ))->getItems();
 
-            $materials = $lessonFiles->clear()->addFilter(array(
+        $materials = $lessonFiles->clear()->addFilter(array(
                 'lesson_id'     => $id,
                 'upload_type'   => 'material',
                 'active'        => 1
             ))->getItems();
 
-            $editItem['files'] = array(
+        $editItem['files'] = array(
                 'video' => $videos,
                 'material'  => $materials
             );
@@ -521,7 +518,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
             $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+            if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] == 0) {
                     $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                     return array_merge($response, $data);
@@ -531,7 +528,6 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                         self::$t->translate($messages['success']),
                         "success"
                     );
-
                 }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -564,10 +560,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'success' => "Lesson content updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
-
             }
 
-            if ($itemModel->setItem($data, $id) !== FALSE) {
+            if ($itemModel->setItem($data, $id) !== false) {
                 $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                 return array_merge($response, $data);
             } else {
@@ -587,7 +582,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function deleteItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
-           if ($model == "me") {
+            if ($model == "me") {
                 $itemModel = $this->model("classes/lessons/collection");
                 $messages = array(
                     'success' => "Lesson removed with success",
@@ -599,12 +594,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'success' => "Lesson content removed with success",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
-
             }
 
             $data = $this->getHttpData(func_get_args());
 
-            if ($itemModel->deleteItem($id) !== FALSE) {
+            if ($itemModel->deleteItem($id) !== false) {
                 $response = $this->createAdviseResponse(self::$t->translate("Lesson removed with success"), "success");
                 return $response;
             } else {
@@ -619,19 +613,27 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * [ add a description ]
      *
-     * @url GET /item/lesson-content/:id/translate
      * @url PUT /item/lesson-content/:id/translate
      */
-    public function translateContent($model, $id) {
+    public function translateContent($model, $id)
+    {
         $modelRoute = "lessons/content";
 
-        $item = $this->model($modelRoute);
+        $itemModel = $this->model($modelRoute);
 
         $http_data = $this->getHttpData(func_get_args());
 
+        $translateModel = $this->model("translate");
+        $lang_codes = $translateModel->getDisponibleLanguagesCodes();
 
+        if (!is_array($http_data) && !in_array($http_data['to'], $lang_codes)) {
+            return $this->invalidRequestError(self::$t->translate(""));
+        }
+        if (!in_array($http_data['from'], $lang_codes)) {
+            $http_data['from'] = $translateModel->getUserLanguageCode();
+        }
         // 1. GET FILE DATA
-        $contentData = $item->getItem($id);
+        $contentData = $itemModel->getItem($id);
         if (in_array($contentData['content_type'], self::$suitable_translate_contents)) {
             //var_dump($contentData);
             if (array_key_exists("file", $contentData) && is_array($contentData['file']) && is_numeric($contentData['file']['id'])) {
@@ -641,17 +643,30 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     $filestream = $this->model("dropbox")->getFileContents($fileInfo);
                     $parsed = $this->parseWebVTTFile($filestream);
 
-                    $tokens = array_column($parsed, "text");
+                    //$tokens = array_column($parsed, "text");
                     // TRANSLATE TOKENS
 
-                    $translatedFilestream = $this->makeWebVTTFile($parsed);
-                    var_dump($translatedFilestream);
-                    exit;
+                    $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
+
+                    $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
+
+                    // CREATE FILE
+                    $fileinfo = $this->model("dropbox")->createFile($translatedFilestream, $fileInfo);
+
+                    unset($contentData['id']);
+                    $contentData['info'] = json_encode($fileinfo);
+                    $contentData['file'] = $fileinfo;
+                    $contentData['language_code'] = $http_data['to'];
+
+                    $contentData['id'] = $itemModel->addItem($contentData);
+
+                    $response = $this->createAdviseResponse(self::$t->translate("File translated with success"), "success");
+                    return array_merge($response, $contentData);
+
                 }
                 exit;
-
             }
-            return $this->invalidRequestError(self::$t->translate("The system can't translate this content. PLease try again"), "info");
+            return $this->invalidRequestError(self::$t->translate("The system can't translate this content. Please try again"), "info");
         } else {
             return $this->invalidRequestError(self::$t->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
         }
@@ -679,11 +694,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      * @todo  Must be moved to a proper helper
      * @return array [description]
      */
-    protected function parseWebVTTFile($filestream) {
-        echo "<pre>";
-
+    protected function parseWebVTTFile($filestream)
+    {
         if (is_string($filestream) && !empty($filestream)) {
-
             $lines = explode("\n", $filestream);
             //echo $filestream;
 
@@ -693,7 +706,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             //exit;
             $filestruct = array();
 
-            foreach($lines as $line) {
+            foreach ($lines as $line) {
                 if (preg_match('/(\d*)\n*^(\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3}) --> (\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3})$\r?\n(.*)/ms', $line, $match)) {
                     $filestruct[] = array(
                         "index" => $match[1],
@@ -712,16 +725,19 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      * @param  array $filestruct The same structure returned by the function parseWebVTTFile
      * @return string
      */
-    protected function makeWebVTTFile($filestruct) {
+    protected function makeWebVTTFile($filestruct, $columns = null)
+    {
+        if (is_null($columns)) {
+            $columns = array("index", "from", "to", "text");
+        }
         $lines = array("WEBVTT");
-        foreach($filestruct as $fileitem) {
-            $item = sprintf("%s --> %s\n%s", $fileitem['from'], $fileitem['to'], $fileitem['text']);
-            if (is_numeric($fileitem['index'])) {
-                $item = $fileitem['index'] . "\n" . $item;
+        foreach ($filestruct as $fileitem) {
+            $item = sprintf("%s --> %s\n%s", $fileitem[$columns[1]], $fileitem[$columns[2]], $fileitem[$columns[3]]);
+            if (is_numeric($fileitem[$columns[0]])) {
+                $item = $fileitem[$columns[0]] . "\n" . $item;
             }
             $lines[] = $item;
         }
         return implode("\n\n", $lines);
     }
-
 }

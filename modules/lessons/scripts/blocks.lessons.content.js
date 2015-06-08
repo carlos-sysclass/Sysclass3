@@ -52,9 +52,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             from: from,
                             to: to
                         },
-                        method : "PUT"
+                        method : "PUT",
+                        success : function(data, textStatus, jqXHR ) {
+                            mod.lessonContentCollection.add(data);
+                        }
                     }
                 );
+
+
             }
         });
 
@@ -73,6 +78,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     model.set("lesson_id", this.lesson_id);
                     // SET POSITION
 
+                });
+                this.listenTo(this, "remove", function(model, collection, opt) {
+                    console.warn(model, collection, opt, this);
+
+                    var self = this;
+
+                    var subfiles = this.where({parent_id : model.get("id")});
+
+                    _.each(subfiles, function(item) {
+                        self.remove(item.id);
+                    });
+
+                    model.destroy();
                 });
             },
             url: function() {
@@ -129,15 +147,17 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 "confirmed.bs.confirmation .delete-file-content"    : "delete"
             },
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
+                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::initialize');
                 this.setOptions(opt);
 
                 this.listenTo(this.model, "sync", function(a,b,c) {
                     this.$el.attr("data-content-id", this.model.get("id"));
                     this.render();
                 });
+                this.listenTo(mod.lessonContentCollection, "add", this.renderOne.bind(this));
             },
             setOptions : function(opt) {
+                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::setOptions');
                 if(!_.isUndefined(opt.upload)) {
                     this.upload = opt.upload;
                 }
@@ -150,6 +170,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 return this;
             },
             render : function() {
+                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::render');
                 var self = this;
                 if (this.upload) {
 
@@ -195,7 +216,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     var collection = new lessonContentCollectionClass(subfiles, {
                         lesson_id : mod.entity_id
                     });
-
+                    /*
                     collection.each(function(model, i) {
                         var view_type = model.get("content_type");
 
@@ -203,6 +224,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             this.renderRelatedFileContent(model, {upload : false});
                         }
                     }, this);
+                    */
 
 
                 }
@@ -217,7 +239,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 var self = this;
                 var fileUploadItem = this.$(".fileupload-subtitle");
                 var url = fileUploadItem.data("fileuploadUrl");
-
 
                 var opt = {
                     url: url,
@@ -298,6 +319,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         data.context.find(".load-percent").html(progress);
                     });
             },
+            renderOne : function(model, collection, options) {
+                if (model.get("id")) {
+                    if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
+                        this.renderRelatedFileContent(model, {upload : false});
+                    }
+                }
+            },
+
             addRelatedFileContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
@@ -307,6 +336,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
 
                 model.mergeWithinFileObject(options.file);
+
+                mod.lessonContentCollection.add(model);
 
                 return this.renderRelatedFileContent(model, options);
             },
@@ -340,7 +371,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     if (!_.isNull(self.jqXHR) && !_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
-                    model.destroy();
+                    mod.lessonContentCollection.remove(model.get("id"));
+                    //model.destroy();
                     //self.collection.remove(model, options);
                     fileContentTimelineView.remove();
                     //self.collection.add(model, "text");
@@ -384,9 +416,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 // REQUEST FILE TRANSLATION SERVICE
                 // GET FROM AND TO VALUES, CHECK FOR EQUALITY AND REQUEST TRANSLATION
                 //var translateServiceModelClass = app.module("models.translate").translateServiceModelClass;
-                console.warn(this.model);
-                this.model.translate("en", "pt");
-
+                this.model.translate(
+                    this.$("[name='related[lang_from]']").val(),
+                    this.$("[name='related[lang_to]']").val()
+                );
             }
         });
 
@@ -581,6 +614,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
             collectionFilter : null,
             jqXHR : null,
+            subviews : {},
             initialize: function(opt) {
                 console.info('blocks.lessons.content/contentTimelineViewClass::initialize');
 
@@ -589,8 +623,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.initializeSortable();
                 this.initializeFileUpload();
 
-                this.listenToOnce(this.collection, "sync", this.render.bind(this));
+                //this.listenToOnce(this.collection, "sync", this.render.bind(this));
 
+                this.listenTo(this.collection, "add", this.renderOne.bind(this));
             },
             initializeSortable : function() {
                 var self = this;
@@ -675,14 +710,33 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     })
                     .bind('fileuploadalways', function (e, data) {
                         //console.warn("fileuploadalways");
-                    })
+                    })/*
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
                         data.context.find(".load-percent").html(progress);
-                    });
+                    })*/;
+            },
+            renderOne : function(model, collection, options) {
+                if (model.get("id")) {
+                    if (_.isNull(model.get("parent_id"))) {
+                        var view_type = model.get("content_type");
+
+                        if (view_type == "file") {
+                            this.subviews[model.get("id")] = this.renderFileContent(model, {upload : false});
+                            return this.subviews[model.get("id")];
+                        } else if (view_type == "text") {
+                            this.subviews[model.get("id")] = this.renderTextContent(model, {editMode : false});
+                            return this.subviews[model.get("id")];
+                        }
+                    } else {
+                        // GET parent_id SUBVIEW AND DELEGATE RENDERING
+                        console.warn(this.subviews);
+
+                        //this.subviews[model.get("id")]
+                    }
+                }
             },
             render : function(collection, models, options) {
-
                 if (this.collectionFilter) {
                     var data = this.collection.where(this.collectionFilter);
                 } else {
@@ -702,6 +756,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return this.renderTextContent(model, {editMode : false});
                     }
                 }, this);
+
+
             },
             expandAll : function() {
                 this.$(".content-timeline-items .timeline-body-content-wrapper").removeClass("hidden");
@@ -718,7 +774,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 model.mergeWithinFileObject(options.file);
 
-                return this.renderFileContent(model, options);
+                this.collection.add(model);
+
+                return this.renderFileContent(model, options).el;
             },
             renderFileContent : function(model, options) {
                 var self = this;
@@ -740,17 +798,23 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     model.save();
                 });
 
+                this.listenTo(fileContentTimelineView, "timeline-file-content:translate", function(model) {
+                    //console.warn(e, model);
+                    self.collection.add(model);
+                    model.save();
+                });
+
                 this.listenTo(fileContentTimelineView, "timeline-file-content:delete", function(model) {
                     if (!_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
-                    model.destroy();
-                    self.collection.remove(model, options);
+                    //model.destroy();
+                    self.collection.remove(model);
                     fileContentTimelineView.remove();
                     //self.collection.add(model, "text");
                 });
 
-                return fileContentTimelineView.el;
+                return fileContentTimelineView;
             },
 
             addTextContent : function(e) {
@@ -760,6 +824,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
 
                 this.renderTextContent(model);
+
+                this.collection.add(model);
 
                 e.preventDefault();
                 //this.textContentTimelineView.addOne();
@@ -780,12 +846,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 this.listenTo(textContentTimelineView, "timeline-text-content:save", function(model) {
                     //console.warn(e, model);
-                    self.collection.add(model);
+                    //self.collection.add(model);
                     model.save();
                 });
 
                 this.listenTo(textContentTimelineView, "timeline-text-content:delete", function(model) {
-                    model.destroy();
+                    //model.destroy();
                     self.collection.remove(model, options);
                     textContentTimelineView.remove();
                 });

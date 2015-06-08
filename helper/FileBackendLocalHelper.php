@@ -9,14 +9,15 @@
  * The interface IFileBackendInterface isn't not created yet, this file will be the based to it.
  * @package Sysclass\Helpers
  */
-class FileBackendLocalHelper /* implements IFileBackendInterface */ {
-
+class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBackendInterface */
+{
     /**
      * Use as Interface Method
      *
      */
     //public function getFileContents($)
-    public function getFileContents($fileinfo) {
+    public function getFileContents($fileinfo)
+    {
         if ($this->fileExists($fileinfo)) {
             $type = $fileinfo['upload_type'];
             $fullpath = realpath($this->getPublicPath($type) . "/" . $fileinfo['name']);
@@ -28,13 +29,73 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
      * Use as Interface Method
      *
      */
-    public function fileExists($fileinfo) {
+    public function fileExists($fileinfo)
+    {
         $type = $fileinfo['upload_type'];
+        $fullpath = realpath($this->getPublicPath($type) . "/" . $fileinfo['filename']);
+        return file_exists($fullpath);
+    }
+    /**
+     * Use as Interface Method
+     *
+     */
+    public function createFile($fileinfo, $filestream)
+    {
+        //var_dump($fileinfo, $filestream);
+        $pathinfo = pathinfo($data['filename']);
+        $suffix = $pathinfo['extension'];
+        if (is_null($suffix)) {
+            // TRY TO DETECT FROM type (mime-type)
+            $suffix = $this->getExtensionFromMimeType($fileinfo['type']);
+        }
+
+        $fileinfo['filename'] = @isset($fileinfo['filename']) ? $fileinfo['filename'] : $this->generateRandomFilename($suffix);
+        $fileinfo['upload_type'] = @isset($fileinfo['upload_type']) ? $fileinfo['upload_type'] : "default";
+
+        while ($this->fileExists($fileinfo)) {
+            $fileinfo['filename'] = $this->generateRandomFilename($suffix);
+        };
+
+        $fullname = $this->getPublicPath($fileinfo['upload_type']) . "/" . $fileinfo['filename'];
+
+        $handler = fopen($fullname, "w");
+        if (fwrite($handler, $filestream) === false) {
+            throw new Exception("File isn't writable", 1);
+        }
+        fclose($handler);
+
+        //$fileinfo = pathinfo($fullname);
+        if (!@isset($fileinfo['type'])) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
+            $fileinfo = finfo_file($finfo, $fullname);
+            $fileinfo['type'] = $fileinfo;
+        }
+        $fileinfo['size'] = mb_strlen($filestream);
+
+        $fileinfo['url'] = $this->getPublicUrl($fileinfo['upload_type']) . "/" . $fileinfo['filename'];
+
+        return $fileinfo;
+    }
+
+    /**
+     * Use as Interface Method
+     *
+     */
+    public function copyFile($fileinfo, $dest = null)
+    {
+        throw new Exception("Function not implemented yet");
+        exit;
+        $type = $fileinfo['upload_type'];
+
         $fullpath = realpath($this->getPublicPath($type) . "/" . $fileinfo['name']);
+        var_dump($fullpath);
+        exit;
         return file_exists($fullpath);
     }
 
-    public function getPublicPath($type = null) {
+
+    public function getPublicPath($type = null)
+    {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("path/files/public") . "/";
@@ -49,7 +110,8 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         return $path;
     }
 
-    public function getPublicUrl($type = null) {
+    public function getPublicUrl($type = null)
+    {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("http/fqdn") . "/files";
@@ -61,7 +123,8 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         return $path;
     }
 
-    public function getLessonPath($lesson_id, $type = null) {
+    public function getLessonPath($lesson_id, $type = null)
+    {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("path/files/public") . "/lessons/" . $lesson_id;
@@ -75,7 +138,8 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         }
         return $path;
     }
-    public function getLessonUrl($lesson_id, $type = null) {
+    public function getLessonUrl($lesson_id, $type = null)
+    {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("http/fqdn") . "/files/lessons/" . $lesson_id;
@@ -87,7 +151,8 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         return $path;
     }
 
-    protected function getUserPath($username) {
+    protected function getUserPath($username)
+    {
         $plicolib = PlicoLib::instance();
 
         $privatepath = $plicolib->get("path/files/private") . "/users/" . $username;
@@ -98,22 +163,26 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         return $privatepath;
     }
 
-    public function getFullPath($username, $file_name) {
+    public function getFullPath($username, $file_name)
+    {
         $file_path = $this->getUserPath($username);
         return $full_name = $file_path . "/" . $file_name;
     }
 
-    public function getFilesize($username, $file_name) {
+    public function getFilesize($username, $file_name)
+    {
         $file_path = $this->getUserPath($username, $file_name);
         return filesize($file_path);
     }
 
-    public function uploadObjectByPath($username, $file_name, $file_path) {
+    public function uploadObjectByPath($username, $file_name, $file_path)
+    {
         $file_data = file_get_contents($file_path);
 
         return $this->uploadObjectByData($username, $file_name, $file_data);
     }
-    public function uploadObjectByData($username, $file_name, $file_data) {
+    public function uploadObjectByData($username, $file_name, $file_data)
+    {
         // TODO CHECK FOR BACKEND TO SEND THE FILE TO THEM
 
         $base_name = pathinfo($file_name, PATHINFO_FILENAME);
@@ -135,40 +204,35 @@ class FileBackendLocalHelper /* implements IFileBackendInterface */ {
         );
     }
 
-    public function listFiles($path) {
+    public function listFiles($path)
+    {
         $realpath = realpath($path);
 
         $plicolib = PlicoLib::instance();
         $privatepath = $plicolib->get("path/files/public");
         $publicpath = $plicolib->get("path/files/private");
 
-        if (strpos($realpath, $privatepath) !== FALSE || strpos($realpath, $publicpath) !== FALSE) {
+        if (strpos($realpath, $privatepath) !== false || strpos($realpath, $publicpath) !== false) {
             return $this->fileTreeToArray($realpath);
         }
         return array();
     }
 
-    protected function fileTreeToArray($dir) {
+    protected function fileTreeToArray($dir)
+    {
+        $result = array();
 
-       $result = array();
+        $cdir = scandir($dir);
+        foreach ($cdir as $key => $value) {
+            if (!in_array($value, array(".", ".."))) {
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
+                    $result[$value] = $this->fileTreeToArray($dir . DIRECTORY_SEPARATOR . $value);
+                } else {
+                    $result[] = $value;
+                }
+            }
+        }
 
-       $cdir = scandir($dir);
-       foreach ($cdir as $key => $value)
-       {
-          if (!in_array($value,array(".","..")))
-          {
-             if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
-             {
-                $result[$value] = $this->fileTreeToArray($dir . DIRECTORY_SEPARATOR . $value);
-             }
-             else
-             {
-                $result[] = $value;
-             }
-          }
-       }
-
-       return $result;
+        return $result;
     }
-
 }

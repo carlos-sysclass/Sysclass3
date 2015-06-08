@@ -11,5 +11,8 @@ files-private/*
 www/doc/*
 /logs
 vendor/*
+/build/api/*
+/build/code-browser/*
 /build/dist/*
-/build/temp/*
+/build/logs/*
+/build/pdepend/*

@@ -7,8 +7,8 @@
  * Provides functions to manipulate files in a backend-agnostic way.
  * @package Sysclass\Models
  */
-class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel {
-
+class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel
+{
     public function init()
     {
         $this->table_name = "mod_dropbox";
@@ -17,19 +17,19 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel 
         //$this->fieldsMap = array();
 
         $this->selectSql = "
-			SELECT
-                `id`,
-                `upload_type`,
-                `name`,
-                `type`,
-                `size`,
-                `url`,
-                `active`
+        SELECT
+        `id`,
+        `upload_type`,
+        `name`,
+        `filename`,
+        `type`,
+        `size`,
+        `url`,
+        `active`
             FROM `mod_dropbox` d
 		";
 
         parent::init();
-
     }
     /**
      * [getFileContents description]
@@ -37,11 +37,12 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel 
      * @return string     All the file contents
      * @throws FileBackendNotFoundException
      */
-    public function getFileContents($id) {
-        if (is_array($id)) {
-            $data = $id;
+    public function getFileContents($identifier)
+    {
+        if (is_array($identifier)) {
+            $data = $identifier;
         } else {
-            $data = $this->getItem($id);
+            $data = $this->getItem($identifier);
         }
         /**
          * For now, the backend is hard-coded, but will be a value from database
@@ -51,13 +52,72 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel 
         //$backend = $data['backend'];
 
         // THE BACKEND MUST BE LOADED LIKE A SERVICE, A HELPER, A PLUGIN OR A MODULE
+        $fileHelper = $this->getBackend($backend);
+        return $fileHelper->getFileContents($data);
+    }
+    /*
+    protected function generateRandomFilename()
+    {
+        $helper = $this->helper("uuid");
+        return $helper::get();
+    }
+    */
+    public function createFile($filestream, $template = null)
+    {
+        if (is_numeric($template)) {
+            $data = $this->getItem($template);
+        }
+        if (is_array($template)) {
+            $data = $template;
+            $pathinfo = pathinfo($data['name']);
+            $data['name']     = $data['name'];
+            unset($data['id']);
+        } else {
+            $data = array(
+                'upload_type'   => 'default',
+                'name'          => 'file',
+                //'filename'      => $this->generateRandomFilename(),
+                 // TRY TO DETECT MIME-TYPE
+                'type'          => "text/plain"
+            );
+        }
+        /**
+         * For now, the backend is hard-coded, but will be a value from database
+         * @var string
+         */
+        $backend = "local";
+        $fileHelper = $this->getBackend($backend);
+        $fileinfo = $fileHelper->createFile($data, $filestream);
+
+        $fileinfo['id'] = $this->addItem($fileinfo);
+        return $fileinfo;
+    }
+
+    public function copyFile($identifier, $dest = null)
+    {
+        if (is_array($identifier)) {
+            $data = $identifier;
+        } else {
+            $data = $this->getItem($identifier);
+        }
+        /**
+         * For now, the backend is hard-coded, but will be a value from database
+         * @var string
+         */
+        $backend = "local";
+        $fileHelper = $this->getBackend($backend);
+        return $fileHelper->copyFile($data, $dest);
+    }
+
+    protected function getBackend($backend)
+    {
+        // THE BACKEND MUST BE LOADED LIKE A SERVICE, A HELPER, A PLUGIN OR A MODULE
         $fileHelper = $this->helper("file/backend/" . $backend);
         if ($fileHelper) {
-            return $fileHelper->getFileContents($data);
+            return $fileHelper;
         } else {
             throw new FileBackendNotFoundException("The file backend {$backend} wasn't found");
         }
-
     }
 /*
     public function addItem($item) {

@@ -12,14 +12,9 @@ class FileWrapperHelper {
     /**
      * Use as Interface Method
      */
-    getFileReference
 
-    public function getFileContents($)
-
-
-
-
-    public function getPublicPath($type = null) {
+    public function getPublicPath($type = null)
+    {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("path/files/public") . "/";

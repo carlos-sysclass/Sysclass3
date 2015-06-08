@@ -17,7 +17,7 @@ ftp-htaccess targets, for instance.
     <target name="build" depends="init, clean, verify, analyze, dist, docs" description="Do a full build"/>
     <target name="verify" depends="init, clean, lint" description="Verify the quality of the code"/>
     <!--target name="analyze" depends="init, clean, phploc, pdepend, phpmd-ci, phpcs-ci, phpcs-, phpcpd" description="Do static analysis of the code"/-->
-    <target name="analyze" depends="init, clean, phpcs-ci, phpcs-" description="Do static analysis of the code"/>
+    <target name="analyze" depends="init, clean, phploc, pdepend, phpmd-ci, phpcs-ci, phpcs-, phpcpd" description="Do static analysis of the code"/>
     <!--target name="docs" depends="init, clean, phpdoc, phpcb, htaccess, copysvg, copybuild, ftp"/-->
     <target name="docs" depends="init, clean, phpdoc"/>
 

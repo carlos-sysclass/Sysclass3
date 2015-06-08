@@ -5,6 +5,8 @@
     "require-dev": {
 
         "phpdocumentor/phpdocumentor": "2.*",
-        "phing/phing": "2.*"
+        "phing/phing": "2.*",
+        "phploc/phploc": "*",
+        "sebastian/phpcpd": "*"
     }
 }

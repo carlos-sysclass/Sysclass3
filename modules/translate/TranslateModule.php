@@ -519,7 +519,6 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
         }
     }
 
-
     /**
      * Get all tokens processed by the system
      *
