@@ -454,11 +454,18 @@
                     <div class="form-group">
                         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                         <label class="control-label">{translateToken value="Subtitle Language"}</label>
-                        <select class="select2-me form-control" name="related[lang_from]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
-                            {foreach $T_LANGUAGES as $lang}
-                                <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                            {/foreach}
-                        </select>
+                        <div class="input-group ">
+                            <select class="select2-me form-control" name="related[lang_from]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
+                                {foreach $T_LANGUAGES as $lang}
+                                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                                {/foreach}
+                            </select>
+                            <div class="input-group-btn">
+                                <button class="btn green save-file-content" type="button">
+                                    {translateToken value="Save"}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Automatic translate to"}</label>
@@ -471,11 +478,17 @@
                             <div class="input-group-btn">
                                 <button class="btn green translate-file-content" type="button">
                                     <i class="fa fa-language"></i>
-                                    Translate
+                                    {translateToken value="Translate"}
                                 </button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="form-section no-margin">Translations</h5>
+                    <ul class="list-group translation-container"></ul>
                 </div>
             </div>
         </div>
@@ -491,3 +504,31 @@
 
     </div>
 </script>
+
+<script type="text/template" id="fileupload-translation-related-item">
+    <li class="translation-item">
+        <% var file = model.file %>
+        <span class="text-upper text-primary">
+            <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
+            <strong><%= model.language_code %></strong>
+        </span>
+        <%= file.name %>
+        <a class="btn btn-sm text-danger delete-translation-content" href="javascript: void(0);" data-content-id="<%= model.id %>"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+            style="display: inline-block;"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
+    </li>
+</script>
+

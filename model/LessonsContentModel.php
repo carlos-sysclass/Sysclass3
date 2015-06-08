@@ -42,7 +42,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         $id = parent::addItem($data);
 
         $type = $data['content_type'];
-        if ($type == "subtitle") {
+        if ($type == "subtitle" || $type == "subtitle-translation") {
             $type = "file";
         }
         if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {

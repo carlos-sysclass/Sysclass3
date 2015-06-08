@@ -940,3 +940,7 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
     padding: 4px 10px 5px;
     position: relative;
 }
+
+.text-upper {
+    text-transform: uppercase;
+}

@@ -599,11 +599,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->deleteItem($id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate("Lesson removed with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -657,6 +657,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     $contentData['info'] = json_encode($fileinfo);
                     $contentData['file'] = $fileinfo;
                     $contentData['language_code'] = $http_data['to'];
+                    $contentData['content_type'] = "subtitle-translation";
+                    $contentData['parent_id'] = $id;
 
                     $contentData['id'] = $itemModel->addItem($contentData);
 

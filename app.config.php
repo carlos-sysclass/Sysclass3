@@ -374,6 +374,7 @@ $plicoLib->concat(
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
 		'css/pageguide/pageguide',
  		//<!-- BEGIN THEME STYLES -->
+ 		'css/flags',
 		'css/style-metronic',
 		'css/style',
 		'css/style-responsive',

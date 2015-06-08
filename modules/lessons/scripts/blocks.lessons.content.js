@@ -80,11 +80,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    console.warn(model, collection, opt, this);
+
 
                     var self = this;
 
-                    var subfiles = this.where({parent_id : model.get("id")});
+                    var subfiles = collection.where({parent_id : model.get("id")});
+
+                    console.warn(model, collection, opt, this, subfiles);
 
                     _.each(subfiles, function(item) {
                         self.remove(item.id);
@@ -326,7 +328,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     }
                 }
             },
-
             addRelatedFileContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
@@ -347,6 +348,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 if (!_.isObject(options)) {
                     options = {};
                 }
+                // DISABLE FILE UPLOAD
+                this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
 
                 var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
                     model : model
@@ -398,19 +401,51 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             delete : function() {
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
+                this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
             }
         });
 
         var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
             uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
             downloadTemplate : _.template($("#fileupload-download-related-item").html()),
+            translationTemplate : _.template($("#fileupload-translation-related-item").html()),
             className : "list-file-item",
             tagName : "li",
             uploadClass : [ "template-upload red-stripe" ],
             downloadClass : [ "template-download green-stripe" ],
             events : {
-                "confirmed.bs.confirmation .delete-file-content"    : "delete",
-                "click .translate-file-content"                     : "translate_contents"
+                "confirmed.bs.confirmation .delete-file-content" : "delete",
+                "click .save-file-content"                       : "save_contents",
+                "click .translate-file-content"                  : "translate_contents",
+                "click .delete-translation-content"              : "delete_translation"
+            },
+            renderOne : function(model, collection, options) {
+                if (model.get("id")) {
+                    if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
+                        // "content_type": "subtitle-translation",
+                        this.renderTranslationContent(model);
+                    }
+                }
+            },
+            renderTranslationContent : function(model) {
+                var html = this.translationTemplate({
+                    model: model.toJSON()
+                });
+                app.module("ui").refresh(
+                    $(html).appendTo(
+                        this.$(".translation-container")
+                    )
+                );
+            },
+            delete_translation : function(e) {
+                var item = $(e.currentTarget);
+                var modelId = item.data("contentId");
+                mod.lessonContentCollection.remove(modelId);
+                item.parents("li.translation-item").remove();
+            },
+            save_contents : function() {
+                this.model.set("language_code", this.$("[name='related[lang_from]']").val());
+                this.model.save();
             },
             translate_contents : function() {
                 // REQUEST FILE TRANSLATION SERVICE
@@ -731,7 +766,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     } else {
                         // GET parent_id SUBVIEW AND DELEGATE RENDERING
                         console.warn(this.subviews);
-
                         //this.subviews[model.get("id")]
                     }
                 }
