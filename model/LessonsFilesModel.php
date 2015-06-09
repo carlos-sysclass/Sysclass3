@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated
+ */
 class LessonsFilesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()

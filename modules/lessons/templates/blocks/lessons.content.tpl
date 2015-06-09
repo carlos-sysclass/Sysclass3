@@ -150,7 +150,19 @@
                     <i class="fa fa-database"></i>
                     {translateToken value="Question's Database"}
                 </a>
-                <a class="btn btn-sm btn-danger delete-text-content" href="javascript: void(0);">
+                <a class="btn btn-sm btn-danger delete-content" href="javascript: void(0);"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                    >
                     <i class="fa fa-trash"></i>
                 </a>
             </div>
@@ -272,7 +284,7 @@
 
     <div class="timeline-badge">
         <div class="timeline-icon">
-            <% if (file_type == "video1") { %>
+            <% if (file_type == "video") { %>
                 <i class="fa fa-file-video-o"></i>
             <% } else if (file_type == "image") { %>
                 <i class="fa fa-file-image-o"></i>

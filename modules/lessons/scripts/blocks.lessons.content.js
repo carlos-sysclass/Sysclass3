@@ -71,6 +71,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
+            defaults : function() {
+                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                defaults['content_type'] = 'exercise';
+                return defaults;
+            }
+        });
+
         var lessonContentCollectionClass = Backbone.Collection.extend({
             initialize: function(data, opt) {
                 this.lesson_id = opt.lesson_id;
@@ -133,6 +141,26 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        /**
+         * SUB VIEW BASE CLASS
+         *
+         * @todo  MOVE TO A MORE GENERIC MODULE
+         */
+        var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
+            events : function() {
+                return {
+                    "confirmed.bs.confirmation .delete-content"    : "delete"
+                }
+            },
+            render : function() {
+                this.$el.html(this.template(this.model.toJSON()));
+
+                return this;
+            },
+            delete : function() {
+                mod.lessonContentCollection.remove(this.model.get("id"));
+            }
+        });
 
         var lessonFileContentTimelineViewClass = Backbone.View.extend({
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
@@ -557,85 +585,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonExercisesContentTimelineViewClass = Backbone.View.extend({
+        var lessonExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",
-            tagName : "div",
-            editMode : null,
-            events : {
-                "dblclick .timeline-body"          : "edit",
-                "click .edit-text-content"      : "edit",
-                "click .save-text-content"      : "save",
-                "click .delete-text-content"    : "delete"
-            },
-            /*
-            initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
-            },
-            */
-            render : function() {
-                this.$el.html(this.template(this.model.toJSON()));
-
-                return this;
-            },
-            initEditor : function() {
-                var self = this;
-                console.warn(this.$el);
-                app.module("ui").refresh(this.$el);
-
-                this.wysihtml5 = this.$(".wysihtml5").data('wysihtml5');
-                this.editor = this.wysihtml5.editor;
-
-                this.editMode = true;
-
-                this.editor.on("change", function(e) {
-                    self.$(".preview").html($(self.wysihtml5.el).val());
-                });
-            },
-            edit : function(e) {
-                e.stopPropagation();
-                if (!this.editMode) {
-                    this.$(".edit-text-content").addClass("hidden");
-                    this.$(".save-text-content").removeClass("hidden");
-                    this.$(".preview").addClass("hidden");
-
-                    //this.editor = this.$(".wysihtml5").data('wysihtml5').editor;
-                    this.$(".wysihtml5").parents(".wysihtml5-container").removeClass("hidden");
-                    //this.editor.toolbar.show();
-                    //this.editor.composer.show();
-                    this.editMode = true;
-                }
-            },
-            save : function(e) {
-                e.stopPropagation();
-                this.$(".text-loading").removeClass("hidden");
-                // SEND MODEL TO SERVER
-                // this.model.save();
-                this.$(".preview").html($(this.wysihtml5.el).val());
-                // UPDATE UI (destroy editor, show only text)
-                this.$(".wysihtml5").parents(".wysihtml5-container").addClass("hidden");
-                //this.editor.toolbar.hide();
-                //this.editor.composer.hide();
-                this.$(".preview").removeClass("hidden");
-                // Put content on a DIV
-                // Hide save button and show edit button
-                this.$(".save-text-content").addClass("hidden");
-                this.$(".edit-text-content").removeClass("hidden");
-
-
-                //$('#editorId').data('wysihtml5').editor.composer.enable();
-                // DESTROY WI
-                // INFORM PARENT
-                this.editMode = false;
-                this.trigger("timeline-text-content:save", this.model);
-                this.$(".text-loading").addClass("hidden");
-            },
-            delete : function() {
-                // IF MODEL IS SAVED, SO DELETE FROM SERVER
-                this.$el.remove();
-
-                this.trigger("timeline-text-content:delete", this.model);
-            }
+            tagName : "div"
         });
 
         var contentTimelineViewClass = Backbone.View.extend({
@@ -762,6 +715,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         } else if (view_type == "text") {
                             this.subviews[model.get("id")] = this.renderTextContent(model, {editMode : false});
                             return this.subviews[model.get("id")];
+                        } else if (view_type == "exercise") {
+
                         }
                     } else {
                         // GET parent_id SUBVIEW AND DELEGATE RENDERING
@@ -790,8 +745,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return this.renderTextContent(model, {editMode : false});
                     }
                 }, this);
-
-
             },
             expandAll : function() {
                 this.$(".content-timeline-items .timeline-body-content-wrapper").removeClass("hidden");
@@ -850,7 +803,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 return fileContentTimelineView;
             },
-
             addTextContent : function(e) {
                 var self = this;
                 var model = new lessonTextContentModelClass(null, {
@@ -881,40 +833,59 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(textContentTimelineView, "timeline-text-content:save", function(model) {
                     //console.warn(e, model);
                     //self.collection.add(model);
-                    model.save();
+                    //model.save();
                 });
 
                 this.listenTo(textContentTimelineView, "timeline-text-content:delete", function(model) {
                     //model.destroy();
-                    self.collection.remove(model, options);
-                    textContentTimelineView.remove();
+                    //self.collection.remove(model, options);
+                    //textContentTimelineView.remove();
                 });
 
                 textContentTimelineView.initEditor();
-
             },
             addExercisesContent : function(e) {
                 var self = this;
-                var model = new Backbone.Model();
-
-                var exercisesContentTimelineView = new exercisesContentTimelineViewClass({
-                    model : model
+                var model = new lessonExerciseContentModelClass(null, {
+                    collection: this.collection,
                 });
 
-                this.$(".content-timeline-items").append(exercisesContentTimelineView.render().el);
+                this.renderExercisesContent(model);
 
-
-                this.listenTo(exercisesContentTimelineView, "timeline-exercise-content:save", function(e, model) {
-                    self.collection.add(model);
-                });
-                this.listenTo(exercisesContentTimelineView, "timeline-exercise-content:delete", function(e, model) {
-                    self.collection.add(model);
-                });
-
-                //exercisesContentTimelineView.initEditor();
+                this.collection.add(model);
 
                 e.preventDefault();
-                //this.textContentTimelineView.addOne();
+            },
+            renderExercisesContent : function(model, options) {
+                var self = this;
+
+                if (!_.isObject(options)) {
+                    options = {};
+                }
+
+                var exerciseContentTimelineView = new lessonExercisesContentTimelineViewClass(_.extend(options, {
+                    model : model
+                }));
+
+                this.$(".content-timeline-items").append(exerciseContentTimelineView.render().el);
+
+                app.module("ui").refresh(exerciseContentTimelineView.render().el);
+
+                /*
+                this.listenTo(exerciseContentTimelineView, "timeline-exercise-content:save", function(model) {
+                    //console.warn(e, model);
+                    //self.collection.add(model);
+                    model.save();
+                });
+
+                this.listenTo(exerciseContentTimelineView, "timeline-exercise-content:delete", function(model) {
+                    //model.destroy();
+                    self.collection.remove(model, options);
+                    exerciseContentTimelineView.remove();
+                });
+                */
+
+                //exerciseContentTimelineView.initEditor();
             }
         });
 
