@@ -1,8 +1,8 @@
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-<!-- BEGIN CORE PLUGINS -->   
+<!-- BEGIN CORE PLUGINS -->
 <!--[if lt IE 9]>
 <script src="assets/metronic/plugins/respond.min.js"></script>
-<script src="assets/metronic/plugins/excanvas.min.js"></script> 
+<script src="assets/metronic/plugins/excanvas.min.js"></script>
 <![endif]-->
 
 <ul id="tlyPageGuide">
@@ -10,7 +10,7 @@
         <div>
         Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
         </div>
-    </li> 
+    </li>
     <li class="tlypageguide_left" data-tourtarget="#courses-widget">
         <div>
         This area contains all the information about the course and the instructors teaching it. In this area you find the entire educational content, as well as the video class, materials, tests and grades.
@@ -46,30 +46,23 @@
         Depending on how your course is set up, the school or instructor can determined what type of contact he or she will make available to the students.
         </div>
     </li>
-    
+
     <li class="tlypageguide_left" data-tourtarget="#calendar-widget">
         <div>
-        Here students and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other students, and meetings with instructors or advisors.    
+        Here students and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other students, and meetings with instructors or advisors.
         </div>
     </li>
-   
-</ul>
-<!--
-<div class="tlyPageGuideWelcome">
-    <button class="btn btn-sm btn-danger tlypageguide_dismiss pull-right">[ Close ]</button>
-    <h2><strong>Welcome to SysClass</strong></h2>
-    <ul>
-        <li>This is a demo version of our new interface. There is a long way ahead, but we are working hard to have it ready for you this fall.</li>
-        <li>By clicking in the diferents fields, a number will appear with a description of the funcionalities on the bottom of the page. Easy!</li>
-        <li>If you have any sugestions, you can send us on the contact area on the right column of the page.</li>
-        <li>Don't forget to like us or follow us.</li>
-    </ul>
-    <p class="text-center">
-        <button class="btn btn-lg btn-success tlypageguide_start">Start Tour.</button>
-    </p>
 
-</div>
--->
+</ul>
+
+{if (isset($T_SECTION_TPL['foot']) &&  ($T_SECTION_TPL['foot']|@count > 0))}
+    <div id="foot-tempĺates">
+    {foreach $T_SECTION_TPL['foot'] as $template}
+        {include file=$template}
+    {/foreach}
+    </div>
+{/if}
+
 {foreach item="script" from=$T_SCRIPTS}
 	<script src="{Plico_GetResource file=$script}"></script>
 {/foreach}
@@ -88,18 +81,8 @@
 {/foreach}
 <!-- END JAVASCRIPTS -->
 
-{if (isset($T_SECTION_TPL['foot']) &&  ($T_SECTION_TPL['foot']|@count > 0))}
-    <div id="foot-tempĺates">
-    {foreach $T_SECTION_TPL['foot'] as $template}
-        {include file=$template}
-    {/foreach}
-    </div>
-{/if}
-
-
-
 <script>
-    jQuery(document).ready(function() {   
+    jQuery(document).ready(function() {
         // pageguide init
         tl.pg.init({
             /* pg_caption : "" */
@@ -108,7 +91,7 @@
 
         var options = {
             theme_path : "{$T_PATH.resource}",
-            theme_app  : App  
+            theme_app  : App
         };
         $SC.start(options);
     });

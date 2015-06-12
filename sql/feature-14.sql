@@ -16,3 +16,7 @@ ALTER TABLE `mod_lessons_content` ADD CONSTRAINT `fk_mod_lessons_content_parent_
 
 
 ALTER TABLE `mod_lessons_content` ADD COLUMN `language_code` varchar(10) NOT NULL DEFAULT 'en' AFTER `info`;
+
+ALTER TABLE `mod_dropbox` ADD COLUMN `filename` VARCHAR(250) NOT NULL DEFAULT '' AFTER `name`;
+
+UPDATE `mod_dropbox` SET filenamequestions = `name`;

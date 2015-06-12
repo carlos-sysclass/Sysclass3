@@ -38,8 +38,37 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
 
     }
 
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+
+        if ($item['content_type'] == 'exercise') {
+            // LOAD QUESTIONS
+            $innerModel = $this->model("lessons/content/exercise");
+            $item['exercise'] = $innerModel->clear()->addFilter(array(
+                'content_id' => $item['id']
+            ))->getItems();
+        }
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+        foreach($data as $key => $item) {
+            if ($item['content_type'] == 'exercise') {
+                // LOAD QUESTIONS
+                $innerModel = $this->model("lessons/content/exercise");
+                $data[$key]['exercise'] = $innerModel->addFilter(array(
+                    'content_id' => $item['id']
+                ))->getItems();
+            }
+        }
+        return $data;
+    }
+
     public function addItem($data) {
-        $id = parent::addItem($data);
+        $identifier = parent::addItem($data);
 
         $type = $data['content_type'];
         if ($type == "subtitle" || $type == "subtitle-translation") {
@@ -47,13 +76,64 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         }
         if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {
             $innerModel = $this->model("lessons/content/" . $type);
-            $innerData = array(
-                'content_id'    => $id,
-                'file_id'       => $data[$type]['id']
-            );
-            $innerModel->addItem($innerData);
+
+            if ($type == "file") {
+                $innerData = array(
+                    'content_id'    => $identifier,
+                    'file_id'       => $data[$type]['id']
+                );
+
+                $innerModel->addItem($innerData);
+            } elseif ($type == "exercise" && is_array($data[$type])) {
+                foreach($data[$type] as $item) {
+                    $innerData = array(
+                        'content_id'    => $identifier,
+                        'question_id'   => $item['question_id']
+                    );
+                    $innerModel->addOrSetItem($innerData);
+                }
+            }
         }
-        return $id;
+
+        // TODO: SAVE EXERCISES SENT!
+        return $identifier;
+    }
+    public function setItem($data, $identifier) {
+        parent::setItem($data, $identifier);
+
+        $type = $data['content_type'];
+        if ($type == "subtitle" || $type == "subtitle-translation") {
+            $type = "file";
+        }
+        if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {
+            $innerModel = $this->model("lessons/content/" . $type);
+
+            if ($type == "file") {
+                /*
+                $innerData = array(
+                    'content_id'    => $identifier,
+                    'file_id'       => $data[$type]['id']
+                );
+
+                $innerModel->addItem($innerData);
+                */
+            } elseif ($type == "exercise" && is_array($data[$type])) {
+                $innerModel->delete(array(
+                    'content_id'    => $identifier
+                ));
+
+                foreach($data[$type] as $item) {
+                    $innerData = array(
+                        'content_id'    => $identifier,
+                        'question_id'   => $item['question_id']
+                    );
+                    $innerModel->addOrSetItem($innerData);
+                }
+            }
+        }
+
+        // TODO: SAVE EXERCISES SENT!
+        return $identifier;
     }
 
     protected function resetContentOrder($lesson_id) {

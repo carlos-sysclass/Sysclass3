@@ -6,6 +6,8 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 	// MODELS
 	mod.addInitializer(function() {
+        var tableViewClass = app.module("views").baseDatatableViewClass;
+        /*
         var tableViewClass = Backbone.View.extend({
 			events : {
 				"confirmed.bs.confirmation .datatable-option-remove" : "removeItem"
@@ -20,18 +22,6 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
-
-		        /*
-		        $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
-		            var iCol = parseInt($(this).attr("data-column"));
-		            var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
-		            oTable.fnSetColumnVis(iCol, (bVis ? false : true));
-		        });
-				*/
-
-
-
-
         	},
 			removeItem : function(e) {
 				e.preventDefault();
@@ -52,6 +42,7 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
 				});
 			}
         });
+        */
 
         if (typeof this.modelPrefix == "undefined") {
         	var sAjaxSource = "/module/" + this.module_id + "/items/me/datatable";

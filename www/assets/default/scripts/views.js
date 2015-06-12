@@ -97,7 +97,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		    			var input = $(this);
 
 						if (input.hasClass("datepick")) {
-		                    if (values[idx] != null) {
+		                    if (values[idx] !== null) {
 		                        var date = new Date(values[idx]);
 		                        // CORRETING TIMEZONE DIFF
 		                        date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
@@ -105,7 +105,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                        input.datepicker('setDate', date);
 		                    }
 		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
-	                		if (values[idx] != null) {
+	                		if (values[idx] !== null) {
 		                		if (input.hasClass("icheck-me")) {
 									input.filter("[value='" + values[idx] +"']").iCheck("check");
 								} else if (input.hasClass("bootstrap-switch-me")) {
@@ -150,7 +150,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                }
 		    		});
 
-
 	            }
 	            if (this.$("[data-update^='" + idx + "']").not(":input").size() > 0) {
 	            	var domField = this.$("[data-update^='" + idx + "']");
@@ -166,10 +165,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 		render: function(model) {
 	    	console.info('views/baseClass::render');
-	    	if (model == undefined) {
+	    	if (model === undefined) {
 	    		model = this.model;
 	    	}
 	    	var values = model.toJSON();
+	    	console.warn(values);
 	    	this.renderItens(values);
 	        return this;
 	    },
@@ -186,6 +186,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		    }
 
 			var value = $el.val();
+
+			if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
+				//value = -1;
+				value = $el.data("valueUnchecked");
+			}
+
 			/*
 			if ($el.is(".datepick")) {
 				value = $el.data("datepicker").getDate().format("isoDate");
@@ -425,7 +431,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	var value = this.model.get(prop);
 
 			if (inputField.hasClass("datepick")) {
-				if (value != null) {
+				if (value !== null) {
 					var date = new Date(value);
 					// CORRETING TIMEZONE DIFF
 					date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
@@ -433,7 +439,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					inputField.datepicker('setDate', date);
 				}
 			} else if (inputField.is("[type='radio']") || inputField.is("[type='checkbox']")) {
-				if (value != null) {
+				if (value !== null) {
 					if (inputField.hasClass("icheck-me")) {
 						inputField.filter("[value='" + value +"']").iCheck("check");
 					} else {
@@ -481,4 +487,51 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			this.$el.off();
 	    }
 	});
+
+    this.baseDatatableViewClass = Backbone.View.extend({
+		events : {
+			"click .datatable-option-select" : "onSelectItem",
+			"confirmed.bs.confirmation .datatable-option-remove" : "onRemoveItem"
+		},
+    	initialize : function(opt) {
+	        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
+	        if (opt.datatable !== undefined) {
+	        	this.oTable = this.$el.dataTable(opt.datatable);
+	        } else {
+	        	this.oTable = this.$el.dataTable();
+	        }
+	        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
+	        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
+	        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
+
+	        /*
+	        $('#sample_2_column_toggler input[type="checkbox"]').change(function(){
+	            var iCol = parseInt($(this).attr("data-column"));
+	            var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+	            oTable.fnSetColumnVis(iCol, (bVis ? false : true));
+	        });
+			*/
+    	},
+		onRemoveItem : function(e) {
+			e.preventDefault();
+			var data = this.oTable._($(e.currentTarget).closest("tr"));
+			var itemModelClass = app.module("crud.models").itemModelClass;
+
+			var self = this;
+			var model = new itemModelClass(data[0]);
+			model.destroy({
+				success : function() {
+					// TODO REMOVE DATA FROM DATATABLE TOO
+					self.oTable
+						.api()
+						.row( $(e.currentTarget).closest("tr") )
+						.remove()
+						.draw();
+				}
+			});
+		},
+		onSelectItem : function(e) {
+
+		}
+    });
 });

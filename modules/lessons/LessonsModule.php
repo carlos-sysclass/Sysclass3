@@ -514,6 +514,14 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 $data['language_code'] = self::$t->getUserLanguageCode();
 
                 $_GET['redirect'] = 0;
+            } elseif ($model == "question-content") {
+                $itemModel = $this->model("lessons/content/question");
+                $messages = array(
+                    'success' => "Question included with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $_GET['redirect'] = 0;
             }
 
 
@@ -560,10 +568,13 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'success' => "Lesson content updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+            } elseif ($model == "question-content") {
+
             }
 
             if ($itemModel->setItem($data, $id) !== false) {
                 $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $data = $itemModel->getItem($id);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

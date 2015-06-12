@@ -12,6 +12,14 @@
 	</script>
 </head>
 <body class="page-boxed page-header-fixed">
+	{if (isset($T_SECTION_TPL['dialogs']) &&  ($T_SECTION_TPL['dialogs']|@count > 0))}
+	    <div id="dialogs-tempĺates">
+	    {foreach $T_SECTION_TPL['dialogs'] as $template}
+	        {include file=$template}
+	    {/foreach}
+	    </div>
+	{/if}
+
 	<!-- BEGIN HEADER -->
 	{block name="topbar"}
 		{include file="block/topbar.tpl"}

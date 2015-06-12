@@ -944,3 +944,16 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 .text-upper {
     text-transform: uppercase;
 }
+
+.question-type-container .question-types-item {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: none;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+.no-padding {
+    padding: 0;
+}

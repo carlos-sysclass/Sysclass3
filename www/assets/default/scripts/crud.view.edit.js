@@ -4,6 +4,7 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
     this.entity_id = this.config.entity_id;
 
     // MODELS
+     this.startWithParent = false;
     mod.addInitializer(function() {
         var itemModelClass = $SC.module("crud.models").itemModelClass;
         this.itemModel = new itemModelClass();
@@ -18,4 +19,8 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
     mod.getForm = function() {
         return this.formView;
     };
+
+    $SC.module("crud.models").on("start", function() {
+        mod.start();
+    });
 });

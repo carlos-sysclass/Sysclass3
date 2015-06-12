@@ -129,7 +129,7 @@
                     <i class="fa fa-spinner fa-spin"></i>
                     {translateToken value="Saving"}
                 </span>
-
+                <!--
                 <div class="btn-group">
                     <button data-close-others="true" data-hover="dropdown" data-toggle="dropdown" type="button" class="btn btn-sm btn-primary add-question dropdown-toggle">
                         <i class="fa fa-plus"></i>
@@ -144,9 +144,13 @@
                         <li><a href="#">Separated link </a></li>
                     </ul>
                 </div>
+                -->
+                <a class="btn btn-sm btn-primary" href="/module/questions/add" >
+                    <i class="fa fa-plus"></i>
+                    {translateToken value="Add a new Question"}
+                </a>
 
-
-                <a class="btn btn-sm btn-warning add-question" href="javascript: void(0);">
+                <a class="btn btn-sm btn-warning select-question" data-target="#questions-select-modal" data-toogle="modal" >
                     <i class="fa fa-database"></i>
                     {translateToken value="Question's Database"}
                 </a>
@@ -169,6 +173,7 @@
         </div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper">
+                <ul class="list-group questions-container"></ul>
                 <div class=" hidden">
 
                 </div>
@@ -176,6 +181,35 @@
         </div>
     </div>
 </script>
+
+<script type="text/template" id="exercise-question-timeline-item">
+    <li class="list-file-item list-question-item">
+        <%= data.title %>
+        <div class="list-file-item-options">
+            <a class="btn btn-sm btn-primary" href="/module/questions/edit/<%= data.question_id %>" >
+                <i class="fa fa-edit"></i>
+            </a>
+
+            <a class="btn btn-sm btn-danger delete-question-item" href="javascript: void(0);" data-question-id="<%= data.question_id %>"
+                data-toggle="confirmation"
+                data-original-title="{translateToken value="Are you sure?"}"
+                data-placement="left"
+                data-singleton="true"
+                data-popout="true"
+                data-btn-ok-icon="fa fa-trash"
+                data-btn-ok-class="btn-sm btn-danger"
+                data-btn-cancel-icon="fa fa-times"
+                data-btn-cancel-class="btn-sm btn-warning"
+                data-btn-ok-label="{translateToken value="Yes"}"
+                data-btn-cancel-label="{translateToken value="No"}"
+                style="display: inline-block;"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </li>
+</script>
+
 
 <script type="text/template" id="fileupload-upload-timeline-item">
     <%

@@ -395,6 +395,7 @@ $plicoLib->concat(
 		'plugins/backbone/underscore',
 		'plugins/backbone/backbone',
 		'plugins/backbone/marionette',
+		'plugins/backbone/backbone-deep-model',
 		'plugins/backbone/backbone-nested-attributes',
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
 		'plugins/bootstrap/js/bootstrap.min',

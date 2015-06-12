@@ -1,0 +1,82 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+blocks:
+  questions.select.dialog:
+    context:
+      datatable_fields:
+
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: area
+          label: Knowlegde Area
+
+        - mData: title
+          label: Title
+
+        - mData: type
+          label: Type
+
+        - mData: difficulty
+          label: Difficulty
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Classes
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your Classes
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: area
+          label: Knowlegde Area
+
+        - mData: title
+          label: Title
+
+        - mData: type
+          label: Type
+
+        - mData: difficulty
+          label: Difficulty
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
+      template: form.tpl
+      scripts: ["views.form.questions"]
+      variables:
+        page_subtitle: Create a new class
+    'edit/:identifier':
+      components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
+      template: form.tpl
+      scripts: ["views.form.questions"]
+      variables:
+        page_subtitle: Edit your class info

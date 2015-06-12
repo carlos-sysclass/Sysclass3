@@ -1,7 +1,8 @@
-$SC.module("views.crud.add", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("crud.views.add", function(mod, app, Backbone, Marionette, $, _) {
     this.config = $SC.module("crud.config").getConfig();
     this.module_id = this.config.module_id;
 
+    this.startWithParent = false;
     mod.addInitializer(function() {
         var itemModelClass = $SC.module("crud.models").itemModelClass;
         var itemModel = new itemModelClass();
@@ -11,5 +12,12 @@ $SC.module("views.crud.add", function(mod, app, Backbone, Marionette, $, _) {
 
         // EXPORTS
         //this.itemModel = itemModel;
+    });
+    mod.getForm = function() {
+        return this.formView;
+    };
+
+    $SC.module("crud.models").on("start", function() {
+        mod.start();
     });
 });

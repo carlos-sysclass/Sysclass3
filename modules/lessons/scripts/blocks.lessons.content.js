@@ -71,12 +71,79 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        var lessonExerciseContentQuestionCollectionClass = Backbone.Collection.extend({
+            initialize: function(data, opt) {
+                console.warn(data, opt);
+                this.content_id = opt.content_id;
+            },
+            /*
+            url: function() {
+                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
+            },
+            */
+            initialize: function(data, opt) {
+                this.listenTo(this, "add", function(model, collection, opt) {
+                    model.set("content_id", this.content_id);
+                    model.set("question_id", model.get("id"));
+                    // SET POSITION
+                });
+                this.listenTo(this, "remove", function(model, collection, opt) {
+                    /*
+                    var self = this;
+
+                    var subfiles = collection.where({parent_id : model.get("id")});
+
+                    console.warn(model, collection, opt, this, subfiles);
+
+                    _.each(subfiles, function(item) {
+                        self.remove(item.id);
+                    });
+
+                    model.destroy();
+                    */
+                });
+            }
+
+        });
+
         var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'exercise';
                 return defaults;
+            },
+            initialize: function(data, opt) {
+                var exerciseCollection = new lessonExerciseContentQuestionCollectionClass(
+                    this.get("exercise"), {lesson_id : this.get("lesson_id")}
+                );
+
+                this.set("exercise", exerciseCollection);
+                this.listenTo(this, "sync", function() {
+                    exerciseCollection.reset(this.get("exercise"));
+
+                    this.set("exercise", exerciseCollection);
+                });
+                this.listenTo(exerciseCollection, "add", function() {
+                    this.save();
+                });
+                this.listenTo(exerciseCollection, "remove", function() {
+                    this.save();
+                });
+
+            }/*,
+            addQuestion : function(questionModel) {
+                $.ajax(
+                    "/module/lessons/item/question-content",
+                    {
+                        data: {
+                            content_id : this.get("id"),
+                            question_id: questionModel.get("id")
+                        },
+                        method : "POST"
+                    }
+                );
             }
+            */
         });
 
         var lessonContentCollectionClass = Backbone.Collection.extend({
@@ -121,6 +188,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return new lessonTextContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
+                    } else if (attrs.content_type == "exercise") {
+                        return new lessonExerciseContentModelClass(attrs, _.extend(options, {
+                            collection: this,
+                        }));
+
                     } else {
                         return new baseLessonContentModelClass(attrs, _.extend(options, {
                             collection: this,
@@ -585,10 +657,88 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        var lessonExercisesContentSubviewTimelineViewClass = Backbone.View.extend({
+            template : _.template($("#exercise-question-timeline-item").html(), {variable : "data"}),
+            events : {
+                "confirmed.bs.confirmation .delete-question-item" : "onRemove"
+            },
+            initialize: function(opt) {
+                this.listenTo(this.collection, "add", this.addOne.bind(this));
+                this.listenTo(this.collection, "remove", this.removeOne.bind(this));
+                this.listenTo(this.collection, "reset", this.render.bind(this));
+            },
+            render : function() {
+                var self = this;
+                this.$el.empty();
+                this.collection.each(function(model) {
+                    self.addOne(model);
+                });
+
+                return this;
+            },
+            addOne : function(model) {
+                var html = this.template(model.toJSON());
+
+                app.module("ui").refresh(
+                    $(html).appendTo(this.$el)
+                );
+            },
+            onRemove : function(e) {
+                var id = $(e.currentTarget).data("questionId");
+                alert(id);
+                this.collection.remove(id);
+
+            },
+            removeOne: function(model) {
+                this.$("[data-question-id='" + model.get("id") +"']").parents("li.list-question-item").remove();
+            }
+        });
+
         var lessonExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",
-            tagName : "div"
+            tagName : "div",
+            initialize: function(opt) {
+                if (!$SC.module("dialogs.questions.select").started) {
+                    $SC.module("dialogs.questions.select").start();
+                }
+
+                this.questionModule = $SC.module("dialogs.questions.select");
+
+                this.listenTo(this.questionModule, "select:item", this.selectQuestion.bind(this));
+            },
+            events : function() {
+                var events = baseLessonChildContentTimelineViewClass.prototype.events.apply(this);
+                events["click .select-question"] = "openDialog";
+                return events;
+            },
+            render : function() {
+                baseLessonChildContentTimelineViewClass.prototype.render.apply(this);
+
+                this.questionView = new lessonExercisesContentSubviewTimelineViewClass({
+                    collection : this.model.get("exercise"),
+                    el: this.$(".questions-container")
+                });
+
+                this.questionView.render();
+
+                return this;
+            },
+            openDialog : function() {
+                $SC.module("dialogs.questions.select").setFilter({
+                    content_id : this.model.get("id")
+                });
+
+                app.module("dialogs.questions.select").open();
+            },
+            selectQuestion : function(e, model) {
+                app.module("dialogs.questions.select").close();
+                this.model.get("exercise").add(model);
+                //this.model.addQuestion(model);
+            },
+            renderQuestionsContent : function() {
+
+            }
         });
 
         var contentTimelineViewClass = Backbone.View.extend({
@@ -698,11 +848,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     })
                     .bind('fileuploadalways', function (e, data) {
                         //console.warn("fileuploadalways");
-                    })/*
+                    })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
                         data.context.find(".load-percent").html(progress);
-                    })*/;
+                    });
             },
             renderOne : function(model, collection, options) {
                 if (model.get("id")) {
@@ -716,11 +866,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             this.subviews[model.get("id")] = this.renderTextContent(model, {editMode : false});
                             return this.subviews[model.get("id")];
                         } else if (view_type == "exercise") {
-
+                            this.subviews[model.get("id")] = this.renderExercisesContent(model, {editMode : false});
+                            return this.subviews[model.get("id")];
                         }
                     } else {
                         // GET parent_id SUBVIEW AND DELEGATE RENDERING
-                        console.warn(this.subviews);
+                        //console.warn(this.subviews);
                         //this.subviews[model.get("id")]
                     }
                 }
@@ -854,6 +1005,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 this.collection.add(model);
 
+                model.save();
+
                 e.preventDefault();
             },
             renderExercisesContent : function(model, options) {
@@ -870,6 +1023,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.$(".content-timeline-items").append(exerciseContentTimelineView.render().el);
 
                 app.module("ui").refresh(exerciseContentTimelineView.render().el);
+
+                mod.exerciseView = exerciseContentTimelineView;
 
                 /*
                 this.listenTo(exerciseContentTimelineView, "timeline-exercise-content:save", function(model) {

@@ -140,7 +140,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
             this.$("form[data-validate='true'] :input").each(function() {
                 data[$(this).attr("name")] = $(this).val();
-            })
+            });
 
 
             var modelClass = Backbone.Model.extend({
@@ -150,8 +150,8 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             var model = new modelClass();
 
             model.set("course_id", mod.course_id);
-            model.set("name", data['name']);
-            model.set("active", data['active']);
+            model.set("name", data.name);
+            model.set("active", data.active);
 
             var self = this;
 
