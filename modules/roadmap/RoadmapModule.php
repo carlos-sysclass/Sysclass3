@@ -12,29 +12,54 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     // IBlockProvider
     public function registerBlocks() {
         return array(
-            'roadmap.courses.edit' => function($data, $self) {
+            'roadmap.classes' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                //$self->putComponent("data-tables");
+                $self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
 
-
+                /*
                 $grouping = $this->model("roadmap/courses/grouping")->addFilter(array(
                     'active'    => true
                 ))->getItems();
 
                 $self->putItem("roadmap_courses_grouping", $grouping);
-
-                $self->putModuleScript("blocks.roadmap");
+                */
+                $self->putModuleScript("blocks.roadmap.classes");
 
                 $block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 $self->putItem("roadmap_block_context", $block_context);
 
-                $self->putSectionTemplate("roadmap", "blocks/roadmap.edit");
-                $self->putSectionTemplate("foot", "dialogs/season.add");
-                $self->putSectionTemplate("foot", "dialogs/class.add");
+                $self->putSectionTemplate("roadmap-classes", "blocks/roadmap.classes");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
+                //$self->putSectionTemplate("foot", "dialogs/grouping.add");
+
+                return true;
+            },
+            'roadmap.grouping' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
+
+                /*
+                $grouping = $this->model("roadmap/courses/grouping")->addFilter(array(
+                    'active'    => true
+                ))->getItems();
+
+                $self->putItem("roadmap_courses_grouping", $grouping);
+                */
+                $self->putModuleScript("blocks.roadmap.grouping");
+
+                $block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                $self->putItem("roadmap_block_context", $block_context);
+
+                $self->putSectionTemplate("roadmap-grouping", "blocks/roadmap.grouping");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
                 $self->putSectionTemplate("foot", "dialogs/grouping.add");
 
                 return true;
-            }
+            },
         );
     }
 
@@ -64,7 +89,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             ), array("operator" => "="))->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
         } elseif ($model ==  "classes") {
-            $modelRoute = "roadmap/courses/classes/collection";
+            $modelRoute = "roadmap/classes";
             $itemsCollection = $this->model($modelRoute);
 
             $courses = filter_var($filter, FILTER_DEFAULT);
@@ -78,6 +103,24 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 'c.active'      => 1,
                 'cl.active'     => 1,
                 'c2c.course_id' => $courses
+            ), array("operator" => "="))->getItems();
+
+            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+        } elseif ($model ==  "grouping") {
+            $modelRoute = "roadmap/grouping";
+            $itemsCollection = $this->model($modelRoute);
+
+            $courses = filter_var($filter, FILTER_DEFAULT);
+
+            if (!is_array($courses)) {
+                $courses = json_decode($courses, true);
+            }
+            //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+            $itemsData = $itemsCollection->addFilter(array(
+                'c.active'      => true,
+                'cg.active'     => true,
+                'cg.course_id' => $courses
             ), array("operator" => "="))->getItems();
 
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
@@ -96,8 +139,8 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
 
 
         if ($type === 'combo') {
-            $q = $_GET['q'];
-            $itemsData = $itemsCollection->filterCollection($itemsData, $q);
+            $query = $_GET['q'];
+            $itemsData = $itemsCollection->filterCollection($itemsData, $query);
 
             $result = array();
 
@@ -139,8 +182,138 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
+     * @url POST /item/:model
+     */
+    public function addItemAction($model)
+    {
+
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+            if ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Class created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+                if ($_GET['redirect'] == 0) {
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $data = $itemModel->getItem($data['id']);
+                    return array_merge($response, $data);
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        self::$t->translate($messages['success']),
+                        "success"
+                    );
+                }
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/:model/:identifier
+     */
+    public function setItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+            if ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Class updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            if ($itemModel->setItem($data, $identifier) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $data = $itemModel->getItem($identifier);
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/:model/:identifier
+     */
+    public function deleteItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+            if ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Class removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping removed with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            if ($itemModel->deleteItem($identifier) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
      * @url POST /item/season
      */
+    /*
     public function addSeasonItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -167,12 +340,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/class/:id
      */
+    /*
     public function switchClassInCourse() {
         $data = $this->getHttpData(func_get_args());
 
@@ -194,5 +368,51 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
         }
         return array_merge($response, $info);
     }
+    */
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /items/:model/set-order/:course_id
+     */
+    public function setOrderAction($model, $course_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
 
+            if ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Classes order updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            //$modelRoute = "classes/lessons/collection";
+
+//            $itemsCollection = $this->model($modelRoute);
+            // APPLY FILTER
+            if (is_null($course_id) || !is_numeric($course_id)) {
+                return $this->invalidRequestError();
+            }
+
+            $data = $this->getHttpData(func_get_args());
+
+            if ($itemModel->setOrder($course_id, $data['position'])) {
+                return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            } else {
+                return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
 }

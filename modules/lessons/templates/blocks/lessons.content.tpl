@@ -499,7 +499,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                        <label class="control-label">{translateToken value="Subtitle Language"}</label>
+                        <label class="control-label">{translateToken value="Original Language"}</label>
                         <div class="input-group ">
                             <select class="select2-me form-control" name="related[lang_from]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
@@ -513,6 +513,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Automatic translate to"}</label>
                         <div class="input-group ">
@@ -529,6 +530,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
             <div class="row">

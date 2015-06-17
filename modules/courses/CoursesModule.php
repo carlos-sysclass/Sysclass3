@@ -182,6 +182,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_coordinator' => true
+        ))->getItems();
+        $this->putItem("supervisors", $items);
+
         parent::addPage();
     }
 
@@ -465,7 +470,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
      */
     public function getItemAction($id) {
 
-        $editItem = $this->model("courses/collection")->getItem($id);
+        $editItem = $this->model("courses")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }

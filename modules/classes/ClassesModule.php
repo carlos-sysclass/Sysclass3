@@ -157,7 +157,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function getItemAction($id) {
 
-        $editItem = $this->model("courses/classes/collection")->getItem($id);
+        $editItem = $this->model("classes")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
 
         $editItem['lessons'] = $this->model("classes/lessons/collection")->addFilter(array(
@@ -177,7 +177,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("courses/classes/collection");
+            $itemModel = $this->model("classes");
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
@@ -204,7 +204,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("courses/classes/collection");
+            $itemModel = $this->model("classes");
             if ($itemModel->setItem($data, $id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Class updated with success"), "success");
                 return array_merge($response, $data);

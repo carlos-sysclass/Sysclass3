@@ -3,6 +3,10 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
     this.startWithParent = false;
 
     mod.on("start", function(opt){
+
+    });
+    /*
+    mod.on("start", function(opt){
         // do stuff after the module has been started
         this.course_id = opt.course_id;
 
@@ -92,29 +96,6 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             this.$("form[data-validate='true']").on("validate:submit", this.save.bind(this));
         },
         save : function(e) {
-            /*
-            e.preventDefault();
-            var data = $(":input[name='class']").select2('data');
-
-            var modelClass = Backbone.Model.extend({
-              urlRoot : "/module/roadmap/item/class/" + mod.course_id
-            });
-
-            var model = new modelClass();
-
-            model.set("course_id", mod.course_id);
-            model.set("name", data['name']);
-            model.set("lesson_id", data['id']);
-
-            var self = this;
-
-            model.save(null, {
-                success : function() {
-                    self.collection.add(model);
-                    self.close();
-                }
-            });
-            */
         },
         open : function() {
             this.$el.modal('show');
@@ -181,13 +162,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
         save : function(e) {
             e.preventDefault();
             var data = $(":input[name='class']").select2('data');
-            /*
-            var object = {
-                'course_id'    : mod.course_id,
-                'id'        : data['id'],
-                'name'      : data['name']
-            };
-            */
+
             var modelClass = Backbone.Model.extend({
               urlRoot : "/module/roadmap/item/class/" + mod.course_id
             });
@@ -235,25 +210,20 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             this.$el.empty().append(this.template(
                 modelData
             ));
-            /*
-            this.$el.append(this.template(_.extend(
-                modelData,
-                {classes : this.collection }
-            )));
-            */
+
             var self = this;
 
             this.$(".list-group").sortable({
                 connectWith: ".list-group",
                 items: "li.list-group-item",
                 opacity: 0.8,
-                /* axis : "y", */
+                // axis : "y",
                 placeholder: 'list-group-item list-group-item btn btn-block btn-default',
                 dropOnEmpty : true,
                 forceHelperSize : true,
                 forcePlaceholderSize: true,
                 tolerance: "intersect",
-                /* helper : 'original',  */
+                // helper : 'original',
                 receive : function( event, ui ) {
                     $(this).removeClass("empty-list-group");
                     self.refreshCounters();
@@ -344,28 +314,67 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             this.listenTo(this.collections.seasons, 'sync', this.renderSeasons.bind(this));
             this.listenTo(this.collections.classes, 'sync', this.renderClasses.bind(this));
 
-            /*
-            this.$("#block_roadmap-accordion").sortable({
+            this.initializeSortable();
+
+            //this.$el.nestable();
+        },
+        initializeSortable : function() {
+            this.$(".list-group").sortable({
                 connectWith: ".list-group",
                 items: "li.list-group-item",
                 opacity: 0.8,
-                axis : "y",
+                // axis : "y",
                 placeholder: 'list-group-item list-group-item btn btn-block btn-default',
                 dropOnEmpty : true,
                 forceHelperSize : true,
                 forcePlaceholderSize: true,
                 tolerance: "intersect",
-                sort : function( event, ui ) {
-                    console.warn(event, ui);
-                }
+                // helper : 'original',
+                receive : function( event, ui ) {
+                    $(this).removeClass("empty-list-group");
+                    self.refreshCounters();
+                    // HANDLE COLLECTIONS
+                    var classe_id = ui.item.data('classId');
+
+                    var item = mod.classesCollection.findWhere({id : classe_id.toString()});
+
+                    var classes = self.model.get('classes');
+
+                    classes.push(item.toJSON());
+                    self.model.set('classes', classes);
+                },
+                remove : function( event, ui ) {
+                    if ($(this).children().size() == 0) {
+                        $(this).addClass("empty-list-group");
+                    }
+                    self.refreshCounters();
+
+                    // HANDLE COLLECTIONS
+                    var classe_id = ui.item.data('classId');
+
+                    var classes = self.model.get('classes');
+
+                    remainingClasses = _.filter(classes, function(model, i) {
+                        if (model.id == classe_id) {
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    self.model.set('classes', remainingClasses);
+                },
+                over : function( event, ui ) {
+                    $(this).addClass("ui-sortable-hover");
+                },
+                out  : function( event, ui ) {
+                    $(this).removeClass("ui-sortable-hover");
+                },
             });
-            */
-            //this.$el.nestable();
+
         },
         openNewGroupingDialog : function() {
             if (_.isNull(this.groupingAddDialog)) {
                 this.groupingAddDialog = new mod.groupingAddDialogClass({
-                    /* collection : this.collections.seasons, */
                     el : "#roadmap-grouping-dialog-modal"
                 });
             }
@@ -404,30 +413,12 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
         },
         addSeason : function(seasonModel) {
             // FILTER CLASSES TO RETURN ONLY CLASSES IN THAT SEASON
-            /*
-            var classesArray = this.collections.classes.filter(function (classModel) {
-                console.warn(model.get("classes"), classModel.get("id"), _.contains(model.get("classes"), classModel.get("id")));
-                return _.contains(model.get("classes"), classModel.get("id"));
-            });
-            */
-            /*
-            var classesArray = [];
-            this.collections.classes.each(function(classModel, i) {
-                if (_.contains(seasonModel.get("classes"), classModel.get("id"))) {
-                    classesArray.push(classModel.toJSON());
-                }
-            });
-            */
+
             //var courseRoadmapTabSeasonView = new mod.courseRoadmapTabSeasonViewClass({model : seasonModel, collection : classesArray});
-            var courseRoadmapTabSeasonView = new mod.courseRoadmapTabSeasonViewClass({model : seasonModel /*, collection : new Backbone.Collection() */});
+            var courseRoadmapTabSeasonView = new mod.courseRoadmapTabSeasonViewClass({model : seasonModel });
             self.$("#block_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
         },
         addClass : function(classModel) {
-            /*
-            var classes = this.noSeasonModel.get("classes");
-            classes.push(classModel.toJSON());
-            this.noSeasonModel.set("classes", classes);
-            */
             //self.$("#block_roadmap-all_lessons-accordion").empty().append(this.courseRoadmapTabNoSeasonView.render().el);
         },
         render : function() {
@@ -468,5 +459,12 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
             }
         }
+    });
+    */
+    app.module("crud.views.edit").on("start", function() {
+        var self = this;
+        mod.listenToOnce(this.getForm(), "form:rendered", function() {
+            mod.start();
+        });
     });
 });

@@ -19,4 +19,4 @@ ALTER TABLE `mod_lessons_content` ADD COLUMN `language_code` varchar(10) NOT NUL
 
 ALTER TABLE `mod_dropbox` ADD COLUMN `filename` VARCHAR(250) NOT NULL DEFAULT '' AFTER `name`;
 
-UPDATE `mod_dropbox` SET filenamequestions = `name`;
+UPDATE `mod_dropbox` SET filename = `name`;

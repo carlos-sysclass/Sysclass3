@@ -5,6 +5,7 @@ crud:
   # BASE VALUES.. USED ON ALL ROUTES
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
+    stylesheets: ["css/components"]
     variables:
       page_title: Classes
   # BASE VALUES.. USED ON ALL ROUTES
@@ -49,8 +50,8 @@ crud:
         page_subtitle: Create a new class
     'edit/:id':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
-      #blocks: ["permission.add", "users.list.table"]
-      blocks: ["permission.add", "classes.lessons.edit"]
+      blocks: ["classes.lessons.edit"]
+      #blocks: ["permission.add", ]
       #scripts: ["views.classes.edit"]
       template: form.tpl
       variables:

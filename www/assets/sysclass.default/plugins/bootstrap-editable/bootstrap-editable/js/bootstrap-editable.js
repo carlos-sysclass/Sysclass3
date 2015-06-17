@@ -313,7 +313,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                  * SMALL HACK TO DO NOT USE A FORM, by andré kucaniz
                  */
                 //standard params
-                params = {}
+                params = {};
                 params[this.options.name] = submitValue;
 
                 //standard params

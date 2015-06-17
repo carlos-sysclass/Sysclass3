@@ -228,11 +228,15 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			       	}
 	    		}
 	    	}*/);
+	    },
+	    setModel : function(model) {
+	    	this.model = model;
+	    	this.render();
 	    }
   	});
 
 	this.baseFormClass = this.baseClass.extend({
-		tagName : "form",
+		//tagName : "form",
 	    events : {
 	    	"change :input"			: "update",
 	    	"click .save-action" 	: "submit"
@@ -254,52 +258,46 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    handleValidation : function() {
 	    	console.info('views/baseFormClass::handleValidation');
 	    	var self = this;
+			this.oForm.validate({
+				ignore: null,
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
 
+                errorPlacement: function (error, element) { // render error placement for each input type
+                	console.log('aa');
+                    //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
+                    //    error.insertAfter("#form_2_membership_error");
+                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
+                    	//console.log(element.data('wysihtml5').editor.composer.iframe);
+                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
+                    //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
+                    //    error.insertAfter("#form_2_service_error");
+                    } else {
+                    	error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
 
-
-
-				this.oForm.validate({
-					ignore: null,
-	                errorElement: 'span', //default input error message container
-	                errorClass: 'help-block', // default input error message class
-
-	                errorPlacement: function (error, element) { // render error placement for each input type
-	                	console.log('aa');
-	                    //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
-	                    //    error.insertAfter("#form_2_membership_error");
-	                    if (element.hasClass("wysihtml5")) { // for wysiwyg editors
-	                    	//console.log(element.data('wysihtml5').editor.composer.iframe);
-	                        error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
-	                    //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
-	                    //    error.insertAfter("#form_2_service_error");
-	                    } else {
-	                    	error.insertAfter(element); // for other inputs, just perform default behavior
-	                    }
-	                },
-
-	                highlight: function (element) { // hightlight error inputs
-	                   $(element)
-	                        .closest('.form-group').addClass('has-error'); // set error class to the control group
-	                },
-	                unhighlight: function (element) { // revert the change done by hightlight
-	                    $(element)
-	                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-	                },
-	                success: function (label) {
-                        label
-                            .addClass('valid').addClass('help-block') // mark the current input as valid and display OK icon
-                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
-	                },
-					submitHandler : function(f) {
-						self.save();
-					}
-				});
-
+                highlight: function (element) { // hightlight error inputs
+                   $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+                success: function (label) {
+                    label
+                        .addClass('valid').addClass('help-block') // mark the current input as valid and display OK icon
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                },
+				submitHandler : function(f) {
+					self.save();
+				}
+			});
 		},
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
 	    	this.oForm.submit();
-	    	e.preventDefault();
 	    }
   	});
 

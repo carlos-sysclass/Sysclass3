@@ -1,8 +1,5 @@
 <?php
-/**
- * @deprecated 3.0.0.18 Use CourseModel Class for same functionality
- */
-class CoursesCollectionModel extends AbstractSysclassModel implements ISyncronizableCollection {
+class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollection {
 
     public function init()
     {
@@ -44,10 +41,33 @@ class CoursesCollectionModel extends AbstractSysclassModel implements ISyncroniz
             `terms`,
             `instance_source`,
             `supervisor_LOGIN`,
-            `has_grouping`
+            `has_grouping`,
+            `has_student_selection`,
+            `has_periods`,
+            `coordinator_id`
         FROM `mod_courses`";
 
         parent::init();
 
     }
+
+    public function getItem($identifier) {
+        $data = parent::getItem($identifier);
+        $data['coordinator_id'] = json_decode($data['coordinator_id'], true);
+        return $data;
+    }
+
+    public function addItem($data)
+    {
+        $data['coordinator_id'] = json_encode($data['coordinator_id']);
+        return parent::addItem($data);
+    }
+
+    public function setItem($data, $identifier)
+    {
+        $data['coordinator_id'] = json_encode($data['coordinator_id']);
+        return parent::setItem($data, $identifier);
+    }
 }
+
+

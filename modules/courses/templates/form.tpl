@@ -11,14 +11,20 @@
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Students"}</a>
 			</li>
 			{/if}
-			{if (isset($T_SECTION_TPL['roadmap']) &&  ($T_SECTION_TPL['roadmap']|@count > 0))}
+			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Road Map"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Classes"}</a>
 			</li>
 			{/if}
+			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
+			<li>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Grouping"}</a>
+			</li>
+			{/if}
+
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Permissions"}</a>
+				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Permissions"}</a>
 			</li>
 			{/if}
 		</ul>
@@ -47,6 +53,17 @@
 				</div>
 
 				<div class="form-group">
+					<label class="control-label">{translateToken value="Coordinators"}</label>
+
+					<select class="select2-me form-control" name="coordinator_id" multiple="multiple">
+						<option value="">{translateToken value="Please Select"}</option>
+						{foreach $T_COORDINATORS as $id => $coordinator}
+							<option value="{$coordinator.id}">{$coordinator.name} {$coordinator.surname}</option>
+						{/foreach}
+					</select>
+				</div>
+
+				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
@@ -58,15 +75,22 @@
 				    {/foreach}
 				</div>
 			{/if}
-			{if (isset($T_SECTION_TPL['roadmap']) &&  ($T_SECTION_TPL['roadmap']|@count > 0))}
+			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
-				    {foreach $T_SECTION_TPL['roadmap'] as $template}
+				    {foreach $T_SECTION_TPL['roadmap-classes'] as $template}
+				        {include file=$template T_MODULE_CONTEXT=$T_ROADMAP_BLOCK_CONTEXT T_MODULE_ID=$T_ROADMAP_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_4">
+				    {foreach $T_SECTION_TPL['roadmap-grouping'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_ROADMAP_BLOCK_CONTEXT T_MODULE_ID=$T_ROADMAP_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_4">
+				<div class="tab-pane fade in" id="tab_1_5">
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
 				    {/foreach}

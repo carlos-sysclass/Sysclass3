@@ -1,8 +1,5 @@
 <?php
-/**
- * @deprecated 3.0.0.17
- */
-class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
+class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {
@@ -41,7 +38,26 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
 
     }
 
+    public function getItem($identifier) {
+        $data = parent::getItem($identifier);
+        $data['instructor_id'] = json_decode($data['instructor_id'], true);
+        return $data;
+    }
 
+    public function addItem($data)
+    {
+        $data['instructor_id'] = json_encode($data['instructor_id']);
+        return parent::addItem($data);
+    }
+
+    public function setItem($data, $identifier)
+    {
+        $data['instructor_id'] = json_encode($data['instructor_id']);
+        return parent::setItem($data, $identifier);
+    }
+
+
+    /*
     public function addItem($item) {
         $id = parent::addItem($item);
         // INJECT INTO
@@ -52,7 +68,8 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         }
         return $id;
     }
-
+    */
+    /*
     public function setItem($item, $id) {
         $result = parent::setItem($item, $id);
         $roadmap = $this->model("roadmap/courses/classes/collection");
@@ -63,5 +80,5 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         }
         return $result;
     }
-
+    */
 }

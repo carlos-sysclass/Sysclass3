@@ -183,6 +183,12 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $this->putItem("classes", $items);
 
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_instructor' => true
+        ))->getItems();
+        $this->putItem("instructors", $items);
+
+
         parent::addPage($id);
     }
 
@@ -198,6 +204,12 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         ))->getItems();
 
         $this->putItem("classes", $items);
+
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_instructor' => true
+        ))->getItems();
+        $this->putItem("instructors", $items);
+
 
         parent::editPage($id);
     }
@@ -462,7 +474,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function getItemAction($model = "me", $id = null)
     {
-        $editItem = $this->model("classes/lessons/collection")->getItem($id);
+        $editItem = $this->model("lessons")->getItem($id);
         //if ($model == "content") {
             //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
             $lessonFiles = $this->model("lessons/files");
@@ -513,7 +525,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
                 $data['language_code'] = self::$t->getUserLanguageCode();
 
-                $_GET['redirect'] = 0;
+                $_GET['redirect'] = "0";
             } elseif ($model == "question-content") {
                 $itemModel = $this->model("lessons/content/question");
                 $messages = array(
@@ -521,13 +533,13 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $_GET['redirect'] = 0;
+                $_GET['redirect'] = "0";
             }
 
 
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
-                if ($_GET['redirect'] == 0) {
+                if ($_GET['redirect'] === "0") {
                     $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                     return array_merge($response, $data);
                 } else {
@@ -557,7 +569,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             if ($model == "me") {
-                $itemModel = $this->model("classes/lessons/collection");
+                $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"

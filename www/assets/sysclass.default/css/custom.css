@@ -831,8 +831,14 @@ table.users-panel-notification-table > thead > tr > td {
 .list-file-item-options.pull-left {
     margin: 0 4px 0 0;
 }
-.list-file-item-options .btn-sm {
+.list-file-item-options .btn-sm, .list-file-item-options .bootstrap-switch-item-option {
     margin-top: -3px;
+}
+
+
+.list-file-item .detail-container {
+    padding: 15px 0 0;
+    display: none;
 }
 
 .list-file-item.placeholder {
@@ -957,3 +963,7 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 .no-padding {
     padding: 0;
 }
+.padding-bottom-10 {
+    padding-bottom: 10px;
+}
+

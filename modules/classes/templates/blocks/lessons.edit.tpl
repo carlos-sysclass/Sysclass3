@@ -1,4 +1,4 @@
-<div id="block_lessons_edit" data-widget-id="lessons-edit-widget" data-class-id="227">
+<div id="block_lessons_edit" data-widget-id="lessons-edit-widget" data-class-id="">
     <!--
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -19,7 +19,7 @@
             </ul>
             <a class="btn btn-sm btn-primary btn-link add-item-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                Create Lesson
+                {translateToken value="Create Lesson"}
             </a>
 
 <!--    </div> -->
@@ -31,17 +31,12 @@
     <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="name"
-        <% if (typeof data.id !== 'undefined') { %>
-        data-url="/module/lessons/item/me/<%= data.id %>"
-        data-pk="<%= data.id %>"
-        data-method="put"
-        <% } else { %>
-        data-url="/module/lessons/item/me"
-        data-pk=""
-        data-method="post"
-        <% } %>
-        data-original-title="Enter username"
+        data-send="never"
+        data-original-title="Lesson Name"
         data-inputclass="form-control"
+        <% if (typeof data.id !== 'undefined') { %>
+        <% } else { %>
+        <% } %>
     >
         <%= data.name %>
     </a>
@@ -50,15 +45,8 @@
             <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= data.id %>" data-original-title="Edit lesson info">
                 <i class="fa fa-edit"></i>
             </a>
-            <% if (data.active == "1") { %>
-                <a class="btn btn-sm btn-warning disable-item-action" href="javascript: void(0);">
-                    <i class="fa fa-times"></i>
-                </a>
-            <% } else { %>
-                <a class="btn btn-sm btn-success enable-item-action" href="javascript: void(0);">
-                    <i class="fa fa-check"></i>
-                </a>
-            <% } %>
+            <input type="checkbox" name="active-<%= data.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
+
         <% } %>
         <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
             data-toggle="confirmation"
@@ -75,6 +63,9 @@
         >
             <i class="fa fa-trash"></i>
         </a>
+    </div>
+    <div class="detail-container">
+        <h5 class="form-section no-margin">Details</h5>
 
     </div>
 </script>

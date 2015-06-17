@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.0.0.17
+ */
 class RoadmapCoursesGroupingModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()

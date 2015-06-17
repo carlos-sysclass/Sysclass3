@@ -43,8 +43,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
 	    mod.classLessonsItemViewClass = Backbone.View.extend({
 			events : {
-				"click .enable-item-action" : "enable",
-				"click .disable-item-action" : "disable",
+				"switchChange.bootstrapSwitch .bootstrap-switch-me" : "toogleActive",
 				"confirmed.bs.confirmation .delete-item-action" : "delete"
 			},
 	    	template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
@@ -55,7 +54,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
 				this.opened = opt.opened ? opt.opened : false;
 
-				//this.listen(this.model, 'sync', this.render.bind(this));
+				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function() {
 				this.$el.html(this.template(this.model.toJSON()));
@@ -94,6 +93,9 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
 				var self = this;
 			    editableItem.on('save', function(e, params) {
+                    self.model.set($(this).data("name"), params.newValue);
+                    self.model.save();
+                    /*
 			        //console.warn(e, params);
 			        if (!self.model.get("id")) {
 			        	var response = params.response;
@@ -101,12 +103,19 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			        	self.trigger("lesson:added", self.model);
 			        	self.render();
 			        }
+			        */
 			    });
 
 				if (this.$el.length) {
 					app.module("ui").refresh(this.$el);
 				}
 			},
+            toogleActive : function(e, state) {
+                this.model.set("active", state);
+                this.model.save();
+                this.render();
+            },
+            /*
 			enable: function() {
 				this.model.set("active", 1);
 				this.model.save();
@@ -117,66 +126,14 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				this.model.save();
 				this.render();
 			},
+			*/
 			delete: function() {
 				this.model.destroy();
 				this.trigger("lesson:removed", this.model);
 				this.remove();
 			}
 	    });
-		/*
-	    mod.classLessonsNewItemViewClass = Backbone.View.extend({
-	    	newtemplate : _.template($("#lessons-edit-add-item").html(), {variable: 'data'}),
-	    	tagName : "li",
-	    	className : "new-lesson-input-container",
-			initialize: function(opt) {
-				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
 
-				//this.param = opt.param;
-
-				//this.listen(this.model, 'sync', this.render.bind(this));
-			},
-			render : function() {
-				this.$el.html(this.newtemplate(this.model.toJSON()));
-
-				return this;
-			},
-			start : function() {
-				this.$("[name='new-lesson-input']").focus();
-
-				var saveLessonAction = function(e) {
-
-				};
-
-				this.$("[name='new-lesson-input']").on("blur", this.save.bind(this));
-				$("[name='new-lesson-input']").on("keyup", function(e) {
-					if (e.keyCode == 27) {
-						$(".new-lesson-input-container").unbind().remove();
-					}
-				});
-
-				//$(".new-lesson-input-container button").on("click", saveLessonAction);
-			},
-			save : function(e) {
-				e.preventDefault();
-				if ($("[name='new-lesson-input']").valid()) {
-					// ADD INPUT SPINNER
-					$("[name='new-lesson-input']").addClass("spinner");
-					// SAVE THE NEW LESSON
-					var name = $("[name='new-lesson-input']").val();
-
-					self.lessonModel.set("name", name);
-					self.lessonModel.save(null, {
-						success: function(model, response) {
-							$(".new-lesson-input-container").remove()
-							self.addOne(model.toJSON());
-						}
-					});
-
-					// REMOVE VIEW, ADD TO COLLECTION
-				}
-			}
-	    });
-		*/
 		mod.classLessonsViewClass = Backbone.View.extend({
 			events : {
 				"click .add-item-action" : "addItem",
@@ -273,19 +230,19 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			addItem : function(e) {
 				var self = this;
 
-				var lessonModel = new mod.lessonModelClass({
+				var itemModel = new mod.lessonModelClass({
 					active : 1
 				});
 
+				self.collection.add(itemModel);
+
 				var classLessonsNewItemView = new mod.classLessonsItemViewClass({
-					model : lessonModel,
+					model : itemModel,
 					opened : true
 				});
 
-				app.module("ui").refresh(
-					$(classLessonsNewItemView.render().el).appendTo( this.$("ul") )
-				);
-
+				$(classLessonsNewItemView.render().el).appendTo( this.$("ul") );
+				/*
 				this.listenTo(classLessonsNewItemView, "lesson:added", function(model) {
 					self.collection.add(model);
 					model.save();
@@ -293,7 +250,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				this.listenTo(classLessonsNewItemView, "lesson:removed", function(model) {
 					self.collection.remove(model);
 				});
-
+				*/
 				classLessonsNewItemView.start();
  			},
 			addOne : function(model) {
@@ -309,12 +266,10 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				this.listenTo(classLessonsItemView, "lesson:removed", function(model) {
 					self.collection.remove(model);
 				});
+				$(classLessonsItemView.render().el).appendTo( this.$("ul") );
 
-				//app.module("ui").refresh(
-					$(classLessonsItemView.render().el).appendTo(
-						this.$("ul")
-					)
-				//);
+				classLessonsItemView.start();
+
 
 			},
 			render: function() {
@@ -350,41 +305,46 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 		*/
 
 		$("[data-widget-id='lessons-edit-widget']").each(function() {
-			mod.createWidget(this, {
-				class_id : $(this).data("classId")
-			});
+            var class_id = null;
+            if (_.isEmpty($(this).data("classId"))) {
+                // LOAD COURSE MODEL TO BY-PASS
+                class_id = opt.entityModel.get("id");
+            } else {
+                class_id = $(this).data("classId");
+            }
+
+            if (!_.isNull(class_id)) {
+                mod.createBlock(this, {
+                    class_id : class_id,
+                    entityModel : opt.entityModel
+                });
+            }
 		});
 
     });
 
-	mod.createWidget = function(el, data) {
-
+    mod.createBlock = function(el, data) {
 		var lessonsCollection = new mod.lessonsCollectionClass({
 			class_id : data.class_id
 		});
 
 		var classLessonsView = new mod.classLessonsViewClass({
 			collection : lessonsCollection,
-			el : el
+			el : el,
+            model : data.entityModel
 		});
 
 
 		lessonsCollection.fetch();
-	};
-	/*
-    app.module("crud.config").on("start", function() {
-        var config = this.getConfig();
+    };
 
-        mod.start({
-        	config : config
-        });
-    });
-	*/
     app.module("crud.views.edit").on("start", function() {
-    	var self = this;
+        var self = this;
+
         mod.listenToOnce(this.getForm(), "form:rendered", function() {
-        	console.warn(self.itemModel);
-            mod.start();
+            mod.start({
+                entityModel : self.itemModel
+            });
         });
     });
 
