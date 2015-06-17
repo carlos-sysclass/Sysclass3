@@ -28,7 +28,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		if($("[data-validate='true']", context).length > 0) {
 			$("[data-validate='true']", context).each(function(){
 				//var id = $(this).attr('id');
-                console.warn(this);
 				$(this).validate({
 					ignore: null,
 	                errorElement: 'span', //default input error message container

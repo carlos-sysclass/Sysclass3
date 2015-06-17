@@ -185,7 +185,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         $items =  $this->model("users/collection")->addFilter(array(
             'can_be_coordinator' => true
         ))->getItems();
-        $this->putItem("supervisors", $items);
+        $this->putItem("coordinators", $items);
 
         parent::addPage();
     }
@@ -202,6 +202,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         ))->getItems();
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
+
+        $items =  $this->model("users/collection")->addFilter(array(
+            'can_be_coordinator' => true
+        ))->getItems();
+        $this->putItem("coordinators", $items);
 
         parent::editPage($id);
     }

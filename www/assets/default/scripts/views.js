@@ -1,4 +1,41 @@
 $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
+	mod.formatValue = function(value, formatTo, formatFrom) {
+
+    	if (formatTo == 'decimal1') {
+			return $.jformat.number(value, "#0.0");
+    	} else if (formatTo == 'decimal2') {
+    		return $.jformat.number(value, "#0.00");
+    	} else if (formatTo == 'date' || formatTo == 'time' || formatTo == 'datetime') {
+    		if (value == 0) {
+    			return "";
+    		}
+	    	if (formatFrom == 'unix-timestamp') {
+	    		value = moment.unix(value);
+	    	} else {
+	    		value = moment(value);
+	    	}
+	    	if (formatTo == 'time') {
+	    		return value.format("hh:mm:ss");
+	    	} else if (formatTo == 'datetime') {
+	    		return value.format("L hh:mm");
+	    	} else { // DEFAULTS TO date
+	    		return value.format("L");
+	    	}
+    	} else if (formatTo == 'unix-timestamp') {
+    		if (formatFrom == 'date') {
+    			value = moment(value, "L");
+    		} else if (formatFrom == 'time') {
+    			value = moment(value, "hh:mm:ss");
+	    	} else if (formatFrom == 'datetime') {
+	    		value = moment(value, "L hh:mm");
+	    	} else { // DEFAULTS TO date
+	    		value = moment(value);
+	    	}
+	    	return value.unix();
+    	}
+    	return value;
+    };
+
   	this.baseClass = Backbone.View.extend({
 	    events : {
 	    	"change :input"			: "update",
@@ -44,6 +81,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    formatValue : function(value, formatTo, formatFrom) {
 	    	console.info('views/baseClass::formatValue');
+	    	return mod.formatValue(value, formatTo, formatFrom);
+	    	/*
 	    	if (formatTo == 'decimal1') {
 				return $.jformat.number(value, "#0.0");
 	    	} else if (formatTo == 'decimal2') {
@@ -77,6 +116,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		    	return value.unix();
 	    	}
 	    	return value;
+	    	*/
 	    },
 	    renderItens : function(values) {
 	    	console.info('views/baseClass::renderItens');
@@ -169,7 +209,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		model = this.model;
 	    	}
 	    	var values = model.toJSON();
-	    	console.warn(values);
 	    	this.renderItens(values);
 	        return this;
 	    },
@@ -264,7 +303,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 errorClass: 'help-block', // default input error message class
 
                 errorPlacement: function (error, element) { // render error placement for each input type
-                	console.log('aa');
                     //if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
                     //    error.insertAfter("#form_2_membership_error");
                     if (element.hasClass("wysihtml5")) { // for wysiwyg editors

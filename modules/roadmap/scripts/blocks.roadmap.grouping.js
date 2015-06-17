@@ -3,7 +3,6 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
     this.startWithParent = false;
 
     mod.on("start", function(opt){
-        console.warn(opt.courseModel);
         /*
         mod.classesCollectionClass = Backbone.Collection.extend({
             course_id : 0,
@@ -78,6 +77,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
             close : function() {
                 this.$el.modal('hide');
             },
+            /*
             submit : function(e) {
                 console.info('blocks.roadmap.grouping/groupingAddDialogClass::submit');
                 if (this.oForm.valid()) {
@@ -85,6 +85,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                     this.close();
                 }
             }
+            */
         });
 
         mod.groupingAddDialog = null;
@@ -96,7 +97,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 "click .view-item-detail": "toogleDetail",
                 "confirmed.bs.confirmation .delete-item-action" : "delete"
             },
-            template : _.template($("#classes-edit-item").html(), {variable: 'data'}),
+            template : _.template($("#grouping-edit-item").html(), {variable: 'data'}),
             tagName : "li",
             className : "list-file-item draggable blue-stripe",
             initialize: function(opt) {
@@ -259,8 +260,6 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 mod.groupingAddDialog.render();
 
                 mod.groupingAddDialog.open();
-
-                mod.modelTest = itemModel;
             },
             /*
             addItem : function(e) {
@@ -301,7 +300,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 });
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap/classLessonsView::refreshCounters');
+                console.info('blocks.roadmap.grouping/classLessonsView::refreshCounters');
                 var total = this.collection.size();
                 this.$("ul.items-container > li.list-file-item .total").html(total);
 
@@ -310,7 +309,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 });
             },
             render: function() {
-                console.info('blocks.roadmap/classLessonsView::render');
+                console.info('blocks.roadmap.grouping/classLessonsView::render');
 
                 var self = this;
 
@@ -354,8 +353,6 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
     });
 
     mod.createBlock = function(el, data) {
-        console.warn(data.courseModel);
-
         var groupingCollection = new mod.groupingCollectionClass({
             course_id : data.course_id
         });

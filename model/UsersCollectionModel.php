@@ -22,6 +22,8 @@ class UsersCollectionModel extends AbstractSysclassModel implements ISyncronizab
             IFNULL(ut.name, u.user_type) as extended_user_type,
             u.timestamp as creation_time,
             UNIX_TIMESTAMP(u.last_login) as last_login,
+            u.can_be_coordinator,
+            u.can_be_instructor,
             u.active
         FROM users u
         LEFT JOIN user_types ut ON (u.user_types_ID = ut.id)";

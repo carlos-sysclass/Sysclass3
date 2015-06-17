@@ -90,7 +90,7 @@
     -->
 </div>
 
-<script type="text/template" id="classes-edit-item">
+<script type="text/template" id="grouping-edit-item">
 
     <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
@@ -101,7 +101,27 @@
 
     >
         <%= data.name %>
+
     </a>
+    <% if (data.start_date != 0 || data.end_date != 0) { %>
+    <i>
+        <small>
+        <% if (data.start_date != 0) { %>
+            {translateToken value="From"}
+            <strong><%= $SC.module("views").formatValue(data.start_date, "date", "unix-timestamp") %></strong>
+        <% } %>
+        <% if (data.end_date != 0) { %>
+            {translateToken value="To"}
+            <strong><%= $SC.module("views").formatValue(data.end_date, "date", "unix-timestamp") %></strong>
+        <% } %>
+        </small>
+    </i>
+    <% } else { %>
+        <i>
+            <small class="text-danger"><strong>No dates Defined</strong></small>
+        </i>
+    <% } %>
+
     <div class="list-file-item-options">
         <% if (typeof data.id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
@@ -109,11 +129,11 @@
             <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
                 <i class="fa fa-edit"></i>
             </a>
-
+            <!--
             <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
                 <i class="fa fa-info-circle"></i>
             </a>
-
+            -->
             <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
 
         <% } %>

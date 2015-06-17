@@ -119,7 +119,6 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
 
             $itemsData = $itemsCollection->addFilter(array(
                 'c.active'      => true,
-                'cg.active'     => true,
                 'cg.course_id' => $courses
             ), array("operator" => "="))->getItems();
 

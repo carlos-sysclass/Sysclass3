@@ -155,6 +155,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
             },
             addItem : function(e) {
+                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addItem');
                 var self = this;
 
                 var itemModel = new mod.classModelClass(null);
@@ -174,7 +175,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 roadmapBlockClassItemView.start();
             },
             addOne : function(model, i) {
-                console.info('blocks.roadmap/classLessonsView::addOne');
+                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addOne');
 
                 var self = this;
 
@@ -183,16 +184,16 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     model : model
                 });
 
+                $(roadmapBlockClassItemView.render().el).appendTo(this.$("ul.items-container"));
+                roadmapBlockClassItemView.start();
+
                 this.listenTo(roadmapBlockClassItemView, "lesson:updated", function(model) {
                     self.refreshCounters();
                 });
 
-
-                $(roadmapBlockClassItemView.render().el).appendTo(this.$("ul.items-container"));
-                roadmapBlockClassItemView.start();
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap/classLessonsView::refreshCounters');
+                console.info('blocks.roadmap.classes/roadmapBlockViewClass::refreshCounters');
                 var total = this.collection.size();
                 this.$("ul.items-container > li.list-file-item .total").html(total);
 
@@ -201,7 +202,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
             },
             render: function() {
-                console.info('blocks.roadmap/classLessonsView::render');
+                console.info('blocks.roadmap.classes/roadmapBlockViewClass::render');
 
                 var self = this;
 
@@ -210,6 +211,8 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
                 //this.refreshCounters();
                 app.module("ui").refresh( this.$("ul.items-container ") );
+
+                this.refreshCounters();
             },
             remove : function(e) {
                 var fileId = $(e.currentTarget).data("fileId");

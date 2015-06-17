@@ -1,7 +1,7 @@
 <div id="roadmap-grouping-dialog-modal" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-        <form role="form" class="form-horizontal form-validate" method="post" action="{$T_FORM_ACTION}" data-validate="true">
+        <form role="form" class="form-horizontal form-validate" method="post" action="{$T_FORM_ACTION}">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">{translateToken value="Course Grouping"}</h4>
@@ -14,11 +14,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Grouping Start Date"}</label>
-                        <input name="start_date" value="" type="text" placeholder="Start Date" class="form-control date-picker" />
+                        <input name="start_date" value="" type="text" placeholder="Start Date" class="form-control date-picker" data-format-from="unix-timestamp" data-format="date" />
                     </div>
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Grouping End Date"}</label>
-                        <input name="end_date" value="" type="text" placeholder="End Date" class="form-control date-picker"/>
+                        <input name="end_date" value="" type="text" placeholder="End Date" class="form-control date-picker" data-format-from="unix-timestamp" data-format="date"/>
                     </div>
 
                     <div class="form-group">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success save-action">{translateToken value="Save"}</button>
+                <button type="submit" class="btn btn-success save-action" data-dismiss="modal">{translateToken value="Save"}</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">{translateToken value="Cancel"}</button>
             </div>
         </form>
