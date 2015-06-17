@@ -262,6 +262,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
+        /*
         if ($model ==  "instructor") {
             $modelRoute = "users/collection";
             $optionsRoute = "edit-instructor";
@@ -311,13 +312,14 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
 
         } else {
-            $modelRoute = "courses/collection";
+        */
+            $modelRoute = "courses";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
             $itemsData = $itemsCollection->getItems();
             $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
-        }
+        //}
 
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
@@ -490,7 +492,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("course/item");
+            $itemModel = $this->model("courses");
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
@@ -517,7 +519,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("course/item");
+            $itemModel = $this->model("courses");
             if ($itemModel->setItem($data, $id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Course updated with success"), "success");
                 return array_merge($response, $data);
@@ -540,7 +542,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("course/item");
+            $itemModel = $this->model("courses");
             if ($itemModel->deleteItem($id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Course removed with success"), "success");
                 return $response;

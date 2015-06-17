@@ -6,6 +6,12 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
+			<li class="">
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
+			</li>
+			<li class="">
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrolled Classes"}</a>
+			</li>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
@@ -111,6 +117,26 @@
 				        {include file=$template}
 				    {/foreach}
 				{/if}
+			</div>
+			<div class="tab-pane fade in" id="tab_1_2">
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div class="alert alert-warning" role="alert">
+	                        Not implemented yet!
+	                    </div>
+	                </div>
+	            </div>
+
+			</div>
+			<div class="tab-pane fade in" id="tab_1_3">
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div class="alert alert-warning" role="alert">
+	                        Not implemented yet!
+	                    </div>
+	                </div>
+	            </div>
+
 			</div>
 		</div>
 	</div>
