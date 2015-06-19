@@ -17,22 +17,14 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
-                /*
-                $grouping = $this->model("roadmap/courses/grouping")->addFilter(array(
-                    'active'    => true
-                ))->getItems();
-
-                $self->putItem("roadmap_courses_grouping", $grouping);
-                */
                 $self->putModuleScript("blocks.roadmap.classes");
 
                 $block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 $self->putItem("roadmap_block_context", $block_context);
 
                 $self->putSectionTemplate("roadmap-classes", "blocks/roadmap.classes");
-                //$self->putSectionTemplate("foot", "dialogs/season.add");
-                //$self->putSectionTemplate("foot", "dialogs/class.add");
-                //$self->putSectionTemplate("foot", "dialogs/grouping.add");
+
+                $self->putSectionTemplate("foot", "dialogs/period.add");
 
                 return true;
             },
@@ -41,21 +33,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
-                /*
-                $grouping = $this->model("roadmap/courses/grouping")->addFilter(array(
-                    'active'    => true
-                ))->getItems();
-
-                $self->putItem("roadmap_courses_grouping", $grouping);
-                */
                 $self->putModuleScript("blocks.roadmap.grouping");
 
                 $block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 $self->putItem("roadmap_block_context", $block_context);
 
                 $self->putSectionTemplate("roadmap-grouping", "blocks/roadmap.grouping");
-                //$self->putSectionTemplate("foot", "dialogs/season.add");
-                //$self->putSectionTemplate("foot", "dialogs/class.add");
+
                 $self->putSectionTemplate("foot", "dialogs/grouping.add");
 
                 return true;
@@ -72,8 +56,8 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        if ($model ==  "seasons") {
-            $modelRoute = "roadmap/courses/seasons/collection";
+        if ($model ==  "periods") {
+            $modelRoute = "roadmap/periods";
             $itemsCollection = $this->model($modelRoute);
 
             $courses = filter_var($filter, FILTER_DEFAULT);
@@ -84,26 +68,29 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
             $itemsData = $itemsCollection->addFilter(array(
-                'cr.active'     => 1,
-                'cr.course_id'  => $courses
+                'c.active'     => 1,
+                'cp.course_id'  => $courses
             ), array("operator" => "="))->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
         } elseif ($model ==  "classes") {
             $modelRoute = "roadmap/classes";
             $itemsCollection = $this->model($modelRoute);
 
-            $courses = filter_var($filter, FILTER_DEFAULT);
+            $filter = filter_var($filter, FILTER_DEFAULT);
 
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
+            if (!is_array($filter)) {
+                $filter = json_decode($filter, true);
             }
+            //var_dump($filter);
+            //exit;
             //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
             $itemsData = $itemsCollection->addFilter(array(
                 'c.active'      => 1,
                 'cl.active'     => 1,
-                'c2c.course_id' => $courses
-            ), array("operator" => "="))->getItems();
+                'c2c.course_id' => $filter['course_id'],
+                'clp.period_id' => $filter['period_id']
+            )/*, array("operator" => "=")*/)->getItems();
 
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
         } elseif ($model ==  "grouping") {
@@ -202,6 +189,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                     'success' => "Course Grouping created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+            } elseif ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
             } else {
                 return $this->invalidRequestError();
             }
@@ -237,6 +231,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
+
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
                 $itemModel = $this->model($modelRoute);
@@ -249,6 +244,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Period created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {
@@ -289,6 +291,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping removed with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Grouping created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {
@@ -388,7 +397,14 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping updated with success",
+                    'success' => "Course Grouping order updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+                $itemModel = $this->model($modelRoute);
+                $messages = array(
+                    'success' => "Course Periods updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {
@@ -405,7 +421,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
 
             $data = $this->getHttpData(func_get_args());
 
-            if ($itemModel->setOrder($course_id, $data['position'])) {
+            if ($itemModel->setOrder($course_id, $data['position'], $data['period_id'])) {
                 return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
             } else {
                 return $this->invalidRequestError(self::$t->translate($messages['success']), "success");

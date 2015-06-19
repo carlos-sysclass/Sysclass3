@@ -467,9 +467,16 @@ h3.course-title, h3.class-title, h3.lesson-title {
 .draggable {
 	cursor: move;
 }
+/*
 ul.list-group.empty-list-group {
     border: 1px dashed #333333;
     height: 34px;
+}
+*/
+ul.list-group.ui-sortable {
+    min-height: 38px;
+    background-color: #f6f6f6;
+    border: 1px dashed #999999;
 }
 
 ul.list-group.empty-list-group.ui-sortable-hover {
@@ -801,12 +808,16 @@ table.users-panel-notification-table > thead > tr > td {
     background-color: #fff;
     border: 1px solid #ddd;
     display: block;
-    margin-bottom: 3px;
+    margin: -1px -1px 3px;
     padding: 10px 15px;
     position: relative;
     font-size: 14px;
     list-style-type: none;
 }
+.list-file-item:last-child {
+    margin: -1px -1px;
+}
+
 .list-file-item.green-stripe {
     border-left: 3px solid #35aa47;
 }
@@ -841,10 +852,19 @@ table.users-panel-notification-table > thead > tr > td {
     display: none;
 }
 
-.list-file-item.placeholder {
+.list-file-item.placeholder, .draggable.placeholder {
     border: 1px dashed #999999;
     background-color: #f6f6f6;
 }
+
+.draggable.placeholder-minimal {
+    padding: 5px;
+    margin: 10px 0;
+    background-color: #89c4f4;
+    border-color: #72b8f2;
+
+}
+
 .list-group {
     list-style-type: none;
 }

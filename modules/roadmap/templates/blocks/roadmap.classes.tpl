@@ -1,4 +1,5 @@
 <div id="block_roadmap" data-widget-id="roadmap-classes-widget" data-course-id="{$T_ENTITY_ID}">
+    <!--
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -12,7 +13,7 @@
                 <input type="checkbox" name="has_student_selection" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
             </div>
         </div>
-        <!--
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
@@ -26,8 +27,6 @@
                 <input type="checkbox" name="has_periods" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
             </div>
         </div>
-        -->
-        <!--
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
@@ -41,23 +40,22 @@
                 <input type="checkbox" name="has_grouping" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
             </div>
         </div>
-        -->
     </div>
+    -->
     <div class="row">
         <div class="col-md-12">
+            <!--
             <ul class="list-group ui-sortable margin-bottom-10 items-container">
             </ul>
-            <!--
-            <a class="btn btn-sm btn-primary btn-link add-period-action" href="javascript: void(0);">
-                <i class="fa fa-plus"></i>
-                {translateToken value="Create Period"}
-
-            </a>
             -->
-            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
-                <i class="fa fa-plus"></i>
-                {translateToken value="Create Class"}
+            <div class="margin-bottom-10 items-container">
 
+            </div>
+            <div class="no-period-container">
+            </div>
+            <a class="btn btn-sm btn-link btn-link add-block-action" href="javascript: void(0);">
+                <i class="fa fa-plus"></i>
+                {translateToken value="Create Block"}
             </a>
         </div>
     </div>
@@ -104,15 +102,85 @@
     -->
 </div>
 
-<script type="text/template" id="classes-edit-item">
+<script type="text/template" id="period-edit-item">
+    <div class="panel-heading">
+        <% if (!_.isEmpty(data.id)) { %>
+        <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+            <i class="fa fa-arrows"></i>
+        </a>
+        <% } %>
+        <a class="btn btn-sm btn-default tooltips toogle-visible-item" data-original-title="{translateToken value="Expand / Collpase"}">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <a href="javascript:void(0);" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+            data-type="text"
+            data-name="name"
+            data-send="never"
+            data-original-title="Period Name"
+            data-inputclass="form-control"
+        >
+            <%= data.name %>
+        </a>
+        <!--
+        <% if (typeof data.max_classes == 'undefined' || data.max_classes <= 0) { %>
+            <span class="size-counter"><%= _.size(data.classes) %></span> {translateToken value="total classes"}
+        <% } else { %>
+            <span class="size-counter"><%= _.size(data.classes) %></span> / <%= max_classes %> {translateToken value="classes selected"}
+        <% } %>
+        -->
+        <div class="list-file-item-options">
+            <% if (!_.isEmpty(data.id)) { %>
+                <span class="btn btn-default btn-sm"><span class="period-counter">X</span> / <span class="period-total">X</span></span>
 
+                <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
+
+
+            <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
+                data-toggle="confirmation"
+                data-original-title="{translateToken value="Are you sure?"}"
+                data-placement="left"
+                data-singleton="true"
+                data-popout="true"
+                data-btn-ok-icon="fa fa-trash"
+                data-btn-ok-class="btn-sm btn-danger"
+                data-btn-cancel-icon="fa fa-times"
+                data-btn-cancel-class="btn-sm btn-warning"
+                data-btn-ok-label="{translateToken value="Yes"}"
+                data-btn-cancel-label="{translateToken value="No"}"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+            <% } %>
+        </div>
+
+        <!--
+        <a class="btn btn-xs btn-default tooltips" data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= data.id %>">
+            <i class="icon-minus"></i>
+        </a>
+        <a class="btn btn-xs btn-default tooltips" data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= data.id %>">
+            <i class="fa fa-arrows"></i>
+        </a>
+        -->
+    </div>
+
+    <div id="season-<%= data.id %>" class="panel-body in subitems-container">
+        <ul class="list-group ui-sortable  margin-bottom-10"></ul>
+        <div class="cleafix"></div>
+        <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
+            <i class="fa fa-plus"></i>
+            {translateToken value="Create Class"}
+        </a>
+    </div>
+
+</script>
+
+<script type="text/template" id="classes-edit-item">
     <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="class.name"
         data-send="never"
         data-original-title="Class Name"
         data-inputclass="form-control"
-
     >
         <% if (_.has(data, 'class')) { %>
             <% if (_.has(data['class'], 'name')) { %>
@@ -122,7 +190,7 @@
     </a>
     <div class="list-file-item-options">
         <% if (typeof data.id !== 'undefined') { %>
-            <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
+            <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
             <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.id %>" data-original-title="Edit class info">
                 <i class="fa fa-edit"></i>

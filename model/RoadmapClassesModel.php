@@ -16,6 +16,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             c2c.`id`,
             c2c.`course_id`,
             c2c.`class_id`,
+            clp.`period_id`,
             c2c.`start_date`,
             c2c.`end_date`,
             c2c.`position`,
@@ -29,6 +30,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             c.`id` as 'course#id',
             c.`name` as 'course#name',
             c.`active` as 'course#active',
+            cp.`id` as 'period#id',
             cp.`name` as 'period#name',
             cp.`max_classes` as 'period#max_classes',
             cp.`active` as 'period#active'
@@ -85,29 +87,45 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         if (!array_key_exists('class_id', $data)) {
             $data['class_id'] = $classModel->addItem($data['class']);
         }
-        return parent::addItem($data);
-        //return array($data['class_id'], $data['class_id']);
+        $identifier = parent::addItem($data);
+
+        if (array_key_exists('period_id', $data)) {
+            $periodsModel = $this->model("roadmap/periods");
+            $periodsModel->addClass($data['course_id'], $data['period_id'], $data['class_id']);
+        }
+
+        return $identifier;
     }
 
-    public function setItem($data, $identifier) {
+    public function setItem($data, $identifier, $quote = true) {
         $classModel = $this->model("classes");
         if (array_key_exists('class_id', $data)) {
             $classModel->setItem($data['class'], $data['class_id']);
         }
-        return parent::setItem($data, $identifier);
+
+        if (array_key_exists('period_id', $data)) {
+            $periodsModel = $this->model("roadmap/periods");
+            $periodsModel->addClass($data['course_id'], $data['period_id'], $data['class_id']);
+        }
+
+        return parent::setItem($data, $identifier, $quote);
         //return array($data['class_id'], $data['class_id']);
     }
 
-    protected function resetOrder($course_id) {
+    protected function resetOrder($course_id, $period_id = null) {
+        $filter = array(
+            'course_id' => $course_id
+        );
+        if (!is_null($period_id)) {
+            $filter['class_id'] = "SELECT class_id FROM mod_roadmap_classes_to_periods WHERE period_id = {$period_id}";
+        }
         $this->setItem(array(
             'position' => -1
-        ), array(
-            'class_id' => $course_id
-        ));
+        ), $filter, false);
     }
 
-    public function setOrder($course_id, array $order_ids) {
-        $this->resetOrder($course_id);
+    public function setOrder($course_id, array $order_ids, $period_id = null) {
+        $this->resetOrder($course_id, $period_id);
         foreach($order_ids as $index => $identifier) {
             $this->setItem(array(
                 'position' => $index + 1
