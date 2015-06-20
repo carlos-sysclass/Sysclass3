@@ -5,15 +5,16 @@ crud:
   # BASE VALUES.. USED ON ALL ROUTES
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
+    stylesheets: ["css/components"]
     variables:
-      page_title: Grades
+      page_title: Tests
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your grades rules
+        page_subtitle: Manage your Tests
       context:
         datatable_fields:
         - mData: id
@@ -23,31 +24,26 @@ crud:
         - mData: name
           label: Name
 
-        - mData: description
-          label: Description
+        - mData: total_questions
+          label: "# Questions"
 
         - mData: active
           sType: table-boolean
           sClass: text-center
-          label: "Active"
+          label: Active
 
         - mData: options
           sType: table-options
           sClass: text-center
           label: Actions
-
     add:
-      components: ["validation", "wysihtml5"]
-      #blocks: ["messages.group.allow"]
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
-      #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Create a new grade ruleset
+        page_subtitle: Create a new Test
     'edit/:id':
-      components: ["validation", "wysihtml5"]
-      blocks: ["users.list.table"]
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
+      blocks: ["tests.questions.edit"]
       template: form.tpl
-      scripts: ["views.groups.edit"]
       variables:
-        page_subtitle: Config and edit the grade ruleset
-
+        page_subtitle: Edit your test info
