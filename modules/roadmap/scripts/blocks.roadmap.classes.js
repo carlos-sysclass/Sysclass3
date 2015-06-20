@@ -23,7 +23,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     model.set("period_id", this.period_id);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    //console.warn(model);
                 });
             },
             model : mod.classModelClass,
@@ -156,7 +155,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 }
 
                 var self = this;
-                console.warn(self.model.toJSON());
                 editableItem.on('save', function(e, params, b,c) {
 
                     self.model.set($(this).data("name"), params.newValue);
@@ -208,64 +206,17 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     tolerance: "intersect",
                     receive : function( event, ui ) {
                         console.info('blocks.roadmap.classes/roadmapBlockClassesViewClass::sortable->receive');
-                        //console.warn(event, ui, self.collection.toJSON());
+
                         var view = $(ui.item).data("view");
-                        //view.model.set("period_id")
-                        console.warn("putting to period " + self.collection.period_id);
+
                         self.collection.add(view.model);
-                        console.warn(view.model.toJSON());
-                        view.model.save(null, {
-                            success : function() {
-                                //self.refreshCounters();
-                            }
-                        });
-                        //console.warn(event, ui, self.collection.toJSON());
-
+                        view.model.save();
                         $(this).removeClass("empty-list-group");
-
-
-                        /*
-                        self.refreshCounters();
-                        // HANDLE COLLECTIONS
-                        var classe_id = ui.item.data('classId');
-
-                        var item = mod.classesCollection.findWhere({id : classe_id.toString()});
-
-                        var classes = self.model.get('classes');
-
-                        classes.push(item.toJSON());
-                        self.model.set('classes', classes);
-                        */
                     },
                     remove : function( event, ui ) {
                         console.info('blocks.roadmap.classes/roadmapBlockClassesViewClass::sortable->remove');
-                        console.warn(event, ui, self.collection.toJSON());
                         var id = $(ui.item).data("roadmapClassId");
                         self.collection.remove(id);
-                        console.warn(event, ui, self.collection.toJSON());
-                        /*
-                        if ($(this).children().size() === 0) {
-                            $(this).addClass("empty-list-group");
-                        }
-                        */
-                       //self.refreshCounters();
-                        /*
-
-
-                        // HANDLE COLLECTIONS
-                        var classe_id = ui.item.data('classId');
-
-                        var classes = self.model.get('classes');
-
-                        remainingClasses = _.filter(classes, function(model, i) {
-                            if (model.id == classe_id) {
-                                return false;
-                            }
-                            return true;
-                        });
-
-                        self.model.set('classes', remainingClasses);
-                        */
                     },
 
                     update : function( event, ui ) {
@@ -274,30 +225,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                         self.collection.setContentOrder(contentOrder);
 
                         self.refreshCounters();
-                    },
-                    activate : function( event, ui ) {
-
-                        //$(this).addClass("ui-sortable-hover");
-                        //console.warn(this, $(this).children().size());
-                        //
-                        /*
-                        if ($(this).children().size() === 0) {
-                            $(this).addClass("empty-list-group");
-                        }
-                        */
-                        //$(this).removeClass("empty-list-group");
-                    },
-                    /*
-                    over : function( event, ui ) {
-                        console.warn("over", this, $(this).children().size());
-                        $(this).addClass("ui-sortable-hover");
-                        //$(this).removeClass("empty-list-group");
-                    },
-                    out  : function( event, ui ) {
-                        console.warn("out", this, $(this).children().size());
-                        $(this).removeClass("ui-sortable-hover");
                     }
-                    */
                 });
             },
             addItem : function(e) {
@@ -361,8 +289,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 } else {
                     this.$("ul.list-group").removeClass("empty-list-group");
                 }
-                //this.refreshCounters();
-                //app.module("ui").refresh( this.$("ul.items-container ") );
 
                 this.refreshCounters();
             },
@@ -393,7 +319,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(this.model, 'sync', this.render.bind(this));
 
                 // CREATE A COLLECTION BASED ON MODEL classes attribute
-                console.log(this.model.get("id"));
                 this.collection = new mod.classesCollectionClass(
                     this.model.get("classes"),
                     {
@@ -420,21 +345,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
 
                 roadmapBlockClassesView.render();
 
-                //$(roadmapBlockClassesView.render().el).appendTo( this.$(".subitems-container") );
-                //roadmapBlockClassesView.start();
-                /*
-                if (this.model.get("id")) {
-                    if (this.model.get("active") == 0) {
-                        this.$el.removeClass("green-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("red-stripe");
-                    } else {
-                        this.$el.removeClass("red-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("green-stripe");
-                    }
-                }
-                */
                 this.$el.attr("data-roadmap-period-id", this.model.get("id"));
 
                 if (this.$el.length) {
@@ -446,8 +356,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 return this;
             },
             start : function() {
-                /*
-                var editableItem = this.$(".editable-me");
+                var editableItem = this.$(".panel-heading > .editable-me");
 
                 if (this.opened) {
                     window.setTimeout(function() {
@@ -460,7 +369,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     self.model.set($(this).data("name"), params.newValue);
                     self.model.save();
                 });
-                */
+
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
                 }
@@ -490,8 +399,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 "click .add-item-action" : "addItem"*/
             },
             initialize : function(opt) {
-                //this.classesCollection = opt.classesCollection;
-                //this.periodsCollection = opt.periodsCollection;
 
                 this.listenToOnce(this.collection, 'sync', this.render.bind(this));
                 //this.listenTo(this.collection, 'add', this.addOne.bind(this));
@@ -508,7 +415,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             },
             initializeSortable : function() {
                 var self = this;
-                console.warn(this.$(".items-container"));
                 this.$(".items-container").sortable({
                     items: ".period-item.draggable",
                     //connectWith: ".list-group",
@@ -526,15 +432,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                         self.collection.setContentOrder(contentOrder);
 
                         self.refreshCounters();
-                    },
-                    /*
-                    over : function( event, ui ) {
-                        $(this).addClass("ui-sortable-hover");
-                    },
-                    out  : function( event, ui ) {
-                        $(this).removeClass("ui-sortable-hover");
                     }
-                    */
                 });
             },
             addItem : function(e) {
@@ -546,7 +444,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
 
                 this.listenToOnce(itemModel, "sync", function(model) {
-                    console.warn("synced");
                     self.collection.add(itemModel);
                     self.addOne(model);
                     //self.refreshCounters();
@@ -564,20 +461,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 mod.periodAddDialog.render();
 
                 mod.periodAddDialog.open();
-
-                /*
-                var roadmapBlockPeriodItemView = new mod.roadmapBlockPeriodItemViewClass({
-                    model : itemModel,
-                    opened : true
-                });
-
-                this.listenTo(roadmapBlockPeriodItemView, "period:updated", function(model) {
-                    self.refreshCounters();
-                });
-
-                $(roadmapBlockPeriodItemView.render().el).appendTo( this.$(".items-container") );
-                roadmapBlockPeriodItemView.start();
-                */
             },
             addOne : function(model, prefixSelector) {
                 console.info('blocks.roadmap.classes/roadmapBlockViewClass::addOne');
@@ -634,8 +517,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     self.addOne(model);
                 });
 
-
-                //this.refreshCounters();
                 app.module("ui").refresh( this.$(".items-container ") );
 
                 this.refreshCounters();
@@ -678,26 +559,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
         var periodsCollection = new mod.periodsCollectionClass({
             course_id : data.course_id
         });
-
-        // CREATE A VIEW CLASS TO:
-        // 1. SHOW CURRENT CLASSES FROM COURSE, WITH ADD, EDIT, AND REMOVE FROM COURSE
-        // 2. IF IT HAS model->has_periods == TRUE,
-        // 2.1 ENABLE periods VIEW (sortable for put classes inside periods)
-        // 2.2 IF NOT, JUST A SINGLE SORTABLE CLASS LIST
-        //
-        // FOR EACH CLASS IT'S MUST BE POSSIBLE TO:
-        // 1. CHANGE ORDER
-        // 2. SET AS REQUIRED OR OPCIONAL
-        // 3. SET PRE-REQUISITES (MAYBE ON CLASS MODULE ITSELF)
-        //
-        // 2. IF IT HAS model->has_grouping == TRUE, (WILL BE MOVED T ANOTHER PAGE, FOR SIMPLICITY)
-        // 2.1 ENABLE grouping period SWITCH (multiple roadmaps, grouping selector AND grouping creator)
-        // 2.2 IF NOT, JUST A SINGLE SORTABLE CLASS LIST
-
-        // var classLessonsView = new mod.classLessonsViewClass({
-        //     collection : lessonsCollection,
-        //     el : el
-        // });
 
         var roadmapBlockView = new mod.roadmapBlockViewClass({
             el : el,
