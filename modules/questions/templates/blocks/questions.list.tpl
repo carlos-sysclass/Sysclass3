@@ -10,7 +10,7 @@
 
             </a>
             -->
-            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
+            <a class="btn btn-sm btn-link add-item-action" href="/module/questions/add">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create Question"}
             </a>

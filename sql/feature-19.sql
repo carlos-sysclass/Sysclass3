@@ -61,5 +61,17 @@ CREATE TABLE `mod_lessons_content_questions` (
 
 
 /* --------------------------------------------------------------------------------------- */
-ALTER TABLE `mod_classes` ADD COLUMN `type` ENUM('class', 'test') NOT NULL DEFAULT 'class' AFTER `active`;
+ALTER TABLE `mod_lessons` ADD COLUMN `type` ENUM('lesson', 'test') NOT NULL DEFAULT 'lesson' AFTER `active`;
 
+DROP TABLE IF EXISTS `mod_tests_to_questions`;
+CREATE TABLE `mod_tests_to_questions` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `lesson_id` mediumint(8) unsigned NOT NULL,
+  `question_id` mediumint(8) unsigned NOT NULL,
+  `position` int(11) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE (`lesson_id`,`question_id`),
+  FOREIGN KEY (`lesson_id`) REFERENCES `mod_lessons` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`question_id`) REFERENCES `mod_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
