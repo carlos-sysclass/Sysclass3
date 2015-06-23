@@ -85,6 +85,27 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
     public function registerBlocks() {
         return array(
+            'questions.list' => function($data, $self) {
+                $self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
+
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                //$self->putComponent("select2");
+                //$self->putComponent("bootstrap-editable");
+
+                //$block_context = $self->getConfig("blocks\\blocks.questions.list\\context");
+                //$self->putItem("questions_list_block_context", $block_context);
+
+                $self->putModuleScript("blocks.questions.list");
+                //$self->setCache("blocks.questions.list", $block_context);
+
+                $self->putSectionTemplate("questions-list", "blocks/questions.list");
+
+                $self->putBlock('questions.select.dialog');
+
+                return true;
+            },
             'questions.select.dialog' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("data-tables");
@@ -341,5 +362,7 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
         return array_values($items);
     }
+
+
 
 }

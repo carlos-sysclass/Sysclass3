@@ -17,7 +17,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("classes/lessons/collection")->addFilter(array(
+            $itemsData = $this->model("lessons")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
@@ -177,7 +177,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function addPage()
     {
-        $items = $this->model("courses/classes/collection")->addFilter(array(
+        $items = $this->model("classes")->addFilter(array(
             'active' => true
         ))->getItems();
 
@@ -199,7 +199,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function editPage($id)
     {
-        $items = $this->model("courses/classes/collection")->addFilter(array(
+        $items = $this->model("classes")->addFilter(array(
             'active' => true
         ))->getItems();
 
@@ -268,7 +268,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         if ($model == "me") {
-            $modelRoute = "classes/lessons/collection";
+            $modelRoute = "lessons";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
@@ -470,22 +470,22 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * [ add a description ]
      *
-     * @url GET /item/:model/:id
+     * @url GET /item/:model/:identifier
      */
-    public function getItemAction($model = "me", $id = null)
+    public function getItemAction($model = "me", $identifier = null)
     {
-        $editItem = $this->model("lessons")->getItem($id);
+        $editItem = $this->model("lessons")->getItem($identifier);
         //if ($model == "content") {
             //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
             $lessonFiles = $this->model("lessons/files");
         $videos = $lessonFiles->clear()->addFilter(array(
-                'lesson_id'     => $id,
+                'lesson_id'     => $identifier,
                 'upload_type'   => 'video',
                 'active'        => 1
             ))->getItems();
 
         $materials = $lessonFiles->clear()->addFilter(array(
-                'lesson_id'     => $id,
+                'lesson_id'     => $identifier,
                 'upload_type'   => 'material',
                 'active'        => 1
             ))->getItems();
@@ -511,7 +511,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             if ($model == "me") {
-                $itemModel = $this->model("classes/lessons/collection");
+                $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
@@ -606,7 +606,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
-                $itemModel = $this->model("classes/lessons/collection");
+                $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson removed with success",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"

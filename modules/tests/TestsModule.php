@@ -7,8 +7,11 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
+
+class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable
 {
+    private static $suitable_translate_contents = array("subtitle");
+
     /* ISummarizable */
     public function getSummary() {
         $data = array(1);
@@ -23,14 +26,15 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             )
         );
     }
+
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("courses/classes/collection")->addFilter(array(
+            $itemsData = $this->model("tests")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
+            $items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -104,22 +108,49 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
         return $actions[$request];
     }
-
-    public function registerBlocks() {
+    /*
+    public function registerBlocks()
+    {
         return array(
-            'classes.lessons.edit' => function($data, $self) {
+            'tests.questions.edit' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
+                $self->putComponent("jquery-file-upload-image");
+                $self->putComponent("jquery-file-upload-video");
+                $self->putComponent("jquery-file-upload-audio");
                 $self->putComponent("bootstrap-confirmation");
-                $self->putComponent("bootstrap-editable");
 
-                $self->putModuleScript("blocks.classes.lessons.edit");
+                $self->putModuleScript("translate", "models.translate");
 
-                $self->putSectionTemplate("lessons", "blocks/lessons.edit");
+                $self->putModuleScript("blocks.lessons.content");
+
+
+
+                $languages = self::$t->getItems();
+
+                $userLanguageCode =  self::$t->getUserLanguageCode();
+
+
+
+                foreach ($languages as &$value) {
+                    if ($value['code'] == $userLanguageCode) {
+                        $value['selected'] = true;
+                        break;
+                    }
+                }
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                $self->putItem("languages", $languages);
+
+                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
+                //$self->putSectionTemplate("foot", "dialogs/season.add");
+                //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 return true;
             }
         );
     }
+    */
+
     /**
      * [ add a description ]
      *
@@ -127,180 +158,110 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
      */
     public function addPage()
     {
-        $items = $this->model("courses/collection")->addFilter(array(
+        $items = $this->model("classes")->addFilter(array(
             'active' => true
         ))->getItems();
-        $this->putItem("courses", $items);
+
+        $this->putItem("classes", $items);
 
         $items =  $this->model("users/collection")->addFilter(array(
             'can_be_instructor' => true
         ))->getItems();
         $this->putItem("instructors", $items);
+
 
         parent::addPage($id);
-
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @url GET /edit/:identifier
      */
-    public function editPage($id)
+    public function editPage($identifier)
     {
-        $items = $this->model("courses/collection")->addFilter(array(
+        $items = $this->model("classes")->addFilter(array(
             'active' => true
         ))->getItems();
-        $this->putItem("courses", $items);
+
+        $this->putItem("classes", $items);
 
         $items =  $this->model("users/collection")->addFilter(array(
             'can_be_instructor' => true
         ))->getItems();
         $this->putItem("instructors", $items);
 
-        parent::editPage($id);
-    }
 
 
 
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/me/:id
-     */
-    public function getItemAction($id) {
-
-        $editItem = $this->model("classes")->getItem($id);
-        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
-
-        $editItem['lessons'] = $this->model("classes/lessons/collection")->addFilter(array(
-            'class_id' => $id
-        ))->getItems($id);
-
-        return $editItem;
+        parent::editPage($identifier);
     }
 
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
+     * @url GET /items/:model
+     * @url GET /items/:model/:type
+     * @url GET /items/:model/:type/:filter
      */
-    public function addItemAction($id)
+    public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
+        if ($model == "me") {
+            $modelRoute = "tests";
+            $optionsRoute = "edit";
 
-            $itemModel = $this->model("classes");
-            $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Test created with success"),
-                    "success"
-                );
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
+            $itemsCollection = $this->model($modelRoute);
+            if (!empty($filter)) {
+                $filter = json_decode($filter, true);
+                if (is_array($filter)) {
+                    // SANITIZE ARRAY
+                    $itemsCollection->addFilter($filter);
+                }
             }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
+            //var_dump($filter);
+            //exit;
+            $itemsData = $itemsCollection->getItems();
+            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+        } elseif ($model == "question") {
+            $modelRoute = "tests/question";
+            $optionsRoute = "edit";
 
-    /**
-     * [ add a description ]
-     *
-     * @url PUT /item/me/:id
-     */
-    public function setItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
+            $itemsCollection = $this->model($modelRoute);
 
-            $itemModel = $this->model("classes");
-            if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Test updated with success"), "success");
-                return array_merge($response, $data);
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+            if (!empty($filter)) {
+                $filter = json_decode($filter, true);
+                if (is_array($filter)) {
+                    // SANITIZE ARRAY
+                    $itemsCollection->addFilter($filter);
+                }
             }
+
+            $itemsData = $itemsCollection->getItems();
         } else {
-            return $this->notAuthenticatedError();
+            return $this->invalidRequestError();
         }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /item/me/:id
-     */
-    public function deleteItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model("courses/classes/collection");
-            if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Test removed with success"), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /items/me
-     * @url GET /items/me/:type
-     */
-    public function getItemsAction($type)
-    {
-        $modelRoute = "courses/classes/collection";
-        $optionsRoute = "edit";
-
-        $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        //$modelRoute = "users/groups/collection";
-        $baseLink = $this->getBasePath();
-
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
-        $items = $itemsData;
 
         if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
+            $query = $_GET['q'];
+            $itemsData = $itemsCollection->filterCollection($itemsData, $query);
 
-            $items = $itemsCollection->filterCollection($items, $q);
+            $result = array();
 
-            foreach($items as $course) {
+            foreach ($itemsData as $item) {
                 // @todo Group by course
                 $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
+                    'id'    => intval($item['id']),
+                    'name'  => $item['name']
                 );
             }
             return $result;
-            */
         } elseif ($type === 'datatable') {
-
-            $items = array_values($items);
-            foreach($items as $key => $item) {
-                $items[$key]['options'] = array(
+            $itemsData = array_values($itemsData);
+            foreach ($itemsData as $key => $item) {
+                $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
-                        'link'  => $baseLink . $optionsRoute . "/" . $item['id'],
+                        'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
                         'class' => 'btn-sm btn-primary'
                     ),
                     'remove'    => array(
@@ -311,41 +272,198 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             }
             return array(
                 'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
+                'iTotalRecords'         => count($itemsData),
+                'iTotalDisplayRecords'  => count($itemsData),
+                'aaData'                => array_values($itemsData)
             );
         }
 
-        return array_values($items);
+        return array_values($itemsData);
     }
 
     /**
      * [ add a description ]
      *
-     * @url PUT /items/lessons/set-order/:class_id
+     * @url PUT /items/:model/set-order/:lesson_id
      */
-    public function setLessonOrderAction($class_id)
+    public function setOrderAction($model, $lesson_id)
     {
-        $modelRoute = "classes/lessons/collection";
+        if ($model == "me") {
+            return $this->invalidRequestError();
+        } elseif ($model == "question") {
+            $modelRoute = "tests/question";
+            $optionsRoute = "edit";
+        } else {
+            return $this->invalidRequestError();
+        }
+
 
         $itemsCollection = $this->model($modelRoute);
         // APPLY FILTER
-        if (is_null($class_id) || !is_numeric($class_id)) {
+        if (is_null($lesson_id) || !is_numeric($lesson_id)) {
             return $this->invalidRequestError();
         }
 
         $messages = array(
-            'success' => "Lesson order updated with success",
+            'success' => "Question order updated with success",
             'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
         );
 
         $data = $this->getHttpData(func_get_args());
 
-        if ($itemsCollection->setContentOrder($class_id, $data['position'])) {
+        if ($itemsCollection->setOrder($lesson_id, $data['position'])) {
             return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
         } else {
             return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+        }
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /item/:model/:identifier
+     */
+    public function getItemAction($model = "me", $identifier = null)
+    {
+        if ($model == "me") {
+            $itemModel = $this->model("tests");
+        } elseif ($model == "question") {
+            $itemModel = $this->model("tests/question");
+        }
+
+        $editItem = $itemModel->getItem($identifier);
+
+        return $editItem;
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url POST /item/:model
+     */
+    public function addItemAction($model, $type)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $data['language_code'] = self::$t->getUserLanguageCode();
+
+                $_GET['redirect'] = "0";
+            } else {
+                return $this->invalidRequestError();
+            }
+
+
+
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== false) {
+                if ($_GET['redirect'] === "0") {
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    return array_merge($response, $data);
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        self::$t->translate($messages['success']),
+                        "success"
+                    );
+                }
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError($messages['error'], "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/:model/:identifier
+     */
+    public function setItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            if ($itemModel->setItem($data, $identifier) !== false) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $data = $itemModel->getItem($identifier);
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/:model/:identifier
+     */
+    public function deleteItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            $data = $this->getHttpData(func_get_args());
+
+            if ($itemModel->deleteItem($identifier) !== false) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
         }
     }
 

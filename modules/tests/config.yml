@@ -14,7 +14,7 @@ crud:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Tests
+        page_subtitle: Manage your tests and exams
       context:
         datatable_fields:
         - mData: id
@@ -24,8 +24,8 @@ crud:
         - mData: name
           label: Name
 
-        - mData: total_questions
-          label: "# Questions"
+        - mData: class
+          label: Class
 
         - mData: active
           sType: table-boolean
@@ -37,13 +37,13 @@ crud:
           sClass: text-center
           label: Actions
     add:
-      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["select2", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new Test
-    'edit/:id':
-      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
-      blocks: ["tests.questions.edit"]
+        page_subtitle: Create a new test
+    'edit/:identifier':
+      components: ["select2", "validation", "bootstrap-switch"]
+      blocks: ["questions.list"]
       template: form.tpl
       variables:
         page_subtitle: Edit your test info

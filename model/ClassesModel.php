@@ -8,31 +8,33 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
         $this->mainTablePrefix = "cl";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "
-			SELECT
-				cl.id,
-				cl.permission_access_mode,
-				cl.ies_id,
-				cl.area_id,
-				cl.name,
-				cl.description,
-				cl.info,
-				cl.active,
-				cl.course_id,
-				cl.instructor_id,
-				cour.name as course_name,
-				CONCAT_WS(' ', u.name, u.surname) AS instructor_name
-			FROM
-				mod_classes cl
-			LEFT JOIN
-				mod_courses cour
-			ON
-				(cour.id = cl.course_id)
-			LEFT JOIN
-				users u
-			ON
-				(cl.instructor_id = u.id)
-		";
+        $this->selectSql =
+        "SELECT
+            cl.`id`,
+            c2c.`course_id`,
+            clp.`period_id`,
+            c2c.`start_date`,
+            c2c.`end_date`,
+            c2c.`position`,
+            cl.`area_id`,
+            cl.`name`,
+            cl.`description`,
+            cl.`instructor_id`,
+            COUNT(l.id) as 'total_lessons',
+            cl.`active`,
+            c.`id` as 'course#id',
+            c.`name` as 'course#name',
+            c.`active` as 'course#active',
+            cp.`id` as 'period#id',
+            cp.`name` as 'period#name',
+            cp.`max_classes` as 'period#max_classes',
+            cp.`active` as 'period#active'
+        FROM mod_roadmap_courses_to_classes c2c
+        LEFT JOIN mod_courses c ON(c2c.course_id = c.id)
+        LEFT JOIN mod_classes cl ON(c2c.class_id = cl.id)
+        LEFT JOIN mod_lessons l ON(cl.id = l.class_id)
+        LEFT JOIN mod_roadmap_classes_to_periods clp ON(c2c.class_id = clp.class_id)
+        LEFT JOIN mod_roadmap_courses_periods cp ON(clp.period_id = cp.id AND cp.course_id = c.id)";
 
         parent::init();
 

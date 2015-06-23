@@ -13,7 +13,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("courses/classes/collection")->addFilter(array(
+            $itemsData = $this->model("classes")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
@@ -113,11 +113,12 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function addPage()
     {
+        /*
         $items = $this->model("courses/collection")->addFilter(array(
             'active' => true
         ))->getItems();
         $this->putItem("courses", $items);
-
+        */
         $items =  $this->model("users/collection")->addFilter(array(
             'can_be_instructor' => true
         ))->getItems();
@@ -134,11 +135,12 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function editPage($id)
     {
+        /*
         $items = $this->model("courses/collection")->addFilter(array(
             'active' => true
         ))->getItems();
         $this->putItem("courses", $items);
-
+        */
         $items =  $this->model("users/collection")->addFilter(array(
             'can_be_instructor' => true
         ))->getItems();
@@ -159,11 +161,11 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $editItem = $this->model("classes")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
-
+        /*
         $editItem['lessons'] = $this->model("classes/lessons/collection")->addFilter(array(
             'class_id' => $id
         ))->getItems($id);
-
+        */
         return $editItem;
     }
 
@@ -248,7 +250,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function getItemsAction($type)
     {
-        $modelRoute = "courses/classes/collection";
+        $modelRoute = "roadmap/classes";
         $optionsRoute = "edit";
 
         $currentUser    = $this->getCurrentUser(true);

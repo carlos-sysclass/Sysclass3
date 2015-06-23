@@ -60,4 +60,6 @@ CREATE TABLE `mod_lessons_content_questions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+/* --------------------------------------------------------------------------------------- */
+ALTER TABLE `mod_classes` ADD COLUMN `type` ENUM('class', 'test') NOT NULL DEFAULT 'class' AFTER `active`;
 

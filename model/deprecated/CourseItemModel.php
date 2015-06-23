@@ -1,6 +1,6 @@
 <?php
 /**
- * @deprecated
+ * @deprecated 3.0.0.18
  */
 class CourseItemModel extends AbstractSysclassModel implements ISyncronizableModel {
 

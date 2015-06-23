@@ -27,12 +27,13 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
     public function getWidgets($widgetsIndexes = array())
     {
-        $itemsData = $this->model("institution/collection")->addFilter(array(
+        /*
+        $itemsData = $this->model("institution")->addFilter(array(
                 'active'    => true
-            ))->getInstitution($userData['id']);
+        ))->getInstitution($userData['id']);
 
         $this->putItem("institution", $itemsData);
-
+        */
         if (in_array('institution.overview', $widgetsIndexes)) {
             $this->putModuleScript("widget.institution");
 
@@ -52,7 +53,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
 
-            $itemsData = $this->model("institution/collection")->addFilter(array(
+            $itemsData = $this->model("institution")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');

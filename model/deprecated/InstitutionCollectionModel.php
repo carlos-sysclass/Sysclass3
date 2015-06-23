@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.0.0.18
+ */
 class InstitutionCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
@@ -18,7 +21,7 @@ class InstitutionCollectionModel extends AbstractSysclassModel implements ISyncr
     	if($id == 0)
     	{
     		$sql = sprintf(
-	           "SELECT 
+	           "SELECT
 				  inst.address,
 				  inst.active,
 				  inst.website,
@@ -32,7 +35,7 @@ class InstitutionCollectionModel extends AbstractSysclassModel implements ISyncr
     	else
     	{
 			$sql = sprintf(
-				"SELECT 
+				"SELECT
 					inst.address,
 					inst.active,
 					inst.website,

@@ -1,7 +1,7 @@
 <?php
 /**
   * This must be used as a "proxy design pattern" to libraries/lesson.class and some parts of libraries/user.class and libraries/course.class
-  * @deprecated
+  * @deprecated 3.0.0.18
  */
 class CourseClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
 

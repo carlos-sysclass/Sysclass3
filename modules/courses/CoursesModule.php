@@ -29,7 +29,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("courses/collection")->addFilter(array(
+            $itemsData = $this->model("courses")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
