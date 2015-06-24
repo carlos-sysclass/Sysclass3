@@ -42,9 +42,10 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
             el.slideDown(200);
 		}
 	};
-
+    /*
 	var oldColumn = "";
     var timeout = 1000;
+
 	mod.onFullscreen = function(e, portlet) {
 		if (jQuery(e.currentTarget).is(".disabled")) {
         	return false;
@@ -52,25 +53,26 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
         var type = portlet.data("portlet-type");
 
 		if (mod.triggerSubMethod(type, "fullscreen", e, portlet)) {
-            var column = jQuery(e.currentTarget).closest("div[class^='col-md-']");
-            var portlets = $(".page-content .row > div[class^='col-md-'] > .panel, .page-content .row > div[class^='col-md-'] > .portlet");
-            
+            var column = $(e.currentTarget).parents(".portlet").closest("div[class^='col-lg-']");
+            console.warn(e.currentTarget, column);
+            var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet");
+
 			jQuery(e.currentTarget).removeClass("fullscreen").addClass("normalscreen");
             jQuery(e.currentTarget).removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
 
             for(i = 1; i <=12; i++) {
-            	if (column.hasClass('col-md-' + i)) {
-                	oldColumn = 'col-md-' + i;
+            	if (column.hasClass('col-lg-' + i)) {
+                	oldColumn = 'col-lg-' + i;
                     break;
                 }
             }
-            
+
             portlets.fadeOut(timeout/2, function() {
-                column.removeClass(oldColumn).addClass("col-md-12");
+                column.removeClass(oldColumn).addClass("col-lg-12");
                 portlet.fadeIn(timeout/2, function() {
                     mod.triggerSubMethod(type, "resized", e, portlet);
                 }).addClass("portlet-fullscreen");
-                
+
             });
         }
 	};
@@ -81,17 +83,17 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
         var type = portlet.data("portlet-type");
 
 		if (mod.triggerSubMethod(type, "restorescreen", e, portlet)) {
-            var column = jQuery(e.currentTarget).closest("div[class^='col-md-']");
-            var portlets = $(".page-content .row > div[class^='col-md-'] > .panel, .page-content .row > div[class^='col-md-'] > .portlet");
-            
+            var column = jQuery(e.currentTarget).closest("div[class^='col-lg-']");
+            var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet");
+
 			jQuery(e.currentTarget).removeClass("normalscreen").addClass("fullscreen");
             jQuery(e.currentTarget).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 
             portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
-                column.removeClass("col-md-12").addClass(oldColumn);
+                column.removeClass("col-lg-12").addClass(oldColumn);
                 portlets.fadeIn(timeout/2, function() {
                     mod.triggerSubMethod(type, "resized", e, portlet);
-                }); 
+                });
             } );
 
         }
@@ -128,6 +130,8 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
             }
 		}
 	};
+    */
+
 	mod.onRemove = function(e, portlet) {
 		if (jQuery(e.currentTarget).is(".disabled")) {
         	return false;
@@ -169,7 +173,7 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
             }
 		}
 	};
-	
+
 
 	mod.addInitializer(function(){
 		// BINDING PORTLET EVENTS
@@ -214,7 +218,7 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 		jQuery('.portlet > .portlet-title > .tools > a.search').each(function (e) {
             jQuery(this).popover(
                 jQuery.extend(
-                    jQuery(this).data(), 
+                    jQuery(this).data(),
                     {content : jQuery("#" + jQuery(this).data("inject-selector")).html()}
                 )
             ).on('show.bs.popover', function () {

@@ -121,14 +121,14 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			$this->putModuleScript("models.courses");
-			$this->putModuleScript("widget.courses");
+			$this->putModuleScript("widget.courses.overview");
 
 
 			return array(
 				'courses.overview' => array(
 					'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
 					'id'        => 'courses-widget',
-					'template'	=> $this->template("overview.widget"),
+					'template'	=> $this->template("widgets/courses.overview"),
 					'box'       => 'dark-blue tabbable tabbable-left',
 					'tools'     => array(
 						'search'        => true,
@@ -209,48 +209,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         $this->putItem("coordinators", $items);
 
         parent::editPage($id);
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/users/:course_id
-    */
-    public function getUsersInCourse($course_id) {
-        $data = $this->getHttpData(func_get_args());
-
-        $userCourseModel = $this->model("user/courses/item");
-
-        $users = $userCourseModel->getUsersInCourse($course_id);
-
-        return $users;
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url POST /item/users/switch
-    */
-    public function switchUserInGroup() {
-        $data = $this->getHttpData(func_get_args());
-
-        $userCourseModel = $this->model("user/courses/item");
-
-        $status = $userCourseModel->switchUserInCourse(
-            $data['course_id'],
-            $data['user_login']
-        );
-
-        if ($status == 1) {
-            // USER ADICIONANDO AO GRUPO
-            $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
-        } elseif ($status == -1) {
-            // USER EXCLUÍDO AO GRUPO
-            $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
-        }
-        return array_merge($response, $info);
     }
 
     /**
@@ -366,6 +324,99 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         return array_values($itemsData);
     }
     /**
+     * [ add a description ]
+     *
+     * @url GET /item/:model/:identifier
+     */
+    public function getItemAction($model, $identifier)
+    {
+        $itemModel = $this->model("courses");
+        if ($model == "me") {
+            $editItem = $itemModel->getItem($identifier);
+        } elseif ($model == "full") {
+            $editItem = $itemModel->getFullItem($identifier);
+        } else {
+            return $this->invalidRequestError();
+        }
+        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+        return $editItem;
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url POST /item/me
+     */
+    public function addItemAction()
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("courses");
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
+                return $this->createRedirectResponse(
+                    $this->getBasePath() . "edit/" . $data['id'],
+                    self::$t->translate("Course created with success"),
+                    "success"
+                );
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/me/:id
+     */
+    public function setItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("courses");
+            if ($itemModel->setItem($data, $id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Course updated with success"), "success");
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/me/:id
+     */
+    public function deleteItemAction($id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            $itemModel = $this->model("courses");
+            if ($itemModel->deleteItem($id) !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Course removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+
+    /**
      * @todo Move all /items routes to above
      */
     /**
@@ -473,86 +524,45 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     /**
      * [ add a description ]
      *
-     * @url GET /item/me/:id
-     */
-    public function getItemAction($id) {
+     * @url GET /item/users/:course_id
+     * @deprecated 3.0.0.18
+    */
+    public function getUsersInCourse($course_id) {
+        $data = $this->getHttpData(func_get_args());
 
-        $editItem = $this->model("courses")->getItem($id);
-        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
-        return $editItem;
+        $userCourseModel = $this->model("user/courses/item");
+
+        $users = $userCourseModel->getUsersInCourse($course_id);
+
+        return $users;
     }
 
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
-     */
-    public function addItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
+     * @url POST /item/users/switch
+     * @deprecated 3.0.0.18
+    */
+    public function switchUserInGroup() {
+        $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("courses");
-            $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Course created with success"),
-                    "success"
-                );
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
+        $userCourseModel = $this->model("user/courses/item");
+
+        $status = $userCourseModel->switchUserInCourse(
+            $data['course_id'],
+            $data['user_login']
+        );
+
+        if ($status == 1) {
+            // USER ADICIONANDO AO GRUPO
+            $info = array('insert' => true, "removed" => false);
+            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
+        } elseif ($status == -1) {
+            // USER EXCLUÍDO AO GRUPO
+            $info = array('insert' => false, "removed" => true);
+            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
         }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url PUT /item/me/:id
-     */
-    public function setItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model("courses");
-            if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Course updated with success"), "success");
-                return array_merge($response, $data);
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /item/me/:id
-     */
-    public function deleteItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model("courses");
-            if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Course removed with success"), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
+        return array_merge($response, $info);
     }
 
 	/**
@@ -560,6 +570,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	 *
 	 * @url GET /item/courses
 	 * @url GET /item/courses/:id
+     * @deprecated 3.0.0.19
 	 */
 	public function getCourseAction($id) {
 		// TODO USE New Model classes to get this info
@@ -612,6 +623,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	 * @url GET /item/classes
 	 * @url GET /item/classes/:course_id
 	 * @url GET /item/classes/:course_id/:id
+     * @deprecated 3.0.0.19
 	 */
 	public function getClassAction($course_id, $id) {
 		// TODO USE New Model classes to get this info
@@ -681,6 +693,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	 * @url GET /item/lessons/:course_id
 	 * @url GET /item/lessons/:course_id/:class_id
 	 * @url GET /item/lessons/:course_id/:class_id/:id
+     * @deprecated 3.0.0.19
 	 */
 	public function getLessonAction($course_id, $class_id, $id) {
 		// TODO USE New Model classes to get this info
@@ -826,76 +839,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		return $result;
 	}
 
-    /*
-    public function viewPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        // SHOW ANNOUCEMENTS BASED ON USER TYPE
-        if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Courses'));
-            $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
-
-            $this->putComponent("select2", "data-tables");
-            $this->putModuleScript("models.courses");
-            $this->putModuleScript("views.courses.view");
-
-            //return array_values($news);
-            $this->display("view.tpl");
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-    */
-    /*
-    public function addPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        $this->putComponent("wysihtml5", "validation");
-        $this->putModuleScript("models.courses");
-        $this->putModuleScript("views.courses.add");
-
-        $this->putItem("page_title", self::$t->translate('Courses'));
-        $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
-
-        //return array_values($news);
-        $this->display("form.tpl");
-    }
-    */
-
-    /*
-    public function editPage($id)
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        $editItem = $this->model("courses/collection")->getItem($id);
-        // TODO CHECK PERMISSION FOR OBJECT
-
-        //$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
-
-        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-        // Ex:
-        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-
-        //$this->putBlock("address.add");
-        //$this->putBlock("permission.add");
-
-
-        //$this->putModuleScript("models.courses");
-        //$this->putModuleScript("views.news");
-        //$this->putModuleScript("views.courses.edit", array('id' => $id));
-
-        $this->putItem("page_title", self::$t->translate('Courses'));
-        $this->putItem("page_subtitle", self::$t->translate('Manage your Courses'));
-
-        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
-        //$this->putItem("entity", $editItem);
-
-        //return array_values($news);
-        $this->display("form.tpl");
-    }
-    */
 	/**
 	 * [ add a description ]
 	 *
@@ -986,6 +929,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		return $this->getContent($course, $lesson, $content);
 	}
 
+    /**
+     * [ add a description ]
+     *
+     * @deprecated
+     */
 	protected function getContent($course = null, $lesson = null, $content = null) {
 		$currentUser    = $this->getCurrentUser(true);
 		if (empty($lesson)) {
@@ -1184,6 +1132,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		//return $this->getContent($course, $lesson, $content);
 	}
 
+    /**
+     * [ add a description ]
+     *
+     * @deprecated
+     */
 	public function getVideoSource($lesson, $content)
 	{
 		$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
@@ -1226,6 +1179,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		);
 	}
 
+    /**
+     * [ add a description ]
+     *
+     * @deprecated
+     */
 	public function getMaterialsSource($course, $lesson, $content)
 	{
 		//$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
@@ -1233,6 +1191,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 		return $urlRoot;
 	}
 
+    /**
+     * [ add a description ]
+     *
+     * @deprecated
+     */
 	protected function getVideoDefaults() {
 		return array(
 			//'poster'    =>  "http://aulas.sysclass.com/upload/ult.jpg",

@@ -50,6 +50,8 @@ class DashboardController extends AbstractSysclassController
 	public function dashboardPage($dashboard_id, $clear)
 	{
         $currentUser = $this->getLoggedUser(true);
+
+        $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
 /*
         if ($user_type != 0 && ($user_type == $currentUser->user['user_types_ID'] || $user_type == $currentUser->getType())) {

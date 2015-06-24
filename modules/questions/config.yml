@@ -32,14 +32,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Classes
+      page_title: Questions
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Classes
+        page_subtitle: Manage your Question Database
       context:
         datatable_fields:
         - mData: id
@@ -73,10 +73,10 @@ crud:
       template: form.tpl
       scripts: ["views.form.questions"]
       variables:
-        page_subtitle: Create a new class
+        page_subtitle: Create a new question
     'edit/:identifier':
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
       template: form.tpl
       scripts: ["views.form.questions"]
       variables:
-        page_subtitle: Edit your class info
+        page_subtitle: Edit your questions

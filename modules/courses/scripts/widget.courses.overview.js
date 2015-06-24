@@ -1,6 +1,6 @@
 $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
-	mod.addInitializer(function() {
+	mod.on("start", function() {
 		// VIEWS
 		//
 		/*
@@ -377,8 +377,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 		/* COURSE TABS VIEW CLASSES */
 		var courseViewClass = Backbone.View.extend({
-			el: $('#course-tab'),
-			portlet: $('#courses-widget'),
+			//portlet: $('#courses-widget'),
 			//template: _.template($('#courses-content-template').html()),
 			//contentVideoView : null,
 			rendered : false,
@@ -388,22 +387,28 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.courses/courseViewClass::initialize');
 
-				var classesCollectionClass = app.module("models.courses").classesCollectionClass;
-				this.classesCollection = new classesCollectionClass();
+				//var classesCollectionClass = app.module("models.courses").classesCollectionClass;
+				//this.classesCollection = new classesCollectionClass();
 
-				var seasonsCollectionClass = app.module("models.courses").seasonsCollectionClass;
-				this.seasonsCollection = new seasonsCollectionClass();
+				//var seasonsCollectionClass = app.module("models.courses").seasonsCollectionClass;
+				//this.seasonsCollection = new seasonsCollectionClass();
+				//
+				console.warn(this.model);
+
+				this.listenTo(this.model, 'sync', this.render.bind(this));
 
 				// TODO CREATE SUB VIEWS!!
 				this.courseDescriptionTabView 	= new courseDescriptionTabViewClass({
-					el : "#tab_course_description > .scroller",
+					el : this.$("#tab_course_description"),
 					model : this.model
 				});
 
-				this.listenTo(this.model, 'sync', this.render.bind(this));
+
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseViewClass::render');
+
+				/*
 
 				if (_.isNull(this.courseClassesTabView)) {
 					this.courseClassesTabView = new courseClassesTabViewClass({
@@ -431,23 +436,24 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.courseDescriptionTabView.render();
 				//this.courseClassesTabView.render();
+				*/
 			}
 		});
+
 		var courseDescriptionTabViewClass = Backbone.View.extend({
-			portlet: $('#courses-widget'),
-			template : _.template($("#tab_course_description-template").html()),
+			//portlet: $('#courses-widget'),
+			template : _.template($("#tab_course_description-template").html(), null, {variable : 'data'}),
 			initialize: function() {
 				console.info('portlet.courses/courseDescriptionTabViewClass::initialize');
-
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseDescriptionTabViewClass::render');
-				var modelData = this.model.get("data");
 
-				this.$el.empty().append(this.template(modelData));
+				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
 		});
+
 		var courseClassesTabViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
 			nofoundTemplate : _.template($("#tab_course_classes-nofound-template").html()),
@@ -460,6 +466,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.datatable = false;
 
 				this.listenTo(this.collection, 'sync', this.render.bind(this));
+
+				// CREATE CLASS COLLECTION BASED ON this.model.get("classes")
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewClass::render');
@@ -488,7 +496,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				return this;
 			}
 		});
-
+		/*
 		var courseRoadmapTabViewClass = Backbone.View.extend({
 			portlet: $('#courses-widget'),
 			seasonsSynced	: false,
@@ -553,12 +561,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 						this.collections.seasons.each((function (seasonModel, i) {
 							// FILTER CLASSES TO RETURN ONLY CLASSES IN THAT SEASON
-							/*
-							var classesArray = this.collections.classes.filter(function (classModel) {
-								console.warn(model.get("classes"), classModel.get("id"), _.contains(model.get("classes"), classModel.get("id")));
-								return _.contains(model.get("classes"), classModel.get("id"));
-							});
-							*/
 							var classesArray = [];
 							this.collections.classes.each(function(classModel, i) {
 								if (_.contains(seasonModel.get("classes"), classModel.get("id"))) {
@@ -570,16 +572,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							var courseRoadmapTabSeasonView = new courseRoadmapTabSeasonViewClass({model : seasonModel, collection : classesArray});
 							self.$("#tab_course_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
 						}).bind(this));
-
-
-						/*
-						var classesArray = [];
-						this.collections.classes.each(function(classModel, i) {
-							if (_.contains(seasonModel.get("classes"), classModel.get("id"))) {
-								classesArray.push(classModel.toJSON());
-							}
-						});
-						*/
 
 					}
 					// SHOW THE CLASSES BACKLOGS
@@ -662,7 +654,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				);
 			}
 		});
-
+		*/
 		var userProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
 			portlet: $('#courses-widget'),
@@ -887,22 +879,38 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.courseWidgetViewClass = Backbone.View.extend({
-			el: $('#courses-widget'),
 			initialize: function(opt) {
+				$(document).on("scroll resize", function() {
+					console.warn("isOnScreen", $('#courses-widget').isOnScreen(1, 0.3), this);
+					if ($('#courses-widget').isOnScreen(1, 0.3)) {
+						$(document).off("scroll resize");
+						// CALl VIEW START
+						this.start();
+					}
+
+				}.bind(this));
+			},
+			start : function() {
+				// CREATE SUB-VIEWS AND FETCH MODELS AND COLLECTIONS
+
 				//opt.collections['course']
 				//opt.collections['class']
 				//opt.collections['lesson']
 				this.$(".portlet-title").height(26);
 
+				console.warn(this.model);
+				/*
 				this.contentNavigationView = new contentNavigationViewClass({
 					collections : opt.collections,
 					el: "#courses-content-navigation"
 				});
-
+				*/
 				this.courseView = new courseViewClass({
-					model : opt.collections.course
+					model : this.model,
+					el : this.$("#course-tab")
 					//classes : opt.collections.class,
 				});
+				/*
 				this.classView = new classViewClass({
 					model : opt.collections['class']
 					//classes : opt.collections.class,
@@ -912,6 +920,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					model : opt.collections.lesson
 				});
 				this.userProgressView = new userProgressViewClass();
+				*/
 				//this.filterActionView = new filterActionViewClass({collection : this.collection, model : this.model});
 
 				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
@@ -925,19 +934,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				var self = this;
 				*/
-				opt.collections.course.fetch({
-					success : function(collection, response, options) {
-						/*
-						opt.collections.class.fetch({
-							success : function(collection, response, options) {
-								opt.collections.lesson.fetch();
-							}
-						});
-						*/
-					}
-				});
 
-			},
+				//opt.collections.course.fetch();
+				this.model.fetch();
+
+			}/*,
 			renderCourse : function() {
 				var model = this.collection.get(this.model.get("course_id"));
 				this.$("#courses-title").html(model.get("name"));
@@ -948,6 +949,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var lessonModel = lessonCollection.get(this.model.get("lesson_id"));
 				this.$el.find("#lessons-title").html(lessonModel.get("name"));
 			}
+			*/
 		});
 
 		this.onFilter = function(e, portlet) {
@@ -968,14 +970,16 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			return false;
 		};
 		this.onResized = function(e, portlet) {
-			//this.filterActionView.repaint();
+			return true;
 		};
 		this.onFullscreen = function(e, portlet) {
+			return true;
 		};
 		this.onRestorescreen = function(e, portlet) {
+			return true;
 		};
 	});
-
+	/*
 	mod.on("start", function() {
 		var coursesModule 		= app.module("models.courses");
 		var courseModelClass 	= coursesModule.courseModelClass;
@@ -994,6 +998,20 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				'class'		: this.classModel,
 				'lesson'	: this.lessonModel
 			}
+		});
+	});
+	*/
+	var fullCourseModelClass = Backbone.Model.extend({
+		urlRoot : "/module/courses/item/full"
+	});
+
+	mod.on("start", function() {
+		var courseModel 	= new fullCourseModelClass();
+		courseModel.set("id", 1);
+		//courseModel.fetch();
+		this.courseWidgetView = new this.courseWidgetViewClass({
+			model : courseModel,
+			el: '#courses-widget'
 		});
 	});
 

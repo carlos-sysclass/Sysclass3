@@ -568,7 +568,7 @@
 </div>
 
 <script type="text/template" id="tab_course_description-template">
-	<%= description %>
+	<%= data.description %>
 </script>
 
 

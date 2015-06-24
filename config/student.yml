@@ -22,9 +22,10 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        1: ["users.overview", "courses.overview", "news.latest", "tutoria.widget"]
-        2: ["institution.overview", "advisor.overview", "advertising", "messages.contactus", "messages.help", "messages.improvements"] #"proctoring.overview",
-        3: ["calendar"]
+        1: ["users.overview", "news.latest", "tutoria.widget", "courses.overview"]
+        #1: ["courses.overview"]
+        #2: ["institution.overview", "advisor.overview", "advertising", "messages.contactus", "messages.help", "messages.improvements"]
+        #3: ["calendar"]
     sortable: false
     resources:
         layout.sections.topbar: ["messages", "forum"]
