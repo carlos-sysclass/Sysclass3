@@ -402,11 +402,20 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					el : this.$("#tab_course_description"),
 					model : this.model
 				});
-
+				
+				this.courseClassesTabView = new courseClassesTabViewClass({
+					el : "#tab_course_classes table tbody",
+					model : this.model/*,
+					collection : new mod.collections.classes(this.model.get("classes")) */
+				});
 
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseViewClass::render');
+
+				//this.courseDescriptionTabView.render();
+				//this.courseClassesTabView.render();
+
 
 				/*
 
@@ -463,14 +472,19 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.template = _.has(opt, "template") ? opt.template : this.template;
 
-				this.collection.datatable = false;
+				//this.collection.datatable = false;
 
-				this.listenTo(this.collection, 'sync', this.render.bind(this));
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				//this.listenTo(this.collection, 'sync', this.render.bind(this));
 
 				// CREATE CLASS COLLECTION BASED ON this.model.get("classes")
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewClass::render');
+
+				this.collection = new mod.collections.classes(this.model.get("classes"));
+
 				this.$el.empty();
 
 				if (this.collection.size() == 0) {
@@ -486,10 +500,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		var courseClassesTabViewItemClass = Backbone.View.extend({
 			tagName : "tr",
-			template 		: _.template($("#tab_course_classes-item-template").html()),
+			template : _.template($("#tab_course_classes-item-template").html(), null {variable: "model"}),
 
 			render : function(e) {
-				console.info('portlet.courses/courseClassesTabViewClass::render');
+				console.info('portlet.courses/courseClassesTabViewItemClass::render');
+				console.warn (this.model.toJSON());
 				this.$el.append(
 					this.template(this.model.toJSON())
 				);
@@ -1004,6 +1019,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	var fullCourseModelClass = Backbone.Model.extend({
 		urlRoot : "/module/courses/item/full"
 	});
+
+	this.collections = {
+		classes : Backbone.Collection.extend({})
+	};
 
 	mod.on("start", function() {
 		var courseModel 	= new fullCourseModelClass();

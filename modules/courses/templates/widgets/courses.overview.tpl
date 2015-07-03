@@ -95,10 +95,8 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
 										</tbody>
 									</table>
-
 								</div>
 							</div>
 							<div id="tab_course_roadmap" class="tab-pane ">
@@ -581,7 +579,7 @@
 	</td>
 </script>
 <script type="text/template" id="tab_course_classes-item-template">
-	<td><a href="#class-tab" class="class-change-action" data-ref-id="<%= id %>" ><%= name %></a></td>
+	<td><a href="#class-tab" class="class-change-action" data-ref-id="<%= id %>" ><%= model.class.name %></a></td>
 	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
