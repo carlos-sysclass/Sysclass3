@@ -1,12 +1,25 @@
 var $SC = new Backbone.Marionette.Application();
 
 jQuery(document).ready(function() {
-    $SC.addInitializer(function(options){
+    $SC.on("before:start", function(options){
         options.theme_app.init(options.theme_path);
 
+        var userSettingsModelClass = Backbone.Model.extend({
+            url : "/module/settings"
+        });
+
+        this.userSettings = new userSettingsModelClass();
+        this.userSettings.fetch();
+
+        this.userSettings.on("change", function(a,b,c,d,e) {
+            this.save(null, {silent : true});
+        });
+    });
+
+    $SC.on("start", function(options){
         $("[data-publish]").click(function (e) {
-        	$SC.request(jQuery(this).data("publish"), jQuery(this).data());
-        })
+            $SC.request(jQuery(this).data("publish"), jQuery(this).data());
+        });
     });
 
 

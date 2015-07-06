@@ -658,7 +658,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         var lessonExercisesContentSubviewTimelineViewClass = Backbone.View.extend({
-            template : _.template($("#exercise-question-timeline-item").html(), {variable : "data"}),
+            template : _.template($("#exercise-question-timeline-item").html(), null, {variable : "model"}),
             events : {
                 "confirmed.bs.confirmation .delete-question-item" : "onRemove"
             },
@@ -1049,6 +1049,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
+            alert(1);
             mod.lessonContentCollection.fetch();
         });
 
@@ -1058,6 +1059,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             collectionFilter : {parent_id: null}
         });
 
+/*
 var contents = $SC.module("blocks.lessons.content").lessonContentCollection.where({
   parent_id: "22"
 });
@@ -1065,7 +1067,7 @@ var contents = $SC.module("blocks.lessons.content").lessonContentCollection.wher
 _.each(contents, function(item) {
   console.log(item);
 });
-
+*/
 
 
     });

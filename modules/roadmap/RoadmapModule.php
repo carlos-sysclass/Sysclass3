@@ -168,6 +168,38 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
+     * @url GET /item/:model/:identifier
+     */
+    public function getItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            if ($model ==  "courses") {
+                $modelRoute = "roadmap/courses";
+            } elseif ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+            } elseif ($model ==  "lessons") {
+                $modelRoute = "roadmap/lessons";
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+            } elseif ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+
+            //} elseif ($model ==  "periods") {
+                // GET USER CURRENT SETTINGS
+                // (CURRENT COURSE, CLASS, LESSON, CONTENT)
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            $itemModel = $this->model($modelRoute);
+            $editItem = $itemModel->getItem($identifier);
+
+            return $editItem;
+        }
+    }
+    /**
+     * [ add a description ]
+     *
      * @url POST /item/:model
      */
     public function addItemAction($model)
@@ -196,6 +228,9 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                     'success' => "Course Grouping created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+            } elseif ($model ==  "periods") {
+                // GET USER CURRENT SETTINGS
+                // (CURRENT COURSE, CLASS, LESSON, CONTENT)
             } else {
                 return $this->invalidRequestError();
             }
@@ -413,7 +448,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
 
             //$modelRoute = "classes/lessons/collection";
 
-//            $itemsCollection = $this->model($modelRoute);
+            // $itemsCollection = $this->model($modelRoute);
             // APPLY FILTER
             if (is_null($course_id) || !is_numeric($course_id)) {
                 return $this->invalidRequestError();

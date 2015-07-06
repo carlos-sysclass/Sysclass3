@@ -408,7 +408,7 @@ $plicoLib->concat(
 		// TODO GET ALL THIS JS AND PUT ON A COMPONENTS BASIS
 		'plugins/bootstrap-toastr/toastr.min',
 		'plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min',
-		'plugins/jquery-slimscroll/jquery.slimscroll.min',
+		'plugins/jquery-slimscroll/jquery.slimscroll',
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
 		'plugins/uniform/jquery.uniform.min',

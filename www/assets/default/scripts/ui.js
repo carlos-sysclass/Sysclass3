@@ -282,15 +282,21 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     this.handleScrollers = function (context) {
         $('.scroller', context).each(function () {
             var height;
-            $(this).slimScroll({destroy: true});
+            //$(this).slimScroll({destroy: true});
             if ($(this).attr("data-height")) {
                 height = $(this).attr("data-height");
                 if (height == "parent") {
-                	height = $(this).parent().outerHeight();
+                	height = $(this).parents().not(".slimScrollDiv").first().outerHeight();
+                    if (height == 0) {
+                        height = "300px";
+                    } else {
+                        height = height + "px";
+                    }
                 }
             } else {
                 height = $(this).css('height');
             }
+
             $(this).slimScroll({
                 size: '7px',
                 color: ($(this).attr("data-handle-color")  ? $(this).attr("data-handle-color") : '#a1b2bd'),
@@ -387,10 +393,13 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
     this.handleActions = function (context) {
         var self = this;
+
         $('[data-action]', context).each(function () {
+
             self.handleAction({
-                intent : $(this).data("intent"),
-                data: $(this).data("intent-data")
+                intent : $(this).data("action"),
+                data: $(this).data("actionData"),
+                el : this
             });
         });
     };
@@ -420,6 +429,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 
 	this.handleAction = function(action) {
+        console.warn(action);
 		if (typeof action != 'undefined') {
 			if (action.intent == "redirect") {
                 if (_.isNull(action.data)) {
@@ -429,11 +439,13 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                 }
 			} else if (action.intent == "advise") {
 				app.module("utils.toastr").message(action.type, action.message);
+            } else if (action.intent == "change-setting") {
+                app.userSettings.set($(el).data("actionProperty"), $(el).data("actionValue"));
 			} else {
 				console.debug("@TODO: handleaction:", action);
 			}
 		}
-	}
+	};
 
 	this.on("start", function() {
 

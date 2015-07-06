@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -17,9 +17,10 @@ class SettingsModule extends SysclassModule
         parent::__construct();
 
         $this->legalValues = array(
-            'course_id', 
+            'course_id',
             'class_id',
-            'lesson_id'
+            'lesson_id',
+            'teste'
         );
 
         $this->defaults = array(
@@ -67,12 +68,12 @@ class SettingsModule extends SysclassModule
             $this->db->StartTrans();
             foreach ($values as $value) {
                 $this->db->Execute(sprintf(
-                    "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'", 
+                    "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
                     $value['user_id'],
                     $value['item']
                 ));
                 $this->db->Execute(sprintf(
-                    "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')", 
+                    "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
                     $value['user_id'],
                     $value['item'],
                     $value['value']
@@ -80,16 +81,17 @@ class SettingsModule extends SysclassModule
             }
             $this->db->CompleteTrans();
 
-            return true;
+            return $this->getSettings(true);
         } else {
             return $this->notAuthenticatedError();
         }
     }
+
     public function getSettings($mergeWithDefaults = false) {
        if ($user = $this->getCurrentUser()) {
             // SAVE SETTINGS FOR CURRENT USER
             $results = $this->db->GetAssoc(sprintf(
-                "SELECT item, value FROM user_settings WHERE user_id = %d", 
+                "SELECT item, value FROM user_settings WHERE user_id = %d",
                 $user['id']
             ));
             if ($mergeWithDefaults) {
@@ -101,11 +103,12 @@ class SettingsModule extends SysclassModule
             return false;
         }
     }
+
     public function get($key) {
        if ($user = $this->getCurrentUser()) {
             // SAVE SETTINGS FOR CURRENT USER
             $value = $this->db->GetOne(sprintf(
-                "SELECT value FROM user_settings WHERE user_id = %d AND item = '%s'", 
+                "SELECT value FROM user_settings WHERE user_id = %d AND item = '%s'",
                 $user['id'],
                 $key
             ));
@@ -118,17 +121,18 @@ class SettingsModule extends SysclassModule
             return false;
         }
     }
+
     public function put($key, $value) {
        if ($user = $this->getCurrentUser()) {
             // SAVE SETTINGS FOR CURRENT USER
             $this->db->StartTrans();
             $this->db->Execute(sprintf(
-                "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'", 
+                "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
                 $user['id'],
                 $key
             ));
             $this->db->Execute(sprintf(
-                "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')", 
+                "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
                 $user['id'],
                 $key,
                 $value

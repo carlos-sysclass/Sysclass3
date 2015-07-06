@@ -475,6 +475,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     public function getItemAction($model = "me", $identifier = null)
     {
         $editItem = $this->model("lessons")->getItem($identifier);
+        /*
         //if ($model == "content") {
             //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
             $lessonFiles = $this->model("lessons/files");
@@ -496,6 +497,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             );
 
         //}
+        */
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }

@@ -184,13 +184,13 @@
 
 <script type="text/template" id="exercise-question-timeline-item">
     <li class="list-file-item list-question-item">
-        <%= data.title %>
+        <%= model.title %>
         <div class="list-file-item-options">
-            <a class="btn btn-sm btn-primary" href="/module/questions/edit/<%= data.question_id %>" >
+            <a class="btn btn-sm btn-primary" href="/module/questions/edit/<%= model.question_id %>" >
                 <i class="fa fa-edit"></i>
             </a>
 
-            <a class="btn btn-sm btn-danger delete-question-item" href="javascript: void(0);" data-question-id="<%= data.question_id %>"
+            <a class="btn btn-sm btn-danger delete-question-item" href="javascript: void(0);" data-question-id="<%= model.question_id %>"
                 data-toggle="confirmation"
                 data-original-title="{translateToken value="Are you sure?"}"
                 data-placement="left"
@@ -226,13 +226,13 @@
     %>
     <div class="timeline-badge">
         <div class="timeline-icon">
-            <% if (/^video\/.*$/.test(file.type)) { %>
+            <% if (file_type == "video") { %>
                 <i class="fa fa-file-video-o"></i>
-            <% } else if (/^image\/.*$/.test(file.type)) { %>
+            <% } else if (file_type == "image") { %>
                 <i class="fa fa-file-image-o"></i>
-            <% } else if (/^audio\/.*$/.test(file.type)) { %>
+            <% } else if (file_type == "audio") { %>
                 <i class="fa fa-file-sound-o"></i>
-            <% } else if (/.*\/pdf$/.test(file.type)) { %>
+            <% } else if (file_type == "pdf") { %>
                 <i class="fa fa-file-pdf-o"></i>
             <% } else { %>
                 <i class="fa fa-file-o"></i>
@@ -533,12 +533,14 @@
                     -->
                 </div>
             </div>
+            <!--
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="form-section no-margin">Translations</h5>
                     <ul class="list-group translation-container"></ul>
                 </div>
             </div>
+            -->
         </div>
         <div role="tabpanel" class="tab-pane" id="subtitle-edit-<%= model.id %>">
             <div class="row">

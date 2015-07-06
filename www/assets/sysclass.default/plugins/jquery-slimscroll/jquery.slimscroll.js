@@ -81,8 +81,12 @@
 
       var o = $.extend(defaults, options);
 
+
+
       // do it for every element that matches selector
       this.each(function(){
+
+
 
       var isOverPanel, isOverBar, isDragg, queueHide, touchDif,
         barHeight, percentScroll, lastScroll,
@@ -142,7 +146,6 @@
 
             return;
         }
-
         // optionally set height to the parent's height
         o.height = (o.height == 'auto') ? me.parent().height() : o.height;
 

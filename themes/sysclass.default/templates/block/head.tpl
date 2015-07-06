@@ -11,7 +11,7 @@
 {foreach item="css" from=$T_STYLESHEETS}
 	<link rel="stylesheet" href="{Plico_GetResource file=$css}" />
 {/foreach}
- 
+
 <link rel="shortcut icon" href="favicon.ico" />
 
 
@@ -27,13 +27,13 @@
     width: 100%;
     margin: 0 auto;
 }
-.video-js { 
+.video-js {
     padding-top: 56.25%;
 }
 .vjs-fullscreen {
     padding-top: 0px;
 }
-.vjs-poster { 
+.vjs-poster {
     position: absolute;
     top:0;
 }

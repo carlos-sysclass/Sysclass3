@@ -55,17 +55,21 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
     }
 
     protected function parseItem($item) {
+        if (count($item) == 0) {
+            return $item;
+        }
+
         $userModel =  $this->model("users/collection");
 
         $item['coordinator_id'] = json_decode($item['coordinator_id'], true);
 
         if (is_array($item['coordinator_id'])) {
-            $item['instructors'] = $userModel->clear()->addFilter(array(
+            $item['coordinators'] = $userModel->clear()->addFilter(array(
                 'can_be_coordinator' => true,
                 'id'    =>  $item['coordinator_id']
             ))->getItems();
         } else {
-            $item['class']['instructors'] = array();
+            $item['class']['coordinators'] = array();
         }
 
         return $item;
@@ -87,9 +91,14 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
         $item = parent::getItem($identifier);
         return $this->parseItem($item);
     }
-
+    /*
     public function getFullItem($identifier) {
+
         $data = $this->getItem($identifier);
+        if (count($data) == 0) {
+            return $data;
+        }
+
         // GET CLASSES
         $data['classes'] = $this->model("roadmap/classes")->addFilter(array(
             'course_id' => $identifier
@@ -97,7 +106,7 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
 
         return $data;
     }
-
+    */
     public function addItem($data)
     {
         $data['coordinator_id'] = json_encode($data['coordinator_id']);

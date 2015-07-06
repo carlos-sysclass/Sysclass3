@@ -20,6 +20,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
                 lc.`language_code`,
                 lc.`position`,
                 lc.`active`,
+                lc.`main`,
                 lf.id as 'file#id',
                 lf.upload_type as 'file#upload_type',
                 lf.`name` as 'file#name',

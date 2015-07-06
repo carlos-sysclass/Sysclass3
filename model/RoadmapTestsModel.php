@@ -1,50 +1,13 @@
 <?php
-class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
+class RoadmapTestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->table_name = "mod_roadmap_courses_to_classes";
-        $this->id_field = "id";
-        $this->mainTablePrefix = "c2c";
-        //$this->fieldsMap = array();
-
-        $this->selectSql =
-        "SELECT
-            c2c.`id`,
-            c2c.`course_id`,
-            c2c.`class_id`,
-            clp.`period_id`,
-            c2c.`start_date`,
-            c2c.`end_date`,
-            c2c.`position`,
-            c2c.`active`,
-            cl.`area_id` as 'class#area_id',
-            cl.`name` as 'class#name',
-            cl.`description` as 'class#description',
-            cl.`instructor_id` as 'class#instructor_id',
-            COUNT(l.id) as 'class#total_lessons',
-            cl.`active` as 'class#active',
-            c.`id` as 'course#id',
-            c.`name` as 'course#name',
-            c.`active` as 'course#active',
-            cp.`id` as 'period#id',
-            cp.`name` as 'period#name',
-            cp.`max_classes` as 'period#max_classes',
-            cp.`active` as 'period#active'
-        FROM mod_roadmap_courses_to_classes c2c
-        LEFT JOIN mod_courses c ON(c2c.course_id = c.id)
-        LEFT JOIN mod_classes cl ON(c2c.class_id = cl.id)
-        LEFT JOIN mod_lessons l ON(cl.id = l.class_id)
-        LEFT JOIN mod_roadmap_classes_to_periods clp ON(c2c.class_id = clp.class_id)
-        LEFT JOIN mod_roadmap_courses_periods cp ON(clp.period_id = cp.id AND cp.course_id = c.id)";
-
-        $this->order = array("-c2c.`position` DESC");
-
-        $this->group_by = array("c2c.`id`");
+        $this->lesson_type =  "test";
 
         parent::init();
     }
-
+    /*
     protected function parseItem($item) {
         $userModel =  $this->model("users/collection");
 
@@ -83,13 +46,8 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
         $data['lessons'] = $this->model("roadmap/lessons")->addFilter(array(
-            'class_id' => $data['class_id']
+            'class_id' => $identifier
         ))->getItems();
-
-        $data['tests'] = $this->model("roadmap/tests")->addFilter(array(
-            'class_id' => $data['class_id']
-        ))->getItems();
-
 
         return $this->parseItem($data);
     }
@@ -149,4 +107,5 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         return true;
 
     }
+    */
 }

@@ -333,8 +333,8 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         $itemModel = $this->model("courses");
         if ($model == "me") {
             $editItem = $itemModel->getItem($identifier);
-        } elseif ($model == "full") {
-            $editItem = $itemModel->getFullItem($identifier);
+        //} elseif ($model == "full") {
+        //    $editItem = $itemModel->getFullItem($identifier);
         } else {
             return $this->invalidRequestError();
         }
