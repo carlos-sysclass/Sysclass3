@@ -88,7 +88,6 @@ abstract class SysclassModule extends BaseSysclassModule
     public function editPage($id)
     {
         $currentUser    = $this->getCurrentUser(true);
-
         if ($currentUser->getType() == 'administrator') {
             $this->createClientContext("edit", array('entity_id' => $id));
             $this->display($this->template);
@@ -96,4 +95,6 @@ abstract class SysclassModule extends BaseSysclassModule
             $this->redirect($this->getSystemUrl('home'), "", 401);
         }
     }
+
+
 }

@@ -702,7 +702,7 @@
 </script>
 
 
-
+<!--
 <script type="text/template" id="tab_roadmap-season-template">
 	<h5>
 		<i class="icon-angle-down"></i>
@@ -806,3 +806,4 @@
 		</div>
 	</div>
 </script>
+-->

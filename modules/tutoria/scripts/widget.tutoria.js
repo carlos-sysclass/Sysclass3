@@ -1,10 +1,9 @@
 $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
-	  	this.collection = new Backbone.Collection;
-		this.collection.url = "/module/tutoria/data";
-	  	
 	  	// VIEWS
+	  	//
+	  	/*
 	  	var viewClass = Backbone.View.extend({
 		    el: $('#tutoria-accordion'),
 		    portlet: $('#tutoria-widget'),
@@ -32,36 +31,73 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 				}
 		    }
 	  	});
+		*/
+		var tutoriaBlockViewClass = Backbone.View.extend({
+			nofoundTemplate : _.template($("#tutoria-nofound-template").html()),
 
-		this.view = new viewClass();
-		this.searchBy = "title";
+			initialize: function(opt) {
+				console.info('portlet.courses/tutoriaBlockViewClass::initialize');
+				this.listenTo(this.collection, 'sync', this.render.bind(this));
+				this.listenTo(this.collection, 'add', this.addOne.bind(this));
+			},
+			render : function(e) {
+				console.info('portlet.courses/tutoriaBlockViewClass::render');
+				this.$el.empty();
 
-		this.onFullscreen = function(e, portlet) {
-			this.view.$el.css({
-				'height': 720
-			});
-		};
-		this.onRestorescreen = function(e, portlet) {
-			this.view.$el.css({
-				'height': 'auto'
-			});
-		};
+				if (this.collection.size() === 0) {
+					this.$el.append(this.nofoundTemplate());
+				} else {
+					var self = this;
+					this.collection.each(function(model, i) {
+						var tutoriaBlockViewItem = new tutoriaBlockViewItemClass({model : model});
+						self.$el.append(tutoriaBlockViewItem.render().el);
+					});
+				}
+				app.module("ui").refresh(this.$el);
+			},
+			addOne : function(model) {
+				var tutoriaBlockViewItem = new tutoriaBlockViewItemClass({model : model});
+				self.$el.append(tutoriaBlockViewItem.render().el);
+			}
+		});
+
+		var tutoriaBlockViewItemClass = Backbone.View.extend({
+			tagName : "div",
+			template : _.template($("#tutoria-item-template").html(), null, {variable: "model"}),
+			render : function(e) {
+				console.info('portlet.tutoria/tutoriaBlockViewItemClass::render');
+				this.$el.html(
+					this.template(this.model.toJSON())
+				);
+				return this;
+			}
+		});
 
 	  	// VIEWS
-	  	var formClass = Backbone.View.extend({
-		    el: $('#tutoria-widget-form'),
-		    initialize: function() {
+	  	var baseFormClass = app.module("views").baseFormClass;
+	  	var tutoriaFormViewClass = baseFormClass.extend({
 
-				this.$el.validate({
-					errorElement: 'span', //default input error message container
-					errorClass: 'help-block', // default input error message class
-					focusInvalid: false, // do not focus the last invalid input
-					ignore: "",
-					rules: {
-						title: {
-							minlength: 10,
-							required: true
-						}
+			initialize: function() {
+		    	console.info('portlet.tutoria/tutoriaFormViewClass::initialize');
+		    	baseFormClass.prototype.initialize.apply(this);
+
+		    	var self = this;
+				this.on("after:save", function(model) {
+					self.model = new mod.models.tutoria({
+						title : ""
+					});
+					self.render();
+				});
+			},
+		    handleValidation: function() {
+		    	console.info('views/baseFormClass::handleValidation');
+		    	var self = this;
+				this.oForm.validate({
+					ignore: null,
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block', // default input error message class
+					errorPlacement: function(error, element) {
+						error.appendTo( element.closest(".chat-form") );
 					},
 					highlight: function (element) { // hightlight error inputs
 						// set error class to the control group
@@ -75,8 +111,17 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 					success: function (label) {
 						label.closest('.form-group').removeClass('has-error'); // set success class to the control group
 					},
-					errorPlacement: function(error, element) {
-						error.appendTo( element.closest(".chat-form") );
+					submitHandler : function(f) {
+						self.save();
+					}
+				});
+				/*
+				this.$el.validate({
+					rules: {
+						title: {
+							minlength: 10,
+							required: true
+						}
 					},
 					submitHandler: function (form) {
 						jQuery.post(
@@ -91,10 +136,111 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 						  }
 						);
 					}
+
 				});
+				*/
 		    }
 	  	});
-		this.formView = new formClass();
+
+		this.tutoriaWidgetViewClass = Backbone.View.extend({
+			tutoriaCollection : null,
+			tutoriaBlockView : null,
+			initialize: function(opt) {
+				if (this.$el.isOnScreen(1, 0.3)) {
+					$(document).off("scroll resize");
+					// CALl VIEW START
+					this.start();
+				} else {
+					$(document).on("scroll resize", function() {
+						//console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
+						if (this.$el.isOnScreen(1, 0.3)) {
+							$(document).off("scroll resize");
+							// CALl VIEW START
+							this.start();
+						}
+
+					}.bind(this));
+				}
+			},
+			start : function() {
+				// CREATE SUB-VIEWS AND FETCH MODELS AND COLLECTIONS
+				this.tutoriaCollection = new mod.collections.tutoria();
+
+				this.tutoriaBlockView = new tutoriaBlockViewClass({
+					collection : this.tutoriaCollection,
+					el: "#tutoria-accordion"
+				});
+
+				this.tutoriaFormView = new tutoriaFormViewClass({
+					el: '#tutoria-widget-form',
+					model: new mod.models.tutoria()
+				});
+
+				this.listenTo(this.tutoriaFormView, "after:save", function(model) {
+					this.tutoriaCollection.add(model);
+				});
+
+				/*
+				USE THESE EVENTS TO CHANGE FAQ COLLECTION BASED ON COURSE/CLASS/LESSON
+				 */
+				/*
+				this.listenTo(this.model, 'change:course_id', this.startCourseView.bind(this));
+				if (this.model.get("course_id")) {
+					this.startCourseView();
+				}
+
+				this.listenTo(this.model, 'change:class_id', this.startClassView.bind(this));
+				if (this.model.get("class_id")) {
+					this.startClassView();
+				}
+
+				this.listenTo(this.model, 'change:lesson_id', this.startLessonView.bind(this));
+				if (this.model.get("lesson_id")) {
+					this.startLessonView();
+				}
+				*/
+				//this.model.fetch();
+
+				this.tutoriaCollection.fetch();
+			}
+		});
+
+		this.onFullscreen = function(e, portlet) {
+			this.tutoriaWidgetViewClass.tutoriaBlockView.$el.css({
+				'height': 720
+			});
+		};
+		this.onRestorescreen = function(e, portlet) {
+			this.tutoriaWidgetViewClass.tutoriaBlockView.$el.css({
+				'height': 'auto'
+			});
+		};
+		this.searchBy = "title";
+	});
+
+	this.models = {
+		tutoria : Backbone.DeepModel.extend({
+			urlRoot : "/module/tutoria/item/question"
+		})
+	};
+	this.collections = {
+		tutoria : Backbone.Collection.extend({
+			url : "/module/tutoria/items/question",
+			model : this.models.tutoria
+		})
+	};
+
+	mod.on("start", function() {
+		//var userSettingsModel = new userSettingsModelClass();
+
+		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+
+			this.courseWidgetView = new this.tutoriaWidgetViewClass({
+				model : app.userSettings,
+				el: '#tutoria-widget'
+			});
+
+		}.bind(this));
 	});
 });
 
@@ -119,7 +265,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 			var username = presence.jid.split("@");
 			presence.from = username[0];
 			if (mod.chatCollections[chat_index]) {
-				mod.chatCollections[chat_index].add(presence);	
+				mod.chatCollections[chat_index].add(presence);
 			}
 		},
 		receiveMessage : function(message) {
@@ -163,15 +309,15 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    initialize: function(opt) {
 	    	//console.log(this.model.toJSON());
 	    	this.collection = this.model.get("messages");
-//		    	this.bbview  = opt.bbview;
+			// 	this.bbview  = opt.bbview;
 	    	this.$el.addClass("chat-widget");
-	    	
+
 	    	this.render();
 	    	// ADD FIRST MESSAGES
 	    	this.updateStatus(this.model);
 
 	    	this.collection.each(this.addOne.bind(this));
-			
+
 			this.listenTo(this.model, 'change:status', this.updateStatus);
 	    	this.listenTo(this.collection, 'add', this.addOne);
 
@@ -238,7 +384,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            		color: "#399bc3",
 	               		repeat: false
 					});
-				});	
+				});
 			} else {
 				this.$(".portlet-title").pulsate({
 	            	color: "#399bc3",
@@ -251,7 +397,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    }
   	});
 
-	
+
 	this.onRemove = function(e, portlet) {
 		portlet.closest(".chat-widget").hide();
 		return false;
@@ -267,7 +413,7 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
 					model 		: model
 				});
 			} else {
-				mod.chatViews[index].focus();	
+				mod.chatViews[index].focus();
 			}
 		});
 	});

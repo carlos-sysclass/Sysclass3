@@ -209,6 +209,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		model = this.model;
 	    	}
 	    	var values = model.toJSON();
+	    	console.warn(values);
 	    	this.renderItens(values);
 	        return this;
 	    },
@@ -244,29 +245,18 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    save : function(e) {
 	    	console.info('views/baseClass::save');
-
 	    	var self = this;
-	    	this.model.save(/*null, {
-	    		success : function(model, response, options) {
-	    			if (model.has("_response_")) {
-	    				self.handleAction(model.get("_response_"));
-	    				model.unset("_response_");
-	    			}
 
-					if (mod.submodules) {
-						for(i in mod.submodules) {
-							mod.submodules[i].triggerMethod("saved", self, model, response);
-						}
-			       	}
+	    	self.trigger("before:save", this.model);
+
+	    	this.model.save(null, {
+	    		success : function(model, response, options) {
+	    			self.trigger("after:save", model);
 	    		},
 	    		error : function(model, xhr, options) {
-					if (mod.submodules) {
-						for(i in mod.submodules) {
-							mod.submodules[i].triggerMethod("error", self, model, xhr);
-						}
-			       	}
+	    			self.trigger("error:save", model);
 	    		}
-	    	}*/);
+	    	});
 	    },
 	    setModel : function(model) {
 	    	this.model = model;

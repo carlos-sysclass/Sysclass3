@@ -266,9 +266,9 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = $this->model("courses/classes/collection");
+            $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Class removed with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Question removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
