@@ -1,0 +1,58 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Announcements
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Manage, review and publish your Announcements
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: title
+          label: Title
+
+        - mData: timestamp
+          sType: unix-moment-since
+          sClass: text-center
+          label: Published
+
+        - mData: expire
+          sType: unix-moment-since
+          sClass: text-center
+          label: Expires
+
+        - mData: login
+          sClass: text-center
+          label: User
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["select2","validation", "bootstrap-switch",  "wysihtml5", "datepicker", "timepicker" ]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new announcement
+    'edit/:id':
+      components: ["select2","validation", "bootstrap-switch",  "wysihtml5", "datepicker", "timepicker" ]
+      template: form.tpl
+      #blocks: ["permission.add"]
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create your announcement

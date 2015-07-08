@@ -40,7 +40,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
        				'title' 	=> self::$t->translate('Questions & Answers'),
        				'template'	=> $this->template("tutoria.widget"),
                     'icon'      => 'book',
-                    'box'       => 'dark-blue',
+                    'box'       => 'dark-blue tabbable',
                     'tools'     => array(
                         'search'        => true,
                         //'collapse'      => true,

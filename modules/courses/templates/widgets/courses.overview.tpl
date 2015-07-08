@@ -22,7 +22,6 @@
 						</div>
 					</a>
 				</li>
-
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
@@ -422,10 +421,18 @@
 							</div>
 						    <div id="tab_lesson_exercises" class="tab-pane">
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-								   	<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 {translateToken value="Ops! There's any exercises posted for this lesson"}
-								   	</div>
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<tr>
+												<th class="text-center">{translateToken value="#"}</th>
+												<th class="text-center">{translateToken value="# Questions"}</th>
+												<th class="text-center">{translateToken value="Status"}</th>
+												<th class="text-center">{translateToken value="Options"}</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
 							   	</div>
 						   	</div>
 						   	<!--
@@ -659,7 +666,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any classes registered for this course"}
+			{translateToken value="Ops! There's any materials registered for this course"}
 		</span>
 	</td>
 </script>
@@ -697,9 +704,27 @@
 	</td>
 </script>
 
-<script type="text/template" id="tab_lesson_exercises-template">
-	EXERCISES
+<script type="text/template" id="tab_lesson_exercises-nofound-template">
+	<span class="text-info">
+		<i class="icon-warning-sign"></i>
+		{translateToken value="Ops! There's any materials registered for this course"}
+	</span>
 </script>
+<script type="text/template" id="tab_lesson_exercises-item-template">
+	<td class="text-center"><%= model.model_index+1 %></th>
+	<td class="text-center"><%= _.size(model.exercise) %></td>
+	<td class="text-center"><span class="label label-danger">{translateToken value="Pending"}</span></td>
+	<td class="text-center">
+		<a href="javascript:void(0);" class="btn btn-xs btn-primary open-exercise-action">
+			{translateToken value="Do now!"}
+		</a>
+	</td>
+</script>
+
+<script type="text/template" id="tab_lesson_exercises-item-question-template">
+
+</script>
+
 
 
 <!--

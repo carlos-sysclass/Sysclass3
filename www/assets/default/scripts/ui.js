@@ -429,7 +429,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 
 	this.handleAction = function(action) {
-        console.warn(action);
 		if (typeof action != 'undefined') {
 			if (action.intent == "redirect") {
                 if (_.isNull(action.data)) {

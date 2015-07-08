@@ -2,64 +2,78 @@ $SC.module("portlet.news", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 		// VIEWS
-		viewClass = Backbone.View.extend({
-			// Instead of generating a new element, bind to the existing skeleton of
-			// the App already present in the HTML.
-			el: $('#news-links'),
-			portlet: $('#news-widget'),
+		var parent = app.module("portlet");
 
-			itemTemplate: _.template($('#news-item-template').html()),
-			noDataFoundTemplate: _.template($('#news-nofound-template').html()),
-
+		var newsBlockViewItemClass = parent.blockViewItemClass.extend({
 			events: {
-			  "click a.list-group-item": "select"
+			  "click a.list-group-item": "viewDetails"
 			},
-			initialize: function() {
-				this.listenTo(this.collection, 'sync', this.render.bind(this));
-				this.collection.fetch();
-			},
-			select : function(e) {
-			  // Get collection index from id
-				var newsID = $(e.currentTarget).data("news-id");
-				var model = this.collection.get(newsID);
+			tagName : "div",
+			template : _.template($("#news-item-template").html(), null, {variable: "model"}),
+			viewDetails : function(e) {
 
-			 	this.portlet.find(".news-title").html(model.get('title'));
-				this.portlet.find(".news-data").html(model.get('data'));
-			},
-			// Re-rendering the App just means refreshing the statistics -- the rest
-			// of the app doesn't change.
-			render: function(collection) {
-			  this.$el.empty();
-
-			  if (this.collection.size() == 0) {
-				this.$el.append(this.noDataFoundTemplate());
-			  } else {
-				var self = this;
-				this.collection.each(function(model,i) {
-					model.toJSON()
-					self.$el.append(
-						self.itemTemplate(model.toJSON())
-					);
-				});
-			  }
+				var dialogId = $(e.currentTarget).data('target');
+			 	$(dialogId).find(".news-title").html(this.model.get('title'));
+				$(dialogId).find(".news-data").html(this.model.get('data'));
 			}
 		});
 
-		this.view = new viewClass({collection: app.module("models.news").itemsCollection});
-		this.searchBy = "title";
+		var newsBlockViewClass = parent.blockViewClass.extend({
+			nofoundTemplate : _.template($("#news-nofound-template").html()),
+			childViewClass : newsBlockViewItemClass
+		});
 
-		this.onFullscreen = function(e, portlet) {
-			this.view.portlet.find("#news-links,.slimScrollDiv").css({
-				'height': 720
-			});
-		};
-		this.onRestorescreen = function(e, portlet) {
-			this.view.portlet.find("#news-links,.slimScrollDiv").css({
-				'height': 200
-			});
-		};
+		this.newsWidgetViewClass = parent.widgetViewClass.extend({
+			collectionClass : mod.collections.news,
+			blockViewClass : newsBlockViewClass,
+			onBeforeStart : function() {
+
+			},
+			onStart : function() {
+
+			},
+			onBeforeFullScreen : function() {
+				/// RETURN FALSE TO DISABLE
+				return true;
+			},
+			onFullScreen : function() {
+				this.$(".scroller").slimScroll({destroy: true});
+				this.$(".scroller").css("height", "auto");
+
+			},
+			onBeforeRestoreScreen : function() {
+				/// RETURN FALSE TO DISABLE
+				return true;
+			},
+			onRestoreScreen : function() {
+				app.module("ui").handleScrollers(this.$el);
+			}
+		});
 	});
-	
+
+	this.models = {
+		news : Backbone.DeepModel.extend({
+			urlRoot : "/module/news/item/me"
+		})
+	};
+	this.collections = {
+		news : Backbone.Collection.extend({
+			url : "/module/news/items/me",
+			model : this.models.news
+		})
+	};
+
+	mod.on("start", function() {
+		//var userSettingsModel = new userSettingsModelClass();
+
+		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+			this.newsWidgetView = new this.newsWidgetViewClass({
+				model : app.userSettings,
+				el: '#news-widget'
+			});
+
+		}.bind(this));
+	});
 
 
 });

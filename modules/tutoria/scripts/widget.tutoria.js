@@ -2,78 +2,6 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 	  	// VIEWS
-	  	//
-	  	/*
-	  	var viewClass = Backbone.View.extend({
-		    el: $('#tutoria-accordion'),
-		    portlet: $('#tutoria-widget'),
-
-		    itemTemplate: _.template($('#tutoria-item-template').html()),
-		    noDataFoundTemplate: _.template($('#tutoria-nofound-template').html()),
-
-		    initialize: function() {
-				this.listenTo(mod.collection, 'sync', this.render);
-				mod.collection.fetch();
-		    },
-		    render: function(collection) {
-				this.$el.empty();
-
-				if (collection.size() == 0) {
-					this.$el.append(this.noDataFoundTemplate());
-				} else {
-					var self = this;
-
-					collection.each(function(model,i) {
-						self.$el.append(
-							self.itemTemplate(model.toJSON())
-						);
-					});
-				}
-		    }
-	  	});
-		*/
-		var tutoriaBlockViewClass = Backbone.View.extend({
-			nofoundTemplate : _.template($("#tutoria-nofound-template").html()),
-
-			initialize: function(opt) {
-				console.info('portlet.courses/tutoriaBlockViewClass::initialize');
-				this.listenTo(this.collection, 'sync', this.render.bind(this));
-				this.listenTo(this.collection, 'add', this.addOne.bind(this));
-			},
-			render : function(e) {
-				console.info('portlet.courses/tutoriaBlockViewClass::render');
-				this.$el.empty();
-
-				if (this.collection.size() === 0) {
-					this.$el.append(this.nofoundTemplate());
-				} else {
-					var self = this;
-					this.collection.each(function(model, i) {
-						var tutoriaBlockViewItem = new tutoriaBlockViewItemClass({model : model});
-						self.$el.append(tutoriaBlockViewItem.render().el);
-					});
-				}
-				app.module("ui").refresh(this.$el);
-			},
-			addOne : function(model) {
-				var tutoriaBlockViewItem = new tutoriaBlockViewItemClass({model : model});
-				self.$el.append(tutoriaBlockViewItem.render().el);
-			}
-		});
-
-		var tutoriaBlockViewItemClass = Backbone.View.extend({
-			tagName : "div",
-			template : _.template($("#tutoria-item-template").html(), null, {variable: "model"}),
-			render : function(e) {
-				console.info('portlet.tutoria/tutoriaBlockViewItemClass::render');
-				this.$el.html(
-					this.template(this.model.toJSON())
-				);
-				return this;
-			}
-		});
-
-	  	// VIEWS
 	  	var baseFormClass = app.module("views").baseFormClass;
 	  	var tutoriaFormViewClass = baseFormClass.extend({
 
@@ -115,107 +43,44 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 						self.save();
 					}
 				});
-				/*
-				this.$el.validate({
-					rules: {
-						title: {
-							minlength: 10,
-							required: true
-						}
-					},
-					submitHandler: function (form) {
-						jQuery.post(
-						  $(form).attr("action"),
-						  $(form).serialize(),
-						  function(response, status) {
-							$(form).find(":input").val("");
-							mod.collection.fetch();
-							if (response.action) {
-								$SC.request("toastr:message", response.action.type, response.action.message);
-							}
-						  }
-						);
-					}
-
-				});
-				*/
 		    }
 	  	});
 
-		this.tutoriaWidgetViewClass = Backbone.View.extend({
-			tutoriaCollection : null,
-			tutoriaBlockView : null,
-			initialize: function(opt) {
-				if (this.$el.isOnScreen(1, 0.3)) {
-					$(document).off("scroll resize");
-					// CALl VIEW START
-					this.start();
-				} else {
-					$(document).on("scroll resize", function() {
-						//console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
-						if (this.$el.isOnScreen(1, 0.3)) {
-							$(document).off("scroll resize");
-							// CALl VIEW START
-							this.start();
-						}
+		var parent = app.module("portlet");
 
-					}.bind(this));
-				}
-			},
-			start : function() {
+		var tutoriaBlockViewItemClass = parent.blockViewItemClass.extend({
+			tagName : "div",
+			template : _.template($("#tutoria-item-template").html(), null, {variable: "model"})
+		});
+
+		var tutoriaBlockViewClass = parent.blockViewClass.extend({
+			nofoundTemplate : _.template($("#news-nofound-template").html()),
+			childViewClass : tutoriaBlockViewItemClass
+		});
+
+		this.tutoriaWidgetViewClass = parent.widgetViewClass.extend({
+			collectionClass : mod.collections.tutoria,
+			blockViewClass : tutoriaBlockViewClass,
+			onStart : function() {
+
 				// CREATE SUB-VIEWS AND FETCH MODELS AND COLLECTIONS
-				this.tutoriaCollection = new mod.collections.tutoria();
-
-				this.tutoriaBlockView = new tutoriaBlockViewClass({
-					collection : this.tutoriaCollection,
-					el: "#tutoria-accordion"
-				});
-
 				this.tutoriaFormView = new tutoriaFormViewClass({
 					el: '#tutoria-widget-form',
 					model: new mod.models.tutoria()
 				});
 
 				this.listenTo(this.tutoriaFormView, "after:save", function(model) {
-					this.tutoriaCollection.add(model);
+					this.collection.add(model, {at: 0});
 				});
-
-				/*
-				USE THESE EVENTS TO CHANGE FAQ COLLECTION BASED ON COURSE/CLASS/LESSON
-				 */
-				/*
-				this.listenTo(this.model, 'change:course_id', this.startCourseView.bind(this));
-				if (this.model.get("course_id")) {
-					this.startCourseView();
-				}
-
-				this.listenTo(this.model, 'change:class_id', this.startClassView.bind(this));
-				if (this.model.get("class_id")) {
-					this.startClassView();
-				}
-
-				this.listenTo(this.model, 'change:lesson_id', this.startLessonView.bind(this));
-				if (this.model.get("lesson_id")) {
-					this.startLessonView();
-				}
-				*/
-				//this.model.fetch();
-
-				this.tutoriaCollection.fetch();
+			},
+			onFullScreen : function() {
+				this.$(".scroller").slimScroll({destroy: true});
+				this.$(".scroller").css("height", "auto");
+			},
+			onRestoreScreen : function() {
+				app.module("ui").handleScrollers(this.$el);
 			}
 		});
-
-		this.onFullscreen = function(e, portlet) {
-			this.tutoriaWidgetViewClass.tutoriaBlockView.$el.css({
-				'height': 720
-			});
-		};
-		this.onRestorescreen = function(e, portlet) {
-			this.tutoriaWidgetViewClass.tutoriaBlockView.$el.css({
-				'height': 'auto'
-			});
-		};
-		this.searchBy = "title";
 	});
 
 	this.models = {
@@ -231,11 +96,10 @@ $SC.module("portlet.tutoria", function(mod, app, Backbone, Marionette, $, _) {
 	};
 
 	mod.on("start", function() {
-		//var userSettingsModel = new userSettingsModelClass();
 
-		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+		mod.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 
-			this.courseWidgetView = new this.tutoriaWidgetViewClass({
+			mod.tutoriaWidgetView = new this.tutoriaWidgetViewClass({
 				model : app.userSettings,
 				el: '#tutoria-widget'
 			});

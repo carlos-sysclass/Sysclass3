@@ -121,7 +121,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			$this->putModuleScript("models.courses");
-			$this->putModuleScript("widget.courses.overview");
+			$this->putModuleScript("widget.courses");
 
 
 			return array(

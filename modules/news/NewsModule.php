@@ -12,8 +12,10 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('news.latest', $widgetsIndexes)) {
-			$this->putModuleScript("models.news");
+			//$this->putModuleScript("models.news");
 			$this->putModuleScript("widget.news");
+
+			$this->putSectionTemplate("foot", "dialogs/news.view");
 
 			return array(
 				'news.latest' => array(
@@ -178,44 +180,6 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		return $actions[$request];
 	}
 	/**
-	 * [ add a description ]
-	 *
-	 * @url GET /data
-	 * @deprecated Use GET /items/me entry point
-	 */
-	public function dataAction()
-	{
-		$currentUser    = $this->getCurrentUser(true);
-
-		# Carrega noticias da ultima licao selecionada
-		$news = news :: getNews(0, false) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
-
-		# Filtra comunicado pela classe do aluno
-		$userClasses = $this->_getTableDataFlat(
-			"users_to_courses",
-			"classe_id",
-			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
-		);
-		/*
-		$xentifyModule = $this->loadModule("xentify");
-		$user = $this->getCurrentUser();
-		*/
-		foreach ($news as $key => $noticia) {
-			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
-				unset($news[$key]);
-			//} elseif ($ajax && $noticia['classe_id']==0) {
-			//    unset($news[$key]);
-			}
-			/*
-			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
-				unset($news[$key]);
-			}
-			*/
-		}
-		return array_values($news);
-	}
-
-	/**
 	 * Get all news visible to the current user
 	 *
 	 * @url GET /item/me/:id
@@ -337,98 +301,45 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		return array_values($news);
 	}
 
-
 	/**
 	 * [ add a description ]
 	 *
-	 * @url GET /view
+	 * @url GET /data
+	 * @deprecated 3.0.0.19 Use GET /items/me entry point
 	 */
-	public function viewPage()
+	public function dataAction()
 	{
 		$currentUser    = $this->getCurrentUser(true);
 
-		// SHOW ANNOUCEMENTS BASED ON USER TYPE
-		if ($currentUser->getType() == 'administrator') {
-			$this->putItem("page_title", self::$t->translate('Announcements'));
-			$this->putItem("page_subtitle", self::$t->translate('Manage, review and publish your Announcements'));
+		# Carrega noticias da ultima licao selecionada
+		$news = news :: getNews(0, false) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
 
-			$this->putComponent("select2");
-			$this->putComponent("data-tables");
-			$this->putModuleScript("models.news");
-			$this->putModuleScript("views.news.view");
-
-			# Carrega noticias da ultima licao selecionada
-			$news = news :: getNews(0, true) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
-
-			foreach ($news as $key => $noticia) {
-				//if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
-				//    unset($news[$key]);
-				//} elseif ($ajax && $noticia['classe_id']==0) {
-				//    unset($news[$key]);
-				//}
-				/*
-				if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
-					unset($news[$key]);
-				}
-				*/
+		# Filtra comunicado pela classe do aluno
+		$userClasses = $this->_getTableDataFlat(
+			"users_to_courses",
+			"classe_id",
+			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
+		);
+		/*
+		$xentifyModule = $this->loadModule("xentify");
+		$user = $this->getCurrentUser();
+		*/
+		foreach ($news as $key => $noticia) {
+			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
+				unset($news[$key]);
+			//} elseif ($ajax && $noticia['classe_id']==0) {
+			//    unset($news[$key]);
 			}
-			//return array_values($news);
-			$this->display("view.tpl");
-		} else {
-			$this->redirect($this->getSystemUrl('home'), "", 401);
+			/*
+			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
+				unset($news[$key]);
+			}
+			*/
 		}
-	}
-	/**
-	 * [ add a description ]
-	 *
-	 * @url GET /add
-	 */
-	public function addPage()
-	{
-		$currentUser    = $this->getCurrentUser(true);
-
-		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
-		$this->putModuleScript("models.news");
-		$this->putModuleScript("views.news.add");
-
-		$this->putItem("page_title", self::$t->translate('Announcements'));
-		$this->putItem("page_subtitle", self::$t->translate('Manage, review and publish your Announcements'));
-
-		//return array_values($news);
-		$this->display("form.tpl");
+		return array_values($news);
 	}
 
-	/**
-	 * [ add a description ]
-	 *
-	 * @url GET /edit/:id
-	 */
-	public function editPage($id)
-	{
-		$currentUser    = $this->getCurrentUser(true);
 
-		$editItem = $this->model("news")->getItem($id);
-		// TODO CHECK PERMISSION FOR OBJECT
-
-		$this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
-
-		// TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-		// Ex:
-		// $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-		$this->putBlock("permission.add");
-
-		$this->putModuleScript("models.news");
-		$this->putModuleScript("views.news.edit", array('id' => $id));
-
-		$this->putItem("page_title", self::$t->translate('Announcements'));
-		$this->putItem("page_subtitle", self::$t->translate('Manage, review and publish your Announcements'));
-
-		$this->putItem("form_action", $_SERVER['REQUEST_URI']);
-		//$this->putItem("entity", $editItem);
-
-		//return array_values($news);
-		$this->display("form.tpl");
-	}
 
 }
 

@@ -1,4 +1,4 @@
-<div class="panel-group accordion scrollable" id="tutoria-accordion">
+<div class="scroller panel-group accordion widget-block-view-container"  data-height="200px" data-always-visible="1" data-rail-visible="1">
 </div>
 <form id="tutoria-widget-form" action="#">
    <div class="chat-form">
@@ -20,7 +20,7 @@
 <script type="text/template" id="tutoria-item-template">
    <% var has_answer = _.has(model, 'answer') && !_.isEmpty(model.answer.answer); %>
 
-   <div class="panel panel-default <% if (model.approved == 0 && !has_answer) { %>danger-stripe<% } else if (!has_answer) {  %>warning-stripe<% } else { %>default-stripe<% } %>">
+   <div class="panel panel-default <% if (model.approved == 0 && !has_answer) { %><% } else if (!has_answer) {  %><% } else { %><% } %>">
       <div class="panel-heading">
          <h4 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#tutoria-accordion" href="#tutoria-accordion-panel-<%= model.id %>">

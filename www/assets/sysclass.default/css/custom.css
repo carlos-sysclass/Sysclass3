@@ -987,3 +987,10 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
     padding-bottom: 10px;
 }
 
+.modal-backdrop {
+     z-index: 0 !important;
+}
+
+.full-width {
+    width: 100% !important;
+}

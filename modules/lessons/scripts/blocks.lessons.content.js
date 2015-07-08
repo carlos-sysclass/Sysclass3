@@ -685,7 +685,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             onRemove : function(e) {
                 var id = $(e.currentTarget).data("questionId");
-                alert(id);
                 this.collection.remove(id);
 
             },
@@ -1049,7 +1048,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
-            alert(1);
             mod.lessonContentCollection.fetch();
         });
 

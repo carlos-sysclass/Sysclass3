@@ -1,4 +1,215 @@
-$SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
+$SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
+
+    /* UTILITY CLASSES */
+    mod.blockViewItemClass = Backbone.View.extend({
+        initialize: function(opt) {
+            console.info('portlet/blockViewItemClass::initialize');
+            Marionette.triggerMethodOn(this, "beforeInitialize");
+
+            this.portlet = opt.portlet;
+            this.model_index = opt.model_index;
+
+            Marionette.triggerMethodOn(this, "initialize");
+        },
+        render : function(e) {
+            console.info('portlet/blockViewItemClass::render');
+            Marionette.triggerMethodOn(this, "beforeRender");
+
+            this.$el.html(
+                this.template(_.extend(this.model.toJSON(), {
+                    model_index : this.model_index
+                }))
+            );
+
+            Marionette.triggerMethodOn(this, "render");
+            return this;
+        }
+    });
+
+    mod.blockViewClass = Backbone.View.extend({
+        childViewClass : mod.blockViewItemClass,
+        childContainer : null,
+        initialize: function(opt) {
+            console.info('portlet/blockViewClass::initialize');
+            Marionette.triggerMethodOn(this, "beforeInitialize");
+
+            if (!_.isUndefined(this.collection)) {
+                this.listenTo(this.collection, 'sync', this.render.bind(this));
+                this.listenTo(this.collection, 'add', this.addOne.bind(this));
+            } else if (!_.isUndefined(this.model)) {
+                this.listenTo(this.model, 'sync', this.render.bind(this));
+            }
+
+            this.portlet = opt.portlet;
+
+            Marionette.triggerMethodOn(this, "initialize");
+        },
+        render : function(e) {
+            console.info('portlet/blockViewClass::render');
+            Marionette.triggerMethodOn(this, "beforeRender");
+
+            var container = this.$el;
+            if (!_.isNull(this.childContainer)) {
+                container = this.$(this.childContainer);
+            }
+            container.empty();
+
+            console.warn(this.collection);
+
+            if (!_.isUndefined(this.collection) && this.collection.size() === 0) {
+                this.$el.append(this.nofoundTemplate());
+            } else {
+                var self = this;
+
+                if (!_.isUndefined(this.template)) {
+                    container.html(
+                        this.template(this.model.toJSON())
+                    );
+                } else {
+                    this.collection.each(function(model, i) {
+                        console.warn(model);
+                        var childView = new self.childViewClass({
+                            model : model,
+                            portlet : self.portlet,
+                            model_index : i
+                        });
+                        console.warn(childView);
+                        console.warn(childView.render().el);
+                        container.append(childView.render().el);
+                    });
+                }
+                app.module("ui").refresh(container);
+            }
+
+            Marionette.triggerMethodOn(this, "render");
+        },
+        addOne : function(model) {
+            var childView = new this.childViewClass({
+                model   : model,
+                portlet : this.portlet
+            });
+            self.$el.append(childView.render().el);
+        }
+    });
+    mod.widgetViewClass = Backbone.View.extend({
+        collectionClass : null,
+        blockViewClass : mod.blockViewClass,
+        blockView : null,
+        events : {
+            'click .portlet-title > .tools > a.fullscreen'      : 'goFullScreen',
+            'click .portlet-title > .tools > a.restorescreen'   : 'goRestoreScreen'
+        },
+        initialize: function() {
+            console.info('portlet/widgetViewClass::initialize');
+            if (this.$el.isOnScreen(1, 0.3)) {
+                //$(document).off("scroll resize");
+                // CALl VIEW START
+                this.start();
+            } else {
+
+                this.scrollEvent = $(document).on("scroll."+this.cid + " resize"+this.cid, function(e) {
+                    console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
+                    if (this.$el.isOnScreen(1, 0.3)) {
+                        $(document).off("scroll."+this.cid + " resize"+this.cid);
+                        // CALl VIEW START
+                        this.start();
+                    }
+
+                }.bind(this));
+            }
+        },
+        start : function() {
+            console.info('portlet/widgetViewClass::start');
+            //this.triggerMethod("beforeStart");
+            Marionette.triggerMethodOn(this, "beforeStart");
+
+            // CREATE SUB-VIEWS AND FETCH MODELS AND COLLECTIONS
+            this.collection = new this.collectionClass();
+
+            this.blockView = new this.blockViewClass({
+                collection : this.collection,
+                el: this.$(".widget-block-view-container"),
+                portlet : this.$el
+            });
+
+            this.collection.fetch();
+            Marionette.triggerMethodOn(this, "start");
+        },
+        goFullScreen : function(e) {
+            if (jQuery(e.currentTarget).is(".disabled")) {
+                return false;
+            }
+            var self = this;
+            var timeout = 1000;
+
+            //var type = portlet.data("portlet-type");
+
+            var canGoFullscreen = Marionette.triggerMethodOn(this, "beforeFullScreen") !== false;
+
+            if (canGoFullscreen) {
+                var column = this.$el.closest("div[class^='col-lg-']");
+
+                var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet").not(this.$el);
+
+
+                portlets.fadeOut({
+                    duration: timeout,
+                    start : function() {
+                        self.prevScroolTop = $("html,body").scrollTop();
+                    }
+                });
+                portlets.promise().done(function() {
+                    $("html,body").animate({ scrollTop: 0 }, 400, null, function() {
+                        column.addClass("full-width", {
+                            duration : timeout
+                        });
+                    });
+
+                    $(e.currentTarget).removeClass("fullscreen").addClass("restorescreen");
+                    $(e.currentTarget).removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+
+                    self.$el.fadeIn(timeout/2, function() {
+                        Marionette.triggerMethodOn(self, "fullScreen");
+                    }).addClass("portlet-fullscreen");
+                });
+
+            }
+        },
+        goRestoreScreen : function(e) {
+            if (jQuery(e.currentTarget).is(".disabled")) {
+                return false;
+            }
+            var self = this;
+            var timeout = 1000;
+
+            //var type = portlet.data("portlet-type");
+
+            var canRestoreScreen = Marionette.triggerMethodOn(this, "beforeRestoreScreen") !== false;
+
+            if (canRestoreScreen) {
+                var column = this.$el.closest("div[class^='col-lg-']");
+
+                var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet").not(this.$el);
+
+                column.removeClass("full-width", timeout, null, function() {
+                    portlets.fadeIn(timeout, function() {
+
+                        $(e.currentTarget).removeClass("restorescreen").addClass("fullscreen");
+                        $(e.currentTarget).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+
+
+                        $("html,body").animate({ scrollTop: self.prevScroolTop }, 400, null, function() {
+                            self.$el.removeClass("portlet-fullscreen");
+                            Marionette.triggerMethodOn(self, "restoreScreen");
+                        });
+
+                    });
+
+                });
+            }
+        }
+    });
+
 
 	mod.triggerSubMethod = function(type, method, e, portlet, data) {
 		if (mod.submodules[type] != undefined) {
@@ -45,59 +256,6 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
     /*
 	var oldColumn = "";
     var timeout = 1000;
-
-	mod.onFullscreen = function(e, portlet) {
-		if (jQuery(e.currentTarget).is(".disabled")) {
-        	return false;
-        }
-        var type = portlet.data("portlet-type");
-
-		if (mod.triggerSubMethod(type, "fullscreen", e, portlet)) {
-            var column = $(e.currentTarget).parents(".portlet").closest("div[class^='col-lg-']");
-            console.warn(e.currentTarget, column);
-            var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet");
-
-			jQuery(e.currentTarget).removeClass("fullscreen").addClass("normalscreen");
-            jQuery(e.currentTarget).removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
-
-            for(i = 1; i <=12; i++) {
-            	if (column.hasClass('col-lg-' + i)) {
-                	oldColumn = 'col-lg-' + i;
-                    break;
-                }
-            }
-
-            portlets.fadeOut(timeout/2, function() {
-                column.removeClass(oldColumn).addClass("col-lg-12");
-                portlet.fadeIn(timeout/2, function() {
-                    mod.triggerSubMethod(type, "resized", e, portlet);
-                }).addClass("portlet-fullscreen");
-
-            });
-        }
-	};
-	mod.onRestorescreen = function(e, portlet) {
-		if (jQuery(e.currentTarget).is(".disabled")) {
-        	return false;
-        }
-        var type = portlet.data("portlet-type");
-
-		if (mod.triggerSubMethod(type, "restorescreen", e, portlet)) {
-            var column = jQuery(e.currentTarget).closest("div[class^='col-lg-']");
-            var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet");
-
-			jQuery(e.currentTarget).removeClass("normalscreen").addClass("fullscreen");
-            jQuery(e.currentTarget).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-
-            portlet.removeClass("portlet-fullscreen").fadeOut(timeout/2, function() {
-                column.removeClass("col-lg-12").addClass(oldColumn);
-                portlets.fadeIn(timeout/2, function() {
-                    mod.triggerSubMethod(type, "resized", e, portlet);
-                });
-            } );
-
-        }
-	};
 
 	mod.onReload = function(e, portlet) {
 		if (jQuery(e.currentTarget).is(".disabled")) {
@@ -179,6 +337,7 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 		// BINDING PORTLET EVENTS
 
 		// Handles portlet tools & actions
+        /*
 		jQuery('body').on('click', '.portlet > .portlet-title > .tools > .collapse', function (e) {
             e.preventDefault();
 			var portlet = jQuery(this).closest(".portlet");
@@ -204,16 +363,20 @@ $SC.module("portlet", function(mod, MyApp, Backbone, Marionette, $, _){
 			var portlet = jQuery(this).closest(".portlet");
 			mod.triggerMethod("reload", e, portlet);
         });
+        */
+        /*
 		jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.fullscreen', function (e) {
             e.preventDefault();
 			var portlet = jQuery(this).closest(".portlet");
 			mod.triggerMethod("fullscreen", e, portlet);
 		});
+
 		jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.normalscreen', function (e) {
             e.preventDefault();
 			var portlet = jQuery(this).closest(".portlet");
 			mod.triggerMethod("restorescreen", e, portlet);
 		});
+        */
         // CREATE SEARCH POPOVERS
 		jQuery('.portlet > .portlet-title > .tools > a.search').each(function (e) {
             jQuery(this).popover(
