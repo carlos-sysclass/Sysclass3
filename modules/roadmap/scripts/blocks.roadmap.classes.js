@@ -109,20 +109,18 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 "click .view-item-detail": "toogleDetail",
                 "confirmed.bs.confirmation .delete-item-action" : "delete"
             },
-            template : _.template($("#classes-edit-item").html(), {variable: 'data'}),
+            template : _.template($("#classes-edit-item").html(), null, {variable: 'data'}),
             tagName : "li",
             className : "list-file-item draggable blue-stripe",
             initialize: function(opt) {
                 console.info('blocks.roadmap.classes/roadmapBlockClassItemViewClass::initialize');
-
                 this.opened = opt.opened ? opt.opened : false;
-
                 //this.listenTo(this.model, 'sync', this.render.bind(this));
             },
             render : function() {
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("id")) {
-                    if (this.model.get("active") == 0) {
+                    if (this.model.get("active") === 0) {
                         this.$el.removeClass("green-stripe");
                         this.$el.removeClass("blue-stripe");
                         this.$el.addClass("red-stripe");
@@ -307,7 +305,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 "click .toogle-visible-item" : "toggleVisible",
                 "confirmed.bs.confirmation .delete-item-action" : "delete"
             },
-            template : _.template($("#period-edit-item").html(), {variable: 'data'}),
+            template : _.template($("#period-edit-item").html(), null, {variable: 'data'}),
             tagName : "div",
             className : "panel panel-default period-item draggable",
             initialize: function(opt) {
@@ -567,6 +565,8 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             model : data.courseModel
         });
 
+
+
         classesCollection.fetch();
         periodsCollection.fetch();
 
@@ -576,6 +576,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
 
     app.module("crud.views.edit").on("start", function() {
         var self = this;
+        console.warn(this.getForm());
 
         mod.listenToOnce(this.getForm(), "form:rendered", function() {
             mod.start({

@@ -46,7 +46,7 @@ crud:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["roadmap.classes", "roadmap.grouping"]
       #blocks: ["roadmap.classes"]
-      scripts: ["views.courses.edit"]
+      #scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
         page_subtitle: Edit your course info
