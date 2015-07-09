@@ -433,6 +433,7 @@
 										<tbody>
 										</tbody>
 									</table>
+									<div class="exercises-container"></div>
 							   	</div>
 						   	</div>
 						   	<!--
@@ -721,10 +722,82 @@
 	</td>
 </script>
 
-<script type="text/template" id="tab_lesson_exercises-item-question-template">
-
+<script type="text/template" id="tab_lesson_exercises-details-template">
+	<hr />
+	<ul class="list-group question-container">
+	</ul>
+	<div class="text-center">
+		<button class="btn btn-success" type="button">{translateToken value="Complete"}</button>
+	</div>
 </script>
 
+<script type="text/template" id="tab_lesson_exercises-question-combine-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+        <div class="alert alert-warning" role="alert">
+            Not implemented yet!
+        </div>
+	</div>
+</script>
+<script type="text/template" id="tab_lesson_exercises-question-true_or_false-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="The answer is..."}</label>
+			<input type="checkbox" name="answer[<%= model.id %>]" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='TRUE'}" data-off-color="danger" data-off-text="{translateToken value='FALSE'}" checked="checked" value="1" data-value-unchecked="0">
+		</div>
+	</div>
+</script>
+<script type="text/template" id="tab_lesson_exercises-question-simple_choice-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+        <div class="alert alert-warning" role="alert">
+            Not implemented yet!
+        </div>
+	</div>
+</script>
+<script type="text/template" id="tab_lesson_exercises-question-multiple_choice-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+        <div class="alert alert-warning" role="alert">
+            Not implemented yet!
+        </div>
+	</div>
+</script>
+<script type="text/template" id="tab_lesson_exercises-question-fill_blanks-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+        <div class="alert alert-warning" role="alert">
+            Not implemented yet!
+        </div>
+	</div>
+</script>
+<script type="text/template" id="tab_lesson_exercises-question-free_text-template">
+	<h5 class="section-title">
+		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
+		<i><%= model.question %></i>
+	</h5>
+	<div class="answer-container">
+        <div class="alert alert-warning" role="alert">
+            Not implemented yet!
+        </div>
+	</div>
+</script>
 
 
 <!--

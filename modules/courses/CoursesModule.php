@@ -112,15 +112,16 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('courses.overview', $widgetsIndexes)) {
 			// TODO MOVE TO YOUR OWN COMPONENT
-			$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
-			$this->putComponent("fuelux-tree");
-			$this->putComponent("jquery-nestable");
+			//$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+			//$this->putComponent("fuelux-tree");
+			//$this->putComponent("jquery-nestable");
+            $this->putComponent("bootstrap-switch");
 
 			$this->putScript("plugins/holder");
 
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
-			$this->putModuleScript("models.courses");
+			//$this->putModuleScript("models.courses");
 			$this->putModuleScript("widget.courses");
 
 

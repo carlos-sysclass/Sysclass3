@@ -23,7 +23,7 @@ dashboard:
                     xs: 12
     widgets:
         1: ["users.overview", "courses.overview", "news.latest", "tutoria.widget" ]
-        #1: ["news.latest"]
+        #1: ["courses.overview"]
         2: ["institution.overview", "advisor.overview", "advertising", "messages.contactus", "messages.help", "messages.improvements"]
         3: ["calendar"]
     sortable: false

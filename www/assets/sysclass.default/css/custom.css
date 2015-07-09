@@ -994,3 +994,14 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 .full-width {
     width: 100% !important;
 }
+
+.question-container {
+    border: 1px solid #cccccc;
+    padding: 10px;
+}
+.question-container li {
+    border-bottom: 1px solid #aaaaaa;
+}
+.question-container li:last-child {
+    border-bottom: none;
+}

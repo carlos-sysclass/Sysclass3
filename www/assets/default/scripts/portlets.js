@@ -8,6 +8,7 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
 
             this.portlet = opt.portlet;
             this.model_index = opt.model_index;
+            this.parent = opt.parent;
 
             Marionette.triggerMethodOn(this, "initialize");
         },
@@ -54,10 +55,10 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
             }
             container.empty();
 
-            console.warn(this.collection);
-
             if (!_.isUndefined(this.collection) && this.collection.size() === 0) {
                 this.$el.append(this.nofoundTemplate());
+
+                Marionette.triggerMethodOn(this, "renderEmpty");
             } else {
                 var self = this;
 
@@ -67,21 +68,20 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
                     );
                 } else {
                     this.collection.each(function(model, i) {
-                        console.warn(model);
                         var childView = new self.childViewClass({
                             model : model,
                             portlet : self.portlet,
-                            model_index : i
+                            model_index : i,
+                            parent : self
                         });
-                        console.warn(childView);
-                        console.warn(childView.render().el);
                         container.append(childView.render().el);
                     });
                 }
                 app.module("ui").refresh(container);
+                Marionette.triggerMethodOn(this, "render");
             }
 
-            Marionette.triggerMethodOn(this, "render");
+
         },
         addOne : function(model) {
             var childView = new this.childViewClass({
@@ -192,8 +192,9 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
                 var portlets = $(".page-content .row > div[class^='col-lg-'] > .panel, .page-content .row > div[class^='col-lg-'] > .portlet").not(this.$el);
 
                 column.removeClass("full-width", timeout, null, function() {
-                    portlets.fadeIn(timeout, function() {
+                    portlets.fadeIn(timeout);
 
+                    portlets.promise().done(function() {
                         $(e.currentTarget).removeClass("restorescreen").addClass("fullscreen");
                         $(e.currentTarget).removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 
@@ -202,7 +203,6 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
                             self.$el.removeClass("portlet-fullscreen");
                             Marionette.triggerMethodOn(self, "restoreScreen");
                         });
-
                     });
 
                 });
