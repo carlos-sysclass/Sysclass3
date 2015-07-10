@@ -315,7 +315,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
      */
     public function setLessonOrderAction($class_id)
     {
-        $modelRoute = "classes/lessons/collection";
+        $modelRoute = "base/lessons";
 
         $itemsCollection = $this->model($modelRoute);
         // APPLY FILTER
@@ -330,7 +330,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
         $data = $this->getHttpData(func_get_args());
 
-        if ($itemsCollection->setContentOrder($class_id, $data['position'])) {
+        if ($itemsCollection->setOrder($class_id, $data['position'])) {
             return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
         } else {
             return $this->invalidRequestError(self::$t->translate($messages['success']), "success");

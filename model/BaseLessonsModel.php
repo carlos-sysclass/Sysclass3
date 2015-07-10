@@ -1,7 +1,7 @@
 <?php
 class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableModel {
 
-    protected $lesson_type = null;
+    protected $lesson_type = FALSE;
 
     public function init()
     {
@@ -43,10 +43,9 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
 
     public function getItems()
     {
-        if (!is_null()) {
+        if ($this->lesson_type !== FALSE) {
             $this->where[] = "l.type = '{$this->lesson_type}'";
         }
-
 
         $data = parent::getItems();
 
@@ -59,7 +58,7 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
 
     public function getItem($identifier)
     {
-        if (!is_null()) {
+        if ($this->lesson_type !== FALSE) {
             $this->where[] = "l.type = '{$this->lesson_type}'";
         }
 
@@ -70,14 +69,19 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
 
     public function addItem($data)
     {
-        $data['type'] = $this->lesson_type;
+        if ($this->lesson_type !== FALSE) {
+            $data['type'] = $this->lesson_type;
+        }
         $data['instructor_id'] = json_encode($data['instructor_id']);
         return parent::addItem($data, $identifier);
     }
 
     public function setItem($data, $identifier)
     {
-        $data['type'] = $this->lesson_type;
+        if ($this->lesson_type !== FALSE) {
+            $data['type'] = $this->lesson_type;
+        }
+
         $data['instructor_id'] = json_encode($data['instructor_id']);
         return parent::setItem($data, $identifier);
     }
@@ -91,7 +95,7 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
     }
 
     public function setOrder($class_id, array $order_ids) {
-        $this->resetContentOrder($class_id);
+        $this->resetOrder($class_id);
         foreach($order_ids as $index => $lesson_id) {
             $this->setItem(array(
                 'position' => $index + 1

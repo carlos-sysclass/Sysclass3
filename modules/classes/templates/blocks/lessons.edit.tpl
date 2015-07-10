@@ -1,4 +1,4 @@
-<div id="block_lessons_edit" data-widget-id="lessons-edit-widget" data-class-id="">
+<div id="block_lessons_edit" data-widget-id="lessons-edit-widget">
     <!--
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -17,52 +17,144 @@
             <ul class="list-group ui-sortable margin-bottom-10">
 
             </ul>
-            <a class="btn btn-sm btn-primary btn-link add-item-action" href="javascript: void(0);">
+            <a class="btn btn-sm btn-primary btn-link add-lesson-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create Lesson"}
             </a>
+            <a class="btn btn-sm btn-success btn-link add-test-action" href="javascript: void(0);">
+                <i class="fa fa-plus"></i>
+                {translateToken value="Create Test"}
+            </a>
+            <a class="btn btn-sm btn-warning btn-link import-item-action" href="javascript: void(0);">
+                <i class="fa fa-plus"></i>
+                {translateToken value="Import Lesson"}
+            </a>
+
 
 <!--    </div> -->
         </div>
     </div>
 </div>
 
-<script type="text/template" id="lessons-edit-item">
-    <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+<script type="text/template" id="class-lesson-item-template">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+        <i class="fa fa-arrows"></i>
+    </a>
+    <span class="btn btn-sm btn-circle btn-default disabled">
+        <i class="fa fa-file"></i>
+        Lesson
+    </span>
+
+    <a href="#" class="editable-me <% if (model.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="name"
         data-send="never"
         data-original-title="Lesson Name"
         data-inputclass="form-control"
-        <% if (typeof data.id !== 'undefined') { %>
+    >
+        <%= model.name %>
+    </a>
+    <div class="list-file-item-options">
+        <% if (!_.isUndefined(model.id)) { %>
+            <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
+
+          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit lesson info">
+                <i class="fa fa-edit"></i>
+            </a>
+            <!--
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+                <i class="fa fa-info-circle"></i>
+            </a>
+            -->
+
+            <input type="checkbox" name="active-<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (model.active == "1") { %>checked="checked"<% } %> value="1">
+            <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
+                data-toggle="confirmation"
+                data-original-title="{translateToken value="Are you sure?"}"
+                data-placement="left"
+                data-singleton="true"
+                data-popout="true"
+                data-btn-ok-icon="fa fa-trash"
+                data-btn-ok-class="btn-sm btn-danger"
+                data-btn-cancel-icon="fa fa-times"
+                data-btn-cancel-class="btn-sm btn-warning"
+                data-btn-ok-label="{translateToken value="Yes"}"
+                data-btn-cancel-label="{translateToken value="No"}"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+        <% } else { %>
+            <a class="btn btn-sm btn-danger delete-unsaved-item-action" href="javascript: void(0);"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+
+        <% } %>
+    </div>
+    <div class="detail-container">
+        <h5 class="form-section no-margin">Details</h5>
+
+    </div>
+</script>
+
+<script type="text/template" id="class-test-item-template">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+        <i class="fa fa-arrows"></i>
+    </a>
+
+    <span class="btn btn-sm btn-circle btn-default disabled">
+        <i class="fa fa-list-ol "></i>
+        Test
+    </span>
+    <a href="#" class="editable-me <% if (model.active == "0") { %>text-danger<% } %>"
+        data-type="text"
+        data-name="name"
+        data-send="never"
+        data-original-title="Lesson Name"
+        data-inputclass="form-control"
+        <% if (typeof model.id !== 'undefined') { %>
         <% } else { %>
         <% } %>
     >
-        <%= data.name %>
+        <%= model.name %>
     </a>
     <div class="list-file-item-options">
-        <% if (typeof data.id !== 'undefined') { %>
-            <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= data.id %>" data-original-title="Edit lesson info">
+        <% if (!_.isUndefined(model.id)) { %>
+            <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
+
+            <a class="btn btn-sm btn-primary tooltips" href="/module/tests/edit/<%= model.id %>" data-original-title="Edit Test info">
                 <i class="fa fa-edit"></i>
             </a>
-            <input type="checkbox" name="active-<%= data.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
+            <!--
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+                <i class="fa fa-info-circle"></i>
+            </a>
+            -->
 
+            <input type="checkbox" name="active-<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (model.active == "1") { %>checked="checked"<% } %> value="1">
+
+
+            <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
+                data-toggle="confirmation"
+                data-original-title="{translateToken value="Are you sure?"}"
+                data-placement="left"
+                data-singleton="true"
+                data-popout="true"
+                data-btn-ok-icon="fa fa-trash"
+                data-btn-ok-class="btn-sm btn-danger"
+                data-btn-cancel-icon="fa fa-times"
+                data-btn-cancel-class="btn-sm btn-warning"
+                data-btn-ok-label="{translateToken value="Yes"}"
+                data-btn-cancel-label="{translateToken value="No"}"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
+        <% } else { %>
+            <a class="btn btn-sm btn-danger delete-unsaved-item-action" href="javascript: void(0);"
+            >
+                <i class="fa fa-trash"></i>
+            </a>
         <% } %>
-        <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
-            data-toggle="confirmation"
-            data-original-title="{translateToken value="Are you sure?"}"
-            data-placement="left"
-            data-singleton="true"
-            data-popout="true"
-            data-btn-ok-icon="fa fa-trash"
-            data-btn-ok-class="btn-sm btn-danger"
-            data-btn-cancel-icon="fa fa-times"
-            data-btn-cancel-class="btn-sm btn-warning"
-            data-btn-ok-label="{translateToken value="Yes"}"
-            data-btn-cancel-label="{translateToken value="No"}"
-        >
-            <i class="fa fa-trash"></i>
-        </a>
     </div>
     <div class="detail-container">
         <h5 class="form-section no-margin">Details</h5>

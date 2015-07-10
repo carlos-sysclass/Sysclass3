@@ -834,6 +834,11 @@ table.users-panel-notification-table > thead > tr > td {
     border-left: 3px solid #333333;
 }
 
+.list-file-item.test-item {
+    background: #efe9e9;
+}
+
+
 
 .list-file-item-options {
     float: right;
@@ -843,7 +848,7 @@ table.users-panel-notification-table > thead > tr > td {
     margin: 0 4px 0 0;
 }
 .list-file-item-options .btn-sm, .list-file-item-options .bootstrap-switch-item-option {
-    margin-top: -3px;
+    /* margin-top: -3px; */
 }
 
 

@@ -1,54 +1,17 @@
-$SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.startWithParent = false;
 
     mod.on("start", function(opt) {
 
-		mod.lessonModelClass = Backbone.Model.extend({
-			urlRoot : function() {
-				if (this.get("id")) {
-					return "/module/lessons/item/me";
-				} else {
-					return "/module/lessons/item/me?redirect=0";
-				}
-			}
-		});
-
-	    mod.lessonsCollectionClass = Backbone.Collection.extend({
-	        initialize: function(opt) {
-	            this.class_id = opt.class_id;
-	            this.listenTo(this, "add", function(model, collection, opt) {
-	                model.set("class_id", this.class_id);
-	            });
-	            this.listenTo(this, "remove", function(model, collection, opt) {
-	                console.warn(model);
-	            });
-	        },
-	        model : mod.lessonModelClass,
-	        url: function() {
-	            return "/module/lessons/items/me/default/" + JSON.stringify({ class_id : this.class_id });
-	        },
-	        setContentOrder : function(order) {
-	            $.ajax(
-	                "/module/classes/items/lessons/set-order/" + this.class_id,
-	                {
-	                    data: {
-	                        position: order
-	                    },
-	                    method : "PUT"
-	                }
-	            );
-	        }
-	    });
-
-	    mod.classLessonsItemViewClass = Backbone.View.extend({
+	    var baseClassItemViewClass = Backbone.View.extend({
 			events : {
 				"switchChange.bootstrapSwitch .bootstrap-switch-me" : "toogleActive",
-				"confirmed.bs.confirmation .delete-item-action" : "delete"
+				"confirmed.bs.confirmation .delete-item-action" : "delete",
+				"click .delete-unsaved-item-action" : "delete"
 			},
-	    	template : _.template($("#lessons-edit-item").html(), {variable: 'data'}),
 	    	tagName : "li",
-	    	className : "list-file-item draggable blue-stripe",
+	    	className : "list-file-item blue-stripe",
 			initialize: function(opt) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
 
@@ -134,17 +97,28 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 			}
 	    });
 
+		var classLessonItemViewClass = baseClassItemViewClass.extend({
+	    	template : _.template($("#class-lesson-item-template").html(), null, {variable: 'model'})
+		});
+		var classTestItemViewClass = baseClassItemViewClass.extend({
+	    	template : _.template($("#class-test-item-template").html(), null, {variable: 'model'}),
+	    	className : "list-file-item blue-stripe test-item"
+		});
+
 		mod.classLessonsViewClass = Backbone.View.extend({
 			events : {
-				"click .add-item-action" : "addItem",
-				"confirmed.bs.confirmation .remove-item-action" : "remove"
+				"click .add-lesson-action" : "addLessonItem",
+				"click .add-test-action" : "addTestItem"
 			},
 			initialize: function(opt) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
 
 				//this.param = opt.param;
-
+				//
 				this.listenToOnce(this.collection, 'sync', this.render.bind(this));
+
+                this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
+                this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
 
 				this.initializeSortable();
 			},
@@ -153,8 +127,8 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
 				this.$(".list-group").sortable({
 	                //connectWith: ".list-group",
-	                //handle : ".drag-handler",
-	                items: "li.list-file-item.draggable",
+	                handle : ".drag-handler",
+	                items: "li.list-file-item",
 	                opacity: 0.8,
 	                // axis : "y",
 	                placeholder: 'list-file-item placeholder',
@@ -166,6 +140,8 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
                         var contentOrder = $(this).sortable("toArray", {attribute : "data-lesson-id"});
 
                         self.collection.setContentOrder(contentOrder);
+
+                        self.refreshCounters();
                     },
 	                // helper : 'original',
 	                /*
@@ -227,16 +203,26 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 
                 });
             },
-			addItem : function(e) {
+            refreshCounters : function() {
+                console.info('blocks.classes.lessons/classLessonsViewClass::refreshCounters');
+                var total = this.collection.size();
+                //alert(total);
+                this.$("ul > li.list-file-item .total").html(total);
+
+                this.$("ul > li.list-file-item").each(function(i, item) {
+                    $(this).find(".counter").html(i+1);
+                });
+            },
+			addLessonItem : function(e) {
 				var self = this;
 
-				var itemModel = new mod.lessonModelClass({
+				var itemModel = new mod.models.lesson({
 					active : 1
 				});
 
 				self.collection.add(itemModel);
 
-				var classLessonsNewItemView = new mod.classLessonsItemViewClass({
+				var classLessonsNewItemView = new classLessonItemViewClass({
 					model : itemModel,
 					opened : true
 				});
@@ -253,35 +239,64 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				*/
 				classLessonsNewItemView.start();
  			},
+			addTestItem : function(e) {
+				var self = this;
+
+				var itemModel = new mod.models.test({
+					active : 1
+				});
+
+				self.collection.add(itemModel);
+
+				var classLessonsNewItemView = new classTestItemViewClass({
+					model : itemModel,
+					opened : true
+				});
+
+				$(classLessonsNewItemView.render().el).appendTo( this.$("ul") );
+
+				classLessonsNewItemView.start();
+ 			},
+
 			addOne : function(model) {
 				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
 
 				var self = this;
+				var classItemView = null;
 
+				if (model.get("type") == "lesson") {
+					classItemView = new classLessonItemViewClass({
+						model : model
+					});
+				} else if (model.get("type") == "test") {
+					classItemView = new classTestItemViewClass({
+						model : model
+					});
+				}
+				if (!_.isNull(classItemView)) {
+					this.listenTo(classItemView, "lesson:removed", function(model) {
+						self.collection.remove(model);
+					});
+					$(classItemView.render().el).appendTo( this.$("ul") );
 
-				var classLessonsItemView = new mod.classLessonsItemViewClass({
-					model : model
-				});
-
-				this.listenTo(classLessonsItemView, "lesson:removed", function(model) {
-					self.collection.remove(model);
-				});
-				$(classLessonsItemView.render().el).appendTo( this.$("ul") );
-
-				classLessonsItemView.start();
-
-
+					classItemView.start();
+				}
 			},
 			render: function() {
 				console.info('blocks.classes.lessons.edit/classLessonsView::render');
 
 				var self = this;
 
+				console.log(this.collection.toJSON());
+
 				this.collection.each(function(model, i) {
 					self.addOne(model);
 				});
+
+				this.refreshCounters();
+
 				app.module("ui").refresh( this.$("ul") );
-			},
+			}/*,
 			remove : function(e) {
 				var fileId = $(e.currentTarget).data("fileId");
 				var fileObject = new mod.lessonFileModelClass();
@@ -289,6 +304,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
 				fileObject.destroy();
 				$(e.currentTarget).parents("li").remove();
 			}
+			*/
 		});
 
 
@@ -324,7 +340,7 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
     });
 
     mod.createBlock = function(el, data) {
-		var lessonsCollection = new mod.lessonsCollectionClass({
+		var lessonsCollection = new mod.collections.lesson({
 			class_id : data.class_id
 		});
 
@@ -334,8 +350,69 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
             model : data.entityModel
 		});
 
-
 		lessonsCollection.fetch();
+    };
+
+    this.models = {
+    	lesson : Backbone.Model.extend({
+    		defaults : {
+    			type : "lesson"
+    		},
+			urlRoot : function() {
+				if (this.get("id")) {
+					return "/module/lessons/item/me";
+				} else {
+					return "/module/lessons/item/me?redirect=0";
+				}
+			}
+		}),
+    	test : Backbone.Model.extend({
+    		defaults : {
+    			type : "test"
+    		},
+			urlRoot : function() {
+				if (this.get("id")) {
+					return "/module/tests/item/me";
+				} else {
+					return "/module/tests/item/me?redirect=0";
+				}
+			}
+		})
+    };
+
+    this.collections = {
+    	lesson : Backbone.Collection.extend({
+	        initialize: function(opt) {
+	            this.class_id = opt.class_id;
+	            this.listenTo(this, "add", function(model, collection, opt) {
+	                model.set("class_id", this.class_id);
+	            });
+	            this.listenTo(this, "remove", function(model, collection, opt) {
+	                console.warn(model);
+	            });
+	        },
+	        model : function(info) {
+	        	if (info.type == 'lesson') {
+	        		return new mod.models.lesson(info);
+	        	} else if (info.type == 'test') {
+	        		return new mod.models.test(info);
+	        	}
+	        },
+	        url: function() {
+	            return "/module/lessons/items/lesson-and-test/default/" + JSON.stringify({ class_id : this.class_id, type : ['test','lesson'] });
+	        },
+	        setContentOrder : function(order) {
+	            $.ajax(
+	                "/module/classes/items/lessons/set-order/" + this.class_id,
+	                {
+	                    data: {
+	                        position: order
+	                    },
+	                    method : "PUT"
+	                }
+	            );
+	        }
+	    })
     };
 
     app.module("crud.views.edit").on("start", function() {
@@ -347,6 +424,4 @@ $SC.module("blocks.classes.lessons.edit", function(mod, app, Backbone, Marionett
             });
         });
     });
-
-    //
 });
