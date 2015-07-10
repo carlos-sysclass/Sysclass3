@@ -116,6 +116,8 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 			//$this->putComponent("fuelux-tree");
 			//$this->putComponent("jquery-nestable");
             $this->putComponent("bootstrap-switch");
+            $this->putComponent("icheck");
+
 
 			$this->putScript("plugins/holder");
 

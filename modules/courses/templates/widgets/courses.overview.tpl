@@ -760,9 +760,15 @@
 		<i><%= model.question %></i>
 	</h5>
 	<div class="answer-container">
-        <div class="alert alert-warning" role="alert">
-            Not implemented yet!
-        </div>
+		<ul class="list-group">
+		<% _.each(model.options, function(option, index) { %>
+			<li>
+				<label>
+					<input type="radio" name="answer[<%= model.id %>]" class="icheck-me" data-skin="square" data-color="green" value="<%= option.index %>"> <%= option.choice %>
+				</label>
+			</li>
+		<% }); %>
+		</ul>
 	</div>
 </script>
 <script type="text/template" id="tab_lesson_exercises-question-multiple_choice-template">
@@ -771,9 +777,15 @@
 		<i><%= model.question %></i>
 	</h5>
 	<div class="answer-container">
-        <div class="alert alert-warning" role="alert">
-            Not implemented yet!
-        </div>
+		<ul class="list-group">
+		<% _.each(model.options, function(option, index) { %>
+			<li>
+				<label>
+					<input type="checkbox" name="answer[<%= model.id %>]" class="icheck-me" data-skin="square" data-color="green" value="<%= option.index %>"> <%= option.choice %>
+				</label>
+			</li>
+		<% }); %>
+		</ul>
 	</div>
 </script>
 <script type="text/template" id="tab_lesson_exercises-question-fill_blanks-template">

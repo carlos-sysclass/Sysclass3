@@ -109,9 +109,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
 
-                $languages = self::$t->getItems();
+                $languages = $self::$t->getItems();
 
-                $userLanguageCode =  self::$t->getUserLanguageCode();
+                $userLanguageCode = $self::$t->getUserLanguageCode();
 
 
 

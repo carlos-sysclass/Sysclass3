@@ -42,6 +42,31 @@ class LessonsContentExerciseModel extends AbstractSysclassModel implements ISync
         parent::init();
 
     }
+
+    protected function parseItem($item)
+    {
+        $item['options'] = json_decode($item['options'], true);
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        // LOAD INSTRUCTORS
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
+        return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+        return $this->parseItem($item);
+    }
+
+
     public function addOrSetItem($data) {
         $items = $this->clear()->addFilter(array(
             'question_id'   => $data['question_id'],

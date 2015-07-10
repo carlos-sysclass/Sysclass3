@@ -90,7 +90,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
         });
 
         var questionChoiceViewClass = Backbone.View.extend({
-            template : _.template($("#question-simple_choice-item").html(), {variable: 'model'}),
+            template : _.template($("#question-simple_choice-item").html(), null, {variable: 'model'}),
             tagName : "li",
             className : "draggable margin-bottom-5",
             events : {

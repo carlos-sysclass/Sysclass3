@@ -108,8 +108,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 				var opt = {
 					checkboxClass: 'icheckbox' + skin + color,
-					radioClass: 'iradio' + skin + color,
-					increaseArea: "20%"
+					radioClass: 'iradio' + skin + color/*,
+					increaseArea: "20%"*/
 				}
 
 				$el.iCheck(opt);

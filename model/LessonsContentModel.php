@@ -39,6 +39,40 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
 
     }
 
+
+    protected function parseItem($item)
+    {
+        $item['info'] = json_decode($item['info'], true);
+
+        if ($item['content_type'] == 'exercise') {
+            // LOAD QUESTIONS
+            $innerModel = $this->model("lessons/content/exercise");
+            $item['exercise'] = $innerModel->clear()->addFilter(array(
+                'content_id' => $item['id']
+            ))->getItems();
+        }
+
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        // LOAD INSTRUCTORS
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
+        return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+        return $this->parseItem($item);
+    }
+
+    /*
     public function getItem($identifier)
     {
         $item = parent::getItem($identifier);
@@ -67,7 +101,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         }
         return $data;
     }
-
+    */
     public function addItem($data) {
         $identifier = parent::addItem($data);
 
