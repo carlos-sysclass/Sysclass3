@@ -13,7 +13,6 @@
     -->
     <div class="row">
         <div class="col-md-12">
-<!--    <div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent"> -->
             <ul class="list-group ui-sortable margin-bottom-10">
 
             </ul>
@@ -25,13 +24,12 @@
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create Test"}
             </a>
+            <!--
             <a class="btn btn-sm btn-warning btn-link import-item-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Import Lesson"}
             </a>
-
-
-<!--    </div> -->
+            -->
         </div>
     </div>
 </div>

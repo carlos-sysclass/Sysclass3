@@ -64,19 +64,53 @@
 </div>
 
 <script type="text/template" id="question-item">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+        <i class="fa fa-arrows"></i>
+    </a>
 
-    <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+    <span class="<% if (model.active == "0") { %>text-danger<% } else { %>text-primary<% } %>"
+    >
+        <%= model.question.title %>
+    </span>
+
+    <span class="btn btn-sm btn-circle btn-default disabled">
+        <!-- <i class="fa fa-question"></i> -->
+        <%= model.question.type %>
+    </span>
+    <% if (model.question.difficulty == "Easy") { %>
+        <span class="btn btn-sm btn-circle green disabled">
+            <%= model.question.difficulty %>
+        </span>
+    <% } else if (model.question.difficulty == "Normal") { %>
+        <span class="btn btn-sm btn-circle yellow disabled">
+            <%= model.question.difficulty %>
+        </span>
+    <% } else if (model.question.difficulty == "Hard") { %>
+        <span class="btn btn-sm btn-circle red disabled">
+            <%= model.question.difficulty %>
+        </span>
+    <% } else if (model.question.difficulty == "Very Hard") { %>
+        <span class="btn btn-sm btn-circle black disabled">
+            <%= model.question.difficulty %>
+        </span>
+    <% } %>
+
+    <!--
+    <a href="#" class="editable-me <% if (model.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="question.title"
         data-send="never"
         data-original-title="Class Name"
         data-inputclass="form-control"
     >
-        <%= data.question.title %>
+        <%= model.question.title %>
     </a>
-
+    -->
     <div class="list-file-item-options">
-        <% if (typeof data.id !== 'undefined') { %>
+        <% if (!_.isUndefined(model.id)) { %>
+
+
+
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
 
             <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
@@ -86,7 +120,7 @@
             <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
                 <i class="fa fa-info-circle"></i>
             </a>
-            <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
+            <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (model.active == "1") { %>checked="checked"<% } %> value="1">
             -->
 
         <% } %>
@@ -106,15 +140,15 @@
             <i class="fa fa-trash"></i>
         </a>
     </div>
-    <% if (_.has(data, 'class')) { %>
+    <% if (_.has(model, 'class')) { %>
     <div class="detail-container">
         <h5 class="form-section no-margin margin-bottom-5">Details</h5>
-        <% if (!_.isEmpty(data.class.description)) { %>
+        <% if (!_.isEmpty(model.class.description)) { %>
         <div class="row">
             <div class="col-md-12 col-sm-12">
                     <span>{translateToken value="Description"}</span>
                     <p class="">
-                        <strong><%= data.class.description %></strong>
+                        <strong><%= model.class.description %></strong>
                     </p>
             </div>
         </div>
@@ -124,21 +158,21 @@
             <div class="col-md-6 col-sm-6">
                 <p>
                     <span>{translateToken value="Total Lessons"}</span>
-                    <% if (data.class.total_lessons == 0) { %>
-                        <strong class="text-danger pull-right"><%= data.class.total_lessons %></strong>
+                    <% if (model.class.total_lessons == 0) { %>
+                        <strong class="text-danger pull-right"><%= model.class.total_lessons %></strong>
                     <% } else { %>
-                        <strong class="text-primary pull-right"><%= data.class.total_lessons %></strong>
+                        <strong class="text-primary pull-right"><%= model.class.total_lessons %></strong>
                     <% } %>
 
                 </p>
             </div>
-            <% if (_.isObject(data.class.instructors)) { %>
+            <% if (_.isObject(model.class.instructors)) { %>
             <div class="col-md-6 col-sm-6">
                 <div>
                     <span>{translateToken value="Instructors"}</span>
                     <ul class="pull-right">
                         <%
-                            var instructors = _.map(data.class.instructors, function(data) {
+                            var instructors = _.map(model.class.instructors, function(data) {
                                 return _.pick(data, "name", "surname");
                             });
                         %>

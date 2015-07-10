@@ -6,8 +6,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
         //var module_id = "questions";
         //var model_id = "me";
 
-        var module_id = "tests";
-        var model_id = "question";
+
         /*
         mod.classesCollectionClass = Backbone.Collection.extend({
             course_id : 0,
@@ -25,50 +24,6 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             }
         });
         */
-        mod.questionModelClass = Backbone.DeepModel.extend({
-            /*
-            defaults : {
-                name: "",
-                start_date : "",
-                end_date : ""
-            },
-            */
-            urlRoot : function() {
-                if (this.get("id")) {
-                    return "/module/" + module_id + "/item/" + model_id;
-                } else {
-                    return "/module/" + module_id + "/item/" + model_id + "?redirect=0";
-                }
-            }
-        });
-
-        mod.questionCollectionClass = Backbone.Collection.extend({
-            initialize: function(opt) {
-                this.lesson_id = opt.lesson_id;
-                this.listenTo(this, "add", function(model, collection, opt) {
-                    model.set("lesson_id", this.lesson_id);
-                });
-                this.listenTo(this, "remove", function(model, collection, opt) {
-                    //console.warn(model);
-                });
-            },
-            model : mod.questionModelClass,
-            url: function() {
-                return "/module/" + module_id + "/items/" + model_id + "/default/" + JSON.stringify({ lesson_id : this.lesson_id });
-            },
-            setOrder : function(order) {
-                $.ajax(
-                    "/module/" + module_id + "/items/" + model_id + "/set-order/" + this.lesson_id,
-                    {
-                        data: {
-                            position: order
-                        },
-                        method : "PUT"
-                    }
-                );
-            }
-        });
-
         mod.blockItemViewClass = Backbone.View.extend({
             events : {
                 "click .edit-item-detail" : "editItem",
@@ -76,9 +31,9 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 "click .view-item-detail": "toogleDetail",
                 "confirmed.bs.confirmation .delete-item-action" : "delete"
             },
-            template : _.template($("#question-item").html(), {variable: 'data'}),
+            template : _.template($("#question-item").html(), null, {variable: 'model'}),
             tagName : "li",
-            className : "list-file-item draggable blue-stripe",
+            className : "list-file-item blue-stripe",
             initialize: function(opt) {
                 console.info('blocks.questions.list/blockItemViewClass::initialize');
 
@@ -90,7 +45,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 console.info('blocks.questions.list/blockItemViewClass::render');
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("id")) {
-                    if (this.model.get("active") == 0) {
+                    if (this.model.get("active") === 0) {
                         this.$el.removeClass("green-stripe");
                         this.$el.removeClass("blue-stripe");
                         this.$el.addClass("red-stripe");
@@ -193,7 +148,8 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 var self = this;
 
                 this.$(".list-group").sortable({
-                    items: "li.list-file-item.draggable",
+                    items: "li.list-file-item",
+                    handle : ".drag-handler",
                     opacity: 0.8,
                     placeholder: 'list-file-item placeholder',
                     dropOnEmpty : true,
@@ -265,7 +221,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             selectQuestion : function(e, model) {
                 app.module("dialogs.questions.select").close();
 
-                var testQuestionModel = new mod.questionModelClass({
+                var testQuestionModel = new mod.models.question({
                     question_id : model.get("id"),
                     question : model.toJSON(),
                     active : 1
@@ -323,6 +279,11 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 test_id = $(this).data("testId");
             }
 
+            console.warn({
+                test_id : test_id,
+                testModel : opt.testModel
+            });
+
             if (!_.isNull(test_id)) {
                 mod.createBlock(this, {
                     test_id : test_id,
@@ -331,13 +292,10 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             }
         });
 
-
-
-
     });
 
     mod.createBlock = function(el, data) {
-        var questionCollection = new mod.questionCollectionClass({
+        var questionCollection = new mod.collections.questions({
             lesson_id : data.test_id
         });
 
@@ -351,6 +309,51 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
         mod.collectionTest = questionCollection;
     };
+
+    var module_id = "tests";
+    var model_id = "question";
+
+    this.models = {
+        question : Backbone.DeepModel.extend({
+            urlRoot : function() {
+                if (this.get("id")) {
+                    return "/module/" + module_id + "/item/" + model_id;
+                } else {
+                    return "/module/" + module_id + "/item/" + model_id + "?redirect=0";
+                }
+            }
+        })
+    };
+
+    this.collections = {
+        questions : Backbone.Collection.extend({
+            initialize: function(opt) {
+                this.lesson_id = opt.lesson_id;
+                this.listenTo(this, "add", function(model, collection, opt) {
+                    model.set("lesson_id", this.lesson_id);
+                });
+                this.listenTo(this, "remove", function(model, collection, opt) {
+                    //console.warn(model);
+                });
+            },
+            model : mod.models.question,
+            url: function() {
+                return "/module/" + module_id + "/items/" + model_id + "/default/" + JSON.stringify({ lesson_id : this.lesson_id });
+            },
+            setOrder : function(order) {
+                $.ajax(
+                    "/module/" + module_id + "/items/" + model_id + "/set-order/" + this.lesson_id,
+                    {
+                        data: {
+                            position: order
+                        },
+                        method : "PUT"
+                    }
+                );
+            }
+        })
+    };
+
 
     app.module("crud.views.edit").on("start", function() {
         var self = this;
