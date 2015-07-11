@@ -24,28 +24,46 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             }
         });
         */
-        mod.blockItemViewClass = Backbone.View.extend({
+        // TODO: EXTEND FROM BASE CLASS, TO GET VIEW/MODEL SYNC
+        var viewsBaseClass = app.module("views").baseClass;
+
+        mod.blockItemViewClass = viewsBaseClass.extend({
+            events : function() {
+                var baseEvents = viewsBaseClass.prototype.events.apply(this);
+                var events = {
+                    //"click .edit-item-detail" : "editItem",
+                    "switchChange.bootstrapSwitch .bootstrap-switch-me" : "toogleActive",
+                    //"click .view-item-detail": "toogleDetail",
+                    "confirmed.bs.confirmation .delete-item-action" : "delete"
+                };
+                return _.extend(baseEvents, events);
+            },
+            /*
             events : {
                 "click .edit-item-detail" : "editItem",
                 "switchChange.bootstrapSwitch .bootstrap-switch-me" : "toogleActive",
                 "click .view-item-detail": "toogleDetail",
                 "confirmed.bs.confirmation .delete-item-action" : "delete"
             },
+            */
             template : _.template($("#question-item").html(), null, {variable: 'model'}),
             tagName : "li",
             className : "list-file-item blue-stripe",
             initialize: function(opt) {
                 console.info('blocks.questions.list/blockItemViewClass::initialize');
 
+                viewsBaseClass.prototype.initialize.apply(this);
+
                 this.opened = opt.opened ? opt.opened : false;
 
                 this.listenTo(this.model, 'sync', this.render.bind(this));
+                this.listenTo(this.model, 'change:points change:weight', this.save.bind(this));
             },
             render : function() {
                 console.info('blocks.questions.list/blockItemViewClass::render');
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("id")) {
-                    if (this.model.get("active") === 0) {
+                    if (this.model.get("active") == "0") {
                         this.$el.removeClass("green-stripe");
                         this.$el.removeClass("blue-stripe");
                         this.$el.addClass("red-stripe");
@@ -64,10 +82,12 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                 this.trigger("grouping:updated", this.model);
 
+                viewsBaseClass.prototype.render.apply(this);
+
                 return this;
             },
             start : function() {
-
+                /*
                 var editableItem = this.$(".editable-me");
 
                 if (this.opened) {
@@ -75,20 +95,21 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                         editableItem.editable('show');
                     }, 350);
                 }
-                /*
-                editableItem.editable("option", "ajaxOptions", {
-                    type: editableItem.data("method")
-                });
-                */
+
                 var self = this;
                 editableItem.on('save', function(e, params, b,c) {
                     self.model.set($(this).data("name"), params.newValue);
                     self.model.save();
                 });
-
+                */
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
                 }
+            },
+            save : function() {
+                // SHOW INNER LOADER
+                // TODO: MAKE A WAY TO INHIBIT GLOBAL LOADER
+                this.model.save();
             },
             editItem : function(e) {
                 var self = this;
@@ -105,15 +126,18 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 mod.groupingAddDialog.render();
                 mod.groupingAddDialog.open();
             },
+            /*
             toogleDetail : function(e) {
                 e.preventDefault();
                 this.$(".detail-container").toggle(500);
             },
+            */
             toogleActive : function(e, state) {
-                this.model.set("active", state);
+                //this.model.set("active", state);
                 this.model.save();
-                this.render();
+            //    this.render();
             },
+
             delete: function() {
                 this.model.destroy();
                 this.trigger("grouping:removed", this.model);
@@ -125,7 +149,9 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             questionModule : null,
             events : {
                 "click .add-item-action" : "addItem",
-                "click .select-question" : "openDialog"
+                "click .select-question" : "openDialog",
+                "click .portlet .tools .expand" : "expand",
+                "click .portlet .tools .collapse" : "collapse"
             },
             initialize : function() {
                 //this.listenToOnce(this.collection, 'sync', this.render.bind(this));
@@ -267,6 +293,23 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 fileObject.set("id", fileId);
                 fileObject.destroy();
                 $(e.currentTarget).parents("li").remove();
+            },
+            expand : function(e) {
+                e.preventDefault();
+
+                $(e.currentTarget)
+                    .removeClass("expand")
+                    .addClass("collapse")
+                    .closest(".portlet").find(".portlet-body").show(500);
+            },
+            collapse : function(e) {
+                e.preventDefault();
+
+                $(e.currentTarget)
+                    .removeClass("collapse")
+                    .addClass("expand")
+                    .closest(".portlet").find(".portlet-body").hide(500);
+
             }
         });
 

@@ -37,10 +37,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     };
 
   	this.baseClass = Backbone.View.extend({
-	    events : {
-	    	"change :input"			: "update",
-	    	"click .save-action" 	: "save"
-	    },
+	    events : function() {
+	    	return {
+		    	"change :input"			: "update",
+		    	"click .save-action" 	: "save"
+	    	};
+    	},
 	    initialize: function() {
 	    	var self = this;
 	    	console.info('views/baseClass::initialize');
@@ -48,19 +50,22 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		this.listenToOnce(this.model, "sync", this.render.bind(this));
 	    	}
 	    	// HANDLE SPECIAL bootstrap-switchs CHANGE EVENTS
-			this.$('.bootstrap-switch-me').each(function() {
-				$(this).on('switchChange.bootstrapSwitch', function(e, state) {
-                    if (state) {
-                        $(this).attr("checked", "checked");
-                        $(this).val(1);
-                    } else {
-                        $(this).removeAttr("checked");
-                        $(this).val(0);
-                    }
+	    	// CREATE A DELEGATED EVENT, BECAUSE THE ITEM SOMETIMES IS NOT IN THE DOM YET
 
-					self.update(e)
-				});
-	    	});
+			//this.$('.bootstrap-switch-me').each(function() {
+			this.$el.delegate('.bootstrap-switch-me', 'switchChange.bootstrapSwitch', function(e, state) {
+				/*
+                if (state) {
+                    $(this).attr("checked", "checked");
+                    $(this).val(1);
+                } else {
+                    $(this).removeAttr("checked");
+                    $(this).val(0);
+                }
+                */
+				self.update(e);
+			});
+	    	/*/});
 	    	// HANDLE SPECIAL wysihtml5 CHANGE EVENTS
 	    	this.$('.wysihtml5').each(function() {
 	    		var wysihtml5DOM = this;
@@ -209,7 +214,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		model = this.model;
 	    	}
 	    	var values = model.toJSON();
-	    	console.warn(values);
+
 	    	this.renderItens(values);
 	        return this;
 	    },
@@ -232,11 +237,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				value = $el.data("valueUnchecked");
 			}
 
-			/*
-			if ($el.is(".datepick")) {
-				value = $el.data("datepicker").getDate().format("isoDate");
-			}
-			*/
 			if ($el.is("[data-format-from]")) {
 				value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 			}

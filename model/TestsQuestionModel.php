@@ -13,6 +13,8 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
                 t2q.`lesson_id`,
                 t2q.`question_id`,
                 t2q.`position`,
+                t2q.`points`,
+                t2q.`weight`,
                 t2q.`active`,
                 q.`id` as 'question#id',
                 q.`title` as 'question#title',
@@ -36,6 +38,9 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
             LEFT JOIN `mod_areas` a ON (q.area_id = a.id)
             LEFT JOIN `mod_questions_difficulties` qd ON (q.difficulty_id = qd.id)
             LEFT JOIN `mod_questions_types` qt ON (q.type_id = qt.id)";
+
+
+        $this->order = array("-t2q.`position` DESC");
 
  		parent::init();
 

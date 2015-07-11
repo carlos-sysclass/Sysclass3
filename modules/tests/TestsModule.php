@@ -200,6 +200,157 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
+     * @url GET /item/:model/:identifier
+     */
+    public function getItemAction($model = "me", $identifier = null)
+    {
+        if ($model == "me") {
+            $itemModel = $this->model("tests");
+        } elseif ($model == "question") {
+            $itemModel = $this->model("tests/question");
+        }
+
+        $editItem = $itemModel->getItem($identifier);
+
+        return $editItem;
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url POST /item/:model
+     */
+    public function addItemAction($model, $type)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $data['language_code'] = self::$t->getUserLanguageCode();
+
+                $_GET['redirect'] = "0";
+            } else {
+                return $this->invalidRequestError();
+            }
+
+
+
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== false) {
+                if ($_GET['redirect'] === "0") {
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    return array_merge($response, $data);
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        self::$t->translate($messages['success']),
+                        "success"
+                    );
+                }
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError($messages['error'], "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/:model/:identifier
+     */
+    public function setItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            //var_dump($data);
+            //question_points
+            //question_weights
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            if ($itemModel->setItem($data, $identifier) !== false) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $data = $itemModel->getItem($identifier);
+                return array_merge($response, $data);
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/:model/:identifier
+     */
+    public function deleteItemAction($model, $identifier)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            if ($model == "me") {
+                $itemModel = $this->model("tests");
+                $messages = array(
+                    'success' => "Lesson removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } elseif ($model == "question") {
+                $itemModel = $this->model("tests/question");
+                $messages = array(
+                    'success' => "Question removed with success",
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                );
+            } else {
+                return $this->invalidRequestError();
+            }
+
+            $data = $this->getHttpData(func_get_args());
+
+            if ($itemModel->deleteItem($identifier) !== false) {
+                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
      * @url GET /items/:model
      * @url GET /items/:model/:type
      * @url GET /items/:model/:type/:filter
@@ -318,153 +469,5 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         }
     }
 
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/:model/:identifier
-     */
-    public function getItemAction($model = "me", $identifier = null)
-    {
-        if ($model == "me") {
-            $itemModel = $this->model("tests");
-        } elseif ($model == "question") {
-            $itemModel = $this->model("tests/question");
-        }
-
-        $editItem = $itemModel->getItem($identifier);
-
-        return $editItem;
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url POST /item/:model
-     */
-    public function addItemAction($model, $type)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            if ($model == "me") {
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-            } elseif ($model == "question") {
-                $itemModel = $this->model("tests/question");
-                $messages = array(
-                    'success' => "Question created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-
-                $data['language_code'] = self::$t->getUserLanguageCode();
-
-                $_GET['redirect'] = "0";
-            } else {
-                return $this->invalidRequestError();
-            }
-
-
-
-            $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== false) {
-                if ($_GET['redirect'] === "0") {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
-                    return array_merge($response, $data);
-                } else {
-                    return $this->createRedirectResponse(
-                        $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate($messages['success']),
-                        "success"
-                    );
-                }
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($messages['error'], "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url PUT /item/:model/:identifier
-     */
-    public function setItemAction($model, $identifier)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            if ($model == "me") {
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson updated with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-            } elseif ($model == "question") {
-                $itemModel = $this->model("tests/question");
-                $messages = array(
-                    'success' => "Question updated with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-            } else {
-                return $this->invalidRequestError();
-            }
-
-            if ($itemModel->setItem($data, $identifier) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
-                $data = $itemModel->getItem($identifier);
-                return array_merge($response, $data);
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /item/:model/:identifier
-     */
-    public function deleteItemAction($model, $identifier)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            if ($model == "me") {
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson removed with success",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
-                );
-            } elseif ($model == "question") {
-                $itemModel = $this->model("tests/question");
-                $messages = array(
-                    'success' => "Question removed with success",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
-                );
-            } else {
-                return $this->invalidRequestError();
-            }
-
-            $data = $this->getHttpData(func_get_args());
-
-            if ($itemModel->deleteItem($identifier) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
 
 }

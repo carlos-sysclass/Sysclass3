@@ -6,7 +6,72 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
         $this->lesson_type =  "test";
 
         parent::init();
+
+        $this->selectSql = "SELECT
+            l.id,
+            l.permission_access_mode,
+            l.class_id,
+            c.name as class,
+            l.name,
+            l.info,
+            l.active,
+            l.`type`,
+            /*
+            l.`has_text_content`,
+            l.`text_content`,
+            l.`text_content_language_id`,
+            l.`has_video_content`,
+            */
+            IFNULL(l.instructor_id, c.instructor_id) as instructor_id,
+            IFNULL(t.`time_limit`, 0) as time_limit,
+            IFNULL(t.`allow_pause`, 0) as allow_pause,
+            IFNULL(t.`test_repetition`, 1) as test_repetition,
+            IFNULL(t.`show_question_weight`, 0) as show_question_weight,
+            IFNULL(t.`show_question_difficulty`, 0) as show_question_difficulty,
+            IFNULL(t.`show_question_type`, 1) as show_question_type,
+            IFNULL(t.`show_one_by_one`, 0) as show_one_by_one,
+            IFNULL(t.`can_navigate_through`, 0) as can_navigate_through,
+            IFNULL(t.`show_correct_answers`, 0) as show_correct_answers,
+            IFNULL(t.`randomize_questions`, 0) as randomize_questions,
+            IFNULL(t.`randomize_answers`, 0) as randomize_answers
+        FROM mod_lessons l
+        LEFT JOIN mod_classes c ON (c.id = l.class_id)
+        LEFT JOIN mod_tests t ON (l.id = t.id)";
     }
 
+    public function addItem($data)
+    {
+        $lesson_id = parent::addItem($data);
 
+        $old_table_name = $this->table_name;
+        $this->table_name = "mod_tests";
+
+        $data['id'] = $lesson_id;
+        $test_settings = parent::addItem($data);
+
+        $this->table_name = $old_table_name;
+
+        return $lesson_id;
+    }
+
+    public function setItem($data, $identifier)
+    {
+        $result = parent::setItem($data, $identifier);
+
+        $exists = $this->db->GetOne("SELECT COUNT(id) FROM mod_tests WHERE id = '{$identifier}'");
+
+        $old_table_name = $this->table_name;
+        $this->table_name = "mod_tests";
+
+        if ($exists == "1") {
+            $test_settings = parent::setItem($data, $identifier);
+        } else {
+            $data['id'] = $identifier;
+            $test_settings = parent::addItem($data);
+        }
+
+        $this->table_name = $old_table_name;
+
+        return $result;
+    }
 }
