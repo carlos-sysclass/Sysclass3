@@ -1,4 +1,57 @@
 <div id="block_roadmap" data-widget-id="questions-list-widget" data-course-id="{$T_ENTITY_ID}">
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
+            <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
+                <i class="fa fa-question-circle"></i>How is it calculated!?</a>
+        </div>
+        <div class="cleafix"></div>
+    </div>
+    <hr />
+    <div class="alert alert-info display-hide tips-container">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
+        <p>
+            <strong>IMPORTANT!</strong>
+            Question points are relative to other questions. Use in conjuction with question weights to create the test relative score. The test maximun score can be defined as:
+        </p>
+        <div class="row">
+            <div class="col-md-4">
+                `M = ((p1 * w1) + (p2 * w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
+            </div>
+            <div class="col-md-4">
+                `U = ((p1 * c1 * w1) + (p2 * c2 *  w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
+            </div>
+            <div class="col-md-4">
+                `S = U / M * 100%`
+            </div>
+        </div>
+        <hr />
+        <strong>LEGEND</strong>
+        <div class="row">
+            <div class="col-md-3">
+                `p1` = Question Point #1<br />
+                `p2` = Question Point #2<br />
+                `pX` = Question Point #X<br />
+            </div>
+            <div class="col-md-3">
+                `c1` = Question Correctness Score #1 (0.0 to 1.0)<br />
+                `c2` = Question Correctness Score #2 (0.0 to 1.0)<br />
+                `cX` = Question Correctness Score #X (0.0 to 1.0)<br />
+            </div>
+            <div class="col-md-3">
+                `w1` = Question Weight #1<br />
+                `w2` = Question Weight #2<br />
+                `wX` = Question Weight #X
+            </div>
+            <div class="col-md-3">
+                `M` = Test Maximum Score<br />
+                `U` = User Score<br />
+                `S` = User Relative Score (0 to 100)<br />
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <ul class="list-group ui-sortable margin-bottom-10 items-container">
@@ -12,6 +65,11 @@
                 <i class="fa fa-database"></i>
                 {translateToken value="Question's Database"}
             </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
         </div>
     </div>
 </div>
@@ -77,10 +135,12 @@
             <i class="fa fa-trash"></i>
         </a>
     </div>
-    <div class="row form-inline">
+    <div class="row form-inline margin-top-10">
         <div class="col-md-6">
             <div class="form-group">
-                <label class="control-label">{translateToken value="Question Points"}:</label>
+                <label class="control-label">
+                    {translateToken value="Question Points"} :
+                </label>
                 <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>

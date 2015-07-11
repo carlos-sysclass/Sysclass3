@@ -110,6 +110,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 // SHOW INNER LOADER
                 // TODO: MAKE A WAY TO INHIBIT GLOBAL LOADER
                 this.model.save();
+                mod.blockView.refreshScore();
             },
             editItem : function(e) {
                 var self = this;
@@ -150,8 +151,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             events : {
                 "click .add-item-action" : "addItem",
                 "click .select-question" : "openDialog",
-                "click .portlet .tools .expand" : "expand",
-                "click .portlet .tools .collapse" : "collapse"
+                "click .show-tips" : "showTips"
             },
             initialize : function() {
                 //this.listenToOnce(this.collection, 'sync', this.render.bind(this));
@@ -236,6 +236,8 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 this.listenTo(roadmapBlockItemView, "grouping:updated", function(model) {
                     self.refreshCounters();
                 });
+
+                this.refreshScore();
             },
             openDialog : function() {
                 $SC.module("dialogs.questions.select").setFilter({
@@ -273,6 +275,26 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 this.$("ul.items-container > li.list-file-item").each(function(i, item) {
                     $(this).find(".counter").html(i+1);
                 });
+
+            },
+            refreshScore : function() {
+                this.$(".total_score").empty();
+
+                var score = this.collection.reduce(function(context, model) {
+                    return context + (model.get("points") * model.get("weight"));
+                }, 0);
+
+                if (score > 0) {
+                    var weights = _.reduce(this.collection.pluck("weight"), function(context, weight) {
+                        return context + parseInt(weight);
+                    }, 0);
+
+                    if (weights > 0) {
+                        this.$(".total_score").html((score / weights).toFixed(2)
+                            //app.module("views").formatValue(score / weights, "decimal2")
+                        );
+                    }
+                }
             },
             render: function() {
                 console.info('blocks.roadmap.grouping/classLessonsView::render');
@@ -294,22 +316,10 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 fileObject.destroy();
                 $(e.currentTarget).parents("li").remove();
             },
-            expand : function(e) {
+            showTips : function(e) {
                 e.preventDefault();
-
-                $(e.currentTarget)
-                    .removeClass("expand")
-                    .addClass("collapse")
-                    .closest(".portlet").find(".portlet-body").show(500);
-            },
-            collapse : function(e) {
-                e.preventDefault();
-
-                $(e.currentTarget)
-                    .removeClass("collapse")
-                    .addClass("expand")
-                    .closest(".portlet").find(".portlet-body").hide(500);
-
+                $(e.currentTarget).hide();
+                this.$(".tips-container").show(500);
             }
         });
 
@@ -351,6 +361,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
         questionCollection.fetch();
 
         mod.collectionTest = questionCollection;
+        mod.blockView = blockView;
     };
 
     var module_id = "tests";

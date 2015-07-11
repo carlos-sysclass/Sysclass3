@@ -1,6 +1,5 @@
 $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	mod.formatValue = function(value, formatTo, formatFrom) {
-
     	if (formatTo == 'decimal1') {
 			return $.jformat.number(value, "#0.0");
     	} else if (formatTo == 'decimal2') {
@@ -63,9 +62,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     $(this).val(0);
                 }
                 */
-				self.update(e);
+
+				//self.update(e);
 			});
-	    	/*/});
+	    	//});
 	    	// HANDLE SPECIAL wysihtml5 CHANGE EVENTS
 	    	this.$('.wysihtml5').each(function() {
 	    		var wysihtml5DOM = this;
@@ -237,11 +237,18 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				value = $el.data("valueUnchecked");
 			}
 
+			/*
+			if ($el.is(".datepick")) {
+				value = $el.data("datepicker").getDate().format("isoDate");
+			}
+			*/
 			if ($el.is("[data-format-from]")) {
 				value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 			}
 
 		    this.model.set(prop, value);
+
+		    //Marionette.triggerMethodOn(this, "updateModel", this.model);
 	    },
 	    save : function(e) {
 	    	console.info('views/baseClass::save');
