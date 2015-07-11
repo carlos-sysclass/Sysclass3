@@ -13,16 +13,16 @@
         <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
         <p>
             <strong>IMPORTANT!</strong>
-            Question points are relative to other questions. Use in conjuction with question weights to create the test relative score. The test maximun score can be defined as:
+            Question points are relative to other questions. Use in conjuction with question weights to create the test relative score. The test maximum score, and user score can be defined as:
         </p>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
                 `M = ((p1 * w1) + (p2 * w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
                 `U = ((p1 * c1 * w1) + (p2 * c2 *  w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
                 `S = U / M * 100%`
             </div>
         </div>
