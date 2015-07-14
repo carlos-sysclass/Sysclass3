@@ -27,8 +27,8 @@ crud:
         - mData: course.name
           label: Course
 
-        - mData: instructor_name
-          label: Instructor
+        #- mData: class.instructors.0.name
+        #  label: Instructor
 
         - mData: active
           sType: table-boolean

@@ -224,14 +224,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         /*
-        if ($model ==  "instructor") {
-            $modelRoute = "users/collection";
-            $optionsRoute = "edit-instructor";
-
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->addFilter(array(
-                'can_be_instructor' => true
-            ))->getItems();
         } elseif ($model ==  "coordinator") {
             $modelRoute = "users/collection";
             $optionsRoute = "edit-instructor";
@@ -271,20 +263,32 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
             ), array("operator" => "="))->getItems();
 
             //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-
-        } else {
         */
+        if ($model ==  "users") {
+            $modelRoute = "enrollment/course";
+            //$optionsRoute = "edit-instructor";
+            //
+            $filter = filter_var($filter, FILTER_DEFAULT);
+
+            if (!is_array($filter)) {
+                $filter = json_decode($filter, true);
+            }
+
+            $itemsCollection = $this->model($modelRoute);
+            $itemsData = $itemsCollection->addFilter($filter)->getItems();
+        } elseif ($model ==  "me") {
             $modelRoute = "courses";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
             $itemsData = $itemsCollection->getItems();
             $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
-        //}
+        } else {
+            return $this->invalidRequestError();
+        }
 
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
 
         if ($type === 'combo') {
             $q = $_GET['q'];
@@ -336,6 +340,8 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         $itemModel = $this->model("courses");
         if ($model == "me") {
             $editItem = $itemModel->getItem($identifier);
+        } elseif ($model == "users") {
+
         //} elseif ($model == "full") {
         //    $editItem = $itemModel->getFullItem($identifier);
         } else {
@@ -549,11 +555,11 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
 
-        $userCourseModel = $this->model("user/courses/item");
+        $enrollCourseModel = $this->model("enrollment/course");
 
-        $status = $userCourseModel->switchUserInCourse(
+        $status = $enrollCourseModel->switchUser(
             $data['course_id'],
-            $data['user_login']
+            $data['user_id']
         );
 
         if ($status == 1) {

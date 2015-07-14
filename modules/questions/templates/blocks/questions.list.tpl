@@ -17,10 +17,10 @@
         </p>
         <div class="row">
             <div class="col-md-4 text-center">
-                `M = ((p1 * w1) + (p2 * w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
+                `M = (p1 * w1) + (p2 * w2) + ...  (pX * wX)`
             </div>
             <div class="col-md-4 text-center">
-                `U = ((p1 * c1 * w1) + (p2 * c2 *  w2) + ...  (pX * wX))/(w1 + w2 + ... wX)`
+                `U = (p1 * c1 * w1) + (p2 * c2 *  w2) + ...  (pX * wX)`
             </div>
             <div class="col-md-4 text-center">
                 `S = U / M * 100%`

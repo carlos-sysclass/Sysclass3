@@ -2,16 +2,17 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
+	alert(entity_id);
 	mod.addInitializer(function() {
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-		var userGroupsCollectionClass = Backbone.Collection.extend({
-			url : "/module/courses/item/users/" + entity_id
+		var userCollectionClass = Backbone.Collection.extend({
+			url : "/module/courses/items/users/default/" + JSON.stringify({course_id : entity_id})
 		});
-		var userGroupsCollection = new userGroupsCollectionClass();
-		userGroupsCollection.fetch();
+		var userCollection = new userCollectionClass();
+		userCollection.fetch();
 
 		app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
-			var exists = userGroupsCollection.findWhere({user_login: data['login']});
+			var exists = userCollection.findWhere({user_id: data['id']});
 			if (typeof exists != "undefined") {
 				$(row).find(".datatable-option-check").removeClass("btn-danger").addClass("btn-success");
 			} else {
@@ -19,27 +20,24 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-
 		app.module("utils.datatables").on("datatable:item:check", function(data) {
 
-			var userGroupsSwitchModelClass = Backbone.Model.extend({
+			console.warn(data);
+
+			var userSwitchModelClass = Backbone.Model.extend({
 				urlRoot : "/module/courses/item/users/switch"
 			});
-			var userGroupsSwitchModel = new userGroupsSwitchModelClass();
-			userGroupsSwitchModel.set("course_id", entity_id);
-			userGroupsSwitchModel.set("user_login", data['login']);
-			userGroupsSwitchModel.save();
+			var userSwitchModel = new userSwitchModelClass();
+			userSwitchModel.set("course_id", entity_id);
+			userSwitchModel.set("user_id", data['id']);
+			userSwitchModel.save();
 
-			var exists = userGroupsCollection.findWhere({user_login: data['login']});
+			var exists = userCollection.findWhere({user_id: data['id']});
 			if (typeof exists != "undefined") {
 				// REMOVE FROM COLLECTION
-				userGroupsCollection.remove(exists);
+				userCollection.remove(exists);
 			} else {
-				userGroupsCollection.add([{
-					"course_id"		: entity_id,
-					"user_login"	: data['login']
-
-				}]);
+				userCollection.add(userSwitchModel);
 			}
 		});
 	});

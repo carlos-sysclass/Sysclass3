@@ -285,15 +285,19 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 }, 0);
 
                 if (score > 0) {
+                    /*
                     var weights = _.reduce(this.collection.pluck("weight"), function(context, weight) {
                         return context + parseInt(weight);
                     }, 0);
 
                     if (weights > 0) {
-                        this.$(".total_score").html((score / weights).toFixed(2)
+                    */
+                        this.$(".total_score").html((score).toFixed(2)
                             //app.module("views").formatValue(score / weights, "decimal2")
                         );
+                    /*
                     }
+                    */
                 }
             },
             render: function() {
