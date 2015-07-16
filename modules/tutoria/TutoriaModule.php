@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
+class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetContainer, IBreadcrumbable, IActionable
 {
     protected $_modelRoute = "tutoria";
     /* ISummarizable */
@@ -54,8 +54,8 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
 
     /* ILinkable */
+    /*
     public function getLinks() {
-
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
             $itemsData = $this->model("tutoria")->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
@@ -72,7 +72,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             );
         }
     }
-
+    */
     /* IBreadcrumbable */
     public function getBreadcrumb() {
         $breadcrumbs = array(
