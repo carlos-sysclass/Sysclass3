@@ -13,7 +13,7 @@
 {/if}
 -->
 {if $T_DATA.data|@count > 0}
-	<ul class="message-recipient-group ver-inline-menu ver-inline-notabbable">
+	<ul class="message-recipient-group ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
 		<li class="active">
 			<a>
 				<i class="icon-{$T_DATA.icon}"></i>

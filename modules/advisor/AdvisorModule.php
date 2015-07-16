@@ -24,18 +24,31 @@ class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetCont
     }
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('advisor.chat', $widgetsIndexes) || in_array('advisor.schedule', $widgetsIndexes)) {
-        	return array(
-        		'advisor.chat' => array(
+        	$widgets = array();
+
+            if (in_array('advisor.chat', $widgetsIndexes)) {
+                // START CHART ON CLICK
+
+                $widgets['advisor.chat'] = array(
                     'id'        => 'advisor-widget',
        				'template'	=> $this->template("widgets/chat"),
-                    'panel'     => true
-        		),
-                'advisor.schedule' => array(
+                    'header'     => self::$t->translate("Talk to us"),
+                    'body'      => false,
+                    'icon'      => "fa fa-comment",
+                    'panel'     => 'dark-blue'
+        		);
+            }
+
+            if (in_array('advisor.schedule', $widgetsIndexes)) {
+                $widgets['advisor.schedule'] = array(
                     'id'        => 'advisor-widget-schedule',
                     'template'  => $this->template("widgets/schedule"),
                     'panel'     => true
-                )
-        	);
+
+                );
+            }
+
+            return $widgets;
         }
         return false;
     }
