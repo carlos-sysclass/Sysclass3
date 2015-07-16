@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  */
 
-class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable
+class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
     private static $suitable_translate_contents = array("subtitle");
 
@@ -108,40 +108,23 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
         return $actions[$request];
     }
-    /*
+
+    /* IBlockProvider */
     public function registerBlocks()
     {
         return array(
-            'tests.questions.edit' => function ($data, $self) {
+            'tests.info.dialog' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("jquery-file-upload-image");
-                $self->putComponent("jquery-file-upload-video");
-                $self->putComponent("jquery-file-upload-audio");
-                $self->putComponent("bootstrap-confirmation");
+                //$self->putComponent("jquery-file-upload-image");
+                //$self->putComponent("jquery-file-upload-video");
+                //$self->putComponent("jquery-file-upload-audio");
+                //$self->putComponent("bootstrap-confirmation");
 
-                $self->putModuleScript("translate", "models.translate");
+                //$self->putModuleScript("translate", "models.translate");
 
-                $self->putModuleScript("blocks.lessons.content");
+                $self->putModuleScript("dialogs.tests.info");
 
-
-
-                $languages = self::$t->getItems();
-
-                $userLanguageCode =  self::$t->getUserLanguageCode();
-
-
-
-                foreach ($languages as &$value) {
-                    if ($value['code'] == $userLanguageCode) {
-                        $value['selected'] = true;
-                        break;
-                    }
-                }
-
-                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
-                $self->putItem("languages", $languages);
-
-                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
+                $self->putSectionTemplate("dialogs", "dialogs/tests.info");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
@@ -149,7 +132,6 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             }
         );
     }
-    */
 
     /**
      * [ add a description ]

@@ -9,7 +9,3 @@ CREATE TABLE `mod_enroll_course_to_users` (
   FOREIGN KEY (`course_id`) REFERENCES `mod_courses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-SELECT * 
-FROM mod_enroll_course_to_users e
-LEFT JOIN mod_courses c ON (c.id = e.course_id)
-LEFT JOIN users u ON (u.id = u.user_id)

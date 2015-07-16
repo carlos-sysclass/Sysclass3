@@ -1,9 +1,9 @@
 <?php
-class RoadmapTestsModel extends BaseLessonsModel implements ISyncronizableModel {
+class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->lesson_type =  "test";
+        //$this->lesson_type =  "test";
 
         parent::init();
     }

@@ -218,10 +218,12 @@
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th>{translateToken value="Exams"}</th>
+												<th>{translateToken value="#"}</th>
+												<th>{translateToken value="Name"}</th>
+												<th class="text-center">{translateToken value="# Questions"}</th>
 												<th class="text-center">{translateToken value="Date"}</th>
-												<th class="text-center">{translateToken value="Status"}</th>
 												<th class="text-center">{translateToken value="Grade"}</th>
+												<th class="text-center">{translateToken value="Options"}</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -644,6 +646,24 @@
 	<td class="text-center"><span class="label label-info">{translateToken value="In Progress"}</span></td>
 </script>
 
+<script type="text/template" id="tab_class_tests-item-template">
+	<td class="text-center"><%= model.id %></td>
+	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
+	<td class="text-center"><%= model.total_questions %></td>
+	<td class="text-center"><span class="label label-danger">{translateToken value="Not set yet"}</span></td>
+	<td class="text-center"><span class="label label-warning">{translateToken value="Not done yet"}</span></td>
+	<td class="text-center">
+		<% if (model.total_questions > 0) { %>
+			<a href="javascript:void(0);" class="btn btn-xs btn-primary open-test-action">
+				{translateToken value="Do now!"}
+			</a>
+			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">
+				{translateToken value="Details"}
+			</a>
+		<% } %>
+	</td>
+</script>
+
 <script type="text/template" id="tab_lessons_video-nofound-template">
 	<div class="alert alert-info">
 		<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -730,6 +750,7 @@
 		<button class="btn btn-success" type="button">{translateToken value="Complete"}</button>
 	</div>
 </script>
+
 
 <script type="text/template" id="tab_lesson_exercises-question-combine-template">
 	<h5 class="section-title">

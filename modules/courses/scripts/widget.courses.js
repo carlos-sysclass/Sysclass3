@@ -715,13 +715,25 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		var classTestsTabViewItemClass = baseClassChildTabViewItemClass.extend({
 			events : {
-				"click .lesson-change-action" : "setLessonId"
+				"click .lesson-change-action" : "setLessonId",
+				"click .view-test-action" : "openDialog"
 			},
 			tagName : "tr",
-			template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
+			template : _.template($("#tab_class_tests-item-template").html(), null, {variable: "model"}),
 			setLessonId : function(e) {
 				app.userSettings.set("lesson_id", this.model.get("id"));
-			}
+			},
+            openDialog : function() {
+                if (!app.module("dialogs.tests.info").started) {
+                    app.module("dialogs.tests.info").start();
+                }
+
+                app.module("dialogs.tests.info").setInfo({
+                	model : this.model
+                });
+
+                app.module("dialogs.tests.info").open();
+            },
 		});
 
 		var baseClassChildTabViewClass = Backbone.View.extend({

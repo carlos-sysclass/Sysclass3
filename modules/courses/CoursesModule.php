@@ -126,6 +126,9 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 			//$this->putModuleScript("models.courses");
 			$this->putModuleScript("widget.courses");
 
+            $this->putBlock("tests.info.dialog");
+
+            //$self->putModuleSectionTemplate("dialogs", "dialogs/questions.select");
 
 			return array(
 				'courses.overview' => array(

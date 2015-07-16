@@ -8,21 +8,22 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
         parent::init();
 
         $this->selectSql = "SELECT
-            l.id,
-            l.permission_access_mode,
-            l.class_id,
-            c.name as class,
-            l.name,
-            l.info,
-            l.active,
+            l.`id`,
+            l.`permission_access_mode`,
+            l.`class_id`,
+            c.`name` as class,
+            l.`name`,
+            l.`info`,
+            l.`active`,
             l.`type`,
+            COUNT(tq.question_id) AS total_questions,
             /*
             l.`has_text_content`,
             l.`text_content`,
             l.`text_content_language_id`,
             l.`has_video_content`,
             */
-            IFNULL(l.instructor_id, c.instructor_id) as instructor_id,
+            IFNULL(l.`instructor_id`, c.`instructor_id`) as instructor_id,
             IFNULL(t.`time_limit`, 0) as time_limit,
             IFNULL(t.`allow_pause`, 0) as allow_pause,
             IFNULL(t.`test_repetition`, 1) as test_repetition,
@@ -36,7 +37,10 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
             IFNULL(t.`randomize_answers`, 0) as randomize_answers
         FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)
-        LEFT JOIN mod_tests t ON (l.id = t.id)";
+        LEFT JOIN mod_tests t ON (l.id = t.id)
+        LEFT JOIN mod_tests_to_questions tq ON (l.id = tq.lesson_id)";
+
+        $this->group_by = array("l.`id`");
     }
 
     public function addItem($data)
