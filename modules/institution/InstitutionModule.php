@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  */
 
-class InstitutionModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
+class InstitutionModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IBlockProvider
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -27,13 +27,13 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
 
     public function getWidgets($widgetsIndexes = array())
     {
-        /*
-        $itemsData = $this->model("institution")->addFilter(array(
-                'active'    => true
-        ))->getInstitution($userData['id']);
 
-        $this->putItem("institution", $itemsData);
-        */
+        $itemsData = $this->model("institution")->getItem(1);
+
+        //exit;
+
+        //$this->putItem("institution", $itemsData);
+
         if (in_array('institution.overview', $widgetsIndexes)) {
             $this->putModuleScript("widget.institution");
 
@@ -41,9 +41,9 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         		'institution.overview' => array(
        				//'title' 	=> 'User Overview',
                     'id'        => 'institution-widget',
-       				'template'	=> $this->template("overview.widget"),
+       				'template'	=> $this->template("widgets/overview"),
                     'panel'     => true,
-                    'institution' => $itemsData
+                    'data' => $itemsData
         		)
         	);
         }
@@ -64,7 +64,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                         'count' => count($items),
                         'text'  => self::$t->translate('Institution'),
                         'icon'  => 'fa fa-university',
-                        'link'  => $this->getBasePath() . 'view'
+                        'link'  => $this->getBasePath() . 'edit/1'
                     )
                 )
             );
@@ -104,6 +104,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     }
 
     /* IActionable */
+    /*
     public function getActions() {
         $request = $this->getMatchedUrl();
 
@@ -114,22 +115,13 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
-                )/*,
-                array(
-                    'separator' => true,
-                ),
-                array(
-                    'text'      => 'Add New 2',
-                    'link'      => $this->getBasePath() . "add",
-                    //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
-                )*/
+                )
             )
         );
 
         return $actions[$request];
     }
-
+    */
     /**
      * [ add a description ]
      *
@@ -150,6 +142,8 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      */
     public function addItemAction($id)
     {
+        return $this->invalidRequestError(self::$t->translate("There's no multi-institution support yet!"), "error");
+
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
@@ -218,18 +212,20 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      */
     public function deleteItemAction($id)
     {
+        return $this->invalidRequestError(self::$t->translate("You can delete the last institution in the system!"), "error");
+
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
             $itemModel = $this->model("institution");
             // TODO Create some  way to make check if this entity can be removed!
-            //if ($itemModel->deleteItem($id) !== FALSE) {
+            if ($itemModel->deleteItem($id) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Institution removed with success"), "success");
                 return $response;
-            //} else {
+            } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-            //    return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos", "error");
-            //}
+                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos", "error");
+            }
         } else {
             return $this->notAuthenticatedError();
         }
@@ -246,7 +242,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $itemsCollection = $this->model("institution/collection");
+        $itemsCollection = $this->model("institution");
         $itemsData = $itemsCollection->getItems();
         $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
@@ -264,7 +260,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             }
             return $result;
         } elseif ($type === 'datatable') {
-            $itemsData = $this->model("institution/collection")->getItems();
+            $itemsData = $this->model("institution")->getItems();
             $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
 
@@ -280,11 +276,11 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                         'icon'  => 'icon-edit',
                         'link'  => $this->getBasePath() . "edit/" . $item['id'],
                         'class' => 'btn-sm btn-primary'
-                    ),
+                    )/*,
                     'remove'    => array(
                         'icon'  => 'icon-remove',
                         'class' => 'btn-sm btn-danger'
-                    )/*,
+                    ),
                     'website'    => array(
                         'icon'  => 'icon-link',
                         'link'  => $item['website'],
@@ -305,77 +301,9 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 'aaData'                => array_values($items)
             );
         }
-        $itemsData = $this->model("institution/collection")->getItems();
+        $itemsData = $this->model("institution")->getItems();
         $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
         return array_values($items);
     }
-/*
-    public function addPage()
-    {
-
-
-        parent::addPage();
-    }
-*/
-    /**
-     * [ add a description ]
-     *
-     * @url GET /view
-     */
-/*
-    public function viewPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        // SHOW ANNOUCEMENTS BASED ON USER TYPE
-        if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Institution'));
-            $this->putItem("page_subtitle", self::$t->translate('Manage your Institution(s)'));
-
-            $this->putComponent("select2");
-            $this->putComponent("data-tables");
-            $this->putModuleScript("models.institution");
-            $this->putModuleScript("views.institution.view");
-
-            //return array_values($news);
-            $this->display("view.tpl");
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-*/
-
-
-    /*
-    public function editPage($id)
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        $editItem = $this->model("institution")->getItem($id);
-        // TODO CHECK PERMISSION FOR OBJECT
-
-        $this->putComponent("datepicker", "timepicker", "select2", "wysihtml5", "validation");
-
-        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-        // Ex:
-        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-
-        $this->putBlock("address.add");
-        $this->putBlock("permission.add");
-
-        $this->putModuleScript("models.institution");
-        //$this->putModuleScript("views.news");
-        $this->putModuleScript("views.institution.edit", array('id' => $id));
-
-        $this->putItem("page_title", self::$t->translate('Institution'));
-        $this->putItem("page_subtitle", self::$t->translate('Manage your Institution(s)'));
-
-        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
-        //$this->putItem("entity", $editItem);
-
-        //return array_values($news);
-        $this->display("form.tpl");
-    }
-    */
 }

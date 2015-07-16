@@ -1,5 +1,5 @@
 <?php
-class TutoriaModel extends AbstractSysclassModel implements ISyncronizableModel {
+class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Module Class File
  * @filesource
@@ -23,14 +23,20 @@ class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetCont
         );
     }
     public function getWidgets($widgetsIndexes = array()) {
-        if (in_array('advisor.overview', $widgetsIndexes)) {
+        if (in_array('advisor.chat', $widgetsIndexes) || in_array('advisor.schedule', $widgetsIndexes)) {
         	return array(
-        		'advisor.overview' => array(
+        		'advisor.chat' => array(
                     'id'        => 'advisor-widget',
-       				'template'	=> $this->template("overview.widget"),
+       				'template'	=> $this->template("widgets/chat"),
                     'panel'     => true
-        		)
+        		),
+                'advisor.schedule' => array(
+                    'id'        => 'advisor-widget-schedule',
+                    'template'  => $this->template("widgets/schedule"),
+                    'panel'     => true
+                )
         	);
         }
+        return false;
     }
 }

@@ -1,24 +1,31 @@
-<div class="row" style="position: relative">
-	<div class="col-md-7  col-sm-7 col-xs-6 text-center">
-		<img class="img-responsive" alt="" src="{Plico_GetResource file='img/logo-institution.png'}" />
+{assign var="context" value=$T_DATA.data}
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+		<img class="" alt="" src="{$context.logo.url}" style="max-width: 100%;" />
     </div>
-	<div class="col-md-5 col-sm-5 col-xs-6">
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="btn-group-vertical btn-group-fixed-size">
-			{foreach $T_INSTITUTION as $id => $institution}
-				<a href="{$institution.website}" target="_blank" class="btn btn-link btn-sm">
-					<span class="text"><i class="icon-link"></i>{translateToken value="Website"}</span>
-				</a>
-				<a href="https://www.google.com.br/maps/place/{$institution.address}" target="_blank" class="btn btn-link btn-sm">
-					<span class="text"><i class="icon-map-marker"></i>{translateToken value="View Map"}</span>
-				</a>
-				<a href="{$institution.facebook}" target="_blank" class="btn btn-link btn-sm">
+			{if $context.website}
+			<a href="{$context.website}" target="_blank" class="btn btn-link">
+				<span class="text"><i class="icon-link"></i>{translateToken value="Website"}</span>
+			</a>
+			{/if}
+			<a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-link">
+				<span class="text"><i class="icon-map-marker"></i>{translateToken value="View Map"}</span>
+			</a>
+			{if $context.facebook}
+				<a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link">
 					<span class="text"><i class="icon-facebook"></i>{translateToken value="Facebook"}</span>
 				</a>
-			{/foreach}
+			{/if}
 		</div>
 	</div>
 </div>
-<hr />
+
+<!--
 <div class="row"  id="institution-chat-list">
 </div>
 <hr />
@@ -64,3 +71,4 @@
 	</a>
 </div>
 </script>
+-->

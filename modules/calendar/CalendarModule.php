@@ -28,7 +28,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     {
         $this->putComponent("select2");
 
-            $this->putModuleScript("widget.news");
+        $this->putModuleScript("widget.news");
 
         if (in_array('calendar', $widgetsIndexes))
         {

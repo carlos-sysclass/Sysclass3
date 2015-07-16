@@ -41,8 +41,8 @@
 
 				<h3 class="form-section">{translateToken value="Logo"}</h3>
 
-				<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo">
-					<input type="hidden" name="logo" />
+				<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
+					<input type="hidden" name="logo_id" />
 				    <ul class="list-group content-timeline-items">
 				    </ul>
 

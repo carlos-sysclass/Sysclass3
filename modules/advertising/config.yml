@@ -1,0 +1,12 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+widgets:
+  ads.leftbar.banner:
+    context:
+      images: ["img/ads/leftbar.banner.jpg"]
+      type: "serial" # [serial | carrousel] # CAROUSEL TYPE ISN'T IMPLEMENTED YET!
+  ads.rightbar.banner:
+    context:
+      images: ["img/ads/rightbar.banner1.jpg","img/ads/rightbar.banner2.jpg","img/ads/rightbar.banner3.jpg"]
+      type: "serial" # [serial | carrousel] # CAROUSEL TYPE ISN'T IMPLEMENTED YET!

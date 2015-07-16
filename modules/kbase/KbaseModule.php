@@ -7,9 +7,9 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
+class KbaseModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
 {
-    protected $_modelRoute = "tutoria";
+    protected $_modelRoute = "kbase";
     /* ISummarizable */
     public function getSummary() {
         $data = array(1);
@@ -27,19 +27,19 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
 
     /* IWidgetContainer */
     public function getWidgets($widgetsIndexes = array()) {
-        if (in_array('tutoria.widget', $widgetsIndexes)) {
+        if (in_array('kbase.widget', $widgetsIndexes)) {
             $this->putScript("plugins/jquery.pulsate.min");
 
-            $this->putModuleScript("widget.tutoria");
+            $this->putModuleScript("widget.kbase");
             //$tutorias = $this->dataAction();
             //$this->putItem("tutoria", $tutorias);
 
         	return array(
-        		'tutoria.widget' => array(
-                    'type'      => 'tutoria', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-                    'id'        => 'tutoria-widget',
+        		'kbase.widget' => array(
+                    'type'      => 'kbase', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+                    'id'        => 'kbase-widget',
        				'title' 	=> self::$t->translate('Questions & Answers'),
-       				'template'	=> $this->template("tutoria.widget"),
+       				'template'	=> $this->template("widgets/overview"),
                     'icon'      => 'book',
                     'box'       => 'dark-blue tabbable',
                     'tools'     => array(
@@ -57,14 +57,14 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
     public function getLinks() {
 
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $itemsData = $this->model("tutoria")->getItems();
+            $itemsData = $this->model($this->_modelRoute)->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
             return array(
                 'communication' => array(
                     array(
                         'count' => count($itemsData),
-                        'text'  => self::$t->translate('Tutoria'),
+                        'text'  => self::$t->translate('Knowledge Base'),
                         'icon'  => 'fa fa-book ',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -84,7 +84,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             array(
                 'icon'  => 'fa fa-book',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Tutoria")
+                'text'  => self::$t->translate("Knowledge Base")
             )
         );
 
@@ -95,11 +95,11 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Tutoria"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New KB Item"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Tutoria"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit KB Item"));
                 break;
             }
         }
@@ -113,7 +113,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Tutoria'),
+                    'text'      => self::$t->translate('New KB Item'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -413,80 +413,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
 
         return $tutorias;
     }
-    /**
-     * [ add a description ]
-     *
-     * @url GET /data/:topic
-     */
-    /*
-    public function dataTopicAction($topic)
-    {
-        if ($topic == 0) {
-            return array();
-        }
 
-        $currentUser    = self::$current_user;
-
-        //$xuserModule = $this->loadModule("xuser");
-        $userLessons = $currentUser->getLessons();
-        $lessonsIds = array_keys($userLessons);
-
-        // GET LAST MESSAGES FROM USER LESSONS
-        $forum_messages = $this->_getTableData("f_messages fm
-            JOIN f_topics ft
-            JOIN f_forums ff
-            LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
-            "ft.title, ft.id as topic_id, ft.users_LOGIN, fm.timestamp, l.name as lessons_name, ff.lessons_id",
-            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN (%s) AND fm.f_topics_ID = %d",
-            implode(",", $lessonsIds), $topic),
-            "fm.timestamp ASC"
-        );
-        return $forum_messages;
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url POST /insert
-     * @deprecated 3.0.0.19
-     */
-    /*
-    public function insertTutoriaAction()
-    {
-        if ($currentUser    = $this->getCurrentUser()) {
-            $defaults = array(
-                'question_timestamp'    => time(),
-                'lessons_ID'            => 0,
-                'unit_ID'               => 0,
-                'title'                 => '',
-                'question_user_id'      => $currentUser['id'],
-                'question'              => ''
-            );
-            $values = array();
-
-            $values['title'] = $_POST['title'];
-            if (!array_key_exists('question', $_POST)) {
-                $values['question'] = $values['title'];
-            } else {
-                $values['question'] = $_POST['question'];
-            }
-            if (array_key_exists('lessons_ID', $_POST) && is_numeric($_POST['lessons_ID'])) {
-                $values['lessons_ID'] = $_POST['lessons_ID'];
-            }
-            if (array_key_exists('unit_ID', $_POST) && is_numeric($_POST['unit_ID'])) {
-                $values['unit_ID'] = $_POST['unit_ID'];
-            }
-
-            $values = array_merge($defaults, $values);
-            $status = $this->_insertTableData("mod_tutoria", $values);
-            if ($status) {
-                return $this->createResponse(200, '', "success", "advise");
-            } else {
-                return $this->createResponse(200, self::$t->translate("An error ocurred when trying to register your question!"), "danger", "advise");
-            }
-        }
-    }
-    */
     /**
      * [ add a description ]
      *
