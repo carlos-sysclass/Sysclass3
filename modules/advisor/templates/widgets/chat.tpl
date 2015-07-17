@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="text-center">
-                <a href="javascript: void(0);" class="btn btn-success">
+                <a href="javascript: void(0);" class="btn btn-success start-chat-action">
                     <span><i class="icon-ok-sign"></i> {translateToken value="Start Chat"}</span>
                 </a>
             </div>

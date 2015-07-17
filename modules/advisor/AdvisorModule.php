@@ -7,9 +7,11 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetContainer
+class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetContainer, IBlockProvider
 {
-    public function getSummary() {
+    // ISummarizable
+    public function getSummary()
+    {
         $data = array(1); // FAKE, PUT HERE DUE PAYMENTS
 
         return array(
@@ -22,15 +24,22 @@ class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetCont
             )
         );
     }
-    public function getWidgets($widgetsIndexes = array()) {
+
+    // IWidgetContainer
+    public function getWidgets($widgetsIndexes = array())
+    {
         if (in_array('advisor.chat', $widgetsIndexes) || in_array('advisor.schedule', $widgetsIndexes)) {
         	$widgets = array();
 
             if (in_array('advisor.chat', $widgetsIndexes)) {
                 // START CHART ON CLICK
+                //
+                $this->putBlock("chat.views");
+
+                $this->putModuleScript("widget.chat.advisor");
 
                 $widgets['advisor.chat'] = array(
-                    'id'        => 'advisor-widget',
+                    'id'        => 'advisor-chat-widget',
        				'template'	=> $this->template("widgets/chat"),
                     'header'     => self::$t->translate("Talk to us"),
                     'body'      => false,
@@ -41,7 +50,7 @@ class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetCont
 
             if (in_array('advisor.schedule', $widgetsIndexes)) {
                 $widgets['advisor.schedule'] = array(
-                    'id'        => 'advisor-widget-schedule',
+                    'id'        => 'advisor-schedule-widget',
                     'template'  => $this->template("widgets/schedule"),
                     'panel'     => true
 
@@ -51,5 +60,20 @@ class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetCont
             return $widgets;
         }
         return false;
+    }
+
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'chat.views' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putModuleScript("chat.views");
+
+                $self->putSectionTemplate("foot", "blocks/chat.views");
+
+                return true;
+
+            }
+        );
     }
 }

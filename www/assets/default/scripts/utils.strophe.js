@@ -2,7 +2,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
     this.startWithParent = false;
 
-    this.rosterCollection = new Backbone.Collection;
+    this.rosterCollection = new Backbone.Collection();
     var presences = {};
 
     this.connectionHandler = function(status) {
@@ -14,11 +14,13 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             console.log('Strophe is disconnecting.');
         } else if (status == Strophe.Status.DISCONNECTED) {
             // TRY TO RECONNECT
-            mod.connection.connect('demo.user@layout.sysclass.com', '123456', mod.connectionHandler);
+            mod.connection.connect('student@sysclass.com', '123456', mod.connectionHandler);
 
-            
+
         } else if (status == Strophe.Status.CONNECTED) {
             console.log('Strophe is connected.');
+
+            console.warn($pres().tree());
 
             this.send($pres().tree());
 
@@ -26,17 +28,18 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             defered.done(function(roster) {
                 var models = [];
                 var i = 0;
-                for(jid in roster) {
-                    if (presences[jid] != undefined) {
-                        var status = presences[jid];
+                for(var jid in roster) {
+                    var status = null;
+                    if (presences[jid] !== undefined) {
+                        status = presences[jid];
                     } else {
-                        var status = "offline"
+                        status = "offline";
                     }
                     models[i++] = {
                         id          : jid,
                         name        : roster[jid].name,
                         status      : status,
-                        messages    : new Backbone.Collection
+                        messages    : new Backbone.Collection()
                     };
                 }
                 //console.log(models);
@@ -53,12 +56,12 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
     };
 
 	this.addInitializer(function(){
-        var BOSH_SERVICE = 'https://demo.sysclass.com/chat-poll';
+        var BOSH_SERVICE = 'http://local.sysclass.com/chat-poll';
         this.connection = new Strophe.Connection(BOSH_SERVICE);
 
         var self = this;
         self.trigger("xmpp:connect:before", status);
-        this.connection.connect('demo.user@layout.sysclass.com', '123456', this.connectionHandler);
+        this.connection.connect('student@enterprise.sysclass.com', '123456', this.connectionHandler);
   	});
 
     this.on("xmpp:connect:after", function(status) {
@@ -76,7 +79,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
                 } else {
                     status = "offline";
                 }
-                if (model != undefined) {
+                if (model !== undefined) {
                     model.set("status", status);
                 } else {
                     presences[presence.jid] = status;
@@ -86,16 +89,16 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             });
             this.connection.messaging.on("xmpp:message", function(message) {
                 var model = mod.rosterCollection.get(message.from.barejid);
-                if (model != undefined) {
+                if (model !== undefined) {
                     var col = model.get("messages");
-                    message.from_me = (message.from.barejid == Strophe.getBareJidFromJid(mod.connection.jid))
+                    message.from_me = (message.from.barejid == Strophe.getBareJidFromJid(mod.connection.jid));
                     col.add(message);
                 }
                 self.trigger("xmpp:message", model);
             });
         }
 
-    })
+    });
 
     this.on("start", function() {
         //app.reqres.setHandler("xmpp:message:send", this.sendMessage);
@@ -104,13 +107,13 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
     this.startChat = function(who) {
         var model = mod.rosterCollection.get(who);
         this.trigger("xmpp:startchat", model);
-    }
+    };
 
     this.sendMessage = function(to_jid, message) {
         mod.connection.messaging.send(to_jid, message);
 
         var from_jid = mod.connection.jid;
-        var message = {
+        var messageData = {
             //id:    .getAttribute('id'),
             from : {
                 jid:  from_jid,
@@ -133,14 +136,15 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
         };
 
         var model = mod.rosterCollection.get(to_jid);
-        model.get("messages").add(message);
+        model.get("messages").add(messageData);
 
         this.trigger("xmpp:message:sent", model);
         return true;
     };
+
     this.GetAmI = function() {
         return Strophe.getBareJidFromJid(mod.connection.jid);
-    }
+    };
     /* GETTING USER CHAT LIST */
 
 
