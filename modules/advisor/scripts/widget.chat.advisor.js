@@ -3,7 +3,7 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 	mod.addInitializer(function() {
 	  	// VIEWS
 		var parent = app.module("portlet");
-
+/*
 		var advisorChatBlockViewItemClass = parent.blockViewItemClass.extend({
 			tagName : "div",
 			template : _.template($("#kbase-item-template").html(), null, {variable: "model"})
@@ -13,7 +13,7 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 			nofoundTemplate : _.template($("#kbase-nofound-template").html()),
 			childViewClass : advisorChatBlockViewItemClass
 		});
-
+*/
 		//this.advisorChatWidgetViewClass = parent.widgetViewClass.extend({
 		this.advisorChatWidgetViewClass = Backbone.View.extend({
 			collection : null,
@@ -60,7 +60,7 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 			}
 		});
 	});
-
+/*
 	this.models = {
 		kbase : Backbone.DeepModel.extend({
 			urlRoot : "/module/kbase/item/question"
@@ -72,7 +72,7 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 			model : this.models.kbase
 		})
 	};
-
+*/
 	mod.on("start", function() {
 
 		mod.listenToOnce(app.userSettings, "sync", function(model, data, options) {
