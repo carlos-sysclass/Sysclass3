@@ -16,23 +16,47 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 
 		//this.advisorChatWidgetViewClass = parent.widgetViewClass.extend({
 		this.advisorChatWidgetViewClass = Backbone.View.extend({
+			collection : null,
 			chatModule : app.module("utils.strophe"),
 			events : {
-				"click .start-chat-action" : "startChat"
+				"click .start-chat-action" : "startChart"
 			},
 			initialize : function() {
 				// LISTEN TO chatModule to Execute interface
-				// $SC.module("utils.strophe").startChat('support1@enterprise.sysclass.com');
+				// 'support1@enterprise.sysclass.com');
+				this.listenToOnce(this.chatModule, "xmpp:connect:before", function(status) {
+					this.$(".block-title").hide();
+					this.$(".chat-loader").show();
+				}.bind(this));
 
-				/*
-				this.listenTo(this.chatModule, "xmpp:roster:sync")
-		$SC.module("utils.strophe").on(, function(col) {
-			mod.view.start(col);
-		});
-				*/
+				this.listenToOnce(this.chatModule, "xmpp:startchat", function(status) {
+					this.$(".chat-loader").fadeOut(500, function() {
+						this.$(".block-title").show();
+						this.$("#chat-action-container").hide();
+					}.bind(this));
+				}.bind(this));
+
+				this.listenToOnce(this.chatModule, "xmpp:roster:sync", function(collection) {
+					this.collection = collection;
+					this.startChart();
+				}.bind(this));
 			},
-			startChat : function() {
-				this.chatModule.start();
+			startChart : function() {
+				if (!this.chatModule.started) {
+					this.chatModule.start();
+				}
+				if (!_.isNull(this.collection)) {
+					if (this.collection.size() > 0) {
+
+						// TODO: DO A LOOP TO CHECK NEXT online support USER.
+						var modelToChat = this.collection.at(0);
+						if (modelToChat.get("status") != "offline") {
+							this.chatModule.startChat(modelToChat.get("id"));
+						}
+					} else {
+						// Show Unavaliable Message
+					}
+				}
 			}
 		});
 	});

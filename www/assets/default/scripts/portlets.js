@@ -91,6 +91,7 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
             self.$el.append(childView.render().el);
         }
     });
+
     mod.widgetViewClass = Backbone.View.extend({
         collectionClass : null,
         blockViewClass : mod.blockViewClass,

@@ -1,10 +1,19 @@
 <ul class="ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
-    <li class="active">
+    <li class="active block-title">
         <a>
             <i class="{$T_DATA.icon}"></i>
             {$T_DATA.header}
         </a>
     </li>
+    <li class="active chat-loader" style="display: none;">
+        <a>
+            <i class="fa">
+                <span class="fa fa-circle-o-notch fa-lg fa-spin"></span>
+            </i>
+            Connecting
+        </a>
+    </li>
+
 </ul>
 <div class="panel-body">
     <div class="row">
@@ -25,9 +34,11 @@
                 <strong class="text-default">English</strong>
             </p>
         </div>
+
     </div>
     <hr />
-    <div class="row">
+
+    <div class="row" id="chat-action-container">
         <div class="col-md-12">
             <div class="text-center">
                 <a href="javascript: void(0);" class="btn btn-success start-chat-action">

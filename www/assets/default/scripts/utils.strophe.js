@@ -1,6 +1,7 @@
 $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
     this.startWithParent = false;
+    this.started = false;
 
     this.rosterCollection = new Backbone.Collection();
     var presences = {};
@@ -14,7 +15,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             console.log('Strophe is disconnecting.');
         } else if (status == Strophe.Status.DISCONNECTED) {
             // TRY TO RECONNECT
-            mod.connection.connect('student@sysclass.com', '123456', mod.connectionHandler);
+            mod.connection.connect('student@enterprise.sysclass.com', '123456', mod.connectionHandler);
 
 
         } else if (status == Strophe.Status.CONNECTED) {
@@ -62,6 +63,8 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
         var self = this;
         self.trigger("xmpp:connect:before", status);
         this.connection.connect('student@enterprise.sysclass.com', '123456', this.connectionHandler);
+
+        this.started = true;
   	});
 
     this.on("xmpp:connect:after", function(status) {

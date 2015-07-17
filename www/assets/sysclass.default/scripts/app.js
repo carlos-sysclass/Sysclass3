@@ -1033,10 +1033,14 @@ var App = function () {
             var html = '';
             if (options.iconOnly) {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img style="" src="/assets/sysclass.default/img/loading-spinner-blue.gif" align=""></div>';
+                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i></div>';
+
+
+
             } else if (options.textOnly) {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             } else {
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img style="" src="/assets/sysclass.default/img/loading-spinner-blue.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
+                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><i class="fa fa-circle-o-notch fa-lg fa-spin"></i><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             }
 
             if (options.target) { // element blocking
@@ -1056,7 +1060,7 @@ var App = function () {
                     },
                     overlayCSS: {
                         backgroundColor: options.overlayColor ? options.overlayColor : '#000',
-                        opacity: options.boxed ? 0.05 : 0.1,
+                        opacity: options.opacity ? options.opacity : (options.boxed ? 0.05 : 0.1),
                         cursor: 'wait'
                     }
                 });
