@@ -12,7 +12,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 {
     /* ISummarizable */
     public function getSummary() {
-        //$data = array(1); // FAKE, PUT HERE DUE PAYMENTS
 
         return array(
             'type'  => 'danger',
@@ -107,7 +106,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         return $actions[$request];
     }
 
-
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('courses.overview', $widgetsIndexes)) {
@@ -143,6 +141,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 				)
 			);
 		}
+        /*
         if (in_array("courses.administration", $widgetsIndexes)) {
             // TODO MOVE TO YOUR OWN COMPONENT
             $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
@@ -170,7 +169,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
                 )
             );
         }
-
+        */
 
 		return false;
 	}

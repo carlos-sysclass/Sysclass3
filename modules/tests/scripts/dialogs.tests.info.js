@@ -8,9 +8,10 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
 
     mod.on("start", function(opt){
         // MOVE THIS MODEL TO ANOTHER MODULE
-        var questionModelClass = Backbone.Model.extend({});
-
         var testsInfoDialogViewClass = Backbone.View.extend({
+            events : {
+                "click [data-action-trigger]" : "triggerAction"
+            },
             template : _.template($("#tests_info_modal-template").html(), null, {variable : "model"}),
             initialize : function() {
                 // CREATE DIALOG
@@ -18,28 +19,6 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
                     show : false,
 
                 });
-
-                // CREATE TABLE SUB-VIEW
-//                var baseDatatableViewClass = app.module("views").baseDatatableViewClass;
-//                var sAjaxSource = "/module/questions/items/lesson-content/datatable/";
-/*
-                var tableViewClass = baseDatatableViewClass.extend({
-                    onSelectItem : function(e) {
-                        var data = this.oTable._($(e.currentTarget).closest("tr"));
-                        var model = new questionModelClass(data[0]);
-                        mod.trigger("select:item", e, model);
-                    }
-                });
-*/
-/*
-                this.tableView = new tableViewClass({
-                    el : "#questions-select-modal-table",
-                    datatable : {
-                        "sAjaxSource": sAjaxSource,
-                        "aoColumns": mod.config.datatable_fields
-                    }
-                });
-*/
                 mod.started = true;
             },
             setModel : function(model) {
@@ -52,6 +31,20 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
                 this.render();
             },
             render : function() {
+                console.warn(this.model.toJSON());
+
+                this.$(".modal-content").html(this.template(this.model.toJSON()));
+
+                app.module("ui").refresh(this.$(".modal-content"));
+            },
+            triggerAction : function(e) {
+                var trigger = $(e.currentTarget).data("actionTrigger");
+
+                if (!_.isEmpty(trigger)) {
+                    mod.trigger("action:do-test", this.model);
+                }
+
+
 
             }
         });
@@ -59,7 +52,7 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
         this.setInfo = function(info) {
             // FILTER DATATABLE
             //this.filter = filter;
-            this.model = info.model;
+            //this.model = info.model;
             // LOAD TEST MODEL FROM
             //
             this.dialogView.setModel(info.model);

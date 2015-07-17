@@ -455,6 +455,7 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
+	<!--
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
@@ -469,15 +470,6 @@
 				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Class"}</a>
 			</div>
 		</div>
-		<!--
-		<div class="margin-bottom-10 visible-sm"></div>
-		<div class="col-md-3">
-			<div class="easy-pie-chart">
-				<div class="number semester" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">Semester</a>
-			</div>
-		</div>
-		-->
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
@@ -487,6 +479,7 @@
 		</div>
 			<div class="clearfix margin-bottom-10"></div>
 	</div>
+	-->
 </div>
 
 <script type="text/template" id="tab_course_description-template">
