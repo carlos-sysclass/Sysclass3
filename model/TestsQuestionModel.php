@@ -46,10 +46,29 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
 
 	}
 
-    public function getItem($identifier) {
-        $data = parent::getItem($identifier);
-        $data['options'] = json_decode($data['options'], true);
+    protected function parseItem($item) {
+        // var_dump($item['question']['options']);
+        // exit;
+
+        $item['question']['options'] = json_decode($item['question']['options'], true);
+
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
         return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+        return $this->parseItem($item);
     }
 
     public function addItem($data)

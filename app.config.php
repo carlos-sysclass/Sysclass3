@@ -364,7 +364,7 @@ $plicoLib->concat(
 		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/font-awesome-more/css/font-awesome-corp',
 		'plugins/bootstrap/css/bootstrap.min',
-		'plugins/uniform/css/uniform.default',
+		//'plugins/uniform/css/uniform.default',
 
         'plugins/fa/css/font-awesome.min',
 		//<!-- END GLOBAL MANDATORY STYLES -->
@@ -418,7 +418,7 @@ $plicoLib->concat(
 		'plugins/jquery-slimscroll/jquery.slimscroll',
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
-		'plugins/uniform/jquery.uniform.min',
+		//'plugins/uniform/jquery.uniform.min',
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 

@@ -51,32 +51,37 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
     /* IBreadcrumbable */
     public function getBreadcrumb() {
-        $breadcrumbs = array(
-            array(
-                'icon'  => 'fa fa-home',
-                'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
-            ),
-            array(
-                'icon'  => 'icon-bookmark',
-                'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Tests")
-            )
-        );
-
+        $breadcrumbableViews = array("view", "add", "edit/:identifier");
         $request = $this->getMatchedUrl();
-        switch($request) {
-            case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
-                break;
-            }
-            case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Test"));
-                break;
-            }
-            case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
-                break;
+
+        if (in_array($request, $breadcrumbableViews)) {
+
+            $breadcrumbs = array(
+                array(
+                    'icon'  => 'fa fa-home',
+                    'link'  => $this->getSystemUrl('home'),
+                    'text'  => self::$t->translate("Home")
+                ),
+                array(
+                    'icon'  => 'icon-bookmark',
+                    'link'  => $this->getBasePath() . "view",
+                    'text'  => self::$t->translate("Tests")
+                )
+            );
+
+            switch($request) {
+                case "view" : {
+                    $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                    break;
+                }
+                case "add" : {
+                    $breadcrumbs[] = array('text'   => self::$t->translate("New Test"));
+                    break;
+                }
+                case "edit/:identifier" : {
+                    $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
+                    break;
+                }
             }
         }
         return $breadcrumbs;
@@ -180,6 +185,79 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     }
 
     /**
+     * Test landing page, before execution
+     *
+     * @url GET /open/:identifier
+     */
+    public function openPage($identifier)
+    {
+        $testData = $this->model("roadmap/tests")->getItem($identifier);
+        /*
+        echo "<pre>";
+        var_dump($testData);
+        echo "</pre>";
+        */
+
+        $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+        // LOAD USER PROGRESS ON THIS TEST
+        //
+        //$testData['info'] = "Test execution Info";
+        /*
+        $testData['user_tries'] = array(
+            array(
+                'user_score' => '150',
+                'total_questions_completed' => 3,
+                'time_spent' => 40,
+                'pass' => true
+            )
+        );
+        */
+
+        //exit;
+        //
+        $this->putItem("test", $testData);
+        $this->createClientContext("open");
+
+        // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+        $this->display($this->template);
+    }
+
+
+
+    /**
+     * The test execution itself
+     *
+     * @url GET /execute/:identifier
+     * @url POST /execute/:identifier
+     */
+    public function executePage($identifier)
+    {
+        // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+
+
+        // START PROGRESS
+        $testData = $this->model("roadmap/tests")->getItem($identifier);
+
+        // PREPARE TEST TO EXECUTE
+        /*
+        echo "<pre>";
+        var_dump($testData);
+        echo "</pre>";
+        */
+
+        $this->module("settings")->put("teste_execution_id", $identifier);
+
+        //$this->putModuleScript();
+
+        $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+
+        $this->putItem("test", $testData);
+        $this->createClientContext("execute");
+
+        $this->display($this->template);
+    }
+
+    /**
      * [ add a description ]
      *
      * @url GET /item/:model/:identifier
@@ -207,6 +285,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
+            $advise = true;
+
             if ($model == "me") {
                 $itemModel = $this->model("tests");
                 $messages = array(
@@ -223,6 +303,16 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 $data['language_code'] = self::$t->getUserLanguageCode();
 
                 $_GET['redirect'] = "0";
+            } elseif ($model == "execution") {
+                $itemModel = $this->model("tests/execution");
+
+                $advise = false;
+                $_GET['redirect'] = "0";
+
+                $messages = array(
+                    'success' => "Test created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
             } else {
                 return $this->invalidRequestError();
             }
@@ -232,7 +322,14 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    if ($advise) {
+                        $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    } else {
+                        $response = $this->createNonAdviseResponse(self::$t->translate($messages['success']), "success");
+                    }
+
+                    $data = $itemModel->getItem($data['id']);
+
                     return array_merge($response, $data);
                 } else {
                     return $this->createRedirectResponse(
@@ -275,12 +372,27 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     'success' => "Question updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+            } elseif ($model == "execution") {
+                $itemModel = $this->model("tests/execution");
+
+                $advise = false;
+
+                $messages = array(
+                    'success' => "Test updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
             } else {
                 return $this->invalidRequestError();
             }
 
             if ($itemModel->setItem($data, $identifier) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                if ($advise) {
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                } else {
+                    $response = $this->createNonAdviseResponse(self::$t->translate($messages['success']), "success");
+                }
+
                 $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
             } else {

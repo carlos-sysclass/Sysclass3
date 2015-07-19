@@ -47,3 +47,14 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your test info
+    'open/:identifier':
+      components: ["select2", "validation", "bootstrap-switch"]
+      template: open.tpl
+      variables:
+        page_subtitle: Edit your test info
+    'execute/:identifier':
+      components: ["select2", "validation", "bootstrap-switch", "icheck"]
+      scripts : ["tests.execute"]
+      template: execute.tpl
+      variables:
+        page_subtitle: Edit your test info

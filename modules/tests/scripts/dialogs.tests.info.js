@@ -43,9 +43,6 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
                 if (!_.isEmpty(trigger)) {
                     mod.trigger("action:do-test", this.model);
                 }
-
-
-
             }
         });
 

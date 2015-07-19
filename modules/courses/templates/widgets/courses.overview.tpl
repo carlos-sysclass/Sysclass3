@@ -647,7 +647,7 @@
 	<td class="text-center"><span class="label label-warning">{translateToken value="Not done yet"}</span></td>
 	<td class="text-center">
 		<% if (model.total_questions > 0) { %>
-			<a href="javascript:void(0);" class="btn btn-xs btn-primary open-test-action">
+			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
 				{translateToken value="Do now!"}
 			</a>
 			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">

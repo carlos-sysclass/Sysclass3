@@ -838,12 +838,16 @@ table.users-panel-notification-table > thead > tr > td {
     background: #efe9e9;
 }
 
-
-
 .list-file-item-options {
     float: right;
     margin: 0 0 0 4px;
 }
+
+/*
+.list-file-item .list-file-item-options {
+    margin-top: -4px;
+}
+*/
 .list-file-item-options.pull-left {
     margin: 0 4px 0 0;
 }
@@ -1009,4 +1013,30 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 }
 .question-container > li:last-child {
     border-bottom: none;
+}
+
+ul.test-sidebar-info {
+    position: fixed;
+    right: 10px;
+    top: 100px;
+}
+ul.test-sidebar-info > li {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    display: block;
+    margin: 0 0 10px;
+    padding: 5px;
+    min-height: 32px;
+    vertical-align: middle;
+}
+ul.test-sidebar-info > li span.pull-left {
+    margin-right: 10px;
+}
+
+.test-question-container {
+    border-style: solid;
+    border-width: 1px 0 1px 0;
+    border-color:  #cccccc;
+    padding: 10px 5px 15px;
+    margin-top: -1px;
 }

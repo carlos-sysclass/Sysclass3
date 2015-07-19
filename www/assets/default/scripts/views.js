@@ -51,21 +51,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	// HANDLE SPECIAL bootstrap-switchs CHANGE EVENTS
 	    	// CREATE A DELEGATED EVENT, BECAUSE THE ITEM SOMETIMES IS NOT IN THE DOM YET
 
-			//this.$('.bootstrap-switch-me').each(function() {
+			// HANDLE SPECIAL bootstrap-switch CHANGE EVENTS
 			this.$el.delegate('.bootstrap-switch-me', 'switchChange.bootstrapSwitch', function(e, state) {
-				/*
-                if (state) {
-                    $(this).attr("checked", "checked");
-                    $(this).val(1);
-                } else {
-                    $(this).removeAttr("checked");
-                    $(this).val(0);
-                }
-                */
-
-				//self.update(e);
+				self.update(e);
 			});
-	    	//});
 	    	// HANDLE SPECIAL wysihtml5 CHANGE EVENTS
 	    	this.$('.wysihtml5').each(function() {
 	    		var wysihtml5DOM = this;
@@ -78,7 +67,15 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					//self.update()
 				});
 	    	});
-
+	    	// HANDLE SPECIAL icheck CHANGE EVENTS
+	    	//this.$('.icheck-me').each(function() {
+    		this.$("[type='radio'].icheck-me").on("ifChecked", function(e) {
+				self.update(e);
+    		});
+    		this.$("[type='checkbox'].icheck-me").on("ifChanged", function(e) {
+				self.update(e);
+    		});
+	    	//});
 	    },
 	    handleAction : function(action) {
 	    	console.info('views/baseClass::handleAction');
@@ -222,33 +219,48 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseClass::update');
 	    	var $el = $(e.currentTarget);
 
+	    	var prop = null;
+
 			if ($el.attr("data-update")) {
-				var prop = $el.attr("data-update");
+				prop = $el.attr("data-update");
 			} else if ($el.attr("name")) {
-		        var prop = $el.attr("name");
+		        prop = $el.attr("name");
 		    } else {
 		    	return;
 		    }
 
 			var value = $el.val();
 
-			if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
+			if ($el.is("[type='checkbox']"))  {
+				// CHECK FOR ANOTHER VALUES, BECAUSE THE ELEMENT TRIGGERING THE EVENT IS JUST ONE OFF MULTIPLE CHECKBOXES
+				var brothers = null;
+				if ($el.attr("data-update")) {
+					brothers = this.$("[type='checkbox'][data-update='" + prop +"']");
+				} else {
+					brothers = this.$("[type='checkbox'][name='" + prop +"']");
+				}
+
+				var values = [];
+				brothers.each(function() {
+					if (!$(this).is(":checked") && $(this).is("[data-value-unchecked]")) {
+						values.push($(this).data("valueUnchecked"));
+					} else if ($(this).is(":checked")) {
+						values.push($(this).val());
+					}
+				});
+				// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
+				this.model.unset(prop, {silent: true});
+				value = values;
+			//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
 				//value = -1;
-				value = $el.data("valueUnchecked");
+			//	value = $el.data("valueUnchecked");
 			}
 
-			/*
-			if ($el.is(".datepick")) {
-				value = $el.data("datepicker").getDate().format("isoDate");
-			}
-			*/
 			if ($el.is("[data-format-from]")) {
 				value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 			}
 
 		    this.model.set(prop, value);
-
-		    //Marionette.triggerMethodOn(this, "updateModel", this.model);
 	    },
 	    save : function(e) {
 	    	console.info('views/baseClass::save');

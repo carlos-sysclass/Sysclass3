@@ -24,7 +24,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
 
         return $item;
     }
-
+    /*
     public function getItems()
     {
         $data = parent::getItems();
@@ -35,7 +35,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
         }
         return $data;
     }
-
+    */
     public function getItem($identifier)
     {
         $data = parent::getItem($identifier);
@@ -45,67 +45,27 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
 
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
-        $data['lessons'] = $this->model("roadmap/lessons")->addFilter(array(
-            'class_id' => $identifier
+        $data['questions'] = $this->model("tests/question")->addFilter(array(
+            'lesson_id' => $identifier
         ))->getItems();
 
         return $this->parseItem($data);
     }
 
-    public function addItem($data) {
-        $classModel = $this->model("classes");
-        if (!array_key_exists('class_id', $data)) {
-            $data['class_id'] = $classModel->addItem($data['class']);
+    public function calculateTestScore($testData) {
+        if (!array_key_exists('questions', $testData)) {
+            $testData['questions'] = $this->model("tests/question")->addFilter(array(
+                'lesson_id' => $testData['id']
+            ))->getItems();
         }
-        $identifier = parent::addItem($data);
-
-        if (array_key_exists('period_id', $data)) {
-            $periodsModel = $this->model("roadmap/periods");
-            $periodsModel->addClass($data['course_id'], $data['period_id'], $data['class_id']);
+        $testScore = 0;
+        foreach($testData['questions'] as $question) {
+            $testScore += $question['points'] * $question['weight'];
         }
 
-        return $identifier;
+        $testData['score'] = $testScore;
+        return $testData;
+
     }
 
-    public function setItem($data, $identifier, $quote = true) {
-        $classModel = $this->model("classes");
-        if (array_key_exists('class_id', $data)) {
-            $classModel->setItem($data['class'], $data['class_id']);
-        }
-
-        if (array_key_exists('period_id', $data)) {
-            $periodsModel = $this->model("roadmap/periods");
-            $periodsModel->addClass($data['course_id'], $data['period_id'], $data['class_id']);
-        }
-
-        return parent::setItem($data, $identifier, $quote);
-        //return array($data['class_id'], $data['class_id']);
-    }
-
-    protected function resetOrder($course_id, $period_id = null) {
-        $filter = array(
-            'course_id' => $course_id
-        );
-        if (!is_null($period_id)) {
-            $filter['class_id'] = "SELECT class_id FROM mod_roadmap_classes_to_periods WHERE period_id = {$period_id}";
-        }
-        $this->setItem(array(
-            'position' => -1
-        ), $filter, false);
-    }
-
-    public function setOrder($course_id, array $order_ids, $period_id = null) {
-        $this->resetOrder($course_id, $period_id);
-        foreach($order_ids as $index => $identifier) {
-            $this->setItem(array(
-                'position' => $index + 1
-            ), array(
-                'id' => $identifier
-            ));
-        }
-
-        return true;
-
-    }
-    */
 }

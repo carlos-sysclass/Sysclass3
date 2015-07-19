@@ -739,9 +739,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 app.module("dialogs.tests.info").open();
             },
             doTest : function(model) {
-            	alert("do test");
-            	console.warn(this.model.toJSON());
-
+            	app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
 
             }

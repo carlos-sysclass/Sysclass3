@@ -175,7 +175,7 @@
 </script>
 
 <script type="text/template" id="classes-edit-item">
-    <a href="#" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+    <a href="#" class="btn btn-sm editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="class.name"
         data-send="never"
