@@ -89,9 +89,12 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     }
 
-    protected function injectObjects($page = null) {
+    protected function injectObjects($page = null, $override_route = null) {
+        if (is_null($override_route)) {
+            $override_route = $this->getMatchedUrl();
+        }
 
-        $config = $this->getConfig("crud\\routes\\" . $this->getMatchedUrl());
+        $config = $this->getConfig("crud\\routes\\" . $override_route);
         $baseconfig = $this->getConfig('crud\base_route');
 
         $config = array_replace_recursive($baseconfig, $config);
@@ -138,8 +141,11 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         //$this->clientContext = $config;
     }
 
-    protected function createClientContext($operation, $data = null) {
-        $config = $this->getConfig("crud\\routes\\" . $this->getMatchedUrl());
+    protected function createClientContext($operation, $data = null, $override_route = null) {
+        if (is_null($override_route)) {
+            $override_route = $this->getMatchedUrl();
+        }
+        $config = $this->getConfig("crud\\routes\\" . $override_route);
 
         if ($config === FALSE) {
             return false;
@@ -149,6 +155,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->clientContext = $config['context'];
         $this->clientContext['module_id'] = $this->context['module_id'];
         $this->clientContext['route'] = $this->getMatchedUrl();
+        $this->clientContext['override_route'] = $override_route;
 
         if (array_key_exists("model-prefix", $config)) {
             $this->clientContext['model-prefix'] = $config['model-prefix'];
@@ -160,7 +167,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         if (array_key_exists("override-route", $config)) {
             $this->injectObjects($config["override-route"]);
         } else {
-            $this->injectObjects($operation);
+            $this->injectObjects($operation, $override_route);
         }
 
         //$this->injectObjects($operation);

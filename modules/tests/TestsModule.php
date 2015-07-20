@@ -111,7 +111,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             )
         );
 
-        return $actions[$request];
+        return array_key_exists($request, $actions) ? $actions[$request] : false;
     }
 
     /* IBlockProvider */
@@ -191,35 +191,48 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
      */
     public function openPage($identifier)
     {
-        $testData = $this->model("roadmap/tests")->getItem($identifier);
-        /*
-        echo "<pre>";
-        var_dump($testData);
-        echo "</pre>";
-        */
+        if ($userData = $this->getCurrentUser()) {
+            $testData = $this->model("roadmap/tests")->getItem($identifier);
+            /*
+            echo "<pre>";
+            var_dump($testData);
+            echo "</pre>";
+            */
 
-        $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
-        // LOAD USER PROGRESS ON THIS TEST
-        //
-        //$testData['info'] = "Test execution Info";
-        /*
-        $testData['user_tries'] = array(
-            array(
-                'user_score' => '150',
-                'total_questions_completed' => 3,
-                'time_spent' => 40,
-                'pass' => true
-            )
-        );
-        */
+            $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+            // LOAD USER PROGRESS ON THIS TEST
+            //
+            $testData['executions'] = $this->model("tests/execution")->addFilter(array(
+                'test_id' => $identifier,
+                'pending' => 0,
+                'user_id' => $userData['id']
+            ))->getItems();
 
-        //exit;
-        //
-        $this->putItem("test", $testData);
-        $this->createClientContext("open");
+            // IF THE USER CANT'T TRY ANOTHER TIME, REDIRECT OR RENDER TEST STATUS VIEW
 
-        // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
-        $this->display($this->template);
+            //var_dump($testData['executions']);
+
+            //
+            //$testData['info'] = "Test execution Info";
+            /*
+            $testData['user_tries'] = array(
+                array(
+                    'user_score' => '150',
+                    'total_questions_completed' => 3,
+                    'time_spent' => 40,
+                    'pass' => true
+                )
+            );
+            */
+
+            //exit;
+            //
+            $this->putItem("test", $testData);
+            $this->createClientContext("execute", null, "open");
+
+            // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+            $this->display($this->template);
+        }
     }
 
 
@@ -227,35 +240,115 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * The test execution itself
      *
-     * @url GET /execute/:identifier
      * @url POST /execute/:identifier
      */
     public function executePage($identifier)
     {
         // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+        //
+        if ($userData = $this->getCurrentUser()) {
+            // START PROGRESS
+            $testData = $this->model("roadmap/tests")->getItem($identifier);
+
+            $executionModel = $this->model("tests/execution");
+
+            $testData['executions'] = $executionModel->addFilter(array(
+                'test_id' => $identifier,
+                'user_id' => $userData['id']
+            ))->getItems();
+
+            // PREPARE TEST TO EXECUTE
+            $executionId = $executionModel->addItem(array(
+                'test_id' => $identifier,
+                'user_id' => $userData['id']
+            ));
 
 
-        // START PROGRESS
-        $testData = $this->model("roadmap/tests")->getItem($identifier);
+            if ($executionId) {
+                $executionData = $executionModel->getItem($executionId);
 
-        // PREPARE TEST TO EXECUTE
-        /*
-        echo "<pre>";
-        var_dump($testData);
-        echo "</pre>";
-        */
+                $this->module("settings")->put("test_execution_id", $executionId);
 
-        $this->module("settings")->put("teste_execution_id", $identifier);
+                //$this->putModuleScript();
 
-        //$this->putModuleScript();
+                $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
 
-        $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+                $this->putItem("test", $testData);
+                $this->putItem("execution", $executionData);
 
-        $this->putItem("test", $testData);
-        $this->createClientContext("execute");
+                $this->createClientContext("execute", null, "execute");
 
-        $this->display($this->template);
+                $this->display($this->template);
+            } else {
+                $this->redirect(
+                    '/module/tests/open/' . $identifier,
+                    self::$t->translate("You can not run this test more often"),
+                    "warning"
+                );
+                //$this->openPage();
+            }
+
+        }
     }
+
+    /**
+     * The test execution itself
+     *
+     * @url GET /execute/:identifier
+     * @url GET /execute/:identifier/:execution_id
+     */
+    public function executeViewPage($identifier, $execution_id)
+    {
+        // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+        //
+        if ($userData = $this->getCurrentUser()) {
+            // START PROGRESS
+            $testData = $this->model("roadmap/tests")->getItem($identifier);
+
+            $executionModel = $this->model("tests/execution");
+
+
+            $executions = array();
+
+            if (!is_null($execution_id)) {
+                $executions = $executionModel->addFilter(array(
+                    'test_id' => $identifier,
+                    'user_id' => $userData['id'],
+                    'id' => $execution_id
+                ))->getItems();
+
+            }
+            if (count($executions) == 0) {
+                $executions = $executionModel->clear()->addFilter(array(
+                    'test_id' => $identifier,
+                    'user_id' => $userData['id']
+                ))->getItems();
+
+            }
+            $execution = end($executions);
+
+            if (count($executions) > 0) {
+                $execution_id = $execution['id'];
+                $executionData = $executionModel->getItem($execution['id']);
+
+                $this->module("settings")->put("test_execution_id", $execution_id);
+
+                $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+
+                $this->putItem("test", $testData);
+                $this->putItem("execution", $executionData);
+
+                $this->createClientContext("execute", null, "execute");
+
+                $this->display($this->template);
+            } else {
+                $this->redirect('/module/tests/open/' . $identifier);
+                //$this->openPage();
+            }
+
+        }
+    }
+
 
     /**
      * [ add a description ]
@@ -268,6 +361,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             $itemModel = $this->model("tests");
         } elseif ($model == "question") {
             $itemModel = $this->model("tests/question");
+        } elseif ($model == "execution") {
+            $itemModel = $this->model("tests/execution");
         }
 
         $editItem = $itemModel->getItem($identifier);
@@ -311,7 +406,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
                 $messages = array(
                     'success' => "Test created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again",
+                    'try_limit' => "You can not run this test more often"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -320,6 +416,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
 
             $data['login'] = $userData['login'];
+            $data['user_id'] = $userData['id'];
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
                     if ($advise) {
@@ -339,6 +436,13 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     );
                 }
             } else {
+                if ($model == "execution") {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "open/" . $data['test_id'],
+                        self::$t->translate($messages['try_limit']),
+                        "warning"
+                    );
+                }
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError($messages['error'], "error");
             }
@@ -386,8 +490,18 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 return $this->invalidRequestError();
             }
 
+            $data['login'] = $userData['login'];
+            $data['user_id'] = $userData['id'];
+
             if ($itemModel->setItem($data, $identifier) !== false) {
-                if ($advise) {
+                if ($model == "execution" && $data['complete'] == 1) {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
+                        self::$t->translate("Test completed with success"),
+                        "success"
+                    );
+                }
+               if ($advise) {
                     $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                 } else {
                     $response = $this->createNonAdviseResponse(self::$t->translate($messages['success']), "success");

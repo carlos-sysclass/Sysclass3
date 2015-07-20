@@ -12,11 +12,15 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         "SELECT
             te.id,
             te.test_id,
+            te.user_id,
             te.try_index,
             te.start_timestamp,
             te.paused,
             te.pending,
-            t.time_limit as 'test#timelimit'/*,
+            te.answers,
+            te.completed,
+            t.time_limit as 'test#timelimit',
+            t.test_repetition as 'test#test_repetition'/*,
             t.**/
         FROM `mod_tests_execution` te
         LEFT JOIN mod_tests t ON (t.id = te.test_id)";
@@ -35,32 +39,68 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         );
     }
 
-    protected function invalidate($test_try, $progress) {
+    protected function completeTest($test_try, $progress) {
+        $now = time();
+        if ($now - $progress['started'] > $progress['time_elapsed']) {
+            $progress['time_elapsed'] = $now - $progress['started'];
+        }
         $this->update(
             array(
                 'pending' => '0',
-                'time_elapsed' => $progress['time_elapsed']
+                'time_elapsed' => $progress['time_elapsed'],
+                'completed' => time()
             ),
-            $test_try['id']
+            array(
+                'id' => $test_try['id'],
+                'pending' => 1
+            )
         );
+    }
+    protected function canExecuteAgain($test_try) {
+        $test_repetition = @isset($test_try['test']['test_repetition']) ? $test_try['test']['test_repetition'] : false;
 
-        // CALCULATE SCORES
+        if (is_numeric($test_repetition)) {
+            $executions = $this->clear()->addFilter(array(
+                'test_id' => $test_try['test_id'],
+                'user_id' => $test_try['user_id']
+            ))->getItems();
+
+            $test_repetition = intval($test_repetition);
+
+            if ($test_repetition > count($executions)) {
+                return count($executions)+1;
+            } else {
+                return false;
+            }
+
+        }
+        // ASSUMES NO LIMIT
+        return true;
     }
 
     protected function progressInfo($test_try) {
         $result = array();
         $result['started'] = $started = $test_try['start_timestamp'];
-        $now = time();
-        $result['time_elapsed'] = $time_elapsed = $now - $started;
+
+
+
+        if ($test_try['pending'] == 0) {
+            $completed = $test_try['completed'];
+        } else {
+            $completed = time();
+        }
+        $result['time_elapsed'] = $time_elapsed = $completed - $started;
         $timelimit = @isset($test_try['test']['timelimit']) ? $test_try['test']['timelimit'] : false;
 
         if (!$timelimit) {
             // CONTINUE IN THIS TEST.. NO TIME LIMIT, RETURN THE $ID
             $result['invalidate'] = false;
         } else {
-            $result['expire_in'] = $timelimit = ($timelimit * 60);
-            $result['expire_in'] = $expiresIn = $started + ($timelimit * 60);
-            if ($expiresIn < $now) {
+            $timelimit = ($timelimit * 60);
+            $result['expire_in'] = $expiresIn = $started + ($timelimit);
+            //var_dump($ex);
+            $now = time();
+            if ($expiresIn <= $now) {
                 // EXECUTION EXPIRED, CHECK IF THE USER CAN TAKE ANOTHER (PROBABLY CHECKED BEFORE)
                 $result['invalidate'] = true;
             } else {
@@ -74,6 +114,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
     protected function parseItem($item)
     {
         $item['progress'] = $this->progressInfo($item);
+        $item['answers'] = json_decode($item['answers']);
 
         return $item;
     }
@@ -101,18 +142,27 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         if (array_key_exists('test_id', $data)) {
             $executions = $this->addFilter(array(
                 'test_id' => $data['test_id'],
-                'pending' => 1
+                'user_id' => $data['user_id']
             ))->getItems();
 
             if(count($executions) > 0) {
                 $test_try = end($executions);
 
-                if (@isset($test_try['progress']['invalidate']) && $test_try['progress']['invalidate'] === TRUE) {
-                    $this->invalidate($test_try, $test_try['progress']);
-                    // EXECUTION EXPIRED, CHECK IF THE USER CAN TAKE ANOTHER (PROBABLY CHECKED BEFORE)
-                } else {
-                    $this->rollProgress($test_try, $test_try['progress']);
-                    return $test_try['id'];
+                if ($test_try['pending'] == "1") {
+                    if (@isset($test_try['progress']['invalidate']) && $test_try['progress']['invalidate'] === TRUE) {
+                        $this->completeTest($test_try, $test_try['progress']);
+                    } else {
+                        $this->rollProgress($test_try, $test_try['progress']);
+                        return $test_try['id'];
+                    }
+                }
+
+                // EXECUTION EXPIRED, CHECK IF THE USER CAN TAKE ANOTHER (PROBABLY CHECKED BEFORE)
+                if ($try_index = $this->canExecuteAgain($test_try)) {
+                    $data['start_timestamp'] = time();
+                    $data['try_index'] = $try_index;
+
+                    return parent::addItem($data);
                 }
             } else {
                 $data['start_timestamp'] = time();
@@ -120,7 +170,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
                 return $execution_id;
             }
-
         }
 
         return false;
@@ -133,13 +182,30 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         $test_try = $data;
 
         if (@isset($progress['invalidate']) && $progress['invalidate'] === TRUE) {
-            $this->invalidate($test_try, $progress);
+            $this->completeTest($test_try, $progress);
+            return true;
             // EXECUTION EXPIRED, CHECK IF THE USER CAN TAKE ANOTHER (PROBABLY CHECKED BEFORE)
         } else {
             $this->rollProgress($test_try, $progress);
-        }
-        $result = parent::setItem($data, $identifier);
 
-        return $result;
+            $data['answers'] = json_encode($data['answers']);
+
+            if ($data['complete'] == "1") {
+                $this->completeTest($data, $progress);
+                return true;
+            }
+
+            return parent::setItem($data, $identifier);
+        }
+        //var_dump($data);
+        //exit;
+        //$this->saveAnswers($data['answer'], $data['id']);
+
+
+
+    }
+
+    protected function setAnswers($answers, $test_execution_id) {
+
     }
 }

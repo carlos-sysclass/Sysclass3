@@ -36,6 +36,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     };
 
   	this.baseClass = Backbone.View.extend({
+  		dataPooling : true,
+  		renderType : "byModel",
 	    events : function() {
 	    	return {
 		    	"change :input"			: "update",
@@ -43,8 +45,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	};
     	},
 	    initialize: function() {
-	    	var self = this;
 	    	console.info('views/baseClass::initialize');
+
+	    	var self = this;
 	    	if (this.model) {
 	    		this.listenToOnce(this.model, "sync", this.render.bind(this));
 	    	}
@@ -72,14 +75,17 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     		this.$("[type='radio'].icheck-me").on("ifChecked", function(e) {
 				self.update(e);
     		});
+
     		this.$("[type='checkbox'].icheck-me").on("ifChanged", function(e) {
 				self.update(e);
     		});
+
 	    	//});
 	    },
 	    handleAction : function(action) {
 	    	console.info('views/baseClass::handleAction');
-	    	$CEPETI.module("pages").handleAction(action);
+
+	    	$SC.module("pages").handleAction(action);
 	    },
 	    formatValue : function(value, formatTo, formatFrom) {
 	    	console.info('views/baseClass::formatValue');
@@ -125,6 +131,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			// INJECT VALUES
 
 	    	for (idx in values) {
+	    		//console.warn(values[idx], idx);
 	    		if (
 	    			this.$(":input[data-update^='" + idx + "']").size() > 0 ||
 	    			this.$(":input[name='" + idx + "']").size() > 0
@@ -148,17 +155,34 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                    }
 		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
 	                		if (values[idx] !== null) {
-		                		if (input.hasClass("icheck-me")) {
-									input.filter("[value='" + values[idx] +"']").iCheck("check");
-								} else if (input.hasClass("bootstrap-switch-me")) {
-									//input.filter("[value='" + values[idx] +"']").iCheck("check");
-									input.bootstrapSwitch('state', (values[idx] == 1), true);
-		                		} else {
-			                		input.filter("[value='" + values[idx] +"']").attr("checked", "checked");
-			                		if ($.uniform) {
-			                			$.uniform.update(input.filter("[value='" + values[idx] +"']"));
-			                		}
-			                	}
+	                			var valueArray = values[idx];
+		                        if (!_.isArray(valueArray)) {
+		                            valueArray = [values[idx]];
+		                        }
+		                        console.warn(valueArray);
+		                        _.each(valueArray, function(itemValue, index) {
+		                        	if (input.filter("[value='" + itemValue +"']").size() > 0) {
+		                        		console.warn(input, idx, itemValue, index, input.filter("[value='" + itemValue +"']"));
+
+		                        		var innerInput = input.filter("[value='" + itemValue +"']");
+
+				                		if (innerInput.hasClass("icheck-me")) {
+				                			//if (input.filter("[value='" + itemValue +"']").size() > 0) {
+				                			innerInput.iCheck("check");
+				                			//}
+										} else if (input.hasClass("bootstrap-switch-me")) {
+											//input.bootstrapSwitch('state', (itemValue == 1), true);
+				                		} else {
+				                			/*
+					                		input.filter("[value='" + itemValue +"']").attr("checked", "checked");
+					                		if ($.uniform) {
+					                			$.uniform.update(input.filter("[value='" + itemValue +"']"));
+					                		}
+					                		*/
+					                	}
+				                	}
+		                        });
+
 		                	} else {
 		                		if (input.hasClass("icheck-me")) {
 		                			input.filter("[value='" + values[idx] +"']").iCheck("check");
@@ -205,62 +229,140 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	        this.trigger("form:rendered");
 
 	    },
+        renderViewItens : function(inputList) {
+            // TEMPORARLY DISABLE UPDATE METHOD
+            this.disableDataPooling();
+            inputList.each(function(index, inputDOM) {
+                var input = $(inputDOM);
+                var modelField  = input.attr("name");
+                if (input.is("[data-update]")) {
+                    modelField = input.data("update");
+                }
+                if (this.model.get(modelField)) {
+                    // UPDATE inputField WITH  this.model.get(modelField)
+                    var values = this.model.get(modelField);
+
+                    if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
+                        if (values !== null) {
+                            var valueArray = values;
+                            if (!_.isArray(valueArray)) {
+                                valueArray = [values];
+                            }
+                            _.each(valueArray, function(itemValue, index) {
+                                if (input.filter("[value='" + itemValue +"']").size() > 0) {
+                                    var innerInput = input.filter("[value='" + itemValue +"']");
+
+                                    if (innerInput.hasClass("icheck-me")) {
+                                        innerInput.iCheck("check");
+                                    } else if (input.hasClass("bootstrap-switch-me")) {
+                                        innerInput.bootstrapSwitch('state', (itemValue == 1), true);
+                                    } else {
+                                        innerInput.attr("checked", "checked");
+                                        if ($.uniform) {
+                                            $.uniform.update(innerInput);
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else {
+                            var innerInput = input.filter("[value='']");
+
+                            if (innerInput.hasClass("icheck-me")) {
+                                innerInput.iCheck("check");
+                            } else {
+                                innerInput.attr("checked", "checked");
+                                if ($.uniform) {
+                                    $.uniform.update(innerInput);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }.bind(this));
+            this.enableDataPooling();
+        },
 		render: function(model) {
 	    	console.info('views/baseClass::render');
+	    	Marionette.triggerMethodOn(this, "beforeRender", model);
+
 	    	if (model === undefined) {
 	    		model = this.model;
 	    	}
-	    	var values = model.toJSON();
+	    	if (this.renderType == "byView") {
+				this.renderViewItens(this.$(":input"));
+	    	} else {
+	    		var values = model.toJSON();
+				this.renderItens(values);
+	    	}
 
-	    	this.renderItens(values);
+	    	Marionette.triggerMethodOn(this, "render", model);
 	        return this;
 	    },
+	    setReadonly : function(toogle) {
+	    	this.$(":input").each(function(i, el) {
+	    		if ($(el).hasClass("icheck-me")) {
+	    			$(el).iCheck("disable");
+	    		} else {
+	    			$(el).attr("disable", "disable").addClass("disabled");
+	    		}
+	    	}.bind(this));
+	    },
+	    disableDataPooling : function() {
+	    	this.dataPooling = false;
+	    },
+		enableDataPooling : function() {
+			this.dataPooling = true;
+		},
 	    update : function(e) {
-	    	console.info('views/baseClass::update');
-	    	var $el = $(e.currentTarget);
+	    	if (this.dataPooling) {
+	    		console.info('views/baseClass::update');
+		    	var $el = $(e.currentTarget);
 
-	    	var prop = null;
+		    	var prop = null;
 
-			if ($el.attr("data-update")) {
-				prop = $el.attr("data-update");
-			} else if ($el.attr("name")) {
-		        prop = $el.attr("name");
-		    } else {
-		    	return;
-		    }
-
-			var value = $el.val();
-
-			if ($el.is("[type='checkbox']"))  {
-				// CHECK FOR ANOTHER VALUES, BECAUSE THE ELEMENT TRIGGERING THE EVENT IS JUST ONE OFF MULTIPLE CHECKBOXES
-				var brothers = null;
 				if ($el.attr("data-update")) {
-					brothers = this.$("[type='checkbox'][data-update='" + prop +"']");
-				} else {
-					brothers = this.$("[type='checkbox'][name='" + prop +"']");
+					prop = $el.attr("data-update");
+				} else if ($el.attr("name")) {
+			        prop = $el.attr("name");
+			    } else {
+			    	return;
+			    }
+
+				var value = $el.val();
+
+				if ($el.is("[type='checkbox']"))  {
+					// CHECK FOR ANOTHER VALUES, BECAUSE THE ELEMENT TRIGGERING THE EVENT IS JUST ONE OFF MULTIPLE CHECKBOXES
+					var brothers = null;
+					if ($el.attr("data-update")) {
+						brothers = this.$("[type='checkbox'][data-update='" + prop +"']");
+					} else {
+						brothers = this.$("[type='checkbox'][name='" + prop +"']");
+					}
+
+					var values = [];
+					brothers.each(function() {
+						if (!$(this).is(":checked") && $(this).is("[data-value-unchecked]")) {
+							values.push($(this).data("valueUnchecked"));
+						} else if ($(this).is(":checked")) {
+							values.push($(this).val());
+						}
+					});
+					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
+					this.model.unset(prop, {silent: true});
+					value = values;
+				//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
+					//value = -1;
+				//	value = $el.data("valueUnchecked");
 				}
 
-				var values = [];
-				brothers.each(function() {
-					if (!$(this).is(":checked") && $(this).is("[data-value-unchecked]")) {
-						values.push($(this).data("valueUnchecked"));
-					} else if ($(this).is(":checked")) {
-						values.push($(this).val());
-					}
-				});
-				// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
-				this.model.unset(prop, {silent: true});
-				value = values;
-			//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
-				//value = -1;
-			//	value = $el.data("valueUnchecked");
-			}
+				if ($el.is("[data-format-from]")) {
+					value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
+				}
 
-			if ($el.is("[data-format-from]")) {
-				value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
-			}
-
-		    this.model.set(prop, value);
+			    this.model.set(prop, value);
+		    }
 	    },
 	    save : function(e) {
 	    	console.info('views/baseClass::save');

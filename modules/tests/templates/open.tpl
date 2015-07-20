@@ -1,6 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
-{assign var="last_try" value=$T_TEST.user_tries|@end}
+{assign var="last_try" value=$T_TEST.executions|@end}
 
 <form id="form-{$T_MODULE_ID}" role="form" method="post" action="/module/tests/execute/{$T_TEST.id}">
     <div class="form-body">
@@ -80,7 +80,7 @@
                                 {translateToken value="Repetition Limit"}:
                             </span>
                             <strong class="text-primary pull-right">
-                                {$T_TEST.user_tries|@count}/{$T_TEST.test_repetition}
+                                {$T_TEST.executions|@count}/{$T_TEST.test_repetition}
                             </strong>
                         </p>
                         <hr />
@@ -128,7 +128,7 @@
                                 {translateToken value="You took"}:
                             </span>
                             <strong class="{$text_class} pull-right">
-                                {$last_try.time_spent} {translateToken value="minutes"}
+                                {$last_try.progress.time_elapsed / 60} {translateToken value="minutes"}
                             </strong>
                         </p>
                         <hr />
@@ -138,7 +138,7 @@
                                 {translateToken value="You already tried"}:
                             </span>
                             <strong class="{$text_class} pull-right">
-                                {$T_TEST.user_tries|@count} {translateToken value="times"}
+                                {$T_TEST.executions|@count} {translateToken value="times"}
                             </strong>
                         </p>
                         <hr />
