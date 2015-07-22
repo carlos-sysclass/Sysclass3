@@ -8,6 +8,7 @@ CREATE TABLE `mod_tests_execution` (
     `paused` tinyint(1) NOT NULL DEFAULT 0,
     `pending` tinyint(1) NOT NULL DEFAULT 1,
     `answers` text DEFAULT NULL,
+    `completed` int(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`test_id`) REFERENCES `mod_lessons` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -89,7 +89,8 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     }
 
-    protected function injectObjects($page = null, $override_route = null) {
+    protected function injectObjects($page = null, $override_route = null, $ext_context = null)
+    {
         if (is_null($override_route)) {
             $override_route = $this->getMatchedUrl();
         }
@@ -104,8 +105,22 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             $this->putComponent($component);
         }
 
+        //var_dump($config['blocks']);
+
+
         foreach($config['blocks'] as $block) {
-            $this->putBlock($block);
+            if (is_array($block)) {
+                //var_dump(key($block));
+                if (is_array($ext_context )) {
+                    $ext_block_context = array_merge_recursive(array('context' => $ext_context), current($block));
+                } else {
+                    $ext_block_context = current($block);
+                }
+
+                $this->putBlock(key($block), $ext_block_context);
+            } else {
+                $this->putBlock($block, $config['context']);
+            }
         }
 
         if (!is_null($page)) {
@@ -167,7 +182,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         if (array_key_exists("override-route", $config)) {
             $this->injectObjects($config["override-route"]);
         } else {
-            $this->injectObjects($operation, $override_route);
+            $this->injectObjects($operation, $override_route, $data);
         }
 
         //$this->injectObjects($operation);

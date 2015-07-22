@@ -23,6 +23,15 @@
 				</a>
 			</li>
 			{/if}
+
+			{if (isset($T_SECTION_TPL['tests_execution']) &&  ($T_SECTION_TPL['tests_execution']|@count > 0))}
+			<li>
+				<a href="#tab_1_4" data-toggle="tab">
+					<i class="fa fa-question"></i>
+					{translateToken value="Executions"}
+				</a>
+			</li>
+			{/if}
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
@@ -220,6 +229,13 @@
 			{if (isset($T_SECTION_TPL['questions-list']) &&  ($T_SECTION_TPL['questions-list']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
 				    {foreach $T_SECTION_TPL['questions-list'] as $template}
+				        {include file=$template}
+				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['tests_execution']) &&  ($T_SECTION_TPL['tests_execution']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_4">
+				    {foreach $T_SECTION_TPL['tests_execution'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>

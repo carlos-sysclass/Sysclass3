@@ -55,6 +55,8 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
                 'pending' => 1
             )
         );
+
+        $this->calculateUserScore();
     }
     protected function canExecuteAgain($test_try) {
         $test_repetition = @isset($test_try['test']['test_repetition']) ? $test_try['test']['test_repetition'] : false;
