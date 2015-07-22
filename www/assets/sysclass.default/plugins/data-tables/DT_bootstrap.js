@@ -79,7 +79,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 	// DEFAULT COLUMN FORMATING
 	"aoColumnDefs": [
 		{
-			"mRender": function ( data, type, row ) {
+			"mRender": function ( data, type, row) {
 				if (type == 'display' || type == 'filter') {
 					return moment.unix(data).fromNow();
 				} else {
@@ -89,6 +89,46 @@ $.extend( true, $.fn.dataTable.defaults, {
 			},
 			"sClass"		: "text-center",
 			"aTargets": [ 'unix-moment-since' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					return moment.unix(data).format("L LT");
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'unix-moment-datetime' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					var duration = moment.duration(data, "seconds");
+					//if (duration.asSeconds() < 60) {
+						//return duration.asSeconds() + "s";
+					//} else {
+						return duration.humanize(true);
+					//}
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'unix-moment-duration' ]
+		},
+		/**
+		 * PLEASE REMOVE THIS FUNCTION FROM HERE, BECAUSE THE STRONG COUPLING
+		 */
+		{
+			"mRender": function ( data, type, row ) {
+				console.warn( data, type, row );
+
+				return row.user.name + " " + row.user.surname;
+			},
+			"aTargets": [ 'concatenate-user' ]
 		},
 		{
 			"mRender": function ( data, type, row ) {

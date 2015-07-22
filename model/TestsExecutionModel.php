@@ -19,11 +19,15 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             te.pending,
             te.answers,
             te.completed,
+            u.name as 'user#name',
+            u.surname as 'user#surname',
+            u.login as 'user#login',
             t.time_limit as 'test#timelimit',
             t.test_repetition as 'test#test_repetition'/*,
             t.**/
         FROM `mod_tests_execution` te
-        LEFT JOIN mod_tests t ON (t.id = te.test_id)";
+        LEFT JOIN mod_tests t ON (t.id = te.test_id)
+        LEFT JOIN users u ON (u.id = te.user_id)";
 
         $this->order = array("try_index ASC");
 
@@ -202,12 +206,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //var_dump($data);
         //exit;
         //$this->saveAnswers($data['answer'], $data['id']);
-
-
-
     }
 
-    protected function setAnswers($answers, $test_execution_id) {
-
-    }
 }

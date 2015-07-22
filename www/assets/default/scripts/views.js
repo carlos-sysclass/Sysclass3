@@ -159,11 +159,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                        if (!_.isArray(valueArray)) {
 		                            valueArray = [values[idx]];
 		                        }
-		                        console.warn(valueArray);
 		                        _.each(valueArray, function(itemValue, index) {
 		                        	if (input.filter("[value='" + itemValue +"']").size() > 0) {
-		                        		console.warn(input, idx, itemValue, index, input.filter("[value='" + itemValue +"']"));
-
 		                        		var innerInput = input.filter("[value='" + itemValue +"']");
 
 				                		if (innerInput.hasClass("icheck-me")) {

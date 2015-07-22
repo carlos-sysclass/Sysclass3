@@ -3,10 +3,15 @@
  * Module Class File
  * @filesource
  */
+use Phalcon\Acl\Adapter\Memory as AclList,
+    Phalcon\Acl\Resource;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
+
+
 
 class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
 {
@@ -132,6 +137,33 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 $self->putSectionTemplate("dialogs", "dialogs/tests.info");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                return true;
+            },
+            'tests.execution.list.table' => function ($data, $self) {
+                // APLLY FILTER BASED ON $data['filter'] AND $data['context']
+                //
+                $stringsHelper = $this->helper("strings");
+
+                // TODO: TEST FOR EMPTY KEYS IN $data
+                $filter = array();
+                foreach($data['filter'] as $key => $value) {
+                    $filter[$key] = $stringsHelper->vksprintf($value, $data['context']);
+                }
+
+                $block_context = $self->getConfig("blocks\\tests.execution.list.table\context");
+
+                $block_context['ajax_source'] = $stringsHelper->vksprintf(
+                    $block_context['ajax_source'],
+                    array('filter' => $filter)
+                );
+
+                $self->putComponent("data-tables");
+                $self->putScript("scripts/utils.datatables");
+
+                $self->putItem("tests_execution_context", $block_context);
+
+                $self->putSectionTemplate("tests_execution", "blocks/table");
 
                 return true;
             }
@@ -302,18 +334,48 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
         //
         if ($userData = $this->getCurrentUser()) {
+            // WHO CAN VIEW THE TEST????
+            // 1 - THE USER ITSELF
+            // 2 - THE TEST INSTRUCTOR
+            // 3 - THE CLASS INSTRUCTOR
+            // 4 - THE COURSE COORDINATOR
+            /*
+            $acl = new AclList();
+            $acl->setDefaultAction(Phalcon\Acl::DENY);
+
+            $acl->addRole("Owner");
+            $acl->addRole("Instructor");
+            $acl->addRole("Coordinator");
+            $acl->addRole("Administrator");
+
+            // Define the "Customers" resource
+            // Add "customers" resource with a couple of operations
+            $acl->addResource("TestsExecution", array("view", "execute"));
+
+            $acl->allow("Owner", "TestsExecution", "view");
+            $acl->allow("Owner", "TestsExecution", "execute");
+            $acl->allow("Instructor", "TestsExecution", "view");
+            $acl->allow("Coordinator", "TestsExecution", "view");
+            $acl->allow("Administrator", "TestsExecution", "view");
+
+            var_dump($acl->isAllowed("", "TestsExecution", "execute"));
+            exit;
+
+            var_dump($userData);
+            */
+
             // START PROGRESS
+            $testModel = $this->model("roadmap/tests");
             $testData = $this->model("roadmap/tests")->getItem($identifier);
 
             $executionModel = $this->model("tests/execution");
-
 
             $executions = array();
 
             if (!is_null($execution_id)) {
                 $executions = $executionModel->addFilter(array(
                     'test_id' => $identifier,
-                    'user_id' => $userData['id'],
+                    //'user_id' => $userData['id'],
                     'id' => $execution_id
                 ))->getItems();
 
@@ -323,9 +385,12 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     'test_id' => $identifier,
                     'user_id' => $userData['id']
                 ))->getItems();
-
             }
             $execution = end($executions);
+
+
+
+
 
             if (count($executions) > 0) {
                 $execution_id = $execution['id'];
@@ -596,6 +661,19 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             }
 
             $itemsData = $itemsCollection->getItems();
+        } elseif ($model ==  "execution") {
+            $modelRoute = "tests/execution";
+            $optionsRoute = "edit";
+
+            $filter = filter_var($filter, FILTER_DEFAULT);
+
+            if (!is_array($filter)) {
+                $filter = json_decode($filter, true);
+            }
+
+            $itemsCollection = $this->model($modelRoute);
+            $itemsData = $itemsCollection->addFilter($filter)->getItems();
+
         } else {
             return $this->invalidRequestError();
         }

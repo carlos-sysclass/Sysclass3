@@ -45,7 +45,7 @@ crud:
       components: ["select2", "validation", "bootstrap-switch"]
       blocks:
       - "questions.list"
-      - "test_execution.list.table":
+      - "tests.execution.list.table":
           filter:
             test_id: "%entity_id$s"
       template: form.tpl
@@ -62,3 +62,33 @@ crud:
       template: execute.tpl
       variables:
         page_subtitle: Edit your test info
+blocks:
+  tests.execution.list.table:
+    context:
+      block_id: "users"
+      ajax_source: "/module/tests/items/execution/datatable/%filter$s"
+      datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: try_index
+          sClass: text-center
+          label: "# Try"
+
+        - mData: "user.name, user.surname"
+          sType: concatenate-user
+          label: Name
+
+        - mData: start_timestamp
+          sType: unix-moment-datetime
+          label: "Started"
+
+        - mData: progress.time_elapsed
+          sType: unix-moment-duration
+          label: "Time to Complete"
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
