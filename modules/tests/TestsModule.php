@@ -56,7 +56,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
     /* IBreadcrumbable */
     public function getBreadcrumb() {
-        $breadcrumbableViews = array("view", "add", "edit/:identifier");
+        $breadcrumbableViews = array("view", "add", "edit/:identifier", "execute/:identifier/:execution_id");
+
         $request = $this->getMatchedUrl();
 
         if (in_array($request, $breadcrumbableViews)) {
@@ -85,6 +86,12 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 }
                 case "edit/:identifier" : {
                     $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
+                    break;
+                }
+                case "execute/:identifier/:execution_id" : {
+                    // TODO A WAY TO INJECT DATA INTO BREADCRUMB FROM HERE (string substitution FROM variables in the route)
+                    $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
+                    $breadcrumbs[] = array('text'   => self::$t->translate("View Execution"));
                     break;
                 }
             }
@@ -630,9 +637,22 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
+        // DEFAULT OPTIONS ROUTE
+        $optionsRoute = array(
+            'edit'  => array(
+                'icon'  => 'icon-edit',
+                'link'  => 'edit/%id$s',
+                'class' => 'btn-sm btn-primary'
+            ),
+            'remove'    => array(
+                'icon'  => 'icon-remove',
+                'class' => 'btn-sm btn-danger'
+            )
+        );
+
+
         if ($model == "me") {
             $modelRoute = "tests";
-            $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
             if (!empty($filter)) {
@@ -648,7 +668,6 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
         } elseif ($model == "question") {
             $modelRoute = "tests/question";
-            $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
 
@@ -663,7 +682,14 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             $itemsData = $itemsCollection->getItems();
         } elseif ($model ==  "execution") {
             $modelRoute = "tests/execution";
-            $optionsRoute = "edit";
+
+            $optionsRoute = array(
+                'view'  => array(
+                    'icon'  => 'icon-search',
+                    'link'  => 'execute/%test_id$s/%try_index$s',
+                    'class' => 'btn-sm btn-primary'
+                )
+            );
 
             $filter = filter_var($filter, FILTER_DEFAULT);
 
@@ -693,12 +719,21 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             }
             return $result;
         } elseif ($type === 'datatable') {
+            $stringsHelper = $this->helper("strings");
             $itemsData = array_values($itemsData);
             foreach ($itemsData as $key => $item) {
+                $itemsData[$key]['options'] = array();
+                foreach($optionsRoute as $index => $optItem) {
+                    //var_dump($item);
+                    $optItem['link'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['link'], $item);
+                    $itemsData[$key]['options'][$index] = $optItem;
+                }
+                /*
+
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
-                        'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
+                        'link'  => $this->getBasePath() . $stringsHelper->vksprintf($optionsRoute, $item['id']),
                         'class' => 'btn-sm btn-primary'
                     ),
                     'remove'    => array(
@@ -706,6 +741,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                         'class' => 'btn-sm btn-danger'
                     )
                 );
+                */
             }
             return array(
                 'sEcho'                 => 1,
