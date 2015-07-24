@@ -1,12 +1,67 @@
 #######################
 # GENERAL DEFINITIONS #
 #######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Advertising
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Manage your in page advertisings
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: title
+          label: Title
+
+        - mData: question.user_name
+          label: Login
+
+        - mData: question.timestamp
+          sType: unix-moment-since
+          sClass: text-center
+          label: Creation Date
+
+        - mData: approved
+          sType: table-boolean
+          sClass: text-center
+          label: Approved
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["select2","validation", "bootstrap-switch"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Edit a advertising entry
+    'edit/:identifier':
+      components: ["select2","validation", "bootstrap-switch"]
+      template: form.tpl
+      stylesheets: ["css/components", "css/pages/timeline"]
+      blocks: ["advertising.banners"]
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Edit a advertising item
 widgets:
   ads.leftbar.banner:
     context:
       images: ["img/ads/leftbar.banner.jpg"]
-      type: "serial" # [serial | carrousel] # CAROUSEL TYPE ISN'T IMPLEMENTED YET!
+      type: "serial" # [serial | carrousel | adsense] # ONLY SERIAL TYPE IS IMPLEMENTED!
   ads.rightbar.banner:
     context:
       images: ["img/ads/rightbar.banner1.jpg","img/ads/rightbar.banner2.jpg","img/ads/rightbar.banner3.jpg"]
-      type: "serial" # [serial | carrousel] # CAROUSEL TYPE ISN'T IMPLEMENTED YET!
+      type: "serial" # [serial | carrousel | adsense] # ONLY SERIAL TYPE IS IMPLEMENTED!
