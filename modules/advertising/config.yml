@@ -21,35 +21,24 @@ crud:
           sClass: text-center
           label: "#"
 
-        - mData: title
-          label: Title
+        - mData: placement_name
+          label: Placement
 
-        - mData: question.user_name
-          label: Login
+        - mData: view_type
+          label: View Type
 
-        - mData: question.timestamp
-          sType: unix-moment-since
-          sClass: text-center
-          label: Creation Date
-
-        - mData: approved
+        - mData: active
           sType: table-boolean
           sClass: text-center
-          label: Approved
+          label: Active
 
         - mData: options
           sType: table-options
           sClass: text-center
           label: Actions
 
-    add:
-      components: ["select2","validation", "bootstrap-switch"]
-      template: form.tpl
-      #scripts: ["models.users", "views.users.add"]
-      variables:
-        page_subtitle: Edit a advertising entry
     'edit/:identifier':
-      components: ["select2","validation", "bootstrap-switch"]
+      components: ["select2","validation", "bootstrap-switch", 'wysihtml5']
       template: form.tpl
       stylesheets: ["css/components", "css/pages/timeline"]
       blocks: ["advertising.banners"]

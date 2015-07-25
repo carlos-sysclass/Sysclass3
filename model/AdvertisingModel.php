@@ -3,46 +3,52 @@ class AdvertisingModel extends AbstractSysclassModel implements ISyncronizableMo
 
     public function init()
     {
-        $this->table_name = "mod_classes";
+        $this->table_name = "mod_advertising";
         $this->id_field = "id";
-        $this->mainTablePrefix = "cl";
+        $this->mainTablePrefix = "a";
         //$this->fieldsMap = array();
 
-        $this->selectSql =
-        "SELECT
-            cl.`id`,
-            c2c.`course_id`,
-            clp.`period_id`,
-            c2c.`start_date`,
-            c2c.`end_date`,
-            c2c.`position`,
-            cl.`area_id`,
-            cl.`name`,
-            cl.`description`,
-            cl.`instructor_id`,
-            COUNT(l.id) as 'total_lessons',
-            cl.`active`,
-            c.`id` as 'course#id',
-            c.`name` as 'course#name',
-            c.`active` as 'course#active',
-            cp.`id` as 'period#id',
-            cp.`name` as 'period#name',
-            cp.`max_classes` as 'period#max_classes',
-            cp.`active` as 'period#active'
-        FROM mod_roadmap_courses_to_classes c2c
-        LEFT JOIN mod_courses c ON(c2c.course_id = c.id)
-        LEFT JOIN mod_classes cl ON(c2c.class_id = cl.id)
-        LEFT JOIN mod_lessons l ON(cl.id = l.class_id)
-        LEFT JOIN mod_roadmap_classes_to_periods clp ON(c2c.class_id = clp.class_id)
-        LEFT JOIN mod_roadmap_courses_periods cp ON(clp.period_id = cp.id AND cp.course_id = c.id)";
+        $this->selectSql = "SELECT id, placement, view_type, active FROM mod_advertising a";
 
         parent::init();
-
     }
 
+    protected function parseItem($item)
+    {
+        if (strpos($item['placement'], 'leftbar')) {
+            $item['placement_name'] = "Left Bar";
+        } elseif (strpos($item['placement'], 'rightbar')) {
+            $item['placement_name'] = "Right Bar";
+        } elseif (strpos($item['placement'], 'topbar')) {
+            $item['placement_name'] = "Top Bar";
+        } else {
+            $item['placement_name'] = "None";
+        }
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        // LOAD INSTRUCTORS
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
+        return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+        return $this->parseItem($item);
+    }
+
+
+    /*
     public function getItem($identifier) {
         $data = parent::getItem($identifier);
-        $data['instructor_id'] = json_decode($data['instructor_id'], true);
+        //$data['instructor_id'] = json_decode($data['instructor_id'], true);
         return $data;
     }
 
@@ -57,7 +63,7 @@ class AdvertisingModel extends AbstractSysclassModel implements ISyncronizableMo
         $data['instructor_id'] = json_encode($data['instructor_id']);
         return parent::setItem($data, $identifier);
     }
-
+    */
 
     /*
     public function addItem($item) {

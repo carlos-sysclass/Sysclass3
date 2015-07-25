@@ -19,15 +19,11 @@
         <div class="tab-content">
             <div class="tab-pane fade active in" id="tab_1_1">
                 <div class="form-group">
-                    <label class="control-label">{translateToken value="Title"}</label>
-                    <input name="title" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-                </div>
-                <div class="form-group">
                     <label class="control-label">{translateToken value="Placement"}</label>
                     <!--
                     <input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
                     -->
-                    <select class="select2-me form-control" name="placement" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Knowledge Area'}">
+                    <select class="select2-me form-control" name="placement" data-rule-required="1" data-placeholder="{translateToken value='Knowledge Area'}">
                     {foreach $T_PLACEMENTS as $placement}
                             <option value="{$placement.id}">{$placement.name}</option>
                     {/foreach}
@@ -38,7 +34,7 @@
                     <!--
                     <input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
                     -->
-                    <select class="select2-me form-control" name="view_type" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Knowledge Area'}">
+                    <select class="select2-me form-control" name="view_type" data-rule-required="1"  data-placeholder="{translateToken value='Knowledge Area'}">
                     {foreach $T_VIEW_TYPES as $view_type}
                             <option value="{$view_type.id}">{$view_type.name}</option>
                     {/foreach}

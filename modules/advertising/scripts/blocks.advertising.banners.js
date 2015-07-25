@@ -2,223 +2,17 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
     // MODELS
     this.startWithParent = false;
     mod.addInitializer(function() {
-        this.config = $SC.module("crud.config").getConfig();
-        console.warn(this.config);
-        mod.entity_id = mod.config.entity_id;
+//        this.config = $SC.module("crud.config").getConfig();
+//        mod.entity_id = mod.config.entity_id;
 
-        var lessonModel = app.module("crud.views.edit").itemModel;
-
-        var baseLessonContentModelClass = Backbone.Model.extend({
-            defaults : function() {
-                return {
-                    id              : null,
-                    lesson_id       : null,
-                    content_type    : null,
-                    title           : '',
-                    info            : '',
-                    position        : null,
-                    active          : 1,
-                    parent_id       : null,
-                    childs          : []
-                };
-            },
-            urlRoot: "/module/lessons/item/lesson-content/"
-        });
-
-        var lessonFileContentModelClass = baseLessonContentModelClass.extend({
-            defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
-                defaults['content_type'] = 'file';
-                return defaults;
-            },
-            mergeWithinFileObject : function(file) {
-                this.set("name", file.name);
-                this.set("info", JSON.stringify(file));
-                this.set("file", file);
-            }
-        });
-
-        var lessonFileSubtitleContentModelClass = lessonFileContentModelClass.extend({
-            defaults : function() {
-                var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
-                defaults['content_type'] = 'subtitle';
-                return defaults;
-            },
-            urlRoot: "/module/lessons/item/lesson-content/",
-            translate : function(from, to) {
-                $.ajax(
-                    this.url() + "/translate",
-                    {
-                        data: {
-                            from: from,
-                            to: to
-                        },
-                        method : "PUT",
-                        success : function(data, textStatus, jqXHR ) {
-                            mod.lessonContentCollection.add(data);
-                        }
-                    }
-                );
-
-
-            }
-        });
-
-        var lessonTextContentModelClass = baseLessonContentModelClass.extend({
-            defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
-                defaults['content_type'] = 'text';
-                return defaults;
-            }
-        });
-
-        var lessonExerciseContentQuestionCollectionClass = Backbone.Collection.extend({
-            initialize: function(data, opt) {
-                console.warn(data, opt);
-                this.content_id = opt.content_id;
-            },
-            /*
-            url: function() {
-                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
-            },
-            */
-            initialize: function(data, opt) {
-                this.listenTo(this, "add", function(model, collection, opt) {
-                    model.set("content_id", this.content_id);
-                    model.set("question_id", model.get("id"));
-                    // SET POSITION
-                });
-                this.listenTo(this, "remove", function(model, collection, opt) {
-                    /*
-                    var self = this;
-
-                    var subfiles = collection.where({parent_id : model.get("id")});
-
-                    console.warn(model, collection, opt, this, subfiles);
-
-                    _.each(subfiles, function(item) {
-                        self.remove(item.id);
-                    });
-
-                    model.destroy();
-                    */
-                });
-            }
-
-        });
-
-        var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
-            defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
-                defaults['content_type'] = 'exercise';
-                return defaults;
-            },
-            initialize: function(data, opt) {
-                var exerciseCollection = new lessonExerciseContentQuestionCollectionClass(
-                    this.get("exercise"), {lesson_id : this.get("lesson_id")}
-                );
-
-                this.set("exercise", exerciseCollection);
-                this.listenTo(this, "sync", function() {
-                    exerciseCollection.reset(this.get("exercise"));
-
-                    this.set("exercise", exerciseCollection);
-                });
-                this.listenTo(exerciseCollection, "add", function() {
-                    this.save();
-                });
-                this.listenTo(exerciseCollection, "remove", function() {
-                    this.save();
-                });
-
-            }/*,
-            addQuestion : function(questionModel) {
-                $.ajax(
-                    "/module/lessons/item/question-content",
-                    {
-                        data: {
-                            content_id : this.get("id"),
-                            question_id: questionModel.get("id")
-                        },
-                        method : "POST"
-                    }
-                );
-            }
-            */
-        });
-
-        var lessonContentCollectionClass = Backbone.Collection.extend({
-            initialize: function(data, opt) {
-                this.lesson_id = opt.lesson_id;
-                this.listenTo(this, "add", function(model, collection, opt) {
-                    model.set("lesson_id", this.lesson_id);
-                    // SET POSITION
-
-                });
-                this.listenTo(this, "remove", function(model, collection, opt) {
-
-
-                    var self = this;
-
-                    var subfiles = collection.where({parent_id : model.get("id")});
-
-                    console.warn(model, collection, opt, this, subfiles);
-
-                    _.each(subfiles, function(item) {
-                        self.remove(item.id);
-                    });
-
-                    model.destroy();
-                });
-            },
-            url: function() {
-                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
-            },
-            model: function(attrs, options) {
-                if (options.add) {
-                    if (attrs.content_type == "file") {
-                        return new lessonFileContentModelClass(attrs, _.extend(options, {
-                            collection: this,
-                        }));
-                    } else if (attrs.content_type == "subtitle") {
-
-                        return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
-                            collection: this,
-                        }));
-                    } else if (attrs.content_type == "text") {
-                        return new lessonTextContentModelClass(attrs, _.extend(options, {
-                            collection: this,
-                        }));
-                    } else if (attrs.content_type == "exercise") {
-                        return new lessonExerciseContentModelClass(attrs, _.extend(options, {
-                            collection: this,
-                        }));
-
-                    } else {
-                        return new baseLessonContentModelClass(attrs, _.extend(options, {
-                            collection: this,
-                        }));
-                    }
-                }
-            },
-            setContentOrder : function(order) {
-                $.ajax(
-                    "/module/lessons/items/lesson-content/set-order/" + this.lesson_id,
-                    {
-                        data: {
-                            position: order
-                        },
-                        method : "PUT"
-                    }
-                );
-            }
-        });
+        var entityModel = app.module("crud.views.edit").itemModel;
 
         /**
          * SUB VIEW BASE CLASS
          *
          * @todo  MOVE TO A MORE GENERIC MODULE
          */
+        /*
         var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
             events : function() {
                 return {
@@ -234,12 +28,68 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 mod.lessonContentCollection.remove(this.model.get("id"));
             }
         });
-
-        var lessonFileContentTimelineViewClass = Backbone.View.extend({
-            uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
-            downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
-            className : "timeline-item fileupload-item",
-            tagName : "div",
+        */
+        /*
+        var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+            uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
+            downloadTemplate : _.template($("#fileupload-download-related-item").html()),
+            translationTemplate : _.template($("#fileupload-translation-related-item").html()),
+            className : "list-file-item",
+            tagName : "li",
+            uploadClass : [ "template-upload red-stripe" ],
+            downloadClass : [ "template-download green-stripe" ],
+            events : {
+                "confirmed.bs.confirmation .delete-file-content" : "delete",
+                "click .save-file-content"                       : "save_contents",
+                "click .translate-file-content"                  : "translate_contents",
+                "click .delete-translation-content"              : "delete_translation"
+            },
+            renderOne : function(model, collection, options) {
+                if (model.get("id")) {
+                    if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
+                        // "content_type": "subtitle-translation",
+                        this.renderTranslationContent(model);
+                    }
+                }
+            },
+            renderTranslationContent : function(model) {
+                var html = this.translationTemplate({
+                    model: model.toJSON()
+                });
+                app.module("ui").refresh(
+                    $(html).appendTo(
+                        this.$(".translation-container")
+                    )
+                );
+            },
+            delete_translation : function(e) {
+                var item = $(e.currentTarget);
+                var modelId = item.data("contentId");
+                mod.lessonContentCollection.remove(modelId);
+                item.parents("li.translation-item").remove();
+            },
+            save_contents : function() {
+                this.model.set("language_code", this.$("[name='related[lang_from]']").val());
+                this.model.save();
+            },
+            translate_contents : function() {
+                // REQUEST FILE TRANSLATION SERVICE
+                // GET FROM AND TO VALUES, CHECK FOR EQUALITY AND REQUEST TRANSLATION
+                //var translateServiceModelClass = app.module("models.translate").translateServiceModelClass;
+                this.model.translate(
+                    this.$("[name='related[lang_from]']").val(),
+                    this.$("[name='related[lang_to]']").val()
+                );
+            }
+        });
+        */
+        /*
+        */
+        var bannerAdvertisingContentViewClass = Backbone.View.extend({
+            uploadTemplate : _.template($("#fileupload-upload-banner-item").html()),
+            downloadTemplate : _.template($("#fileupload-download-banner-item").html()),
+            className : "list-file-item banner-item fileupload-item draggable green-stripe",
+            tagName : "li",
             upload : true,
             uploadClass : [ "template-upload" ],
             downloadClass : [ "template-download" ],
@@ -250,17 +100,17 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 "confirmed.bs.confirmation .delete-file-content"    : "delete"
             },
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::initialize');
+                console.info('blocks.advertising.banners/bannerAdvertisingContentViewClass::initialize');
                 this.setOptions(opt);
 
                 this.listenTo(this.model, "sync", function(a,b,c) {
                     this.$el.attr("data-content-id", this.model.get("id"));
                     this.render();
                 });
-                this.listenTo(mod.lessonContentCollection, "add", this.renderOne.bind(this));
+                //this.listenTo(mod.lessonContentCollection, "add", this.renderOne.bind(this));
             },
             setOptions : function(opt) {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::setOptions');
+                console.info('blocks.advertising.banners/bannerAdvertisingContentViewClass::setOptions');
                 if(!_.isUndefined(opt.upload)) {
                     this.upload = opt.upload;
                 }
@@ -269,18 +119,16 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     opt.opt,
                     { formatFileSize : this.formatFileSize }
                 );
-
                 return this;
             },
             render : function() {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::render');
+                console.info('blocks.advertising.banners/bannerAdvertisingContentViewClass::render');
                 var self = this;
                 if (this.upload) {
 
                     _.each(this.downloadClass, function(item) {
                         self.$el.removeClass(item);
                     });
-
 
                     this.$el.html(this.uploadTemplate({
                         model: this.model.toJSON(),
@@ -297,6 +145,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         self.$el.removeClass(item);
                     });
 
+                    console.warn({
+                        model: this.model.toJSON(),
+                        //file : this.fuploadFile,
+                        opt  : { formatFileSize : this.formatFileSize }
+                    });
+
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
@@ -306,19 +160,21 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     _.each(this.downloadClass, function(item) {
                         self.$el.addClass(item);
                     });
-
+                    /*
                     // IF IS A VIDEO, RENDER
                     if (/^video\/.*$/.test(this.model.get("file").type)) {
                         this.initializeFileUpload();
                     }
 
                     // RENDER SUBFILES VIEW
+
                     var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
 
 
                     var collection = new lessonContentCollectionClass(subfiles, {
                         lesson_id : mod.entity_id
                     });
+                    */
                     /*
                     collection.each(function(model, i) {
                         var view_type = model.get("content_type");
@@ -501,68 +357,18 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             },
             delete : function() {
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
+
                 this.trigger("timeline-file-content:delete", this.model);
                 this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
+
+                this.model.destroy();
             }
         });
 
-        var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
-            uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
-            downloadTemplate : _.template($("#fileupload-download-related-item").html()),
-            translationTemplate : _.template($("#fileupload-translation-related-item").html()),
-            className : "list-file-item",
+        var textAdvertisingContentViewClass = Backbone.View.extend({
+            template : _.template($("#text-banner-item").html()),
+            className : "list-file-item banner-item draggable green-stripe",
             tagName : "li",
-            uploadClass : [ "template-upload red-stripe" ],
-            downloadClass : [ "template-download green-stripe" ],
-            events : {
-                "confirmed.bs.confirmation .delete-file-content" : "delete",
-                "click .save-file-content"                       : "save_contents",
-                "click .translate-file-content"                  : "translate_contents",
-                "click .delete-translation-content"              : "delete_translation"
-            },
-            renderOne : function(model, collection, options) {
-                if (model.get("id")) {
-                    if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
-                        // "content_type": "subtitle-translation",
-                        this.renderTranslationContent(model);
-                    }
-                }
-            },
-            renderTranslationContent : function(model) {
-                var html = this.translationTemplate({
-                    model: model.toJSON()
-                });
-                app.module("ui").refresh(
-                    $(html).appendTo(
-                        this.$(".translation-container")
-                    )
-                );
-            },
-            delete_translation : function(e) {
-                var item = $(e.currentTarget);
-                var modelId = item.data("contentId");
-                mod.lessonContentCollection.remove(modelId);
-                item.parents("li.translation-item").remove();
-            },
-            save_contents : function() {
-                this.model.set("language_code", this.$("[name='related[lang_from]']").val());
-                this.model.save();
-            },
-            translate_contents : function() {
-                // REQUEST FILE TRANSLATION SERVICE
-                // GET FROM AND TO VALUES, CHECK FOR EQUALITY AND REQUEST TRANSLATION
-                //var translateServiceModelClass = app.module("models.translate").translateServiceModelClass;
-                this.model.translate(
-                    this.$("[name='related[lang_from]']").val(),
-                    this.$("[name='related[lang_to]']").val()
-                );
-            }
-        });
-
-        var lessonTextContentTimelineViewClass = Backbone.View.extend({
-            template : _.template($("#text-timeline-item").html()),
-            className : "timeline-item",
-            tagName : "div",
             editMode : true,
             events : {
                 //"dblclick .timeline-body"                           : "edit",
@@ -572,7 +378,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             },
 
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
+                console.info('blocks.advertising.banners/textAdvertisingContentViewClass::initialize');
                 if(!_.isUndefined(opt.editMode)) {
                     this.editMode = opt.editMode;
                 }
@@ -647,6 +453,8 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     this.editMode = false;
                     this.trigger("timeline-text-content:save", this.model);
 
+                    this.model.save();
+
                     this.$(".text-loading").addClass("hidden");
                 }
             },
@@ -658,27 +466,23 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             }
         });
 
-        var contentTimelineViewClass = Backbone.View.extend({
+        var advertisingContentViewClass = Backbone.View.extend({
             events : {
                 "click .timeline-addtext" : "addTextContent",
-                "click .timeline-addexercise" : "addExercisesContent",
                 "click .timeline-expand" : "expandAll",
                 "click .timeline-collapse" : "collapseAll"
             },
-            uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
-            downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
-            collectionFilter : null,
+            uploadTemplate : _.template($("#fileupload-upload-banner-item").html()),
+            downloadTemplate : _.template($("#fileupload-download-banner-item").html()),
             jqXHR : null,
             subviews : {},
             initialize: function(opt) {
-                console.info('blocks.lessons.content/contentTimelineViewClass::initialize');
+                console.info('blocks.advertising.banners/contentTimelineViewClass::initialize');
 
-                this.collectionFilter = opt.collectionFilter ? opt.collectionFilter : null;
+                //this.collectionFilter = opt.collectionFilter ? opt.collectionFilter : null;
 
                 this.initializeSortable();
                 this.initializeFileUpload();
-
-                alert(1);
 
                 //this.listenToOnce(this.collection, "sync", this.render.bind(this));
 
@@ -686,10 +490,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             },
             initializeSortable : function() {
                 var self = this;
-                this.$("div.content-timeline-items").sortable({
+                this.$("ul.content-timeline-items").sortable({
                     //connectWith: ".list-group",
                     handle : ".drag-handler",
-                    items: "div.timeline-item",
+                    items: ".list-file-item.draggable",
                     opacity: 0.8,
                     /* axis : "y", */
                     placeholder: 'list-file-item placeholder',
@@ -719,7 +523,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     singleFileUploads: false,
                     autoUpload : true,
                     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
-                    filesContainer: this.$("div.content-timeline-items"),
+                    filesContainer: this.$("ul.content-timeline-items"),
                     uploadTemplate: function (o) {
                         return fileUploadItem.data("upload-contexts");
                     },
@@ -741,7 +545,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                             })));
                         });
                         $(this).data("upload-contexts", rows);
-
                         o.context = rows;
                         //self.jqXHR = o.submit();
                     })
@@ -774,28 +577,24 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     });
             },
             renderOne : function(model, collection, options) {
+                console.info('blocks.advertising.banners/advertisingContentViewClass::renderOne');
                 if (model.get("id")) {
-                    if (_.isNull(model.get("parent_id"))) {
-                        var view_type = model.get("content_type");
+                    var view_type = model.get("content_type");
 
-                        if (view_type == "file") {
-                            this.subviews[model.get("id")] = this.renderFileContent(model, {upload : false});
-                            return this.subviews[model.get("id")];
-                        } else if (view_type == "text") {
-                            this.subviews[model.get("id")] = this.renderTextContent(model, {editMode : false});
-                            return this.subviews[model.get("id")];
-                        } else if (view_type == "exercise") {
-                            this.subviews[model.get("id")] = this.renderExercisesContent(model, {editMode : false});
-                            return this.subviews[model.get("id")];
-                        }
-                    } else {
-                        // GET parent_id SUBVIEW AND DELEGATE RENDERING
-                        //console.warn(this.subviews);
-                        //this.subviews[model.get("id")]
+                    if (view_type == "file") {
+                        this.subviews[model.get("id")] = this.renderFileContent(model, {upload : false});
+                        return this.subviews[model.get("id")];
+                    } else if (view_type == "text") {
+                        this.subviews[model.get("id")] = this.renderTextContent(model, {editMode : false});
+                        return this.subviews[model.get("id")];
+                    } else if (view_type == "exercise") {
+                        this.subviews[model.get("id")] = this.renderExercisesContent(model, {editMode : false});
+                        return this.subviews[model.get("id")];
                     }
                 }
             },
             render : function(collection, models, options) {
+                /*
                 if (this.collectionFilter) {
                     var data = this.collection.where(this.collectionFilter);
                 } else {
@@ -805,8 +604,8 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 var collection = new lessonContentCollectionClass(data, {
                     lesson_id : this.collection.lesson_id
                 });
-
-                collection.each(function(model, i) {
+                */
+                this.collection.each(function(model, i) {
                     var view_type = model.get("content_type");
 
                     if (view_type == "file") {
@@ -823,9 +622,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 this.$(".content-timeline-items .timeline-body-content-wrapper").addClass("hidden");
             },
             addFileContent : function(options) {
+                console.info('blocks.advertising.banners/advertisingContentViewClass::addFileContent');
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
-                var model = new lessonFileContentModelClass(null, {
+                var model = new mod.models.advertising.file(null, {
                     collection: this.collection,
                 });
 
@@ -836,46 +636,55 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 return this.renderFileContent(model, options).el;
             },
             renderFileContent : function(model, options) {
+                console.info('blocks.advertising.banners/advertisingContentViewClass::renderFileContent');
                 var self = this;
 
                 if (!_.isObject(options)) {
                     options = {};
                 }
 
-                var fileContentTimelineView = new lessonFileContentTimelineViewClass(_.extend(options, {
+
+                console.warn(_.extend(options, {
                     model : model
                 }));
 
-                this.$(".content-timeline-items").append(fileContentTimelineView.render().el);
+
+                var bannerAdvertisingContentView = new bannerAdvertisingContentViewClass(_.extend(options, {
+                    model : model
+                }));
+
+                this.$(".content-timeline-items").append(bannerAdvertisingContentView.render().el);
 
 
-                this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
-                    //console.warn(e, model);
+                this.listenTo(bannerAdvertisingContentView, "timeline-file-content:save", function(model) {
                     self.collection.add(model);
                     model.save();
                 });
 
-                this.listenTo(fileContentTimelineView, "timeline-file-content:translate", function(model) {
+                /*
+                this.listenTo(bannerAdvertisingContentView, "timeline-file-content:translate", function(model) {
                     //console.warn(e, model);
                     self.collection.add(model);
                     model.save();
                 });
+                */
 
-                this.listenTo(fileContentTimelineView, "timeline-file-content:delete", function(model) {
+                this.listenTo(bannerAdvertisingContentView, "timeline-file-content:delete", function(model) {
                     if (!_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
                     //model.destroy();
                     self.collection.remove(model);
-                    fileContentTimelineView.remove();
+                    bannerAdvertisingContentView.remove();
                     //self.collection.add(model, "text");
                 });
+                console.warn(3);
 
-                return fileContentTimelineView;
+                return bannerAdvertisingContentView;
             },
             addTextContent : function(e) {
                 var self = this;
-                var model = new lessonTextContentModelClass(null, {
+                var model = new mod.models.advertising.text(null, {
                     collection: this.collection,
                 });
 
@@ -893,48 +702,154 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     options = {};
                 }
 
-                var textContentTimelineView = new lessonTextContentTimelineViewClass(_.extend(options, {
+                var textAdvertisingContentView = new textAdvertisingContentViewClass(_.extend(options, {
                     model : model
                 }));
 
-                this.$(".content-timeline-items").append(textContentTimelineView.render().el);
+                this.$(".content-timeline-items").append(textAdvertisingContentView.render().el);
 
 
-                this.listenTo(textContentTimelineView, "timeline-text-content:save", function(model) {
+                this.listenTo(textAdvertisingContentView, "timeline-text-content:save", function(model) {
                     //console.warn(e, model);
                     //self.collection.add(model);
                     //model.save();
                 });
 
-                this.listenTo(textContentTimelineView, "timeline-text-content:delete", function(model) {
+                this.listenTo(textAdvertisingContentView, "timeline-text-content:delete", function(model) {
                     //model.destroy();
                     //self.collection.remove(model, options);
                     //textContentTimelineView.remove();
                 });
 
-                textContentTimelineView.initEditor();
+                textAdvertisingContentView.initEditor();
             }
         });
 
-        mod.lessonContentCollection = new lessonContentCollectionClass([], {
-            lesson_id :  mod.entity_id
+        var contentCollection = new this.collections.advertising_content([], {
+            entity_id :  entityModel.get("id")
         });
 
-        this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
-            alert(1);
-            mod.lessonContentCollection.fetch();
+        this.listenTo(entityModel, "sync", function(a,b,c,d,e) {
+            contentCollection.fetch();
         });
 
-        mod.contentTimelineView = new contentTimelineViewClass({
+
+        this.advertisingContentView = new advertisingContentViewClass({
             el : "#advertising-banners",
-            collection : mod.lessonContentCollection,
-            collectionFilter : {parent_id: null}
+            collection : contentCollection
         });
     });
-    /*
-    this.models
-    this.collections
-    */
+
+    var baseAdvertisingContentModelClass = Backbone.Model.extend({
+        defaults : function() {
+            return {
+                id              : null,
+                advertising_id  : null,
+                content_type    : null,
+                title           : '',
+                info            : '',
+                position        : null,
+                active          : 1
+            };
+        },
+        urlRoot: "/module/advertising/item/content/"
+    });
+
+    this.models = {
+        advertising : {
+            file : baseAdvertisingContentModelClass.extend({
+                defaults : function() {
+                    var defaults = baseAdvertisingContentModelClass.prototype.defaults.apply(this);
+                    defaults['content_type'] = 'file';
+                    return defaults;
+                },
+                mergeWithinFileObject : function(file) {
+                    this.set("name", file.name);
+                    this.set("info", JSON.stringify(file));
+                    this.set("file", file);
+                }
+            }),
+            text : baseAdvertisingContentModelClass.extend({
+                defaults : function() {
+                    var defaults = baseAdvertisingContentModelClass.prototype.defaults.apply(this);
+                    defaults['content_type'] = 'text';
+                    return defaults;
+                }
+            })
+        }
+    };
+
+    this.collections = {
+        advertising_content : Backbone.Collection.extend({
+        initialize: function(data, opt) {
+            this.entity_id = opt.entity_id;
+            this.listenTo(this, "add", function(model, collection, opt) {
+                model.set("advertising_id", this.entity_id);
+                // SET POSITION
+            });
+            /*
+            this.listenTo(this, "remove", function(model, collection, opt) {
+                var self = this;
+
+                var subfiles = collection.where({parent_id : model.get("id")});
+
+                console.warn(model, collection, opt, this, subfiles);
+
+                _.each(subfiles, function(item) {
+                    self.remove(item.id);
+                });
+
+                model.destroy();
+            });
+            */
+        },
+        url: function() {
+            return "/module/advertising/items/content/default/" + this.entity_id;
+        },
+        model: function(attrs, options) {
+            if (options.add) {
+                if (attrs.content_type == "file") {
+
+                    return new mod.models.advertising.file(attrs, _.extend(options, {
+                        collection: this,
+                    }));
+                /*
+                } else if (attrs.content_type == "subtitle") {
+
+                    return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
+                        collection: this,
+                    }));
+                */
+                } else if (attrs.content_type == "text") {
+                    return new mod.models.advertising.text(attrs, _.extend(options, {
+                        collection: this,
+                    }));
+                /*
+                } else if (attrs.content_type == "exercise") {
+                    return new lessonExerciseContentModelClass(attrs, _.extend(options, {
+                        collection: this,
+                    }));
+                */
+                } else {
+                    return new baseAdvertisingContentModelClass(attrs, _.extend(options, {
+                        collection: this,
+                    }));
+                }
+            }
+        },
+        setContentOrder : function(order) {
+            $.ajax(
+                "/module/advertising/items/content/set-order/" + this.entity_id,
+                {
+                    data: {
+                        position: order
+                    },
+                    method : "PUT"
+                }
+            );
+        }
+        })
+    };
 
     $SC.module("crud.views.edit").on("start", function() {
         mod.start();
