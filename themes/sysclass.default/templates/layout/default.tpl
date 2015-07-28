@@ -53,7 +53,9 @@
 		<script type="text/template" id="datatables-options-template">
 				<a
 					class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
-					href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>#<% } %>"
+					href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>javascript: void(0);<% } %>"
+					<% if (item.action != undefined) { %>data-action-url="<%= item.action %>"<% } %>
+					<% if (item.method != undefined) { %>data-action-method="<%= item.method %>"<% } %>
 					<% if (key == "remove") { %>
 	                    data-toggle="confirmation"
 	                    data-original-title="{translateToken value="Are you sure?"}"

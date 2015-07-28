@@ -7,7 +7,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         mod.tableViewClass = Backbone.View.extend({
 			events : {
 				"click .datatable-option-remove" : "removeItem",
-				"click .datatable-option-check" : "checkItem"
+				"click .datatable-option-check" : "checkItem",
+				"click .datatable-actionable" : "doAction",
 			},
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
@@ -58,6 +59,18 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 							.draw();
 					}
 				});
+			},
+			doAction : function(e) {
+				var item = $(e.currentTarget);
+				if (item.data("actionUrl")) {
+					var url = item.data("actionUrl");
+					var method = "GET";
+					if (item.data("actionMethod")) {
+						method = item.data("actionMethod");
+					}
+
+	                $.ajax(url, { method : method } );
+				}
 			}
         });
 	});

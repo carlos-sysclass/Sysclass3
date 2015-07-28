@@ -688,7 +688,19 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     'icon'  => 'icon-search',
                     'link'  => 'execute/%test_id$s/%try_index$s',
                     'class' => 'btn-sm btn-primary'
-                )
+                ),
+                'recalculate'  => array(
+                    'icon'  => 'fa fa-refresh',
+                    'class' => 'btn-sm btn-warning datatable-actionable',
+                    'action' => 'recalculate/%test_id$s/%try_index$s',
+                    'method' => 'POST'
+                ),
+
+                /*,
+                'remove'    => array(
+                    'icon'  => 'icon-remove',
+                    'class' => 'btn-sm btn-danger'
+                )*/
             );
 
             $filter = filter_var($filter, FILTER_DEFAULT);
@@ -725,7 +737,12 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 $itemsData[$key]['options'] = array();
                 foreach($optionsRoute as $index => $optItem) {
                     //var_dump($item);
-                    $optItem['link'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['link'], $item);
+                    if (array_key_exists('link', $optItem)) {
+                        $optItem['link'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['link'], $item);
+                    } elseif (array_key_exists('action', $optItem)) {
+                        $optItem['action'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['action'], $item);
+                    }
+
                     $itemsData[$key]['options'][$index] = $optItem;
                 }
                 /*
@@ -753,6 +770,87 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
         return array_values($itemsData);
     }
+
+
+    /**
+     * The test execution itself
+     *
+     * @url GET /recalculate/:identifier/:execution_id
+     * @url POST /recalculate/:identifier/:execution_id
+     */
+    public function recalculateViewPage($identifier, $execution_id)
+    {
+        // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+        //
+        if ($userData = $this->getCurrentUser()) {
+            // WHO CAN RECALCULATE THE TEST????
+            // 1 - THE USER ITSELF
+            // 2 - THE TEST INSTRUCTOR
+            // 3 - THE CLASS INSTRUCTOR
+            // 4 - THE COURSE COORDINATOR
+            /*
+            $acl = new AclList();
+            $acl->setDefaultAction(Phalcon\Acl::DENY);
+
+            $acl->addRole("Owner");
+            $acl->addRole("Instructor");
+            $acl->addRole("Coordinator");
+            $acl->addRole("Administrator");
+
+            // Define the "Customers" resource
+            // Add "customers" resource with a couple of operations
+            $acl->addResource("TestsExecution", array("view", "execute"));
+
+            $acl->allow("Owner", "TestsExecution", "view");
+            $acl->allow("Owner", "TestsExecution", "execute");
+            $acl->allow("Instructor", "TestsExecution", "view");
+            $acl->allow("Coordinator", "TestsExecution", "view");
+            $acl->allow("Administrator", "TestsExecution", "view");
+
+            var_dump($acl->isAllowed("", "TestsExecution", "execute"));
+            exit;
+
+            var_dump($userData);
+            */
+
+            // START PROGRESS
+            $testModel = $this->model("roadmap/tests");
+            $testData = $this->model("roadmap/tests")->getItem($identifier);
+
+            $executionModel = $this->model("tests/execution");
+
+            $executions = array();
+
+            if (!is_null($execution_id)) {
+                $executions = $executionModel->addFilter(array(
+                    'test_id' => $identifier,
+                    //'user_id' => $userData['id'],
+                    'id' => $execution_id
+                ))->getItems();
+            } else {
+                return $this->invalidRequestError();
+            }
+            $execution = end($executions);
+
+            if (count($executions) > 0) {
+                $execution_id = $execution['id'];
+
+                $executionModel->calculateUserScore($execution_id);
+
+                $response = $this->createAdviseResponse(
+                    self::$t->translate("Score recalculated with sucess"),
+                    "success"
+                );
+
+                $data = $executionModel->getItem($execution_id);
+
+                return array_merge($response, $data);
+            } else {
+                return $this->invalidRequestError();
+            }
+        }
+    }
+
 
     /**
      * [ add a description ]

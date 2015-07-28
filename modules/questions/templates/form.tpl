@@ -95,9 +95,13 @@
 	                    </div>
 					</div>
 					<!-- NO DATA NEEDED -->
-					<!--
-					<div class="question-types-item question-type-free_text"></div>
-					-->
+
+					<div class="question-types-item question-type-free_text">
+	                    <div class="alert alert-warning" role="alert">
+	                        Not implemented yet!
+	                    </div>
+					</div>
+
 					<div class="question-types-item question-type-true_or_false">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="The answer is..."}</label>
@@ -137,10 +141,15 @@
 						</div>
 					</div>
 					<div class="question-types-item question-type-fill_blanks">
+	                    <div class="alert alert-warning" role="alert">
+	                        Not implemented yet!
+	                    </div>
+	                    <!--
 						<div class="alert alert-info">
 							<i class="fa fa-info-circle"></i>
 							{translateToken value="Type your question, and where you need to insert a blank, enter the following sequence"} <span class="btn btn-xs btn-default disabled"><strong>###</strong></span>
 						</div>
+						-->
 					</div>
 
 				</div>

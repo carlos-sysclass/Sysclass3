@@ -4,7 +4,7 @@
         <div class="col-md-12 text-right">
             Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
-                <i class="fa fa-question-circle"></i>How is it calculated!?</a>
+                <i class="fa fa-question-circle"></i>{translateToken value="How is it calculated!?"}</a>
         </div>
         <div class="cleafix"></div>
     </div>
@@ -117,7 +117,7 @@
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
-            <input type="checkbox" name="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0">
+            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0">
         <% } %>
         <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
             data-toggle="confirmation"

@@ -9,12 +9,13 @@
  */
 class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
 {
+    protected $_modelRoute = "grades";
 
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            $groupItems = $this->model("grades/groups/collection")->addFilter(array(
+            $groupItems = $this->model("grades")->addFilter(array(
                 'active'    => true
             ))->getItems();
             // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
@@ -22,17 +23,17 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return array(
                 'content' => array(
                     array(
-                        'count' => 0, //count($groupItems),
-                        'text'  => self::$t->translate('Grades Settings'),
-                        'icon'  => 'fa fa-cog',
+                        'count' => count($groupItems),
+                        'text'  => self::$t->translate('Grades Rules'),
+                        'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view'
-                    ),
+                    )/*,
                     array(
                         'count' => count($groupItems),
                         'text'  => self::$t->translate('Grades Groups'),
                         'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view-group'
-                    )
+                    )*/
                 )
             );
         }
@@ -65,7 +66,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Grades Rules")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Grade Rules"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Grade Rule"));
                 break;
             }
             case "edit/:id" : {
@@ -77,6 +78,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Grade Rule"));
                 break;
             }
+            /*
             case "view-group" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
@@ -104,6 +106,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Grade Group"));
                 break;
             }
+            */
         }
         return $breadcrumbs;
     }
@@ -117,22 +120,10 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                 array(
                     'text'      => self::$t->translate('New Grade Rule'),
                     'link'      => $this->getBasePath() . "add",
-                    'class'     => "btn-plus",
+                    'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
-                ),
-                array(
-                    'text'      => self::$t->translate('View Grade Groups'),
-                    'link'      => $this->getBasePath() . "view-group",
-                    'class'     => "btn-default",
-                    'icon'      => 'icon-group'
-                ),
-                array(
-                    'text'      => self::$t->translate('New Grade Group'),
-                    'link'      => $this->getBasePath() . "add-group",
-                    'class'     => "btn-default",
-                    'icon'      => 'icon-group'
                 )
-            ),
+            )/*,
             'view-group'  => array(
                 array(
                     'text'      => self::$t->translate('New Grade Group'),
@@ -154,6 +145,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                 ),
 
             )
+            */
         );
 
         return $actions[$request];
@@ -162,98 +154,27 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /**
      * [ add a description ]
      *
-     * @url GET /view-group
-     */
-    public function viewGroupPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        if ($currentUser->getType() == 'administrator') {
-
-            $this->createClientContext("view-group");
-            $this->display($this->template);
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /add-group
-     */
-    public function addGroupPage()
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        if ($currentUser->getType() == 'administrator') {
-            if (!$this->createClientContext("add-group")) {
-                $this->entryPointNotFoundError($this->getSystemUrl('home'));
-            }
-            $this->display($this->template);
-
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /edit-group/:id
-     */
-    public function editGroupPage($id)
-    {
-        $currentUser    = $this->getCurrentUser(true);
-
-        if ($currentUser->getType() == 'administrator') {
-            if (!$this->createClientContext("edit-group", array('entity_id' => $id))) {
-                $this->entryPointNotFoundError($this->getSystemUrl('home'));
-            }
-            $this->display($this->template);
-
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-
-    /**
-     * [ add a description ]
-     *
      * @url GET /item/me/:id
-     * @url GET /group/item/me/:id
     */
     public function getItemAction($id) {
-        $matchedurl = $this->getMatchedUrl();
-        if (strpos($matchedurl, "group") === 0) {
-            $modelRoute = "grades/groups/collection";
-        } else {
-            $modelRoute = "grades/rules/collection";
-        }
-
-        $editItem = $this->model($modelRoute)->getItem($id);
+        $editItem = $this->model($this->_modelRoute)->getItem($id);
         return $editItem;
     }
 
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
-     * @url POST /group/item/me
+     * @url POST /item/:model
      */
-    public function addItemAction($id)
+    public function addItemAction($model)
     {
         $matchedurl = $this->getMatchedUrl();
 
-        if (strpos($matchedurl, "group") === 0) {
-            $modelRoute = "grades/groups/item";
+        if ($model === "me") {
+            $modelRoute = $this->_modelRoute;
             $successMessage = "Grade Group created with success";
-            $optionsRoute = "edit-group";
         } else {
-            $modelRoute = "grades/rules/item";
-            $successMessage = "Grade Rule created with success";
-            $optionsRoute = "edit";
+            return $this->invalidRequestError();
         }
 
         $itemModel = $this->model($modelRoute);
@@ -280,30 +201,25 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /**
      * [ add a description ]
      *
-     * @url PUT /item/me/:id
-     * @url PUT /group/item/me/:id
+     * @url PUT /item/:model/:identifier
      */
-    public function setItemAction($id)
+    public function setItemAction($model, $identifier)
     {
-        $matchedurl = $this->getMatchedUrl();
 
-        if (strpos($matchedurl, "group") === 0) {
-            $modelRoute = "grades/groups/item";
-            $successMessage = "Grade Group updated with success";
-            $optionsRoute = "edit-group";
+        if ($model === "me") {
+            $modelRoute = $this->_modelRoute;
+            $successMessage = "Grade Group created with success";
         } else {
-            $modelRoute = "grades/rules/item";
-            $successMessage = "Grade Rule updated with success";
-            $optionsRoute = "edit";
+            return $this->invalidRequestError();
         }
-
         $itemModel = $this->model($modelRoute);
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            if ($itemModel->setItem($data, $id) !== FALSE) {
+            if ($itemModel->setItem($data, $identifier) !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate($successMessage), "success");
+                $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -318,14 +234,13 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      * [ add a description ]
      *
      * @url DELETE /item/me/:id
-     * @url DELETE /group/item/me/:id
      */
     public function deleteItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-        $matchedurl = $this->getMatchedUrl();
+            $matchedurl = $this->getMatchedUrl();
 
             if (strpos($matchedurl, "group") === 0) {
                 $modelRoute = "grades/groups/item";
@@ -350,61 +265,66 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
+
     /**
      * [ add a description ]
      *
-     * @url GET /items/me
-     * @url GET /items/me/:type
-     * @url GET /group/items/me
-     * @url GET /group/items/me/:type
+     * @url GET /items/:model
+     * @url GET /items/:model/:type
+     * @url GET /items/:model/:type/:filter
      */
-    public function getItemsAction($type)
+    public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        $matchedurl = $this->getMatchedUrl();
-        if (strpos($matchedurl, "group") === 0) {
-            $modelRoute = "grades/groups/collection";
-            $optionsRoute = "edit-group";
+        // DEFAULT OPTIONS ROUTE
+        $optionsRoute = array(
+            'edit'  => array(
+                'icon'  => 'icon-edit',
+                'link'  => 'edit/%id$s',
+                'class' => 'btn-sm btn-primary'
+            ),
+            'remove'    => array(
+                'icon'  => 'icon-remove',
+                'class' => 'btn-sm btn-danger'
+            )
+        );
+
+
+        if ($model == "me") {
+            $itemsCollection = $this->model($this->_modelRoute);
+            if (!empty($filter)) {
+                $filter = json_decode($filter, true);
+                if (is_array($filter)) {
+                    // SANITIZE ARRAY
+                    $itemsCollection->addFilter($filter);
+                }
+            }
+            $itemsData = $itemsCollection->getItems();
         } else {
-            $modelRoute = "grades/rules/collection";
-            $optionsRoute = "edit";
+            return $this->invalidRequestError();
         }
 
-        $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        //$modelRoute = "users/groups/collection";
-        $baseLink = $this->getBasePath();
-
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
-        $items = $itemsData;
-
         if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
-
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
-                );
-            }
-            return $result;
-            */
         } elseif ($type === 'datatable') {
+            $stringsHelper = $this->helper("strings");
+            $itemsData = array_values($itemsData);
+            foreach ($itemsData as $key => $item) {
+                $itemsData[$key]['options'] = array();
+                foreach($optionsRoute as $index => $optItem) {
+                    //var_dump($item);
+                    if (array_key_exists('link', $optItem)) {
+                        $optItem['link'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['link'], $item);
+                    } elseif (array_key_exists('action', $optItem)) {
+                        $optItem['action'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['action'], $item);
+                    }
 
-            $items = array_values($items);
-            foreach($items as $key => $item) {
-                $items[$key]['options'] = array(
+                    $itemsData[$key]['options'][$index] = $optItem;
+                }
+                /*
+
+                $itemsData[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
-                        'link'  => $baseLink . $optionsRoute . "/" . $item['id'],
+                        'link'  => $this->getBasePath() . $stringsHelper->vksprintf($optionsRoute, $item['id']),
                         'class' => 'btn-sm btn-primary'
                     ),
                     'remove'    => array(
@@ -412,16 +332,82 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                         'class' => 'btn-sm btn-danger'
                     )
                 );
+                */
             }
             return array(
                 'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
+                'iTotalRecords'         => count($itemsData),
+                'iTotalDisplayRecords'  => count($itemsData),
+                'aaData'                => array_values($itemsData)
             );
         }
 
-        return array_values($items);
+        return array_values($itemsData);
     }
 
+
+
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /view-group
+     * @deprecated 3.0.0.24
+     */
+
+    public function viewGroupPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+
+            $this->createClientContext("view-group");
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /add-group
+     * @deprecated 3.0.0.24
+     */
+    public function addGroupPage()
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+            if (!$this->createClientContext("add-group")) {
+                $this->entryPointNotFoundError($this->getSystemUrl('home'));
+            }
+            $this->display($this->template);
+
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /edit-group/:id
+     * @deprecated 3.0.0.24
+     */
+    public function editGroupPage($id)
+    {
+        $currentUser    = $this->getCurrentUser(true);
+
+        if ($currentUser->getType() == 'administrator') {
+            if (!$this->createClientContext("edit-group", array('entity_id' => $id))) {
+                $this->entryPointNotFoundError($this->getSystemUrl('home'));
+            }
+            $this->display($this->template);
+
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
 }

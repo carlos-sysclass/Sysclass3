@@ -19,6 +19,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             te.pending,
             te.answers,
             te.completed,
+            te.user_score,
             u.name as 'user#name',
             u.surname as 'user#surname',
             u.login as 'user#login',
@@ -60,8 +61,48 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             )
         );
 
-        $this->calculateUserScore();
+        $this->calculateUserScore($test_try);
     }
+
+    public function calculateUserScore($execution) {
+        if (is_array($execution)) {
+            $executionData = $execution;
+        } else {
+            $executionData = $this->getItem($execution);
+        }
+
+        $questionModel = $this->model("tests/question");
+
+        $testData = $this->model("tests")->getItem($executionData['test_id']);
+
+        $questionsData = $questionModel->addFilter(array(
+            'lesson_id' => $executionData['test_id']
+        ))->getItems();
+
+        $testPoints = 0;
+        $totalPoints = 0;
+
+        foreach($questionsData as $question) {
+            $testPoints += $question['points'] * $question['weight'];
+            $totalPoints += $questionModel->correct($question, $executionData['answers'][$question['id']]);
+        }
+
+        $this->update(
+            array(
+                'user_points' => $totalPoints,
+                'user_score'  => $totalPoints / $testPoints
+            ),
+            array(
+                'id' => $executionData['id'],
+            )
+        );
+
+        return true;
+    }
+
+
+
+
     protected function canExecuteAgain($test_try) {
         $test_repetition = @isset($test_try['test']['test_repetition']) ? $test_try['test']['test_repetition'] : false;
 

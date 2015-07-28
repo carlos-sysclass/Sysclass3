@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.0.0.21
+ */
 class GradesRulesCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()

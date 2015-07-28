@@ -88,6 +88,11 @@ blocks:
           sType: unix-moment-duration
           label: "Time to Complete"
 
+        - mData: user_score
+          sClass: text-center
+          sType: float-as-percentage
+          label: "Score Achieved"
+
         - mData: options
           sType: table-options
           sClass: text-center

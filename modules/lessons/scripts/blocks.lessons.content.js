@@ -222,7 +222,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             events : function() {
                 return {
                     "confirmed.bs.confirmation .delete-content"    : "delete"
-                }
+                };
             },
             render : function() {
                 this.$el.html(this.template(this.model.toJSON()));

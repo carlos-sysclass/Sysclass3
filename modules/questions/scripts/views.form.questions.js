@@ -74,6 +74,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
         var subviewsClass = {};
         subviewsClass.combine = baseSubviewViewClass.extend({});
         subviewsClass.fill_blanks = baseSubviewViewClass.extend({});
+        subviewsClass.free_text = baseSubviewViewClass.extend({});
 
         subviewsClass.true_or_false = baseSubviewViewClass.extend({
             disabled : true,
@@ -196,7 +197,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                     }
                 });
             },
-
             updateModel : function() {
                 console.info('views.form.questions/baseSubviewChoicesViewClass::updateModel');
                 if (!this.disabled) {

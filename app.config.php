@@ -245,6 +245,12 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/icheck/icheck')
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'noui-slider',
+	'css'	=> array('plugins/nouislider/nouislider'),
+	'js'	=> array('plugins/nouislider/nouislider')
+));
+
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'bootstrap-editable',

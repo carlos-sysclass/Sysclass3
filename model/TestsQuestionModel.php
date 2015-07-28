@@ -114,4 +114,76 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
         return true;
 
     }
+
+    public function correct($question, $answer) {
+        if (is_array($question)) {
+            $questionData = $question;
+        } else {
+            $questionData = $this->getItem($question);
+        }
+
+        //var_dump($questionData['question']['type_id']);
+
+        switch ($questionData['question']['type_id']) {
+            case "simple_choice" : {
+                return $this->correctSingleChoice($questionData, $answer);
+                break;
+            }
+            case "true_or_false" : {
+                return $this->correctTrueOrFalse($questionData, $answer);
+                break;
+            }
+            case "multiple_choice" : {
+                return $this->correctMultipleChoice($questionData, $answer);
+                break;
+            }
+        }
+        return 0;
+
+    }
+    protected function correctSingleChoice($questionData, $answer) {
+        $options = $questionData['question']['options'];
+        foreach($options as $opt) {
+            if ($opt['answer'] === TRUE && $answer == $opt['index']) {
+                return ($questionData['points'] * $questionData['weight']);
+            }
+        }
+        return 0;
+    }
+
+    protected function correctTrueOrFalse($questionData, $answer) {
+        if ($questionData['question']['answer'] == $answer) {
+            return ($questionData['points'] * $questionData['weight']);
+        } else {
+            return 0;
+        }
+    }
+
+    protected function correctMultipleChoice($questionData, $answer) {
+        $countCorrect = 0;
+        $countAnswer = 0;
+        $countError = 0;
+
+        $options = $questionData['question']['options'];
+        foreach($options as $opt) {
+            if ($opt['answer'] === TRUE) {
+                $countCorrect++;
+                if (in_array($opt['index'], $answer)) {
+                    $countAnswer++;
+                } else {
+                    $countError++;
+                    $has_errors = true;
+                }
+            }
+        }
+
+        if ($countError == 0) {
+            $correctFactor = $countAnswer / $countCorrect;
+        } else {
+            $correctFactor = 0;
+        }
+
+        return ($questionData['points'] * $questionData['weight']) * $correctFactor;
+    }
+
 }

@@ -1,17 +1,19 @@
 <?php
-class GradesGroupsItemModel extends AbstractSysclassModel implements ISyncronizableModel {
+/**
+ * @deprecated 3.0.0.21
+ */
+class GradesRulesItemModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->table_name = "mod_grades_groups";
+        $this->table_name = "mod_grades_rules";
         $this->id_field = "id";
-        $this->mainTablePrefix = "gg";
+        $this->mainTablePrefix = "gr";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, lesson_id, class_id, name, description, active FROM mod_grades_groups gg";
+        $this->selectSql = "SELECT id, lesson_id, class_id, name, description, active FROM mod_grades_rules gr";
 
         parent::init();
-
     }
     /*
     public function getUsersInGroup($group_id) {

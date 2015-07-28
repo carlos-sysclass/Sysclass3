@@ -119,6 +119,21 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'unix-moment-duration' ]
 		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (!_.isNull(data)) {
+					var floatValue = parseFloat( data );
+					if (type == 'display') {
+						return (floatValue * 100) + "%";
+					}
+					return floatValue;
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'float-as-percentage' ]
+		},
+
 		/**
 		 * PLEASE REMOVE THIS FUNCTION FROM HERE, BECAUSE THE STRONG COUPLING
 		 */
