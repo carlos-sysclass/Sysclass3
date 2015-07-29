@@ -183,6 +183,11 @@ $configurationDefaults = array(
 		'dbname'	=> 'sysclass_enterprise',
 		'overrideTheme' => 'sysclass3',
 		'https'		=> 'optional',
+	),
+	'fornecedores.itaipu.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_enterprise',
+		'overrideTheme' => 'sysclass3',
+		'https'		=> 'required',
 	)
 );
 

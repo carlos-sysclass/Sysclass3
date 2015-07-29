@@ -150,7 +150,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             'tests.execution.list.table' => function ($data, $self) {
                 // APLLY FILTER BASED ON $data['filter'] AND $data['context']
                 //
-                $stringsHelper = $this->helper("strings");
+                $stringsHelper = $self->helper("strings");
 
                 // TODO: TEST FOR EMPTY KEYS IN $data
                 $filter = array();
