@@ -839,6 +839,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
 				if (this.$("#" + videoDomID).size() === 0) {
+					console.warn(this.videoModel.toJSON());
 					this.$el.empty().append(
 						this.template(this.videoModel.toJSON())
 					);
@@ -1376,7 +1377,23 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				);
 
-				mainVideo.set("childs", childs);
+				if (_.size(childs) > 0) {
+					// GET SUBTITLES CHILDS
+					var subchilds = _.map(
+						this.where({
+							parent_id : childs[0].id
+						}),
+						function(model, index) {
+							return model.toJSON();
+						}
+					);
+					//console.warn(child.concat(subchilds));
+					//mainVideo.set("childs", _.union(child, subchilds));
+					mainVideo.set("childs", subchilds);
+				} else {
+					mainVideo.set("childs", childs);
+				}
+
 
 				return mainVideo;
 			},

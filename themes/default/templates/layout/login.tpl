@@ -9,7 +9,7 @@
 	{/block}
 </head>
 <!-- BEGIN BODY -->
-<body class="login backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/sysclass_background.jpg'}"]'>
+<body class="login backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/default.jpg'}"]'>
 	<!-- BEGIN LOGO -->
 	<div class="logo">
 		<!--<img src="{Plico_GetResource file='img/logo.png'}" alt="" /> -->

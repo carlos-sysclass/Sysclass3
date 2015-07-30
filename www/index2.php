@@ -1,4 +1,5 @@
 <?php
+@session_start();
 
 if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
     define("PLICOLIB_PATH", "/projects/repo/plico/plicolib.local/");

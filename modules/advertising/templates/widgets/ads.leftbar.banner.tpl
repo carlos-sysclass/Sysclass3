@@ -3,7 +3,7 @@
 {foreach $context.content as $content}
     {if ($content.type == 'image')}
         <div align="center">
-        	<img width="100%" src="{$content.url}"/>
+        	<img class="img-responsive" src="{$content.url}"/>
         </div>
     {elseif ($content.type == 'text')}
         <div align="center">

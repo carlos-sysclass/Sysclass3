@@ -463,6 +463,9 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 this.$el.remove();
 
                 this.trigger("timeline-text-content:delete", this.model);
+
+                // IF MODEL IS SAVED, SO DELETE FROM SERVER
+                this.model.destroy();
             }
         });
 

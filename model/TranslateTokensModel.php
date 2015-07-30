@@ -73,6 +73,8 @@ class TranslateTokensModel extends ModelManager {
 
 		$cacheHash = __METHOD__ . "/" . serialize(func_get_args());
 
+        $this->clearCache($cacheHash);
+
 		if ($this->cacheable() && $this->hasCache($cacheHash)) {
 				// TODO CHECK IF IS THERE A CACHE, AND RETURN IT.
 			return $this->getCache($cacheHash);

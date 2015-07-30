@@ -688,6 +688,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
                     $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
 
+
                     $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
 
                     // CREATE FILE
@@ -743,13 +744,12 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             //echo $filestream;
 
             $lines = preg_split("/\r?\n^$\r?\n/m", $filestream);
+            $lines = preg_split("/\r?\n\r?\n/m", $filestream);
 
-            //var_dump($lines);
-            //exit;
             $filestruct = array();
 
             foreach ($lines as $line) {
-                if (preg_match('/(\d*)\n*^(\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3}) --> (\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3})$\r?\n(.*)/ms', $line, $match)) {
+                if (preg_match('/(\d*)\r?\n*^(\d{2}:\d{2}[:.]\d{2,3}[.]?\d{0,3}) --> (\d{2}:\d{2}[:.]\d{2,3}[.]?\d{0,3})\r?\n(.*)/ms', $line, $match)) {
                     $filestruct[] = array(
                         "index" => $match[1],
                         "from"  => $match[2],

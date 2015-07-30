@@ -14,6 +14,13 @@ if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
 
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
 isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
+
+$themes = array('sysclass.default', 'sysclass.itaipu');
+
+if (!in_array($_SESSION['new-theme'], $themes)) {
+	unset($_SESSION['new-theme']);
+}
+
 $configurationDefaults = array(
 	'_default'			=> array(
 		'server'	=> $protocol.'://'.$HTTP_HOST.'/',
@@ -21,71 +28,51 @@ $configurationDefaults = array(
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass',
+		'dbname'	=> 'sysclass_demo',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'none',
+		'theme'		=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.itaipu')
 	),
+	/*
 	'local.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_demo',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
 	'local.beta.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_demo',
-		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass3')
+		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
-	'demo.sysclass.com'	=> array(
-		'dbname'	=> 'sysclass_demo',
-		'overrideTheme' => 'sysclass3',
-		'https'		=> 'required',
-	),
-	'www.demo.sysclass.com'     => array(
-		'dbname'        => 'sysclass_demo',
-		'overrideTheme' => 'sysclass3',
-		'https'		=> 'required',
-	),
-	'biblemesh.sysclass.com'	=> array(
-		'dbname'	=> 'sysclass_biblemesh',
-		'overrideTheme' => 'sysclass3'
-	),
-	'www.biblemesh.sysclass.com'     => array(
-		'dbname'        => 'sysclass_biblemesh',
-		'overrideTheme' => 'sysclass3'
-	),
-	'layout.sysclass.com'	=> array(
-		'dbname'        => 'sysclass_layout',
-		'overrideTheme' => 'sysclass3',
-		'https'		=> 'optional'
-	),
-	'www.layout.sysclass.com'	=> array(
-        'dbname'        => 'sysclass_layout',
-        'overrideTheme' => 'sysclass3',
-		'https'		=> 'optional'
-	),
+	*/
 	'enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
-		'overrideTheme' => 'sysclass3',
+		'theme'		=> 'sysclass.default',
 		'https'		=> 'required',
 	),
 	'www.enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
-		'overrideTheme' => 'sysclass3',
+		'theme'		=> 'sysclass.default',
 		'https'		=> 'required',
 	),
 	'fornecedores.itaipu.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_itaipu',
-		'overrideTheme' => 'sysclass3',
+		'theme'		=> 'sysclass.itaipu',
 		'https'		=> 'required',
 	),
 	'itaipu.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_itaipu',
-		'overrideTheme' => 'sysclass3',
-		'https'		=> 'required',
+		'theme'		=> 'sysclass.itaipu',
+		'https'		=> 'required'
 	)
 );
 
-$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$HTTP_HOST]);
+if (array_key_exists($HTTP_HOST, $configurationDefaults['_default'])) {
+	$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$HTTP_HOST]);
+} else {
+	$configuration = $configurationDefaults['_default'];
+}
+
 $configuration['dsn'] = sprintf(
 	'%s://%s:%s@%s/%s?persist',
 	$configuration['dbtype'],
@@ -95,11 +82,14 @@ $configuration['dsn'] = sprintf(
 	$configuration['dbname']
 );
 
-$plicoLib->set('theme', 'sysclass.default');
+$plicoLib->set('theme', $configuration['theme']);
 $plicoLib->set('client_name', 'Sysclass');
 $plicoLib->set('app_name', 'Sysclass');
 $plicoLib->set('db_dsn', $configuration['dsn']);
 $plicoLib->set('db/charset', 'utf8');
+
+
+
 
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
@@ -373,7 +363,7 @@ $plicoLib->add("resources/components", array(
 
 
 $plicoLib->concat(
-	'resources/sysclass.default/css',
+	'resources/css',
 	array(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		'plugins/font-awesome/css/font-awesome.min',
@@ -411,7 +401,7 @@ $plicoLib->concat(
 );
 
 $plicoLib->concat(
-	'resources/sysclass.default/js',
+	'resources/js',
 	array(
 		'plugins/jquery-1.10.2.min',
 		'plugins/jquery-migrate-1.2.1.min',

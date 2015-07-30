@@ -731,8 +731,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 	 */
 	public function profilePasswordSaveAction()
 	{
-		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
-		exit;
+		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		//exit;
 
 		$currentUser = $this->getCurrentUser(true);
 		$values = $_POST;

@@ -13,27 +13,32 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /* IWidgetContainer */
     public function getWidgets($widgetsIndexes = array()) {
 
-        $leftbar_data = $this->getConfig("widgets\ads.leftbar.banner\context");
-        $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
+        $widgetsContext = $this->getConfig("widgets");
+//        $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
 
         $adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
 
         $items = $adsModel->getItems();
-
-
         $widgetsData = array();
 
         foreach($items as $item) {
+
             if (!array_key_exists($item['placement'], $widgetsData)) {
-                $widgetsData[$item['placement']] = array(
+                $widgetItem = array(
                     'id'        => str_replace('.', '-', $item['placement']),
                     'template'  => $this->template("widgets/" . $item['placement']),
                     'data'      => array(
                         'type' => $item['view_type']
                     )
                 );
+                if (array_key_exists($item['placement'], $widgetsContext) && is_array($widgetsContext[$item['placement']])) {
+                    $widgetsData[$item['placement']] = array_merge_recursive($widgetsContext[$item['placement']], $widgetItem);
+                } else {
+                    $widgetsData[$item['placement']] = $widgetItem;
+                }
             }
+
             $adsContentData = $adsContentModel->clear()->addFilter(array(
                 'active'    => 1,
                 'advertising_id' => $item['id']
@@ -57,8 +62,6 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
                 }
             }
         }
-
-
 
         return $widgetsData;
     }
@@ -251,7 +254,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
 
 
             $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->debug()->addItem($data)) !== false) {
+            if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
                     $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
                     return array_merge($response, $data);

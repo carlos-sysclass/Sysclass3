@@ -15,7 +15,7 @@
     {/foreach}
 
     {assign var="total_itens" value=$item.items|@count}
-    {assign var="total_itens" value=14}
+    {assign var="total_itens" value=4}
     {assign var="max_per_col" value=(($total_itens/3)|ceil)}
 
     <ul class="dropdown-menu" style="min-width: 700px;">

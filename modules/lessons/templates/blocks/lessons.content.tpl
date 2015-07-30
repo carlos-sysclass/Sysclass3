@@ -513,7 +513,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--
+
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Automatic translate to"}</label>
                         <div class="input-group ">
@@ -530,17 +530,15 @@
                             </div>
                         </div>
                     </div>
-                    -->
                 </div>
             </div>
-            <!--
+
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="form-section no-margin">Translations</h5>
                     <ul class="list-group translation-container"></ul>
                 </div>
             </div>
-            -->
         </div>
         <div role="tabpanel" class="tab-pane" id="subtitle-edit-<%= model.id %>">
             <div class="row">

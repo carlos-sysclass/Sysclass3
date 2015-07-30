@@ -314,11 +314,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     // RENDER SUBFILES VIEW
                     var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
 
-
                     var collection = new lessonContentCollectionClass(subfiles, {
                         lesson_id : mod.entity_id
                     });
-                    /*
+
                     collection.each(function(model, i) {
                         var view_type = model.get("content_type");
 
@@ -326,7 +325,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             this.renderRelatedFileContent(model, {upload : false});
                         }
                     }, this);
-                    */
+
 
 
                 }
