@@ -501,7 +501,7 @@
                         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                         <label class="control-label">{translateToken value="Original Language"}</label>
                         <div class="input-group ">
-                            <select class="select2-me form-control" name="related[lang_from]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
+                            <select class="select2-me form-control" name="related[lang_from]" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
                                     <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
                                 {/foreach}
@@ -517,7 +517,7 @@
                     <div class="form-group">
                         <label class="control-label">{translateToken value="Automatic translate to"}</label>
                         <div class="input-group ">
-                            <select class="select2-me form-control" name="related[lang_to]" data-rule-required="1" data-rule-min="1" data-placeholder="{translateToken value="Choose language"}">
+                            <select class="select2-me form-control" name="related[lang_to]" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
                                     <option value="{$lang.code}" <% if (model.language_code != '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
                                 {/foreach}
