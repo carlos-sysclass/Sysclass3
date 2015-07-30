@@ -1,7 +1,7 @@
 var FormValidation = function () {
 
     var handleValidation1 = function() {
-        // for more info visit the official plugin documentation: 
+        // for more info visit the official plugin documentation:
             // http://docs.jquery.com/Plugins/Validation
 
             var form1 = $('#form_sample_1');
@@ -46,7 +46,7 @@ var FormValidation = function () {
                     }
                 },
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
+                invalidHandler: function (event, validator) { //display error alert on form submit
                     success1.hide();
                     error1.show();
                     App.scrollTo(error1, -200);
@@ -77,7 +77,7 @@ var FormValidation = function () {
     }
 
     var handleValidation2 = function() {
-        // for more info visit the official plugin documentation: 
+        // for more info visit the official plugin documentation:
         // http://docs.jquery.com/Plugins/Validation
 
             var form2 = $('#form_sample_2');
@@ -146,7 +146,7 @@ var FormValidation = function () {
                     if (element.attr("name") == "membership") { // for uniform radio buttons, insert the after the given container
                         error.insertAfter("#form_2_membership_error");
                     } else if (element.attr("name") == "editor1" || element.attr("name") == "editor2") { // for wysiwyg editors
-                        error.insertAfter($(element.attr('data-error-container'))); 
+                        error.insertAfter($(element.attr('data-error-container')));
                     } else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
                         error.insertAfter("#form_2_service_error");
                     } else {
@@ -154,7 +154,7 @@ var FormValidation = function () {
                     }
                 },
 
-                invalidHandler: function (event, validator) { //display error alert on form submit   
+                invalidHandler: function (event, validator) { //display error alert on form submit
                     success2.hide();
                     error2.show();
                     App.scrollTo(error2, -200);
@@ -196,7 +196,7 @@ var FormValidation = function () {
 
             //apply validation on wysiwyg editors change, this only needed for chosen dropdown integration.
             $('.wysihtml5, .ckeditor', form2).change(function () {
-                alert(1);
+//                alert(1);
                 form2.validate().element($(this)); //revalidate the wysiwyg editors and show error or success message for the input
             });
 
@@ -208,7 +208,7 @@ var FormValidation = function () {
 
     var handleWysihtml5 = function() {
         if (!jQuery().wysihtml5) {
-            
+
             return;
         }
 
