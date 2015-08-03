@@ -195,6 +195,13 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         ))->getItems();
         $this->putItem("instructors", $items);
 
+        $items = $this->model("grades")->addFilter(array(
+            'active' => true
+        ))->getItems();
+
+        $this->putItem("grades", $items);
+
+
 
         parent::addPage($id);
     }
@@ -217,6 +224,12 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         ))->getItems();
         $this->putItem("instructors", $items);
 
+
+        $items = $this->model("grades")->addFilter(array(
+            'active' => true
+        ))->getItems();
+
+        $this->putItem("grades", $items);
 
 
 

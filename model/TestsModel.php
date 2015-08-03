@@ -23,6 +23,7 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
             l.`text_content_language_id`,
             l.`has_video_content`,
             */
+            IFNULL(t.`grade_id`, 0) as grade_id,
             IFNULL(l.`instructor_id`, c.`instructor_id`) as instructor_id,
             IFNULL(t.`time_limit`, 0) as time_limit,
             IFNULL(t.`allow_pause`, 0) as allow_pause,

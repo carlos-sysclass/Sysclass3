@@ -50,6 +50,16 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Grade Rule"}</label>
+					<select class="select2-me form-control" name="grade_id" data-placeholder="{translateToken value="Select Class"}">
+						<option value="">{translateToken value="Select Grade Rule"}</option>
+						{foreach $T_GRADES as $grade}
+							<option value="{$grade.id}">{$grade.name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
 					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
 					<select class="select2-me form-control" name="instructor_id" multiple="multiple">

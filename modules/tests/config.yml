@@ -93,6 +93,10 @@ blocks:
           sType: float-as-percentage
           label: "Score Achieved"
 
+        - mData: user_grade
+          sClass: text-center
+          label: "Grade"
+
         - mData: options
           sType: table-options
           sClass: text-center

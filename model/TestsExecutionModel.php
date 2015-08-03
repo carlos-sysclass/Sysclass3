@@ -20,10 +20,13 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             te.answers,
             te.completed,
             te.user_score,
+            te.user_points,
+            te.user_grade,
             u.name as 'user#name',
             u.surname as 'user#surname',
             u.login as 'user#login',
             t.time_limit as 'test#timelimit',
+            t.grade_id as 'test#grade_id',
             t.test_repetition as 'test#test_repetition'/*,
             t.**/
         FROM `mod_tests_execution` te
@@ -87,15 +90,42 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             $totalPoints += $questionModel->correct($question, $executionData['answers'][$question['id']]);
         }
 
+        $userScore = $totalPoints / $testPoints;
+
+        if (@isset($executionData['test']['grade_id']) && is_numeric($executionData['test']['grade_id'])) {
+            $gradeId = $executionData['test']['grade_id'];
+            $gradesModel = $this->model("grades");
+            $gradeData = $gradesModel->getItem($gradeId);
+
+            if (count($gradeData) > 0 && count($gradeData['grades']) > 0) {
+
+                $checkScore = $userScore * 100;
+
+                //var_dump($checkScore, $gradeData);
+
+                foreach ($gradeData['grades'] as $key => $value) {
+                    var_dump($checkScore >= $value['range'][0] && $checkScore <= $value['range'][1], $value);
+                    if ($checkScore >= $value['range'][0] && $checkScore <= $value['range'][1]) {
+                        $userGrade = $value['grade'];
+                        break;
+                    }
+                }
+            }
+
+        }
+
         $this->update(
             array(
                 'user_points' => $totalPoints,
-                'user_score'  => $totalPoints / $testPoints
+                'user_score'  => $userScore,
+                'user_grade'  => isset($userGrade) ? $userGrade : $userScore * 100
             ),
             array(
                 'id' => $executionData['id'],
             )
         );
+
+
 
         return true;
     }
