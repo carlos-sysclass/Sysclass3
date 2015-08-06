@@ -12,7 +12,7 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
             events : {
                 "click [data-action-trigger]" : "triggerAction"
             },
-            template : _.template($("#tests_info_modal-template").html(), null, {variable : "model"}),
+            //template : _.template($("#tests_info_modal-template").html(), null, {variable : "model"}),
             initialize : function() {
                 // CREATE DIALOG
                 this.$el.modal({
@@ -31,9 +31,11 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
                 this.render();
             },
             render : function() {
-                console.warn(this.model.toJSON());
+                //console.warn(this.model.toJSON());
 
-                this.$(".modal-content").html(this.template(this.model.toJSON()));
+                //this.$(".modal-content").html(this.template(this.model.toJSON()));
+                //
+                this.$(".modal-content").load("/module/tests/open/" + this.model.get("id") + "?dialog");
 
                 app.module("ui").refresh(this.$(".modal-content"));
             },

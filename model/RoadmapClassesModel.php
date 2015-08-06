@@ -88,7 +88,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
 
         $data['tests'] = $this->model("roadmap/tests")->addFilter(array(
             'class_id' => $data['class_id']
-        ))->getItems();
+        ))->setUserFilter($this->getUserFilter())->getItems();
 
 
         return $this->parseItem($data);

@@ -7,24 +7,18 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
 
         parent::init();
     }
-    /*
     protected function parseItem($item) {
-        $userModel =  $this->model("users/collection");
+        $item = parent::parseItem($item);
 
-        $item['class']['instructor_id'] = json_decode($item['class']['instructor_id'], true);
-
-        if (is_array($item['class']['instructor_id'])) {
-            $item['class']['instructors'] = $userModel->clear()->addFilter(array(
-                'can_be_instructor' => true,
-                'id'    =>  $item['class']['instructor_id']
+        if (!is_null($this->getUserFilter())) {
+            $item['executions'] = $this->model("tests/execution")->addFilter(array(
+                'test_id' => $item['id'],
+                'user_id' => $this->getUserFilter()
             ))->getItems();
-        } else {
-            $item['class']['instructors'] = array();
         }
-
         return $item;
     }
-    /*
+
     public function getItems()
     {
         $data = parent::getItems();
@@ -35,7 +29,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
         }
         return $data;
     }
-    */
+
     public function getItem($identifier)
     {
         $data = parent::getItem($identifier);
@@ -48,6 +42,8 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
         $data['questions'] = $this->model("tests/question")->addFilter(array(
             'lesson_id' => $identifier
         ))->getItems();
+
+
 
         return $this->parseItem($data);
     }

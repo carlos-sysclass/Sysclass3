@@ -221,7 +221,7 @@
 												<th>{translateToken value="#"}</th>
 												<th>{translateToken value="Name"}</th>
 												<th class="text-center">{translateToken value="# Questions"}</th>
-												<th class="text-center">{translateToken value="Date"}</th>
+												<th class="text-center">{translateToken value="Times done"}</th>
 												<th class="text-center">{translateToken value="Grade"}</th>
 												<th class="text-center">{translateToken value="Options"}</th>
 											</tr>
@@ -643,13 +643,30 @@
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
 	<td class="text-center"><%= model.total_questions %></td>
-	<td class="text-center"><span class="label label-danger">{translateToken value="Not set yet"}</span></td>
-	<td class="text-center"><span class="label label-warning">{translateToken value="Not done yet"}</span></td>
 	<td class="text-center">
-		<% if (model.total_questions > 0) { %>
+		<span class="label label-danger">
+		<%= _.size(model.executions) %>
+		<% if (model.test_repetition > 0) { %>
+			 / <%= model.test_repetition %>
+		<% } %>
+		</span>
+	</td>
+	<td class="text-center">
+		<%
+		if (_.size(model.executions) > 0) {
+			 var execution = _.last(model.executions);
+		%>
+			<span class="label label-primary"><%= execution.user_grade %></span>
+			<small><%= execution.user_points %> {translateToken value="points"}</small>
+		<% } %>
+	</span></td>
+	<td class="text-center">
+		<% if (model.total_questions > 0 && (model.test_repetition <= 0 || _.size(model.executions) < model.test_repetition) ) { %>
 			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
 				{translateToken value="Do now!"}
 			</a>
+		<% } %>
+		<% if (model.total_questions > 0) { %>
 			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">
 				{translateToken value="Details"}
 			</a>

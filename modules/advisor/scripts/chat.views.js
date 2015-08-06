@@ -132,16 +132,20 @@ $SC.module("portlet.chat", function(mod, app, Backbone, Marionette, $, _) {
                 this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
                 var self = this;
                 this.$(".portlet > .portlet-body").slideDown(200, function() {
+                    /*
                     self.$(".portlet-title").pulsate({
                         color: "#399bc3",
                         repeat: false
                     });
+                    */
                 });
             } else {
+                /*
                 this.$(".portlet-title").pulsate({
                     color: "#399bc3",
                     repeat: false
                 });
+                */
             }
 
             var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';

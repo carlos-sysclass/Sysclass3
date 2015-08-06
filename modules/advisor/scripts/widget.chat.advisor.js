@@ -29,6 +29,13 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 					this.$(".chat-loader").show();
 				}.bind(this));
 
+				this.listenToOnce(this.chatModule, "xmpp:connect:after", function(status) {
+					if (status == Strophe.Status.CONNECTED) {
+						this.$(".chat-loader").hide();
+						this.$(".block-title").show();
+					}
+				}.bind(this));
+
 				this.listenToOnce(this.chatModule, "xmpp:startchat", function(status) {
 					this.$(".chat-loader").fadeOut(500, function() {
 						this.$(".block-title").show();

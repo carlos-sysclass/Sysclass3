@@ -283,6 +283,12 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             $this->createClientContext("execute", null, "open");
 
             // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
+            if (array_key_exists('dialog', $_GET)) {
+                $this->putItem("extends_file", "layout/dialog.tpl");
+            } else {
+                $this->putItem("extends_file", "layout/default.tpl");
+            }
+
             $this->display($this->template);
         }
     }

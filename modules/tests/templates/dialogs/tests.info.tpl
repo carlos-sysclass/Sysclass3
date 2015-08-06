@@ -5,7 +5,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<!--
 <script type="text/template" id="tests_info_modal-template">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -68,3 +68,4 @@
         </button>
     </div>
 </script>
+-->

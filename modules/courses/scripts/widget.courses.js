@@ -698,6 +698,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
 			render : function(e) {
 				console.info('portlet.courses/baseClassChildTabViewItemClass::render');
+				console.warn(this.model.toJSON());
 				this.$el.html(
 					this.template(this.model.toJSON())
 				);
@@ -739,10 +740,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 app.module("dialogs.tests.info").open();
             },
             doTest : function(model) {
-            	app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
             	//alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
-
             }
 		});
 

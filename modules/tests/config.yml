@@ -55,7 +55,7 @@ crud:
       components: ["select2", "validation", "bootstrap-switch"]
       template: open.tpl
       variables:
-        page_subtitle: Edit your test info
+        page_subtitle: Details about your tests
     'execute':
       components: ["select2", "validation", "bootstrap-switch", "icheck"]
       scripts : ["tests.execute"]

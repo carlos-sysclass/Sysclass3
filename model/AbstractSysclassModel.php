@@ -1,5 +1,6 @@
 <?php
 abstract class AbstractSysclassModel extends ModelManager implements ISyncronizableCollection  {
+    protected $contextUserId = null;
 
     public function filterCollection($data, $filter) {
         $filter = trim(mb_strtolower($filter), '||');
@@ -15,4 +16,13 @@ abstract class AbstractSysclassModel extends ModelManager implements ISyncroniza
         return $data;
     }
 
+    public function getUserFilter($user_id) {
+        return $this->contextUserId;
+    }
+
+    public function setUserFilter($user_id) {
+        $this->contextUserId = $user_id;
+
+        return $this;
+    }
 }
