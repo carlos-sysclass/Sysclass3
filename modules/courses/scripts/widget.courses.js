@@ -1388,11 +1388,15 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						}
 					);
 					//console.warn(child.concat(subchilds));
-					//mainVideo.set("childs", _.union(child, subchilds));
-					mainVideo.set("childs", subchilds);
+					mainVideo.set("childs", _.union(childs, subchilds));
+
 				} else {
+
+					console.warn(childs);
 					mainVideo.set("childs", childs);
 				}
+
+
 
 
 				return mainVideo;

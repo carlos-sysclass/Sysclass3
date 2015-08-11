@@ -24,6 +24,7 @@ $debugMode = 0;
 header('Content-Type: text/html; charset=utf-8');
 
 error_reporting( E_ERROR );
+define("NO_OUTPUT_BUFFERING", true); // SEENS TO CREATE MORE PROBLEMS THAN RESOLVE
 if ($_GET['debug'] == 10) {
 	error_reporting( E_ALL & ~E_STRICT & ~E_DEPRECATED );
     ini_set("display_errors", true);

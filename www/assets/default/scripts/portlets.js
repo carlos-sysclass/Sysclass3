@@ -84,11 +84,12 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
 
         },
         addOne : function(model) {
+
             var childView = new this.childViewClass({
                 model   : model,
                 portlet : this.portlet
             });
-            self.$el.append(childView.render().el);
+            this.$el.append(childView.render().el);
         }
     });
 

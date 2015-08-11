@@ -184,7 +184,9 @@
 
 <script type="text/template" id="exercise-question-timeline-item">
     <li class="list-file-item list-question-item">
-        <%= model.title %>
+        <span class="btn btn-sm">
+            <%= model.title %>
+        </span>
         <div class="list-file-item-options">
             <a class="btn btn-sm btn-primary" href="/module/questions/edit/<%= model.question_id %>" >
                 <i class="fa fa-edit"></i>

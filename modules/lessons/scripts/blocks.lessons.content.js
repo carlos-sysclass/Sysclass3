@@ -161,8 +161,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                     var subfiles = collection.where({parent_id : model.get("id")});
 
-                    console.warn(model, collection, opt, this, subfiles);
-
                     _.each(subfiles, function(item) {
                         self.remove(item.id);
                     });
@@ -312,22 +310,26 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     }
 
                     // RENDER SUBFILES VIEW
+                    /*
                     var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
+
+
 
                     var collection = new lessonContentCollectionClass(subfiles, {
                         lesson_id : mod.entity_id
                     });
 
+                    console.warn(subfiles, this.model.toJSON(), collection.toJSON());
+
                     collection.each(function(model, i) {
+                        console.log(i);
                         var view_type = model.get("content_type");
 
                         if (view_type == "subtitle") {
                             this.renderRelatedFileContent(model, {upload : false});
                         }
                     }, this);
-
-
-
+                    */
                 }
 
                 app.module("ui").refresh(this.$el);
@@ -442,13 +444,16 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 return this.renderRelatedFileContent(model, options);
             },
             renderRelatedFileContent : function(model, options) {
+                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::renderRelatedFileContent');
                 var self = this;
 
                 if (!_.isObject(options)) {
                     options = {};
                 }
                 // DISABLE FILE UPLOAD
-                this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
+                //this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
+
+                console.warn(model);
 
                 var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
                     model : model
@@ -478,6 +483,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     //self.collection.remove(model, options);
                     fileContentTimelineView.remove();
                     //self.collection.add(model, "text");
+
                 });
 
                 return fileContentTimelineView.el;
@@ -498,9 +504,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.trigger("timeline-file-content:save", this.model);
             },
             delete : function() {
+                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::delete');
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
-                this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
+                console.warn(this.$el, this.$(".fileupload-subtitle"));
+                //this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
             }
         });
 
@@ -736,6 +744,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             renderQuestionsContent : function() {
 
+            },
+            delete : function() {
+                baseLessonChildContentTimelineViewClass.prototype.delete.apply(this);
+
+                this.remove();
             }
         });
 
