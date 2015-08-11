@@ -37,14 +37,14 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5"]
+      components: ["validation", "wysihtml5", "bootstrap-switch"]
       blocks: ["messages.group.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new User
     'edit/:id':
-      components: ["validation", "wysihtml5"]
+      components: ["validation", "wysihtml5", "bootstrap-switch"]
       blocks: ["messages.group.allow", "users.list.table"]
       template: form.tpl
       scripts: ["views.groups.edit"]

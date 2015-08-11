@@ -67,7 +67,7 @@ $configurationDefaults = array(
 	)
 );
 
-if (array_key_exists($HTTP_HOST, $configurationDefaults['_default'])) {
+if (array_key_exists($HTTP_HOST, $configurationDefaults)) {
 	$configuration = array_merge($configurationDefaults['_default'], $configurationDefaults[$HTTP_HOST]);
 } else {
 	$configuration = $configurationDefaults['_default'];

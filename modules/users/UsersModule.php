@@ -77,7 +77,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Users")
                 );
-                //$breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                return $breadcrumbs;
                 break;
             }
             case "add" : {
@@ -87,6 +87,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     'text'  => self::$t->translate("Users")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("New User"));
+                return $breadcrumbs;
                 break;
             }
             case "edit/:id" : {
@@ -96,10 +97,10 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     'text'  => self::$t->translate("Users")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit User"));
+                return $breadcrumbs;
                 break;
             }
         }
-        return $breadcrumbs;
     }
 
     /* IActionable */
@@ -624,11 +625,19 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
 		//exit;
 		$currentUser    = $this->getCurrentUser(true);
+
+
+        $currentUser    = $this->getCurrentUser();
+
+        $this->createClientContext("edit", array('entity_id' => $currentUser['id']));
+
+
 		// PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
+        /*
 		$this->putComponent("select2");
 		$this->putComponent("datepicker");
 		$this->putComponent("pwstrength");
-
+        */
 		// GET SUMMARY
 		$summaryModules = $this->getModules("ISummarizable");
 		$summary = array();
@@ -637,8 +646,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		}
 		$summary = $this->module("layout")->sortModules("users.overview.notification.order", $summary);
 
-		$languages = MagesterSystem :: getLanguages(true, true);
-
+		//$languages = MagesterSystem :: getLanguages(true, true);
+        /*
 		$timezones = sC_getTimezones();
 
 		$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
@@ -669,8 +678,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			'password'  => $this->getBasePath() . 'profile/password'
 		);
 		$this->putItem("FORM_ACTIONS", $form_actions);
-
-		$this->putCss("css/pages/profile");
+        */
+		//$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
 

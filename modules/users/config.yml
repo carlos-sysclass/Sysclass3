@@ -57,6 +57,17 @@ crud:
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Config and edit user info
+    profile:
+      components: ["select2","validation","datepicker","pwstrength"]
+      stylesheets: ["css/pages/profile"]
+      override-route: "edit"
+      template: profile.tpl
+      variables:
+        page_title: Your Profile
+        page_subtitle: See your profile info, change your password and more.
+
+
+
 blocks:
   users.list.table:
     context:

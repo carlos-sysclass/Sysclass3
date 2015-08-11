@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="page-breadcrumb breadcrumb">
-		
+
 			{if (isset($T_ACTIONS) && $T_ACTIONS|@count > 0)}
 			<li class="btn-group">
 				{if $T_ACTIONS|@count == 1}
@@ -42,7 +42,7 @@
 	<button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
 		<span>Actions</span> <i class="icon-angle-down"></i>
 	</button>
-	
+
 -->
 			</li>
 			{/if}
@@ -61,7 +61,7 @@
 					   <i class="icon-angle-right"></i>
 					{/if}
 				</li>
-			{/foreach}  
+			{/foreach}
 		</ul>
 	</div>
 </div>
