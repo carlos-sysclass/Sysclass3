@@ -453,8 +453,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 // DISABLE FILE UPLOAD
                 //this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
 
-                console.warn(model);
-
                 var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
@@ -475,7 +473,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
 
                 this.listenTo(fileContentTimelineView, "timeline-file-content:delete", function(model) {
-                    if (!_.isNull(self.jqXHR) && !_.isNull(self.jqXHR)) {
+                    if (!_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
                     mod.lessonContentCollection.remove(model.get("id"));
@@ -505,6 +503,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             delete : function() {
                 console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::delete');
+                if (!_.isNull(this.jqXHR)) {
+                    this.jqXHR.abort();
+                }
+
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
                 console.warn(this.$el, this.$(".fileupload-subtitle"));
@@ -810,6 +812,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     dataType: 'json',
                     singleFileUploads: false,
                     autoUpload : true,
+                    maxChunkSize: 2*1024*1024,
+                    bitrateInterval : 1000,
                     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
                     filesContainer: this.$("div.content-timeline-items"),
                     uploadTemplate: function (o) {
@@ -852,7 +856,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             viewObject.completeEvents();
                         });
                         self.jqXHR = null;
-
                     })
                     .bind('fileuploadfail', function (e, data) {
                         //console.warn("fileuploadfail");
@@ -862,6 +865,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
+                        data.context.find(".load-total").html(self.formatFileSize(data.loaded));
+                        data.context.find(".load-bitrate").html(self.formatFileSize(data._progress.bitrate / 8));
                         data.context.find(".load-percent").html(progress);
                     });
             },
@@ -1052,7 +1057,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 */
 
                 //exerciseContentTimelineView.initEditor();
-            }
+            },
+            formatFileSize: function (bytes) {
+                if (typeof bytes !== 'number') {
+                    return '';
+                }
+                if (bytes >= 1000000000) {
+                    return (bytes / 1000000000).toFixed(2) + ' GB';
+                }
+                if (bytes >= 1000000) {
+                    return (bytes / 1000000).toFixed(2) + ' MB';
+                }
+                return (bytes / 1000).toFixed(2) + ' KB';
+            },
         });
 
         mod.lessonContentCollection = new lessonContentCollectionClass([], {

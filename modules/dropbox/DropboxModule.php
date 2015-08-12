@@ -121,7 +121,7 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             $param_name = reset(array_keys($_FILES));
         }
 
-        if (!in_array($type, array("video", "subtitle", "image", "material", "default"))) {
+        if (!in_array($type, array("video", "lesson", "subtitle", "image", "material", "default"))) {
             $type = "default";
         }
 
@@ -168,6 +168,9 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             $param_name => array()
         );
 
+        $content_range_header = @$_SERVER['HTTP_CONTENT_RANGE'];
+        $content_range = $content_range_header ? preg_split('/[^0-9]+/', $content_range_header) : null;
+
         if ($result[$param_name][0]->error) {
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
@@ -185,7 +188,26 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                 $filedata = (array) $fileObject;
                 //$filedata['lesson_id'] = $id;
                 $filedata['upload_type'] = $type;
-                $filedata['id'] = $this->model("dropbox")->addItem($filedata);
+
+                // CHECK FOR FILE EXISTENCE
+                if (!is_null($content_range)) {
+                    $exists = $this->model("dropbox")->addFilter(array(
+                        'type'          => $filedata['type'],
+                        'name'          => $filedata['name'],
+                        'upload_type'   => $filedata['upload_type']
+                    ))->getItems();
+
+                    if (count($exists) > 0) {
+                        $filedata['id'] = $exists[0]['id'];
+                        $this->model("dropbox")->setItem($filedata, $exists[0]['id']);
+                    } else {
+                        $filedata['id'] = $this->model("dropbox")->addItem($filedata);
+                    }
+                } else {
+                    $filedata['id'] = $this->model("dropbox")->addItem($filedata);
+                }
+
+                $filedata = $this->model("dropbox")->getItem($filedata['id']);
 
                 $file_result[$param_name][] = $filedata;
             }

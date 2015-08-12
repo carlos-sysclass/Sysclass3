@@ -265,12 +265,19 @@
 
                     <%= file.name %>
                 </span>
+                <!--
                 <span class="timeline-body-time font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
+                -->
             </div>
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default disabled text-loading">
                     <i class="fa fa-spinner fa-spin"></i>
-                    <span class="load-percent">0</span>{translateToken value="% Complete"}
+                    <span class="load-percent">0</span>% {translateToken value="% Complete"}
+
+                </span>
+                <span class="btn btn-sm btn-default disabled text-loading">
+
+                    <span class="load-total"></span> / <%= opt.formatFileSize(file.size) %> (<span class="load-bitrate"></span>/s)
                 </span>
                     <!--
                     <a class="btn btn-sm btn-success start" data-file-id="" href="javascript: void(0);">
