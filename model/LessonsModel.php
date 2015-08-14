@@ -38,4 +38,22 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
         return true;
 
     }
+    public function recalculateProgress($lesson_id) {
+        $progressAwareTypes = array('file');
+
+        $contents = $this->model("lessons/content")->debug()->addFilter(array(
+            'lesson_id' => $lesson_id,
+            'content_type' => $progressAwareTypes
+        ))->getItems();
+
+        $progressItens = array_column($contents, 'progress');
+
+        if (array_sum($progressItens) == count($progressItens)) {
+            $this->setItem(array('progress' => 1), $lesson_id);
+            return true;
+        }
+
+        return false;
+
+    }
 }

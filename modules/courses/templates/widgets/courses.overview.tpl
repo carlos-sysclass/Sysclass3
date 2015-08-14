@@ -34,7 +34,7 @@
 			<div class="tab-content">
 				<div id="course-tab" class="tab-pane">
 					<div class="clearfix"></div>
-					<div class="navbar navbar-default" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
@@ -113,7 +113,7 @@
 				</div>
 				<div id="class-tab" class="tab-pane">
 
-					<div class="navbar navbar-default" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
@@ -205,7 +205,6 @@
 											<tr>
 												<th>{translateToken value="Name"}</th>
 												<th class="text-center">{translateToken value="Completed"}</th>
-												<th class="text-center">{translateToken value="Status"}</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -345,7 +344,7 @@
 					</div>
 				</div>
 				<div id="lesson-tab" class="tab-pane active">
-					<div class="navbar navbar-default" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
@@ -357,7 +356,7 @@
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
 								{translateToken value="Lessons"}
 							</a>
-							<a href="javascript: void(0);" class="navbar-brand">
+							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
 							</a>
 						</div>
@@ -635,8 +634,13 @@
 </script>
 <script type="text/template" id="tab_class_lessons-item-template">
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
-	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
-	<td class="text-center"><span class="label label-info">{translateToken value="In Progress"}</span></td>
+	<td class="text-center">
+		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+			<span class="label label-success">{translateToken value="Yes"}</span>
+		<% } else { %>
+			<span class="label label-danger">{translateToken value="No"}</span>
+		<% } %>
+	</td>
 </script>
 
 <script type="text/template" id="tab_class_tests-item-template">
@@ -729,9 +733,15 @@
         <% }  %>
 	</td>
 	<td><a href="#class-tab" class="class-change-action"><%= model['file'].name %></a></td>
-	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
 	<td class="text-center">
-		<a target="_blank" href="<%= model['file'].url %>">View/Download</a>
+		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+			<span class="label label-success">{translateToken value="Yes"}</span>
+		<% } else { %>
+			<span class="label label-danger">{translateToken value="No"}</span>
+		<% } %>
+	</td>
+	<td class="text-center">
+		<a target="_blank" class="view-content-action" href="<%= model['file'].url %>">View/Download</a>
 	</td>
 </script>
 

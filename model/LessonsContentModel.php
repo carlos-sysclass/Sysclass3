@@ -52,6 +52,14 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
             ))->getItems();
         }
 
+        if ($this->getUserFilter()) {
+            $progress = $this->model("lessons/content/progress")->clear()->addFilter(array(
+                'user_id'       => $this->getUserFilter(),
+                'content_id'    => $item['id']
+            ))->getItems();
+            $item['progress'] = reset($progress);
+        }
+
         return $item;
     }
 
@@ -69,6 +77,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
     public function getItem($identifier)
     {
         $item = parent::getItem($identifier);
+
         return $this->parseItem($item);
     }
 
@@ -133,8 +142,14 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         // TODO: SAVE EXERCISES SENT!
         return $identifier;
     }
+
     public function setItem($data, $identifier) {
         parent::setItem($data, $identifier);
+
+        // IF THE PROGRESS IS SET, SEND TO PARENT MODELS TO RECALCULATE
+        if (floatval($data['progress']) >= 1) {
+            $this->model("lessons")->recalculateProgress($data['lesson_id']);
+        }
 
         $type = $data['content_type'];
         if ($type == "subtitle" || $type == "subtitle-translation") {
@@ -166,6 +181,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
                 }
             }
         }
+
 
         // TODO: SAVE EXERCISES SENT!
         return $identifier;

@@ -81,8 +81,9 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
         if ($this->lesson_type !== FALSE) {
             $data['type'] = $this->lesson_type;
         }
-
-        $data['instructor_id'] = json_encode($data['instructor_id']);
+        if (array_key_exists('instructor_id', $data)) {
+            $data['instructor_id'] = json_encode($data['instructor_id']);
+        }
         return parent::setItem($data, $identifier);
     }
 

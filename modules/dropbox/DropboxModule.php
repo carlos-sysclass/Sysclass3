@@ -198,8 +198,8 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                     ))->getItems();
 
                     if (count($exists) > 0) {
-                        $filedata['id'] = $exists[0]['id'];
                         $this->model("dropbox")->setItem($filedata, $exists[0]['id']);
+                        $filedata['id'] = $exists[0]['id'];
                     } else {
                         $filedata['id'] = $this->model("dropbox")->addItem($filedata);
                     }

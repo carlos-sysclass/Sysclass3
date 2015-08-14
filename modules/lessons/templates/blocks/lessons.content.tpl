@@ -272,7 +272,7 @@
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default disabled text-loading">
                     <i class="fa fa-spinner fa-spin"></i>
-                    <span class="load-percent">0</span>% {translateToken value="% Complete"}
+                    <span class="load-percent">0</span>{translateToken value="% Complete"}
 
                 </span>
                 <span class="btn btn-sm btn-default disabled text-loading">

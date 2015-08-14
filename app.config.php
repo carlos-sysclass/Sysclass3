@@ -17,8 +17,11 @@ isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
 
 $themes = array('sysclass.default', 'sysclass.itaipu');
 
+
 if (!in_array($_SESSION['new-theme'], $themes)) {
 	unset($_SESSION['new-theme']);
+} else {
+
 }
 
 $configurationDefaults = array(
@@ -33,7 +36,7 @@ $configurationDefaults = array(
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
 		'https'		=> 'none',
-		'theme'		=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.itaipu')
+		'theme'		=> (@isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
 	/*
 	'local.sysclass.com'	=> array(
@@ -72,6 +75,9 @@ if (array_key_exists($HTTP_HOST, $configurationDefaults)) {
 } else {
 	$configuration = $configurationDefaults['_default'];
 }
+
+//var_dump($configuration);
+//exit;
 
 $configuration['dsn'] = sprintf(
 	'%s://%s:%s@%s/%s?persist',

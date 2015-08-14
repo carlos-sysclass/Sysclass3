@@ -231,6 +231,17 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             } elseif ($model ==  "periods") {
                 // GET USER CURRENT SETTINGS
                 // (CURRENT COURSE, CLASS, LESSON, CONTENT)
+            } elseif ($model ==  "content-progress") {
+                $modelRoute = "lessons/content/progress";
+
+                $itemModel = $this->model($modelRoute);
+
+                $itemModel->setUserFilter($userData['id']);
+
+                $messages = array(
+                    'success' => false,
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
             } else {
                 return $this->invalidRequestError();
             }
@@ -238,7 +249,12 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 if ($_GET['redirect'] == 0) {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    if ($messages['success']) {
+                        $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    } else {
+                        $response = array();
+                    }
+
                     $data = $itemModel->getItem($data['id']);
                     return array_merge($response, $data);
                 } else {
@@ -288,12 +304,28 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                     'success' => "Course Period created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+            } elseif ($model ==  "content-progress") {
+                $modelRoute = "lessons/content/progress";
+
+                $itemModel = $this->model($modelRoute);
+
+                $itemModel->setUserFilter($userData['id']);
+
+                $messages = array(
+                    'success' => false,
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
             } else {
                 return $this->invalidRequestError();
             }
 
             if ($itemModel->setItem($data, $identifier) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                if ($messages['success']) {
+                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                } else {
+                    $response = array();
+                }
+
                 $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
             } else {

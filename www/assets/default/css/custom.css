@@ -1040,3 +1040,7 @@ ul.test-sidebar-info > li span.pull-left {
     padding: 10px 5px 15px;
     margin-top: -1px;
 }
+
+.navbar-lesson .navbar-brand {
+    height: auto;
+}

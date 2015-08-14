@@ -82,9 +82,11 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
 
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
-        $data['lessons'] = $this->model("roadmap/lessons")->addFilter(array(
-            'class_id' => $data['class_id']
-        ))->getItems();
+        $data['lessons'] = $this->model("roadmap/lessons")
+            ->setUserFilter($this->getUserFilter())
+            ->addFilter(array(
+                'class_id' => $data['class_id']
+            ))->getItems();
 
         $data['tests'] = $this->model("roadmap/tests")->addFilter(array(
             'class_id' => $data['class_id']

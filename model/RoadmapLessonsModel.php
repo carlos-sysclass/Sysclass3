@@ -24,7 +24,7 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
 
         return $item;
     }
-
+    */
     public function getItems()
     {
         $data = parent::getItems();
@@ -32,10 +32,21 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
         // LOAD INSTRUCTORS
         foreach($data as $key => $item) {
             $data[$key] = $this->parseItem($item);
+
+            if ($this->getUserFilter()) {
+                $progress = $this->model("lessons/progress")->clear()
+                    ->setUserFilter($this->getUserFilter())
+                    ->addFilter(array(
+                        'lesson_id'     => $item['id']
+                    ))->getItems();
+
+                $data[$key]['progress'] = reset($progress);
+            }
+
         }
         return $data;
     }
-    */
+
     public function getItem($identifier)
     {
         $data = parent::getItem($identifier);
@@ -45,9 +56,21 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
 
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
-        $data['contents'] = $this->model("lessons/content")->addFilter(array(
-            'lesson_id' => $identifier
-        ))->getItems();
+        $data['contents'] = $this->model("lessons/content")
+            ->setUserFilter($this->getUserFilter())
+            ->addFilter(array(
+                'lesson_id' => $identifier
+            ))->getItems();
+
+        if ($this->getUserFilter()) {
+            $progress = $this->model("lessons/progress")->clear()
+                ->setUserFilter($this->getUserFilter())
+                ->addFilter(array(
+                    'lesson_id'     => $identifier
+                ))->getItems();
+
+            $data['progress'] = reset($progress);
+        }
 
         return $this->parseItem($data);
     }

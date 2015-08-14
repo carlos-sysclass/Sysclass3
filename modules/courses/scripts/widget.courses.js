@@ -661,7 +661,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
 		});
-
 		var classInstructorTabViewClass = Backbone.View.extend({
 			//portlet: $('#courses-widget'),
 			template : _.template($("#tab_classes-instructor-template").html(), null, {variable : 'model'}),
@@ -698,7 +697,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
 			render : function(e) {
 				console.info('portlet.courses/baseClassChildTabViewItemClass::render');
-				console.warn(this.model.toJSON());
 				this.$el.html(
 					this.template(this.model.toJSON())
 				);
@@ -802,6 +800,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 	portlet : this.$el
 				});
 
+				this.listenTo(this.lessonVideoTabView, "video:viewed", this.setViewed.bind(this));
+
 				this.lessonMaterialsTabView 	= new lessonMaterialsTabViewClass({
 					el : this.$("#tab_lesson_materials table tbody"),
 					model : this.model,
@@ -816,6 +816,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseTabViewClass::render');
+				console.warn(this.model.toJSON());
+				var factor = this.model.get("progress.factor");
+				if (factor >= 1) {
+					this.$(".viewed-status").removeClass("hidden");
+				}
+			},
+			setViewed : function() {
+				this.$(".viewed-status").removeClass("hidden");
 			}
 		});
 
@@ -829,41 +837,96 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.courses/lessonVideosTabViewClass::render');
-				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
-				this.videoModel = contentsCollection.getMainVideo();
+				var self = this;
 
-				if (!_.isNull(this.videoJS)) {
-					this.videoJS.dispose();
+				if (_.size(this.model.get("contents")) == 0) {
+					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
+					this.disableView();
+				} else {
+					var contentsCollection = new mod.collections.contents(this.model.get("contents"));
+					this.videoModel = contentsCollection.getMainVideo();
+
+					if (!_.isNull(this.videoJS)) {
+						this.videoJS.dispose();
+					}
+
+					//console.warn(contentsCollection, this.videoModel);
+
+					var videoDomID = "lesson-video-" + this.videoModel.get("id");
+
+					if (this.$("#" + videoDomID).size() === 0) {
+						console.warn(this.videoModel.toJSON());
+						this.$el.empty().append(
+							this.template(this.videoModel.toJSON())
+						);
+
+						//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
+						videojs(videoDomID, {
+							"controls": true,
+							"autoplay": false,
+							"preload": "auto",
+							"width" : "auto",
+							"height" : "auto",
+							"techOrder" : [
+								'html5', 'flash'
+							]
+						}, function() {
+							//this.play();
+						});
+					}
+
+
+
+					this.videoJS = videojs(videoDomID);
+
+					this.videoJS.ready(this.bindStartVideoEvents.bind(this));
+
+					mod.videoJS = this.videoJS;
+
+					app.module("ui").refresh(this.$el);
+				}
+			},
+			bindStartVideoEvents : function() {
+				var self = this;
+				//this.videoJS.play();
+				this.currentProgress = parseFloat(this.videoModel.get("progress.factor"));
+
+				if (_.isNaN(this.currentProgress)) {
+					this.currentProgress = 0;
 				}
 
-				var videoDomID = "lesson-video-" + this.videoModel.get("id");
+				if (this.currentProgress >= 1) {
+					this.trigger("video:viewed");
+				} else {
 
-				if (this.$("#" + videoDomID).size() === 0) {
-					console.warn(this.videoModel.toJSON());
-					this.$el.empty().append(
-						this.template(this.videoModel.toJSON())
-					);
+					this.videoJS.on("timeupdate", function() {
+						console.warn(this.videoJS.duration(), this.videoJS.currentTime(), this.currentProgress);
+						// CALCULATE CURRENT PROGRESS
+						var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
 
-					//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
-					videojs(videoDomID, {
-						"controls": true,
-						"autoplay": false,
-						"preload": "auto",
-						"width" : "auto",
-						"height" : "auto",
-						"techOrder" : [
-							'html5', 'flash'
-						]
-					}, function() {
-						//this.play();
-					});
+						if (currentProgress > this.currentProgress) {
+							var progressDiff =  currentProgress - this.currentProgress;
+							if (progressDiff > 0.03 ) {
+								this.currentProgress = currentProgress;
+								//this.videoModel.set("progress", this.currentProgress);
+								var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
+								progressModel.setAsViewed(this.videoModel, this.currentProgress);
+							}
+						}
+
+					}.bind(this));
+
+					this.videoJS.on("ended", function() {
+						this.currentProgress = 1;
+						var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
+						progressModel.setAsViewed(this.videoModel, this.currentProgress);
+
+						this.trigger("video:viewed");
+					}.bind(this));
 				}
-
-				this.videoJS = videojs(videoDomID);
-
-				mod.videoJS = this.videoJS;
-
-				app.module("ui").refresh(this.$el);
+			},
+			disableView : function() {
+				//this.$el.hide();
 			}
 		});
 
@@ -916,24 +979,27 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		var lessonMaterialsTabViewItemClass = Backbone.View.extend({
-			/*
 			events : {
-				"click .class-change-action" : "setClassId"
+				"click .view-content-action" : "viewContentAction"
 			},
-			*/
 			tagName : "tr",
 			template : _.template($("#tab_lessons_materials-item-template").html(), null, {variable: "model"}),
-			/*
-			setClassId : function(e) {
-				app.userSettings.set("class_id", this.model.get("id"));
+			initialize : function() {
+				this.listenTo(this.model, "change", this.render.bind(this));
 			},
-			*/
 			render : function(e) {
 				console.info('portlet.courses/lessonMaterialsTabViewItemClass::render');
 				this.$el.html(
 					this.template(this.model.toJSON())
 				);
 				return this;
+			},
+			viewContentAction : function(e) {
+				// TRACK PROGRESS
+				var progressModel = new mod.models.content_progress();
+				progressModel.setAsViewed(this.model);
+
+				//e.preventDefault();
 			}
 		});
 		/*
@@ -986,7 +1052,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
 				this.collection = contentsCollection.getExercises();
 			},
-			loadExerciseDetails(model) {
+			loadExerciseDetails : function(model) {
 				var self = this;
 
 				this.$(".exercises-container").html(
@@ -1338,9 +1404,21 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	});
 
 	this.models = {
-		questions : Backbone.DeepModel.extend({})
-	};
+		questions : Backbone.DeepModel.extend({}),
+		content_progress : Backbone.DeepModel.extend({
+			urlRoot : "/module/roadmap/item/content-progress",
+			setAsViewed : function(model, factor) {
+				if (_.isUndefined(factor)) {
+					factor = 1;
+				}
+				this.set("content_id", model.get("id"));
+				this.set("factor", factor);
+				this.save();
 
+				model.set("progress", this.toJSON());
+			}
+		})
+	};
 
 	this.collections = {
 		classes : Backbone.Collection.extend({}),
@@ -1396,9 +1474,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					mainVideo.set("childs", childs);
 				}
 
-
-
-
 				return mainVideo;
 			},
 			getMaterials : function() {
@@ -1417,10 +1492,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				return new mod.collections.contents(filteredCollection);
-			},
-
+			}
 		}),
-		questions : Backbone.Collection.extend({})
+		questions : Backbone.Collection.extend({
+
+		})
 	};
 
 	mod.on("start", function() {

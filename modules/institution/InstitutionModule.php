@@ -35,7 +35,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         //$this->putItem("institution", $itemsData);
 
         if (in_array('institution.overview', $widgetsIndexes)) {
-            $this->putModuleScript("widget.institution");
+            //$this->putModuleScript("widget.institution");
 
         	return array(
         		'institution.overview' => array(
