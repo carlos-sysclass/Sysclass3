@@ -1,1 +1,0 @@
-Clique <a href="{$T_XCONTENT_SCHEDULE_LINK}">aqui</a> para liberar as provas presenciais.

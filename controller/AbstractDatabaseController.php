@@ -1,6 +1,34 @@
-<?php 
+<?php
 abstract class AbstractDatabaseController extends AbstractToolsController
 {
+
+	function prepareGetTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
+	{
+	    $tables = explode(",", $table);
+	    foreach ($tables as $key => $value) {
+	        //Prepend prefix to the table
+	        $tables[$key] = G_DBPREFIX.trim($value);
+	    }
+	    $table = implode(",", $tables);
+	    $table = str_ireplace(" join ", " join ".G_DBPREFIX, $table);
+	    $sql = "SELECT ".$fields." FROM ".$table;
+	    if ($where != "") {
+	        $sql .= " WHERE ".$where;
+	    }
+	    if ($group != "") {
+	        $sql .= " GROUP BY ".$group;
+	    }
+	    if ($order != "") {
+	        $sql .= " ORDER BY ".$order;
+	    }
+	    if ($limit != "") {
+	        $sql .= " limit ".$limit;
+	    }
+	    return $sql;
+	}
+
+
+
 	/**
 	 * Retrieve table contents Flat
 	 *
@@ -53,14 +81,14 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	    if ($group != "") {
 	        $sql .= " GROUP BY ".$group;
 	    }
-	    $result = sC_getTableData($table, $fields, $where, $order, $group);
+	    $result = $this->_getTableData($table, $fields, $where, $order, $group);
 	    $temp = array();
 	    for ($i = 0; $i < sizeof($result); $i++) {
 	        foreach ($result[$i] as $key => $value) {
 	            $temp[$key][] = $value;
 	        }
 	    }
-	    logProcess($thisQuery, $sql);
+	    $this->logProcess($thisQuery, $sql);
 	    return $temp;
 	}
 
@@ -95,7 +123,7 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	function _getTableData($table, $fields = "*", $where = "", $order = "", $group = "", $limit = "")
 	{
 	    $thisQuery = microtime(true);
-	    $sql = prepareGetTableData($table, $fields, $where, $order, $group, $limit);
+	    $sql = self::prepareGetTableData($table, $fields, $where, $order, $group, $limit);
 	    //$result = $GLOBALS['db']->GetAll($sql);
 
 	    $result = $GLOBALS['db']->_Execute($sql);
@@ -112,12 +140,32 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	    }
 
 
-	    logProcess($thisQuery, $sql);
+	    $this->logProcess($thisQuery, $sql);
 	    if ($result == false) {
 	        return array();
 	    } else {
 	        return $result;
 	    }
+	}
+
+	function logProcess($thisQuery, $sql)
+	{
+	    if ($GLOBALS['db']->debug == true) {
+	        echo '<span style = "color:red">Time spent on this query: '.(microtime(true) - $thisQuery).'</span>';
+	    }
+	    $GLOBALS['db']->databaseTime = $GLOBALS['db']->databaseTime + microtime(true) - $thisQuery;
+	    $GLOBALS['db']->databaseQueries++;
+	    if (G_DEBUG) {
+	        $GLOBALS['db']->queries[$GLOBALS['db']->databaseQueries]['times'] = microtime(true) - $thisQuery;
+	        $GLOBALS['db']->queries[$GLOBALS['db']->databaseQueries]['sql'] = $sql;
+	        foreach (debug_backtrace(false) as $value) {
+	            $backtrace[] = basename(dirname($value['file'])).'/'.basename($value['file']).':'.$value['line'];
+	        }
+	        $GLOBALS['db']->queries[$GLOBALS['db']->databaseQueries]['trace'] = print_r($backtrace, true);
+	    }
+	    // Comment the next line in a production environment
+	    //storeLog($thisQuery, $sql);
+
 	}
 	/**
 	 * Insert data to a database table

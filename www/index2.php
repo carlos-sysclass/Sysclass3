@@ -30,16 +30,16 @@ $plicoLib = PlicoLib::instance(__DIR__ . "/../");
 session_cache_limiter('nocache');
 $sid = session_id();
 if (empty($sid)) session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
-
+/*
 $path = "../libraries/";
 //Automatically redirect to installation page if configuration file is missing
 if (!is_file($path."configuration.php")) { //If the configuration file does not exist, this is a fresh installation, so redirect to installation page
     is_file("install/index.php") ? header("location:install/index.php") : print('Failed locating configuration file <br/> Failed locating installation directory <br/> Please execute installation script manually <br/>');
     exit;
 } else {
-    /** Configuration file */
     require_once $path."configuration.php";
 }
+*/
 /*
 if ($GLOBALS['configuration']['webserver_auth']) {
     $usernameVar = $GLOBALS['configuration']['username_variable'];

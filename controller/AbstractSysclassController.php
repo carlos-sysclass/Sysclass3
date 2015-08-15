@@ -14,8 +14,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	{
 		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
-		// LOAD LANGUAGE MODULE
-
+		// LOAD LANGUAGE 	MODULE
+		/*
 		$modulesDB = $this->_getTableData("modules","*","className = 'module_language' AND active=1");
 
 		foreach ($modulesDB as $module) {
@@ -82,6 +82,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    }
 		    $languageModule->getLanguageFile($setLanguage);
 		}
+		*/
 		// LOAD TRANSLATE MODEL
 		if (is_null(self::$t)) {
 			self::$t = $this->model("translate");

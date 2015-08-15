@@ -95,7 +95,7 @@ $plicoLib->set('db_dsn', $configuration['dsn']);
 $plicoLib->set('db/charset', 'utf8');
 
 
-
+$GLOBALS['db'] = DatabaseManager::db();
 
 $plicoLib->set('default/resource', '/assets/%s/');
 $plicoLib->add('path/themes', __DIR__ . '/themes/');
