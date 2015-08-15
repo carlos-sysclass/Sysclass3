@@ -69,6 +69,7 @@ if (is_dir("install") && isset($_GET['delete_install'])) {
     }
 }
 */
+
 $plicoLib->start();
 
 echo 'done.';

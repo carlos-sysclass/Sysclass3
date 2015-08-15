@@ -349,7 +349,7 @@ class LoginController extends AbstractSysclassController
 		        $key = array_search($hash, $autolinks);
 
 		        if ($key !== false) {
-		        	var_dump($result['login'][$key]);
+		        	var_dump($result);
 		            $user = MagesterUserFactory :: factory($result['login'][$key]);
 
 		            $pattern = $user->user['login']."_".$user->user['timestamp'];

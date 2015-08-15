@@ -3,25 +3,46 @@ class UsersModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
 	{
-		/*
-		$this->permissionsCallbacks= array(
-			array(self, "")
-			[self::PERMISSION_IN_LESSON] =
-		*/
-		/*
-		$this->table_name = "news";
+		$this->table_name = "users";
 		$this->id_field = "id";
-		$this->mapFields = array(
-			//"id"					=> false, // SET TO FALSE TO CLEAR FROM "TO-SAVE" RESOURCE
-			"login"					=> 'users_LOGIN',
-			'lesson_id'				=> 'lessons_ID'
-		);
 
-		$this->selectSql = "SELECT `id`, `title`, `data`, `timestamp`, `expire`, `lessons_ID`, `classe_id`, `users_LOGIN` FROM `news`";
-		*/
+		$this->selectSql = "SELECT
+			id,
+		    login,
+		    password,
+		    email,
+		    dashboard_id,
+		    language_id,
+		    languages_NAME,
+		    timezone,
+		    name,
+		    surname,
+		    active,
+		    comments,
+		    user_type,
+		    group_id,
+		    timestamp,
+		    avatar,
+		    pending,
+		    user_types_ID,
+		    additional_accounts,
+		    viewed_license,
+		    status,
+		    short_description,
+		    balance,
+		    archive,
+		    dashboard_positions,
+		    need_mod_init,
+		    autologin,
+		    last_login,
+		    can_be_instructor,
+		    can_be_coordinator
+		FROM users";
 		parent::init();
 	}
+	/*
 	public function getItem($id) {
 		return MagesterUserFactory::factory($id);
 	}
+	*/
 }

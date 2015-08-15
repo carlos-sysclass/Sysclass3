@@ -456,3 +456,77 @@ $plicoLib->concat(
 		'scripts/portlets'
 	)
 );
+
+
+
+/* BOOTSTRAP PHALCON */
+use Phalcon\Loader;
+use Phalcon\DI;
+use Phalcon\Mvc\Model\Manager as ModelsManager;
+use Phalcon\Mvc\Model\Metadata\Memory as MetaData;
+use Phalcon\Db\Adapter\Pdo as PDO;
+
+$di = new DI();
+
+$di->set('db', function () use ($configuration) {
+	$adapter = ucfirst($configuration['dbtype']);
+	echo $class = "Phalcon\\Db\\Adapter\\Pdo\\" . $adapter;
+    return new $class(array(
+        "host"     => $configuration['dbhost'],
+        "username" => $configuration['dbuser'],
+        "password" => $configuration['dbpass'],
+        "dbname"   => $configuration['dbname']
+    ));
+});
+
+
+// Set a models manager
+$di->set('modelsManager', new ModelsManager());
+
+// Use the memory meta-data adapter or other
+$di->set('modelsMetadata', new MetaData());
+
+// Creates the autoloader
+$loader = new Loader();
+
+// Register some namespaces
+$loader->registerNamespaces(
+    array(
+       "Sysclass\Models" => "../app/models/"
+    )
+);
+
+// Register autoloader
+$loader->register();
+
+$locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+
+// Locale could be something like "en_GB" or "en"
+echo Locale::getPrimaryLanguage($locale);
+exit;
+
+/*
+use Phalcon\DI;
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Manager as ModelsManager;
+use Phalcon\Db\Adapter\Pdo\Sqlite as Connection;
+use Phalcon\Mvc\Model\Metadata\Memory as MetaData;
+
+$di = new DI();
+
+// Setup a connection
+$di->set(
+    'db',
+    new Connection(
+        array(
+            "dbname" => "sample.db"
+        )
+    )
+);
+
+// Set a models manager
+$di->set('modelsManager', new ModelsManager());
+
+// Use the memory meta-data adapter or other
+$di->set('modelsMetadata', new MetaData());
+*/
