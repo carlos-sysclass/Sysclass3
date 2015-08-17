@@ -8,7 +8,7 @@
     </div>
 
     <div class="page-body">
-      {if isset($T_MESSAGE) && $T_MESSAGE|@count > 0} 
+      {if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
         <div class="alert alert-{$T_MESSAGE.type}">
           <button class="close" data-dismiss="alert"></button>
           <span>{$T_MESSAGE.message}</span>
@@ -27,7 +27,7 @@
 
               <div class="input-group input-medium">
                 <input type="{$T_LOGIN_FORM.password.type}" class="form-control" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" autocomplete="off">
-                <span class="input-group-btn">        
+                <span class="input-group-btn">
                 <button type="submit" class="btn blue icn-only" name="{$T_LOGIN_FORM.submit_login.name}" value="{$T_LOGIN_FORM.submit_login.value}"><i class="m-icon-swapright m-icon-white"></i></button>
                 </span>
               </div>

@@ -1,4 +1,8 @@
 <?php
+use Phalcon\DI,
+	Sysclass\Models\Users as usersModel,
+	Sysclass\Services\Authentication\Exception as AuthenticationException;
+
 class LoginController extends AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
@@ -19,7 +23,8 @@ class LoginController extends AbstractSysclassController
 	*/
 	protected function createLoginForm() {
 		//$postTarget = "/login?debug=10";
-//		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
+		//		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
+
 		$form = new HTML_QuickForm("login_form", "post", $_SERVER['REQUEST_URI'], "", "class = 'login-form'", true);
 		$form->removeAttribute('name');
 		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
@@ -55,6 +60,18 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function loginPage($reset)
 	{
+		$di = DI::getDefault();
+
+		$session = $di->get("session");
+		$request_uri = $session->get("requested_uri");
+
+		if ($request_uri) {
+			$session->set("requested_uri", $request_uri);
+		}
+
+		var_dump($request_uri);
+
+		/*
 		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
 		    try {
 		        $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
@@ -72,6 +89,7 @@ class LoginController extends AbstractSysclassController
 		        exit;
 		    } catch (MagesterUserException $e) {}
 		}
+		*/
 		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
 		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
 
@@ -90,16 +108,21 @@ class LoginController extends AbstractSysclassController
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		//$this->putScript("scripts/login-soft");
 
-		$smarty = $this->getSmarty();
-		$loginForm = $this->createLoginForm();
+		//$smarty = $this->getSmarty();
+		//$loginForm = $this->createLoginForm();
 
-
+		/*
 		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
 		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
 		$loginForm->setRequiredNote(_REQUIREDNOTE);
 		$loginForm->accept($renderer);
 		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
 
+		var_dump($renderer->toArray());
+		exit;
+		*/
+
+		/*
 		if ($GLOBALS['configuration']['password_reminder'] && !$GLOBALS['configuration']['only_ldap']) { //The user asked to display the contact form
 			$resetForm = $this->createResetPasswordForm();
 		    $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -112,9 +135,11 @@ class LoginController extends AbstractSysclassController
 		    $resetForm->accept($renderer);
 		    $smarty->assign('T_RESET_PASSWORD_FORM', $renderer->toArray());
 		}
+		*/
 		if ($reset) {
 			$this->putItem("open_login_section", "reset");
 		}
+		$this->putItem("requested_uri", $request_uri);
 		parent::display('pages/auth/login.tpl');
     /*
     } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
@@ -166,7 +191,7 @@ class LoginController extends AbstractSysclassController
 		$this->putScript("scripts/lock");
 
 		$smarty = $this->getSmarty();
-		$loginForm = $this->createLoginForm();
+		//$loginForm = $this->createLoginForm();
 
 
 		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
@@ -206,7 +231,7 @@ class LoginController extends AbstractSysclassController
 	}
 
 	/**
-	 *
+	 * [Add a description]
 	 *
 	 * @url POST /
 	 * @url POST /login
@@ -214,79 +239,82 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function loginAction()
 	{
-		$form = $this->createLoginForm();
-		if ($form->isSubmitted() && $form->validate()) {
+		$data = $this->getHttpData(func_get_args());
 
-		    try {
-		        $user = MagesterUserFactory :: factory(trim($form->exportValue('login')));
-		        if ($GLOBALS['configuration']['lock_down'] && $user->user['user_type'] != 'administrator') {
-		            //sC_redirect("index.php?message=".urlencode()."&message_type=failure");
-		            $this->redirect("checkout", self::$t->translate("_LOCKDOWNONLYADMINISTRATORSCANLOGIN"), "danger");
-		            exit;
-		        }
-		        $user->login($form->exportValue('password'));
-		        if ($form->exportValue('remember')) { //The user asked to remeber login (it is implemented with cookies)
-		            $expire = time() + 30 * 86400; //1 month
-		            setcookie("cookie_login", $_SESSION['s_login'], $expire);
-		            setcookie("cookie_password", $_SESSION['s_password'], $expire);
-		        } else {
-		            setcookie("cookie_login", '', time() - 3600);
-		            setcookie("cookie_password", '', time() - 3600);
-		        }
-		        // Check if the mobile version of SysClass is required - if so set a session variable accordingly
-		        //sC_setMobile();
-		        if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
-		            //sC_redirect("index.php?ctg=agreement");
-		            $this->redirect("agreement");
-		        } elseif ($_SESSION['login_mode']) {
-		            //sC_redirect("index.php?ctg=checkout&checkout=1");
-		            $this->redirect("checkout/do");
-		        } else {
-		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
-		            //LoginRedirect($user->user['user_type']);
-					$_SESSION['user_locked'] = false;
-		            //$this->redirect($user->user['user_type']);
-		            $this->redirect("/dashboard/" . $user->user['user_types_ID']);
-		        }
-		        exit;
-		    } catch (MagesterUserException $e) {
-		        if ($GLOBALS['configuration']['activate_ldap']) {
-		            if (!extension_loaded('ldap')) {
-		                $message = $e->getMessage().'<br/>'. self::$t->translate("_LDAPEXTENSIONNOTLOADED");
-		                $message_type = 'danger';
-		            } else {
-		                $result = sC_checkUserLdap($form->exportValue('login'), $form->exportValue('password'));
-		                if ($result) { //The user exists in the LDAP server
-		                    $_SESSION['ldap_user_pwd'] = $form->exportValue('password'); //Keep the password temporarily in the session, it will be used in the next step
-		                    sC_redirect("index.php?ctg=signup&ldap=1&login=".$form->exportValue('login'));
-		                } else {
-		                    $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
-		                    $message_type = 'warning';
-		                }
-		            }
-		        } elseif ($e->getCode() == MagesterUserException :: USER_PENDING) {
-		            $message = $e->getMessage();
+		$di = DI::getDefault();
+
+		// DEFINE AUTHENTICATION BACKEND
+
+		//$authBackend = $di->get("authentication")->getBackend($data['login']);
+		//
+		try {
+			$user = $di->get("authentication")->login(
+				array(
+					'login' => $data['login'],
+					'password' => $data['password']
+				)
+			);
+
+			// IF THE USER IS AUTHENTICATED, GO TO AUTHORIZATION
+		} catch (AuthenticationException $e) {
+			$url = null;
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 		            $message_type = 'warning';
-		        } elseif ($e->getCode() == MagesterUserException :: USER_INACTIVE) {
-		            $message = $e->getMessage();
+		            break;
+				}
+
+				case AuthenticationException :: MAINTENANCE_MODE : {
+
+		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
-		        } else {
+		            break;
+				}
+				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
 		            $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
+		            $message_type = 'warning';
+					break;
+				}
+				case AuthenticationException :: LOCKED_DOWN : {
+		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message_type = 'warning';
+					break;
+				}
+				default : {
+		            $message = self::$t->translate($e->getMessage());
 		            $message_type = 'danger';
-		        }
-		        $form->setConstants(array("login" => $values['login'], "password" => ""));
-		    } catch (Exception $e) {
-		        $smarty->assign("T_EXCEPTION_TRACE", $e->getTraceAsString());
-		        $message = $e->getMessage().' &nbsp;<a href = "javascript:void(0)" onclick = "sC_js_showDivPopup(\''._ERRORDETAILS.'\', 2, \'error_details\')">'._MOREINFO.'</a>';
-		        $message_type = "danger";
-		    }
-		    $this->redirect(null, $message, $message_type);
+		            break;
+				}
+			}
+
+			if (!empty($data["requested_uri"])) {
+				$di->get("session")->set("requested_uri", $data["requested_uri"]);
+			}
+
+			$this->redirect($url, $message, $message_type);
+		}
+		// USER IS LOGGED IN, SO...
+		// 1.6 Check for license agreement
+		if ($user->viewed_license == 0) {
+			$this->redirect("agreement");
 		}
 
+		// 1.7 Check if the user needs to realize a payment to continue (like after a enroll process)
+		/**
+		 * @todo Create a way check if the user came from a external service, and if this service needs a pament function.
+		 */
+
+		if (!empty($data["requested_uri"])) {
+			$di->get("session")->remove("requested_uri");
+			$this->redirect($data["requested_uri"]);
+		} else {
+			$this->redirect("/dashboard/");
+		}
 	}
 
 	/**
-	 *
+	 * [Add a description]
 	 *
 	 * @url POST /login/reset
 	 */
@@ -400,6 +428,7 @@ class LoginController extends AbstractSysclassController
 
 
 	/**
+	 * [Add a description]
 	 *
 	 * @url GET /logout
 	 * @url POST /logout

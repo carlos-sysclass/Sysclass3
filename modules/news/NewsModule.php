@@ -271,7 +271,7 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 	public function getItemsAction($datatable)
 	{
 		$currentUser    = $this->getCurrentUser(true);
-		$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+		//$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
 		$newsItens = $this->model("news")->getItems();
 

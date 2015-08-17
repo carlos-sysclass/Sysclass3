@@ -1,5 +1,5 @@
 <?php
-@session_start();
+//@session_start();
 
 ini_set("display_errors",false);
 
@@ -21,15 +21,15 @@ $plicoLib = PlicoLib::instance(__DIR__ . "/../");
 //define("DEBUG", 1);
 
 //if (defined("DEBUG") && DEBUG == 1) {
-    error_reporting(E_ALL);
+    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT );
 	ini_set("display_errors", "1");
 //} else {
 //	ini_set("display_errors", "0");
 //}
 
-session_cache_limiter('nocache');
-$sid = session_id();
-if (empty($sid)) session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
+//session_cache_limiter('nocache');
+//$sid = session_id();
+//if (empty($sid)) session_start(); //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 /*
 $path = "../libraries/";
 //Automatically redirect to installation page if configuration file is missing

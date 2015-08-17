@@ -13,17 +13,17 @@ if ($_SERVER['HTTP_HOST'] == '127.0.0.1') {
 }
 
 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? $protocol = 'https' : $protocol = 'http';
+/*
 isset($_GET['theme']) ? $_SESSION['new-theme'] = $_GET['theme'] : '';
 
 $themes = array('sysclass.default', 'sysclass.itaipu');
-
 
 if (!in_array($_SESSION['new-theme'], $themes)) {
 	unset($_SESSION['new-theme']);
 } else {
 
 }
-
+*/
 $configurationDefaults = array(
 	'_default'			=> array(
 		'server'	=> $protocol.'://'.$HTTP_HOST.'/',
@@ -151,7 +151,6 @@ $plicoLib->set("urls",
 		'home'		=> '/dashboard'
 	)
 );
-
 
 /*
 // WEB THEME SPECIFIC
@@ -460,25 +459,44 @@ $plicoLib->concat(
 
 
 /* BOOTSTRAP PHALCON */
-use Phalcon\Loader;
-use Phalcon\DI;
-use Phalcon\Mvc\Model\Manager as ModelsManager;
-use Phalcon\Mvc\Model\Metadata\Memory as MetaData;
-use Phalcon\Db\Adapter\Pdo as PDO;
+use Phalcon\Loader,
+	Phalcon\DI\FactoryDefault,
+	Phalcon\Mvc\Model\Manager as ModelsManager,
+	Phalcon\Mvc\Model\Metadata\Memory as MetaData,
+	Phalcon\Session\Adapter\Files as Session,
+	Phalcon\Crypt;
 
-$di = new DI();
+
+
+$di = new FactoryDefault();
 
 $di->set('db', function () use ($configuration) {
-	$adapter = ucfirst($configuration['dbtype']);
-	echo $class = "Phalcon\\Db\\Adapter\\Pdo\\" . $adapter;
-    return new $class(array(
-        "host"     => $configuration['dbhost'],
-        "username" => $configuration['dbuser'],
-        "password" => $configuration['dbpass'],
-        "dbname"   => $configuration['dbname']
-    ));
+	$class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($configuration['dbtype']);
+	if (class_exists($class)) {
+	    return new $class(array(
+	        "host"     => $configuration['dbhost'],
+	        "username" => $configuration['dbuser'],
+	        "password" => $configuration['dbpass'],
+	        "dbname"   => $configuration['dbname']
+	    ));
+	} else {
+		throw new Exception("Error estabilishing a database connection");
+		exit;
+	}
 });
 
+$eventsManager = new Phalcon\Events\Manager();
+$di->set("eventManager", $eventsManager);
+
+$session = new Session(array('uniqueId' => 'SYSCLASS'));
+if (!$session->isStarted()) {
+	$session->start();
+}
+$di->set('session', $session);
+
+$di->set("configuration", function() {
+	return new Sysclass\Services\Configuration();
+});
 
 // Set a models manager
 $di->set('modelsManager', new ModelsManager());
@@ -486,25 +504,57 @@ $di->set('modelsManager', new ModelsManager());
 // Use the memory meta-data adapter or other
 $di->set('modelsMetadata', new MetaData());
 
+
+// TODO: Load Autentication Backends, based on configuration
+$di->set("authentication", function() use ($eventsManager) {
+	$authentication = new Sysclass\Services\Authentication\Adapter();
+	$authentication->setEventsManager($eventsManager);
+	return $authentication;
+});
+
+$di->set('crypt', function () {
+    $crypt = new Crypt();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $crypt;
+}, true);
+
+// TODO: PARSE MODULES FILES (aka config.yml), AND CHECK FOR EVENT LISTENERS
+
+/*
+class SomeListener
+{
+    public function afterLogin($event, $myComponent, $data)
+    {
+        var_dump($myComponent);
+        exit;
+    }
+}
+// Attach the listener to the EventsManager
+$eventsManager->attach('authentication', new SomeListener());
+*/
+
+
 // Creates the autoloader
 $loader = new Loader();
 
 // Register some namespaces
 $loader->registerNamespaces(
     array(
-       "Sysclass\Models" => "../app/models/"
+       "Sysclass\Models" => "../app/models/",
+       "Sysclass\Services" => "../app/services/"
     )
 );
 
 // Register autoloader
 $loader->register();
-
+/*
 $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 
 // Locale could be something like "en_GB" or "en"
 echo Locale::getPrimaryLanguage($locale);
 exit;
-
+*/
 /*
 use Phalcon\DI;
 use Phalcon\Mvc\Model;

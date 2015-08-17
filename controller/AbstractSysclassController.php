@@ -1,7 +1,12 @@
 <?php
+/*
 use Monolog\Logger;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Formatter\WildfireFormatter;
+*/
+use Phalcon\DI,
+	Sysclass\Models\Settings,
+	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 abstract class AbstractSysclassController extends AbstractDatabaseController
 {
@@ -10,6 +15,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	protected static $logged_user = null;
 
 	public static $t = null;
+	public static $cfg = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
 		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
@@ -88,38 +94,60 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			self::$t = $this->model("translate");
 		}
 
+		if (is_null(self::$cfg)) {
+			$di = DI::getDefault();
+			self::$cfg = $di->get("configuration")->asArray();
+		}
 	}
 
 	public function authorize()
 	{
 		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
+		$di = DI::getDefault();
 		try {
 			// OLD CHECK STYLE
+			$user = $di->get("authentication")->checkAccess();
 
-		    self::$current_user 	= MagesterUser::checkUserAccess();
-		    self::$logged_user = $this->model("user/item")->getItem(self::$current_user->user['id']);
+			self::$current_user = $user;
+			self::$logged_user = $user->toArray();
+
 		    $smarty->assign("T_CURRENT_USER", self::$current_user);
 		    $smarty->assign("T_LOGGED_USER", self::$logged_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
-		    if (array_key_exists('user_locked', $_SESSION) && $_SESSION['user_locked']) {
-		    	if ($this->context['url'] != "lock") {
-		    		$this->redirect("lock", self::$t->translate("You need to unlock your account first."), "info");
-		    		exit;
-		    	}
-		    }
+		} catch (AuthenticationException $e) {
+			$url = "/login";
 
-
-		} catch (Exception $e) {
-		    if ($e->getCode() == MagesterUserException :: USER_NOT_LOGGED_IN) {
-		        setcookie('c_request', http_build_query($_GET), time() + 300);
-		    }
-		    $this->redirect("/login", $e->getMessage() . ' (' . $e->getCode() . ')', "danger");
-		    exit;
+			$session = $di->get("session");
+			$session->set("requested_uri", $_SERVER['REQUEST_URI']);
+			$session->set("a", "aaaa");
+			//var_dump($session->getId());
+			//exit;
+			switch($e->getCode()) {
+				case AuthenticationException :: MAINTENANCE_MODE : {
+		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message_type = 'warning';
+		            break;
+				}
+				case AuthenticationException :: LOCKED_DOWN : {
+		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message_type = 'warning';
+					break;
+				}
+				default : {
+		            $message = self::$t->translate($e->getMessage());
+		            $message_type = 'danger';
+		            break;
+				}
+			}
+			// TODO:  CHECK IF THE REQUEST WASN'T A JSON REQUEST
+			$this->redirect($url, $message, $message_type);
 		}
 		return TRUE;
 	}
+
+
 /*
 	protected function onThemeRequest()
 	{
@@ -129,6 +157,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	protected function beforeDisplay() {
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
+		$this->putItem("configuration", self::$cfg);
+
 		if ($this->getCurrentUser()) {
 
 			$userSettings = $this->module("settings")->getSettings(true);
@@ -147,13 +177,14 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
         	parent::beforeDisplay();
 
+        	/*
 			if (unserialize(self::$current_user -> user['additional_accounts'])) {
 				$accounts = unserialize(self::$current_user -> user['additional_accounts']);
 				$queryString = "'".implode("','", array_values($accounts))."'";
 				$bar_additional_accounts = sC_getTableData("users", "login, user_type", "login in (".$queryString.")");
 				$this -> putItem("additional_accounts", $bar_additional_accounts);
 			}
-
+			*/
 			$this -> putItem("user_types_icons", array(
 				'administrator'	=> array(
 					"icon"	=> "rocket",
@@ -170,6 +201,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			));
 
 			// CREATE USER TOP-BAR AVATAR
+			/*
 			$small_user_avatar = $big_user_avatar = array();
 			try {
 			    $file = new MagesterFile(self::$current_user->user['avatar']);
@@ -192,6 +224,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			}
 			$this->putItem("small_user_avatar", $small_user_avatar);
 			$this->putItem("big_user_avatar", $big_user_avatar);
+			*/
 		} else {
 			parent::beforeDisplay();
 		}
@@ -208,7 +241,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		if ($object) {
 			return self::$current_user;
 		} else {
-			return self::$current_user->user;
+			return self::$current_user->toArray();
 		}
 	}
 

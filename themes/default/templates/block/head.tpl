@@ -1,5 +1,8 @@
 <meta charset="utf-8" />
-<title>{if $T_CONFIGURATION.site_name}{$T_CONFIGURATION.site_name}{else}{$smarty.const._MAGESTERNAME}{/if} | {if $T_CONFIGURATION.site_motto}{$T_CONFIGURATION.site_motto}{else}{$smarty.const._THENEWFORMOFADDITIVELEARNING}{/if}</title>
+<title>
+    {if $T_CONFIGURATION.site_title}{$T_CONFIGURATION.site_title}{else}{$smarty.const._MAGESTERNAME}{/if}
+    {if $T_CONFIGURATION.site_subtitle} | {$T_CONFIGURATION.site_subtitle}{/if}
+</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta content="" name="description" />

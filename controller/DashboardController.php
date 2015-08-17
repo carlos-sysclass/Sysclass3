@@ -2,15 +2,6 @@
 class DashboardController extends AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
-	public function authorize()
-	{
-		if (parent::authorize()) {
-			// USER IS LOGGED IN, CHECK FOR TYPE
-			$stats = self::$current_user	= MagesterUser::checkUserAccess(false);
-			return true;
-		}
-		return false;
-	}
 /*
     protected function startEnviroment($request) {
         // @todo put here the merge content from student.php administrator.php and professor.php
