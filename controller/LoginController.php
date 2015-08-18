@@ -1,6 +1,6 @@
 <?php
 use Phalcon\DI,
-	Sysclass\Models\Users,
+	Sysclass\Models\Users\User,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends AbstractSysclassController
@@ -277,7 +277,7 @@ class LoginController extends AbstractSysclassController
 					//AuthenticationException::NO_USER_LOGGED_IN
 				}
 
-	            $user = Users::findFirst(array(
+	            $user = User::findFirst(array(
 	                "autologin = '{$hash}'",
 	                'active = 1'
 	            ));
@@ -334,7 +334,6 @@ class LoginController extends AbstractSysclassController
 		try {
 			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
 			$user = $di->get("authentication")->lock();
-
 		    //$smarty->assign("T_LOGGED_USER", self::$logged_user);
 		} catch (AuthenticationException $e) {
 			$url = "/login";
@@ -371,9 +370,10 @@ class LoginController extends AbstractSysclassController
 		            break;
 				}
 			}
-			if (!is_null($url)) {
-				$this->redirect($url, $message, $message_type);
-			}
+		}
+
+		if (!is_null($url)) {
+			$this->redirect($url, $message, $message_type);
 		}
 
 		if ($user) {

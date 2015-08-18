@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * Module Class File
  * @filesource
@@ -315,6 +313,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
      * @return [type]                 [description]
      * @implemen
      */
+
 	public function getWidgets($widgetsIndexes = array()) {
 		if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->getCurrentUser(true);
@@ -324,8 +323,10 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			//var_dump(array_keys($modules));
 			//exit;
 
-			$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
-			$userDetails = array_merge($currentUser->user, $userDetails);
+            $userDetails = $currentUser->toArray();
+
+			//$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
+			//$userDetails = array_merge($currentUser->toArray(), $userDetails);
 
 			$data = array();
 			$data['user_details'] = $userDetails;

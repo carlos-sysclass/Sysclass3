@@ -31,4 +31,4 @@ ln -s ../files/public/ files
 
 #creating cache dir
 #mkdir -p "$DIRNAME/../logs"
-#chmod 777 "$DIRNAME/../logs" -R
+chmod 777 "$DIRNAME/../logs" -R

@@ -16,3 +16,4 @@ www/doc/*
 /build/dist/*
 /build/logs/*
 /build/pdepend/*
+/logs/*

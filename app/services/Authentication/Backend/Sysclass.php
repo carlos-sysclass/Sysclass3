@@ -4,17 +4,17 @@ namespace Sysclass\Services\Authentication\Backend;
 use Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
-    Sysclass\Models\Users;
+    Sysclass\Models\Users\User;
 
 class Sysclass extends Component implements IAuthentication
 {
     public function login($info, $options = null)
     {
-        if ($info instanceof Users) {
+        if ($info instanceof User) {
             $user = $info;
             $password = @isset($options['password']) ? $options['password'] : null;
         } else {
-            $user = Users::findFirstByLogin($info['login']);
+            $user = User::findFirstByLogin($info['login']);
             $password = $info['password'];
         }
 
@@ -24,7 +24,7 @@ class Sysclass extends Component implements IAuthentication
         return false;
     }
 
-    public function logout(Users $user) {
+    public function logout(User $user) {
         // CALLED ON USER LOGOUT EXPLICIT REQUEST
         return TRUE;
     }

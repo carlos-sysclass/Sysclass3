@@ -461,33 +461,87 @@ $plicoLib->concat(
 /* BOOTSTRAP PHALCON */
 use Phalcon\Loader,
 	Phalcon\DI\FactoryDefault,
-	Phalcon\Mvc\Model\Manager as ModelsManager,
+	//Phalcon\Mvc\Model\Manager as ModelsManager,
+	//Plico\Mvc\Model\Manager as ModelsManager,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaData,
+	Phalcon\Mvc\Model\MetaData\Apc as ApcMetaData,
 	Phalcon\Session\Adapter\Files as Session,
+	Phalcon\Cache\Backend\Apc as BackendCache,
+	Phalcon\Logger,
+	Phalcon\Logger\Adapter\File as FileLogger,
 	Phalcon\Crypt;
 
+// Creates the autoloader
+$loader = new Loader();
+
+// Register some namespaces
+$loader->registerNamespaces(
+    array(
+       "Sysclass\Models" => "../app/models/",
+       "Sysclass\Services" => "../app/services/",
+       "Plico" => "../app/library/" // TODO: Move code to plicolib itself
+    )
+);
+// Register autoloader
+$loader->register();
 
 
 $di = new FactoryDefault();
+$eventsManager = new Phalcon\Events\Manager();
+$di->set("eventManager", $eventsManager);
 
-$di->set('db', function () use ($configuration) {
+$di->set('db', function () use ($configuration, $eventsManager) {
 	$class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($configuration['dbtype']);
 	if (class_exists($class)) {
-	    return new $class(array(
+	    $database = new $class(array(
 	        "host"     => $configuration['dbhost'],
 	        "username" => $configuration['dbuser'],
 	        "password" => $configuration['dbpass'],
 	        "dbname"   => $configuration['dbname'],
 	        "charset"  => 'utf8'
 	    ));
+
+	    $database->setEventsManager($eventsManager);
+
+	    return $database;
 	} else {
 		throw new Exception("Error estabilishing a database connection");
 		exit;
 	}
 });
 
-$eventsManager = new Phalcon\Events\Manager();
-$di->set("eventManager", $eventsManager);
+$logger = new FileLogger(__DIR__ . "/logs/database.log");
+// Listen all the database events
+$eventsManager->attach('db', function ($event, $connection) use ($logger) {
+    if ($event->getType() == 'beforeQuery') {
+        $logger->log($connection->getSQLStatement(), Logger::INFO);
+    }
+});
+
+// Set a models manager
+$di->set('modelsManager', function ()  use ($eventsManager) {
+    $ModelsManager = new Plico\Mvc\Model\Manager();
+
+	return $ModelsManager;
+});
+
+// Use the memory meta-data adapter or other
+$di->set('modelsMetadata', new MetaData());
+
+$di->set('cache', function() {
+
+	//Cache data for 1 hour
+	$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+	    'lifetime' => 3600
+	));
+
+	$cache = new \Phalcon\Cache\Backend\Apc($frontCache, array(
+    	'prefix' => 'SYSCLASS'
+  	));
+
+	return $cache;
+});
+
 
 $session = new Session(array('uniqueId' => 'SYSCLASS'));
 if (!$session->isStarted()) {
@@ -498,13 +552,6 @@ $di->set('session', $session);
 $di->set("configuration", function() {
 	return new Sysclass\Services\Configuration();
 });
-
-// Set a models manager
-$di->set('modelsManager', new ModelsManager());
-
-// Use the memory meta-data adapter or other
-$di->set('modelsMetadata', new MetaData());
-
 
 // TODO: Load Autentication Backends, based on configuration
 $di->set("authentication", function() use ($eventsManager) {
@@ -536,19 +583,7 @@ $eventsManager->attach('authentication', new SomeListener());
 */
 
 
-// Creates the autoloader
-$loader = new Loader();
 
-// Register some namespaces
-$loader->registerNamespaces(
-    array(
-       "Sysclass\Models" => "../app/models/",
-       "Sysclass\Services" => "../app/services/"
-    )
-);
-
-// Register autoloader
-$loader->register();
 /*
 $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 

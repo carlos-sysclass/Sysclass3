@@ -5,8 +5,8 @@ use Phalcon\Mvc\User\Component,
     Phalcon\Events\EventsAwareInterface,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
-    Sysclass\Models\Users,
-    Sysclass\Models\UserTimes;
+    Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UserTimes;
 
 class Adapter extends Component implements IAuthentication, EventsAwareInterface
 {
@@ -21,10 +21,10 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
     }
 
     public function getBackend($info) {
-        if ($info instanceof Users) {
+        if ($info instanceof User) {
             $user = $info;
         } else {
-            $user = Users::findFirstByLogin($info['login']);
+            $user = User::findFirstByLogin($info['login']);
         }
 
         if ($user) {
@@ -61,7 +61,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
                 }
             }
             if (!$user) {
-                if ($info instanceof Users) {
+                if ($info instanceof User) {
                     $user = $info;
                 } else {
                     throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
@@ -102,7 +102,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         return false;
     }
 
-    public function logout(Users $user = null) {
+    public function logout(User $user = null) {
         $this->_eventsManager->fire("authentication:beforeLogout", $this);
 
         if (is_null($user)) {
@@ -136,7 +136,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         $this->_eventsManager->fire("authentication:afterLogout", $this, $user);
     }
 
-    public function lock(Users $user = null) {
+    public function lock(User $user = null) {
         $this->_eventsManager->fire("authentication:beforeLock", $this);
 
         if (is_null($user)) {
@@ -152,7 +152,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
     }
 
 
-    protected function checkForMaintenance(Users $user) {
+    protected function checkForMaintenance(User $user) {
         // 1.4 Check for account explicit lock
         if ($user->locked == 1) {
             throw new AuthenticationException("USER_ACCOUNT_IS_LOCKED", AuthenticationException::USER_ACCOUNT_IS_LOCKED);
@@ -231,7 +231,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
     }
 
-    protected function registerSession(Users $user) {
+    protected function registerSession(User $user) {
         //$this->session()
         $token = $this->crypt->encrypt($user->password, '%31.1e#a&!$i86e$f!8jz');
 
@@ -255,7 +255,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         return true;
     }
 
-    protected function unregisterSession(Users $user) {
+    protected function unregisterSession(User $user) {
         if ($this->session->has('session_index')) {
 
             // EXPIRES ALL USERS PENDING SESSION

@@ -12,6 +12,17 @@ ADD COLUMN `backend` VARCHAR(45) NOT NULL DEFAULT 'sysclass' AFTER `password`;
 
 ALTER TABLE `users` ADD COLUMN `locked` tinyint(1) NOT NULL DEFAULT 0 AFTER `backend`;
 
+ALTER TABLE `users` 
+CHANGE COLUMN `name` `name` VARCHAR(100) NOT NULL AFTER `email`,
+CHANGE COLUMN `surname` `surname` VARCHAR(100) NOT NULL AFTER `name`,
+CHANGE COLUMN `user_type` `user_type` VARCHAR(50) NOT NULL DEFAULT 'student' AFTER `surname`,
+CHANGE COLUMN `language_id` `language_id` INT(11) NOT NULL DEFAULT '0' AFTER `user_type`,
+CHANGE COLUMN `can_be_instructor` `can_be_instructor` TINYINT(1) NOT NULL DEFAULT '0' AFTER `language_id`,
+CHANGE COLUMN `can_be_coordinator` `can_be_coordinator` TINYINT(1) NOT NULL DEFAULT '0' AFTER `can_be_instructor`,
+CHANGE COLUMN `viewed_license` `viewed_license` TINYINT(1) NULL DEFAULT '0' AFTER `can_be_coordinator`,
+CHANGE COLUMN `active` `active` TINYINT(1) NOT NULL DEFAULT '1' AFTER `viewed_license`;
+
+
 UPDATE `users` SET backend = 'sysclass';
 
 DROP TABLE IF EXISTS user_times;

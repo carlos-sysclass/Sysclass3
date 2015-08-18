@@ -1,4 +1,6 @@
 <?php
+use Sysclass\Models\Announcements\Announcement;
+
 /**
  * Module Class File
  * @filesource
@@ -273,9 +275,14 @@ class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummari
 		$currentUser    = $this->getCurrentUser(true);
 		//$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-		$newsItens = $this->model("news")->getItems();
+		$newsRS = Announcement::find();
+		foreach($newsRS as $key => $item) {
+			$news[$key] = $item->toArray();
+			$news[$key]['user'] = $item->getUser()->toArray();;
+		}
+		//$news = $this->model("news")->getItems();
 
-		$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
+		//$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
 
 		if ($datatable === 'datatable') {
 			$news = array_values($news);
