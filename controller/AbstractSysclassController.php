@@ -121,7 +121,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 			$session = $di->get("session");
 			$session->set("requested_uri", $_SERVER['REQUEST_URI']);
-			$session->set("a", "aaaa");
+			//$session->set("a", "aaaa");
 			//var_dump($session->getId());
 			//exit;
 			switch($e->getCode()) {
@@ -133,6 +133,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 				case AuthenticationException :: LOCKED_DOWN : {
 		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
+					break;
+				}
+				case AuthenticationException :: NO_USER_LOGGED_IN : {
+		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message_type = 'info';
 					break;
 				}
 				default : {
@@ -238,11 +243,14 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		if (is_null(self::$current_user)) {
 			$this->authorize();
 		}
-		if ($object) {
-			return self::$current_user;
-		} else {
-			return self::$current_user->toArray();
+		if (self::$current_user) {
+			if ($object) {
+				return self::$current_user;
+			} else {
+				return self::$current_user->toArray();
+			}
 		}
+		return false;
 	}
 
 	public function getLoggedUser($object = false) {

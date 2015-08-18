@@ -1,26 +1,16 @@
 <?php
 use Phalcon\DI,
-	Sysclass\Models\Users as usersModel,
+	Sysclass\Models\Users,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends AbstractSysclassController
 {
-	// ABSTRACT - MUST IMPLEMENT METHODS!
-
 	public function authorize()
 	{
 		// Always authorize login page
 		return TRUE;
-
 	}
 	/*
-	protected function onThemeRequest()
-	{
-		if ($this->getRequestedUrl() == "") {
-			$this->setTheme('sysclass.frontend');
-		}
-	}
-	*/
 	protected function createLoginForm() {
 		//$postTarget = "/login?debug=10";
 		//		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
@@ -51,6 +41,7 @@ class LoginController extends AbstractSysclassController
 
 		return $form;
 	}
+	*/
 	/**
 	 * Create login and reset password forms
 	 *
@@ -62,14 +53,30 @@ class LoginController extends AbstractSysclassController
 	{
 		$di = DI::getDefault();
 
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+			$user = $di->get("authentication")->checkAccess();
+			$this->redirect("/dashboard");
+		} catch (AuthenticationException $e) {
+			/*
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_USER_LOGGED_IN : {
+					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
+		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message_type = 'info';
+					break;
+				}
+			}
+			*/
+		}
+
+
 		$session = $di->get("session");
 		$request_uri = $session->get("requested_uri");
 
 		if ($request_uri) {
 			$session->set("requested_uri", $request_uri);
 		}
-
-		var_dump($request_uri);
 
 		/*
 		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
@@ -103,130 +110,34 @@ class LoginController extends AbstractSysclassController
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");
 
-
-		// CREATE LOGIC AND CALL VIEW.
-		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
-		//$this->putScript("scripts/login-soft");
-
-		//$smarty = $this->getSmarty();
-		//$loginForm = $this->createLoginForm();
-
-		/*
-		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
-		$loginForm->setRequiredNote(_REQUIREDNOTE);
-		$loginForm->accept($renderer);
-		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
-
-		var_dump($renderer->toArray());
-		exit;
-		*/
-
-		/*
-		if ($GLOBALS['configuration']['password_reminder'] && !$GLOBALS['configuration']['only_ldap']) { //The user asked to display the contact form
-			$resetForm = $this->createResetPasswordForm();
-		    $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		    $renderer->setRequiredTemplate(
-		        '{$html}{if $required}
-		        &nbsp;<span class = "formRequired">*</span>
-		            {/if}');
-		    $resetForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
-		    $resetForm->setRequiredNote(_REQUIREDNOTE);
-		    $resetForm->accept($renderer);
-		    $smarty->assign('T_RESET_PASSWORD_FORM', $renderer->toArray());
-		}
-		*/
 		if ($reset) {
 			$this->putItem("open_login_section", "reset");
 		}
 		$this->putItem("requested_uri", $request_uri);
 		parent::display('pages/auth/login.tpl');
-    /*
-    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
-        $login = $_GET['login'];
-        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
-            $message = _INVALIDUSER;
-            $message_type = 'failure';
-        } else {
-            $user = sC_getTableData("users", "email, name", "login='".$login."'");
-            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
-                $password = mb_substr(md5($login.time()), 0, 8);
-                $password_encrypted = MagesterUser::createPassword($password);
-                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
-                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
-                $message = _EMAILWITHPASSWORDSENT;
-                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
-            } else {
-                $message = _INVALIDUSER;
-                $message_type = 'failure';
-            }
-        }
-    }
-	}
-	*/
-
-	}
-
-	protected function beforeDisplay() {
-		parent::beforeDisplay();
-		if ($this->getTheme() == "sysclass.frontend") {
-			$this->template = 'login.tpl';
-			// RETURN FALSE TO OVERRIDE TEMPLATE
-			return false;
+	    /*
+	    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
+	        $login = $_GET['login'];
+	        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
+	            $message = _INVALIDUSER;
+	            $message_type = 'failure';
+	        } else {
+	            $user = sC_getTableData("users", "email, name", "login='".$login."'");
+	            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
+	                $password = mb_substr(md5($login.time()), 0, 8);
+	                $password_encrypted = MagesterUser::createPassword($password);
+	                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
+	                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
+	                $message = _EMAILWITHPASSWORDSENT;
+	                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+	            } else {
+	                $message = _INVALIDUSER;
+	                $message_type = 'failure';
+	            }
+	        }
+	    }
 		}
-	}
-
-	/**
-	 * Create login and reset password forms
-	 *
-	 * @url GET /lock
-	 */
-	public function lockPage($reset)
-	{
-		parent::authorize();
-		$_SESSION['user_locked'] = true;
-		// CREATE LOGIC AND CALL VIEW.
-		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
-		$this->putCss("css/pages/lock");
-		$this->putScript("scripts/lock");
-
-		$smarty = $this->getSmarty();
-		//$loginForm = $this->createLoginForm();
-
-
-		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
-		$loginForm->setRequiredNote(_REQUIREDNOTE);
-		$loginForm->accept($renderer);
-		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
-
-		parent::display('pages/auth/lock.tpl');
-
-
-
-    /*
-    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
-        $login = $_GET['login'];
-        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
-            $message = _INVALIDUSER;
-            $message_type = 'failure';
-        } else {
-            $user = sC_getTableData("users", "email, name", "login='".$login."'");
-            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
-                $password = mb_substr(md5($login.time()), 0, 8);
-                $password_encrypted = MagesterUser::createPassword($password);
-                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
-                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
-                $message = _EMAILWITHPASSWORDSENT;
-                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
-            } else {
-                $message = _INVALIDUSER;
-                $message_type = 'failure';
-            }
-        }
-    }
-	}
-	*/
+		*/
 
 	}
 
@@ -316,6 +227,124 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
+	 * @url GET /logout
+	 * @url POST /logout
+	 */
+	public function logoutAction()
+	{
+		$di = DI::getDefault();
+
+		// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+		$user = $di->get("authentication")->checkAccess();
+		if ($user) {
+			$di->get("authentication")->logout($user);
+		}
+		$this->redirect("login", $message, $message_type);
+	}
+	/**
+	 * Create login and reset password forms
+	 *
+	 * @url GET /autologin/:hash
+	 */
+	public function autologinPage($hash)
+	{
+		if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
+
+			$di = DI::getDefault();
+			try {
+				// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
+				try {
+					$user = $di->get("authentication")->checkAccess();
+					if ($user) {
+						$di->get("authentication")->logout($user);
+					}
+				} catch (AuthenticationException $e) {
+					//AuthenticationException::NO_USER_LOGGED_IN
+				}
+
+	            $user = Users::findFirst(array(
+	                "autologin = '{$hash}'",
+	                'active = 1'
+	            ));
+
+	            if ($user) {
+            		$di->get("authentication")->login($user, array('disableBackends' => true));
+					$this->redirect("/dashboard");
+	            } else {
+	            	throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+	            }
+			} catch (AuthenticationException $e) {
+				$url = "/login";
+				switch($e->getCode()) {
+					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+			            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+
+					case AuthenticationException :: MAINTENANCE_MODE : {
+
+			            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
+			            $message = self::$t->translate("The system can't locate this account. Please use the form below.");
+			            $message_type = 'warning';
+						break;
+					}
+					case AuthenticationException :: LOCKED_DOWN : {
+			            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message_type = 'warning';
+						break;
+					}
+					default : {
+			            $message = self::$t->translate($e->getMessage());
+			            $message_type = 'danger';
+			            break;
+					}
+				}
+			}
+		}
+		$this->redirect($url, $message, $message_type);
+	}
+
+	/**
+	 * TODO THESE METHODS!!!!
+	 */
+
+	/**
+	 * Create login and reset password forms
+	 *
+	 * @url GET /lock
+	 * @review
+	 */
+	public function lockPage($reset)
+	{
+		parent::authorize();
+		$_SESSION['user_locked'] = true;
+		// CREATE LOGIC AND CALL VIEW.
+		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
+		$this->putCss("css/pages/lock");
+		$this->putScript("scripts/lock");
+
+		$smarty = $this->getSmarty();
+		//$loginForm = $this->createLoginForm();
+
+
+		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
+		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
+		$loginForm->setRequiredNote(_REQUIREDNOTE);
+		$loginForm->accept($renderer);
+		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
+
+		parent::display('pages/auth/lock.tpl');
+
+	}
+
+	/**
+	 * [Add a description]
+	 *
 	 * @url POST /login/reset
 	 */
 	public function loginResetAction()
@@ -363,130 +392,10 @@ class LoginController extends AbstractSysclassController
 	}
 
 
-	/**
-	 * Create login and reset password forms
-	 *
-	 * @url GET /autologin/:hash
-	 */
-	public function autologinPage($hash)
-	{
-		if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
-		    try {
-		        $result = $this->_getTableDataFlat("users", "login,autologin,password,user_type", "active=1 and autologin !=''");
-		        $autolinks = $result['autologin'];
-		        $key = array_search($hash, $autolinks);
-
-		        if ($key !== false) {
-		        	var_dump($result);
-		            $user = MagesterUserFactory :: factory($result['login'][$key]);
-
-		            $pattern = $user->user['login']."_".$user->user['timestamp'];
-		            $pattern = md5($pattern.G_MD5KEY);
-
-		            if ($hash == 'demo-user' || $hash == 'admin-user' || strcmp($pattern, $hash) == 0) {
-		                $user->login($user->user['password'], true);
-
-		                //if (isset($_GET['lessons_ID']) && sC_checkParameter($_GET['lessons_ID'], 'id')) {
-		                //check for valid lesson
-		                $urlArray = array();
-		                foreach ($_GET as $key => $item) {
-		                    if ($key != 'autologin') {
-		                        $urlArray[] = $key . '=' . $item;
-		                    }
-		                }
-		                if (count($urlArray) > 0) {
-		                    setcookie('c_request', $user->user['user_type'].'.php?' . implode('&', $urlArray), time() + 300);
-		                } else {
-		                    setcookie('c_request', $user->user['user_type'].'.php', time() + 300);
-		                }
-		                //}
-
-		                // UPDATE LAST LOGIN VALUE
-		                $this->model("user/item")->setItem(array('last_login' => date("Y-m-d H:i:s")), $user->user['id']);
-
-		                //$user_type = $user->user['user_types_ID'];
-
-					    //$userTypes = array('administrator', 'professor', 'student');
-					    //if (in_array($user_type, $userTypes)) {
-							$this->redirect("/dashboard/" . $user->user['user_types_ID']);
-						//} else {
-						//	$this->redirect("user");
-						//}
-		                exit;
-		            }
-		        }
-		    } catch (MagesterUserException $e) {
-		    	var_dump($e);
-		    	exit;
-		    }
-		}
-		$this->redirect("login");
-	}
 
 
 
 
 
-	/**
-	 * [Add a description]
-	 *
-	 * @url GET /logout
-	 * @url POST /logout
-	 */
-	public function logoutAction()
-	{
-	    //session_start();			//Isn't needed here if the head session_start() is in place
-	    if (isset($_SESSION['s_login']) && $_SESSION['s_login']) {
-	        try {
-	            $user = MagesterUserFactory :: factory($_SESSION['s_login']);
-	            $user->logout(false);
 
-                //$_SESSION = array();
-                //isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
-                //session_destroy();
-                setcookie ("cookie_login", "", time() - 3600);
-                setcookie ("cookie_password", "", time() - 3600);
-                if (isset($_COOKIE['c_request'])) {
-                    setcookie('c_request', '', time() - 86400);
-                    unset($_COOKIE['c_request']);
-                }
-                unset($_COOKIE['cookie_login']); //These 2 lines are necessary, so that index.php does not think they are set
-                unset($_COOKIE['cookie_password']);
-
-	            $message = self::$t->translate("You have been logged out successfully.");
-	            $message_type = 'success';
-
-	            //Redirect user to another page, if such a configuration setting exists
-	            /*
-	            if ($GLOBALS['configuration']['logout_redirect']) {
-	                if ($GLOBALS['configuration']['logout_redirect'] == 'close') {
-	                    echo "<script>window.close();</script>";
-	                } else {
-	                    strpos($GLOBALS['configuration']['logout_redirect'], 'http://') === 0 ?
-	                    sC_redirect("".$GLOBALS['configuration']['logout_redirect']) :
-	                    header("location:http://".$GLOBALS['configuration']['logout_redirect']);
-	                }
-	            }
-	            */
-	        } catch (MagesterUserException $e) {
-	            $message = $e->getMessage();
-	            $message_type = 'danger';
-	        }
-	        // PUT HERE BECAUSE $user->logout(); destroy the session
-	        $this->redirect("login", $message, $message_type);
-	        var_dump($_SESSION);
-	        exit;
-	    } else {
-	    	$this->redirect("login");
-	    }
-/*
-		$result = $this->logoutUser();
-
-		if ($this->getRequestedFormat() == RestFormat::HTML) {
-			$this->putMessage($result['message'], "success");
-			header("Location: login");
-			exit;
-		}
-*/
-	}
 }

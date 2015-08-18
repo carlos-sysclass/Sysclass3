@@ -10,12 +10,23 @@ class Sysclass extends Component implements IAuthentication
 {
     public function login($info, $options = null)
     {
-        $user = Users::findFirstByLogin($info['login']);
+        if ($info instanceof Users) {
+            $user = $info;
+            $password = @isset($options['password']) ? $options['password'] : null;
+        } else {
+            $user = Users::findFirstByLogin($info['login']);
+            $password = $info['password'];
+        }
 
-        if ($this->security->checkHash($info['password'], $user->password)) {
+        if (!is_null($password) && $this->security->checkHash($password, $user->password)) {
             return $user;
         }
         return false;
+    }
+
+    public function logout(Users $user) {
+        // CALLED ON USER LOGOUT EXPLICIT REQUEST
+        return TRUE;
     }
 
     public function checkAccess($info = null)

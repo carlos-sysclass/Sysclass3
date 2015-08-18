@@ -12,7 +12,11 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 {
 
     public function getBackend($info) {
-        $user = Users::findFirstByLogin($info['login']);
+        if ($info instanceof Users) {
+            $user = $info;
+        } else {
+            $user = Users::findFirstByLogin($info['login']);
+        }
 
         if ($user) {
             $class = "Sysclass\\Services\\Authentication\\Backend\\" . ucfirst(strtolower($user->backend));
@@ -44,14 +48,22 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         // 1.2 Check for maintenance mode
         // 1.3 Check for system lock
         // 1.4 Check for account lock and unlock if necessary
-        // 1.5 Check for account restrictions (like IP access, 2-way authetication, multiple-login, etc...)
+        // 1.5 Check for account restrictions (like IP access, 2-way authentication, multiple-login, etc...)
         // 1.6 Create session to handle user login status
 
         $backend = $this->getBackend($info);
 
         if ($backend) {
             // 1.1 Check for username/pass sent
-            if (($user = $backend->login($info, $options)) === FALSE) {
+
+            if (!array_key_exists('disableBackends', $options) || $options['disableBackends'] == FALSE) {
+                if (($user = $backend->login($info, $options)) === FALSE) {
+                    throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+                }
+            }
+            if (!$user && $info instanceof Users) {
+                $user = $info;
+            } else {
                 throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
             }
 
@@ -80,6 +92,37 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         return false;
     }
 
+    public function logout(Users $user) {
+        $this->_eventsManager->fire("authentication:beforeLogout", $this);
+
+        // LOGOUT PROCESS
+
+        $backend = $this->getBackend($user);
+
+        if ($backend) {
+            if (!$backend->logout($user)) {
+                // TODO: stop the logout process
+                //throw new AuthenticationException("error", AuthenticationException::CANT_LOGOUT_RIGHT_NOW);
+            }
+
+            // REGISTER USER LOGOUT EVENT
+            $this->unregisterSession($user);
+
+            //$this->_eventsManager->collectResponses(true);
+            $this->_eventsManager->fire("authentication:afterLogin", $this, $user);
+
+            $user->save();
+
+            return $user;
+
+        }
+        throw new AuthenticationException("error", AuthenticationException::NO_BACKEND_DISPONIBLE);
+        return false;
+
+        $this->_eventsManager->fire("authentication:afterLogout", $this, $user);
+    }
+
+
     protected function checkForMaintenance(Users $user) {
         // 1.2 Check for maintenance mode
         if ($this->configuration->get("maintenance_mode") == TRUE
@@ -102,27 +145,34 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
     {
         $this->_eventsManager->fire("authentication:beforeCheckAccess", $this, $user);
 
-        $userTimes = UserTimes::findFirst(array(
-            'session_id' => $this->session->getId(),
-            'id' => $this->session->get('session_index')
-        ));
+        if ($this->session->has('session_index')) {
 
-        if ($userTimes) {
-            $user = $userTimes->getUser();
+            $userTimes = UserTimes::findFirst(array(
+                "session_id = '{$this->session->getId()}'",
+                "id = {$this->session->get('session_index')}",
+                'expired = 0'
+            ));
 
-            if ($user) {
+            if ($userTimes) {
+                $user = $userTimes->getUser();
 
-                $this->checkForMaintenance($user);
-                $userTimes->ping = time();
-                $userTimes->save();
-                return $user;
-            } else {
-                $userTimes->expired = 1;
-                $userTimes->save();
+                if ($user) {
+
+                    $this->checkForMaintenance($user);
+                    $userTimes->ping = time();
+                    $userTimes->save();
+                    return $user;
+                } else {
+                    $userTimes->expired = 1;
+                    $userTimes->save();
+                }
             }
+
+            $this->_eventsManager->fire("authentication:afterCheckAccess", $this, $user);
+        } else {
+            throw new AuthenticationException("error", AuthenticationException::NO_USER_LOGGED_IN);
         }
 
-        $this->_eventsManager->fire("authentication:afterCheckAccess", $this, $user);
         return false;
     }
 
@@ -149,6 +199,29 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
         return true;
     }
+
+    protected function unregisterSession(Users $user) {
+        if ($this->session->has('session_index')) {
+
+            // EXPIRES ALL USERS PENDING SESSION
+
+            $userTimes = UserTimes::find(array(
+                "user_id = {$user->id}",
+                'expired = 0'
+            ));
+            if ($userTimes) {
+                foreach($userTimes as $userTime) {
+                    $userTime->expired = 1;
+                    $userTime->save();
+                }
+            }
+        }
+        $this->session->destroy();
+
+        return true;
+    }
+
+
 
 
 
