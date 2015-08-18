@@ -477,7 +477,8 @@ $di->set('db', function () use ($configuration) {
 	        "host"     => $configuration['dbhost'],
 	        "username" => $configuration['dbuser'],
 	        "password" => $configuration['dbpass'],
-	        "dbname"   => $configuration['dbname']
+	        "dbname"   => $configuration['dbname'],
+	        "charset"  => 'utf8'
 	    ));
 	} else {
 		throw new Exception("Error estabilishing a database connection");

@@ -16,31 +16,30 @@
       {/if}
       <img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="{$T_BIG_USER_AVATAR.width}" alt="">
       <div class="page-lock-info">
-        <h1>{$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname}</h1>
-        <span class="email">{$T_CURRENT_USER->user.email}</span>
+        <h1>{$T_LOGGED_USER.name} {$T_LOGGED_USER.surname}</h1>
+        <span class="email">{$T_LOGGED_USER.email}</span>
         <span class="locked">Locked</span>
         <!-- <form class="form-inline" action="index.html"> -->
         {$T_LOGIN_FORM.javascript}
-            <form {$T_LOGIN_FORM.attributes}>
-              {$T_LOGIN_FORM.hidden}
-              <input type="hidden" name="{$T_LOGIN_FORM.login.name}" value="{$T_CURRENT_USER->user.login}"/>
+            <form class="login-form" action="/login" method="post">
+              <input type="hidden" name="login" value="{$T_LOGGED_USER.login}"/>
 
               <div class="input-group input-medium">
-                <input type="{$T_LOGIN_FORM.password.type}" class="form-control" placeholder="{$T_LOGIN_FORM.password.label}" name="{$T_LOGIN_FORM.password.name}" id="{$T_LOGIN_FORM.password.name}" autocomplete="off">
+                <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" class="form-control placeholder-no-fix">
                 <span class="input-group-btn">
-                <button type="submit" class="btn blue icn-only" name="{$T_LOGIN_FORM.submit_login.name}" value="{$T_LOGIN_FORM.submit_login.value}"><i class="m-icon-swapright m-icon-white"></i></button>
+                <button type="submit" class="btn blue icn-only" name="submit_login" value="Click to access"><i class="m-icon-swapright m-icon-white"></i></button>
                 </span>
               </div>
-          <!-- /input-group -->
-              <div class="relogin">
-                <a href="/login">{translateToken    value   =  "Not"} {$T_CURRENT_USER->user.name} {$T_CURRENT_USER->user.surname} ?</a>
+
+              <!-- /input-group -->
+                <div class="relogin">
+                <a href="/login">{translateToken value =  "Not"} {$T_LOGGED_USER.name} {$T_LOGGED_USER.surname} ?</a>
               </div>
             </form>
-
       </div>
     </div>
     <div class="page-footer">
-      &copy; Copyright 2014 • WiseFlex Knowledge Systems LLC.
+      &copy; Copyright 2015 • WiseFlex Knowledge Systems LLC.
     </div>
   </div>
 {/block}

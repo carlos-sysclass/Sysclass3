@@ -10,6 +10,15 @@ use Phalcon\Mvc\User\Component,
 
 class Adapter extends Component implements IAuthentication, EventsAwareInterface
 {
+    public function setEventsManager(\Phalcon\Events\ManagerInterface $eventsManager)
+    {
+        $this->_eventsManager = $eventsManager;
+    }
+
+    public function getEventsManager()
+    {
+        return $this->_eventsManager;
+    }
 
     public function getBackend($info) {
         if ($info instanceof Users) {
@@ -26,16 +35,6 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
             }
         }
         return false;
-    }
-
-    public function setEventsManager(\Phalcon\Events\ManagerInterface $eventsManager)
-    {
-        $this->_eventsManager = $eventsManager;
-    }
-
-    public function getEventsManager()
-    {
-        return $this->_eventsManager;
     }
 
     /* PROXY/ADAPTER PATTERN */
@@ -61,19 +60,30 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
                     throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
                 }
             }
-            if (!$user && $info instanceof Users) {
-                $user = $info;
-            } else {
-                throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+            if (!$user) {
+                if ($info instanceof Users) {
+                    $user = $info;
+                } else {
+                    throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+                }
             }
-
-            $this->checkForMaintenance($user);
-
+            try {
+                $this->checkForMaintenance($user);
+            } catch (AuthenticationException $e) {
+                switch($e->getCode()) {
+                    case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
+                        $user->locked = 0;
+                        break;
+                    }
+                    default : {
+                        throw new AuthenticationException($e->getMessage(), $e->getCode());
+                    }
+                }
+            }
 
             // 1.4 Check for account lock and unlock if necessary
-            if ($user->locked != 0) {
-                $user->locked = 0;
-            }
+            //if ($user->locked != 0) {
+            //}
 
             // 1.5 Check for account restrictions (like IP access, 2-way authetication)
             // TODO
@@ -92,8 +102,12 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         return false;
     }
 
-    public function logout(Users $user) {
+    public function logout(Users $user = null) {
         $this->_eventsManager->fire("authentication:beforeLogout", $this);
+
+        if (is_null($user)) {
+            $user = $this->checkAccess();
+        }
 
         // LOGOUT PROCESS
 
@@ -111,7 +125,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
             //$this->_eventsManager->collectResponses(true);
             $this->_eventsManager->fire("authentication:afterLogin", $this, $user);
 
-            $user->save();
+           // $user->save();
 
             return $user;
 
@@ -122,20 +136,40 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         $this->_eventsManager->fire("authentication:afterLogout", $this, $user);
     }
 
+    public function lock(Users $user = null) {
+        $this->_eventsManager->fire("authentication:beforeLock", $this);
+
+        if (is_null($user)) {
+            $user = $this->checkAccess();
+        }
+
+        $user->locked = 1;
+        $user->save();
+
+        $this->_eventsManager->fire("authentication:afterLock", $this, $user);
+
+        return $user;
+    }
+
 
     protected function checkForMaintenance(Users $user) {
+        // 1.4 Check for account explicit lock
+        if ($user->locked == 1) {
+            throw new AuthenticationException("USER_ACCOUNT_IS_LOCKED", AuthenticationException::USER_ACCOUNT_IS_LOCKED);
+        }
+
         // 1.2 Check for maintenance mode
         if ($this->configuration->get("maintenance_mode") == TRUE
             && !in_array($user->user_type, array("system_administrator"))
         ) {
-            throw new AuthenticationException("error", AuthenticationException::MAINTENANCE_MODE);
+            throw new AuthenticationException("MAINTENANCE_MODE", AuthenticationException::MAINTENANCE_MODE);
         }
         // 1.3 Check for system lock
         if (
             $this->configuration->get("locked_down") &&
             !in_array($user->user_type, array("administrator", "system_administrator"))
         ) {
-            throw new AuthenticationException("error", AuthenticationException::LOCKED_DOWN);
+            throw new AuthenticationException("LOCKED_DOWN", AuthenticationException::LOCKED_DOWN);
         }
 
         return true;
@@ -147,11 +181,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
         if ($this->session->has('session_index')) {
 
-            $userTimes = UserTimes::findFirst(array(
-                "session_id = '{$this->session->getId()}'",
-                "id = {$this->session->get('session_index')}",
-                'expired = 0'
-            ));
+            $userTimes = $this->getSession();
 
             if ($userTimes) {
                 $user = $userTimes->getUser();
@@ -159,6 +189,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
                 if ($user) {
 
                     $this->checkForMaintenance($user);
+
                     $userTimes->ping = time();
                     $userTimes->save();
                     return $user;
@@ -170,10 +201,34 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
             $this->_eventsManager->fire("authentication:afterCheckAccess", $this, $user);
         } else {
-            throw new AuthenticationException("error", AuthenticationException::NO_USER_LOGGED_IN);
+            throw new AuthenticationException("NO_USER_LOGGED_IN", AuthenticationException::NO_USER_LOGGED_IN);
         }
 
         return false;
+    }
+
+    protected function getSession() {
+        $userTimes = UserTimes::findFirst(array(
+            "session_id = '{$this->session->getId()}'",
+            "id = {$this->session->get('session_index')}",
+            'expired = 0'
+        ));
+
+        if ($userTimes) {
+            return $userTimes;
+        }
+        return false;
+
+    }
+
+    public function getSessionUser() {
+        $userTimes = $this->getSession();
+
+        if ($userTimes) {
+            return $user = $userTimes->getUser();
+        }
+        return false;
+
     }
 
     protected function registerSession(Users $user) {

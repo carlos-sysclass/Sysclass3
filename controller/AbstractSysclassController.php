@@ -122,7 +122,6 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$session = $di->get("session");
 			$session->set("requested_uri", $_SERVER['REQUEST_URI']);
 			//$session->set("a", "aaaa");
-			//var_dump($session->getId());
 			//exit;
 			switch($e->getCode()) {
 				case AuthenticationException :: MAINTENANCE_MODE : {
@@ -139,6 +138,12 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
 		            $message_type = 'info';
 					break;
+				}
+				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
+					$url = "/lock";
+		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message_type = 'info';
+		            break;
 				}
 				default : {
 		            $message = self::$t->translate($e->getMessage());

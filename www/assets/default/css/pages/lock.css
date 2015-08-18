@@ -19,7 +19,7 @@ body {
 	margin-bottom: 15px;
 }
 
-.page-lock .page-body {	
+.page-lock .page-body {
    width: 500px;
    padding: 10px;
    background: url(../../img/bg-white-lock.png) repeat;
@@ -71,11 +71,11 @@ body {
 	font-size: 14px;
 	line-height: 14px;
 	margin-bottom: 10px;
-} 
+}
 
 .page-lock .page-lock-info .locked {
 	color: #333;
-	font-size: 14px;	
+	font-size: 14px;
 	line-height: 14px;
 	font-style: normal;
 }
@@ -93,7 +93,7 @@ body {
 }
 
 .page-lock .relogin a {
-	color: #e1e1e1;
+	color: #0d638f !important;
 }
 
 /*Responsive*/
@@ -103,11 +103,11 @@ body {
 	   width: 280px;
 	   margin-top: 20px;
 	   margin-left: -140px;
-	}	
+	}
 
-	.page-lock .page-body {	
+	.page-lock .page-body {
 		padding: 10px;
-	    text-align: center;	
+	    text-align: center;
 		width: 280px;
 	}
 
@@ -120,7 +120,7 @@ body {
 	}
 	.page-lock .page-lock-info {
 		float: none !important;
-		width: 260px;		
+		width: 260px;
 		margin: 0 auto;
 	}
 

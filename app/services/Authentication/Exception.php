@@ -10,7 +10,7 @@ class Exception extends \Phalcon\Exception
     const LOCKED_DOWN = 903;
     const NO_USER_LOGGED_IN = 905;
     const CANT_LOGOUT_RIGHT_NOW = 906;
-
+    const USER_ACCOUNT_IS_LOCKED = 907;
     /*
     const INVALID_LOGIN = 401;
     const USER_NOT_EXISTS = 402;

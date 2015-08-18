@@ -192,6 +192,12 @@ class LoginController extends AbstractSysclassController
 		            $message_type = 'warning';
 					break;
 				}
+				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
+					$url = "/lock";
+		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message_type = 'info';
+		            break;
+				}
 				default : {
 		            $message = self::$t->translate($e->getMessage());
 		            $message_type = 'danger';
@@ -234,12 +240,20 @@ class LoginController extends AbstractSysclassController
 	{
 		$di = DI::getDefault();
 
-		// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
-		$user = $di->get("authentication")->checkAccess();
-		if ($user) {
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+			//$user = $di->get("authentication")->checkAccess();
+
 			$di->get("authentication")->logout($user);
+
+		    $message = self::$t->translate("You have been logout sucessfully. Thanks for using Sysclass.");
+		    $message_type = 'warning';
+
+			$this->redirect("/login", $message, $message_type);
+		} catch (AuthenticationException $e) {
+			//AuthenticationException::NO_USER_LOGGED_IN;
+			$this->redirect("/login");
 		}
-		$this->redirect("login", $message, $message_type);
 	}
 	/**
 	 * Create login and reset password forms
@@ -248,6 +262,7 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function autologinPage($hash)
 	{
+		$url = "/login";
 		if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
 
 			$di = DI::getDefault();
@@ -274,14 +289,12 @@ class LoginController extends AbstractSysclassController
 	            	throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
 	            }
 			} catch (AuthenticationException $e) {
-				$url = "/login";
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 			            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 			            $message_type = 'warning';
 			            break;
 					}
-
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
 			            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
@@ -310,35 +323,67 @@ class LoginController extends AbstractSysclassController
 	}
 
 	/**
-	 * TODO THESE METHODS!!!!
-	 */
-
-	/**
 	 * Create login and reset password forms
 	 *
 	 * @url GET /lock
-	 * @review
 	 */
 	public function lockPage($reset)
 	{
-		parent::authorize();
-		$_SESSION['user_locked'] = true;
-		// CREATE LOGIC AND CALL VIEW.
-		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
-		$this->putCss("css/pages/lock");
-		$this->putScript("scripts/lock");
+		$di = DI::getDefault();
 
-		$smarty = $this->getSmarty();
-		//$loginForm = $this->createLoginForm();
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+			$user = $di->get("authentication")->lock();
 
+		    //$smarty->assign("T_LOGGED_USER", self::$logged_user);
+		} catch (AuthenticationException $e) {
+			$url = "/login";
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message_type = 'warning';
+		            break;
+				}
+				case AuthenticationException :: MAINTENANCE_MODE : {
+		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message_type = 'warning';
+		            break;
+				}
+				case AuthenticationException :: LOCKED_DOWN : {
+		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message_type = 'warning';
+					break;
+				}
+				case AuthenticationException :: NO_USER_LOGGED_IN : {
+		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message_type = 'info';
+		            break;
+				}
+				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
+					$url = null;
+					$message = null;
+		            $message_type = null;
+		            $user = $di->get("authentication")->getSessionUser();
+				}
+				default : {
+		            $message = self::$t->translate($e->getMessage());
+		            $message_type = 'danger';
+		            break;
+				}
+			}
+			if (!is_null($url)) {
+				$this->redirect($url, $message, $message_type);
+			}
+		}
 
-		$renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);
-		$loginForm->setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);
-		$loginForm->setRequiredNote(_REQUIREDNOTE);
-		$loginForm->accept($renderer);
-		$smarty->assign('T_LOGIN_FORM', $renderer->toArray());
+		if ($user) {
+			$this->putItem("LOGGED_USER", $user->toArray());
 
-		parent::display('pages/auth/lock.tpl');
+			$this->putCss("css/pages/lock");
+			$this->putScript("scripts/lock");
+			parent::display('pages/auth/lock.tpl');
+		}
+		$this->redirect("/login");
 
 	}
 
@@ -349,6 +394,11 @@ class LoginController extends AbstractSysclassController
 	 */
 	public function loginResetAction()
 	{
+
+		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");
+		$message_type = 'warning';
+		$this->redirect("/login", $message, $message_type);
+		/*
 		if ($GLOBALS['configuration']['password_reminder'] && !$GLOBALS['configuration']['only_ldap']) { //The user asked to display the contact form
 			$form = $this->createResetPasswordForm();
 
@@ -389,13 +439,19 @@ class LoginController extends AbstractSysclassController
 		} else {
 			return false;
 		}
+		*/
 	}
+	/**
+	 * [Add a description]
+	 *
+	 * @url GET /signup
+	 */
+	public function signupPage()
+	{
 
-
-
-
-
-
-
+		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");
+		$message_type = 'warning';
+		$this->redirect("/login", $message, $message_type);
+	}
 
 }
