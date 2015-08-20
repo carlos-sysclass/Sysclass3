@@ -17,10 +17,11 @@ var UIBlockUI = function() {
                 target: '#blockui_sample_1_portlet_body',
                 boxed: true
             });
-
+            /*
             window.setTimeout(function() {
                 Metronic.unblockUI('#blockui_sample_1_portlet_body');
             }, 2000);
+*/
         });
 
         $('#blockui_sample_1_3').click(function() {

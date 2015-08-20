@@ -104,9 +104,14 @@ class LoginController extends AbstractSysclassController
 		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
 		$this->putCss("css/pages/login");
 		$this->putCss("css/bigvideo/bigvideo");
+
+		$this->putCss("plugins/uniform/css/uniform.default");
+		$this->putScript("plugins/uniform/jquery.uniform.min");
+
 		$this->putScript("plugins/modernizr/modernizr");
 		$this->putScript("plugins/imagesloaded/imagesloaded");
 		$this->putScript("plugins/bigvideo/bigvideo");
+
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");
 

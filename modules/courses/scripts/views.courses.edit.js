@@ -2,7 +2,7 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
-	alert(entity_id);
+
 	mod.addInitializer(function() {
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
 		var userCollectionClass = Backbone.Collection.extend({
@@ -21,8 +21,6 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		app.module("utils.datatables").on("datatable:item:check", function(data) {
-
-			console.warn(data);
 
 			var userSwitchModelClass = Backbone.Model.extend({
 				urlRoot : "/module/courses/item/users/switch"

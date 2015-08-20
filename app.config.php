@@ -399,6 +399,7 @@ $plicoLib->concat(
 		'css/plugins',
 		'css/layout',
 		'css/themes/blue',
+
 		'css/custom',
 		'css/videojs/video-js'
 		//<!-- END THEME STYLES -->

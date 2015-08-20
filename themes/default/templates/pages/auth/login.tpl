@@ -50,19 +50,20 @@
 				<ul class="social-icons">
 					{if $T_CONFIGURATION.enable_facebook_login}
 					<li>
-						<a class="facebook" data-original-title="facebook" href="#">
+						<a class="facebook social-icon-color" data-original-title="facebook" href="#">
+							<i class="fa fa-facebook"></i>
 						</a>
 					</li>
 					{/if}
 					{if $T_CONFIGURATION.enable_googleplus_login}
 					<li>
-						<a class="googleplus" data-original-title="Goole Plus" href="#">
+						<a class="googleplus social-icon-color" data-original-title="Goole Plus" href="#">
 						</a>
 					</li>
 					{/if}
 					{if $T_CONFIGURATION.enable_linkedin_login}
 					<li>
-						<a class="linkedin" data-original-title="Linkedin" href="#">
+						<a class="linkedin social-icon-color" data-original-title="Linkedin" href="#">
 						</a>
 					</li>
 					{/if}

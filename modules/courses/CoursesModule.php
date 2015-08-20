@@ -108,15 +108,14 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
-		if (in_array('courses.overview', $widgetsIndexes)) {
+		if (in_array('courses.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
+
 			// TODO MOVE TO YOUR OWN COMPONENT
 			//$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
 			//$this->putComponent("fuelux-tree");
 			//$this->putComponent("jquery-nestable");
             $this->putComponent("bootstrap-switch");
             $this->putComponent("icheck");
-
-
 			$this->putScript("plugins/holder");
 
 			//$this->putScript("plugins/videojs/vjs.youtube");
@@ -126,6 +125,40 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
             $this->putBlock("tests.info.dialog");
 
+
+            $settings = $this->module("settings")->getSettings(true);
+            if (@isset($settings['course_id'])) {
+                // GET FIRST COURSE FORM USER LIST
+                $enrollments = $this->model("enrollment/course")->addFilter(array(
+                    'user_id' => $currentUser->id,
+                    'status_id' => 1
+                ))->getItems();
+                if (count($enrollments) == 0) {
+                    // CHECK FOR CLASS-ONLY ENROLLMENTS
+                } else {
+                    $this->db->Execute(sprintf(
+                        "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
+                        $currentUser->id,
+                        'course_id'
+                    ));
+                    $this->db->Execute(sprintf(
+                        "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
+                        $currentUser->id,
+                        'course_id',
+                        $enrollments[0]['course_id']
+                    ));
+                    if (@isset($settings['class_id'])) {
+                        // GET THE FIRST CLASS FROM COURSE
+
+                    }
+
+                }
+
+            }
+            /*
+            var_dump($settings);
+            exit;
+            */
             //$self->putModuleSectionTemplate("dialogs", "dialogs/questions.select");
 
 			return array(
@@ -225,112 +258,75 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        /*
-        } elseif ($model ==  "coordinator") {
-            $modelRoute = "users/collection";
-            $optionsRoute = "edit-instructor";
+        if ($currentUser = $this->getCurrentUser(true)) {
 
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->addFilter(array(
-                'can_be_coordinator' => true
-            ))->getItems();
+            if ($model ==  "users") {
+                $modelRoute = "enrollment/course";
+                //$optionsRoute = "edit-instructor";
+                //
+                $filter = filter_var($filter, FILTER_DEFAULT);
 
-        } elseif ($model ==  "seasons") {
+                if (!is_array($filter)) {
+                    $filter = json_decode($filter, true);
+                }
 
-            $courses = filter_var($filter, FILTER_DEFAULT);
+                $itemsCollection = $this->model($modelRoute);
+                $itemsData = $itemsCollection->addFilter($filter)->getItems();
 
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
+            } elseif ($model ==  "me") {
+                $modelRoute = "courses";
+                $optionsRoute = "edit";
+
+                $itemsCollection = $this->model($modelRoute);
+                $itemsData = $itemsCollection->getItems();
+                $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+            } else {
+                return $this->invalidRequestError();
             }
+
+            //$currentUser    = $this->getCurrentUser(true);
             //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-            $itemsData = $this->model("course/seasons")->addFilter(array(
-                'active'    => 1,
-                'course_id' => $courses
-            ), array("operator" => "="))->getItems();
+            if ($type === 'combo') {
+                $q = $_GET['q'];
+                $itemsData = $itemsCollection->filterCollection($itemsData, $q);
 
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-        } elseif ($model ==  "classes") {
+                $result = array();
 
-            $courses = filter_var($filter, FILTER_DEFAULT);
+                foreach($itemsData as $item) {
+                    // @todo Group by course
+                    $result[] = array(
+                        'id'    => intval($item['id']),
+                        'name'  => ($model ==  "instructor") ? $item['name'] . ' ' . $item['surname'] : $item['name']
+                    );
+                }
+                return $result;
+            } elseif ($type === 'datatable') {
 
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
-            }
-            $modelRoute = "courses/classes/collection";
-            $itemsCollection = $this->model($modelRoute);
-
-            $itemsData = $itemsCollection->addFilter(array(
-                'active'    => 1
-            ), array("operator" => "="))->getItems();
-
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-        */
-        if ($model ==  "users") {
-            $modelRoute = "enrollment/course";
-            //$optionsRoute = "edit-instructor";
-            //
-            $filter = filter_var($filter, FILTER_DEFAULT);
-
-            if (!is_array($filter)) {
-                $filter = json_decode($filter, true);
-            }
-
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->addFilter($filter)->getItems();
-        } elseif ($model ==  "me") {
-            $modelRoute = "courses";
-            $optionsRoute = "edit";
-
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
-        } else {
-            return $this->invalidRequestError();
-        }
-
-        //$currentUser    = $this->getCurrentUser(true);
-        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        if ($type === 'combo') {
-            $q = $_GET['q'];
-            $itemsData = $itemsCollection->filterCollection($itemsData, $q);
-
-            $result = array();
-
-            foreach($itemsData as $item) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($item['id']),
-                    'name'  => ($model ==  "instructor") ? $item['name'] . ' ' . $item['surname'] : $item['name']
+                $itemsData = array_values($itemsData);
+                foreach($itemsData as $key => $item) {
+                    $itemsData[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'icon-edit',
+                            'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
+                            'class' => 'btn-sm btn-primary'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+                return array(
+                    'sEcho'                 => 1,
+                    'iTotalRecords'         => count($itemsData),
+                    'iTotalDisplayRecords'  => count($itemsData),
+                    'aaData'                => array_values($itemsData)
                 );
             }
-            return $result;
-        } elseif ($type === 'datatable') {
 
-            $itemsData = array_values($itemsData);
-            foreach($itemsData as $key => $item) {
-                $itemsData[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
-                );
-            }
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($itemsData),
-                'iTotalDisplayRecords'  => count($itemsData),
-                'aaData'                => array_values($itemsData)
-            );
+            return array_values($itemsData);
         }
-
-        return array_values($itemsData);
     }
     /**
      * [ add a description ]

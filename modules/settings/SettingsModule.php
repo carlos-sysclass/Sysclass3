@@ -6,7 +6,7 @@
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
- * @todo think about move this module to PlicoLib
+ * @todo think about move this module to Phalcon, as a model
  */
 class SettingsModule extends SysclassModule
 {

@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Enrollments\Course as EnrolledCourse;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -56,113 +57,125 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        if ($model ==  "periods") {
-            $modelRoute = "roadmap/periods";
-            $itemsCollection = $this->model($modelRoute);
+        if ($currentUser = $this->getCurrentUser(true)) {
+            if ($model ==  "periods") {
+                $modelRoute = "roadmap/periods";
+                $itemsCollection = $this->model($modelRoute);
 
-            $courses = filter_var($filter, FILTER_DEFAULT);
+                $courses = filter_var($filter, FILTER_DEFAULT);
 
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
+                if (!is_array($courses)) {
+                    $courses = json_decode($courses, true);
+                }
+                //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+                $itemsData = $itemsCollection->addFilter(array(
+                    'c.active'     => 1,
+                    'cp.course_id'  => $courses
+                ), array("operator" => "="))->getItems();
+                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+            } elseif ($model ==  "classes") {
+                $modelRoute = "roadmap/classes";
+                $itemsCollection = $this->model($modelRoute);
+
+                $filter = filter_var($filter, FILTER_DEFAULT);
+
+                if (!is_array($filter)) {
+                    $filter = json_decode($filter, true);
+                }
+                //var_dump($filter);
+                //exit;
+                //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+                $itemsData = $itemsCollection->addFilter(array(
+                    'c.active'      => 1,
+                    'cl.active'     => 1,
+                    'c2c.course_id' => $filter['course_id'],
+                    'clp.period_id' => $filter['period_id']
+                )/*, array("operator" => "=")*/)->getItems();
+
+                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+            } elseif ($model ==  "grouping") {
+                $modelRoute = "roadmap/grouping";
+                $itemsCollection = $this->model($modelRoute);
+
+                $courses = filter_var($filter, FILTER_DEFAULT);
+
+                if (!is_array($courses)) {
+                    $courses = json_decode($courses, true);
+                }
+                //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+                $itemsData = $itemsCollection->addFilter(array(
+                    'c.active'      => true,
+                    'cg.course_id' => $courses
+                ), array("operator" => "="))->getItems();
+
+                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+            } elseif ($model ==  "courses") {
+                // GET USERS COURSES
+                $userCourses = EnrolledCourse::find(
+                    "user_id = {$currentUser->id}"
+                );
+                $itemsData = array();
+                foreach($userCourses as $usercourse) {
+                    $itemsData[] = $usercourse->getCourse()->toArray();
+                }
+            } else {
+                $modelRoute = "courses/collection";
+                $optionsRoute = "edit";
+
+                $itemsCollection = $this->model($modelRoute);
+                $itemsData = $itemsCollection->getItems();
+                $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             }
+
+            //$currentUser    = $this->getCurrentUser(true);
             //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-            $itemsData = $itemsCollection->addFilter(array(
-                'c.active'     => 1,
-                'cp.course_id'  => $courses
-            ), array("operator" => "="))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-        } elseif ($model ==  "classes") {
-            $modelRoute = "roadmap/classes";
-            $itemsCollection = $this->model($modelRoute);
 
-            $filter = filter_var($filter, FILTER_DEFAULT);
+            if ($type === 'combo') {
+                $query = $_GET['q'];
+                $itemsData = $itemsCollection->filterCollection($itemsData, $query);
 
-            if (!is_array($filter)) {
-                $filter = json_decode($filter, true);
+                $result = array();
+
+                foreach($itemsData as $item) {
+                    // @todo Group by course
+                    $result[] = array(
+                        'id'    => intval($item['id']),
+                        'name'  => ($model ==  "instructor") ? $item['name'] . ' ' . $item['surname'] : $item['name']
+                    );
+                }
+                return $result;
+            } elseif ($type === 'datatable') {
+
+                $itemsData = array_values($itemsData);
+                foreach($itemsData as $key => $item) {
+                    $itemsData[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'icon-edit',
+                            'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
+                            'class' => 'btn-sm btn-primary'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+                return array(
+                    'sEcho'                 => 1,
+                    'iTotalRecords'         => count($itemsData),
+                    'iTotalDisplayRecords'  => count($itemsData),
+                    'aaData'                => array_values($itemsData)
+                );
             }
-            //var_dump($filter);
-            //exit;
-            //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-            $itemsData = $itemsCollection->addFilter(array(
-                'c.active'      => 1,
-                'cl.active'     => 1,
-                'c2c.course_id' => $filter['course_id'],
-                'clp.period_id' => $filter['period_id']
-            )/*, array("operator" => "=")*/)->getItems();
-
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-        } elseif ($model ==  "grouping") {
-            $modelRoute = "roadmap/grouping";
-            $itemsCollection = $this->model($modelRoute);
-
-            $courses = filter_var($filter, FILTER_DEFAULT);
-
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
-            }
-            //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-            $itemsData = $itemsCollection->addFilter(array(
-                'c.active'      => true,
-                'cg.course_id' => $courses
-            ), array("operator" => "="))->getItems();
-
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-
+            return array_values($itemsData);
         } else {
-            $modelRoute = "courses/collection";
-            $optionsRoute = "edit";
 
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
         }
-
-        //$currentUser    = $this->getCurrentUser(true);
-        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-
-        if ($type === 'combo') {
-            $query = $_GET['q'];
-            $itemsData = $itemsCollection->filterCollection($itemsData, $query);
-
-            $result = array();
-
-            foreach($itemsData as $item) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($item['id']),
-                    'name'  => ($model ==  "instructor") ? $item['name'] . ' ' . $item['surname'] : $item['name']
-                );
-            }
-            return $result;
-        } elseif ($type === 'datatable') {
-
-            $itemsData = array_values($itemsData);
-            foreach($itemsData as $key => $item) {
-                $itemsData[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
-                );
-            }
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($itemsData),
-                'iTotalDisplayRecords'  => count($itemsData),
-                'aaData'                => array_values($itemsData)
-            );
-        }
-
-        return array_values($itemsData);
     }
 
     /**
