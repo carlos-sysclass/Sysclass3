@@ -127,7 +127,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
 
             $settings = $this->module("settings")->getSettings(true);
-            if (@isset($settings['course_id'])) {
+            if (!@isset($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
                 $enrollments = $this->model("enrollment/course")->addFilter(array(
                     'user_id' => $currentUser->id,
