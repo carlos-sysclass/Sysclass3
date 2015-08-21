@@ -828,7 +828,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(e) {
 				console.info('portlet.courses/lessonTabViewClass::render');
 				this.unBlockUi();
-				//console.warn(this.model.toJSON());
 				//
 				this.$(".class-title").html(this.model.get("class"));
 				this.$(".lesson-title").html(this.model.get("name"));
@@ -881,13 +880,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
 					}
-
-					//console.warn(contentsCollection, this.videoModel);
-
 					var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
 					if (this.$("#" + videoDomID).size() === 0) {
-						console.warn(this.videoModel.toJSON());
 						this.$el.empty().append(
 							this.template(this.videoModel.toJSON())
 						);
@@ -932,7 +927,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 
 					this.videoJS.on("timeupdate", function() {
-						console.warn(this.videoJS.duration(), this.videoJS.currentTime(), this.currentProgress);
 						// CALCULATE CURRENT PROGRESS
 						var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
 
@@ -1052,7 +1046,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			/*
 			onBeforeRender : function() {
-				//console.warn(this.model.toJSON());
 				this.collection = new mod.collections.questions(this.model.get("exercise"));
 			},
 			onRender : function() {
@@ -1093,7 +1086,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				_.each(model.get("exercise"), function(data, index) {
 					var innermodel = new mod.models.questions(data);
-					console.warn(innermodel, index);
+
 					var questionView = new lessonExercisesQuestionItemClass({
 						model : innermodel,
 						model_index : index
@@ -1310,7 +1303,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}.bind(this));
 
 					this.listenTo(this.courseModel, 'sync', function(model, model_id) {
-						console.warn('setting course to ', model.get("id"));
 						this.model.set("course_id", model.get("id"), {silent : true});
 
 						// SET CLASS.... IF THE CURRENT IS INSIDE, JUST FETCH, IF NOT, SELECT THE FIRST ONE
@@ -1396,7 +1388,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}.bind(this));
 
 					this.listenTo(this.classModel, 'sync', function(model) {
-						console.warn('setting class to ', model.get("id"));
 						this.model.set("class_id", model.get("id"), {silent : true});
 
 						var currentLesson = this.model.get("lesson_id");
@@ -1446,7 +1437,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (_.isNull(this.classesCollection)) {
-					console.warn(this.courseModel.get("classes"));
 					this.classesCollection = new mod.collections.classes(this.courseModel.get("classes"));
 				}
 
@@ -1475,7 +1465,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.lessonModel = new fullLessonModelClass();
 
 					this.listenTo(this.lessonModel, 'sync', function(model) {
-						console.warn('setting lesson to ', model.get("id"));
 						this.model.set("lesson_id", model.get("id"), {silent : true});
 
 						// RESELECT THE CLASS
@@ -1612,9 +1601,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			this.pointer = pointer;
 		},
 		prev : function() {
-			console.warn('currentPointer', this.pointer);
 			var newPointer = _.max([0, this.pointer-1]);
-			console.warn('currentPointer To', newPointer);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
 				this.trigger("prevModel", this.at(this.pointer), this.pointer, this);
@@ -1623,9 +1610,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 		},
 		next : function() {
-			console.warn('currentPointer', this.pointer);
 			var newPointer = _.min([this.size()-1, this.pointer+1]);
-			console.warn('currentPointer To', newPointer);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
 				this.trigger("nextModel", this.at(this.pointer), this.pointer, this);
@@ -1683,12 +1668,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							return model.toJSON();
 						}
 					);
-					//console.warn(child.concat(subchilds));
 					mainVideo.set("childs", _.union(childs, subchilds));
-
 				} else {
-
-					console.warn(childs);
 					mainVideo.set("childs", childs);
 				}
 
