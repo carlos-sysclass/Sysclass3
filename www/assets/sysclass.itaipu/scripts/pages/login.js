@@ -6,16 +6,17 @@ $SC.module("ui.pages", function(mod, app, Backbone, Marionette, $, _){
 //		alert(Modernizr.video.h264);
 		var isMobile = app.module("ui").mobile;
 		var sources = {};
-		console.warn(Modernizr);
+		if (Modernizr.video.h264 || !isMobile) { // @todo Check for flash support
+			sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.mp4';
+		}
+
 		if (Modernizr.video.webm) {
 			sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.webm';
 		}
 		//if (Modernizr.video.ogg) {
 		//	sources['video/ogg'] = '/files/login-background.ogv';
 		//}
-		//if (Modernizr.video.h264 || !isMobile) { // @todo Check for flash support
-			//sources['video/mp4'] = ;
-		//}
+
 		//sources['video/flv'] = '/login-background.flv';
 
 		if (!_.isEmpty(sources)) {
