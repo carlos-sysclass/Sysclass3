@@ -1,13 +1,11 @@
 $SC.module("ui.pages", function(mod, app, Backbone, Marionette, $, _){
 	this.startWithParent = false;
 	this.on("start", function() {
-//		alert(Modernizr.video.ogg);
-//		alert(Modernizr.video.webm);
-//		alert(Modernizr.video.h264);
+
 		var isMobile = app.module("ui").mobile;
 		var sources = {};
 		if (Modernizr.video.h264 || !isMobile) { // @todo Check for flash support
-			sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.mp4';
+			sources['video/mp4'] = '/assets/sysclass.itaipu/video/login-background.mp4';
 		}
 
 		if (Modernizr.video.webm) {

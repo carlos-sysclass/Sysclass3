@@ -24,6 +24,8 @@ if (!in_array($_SESSION['new-theme'], $themes)) {
 
 }
 */
+//$_SESSION['new-theme'] = 'sysclass.itaipu';
+
 $configurationDefaults = array(
 	'_default'			=> array(
 		'server'	=> $protocol.'://'.$HTTP_HOST.'/',
