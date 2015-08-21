@@ -8,6 +8,40 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
         parent::init();
     }
 
+    protected function parseItem($item)
+    {
+        $item['info'] = json_decode($item['info'], true);
+
+        if ($this->getUserFilter()) {
+            $progress = $this->model("lessons/progress")->clear()->addFilter(array(
+                'user_id'       => $this->getUserFilter(),
+                'lesson_id'    => $item['id']
+            ))->getItems();
+
+            $item['progress'] = reset($progress);
+        }
+
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        // LOAD INSTRUCTORS
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
+        return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+
+        return $this->parseItem($item);
+    }
+
     public function loadContentFiles($id, $type = null) {
         $filehelper = $this->helper("file/wrapper");
         $path = $filehelper->getLessonPath($id, $type);
@@ -38,6 +72,7 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
         return true;
 
     }
+    /*
     public function recalculateProgress($lesson_id) {
         $progressAwareTypes = array('file');
 
@@ -56,4 +91,5 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
         return false;
 
     }
+    */
 }

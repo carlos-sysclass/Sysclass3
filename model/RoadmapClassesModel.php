@@ -59,6 +59,16 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             $item['class']['instructors'] = array();
         }
 
+        if ($this->getUserFilter()) {
+            $progress = $this->model("classes/progress")->clear()->addFilter(array(
+                'user_id'       => $this->getUserFilter(),
+                'class_id'    => $item['class_id']
+            ))->getItems();
+
+            $item['progress'] = reset($progress);
+        }
+
+
         return $item;
     }
 

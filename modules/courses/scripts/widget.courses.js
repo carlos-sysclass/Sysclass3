@@ -336,6 +336,13 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/courseTabViewClass::render');
 				this.unBlockUi();
 				this.$(".course-title").html(this.model.get("name"));
+
+				var factor = this.model.get("progress.factor");
+				if (factor >= 1) {
+					this.$(".viewed-status").removeClass("hidden");
+				} else {
+					this.$(".viewed-status").addClass("hidden");
+				}
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
@@ -623,6 +630,13 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.$(".course-title").html(this.model.get("course.name"));
 				this.$(".class-title").html(this.model.get("class.name"));
 
+				var factor = this.model.get("progress.factor");
+				if (factor >= 1) {
+					this.$(".viewed-status").removeClass("hidden");
+				} else {
+					this.$(".viewed-status").addClass("hidden");
+				}
+
 				this.unBlockUi();
 			},
 			updateCollectionIndex : function(e) {
@@ -835,6 +849,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
 					this.$(".viewed-status").removeClass("hidden");
+				} else {
+					this.$(".viewed-status").addClass("hidden");
 				}
 			},
 			setViewed : function() {

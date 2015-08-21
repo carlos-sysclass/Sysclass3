@@ -147,9 +147,12 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
         parent::setItem($data, $identifier);
 
         // IF THE PROGRESS IS SET, SEND TO PARENT MODELS TO RECALCULATE
+        //
+        /*
         if (floatval($data['progress']) >= 1) {
             $this->model("lessons")->recalculateProgress($data['lesson_id']);
         }
+        */
 
         $type = $data['content_type'];
         if ($type == "subtitle" || $type == "subtitle-translation") {

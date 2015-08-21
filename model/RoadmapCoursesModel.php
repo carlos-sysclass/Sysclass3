@@ -9,10 +9,11 @@ class RoadmapCoursesModel extends CoursesModel implements ISyncronizableCollecti
         }
 
         // GET CLASSES
-        $data['classes'] = $this->model("roadmap/classes")->addFilter(array(
-            'course_id' => $identifier
-        ))->getItems();
-
+        $data['classes'] = $this->model("roadmap/classes")
+            ->setUserFilter($this->getUserFilter())
+            ->addFilter(array(
+                'course_id' => $identifier
+            ))->getItems();
         return $data;
     }
 

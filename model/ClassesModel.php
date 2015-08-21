@@ -40,10 +40,38 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
 
     }
 
-    public function getItem($identifier) {
-        $data = parent::getItem($identifier);
+    protected function parseItem($item)
+    {
         $data['instructor_id'] = json_decode($data['instructor_id'], true);
+
+        if ($this->getUserFilter()) {
+            $progress = $this->model("classes/progress")->clear()->addFilter(array(
+                'user_id'       => $this->getUserFilter(),
+                'class_id'    => $item['id']
+            ))->getItems();
+
+            $item['progress'] = reset($progress);
+        }
+
+        return $item;
+    }
+
+    public function getItems()
+    {
+        $data = parent::getItems();
+
+        // LOAD INSTRUCTORS
+        foreach($data as $key => $item) {
+            $data[$key] = $this->parseItem($item);
+        }
         return $data;
+    }
+
+    public function getItem($identifier)
+    {
+        $item = parent::getItem($identifier);
+
+        return $this->parseItem($item);
     }
 
     public function addItem($data)

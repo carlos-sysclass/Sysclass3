@@ -1,36 +1,34 @@
 <?php
-class LessonsProgressmodel extends AbstractSysclassModel implements ISyncronizableModel {
+class ClassesProgressmodel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {
 
-        $this->table_name = "mod_lessons_progress";
+        $this->table_name = "mod_classes_progress";
         $this->id_field = "id";
-        $this->mainTablePrefix = "lp";
+        $this->mainTablePrefix = "cp";
         //$this->fieldsMap = array();
 
         $this->selectSql = "SELECT
-            lp.id,
-            lp.user_id,
-            lp.lesson_id,
-            lp.factor,
-            l.class_id as 'class#class_id'
-        FROM `mod_lessons_progress` lp
-        LEFT JOIN mod_lessons l ON (lp.lesson_id = l.id)";
+            cp.id,
+            cp.user_id,
+            cp.class_id,
+            cp.factor,
+            cl.course_id as 'course#course_id'
+        FROM `mod_classes_progress` cp
+        LEFT JOIN mod_classes cl ON (cp.class_id = cl.id)";
 
 //        $this->order = array("-lc.`position` DESC");
         parent::init();
     }
 
+    public function recalculateProgress($class_id) {
+        //$progressAwareTypes = array('file');
 
-    public function recalculateProgress($lesson_id) {
-        $progressAwareTypes = array('file');
-
-        $contents = $this->model("lessons/content")
+        $contents = $this->model("lessons")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
-                'lesson_id'  => $lesson_id,
-                'content_type'  => $progressAwareTypes
+                'class_id'  => $class_id
             ))->getItems();
 
         $progressItens = array_column($contents, 'progress');
@@ -47,15 +45,12 @@ class LessonsProgressmodel extends AbstractSysclassModel implements ISyncronizab
         //if (array_sum($progressItens) == count($progressItens)) {
             $this->addOrSetItem(array(
                 'factor'        => $factor,
-                'lesson_id'     => $lesson_id,
+                'class_id'      => $class_id,
                 'user_id'       => $this->getUserFilter()
             ), array(
-                'lesson_id'     => $lesson_id,
+                'class_id'      => $class_id,
                 'user_id'       => $this->getUserFilter()
             ));
-
-
-
             return true;
         //}
 
@@ -67,13 +62,13 @@ class LessonsProgressmodel extends AbstractSysclassModel implements ISyncronizab
 
         $items = $this->clear()->addFilter(array(
             'user_id'       => $data['user_id'],
-            'lesson_id'    => $data['lesson_id']
+            'class_id'    => $data['class_id']
         ))->getItems();
 
         if (count($items) > 0) {
             $result = parent::setItem($data, array(
-                'user_id'       => $data['user_id'],
-                'lesson_id'    => $data['lesson_id']
+                'user_id'     => $data['user_id'],
+                'class_id'    => $data['class_id']
             ));
 
             $progress_id = $items[0]['id'];
@@ -87,11 +82,10 @@ class LessonsProgressmodel extends AbstractSysclassModel implements ISyncronizab
         $progress = $this->clear()->getItem($progress_id);
 
         if (floatval($data['factor']) >= 1) {
-            $this->model("classes/progress")
+            $this->model("courses/progress")
                 ->setUserFilter($this->getUserFilter())
-                ->recalculateProgress($progress['class']['class_id']);
+                ->recalculateProgress($progress['course']['course_id']);
         }
-
         return $progress;
     }
 

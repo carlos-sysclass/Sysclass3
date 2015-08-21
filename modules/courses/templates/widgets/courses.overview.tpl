@@ -42,6 +42,9 @@
 							<a href="#" class="navbar-brand course-title">
 								 {translateToken value="Course"}
 							</a>
+							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
+								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 
@@ -90,9 +93,6 @@
 											<tr>
 												<th>{translateToken value="Name"}</th>
 												<th class="text-center">{translateToken value="Completed"}</th>
-												<th class="text-center">{translateToken value="Attendence"}</th>
-												<th class="text-center">{translateToken value="Grade"}</th>
-												<th class="text-center">{translateToken value="Status"}</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -124,6 +124,9 @@
 							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="#" class="navbar-brand class-title">
 								{translateToken value="Class"}
+							</a>
+							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
+								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -494,10 +497,14 @@
 </script>
 <script type="text/template" id="tab_course_classes-item-template">
 	<td><a href="#class-tab" class="class-change-action"><%= model['class'].name %></a></td>
-	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
-	<td class="text-center"></td>
-	<td class="text-center"></td>
-	<td class="text-center"><span class="label label-info">{translateToken value="In Progress"}</span></td>
+
+	<td class="text-center">
+		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+			<span class="label label-success">{translateToken value="Yes"}</span>
+		<% } else { %>
+			<span class="label label-danger">{translateToken value="No"}</span>
+		<% } %>
+	</td>
 </script>
 
 

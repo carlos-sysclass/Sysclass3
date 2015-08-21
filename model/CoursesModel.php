@@ -72,6 +72,15 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
             $item['class']['coordinators'] = array();
         }
 
+        if ($this->getUserFilter()) {
+            $progress = $this->model("courses/progress")->clear()->addFilter(array(
+                'user_id'       => $this->getUserFilter(),
+                'course_id'    => $item['id']
+            ))->getItems();
+
+            $item['progress'] = reset($progress);
+        }
+
         return $item;
     }
 
