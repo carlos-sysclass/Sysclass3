@@ -1,8 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 
-{$T_MODULE_CONTEXT_NAME}
-
 <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
