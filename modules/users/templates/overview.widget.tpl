@@ -4,7 +4,7 @@
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
 	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
-		<img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="100%" alt="">
+		<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
 	</div>
 	<div class="col-md-4 col-sm-7 col-xs-7 list-fixed-size">
 		<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
@@ -34,7 +34,7 @@
 					<td {if !isset($notif.link) || !$notif.link}colspan="2"{/if}>{$notif.text}</td>
 					<td>
 						{if isset($notif.link)}
-							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>	
+							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 						{/if}
 					</td>
 	           	</tr>

@@ -2,12 +2,12 @@
 	<div class="col-md-3">
 		<ul class="list-unstyled profile-nav">
 			<li>
-				<img width="100%" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" class="img-responsive" alt="" /> 
+				<img width="100%" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" class="img-responsive" alt="" />
 				<a href="#" class="profile-edit">edit</a>
 			</li>
 			{foreach $T_SUMMARY as $key => $value}
 				<li>
-					<a href="{$value.link.link}" class="text-{$value.type}">{$value.text} 
+					<a href="{$value.link.link}" class="text-{$value.type}">{$value.text}
 					{if $value.count > 0}
 						<span>{$value.count}</span>
 					{/if}
@@ -129,19 +129,19 @@
 					<div class="portlet-body">
 						<ul class="list-unstyled">
 							<li>
-								<span class="sale-info">TODAY SOLD <i class="icon-img-up"></i></span> 
+								<span class="sale-info">TODAY SOLD <i class="icon-img-up"></i></span>
 								<span class="sale-num">23</span>
 							</li>
 							<li>
-								<span class="sale-info">WEEKLY SALES <i class="icon-img-down"></i></span> 
+								<span class="sale-info">WEEKLY SALES <i class="icon-img-down"></i></span>
 								<span class="sale-num">87</span>
 							</li>
 							<li>
-								<span class="sale-info">TOTAL SOLD</span> 
+								<span class="sale-info">TOTAL SOLD</span>
 								<span class="sale-num">2377</span>
 							</li>
 							<li>
-								<span class="sale-info">EARNS</span> 
+								<span class="sale-info">EARNS</span>
 								<span class="sale-num">$37.990</span>
 							</li>
 						</ul>
@@ -179,7 +179,7 @@
 									<td>
 										<a href="#">
 										Smart House
-										</a>  
+										</a>
 									</td>
 									<td class="hidden-xs">Office furniture purchase</td>
 									<td>5760.00$ <span class="label label-warning label-sm">Pending</span></td>
@@ -215,7 +215,7 @@
 									<td>
 										<a href="#">
 										Smart House
-										</a>  
+										</a>
 									</td>
 									<td class="hidden-xs">Office furniture purchase</td>
 									<td>5760.00$ <span class="label label-warning label-sm">Pending</span></td>
@@ -244,7 +244,7 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-success">                        
+												<div class="label label-success">
 													<i class="icon-bell"></i>
 												</div>
 											</div>
@@ -252,7 +252,7 @@
 												<div class="desc">
 													You have 4 pending tasks.
 													<span class="label label-danger label-sm">
-													Take action 
+													Take action
 													<i class="icon-share-alt"></i>
 													</span>
 												</div>
@@ -270,13 +270,13 @@
 										<div class="col1">
 											<div class="cont">
 												<div class="cont-col1">
-													<div class="label label-success">                        
+													<div class="label label-success">
 														<i class="icon-bell"></i>
 													</div>
 												</div>
 												<div class="cont-col2">
 													<div class="desc">
-														New version v1.4 just lunched!   
+														New version v1.4 just lunched!
 													</div>
 												</div>
 											</div>
@@ -292,13 +292,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-danger">                      
+												<div class="label label-danger">
 													<i class="icon-bolt"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													Database server #12 overloaded. Please fix the issue.                      
+													Database server #12 overloaded. Please fix the issue.
 												</div>
 											</div>
 										</div>
@@ -313,13 +313,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -334,13 +334,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-success">                        
+												<div class="label label-success">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -355,13 +355,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-warning">                        
+												<div class="label label-warning">
 													<i class="icon-plus"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New user registered.                
+													New user registered.
 												</div>
 											</div>
 										</div>
@@ -376,14 +376,14 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-success">                        
+												<div class="label label-success">
 													<i class="icon-bell-alt"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													Web server hardware needs to be upgraded. 
-													<span class="label label-inverse label-sm">Overdue</span>             
+													Web server hardware needs to be upgraded.
+													<span class="label label-inverse label-sm">Overdue</span>
 												</div>
 											</div>
 										</div>
@@ -398,13 +398,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-default">                       
+												<div class="label label-default">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -419,13 +419,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-warning">                        
+												<div class="label label-warning">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -440,13 +440,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -461,13 +461,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-default">                       
+												<div class="label label-default">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -482,13 +482,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -503,13 +503,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-default">                       
+												<div class="label label-default">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -524,13 +524,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -545,13 +545,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-default">                       
+												<div class="label label-default">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -566,13 +566,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -587,13 +587,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-default">                       
+												<div class="label label-default">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>
@@ -608,13 +608,13 @@
 									<div class="col1">
 										<div class="cont">
 											<div class="cont-col1">
-												<div class="label label-info">                        
+												<div class="label label-info">
 													<i class="icon-bullhorn"></i>
 												</div>
 											</div>
 											<div class="cont-col2">
 												<div class="desc">
-													New order received. Please take care of it.                 
+													New order received. Please take care of it.
 												</div>
 											</div>
 										</div>

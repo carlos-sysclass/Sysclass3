@@ -18,11 +18,20 @@ class Sysclass extends Component implements IAuthentication
             $password = $info['password'];
         }
 
-        if (!is_null($password) && $this->security->checkHash($password, $user->password)) {
+        if ($this->checkPassword($password, $user)) {
             return $user;
         }
         return false;
     }
+
+    public function checkPassword($password, $user) {
+        return (!is_null($password) && $this->security->checkHash($password, $user->password));
+    }
+    public function hashPassword($password) {
+        return $this->security->hash($password);
+    }
+
+
 
     public function logout(User $user) {
         // CALLED ON USER LOGOUT EXPLICIT REQUEST

@@ -38,6 +38,24 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
     }
 
     /* PROXY/ADAPTER PATTERN */
+    public function checkPassword($password, User $user = null) {
+        if (is_null($user)) {
+            $user = $this->checkAccess();
+        }
+        $backend = $this->getBackend($user);
+
+        return $backend->checkPassword($password, $user);
+    }
+
+    public function hashPassword($password, User $user = null) {
+        if (is_null($user)) {
+            $user = $this->checkAccess();
+        }
+        $backend = $this->getBackend($user);
+
+        return $backend->hashPassword($password);
+    }
+
     public function login($info, $options = null)
     {
         $this->_eventsManager->fire("authentication:beforeLogin", $this);

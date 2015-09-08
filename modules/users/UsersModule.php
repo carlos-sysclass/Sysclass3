@@ -1,4 +1,7 @@
 <?php
+use Phalcon\DI,
+    Sysclass\Models\Users\User,
+    Sysclass\Services\Authentication\Exception as AuthenticationException;
 /**
  * Module Class File
  * @filesource
@@ -323,7 +326,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			//var_dump(array_keys($modules));
 			//exit;
 
-            $userDetails = $currentUser->toArray();
+            $userDetails = $currentUser->toFullArray(array('Avatars'));
 
 			//$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
 			//$userDetails = array_merge($currentUser->toArray(), $userDetails);
@@ -357,66 +360,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			);
 		}
 	}
-	/*
-	public function getLinks() {
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            return array(
-                'users' => array(
-                    array(
-                        //'count' => count($data),
-                        'text'  => self::$t->translate('My Profile'),
-                        'link'  => $this->getBasePath() . 'profile'
-                    ),
-                    array(
-                        //'count' => count($data),
-                        'text'  => self::$t->translate('Users'),
-                        'link'  => $this->getBasePath() . 'view'
-                    ),
-					array(
-                        //'count' => count($data),
-                        'text'  => self::$t->translate('Users Types'),
-                        'link'  => $this->getBasePath() . 'view/types'
-                    ),
-                    array(
-                        //'count' => count($data),
-                        'text'  => self::$t->translate('Users Types'),
-                        'link'  => $this->getBasePath() . 'view/groups'
-                    )
-                )
-            );
-        //}
-    }
-	*/
-    /**
-     * Entry point for 'select2' request data
-     *
-     * @url GET /combo/items
-     * @url GET /combo/items/:type
-     * @deprecated 3.0.0.0
-     */
-    public function comboItensAction($type) {
-        $q = $_GET['q'];
-
-        switch ($type) {
-            case 'user_types':
-            default : {
-                $roles = MagesterUser::GetRoles(true);
-                $result = array();
-                foreach($roles as $key => $value) {
-                	$result[] = array(
-                		'id'	=> $key,
-                		'name'	=> $value
-                	);
-                }
-                if (!empty($q)) {
-                    $result = sC_filterData($result, $q);
-                }
-                return array_values($result);
-            }
-        }
-    }
-
-
 
     /**
      * [ add a description ]
@@ -426,11 +369,14 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     public function getItemAction($id) {
         $request = $this->getMatchedUrl();
 
+        // TODO: CHECK PERMISSIONS
+
         if (strpos($request, "groups/") === 0) {
             $editItem = $this->model("users/groups/collection")->getItem($id);
         } else {
-            $editItem = $this->model("users/collection")->getItem($id);
-            // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
+            $editItem = \Sysclass\Models\Users\User::findFirstById($id);
+
+            return $editItem->toFullArray(array('Avatars'));
         }
         return $editItem;
     }
@@ -479,17 +425,52 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     {
         $request = $this->getMatchedUrl();
 
-        $itemModel = $this->model("user/item");
+        //$itemModel = $this->model("user/item");
 
-        if ($userData = $this->getCurrentUser()) {
+        if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
 
-            if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
-                return array_merge($response, $data);
+            if ($userModel->id == $id || $userModel->getType() == "administrator") {
+                if ($userModel->id == $id) {
+                } else {
+                    $userModel = new \Sysclass\Models\Users\User();
+                }
+                //unset($data['password']);
+                $userModel->assign($data);
+
+                // CHECK FOR PASSWORD CHANGING
+                if (
+                    array_key_exists('new-password', $data) &&
+                    array_key_exists('new-password-confirm', $data) &&
+                    !empty($data['new-password']) &&
+                    !empty($data['new-password-confirm']) &&
+                    $data['new-password'] === $data['new-password-confirm']
+                ) {
+                    // CHECK PASSWORD
+                    $di = DI::getDefault();
+
+                    // DEFINE AUTHENTICATION BACKEND
+                    if ($di->get("authentication")->checkPassword($data['old-password'], $userModel)) {
+                        $userModel->password = $di->get("authentication")->hashPassword($data['new-password'], $userModel);
+                    }
+                }
+
+                if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {
+                    $userAvatarModel = new \Sysclass\Models\Users\UserAvatar();
+                    $userAvatarModel->assign($data['avatar']);
+                    $userModel->avatar = $userAvatarModel;
+                }
+
+                if ($userModel->save()) {
+                    $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
+
+                    return array_merge($response, $userModel->toFullArray());
+                } else {
+                    $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    return array_merge($response, $userModel->toFullArray());
+                }
             } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError(self::$t->translate("You don't have the permission to update these info."), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -599,23 +580,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
         return array_values($items);
     }
 
-
-    // CRUD FUNCIONS
-    /**
-     * [ add a description ]
-     *
-     * @url GET /view
-     */
-    public function viewPage()
-    {
-        $this->putBlock("group.add");
-
-        parent::viewPage();
-
-    }
-
-
-
 	/**
 	 * [ add a description ]
 	 *
@@ -628,9 +592,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		$currentUser    = $this->getCurrentUser(true);
 
 
-        $currentUser    = $this->getCurrentUser();
-
-        $this->createClientContext("edit", array('entity_id' => $currentUser['id']));
+        $this->createClientContext("edit", array('entity_id' => $currentUser->id));
 
 
 		// PUT HERE CHAT MODULE (CURRENTLY TUTORIA)
@@ -646,6 +608,10 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			$summary[$key] = $mod->getSummary();
 		}
 		$summary = $this->module("layout")->sortModules("users.overview.notification.order", $summary);
+
+        //$this->putModuleScript("views.profile");
+
+        $this->putBlock("dropbox.upload");
 
 		//$languages = MagesterSystem :: getLanguages(true, true);
         /*
@@ -680,6 +646,9 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		);
 		$this->putItem("FORM_ACTIONS", $form_actions);
         */
+        $this->putItem("edit_user", $currentUser->toFullArray(array('Avatars')));
+        //var_dump($currentUser->toFullArray(array('Avatars')));
+        //exit;
 		//$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
@@ -688,6 +657,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 	 * [ add a description ]
 	 *
 	 * @url POST /profile/personal
+     * @deprecated 3.0.0.34
 	 */
 	public function profilePersonalSaveAction()
 	{
@@ -738,6 +708,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 	 * [ add a description ]
 	 *
 	 * @url POST /profile/password
+     * @deprecated 3.0.0.34
 	 */
 	public function profilePasswordSaveAction()
 	{
@@ -775,6 +746,66 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		exit;
 
 	}
+
+    /**
+     * Entry point for 'select2' request data
+     *
+     * @url GET /combo/items
+     * @url GET /combo/items/:type
+     * @deprecated 3.0.0.0
+     */
+    public function comboItensAction($type) {
+        $q = $_GET['q'];
+
+        switch ($type) {
+            case 'user_types':
+            default : {
+                $roles = MagesterUser::GetRoles(true);
+                $result = array();
+                foreach($roles as $key => $value) {
+                    $result[] = array(
+                        'id'    => $key,
+                        'name'  => $value
+                    );
+                }
+                if (!empty($q)) {
+                    $result = sC_filterData($result, $q);
+                }
+                return array_values($result);
+            }
+        }
+    }
+
+    /*
+    public function getLinks() {
+        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+            return array(
+                'users' => array(
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('My Profile'),
+                        'link'  => $this->getBasePath() . 'profile'
+                    ),
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users'),
+                        'link'  => $this->getBasePath() . 'view'
+                    ),
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users Types'),
+                        'link'  => $this->getBasePath() . 'view/types'
+                    ),
+                    array(
+                        //'count' => count($data),
+                        'text'  => self::$t->translate('Users Types'),
+                        'link'  => $this->getBasePath() . 'view/groups'
+                    )
+                )
+            );
+        //}
+    }
+    */
 
 
 }

@@ -211,6 +211,10 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			));
 
 			// CREATE USER TOP-BAR AVATAR
+			//
+			$userData = $this->getCurrentUser(true)->toFullArray(array('Avatars'));
+
+			$this->putItem("current_user", $userData);
 			/*
 			$small_user_avatar = $big_user_avatar = array();
 			try {

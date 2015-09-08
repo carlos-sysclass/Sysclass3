@@ -133,7 +133,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                     singleFileUploads: true,
                     autoUpload : true,
                     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
-                    filesContainer: this.$("content-timeline-items"),
+                    filesContainer: this.$(".content-timeline-items"),
                     uploadTemplate: function (o) {
                         return self.$el.data("upload-contexts");
                     },
@@ -243,10 +243,10 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
 
             var dropboxItemModel = new dropboxItemModelClass();
             var fileId = $(this).find(":input[type='hidden']").val();
-            var updateField = true;
+            var updateField = $(this).find(":input[type='hidden']").size() > 0;
             if (_.isEmpty(fileId)) {
                 fileId = $(this).data("fileId");
-                updateField = false;
+                //updateField = false;
             }
             dropboxItemModel.set("id", fileId);
 
@@ -256,11 +256,13 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             });
 
             fileUploadItemView.on("file-upload:change", function(data) {
+                console.warn(data, updateField);
                 if (updateField) {
                     $(self).find(":input[type='hidden']").val(data.id);
                     $(self).find(":input[type='hidden']").change();
-                } else {
                     $(self).data("fileId", data.id);
+                } else {
+                    //$(self).data("fileId", data.id);
                 }
             });
 

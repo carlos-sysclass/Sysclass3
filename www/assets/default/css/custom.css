@@ -1162,3 +1162,7 @@ UI Loading
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
+
+.header .navbar-nav > li.dropdown.user .dropdown-toggle {
+    padding: 10px 4px 12px 9px;
+}
