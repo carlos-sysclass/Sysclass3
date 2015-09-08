@@ -424,17 +424,19 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 },
 
                 highlight: function (element) { // hightlight error inputs
-                   $(element)
+                    $(element)
                         .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    $(element).trigger("error.validate");
                 },
                 unhighlight: function (element) { // revert the change done by hightlight
                     $(element)
                         .closest('.form-group').removeClass('has-error'); // set error class to the control group
                 },
-                success: function (label) {
+                success: function (label, element) {
                     label
                         .addClass('valid').addClass('help-block') // mark the current input as valid and display OK icon
                         .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    $(element).trigger("success.validate");
                 },
 				submitHandler : function(f) {
 					self.save();

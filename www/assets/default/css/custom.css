@@ -1166,3 +1166,12 @@ UI Loading
 .header .navbar-nav > li.dropdown.user .dropdown-toggle {
     padding: 10px 4px 12px 9px;
 }
+
+.input-icon i.checkunique-error {
+    color: #b94a48;
+    display: none;
+}
+.input-icon i.checkunique-ok {
+    color: #468847;
+    display: none;
+}

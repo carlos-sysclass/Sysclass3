@@ -191,7 +191,7 @@ $plicoLib->add("resources/components", array(
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'validation',
-	'js'	=> array('plugins/jquery-validation/dist/jquery.validate.min', 'plugins/jquery-validation/dist/additional-methods.min')
+	'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
 ));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'data-tables',
@@ -433,7 +433,7 @@ $plicoLib->concat(
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
 		//'plugins/uniform/jquery.uniform.min',
-		'plugins/jquery-validation/dist/jquery.validate',
+//		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 
 		'plugins/jquery.blockui.min',

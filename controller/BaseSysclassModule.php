@@ -149,6 +149,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             $this->putItem($name, self::$t->translate($value));
         }
 
+        $this->putItem("module_context_name", $page);
         $this->putItem("module_context", $config['context']);
 
         $this->template = $config['template'];

@@ -20,6 +20,11 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         return $this->_eventsManager;
     }
 
+    public function getDefaultBackend() {
+        // TODO: GET FROM CONFIGURATION
+        return $this->configuration->get("default_auth_backend");
+    }
+
     public function getBackend($info) {
         if ($info instanceof User) {
             $user = $info;
@@ -32,6 +37,12 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
             if (class_exists($class)) {
                 return new $class();
+            } else {
+                // TRY DEFAULT BACKEND
+                $class = "Sysclass\\Services\\Authentication\\Backend\\" . ucfirst(strtolower($this->getDefaultBackend()));
+                if (class_exists($class)) {
+                    return new $class();
+                }
             }
         }
         return false;

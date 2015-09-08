@@ -389,7 +389,32 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     };
 
+    this.handleCheckUnique = function(context) {
+        if ($(".checkunique-me", context).size() > 0) {
+            $(".checkunique-me", context).each(function() {
+                if (!$(this).data('checkunique')) {
+                    $(this).data('checkunique', true);
+                    var widget = $(this);
 
+                    var widgetInput = $(this).find(":input");
+
+                    widgetInput.on("error.validate", function(e,a,b,c) {
+                        widget.find(".checkunique-error").fadeIn(500);
+                    });
+                    widgetInput.on("success.validate", function(e,a,b,c) {
+                        widget.find(".checkunique-ok").fadeIn(500);
+                    });
+                    widgetInput.on("beforeAjax.validate", function(e,a,b,c) {
+                        widget.find(".checkunique-ok, .checkunique-error").hide();
+                        $(this).addClass("spinner");
+                    });
+                    widgetInput.on("afterAjax.validate", function(e,a,b,c) {
+                        $(this).removeClass("spinner");
+                    });
+                }
+            });
+        }
+    };
 
     this.handleActions = function (context) {
         var self = this;
@@ -419,6 +444,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleTabs(context);
         this.handleMultipleSelect(context);
         this.handleBootstrapSwitch(context);
+        this.handleCheckUnique(context);
 		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
         this.handleActions(context);

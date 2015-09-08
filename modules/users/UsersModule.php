@@ -361,6 +361,44 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		}
 	}
 
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /add
+     */
+    public function addPage($id)
+    {
+        $languages = self::$t->getItems();
+        $this->putitem("languages", $languages);
+
+        $groups =  $this->model("users/groups/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
+        $this->putItem("groups", $groups);
+
+        parent::addPage();
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $languages = self::$t->getItems();
+        $this->putitem("languages", $languages);
+
+        $groups =  $this->model("users/groups/collection")->addFilter(array(
+            'active' => true
+        ))->getItems();
+        $this->putItem("groups", $groups);
+
+        parent::editPage($id);
+    }
+
+
     /**
      * [ add a description ]
      *
@@ -390,26 +428,35 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     {
         $request = $this->getMatchedUrl();
 
-        if (strpos($request, "groups/") === 0) {
-            $itemModel = $this->model("user/groups/item");
-        } else {
-            $itemModel = $this->model("user/item");
-            // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
-        }
-
         if ($userData = $this->getCurrentUser()) {
+            //$itemModel = $this->model("user/item");
+            // TODO CHECK IF CURRENT USER CAN DO THAT
             $data = $this->getHttpData(func_get_args());
+            $userModel = new User();
+            $userModel->assign($data);
 
-            //$data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->debug()->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("User created with success"),
-                    "success"
-                );
+            if (
+                array_key_exists('new-password', $data) &&
+                !empty($data['new-password'])
+            ) {
+                // CHECK PASSWORD
+                $di = DI::getDefault();
+
+                // DEFINE AUTHENTICATION BACKEND
+                $userModel->password = $di->get("authentication")->hashPassword($data['new-password'], $userModel);
+            }
+
+            if (is_null($userModel->backend)) {
+                $userModel->backend = $di->get("authentication")->getDefaultBackend();
+            }
+
+            if ($userModel->save()) {
+                $response = $this->createAdviseResponse(self::$t->translate("User created with success"), "success");
+
+                return array_merge($response, $userModel->toFullArray());
             } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                return array_merge($response, $userModel->toFullArray());
             }
         } else {
             return $this->notAuthenticatedError();
@@ -652,6 +699,36 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		//$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
+
+
+/**
+     * [ add a description ]
+     *
+     * @url GET /check-login
+     */
+    public function checkLoginAction()
+    {
+        if ($currentUser    = $this->getCurrentUser(true)) {
+            $login = $_GET['login'];
+            /*
+            $exists = User::count(array(
+                "login = ?0 AND login <> ?1",
+                "bind" => array($login, $currentUser->login)
+            ));
+            */
+            $exists = User::count(array(
+                "login = ?0",
+                "bind" => array($login)
+            ));
+
+            return $exists == 0;
+        } else {
+            return $this->invalidRequestError();
+        }
+    }
+
+
+
 
 	/**
 	 * [ add a description ]

@@ -24,11 +24,14 @@ class Sysclass extends Component implements IAuthentication
         return false;
     }
 
-    public function checkPassword($password, $user) {
+    public function checkPassword($password, User $user = null)
+    {
+
         return (!is_null($password) && $this->security->checkHash($password, $user->password));
     }
-    public function hashPassword($password) {
-        return $this->security->hash($password);
+    public function hashPassword($password, User $user = null)
+    {
+            return $this->security->hash($password);
     }
 
 

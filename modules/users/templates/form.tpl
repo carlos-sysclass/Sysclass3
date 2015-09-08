@@ -1,5 +1,8 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
+
+{$T_MODULE_CONTEXT_NAME}
+
 <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
@@ -39,7 +42,11 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Primary Group"}</label>
-							<select class="select2-me form-control input-block-level" name="group_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Primary Group'}" data-url="/module/groups/items/me/select2">
+							<select class="select2-me form-control input-block-level" name="group_id" data-placeholder="{translateToken value='Primary Group'}">
+								<option value="-1">{translateToken value="Select a group"}</option>
+								{foreach $T_GROUPS as $group}
+									<option value="{$group.id}">{$group.name}</option>
+								{/foreach}
 							</select>
 						</div>
 					</div>
@@ -48,7 +55,11 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Primary Language"}</label>
-							<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Language'}" data-url="/module/translate/items/me/select2">
+							<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Language'}">
+								<option value="">{translateToken value="Please Select"}</option>
+								{foreach $T_LANGUAGES as $lang}
+									<option value="{$lang.id}">{$lang.name}</option>
+								{/foreach}
 							</select>
 						</div>
 					</div>
@@ -58,6 +69,14 @@
 		                    <input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
 					</div>
+				</div>
+				<h5 class="form-section margin-bottom-10">{translateToken value="Log in details"}</h5>
+				<div class="row">
+					{if $T_MODULE_CONTEXT_NAME == "add"}
+						{include file="./profile/login_and_password.tpl"}
+					{elseif $T_MODULE_CONTEXT_NAME == "edit"}
+						{include file="./profile/password.tpl"}
+					{/if}
 				</div>
 				<h5 class="form-section margin-bottom-10">{translateToken value="Behavior"}</h5>
 				<div class="row">

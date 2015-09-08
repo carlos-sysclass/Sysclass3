@@ -782,6 +782,7 @@ $.extend($.validator, {
 				this.pendingRequest++;
 				this.pending[element.name] = true;
 			}
+			$(element).trigger("beforeAjax.validate");
 		},
 
 		stopRequest: function( element, valid ) {
@@ -798,6 +799,7 @@ $.extend($.validator, {
 				$(this.currentForm).triggerHandler("invalid-form", [this]);
 				this.formSubmitted = false;
 			}
+			$(element).trigger("afterAjax.validate");
 		},
 
 		previousValue: function( element ) {
@@ -1145,6 +1147,8 @@ $.extend($.validator, {
 			previous.old = value;
 			var validator = this;
 			this.startRequest(element);
+
+
 			var data = {};
 			data[element.name] = value;
 			$.ajax($.extend(true, {
