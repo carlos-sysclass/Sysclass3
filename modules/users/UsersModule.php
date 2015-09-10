@@ -1,6 +1,7 @@
 <?php
 use Phalcon\DI,
     Sysclass\Models\Users\User,
+    Sysclass\Services\L10n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
 /**
  * Module Class File
@@ -695,6 +696,13 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 		);
 		$this->putItem("FORM_ACTIONS", $form_actions);
         */
+
+        $languages = self::$t->getItems();
+        $this->putitem("languages", $languages);
+
+        $timezones = Timezones::findAll();
+        $this->putitem("timezones", $timezones);
+
         $this->putItem("edit_user", $currentUser->toFullArray(array('Avatars')));
         //var_dump($currentUser->toFullArray(array('Avatars')));
         //exit;

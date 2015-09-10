@@ -19,15 +19,14 @@
 		<label class="control-label">{translateToken value="Birthday"}</label>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-calendar"></i></span>
-			<input type="text" name="data_nascimento" value="{$T_EDIT_USER.data_nascimento}" readonly class="form-control datepick" data-format="{$T_SETTINGS_.js_date_fmt}" data-date-view-mode="years">
+			<input type="text" name="birthday" value="" data-format="date" readonly class="form-control date-picker">
 		</div>
 	</div>
-
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Language"}</label>
-		<select name="languages_NAME" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+		<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 		{foreach $T_LANGUAGES as $key => $value}
-			<option value="{$key}" {if $key == $T_EDIT_USER.languages_NAME}selected="selected"{/if}>{$value}</option>
+			<option value="{$key}" {if $value.id == $T_EDIT_USER.language_id}selected="selected"{/if}>{$value.name}</option>
 		{/foreach}
 		</select>
 	</div>
@@ -35,7 +34,7 @@
 		<label class="control-label">{translateToken value="Timezone"}</label>
 		<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 		{foreach $T_TIMEZONES as $key => $value}
-			<option value="{$key}" {if $key == $T_EDIT_USER.timezone}selected="selected"{/if}>{$value}</option>
+			<option value="{$key}" {if $value.id == $T_EDIT_USER.timezone}selected="selected"{/if}>{$value.name}</option>
 		{/foreach}
 		</select>
 	</div>

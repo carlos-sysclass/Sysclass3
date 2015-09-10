@@ -14,19 +14,29 @@
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div>
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Date"}</label>
-					<input class="form-control input-small date-picker"  size="16" type="text" name="date" data-update="date" data-format="date" data-rule-required="true" />
-				</div>
-				<div class="form-group">
-					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-					<label class="control-label">{translateToken value="Type"}</label>
-					<select class="select2-me form-control" name="type_id" data-rule-required="1" data-rule-min="1">
-						{foreach $T_EVENT_TYPES as $id => $name}
-							<option value="{$id}">{$name}</option>
-						{/foreach}
+				<div class="row">
+					<div class="form-group col-md-6">
 
-					</select>
+						<label class="control-label">{translateToken value="Start Date"}</label>
+						<input class="form-control input-small date-picker"  size="16" type="text" name="start_date" data-update="start_date"  data-format="date" data-format-from="unix-timestamp" data-rule-required="true" />
+					</div>
+					<div class="form-group col-md-6">
+						<label class="control-label">{translateToken value="End Date"}</label>
+						<input class="form-control input-small date-picker"  size="16" type="text" name="end_date" data-update="end_date"  data-format="date" data-format-from="unix-timestamp" data-rule-required="true" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-md-6">
+						<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+						<label class="control-label">{translateToken value="Type"}</label>
+						<select class="select2-me form-control" name="type_id" data-rule-required="1" data-rule-min="1">
+							<option value="">{translateToken value="Please Select"}</option>
+							{foreach $T_EVENT_TYPES as $event_type}
+								<option value="{$event_type.id}">{$event_type.name}</option>
+							{/foreach}
+
+						</select>
+					</div>
 				</div>
 
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}

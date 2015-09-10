@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use \Sysclass\Models\Calendar\Event;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -61,20 +62,22 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     {
         $currentUser    = $this->getCurrentUser();
 
-        $events = calendar :: getCalendarEventsForUser($currentUser);
+        $eventRS = Event::find();
+
+        //$events = calendar :: getCalendarEventsForUser($currentUser);
 
         $items = array();
 
-        foreach($events aS $evt)
+        foreach($eventRS aS $evt)
         {
             $items[] = array
             (
-                'id'            => $evt['event_id'],
-                'title'         => substr(str_replace("\n", " ", strip_tags($evt['event_name'])), 0, 25),
-                'description'   => $evt['event_description'],
-                'start'         => $evt['event_date'],
+                'id'            => $evt->id,
+                'title'         => substr(str_replace("\n", " ", strip_tags($evt->name)), 0, 25),
+                'description'   => $evt->description,
+                'start'         => $evt->start_date,
                 'allDay'        => true,
-                'color'         => $evt['event_type_color'],
+                //'color'         => $evt->type->color,
                 'editable'      => false
             );
         }

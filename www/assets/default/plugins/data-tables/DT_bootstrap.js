@@ -93,7 +93,27 @@ $.extend( true, $.fn.dataTable.defaults, {
 		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display' || type == 'filter') {
-					return moment.unix(data).format("L LT");
+					if (data != 0) {
+						return moment.unix(data).format("L");
+					} else {
+						return "";
+					}
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'unix-moment-date' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					if (data != 0) {
+						return moment.unix(data).format("L LT");
+					} else {
+						return "";
+					}
 				} else {
 					return parseFloat( data );
 				}

@@ -16,9 +16,9 @@
 {/foreach}
 
 <link rel="shortcut icon" href="favicon.ico" />
-
+<!--
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
-
+-->
 <!-- THE VIDEO JS *MUST* BE ON HEAD TAG!! MAKE A WAY TO INJECT IT HERE -->
 <script src="{Plico_GetResource file='plugins/videojs/video.js'}"></script>
 <script>

@@ -194,10 +194,17 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.handleDatepickers = function(context) {
 		// datepicker
 		if($('.date-picker', context).length > 0){
-			$('.date-picker', context).datepicker()
+			$('.date-picker', context).datepicker({
+                format: "mm/dd/yyyy",
+                //endDate: "07/19/1984",
+                todayBtn: true,
+                autoclose: true,
+                todayHighlight: true,
+                toggleActive: true
+            })/*
 			.on('changeDate', function(e) {
 				$(this).datepicker('hide');
-			});
+			})*/;
 
 		}
 	};

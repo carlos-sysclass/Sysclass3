@@ -11,7 +11,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	if (formatFrom == 'unix-timestamp') {
 	    		value = moment.unix(value);
 	    	} else {
+                console.warn(value);
 	    		value = moment(value);
+                console.warn(value.format("L"));
 	    	}
 	    	if (formatTo == 'time') {
 	    		return value.format("hh:mm:ss");
@@ -145,15 +147,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		    		inputField.each(function(el, i) {
 		    			var input = $(this);
 
-						if (input.hasClass("datepick")) {
-		                    if (values[idx] !== null) {
-		                        var date = new Date(values[idx]);
-		                        // CORRETING TIMEZONE DIFF
-		                        date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
-
-		                        input.datepicker('setDate', date);
-		                    }
-		                } else if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
+                        if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
 	                		if (values[idx] !== null) {
 	                			var valueArray = values[idx];
 		                        if (!_.isArray(valueArray)) {
@@ -211,16 +205,25 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                    	input.val(values[idx]);
 		                    }
 		                }
-		    		});
 
-	            }
-	            if (this.$("[data-update^='" + idx + "']").not(":input").size() > 0) {
-	            	var domField = this.$("[data-update^='" + idx + "']");
-	            	if (domField.is("[data-format]")) {
-	            		domField.html(this.formatValue(values[idx], domField.data("format"), domField.data("format-from")));
-	            	} else {
-	            		domField.html(values[idx]);
-	            	}
+                        if (input.hasClass("date-picker")) {
+                            input.datepicker('update');
+                        }
+                            /*
+                            if (values[idx] !== null) {
+                                var date = new Date(values[idx]);
+                                // CORRETING TIMEZONE DIFF
+                                //date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
+
+                                console.warn(date);
+
+                                //input.datepicker('setDate', date);
+                                input.val(datepicker('update');
+
+                            }
+                            */
+                    });
+
 	            }
 	        }
 	        this.trigger("form:rendered");
@@ -280,6 +283,26 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             }.bind(this));
             this.enableDataPooling();
         },
+        renderUiItems : function() {
+            if (this.$("[data-update]").not(":input").size() > 0) {
+                var self = this;
+                this.$("[data-update]").not(":input").each(function() {
+                    var domField = $(this);
+
+                    var modelField = $(this).data("update");
+
+                    if (self.model.get(modelField)) {
+                        var values = self.model.get(modelField);
+
+                        if (domField.is("[data-format]")) {
+                            domField.html(self.formatValue(values, domField.data("format"), domField.data("format-from")));
+                        } else {
+                            domField.html(values);
+                        }
+                    }
+                });
+            }
+        },
 		render: function(model) {
 	    	console.info('views/baseClass::render');
 	    	Marionette.triggerMethodOn(this, "beforeRender", model);
@@ -293,6 +316,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		var values = model.toJSON();
 				this.renderItens(values);
 	    	}
+
+            this.renderUiItems();
 
 	    	Marionette.triggerMethodOn(this, "render", model);
 	        return this;
@@ -359,6 +384,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 			    this.model.set(prop, value);
+
+                this.renderUiItems();
 		    }
 	    },
 	    save : function(e) {

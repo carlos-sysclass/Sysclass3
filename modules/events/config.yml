@@ -26,11 +26,11 @@ crud:
         - mData: description
           label: Description
 
-        - mData: date
-          sType: table-datetime
+        - mData: start_date
+          sType: unix-moment-date
           label: Date
 
-        - mData: event_type_name
+        - mData: type.name
           label: Type
 
         - mData: options
@@ -47,9 +47,9 @@ crud:
         page_subtitle: Create a new Event
     'edit/:id':
       components: ["validation", "wysihtml5", "select2", "datepicker", "timepicker"]
-      blocks: ["messages.events.allow"]
+      #blocks: ["messages.events.allow"]
       template: form.tpl
-      scripts: ["views.events.edit"]
+      #scripts: ["views.events.edit"]
       variables:
         page_subtitle: Config and edit events
 

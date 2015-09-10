@@ -3,6 +3,8 @@
  * Module Class File
  * @filesource
  */
+use \Sysclass\Models\Calendar\Event,
+    \Sysclass\Models\Calendar\EventTypes;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -54,7 +56,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event',
+                    'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Event")
                 );
@@ -67,7 +69,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event',
+                    'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Event")
                 );
@@ -80,7 +82,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             {
                 $breadcrumbs[] = array
                 (
-                    'icon'  => 'icon-event',
+                    'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Event")
                 );
@@ -124,15 +126,8 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      */
     public function addPage()
     {
-        // GET THE MODEL DATA
-        $items = $this->model("event/types/collection")->getItems();
-
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        $event_types = array();
-        foreach($items as $type) {
-            $event_types[$type['id']] = $type['name'];
-        }
-        $this->putItem("event_types", $event_types);
+        $eventTypesmodel = EventTypes::find();
+        $this->putItem("event_types", $eventTypesmodel->toArray());
 
         // HANDLE PAGE
         parent::addPage($id);
@@ -145,34 +140,10 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      */
     public function editPage($id)
     {
-        $items = $this->model("event/types/collection")->getItems();
-
-        // TRANSVERSE TO CREATE A "NAME-VALUE" STRUCTURE
-        $event_types = array();
-        foreach($items as $type)
-        {
-            $event_types[$type['id']] = $type['name'];
-        }
-
-        $this->putItem("event_types", $event_types);
+        $eventTypesmodel = EventTypes::find();
+        $this->putItem("event_types", $eventTypesmodel->toArray());
 
         parent::editPage($id);
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/users/
-    */
-    public function getEvents()
-    {
-        $data = $this->getHttpData(func_get_args());
-
-        $eventTypesModel = $this->model("events/item");
-
-        $eventTypes = $eventTypesModel->getEvents();
-
-        return $eventTypes;
     }
 
     /**
@@ -182,8 +153,9 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     */
     public function getItemAction($id)
     {
-         $editItem = $this->model("events/collection")->getItem($id);
-         return $editItem;
+        $eventModel = Event::findFirstById($id);
+
+        return $eventModel->toFullArray();
     }
 
     /**
@@ -193,21 +165,20 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      */
     public function addItemAction($id)
     {
-        $request = $this->getMatchedUrl();
-
-        $itemModel = $this->model("events/item");
-
-        if ($userData = $this->getCurrentUser())
+        if ($userData = $this->getCurrentUser(true))
         {
             $data = $this->getHttpData(func_get_args());
 
-            $data['date'] = date("y-m-d", strtotime($data['date']));
+            $eventModel = new Event();
+            $eventModel->assign($data);
+
+            $eventModel->user_id = $userData->id;
 
             //$data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE)
+            if ($eventModel->save())
             {
                 return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
+                    $this->getBasePath() . "edit/" . $eventModel->id,
                     self::$t->translate("Event created with success"),
                     "success"
                 );
@@ -215,7 +186,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             else
             {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
             }
         }
         else
@@ -231,18 +202,18 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      */
     public function setItemAction($id)
     {
-        $itemModel = $this->model("events/item");
-
         if ($userData = $this->getCurrentUser())
         {
             $data = $this->getHttpData(func_get_args());
 
-            $data['date'] = date("y-m-d", strtotime($data['date']));
+            $eventModel = Event::findFirstById($id);
+            $eventModel->assign($data);
 
-            if ($itemModel->setItem($data, $id) !== FALSE)
+            if ($eventModel->save() !== FALSE)
             {
                 $response = $this->createAdviseResponse(self::$t->translate("Event updated with success"), "success");
-                return array_merge($response, $data);
+
+                return array_merge($response, $eventModel->toFullArray());
             }
             else
             {
@@ -276,7 +247,7 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             else
             {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
             }
         }
         else
@@ -292,75 +263,102 @@ class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      */
     public function getItemsAction($type)
     {
-        $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+        if ($currentUser = $this->getCurrentUser(true)) {
+            $itemsRS = Event::find();
 
-        $modelRoute = "events/collection";
-        $baseLink = $this->getBasePath();
+            /*
+            $currentUser    = $this->getCurrentUser(true);
+            $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
+            $modelRoute = "events/collection";
+            $baseLink = $this->getBasePath();
 
-        $items = $itemsData;
+            $itemsCollection = $this->model($modelRoute);
+            $itemsData = $itemsCollection->getItems();
 
-        if ($type === 'combo')
-        {
-            $q = $_GET['q'];
-
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $event) {
-                // Events
-                $result[] = array
-                (
-                    'id'            => intval($event['id']),
-                    'title'         => substr(str_replace("\n", " ", strip_tags($event['name'])), 0, 25),
-                    'description'   => $event['description'],
-                    'start'         => $event['date'],
-                    'allDay'        => true,
-                    'color'         => $event['event_type_color'],
-                    'editable'      => false
-                );
-            }
-
-            return $result;
-        }
-        else if ($type === 'datatable')
-        {
-            $items = array_values($items);
-            foreach($items as $key => $item)
+            $items = $itemsData;
+            */
+            if ($type === 'combo')
             {
-                $items[$key]['options'] = array
+                $q = $_GET['q'];
+
+                $items = $itemsCollection->filterCollection($items, $q);
+
+                foreach($items as $event) {
+                    // Events
+                    $result[] = array
+                    (
+                        'id'            => intval($event['id']),
+                        'title'         => substr(str_replace("\n", " ", strip_tags($event['name'])), 0, 25),
+                        'description'   => $event['description'],
+                        'start'         => $event['date'],
+                        'allDay'        => true,
+                        'color'         => $event['event_type_color'],
+                        'editable'      => false
+                    );
+                }
+
+                return $result;
+            }
+            else if ($type === 'datatable')
+            {
+                $items = array();
+                foreach($itemsRS as $key => $model)
+                {
+                    $items[$key] = $model->toFullArray();
+
+                    $items[$key]['options'] = array
+                    (
+                        'edit'  => array
+                        (
+                            'icon'  => 'icon-edit',
+                            'link'  => $baseLink . "edit/" . $model->id,
+                            'class' => 'btn-sm btn-primary'
+                        ),
+                        'remove'    => array
+                        (
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+                return array
                 (
-                    'edit'  => array
-                    (
-                        'icon'  => 'icon-edit',
-                        'link'  => $baseLink . "edit/" . $item['id'],
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array
-                    (
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
+                    'sEcho'                 => 1,
+                    'iTotalRecords'         => count($items),
+                    'iTotalDisplayRecords'  => count($items),
+                    'aaData'                => array_values($items)
                 );
             }
-            return array
-            (
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
-            );
         }
 
-        return array_values($items);
+        return $items->toArray();
     }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /item/users/
+     * @deprecated
+    */
+    public function getEvents()
+    {
+        $data = $this->getHttpData(func_get_args());
+
+        $eventTypesModel = $this->model("events/item");
+
+        $eventTypes = $eventTypesModel->getEvents();
+
+        return $eventTypes;
+    }
+
 
     /**
      * [ add a description ]
      *
      * @url GET /data/:id
+     * @deprecated
      */
     public function dataAction($id)
     {

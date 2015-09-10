@@ -33,7 +33,11 @@
 								<div class="col-md-3">
 									<ul class="list-unstyled profile-nav" style="margin-bottom: 0px;">
 										<li>
-											<img width="100%" src="{$T_EDIT_USER.avatars[0].url}" class="img-responsive" alt="" />
+											{if ({$T_EDIT_USER.avatars[0].url})}
+												<img width="100%" src="{$T_EDIT_USER.avatars[0].url}" class="img-responsive" alt="" />
+											{else}
+												<img width="100%" src="{Plico_GetResource file='images/placeholder/avatar.png'}" class="img-responsive" alt="" />
+											{/if}
 											<a href="#" class="profile-edit">edit</a>
 										</li>
 										{foreach $T_SUMMARY as $key => $value}
@@ -48,18 +52,19 @@
 									</ul>
 								</div>
 								<div class="col-md-9 profile-info">
-									<h1>{$T_EDIT_USER.name} {$T_EDIT_USER.surname}</h1>
-									<p>{$T_EDIT_USER.short_description}</p>
-									<p><a href="#">{$T_EDIT_USER.website}</a></p>
+									<h1><span data-update="name">{$T_EDIT_USER.name}</span> <span data-update="surname"> {$T_EDIT_USER.surname}</span></h1>
+									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>
+
+									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
+
 									<ul class="list-inline">
 										<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
-										{if $T_EDIT_USER.data_nascimento}
-											<li><i class="icon-calendar"></i> {$T_EDIT_USER.data_nascimento}</li>
-										{/if}
+										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" >{$T_EDIT_USER.birthday}</span></li>
+										<!--
 										{if $T_EDIT_USER.polo_id}
 											<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
 										{/if}
-										<!--
+
 										<li><i class="icon-star"></i> Top Seller</li>
 										<li><i class="icon-heart"></i> BASE Jumping</li>
 										-->
@@ -76,18 +81,11 @@
 											</a>
 											<span class="after"></span>
 										</li>
+										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> Change Avatar</a></li>
+										<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
 										<!--
-										<li>
-											<a data-toggle="tab" href="#tab_2-1">
-											<i class="icon-home"></i>
-												Contact info
-											</a>
-										</li>
+										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>
 										-->
-										<li ><a data-toggle="tab" href="#tab_3-2"><i class="icon-picture"></i> Change Avatar</a></li>
-
-										<li ><a data-toggle="tab" href="#tab_4-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
-										<li ><a data-toggle="tab" href="#tab_4-5"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>
 										<!--
 										<li ><a data-toggle="tab" href="#tab_5-4"><i class="icon-eye-open"></i> {translateToken value="Privacity Settings"}</a></li>
 										-->
@@ -100,51 +98,16 @@
 											{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 										</div>
 
-										<div id="tab_2-1" class="tab-pane">
-											{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
+										{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
+
+										<div id="tab_1-2" class="tab-pane">
+											{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 										</div>
-
-										<div id="tab_3-2" class="tab-pane">
-
-
-												<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/avatar" data-model-file="avatar.file_id">
-													<input type="hidden" name="avatar.file_id" value="{$T_EDIT_USER.avatars[0].id}" />
-												    <ul class="list-group content-timeline-items">
-												    </ul>
-
-													<span class="btn btn-primary fileinput-button">
-								                        <i class="fa fa-plus"></i>
-								                        <span>{translateToken value="Add/Change file"}</span>
-								                        <input type="file" name="files[]">
-								                    </span>
-												</div>
-
-												<div class="form-group">
-													<!--
-													<div class="margin-top-10 fileupload fileupload-new" data-provides="fileupload">
-														<div class="input-group input-group-fixed">
-															<span class="input-group-btn">
-															<span class="uneditable-input">
-															<i class="icon-file fileupload-exists"></i>
-															<span class="fileupload-preview"></span>
-															</span>
-															</span>
-															<span class="btn default btn-file">
-															<span class="fileupload-new"><i class="icon-paper-clip"></i> {translateToken value="Select file"}</span>
-															<span class="fileupload-exists"><i class="icon-undo"></i> {translateToken value="Change"}</span>
-															<input type="file" class="default" />
-															</span>
-															<a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="icon-trash"></i> {translateToken value="Remove"}</a>
-														</div>
-													</div>
-													-->
-												</div>
-										</div>
-										<div id="tab_4-3" class="tab-pane">
+										<div id="tab_1-3" class="tab-pane">
 											{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"}
 										 </div>
-										<div id="tab_4-5" class="tab-pane">
-											{include file="`$T_MODULE_TPLPATH`/profile/courses.tpl"}
+										<div id="tab_1-4" class="tab-pane">
+											{*include file="`$T_MODULE_TPLPATH`/profile/courses.tpl"*}
 										</div>
 										<!--
 										<div id="tab_5-4" class="tab-pane">

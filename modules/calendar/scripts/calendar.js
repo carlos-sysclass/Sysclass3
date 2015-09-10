@@ -48,7 +48,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            }
-	            
+
 	            this.calOptions =
 	            { //re-initialize the calendar
 	                header: h,
@@ -56,10 +56,15 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                selectable: false,
 	                editable: false,
 	                droppable: false,
-	                 eventSources:
-	                 [
-						'/module/calendar/data'
-	                 ],
+                    eventSources: [
+                        {
+                            url : '/module/calendar/data',
+                            color: '#005999',   // a non-ajax option
+                            borderColor: "#aaaaaa",
+                            textColor: 'white', // a non-ajax option
+                        }
+	                ],
+
 	                eventClick : function(event, jsEvent, view)
 	                {
 	                	mod.view.calendarDialog.find(".event-description").html(event.description);
@@ -87,7 +92,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 
 		this.view = new viewClass();
 		this.searchBy = "title";
-$('.fc-button-prev').click
+        $('.fc-button-prev').click
         (
         	function()
         	{
@@ -97,7 +102,7 @@ $('.fc-button-prev').click
 
 	         	var listOptions;
 		        var i;
-		        
+
 		        listOptions = document.getElementById("event-to-filter").options;
 
 			    $(".select2-chosen").html("All");
@@ -110,7 +115,7 @@ $('.fc-button-prev').click
 				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
 					$('#calendar').fullCalendar('removeEvents');
 				}
-        		
+
         		listOptions[0].selected = true;
 			}
 		);
@@ -122,10 +127,10 @@ $('.fc-button-prev').click
 				$('#calendar').fullCalendar('removeEventSource');
             	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
         		$('#calendar').fullCalendar('removeEvents');
-        		
+
 				var listOptions;
 		        var i;
-		        
+
 		        listOptions = document.getElementById("event-to-filter").options;
 
 			    $(".select2-chosen").html("All");
@@ -134,11 +139,11 @@ $('.fc-button-prev').click
 	     		for(i = 0; i < listOptions.length; i++)
         		{
         			listOptions[i].selected = false;
-        			
+
 				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
 					$('#calendar').fullCalendar('removeEvents');
 				}
-        		
+
         		listOptions[0].selected = true;
 			}
 		);
