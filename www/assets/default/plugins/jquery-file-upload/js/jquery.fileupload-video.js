@@ -83,7 +83,7 @@
                     if (url) {
                         video = this._videoElement.cloneNode(false);
                         video.src = url;
-                        video.style = "max-width:50%";
+                        video.setAttribute('style', "max-width:50%");
                         video.controls = true;
                         data.video = video;
                         return data;
