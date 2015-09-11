@@ -1472,7 +1472,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.classModel.set("id", this.model.get("class_id"), {silent : true});
 					//this.classModel.fetch();
 
-					this.classesCollection.fetch();
+					//this.classesCollection.fetch();
 				}
 			},
 			startLessonView : function() {
@@ -1508,7 +1508,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.lessonModel.set("id", this.model.get("lesson_id"), {silent : true});
 					//this.classModel.fetch();
 
-					this.lessonsCollection.fetch();
+					//this.lessonsCollection.fetch();
 				}
 			}
 		});

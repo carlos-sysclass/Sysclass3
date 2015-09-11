@@ -29,7 +29,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     {
         $this->putComponent("select2");
 
-        $this->putModuleScript("widget.news");
+        //$this->putModuleScript("widget.news");
 
         if (in_array('calendar', $widgetsIndexes))
         {
@@ -56,6 +56,42 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
+     * @url GET /config
+     */
+    public function configPage($route)
+    {
+        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
+        $this->createClientContext("config");
+        if (!$this->createClientContext("config")) {
+            $this->entryPointNotFoundError($this->getSystemUrl('home'));
+        }
+        $this->display($this->template);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /items/events-source
+     */
+
+    public function eventSourcesAction() {
+
+        $item = array(
+            'id' => 1,
+            'url' => '/module/calendar/data',
+            //'color' => '#005999',   // a non-ajax option
+            //'borderColor' => "#aaaaaa",
+            //'textColor' => 'white', // a non-ajax option
+            'className' => 'calendar'
+        );
+
+        return array($item);
+    }
+
+
+    /**
+     * [ add a description ]
+     *
      * @url GET /data
      */
     public function dataAction()
@@ -76,9 +112,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
                 'title'         => substr(str_replace("\n", " ", strip_tags($evt->name)), 0, 25),
                 'description'   => $evt->description,
                 'start'         => $evt->start_date,
+                'end'         => $evt->end_date,
                 'allDay'        => true,
                 //'color'         => $evt->type->color,
-                'editable'      => false
+                'editable'      => true
             );
         }
 

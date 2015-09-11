@@ -368,6 +368,14 @@ $plicoLib->add("resources/components", array(
 	)
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'fullcalendar',
+	'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
+	'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar.min')
+));
+
+
+
 
 $plicoLib->concat(
 	'resources/css',
@@ -387,7 +395,6 @@ $plicoLib->concat(
 		'plugins/bootstrap-toastr/toastr.min',
 		'plugins/gritter/css/jquery.gritter',
 		'plugins/bootstrap-daterangepicker/daterangepicker-bs3',
-		'plugins/fullcalendar/fullcalendar/fullcalendar',
 		'plugins/jqvmap/jqvmap/jqvmap',
 		'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
 		'plugins/bootstrap-fileupload/bootstrap-fileupload',

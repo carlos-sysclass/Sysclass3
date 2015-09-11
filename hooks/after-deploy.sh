@@ -21,7 +21,7 @@
 # Executado após a instalação.                                                 #
 # ---------------------------------------------------------------------------- #
 
-#DIRNAME=`dirname $(readlink -f $0)`
+DIRNAME=`dirname $(readlink -f $0)`
 
 ln -s ../files/public/ files
 
@@ -30,5 +30,5 @@ ln -s ../files/public/ files
 #chmod 777 "$DIRNAME/../cache/volt" -R
 
 #creating cache dir
-#mkdir -p "$DIRNAME/../logs"
+mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
