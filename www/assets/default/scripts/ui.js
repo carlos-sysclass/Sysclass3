@@ -470,9 +470,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 				    window.location.href = action.data;
                 }
 			} else if (action.intent == "advise") {
-				app.module("utils.toastr").message(action.type, action.message);
+				$SC.module("utils.toastr").message(action.type, action.message);
             } else if (action.intent == "change-setting") {
-                app.userSettings.set($(el).data("actionProperty"), $(el).data("actionValue"));
+                $SC.userSettings.set($(el).data("actionProperty"), $(el).data("actionValue"));
 			} else {
 				console.debug("@TODO: handleaction:", action);
 			}

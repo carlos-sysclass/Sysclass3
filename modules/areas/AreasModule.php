@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use \Sysclass\Models\Users\User;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -90,6 +91,38 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         );
 
         return $actions[$request];
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /add
+     */
+    public function addPage()
+    {
+        $coordinators = User::find(
+            "can_be_coordinator = 1"
+        );
+        $this->putItem("coordinators", $coordinators->toArray());
+
+        // HANDLE PAGE
+        parent::addPage($id);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /edit/:id
+     */
+    public function editPage($id)
+    {
+        $coordinators = User::find(
+            "can_be_coordinator = 1"
+        );
+        $this->putItem("coordinators", $coordinators->toArray());
+
+
+        parent::editPage($id);
     }
 
     /**
@@ -263,7 +296,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
             $itemModel = $this->model("courses/areas/collection");
             //$data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->debug()->addItem($data)) !== FALSE) {
+            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
                     self::$t->translate("Knowlegde Area created with success"),
