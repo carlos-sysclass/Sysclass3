@@ -10,6 +10,7 @@ libraries/language/*
 files/*
 files-private/*
 www/doc/*
+www/resources
 /logs
 /build/api/*
 /build/code-browser/*

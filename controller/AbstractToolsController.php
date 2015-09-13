@@ -1,5 +1,5 @@
 <?php
-abstract class AbstractToolsController extends PageController
+abstract class AbstractToolsController extends PhalconWrapperController
 {
 
     // CREATE FUNCTION HERE

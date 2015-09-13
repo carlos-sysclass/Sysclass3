@@ -16,3 +16,10 @@ crud:
       template: manage.tpl
       variables:
         page_subtitle: Manage your calendar events
+    "event-source/add":
+      components: ["validation", "wysihtml5"]
+      #blocks: ["messages.eventtypes.allow"]
+      template: event-source.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new Event Source

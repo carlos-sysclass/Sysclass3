@@ -1,6 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
-<div class="row" id="calendar-container">
+<div class="row margin-top-20" id="calendar-container">
     <!--
     <div class="col-md-3 col-sm-12">
         <h3 class="event-form-title">Draggable Events</h3>
@@ -53,8 +53,11 @@
                         <div class="form-body">
                             <div class="form-group">
                                 <label class="control-label">{translateToken value="Type"}</label>
-                                <select class="select2-me form-control" id="calendar-event-source-combo" name="source_id" data-rule-required="1"  data-format-as="color-list">
-
+                                <select class="select2-me form-control" name="source_id" data-rule-required="1"  data-format-as="color-list">
+                                    <option value="">{translateToken value="Please Select"}</option>
+                                    {foreach $T_EVENT_SOURCES as $evt}
+                                        <option value="{$evt.id}" data-class="{$evt.class_name}">{$evt.name}</option>
+                                    {/foreach}
                                 </select>
                             </div>
                             <div class="form-group">
@@ -88,13 +91,54 @@
         </div>
     <!-- /.modal-create-dialog -->
     </div>
-</div>
+    <!-- TODO: CREATE A DIALOG TO MANAGE THE USER CALENDARS -->
+    <!--
+    <div class="modal fade" id="calendar-event-source" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-wide">
+            <div class="modal-content">
+                <form id="form-calendar-event-creation" role="form" class="form-validate">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title event-title">{translateToken value="Event Creation"}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="backgrid-table">
+                                        <table class="table table-striped table-bordered table-hover table-full-width data-table" id="view-{$T_MODULE_ID}">
+                                            <thead>
+                                                <tr>
+                                                    <th align="center">Disponible Event Sources</th>
+                                                </tr>
+                                            </thead>
+                                                {foreach $T_EVENT_SOURCES as $evt}
+                                                <tr>
+                                                    <td align="center"><div class="label ladel-default {$evt.class_name}">{$evt.name}</div></td>
+                                                </tr>
+                                                {/foreach}
+                                            <tbody>
 
-<script type="text/template" id="calendar-event-source-combo-template">
-    <option value="">{translateToken value="Please Select"}</option>
-    <% _.each(model, function(item) { %>
-        <option value="<%= item.id %>" data-class="<%= item.class_name %>"><%= item.name %></option>
-    <% }); %>
-</script>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" type="submit">{translateToken value="Create Event"}</button>
+                        <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    -->
+</div>
 
 {/block}

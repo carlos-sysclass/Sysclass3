@@ -63,9 +63,11 @@
     </div>
 {/if}
 
-{foreach item="script" from=$T_SCRIPTS}
-	<script src="{Plico_GetResource file=$script}"></script>
-{/foreach}
+{$T_SCRIPTS}
+
+{*foreach item="script" from=$T_SCRIPTS*}
+<!--    <script src="{Plico_GetResource file=$script}"></script> -->
+{*/foreach*}
 
 <!-- END CORE PLUGINS -->
 

@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class EventTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActionable
 {
     /* ILinkable */
     public function getLinks()

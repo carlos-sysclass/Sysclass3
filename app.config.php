@@ -374,20 +374,18 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
 ));
 
-
-
-
 $plicoLib->concat(
 	'resources/css',
 	array(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
-		'plugins/font-awesome/css/font-awesome.min',
+
+		'plugins/font-awesome/css/font-awesome',
 		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/font-awesome-more/css/font-awesome-corp',
 		'plugins/bootstrap/css/bootstrap.min',
 		//'plugins/uniform/css/uniform.default',
+		'plugins/fa/css/font-awesome',
 
-        'plugins/fa/css/font-awesome.min',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -440,7 +438,7 @@ $plicoLib->concat(
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
 		//'plugins/uniform/jquery.uniform.min',
-//		'plugins/jquery-validation/dist/jquery.validate',
+		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 
 		'plugins/jquery.blockui.min',
@@ -470,6 +468,7 @@ $plicoLib->concat(
 
 /* BOOTSTRAP PHALCON */
 use Phalcon\Loader,
+	Phalcon\DI,
 	Phalcon\DI\FactoryDefault,
 	//Phalcon\Mvc\Model\Manager as ModelsManager,
 	//Plico\Mvc\Model\Manager as ModelsManager,
@@ -551,6 +550,29 @@ $di->set('cache', function() {
 	return $cache;
 });
 
+$di->setShared("url", function() use ($di) {
+	$url = new Phalcon\Mvc\Url();
+	$url->setDI($di);
+	$url->setBasePath("/var/www/local.sysclass.com/current/www");
+
+	return $url;
+});
+
+$di->setShared("escaper", function() {
+    $escaper = new \Phalcon\Escaper();
+    return $escaper;
+});
+
+$di->setShared("assets", function() use ($di) {
+	$assets = new Plico\Assets\Manager(array(
+		"sourceBasePath" => "/var/www/local.sysclass.com/current/www/",
+		"targetBasePath" => "/var/www/local.sysclass.com/current/www/"
+	));
+	//$assets->setDI($di);
+	//$url->setBasePath("/var/www/local.sysclass.com/current/www");
+	return $assets;
+});
+
 
 $session = new Session(array('uniqueId' => 'SYSCLASS'));
 if (!$session->isStarted()) {
@@ -584,6 +606,7 @@ $di->set('stringsHelper', function () {
     return $strings;
 });
 
+DI::setDefault($di);
 
 // TODO: PARSE MODULES FILES (aka config.yml), AND CHECK FOR EVENT LISTENERS
 

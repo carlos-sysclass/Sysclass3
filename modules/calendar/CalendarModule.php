@@ -11,7 +11,7 @@ use Sysclass\Models\Calendar\Sources as CalendarSource,
  * @package Sysclass\Modules
  */
 
-class CalendarModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable
+class CalendarModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
 {
     public function getSummary() {
         $data = Event::count(); // FAKE, PUT HERE DUE PAYMENTS
@@ -104,27 +104,46 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             ),
             array(
                 'icon'  => 'fa fa-calendar',
-                'link'  => $this->getBasePath() . "config",
-                'text'  => self::$t->translate("Announcements")
+                'link'  => $this->getBasePath() . "manage",
+                'text'  => self::$t->translate("Calendar Events")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
-            case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+            case "event-source/add" : {
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Event Source"));
                 break;
             }
-            case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Annoucement"));
-                break;
-            }
+            /*
             case "edit/:id" : {
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Annoucement"));
                 break;
             }
+            */
         }
         return $breadcrumbs;
+    }
+
+    /* IActionable */
+    public function getActions()
+    {
+        $request = $this->getMatchedUrl();
+
+        $actions = array
+        (
+            'manage'  => array
+            (
+                array(
+                    'text'      => self::$t->translate('New Event Source'),
+                    'link'      => $this->getBasePath() . "event-source/add",
+                    'class'     => "btn-primary",
+                    'icon'      => 'icon-plus'
+                )
+            )
+        );
+
+        return $actions[$request];
     }
 
     /**
@@ -140,8 +159,28 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
         if (!$this->createClientContext("manage")) {
             $this->entryPointNotFoundError($this->getSystemUrl('home'));
         }
+        $eventSources = CalendarSource::find()->toArray();
+        $this->putItem("event_sources", $eventSources);
+
         $this->display($this->template);
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /event-source/add
+     */
+
+    public function addEventSourcePage()
+    {
+        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
+        $this->createClientContext("event-source/add");
+        if (!$this->createClientContext("event-source/add")) {
+            $this->entryPointNotFoundError($this->getSystemUrl('home'));
+        }
+        $this->display($this->template);
+    }
+
     /**
      * [ add a description ]
      *

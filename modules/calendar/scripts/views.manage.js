@@ -70,7 +70,7 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
 
 
         var calendarManagerViewClass = Backbone.View.extend({
-            comboTemplate : _.template($("#calendar-event-source-combo-template").html(), null, {variable: "model"}),
+            //comboTemplate : _.template($("#calendar-event-source-combo-template").html(), null, {variable: "model"}),
             //portlet: $('#calendar-widget'),
             //calendarDialog : $('#calendar-dialog'),
             //calendarCreateDialog : $('#calendar-create-dialog'),
@@ -91,10 +91,11 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                 */
             },
             createSourceCombo : function() {
+                /*
                 this.$("#calendar-event-source-combo").html(
                     this.comboTemplate(this.collection.toJSON())
                 );
-
+                */
                 /*
                 this.$("#calendar-event-source-combo").select2({
                     templateResult: formatResult,

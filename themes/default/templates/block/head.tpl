@@ -11,9 +11,11 @@
 
 <link rel="icon" type="image/ico" href="{Plico_GetResource file='images/favicon.ico'}" />
 
-{foreach item="css" from=$T_STYLESHEETS}
-	<link rel="stylesheet" href="{Plico_GetResource file=$css}" />
-{/foreach}
+{$T_STYLESHEETS}
+
+{*foreach item="css" from=$T_STYLESHEETS*}
+<!--	<link rel="stylesheet" href="{$T_STYLESHEETS}" /> -->
+{*/foreach*}
 
 <link rel="shortcut icon" href="favicon.ico" />
 <!--
