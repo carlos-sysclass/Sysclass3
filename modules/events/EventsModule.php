@@ -9,8 +9,9 @@ use \Sysclass\Models\Calendar\Event,
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
+ * @deprecated 3.0.1.1 Moved to calendar module
  */
-class EventsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumbable, IActionable
 {
     /* ILinkable */
     public function getLinks()

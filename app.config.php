@@ -371,7 +371,7 @@ $plicoLib->add("resources/components", array(
 $plicoLib->add("resources/components", array(
 	'name'	=> 'fullcalendar',
 	'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
-	'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar.min')
+	'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
 ));
 
 
@@ -495,7 +495,6 @@ $loader->registerNamespaces(
 // Register autoloader
 $loader->register();
 
-
 $di = new FactoryDefault();
 $eventsManager = new Phalcon\Events\Manager();
 $di->set("eventManager", $eventsManager);
@@ -576,6 +575,15 @@ $di->set('crypt', function () {
     //$crypt->setKey();
     return $crypt;
 }, true);
+
+
+$di->set('stringsHelper', function () {
+    $strings = new \Plico\Php\Helpers\Strings();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $strings;
+});
+
 
 // TODO: PARSE MODULES FILES (aka config.yml), AND CHECK FOR EVENT LISTENERS
 

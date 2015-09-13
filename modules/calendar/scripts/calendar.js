@@ -57,14 +57,16 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                editable: false,
 	                droppable: false,
                     eventSources: [
-                        {
-                            url : '/module/calendar/data',
-                            color: '#005999',   // a non-ajax option
-                            borderColor: "#aaaaaa",
-                            textColor: 'white', // a non-ajax option
-                        }
+                        '/module/calendar/items/calendar'
 	                ],
-
+                    eventDataTransform : function( eventData ) {
+                        if (/^-?[\d.]+(?:e-?\d+)?$/.test(eventData.id)) {
+                            eventData.start = moment.unix(eventData.start);
+                            eventData.end = moment.unix(eventData.end);
+                        }
+                        return eventData;
+                    },
+                    /*
 	                eventClick : function(event, jsEvent, view)
 	                {
 	                	mod.view.calendarDialog.find(".event-description").html(event.description);
@@ -75,6 +77,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                	mod.view.calendarCreateDialog.find("#date").val(date.toISOString().slice(0, 10));
 	                	mod.view.calendarCreateDialog.modal('show');
 	                }
+                    */
 	            };
 
 		        this.render();
@@ -147,7 +150,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
         		listOptions[0].selected = true;
 			}
 		);
-
+        /*
         jQuery("#event-to-filter").change
         (
             function()
@@ -211,6 +214,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                 });
             }
         });
+        */
 	});
 });
 

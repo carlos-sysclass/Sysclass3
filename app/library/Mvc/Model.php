@@ -1,11 +1,13 @@
 <?php
 namespace Plico\Mvc;
 
-use Phalcon\Mvc\Model\Relation;
+use Phalcon\DI,
+    Phalcon\Mvc\Model\Relation;
 
 class Model extends \Phalcon\Mvc\Model
 {
     public function toFullArray($manyAliases = null) {
+
         $itemData = $this->toArray();
 
         if (is_array($manyAliases)) {
@@ -26,6 +28,8 @@ class Model extends \Phalcon\Mvc\Model
 
         $relations = $this->modelsManager->getRelations(get_class($this));
 
+        $DepInject = DI::getDefault();
+
         foreach($relations as $relation) {
 
             if ($relation->getType() == Relation::HAS_ONE) {
@@ -34,7 +38,7 @@ class Model extends \Phalcon\Mvc\Model
                 if (array_key_exists('alias', $options)) {
                     $alias = $options['alias'];
                     $methodName = "get{$alias}";
-                    $key = strtolower($alias);
+                    $key = $DepInject->get("stringsHelper")->camelDiscasefying($alias);
 
                     $itemRel = $this->{$methodName}();
                     if ($itemRel) {
@@ -49,7 +53,7 @@ class Model extends \Phalcon\Mvc\Model
                 if (array_key_exists('alias', $options)) {
                     $alias = $options['alias'];
                     $methodName = "get{$alias}";
-                    $key = strtolower($alias);
+                    $key = $DepInject->get("stringsHelper")->camelDiscasefying($alias);
 
                     $itemRel = $this->{$methodName}();
 

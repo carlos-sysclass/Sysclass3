@@ -14,7 +14,7 @@ $SC.module("portlet.news", function(mod, app, Backbone, Marionette, $, _) {
 
 				var dialogId = $(e.currentTarget).data('target');
 			 	$(dialogId).find(".news-title").html(this.model.get('title'));
-				$(dialogId).find(".news-data").html(this.model.get('data'));
+				$(dialogId).find(".news-data").html(this.model.get('description'));
 			}
 		});
 
@@ -53,12 +53,13 @@ $SC.module("portlet.news", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.models = {
 		news : Backbone.DeepModel.extend({
-			urlRoot : "/module/news/item/me"
+			urlRoot : "/module/calendar/item/me"
 		})
 	};
+
 	this.collections = {
 		news : Backbone.Collection.extend({
-			url : "/module/news/items/me",
+			url : "/module/calendar/items/me/" + JSON.stringify({source_id:2}) ,
 			model : this.models.news
 		})
 	};

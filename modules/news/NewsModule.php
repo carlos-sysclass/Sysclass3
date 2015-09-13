@@ -9,7 +9,7 @@ use Sysclass\Models\Announcements\Announcement;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class NewsModule extends SysclassModule implements IWidgetContainer, /* ISummarizable, */ ILinkable, IBreadcrumbable, IActionable, ISectionMenu
+class NewsModule extends SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, */ IBreadcrumbable, IActionable, ISectionMenu
 {
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {

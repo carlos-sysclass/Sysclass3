@@ -187,7 +187,15 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	this.select2FormatFunctions = {
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup
-            return "<img class='flag' src='/assets/sysclass.default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
+            return "<img class='flag' src='/assets/default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
+        },
+        "color-list" : function (item) {
+            var uiclass = $(item.element).data("class");
+
+            if (_.isUndefined(uiclass)) {
+                uiclass = "";
+            }
+            return '<span class="btn btn-xs ' + uiclass + '" style="width:16px;height:16px;"></span>&nbsp;&nbsp;' + item.text;
         }
 	};
 

@@ -9,50 +9,10 @@ crud:
       page_title: Calendar Events
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
-    config:
-      components: ["fullcalendar"]
-      scripts: ["views.config"]
-      template: config.tpl
-    view:
-      components: ["select2","data-tables"]
-      template: view.tpl
+    manage:
+      components: ["fullcalendar", "validation", "select2", "wysihtml5", "datepicker", "timepicker"]
+      base_scripts : ["plugins/fullcalendar/fullcalendar/gcal"]
+      scripts: ["views.manage"]
+      template: manage.tpl
       variables:
         page_subtitle: Manage your calendar events
-      context:
-        datatable_fields:
-        - mData: id
-          sClass: text-center
-          label: "#"
-
-        - mData: name
-          label: Name
-
-        - mData: description
-          label: Description
-
-        - mData: start_date
-          sType: unix-moment-date
-          label: Date
-
-        - mData: type.name
-          label: Type
-
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
-
-    add:
-      components: ["validation", "wysihtml5", "select2", "datepicker", "timepicker"]
-      blocks: ["messages.events.allow"]
-      template: form.tpl
-      #scripts: ["models.users", "views.users.add"]
-      variables:
-        page_subtitle: Create a new Event
-    'edit/:id':
-      components: ["validation", "wysihtml5", "select2", "datepicker", "timepicker"]
-      #blocks: ["messages.events.allow"]
-      template: form.tpl
-      #scripts: ["views.events.edit"]
-      variables:
-        page_subtitle: Config and edit events

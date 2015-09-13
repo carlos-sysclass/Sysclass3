@@ -3,11 +3,11 @@ namespace Sysclass\Models\Calendar;
 
 use Phalcon\Mvc\Model;
 
-class EventTypes extends Model
+class Sources extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_event_types");
+        $this->setSource("mod_calendar_sources");
 
     }
 
