@@ -533,8 +533,24 @@ $di->set('modelsManager', function ()  use ($eventsManager) {
 	return $ModelsManager;
 });
 
+$di->set('modelsCache', function () {
+
+	//Cache data for 1 hour
+	$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+	    'lifetime' => 3600
+	));
+
+	$cache = new \Phalcon\Cache\Backend\Apc($frontCache, array(
+    	'prefix' => 'SYSCLASS'
+  	));
+
+    return $cache;
+});
+
 // Use the memory meta-data adapter or other
-$di->set('modelsMetadata', new MetaData());
+$di->set('modelsMetadata', new ApcMetaData(array(
+	'lifetime' => 86400,
+)));
 
 $di->set('cache', function() {
 

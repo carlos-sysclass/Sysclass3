@@ -67,8 +67,6 @@ crud:
         page_title: Your Profile
         page_subtitle: See your profile info, change your password and more.
 
-
-
 blocks:
   users.list.table:
     context:
@@ -82,21 +80,19 @@ blocks:
         - mData: name
           label: Name
 
+        - mData: surname
+          label: Surname
+
         - mData: login
           label: Login
 
-        - mData: extended_user_type
+        - mData: user_type
           label: "User Type"
 
-        - mData: creation_time
-          sType: unix-moment-since
+        - mData: last_login
+          sType: datetime-moment-since
           sClass: text-center
           label: User Since
-
-        - mData: last_login
-          sType: unix-moment-since
-          sClass: text-center
-          label: Last Login
 
         - mData: options
           sType: table-options

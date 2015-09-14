@@ -192,7 +192,7 @@
         <% if (typeof data.id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.id %>" data-original-title="Edit class info">
+            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.class_id %>" data-original-title="Edit class info">
                 <i class="fa fa-edit"></i>
             </a>
 

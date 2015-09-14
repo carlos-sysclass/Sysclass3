@@ -91,6 +91,18 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"aTargets": [ 'unix-moment-since' ]
 		},
 		{
+			"mRender": function ( data, type, row) {
+				if (type == 'display' || type == 'filter') {
+					return moment(data).fromNow();
+				} else {
+					return moment(data).unix();
+				}
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'datetime-moment-since' ]
+		},
+		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display' || type == 'filter') {
 					if (data != 0) {

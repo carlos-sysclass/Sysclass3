@@ -557,39 +557,20 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
      */
     public function getItemsAction($type)
     {
+
         $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $request = $this->getMatchedUrl();
+        $modelRS = User::find();
+        foreach($modelRS as $key => $item) {
+            $items[$key] = $item->toArray();
+            //$news[$key]['user'] = $item->getUser()->toArray();;
+        }
 
-        $modelRoute = "users/collection" ;
-        $baseLink = $this->getBasePath();
-
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
-        $items = $itemsData;
-
-        if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
-
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
-                );
-            }
-            return $result;
-            */
-        } elseif ($type === 'datatable') {
-
+        if ($type === 'datatable') {
             $items = array_values($items);
+            $baseLink = $this->getBasePath();
+
             foreach($items as $key => $item) {
                 // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                 if (array_key_exists('block', $_GET)) {
@@ -618,6 +599,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                         )
                     );
                 }
+
             }
             return array(
                 'sEcho'                 => 1,
@@ -626,7 +608,6 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                 'aaData'                => array_values($items)
             );
         }
-
         return array_values($items);
     }
 
