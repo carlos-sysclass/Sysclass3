@@ -213,14 +213,24 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
             $userTimes = $this->getSession();
 
             if ($userTimes) {
-                $user = $userTimes->getUser();
+                $user = $userTimes->getUser(array(
+                    'cache' => array(
+                        "key"      => "User",
+                        'lifetime' => 300
+                    )
+                ));
 
                 if ($user) {
 
                     $this->checkForMaintenance($user);
+                    if (time() - $userTimes->ping > 90) {
+                        $this->cache->delete("UserTimes");
 
-                    $userTimes->ping = time();
-                    $userTimes->save();
+                        $userTimes->ping = time();
+                        $userTimes->save();
+                        $this->cache->delete("UserTimes");
+                    }
+
                     return $user;
                 } else {
                     $userTimes->expired = 1;
@@ -238,9 +248,15 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
     protected function getSession() {
         $userTimes = UserTimes::findFirst(array(
-            "session_id = '{$this->session->getId()}'",
-            "id = {$this->session->get('session_index')}",
-            'expired = 0'
+            'conditions' => array(
+                "session_id = '{$this->session->getId()}'",
+                "id = {$this->session->get('session_index')}",
+                'expired = 0'
+            ),
+            'cache' => array(
+                "key"      => "UserTimes",
+                'lifetime' => 120
+            )
         ));
 
         if ($userTimes) {
