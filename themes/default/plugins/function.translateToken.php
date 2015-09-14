@@ -10,14 +10,14 @@ function smarty_function_translateToken($params, &$smarty)
 
     $language_id = null;
     if (array_key_exists('language', $params)) {
-        $language_id = $params['language_id'];
-        unset($params['language_id']);
+        $language_id = $params['language'];
+        unset($params['language']);
     }
-    
+
     $vars = null;
     if (count($params) > 0) {
         $vars = $params;
-    } 
+    }
 
     $controller = PlicoLib::handler();
     return $controller::$t->translate($token, $vars, $language_id);

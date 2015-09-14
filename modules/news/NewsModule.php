@@ -284,7 +284,7 @@ class NewsModule extends SysclassModule implements /* IWidgetContainer, ISummari
 
 		//$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
 
-		if ($datatable === 'datatable') {
+		if ($type === 'datatable') {
 			$news = array_values($news);
 			foreach($news as $key => $item) {
 				$news[$key]['options'] = array(

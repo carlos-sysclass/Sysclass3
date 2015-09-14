@@ -1076,7 +1076,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             lesson_id :  mod.entity_id
         });
 
-        this.listenTo(lessonModel, "sync", function(a,b,c,d,e) {
+        this.listenToOnce(lessonModel, "sync", function() {
             mod.lessonContentCollection.fetch();
         });
 
