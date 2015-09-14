@@ -382,7 +382,7 @@ $plicoLib->concat(
 		'plugins/font-awesome/css/font-awesome',
 		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/font-awesome-more/css/font-awesome-corp',
-		'plugins/bootstrap/css/bootstrap.min',
+		'plugins/bootstrap/css/bootstrap',
 		//'plugins/uniform/css/uniform.default',
 		'plugins/fa/css/font-awesome',
 
@@ -565,8 +565,8 @@ $di->setShared("escaper", function() {
 
 $di->setShared("assets", function() use ($di) {
 	$assets = new Plico\Assets\Manager(array(
-		"sourceBasePath" => "/var/www/local.sysclass.com/current/www/",
-		"targetBasePath" => "/var/www/local.sysclass.com/current/www/"
+		"sourceBasePath" => __DIR__ . "/www/",
+		"targetBasePath" => __DIR__ . "/www/"
 	));
 	//$assets->setDI($di);
 	//$url->setBasePath("/var/www/local.sysclass.com/current/www");

@@ -155,7 +155,7 @@
 
         createEditor: function(options) {
             options = options || {};
-            
+
             // Add the toolbar to a clone of the options object so multiple instances
             // of the WYISYWG don't break because "toolbar" is already defined
             options = $.extend(true, {}, options);
@@ -388,7 +388,7 @@
             return methods.init.apply( this, arguments );
         } else {
             $.error( 'Method ' +  method + ' does not exist on jQuery.wysihtml5' );
-        }    
+        }
     };
 
     $.fn.wysihtml5.Constructor = Wysihtml5;
@@ -459,7 +459,7 @@
                 "pre": 1
             }
         },
-        stylesheets: ["./wysiwyg-color.css"], // (path_to_project/lib/css/wysiwyg-color.css)
+        stylesheets: ["plugins/bootstrap-wysihtml5/wysiwyg-color.css"], // (path_to_project/lib/css/wysiwyg-color.css)
         locale: "en"
     };
 
