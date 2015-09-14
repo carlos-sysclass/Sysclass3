@@ -67,8 +67,6 @@ crud:
         page_title: Your Profile
         page_subtitle: See your profile info, change your password and more.
 
-
-
 blocks:
   users.list.table:
     context:
