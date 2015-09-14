@@ -11,9 +11,12 @@ class Configuration extends Component
     public function __construct() {
         if (is_null(self::$cfg)) {
             // LOAD CONFIGURATION
-            $configRS = Settings::find(/*array(
-                'hydration' => Resultset::HYDRATE_ARRAYS
-            )*/);
+            $configRS = Settings::find(array(
+                "cache" => array(
+                    "key"      => "settings-configuration",
+                    "lifetime" => 600
+                )
+            ));
 
             $configRS->setHydrateMode(Resultset::HYDRATE_ARRAYS);
             self::$cfg = array();
