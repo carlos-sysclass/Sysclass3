@@ -228,7 +228,6 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
                         $userTimes->ping = time();
                         $userTimes->save();
-                        $this->cache->delete("UserTimes");
                     }
 
                     return $user;
@@ -236,6 +235,8 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
                     $userTimes->expired = 1;
                     $userTimes->save();
                 }
+            } else {
+                throw new AuthenticationException("NO_USER_LOGGED_IN", AuthenticationException::NO_USER_LOGGED_IN);
             }
 
             $this->_eventsManager->fire("authentication:afterCheckAccess", $this, $user);

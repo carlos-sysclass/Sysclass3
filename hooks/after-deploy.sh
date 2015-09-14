@@ -30,6 +30,9 @@ ln -s ../files/public/ files
 #chmod 777 "$DIRNAME/../cache/volt" -R
 
 #creating cache dir
+mkdir -p "$DIRNAME/../cache/metadata"
+chmod 777 "$DIRNAME/../cache/metadata" -R
+
 mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 

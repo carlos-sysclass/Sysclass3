@@ -540,7 +540,7 @@ $di->set('modelsCache', function () {
 	    'lifetime' => 3600
 	));
 
-	$cache = new \Phalcon\Cache\Backend\Apc($frontCache, array(
+	$cache = new BackendCache($frontCache, array(
     	'prefix' => 'SYSCLASS'
   	));
 
@@ -548,10 +548,11 @@ $di->set('modelsCache', function () {
 });
 
 // Use the memory meta-data adapter or other
-$di->set('modelsMetadata', new ApcMetaData(array(
-	'lifetime' => 86400,
-)));
+//$di->set('modelsMetadata', new MetaData());
 
+$di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
+    'metaDataDir' => __DIR__ . '/cache/metadata/'
+)));
 $di->set('cache', function() {
 
 	//Cache data for 1 hour
@@ -559,7 +560,7 @@ $di->set('cache', function() {
 	    'lifetime' => 3600
 	));
 
-	$cache = new \Phalcon\Cache\Backend\Apc($frontCache, array(
+	$cache = new BackendCache($frontCache, array(
     	'prefix' => 'SYSCLASS'
   	));
 
