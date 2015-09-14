@@ -81,7 +81,7 @@ class TranslateModel extends ModelManager
 
         $langCodes = $translateModel->getDisponibleLanguagesCodes();
 
-        $language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_code;
+        $language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getSystemLanguageCode() : $language_code;
 
         $tokens = $translateTokensModel->clear()->cache(true)->getItemsGroupByToken();
 

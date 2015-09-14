@@ -6,7 +6,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 			events : {
 				"click .datatable-option-edit" 				: "editItem",
 				"click .datatable-option-translate-windows"	: "translateItemWindows",
-				
+
 			},
 			initialize : function(opt) {
 				//this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
@@ -38,16 +38,17 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 				e.preventDefault();
 
 				var modelData = {
-					token 		: data['token'],
-					text		: data[this.dstlang],
-					language_id	: this.dstlang,
-					srclang 	: this.srclang,
-					dstlang 	: this.dstlang
+					token 			: data['token'],
+					text			: data[this.dstlang],
+					language_id		: this.dstlang,
+					//language_code	: this.dstlang,
+					srclang 		: this.srclang,
+					dstlang 		: this.dstlang
 				};
 
 				var translateEditTokenModelClass = app.module("models.translate").translateEditTokenModelClass;
 				var translateEditTokenModel = new translateEditTokenModelClass(modelData);
-				
+
 				if (this.translateEditTokenDialog == null) {
 					var translateEditTokenDialogClass = app.module("dialog.translate.edit").translateEditTokenDialogClass;
 					this.translateEditTokenDialog = new translateEditTokenDialogClass();
@@ -137,7 +138,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 			},
 			refreshTable : function() {
 				this.oTable.api().ajax.reload(null, false);
-			} 
+			}
 		});
 
 		var translateViewClass = Backbone.View.extend({

@@ -37,8 +37,12 @@ class TranslateTokensModel extends ModelManager {
 	}
 
 	public function addToken($token, $force_update = false) {
+        $lang_code = !isset($token['language_code']) ? $token['language_id'] : $token['language_code'];
+        if (empty($lang_code)) {
+            $lang_code = $this->model("translate")->getSystemLanguageCode();
+        }
         $id = array(
-			'language_code'	=> !isset($token['language_code']) ? $this->model("translate")->getSystemLanguageCode() : $token['language_code'],
+			'language_code'	=> !isset($token['language_code']) ? $token['language_id'] : $token['language_code'],
 			'token' 		=> $token['token'],
         );
         if (!$this->exists($id)) {
