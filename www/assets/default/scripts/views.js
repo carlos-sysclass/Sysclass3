@@ -163,6 +163,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				                			//}
 										} else if (input.hasClass("bootstrap-switch-me")) {
 											//input.bootstrapSwitch('state', (itemValue == 1), true);
+                                            innerInput.bootstrapSwitch('state', (itemValue == 1), true);
 				                		} else {
 				                			/*
 					                		input.filter("[value='" + itemValue +"']").attr("checked", "checked");
@@ -238,7 +239,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 if (input.is("[data-update]")) {
                     modelField = input.data("update");
                 }
-                if (this.model.get(modelField)) {
+
+                if (!_.isUndefined(modelField)) {
                     // UPDATE inputField WITH  this.model.get(modelField)
                     var values = this.model.get(modelField);
 
@@ -248,16 +250,33 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                             if (!_.isArray(valueArray)) {
                                 valueArray = [values];
                             }
+
                             _.each(valueArray, function(itemValue, index) {
-                                if (input.filter("[value='" + itemValue +"']").size() > 0) {
+                                if (input.filter("[value='" + itemValue +"']").size() > 0 || input.filter("[data-value-unchecked='" + itemValue +"']")) {
                                     var innerInput = input.filter("[value='" + itemValue +"']");
+                                    var uncheck = false;
+
+                                    if (innerInput.size() == 0) {
+
+                                        innerInput = input.filter("[data-value-unchecked='" + itemValue +"']");
+                                        uncheck = true;
+
+                                    }
 
                                     if (innerInput.hasClass("icheck-me")) {
-                                        innerInput.iCheck("check");
+                                        if (uncheck) {
+                                            innerInput.iCheck("check");
+                                        } else {
+                                            innerInput.iCheck("uncheck");
+                                        }
                                     } else if (input.hasClass("bootstrap-switch-me")) {
                                         innerInput.bootstrapSwitch('state', (itemValue == 1), true);
                                     } else {
-                                        innerInput.attr("checked", "checked");
+                                        if (uncheck) {
+                                            innerInput.attr("checked", "checked");
+                                        } else {
+                                            innerInput.removeAttr("checked");
+                                        }
                                         if ($.uniform) {
                                             $.uniform.update(innerInput);
                                         }
@@ -277,8 +296,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                 }
                             }
                         }
+                    } else {
+                        input.val(values);
                     }
-
                 }
             }.bind(this));
             this.enableDataPooling();
@@ -373,7 +393,16 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					});
 					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
 					this.model.unset(prop, {silent: true});
-					value = values;
+                    console.warn($el, $el.is("[data-update-single]"));
+                    if ($el.is("[data-update-single]")) {
+                        value = _.first(values);
+
+                    } else {
+                        value = values;
+                    }
+
+
+
 				//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
 					//value = -1;
 				//	value = $el.data("valueUnchecked");
@@ -402,10 +431,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    			self.trigger("error:save", model);
 	    		}
 	    	});
+
+            self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
 	    	this.model = model;
-	    	this.render();
+	    	this.render(model);
 	    }
   	});
 
@@ -664,15 +695,19 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     this.baseDatatableViewClass = Backbone.View.extend({
 		events : {
 			"click .datatable-option-select" : "onSelectItem",
+            "click .datatable-actionable" : "onAction",
 			"confirmed.bs.confirmation .datatable-option-remove" : "onRemoveItem"
 		},
     	initialize : function(opt) {
 	        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
 	        if (opt.datatable !== undefined) {
 	        	this.oTable = this.$el.dataTable(opt.datatable);
+            //    this.oTableApi = this.oTable.api();
 	        } else {
 	        	this.oTable = this.$el.dataTable();
 	        }
+            this.oTableApi = this.oTable.api();
+
 	        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 	        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 	        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
@@ -685,6 +720,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	        });
 			*/
     	},
+        refreshTable : function() {
+            //console.warn(this, this.oTable, , this.oTableApi, new $.fn.dataTable.Api( this.oTable ));
+            this.oTable.api().ajax.reload();
+        },
 		onRemoveItem : function(e) {
 			e.preventDefault();
 			var data = this.oTable._($(e.currentTarget).closest("tr"));
@@ -705,6 +744,22 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		onSelectItem : function(e) {
 
-		}
+		},
+        onAction : function(e) {
+            e.preventDefault();
+            var item = $(e.currentTarget);
+            if (item.data("actionUrl")) {
+                var url = item.data("actionUrl");
+                var method = "GET";
+                if (item.data("actionMethod")) {
+                    method = item.data("actionMethod");
+                }
+
+                $.ajax(url, { method : method } );
+            } else {
+                var data = this.oTable._($(e.currentTarget).closest("tr"));
+                this.trigger("action.datatable", _.first(data), item);
+            }
+        }
     });
 });

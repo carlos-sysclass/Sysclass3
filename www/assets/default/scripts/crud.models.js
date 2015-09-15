@@ -7,7 +7,6 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
     var baseItemModelClass = Backbone.DeepModel.extend({
         save: function(key, val, options) {
             this.trigger("before:save", this);
-            console.warn(this.toJSON());
             //this.trigger('change:' + changes[i], this, current[changes[i]], options);
             Backbone.DeepModel.prototype.save.apply(this);
         }

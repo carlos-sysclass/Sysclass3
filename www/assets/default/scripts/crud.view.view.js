@@ -50,7 +50,7 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
         	var sAjaxSource = "/module/" + this.module_id + "/" + this.modelPrefix + "/items/me/datatable";
         }
 
-        var tableView = new tableViewClass({
+        this.tableView = new tableViewClass({
         	el : "#view-" + this.module_id,
         	datatable : {
 		        "sAjaxSource": sAjaxSource,

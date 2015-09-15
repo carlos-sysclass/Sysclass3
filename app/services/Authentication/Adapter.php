@@ -151,8 +151,16 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
             // REGISTER USER LOGOUT EVENT
             $this->unregisterSession($user);
 
+            //var_dump($this->modelsCache-> exists("UserTimes"));
+            //
+            $this->modelsCache->delete("User");
+            $this->modelsCache->delete("UserTimes");
+            //var_dump($this->modelsCache->get("UserTimes"));
+            //$this->modelsCache->flush();
+            //exit;
+
             //$this->_eventsManager->collectResponses(true);
-            $this->_eventsManager->fire("authentication:afterLogin", $this, $user);
+            $this->_eventsManager->fire("authentication:afterLogout", $this, $user);
 
            // $user->save();
 
@@ -213,18 +221,14 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
             $userTimes = $this->getSession();
 
             if ($userTimes) {
-                $user = $userTimes->getUser(array(
-                    'cache' => array(
-                        "key"      => "User",
-                        'lifetime' => 300
-                    )
-                ));
+
+                $user = $userTimes->getUser();
 
                 if ($user) {
 
                     $this->checkForMaintenance($user);
                     if (time() - $userTimes->ping > 90) {
-                        $this->cache->delete("UserTimes");
+                        $this->modelsCache->delete("UserTimes");
 
                         $userTimes->ping = time();
                         $userTimes->save();
@@ -249,15 +253,9 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
     protected function getSession() {
         $userTimes = UserTimes::findFirst(array(
-            'conditions' => array(
-                "session_id = '{$this->session->getId()}'",
-                "id = {$this->session->get('session_index')}",
-                'expired = 0'
-            ),
-            'cache' => array(
-                "key"      => "UserTimes",
-                'lifetime' => 120
-            )
+            "session_id = '{$this->session->getId()}'",
+            "id = {$this->session->get('session_index')}",
+            'expired = 0'
         ));
 
         if ($userTimes) {

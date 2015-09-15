@@ -9,7 +9,7 @@
  * @todo think about move this module to PlicoLib
  */
 
-class UserTypesModule extends SysclassModule implements ILinkable, IBreadcrumbable
+class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadcrumbable
 {
 
 

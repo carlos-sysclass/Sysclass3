@@ -8,7 +8,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				"click .datatable-option-remove" : "removeItem",
 				"click .datatable-option-check" : "checkItem",
-				"click .datatable-actionable" : "doAction",
+				"click .datatable-actionable" : "doAction"
 			},
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
@@ -61,6 +61,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				});
 			},
 			doAction : function(e) {
+				alert('dsadas');
 				var item = $(e.currentTarget);
 				if (item.data("actionUrl")) {
 					var url = item.data("actionUrl");
@@ -70,6 +71,9 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					}
 
 	                $.ajax(url, { method : method } );
+				} else {
+					var data = this.oTable._($(e.currentTarget).closest("tr"));
+					mod.trigger("datatable:item:click", item, _.first(data));
 				}
 			}
         });

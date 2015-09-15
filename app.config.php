@@ -541,7 +541,7 @@ $di->set('modelsCache', function () {
 	));
 
 	$cache = new BackendCache($frontCache, array(
-    	'prefix' => 'SYSCLASS'
+    	'prefix' => 'SYSCLASS-MODELS'
   	));
 
     return $cache;
