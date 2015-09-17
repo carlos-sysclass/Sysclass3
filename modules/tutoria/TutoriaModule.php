@@ -7,10 +7,11 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetContainer, IBreadcrumbable, IActionable
+class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcrumbable, IActionable
 {
     protected $_modelRoute = "tutoria";
     /* ISummarizable */
+    /*
     public function getSummary() {
         $data = array(1);
 
@@ -24,7 +25,7 @@ class TutoriaModule extends SysclassModule implements ISummarizable, IWidgetCont
             )
         );
     }
-
+    */
     /* IWidgetContainer */
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('tutoria.widget', $widgetsIndexes)) {

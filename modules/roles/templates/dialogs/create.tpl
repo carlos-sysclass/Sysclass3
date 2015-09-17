@@ -25,6 +25,21 @@
 					                </div>
 								</div>
 							</div>
+                            <h5 class="form-section margin-bottom-10">{translateToken value="Entities using these roles"}</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">{translateToken value="Courses"}</label>
+                                        <input type="checkbox" name="in_course" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">{translateToken value="Classes"}</label>
+                                        <input type="checkbox" name="in_class" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 					</div>
                 </div>

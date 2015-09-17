@@ -6,7 +6,7 @@ $SC.module("dialogs.roles.create", function(mod, app, Backbone, Marionette, $, _
 
 //    this.started = false;
 
-    mod.on("start", function(opt){
+    mod.on("start", function(opt) {
         var baseFormClass = app.module("views").baseFormClass;
         var roleCreationDialogViewClass = baseFormClass.extend({
             renderType : "byView",
@@ -29,25 +29,25 @@ $SC.module("dialogs.roles.create", function(mod, app, Backbone, Marionette, $, _
 
         this.models = {
             roles : Backbone.Model.extend({
+                defaults : {
+                    name : "",
+                    active : 1,
+                    in_course : 0,
+                    in_class : 0
+                },
                 urlRoot : "/module/roles/item/me"
             })
         };
 
         this.dialogView = new roleCreationDialogViewClass({
             el : "#dialogs-roles-create",
-            model : new mod.models.roles({
-                name : "",
-                active : 1
-            })
+            model : new mod.models.roles()
         });
 
         // BIND TO DEFAULT CALLER
         $(".dialog-create-role-open-action").on("click", function(e) {
             e.preventDefault();
-            this.dialogView.setModel(new mod.models.roles({
-                name : "",
-                active : 1
-            }));
+            this.dialogView.setModel(new mod.models.roles());
             this.dialogView.open();
         }.bind(this));
         /*
