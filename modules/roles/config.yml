@@ -37,37 +37,3 @@ crud:
 
     add: false
     'edit/:id': false
-
-blocks:
-  users.list.table:
-    context:
-      block_id: "users"
-      ajax_source: "/module/users/items/me/datatable?block"
-      datatable_fields:
-        - mData: id
-          sClass: text-center
-          label: "#"
-
-        - mData: name
-          label: Name
-
-        - mData: surname
-          label: Surname
-
-        - mData: login
-          label: Login
-
-        - mData: user_type
-          label: "User Type"
-
-        - mData: last_login
-          sType: datetime-moment-since
-          sClass: text-center
-          label: User Since
-
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
-
-

@@ -374,6 +374,15 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
 ));
 
+$plicoLib->add("resources/components", array(
+	'name'	=> 'easy-pie-chart',
+	'css'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
+	'js'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart')
+));
+
+		//,
+
+
 $plicoLib->concat(
 	'resources/css',
 	array(
@@ -394,7 +403,7 @@ $plicoLib->concat(
 		'plugins/gritter/css/jquery.gritter',
 		'plugins/bootstrap-daterangepicker/daterangepicker-bs3',
 		'plugins/jqvmap/jqvmap/jqvmap',
-		'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
+		//'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
 		'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
 		'css/pageguide/pageguide',

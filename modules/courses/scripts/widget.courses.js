@@ -836,6 +836,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 	portlet : this.$el
 				});
 
+				this.lessonExercisesTabView 	= new lessonExercisesTabViewClass({
+					el : this.$("#tab_lesson_exercises"),
+					model : this.model,
+                	portlet : this.$el
+				});
+
 				this.blockUi('No Lesson Selected');
 
 			},
@@ -1181,8 +1187,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 		*/
-		/*
-		var userProgressViewClass = Backbone.View.extend({
+
+		var overallProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
 			portlet: $('#courses-widget'),
 			initialize: function() {
@@ -1193,7 +1199,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function() {
+				console.warn(jQuery.fn.easyPieChart);
 				if (jQuery.fn.easyPieChart) {
+
 					this.$(".lesson").easyPieChart({
 						animate: 1000,
 						size: 75,
@@ -1206,29 +1214,32 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('yellow')
 					});
+					/*
 					this.$(".semester").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
 						barColor: App.getLayoutColorCode('red')
 					});
+					*/
 					this.$(".course").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
-						barColor: App.getLayoutColorCode('grey')
+						barColor: App.getLayoutColorCode('red')
 					});
 
 
-					this.renderCourse();
-					this.renderSemester();
-					this.renderClass();
-					this.renderLesson();
+					//this.renderCourse();
+					//this.renderSemester();
+					//this.renderClass();
+					//this.renderLesson();
 				}
 			},
-			renderCourse : function() {
+			renderCourse : function(factor) {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				percent = 30;
+				//percent = 30;
+				var percent = factor * 100;
 				this.$(".course span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
@@ -1238,9 +1249,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			renderSemester : function() {
 			},
 
-			renderClass : function() {
-				percent = 20;
-
+			renderClass : function(factor) {
+				var percent = factor * 100;
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				this.$(".class span").html(percent);
 
@@ -1248,9 +1258,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".class").data('easyPieChart').update(percent);
 				}
 			},
-			renderLesson : function() {
+			renderLesson : function(factor) {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				percent = 80;
+				var percent = factor * 100;
 				this.$(".lesson span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
@@ -1258,7 +1268,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		});
-		*/
 
 		this.courseWidgetViewClass = parent.widgetViewClass.extend({
 			coursesCollection : null,
@@ -1286,6 +1295,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					el: "#courses-content-navigation"
 				});
 				*/
+				this.startOverallProgress();
+
 				//this.listenTo(this.model, 'change:course_id', this.startCourseView.bind(this));
 
 				//if (this.model.get("course_id")) {
@@ -1306,6 +1317,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//}
 
 				Marionette.triggerMethodOn(this, "start");
+			},
+			startOverallProgress : function() {
+				this.overallProgressView = new overallProgressViewClass();
 			},
 			startCourseView : function() {
 				console.info('portlet.courses/courseWidgetViewClass::startCourseView');
@@ -1367,6 +1381,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						// RESELECT THE CLASS
 						//this.model.save();
 
+						//UPDATE PROGRESS INDICATION
+						this.overallProgressView.renderCourse(this.courseModel.get("progress.factor"));
 					}.bind(this));
 				}
 				if (_.isNull(this.coursesCollection)) {
@@ -1449,6 +1465,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						}
 						// RESELECT THE CLASS
 						//this.model.save();
+						this.overallProgressView.renderClass(this.classModel.get("progress.factor"));
 					}.bind(this));
 				}
 
@@ -1485,6 +1502,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 						// RESELECT THE CLASS
 						this.model.save();
+
+						this.overallProgressView.renderLesson(this.lessonModel.get("progress.factor"));
 					}.bind(this));
 				}
 

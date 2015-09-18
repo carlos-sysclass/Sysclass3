@@ -457,12 +457,12 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
-	<!--
+
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number lesson" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Lesson"}</a>
+				<div class="number course" data-percent="0"><span>0</span>%</div>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Course"}</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
@@ -475,13 +475,12 @@
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number course" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Course"}</a>
+				<div class="number lesson" data-percent="0"><span>0</span>%</div>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Lesson"}</a>
 			</div>
 		</div>
-			<div class="clearfix margin-bottom-10"></div>
+		<div class="clearfix margin-bottom-10"></div>
 	</div>
-	-->
 </div>
 
 <script type="text/template" id="tab_course_description-template">
