@@ -693,7 +693,10 @@
 
 <script type="text/template" id="tab_lessons_video-item-template">
 	<div class="videocontent">
-		<video id="lesson-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered" width="auto"  height="auto" style="max-height:100%;max-width:100%;">
+		<video id="lesson-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered"
+			width="auto"  height="auto"
+			poster="{Plico_GetResource file='images/default-poster.jpg'}"
+			style="max-height:100%;max-width:100%;">
 			<source src="<%= model.file.url %>" type='<%= model.file.type %>' />
 
 			<% _.each(model.childs, function(item, index){ %>

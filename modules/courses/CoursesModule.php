@@ -16,7 +16,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         return array(
             'type'  => 'danger',
             'count' => '<i class="icon-arrow-down"></i>',
-            'text'  => self::$t->translate('Work Due'),
+            'text'  => self::$t->translate('Progress'),
             'link'  => array(
                 'text'  => '35%',
                 'link'  => $this->getBasePath() . 'all'
