@@ -8,7 +8,7 @@
  * @package Sysclass\Modules
  */
 
-class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IWidgetContainer
+class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IWidgetContainer, IPermissionable
 {
     /* ISummarizable */
     public function getSummary() {
@@ -208,6 +208,13 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
 		return false;
 	}
+    /* IPermissionable */
+    public function getResources() {
+        return array(
+
+
+        );
+    }
 
     /**
      * [ add a description ]

@@ -30,6 +30,17 @@ crud:
           sClass: text-center
           label: Active
 
+        - mData: in_course
+          sType: table-boolean
+          sClass: text-center
+          label: Course Role
+
+        - mData: in_class
+          sType: table-boolean
+          sClass: text-center
+          label: Class Role
+
+
         - mData: options
           sType: table-options
           sClass: text-center
@@ -37,3 +48,29 @@ crud:
 
     add: false
     'edit/:id': false
+    'set-resources/:id':
+      #components: ["validation", "select2", "wysihtml5", "datepicker", "timepicker"]
+      components: ["select2","data-tables"]
+      base_scripts : ["scripts/utils.datatables"]
+      scripts: ["views.roles.set-resources"]
+      template: set-resources.tpl
+      variables:
+        page_subtitle: Manage permissions
+      context:
+        ajax_source: "/module/permission/items/me/datatable?block"
+        datatable_fields:
+        - mData: group
+          sClass: text-center
+          label: "Group"
+
+        - mData: name
+          label: Name
+
+        - mData: description
+          label: Description
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+

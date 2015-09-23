@@ -65,7 +65,6 @@ class DashboardController extends AbstractSysclassController
 
         foreach($widgets as $key => $widget) {
             call_user_func_array(array($this, "addWidget"), $widget);
-
         }
 
         //$pageLayout = $layoutManager->getLayout('dashboard.' . $currentUser['dashboard_id']);
@@ -77,12 +76,13 @@ class DashboardController extends AbstractSysclassController
             $this->putBlock("institution.social-gadgets");
         //}
 
+            $widgets = array_slice($widgets, 0, 1);
+
         //$topbarMenu = $layoutManager->getMenuBySection("topbar");
 
         //$this->putItem("topbar_menu", $topbarMenu);
 
         //$this->putBlock("institution.social-gadgets");
-
         parent::display('pages/dashboard/default.tpl');
 	}
 

@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Acl\Resource as AclResource;
 /**
  * Manage and control the system permission system
  * @package Sysclass\Modules
@@ -13,6 +14,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	const RULE_MATCH_ANY = 2;
 	const RULE_NOT_MATCH_ALL = 3;
 	const RULE_NOT_MATCH_ANY = 4;
+
 
 	// IBlockProvider
 	public function registerBlocks() {
@@ -34,6 +36,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * Utility method to parse data for a condition_id string e return the struct
 	 * @param  string $condition_id The condition ID, in "{module_id}::{cond_id}" format
 	 * @return array Return the condition_id, the module name and the module itself.
+	 * @deprecated
 	 */
 	protected function getModuleByConditionId($condition_id) {
 		list($module, $condition_id) = explode("::", $condition_id);
@@ -51,6 +54,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * @param  string $access_mode
 	 * @param  string $id_field
 	 * @return array[]
+	 * @deprecated 3.0.1.0
 	 */
 	public function checkRules($dataItens, $type, $access_mode = 'permission_access_mode', $id_field = "id") {
 		// TODO MAKE A WAY TO CACHE getItemsByType, in the model
@@ -115,7 +119,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 
 	/**
 	 * [ add a description ]
-	 *
+	 * @deprecated 3.0.1.0
 	 * @url GET /combo/items
 	 */
 	public function comboItensAction()
@@ -153,7 +157,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * Get the HTML snipet for a determinated condition
 	 * @param  string $condition_id
 	 * @return html
-	 *
+	 * @deprecated 3.0.1.0
 	 * @url GET /get/options/:condition_id
 	 */
 	public function getConditionOptions($condition_id) {
@@ -175,6 +179,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * ADD A NEW PERMISSION
 	 *
 	 * @url POST /item/me
+	 * @deprecated 3.0.1.0
 	 */
 	public function createModelAction()
 	{
@@ -225,6 +230,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	 * @param  id $id The permission/condition ID to remove
 	 * @return response     The status response from model;
 	 * @url DELETE /item/me/:id
+	 * @deprecated 3.0.1.0
 	 */
 	public function deleteModelAction($id)
 	{
@@ -239,8 +245,8 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 	/**
 	 * GET ALL OR FILTERED PERMISSIONS
 	 *
-	 * @url GET /items/me
 	 * @return json[]
+	 * @deprecated 3.0.1.0 NOw a database aproch is used;.
 	 */
 	public function getPermissionsAction()
 	{
@@ -286,5 +292,68 @@ class PermissionModule extends SysclassModule implements IBlockProvider
 			return $this->notAuthenticatedError();
 		}
 	}
+
+	/**
+     * [ add a description ]
+     *
+     * @url GET /items/me
+     * @url GET /items/me/:type
+     */
+    public function getItemsAction($type)
+    {
+
+        $currentUser    = $this->getCurrentUser(true);
+        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+
+        $modelRS = AclResource::find();
+        $items = array();
+        foreach($modelRS as $key => $item) {
+            $items[$key] = $item->toArray();
+            //$news[$key]['user'] = $item->getUser()->toArray();;
+        }
+
+        if ($type === 'datatable') {
+            $items = array_values($items);
+            $baseLink = $this->getBasePath();
+
+            foreach($items as $key => $item) {
+                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                if (array_key_exists('block', $_GET)) {
+                    $items[$key]['options'] = array(
+                        'check'  => array(
+                            'icon'  => 'icon-check',
+                            'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                } else {
+                    $items[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'fa fa-edit',
+                            //'link'  => $baseLink . "edit/" . $item['id'],
+                            'class' => 'btn-sm btn-primary datatable-actionable'
+                        ),
+                        'permission'  => array(
+                            'icon'  => 'fa fa-lock',
+                            'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+        return array_values($items);
+    }
 }
 

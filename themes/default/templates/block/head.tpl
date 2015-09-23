@@ -17,7 +17,7 @@
 <!--	<link rel="stylesheet" href="{$T_STYLESHEETS}" /> -->
 {*/foreach*}
 
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="shortcut icon" href="{Plico_GetResource file='images/favicon.ico'}" />
 <!--
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
 -->

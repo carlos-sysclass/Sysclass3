@@ -1,6 +1,8 @@
 <?php
 use Phalcon\DI,
-    Sysclass\Models\Users\Role,
+    Sysclass\Models\Acl\Role as AclRole,
+    Sysclass\Models\Acl\Resource as AclResource,
+    Sysclass\Models\Acl\RolesResources,
     Sysclass\Services\L10n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
 /**
@@ -20,7 +22,7 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         //$data = $this->getItemsAction();
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
 
-            $count = Role::count("active = 1");
+            $count = AclRole::count("active = 1");
 
             // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
@@ -51,30 +53,23 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Roles")
                 );
                 return $breadcrumbs;
                 break;
             }
-            case "add" : {
+            case "set-resources/:id" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Roles")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Role"));
-                return $breadcrumbs;
-                break;
-            }
-            case "edit/:id" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
-                    'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Roles")
+                    'icon'  => 'fa fa-lock',
+                    'text'   => self::$t->translate("View Resources")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Role"));
                 return $breadcrumbs;
                 break;
             }
@@ -169,6 +164,29 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     /**
      * [ add a description ]
      *
+     * @url GET /set-resources/:id
+    */
+    public function setResourcesPage($id) {
+        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
+        //$this->createClientContext("set-resources");
+        if (!$this->createClientContext("set-resources", array('entity_id' => $id))) {
+            $this->entryPointNotFoundError($this->getSystemUrl('home'));
+        }
+
+        $roleMOdel = AclRole::findFirstById($id);
+
+        $this->putItem("role", $roleMOdel->toArray());
+
+        $resources = AclResource::find()->toArray();
+        $this->putItem("acl_resources", $resources);
+
+        $this->display($this->template);
+    }
+    
+
+    /**
+     * [ add a description ]
+     *
      * @url GET /item/me/:id
     */
     public function getItemAction($id) {
@@ -199,7 +217,7 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             //$itemModel = $this->model("user/item");
             // TODO CHECK IF CURRENT USER CAN DO THAT
             $data = $this->getHttpData(func_get_args());
-            $userModel = new Role();
+            $userModel = new AclRole();
             $userModel->assign($data);
 
             if ($userModel->save()) {
@@ -230,7 +248,7 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
 
-            $itemModel = Role::findFirstById($id);
+            $itemModel = AclRole::findFirstById($id);
             $itemModel->assign($data);
 
             if ($itemModel->save()) {
@@ -255,7 +273,7 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     {
         if ($userData = $this->getCurrentUser()) {
 
-            $itemModel = Role::findFirstById($id);
+            $itemModel = AclRole::findFirstById($id);
 
             if ($itemModel->delete() !== FALSE) {
                 $response = $this->createAdviseResponse(self::$t->translate("Role removed with success"), "success");
@@ -280,7 +298,7 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         $currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-        $modelRS = Role::find();
+        $modelRS = AclRole::find();
         $items = array();
         foreach($modelRS as $key => $item) {
             $items[$key] = $item->toArray();
@@ -308,6 +326,11 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                             //'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary datatable-actionable'
                         ),
+                        'permission'  => array(
+                            'icon'  => 'fa fa-lock',
+                            'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning'
+                        ),
                         'remove'    => array(
                             'icon'  => 'icon-remove',
                             'class' => 'btn-sm btn-danger'
@@ -326,4 +349,119 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         return array_values($items);
     }
 
+    /**
+     * [ add a description ]
+     *
+     * @url POST /item/resources/toggle
+     */
+    public function toggleRoleInResourceAction() {
+        $data = $this->getHttpData(func_get_args());
+
+        $index = 0;
+        $modelFilters = array();
+        $filterData = array();
+        foreach($data as $key => $item) {
+            $modelFilters[$index] = "{$key} = ?{$index}";
+            $filterData[$index] = $item;
+            $index++;
+        }
+
+        $roleResources = RolesResources::find(array(
+            'conditions'    => implode(" AND ", $modelFilters),
+            'bind' => $filterData
+        ));
+        if ($roleResources->count() == 0) {
+            $RolesResourcesModel = new RolesResources();
+            $RolesResourcesModel->assign($data);
+            $RolesResourcesModel->save();
+
+            // USER ADICIONANDO AO GRUPO
+            $info = array('insert' => true, "removed" => false);
+            $response = $this->createAdviseResponse(self::$t->translate("Role added to resource with success"), "success");
+
+        } else {
+            $roleResources->getFirst()->delete();
+
+            $info = array('insert' => false, "removed" => true);
+            $response = $this->createAdviseResponse(self::$t->translate("Role removed from resource with success"), "error");
+        }
+        return array_merge($response, $info);
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /items/me
+     * @url GET /items/resources/:type/:filter
+     */
+    public function getResourcesItemsAction($type, $filter)
+    {
+        $filter = json_decode($filter, true);
+        if (is_array($filter)) {
+            $index = 0;
+            foreach($filter as $key => $item) {
+                $modelFilters[] = "{$key} = ?{$index}";
+                $filterData[$index] = $item;
+                $index++;
+            }
+
+            $modelRS = RolesResources::find(array(
+                'conditions'    => implode(" AND ", $modelFilters),
+                'bind' => $filterData
+            ));
+        } else {
+            $modelRS = RolesResources::find();    
+        }
+            
+        $items = array();
+        foreach($modelRS as $key => $item) {
+            $items[$key] = $item->toArray();
+            $items[$key]['resource'] = $item->getAclResource()->toArray();
+            //$news[$key]['user'] = $item->getUser()->toArray();;
+        }
+
+        if ($type === 'datatable') {
+            $items = array_values($items);
+            $baseLink = $this->getBasePath();
+
+            foreach($items as $key => $item) {
+                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                if (array_key_exists('block', $_GET)) {
+                    $items[$key]['options'] = array(
+                        'check'  => array(
+                            'icon'  => 'icon-check',
+                            'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                } else {
+                    $items[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'fa fa-edit',
+                            //'link'  => $baseLink . "edit/" . $item['id'],
+                            'class' => 'btn-sm btn-primary datatable-actionable'
+                        ),
+                        'permission'  => array(
+                            'icon'  => 'fa fa-lock',
+                            'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+        return array_values($items);
+    }
 }

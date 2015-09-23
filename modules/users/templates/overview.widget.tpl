@@ -6,43 +6,54 @@
 	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
 		<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
 	</div>
-	<div class="col-md-4 col-sm-7 col-xs-7 list-fixed-size">
+	<div class="col-md-9 col-sm-7 col-xs-7">
 		<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
-
-		<ul class="list-group border-bottom users-panel-links">
-			<li class="list-group-item">
-				<a href="javascript: void(0);">{translateToken value="Course"}</a>
-			</li>
-			<li class="list-group-item">
-				<a href="javascript: void(0);">{translateToken value="Grades"}</a>
-			</li>
-			<li class="list-group-item">
-				<a href="javascript: void(0);">{translateToken value="Reports"}</a>
-			</li>
-			<li class="list-group-item">
-				<a href="javascript: void(0);">{translateToken value="Roadmap"}</a>
-			</li>
-		</ul>
-	</div>
-	<div class="col-md-5 col-sm-12">
-		{if isset($notifications)}
-		<table class="table table-hover no-space users-panel-notification-table">
-	        <thead>
-				{foreach $notifications as $key => $notif}
-	           	<tr>
-					<td><strong class="text-{$notif.type}">{$notif.count}</strong></td>
-					<td {if !isset($notif.link) || !$notif.link}colspan="2"{/if}>{$notif.text}</td>
-					<td>
-						{if isset($notif.link)}
-							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
-						{/if}
-					</td>
-	           	</tr>
-	           	{/foreach}
-	        </thead>
-        </table>
-        {else}
-        {/if}
+		<div class="row">
+			<div class="col-md-6 col-sm-12 col-xs-12 list-fixed-size">
+				<h6 class="users-panel-username">
+					NOME DO CURSO
+				</h6>
+				<ul class="list-group border-bottom users-panel-links hidden-sm hidden-xs">
+					<!--
+					<li class="list-group-item">
+						<a href="javascript: void(0);">{translateToken value="Grades"}</a>
+					</li>
+					-->
+					<li class="list-group-item">
+						<a href="javascript: void(0);">{translateToken value="Reports"}</a>
+					</li>
+					<li class="list-group-item">
+						<a href="javascript: void(0);">{translateToken value="Roadmap"}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				{if isset($notifications)}
+				<table class="table table-hover no-space users-panel-notification-table">
+			        <thead>
+						{foreach $notifications as $key => $notif}
+			           	<tr>
+			           		<!--
+							<td></td>
+							<td {if !isset($notif.link) || !$notif.link}colspan="2"{/if}><strong class="text-{$notif.type}">{$notif.count}</strong> {$notif.text}</td>
+							-->
+							<td>
+								<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count}</strong></span>
+								{$notif.text}
+							</td>
+							<td align="right">
+								{if isset($notif.link)}
+									<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
+								{/if}
+							</td>
+			           	</tr>
+			           	{/foreach}
+			        </thead>
+		        </table>
+		        {else}
+		        {/if}
+			</div>
+		</div>
 	</div>
 </div>
 <!--

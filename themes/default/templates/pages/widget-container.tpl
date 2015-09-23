@@ -6,6 +6,7 @@
 				{if $T_WIDGETS|@count > 0}
 					{foreach $T_WIDGETS as $widget}
 						{if $widget.weight == $column_id}
+							{* $widget|@json_encode *}
 							{if isset($widget.template)}
 								{include file="`$widget.template`.tpl" T_DATA=$widget.data}
 							{else}

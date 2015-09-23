@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class AdvisorModule extends SysclassModule implements ISummarizable, IWidgetContainer, IBlockProvider
+class AdvisorModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer, IBlockProvider
 {
     // ISummarizable
     public function getSummary()

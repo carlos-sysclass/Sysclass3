@@ -759,11 +759,12 @@ ul.border-bottom li {
 ul.border-bottom li:last-child {
 	border-width: 0px;
 }
-h3.users-panel-username {
+h3.users-panel-username, h6.users-panel-username {
 	padding: 5px 10px;
 	height: 36px;
 	margin: 0;
 }
+
 .users-panel-links li {
 	padding-top: 8px;
 	padding-bottom: 8px;

@@ -22,9 +22,11 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        1: ["users.overview", "ads.leftbar.banner", "courses.overview", "news.latest" ]
-        #2: ["institution.overview", "advisor.overview", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
+        #1: ["users.overview", "ads.leftbar.banner", "courses.overview", "news.latest" ]
+
+        1: ["users.overview", "ads.leftbar.banner", "news.latest" ]
         2: ["institution.overview", "advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
+
         3: ["calendar"]
     sortable: false
     resources:
