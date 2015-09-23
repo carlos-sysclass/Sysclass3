@@ -12,7 +12,7 @@ crud:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
-      blocks: ["roles.create.dialog"]
+      blocks: ["roles.create.dialog", "roles.resources.dialog"]
       scripts: ["views.roles.view"]
       variables:
         page_subtitle: Manage your Roles
@@ -48,29 +48,30 @@ crud:
 
     add: false
     'edit/:id': false
-    'set-resources/:id':
-      #components: ["validation", "select2", "wysihtml5", "datepicker", "timepicker"]
-      components: ["select2","data-tables"]
-      base_scripts : ["scripts/utils.datatables"]
-      scripts: ["views.roles.set-resources"]
-      template: set-resources.tpl
-      variables:
-        page_subtitle: Manage permissions
-      context:
-        ajax_source: "/module/permission/items/me/datatable?block"
-        datatable_fields:
-        - mData: group
-          sClass: text-center
-          label: "Group"
+blocks:
+  'roles.resources.dialog':
+    #components: ["validation", "select2", "wysihtml5", "datepicker", "timepicker"]
+    #components: ["select2","data-tables"]
+    #base_scripts : ["scripts/utils.datatables"]
+    #scripts: ["views.roles.set-resources"]
+    #template: set-resources.tpl
+    #variables:
+    #  page_subtitle: Manage permissions
+    context:
+      ajax_source: "/module/permission/items/me/datatable?block"
+      datatable_fields:
+      - mData: group
+        sClass: text-center
+        label: "Group"
 
-        - mData: name
-          label: Name
+      - mData: name
+        label: Name
 
-        - mData: description
-          label: Description
+      - mData: description
+        label: Description
 
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
 

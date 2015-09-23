@@ -21,8 +21,7 @@
 	</div>
 	{/if}
 
-	{block name="dialog-content"}1
-	{/block}
+	{block name="dialog-content"}{/block}
 </div>
 {block name="dialog-footer"}
 <div class="modal-footer">

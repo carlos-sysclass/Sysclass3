@@ -42,6 +42,9 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
+        	redraw : function() {
+        		this.oTable.api().draw();
+        	},
 			removeItem : function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));

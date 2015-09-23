@@ -14,7 +14,7 @@ use Phalcon\DI,
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
+class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, IBreadcrumbable, IActionable
 {
 
     /* ILinkable */
@@ -120,7 +120,41 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                 $self->putSectionTemplate("dialogs", "dialogs/create");
 
                 return true;
-            }
+            },
+            'roles.resources.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                // 
+                // 
+                // 
+                // 
+                // MUST SHOW ALL AVALIABLE CALENDARS TYPES
+                //$this->createClientContext("set-resources");
+                //if (!$this->createClientContext("set-resources", array('entity_id' => $id))) {
+                  //  $this->entryPointNotFoundError($this->getSystemUrl('home'));
+                //}
+
+                //$roleModel = AclRole::findFirstById($id);
+
+                //$this->putItem("role", $roleMOdel->toArray());
+
+                $resources = AclResource::find()->toArray();
+                $this->putItem("acl_resources", $resources);
+
+                // GET ALL THIS DATA FROM config.yml
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                $block_context = $self->getConfig("blocks\\roles.resources.dialog\\context");
+                $self->putItem("roles_resources_dialog_context", $block_context);
+
+                $self->putModuleScript("dialogs.roles.resources");
+
+                $self->putSectionTemplate("dialogs", "dialogs/resources");
+
+                return true;
+            },
         );
     }
 
@@ -328,8 +362,8 @@ class RolesModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                         ),
                         'permission'  => array(
                             'icon'  => 'fa fa-lock',
-                            'link'  => $baseLink . "set-resources/" . $item['id'],
-                            'class' => 'btn-sm btn-warning'
+                            //'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning datatable-actionable'
                         ),
                         'remove'    => array(
                             'icon'  => 'icon-remove',

@@ -14,6 +14,8 @@ jQuery(document).ready(function() {
         this.userSettings.on("change", function(a,b,c,d,e) {
             this.save(null, {silent : true});
         });
+
+        this._tables = {};
     });
 
     $SC.on("start", function(options){
@@ -22,6 +24,14 @@ jQuery(document).ready(function() {
         });
     });
 
+    $SC.addTable = function(name, obj) {
+        this._tables[name] = obj;
+        return obj;
+    };
+
+    $SC.getTable = function(name) {
+        return this._tables[name];
+    };
 
     if (typeof _lazy_init_functions != "undefined") {
 

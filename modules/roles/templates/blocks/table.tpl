@@ -28,6 +28,8 @@ _lazy_init_functions.push(function() {
             "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode}
         }
     });
+
+    $SC.addTable("view-{$T_MODULE_ID}", tableView);
 });
 </script>
 {/if}
