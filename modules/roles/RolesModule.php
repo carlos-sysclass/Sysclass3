@@ -446,6 +446,106 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
         return array_merge($response, $info);
     }
 
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/users/:role_id/:user_id
+     */
+    public function createUserRoleItemAction($role_id, $user_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $itemModel = new RolesUsers();
+            $itemModel->assign(array(
+                'role_id' => $role_id,
+                'user_id' => $user_id
+            ));
+
+            if ($itemModel->save() !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("User Included with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/users/:role_id/:user_id
+     */
+    public function deleteUserRoleItemAction($role_id, $user_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $itemModel = RolesUsers::findFirst(array(
+                'conditions' => 'role_id = ?0 AND user_id = ?1',
+                'bind' => array($role_id, $user_id)
+            ));
+
+            if ($itemModel->delete() !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("User removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url PUT /item/groups/:role_id/:user_id
+     */
+    public function createGroupRoleItemAction($role_id, $user_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $itemModel = new RolesGroups();
+            $itemModel->assign(array(
+                'role_id' => $role_id,
+                'group_id' => $user_id
+            ));
+
+            if ($itemModel->save() !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Group Included with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+    /**
+     * [ add a description ]
+     *
+     * @url DELETE /item/groups/:role_id/:user_id
+     */
+    public function deleteGroupRoleItemAction($role_id, $user_id)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $itemModel = RolesUsers::findFirst(array(
+                'conditions' => 'role_id = ?0 AND group_id = ?1',
+                'bind' => array($role_id, $user_id)
+            ));
+
+            if ($itemModel->delete() !== FALSE) {
+                $response = $this->createAdviseResponse(self::$t->translate("Group removed with success"), "success");
+                return $response;
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
 
     /**
      * [ add a description ]
@@ -542,8 +642,13 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 $index++;
             }
             */
-            $usersRS = RolesUsers::getUsersWithoutARole($filter['role_id'], $_GET['q']);
-            $groupsRS = RolesGroups::getGroupsWithoutARole($filter['role_id'], $_GET['q']);
+            if ($filter['exclude'] == TRUE) {
+                $usersRS = RolesUsers::getUsersWithoutARole($filter['role_id'], $_GET['q']);
+                $groupsRS = RolesGroups::getGroupsWithoutARole($filter['role_id'], $_GET['q']);
+            } else {
+                $usersRS = RolesUsers::getUsersWithARole($filter['role_id']);
+                $groupsRS = RolesGroups::getGroupsWithARole($filter['role_id']);
+            }
 
         } else {
             $usersRS = RolesUsers::getUsersWithoutARole(null, $_GET['q']);
@@ -567,7 +672,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 $usersItems = array();
                 foreach($usersRS as $key => $item) {
                     $usersItems[$key] = array(
-                        'id' => $item->id,
+                        'id' => 'user:' . $item->id,
                         'name' => $item->name . " " . $item->surname,
                     );
                 }
@@ -580,7 +685,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 $groupItems = array();
                 foreach($groupsRS as $key => $item) {
                     $groupItems[$key] = array(
-                        'id' => $item->id,
+                        'id' => 'group:' . $item->id,
                         'name' => $item->name,
                     );
                 }
@@ -590,22 +695,45 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 );
             }
 
-
             return $results;
 
-
         } elseif ($type === 'datatable') {
-            /*
-            $items = array_values($items);
+
+            $items = array();
+            if ($usersRS->count() > 0) {
+                foreach($usersRS as $item) {
+                    $items[] = array_merge(
+                        $item->toArray(),
+                        array(
+                            'fullname' => $item->name . " " . $item->surname,
+                            'type'  => 'user',
+                            'icon'  => 'fa fa-user'
+                        )
+                    );
+                }
+            }
+            if ($groupsRS->count()) {
+                foreach($groupsRS as $item) {
+                    $items[] = array_merge(
+                        $item->toArray(),
+                        array(
+                            'fullname' => $item->name,
+                            'type'  => 'group',
+                            'icon'  => 'fa fa-group'
+                        )
+                    );
+                }
+            }
+
             $baseLink = $this->getBasePath();
 
             foreach($items as $key => $item) {
                 // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                 if (array_key_exists('block', $_GET)) {
                     $items[$key]['options'] = array(
-                        'check'  => array(
-                            'icon'  => 'icon-check',
-                            'link'  => $baseLink . "block/" . $item['id'],
+                        'remove'  => array(
+                            'icon'  => 'fa fa-close',
+                            //'link'  => $baseLink . "block/" . $item['id'],
                             'class' => 'btn-sm btn-danger'
                         )
                     );
@@ -636,7 +764,6 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 'iTotalDisplayRecords'  => count($items),
                 'aaData'                => array_values($items)
             );
-            */
         }
         return array_values($usersRS->toArray() + $groupsRS->toArray());
     }

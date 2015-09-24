@@ -4,7 +4,14 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
 	// MODELS
 	mod.addInitializer(function() {
+        // USE AS SKELETON TO UNIFY A DATATABLE VIEW CLASS, FOR USE IN ALL SYSTEMS, PROVIDING:
+        // ATTACH FOR EVENTS RECEIVE, USING app TO GET THE TABLE REFERENCE
+        // MODEL DEFINITION, FOR DELETE, ALTER, ETC...
+        // EXTENSABILITY (PROVIDE WAY TO ANOTHER MODULE TO EXTEND THE CLASS, AND OVERRIDE THESE METHODS)
+        // AND SO ON....
+
         mod.tableViewClass = Backbone.View.extend({
+        	_vars : {},
 			events : {
 				"click .datatable-option-remove" : "removeItem",
 				"click .datatable-option-check" : "checkItem",
@@ -28,7 +35,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
-
         	},
         	checkItem: function(e) {
 				e.preventDefault();
@@ -42,9 +48,68 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
+        	setUrl : function(url) {
+        		this.oTable.api().ajax.url(url).load();
+        	},
+	        refresh : function() {
+	            this.oTable.api().ajax.reload();
+	        },
         	redraw : function() {
         		this.oTable.api().draw();
         	},
+
+        	/**
+        	 * Get a variable from view bags
+        	 * @param  {[type]} name [description]
+        	 * @return {[type]}      [description]
+        	 */
+			getVar : function(name) {
+				return this._vars[name];
+			},
+			/**
+			 * Put a variable inside view bag's
+			 * @param  {[type]} name  [description]
+			 * @param  {[type]} value [description]
+			 * @return {[type]}       [description]
+			 */
+			putVar : function(name, value) {
+				this._vars[name] = value;
+				return this;
+			},
+        	// 
+        	/**
+        	 * RETURN THE MODEL BASED ON ROW DATA, CAN BE OVERRIDEN
+        	 * @param  {array} data the raw JSON data from selected / clicked row.
+        	 * @return {object}     THe Backbone.Model with data assigned
+        	 */
+        	getTableItemModel : function(data) {
+        		var itemModelClass = app.module("crud.models").itemModelClass;
+        		return new itemModelClass(data);
+        	},
+        	/**
+        	 * Call the "destroy" method on referenced model 
+        	 * @param  {Event} e JsEvent from button click
+        	 * @return {null}   
+        	 */
+			removeItem : function(e) {
+				e.preventDefault();
+				var data = this.oTable._($(e.currentTarget).closest("tr"));
+
+				var model = this.getTableItemModel(data[0]);
+
+				console.warn(model.toJSON());
+				console.warn(model);
+
+				
+				this.oTable
+					.api()
+					.row( $(e.currentTarget).closest("tr") )
+					.remove()
+					.draw();
+
+				model.destroy();
+			},
+			/*
 			removeItem : function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
@@ -63,8 +128,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				});
 			},
+			*/
 			doAction : function(e) {
-				alert('dsadas');
 				var item = $(e.currentTarget);
 				if (item.data("actionUrl")) {
 					var url = item.data("actionUrl");

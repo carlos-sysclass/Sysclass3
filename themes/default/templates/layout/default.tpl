@@ -8,6 +8,7 @@
 		{include file="block/head.tpl"}
 	{/block}
 	<script>
+		_before_init_functions = [];
 		_lazy_init_functions = [];
 	</script>
 </head>

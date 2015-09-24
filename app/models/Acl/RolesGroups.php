@@ -41,5 +41,31 @@ class RolesGroups extends Model
 
 		return $users;
     }
+
+    public static function getGroupsWithARole($role_id, $search = null) {
+        if (is_null($search)) {
+            $sql = "SELECT g.* 
+            FROM Sysclass\\Models\\Users\\Group g
+            LEFT OUTER JOIN Sysclass\\Models\\Acl\\RolesGroups rg ON (g.id = rg.group_id)
+            WHERE (rg.role_id = :role_id:)
+            ";
+
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("role_id" => $role_id));
+        } else {
+            $sql = "SELECT g.* 
+            FROM Sysclass\\Models\\Users\\Group g
+            LEFT OUTER JOIN Sysclass\\Models\\Acl\\RolesGroups rg ON (g.id = rg.group_id)
+            WHERE (rg.role_id = :role_id:)
+            AND LOWER(g.name) LIKE LOWER(:query:)
+            ";
+
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("role_id" => $role_id, 'query' => '%' . $search . '%'));
+        }
+
+        return $users;
+    }
+
 }
 

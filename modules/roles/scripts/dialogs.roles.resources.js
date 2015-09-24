@@ -21,10 +21,11 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				this.collection = new rolesResourcesCollectionClass();
 
 				this.listenTo(this.collection, "sync", function() {
-					app.getTable("view-roles_resources").redraw();
+					app.getTable("view-roles_resources-table").redraw();
 				});
 				//this.collection.fetch();
-
+				//
+				// ALL EVENTS MUST BE BINDED ON tableVewObject, not on module
 				app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
 					var exists = this.collection.findWhere({resource_id: data['id']});
 

@@ -7,22 +7,28 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-lock"></i>
-                    {translateToken value='Manage role users and groups'}
+                    {translateToken value='Manage role Users and Groups'}
                 </h4>
             </div>
             <div class="modal-body ">
             	<form class="form-horizontal" action="#">
 					<div class="form-body">
+						<div class="form-group">
+							
+                            <label class="">{translateToken value="Search for Group or User"}</label>
+                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please Select'}" data-url="/module/roles/items/users" />
 
-							<div class="form-group">
-								
-<label class="">{translateToken value="Search for Group or User"}</label>
-	                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please Select'}" data-url="/module/roles/items/users" />
-
-							</div>
+						</div>
 					</div>
-				</div>
-			</form>
+                    <div class="row margin-top-20">
+                        <div class="col-md-12">
+                            {include "`$smarty.current_dir`/../blocks/table.tpl" 
+                            T_MODULE_CONTEXT=$T_ROLES_USERS_DIALOG_CONTEXT
+                            T_MODULE_ID="roles_users"}
+                        </div>
+                    </div>
+                </form>        
+			</div>
 		</div>
 	</div>
 </div>

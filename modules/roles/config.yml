@@ -76,10 +76,19 @@ blocks:
         label: Actions
   'roles.users.dialog':
     context:
-      ajax_source: "/module/users/items/me/datatable?block"
+      #ajax_source: "/module/roles/items/users/datatable//"
       datatable_fields:
-      - mData: login
-        label: Login
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
 
       - mData: options
         sType: table-options

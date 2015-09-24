@@ -16,6 +16,15 @@ jQuery(document).ready(function() {
         });
 
         this._tables = {};
+        this._resources = {};
+
+        if (typeof _before_init_functions != "undefined") {
+            for(i in _before_init_functions) {
+                if (typeof _before_init_functions[i] == "function") {
+                    _before_init_functions[i].bind(this).apply();
+                }
+            }
+        }
     });
 
     $SC.on("start", function(options){
@@ -31,6 +40,15 @@ jQuery(document).ready(function() {
 
     $SC.getTable = function(name) {
         return this._tables[name];
+    };
+
+    $SC.addResource = function(name, obj) {
+        this._resources[name] = obj;
+        return obj;
+    };
+
+    $SC.getResource = function(name) {
+        return this._resources[name];
     };
 
     if (typeof _lazy_init_functions != "undefined") {

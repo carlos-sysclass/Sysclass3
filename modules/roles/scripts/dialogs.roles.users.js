@@ -1,17 +1,94 @@
+// USE THIS MODULE AS SKELETON TO ANOTHER, 
+// 
+// TODO: CREATE A JS MODULE UNIFIED MODULE TYPE, DEFINE FIRST, CODE AFTER
 $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _) {
 
+	mod.models = {
+		roles : {
+			user : Backbone.Model.extend({
+				idAttribute : "user_id",
+				urlRoot : function() {
+					return "/module/roles/item/users/" + this.get("role_id")
+				} 
+			}),
+			group : Backbone.Model.extend({
+				idAttribute : "group_id",
+				urlRoot : function() {
+					return "/module/roles/item/groups/" + this.get("role_id")
+				} 
+			})
+		}
+	};
+
     mod.on("start", function(opt) {
-        //var baseDatatableViewClass = app.module("views").baseDatatableViewClass;
-        //var roleResourceDialogViewClass = baseDatatableViewClass.extend({
+      
+        var tableViewClass = $SC.module("utils.datatables").tableViewClass;
+
+        var rolesUserTableViewClass = tableViewClass.extend({
+        	getTableItemModel : function(data) {
+				if (data['type'] == 'user') {
+					return itemModelClass = new mod.models.roles.user({
+						'role_id' : this.getVar("role_id"),
+						'user_id' : data['id']
+					});
+				} else {
+					return itemModelClass = new mod.models.roles.group({
+						'role_id' : this.getVar("role_id"),
+						'group_id' : data['id']
+					});
+				}
+        	}
+        });
+        
         var roleResourceDialogViewClass = Backbone.View.extend({
             initialize: function() {
                 console.info('dialogs.roles.users/roleResourceDialogViewClass::initialize');
                 //baseDatatableViewClass.prototype.initialize.apply(this);
+                //
+                var block_context = app.getResource("roles_users_context");
+                this.tableView = new rolesUserTableViewClass({
+	        		el : "#view-roles_users",
+	        		datatable : {
+	            		//"sAjaxSource": "{$T_MODULE_CONTEXT.ajax_source}",
+	            		"aoColumns": block_context.datatable_fields
+	        		}
+	    		});
 
                 var self = this;
 
+                this.select2Obj = this.$(".select2-me");
 
-                this.select2Obj =this.$(".select2-me");
+                this.select2Obj.on("change", function (e, a,b,c,d) { 
+                	console.warn(e,a,b,c,d);
+                	var data = e.added;
+
+                	var typeId = data.id.split(":");
+                	console.warn(typeId);
+
+                	var model = null;
+
+                	if (typeId[0] == "user") {
+	                	model = new mod.models.roles.user({
+	                		role_id : this.model.get("id"),
+	                		user_id : typeId[1]
+	                	});
+
+	                	model.save();
+
+	                	this.tableView.refresh();
+                	} else if (typeId[0] == "group") {
+	                	model = new mod.models.roles.group({
+	                		role_id : this.model.get("id"),
+	                		group_id : typeId[1]
+	                	});
+
+	                	model.save();
+
+	                	this.tableView.refresh();
+                	}
+				}.bind(this));
+
+
                 /*
 				// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
 				var rolesResourcesCollectionClass = Backbone.Collection.extend({
@@ -56,9 +133,19 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
                 //this.on("complete:save", this.close.bind(this));
             },
             open : function() {
+                //this.select2Obj.off("select2:select");
             	this.select2Obj.select2("destroy");
+
                 this.$el.modal("show");
                 app.module("ui").handleSelect2(this.$el);
+                /*
+                this.select2Obj = this.$(".select2-me");
+
+                this.select2Obj.on("change", function (e, a,b,c,d) { 
+                	console.warn(e,a,b,c,d);
+				});
+				*/
+
             },
             close : function() {
                 this.$el.modal("hide");
@@ -71,29 +158,29 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
             	//data-url="/module/roles/items/users"
 
             	this.select2Obj.select2("destroy");
-				this.select2Obj.data("url", "/module/roles/items/users/combo/" + JSON.stringify({role_id : this.model.get("id")}));
+				this.select2Obj.data("url", "/module/roles/items/users/combo/" + JSON.stringify({
+					role_id : this.model.get("id"),
+					exclude : true
+				}));
+
+
+				this.tableView
+					.putVar('role_id', this.model.get("id"))
+					.setUrl("/module/roles/items/users/datatable/" + JSON.stringify({
+						role_id : this.model.get("id")
+					}) + "?block");
+
             	//app.module("ui").handleSelect2(this.$el);
 
             	//this.collection.role_id = this.model.get("id");
             	//this.collection.fetch();
             }
         });
-		/*        
-        this.models = {
-            roles : Backbone.Model.extend({
-                defaults : {
-                    name : "",
-                    active : 1,
-                    in_course : 0,
-                    in_class : 0
-                },
-                urlRoot : "/module/roles/item/resource"
-            })
-        };
-		*/
+
         this.dialogView = new roleResourceDialogViewClass({
             el : "#dialogs-roles-users"
         });
+
     });
 	// MODELS
 	//this.config = $SC.module("crud.config").getConfig();

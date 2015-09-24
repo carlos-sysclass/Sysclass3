@@ -165,6 +165,19 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'float-as-percentage' ]
 		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display') {
+					return '<i class="' + data + '"></i>';
+				} else {
+					return data;
+				}
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-icon' ]
+		},
+
+
 
 		/**
 		 * PLEASE REMOVE THIS FUNCTION FROM HERE, BECAUSE THE STRONG COUPLING
