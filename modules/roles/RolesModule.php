@@ -529,7 +529,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     public function deleteGroupRoleItemAction($role_id, $user_id)
     {
         if ($userData = $this->getCurrentUser()) {
-            $itemModel = RolesUsers::findFirst(array(
+            $itemModel = RolesGroups::findFirst(array(
                 'conditions' => 'role_id = ?0 AND group_id = ?1',
                 'bind' => array($role_id, $user_id)
             ));

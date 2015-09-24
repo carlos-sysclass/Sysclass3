@@ -184,8 +184,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 		 */
 		{
 			"mRender": function ( data, type, row ) {
-				console.warn( data, type, row );
-
 				return row.user.name + " " + row.user.surname;
 			},
 			"aTargets": [ 'concatenate-user' ]
@@ -239,7 +237,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 		},
 		{
 			"mRender": function ( data, type, row ) {
-				console.warn(data, type, row);
 				/*
 				if (type == 'display') {
 					result = [];
@@ -258,7 +255,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 		},
 		{
 			"mRender": function ( data, type, row ) {
-				//console.warn(data, type, row);
 				// TODO GET THE MAP FROM TRANSLATION MODEL
 				var map = {
 					1 : "Yes",
@@ -291,7 +287,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 	"iDisplayLength": 10,
 	"createdRow": function( row, data, dataIndex ) {
 		$SC.module("ui").refresh(row);
-   		//console.warn(row, data, dataIndex);
 	}
 });
 

@@ -59,12 +59,8 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
                 this.select2Obj = this.$(".select2-me");
 
                 this.select2Obj.on("change", function (e, a,b,c,d) { 
-                	console.warn(e,a,b,c,d);
                 	var data = e.added;
-
                 	var typeId = data.id.split(":");
-                	console.warn(typeId);
-
                 	var model = null;
 
                 	if (typeId[0] == "user") {

@@ -21,7 +21,7 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				this.collection = new rolesResourcesCollectionClass();
 
 				this.listenTo(this.collection, "sync", function() {
-					app.getTable("view-roles_resources-table").redraw();
+					app.getTable("view-roles_resources").redraw();
 				});
 				//this.collection.fetch();
 				//
@@ -29,7 +29,6 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
 					var exists = this.collection.findWhere({resource_id: data['id']});
 
-					console.warn({resource_id: data['id']}, exists);
 					if (typeof exists != "undefined") {
 						$(row).find(".datatable-option-check").removeClass("btn-danger").addClass("btn-success");
 					} else {
@@ -38,7 +37,6 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				}.bind(this));
 				
 				app.module("utils.datatables").on("datatable:item:check", function(data,a,b,c) {
-					console.warn(data,a,b,c);
 					
 					var resourceSwitchModelClass = Backbone.Model.extend({
 						urlRoot : "/module/roles/item/resources/toggle"
@@ -116,7 +114,6 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 		});
 
 		app.module("utils.datatables").on("datatable:item:check", function(data,a,b,c) {
-			console.warn(data,a,b,c);
 			
 			var resourceSwitchModelClass = Backbone.Model.extend({
 				urlRoot : "/module/roles/item/resources/toggle"

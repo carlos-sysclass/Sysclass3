@@ -96,10 +96,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 
 				var model = this.getTableItemModel(data[0]);
-
-				console.warn(model.toJSON());
-				console.warn(model);
-
 				
 				this.oTable
 					.api()
