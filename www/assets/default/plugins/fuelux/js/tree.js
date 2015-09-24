@@ -1,11 +1,3 @@
-/*
- * Fuel UX Spinner
- * https://github.com/ExactTarget/fuelux
- * Improved by keenthemes for metronic theme
- * Copyright (c) 2012 ExactTarget
- * Licensed under the MIT license.
- */
-
 !function ($) {
 	var Tree = function (element, options) {
 		this.$element = $(element);

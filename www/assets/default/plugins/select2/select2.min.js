@@ -1,6 +1,5 @@
 /*
 Copyright 2012 Igor Vaynberg
-Modifed by keenthemes for Metronic theme integration.
 
 Version: 3.4.3 Timestamp: Tue Sep 17 06:47:14 PDT 2013
 

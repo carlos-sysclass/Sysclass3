@@ -157,13 +157,6 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		return TRUE;
 	}
 
-
-/*
-	protected function onThemeRequest()
-	{
-		//$this->setTheme('metronic');
-	}
-*/
 	protected function beforeDisplay() {
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS

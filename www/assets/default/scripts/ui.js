@@ -162,6 +162,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         //opt.minimumResultsForSearch = 3;
                         //console.warn(opt);
 						$el.select2(opt);
+
+                        console.warn(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
 						mod.loadDatasourceInto(this, jQuery(this).data('url'), function() {

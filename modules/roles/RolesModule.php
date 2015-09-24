@@ -2,6 +2,8 @@
 use Phalcon\DI,
     Sysclass\Models\Acl\Role as AclRole,
     Sysclass\Models\Acl\Resource as AclResource,
+    Sysclass\Models\Acl\RolesUsers,
+    Sysclass\Models\Acl\RolesGroups,
     Sysclass\Models\Acl\RolesResources,
     Sysclass\Services\L10n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
@@ -155,6 +157,22 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
 
                 return true;
             },
+            'roles.users.dialog' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                $block_context = $self->getConfig("blocks\\roles.users.dialog\\context");
+                $self->putItem("roles_users_dialog_context", $block_context);
+
+                $self->putModuleScript("dialogs.roles.users");
+
+                $self->putSectionTemplate("dialogs", "dialogs/users");
+
+                return true;
+            },
         );
     }
 
@@ -200,6 +218,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
      *
      * @url GET /set-resources/:id
     */
+    /*
     public function setResourcesPage($id) {
         // MUST SHOW ALL AVALIABLE CALENDARS TYPES
         //$this->createClientContext("set-resources");
@@ -216,7 +235,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
 
         $this->display($this->template);
     }
-    
+    */
 
     /**
      * [ add a description ]
@@ -360,6 +379,11 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                             //'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary datatable-actionable'
                         ),
+                        'users'  => array(
+                            'icon'  => 'fa fa-user',
+                            //'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-info datatable-actionable'
+                        ),
                         'permission'  => array(
                             'icon'  => 'fa fa-lock',
                             //'link'  => $baseLink . "set-resources/" . $item['id'],
@@ -426,7 +450,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /**
      * [ add a description ]
      *
-     * @url GET /items/me
+     * @url GET /items/resources
      * @url GET /items/resources/:type/:filter
      */
     public function getResourcesItemsAction($type, $filter)
@@ -476,6 +500,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                             //'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary datatable-actionable'
                         ),
+
                         'permission'  => array(
                             'icon'  => 'fa fa-lock',
                             'link'  => $baseLink . "set-resources/" . $item['id'],
@@ -497,5 +522,122 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
             );
         }
         return array_values($items);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /items/users
+     * @url GET /items/users/:type/:filter
+     */
+    public function getUsersItemsAction($type, $filter)
+    {
+        $filter = json_decode($filter, true);
+        if (is_array($filter)) {
+            /*
+            $index = 0;
+            foreach($filter as $key => $item) {
+                $modelFilters[] = "{$key} <> ?{$index}";
+                $filterData[$index] = $item;
+                $index++;
+            }
+            */
+            $usersRS = RolesUsers::getUsersWithoutARole($filter['role_id'], $_GET['q']);
+            $groupsRS = RolesGroups::getGroupsWithoutARole($filter['role_id'], $_GET['q']);
+
+        } else {
+            $usersRS = RolesUsers::getUsersWithoutARole(null, $_GET['q']);
+            $groupsRS = RolesGroups::getGroupsWithoutARole(null, $_GET['q']);
+        }
+
+        // FILTER BY Query
+
+        $items = array();
+        /*
+        foreach($modelRS as $key => $item) {
+            $items[$key] = $item->toArray();
+            $items[$key]['resource'] = $item->getAclResource()->toArray();
+            //$news[$key]['user'] = $item->getUser()->toArray();;
+        }
+        */
+        if ($type === 'combo') {
+            $results = array();
+            
+            if ($usersRS->count()) {
+                $usersItems = array();
+                foreach($usersRS as $key => $item) {
+                    $usersItems[$key] = array(
+                        'id' => $item->id,
+                        'name' => $item->name . " " . $item->surname,
+                    );
+                }
+                $results[] = array(
+                    'text'  => self::$t->translate("Users"),
+                    'children'  => $usersItems
+                );
+            }
+            if ($groupsRS->count()) {
+                $groupItems = array();
+                foreach($groupsRS as $key => $item) {
+                    $groupItems[$key] = array(
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    );
+                }
+                $results[] = array(
+                    'text'  => self::$t->translate("Groups"),
+                    'children'  => $groupItems
+                );
+            }
+
+
+            return $results;
+
+
+        } elseif ($type === 'datatable') {
+            /*
+            $items = array_values($items);
+            $baseLink = $this->getBasePath();
+
+            foreach($items as $key => $item) {
+                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                if (array_key_exists('block', $_GET)) {
+                    $items[$key]['options'] = array(
+                        'check'  => array(
+                            'icon'  => 'icon-check',
+                            'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                } else {
+                    $items[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'fa fa-edit',
+                            //'link'  => $baseLink . "edit/" . $item['id'],
+                            'class' => 'btn-sm btn-primary datatable-actionable'
+                        ),
+
+                        'permission'  => array(
+                            'icon'  => 'fa fa-lock',
+                            'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+
+            }
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+            */
+        }
+        return array_values($usersRS->toArray() + $groupsRS->toArray());
     }
 }

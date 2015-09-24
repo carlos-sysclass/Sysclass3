@@ -215,7 +215,7 @@ $plicoLib->add("resources/components", array(
 ));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'fuelux-tree',
-	'css'	=> array('plugins/fuelux/css/tree-metronic'),
+	'css'	=> array('plugins/fuelux/css/tree-sysclass'),
 	'js'	=> array('plugins/fuelux/js/tree.min')
 ));
 $plicoLib->add("resources/components", array(
@@ -409,7 +409,7 @@ $plicoLib->concat(
 		'css/pageguide/pageguide',
  		//<!-- BEGIN THEME STYLES -->
  		'css/flags',
-		'css/style-metronic',
+		'css/style-sysclass',
 		'css/style',
 		'css/style-responsive',
 		'css/plugins',

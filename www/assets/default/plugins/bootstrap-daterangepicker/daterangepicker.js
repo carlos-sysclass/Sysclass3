@@ -2,8 +2,6 @@
 * @version: 1.2
 * @author: Dan Grossman http://www.dangrossman.info/
 *
-* @Improved by KeenThemes for Metronic Bootstrap 3.0
-
 * @date: 2013-07-25
 * @copyright: Copyright (c) 2012-2013 Dan Grossman. All rights reserved.
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
