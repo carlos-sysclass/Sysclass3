@@ -118,7 +118,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 
 		    // CODE TO CHECK FOR AUTHORIZATION
-		    var_dump($di->get("acl")->isUserAllowed($user, "Courses", "Enroll"));
+		    echo "see {ROOT}controller/" . __CLASS__ . ".php:  line 121";
+		    //var_dump($di->get("acl")->isUserAllowed($user, "Courses", "Enroll"));
 		    exit;
 
 		} catch (AuthenticationException $e) {

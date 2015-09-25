@@ -72,7 +72,7 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
 
 
             foreach($operationsSingle as $operation) {
-                echo sprintf("ALLOW: %s %s %s <br />", $role->name, $resource, $operation);
+                //echo sprintf("ALLOW: %s %s %s <br />", $role->name, $resource, $operation);
                 $this->allow($role->name, $resource, $operation);
             }
         }
