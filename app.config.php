@@ -487,7 +487,8 @@ use Phalcon\Loader,
 	Phalcon\Cache\Backend\Apc as BackendCache,
 	Phalcon\Logger,
 	Phalcon\Logger\Adapter\File as FileLogger,
-	Phalcon\Crypt;
+	Phalcon\Crypt,
+	Phalcon\Acl\Adapter\Memory as AclList;
 
 // Creates the autoloader
 $loader = new Loader();
@@ -497,7 +498,8 @@ $loader->registerNamespaces(
     array(
        "Sysclass\Models" => "../app/models/",
        "Sysclass\Services" => "../app/services/",
-       "Plico" => "../app/library/" // TODO: Move code to plicolib itself
+       "Plico" => "../app/plico/", // TODO: Move code to plicolib itself
+       "Sysclass" => "../app/sysclass/"
     )
 );
 // Register autoloader
@@ -576,10 +578,41 @@ $di->set('cache', function() {
 	return $cache;
 });
 
+
+$di->setShared("acl", function() use ($di, $eventsManager) {
+	// GET CURRENT USER
+	$user = $di->get("authentication")->checkAccess();
+
+	// CREATE THE ACL
+	$acl = Sysclass\Acl\Adapter::getDefault($user);
+	// Bind the eventsManager to the ACL component
+	$acl->setEventsManager($eventsManager);
+
+	return $acl;
+
+});
+
+
+// Attach a listener for type "acl"
+$eventsManager->attach("acl", function ($event, $acl) {
+	/*
+    //if ($event->getType() == "beforeCheckAccess") {
+    	var_dump(json_encode($acl));
+    	echo $event->getType(),
+        	$acl->getActiveRole(),
+            $acl->getActiveResource(),
+            $acl->getActiveAccess(),
+            "<br />";
+    //}
+    */
+});
+
+
+
 $di->setShared("url", function() use ($di) {
 	$url = new Phalcon\Mvc\Url();
 	$url->setDI($di);
-	$url->setBasePath("/var/www/local.sysclass.com/current/www");
+	$url->setBasePath("/var/www/sysclass/current/www");
 
 	return $url;
 });

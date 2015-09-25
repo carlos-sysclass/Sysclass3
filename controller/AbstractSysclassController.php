@@ -116,6 +116,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		    $smarty->assign("T_LOGGED_USER", self::$logged_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
+
+		    // CODE TO CHECK FOR AUTHORIZATION
+		    var_dump($di->get("acl")->isUserAllowed($user, "Courses", "Enroll"));
+		    exit;
+
 		} catch (AuthenticationException $e) {
 			$url = "/login";
 

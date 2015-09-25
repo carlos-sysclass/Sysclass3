@@ -69,4 +69,26 @@ class Model extends \Phalcon\Mvc\Model
         return $itemData;
     }
 
+    public static function findConnectBy($params) {
+
+        if (!array_key_exists('connect_by', $params)) {
+            throw new Exception("The parameter 'connect_by' can not be null!");
+        }
+
+        $resultset = parent::find($params);
+
+        $connectByField = $params['connect_by'];
+
+        $result = array();
+        foreach($resultset as $item) {
+            $connectByValue = $item->{$connectByField};
+            if (!array_key_exists($connectByValue, $result)) {
+                $result[$connectByValue] = array();
+            }
+            $result[$connectByValue][] = $item->toArray();
+        }
+        return $result;
+        
+    }
+
 }

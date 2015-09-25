@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Acl;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Resource extends Model
 {

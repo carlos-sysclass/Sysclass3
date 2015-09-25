@@ -44,12 +44,12 @@ class DashboardController extends AbstractSysclassController
 
         $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
-/*
+        /*
         if ($user_type != 0 && ($user_type == $currentUser->user['user_types_ID'] || $user_type == $currentUser->getType())) {
         } else {
             $user_type = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->user['user_types_ID'];
         }
-*/
+        */
         //$layout_index = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->getType() . "." . $currentUser->user['user_types_ID'];
 
         $dashboardManager = $this->module("dashboard");
