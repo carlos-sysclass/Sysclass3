@@ -25,9 +25,10 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 			var userGroupsSwitchModelClass = Backbone.Model.extend({
 				urlRoot : "/module/groups/item/users/switch"
 			});
+
 			var userGroupsSwitchModel = new userGroupsSwitchModelClass();
 			userGroupsSwitchModel.set("group_id", entity_id);
-			userGroupsSwitchModel.set("user_login", data['login']);
+			userGroupsSwitchModel.set("user_id", data['id']);
 			userGroupsSwitchModel.save();
 
 			var exists = userGroupsCollection.findWhere({user_login: data['login']});

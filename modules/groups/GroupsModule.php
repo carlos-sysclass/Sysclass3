@@ -120,7 +120,7 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         $status = $userGroupModel->switchUserInGroup(
             $data['group_id'],
-            $data['user_login']
+            $data['user_id']
         );
 
         if ($status == 1) {

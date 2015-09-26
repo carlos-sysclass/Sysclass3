@@ -37,6 +37,7 @@
 							<input name="email" value="" type="text" placeholder="{translateToken value='Email'}" class="form-control" data-rule-required="true" data-rule-email="true" />
 						</div>
 					</div>
+					<!--
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Primary Group"}</label>
@@ -48,6 +49,7 @@
 							</select>
 						</div>
 					</div>
+					-->
 				</div>
 				<div class="row">
 					<div class="col-md-6">

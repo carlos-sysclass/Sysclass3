@@ -10,7 +10,7 @@ class User extends Model
     {
         $this->setSource("users");
 
-        $this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
+        //$this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
 
         $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
 
@@ -32,9 +32,40 @@ class User extends Model
             array('alias' => 'UserRoles', 'reusable' => true)
         );
 
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Users\UsersGroups",
+            "user_id", "group_id",
+            "Sysclass\Models\Users\Group",
+            "id",
+            array('alias' => 'UserGroups', 'reusable' => true)
+        );
+
     }
 
     public function getType() {
         return $this->user_type;
+    }
+
+    public function getRoles() {
+        $userRoles = $this->getUserRoles();
+
+        $roles = $userRoles->toArray();
+
+        $groups = $this->getUserGroups();
+
+        foreach($groups as $group) {
+            $groupRoles = $group->getRoles();
+            $roles = array_merge($roles, $groupRoles->toArray());
+            $roles = array_map("unserialize", array_unique(array_map("serialize", $roles)));
+        }
+        return $roles;
+    }
+
+    public function getDashboards() {
+        $roles = $this->getRoles();
+        $dashboards = array_map("strtolower", array_column($roles, "name"));
+
+        return $dashboards;
     }
 }
