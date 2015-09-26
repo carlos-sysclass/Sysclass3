@@ -25,11 +25,11 @@ crud:
         - mData: name
           label: Name
 
+        - mData: surname
+          label: Surname
+
         - mData: login
           label: Login
-
-        - mData: extended_user_type
-          label: "User Type"
 
         - mData: creation_time
           sType: unix-moment-since
