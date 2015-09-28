@@ -24,7 +24,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Knowlegde Areas'),
+                        'text'  => self::$t->translate('Department'),
                         'icon'  => 'fa fa-cubes',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -44,7 +44,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             array(
                 'icon'  => 'fa fa-cubes',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Areas")
+                'text'  => self::$t->translate("Department")
             )
         );
 
@@ -55,11 +55,11 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Course"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Department"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Course"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Department"));
                 break;
             }
         }
@@ -73,7 +73,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Knowlegde Area'),
+                    'text'      => self::$t->translate('New Department'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -299,7 +299,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Knowlegde Area created with success"),
+                    self::$t->translate("Department created with success"),
                     "success"
                 );
             } else {
@@ -323,7 +323,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Knowlegde Area updated with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Department updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -346,7 +346,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Knowlegde Area removed with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Department removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

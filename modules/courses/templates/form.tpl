@@ -41,11 +41,11 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Knowledge Area"}</label>
+					<label class="control-label">{translateToken value="Departament"}</label>
 					<!--
 					<input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
 					-->
-					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Knowledge Area'}">
+					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Departament'}">
 					{foreach $T_KNOWLEDGE_AREAS as $knowledge}
 							<option value="{$knowledge.id}">{$knowledge.name}</option>
 					{/foreach}

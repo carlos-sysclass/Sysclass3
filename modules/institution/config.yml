@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Institution
+      page_title: Organization
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Institution(s)
+        page_subtitle: Manage your Organization(s)
       context:
         datatable_fields:
         - mData: id
@@ -50,10 +50,10 @@ crud:
       scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new Institution
+        page_subtitle: Create a new Organization
     'edit/:id':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
       blocks: ["dropbox.upload", "address.book"]
       template: form.tpl
       variables:
-        page_subtitle: Edit your Institution
+        page_subtitle: Edit your Organization

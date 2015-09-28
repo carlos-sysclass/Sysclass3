@@ -62,7 +62,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 'administration' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Institution'),
+                        'text'  => self::$t->translate('Organization'),
                         'icon'  => 'fa fa-university',
                         'link'  => $this->getBasePath() . 'edit/1'
                     )
@@ -81,7 +81,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             array(
                 'icon'  => 'fa fa-university',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Institutions")
+                'text'  => self::$t->translate("Organizations")
             )
         );
 
@@ -92,11 +92,11 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Institution"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("New Organization"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Institution"));
+                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Organization"));
                 break;
             }
         }
@@ -142,7 +142,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      */
     public function addItemAction($id)
     {
-        return $this->invalidRequestError(self::$t->translate("There's no multi-institution support yet!"), "error");
+        return $this->invalidRequestError(self::$t->translate("There's no multi-organization support yet!"), "error");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -169,7 +169,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 );
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -193,11 +193,11 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             }
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Institution updated with success"), "success");
+                $response = $this->createAdviseResponse(self::$t->translate("Organization updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -212,7 +212,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
      */
     public function deleteItemAction($id)
     {
-        return $this->invalidRequestError(self::$t->translate("You can delete the last institution in the system!"), "error");
+        return $this->invalidRequestError(self::$t->translate("You can't delete the last institution in the system!"), "error");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -224,7 +224,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
