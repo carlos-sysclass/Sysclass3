@@ -13,13 +13,14 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 	    	tagName : "li",
 	    	className : "list-file-item blue-stripe",
 			initialize: function(opt) {
-				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
+				console.info('blocks.classes.lessons/baseClassItemViewClass::initialize');
 
 				this.opened = opt.opened ? opt.opened : false;
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function() {
+				console.info('blocks.classes.lessons/baseClassItemViewClass::render');
 				this.$el.html(this.template(this.model.toJSON()));
 				if (this.model.get("id")) {
 					if (this.model.get("active") == 0) {
@@ -38,6 +39,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 				if (this.$el.length) {
 					app.module("ui").refresh(this.$el);
 				}
+
+				this.trigger("view:rendered");
 
 				return this;
 			},
@@ -58,8 +61,10 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 			    editableItem.on('save', function(e, params) {
                     self.model.set($(this).data("name"), params.newValue);
                     self.model.save();
+
+                    // TRIGGER A COUNTER UPDATE
+                    
                     /*
-			        //console.warn(e, params);
 			        if (!self.model.get("id")) {
 			        	var response = params.response;
 			        	self.model.set(response);
@@ -76,7 +81,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
             toogleActive : function(e, state) {
                 this.model.set("active", state);
                 this.model.save();
-                this.render();
+                //this.render();
             },
             /*
 			enable: function() {
@@ -91,9 +96,10 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 			},
 			*/
 			delete: function() {
+				this.remove();
 				this.model.destroy();
 				this.trigger("lesson:removed", this.model);
-				this.remove();
+				this.trigger("view:removed");
 			}
 	    });
 
@@ -104,6 +110,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 	    	template : _.template($("#class-test-item-template").html(), null, {variable: 'model'}),
 	    	className : "list-file-item blue-stripe test-item"
 		});
+
+
 
 		mod.classLessonsViewClass = Backbone.View.extend({
 			events : {
@@ -119,6 +127,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 
                 this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
                 this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
+                //this.listenTo(this.collection, 'change', this.refreshCounters.bind(this));
 
 				this.initializeSortable();
 			},
@@ -204,13 +213,18 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
                 });
             },
             refreshCounters : function() {
-                console.info('blocks.classes.lessons/classLessonsViewClass::refreshCounters');
+                console.info('blocks.classes.lessons.edit/classLessonsViewClass::refreshCounters');
                 var total = this.collection.size();
                 //alert(total);
                 this.$("ul > li.list-file-item .total").html(total);
 
+                var counter = 0;
+
                 this.$("ul > li.list-file-item").each(function(i, item) {
-                    $(this).find(".counter").html(i+1);
+                	if ($(this).find(".counter").size() > 0) {
+                    	$(this).find(".counter").html(counter+1);
+                    	counter++;
+                    }
                 });
             },
 			addLessonItem : function(e) {
@@ -238,6 +252,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 				});
 				*/
 				classLessonsNewItemView.start();
+
+				this.listenTo(classLessonsNewItemView, "view:rendered", this.refreshCounters.bind(this));
  			},
 			addTestItem : function(e) {
 				var self = this;
@@ -256,6 +272,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 				$(classLessonsNewItemView.render().el).appendTo( this.$("ul") );
 
 				classLessonsNewItemView.start();
+
+				this.listenTo(classLessonsNewItemView, "view:rendered", this.refreshCounters.bind(this));
  			},
 
 			addOne : function(model) {
@@ -280,6 +298,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 					$(classItemView.render().el).appendTo( this.$("ul") );
 
 					classItemView.start();
+
+					this.listenTo(classItemView, "view:rendered", this.refreshCounters.bind(this));
 				}
 			},
 			render: function() {
@@ -307,19 +327,6 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 			*/
 		});
 
-
-/*
-
-		$SC.module("crud.views.edit").on("start", function() {
-			// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-	        mod.lessonsEditView = new lessonsEditViewClass({
-				el : "#block_lessons_edit",
-				param : "lessons",
-				model : this.itemModel
-			});
-		});
-		*/
-
 		$("[data-widget-id='lessons-edit-widget']").each(function() {
             var class_id = null;
             if (_.isEmpty($(this).data("classId"))) {
@@ -340,7 +347,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
     });
 
     mod.createBlock = function(el, data) {
-		var lessonsCollection = new mod.collections.lesson({
+		var lessonsCollection = new mod.collections.lesson(null, {
 			class_id : data.class_id
 		});
 
@@ -382,14 +389,15 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 
     this.collections = {
     	lesson : Backbone.Collection.extend({
-	        initialize: function(opt) {
+	        initialize: function(data, opt) {
 	            this.class_id = opt.class_id;
-	            this.listenTo(this, "add", function(model, collection, opt) {
+	            this.on("add", function(model, collection, opt) {
 	                model.set("class_id", this.class_id);
 	            });
-	            this.listenTo(this, "remove", function(model, collection, opt) {
-	                console.warn(model);
+	            this.on("remove", function(model, collection, opt) {
+
 	            });
+
 	        },
 	        model : function(info) {
 	        	if (info.type == 'lesson') {
