@@ -186,7 +186,7 @@ $plicoLib->add("resources/components", array(
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'icheck',
-	'css'	=> array('plugins/icheck/skins/all'),
+	'css'	=> array('plugins/icheck/skins/square/_all'),
 	'js'	=> array('plugins/icheck/icheck.min')
 ));
 
