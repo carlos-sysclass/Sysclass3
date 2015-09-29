@@ -1209,5 +1209,8 @@ button.calendar-news-item {
 }
 
 
-
+.agreement-container {
+    overflow-y: scroll;
+    max-height: 600px;
+}
 

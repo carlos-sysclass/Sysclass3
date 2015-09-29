@@ -124,7 +124,8 @@ $plicoLib->concat(
 //		'FrontendController',
 		'LoginController',
 		//'HomeController',
-		'DashboardController'
+		'DashboardController',
+		'AgreementController'
 		//'CrudController'
 		//'AdministratorController',
 		//'StudentController'

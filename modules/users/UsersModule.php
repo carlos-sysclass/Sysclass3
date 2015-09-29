@@ -530,6 +530,55 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
     /**
      * [ add a description ]
      *
+     * @url PUT /item/agreement/:id
+     * @todo MOVE TO AGREEMENT CONTROLLER
+     */
+    public function setAgreementAction($id)
+    {
+        if ($userModel = $this->getCurrentUser(true)) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($userModel->id == $id || $userModel->getType() == "administrator") {
+                if ($userModel->id == $id) {
+                } else {
+                    $userModel = new \Sysclass\Models\Users\User();
+                }
+                
+                $userModel->assign($data);
+
+                // CHECK FOR PASSWORD CHANGING
+                if ($userModel->save()) {
+                    if ($userModel->viewed_license == 1) {
+                        return $this->createRedirectResponse(
+                            "/dashboard",
+                            self::$t->translate("You agreed within the license. Thanks for using Sysclass"),
+                            "success"
+                        );
+                    } else {
+                        $di = DI::getDefault();
+                        $di->get("authentication")->logout($userModel);
+                        $message = self::$t->translate("You cannot access the system before you accepted ther terms of use.");
+                        $message_type = 'warning';
+                        return $this->createRedirectResponse(
+                            "/login", $message, $message_type
+                        );
+                    }
+                } else {
+                    $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    return array_merge($response, $userModel->toFullArray());
+                }
+            } else {
+                return $this->invalidRequestError(self::$t->translate("You don't have the permission to update these info."), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+    
+
+    /**
+     * [ add a description ]
+     *
      * @url DELETE /item/me/:id
      */
     public function deleteItemAction($id)
