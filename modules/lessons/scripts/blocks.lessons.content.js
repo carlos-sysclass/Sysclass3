@@ -412,7 +412,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
+                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
                         //console.warn("fileuploadalways");
@@ -509,7 +509,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
-                console.warn(this.$el, this.$(".fileupload-subtitle"));
+                //console.warn(this.$el, this.$(".fileupload-subtitle"));
                 //this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
             }
         });
@@ -842,23 +842,29 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         //self.jqXHR = o.submit();
                     })
                     .bind('fileuploaddone', function (e, data) {
+                        
                         var files = data.getFilesFromResponse(data);
                         var viewObject = data.context.data("viewObject");
 
-                        $.each(files, function (index, file) {
-                            viewObject.model.mergeWithinFileObject(file);
-                            viewObject.setOptions({
-                                upload : false,
-                                file: file,
-                                opt : data
-                            });//.render();
+                        if (_.size(files) == 0) {
+                            window.setTimeout(function() { viewObject.delete() }, 1500);
+                        } else {
 
-                            viewObject.completeEvents();
-                        });
+                            $.each(files, function (index, file) {
+                                viewObject.model.mergeWithinFileObject(file);
+                                viewObject.setOptions({
+                                    upload : false,
+                                    file: file,
+                                    opt : data
+                                });//.render();
+
+                                viewObject.completeEvents();
+                            });
+                        }
                         self.jqXHR = null;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
+                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
                         //console.warn("fileuploadalways");
