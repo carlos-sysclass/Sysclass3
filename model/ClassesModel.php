@@ -38,6 +38,8 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
 
         parent::init();
 
+        $this->group_by = array("cl.`id`");
+
     }
 
     protected function parseItem($item)
