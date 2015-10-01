@@ -269,7 +269,7 @@ class IntrospectionHelper
                     }
 
                     // we don't use the classname here, but we need to make sure it exists before
-                    // we later try to instantiate a non-existant class
+                    // we later try to instantiate a non-existent class
                     if ($classname === null) {
                         throw new BuildException($method->getDeclaringClass()->getName() . "::" . $method->getName(
                             ) . "() method MUST use a class hint to indicate the class type of parameter.");
@@ -465,7 +465,12 @@ class IntrospectionHelper
                 }
 
                 // create a new instance of the object and add it via $addMethod
-                $nestedElement = new $classname();
+                $clazz = new ReflectionClass($classname);
+                if ($clazz->getConstructor() !== null && $clazz->getConstructor()->getNumberOfRequiredParameters() === 1) {
+                    $nestedElement = new $classname(Phing::getCurrentProject());
+                } else {
+                    $nestedElement = new $classname();
+                }
 
                 $method->invoke($element, $nestedElement);
 
