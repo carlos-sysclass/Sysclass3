@@ -26,11 +26,11 @@
 git_bin=$bamboo_capability_system_git_executable
 
 FULL_RELEASE=`cat $bamboo_working_directory/RELEASE`
-MESSAGE="${bamboo_buildPlanName} build number ${bamboo_buildNumber} passed automated acceptance testing." ${bamboo_planRepository_revision}
+MESSAGE="${bamboo_buildPlanName} build number ${bamboo_buildNumber} passed automated acceptance testing."
 
 $git_bin add $bamboo_working_directory/RELEASE
 
-$git_bin tag -a ${FULL_RELEASE} -m "${bamboo_buildPlanName} build number ${bamboo_buildNumber} passed automated acceptance testing." ${bamboo_planRepository_revision}
+$git_bin tag -a ${FULL_RELEASE} -m "${bamboo_buildPlanName} build number ${bamboo_buildNumber} passed automated acceptance testing."
 $git_bin remote add central ${bamboo_planRepository_repositoryUrl}
 $git_bin push central ${FULL_RELEASE}
 $git_bin ls-remote --exit-code --tags central ${FULL_RELEASE}
