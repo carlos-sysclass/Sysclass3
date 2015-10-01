@@ -29,7 +29,7 @@
 #echo "FULL VERSION: $bamboo_vars_version.$bamboo_buildNumber"
 
 #DUMP OUTS RELEASE
-cat $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEASE
+echo $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEASE
 
 
 
