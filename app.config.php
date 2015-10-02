@@ -50,6 +50,11 @@ $configurationDefaults = array(
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
 	*/
+	'develop.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_develop',
+		'theme'		=> 'sysclass.default',
+		'https'		=> 'required',
+	),
 	'enterprise.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_enterprise',
 		'theme'		=> 'sysclass.default',
