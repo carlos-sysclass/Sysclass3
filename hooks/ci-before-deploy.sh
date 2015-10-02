@@ -21,20 +21,27 @@
 # Executed on the very beginig on deploy process, responsible to define the    #
 # build variables and pass the context to phing								   #
 # ---------------------------------------------------------------------------- #
-# 
+ 
 
-git_bin=$bamboo_capability_system_git_executable
+#source srv-variables.txt
 
-FULL_RELEASE=$bamboo_vars_full_version
-MESSAGE="RELEASE ${FULL_RELEASE}"
+#deploy_version=$bamboo_vars_full_version
+#enviroment=$bamboo_deploy_environment
+enviroment=$bamboo_planRepository_branch
+scp -P 22411 -i ~/.ssh/id_rsa -r $bamboo_working_directory/hooks/variables.txt 54.149.57.151:/var/www/sysclass/deploy-info/$enviroment/info
 
-$git_bin add $bamboo_working_directory/RELEASE
-$git_bin commit -m "RELEASE ${FULL_RELEASE}" 
+#git_bin=$bamboo_capability_system_git_executable
 
-$git_bin tag -a ${FULL_RELEASE} -m "RELEASE ${FULL_RELEASE}"
-$git_bin remote add central ${bamboo_planRepository_repositoryUrl}
-$git_bin push central ${FULL_RELEASE}
-$git_bin ls-remote --exit-code --tags central ${FULL_RELEASE}
+#FULL_RELEASE=$bamboo_vars_full_version
+#MESSAGE="RELEASE ${FULL_RELEASE}"
+
+#$git_bin add $bamboo_working_directory/RELEASE
+#$git_bin commit -m "RELEASE ${FULL_RELEASE}" 
+
+#$git_bin tag -a ${FULL_RELEASE} -m "RELEASE ${FULL_RELEASE}"
+#$git_bin remote add central ${bamboo_planRepository_repositoryUrl}
+#$git_bin push central ${FULL_RELEASE}
+#$git_bin ls-remote --exit-code --tags central ${FULL_RELEASE}
 
 
 

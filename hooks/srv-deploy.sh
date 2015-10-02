@@ -32,8 +32,8 @@
 #   - mark OLD RELEASE to DELETE in 7 Days
 # -------------------------------------------------------------------------- #
 
-deploy_version=$1
-enviroment=$2
+deploy_version=$bamboo_vars_full_version
+enviroment=$bamboo_deploy_environment
 
 if [ -z $deploy_version ]; then
     echo "Please especify the version to deploy. Exiting..."

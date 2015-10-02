@@ -28,16 +28,17 @@
 
 #echo "FULL VERSION: $bamboo_vars_version.$bamboo_buildNumber"
 #
-#mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
-touch $bamboo_working_directory/hooks/srv-variables.txt
-
 #DUMP OUTS RELEASE
 echo "$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/RELEASE
 
-echo "full_version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/srv-variables.txt
-echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/srv-variables.txt
-echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/srv-variables.txt
-echo "repositoryUrl=$bamboo_planRepository_revision" >> $bamboo_working_directory/hooks/srv-variables.txt
+#mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
+touch $bamboo_working_directory/hooks/variables.txt
+
+
+echo "full_version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
+echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/variables.txt
+echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/variables.txt
+echo "revision=$bamboo_planRepository_revision" >> $bamboo_working_directory/hooks/variables.txt
 
 # GET RELEASE NOTES FROM JIRA (IF POSSIBLE)
 
