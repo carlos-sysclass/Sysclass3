@@ -140,7 +140,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 //$this->putItem("role", $roleMOdel->toArray());
 
                 $resources = AclResource::find()->toArray();
-                $this->putItem("acl_resources", $resources);
+                $self->putItem("acl_resources", $resources);
 
                 // GET ALL THIS DATA FROM config.yml
                 $self->putComponent("data-tables");
