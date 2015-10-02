@@ -25,7 +25,7 @@
 
 git_bin=$bamboo_capability_system_git_executable
 
-FULL_RELEASE=`cat $bamboo_working_directory/RELEASE`
+FULL_RELEASE=$bamboo_vars_full_version
 MESSAGE="RELEASE ${FULL_RELEASE}"
 
 $git_bin add $bamboo_working_directory/RELEASE

@@ -27,11 +27,19 @@
 #echo $bamboo_vars_version
 
 #echo "FULL VERSION: $bamboo_vars_version.$bamboo_buildNumber"
+#
+mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
+touch $bamboo_working_directory/hooks/srv-variables.txt
 
 #DUMP OUTS RELEASE
-echo $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEASE
+echo "$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/RELEASE
 
+echo "full_version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/srv-variables.txt
+echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/srv-variables.txt
+echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/srv-variables.txt
+echo "repositoryUrl=$bamboo_planRepository_revision" >> $bamboo_working_directory/hooks/srv-variables.txt
 
+# GET RELEASE NOTES FROM JIRA (IF POSSIBLE)
 
 #bamboo_planRepository_1_branch=develop
 #bamboo_repository_revision_number=c4ebf91ebc4f36847e116295294a96d7ba73fef8
@@ -44,7 +52,7 @@ echo $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEAS
 #bamboo_planRepository_name=wiseflex/sysclass3:develop
 #bamboo_buildNumber=2
 #bamboo_buildResultsUrl=http://tasks.plicoweb.com.br/bamboo/browse/SC-DEV-JOB1-2
-#bamboo_planRepository_repositoryUrl=git@bitbucket.org:wiseflex/sysclass3.git
+
 #bamboo_agentId=131073
 #bamboo_shortPlanKey=DEV
 #bamboo_repository_360449_branch_name=develop
@@ -62,7 +70,6 @@ echo $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEAS
 #bamboo_repository_name=wiseflex/sysclass3:develop
 #bamboo_dependenciesDisabled=false
 #bamboo_planRepository_branch=develop
-#bamboo_repository_360449_git_repositoryUrl=git@bitbucket.org:wiseflex/sysclass3.git
 #bamboo_agentWorkingDirectory=/var/atlassian/application-data/bamboo/xml-data/build-dir
 #bamboo_capability_system_git_executable=/bin/git
 #bamboo_planRepository_1_previousRevision=e4640f99ced475ae886fd58c51c3e0d6c545c3c0
@@ -73,10 +80,8 @@ echo $bamboo_vars_version.$bamboo_buildNumber > $bamboo_working_directory/RELEAS
 #bamboo_planRepository_type=git
 #bamboo_planRepository_1_username=
 #bamboo_ManualBuildTriggerReason_userName=akucaniz
-#bamboo_repository_git_repositoryUrl=git@bitbucket.org:wiseflex/sysclass3.git
 #bamboo_working_directory=/var/atlassian/application-data/bamboo/xml-data/build-dir/SC-DEV-JOB1
 #bamboo_planKey=SC-DEV
-#bamboo_planRepository_1_repositoryUrl=git@bitbucket.org:wiseflex/sysclass3.git
 #bamboo_planRepository_username=
 #bamboo_capability_system_jdk_JDK_1_8_0_60=/opt/jdk1.8.0_60
 #bamboo_capability_system_jdk_JDK_1_8=/opt/jdk1.8.0_60

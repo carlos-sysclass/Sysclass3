@@ -18,3 +18,4 @@ www/resources
 /build/logs/*
 /build/pdepend/*
 /logs/*
+/hooks/data/*
