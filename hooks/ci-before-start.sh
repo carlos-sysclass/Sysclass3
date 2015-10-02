@@ -28,7 +28,7 @@
 
 #echo "FULL VERSION: $bamboo_vars_version.$bamboo_buildNumber"
 #
-mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
+#mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
 touch $bamboo_working_directory/hooks/srv-variables.txt
 
 #DUMP OUTS RELEASE
