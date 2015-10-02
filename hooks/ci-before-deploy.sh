@@ -28,7 +28,7 @@
 #deploy_version=$bamboo_vars_full_version
 #enviroment=$bamboo_deploy_environment
 enviroment=$bamboo_planRepository_branch
-scp -P 22411 -i ~/.ssh/id_rsa -r $bamboo_working_directory/hooks/variables.txt 54.149.57.151:/var/www/sysclass/deploy-info/$enviroment/info
+scp -P 22411 -i ~/.ssh/id_rsa $bamboo_working_directory/hooks/variables.txt 54.149.57.151:/var/www/sysclass/deploy-info/$enviroment/info
 
 #git_bin=$bamboo_capability_system_git_executable
 
