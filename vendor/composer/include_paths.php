@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     $vendorDir . '/phing/phing/classes',
-    $vendorDir . '/phpunit/php-timer',
 );

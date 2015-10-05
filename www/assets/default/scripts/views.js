@@ -244,6 +244,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     // UPDATE inputField WITH  this.model.get(modelField)
                     var values = this.model.get(modelField);
 
+
+
                     if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
                         if (values !== null) {
                             var valueArray = values;
@@ -255,6 +257,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                 if (input.filter("[value='" + itemValue +"']").size() > 0 || input.filter("[data-value-unchecked='" + itemValue +"']")) {
                                     var innerInput = input.filter("[value='" + itemValue +"']");
                                     var uncheck = false;
+//console.warn("icheck", input, innerInput, values, itemValue, uncheck);
+
 
                                     if (innerInput.size() == 0) {
 
@@ -264,18 +268,19 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                     }
 
                                     if (innerInput.hasClass("icheck-me")) {
+                                        
                                         if (uncheck) {
-                                            innerInput.iCheck("check");
-                                        } else {
                                             innerInput.iCheck("uncheck");
+                                        } else {
+                                            innerInput.iCheck("check");
                                         }
                                     } else if (input.hasClass("bootstrap-switch-me")) {
                                         innerInput.bootstrapSwitch('state', (itemValue == 1), true);
                                     } else {
                                         if (uncheck) {
-                                            innerInput.attr("checked", "checked");
-                                        } else {
                                             innerInput.removeAttr("checked");
+                                        } else {
+                                            innerInput.attr("checked", "checked");
                                         }
                                         if ($.uniform) {
                                             $.uniform.update(innerInput);

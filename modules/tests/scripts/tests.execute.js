@@ -36,7 +36,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                     /// SET INPUT AS READ_ONLY
 
                 } else {
-                    console.warn("write");
+                    //console.warn("write");
                 }
             }
         });

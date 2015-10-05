@@ -30,7 +30,7 @@ include_once 'phing/IntrospectionHelper.php';
 /**
  * The datatype handler class.
  *
- * This class handles the occurance of registered datatype tags like
+ * This class handles the occurrence of registered datatype tags like
  * FileSet
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
@@ -242,14 +242,11 @@ class ProjectConfigurator
     /**
      * Configures an element and resolves eventually given properties.
      *
-     * @param $target
-     * @param $attrs
-     * @param Project $project
+     * @param mixed $target element to configure
+     * @param array $attrs element's attributes
+     * @param Project $project project this element belongs to
      * @throws BuildException
      * @throws Exception
-     * @internal param the $object element to configure
-     * @internal param the $array element's attributes
-     * @internal param the $object project this element belongs to
      */
     public static function configure($target, $attrs, Project $project)
     {
