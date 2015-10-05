@@ -16,7 +16,7 @@
 	<div class="form-actions nobg">
 		<button class="btn btn-success" type="submit">{translateToken value="Confirm"}</button>
 	</div>
-</form>
+</form>  
 <script>
 _lazy_init_functions.push(function() {
     // START DATATABLE HERE
