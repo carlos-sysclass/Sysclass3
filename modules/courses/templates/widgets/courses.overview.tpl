@@ -695,7 +695,11 @@
 	<div class="videocontent">
 		<video id="lesson-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered"
 			width="auto"  height="auto"
-			poster="{Plico_GetResource file='images/default-poster.jpg'}"
+			<% if (_.isNull(model.poster)) { %>
+				poster="{Plico_GetResource file='images/default-poster.jpg'}"
+			<% } else { %>
+				poster="<%= model.poster.file.url %>"
+			<% } %>
 			style="max-height:100%;max-width:100%;">
 			<source src="<%= model.file.url %>" type='<%= model.file.type %>' />
 
