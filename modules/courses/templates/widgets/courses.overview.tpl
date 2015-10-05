@@ -691,6 +691,7 @@
 	</div>
 </script>
 
+
 <script type="text/template" id="tab_lessons_video-item-template">
 	<div class="videocontent">
 		<video id="lesson-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered"
