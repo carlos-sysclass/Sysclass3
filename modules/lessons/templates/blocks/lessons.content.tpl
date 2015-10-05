@@ -375,6 +375,14 @@
                         </span>
                         <input type="file" name="subtitles[]">
                     </span>
+                    <span class="btn btn-sm btn-warning fileinput-button fileupload-poster" id="fileupload"  data-fileupload-url="/module/dropbox/upload/poster">
+                        <i class="fa fa-file-image-o"></i>
+                        <span class="hidden-xs">
+                        {translateToken value="Add a Video Poster"}
+                        </span>
+                        <input type="file" name="poster[]">
+                    </span>
+
                 <% }  %>
                 <a class="btn btn-sm btn-danger delete-file-content" href="javascript: void(0);"
                     data-toggle="confirmation"
@@ -561,6 +569,36 @@
 
     </div>
 </script>
+
+<script type="text/template" id="fileupload-download-related-poster-item">
+    <% var file = model.file %>
+    <span class="">
+        <i class="fa fa-file-image-o"></i>
+    </span>
+
+    <%= file.name %>
+
+    <div class="list-file-item-options">
+        <a class="btn btn-sm text-danger delete-file-content" href="javascript: void(0);"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+            style="display: inline-block;"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
+</script>
+
+
 
 <script type="text/template" id="fileupload-translation-related-item">
     <li class="translation-item">

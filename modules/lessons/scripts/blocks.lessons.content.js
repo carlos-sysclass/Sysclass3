@@ -63,6 +63,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
+        var lessonFilePosterContentModelClass = lessonFileContentModelClass.extend({
+            defaults : function() {
+                var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
+                defaults['content_type'] = 'poster';
+                return defaults;
+            },
+            urlRoot: "/module/lessons/item/lesson-content/"
+        });
+
         var lessonTextContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
@@ -190,7 +199,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return new lessonExerciseContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
-
+                    } else if (attrs.content_type == "poster") {
+                        return new lessonFilePosterContentModelClass(attrs, _.extend(options, {
+                            collection: this,
+                        }));
                     } else {
                         return new baseLessonContentModelClass(attrs, _.extend(options, {
                             collection: this,
@@ -279,7 +291,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     });
 
 
-                    this.$el.html(this.uploadTemplate({
+                   this.$el.html(this.uploadTemplate({
                         model: this.model.toJSON(),
                         file : this.fuploadFile,
                         opt  : this.fuploadOptions
@@ -306,7 +318,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                     // IF IS A VIDEO, RENDER
                     if (/^video\/.*$/.test(this.model.get("file").type)) {
-                        this.initializeFileUpload();
+                        this.initializeFileSubtitleUpload();
+                        this.initializeFileposterUpload();
                     }
 
                     // RENDER SUBFILES VIEW
@@ -338,7 +351,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.$el.data("viewObject", this);
                 return this;
             },
-            initializeFileUpload : function() {
+            initializeFileSubtitleUpload : function() {
                 var self = this;
                 var fileUploadItem = this.$(".fileupload-subtitle");
                 var url = fileUploadItem.data("fileuploadUrl");
@@ -374,7 +387,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             rows = rows.add($(self.addRelatedFileContent({
                                 upload : true,
                                 file: file,
-                                opt : o
+                                opt : o,
+                                type : "subtitle"
                             })));
                         });
 
@@ -422,6 +436,92 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         data.context.find(".load-percent").html(progress);
                     });
             },
+            initializeFileposterUpload : function() {
+                var self = this;
+                var fileUploadItem = this.$(".fileupload-poster");
+                var url = fileUploadItem.data("fileuploadUrl");
+
+                var opt = {
+                    url: url,
+                    paramName : "subtitles",
+                    dataType: 'json',
+                    singleFileUploads: true,
+                    autoUpload : true,
+                    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
+                    filesContainer: this.$("ul.content-subtitles-items"),
+                    downloadTemplateId: null,
+                    uploadTemplate: function (o) {
+                        return fileUploadItem.data("upload-contexts");
+                    },
+                    /*
+                    downloadTemplate: function (o) {
+                        return fileUploadItem.data("download-contexts");
+                    },
+                    */
+                    done: function() {
+
+                    }
+                };
+
+                fileUploadItem.fileupload(opt)
+                    .bind('fileuploadadd', function (e, o) {
+                        var rows = $();
+
+                        $.each(o.files, function (index, file) {
+                            //rows = rows.add("<p>FILE: " + file.name + "</p>");
+                            rows = rows.add($(self.addRelatedFileContent({
+                                upload : true,
+                                file: file,
+                                opt : o,
+                                type : "poster"
+                            })));
+                        });
+
+                        $(this).data("upload-contexts", rows);
+
+                        o.context = rows;
+                        //e.stopPropagation();
+                        self.jqXHR = o.submit();
+                        return rows;
+                    })
+                    .bind('fileuploaddone', function (e, data) {
+                        var files = data.getFilesFromResponse(data);
+                        var rows = $();
+                        var viewObject = data.context.data("viewObject");
+
+                        if (files.length == 0) {
+                            window.setTimeout(function() {
+                                viewObject.delete();
+                            }, 500);
+
+                        } else {
+                            $.each(files, function (index, file) {
+                                viewObject.model.mergeWithinFileObject(file);
+                                viewObject.setOptions({
+                                    upload : false,
+                                    file: file,
+                                    opt : data
+                                })//.render();
+
+                                viewObject.completeEvents();
+                            });
+                            $(this).data("download-contexts", rows);
+                        }
+                        self.jqXHR = null;
+                        return rows;
+                    })
+                    .bind('fileuploadfail', function (e, data) {
+                        console.warn("fileuploadfail");
+                    })
+                    .bind('fileuploadalways', function (e, data) {
+                        //console.warn("fileuploadalways");
+                    })
+                    .bind('fileuploadprogress', function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        data.context.find(".load-percent").html(progress);
+                    });
+            },
+
             renderOne : function(model, collection, options) {
                 if (model.get("id")) {
                     if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
@@ -430,12 +530,22 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
             },
             addRelatedFileContent : function(options) {
+                console.warn(options);
                 var self = this;
-                // TODO: INJECT FILES DATA ON MODEL
-                var model = new lessonFileSubtitleContentModelClass({
-                    parent_id : this.model.get("id"),
-                    lesson_id : this.model.get("lesson_id")
-                });
+                
+                var model = null;
+
+                if (options.type == 'poster') {
+                    var model = new lessonFilePosterContentModelClass({
+                        parent_id : this.model.get("id"),
+                        lesson_id : this.model.get("lesson_id")
+                    });
+                } else {
+                    var model = new lessonFileSubtitleContentModelClass({
+                        parent_id : this.model.get("id"),
+                        lesson_id : this.model.get("lesson_id")
+                    });
+                }
 
                 model.mergeWithinFileObject(options.file);
 
@@ -450,15 +560,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 if (!_.isObject(options)) {
                     options = {};
                 }
-                // DISABLE FILE UPLOAD
-                //this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
 
-                var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
+                var viewClass = null;
+                if (model.get("content_type") == "poster") {
+                    viewClass = lessonFileRelatedPosterContentTimelineViewClass;
+                } else {
+                    viewClass = lessonFileRelatedContentTimelineViewClass;
+                }
+                
+                var fileContentTimelineView = new viewClass(_.extend(options, {
                     model : model
                 }));
 
                 this.$("ul.content-subtitles-items").append(fileContentTimelineView.render().el);
-
 
                 this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
                     var self = this;
@@ -565,6 +679,62 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     this.$("[name='related[lang_to]']").val()
                 );
             }
+        });
+
+        var lessonFileRelatedPosterContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+            uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
+            downloadTemplate : _.template($("#fileupload-download-related-poster-item").html()),
+            //translationTemplate : _.template($("#fileupload-translation-related-item").html()),
+            className : "list-file-item",
+            tagName : "li",
+            uploadClass : [ "template-upload red-stripe" ],
+            downloadClass : [ "template-download green-stripe" ],
+            events : {
+                "confirmed.bs.confirmation .delete-file-content" : "delete",
+                "click .save-file-content"                       : "save_contents",
+                "click .translate-file-content"                  : "translate_contents",
+                "click .delete-translation-content"              : "delete_translation"
+            },
+            /*
+            renderOne : function(model, collection, options) {
+                if (model.get("id")) {
+                    if (!_.isNull(model.get("parent_id")) && model.get("parent_id") == this.model.get("id")) {
+                        // "content_type": "subtitle-translation",
+                        this.renderTranslationContent(model);
+                    }
+                }
+            },
+            renderTranslationContent : function(model) {
+                var html = this.translationTemplate({
+                    model: model.toJSON()
+                });
+                app.module("ui").refresh(
+                    $(html).appendTo(
+                        this.$(".translation-container")
+                    )
+                );
+            },
+            delete_translation : function(e) {
+                var item = $(e.currentTarget);
+                var modelId = item.data("contentId");
+                mod.lessonContentCollection.remove(modelId);
+                item.parents("li.translation-item").remove();
+            },
+            save_contents : function() {
+                this.model.set("language_code", this.$("[name='related[lang_from]']").val());
+                this.model.save();
+            },
+
+            translate_contents : function() {
+                // REQUEST FILE TRANSLATION SERVICE
+                // GET FROM AND TO VALUES, CHECK FOR EQUALITY AND REQUEST TRANSLATION
+                //var translateServiceModelClass = app.module("models.translate").translateServiceModelClass;
+                this.model.translate(
+                    this.$("[name='related[lang_from]']").val(),
+                    this.$("[name='related[lang_to]']").val()
+                );
+            }
+            */
         });
 
         var lessonTextContentTimelineViewClass = Backbone.View.extend({
@@ -1092,16 +1262,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             collectionFilter : {parent_id: null}
         });
 
-/*
-var contents = $SC.module("blocks.lessons.content").lessonContentCollection.where({
-  parent_id: "22"
-});
+        /*
+        var contents = $SC.module("blocks.lessons.content").lessonContentCollection.where({
+          parent_id: "22"
+        });
 
-_.each(contents, function(item) {
-  console.log(item);
-});
-*/
-
+        _.each(contents, function(item) {
+          console.log(item);
+        });
+        */
 
     });
     $SC.module("crud.views.edit").on("start", function() {

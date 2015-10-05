@@ -908,6 +908,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						this.$el.empty().append(
 							this.template(this.videoModel.toJSON())
 						);
+						console.warn(this.videoModel.toJSON());
 
 						//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 						videojs(videoDomID, {
@@ -1684,9 +1685,25 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				// GET CHILDS OBJECTS
+				var poster = _.map(
+					this.where({
+						parent_id : mainVideo.get("id"),
+						content_type : "poster"
+					}),
+					function(model, index) {
+						return model.toJSON();
+					}
+				);
+				if (_.size(poster) > 0) {
+
+					mainVideo.set("poster", _.first(poster));
+				}
+
+				// GET CHILDS OBJECTS
 				var childs = _.map(
 					this.where({
-						parent_id : mainVideo.get("id")
+						parent_id : mainVideo.get("id"),
+						content_type : "subtitle"
 					}),
 					function(model, index) {
 						return model.toJSON();

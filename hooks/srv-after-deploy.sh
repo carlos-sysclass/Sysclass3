@@ -28,6 +28,8 @@ ln -s ../files/public/ files
 #creating cache dir
 #mkdir -p "$DIRNAME/../cache/volt"
 #chmod 777 "$DIRNAME/../cache/volt" -R
+#
+# DELETE DATABASE METADATA
 
 #creating cache dir
 mkdir -p "$DIRNAME/../cache/metadata"
