@@ -40,6 +40,8 @@ echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/v
 echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/variables.txt
 echo "revision=$bamboo_planRepository_revision" >> $bamboo_working_directory/hooks/variables.txt
 
+echo "project.version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/build.properties
+
 # GET RELEASE NOTES FROM JIRA (IF POSSIBLE)
 
 #bamboo_planRepository_1_branch=develop

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Sysclass" default="build" description="Jenkins">
+<project name="Sysclass" default="build" description="Sysclass phing Build System for Bamboo">
 
     <import file="build/lib/phing/default.xml"/>
 
