@@ -594,6 +594,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.collection, 'sync', this.updateCollectionIndex.bind(this));
 
 				this.listenTo(this.collection, 'prevModel nextModel', function(model, index, collection) {
+					console.warn(model, index, collection);
 					this.model.set("id", model.get("id"));
 					this.model.fetch();
 				}.bind(this));

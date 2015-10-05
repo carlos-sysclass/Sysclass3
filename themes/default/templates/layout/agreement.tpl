@@ -6,7 +6,7 @@
 	<div class="form-body">
 		{block name="inner-content"}{/block}
 		<div class="form-group">
-			<label class="control-label">{translateToken value="I Confirm "}</label>
+			<label class="control-label">{translateToken value="I Agree"}</label>
             <input type="checkbox" name="viewed_license" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-update-single="true" data-value-unchecked="0">
             
         </div>
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Confirm"}</button>
 	</div>
 </form>
 <script>
