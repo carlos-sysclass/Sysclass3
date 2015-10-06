@@ -485,8 +485,7 @@ $plicoLib->concat(
 use Phalcon\Loader,
 	Phalcon\DI,
 	Phalcon\DI\FactoryDefault,
-	//Phalcon\Mvc\Model\Manager as ModelsManager,
-	//Plico\Mvc\Model\Manager as ModelsManager,
+	Phalcon\Config\Adapter\Ini as ConfigIni,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaData,
 	Phalcon\Mvc\Model\MetaData\Apc as ApcMetaData,
 	Phalcon\Session\Adapter\Files as Session,
@@ -534,6 +533,14 @@ $di->set('db', function () use ($configuration, $eventsManager) {
 		exit;
 	}
 });
+
+$di->set('sysconfig', function()  {
+	$config = new ConfigIni(__DIR__ . "/RELEASE");
+	echo $config->project->full_version, "\n";
+	return $config;
+}, true);
+
+
 
 $logger = new FileLogger(__DIR__ . "/logs/database.log");
 // Listen all the database events
