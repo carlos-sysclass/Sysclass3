@@ -243,7 +243,7 @@ ftp-htaccess targets, for instance.
         <exec executable="phploc" logoutput="true" checkreturn="true" level="debug">
             <arg value="--log-csv"/>
             <arg value="${build.logs.dir}/phploc.csv"/>
-            <arg path="${src.dir}"/>l
+            <arg path="${src.dir}"/>
         </exec>
     </target>
 
