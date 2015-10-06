@@ -17,7 +17,7 @@ crud:
         page_subtitle: Manage your Classes
       context:
         datatable_fields:
-        - mData: id
+        - mData: class_id
           sClass: text-center
           label: "#"
 

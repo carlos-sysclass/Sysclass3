@@ -114,6 +114,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                      * SMALL HACK TO DO NOT USE A FORM, by andré kucaniz
                      */
                     this.$form.find(".editable-submit").on("click", $.proxy(this.submit, this));
+                    
+                    this.$form.find(".editable-input :input.form-control").on("keyup", function(e,a,b,c,d) {
+                        if (e.which == 13) {
+                            this.submit(e);
+                        }
+                    }.bind(this));
+                    
                     //this.$form.submit($.proxy(this.submit, this));
                 }
 

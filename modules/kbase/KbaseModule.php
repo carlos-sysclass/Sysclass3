@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer /*, ILinkable, */IBreadcrumbable, IActionable
+class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer, /*, ILinkable, */ IBreadcrumbable, IActionable
 {
     protected $_modelRoute = "kbase";
     /* ISummarizable */
