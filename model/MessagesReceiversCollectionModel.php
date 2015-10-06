@@ -17,9 +17,9 @@ class MessagesReceiversCollectionModel extends AbstractSysclassModel implements 
                 mmg.id as group_id,
                 mmg.name as group_name
             FROM groups g
-            LEFT JOIN users_to_groups ug ON (g.id = ug.groups_ID)
+            LEFT JOIN users_to_groups ug ON (g.id = ug.group_id)
             LEFT JOIN mod_messages_groups mmg ON (g.behaviour_allow_messages = mmg.id)
-            LEFT OUTER JOIN users u ON (ug.users_LOGIN = u.login)
+            LEFT OUTER JOIN users u ON (ug.user_id = u.id)
             WHERE behaviour_allow_messages > 0";
 
         parent::init();

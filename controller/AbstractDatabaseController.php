@@ -7,10 +7,10 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	    $tables = explode(",", $table);
 	    foreach ($tables as $key => $value) {
 	        //Prepend prefix to the table
-	        $tables[$key] = G_DBPREFIX.trim($value);
+	        $tables[$key] = trim($value);
 	    }
 	    $table = implode(",", $tables);
-	    $table = str_ireplace(" join ", " join ".G_DBPREFIX, $table);
+	    $table = str_ireplace(" join ", " join ", $table);
 	    $sql = "SELECT ".$fields." FROM ".$table;
 	    if ($where != "") {
 	        $sql .= " WHERE ".$where;
