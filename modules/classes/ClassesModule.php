@@ -288,7 +288,7 @@ class ClassesModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 $items[$key]['options'] = array(
                     'edit'  => array(
                         'icon'  => 'icon-edit',
-                        'link'  => $baseLink . $optionsRoute . "/" . $item['id'],
+                        'link'  => $baseLink . $optionsRoute . "/" . $item['class_id'],
                         'class' => 'btn-sm btn-primary'
                     ),
                     'remove'    => array(
