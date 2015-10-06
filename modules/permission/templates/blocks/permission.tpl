@@ -50,7 +50,7 @@
 	<script type="text/template" id="permission-block-nofound-template">
 		<tr>
 			<td colspan="3">
-				{translateToken value="Ops! There\'s any permission found for this object"}
+				{translateToken value="Ops! There's any permission found for this object"}
 			</td>
 		</tr>
 	</script>
