@@ -16,6 +16,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 	public static $t = null;
 	public static $cfg = null;
+	public static $syscfg = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
 		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
@@ -28,6 +29,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		if (is_null(self::$cfg)) {
 			$di = DI::getDefault();
 			self::$cfg = $di->get("configuration")->asArray();
+			self::$syscfg = $di->get("sysconfig");
+
 		}
 	}
 
@@ -98,6 +101,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
 		$this->putItem("configuration", self::$cfg);
+		$this->putItem("sysconfig", self::$syscfg);
 
 		if ($this->getCurrentUser()) {
 

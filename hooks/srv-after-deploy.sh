@@ -17,7 +17,7 @@
 # ---------------------------------------------------------------------------- #
 
 # ---------------------------------------------------------------------------- #
-# hooks/after-deploy.sh                                                        #
+# hooks/srv-after-deploy.sh                                                        #
 # Executado após a instalação.                                                 #
 # ---------------------------------------------------------------------------- #
 
@@ -28,10 +28,8 @@ ln -s ../files/public/ files
 #creating cache dir
 #mkdir -p "$DIRNAME/../cache/volt"
 #chmod 777 "$DIRNAME/../cache/volt" -R
-#
-# DELETE DATABASE METADATA
 
-#creating cache dir
+
 mkdir -p "$DIRNAME/../cache/metadata"
 chmod 777 "$DIRNAME/../cache/metadata" -R
 
@@ -40,3 +38,12 @@ chmod 777 "$DIRNAME/../logs" -R
 
 mkdir -p "$DIRNAME/../www/resources"
 chmod 777 "$DIRNAME/../www/resources" -R
+
+# INJECT VERSION INSIDE DATABASE
+$full_version=$1
+$branch=$2
+
+echo "[deploy]" > RELEASE
+echo "version=$full_version" >> RELEASE
+echo "version_suffix=$branch" >> RELEASE
+
