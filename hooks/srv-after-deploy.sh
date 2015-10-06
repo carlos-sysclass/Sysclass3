@@ -40,8 +40,8 @@ mkdir -p "$DIRNAME/../www/resources"
 chmod 777 "$DIRNAME/../www/resources" -R
 
 # INJECT VERSION INSIDE DATABASE
-$full_version=$1
-$branch=$2
+full_version=$1
+branch=$2
 
 echo "[deploy]" > RELEASE
 echo "version=$full_version" >> RELEASE
