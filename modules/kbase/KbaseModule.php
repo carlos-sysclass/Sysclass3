@@ -7,7 +7,7 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
+class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer /*, ILinkable, */IBreadcrumbable, IActionable
 {
     protected $_modelRoute = "kbase";
     /* ISummarizable */
@@ -55,6 +55,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
 
     /* ILinkable */
     public function getLinks() {
+
 
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
             $itemsData = $this->model($this->_modelRoute)->getItems();
