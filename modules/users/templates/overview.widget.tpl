@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="col-md-6 col-sm-12 col-xs-12 list-fixed-size">
 				<h6 class="users-panel-username">
-					NOME DO CURSO
+					{translateToken value="COURSE"}: DEMO LESSON
 				</h6>
 				<ul class="list-group border-bottom users-panel-links hidden-sm hidden-xs">
 					<!--
