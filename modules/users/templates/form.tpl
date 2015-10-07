@@ -75,7 +75,10 @@
 					{if $T_MODULE_CONTEXT_NAME == "add"}
 						{include file="./profile/login_and_password.tpl"}
 					{elseif $T_MODULE_CONTEXT_NAME == "edit"}
-						{include file="./profile/password.tpl"}
+						{has_permission resource="Users" action="change-password" assign="allowed"}
+						{if $allowed}
+							{include file="./profile/password.tpl" T_CHECK_OLD=false}
+						{/if}
 					{/if}
 				</div>
 				<h5 class="form-section margin-bottom-10">{translateToken value="Behavior"}</h5>

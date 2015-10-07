@@ -22,6 +22,8 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
         if (is_null(self::$default)) {
             self::$default = new self();
             self::$default->initialize($user);
+
+            self::$user = $user;
         }
 
         return self::$default;
@@ -30,8 +32,9 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
     private function initialize(User $user = null) {
         $this->setDefaultAction(\Phalcon\Acl::DENY);
 
-        $group = $user->getGroup();
-        if ($group) {
+        $groups = $user->getUserGroups();
+
+        foreach($groups as $group) {
             $groupRoles = $group->getRoles();
             foreach($groupRoles as $role) {
                 $this->addPermission($role);
@@ -62,8 +65,20 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
             $resources[$connectByValue][] = $item->toArray();
         }
 
+        $depinject = \Phalcon\DI::getDefault();
+        $stringHelper = $depinject->get("stringsHelper");
+
         foreach($resources as $resource => $operations) {
+
+            $resource = $stringHelper->stripChars($resource);
             $operationsSingle = array_column($operations, "name");
+
+            $filter = new \Phalcon\Filter();
+
+            foreach($operationsSingle as $key => $operation) {
+                $operationsSingle[$key] = $stringHelper->stripChars($operation);
+            }
+
             $this->addResource(
                 new \Phalcon\Acl\Resource($resource),
                 $operationsSingle
@@ -79,10 +94,20 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
     }
 
     public function isUserAllowed(User $user = null, $resource, $operation) {
-        
-        $group = $user->getGroup();
-        if ($group) {
-            $groupRoles = $user->getGroup()->getRoles();
+        if (is_null($user)) {
+            $user = self::$user;
+        }
+
+        $depinject = \Phalcon\DI::getDefault();
+        $stringHelper = $depinject->get("stringsHelper");
+
+        $resource = $stringHelper->stripChars($resource);
+        $operation = $stringHelper->stripChars($operation);
+
+        $groups = $user->getUserGroups();
+
+        foreach($groups as $group) {
+            $groupRoles = $group->getRoles();
             foreach($groupRoles as $role) {
                 //echo sprintf("CHECKING GROUP : %s %s %s<br />", $role->name, $resource, $operation);
                 $status = $this->isAllowed($role->name, $resource, $operation);

@@ -1,12 +1,14 @@
-<div class="form-group col-md-4">
-	<label class="control-label">{translateToken value="Current Password"}</label>
-	<input type="password" name="old-password" class="form-control" autocomplete="off" />
-</div>
-<div class="form-group col-md-4">
+{if $T_CHECK_OLD}
+	<div class="form-group col-md-4">
+		<label class="control-label">{translateToken value="Current Password"}</label>
+		<input type="password" name="old-password" class="form-control" autocomplete="off" />
+	</div>
+{/if}
+<div class="form-group col-md-{if $T_CHECK_OLD}4{else}6{/if}">
 	<label class="control-label">{translateToken value="New Password"}</label>
 	<input type="password" name="new-password" class="form-control password_strength" autocomplete="off" />
 </div>
-<div class="form-group col-md-4">
+<div class="form-group col-md-{if $T_CHECK_OLD}4{else}6{/if}">
 	<label class="control-label">{translateToken value="Re-type New Password"}</label>
 	<input type="password" name="new-password-confirm" class="form-control" autocomplete="off" />
 </div>

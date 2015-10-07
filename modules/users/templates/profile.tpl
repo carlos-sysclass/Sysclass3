@@ -104,7 +104,7 @@
 											{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 										</div>
 										<div id="tab_1-3" class="tab-pane">
-											{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"}
+											{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
 										 </div>
 										<div id="tab_1-4" class="tab-pane">
 											{*include file="`$T_MODULE_TPLPATH`/profile/courses.tpl"*}

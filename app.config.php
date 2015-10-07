@@ -536,7 +536,7 @@ $di->set('db', function () use ($configuration, $eventsManager) {
 
 $di->set('sysconfig', function()  {
 	$config = new ConfigIni(__DIR__ . "/RELEASE");
-	echo $config->project->full_version, "\n";
+	//echo $config->project->full_version, "\n";
 	return $config;
 }, true);
 

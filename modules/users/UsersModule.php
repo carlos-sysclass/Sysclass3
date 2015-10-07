@@ -385,6 +385,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
      * [ add a description ]
      *
      * @url GET /edit/:id
+     * @allow(resource=users, action=edit)
      */
     public function editPage($id)
     {
@@ -473,14 +474,14 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
      */
     public function setItemAction($id)
     {
-        $request = $this->getMatchedUrl();
-
-        //$itemModel = $this->model("user/item");
+        //$request = $this->getMatchedUrl();
+        $ACL = Phalcon\DI::getDefault()->get("acl");
+        $allowed = $ACL->isUserAllowed(null, "users", "edit");
 
         if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
 
-            if ($userModel->id == $id || $userModel->getType() == "administrator") {
+            if ($userModel->id == $id || $allowed) {
                 if ($userModel->id == $id) {
                 } else {
                     $userModel = new \Sysclass\Models\Users\User();
@@ -497,11 +498,20 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     $data['new-password'] === $data['new-password-confirm']
                 ) {
                     // CHECK PASSWORD
-                    $di = DI::getDefault();
+                    if ($ACL->isUserAllowed(null, "users", "change-password")) {
+                        // DEFINE AUTHENTICATION BACKEND
+                        $AUTH = DI::getDefault()->get("authentication");
 
-                    // DEFINE AUTHENTICATION BACKEND
-                    if ($di->get("authentication")->checkPassword($data['old-password'], $userModel)) {
-                        $userModel->password = $di->get("authentication")->hashPassword($data['new-password'], $userModel);
+                        if (
+                            array_key_exists('old-password-confirm', $data) &&
+                            !empty($data['old-password'])
+                        ) {
+                            $continue = $AUTH->checkPassword($data['old-password'], $userModel);
+                        } else {
+                            $continue = true;
+                        }
+
+                        $userModel->password = $AUTH->hashPassword($data['new-password'], $userModel);
                     }
                 }
 

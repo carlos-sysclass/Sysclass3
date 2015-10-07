@@ -69,4 +69,13 @@ class Strings {
         return $string;
     }
 
+    /**
+     * [sanitizeFilter description]
+     * @return [type] [description]
+     * @todo Include This function inside a Phalcon\Filter
+     */
+    public function stripChars($string) {
+        return strtolower(str_replace(" ", "-", ucwords($string)));
+    }
+
 }
