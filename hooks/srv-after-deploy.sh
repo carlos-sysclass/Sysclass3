@@ -21,11 +21,11 @@
 # Executado após a instalação.                                                 #
 # ---------------------------------------------------------------------------- #
 
-DIRNAME=`dirname $(readlink -f $0)`
-
 declare `awk -F = '{print $0}' $1`
 
-ln -s ../files/public/ files
+DIRNAME=`dirname $(readlink -f $0)`
+
+#ln -s ../files/public/ files
 
 #creating cache dir
 #mkdir -p "$DIRNAME/../cache/volt"
@@ -39,7 +39,7 @@ mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 
 mkdir -p "$DIRNAME/../www/resources"
-chmod 777 "$DIRNAME/../www/resources" -R
+chmod 777 "$DIRNAME/../www/resorces" -R
 
 # INJECT VERSION INSIDE DATABASE
 #full_version=$1
