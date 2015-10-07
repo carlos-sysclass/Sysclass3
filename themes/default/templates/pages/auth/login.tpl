@@ -123,11 +123,18 @@
 		<!-- END FORGOT PASSWORD FORM -->
 		<!-- BEGIN REGISTRATION FORM -->
 		<!-- END REGISTRATION FORM -->
+		<div class="copyright">
+			&copy; 2015 • WiseFlex Knowledge Systems LLC. <br />
+			<span style="color: black">
+				{$T_SYSCONFIG.deploy.base_version} 
+				Build {$T_SYSCONFIG.deploy.build_number}
+			</span> 
+			<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
+		</div>
 	</div>
 	<!-- BEGIN COPYRIGHT -->
-	<div class="copyright">
-		&copy; Copyright 2015 • WiseFlex Knowledge Systems LLC.
-	</div>
+
+
 	{if $T_OPEN_LOGIN_SECTION == 'reset'}
 		<style type="text/css">
 			.login .content .forget-form {

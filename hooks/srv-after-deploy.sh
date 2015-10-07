@@ -23,6 +23,8 @@
 
 DIRNAME=`dirname $(readlink -f $0)`
 
+declare `awk -F = '{print $0}' $1`
+
 ln -s ../files/public/ files
 
 #creating cache dir
@@ -40,10 +42,11 @@ mkdir -p "$DIRNAME/../www/resources"
 chmod 777 "$DIRNAME/../www/resources" -R
 
 # INJECT VERSION INSIDE DATABASE
-full_version=$1
-branch=$2
+#full_version=$1
+#branch=$2
 
 echo "[deploy]" > RELEASE
-echo "version=$full_version" >> RELEASE
-echo "version_suffix=$branch" >> RELEASE
-
+echo "base_version=$base_version" >> RELEASE
+echo "full_version=$full_version" >> RELEASE
+echo "build_number=$build_number" >> RELEASE
+echo "branch=$branch" >> RELEASE

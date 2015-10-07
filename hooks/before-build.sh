@@ -35,6 +35,8 @@ echo "$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_director
 touch $bamboo_working_directory/hooks/variables.txt
 
 
+echo "base_version=$bamboo_vars_base_version" >> $bamboo_working_directory/hooks/variables.txt
+echo "build_number=$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
 echo "full_version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
 echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/variables.txt
 echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/variables.txt
