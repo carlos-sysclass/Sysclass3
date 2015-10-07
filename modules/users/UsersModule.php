@@ -17,8 +17,8 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Users", "View")) {
             $items = $this->model("users/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
