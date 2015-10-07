@@ -49,10 +49,8 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function viewPage()
     {
-        $currentUser    = $this->getCurrentUser(true);
-
-        if ($currentUser->getType() == 'administrator') {
-
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, $this->module_id, "View")) {
             $this->createClientContext("view");
             $this->display($this->template);
         } else {
@@ -67,9 +65,8 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function addPage()
     {
-        $currentUser    = $this->getCurrentUser(true);
-
-        if ($currentUser->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, $this->module_id, "Create")) {
             if (!$this->createClientContext("add")) {
                 $this->entryPointNotFoundError($this->getSystemUrl('home'));
             }
@@ -87,8 +84,8 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function editPage($id)
     {
-        $currentUser    = $this->getCurrentUser(true);
-        if ($currentUser->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, $this->module_id, "Edit")) {
             $this->createClientContext("edit", array('entity_id' => $id));
             $this->display($this->template);
         } else {
